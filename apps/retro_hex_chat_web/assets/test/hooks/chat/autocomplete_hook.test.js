@@ -10,6 +10,7 @@ import AutocompleteHook from "../../../js/hooks/chat/autocomplete_hook.js";
 describe("AutocompleteHook", () => {
   let hook;
   let storage;
+  const originalInnerWidth = window.innerWidth;
 
   beforeEach(() => {
     storage = mockLocalStorage();
@@ -17,9 +18,23 @@ describe("AutocompleteHook", () => {
   });
 
   afterEach(() => {
+    hook?.destroyed?.();
     cleanupDOM();
     storage.restore();
+    Object.defineProperty(window, "innerWidth", {
+      configurable: true,
+      writable: true,
+      value: originalInnerWidth,
+    });
   });
+
+  function setViewportWidth(width) {
+    Object.defineProperty(window, "innerWidth", {
+      configurable: true,
+      writable: true,
+      value: width,
+    });
+  }
 
   // ── detectTrigger ──────────────────────────────────────
 
@@ -279,6 +294,16 @@ describe("AutocompleteHook", () => {
       hook.el.dispatchEvent(new Event("input", { bubbles: true }));
       // After auto-resize, the height style should be set
       expect(hook.el.style.height).toBeDefined();
+    });
+
+    it("uses fewer max lines on mobile viewports", () => {
+      setViewportWidth(390);
+      hook.configureTextareaSizing();
+      expect(hook.maxLines).toBe(3);
+
+      setViewportWidth(900);
+      hook.configureTextareaSizing();
+      expect(hook.maxLines).toBe(5);
     });
   });
 

@@ -68,6 +68,34 @@ defmodule RetroHexChatWeb.ChatLive.Components.UserContextMenusTest do
     assert html =~ ~s(phx-window-keydown="close_chat_context_menu")
   end
 
+  test "renders edit action for own message menu targets" do
+    html =
+      menus(%{
+        chat_context_menu: %{
+          visible: true,
+          type: :message,
+          x: 10,
+          y: 20,
+          target_nick: nil,
+          target_url: nil,
+          target_channel: nil,
+          target_message: %{
+            id: 123,
+            nick: "alice",
+            text: "hello",
+            is_own: true
+          },
+          has_selection: false,
+          is_target_registered: false
+        }
+      })
+
+    assert html =~ "context-menu-item-reply_to_message"
+    assert html =~ "context-menu-item-edit_message"
+    assert html =~ "context-menu-item-ctx_chat_delete"
+    assert html =~ ~s(phx-value-message_id="123")
+  end
+
   test "derives is_target_self (own nick disables Query) from session" do
     html =
       menus(%{

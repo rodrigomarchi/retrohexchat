@@ -32,6 +32,8 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
 
   use Phoenix.VerifiedRoutes, endpoint: RetroHexChatWeb.Endpoint, router: RetroHexChatWeb.Router
 
+  @mobile_breakpoint 768
+
   def handle_event("quit_chat", _params, socket) do
     session = socket.assigns.session
     cleanup_channels(session, dgettext("chat", "Leaving"))
@@ -103,9 +105,14 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
     {:halt, Windows.open(socket, "cheatsheet")}
   end
 
-  def handle_event("viewport_info", %{"width" => width}, socket) when width < 768 do
-    {:halt,
-     assign(socket, show_conversations: false, show_nicklist: false, mobile_viewport: true)}
+  def handle_event("viewport_info", %{"width" => width} = params, socket) do
+    mobile? =
+      case mobile_param(params) do
+        nil -> viewport_width(width) < @mobile_breakpoint
+        value -> value
+      end
+
+    {:halt, apply_viewport_mode(socket, mobile?)}
   end
 
   def handle_event("viewport_info", _params, socket), do: {:halt, socket}
@@ -120,4 +127,56 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
   end
 
   def handle_event(_event, _params, socket), do: {:cont, socket}
+
+  defp apply_viewport_mode(socket, true) do
+    if socket.assigns[:mobile_viewport] == true do
+      assign(socket, mobile_viewport: true)
+    else
+      restore = %{
+        show_conversations: Map.get(socket.assigns, :show_conversations, true),
+        show_nicklist: Map.get(socket.assigns, :show_nicklist, true)
+      }
+
+      assign(socket,
+        mobile_viewport: true,
+        mobile_panel_restore: restore,
+        show_conversations: false,
+        show_nicklist: false
+      )
+    end
+  end
+
+  defp apply_viewport_mode(socket, false) do
+    restore = Map.get(socket.assigns, :mobile_panel_restore)
+
+    socket =
+      socket
+      |> assign(mobile_viewport: false, mobile_panel_restore: nil)
+
+    if is_map(restore) do
+      assign(socket, restore)
+    else
+      socket
+    end
+  end
+
+  defp viewport_width(width) when is_integer(width), do: width
+  defp viewport_width(width) when is_float(width), do: round(width)
+
+  defp viewport_width(width) when is_binary(width) do
+    case Integer.parse(width) do
+      {value, _rest} -> value
+      :error -> @mobile_breakpoint
+    end
+  end
+
+  defp viewport_width(_width), do: @mobile_breakpoint
+
+  defp mobile_param(%{"mobile" => value}), do: boolean_param(value)
+  defp mobile_param(_params), do: nil
+
+  defp boolean_param(value) when is_boolean(value), do: value
+  defp boolean_param("true"), do: true
+  defp boolean_param("false"), do: false
+  defp boolean_param(_value), do: nil
 end

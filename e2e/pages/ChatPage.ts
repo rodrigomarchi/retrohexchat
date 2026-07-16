@@ -127,6 +127,7 @@ export class ChatPage {
   readonly chatContextMenu: Locator;
   readonly contextCopyMessageMenuItem: Locator;
   readonly contextReplyMenuItem: Locator;
+  readonly contextEditMenuItem: Locator;
   readonly contextDeleteMenuItem: Locator;
   readonly chatContextCallMenuItem: Locator;
   readonly chatContextVideoCallMenuItem: Locator;
@@ -406,6 +407,9 @@ export class ChatPage {
     );
     this.contextReplyMenuItem = page.getByTestId(
       "context-menu-item-reply_to_message",
+    );
+    this.contextEditMenuItem = page.getByTestId(
+      "context-menu-item-edit_message",
     );
     this.contextDeleteMenuItem = page.getByTestId(
       "context-menu-item-ctx_chat_delete",

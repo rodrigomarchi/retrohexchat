@@ -73,6 +73,7 @@ defmodule RetroHexChatWeb.ChatLive.SearchEvents do
   @spec open(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
   def open(socket) do
     socket
+    |> close_mobile_navigation_panels()
     |> assign(search_visible: true)
     |> update_search(:open)
   end
@@ -94,4 +95,10 @@ defmodule RetroHexChatWeb.ChatLive.SearchEvents do
     send_update(SearchBar, id: SearchBar.id(), action: action)
     socket
   end
+
+  defp close_mobile_navigation_panels(%{assigns: %{mobile_viewport: true}} = socket) do
+    assign(socket, show_conversations: false, show_nicklist: false)
+  end
+
+  defp close_mobile_navigation_panels(socket), do: socket
 end

@@ -97,6 +97,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
      )
      |> reset_composer_modes()
      |> clear_search_on_switch()
+     |> close_mobile_navigation_panels()
      |> load_channel_users(channel)
      |> load_channel_messages_with_pagination(channel)
      |> push_reconnect_state()}
@@ -153,6 +154,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
      )
      |> reset_composer_modes()
      |> clear_search_on_switch()
+     |> close_mobile_navigation_panels()
      |> PM.load_pm_messages_with_pagination(nickname)
      |> push_reconnect_state()}
   end
@@ -164,7 +166,8 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
      socket
      |> assign(show_status_tab: true, status_unread: false, notice_active: false)
      |> reset_composer_modes()
-     |> clear_search_on_switch()}
+     |> clear_search_on_switch()
+     |> close_mobile_navigation_panels()}
   end
 
   # -- close_channel_tab --
@@ -272,6 +275,21 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
     end
   end
 
+  # -- edit_message --
+
+  def handle_event("edit_message", %{"message_id" => msg_id_str}, socket) do
+    session = socket.assigns.session
+    nickname = session.nickname
+
+    with {:ok, msg_id} <- parse_message_id(msg_id_str),
+         %{} = message <- get_reply_parent(session, msg_id),
+         true <- editable_message?(message, session, nickname) do
+      {:halt, enter_edit_mode(socket, message)}
+    else
+      _ -> {:halt, socket}
+    end
+  end
+
   # -- cancel_reply --
 
   def handle_event("cancel_reply", _params, socket) do
@@ -309,14 +327,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
       end
 
     if last_message && editable_message?(last_message, session, nickname) do
-      msg_id = last_message.id
-
-      socket = put_composer(socket, enter_edit: last_message.content)
-
-      {:halt,
-       socket
-       |> assign(edit_mode_message_id: msg_id)
-       |> push_event("enter_edit_mode", %{message_id: msg_id, content: last_message.content})}
+      {:halt, enter_edit_mode(socket, last_message)}
     else
       {:halt, socket}
     end
@@ -503,6 +514,15 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
     }
   end
 
+  defp enter_edit_mode(socket, message) do
+    msg_id = message.id
+    socket = put_composer(socket, enter_edit: message.content)
+
+    socket
+    |> assign(edit_mode_message_id: msg_id)
+    |> push_event("enter_edit_mode", %{message_id: msg_id, content: message.content})
+  end
+
   defp editable_message?(message, %{active_pm: active_pm}, nickname) when not is_nil(active_pm) do
     message
     |> Map.put(:author_nickname, message.sender_nickname)
@@ -673,4 +693,10 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
       socket
     end
   end
+
+  defp close_mobile_navigation_panels(%{assigns: %{mobile_viewport: true}} = socket) do
+    assign(socket, show_conversations: false, show_nicklist: false)
+  end
+
+  defp close_mobile_navigation_panels(socket), do: socket
 end

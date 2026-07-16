@@ -15,6 +15,10 @@ import {
 import { createHistoryManager, isSensitiveCommand } from "../../lib/chat/history.js";
 import { SHORTCUT_FORMAT_MAP } from "../../lib/chat/irc_format.js";
 
+const MOBILE_BREAKPOINT = 768;
+const DESKTOP_MAX_LINES = 5;
+const MOBILE_MAX_LINES = 3;
+
 const AutocompleteHook = {
   mounted() {
     this.inputEl = this.el;
@@ -32,9 +36,15 @@ const AutocompleteHook = {
     // Push recent commands to server
     this.pushEvent("recent_commands_loaded", { commands: this.historyManager.getRecentCommands() });
 
-    // Auto-resize: compute max height for 5 lines
-    this.maxLines = 5;
-    this.maxHeight = computeMaxHeight(this.inputEl, this.maxLines);
+    // Auto-resize: mobile keeps the composer compact so autocomplete, reply and
+    // syntax panels still have room above the keyboard.
+    this.configureTextareaSizing();
+    this.onViewportResize = () => {
+      this.configureTextareaSizing();
+      autoResize(this.inputEl, this.maxHeight);
+    };
+    window.addEventListener("resize", this.onViewportResize);
+    window.addEventListener("orientationchange", this.onViewportResize);
     this.formEl = this.inputEl.closest("form");
 
     if (this.formEl) {
@@ -306,6 +316,12 @@ const AutocompleteHook = {
     });
   },
 
+  destroyed() {
+    window.removeEventListener("resize", this.onViewportResize);
+    window.removeEventListener("orientationchange", this.onViewportResize);
+    clearTimeout(this.typingTimeout);
+  },
+
   updated() {
     // LiveView's focused-input handling can re-apply a stale placeholder from
     // its cached tree on later patches; while focused, the pushed value wins.
@@ -571,6 +587,15 @@ const AutocompleteHook = {
 
   autoResize() {
     autoResize(this.inputEl, this.maxHeight);
+  },
+
+  configureTextareaSizing() {
+    this.maxLines = this.maxLinesForViewport();
+    this.maxHeight = computeMaxHeight(this.inputEl, this.maxLines);
+  },
+
+  maxLinesForViewport() {
+    return window.innerWidth < MOBILE_BREAKPOINT ? MOBILE_MAX_LINES : DESKTOP_MAX_LINES;
   },
 };
 

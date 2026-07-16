@@ -170,7 +170,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatInput do
           class="min-w-[60px]"
         >
           <:icon><Icons.icon_btn_send class="w-4 h-4" /></:icon>
-          {@send_label}
+          <span class="chat-input-send-label">{@send_label}</span>
         </.button>
       </form>
       <p

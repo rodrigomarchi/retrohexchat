@@ -280,6 +280,15 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
       <:icon><Icons.icon_chat class="w-[14px] h-[14px]" /></:icon>
       {dgettext("chat", "Reply")}
     </.context_menu_item>
+    <.context_menu_item
+      :if={@is_own}
+      on_click={@on_action}
+      action="edit_message"
+      phx-value-message_id={@msg_id}
+    >
+      <:icon><Icons.icon_btn_edit class="w-[14px] h-[14px]" /></:icon>
+      {dgettext("chat", "Edit")}
+    </.context_menu_item>
     <.context_menu_separator />
     <.context_menu_item
       :if={@is_own}

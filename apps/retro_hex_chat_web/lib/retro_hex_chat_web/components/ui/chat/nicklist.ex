@@ -20,7 +20,7 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
   def nicklist_sidebar(assigns) do
     ~H"""
     <div class={[
-      "fixed inset-0 z-40 md:relative md:inset-auto md:z-auto",
+      "chat-sidebar-overlay fixed inset-x-0 bottom-0 top-0 z-40 md:relative md:inset-auto md:z-auto",
       "flex justify-end md:h-full md:justify-stretch md:w-[140px] md:shrink-0",
       !@visible && "hidden"
     ]}>

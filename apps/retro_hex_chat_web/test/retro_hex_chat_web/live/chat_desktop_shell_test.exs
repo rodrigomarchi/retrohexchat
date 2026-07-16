@@ -73,6 +73,40 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
       assert has_element?(view, ~s([data-testid="chat-input-form"] [data-testid="char-counter"]))
     end
 
+    test "viewport events collapse mobile panels and restore the prior desktop state", %{
+      conn: conn
+    } do
+      {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/chat")
+
+      assigns = :sys.get_state(view.pid).socket.assigns
+      assert assigns.show_conversations
+      assert assigns.show_nicklist
+      refute assigns.mobile_viewport
+
+      render_hook(view, "viewport_info", %{"width" => 390, "mobile" => true})
+      assigns = :sys.get_state(view.pid).socket.assigns
+      assert assigns.mobile_viewport
+      refute assigns.show_conversations
+      refute assigns.show_nicklist
+
+      render_click(view, "toggle_conversations", %{})
+      assert :sys.get_state(view.pid).socket.assigns.show_conversations
+
+      render_hook(view, "viewport_info", %{"width" => 390, "mobile" => true, "height" => 720})
+      assert :sys.get_state(view.pid).socket.assigns.show_conversations
+
+      render_click(view, "switch_pm", %{"nickname" => "MobilePeer#{uid()}"})
+      assigns = :sys.get_state(view.pid).socket.assigns
+      refute assigns.show_conversations
+      refute assigns.show_nicklist
+
+      render_hook(view, "viewport_info", %{"width" => 900, "mobile" => false})
+      assigns = :sys.get_state(view.pid).socket.assigns
+      refute assigns.mobile_viewport
+      assert assigns.show_conversations
+      assert assigns.show_nicklist
+    end
+
     test "a channel can switch from Chat to Space without replacing the composer", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/chat")
 

@@ -49,7 +49,7 @@
  */
 const STORAGE_PREFIX = "rhc:desktop:";
 const Z_BASE = 10;
-const STACK_BREAKPOINT = 720;
+const STACK_BREAKPOINT = 768;
 const EDGE_MARGIN = 40;
 const CASCADE_STEP = 26;
 const CASCADE_SIZE_RATIO = 0.6;

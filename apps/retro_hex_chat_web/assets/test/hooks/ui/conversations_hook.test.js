@@ -17,8 +17,18 @@ describe("ConversationsHook", () => {
   });
 
   afterEach(() => {
+    hook?.destroyed?.();
+    vi.useRealTimers();
     cleanupDOM();
   });
+
+  function pointerEvent(type, attrs = {}) {
+    const event = new Event(type, { bubbles: true, cancelable: true });
+    for (const [key, value] of Object.entries(attrs)) {
+      Object.defineProperty(event, key, { value, configurable: true });
+    }
+    return event;
+  }
 
   it("pushes channel_right_click on contextmenu", () => {
     const li = hook.el.querySelector("[data-channel='#general']");
@@ -53,5 +63,47 @@ describe("ConversationsHook", () => {
     hook.pushEvent.mockClear();
     hook.el.dispatchEvent(new MouseEvent("dblclick", { bubbles: true }));
     expect(hook.pushEvent).not.toHaveBeenCalled();
+  });
+
+  it("opens the channel context menu from a touch long press", () => {
+    vi.useFakeTimers();
+    const li = hook.el.querySelector("[data-channel='#general']");
+
+    li.dispatchEvent(
+      pointerEvent("pointerdown", {
+        pointerType: "touch",
+        button: 0,
+        clientX: 44,
+        clientY: 88,
+      }),
+    );
+    vi.advanceTimersByTime(550);
+
+    expect(hook.pushEvent).toHaveBeenCalledWith("channel_right_click", {
+      channel: "#general",
+      x: 44,
+      y: 88,
+    });
+  });
+
+  it("opens the PM context menu from a touch long press", () => {
+    vi.useFakeTimers();
+    const li = hook.el.querySelector("[data-nick='Alice']");
+
+    li.dispatchEvent(
+      pointerEvent("pointerdown", {
+        pointerType: "touch",
+        button: 0,
+        clientX: 20,
+        clientY: 30,
+      }),
+    );
+    vi.advanceTimersByTime(550);
+
+    expect(hook.pushEvent).toHaveBeenCalledWith("pm_right_click", {
+      nick: "Alice",
+      x: 20,
+      y: 30,
+    });
   });
 });

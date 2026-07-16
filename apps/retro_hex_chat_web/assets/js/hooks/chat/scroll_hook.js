@@ -34,6 +34,9 @@ import {
 import { showFeedbackToast } from "../../lib/notifications/feedback_toast.js";
 import { t } from "../../lib/i18n.js";
 
+const LONG_PRESS_MS = 550;
+const MOVE_TOLERANCE_PX = 10;
+
 const ScrollHook = {
   mounted() {
     this.chatEl = this.el;
@@ -45,6 +48,8 @@ const ScrollHook = {
     this.wasHidden = this.isHidden();
     this.mouseDownPos = null;
     this.lastClearToken = this.el.dataset.clearToken || "";
+    this.longPress = null;
+    this.suppressNextClick = false;
 
     // Pin to the bottom on mount, then re-pin once after the next frame so
     // late layout (flex sizing, web fonts, initial stream patches) that grows
@@ -156,6 +161,13 @@ const ScrollHook = {
 
     // Channel single-click — join or switch
     this.chatEl.addEventListener("click", (e) => {
+      if (this.suppressNextClick) {
+        e.preventDefault();
+        e.stopPropagation();
+        this.suppressNextClick = false;
+        return;
+      }
+
       if (isContextMenuOpen()) {
         setContextMenuOpen(false);
         return;
@@ -194,6 +206,16 @@ const ScrollHook = {
       // Cancel nick hover timer on mousedown (FR-015 — text selection suppression)
       cancelNickHoverTimer();
     });
+
+    this._pointerDown = (e) => this.startLongPress(e);
+    this._pointerMove = (e) => this.moveLongPress(e);
+    this._pointerUp = (e) => this.finishLongPress(e);
+    this._pointerCancel = () => this.cancelLongPress();
+
+    this.chatEl.addEventListener("pointerdown", this._pointerDown);
+    this.chatEl.addEventListener("pointermove", this._pointerMove);
+    this.chatEl.addEventListener("pointerup", this._pointerUp);
+    this.chatEl.addEventListener("pointercancel", this._pointerCancel);
 
     // Double-click on channel names in chat → join/switch channel (legacy, keep for compat)
     this.chatEl.addEventListener("dblclick", (e) => {
@@ -452,6 +474,7 @@ const ScrollHook = {
   },
 
   destroyed() {
+    this.cancelLongPress();
     this.cancelRepin();
     if (this.observer) {
       this.observer.disconnect();
@@ -462,6 +485,10 @@ const ScrollHook = {
     if (this._viewportLeaveHandler) {
       document.documentElement.removeEventListener("mouseleave", this._viewportLeaveHandler);
     }
+    this.chatEl.removeEventListener("pointerdown", this._pointerDown);
+    this.chatEl.removeEventListener("pointermove", this._pointerMove);
+    this.chatEl.removeEventListener("pointerup", this._pointerUp);
+    this.chatEl.removeEventListener("pointercancel", this._pointerCancel);
     removeTooltip();
     cancelNickHoverTimer();
   },
@@ -568,6 +595,68 @@ const ScrollHook = {
 
   collectUrls(msgEl) {
     return collectUrls(msgEl);
+  },
+
+  startLongPress(e) {
+    if (e.pointerType !== "touch" || e.button !== 0) return;
+    if (e.target.closest("textarea, input, [contenteditable]")) return;
+
+    const msgEl = e.target.closest(".chat-message");
+    if (!msgEl) return;
+
+    this.cancelLongPress();
+    cancelNickHoverTimer();
+    removeTooltip();
+    this.longPress = {
+      msgEl,
+      target: e.target,
+      x: e.clientX,
+      y: e.clientY,
+      fired: false,
+      timer: setTimeout(() => this.fireLongPress(), LONG_PRESS_MS),
+    };
+  },
+
+  moveLongPress(e) {
+    if (!this.longPress) return;
+    if (this.longPress.fired) return;
+
+    const dx = Math.abs(e.clientX - this.longPress.x);
+    const dy = Math.abs(e.clientY - this.longPress.y);
+    if (dx > MOVE_TOLERANCE_PX || dy > MOVE_TOLERANCE_PX) {
+      this.cancelLongPress();
+    }
+  },
+
+  finishLongPress(e) {
+    if (this.longPress?.fired) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    this.cancelLongPress({ keepClickSuppression: true });
+  },
+
+  fireLongPress() {
+    if (!this.longPress) return;
+
+    const { msgEl, target, x, y } = this.longPress;
+    if (!msgEl.isConnected) {
+      this.cancelLongPress();
+      return;
+    }
+
+    this.longPress.fired = true;
+    this.suppressNextClick = true;
+    setContextMenuOpen(true);
+    cancelNickHoverTimer();
+    removeTooltip();
+    this.detectAndPushContextMenu({ target, clientX: x, clientY: y }, msgEl);
+  },
+
+  cancelLongPress({ keepClickSuppression = false } = {}) {
+    if (this.longPress?.timer) clearTimeout(this.longPress.timer);
+    this.longPress = null;
+    if (!keepClickSuppression) this.suppressNextClick = false;
   },
 
   isMessageStreamMutation(mutation) {

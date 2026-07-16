@@ -776,7 +776,8 @@ defmodule RetroHexChatWeb.App.ChatLive do
       p2p_pending: nil,
       p2p_setup: nil,
       arcade_session: nil,
-      mobile_viewport: false
+      mobile_viewport: false,
+      mobile_panel_restore: nil
     )
   end
 

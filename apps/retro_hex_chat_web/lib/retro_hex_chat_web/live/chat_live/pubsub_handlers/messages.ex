@@ -233,7 +233,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
         socket =
           socket
           |> record_pm_activity(peer)
-          |> maybe_open_p2p_invite_tab(peer, direction, msg_type)
+          |> maybe_open_pm_activity_tab(peer, direction, msg_type)
           |> maybe_mark_pm_activity_unread(peer, direction)
           |> PM.maybe_auto_add_to_notify(peer)
 
@@ -381,10 +381,8 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
     assign(socket, session: Session.add_pm_conversation(session, peer))
   end
 
-  defp maybe_open_p2p_invite_tab(socket, peer, :incoming, :invite),
+  defp maybe_open_pm_activity_tab(socket, peer, _direction, _type),
     do: PM.open_pm_tab(socket, peer)
-
-  defp maybe_open_p2p_invite_tab(socket, _peer, _direction, _type), do: socket
 
   defp maybe_mark_pm_activity_unread(socket, sender, :incoming) do
     session = socket.assigns.session

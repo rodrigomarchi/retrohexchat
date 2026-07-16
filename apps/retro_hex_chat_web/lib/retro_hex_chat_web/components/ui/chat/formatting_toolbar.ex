@@ -57,7 +57,7 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
 
     ~H"""
     <div
-      class={classes(["hidden md:block", @class])}
+      class={classes(["block", @class])}
       phx-hook="FormatToolbarHook"
       id={@id}
       {@rest}
@@ -68,7 +68,7 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
           variant="compact"
           label={dgettext("chat", "Bold (Ctrl+Shift+B)")}
           active={@bold_active}
-          class="format-btn"
+          class="format-btn hidden md:inline-flex"
           data-format-code="bold"
           data-testid="format-btn-bold"
         >
@@ -78,7 +78,7 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
           variant="compact"
           label={dgettext("chat", "Italic (Ctrl+Shift+Y)")}
           active={@italic_active}
-          class="format-btn"
+          class="format-btn hidden md:inline-flex"
           data-format-code="italic"
           data-testid="format-btn-italic"
         >
@@ -88,17 +88,17 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
           variant="compact"
           label={dgettext("chat", "Underline (Ctrl+Shift+U)")}
           active={@underline_active}
-          class="format-btn"
+          class="format-btn hidden md:inline-flex"
           data-format-code="underline"
           data-testid="format-btn-underline"
         >
           <Icons.icon_fmt_underline class="w-3.5 h-3.5" />
         </.toolbar_button>
 
-        <.toolbar_separator variant="compact" />
+        <.toolbar_separator variant="compact" class="hidden md:block" />
 
         <%!-- Color picker toggle + dropdown --%>
-        <div class="format-color-picker-wrapper relative inline-flex items-center">
+        <div class="format-color-picker-wrapper relative hidden items-center md:inline-flex">
           <.toolbar_button
             variant="compact"
             label={dgettext("chat", "Color (Ctrl+Shift+D)")}
@@ -122,13 +122,13 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
           </div>
         </div>
 
-        <.toolbar_separator variant="compact" />
+        <.toolbar_separator variant="compact" class="hidden md:block" />
 
         <%!-- Control buttons --%>
         <.toolbar_button
           variant="compact"
           label={dgettext("chat", "Reverse (Ctrl+Shift+V)")}
-          class="format-btn"
+          class="format-btn hidden md:inline-flex"
           data-format-code="reverse"
           data-testid="format-btn-reverse"
         >
@@ -137,20 +137,21 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
         <.toolbar_button
           variant="compact"
           label={dgettext("chat", "Reset (Ctrl+Shift+X)")}
-          class="format-btn"
+          class="format-btn hidden md:inline-flex"
           data-format-code="reset"
           data-testid="format-btn-reset"
         >
           <Icons.icon_fmt_reset class="w-3.5 h-3.5" />
         </.toolbar_button>
 
-        <.toolbar_separator variant="compact" />
+        <.toolbar_separator variant="compact" class="hidden md:block" />
 
         <%!-- Strip formatting --%>
         <.toolbar_button
           variant="compact"
           label={dgettext("chat", "Strip Colors")}
           active={@strip_active}
+          class="hidden md:inline-flex"
           phx-click={@on_format}
           phx-value-format="strip"
           data-testid="strip-formatting-toggle"
@@ -158,7 +159,7 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
           <Icons.icon_fmt_strip class="w-3.5 h-3.5" />
         </.toolbar_button>
 
-        <.toolbar_separator :if={@show_emoji} variant="compact" />
+        <.toolbar_separator :if={@show_emoji} variant="compact" class="hidden md:block" />
 
         <%!-- Emoji toggle --%>
         <.toolbar_button

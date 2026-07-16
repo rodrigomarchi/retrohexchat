@@ -15,6 +15,7 @@ describe("ScrollHook", () => {
 
   afterEach(() => {
     hook?.destroyed?.();
+    vi.useRealTimers();
     cleanupDOM();
   });
 
@@ -33,6 +34,14 @@ describe("ScrollHook", () => {
 
   function flushMutations() {
     return new Promise((resolve) => setTimeout(resolve, 0));
+  }
+
+  function pointerEvent(type, attrs = {}) {
+    const event = new Event(type, { bubbles: true, cancelable: true });
+    for (const [key, value] of Object.entries(attrs)) {
+      Object.defineProperty(event, key, { value, configurable: true });
+    }
+    return event;
   }
 
   // ── scroll detection ───────────────────────────────────
@@ -206,6 +215,27 @@ describe("ScrollHook", () => {
       expect(hook.pushEvent).toHaveBeenCalledWith(
         "chat_context_menu",
         expect.objectContaining({ type: "message" }),
+      );
+    });
+
+    it("opens the same message context menu from a touch long press", () => {
+      vi.useFakeTimers();
+      const msgEl = createMsgEl('<span class="chat-nick" data-nick="Alice">Alice</span>');
+      const nickEl = msgEl.querySelector(".chat-nick");
+
+      nickEl.dispatchEvent(
+        pointerEvent("pointerdown", {
+          pointerType: "touch",
+          button: 0,
+          clientX: 33,
+          clientY: 77,
+        }),
+      );
+      vi.advanceTimersByTime(550);
+
+      expect(hook.pushEvent).toHaveBeenCalledWith(
+        "chat_context_menu",
+        expect.objectContaining({ type: "nick", nick: "Alice", x: 33, y: 77 }),
       );
     });
   });

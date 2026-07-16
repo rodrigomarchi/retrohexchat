@@ -29,6 +29,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShellTest do
     html = header(Session.new("alice"))
 
     assert html =~ ~s(data-testid="app-header")
+    assert html =~ ~s(data-testid="chat-mobile-conversations")
+    assert html =~ ~s(data-testid="chat-mobile-nicklist")
+    assert html =~ ~s(data-testid="chat-mobile-search")
     assert html =~ ~s(id="menubar")
     assert html =~ ~s(phx-hook="MenuBarHook")
     assert html =~ ~s(data-testid="status-bar-app")

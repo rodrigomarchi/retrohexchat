@@ -48,24 +48,18 @@ defmodule RetroHexChatWeb.Live.WindowNavigationTest do
       assert html =~ "chat-messages"
     end
 
-    test "window navigation skips sidebar-only PMs and includes opened PM tabs", %{conn: conn} do
+    test "window navigation includes PM tabs opened by incoming activity", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "WinPm#{uid()}"), "/chat")
 
       send(view.pid, pm_activity("ClosedPm"))
       render(view)
 
       assert has_element?(view, ~s([data-testid="pm-ClosedPm"]))
-      refute has_element?(view, ~s([role="tab"][phx-value-type="pm"][phx-value-label="ClosedPm"]))
-
-      render_click(view, "window_next")
+      assert has_element?(view, ~s([role="tab"][phx-value-type="pm"][phx-value-label="ClosedPm"]))
       refute assigns(view).session.active_pm == "ClosedPm"
 
-      view
-      |> element(~s([data-testid="pm-ClosedPm"]))
-      |> render_click()
-
+      render_click(view, "window_next")
       assert assigns(view).session.active_pm == "ClosedPm"
-      assert has_element?(view, ~s([role="tab"][phx-value-type="pm"][phx-value-label="ClosedPm"]))
 
       render_click(view, "switch_channel", %{"channel" => "#lobby"})
       assert assigns(view).session.active_channel == "#lobby"

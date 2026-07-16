@@ -231,7 +231,7 @@ describe("WindowManagerHook", () => {
 
     it("entering stacked mode focuses the topmost open window when none is focused", () => {
       const originalWidth = window.innerWidth;
-      window.innerWidth = 375; // a phone-sized viewport, below the breakpoint
+      window.innerWidth = 375; // a phone-sized viewport, below the 768px breakpoint
       try {
         hook.stacked = false;
         hook.focusedId = null;
@@ -240,6 +240,21 @@ describe("WindowManagerHook", () => {
         expect(hook.stacked).toBe(true);
         expect(hook.focusedId).not.toBeNull();
         expect(hook.windows[hook.focusedId].state.open).toBe(true);
+      } finally {
+        window.innerWidth = originalWidth;
+      }
+    });
+
+    it("uses 768px as the stacked breakpoint", () => {
+      const originalWidth = window.innerWidth;
+      try {
+        window.innerWidth = 767;
+        hook.updateStacking();
+        expect(hook.stacked).toBe(true);
+
+        window.innerWidth = 768;
+        hook.updateStacking();
+        expect(hook.stacked).toBe(false);
       } finally {
         window.innerWidth = originalWidth;
       }

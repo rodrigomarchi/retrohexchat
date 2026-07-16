@@ -31,9 +31,20 @@ export default defineConfig({
   projects: [
     {
       name: "chromium",
+      testIgnore: /.*mobile.*\.spec\.ts/,
       use: {
         ...devices["Desktop Chrome"],
         // Set SLOW_MO=300 (ms) when running headed to watch the spec unfold.
+        launchOptions: {
+          slowMo: Number(process.env.SLOW_MO) || 0,
+        },
+      },
+    },
+    {
+      name: "mobile-chrome",
+      testMatch: /.*mobile.*\.spec\.ts/,
+      use: {
+        ...devices["Pixel 5"],
         launchOptions: {
           slowMo: Number(process.env.SLOW_MO) || 0,
         },

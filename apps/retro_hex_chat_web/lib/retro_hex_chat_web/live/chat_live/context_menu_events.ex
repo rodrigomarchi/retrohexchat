@@ -13,7 +13,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   ctx_chat_set_color, ctx_chat_kick, ctx_chat_ban, ctx_chat_voice, ctx_chat_devoice,
   ctx_chat_op, ctx_chat_deop, ctx_chat_mute, ctx_chat_unmute, ctx_chat_open_url,
   ctx_chat_copy_url, ctx_chat_save_url, ctx_chat_join, ctx_chat_copy_channel,
-  ctx_chat_channel_info,
+  ctx_chat_channel_info, edit_message,
   ctx_chat_copy_message, ctx_chat_copy_selection, ctx_chat_ignore_sender,
   ctx_chat_lobby.
 
@@ -383,6 +383,18 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   end
 
   def handle_event("reply_to_message", _params, socket) do
+    {:halt, close_chat_context_menu(socket)}
+  end
+
+  def handle_event("edit_message", %{"message_id" => msg_id} = params, socket)
+      when is_binary(msg_id) and byte_size(msg_id) > 0 do
+    socket =
+      close_chat_context_menu(socket)
+
+    CoreEvents.handle_event("edit_message", params, socket)
+  end
+
+  def handle_event("edit_message", _params, socket) do
     {:halt, close_chat_context_menu(socket)}
   end
 
