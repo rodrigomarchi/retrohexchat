@@ -14,14 +14,23 @@ async function signedInUser(page: Page) {
   return chat;
 }
 
+function uniqueChannel(prefix = "editempty"): string {
+  return `#${prefix}${Math.random().toString(36).slice(2, 9)}`;
+}
+
 test.describe("Message edit/delete edge cases", () => {
   test("editing a message to empty opens delete confirmation and cancel restores normal input state (R10)", async ({
     page,
   }) => {
     const chat = await signedInUser(page);
+    const channel = uniqueChannel();
     const marker = Date.now();
     const original = `empty-edit-original-${marker}`;
     const afterCancel = `empty-edit-after-cancel-${marker}`;
+
+    await chat.sendMessage(`/join ${channel}`);
+    await chat.expectTabVisible(channel);
+    await chat.expectTabSelected(channel);
 
     await chat.sendMessage(original);
     const originalRow = chat.messageRowByText(original);

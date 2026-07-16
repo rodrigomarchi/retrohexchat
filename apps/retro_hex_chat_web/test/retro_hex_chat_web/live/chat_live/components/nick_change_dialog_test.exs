@@ -28,6 +28,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.NickChangeDialogTest do
     assert html =~ "bob"
     # Confirm bubbles to the parent carrying target + registered.
     assert html =~ "confirm_nick_change"
+    assert html =~ "nick_change_cancel"
     refute html =~ ~s(data-testid="nick-change-password")
   end
 
@@ -40,5 +41,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.NickChangeDialogTest do
 
     assert html =~ "alice"
     assert html =~ ~s(data-testid="nick-change-password")
+    assert html =~ "NickServ password"
   end
 end

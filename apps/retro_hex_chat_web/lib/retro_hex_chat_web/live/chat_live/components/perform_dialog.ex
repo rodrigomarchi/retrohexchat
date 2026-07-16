@@ -120,6 +120,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.PerformDialog do
     {:noreply, assign(socket, show_autojoin_edit_dialog: false)}
   end
 
+  def handle_event("perform_dialog_close", _params, socket) do
+    send(self(), {:close_window, "perform"})
+    {:noreply, socket}
+  end
+
   # ── Perform list mutations ───────────────────────────────────────
 
   def handle_event("perform_dialog_add_confirm", %{"command" => command}, socket) do
@@ -285,6 +290,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.PerformDialog do
         on_autojoin_add="autojoin_dialog_add"
         on_autojoin_edit="autojoin_dialog_edit"
         on_autojoin_remove="autojoin_dialog_remove"
+        on_close="perform_dialog_close"
       />
     </div>
     """

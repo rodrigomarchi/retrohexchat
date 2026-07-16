@@ -37,26 +37,40 @@ defmodule RetroHexChatWeb.Components.UI.PasteConfirmDialog do
   def paste_confirm_dialog(assigns) do
     ~H"""
     <span data-testid="paste-confirm-dialog">
-      <.dialog id={@id} show={@show}>
-        <.dialog_header id={@id} title={dgettext("dialogs", "Paste Confirmation")}>
+      <.dialog id={@id} show={@show} on_cancel={@on_cancel} class="cd-dialog-wrap">
+        <.dialog_header
+          id={@id}
+          title={dgettext("dialogs", "Paste Confirmation")}
+          on_close={@on_cancel}
+        >
           <:icon><Icons.icon_dialog_paste class="w-4 h-4" /></:icon>
         </.dialog_header>
 
-        <.dialog_body>
-          <div class="space-y-retro-8">
-            <p class="text-xs">
-              {dgettext("dialogs", "You are about to send %{count} of text.",
-                count: dngettext("dialogs", "%{count} line", "%{count} lines", @line_count)
-              )}
-            </p>
+        <.dialog_body class="cd-dialog-body">
+          <div class="cd-paste-stack">
+            <div class="cd-message-row">
+              <span class="cd-message-icon" aria-hidden="true">
+                <Icons.icon_dialog_paste class="w-5 h-5" />
+              </span>
+              <div class="cd-message-copy">
+                <p class="cd-message-text">
+                  {dgettext("dialogs", "You are about to send %{count} of text.",
+                    count: dngettext("dialogs", "%{count} line", "%{count} lines", @line_count)
+                  )}
+                </p>
+                <p class="cd-message-note">
+                  {dgettext("dialogs", "Send them as a paced batch to the active conversation.")}
+                </p>
+              </div>
+            </div>
 
             <div
               :if={@flood_warning}
-              class="shadow-retro-field bg-white p-retro-8 flex items-start gap-retro-4"
+              class="cd-callout cd-callout--warning"
               data-testid="paste-flood-warning"
             >
-              <Icons.icon_warning class="w-4 h-4 shrink-0 mt-[1px]" />
-              <p class="text-xs">
+              <Icons.icon_warning class="w-4 h-4 shrink-0" />
+              <p>
                 {dgettext(
                   "dialogs",
                   "Warning: This exceeds the flood protection limit. Messages may be throttled."
@@ -64,18 +78,19 @@ defmodule RetroHexChatWeb.Components.UI.PasteConfirmDialog do
               </p>
             </div>
 
-            <p class="text-xs text-muted-foreground">
+            <p class="cd-message-question">
               {dgettext("dialogs", "Are you sure you want to send all lines at once?")}
             </p>
           </div>
         </.dialog_body>
 
-        <.dialog_footer>
+        <.dialog_footer class="cd-dialog-footer">
           <.button
             variant="default"
             phx-click={@on_send}
             disabled={@send_disabled}
             data-testid="paste-confirm-send"
+            class="cd-dialog-action"
           >
             <:icon><Icons.icon_dialog_paste class="w-4 h-4" /></:icon>
             {dgettext("dialogs", "Send All")}
@@ -84,6 +99,7 @@ defmodule RetroHexChatWeb.Components.UI.PasteConfirmDialog do
             variant="outline"
             phx-click={@on_cancel || hide_modal(@id)}
             data-testid="paste-confirm-cancel"
+            class="cd-dialog-action"
           >
             <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
             {dgettext("dialogs", "Cancel")}

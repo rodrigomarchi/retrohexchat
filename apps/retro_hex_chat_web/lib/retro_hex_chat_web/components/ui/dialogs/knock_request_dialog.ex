@@ -35,7 +35,7 @@ defmodule RetroHexChatWeb.Components.UI.KnockRequestDialog do
       |> assign(:message_too_long, message_length > @max_message_length)
 
     ~H"""
-    <.dialog id={@id} show={@show} on_cancel={@on_cancel} class="max-w-md">
+    <.dialog id={@id} show={@show} on_cancel={@on_cancel} class="kr-dialog-wrap">
       <.dialog_header
         id={@id}
         title={dgettext("dialogs", "Request Channel Access")}
@@ -44,29 +44,36 @@ defmodule RetroHexChatWeb.Components.UI.KnockRequestDialog do
         <:icon><Icons.icon_dialog_invite class="w-4 h-4" /></:icon>
       </.dialog_header>
 
-      <.dialog_body>
+      <.dialog_body class="kr-dialog-body">
         <form
           id={"#{@id}-form"}
           phx-change={@on_change}
           phx-submit={@on_submit}
           phx-auto-recover="ignore"
-          class="space-y-retro-10"
+          class="kr-form"
         >
           <input type="hidden" name="channel" value={@channel || ""} />
 
-          <p class="text-xs font-bold">
-            {dgettext("dialogs", "Channel")}: {display_channel(@channel)}
-          </p>
+          <div class="kr-channel-card">
+            <span class="kr-channel-icon" aria-hidden="true">
+              <Icons.icon_dialog_invite class="w-4 h-4" />
+            </span>
+            <div class="kr-channel-copy">
+              <p class="kr-field-label">{dgettext("dialogs", "Channel")}</p>
+              <p class="kr-channel-value">{display_channel(@channel)}</p>
+            </div>
+          </div>
 
-          <div class="flex flex-col gap-retro-4">
-            <label class="text-xs font-bold" for={"#{@id}-message"}>
-              {dgettext("dialogs", "Message (optional)")}:
+          <div class="kr-field-group">
+            <label class="kr-field-label" for={"#{@id}-message"}>
+              {dgettext("dialogs", "Message (optional)")}
             </label>
             <.textarea
               id={"#{@id}-message"}
               name="message"
               value={@message}
               rows="4"
+              class="kr-message-input"
               placeholder={
                 dgettext("dialogs", "Leave a message for the channel operators (optional)")
               }
@@ -74,29 +81,36 @@ defmodule RetroHexChatWeb.Components.UI.KnockRequestDialog do
             />
             <p
               class={[
-                "text-[10px]",
-                if(@message_too_long, do: "text-destructive", else: "text-muted-foreground")
+                "kr-counter",
+                @message_too_long && "kr-counter--error"
               ]}
               data-testid="knock-request-counter"
             >
               {@message_length} / {@max_message_length}
             </p>
-            <p :if={@error} class="text-[10px] text-destructive" data-testid="knock-request-error">
+            <p :if={@error} class="kr-error" data-testid="knock-request-error">
               {@error}
             </p>
           </div>
 
-          <div class="flex justify-end gap-retro-4">
+          <div class="kr-action-row">
             <.button
               type="submit"
               size="sm"
               disabled={@message_too_long}
+              class="kr-action-button"
               data-testid="knock-request-submit"
             >
               <:icon><Icons.icon_dialog_invite /></:icon>
               {dgettext("dialogs", "Send Request")}
             </.button>
-            <.button type="button" size="sm" variant="outline" phx-click={@on_cancel}>
+            <.button
+              type="button"
+              size="sm"
+              variant="outline"
+              phx-click={@on_cancel}
+              class="kr-action-button"
+            >
               <:icon><Icons.icon_close /></:icon>
               {dgettext("dialogs", "Cancel")}
             </.button>

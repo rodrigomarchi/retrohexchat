@@ -27,7 +27,7 @@ defmodule RetroHexChatWeb.Components.UI.InviteChannelPickerDialog do
       |> assign(:has_channels, assigns.channels != [])
 
     ~H"""
-    <.dialog id={@id} show={@show} on_cancel={@on_cancel} class="max-w-sm">
+    <.dialog id={@id} show={@show} on_cancel={@on_cancel} class="icp-dialog-wrap">
       <.dialog_header
         id={@id}
         title={dgettext("dialogs", "Invite to Channel")}
@@ -36,22 +36,23 @@ defmodule RetroHexChatWeb.Components.UI.InviteChannelPickerDialog do
         <:icon><Icons.icon_dialog_invite class="w-4 h-4" /></:icon>
       </.dialog_header>
 
-      <.dialog_body>
-        <form id={"#{@id}-form"} phx-submit={@on_submit} class="space-y-retro-10">
+      <.dialog_body class="icp-dialog-body">
+        <form id={"#{@id}-form"} phx-submit={@on_submit} class="icp-form">
           <input type="hidden" name="target" value={@target_nick || ""} />
 
-          <p class="text-xs font-bold">
-            {dgettext("dialogs", "Inviting")}: {display_nick(@target_nick)}
-          </p>
+          <div class="icp-target-row">
+            <span class="icp-field-label">{dgettext("dialogs", "Inviting")}</span>
+            <span class="icp-target-value">{display_nick(@target_nick)}</span>
+          </div>
 
-          <div class="flex flex-col gap-retro-4">
-            <label class="text-xs font-bold" for={"#{@id}-channel"}>
-              {dgettext("dialogs", "Channel")}:
+          <div class="icp-field-group">
+            <label class="icp-field-label" for={"#{@id}-channel"}>
+              {dgettext("dialogs", "Channel")}
             </label>
             <select
               id={"#{@id}-channel"}
               name="channel"
-              class="flex h-10 w-full border-none shadow-retro-field bg-white px-3 py-2 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-black disabled:cursor-not-allowed disabled:opacity-50"
+              class="icp-select flex h-10 w-full border-none shadow-retro-field bg-white px-3 py-2 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-black disabled:cursor-not-allowed disabled:opacity-50"
               disabled={!@has_channels}
               data-testid="invite-channel-picker-select"
             >
@@ -63,25 +64,32 @@ defmodule RetroHexChatWeb.Components.UI.InviteChannelPickerDialog do
                 {channel}
               </option>
             </select>
-            <p :if={!@has_channels} class="text-[10px] text-muted-foreground">
+            <p :if={!@has_channels} class="icp-help-text">
               {dgettext("dialogs", "You must be in a channel to invite someone")}
             </p>
-            <p :if={@error} class="text-[10px] text-destructive" data-testid="invite-channel-error">
+            <p :if={@error} class="icp-error-text" data-testid="invite-channel-error">
               {@error}
             </p>
           </div>
 
-          <div class="flex justify-end gap-retro-4">
+          <div class="icp-action-row">
             <.button
               type="submit"
               size="sm"
               disabled={!@has_channels}
               data-testid="invite-channel-submit"
+              class="icp-action-button"
             >
               <:icon><Icons.icon_dialog_invite /></:icon>
               {dgettext("dialogs", "Send Invite")}
             </.button>
-            <.button type="button" size="sm" variant="outline" phx-click={@on_cancel}>
+            <.button
+              type="button"
+              size="sm"
+              variant="outline"
+              phx-click={@on_cancel}
+              class="icp-action-button"
+            >
               <:icon><Icons.icon_close /></:icon>
               {dgettext("dialogs", "Cancel")}
             </.button>

@@ -76,7 +76,8 @@ defmodule RetroHexChatWeb.ChannelMembershipFeatureTest do
       html = render(op_view)
 
       assert html =~ "Invite to Channel"
-      assert html =~ "Inviting: #{target}"
+      assert html =~ "Inviting"
+      assert html =~ target
       assert html =~ channel
 
       op_view
@@ -171,7 +172,8 @@ defmodule RetroHexChatWeb.ChannelMembershipFeatureTest do
       html = render(guest_view)
 
       assert html =~ "Request Channel Access"
-      assert html =~ "Channel: #{channel}"
+      assert html =~ "Channel"
+      assert html =~ channel
       refute has_element?(guest_view, "#channel-list-dialog-show-trigger")
 
       guest_view
@@ -229,7 +231,7 @@ defmodule RetroHexChatWeb.ChannelMembershipFeatureTest do
       # phx-change for every mounted form to recover in-flight input — including
       # the hidden knock form. This is that recovered event, arriving closed with
       # an empty channel (a fresh cold mount has no channel draft). It must NOT
-      # surface the "Request Channel Access" window with "Channel: unknown".
+      # surface the "Request Channel Access" window with an unknown channel.
       render_change(guest_view, "knock_request_change", %{"channel" => "", "message" => ""})
       _ = render(guest_view)
 

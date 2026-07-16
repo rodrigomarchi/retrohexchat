@@ -99,6 +99,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.TimersDialog do
     {:noreply, assign(socket, [{:editing, false} | draft_fields()])}
   end
 
+  def handle_event("timers_dialog_close", _params, socket) do
+    send(self(), {:close_window, "timers"})
+    {:noreply, socket}
+  end
+
   @impl true
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()
   def render(assigns) do
@@ -106,6 +111,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.TimersDialog do
     <div id={"#{@id}-mount"} class="contents">
       <.timers_panel
         id={@id}
+        target={@myself}
         timers={@timers}
         selected_timer={@selected}
         editing={@editing}
@@ -121,6 +127,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.TimersDialog do
         on_change={JS.push("timers_dialog_change", target: @myself)}
         on_save="timers_dialog_save"
         on_cancel_edit={JS.push("timers_dialog_cancel_edit", target: @myself)}
+        on_close="timers_dialog_close"
       />
     </div>
     """

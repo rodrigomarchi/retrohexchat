@@ -29,36 +29,39 @@ defmodule RetroHexChatWeb.Components.UI.UserLookupDialog do
     <div
       id={"#{@id}-content"}
       data-testid="user-lookup-panel"
-      class="flex h-full min-h-0 flex-col gap-retro-8 overflow-y-auto"
+      class="ul-panel"
     >
       <form
         id={"#{@id}-form"}
         data-testid="user-lookup-form"
         phx-submit={@on_whois}
         phx-change={@on_change}
-        class="space-y-retro-8"
+        class="ul-form"
       >
-        <div class="flex flex-col gap-retro-4">
-          <label class="text-xs font-bold" for={"#{@id}-nickname"}>
+        <div class="ul-field-row">
+          <label class="ul-field-label" for={"#{@id}-nickname"}>
             {dgettext("dialogs", "Nickname")}:
           </label>
-          <.input
-            type="text"
-            id={"#{@id}-nickname"}
-            name="nickname"
-            value={@nickname}
-            autofocus
-            autocomplete="off"
-            placeholder={dgettext("dialogs", "Enter nickname...")}
-            data-testid="user-lookup-nickname"
-          />
-          <p :if={@error_message} class="text-xs text-destructive" data-testid="user-lookup-error">
-            {@error_message}
-          </p>
+          <div class="ul-field-control">
+            <.input
+              type="text"
+              id={"#{@id}-nickname"}
+              name="nickname"
+              value={@nickname}
+              autofocus
+              autocomplete="off"
+              placeholder={dgettext("dialogs", "Enter nickname...")}
+              data-testid="user-lookup-nickname"
+              class="ul-nickname-input"
+            />
+            <p :if={@error_message} class="ul-error" data-testid="user-lookup-error">
+              {@error_message}
+            </p>
+          </div>
         </div>
 
-        <div class="flex justify-end gap-retro-4">
-          <.button type="submit" size="sm" data-testid="user-lookup-whois">
+        <div class="ul-action-row">
+          <.button type="submit" size="sm" data-testid="user-lookup-whois" class="ul-action-button">
             <:icon><Icons.icon_btn_search class="w-[14px] h-[14px]" /></:icon>
             {dgettext("dialogs", "Whois")}
           </.button>
@@ -69,6 +72,7 @@ defmodule RetroHexChatWeb.Components.UI.UserLookupDialog do
             phx-click={@on_whowas}
             phx-value-nickname={@nickname}
             data-testid="user-lookup-whowas"
+            class="ul-action-button"
           >
             <:icon><Icons.icon_clock class="w-[14px] h-[14px]" /></:icon>
             {dgettext("dialogs", "Last Seen")}
@@ -76,14 +80,19 @@ defmodule RetroHexChatWeb.Components.UI.UserLookupDialog do
         </div>
       </form>
 
-      <.lookup_result_card
-        :if={@result}
-        result={@result}
-        on_close={@on_result_close}
-        on_whois={@on_result_whois}
-        on_whowas={@on_result_whowas}
-        on_query={@on_result_query}
-      />
+      <div class="ul-result-region">
+        <.lookup_result_card
+          :if={@result}
+          result={@result}
+          on_close={@on_result_close}
+          on_whois={@on_result_whois}
+          on_whowas={@on_result_whowas}
+          on_query={@on_result_query}
+        />
+        <div :if={!@result} class="ul-empty-state" data-testid="user-lookup-empty">
+          {dgettext("dialogs", "No lookup yet.")}
+        </div>
+      </div>
     </div>
     """
   end
@@ -106,21 +115,21 @@ defmodule RetroHexChatWeb.Components.UI.UserLookupDialog do
       )
 
     ~H"""
-    <section data-testid="lookup-result-card" class="space-y-retro-8">
-      <header class="flex items-center gap-retro-4 text-xs font-bold">
+    <section data-testid="lookup-result-card" class="ul-result-card">
+      <header class="ul-result-header">
         <Icons.icon_btn_search :if={@kind == :whois} class="w-4 h-4" />
         <Icons.icon_clock :if={@kind == :whowas} class="w-4 h-4" />
-        <span data-testid="lookup-result-title">{@title}</span>
+        <span data-testid="lookup-result-title" class="ul-result-title">{@title}</span>
       </header>
 
-      <dl class="shadow-retro-field bg-white p-retro-8 text-xs">
-        <div :for={row <- @rows} class="grid grid-cols-[112px_1fr] gap-retro-8 py-retro-2">
-          <dt class="font-bold">{row.label}:</dt>
-          <dd class="min-w-0 break-words">{row.value}</dd>
+      <dl class="ul-result-list retro-scrollbar">
+        <div :for={row <- @rows} class="ul-result-row">
+          <dt class="ul-result-label">{row.label}:</dt>
+          <dd class="ul-result-value">{row.value}</dd>
         </div>
       </dl>
 
-      <div class="flex justify-end gap-retro-4">
+      <div class="ul-result-actions">
         <.button
           :if={@kind == :whois}
           type="button"
@@ -129,6 +138,7 @@ defmodule RetroHexChatWeb.Components.UI.UserLookupDialog do
           phx-click={@on_whowas}
           phx-value-nick={@nickname}
           data-testid="lookup-result-whowas"
+          class="ul-action-button"
         >
           <:icon><Icons.icon_clock class="w-[14px] h-[14px]" /></:icon>
           {dgettext("dialogs", "Whowas")}
@@ -141,6 +151,7 @@ defmodule RetroHexChatWeb.Components.UI.UserLookupDialog do
           phx-click={@on_query}
           phx-value-nick={@nickname}
           data-testid="lookup-result-query"
+          class="ul-action-button"
         >
           <:icon><Icons.icon_tab_pm class="w-[14px] h-[14px]" /></:icon>
           {dgettext("dialogs", "Query (PM)")}
@@ -154,11 +165,18 @@ defmodule RetroHexChatWeb.Components.UI.UserLookupDialog do
           phx-value-nick={@nickname}
           disabled={!@online}
           data-testid="lookup-result-whois"
+          class="ul-action-button"
         >
           <:icon><Icons.icon_btn_search class="w-[14px] h-[14px]" /></:icon>
           {dgettext("dialogs", "Whois")}
         </.button>
-        <.button type="button" size="sm" phx-click={@on_close} data-testid="lookup-result-close">
+        <.button
+          type="button"
+          size="sm"
+          phx-click={@on_close}
+          data-testid="lookup-result-close"
+          class="ul-action-button"
+        >
           <:icon><Icons.icon_close class="w-[14px] h-[14px]" /></:icon>
           {dgettext("dialogs", "Clear")}
         </.button>

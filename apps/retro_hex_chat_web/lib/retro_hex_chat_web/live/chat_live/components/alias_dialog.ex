@@ -94,6 +94,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.AliasDialog do
     {:noreply, assign(socket, editing: false, draft_name: "", draft_expansion: "", error: nil)}
   end
 
+  def handle_event("alias_dialog_close", _params, socket) do
+    send(self(), {:close_window, "alias"})
+    {:noreply, socket}
+  end
+
   @impl true
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()
   def render(assigns) do
@@ -116,6 +121,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AliasDialog do
         on_save={JS.push("alias_dialog_save", value: %{selected: @selected})}
         on_delete={JS.push("alias_dialog_delete", value: %{selected: @selected})}
         on_cancel_edit={JS.push("alias_dialog_cancel_edit", target: @myself)}
+        on_close={JS.push("alias_dialog_close", target: @myself)}
       />
     </div>
     """

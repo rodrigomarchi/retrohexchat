@@ -10,11 +10,11 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
 
   import RetroHexChatWeb.Components.UI.Dialog
   import RetroHexChatWeb.Components.UI.Tabs
-  import RetroHexChatWeb.Components.UI.Table
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Checkbox
   import RetroHexChatWeb.Components.UI.Separator
   import RetroHexChatWeb.Components.UI.Input
+  import RetroHexChatWeb.Components.UI.Textarea
 
   alias RetroHexChatWeb.Icons
 
@@ -142,77 +142,101 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
   attr :on_autojoin_add, :any, default: nil
   attr :on_autojoin_edit, :any, default: nil
   attr :on_autojoin_remove, :any, default: nil
+  attr :on_close, :any, default: nil
   attr :sub_scope, :atom, default: :window, values: [:viewport, :window]
 
   @spec perform_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def perform_panel(assigns) do
     ~H"""
-    <div
-      id={"#{@id}-content"}
-      data-testid="perform-panel"
-      class="flex h-full min-h-0 flex-col gap-retro-8"
-    >
-      <.tabs :let={builder} id={"#{@id}-tabs"} default={@active_tab}>
-        <.tabs_list>
-          <.tabs_trigger builder={builder} value="commands">
-            <:icon><Icons.icon_tab_commands class="w-4 h-4" /></:icon>
-            {dgettext("dialogs", "Commands")}
-          </.tabs_trigger>
-          <.tabs_trigger builder={builder} value="autojoin">
-            <:icon><Icons.icon_tab_autojoin class="w-4 h-4" /></:icon>
-            {dgettext("dialogs", "Auto-Join")}
-          </.tabs_trigger>
-        </.tabs_list>
+    <div id={@id} class="contents">
+      <.focus_wrap id={"#{@id}-focus-wrap"} class="contents">
+        <div
+          id={"#{@id}-content"}
+          data-testid="perform-panel"
+          role="dialog"
+          aria-modal="false"
+          tabindex="0"
+          phx-mounted={JS.focus(to: "##{@id}-content")}
+          class="pf-dialog flex h-full min-h-0 flex-col gap-retro-8"
+        >
+          <.tabs :let={builder} id={"#{@id}-tabs"} default={@active_tab} class="pf-tabs min-h-0">
+            <div class="pf-tabs-shell">
+              <.tabs_list class="pf-main-tabs">
+                <.tabs_trigger builder={builder} value="commands">
+                  <:icon><Icons.icon_tab_commands class="w-4 h-4" /></:icon>
+                  {dgettext("dialogs", "Commands")}
+                </.tabs_trigger>
+                <.tabs_trigger builder={builder} value="autojoin">
+                  <:icon><Icons.icon_tab_autojoin class="w-4 h-4" /></:icon>
+                  {dgettext("dialogs", "Auto-Join")}
+                </.tabs_trigger>
+              </.tabs_list>
+            </div>
 
-        <.tabs_content value="commands">
-          <.commands_tab
-            target={@target}
-            entries={@perform_entries}
-            selected={@perform_selected}
-            enabled={@perform_enabled}
-            on_select={@on_select}
-            on_add={@on_add}
-            on_edit={@on_edit}
-            on_remove={@on_remove}
-            on_move_up={@on_move_up}
-            on_move_down={@on_move_down}
-            on_toggle_enabled={@on_toggle_enabled}
-          />
-        </.tabs_content>
+            <.tabs_content value="commands" class="pf-tab-content">
+              <.commands_tab
+                target={@target}
+                entries={@perform_entries}
+                selected={@perform_selected}
+                enabled={@perform_enabled}
+                on_select={@on_select}
+                on_add={@on_add}
+                on_edit={@on_edit}
+                on_remove={@on_remove}
+                on_move_up={@on_move_up}
+                on_move_down={@on_move_down}
+                on_toggle_enabled={@on_toggle_enabled}
+              />
+            </.tabs_content>
 
-        <.tabs_content value="autojoin">
-          <.autojoin_tab
-            target={@target}
-            entries={@autojoin_entries}
-            selected={@autojoin_selected}
-            on_select={@on_autojoin_select}
-            on_add={@on_autojoin_add}
-            on_edit={@on_autojoin_edit}
-            on_remove={@on_autojoin_remove}
-          />
-        </.tabs_content>
-      </.tabs>
+            <.tabs_content value="autojoin" class="pf-tab-content">
+              <.autojoin_tab
+                target={@target}
+                entries={@autojoin_entries}
+                selected={@autojoin_selected}
+                on_select={@on_autojoin_select}
+                on_add={@on_autojoin_add}
+                on_edit={@on_autojoin_edit}
+                on_remove={@on_autojoin_remove}
+              />
+            </.tabs_content>
+          </.tabs>
 
-      <%!-- Perform Add Sub-Dialog --%>
-      <.perform_add_sub_form :if={@show_perform_add_dialog} target={@target} scope={@sub_scope} />
-      <%!-- Perform Edit Sub-Dialog --%>
-      <.perform_edit_sub_form
-        :if={@show_perform_edit_dialog}
-        target={@target}
-        entries={@perform_entries}
-        selected={@perform_selected}
-        scope={@sub_scope}
-      />
-      <%!-- Autojoin Add Sub-Dialog --%>
-      <.autojoin_add_sub_form :if={@show_autojoin_add_dialog} target={@target} scope={@sub_scope} />
-      <%!-- Autojoin Edit Sub-Dialog --%>
-      <.autojoin_edit_sub_form
-        :if={@show_autojoin_edit_dialog}
-        target={@target}
-        entries={@autojoin_entries}
-        selected={@autojoin_selected}
-        scope={@sub_scope}
-      />
+          <div :if={@on_close} class="pf-dialog-footer flex justify-end">
+            <.button
+              type="button"
+              size="sm"
+              phx-click={@on_close}
+              phx-target={@target}
+              class="pf-action-button"
+            >
+              <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
+              {dgettext("dialogs", "OK")}
+            </.button>
+          </div>
+        </div>
+
+        <%!-- Perform Add Sub-Dialog --%>
+        <.perform_add_sub_form :if={@show_perform_add_dialog} target={@target} scope={@sub_scope} />
+        <%!-- Perform Edit Sub-Dialog --%>
+        <.perform_edit_sub_form
+          :if={@show_perform_edit_dialog}
+          target={@target}
+          entries={@perform_entries}
+          selected={@perform_selected}
+          scope={@sub_scope}
+        />
+        <%!-- Autojoin Add Sub-Dialog --%>
+        <.autojoin_add_sub_form :if={@show_autojoin_add_dialog} target={@target} scope={@sub_scope} />
+        <%!-- Autojoin Edit Sub-Dialog --%>
+        <.autojoin_edit_sub_form
+          :if={@show_autojoin_edit_dialog}
+          target={@target}
+          entries={@autojoin_entries}
+          selected={@autojoin_selected}
+          scope={@sub_scope}
+        />
+      </.focus_wrap>
     </div>
     """
   end
@@ -244,24 +268,25 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
           phx-submit="perform_dialog_add_confirm"
           phx-target={@target}
           data-testid="perform-add-dialog"
+          class="pf-sub-form"
         >
           <div class="flex flex-col gap-1.5 mb-2">
             <label class="text-xs font-bold" for="perform-command-input">
               {dgettext("dialogs", "Command")}:
             </label>
-            <.input
-              type="text"
+            <.textarea
               id="perform-command-input"
               name="command"
               maxlength="500"
               placeholder={dgettext("dialogs", "/join #channel")}
               required
               autofocus
-              class="w-full"
+              rows="3"
+              class="pf-command-input w-full resize-none"
             />
           </div>
-          <div class="flex justify-end gap-1">
-            <.button type="submit" size="sm">
+          <div class="pf-form-actions flex justify-end gap-1">
+            <.button type="submit" size="sm" class="pf-action-button">
               <:icon><Icons.icon_checkmark /></:icon>
               {dgettext("dialogs", "OK")}
             </.button>
@@ -271,6 +296,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
               variant="outline"
               phx-click="close_perform_add_dialog"
               phx-target={@target}
+              class="pf-action-button"
             >
               <:icon><Icons.icon_close /></:icon>
               {dgettext("dialogs", "Cancel")}
@@ -312,24 +338,25 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
           phx-submit="perform_dialog_edit_confirm"
           phx-target={@target}
           data-testid="perform-edit-dialog"
+          class="pf-sub-form"
         >
           <div class="flex flex-col gap-1.5 mb-2">
             <label class="text-xs font-bold" for="perform-edit-input">
               {dgettext("dialogs", "Command")}:
             </label>
-            <.input
-              type="text"
+            <.textarea
               id="perform-edit-input"
               name="command"
               maxlength="500"
               value={@edit_command}
               required
               autofocus
-              class="w-full"
+              rows="3"
+              class="pf-command-input w-full resize-none"
             />
           </div>
-          <div class="flex justify-end gap-1">
-            <.button type="submit" size="sm">
+          <div class="pf-form-actions flex justify-end gap-1">
+            <.button type="submit" size="sm" class="pf-action-button">
               <:icon><Icons.icon_checkmark /></:icon>
               {dgettext("dialogs", "OK")}
             </.button>
@@ -339,6 +366,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
               variant="outline"
               phx-click="close_perform_edit_dialog"
               phx-target={@target}
+              class="pf-action-button"
             >
               <:icon><Icons.icon_close /></:icon>
               {dgettext("dialogs", "Cancel")}
@@ -375,6 +403,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
           phx-submit="autojoin_dialog_add_confirm"
           phx-target={@target}
           data-testid="autojoin-add-dialog"
+          class="pf-sub-form"
         >
           <div class="flex flex-col gap-1.5 mb-2">
             <label class="text-xs font-bold" for="autojoin-channel-input">
@@ -404,8 +433,8 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
               class="w-full"
             />
           </div>
-          <div class="flex justify-end gap-1">
-            <.button type="submit" size="sm">
+          <div class="pf-form-actions flex justify-end gap-1">
+            <.button type="submit" size="sm" class="pf-action-button">
               <:icon><Icons.icon_checkmark /></:icon>
               {dgettext("dialogs", "OK")}
             </.button>
@@ -415,6 +444,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
               variant="outline"
               phx-click="close_autojoin_add_dialog"
               phx-target={@target}
+              class="pf-action-button"
             >
               <:icon><Icons.icon_close /></:icon>
               {dgettext("dialogs", "Cancel")}
@@ -461,6 +491,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
           phx-submit="autojoin_dialog_edit_confirm"
           phx-target={@target}
           data-testid="autojoin-edit-dialog"
+          class="pf-sub-form"
         >
           <input type="hidden" name="channel" value={@edit_channel} />
           <div class="flex flex-col gap-1.5 mb-2">
@@ -490,8 +521,8 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
               class="w-full"
             />
           </div>
-          <div class="flex justify-end gap-1">
-            <.button type="submit" size="sm">
+          <div class="pf-form-actions flex justify-end gap-1">
+            <.button type="submit" size="sm" class="pf-action-button">
               <:icon><Icons.icon_checkmark /></:icon>
               {dgettext("dialogs", "OK")}
             </.button>
@@ -501,6 +532,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
               variant="outline"
               phx-click="close_autojoin_edit_dialog"
               phx-target={@target}
+              class="pf-action-button"
             >
               <:icon><Icons.icon_close /></:icon>
               {dgettext("dialogs", "Cancel")}
@@ -539,47 +571,44 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
       )
 
     ~H"""
-    <div class="overflow-y-auto max-h-[200px] shadow-retro-field bg-white mb-2">
-      <.table>
-        <.table_header>
-          <.table_row>
-            <.table_head class="w-[60px] text-xs px-2 py-1">#</.table_head>
-            <.table_head class="text-xs px-2 py-1">{dgettext("dialogs", "Command")}</.table_head>
-          </.table_row>
-        </.table_header>
-        <.table_body>
-          <.table_row
-            :for={entry <- @entries}
-            class={
-              classes([
-                "cursor-pointer text-xs",
-                @selected == entry.position && "bg-primary text-white"
-              ])
-            }
-            phx-click={@on_select}
-            phx-target={@target}
-            phx-value-position={entry.position}
-          >
-            <.table_cell class="px-2 py-1 text-xs">{entry.position}</.table_cell>
-            <.table_cell class="px-2 py-1 text-xs font-mono">
-              {mask_command(entry.command)}
-            </.table_cell>
-          </.table_row>
-          <tr :if={@entries == []}>
-            <td colspan="2" class="px-2 py-4 text-xs text-center text-muted-foreground">
-              {dgettext("dialogs", "No commands configured. Click Add to create one.")}
-            </td>
-          </tr>
-        </.table_body>
-      </.table>
+    <div class="pf-entry-list overflow-y-auto max-h-[220px] mb-2">
+      <div :if={@entries == []} class="pf-empty-state text-center text-muted-foreground">
+        {dgettext("dialogs", "No commands configured. Click Add to create one.")}
+      </div>
+
+      <button
+        :for={entry <- @entries}
+        type="button"
+        data-testid="perform-command-row"
+        data-position={entry.position}
+        aria-pressed={@selected == entry.position}
+        class={row_class("pf-entry pf-command-entry", @selected == entry.position)}
+        phx-click={@on_select}
+        phx-target={@target}
+        phx-value-position={entry.position}
+      >
+        <span class="pf-entry-index">{entry.position}</span>
+        <span class="pf-entry-content">
+          <span class="pf-entry-label">{mask_command(entry.command)}</span>
+          <span class="pf-entry-meta">
+            {dgettext("dialogs", "Position")} {entry.position}
+          </span>
+        </span>
+      </button>
     </div>
 
-    <div class="flex gap-1 mb-2">
-      <.button size="sm" phx-click={@on_add} phx-target={@target}>
+    <div class="pf-action-row flex gap-1 mb-2">
+      <.button size="sm" phx-click={@on_add} phx-target={@target} class="pf-action-button">
         <:icon><Icons.icon_btn_add /></:icon>
         {dgettext("dialogs", "Add")}
       </.button>
-      <.button size="sm" phx-click={@on_edit} phx-target={@target} disabled={!@has_selection}>
+      <.button
+        size="sm"
+        phx-click={@on_edit}
+        phx-target={@target}
+        disabled={!@has_selection}
+        class="pf-action-button"
+      >
         <:icon><Icons.icon_btn_edit /></:icon>
         {dgettext("dialogs", "Edit")}
       </.button>
@@ -589,6 +618,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
         phx-click={@on_remove}
         phx-target={@target}
         disabled={!@has_selection}
+        class="pf-action-button"
       >
         <:icon><Icons.icon_btn_remove /></:icon>
         {dgettext("dialogs", "Remove")}
@@ -599,6 +629,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
         phx-click={@on_move_up}
         phx-target={@target}
         disabled={!@has_selection || @selected == @first_pos}
+        class="pf-action-button"
       >
         <:icon><Icons.icon_btn_up /></:icon>
         {dgettext("dialogs", "Up")}
@@ -609,6 +640,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
         phx-click={@on_move_down}
         phx-target={@target}
         disabled={!@has_selection || @selected == @last_pos}
+        class="pf-action-button"
       >
         <:icon><Icons.icon_btn_down /></:icon>
         {dgettext("dialogs", "Down")}
@@ -617,7 +649,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
 
     <.separator class="my-2" />
 
-    <label class="inline-flex items-center gap-2 text-xs cursor-pointer">
+    <label class="pf-toggle-row inline-flex items-center gap-2 text-xs cursor-pointer">
       <.checkbox
         name="perform_enabled"
         value={@enabled}
@@ -643,47 +675,45 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
     assigns = assign(assigns, :has_selection, has_selection)
 
     ~H"""
-    <div class="overflow-y-auto max-h-[200px] shadow-retro-field bg-white mb-2">
-      <.table>
-        <.table_header>
-          <.table_row>
-            <.table_head class="text-xs px-2 py-1">{dgettext("dialogs", "Channel")}</.table_head>
-            <.table_head class="w-[80px] text-xs px-2 py-1">{dgettext("dialogs", "Key")}</.table_head>
-          </.table_row>
-        </.table_header>
-        <.table_body>
-          <.table_row
-            :for={entry <- @entries}
-            class={
-              classes([
-                "cursor-pointer text-xs",
-                @selected == entry.channel_name && "bg-primary text-white"
-              ])
-            }
-            phx-click={@on_select}
-            phx-target={@target}
-            phx-value-channel={entry.channel_name}
-          >
-            <.table_cell class="px-2 py-1 text-xs">{entry.channel_name}</.table_cell>
-            <.table_cell class="px-2 py-1 text-xs">
-              {if entry.channel_key, do: "***", else: ""}
-            </.table_cell>
-          </.table_row>
-          <tr :if={@entries == []}>
-            <td colspan="2" class="px-2 py-4 text-xs text-center text-muted-foreground">
-              {dgettext("dialogs", "No auto-join channels. Click Add to create one.")}
-            </td>
-          </tr>
-        </.table_body>
-      </.table>
+    <div class="pf-entry-list overflow-y-auto max-h-[220px] mb-2">
+      <div :if={@entries == []} class="pf-empty-state text-center text-muted-foreground">
+        {dgettext("dialogs", "No auto-join channels. Click Add to create one.")}
+      </div>
+
+      <button
+        :for={entry <- @entries}
+        type="button"
+        data-testid="autojoin-row"
+        data-channel={entry.channel_name}
+        aria-pressed={@selected == entry.channel_name}
+        class={row_class("pf-entry pf-autojoin-entry", @selected == entry.channel_name)}
+        phx-click={@on_select}
+        phx-target={@target}
+        phx-value-channel={entry.channel_name}
+      >
+        <span class="pf-entry-content">
+          <span class="pf-entry-label">{entry.channel_name}</span>
+          <span class="pf-entry-meta">
+            {dgettext("dialogs", "Key")}: {if entry.channel_key,
+              do: "***",
+              else: dgettext("dialogs", "none")}
+          </span>
+        </span>
+      </button>
     </div>
 
-    <div class="flex gap-1">
-      <.button size="sm" phx-click={@on_add} phx-target={@target}>
+    <div class="pf-action-row flex gap-1">
+      <.button size="sm" phx-click={@on_add} phx-target={@target} class="pf-action-button">
         <:icon><Icons.icon_btn_add /></:icon>
         {dgettext("dialogs", "Add")}
       </.button>
-      <.button size="sm" phx-click={@on_edit} phx-target={@target} disabled={!@has_selection}>
+      <.button
+        size="sm"
+        phx-click={@on_edit}
+        phx-target={@target}
+        disabled={!@has_selection}
+        class="pf-action-button"
+      >
         <:icon><Icons.icon_btn_edit /></:icon>
         {dgettext("dialogs", "Edit")}
       </.button>
@@ -693,6 +723,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
         phx-click={@on_remove}
         phx-target={@target}
         disabled={!@has_selection}
+        class="pf-action-button"
       >
         <:icon><Icons.icon_btn_remove /></:icon>
         {dgettext("dialogs", "Remove")}
@@ -709,4 +740,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
     |> String.replace(~r{(?i)(identify|ns identify|nickserv identify)\s+\S+}, "\\1 ***")
     |> String.replace(~r{(?i)(msg\s+nickserv\s+identify)\s+\S+}, "\\1 ***")
   end
+
+  defp row_class(base, true), do: "#{base} bg-selection-bg text-selection-fg"
+  defp row_class(base, false), do: base
 end

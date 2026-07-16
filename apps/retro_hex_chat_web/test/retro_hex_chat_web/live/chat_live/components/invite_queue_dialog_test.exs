@@ -33,5 +33,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.InviteQueueDialogTest do
     assert html =~ ~s(data-testid="invite-ignore-#dev")
     assert html =~ "#elixir"
     assert html =~ "#dev"
+    assert html =~ "Invited by alice"
+    assert html =~ "Invited by bob"
+    assert html =~ "invite_accept"
+    assert html =~ "invite_ignore"
   end
 end

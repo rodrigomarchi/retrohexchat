@@ -80,165 +80,187 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
   @spec address_book_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def address_book_panel(assigns) do
     ~H"""
-    <div
-      id={"#{@id}-content"}
-      data-testid="address-book-panel"
-      class="flex h-full min-h-0 flex-col gap-retro-8"
-    >
-      <.tabs :let={builder} id={"#{@id}-tabs"} default={@selected_tab}>
-        <.tabs_list class="flex-wrap">
-          <.tabs_trigger
-            builder={builder}
-            value="contacts"
-            phx-click={@on_tab}
-            phx-value-tab="contacts"
-          >
-            <:icon><Icons.icon_dialog_address_book class="w-4 h-4" /></:icon>
-            {dgettext("dialogs", "Contacts")}
-          </.tabs_trigger>
-          <.tabs_trigger builder={builder} value="notify" phx-click={@on_tab} phx-value-tab="notify">
-            <:icon><Icons.icon_btn_bell class="w-4 h-4" /></:icon>
-            {dgettext("dialogs", "Notify")}
-          </.tabs_trigger>
-          <.tabs_trigger builder={builder} value="colors" phx-click={@on_tab} phx-value-tab="colors">
-            <:icon><Icons.icon_fmt_color class="w-4 h-4" /></:icon>
-            {dgettext("dialogs", "Nick Colors")}
-          </.tabs_trigger>
-          <.tabs_trigger
-            builder={builder}
-            value="control"
-            phx-click={@on_tab}
-            phx-value-tab="control"
-          >
-            <:icon><Icons.icon_shield class="w-4 h-4" /></:icon>
-            {dgettext("dialogs", "Control")}
-          </.tabs_trigger>
-        </.tabs_list>
+    <div id={@id} class="contents">
+      <.focus_wrap id={"#{@id}-focus-wrap"} class="contents">
+        <div
+          id={"#{@id}-content"}
+          data-testid="address-book-panel"
+          role="dialog"
+          aria-modal="false"
+          tabindex="0"
+          phx-mounted={JS.focus(to: "##{@id}-content")}
+          class="ab-dialog flex h-full min-h-0 flex-col gap-retro-8"
+        >
+          <.tabs :let={builder} id={"#{@id}-tabs"} default={@selected_tab} class="ab-tabs min-h-0">
+            <div class="ab-tabs-shell">
+              <.tabs_list class="ab-main-tabs flex-wrap">
+                <.tabs_trigger
+                  builder={builder}
+                  value="contacts"
+                  phx-click={@on_tab}
+                  phx-value-tab="contacts"
+                >
+                  <:icon><Icons.icon_dialog_address_book class="w-4 h-4" /></:icon>
+                  {dgettext("dialogs", "Contacts")}
+                </.tabs_trigger>
+                <.tabs_trigger
+                  builder={builder}
+                  value="notify"
+                  phx-click={@on_tab}
+                  phx-value-tab="notify"
+                >
+                  <:icon><Icons.icon_btn_bell class="w-4 h-4" /></:icon>
+                  {dgettext("dialogs", "Notify")}
+                </.tabs_trigger>
+                <.tabs_trigger
+                  builder={builder}
+                  value="colors"
+                  phx-click={@on_tab}
+                  phx-value-tab="colors"
+                >
+                  <:icon><Icons.icon_fmt_color class="w-4 h-4" /></:icon>
+                  {dgettext("dialogs", "Nick Colors")}
+                </.tabs_trigger>
+                <.tabs_trigger
+                  builder={builder}
+                  value="control"
+                  phx-click={@on_tab}
+                  phx-value-tab="control"
+                >
+                  <:icon><Icons.icon_shield class="w-4 h-4" /></:icon>
+                  {dgettext("dialogs", "Control")}
+                </.tabs_trigger>
+              </.tabs_list>
+            </div>
 
-        <%!-- Contacts Tab --%>
-        <.tabs_content value="contacts" builder={builder}>
-          <.contacts_table
-            target={@target}
-            contacts={@contacts}
-            selected={if(@selected_tab == "contacts", do: @selected_index)}
-            on_select={@on_select}
-            nick_color_fn={@nick_color_fn}
-            timezone={@timezone}
-          />
-          <.crud_buttons
-            target={@target}
-            on_add={@on_add}
-            on_edit={@on_edit}
-            on_remove={@on_remove}
-            selected={@selected_index != nil && @selected_tab == "contacts"}
-            testid_prefix="contact"
-          />
-        </.tabs_content>
+            <%!-- Contacts Tab --%>
+            <.tabs_content value="contacts" builder={builder} class="ab-tab-content">
+              <.contacts_table
+                target={@target}
+                contacts={@contacts}
+                selected={if(@selected_tab == "contacts", do: @selected_index)}
+                on_select={@on_select}
+                nick_color_fn={@nick_color_fn}
+                timezone={@timezone}
+              />
+              <.crud_buttons
+                target={@target}
+                on_add={@on_add}
+                on_edit={@on_edit}
+                on_remove={@on_remove}
+                selected={@selected_index != nil && @selected_tab == "contacts"}
+                testid_prefix="contact"
+              />
+            </.tabs_content>
 
-        <%!-- Notify Tab --%>
-        <.tabs_content value="notify" builder={builder}>
-          <.notify_table
-            target={@target}
-            notify_list={@notify_list}
-            selected={if(@selected_tab == "notify", do: @notify_selected)}
-            on_select={@on_notify_select}
-            timezone={@timezone}
-          />
-          <.crud_buttons
-            target={@target}
-            on_add={@on_notify_add}
-            on_edit={@on_notify_edit}
-            on_remove={@on_notify_remove}
-            selected={@notify_selected != nil && @selected_tab == "notify"}
-            testid_prefix="ab-notify"
-          />
-        </.tabs_content>
+            <%!-- Notify Tab --%>
+            <.tabs_content value="notify" builder={builder} class="ab-tab-content">
+              <.notify_table
+                target={@target}
+                notify_list={@notify_list}
+                selected={if(@selected_tab == "notify", do: @notify_selected)}
+                on_select={@on_notify_select}
+                timezone={@timezone}
+              />
+              <.crud_buttons
+                target={@target}
+                on_add={@on_notify_add}
+                on_edit={@on_notify_edit}
+                on_remove={@on_notify_remove}
+                selected={@notify_selected != nil && @selected_tab == "notify"}
+                testid_prefix="ab-notify"
+              />
+            </.tabs_content>
 
-        <%!-- Nick Colors Tab --%>
-        <.tabs_content value="colors" builder={builder}>
-          <.nick_colors_table
-            target={@target}
-            nick_colors={@nick_colors}
-            selected={if(@selected_tab == "colors", do: @nick_colors_selected)}
-            on_select={@on_nick_color_select}
-          />
-          <.crud_buttons
-            target={@target}
-            on_add={@on_nick_color_add}
-            on_edit={@on_nick_color_edit}
-            on_remove={@on_nick_color_remove}
-            selected={@nick_colors_selected != nil && @selected_tab == "colors"}
-            testid_prefix="nick-color"
-          />
-        </.tabs_content>
+            <%!-- Nick Colors Tab --%>
+            <.tabs_content value="colors" builder={builder} class="ab-tab-content">
+              <.nick_colors_table
+                target={@target}
+                nick_colors={@nick_colors}
+                selected={if(@selected_tab == "colors", do: @nick_colors_selected)}
+                on_select={@on_nick_color_select}
+              />
+              <.crud_buttons
+                target={@target}
+                on_add={@on_nick_color_add}
+                on_edit={@on_nick_color_edit}
+                on_remove={@on_nick_color_remove}
+                selected={@nick_colors_selected != nil && @selected_tab == "colors"}
+                testid_prefix="nick-color"
+              />
+            </.tabs_content>
 
-        <%!-- Control Tab --%>
-        <.tabs_content value="control" builder={builder}>
-          <.control_table
-            target={@target}
-            control_list={@control_list}
-            selected={if(@selected_tab == "control", do: @control_selected)}
-            on_select={@on_control_select}
-          />
-          <div class="flex gap-retro-4 mt-retro-4">
-            <.button
-              size="sm"
-              variant="outline"
-              phx-click={@on_control_add}
-              phx-target={@target}
-              data-testid="control-add"
-            >
-              <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
-              {dgettext("dialogs", "Add")}
-            </.button>
-            <.button
-              size="sm"
-              variant="outline"
-              phx-click={@on_control_remove}
-              phx-target={@target}
-              disabled={@control_selected == nil}
-              data-testid="control-remove"
-            >
-              <:icon><Icons.icon_btn_remove class="w-4 h-4" /></:icon>
-              {dgettext("dialogs", "Remove")}
-            </.button>
-          </div>
-        </.tabs_content>
-      </.tabs>
+            <%!-- Control Tab --%>
+            <.tabs_content value="control" builder={builder} class="ab-tab-content">
+              <.control_table
+                target={@target}
+                control_list={@control_list}
+                selected={if(@selected_tab == "control", do: @control_selected)}
+                on_select={@on_control_select}
+              />
+              <div class="ab-action-row flex gap-retro-4 mt-retro-4">
+                <.button
+                  size="sm"
+                  variant="outline"
+                  phx-click={@on_control_add}
+                  phx-target={@target}
+                  data-testid="control-add"
+                  class="ab-action-button"
+                >
+                  <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
+                  {dgettext("dialogs", "Add")}
+                </.button>
+                <.button
+                  size="sm"
+                  variant="outline"
+                  phx-click={@on_control_remove}
+                  phx-target={@target}
+                  disabled={@control_selected == nil}
+                  data-testid="control-remove"
+                  class="ab-action-button"
+                >
+                  <:icon><Icons.icon_btn_remove class="w-4 h-4" /></:icon>
+                  {dgettext("dialogs", "Remove")}
+                </.button>
+              </div>
+            </.tabs_content>
+          </.tabs>
 
-      <%!-- Contact Add Sub-Dialog --%>
-      <.contact_add_form :if={@show_contact_add_dialog} target={@target} />
-      <%!-- Contact Edit Sub-Dialog --%>
-      <.contact_edit_form
-        :if={@show_contact_edit_dialog}
-        target={@target}
-        contacts_selected={@contacts_selected}
-        selected_contact_note={@selected_contact_note}
-      />
-      <%!-- Notify Add Sub-Dialog --%>
-      <.ab_notify_add_form :if={@show_notify_add_dialog} target={@target} />
-      <%!-- Notify Edit Sub-Dialog --%>
-      <.ab_notify_edit_form
-        :if={@show_notify_edit_dialog}
-        target={@target}
-        notify_selected={@notify_selected}
-        selected_notify_note={@selected_notify_note}
-      />
-      <%!-- Nick Color Add Sub-Dialog --%>
-      <.nick_color_add_form
-        :if={@show_nick_color_add_dialog}
-        target={@target}
-        nick_palette_editing_index={@nick_palette_editing_index}
-      />
-      <%!-- Nick Color Edit Sub-Dialog --%>
-      <.nick_color_edit_form
-        :if={@show_nick_color_edit_dialog}
-        target={@target}
-        nick_colors_selected={@nick_colors_selected}
-        nick_palette_editing_index={@nick_palette_editing_index}
-      />
-      <%!-- Control Add Sub-Dialog --%>
-      <.control_add_form :if={@show_control_add_dialog} target={@target} />
+          <%!-- Contact Add Sub-Dialog --%>
+          <.contact_add_form :if={@show_contact_add_dialog} target={@target} />
+          <%!-- Contact Edit Sub-Dialog --%>
+          <.contact_edit_form
+            :if={@show_contact_edit_dialog}
+            target={@target}
+            contacts_selected={@contacts_selected}
+            selected_contact_note={@selected_contact_note}
+          />
+          <%!-- Notify Add Sub-Dialog --%>
+          <.ab_notify_add_form :if={@show_notify_add_dialog} target={@target} />
+          <%!-- Notify Edit Sub-Dialog --%>
+          <.ab_notify_edit_form
+            :if={@show_notify_edit_dialog}
+            target={@target}
+            notify_selected={@notify_selected}
+            selected_notify_note={@selected_notify_note}
+          />
+          <%!-- Nick Color Add Sub-Dialog --%>
+          <.nick_color_add_form
+            :if={@show_nick_color_add_dialog}
+            target={@target}
+            nick_palette_editing_index={@nick_palette_editing_index}
+          />
+          <%!-- Nick Color Edit Sub-Dialog --%>
+          <.nick_color_edit_form
+            :if={@show_nick_color_edit_dialog}
+            target={@target}
+            nick_colors_selected={@nick_colors_selected}
+            nick_palette_editing_index={@nick_palette_editing_index}
+          />
+          <%!-- Control Add Sub-Dialog --%>
+          <.control_add_form :if={@show_control_add_dialog} target={@target} />
+        </div>
+      </.focus_wrap>
     </div>
     """
   end
@@ -673,45 +695,50 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
 
   defp contacts_table(assigns) do
     ~H"""
-    <.table>
-      <.table_header>
-        <.table_row>
-          <.table_head>{dgettext("dialogs", "Nick")}</.table_head>
-          <.table_head>{dgettext("dialogs", "Notes")}</.table_head>
-          <.table_head>{dgettext("dialogs", "Since")}</.table_head>
-        </.table_row>
-      </.table_header>
-      <.table_body>
-        <.table_row :if={@contacts == []}>
-          <.table_cell colspan="3" class="text-center text-muted-foreground py-4">
-            {dgettext("dialogs", "No contacts saved")}
-          </.table_cell>
-        </.table_row>
-        <.table_row
-          :for={contact <- @contacts}
-          id={"contact-entry-#{contact.contact_nickname}"}
-          class={
-            if(@selected == contact.contact_nickname,
-              do: "bg-selection-bg text-selection-fg",
-              else: ""
-            )
-          }
-          phx-click={@on_select}
-          phx-target={@target}
-          phx-value-nickname={contact.contact_nickname}
-        >
-          <.table_cell>
-            <span class={@nick_color_fn && @nick_color_fn.(contact.contact_nickname)}>
-              {contact.contact_nickname}
-            </span>
-          </.table_cell>
-          <.table_cell>{Map.get(contact, :note, "")}</.table_cell>
-          <.table_cell class="text-xs text-muted-foreground">
-            {format_contact_date(Map.get(contact, :first_contact_date), @timezone)}
-          </.table_cell>
-        </.table_row>
-      </.table_body>
-    </.table>
+    <div class="ab-table-wrap">
+      <.table class="ab-mobile-list-table">
+        <.table_header>
+          <.table_row>
+            <.table_head>{dgettext("dialogs", "Nick")}</.table_head>
+            <.table_head>{dgettext("dialogs", "Notes")}</.table_head>
+            <.table_head>{dgettext("dialogs", "Since")}</.table_head>
+          </.table_row>
+        </.table_header>
+        <.table_body>
+          <.table_row :if={@contacts == []} class="ab-empty-row">
+            <.table_cell colspan="3" class="ab-empty-cell text-center text-muted-foreground py-4">
+              {dgettext("dialogs", "No contacts saved")}
+            </.table_cell>
+          </.table_row>
+          <.table_row
+            :for={contact <- @contacts}
+            id={"contact-entry-#{contact.contact_nickname}"}
+            class={row_class("ab-mobile-list-row", @selected == contact.contact_nickname)}
+            phx-click={@on_select}
+            phx-target={@target}
+            phx-value-nickname={contact.contact_nickname}
+          >
+            <.table_cell
+              class="ab-mobile-list-primary"
+              data-label={dgettext("dialogs", "Nick")}
+            >
+              <span class={@nick_color_fn && @nick_color_fn.(contact.contact_nickname)}>
+                {contact.contact_nickname}
+              </span>
+            </.table_cell>
+            <.table_cell class="ab-mobile-list-meta" data-label={dgettext("dialogs", "Notes")}>
+              {Map.get(contact, :note, "")}
+            </.table_cell>
+            <.table_cell
+              class="ab-mobile-list-meta text-xs text-muted-foreground"
+              data-label={dgettext("dialogs", "Since")}
+            >
+              {format_contact_date(Map.get(contact, :first_contact_date), @timezone)}
+            </.table_cell>
+          </.table_row>
+        </.table_body>
+      </.table>
+    </div>
     """
   end
 
@@ -725,46 +752,49 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
 
   defp notify_table(assigns) do
     ~H"""
-    <.table>
-      <.table_header>
-        <.table_row>
-          <.table_head>{dgettext("dialogs", "Nick")}</.table_head>
-          <.table_head>{dgettext("dialogs", "Status")}</.table_head>
-          <.table_head>{dgettext("dialogs", "Note")}</.table_head>
-          <.table_head>{dgettext("dialogs", "Last Seen")}</.table_head>
-        </.table_row>
-      </.table_header>
-      <.table_body>
-        <.table_row :if={@notify_list == []}>
-          <.table_cell colspan="4" class="text-center text-muted-foreground py-4">
-            {dgettext("dialogs", "No entries. Click Add to track a nickname.")}
-          </.table_cell>
-        </.table_row>
-        <.table_row
-          :for={entry <- @notify_list}
-          id={"ab-notify-entry-#{entry.tracked_nickname}"}
-          class={
-            if(@selected == entry.tracked_nickname, do: "bg-selection-bg text-selection-fg", else: "")
-          }
-          phx-click={@on_select}
-          phx-target={@target}
-          phx-value-nickname={entry.tracked_nickname}
-        >
-          <.table_cell>{entry.tracked_nickname}</.table_cell>
-          <.table_cell>
-            <span class={if(entry.online, do: "text-success", else: "text-muted-foreground")}>
-              {if entry.online,
-                do: dgettext("dialogs", "Online"),
-                else: dgettext("dialogs", "Offline")}
-            </span>
-          </.table_cell>
-          <.table_cell class="text-xs">{Map.get(entry, :note, "")}</.table_cell>
-          <.table_cell class="text-xs text-muted-foreground">
+    <div class="ab-entry-list" role="list">
+      <div :if={@notify_list == []} class="ab-entry-empty">
+        {dgettext("dialogs", "No entries. Click Add to track a nickname.")}
+      </div>
+      <button
+        :for={entry <- @notify_list}
+        id={"ab-notify-entry-#{entry.tracked_nickname}"}
+        type="button"
+        class={row_class("ab-entry ab-notify-entry", @selected == entry.tracked_nickname)}
+        phx-click={@on_select}
+        phx-target={@target}
+        phx-value-nickname={entry.tracked_nickname}
+        role="listitem"
+      >
+        <span class="ab-entry-primary">
+          <span class="ab-entry-label">{dgettext("dialogs", "Nick")}</span>
+          <span class="ab-entry-value">{entry.tracked_nickname}</span>
+        </span>
+        <span class="ab-entry-meta">
+          <span class="ab-entry-label">{dgettext("dialogs", "Status")}</span>
+          <span class={
+            if(entry.online,
+              do: "ab-entry-value text-success",
+              else: "ab-entry-value text-muted-foreground"
+            )
+          }>
+            {if entry.online,
+              do: dgettext("dialogs", "Online"),
+              else: dgettext("dialogs", "Offline")}
+          </span>
+        </span>
+        <span class="ab-entry-meta">
+          <span class="ab-entry-label">{dgettext("dialogs", "Note")}</span>
+          <span class="ab-entry-value">{Map.get(entry, :note, "")}</span>
+        </span>
+        <span class="ab-entry-meta">
+          <span class="ab-entry-label">{dgettext("dialogs", "Last Seen")}</span>
+          <span class="ab-entry-value text-muted-foreground">
             {format_last_seen(Map.get(entry, :last_seen_at), entry.online, @timezone)}
-          </.table_cell>
-        </.table_row>
-      </.table_body>
-    </.table>
+          </span>
+        </span>
+      </button>
+    </div>
     """
   end
 
@@ -777,40 +807,42 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
 
   defp nick_colors_table(assigns) do
     ~H"""
-    <.table>
-      <.table_header>
-        <.table_row>
-          <.table_head>{dgettext("dialogs", "Nick")}</.table_head>
-          <.table_head>{dgettext("dialogs", "Color")}</.table_head>
-        </.table_row>
-      </.table_header>
-      <.table_body>
-        <.table_row :if={@nick_colors == []}>
-          <.table_cell colspan="2" class="text-center text-muted-foreground py-4">
-            {dgettext("dialogs", "No custom colors set. Nicknames use automatic colors.")}
-          </.table_cell>
-        </.table_row>
-        <.table_row
-          :for={entry <- @nick_colors}
-          id={"nick-color-entry-#{entry.target_nickname}"}
-          data-color-index={entry.color_index}
-          class={
-            if(@selected == entry.target_nickname, do: "bg-selection-bg text-selection-fg", else: "")
-          }
-          phx-click={@on_select}
-          phx-target={@target}
-          phx-value-nickname={entry.target_nickname}
-        >
-          <.table_cell>{entry.target_nickname}</.table_cell>
-          <.table_cell>
-            <div
-              class="w-4 h-4 border border-border"
-              class={nick_color_class(entry.color_index)}
-            />
-          </.table_cell>
-        </.table_row>
-      </.table_body>
-    </.table>
+    <div class="ab-table-wrap">
+      <.table class="ab-mobile-list-table">
+        <.table_header>
+          <.table_row>
+            <.table_head>{dgettext("dialogs", "Nick")}</.table_head>
+            <.table_head>{dgettext("dialogs", "Color")}</.table_head>
+          </.table_row>
+        </.table_header>
+        <.table_body>
+          <.table_row :if={@nick_colors == []} class="ab-empty-row">
+            <.table_cell colspan="2" class="ab-empty-cell text-center text-muted-foreground py-4">
+              {dgettext("dialogs", "No custom colors set. Nicknames use automatic colors.")}
+            </.table_cell>
+          </.table_row>
+          <.table_row
+            :for={entry <- @nick_colors}
+            id={"nick-color-entry-#{entry.target_nickname}"}
+            data-color-index={entry.color_index}
+            class={row_class("ab-mobile-list-row", @selected == entry.target_nickname)}
+            phx-click={@on_select}
+            phx-target={@target}
+            phx-value-nickname={entry.target_nickname}
+          >
+            <.table_cell
+              class="ab-mobile-list-primary"
+              data-label={dgettext("dialogs", "Nick")}
+            >
+              {entry.target_nickname}
+            </.table_cell>
+            <.table_cell class="ab-mobile-list-meta" data-label={dgettext("dialogs", "Color")}>
+              <div class={"ab-color-swatch w-4 h-4 border border-border #{nick_color_class(entry.color_index)}"} />
+            </.table_cell>
+          </.table_row>
+        </.table_body>
+      </.table>
+    </div>
     """
   end
 
@@ -823,40 +855,51 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
 
   defp control_table(assigns) do
     ~H"""
-    <.table>
-      <.table_header>
-        <.table_row>
-          <.table_head>{dgettext("dialogs", "Nick")}</.table_head>
-          <.table_head>{dgettext("dialogs", "Type")}</.table_head>
-          <.table_head>{dgettext("dialogs", "Expires")}</.table_head>
-        </.table_row>
-      </.table_header>
-      <.table_body>
-        <.table_row :if={@control_list == []}>
-          <.table_cell colspan="3" class="text-center text-muted-foreground py-4">
-            {dgettext("dialogs", "No ignored users. Click Add to ignore a nickname.")}
-          </.table_cell>
-        </.table_row>
-        <.table_row
-          :for={entry <- @control_list}
-          id={"control-entry-#{control_nick(entry)}"}
-          class={
-            if(@selected == control_nick(entry), do: "bg-selection-bg text-selection-fg", else: "")
-          }
-          phx-click={@on_select}
-          phx-target={@target}
-          phx-value-nickname={control_nick(entry)}
-        >
-          <.table_cell class="font-bold text-xs">{control_nick(entry)}</.table_cell>
-          <.table_cell class="text-xs">
-            {to_string(Map.get(entry, :ignore_type, Map.get(entry, :level, "")))}
-          </.table_cell>
-          <.table_cell class="text-xs text-muted-foreground">
-            {format_expires(Map.get(entry, :expires_at))}
-          </.table_cell>
-        </.table_row>
-      </.table_body>
-    </.table>
+    <div class="ab-table-wrap">
+      <.table class="ab-mobile-list-table">
+        <.table_header>
+          <.table_row>
+            <.table_head>{dgettext("dialogs", "Nick")}</.table_head>
+            <.table_head>{dgettext("dialogs", "Type")}</.table_head>
+            <.table_head>{dgettext("dialogs", "Expires")}</.table_head>
+          </.table_row>
+        </.table_header>
+        <.table_body>
+          <.table_row :if={@control_list == []} class="ab-empty-row">
+            <.table_cell colspan="3" class="ab-empty-cell text-center text-muted-foreground py-4">
+              {dgettext("dialogs", "No ignored users. Click Add to ignore a nickname.")}
+            </.table_cell>
+          </.table_row>
+          <.table_row
+            :for={entry <- @control_list}
+            id={"control-entry-#{control_nick(entry)}"}
+            class={row_class("ab-mobile-list-row", @selected == control_nick(entry))}
+            phx-click={@on_select}
+            phx-target={@target}
+            phx-value-nickname={control_nick(entry)}
+          >
+            <.table_cell
+              class="ab-mobile-list-primary font-bold text-xs"
+              data-label={dgettext("dialogs", "Nick")}
+            >
+              {control_nick(entry)}
+            </.table_cell>
+            <.table_cell
+              class="ab-mobile-list-meta text-xs"
+              data-label={dgettext("dialogs", "Type")}
+            >
+              {to_string(Map.get(entry, :ignore_type, Map.get(entry, :level, "")))}
+            </.table_cell>
+            <.table_cell
+              class="ab-mobile-list-meta text-xs text-muted-foreground"
+              data-label={dgettext("dialogs", "Expires")}
+            >
+              {format_expires(Map.get(entry, :expires_at))}
+            </.table_cell>
+          </.table_row>
+        </.table_body>
+      </.table>
+    </div>
     """
   end
 
@@ -871,13 +914,14 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
 
   defp crud_buttons(assigns) do
     ~H"""
-    <div class="flex gap-retro-4 mt-retro-4">
+    <div class="ab-action-row flex gap-retro-4 mt-retro-4">
       <.button
         size="sm"
         variant="outline"
         phx-click={@on_add}
         phx-target={@target}
         data-testid={@testid_prefix && "#{@testid_prefix}-add"}
+        class="ab-action-button"
       >
         <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
         {dgettext("dialogs", "Add")}
@@ -889,6 +933,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
         phx-target={@target}
         disabled={!@selected}
         data-testid={@testid_prefix && "#{@testid_prefix}-edit"}
+        class="ab-action-button"
       >
         <:icon><Icons.icon_btn_edit class="w-4 h-4" /></:icon>
         {dgettext("dialogs", "Edit")}
@@ -900,6 +945,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
         phx-target={@target}
         disabled={!@selected}
         data-testid={@testid_prefix && "#{@testid_prefix}-remove"}
+        class="ab-action-button"
       >
         <:icon><Icons.icon_btn_remove class="w-4 h-4" /></:icon>
         {dgettext("dialogs", "Remove")}
@@ -993,6 +1039,9 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
   end
 
   # ── Helpers ────────────────────────────────────────
+
+  defp row_class(base, true), do: "#{base} bg-selection-bg text-selection-fg"
+  defp row_class(base, false), do: base
 
   # Support both IgnoreEntry structs (:nickname) and showcase maps (:nick)
   @spec control_nick(map()) :: String.t()

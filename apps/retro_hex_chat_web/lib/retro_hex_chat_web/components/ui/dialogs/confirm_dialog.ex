@@ -48,23 +48,33 @@ defmodule RetroHexChatWeb.Components.UI.ConfirmDialog do
       |> assign(:resolved_cancel_label, assigns.cancel_label || dgettext("dialogs", "Cancel"))
 
     ~H"""
-    <.dialog id={@id} show={@show}>
-      <.dialog_header id={@id} title={@resolved_title}>
+    <.dialog id={@id} show={@show} on_cancel={@on_cancel} class="cd-dialog-wrap">
+      <.dialog_header id={@id} title={@resolved_title} on_close={@on_cancel}>
         <:icon>
           <%= if @icon != [] do %>
             {render_slot(@icon)}
           <% else %>
-            <Icons.icon_warning class="w-8 h-8" />
+            <Icons.icon_warning class="w-4 h-4" />
           <% end %>
         </:icon>
       </.dialog_header>
 
-      <.dialog_body class={@class}>
-        <p class="text-xs">{@message}</p>
+      <.dialog_body class={classes(["cd-dialog-body", @class])}>
+        <div class="cd-message-row">
+          <span class="cd-message-icon" aria-hidden="true">
+            <Icons.icon_warning class="w-5 h-5" />
+          </span>
+          <p class="cd-message-text">{@message}</p>
+        </div>
       </.dialog_body>
 
-      <.dialog_footer>
-        <.button variant={@variant} phx-click={@on_confirm} data-testid="confirm-dialog-confirm">
+      <.dialog_footer class="cd-dialog-footer">
+        <.button
+          variant={@variant}
+          phx-click={@on_confirm}
+          data-testid="confirm-dialog-confirm"
+          class="cd-dialog-action"
+        >
           <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
           {@resolved_confirm_label}
         </.button>
@@ -72,6 +82,7 @@ defmodule RetroHexChatWeb.Components.UI.ConfirmDialog do
           variant="outline"
           phx-click={@on_cancel || hide_modal(@id)}
           data-testid="confirm-dialog-cancel"
+          class="cd-dialog-action"
         >
           <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
           {@resolved_cancel_label}

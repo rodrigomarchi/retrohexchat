@@ -42,31 +42,33 @@ defmodule RetroHexChatWeb.Components.UI.NickChangeDialog do
   @spec nick_change_dialog(map()) :: Phoenix.LiveView.Rendered.t()
   def nick_change_dialog(assigns) do
     ~H"""
-    <.dialog id={@id} show={@show}>
-      <.dialog_header id={@id} title={dgettext("dialogs", "Change Nickname")}>
+    <.dialog id={@id} show={@show} on_cancel={@on_cancel} class="nc-dialog-wrap">
+      <.dialog_header id={@id} title={dgettext("dialogs", "Change Nickname")} on_close={@on_cancel}>
         <:icon><Icons.icon_dialog_nick class="w-4 h-4" /></:icon>
       </.dialog_header>
 
-      <.dialog_body>
-        <div class="space-y-retro-8" data-testid="nick-change-dialog">
-          <%!-- Target nick info --%>
-          <p class="text-xs">
-            {dgettext("dialogs", "Changing nickname to:")}
-            <span class="font-bold">{@target_nick}</span>
-          </p>
+      <.dialog_body class="nc-dialog-body">
+        <div class="nc-dialog-content" data-testid="nick-change-dialog">
+          <div class="nc-target-card">
+            <span class="nc-target-icon" aria-hidden="true">
+              <Icons.icon_dialog_nick class="w-4 h-4" />
+            </span>
+            <div class="nc-target-copy">
+              <p class="nc-field-label">{dgettext("dialogs", "Changing nickname to")}</p>
+              <p class="nc-target-value">{@target_nick}</p>
+            </div>
+          </div>
 
-          <%!-- Registered nick notice --%>
-          <div :if={@registered} class="text-xs text-muted-foreground">
+          <div :if={@registered} class="nc-notice">
             {dgettext(
               "dialogs",
               "This nickname is registered. Please enter the NickServ password to identify."
             )}
           </div>
 
-          <%!-- Password field — only shown for registered nicks --%>
-          <div :if={@registered} class="space-y-retro-2">
-            <label for={"#{@id}-password"} class="text-xs font-bold">
-              {dgettext("dialogs", "NickServ password:")}
+          <div :if={@registered} class="nc-field-group">
+            <label for={"#{@id}-password"} class="nc-field-label">
+              {dgettext("dialogs", "NickServ password")}
             </label>
             <.input
               id={"#{@id}-password"}
@@ -74,25 +76,25 @@ defmodule RetroHexChatWeb.Components.UI.NickChangeDialog do
               type="password"
               value={@password}
               placeholder={dgettext("dialogs", "Enter password")}
-              class="text-xs h-7"
+              class="nc-password-input"
               phx-keyup={@on_password_change}
               data-testid="nick-change-password"
             />
 
-            <%!-- Password error --%>
-            <p :if={@password_error} class="text-xs text-error" data-testid="nick-change-error">
+            <p :if={@password_error} class="nc-error" data-testid="nick-change-error">
               {@password_error}
             </p>
           </div>
         </div>
       </.dialog_body>
 
-      <.dialog_footer>
+      <.dialog_footer class="nc-dialog-footer">
         <.button
           variant="default"
           phx-click={@on_confirm}
           phx-value-password={@password}
           data-testid="nick-change-confirm"
+          class="nc-action-button"
         >
           <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
           {dgettext("dialogs", "Confirm")}
@@ -101,6 +103,7 @@ defmodule RetroHexChatWeb.Components.UI.NickChangeDialog do
           variant="outline"
           phx-click={@on_cancel || hide_modal(@id)}
           data-testid="nick-change-cancel"
+          class="nc-action-button"
         >
           <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
           {dgettext("dialogs", "Cancel")}

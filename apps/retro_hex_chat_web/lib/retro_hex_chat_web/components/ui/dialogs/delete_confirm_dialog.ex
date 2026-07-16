@@ -35,25 +35,37 @@ defmodule RetroHexChatWeb.Components.UI.DeleteConfirmDialog do
   def delete_confirm_dialog(assigns) do
     ~H"""
     <span data-testid="delete-confirm-dialog">
-      <.dialog id={@id} show={@show}>
-        <.dialog_header id={@id} title={dgettext("dialogs", "Delete Message")}>
+      <.dialog id={@id} show={@show} on_cancel={@on_cancel} class="cd-dialog-wrap">
+        <.dialog_header
+          id={@id}
+          title={dgettext("dialogs", "Delete Message")}
+          on_close={@on_cancel}
+        >
           <:icon><Icons.icon_dialog_delete class="w-[16px] h-[16px]" /></:icon>
         </.dialog_header>
 
-        <.dialog_body>
-          <p class="text-xs">
-            {dgettext(
-              "dialogs",
-              "Are you sure you want to delete this message? This action cannot be undone."
-            )}
-          </p>
+        <.dialog_body class="cd-dialog-body">
+          <div class="cd-message-row cd-message-row--destructive">
+            <span class="cd-message-icon" aria-hidden="true">
+              <Icons.icon_dialog_delete class="w-5 h-5" />
+            </span>
+            <div class="cd-message-copy">
+              <p class="cd-message-text">
+                {dgettext("dialogs", "Are you sure you want to delete this message?")}
+              </p>
+              <p class="cd-message-note">
+                {dgettext("dialogs", "This action cannot be undone.")}
+              </p>
+            </div>
+          </div>
         </.dialog_body>
 
-        <.dialog_footer>
+        <.dialog_footer class="cd-dialog-footer">
           <.button
             variant="destructive"
             phx-click={@on_confirm}
             data-testid="delete-confirm-dialog-confirm"
+            class="cd-dialog-action"
           >
             <:icon><Icons.icon_dialog_delete class="w-4 h-4" /></:icon>
             {dgettext("dialogs", "Delete")}
@@ -62,6 +74,7 @@ defmodule RetroHexChatWeb.Components.UI.DeleteConfirmDialog do
             variant="outline"
             phx-click={@on_cancel || hide_modal(@id)}
             data-testid="delete-confirm-dialog-cancel"
+            class="cd-dialog-action"
           >
             <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
             {dgettext("dialogs", "Cancel")}

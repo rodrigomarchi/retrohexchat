@@ -140,6 +140,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.NotifyListDialog do
     {:noreply, put_session(socket, NotifyOps.toggle_auto_add_pm(socket.assigns.session))}
   end
 
+  def handle_event("notify_close", _params, socket) do
+    send(self(), {:close_window, "notify-list"})
+    {:noreply, socket}
+  end
+
   # ── Render ───────────────────────────────────────────────────────
 
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()
@@ -171,6 +176,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.NotifyListDialog do
         on_remove="notify_remove"
         on_toggle_auto_whois="toggle_auto_whois"
         on_toggle_auto_add_pm="toggle_auto_add_pm"
+        on_close="notify_close"
       />
     </div>
     """

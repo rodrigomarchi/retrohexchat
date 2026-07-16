@@ -26,6 +26,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.KickQueueDialogTest do
       )
 
     assert html =~ "#elixir"
+    assert html =~ "Op"
+    assert html =~ "spam"
+    assert html =~ "The channel tab was closed"
+    assert html =~ "kick_dialog_dismiss"
     assert html =~ ~s(data-testid="kick-dialog-ok")
   end
 end

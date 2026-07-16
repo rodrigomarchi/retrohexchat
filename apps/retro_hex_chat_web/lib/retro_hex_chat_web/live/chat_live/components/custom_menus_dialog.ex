@@ -99,6 +99,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.CustomMenusDialog do
     {:noreply, assign(socket, editing: false, draft_label: "", draft_command: "", error: nil)}
   end
 
+  def handle_event("custom_menu_dialog_close", _params, socket) do
+    send(self(), {:close_window, "custom-menus"})
+    {:noreply, socket}
+  end
+
   @impl true
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()
   def render(assigns) do
@@ -122,6 +127,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.CustomMenusDialog do
         on_save={JS.push("custom_menu_dialog_save", value: %{selected: @selected, tab: @tab})}
         on_delete={JS.push("custom_menu_dialog_delete", value: %{selected: @selected, tab: @tab})}
         on_cancel_edit={JS.push("custom_menu_dialog_cancel_edit", target: @myself)}
+        on_close={JS.push("custom_menu_dialog_close", target: @myself)}
       />
     </div>
     """

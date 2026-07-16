@@ -19,6 +19,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.InviteQueueDialog do
 
   import RetroHexChatWeb.Components.UI.InviteDialog
 
+  alias Phoenix.LiveView.JS
+
   @id "invite-queue-dialog"
 
   @doc "Stable DOM/component id used by the parent for `<.live_component>` mounting."
@@ -57,8 +59,24 @@ defmodule RetroHexChatWeb.ChatLive.Components.InviteQueueDialog do
         invites={@invites}
         on_accept={JS.push("invite_accept", target: @myself)}
         on_ignore={JS.push("invite_ignore", target: @myself)}
+        on_dismiss={dismiss_top_invite(@invites, @myself)}
       />
     </div>
     """
+  end
+
+  defp dismiss_top_invite([], _target), do: nil
+
+  defp dismiss_top_invite(invites, target) do
+    case List.last(invites) do
+      %{channel: channel} when is_binary(channel) ->
+        JS.push("invite_ignore", target: target, value: %{channel: channel})
+
+      %{"channel" => channel} when is_binary(channel) ->
+        JS.push("invite_ignore", target: target, value: %{channel: channel})
+
+      _ ->
+        nil
+    end
   end
 end

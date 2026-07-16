@@ -103,12 +103,12 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
       :if={@windowed}
       id={"#{@id}-content"}
       data-testid="admin-console-panel"
-      class="flex h-full min-h-0 flex-col gap-retro-8"
+      class="ac-dialog flex h-full min-h-0 flex-col gap-retro-8"
     >
-      <div class="min-h-0 flex-1 overflow-y-auto">
+      <div class="ac-scroll min-h-0 flex-1 overflow-y-auto">
         <.admin_console_tabs {assigns} />
       </div>
-      <div class="flex justify-end">
+      <div class="ac-window-actions flex justify-end">
         <.button
           type="button"
           variant="outline"
@@ -155,81 +155,83 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
 
   defp admin_console_tabs(assigns) do
     ~H"""
-    <.tabs :let={builder} id={"#{@id}-tabs"} default={@active_tab}>
-      <.tabs_list class="flex flex-wrap">
-        <.admin_tab
-          target={@target}
-          builder={builder}
-          value="server_settings"
-          label={dgettext("dialogs", "Server Settings")}
-          icon_fn={:icon_server}
-          on_tab={@on_tab}
-        />
-        <.admin_tab
-          target={@target}
-          builder={builder}
-          value="users"
-          label={dgettext("dialogs", "Users")}
-          icon_fn={:icon_tab_nicklist}
-          on_tab={@on_tab}
-        />
-        <.admin_tab
-          target={@target}
-          builder={builder}
-          value="channels"
-          label={dgettext("dialogs", "Channels")}
-          icon_fn={:icon_channels}
-          on_tab={@on_tab}
-        />
-        <.admin_tab
-          target={@target}
-          builder={builder}
-          value="motd"
-          label={dgettext("dialogs", "MOTD")}
-          icon_fn={:icon_notepad}
-          on_tab={@on_tab}
-        />
-        <.admin_tab
-          target={@target}
-          builder={builder}
-          value="broadcast"
-          label={dgettext("dialogs", "Broadcast")}
-          icon_fn={:icon_megaphone}
-          on_tab={@on_tab}
-        />
-        <.admin_tab
-          target={@target}
-          builder={builder}
-          value="audit_log"
-          label={dgettext("dialogs", "Audit Log")}
-          icon_fn={:icon_notepad}
-          on_tab={@on_tab}
-        />
-        <.admin_tab
-          target={@target}
-          builder={builder}
-          value="turn"
-          label={dgettext("dialogs", "TURN")}
-          icon_fn={:icon_websocket}
-          on_tab={@on_tab}
-        />
-        <.admin_tab
-          target={@target}
-          builder={builder}
-          value="danger_zone"
-          label={dgettext("dialogs", "Danger Zone")}
-          icon_fn={:icon_warning}
-          on_tab={@on_tab}
-        />
-        <.admin_tab
-          target={@target}
-          builder={builder}
-          value="console"
-          label={dgettext("dialogs", "Console")}
-          icon_fn={:icon_terminal}
-          on_tab={@on_tab}
-        />
-      </.tabs_list>
+    <.tabs :let={builder} id={"#{@id}-tabs"} default={@active_tab} class="ac-tabs">
+      <div class="ac-main-tabs-shell">
+        <.tabs_list class="ac-main-tabs flex flex-wrap">
+          <.admin_tab
+            target={@target}
+            builder={builder}
+            value="server_settings"
+            label={dgettext("dialogs", "Server Settings")}
+            icon_fn={:icon_server}
+            on_tab={@on_tab}
+          />
+          <.admin_tab
+            target={@target}
+            builder={builder}
+            value="users"
+            label={dgettext("dialogs", "Users")}
+            icon_fn={:icon_tab_nicklist}
+            on_tab={@on_tab}
+          />
+          <.admin_tab
+            target={@target}
+            builder={builder}
+            value="channels"
+            label={dgettext("dialogs", "Channels")}
+            icon_fn={:icon_channels}
+            on_tab={@on_tab}
+          />
+          <.admin_tab
+            target={@target}
+            builder={builder}
+            value="motd"
+            label={dgettext("dialogs", "MOTD")}
+            icon_fn={:icon_notepad}
+            on_tab={@on_tab}
+          />
+          <.admin_tab
+            target={@target}
+            builder={builder}
+            value="broadcast"
+            label={dgettext("dialogs", "Broadcast")}
+            icon_fn={:icon_megaphone}
+            on_tab={@on_tab}
+          />
+          <.admin_tab
+            target={@target}
+            builder={builder}
+            value="audit_log"
+            label={dgettext("dialogs", "Audit Log")}
+            icon_fn={:icon_notepad}
+            on_tab={@on_tab}
+          />
+          <.admin_tab
+            target={@target}
+            builder={builder}
+            value="turn"
+            label={dgettext("dialogs", "TURN")}
+            icon_fn={:icon_websocket}
+            on_tab={@on_tab}
+          />
+          <.admin_tab
+            target={@target}
+            builder={builder}
+            value="danger_zone"
+            label={dgettext("dialogs", "Danger Zone")}
+            icon_fn={:icon_warning}
+            on_tab={@on_tab}
+          />
+          <.admin_tab
+            target={@target}
+            builder={builder}
+            value="console"
+            label={dgettext("dialogs", "Console")}
+            icon_fn={:icon_terminal}
+            on_tab={@on_tab}
+          />
+        </.tabs_list>
+      </div>
 
       <.tabs_content
         :for={tab <- admin_shell_tabs()}
@@ -762,6 +764,8 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
             label={dgettext("dialogs", "Description")}
             value={setting_value(@values, "server_description")}
             disabled={not @can_edit}
+            type="textarea"
+            rows={3}
           />
           <.settings_input
             target={@target}
@@ -770,6 +774,8 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
             label={dgettext("dialogs", "Welcome message")}
             value={setting_value(@values, "welcome_message")}
             disabled={not @can_edit}
+            type="textarea"
+            rows={3}
           />
           <div>
             <label for="admin-console-registration" class="block text-xs font-bold mb-retro-2">
@@ -851,6 +857,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   attr :type, :string, default: "text"
   attr :min, :string, default: nil
   attr :max, :string, default: nil
+  attr :rows, :integer, default: 2
 
   attr :target, :any, default: nil
 
@@ -859,6 +866,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
     <div>
       <label for={@id} class="block text-xs font-bold mb-retro-2">{@label}</label>
       <input
+        :if={@type != "textarea"}
         id={@id}
         name={@name}
         type={@type}
@@ -869,6 +877,15 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
         autocomplete="off"
         class="w-full shadow-retro-sunken bg-white px-retro-4 py-retro-2 text-sm"
       />
+      <textarea
+        :if={@type == "textarea"}
+        id={@id}
+        name={@name}
+        disabled={@disabled}
+        autocomplete="off"
+        rows={@rows}
+        class="ac-settings-textarea w-full shadow-retro-sunken bg-white px-retro-4 py-retro-2 text-sm resize-y"
+      >{@value}</textarea>
     </div>
     """
   end

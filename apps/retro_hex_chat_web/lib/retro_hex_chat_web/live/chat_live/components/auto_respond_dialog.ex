@@ -96,6 +96,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.AutoRespondDialog do
     {:noreply, assign(socket, editing: false, error: nil)}
   end
 
+  def handle_event("autorespond_dialog_close", _params, socket) do
+    send(self(), {:close_window, "auto-respond"})
+    {:noreply, socket}
+  end
+
   @impl true
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()
   def render(assigns) do
@@ -119,6 +124,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AutoRespondDialog do
         on_save={JS.push("autorespond_dialog_save", value: %{selected: @selected})}
         on_delete={JS.push("autorespond_dialog_delete", value: %{selected: @selected})}
         on_cancel_edit={JS.push("autorespond_dialog_cancel_edit", target: @myself)}
+        on_close={JS.push("autorespond_dialog_close", target: @myself)}
       />
     </div>
     """

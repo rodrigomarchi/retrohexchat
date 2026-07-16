@@ -23,13 +23,13 @@ defmodule RetroHexChatWeb.Components.UI.BotFormDialog do
   @spec new_bot_dialog(map()) :: Phoenix.LiveView.Rendered.t()
   def new_bot_dialog(assigns) do
     ~H"""
-    <.dialog id={@id} show={@show} class="max-w-md">
+    <.dialog id={@id} show={@show} scope={:window} class="bm-form-dialog max-w-md">
       <.dialog_header id={@id} title={dgettext("dialogs", "Create New Bot")}>
         <:icon><Icons.icon_btn_bot_management class="w-[16px] h-[16px]" /></:icon>
       </.dialog_header>
-      <form phx-submit="create_bot">
-        <.dialog_body>
-          <div class="space-y-retro-8">
+      <form phx-submit="create_bot" class="bm-form flex min-h-0 flex-1 flex-col">
+        <.dialog_body class="bm-form-body">
+          <div class="bm-form-fields space-y-retro-8">
             <div>
               <.label for="bot-name">{dgettext("dialogs", "Name")}</.label>
               <.input
@@ -58,7 +58,7 @@ defmodule RetroHexChatWeb.Components.UI.BotFormDialog do
                 placeholder={dgettext("dialogs", "A helpful bot")}
               />
             </div>
-            <div class="flex gap-retro-16">
+            <div class="bm-short-grid flex gap-retro-16">
               <div>
                 <.label for="bot-prefix">{dgettext("dialogs", "Command Prefix")}</.label>
                 <.input id="bot-prefix" name="prefix" type="text" value="!" class="w-[60px]" />
@@ -68,11 +68,11 @@ defmodule RetroHexChatWeb.Components.UI.BotFormDialog do
                 <.input id="bot-cooldown" name="cooldown" type="number" value="3" class="w-[80px]" />
               </div>
             </div>
-            <fieldset class="shadow-retro-sunken p-retro-8">
+            <fieldset class="bm-capability-fieldset shadow-retro-sunken p-retro-8">
               <legend class="text-xs font-bold px-retro-4">
                 {dgettext("dialogs", "Capabilities")}
               </legend>
-              <div class="grid grid-cols-2 gap-retro-4">
+              <div class="bm-checkbox-grid grid grid-cols-2 gap-retro-4">
                 <.checkbox_item
                   id="cap-mention"
                   name="cap_mention"
@@ -110,12 +110,12 @@ defmodule RetroHexChatWeb.Components.UI.BotFormDialog do
             </fieldset>
           </div>
         </.dialog_body>
-        <.dialog_footer>
-          <.button type="submit">
+        <.dialog_footer class="bm-form-footer">
+          <.button type="submit" class="bm-action-button">
             <:icon><Icons.icon_checkmark class="w-[14px] h-[14px]" /></:icon>
             {dgettext("dialogs", "Create")}
           </.button>
-          <.button type="button" variant="outline" phx-click={@on_close}>
+          <.button type="button" variant="outline" phx-click={@on_close} class="bm-action-button">
             <:icon><Icons.icon_close class="w-[14px] h-[14px]" /></:icon>
             {dgettext("dialogs", "Cancel")}
           </.button>
@@ -135,14 +135,14 @@ defmodule RetroHexChatWeb.Components.UI.BotFormDialog do
   @spec add_command_dialog(map()) :: Phoenix.LiveView.Rendered.t()
   def add_command_dialog(assigns) do
     ~H"""
-    <.dialog id={@id} show={@show} class="max-w-md">
+    <.dialog id={@id} show={@show} scope={:window} class="bm-form-dialog max-w-md">
       <.dialog_header id={@id} title={dgettext("dialogs", "Add Command — %{bot}", bot: @bot_name)}>
         <:icon><Icons.icon_btn_bot_management class="w-[16px] h-[16px]" /></:icon>
       </.dialog_header>
-      <form phx-submit="bot_add_command">
+      <form phx-submit="bot_add_command" class="bm-form flex min-h-0 flex-1 flex-col">
         <input type="hidden" name="bot_name" value={@bot_name} />
-        <.dialog_body>
-          <div class="space-y-retro-8">
+        <.dialog_body class="bm-form-body">
+          <div class="bm-form-fields space-y-retro-8">
             <div>
               <.label for="cmd-trigger">{dgettext("dialogs", "Trigger")}</.label>
               <.input
@@ -180,12 +180,12 @@ defmodule RetroHexChatWeb.Components.UI.BotFormDialog do
             </div>
           </div>
         </.dialog_body>
-        <.dialog_footer>
-          <.button type="submit">
+        <.dialog_footer class="bm-form-footer">
+          <.button type="submit" class="bm-action-button">
             <:icon><Icons.icon_checkmark class="w-[14px] h-[14px]" /></:icon>
             {dgettext("dialogs", "Add")}
           </.button>
-          <.button type="button" variant="outline" phx-click={@on_close}>
+          <.button type="button" variant="outline" phx-click={@on_close} class="bm-action-button">
             <:icon><Icons.icon_close class="w-[14px] h-[14px]" /></:icon>
             {dgettext("dialogs", "Cancel")}
           </.button>
@@ -199,7 +199,7 @@ defmodule RetroHexChatWeb.Components.UI.BotFormDialog do
 
   defp checkbox_item(assigns) do
     ~H"""
-    <div class="flex items-center gap-retro-4">
+    <div class="bm-checkbox-item flex items-center gap-retro-4">
       <.checkbox id={@id} name={@name} />
       <.label for={@id} class="text-xs cursor-pointer">{@label}</.label>
     </div>

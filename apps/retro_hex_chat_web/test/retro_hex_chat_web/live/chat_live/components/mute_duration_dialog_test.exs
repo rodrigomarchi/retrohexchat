@@ -26,7 +26,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.MuteDurationDialogTest do
         action: {:open, "Bob"}
       )
 
-    assert html =~ "Mute user: Bob"
+    assert html =~ "Mute User"
+    assert html =~ "Bob"
     assert html =~ "mute-duration-input"
+    assert html =~ "mute_duration_cancel"
   end
 end

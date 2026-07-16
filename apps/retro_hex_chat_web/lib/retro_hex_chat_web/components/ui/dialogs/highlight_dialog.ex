@@ -2,7 +2,7 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
   @moduledoc """
   Highlight dialog component for the showcase design system.
 
-  Composed from dialog + table + color_picker + button + input primitives.
+  Composed from dialog + color_picker + button + input primitives.
   Word list with color assignments, Add/Edit/Remove, own nick highlight.
 
   ## Usage
@@ -19,7 +19,6 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Dialog
-  import RetroHexChatWeb.Components.UI.Table
   import RetroHexChatWeb.Components.UI.ColorPicker
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Input
@@ -113,119 +112,144 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
   attr :show_highlight_add_dialog, :boolean, default: false
   attr :show_highlight_edit_dialog, :boolean, default: false
   attr :on_color_select, :any, default: nil
+  attr :on_close, :any, default: nil
   attr :sub_scope, :atom, default: :window, values: [:viewport, :window]
 
   @spec highlight_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def highlight_panel(assigns) do
     ~H"""
-    <div
-      id={"#{@id}-content"}
-      data-testid="highlight-panel"
-      class="flex h-full min-h-0 flex-col gap-retro-8"
-    >
-      <%!-- Add word button --%>
-      <div class="flex items-center gap-retro-4">
-        <.button size="sm" variant="outline" phx-click={@on_add} phx-target={@target}>
-          <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
-          {dgettext("dialogs", "Add")}
-        </.button>
-      </div>
+    <div id={"#{@id}-panel-root"} class="contents">
+      <.focus_wrap id={"#{@id}-focus-wrap"} class="contents">
+        <div
+          id={"#{@id}-content"}
+          data-testid="highlight-panel"
+          role="dialog"
+          aria-modal="false"
+          tabindex="0"
+          phx-mounted={JS.focus(to: "##{@id}-content")}
+          class="hl-dialog flex h-full min-h-0 flex-col gap-retro-8"
+        >
+          <div class="hl-content min-h-0 flex-1">
+            <div class="hl-list-pane min-h-0">
+              <div class="hl-entry-list overflow-y-auto retro-scrollbar">
+                <div :if={@own_nick} class="hl-own-entry">
+                  <span class="hl-entry-word">
+                    <span>{@own_nick}</span>
+                    <span class="hl-entry-tag">{dgettext("dialogs", "(you)")}</span>
+                  </span>
+                  <span class="hl-entry-color">
+                    <span class="hl-color-swatch bg-warning" />
+                    <span>{dgettext("dialogs", "Own nick")}</span>
+                  </span>
+                </div>
 
-      <%!-- Word list table --%>
-      <div class="flex-1 min-h-0 overflow-y-auto retro-scrollbar">
-        <.table>
-          <.table_header>
-            <.table_row>
-              <.table_head>{dgettext("dialogs", "Word")}</.table_head>
-              <.table_head>{dgettext("dialogs", "Color")}</.table_head>
-              <.table_head class="w-[40px]"></.table_head>
-            </.table_row>
-          </.table_header>
-          <.table_body>
-            <%!-- Own nick (non-removable) --%>
-            <.table_row :if={@own_nick} class="bg-hover-bg">
-              <.table_cell>
-                <span class="font-bold">{@own_nick}</span>
-                <span class="text-muted-foreground text-[10px] ml-retro-4">
-                  {dgettext("dialogs", "(you)")}
-                </span>
-              </.table_cell>
-              <.table_cell>
-                <div class="w-4 h-4 border border-border bg-warning" />
-              </.table_cell>
-              <.table_cell></.table_cell>
-            </.table_row>
-            <%!-- User-defined words --%>
-            <.table_row
-              :for={word <- @words}
-              class={
-                if(@selected_word == word.word, do: "bg-selection-bg text-selection-fg", else: "")
-              }
-              phx-click={@on_select}
-              phx-target={@target}
-              phx-value-word={word.word}
-              data-testid={"highlight-word-row-#{word.word}"}
-            >
-              <.table_cell>{word.word}</.table_cell>
-              <.table_cell>
                 <div
-                  class={["w-4 h-4 border border-border", color_class(word.bg_color)]}
-                  data-testid={"highlight-word-color-#{word.word}"}
-                />
-              </.table_cell>
-              <.table_cell></.table_cell>
-            </.table_row>
-          </.table_body>
-        </.table>
-      </div>
+                  :if={@words == []}
+                  class="hl-empty-state text-center text-muted-foreground"
+                >
+                  {dgettext("dialogs", "No highlight words configured. Click Add to create one.")}
+                </div>
 
-      <div class="flex gap-retro-4">
-        <.button
-          size="sm"
-          variant="outline"
-          phx-click={@on_edit}
-          phx-target={@target}
-          disabled={@selected_word == nil}
-        >
-          <:icon><Icons.icon_btn_edit class="w-4 h-4" /></:icon>
-          {dgettext("dialogs", "Edit")}
-        </.button>
-        <.button
-          size="sm"
-          variant="outline"
-          phx-click={@on_remove}
-          phx-target={@target}
-          phx-value-word={@selected_word || ""}
-          disabled={@selected_word == nil}
-        >
-          <:icon><Icons.icon_btn_remove class="w-4 h-4" /></:icon>
-          {dgettext("dialogs", "Remove")}
-        </.button>
-      </div>
+                <button
+                  :for={word <- @words}
+                  type="button"
+                  data-testid={"highlight-word-row-#{word.word}"}
+                  aria-pressed={@selected_word == word.word}
+                  aria-label={word.word}
+                  class={highlight_entry_class(@selected_word == word.word)}
+                  phx-click={@on_select}
+                  phx-target={@target}
+                  phx-value-word={word.word}
+                >
+                  <span class="hl-entry-word">{word.word}</span>
+                  <span class="hl-entry-color">
+                    <span
+                      class={["hl-color-swatch", color_class(word.bg_color)]}
+                      data-testid={"highlight-word-color-#{word.word}"}
+                    />
+                    <span>{color_label(word.bg_color)}</span>
+                  </span>
+                </button>
+              </div>
 
-      <%!-- Color picker for assignment --%>
-      <.color_picker
-        id={"#{@id}-color-picker"}
-        target={@target}
-        selected={@selected_color}
-        on_select={@on_color_select}
-      />
+              <div class="hl-action-row flex gap-retro-4">
+                <.button
+                  size="sm"
+                  variant="outline"
+                  phx-click={@on_add}
+                  phx-target={@target}
+                  class="hl-action-button"
+                >
+                  <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
+                  {dgettext("dialogs", "Add")}
+                </.button>
+                <.button
+                  size="sm"
+                  variant="outline"
+                  phx-click={@on_edit}
+                  phx-target={@target}
+                  disabled={@selected_word == nil}
+                  class="hl-action-button"
+                >
+                  <:icon><Icons.icon_btn_edit class="w-4 h-4" /></:icon>
+                  {dgettext("dialogs", "Edit")}
+                </.button>
+                <.button
+                  size="sm"
+                  variant="outline"
+                  phx-click={@on_remove}
+                  phx-target={@target}
+                  phx-value-word={@selected_word || ""}
+                  disabled={@selected_word == nil}
+                  class="hl-action-button"
+                >
+                  <:icon><Icons.icon_btn_remove class="w-4 h-4" /></:icon>
+                  {dgettext("dialogs", "Remove")}
+                </.button>
+              </div>
+            </div>
 
-      <%!-- Highlight Add Sub-Dialog (modal, scoped by @sub_scope) --%>
-      <.highlight_add_sub_form
-        :if={@show_highlight_add_dialog}
-        target={@target}
-        selected_color={@selected_color}
-        scope={@sub_scope}
-      />
-      <%!-- Highlight Edit Sub-Dialog --%>
-      <.highlight_edit_sub_form
-        :if={@show_highlight_edit_dialog}
-        target={@target}
-        selected_word={@selected_word}
-        selected_color={@selected_color}
-        scope={@sub_scope}
-      />
+            <div class="hl-color-panel">
+              <.color_picker
+                id={"#{@id}-color-picker"}
+                target={@target}
+                selected={@selected_color}
+                on_select={@on_color_select}
+                class="hl-color-picker"
+              />
+            </div>
+          </div>
+
+          <div :if={@on_close} class="hl-dialog-footer flex justify-end">
+            <.button
+              type="button"
+              size="sm"
+              phx-click={@on_close}
+              phx-target={@target}
+              class="hl-action-button"
+            >
+              <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
+              {dgettext("dialogs", "OK")}
+            </.button>
+          </div>
+
+          <%!-- Highlight Add Sub-Dialog (modal, scoped by @sub_scope) --%>
+          <.highlight_add_sub_form
+            :if={@show_highlight_add_dialog}
+            target={@target}
+            selected_color={@selected_color}
+            scope={@sub_scope}
+          />
+          <%!-- Highlight Edit Sub-Dialog --%>
+          <.highlight_edit_sub_form
+            :if={@show_highlight_edit_dialog}
+            target={@target}
+            selected_word={@selected_word}
+            selected_color={@selected_color}
+            scope={@sub_scope}
+          />
+        </div>
+      </.focus_wrap>
     </div>
     """
   end
@@ -256,7 +280,12 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
         <:icon><Icons.icon_star class="w-4 h-4" /></:icon>
       </.dialog_header>
       <.dialog_body>
-        <form phx-submit="highlight_add" phx-target={@target} data-testid="highlight-add-form">
+        <form
+          phx-submit="highlight_add"
+          phx-target={@target}
+          data-testid="highlight-add-form"
+          class="hl-sub-form"
+        >
           <div class="flex flex-col gap-1.5 mb-2">
             <label class="text-xs font-bold" for="highlight-word-input">
               {dgettext("dialogs", "Word:")}
@@ -276,7 +305,7 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
               required
               autofocus
               phx-update="ignore"
-              class="w-full"
+              class="hl-input w-full"
             />
           </div>
           <input type="hidden" name="bg_color" value={to_string(@selected_color || "")} />
@@ -289,10 +318,11 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
               target={@target}
               selected={@selected_color}
               on_select="highlight_color_pick"
+              class="hl-color-picker hl-sub-color-picker"
             />
           </div>
-          <div class="flex justify-end gap-1 mt-3">
-            <.button type="submit" size="sm">
+          <div class="hl-form-actions flex justify-end gap-1 mt-3">
+            <.button type="submit" size="sm" class="hl-action-button">
               <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
               {dgettext("dialogs", "Add")}
             </.button>
@@ -302,6 +332,7 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
               variant="outline"
               phx-click="close_highlight_add_dialog"
               phx-target={@target}
+              class="hl-action-button"
             >
               <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
               {dgettext("dialogs", "Cancel")}
@@ -335,7 +366,12 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
         <:icon><Icons.icon_star class="w-4 h-4" /></:icon>
       </.dialog_header>
       <.dialog_body>
-        <form phx-submit="highlight_edit" phx-target={@target} data-testid="highlight-edit-form">
+        <form
+          phx-submit="highlight_edit"
+          phx-target={@target}
+          data-testid="highlight-edit-form"
+          class="hl-sub-form"
+        >
           <input type="hidden" name="word" value={@selected_word || ""} />
           <input type="hidden" name="bg_color" value={to_string(@selected_color || "")} />
           <div class="flex flex-col gap-1.5">
@@ -345,10 +381,11 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
               target={@target}
               selected={@selected_color}
               on_select="highlight_color_pick"
+              class="hl-color-picker hl-sub-color-picker"
             />
           </div>
-          <div class="flex justify-end gap-1 mt-3">
-            <.button type="submit" size="sm">
+          <div class="hl-form-actions flex justify-end gap-1 mt-3">
+            <.button type="submit" size="sm" class="hl-action-button">
               <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
               {dgettext("dialogs", "OK")}
             </.button>
@@ -358,6 +395,7 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
               variant="outline"
               phx-click="close_highlight_edit_dialog"
               phx-target={@target}
+              class="hl-action-button"
             >
               <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
               {dgettext("dialogs", "Cancel")}
@@ -372,4 +410,12 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
   @spec color_class(any()) :: String.t()
   defp color_class(n) when is_integer(n), do: "irc-bg-#{n}"
   defp color_class(_), do: "highlight-bg-default"
+
+  defp color_label(n) when is_integer(n),
+    do: dgettext("dialogs", "Color %{index}", index: n)
+
+  defp color_label(_), do: dgettext("dialogs", "Default")
+
+  defp highlight_entry_class(true), do: "hl-highlight-entry bg-selection-bg text-selection-fg"
+  defp highlight_entry_class(false), do: "hl-highlight-entry"
 end

@@ -2,7 +2,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
   @moduledoc """
   Notify list dialog component for the showcase design system.
 
-  Composed from dialog + table + button + checkbox primitives.
+  Composed from dialog + button + checkbox + input/textarea primitives.
   Shows tracked nicks with online/offline status, last seen time,
   and Auto-Whois toggle. Supports Add/Edit/Remove CRUD actions.
 
@@ -13,10 +13,10 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Dialog
-  import RetroHexChatWeb.Components.UI.Table
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Checkbox
   import RetroHexChatWeb.Components.UI.Input
+  import RetroHexChatWeb.Components.UI.Textarea
 
   alias RetroHexChatWeb.Icons
 
@@ -99,115 +99,146 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
   attr :on_toggle_auto_whois, :any, default: nil
   attr :auto_add_pm, :boolean, default: true
   attr :on_toggle_auto_add_pm, :any, default: nil
+  attr :on_close, :any, default: nil
 
   @spec notify_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def notify_panel(assigns) do
     ~H"""
-    <div
-      id={"#{@id}-content"}
-      data-testid="notify-list"
-      class="flex h-full min-h-0 flex-col gap-retro-8"
-    >
-      <%!-- Settings toggles --%>
-      <div class="flex flex-col gap-retro-4">
-        <div class="flex items-center gap-retro-4">
-          <.checkbox
-            name="auto_add_pm"
-            value={@auto_add_pm}
-            phx-click={@on_toggle_auto_add_pm}
-            phx-target={@target}
-            id={"#{@id}-auto-add-pm"}
-          />
-          <label for={"#{@id}-auto-add-pm"} class="text-xs cursor-pointer select-none">
-            {dgettext("dialogs", "Auto-add PM contacts to notify list")}
-          </label>
-        </div>
-        <div class="flex items-center gap-retro-4">
-          <.checkbox
-            name="auto_whois"
-            value={@auto_whois}
-            phx-click={@on_toggle_auto_whois}
-            phx-target={@target}
-            id={"#{@id}-auto-whois"}
-          />
-          <label for={"#{@id}-auto-whois"} class="text-xs cursor-pointer select-none">
-            {dgettext("dialogs", "Perform WHOIS on notify nicks when they come online")}
-          </label>
-        </div>
-      </div>
+    <div id={"#{@id}-panel-root"} class="contents">
+      <.focus_wrap id={"#{@id}-focus-wrap"} class="contents">
+        <div
+          id={"#{@id}-content"}
+          data-testid="notify-list"
+          role="dialog"
+          aria-modal="false"
+          tabindex="0"
+          phx-mounted={JS.focus(to: "##{@id}-content")}
+          class="nl-dialog flex h-full min-h-0 flex-col gap-retro-8"
+        >
+          <%!-- Settings toggles --%>
+          <div class="nl-settings">
+            <label class="nl-setting-row">
+              <.checkbox
+                name="auto_add_pm"
+                value={@auto_add_pm}
+                phx-click={@on_toggle_auto_add_pm}
+                phx-target={@target}
+                id={"#{@id}-auto-add-pm"}
+              />
+              <span>{dgettext("dialogs", "Auto-add PM contacts to notify list")}</span>
+            </label>
+            <label class="nl-setting-row">
+              <.checkbox
+                name="auto_whois"
+                value={@auto_whois}
+                phx-click={@on_toggle_auto_whois}
+                phx-target={@target}
+                id={"#{@id}-auto-whois"}
+              />
+              <span>
+                {dgettext("dialogs", "Perform WHOIS on notify nicks when they come online")}
+              </span>
+            </label>
+          </div>
 
-      <%!-- Entries table --%>
-      <div class="flex-1 min-h-0 overflow-y-auto retro-scrollbar">
-        <.table>
-          <.table_header>
-            <.table_row>
-              <.table_head>{dgettext("dialogs", "Nick")}</.table_head>
-              <.table_head>{dgettext("dialogs", "Status")}</.table_head>
-              <.table_head>{dgettext("dialogs", "Last Seen")}</.table_head>
-            </.table_row>
-          </.table_header>
-          <.table_body>
-            <.table_row
+          <%!-- Entries list --%>
+          <div class="nl-entry-list flex-1 overflow-y-auto retro-scrollbar">
+            <div :if={@entries == []} class="nl-empty-state text-center text-muted-foreground">
+              {dgettext("dialogs", "No notify nicks yet. Add a nick to track online status.")}
+            </div>
+
+            <button
               :for={entry <- @entries}
-              class={
-                if(@selected_entry == entry.tracked_nickname,
-                  do: "bg-selection-bg text-selection-fg",
-                  else: ""
-                )
-              }
+              type="button"
+              class={entry_class(@selected_entry == entry.tracked_nickname)}
               phx-click={@on_select}
               phx-target={@target}
               phx-value-nickname={entry.tracked_nickname}
               data-testid={"notify-list-row-#{entry.tracked_nickname}"}
+              aria-pressed={@selected_entry == entry.tracked_nickname}
+              aria-label={entry.tracked_nickname}
             >
-              <.table_cell class="font-bold">{entry.tracked_nickname}</.table_cell>
-              <.table_cell>
+              <span class="nl-entry-header">
+                <span class="nl-entry-name">{entry.tracked_nickname}</span>
                 <.online_status online={entry.online} />
-              </.table_cell>
-              <.table_cell class="text-xs">{Map.get(entry, :last_seen_at, "")}</.table_cell>
-            </.table_row>
-          </.table_body>
-        </.table>
-      </div>
+              </span>
+              <span class="nl-entry-meta">
+                <span class="nl-entry-meta-label">{dgettext("dialogs", "Last Seen")}</span>
+                {last_seen_label(entry)}
+              </span>
+              <span class="nl-entry-note">
+                <span class="nl-entry-meta-label">{dgettext("dialogs", "Note")}</span>
+                {note_label(entry)}
+              </span>
+            </button>
+          </div>
 
-      <%!-- CRUD buttons --%>
-      <div class="flex gap-retro-4">
-        <.button size="sm" variant="outline" phx-click={@on_add} phx-target={@target}>
-          <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
-          {dgettext("dialogs", "Add")}
-        </.button>
-        <.button
-          size="sm"
-          variant="outline"
-          phx-click={@on_edit}
-          phx-target={@target}
-          disabled={@selected_entry == nil}
-        >
-          <:icon><Icons.icon_btn_edit class="w-4 h-4" /></:icon>
-          {dgettext("dialogs", "Edit")}
-        </.button>
-        <.button
-          size="sm"
-          variant="outline"
-          phx-click={@on_remove}
-          phx-target={@target}
-          phx-value-nickname={@selected_entry}
-          disabled={@selected_entry == nil}
-        >
-          <:icon><Icons.icon_btn_remove class="w-4 h-4" /></:icon>
-          {dgettext("dialogs", "Remove")}
-        </.button>
-      </div>
+          <%!-- CRUD buttons --%>
+          <div class="nl-action-row flex gap-retro-4">
+            <.button
+              size="sm"
+              variant="outline"
+              phx-click={@on_add}
+              phx-target={@target}
+              data-testid="notify-list-add"
+              class="nl-action-button"
+            >
+              <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
+              {dgettext("dialogs", "Add")}
+            </.button>
+            <.button
+              size="sm"
+              variant="outline"
+              phx-click={@on_edit}
+              phx-target={@target}
+              disabled={@selected_entry == nil}
+              data-testid="notify-list-edit"
+              class="nl-action-button"
+            >
+              <:icon><Icons.icon_btn_edit class="w-4 h-4" /></:icon>
+              {dgettext("dialogs", "Edit")}
+            </.button>
+            <.button
+              size="sm"
+              variant="outline"
+              phx-click={@on_remove}
+              phx-target={@target}
+              phx-value-nickname={@selected_entry}
+              disabled={@selected_entry == nil}
+              data-testid="notify-list-remove"
+              class="nl-action-button"
+            >
+              <:icon><Icons.icon_btn_remove class="w-4 h-4" /></:icon>
+              {dgettext("dialogs", "Remove")}
+            </.button>
+          </div>
 
-      <%!-- Notify Add Sub-Dialog --%>
-      <.notify_add_sub_form :if={@show_add_dialog} target={@target} />
-      <%!-- Notify Edit Sub-Dialog --%>
-      <.notify_edit_sub_form
-        :if={@show_edit_dialog}
-        target={@target}
-        selected_entry={@selected_entry}
-        selected_note={@selected_note}
-      />
+          <div :if={@on_close} class="nl-dialog-footer flex justify-end">
+            <.button
+              type="button"
+              size="sm"
+              variant="outline"
+              phx-click={@on_close}
+              phx-target={@target}
+              class="nl-action-button"
+              data-testid="notify-list-close"
+            >
+              <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
+              {dgettext("dialogs", "Close")}
+            </.button>
+          </div>
+
+          <%!-- Notify Add Sub-Dialog --%>
+          <.notify_add_sub_form :if={@show_add_dialog} target={@target} />
+          <%!-- Notify Edit Sub-Dialog --%>
+          <.notify_edit_sub_form
+            :if={@show_edit_dialog}
+            target={@target}
+            selected_entry={@selected_entry}
+            selected_note={@selected_note}
+          />
+        </div>
+      </.focus_wrap>
     </div>
     """
   end
@@ -223,7 +254,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
       show
       scope={:window}
       on_cancel={JS.push("notify_add_cancel", target: @target)}
-      class="md:max-w-sm"
+      class="nl-subdialog md:max-w-sm"
     >
       <.dialog_header
         id="notify-add-modal"
@@ -233,8 +264,13 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
         <:icon><Icons.icon_btn_bell class="w-4 h-4" /></:icon>
       </.dialog_header>
       <.dialog_body>
-        <form phx-submit="notify_add" phx-target={@target} data-testid="notify-add-form">
-          <div class="flex flex-col gap-1.5 mb-2">
+        <form
+          phx-submit="notify_add"
+          phx-target={@target}
+          data-testid="notify-add-form"
+          class="nl-sub-form"
+        >
+          <div class="nl-field">
             <label class="text-xs font-bold" for="notify-add-nickname">
               {dgettext("dialogs", "Nickname:")}
             </label>
@@ -245,24 +281,24 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
               maxlength="16"
               required
               autocomplete="off"
-              class="w-full"
+              class="nl-input w-full"
             />
           </div>
-          <div class="flex flex-col gap-1.5 mb-2">
+          <div class="nl-field">
             <label class="text-xs font-bold" for="notify-add-note">
               {dgettext("dialogs", "Note:")}
             </label>
-            <.input
-              type="text"
+            <.textarea
               id="notify-add-note"
               name="note"
               maxlength="200"
               autocomplete="off"
-              class="w-full"
+              rows="3"
+              class="nl-note-input nl-input w-full resize-none text-xs"
             />
           </div>
-          <div class="flex justify-end gap-2">
-            <.button type="submit" size="sm">
+          <div class="nl-form-actions flex justify-end gap-2">
+            <.button type="submit" size="sm" class="nl-action-button">
               <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
               {dgettext("dialogs", "OK")}
             </.button>
@@ -272,6 +308,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
               variant="outline"
               phx-click="notify_add_cancel"
               phx-target={@target}
+              class="nl-action-button"
             >
               <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
               {dgettext("dialogs", "Cancel")}
@@ -294,7 +331,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
       show
       scope={:window}
       on_cancel={JS.push("notify_edit_cancel", target: @target)}
-      class="md:max-w-sm"
+      class="nl-subdialog md:max-w-sm"
     >
       <.dialog_header
         id="notify-edit-modal"
@@ -304,8 +341,13 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
         <:icon><Icons.icon_btn_bell class="w-4 h-4" /></:icon>
       </.dialog_header>
       <.dialog_body>
-        <form phx-submit="notify_edit" phx-target={@target} data-testid="notify-edit-form">
-          <div class="flex flex-col gap-1.5 mb-2">
+        <form
+          phx-submit="notify_edit"
+          phx-target={@target}
+          data-testid="notify-edit-form"
+          class="nl-sub-form"
+        >
+          <div class="nl-field">
             <label class="text-xs font-bold" for="notify-edit-nickname">
               {dgettext("dialogs", "Nickname:")}
             </label>
@@ -315,25 +357,25 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
               name="nickname"
               value={@selected_entry}
               readonly
-              class="w-full input-readonly"
+              class="nl-input w-full input-readonly"
             />
           </div>
-          <div class="flex flex-col gap-1.5 mb-2">
+          <div class="nl-field">
             <label class="text-xs font-bold" for="notify-edit-note">
               {dgettext("dialogs", "Note:")}
             </label>
-            <.input
-              type="text"
+            <.textarea
               id="notify-edit-note"
               name="note"
               value={@selected_note}
               maxlength="200"
               autocomplete="off"
-              class="w-full"
+              rows="3"
+              class="nl-note-input nl-input w-full resize-none text-xs"
             />
           </div>
-          <div class="flex justify-end gap-2">
-            <.button type="submit" size="sm">
+          <div class="nl-form-actions flex justify-end gap-2">
+            <.button type="submit" size="sm" class="nl-action-button">
               <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
               {dgettext("dialogs", "OK")}
             </.button>
@@ -343,6 +385,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
               variant="outline"
               phx-click="notify_edit_cancel"
               phx-target={@target}
+              class="nl-action-button"
             >
               <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
               {dgettext("dialogs", "Cancel")}
@@ -360,20 +403,39 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
 
   defp online_status(%{online: true} = assigns) do
     ~H"""
-    <span class="inline-flex items-center gap-retro-2 text-xs">
-      <span class="w-2 h-2 rounded-full bg-success inline-block" /> {dgettext("dialogs", "Online")}
+    <span class="nl-status nl-status--online">
+      <span class="nl-status-dot" /> {dgettext("dialogs", "Online")}
     </span>
     """
   end
 
   defp online_status(assigns) do
     ~H"""
-    <span class="inline-flex items-center gap-retro-2 text-xs text-muted-foreground">
-      <span class="w-2 h-2 rounded-full bg-muted-foreground inline-block" /> {dgettext(
-        "dialogs",
-        "Offline"
-      )}
+    <span class="nl-status nl-status--offline">
+      <span class="nl-status-dot" /> {dgettext("dialogs", "Offline")}
     </span>
     """
+  end
+
+  defp entry_class(true), do: "nl-entry bg-selection-bg text-selection-fg"
+  defp entry_class(false), do: "nl-entry"
+
+  defp note_label(entry) do
+    case Map.get(entry, :note) do
+      nil -> dgettext("dialogs", "No note")
+      "" -> dgettext("dialogs", "No note")
+      note -> note
+    end
+  end
+
+  defp last_seen_label(%{online: true}), do: dgettext("dialogs", "Now")
+
+  defp last_seen_label(entry) do
+    case Map.get(entry, :last_seen_at) do
+      nil -> "--"
+      "" -> "--"
+      %DateTime{} = value -> Calendar.strftime(value, "%Y-%m-%d %H:%M")
+      value -> to_string(value)
+    end
   end
 end

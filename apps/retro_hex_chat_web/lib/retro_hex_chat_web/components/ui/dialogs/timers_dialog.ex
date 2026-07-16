@@ -3,7 +3,7 @@ defmodule RetroHexChatWeb.Components.UI.TimersDialog do
   Timer management panel for session-scoped scheduled commands — the body of
   the Timers desktop window.
 
-  Composed from the shared table, button, input, and checkbox primitives.
+  Composed from the shared button, input, textarea, and checkbox primitives.
   Runtime scheduling stays in the LiveView process; this component only renders
   the current timer map and emits events.
   """
@@ -12,12 +12,13 @@ defmodule RetroHexChatWeb.Components.UI.TimersDialog do
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Checkbox
   import RetroHexChatWeb.Components.UI.Input
-  import RetroHexChatWeb.Components.UI.Table
+  import RetroHexChatWeb.Components.UI.Textarea
 
   alias RetroHexChat.Chat.TimerManager
   alias RetroHexChatWeb.Icons
 
   attr :id, :string, required: true
+  attr :target, :any, default: nil
   attr :timers, :map, default: %{}, doc: "Map of timer name to timer runtime info"
   attr :selected_timer, :string, default: nil, doc: "Name of the selected active timer"
   attr :editing, :boolean, default: false, doc: "True when Add/Edit form is visible"
@@ -33,6 +34,7 @@ defmodule RetroHexChatWeb.Components.UI.TimersDialog do
   attr :on_change, :any, default: nil, doc: "Form change event"
   attr :on_save, :any, default: nil, doc: "Form submit event"
   attr :on_cancel_edit, :any, default: nil, doc: "Cancel edit event"
+  attr :on_close, :any, default: nil, doc: "Close/OK event"
 
   @spec timers_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def timers_panel(assigns) do
@@ -46,184 +48,220 @@ defmodule RetroHexChatWeb.Components.UI.TimersDialog do
       )
 
     ~H"""
-    <div
-      id={"#{@id}-content"}
-      data-testid="timers-panel"
-      class="flex h-full min-h-0 flex-col gap-retro-8"
-    >
-      <div class="max-h-[220px] overflow-y-auto retro-scrollbar shadow-retro-sunken">
-        <.table>
-          <.table_header>
-            <.table_row>
-              <.table_head class="w-[120px]">{dgettext("dialogs", "Name")}</.table_head>
-              <.table_head class="w-[72px]">{dgettext("dialogs", "Every")}</.table_head>
-              <.table_head class="w-[72px]">{dgettext("dialogs", "Repeat")}</.table_head>
-              <.table_head class="w-[92px]">{dgettext("dialogs", "Next Fire")}</.table_head>
-              <.table_head>{dgettext("dialogs", "Command")}</.table_head>
-            </.table_row>
-          </.table_header>
-          <.table_body>
-            <tr :if={@rows == []}>
-              <td colspan="5" class="p-4 text-center text-muted-foreground text-xs">
-                {dgettext("dialogs", "No active timers. Click Add to schedule one.")}
-              </td>
-            </tr>
-            <.table_row
-              :for={row <- @rows}
-              data-testid={"timer-row-#{row.name}"}
-              class={
-                if(row.name == @selected_timer,
-                  do: "bg-selection-bg text-selection-fg cursor-pointer",
-                  else: "cursor-pointer"
-                )
-              }
-              phx-click={@on_select}
-              phx-value-name={row.name}
+    <div id={"#{@id}-panel-root"} class="contents">
+      <.focus_wrap id={"#{@id}-focus-wrap"} class="contents">
+        <div
+          id={"#{@id}-content"}
+          data-testid="timers-panel"
+          role="dialog"
+          aria-modal="false"
+          tabindex="0"
+          phx-mounted={JS.focus(to: "##{@id}-content")}
+          class="tm-dialog flex h-full min-h-0 flex-col gap-retro-8"
+        >
+          <div class={
+            classes([
+              "tm-editor min-h-0 flex-1",
+              @editing && "tm-editor--editing"
+            ])
+          }>
+            <div class="tm-list-pane min-h-0">
+              <div class="tm-timer-list overflow-y-auto retro-scrollbar">
+                <div :if={@rows == []} class="tm-empty-state text-center text-muted-foreground">
+                  {dgettext("dialogs", "No active timers. Click Add to schedule one.")}
+                </div>
+
+                <button
+                  :for={row <- @rows}
+                  type="button"
+                  data-testid={"timer-row-#{row.name}"}
+                  aria-pressed={row.name == @selected_timer}
+                  aria-label={row.name}
+                  class={timer_entry_class(row.name == @selected_timer)}
+                  phx-click={@on_select}
+                  phx-value-name={row.name}
+                >
+                  <span class="tm-timer-name">{row.name}</span>
+                  <span class="tm-timer-meta">
+                    <span>
+                      <span class="tm-timer-meta-label">{dgettext("dialogs", "Every")}</span>
+                      {row.interval}s
+                    </span>
+                    <span>
+                      <span class="tm-timer-meta-label">{dgettext("dialogs", "Repeat")}</span>
+                      {repeat_label(row.type)}
+                    </span>
+                    <span>
+                      <span class="tm-timer-meta-label">{dgettext("dialogs", "Next")}</span>
+                      {row.next_fire}
+                    </span>
+                  </span>
+                  <code class="tm-timer-command">{row.command}</code>
+                </button>
+              </div>
+
+              <p :if={@at_limit} class="tm-note text-xs text-muted-foreground">
+                {dgettext("dialogs", "Maximum 5 timers active. Stop one to add another.")}
+              </p>
+
+              <p class="tm-note text-[10px] text-muted-foreground">
+                {dgettext("dialogs", "Timers are session-only and will be lost on disconnect.")}
+              </p>
+
+              <div class="tm-action-row flex gap-retro-4">
+                <.button
+                  size="sm"
+                  variant="outline"
+                  phx-click={@on_add}
+                  disabled={@at_limit}
+                  data-testid="timers-dialog-add"
+                  class="tm-action-button"
+                >
+                  <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
+                  {dgettext("dialogs", "Add")}
+                </.button>
+                <.button
+                  size="sm"
+                  variant="outline"
+                  phx-click={@on_edit}
+                  disabled={!@selected_active}
+                  data-testid="timers-dialog-edit"
+                  class="tm-action-button"
+                >
+                  <:icon><Icons.icon_btn_edit class="w-4 h-4" /></:icon>
+                  {dgettext("dialogs", "Edit")}
+                </.button>
+                <.button
+                  size="sm"
+                  variant="outline"
+                  phx-click={@on_stop}
+                  phx-value-selected={@selected_timer}
+                  disabled={!@selected_active}
+                  data-testid="timers-dialog-stop"
+                  class="tm-action-button"
+                >
+                  <:icon><Icons.icon_btn_remove class="w-4 h-4" /></:icon>
+                  {dgettext("dialogs", "Stop")}
+                </.button>
+              </div>
+            </div>
+
+            <form
+              :if={@editing}
+              phx-change={@on_change}
+              phx-submit={@on_save}
+              data-testid="timers-edit-form"
+              class="tm-edit-form shadow-retro-field bg-white p-retro-8"
             >
-              <.table_cell class="font-mono text-xs">{row.name}</.table_cell>
-              <.table_cell class="font-mono text-xs">{row.interval}s</.table_cell>
-              <.table_cell class="text-xs">{repeat_label(row.type)}</.table_cell>
-              <.table_cell class="font-mono text-xs">{row.next_fire}</.table_cell>
-              <.table_cell class="font-mono text-xs truncate max-w-[260px]">
-                {row.command}
-              </.table_cell>
-            </.table_row>
-          </.table_body>
-        </.table>
-      </div>
+              <input :if={@selected_timer} type="hidden" name="selected" value={@selected_timer} />
+              <h3 class="font-bold text-xs">
+                {if @selected_active,
+                  do: dgettext("dialogs", "Edit Timer"),
+                  else: dgettext("dialogs", "Add Timer")}
+              </h3>
 
-      <p :if={@at_limit} class="text-xs text-muted-foreground px-retro-2">
-        {dgettext("dialogs", "Maximum 5 timers active. Stop one to add another.")}
-      </p>
+              <div class="tm-form-fields">
+                <div class="tm-field">
+                  <label class="tm-form-label">
+                    {dgettext("dialogs", "Name")}
+                  </label>
+                  <.input
+                    type="text"
+                    name="name"
+                    value={@draft_name}
+                    placeholder={dgettext("dialogs", "e.g. remind")}
+                    data-testid="timer-name-input"
+                    class="tm-input w-full text-xs h-7"
+                    maxlength="30"
+                    disabled={@selected_active}
+                  />
+                </div>
 
-      <p class="text-[10px] text-muted-foreground px-retro-2">
-        {dgettext("dialogs", "Timers are session-only and will be lost on disconnect.")}
-      </p>
+                <div class="tm-field">
+                  <label class="tm-form-label">
+                    {seconds_label(@draft_repeat)}
+                  </label>
+                  <.input
+                    type="number"
+                    name="seconds"
+                    value={@draft_seconds}
+                    min={TimerManager.min_once_interval()}
+                    max={TimerManager.max_interval()}
+                    step="1"
+                    data-testid="timer-seconds-input"
+                    class={[
+                      "tm-input w-full text-xs h-7",
+                      @repeat_seconds_invalid && "!border-destructive"
+                    ]}
+                  />
+                </div>
 
-      <div class="flex gap-retro-4">
-        <.button
-          size="sm"
-          variant="outline"
-          phx-click={@on_add}
-          disabled={@at_limit}
-          data-testid="timers-dialog-add"
-        >
-          <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
-          {dgettext("dialogs", "Add")}
-        </.button>
-        <.button
-          size="sm"
-          variant="outline"
-          phx-click={@on_edit}
-          disabled={!@selected_active}
-          data-testid="timers-dialog-edit"
-        >
-          <:icon><Icons.icon_btn_edit class="w-4 h-4" /></:icon>
-          {dgettext("dialogs", "Edit")}
-        </.button>
-        <.button
-          size="sm"
-          variant="outline"
-          phx-click={@on_stop}
-          phx-value-selected={@selected_timer}
-          disabled={!@selected_active}
-          data-testid="timers-dialog-stop"
-        >
-          <:icon><Icons.icon_btn_remove class="w-4 h-4" /></:icon>
-          {dgettext("dialogs", "Stop")}
-        </.button>
-      </div>
+                <div class="tm-field">
+                  <label class="tm-form-label">
+                    {dgettext("dialogs", "Command")}
+                  </label>
+                  <.textarea
+                    name="command"
+                    value={@draft_command}
+                    placeholder={dgettext("dialogs", "/me standup in 30 minutes")}
+                    data-testid="timer-command-input"
+                    class="tm-command-input tm-input w-full resize-none text-xs"
+                    maxlength="500"
+                    rows="3"
+                  />
+                </div>
+              </div>
 
-      <form
-        :if={@editing}
-        phx-change={@on_change}
-        phx-submit={@on_save}
-        data-testid="timers-edit-form"
-        class="shadow-retro-field bg-white p-retro-8 space-y-retro-4"
-      >
-        <input :if={@selected_timer} type="hidden" name="selected" value={@selected_timer} />
-        <h3 class="font-bold text-xs mb-retro-4">
-          {if @selected_active,
-            do: dgettext("dialogs", "Edit Timer"),
-            else: dgettext("dialogs", "Add Timer")}
-        </h3>
+              <label class="tm-repeat-row inline-flex items-center gap-retro-4 text-xs">
+                <.checkbox name="repeat" value={@draft_repeat} data-testid="timer-repeat-checkbox" />
+                {dgettext("dialogs", "Repeating timer")}
+              </label>
 
-        <div class="grid gap-retro-4 md:grid-cols-[160px_120px_1fr]">
-          <div>
-            <label class="text-xs font-bold block mb-retro-2">
-              {dgettext("dialogs", "Name")}
-            </label>
-            <.input
-              type="text"
-              name="name"
-              value={@draft_name}
-              placeholder={dgettext("dialogs", "e.g. remind")}
-              data-testid="timer-name-input"
-              class="w-full text-xs h-7"
-              maxlength="30"
-              disabled={@selected_active}
-            />
+              <p :if={@repeat_seconds_invalid} class="tm-error text-xs text-destructive">
+                {repeat_min_message()}
+              </p>
+
+              <p
+                :if={@error_message}
+                data-testid="timers-dialog-error"
+                class="tm-error text-xs text-destructive"
+              >
+                {@error_message}
+              </p>
+
+              <div class="tm-form-actions flex gap-retro-4 pt-retro-4">
+                <.button type="submit" size="sm" variant="default" class="tm-action-button">
+                  <:icon><Icons.icon_btn_save class="w-4 h-4" /></:icon>
+                  {dgettext("dialogs", "Save")}
+                </.button>
+                <.button
+                  type="button"
+                  size="sm"
+                  variant="outline"
+                  phx-click={@on_cancel_edit}
+                  class="tm-action-button"
+                >
+                  <:icon><Icons.icon_btn_cancel class="w-4 h-4" /></:icon>
+                  {dgettext("dialogs", "Cancel")}
+                </.button>
+              </div>
+            </form>
           </div>
 
-          <div>
-            <label class="text-xs font-bold block mb-retro-2">
-              {seconds_label(@draft_repeat)}
-            </label>
-            <.input
-              type="number"
-              name="seconds"
-              value={@draft_seconds}
-              min={TimerManager.min_once_interval()}
-              max={TimerManager.max_interval()}
-              step="1"
-              data-testid="timer-seconds-input"
-              class={[
-                "w-full text-xs h-7",
-                @repeat_seconds_invalid && "!border-destructive"
-              ]}
-            />
-          </div>
-
-          <div>
-            <label class="text-xs font-bold block mb-retro-2">
-              {dgettext("dialogs", "Command")}
-            </label>
-            <.input
-              type="text"
-              name="command"
-              value={@draft_command}
-              placeholder={dgettext("dialogs", "/me standup in 30 minutes")}
-              data-testid="timer-command-input"
-              class="w-full text-xs h-7"
-              maxlength="500"
-            />
+          <div :if={@on_close} class="tm-dialog-footer flex justify-end">
+            <.button
+              type="button"
+              size="sm"
+              phx-click={@on_close}
+              phx-target={@target}
+              class="tm-action-button"
+            >
+              <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
+              {dgettext("dialogs", "OK")}
+            </.button>
           </div>
         </div>
-
-        <label class="inline-flex items-center gap-retro-4 text-xs">
-          <.checkbox name="repeat" value={@draft_repeat} data-testid="timer-repeat-checkbox" />
-          {dgettext("dialogs", "Repeating timer")}
-        </label>
-
-        <p :if={@repeat_seconds_invalid} class="text-xs text-destructive">
-          {repeat_min_message()}
-        </p>
-
-        <p :if={@error_message} data-testid="timers-dialog-error" class="text-xs text-destructive">
-          {@error_message}
-        </p>
-
-        <div class="flex gap-retro-4 pt-retro-4">
-          <.button type="submit" size="sm" variant="default">
-            <:icon><Icons.icon_btn_save class="w-4 h-4" /></:icon>
-            {dgettext("dialogs", "Save")}
-          </.button>
-          <.button type="button" size="sm" variant="outline" phx-click={@on_cancel_edit}>
-            <:icon><Icons.icon_btn_cancel class="w-4 h-4" /></:icon>
-            {dgettext("dialogs", "Cancel")}
-          </.button>
-        </div>
-      </form>
+      </.focus_wrap>
     </div>
     """
   end
@@ -293,4 +331,7 @@ defmodule RetroHexChatWeb.Components.UI.TimersDialog do
   defp repeat_seconds_invalid?(_, _seconds), do: false
 
   defp repeat_min_message, do: dgettext("dialogs", "min 10s for repeating timers")
+
+  defp timer_entry_class(true), do: "tm-timer-entry bg-selection-bg text-selection-fg"
+  defp timer_entry_class(false), do: "tm-timer-entry"
 end

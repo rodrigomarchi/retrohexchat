@@ -1,4 +1,4 @@
-import { Browser, BrowserContext, Page, test } from "@playwright/test";
+import { Browser, BrowserContext, Page, test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";
 
@@ -59,12 +59,11 @@ test.describe("Whowas command", () => {
       await bob.chat.disconnect();
 
       await alice.chat.sendMessage(`/whowas ${bob.nick}`);
-      await alice.chat.expectMessageVisible(`----- Whowas: ${bob.nick} -----`);
-      await alice.chat.expectMessageVisible("Last seen:");
-      await alice.chat.expectMessageVisible("Channels:");
-      await alice.chat.expectMessageVisible("#lobby");
-      await alice.chat.expectMessageVisible(channel);
-      await alice.chat.expectMessageVisible("Quit message: Leaving");
+      await expect(alice.chat.lookupResultCard).toBeVisible();
+      await expect(alice.chat.lookupResultCard).toContainText(`Last Seen: ${bob.nick}`);
+      await alice.chat.expectLookupCardField("Channels", "#lobby");
+      await alice.chat.expectLookupCardField("Channels", channel);
+      await alice.chat.expectLookupCardField("Quit message", "Leaving");
     } finally {
       await closeUsers([alice, bob]);
     }

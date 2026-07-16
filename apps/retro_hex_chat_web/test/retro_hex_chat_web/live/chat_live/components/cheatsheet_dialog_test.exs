@@ -16,7 +16,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.CheatsheetDialogTest do
 
     assert html =~ ~s(data-testid="cheatsheet-dialog")
     refute html =~ "phx-show-modal"
-    # The bindings table is computed once at mount.
+    # The bindings list is computed once at mount.
     assert html =~ "Navigation"
   end
 end

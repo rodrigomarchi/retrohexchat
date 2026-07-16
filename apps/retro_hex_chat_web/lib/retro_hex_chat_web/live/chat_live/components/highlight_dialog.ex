@@ -85,6 +85,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.HighlightDialog do
     {:noreply, assign(socket, show_highlight_edit_dialog: false)}
   end
 
+  def handle_event("highlight_dialog_close", _params, socket) do
+    send(self(), {:close_window, "highlight"})
+    {:noreply, socket}
+  end
+
   def handle_event("highlight_color_pick", params, socket) do
     color = params["color"] || params["index"]
     {:noreply, assign(socket, highlight_selected_color: parse_optional_color(color))}
@@ -169,6 +174,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.HighlightDialog do
         on_edit="open_highlight_edit_dialog"
         on_remove="highlight_remove"
         on_color_select="highlight_color_pick"
+        on_close="highlight_dialog_close"
       />
     </div>
     """

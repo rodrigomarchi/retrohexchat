@@ -1703,7 +1703,7 @@ export class ChatPage {
   }
 
   soundSelect(event: string): Locator {
-    return this.page.getByTestId(`sound-select-${event}`);
+    return this.soundSettingsDialog.getByTestId(`sound-select-${event}`);
   }
 
   soundSelectLabel(event: string): Locator {
@@ -1711,22 +1711,27 @@ export class ChatPage {
   }
 
   soundFlashToggle(event: string): Locator {
-    return this.page.getByTestId(`flash-toggle-${event}`);
+    return this.soundSettingsDialog.getByTestId(`flash-toggle-${event}`);
   }
 
   soundPreviewButton(event: string): Locator {
-    return this.page.getByTestId(`sound-preview-${event}`);
+    return this.soundSettingsDialog.getByTestId(`sound-preview-${event}`);
   }
 
   async selectSound(event: string, label: string) {
     const select = this.soundSelect(event);
+    const content = select.locator(".select-content");
 
-    await select.getByRole("button").click();
-    await expect(select.locator(".select-content")).toBeVisible();
+    if (!(await content.isVisible())) {
+      await select.getByRole("button").click();
+    }
+
+    await expect(content).toBeVisible();
     await select
       .getByRole("option", { name: label, exact: true })
       .getByText(label, { exact: true })
       .click();
+    await expect(content).toBeHidden();
     await expect(this.soundSelectLabel(event)).toHaveAttribute(
       "data-content",
       label,
@@ -1756,7 +1761,7 @@ export class ChatPage {
 
   performCommandRow(command: string): Locator {
     return this.performCommandsPanel()
-      .locator("tr")
+      .getByTestId("perform-command-row")
       .filter({ hasText: command })
       .first();
   }
@@ -1817,7 +1822,7 @@ export class ChatPage {
 
   autojoinRow(channel: string): Locator {
     return this.performAutojoinPanel()
-      .locator("tr")
+      .getByTestId("autojoin-row")
       .filter({ hasText: channel })
       .first();
   }
@@ -1857,7 +1862,7 @@ export class ChatPage {
 
   autorespondRuleRow(text: string): Locator {
     return this.autorespondDialog
-      .locator("tr")
+      .getByTestId("autorespond-rule-row")
       .filter({ hasText: text })
       .first();
   }
@@ -1878,7 +1883,7 @@ export class ChatPage {
       .locator('input[name="channel"]')
       .fill(channel);
     await this.autorespondEditForm
-      .locator('input[name="command"]')
+      .locator('[name="command"]')
       .fill(command);
   }
 
@@ -1901,7 +1906,7 @@ export class ChatPage {
     await this.autorespondDialog.getByRole("button", { name: "Edit" }).click();
     await expect(this.autorespondEditForm).toBeVisible();
     await this.autorespondEditForm
-      .locator('input[name="command"]')
+      .locator('[name="command"]')
       .fill(replacement);
     await this.saveAutorespondDraft();
     await expect(this.autorespondEditForm).toBeHidden();

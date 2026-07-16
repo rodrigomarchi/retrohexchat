@@ -2,9 +2,10 @@ defmodule RetroHexChatWeb.Components.UI.SoundSettingsDialog do
   @moduledoc """
   Sound event settings dialog component for the showcase design system.
 
-  Composed from dialog + table + button + checkbox primitives.
-  Displays a table of IRC events with per-row sound selection, flash toggle,
-  and preview (play) button. OK/Cancel/Apply footer actions.
+  Composed from dialog + button + checkbox + select primitives.
+  Displays IRC events as a responsive settings list with per-event sound
+  selection, flash toggle, and preview (play) button. OK/Cancel/Apply footer
+  actions.
 
   ## Usage
 
@@ -20,7 +21,6 @@ defmodule RetroHexChatWeb.Components.UI.SoundSettingsDialog do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Dialog
-  import RetroHexChatWeb.Components.UI.Table
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Checkbox
   import RetroHexChatWeb.Components.UI.Select
@@ -78,7 +78,7 @@ defmodule RetroHexChatWeb.Components.UI.SoundSettingsDialog do
   end
 
   @doc """
-  Renders the sound settings content (event/sound table + OK/Cancel/Apply)
+  Renders the sound settings content (event settings list + OK/Cancel/Apply)
   without any frame — compose it inside a dialog or a desktop window body.
   """
   attr :id, :string, required: true
@@ -93,7 +93,7 @@ defmodule RetroHexChatWeb.Components.UI.SoundSettingsDialog do
 
   attr :table_class, :any,
     default: nil,
-    doc: "extra classes for the scrollable table region (e.g. a max-height cap in a dialog)"
+    doc: "extra classes for the scrollable event list region (e.g. a max-height cap in a dialog)"
 
   @spec sound_settings_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def sound_settings_panel(assigns) do
@@ -114,31 +114,41 @@ defmodule RetroHexChatWeb.Components.UI.SoundSettingsDialog do
       |> assign(:available_sounds, normalize_sound_options(assigns.available_sounds))
 
     ~H"""
-    <div
-      id={"#{@id}-content"}
-      data-testid="sound-settings-panel"
-      class="flex h-full min-h-0 flex-col gap-retro-8"
-    >
-      <div class={classes(["flex-1 min-h-0 overflow-y-auto retro-scrollbar", @table_class])}>
-        <.table>
-          <.table_header>
-            <.table_row>
-              <.table_head>{dgettext("dialogs", "Event")}</.table_head>
-              <.table_head>{dgettext("dialogs", "Sound")}</.table_head>
-              <.table_head class="w-[60px] text-center">{dgettext("dialogs", "Flash")}</.table_head>
-              <.table_head class="w-[80px] text-center">
-                {dgettext("dialogs", "Preview")}
-              </.table_head>
-            </.table_row>
-          </.table_header>
-          <.table_body>
-            <.table_row :for={event <- @event_order}>
-              <.table_cell class="font-bold text-xs">
-                {event_label(event)}
-              </.table_cell>
+    <div id={"#{@id}-panel-root"} class="contents">
+      <.focus_wrap id={"#{@id}-focus-wrap"} class="contents">
+        <div
+          id={"#{@id}-content"}
+          data-testid="sound-settings-panel"
+          role="dialog"
+          aria-modal="false"
+          tabindex="0"
+          phx-mounted={JS.focus(to: "##{@id}-content")}
+          class="ss-dialog flex h-full min-h-0 flex-col gap-retro-8"
+        >
+          <div class={classes(["ss-event-list flex-1 overflow-y-auto retro-scrollbar", @table_class])}>
+            <article
+              :for={event <- @event_order}
+              class="ss-event-entry"
+              data-testid={"sound-event-#{event}"}
+            >
+              <div class="ss-event-header">
+                <span class="ss-event-name">{event_label(event)}</span>
+                <.button
+                  size="sm"
+                  variant="outline"
+                  phx-click={@on_preview}
+                  phx-value-event={event}
+                  data-testid={"sound-preview-#{event}"}
+                  class="ss-preview-button"
+                >
+                  <:icon><Icons.icon_btn_sounds class="w-4 h-4" /></:icon>
+                  {dgettext("dialogs", "Play")}
+                </.button>
+              </div>
 
-              <.table_cell>
-                <form phx-change={@on_sound_change}>
+              <div class="ss-event-controls">
+                <form phx-change={@on_sound_change} class="ss-field ss-select-form">
+                  <span class="ss-form-label">{dgettext("dialogs", "Sound")}</span>
                   <.select
                     :let={builder}
                     id={"sound-select-#{event}"}
@@ -148,7 +158,7 @@ defmodule RetroHexChatWeb.Components.UI.SoundSettingsDialog do
                     class="w-full"
                     data-testid={"sound-select-#{event}"}
                   >
-                    <.select_trigger builder={builder} class="h-8 text-xs" />
+                    <.select_trigger builder={builder} class="ss-select-trigger h-8 text-xs" />
                     <.select_content builder={builder}>
                       <.select_group>
                         <.select_item
@@ -165,56 +175,52 @@ defmodule RetroHexChatWeb.Components.UI.SoundSettingsDialog do
                     </.select_content>
                   </.select>
                 </form>
-              </.table_cell>
 
-              <.table_cell class="text-center">
-                <.checkbox
-                  value={event_flash(@settings, event)}
-                  phx-click={@on_flash_toggle}
-                  phx-value-event={event}
-                  data-testid={"flash-toggle-#{event}"}
-                />
-              </.table_cell>
+                <label class="ss-toggle-row">
+                  <.checkbox
+                    id={"flash-toggle-#{event}"}
+                    value={event_flash(@settings, event)}
+                    phx-click={@on_flash_toggle}
+                    phx-value-event={event}
+                    data-testid={"flash-toggle-#{event}"}
+                  />
+                  <span>{dgettext("dialogs", "Flash")}</span>
+                </label>
+              </div>
+            </article>
+          </div>
 
-              <.table_cell class="text-center">
-                <.button
-                  size="sm"
-                  variant="outline"
-                  phx-click={@on_preview}
-                  phx-value-event={event}
-                  data-testid={"sound-preview-#{event}"}
-                >
-                  <:icon><Icons.icon_btn_sounds class="w-4 h-4" /></:icon>
-                  {dgettext("dialogs", "Play")}
-                </.button>
-              </.table_cell>
-            </.table_row>
-          </.table_body>
-        </.table>
-      </div>
-
-      <div class="flex justify-end gap-retro-4">
-        <.button
-          variant="default"
-          phx-click={@on_ok}
-          data-testid="sound-settings-ok"
-        >
-          <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
-          {dgettext("dialogs", "OK")}
-        </.button>
-        <.button
-          variant="outline"
-          phx-click={@on_cancel}
-          data-testid="sound-settings-cancel"
-        >
-          <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-          {dgettext("dialogs", "Cancel")}
-        </.button>
-        <.button variant="outline" phx-click={@on_apply} data-testid="sound-settings-apply">
-          <:icon><Icons.icon_btn_sounds class="w-4 h-4" /></:icon>
-          {dgettext("dialogs", "Apply")}
-        </.button>
-      </div>
+          <div class="ss-dialog-footer flex justify-end gap-retro-4">
+            <.button
+              variant="default"
+              phx-click={@on_ok}
+              data-testid="sound-settings-ok"
+              class="ss-action-button"
+            >
+              <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
+              {dgettext("dialogs", "OK")}
+            </.button>
+            <.button
+              variant="outline"
+              phx-click={@on_cancel}
+              data-testid="sound-settings-cancel"
+              class="ss-action-button"
+            >
+              <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
+              {dgettext("dialogs", "Cancel")}
+            </.button>
+            <.button
+              variant="outline"
+              phx-click={@on_apply}
+              data-testid="sound-settings-apply"
+              class="ss-action-button"
+            >
+              <:icon><Icons.icon_btn_sounds class="w-4 h-4" /></:icon>
+              {dgettext("dialogs", "Apply")}
+            </.button>
+          </div>
+        </div>
+      </.focus_wrap>
     </div>
     """
   end

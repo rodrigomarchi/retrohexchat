@@ -406,6 +406,8 @@ const WindowManagerHook = {
   // ── Click interactions (controls / taskbar / start menu) ───
 
   onClick(e) {
+    this.resetStackedScroll();
+
     const menuItem = e.target.closest("[data-taskbar-menu-action]");
     if (menuItem) {
       this.onTaskbarMenuAction(menuItem.dataset.taskbarMenuAction);
@@ -1200,6 +1202,18 @@ const WindowManagerHook = {
       if (!focused || !focused.state.open || focused.state.minimized) {
         this.focusTopmost();
       }
+      this.resetStackedScroll();
+      requestAnimationFrame(() => this.resetStackedScroll());
+    }
+  },
+
+  resetStackedScroll() {
+    if (!this.stacked) return;
+    this.el.scrollLeft = 0;
+    this.el.scrollTop = 0;
+    if (this.workspace) {
+      this.workspace.scrollLeft = 0;
+      this.workspace.scrollTop = 0;
     }
   },
 

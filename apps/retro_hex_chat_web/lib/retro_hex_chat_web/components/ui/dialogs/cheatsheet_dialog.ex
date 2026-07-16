@@ -2,8 +2,7 @@ defmodule RetroHexChatWeb.Components.UI.CheatsheetDialog do
   @moduledoc """
   Keyboard shortcuts cheatsheet dialog for the showcase design system.
 
-  Composed from dialog + button + table primitives.
-  Displays grouped keyboard shortcut bindings in a table format.
+  Displays grouped keyboard shortcut bindings as a compact responsive list.
 
   ## Usage
 
@@ -24,8 +23,6 @@ defmodule RetroHexChatWeb.Components.UI.CheatsheetDialog do
   """
   use RetroHexChatWeb.Component
 
-  import RetroHexChatWeb.Components.UI.Table
-
   @doc "Renders the keyboard shortcuts cheatsheet dialog."
   attr :id, :string, required: true
 
@@ -39,41 +36,41 @@ defmodule RetroHexChatWeb.Components.UI.CheatsheetDialog do
     <div
       id={"#{@id}-content"}
       data-testid="cheatsheet-dialog"
-      class="flex-1 min-h-0 overflow-y-auto retro-scrollbar"
+      class="cs-panel retro-scrollbar"
     >
-      <div :if={@bindings == []} class="text-xs text-muted-foreground italic">
+      <div :if={@bindings == []} class="cs-empty-state">
         {dgettext("dialogs", "No shortcuts defined.")}
       </div>
 
-      <div :for={group <- @bindings} class="mb-retro-8 last:mb-0">
-        <h3 class="text-xs font-bold mb-retro-4 px-1 bg-title-bar text-white">
+      <section
+        :for={{group, group_index} <- Enum.with_index(@bindings)}
+        class="cs-group"
+        data-testid={"cheatsheet-group-#{group_index}"}
+      >
+        <h3 class="cs-group-title">
           {group.category}
         </h3>
-        <.table>
-          <.table_header>
-            <.table_row>
-              <.table_head class="text-xs w-1/3">{dgettext("dialogs", "Action")}</.table_head>
-              <.table_head class="text-xs w-1/4">{dgettext("dialogs", "Keys")}</.table_head>
-              <.table_head class="text-xs">{dgettext("dialogs", "Description")}</.table_head>
-            </.table_row>
-          </.table_header>
-          <.table_body>
-            <.table_row :for={item <- group.items}>
-              <.table_cell class="text-xs font-medium py-1 px-2">
+        <div class="cs-shortcut-list" role="list">
+          <article
+            :for={{item, item_index} <- Enum.with_index(group.items)}
+            class="cs-shortcut-entry"
+            data-testid={"cheatsheet-shortcut-#{group_index}-#{item_index}"}
+            role="listitem"
+          >
+            <div class="cs-shortcut-main">
+              <span class="cs-shortcut-action">
                 {item.action}
-              </.table_cell>
-              <.table_cell class="text-xs py-1 px-2">
-                <kbd class="shadow-retro-raised bg-surface px-1 font-mono text-xs">
-                  {item.keys}
-                </kbd>
-              </.table_cell>
-              <.table_cell class="text-xs py-1 px-2 text-muted-foreground">
-                {item.description}
-              </.table_cell>
-            </.table_row>
-          </.table_body>
-        </.table>
-      </div>
+              </span>
+              <kbd class="cs-shortcut-key">
+                {item.keys}
+              </kbd>
+            </div>
+            <p class="cs-shortcut-description">
+              {item.description}
+            </p>
+          </article>
+        </div>
+      </section>
     </div>
     """
   end
