@@ -37,8 +37,10 @@ defmodule RetroHexChatWeb.Components.UI.MuteDurationDialog do
               <Icons.icon_mute class="w-4 h-4" />
             </span>
             <div class="mud-target-copy">
-              <p class="mud-field-label">{dgettext("dialogs", "Muting")}</p>
-              <p class="mud-target-value">{display_nick(@target_nick)}</p>
+              <p class="mud-field-label">{dgettext("dialogs", "Target")}</p>
+              <p class="mud-target-value">
+                {dgettext("dialogs", "Mute user: %{nick}", nick: display_nick(@target_nick))}
+              </p>
             </div>
           </div>
 

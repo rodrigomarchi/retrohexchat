@@ -61,6 +61,46 @@ chat-input-send-label
 chat-message
 chat-mobile-action
 chat-sidebar-overlay
+# Dialog mobile-first surfaces — these classes live in components/ui/* dialog
+# modules that are intentionally outside the CSS consistency template scanner.
+ab-*
+ac-*
+acct-*
+al-*
+ar-*
+bm-*
+cc-*
+cd-*
+cl-*
+cm-*
+cs-*
+fp-*
+hl-*
+icp-*
+iv-*
+kd-*
+kr-*
+mud-*
+nc-*
+nl-*
+pf-*
+ss-*
+tm-*
+uc-*
+ul-*
+tabs-content
+tabs-trigger
+# Utility classes defined by the generated CSS bundle but referenced from
+# skipped component paths.
+bg-selection-bg
+bg-white
+btn
+grid
+items-end
+justify-end
+overflow-x-auto
+shadow-retro-sunken
+text-muted-foreground
 # P2P/game media components — used by components/ui/* files (skipped by template scanner)
 activity-indicator__*
 game-media*

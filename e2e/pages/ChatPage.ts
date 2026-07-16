@@ -1882,9 +1882,7 @@ export class ChatPage {
     await this.autorespondEditForm
       .locator('input[name="channel"]')
       .fill(channel);
-    await this.autorespondEditForm
-      .locator('[name="command"]')
-      .fill(command);
+    await this.autorespondEditForm.locator('[name="command"]').fill(command);
   }
 
   async saveAutorespondDraft() {

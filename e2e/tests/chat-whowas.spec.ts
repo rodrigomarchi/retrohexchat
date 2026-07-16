@@ -60,7 +60,9 @@ test.describe("Whowas command", () => {
 
       await alice.chat.sendMessage(`/whowas ${bob.nick}`);
       await expect(alice.chat.lookupResultCard).toBeVisible();
-      await expect(alice.chat.lookupResultCard).toContainText(`Last Seen: ${bob.nick}`);
+      await expect(alice.chat.lookupResultCard).toContainText(
+        `Last Seen: ${bob.nick}`,
+      );
       await alice.chat.expectLookupCardField("Channels", "#lobby");
       await alice.chat.expectLookupCardField("Channels", channel);
       await alice.chat.expectLookupCardField("Quit message", "Leaving");
