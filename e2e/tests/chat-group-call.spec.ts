@@ -248,7 +248,9 @@ async function expectMediaSessionHeadersStable(page: Page, rootTestId: string) {
     const overflowHeaders: string[] = [];
     const horizontalScrollHeaders: string[] = [];
 
-    for (const header of Array.from(root.querySelectorAll<HTMLElement>("header"))) {
+    for (const header of Array.from(
+      root.querySelectorAll<HTMLElement>("header"),
+    )) {
       const rect = header.getBoundingClientRect();
       if (rect.width === 0 || rect.height === 0) continue;
 
@@ -798,7 +800,9 @@ test.describe("Channel group calls", () => {
       );
 
       await groupCallSection(alice.page, "people").click();
-      await expect(alice.page.getByTestId("group-call-participants")).toBeVisible();
+      await expect(
+        alice.page.getByTestId("group-call-participants"),
+      ).toBeVisible();
       await expect(groupCallSection(alice.page, "people")).toHaveAttribute(
         "aria-pressed",
         "true",

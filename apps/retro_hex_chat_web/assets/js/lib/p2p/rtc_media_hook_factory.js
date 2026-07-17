@@ -326,7 +326,7 @@ export function createRtcMediaHook(configInput) {
 
       if (this.callType && !receiverEnablingAudio) return;
 
-      if (type === "audio" && config.autoJoin) {
+      if (receiverEnablingAudio) {
         this._joinCall();
         this._enableAudioAfterReceiveReady();
         return;

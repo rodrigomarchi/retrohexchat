@@ -117,6 +117,9 @@ group-call-video-surface
 group-call-video-tile--remote
 group-call-video-tile__empty
 group-call-video-tile__badges
+# Shared media-session components — used by components/ui/media_session/* files
+# (skipped by the template scanner).
+media-session-section-nav*
 # Desktop window manager — BEM classes applied via classes([...]) in components/ui/layout/desktop.ex
 # and toggled by WindowManagerHook (both skipped by the template scanner)
 desktop*

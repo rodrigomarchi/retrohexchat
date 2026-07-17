@@ -180,6 +180,7 @@ defmodule Mix.Tasks.Lint.CssConsistency do
     "layouts/landing_live.html.heex",
     "live/help_live/",
     "layouts/help_live.html.heex",
+    "live/chat_live/components/p2p_session_console.ex",
     "live/app/",
     "controllers/app/",
     "layouts/chat.html.heex"

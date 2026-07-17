@@ -1073,16 +1073,32 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
   defp main_grid_class(call) do
     classes([
       "grid min-h-0 flex-1 gap-1",
-      !mini_mode?(call) && stats_section?(call) &&
-        "grid-cols-1 lg:grid-cols-[minmax(0,1fr)_24rem] lg:grid-rows-1",
-      !mini_mode?(call) && !stats_section?(call) && inspector_open?(call) &&
-        mobile_inspector_open?(call) &&
-        "grid-cols-1 grid-rows-[minmax(0,1fr)] lg:grid-cols-[minmax(0,1fr)_14rem] lg:grid-rows-1",
-      !mini_mode?(call) && !stats_section?(call) && inspector_open?(call) &&
-        !mobile_inspector_open?(call) &&
-        "grid-cols-1 lg:grid-cols-[minmax(0,1fr)_14rem] lg:grid-rows-1",
-      (mini_mode?(call) || (!inspector_open?(call) && !stats_section?(call))) && "grid-cols-1"
+      main_grid_layout_class(call)
     ])
+  end
+
+  defp main_grid_layout_class(call) do
+    cond do
+      mini_mode?(call) ->
+        "grid-cols-1"
+
+      stats_section?(call) ->
+        "grid-cols-1 lg:grid-cols-[minmax(0,1fr)_24rem] lg:grid-rows-1"
+
+      inspector_open?(call) ->
+        inspector_grid_layout_class(call)
+
+      true ->
+        "grid-cols-1"
+    end
+  end
+
+  defp inspector_grid_layout_class(call) do
+    if mobile_inspector_open?(call) do
+      "grid-cols-1 grid-rows-[minmax(0,1fr)] lg:grid-cols-[minmax(0,1fr)_14rem] lg:grid-rows-1"
+    else
+      "grid-cols-1 lg:grid-cols-[minmax(0,1fr)_14rem] lg:grid-rows-1"
+    end
   end
 
   defp stage_section_class(call) do
