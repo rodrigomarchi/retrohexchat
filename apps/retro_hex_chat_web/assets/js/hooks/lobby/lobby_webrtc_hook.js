@@ -53,21 +53,45 @@ const LobbyWebRTCHook = {
     this.statsTimer = null;
     this._statsPrev = null;
     this.videoSource = "camera";
+    this.recoveryStateEventHandler = (event) => {
+      const payload = event.detail || {};
+
+      if (payload.state === "failed") {
+        this.pushEvent("lobby_failed", {
+          reason: payload.reason || "failed",
+          manual_retry: payload.manual_retry !== false,
+        });
+      } else if (payload.state === "reconnecting") {
+        this.pushEvent("lobby_retry", { attempt: payload.attempt || null });
+      }
+    };
 
     this.handleEvent("lobby_start_offer", (data) => this._handleStartOffer(data));
     this.handleEvent("lobby_start_answer", (data) => this._handleStartAnswer(data));
+    this.handleEvent("lobby_restart", () => this._handleRestart());
     this.handleEvent("lobby_signal", (data) => this._handleSignal(data));
     // Answerer → initiator request to (re)offer after the answerer added tracks.
     this.handleEvent("lobby_renegotiate", (data = {}) => this._handleRenegotiate(data));
 
     // The media hook's stalled-stream watchdog asks us to recover a remote track
-    // that negotiated but never started flowing (black frame, no RTP).
-    this._onMediaRecover = () => this._recoverMedia();
+    // that negotiated but never started flowing (black frame, no RTP). Most
+    // recoveries can renegotiate in place; startup races can request a full
+    // coordinated restart through the LiveView.
+    this._onMediaRecover = (event) => {
+      if (event.detail?.restart) {
+        this.pushEvent("lobby_media_restart", {
+          reason: event.detail.reason || "media_startup_stalled",
+        });
+      } else {
+        this._recoverMedia();
+      }
+    };
     this.el.addEventListener("lobby_media_recover", this._onMediaRecover);
     this._onMediaSourceChanged = (event) => {
       this.videoSource = event.detail?.source === "screen" ? "screen" : "camera";
     };
     this.el.addEventListener("lobby_media_source_changed", this._onMediaSourceChanged);
+    this.el.addEventListener("p2p-lobby:recovery-state", this.recoveryStateEventHandler);
 
     this.pushEvent("lobby_webrtc_ready", {});
   },
@@ -75,6 +99,7 @@ const LobbyWebRTCHook = {
   destroyed() {
     this.el.removeEventListener("lobby_media_recover", this._onMediaRecover);
     this.el.removeEventListener("lobby_media_source_changed", this._onMediaSourceChanged);
+    this.el.removeEventListener("p2p-lobby:recovery-state", this.recoveryStateEventHandler);
     this._cleanup();
   },
 
@@ -120,6 +145,30 @@ const LobbyWebRTCHook = {
       }
     } catch (error) {
       this._failConnection("answer", error);
+    }
+  },
+
+  async _handleRestart() {
+    if (!this.role || !this.iceServers) {
+      this.pushEvent("lobby_failed", { reason: "restart_unavailable" });
+      return;
+    }
+
+    this._clearDisconnectedTimer();
+    this._stopStatsPolling();
+    this.retryCount = 0;
+
+    try {
+      await this._createConnection();
+
+      if (this.role === "initiator") {
+        window.setTimeout(() => {
+          if (!this.pc || this.negotiating || this.pc.signalingState !== "stable") return;
+          this._maybeOffer();
+        }, 0);
+      }
+    } catch (error) {
+      this._failConnection("manual_retry", error);
     }
   },
 

@@ -1,16 +1,16 @@
 defmodule RetroHexChatWeb.ChatLive.Components.P2PGameIsland do
   @moduledoc """
   Game island — owner of the lobby's game state (the catalog, the active game and
-  the incoming/outgoing proposal) and the body of the "Games" window.
+  the incoming/outgoing proposal) and the P2P console's Games section.
 
-  The Games window is server-managed: the island mounts only while the window is
-  open, so every open starts from a fresh island. It pushes `window_command` open
-  to restore/focus the window on a proposal or game start, asks the host to
-  unmount it when the game ends — `send(self(), {:close_window, socket.assigns.window_id})` — and
-  pushes the canvas hook's `lobby_game_start`/`lobby_game_end` lifecycle events
-  (C3). Whenever the game becomes active or idle it mirrors a minimal summary to
-  the host — `send(self(), {:feature_summary, :game, %{active?: ...}})` — so the
-  taskbar badge reads it without reaching into the game state (C2).
+  In the P2P console the island stays mounted while section changes only hide the
+  surface, so an active game can share the same connection as the call and file
+  transfer. A proposal or game start asks the host to select the Games section of
+  the single P2P console. The canvas hook's `lobby_game_start`/`lobby_game_end`
+  lifecycle events remain local to this component (C3). Whenever the game becomes
+  active or idle it mirrors a minimal summary to the host —
+  `send(self(), {:feature_summary, :game, %{active?: ...}})` — so the taskbar
+  badge reads it without reaching into the game state (C2).
 
   Game PubSub stays subscribed on the host, which forwards each event here via
   `send_update/2`. The proposal/response/quit context calls
@@ -42,8 +42,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PGameIsland do
        game_outgoing: false,
        games: Catalog.list_games(),
        connected: false,
-       peer_nick: nil,
-       window_id: "game"
+       peer_nick: nil
      )}
   end
 
@@ -59,7 +58,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PGameIsland do
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()
   def render(assigns) do
     ~H"""
-    <div id={@id}>
+    <div id={@id} class="h-full">
       <.game_panel
         connected={@connected}
         game={@game}
@@ -76,16 +75,16 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PGameIsland do
   defp assign_context(socket, assigns) do
     assign(socket,
       connected: Map.get(assigns, :connected, socket.assigns.connected),
-      peer_nick: Map.get(assigns, :peer_nick, socket.assigns.peer_nick),
-      window_id: Map.get(assigns, :window_id, socket.assigns.window_id)
+      peer_nick: Map.get(assigns, :peer_nick, socket.assigns.peer_nick)
     )
   end
 
   @spec handle_action(Phoenix.LiveView.Socket.t(), term()) :: Phoenix.LiveView.Socket.t()
   defp handle_action(socket, {:request, request, outgoing}) do
+    surface_games()
+
     socket
     |> assign(game: @idle, game_request: request, game_outgoing: outgoing)
-    |> push_event("window_command", %{action: "open", id: socket.assigns.window_id})
   end
 
   defp handle_action(socket, :request_declined) do
@@ -93,6 +92,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PGameIsland do
   end
 
   defp handle_action(socket, {:playing, game_id, is_host}) do
+    surface_games()
+
     socket
     |> assign(
       game: %{status: "playing", game_id: game_id, is_host: is_host},
@@ -100,13 +101,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PGameIsland do
       game_outgoing: false
     )
     |> push_event("lobby_game_start", %{game_id: game_id, is_host: is_host})
-    |> push_event("window_command", %{action: "open", id: socket.assigns.window_id})
     |> summarize()
   end
 
   defp handle_action(socket, :idle) do
-    send(self(), {:close_window, socket.assigns.window_id})
-
     socket
     |> assign(game: @idle)
     |> push_event("lobby_game_end", %{})
@@ -144,9 +142,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PGameIsland do
   end
 
   defp handle_action(socket, :end_game) do
-    send(self(), {:close_window, socket.assigns.window_id})
     assign(socket, game_request: nil, game_outgoing: false)
   end
+
+  defp surface_games, do: send(self(), {:p2p_console_section, "games"})
 
   @spec post_result_message(Phoenix.LiveView.Socket.t(), String.t() | nil, map()) ::
           Phoenix.LiveView.Socket.t()

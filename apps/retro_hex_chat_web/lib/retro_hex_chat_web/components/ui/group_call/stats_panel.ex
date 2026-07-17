@@ -4,55 +4,101 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.StatsPanel do
   """
   use RetroHexChatWeb.Component
 
-  import RetroHexChatWeb.Components.UI.Fieldset
+  import RetroHexChatWeb.Components.UI.MediaSession.DiagnosticsGroup
+  import RetroHexChatWeb.Components.UI.MediaSession.StatusHeader
+  import RetroHexChatWeb.Components.UI.MediaSession.SummaryCard
 
   alias RetroHexChatWeb.Icons
 
   attr :call, :map, required: true
   attr :stats, :map, required: true
+  attr :id, :string, default: "group-call-stats-scroll-preserver"
 
   @spec group_call_stats_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def group_call_stats_panel(assigns) do
     ~H"""
     <div
-      id="group-call-stats-scroll-preserver"
+      id={@id}
       phx-hook="PreserveScrollHook"
       data-preserve-scroll-target="parent"
       class="flex min-h-0 flex-col gap-2 text-xs"
       data-testid="group-call-stats-panel"
     >
-      <div class="shadow-retro-field bg-canvas p-2">
-        <div class="flex items-center justify-between gap-2">
-          <div class="flex min-w-0 items-center gap-2">
-            <Icons.icon_protocol_conference class="h-12 w-[72px] shrink-0" />
-            <div class="min-w-0">
-              <div class="truncate font-bold">{@call.channel_name}</div>
-              <div class="flex min-w-0 items-center gap-2 text-muted-foreground">
-                <span class="inline-flex min-w-0 items-center gap-1 truncate">
-                  <Icons.icon_laptop class="h-3 w-3 shrink-0" />
-                  <span class="truncate">
-                    {dgettext("group_call", "Browser %{state}",
-                      state: connection_state(@call, @stats)
-                    )}
-                  </span>
-                </span>
-                <span class="inline-flex shrink-0 items-center gap-1">
-                  <Icons.icon_server class="h-3 w-3 shrink-0" />
-                  {room_status(@call)}
-                </span>
-              </div>
-            </div>
-          </div>
-          <div class="flex shrink-0 items-center gap-1">
-            <Icons.icon_community class="h-3.5 w-3.5" />
-            <span data-testid="group-call-stats-participants">
-              {participant_count(@call, @stats)}
+      <.media_session_status_header title={@call.channel_name}>
+        <:icon>
+          <Icons.icon_protocol_conference class="h-8 w-12 shrink-0" />
+        </:icon>
+        <:meta>
+          <span class="inline-flex min-w-0 items-center gap-1 truncate">
+            <Icons.icon_laptop class="h-3 w-3 shrink-0" />
+            <span class="truncate">
+              {dgettext("group_call", "Browser %{state}", state: connection_state(@call, @stats))}
             </span>
-          </div>
-        </div>
+          </span>
+          <span class="inline-flex shrink-0 items-center gap-1">
+            <Icons.icon_server class="h-3 w-3 shrink-0" />
+            {room_status(@call)}
+          </span>
+        </:meta>
+        <:facets>
+          <Icons.icon_community class="h-3.5 w-3.5" />
+          <span data-testid="group-call-stats-participants">
+            {participant_count(@call, @stats)}
+          </span>
+        </:facets>
+      </.media_session_status_header>
+
+      <div
+        class="grid grid-cols-2 gap-1"
+        aria-label={dgettext("group_call", "Conference health summary")}
+        data-testid="group-call-stats-summary"
+      >
+        <.summary_card
+          icon={:icon_quality_high}
+          label={dgettext("group_call", "Health")}
+          value={health_label(@stats.connection.level)}
+          detail={dgettext("group_call", "MOS %{score}", score: format_mos(@stats.connection.mos))}
+          tone_class={health_class(@stats.connection.level)}
+          class="bg-surface"
+          testid="group-call-stats-summary-health"
+        />
+        <.summary_card
+          icon={:icon_clock}
+          label={dgettext("group_call", "Latency")}
+          value={dgettext("group_call", "%{n} ms", n: @stats.connection.rtt_ms)}
+          detail={
+            dgettext("group_call", "%{jitter} ms jitter / %{loss}% loss",
+              jitter: @stats.connection.jitter_ms,
+              loss: @stats.connection.loss_pct
+            )
+          }
+          class="bg-surface"
+          testid="group-call-stats-summary-latency"
+        />
+        <.summary_card
+          icon={:icon_webrtc}
+          label={dgettext("group_call", "Media")}
+          value={media_summary(@stats)}
+          detail={dgettext("group_call", "%{n} tracks", n: track_count(@call, @stats))}
+          class="bg-surface"
+          testid="group-call-stats-summary-media"
+        />
+        <.summary_card
+          icon={:icon_server}
+          label={dgettext("group_call", "Room")}
+          value={server_participant_summary(@call)}
+          detail={connection_state(@call, @stats)}
+          class="bg-surface"
+          testid="group-call-stats-summary-room"
+        />
       </div>
 
-      <.retro_fieldset legend={dgettext("group_call", "Server")}>
+      <.media_session_diagnostics_group
+        title={dgettext("group_call", "Server")}
+        summary={server_diagnostics_summary(@call, @stats)}
+        icon={:icon_server}
+        testid="group-call-stats-details-server"
+      >
         <dl class="grid grid-cols-2 gap-x-3 gap-y-[2px]">
           <.stat_row
             icon={:icon_server}
@@ -90,9 +136,14 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.StatsPanel do
             value={Integer.to_string(track_count(@call, @stats))}
           />
         </dl>
-      </.retro_fieldset>
+      </.media_session_diagnostics_group>
 
-      <.retro_fieldset legend={dgettext("group_call", "Server runtime")}>
+      <.media_session_diagnostics_group
+        title={dgettext("group_call", "Server runtime")}
+        summary={server_runtime_summary(@call)}
+        icon={:icon_webrtc}
+        testid="group-call-stats-details-server-runtime"
+      >
         <dl class="grid grid-cols-2 gap-x-3 gap-y-[2px]">
           <.stat_row
             icon={:icon_server}
@@ -135,15 +186,27 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.StatsPanel do
             value={server_feedback_summary(@call)}
           />
         </dl>
-      </.retro_fieldset>
+      </.media_session_diagnostics_group>
 
-      <.retro_fieldset :if={server_peers(@call) != []} legend={dgettext("group_call", "Server peers")}>
+      <.media_session_diagnostics_group
+        :if={server_peers(@call) != []}
+        title={dgettext("group_call", "Server peers")}
+        summary={server_peers_summary(@call)}
+        icon={:icon_status_user}
+        testid="group-call-stats-details-server-peers"
+      >
         <div class="grid gap-1">
           <.server_peer_card :for={peer <- server_peers(@call)} peer={peer} />
         </div>
-      </.retro_fieldset>
+      </.media_session_diagnostics_group>
 
-      <.retro_fieldset legend={dgettext("group_call", "Browser connection")}>
+      <.media_session_diagnostics_group
+        title={dgettext("group_call", "Browser connection")}
+        summary={browser_connection_summary(@stats)}
+        icon={:icon_laptop}
+        open
+        testid="group-call-stats-details-browser-connection"
+      >
         <div class="mb-1 flex items-center justify-between gap-2">
           <span
             class={["flex items-center gap-1 font-bold", health_class(@stats.connection.level)]}
@@ -179,9 +242,14 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.StatsPanel do
             value={dgettext("group_call", "%{n} kbps", n: @stats.connection.available_kbps)}
           />
         </dl>
-      </.retro_fieldset>
+      </.media_session_diagnostics_group>
 
-      <.retro_fieldset legend={dgettext("group_call", "Audio")}>
+      <.media_session_diagnostics_group
+        title={dgettext("group_call", "Audio")}
+        summary={audio_diagnostics_summary(@stats.audio)}
+        icon={:icon_microphone}
+        testid="group-call-stats-details-audio"
+      >
         <dl class="grid grid-cols-2 gap-x-3 gap-y-[2px]">
           <.stat_status
             icon={:icon_microphone}
@@ -204,9 +272,14 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.StatsPanel do
             value={dgettext("group_call", "%{n}%", n: @stats.audio.loss_pct)}
           />
         </dl>
-      </.retro_fieldset>
+      </.media_session_diagnostics_group>
 
-      <.retro_fieldset legend={dgettext("group_call", "Video")}>
+      <.media_session_diagnostics_group
+        title={dgettext("group_call", "Video")}
+        summary={video_diagnostics_summary(@stats.video)}
+        icon={:icon_camera}
+        testid="group-call-stats-details-video"
+      >
         <dl class="grid grid-cols-2 gap-x-3 gap-y-[2px]">
           <.stat_status
             icon={:icon_camera}
@@ -249,9 +322,14 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.StatsPanel do
             value={limitation_label(@stats.video.limitation)}
           />
         </dl>
-      </.retro_fieldset>
+      </.media_session_diagnostics_group>
 
-      <.retro_fieldset legend={dgettext("group_call", "Browser summary")}>
+      <.media_session_diagnostics_group
+        title={dgettext("group_call", "Browser summary")}
+        summary={browser_summary(@call, @stats)}
+        icon={:icon_status_signal}
+        testid="group-call-stats-details-browser-summary"
+      >
         <dl class="grid grid-cols-2 gap-x-3 gap-y-[2px]">
           <.stat_row
             icon={:icon_community}
@@ -274,7 +352,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.StatsPanel do
             value={connection_state(@call, @stats)}
           />
         </dl>
-      </.retro_fieldset>
+      </.media_session_diagnostics_group>
     </div>
     """
   end
@@ -389,6 +467,66 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.StatsPanel do
       </dl>
     </article>
     """
+  end
+
+  defp server_diagnostics_summary(call, stats) do
+    dgettext("group_call", "%{participants} / %{tracks} tracks",
+      participants: server_participant_summary(call),
+      tracks: track_count(call, stats)
+    )
+  end
+
+  defp server_runtime_summary(call) do
+    dgettext("group_call", "Peer connections %{peers} / %{tracks}",
+      peers: server_peer_summary(call),
+      tracks: server_track_summary(call)
+    )
+  end
+
+  defp server_peers_summary(call) do
+    dgettext("group_call", "%{count} peers", count: length(server_peers(call)))
+  end
+
+  defp browser_connection_summary(stats) do
+    dgettext("group_call", "%{health} / %{latency} ms",
+      health: health_label(stats.connection.level),
+      latency: stats.connection.rtt_ms
+    )
+  end
+
+  defp audio_diagnostics_summary(audio) do
+    dgettext("group_call", "%{state} / %{down} down / %{up} up",
+      state:
+        if(audio.active,
+          do: dgettext("group_call", "Active"),
+          else: dgettext("group_call", "Idle")
+        ),
+      down: dgettext("group_call", "%{n} kbps", n: audio.in_kbps),
+      up: dgettext("group_call", "%{n} kbps", n: audio.out_kbps)
+    )
+  end
+
+  defp video_diagnostics_summary(%{active: true} = video) do
+    dgettext("group_call", "%{resolution} / %{fps} fps / %{loss}% loss",
+      resolution: resolution_label(video),
+      fps: video.fps,
+      loss: video.loss_pct
+    )
+  end
+
+  defp video_diagnostics_summary(video) do
+    dgettext("group_call", "%{state} / %{resolution}",
+      state: dgettext("group_call", "Idle"),
+      resolution: resolution_label(video)
+    )
+  end
+
+  defp browser_summary(call, stats) do
+    dgettext("group_call", "%{participants} people / %{streams} streams / %{ice}",
+      participants: participant_count(call, stats),
+      streams: stats.summary.remote_stream_count,
+      ice: connection_state(call, stats)
+    )
   end
 
   defp participant_count(_call, %{summary: %{participant_count: count}}) when count > 0,
@@ -617,6 +755,13 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.StatsPanel do
     do: Atom.to_string(status)
 
   defp connection_state(_call, _stats), do: dgettext("group_call", "Unknown")
+
+  defp media_summary(%{audio: %{active: true}, video: %{active: true}}),
+    do: dgettext("group_call", "Audio + Video")
+
+  defp media_summary(%{audio: %{active: true}}), do: dgettext("group_call", "Audio")
+  defp media_summary(%{video: %{active: true}}), do: dgettext("group_call", "Video")
+  defp media_summary(_stats), do: dgettext("group_call", "Idle")
 
   defp health_class("excellent"), do: "text-success"
   defp health_class("good"), do: "text-success"

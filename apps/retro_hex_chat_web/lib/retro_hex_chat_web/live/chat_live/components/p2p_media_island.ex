@@ -10,13 +10,12 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PMediaIsland do
   PubSub events arrive the same way through host adapters. The island runs
   `surface_peer_media` (auto-joining a call when the peer turns media on), records
   media presence with `Lobby.set_media`, broadcasts its own mute/camera changes,
-  pushes the hook's media commands and its own `window_command` (C3), and mirrors a
+  pushes the hook's media commands (C3), and mirrors a
   `{type, duration, quality_label}` summary to the host for the taskbar badge and
-  the Statistics-window connection strip (C2). Device fallbacks and errors bubble
+  the Stats section connection strip (C2). Device fallbacks and errors bubble
   to the host (`{:p2p_feature_notice, :call, text}`) for its chat sink (C1).
-
-  `window_id` names the desktop window the island drives ("p2p-call" on the
-  chat desktop).
+  Whenever call activity needs to surface, the island asks the host to select the
+  Call section of the single P2P console.
 
   WebRTC negotiation is single-offerer and lives in the host/JS backbone — the
   island only asks for media via hook push-events; it never touches offer/answer.
@@ -57,11 +56,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PMediaIsland do
        connected: false,
        mini: false,
        device_preferences: %{},
+       media_mode: "video",
        nickname: nil,
        peer_nick: nil,
        token: nil,
-       user_id: nil,
-       window_id: "call"
+       user_id: nil
      )}
   end
 
@@ -135,6 +134,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PMediaIsland do
         peer_screen_sharing={@peer_screen_sharing}
         reactions={@reactions}
         devices={@devices}
+        media_mode={@media_mode}
         mini={@mini}
       />
     </div>
@@ -149,10 +149,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PMediaIsland do
       peer_nick: Map.get(assigns, :peer_nick, socket.assigns.peer_nick),
       token: Map.get(assigns, :token, socket.assigns.token),
       user_id: Map.get(assigns, :user_id, socket.assigns.user_id),
-      window_id: Map.get(assigns, :window_id, socket.assigns.window_id),
       self_view: Map.get(assigns, :self_view, socket.assigns.self_view),
       mini: Map.get(assigns, :mini, socket.assigns.mini),
-      device_preferences: Map.get(assigns, :device_preferences, socket.assigns.device_preferences)
+      device_preferences:
+        Map.get(assigns, :device_preferences, socket.assigns.device_preferences),
+      media_mode: Map.get(assigns, :media_mode, socket.assigns.media_mode)
     )
   end
 
@@ -165,7 +166,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PMediaIsland do
 
     socket
     |> push_event("lobby_media_start_video", media_start_payload(socket))
-    |> push_event("window_command", %{action: "open", id: socket.assigns.window_id})
+    |> surface_call()
   end
 
   defp media_event(socket, "start_call", %{"type" => "audio"}) do
@@ -173,7 +174,13 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PMediaIsland do
 
     socket
     |> push_event("lobby_media_start_audio", media_start_payload(socket))
-    |> push_event("window_command", %{action: "open", id: socket.assigns.window_id})
+    |> surface_call()
+  end
+
+  defp media_event(socket, "join_call", _params) do
+    socket
+    |> push_event("lobby_media_join", %{})
+    |> surface_call()
   end
 
   # The media hook reports its self-controlled send state for every change: starting
@@ -218,7 +225,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PMediaIsland do
       peer_camera_off: false,
       peer_screen_sharing: false
     )
-    |> push_event("window_command", %{action: "close", id: socket.assigns.window_id})
     |> summarize()
   end
 
@@ -311,23 +317,14 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PMediaIsland do
 
   # --- surface_peer_media (auto-join) ---
 
-  # The peer's media turned on. If we are not in the call yet, auto-join and open our
-  # own media by default to match the call: mic always, plus camera when the peer is
-  # sharing video. The user can mute or turn the camera off afterwards — starting open
-  # keeps the controls honest (an "on" icon means a live track). The hook acquires the
-  # media and echoes `lobby_media_call_started`, which sets the real call state; if it
-  # cannot (permission denied), it falls back to a pure receiver. While the interim
-  # "receiving" state stands, the surface still renders because the peer is sharing. If
-  # we are already in, just keep the window surfaced.
+  # The peer's media turned on. If we are not in the call yet, surface the call and
+  # honor this side's setup posture: receive-only joins without capture, audio starts
+  # mic only, and the default video posture keeps matching the peer's active media.
+  # The hook echoes `lobby_media_call_started` once it acquires local tracks.
   @spec surface_peer_media(Phoenix.LiveView.Socket.t(), boolean()) ::
           Phoenix.LiveView.Socket.t()
   defp surface_peer_media(socket, true) do
     if is_nil(socket.assigns.call) do
-      start_event =
-        if socket.assigns.peer_media.video,
-          do: "lobby_media_start_video",
-          else: "lobby_media_start_audio"
-
       call = %{
         type: "receiving",
         audio_on: false,
@@ -339,11 +336,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PMediaIsland do
 
       socket
       |> assign(call: call, local_muted: false, local_camera_off: false)
-      |> push_event(start_event, %{auto: true})
-      |> push_event("window_command", %{action: "open", id: socket.assigns.window_id})
+      |> push_peer_media_surface_command()
+      |> surface_call()
       |> summarize()
     else
-      push_event(socket, "window_command", %{action: "open", id: socket.assigns.window_id})
+      surface_call(socket)
     end
   end
 
@@ -358,6 +355,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PMediaIsland do
     else
       socket
     end
+  end
+
+  defp surface_call(socket) do
+    send(self(), {:p2p_console_section, "call"})
+    socket
   end
 
   # --- Helpers ---
@@ -381,6 +383,23 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PMediaIsland do
   @spec media_start_payload(Phoenix.LiveView.Socket.t()) :: map()
   defp media_start_payload(socket) do
     %{device_preferences: socket.assigns.device_preferences || %{}}
+  end
+
+  defp push_peer_media_surface_command(%{assigns: %{media_mode: "receive"}} = socket) do
+    push_event(socket, "lobby_media_join", %{})
+  end
+
+  defp push_peer_media_surface_command(%{assigns: %{media_mode: "audio"}} = socket) do
+    push_event(socket, "lobby_media_start_audio", %{auto: true})
+  end
+
+  defp push_peer_media_surface_command(socket) do
+    event =
+      if socket.assigns.peer_media.video,
+        do: "lobby_media_start_video",
+        else: "lobby_media_start_audio"
+
+    push_event(socket, event, %{auto: true})
   end
 
   # The host owns the cross-cutting read-model (taskbar badge + Statistics strip);

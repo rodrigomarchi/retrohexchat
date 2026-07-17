@@ -86,33 +86,11 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
         <:icon><Icons.icon_btn_timers class="h-4 w-4" /></:icon>
       </.taskbar_button>
       <.taskbar_button
-        :if={@p2p_session && window_open?(@open_windows, "p2p-stats")}
-        window="p2p-stats"
-        label={dgettext("chat", "P2P Statistics")}
-      >
-        <:icon><Icons.icon_protocol_p2p_compact class="h-4 w-4" /></:icon>
-      </.taskbar_button>
-      <.taskbar_button
         :if={p2p_ready?(@p2p_session)}
         window="p2p-call"
         label={p2p_call_label(@p2p_session)}
       >
-        <:icon><Icons.icon_camera class="h-4 w-4" /></:icon>
-      </.taskbar_button>
-      <.taskbar_button
-        :if={p2p_ready?(@p2p_session)}
-        window="p2p-files"
-        label={dgettext("chat", "P2P Files")}
-      >
-        <:icon><Icons.icon_file_send class="h-4 w-4" /></:icon>
-      </.taskbar_button>
-      <.taskbar_button
-        :if={@group_call && window_open?(@open_windows, "group-call-stats")}
-        window="group-call-stats"
-        label={dgettext("group_call", "Conference Statistics")}
-        data-testid="group-call-stats-taskbar"
-      >
-        <:icon><Icons.icon_protocol_conference_compact class="h-4 w-4" /></:icon>
+        <:icon><Icons.icon_protocol_p2p_compact class="h-4 w-4" /></:icon>
       </.taskbar_button>
       <.taskbar_button
         :if={@group_call}
@@ -121,13 +99,6 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
         data-testid="group-call-taskbar"
       >
         <:icon><Icons.icon_protocol_conference_compact class="h-4 w-4" /></:icon>
-      </.taskbar_button>
-      <.taskbar_button
-        :if={@p2p_session && window_open?(@open_windows, "p2p-games")}
-        window="p2p-games"
-        label={dgettext("chat", "P2P Games")}
-      >
-        <:icon><Icons.icon_game_arcade class="h-4 w-4" /></:icon>
       </.taskbar_button>
       <.taskbar_button
         :if={@arcade_session && window_open?(@open_windows, "arcade-games")}
@@ -217,10 +188,10 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
   defp p2p_ready?(_p2p_session), do: false
 
   defp p2p_call_label(%{peer_nick: peer_nick}) when peer_nick not in [nil, ""] do
-    peer_nick
+    dgettext("chat", "P2P: %{peer}", peer: peer_nick)
   end
 
-  defp p2p_call_label(_p2p_session), do: dgettext("chat", "P2P Call")
+  defp p2p_call_label(_p2p_session), do: dgettext("chat", "P2P Session")
 
   defp group_call_label(%{channel_name: channel_name}) when channel_name not in [nil, ""] do
     channel_name

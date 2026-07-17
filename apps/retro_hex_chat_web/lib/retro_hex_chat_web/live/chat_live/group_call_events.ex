@@ -27,7 +27,6 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   alias RetroHexChatWeb.ChatLive.Windows
 
   @window_id "group-call"
-  @stats_window_id "group-call-stats"
   @layout_modes ~w(auto grid focus sidebar speaker)
   @self_view_cycle [:tile, :pip, :hidden]
 
@@ -179,11 +178,15 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
 
   def handle_event("group_call_statusbar_stop", _params, socket), do: {:halt, socket}
 
-  def handle_event("group_call_dock_stats", _params, %{assigns: %{group_call: %{}}} = socket) do
-    {:halt, dock_stats(socket)}
+  def handle_event(
+        "group_call_console_select",
+        %{"section" => section},
+        %{assigns: %{group_call: %{}}} = socket
+      ) do
+    {:halt, select_console_section(socket, section)}
   end
 
-  def handle_event("group_call_dock_stats", _params, socket), do: {:halt, socket}
+  def handle_event("group_call_console_select", _params, socket), do: {:halt, socket}
 
   def handle_event("group_call_retry", _params, %{assigns: %{group_call: %{}}} = socket) do
     socket =
@@ -514,10 +517,8 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
     if participant_id == call.participant_id do
       {:halt,
        socket
-       |> Windows.close_window(@stats_window_id)
        |> assign(group_call: nil, group_call_pending: nil)
-       |> push_event("window_command", %{action: "close", id: @window_id})
-       |> push_event("window_command", %{action: "close", id: @stats_window_id})}
+       |> push_event("window_command", %{action: "close", id: @window_id})}
     else
       {:halt,
        socket |> update_call(&remove_participant(&1, participant_id)) |> push_group_call_layout()}
@@ -598,10 +599,8 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
 
     socket =
       socket
-      |> Windows.close_window(@stats_window_id)
       |> assign(group_call: nil, group_call_pending: nil)
       |> push_event("window_command", %{action: "close", id: @window_id})
-      |> push_event("window_command", %{action: "close", id: @stats_window_id})
 
     {:halt, Messages.system_event(socket, message)}
   end
@@ -824,25 +823,34 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
 
   def leave_channel_call(socket, _channel_name, _reason), do: socket
 
-  defp open_call_windows(%{assigns: %{mobile_viewport: true}} = socket),
-    do: Windows.open(socket, @window_id)
+  defp open_call_windows(socket), do: Windows.open(socket, @window_id)
 
-  defp open_call_windows(socket) do
+  defp select_console_section(socket, "stats"), do: put_console_section(socket, :stats)
+
+  defp select_console_section(socket, "people") do
     socket
-    |> Windows.open(@stats_window_id)
-    |> push_event("window_command", %{action: "minimize", id: @stats_window_id})
-    |> Windows.open(@window_id)
+    |> update_call(fn call ->
+      layout =
+        call
+        |> layout()
+        |> Map.put(:console_section, :people)
+        |> Map.put(:sidebar_open, true)
+
+      %{call | layout: layout}
+    end)
+    |> push_group_call_layout()
   end
 
-  defp dock_stats(socket) do
-    socket
-    |> Windows.open_window(@stats_window_id)
-    |> push_event("window_command", %{
-      action: "dock_pair",
-      id: @window_id,
-      secondary_id: @stats_window_id,
-      secondary_width: 390
-    })
+  defp select_console_section(socket, "settings"), do: put_console_section(socket, :settings)
+  defp select_console_section(socket, "call"), do: put_console_section(socket, :call)
+  defp select_console_section(socket, _section), do: put_console_section(socket, :call)
+
+  defp put_console_section(socket, section) when section in [:call, :people, :stats, :settings] do
+    update_call(socket, fn call ->
+      layout = call |> layout() |> Map.put(:console_section, section)
+      %{call | layout: layout}
+    end)
+    |> push_group_call_layout()
   end
 
   defp end_current_call(%{assigns: %{group_call: call}} = socket, reason) when is_map(call) do
@@ -851,10 +859,8 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
     end
 
     socket
-    |> Windows.close_window(@stats_window_id)
     |> assign(group_call: nil, group_call_pending: nil, group_call_prejoin: nil)
     |> push_event("window_command", %{action: "close", id: @window_id})
-    |> push_event("window_command", %{action: "close", id: @stats_window_id})
   end
 
   defp get_or_create_room(channel_name, actor) do
@@ -1474,11 +1480,9 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
     with {:ok, actor} <- actor(socket),
          :ok <- GroupCall.close_call(socket.assigns.group_call.token, actor, "moderation") do
       socket
-      |> Windows.close_window(@stats_window_id)
       |> assign(group_call: nil, group_call_pending: nil)
       |> mark_channel_call_inactive(channel_name)
       |> push_event("window_command", %{action: "close", id: @window_id})
-      |> push_event("window_command", %{action: "close", id: @stats_window_id})
     else
       {:error, message} when is_binary(message) -> Messages.error_event(socket, message)
       _error -> Messages.error_event(socket, dgettext("group_call", "Could not end group call."))
@@ -2254,6 +2258,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
       focused_participant_id: nil,
       sidebar_open: true,
       self_view: :tile,
+      console_section: :call,
       mini: false,
       pinned_participant_ids: []
     }
@@ -2262,10 +2267,26 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   defp layout(%{layout: layout}) when is_map(layout) do
     default_layout()
     |> Map.merge(layout)
+    |> Map.update!(:console_section, &normalize_console_section/1)
     |> Map.update!(:pinned_participant_ids, &normalize_pinned_participant_ids/1)
   end
 
   defp layout(_call), do: default_layout()
+
+  defp normalize_console_section(section) when section in [:call, :people, :stats, :settings],
+    do: section
+
+  defp normalize_console_section(section) when is_binary(section) do
+    case section do
+      "call" -> :call
+      "people" -> :people
+      "stats" -> :stats
+      "settings" -> :settings
+      _other -> :call
+    end
+  end
+
+  defp normalize_console_section(_section), do: :call
 
   defp maybe_open_sidebar_for_mode(%{mode: :sidebar} = layout), do: %{layout | sidebar_open: true}
   defp maybe_open_sidebar_for_mode(layout), do: layout

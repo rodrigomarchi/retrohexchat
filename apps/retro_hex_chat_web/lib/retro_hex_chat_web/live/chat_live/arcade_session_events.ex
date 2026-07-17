@@ -14,12 +14,12 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEvents do
   `window.open`s the external WASM game and polls it — its close bubbles back as
   `game_window_closed` → `Arcade.finish_game`.
 
-  Unlike the P2P windows the arcade content is a pure read-model of this assign,
-  rendered inline (`solo_lobby`) like the P2P Statistics window — no island
-  LiveComponent, no `send_update`, so there is no mount-patch race to work
-  around. The stable `#arcade-session` hook anchor is gated on `@arcade_session`
-  (not the window), so the game-window poll survives minimizing or closing the
-  picker while a game is running.
+  Unlike the P2P console islands, the arcade content is a pure read-model of
+  this assign, rendered inline (`solo_lobby`) with no island LiveComponent and no
+  `send_update`, so there is no mount-patch race to work around. The stable
+  `#arcade-session` hook anchor is gated on `@arcade_session` (not the window),
+  so the game-window poll survives minimizing or closing the picker while a game
+  is running.
   """
 
   import Phoenix.Component, only: [assign: 2]

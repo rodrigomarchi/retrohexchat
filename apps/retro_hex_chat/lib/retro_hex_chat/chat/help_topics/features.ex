@@ -1073,8 +1073,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "help",
             "The P2P Lobby is the persistent peer-to-peer connection behind /p2p — one link " <>
               "that hosts a call, file transfers and games all at the same time. It lives " <>
-              "inside the chat: accepting an invite opens the session windows right on the " <>
-              "chat desktop, and ending any one activity never drops the others. " <>
+              "inside the chat: accepting an invite opens the P2P Session Console right on " <>
+              "the chat desktop, and ending any one activity never drops the others. " <>
               "See also: P2P Sessions in Chat."
           )
       },
@@ -1104,12 +1104,12 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "Run a P2P session without leaving the chat: /p2p <nick> sends an invite card " <>
               "into the private message, and the invited person accepts or declines right on " <>
               "the card. Once connected, the P2P menu (also mirrored in the Start menu) opens " <>
-              "the session windows on the chat desktop: Call (audio/video), Files, Games and " <>
-              "P2P Statistics. The conversation IS the private message — session events " <>
+              "the P2P Session Console on the chat desktop with Call, Files, Games and " <>
+              "Stats sections. The conversation IS the private message — session events " <>
               "(connected, file received, game results, who ended it) are saved into the PM " <>
               "history as P2P lines, and the PM tab shows a small P2P icon while the session " <>
               "is live. The status bar always shows the active session: click it to bring the " <>
-              "P2P windows to the front, or use its stop button to cancel a pending invite / " <>
+              "P2P Session Console to the front, or use its stop button to cancel a pending invite / " <>
               "end the session. You can hold ONE session at a time — accepting a new invite " <>
               "(or inviting someone else) asks to end the current session first. When a TURN " <>
               "relay is configured, Toggle Privacy Mode in the P2P menu forces the connection " <>

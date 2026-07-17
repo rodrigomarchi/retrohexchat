@@ -36,7 +36,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SetupDialog do
 
     ~H"""
     <span data-testid="p2p-setup-dialog">
-      <.dialog id={@id} show={@show} on_cancel={@on_cancel} class="md:max-w-[640px]">
+      <.dialog id={@id} show={@show} on_cancel={@on_cancel} class="md:max-w-[760px]">
         <.dialog_header
           id={@id}
           title={setup_title(@outgoing?)}
@@ -54,8 +54,8 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SetupDialog do
           class="contents"
           data-testid="p2p-setup-form"
         >
-          <.dialog_body class="box-border w-full md:w-[600px]">
-            <div class="grid min-w-0 gap-2 text-xs md:grid-cols-[240px_minmax(0,1fr)]">
+          <.dialog_body class="box-border w-full md:w-[720px]">
+            <div class="grid min-w-0 gap-2 text-xs md:grid-cols-[260px_minmax(0,1fr)]">
               <.setup_preview
                 media={@media}
                 setup={@setup}
@@ -64,9 +64,9 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SetupDialog do
 
               <section class="grid min-w-0 gap-2">
                 <section class="grid min-w-0 gap-2 border border-border bg-canvas p-2 shadow-retro-sunken">
-                  <div class="flex items-center gap-2">
-                    <span class="flex h-9 w-9 shrink-0 items-center justify-center bg-surface shadow-retro-sunken">
-                      <Icons.icon_protocol_p2p_compact class="h-6 w-6" />
+                  <div class="flex items-start gap-2">
+                    <span class="flex h-8 w-8 shrink-0 items-center justify-center bg-surface shadow-retro-sunken">
+                      <Icons.icon_protocol_p2p_compact class="h-4 w-4" />
                     </span>
                     <div class="min-w-0">
                       <div class="font-bold">
@@ -79,36 +79,28 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SetupDialog do
                   </div>
                 </section>
 
-                <section class="flex min-w-0 items-center gap-2 border border-border bg-canvas p-2 shadow-retro-sunken">
-                  <Icons.icon_protocol_p2p class="h-16 w-24 shrink-0" />
-                  <div class="min-w-0">
-                    <div class="font-bold">{dgettext("p2p", "Direct P2P topology")}</div>
-                    <p class="text-muted-foreground">
-                      {protocol_description(@turn_only)}
-                    </p>
-                  </div>
-                </section>
-
                 <section class="grid min-w-0 gap-2 border border-border bg-canvas p-2 shadow-retro-sunken">
                   <div class="flex items-center gap-1 font-bold">
                     <Icons.icon_devices class="h-3.5 w-3.5" />
-                    {dgettext("p2p", "Initial media")}
+                    {dgettext("p2p", "Media defaults")}
                   </div>
 
-                  <.toggle_row
-                    name="p2p_setup[audio]"
-                    checked={@media.audio}
-                    icon={:icon_microphone}
-                    label={dgettext("p2p", "Start with microphone")}
-                    testid="p2p-setup-audio"
-                  />
-                  <.toggle_row
-                    name="p2p_setup[video]"
-                    checked={@media.video}
-                    icon={:icon_camera}
-                    label={dgettext("p2p", "Start with camera")}
-                    testid="p2p-setup-video"
-                  />
+                  <div class="grid min-w-0 gap-2 sm:grid-cols-2">
+                    <.toggle_row
+                      name="p2p_setup[audio]"
+                      checked={@media.audio}
+                      icon={:icon_microphone}
+                      label={dgettext("p2p", "Start with microphone")}
+                      testid="p2p-setup-audio"
+                    />
+                    <.toggle_row
+                      name="p2p_setup[video]"
+                      checked={@media.video}
+                      icon={:icon_camera}
+                      label={dgettext("p2p", "Start with camera")}
+                      testid="p2p-setup-video"
+                    />
+                  </div>
                   <div class="flex items-start gap-1 text-muted-foreground">
                     <Icons.icon_mute class="mt-[1px] h-3.5 w-3.5 shrink-0" />
                     {dgettext(
@@ -148,29 +140,56 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SetupDialog do
                   />
                 </section>
 
-                <section class="grid min-w-0 gap-2 border border-border bg-canvas p-2 shadow-retro-sunken">
-                  <label class="flex items-start gap-2">
-                    <input type="hidden" name="p2p_setup[turn_only]" value="false" />
-                    <input
-                      type="checkbox"
-                      name="p2p_setup[turn_only]"
-                      value="true"
-                      checked={@turn_only}
-                      disabled={!@turn_configured}
-                      class="retro-checkbox mt-0.5 shrink-0"
-                      data-testid="p2p-setup-turn-only"
-                    />
-                    <span class="grid min-w-0 gap-0.5">
-                      <span class="inline-flex items-center gap-1 font-bold">
-                        <Icons.icon_privacy class="h-3.5 w-3.5" />
-                        {dgettext("p2p", "Privacy relay")}
-                      </span>
-                      <span class="text-muted-foreground">
-                        {privacy_copy(@turn_configured)}
-                      </span>
+                <details
+                  class="grid min-w-0 gap-2 border border-border bg-canvas p-2 shadow-retro-sunken"
+                  data-testid="p2p-setup-advanced"
+                >
+                  <summary class="flex cursor-pointer items-start justify-between gap-2 font-bold">
+                    <span class="inline-flex min-w-0 items-center gap-1">
+                      <Icons.icon_protocol_p2p class="h-3.5 w-3.5 shrink-0" />
+                      <span class="truncate">{dgettext("p2p", "Route and privacy")}</span>
                     </span>
-                  </label>
-                </section>
+                    <span class="shrink-0 text-[10px] font-normal text-muted-foreground">
+                      {p2p_route_summary(@turn_configured, @turn_only)}
+                    </span>
+                  </summary>
+
+                  <div class="mt-2 grid min-w-0 gap-2 md:grid-cols-2">
+                    <div class="flex min-w-0 items-start gap-2">
+                      <span class="flex h-8 w-8 shrink-0 items-center justify-center bg-surface shadow-retro-sunken">
+                        <Icons.icon_protocol_p2p class="h-5 w-5" />
+                      </span>
+                      <div class="min-w-0">
+                        <div class="font-bold">{dgettext("p2p", "Direct P2P topology")}</div>
+                        <p class="text-muted-foreground">
+                          {protocol_description(@turn_only)}
+                        </p>
+                      </div>
+                    </div>
+
+                    <label class="flex min-w-0 items-start gap-2">
+                      <input type="hidden" name="p2p_setup[turn_only]" value="false" />
+                      <input
+                        type="checkbox"
+                        name="p2p_setup[turn_only]"
+                        value="true"
+                        checked={@turn_only}
+                        disabled={!@turn_configured}
+                        class="retro-checkbox mt-0.5 shrink-0"
+                        data-testid="p2p-setup-turn-only"
+                      />
+                      <span class="grid min-w-0 gap-0.5">
+                        <span class="inline-flex items-center gap-1 font-bold">
+                          <Icons.icon_privacy class="h-3.5 w-3.5" />
+                          {dgettext("p2p", "Privacy relay")}
+                        </span>
+                        <span class="text-muted-foreground">
+                          {privacy_copy(@turn_configured)}
+                        </span>
+                      </span>
+                    </label>
+                  </div>
+                </details>
               </section>
             </div>
           </.dialog_body>
@@ -397,4 +416,9 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SetupDialog do
   defp privacy_copy(false) do
     dgettext("p2p", "Relay privacy is unavailable until TURN is configured on this server.")
   end
+
+  @spec p2p_route_summary(boolean(), boolean()) :: String.t()
+  defp p2p_route_summary(_turn_configured, true), do: dgettext("p2p", "Relay on")
+  defp p2p_route_summary(false, _turn_only), do: dgettext("p2p", "Relay unavailable")
+  defp p2p_route_summary(_turn_configured, _turn_only), do: dgettext("p2p", "Direct preferred")
 end

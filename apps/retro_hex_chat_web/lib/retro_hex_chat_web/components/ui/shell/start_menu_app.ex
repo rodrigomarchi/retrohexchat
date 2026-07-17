@@ -123,24 +123,30 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
         />
         <.app_item
           :if={@p2p_active}
-          action="p2p_open_files"
+          action="p2p_console_select"
           on_action={@on_action}
           label={dgettext("ui", "Send a File...")}
           icon_fn={:icon_file_send}
+          phx-value-section="files"
+          testid="start-menu-item-p2p-files"
         />
         <.app_item
           :if={@p2p_active}
-          action="p2p_open_games"
+          action="p2p_console_select"
           on_action={@on_action}
           label={dgettext("ui", "Play a Game...")}
           icon_fn={:icon_game_arcade}
+          phx-value-section="games"
+          testid="start-menu-item-p2p-games"
         />
         <.app_item
           :if={@p2p_active}
-          action="p2p_open_stats"
+          action="p2p_console_select"
           on_action={@on_action}
-          label={dgettext("ui", "P2P Statistics")}
+          label={dgettext("ui", "P2P Stats")}
           icon_fn={:icon_status_signal}
+          phx-value-section="stats"
+          testid="start-menu-item-p2p-stats"
         />
         <.app_item
           :if={@p2p_active}
@@ -209,6 +215,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
   attr :label, :string, required: true
   attr :action, :string, required: true
   attr :on_action, :any, default: nil
+  attr :testid, :string, default: nil
   attr :rest, :global
 
   defp app_item(assigns) do
@@ -217,7 +224,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
       phx-click={@on_action}
       phx-value-action={@action}
       label={@label}
-      data-testid={"start-menu-item-#{@action}"}
+      data-testid={@testid || "start-menu-item-#{@action}"}
       {@rest}
     >
       <:icon>{apply(Icons, @icon_fn, [%{class: "h-4 w-4"}])}</:icon>

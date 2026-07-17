@@ -7,6 +7,9 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.LayoutControls do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.MediaSession.CommandBar
+  import RetroHexChatWeb.Components.UI.MediaSession.IconButton
+
   alias RetroHexChatWeb.Icons.CallControls
 
   attr :call, :map, default: nil
@@ -20,12 +23,11 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.LayoutControls do
   @spec layout_controls(map()) :: Phoenix.LiveView.Rendered.t()
   def layout_controls(assigns) do
     ~H"""
-    <div
+    <.media_session_command_bar
       class={layout_controls_class(@orientation, @class)}
-      role="toolbar"
-      aria-label={dgettext("group_call", "Conference layout controls")}
+      aria_label={dgettext("group_call", "Conference layout controls")}
       data-orientation={@orientation}
-      data-testid="group-call-layout-controls"
+      testid="group-call-layout-controls"
     >
       <.layout_button
         mode={:auto}
@@ -34,7 +36,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.LayoutControls do
         label={dgettext("group_call", "Auto layout")}
         testid="group-call-layout-auto"
       >
-        <CallControls.icon_call_layout_auto class="h-8 w-8" />
+        <CallControls.icon_call_layout_auto class="h-4 w-4" />
       </.layout_button>
 
       <.layout_button
@@ -44,7 +46,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.LayoutControls do
         label={dgettext("group_call", "Grid layout")}
         testid="group-call-layout-grid"
       >
-        <CallControls.icon_call_layout_split class="h-8 w-8" />
+        <CallControls.icon_call_layout_split class="h-4 w-4" />
       </.layout_button>
 
       <.layout_button
@@ -54,7 +56,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.LayoutControls do
         label={dgettext("group_call", "Focus layout")}
         testid="group-call-layout-focus"
       >
-        <CallControls.icon_call_layout_focus class="h-8 w-8" />
+        <CallControls.icon_call_layout_focus class="h-4 w-4" />
       </.layout_button>
 
       <.layout_button
@@ -64,45 +66,39 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.LayoutControls do
         label={dgettext("group_call", "Speaker layout")}
         testid="group-call-layout-speaker"
       >
-        <CallControls.icon_call_layout_speaker class="h-8 w-8" />
+        <CallControls.icon_call_layout_speaker class="h-4 w-4" />
       </.layout_button>
 
-      <button
-        type="button"
+      <.media_session_icon_button
+        label={dgettext("group_call", "Toggle participants panel")}
+        active={sidebar_open?(@call)}
+        pressed={sidebar_open?(@call)}
         phx-click={@on_toggle_sidebar}
-        class={control_button_class(sidebar_open?(@call))}
-        aria-label={dgettext("group_call", "Toggle participants panel")}
-        title={dgettext("group_call", "Toggle participants panel")}
-        aria-pressed={to_string(sidebar_open?(@call))}
         data-testid="group-call-layout-sidebar"
       >
-        <CallControls.icon_call_participants class="h-8 w-8" />
-      </button>
+        <CallControls.icon_call_participants class="h-4 w-4" />
+      </.media_session_icon_button>
 
-      <button
-        type="button"
+      <.media_session_icon_button
+        label={self_view_title(@call)}
+        active={self_view(@call) != :hidden}
+        pressed={self_view(@call) != :hidden}
         phx-click={@on_cycle_self_view}
-        class={control_button_class(self_view(@call) != :hidden)}
-        aria-label={self_view_title(@call)}
-        title={self_view_title(@call)}
         data-self-view={self_view(@call)}
         data-testid="group-call-self-view-toggle"
       >
-        <CallControls.icon_call_self_view class="h-8 w-8" />
-      </button>
+        <CallControls.icon_call_self_view class="h-4 w-4" />
+      </.media_session_icon_button>
 
-      <button
+      <.media_session_icon_button
         :if={focused_participant_id(@call)}
-        type="button"
+        label={dgettext("group_call", "Clear focused participant")}
         phx-click={@on_clear_focus}
-        class={control_button_class(false)}
-        aria-label={dgettext("group_call", "Clear focused participant")}
-        title={dgettext("group_call", "Clear focused participant")}
         data-testid="group-call-clear-focus"
       >
-        <CallControls.icon_call_close class="h-8 w-8" />
-      </button>
-    </div>
+        <CallControls.icon_call_close class="h-4 w-4" />
+      </.media_session_icon_button>
+    </.media_session_command_bar>
     """
   end
 
@@ -117,28 +113,18 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.LayoutControls do
     assigns = assign(assigns, :selected, assigns.mode == assigns.current)
 
     ~H"""
-    <button
-      type="button"
+    <.media_session_icon_button
+      label={@label}
+      active={@selected}
+      pressed={@selected}
       phx-click={@event}
       phx-value-mode={@mode}
-      class={control_button_class(@selected)}
-      aria-label={@label}
-      title={@label}
-      aria-pressed={to_string(@selected)}
       data-layout-mode={@mode}
       data-testid={@testid}
     >
       {render_slot(@inner_block)}
-    </button>
+    </.media_session_icon_button>
     """
-  end
-
-  defp control_button_class(selected?) do
-    classes([
-      "flex h-10 w-10 min-w-[2.5rem] items-center justify-center bg-surface shadow-retro-raised",
-      "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground",
-      selected? && "bg-muted shadow-retro-sunken"
-    ])
   end
 
   defp layout_controls_class("vertical", extra) do

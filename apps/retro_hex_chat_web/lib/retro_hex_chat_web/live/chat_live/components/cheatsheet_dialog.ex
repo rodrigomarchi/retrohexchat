@@ -54,17 +54,17 @@ defmodule RetroHexChatWeb.ChatLive.Components.CheatsheetDialog do
           end)
       }
     end)
-    |> Kernel.++([p2p_call_window_shortcuts()])
+    |> Kernel.++([p2p_session_console_shortcuts()])
   end
 
   @spec format_binding(map() | nil) :: String.t()
   defp format_binding(nil), do: "—"
   defp format_binding(binding), do: KeyBindings.to_display_string(binding)
 
-  @spec p2p_call_window_shortcuts() :: map()
-  defp p2p_call_window_shortcuts do
+  @spec p2p_session_console_shortcuts() :: map()
+  defp p2p_session_console_shortcuts do
     %{
-      category: dgettext("chat", "P2P Call Window"),
+      category: dgettext("chat", "P2P Session Console"),
       items: [
         shortcut_item(
           dgettext("chat", "Toggle P2P Microphone"),
@@ -89,7 +89,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.CheatsheetDialog do
         shortcut_item(
           dgettext("chat", "Toggle P2P Screen Share"),
           %{key: ".", modifiers: [:ctrl, :shift]},
-          dgettext("chat", "Start or stop screen sharing in the focused P2P Call window")
+          dgettext("chat", "Start or stop screen sharing in the focused P2P Session Console")
         ),
         shortcut_item(
           dgettext("chat", "End P2P Call Media"),

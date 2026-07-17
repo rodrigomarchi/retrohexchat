@@ -2,7 +2,7 @@ defmodule RetroHexChatWeb.App.P2PStats do
   @moduledoc """
   Normalization of the always-on telemetry sample pushed by `LobbyWebRTCHook`
   (`lobby_stats`, every 2.5s) into a fully-populated stats struct, so the
-  P2P Statistics panel never guards against missing keys.
+  P2P Stats section never guards against missing keys.
   """
 
   @doc "Normalizes the per-feature payload from LobbyWebRTCHook."

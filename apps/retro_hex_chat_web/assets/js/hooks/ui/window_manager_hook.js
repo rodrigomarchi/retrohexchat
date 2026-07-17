@@ -195,7 +195,7 @@ const WindowManagerHook = {
       pinned: d.windowPinned === "true",
       managed: d.windowManaged === "true",
       // Ephemeral windows never load or save layout state: every mount
-      // starts from the default geometry (session windows).
+      // starts from the default geometry for transient surfaces.
       ephemeral: d.windowEphemeral === "true",
       minW: int(d.windowMinWidth, 220),
       minH: int(d.windowMinHeight, 120),

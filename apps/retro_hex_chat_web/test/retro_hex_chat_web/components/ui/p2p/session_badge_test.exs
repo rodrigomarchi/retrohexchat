@@ -31,8 +31,9 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadgeTest do
     assert html =~ ~s(data-testid="p2p-peer-facet-file")
     assert html =~ ~s(data-testid="p2p-peer-facet-game")
     assert html =~ ~s(data-testid="p2p-peer-facet-relay")
-    assert html =~ ~s(phx-click="p2p_open_call")
-    assert html =~ ~s(phx-click="p2p_open_stats")
+    assert html =~ ~s(phx-click="p2p_console_select")
+    assert html =~ ~s(phx-value-section="call")
+    assert html =~ ~s(phx-value-section="stats")
     assert html =~ ~s(phx-click="p2p_statusbar_stop")
   end
 

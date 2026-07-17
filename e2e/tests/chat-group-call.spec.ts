@@ -53,8 +53,8 @@ function groupCallPrejoinEmpty(page: Page) {
   return page.getByTestId("group-call-prejoin-empty");
 }
 
-function groupCallStatsWindow(page: Page) {
-  return page.getByTestId("group-call-stats-window");
+function groupCallInlineStats(page: Page) {
+  return page.getByTestId("group-call-inline-stats");
 }
 
 function groupCallLeave(page: Page) {
@@ -103,10 +103,6 @@ function groupCallConfirmCancel(page: Page) {
 
 function groupCallTaskbarButton(page: Page) {
   return page.getByTestId("group-call-taskbar");
-}
-
-function groupCallStatsTaskbarButton(page: Page) {
-  return page.getByTestId("group-call-stats-taskbar");
 }
 
 function groupCallStatusBar(page: Page) {
@@ -165,8 +161,12 @@ function groupCallMiniLeave(page: Page) {
   return page.getByTestId("group-call-mini-leave");
 }
 
-function groupCallDockStats(page: Page) {
-  return page.getByTestId("group-call-dock-stats");
+function groupCallSection(page: Page, section: string) {
+  return page.getByTestId(`group-call-section-${section}`);
+}
+
+function groupCallSettingsPanel(page: Page) {
+  return page.getByTestId("group-call-settings-panel");
 }
 
 function groupCallReaction(page: Page, reaction: string) {
@@ -177,6 +177,10 @@ function groupCallReactionIcon(page: Page, reaction: string) {
   return page
     .getByTestId(`group-call-reaction-icon-${reaction}`)
     .locator("svg");
+}
+
+function groupCallReactionsToggle(page: Page) {
+  return page.getByTestId("group-call-reactions-toggle");
 }
 
 function groupCallClearFocus(page: Page) {
@@ -205,6 +209,73 @@ function groupCallVideoGrid(page: Page) {
 
 function groupCallLocalTile(page: Page) {
   return page.getByTestId("group-call-local-tile");
+}
+
+async function expectMobileSectionNavCue(page: Page, testId: string) {
+  const cue = await page.getByTestId(testId).evaluate((nav) => {
+    const scroller = nav.querySelector('[data-scroll-cue="horizontal"]');
+    const start = nav.querySelector(".media-session-section-nav__cue--start");
+    const end = nav.querySelector(".media-session-section-nav__cue--end");
+    const active = nav.querySelector('button[aria-pressed="true"]');
+    const scrollerRect = scroller?.getBoundingClientRect();
+    const activeRect = active?.getBoundingClientRect();
+
+    return {
+      scrollCue: scroller?.getAttribute("data-scroll-cue"),
+      startText: start?.textContent?.trim(),
+      endText: end?.textContent?.trim(),
+      startDisplay: start ? window.getComputedStyle(start).display : null,
+      endDisplay: end ? window.getComputedStyle(end).display : null,
+      activeInsideScroller:
+        !!scrollerRect &&
+        !!activeRect &&
+        activeRect.left >= scrollerRect.left - 1 &&
+        activeRect.right <= scrollerRect.right + 1,
+    };
+  });
+
+  expect(cue.scrollCue).toBe("horizontal");
+  expect(cue.startText).toBe("<");
+  expect(cue.endText).toBe(">");
+  expect(cue.startDisplay).toBe("flex");
+  expect(cue.endDisplay).toBe("flex");
+  expect(cue.activeInsideScroller).toBe(true);
+}
+
+async function expectMediaSessionHeadersStable(page: Page, rootTestId: string) {
+  const metrics = await page.getByTestId(rootTestId).evaluate((root) => {
+    const rootRect = root.getBoundingClientRect();
+    const overflowHeaders: string[] = [];
+    const horizontalScrollHeaders: string[] = [];
+
+    for (const header of Array.from(root.querySelectorAll<HTMLElement>("header"))) {
+      const rect = header.getBoundingClientRect();
+      if (rect.width === 0 || rect.height === 0) continue;
+
+      const label =
+        header.dataset.testid ||
+        header.textContent?.replace(/\s+/g, " ").trim().slice(0, 80) ||
+        "header";
+
+      if (
+        rect.left < rootRect.left - 1 ||
+        rect.right > rootRect.right + 1 ||
+        rect.top < rootRect.top - 1 ||
+        rect.bottom > rootRect.bottom + 1
+      ) {
+        overflowHeaders.push(label);
+      }
+
+      if (header.scrollWidth > header.clientWidth + 2) {
+        horizontalScrollHeaders.push(label);
+      }
+    }
+
+    return { overflowHeaders, horizontalScrollHeaders };
+  });
+
+  expect(metrics.overflowHeaders).toEqual([]);
+  expect(metrics.horizontalScrollHeaders).toEqual([]);
 }
 
 function remoteVideoTile(page: Page) {
@@ -485,6 +556,9 @@ async function expectGroupCallLayoutStable(page: Page) {
       ),
     )) {
       const rect = element.getBoundingClientRect();
+      const isRendered = rect.width > 0 && rect.height > 0;
+      if (!isRendered) continue;
+
       const testId = element.dataset.testid || element.id || element.tagName;
 
       if (
@@ -681,7 +755,7 @@ test.describe("Channel group calls", () => {
     browser,
   }) => {
     const alice = await newGroupCallUser(browser, "gcvpa");
-    const channel = uniqueChannel("gcallvisual");
+    const channel = uniqueChannel("gcallvisual-long-room-name");
 
     try {
       await alice.page.setViewportSize({ width: 1280, height: 720 });
@@ -708,10 +782,52 @@ test.describe("Channel group calls", () => {
       const desktopImage = await groupCallWindow(alice.page).screenshot();
       expect(desktopImage.byteLength).toBeGreaterThan(8_000);
       await expectGroupCallLayoutStable(alice.page);
+      await expectMediaSessionHeadersStable(alice.page, "group-call-panel");
+
+      await alice.page.setViewportSize({ width: 768, height: 1024 });
+      await expect(groupCallWindow(alice.page)).toBeVisible();
+      await expect(groupCallPanel(alice.page)).toBeVisible();
+      await expectGroupCallLayoutStable(alice.page);
+      await expectMediaSessionHeadersStable(alice.page, "group-call-panel");
+
+      await groupCallSection(alice.page, "settings").click();
+      await expect(groupCallSettingsPanel(alice.page)).toBeVisible();
+      await expect(groupCallSection(alice.page, "settings")).toHaveAttribute(
+        "aria-pressed",
+        "true",
+      );
+
+      await groupCallSection(alice.page, "people").click();
+      await expect(alice.page.getByTestId("group-call-participants")).toBeVisible();
+      await expect(groupCallSection(alice.page, "people")).toHaveAttribute(
+        "aria-pressed",
+        "true",
+      );
+
+      await groupCallSection(alice.page, "call").click();
+      await expect(groupCallVideoGrid(alice.page)).toBeVisible();
+      await expect(groupCallSection(alice.page, "call")).toHaveAttribute(
+        "aria-pressed",
+        "true",
+      );
+
+      await groupCallSection(alice.page, "stats").click();
+      await expect(groupCallInlineStats(alice.page)).toBeVisible();
+      await expect(groupCallInlineStats(alice.page)).toContainText(
+        "Browser connection",
+      );
+      await expect(groupCallSection(alice.page, "stats")).toHaveAttribute(
+        "aria-pressed",
+        "true",
+      );
+      await expect(groupCallWindow(alice.page)).toBeVisible();
 
       await alice.page.setViewportSize({ width: 390, height: 844 });
       await expect(groupCallWindow(alice.page)).toBeVisible();
       await expect(groupCallPanel(alice.page)).toBeVisible();
+      await expect(groupCallInlineStats(alice.page)).toBeVisible();
+      await expectMobileSectionNavCue(alice.page, "group-call-section-nav");
+      await expectMediaSessionHeadersStable(alice.page, "group-call-panel");
 
       const mobileImage = await groupCallWindow(alice.page).screenshot();
       expect(mobileImage.byteLength).toBeGreaterThan(8_000);
@@ -775,28 +891,18 @@ test.describe("Channel group calls", () => {
         bob.page.getByTestId("group-call-participants"),
       ).toContainText(alice.nick);
 
-      await expect(groupCallStatsTaskbarButton(alice.page)).toBeVisible();
-      await groupCallStatsTaskbarButton(alice.page).click();
-      await expect(groupCallStatsWindow(alice.page)).toBeVisible();
-      await expect(groupCallStatsWindow(alice.page)).toContainText(
+      await groupCallSection(alice.page, "stats").click();
+      await expect(groupCallInlineStats(alice.page)).toBeVisible();
+      await expect(groupCallInlineStats(alice.page)).toContainText(
         "Server runtime",
       );
-      await expect(groupCallStatsWindow(alice.page)).toContainText(
+      await expect(groupCallInlineStats(alice.page)).toContainText(
         "Browser connection",
       );
-      await expect(groupCallStatsWindow(alice.page)).toContainText(
+      await expect(groupCallInlineStats(alice.page)).toContainText(
         "Peer connections",
       );
-
-      await groupCallStatsWindow(alice.page)
-        .locator('[data-window-control="close"]')
-        .click();
-      await expect(groupCallConfirmLeave(alice.page)).toBeVisible();
-      await expect(
-        alice.page.getByTestId("group-call-confirm-dialog"),
-      ).toContainText("Closing this window leaves");
-      await groupCallConfirmCancel(alice.page).click();
-      await expect(groupCallStatsWindow(alice.page)).toBeVisible();
+      await groupCallSection(alice.page, "call").click();
       await groupCallStatusBar(alice.page).click();
       await expect(groupCallWindow(alice.page)).toBeVisible();
 
@@ -1698,37 +1804,22 @@ test.describe("Channel group calls", () => {
     }
   });
 
-  test("conference can dock statistics beside the call and maximize the call window", async ({
+  test("conference keeps statistics inline while maximizing the call window", async ({
     browser,
   }) => {
-    const alice = await newGroupCallUser(browser, "gcdka");
-    const channel = uniqueChannel("gcalldock");
+    const alice = await newGroupCallUser(browser, "gcsta");
+    const channel = uniqueChannel("gcallstats");
 
     try {
       await joinChannel(alice, channel);
       await joinGroupCall(alice.page);
       await expect(groupCallWindow(alice.page)).toBeVisible();
 
-      await groupCallDockStats(alice.page).click();
-      await expect(groupCallStatsWindow(alice.page)).toBeVisible();
-
-      const callBox = await groupCallWindow(alice.page).boundingBox();
-      const statsBox = await groupCallStatsWindow(alice.page).boundingBox();
-      expect(callBox).toBeTruthy();
-      expect(statsBox).toBeTruthy();
-      expect(statsBox!.x).toBeGreaterThan(callBox!.x + callBox!.width - 2);
-      expect(Math.abs(statsBox!.y - callBox!.y)).toBeLessThanOrEqual(2);
-      expect(Math.abs(statsBox!.height - callBox!.height)).toBeLessThanOrEqual(
-        2,
+      await groupCallSection(alice.page, "stats").click();
+      await expect(groupCallInlineStats(alice.page)).toBeVisible();
+      await expect(groupCallInlineStats(alice.page)).toContainText(
+        "Browser connection",
       );
-
-      await groupCallWindow(alice.page)
-        .locator('[data-window-control="maximize"]')
-        .click();
-      await expect(groupCallWindow(alice.page)).toHaveClass(
-        /desktop-window--maximized/,
-      );
-      await expect(groupCallStatsWindow(alice.page)).toBeVisible();
 
       await groupCallWindow(alice.page)
         .locator('[data-window-control="restore"]')
@@ -1736,6 +1827,15 @@ test.describe("Channel group calls", () => {
       await expect(groupCallWindow(alice.page)).not.toHaveClass(
         /desktop-window--maximized/,
       );
+      await expect(groupCallInlineStats(alice.page)).toBeVisible();
+
+      await groupCallWindow(alice.page)
+        .locator('[data-window-control="maximize"]')
+        .click();
+      await expect(groupCallWindow(alice.page)).toHaveClass(
+        /desktop-window--maximized/,
+      );
+      await expect(groupCallInlineStats(alice.page)).toBeVisible();
     } finally {
       await closeGroupCallUsers([alice]);
     }
@@ -1879,6 +1979,7 @@ test.describe("Channel group calls", () => {
         aliceParticipantId || "",
       );
 
+      await groupCallReactionsToggle(alice.page).click();
       await groupCallReaction(alice.page, "clap").click();
 
       const remoteReaction = bob.page.locator(
@@ -1917,24 +2018,26 @@ test.describe("Channel group calls", () => {
         .poll(() => remoteVideoLive(bob.page), { timeout: 30_000 })
         .toBe(true);
 
-      await groupCallWebRTC(bob.page).evaluate((el) => {
-        el.dispatchEvent(
-          new CustomEvent("group-call:recovery-state", {
-            detail: {
-              state: "failed",
-              manual_retry: true,
-              attempt: 3,
-              max_attempts: 3,
-              message: "Media recovery failed. Retry the media connection.",
-            },
-          }),
-        );
-      });
+      await expect(async () => {
+        await groupCallWebRTC(bob.page).evaluate((el) => {
+          el.dispatchEvent(
+            new CustomEvent("group-call:recovery-state", {
+              detail: {
+                state: "failed",
+                manual_retry: true,
+                attempt: 3,
+                max_attempts: 3,
+                message: "Media recovery failed. Retry the media connection.",
+              },
+            }),
+          );
+        });
 
-      await expect(groupCallError(bob.page)).toContainText("Retry");
-      await expect(groupCallRetry(bob.page)).toBeVisible();
-
-      await groupCallRetry(bob.page).click();
+        await expect(groupCallError(bob.page)).toContainText("Retry", {
+          timeout: 1_000,
+        });
+        await groupCallRetry(bob.page).click({ timeout: 1_000 });
+      }).toPass({ timeout: 10_000 });
 
       await expect(groupCallWarning(bob.page)).toContainText(
         "Requesting a fresh media offer",

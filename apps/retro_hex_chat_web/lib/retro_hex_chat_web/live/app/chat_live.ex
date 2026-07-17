@@ -33,12 +33,10 @@ defmodule RetroHexChatWeb.App.ChatLive do
   # ── Desktop window manager ───────────────────────────────────
   import RetroHexChatWeb.Components.UI.Desktop
 
-  # ── P2P session windows ──────────────────────────────────────
-  import RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel
+  # ── P2P session setup + console ──────────────────────────────
   import RetroHexChatWeb.Components.UI.P2P.SetupDialog
   import RetroHexChatWeb.Components.UI.P2P.SessionBadge
   import RetroHexChatWeb.Components.UI.GroupCall.PreJoinDialog
-  import RetroHexChatWeb.Components.UI.GroupCall.StatsPanel
 
   # ── Solo arcade window body ──────────────────────────────────
   import RetroHexChatWeb.Components.UI.SoloLobby
@@ -249,8 +247,8 @@ defmodule RetroHexChatWeb.App.ChatLive do
   @impl true
 
   # Toolbar actions — components emit v1 event names directly
-  def handle_event("toolbar_action", %{"action" => action}, socket) do
-    dispatch_to_hooks(action, %{}, socket)
+  def handle_event("toolbar_action", %{"action" => action} = params, socket) do
+    dispatch_to_hooks(action, Map.delete(params, "action"), socket)
   end
 
   # Tab bar actions → type-specific v1 events
@@ -317,7 +315,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
         %{"id" => id} = params,
         %{assigns: %{group_call: %{}}} = socket
       )
-      when id in ~w(group-call group-call-stats) do
+      when id == "group-call" do
     dispatch_to_hooks("group_call_window_close", params, socket)
   end
 

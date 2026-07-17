@@ -506,69 +506,9 @@
       />
     </.desktop_window>
 
-    <%!-- P2P Statistics — server-managed and gated on the active session:
-          per-feature telemetry, connection diagram and whois for the in-chat
-          P2P session. --%>
-    <.desktop_window
-      :if={@p2p_session && "p2p-stats" in @open_windows}
-      id="p2p-stats"
-      persist_geometry={false}
-      title={dgettext("chat", "P2P Statistics")}
-      managed
-      on_close="p2p_window_close"
-      default_x={880}
-      default_y={64}
-      width={380}
-      height={420}
-      data-testid="p2p-stats-window"
-    >
-      <:icon><Icons.icon_protocol_p2p_compact class="h-4 w-4" /></:icon>
-      <.lobby_network_panel
-        stats={@p2p_session.stats}
-        info_open={@p2p_session.info_open}
-        nickname={@session.nickname}
-        peer_nick={@p2p_session.peer_nick}
-        peer_online={@p2p_session.peer_online}
-        session_status={p2p_panel_status(@p2p_session)}
-        connection_label={p2p_connection_label(@p2p_session)}
-        local_info={@client_info}
-        peer_info={@p2p_session.peer_info}
-        call_summary={@p2p_session.call_summary}
-        file_summary={@p2p_session.file_summary}
-        game_summary={@p2p_session.game_summary}
-        turn_only={@p2p_session.turn_only}
-      />
-    </.desktop_window>
-
-    <%!-- P2P Games — server-managed: the island mounts only while open, so
-          every open starts from a fresh picker. The X quits/cancels whatever
-          is there (a playing game ends for BOTH peers). --%>
-    <.desktop_window
-      :if={@p2p_session && "p2p-games" in @open_windows}
-      id="p2p-games"
-      persist_geometry={false}
-      title={dgettext("chat", "P2P Games")}
-      managed
-      on_close="p2p_window_close"
-      default_x={120}
-      default_y={48}
-      width={680}
-      body_class="p-1"
-      data-testid="p2p-games-window"
-    >
-      <:icon><Icons.icon_game_arcade class="h-4 w-4" /></:icon>
-      <.live_component
-        module={RetroHexChatWeb.ChatLive.Components.P2PGameIsland}
-        id={RetroHexChatWeb.ChatLive.Components.P2PGameIsland.id()}
-        connected={@p2p_session.state == :connected}
-        peer_nick={@p2p_session.peer_nick}
-        window_id="p2p-games"
-      />
-    </.desktop_window>
-
-    <%!-- P2P Call — always mounted while a session is joined so the media
-          hooks and streams survive hide/show; the X asks the island to end
-          the call (never just hides a live call silently). --%>
+    <%!-- P2P Session Console — the primary P2P product surface. It keeps call,
+          files, games and stats inside one reachable session window while the
+          underlying feature islands continue to own their lifecycles. --%>
     <.desktop_window
       :if={@p2p_session && @p2p_session.state != :invite_sent}
       id="p2p-call"
@@ -576,85 +516,31 @@
       default_maximized
       title={
         if @p2p_session.peer_nick in [nil, ""],
-          do: dgettext("chat", "P2P Call"),
+          do: dgettext("chat", "P2P Session"),
           else: @p2p_session.peer_nick
       }
       open={false}
       on_close="p2p_window_close"
-      default_x={496}
+      default_x={360}
       default_y={48}
-      width={if Map.get(@p2p_session, :call_mini, false), do: 300, else: 460}
-      height={if Map.get(@p2p_session, :call_mini, false), do: 236, else: nil}
-      min_width={260}
-      min_height={180}
-      body_class="p-1"
+      width={760}
+      height={520}
+      min_width={320}
+      min_height={360}
+      body_class="h-full min-h-0 overflow-hidden p-1"
       data-testid="p2p-call-window"
     >
-      <:icon><Icons.icon_camera class="h-4 w-4" /></:icon>
+      <:icon><Icons.icon_protocol_p2p_compact class="h-4 w-4" /></:icon>
       <.live_component
-        module={RetroHexChatWeb.ChatLive.Components.P2PMediaIsland}
-        id={RetroHexChatWeb.ChatLive.Components.P2PMediaIsland.id()}
-        connected={@p2p_session.state == :connected}
+        module={RetroHexChatWeb.ChatLive.Components.P2PSessionConsole}
+        id="p2p-session-console"
+        p2p_session={@p2p_session}
+        section={Map.get(@p2p_session, :console_section, "call")}
         nickname={@session.nickname}
-        peer_nick={@p2p_session.peer_nick}
-        token={@p2p_session.token}
-        user_id={@p2p_session.user_id}
-        window_id="p2p-call"
-        mini={Map.get(@p2p_session, :call_mini, false)}
-        device_preferences={Map.get(@p2p_session, :device_preferences, %{})}
+        client_info={@client_info}
+        session_status={p2p_panel_status(@p2p_session)}
+        connection_label={p2p_connection_label(@p2p_session)}
       />
-    </.desktop_window>
-
-    <%!-- P2P Files — always mounted while a session is joined: the island's
-          FileTransferHook must stay alive for the whole connection (the data
-          channel has no onmessage without it). The X cancels the transfer via
-          the island; the window merely hides. --%>
-    <.desktop_window
-      :if={@p2p_session && @p2p_session.state != :invite_sent}
-      id="p2p-files"
-      persist_geometry={false}
-      title={dgettext("chat", "P2P Files")}
-      open={false}
-      on_close="p2p_window_close"
-      default_x={536}
-      default_y={330}
-      width={320}
-      body_class="p-1"
-      data-testid="p2p-files-window"
-    >
-      <:icon><Icons.icon_file_send class="h-4 w-4" /></:icon>
-      <.live_component
-        module={RetroHexChatWeb.ChatLive.Components.P2PFileIsland}
-        id={RetroHexChatWeb.ChatLive.Components.P2PFileIsland.id()}
-        connected={@p2p_session.state == :connected}
-        nickname={@session.nickname}
-        peer_nick={@p2p_session.peer_nick}
-        token={@p2p_session.token}
-        window_id="p2p-files"
-      />
-    </.desktop_window>
-
-    <%!-- Group Call Statistics — server-managed and opened minimized with the
-          conference. Browser getStats() feeds RTP/ICE metrics, while the call
-          assign supplies server-side room, participant and track state. --%>
-    <.desktop_window
-      :if={@group_call && "group-call-stats" in @open_windows}
-      id="group-call-stats"
-      persist_geometry={false}
-      title={dgettext("group_call", "Conference Statistics")}
-      managed
-      on_close="group_call_window_close"
-      default_x={896}
-      default_y={88}
-      width={390}
-      height={500}
-      min_width={340}
-      min_height={360}
-      body_class="flex min-h-0 flex-col p-2"
-      data-testid="group-call-stats-window"
-    >
-      <:icon><Icons.icon_protocol_conference_compact class="h-4 w-4" /></:icon>
-      <.group_call_stats_panel call={@group_call} stats={@group_call.stats} />
     </.desktop_window>
 
     <%!-- Group Call — always mounted while the user is in a channel call so
@@ -686,7 +572,7 @@
     </.desktop_window>
 
     <%!-- Arcade — server-managed solo-game picker, a pure read-model of the
-          @arcade_session assign (like P2P Statistics, no island component).
+          @arcade_session assign.
           The X keeps the session alive while a game is running (the pop-up
           keeps playing); the Leave/Close button inside ends it. --%>
     <.desktop_window

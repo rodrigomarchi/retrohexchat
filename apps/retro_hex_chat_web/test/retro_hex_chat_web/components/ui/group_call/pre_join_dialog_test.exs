@@ -29,12 +29,22 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoinDialogTest do
         }
       })
 
+    document = Floki.parse_document!(html)
+
     assert html =~ ~s|md:max-w-[760px]|
     assert html =~ ~s|md:w-[720px]|
     assert html =~ ~s|md:grid-cols-[260px_minmax(0,1fr)]|
+    assert html =~ ~s(data-testid="group-call-prejoin-devices")
     assert html =~ ~s(data-testid="group-call-prejoin-audio-input")
+    assert html =~ ~s(data-testid="group-call-prejoin-advanced")
     assert html =~ ~s(min-w-0)
     assert html =~ "Join Channel Conference"
-    assert html =~ "Join settings"
+    assert html =~ "Join #lobby"
+    assert html =~ "Media defaults"
+    assert html =~ "Layout and route"
+    assert html =~ "Auto / Tile"
+    assert html =~ "Conference route"
+    assert html =~ "Layout defaults"
+    assert Floki.find(document, ~s([data-testid="group-call-prejoin-advanced"][open])) == []
   end
 end

@@ -43,9 +43,10 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   alias RetroHexChatWeb.ChatLive.Windows
 
   @pubsub RetroHexChat.PubSub
-
-  # The P2P desktop windows, in status-bar focus order.
-  @p2p_windows ~w(p2p-stats p2p-files p2p-call p2p-games)
+  @p2p_console_width 760
+  @p2p_console_height 520
+  @p2p_console_x 360
+  @p2p_console_y 48
 
   # ── Client events (WebRTC hooks + P2P UI) ─────────────────────
 
@@ -88,16 +89,54 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
     {:halt, socket}
   end
 
+  def handle_event(
+        "lobby_state_change",
+        %{"state" => "disconnected"},
+        %{assigns: %{p2p_session: %{}}} = socket
+      ) do
+    {:halt, mark_p2p_reconnecting(socket, nil, "disconnected")}
+  end
+
   def handle_event("lobby_state_change", _params, %{assigns: %{p2p_session: %{}}} = socket) do
     {:halt, socket}
   end
 
-  def handle_event("lobby_failed", _params, %{assigns: %{p2p_session: %{}}} = socket) do
-    {:halt, Messages.system_event(socket, dgettext("chat", "P2P connection failed."))}
+  def handle_event("lobby_failed", params, %{assigns: %{p2p_session: %{}}} = socket) do
+    reason = params["reason"] || params[:reason] || "failed"
+
+    {:halt,
+     socket
+     |> mark_p2p_failed(reason)
+     |> open_p2p_console("call")
+     |> Messages.system_event(dgettext("chat", "P2P connection failed."))}
   end
 
-  def handle_event("lobby_retry", _params, %{assigns: %{p2p_session: %{}}} = socket) do
-    {:halt, socket}
+  def handle_event("lobby_retry", params, %{assigns: %{p2p_session: %{}}} = socket) do
+    attempt = integer_param(params, "attempt")
+    {:halt, mark_p2p_reconnecting(socket, attempt, "auto_retry")}
+  end
+
+  def handle_event("p2p_retry_connection", _params, %{assigns: %{p2p_session: %{}}} = socket) do
+    p2p = socket.assigns.p2p_session
+
+    broadcast(p2p.token, "lobby_manual_retry", %{from: p2p.user_id})
+
+    {:halt,
+     socket
+     |> mark_p2p_reconnecting(nil, "manual_retry")
+     |> push_event("lobby_restart", %{})}
+  end
+
+  def handle_event("lobby_media_restart", params, %{assigns: %{p2p_session: %{}}} = socket) do
+    p2p = socket.assigns.p2p_session
+    reason = params["reason"] || params[:reason] || "media_restart"
+
+    broadcast(p2p.token, "lobby_media_restart", %{from: p2p.user_id, reason: reason})
+
+    {:halt,
+     socket
+     |> mark_p2p_reconnecting(nil, reason)
+     |> push_event("lobby_restart", %{})}
   end
 
   def handle_event("lobby_stats", payload, %{assigns: %{p2p_session: %{}}} = socket) do
@@ -110,24 +149,16 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
     {:halt, put_p2p(socket, %{p2p | info_open: not p2p.info_open})}
   end
 
-  def handle_event("p2p_open_stats", _params, %{assigns: %{p2p_session: %{}}} = socket) do
-    {:halt, Windows.open(socket, "p2p-stats")}
-  end
-
-  def handle_event("p2p_open_files", _params, %{assigns: %{p2p_session: %{}}} = socket) do
-    {:halt, Windows.open(socket, "p2p-files")}
-  end
-
-  def handle_event("p2p_open_games", _params, %{assigns: %{p2p_session: %{}}} = socket) do
-    {:halt, Windows.open(socket, "p2p-games")}
-  end
-
-  def handle_event("p2p_open_call", _params, %{assigns: %{p2p_session: %{state: state}}} = socket)
+  def handle_event(
+        "p2p_console_select",
+        %{"section" => section},
+        %{assigns: %{p2p_session: %{state: state}}} = socket
+      )
       when state != :invite_sent do
-    {:halt, Windows.open(socket, "p2p-call")}
+    {:halt, open_p2p_console(socket, section)}
   end
 
-  def handle_event("p2p_open_call", _params, socket), do: {:halt, socket}
+  def handle_event("p2p_console_select", _params, socket), do: {:halt, socket}
 
   # Privacy mode: force every P2P connection through the TURN relay (hides
   # the direct peer IP). Persisted per user; applies from the next
@@ -173,7 +204,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   # The media hook finished its lazy load and is listening. This is the
   # race-free moment to auto-start the call: both sides open mic+camera on
   # connect (the single-offerer model absorbs the simultaneous start). Once
-  # per session; skipped on mobile, where the Call window isn't surfaced.
+  # per session; the unified P2P console is now surfaced on mobile too.
   def handle_event(
         "lobby_media_hook_ready",
         _params,
@@ -181,8 +212,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
       ) do
     p2p = socket.assigns.p2p_session
 
-    if p2p.state == :connected and not p2p.auto_call_started and
-         not socket.assigns[:mobile_viewport] do
+    if p2p.state == :connected and not p2p.auto_call_started do
       socket =
         case p2p[:media_mode] || "video" do
           "video" ->
@@ -192,8 +222,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
             socket
 
           "audio" ->
-            {:halt, socket} =
-              forward_media(socket, "start_call", start_call_payload(p2p, "audio"))
+            {:halt, socket} = forward_media(socket, "join_call", %{})
 
             socket
 
@@ -245,15 +274,13 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
     {:halt, socket}
   end
 
-  # The X on the Games window quits/cancels whatever is there — a playing game
-  # ends for both peers; an open picker or pending proposal just closes.
+  # A game close/cancel action quits whatever is there: a playing game ends for
+  # both peers; an open picker or pending proposal returns to the session.
   def handle_event("end_game", _params, %{assigns: %{p2p_session: %{}}} = socket) do
     p2p = socket.assigns.p2p_session
     _ = Lobby.end_game(p2p.token, p2p.user_id)
 
-    if "p2p-games" in socket.assigns.open_windows do
-      Phoenix.LiveView.send_update(P2PGameIsland, id: P2PGameIsland.id(), action: :end_game)
-    end
+    Phoenix.LiveView.send_update(P2PGameIsland, id: P2PGameIsland.id(), action: :end_game)
 
     {:halt, socket}
   end
@@ -367,16 +394,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
         {:halt, socket}
 
       _p2p ->
-        case Enum.filter(@p2p_windows, &(&1 in socket.assigns.open_windows)) do
-          [] ->
-            {:halt, Windows.open(socket, "p2p-stats")}
-
-          open_ids ->
-            {:halt,
-             Enum.reduce(open_ids, socket, fn id, acc ->
-               push_event(acc, "window_command", %{action: "focus", id: id})
-             end)}
-        end
+        {:halt, open_p2p_console(socket, "call")}
     end
   end
 
@@ -396,12 +414,6 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   end
 
   def handle_event("p2p_toggle_call_mini", _params, socket), do: {:halt, socket}
-
-  def handle_event("p2p_dock_stats", _params, %{assigns: %{p2p_session: %{}}} = socket) do
-    {:halt, dock_p2p_stats(socket)}
-  end
-
-  def handle_event("p2p_dock_stats", _params, socket), do: {:halt, socket}
 
   # The X on ANY session window means disconnecting the whole session, never
   # a silent hide — users were closing the camera and not realizing the
@@ -486,6 +498,10 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   # User-topic lobby events without a token envelope (lobby_session_ended);
   # PubsubHandlers consumed lobby_invite before this hook.
   def handle_info(%{event: "lobby_" <> _rest}, socket), do: {:halt, socket}
+
+  def handle_info({:p2p_console_section, section}, socket) do
+    {:halt, open_p2p_console(socket, section)}
+  end
 
   # C2 read-model bubbles from the feature islands (taskbar badges + the
   # Statistics strip read them from the host state).
@@ -604,6 +620,38 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
     end
   end
 
+  defp handle_session_event(
+         %{event: "lobby_manual_retry", payload: %{from: from}},
+         socket,
+         p2p
+       ) do
+    if from == p2p.user_id do
+      {:halt, socket}
+    else
+      {:halt,
+       socket
+       |> mark_p2p_reconnecting(nil, "peer_manual_retry")
+       |> open_p2p_console("call")
+       |> push_event("lobby_restart", %{})}
+    end
+  end
+
+  defp handle_session_event(
+         %{event: "lobby_media_restart", payload: %{from: from} = payload},
+         socket,
+         p2p
+       ) do
+    if from == p2p.user_id do
+      {:halt, socket}
+    else
+      {:halt,
+       socket
+       |> mark_p2p_reconnecting(nil, payload[:reason] || "peer_media_restart")
+       |> open_p2p_console("call")
+       |> push_event("lobby_restart", %{})}
+    end
+  end
+
   # The creator holds :invite_sent WITHOUT having joined — a pending invite
   # is just a card, not a connection. The peer joining is the cue to join
   # from here; :already_joined means another process of this user (an old
@@ -624,7 +672,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
              |> Messages.system_event(
                dgettext(
                  "chat",
-                 "%{peer} accepted the invite — connecting... the session windows will open shortly.",
+                 "%{peer} accepted the invite - connecting... the P2P session will open shortly.",
                  peer: p2p.peer_nick || dgettext("chat", "The other user")
                )
              )}
@@ -669,6 +717,8 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
     unless payload.user_id == p2p.user_id do
       Phoenix.LiveView.send_update(P2PMediaIsland,
         id: P2PMediaIsland.id(),
+        device_preferences: Map.get(p2p, :device_preferences, default_device_preferences()),
+        media_mode: Map.get(p2p, :media_mode, "video"),
         action: {:peer_media_changed, payload}
       )
     end
@@ -742,13 +792,12 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   defp handle_session_event(%{event: "lobby_game_request", payload: request}, socket, p2p) do
     outgoing = request.proposer_id == p2p.user_id
 
-    # open_with defers the send_update one message hop: a same-cycle
-    # send_update into the freshly mounted managed island never patches.
-    {:halt,
-     Windows.open_with(socket, "p2p-games", P2PGameIsland,
-       id: P2PGameIsland.id(),
-       action: {:request, request, outgoing}
-     )}
+    Phoenix.LiveView.send_update(P2PGameIsland,
+      id: P2PGameIsland.id(),
+      action: {:request, request, outgoing}
+    )
+
+    {:halt, open_p2p_console(socket, "games")}
   end
 
   defp handle_session_event(
@@ -756,12 +805,10 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
          socket,
          _p2p
        ) do
-    if "p2p-games" in socket.assigns.open_windows do
-      Phoenix.LiveView.send_update(P2PGameIsland,
-        id: P2PGameIsland.id(),
-        action: :request_declined
-      )
-    end
+    Phoenix.LiveView.send_update(P2PGameIsland,
+      id: P2PGameIsland.id(),
+      action: :request_declined
+    )
 
     {:halt, Messages.system_event(socket, dgettext("chat", "Game request declined."))}
   end
@@ -781,11 +828,12 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
        ) do
     is_host = payload.host_id == p2p.user_id
 
-    {:halt,
-     Windows.open_with(socket, "p2p-games", P2PGameIsland,
-       id: P2PGameIsland.id(),
-       action: {:playing, payload.game_id, is_host}
-     )}
+    Phoenix.LiveView.send_update(P2PGameIsland,
+      id: P2PGameIsland.id(),
+      action: {:playing, payload.game_id, is_host}
+    )
+
+    {:halt, open_p2p_console(socket, "games")}
   end
 
   defp handle_session_event(
@@ -793,9 +841,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
          socket,
          _p2p
        ) do
-    if "p2p-games" in socket.assigns.open_windows do
-      Phoenix.LiveView.send_update(P2PGameIsland, id: P2PGameIsland.id(), action: :idle)
-    end
+    Phoenix.LiveView.send_update(P2PGameIsland, id: P2PGameIsland.id(), action: :idle)
 
     {:halt, socket}
   end
@@ -805,14 +851,12 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
          socket,
          _p2p
        ) do
-    if "p2p-games" in socket.assigns.open_windows do
-      Phoenix.LiveView.send_update(P2PGameIsland,
-        id: P2PGameIsland.id(),
-        action: {:result, payload.result}
-      )
-    end
+    Phoenix.LiveView.send_update(P2PGameIsland,
+      id: P2PGameIsland.id(),
+      action: {:result, payload.result}
+    )
 
-    {:halt, socket}
+    {:halt, open_p2p_console(socket, "games")}
   end
 
   defp handle_session_event(
@@ -921,6 +965,8 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
       call_summary: nil,
       game_summary: nil,
       auto_call_started: false,
+      recovery: empty_p2p_recovery(),
+      console_section: "call",
       media_mode: "video",
       call_mini: false,
       device_preferences: default_device_preferences(),
@@ -1153,7 +1199,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
       socket,
       dgettext(
         "chat",
-        "Invite accepted — connecting... the session windows will open shortly."
+        "Invite accepted - connecting... the P2P session will open shortly."
       )
     )
   end
@@ -1197,7 +1243,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
     persist_p2p_system(
       socket,
       p2p.peer_nick,
-      dgettext("chat", "P2P session connected — calls, files and games are available.")
+      dgettext("chat", "P2P session connected - call, files, games and stats are available.")
     )
 
     socket
@@ -1205,50 +1251,60 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
 
   defp maybe_persist_connected(socket, _p2p), do: socket
 
-  # Already connected (duplicate hook event / PubSub echo): nothing to do —
-  # in particular, no second window burst.
-  defp enter_connected(socket, %{state: :connected}), do: socket
+  # Already connected (duplicate hook event / PubSub echo): keep the console in
+  # place, but clear any transient recovery banner from a completed retry.
+  defp enter_connected(socket, %{state: :connected} = p2p) do
+    put_p2p(socket, %{p2p | recovery: empty_p2p_recovery()})
+  end
 
   defp enter_connected(socket, p2p) do
     socket
     |> maybe_persist_connected(p2p)
-    |> put_p2p(%{p2p | state: :connected})
+    |> put_p2p(%{p2p | state: :connected, recovery: empty_p2p_recovery()})
     |> burst_windows()
   end
 
   # The session presents itself the moment the link comes up, on both sides:
-  # the Call window opens in front (the call auto-starts once the media hook
-  # reports ready — see lobby_media_hook_ready) while Files, Games and
-  # Statistics open MINIMIZED to the taskbar, present but out of the way.
-  # Closing any of them only hides (features keep running). Skipped on
-  # stacked mobile, where the windows would bury the conversation.
+  # the unified P2P console opens in front. Call, Files, Games and Statistics
+  # live inside that surface so mobile and desktop share one mental model.
   defp burst_windows(socket) do
-    if socket.assigns[:mobile_viewport] do
-      socket
-    else
-      socket
-      |> Windows.open("p2p-stats")
-      |> Windows.open("p2p-games")
-      |> Windows.open("p2p-files")
-      |> Windows.open("p2p-call")
-      |> push_event("window_command", %{action: "minimize", id: "p2p-stats"})
-      |> push_event("window_command", %{action: "minimize", id: "p2p-games"})
-      |> push_event("window_command", %{action: "minimize", id: "p2p-files"})
+    open_p2p_console(socket, "call")
+  end
+
+  defp open_p2p_console(socket, section) do
+    section = normalize_console_section(section)
+
+    case socket.assigns.p2p_session do
+      nil ->
+        socket
+
+      p2p ->
+        was_mini? = Map.get(p2p, :call_mini, false)
+
+        p2p =
+          if section == "call" do
+            p2p
+          else
+            Map.put(p2p, :call_mini, false)
+          end
+
+        socket
+        |> put_p2p(Map.put(p2p, :console_section, section))
+        |> Windows.open("p2p-call")
+        |> maybe_expand_p2p_console(section, was_mini?)
     end
   end
 
-  defp dock_p2p_stats(socket) do
-    socket
-    |> put_p2p(Map.put(socket.assigns.p2p_session, :call_mini, false))
-    |> Windows.open("p2p-stats")
-    |> Windows.open("p2p-call")
-    |> push_event("window_command", %{
-      action: "dock_pair",
-      id: "p2p-call",
-      secondary_id: "p2p-stats",
-      secondary_width: 390
-    })
-  end
+  defp normalize_console_section(section) when section in ~w(call files games stats), do: section
+
+  defp normalize_console_section(section) when is_atom(section),
+    do: normalize_console_section(Atom.to_string(section))
+
+  defp normalize_console_section(_section), do: "call"
+
+  defp maybe_expand_p2p_console(socket, "call", _was_mini?), do: socket
+  defp maybe_expand_p2p_console(socket, _section, true), do: push_p2p_call_geometry(socket, false)
+  defp maybe_expand_p2p_console(socket, _section, false), do: socket
 
   defp push_p2p_call_geometry(socket, true) do
     push_event(socket, "window_command", %{
@@ -1265,10 +1321,10 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
     push_event(socket, "window_command", %{
       action: "set_geometry",
       id: "p2p-call",
-      width: 460,
-      height: nil,
-      x: 496,
-      y: 48
+      width: @p2p_console_width,
+      height: @p2p_console_height,
+      x: @p2p_console_x,
+      y: @p2p_console_y
     })
   end
 
@@ -1296,11 +1352,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   defp detach_session(socket, p2p) do
     Phoenix.PubSub.unsubscribe(@pubsub, "lobby:#{p2p.token}")
 
-    socket
-    |> put_p2p(nil)
-    |> update(:open_windows, fn open ->
-      Enum.reduce(@p2p_windows, open, &MapSet.delete(&2, &1))
-    end)
+    put_p2p(socket, nil)
   end
 
   # Reasons with a single writer already persisted a p2p_system line into the
@@ -1345,6 +1397,48 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   end
 
   defp put_p2p(socket, p2p), do: assign(socket, p2p_session: p2p)
+
+  defp mark_p2p_reconnecting(socket, attempt, reason) do
+    update(socket, :p2p_session, fn
+      nil ->
+        nil
+
+      p2p ->
+        %{
+          p2p
+          | recovery: %{
+              state: :reconnecting,
+              attempt: attempt,
+              reason: reason,
+              manual_retry: false
+            },
+            stats: P2PStats.empty()
+        }
+    end)
+  end
+
+  defp mark_p2p_failed(socket, reason) do
+    update(socket, :p2p_session, fn
+      nil ->
+        nil
+
+      p2p ->
+        %{
+          p2p
+          | recovery: %{
+              state: :failed,
+              attempt: nil,
+              reason: reason,
+              manual_retry: true
+            },
+            stats: P2PStats.empty()
+        }
+    end)
+  end
+
+  defp empty_p2p_recovery do
+    %{state: :idle, attempt: nil, reason: nil, manual_retry: false}
+  end
 
   defp joinable_summary(token) do
     case Lobby.session_summary(token) do
@@ -1474,6 +1568,21 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   end
 
   defp value(_map, _key), do: nil
+
+  defp integer_param(map, key) do
+    case value(map, key) do
+      value when is_integer(value) -> value
+      value when is_binary(value) -> parse_integer(value)
+      _ -> nil
+    end
+  end
+
+  defp parse_integer(value) do
+    case Integer.parse(value) do
+      {integer, ""} -> integer
+      _ -> nil
+    end
+  end
 
   defp truthy?(value), do: value in [true, "true", "1", 1, "on"]
 

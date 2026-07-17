@@ -15,8 +15,8 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
   attr :state, :any, default: nil
   attr :current, :boolean, default: false
   attr :on_open, :any, default: "p2p_statusbar_click"
-  attr :on_open_call, :any, default: "p2p_open_call"
-  attr :on_open_stats, :any, default: "p2p_open_stats"
+  attr :on_open_call, :any, default: "p2p_console_select"
+  attr :on_open_stats, :any, default: "p2p_console_select"
   attr :on_stop, :any, default: "p2p_statusbar_stop"
   attr :class, :any, default: nil
 
@@ -158,6 +158,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
               :if={@status != :invite}
               type="button"
               phx-click={@on_open_call}
+              phx-value-section="call"
               class="flex h-6 items-center justify-center gap-1 shadow-retro-raised bg-surface px-2 text-xs font-bold focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
               data-testid="p2p-peer-open-call"
             >
@@ -167,6 +168,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
             <button
               type="button"
               phx-click={@on_open_stats}
+              phx-value-section="stats"
               class="flex h-6 items-center justify-center gap-1 shadow-retro-raised bg-surface px-2 text-xs font-bold focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
               data-testid="p2p-peer-open-stats"
             >

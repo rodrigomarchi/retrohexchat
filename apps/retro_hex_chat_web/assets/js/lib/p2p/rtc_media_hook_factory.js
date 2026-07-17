@@ -295,6 +295,7 @@ export function createRtcMediaHook(configInput) {
     _handlePcReady(pc) {
       this.pc = pc;
       this.pc.ontrack = (event) => this._handleRemoteTrack(event);
+      this._adoptExistingRemoteTracks();
       this._attachMediaElements();
     },
 
@@ -307,7 +308,30 @@ export function createRtcMediaHook(configInput) {
     // --- Call start/end ---
 
     async _startCall(type, opts = {}) {
-      if (!this.pc || this.callType || this.startingCall) return;
+      if (!this.pc || this.startingCall) return;
+
+      const mediaMode = this.el?.dataset?.mediaMode || "video";
+
+      if (opts.auto === true && mediaMode === "receive") {
+        this._joinCall();
+        return;
+      }
+
+      if (opts.auto === true && mediaMode === "audio" && type === "video") {
+        type = "audio";
+      }
+
+      const receiverEnablingAudio =
+        config.autoJoin && type === "audio" && this.callType === "receiving";
+
+      if (this.callType && !receiverEnablingAudio) return;
+
+      if (type === "audio" && config.autoJoin) {
+        this._joinCall();
+        this._enableAudioAfterReceiveReady();
+        return;
+      }
+
       this.startingCall = true;
 
       const preferences = opts.device_preferences || opts.devicePreferences || {};
@@ -393,6 +417,58 @@ export function createRtcMediaHook(configInput) {
       // No toggle sync here: a pure receiver sends nothing, so the mute/camera
       // controls stay hidden until `_enableAudio` / `_enableVideo` (which push their
       // own state) reveal them.
+    },
+
+    _enableAudioAfterReceiveReady() {
+      const startedAt = Date.now();
+      const shortWaitMs = 3000;
+      const hardWaitMs = 25000;
+      let recoveryRequested = false;
+
+      const ready = () => {
+        return this._remoteVideoFlowing();
+      };
+
+      const tick = () => {
+        if (!this.inCall || this.audioOn) return;
+        this._adoptExistingRemoteTracks();
+
+        if (ready()) {
+          this._enableAudio();
+          return;
+        }
+
+        const elapsed = Date.now() - startedAt;
+        const track = this._remoteVideoTrack();
+        const stalledTrack = track?.readyState === "live" && !this._remoteVideoFlowing();
+
+        if (elapsed > shortWaitMs && stalledTrack) {
+          if (!recoveryRequested) {
+            recoveryRequested = true;
+            this._requestMediaRecovery({
+              restart: true,
+              reason: "audio_only_remote_video_stalled",
+            });
+          }
+
+          if (elapsed <= hardWaitMs) {
+            window.setTimeout(tick, 150);
+            return;
+          }
+        } else if (elapsed > shortWaitMs && !track) {
+          this._enableAudio();
+          return;
+        }
+
+        if (elapsed > hardWaitMs) {
+          this._enableAudio();
+          return;
+        }
+
+        window.setTimeout(tick, 100);
+      };
+
+      tick();
     },
 
     // Acquire and send the microphone on demand (the auto-joined peer choosing to
@@ -523,8 +599,11 @@ export function createRtcMediaHook(configInput) {
 
       this._stalledSince = null;
       this.watchdogInterval = setInterval(() => {
-        const track = this.remoteStream && this.remoteStream.getVideoTracks?.()[0];
-        if (!track || track.readyState !== "live" || track.muted !== true) {
+        this._adoptExistingRemoteTracks();
+        const track = this._remoteVideoTrack();
+        const stalledTrack = track?.readyState === "live" && !this._remoteVideoFlowing();
+
+        if (!stalledTrack) {
           this._stalledSince = null;
           return;
         }
@@ -546,10 +625,28 @@ export function createRtcMediaHook(configInput) {
       this._stalledSince = null;
     },
 
-    _requestMediaRecovery() {
+    _requestMediaRecovery(detail = {}) {
       if (this._webrtcEl) {
-        this._webrtcEl.dispatchEvent(new CustomEvent("lobby_media_recover"));
+        this._webrtcEl.dispatchEvent(new CustomEvent("lobby_media_recover", { detail }));
       }
+    },
+
+    _remoteVideoTrack() {
+      return this.remoteStream?.getVideoTracks?.()[0] || null;
+    },
+
+    _remoteVideoFlowing() {
+      const track = this._remoteVideoTrack();
+      if (!track || track.readyState !== "live" || track.muted === true) return false;
+
+      const remoteVideo = this._query(config.elementIds.remoteVideo);
+      if (!remoteVideo) return true;
+
+      return (
+        remoteVideo.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA &&
+        remoteVideo.videoWidth > 0 &&
+        remoteVideo.videoHeight > 0
+      );
     },
 
     _clearMediaElements() {
@@ -597,14 +694,43 @@ export function createRtcMediaHook(configInput) {
 
     _handleRemoteTrack(event) {
       const [stream] = event.streams;
-      if (!stream) return;
+      this._addRemoteTrack(event.track, stream || null);
+      this._attachMediaElements();
+    },
 
-      this.remoteStream = stream;
+    _adoptExistingRemoteTracks() {
+      if (!this.pc?.getReceivers) return;
+
+      let adopted = false;
+      for (const receiver of this.pc.getReceivers()) {
+        const track = receiver.track;
+        if (!track || track.readyState === "ended") continue;
+        if (track.kind !== "audio" && track.kind !== "video") continue;
+
+        adopted = this._addRemoteTrack(track, null) || adopted;
+      }
+
+      if (adopted) this._attachMediaElements();
+    },
+
+    _addRemoteTrack(track, stream) {
+      if (!track || (track.kind !== "audio" && track.kind !== "video")) return false;
+
+      if (stream) {
+        this.remoteStream = stream;
+      } else if (!this.remoteStream) {
+        this.remoteStream = new MediaStream();
+      }
+
+      const exists = this.remoteStream.getTracks().some((candidate) => candidate.id === track.id);
+      if (!exists) this.remoteStream.addTrack(track);
+
       this.remoteHasVideo =
         this.remoteHasVideo ||
-        event.track?.kind === "video" ||
-        stream.getVideoTracks?.().length > 0;
-      this._attachMediaElements();
+        track.kind === "video" ||
+        this.remoteStream.getVideoTracks?.().length > 0;
+
+      return !exists;
     },
 
     // --- Controls ---

@@ -40,20 +40,25 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SetupDialogTest do
     document = Floki.parse_document!(html)
 
     assert html =~ "Connect with trinity"
-    assert html =~ ~s|md:max-w-[640px]|
-    assert html =~ ~s|md:w-[600px]|
-    assert html =~ ~s|md:grid-cols-[240px_minmax(0,1fr)]|
+    assert html =~ ~s|md:max-w-[760px]|
+    assert html =~ ~s|md:w-[720px]|
+    assert html =~ ~s|md:grid-cols-[260px_minmax(0,1fr)]|
     assert html =~ ~s(phx-hook="P2PSetupHook")
     assert html =~ ~s(data-testid="p2p-setup-preview")
+    assert html =~ "Media defaults"
     assert html =~ "Start with microphone"
     assert html =~ "Start with camera"
     assert html =~ "Turn both off to join receive-only"
     assert html =~ ~s(data-testid="p2p-setup-audio-input")
     assert html =~ ~s(value="mic-1" selected)
+    assert html =~ ~s(data-testid="p2p-setup-advanced")
+    assert html =~ "Route and privacy"
+    assert html =~ "Relay on"
     assert html =~ "Privacy relay"
     assert html =~ ~s(<svg)
     assert Floki.find(document, ~s([data-testid="p2p-setup-audio"][checked])) != []
     assert Floki.find(document, ~s([data-testid="p2p-setup-video"][checked])) == []
+    assert Floki.find(document, ~s([data-testid="p2p-setup-advanced"][open])) == []
     assert Floki.find(document, ~s([data-testid="p2p-setup-turn-only"][checked])) != []
   end
 

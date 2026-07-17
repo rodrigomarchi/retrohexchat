@@ -28,6 +28,21 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanelTest do
       )
 
     assert html =~ ~s(data-testid="p2p-stats-session-header")
+    assert html =~ ~s(data-testid="p2p-stats-summary")
+    assert html =~ ~s(data-testid="p2p-stats-summary-health")
+    assert html =~ ~s(data-testid="p2p-stats-summary-latency")
+    assert html =~ ~s(data-testid="p2p-stats-summary-media")
+    assert html =~ ~s(data-testid="p2p-stats-summary-data")
+    assert html =~ ~s(data-testid="p2p-stats-tab-network")
+    assert html =~ ~s(data-testid="p2p-stats-tab-audio")
+    assert html =~ ~s(data-testid="p2p-stats-tab-video")
+    assert html =~ ~s(data-testid="p2p-stats-tab-game")
+    assert html =~ ~s(data-testid="p2p-stats-tab-file")
+    assert html =~ ~s(data-testid="p2p-stats-details-connection")
+    assert html =~ ~s(data-testid="p2p-stats-details-audio")
+    assert html =~ ~s(data-testid="p2p-stats-details-video")
+    assert html =~ ~s(data-testid="p2p-stats-details-game")
+    assert html =~ ~s(data-testid="p2p-stats-details-file")
     assert html =~ "P2P session with trinity"
     assert html =~ "Connected"
     assert html =~ "Peer online"
@@ -38,5 +53,13 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanelTest do
     assert html =~ ~s(data-testid="p2p-stats-relay")
     assert html =~ "Source"
     assert html =~ "Screen"
+
+    document = Floki.parse_document!(html)
+
+    assert Floki.find(document, ~s([data-testid="p2p-stats-details-connection"][open])) != []
+    assert Floki.find(document, ~s([data-testid="p2p-stats-details-audio"][open])) == []
+    assert Floki.find(document, ~s([data-testid="p2p-stats-details-video"][open])) == []
+    assert Floki.find(document, ~s([data-testid="p2p-stats-details-game"][open])) == []
+    assert Floki.find(document, ~s([data-testid="p2p-stats-details-file"][open])) == []
   end
 end

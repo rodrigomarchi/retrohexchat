@@ -215,7 +215,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
     end
   end
 
-  describe "statistics window" do
+  describe "P2P console stats section" do
     test "opens via the P2P menu action, shows telemetry, and closes with the session",
          %{conn: conn} do
       ctx = mount_pair(conn, "p2pfo#{uid()}", "p2pfp#{uid()}")
@@ -223,12 +223,18 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
       accept_invite(ctx.view_b, session.token)
       flush(ctx.view_a)
 
-      # Menu bar / start menu dispatch the same semantic action.
-      render_click(ctx.view_a, "toolbar_action", %{"action" => "p2p_open_stats"})
-      assert render(ctx.view_a) =~ "p2p-stats-window"
+      # Menu bar / start menu dispatch the same semantic console-selection action.
+      render_click(ctx.view_a, "toolbar_action", %{
+        "action" => "p2p_console_select",
+        "section" => "stats"
+      })
+
+      assert p2p_assigns(ctx.view_a).console_section == "stats"
+      assert render(ctx.view_a) =~ ~s(data-testid="p2p-console-section-stats")
 
       # The PM-level session indicator has an explicit Call action.
-      render_click(ctx.view_a, "p2p_open_call", %{})
+      render_click(ctx.view_a, "p2p_console_select", %{"section" => "call"})
+      assert p2p_assigns(ctx.view_a).console_section == "call"
       assert render(ctx.view_a) =~ "p2p-call-window"
 
       assert has_element?(
@@ -240,21 +246,21 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
       render_click(ctx.view_a, "lobby_stats", %{"connection" => %{"rtt_ms" => 42}})
       assert p2p_assigns(ctx.view_a).stats.connection.rtt_ms == 42
 
-      # Clicking the status-bar area focuses the open P2P windows (no crash,
+      # Clicking the status-bar area focuses the P2P Session Console (no crash,
       # window stays open).
       render_click(ctx.view_a, "p2p_statusbar_click", %{})
-      assert render(ctx.view_a) =~ "p2p-stats-window"
+      assert render(ctx.view_a) =~ ~s(data-testid="p2p-session-console")
 
       # Ending the session tears the window down with it.
       render_click(ctx.view_a, "p2p_statusbar_stop", %{})
       render_click(ctx.view_a, "p2p_confirm_end", %{})
       flush(ctx.view_a)
       assert p2p_assigns(ctx.view_a) == nil
-      refute render(ctx.view_a) =~ "p2p-stats-window"
+      refute render(ctx.view_a) =~ ~s(data-testid="p2p-session-console")
     end
   end
 
-  describe "files window" do
+  describe "P2P console files section" do
     test "mounts with the session, reacts to ft_* events, and feeds the summary",
          %{conn: conn} do
       ctx = mount_pair(conn, "p2pfq#{uid()}", "p2pfr#{uid()}")
@@ -262,8 +268,8 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
       accept_invite(ctx.view_b, session.token)
       flush(ctx.view_a)
 
-      # The window (and its island/hook) is always mounted while joined.
-      assert render(ctx.view_b) =~ "p2p-files-window"
+      # The console and file island are always mounted while joined.
+      assert render(ctx.view_b) =~ ~s(data-testid="p2p-console-section-files")
 
       # The WebRTC hook reports the link up; the panel unlocks on :connected.
       render_click(ctx.view_b, "lobby_connected", %{})
@@ -283,6 +289,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
       assert %{file_summary: %{status: "offer_received", file_name: "relatorio.pdf"}} =
                p2p_assigns(ctx.view_b)
 
+      assert p2p_assigns(ctx.view_b).console_section == "files"
       assert render(ctx.view_b) =~ "relatorio.pdf"
     end
   end
@@ -318,8 +325,8 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
     end
   end
 
-  describe "games window" do
-    test "a full propose → accept → finish cycle drives both windows", %{conn: conn} do
+  describe "P2P console games section" do
+    test "a full propose → accept → finish cycle drives both consoles", %{conn: conn} do
       ctx = mount_pair(conn, "p2pfu#{uid()}", "p2pfv#{uid()}")
       session = invite(ctx)
       accept_invite(ctx.view_b, session.token)
@@ -327,12 +334,14 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
       render_click(ctx.view_a, "lobby_connected", %{})
       flush(ctx.view_b)
 
-      # A proposes; the request opens the (managed) window on BOTH sides.
+      # A proposes; the request opens the Games section on BOTH sides.
       render_click(ctx.view_a, "propose_game", %{"game_id" => "hex_pong"})
       flush(ctx.view_a)
       flush(ctx.view_b)
-      assert render(ctx.view_a) =~ "p2p-games-window"
-      assert render(ctx.view_b) =~ "p2p-games-window"
+      assert p2p_assigns(ctx.view_a).console_section == "games"
+      assert p2p_assigns(ctx.view_b).console_section == "games"
+      assert render(ctx.view_a) =~ ~s(data-testid="p2p-console-section-games")
+      assert render(ctx.view_b) =~ ~s(data-testid="p2p-console-section-games")
 
       # B accepts: the game starts and the C2 summary flags it active.
       render_click(ctx.view_b, "respond_game", %{"accepted" => "true"})
@@ -350,18 +359,18 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
 
       flush(ctx.view_a)
       assert {:ok, %{game: %{status: "finished"}}} = Lobby.session_info(session.token)
-      assert render(ctx.view_a) =~ "p2p-games-window"
+      assert render(ctx.view_a) =~ ~s(data-testid="p2p-console-section-games")
 
-      # Quitting via the window returns the domain to idle and unmounts.
+      # Quitting from the console returns the domain to idle without tearing down the session.
       render_click(ctx.view_a, "end_game", %{})
       flush(ctx.view_a)
       assert {:ok, %{game: %{status: "idle"}}} = Lobby.session_info(session.token)
-      refute render(ctx.view_a) =~ "p2p-games-window"
+      assert render(ctx.view_a) =~ ~s(data-testid="p2p-session-console")
     end
   end
 
-  describe "window burst on connect" do
-    test "connecting opens all four session windows; ending closes them all", %{conn: conn} do
+  describe "P2P console on connect" do
+    test "connecting opens the unified session console; ending closes it", %{conn: conn} do
       ctx = mount_pair(conn, "p2pgc#{uid()}", "p2pgd#{uid()}")
       session = invite(ctx)
       accept_invite(ctx.view_b, session.token)
@@ -370,19 +379,12 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
       render_click(ctx.view_a, "lobby_connected", %{})
 
       assigns = :sys.get_state(ctx.view_a.pid).socket.assigns
-      assert "p2p-stats" in assigns.open_windows
-      assert "p2p-games" in assigns.open_windows
+      refute Enum.any?(assigns.open_windows, &String.starts_with?(&1, "p2p-"))
 
       html = render(ctx.view_a)
-
-      for window <- ~w(p2p-call-window p2p-files-window p2p-games-window p2p-stats-window) do
-        assert html =~ window
-      end
-
-      # Everything but the Call window is sent to the taskbar minimized.
-      for id <- ~w(p2p-stats p2p-games p2p-files) do
-        assert_push_event(ctx.view_a, "window_command", %{action: "minimize", id: ^id})
-      end
+      assert html =~ "p2p-call-window"
+      assert html =~ ~s(data-testid="p2p-session-console")
+      assert p2p_assigns(ctx.view_a).console_section == "call"
 
       # Once the media hook reports ready, the call auto-starts (mic+camera)
       # exactly once — media presence lands in the domain.
@@ -396,16 +398,14 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
       render_click(ctx.view_a, "lobby_media_hook_ready", %{})
       assert p2p_assigns(ctx.view_a).auto_call_started
 
-      # Ending the session tears every session window down with it.
+      # Ending the session tears the console down with it.
       render_click(ctx.view_a, "p2p_statusbar_stop", %{})
       render_click(ctx.view_a, "p2p_confirm_end", %{})
       flush(ctx.view_a)
 
       html = render(ctx.view_a)
-
-      for window <- ~w(p2p-call-window p2p-files-window p2p-games-window p2p-stats-window) do
-        refute html =~ window
-      end
+      refute html =~ "p2p-call-window"
+      refute html =~ ~s(data-testid="p2p-session-console")
     end
 
     test "receive-only setup opens the windows but does not auto-start local media",
@@ -421,9 +421,116 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
       {:ok, state} = Lobby.session_info(session.token)
       assert state.media.peer == %{audio: false, video: false}
       assert p2p_assigns(ctx.view_b).auto_call_started
+
+      render_click(ctx.view_a, "lobby_connected", %{})
+      render_click(ctx.view_a, "lobby_media_hook_ready", %{})
+      flush(ctx.view_b)
+
+      assert_push_event(ctx.view_b, "lobby_media_join", %{})
+      refute_push_event(ctx.view_b, "lobby_media_start_video", %{})
+      refute_push_event(ctx.view_b, "lobby_media_start_audio", %{})
     end
 
-    test "call mini mode and stats docking drive the window manager", %{conn: conn} do
+    test "audio-only setup joins receive-first and starts microphone after peer media",
+         %{conn: conn} do
+      ctx = mount_pair(conn, "p2pga#{uid()}", "p2pgb#{uid()}")
+      session = invite(ctx)
+      accept_invite(ctx.view_b, session.token, %{"audio" => "true", "video" => "false"})
+      flush(ctx.view_a)
+
+      render_click(ctx.view_b, "lobby_connected", %{})
+      render_click(ctx.view_b, "lobby_media_hook_ready", %{})
+
+      {:ok, state} = Lobby.session_info(session.token)
+      assert state.media.peer == %{audio: false, video: false}
+      assert p2p_assigns(ctx.view_b).auto_call_started
+      assert_push_event(ctx.view_b, "lobby_media_join", %{})
+
+      render_click(ctx.view_a, "lobby_connected", %{})
+      render_click(ctx.view_a, "lobby_media_hook_ready", %{})
+      flush(ctx.view_b)
+
+      assert_push_event(ctx.view_b, "lobby_media_start_audio", %{auto: true})
+      refute_push_event(ctx.view_b, "lobby_media_start_video", %{})
+
+      render_click(ctx.view_b, "lobby_media_call_started", %{
+        "type" => "audio",
+        "audio_on" => true,
+        "video_on" => false
+      })
+
+      {:ok, state} = Lobby.session_info(session.token)
+      assert state.media.peer == %{audio: true, video: false}
+    end
+
+    test "connection recovery surfaces retry and restarts both peer hooks", %{conn: conn} do
+      ctx = mount_pair(conn, "p2pgy#{uid()}", "p2pgz#{uid()}")
+      session = invite(ctx)
+      accept_invite(ctx.view_b, session.token)
+      flush(ctx.view_a)
+
+      render_click(ctx.view_a, "lobby_connected", %{})
+      render_click(ctx.view_b, "lobby_connected", %{})
+
+      render_click(ctx.view_b, "lobby_media_restart", %{
+        "reason" => "audio_only_remote_video_stalled"
+      })
+
+      assert_push_event(ctx.view_b, "lobby_restart", %{})
+
+      assert %{recovery: %{state: :reconnecting, reason: "audio_only_remote_video_stalled"}} =
+               p2p_assigns(ctx.view_b)
+
+      flush(ctx.view_a)
+      assert_push_event(ctx.view_a, "lobby_restart", %{})
+
+      assert %{recovery: %{state: :reconnecting, reason: "audio_only_remote_video_stalled"}} =
+               p2p_assigns(ctx.view_a)
+
+      render_click(ctx.view_a, "lobby_connected", %{})
+      render_click(ctx.view_b, "lobby_connected", %{})
+
+      render_click(ctx.view_a, "lobby_retry", %{"attempt" => "2"})
+
+      assert %{
+               recovery: %{state: :reconnecting, attempt: 2, manual_retry: false}
+             } = p2p_assigns(ctx.view_a)
+
+      assert render(ctx.view_a) =~ ~s(data-testid="p2p-recovery-banner")
+      assert render(ctx.view_a) =~ "Retrying the peer connection"
+
+      render_click(ctx.view_a, "lobby_failed", %{"reason" => "max_retries_exhausted"})
+
+      assert %{
+               recovery: %{
+                 state: :failed,
+                 reason: "max_retries_exhausted",
+                 manual_retry: true
+               }
+             } = p2p_assigns(ctx.view_a)
+
+      html = render(ctx.view_a)
+      assert html =~ ~s(data-p2p-recovery-state="failed")
+      assert html =~ ~s(data-testid="p2p-retry-connection")
+
+      render_click(ctx.view_a, "p2p_retry_connection", %{})
+
+      assert_push_event(ctx.view_a, "lobby_restart", %{})
+
+      assert %{recovery: %{state: :reconnecting, reason: "manual_retry"}} =
+               p2p_assigns(ctx.view_a)
+
+      flush(ctx.view_b)
+      assert_push_event(ctx.view_b, "lobby_restart", %{})
+
+      assert %{recovery: %{state: :reconnecting, reason: "peer_manual_retry"}} =
+               p2p_assigns(ctx.view_b)
+
+      render_click(ctx.view_a, "lobby_connected", %{})
+      assert %{recovery: %{state: :idle}} = p2p_assigns(ctx.view_a)
+    end
+
+    test "call mini mode and stats section drive the window manager", %{conn: conn} do
       ctx = mount_pair(conn, "p2pgo#{uid()}", "p2pgp#{uid()}")
       session = invite(ctx)
       accept_invite(ctx.view_b, session.token)
@@ -444,17 +551,18 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
 
       assert render(ctx.view_a) =~ ~s(data-call-mini="true")
 
-      render_click(ctx.view_a, "p2p_dock_stats", %{})
+      render_click(ctx.view_a, "p2p_console_select", %{"section" => "stats"})
       refute p2p_assigns(ctx.view_a).call_mini
-      assert "p2p-stats" in :sys.get_state(ctx.view_a.pid).socket.assigns.open_windows
-      assert_push_event(ctx.view_a, "window_command", %{action: "open", id: "p2p-stats"})
+      assert p2p_assigns(ctx.view_a).console_section == "stats"
       assert_push_event(ctx.view_a, "window_command", %{action: "open", id: "p2p-call"})
 
       assert_push_event(ctx.view_a, "window_command", %{
-        action: "dock_pair",
+        action: "set_geometry",
         id: "p2p-call",
-        secondary_id: "p2p-stats",
-        secondary_width: 390
+        width: 760,
+        height: 520,
+        x: 360,
+        y: 48
       })
     end
 
@@ -489,8 +597,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
       render_click(ctx.view_a, "lobby_connected", %{})
 
       assigns = :sys.get_state(ctx.view_a.pid).socket.assigns
-      refute "p2p-stats" in assigns.open_windows
-      refute "p2p-games" in assigns.open_windows
+      refute Enum.any?(assigns.open_windows, &String.starts_with?(&1, "p2p-"))
     end
   end
 

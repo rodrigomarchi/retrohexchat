@@ -20,7 +20,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ParticipantQualityBadge do
     <span
       :if={@level != :unknown}
       class={[
-        "flex h-10 w-10 items-center justify-center shadow-retro-sunken",
+        "flex h-8 w-8 items-center justify-center shadow-retro-sunken",
         quality_class(@level)
       ]}
       title={@title}
@@ -29,10 +29,10 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ParticipantQualityBadge do
       data-group-call-participant-quality
       data-quality-level={Atom.to_string(@level)}
     >
-      <Icons.icon_quality_high :if={@level in [:excellent, :good]} class="h-8 w-8" />
-      <Icons.icon_quality_medium :if={@level == :fair} class="h-8 w-8" />
-      <Icons.icon_quality_low :if={@level == :poor} class="h-8 w-8" />
-      <Icons.icon_btn_timers :if={@level == :reconnecting} class="h-8 w-8" />
+      <Icons.icon_quality_high :if={@level in [:excellent, :good]} class="h-4 w-4" />
+      <Icons.icon_quality_medium :if={@level == :fair} class="h-4 w-4" />
+      <Icons.icon_quality_low :if={@level == :poor} class="h-4 w-4" />
+      <Icons.icon_btn_timers :if={@level == :reconnecting} class="h-4 w-4" />
     </span>
     """
   end

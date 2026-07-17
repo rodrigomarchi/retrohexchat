@@ -36,7 +36,6 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
     do: :sys.get_state(view.pid).socket.assigns.group_call_channel_summaries
 
   defp active_channel(view), do: :sys.get_state(view.pid).socket.assigns.session.active_channel
-  defp open_windows(view), do: :sys.get_state(view.pid).socket.assigns.open_windows
   defp flush(view), do: :sys.get_state(view.pid)
 
   defp channel_role_rank("owner"), do: 4
@@ -168,8 +167,6 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
 
       confirm_prejoin(view)
 
-      assert_push_event(view, "window_command", %{action: "open", id: "group-call-stats"})
-      assert_push_event(view, "window_command", %{action: "minimize", id: "group-call-stats"})
       assert_push_event(view, "window_command", %{action: "open", id: "group-call"})
 
       call = group_call_assign(view)
@@ -184,18 +181,10 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
                ~s([data-testid="group-call-window"][data-window-initial-open="true"][data-window-default-maximized="true"])
              )
 
-      assert has_element?(view, ~s([data-testid="group-call-stats-window"]))
-
       assert has_element?(
                view,
                ~s([data-testid="group-call-taskbar"][data-window-taskbar="group-call"]),
                call.channel_name
-             )
-
-      assert has_element?(
-               view,
-               ~s([data-testid="group-call-stats-taskbar"][data-window-taskbar="group-call-stats"]),
-               "Conference Statistics"
              )
 
       assert has_element?(view, ~s([data-testid="status-bar-group-call"]), "Call:")
@@ -460,10 +449,8 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       flush(view)
 
       assert_push_event(view, "window_command", %{action: "close", id: "group-call"})
-      assert_push_event(view, "window_command", %{action: "close", id: "group-call-stats"})
       assert group_call_assign(view) == nil
       refute has_element?(view, ~s([data-testid="group-call-window"]))
-      refute has_element?(view, ~s([data-testid="group-call-stats-window"]))
       refute has_element?(view, ~s([data-testid="status-bar-group-call"]))
     end
 
@@ -489,45 +476,6 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       flush(view)
 
       assert group_call_assign(view)
-    end
-
-    test "closing the statistics window asks before leaving the conference", %{conn: conn} do
-      %{view: view} = mount_identified(conn, "gcfx")
-
-      open_group_call(view)
-
-      assert_push_event(view, "window_command", %{action: "open", id: "group-call"})
-
-      call = group_call_assign(view)
-      cleanup_room(call.token)
-
-      render_click(view, "group_call_window_close", %{"id" => "group-call-stats"})
-      flush(view)
-
-      assert has_element?(view, ~s|#group-call-confirm-dialog:not(.hidden)|)
-      assert group_call_assign(view)
-      assert has_element?(view, ~s([data-testid="group-call-stats-window"]))
-
-      render_click(view, "group_call_confirm_cancel", %{})
-      flush(view)
-
-      assert_push_event(view, "window_command", %{action: "open", id: "group-call-stats"})
-      assert group_call_assign(view)
-
-      render_hook(view, "window_closed", %{"id" => "group-call-stats"})
-      flush(view)
-
-      assert has_element?(view, ~s|#group-call-confirm-dialog:not(.hidden)|)
-      assert group_call_assign(view)
-
-      render_click(view, "group_call_confirm_leave", %{})
-      flush(view)
-
-      assert_push_event(view, "window_command", %{action: "close", id: "group-call"})
-      assert_push_event(view, "window_command", %{action: "close", id: "group-call-stats"})
-      assert group_call_assign(view) == nil
-      refute has_element?(view, ~s([data-testid="group-call-window"]))
-      refute has_element?(view, ~s([data-testid="group-call-stats-window"]))
     end
 
     test "conference layout controls update focus, self view, and participant rail", %{conn: conn} do
@@ -857,6 +805,12 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
                "Receive-only mode"
              )
 
+      assert has_element?(
+               view,
+               ~s([data-testid="group-call-participants-loading"][role="listitem"]),
+               "Joining conference"
+             )
+
       render_click(view, "group_call_client_warning", %{
         "message" => "Could not access your microphone or camera. You joined receive-only."
       })
@@ -940,31 +894,28 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       assert has_element?(view, ~s([data-testid="group-call-panel"][data-mini-mode="false"]))
     end
 
-    test "dock stats arranges conference and statistics windows together", %{conn: conn} do
-      %{view: view} = mount_identified(conn, "gcdo")
+    test "stats section renders inside the conference console", %{conn: conn} do
+      %{view: view} = mount_identified(conn, "gcst")
 
       open_group_call(view)
 
       call = group_call_assign(view)
       cleanup_room(call.token)
 
-      assert "group-call-stats" in open_windows(view)
-
       view
-      |> element(~s([data-testid="group-call-dock-stats"]))
+      |> element(~s([data-testid="group-call-section-stats"]))
       |> render_click()
 
-      assert_push_event(view, "window_command", %{
-        action: "dock_pair",
-        id: "group-call",
-        secondary_id: "group-call-stats",
-        secondary_width: 390
-      })
+      assert group_call_assign(view).layout.console_section == :stats
+      assert has_element?(view, ~s([data-testid="group-call-inline-stats"]))
 
-      assert "group-call-stats" in open_windows(view)
+      assert has_element?(
+               view,
+               ~s([data-testid="group-call-inline-stats"] [data-testid="group-call-stats-panel"])
+             )
     end
 
-    test "browser stats update the conference statistics window", %{conn: conn} do
+    test "browser stats update the inline conference statistics section", %{conn: conn} do
       %{view: view} = mount_identified(conn, "gcfs")
 
       open_group_call(view)
@@ -1014,7 +965,26 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       assert call.stats.video.width == 1280
       assert call.stats.summary.remote_stream_count == 1
 
-      assert has_element?(view, ~s([data-testid="group-call-stats-window"]))
+      view
+      |> element(~s([data-testid="group-call-section-stats"]))
+      |> render_click()
+
+      assert group_call_assign(view).layout.console_section == :stats
+      assert has_element?(view, ~s([data-testid="group-call-inline-stats"]))
+      assert has_element?(view, ~s([data-testid="group-call-stats-summary"]))
+      assert has_element?(view, ~s([data-testid="group-call-stats-summary-health"]), "Good")
+      assert has_element?(view, ~s([data-testid="group-call-stats-summary-latency"]), "42 ms")
+      assert has_element?(view, ~s([data-testid="group-call-stats-details-browser-connection"]))
+      assert has_element?(view, ~s([data-testid="group-call-stats-details-audio"]))
+      assert has_element?(view, ~s([data-testid="group-call-stats-details-video"]))
+      assert has_element?(view, ~s([data-testid="group-call-stats-details-browser-summary"]))
+
+      assert has_element?(
+               view,
+               ~s([data-testid="group-call-stats-summary-media"]),
+               "Audio + Video"
+             )
+
       assert has_element?(view, ~s([data-testid="group-call-stats-health"]), "Good")
       assert render(view) =~ "1280x720"
     end
@@ -1082,6 +1052,11 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
                ~s([data-testid="group-call-participant-123"][data-media-screen="true"])
              )
 
+      view
+      |> element(~s([data-testid="group-call-section-stats"]))
+      |> render_click()
+
+      assert has_element?(view, ~s([data-testid="group-call-inline-stats"]))
       assert render(view) =~ "Screen tracks"
 
       render_click(view, "group_call_screen_share_state", %{
@@ -1381,8 +1356,14 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       assert [%{candidate_pairs: %{valid: 2}, nickname: peer_nickname}] = call.server_stats.peers
       assert peer_nickname == nick.nickname
 
+      view
+      |> element(~s([data-testid="group-call-section-stats"]))
+      |> render_click()
+
       html = render(view)
       assert html =~ "Server runtime"
+      assert html =~ ~s(data-testid="group-call-stats-details-server-runtime")
+      assert html =~ ~s(data-testid="group-call-stats-details-server-peers")
       assert html =~ "Server peers"
       assert html =~ "1/1 connected"
       assert html =~ "12 pkt / 2.0 KB"

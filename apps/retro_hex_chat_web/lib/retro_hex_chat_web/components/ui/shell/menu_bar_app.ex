@@ -248,7 +248,7 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
       </.menu>
 
       <%!-- P2P menu — always enabled: without a session it teaches how to
-            start one; with a session it drives the session windows. --%>
+            start one; with a session it drives the console sections. --%>
       <.menu label={dgettext("ui", "P2P")} disabled={!@connected}>
         <.menu_item
           :if={!@p2p_active}
@@ -275,22 +275,25 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
           :if={@p2p_active}
           icon_fn={:icon_file_send}
           label={dgettext("ui", "Send a File...")}
-          action="p2p_open_files"
+          action="p2p_console_select"
           on_action={@on_action}
+          phx-value-section="files"
         />
         <.menu_item
           :if={@p2p_active}
           icon_fn={:icon_game_arcade}
           label={dgettext("ui", "Play a Game...")}
-          action="p2p_open_games"
+          action="p2p_console_select"
           on_action={@on_action}
+          phx-value-section="games"
         />
         <.menu_item
           :if={@p2p_active}
           icon_fn={:icon_status_signal}
           label={dgettext("ui", "Statistics")}
-          action="p2p_open_stats"
+          action="p2p_console_select"
           on_action={@on_action}
+          phx-value-section="stats"
         />
         <.menu_item
           :if={@p2p_active && @p2p_turn_available}

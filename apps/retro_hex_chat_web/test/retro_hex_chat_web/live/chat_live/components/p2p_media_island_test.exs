@@ -37,9 +37,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PMediaIslandTest do
       )
 
     # We are now in the call (window opens via push) and the remote surface renders.
-    # This is the synchronous interim state: the island also pushes a start event so
-    # the hook opens our own mic/camera by default, then echoes the real call state.
-    # Until that echo, we render as sending nothing (enable-on-demand controls).
+    # This is the synchronous interim state before the hook echoes the real call
+    # state, so we render as sending nothing (enable-on-demand controls).
     assert html =~ ~s(id="lobby-remote-video")
     assert html =~ "End call"
     assert html =~ ~s(data-lobby-media-action="enable-audio")

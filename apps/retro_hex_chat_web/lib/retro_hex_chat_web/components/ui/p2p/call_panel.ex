@@ -7,6 +7,10 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.MediaSession.CommandBar
+  import RetroHexChatWeb.Components.UI.MediaSession.Header
+  import RetroHexChatWeb.Components.UI.MediaSession.IconButton
+
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.Icons.CallControls
 
@@ -25,6 +29,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
   attr :peer_screen_sharing, :boolean, default: false
   attr :reactions, :list, default: []
   attr :devices, :map, default: nil
+  attr :media_mode, :string, default: "video"
   attr :mini, :boolean, default: false
 
   @spec call_panel(map()) :: Phoenix.LiveView.Rendered.t()
@@ -86,6 +91,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
             @mini && "lobby-media--mini"
           ]}
           data-testid="p2p-call-surface"
+          data-media-mode={@media_mode}
           data-call-layout={@normalized_layout}
           data-self-view={@self_view_mode}
           data-call-mini={to_string(@mini)}
@@ -122,7 +128,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
                   ]}
                   data-testid="lobby-call-quality"
                 >
-                  <Icons.icon_status_signal class="h-8 w-8" />
+                  <Icons.icon_status_signal class="h-4 w-4" />
                   <span>{quality_label(@call)}</span>
                 </div>
 
@@ -154,20 +160,20 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
                 <div class="absolute bottom-2 left-2 flex max-w-[70%] items-center gap-1 bg-black/70 px-1.5 py-0.5 font-bold text-white">
                   <CallControls.icon_call_screen_share
                     :if={@peer_screen_sharing}
-                    class="h-8 w-8 shrink-0 text-warning"
+                    class="h-4 w-4 shrink-0 text-warning"
                   />
                   <Icons.icon_protocol_p2p_compact
                     :if={!@peer_screen_sharing}
-                    class="h-8 w-8 shrink-0"
+                    class="h-4 w-4 shrink-0"
                   />
                   <span class="truncate">{peer_label(@peer_nick)}</span>
                   <CallControls.icon_call_mute
                     :if={@peer_muted}
-                    class="h-8 w-8 shrink-0 text-warning"
+                    class="h-4 w-4 shrink-0 text-warning"
                   />
                   <CallControls.icon_call_camera_off
                     :if={@peer_camera_off}
-                    class="h-8 w-8 shrink-0 text-warning"
+                    class="h-4 w-4 shrink-0 text-warning"
                   />
                 </div>
                 <.reaction_stack reactions={@reactions} source={:peer} testid="p2p-peer-reactions" />
@@ -192,9 +198,9 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
                 <div class="absolute bottom-1 left-1 right-1 flex items-center gap-1 bg-black/70 px-1 py-0.5 font-bold text-white">
                   <CallControls.icon_call_screen_share
                     :if={@screen_sharing}
-                    class="h-8 w-8 shrink-0 text-warning"
+                    class="h-4 w-4 shrink-0 text-warning"
                   />
-                  <Icons.icon_laptop :if={!@screen_sharing} class="h-8 w-8 shrink-0" />
+                  <Icons.icon_laptop :if={!@screen_sharing} class="h-4 w-4 shrink-0" />
                   <span class="truncate">
                     {if @screen_sharing,
                       do: dgettext("p2p", "Your screen"),
@@ -213,7 +219,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
             data-testid="lobby-peer-muted"
             class="flex items-center gap-1 border border-border bg-surface px-2 py-1 font-bold shadow-retro-sunken"
           >
-            <CallControls.icon_call_mute class="h-8 w-8" />
+            <CallControls.icon_call_mute class="h-4 w-4" />
             {dgettext("lobby", "%{peer} is muted", peer: peer_label(@peer_nick))}
           </div>
 
@@ -244,65 +250,62 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
 
   defp call_header(assigns) do
     ~H"""
-    <div
-      class="flex min-h-8 shrink-0 flex-wrap items-center justify-between gap-1 border border-border bg-surface px-2 py-1 shadow-retro-sunken"
-      data-testid="p2p-call-header"
+    <.media_session_header
+      title={dgettext("p2p", "Direct call with %{peer}", peer: peer_label(@peer_nick))}
+      title_class="truncate text-xs font-bold leading-4"
+      testid="p2p-call-header"
     >
-      <div class="flex min-w-0 items-center gap-2">
-        <Icons.icon_protocol_p2p_compact class="h-8 w-8 shrink-0" />
-        <div class="min-w-0">
-          <div class="truncate font-bold leading-4">
-            {dgettext("p2p", "Direct call with %{peer}", peer: peer_label(@peer_nick))}
-          </div>
-          <div class="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-0.5 text-[10px] leading-3 text-muted-foreground">
-            <span
-              class="inline-flex min-w-0 items-center gap-1 truncate"
-              aria-live="polite"
-              data-testid="p2p-call-status-announcer"
-            >
-              <Icons.icon_status_signal class={[
-                "h-8 w-8 shrink-0",
-                status_icon_class(@connected, @call, @peer_media)
-              ]} />
-              <span class="truncate">{status_label(@connected, @call, @peer_media)}</span>
-            </span>
-            <span class="inline-flex items-center gap-1">
-              <Icons.icon_status_user class="h-8 w-8 shrink-0" />
-              {dgettext("p2p", "1:1")}
-            </span>
-            <span class="inline-flex items-center gap-1">
-              <CallControls.icon_call_webrtc class="h-8 w-8 shrink-0" />
-              {track_label(@call, @peer_media)}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <div class="flex max-w-full shrink-0 flex-wrap items-center justify-end gap-px">
+      <:icon>
+        <Icons.icon_protocol_p2p_compact class="h-4 w-4 shrink-0" />
+      </:icon>
+      <:meta>
+        <span
+          class="inline-flex min-w-0 items-center gap-1 truncate"
+          aria-live="polite"
+          data-testid="p2p-call-status-announcer"
+        >
+          <Icons.icon_status_signal class={[
+            "h-4 w-4 shrink-0",
+            status_icon_class(@connected, @call, @peer_media)
+          ]} />
+          <span class="truncate">{status_label(@connected, @call, @peer_media)}</span>
+        </span>
+        <span class="inline-flex items-center gap-1">
+          <Icons.icon_status_user class="h-4 w-4 shrink-0" />
+          {dgettext("p2p", "1:1")}
+        </span>
+        <span class="inline-flex items-center gap-1">
+          <CallControls.icon_call_webrtc class="h-4 w-4 shrink-0" />
+          {track_label(@call, @peer_media)}
+        </span>
         <span
           :if={duration_label(@call)}
-          class="inline-flex h-10 items-center gap-1 bg-canvas px-1.5 font-bold shadow-retro-sunken"
+          class="inline-flex items-center gap-1 font-bold"
           data-testid="p2p-call-duration"
         >
-          <Icons.icon_clock class="h-8 w-8" />
+          <Icons.icon_clock class="h-4 w-4 shrink-0" />
           {duration_label(@call)}
         </span>
-        <span class="inline-flex h-10 items-center gap-1 bg-canvas px-1.5 shadow-retro-sunken">
+        <span
+          class="inline-flex items-center gap-1"
+          title={dgettext("p2p", "Peer media state")}
+          data-testid="p2p-call-peer-media-state"
+        >
           <Icons.icon_microphone class={[
-            "h-8 w-8",
+            "h-4 w-4",
             @peer_muted && "text-warning"
           ]} />
           <Icons.icon_camera class={[
-            "h-8 w-8",
+            "h-4 w-4",
             @peer_camera_off && "text-warning"
           ]} />
           <CallControls.icon_call_screen_share
             :if={@peer_screen_sharing}
-            class="h-8 w-8 text-warning"
+            class="h-4 w-4 text-warning"
           />
         </span>
-      </div>
-    </div>
+      </:meta>
+    </.media_session_header>
     """
   end
 
@@ -316,7 +319,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
     >
       <div class="flex min-h-[120px] flex-1 flex-col items-center justify-center gap-2 text-center">
         <span class="flex h-11 w-11 items-center justify-center bg-canvas shadow-retro-sunken">
-          <CallControls.icon_call_webrtc class="h-16 w-16" />
+          <CallControls.icon_call_webrtc class="h-6 w-6" />
         </span>
         <div class="font-bold">{dgettext("p2p", "Ready for private media")}</div>
         <p class="max-w-[30rem] text-muted-foreground">
@@ -327,10 +330,9 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
         </p>
       </div>
 
-      <div
+      <.media_session_command_bar
         class="flex flex-wrap items-center justify-center gap-2 border border-border bg-surface px-2 py-2 shadow-retro-sunken"
-        role="toolbar"
-        aria-label={dgettext("p2p", "Start P2P media")}
+        aria_label={dgettext("p2p", "Start P2P media")}
       >
         <.p2p_call_button
           label={dgettext("lobby", "Start audio")}
@@ -338,7 +340,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
           phx-value-type="audio"
           data-testid="lobby-call-start-audio"
         >
-          <CallControls.icon_call_microphone class="h-8 w-8" />
+          <CallControls.icon_call_microphone class="h-4 w-4" />
         </.p2p_call_button>
         <.p2p_call_button
           label={dgettext("lobby", "Start video")}
@@ -346,13 +348,13 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
           phx-value-type="video"
           data-testid="lobby-call-start-video"
         >
-          <CallControls.icon_call_camera class="h-8 w-8" />
+          <CallControls.icon_call_camera class="h-4 w-4" />
         </.p2p_call_button>
         <span class="ml-1 inline-flex items-center gap-1 text-muted-foreground">
-          <Icons.icon_protocol_p2p_compact class="h-8 w-8" />
+          <Icons.icon_protocol_p2p_compact class="h-4 w-4" />
           {peer_label(@peer_nick)}
         </span>
-      </div>
+      </.media_session_command_bar>
     </div>
     """
   end
@@ -367,10 +369,9 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
   defp sending_controls(assigns) do
     ~H"""
     <div class="grid gap-1">
-      <div
+      <.media_session_command_bar
         class="flex flex-wrap items-center justify-center gap-2 border border-border bg-surface px-2 py-2 shadow-retro-sunken"
-        role="toolbar"
-        aria-label={dgettext("p2p", "P2P media controls")}
+        aria_label={dgettext("p2p", "P2P media controls")}
       >
         <.p2p_call_button
           :if={!media_on?(@call, :audio)}
@@ -378,7 +379,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
           data-lobby-media-action="enable-audio"
           data-testid="p2p-call-enable-audio"
         >
-          <CallControls.icon_call_microphone class="h-8 w-8" />
+          <CallControls.icon_call_microphone class="h-4 w-4" />
         </.p2p_call_button>
         <.p2p_call_button
           :if={media_on?(@call, :audio)}
@@ -388,8 +389,8 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
           data-lobby-media-action="mute"
           data-testid="p2p-call-toggle-mute"
         >
-          <CallControls.icon_call_mute :if={@local_muted} class="h-8 w-8" />
-          <CallControls.icon_call_microphone :if={!@local_muted} class="h-8 w-8" />
+          <CallControls.icon_call_mute :if={@local_muted} class="h-4 w-4" />
+          <CallControls.icon_call_microphone :if={!@local_muted} class="h-4 w-4" />
         </.p2p_call_button>
         <.p2p_call_button
           :if={!media_on?(@call, :video)}
@@ -397,7 +398,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
           data-lobby-media-action="enable-video"
           data-testid="p2p-call-enable-video"
         >
-          <CallControls.icon_call_camera class="h-8 w-8" />
+          <CallControls.icon_call_camera class="h-4 w-4" />
         </.p2p_call_button>
         <.p2p_call_button
           :if={media_on?(@call, :video)}
@@ -411,8 +412,8 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
           data-lobby-media-action="camera"
           data-testid="p2p-call-toggle-camera"
         >
-          <CallControls.icon_call_camera_off :if={@local_camera_off} class="h-8 w-8" />
-          <CallControls.icon_call_camera :if={!@local_camera_off} class="h-8 w-8" />
+          <CallControls.icon_call_camera_off :if={@local_camera_off} class="h-4 w-4" />
+          <CallControls.icon_call_camera :if={!@local_camera_off} class="h-4 w-4" />
         </.p2p_call_button>
         <.p2p_call_button
           label={
@@ -425,16 +426,17 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
           data-lobby-media-action="screen-share"
           data-testid="p2p-call-screen-share"
         >
-          <CallControls.icon_call_screen_share class="h-8 w-8" />
+          <CallControls.icon_call_screen_share class="h-4 w-4" />
         </.p2p_call_button>
         <.p2p_reaction_drawer :if={!@mini} />
         <.p2p_call_button
           :if={@mini}
-          label={dgettext("p2p", "Dock statistics")}
-          phx-click="p2p_dock_stats"
-          data-testid="p2p-call-dock-stats"
+          label={dgettext("p2p", "Open stats")}
+          phx-click="p2p_console_select"
+          phx-value-section="stats"
+          data-testid="p2p-call-open-stats"
         >
-          <CallControls.icon_call_stats class="h-8 w-8" />
+          <CallControls.icon_call_stats class="h-4 w-4" />
         </.p2p_call_button>
         <.p2p_call_button
           :if={@mini}
@@ -448,8 +450,8 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
           phx-click="p2p_toggle_call_mini"
           data-testid="p2p-call-mini-toggle"
         >
-          <CallControls.icon_call_expand :if={@mini} class="h-8 w-8" />
-          <CallControls.icon_call_mini :if={!@mini} class="h-8 w-8" />
+          <CallControls.icon_call_expand :if={@mini} class="h-4 w-4" />
+          <CallControls.icon_call_mini :if={!@mini} class="h-4 w-4" />
         </.p2p_call_button>
         <.p2p_call_button
           label={dgettext("lobby", "End call")}
@@ -457,13 +459,13 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
           data-lobby-media-action="end-call"
           data-testid="p2p-call-end"
         >
-          <CallControls.icon_call_phone_end class="h-8 w-8" />
+          <CallControls.icon_call_phone_end class="h-4 w-4" />
         </.p2p_call_button>
         <span class="ml-auto inline-flex items-center gap-1 text-muted-foreground">
-          <CallControls.icon_call_webrtc class="h-8 w-8" />
+          <CallControls.icon_call_webrtc class="h-4 w-4" />
           {call_type_label(@call, @screen_sharing)}
         </span>
-      </div>
+      </.media_session_command_bar>
 
       <.device_selectors :if={!@mini} devices={@devices} />
     </div>
@@ -477,21 +479,20 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
 
   defp p2p_view_rail(assigns) do
     ~H"""
-    <div
+    <.media_session_command_bar
       class="flex shrink-0 flex-row flex-wrap content-start gap-1 border border-border bg-surface p-1 shadow-retro-sunken lg:flex-col"
       role="group"
-      aria-label={dgettext("p2p", "P2P view and window controls")}
-      data-testid="p2p-call-view-rail"
+      aria_label={dgettext("p2p", "P2P view and window controls")}
+      testid="p2p-call-view-rail"
     >
       <.layout_and_quality_controls
         :if={media_on?(@call, :video) or map_value(@peer_media, :video, false)}
         call_layout={@call_layout}
         self_view={@self_view}
       />
-      <div
+      <.media_session_command_bar
         class="flex flex-row flex-wrap gap-1 lg:flex-col"
-        role="toolbar"
-        aria-label={dgettext("p2p", "P2P window controls")}
+        aria_label={dgettext("p2p", "P2P window controls")}
       >
         <.p2p_call_button
           :if={map_value(@peer_media, :video, false)}
@@ -499,31 +500,32 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
           data-lobby-media-action="pip"
           data-testid="p2p-call-pip"
         >
-          <CallControls.icon_call_pip class="h-8 w-8" />
+          <CallControls.icon_call_pip class="h-4 w-4" />
         </.p2p_call_button>
         <.p2p_call_button
           label={dgettext("lobby", "Devices")}
           data-lobby-media-action="device-settings"
           data-testid="p2p-call-devices"
         >
-          <CallControls.icon_call_devices class="h-8 w-8" />
+          <CallControls.icon_call_devices class="h-4 w-4" />
         </.p2p_call_button>
         <.p2p_call_button
-          label={dgettext("p2p", "Dock statistics")}
-          phx-click="p2p_dock_stats"
-          data-testid="p2p-call-dock-stats"
+          label={dgettext("p2p", "Open stats")}
+          phx-click="p2p_console_select"
+          phx-value-section="stats"
+          data-testid="p2p-call-open-stats"
         >
-          <CallControls.icon_call_stats class="h-8 w-8" />
+          <CallControls.icon_call_stats class="h-4 w-4" />
         </.p2p_call_button>
         <.p2p_call_button
           label={dgettext("p2p", "Mini call window")}
           phx-click="p2p_toggle_call_mini"
           data-testid="p2p-call-mini-toggle"
         >
-          <CallControls.icon_call_mini class="h-8 w-8" />
+          <CallControls.icon_call_mini class="h-4 w-4" />
         </.p2p_call_button>
-      </div>
-    </div>
+      </.media_session_command_bar>
+    </.media_session_command_bar>
     """
   end
 
@@ -534,11 +536,10 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
     assigns = assign(assigns, :normalized_layout, normalize_layout(assigns.call_layout))
 
     ~H"""
-    <div
+    <.media_session_command_bar
       class="flex flex-row flex-wrap gap-1 border-b border-border pb-1 lg:flex-col"
-      role="toolbar"
-      aria-label={dgettext("p2p", "P2P layout")}
-      data-testid="p2p-call-layout-controls"
+      aria_label={dgettext("p2p", "P2P layout")}
+      testid="p2p-call-layout-controls"
     >
       <.p2p_call_button
         label={dgettext("p2p", "Auto layout")}
@@ -548,7 +549,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
         phx-value-layout="auto"
         data-testid="p2p-call-layout-auto"
       >
-        <CallControls.icon_call_layout_auto class="h-8 w-8" />
+        <CallControls.icon_call_layout_auto class="h-4 w-4" />
       </.p2p_call_button>
       <.p2p_call_button
         label={dgettext("lobby", "Focus")}
@@ -558,7 +559,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
         phx-value-layout="focus"
         data-testid="p2p-call-layout-focus"
       >
-        <CallControls.icon_call_layout_focus class="h-8 w-8" />
+        <CallControls.icon_call_layout_focus class="h-4 w-4" />
       </.p2p_call_button>
       <.p2p_call_button
         label={dgettext("p2p", "Split")}
@@ -568,7 +569,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
         phx-value-layout="split"
         data-testid="p2p-call-layout-split"
       >
-        <CallControls.icon_call_layout_split class="h-8 w-8" />
+        <CallControls.icon_call_layout_split class="h-4 w-4" />
       </.p2p_call_button>
       <.p2p_call_button
         label={dgettext("p2p", "Speaker")}
@@ -578,7 +579,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
         phx-value-layout="speaker"
         data-testid="p2p-call-layout-speaker"
       >
-        <CallControls.icon_call_layout_speaker class="h-8 w-8" />
+        <CallControls.icon_call_layout_speaker class="h-4 w-4" />
       </.p2p_call_button>
       <.p2p_call_button
         label={dgettext("p2p", "Compact")}
@@ -588,7 +589,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
         phx-value-layout="compact"
         data-testid="p2p-call-layout-compact"
       >
-        <CallControls.icon_call_layout_compact class="h-8 w-8" />
+        <CallControls.icon_call_layout_compact class="h-4 w-4" />
       </.p2p_call_button>
       <.p2p_call_button
         label={self_view_title(@self_view)}
@@ -598,9 +599,9 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
         data-self-view={@self_view}
         data-testid="p2p-call-self-view-toggle"
       >
-        <CallControls.icon_call_self_view class="h-8 w-8" />
+        <CallControls.icon_call_self_view class="h-4 w-4" />
       </.p2p_call_button>
-    </div>
+    </.media_session_command_bar>
     """
   end
 
@@ -614,22 +615,18 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
 
   defp p2p_call_button(assigns) do
     ~H"""
-    <button
-      type="button"
-      title={@label}
-      aria-label={@label}
-      aria-pressed={aria_pressed(@pressed)}
-      class={p2p_call_button_class(@active, @tone, @class)}
+    <.media_session_icon_button
+      label={@label}
+      active={@active}
+      pressed={@pressed}
+      tone={@tone}
+      class={@class}
       {@rest}
     >
       {render_slot(@inner_block)}
-    </button>
+    </.media_session_icon_button>
     """
   end
-
-  defp aria_pressed(nil), do: nil
-  defp aria_pressed(value) when is_binary(value), do: value
-  defp aria_pressed(value), do: to_string(value)
 
   defp p2p_reaction_drawer(assigns) do
     ~H"""
@@ -642,20 +639,19 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
         title={dgettext("p2p", "Reactions")}
         aria-label={dgettext("p2p", "Reactions")}
       >
-        <CallControls.icon_call_reactions class="h-8 w-8" />
+        <CallControls.icon_call_reactions class="h-4 w-4" />
       </summary>
-      <div
+      <.media_session_command_bar
         class="absolute bottom-full left-1/2 z-30 mb-1 flex -translate-x-1/2 gap-1 border border-border bg-surface p-1 shadow-retro-raised"
-        role="toolbar"
-        aria-label={dgettext("p2p", "P2P reactions")}
-        data-testid="p2p-call-reactions"
+        aria_label={dgettext("p2p", "P2P reactions")}
+        testid="p2p-call-reactions"
       >
         <.reaction_button reaction="heart" label={dgettext("p2p", "Send heart reaction")} />
         <.reaction_button reaction="thumbs_up" label={dgettext("p2p", "Send thumbs up")} />
         <.reaction_button reaction="clap" label={dgettext("p2p", "Send clap")} />
         <.reaction_button reaction="laugh" label={dgettext("p2p", "Send laugh")} />
         <.reaction_button reaction="sparkle" label={dgettext("p2p", "Send wow")} />
-      </div>
+      </.media_session_command_bar>
     </details>
     """
   end
@@ -671,7 +667,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
       phx-value-reaction={@reaction}
       data-testid={"p2p-call-reaction-#{@reaction}"}
     >
-      <.reaction_icon reaction={@reaction} class="h-8 w-8" />
+      <.reaction_icon reaction={@reaction} class="h-4 w-4" />
     </.p2p_call_button>
     """
   end
@@ -699,7 +695,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
         class="inline-flex h-8 w-8 items-center justify-center border border-border bg-warning text-primary shadow-retro-raised"
         data-reaction={item.reaction}
       >
-        <.reaction_icon reaction={item.reaction} class="h-8 w-8" />
+        <.reaction_icon reaction={item.reaction} class="h-4 w-4" />
       </span>
     </div>
     """
@@ -732,7 +728,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
         title={dgettext("lobby", "Devices")}
         aria-label={dgettext("lobby", "Devices")}
       >
-        <CallControls.icon_call_devices class="h-8 w-8" />
+        <CallControls.icon_call_devices class="h-4 w-4" />
         {dgettext("lobby", "Devices")}
       </summary>
       <div class="mt-1 grid gap-1 sm:grid-cols-3">
@@ -758,20 +754,14 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
 
   defp device_icon(assigns) do
     ~H"""
-    <CallControls.icon_call_microphone :if={@kind == "audioinput"} class="h-8 w-8" />
-    <CallControls.icon_call_camera :if={@kind == "videoinput"} class="h-8 w-8" />
-    <CallControls.icon_call_devices :if={@kind == "audiooutput"} class="h-8 w-8" />
+    <CallControls.icon_call_microphone :if={@kind == "audioinput"} class="h-4 w-4" />
+    <CallControls.icon_call_camera :if={@kind == "videoinput"} class="h-4 w-4" />
+    <CallControls.icon_call_devices :if={@kind == "audiooutput"} class="h-4 w-4" />
     """
   end
 
   defp p2p_call_button_class(active?, tone, extra) do
-    classes([
-      "inline-flex h-10 w-10 min-w-10 cursor-pointer items-center justify-center border border-transparent bg-surface p-0",
-      "shadow-retro-raised hover:shadow-retro-raised active:shadow-retro-sunken focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground",
-      active? && "bg-hover-bg shadow-retro-sunken",
-      tone == "danger" && "bg-destructive text-destructive-foreground",
-      extra
-    ])
+    media_session_icon_button_class(active?, tone, extra)
   end
 
   defp p2p_stage_class(true), do: "grid min-h-0 gap-1"

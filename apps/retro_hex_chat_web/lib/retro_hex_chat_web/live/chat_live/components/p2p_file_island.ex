@@ -1,25 +1,23 @@
 defmodule RetroHexChatWeb.ChatLive.Components.P2PFileIsland do
   @moduledoc """
   File-transfer island — owner of `file_transfer`/`file_transfer_ready` and the
-  body of the "Files" window.
+  body of the P2P console's Files section.
 
   The island is always mounted so its `FileTransferHook` (and the `filetransfer`
-  data channel) stays alive for the whole connection — closing the Files window
+  data channel) stays alive for the whole connection — changing console sections
   only hides it, it never tears down an in-flight transfer. There is no PubSub
   here: transfer control rides the data channel. The hook pushes its `ft_*`
   events to the root LiveView, which forwards them verbatim via
   `send_update(__MODULE__, action: {:ft_event, name, params})`; the island owns
   the resulting state and pushes the hook's control events (`ft_config`,
-  `ft_accept`/`ft_reject`, `ft_cancel`, `ft_retry`) and its own `window_command`
-  back out (C3).
+  `ft_accept`/`ft_reject`, `ft_cancel`, `ft_retry`) back out (C3).
 
   It mirrors a summary (status, sender, percent, speed, file name) to the host on
-  every change so the taskbar badge and the Statistics-window connection strip can
+  every change so the taskbar badge and the Stats connection strip can
   read it without owning the transfer (C2), and bubbles the completion notice to
   the host (`{:p2p_feature_notice, :file, text}`) for its chat sink (C1).
-
-  `window_id` names the desktop window the island drives ("p2p-files" on the
-  chat desktop).
+  Incoming offers ask the host to select the Files section of the single P2P
+  console.
   """
   use RetroHexChatWeb, :live_component
 
@@ -46,7 +44,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PFileIsland do
        nickname: nil,
        peer_nick: nil,
        token: nil,
-       window_id: "file",
        max_file_size_mb: max_file_size_mb(),
        blocked_file_extensions: blocked_file_extensions()
      )}
@@ -69,6 +66,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PFileIsland do
         connected={@connected}
         file_transfer={@file_transfer}
         nickname={@nickname}
+        peer_nick={@peer_nick}
         max_file_size_mb={@max_file_size_mb}
         blocked_file_extensions={@blocked_file_extensions}
       />
@@ -82,8 +80,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PFileIsland do
       connected: Map.get(assigns, :connected, socket.assigns.connected),
       nickname: Map.get(assigns, :nickname, socket.assigns.nickname),
       peer_nick: Map.get(assigns, :peer_nick, socket.assigns.peer_nick),
-      token: Map.get(assigns, :token, socket.assigns.token),
-      window_id: Map.get(assigns, :window_id, socket.assigns.window_id)
+      token: Map.get(assigns, :token, socket.assigns.token)
     )
   end
 
@@ -104,9 +101,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PFileIsland do
   end
 
   defp handle_ft(socket, "ft_offer_received", params) do
+    send(self(), {:p2p_console_section, "files"})
+
     socket
     |> assign(file_transfer: ft_meta(params, "offer_received", socket.assigns.peer_nick))
-    |> push_event("window_command", %{action: "open", id: socket.assigns.window_id})
     |> summarize()
   end
 
@@ -167,7 +165,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PFileIsland do
     socket
     |> assign(file_transfer: %{status: "ready"})
     |> maybe_push_ft_config()
-    |> push_event("window_command", %{action: "close", id: socket.assigns.window_id})
     |> summarize()
   end
 
@@ -188,12 +185,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PFileIsland do
     push_event(socket, "ft_accept", %{})
   end
 
-  # The X on the Files window cancels an in-flight transfer (the hook tears it down)
-  # and closes the window in every state, including an idle picker.
   defp handle_ft(socket, "ft_cancel", _params) do
-    socket
-    |> push_event("ft_cancel", %{nickname: socket.assigns.nickname})
-    |> push_event("window_command", %{action: "close", id: socket.assigns.window_id})
+    push_event(socket, "ft_cancel", %{nickname: socket.assigns.nickname})
   end
 
   defp handle_ft(socket, "ft_retry", _params) do

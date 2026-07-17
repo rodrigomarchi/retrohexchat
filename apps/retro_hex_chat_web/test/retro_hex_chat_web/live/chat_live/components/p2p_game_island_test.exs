@@ -15,6 +15,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PGameIslandTest do
     html = render_component(P2PGameIsland, id: P2PGameIsland.id(), connected: false)
 
     refute html =~ ~s(data-testid="lobby-game-panel")
+    assert html =~ ~s(data-testid="p2p-games-activity-header")
     assert html =~ "Connect to play"
   end
 
@@ -22,6 +23,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PGameIslandTest do
     html = render_component(P2PGameIsland, id: P2PGameIsland.id(), connected: true)
 
     assert html =~ ~s(data-testid="lobby-game-panel")
+    assert html =~ ~s(data-testid="p2p-games-activity-header")
+    assert html =~ ~s(data-testid="p2p-games-catalog")
     assert html =~ "Hex Pong"
   end
 
@@ -35,6 +38,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PGameIslandTest do
 
     assert html =~ ~s(data-testid="lobby-game-consent")
     assert html =~ "neo"
+    assert html =~ "wants to play"
+    assert html =~ "Accept"
+    assert html =~ "Decline"
+    refute html =~ ~s(data-testid="p2p-games-catalog")
   end
 
   test "shows the waiting state for an outgoing request" do
@@ -47,8 +54,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PGameIslandTest do
       )
 
     refute html =~ ~s(data-testid="lobby-game-consent")
+    assert html =~ ~s(data-testid="p2p-games-waiting")
     assert html =~ "Waiting for"
     assert html =~ "trinity"
+    assert html =~ "Cancel"
+    refute html =~ ~s(data-testid="p2p-games-catalog")
   end
 
   test "renders the in-progress state and canvas while playing" do

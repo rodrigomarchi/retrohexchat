@@ -27,6 +27,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoinDialog do
       |> assign(:layout, layout(assigns.prejoin))
       |> assign(:devices, devices(assigns.prejoin))
       |> assign(:device_preferences, device_preferences(assigns.prejoin))
+      |> assign(:channel_name, channel_name(assigns.prejoin))
 
     ~H"""
     <span data-testid="group-call-prejoin-dialog">
@@ -57,26 +58,32 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoinDialog do
               />
 
               <section class="grid min-w-0 gap-2 text-xs">
-                <div class="flex min-w-0 items-center gap-2 border border-border bg-canvas p-2 shadow-retro-sunken">
-                  <Icons.icon_protocol_conference class="h-16 w-24 shrink-0" />
-                  <div class="min-w-0">
-                    <div class="font-bold">{dgettext("group_call", "Conference topology")}</div>
-                    <p class="text-muted-foreground">
-                      {dgettext(
-                        "group_call",
-                        "Each browser sends media to the room server; the server routes streams to the other participants."
-                      )}
-                    </p>
+                <div class="grid min-w-0 gap-2 border border-border bg-canvas p-2 shadow-retro-sunken">
+                  <div class="flex items-start gap-2">
+                    <span class="flex h-8 w-8 shrink-0 items-center justify-center bg-surface shadow-retro-sunken">
+                      <Icons.icon_protocol_conference_compact class="h-4 w-4" />
+                    </span>
+                    <div class="min-w-0">
+                      <div class="font-bold">
+                        {dgettext("group_call", "Join %{channel}", channel: @channel_name)}
+                      </div>
+                      <p class="text-muted-foreground">
+                        {dgettext(
+                          "group_call",
+                          "Choose how you enter the room. You can change media and layout after joining."
+                        )}
+                      </p>
+                    </div>
                   </div>
                 </div>
 
                 <div class="min-w-0 border border-border bg-canvas p-2 shadow-retro-sunken">
                   <div class="mb-2 flex items-center gap-1 font-bold">
                     <Icons.icon_devices class="h-3.5 w-3.5" />
-                    {dgettext("group_call", "Join settings")}
+                    {dgettext("group_call", "Media defaults")}
                   </div>
 
-                  <div class="grid gap-2">
+                  <div class="grid gap-2 sm:grid-cols-2">
                     <.toggle_row
                       name="group_call_prejoin[audio]"
                       checked={@media.audio}
@@ -91,17 +98,13 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoinDialog do
                       label={dgettext("group_call", "Join with camera")}
                       testid="group-call-prejoin-video-toggle"
                     />
-                    <.toggle_row
-                      name="group_call_prejoin[sidebar_open]"
-                      checked={@layout.sidebar_open}
-                      icon={:icon_tab_nicklist}
-                      label={dgettext("group_call", "Show participants panel")}
-                      testid="group-call-prejoin-sidebar"
-                    />
                   </div>
                 </div>
 
-                <div class="grid min-w-0 gap-2 border border-border bg-canvas p-2 shadow-retro-sunken">
+                <div
+                  class="grid min-w-0 gap-2 border border-border bg-canvas p-2 shadow-retro-sunken"
+                  data-testid="group-call-prejoin-devices"
+                >
                   <DeviceSelect.device_select
                     name="group_call_prejoin[audio_input_id]"
                     value={@device_preferences.audio_input_id}
@@ -131,32 +134,80 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoinDialog do
                   />
                 </div>
 
-                <div class="grid min-w-0 grid-cols-2 gap-2 border border-border bg-canvas p-2 shadow-retro-sunken">
-                  <.simple_select
-                    name="group_call_prejoin[layout_mode]"
-                    value={Atom.to_string(@layout.mode)}
-                    icon={:icon_layout_maximize}
-                    label={dgettext("group_call", "Layout")}
-                    options={[
-                      {"auto", dgettext("group_call", "Auto")},
-                      {"grid", dgettext("group_call", "Grid")},
-                      {"focus", dgettext("group_call", "Focus")}
-                    ]}
-                    testid="group-call-prejoin-layout"
-                  />
-                  <.simple_select
-                    name="group_call_prejoin[self_view]"
-                    value={Atom.to_string(@layout.self_view)}
-                    icon={:icon_pip}
-                    label={dgettext("group_call", "Self view")}
-                    options={[
-                      {"tile", dgettext("group_call", "Tile")},
-                      {"pip", dgettext("group_call", "PiP")},
-                      {"hidden", dgettext("group_call", "Hidden")}
-                    ]}
-                    testid="group-call-prejoin-self-view"
-                  />
-                </div>
+                <details
+                  class="grid min-w-0 gap-2 border border-border bg-canvas p-2 shadow-retro-sunken"
+                  data-testid="group-call-prejoin-advanced"
+                >
+                  <summary class="flex cursor-pointer items-start justify-between gap-2 font-bold">
+                    <span class="inline-flex min-w-0 items-center gap-1">
+                      <Icons.icon_layout_maximize class="h-3.5 w-3.5 shrink-0" />
+                      <span class="truncate">{dgettext("group_call", "Layout and route")}</span>
+                    </span>
+                    <span class="shrink-0 text-[10px] font-normal text-muted-foreground">
+                      {conference_layout_summary(@layout)}
+                    </span>
+                  </summary>
+
+                  <div class="mt-2 grid min-w-0 gap-2">
+                    <div class="min-w-0 border border-border bg-surface p-2 shadow-retro-sunken">
+                      <div class="mb-2 flex items-center gap-1 font-bold">
+                        <Icons.icon_layout_maximize class="h-3.5 w-3.5" />
+                        {dgettext("group_call", "Layout defaults")}
+                      </div>
+
+                      <div class="grid min-w-0 gap-2">
+                        <.toggle_row
+                          name="group_call_prejoin[sidebar_open]"
+                          checked={@layout.sidebar_open}
+                          icon={:icon_tab_nicklist}
+                          label={dgettext("group_call", "Show participants panel")}
+                          testid="group-call-prejoin-sidebar"
+                        />
+                        <div class="grid min-w-0 grid-cols-2 gap-2">
+                          <.simple_select
+                            name="group_call_prejoin[layout_mode]"
+                            value={Atom.to_string(@layout.mode)}
+                            icon={:icon_layout_maximize}
+                            label={dgettext("group_call", "Layout")}
+                            options={[
+                              {"auto", dgettext("group_call", "Auto")},
+                              {"grid", dgettext("group_call", "Grid")},
+                              {"focus", dgettext("group_call", "Focus")}
+                            ]}
+                            testid="group-call-prejoin-layout"
+                          />
+                          <.simple_select
+                            name="group_call_prejoin[self_view]"
+                            value={Atom.to_string(@layout.self_view)}
+                            icon={:icon_pip}
+                            label={dgettext("group_call", "Self view")}
+                            options={[
+                              {"tile", dgettext("group_call", "Tile")},
+                              {"pip", dgettext("group_call", "PiP")},
+                              {"hidden", dgettext("group_call", "Hidden")}
+                            ]}
+                            testid="group-call-prejoin-self-view"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="flex min-w-0 items-start gap-2 border border-border bg-surface p-2 shadow-retro-sunken">
+                      <span class="flex h-8 w-8 shrink-0 items-center justify-center bg-canvas shadow-retro-sunken">
+                        <Icons.icon_protocol_conference class="h-5 w-5" />
+                      </span>
+                      <div class="min-w-0">
+                        <div class="font-bold">{dgettext("group_call", "Conference route")}</div>
+                        <p class="text-muted-foreground">
+                          {dgettext(
+                            "group_call",
+                            "Each browser sends media to the room server; the server routes streams to the other participants."
+                          )}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </details>
               </section>
             </div>
           </.dialog_body>
@@ -248,6 +299,12 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoinDialog do
 
   defp layout(_prejoin), do: %{mode: :auto, sidebar_open: true, self_view: :tile}
 
+  defp channel_name(%{channel_name: channel_name})
+       when is_binary(channel_name) and channel_name != "",
+       do: channel_name
+
+  defp channel_name(_prejoin), do: dgettext("group_call", "conference")
+
   defp devices(%{devices: devices}) when is_map(devices) do
     Map.merge(%{"audioinput" => [], "videoinput" => [], "audiooutput" => []}, devices)
   end
@@ -265,4 +322,20 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoinDialog do
   defp device_preferences(_prejoin) do
     %{audio_input_id: nil, video_input_id: nil, audio_output_id: nil}
   end
+
+  @spec conference_layout_summary(map()) :: String.t()
+  defp conference_layout_summary(%{mode: mode, self_view: self_view}) do
+    dgettext("group_call", "%{layout} / %{self}",
+      layout: conference_layout_label(mode),
+      self: conference_self_view_label(self_view)
+    )
+  end
+
+  defp conference_layout_label(:grid), do: dgettext("group_call", "Grid")
+  defp conference_layout_label(:focus), do: dgettext("group_call", "Focus")
+  defp conference_layout_label(_mode), do: dgettext("group_call", "Auto")
+
+  defp conference_self_view_label(:pip), do: dgettext("group_call", "PiP")
+  defp conference_self_view_label(:hidden), do: dgettext("group_call", "Hidden")
+  defp conference_self_view_label(_self_view), do: dgettext("group_call", "Tile")
 end

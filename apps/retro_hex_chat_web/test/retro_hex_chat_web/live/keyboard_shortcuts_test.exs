@@ -67,7 +67,7 @@ defmodule RetroHexChatWeb.Live.KeyboardShortcutsTest do
 
       assert html =~ "Navigation"
       assert html =~ "System"
-      assert html =~ "P2P Call Window"
+      assert html =~ "P2P Session Console"
       assert html =~ "Ctrl+Shift+."
     end
 

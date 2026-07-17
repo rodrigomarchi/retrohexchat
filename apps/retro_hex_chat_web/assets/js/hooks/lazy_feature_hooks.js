@@ -16,7 +16,13 @@ export const lazyFeatureHooks = {
   LobbyWebRTCHook: lazyFeatureHook({
     name: "LobbyWebRTCHook",
     loader: () => import("./lobby/lobby_webrtc_hook"),
-    serverEvents: ["lobby_start_offer", "lobby_start_answer", "lobby_signal"],
+    serverEvents: [
+      "lobby_start_offer",
+      "lobby_start_answer",
+      "lobby_restart",
+      "lobby_signal",
+      "lobby_renegotiate",
+    ],
     readyEvent: "lobby_webrtc_ready",
     reason: "P2P lobby WebRTC signaling is a heavy session feature.",
   }),
@@ -30,6 +36,7 @@ export const lazyFeatureHooks = {
       "lobby_media_peer_muted",
       "lobby_media_peer_camera",
       "lobby_media_set_preset",
+      "lobby_media_join",
     ],
     readyEvent: "lobby_media_hook_ready",
     reason: "P2P lobby media capture is only needed inside an active lobby.",

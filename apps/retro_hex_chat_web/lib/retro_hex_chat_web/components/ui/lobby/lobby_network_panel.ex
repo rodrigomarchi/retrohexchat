@@ -18,7 +18,9 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Toolbar
-  import RetroHexChatWeb.Components.UI.Fieldset
+  import RetroHexChatWeb.Components.UI.MediaSession.DiagnosticsGroup
+  import RetroHexChatWeb.Components.UI.MediaSession.StatusHeader
+  import RetroHexChatWeb.Components.UI.MediaSession.SummaryCard
   import RetroHexChatWeb.Components.UI.Tabs
   import RetroHexChatWeb.Components.UI.P2PConnectionDiagram
 
@@ -51,6 +53,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
       data-testid="lobby-network-panel"
     >
       <.session_header
+        stats={@stats}
         peer_nick={@peer_nick}
         peer_online={@peer_online}
         session_status={@session_status}
@@ -68,6 +71,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
             value="network"
             icon={:icon_protocol_p2p_compact}
             label={dgettext("p2p", "Network")}
+            testid="p2p-stats-tab-network"
           />
           <.stats_tab
             builder={builder}
@@ -75,6 +79,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
             icon={:icon_microphone}
             label={dgettext("p2p", "Audio")}
             active={@stats.audio.active}
+            testid="p2p-stats-tab-audio"
           />
           <.stats_tab
             builder={builder}
@@ -82,6 +87,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
             icon={:icon_camera}
             label={dgettext("p2p", "Video")}
             active={@stats.video.active}
+            testid="p2p-stats-tab-video"
           />
           <.stats_tab
             builder={builder}
@@ -89,6 +95,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
             icon={:icon_joystick}
             label={dgettext("p2p", "Game")}
             active={@stats.game.active}
+            testid="p2p-stats-tab-game"
           />
           <.stats_tab
             builder={builder}
@@ -96,6 +103,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
             icon={:icon_file_send}
             label={dgettext("p2p", "File")}
             active={@stats.file.active}
+            testid="p2p-stats-tab-file"
           />
 
           <%!-- Privacy + metric-help, tucked to the right of the tab strip so
@@ -133,7 +141,14 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
             local_info={@local_info}
             peer_info={@peer_info}
           />
-          <.retro_fieldset legend={dgettext("p2p", "Connection")} class="lobby__stats-section">
+          <.media_session_diagnostics_group
+            title={dgettext("p2p", "Connection")}
+            summary={p2p_connection_summary(@stats)}
+            icon={:icon_status_signal}
+            open
+            testid="p2p-stats-details-connection"
+            class="lobby__stats-section"
+          >
             <div class="mb-1 flex items-center gap-2">
               <span
                 class={["flex items-center gap-1", net_health_class(@stats.connection.level)]}
@@ -182,12 +197,18 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
                 info_open={@info_open}
               />
             </dl>
-          </.retro_fieldset>
+          </.media_session_diagnostics_group>
         </.tabs_content>
 
         <%!-- Audio --%>
         <.tabs_content value="audio" builder={builder}>
-          <.retro_fieldset legend={dgettext("p2p", "Audio")} class="lobby__stats-section">
+          <.media_session_diagnostics_group
+            title={dgettext("p2p", "Audio")}
+            summary={p2p_audio_summary(@stats.audio)}
+            icon={:icon_microphone}
+            testid="p2p-stats-details-audio"
+            class="lobby__stats-section"
+          >
             <dl class="grid grid-cols-2 gap-x-3 gap-y-[2px] text-xs">
               <.stat_status
                 icon={:icon_microphone}
@@ -223,12 +244,18 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
                 info_open={@info_open}
               />
             </dl>
-          </.retro_fieldset>
+          </.media_session_diagnostics_group>
         </.tabs_content>
 
         <%!-- Video --%>
         <.tabs_content value="video" builder={builder}>
-          <.retro_fieldset legend={dgettext("p2p", "Video")} class="lobby__stats-section">
+          <.media_session_diagnostics_group
+            title={dgettext("p2p", "Video")}
+            summary={p2p_video_detail(@stats.video)}
+            icon={:icon_camera}
+            testid="p2p-stats-details-video"
+            class="lobby__stats-section"
+          >
             <dl class="grid grid-cols-2 gap-x-3 gap-y-[2px] text-xs">
               <.stat_status
                 icon={:icon_camera}
@@ -292,35 +319,48 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
                 info_open={@info_open}
               />
             </dl>
-          </.retro_fieldset>
+          </.media_session_diagnostics_group>
         </.tabs_content>
 
         <%!-- Game data channel --%>
         <.tabs_content value="game" builder={builder}>
-          <.retro_fieldset legend={dgettext("p2p", "Games")} class="lobby__stats-section">
+          <.media_session_diagnostics_group
+            title={dgettext("p2p", "Games")}
+            summary={p2p_channel_summary(@stats.game)}
+            icon={:icon_joystick}
+            testid="p2p-stats-details-game"
+            class="lobby__stats-section"
+          >
             <.channel_metrics
               icon={:icon_joystick}
               channel={@stats.game}
               info_open={@info_open}
             />
-          </.retro_fieldset>
+          </.media_session_diagnostics_group>
         </.tabs_content>
 
         <%!-- File data channel --%>
         <.tabs_content value="file" builder={builder}>
-          <.retro_fieldset legend={dgettext("p2p", "Files")} class="lobby__stats-section">
+          <.media_session_diagnostics_group
+            title={dgettext("p2p", "Files")}
+            summary={p2p_channel_summary(@stats.file)}
+            icon={:icon_file_send}
+            testid="p2p-stats-details-file"
+            class="lobby__stats-section"
+          >
             <.channel_metrics
               icon={:icon_file_send}
               channel={@stats.file}
               info_open={@info_open}
             />
-          </.retro_fieldset>
+          </.media_session_diagnostics_group>
         </.tabs_content>
       </.tabs>
     </div>
     """
   end
 
+  attr :stats, :map, required: true
   attr :peer_nick, :string, required: true
   attr :peer_online, :boolean, default: false
   attr :session_status, :string, required: true
@@ -336,35 +376,32 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
       class="grid gap-1 border border-border bg-surface p-2 shadow-retro-sunken"
       data-testid="p2p-stats-session-header"
     >
-      <div class="flex min-w-0 flex-wrap items-center justify-between gap-2">
-        <div class="flex min-w-0 items-center gap-2">
+      <.media_session_status_header
+        title={dgettext("p2p", "P2P session with %{peer}", peer: @peer_nick || "?")}
+        class="bg-transparent p-0 shadow-none"
+      >
+        <:icon>
           <span class="flex h-8 w-8 shrink-0 items-center justify-center bg-canvas shadow-retro-sunken">
             <Icons.icon_protocol_p2p_compact class="h-5 w-5" />
           </span>
-          <div class="min-w-0">
-            <div class="truncate font-bold leading-4">
-              {dgettext("p2p", "P2P session with %{peer}", peer: @peer_nick || "?")}
-            </div>
-            <div class="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-0.5 text-[10px] leading-3 text-muted-foreground">
-              <span class={["inline-flex items-center gap-1", session_status_class(@session_status)]}>
-                <Icons.icon_status_signal class="h-3 w-3" />
-                {session_status_label(@session_status)}
-              </span>
-              <span class="inline-flex items-center gap-1">
-                <Icons.icon_webrtc class="h-3 w-3" />
-                {@connection_label || dgettext("p2p", "Measuring")}
-              </span>
-              <span class="inline-flex items-center gap-1">
-                <Icons.icon_status_user class="h-3 w-3" />
-                {if @peer_online,
-                  do: dgettext("p2p", "Peer online"),
-                  else: dgettext("p2p", "Peer offline")}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <div class="flex shrink-0 flex-wrap items-center justify-end gap-1">
+        </:icon>
+        <:meta>
+          <span class={["inline-flex items-center gap-1", session_status_class(@session_status)]}>
+            <Icons.icon_status_signal class="h-3 w-3" />
+            {session_status_label(@session_status)}
+          </span>
+          <span class="inline-flex items-center gap-1">
+            <Icons.icon_webrtc class="h-3 w-3" />
+            {@connection_label || dgettext("p2p", "Measuring")}
+          </span>
+          <span class="inline-flex items-center gap-1">
+            <Icons.icon_status_user class="h-3 w-3" />
+            {if @peer_online,
+              do: dgettext("p2p", "Peer online"),
+              else: dgettext("p2p", "Peer offline")}
+          </span>
+        </:meta>
+        <:facets>
           <.session_badge :if={@call_summary} icon={:icon_camera} testid="p2p-stats-facet-call">
             {call_badge_label(@call_summary)}
           </.session_badge>
@@ -381,7 +418,52 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
           <.session_badge :if={@turn_only} icon={:icon_privacy} testid="p2p-stats-relay">
             {dgettext("p2p", "Relay")}
           </.session_badge>
-        </div>
+        </:facets>
+      </.media_session_status_header>
+
+      <div
+        class="grid grid-cols-2 gap-1 lg:grid-cols-4"
+        aria-label={dgettext("p2p", "P2P health summary")}
+        data-testid="p2p-stats-summary"
+      >
+        <.summary_card
+          icon={:icon_quality_high}
+          label={dgettext("p2p", "Health")}
+          value={net_health_label(@stats.connection.level)}
+          detail={dgettext("p2p", "MOS %{score}", score: format_mos(@stats.connection.mos))}
+          tone_class={net_health_class(@stats.connection.level)}
+          class="bg-canvas"
+          testid="p2p-stats-summary-health"
+        />
+        <.summary_card
+          icon={:icon_clock}
+          label={dgettext("p2p", "Latency")}
+          value={dgettext("p2p", "%{n} ms", n: @stats.connection.rtt_ms)}
+          detail={
+            dgettext("p2p", "%{jitter} ms jitter / %{loss}% loss",
+              jitter: @stats.connection.jitter_ms,
+              loss: @stats.connection.loss_pct
+            )
+          }
+          class="bg-canvas"
+          testid="p2p-stats-summary-latency"
+        />
+        <.summary_card
+          icon={:icon_webrtc}
+          label={dgettext("p2p", "Media")}
+          value={p2p_media_summary(@stats)}
+          detail={p2p_video_summary(@stats.video)}
+          class="bg-canvas"
+          testid="p2p-stats-summary-media"
+        />
+        <.summary_card
+          icon={:icon_btn_connect_lightning}
+          label={dgettext("p2p", "Data")}
+          value={p2p_data_summary(@stats)}
+          detail={p2p_data_detail(@stats)}
+          class="bg-canvas"
+          testid="p2p-stats-summary-data"
+        />
       </div>
     </div>
     """
@@ -412,6 +494,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
   attr :icon, :atom, required: true
   attr :label, :string, required: true
   attr :active, :boolean, default: false
+  attr :testid, :string, default: nil
 
   defp stats_tab(assigns) do
     ~H"""
@@ -421,6 +504,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
       class="group px-retro-4"
       title={@label}
       aria-label={@label}
+      data-testid={@testid}
     >
       <:icon>{apply(Icons, @icon, [%{class: "w-4 h-4"}])}</:icon>
       <span class={[
@@ -565,6 +649,68 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
   defp net_channel_state_label("open"), do: dgettext("p2p", "Open")
   defp net_channel_state_label("connecting"), do: dgettext("p2p", "Connecting")
   defp net_channel_state_label(_), do: dgettext("p2p", "Closed")
+
+  defp p2p_media_summary(%{audio: %{active: true}, video: %{active: true}}),
+    do: dgettext("p2p", "Audio + Video")
+
+  defp p2p_media_summary(%{audio: %{active: true}}), do: dgettext("p2p", "Audio")
+  defp p2p_media_summary(%{video: %{active: true}}), do: dgettext("p2p", "Video")
+  defp p2p_media_summary(_stats), do: dgettext("p2p", "Idle")
+
+  defp p2p_video_summary(%{active: true} = video), do: net_resolution_label(video)
+  defp p2p_video_summary(_video), do: dgettext("p2p", "No video")
+
+  defp p2p_data_summary(%{game: %{active: true}, file: %{active: true}}),
+    do: dgettext("p2p", "Game + File")
+
+  defp p2p_data_summary(%{game: %{active: true}}), do: dgettext("p2p", "Game")
+  defp p2p_data_summary(%{file: %{active: true}}), do: dgettext("p2p", "File")
+  defp p2p_data_summary(_stats), do: dgettext("p2p", "Idle")
+
+  defp p2p_data_detail(%{game: %{active: true}, file: %{active: true}}),
+    do: dgettext("p2p", "Both live")
+
+  defp p2p_data_detail(%{game: %{active: true}}), do: dgettext("p2p", "Game live")
+  defp p2p_data_detail(%{file: %{active: true}}), do: dgettext("p2p", "File live")
+  defp p2p_data_detail(_stats), do: dgettext("p2p", "Game + files")
+
+  defp p2p_connection_summary(stats) do
+    dgettext("p2p", "%{latency} ms / %{loss}% loss",
+      latency: stats.connection.rtt_ms,
+      loss: stats.connection.loss_pct
+    )
+  end
+
+  defp p2p_audio_summary(audio) do
+    dgettext("p2p", "%{state} / %{down} down / %{up} up",
+      state: if(audio.active, do: dgettext("p2p", "Active"), else: dgettext("p2p", "Idle")),
+      down: dgettext("p2p", "%{n} kbps", n: audio.in_kbps),
+      up: dgettext("p2p", "%{n} kbps", n: audio.out_kbps)
+    )
+  end
+
+  defp p2p_video_detail(%{active: true} = video) do
+    dgettext("p2p", "%{source} / %{resolution} / %{fps} fps",
+      source: net_video_source_label(video.source),
+      resolution: net_resolution_label(video),
+      fps: video.fps
+    )
+  end
+
+  defp p2p_video_detail(video) do
+    dgettext("p2p", "%{state} / %{source}",
+      state: dgettext("p2p", "Idle"),
+      source: net_video_source_label(video.source)
+    )
+  end
+
+  defp p2p_channel_summary(channel) do
+    dgettext("p2p", "%{state} / %{sent} sent / %{received} received",
+      state: net_channel_state_label(channel.state),
+      sent: dgettext("p2p", "%{n} kbps", n: channel.sent_kbps),
+      received: dgettext("p2p", "%{n} kbps", n: channel.recv_kbps)
+    )
+  end
 
   @spec net_metric_tip(atom()) :: String.t()
   defp net_metric_tip(:health),

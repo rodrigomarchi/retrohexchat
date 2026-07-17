@@ -7,6 +7,8 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ScreenShareControl do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.MediaSession.IconButton
+
   alias RetroHexChatWeb.Icons.CallControls
 
   attr :call, :map, required: true
@@ -14,24 +16,20 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ScreenShareControl do
   @spec screen_share_control(map()) :: Phoenix.LiveView.Rendered.t()
   def screen_share_control(assigns) do
     ~H"""
-    <button
-      type="button"
-      class={[
-        "flex h-10 w-10 min-w-[2.5rem] items-center justify-center bg-surface shadow-retro-raised",
-        "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground",
-        screen_share_active?(@call) && "bg-muted shadow-retro-sunken text-primary",
+    <.media_session_icon_button
+      label={screen_share_title(@call)}
+      active={screen_share_active?(@call)}
+      pressed={screen_share_active?(@call)}
+      class={
         screen_share_blocked?(@call) &&
           "bg-destructive text-destructive-foreground shadow-retro-sunken"
-      ]}
-      aria-label={screen_share_title(@call)}
-      title={screen_share_title(@call)}
-      aria-pressed={to_string(screen_share_active?(@call))}
+      }
       disabled={screen_share_blocked?(@call)}
       data-group-call-screen-share-for={@call.token}
       data-testid="group-call-screen-share-toggle"
     >
-      <CallControls.icon_call_screen_share class="h-8 w-8" />
-    </button>
+      <CallControls.icon_call_screen_share class="h-4 w-4" />
+    </.media_session_icon_button>
     """
   end
 
