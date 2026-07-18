@@ -24,7 +24,7 @@ test.describe("chat desktop on a phone (stacked single-window)", () => {
   test("shows one fullscreen window at a time, switched via the taskbar", async ({
     page,
   }) => {
-    const { chat } = await signedInUser(page);
+    await signedInUser(page);
 
     const desktop = page.getByTestId("chat-desktop");
     const workspace = desktop.locator(".desktop__workspace");
@@ -32,13 +32,31 @@ test.describe("chat desktop on a phone (stacked single-window)", () => {
     const timersWindow = page.getByTestId("timers-window");
     const menuBar = page.getByTestId("menu-bar");
     const startButton = page.locator("[data-window-start]");
-    const chatTaskbarBtn = page.locator('[data-window-taskbar="chat"]');
-    const timersTaskbarBtn = page.locator('[data-window-taskbar="timers"]');
+    const desktopToolsMenu = menuBar
+      .locator(".app-menu-bar__desktop-menu button[data-menubar-trigger]")
+      .filter({ hasText: "Tools" });
+    const mobileMenuTrigger = page.getByTestId("app-mobile-menu-trigger");
+    const desktopChatTaskbarBtn = page.locator(
+      '.desktop-taskbar__window-button[data-window-taskbar="chat"]',
+    );
+    const desktopTimersTaskbarBtn = page.locator(
+      '.desktop-taskbar__window-button[data-window-taskbar="timers"]',
+    );
+    const mobileTaskSwitcherTrigger = page.getByTestId(
+      "mobile-task-switcher-trigger",
+    );
+    const mobileTaskSwitcherPanel = page.locator(
+      "[data-mobile-task-switcher]",
+    );
 
-    // The menu bar, Start button and taskbar all remain on mobile.
+    // The shell remains complete on mobile, but dense horizontal controls
+    // collapse behind semantic launchers.
     await expect(menuBar).toBeVisible();
     await expect(startButton).toBeVisible();
-    await expect(chatTaskbarBtn).toBeVisible();
+    await expect(desktopToolsMenu).toBeHidden();
+    await expect(mobileMenuTrigger).toBeVisible();
+    await expect(desktopChatTaskbarBtn).toBeHidden();
+    await expect(mobileTaskSwitcherTrigger).toBeVisible();
 
     // The chat window fills the workspace (fullscreen app layout).
     await expect(chatWindow).toBeVisible();
@@ -50,10 +68,43 @@ test.describe("chat desktop on a phone (stacked single-window)", () => {
     expect(chatBox!.height).toBeGreaterThanOrEqual(wsBox!.height - 2);
 
     // Opening Timers makes it the sole visible window; the chat window hides.
-    await chat.openTimersFromToolsMenu();
+    await mobileMenuTrigger.click();
+    const mobileMenuDropdown = menuBar.locator(
+      "[data-menubar-dropdown]:not(.u-hidden)",
+    );
+    const fileCategory = mobileMenuDropdown.getByTestId(
+      "app-mobile-menu-category-file",
+    );
+    const toolsCategory = mobileMenuDropdown.getByTestId(
+      "app-mobile-menu-category-tools",
+    );
+    const fileSection = mobileMenuDropdown.getByTestId(
+      "app-mobile-menu-section-file",
+    );
+    const toolsSection = mobileMenuDropdown.getByTestId(
+      "app-mobile-menu-section-tools",
+    );
+    const timersMenuItem = mobileMenuDropdown.getByTestId(
+      "context-menu-item-open_timers_dialog",
+    );
+    await expect(mobileMenuDropdown).toBeVisible();
+    await expect(fileCategory).toBeVisible();
+    await expect(toolsCategory).toBeVisible();
+    await expect(fileCategory).toHaveAttribute("aria-selected", "true");
+    await expect(fileSection).toBeVisible();
+    await expect(toolsSection).toBeHidden();
+    await expect(timersMenuItem).toBeHidden();
+
+    await toolsCategory.click();
+    await expect(fileCategory).toHaveAttribute("aria-selected", "false");
+    await expect(toolsCategory).toHaveAttribute("aria-selected", "true");
+    await expect(fileSection).toBeHidden();
+    await expect(toolsSection).toBeVisible();
+    await expect(timersMenuItem).toBeVisible();
+    await timersMenuItem.click();
     await expect(timersWindow).toBeVisible();
     await expect(chatWindow).toBeHidden();
-    await expect(timersTaskbarBtn).toBeVisible();
+    await expect(desktopTimersTaskbarBtn).toBeHidden();
 
     // Geometry controls are dropped on mobile — only the close button remains.
     await expect(
@@ -66,8 +117,13 @@ test.describe("chat desktop on a phone (stacked single-window)", () => {
       timersWindow.locator('[data-window-control="close"]'),
     ).toBeVisible();
 
-    // Tapping the chat taskbar button switches back; Timers hides.
-    await chatTaskbarBtn.click();
+    // Tapping the mobile task switcher exposes a vertical list; choosing Chat
+    // switches back without horizontal taskbar scrolling.
+    await mobileTaskSwitcherTrigger.click();
+    await expect(mobileTaskSwitcherPanel).toBeVisible();
+    await mobileTaskSwitcherPanel
+      .locator('[data-mobile-task-switcher-item][data-window-taskbar="chat"]')
+      .click();
     await expect(chatWindow).toBeVisible();
     await expect(timersWindow).toBeHidden();
   });

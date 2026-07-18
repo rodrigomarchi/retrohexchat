@@ -44,6 +44,15 @@ const MenuBarHook = {
 
     // Click on a dropdown item closes all menus
     this.el.addEventListener("click", (e) => {
+      const mobileCategory = e.target.closest("[data-mobile-menu-category]");
+
+      if (mobileCategory) {
+        e.preventDefault();
+        e.stopPropagation();
+        this._activateMobileMenuCategory(mobileCategory);
+        return;
+      }
+
       const copyItem = e.target.closest("[data-menubar-copy-selection]");
 
       if (copyItem) {
@@ -103,6 +112,21 @@ const MenuBarHook = {
       }
     });
     this._activeMenu = null;
+  },
+
+  _activateMobileMenuCategory(category) {
+    const root = category.closest("[data-mobile-menu-root]");
+    if (!root) return;
+
+    const section = category.dataset.mobileMenuCategory;
+    root.querySelectorAll("[data-mobile-menu-category]").forEach((button) => {
+      const active = button.dataset.mobileMenuCategory === section;
+      button.dataset.active = active ? "true" : "false";
+      button.setAttribute("aria-selected", active ? "true" : "false");
+    });
+    root.querySelectorAll("[data-mobile-menu-section]").forEach((panel) => {
+      panel.classList.toggle("u-hidden", panel.dataset.mobileMenuSection !== section);
+    });
   },
 
   _refreshCopySelectionItems(menu) {

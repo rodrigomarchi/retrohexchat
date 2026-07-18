@@ -72,9 +72,7 @@ msgstr "Close Group Call?"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:94
 #, elixir-autogen, elixir-format
-msgid ""
-"Closing this window leaves the group call in %{channel}. To keep the call "
-"running and just tidy up, minimize the window instead."
+msgid "Closing this window leaves the group call in %{channel}. To keep the call running and just tidy up, minimize the window instead."
 msgstr ""
 "Menutup jendela ini meninggalkan panggilan grup %{channel}Untuk menjaga "
 "panggilan berjalan dan hanya merapikan, meminimalkan jendela sebagai "
@@ -134,14 +132,12 @@ msgstr "Panggilan grup akhir"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:111
 #, elixir-autogen, elixir-format
-msgid ""
-"End the group call in %{channel} for everyone? All participants will be "
-"disconnected."
+msgid "End the group call in %{channel} for everyone? All participants will be disconnected."
 msgstr ""
 "Akhiri panggilan grup %{channel} untuk semua orang? Semua peserta akan "
 "diputus."
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:200
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:255
 #: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:37
 #: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:354
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1056
@@ -246,9 +242,7 @@ msgstr "Tinggalkan panggilan grup"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:86
 #, elixir-autogen, elixir-format
-msgid ""
-"Leave the group call in %{channel}? Your microphone and camera will "
-"disconnect."
+msgid "Leave the group call in %{channel}? Your microphone and camera will disconnect."
 msgstr ""
 "Tinggalkan panggilan grup di %{channel}Mikrofon dan kameramu akan dimatikan."
 
@@ -320,9 +314,7 @@ msgstr "Peserta Unmute"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:102
 #, elixir-autogen, elixir-format
-msgid ""
-"You are already in a group call in %{channel}. Leave it and join the call in"
-" %{new_channel}?"
+msgid "You are already in a group call in %{channel}. Leave it and join the call in %{new_channel}?"
 msgstr ""
 "Anda sudah dalam kelompok panggilan di %{channel}Tinggalkan dan bergabung "
 "dengan panggilan masuk %{new_channel}?"
@@ -452,9 +444,7 @@ msgstr "%{inbound} dalam / %{fanout} fanout"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:67
 #, elixir-autogen, elixir-format
-msgid ""
-"%{level} quality: RTT %{rtt} ms, loss %{loss}%, %{bitrate} kbps, %{fps} fps,"
-" freezes %{freezes}"
+msgid "%{level} quality: RTT %{rtt} ms, loss %{loss}%, %{bitrate} kbps, %{fps} fps, freezes %{freezes}"
 msgstr ""
 "%{level} kualitas: RTT %{rtt} ms, kehilangan %{loss}%, %{bitrate} kbps, "
 "%{fps} fps, membeku %{freezes}"
@@ -528,8 +518,7 @@ msgstr "%{sent} naik / %{received} turun"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:358
 #, elixir-autogen, elixir-format
-msgid ""
-"%{state} conference in %{channel}: %{count}/%{max} participants, %{duration}"
+msgid "%{state} conference in %{channel}: %{count}/%{max} participants, %{duration}"
 msgstr ""
 "%{state} konferensi di %{channel}: %{count}/%{max} Peserta, %{duration}"
 
@@ -1139,9 +1128,7 @@ msgstr "Mute semua peserta peringkat-rendah"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:128
 #, elixir-autogen, elixir-format
-msgid ""
-"Mute all lower-ranked participants in %{channel}? They cannot unmute until a"
-" moderator allows their microphone again."
+msgid "Mute all lower-ranked participants in %{channel}? They cannot unmute until a moderator allows their microphone again."
 msgstr ""
 "Mute semua peserta peringkat rendah di %{channel}♪ They cannot unmute till a"
 " moderator allowed their microphone again. ♪"
@@ -1324,10 +1311,7 @@ msgstr "Arus remote"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:119
 #, elixir-autogen, elixir-format
-msgid ""
-"Remove %{target} from %{channel}? This will ban them from the channel, "
-"disconnect them from the conference, and prevent them from rejoining until a"
-" channel operator unbans them."
+msgid "Remove %{target} from %{channel}? This will ban them from the channel, disconnect them from the conference, and prevent them from rejoining until a channel operator unbans them."
 msgstr ""
 "Hapus %{target} dari %{channel}? Ini akan melarang mereka dari saluran, "
 "memutuskan mereka dari konferensi, dan mencegah mereka dari bergabung "
@@ -1569,9 +1553,7 @@ msgstr "Matikan semua kamera peringkat rendah"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:136
 #, elixir-autogen, elixir-format
-msgid ""
-"Turn off cameras for all lower-ranked participants in %{channel}? They "
-"cannot turn camera back on until a moderator allows it again."
+msgid "Turn off cameras for all lower-ranked participants in %{channel}? They cannot turn camera back on until a moderator allows it again."
 msgstr ""
 "Matikan kamera untuk semua peserta peringkat-rendah di %{channel}Mereka "
 "tidak bisa menghidupkan kembali kamera sampai moderator mengizinkannya lagi."
@@ -1680,9 +1662,7 @@ msgstr "Kontrol konferensi"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/pre_join_dialog.ex:202
 #, elixir-autogen, elixir-format
-msgid ""
-"Each browser sends media to the room server; the server routes streams to "
-"the other participants."
+msgid "Each browser sends media to the room server; the server routes streams to the other participants."
 msgstr ""
 "Setiap peramban mengirim media ke server kamar; rute server mengalir ke "
 "peserta lain."
@@ -1756,9 +1736,7 @@ msgstr "Video + Audio"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/pre_join_dialog.ex:71
 #, elixir-autogen, elixir-format
-msgid ""
-"Choose how you enter the room. You can change media and layout after "
-"joining."
+msgid "Choose how you enter the room. You can change media and layout after joining."
 msgstr ""
 "Pilih bagaimana Anda memasuki ruangan. Anda dapat mengubah media dan tata "
 "letak setelah bergabung."

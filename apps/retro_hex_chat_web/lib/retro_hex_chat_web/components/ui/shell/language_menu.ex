@@ -16,6 +16,7 @@ defmodule RetroHexChatWeb.Components.UI.LanguageMenu do
   attr :current_path, :string, default: nil
   attr :return_to, :string, default: nil
   attr :locale, :string, default: nil
+  attr :class, :any, default: nil
 
   @spec language_menu(map()) :: Phoenix.LiveView.Rendered.t()
   def language_menu(assigns) do
@@ -27,25 +28,49 @@ defmodule RetroHexChatWeb.Components.UI.LanguageMenu do
       |> assign(:locales, locale_links(assigns.mode, assigns.current_path, assigns.return_to))
 
     ~H"""
-    <.menu label={dgettext("ui", "Language")} testid="language-menu-trigger">
-      <.context_menu_item
-        :for={locale <- @locales}
-        data-testid={"language-menu-item-#{locale.code}"}
-        data-locale={locale.code}
-        class={locale.code == @current_locale && "font-bold text-text"}
+    <.menu label={dgettext("ui", "Language")} testid="language-menu-trigger" class={@class}>
+      <.language_menu_items
+        mode={@mode}
+        current_path={@current_path}
+        return_to={@return_to}
+        locale={@locale}
+      />
+    </.menu>
+    """
+  end
+
+  attr :mode, :atom, required: true, values: [:app, :public]
+  attr :current_path, :string, default: nil
+  attr :return_to, :string, default: nil
+  attr :locale, :string, default: nil
+
+  @spec language_menu_items(map()) :: Phoenix.LiveView.Rendered.t()
+  def language_menu_items(assigns) do
+    current_locale = I18n.normalize_locale(assigns.locale) || I18n.current_locale()
+
+    assigns =
+      assigns
+      |> assign(:current_locale, current_locale)
+      |> assign(:locales, locale_links(assigns.mode, assigns.current_path, assigns.return_to))
+
+    ~H"""
+    <.context_menu_item
+      :for={locale <- @locales}
+      data-testid={"language-menu-item-#{locale.code}"}
+      data-locale={locale.code}
+      class={locale.code == @current_locale && "font-bold text-text"}
+      aria-current={locale.code == @current_locale && "true"}
+    >
+      <:icon><Icons.icon_globe class="h-[14px] w-[14px]" /></:icon>
+      <a
+        href={locale.href}
+        hreflang={locale.bcp47}
+        class="block flex-1"
         aria-current={locale.code == @current_locale && "true"}
       >
-        <:icon><Icons.icon_globe class="h-[14px] w-[14px]" /></:icon>
-        <a
-          href={locale.href}
-          hreflang={locale.bcp47}
-          class="block flex-1"
-          aria-current={locale.code == @current_locale && "true"}
-        >
-          {locale.label}
-        </a>
-      </.context_menu_item>
-    </.menu>
+        {locale.label}
+      </a>
+    </.context_menu_item>
     """
   end
 

@@ -72,9 +72,7 @@ msgstr "关闭组呼叫 ?"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:94
 #, elixir-autogen, elixir-format
-msgid ""
-"Closing this window leaves the group call in %{channel}. To keep the call "
-"running and just tidy up, minimize the window instead."
+msgid "Closing this window leaves the group call in %{channel}. To keep the call running and just tidy up, minimize the window instead."
 msgstr "关闭此窗口后, 组调用 %{channel}保持电话运行和清理, 将窗口最小化。"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1064
@@ -131,12 +129,10 @@ msgstr "结束组呼叫"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:111
 #, elixir-autogen, elixir-format
-msgid ""
-"End the group call in %{channel} for everyone? All participants will be "
-"disconnected."
+msgid "End the group call in %{channel} for everyone? All participants will be disconnected."
 msgstr "结束小组呼叫 %{channel} 给大家看? 所有参与者都将被切断。"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:200
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:255
 #: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:37
 #: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:354
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1056
@@ -241,9 +237,7 @@ msgstr "离开小组呼叫"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:86
 #, elixir-autogen, elixir-format
-msgid ""
-"Leave the group call in %{channel}? Your microphone and camera will "
-"disconnect."
+msgid "Leave the group call in %{channel}? Your microphone and camera will disconnect."
 msgstr "离开小组呼叫 %{channel}你的麦克风和相机会断开。"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1459
@@ -314,9 +308,7 @@ msgstr "无意参与者"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:102
 #, elixir-autogen, elixir-format
-msgid ""
-"You are already in a group call in %{channel}. Leave it and join the call in"
-" %{new_channel}?"
+msgid "You are already in a group call in %{channel}. Leave it and join the call in %{new_channel}?"
 msgstr "你已经在小组呼叫中了 %{channel}离开它并加入呼叫 %{new_channel}?"
 
 #: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:718
@@ -442,9 +434,7 @@ msgstr "%{inbound} 单位/ %{fanout} 风扇"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:67
 #, elixir-autogen, elixir-format
-msgid ""
-"%{level} quality: RTT %{rtt} ms, loss %{loss}%, %{bitrate} kbps, %{fps} fps,"
-" freezes %{freezes}"
+msgid "%{level} quality: RTT %{rtt} ms, loss %{loss}%, %{bitrate} kbps, %{fps} fps, freezes %{freezes}"
 msgstr ""
 "%{level} 质量:RTT %{rtt}/ms,损失%{loss}%,%{bitrate}kbps,%{fps}fps,冻结%{freezes}"
 
@@ -517,8 +507,7 @@ msgstr "%{sent} 上 / %{received} 下"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:358
 #, elixir-autogen, elixir-format
-msgid ""
-"%{state} conference in %{channel}: %{count}/%{max} participants, %{duration}"
+msgid "%{state} conference in %{channel}: %{count}/%{max} participants, %{duration}"
 msgstr "%{state}会议,%{channel}:%{count}/%{max}与会者,%{duration}"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:545
@@ -1127,9 +1116,7 @@ msgstr "停止所有级别较低的参与者"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:128
 #, elixir-autogen, elixir-format
-msgid ""
-"Mute all lower-ranked participants in %{channel}? They cannot unmute until a"
-" moderator allows their microphone again."
+msgid "Mute all lower-ranked participants in %{channel}? They cannot unmute until a moderator allows their microphone again."
 msgstr "要将 %{channel} 中所有较低权限的参与者静音吗？在主持人重新允许其麦克风之前，他们无法取消静音。"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:630
@@ -1309,10 +1296,7 @@ msgstr "远程流"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:119
 #, elixir-autogen, elixir-format
-msgid ""
-"Remove %{target} from %{channel}? This will ban them from the channel, "
-"disconnect them from the conference, and prevent them from rejoining until a"
-" channel operator unbans them."
+msgid "Remove %{target} from %{channel}? This will ban them from the channel, disconnect them from the conference, and prevent them from rejoining until a channel operator unbans them."
 msgstr "要将 %{target} 从 %{channel} 移除吗？这会将其从频道封禁、断开其会议连接，并阻止其重新加入，直到频道操作员解除封禁。"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:81
@@ -1551,9 +1535,7 @@ msgstr "关闭所有级别较低的摄像头"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:136
 #, elixir-autogen, elixir-format
-msgid ""
-"Turn off cameras for all lower-ranked participants in %{channel}? They "
-"cannot turn camera back on until a moderator allows it again."
+msgid "Turn off cameras for all lower-ranked participants in %{channel}? They cannot turn camera back on until a moderator allows it again."
 msgstr "在%{channel}中为所有排名较低的参与者关闭相机? 除非主持人再次允许,否则他们不能打开摄像机。"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1389
@@ -1660,9 +1642,7 @@ msgstr "会议控制"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/pre_join_dialog.ex:202
 #, elixir-autogen, elixir-format
-msgid ""
-"Each browser sends media to the room server; the server routes streams to "
-"the other participants."
+msgid "Each browser sends media to the room server; the server routes streams to the other participants."
 msgstr "每个浏览器都会向房间服务器发送媒体;服务器的路由会流到其他参与者."
 
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:853
@@ -1734,9 +1714,7 @@ msgstr "音频 + 视频"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/pre_join_dialog.ex:71
 #, elixir-autogen, elixir-format
-msgid ""
-"Choose how you enter the room. You can change media and layout after "
-"joining."
+msgid "Choose how you enter the room. You can change media and layout after joining."
 msgstr "选择如何进入房间。 加入后可以改变媒体和布局."
 
 #: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:53

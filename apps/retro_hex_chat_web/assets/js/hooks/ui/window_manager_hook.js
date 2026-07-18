@@ -415,6 +415,12 @@ const WindowManagerHook = {
       return;
     }
 
+    const mobileTaskSwitcherTrigger = e.target.closest("[data-mobile-task-switcher-trigger]");
+    if (mobileTaskSwitcherTrigger) {
+      this.toggleMobileTaskSwitcher();
+      return;
+    }
+
     // A single click selects a desktop shortcut (it opens on double-click); any
     // other click clears the selection, mirroring a real desktop.
     const shortcut = e.target.closest("[data-window-shortcut]");
@@ -436,11 +442,13 @@ const WindowManagerHook = {
 
     const taskBtn = e.target.closest("[data-window-taskbar]");
     if (taskBtn) {
+      if (e.target.closest("[data-mobile-task-switcher-item]")) this.closeMobileTaskSwitcher();
       this.onTaskbarClick(taskBtn.dataset.windowTaskbar, taskBtn);
       return;
     }
 
     if (e.target.closest("[data-window-start]")) {
+      this.closeMobileTaskSwitcher();
       this.toggleStartMenu();
       return;
     }
@@ -454,6 +462,7 @@ const WindowManagerHook = {
       // <button>) — it must not act.
       if (opener.getAttribute("aria-disabled") === "true" || opener.disabled) return;
       this.command("open", opener.dataset.windowOpen, opener);
+      this.closeMobileTaskSwitcher();
       this.closeStartMenu();
       return;
     }
@@ -581,6 +590,7 @@ const WindowManagerHook = {
       e.stopPropagation();
       this.closeTaskbarMenus();
       this.closeStartMenu();
+      this.closeMobileTaskSwitcher();
       return;
     }
 
@@ -608,6 +618,8 @@ const WindowManagerHook = {
   anyMenuOpen() {
     const start = this.startMenu();
     if (start && !start.classList.contains("u-hidden")) return true;
+    const mobileTaskSwitcher = this.mobileTaskSwitcher();
+    if (mobileTaskSwitcher && !mobileTaskSwitcher.classList.contains("u-hidden")) return true;
     for (const menu of this.el.querySelectorAll("[data-taskbar-menu]")) {
       if (!menu.classList.contains("u-hidden")) return true;
     }
@@ -1034,13 +1046,15 @@ const WindowManagerHook = {
   flashWindow(id) {
     const st = this.windows[id].state;
     if (st.open && !st.minimized && this.focusedId === id) return;
-    const btn = this.taskbarButton(id);
-    if (btn) btn.classList.add("is-flashing");
+    for (const btn of this.taskbarButtons(id)) {
+      btn.classList.add("is-flashing");
+    }
   },
 
   clearFlash(id) {
-    const btn = this.taskbarButton(id);
-    if (btn) btn.classList.remove("is-flashing");
+    for (const btn of this.taskbarButtons(id)) {
+      btn.classList.remove("is-flashing");
+    }
   },
 
   // ── Zoom animation ─────────────────────────────────────────
@@ -1133,14 +1147,49 @@ const WindowManagerHook = {
   },
 
   updateTaskbar(id) {
-    const btn = this.taskbarButton(id);
-    if (!btn) return;
+    const buttons = this.taskbarButtons(id);
+    if (buttons.length === 0) return;
     const st = this.windows[id].state;
-    btn.classList.toggle("u-hidden", !st.open);
-    btn.classList.toggle("is-active", st.open && !st.minimized && this.focusedId === id);
-    if (st.open && !st.minimized && this.focusedId === id) {
-      btn.classList.remove("is-flashing");
+    for (const btn of buttons) {
+      btn.classList.toggle("u-hidden", !st.open);
+      btn.classList.toggle("is-active", st.open && !st.minimized && this.focusedId === id);
+      if (st.open && !st.minimized && this.focusedId === id) {
+        btn.classList.remove("is-flashing");
+      }
     }
+  },
+
+  // ── Mobile task switcher ───────────────────────────────────
+
+  mobileTaskSwitcher() {
+    return this.el.querySelector("[data-mobile-task-switcher]");
+  },
+
+  mobileTaskSwitcherTrigger() {
+    return this.el.querySelector("[data-mobile-task-switcher-trigger]");
+  },
+
+  toggleMobileTaskSwitcher() {
+    this.closeTaskbarMenus();
+    this.closeStartMenu();
+
+    const menu = this.mobileTaskSwitcher();
+    if (!menu) return;
+
+    const opening = menu.classList.contains("u-hidden");
+    menu.classList.toggle("u-hidden", !opening);
+    this.setMobileTaskSwitcherExpanded(opening);
+  },
+
+  closeMobileTaskSwitcher() {
+    const menu = this.mobileTaskSwitcher();
+    if (menu) menu.classList.add("u-hidden");
+    this.setMobileTaskSwitcherExpanded(false);
+  },
+
+  setMobileTaskSwitcherExpanded(expanded) {
+    const trigger = this.mobileTaskSwitcherTrigger();
+    if (trigger) trigger.setAttribute("aria-expanded", expanded ? "true" : "false");
   },
 
   // ── Start menu ─────────────────────────────────────────────
@@ -1161,6 +1210,12 @@ const WindowManagerHook = {
 
   onDocPointerDown(e) {
     if (!e.target.closest("[data-taskbar-menu]")) this.closeTaskbarMenus();
+    if (
+      !e.target.closest("[data-mobile-task-switcher]") &&
+      !e.target.closest("[data-mobile-task-switcher-trigger]")
+    ) {
+      this.closeMobileTaskSwitcher();
+    }
 
     const menu = this.startMenu();
     if (!menu || menu.classList.contains("u-hidden")) return;
@@ -1245,7 +1300,12 @@ const WindowManagerHook = {
   },
 
   taskbarButton(id) {
-    return this.el.querySelector(`[data-window-taskbar="${cssEscape(id)}"]`);
+    const buttons = this.taskbarButtons(id);
+    return buttons.find((btn) => btn.getClientRects().length > 0) || buttons[0] || null;
+  },
+
+  taskbarButtons(id) {
+    return Array.from(this.el.querySelectorAll(`[data-window-taskbar="${cssEscape(id)}"]`));
   },
 
   readStorage() {

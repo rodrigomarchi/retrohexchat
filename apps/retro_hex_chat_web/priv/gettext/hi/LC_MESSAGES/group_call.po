@@ -72,9 +72,7 @@ msgstr "ग्रुप कॉल बंद करें?"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:94
 #, elixir-autogen, elixir-format
-msgid ""
-"Closing this window leaves the group call in %{channel}. To keep the call "
-"running and just tidy up, minimize the window instead."
+msgid "Closing this window leaves the group call in %{channel}. To keep the call running and just tidy up, minimize the window instead."
 msgstr ""
 "इस विंडो को बंद करने से %{channel} में ग्रुप कॉल छोड़ देता है। कॉल चलाने के "
 "लिए और सिर्फ टाइड अप रखने के लिए, इसके बजाय विंडो को कम करें।"
@@ -133,14 +131,12 @@ msgstr "एंड ग्रुप कॉल"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:111
 #, elixir-autogen, elixir-format
-msgid ""
-"End the group call in %{channel} for everyone? All participants will be "
-"disconnected."
+msgid "End the group call in %{channel} for everyone? All participants will be disconnected."
 msgstr ""
 "सभी के लिए %{channel} में ग्रुप कॉल समाप्त करें? सभी प्रतिभागियों को "
 "डिस्कनेक्ट किया जाएगा।"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:200
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:255
 #: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:37
 #: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:354
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1056
@@ -245,9 +241,7 @@ msgstr "समूह कॉल छोड़ें"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:86
 #, elixir-autogen, elixir-format
-msgid ""
-"Leave the group call in %{channel}? Your microphone and camera will "
-"disconnect."
+msgid "Leave the group call in %{channel}? Your microphone and camera will disconnect."
 msgstr ""
 "%{channel} में ग्रुप कॉल छोड़ें? आपका माइक्रोफोन और कैमरा डिस्कनेक्ट हो "
 "जाएगा।"
@@ -320,9 +314,7 @@ msgstr "Unmute participant"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:102
 #, elixir-autogen, elixir-format
-msgid ""
-"You are already in a group call in %{channel}. Leave it and join the call in"
-" %{new_channel}?"
+msgid "You are already in a group call in %{channel}. Leave it and join the call in %{new_channel}?"
 msgstr ""
 "आप पहले से ही %{channel} में एक समूह कॉल में हैं। इसे छोड़ दें और "
 "%{new_channel} में कॉल में शामिल हों?"
@@ -454,9 +446,7 @@ msgstr "%{inbound} में / %{fanout} फैनआउट"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:67
 #, elixir-autogen, elixir-format
-msgid ""
-"%{level} quality: RTT %{rtt} ms, loss %{loss}%, %{bitrate} kbps, %{fps} fps,"
-" freezes %{freezes}"
+msgid "%{level} quality: RTT %{rtt} ms, loss %{loss}%, %{bitrate} kbps, %{fps} fps, freezes %{freezes}"
 msgstr ""
 "%{level} गुणवत्ता: RTT %{rtt} ms, हानि %{loss}%, %{bitrate} kbps, %{fps} "
 "fps, फ्रीज %{freezes}"
@@ -530,8 +520,7 @@ msgstr "%{sent} ऊपर / %{received} नीचे"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:358
 #, elixir-autogen, elixir-format
-msgid ""
-"%{state} conference in %{channel}: %{count}/%{max} participants, %{duration}"
+msgid "%{state} conference in %{channel}: %{count}/%{max} participants, %{duration}"
 msgstr ""
 "%{channel} में %{state} कॉन्फ़्रेंस: %{count}/%{max} प्रतिभागी, %{duration}"
 
@@ -1144,9 +1133,7 @@ msgstr "सभी कम रैंक वाले प्रतिभागि�
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:128
 #, elixir-autogen, elixir-format
-msgid ""
-"Mute all lower-ranked participants in %{channel}? They cannot unmute until a"
-" moderator allows their microphone again."
+msgid "Mute all lower-ranked participants in %{channel}? They cannot unmute until a moderator allows their microphone again."
 msgstr ""
 "%{channel} में सभी कम रैंक वाले प्रतिभागियों को म्यूट करें? जब तक एक मॉडरेटर"
 " अपने माइक्रोफोन को फिर से अनुमति देता है तब तक वे नष्ट नहीं हो सकते।"
@@ -1329,10 +1316,7 @@ msgstr "रिमोट स्ट्रीम"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:119
 #, elixir-autogen, elixir-format
-msgid ""
-"Remove %{target} from %{channel}? This will ban them from the channel, "
-"disconnect them from the conference, and prevent them from rejoining until a"
-" channel operator unbans them."
+msgid "Remove %{target} from %{channel}? This will ban them from the channel, disconnect them from the conference, and prevent them from rejoining until a channel operator unbans them."
 msgstr ""
 "%{target} %{channel} से निकालें? यह उन्हें चैनल से प्रतिबंधित करेगा, उन्हें "
 "सम्मेलन से डिस्कनेक्ट करेगा और उन्हें फिर से जुड़ने से रोक देगा जब तक कि एक "
@@ -1574,9 +1558,7 @@ msgstr "सभी कम रैंक वाले कैमरों को ब
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:136
 #, elixir-autogen, elixir-format
-msgid ""
-"Turn off cameras for all lower-ranked participants in %{channel}? They "
-"cannot turn camera back on until a moderator allows it again."
+msgid "Turn off cameras for all lower-ranked participants in %{channel}? They cannot turn camera back on until a moderator allows it again."
 msgstr ""
 "%{channel} में सभी कम रैंक वाले प्रतिभागियों के लिए कैमरे बंद करें? जब तक एक"
 " मॉडरेटर इसे फिर से अनुमति देता है तब तक वे कैमरे को वापस नहीं बदल सकते।"
@@ -1686,9 +1668,7 @@ msgstr "सम्मेलन नियंत्रण"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/pre_join_dialog.ex:202
 #, elixir-autogen, elixir-format
-msgid ""
-"Each browser sends media to the room server; the server routes streams to "
-"the other participants."
+msgid "Each browser sends media to the room server; the server routes streams to the other participants."
 msgstr ""
 "प्रत्येक ब्राउज़र मीडिया को रूम सर्वर पर भेजता है; सर्वर मार्ग अन्य "
 "प्रतिभागियों को स्ट्रीम करता है।"
@@ -1762,9 +1742,7 @@ msgstr "ऑडियो + वीडियो"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/pre_join_dialog.ex:71
 #, elixir-autogen, elixir-format
-msgid ""
-"Choose how you enter the room. You can change media and layout after "
-"joining."
+msgid "Choose how you enter the room. You can change media and layout after joining."
 msgstr ""
 "क्या आप कमरे में प्रवेश करते हैं? आप शामिल होने के बाद मीडिया और लेआउट को "
 "बदल सकते हैं।"

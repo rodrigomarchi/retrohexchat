@@ -1,23 +1,10 @@
 defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
   @moduledoc """
-  macOS-style textual menu bar for the App interface.
+  App menu bar for the chat interface.
 
-  Renders a compact, single-line menu bar with File, Edit, View, Tools, and Help
-  dropdown menus. When `connected=false`, only Help is enabled — the other
-  menus are grayed out and non-interactive.
-
-  Uses the same action strings as the previous ToolbarApp, so no backend
-  changes are needed.
-
-  ## Usage
-
-      <.menu_bar_app
-        id="menubar"
-        phx-hook="MenuBarHook"
-        connected={true}
-        is_admin={false}
-        on_action="toolbar_action"
-      />
+  Desktop renders the classic Win98-style textual menu strip. Stacked/mobile
+  shells render one compact menu button that opens the same commands grouped in
+  a vertical menu, so narrow screens do not need horizontal scrolling.
   """
   use RetroHexChatWeb.Component
 
@@ -52,314 +39,611 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
   @spec menu_bar_app(map()) :: Phoenix.LiveView.Rendered.t()
   def menu_bar_app(assigns) do
     ~H"""
-    <.menu_bar id={@id} class={@class} {@rest}>
-      <%!-- File menu --%>
-      <.menu label={dgettext("ui", "File")} disabled={!@connected}>
-        <.context_menu_label>{dgettext("ui", "Account")}</.context_menu_label>
-        <.menu_item
-          icon_fn={:icon_lock}
-          label={dgettext("ui", "Register Nickname...")}
-          action="open_account_register"
-          on_action={@on_action}
-        />
-        <.menu_item
-          icon_fn={:icon_status_user}
-          label={dgettext("ui", "Identify...")}
-          action="open_account_identify"
-          on_action={@on_action}
-        />
-        <.menu_item
-          icon_fn={:icon_dialog_nick}
-          label={dgettext("ui", "Change Nickname...")}
-          action="open_account_profile"
-          on_action={@on_action}
-        />
-        <.menu_item
-          icon_fn={:icon_status_user}
-          label={dgettext("ui", "Edit Profile...")}
-          action="open_account_profile"
-          on_action={@on_action}
-        />
-        <.menu_item
-          icon_fn={:icon_btn_dnd}
-          label={dgettext("ui", "Set Away...")}
-          action="open_account_presence"
-          on_action={@on_action}
-        />
-        <.menu_item
-          icon_fn={:icon_tab_status}
-          label={dgettext("ui", "Account Info")}
-          action="account_info"
-          on_action={@on_action}
-        />
-        <.context_menu_separator />
-        <.menu_item
-          icon_fn={:icon_btn_disconnect}
-          label={dgettext("ui", "Disconnect")}
-          action="disconnect"
-          on_action={@on_action}
-        />
-        <.menu_item
-          :if={@is_admin}
-          icon_fn={:icon_dialog_admin_console}
-          label={dgettext("ui", "Admin Console")}
-          action="open_admin_console"
+    <.menu_bar id={@id} class={classes(["app-menu-bar", @class])} {@rest}>
+      <.mobile_main_menu
+        menu_id={@id}
+        connected={@connected}
+        is_admin={@is_admin}
+        p2p_active={@p2p_active}
+        p2p_turn_available={@p2p_turn_available}
+        arcade_available={@arcade_available}
+        language_return_to={@language_return_to}
+        on_action={@on_action}
+      />
+
+      <.menu class="app-menu-bar__desktop-menu" label={dgettext("ui", "File")} disabled={!@connected}>
+        <.file_menu_items is_admin={@is_admin} on_action={@on_action} />
+      </.menu>
+
+      <.menu class="app-menu-bar__desktop-menu" label={dgettext("ui", "Edit")} disabled={!@connected}>
+        <.edit_menu_items on_action={@on_action} />
+      </.menu>
+
+      <.menu class="app-menu-bar__desktop-menu" label={dgettext("ui", "View")} disabled={!@connected}>
+        <.view_menu_items on_action={@on_action} />
+      </.menu>
+
+      <.menu class="app-menu-bar__desktop-menu" label={dgettext("ui", "Tools")} disabled={!@connected}>
+        <.tools_menu_items is_admin={@is_admin} on_action={@on_action} />
+      </.menu>
+
+      <.menu class="app-menu-bar__desktop-menu" label={dgettext("ui", "P2P")} disabled={!@connected}>
+        <.p2p_menu_items
+          p2p_active={@p2p_active}
+          p2p_turn_available={@p2p_turn_available}
           on_action={@on_action}
         />
       </.menu>
 
-      <%!-- Edit menu --%>
-      <.menu label={dgettext("ui", "Edit")} disabled={!@connected}>
-        <.menu_item
-          icon_fn={:icon_btn_remove}
-          label={dgettext("ui", "Clear Window")}
-          action="clear_window"
-          on_action={@on_action}
-        />
-        <.context_menu_separator />
-        <.menu_item
-          icon_fn={:icon_copy}
-          label={dgettext("ui", "Copy")}
-          action="copy_selection"
-          data-menubar-copy-selection="true"
-          data-copy-disabled="true"
-          aria-disabled="true"
-        />
-        <.context_menu_separator />
-        <.menu_item
-          icon_fn={:icon_btn_find}
-          label={dgettext("ui", "Find")}
-          action="toggle_search"
-          on_action={@on_action}
-          shortcut={dgettext("ui", "Ctrl+Shift+F")}
-        />
+      <.menu class="app-menu-bar__desktop-menu" label={dgettext("ui", "Games")} disabled={!@connected}>
+        <.games_menu_items arcade_available={@arcade_available} on_action={@on_action} />
       </.menu>
 
-      <%!-- View menu --%>
-      <.menu label={dgettext("ui", "View")} disabled={!@connected}>
-        <.menu_item
-          icon_fn={:icon_btn_channel_list}
-          label={dgettext("ui", "Channel List")}
-          action="toggle_channel_list"
-          on_action={@on_action}
-        />
-        <.menu_item
-          icon_fn={:icon_btn_toggle_conversations}
-          label={dgettext("ui", "Toggle Conversations")}
-          action="toggle_conversations"
-          on_action={@on_action}
-        />
-        <.menu_item
-          icon_fn={:icon_btn_toggle_nicklist}
-          label={dgettext("ui", "Toggle Nicklist")}
-          action="toggle_nicklist"
-          on_action={@on_action}
-        />
-        <.menu_item
-          icon_fn={:icon_tab_notify}
-          label={dgettext("ui", "Notify List")}
-          action="toggle_notify_list"
-          on_action={@on_action}
-        />
-      </.menu>
+      <.language_menu
+        mode={:app}
+        return_to={@language_return_to}
+        class="app-menu-bar__desktop-menu"
+      />
 
-      <%!-- Tools menu --%>
-      <.menu label={dgettext("ui", "Tools")} disabled={!@connected}>
-        <.menu_item
-          icon_fn={:icon_btn_address_book}
-          label={dgettext("ui", "Address Book")}
-          action="toggle_address_book"
-          on_action={@on_action}
-        />
-        <.menu_item
-          icon_fn={:icon_btn_highlight_words}
-          label={dgettext("ui", "Highlight Words")}
-          action="open_highlight_dialog"
-          on_action={@on_action}
-        />
-        <.menu_item
-          icon_fn={:icon_btn_url_catcher}
-          label={dgettext("ui", "URL Catcher")}
-          action="toggle_url_catcher"
-          on_action={@on_action}
-        />
-        <.menu_item
-          icon_fn={:icon_btn_channel_central}
-          label={dgettext("ui", "Channel Central")}
-          action="open_channel_central"
-          on_action={@on_action}
-        />
-        <.menu_item
-          icon_fn={:icon_btn_search}
-          label={dgettext("ui", "User Lookup")}
-          action="open_user_lookup"
-          on_action={@on_action}
-        />
-        <.menu_item
-          icon_fn={:icon_btn_perform}
-          label={dgettext("ui", "Perform")}
-          action="open_perform_dialog"
-          on_action={@on_action}
-        />
-        <.context_menu_separator />
-        <.menu_item
-          icon_fn={:icon_btn_sounds}
-          label={dgettext("ui", "Sounds")}
-          action="open_sound_settings_dialog"
-          on_action={@on_action}
-        />
-        <.menu_item
-          icon_fn={:icon_btn_flood_protection}
-          label={dgettext("ui", "Flood Protection")}
-          action="open_flood_protection_dialog"
-          on_action={@on_action}
-        />
-        <.menu_item
-          icon_fn={:icon_btn_alias_editor}
-          label={dgettext("ui", "Alias Editor")}
-          action="open_alias_dialog"
-          on_action={@on_action}
-        />
-        <.menu_item
-          icon_fn={:icon_btn_custom_menus}
-          label={dgettext("ui", "Custom Menus")}
-          action="open_custom_menus_dialog"
-          on_action={@on_action}
-        />
-        <.menu_item
-          icon_fn={:icon_btn_auto_respond}
-          label={dgettext("ui", "Auto Respond")}
-          action="open_autorespond_dialog"
-          on_action={@on_action}
-        />
-        <.menu_item
-          icon_fn={:icon_btn_timers}
-          label={dgettext("ui", "Timers")}
-          action="open_timers_dialog"
-          on_action={@on_action}
-        />
-        <.menu_item
-          :if={@is_admin}
-          icon_fn={:icon_btn_bot_management}
-          label={dgettext("ui", "Bot Management")}
-          action="open_bot_dialog"
-          on_action={@on_action}
-        />
-      </.menu>
-
-      <%!-- P2P menu — always enabled: without a session it teaches how to
-            start one; with a session it drives the console sections. --%>
-      <.menu label={dgettext("ui", "P2P")} disabled={!@connected}>
-        <.menu_item
-          :if={!@p2p_active}
-          icon_fn={:icon_protocol_p2p_compact}
-          label={dgettext("ui", "Start a P2P Session...")}
-          action="p2p_how_to_start"
-          on_action={@on_action}
-        />
-        <.menu_item
-          :if={@p2p_active}
-          icon_fn={:icon_microphone}
-          label={dgettext("ui", "Start Audio Call")}
-          action="p2p_start_audio"
-          on_action={@on_action}
-        />
-        <.menu_item
-          :if={@p2p_active}
-          icon_fn={:icon_camera}
-          label={dgettext("ui", "Start Video Call")}
-          action="p2p_start_video"
-          on_action={@on_action}
-        />
-        <.menu_item
-          :if={@p2p_active}
-          icon_fn={:icon_file_send}
-          label={dgettext("ui", "Send a File...")}
-          action="p2p_console_select"
-          on_action={@on_action}
-          phx-value-section="files"
-        />
-        <.menu_item
-          :if={@p2p_active}
-          icon_fn={:icon_game_arcade}
-          label={dgettext("ui", "Play a Game...")}
-          action="p2p_console_select"
-          on_action={@on_action}
-          phx-value-section="games"
-        />
-        <.menu_item
-          :if={@p2p_active}
-          icon_fn={:icon_status_signal}
-          label={dgettext("ui", "Statistics")}
-          action="p2p_console_select"
-          on_action={@on_action}
-          phx-value-section="stats"
-        />
-        <.menu_item
-          :if={@p2p_active && @p2p_turn_available}
-          icon_fn={:icon_lock}
-          label={dgettext("ui", "Toggle Privacy Mode")}
-          action="p2p_toggle_privacy"
-          on_action={@on_action}
-        />
-        <.context_menu_separator :if={@p2p_active} />
-        <.menu_item
-          :if={@p2p_active}
-          icon_fn={:icon_btn_disconnect}
-          label={dgettext("ui", "End Session")}
-          action="p2p_end_session"
-          on_action={@on_action}
-        />
-      </.menu>
-
-      <%!-- Games menu — solo arcade. The item needs a registered + identified
-            nick; it grays out (with a hint label) until then. --%>
-      <.menu label={dgettext("ui", "Games")} disabled={!@connected}>
-        <.menu_item
-          icon_fn={:icon_game_arcade}
-          label={dgettext("ui", "Arcade...")}
-          action="open_arcade"
-          on_action={@on_action}
-          disabled={!@arcade_available}
-        />
-        <.context_menu_label :if={!@arcade_available}>
-          {dgettext("ui", "Register & identify to play")}
-        </.context_menu_label>
-      </.menu>
-
-      <.language_menu mode={:app} return_to={@language_return_to} />
-
-      <%!-- Help menu (always enabled) --%>
-      <.menu label={dgettext("ui", "Help")} disabled={false} testid="app-menu-help-trigger">
-        <.menu_item
-          icon_fn={:icon_btn_help_topics}
-          label={dgettext("ui", "Help Topics")}
-          action="help_topics"
-          on_action={@on_action}
-        />
-        <.menu_item
-          icon_fn={:icon_notepad}
-          label={dgettext("ui", "Message of the Day")}
-          action="show_motd"
-          on_action={@on_action}
-        />
-        <.menu_item
-          icon_fn={:icon_dialog_cheatsheet}
-          label={dgettext("ui", "Shortcut Cheatsheet")}
-          action="toggle_cheatsheet"
-          on_action={@on_action}
-        />
-        <.context_menu_separator />
-        <.context_menu_item on_click={show_modal("about-dialog")} action="show_about">
-          <:icon>{apply(Icons, :icon_dialog_about, [%{class: "w-[14px] h-[14px]"}])}</:icon>
-          {dgettext("ui", "About RetroHexChat")}
-        </.context_menu_item>
+      <.menu
+        class="app-menu-bar__desktop-menu"
+        label={dgettext("ui", "Help")}
+        disabled={false}
+        testid="app-menu-help-trigger"
+      >
+        <.help_menu_items on_action={@on_action} />
       </.menu>
     </.menu_bar>
     """
   end
 
-  # ── Private helpers ─────────────────────────────────
+  # ── Mobile composition ───────────────────────────────
+
+  attr :menu_id, :string, required: true
+  attr :connected, :boolean, default: false
+  attr :is_admin, :boolean, default: false
+  attr :p2p_active, :boolean, default: false
+  attr :p2p_turn_available, :boolean, default: false
+  attr :arcade_available, :boolean, default: false
+  attr :language_return_to, :string, default: "/connect"
+  attr :on_action, :any, default: nil
+
+  defp mobile_main_menu(assigns) do
+    assigns =
+      assign(assigns, :active_section, if(assigns.connected, do: "file", else: "language"))
+
+    ~H"""
+    <.menu
+      class="app-menu-bar__mobile-menu"
+      label={dgettext("ui", "Menu")}
+      testid="app-mobile-menu-trigger"
+      trigger_class="app-menu-bar__mobile-trigger shadow-retro-raised bg-surface h-8 w-10 justify-center border-0 px-0 py-0"
+      label_class="sr-only"
+    >
+      <:icon><Icons.icon_btn_menu class="h-4 w-4" /></:icon>
+
+      <li class="app-mobile-menu__shell" data-mobile-menu-root role="none">
+        <div class="app-mobile-menu__categories" role="tablist" aria-label={dgettext("ui", "Menu")}>
+          <.mobile_menu_category
+            :if={@connected}
+            menu_id={@menu_id}
+            section="file"
+            label={dgettext("ui", "File")}
+            icon_fn={:icon_folder}
+            active={@active_section == "file"}
+          />
+          <.mobile_menu_category
+            :if={@connected}
+            menu_id={@menu_id}
+            section="edit"
+            label={dgettext("ui", "Edit")}
+            icon_fn={:icon_copy}
+            active={@active_section == "edit"}
+          />
+          <.mobile_menu_category
+            :if={@connected}
+            menu_id={@menu_id}
+            section="view"
+            label={dgettext("ui", "View")}
+            icon_fn={:icon_channels}
+            active={@active_section == "view"}
+          />
+          <.mobile_menu_category
+            :if={@connected}
+            menu_id={@menu_id}
+            section="tools"
+            label={dgettext("ui", "Tools")}
+            icon_fn={:icon_dialog_options}
+            active={@active_section == "tools"}
+          />
+          <.mobile_menu_category
+            :if={@connected}
+            menu_id={@menu_id}
+            section="p2p"
+            label={dgettext("ui", "P2P")}
+            icon_fn={:icon_protocol_p2p_compact}
+            active={@active_section == "p2p"}
+          />
+          <.mobile_menu_category
+            :if={@connected}
+            menu_id={@menu_id}
+            section="games"
+            label={dgettext("ui", "Games")}
+            icon_fn={:icon_game_arcade}
+            active={@active_section == "games"}
+          />
+          <.mobile_menu_category
+            menu_id={@menu_id}
+            section="language"
+            label={dgettext("ui", "Language")}
+            icon_fn={:icon_globe}
+            active={@active_section == "language"}
+          />
+          <.mobile_menu_category
+            menu_id={@menu_id}
+            section="help"
+            label={dgettext("ui", "Help")}
+            icon_fn={:icon_btn_help_topics}
+            active={@active_section == "help"}
+          />
+        </div>
+
+        <div class="app-mobile-menu__content">
+          <.mobile_menu_panel
+            :if={@connected}
+            menu_id={@menu_id}
+            section="file"
+            active={@active_section == "file"}
+          >
+            <.file_menu_items is_admin={@is_admin} on_action={@on_action} />
+          </.mobile_menu_panel>
+
+          <.mobile_menu_panel
+            :if={@connected}
+            menu_id={@menu_id}
+            section="edit"
+            active={@active_section == "edit"}
+          >
+            <.edit_menu_items on_action={@on_action} />
+          </.mobile_menu_panel>
+
+          <.mobile_menu_panel
+            :if={@connected}
+            menu_id={@menu_id}
+            section="view"
+            active={@active_section == "view"}
+          >
+            <.view_menu_items on_action={@on_action} />
+          </.mobile_menu_panel>
+
+          <.mobile_menu_panel
+            :if={@connected}
+            menu_id={@menu_id}
+            section="tools"
+            active={@active_section == "tools"}
+          >
+            <.tools_menu_items is_admin={@is_admin} on_action={@on_action} />
+          </.mobile_menu_panel>
+
+          <.mobile_menu_panel
+            :if={@connected}
+            menu_id={@menu_id}
+            section="p2p"
+            active={@active_section == "p2p"}
+          >
+            <.p2p_menu_items
+              p2p_active={@p2p_active}
+              p2p_turn_available={@p2p_turn_available}
+              on_action={@on_action}
+            />
+          </.mobile_menu_panel>
+
+          <.mobile_menu_panel
+            :if={@connected}
+            menu_id={@menu_id}
+            section="games"
+            active={@active_section == "games"}
+          >
+            <.games_menu_items arcade_available={@arcade_available} on_action={@on_action} />
+          </.mobile_menu_panel>
+
+          <.mobile_menu_panel
+            menu_id={@menu_id}
+            section="language"
+            active={@active_section == "language"}
+          >
+            <.language_menu_items mode={:app} return_to={@language_return_to} />
+          </.mobile_menu_panel>
+
+          <.mobile_menu_panel menu_id={@menu_id} section="help" active={@active_section == "help"}>
+            <.help_menu_items on_action={@on_action} />
+          </.mobile_menu_panel>
+        </div>
+      </li>
+    </.menu>
+    """
+  end
+
+  attr :menu_id, :string, required: true
+  attr :section, :string, required: true
+  attr :label, :string, required: true
+  attr :icon_fn, :atom, required: true
+  attr :active, :boolean, default: false
+
+  defp mobile_menu_category(assigns) do
+    ~H"""
+    <button
+      id={mobile_menu_category_id(@menu_id, @section)}
+      type="button"
+      class="app-mobile-menu__category"
+      data-mobile-menu-category={@section}
+      data-active={@active && "true"}
+      data-testid={"app-mobile-menu-category-#{@section}"}
+      aria-selected={to_string(@active)}
+      aria-controls={mobile_menu_panel_id(@menu_id, @section)}
+      role="tab"
+    >
+      <span class="app-mobile-menu__category-icon">
+        {apply(Icons, @icon_fn, [%{class: "h-[14px] w-[14px]"}])}
+      </span>
+      <span class="app-mobile-menu__category-label">{@label}</span>
+    </button>
+    """
+  end
+
+  attr :menu_id, :string, required: true
+  attr :section, :string, required: true
+  attr :active, :boolean, default: false
+  slot :inner_block, required: true
+
+  defp mobile_menu_panel(assigns) do
+    ~H"""
+    <section
+      id={mobile_menu_panel_id(@menu_id, @section)}
+      class={classes(["app-mobile-menu__panel", !@active && "u-hidden"])}
+      data-mobile-menu-section={@section}
+      data-testid={"app-mobile-menu-section-#{@section}"}
+      aria-labelledby={mobile_menu_category_id(@menu_id, @section)}
+      role="tabpanel"
+    >
+      <ul class="list-none m-0 p-0">
+        {render_slot(@inner_block)}
+      </ul>
+    </section>
+    """
+  end
+
+  defp mobile_menu_category_id(menu_id, section), do: "#{menu_id}-mobile-menu-category-#{section}"
+  defp mobile_menu_panel_id(menu_id, section), do: "#{menu_id}-mobile-menu-section-#{section}"
+
+  # ── Shared menu item groups ───────────────────────────
+
+  attr :is_admin, :boolean, default: false
+  attr :on_action, :any, default: nil
+
+  defp file_menu_items(assigns) do
+    ~H"""
+    <.context_menu_label>{dgettext("ui", "Account")}</.context_menu_label>
+    <.menu_item
+      icon_fn={:icon_lock}
+      label={dgettext("ui", "Register Nickname...")}
+      action="open_account_register"
+      on_action={@on_action}
+    />
+    <.menu_item
+      icon_fn={:icon_status_user}
+      label={dgettext("ui", "Identify...")}
+      action="open_account_identify"
+      on_action={@on_action}
+    />
+    <.menu_item
+      icon_fn={:icon_dialog_nick}
+      label={dgettext("ui", "Change Nickname...")}
+      action="open_account_profile"
+      on_action={@on_action}
+    />
+    <.menu_item
+      icon_fn={:icon_status_user}
+      label={dgettext("ui", "Edit Profile...")}
+      action="open_account_profile"
+      on_action={@on_action}
+    />
+    <.menu_item
+      icon_fn={:icon_btn_dnd}
+      label={dgettext("ui", "Set Away...")}
+      action="open_account_presence"
+      on_action={@on_action}
+    />
+    <.menu_item
+      icon_fn={:icon_tab_status}
+      label={dgettext("ui", "Account Info")}
+      action="account_info"
+      on_action={@on_action}
+    />
+    <.context_menu_separator />
+    <.menu_item
+      icon_fn={:icon_btn_disconnect}
+      label={dgettext("ui", "Disconnect")}
+      action="disconnect"
+      on_action={@on_action}
+    />
+    <.menu_item
+      :if={@is_admin}
+      icon_fn={:icon_dialog_admin_console}
+      label={dgettext("ui", "Admin Console")}
+      action="open_admin_console"
+      on_action={@on_action}
+    />
+    """
+  end
+
+  attr :on_action, :any, default: nil
+
+  defp edit_menu_items(assigns) do
+    ~H"""
+    <.menu_item
+      icon_fn={:icon_btn_remove}
+      label={dgettext("ui", "Clear Window")}
+      action="clear_window"
+      on_action={@on_action}
+    />
+    <.context_menu_separator />
+    <.menu_item
+      icon_fn={:icon_copy}
+      label={dgettext("ui", "Copy")}
+      action="copy_selection"
+      data-menubar-copy-selection="true"
+      data-copy-disabled="true"
+      aria-disabled="true"
+    />
+    <.context_menu_separator />
+    <.menu_item
+      icon_fn={:icon_btn_find}
+      label={dgettext("ui", "Find")}
+      action="toggle_search"
+      on_action={@on_action}
+      shortcut={dgettext("ui", "Ctrl+Shift+F")}
+    />
+    """
+  end
+
+  attr :on_action, :any, default: nil
+
+  defp view_menu_items(assigns) do
+    ~H"""
+    <.menu_item
+      icon_fn={:icon_btn_channel_list}
+      label={dgettext("ui", "Channel List")}
+      action="toggle_channel_list"
+      on_action={@on_action}
+    />
+    <.menu_item
+      icon_fn={:icon_btn_toggle_conversations}
+      label={dgettext("ui", "Toggle Conversations")}
+      action="toggle_conversations"
+      on_action={@on_action}
+    />
+    <.menu_item
+      icon_fn={:icon_btn_toggle_nicklist}
+      label={dgettext("ui", "Toggle Nicklist")}
+      action="toggle_nicklist"
+      on_action={@on_action}
+    />
+    <.menu_item
+      icon_fn={:icon_tab_notify}
+      label={dgettext("ui", "Notify List")}
+      action="toggle_notify_list"
+      on_action={@on_action}
+    />
+    """
+  end
+
+  attr :is_admin, :boolean, default: false
+  attr :on_action, :any, default: nil
+
+  defp tools_menu_items(assigns) do
+    ~H"""
+    <.menu_item
+      icon_fn={:icon_btn_address_book}
+      label={dgettext("ui", "Address Book")}
+      action="toggle_address_book"
+      on_action={@on_action}
+    />
+    <.menu_item
+      icon_fn={:icon_btn_highlight_words}
+      label={dgettext("ui", "Highlight Words")}
+      action="open_highlight_dialog"
+      on_action={@on_action}
+    />
+    <.menu_item
+      icon_fn={:icon_btn_url_catcher}
+      label={dgettext("ui", "URL Catcher")}
+      action="toggle_url_catcher"
+      on_action={@on_action}
+    />
+    <.menu_item
+      icon_fn={:icon_btn_channel_central}
+      label={dgettext("ui", "Channel Central")}
+      action="open_channel_central"
+      on_action={@on_action}
+    />
+    <.menu_item
+      icon_fn={:icon_btn_search}
+      label={dgettext("ui", "User Lookup")}
+      action="open_user_lookup"
+      on_action={@on_action}
+    />
+    <.menu_item
+      icon_fn={:icon_btn_perform}
+      label={dgettext("ui", "Perform")}
+      action="open_perform_dialog"
+      on_action={@on_action}
+    />
+    <.context_menu_separator />
+    <.menu_item
+      icon_fn={:icon_btn_sounds}
+      label={dgettext("ui", "Sounds")}
+      action="open_sound_settings_dialog"
+      on_action={@on_action}
+    />
+    <.menu_item
+      icon_fn={:icon_btn_flood_protection}
+      label={dgettext("ui", "Flood Protection")}
+      action="open_flood_protection_dialog"
+      on_action={@on_action}
+    />
+    <.menu_item
+      icon_fn={:icon_btn_alias_editor}
+      label={dgettext("ui", "Alias Editor")}
+      action="open_alias_dialog"
+      on_action={@on_action}
+    />
+    <.menu_item
+      icon_fn={:icon_btn_custom_menus}
+      label={dgettext("ui", "Custom Menus")}
+      action="open_custom_menus_dialog"
+      on_action={@on_action}
+    />
+    <.menu_item
+      icon_fn={:icon_btn_auto_respond}
+      label={dgettext("ui", "Auto Respond")}
+      action="open_autorespond_dialog"
+      on_action={@on_action}
+    />
+    <.menu_item
+      icon_fn={:icon_btn_timers}
+      label={dgettext("ui", "Timers")}
+      action="open_timers_dialog"
+      on_action={@on_action}
+    />
+    <.menu_item
+      :if={@is_admin}
+      icon_fn={:icon_btn_bot_management}
+      label={dgettext("ui", "Bot Management")}
+      action="open_bot_dialog"
+      on_action={@on_action}
+    />
+    """
+  end
+
+  attr :p2p_active, :boolean, default: false
+  attr :p2p_turn_available, :boolean, default: false
+  attr :on_action, :any, default: nil
+
+  defp p2p_menu_items(assigns) do
+    ~H"""
+    <.menu_item
+      :if={!@p2p_active}
+      icon_fn={:icon_protocol_p2p_compact}
+      label={dgettext("ui", "Start a P2P Session...")}
+      action="p2p_how_to_start"
+      on_action={@on_action}
+    />
+    <.menu_item
+      :if={@p2p_active}
+      icon_fn={:icon_microphone}
+      label={dgettext("ui", "Start Audio Call")}
+      action="p2p_start_audio"
+      on_action={@on_action}
+    />
+    <.menu_item
+      :if={@p2p_active}
+      icon_fn={:icon_camera}
+      label={dgettext("ui", "Start Video Call")}
+      action="p2p_start_video"
+      on_action={@on_action}
+    />
+    <.menu_item
+      :if={@p2p_active}
+      icon_fn={:icon_file_send}
+      label={dgettext("ui", "Send a File...")}
+      action="p2p_console_select"
+      on_action={@on_action}
+      phx-value-section="files"
+    />
+    <.menu_item
+      :if={@p2p_active}
+      icon_fn={:icon_game_arcade}
+      label={dgettext("ui", "Play a Game...")}
+      action="p2p_console_select"
+      on_action={@on_action}
+      phx-value-section="games"
+    />
+    <.menu_item
+      :if={@p2p_active}
+      icon_fn={:icon_status_signal}
+      label={dgettext("ui", "Statistics")}
+      action="p2p_console_select"
+      on_action={@on_action}
+      phx-value-section="stats"
+    />
+    <.menu_item
+      :if={@p2p_active && @p2p_turn_available}
+      icon_fn={:icon_lock}
+      label={dgettext("ui", "Toggle Privacy Mode")}
+      action="p2p_toggle_privacy"
+      on_action={@on_action}
+    />
+    <.context_menu_separator :if={@p2p_active} />
+    <.menu_item
+      :if={@p2p_active}
+      icon_fn={:icon_btn_disconnect}
+      label={dgettext("ui", "End Session")}
+      action="p2p_end_session"
+      on_action={@on_action}
+    />
+    """
+  end
+
+  attr :arcade_available, :boolean, default: false
+  attr :on_action, :any, default: nil
+
+  defp games_menu_items(assigns) do
+    ~H"""
+    <.menu_item
+      icon_fn={:icon_game_arcade}
+      label={dgettext("ui", "Arcade...")}
+      action="open_arcade"
+      on_action={@on_action}
+      disabled={!@arcade_available}
+    />
+    <.context_menu_label :if={!@arcade_available}>
+      {dgettext("ui", "Register & identify to play")}
+    </.context_menu_label>
+    """
+  end
+
+  attr :on_action, :any, default: nil
+
+  defp help_menu_items(assigns) do
+    ~H"""
+    <.menu_item
+      icon_fn={:icon_btn_help_topics}
+      label={dgettext("ui", "Help Topics")}
+      action="help_topics"
+      on_action={@on_action}
+    />
+    <.menu_item
+      icon_fn={:icon_notepad}
+      label={dgettext("ui", "Message of the Day")}
+      action="show_motd"
+      on_action={@on_action}
+    />
+    <.menu_item
+      icon_fn={:icon_dialog_cheatsheet}
+      label={dgettext("ui", "Shortcut Cheatsheet")}
+      action="toggle_cheatsheet"
+      on_action={@on_action}
+    />
+    <.context_menu_separator />
+    <.context_menu_item on_click={show_modal("about-dialog")} action="show_about">
+      <:icon>{apply(Icons, :icon_dialog_about, [%{class: "w-[14px] h-[14px]"}])}</:icon>
+      {dgettext("ui", "About RetroHexChat")}
+    </.context_menu_item>
+    """
+  end
+
+  # ── Leaf item ────────────────────────────────────────
 
   attr :icon_fn, :atom, required: true
   attr :label, :string, required: true

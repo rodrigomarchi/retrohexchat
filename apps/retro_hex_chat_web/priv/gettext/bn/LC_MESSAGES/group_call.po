@@ -72,9 +72,7 @@ msgstr "বন্ধ গ্রুপ কল?"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:94
 #, elixir-autogen, elixir-format
-msgid ""
-"Closing this window leaves the group call in %{channel}. To keep the call "
-"running and just tidy up, minimize the window instead."
+msgid "Closing this window leaves the group call in %{channel}. To keep the call running and just tidy up, minimize the window instead."
 msgstr ""
 "এই উইন্ডো বন্ধ করা হলে এই উইন্ডো বন্ধ করা হবে %{channel}..এই কল শুধু চলমান "
 "এবং শুধু জানালার নিচে নামিয়ে রাখা."
@@ -133,13 +131,11 @@ msgstr "কল সমাপ্ত"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:111
 #, elixir-autogen, elixir-format
-msgid ""
-"End the group call in %{channel} for everyone? All participants will be "
-"disconnected."
+msgid "End the group call in %{channel} for everyone? All participants will be disconnected."
 msgstr ""
 "কল সমাপ্তি %{channel} সবার জন্য? সকল অংশগ্রহণকারীদেরকে বিচ্ছিন্ন করা হবে।"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:200
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:255
 #: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:37
 #: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:354
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1056
@@ -244,9 +240,7 @@ msgstr "কল প্রস্থান করুন"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:86
 #, elixir-autogen, elixir-format
-msgid ""
-"Leave the group call in %{channel}? Your microphone and camera will "
-"disconnect."
+msgid "Leave the group call in %{channel}? Your microphone and camera will disconnect."
 msgstr "কল প্রস্থান করুন %{channel}তোমার মাইক্রোফোন আর ক্যামেরা সংযোগ করবে।"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1459
@@ -317,9 +311,7 @@ msgstr "স্লিটমিউট"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:102
 #, elixir-autogen, elixir-format
-msgid ""
-"You are already in a group call in %{channel}. Leave it and join the call in"
-" %{new_channel}?"
+msgid "You are already in a group call in %{channel}. Leave it and join the call in %{new_channel}?"
 msgstr ""
 "আপনি একটি গ্রুপের মধ্যে রয়েছেন %{channel}অতএব , আপনি তার আনুগত ্ য করবেন "
 "এবং তাকে উপেক ্ ষা করুন । %{new_channel}?"
@@ -451,9 +443,7 @@ msgstr "%{inbound} - তে %{fanout} ফ্যান্টাসি"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:67
 #, elixir-autogen, elixir-format
-msgid ""
-"%{level} quality: RTT %{rtt} ms, loss %{loss}%, %{bitrate} kbps, %{fps} fps,"
-" freezes %{freezes}"
+msgid "%{level} quality: RTT %{rtt} ms, loss %{loss}%, %{bitrate} kbps, %{fps} fps, freezes %{freezes}"
 msgstr ""
 "%{level} গুণমান: RTT %{rtt} মিটার, হার %{loss}%, %{bitrate} কিলোবাইট/সেকেন্ড"
 " %{fps} fsps, ঠান্ডা %{freezes}"
@@ -527,8 +517,7 @@ msgstr "%{sent} উপরে %{received} নিচে"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:358
 #, elixir-autogen, elixir-format
-msgid ""
-"%{state} conference in %{channel}: %{count}/%{max} participants, %{duration}"
+msgid "%{state} conference in %{channel}: %{count}/%{max} participants, %{duration}"
 msgstr ""
 "%{state} ট্র্যাকের মধ্যে কনফারেন্স %{channel}: %{count}/%{max} "
 "অংশগ্রহণকারীদের, %{duration}"
@@ -1140,9 +1129,7 @@ msgstr "সকল নিম্নবিত্ত অংশগ্রহণকা�
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:128
 #, elixir-autogen, elixir-format
-msgid ""
-"Mute all lower-ranked participants in %{channel}? They cannot unmute until a"
-" moderator allows their microphone again."
+msgid "Mute all lower-ranked participants in %{channel}? They cannot unmute until a moderator allows their microphone again."
 msgstr ""
 "সকল নিম্নমুখী অংশগ্রহণকারীকে নিঃশব্দ করো %{channel}তারা কি পুনরায় "
 "মাইক্রোফোন চালাতে পারবে না?"
@@ -1326,10 +1313,7 @@ msgstr "দূরবর্তী স্ট্রিম"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:119
 #, elixir-autogen, elixir-format
-msgid ""
-"Remove %{target} from %{channel}? This will ban them from the channel, "
-"disconnect them from the conference, and prevent them from rejoining until a"
-" channel operator unbans them."
+msgid "Remove %{target} from %{channel}? This will ban them from the channel, disconnect them from the conference, and prevent them from rejoining until a channel operator unbans them."
 msgstr ""
 "মুছে ফেলুন %{target} থেকে %{channel}? এটি চ্যানেল থেকে তাদেরকে নিষিদ্ধ করবে,"
 " তাদেরকে কনফারেন্স থেকে বিচ্ছিন্ন করবে, আর চ্যানেল অপারেটর না হওয়া পর্যন্ত "
@@ -1571,9 +1555,7 @@ msgstr "সব নিম্নমুখী ক্যামেরা বন্ধ
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:136
 #, elixir-autogen, elixir-format
-msgid ""
-"Turn off cameras for all lower-ranked participants in %{channel}? They "
-"cannot turn camera back on until a moderator allows it again."
+msgid "Turn off cameras for all lower-ranked participants in %{channel}? They cannot turn camera back on until a moderator allows it again."
 msgstr ""
 "সব নিচু শ্রেণীর অংশগ্রহণকারীদের জন্য ক্যামেরা বন্ধ করুন %{channel}তারা "
 "ক্যামেরা আবার চালু করতে পারবে না যতক্ষণ না একজন মডারেটর এটা আবার করতে পারে।"
@@ -1682,9 +1664,7 @@ msgstr "বৈঠক সংক্রান্ত নিয়ন্ত্রণ"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/pre_join_dialog.ex:202
 #, elixir-autogen, elixir-format
-msgid ""
-"Each browser sends media to the room server; the server routes streams to "
-"the other participants."
+msgid "Each browser sends media to the room server; the server routes streams to the other participants."
 msgstr ""
 "প্রতিটি ব্রাউজারের ক্ষেত্রে, সার্ভার দ্বারা অন্যান্য অংশগ্রহণকারীদের সাথে "
 "সংযোগ স্থাপন করা হবে।"
@@ -1758,9 +1738,7 @@ msgstr "অডিও+ ভিডিও"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/pre_join_dialog.ex:71
 #, elixir-autogen, elixir-format
-msgid ""
-"Choose how you enter the room. You can change media and layout after "
-"joining."
+msgid "Choose how you enter the room. You can change media and layout after joining."
 msgstr ""
 "যে রুমে প্রবেশ করতে চান তা বেছে নিন । যোগ করার পরে মিডিয়া পরিবর্তন করা যাবে"
 " ও বহির্বিন্যাস পরিবর্তন করা যাবে।"

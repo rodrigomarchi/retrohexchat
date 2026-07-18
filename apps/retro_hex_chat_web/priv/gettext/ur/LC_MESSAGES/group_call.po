@@ -72,9 +72,7 @@ msgstr "قریبی گروپ کال؟"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:94
 #, elixir-autogen, elixir-format
-msgid ""
-"Closing this window leaves the group call in %{channel}. To keep the call "
-"running and just tidy up, minimize the window instead."
+msgid "Closing this window leaves the group call in %{channel}. To keep the call running and just tidy up, minimize the window instead."
 msgstr ""
 "اس ونڈو کو چلاتے ہوئے گروپ کو بلا لیتے ہیں۔ %{channel}. چلانے کے لئے اور صرف"
 " اوپر، کھڑکی کو کم کرنے کے لئے."
@@ -133,13 +131,11 @@ msgstr "آخری گروپ کہلاتا ہے۔"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:111
 #, elixir-autogen, elixir-format
-msgid ""
-"End the group call in %{channel} for everyone? All participants will be "
-"disconnected."
+msgid "End the group call in %{channel} for everyone? All participants will be disconnected."
 msgstr ""
 "گروپ کال ختم کريں %{channel} سب کے لئے؟ تمام شرکاء کو ختم کر دیا جائے گا."
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:200
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:255
 #: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:37
 #: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:354
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1056
@@ -244,9 +240,7 @@ msgstr "گروپ کو فون کریں"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:86
 #, elixir-autogen, elixir-format
-msgid ""
-"Leave the group call in %{channel}? Your microphone and camera will "
-"disconnect."
+msgid "Leave the group call in %{channel}? Your microphone and camera will disconnect."
 msgstr ""
 "جماعت کو دعوت دینے کے لیے چھوڑ دیں۔ %{channel}... آپ کی دادی اور کیمرے کو "
 "تباہ کر دیں گے."
@@ -319,9 +313,7 @@ msgstr "غیر متصل"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:102
 #, elixir-autogen, elixir-format
-msgid ""
-"You are already in a group call in %{channel}. Leave it and join the call in"
-" %{new_channel}?"
+msgid "You are already in a group call in %{channel}. Leave it and join the call in %{new_channel}?"
 msgstr ""
 "بیشک تم مختلف گروہ ہوتے ہو %{channel}... اسے چھوڑ دو اور شریکوں میں شامل ہو "
 "جاؤ %{new_channel}?"
@@ -453,9 +445,7 @@ msgstr "%{inbound} میں / %{fanout} غیر متصل"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:67
 #, elixir-autogen, elixir-format
-msgid ""
-"%{level} quality: RTT %{rtt} ms, loss %{loss}%, %{bitrate} kbps, %{fps} fps,"
-" freezes %{freezes}"
+msgid "%{level} quality: RTT %{rtt} ms, loss %{loss}%, %{bitrate} kbps, %{fps} fps, freezes %{freezes}"
 msgstr ""
 "%{level} خوبی : ترتیب %{rtt} میٹر، نقصان %{loss}%, %{bitrate} کپاس، %{fps} "
 "پَر ، پَر %{freezes}"
@@ -529,8 +519,7 @@ msgstr "%{sent} کھڑے / %{received} نیچے"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:358
 #, elixir-autogen, elixir-format
-msgid ""
-"%{state} conference in %{channel}: %{count}/%{max} participants, %{duration}"
+msgid "%{state} conference in %{channel}: %{count}/%{max} participants, %{duration}"
 msgstr "%{state} کانفرنس میں %{channel}: %{count}/%{max} شریک، %{duration}"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:545
@@ -1139,9 +1128,7 @@ msgstr "مندرجہ ذیل تمام شرکاء کو منتقل کریں"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:128
 #, elixir-autogen, elixir-format
-msgid ""
-"Mute all lower-ranked participants in %{channel}? They cannot unmute until a"
-" moderator allows their microphone again."
+msgid "Mute all lower-ranked participants in %{channel}? They cannot unmute until a moderator allows their microphone again."
 msgstr ""
 "مندرجہ ذیل تمام شرکاء کو منتقل کریں۔ %{channel}. . . جب تک کوئی موڈر اپنے "
 "گاہک کو دوبارہ اجازت نہیں دیتا."
@@ -1324,10 +1311,7 @@ msgstr "دور دراز نہریں"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:119
 #, elixir-autogen, elixir-format
-msgid ""
-"Remove %{target} from %{channel}? This will ban them from the channel, "
-"disconnect them from the conference, and prevent them from rejoining until a"
-" channel operator unbans them."
+msgid "Remove %{target} from %{channel}? This will ban them from the channel, disconnect them from the conference, and prevent them from rejoining until a channel operator unbans them."
 msgstr ""
 "نکالو %{target} سے %{channel}... یہ انہیں چینل سے منع کرے گا، انہیں کانفرنس "
 "سے باہر نکال دے گا اور انہیں چینل کے آپریٹنگ کرنے تک روک دے گا۔"
@@ -1568,9 +1552,7 @@ msgstr "تمام نچلے درجے کے کیمرے بند کریں"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:136
 #, elixir-autogen, elixir-format
-msgid ""
-"Turn off cameras for all lower-ranked participants in %{channel}? They "
-"cannot turn camera back on until a moderator allows it again."
+msgid "Turn off cameras for all lower-ranked participants in %{channel}? They cannot turn camera back on until a moderator allows it again."
 msgstr ""
 "تمام مندرجہ ذیل شرکاء کے لیے کیمرے بند کر دیں %{channel}... وہ واپس کیمرے "
 "نہیں کر سکتے جب تک کہ موڈر اسے دوبارہ اجازت نہیں دیتا."
@@ -1679,9 +1661,7 @@ msgstr "کانفرنس کنٹرول"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/pre_join_dialog.ex:202
 #, elixir-autogen, elixir-format
-msgid ""
-"Each browser sends media to the room server; the server routes streams to "
-"the other participants."
+msgid "Each browser sends media to the room server; the server routes streams to the other participants."
 msgstr ""
 "ہر براؤزر کمرے سرور کو میڈیا بھیجتا ہے؛ سرور دوسرے شرکاء کے لیے نہریں چلاتا "
 "ہے۔"
@@ -1755,9 +1735,7 @@ msgstr "آڈیو + ویڈیو"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/pre_join_dialog.ex:71
 #, elixir-autogen, elixir-format
-msgid ""
-"Choose how you enter the room. You can change media and layout after "
-"joining."
+msgid "Choose how you enter the room. You can change media and layout after joining."
 msgstr ""
 "آپ کمرے میں کیسے داخل ہو سکتے ہیں. آپ میڈیا تبدیل کر سکتے ہیں اور شامل ہونے "
 "کے بعد آؤٹ ہو سکتے ہیں."

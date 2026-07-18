@@ -34,6 +34,12 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShellTest do
     assert html =~ ~s(data-testid="chat-mobile-search")
     assert html =~ ~s(id="menubar")
     assert html =~ ~s(phx-hook="MenuBarHook")
+    assert html =~ ~s(data-testid="app-mobile-menu-trigger")
+    assert html =~ ~s(data-testid="app-mobile-menu-category-file")
+    assert html =~ ~s(data-testid="app-mobile-menu-category-tools")
+    assert html =~ ~s(data-testid="app-mobile-menu-section-file")
+    assert html =~ ~s(data-testid="app-mobile-menu-section-tools")
+    assert html =~ ~s(app-menu-bar__desktop-menu)
     assert html =~ ~s(data-testid="status-bar-app")
     assert html =~ "alice"
   end
