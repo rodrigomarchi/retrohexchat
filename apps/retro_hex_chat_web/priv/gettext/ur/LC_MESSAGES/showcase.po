@@ -1,4 +1,4 @@
-# "msgid"s in this file come from showcase.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: ur; status: enabled; wave: 3.
+# "msgid"s in this file come from showcase.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=showcase to refresh catalogs.  Locale: ur; status: enabled; wave: 3.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -214,8 +214,12 @@ msgstr ": Lorem ipsum dolor atmet, conceptur adipiscing Elit -"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/scroll_area_page.ex:80
 #, elixir-autogen, elixir-format
-msgid ": This is a wide line with lots of text to force both vertical and horizontal scrolling in the container."
-msgstr ": یہ عبارت بہت سی عبارتوں پر مشتمل ہے جس میں حروفِ تہجی اور قلم دونوں پر زور دیا گیا ہے۔"
+msgid ""
+": This is a wide line with lots of text to force both vertical and "
+"horizontal scrolling in the container."
+msgstr ""
+": یہ عبارت بہت سی عبارتوں پر مشتمل ہے جس میں حروفِ تہجی اور قلم دونوں پر زور"
+" دیا گیا ہے۔"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:40
 #, elixir-autogen, elixir-format
@@ -247,8 +251,11 @@ msgstr "ڈائری کے بارے میں"
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/accordion.ex:67
 #, elixir-autogen, elixir-format
-msgid "Absolutely. All components are local source code you can modify freely."
-msgstr "بالکل نہیں ۔ تمام اجزاء مقامی ماخذ کوڈ ہیں آپ آزادانہ طور پر ترمیم کر سکتے ہیں۔"
+msgid ""
+"Absolutely. All components are local source code you can modify freely."
+msgstr ""
+"بالکل نہیں ۔ تمام اجزاء مقامی ماخذ کوڈ ہیں آپ آزادانہ طور پر ترمیم کر سکتے "
+"ہیں۔"
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/checkbox.ex:33
 #, elixir-autogen, elixir-format
@@ -434,8 +441,13 @@ msgstr "پرنٹ کے بعد صارف پر پابندی بھی لگا دی"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/scroll_area_page.ex:59
 #, elixir-autogen, elixir-format
-msgid "Another long line: ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-msgstr "ایک اور طویل لائن: A BBCDEFFFGHIJKMMKUKUWXYZ ABCDFFGHJKKLMNUKKLMNTHEBCLKLKLKLMNTHLPKLPKLPKLPLPS -"
+msgid ""
+"Another long line: ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ "
+"ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ "
+"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+msgstr ""
+"ایک اور طویل لائن: A BBCDEFFFGHIJKMMKUKUWXYZ "
+"ABCDFFGHJKKLMNUKKLMNTHEBCLKLKLKLMNTHLPKLPKLPKLPLPS -"
 
 #: lib/retro_hex_chat_web/live/showcase_live/chat/chat_layout_page.ex:45
 #, elixir-autogen, elixir-format
@@ -772,12 +784,18 @@ msgstr "بروس چینل"
 #: lib/retro_hex_chat_web/live/showcase_live/shell/empty_state_page.ex:60
 #, elixir-autogen, elixir-format
 msgid "Browse available channels and join one to start chatting."
-msgstr "بروش دستیاب چینلوں میں سے ایک کیساتھ بات‌چیت شروع کرنے کیلئے اکٹھے ہو جاتا ہے ۔"
+msgstr ""
+"بروش دستیاب چینلوں میں سے ایک کیساتھ بات‌چیت شروع کرنے کیلئے اکٹھے ہو جاتا "
+"ہے ۔"
 
 #: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:125
 #, elixir-autogen, elixir-format
-msgid "Brutus here — I keep the peace. Play nice and we'll get along. Type !rules if you need a reminder."
-msgstr "یہاں Bruts &mdash؛ میں امن برقرار رکھتا ہوں۔ اچھا پلے کریں اور ہم ساتھ مل جائیں گے. قسم! اگر تمہیں نصیحت کی ضرورت ہے."
+msgid ""
+"Brutus here — I keep the peace. Play nice and we'll get along. Type !rules "
+"if you need a reminder."
+msgstr ""
+"یہاں Bruts &mdash؛ میں امن برقرار رکھتا ہوں۔ اچھا پلے کریں اور ہم ساتھ مل "
+"جائیں گے. قسم! اگر تمہیں نصیحت کی ضرورت ہے."
 
 #: lib/retro_hex_chat_web/components/showcase_helpers.ex:33
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/button.ex:17
@@ -1024,8 +1042,12 @@ msgstr "گفتگو ، چینلوں ، نیٹ ورکنگ"
 
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:28
 #, elixir-autogen, elixir-format
-msgid "Chat-specific components — messages, nicklist, emoji picker, formatting toolbar, context menus, and more."
-msgstr "چیٹ روم کے اجزا — پیغامات، پیامات، ایموجی منتخب کرنے والا، فارمیٹ لینے والا، سیاق و سباق مینس اور مزید۔"
+msgid ""
+"Chat-specific components — messages, nicklist, emoji picker, formatting "
+"toolbar, context menus, and more."
+msgstr ""
+"چیٹ روم کے اجزا — پیغامات، پیامات، ایموجی منتخب کرنے والا، فارمیٹ لینے والا،"
+" سیاق و سباق مینس اور مزید۔"
 
 #: lib/retro_hex_chat_web/components/showcase_helpers.ex:128
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:74
@@ -1166,8 +1188,12 @@ msgstr "مکمل"
 
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:38
 #, elixir-autogen, elixir-format
-msgid "Complex dialog composites — channel settings, perform, address book, sound settings, and 20+ more."
-msgstr "پیچیدہ نظام — چینل کی ترتیبات ، کارکردگی ، معلوماتی کتاب ، آواز کی ترتیبات اور ۲۰+ مزید معلومات ۔"
+msgid ""
+"Complex dialog composites — channel settings, perform, address book, sound "
+"settings, and 20+ more."
+msgstr ""
+"پیچیدہ نظام — چینل کی ترتیبات ، کارکردگی ، معلوماتی کتاب ، آواز کی ترتیبات "
+"اور ۲۰+ مزید معلومات ۔"
 
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:67
 #, elixir-autogen, elixir-format
@@ -1616,7 +1642,8 @@ msgstr "DiceBot نے جواب دیا!"
 #: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "Did you know you can use /help to see all commands?"
-msgstr "کیا آپ جانتے ہیں کہ آپ تمام کمانڈز کو دیکھنے کے لیے اشارہ کر سکتے ہیں؟"
+msgstr ""
+"کیا آپ جانتے ہیں کہ آپ تمام کمانڈز کو دیکھنے کے لیے اشارہ کر سکتے ہیں؟"
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:41
 #, elixir-autogen, elixir-format
@@ -1848,7 +1875,8 @@ msgstr "پرنٹ"
 #: lib/retro_hex_chat_web/live/showcase_live/chat/syntax_tooltip_page.ex:117
 #, elixir-autogen, elixir-format
 msgid "Expert Mode — /msg"
-msgstr "محمد علی مکی makki.ma@gmail.com اردو کوڈر لینکس فورم www.urducoder.com"
+msgstr ""
+"محمد علی مکی makki.ma@gmail.com اردو کوڈر لینکس فورم www.urducoder.com"
 
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/file_transfer_page.ex:83
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:52
@@ -2338,8 +2366,14 @@ msgstr "انٹریکٹیو ڈیم"
 
 #: lib/retro_hex_chat_web/live/showcase_live/index.html.heex:13
 #, elixir-autogen, elixir-format
-msgid "Interactive catalog of all UI components used in RetroHexChat. Each component is a reusable, self-contained building block with generic callbacks — no hardcoded event names."
-msgstr "RetroHxChat میں استعمال ہونے والے تمام UI اجزاء کے انٹریکٹیو کیٹلاگ. ہر اجزاء ایک رد عمل، خود ساختہ عمارت بلاک ہے جس میں جینریکل کال بیکس — کوئی مشکل کوڈڈ تقریب نام نہیں ہیں۔"
+msgid ""
+"Interactive catalog of all UI components used in RetroHexChat. Each "
+"component is a reusable, self-contained building block with generic "
+"callbacks — no hardcoded event names."
+msgstr ""
+"RetroHxChat میں استعمال ہونے والے تمام UI اجزاء کے انٹریکٹیو کیٹلاگ. ہر "
+"اجزاء ایک رد عمل، خود ساختہ عمارت بلاک ہے جس میں جینریکل کال بیکس — کوئی "
+"مشکل کوڈڈ تقریب نام نہیں ہیں۔"
 
 #: lib/retro_hex_chat_web/components/showcase_helpers.ex:142
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/invite_dialog_page.ex:22
@@ -3136,7 +3170,7 @@ msgstr "P2P"
 #: lib/retro_hex_chat_web/live/showcase_live/layout/context_menu_page.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
-msgstr "پَک"
+msgstr "بات‌چیت میں پی‌2 پی ."
 
 #: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:41
 #, elixir-autogen, elixir-format
@@ -3522,7 +3556,9 @@ msgstr "انتخاب منتخب کریں"
 
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:18
 #, elixir-autogen, elixir-format
-msgid "SaladUI base widgets — buttons, inputs, badges, toggles, selects, and other atomic form controls."
+msgid ""
+"SaladUI base widgets — buttons, inputs, badges, toggles, selects, and other "
+"atomic form controls."
 msgstr "اسکے علاوہ وہ اپنے والدین کے ساتھ مل کر اُن کی مدد کرتے ہیں ۔"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/dialog_page.ex:61
@@ -4015,8 +4051,12 @@ msgstr "مضبوط فعال"
 
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:23
 #, elixir-autogen, elixir-format
-msgid "Structural containers — dialogs, tabs, tables, menus, tree views, windows, and scroll areas."
-msgstr "اِس کے علاوہ اِن علاقوں میں بھی بہت سے ایسے لوگ پائے جاتے ہیں جنہوں نے بائبل کا مطالعہ کِیا ۔"
+msgid ""
+"Structural containers — dialogs, tabs, tables, menus, tree views, windows, "
+"and scroll areas."
+msgstr ""
+"اِس کے علاوہ اِن علاقوں میں بھی بہت سے ایسے لوگ پائے جاتے ہیں جنہوں نے بائبل"
+" کا مطالعہ کِیا ۔"
 
 #: lib/retro_hex_chat_web/live/showcase_live/chat/autocomplete_page.html.heex:87
 #, elixir-autogen, elixir-format
@@ -4155,13 +4195,20 @@ msgstr "یہ عمل ناقابل فراموش نہیں ہو سکتا۔"
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/alert_dialog_page.ex:46
 #, elixir-autogen, elixir-format
-msgid "This action cannot be undone. This will permanently delete your account and remove your data from our servers."
-msgstr "یہ عمل ناقابل فراموش نہیں ہو سکتا۔ یہ آپ کے اکاؤنٹ کو مستقل طور پر حذف کر دے گا اور ہمارے سروروں سے آپ کے ڈیٹا کو دور کر دے گا۔"
+msgid ""
+"This action cannot be undone. This will permanently delete your account and "
+"remove your data from our servers."
+msgstr ""
+"یہ عمل ناقابل فراموش نہیں ہو سکتا۔ یہ آپ کے اکاؤنٹ کو مستقل طور پر حذف کر دے"
+" گا اور ہمارے سروروں سے آپ کے ڈیٹا کو دور کر دے گا۔"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/dialog_page.ex:98
 #, elixir-autogen, elixir-format
-msgid "This action cannot be undone. This will permanently delete your account."
-msgstr "یہ عمل ناقابل فراموش نہیں ہو سکتا۔ یہ آپ کے اکاؤنٹ کو مستقل طور پر حذف کر دے گا۔"
+msgid ""
+"This action cannot be undone. This will permanently delete your account."
+msgstr ""
+"یہ عمل ناقابل فراموش نہیں ہو سکتا۔ یہ آپ کے اکاؤنٹ کو مستقل طور پر حذف کر دے"
+" گا۔"
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/alert.ex:36
 #, elixir-autogen, elixir-format
@@ -4185,8 +4232,13 @@ msgstr "یہ ایک ٹولی ہے"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/scroll_area_page.ex:53
 #, elixir-autogen, elixir-format
-msgid "This is a very long line that extends beyond the container width to demonstrate horizontal scrollbar behavior. It keeps going and going and going until you have to scroll right to read it all."
-msgstr "یہ ایک انتہائی لمبی لائن ہے جو برتن کی چوڑائی سے باہر تک پھیلی ہوئی ہے ۔ اِسے پڑھنے کا حق حاصل کرنے کے لئے اِسے پڑھنا ہمیشہ جاری رہتا ہے ۔"
+msgid ""
+"This is a very long line that extends beyond the container width to "
+"demonstrate horizontal scrollbar behavior. It keeps going and going and "
+"going until you have to scroll right to read it all."
+msgstr ""
+"یہ ایک انتہائی لمبی لائن ہے جو برتن کی چوڑائی سے باہر تک پھیلی ہوئی ہے ۔ "
+"اِسے پڑھنے کا حق حاصل کرنے کے لئے اِسے پڑھنا ہمیشہ جاری رہتا ہے ۔"
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/card.ex:42
 #, elixir-autogen, elixir-format
@@ -4230,8 +4282,12 @@ msgstr "یہ شیٹ اوپر سے اوپر میں ہے."
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/alert_dialog_page.ex:96
 #, elixir-autogen, elixir-format
-msgid "This will permanently delete your account and all associated data. This action cannot be reversed."
-msgstr "یہ آپ کے اکاؤنٹ اور تمام متعلقہ اعداد کو مستقل طور پر حذف کر دے گا۔ یہ عمل واپس نہیں کیا جا سکتا۔"
+msgid ""
+"This will permanently delete your account and all associated data. This "
+"action cannot be reversed."
+msgstr ""
+"یہ آپ کے اکاؤنٹ اور تمام متعلقہ اعداد کو مستقل طور پر حذف کر دے گا۔ یہ عمل "
+"واپس نہیں کیا جا سکتا۔"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/window.html.heex:80
 #, elixir-autogen, elixir-format
@@ -4364,8 +4420,12 @@ msgstr "باہر نکلنے؟ ٹھنڈا. آپ کی سیٹ گرم رکھیں گ�
 
 #: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:119
 #, elixir-autogen, elixir-format
-msgid "Troll heading out? Cool cool. The lobby will keep your seat warm. We're always open. Like a 24/7 diner but with better Wi-Fi."
-msgstr "باہر نکلنے؟ ٹھنڈا. آپ کی سیٹ گرم رکھیں گے. ہم ہمیشہ کھلے ہیں۔ جیسے 24/7 دینار لیکن بہتر وائی فائی کے ساتھ."
+msgid ""
+"Troll heading out? Cool cool. The lobby will keep your seat warm. We're "
+"always open. Like a 24/7 diner but with better Wi-Fi."
+msgstr ""
+"باہر نکلنے؟ ٹھنڈا. آپ کی سیٹ گرم رکھیں گے. ہم ہمیشہ کھلے ہیں۔ جیسے 24/7 "
+"دینار لیکن بہتر وائی فائی کے ساتھ."
 
 #: lib/retro_hex_chat_web/live/showcase_live/shell/empty_state_page.ex:91
 #, elixir-autogen, elixir-format
@@ -4572,7 +4632,8 @@ msgstr "آواز"
 #: lib/retro_hex_chat_web/live/showcase_live/assets/diagrams.ex:46
 #, elixir-autogen, elixir-format
 msgid "Voice/video call mockups"
-msgstr "وَإِنَّهُمْ أَن يَوْمَئِنَ الْمُسْتَقُونَ سانچہ:قرآن-سورہ 71 آیت 8۔۔۔*"
+msgstr ""
+"وَإِنَّهُمْ أَن يَوْمَئِنَ الْمُسْتَقُونَ سانچہ:قرآن-سورہ 71 آیت 8۔۔۔*"
 
 #: lib/retro_hex_chat_web/live/showcase_live/index.html.heex:189
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:66
@@ -4640,8 +4701,12 @@ msgstr "کون"
 
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:33
 #, elixir-autogen, elixir-format
-msgid "Win98 app shell composites — toolbar app, status bar app, app header, config form, and empty states."
-msgstr "واندو ایپ کے ٹکڑے — کارپوریٹ ایپ ، حالت باری ایپ ، ایپ کے سرے ، اوور اور خالی ریاستیں ۔"
+msgid ""
+"Win98 app shell composites — toolbar app, status bar app, app header, config"
+" form, and empty states."
+msgstr ""
+"واندو ایپ کے ٹکڑے — کارپوریٹ ایپ ، حالت باری ایپ ، ایپ کے سرے ، اوور اور "
+"خالی ریاستیں ۔"
 
 #: lib/retro_hex_chat_web/live/showcase_live/assets/diagrams.ex:52
 #, elixir-autogen, elixir-format
@@ -4684,7 +4749,8 @@ msgstr "تمام پلگ ان کے ساتھ"
 #: lib/retro_hex_chat_web/live/showcase_live/chat/conversations_context_menu_page.ex:72
 #, elixir-autogen, elixir-format
 msgid "With Custom Items"
-msgstr "اِس کا مطلب ہے کہ اِس بیماری کی وجہ سے اُن کی صحت پر اچھا اثر پڑتا ہے ۔"
+msgstr ""
+"اِس کا مطلب ہے کہ اِس بیماری کی وجہ سے اُن کی صحت پر اچھا اثر پڑتا ہے ۔"
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/breadcrumb_page.ex:61
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/pagination_page.ex:88
@@ -4803,8 +4869,12 @@ msgstr "وولف3D انجن"
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/accordion.ex:53
 #, elixir-autogen, elixir-format
-msgid "Yes! These new UI components are built with Tailwind for full responsiveness."
-msgstr "جی ہاں! یہ نئے یو آئی کے اجزا پورے جذبے کے لیے تِلّین کے ساتھ تعمیر کیے جاتے ہیں۔"
+msgid ""
+"Yes! These new UI components are built with Tailwind for full "
+"responsiveness."
+msgstr ""
+"جی ہاں! یہ نئے یو آئی کے اجزا پورے جذبے کے لیے تِلّین کے ساتھ تعمیر کیے جاتے"
+" ہیں۔"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:73
 #, elixir-autogen, elixir-format
@@ -4839,7 +4909,8 @@ msgstr "bg-gradient-to-r-from-Premary سے شروع ہو کر-"
 #: lib/retro_hex_chat_web/live/showcase_live/shell/config_form_page.ex:135
 #, elixir-autogen, elixir-format
 msgid "connect / #channel"
-msgstr "محمد علی مکی makki.ma@gmail.com اردو کوڈر لینکس فورم www.urducoder.com"
+msgstr ""
+"محمد علی مکی makki.ma@gmail.com اردو کوڈر لینکس فورم www.urducoder.com"
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/input.ex:31
 #, elixir-autogen, elixir-format
@@ -4849,7 +4920,9 @@ msgstr "ای میل ڈرائنگس سم.com"
 #: lib/retro_hex_chat_web/live/showcase_live/chat/chat_layout_page.ex:55
 #, elixir-autogen, elixir-format
 msgid "eve has joined #lobby"
-msgstr "محمد علی کرم اللہ وجہہ نے http://www.d-date= (معاونت) صيانة CS1: لغة غير مدعومة (link)"
+msgstr ""
+"محمد علی کرم اللہ وجہہ نے http://www.d-date= (معاونت) صيانة CS1: لغة غير "
+"مدعومة (link)"
 
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:68
 #, elixir-autogen, elixir-format
@@ -4989,97 +5062,100 @@ msgstr "ایس ."
 
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:48
 #, elixir-autogen, elixir-format
-msgid "Arcade and solo game components — game cards, solo lobby, and arcade frame."
-msgstr "Arcade and solo game components — game cards, solo lobby, and arcade frame."
+msgid ""
+"Arcade and solo game components — game cards, solo lobby, and arcade frame."
+msgstr ""
+"اِس لئے اُس نے کہا : ” مَیں نے دیکھا ہے کہ مَیں اُس کے ساتھ کھیل رہا ہوں ۔ “"
 
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_connection_diagram_page.ex:101
 #, elixir-autogen, elixir-format
 msgid "Compact — File Transfer"
-msgstr "Compact — File Transfer"
+msgstr "کمپنیاں — فائل منتقلی"
 
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_connection_diagram_page.ex:71
 #, elixir-autogen, elixir-format
 msgid "Compact — Ready"
-msgstr "Compact — Ready"
+msgstr "کمپنیاں — تیار"
 
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_connection_diagram_page.ex:85
 #, elixir-autogen, elixir-format
 msgid "Compact — Video Call"
-msgstr "Compact — Video Call"
+msgstr "کمپنیاں — ویڈیو کال"
 
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_connection_diagram_page.ex:57
 #, elixir-autogen, elixir-format
 msgid "Compact — Waiting"
-msgstr "Compact — Waiting"
+msgstr "کمپنیاں — انتظار کریں"
 
 #: lib/retro_hex_chat_web/components/showcase_helpers.ex:157
 #, elixir-autogen, elixir-format
 msgid "Connection Diagram"
-msgstr "Connection Diagram"
+msgstr "اتصال ڈائیگرام"
 
 #: lib/retro_hex_chat_web/components/showcase_helpers.ex:58
 #: lib/retro_hex_chat_web/live/showcase_live/layout/desktop.ex:17
 #: lib/retro_hex_chat_web/live/showcase_live/layout/desktop.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Desktop"
-msgstr "Desktop"
+msgstr "انڈیا"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/desktop.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "Drag my title bar. Resize me from the bottom-right grip."
-msgstr "Drag my title bar. Resize me from the bottom-right grip."
+msgstr "میرے عنوان بار منتقل کریں. نیچے دائیں گرفت سے مجھے واپس."
 
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_connection_diagram_page.ex:117
 #, elixir-autogen, elixir-format
 msgid "Expanded — Ready"
-msgstr "Expanded — Ready"
+msgstr "تیار رہیں"
 
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_connection_diagram_page.ex:131
 #, elixir-autogen, elixir-format
 msgid "Expanded — Video Call"
-msgstr "Expanded — Video Call"
+msgstr "ویڈیو کال"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/desktop.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "Opened from the Start menu."
-msgstr "Opened from the Start menu."
+msgstr "شروع میں سے ڈالے گئے مینو میں سے"
 
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_connection_diagram_page.ex:38
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_connection_diagram_page.ex:53
 #, elixir-autogen, elixir-format
 msgid "P2P Connection Diagram"
-msgstr "P2P Connection Diagram"
+msgstr "P2P اتصال ڈائیگرام"
 
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:43
 #, elixir-autogen, elixir-format
-msgid "Peer-to-peer session components — connection diagram and file transfer."
-msgstr "Peer-to-peer session components — connection diagram and file transfer."
+msgid ""
+"Peer-to-peer session components — connection diagram and file transfer."
+msgstr "متعلقہ سیشن کے اجزاء — اتصال نگاری اور فائل ٹرانسفر —"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/desktop.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "Pinned — minimize only, no close."
-msgstr "Pinned — minimize only, no close."
+msgstr "اِس لئے اُس نے اُن سے کہا : ” اَے میرے بیٹے !"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/desktop.html.heex:12
 #: lib/retro_hex_chat_web/live/showcase_live/layout/desktop.html.heex:57
 #: lib/retro_hex_chat_web/live/showcase_live/layout/desktop.html.heex:72
 #, elixir-autogen, elixir-format
 msgid "Readme"
-msgstr "Readme"
+msgstr "پڑھئے"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/desktop.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "Start"
-msgstr "Start"
+msgstr "آغاز"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/desktop.html.heex:37
 #: lib/retro_hex_chat_web/live/showcase_live/layout/desktop.html.heex:65
 #: lib/retro_hex_chat_web/live/showcase_live/layout/desktop.html.heex:78
 #, elixir-autogen, elixir-format
 msgid "Stats"
-msgstr "Stats"
+msgstr "سٹیٹس"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/desktop.html.heex:5
 #, elixir-autogen, elixir-format
 msgid "Window manager"
-msgstr "Window manager"
+msgstr "ونڈوز منیجر"

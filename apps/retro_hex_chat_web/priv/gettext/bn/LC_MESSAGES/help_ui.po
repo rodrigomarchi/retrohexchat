@@ -1,4 +1,4 @@
-# "msgid"s in this file come from help_ui.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: bn; status: enabled; wave: 3.
+# "msgid"s in this file come from help_ui.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=help_ui to refresh catalogs.  Locale: bn; status: enabled; wave: 3.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -1646,11 +1646,6 @@ msgstr ""
 "অনুসন্ধানের উইন্ডোর মধ্যে কোনো বার্তা অনুসন্ধানের জন্য প্রি-সেট অথবা বন্ধ "
 "করা হয়। এছাড়াও Ctrl+Shift+F চাপতে পারেন।"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:7
-#, elixir-autogen, elixir-format
-msgid "P2P Call Window"
-msgstr "P2P কল উইন্ডো"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:74
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:82
 #, elixir-autogen, elixir-format
@@ -2008,18 +2003,6 @@ msgstr ""
 "ব্যবহারকারী মোডগুলো বর্তমানে দেয়ালস (+w) সেটের বৈশিষ্ট্য উন্মোচন করে, যা "
 "আপনাকে অপারেটরের বার্তা সম্প্রচার করতে বাধা দেয়।"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:8
-#, elixir-autogen, elixir-format
-msgid ""
-"When the P2P Call window is focused: Ctrl+Shift+ArrowUp — Toggle microphone "
-"Ctrl+Shift+ArrowLeft — Toggle camera Ctrl+Shift+ArrowRight — Next layout "
-"Ctrl+Shift+ArrowDown — Cycle self-view Ctrl+Shift+. — Toggle screen share "
-"Ctrl+Shift+Q — End call media"
-msgstr ""
-"P2P কলের উইন্ডো যখন ফোকাস করা হয়: Ctrl+Shift+RO - Ctrl+Shift+RW আওভার "
-"অধিকার - পরবর্তী ট্যাবে Ctrl+Shift+Revo - পরবর্তী বিন্যাস - "
-"Ctrl+Shift+W+S+Shift+W পর্দা শেয়ার না করার ফলে Ctrl+Shift+Q"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:41
 #, elixir-autogen, elixir-format
 msgid ""
@@ -2152,3 +2135,20 @@ msgid "— The chat window cannot be closed; it only minimizes or restores."
 msgstr ""
 "— চ্যাট উইন্ডো বন্ধ করা যাবে না; এটি শুধু ছোট বা আগের অবস্থায় ফিরিয়ে নিয়ে"
 " আসে ।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "P2P Session Console"
+msgstr "আলাপনের মধ্যে P2P সেশন"
+
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:8
+#, elixir-autogen, elixir-format
+msgid ""
+"When the P2P Session Console is focused: Ctrl+Shift+ArrowUp — Toggle "
+"microphone Ctrl+Shift+ArrowLeft — Toggle camera Ctrl+Shift+ArrowRight — Next"
+" layout Ctrl+Shift+ArrowDown — Cycle self-view Ctrl+Shift+. — Toggle screen "
+"share Ctrl+Shift+Q — End call media"
+msgstr ""
+"P2P সেশন কনসোল যখন ফোকাস করা হয়: Ctrl+Shift+RO -\" "
+"Ctrl+Shift+RE8+RW+W+Refer - পরবর্তী বিন্যাসের জন্য "
+"Ctrl+Shift+F+S+Alt+W+S+S+W পর্দা শেয়ার না করার ফলে Ctrl+Shift+Q"

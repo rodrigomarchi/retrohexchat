@@ -1,4 +1,4 @@
-# "msgid"s in this file come from lobby.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: tr; status: enabled; wave: 2.
+# "msgid"s in this file come from lobby.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=lobby to refresh catalogs.  Locale: tr; status: enabled; wave: 2.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -12,177 +12,145 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:109
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:202
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:223
 #, elixir-autogen, elixir-format
 msgid "%{peer} is muted"
 msgstr "%{peer}"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:88
-#, elixir-autogen, elixir-format
-msgid "%{peer} wants to play %{game}"
-msgstr "%{peer} %{game}"
-
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:88
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:139
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:153
 #, elixir-autogen, elixir-format
 msgid "%{peer}'s camera is off"
 msgstr "%{peer} kamera kapalı"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:70
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:140
 #, elixir-autogen, elixir-format
 msgid "%{score} P2"
 msgstr "%{score} P2"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:96
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:186
 #, elixir-autogen, elixir-format
 msgid "Accept"
 msgstr "Kabul Kabul Kabul Kabul"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:79
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:146
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:150
 #, elixir-autogen, elixir-format
 msgid "Back to games"
 msgstr "Oyuna Geri Dönüş"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:70
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:133
 #, elixir-autogen, elixir-format
 msgid "Browse files"
 msgstr "Yüz dosyaları"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:150
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:397
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:408
 #, elixir-autogen, elixir-format
 msgid "Camera Off"
 msgstr "Kamera"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:149
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:396
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:407
 #, elixir-autogen, elixir-format
 msgid "Camera On"
 msgstr "Kamera"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:29
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:55
 #, elixir-autogen, elixir-format
 msgid "Connect to play a game."
 msgstr "Bir oyun oynamak için bağlayın."
 
-#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:28
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:54
 #, elixir-autogen, elixir-format
 msgid "Connect to send a file."
 msgstr "Bir dosyayı göndermek için bağlayın."
 
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:47
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:60
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:64
 #, elixir-autogen, elixir-format
 msgid "Connect to start an audio or video call."
 msgstr "Bir ses veya video çağrısı başlatmak için bağlayın."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/p2p_media_island.ex:304
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_media_island.ex:310
 #, elixir-autogen, elixir-format
 msgid "Could not access your microphone or camera."
 msgstr "Mikrofonunuza veya kameranıza erişemez."
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:100
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:194
 #, elixir-autogen, elixir-format
 msgid "Decline"
 msgstr "Decline"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:168
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:445
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:506
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:728
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:729
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:732
 #, elixir-autogen, elixir-format
 msgid "Devices"
 msgstr "Cihazlar"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:160
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:324
 #, elixir-autogen, elixir-format
 msgid "Draw."
 msgstr "Çizim."
 
-#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:59
-#, elixir-autogen, elixir-format
-msgid ""
-"Drop a file here, or browse. Transfers run alongside your call and game."
-msgstr ""
-"Burada bir dosyayı bırakın veya göz atın. Transferler çağrı ve oyununuzun "
-"yanında çalışır."
-
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:176
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:476
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:457
 #, elixir-autogen, elixir-format
 msgid "End call"
 msgstr "End call"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:40
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:95
 #, elixir-autogen, elixir-format
 msgid "End game"
 msgstr "End oyunu"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/p2p_file_island.ex:150
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_file_island.ex:148
 #, elixir-autogen, elixir-format
 msgid "File transfer completed: %{name}"
 msgstr "Dosya transferi tamamlandı: %{name}"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:61
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:127
 #, elixir-autogen, elixir-format
 msgid "Final Score"
 msgstr "Final Puanı"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:193
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:525
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:555
 #, elixir-autogen, elixir-format
 msgid "Focus"
 msgstr "Focus Focus Focus Focus"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:36
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:88
 #, elixir-autogen, elixir-format
 msgid "Game in progress"
 msgstr "İlerlemede Oyun"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/p2p_game_island.ex:160
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_game_island.ex:159
 #, elixir-autogen, elixir-format
 msgid "Game over — %{game}: %{p1} × %{p2}"
 msgstr "Game over - %{game}: %{p1} × %{p2}"
-
-#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:223
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:576
-#, elixir-autogen, elixir-format
-msgid "High quality"
-msgstr "Yüksek kaliteli"
-
-#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:239
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:594
-#, elixir-autogen, elixir-format
-msgid "Low quality"
-msgstr "Düşük kaliteli"
-
-#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:65
-#, elixir-autogen, elixir-format
-msgid "Max: %{size} MB"
-msgstr "Maks: %{size} MB"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:211
 #, elixir-autogen, elixir-format
 msgid "Maximize"
 msgstr "Max kesim"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:231
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:585
-#, elixir-autogen, elixir-format
-msgid "Medium quality"
-msgstr "Orta kaliteli"
-
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:128
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:374
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:386
 #, elixir-autogen, elixir-format
 msgid "Mute"
 msgstr "Mute"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:66
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:136
 #, elixir-autogen, elixir-format
 msgid "P1 %{score}"
 msgstr "P1 %{score}"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:161
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:409
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:499
 #, elixir-autogen, elixir-format
 msgid "Picture-in-Picture"
 msgstr "Resim-in-Picture"
@@ -192,14 +160,14 @@ msgstr "Resim-in-Picture"
 msgid "Side by side"
 msgstr "Side"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:265
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:320
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:238
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:338
 #, elixir-autogen, elixir-format
 msgid "Start audio"
 msgstr "Start audio"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:285
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:308
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:258
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:326
 #, elixir-autogen, elixir-format
 msgid ""
 "Start audio or video — or the peer can, independently. You'll join "
@@ -208,46 +176,188 @@ msgstr ""
 "Ses veya video başlatın - veya akran bağımsız olarak. Otomatik olarak "
 "katılacaksınız."
 
-#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:274
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:329
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:247
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:346
 #, elixir-autogen, elixir-format
 msgid "Start video"
 msgstr "Başlangıç Video"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:139
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:385
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:397
 #, elixir-autogen, elixir-format
 msgid "Turn on camera"
 msgstr "Turn on kamera"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:119
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:365
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:378
 #, elixir-autogen, elixir-format
 msgid "Turn on microphone"
 msgstr "Turn on mikrofon"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:128
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:374
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:386
 #, elixir-autogen, elixir-format
 msgid "Unmute"
 msgstr "Unmute"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:110
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:212
 #, elixir-autogen, elixir-format
 msgid "Waiting for %{peer} to accept..."
 msgstr "Kabul etmek için %{peer}"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:159
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:323
 #, elixir-autogen, elixir-format
 msgid "You lose."
 msgstr "kaybedersiniz."
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:158
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:322
 #, elixir-autogen, elixir-format
 msgid "You win!"
 msgstr "Sen kazanırsın!"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:68
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:138
 #, elixir-autogen, elixir-format
 msgid "×"
 msgstr "Ve zamanlar;"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:268
+#, elixir-autogen, elixir-format
+msgid "%{count} games"
+msgstr "%{count} oyun"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:169
+#, elixir-autogen, elixir-format
+msgid "%{peer} wants to play"
+msgstr "%{peer} oynamak istiyor"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:181
+#, elixir-autogen, elixir-format
+msgid "Accept game invite"
+msgstr "Kabul oyun daveti"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:168
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:172
+#, elixir-autogen, elixir-format
+msgid "Active"
+msgstr "Aktif Aktif Aktif Aktif Aktif Aktif Aktif"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:123
+#, elixir-autogen, elixir-format
+msgid "Call and game stay active with %{peer}."
+msgstr "Arama ve oyun %{peer} ile etkin kalır."
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:228
+#, elixir-autogen, elixir-format
+msgid "Cancel"
+msgstr "Cancel Cancel Cancel Cancel"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:224
+#, elixir-autogen, elixir-format
+msgid "Cancel game invite"
+msgstr "Cancel game invite"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:165
+#, elixir-autogen, elixir-format
+msgid "Check file"
+msgstr "Check file"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:189
+#, elixir-autogen, elixir-format
+msgid "Decline game invite"
+msgstr "Decline oyunu davet"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:120
+#, elixir-autogen, elixir-format
+msgid "Drop a file here or browse."
+msgstr "Burada bir dosyayı bırakın veya göz atın."
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:34
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:72
+#, elixir-autogen, elixir-format
+msgid "Files"
+msgstr "Dosyalar"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:276
+#, elixir-autogen, elixir-format
+msgid "Finished"
+msgstr "Bitmiş Bitti"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:35
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:66
+#, elixir-autogen, elixir-format
+msgid "Games"
+msgstr "Oyunlar"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:166
+#, elixir-autogen, elixir-format
+msgid "Incoming"
+msgstr "Incoming"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:282
+#, elixir-autogen, elixir-format
+msgid "Invite"
+msgstr "Invite"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:81
+#, elixir-autogen, elixir-format
+msgid "Max %{size} MB"
+msgstr "Maks. %{size} MB"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:167
+#, elixir-autogen, elixir-format
+msgid "Offering"
+msgstr "Misafirlerin hizmetinde"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:169
+#, elixir-autogen, elixir-format
+msgid "Paused"
+msgstr "Pa used Pa used"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:80
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:74
+#, elixir-autogen, elixir-format
+msgid "Peer %{peer}"
+msgstr "Eş %{peer}"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:273
+#, elixir-autogen, elixir-format
+msgid "Playing"
+msgstr "oynamayı oynamak"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:97
+#, elixir-autogen, elixir-format
+msgid "Preparing file transfer."
+msgstr "Dosya transferini hazırlamak."
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:174
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:284
+#, elixir-autogen, elixir-format
+msgid "Ready"
+msgstr "Hazır Hazır Hazır Hazır"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:218
+#, elixir-autogen, elixir-format
+msgid "The call remains live while the invite is pending."
+msgstr "Çağrı beklemeye devam ederken yaşar."
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:175
+#, elixir-autogen, elixir-format
+msgid "The call stays active while the game runs."
+msgstr "Çağrı, oyun çalışırken aktif kalır."
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:279
+#, elixir-autogen, elixir-format
+msgid "Waiting"
+msgstr "Bekle"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:42
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:43
+#, elixir-autogen, elixir-format
+msgid "Waiting for P2P connection"
+msgstr "P2P bağlantı için bekliyor"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:162
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:264
+#, elixir-autogen, elixir-format
+msgid "peer"
+msgstr "akran"

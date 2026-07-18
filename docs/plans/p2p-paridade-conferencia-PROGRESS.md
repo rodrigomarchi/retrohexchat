@@ -1,5 +1,9 @@
 # P2P x conferencia - progresso e aprendizados
 
+> Historico/superseded: diario de execucao do plano de paridade anterior a
+> unificacao final. Para o estado atual, use
+> `docs/reference/media-session-p2p-conference-current.md`.
+
 > Diario de execucao do plano `p2p-paridade-conferencia.md`.
 > Atualizar ao iniciar e concluir cada bloco. Sem commit ate autorizacao
 > explicita do Rodrigo.

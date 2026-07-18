@@ -1,4 +1,4 @@
-# "msgid"s in this file come from help_ui.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: ko; status: enabled; wave: 2.
+# "msgid"s in this file come from help_ui.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=help_ui to refresh catalogs.  Locale: ko; status: enabled; wave: 2.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -1589,11 +1589,6 @@ msgid ""
 "press Ctrl+Shift+F."
 msgstr "메시지 검색을 위해 in-window Find bar를 열고 닫습니다. Ctrl+Shift+F를 누르면 됩니다."
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:7
-#, elixir-autogen, elixir-format
-msgid "P2P Call Window"
-msgstr "P2P 통화 창"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:74
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:82
 #, elixir-autogen, elixir-format
@@ -1917,18 +1912,6 @@ msgid ""
 "operator broadcast messages."
 msgstr "사용자 모드는 현재 연산자 방송 메시지에 당신을 선택 하는 wallops (+w) 설정 노출."
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:8
-#, elixir-autogen, elixir-format
-msgid ""
-"When the P2P Call window is focused: Ctrl+Shift+ArrowUp — Toggle microphone "
-"Ctrl+Shift+ArrowLeft — Toggle camera Ctrl+Shift+ArrowRight — Next layout "
-"Ctrl+Shift+ArrowDown — Cycle self-view Ctrl+Shift+. — Toggle screen share "
-"Ctrl+Shift+Q — End call media"
-msgstr ""
-"P2P 통화 창이 집중될 때: Ctrl+Shift+ArrowUp — 토글 마이크 Ctrl+Shift+ArrowLeft — 토글 카메라 "
-"Ctrl+Shift+ArrowRight — Next layout Ctrl+Shift+ArrowDown — Cycle self-view "
-"Ctrl+Shift+. — 토글 스크린 공유 Ctrl+Shift+Q — 엔드콜 미디어"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:41
 #, elixir-autogen, elixir-format
 msgid ""
@@ -2048,3 +2031,20 @@ msgstr "— 작업 표시 버튼으로 채팅을 보냅니다. 버튼을 클릭�
 #, elixir-autogen, elixir-format
 msgid "— The chat window cannot be closed; it only minimizes or restores."
 msgstr "- 채팅 창은 닫힐 수 없습니다; 그것은 단지 최소화하거나 복원."
+
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "P2P Session Console"
+msgstr "P2P 세션"
+
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:8
+#, elixir-autogen, elixir-format
+msgid ""
+"When the P2P Session Console is focused: Ctrl+Shift+ArrowUp — Toggle "
+"microphone Ctrl+Shift+ArrowLeft — Toggle camera Ctrl+Shift+ArrowRight — Next"
+" layout Ctrl+Shift+ArrowDown — Cycle self-view Ctrl+Shift+. — Toggle screen "
+"share Ctrl+Shift+Q — End call media"
+msgstr ""
+"P2P 세션 콘솔이 집중될 때: Ctrl+Shift+ArrowUp — 토글 마이크 Ctrl+Shift+ArrowLeft — 토글 카메라 "
+"Ctrl+Shift+ArrowRight — Next layout Ctrl+Shift+ArrowDown — Cycle self-view "
+"Ctrl+Shift+. — 토글 스크린 공유 Ctrl+Shift+Q — 엔드콜 미디어"

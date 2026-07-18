@@ -1,4 +1,4 @@
-# "msgid"s in this file come from lobby.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: de; status: enabled; wave: 1.
+# "msgid"s in this file come from lobby.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=lobby to refresh catalogs.  Locale: de; status: enabled; wave: 1.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -78,8 +78,7 @@ msgstr "Zielbenutzer muss registriert werden"
 #: lib/retro_hex_chat/lobby/service.ex:171
 #, elixir-autogen, elixir-format
 msgid "Too many lobbies created. Try again in %{minutes} minutes"
-msgstr ""
-"Zu viele Lobbies erstellt. Versuchen Sie noch einmal %{minutes} Minuten"
+msgstr "Zu viele Lobbies erstellt. Versuchen Sie noch einmal %{minutes} Minuten"
 
 #: lib/retro_hex_chat/lobby/policy.ex:102
 #, elixir-autogen, elixir-format

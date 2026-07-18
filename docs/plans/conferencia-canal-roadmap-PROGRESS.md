@@ -1,5 +1,9 @@
 # Conferencia de canal — progresso e aprendizados
 
+> Historico/superseded: diario do roadmap inicial de conferencia. Para o estado
+> atual da experiencia P2P/conferencia unificada, use
+> `docs/reference/media-session-p2p-conference-current.md`.
+
 > Diario de execucao do roadmap `conferencia-canal-roadmap.md`.
 > Atualizar ao iniciar e ao concluir cada bloco de trabalho. Nao substituir
 > historico; adicionar novas entradas com data.

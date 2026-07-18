@@ -1,4 +1,4 @@
-# "msgid"s in this file come from arcade.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: zh_hans; status: enabled; wave: 1.
+# "msgid"s in this file come from arcade.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=arcade to refresh catalogs.  Locale: zh_hans; status: enabled; wave: 1.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -11,52 +11,52 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:51
+#: lib/retro_hex_chat/arcade/catalog.ex:52
 #, elixir-autogen, elixir-format
 msgid "32 levels — Doom II compatible"
 msgstr "32级——Doom II兼容"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:37
+#: lib/retro_hex_chat/arcade/catalog.ex:38
 #, elixir-autogen, elixir-format
 msgid "36 levels of open-source doom"
 msgstr "36级开源末日"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:109
+#: lib/retro_hex_chat/arcade/catalog.ex:110
 #, elixir-autogen, elixir-format
 msgid ""
 "A Viking-themed total conversion with hand-drawn pixel art. Battle through "
 "Norse-inspired levels with axes, bows, and runic magic."
 msgstr "维京主题全转换与手绘像素艺术. 以斧头、弓箭和狂躁的魔法进行战斗。"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:53
+#: lib/retro_hex_chat/arcade/catalog.ex:54
 #, elixir-autogen, elixir-format
 msgid ""
 "A complete free replacement for DOOM II — 32 levels with the Super Shotgun. "
 "Compatible with thousands of community-made PWAD mods."
 msgstr "完全免费替换DOOM II——32级与超级猎枪. 与数千种社区制作的PWAD Mod兼容."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:136
+#: lib/retro_hex_chat/arcade/catalog.ex:137
 #, elixir-autogen, elixir-format
 msgid ""
 "A complete free replacement for Quake — original levels, art, and music "
 "under BSD license. Community-made open-source content."
 msgstr "在BSD许可下完全免费替换Quake——原始关卡,艺术,和音乐. 社区制作的开源内容."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:39
+#: lib/retro_hex_chat/arcade/catalog.ex:40
 #, elixir-autogen, elixir-format
 msgid ""
 "A complete free replacement for Ultimate DOOM — 4 episodes, 36 levels. "
 "Original art, music, and levels under BSD license."
 msgstr "完全免费替换终极DOOM——4集,36级. BSD许可下的原始艺术,音乐,和关卡."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:95
+#: lib/retro_hex_chat/arcade/catalog.ex:96
 #, elixir-autogen, elixir-format
 msgid ""
 "A cyberpunk total conversion — hack through a dystopian future with new "
 "weapons, enemies, and levels. Standalone v1.2 IWAD."
 msgstr "网球总转换——用新武器,敌人,和水平,黑客通过阴暗的未来. 独立 v1.2 IWAD."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:234
+#: lib/retro_hex_chat/arcade/catalog.ex:235
 #, elixir-autogen, elixir-format
 msgid ""
 "A disturbing top-down cyberpunk adventure by Creative Reality. You are Ryan,"
@@ -120,7 +120,7 @@ msgid ""
 "Arena-style layouts mean enemies can come from any direction — stay moving."
 msgstr "竞技场式布局意味着敌人可以来自任何方向——保持前进."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:172
+#: lib/retro_hex_chat/arcade/catalog.ex:173
 #, elixir-autogen, elixir-format
 msgid "Arrow keys move, Ctrl fire, Space open doors, Shift run, 1-4 weapons"
 msgstr "箭键移动, Ctrl 射击, 空间打开的门, Shift 运行, 1-4 武器"
@@ -155,7 +155,7 @@ msgstr ""
 "作为一个孤独的太空海军陆战队, 利用一个包括标志性猎枪、链枪和火箭发射器的军火库, 通过被地狱喷泉攻破的军事基地战斗。 约翰·罗梅罗(John "
 "Romero)和桑迪·彼得森(Sandy Petersen)的级别设计仍然是非线性FPS地图设计的大师级."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:197
+#: lib/retro_hex_chat/arcade/catalog.ex:198
 #, elixir-autogen, elixir-format
 msgid "Beneath a Steel Sky"
 msgstr "在钢铁天空下"
@@ -172,7 +172,7 @@ msgstr ""
 "A Beneath a Steel Sky (1994年)是革命软件的一次网球点击冒险,设定于未来澳大利亚的堤坝中. 罗伯特·福斯特(Robert "
 "Foster)是在被称为\"漏洞\"的放射性荒地长大的,但被绑架并被带到联合城——一个由超级计算机LINC统治的大规模,分级的都市."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:217
+#: lib/retro_hex_chat/arcade/catalog.ex:218
 #, elixir-autogen, elixir-format
 msgid ""
 "British real estate agent John Hacker must defeat the vampire Drascula in "
@@ -180,7 +180,7 @@ msgid ""
 "references and absurd humor."
 msgstr "英国房地产经纪人John Hacker必须击败吸血鬼Drascula,"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:78
+#: lib/retro_hex_chat/arcade/catalog.ex:79
 #, elixir-autogen, elixir-format
 msgid "Chex Quest"
 msgstr "切克斯查询"
@@ -220,12 +220,12 @@ msgid ""
 "Combine inventory items — some puzzles require creative item combinations."
 msgstr "组合库存项目——一些谜题需要创意项目组合."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:215
+#: lib/retro_hex_chat/arcade/catalog.ex:216
 #, elixir-autogen, elixir-format
 msgid "Comedic Dracula parody adventure (1996)"
 msgstr "喜剧《德古拉流浪者》(1996年)"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:249
+#: lib/retro_hex_chat/arcade/catalog.ex:250
 #, elixir-autogen, elixir-format
 msgid "Comic adventure in the Amazon (1995)"
 msgstr "亚马逊的漫画冒险(1995年)"
@@ -298,12 +298,12 @@ msgstr "代码"
 msgid "Ctrl + F5"
 msgstr "Ctrl + F5 常规"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:198
+#: lib/retro_hex_chat/arcade/catalog.ex:199
 #, elixir-autogen, elixir-format
 msgid "Cyberpunk point & click adventure (1994)"
 msgstr "Cyberpunk 点和点击冒险(1994年)"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:93
+#: lib/retro_hex_chat/arcade/catalog.ex:94
 #, elixir-autogen, elixir-format
 msgid "Cyberpunk total conversion"
 msgstr "Cyberpunk 总转换"
@@ -315,17 +315,17 @@ msgid ""
 "distance."
 msgstr "Cyborg的敌人可以比经典的DOOM怪物更强硬——保持距离."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:22
+#: lib/retro_hex_chat/arcade/catalog.ex:23
 #, elixir-autogen, elixir-format
 msgid "DOOM: Knee-Deep in the Dead"
 msgstr "膝盖深处死者"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:232
+#: lib/retro_hex_chat/arcade/catalog.ex:233
 #, elixir-autogen, elixir-format
 msgid "Dark cyberpunk adventure (1994)"
 msgstr "黑暗网络朋克冒险(1994年)"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:65
+#: lib/retro_hex_chat/arcade/catalog.ex:66
 #, elixir-autogen, elixir-format
 msgid "Deathmatch arena — open source"
 msgstr "死亡竞技场——开源"
@@ -347,7 +347,7 @@ msgstr "别对超现实逻辑感到沮丧——这是魅力的一部分."
 msgid "Drag item"
 msgstr "拖动项目"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:214
+#: lib/retro_hex_chat/arcade/catalog.ex:215
 #, elixir-autogen, elixir-format
 msgid "Drascula: The Vampire Strikes Back"
 msgstr "德拉斯库拉:吸血鬼反击"
@@ -363,7 +363,7 @@ msgstr ""
 "德拉斯库拉(Drascula):吸血鬼反击(1996年)是阿尔卡乔法·索德(英语:Alcachofa Soft)的一场搞笑的西班牙点击冒险. "
 "英国房地产经纪人约翰·哈克(John Hacker)前往特兰西瓦尼亚,必须打败吸血鬼德拉斯库拉伯爵,他绑架了美丽的BJ,让她成为他的新娘."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:231
+#: lib/retro_hex_chat/arcade/catalog.ex:232
 #, elixir-autogen, elixir-format
 msgid "Dreamweb"
 msgstr "梦幻网"
@@ -397,13 +397,13 @@ msgstr ""
 "第1集将你带入了洛夫克勒斯特恐怖的四维:中世纪的城堡,黑暗的地窖,以及充满了沙姆布勒斯,菲恩德斯,奥格雷斯,以及其他夜游生物的其他世界. "
 "特伦特·雷兹诺尔(英语:Trent Reznor (Nine Inch Nails))的大气音轨增加了压迫情绪."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:23
-#: lib/retro_hex_chat/arcade/catalog.ex:121
+#: lib/retro_hex_chat/arcade/catalog.ex:24
+#: lib/retro_hex_chat/arcade/catalog.ex:122
 #, elixir-autogen, elixir-format
 msgid "Episode 1 — The Original"
 msgstr "第1集——原著"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:164
+#: lib/retro_hex_chat/arcade/catalog.ex:165
 #, elixir-autogen, elixir-format
 msgid "Episode 1 — The Shareware Classic"
 msgstr "第1集——共享软件经典"
@@ -430,7 +430,7 @@ msgstr "第1集——共享软件经典"
 msgid "Esc"
 msgstr "埃斯科"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:200
+#: lib/retro_hex_chat/arcade/catalog.ex:201
 #, elixir-autogen, elixir-format
 msgid ""
 "Escape Union City and uncover your past in this cyberpunk classic by "
@@ -507,7 +507,7 @@ msgstr "火器"
 msgid "Flashlight toggle"
 msgstr "手电筒切换"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:248
+#: lib/retro_hex_chat/arcade/catalog.ex:249
 #, elixir-autogen, elixir-format
 msgid "Flight of the Amazon Queen"
 msgstr "亚马逊女王的飞行"
@@ -523,14 +523,14 @@ msgstr ""
 "\"亚马逊女王号\"(1995年)是印第安纳琼斯和猴岛风格的漫画点击冒险. 你扮演Joe King,一个飞行员 飞机坠毁在亚马逊丛林 "
 "运送一位著名女演员。"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:67
+#: lib/retro_hex_chat/arcade/catalog.ex:68
 #, elixir-autogen, elixir-format
 msgid ""
 "Free deathmatch-focused maps for DOOM. 32 arena-style levels designed for "
 "fast-paced multiplayer action. BSD license."
 msgstr "DOOM的免费死亡比赛焦点地图. 32个竞技场式关卡,为快节奏多人动作设计. BSD许可证."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:268
+#: lib/retro_hex_chat/arcade/catalog.ex:269
 #, elixir-autogen, elixir-format
 msgid ""
 "Free the village of Turnvale from the sorceress Selena. Revolution "
@@ -538,7 +538,7 @@ msgid ""
 "autonomous NPCs."
 msgstr "将Turnvale村从女巫塞琳娜中解放出来. 革命软件的首发游戏以创新的Virtual Theatre系统为主角,拥有自主的NPC."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:64
+#: lib/retro_hex_chat/arcade/catalog.ex:65
 #, elixir-autogen, elixir-format
 msgid "FreeDM"
 msgstr "免费DM"
@@ -558,7 +558,7 @@ msgid ""
 "patterns — learn the new sprites."
 msgstr "Freedoom的敌人设计与DOOM不同,但遵循类似的行为模式——学习新的图案."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:36
+#: lib/retro_hex_chat/arcade/catalog.ex:37
 #, elixir-autogen, elixir-format
 msgid "Freedoom: Phase 1"
 msgstr "Freedoom: 第一阶段"
@@ -574,7 +574,7 @@ msgstr ""
 "Freedoom:第1阶段是Ultimate DOOM的完全免费替换——4集全集,原有36个关卡,均在BSD许可下. "
 "每条图案,纹理,音效,以及音乐音轨都被社区从零开始重现."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:50
+#: lib/retro_hex_chat/arcade/catalog.ex:51
 #, elixir-autogen, elixir-format
 msgid "Freedoom: Phase 2"
 msgstr "Freedoom: 第二阶段"
@@ -589,7 +589,7 @@ msgstr ""
 "Freedoom:第二阶段是DOOM II的完全自由替换:地狱在地球上——32级激烈的FPS动作与传奇的Super Shotgun. "
 "所有资产都是BSD许可下的原始社区创建."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:92
+#: lib/retro_hex_chat/arcade/catalog.ex:93
 #, elixir-autogen, elixir-format
 msgid "HacX: Twitch 'n Kill"
 msgstr "HacX: Twitch 'n Kill (杀)"
@@ -604,7 +604,7 @@ msgstr ""
 "HacX: Twitch'n Kill (1997)是独立化的DOOM II的网络punk总转换. 设定在阴暗的未来,你黑 公司安全系统 和机器人敌人 "
 "在霓虹灯走廊。"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:180
+#: lib/retro_hex_chat/arcade/catalog.ex:181
 #, elixir-autogen, elixir-format
 msgid "Half-Life: Uplink"
 msgstr "半条命:上行链路"
@@ -706,14 +706,14 @@ msgstr "最后使用的武器"
 msgid "Left Click"
 msgstr "左键单击"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:206
+#: lib/retro_hex_chat/arcade/catalog.ex:207
 #, elixir-autogen, elixir-format
 msgid ""
 "Left click interact/walk, Right click examine/verb menu, Drag inventory "
 "items to combine. F5 save/load, Ctrl+F5 options, Esc skip cutscene"
 msgstr "左键点击交互/walk,右键点击检查/verb菜单,拖动目录项合并. F5 保存 /load, Ctrl+F5 选项, Esc 跳过切切面"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:133
+#: lib/retro_hex_chat/arcade/catalog.ex:134
 #, elixir-autogen, elixir-format
 msgid "LibreQuake"
 msgstr "自由夸克"
@@ -761,7 +761,7 @@ msgid ""
 "Listen for guards — you can hear enemies through doors before opening them."
 msgstr "倾听卫兵的呼声——在打开门前,你可以听到敌人的呼声."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:265
+#: lib/retro_hex_chat/arcade/catalog.ex:266
 #, elixir-autogen, elixir-format
 msgid "Lure of the Temptress"
 msgstr "诱惑者的光芒"
@@ -810,7 +810,7 @@ msgstr "由开发者制作的自由软件,亚马逊皇后号的飞行在CD版本
 msgid "Maps are compact and weapon-dense — perfect for quick action sessions."
 msgstr "地图是紧凑和武器密集的——适合快速行动会议。"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:266
+#: lib/retro_hex_chat/arcade/catalog.ex:267
 #, elixir-autogen, elixir-format
 msgid "Medieval fantasy adventure (1992)"
 msgstr "中世纪幻想冒险(1992)."
@@ -914,7 +914,7 @@ msgstr "打开门/ 使用"
 msgid "Open verb menu"
 msgstr "打开动词菜单"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:134
+#: lib/retro_hex_chat/arcade/catalog.ex:135
 #, elixir-autogen, elixir-format
 msgid "Open-source Quake replacement"
 msgstr "开源Quake 替换"
@@ -994,7 +994,7 @@ msgid ""
 "for secrets."
 msgstr "第2阶段的级别比第1阶段更加开放和复杂——彻底探索秘密."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:251
+#: lib/retro_hex_chat/arcade/catalog.ex:252
 #, elixir-autogen, elixir-format
 msgid ""
 "Pilot Joe King crash-lands in the Amazon and stumbles into a mad scientist's"
@@ -1003,35 +1003,35 @@ msgid ""
 msgstr ""
 "飞行员Joe King在亚马逊的坠落地 偶然陷入疯狂科学家的阴谋 把人类变成恐龙 一个搞笑的印第安纳琼斯风格的点点 & 点击冒险与全声表演."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:223
+#: lib/retro_hex_chat/arcade/catalog.ex:224
 #, elixir-autogen, elixir-format
 msgid ""
 "Point & click: left-click interact, right-click examine. Inventory at bottom"
 " of screen. F5 save/load, Esc skip cutscene"
 msgstr "点击( C) : 左键点击交互, 右键点击检查 。 盘点在屏幕底部。 F5 保存/load, Esc 跳过剪切"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:257
+#: lib/retro_hex_chat/arcade/catalog.ex:258
 #, elixir-autogen, elixir-format
 msgid ""
 "Point & click: left-click interact, right-click examine. Inventory at top of"
 " screen. F5 save/load, Esc skip cutscene"
 msgstr "点击( C) : 左键点击交互, 右键点击检查 。 库存在屏幕的顶端。 F5 保存/load, Esc 跳过剪切"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:291
+#: lib/retro_hex_chat/arcade/catalog.ex:292
 #, elixir-autogen, elixir-format
 msgid ""
 "Point & click: left-click interact, right-click examine. Simple, streamlined"
 " interface. F5 save/load, Esc skip cutscene"
 msgstr "点击( C) : 左键点击交互, 右键点击检查 。 简单,精简的接口. F5 保存/load, Esc 跳过剪切"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:274
+#: lib/retro_hex_chat/arcade/catalog.ex:275
 #, elixir-autogen, elixir-format
 msgid ""
 "Point & click: left-click interact, right-click verb menu. NPCs follow their"
 " own schedules. F5 save/load, Esc skip cutscene"
 msgstr "点( C) : 左键单击交互,右键单击动词菜单 。 国家计生委按自己的日程安排. F5 保存/load, Esc 跳过剪切"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:240
+#: lib/retro_hex_chat/arcade/catalog.ex:241
 #, elixir-autogen, elixir-format
 msgid ""
 "Point & click: left-click interact/walk, right-click examine. Inventory at "
@@ -1083,17 +1083,17 @@ msgstr ""
 "Quake II采用了基于任务的级别设计,并配有互联的地图,彩色照明,以及更有条理的叙事. "
 "斯特罗格人是一种网络化的外星人,将人类收获为部分——身体恐怖元素给了游戏独特的令人不安的氛围."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:146
+#: lib/retro_hex_chat/arcade/catalog.ex:147
 #, elixir-autogen, elixir-format
 msgid "Quake II: The Invasion"
 msgstr "夸克二:入侵"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:120
+#: lib/retro_hex_chat/arcade/catalog.ex:121
 #, elixir-autogen, elixir-format
 msgid "Quake: Dimension of the Doomed"
 msgstr "夸克:毁灭的尺寸"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:106
+#: lib/retro_hex_chat/arcade/catalog.ex:107
 #, elixir-autogen, elixir-format
 msgid "REKKR: Sunken Land"
 msgstr "沉没的土地"
@@ -1134,7 +1134,7 @@ msgid ""
 "Reload during quiet moments — don't get caught mid-reload in a firefight."
 msgstr "静时重装——不要在交火中被夹在中重装."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:285
+#: lib/retro_hex_chat/arcade/catalog.ex:286
 #, elixir-autogen, elixir-format
 msgid ""
 "Rescue your grandfather from underground pirates in this charmingly absurd "
@@ -1310,7 +1310,7 @@ msgstr "跳过剪切场"
 msgid "Skip dialogue line"
 msgstr "跳过对话框"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:282
+#: lib/retro_hex_chat/arcade/catalog.ex:283
 #, elixir-autogen, elixir-format
 msgid "Soltys"
 msgstr "溶液"
@@ -1395,7 +1395,7 @@ msgid ""
 "than running straight."
 msgstr "Strafe-running(向前+strafe同时)使得移动~40%的速度比直跑快."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:283
+#: lib/retro_hex_chat/arcade/catalog.ex:284
 #, elixir-autogen, elixir-format
 msgid "Surreal Polish puzzle adventure (1995)"
 msgstr "超现实的波兰谜题冒险(1995年)"
@@ -1442,7 +1442,7 @@ msgid ""
 "around corners."
 msgstr "榴弹发射器在紧凑的走廊中具有毁灭性——在角落周围弹出手榴弹."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:181
+#: lib/retro_hex_chat/arcade/catalog.ex:182
 #, elixir-autogen, elixir-format
 msgid "The Official Demo — 3 Unique Missions"
 msgstr "官方Demo——3个独特特派团"
@@ -1471,7 +1471,7 @@ msgstr "自动映射(Tab)是您在迷宫类关卡中最好的朋友."
 msgid "The bow is effective at range but arrows are limited — aim carefully."
 msgstr "弓箭在射程上是有效的,但箭箭是有限的——仔细瞄准."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:79
+#: lib/retro_hex_chat/arcade/catalog.ex:80
 #, elixir-autogen, elixir-format
 msgid "The cereal box classic"
 msgstr "谷物盒经典"
@@ -1606,7 +1606,7 @@ msgstr ""
 "游戏玩法遵循经典的DOOM公式:快节奏的FPS动作与labyrinthine关卡,键卡谜题,以及敌人的群. 虽然资产不同于id "
 "Software的原版,但游戏运行在同一个引擎上,支持相同的moding生态系统."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:166
+#: lib/retro_hex_chat/arcade/catalog.ex:167
 #, elixir-autogen, elixir-format
 msgid ""
 "The grandfather of FPS games (1992) — 10 levels of castle-storming action. "
@@ -1638,7 +1638,7 @@ msgid ""
 "The interface is simple and streamlined — left-click does most of the work."
 msgstr "界面简单精简——左键点击完成大部分工作."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:81
+#: lib/retro_hex_chat/arcade/catalog.ex:82
 #, elixir-autogen, elixir-format
 msgid ""
 "The legendary 1996 cereal box promotion — a kid-friendly total conversion of"
@@ -1659,7 +1659,7 @@ msgid ""
 " work here too."
 msgstr "移动系统与夸克完全相同——兔子购物和跳跃也在这里工作."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:183
+#: lib/retro_hex_chat/arcade/catalog.ex:184
 #, elixir-autogen, elixir-format
 msgid ""
 "The official Half-Life demo (1999) — 3 unique levels not found in the full "
@@ -1667,7 +1667,7 @@ msgid ""
 " Valve."
 msgstr "官方\"半条命\"演示(1999年)——在全游戏中找不到3个独特的关卡. 通过黑梅萨的地下实验室战斗. 由Valve自由再分配。"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:149
+#: lib/retro_hex_chat/arcade/catalog.ex:150
 #, elixir-autogen, elixir-format
 msgid ""
 "The official Quake II demo (1997) — full 3D FPS with Strogg invasion. Unit 1"
@@ -1675,14 +1675,14 @@ msgid ""
 "FPS."
 msgstr "官方的Quake II演示(1997年)——带有Strogg入侵的全3D FPS. 单人战役第一单元. 定义在线FPS的共享软件经典."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:25
+#: lib/retro_hex_chat/arcade/catalog.ex:26
 #, elixir-autogen, elixir-format
 msgid ""
 "The original Episode 1 of DOOM (1993) — 9 levels of demon-infested corridors"
 " on Phobos. The shareware classic that started it all."
 msgstr "DOOM最初的第1集(1993年)——普波斯岛上9级恶魔侵扰走廊. 启动这一切的共享软件经典."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:123
+#: lib/retro_hex_chat/arcade/catalog.ex:124
 #, elixir-autogen, elixir-format
 msgid ""
 "The original Episode 1 of Quake (1996) — full 3D FPS with Lovecraftian "
@@ -1851,7 +1851,7 @@ msgstr "用一切尝试一切——游戏的谜题逻辑遵循卡通喜剧规则
 msgid "Turn left / right"
 msgstr "左/右转"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:147
+#: lib/retro_hex_chat/arcade/catalog.ex:148
 #, elixir-autogen, elixir-format
 msgid "Unit 1 — The Demo"
 msgstr "第1单元——民主"
@@ -1912,7 +1912,7 @@ msgid ""
 "HEV suit's sprint."
 msgstr "在黑暗地区使用手电筒(F)——但注意它与你的HEV服的冲刺分享动力."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:107
+#: lib/retro_hex_chat/arcade/catalog.ex:108
 #, elixir-autogen, elixir-format
 msgid "Viking-themed standalone"
 msgstr "维京主题独立"
@@ -1932,30 +1932,30 @@ msgstr "维京主题独立"
 msgid "W / ↑"
 msgstr "W / ↑"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:128
-#: lib/retro_hex_chat/arcade/catalog.ex:141
+#: lib/retro_hex_chat/arcade/catalog.ex:129
+#: lib/retro_hex_chat/arcade/catalog.ex:142
 #, elixir-autogen, elixir-format
 msgid "WASD move, Mouse aim, Left click fire, E use"
 msgstr "WASD 移动、鼠标瞄准、左键点火、 E 使用"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:31
-#: lib/retro_hex_chat/arcade/catalog.ex:45
-#: lib/retro_hex_chat/arcade/catalog.ex:59
-#: lib/retro_hex_chat/arcade/catalog.ex:73
-#: lib/retro_hex_chat/arcade/catalog.ex:87
-#: lib/retro_hex_chat/arcade/catalog.ex:101
-#: lib/retro_hex_chat/arcade/catalog.ex:115
+#: lib/retro_hex_chat/arcade/catalog.ex:32
+#: lib/retro_hex_chat/arcade/catalog.ex:46
+#: lib/retro_hex_chat/arcade/catalog.ex:60
+#: lib/retro_hex_chat/arcade/catalog.ex:74
+#: lib/retro_hex_chat/arcade/catalog.ex:88
+#: lib/retro_hex_chat/arcade/catalog.ex:102
+#: lib/retro_hex_chat/arcade/catalog.ex:116
 #, elixir-autogen, elixir-format
 msgid "WASD move, Mouse aim, Left click fire, E use, Space jump"
 msgstr "WASD 移动、鼠标瞄准、左键点火、E 使用、空间跳跃"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:155
+#: lib/retro_hex_chat/arcade/catalog.ex:156
 #, elixir-autogen, elixir-format
 msgid ""
 "WASD move, Mouse aim, Left click fire, E use, Space jump, C crouch, R reload"
 msgstr "WASD 移动,鼠标瞄准,左键点火, E 使用, 空格跳动, C 蹲下, R 重装"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:189
+#: lib/retro_hex_chat/arcade/catalog.ex:190
 #, elixir-autogen, elixir-format
 msgid ""
 "WASD move, Mouse aim, Left click fire, E use, Space jump, Shift crouch, R "
@@ -2021,7 +2021,7 @@ msgstr ""
 "沃尔芬斯坦3D(1992年)——第一人称射击手的祖父. 第1集:\"逃离沃尔芬斯坦城堡\"——作为美国间谍B·J·布拉兹科维茨(B.J. "
 "Blazkowicz)从纳粹堡垒中逃出,进行十级城堡暴动行动."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:163
+#: lib/retro_hex_chat/arcade/catalog.ex:164
 #, elixir-autogen, elixir-format
 msgid "Wolfenstein 3D: Escape from Castle"
 msgstr "沃尔芬斯坦3D:逃离城堡"

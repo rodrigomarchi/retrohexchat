@@ -1,5 +1,9 @@
 # SFU chamadas em grupo — progresso e aprendizados
 
+> Historico/superseded: diario da implementacao inicial de conferencia SFU.
+> Para o estado atual da experiencia P2P/conferencia unificada, use
+> `docs/reference/media-session-p2p-conference-current.md`.
+
 > Diario de execucao do plano `sfu-chamadas-grupo-referencias.md`.
 > Este arquivo registra o que foi implementado, decisoes aplicadas,
 > desvios e aprendizados. Atualizar ao final de cada bloco de trabalho.

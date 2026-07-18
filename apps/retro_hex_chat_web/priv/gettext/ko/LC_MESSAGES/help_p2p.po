@@ -1,4 +1,4 @@
-# "msgid"s in this file come from help_p2p.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: ko; status: enabled; wave: 2.
+# "msgid"s in this file come from help_p2p.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=help_p2p to refresh catalogs.  Locale: ko; status: enabled; wave: 2.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -10,21 +10,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:13
-#, elixir-autogen, elixir-format
-msgid "(1.5 Mbps),"
-msgstr "(1.5 Mbps),"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:15
-#, elixir-autogen, elixir-format
-msgid "(150 Kbps) buttons to adjust the bitrate manually."
-msgstr "(150 Kbps) 단추는 수동으로 가립니다."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:14
-#, elixir-autogen, elixir-format
-msgid "(500 Kbps), or"
-msgstr "(500 Kbps) 또는"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:8
 #, elixir-autogen, elixir-format
@@ -127,11 +112,6 @@ msgstr "종료 통화"
 msgid "File Transfer"
 msgstr "파일 전송"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:12
-#, elixir-autogen, elixir-format
-msgid "High"
-msgstr "사이트맵"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_media_devices.html.heex:18
 #, elixir-autogen, elixir-format
 msgid ""
@@ -172,32 +152,12 @@ msgstr "제품정보"
 msgid "Live Switching"
 msgstr "실시간 전환"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:14
-#, elixir-autogen, elixir-format
-msgid "Low"
-msgstr "이름 *"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:10
-#, elixir-autogen, elixir-format
-msgid "Manual Quality Adjustment"
-msgstr "수동 품질 조정"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:98
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:67
 #, elixir-autogen, elixir-format
 msgid "Media Devices"
 msgstr "미디어 장치"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:13
-#, elixir-autogen, elixir-format
-msgid "Medium"
-msgstr "한국어"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:1
-#, elixir-autogen, elixir-format
-msgid "Monitor and adjust connection quality during calls."
-msgstr "감시자는 통화 도중 연결 질을 조정합니다."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:13
 #, elixir-autogen, elixir-format
@@ -330,11 +290,6 @@ msgstr "연락처"
 #, elixir-autogen, elixir-format
 msgid "Turn Camera Off/On"
 msgstr "연락처/On"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:12
-#, elixir-autogen, elixir-format
-msgid "Use the"
-msgstr "사용 방법"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:49
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:27
@@ -493,15 +448,6 @@ msgid ""
 " the network is too slow."
 msgstr "— 왜 질은 모자를 씌웠습니다: CPU는 당신의 장치가 너무 바빴습니다; 대역폭은 네트워크가 너무 느립니다."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:6
-#, elixir-autogen, elixir-format
-msgid ""
-". Either peer can start or stop their own microphone independently; if your "
-"peer starts media first, your Call window opens and you join automatically."
-msgstr ""
-". 어느 동료든지 그들의 자신의 마이크를 자주적으로 시작할 수 있습니다; 당신의 동료가 매체를 첫째로 시작하면, 당신의 전화 창은 열고 "
-"당신은 자동적으로 가입합니다."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:9
 #, elixir-autogen, elixir-format
 msgid ""
@@ -510,18 +456,6 @@ msgid ""
 msgstr ""
 ". P2P 매체는 각자 통제됩니다: 동료는 사진기 또는 마이크를 자주적으로 시작할 수 있고, 다른 측은 매체 표면을 자동적으로 "
 "결합합니다."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:90
-#, elixir-autogen, elixir-format
-msgid ""
-"A conference statistics window opens with the call and shows both server-"
-"side SFU state and live browser connection metrics. Use the stats/dock "
-"control in the conference header to arrange the call and statistics side by "
-"side without moving focus away from the call. Closing the statistics window "
-"leaves the conference, so minimize it to keep the session running."
-msgstr ""
-"회의 통계 창은 통화로 열고 서버 측 SFU 상태와 라이브 브라우저 연결 메트릭스를 보여줍니다. stats/dock 회의 헤더의 제어를 "
-"사용하여 통화에서 멀리 이동하지 않고 통화 및 통계 측면을 정렬합니다. 통계 창을 닫아 회의를 극소화하여 세션을 계속 유지하도록 합니다."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:16
 #, elixir-autogen, elixir-format
@@ -595,17 +529,6 @@ msgstr ""
 "공유 화면을 클릭하여 브라우저 디스플레이 캡처 트랙으로 카메라 피드를 교체하십시오. 브라우저에서 중지하거나 버튼에서 가능한 경우 이전 "
 "카메라를 복원합니다. 피어는 화면 배지를 볼 수 있습니다."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:23
-#, elixir-autogen, elixir-format
-msgid ""
-"Closing any session window disconnects the whole session (after a "
-"confirmation); minimizing keeps everything running in the taskbar. The "
-"status bar always shows the active session — click it to bring the windows "
-"back to the front."
-msgstr ""
-"모든 세션 창을 닫는 전체 세션 (확인 후); minimizing은 taskbar에서 실행하는 모든 것을 유지합니다. 상태 표시 줄은 "
-"항상 활성 세션을 보여줍니다. 창을 앞으로 가져갈 수 있습니다."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:21
 #, elixir-autogen, elixir-format
 msgid "Closing vs. Minimizing"
@@ -615,23 +538,6 @@ msgstr "닫기 대 Minimizing"
 #, elixir-autogen, elixir-format
 msgid "Conversations"
 msgstr "회사연혁"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:35
-#, elixir-autogen, elixir-format
-msgid ""
-"Ctrl+Shift+. toggles screen sharing when the P2P Call window is focused. A "
-"shared screen automatically favors the focus layout."
-msgstr "Ctrl+Shift+. P2P 통화 창이 집중될 때 화면 공유. 공유 화면은 자동으로 초점 레이아웃을 선호합니다."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:34
-#, elixir-autogen, elixir-format
-msgid ""
-"Ctrl+Shift+Q in the focused P2P Call window ends only the call media. Use "
-"the status bar stop button or close confirmation to end the whole P2P "
-"session."
-msgstr ""
-"Ctrl + 이동 + 초점을 맞춘 P2P 통화 창의 Q는 통화 미디어 만 종료합니다. 상태 표시 버튼 또는 전체 P2P 세션 종료 확인을"
-" 사용하십시오."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:64
 #, elixir-autogen, elixir-format
@@ -684,48 +590,10 @@ msgstr "관련 기사"
 msgid "Media Controls"
 msgstr "미디어 컨트롤"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:29
-#, elixir-autogen, elixir-format
-msgid ""
-"Messages during the session are regular private messages, saved like any "
-"other. Session events — connected, file received, game score, who ended it —"
-" are written into the PM history as P2P lines, so the story of the session "
-"survives it. While connected, the PM tab shows a small P2P icon."
-msgstr ""
-"세션 중 메시지는 일반 개인 메시지이며 다른 사람처럼 저장됩니다. 세션 이벤트 - 연결, 파일 수신, 게임 점수, 누가 종료 — P2P "
-"라인으로 PM 역사로 작성, 그래서 세션의 이야기는 그것을 살아. 연결된 동안 PM 탭은 작은 P2P 아이콘을 보여줍니다."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "Moderation"
 msgstr "회사연혁"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:22
-#, elixir-autogen, elixir-format
-msgid ""
-"Once connected, the P2P menu in the menu bar (mirrored in the Start menu) "
-"opens the session windows: Call for audio/video, Files for transfers, Games "
-"for the two-player arcade, and P2P Statistics for live telemetry. Windows "
-"auto-open on activity — an incoming file offer opens Files, a game proposal "
-"opens Games, and when your peer turns their camera or microphone on the Call"
-" window surfaces and you join automatically."
-msgstr ""
-"한 번 연결되면 메뉴 바의 P2P 메뉴 (시작 메뉴에서 정렬) 세션 창을 엽니 다 : audio/video, 전송 파일, 2 플레이어 "
-"아케이드 게임 및 P2P 통계를 호출합니다. Windows auto-open on activity — 수신된 파일 제공 파일, 게임 "
-"제안은 게임을 열고, 동료가 통화 창 표면에 카메라 또는 마이크를 회전하고 자동으로 가입 할 때."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:9
-#, elixir-autogen, elixir-format
-msgid ""
-"Once connected, the call starts automatically with each side's setup choices"
-" and the Files, Games and Statistics windows wait minimized on the taskbar. "
-"Everything runs concurrently over the same connection: share your screen, "
-"send a file during the call, start a game without hanging up. Ending any one"
-" activity never drops the others — only ending the session does."
-msgstr ""
-"일단 연결되면, 통화는 각 측면의 설정 선택과 파일, 게임 및 통계 창이 작업 표시줄에 최소화됩니다. 모든 것은 동일한 연결을 통해 동시"
-" 실행 : 화면을 공유, 통화 중에 파일을 보내, 걸려없이 게임을 시작합니다. 어떤 활동을 종료하지 않는 다른 사람을 삭제 — 만 세션 "
-"종료."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:7
 #, elixir-autogen, elixir-format
@@ -741,15 +609,6 @@ msgstr "한 번의 세션"
 #, elixir-autogen, elixir-format
 msgid "P2P Sessions in Chat"
 msgstr "P2P 세션"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"P2P sessions run right inside the chat: the invite, the conversation and "
-"every feature window live on the chat desktop, anchored to the private "
-"message with your peer."
-msgstr ""
-"P2P 세션은 채팅 내에서 올바른 실행: 초대, 대화 및 모든 기능 창은 채팅 바탕 화면에서 라이브, 당신의 동료와 개인 메시지에 고정."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:50
 #, elixir-autogen, elixir-format
@@ -835,42 +694,6 @@ msgstr "스피커 및 품질"
 msgid "Statistics"
 msgstr "관련 기사"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:43
-#, elixir-autogen, elixir-format
-msgid ""
-"The Call window uses the same media language as channel conferences: mic, "
-"camera, screen share, devices, PiP, layout, self-view, mini mode, docked "
-"statistics and reaction controls are icon buttons with tooltips. End Call "
-"stops only the media; closing a P2P window asks before ending the whole P2P "
-"session."
-msgstr ""
-"통화 창은 채널 회의와 같은 미디어 언어를 사용합니다 : mic, 카메라, 스크린 공유, 장치, PiP, 레이아웃, 자기보기, 미니 "
-"모드, 도킹 통계 및 반응 제어 도구와 아이콘 버튼입니다. End Call은 미디어 만 중지합니다. P2P 창을 닫으면 전체 P2P "
-"세션을 종료합니다."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"The P2P Lobby is the persistent peer-to-peer connection behind /p2p: one "
-"link between two users that hosts a call, file transfers and games all at "
-"the same time. It lives inside the chat — setup happens before sending or "
-"accepting the invite, and accepting opens the session windows right on the "
-"chat desktop, next to your conversations."
-msgstr ""
-"P2P 로비는 /p2p 뒤에 지속적 인 동료 - 투 - 피어 연결입니다. 통화, 파일 전송 및 게임을 동시에 호스트하는 두 사용자 간의 "
-"연결. 그것은 채팅 내부에 살고 - 설정은 초대를 보내거나 받아들일 전에 일어나고, 채팅 데스크톱에서 세션 창을 열고, 대화 옆에."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"The P2P Statistics window shows live telemetry for the whole P2P session: "
-"WebRTC connection, audio, video or screen source, file transfer and game "
-"data channels. Click the ? button in the panel to see a short explanation of"
-" each metric inline, or hover any row for a tooltip."
-msgstr ""
-"P2P 통계 창은 전체 P2P 세션의 실시간 원격 측정을 보여줍니다: WebRTC 연결, 오디오, 비디오 또는 스크린 소스, 파일 전송 "
-"및 게임 데이터 채널. 패널의 ? 버튼을 클릭하여 각 메트릭 인라인의 짧은 설명 또는 도구 팁의 행을 볼 수 있습니다."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_media_devices.html.heex:9
 #, elixir-autogen, elixir-format
 msgid ""
@@ -885,11 +708,6 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "The PM Is the Conversation"
 msgstr "PM은 대화입니다"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:20
-#, elixir-autogen, elixir-format
-msgid "The Session Windows"
-msgstr "세션 Windows"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:34
 #, elixir-autogen, elixir-format
@@ -939,19 +757,6 @@ msgstr ""
 "사전 조인트 대화 상자는 카메라를 미리 볼 수 있으며 마이크, 카메라 및 스피커 장치를 선택하고 마이크 또는 카메라를 사용할 수 있는지 "
 "결정합니다. 권한 및 장치 실패는 Retry 동작을 표시하고, 여전히 수신 만에 가입 할 수 있습니다. 레이아웃 및 미디어 기본은 "
 "계정으로 기억됩니다. 브라우저 특정 장치 선택은 로컬로 기억됩니다."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:36
-#, elixir-autogen, elixir-format
-msgid ""
-"The status bar always shows your active session, wherever you are in the "
-"chat. It also shows compact badges for active call, file transfer, game, "
-"call quality and relay privacy. Click it to bring the P2P windows to the "
-"front (or open Statistics when none is open); the stop button next to it "
-"cancels a pending invite or ends the session, after a confirmation."
-msgstr ""
-"상태 표시 줄은 항상 채팅에 있는 활성 세션을 보여줍니다. 그것은 또한 활성 통화, 파일 전송, 게임, 전화 품질 및 릴레이 개인 정보에"
-" 대한 컴팩트 배지를 보여줍니다. P2P 창을 정면으로 가져가려면 클릭 (또는 열릴 때 열렬한 통계); 공개 초대를 취소하거나 세션을 "
-"종료 한 다음 정지 버튼, 확인 후."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:9
 #, elixir-autogen, elixir-format
@@ -1023,14 +828,6 @@ msgstr ""
 "Ctrl + 이동 + 레이아웃, Ctrl+Shift+ 다음 참가자를 집중하고, Ctrl+Shift+Q를 사용하여 휴가 확인을 엽니다. "
 "Ctrl+Shift+Z를 눌러 푸시-투-스톡을 유지하십시오. 컨퍼런스 단축키는 편집 가능한 텍스트 필드에서 불을하지 않습니다."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:49
-#, elixir-autogen, elixir-format
-msgid ""
-"When the P2P Call window is focused, Ctrl+Shift media shortcuts control "
-"microphone, camera, layout, self-view, screen share and end-call media."
-msgstr ""
-"P2P 통화 창이 집중되면 Ctrl+ Shift 미디어 단축키 제어 마이크, 카메라, 레이아웃, 셀프뷰, 스크린 공유 및 엔드콜 미디어."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:63
 #, elixir-autogen, elixir-format
 msgid ""
@@ -1041,24 +838,6 @@ msgid ""
 msgstr ""
 "서버가 구성된 TURN 릴레이가 있을 때, P2P 메뉴의 설정 대화 상자 또는 토글 프라이버시 모드는 릴레이를 통해 전체 연결을 강제할 "
 "수 있으므로 IP 주소는 동료와 공유되지 않습니다. 미래 세션에 대한 선호도."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:22
-#, elixir-autogen, elixir-format
-msgid ""
-"With the P2P Call window focused, Ctrl+Shift+ArrowRight cycles layouts and "
-"Ctrl+Shift+ArrowDown cycles self-view."
-msgstr ""
-"P2P 통화 창이 집중된 상태에서 Ctrl+Shift+ ArrowRight 주기 배치 및 Ctrl+Shift+ArrowDown 주기 각자"
-" 전망."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:20
-#, elixir-autogen, elixir-format
-msgid ""
-"With the P2P Call window focused, Ctrl+Shift+ArrowUp toggles microphone "
-"state and Ctrl+Shift+ArrowLeft toggles camera state."
-msgstr ""
-"P2P 통화 창이 집중된 상태에서 Ctrl+Shift+ ArrowUp toggles 마이크 상태 및 Ctrl+Shift+ "
-"ArrowLeft toggles 카메라 상태."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:56
 #, elixir-autogen, elixir-format
@@ -1082,3 +861,203 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "— resolution and frame rate of the received video or screen stream."
 msgstr "— 수신된 비디오 또는 스크린 스트림의 해상도 및 프레임 속도."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:12
+#, elixir-autogen, elixir-format
+msgid ""
+"Calls use conservative audio and video limits by default to favor stability "
+"over maximum image quality."
+msgstr "최대 이미지 품질에 대한 안정성을 보장하기 위해 기본적으로 기본으로 보존 된 오디오 및 비디오 제한을 사용합니다."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:29
+#, elixir-autogen, elixir-format
+msgid ""
+"Messages during the session are regular private messages, saved like any "
+"other. Session events — connected, file received, game score, who ended it —"
+" are written into the PM history as P2P lines, so the story of the session "
+"survives it. While a session exists, the peer's PM tab, PM sidebar row and "
+"PM topic bar show the same P2P indicator family used by channel conferences,"
+" with state and active call/file/game/relay facets."
+msgstr ""
+"세션 중 메시지는 일반 개인 메시지이며 다른 사람처럼 저장됩니다. 세션 이벤트 - 연결, 파일 수신, 게임 점수, 누가 종료 — P2P "
+"라인으로 PM 역사로 작성, 그래서 세션의 이야기는 그것을 살아. 세션이 존재하는 동안, 동료의 PM 탭, PM 사이드 바 행 및 PM "
+"주제 바는 채널 회의에 의해 사용되는 동일한 P2P 지표 제품군을 보여줍니다, 국가 및 활성 통화/file/game/relay 얼굴."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:1
+#, elixir-autogen, elixir-format
+msgid "Monitor connection quality during calls."
+msgstr "통화 중 연결 품질 모니터링."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Stable Defaults"
+msgstr "안정된 과태"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:6
+#, elixir-autogen, elixir-format
+msgid ""
+". Either peer can start or stop their own microphone independently; if your "
+"peer starts media first, your Call section opens and you join automatically."
+msgstr ""
+". 어느 동료든지 그들의 자신의 마이크를 자주적으로 시작할 수 있습니다; 당신의 동료가 매체를 첫째로 시작하면, 당신의 외침 단면도는 "
+"열고 당신은 자동적으로 가입합니다."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:23
+#, elixir-autogen, elixir-format
+msgid ""
+"Closing the P2P Session Console disconnects the whole session (after a "
+"confirmation); minimizing keeps everything running in the taskbar. The "
+"status bar always shows the active session — click it to bring the console "
+"back to the front."
+msgstr ""
+"P2P 세션 콘솔을 종료하면 전체 세션을 분리합니다. (확인 후); 최소화는 taskbar에서 모든 작업을 유지합니다. 상태 바는 항상 "
+"활성 세션을 보여줍니다 - 콘솔을 앞으로 가져 오는 것을 클릭합니다."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:35
+#, elixir-autogen, elixir-format
+msgid ""
+"Ctrl+Shift+. toggles screen sharing when the P2P Session Console is focused."
+" A shared screen automatically favors the focus layout."
+msgstr ""
+"Ctrl+Shift+. P2P 세션 콘솔이 집중될 때 toggles 스크린 공유. 공유 화면은 자동으로 초점 레이아웃을 선호합니다."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:34
+#, elixir-autogen, elixir-format
+msgid ""
+"Ctrl+Shift+Q in the focused P2P Session Console ends only the call media. "
+"Use the status bar stop button or close confirmation to end the whole P2P "
+"session."
+msgstr ""
+"Ctrl + 시프트 + 집중된 P2P 세션 콘솔의 Q는 통화 미디어만 종료합니다. 상태 표시 버튼 또는 전체 P2P 세션 종료 확인을 "
+"사용하십시오."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:22
+#, elixir-autogen, elixir-format
+msgid ""
+"Once connected, the P2P menu in the menu bar (mirrored in the Start menu) "
+"opens the P2P Session Console. Its sections cover Call for audio/video, "
+"Files for transfers, Games for the two-player arcade, and Stats for live "
+"telemetry. The console opens on activity: an incoming file offer selects "
+"Files, a game proposal selects Games, and when your peer turns their camera "
+"or microphone on the Call section surfaces and you join automatically."
+msgstr ""
+"P2P 메뉴는 메뉴 바 (시작 메뉴에서 정렬)에 P2P 세션 콘솔을 엽니다. 그것의 단면도는 오디오를 위한 통화를 덮습니다/video, "
+"전송의 파일, 두 플레이어 아케이드 게임, 라이브 telemetry에 대한 통계. 콘솔은 활동에 열려: 들어오는 파일 제안은 파일을 "
+"선정합니다, 게임 제안은 게임을 선정하고, 당신의 동료가 통화 단면도 표면에 사진기 또는 마이크를 돌 때 당신은 자동적으로 가입합니다."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:9
+#, elixir-autogen, elixir-format
+msgid ""
+"Once connected, the call starts automatically with each side's setup choices"
+" and the console keeps Files, Games and Stats one tap away. Everything runs "
+"concurrently over the same connection: share your screen, send a file during"
+" the call, start a game without hanging up. Ending any one activity never "
+"drops the others — only ending the session does."
+msgstr ""
+"연결되면, 통화는 각 측면의 설정 선택과 콘솔을 자동으로 시작합니다 파일, 게임 및 통계 한 탭. 모든 것은 동일한 연결을 통해 동시 "
+"실행 : 화면을 공유, 통화 중에 파일을 보내, 걸려없이 게임을 시작합니다. 어떤 활동을 종료하지 않는 다른 사람을 삭제 — 만 세션 "
+"종료."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"P2P sessions run right inside the chat: the invite, the conversation and the"
+" P2P Session Console live on the chat desktop, anchored to the private "
+"message with your peer."
+msgstr ""
+"P2P 세션은 채팅 내에서 올바른 실행: 초대, 대화 및 P2P 세션 콘솔은 채팅 데스크톱에서 라이브, 당신의 동료와 개인 메시지에 "
+"고정."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:43
+#, elixir-autogen, elixir-format
+msgid ""
+"The Call section uses the same media language as channel conferences: mic, "
+"camera, screen share, devices, PiP, layout, self-view, mini mode, statistics"
+" and reaction controls are icon buttons with tooltips. End Call stops only "
+"the media; closing the P2P Session Console asks before ending the whole P2P "
+"session."
+msgstr ""
+"통화 섹션은 채널 회의와 같은 미디어 언어를 사용합니다 : mic, 카메라, 스크린 공유, 장치, PiP, 레이아웃, 자기보기, 미니 "
+"모드, 통계 및 반응 제어 도구가 아이콘 버튼입니다. End Call은 미디어에만 중지합니다. P2P 세션 콘솔을 닫으면 전체 P2P "
+"세션을 종료합니다."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"The P2P Lobby is the persistent peer-to-peer connection behind /p2p: one "
+"link between two users that hosts a call, file transfers and games all at "
+"the same time. It lives inside the chat — setup happens before sending or "
+"accepting the invite, and accepting opens the P2P Session Console right on "
+"the chat desktop, next to your conversations."
+msgstr ""
+"P2P 로비는 영구 피어 투 피어 연결입니다. /p2p: 통화, 파일 전송 및 게임을 동시에 호스트하는 두 명의 사용자 간의 연결. 채팅"
+" 내부에 살고 - 설정은 초대를 보내거나 받아 들일 전에 일어나고, 대화 옆에 채팅 데스크톱에서 P2P 세션 콘솔을 열 수 있습니다."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "The Session Console"
+msgstr "세션 콘솔"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"The Stats section of the P2P Session Console shows live telemetry for the "
+"whole P2P session: WebRTC connection, audio, video or screen source, file "
+"transfer and game data channels. Click the ? button in the panel to see a "
+"short explanation of each metric inline, or hover any row for a tooltip."
+msgstr ""
+"P2P 세션 콘솔의 통계 섹션은 전체 P2P 세션의 실시간 원격 측정을 보여줍니다: WebRTC 연결, 오디오, 비디오 또는 화면 소스,"
+" 파일 전송 및 게임 데이터 채널. 패널의 ? 버튼을 클릭하여 각 메트릭 인라인의 짧은 설명 또는 도구 팁의 행을 볼 수 있습니다."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:90
+#, elixir-autogen, elixir-format
+msgid ""
+"The conference Stats section lives inside the same call window and shows "
+"both server-side SFU state and live browser connection metrics. Use the "
+"Stats tab in the conference header to inspect diagnostics without leaving "
+"the call surface. Closing the conference window leaves the conference, so "
+"minimize it to keep the session running."
+msgstr ""
+"회의 통계 섹션은 동일한 통화 창 안쪽에 살고 있으며 서버 측 SFU 상태와 라이브 브라우저 연결 미터를 보여줍니다. 호출 표면을 떠나지"
+" 않고 진단을 검사하기 위해 회의 헤더의 통계 탭을 사용합니다. 회의 창을 닫는 것은 회의를 떠나, 그래서 세션을 실행하는 것을 "
+"극소화합니다."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:36
+#, elixir-autogen, elixir-format
+msgid ""
+"The status bar always shows your active session, wherever you are in the "
+"chat. It also shows compact badges for active call, file transfer, game, "
+"call quality and relay privacy. Click it to bring the P2P Session Console to"
+" the front; the stop button next to it cancels a pending invite or ends the "
+"session, after a confirmation."
+msgstr ""
+"상태 표시 줄은 항상 채팅에 있는 활성 세션을 보여줍니다. 그것은 또한 활성 통화, 파일 전송, 게임, 전화 품질 및 릴레이 개인 정보에"
+" 대한 컴팩트 배지를 보여줍니다. P2P 세션 콘솔을 앞쪽으로 가져갈 수 있습니다. 종료된 초대를 취소하거나 세션을 종료한 다음, 확인 "
+"후."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:49
+#, elixir-autogen, elixir-format
+msgid ""
+"When the P2P Session Console is focused, Ctrl+Shift media shortcuts control "
+"microphone, camera, layout, self-view, screen share and end-call media."
+msgstr ""
+"P2P 세션 콘솔이 집중되면 Ctrl+ Shift 미디어 단축키 제어 마이크, 카메라, 레이아웃, 셀프뷰, 스크린 공유 및 엔드콜 "
+"미디어."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:22
+#, elixir-autogen, elixir-format
+msgid ""
+"With the P2P Session Console focused, Ctrl+Shift+ArrowRight cycles layouts "
+"and Ctrl+Shift+ArrowDown cycles self-view."
+msgstr ""
+"P2P 세션 콘솔이 집중된 상태에서, Ctrl+Shift+ArrowRight 주기 레이아웃과 Ctrl+Shift+ArrowDown 주기 "
+"자체 보기."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:20
+#, elixir-autogen, elixir-format
+msgid ""
+"With the P2P Session Console focused, Ctrl+Shift+ArrowUp toggles microphone "
+"state and Ctrl+Shift+ArrowLeft toggles camera state."
+msgstr ""
+"P2P 세션 콘솔이 집중된 상태에서 Ctrl+Shift+ArrowUp toggles 마이크 상태와 Ctrl+Shift+ArrowLeft "
+"toggles 카메라 상태."

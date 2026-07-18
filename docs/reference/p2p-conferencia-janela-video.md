@@ -1,9 +1,9 @@
-# P2P x conferencia - janela de video
+# P2P x conferencia - janela de video historica
 
-> Fotografia do comportamento atual em 2026-07-15. Escopo restrito as janelas
-> de video/chamada: `P2P Call` e `Group Call`. Setup, stats, arquivos, jogos,
-> topic bar, status bar e taskbar so aparecem aqui quando afetam diretamente a
-> janela de video.
+> Historico: fotografia do comportamento em 2026-07-15, antes da unificacao
+> mobile-first de P2P e conferencia. Nao use este documento como fonte atual
+> para implementacao. A fonte operacional atual e
+> `docs/reference/media-session-p2p-conference-current.md`.
 
 ## Resumo da diferenca
 

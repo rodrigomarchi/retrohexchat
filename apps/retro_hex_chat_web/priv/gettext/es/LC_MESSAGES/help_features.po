@@ -1,4 +1,4 @@
-# "msgid"s in this file come from help_features.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: es; status: enabled; wave: 1.
+# "msgid"s in this file come from help_features.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=help_features to refresh catalogs.  Locale: es; status: enabled; wave: 1.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -6225,8 +6225,8 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid ""
 "item in the P2P menu. The preference is saved and remembered for future "
-"sessions. When enabled, the status bar and Statistics window show "
-"relay/privacy indicators."
+"sessions. When enabled, the status bar and Stats section show relay/privacy "
+"indicators."
 msgstr ""
 "elemento en el menú P2P. La preferencia se salva y se recuerda para futuras "
 "sesiones. Cuando está habilitado, la barra de estado y la ventana de "

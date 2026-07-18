@@ -1,5 +1,9 @@
 # Prompt de retomada — SFU chamadas em grupo
 
+> Historico/superseded: prompt de retomada da implementacao inicial de SFU.
+> Nao usar como fonte atual para janelas, taskbar ou stats de conferencia. Fonte
+> operacional atual: `docs/reference/media-session-p2p-conference-current.md`.
+
 Use este prompt para reiniciar o trabalho em outra sessao do Codex.
 
 ```text

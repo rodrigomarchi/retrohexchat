@@ -1,4 +1,4 @@
-# "msgid"s in this file come from group_call.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: it; status: enabled; wave: 3.
+# "msgid"s in this file come from group_call.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=group_call to refresh catalogs.  Locale: it; status: enabled; wave: 3.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -41,12 +41,8 @@ msgstr "La chiamata di gruppo non è più attiva"
 #, elixir-autogen, elixir-format
 msgid "Group call rate limit reached. Try again in %{count} second."
 msgid_plural "Group call rate limit reached. Try again in %{count} seconds."
-msgstr[0] ""
-"Limiti di tasso di chiamata di gruppo raggiunto. Prova di nuovo %{count} "
-"secondo."
-msgstr[1] ""
-"Limiti di tasso di chiamata di gruppo raggiunto. Prova di nuovo %{count} "
-"secondi."
+msgstr[0] "Limiti di tasso di chiamata di gruppo raggiunto. Prova di nuovo %{count} secondo."
+msgstr[1] "Limiti di tasso di chiamata di gruppo raggiunto. Prova di nuovo %{count} secondi."
 
 #: lib/retro_hex_chat/group_call.ex:397
 #, elixir-autogen, elixir-format

@@ -1,4 +1,4 @@
-# "msgid"s in this file come from games.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: hi; status: enabled; wave: 2.
+# "msgid"s in this file come from games.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=games to refresh catalogs.  Locale: hi; status: enabled; wave: 2.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -94,12 +94,8 @@ msgstr "रेट्रो आर्केड"
 
 #: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:45
 #, elixir-autogen, elixir-format
-msgid ""
-"Session will be closed due to inactivity soon. Select a game to keep it "
-"active."
-msgstr ""
-"जल्द ही निष्क्रियता के कारण सत्र बंद हो जाएगा। इसे सक्रिय रखने के लिए एक गेम"
-" चुनें।"
+msgid "Session will be closed due to inactivity soon. Select a game to keep it active."
+msgstr "जल्द ही निष्क्रियता के कारण सत्र बंद हो जाएगा। इसे सक्रिय रखने के लिए एक गेम चुनें।"
 
 #: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:178
 #, elixir-autogen, elixir-format
@@ -128,9 +124,5 @@ msgstr "%{time}"
 
 #: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:275
 #, elixir-autogen, elixir-format
-msgid ""
-"The game runs in a separate window. Keep this window open to track your "
-"session — closing the game window ends it."
-msgstr ""
-"गेम एक अलग विंडो में चलता है। इस विंडो को अपने सत्र को ट्रैक करने के लिए "
-"खुला रखें - गेम विंडो को बंद करने से यह समाप्त होता है।"
+msgid "The game runs in a separate window. Keep this window open to track your session — closing the game window ends it."
+msgstr "गेम एक अलग विंडो में चलता है। इस विंडो को अपने सत्र को ट्रैक करने के लिए खुला रखें - गेम विंडो को बंद करने से यह समाप्त होता है।"

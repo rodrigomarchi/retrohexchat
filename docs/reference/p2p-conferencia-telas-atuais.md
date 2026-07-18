@@ -1,7 +1,9 @@
-# P2P x conferencia - telas atuais
+# P2P x conferencia - telas historicas
 
-> Fotografia do comportamento atual em 2026-07-14. Este documento descreve as
-> telas como estao hoje no chat desktop, sem propor redesign.
+> Historico: fotografia do comportamento em 2026-07-14, antes da unificacao
+> mobile-first de P2P e conferencia. Nao use este documento como fonte atual
+> para implementacao. A fonte operacional atual e
+> `docs/reference/media-session-p2p-conference-current.md`.
 
 ## Resumo rapido
 

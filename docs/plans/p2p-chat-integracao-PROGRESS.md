@@ -1,5 +1,9 @@
 # PM = P2P — progresso e aprendizados
 
+> Historico/superseded: progresso da primeira integracao P2P ao chat, antes da
+> unificacao mobile-first de P2P e conferencia. Para o estado atual de janelas,
+> secoes e eventos, use `docs/reference/media-session-p2p-conference-current.md`.
+
 > Diário de execução do plano `p2p-chat-integracao.md`. Atualizado a cada
 > passo concluído. Decisões travadas D1–D8 e edge cases E1–E10 estão no plano
 > — aqui só status, desvios e aprendizados.

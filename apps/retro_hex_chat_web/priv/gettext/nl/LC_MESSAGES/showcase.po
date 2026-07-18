@@ -1,4 +1,4 @@
-# "msgid"s in this file come from showcase.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: nl; status: enabled; wave: 3.
+# "msgid"s in this file come from showcase.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=showcase to refresh catalogs.  Locale: nl; status: enabled; wave: 3.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -3172,7 +3172,7 @@ msgstr "P2P"
 #: lib/retro_hex_chat_web/live/showcase_live/layout/context_menu_page.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
-msgstr "P2P-sessie"
+msgstr "P2P-sessies in chat"
 
 #: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:41
 #, elixir-autogen, elixir-format

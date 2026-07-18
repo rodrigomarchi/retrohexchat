@@ -1,4 +1,4 @@
-# "msgid"s in this file come from landing.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: pt_BR; status: enabled; wave: 0.
+# "msgid"s in this file come from landing.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=landing to refresh catalogs.  Locale: pt_BR; status: enabled; wave: 0.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -88,28 +88,28 @@ msgstr ""
 "O — está a ajudar os usuários a encontrar- se. Uma vez conectado, todos os "
 "dados flui diretamente entre navegadores via WebRTC."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:571
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:573
 #, elixir-autogen, elixir-format
 msgid "/help"
 msgstr "/help"
 
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:486
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:488
 #, elixir-autogen, elixir-format
 msgid "0 object(s)"
 msgstr "0 objeto(s)"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:360
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:362
 #, elixir-autogen, elixir-format
 msgid "18 classic games via WebAssembly."
 msgstr "18 jogos clássicos via WebAssembly."
 
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:397
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:399
 #, elixir-autogen, elixir-format
 msgid "18 classic games. Running in your browser."
 msgstr "18 jogos clássicos. A correr no teu navegador."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:427
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:423
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:429
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:425
 #, elixir-autogen, elixir-format
 msgid "18 games"
 msgstr "18 jogos"
@@ -150,17 +150,17 @@ msgstr ""
 " e mantenha toda a sua comunicação com a sua própria infraestrutura. Sem "
 "preços por assento, sem limites de mensagens."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:525
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:527
 #, elixir-autogen, elixir-format
 msgid "Accounts, roles, bans, and registration control."
 msgstr "Contas, funções, proibições e controle de registro."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:511
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:513
 #, elixir-autogen, elixir-format
 msgid "Admin Panel"
 msgstr "Painel de Administração"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:501
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:503
 #, elixir-autogen, elixir-format
 msgid "Administration"
 msgstr "Administração"
@@ -174,7 +174,7 @@ msgstr ""
 "Qualquer um pode executar um servidor. Instale-o em um $5 / mês VPS, um Pi "
 "Framboesa, ou seu próprio hardware. Tu controlas tudo."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:382
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:384
 #, elixir-autogen, elixir-format
 msgid "BASS"
 msgstr "BASE"
@@ -199,12 +199,12 @@ msgstr "Grandes plataformas tecnológicas"
 msgid "Big Tech vs. Retro Hex Chat."
 msgstr "Big Tech vs. Retro Hex Chat."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:434
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:436
 #, elixir-autogen, elixir-format
 msgid "Bots"
 msgstr "Bots"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:307
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:309
 #, elixir-autogen, elixir-format
 msgid "Boxing"
 msgstr "Boxe"
@@ -219,7 +219,7 @@ msgstr "Construído com Elixir, Phoenix e LiveView."
 msgid "Built with today’s technology."
 msgstr "Construído com tecnologia de hoje."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:556
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:558
 #, elixir-autogen, elixir-format
 msgid "Built-in Help"
 msgstr "Ajuda incorporada"
@@ -239,7 +239,7 @@ msgstr "C:\\SETUP\\install server.exe"
 msgid "C:\\TRUTH\\"
 msgstr "C:\\TRUTH\\"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:561
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:563
 #, elixir-autogen, elixir-format
 msgid "CHM-style help system built in."
 msgstr "Sistema de ajuda ao estilo CHM incorporado."
@@ -269,7 +269,7 @@ msgstr "Eles podem banir a sua comunidade?"
 msgid "Can they read your messages?"
 msgstr "Podem ler as suas mensagens?"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:327
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:329
 #, elixir-autogen, elixir-format
 msgid "Challenge anyone with"
 msgstr "Desafiar qualquer um com"
@@ -358,12 +358,12 @@ msgstr "Contribuições são bem-vindas! Ver"
 msgid "Control"
 msgstr "Controle"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:580
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:582
 #, elixir-autogen, elixir-format
 msgid "Cross-referenced “See Also” links"
 msgstr "Conexões entre “ Ver também ”"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:366
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:368
 #, elixir-autogen, elixir-format
 msgid "DOOM"
 msgstr "DOOM"
@@ -383,7 +383,7 @@ msgstr "Dados usados para treinamento de IA?"
 msgid "Database"
 msgstr "Base de dados"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:457
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:459
 #, elixir-autogen, elixir-format
 msgid "Dice:"
 msgstr "Dados:"
@@ -420,7 +420,7 @@ msgstr "Documentação"
 msgid "Does it work on mobile?"
 msgstr "Funciona no celular?"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:386
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:388
 #, elixir-autogen, elixir-format
 msgid "Drascula"
 msgstr "Drascula"
@@ -445,18 +445,18 @@ msgstr "Elixir, Phoenix, LiveView"
 msgid "Emoji reactions and inline formatting"
 msgstr "Reações emoji e formatação em linha"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:273
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:275
 #: lib/retro_hex_chat_web/live/landing_live/how_it_works.html.heex:370
 #, elixir-autogen, elixir-format
 msgid "Encrypted"
 msgstr "Encriptado"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:319
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:321
 #, elixir-autogen, elixir-format
 msgid "Enduro"
 msgstr "Enduro"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:494
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:496
 #, elixir-autogen, elixir-format
 msgid "Extensible"
 msgstr "Extensível"
@@ -472,7 +472,7 @@ msgstr "FAQ"
 msgid "FAQ — Retro Hex Chat"
 msgstr "FAQ — Conversa Retro Hex"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:390
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:392
 #, elixir-autogen, elixir-format
 msgid "FOTAQ"
 msgstr "FOTAQ"
@@ -488,7 +488,7 @@ msgstr "Características"
 msgid "Features — Retro Hex Chat"
 msgstr "Características — Conversa Retro Hex"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:262
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:264
 #, elixir-autogen, elixir-format
 msgid "File transfer — send files directly, no upload"
 msgstr "Transferência de arquivos — envia arquivos diretamente, sem envio"
@@ -508,12 +508,12 @@ msgstr "Software livre. A tua para sempre."
 msgid "Frontend"
 msgstr "Frontend"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:549
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:551
 #, elixir-autogen, elixir-format
 msgid "Full control"
 msgstr "Controlo total"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:516
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:518
 #, elixir-autogen, elixir-format
 msgid "Full dashboard with real-time logs and metrics."
 msgstr "Painel completo com registros em tempo real e métricas."
@@ -544,7 +544,7 @@ msgstr "Entendido."
 msgid "HTTPS and WSS with TLS encryption."
 msgstr "HTTPS e WSS com criptografia TLS."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:378
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:380
 #, elixir-autogen, elixir-format
 msgid "Half-Life"
 msgstr "Meio- Vida"
@@ -554,7 +554,7 @@ msgstr "Meio- Vida"
 msgid "Help keep Retro Hex Chat alive."
 msgstr "Ajude a manter Retro Hex Chat vivo."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:311
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:313
 #, elixir-autogen, elixir-format
 msgid "Hockey"
 msgstr "Hóquei"
@@ -585,7 +585,7 @@ msgstr "Como funcionam as sessões?"
 msgid "How is it different from Discord?"
 msgstr "Como é diferente da Discórdia?"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:597
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:599
 #, elixir-autogen, elixir-format
 msgid "IRC Commands"
 msgstr "Comandos IRC"
@@ -621,7 +621,7 @@ msgstr "Instale em seu próprio hardware ou em um $5/mês de VPS."
 msgid "Installation complete"
 msgstr "Instalação concluída"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:315
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:317
 #, elixir-autogen, elixir-format
 msgid "Invaders"
 msgstr "Invasores"
@@ -636,7 +636,7 @@ msgstr "É grátis?"
 msgid "Is it secure?"
 msgstr "Está seguro?"
 
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:478
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:480
 #, elixir-autogen, elixir-format
 msgid "Just clean code. ✨"
 msgstr "Apenas código limpo. ✨"
@@ -667,7 +667,7 @@ msgstr "Antevisão da conexão com metadados ricos"
 msgid "Live"
 msgstr "Vivo"
 
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:452
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:454
 #, elixir-autogen, elixir-format
 msgid "Ln 1, Col 1"
 msgstr "Ln 1, Col 1"
@@ -710,18 +710,18 @@ msgstr "Mensagens guardadas em"
 msgid "Messages, users, channels — all stored on your machine."
 msgstr "Mensagens, usuários, canais — todos armazenados na sua máquina."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:529
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:531
 #, elixir-autogen, elixir-format
 msgid "Moderation"
 msgstr "Moderação"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:466
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:468
 #, elixir-autogen, elixir-format
 msgid "Moderation:"
 msgstr "Moderação:"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:280
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:359
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:282
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:361
 #, elixir-autogen, elixir-format
 msgid "Multiplayer Games"
 msgstr "Jogos Multijogador"
@@ -756,7 +756,7 @@ msgstr "Nenhuma empresa te pode fechar."
 msgid "No corporation. No algorithms. No permission needed."
 msgstr "Nenhuma corporação. Sem algoritmos. Não é preciso permissão."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:420
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:422
 #, elixir-autogen, elixir-format
 msgid "No downloads, no plugins — opens in a new window"
 msgstr "Sem downloads, nenhum plug- in — abre em uma nova janela"
@@ -774,7 +774,7 @@ msgstr ""
 "Nada de localização. Não há perfis. Sem recolha de dados. Apenas um servidor"
 " de chat que"
 
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:478
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:480
 #, elixir-autogen, elixir-format
 msgid "No trash here."
 msgstr "Não há lixo aqui."
@@ -813,7 +813,7 @@ msgstr "Uma ordem judicial e a vossa comunidade desaparece."
 msgid "One server. Fully yours."
 msgstr "Um servidor. Totalmente teu."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:570
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:572
 #, elixir-autogen, elixir-format
 msgid "Open Help Topics or type"
 msgstr "Abrir Tópicos de Ajuda ou tipo"
@@ -874,7 +874,7 @@ msgstr "Outras formas de ajudar"
 msgid "P2P calls:"
 msgstr "P2P chama:"
 
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:368
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:370
 #, elixir-autogen, elixir-format
 msgid "P2P multiplayer games flow diagram"
 msgstr "Diagrama de fluxo de jogos multiplayer P2P"
@@ -894,7 +894,7 @@ msgstr "Peer-to-peer"
 msgid "Peer-to-peer connection diagram"
 msgstr "Diagrama de conexão entre pares"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:291
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:293
 #, elixir-autogen, elixir-format
 msgid "Pong"
 msgstr "Pong"
@@ -905,7 +905,7 @@ msgstr "Pong"
 msgid "PostgreSQL"
 msgstr "PostgreSQL"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:602
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:604
 #, elixir-autogen, elixir-format
 msgid "Powerful IRC-style commands."
 msgstr "Comandos poderosos de estilo IRC."
@@ -935,7 +935,7 @@ msgstr ""
 msgid "Private:"
 msgstr "Privado:"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:439
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:441
 #, elixir-autogen, elixir-format
 msgid "Programmable bots with pluggable capabilities."
 msgstr "Bots programáveis com recursos plugáveis."
@@ -956,12 +956,12 @@ msgstr "Protegido:"
 msgid "Public:"
 msgstr "Público:"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:370
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:372
 #, elixir-autogen, elixir-format
 msgid "Quake"
 msgstr "Quake"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:394
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:396
 #, elixir-autogen, elixir-format
 msgid "Quake II"
 msgstr "Quake II"
@@ -971,22 +971,22 @@ msgstr "Quake II"
 msgid "README.txt"
 msgstr "README.txt"
 
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:441
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:443
 #, elixir-autogen, elixir-format
 msgid "README.txt — Notepad"
 msgstr "README.txt — Bloco de notas"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:457
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:459
 #, elixir-autogen, elixir-format
 msgid "RPG-style rolling (!roll 2d6+3)"
 msgstr "Rolagem em estilo RPG (! roll 2d6+3)"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:475
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:477
 #, elixir-autogen, elixir-format
 msgid "RSS:"
 msgstr "RSS:"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:531
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:533
 #, elixir-autogen, elixir-format
 msgid "Rate limiting, flood protection, and word filters."
 msgstr "Limite de taxa, proteção contra inundações e filtros de palavras."
@@ -1022,7 +1022,7 @@ msgstr "Conversa em tempo real. Nada de refrescos. Zero de carga."
 msgid "Real-time messages via"
 msgstr "Mensagens em tempo real via"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:333
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:335
 #, elixir-autogen, elixir-format
 msgid "Real-time sync via WebRTC DataChannel"
 msgstr "Sincronização em tempo real através do canal de dados WebRTC"
@@ -1083,17 +1083,17 @@ msgstr "Roteado através de seus servidores"
 msgid "Run your own server. Your data stays with you."
 msgstr "Executa o teu próprio servidor. Os seus dados ficam consigo."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:415
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:417
 #, elixir-autogen, elixir-format
 msgid "Runs entirely in the browser via WebAssembly"
 msgstr "Funciona inteiramente no navegador via WebAssembly"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:484
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:486
 #, elixir-autogen, elixir-format
 msgid "Scheduler:"
 msgstr "Agendador:"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:576
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:578
 #, elixir-autogen, elixir-format
 msgid "Searchable topics with keyword matching"
 msgstr "Tópicos pesquisáveis com correspondência de palavras-chave"
@@ -1118,7 +1118,7 @@ msgstr "Segurança em cada camada."
 msgid "Security layers diagram"
 msgstr "Diagrama de camadas de segurança"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:586
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:588
 #, elixir-autogen, elixir-format
 msgid "Self-documented"
 msgstr "Autodocumentado"
@@ -1153,13 +1153,13 @@ msgstr ""
 msgid "Slack charges for messages you already sent."
 msgstr "Cobranças por mensagens que já enviou."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:355
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:392
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:357
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:394
 #, elixir-autogen, elixir-format
 msgid "Solo Arcade"
 msgstr "Arcade Solo"
 
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:401
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:403
 #, elixir-autogen, elixir-format
 msgid "Solo arcade flow diagram"
 msgstr "Diagrama de fluxo de arcade individual"
@@ -1169,7 +1169,7 @@ msgstr "Diagrama de fluxo de arcade individual"
 msgid "Source code"
 msgstr "Código-fonte"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:295
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:297
 #, elixir-autogen, elixir-format
 msgid "Star Duel"
 msgstr "Duel de Estrelas"
@@ -1234,7 +1234,7 @@ msgstr "Relé TURN"
 msgid "Take back control."
 msgstr "Recupera o controlo."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:299
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:301
 #, elixir-autogen, elixir-format
 msgid "Tanks"
 msgstr "Tanques"
@@ -1308,7 +1308,7 @@ msgstr ""
 msgid "Topic, modes, slow mode — you control it"
 msgstr "Tópico, modos, modo lento — você o controla"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:303
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:305
 #, elixir-autogen, elixir-format
 msgid "Trails"
 msgstr "Trilhos"
@@ -1319,27 +1319,27 @@ msgid "Trains their AI, sold to advertisers"
 msgstr "Treina a sua IA, vendida a anunciantes"
 
 #: lib/retro_hex_chat_web/live/landing_live/index.html.heex:96
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:470
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:472
 #, elixir-autogen, elixir-format
 msgid "Trash"
 msgstr "Lixo"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:448
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:450
 #, elixir-autogen, elixir-format
 msgid "Trivia:"
 msgstr "Trivia:"
 
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:373
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:375
 #, elixir-autogen, elixir-format
 msgid "Type"
 msgstr "Tipo"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:520
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:522
 #, elixir-autogen, elixir-format
 msgid "User Management"
 msgstr "Gestão do Usuário"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:257
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:259
 #, elixir-autogen, elixir-format
 msgid "Video calls with camera toggle and PiP"
 msgstr "Chamadas de vídeo com alternância de câmera e PiP"
@@ -1349,7 +1349,7 @@ msgstr "Chamadas de vídeo com alternância de câmera e PiP"
 msgid "Voice and video calls"
 msgstr "Chamadas de voz e vídeo"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:246
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:248
 #, elixir-autogen, elixir-format
 msgid "Voice call mockup"
 msgstr "Mockup de chamada de voz"
@@ -1359,7 +1359,7 @@ msgstr "Mockup de chamada de voz"
 msgid "Want your own server? Three steps."
 msgstr "Queres o teu próprio servidor? Três passos."
 
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:415
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:417
 #, elixir-autogen, elixir-format
 msgid "WebAssembly"
 msgstr "WebAssembly"
@@ -1404,7 +1404,7 @@ msgstr "Onde são armazenadas as mensagens?"
 msgid "Who owns the server?"
 msgstr "Quem é o dono do servidor?"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:374
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:376
 #, elixir-autogen, elixir-format
 msgid "Wolf3D"
 msgstr "Wolf3D"
@@ -1542,7 +1542,7 @@ msgstr "As tuas regras."
 msgid "Your server, your database"
 msgstr "Seu servidor, sua base de dados"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:506
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:508
 #, elixir-autogen, elixir-format
 msgid "Your server, your rules."
 msgstr "O teu servidor, as tuas regras."
@@ -1584,7 +1584,7 @@ msgstr "entre eles — criptografado, privado e rápido."
 msgid "contributing guide"
 msgstr "guia contribuinte"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:475
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:477
 #, elixir-autogen, elixir-format
 msgid "feed monitoring with announcements"
 msgstr "monitorização dos alimentos para animais com anúncios"
@@ -1594,7 +1594,7 @@ msgstr "monitorização dos alimentos para animais com anúncios"
 msgid "github.com/rodrigomarchi/retro_hex_chat"
 msgstr "github.com/rodrigomarchi/retro_hex_chat"
 
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:415
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:417
 #, elixir-autogen, elixir-format
 msgid "in your browser. No downloads."
 msgstr "no seu navegador. Sem downloads."
@@ -1609,7 +1609,7 @@ msgstr "apenas para o seu grupo"
 msgid "invite-only, for your company or group."
 msgstr "apenas para convidados, para a sua empresa ou grupo."
 
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:377
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:379
 #, elixir-autogen, elixir-format
 msgid "no server involvement"
 msgstr "sem envolvimento do servidor"
@@ -1634,7 +1634,7 @@ msgstr "aberto a quem quiser participar."
 msgid "password-gated access"
 msgstr "acesso com senha"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:448
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:450
 #, elixir-autogen, elixir-format
 msgid "quiz games with leaderboards"
 msgstr "jogos de quiz com leaderboards"
@@ -1654,12 +1654,12 @@ msgstr "servidor, nunca sair"
 msgid "servers, mined for ads"
 msgstr "servidores, extraídos para anúncios"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:484
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:486
 #, elixir-autogen, elixir-format
 msgid "timed messages and reminders"
 msgstr "mensagens e lembretes cronometrados"
 
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:374
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:376
 #, elixir-autogen, elixir-format
 msgid ""
 "to challenge anyone. Games run on HTML5 Canvas with state synced via WebRTC "
@@ -1675,7 +1675,7 @@ msgstr ""
 msgid "v0.1.0"
 msgstr "v0.1.0"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:466
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:468
 #, elixir-autogen, elixir-format
 msgid "word filters and spam detection"
 msgstr "filtros de palavras e detecção de spam"
@@ -1788,36 +1788,36 @@ msgstr ""
 "Clone o repositório, execute a tarefa de configuração, inicie Phoenix e "
 "mantenha o controle dos dados da comunidade."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:328
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:374
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:330
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:376
 #, elixir-autogen, elixir-format
 msgid "/p2p @nick"
 msgstr "/p2p @nick"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:348
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:385
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:350
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:387
 #, elixir-autogen, elixir-format
 msgid "34 games"
 msgstr "34 jogos"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:285
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:287
 #, elixir-autogen, elixir-format
 msgid "34 multiplayer games via WebRTC."
 msgstr "34 jogos multiplayer via WebRTC."
 
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:364
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:366
 #, elixir-autogen, elixir-format
 msgid "34 multiplayer games. Right from the chat."
 msgstr "34 jogos multiplayer. Mesmo da conversa."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:404
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:411
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:406
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:413
 #, elixir-autogen, elixir-format
 msgid "Arcade"
 msgstr "Arcade"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:402
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:407
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:404
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:409
 #, elixir-autogen, elixir-format
 msgid "Games"
 msgstr "Jogos"
@@ -1837,8 +1837,8 @@ msgstr "Principal"
 msgid "Navigate"
 msgstr "Navegar"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:402
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:406
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:404
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:408
 #, elixir-autogen, elixir-format
 msgid "Open the"
 msgstr "Abrir o"
@@ -1848,7 +1848,7 @@ msgstr "Abrir o"
 msgid "Open the app"
 msgstr "Abra a aplicação"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:410
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:412
 #, elixir-autogen, elixir-format
 msgid "Pick a game — it opens in a new browser window"
 msgstr "Escolha um jogo — ele abre em uma nova janela do navegador"
@@ -1858,13 +1858,13 @@ msgstr "Escolha um jogo — ele abre em uma nova janela do navegador"
 msgid "Start"
 msgstr "Iniciar"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:403
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:407
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:405
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:409
 #, elixir-autogen, elixir-format
 msgid "menu and choose"
 msgstr "menu e escolher"
 
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:411
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:413
 #, elixir-autogen, elixir-format
 msgid ""
 "— a game picker opens right in the chat. Pick from DOOM, Quake, Wolfenstein "
@@ -1873,12 +1873,12 @@ msgstr ""
 "— um catador de jogos abre bem no chat. Escolha entre DOOM, Quake, "
 "Wolfenstein 3D, Half-Life, e ScummVM aventuras - todos correndo como"
 
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:377
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:379
 #, elixir-autogen, elixir-format
 msgid ", just like private P2P calls."
 msgstr ", tal como chamadas P2P privadas."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:611
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:613
 #, elixir-autogen, elixir-format
 msgid "50+ commands"
 msgstr "50+ comandos"
@@ -1912,18 +1912,18 @@ msgstr "As conferências de canais são P2P?"
 msgid "Canvas map runtime"
 msgstr "Tempo de execução do mapa de tela"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:176
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:178
 #: lib/retro_hex_chat_web/live/landing_live/how_it_works.html.heex:186
 #, elixir-autogen, elixir-format
 msgid "Channel Conferences"
 msgstr "Conferências do Canal"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:535
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:537
 #, elixir-autogen, elixir-format
 msgid "Channel Services"
 msgstr "Serviços de Canal"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:159
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:161
 #, elixir-autogen, elixir-format
 msgid "Channel and DM messages appear as bubbles in the same conversation"
 msgstr "Mensagens de canais e DM aparecem como bolhas na mesma conversa"
@@ -1953,7 +1953,7 @@ msgstr "Canal ou DM"
 msgid "Chat"
 msgstr "Conversar"
 
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:345
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:347
 #, elixir-autogen, elixir-format
 msgid "Chat / Space / Conference"
 msgstr "Conversar / Espaço / Conferência"
@@ -1969,12 +1969,12 @@ msgid "Chat, Spaces, private P2P calls, channel conferences, and retro games."
 msgstr ""
 "Chat, Espaços, chamadas P2P privadas, conferências de canais e jogos retro."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:144
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:146
 #, elixir-autogen, elixir-format
 msgid "Choose an avatar before entering the shared map"
 msgstr "Escolha um avatar antes de inserir o mapa compartilhado"
 
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:326
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:328
 #, elixir-autogen, elixir-format
 msgid "Conference"
 msgstr "Conferência"
@@ -1989,7 +1989,7 @@ msgstr "O acesso à conferência segue o modelo de adesão e moderação do cana
 msgid "Conference media"
 msgstr "Meios de comunicação social"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:217
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:219
 #, elixir-autogen, elixir-format
 msgid ""
 "Conference statistics, mini mode, focus/grid layouts, and reconnect handling"
@@ -2002,7 +2002,7 @@ msgstr ""
 msgid "Conferences"
 msgstr "Conferências"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:242
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:244
 #, elixir-autogen, elixir-format
 msgid "Direct 1:1 connections between people."
 msgstr "Ligações diretas 1:1 entre as pessoas."
@@ -2094,12 +2094,12 @@ msgstr ""
 "Agrupe áudio, vídeo, compartilhamento de tela e moderação em seu próprio "
 "servidor."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:227
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:229
 #, elixir-autogen, elixir-format
 msgid "Group call"
 msgstr "Chamada em grupo"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:181
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:183
 #, elixir-autogen, elixir-format
 msgid "Group calls live inside channels."
 msgstr "Chamadas em grupo ao vivo dentro dos canais."
@@ -2139,7 +2139,7 @@ msgstr ""
 msgid "Moderation controls"
 msgstr "Controlos de moderação"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:208
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:210
 #, elixir-autogen, elixir-format
 msgid ""
 "Moderator controls: lock room, mute all, camera off all, and remove "
@@ -2148,12 +2148,12 @@ msgstr ""
 "Controles moderadores: sala de bloqueio, mudo tudo, câmera fora de todos, e "
 "remover participantes"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:540
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:542
 #, elixir-autogen, elixir-format
 msgid "NickServ and ChanServ-style registration and access control."
 msgstr "Controlo de registo e acesso ao estilo NickServ e ChanServ."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:338
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:340
 #, elixir-autogen, elixir-format
 msgid "No gameplay server — synced through the private P2P session"
 msgstr "Nenhum servidor de jogo — sincronizado através da sessão P2P privada"
@@ -2195,7 +2195,7 @@ msgstr ""
 "Os operadores podem trancar a sala, silenciar os participantes, desativar as"
 " câmeras, gerenciar o compartilhamento de tela ou encerrar a conferência."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:607
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:609
 #, elixir-autogen, elixir-format
 msgid "Over 50 commands with smart autocomplete."
 msgstr "Mais de 50 comandos com autocompletar inteligente."
@@ -2229,7 +2229,7 @@ msgstr ""
 "PostgreSQL mantém os dados acessíveis para sua própria estratégia de backup "
 "e migração."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:199
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:201
 #, elixir-autogen, elixir-format
 msgid ""
 "Pre-join device picker with microphone, camera, speaker, and layout settings"
@@ -2242,7 +2242,7 @@ msgstr ""
 msgid "Private P2P"
 msgstr "P2P Privado"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:235
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:237
 #, elixir-autogen, elixir-format
 msgid "Private P2P Calls & Files"
 msgstr "Chamadas e Ficheiros P2P Privados"
@@ -2287,7 +2287,7 @@ msgstr ""
 msgid "Private sessions connect directly via WebRTC."
 msgstr "Sessões privadas conectam diretamente através do WebRTC."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:253
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:255
 #, elixir-autogen, elixir-format
 msgid "Private voice calls — direct P2P via WebRTC"
 msgstr "Chamadas de voz privadas – P2P direto via WebRTC"
@@ -2344,7 +2344,7 @@ msgstr "Mesmo histórico de conversas"
 msgid "Self-hosted SFU"
 msgstr "FU auto-hospedada"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:193
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:195
 #, elixir-autogen, elixir-format
 msgid "Self-hosted SFU routes group media through your server"
 msgstr "Auto-hosted rotas SFU grupo mídia através de seu servidor"
@@ -2359,7 +2359,7 @@ msgstr "Self-hosted WebRTC SFU"
 msgid "Server-validated movement"
 msgstr "Movimento validado pelo servidor"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:150
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:152
 #, elixir-autogen, elixir-format
 msgid "Server-validated movement, collision, seating, and interactions"
 msgstr "Movimento, colisão, lugares e interações validados pelo servidor"
@@ -2397,12 +2397,12 @@ msgstr ""
 "conversa, e vê mensagens de chat como bolhas no mapa. Eles não criam uma "
 "sala de chat separada; eles visualizam a conversa em que você já está."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:169
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:171
 #, elixir-autogen, elixir-format
 msgid "Spatial chat"
 msgstr "Conversa espacial"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:138
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:140
 #, elixir-autogen, elixir-format
 msgid "Switch between Chat and Space from the channel topic bar"
 msgstr "Alternar entre bate- papo e espaço da barra de tópicos do canal"
@@ -2446,7 +2446,7 @@ msgstr "Espaços Virtuais"
 msgid "Virtual Spaces."
 msgstr "Espaços Virtuais."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:267
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:269
 #, elixir-autogen, elixir-format
 msgid "WebRTC encrypted with TURN relay fallback"
 msgstr "WebRTC criptografado com retrocesso do relé TURN"
@@ -2521,8 +2521,8 @@ msgid "— Open the SFU UDP port range 50000–50100 for channel conferences"
 msgstr ""
 "— Abrir a gama de portos UDP UFS 50000–50100 para conferências de canais"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:185
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:330
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:187
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:332
 #, elixir-autogen, elixir-format
 msgid "Channel conference topology diagram"
 msgstr "Diagrama topológico da conferência de canais"
@@ -2536,7 +2536,7 @@ msgstr ""
 "Canais, DMs, bots, comandos, respostas, reações e moderação permanecem em um"
 " histórico de conversação durável."
 
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:335
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:337
 #, elixir-autogen, elixir-format
 msgid ""
 "Conference keeps media inside the channel: participants join from the room, "
@@ -2545,8 +2545,8 @@ msgstr ""
 "A conferência mantém a mídia dentro do canal: os participantes se juntam a "
 "partir da sala, os operadores moderados, e seu SFU encaminha os fluxos."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:126
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:307
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:127
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:308
 #, elixir-autogen, elixir-format
 msgid "End of Time Space map with avatars and in-world chat bubbles"
 msgstr ""
@@ -2557,7 +2557,7 @@ msgstr ""
 msgid "Persistent chat workspace diagram"
 msgstr "Diagrama de espaço de trabalho de bate- papo persistente"
 
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:316
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:318
 #, elixir-autogen, elixir-format
 msgid ""
 "Space renders that same conversation as a live map: avatars move, messages "

@@ -1,4 +1,4 @@
-# "msgid"s in this file come from arcade.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: ja; status: enabled; wave: 1.
+# "msgid"s in this file come from arcade.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=arcade to refresh catalogs.  Locale: ja; status: enabled; wave: 1.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -11,19 +11,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:51
+#: lib/retro_hex_chat/arcade/catalog.ex:52
 #, elixir-autogen, elixir-format
 msgid "32 levels — Doom II compatible"
 msgstr "32 レベル — Doom II 互換"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:37
+#: lib/retro_hex_chat/arcade/catalog.ex:38
 #, elixir-autogen, elixir-format
 msgid "36 levels of open-source doom"
 msgstr ""
 "の特長\n"
 "36レベルのオープンソースのドーム"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:109
+#: lib/retro_hex_chat/arcade/catalog.ex:110
 #, elixir-autogen, elixir-format
 msgid ""
 "A Viking-themed total conversion with hand-drawn pixel art. Battle through "
@@ -32,7 +32,7 @@ msgstr ""
 "の特長\n"
 "手描きの画素アートによるヴァイキングをテーマにしたトータルコンバージョン。 Norse-inspiredレベルを軸、弓、ランディカルマジックで戦います。"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:53
+#: lib/retro_hex_chat/arcade/catalog.ex:54
 #, elixir-autogen, elixir-format
 msgid ""
 "A complete free replacement for DOOM II — 32 levels with the Super Shotgun. "
@@ -41,7 +41,7 @@ msgstr ""
 "の特長\n"
 "DOOM IIの完全無料交換 — スーパーショットガンで32レベル。 何千ものコミュニティメイドのPWADモジュールと互換性があります。"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:136
+#: lib/retro_hex_chat/arcade/catalog.ex:137
 #, elixir-autogen, elixir-format
 msgid ""
 "A complete free replacement for Quake — original levels, art, and music "
@@ -50,7 +50,7 @@ msgstr ""
 "の特長\n"
 "Quake — BSD ライセンスの元のレベル、アート、音楽の完全無料交換。 コミュニティで作られたオープンソースコンテンツ。"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:39
+#: lib/retro_hex_chat/arcade/catalog.ex:40
 #, elixir-autogen, elixir-format
 msgid ""
 "A complete free replacement for Ultimate DOOM — 4 episodes, 36 levels. "
@@ -59,7 +59,7 @@ msgstr ""
 "の特長\n"
 "Ultimate DOOM - 4エピソード、36レベルの完全な無料交換。 BSD ライセンスに基づくオリジナルのアート、音楽、レベル。"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:95
+#: lib/retro_hex_chat/arcade/catalog.ex:96
 #, elixir-autogen, elixir-format
 msgid ""
 "A cyberpunk total conversion — hack through a dystopian future with new "
@@ -68,7 +68,7 @@ msgstr ""
 "の特長\n"
 "サイバーパンクの総変換 — 新たな武器、敵、レベルでダイストピアの未来を追いかけます。 スタンドアロン v1.2 IWAD."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:234
+#: lib/retro_hex_chat/arcade/catalog.ex:235
 #, elixir-autogen, elixir-format
 msgid ""
 "A disturbing top-down cyberpunk adventure by Creative Reality. You are Ryan,"
@@ -148,7 +148,7 @@ msgstr ""
 "の特長\n"
 "闘技場スタイルのレイアウトは、敵があらゆる方向から来ることができることを意味します。"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:172
+#: lib/retro_hex_chat/arcade/catalog.ex:173
 #, elixir-autogen, elixir-format
 msgid "Arrow keys move, Ctrl fire, Space open doors, Shift run, 1-4 weapons"
 msgstr ""
@@ -187,7 +187,7 @@ msgstr ""
 "の特長\n"
 "孤立した空間の海兵として, 軍事基地を介してあなたの方法と対抗ショットガンを含み、, チェーンガン, そしてロケットランチャー. John RomeroとSandy Petersenによるレベルデザインは、非線形FPSマップのデザインのマスタークラスです。"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:197
+#: lib/retro_hex_chat/arcade/catalog.ex:198
 #, elixir-autogen, elixir-format
 msgid "Beneath a Steel Sky"
 msgstr ""
@@ -206,7 +206,7 @@ msgstr ""
 "の特長\n"
 "スティール・スカイ(1994年)の下には、革新的なソフトウェアによるサイバーパンクのポイントアンドクリック・アドベンチャーで、ディストピアンの未来オーストラリアに設定されています。 ロバート・フォスターは、「ザ・ギャップ」として知られる放射性廃棄物の土地で育つが、ユニオン・シティに誘拐され、スーパーコンピュータ・リンが規制する巨大で戦略的な都市である。"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:217
+#: lib/retro_hex_chat/arcade/catalog.ex:218
 #, elixir-autogen, elixir-format
 msgid ""
 "British real estate agent John Hacker must defeat the vampire Drascula in "
@@ -216,7 +216,7 @@ msgstr ""
 "の特長\n"
 "英国の不動産代理店 John Hackerは、この巨大なスペインのポイントでヴァンパイア・ドラスキュラを倒し、ポップアップ文化の参照と暴露ユーモアの完全な冒険をクリックします。"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:78
+#: lib/retro_hex_chat/arcade/catalog.ex:79
 #, elixir-autogen, elixir-format
 msgid "Chex Quest"
 msgstr ""
@@ -266,14 +266,14 @@ msgstr ""
 "の特長\n"
 "在庫アイテムを組み合わせる - 一部のパズルには、クリエイティブアイテムの組み合わせが必要です。"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:215
+#: lib/retro_hex_chat/arcade/catalog.ex:216
 #, elixir-autogen, elixir-format
 msgid "Comedic Dracula parody adventure (1996)"
 msgstr ""
 "の特長\n"
 "コメディ・ドラキュラ・パロディ・アドベンチャー(1996)"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:249
+#: lib/retro_hex_chat/arcade/catalog.ex:250
 #, elixir-autogen, elixir-format
 msgid "Comic adventure in the Amazon (1995)"
 msgstr ""
@@ -364,14 +364,14 @@ msgstr ""
 "の特長\n"
 "Ctrl + F5"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:198
+#: lib/retro_hex_chat/arcade/catalog.ex:199
 #, elixir-autogen, elixir-format
 msgid "Cyberpunk point & click adventure (1994)"
 msgstr ""
 "の特長\n"
 "サイバーパンクポイント&クリックアドベンチャー(1994)"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:93
+#: lib/retro_hex_chat/arcade/catalog.ex:94
 #, elixir-autogen, elixir-format
 msgid "Cyberpunk total conversion"
 msgstr ""
@@ -387,21 +387,21 @@ msgstr ""
 "の特長\n"
 "Cyborgの敵は、古典的なDOOMモンスターよりも厳しいことができます。"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:22
+#: lib/retro_hex_chat/arcade/catalog.ex:23
 #, elixir-autogen, elixir-format
 msgid "DOOM: Knee-Deep in the Dead"
 msgstr ""
 "の特長\n"
 "DOOM:死者のニーディープ"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:232
+#: lib/retro_hex_chat/arcade/catalog.ex:233
 #, elixir-autogen, elixir-format
 msgid "Dark cyberpunk adventure (1994)"
 msgstr ""
 "の特長\n"
 "ダークサイバーパンクの冒険 (1994)"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:65
+#: lib/retro_hex_chat/arcade/catalog.ex:66
 #, elixir-autogen, elixir-format
 msgid "Deathmatch arena — open source"
 msgstr ""
@@ -429,7 +429,7 @@ msgstr ""
 "の特長\n"
 "ドラッグアイテム"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:214
+#: lib/retro_hex_chat/arcade/catalog.ex:215
 #, elixir-autogen, elixir-format
 msgid "Drascula: The Vampire Strikes Back"
 msgstr ""
@@ -447,7 +447,7 @@ msgstr ""
 "の特長\n"
 "Drascula: Vampire Strikes Back (1996) は、Alcachofa Soft による魅力的なスペインのポイントアンドクリックアドベンチャーです。 英国の不動産代理店 John Hacker は Transylvania に旅行し、彼の花嫁を作るために美しい BJ を誘拐した吸血鬼のカウント ドラキュラを敗北しなければなりません。"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:231
+#: lib/retro_hex_chat/arcade/catalog.ex:232
 #, elixir-autogen, elixir-format
 msgid "Dreamweb"
 msgstr ""
@@ -485,15 +485,15 @@ msgstr ""
 "の特長\n"
 "第1話は、ラブクラフトのホラーの4つの次元であなたを連れて行きます:中世の城、暗い暗号化、そして他の世界的な領域は、シェーンブラー、フィends、Ogres、および他の悪夢の生き物で満たされています。 トレント・レズノーによる大気圏のサウンドトラック(Nine inch Nails)は、圧迫的な気分に。"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:23
-#: lib/retro_hex_chat/arcade/catalog.ex:121
+#: lib/retro_hex_chat/arcade/catalog.ex:24
+#: lib/retro_hex_chat/arcade/catalog.ex:122
 #, elixir-autogen, elixir-format
 msgid "Episode 1 — The Original"
 msgstr ""
 "の特長\n"
 "第1話 — オリジナル"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:164
+#: lib/retro_hex_chat/arcade/catalog.ex:165
 #, elixir-autogen, elixir-format
 msgid "Episode 1 — The Shareware Classic"
 msgstr ""
@@ -524,7 +524,7 @@ msgstr ""
 "の特長\n"
 "エスケープ"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:200
+#: lib/retro_hex_chat/arcade/catalog.ex:201
 #, elixir-autogen, elixir-format
 msgid ""
 "Escape Union City and uncover your past in this cyberpunk classic by "
@@ -621,7 +621,7 @@ msgstr ""
 "の特長\n"
 "Flashlight トグル"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:248
+#: lib/retro_hex_chat/arcade/catalog.ex:249
 #, elixir-autogen, elixir-format
 msgid "Flight of the Amazon Queen"
 msgstr ""
@@ -639,7 +639,7 @@ msgstr ""
 "の特長\n"
 "アマゾンクイーン(1995)のフライトは、インディアナ・ジョーンズとモンキー・アイランドのスタイルのコミックポイントアンドクリックアドベンチャーです。 あなたは有名な女優を輸送しながら、アマゾンジャングルで飛行機のクラッシュランズが、パイロット·ホールとして再生."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:67
+#: lib/retro_hex_chat/arcade/catalog.ex:68
 #, elixir-autogen, elixir-format
 msgid ""
 "Free deathmatch-focused maps for DOOM. 32 arena-style levels designed for "
@@ -648,7 +648,7 @@ msgstr ""
 "の特長\n"
 "DOOM のための無料のデッドマッチに焦点を当てたマップ。 32 は、ペースの速いマルチプレイアクションのために設計されたレベルです。 BSD ライセンス。"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:268
+#: lib/retro_hex_chat/arcade/catalog.ex:269
 #, elixir-autogen, elixir-format
 msgid ""
 "Free the village of Turnvale from the sorceress Selena. Revolution "
@@ -658,7 +658,7 @@ msgstr ""
 "の特長\n"
 "ソルサーセリナからターンヴァレの村を解放します。 革新的なバーチャルシアターシステムを搭載した革新的なソフトウェアのデビューゲーム。"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:64
+#: lib/retro_hex_chat/arcade/catalog.ex:65
 #, elixir-autogen, elixir-format
 msgid "FreeDM"
 msgstr ""
@@ -684,7 +684,7 @@ msgstr ""
 "の特長\n"
 "Freedoomの敵のデザインはDOOMと異なり、同様の動作パターンに従うことで、新しいスプライトを学ぶことができます。"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:36
+#: lib/retro_hex_chat/arcade/catalog.ex:37
 #, elixir-autogen, elixir-format
 msgid "Freedoom: Phase 1"
 msgstr ""
@@ -702,7 +702,7 @@ msgstr ""
 "の特長\n"
 "Freedoom: Phase 1 は、究極の DOOM の完全無料交換です。 36 元のレベルを持つ 4 つの完全なエピソード、BSD ライセンスの下ですべて。 スプライト、テクスチャ、サウンドエフェクト、音楽トラックは、コミュニティによってゼロから再作成されています。"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:50
+#: lib/retro_hex_chat/arcade/catalog.ex:51
 #, elixir-autogen, elixir-format
 msgid "Freedoom: Phase 2"
 msgstr ""
@@ -719,7 +719,7 @@ msgstr ""
 "の特長\n"
 "Freedoom: フェーズ2は、DOOM IIの完全無料交換です: 地球上の地獄 — 伝説的なスーパーショットガンとの激しいFPSアクションの32レベル。 すべてのアセットは、BSD ライセンスの下で元のコミュニティの作成です。"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:92
+#: lib/retro_hex_chat/arcade/catalog.ex:93
 #, elixir-autogen, elixir-format
 msgid "HacX: Twitch 'n Kill"
 msgstr ""
@@ -736,7 +736,7 @@ msgstr ""
 "の特長\n"
 "HacX: Twitch 'n Kill (1997) は、スタンドアローンに行った DOOM II のサイバーパンク総変換です。 未来を舞台に、企業セキュリティシステムやサイボーグの敵をネオンリットでハッキングします。"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:180
+#: lib/retro_hex_chat/arcade/catalog.ex:181
 #, elixir-autogen, elixir-format
 msgid "Half-Life: Uplink"
 msgstr ""
@@ -860,7 +860,7 @@ msgstr ""
 "の特長\n"
 "左クリック"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:206
+#: lib/retro_hex_chat/arcade/catalog.ex:207
 #, elixir-autogen, elixir-format
 msgid ""
 "Left click interact/walk, Right click examine/verb menu, Drag inventory "
@@ -869,7 +869,7 @@ msgstr ""
 "の特長\n"
 "左クリックで、research/walk, 右クリックでresearch/verbメニュー, 在庫アイテムをドラッグして組み合わせます. F5 save/load, Ctrl + F5 オプション, Esc はキュートシーンをスキップします"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:133
+#: lib/retro_hex_chat/arcade/catalog.ex:134
 #, elixir-autogen, elixir-format
 msgid "LibreQuake"
 msgstr "リブレキューク"
@@ -922,7 +922,7 @@ msgstr ""
 "の特長\n"
 "ガードを聴く - それらを開く前にドアを通して敵を聴くことができます。"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:265
+#: lib/retro_hex_chat/arcade/catalog.ex:266
 #, elixir-autogen, elixir-format
 msgid "Lure of the Temptress"
 msgstr ""
@@ -978,7 +978,7 @@ msgstr ""
 "の特長\n"
 "地図はコンパクトで武器密で、迅速なアクションセッションに最適です。"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:266
+#: lib/retro_hex_chat/arcade/catalog.ex:267
 #, elixir-autogen, elixir-format
 msgid "Medieval fantasy adventure (1992)"
 msgstr ""
@@ -1104,7 +1104,7 @@ msgstr ""
 "の特長\n"
 "動詞メニューを開く"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:134
+#: lib/retro_hex_chat/arcade/catalog.ex:135
 #, elixir-autogen, elixir-format
 msgid "Open-source Quake replacement"
 msgstr ""
@@ -1201,7 +1201,7 @@ msgstr ""
 "の特長\n"
 "フェーズ 2 レベルは、フェーズ 1 よりもオープンで複雑です。"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:251
+#: lib/retro_hex_chat/arcade/catalog.ex:252
 #, elixir-autogen, elixir-format
 msgid ""
 "Pilot Joe King crash-lands in the Amazon and stumbles into a mad scientist's"
@@ -1211,7 +1211,7 @@ msgstr ""
 "の特長\n"
 "パイロットジョーキングはアマゾンでクラッシュランドし、マッドサイエンティストのプロットに転倒し、人間を恐竜に変えます。 魅力的なインディアナ・ジョーンズ・スタイル・ポイント&フルボイス演技で冒険をクリックします。"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:223
+#: lib/retro_hex_chat/arcade/catalog.ex:224
 #, elixir-autogen, elixir-format
 msgid ""
 "Point & click: left-click interact, right-click examine. Inventory at bottom"
@@ -1220,7 +1220,7 @@ msgstr ""
 "の特長\n"
 "ポイント & クリック: 左クリック 相互作用, 右クリック 検査. 画面下部の在庫。 F5 保存/load, Esc スキップ キュートシーン"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:257
+#: lib/retro_hex_chat/arcade/catalog.ex:258
 #, elixir-autogen, elixir-format
 msgid ""
 "Point & click: left-click interact, right-click examine. Inventory at top of"
@@ -1229,7 +1229,7 @@ msgstr ""
 "の特長\n"
 "ポイント & クリック: 左クリック 相互作用, 右クリック 検査. 画面上部の在庫。 F5 保存/load, Esc スキップ キュートシーン"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:291
+#: lib/retro_hex_chat/arcade/catalog.ex:292
 #, elixir-autogen, elixir-format
 msgid ""
 "Point & click: left-click interact, right-click examine. Simple, streamlined"
@@ -1238,7 +1238,7 @@ msgstr ""
 "の特長\n"
 "ポイント & クリック: 左クリック 相互作用, 右クリック 検査. 簡単、合理化されたインターフェイス。 F5 保存/load, Esc スキップ キュートシーン"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:274
+#: lib/retro_hex_chat/arcade/catalog.ex:275
 #, elixir-autogen, elixir-format
 msgid ""
 "Point & click: left-click interact, right-click verb menu. NPCs follow their"
@@ -1247,7 +1247,7 @@ msgstr ""
 "の特長\n"
 "ポイント & クリック: 左クリック 対話, 右クリック 動詞 メニュー. NPCはスケジュールに従っています。 F5 保存/load, Esc スキップ キュートシーン"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:240
+#: lib/retro_hex_chat/arcade/catalog.ex:241
 #, elixir-autogen, elixir-format
 msgid ""
 "Point & click: left-click interact/walk, right-click examine. Inventory at "
@@ -1305,21 +1305,21 @@ msgstr ""
 "の特長\n"
 "Quake IIは、相互接続されたマップ、カラー照明、構造化された物語でミッションベースレベルのデザインを導入しました。 ストロッグは、身体のホラー要素がゲームを一意に乱す雰囲気を与える、部品のために人間を収穫するサイバーネットのエイリアンです。"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:146
+#: lib/retro_hex_chat/arcade/catalog.ex:147
 #, elixir-autogen, elixir-format
 msgid "Quake II: The Invasion"
 msgstr ""
 "の特長\n"
 "Quake II: 侵略"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:120
+#: lib/retro_hex_chat/arcade/catalog.ex:121
 #, elixir-autogen, elixir-format
 msgid "Quake: Dimension of the Doomed"
 msgstr ""
 "の特長\n"
 "Quake: Doomedの次元"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:106
+#: lib/retro_hex_chat/arcade/catalog.ex:107
 #, elixir-autogen, elixir-format
 msgid "REKKR: Sunken Land"
 msgstr ""
@@ -1368,7 +1368,7 @@ msgstr ""
 "の特長\n"
 "静かな瞬間にリロード - 消防で中荷をキャッチしません。"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:285
+#: lib/retro_hex_chat/arcade/catalog.ex:286
 #, elixir-autogen, elixir-format
 msgid ""
 "Rescue your grandfather from underground pirates in this charmingly absurd "
@@ -1584,7 +1584,7 @@ msgstr ""
 "の特長\n"
 "対話ラインをスキップ"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:282
+#: lib/retro_hex_chat/arcade/catalog.ex:283
 #, elixir-autogen, elixir-format
 msgid "Soltys"
 msgstr ""
@@ -1683,7 +1683,7 @@ msgstr ""
 "の特長\n"
 "Strafe-running (forward + strafe を同時に) すると、 40% 速く動きます。"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:283
+#: lib/retro_hex_chat/arcade/catalog.ex:284
 #, elixir-autogen, elixir-format
 msgid "Surreal Polish puzzle adventure (1995)"
 msgstr ""
@@ -1744,7 +1744,7 @@ msgstr ""
 "の特長\n"
 "グレネード・ランチャーは、タイトな廊下で壊滅的であり、角の周りのグレナデをバウンスします。"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:181
+#: lib/retro_hex_chat/arcade/catalog.ex:182
 #, elixir-autogen, elixir-format
 msgid "The Official Demo — 3 Unique Missions"
 msgstr ""
@@ -1783,7 +1783,7 @@ msgstr ""
 "の特長\n"
 "弓は範囲で有効ですが、矢印は限られています。"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:79
+#: lib/retro_hex_chat/arcade/catalog.ex:80
 #, elixir-autogen, elixir-format
 msgid "The cereal box classic"
 msgstr ""
@@ -1942,7 +1942,7 @@ msgstr ""
 "の特長\n"
 "ゲームのプレイは、古典的なDOOMの式に従います:ラボリンスレベル、キーカードパズル、敵の群馬と高速ペースのFPSアクション。 資産はIDソフトウェアの原物とは異なりますが、ゲームは同じエンジンで実行され、同じ改造エコシステムをサポートしています。"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:166
+#: lib/retro_hex_chat/arcade/catalog.ex:167
 #, elixir-autogen, elixir-format
 msgid ""
 "The grandfather of FPS games (1992) — 10 levels of castle-storming action. "
@@ -1984,7 +1984,7 @@ msgstr ""
 "の特長\n"
 "インターフェイスはシンプルで合理化されています。左クリックはほとんどの作業を行います。"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:81
+#: lib/retro_hex_chat/arcade/catalog.ex:82
 #, elixir-autogen, elixir-format
 msgid ""
 "The legendary 1996 cereal box promotion — a kid-friendly total conversion of"
@@ -2011,7 +2011,7 @@ msgstr ""
 "の特長\n"
 "移動システムは、コークと同一です。バニーホッピングとストラフェジャンプの作業もここにあります。"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:183
+#: lib/retro_hex_chat/arcade/catalog.ex:184
 #, elixir-autogen, elixir-format
 msgid ""
 "The official Half-Life demo (1999) — 3 unique levels not found in the full "
@@ -2021,7 +2021,7 @@ msgstr ""
 "の特長\n"
 "ハーフライフの公式デモ(1999) — 3つのユニークなレベルがフルゲームでは見つかりませんでした。 黒メサの地下室で戦う。 弁によって自由に再配布可能。"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:149
+#: lib/retro_hex_chat/arcade/catalog.ex:150
 #, elixir-autogen, elixir-format
 msgid ""
 "The official Quake II demo (1997) — full 3D FPS with Strogg invasion. Unit 1"
@@ -2031,7 +2031,7 @@ msgstr ""
 "の特長\n"
 "正式なQuake IIデモ(1997) — フル3D FPSとStroggの侵入。 シングルプレイヤーキャンペーンのユニット1。 オンラインFPSを定義したシェアウェアの古典。"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:25
+#: lib/retro_hex_chat/arcade/catalog.ex:26
 #, elixir-autogen, elixir-format
 msgid ""
 "The original Episode 1 of DOOM (1993) — 9 levels of demon-infested corridors"
@@ -2040,7 +2040,7 @@ msgstr ""
 "の特長\n"
 "ドムのオリジナルエピソード1(1993) — ドモンのデモンストレーションの回廊の9レベル。 シェアウェアのクラシックが始まりました。"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:123
+#: lib/retro_hex_chat/arcade/catalog.ex:124
 #, elixir-autogen, elixir-format
 msgid ""
 "The original Episode 1 of Quake (1996) — full 3D FPS with Lovecraftian "
@@ -2237,7 +2237,7 @@ msgstr ""
 "の特長\n"
 "左折/右折"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:147
+#: lib/retro_hex_chat/arcade/catalog.ex:148
 #, elixir-autogen, elixir-format
 msgid "Unit 1 — The Demo"
 msgstr ""
@@ -2310,7 +2310,7 @@ msgstr ""
 "の特長\n"
 "暗い場所での懐中電灯(F)を使用してください。しかし、あなたのHEVスーツのスプリントと電力を共有することに注意してください。"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:107
+#: lib/retro_hex_chat/arcade/catalog.ex:108
 #, elixir-autogen, elixir-format
 msgid "Viking-themed standalone"
 msgstr ""
@@ -2332,28 +2332,28 @@ msgstr ""
 msgid "W / ↑"
 msgstr "W / ↑"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:128
-#: lib/retro_hex_chat/arcade/catalog.ex:141
+#: lib/retro_hex_chat/arcade/catalog.ex:129
+#: lib/retro_hex_chat/arcade/catalog.ex:142
 #, elixir-autogen, elixir-format
 msgid "WASD move, Mouse aim, Left click fire, E use"
 msgstr ""
 "の特長\n"
 "WASDの移動、マウスの目的、左クリックの火、Eの使用"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:31
-#: lib/retro_hex_chat/arcade/catalog.ex:45
-#: lib/retro_hex_chat/arcade/catalog.ex:59
-#: lib/retro_hex_chat/arcade/catalog.ex:73
-#: lib/retro_hex_chat/arcade/catalog.ex:87
-#: lib/retro_hex_chat/arcade/catalog.ex:101
-#: lib/retro_hex_chat/arcade/catalog.ex:115
+#: lib/retro_hex_chat/arcade/catalog.ex:32
+#: lib/retro_hex_chat/arcade/catalog.ex:46
+#: lib/retro_hex_chat/arcade/catalog.ex:60
+#: lib/retro_hex_chat/arcade/catalog.ex:74
+#: lib/retro_hex_chat/arcade/catalog.ex:88
+#: lib/retro_hex_chat/arcade/catalog.ex:102
+#: lib/retro_hex_chat/arcade/catalog.ex:116
 #, elixir-autogen, elixir-format
 msgid "WASD move, Mouse aim, Left click fire, E use, Space jump"
 msgstr ""
 "の特長\n"
 "WASDの移動、マウスの目的、左クリックの火、Eの使用、スペース ジャンプ"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:155
+#: lib/retro_hex_chat/arcade/catalog.ex:156
 #, elixir-autogen, elixir-format
 msgid ""
 "WASD move, Mouse aim, Left click fire, E use, Space jump, C crouch, R reload"
@@ -2361,7 +2361,7 @@ msgstr ""
 "の特長\n"
 "WASDの移動、マウスの目的、左のかちりと言う音の火、Eの使用、スペース ジャンプ、Cのクロウ、Rのリロード"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:189
+#: lib/retro_hex_chat/arcade/catalog.ex:190
 #, elixir-autogen, elixir-format
 msgid ""
 "WASD move, Mouse aim, Left click fire, E use, Space jump, Shift crouch, R "
@@ -2437,7 +2437,7 @@ msgstr ""
 "の特長\n"
 "Wolfenstein 3D (1992) — 初人シューターの祖父。 第1話:「城Wolfensteinから脱出する」 — アメリカのスパイB.J. BlazkowiczがNazi要塞から彼の方法と戦う10レベルの城嵐行動。"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:163
+#: lib/retro_hex_chat/arcade/catalog.ex:164
 #, elixir-autogen, elixir-format
 msgid "Wolfenstein 3D: Escape from Castle"
 msgstr ""

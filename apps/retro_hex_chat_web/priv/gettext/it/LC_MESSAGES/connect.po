@@ -1,4 +1,4 @@
-# "msgid"s in this file come from connect.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: it; status: enabled; wave: 3.
+# "msgid"s in this file come from connect.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=connect to refresh catalogs.  Locale: it; status: enabled; wave: 3.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -16,14 +16,14 @@ msgstr ""
 msgid "1-16 characters"
 msgstr "1-16 caratteri"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:253
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:252
 #: lib/retro_hex_chat_web/components/ui/shell/connect_status_bar.ex:42
 #, elixir-autogen, elixir-format
 msgid "Authentication"
 msgstr "Autenticazione"
 
 #: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:294
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:375
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:377
 #, elixir-autogen, elixir-format
 msgid "Back"
 msgstr "Indietro"
@@ -38,15 +38,15 @@ msgstr "Casi sensibili"
 msgid "Choose a password (min. 5 characters)..."
 msgstr "Scegli una password (min. 5 caratteri)..."
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:349
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:350
 #, elixir-autogen, elixir-format
 msgid "Confirm password"
 msgstr "Conferma la password"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:223
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:222
 #: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:298
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:423
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:444
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:421
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:442
 #, elixir-autogen, elixir-format
 msgid "Connect"
 msgstr "Collegamento"
@@ -61,22 +61,22 @@ msgstr "Collegamento - RetroHexChat"
 msgid "Connect to RetroHexChat"
 msgstr "Collegarsi a RetroHexChat"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:229
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:228
 #, elixir-autogen, elixir-format
 msgid "Connecting from another window ends the previous session."
 msgstr "La connessione da un'altra finestra termina la sessione precedente."
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:180
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:181
 #, elixir-autogen, elixir-format
 msgid "Enter your nickname..."
 msgstr "Inserisci il tuo soprannome..."
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:278
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:277
 #, elixir-autogen, elixir-format
 msgid "Enter your password..."
 msgstr "Inserisci la password..."
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:105
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:91
 #, elixir-autogen, elixir-format
 msgid "Incorrect password"
 msgstr "password non corretta"
@@ -91,37 +91,37 @@ msgstr "Deve iniziare con una lettera"
 msgid "Nickname"
 msgstr "Cognome"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:182
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:172
 #, elixir-autogen, elixir-format
 msgid "Nickname cannot be empty"
 msgstr "Nickname non può essere vuoto"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:191
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:181
 #, elixir-autogen, elixir-format
 msgid "Nickname cannot contain spaces"
 msgstr "Nickname non può contenere spazi"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:236
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:235
 #, elixir-autogen, elixir-format
 msgid "Nickname cleanup"
 msgstr "Pulisci il nome del nichel"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:179
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:169
 #, elixir-autogen, elixir-format
 msgid "Nickname must be a string"
 msgstr "Nickname deve essere una stringa"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:185
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:175
 #, elixir-autogen, elixir-format
 msgid "Nickname must be at most 16 characters"
 msgstr "Nickname deve essere al massimo 16 caratteri"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:188
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:178
 #, elixir-autogen, elixir-format
 msgid "Nickname must start with a letter or special character"
 msgstr "Nickname deve iniziare con una lettera o un carattere speciale"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:239
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:238
 #, elixir-autogen, elixir-format
 msgid "Nicknames unused for 7 days are automatically released."
 msgstr "I nomi inutilizzati per 7 giorni vengono rilasciati automaticamente."
@@ -131,28 +131,28 @@ msgstr "I nomi inutilizzati per 7 giorni vengono rilasciati automaticamente."
 msgid "No spaces allowed"
 msgstr "Nessun spazio consentito"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:228
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:227
 #, elixir-autogen, elixir-format
 msgid "One session per nickname"
 msgstr "Una sessione per soprannome"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:267
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:266
 #: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:327
 #, elixir-autogen, elixir-format
 msgid "Password"
 msgstr "Password"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:126
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:106
 #, elixir-autogen, elixir-format
 msgid "Password must be at least 5 characters"
 msgstr "La password deve essere almeno 5 caratteri"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:130
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:114
 #, elixir-autogen, elixir-format
 msgid "Passwords do not match"
 msgstr "Le password non corrispondono"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:383
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:381
 #, elixir-autogen, elixir-format
 msgid "Register & Connect"
 msgstr "Registrazione e connessione"
@@ -163,7 +163,7 @@ msgstr "Registrazione e connessione"
 msgid "Registration"
 msgstr "Registrazione"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:360
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:361
 #, elixir-autogen, elixir-format
 msgid "Repeat your password..."
 msgstr "Ripetere la password..."
@@ -183,12 +183,12 @@ msgstr "Sessione conclusa"
 msgid "Session expired"
 msgstr "Sessione scaduta"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:231
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:230
 #, elixir-autogen, elixir-format
 msgid "Session expiry"
 msgstr "Periodo di validità"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:232
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:231
 #, elixir-autogen, elixir-format
 msgid "Sessions expire after 10 failed reconnection attempts."
 msgstr "Le sessioni scadono dopo 10 tentativi di riconnessione falliti."
@@ -201,7 +201,7 @@ msgstr ""
 "Il soprannome %{nickname} è disponibile! Scegli una password per "
 "registrarla."
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:257
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:256
 #, elixir-autogen, elixir-format
 msgid ""
 "The nickname %{nickname} is registered. Please enter your password to "

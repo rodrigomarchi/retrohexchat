@@ -1,4 +1,4 @@
-# "msgid"s in this file come from help_space.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: zh_hant; status: enabled; wave: 3.
+# "msgid"s in this file come from help_space.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=help_space to refresh catalogs.  Locale: zh_hant; status: enabled; wave: 3.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -23,50 +23,75 @@ msgstr "生命週期"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "A virtual space is the map view built into every channel. People who are present in the channel can switch from Chat to Space, walk around the shared 8-bit village, and keep using the same public channel conversation."
-msgstr "A virtual space is the map view built into every channel. People who are present in the channel can switch from Chat to Space, walk around the shared 8-bit village, and keep using the same public channel conversation."
+msgid ""
+"A virtual space is the map view built into every channel. People who are "
+"present in the channel can switch from Chat to Space, walk around the shared"
+" 8-bit village, and keep using the same public channel conversation."
+msgstr ""
+"一個虛擬空間是每個頻道所建的地圖視圖. 頻道中在場的人可以從Chat切換到Space,在共享的8位村莊周圍走動,並繼續使用相同的公共頻道對話."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:23
 #, elixir-autogen, elixir-format
-msgid "Channel spaces are runtime state. They wake when someone views Space, mirror the current channel presence, and can be rebuilt from that presence when the view is opened again."
-msgstr "Channel spaces are runtime state. They wake when someone views Space, mirror the current channel presence, and can be rebuilt from that presence when the view is opened again."
+msgid ""
+"Channel spaces are runtime state. They wake when someone views Space, mirror"
+" the current channel presence, and can be rebuilt from that presence when "
+"the view is opened again."
+msgstr "頻道空間爲運行時狀態 。 當有人看到Space,鏡像當前頻道存在時,他們醒來,在再次打開視圖時可以從該存在中重建."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:16
 #, elixir-autogen, elixir-format
-msgid "Entering the channel makes your avatar available in Space. Move with the arrow keys or WASD while the canvas is focused; the server validates every step, so walls and furniture block movement for everyone equally."
-msgstr "Entering the channel makes your avatar available in Space. Move with the arrow keys or WASD while the canvas is focused; the server validates every step, so walls and furniture block movement for everyone equally."
+msgid ""
+"Entering the channel makes your avatar available in Space. Move with the "
+"arrow keys or WASD while the canvas is focused; the server validates every "
+"step, so walls and furniture block movement for everyone equally."
+msgstr ""
+"進入頻道可以使您的阿凡達在太空中可用. 在畫布被聚焦時隨箭鍵或WASD一起移動;服務器驗證每個步驟,因此牆壁和傢俱塊運動對每個人都是平等的."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:9
 #, elixir-autogen, elixir-format
-msgid "Open any channel and use the Chat and Space buttons in the topic row. There is no separate invite card or space command for the channel map."
-msgstr "Open any channel and use the Chat and Space buttons in the topic row. There is no separate invite card or space command for the channel map."
+msgid ""
+"Open any channel and use the Chat and Space buttons in the topic row. There "
+"is no separate invite card or space command for the channel map."
+msgstr "打開任意頻道並使用主題行中的聊天和空間按鈕. 頻道地圖沒有單獨的邀請卡或空格命令."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Opening Space"
-msgstr "Opening Space"
+msgstr "打開空間"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "Choosing"
-msgstr "Choosing"
+msgstr "選擇"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:16
 #, elixir-autogen, elixir-format
-msgid "Click a card to enter the map wearing that character. Everyone else in the Space sees your choice immediately. The picker appears each time you enter, starting on your last pick, so you can switch characters whenever you like."
-msgstr "Click a card to enter the map wearing that character. Everyone else in the Space sees your choice immediately. The picker appears each time you enter, starting on your last pick, so you can switch characters whenever you like."
+msgid ""
+"Click a card to enter the map wearing that character. Everyone else in the "
+"Space sees your choice immediately. The picker appears each time you enter, "
+"starting on your last pick, so you can switch characters whenever you like."
+msgstr "單擊卡片以輸入帶有該字符的地圖。 太空裏的其他人立刻看到你的選擇 拾取器每次輸入時都會出現,從最後的拾取開始,這樣可以隨時切換字符."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:9
 #, elixir-autogen, elixir-format
-msgid "Eight characters are available: the Hero, plus the Sorceress, Knight, Archer, Barbarian, Rogue, Cleric and Monk. Each card shows an animated walking preview so you can see the sprite before you commit, and every character has its own attack animation too."
-msgstr "Eight characters are available: the Hero, plus the Sorceress, Knight, Archer, Barbarian, Rogue, Cleric and Monk. Each card shows an animated walking preview so you can see the sprite before you commit, and every character has its own attack animation too."
+msgid ""
+"Eight characters are available: the Hero, plus the Sorceress, Knight, "
+"Archer, Barbarian, Rogue, Cleric and Monk. Each card shows an animated "
+"walking preview so you can see the sprite before you commit, and every "
+"character has its own attack animation too."
+msgstr ""
+"現有8個角色:英雄,加上巫師,騎士,阿徹,野蠻人,羅格,教士和僧侶. "
+"每張卡片都顯示一個動畫的行走預覽,這樣你就可以在犯罪前看到圖示,每個角色也有自己的攻擊動畫."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "The Roster"
-msgstr "The Roster"
+msgstr "名冊"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "When you open a channel's Space, a character picker appears before the map loads. Pick who you want to be — the classic Hero or one of six adventuring classes."
-msgstr "When you open a channel's Space, a character picker appears before the map loads. Pick who you want to be — the classic Hero or one of six adventuring classes."
+msgid ""
+"When you open a channel's Space, a character picker appears before the map "
+"loads. Pick who you want to be — the classic Hero or one of six adventuring "
+"classes."
+msgstr "當打開頻道的空間時,在地圖加載之前會出現一個字符拾取器. 選擇你想成爲誰——典型的英雄或六門冒險課之一."

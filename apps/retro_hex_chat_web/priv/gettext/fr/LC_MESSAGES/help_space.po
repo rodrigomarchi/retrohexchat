@@ -1,4 +1,4 @@
-# "msgid"s in this file come from help_space.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: fr; status: enabled; wave: 1.
+# "msgid"s in this file come from help_space.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=help_space to refresh catalogs.  Locale: fr; status: enabled; wave: 1.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -23,48 +23,23 @@ msgstr "Cycle de Vie"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:2
 #, elixir-autogen, elixir-format
-msgid ""
-"A virtual space is the map view built into every channel. People who are "
-"present in the channel can switch from Chat to Space, walk around the shared"
-" 8-bit village, and keep using the same public channel conversation."
-msgstr ""
-"Un espace virtuel est la vue de carte intégrée dans chaque canal. Les "
-"personnes présentes dans le canal peuvent passer du Chat à l'Espace, se "
-"promener dans le village partagé 8 bits, et continuer à utiliser la même "
-"conversation de canal public."
+msgid "A virtual space is the map view built into every channel. People who are present in the channel can switch from Chat to Space, walk around the shared 8-bit village, and keep using the same public channel conversation."
+msgstr "Un espace virtuel est la vue de carte intégrée dans chaque canal. Les personnes présentes dans le canal peuvent passer du Chat à l'Espace, se promener dans le village partagé 8 bits, et continuer à utiliser la même conversation de canal public."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:23
 #, elixir-autogen, elixir-format
-msgid ""
-"Channel spaces are runtime state. They wake when someone views Space, mirror"
-" the current channel presence, and can be rebuilt from that presence when "
-"the view is opened again."
-msgstr ""
-"Les espaces de canaux sont l'état d'exécution. Ils se réveillent quand "
-"quelqu'un voit l'espace, miroir la présence du canal actuel, et peut être "
-"reconstruit à partir de cette présence lorsque la vue est à nouveau ouverte."
+msgid "Channel spaces are runtime state. They wake when someone views Space, mirror the current channel presence, and can be rebuilt from that presence when the view is opened again."
+msgstr "Les espaces de canaux sont l'état d'exécution. Ils se réveillent quand quelqu'un voit l'espace, miroir la présence du canal actuel, et peut être reconstruit à partir de cette présence lorsque la vue est à nouveau ouverte."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:16
 #, elixir-autogen, elixir-format
-msgid ""
-"Entering the channel makes your avatar available in Space. Move with the "
-"arrow keys or WASD while the canvas is focused; the server validates every "
-"step, so walls and furniture block movement for everyone equally."
-msgstr ""
-"Entrer dans le canal rend votre avatar disponible dans l'espace. Déplacez-"
-"vous avec les touches fléchées ou WASD pendant que la toile est focalisée; "
-"le serveur valide chaque étape, de sorte que les murs et les meubles "
-"bloquent le mouvement pour tous également."
+msgid "Entering the channel makes your avatar available in Space. Move with the arrow keys or WASD while the canvas is focused; the server validates every step, so walls and furniture block movement for everyone equally."
+msgstr "Entrer dans le canal rend votre avatar disponible dans l'espace. Déplacez-vous avec les touches fléchées ou WASD pendant que la toile est focalisée; le serveur valide chaque étape, de sorte que les murs et les meubles bloquent le mouvement pour tous également."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:9
 #, elixir-autogen, elixir-format
-msgid ""
-"Open any channel and use the Chat and Space buttons in the topic row. There "
-"is no separate invite card or space command for the channel map."
-msgstr ""
-"Ouvrez n'importe quel canal et utilisez les boutons Chat et Espace dans la "
-"ligne du sujet. Il n'y a pas de carte d'invitation ou de commande d'espace "
-"séparée pour la carte du canal."
+msgid "Open any channel and use the Chat and Space buttons in the topic row. There is no separate invite card or space command for the channel map."
+msgstr "Ouvrez n'importe quel canal et utilisez les boutons Chat et Espace dans la ligne du sujet. Il n'y a pas de carte d'invitation ou de commande d'espace séparée pour la carte du canal."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:7
 #, elixir-autogen, elixir-format
@@ -78,29 +53,13 @@ msgstr "Choix"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:16
 #, elixir-autogen, elixir-format
-msgid ""
-"Click a card to enter the map wearing that character. Everyone else in the "
-"Space sees your choice immediately. The picker appears each time you enter, "
-"starting on your last pick, so you can switch characters whenever you like."
-msgstr ""
-"Cliquez sur une carte pour saisir la carte portant ce caractère. Tout le "
-"monde dans l'Espace voit votre choix immédiatement. Le sélecteur apparaît à "
-"chaque fois que vous entrez, à partir de votre dernier choix, de sorte que "
-"vous pouvez changer de caractères quand vous le souhaitez."
+msgid "Click a card to enter the map wearing that character. Everyone else in the Space sees your choice immediately. The picker appears each time you enter, starting on your last pick, so you can switch characters whenever you like."
+msgstr "Cliquez sur une carte pour saisir la carte portant ce caractère. Tout le monde dans l'Espace voit votre choix immédiatement. Le sélecteur apparaît à chaque fois que vous entrez, à partir de votre dernier choix, de sorte que vous pouvez changer de caractères quand vous le souhaitez."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:9
 #, elixir-autogen, elixir-format
-msgid ""
-"Eight characters are available: the Hero, plus the Sorceress, Knight, "
-"Archer, Barbarian, Rogue, Cleric and Monk. Each card shows an animated "
-"walking preview so you can see the sprite before you commit, and every "
-"character has its own attack animation too."
-msgstr ""
-"Huit personnages sont disponibles : le Héros, plus la Sorceresse, le "
-"Chevalier, l'Archer, le Barbarien, le Rogue, le Clerc et le Moine. Chaque "
-"carte montre un aperçu animé de marche afin que vous puissiez voir le sprite"
-" avant de commettre, et chaque personnage a sa propre animation d'attaque "
-"aussi."
+msgid "Eight characters are available: the Hero, plus the Sorceress, Knight, Archer, Barbarian, Rogue, Cleric and Monk. Each card shows an animated walking preview so you can see the sprite before you commit, and every character has its own attack animation too."
+msgstr "Huit personnages sont disponibles : le Héros, plus la Sorceresse, le Chevalier, l'Archer, le Barbarien, le Rogue, le Clerc et le Moine. Chaque carte montre un aperçu animé de marche afin que vous puissiez voir le sprite avant de commettre, et chaque personnage a sa propre animation d'attaque aussi."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:7
 #, elixir-autogen, elixir-format
@@ -109,11 +68,5 @@ msgstr "La liste"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:2
 #, elixir-autogen, elixir-format
-msgid ""
-"When you open a channel's Space, a character picker appears before the map "
-"loads. Pick who you want to be — the classic Hero or one of six adventuring "
-"classes."
-msgstr ""
-"Lorsque vous ouvrez l'espace d'un canal, un sélecteur de caractères apparaît"
-" avant le chargement de la carte. Choisissez qui vous voulez être — le héros"
-" classique ou l'un des six cours d'aventure."
+msgid "When you open a channel's Space, a character picker appears before the map loads. Pick who you want to be — the classic Hero or one of six adventuring classes."
+msgstr "Lorsque vous ouvrez l'espace d'un canal, un sélecteur de caractères apparaît avant le chargement de la carte. Choisissez qui vous voulez être — le héros classique ou l'un des six cours d'aventure."

@@ -1,4 +1,4 @@
-# "msgid"s in this file come from arcade.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: hi; status: enabled; wave: 2.
+# "msgid"s in this file come from arcade.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=arcade to refresh catalogs.  Locale: hi; status: enabled; wave: 2.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -11,17 +11,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:51
+#: lib/retro_hex_chat/arcade/catalog.ex:52
 #, elixir-autogen, elixir-format
 msgid "32 levels — Doom II compatible"
 msgstr "32 स्तर - Doom II संगत"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:37
+#: lib/retro_hex_chat/arcade/catalog.ex:38
 #, elixir-autogen, elixir-format
 msgid "36 levels of open-source doom"
 msgstr "ओपन सोर्स डूम के 36 स्तर"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:109
+#: lib/retro_hex_chat/arcade/catalog.ex:110
 #, elixir-autogen, elixir-format
 msgid ""
 "A Viking-themed total conversion with hand-drawn pixel art. Battle through "
@@ -30,7 +30,7 @@ msgstr ""
 "हाथ से तैयार पिक्सेल कला के साथ एक वाइकिंग-थीम कुल रूपांतरण। Axes, धनुष और "
 "रनिक जादू के साथ Norse प्रेरित स्तरों के माध्यम से लड़ाई।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:53
+#: lib/retro_hex_chat/arcade/catalog.ex:54
 #, elixir-autogen, elixir-format
 msgid ""
 "A complete free replacement for DOOM II — 32 levels with the Super Shotgun. "
@@ -39,7 +39,7 @@ msgstr ""
 "DOOM II के लिए एक पूर्ण मुफ्त प्रतिस्थापन - सुपर शॉटगन के साथ 32 स्तर। "
 "हजारों सामुदायिक निर्मित PWAD मोड के साथ संगत।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:136
+#: lib/retro_hex_chat/arcade/catalog.ex:137
 #, elixir-autogen, elixir-format
 msgid ""
 "A complete free replacement for Quake — original levels, art, and music "
@@ -48,7 +48,7 @@ msgstr ""
 "बीएसडी लाइसेंस के तहत क्वाक - मूल स्तर, कला और संगीत के लिए एक पूर्ण मुफ्त "
 "प्रतिस्थापन। सामुदायिक निर्मित ओपन सोर्स सामग्री।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:39
+#: lib/retro_hex_chat/arcade/catalog.ex:40
 #, elixir-autogen, elixir-format
 msgid ""
 "A complete free replacement for Ultimate DOOM — 4 episodes, 36 levels. "
@@ -57,7 +57,7 @@ msgstr ""
 "अल्टीमेट डोम - 4 एपिसोड, 36 स्तरों के लिए एक पूर्ण मुफ्त प्रतिस्थापन। बीएसडी"
 " लाइसेंस के तहत मूल कला, संगीत और स्तर।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:95
+#: lib/retro_hex_chat/arcade/catalog.ex:96
 #, elixir-autogen, elixir-format
 msgid ""
 "A cyberpunk total conversion — hack through a dystopian future with new "
@@ -66,7 +66,7 @@ msgstr ""
 "एक साइबर पंक कुल रूपांतरण — नए हथियारों, दुश्मनों और स्तरों के साथ एक "
 "डिस्टोपियन भविष्य के माध्यम से हैक। स्टैंडअलोन v1.2 IWAD"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:234
+#: lib/retro_hex_chat/arcade/catalog.ex:235
 #, elixir-autogen, elixir-format
 msgid ""
 "A disturbing top-down cyberpunk adventure by Creative Reality. You are Ryan,"
@@ -137,7 +137,7 @@ msgstr ""
 "Arena-style लेआउट का मतलब है कि दुश्मन किसी भी दिशा में आ सकते हैं - चलती "
 "रहें।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:172
+#: lib/retro_hex_chat/arcade/catalog.ex:173
 #, elixir-autogen, elixir-format
 msgid "Arrow keys move, Ctrl fire, Space open doors, Shift run, 1-4 weapons"
 msgstr "तीर कुंजी चाल, Ctrl आग, अंतरिक्ष खुला दरवाजे, शिफ्ट रन, 1-4 हथियार"
@@ -179,7 +179,7 @@ msgstr ""
 "शॉटगन, चेनगन और रॉकेट लॉन्चर शामिल हैं। जॉन रोमेरो और सैंडी पीटरसन द्वारा "
 "स्तर का डिजाइन गैर-रैखिक FPS मानचित्र डिजाइन में एक मास्टरक्लास बनी हुई है।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:197
+#: lib/retro_hex_chat/arcade/catalog.ex:198
 #, elixir-autogen, elixir-format
 msgid "Beneath a Steel Sky"
 msgstr "Beneath a steel sky"
@@ -199,7 +199,7 @@ msgstr ""
 " था लेकिन इसे अपहरण कर लिया जाता है और यूनियन सिटी में लाया जाता है - सुपर "
 "कंप्यूटर LINC द्वारा नियंत्रित एक विशाल, स्तरित मेट्रोपोलिस।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:217
+#: lib/retro_hex_chat/arcade/catalog.ex:218
 #, elixir-autogen, elixir-format
 msgid ""
 "British real estate agent John Hacker must defeat the vampire Drascula in "
@@ -210,7 +210,7 @@ msgstr ""
 "वैम्पायर Drascula को हराना चाहिए और पॉप संस्कृति संदर्भ और absurd हास्य से "
 "भरा साहसिक क्लिक करें।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:78
+#: lib/retro_hex_chat/arcade/catalog.ex:79
 #, elixir-autogen, elixir-format
 msgid "Chex Quest"
 msgstr "चेक्स क्वेस्ट"
@@ -256,12 +256,12 @@ msgid ""
 msgstr ""
 "सूची आइटम को मिलाएं - कुछ पहेली को रचनात्मक आइटम संयोजन की आवश्यकता होती है।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:215
+#: lib/retro_hex_chat/arcade/catalog.ex:216
 #, elixir-autogen, elixir-format
 msgid "Comedic Dracula parody adventure (1996)"
 msgstr "कॉमेडी साहसिक (1996)"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:249
+#: lib/retro_hex_chat/arcade/catalog.ex:250
 #, elixir-autogen, elixir-format
 msgid "Comic adventure in the Amazon (1995)"
 msgstr "अमेज़न (1995) में कॉमिक साहसिक"
@@ -343,12 +343,12 @@ msgstr "Ctrl"
 msgid "Ctrl + F5"
 msgstr "Ctrl + F5"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:198
+#: lib/retro_hex_chat/arcade/catalog.ex:199
 #, elixir-autogen, elixir-format
 msgid "Cyberpunk point & click adventure (1994)"
 msgstr "साइबर पंक पॉइंट एंड क्लिक एडवेंचर (1994)"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:93
+#: lib/retro_hex_chat/arcade/catalog.ex:94
 #, elixir-autogen, elixir-format
 msgid "Cyberpunk total conversion"
 msgstr "साइबर पंक कुल रूपांतरण"
@@ -362,17 +362,17 @@ msgstr ""
 "Cyborg दुश्मन क्लासिक डोम राक्षसों की तुलना में कठिन हो सकता है - अपनी दूरी "
 "को बनाए रखें।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:22
+#: lib/retro_hex_chat/arcade/catalog.ex:23
 #, elixir-autogen, elixir-format
 msgid "DOOM: Knee-Deep in the Dead"
 msgstr "DOOM: मृत में घुटने डीप"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:232
+#: lib/retro_hex_chat/arcade/catalog.ex:233
 #, elixir-autogen, elixir-format
 msgid "Dark cyberpunk adventure (1994)"
 msgstr "डार्क साइबर पंक एडवेंचर (1994)"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:65
+#: lib/retro_hex_chat/arcade/catalog.ex:66
 #, elixir-autogen, elixir-format
 msgid "Deathmatch arena — open source"
 msgstr "Deathmatch arena - खुला स्रोत"
@@ -395,7 +395,7 @@ msgstr "असत्य तर्क द्वारा निराश न ह�
 msgid "Drag item"
 msgstr "आइटम खींचें"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:214
+#: lib/retro_hex_chat/arcade/catalog.ex:215
 #, elixir-autogen, elixir-format
 msgid "Drascula: The Vampire Strikes Back"
 msgstr "ड्रासकुला: द वैम्पायर स्ट्राइक्स बैक"
@@ -413,7 +413,7 @@ msgstr ""
 "ट्रांसिल्वेनिया की यात्रा करते हैं और उन्हें वैम्पायर काउंट ड्रासकुला को "
 "हराना चाहिए, जिन्होंने अपनी दुल्हन बनाने के लिए खूबसूरत BJ का अपहरण किया है।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:231
+#: lib/retro_hex_chat/arcade/catalog.ex:232
 #, elixir-autogen, elixir-format
 msgid "Dreamweb"
 msgstr "ड्रीमवेब"
@@ -453,13 +453,13 @@ msgstr ""
 "फाइन्ड्स, ओग्रेस और अन्य nightmarish प्राणियों से भरा है। Trent Reznor (Nine"
 " Inch Nails) द्वारा वायुमंडलीय साउंडट्रैक, oppressive मूड को जोड़ता है।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:23
-#: lib/retro_hex_chat/arcade/catalog.ex:121
+#: lib/retro_hex_chat/arcade/catalog.ex:24
+#: lib/retro_hex_chat/arcade/catalog.ex:122
 #, elixir-autogen, elixir-format
 msgid "Episode 1 — The Original"
 msgstr "एपिसोड 1 - मूल"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:164
+#: lib/retro_hex_chat/arcade/catalog.ex:165
 #, elixir-autogen, elixir-format
 msgid "Episode 1 — The Shareware Classic"
 msgstr "एपिसोड 1 - शेयरवेयर क्लासिक"
@@ -486,7 +486,7 @@ msgstr "एपिसोड 1 - शेयरवेयर क्लासिक"
 msgid "Esc"
 msgstr "Esc"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:200
+#: lib/retro_hex_chat/arcade/catalog.ex:201
 #, elixir-autogen, elixir-format
 msgid ""
 "Escape Union City and uncover your past in this cyberpunk classic by "
@@ -572,7 +572,7 @@ msgstr "अग्नि हथियार"
 msgid "Flashlight toggle"
 msgstr "टॉर्च टॉगल"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:248
+#: lib/retro_hex_chat/arcade/catalog.ex:249
 #, elixir-autogen, elixir-format
 msgid "Flight of the Amazon Queen"
 msgstr "अमेज़न रानी की उड़ान"
@@ -590,7 +590,7 @@ msgstr ""
 "for-hire जिसका विमान अमेज़ॅन जंगल में दुर्घटनाग्रस्त हो जाता है जबकि एक "
 "प्रसिद्ध अभिनेत्री का परिवहन करता है।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:67
+#: lib/retro_hex_chat/arcade/catalog.ex:68
 #, elixir-autogen, elixir-format
 msgid ""
 "Free deathmatch-focused maps for DOOM. 32 arena-style levels designed for "
@@ -599,7 +599,7 @@ msgstr ""
 "DOOM के लिए फ्री डेथमैच-फोकस्ड मैप्स। फास्ट-पैक मल्टीप्लेयर एक्शन के लिए "
 "डिज़ाइन किए गए 32 arena-style स्तर। बीएसडी लाइसेंस"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:268
+#: lib/retro_hex_chat/arcade/catalog.ex:269
 #, elixir-autogen, elixir-format
 msgid ""
 "Free the village of Turnvale from the sorceress Selena. Revolution "
@@ -609,7 +609,7 @@ msgstr ""
 "सोर्केरेस सेलेना से टर्नवेल के गांव को मुक्त करें। स्वायत्त एनपीसी के साथ "
 "अभिनव वर्चुअल थिएटर प्रणाली की विशेषता वाले क्रांति सॉफ्टवेयर की शुरुआत खेल।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:64
+#: lib/retro_hex_chat/arcade/catalog.ex:65
 #, elixir-autogen, elixir-format
 msgid "FreeDM"
 msgstr "फ्रीडम"
@@ -634,7 +634,7 @@ msgstr ""
 "फ्रीडोम के दुश्मन डिजाइन डीओओएम से भिन्न होते हैं लेकिन इसी तरह के व्यवहार "
 "पैटर्न का पालन करते हैं - नए स्प्राइट सीखते हैं।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:36
+#: lib/retro_hex_chat/arcade/catalog.ex:37
 #, elixir-autogen, elixir-format
 msgid "Freedoom: Phase 1"
 msgstr "फ्रीडूम: चरण 1"
@@ -651,7 +651,7 @@ msgstr ""
 "स्तरों के साथ 4 पूर्ण एपिसोड, सभी बीएसडी लाइसेंस के तहत। प्रत्येक स्प्राइट, "
 "बनावट, ध्वनि प्रभाव और संगीत ट्रैक को समुदाय द्वारा स्क्रैच से बनाया गया है।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:50
+#: lib/retro_hex_chat/arcade/catalog.ex:51
 #, elixir-autogen, elixir-format
 msgid "Freedoom: Phase 2"
 msgstr "फ्रीडूम: चरण 2"
@@ -667,7 +667,7 @@ msgstr ""
 "साथ पौराणिक सुपर शॉटगन. सभी परिसंपत्तियां बीएसडी लाइसेंस के तहत मूल "
 "सामुदायिक रचनाएं हैं।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:92
+#: lib/retro_hex_chat/arcade/catalog.ex:93
 #, elixir-autogen, elixir-format
 msgid "HacX: Twitch 'n Kill"
 msgstr "Hacx: Twitch 'n Kill"
@@ -684,7 +684,7 @@ msgstr ""
 "कॉरिडोर में कॉर्पोरेट सुरक्षा प्रणालियों और cyborg दुश्मनों के माध्यम से हैक"
 " करते हैं।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:180
+#: lib/retro_hex_chat/arcade/catalog.ex:181
 #, elixir-autogen, elixir-format
 msgid "Half-Life: Uplink"
 msgstr "हाफ लाइफ: अपलिंक"
@@ -800,7 +800,7 @@ msgstr "इस्तेमाल किया गया"
 msgid "Left Click"
 msgstr "लेफ्ट क्लिक"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:206
+#: lib/retro_hex_chat/arcade/catalog.ex:207
 #, elixir-autogen, elixir-format
 msgid ""
 "Left click interact/walk, Right click examine/verb menu, Drag inventory "
@@ -809,7 +809,7 @@ msgstr ""
 "लेफ्ट क्लिक इंटरेक्शन/walk, राइट क्लिक जांच/verb मेनू, कनेक्ट करने के लिए "
 "सूची आइटम खींचें। F5 सेव/load, Ctrl+F5 विकल्प, Esc छोड़ कटscene"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:133
+#: lib/retro_hex_chat/arcade/catalog.ex:134
 #, elixir-autogen, elixir-format
 msgid "LibreQuake"
 msgstr "LibreQuake"
@@ -866,7 +866,7 @@ msgstr ""
 "सुरक्षा के लिए सुनिए - आप उन्हें खोलने से पहले दरवाजे के माध्यम से दुश्मनों "
 "को सुन सकते हैं।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:265
+#: lib/retro_hex_chat/arcade/catalog.ex:266
 #, elixir-autogen, elixir-format
 msgid "Lure of the Temptress"
 msgstr "मूत्र"
@@ -924,7 +924,7 @@ msgid "Maps are compact and weapon-dense — perfect for quick action sessions."
 msgstr ""
 "मानचित्र कॉम्पैक्ट और हथियार-घन - त्वरित कार्रवाई सत्र के लिए एकदम सही हैं।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:266
+#: lib/retro_hex_chat/arcade/catalog.ex:267
 #, elixir-autogen, elixir-format
 msgid "Medieval fantasy adventure (1992)"
 msgstr "मध्यकालीन काल्पनिक साहसिक (1992)"
@@ -1034,7 +1034,7 @@ msgstr "खुले दरवाजे / उपयोग"
 msgid "Open verb menu"
 msgstr "क्रिया मेनू"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:134
+#: lib/retro_hex_chat/arcade/catalog.ex:135
 #, elixir-autogen, elixir-format
 msgid "Open-source Quake replacement"
 msgstr "ओपन सोर्स क्वेक प्रतिस्थापन"
@@ -1133,7 +1133,7 @@ msgstr ""
 "चरण 2 स्तर चरण 1 की तुलना में अधिक खुला और जटिल हैं - रहस्यों के लिए पूरी "
 "तरह से खोज करें।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:251
+#: lib/retro_hex_chat/arcade/catalog.ex:252
 #, elixir-autogen, elixir-format
 msgid ""
 "Pilot Joe King crash-lands in the Amazon and stumbles into a mad scientist's"
@@ -1144,7 +1144,7 @@ msgstr ""
 "के लिए एक पागल वैज्ञानिक साजिश में ठोकर खाता है। एक अलग इंडियाना जोन्स शैली "
 "बिंदु और पूर्ण आवाज अभिनय के साथ साहसिक क्लिक करें।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:223
+#: lib/retro_hex_chat/arcade/catalog.ex:224
 #, elixir-autogen, elixir-format
 msgid ""
 "Point & click: left-click interact, right-click examine. Inventory at bottom"
@@ -1153,7 +1153,7 @@ msgstr ""
 "प्वाइंट एंड क्लिक करें: बाएं क्लिक इंटरेक्शन, राइट-क्लिक जांच। स्क्रीन के "
 "नीचे सूची। F5 सेव/loadEsc छोड़ कट्सीन"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:257
+#: lib/retro_hex_chat/arcade/catalog.ex:258
 #, elixir-autogen, elixir-format
 msgid ""
 "Point & click: left-click interact, right-click examine. Inventory at top of"
@@ -1162,7 +1162,7 @@ msgstr ""
 "प्वाइंट एंड क्लिक करें: बाएं क्लिक इंटरेक्शन, राइट-क्लिक जांच। स्क्रीन के "
 "शीर्ष पर सूची। F5 सेव/loadEsc छोड़ कट्सीन"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:291
+#: lib/retro_hex_chat/arcade/catalog.ex:292
 #, elixir-autogen, elixir-format
 msgid ""
 "Point & click: left-click interact, right-click examine. Simple, streamlined"
@@ -1171,7 +1171,7 @@ msgstr ""
 "प्वाइंट एंड क्लिक करें: बाएं क्लिक इंटरेक्शन, राइट-क्लिक जांच। सरल, "
 "सुव्यवस्थित इंटरफ़ेस। F5 सेव/loadEsc छोड़ कट्सीन"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:274
+#: lib/retro_hex_chat/arcade/catalog.ex:275
 #, elixir-autogen, elixir-format
 msgid ""
 "Point & click: left-click interact, right-click verb menu. NPCs follow their"
@@ -1180,7 +1180,7 @@ msgstr ""
 "प्वाइंट एंड क्लिक करें: बाएं क्लिक इंटरेक्शन, राइट-क्लिक क्रिया मेनू। एनपीसी"
 " अपने स्वयं के कार्यक्रम का पालन करते हैं। F5 सेव/loadEsc छोड़ कट्सीन"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:240
+#: lib/retro_hex_chat/arcade/catalog.ex:241
 #, elixir-autogen, elixir-format
 msgid ""
 "Point & click: left-click interact/walk, right-click examine. Inventory at "
@@ -1242,17 +1242,17 @@ msgstr ""
 "भागों के लिए मनुष्यों की कटाई करते हैं - शरीर के हॉररर तत्व खेल को एक "
 "अद्वितीय रूप से परेशान वातावरण देते हैं।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:146
+#: lib/retro_hex_chat/arcade/catalog.ex:147
 #, elixir-autogen, elixir-format
 msgid "Quake II: The Invasion"
 msgstr "Quake II: The Invasion"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:120
+#: lib/retro_hex_chat/arcade/catalog.ex:121
 #, elixir-autogen, elixir-format
 msgid "Quake: Dimension of the Doomed"
 msgstr "Quake: Doomed का आयाम"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:106
+#: lib/retro_hex_chat/arcade/catalog.ex:107
 #, elixir-autogen, elixir-format
 msgid "REKKR: Sunken Land"
 msgstr "REKKR: Sunken Land"
@@ -1301,7 +1301,7 @@ msgstr ""
 "शांत क्षणों के दौरान फिर से लोड - एक अग्निशमन में मध्य-रिलोड को नहीं पकड़ा "
 "जाता है।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:285
+#: lib/retro_hex_chat/arcade/catalog.ex:286
 #, elixir-autogen, elixir-format
 msgid ""
 "Rescue your grandfather from underground pirates in this charmingly absurd "
@@ -1490,7 +1490,7 @@ msgstr "लॉग इन"
 msgid "Skip dialogue line"
 msgstr "संवाद लाइन"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:282
+#: lib/retro_hex_chat/arcade/catalog.ex:283
 #, elixir-autogen, elixir-format
 msgid "Soltys"
 msgstr "सोल्टी"
@@ -1579,7 +1579,7 @@ msgstr ""
 "स्ट्राफ-रनिंग (forward + strafe एक साथ) आपको सीधे चलने की तुलना में ~ 40% "
 "तेज़ी से आगे बढ़ना पड़ता है।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:283
+#: lib/retro_hex_chat/arcade/catalog.ex:284
 #, elixir-autogen, elixir-format
 msgid "Surreal Polish puzzle adventure (1995)"
 msgstr "Surreal पोलिश पहेली साहसिक (1995)"
@@ -1638,7 +1638,7 @@ msgstr ""
 "ग्रेनेड लॉन्चर तंग गलियारों में तबाह हो रहा है - कोनों के आसपास उछाल वाले "
 "ग्रेनेड।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:181
+#: lib/retro_hex_chat/arcade/catalog.ex:182
 #, elixir-autogen, elixir-format
 msgid "The Official Demo — 3 Unique Missions"
 msgstr "आधिकारिक डेमो - 3 अद्वितीय मिशन"
@@ -1671,7 +1671,7 @@ msgstr "ऑटोमैप (टैब) भूलभुलैया स्तर�
 msgid "The bow is effective at range but arrows are limited — aim carefully."
 msgstr "धनुष रेंज पर प्रभावी है लेकिन तीर सीमित हैं - ध्यान से लक्ष्य।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:79
+#: lib/retro_hex_chat/arcade/catalog.ex:80
 #, elixir-autogen, elixir-format
 msgid "The cereal box classic"
 msgstr "अनाज बॉक्स क्लासिक"
@@ -1839,7 +1839,7 @@ msgstr ""
 "परिसंपत्तियां आईडी सॉफ्टवेयर के मूल से अलग हैं, खेल उसी इंजन पर चलता है और "
 "समान मोडिंग पारिस्थितिकी तंत्र का समर्थन करता है।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:166
+#: lib/retro_hex_chat/arcade/catalog.ex:167
 #, elixir-autogen, elixir-format
 msgid ""
 "The grandfather of FPS games (1992) — 10 levels of castle-storming action. "
@@ -1877,7 +1877,7 @@ msgid ""
 "The interface is simple and streamlined — left-click does most of the work."
 msgstr "इंटरफ़ेस सरल और सुव्यवस्थित है - बाएँ-क्लिक अधिकांश कार्य करता है।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:81
+#: lib/retro_hex_chat/arcade/catalog.ex:82
 #, elixir-autogen, elixir-format
 msgid ""
 "The legendary 1996 cereal box promotion — a kid-friendly total conversion of"
@@ -1903,7 +1903,7 @@ msgid ""
 msgstr ""
 "आंदोलन प्रणाली क्वेक के समान है - बनी हॉपिंग और स्ट्रैफ जंपिंग वर्क यहां भी।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:183
+#: lib/retro_hex_chat/arcade/catalog.ex:184
 #, elixir-autogen, elixir-format
 msgid ""
 "The official Half-Life demo (1999) — 3 unique levels not found in the full "
@@ -1914,7 +1914,7 @@ msgstr ""
 "ब्लैक मेसा की भूमिगत प्रयोगशालाओं के माध्यम से लड़ाई। वाल्व द्वारा स्वतंत्र "
 "रूप से पुनर्वितरण योग्य।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:149
+#: lib/retro_hex_chat/arcade/catalog.ex:150
 #, elixir-autogen, elixir-format
 msgid ""
 "The official Quake II demo (1997) — full 3D FPS with Strogg invasion. Unit 1"
@@ -1924,7 +1924,7 @@ msgstr ""
 "आधिकारिक Quake II डेमो (1997) - Strogg आक्रमण के साथ पूर्ण 3D FPS। एकल "
 "खिलाड़ी अभियान की इकाई 1। शेयरवेयर क्लासिक जो ऑनलाइन FPS परिभाषित करते हैं।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:25
+#: lib/retro_hex_chat/arcade/catalog.ex:26
 #, elixir-autogen, elixir-format
 msgid ""
 "The original Episode 1 of DOOM (1993) — 9 levels of demon-infested corridors"
@@ -1933,7 +1933,7 @@ msgstr ""
 "DOOM (1993) का मूल एपिसोड 1 - Phobos पर राक्षस-प्रेरित गलियारों के 9 स्तर। "
 "शेयरवेयर क्लासिक जिसने इसे सब शुरू किया।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:123
+#: lib/retro_hex_chat/arcade/catalog.ex:124
 #, elixir-autogen, elixir-format
 msgid ""
 "The original Episode 1 of Quake (1996) — full 3D FPS with Lovecraftian "
@@ -2132,7 +2132,7 @@ msgstr ""
 msgid "Turn left / right"
 msgstr "बाएं / दाएं मुड़ें"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:147
+#: lib/retro_hex_chat/arcade/catalog.ex:148
 #, elixir-autogen, elixir-format
 msgid "Unit 1 — The Demo"
 msgstr "इकाई 1 - डेमो"
@@ -2202,7 +2202,7 @@ msgstr ""
 "अंधेरे क्षेत्रों में फ्लैशलाइट (एफ) का उपयोग करें - लेकिन ध्यान दें कि यह "
 "आपके HEV सूट के स्प्रिंट के साथ शक्ति साझा करता है।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:107
+#: lib/retro_hex_chat/arcade/catalog.ex:108
 #, elixir-autogen, elixir-format
 msgid "Viking-themed standalone"
 msgstr "वाइकिंग थीम्ड स्टैंडअलोन"
@@ -2222,24 +2222,24 @@ msgstr "वाइकिंग थीम्ड स्टैंडअलोन"
 msgid "W / ↑"
 msgstr "W / ↑"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:128
-#: lib/retro_hex_chat/arcade/catalog.ex:141
+#: lib/retro_hex_chat/arcade/catalog.ex:129
+#: lib/retro_hex_chat/arcade/catalog.ex:142
 #, elixir-autogen, elixir-format
 msgid "WASD move, Mouse aim, Left click fire, E use"
 msgstr "WASD चाल, माउस लक्ष्य, बाएं क्लिक आग, ई उपयोग"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:31
-#: lib/retro_hex_chat/arcade/catalog.ex:45
-#: lib/retro_hex_chat/arcade/catalog.ex:59
-#: lib/retro_hex_chat/arcade/catalog.ex:73
-#: lib/retro_hex_chat/arcade/catalog.ex:87
-#: lib/retro_hex_chat/arcade/catalog.ex:101
-#: lib/retro_hex_chat/arcade/catalog.ex:115
+#: lib/retro_hex_chat/arcade/catalog.ex:32
+#: lib/retro_hex_chat/arcade/catalog.ex:46
+#: lib/retro_hex_chat/arcade/catalog.ex:60
+#: lib/retro_hex_chat/arcade/catalog.ex:74
+#: lib/retro_hex_chat/arcade/catalog.ex:88
+#: lib/retro_hex_chat/arcade/catalog.ex:102
+#: lib/retro_hex_chat/arcade/catalog.ex:116
 #, elixir-autogen, elixir-format
 msgid "WASD move, Mouse aim, Left click fire, E use, Space jump"
 msgstr "WASD चाल, माउस लक्ष्य, बाएं क्लिक आग, ई उपयोग, स्पेस जंप"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:155
+#: lib/retro_hex_chat/arcade/catalog.ex:156
 #, elixir-autogen, elixir-format
 msgid ""
 "WASD move, Mouse aim, Left click fire, E use, Space jump, C crouch, R reload"
@@ -2247,7 +2247,7 @@ msgstr ""
 "WASD चाल, माउस लक्ष्य, बाएं क्लिक आग, ई उपयोग, अंतरिक्ष कूद, सी crouch, आर "
 "पुनः लोड"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:189
+#: lib/retro_hex_chat/arcade/catalog.ex:190
 #, elixir-autogen, elixir-format
 msgid ""
 "WASD move, Mouse aim, Left click fire, E use, Space jump, Shift crouch, R "
@@ -2325,7 +2325,7 @@ msgstr ""
 "महल-स्टॉर्मिंग कार्रवाई के 10 स्तरों एक नाज़ी किले से बाहर अपने रास्ते से "
 "लड़ता है।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:163
+#: lib/retro_hex_chat/arcade/catalog.ex:164
 #, elixir-autogen, elixir-format
 msgid "Wolfenstein 3D: Escape from Castle"
 msgstr "Wolfenstein 3D: महल से बच"

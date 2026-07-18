@@ -1,4 +1,4 @@
-# "msgid"s in this file come from games.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: zh_hans; status: enabled; wave: 1.
+# "msgid"s in this file come from games.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=games to refresh catalogs.  Locale: zh_hans; status: enabled; wave: 1.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -94,9 +94,7 @@ msgstr "复古拱门"
 
 #: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:45
 #, elixir-autogen, elixir-format
-msgid ""
-"Session will be closed due to inactivity soon. Select a game to keep it "
-"active."
+msgid "Session will be closed due to inactivity soon. Select a game to keep it active."
 msgstr "由于会议即将结束。 选择一个游戏以保持其活动 。"
 
 #: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:178
@@ -126,7 +124,5 @@ msgstr "开始 %{time}"
 
 #: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:275
 #, elixir-autogen, elixir-format
-msgid ""
-"The game runs in a separate window. Keep this window open to track your "
-"session — closing the game window ends it."
+msgid "The game runs in a separate window. Keep this window open to track your session — closing the game window ends it."
 msgstr "游戏在单独的窗口中运行. 保持此窗口打开以跟踪您的会话——关闭游戏窗口结束它."

@@ -108,6 +108,9 @@ Status after implementation pass 3: P2P and conference stats now use a summary-f
 
 Audit date: 2026-07-17.
 
+Operational short source of truth:
+`docs/reference/media-session-p2p-conference-current.md`.
+
 The sections below this point include the original audit, the implementation blueprint, and historical "remaining work" notes. Treat those older notes as decision history unless the item is restated in this section.
 
 Original plan status:
@@ -2225,11 +2228,9 @@ Evidence from code/tests:
   - `summary_card.ex`
 - P2P console state and routing are live:
   - `p2p_console_select`
-  - `p2p_open_stats`
-  - `p2p_open_files`
-  - `p2p_open_games`
   - `open_p2p_console/2`
   - `p2p-console-section-call/files/games/stats`
+  - menu and Start entries route to `p2p_console_select` with `section`
 - P2P E2E covers:
   - console visibility and section nav on desktop/mobile
   - Files/Games reachability inside the session console

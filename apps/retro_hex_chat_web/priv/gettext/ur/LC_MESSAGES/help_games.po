@@ -1,4 +1,4 @@
-# "msgid"s in this file come from help_games.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: ur; status: enabled; wave: 3.
+# "msgid"s in this file come from help_games.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=help_games to refresh catalogs.  Locale: ur; status: enabled; wave: 3.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -14,7 +14,8 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "(this mode) — Cactus obstacle in the center blocks direct shots"
-msgstr "(یہ طریقہ کار) — مرکزی بلاکس میں مرکزی رکاوٹ براہ راست گولیوں میں رکاوٹ ہے۔"
+msgstr ""
+"(یہ طریقہ کار) — مرکزی بلاکس میں مرکزی رکاوٹ براہ راست گولیوں میں رکاوٹ ہے۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey_blitz.html.heex:32
 #, elixir-autogen, elixir-format
@@ -43,8 +44,12 @@ msgstr "ٹیگلو مکمل کر نے کے ليے 15 ٹکڑے"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:44
 #, elixir-autogen, elixir-format
-msgid "3 lives per player — highest score when all sections clear or both out of lives wins"
-msgstr "3 کھلاڑی فی کھلاڑی — سب سے زیادہ اسکور اس وقت جیتا جب تمام حصے واضح ہوں یا دونوں زندگیوں میں جیت جائیں۔"
+msgid ""
+"3 lives per player — highest score when all sections clear or both out of "
+"lives wins"
+msgstr ""
+"3 کھلاڑی فی کھلاڑی — سب سے زیادہ اسکور اس وقت جیتا جب تمام حصے واضح ہوں یا "
+"دونوں زندگیوں میں جیت جائیں۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders.html.heex:56
 #, elixir-autogen, elixir-format
@@ -58,8 +63,15 @@ msgstr "۳ دن"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_night.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "3-minute race in permanent darkness with fog bursts. Headlights-only visibility — pure reflexes. Most overtakes wins. The darkness transforms Enduro into a game of memory and reaction — you can hear cars approaching before you see them."
-msgstr "3- منٹ کی دوڑ دائمی تاریکی میں فینگ پھٹنے کے ساتھ. صرف نظریۂ بینی یعنی خالص ذرات۔ سب سے زیادہ آتا ہے. تاریکی یادداشت اور ردِعمل کے کھیل میں بدل دیتی ہے ۔"
+msgid ""
+"3-minute race in permanent darkness with fog bursts. Headlights-only "
+"visibility — pure reflexes. Most overtakes wins. The darkness transforms "
+"Enduro into a game of memory and reaction — you can hear cars approaching "
+"before you see them."
+msgstr ""
+"3- منٹ کی دوڑ دائمی تاریکی میں فینگ پھٹنے کے ساتھ. صرف نظریۂ بینی یعنی خالص "
+"ذرات۔ سب سے زیادہ آتا ہے. تاریکی یادداشت اور ردِعمل کے کھیل میں بدل دیتی ہے "
+"۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_night.html.heex:48
 #, elixir-autogen, elixir-format
@@ -78,8 +90,15 @@ msgstr "40%"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_blitz.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "5 sections of intense River Raid action — river starts narrow, fuel is scarce, mines recharge faster. Quick and chaotic. Every second counts in this compressed, high-pressure variant where mistakes are immediately punished."
-msgstr "اِس کی وجہ یہ ہے کہ اِن میں سے 5 حصے زیادہ تیز ہوتے ہیں ۔ جلدی کرو. اس دبئی میں ہر سیکنڈ دوسرے نمبر پر، اعلیٰ دباؤ والے جہاں غلطیوں کو فوری سزا دی جاتی ہے۔"
+msgid ""
+"5 sections of intense River Raid action — river starts narrow, fuel is "
+"scarce, mines recharge faster. Quick and chaotic. Every second counts in "
+"this compressed, high-pressure variant where mistakes are immediately "
+"punished."
+msgstr ""
+"اِس کی وجہ یہ ہے کہ اِن میں سے 5 حصے زیادہ تیز ہوتے ہیں ۔ جلدی کرو. اس دبئی "
+"میں ہر سیکنڈ دوسرے نمبر پر، اعلیٰ دباؤ والے جہاں غلطیوں کو فوری سزا دی جاتی "
+"ہے۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey.html.heex:68
 #, elixir-autogen, elixir-format
@@ -103,23 +122,31 @@ msgstr "90 سیکنڈ کی دوڑ — سب سے زیادہ حاصل ہونے و�
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_stagecoach.html.heex:26
 #, elixir-autogen, elixir-format
-msgid "A stagecoach moves up and down continuously through the center of the arena"
+msgid ""
+"A stagecoach moves up and down continuously through the center of the arena"
 msgstr "ایک اسٹیجکواچ مرکزے کے ذریعے مسلسل حرکت کرتا اور نیچے آتا ہے۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_ricochet.html.heex:28
 #, elixir-autogen, elixir-format
-msgid "A wide wall (60% of arena height) replaces the cactus — no straight shots get through"
-msgstr "ایک وسیع دیوار (60% اونچائی پر اونچائی) کو تبدیل کرتی ہے — کوئی براہ راست گولیاں گزر نہیں سکتیں"
+msgid ""
+"A wide wall (60% of arena height) replaces the cactus — no straight shots "
+"get through"
+msgstr ""
+"ایک وسیع دیوار (60% اونچائی پر اونچائی) کو تبدیل کرتی ہے — کوئی براہ راست "
+"گولیاں گزر نہیں سکتیں"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_nml.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "Advancing closer gives less reaction time for both players"
-msgstr "قریبی تعلقات قائم کرنا دونوں کھلاڑیوں کیلئے کم ردِعمل دکھانے کا وقت فراہم کرتا ہے"
+msgstr ""
+"قریبی تعلقات قائم کرنا دونوں کھلاڑیوں کیلئے کم ردِعمل دکھانے کا وقت فراہم "
+"کرتا ہے"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "After each hit, a 1.5-second pause then positions reset (scores don't)"
-msgstr "ہر جھٹکے کے بعد 1.5 سیکنڈ وقفہ پھر پوزیشنیں ری سیٹ (scores) نہیں کرتے ہیں۔"
+msgstr ""
+"ہر جھٹکے کے بعد 1.5 سیکنڈ وقفہ پھر پوزیشنیں ری سیٹ (scores) نہیں کرتے ہیں۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:33
 #, elixir-autogen, elixir-format
@@ -133,8 +160,14 @@ msgstr "ہیکس انڈرس سے دیگر تمام قوانین لاگو ہوت�
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Arctic construction race — jump on floating ice blocks to build your igloo while competing against your opponent. The twist: blocks are shared, and stepping on opponent-owned blocks steals their pieces!"
-msgstr "آرکٹک تعمیراتی دوڑ — اپنے مخالف کھلاڑیوں کے خلاف مقابلہ کرتے ہوئے اپنے برفانی بلاک تعمیر کرنے کیلئے برف کے ستونوں پر دوڑ رہی ہے ۔ توڑ: بلاکیں مشترکہ ہیں اور مخالف جڑوں پر قدم رکھتے ہیں ان کے ٹکڑے چوری کرتے ہیں!"
+msgid ""
+"Arctic construction race — jump on floating ice blocks to build your igloo "
+"while competing against your opponent. The twist: blocks are shared, and "
+"stepping on opponent-owned blocks steals their pieces!"
+msgstr ""
+"آرکٹک تعمیراتی دوڑ — اپنے مخالف کھلاڑیوں کے خلاف مقابلہ کرتے ہوئے اپنے "
+"برفانی بلاک تعمیر کرنے کیلئے برف کے ستونوں پر دوڑ رہی ہے ۔ توڑ: بلاکیں "
+"مشترکہ ہیں اور مخالف جڑوں پر قدم رکھتے ہیں ان کے ٹکڑے چوری کرتے ہیں!"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:20
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_blitz.html.heex:20
@@ -264,8 +297,13 @@ msgstr "ہر قیمت پر اخراجات سے گریز کریں"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_pong.html.heex:35
 #, elixir-autogen, elixir-format
-msgid "Ball angle depends on where it hits the paddle — center gives a shallow bounce, edges give steep angles (up to 60 degrees)"
-msgstr "بال زاویے کا انحصار اس بات پر ہوتا ہے کہ وہ کہاں سے گزرتا ہے — مرکزے میں ایک پتھریلی بونے کی صورت اختیار کر لیتا ہے ، کناروں سے گزرنے والے زاویے ( 60 ڈگری تک )"
+msgid ""
+"Ball angle depends on where it hits the paddle — center gives a shallow "
+"bounce, edges give steep angles (up to 60 degrees)"
+msgstr ""
+"بال زاویے کا انحصار اس بات پر ہوتا ہے کہ وہ کہاں سے گزرتا ہے — مرکزے میں ایک"
+" پتھریلی بونے کی صورت اختیار کر لیتا ہے ، کناروں سے گزرنے والے زاویے ( 60 "
+"ڈگری تک )"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis.html.heex:49
 #, elixir-autogen, elixir-format
@@ -275,7 +313,8 @@ msgstr "بال کو نیٹ ورک (سمت شدہ اونچائی آرک) کو ص�
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_pong.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "Ball speed increases with each paddle hit, up to 2.4x initial speed"
-msgstr "بل کی رفتار ہر بلے باز کی چوٹ کے ساتھ بڑھتی ہے یعنی 2.4x ابتدائی رفتار تک۔"
+msgstr ""
+"بل کی رفتار ہر بلے باز کی چوٹ کے ساتھ بڑھتی ہے یعنی 2.4x ابتدائی رفتار تک۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:58
 #, elixir-autogen, elixir-format
@@ -289,13 +328,20 @@ msgstr "اٹاری 2600 کے لیے Ice Hockey (1981) کی بنیاد رکھی �
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_pong.html.heex:49
 #, elixir-autogen, elixir-format
-msgid "Based on Atari's Pong (1972) — the game that started the video game industry."
-msgstr "اٹاری کے پنگ پر مبنی (1972ء) — ویڈیو گیم انڈسٹری کا آغاز کرنے والی گیم۔"
+msgid ""
+"Based on Atari's Pong (1972) — the game that started the video game "
+"industry."
+msgstr ""
+"اٹاری کے پنگ پر مبنی (1972ء) — ویڈیو گیم انڈسٹری کا آغاز کرنے والی گیم۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:69
 #, elixir-autogen, elixir-format
-msgid "Based on Atari's Warlords (1980) — castle defense meets Breakout in a head-to-head duel."
-msgstr "اٹاری کے جنگی قافلے (1980ء) پر مبنی ہے — قلعہ دفاع ایک سرے دار ڈیول میں ٹوٹ پھوٹ کا سامنا کرتا ہے۔"
+msgid ""
+"Based on Atari's Warlords (1980) — castle defense meets Breakout in a head-"
+"to-head duel."
+msgstr ""
+"اٹاری کے جنگی قافلے (1980ء) پر مبنی ہے — قلعہ دفاع ایک سرے دار ڈیول میں ٹوٹ "
+"پھوٹ کا سامنا کرتا ہے۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw.html.heex:76
 #, elixir-autogen, elixir-format
@@ -346,8 +392,14 @@ msgstr "بلٹز کی جنگ"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_blitz.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Blitz Space Invaders — instant alien drops, easier combo thresholds, 5 waves of pure chaos from the start. The lowered combo thresholds mean aggressive play is rewarded — chain kills to bury your opponent in aliens."
-msgstr "بلٹز اسپیس انواڈرز — فوری بیرونی دباؤ ، آسانی سے کوان‌کوئرز ، شروع ہی سے خالص آلودگی کی ۵ لہریں ۔ اِس کے علاوہ وہ اپنے مخالف کھلاڑی کو اجنبیوں میں دفن کرنے کے لئے بھی مار ڈالتے ہیں ۔"
+msgid ""
+"Blitz Space Invaders — instant alien drops, easier combo thresholds, 5 waves"
+" of pure chaos from the start. The lowered combo thresholds mean aggressive "
+"play is rewarded — chain kills to bury your opponent in aliens."
+msgstr ""
+"بلٹز اسپیس انواڈرز — فوری بیرونی دباؤ ، آسانی سے کوان‌کوئرز ، شروع ہی سے "
+"خالص آلودگی کی ۵ لہریں ۔ اِس کے علاوہ وہ اپنے مخالف کھلاڑی کو اجنبیوں میں "
+"دفن کرنے کے لئے بھی مار ڈالتے ہیں ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:102
 #, elixir-autogen, elixir-format
@@ -398,17 +450,23 @@ msgstr "بلاک کیے گئے شاٹس دوبارہ کھیلنے میں"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "Both players race on a 3-lane pseudo-3D road with AI traffic"
-msgstr "دونوں کھلاڑی اے آئی اے ٹرافی کے ساتھ 3-لین پیسوڈو-3D سڑک پر دوڑ رہے ہیں۔"
+msgstr ""
+"دونوں کھلاڑی اے آئی اے ٹرافی کے ساتھ 3-لین پیسوڈو-3D سڑک پر دوڑ رہے ہیں۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_coop.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "Both players share the same screen and fight the same alien waves"
-msgstr "دونوں کھلاڑی ایک ہی پردے میں شریک ہوتے ہیں اور ایک ہی بیرونی لہروں کا مقابلہ کرتے ہیں۔"
+msgstr ""
+"دونوں کھلاڑی ایک ہی پردے میں شریک ہوتے ہیں اور ایک ہی بیرونی لہروں کا مقابلہ"
+" کرتے ہیں۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:50
 #, elixir-autogen, elixir-format
-msgid "Boxers cannot pass through each other — body collision pushes the mover back"
-msgstr "بکس‌نگار ایک دوسرے سے نہیں گزر سکتے — جسم میں منتقل ہونے والے عمل کو دوبارہ منتقل کر دیتا ہے"
+msgid ""
+"Boxers cannot pass through each other — body collision pushes the mover back"
+msgstr ""
+"بکس‌نگار ایک دوسرے سے نہیں گزر سکتے — جسم میں منتقل ہونے والے عمل کو دوبارہ "
+"منتقل کر دیتا ہے"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_night.html.heex:61
 #, elixir-autogen, elixir-format
@@ -432,13 +490,18 @@ msgstr "بُت‌پرست لوگ اِس لئے نظر آتے ہیں کیونکہ
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_ricochet.html.heex:34
 #, elixir-autogen, elixir-format
-msgid "Bullets fire at a fixed 30-degree angle, aimed up or down based on your last vertical input"
-msgstr "ٹھوس 30 ڈگری زاویے پر آتش فشاں، جس کا مقصد آپ کے آخری عمودی ان پٹ پر مبنی یا نیچے ہے۔"
+msgid ""
+"Bullets fire at a fixed 30-degree angle, aimed up or down based on your last"
+" vertical input"
+msgstr ""
+"ٹھوس 30 ڈگری زاویے پر آتش فشاں، جس کا مقصد آپ کے آخری عمودی ان پٹ پر مبنی یا"
+" نیچے ہے۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "Bullets travel horizontally and are blocked by obstacles"
-msgstr "بِل‌وے سفر کرنے والی گاڑیوں کا سفر کرنا اور رکاوٹوں کی وجہ سے رُک جاتے ہیں"
+msgstr ""
+"بِل‌وے سفر کرنے والی گاڑیوں کا سفر کرنا اور رکاوٹوں کی وجہ سے رُک جاتے ہیں"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_stagecoach.html.heex:37
 #, elixir-autogen, elixir-format
@@ -453,12 +516,18 @@ msgstr "مصر"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "Castles fully rebuild between rounds after a king hit"
-msgstr "ایک بادشاہ کو مارنے کے بعد گردوں کے درمیان قلعے مکمل طور پر دوبارہ تعمیر ہوتے ہیں۔"
+msgstr ""
+"ایک بادشاہ کو مارنے کے بعد گردوں کے درمیان قلعے مکمل طور پر دوبارہ تعمیر "
+"ہوتے ہیں۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:54
 #, elixir-autogen, elixir-format
-msgid "Catch mechanic: hold Space when the fireball touches your shield to grab it, release to aim and launch"
-msgstr "کیچ میکانکی: اسپیس کو تھامے رکھو جب آتش بال اسے پکڑنے کے لیے آپ کی سپر چھوتی ہے، مقصد اور لانچ کرنے کے لئے ریلیز کرتی ہے۔"
+msgid ""
+"Catch mechanic: hold Space when the fireball touches your shield to grab it,"
+" release to aim and launch"
+msgstr ""
+"کیچ میکانکی: اسپیس کو تھامے رکھو جب آتش بال اسے پکڑنے کے لیے آپ کی سپر چھوتی"
+" ہے، مقصد اور لانچ کرنے کے لئے ریلیز کرتی ہے۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_blitz.html.heex:43
 #, elixir-autogen, elixir-format
@@ -472,8 +541,16 @@ msgstr "کلس"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_coop.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Classic co-op Space Invaders — two cannons fighting the same alien waves on a shared screen. No alien drop mechanic. Survive together or fall together. Communication and coordination are everything — divide the screen and cover each other's blind spots."
-msgstr "کلاسیکی ذرات (classical coop Space Invaders) یعنی دو قندھار ایک مشترکہ پردے پر ایک ہی بیرونی لہروں سے لڑتا ہے۔ کوئی اجنبی منقسم نہیں. ایک ساتھ مل کر یا ایک ساتھ گر. آپس میں بات‌چیت کرنے اور اُن کے اندھاپن کو ڈھانپنے کی ہر چیز — پردے کو تقسیم کرنے اور ایک دوسرے کے اندھے نشانوں پر محیط ہوتی ہے ۔"
+msgid ""
+"Classic co-op Space Invaders — two cannons fighting the same alien waves on "
+"a shared screen. No alien drop mechanic. Survive together or fall together. "
+"Communication and coordination are everything — divide the screen and cover "
+"each other's blind spots."
+msgstr ""
+"کلاسیکی ذرات (classical coop Space Invaders) یعنی دو قندھار ایک مشترکہ پردے "
+"پر ایک ہی بیرونی لہروں سے لڑتا ہے۔ کوئی اجنبی منقسم نہیں. ایک ساتھ مل کر یا "
+"ایک ساتھ گر. آپس میں بات‌چیت کرنے اور اُن کے اندھاپن کو ڈھانپنے کی ہر چیز — "
+"پردے کو تقسیم کرنے اور ایک دوسرے کے اندھے نشانوں پر محیط ہوتی ہے ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:46
 #, elixir-autogen, elixir-format
@@ -503,7 +580,9 @@ msgstr "3- سیکنڈ کے لیے رفتار بڑھاو (انگریزی: settle)
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_escape.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "Collisions are devastating — even a brief stun can mean engulfment"
-msgstr "دل کی دھڑکنیں تباہ‌کُن ہوتی ہیں — یہاں تک کہ ایک مختصر سُن کا مطلب بھی ہو سکتا ہے"
+msgstr ""
+"دل کی دھڑکنیں تباہ‌کُن ہوتی ہیں — یہاں تک کہ ایک مختصر سُن کا مطلب بھی ہو "
+"سکتا ہے"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_clean.html.heex:23
 #, elixir-autogen, elixir-format
@@ -522,12 +601,18 @@ msgstr "اے آئی گاڑیوں کے ساتھ رابطہ آپ کو عارضی �
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders.html.heex:41
 #, elixir-autogen, elixir-format
-msgid "Combo system: 3 rapid kills = 1 extra drop, 5 = 2 + armored, 8+ = 3 + armored"
-msgstr "کومبو سسٹم: 3 جلدوں کا قتل = 1 اضافی کمیت، 5 = 2 + محافظہ، 8+ = 3 + ہتھیاروں سے لیس ہے۔"
+msgid ""
+"Combo system: 3 rapid kills = 1 extra drop, 5 = 2 + armored, 8+ = 3 + "
+"armored"
+msgstr ""
+"کومبو سسٹم: 3 جلدوں کا قتل = 1 اضافی کمیت، 5 = 2 + محافظہ، 8+ = 3 + ہتھیاروں"
+" سے لیس ہے۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_blitz.html.heex:32
 #, elixir-autogen, elixir-format
-msgid "Combo thresholds lowered: 2 kills = extra drop, 4 = 2 + armored, 6+ = 3 + armored"
+msgid ""
+"Combo thresholds lowered: 2 kills = extra drop, 4 = 2 + armored, 6+ = 3 + "
+"armored"
 msgstr "کمیت نیچے: 2 ہلاکتیں = اضافی کمیت، 4 = 2 + محافظات، 6+ = 3 + محافظات۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_nml.html.heex:63
@@ -595,13 +680,27 @@ msgstr "پتے"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_pong.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Cyberpunk Pong with neon glow, CRT scanlines, and synth audio. Two paddles, one ball, pure skill. The ball accelerates with every rally — first to 11 points wins (must win by 2 after 10-10). Games are fast and intense, typically lasting 2-3 minutes."
-msgstr "خیبر پختونخوا کے ساتھ نیون‌ومنگ ، ٹی‌ٹی اسکین‌ٹی‌ٹی‌لینڈز اور سن‌تھی آڈیو کیساتھ ۔ دو سنچریاں، ایک گیند، خالص مہارت. گیند ہر بلے باز سے ٹکراتا ہے یعنی پہلے سے 11 پوائنٹ جیت جاتا ہے (مکمل طور پر 10-10 کے بعد 2 جیت لیتا ہے۔ کھیلوں میں تیزی اور شدت ہے، غیر مستقل 2-3 منٹ."
+msgid ""
+"Cyberpunk Pong with neon glow, CRT scanlines, and synth audio. Two paddles, "
+"one ball, pure skill. The ball accelerates with every rally — first to 11 "
+"points wins (must win by 2 after 10-10). Games are fast and intense, "
+"typically lasting 2-3 minutes."
+msgstr ""
+"خیبر پختونخوا کے ساتھ نیون‌ومنگ ، ٹی‌ٹی اسکین‌ٹی‌ٹی‌لینڈز اور سن‌تھی آڈیو "
+"کیساتھ ۔ دو سنچریاں، ایک گیند، خالص مہارت. گیند ہر بلے باز سے ٹکراتا ہے یعنی"
+" پہلے سے 11 پوائنٹ جیت جاتا ہے (مکمل طور پر 10-10 کے بعد 2 جیت لیتا ہے۔ "
+"کھیلوں میں تیزی اور شدت ہے، غیر مستقل 2-3 منٹ."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_sprint.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Daylight sprint — no weather changes, no fuel drain, just speed. 90 seconds to score maximum overtakes. The purest form of Enduro — strip away everything except raw racing and see who can weave through traffic faster."
-msgstr "دن‌بھر کی روشنی — کوئی موسمی تبدیلیاں نہیں ہوتیں ، ایندھن کی رفتار میں کوئی کمی نہیں ۔ زیادہ اسکور کرنے میں 90 سیکنڈ لگے ۔ ٹریفک میں تیزی سے اضافہ کرنے والی ہر چیز کو پھینک دیتی ہے ۔"
+msgid ""
+"Daylight sprint — no weather changes, no fuel drain, just speed. 90 seconds "
+"to score maximum overtakes. The purest form of Enduro — strip away "
+"everything except raw racing and see who can weave through traffic faster."
+msgstr ""
+"دن‌بھر کی روشنی — کوئی موسمی تبدیلیاں نہیں ہوتیں ، ایندھن کی رفتار میں کوئی "
+"کمی نہیں ۔ زیادہ اسکور کرنے میں 90 سیکنڈ لگے ۔ ٹریفک میں تیزی سے اضافہ کرنے "
+"والی ہر چیز کو پھینک دیتی ہے ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:38
 #, elixir-autogen, elixir-format
@@ -615,7 +714,9 @@ msgstr "پوائنٹ کے لیے دشمنوں کو تباہ کرنا (بولٹ،
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders.html.heex:35
 #, elixir-autogen, elixir-format
-msgid "Destroyed aliens \"drop\" onto your opponent's side as reinforcements after a delay"
+msgid ""
+"Destroyed aliens \"drop\" onto your opponent's side as reinforcements after "
+"a delay"
 msgstr "تاخیر کے بعد غیر ملکی افراد کو ہلاک کر دیتے ہیں۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_coop.html.heex:32
@@ -635,7 +736,8 @@ msgstr "ترقی"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:26
 #, elixir-autogen, elixir-format
-msgid "Distance-based scoring: close punch = 3 points, medium = 2, long range = 1"
+msgid ""
+"Distance-based scoring: close punch = 3 points, medium = 2, long range = 1"
 msgstr "دوری جدول : قریبی جدول = 3 نقاط، درمیانی = 2، لمبائی = 1 ہے۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_escape.html.heex:26
@@ -666,7 +768,9 @@ msgstr "اپنگ مت دیکھ"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "Double fault (two missed serves) gives point to receiver"
-msgstr "دو گم‌شُدہ غلطی ( دو گم‌شُدہ بہن‌بھائیوں کی مدد کی جاتی ہے ) اِس بات پر زور دیا جاتا ہے کہ وہ دوسروں کو داد دے رہے ہیں ۔"
+msgstr ""
+"دو گم‌شُدہ غلطی ( دو گم‌شُدہ بہن‌بھائیوں کی مدد کی جاتی ہے ) اِس بات پر زور "
+"دیا جاتا ہے کہ وہ دوسروں کو داد دے رہے ہیں ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:49
 #, elixir-autogen, elixir-format
@@ -700,8 +804,12 @@ msgstr "ہر کھلاڑی 1 سکور دے — پہلے سے 10 تک چکر جی�
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_nml.html.heex:25
 #, elixir-autogen, elixir-format
-msgid "Each player can move horizontally within their 30% zone (the center 40% is no-man's-land)"
-msgstr "ہر کھلاڑی اپنے 30% زون کے اندر ان کی نقل و حرکت کر سکتا ہے ( سینٹر 40% غیر مین-زمین)۔"
+msgid ""
+"Each player can move horizontally within their 30% zone (the center 40% is "
+"no-man's-land)"
+msgstr ""
+"ہر کھلاڑی اپنے 30% زون کے اندر ان کی نقل و حرکت کر سکتا ہے ( سینٹر 40% غیر "
+"مین-زمین)۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_pong.html.heex:25
 #, elixir-autogen, elixir-format
@@ -710,7 +818,9 @@ msgstr "ہر کھلاڑی اسکرین کے کنارے پر ایک کیچ کنٹ
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders.html.heex:29
 #, elixir-autogen, elixir-format
-msgid "Each player defends their half of a split screen against descending alien waves"
+msgid ""
+"Each player defends their half of a split screen against descending alien "
+"waves"
 msgstr "ہر کھلاڑی غیر ملکی لہروں کے خلاف اپنے نصف الگ پردے کا دفاع کرتا ہے۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_sudden.html.heex:31
@@ -725,8 +835,15 @@ msgstr "ہر شمارے میں تھوڑا سا ٹھنڈا ہوتا ہے"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_escape.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Endless survival descent — outrun the ever-accelerating avalanche of radioactive debris. No finish line, no rounds. Last skier standing wins. A test of endurance and nerve — how long can you keep dodging at ever-increasing speeds?"
-msgstr "غیر محفوظ نسلِ‌انسانی — ریڈیائی عمل‌شُدہ نمی کے ہمیشہ کے لئے ختم ہو جانے والی وبا ۔ کوئی ختم لائن، نہیں راؤنڈ. آخری سکیکر کھڑا ہو جاتا ہے۔ صبر اور مایوسی کا ایک امتحان — آپ کتنی دیر تک مسلسل کوشش کر سکتے ہیں ؟"
+msgid ""
+"Endless survival descent — outrun the ever-accelerating avalanche of "
+"radioactive debris. No finish line, no rounds. Last skier standing wins. A "
+"test of endurance and nerve — how long can you keep dodging at ever-"
+"increasing speeds?"
+msgstr ""
+"غیر محفوظ نسلِ‌انسانی — ریڈیائی عمل‌شُدہ نمی کے ہمیشہ کے لئے ختم ہو جانے "
+"والی وبا ۔ کوئی ختم لائن، نہیں راؤنڈ. آخری سکیکر کھڑا ہو جاتا ہے۔ صبر اور "
+"مایوسی کا ایک امتحان — آپ کتنی دیر تک مسلسل کوشش کر سکتے ہیں ؟"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:65
 #, elixir-autogen, elixir-format
@@ -755,8 +872,14 @@ msgstr "ہر نقطہ معاملات مزید"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_sudden.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Every point wins a game — no 15-30-40, no deuce, no advantage. First to 6 games takes the set. Pure pressure. One mistake can cost you an entire game — there's no recovering from a bad point."
-msgstr "ہر پوائنٹ ایک کھیل جیتتا ہے — نہ کہ 15-30-40، نہ کوئی دیوس، کوئی فائدہ۔ پہلے سے 6 گیمز سیٹ لے لیتی ہیں۔ خالص دباؤ. ایک غلطی آپ پورے کھیل کا فائدہ اُٹھا سکتی ہے ۔"
+msgid ""
+"Every point wins a game — no 15-30-40, no deuce, no advantage. First to 6 "
+"games takes the set. Pure pressure. One mistake can cost you an entire game "
+"— there's no recovering from a bad point."
+msgstr ""
+"ہر پوائنٹ ایک کھیل جیتتا ہے — نہ کہ 15-30-40، نہ کوئی دیوس، کوئی فائدہ۔ پہلے"
+" سے 6 گیمز سیٹ لے لیتی ہیں۔ خالص دباؤ. ایک غلطی آپ پورے کھیل کا فائدہ اُٹھا "
+"سکتی ہے ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey.html.heex:99
 #, elixir-autogen, elixir-format
@@ -785,7 +908,8 @@ msgstr "فائربال رابطہ اور باورچی خانے پر ایک ای�
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:60
 #, elixir-autogen, elixir-format
-msgid "Fireball speeds up with each shield deflection (up to 1.8x initial speed)"
+msgid ""
+"Fireball speeds up with each shield deflection (up to 1.8x initial speed)"
 msgstr "فائربال رفتار ہر اسکیپ کے ساتھ ( 1.8x ابتدائی رفتار سے )"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:32
@@ -795,8 +919,11 @@ msgstr "سب سے پہلے 100 پوائنٹ ایک KO — راؤنڈ فوراً 
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_pong.html.heex:41
 #, elixir-autogen, elixir-format
-msgid "First to 11 points wins — deuce rule applies after 10-10 (must win by 2)"
-msgstr "سب سے پہلے 11 نکات جیت گئے — دیوسائی حکمرانی کا اطلاق 10-10 کے بعد (مکمل طور پر 2) کے بعد ہوتا ہے۔"
+msgid ""
+"First to 11 points wins — deuce rule applies after 10-10 (must win by 2)"
+msgstr ""
+"سب سے پہلے 11 نکات جیت گئے — دیوسائی حکمرانی کا اطلاق 10-10 کے بعد (مکمل طور"
+" پر 2) کے بعد ہوتا ہے۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_quick.html.heex:33
 #, elixir-autogen, elixir-format
@@ -831,7 +958,9 @@ msgstr "مچھلی"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "Fly over fuel stations to capture fuel — first come, first served"
-msgstr "ایندھن پر قبضہ کرنے کیلئے ایندھن کی زیادہ سے زیادہ جگہ — پہلی مرتبہ خدمت کی ۔"
+msgstr ""
+"ایندھن پر قبضہ کرنے کیلئے ایندھن کی زیادہ سے زیادہ جگہ — پہلی مرتبہ خدمت کی "
+"۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_coop.html.heex:53
 #, elixir-autogen, elixir-format
@@ -846,7 +975,9 @@ msgstr "بُری عادتوں پر توجہ دیں"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_pacifist.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "Focus on destroying enemies, managing fuel, and clearing bridges"
-msgstr "دشمنوں کو تباہ کرنے ، ایندھن کا انتظام کرنے اور بُری جگہوں کو صاف کرنے پر توجہ مرکوز رکھیں"
+msgstr ""
+"دشمنوں کو تباہ کرنے ، ایندھن کا انتظام کرنے اور بُری جگہوں کو صاف کرنے پر "
+"توجہ مرکوز رکھیں"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_peaceful.html.heex:33
 #, elixir-autogen, elixir-format
@@ -891,7 +1022,8 @@ msgstr "مکمل سرنگ ہمیشہ"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_coop.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "Game over when aliens reach the ground or both players lose all lives"
-msgstr "جب غیر ملکی لوگ زمین پر پہنچتے ہیں یا دونوں کھلاڑی ساری زندگی کھو دیتے ہیں۔"
+msgstr ""
+"جب غیر ملکی لوگ زمین پر پہنچتے ہیں یا دونوں کھلاڑی ساری زندگی کھو دیتے ہیں۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:80
 #, elixir-autogen, elixir-format
@@ -999,18 +1131,40 @@ msgstr "بیرونِ‌ملک"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_stagecoach.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Hex Outlaw variant with a moving obstacle. A stagecoach bounces vertically through the center of the arena, blocking bullets with unpredictable timing. Time your shots for the gaps. The stagecoach adds a rhythm-based element to the classic duel."
-msgstr "اُنہوں نے کہا : ” مَیں نے اِس بات پر غور کِیا ہے کہ مَیں اُن کی مدد کیسے کر سکتا ہوں ۔ اِس کے بعد اُس نے گولیوں کو روک دیا ۔ توڑ کے لئے تیروں کا وقت. سٹیجکوچ کلاسیکی ڈویل پر مبنی عنصر کو شامل کرتا ہے۔"
+msgid ""
+"Hex Outlaw variant with a moving obstacle. A stagecoach bounces vertically "
+"through the center of the arena, blocking bullets with unpredictable timing."
+" Time your shots for the gaps. The stagecoach adds a rhythm-based element to"
+" the classic duel."
+msgstr ""
+"اُنہوں نے کہا : ” مَیں نے اِس بات پر غور کِیا ہے کہ مَیں اُن کی مدد کیسے کر "
+"سکتا ہوں ۔ اِس کے بعد اُس نے گولیوں کو روک دیا ۔ توڑ کے لئے تیروں کا وقت. "
+"سٹیجکوچ کلاسیکی ڈویل پر مبنی عنصر کو شامل کرتا ہے۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_ricochet.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Hex Outlaw variant with bouncing bullets. A wide wall blocks direct horizontal shots — fire at 30-degree angles and bounce bullets off the ceiling or floor to hit your opponent. This variant rewards geometric thinking and precise vertical positioning."
-msgstr "گولیوں کے خلاف احتجاج ایک وسیع دیوار کے بلاک براہ راست گول — 30 ڈگری زاویوں پر فائرنگ اور اپنے مخالف کو مارنے کے لئے چھت یا فرش سے نیچے کی گولیاں اِس سے ظاہر ہوتا ہے کہ اُن کی سوچ بالکل بدل گئی ہے ۔"
+msgid ""
+"Hex Outlaw variant with bouncing bullets. A wide wall blocks direct "
+"horizontal shots — fire at 30-degree angles and bounce bullets off the "
+"ceiling or floor to hit your opponent. This variant rewards geometric "
+"thinking and precise vertical positioning."
+msgstr ""
+"گولیوں کے خلاف احتجاج ایک وسیع دیوار کے بلاک براہ راست گول — 30 ڈگری زاویوں "
+"پر فائرنگ اور اپنے مخالف کو مارنے کے لئے چھت یا فرش سے نیچے کی گولیاں اِس سے"
+" ظاہر ہوتا ہے کہ اُن کی سوچ بالکل بدل گئی ہے ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_nml.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Hex Outlaw variant with no obstacles and full horizontal movement. Each gunslinger can advance within their 30% of the arena — closing the distance reduces your opponent's reaction time but leaves you exposed too. The purest test of reflexes and positioning."
-msgstr "ہیکس خارجہ بغیر رکاوٹوں اور بھرپور نقل و حرکت کا مظاہرہ کرتا ہے۔ ہر بندوق بنانے والا اپنے 30% کے اندر آگے بڑھ سکتا ہے — فاصلہ بند کرنے سے آپ کے مخالف کے ردِعمل کو کم کر دیتا ہے لیکن آپ بھی کھل جاتے ہیں ۔ مریخ اور پوزیشن کا خالص امتحان."
+msgid ""
+"Hex Outlaw variant with no obstacles and full horizontal movement. Each "
+"gunslinger can advance within their 30% of the arena — closing the distance "
+"reduces your opponent's reaction time but leaves you exposed too. The purest"
+" test of reflexes and positioning."
+msgstr ""
+"ہیکس خارجہ بغیر رکاوٹوں اور بھرپور نقل و حرکت کا مظاہرہ کرتا ہے۔ ہر بندوق "
+"بنانے والا اپنے 30% کے اندر آگے بڑھ سکتا ہے — فاصلہ بند کرنے سے آپ کے مخالف "
+"کے ردِعمل کو کم کر دیتا ہے لیکن آپ بھی کھل جاتے ہیں ۔ مریخ اور پوزیشن کا "
+"خالص امتحان."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:53
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_blitz.html.heex:74
@@ -1086,18 +1240,26 @@ msgstr "ہر سللم دروازے پر گر پڑیں"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis.html.heex:32
 #, elixir-autogen, elixir-format
-msgid "Hitting is automatic — when the ball enters your hit zone, it's returned"
-msgstr "ہاٹنگ خودکار ہوتا ہے — جب گیند آپ کے متاثرہ زون میں داخل ہوتا ہے تو یہ واپس چلا جاتا ہے۔"
+msgid ""
+"Hitting is automatic — when the ball enters your hit zone, it's returned"
+msgstr ""
+"ہاٹنگ خودکار ہوتا ہے — جب گیند آپ کے متاثرہ زون میں داخل ہوتا ہے تو یہ واپس "
+"چلا جاتا ہے۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "Hitting the king removes one life — each player starts with 3 lives"
-msgstr "بادشاہ کو مارنے سے ایک زندگی ختم ہو جاتی ہے — ہر کھلاڑی 3 زندگی سے شروع ہوتا ہے۔"
+msgstr ""
+"بادشاہ کو مارنے سے ایک زندگی ختم ہو جاتی ہے — ہر کھلاڑی 3 زندگی سے شروع ہوتا"
+" ہے۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_nml.html.heex:31
 #, elixir-autogen, elixir-format
-msgid "Horizontal speed is slightly slower than vertical to prevent easy dodging"
-msgstr "آسان دواؤں کو روکنے کے لیے ہوریزونٹل کی رفتار عمودی سے کچھ زیادہ تیز ہوتی ہے۔"
+msgid ""
+"Horizontal speed is slightly slower than vertical to prevent easy dodging"
+msgstr ""
+"آسان دواؤں کو روکنے کے لیے ہوریزونٹل کی رفتار عمودی سے کچھ زیادہ تیز ہوتی "
+"ہے۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_ricochet.html.heex:64
 #, elixir-autogen, elixir-format
@@ -1111,7 +1273,8 @@ msgstr "اگر اجنبی آپ کی طرف زمین تک پہنچے تو آپ ف
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_escape.html.heex:32
 #, elixir-autogen, elixir-format
-msgid "If both are engulfed simultaneously, the skier who descended further wins"
+msgid ""
+"If both are engulfed simultaneously, the skier who descended further wins"
 msgstr "اگر دونوں بےقابو ہو جائیں تو وہ کھلاڑی جو مزید جیت جاتا ہے"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:33
@@ -1122,12 +1285,17 @@ msgstr "اگر دونوں پکڑے جائیں تو وہ کھلاڑی جو مزی
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:116
 #, elixir-autogen, elixir-format
 msgid "If it reaches 0°, the round ends — most igloo pieces wins"
-msgstr "اگر یہ 0° تک پہنچ جائے تو چکر ختم ہو جاتا ہے — زیادہ تر یگلو ٹکڑے جیت جاتے ہیں۔"
+msgstr ""
+"اگر یہ 0° تک پہنچ جائے تو چکر ختم ہو جاتا ہے — زیادہ تر یگلو ٹکڑے جیت جاتے "
+"ہیں۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:35
 #, elixir-autogen, elixir-format
-msgid "If the 2-minute timer runs out, the fighter with more points wins the round"
-msgstr "اگر 2- منٹ ٹائم آؤٹ ہو جائے تو زیادہ سے زیادہ پوائنٹ کے ساتھ لڑنے والے لڑاکا چکر جیت جاتا ہے۔"
+msgid ""
+"If the 2-minute timer runs out, the fighter with more points wins the round"
+msgstr ""
+"اگر 2- منٹ ٹائم آؤٹ ہو جائے تو زیادہ سے زیادہ پوائنٹ کے ساتھ لڑنے والے لڑاکا"
+" چکر جیت جاتا ہے۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_pong.html.heex:28
 #, elixir-autogen, elixir-format
@@ -1294,7 +1462,9 @@ msgstr "کوئی روک ٹوک — دفاعی عملہ حرکت و نقل و ح�
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_sprint.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "No fuel drain — focus purely on speed and overtaking"
-msgstr "ایندھن کے بغیر ایندھن کا استعمال نہ صرف تیز رفتار اور تیز رفتاری پر مرکوز ہوتا ہے"
+msgstr ""
+"ایندھن کے بغیر ایندھن کا استعمال نہ صرف تیز رفتار اور تیز رفتاری پر مرکوز "
+"ہوتا ہے"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_nml.html.heex:23
 #, elixir-autogen, elixir-format
@@ -1318,8 +1488,15 @@ msgstr "کوئی وقت محدود نہیں"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey_showdown.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "No timer — first to 5 goals wins. The puck speeds up after every goal scored, building pressure as the match intensifies. The escalating speed turns the final goals into frantic, blink-and-you-miss-it moments."
-msgstr "کوئی بھی مرتبہ — پہلے 5 نشانے جیت نہیں سکتا ۔ ہر ہدف اسکور کرنے کے بعد بلے بازی کی رفتار تیز ہو جاتی ہے، میچ بلے بازی کے طور پر دباؤ بنانے لگتا ہے۔ بے انتہا رفتار اختتامی مقاصد کو تغذیہ میں تبدیل کر دیتی ہے، تغذیہ-اور-آپ-مس-اے-مس-وی لمحات میں۔"
+msgid ""
+"No timer — first to 5 goals wins. The puck speeds up after every goal "
+"scored, building pressure as the match intensifies. The escalating speed "
+"turns the final goals into frantic, blink-and-you-miss-it moments."
+msgstr ""
+"کوئی بھی مرتبہ — پہلے 5 نشانے جیت نہیں سکتا ۔ ہر ہدف اسکور کرنے کے بعد بلے "
+"بازی کی رفتار تیز ہو جاتی ہے، میچ بلے بازی کے طور پر دباؤ بنانے لگتا ہے۔ بے "
+"انتہا رفتار اختتامی مقاصد کو تغذیہ میں تبدیل کر دیتی ہے، تغذیہ-اور-آپ-مس-اے-"
+"مس-وی لمحات میں۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_sudden.html.heex:32
 #, elixir-autogen, elixir-format
@@ -1339,22 +1516,42 @@ msgstr "رکاوٹوں میں اضافہ ہوتا ہے"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "Once complete, return to shore and enter your igloo to win the round"
-msgstr "مکمل ہونے کے بعد واپس ساحل پر جائیں اور راؤنڈ جیتنے کے لئے اپنے ایللو میں داخل ہو جائیں۔"
+msgstr ""
+"مکمل ہونے کے بعد واپس ساحل پر جائیں اور راؤنڈ جیتنے کے لئے اپنے ایللو میں "
+"داخل ہو جائیں۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw.html.heex:28
 #, elixir-autogen, elixir-format
-msgid "One bullet per player at a time — wait for it to hit or miss before firing again"
-msgstr "کسی وقت میں ایک گول کھلاڑی — اسے دوبارہ گولی مارنے سے پہلے مارنے یا بھول جانے کا انتظار کرنے کیلئے انتظار کریں"
+msgid ""
+"One bullet per player at a time — wait for it to hit or miss before firing "
+"again"
+msgstr ""
+"کسی وقت میں ایک گول کھلاڑی — اسے دوبارہ گولی مارنے سے پہلے مارنے یا بھول "
+"جانے کا انتظار کرنے کیلئے انتظار کریں"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "One epic long round of Frostbite — all enemies from the start, igloo needs 20 pieces, and the temperature drops slowly from 60°. Arctic endurance mode. A marathon of precision and patience — one wrong jump can cost you minutes of progress."
-msgstr "اِس کی وجہ یہ ہے کہ اِس کا درجۂ‌حرارت تقریباً ۲۰ گُنا زیادہ ہوتا ہے ۔ آرکٹک برداشت موڈ. صبر اور تحمل کی کمی — ایک غلط دوڑنے کی وجہ سے آپ فوری طور پر ترقی کر سکتے ہیں ۔"
+msgid ""
+"One epic long round of Frostbite — all enemies from the start, igloo needs "
+"20 pieces, and the temperature drops slowly from 60°. Arctic endurance mode."
+" A marathon of precision and patience — one wrong jump can cost you minutes "
+"of progress."
+msgstr ""
+"اِس کی وجہ یہ ہے کہ اِس کا درجۂ‌حرارت تقریباً ۲۰ گُنا زیادہ ہوتا ہے ۔ آرکٹک "
+"برداشت موڈ. صبر اور تحمل کی کمی — ایک غلط دوڑنے کی وجہ سے آپ فوری طور پر "
+"ترقی کر سکتے ہیں ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey_blitz.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "One intense period of 3 minutes — the puck moves 25% faster and tackles succeed 80% of the time. Pure intensity from start to finish. With nearly guaranteed tackles, defense is almost impossible — score fast or get scored on."
-msgstr "۳ منٹوں کا ایک سخت عرصہ — زہرہ ۲۵ فیصد تیزی سے حرکت کرتا ہے اور دوڑنے والوں کو ۸۰ فیصد وقت پر کامیابی حاصل ہوتی ہے ۔ شروع سے ختم ہونے والی خالص شدت. اِس بات کی ضمانت دی جاتی ہے کہ دفاعی سطح پر تیزی سے اِستعمال کِیا جا سکتا ہے ۔"
+msgid ""
+"One intense period of 3 minutes — the puck moves 25% faster and tackles "
+"succeed 80% of the time. Pure intensity from start to finish. With nearly "
+"guaranteed tackles, defense is almost impossible — score fast or get scored "
+"on."
+msgstr ""
+"۳ منٹوں کا ایک سخت عرصہ — زہرہ ۲۵ فیصد تیزی سے حرکت کرتا ہے اور دوڑنے والوں "
+"کو ۸۰ فیصد وقت پر کامیابی حاصل ہوتی ہے ۔ شروع سے ختم ہونے والی خالص شدت. اِس"
+" بات کی ضمانت دی جاتی ہے کہ دفاعی سطح پر تیزی سے اِستعمال کِیا جا سکتا ہے ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_blitz.html.heex:37
 #, elixir-autogen, elixir-format
@@ -1374,7 +1571,9 @@ msgstr "اپنے راستے کو تیز کریں"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "Overtake AI cars for 1 point, overtake your opponent for 5 points"
-msgstr "1 نقطہ کے لئے AI گاڑیوں کو استعمال کریں، 5 پوائنٹ کے لئے آپ کے مخالف کو پہنچے"
+msgstr ""
+"1 نقطہ کے لئے AI گاڑیوں کو استعمال کریں، 5 پوائنٹ کے لئے آپ کے مخالف کو "
+"پہنچے"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:40
 #, elixir-autogen, elixir-format
@@ -1409,7 +1608,9 @@ msgstr "محفوظ کھیل"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Players move freely in their half of the court (cannot cross the net)"
-msgstr "کھلاڑی اپنی آدھی عدالت میں آزادانہ طور پر حرکت کرتے ہیں (جو نیٹ ورک کو عبور کرتی ہے۔"
+msgstr ""
+"کھلاڑی اپنی آدھی عدالت میں آزادانہ طور پر حرکت کرتے ہیں (جو نیٹ ورک کو عبور "
+"کرتی ہے۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:68
 #, elixir-autogen, elixir-format
@@ -1429,7 +1630,8 @@ msgstr "مچھروں کی روک‌تھام"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey.html.heex:65
 #, elixir-autogen, elixir-format
 msgid "Press action near an opponent who has the puck to attempt a steal"
-msgstr "ایک مخالف کے قریب پریس کارروائی جس کے پاس چوری کی کوشش کرنے کی ضرورت ہے"
+msgstr ""
+"ایک مخالف کے قریب پریس کارروائی جس کے پاس چوری کی کوشش کرنے کی ضرورت ہے"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:47
 #, elixir-autogen, elixir-format
@@ -1443,8 +1645,15 @@ msgstr "اپنے ساتھی کی حفاظت کریں"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Pseudo-3D racing duel through day, snow, fog, and night. Both players race on the same road — overtake AI cars and your opponent for points. Manage fuel, use turbo boosts, and draft in slipstreams. Best of 3 days."
-msgstr "پشاور-3D دوڑوں میں دن بھر، برف، فوگ اور رات کے وقت کمیت۔ دونوں کھلاڑی ایک ہی سڑک پر دوڑ رہے ہیں — اے آئی گاڑیوں اور آپ کے مخالف پوائنٹ پر پہنچ جاتے ہیں ۔ ایندھن کا ایندھن ، ٹربو کو تیز کرنے کے لئے استعمال کریں اور بڑی تیزی سے گاڑیوں میں ڈرنے لگیں ۔ 3 دن میں سے بہترین."
+msgid ""
+"Pseudo-3D racing duel through day, snow, fog, and night. Both players race "
+"on the same road — overtake AI cars and your opponent for points. Manage "
+"fuel, use turbo boosts, and draft in slipstreams. Best of 3 days."
+msgstr ""
+"پشاور-3D دوڑوں میں دن بھر، برف، فوگ اور رات کے وقت کمیت۔ دونوں کھلاڑی ایک ہی"
+" سڑک پر دوڑ رہے ہیں — اے آئی گاڑیوں اور آپ کے مخالف پوائنٹ پر پہنچ جاتے ہیں "
+"۔ ایندھن کا ایندھن ، ٹربو کو تیز کرنے کے لئے استعمال کریں اور بڑی تیزی سے "
+"گاڑیوں میں ڈرنے لگیں ۔ 3 دن میں سے بہترین."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey.html.heex:29
 #, elixir-autogen, elixir-format
@@ -1458,13 +1667,26 @@ msgstr "پنچوں کے کنارے لپٹے ہوئے ہوتے ہیں ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_peaceful.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Pure construction race — no block stealing allowed. Stepping on an opponent's block has no effect. First to complete the igloo wins. Fair and square. The gentlest variant — pure construction speed without the chaos of sabotage."
-msgstr "خالص تعمیراتی دوڑ — چوری کی کوئی بھی اجازت نہیں تھی ۔ مخالف کے بلاک پر قدم رکھنا کوئی اثر نہیں ہوتا۔ سب سے پہلے ایگلو فتح کرنے کے لئے. فیئر اینڈ مربع۔ اِس کی وجہ یہ ہے کہ اِن میں سے زیادہ‌تر لوگ اِس کام میں مصروف ہیں ۔"
+msgid ""
+"Pure construction race — no block stealing allowed. Stepping on an "
+"opponent's block has no effect. First to complete the igloo wins. Fair and "
+"square. The gentlest variant — pure construction speed without the chaos of "
+"sabotage."
+msgstr ""
+"خالص تعمیراتی دوڑ — چوری کی کوئی بھی اجازت نہیں تھی ۔ مخالف کے بلاک پر قدم "
+"رکھنا کوئی اثر نہیں ہوتا۔ سب سے پہلے ایگلو فتح کرنے کے لئے. فیئر اینڈ مربع۔ "
+"اِس کی وجہ یہ ہے کہ اِن میں سے زیادہ‌تر لوگ اِس کام میں مصروف ہیں ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_clean.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Pure downhill time trial — no avalanche, no items, no distractions. Navigate the course cleanly and reach the finish line in the fastest time. The purist mode — nothing between you and the mountain but your reflexes."
-msgstr "خالص وقت کی آزمائش — کوئی بھی چیز ، کوئی چیزوں ، چیزوں کی آزمائش نہیں ۔ اس کورس کو صاف کریں اور تیز رفتار وقت میں مکمل لائن تک پہنچ جائیں ۔ اِس سے ظاہر ہوتا ہے کہ آپ کا ایمان مضبوط ہے ۔"
+msgid ""
+"Pure downhill time trial — no avalanche, no items, no distractions. Navigate"
+" the course cleanly and reach the finish line in the fastest time. The "
+"purist mode — nothing between you and the mountain but your reflexes."
+msgstr ""
+"خالص وقت کی آزمائش — کوئی بھی چیز ، کوئی چیزوں ، چیزوں کی آزمائش نہیں ۔ اس "
+"کورس کو صاف کریں اور تیز رفتار وقت میں مکمل لائن تک پہنچ جائیں ۔ اِس سے ظاہر"
+" ہوتا ہے کہ آپ کا ایمان مضبوط ہے ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw.html.heex:45
 #, elixir-autogen, elixir-format
@@ -1478,8 +1700,14 @@ msgstr "جلدی میچ"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_quick.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Quick tennis match — first to 3 games wins. Same gameplay as Classic, shorter format. No tiebreak needed since you can't reach 6-6. Perfect for a fast match when you don't have time for a full set."
-msgstr "فوری ٹینس میچ — پہلے سے 3 کھیلوں میں جیت ۔ کلاس روم کے طور پر سولہ کھيل کھيليں، مختصر اندازه آپ کو 6-6 تک نہیں پہنچ سکتے کیونکہ ضرورت کی کوئی حد نہیں ہے. ایک روزہ میچ کے لئے کامل جب آپ کے پاس مکمل سیٹ کے لئے وقت نہیں ہے."
+msgid ""
+"Quick tennis match — first to 3 games wins. Same gameplay as Classic, "
+"shorter format. No tiebreak needed since you can't reach 6-6. Perfect for a "
+"fast match when you don't have time for a full set."
+msgstr ""
+"فوری ٹینس میچ — پہلے سے 3 کھیلوں میں جیت ۔ کلاس روم کے طور پر سولہ کھيل "
+"کھيليں، مختصر اندازه آپ کو 6-6 تک نہیں پہنچ سکتے کیونکہ ضرورت کی کوئی حد "
+"نہیں ہے. ایک روزہ میچ کے لئے کامل جب آپ کے پاس مکمل سیٹ کے لئے وقت نہیں ہے."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_night.html.heex:47
 #, elixir-autogen, elixir-format
@@ -1506,13 +1734,25 @@ msgstr "خطرے کا اجر : غصے میں آنے والے لوگ آگ سے ب
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "River Raid reimagined for two — race through a scrolling toxic canal, destroy enemies for points, steal fuel, and drop mines on your rival. 10 sections of increasing difficulty."
-msgstr "اِس کی وجہ یہ ہے کہ اُس نے اپنے دُشمنوں کو ہلاک کر دیا ۔ مزید مشکلات کے 10 حصے۔"
+msgid ""
+"River Raid reimagined for two — race through a scrolling toxic canal, "
+"destroy enemies for points, steal fuel, and drop mines on your rival. 10 "
+"sections of increasing difficulty."
+msgstr ""
+"اِس کی وجہ یہ ہے کہ اُس نے اپنے دُشمنوں کو ہلاک کر دیا ۔ مزید مشکلات کے 10 "
+"حصے۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_pacifist.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "River Raid without sabotage — no mines allowed. Pure competition for points, fuel, and survival across 10 sections. Without mine drops, every point comes from skill alone — shooting accuracy, fuel management, and knowing when to push deeper into enemy territory."
-msgstr "اِس لئے اُس نے اُن سے کہا : ” اَے [ یہوواہ ] ! اِس سلسلے میں ایک مثال پر غور کریں ۔ مَیں نے اِس بات پر غور کِیا ہے کہ دُشمن کس علاقے میں جا کر اُن کی مدد کرے گا ۔"
+msgid ""
+"River Raid without sabotage — no mines allowed. Pure competition for points,"
+" fuel, and survival across 10 sections. Without mine drops, every point "
+"comes from skill alone — shooting accuracy, fuel management, and knowing "
+"when to push deeper into enemy territory."
+msgstr ""
+"اِس لئے اُس نے اُن سے کہا : ” اَے [ یہوواہ ] ! اِس سلسلے میں ایک مثال پر غور"
+" کریں ۔ مَیں نے اِس بات پر غور کِیا ہے کہ دُشمن کس علاقے میں جا کر اُن کی "
+"مدد کرے گا ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_blitz.html.heex:35
 #, elixir-autogen, elixir-format
@@ -1564,7 +1804,9 @@ msgstr "احکام"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "Run out of fuel or crash into banks/enemies and you lose a life"
-msgstr "ایندھن سے نکل کر یا گرا ہوا بینکوں میں %dph08/ph08/ph08. اور آپ کی جان کھو بیٹھیں گے۔"
+msgstr ""
+"ایندھن سے نکل کر یا گرا ہوا بینکوں میں %dph08/ph08/ph08. اور آپ کی جان کھو "
+"بیٹھیں گے۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:52
 #, elixir-autogen, elixir-format
@@ -1584,13 +1826,18 @@ msgstr "بنیادی دوڑ کے اصول"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_sprint.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "Same core racing rules as Hex Enduro but with permanent daylight"
-msgstr "بنیادی دوڑوں میں حصہ لینے والے قوانین جیسے کہ ہیکس‌منگوے مگر دائمی دن کیساتھ"
+msgstr ""
+"بنیادی دوڑوں میں حصہ لینے والے قوانین جیسے کہ ہیکس‌منگوے مگر دائمی دن کیساتھ"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_quick.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_sudden.html.heex:26
 #, elixir-autogen, elixir-format
-msgid "Same hitting mechanics as Classic — automatic hitting, angle based on contact position"
-msgstr "ہم‌جنس‌پرستوں کے طور پر کلاسیکی — خودکار طور پر استعمال ہونے والے زاویے ، رابطہ کی جگہ پر مبنی زاویے"
+msgid ""
+"Same hitting mechanics as Classic — automatic hitting, angle based on "
+"contact position"
+msgstr ""
+"ہم‌جنس‌پرستوں کے طور پر کلاسیکی — خودکار طور پر استعمال ہونے والے زاویے ، "
+"رابطہ کی جگہ پر مبنی زاویے"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_pacifist.html.heex:31
 #, elixir-autogen, elixir-format
@@ -1626,8 +1873,11 @@ msgstr "س . ع ."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis.html.heex:51
 #, elixir-autogen, elixir-format
-msgid "Scoring: Love → 15 → 30 → 40 → Game (deuce at 40-40, advantage, win by 2)"
-msgstr "سکورنگ: محبت 15 رنوں کو 30 رن دے 40 ٹی وی گیم (ڈی او پر 40-40، فائدہ، 2) سے جیت کر 2 جیتے۔"
+msgid ""
+"Scoring: Love → 15 → 30 → 40 → Game (deuce at 40-40, advantage, win by 2)"
+msgstr ""
+"سکورنگ: محبت 15 رنوں کو 30 رن دے 40 ٹی وی گیم (ڈی او پر 40-40، فائدہ، 2) سے "
+"جیت کر 2 جیتے۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_block_breakers.html.heex:63
 #: lib/retro_hex_chat_web/controllers/help_content/feature_debris_field.html.heex:95
@@ -1691,12 +1941,18 @@ msgstr "سرور متبادل ہر نقطے کے بعد کرتا ہے۔"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:115
 #, elixir-autogen, elixir-format
 msgid "Shared timer starts at 45° and drops ~1°/second"
-msgstr "شیئرڈ ٹائمر کا آغاز 45° سے ہوتا ہے اور اس کے بعد +1° +ph08/ph08/ph081 بنتا ہے۔"
+msgstr ""
+"شیئرڈ ٹائمر کا آغاز 45° سے ہوتا ہے اور اس کے بعد +1° +ph08/ph08/ph081 بنتا "
+"ہے۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:48
 #, elixir-autogen, elixir-format
-msgid "Shield deflection angle depends on hit position — edges create steep bounces (up to 60 degrees)"
-msgstr "حفاظتی زاویے کا انحصار درجہ‌بندی پر ہوتا ہے — اطراف میں ڈھلوانوں ( 60 ڈگری تک ) پیدا ہوتی ہے"
+msgid ""
+"Shield deflection angle depends on hit position — edges create steep bounces"
+" (up to 60 degrees)"
+msgstr ""
+"حفاظتی زاویے کا انحصار درجہ‌بندی پر ہوتا ہے — اطراف میں ڈھلوانوں ( 60 ڈگری "
+"تک ) پیدا ہوتی ہے"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders.html.heex:53
 #, elixir-autogen, elixir-format
@@ -1726,13 +1982,16 @@ msgstr "گولی جب کہ کنارے پر ہے"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis.html.heex:38
 #, elixir-autogen, elixir-format
-msgid "Shot angle depends on horizontal contact position (left/right = cross-court)"
+msgid ""
+"Shot angle depends on horizontal contact position (left/right = cross-court)"
 msgstr "صوتی زاویے کا انحصار انفنٹری رابطہ پوزیشن پر ہے (سی ڈی پی اے -"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis.html.heex:44
 #, elixir-autogen, elixir-format
-msgid "Shot power depends on depth of contact (front = drop shot, back = drive)"
-msgstr "شطرنج کی طاقت کا انحصار رابطے کی گہرائی پر ہے ( آگے = گراوٹ، پشتو = دائرہ)۔"
+msgid ""
+"Shot power depends on depth of contact (front = drop shot, back = drive)"
+msgstr ""
+"شطرنج کی طاقت کا انحصار رابطے کی گہرائی پر ہے ( آگے = گراوٹ، پشتو = دائرہ)۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey.html.heex:115
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey.html.heex:127
@@ -1763,8 +2022,10 @@ msgstr "رفتار سے اوپري لائنیں"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:57
 #, elixir-autogen, elixir-format
-msgid "Snow reduces max speed, fog limits visibility, night shows headlights only"
-msgstr "برف کی رفتار کم ہوتی ہے، فغ حدود نظر آتی ہیں، رات کو صرف کمیت ظاہر کرتی ہے۔"
+msgid ""
+"Snow reduces max speed, fog limits visibility, night shows headlights only"
+msgstr ""
+"برف کی رفتار کم ہوتی ہے، فغ حدود نظر آتی ہیں، رات کو صرف کمیت ظاہر کرتی ہے۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_debris_field.html.heex:29
 #: lib/retro_hex_chat_web/controllers/help_content/feature_gravity_well.html.heex:29
@@ -1841,8 +2102,14 @@ msgstr "پردے کي مشق کريں"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Split-screen Space Invaders — aliens you destroy fall on your opponent's side as reinforcements. Combos send extra drops. UFO kills send armored aliens. 10 waves of escalating chaos."
-msgstr "settle-creen Space Invaders — غیر جانبدار افراد آپ اپنے مخالف کے پہلو پر ٹوٹ پڑتے ہیں کومبس اضافی بارش بھیجتا ہے۔ UFO ہلاک ہونے والے خارجیوں کو قتل کرتے ہیں۔ تباہی کی دس لہریں ۔"
+msgid ""
+"Split-screen Space Invaders — aliens you destroy fall on your opponent's "
+"side as reinforcements. Combos send extra drops. UFO kills send armored "
+"aliens. 10 waves of escalating chaos."
+msgstr ""
+"settle-creen Space Invaders — غیر جانبدار افراد آپ اپنے مخالف کے پہلو پر ٹوٹ"
+" پڑتے ہیں کومبس اضافی بارش بھیجتا ہے۔ UFO ہلاک ہونے والے خارجیوں کو قتل کرتے"
+" ہیں۔ تباہی کی دس لہریں ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:79
 #, elixir-autogen, elixir-format
@@ -1977,8 +2244,12 @@ msgstr "گیند اوپر اور نیچے کی دیواروں سے نیچے کی
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:38
 #, elixir-autogen, elixir-format
-msgid "The king is only vulnerable when the inner column of bricks at the fireball's height is cleared"
-msgstr "بادشاہ صرف اس وقت ناگزیر ہوتا ہے جب فائربل کی بلندی پر اینٹوں کے اندرونی ستون صاف کیے جاتے ہیں۔"
+msgid ""
+"The king is only vulnerable when the inner column of bricks at the "
+"fireball's height is cleared"
+msgstr ""
+"بادشاہ صرف اس وقت ناگزیر ہوتا ہے جب فائربل کی بلندی پر اینٹوں کے اندرونی "
+"ستون صاف کیے جاتے ہیں۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_clean.html.heex:25
 #, elixir-autogen, elixir-format
@@ -2012,23 +2283,49 @@ msgstr "Tied at-oper 1 (host) کھلاڑی کے پاس جاتا ہے۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Top-down alpine descent through toxic wastelands. Race your opponent downhill through procedurally generated obstacles while outrunning a rising avalanche of radioactive debris."
-msgstr "سب سے اوپر ایک ۱۷ نسل کے ذریعے زہریلے کیڑے کے ذریعے. اپنے مخالف کھلاڑیوں کی دوڑ میں تیزی سے رکاوٹ پیدا ہو رہی ہے جبکہ ریڈیو کے عملہ کے ایک اُوپر والے حصے کو اُٹھایا جاتا ہے ۔"
+msgid ""
+"Top-down alpine descent through toxic wastelands. Race your opponent "
+"downhill through procedurally generated obstacles while outrunning a rising "
+"avalanche of radioactive debris."
+msgstr ""
+"سب سے اوپر ایک ۱۷ نسل کے ذریعے زہریلے کیڑے کے ذریعے. اپنے مخالف کھلاڑیوں کی "
+"دوڑ میں تیزی سے رکاوٹ پیدا ہو رہی ہے جبکہ ریڈیو کے عملہ کے ایک اُوپر والے "
+"حصے کو اُٹھایا جاتا ہے ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Top-down boxing in a cyberpunk underground ring. Close punches score more — get in your opponent's face for maximum damage, but risk taking hits yourself. First to 100 points triggers a KO. Best of 3 rounds, 2 minutes each."
-msgstr "ایک سائبرپک زیر زمین حلقہ میں ٹاپ ڈاؤن باکسنگ. قریبی کھلاڑی زیادہ اسکور کرتے ہیں — اپنے مخالف کے چہرے میں زیادہ نقصان پہنچ جاتے ہیں لیکن خود کو زخمی کرنے کا خطرہ ہوتا ہے۔ پہلے 100 پوائنٹ ایک KO. 3 چکروں میں سے سب سے بہتر، 2 منٹ"
+msgid ""
+"Top-down boxing in a cyberpunk underground ring. Close punches score more — "
+"get in your opponent's face for maximum damage, but risk taking hits "
+"yourself. First to 100 points triggers a KO. Best of 3 rounds, 2 minutes "
+"each."
+msgstr ""
+"ایک سائبرپک زیر زمین حلقہ میں ٹاپ ڈاؤن باکسنگ. قریبی کھلاڑی زیادہ اسکور کرتے"
+" ہیں — اپنے مخالف کے چہرے میں زیادہ نقصان پہنچ جاتے ہیں لیکن خود کو زخمی "
+"کرنے کا خطرہ ہوتا ہے۔ پہلے 100 پوائنٹ ایک KO. 3 چکروں میں سے سب سے بہتر، 2 "
+"منٹ"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Top-down ice hockey in a cyberpunk neon arena. Control your field player while an AI goalie defends your net. Shoot, tackle, and outplay your opponent across 3 periods of intense action."
-msgstr "توپ ڈاؤن آئس ہاکی ایک سائبرپک نیون سیریز میں. اپنے فیلڈ کھلاڑی کو کنٹرول کریں جبکہ ایک آئی اے مقصدی آپ کے نیٹ ورک کا دفاع. گولی مار، حملے اور اپنے مخالف کھلاڑی کو 3 گھنٹوں میں شدید کارروائی پر نشانہ لگائیں."
+msgid ""
+"Top-down ice hockey in a cyberpunk neon arena. Control your field player "
+"while an AI goalie defends your net. Shoot, tackle, and outplay your "
+"opponent across 3 periods of intense action."
+msgstr ""
+"توپ ڈاؤن آئس ہاکی ایک سائبرپک نیون سیریز میں. اپنے فیلڈ کھلاڑی کو کنٹرول "
+"کریں جبکہ ایک آئی اے مقصدی آپ کے نیٹ ورک کا دفاع. گولی مار، حملے اور اپنے "
+"مخالف کھلاڑی کو 3 گھنٹوں میں شدید کارروائی پر نشانہ لگائیں."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Top-down tennis duel — automatic hitting where shot angle depends on ball contact position relative to your player sprite. Full set with deuce, advantage, and tiebreak at 6-6."
-msgstr "ٹاپ ڈاؤن ٹینس ڈیول — خودکار ڈرافٹ جس میں گول زاویے کا انحصار آپ کے کھلاڑی اسپاٹائٹس سے متعلق پوزیشن پر ہوتا ہے۔ مکمل طور پر دیوسائی، نفع بخش اور جوڑ کر 6-6 پر بنایا گیا۔"
+msgid ""
+"Top-down tennis duel — automatic hitting where shot angle depends on ball "
+"contact position relative to your player sprite. Full set with deuce, "
+"advantage, and tiebreak at 6-6."
+msgstr ""
+"ٹاپ ڈاؤن ٹینس ڈیول — خودکار ڈرافٹ جس میں گول زاویے کا انحصار آپ کے کھلاڑی "
+"اسپاٹائٹس سے متعلق پوزیشن پر ہوتا ہے۔ مکمل طور پر دیوسائی، نفع بخش اور جوڑ "
+"کر 6-6 پر بنایا گیا۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_night.html.heex:54
 #, elixir-autogen, elixir-format
@@ -2047,8 +2344,12 @@ msgstr "کینز پر ٹربو"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders.html.heex:47
 #, elixir-autogen, elixir-format
-msgid "UFO crosses the top — destroy it for bonus points and sends an armored alien to opponent"
-msgstr "UFO UF Upper — اسے بونس پوائنٹ کے لیے تباہ کر کے دشمن کے لیے ایک ہتھیار خارج کر دیتا ہے۔"
+msgid ""
+"UFO crosses the top — destroy it for bonus points and sends an armored alien"
+" to opponent"
+msgstr ""
+"UFO UF Upper — اسے بونس پوائنٹ کے لیے تباہ کر کے دشمن کے لیے ایک ہتھیار خارج"
+" کر دیتا ہے۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey_showdown.html.heex:68
 #, elixir-autogen, elixir-format
@@ -2072,13 +2373,23 @@ msgstr "واضح طور پر استعمال کریں"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Versus Breakout battle — each player defends a brick castle with a king inside. Deflect or catch the fireball with your shield to smash your opponent's walls. Clear a path to the king and strike to take a life. Last king standing wins."
-msgstr "ہر کھلاڑی ایک قلعے کا دفاع کرتا ہے جس کے اندر ایک بادشاہ ہوتا ہے ۔ دفاع کرنا یا اپنے مخالف کی دیواروں کو کچلنے کے لئے اپنے سپر کے ساتھ فائربال پکڑ. بادشاہ کے پاس راستہ صاف کرو اور جان لینے کے لیے حملہ کریں۔ آخری بادشاہ کھڑے ہو کر جیت جاتا ہے۔"
+msgid ""
+"Versus Breakout battle — each player defends a brick castle with a king "
+"inside. Deflect or catch the fireball with your shield to smash your "
+"opponent's walls. Clear a path to the king and strike to take a life. Last "
+"king standing wins."
+msgstr ""
+"ہر کھلاڑی ایک قلعے کا دفاع کرتا ہے جس کے اندر ایک بادشاہ ہوتا ہے ۔ دفاع کرنا"
+" یا اپنے مخالف کی دیواروں کو کچلنے کے لئے اپنے سپر کے ساتھ فائربال پکڑ. "
+"بادشاہ کے پاس راستہ صاف کرو اور جان لینے کے لیے حملہ کریں۔ آخری بادشاہ کھڑے "
+"ہو کر جیت جاتا ہے۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_night.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "Visibility limited to headlight cone — AI cars appear as colored dots"
-msgstr "سر کی روشنی کونے تک محدود — آئی‌آئی‌اے گاڑیاں رنگ کے برتنوں کی طرح نظر آتی ہیں"
+msgstr ""
+"سر کی روشنی کونے تک محدود — آئی‌آئی‌اے گاڑیاں رنگ کے برتنوں کی طرح نظر آتی "
+"ہیں"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_ricochet.html.heex:12
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_pong.html.heex:17
@@ -2125,12 +2436,21 @@ msgstr "درجہ حرارت دیکھیں"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "Weather cycles: Day → Snow → Fog → Night → Dawn (~3.5 min per day)"
-msgstr "موسمیاتی چکر : دن بہ دن برف کی مقدار فی دن فی دن فی دن فی دن فی دن رات فی دن ( ~3.5 من روزانہ) ہے۔"
+msgstr ""
+"موسمیاتی چکر : دن بہ دن برف کی مقدار فی دن فی دن فی دن فی دن فی دن رات فی دن"
+" ( ~3.5 من روزانہ) ہے۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Western duel — two gunslingers face off across a cactus obstacle. Dodge bullets you can see coming and shoot your opponent. First to 10 points wins the round, best of 3 rounds. Four distinct game modes offer different obstacles and bullet mechanics."
-msgstr "مغربی جائزے — دو بندوق‌داروں کو کسی رکاوٹ سے گزرنا پڑتا ہے ۔ آپ اپنے مخالف کو دیکھ کر گولی مار سکتے ہیں. سب سے پہلے 10 پوائنٹ کو بلے بازی، 3 رنز میں سے بہترین۔ چار الگ الگ کھیل موڈز مختلف رکاوٹوں اور گول میچوں کی پیشکش کرتا ہے۔"
+msgid ""
+"Western duel — two gunslingers face off across a cactus obstacle. Dodge "
+"bullets you can see coming and shoot your opponent. First to 10 points wins "
+"the round, best of 3 rounds. Four distinct game modes offer different "
+"obstacles and bullet mechanics."
+msgstr ""
+"مغربی جائزے — دو بندوق‌داروں کو کسی رکاوٹ سے گزرنا پڑتا ہے ۔ آپ اپنے مخالف "
+"کو دیکھ کر گولی مار سکتے ہیں. سب سے پہلے 10 پوائنٹ کو بلے بازی، 3 رنز میں سے"
+" بہترین۔ چار الگ الگ کھیل موڈز مختلف رکاوٹوں اور گول میچوں کی پیشکش کرتا ہے۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_debris_field.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/feature_gravity_well.html.heex:38
@@ -2223,13 +2543,21 @@ msgstr "— غیرمتوقع وقت کیساتھ چلنے والا ایک متح
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_escape.html.heex:57
 #, elixir-autogen, elixir-format
-msgid "— A stun at high speeds means the avalanche catches up instantly. One collision can end your run."
-msgstr "— تیز رفتار رفتار سے بلند آواز کا مطلب فوراً شکار کرنا ہے ۔ آپ کی دوڑ ختم ہو سکتی ہے ۔"
+msgid ""
+"— A stun at high speeds means the avalanche catches up instantly. One "
+"collision can end your run."
+msgstr ""
+"— تیز رفتار رفتار سے بلند آواز کا مطلب فوراً شکار کرنا ہے ۔ آپ کی دوڑ ختم ہو"
+" سکتی ہے ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_night.html.heex:55
 #, elixir-autogen, elixir-format
-msgid "— AI cars appear as colored dots at the edge of your vision. React to dot colors to predict their lane."
-msgstr "— آئی‌ڈی‌ڈی‌ایم‌ایس آپکی آنکھوں کے کنارے رنگ‌برنگی دُکانوں کی طرح دکھائی دیتا ہے ۔ اُن کے رنگوں کی پیشینگوئی کرنے کی کوشش کریں ۔"
+msgid ""
+"— AI cars appear as colored dots at the edge of your vision. React to dot "
+"colors to predict their lane."
+msgstr ""
+"— آئی‌ڈی‌ڈی‌ایم‌ایس آپکی آنکھوں کے کنارے رنگ‌برنگی دُکانوں کی طرح دکھائی "
+"دیتا ہے ۔ اُن کے رنگوں کی پیشینگوئی کرنے کی کوشش کریں ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_night.html.heex:23
@@ -2250,13 +2578,21 @@ msgstr "— عملہ کی ترقی"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_nml.html.heex:43
 #, elixir-autogen, elixir-format
-msgid "— Advancing gives you faster bullet travel time but also means less time to dodge. Find your sweet spot."
-msgstr "— نقل‌مکانی کرنے سے آپ کو تیز رفتار گول سفر کرنے کا وقت ملتا ہے لیکن اس کا مطلب کم وقت کا ہوتا ہے ۔ آپ کی شیرنی جگہ تلاش کریں."
+msgid ""
+"— Advancing gives you faster bullet travel time but also means less time to "
+"dodge. Find your sweet spot."
+msgstr ""
+"— نقل‌مکانی کرنے سے آپ کو تیز رفتار گول سفر کرنے کا وقت ملتا ہے لیکن اس کا "
+"مطلب کم وقت کا ہوتا ہے ۔ آپ کی شیرنی جگہ تلاش کریں."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_blitz.html.heex:51
 #, elixir-autogen, elixir-format
-msgid "— Aliens descend faster in Blitz. Focus on the lowest rows to buy yourself time."
-msgstr "— بلٹز میں ایلینز تیزی سے اُتر آتا ہے ۔ وقت خریدنے کے لئے مندرجہ ذیل قطاروں پر توجہ مرکوز کیجئے۔"
+msgid ""
+"— Aliens descend faster in Blitz. Focus on the lowest rows to buy yourself "
+"time."
+msgstr ""
+"— بلٹز میں ایلینز تیزی سے اُتر آتا ہے ۔ وقت خریدنے کے لئے مندرجہ ذیل قطاروں "
+"پر توجہ مرکوز کیجئے۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_pong.html.heex:17
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:17
@@ -2266,13 +2602,21 @@ msgstr "— متبادل کنٹرول"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:62
 #, elixir-autogen, elixir-format
-msgid "— At 0.5°/second, you have about 2 minutes. Don't panic but don't dawdle either."
-msgstr "— 0.5°08ph08/ph08 + آپ کے پاس تقریبا 2 منٹ ہیں۔ خوف مت کرو مگر بہر حال دادو نہ ہو۔"
+msgid ""
+"— At 0.5°/second, you have about 2 minutes. Don't panic but don't dawdle "
+"either."
+msgstr ""
+"— 0.5°08ph08/ph08 + آپ کے پاس تقریبا 2 منٹ ہیں۔ خوف مت کرو مگر بہر حال دادو "
+"نہ ہو۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_blitz.html.heex:58
 #, elixir-autogen, elixir-format
-msgid "— At combo 4+, armored drops appear. These take 2 hits and can clog your opponent's screen."
-msgstr "— کوکومبو 4+ پر ہتھیاروں کی بنی ہوئی بارشیں دکھائی دیتی ہیں ۔ یہ 2 متاثرین کو لے جاتے ہیں اور اپنے مخالف کے پردے کو اڑا سکتے ہیں."
+msgid ""
+"— At combo 4+, armored drops appear. These take 2 hits and can clog your "
+"opponent's screen."
+msgstr ""
+"— کوکومبو 4+ پر ہتھیاروں کی بنی ہوئی بارشیں دکھائی دیتی ہیں ۔ یہ 2 متاثرین "
+"کو لے جاتے ہیں اور اپنے مخالف کے پردے کو اڑا سکتے ہیں."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:92
 #, elixir-autogen, elixir-format
@@ -2289,12 +2633,18 @@ msgstr "—"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_pacifist.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "— Bridges give the highest point rewards. Never miss a bridge kill."
-msgstr "— شاہراہیں اعلیٰ درجے کا انعام فراہم کرتی ہیں ۔ کبھی بھی کسی پُل کو مار نہیں."
+msgstr ""
+"— شاہراہیں اعلیٰ درجے کا انعام فراہم کرتی ہیں ۔ کبھی بھی کسی پُل کو مار "
+"نہیں."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_ricochet.html.heex:51
 #, elixir-autogen, elixir-format
-msgid "— Bullets always bounce at matching angles. Position yourself so the ricochet lands where your opponent tends to stand."
-msgstr "— کبھی‌کبھار ہم ایک دوسرے سے ملتے جلتے ہوتے ہیں ۔ اپنے آپ کو اس طرح قائم رکھیں کہ آپ کے مخالف ممالک کے قیام کی طرف مائل."
+msgid ""
+"— Bullets always bounce at matching angles. Position yourself so the "
+"ricochet lands where your opponent tends to stand."
+msgstr ""
+"— کبھی‌کبھار ہم ایک دوسرے سے ملتے جلتے ہوتے ہیں ۔ اپنے آپ کو اس طرح قائم "
+"رکھیں کہ آپ کے مخالف ممالک کے قیام کی طرف مائل."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw.html.heex:54
 #, elixir-autogen, elixir-format
@@ -2327,13 +2677,20 @@ msgstr "— کلاسیکی: مکمل طور پر 6-6 پر جوڑ کے ساتھ"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_coop.html.heex:54
 #, elixir-autogen, elixir-format
-msgid "— Clearing aliens from the sides slows horizontal movement for the entire wave."
-msgstr "— مخالف سمتوں سے اجنبیوں کو صاف کرنا پوری لہر کی رفتار کو کم کرتا ہے ۔"
+msgid ""
+"— Clearing aliens from the sides slows horizontal movement for the entire "
+"wave."
+msgstr ""
+"— مخالف سمتوں سے اجنبیوں کو صاف کرنا پوری لہر کی رفتار کو کم کرتا ہے ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_clean.html.heex:45
 #, elixir-autogen, elixir-format
-msgid "— Courses repeat. In best-of-3, the third round favors the player who learned the layout."
-msgstr "— کورس دوبارہ شروع کرتے ہیں ۔ سب سے بہترین-3 میں تیسرا گول مبارک کھلاڑی جس نے پستول کی تعلیم حاصل کی۔"
+msgid ""
+"— Courses repeat. In best-of-3, the third round favors the player who "
+"learned the layout."
+msgstr ""
+"— کورس دوبارہ شروع کرتے ہیں ۔ سب سے بہترین-3 میں تیسرا گول مبارک کھلاڑی جس "
+"نے پستول کی تعلیم حاصل کی۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:20
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_blitz.html.heex:20
@@ -2344,7 +2701,9 @@ msgstr "— آزادی"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_blitz.html.heex:57
 #, elixir-autogen, elixir-format
-msgid "— Decelerate in narrow sections. One wrong move at high speed means instant death on the banks."
+msgid ""
+"— Decelerate in narrow sections. One wrong move at high speed means instant "
+"death on the banks."
 msgstr "— تنگ‌نظر قطع‌نظر ۔ تیز رفتار حرکت کا مطلب بینکوں پر فوری موت ہے ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:66
@@ -2354,7 +2713,8 @@ msgstr "— برف کے قطرے ، تیزی سے پگھلنے ، تنگ درو�
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_sprint.html.heex:72
 #, elixir-autogen, elixir-format
-msgid "— Don't waste time recovering from crashes. Stay focused from second one."
+msgid ""
+"— Don't waste time recovering from crashes. Stay focused from second one."
 msgstr "— حادثات سے وقت ضائع نہ کریں۔ دوسری سے توجہ مرکوز رکھیں۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:29
@@ -2365,13 +2725,21 @@ msgstr "— مجھے معطل کریں"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_clean.html.heex:31
 #, elixir-autogen, elixir-format
-msgid "— Each gate saves 2 seconds. Over a full run, gates make the difference between winning and losing."
-msgstr "— ہر دروازہ 2 سیکنڈ بچا لیتا ہے ۔ پورے دوڑ میں ، پھاٹک جیتنے اور ہارنے میں فرق پیدا کرتے ہیں ۔"
+msgid ""
+"— Each gate saves 2 seconds. Over a full run, gates make the difference "
+"between winning and losing."
+msgstr ""
+"— ہر دروازہ 2 سیکنڈ بچا لیتا ہے ۔ پورے دوڑ میں ، پھاٹک جیتنے اور ہارنے میں "
+"فرق پیدا کرتے ہیں ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_coop.html.heex:47
 #, elixir-autogen, elixir-format
-msgid "— Each player takes a side. Overlapping coverage wastes shots and leaves gaps."
-msgstr "— ہر کھلاڑی ایک طرف لے جاتا ہے ۔ اِس کی وجہ یہ ہے کہ اِس کے نتیجے میں اُن کی جان خطرے میں پڑ جاتی ہے ۔"
+msgid ""
+"— Each player takes a side. Overlapping coverage wastes shots and leaves "
+"gaps."
+msgstr ""
+"— ہر کھلاڑی ایک طرف لے جاتا ہے ۔ اِس کی وجہ یہ ہے کہ اِس کے نتیجے میں اُن کی"
+" جان خطرے میں پڑ جاتی ہے ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis.html.heex:76
 #, elixir-autogen, elixir-format
@@ -2380,23 +2748,38 @@ msgstr "— ہر نقاد ایک کھیل جیتتا ہے ، پہلے سے ۶ ت
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_coop.html.heex:68
 #, elixir-autogen, elixir-format
-msgid "— Earlier waves are easier. Play conservatively to have lives for waves 8-10."
-msgstr "— اس سے پہلے لہریں آسان ہیں ۔ محتاط انداز میں 8-10 لہروں کے لیے زندگی بسر کرنا."
+msgid ""
+"— Earlier waves are easier. Play conservatively to have lives for waves "
+"8-10."
+msgstr ""
+"— اس سے پہلے لہریں آسان ہیں ۔ محتاط انداز میں 8-10 لہروں کے لیے زندگی بسر "
+"کرنا."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_peaceful.html.heex:62
 #, elixir-autogen, elixir-format
-msgid "— Enemies still escalate. In later rounds, focus on survival over speed."
-msgstr "— انتظار کرنے والا ابھی تک ناکام ہے ۔ بعد کے دوروں میں تیزی سے بچنے پر توجہ مرکوز کرتے ہیں۔"
+msgid ""
+"— Enemies still escalate. In later rounds, focus on survival over speed."
+msgstr ""
+"— انتظار کرنے والا ابھی تک ناکام ہے ۔ بعد کے دوروں میں تیزی سے بچنے پر توجہ "
+"مرکوز کرتے ہیں۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_peaceful.html.heex:48
 #, elixir-autogen, elixir-format
-msgid "— Even though stealing is off, being on the same row as your opponent means fewer blocks for you."
-msgstr "— اگرچہ چوری ختم ہو جاتی ہے توبھی اپنے مخالفوں کی طرح ایک ہی قطار میں رہنا آپ کیلئے مشکل ہے ۔"
+msgid ""
+"— Even though stealing is off, being on the same row as your opponent means "
+"fewer blocks for you."
+msgstr ""
+"— اگرچہ چوری ختم ہو جاتی ہے توبھی اپنے مخالفوں کی طرح ایک ہی قطار میں رہنا "
+"آپ کیلئے مشکل ہے ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_quick.html.heex:53
 #, elixir-autogen, elixir-format
-msgid "— Even when behind in a game, fighting to deuce gives you a chance. Never give up a game easily."
-msgstr "— جب آپ کسی کھیل میں حصہ لیتے ہیں تو بھی آپ کو موقع ملتا ہے ۔ کبھی کھیل کو آسانی سے نہیں چھوڑیں۔"
+msgid ""
+"— Even when behind in a game, fighting to deuce gives you a chance. Never "
+"give up a game easily."
+msgstr ""
+"— جب آپ کسی کھیل میں حصہ لیتے ہیں تو بھی آپ کو موقع ملتا ہے ۔ کبھی کھیل کو "
+"آسانی سے نہیں چھوڑیں۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_sudden.html.heex:40
 #, elixir-autogen, elixir-format
@@ -2405,8 +2788,11 @@ msgstr "— ہر اسمبلی ایک کھیل کا فیصلہ کرتی ہے ۔ �
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey_showdown.html.heex:76
 #, elixir-autogen, elixir-format
-msgid "— Fast pucks that hit the corners of the goal are nearly impossible to save."
-msgstr "— مقصد کے کونوں کو داغدار کرنے والے تیزاب کو بچانے کیلئے تقریباً ناممکن ہیں ۔"
+msgid ""
+"— Fast pucks that hit the corners of the goal are nearly impossible to save."
+msgstr ""
+"— مقصد کے کونوں کو داغدار کرنے والے تیزاب کو بچانے کیلئے تقریباً ناممکن ہیں "
+"۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw.html.heex:17
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_nml.html.heex:15
@@ -2442,12 +2828,17 @@ msgstr "— قطاروں کے درمیان ، چھلانگ لگانے کے دو�
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_escape.html.heex:64
 #, elixir-autogen, elixir-format
-msgid "— Focus on the obstacles ahead, not the death wall behind you. Trust your speed and dodge forward."
-msgstr "اِن رکاوٹوں پر توجہ دیں ۔ اپنی رفتار پر بھروسا کریں اور آگے بڑھتے رہیں۔"
+msgid ""
+"— Focus on the obstacles ahead, not the death wall behind you. Trust your "
+"speed and dodge forward."
+msgstr ""
+"اِن رکاوٹوں پر توجہ دیں ۔ اپنی رفتار پر بھروسا کریں اور آگے بڑھتے رہیں۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_night.html.heex:62
 #, elixir-autogen, elixir-format
-msgid "— Fog bursts reduce visibility to nearly zero. Slow down when fog hits and stay centered."
+msgid ""
+"— Fog bursts reduce visibility to nearly zero. Slow down when fog hits and "
+"stay centered."
 msgstr "— فِلپّیوں کی تعداد تقریباً صفر تک کم ہو جاتی ہے ۔ نیچے بیٹھ جاؤ، جب."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey.html.heex:50
@@ -2472,13 +2863,20 @@ msgstr "— مکمل دستور : آئین ، ایندھن مہم ، ۱۰ حصو
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_nml.html.heex:64
 #, elixir-autogen, elixir-format
-msgid "— Half-measures get you killed. Either push hard or stay back and react."
-msgstr "— آصف علی زرداری آپ کو قتل کر دیتے ہیں۔ چاہے آپ سخت دباؤ ڈالیں یا پیچھے رہ جائیں ، آپ کا ردِعمل کیا ہوگا ؟"
+msgid ""
+"— Half-measures get you killed. Either push hard or stay back and react."
+msgstr ""
+"— آصف علی زرداری آپ کو قتل کر دیتے ہیں۔ چاہے آپ سخت دباؤ ڈالیں یا پیچھے رہ "
+"جائیں ، آپ کا ردِعمل کیا ہوگا ؟"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_coop.html.heex:61
 #, elixir-autogen, elixir-format
-msgid "— If one cannon goes down, the other faces the full wave alone. Keep each other alive."
-msgstr "— اگر ایک شخص نیچے گِر جاتا ہے تو دوسرا اُس کا چہرہ اکیلے ہی بھرتا ہے ۔ ایک دوسرے کو زندہ رکھیں."
+msgid ""
+"— If one cannon goes down, the other faces the full wave alone. Keep each "
+"other alive."
+msgstr ""
+"— اگر ایک شخص نیچے گِر جاتا ہے تو دوسرا اُس کا چہرہ اکیلے ہی بھرتا ہے ۔ ایک "
+"دوسرے کو زندہ رکھیں."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey.html.heex:56
 #, elixir-autogen, elixir-format
@@ -2487,22 +2885,32 @@ msgstr "— اگر بلے باز 5 سیکنڈ کے لیے رک جائے تو چ�
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey_blitz.html.heex:76
 #, elixir-autogen, elixir-format
-msgid "— If tied at the end, the next goal wins. Stay composed under pressure."
-msgstr "— اگر آخر میں بندھے ہوئے نشانے ہوئے ہیں تو اگلے نشانے جیت جاتے ہیں ۔ دباؤ کا شکار رہیں ۔"
+msgid ""
+"— If tied at the end, the next goal wins. Stay composed under pressure."
+msgstr ""
+"— اگر آخر میں بندھے ہوئے نشانے ہوئے ہیں تو اگلے نشانے جیت جاتے ہیں ۔ دباؤ کا"
+" شکار رہیں ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_blitz.html.heex:65
 #, elixir-autogen, elixir-format
-msgid "— In Blitz, volume of kills matters more than perfect accuracy. Keep firing."
-msgstr "— بلٹز میں ، معاملات کو مکمل درستی سے زیادہ تباہ‌کُن ہے ۔ فائرنگ کرتے رہیں."
+msgid ""
+"— In Blitz, volume of kills matters more than perfect accuracy. Keep firing."
+msgstr ""
+"— بلٹز میں ، معاملات کو مکمل درستی سے زیادہ تباہ‌کُن ہے ۔ فائرنگ کرتے رہیں."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_quick.html.heex:46
 #, elixir-autogen, elixir-format
-msgid "— In a short match, holding serve is critical. Aim for the corners on your service games."
-msgstr "— مختصر مقابلہ‌بازی میں ، خدمت جاری رکھنا اہم ہے ۔ آپ کی خدمت کے کھیلوں پر کونوں کے لئے ایم اے."
+msgid ""
+"— In a short match, holding serve is critical. Aim for the corners on your "
+"service games."
+msgstr ""
+"— مختصر مقابلہ‌بازی میں ، خدمت جاری رکھنا اہم ہے ۔ آپ کی خدمت کے کھیلوں پر "
+"کونوں کے لئے ایم اے."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:39
 #, elixir-autogen, elixir-format
-msgid "— Infinite descent, ever-accelerating avalanche, last skier standing wins"
+msgid ""
+"— Infinite descent, ever-accelerating avalanche, last skier standing wins"
 msgstr "— انتہائی نسل ، ہمیشہ کے لئے تباہ‌کُن Avance, آخری سُر کھڑا کرنے والا"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders.html.heex:74
@@ -2534,8 +2942,12 @@ msgstr "یعنی نیچے کے نیچے کی طرف ( زیریں پانی )"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_night.html.heex:76
 #, elixir-autogen, elixir-format
-msgid "— Keep a mental tally. If you're ahead, play safe. If behind, take risks in the final minute."
-msgstr "— ایک بلند دماغ رکھیں ۔ اگر آپ آگے ہیں، محفوظ کھیل. اگر پیچھے رہ جائے تو فائنل منٹ میں خطرات کا سامنا کریں۔"
+msgid ""
+"— Keep a mental tally. If you're ahead, play safe. If behind, take risks in "
+"the final minute."
+msgstr ""
+"— ایک بلند دماغ رکھیں ۔ اگر آپ آگے ہیں، محفوظ کھیل. اگر پیچھے رہ جائے تو "
+"فائنل منٹ میں خطرات کا سامنا کریں۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:25
 #, elixir-autogen, elixir-format
@@ -2549,7 +2961,9 @@ msgstr "— آپ کی سمت میں حرکت کی رفتار ۲× کے بعد"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_stagecoach.html.heex:59
 #, elixir-autogen, elixir-format
-msgid "— Match your vertical position to stay in the gap the stagecoach leaves behind as it moves."
+msgid ""
+"— Match your vertical position to stay in the gap the stagecoach leaves "
+"behind as it moves."
 msgstr "— اسٹیج‌کواش کے پتوں میں رہنے کیلئے عمودی پوزیشن کا مقابلہ کریں ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:60
@@ -2578,7 +2992,8 @@ msgstr "— سیدھے ہاتھ میں حرکت"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_nml.html.heex:50
 #, elixir-autogen, elixir-format
-msgid "— Move forward to draw a shot, then dodge it while your opponent reloads."
+msgid ""
+"— Move forward to draw a shot, then dodge it while your opponent reloads."
 msgstr "اِس کے بعد اپنے مخالف کھلاڑیوں کو اِس کی جگہ دیں ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw.html.heex:11
@@ -2634,7 +3049,8 @@ msgstr "— ڈھالنے کو تیز کریں"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_ricochet.html.heex:13
 #, elixir-autogen, elixir-format
-msgid "— Move vertically and set aim direction (last pressed determines angle)"
+msgid ""
+"— Move vertically and set aim direction (last pressed determines angle)"
 msgstr "— حرکت کریں اور مقصدی سمت (کم پابند زاویہ) طے کریں"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:32
@@ -2654,7 +3070,9 @@ msgstr "— چوری ، خالص تعمیری دوڑ نہیں"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_sprint.html.heex:51
 #, elixir-autogen, elixir-format
-msgid "— No fuel means no reason to brake unless you're about to crash. Keep the pedal down."
+msgid ""
+"— No fuel means no reason to brake unless you're about to crash. Keep the "
+"pedal down."
 msgstr "— جب تک آپ ٹوٹ نہیں جائیں گے ایندھن کا کوئی مطلب نہیں ہے. نیچے رکھیں."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:59
@@ -2665,22 +3083,31 @@ msgstr "— کوئی میرین نہیں ، صاف مہارت کا مقابلہ 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "— No obstacle, but players can advance horizontally within their half"
-msgstr "— کوئی رکاوٹ تو نہیں لیکن کھلاڑی اپنے نصف کے اندر پہلے سے بھی آگے بڑھ سکتے ہیں"
+msgstr ""
+"— کوئی رکاوٹ تو نہیں لیکن کھلاڑی اپنے نصف کے اندر پہلے سے بھی آگے بڑھ سکتے "
+"ہیں"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey.html.heex:117
 #, elixir-autogen, elixir-format
 msgid "— No timer, first to 5 goals, puck speeds up with each goal"
-msgstr "— کوئی بھی وقت ، پہلے سے ۵ نشانے ، ہر نشانے سے تیزی سے تجاوز نہیں کرتا"
+msgstr ""
+"— کوئی بھی وقت ، پہلے سے ۵ نشانے ، ہر نشانے سے تیزی سے تجاوز نہیں کرتا"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:48
 #, elixir-autogen, elixir-format
-msgid "— Not all ice rows are equal. Focus on rows with predictable patterns first."
-msgstr "کیونکہ تمام برف‌باریاں یکساں نہیں ہوتیں ۔ سب سے پہلے قطاروں پر غور کریں ۔"
+msgid ""
+"— Not all ice rows are equal. Focus on rows with predictable patterns first."
+msgstr ""
+"کیونکہ تمام برف‌باریاں یکساں نہیں ہوتیں ۔ سب سے پہلے قطاروں پر غور کریں ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_stagecoach.html.heex:66
 #, elixir-autogen, elixir-format
-msgid "— One bullet at a time. A wasted shot on the stagecoach gives your opponent a free window to reposition."
-msgstr "— ایک وقت میں ایک گولی. سٹیج پر ایک تباہ کن گولی آپ کے مخالف کو دوبارہ تنصیب کے لئے ایک آزاد کھڑکی فراہم کرتی ہے."
+msgid ""
+"— One bullet at a time. A wasted shot on the stagecoach gives your opponent "
+"a free window to reposition."
+msgstr ""
+"— ایک وقت میں ایک گولی. سٹیج پر ایک تباہ کن گولی آپ کے مخالف کو دوبارہ تنصیب"
+" کے لئے ایک آزاد کھڑکی فراہم کرتی ہے."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:86
 #, elixir-autogen, elixir-format
@@ -2694,8 +3121,12 @@ msgstr "— ساحل ۔ اپنے بچے تک پہنچنے کی کوشش کریں
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_peaceful.html.heex:55
 #, elixir-autogen, elixir-format
-msgid "— Perfect your jump timing between rows to minimize time between block collections."
-msgstr "— بلاک کے مجموعوں کے درمیان وقت کو کم کرنے کے لئے قطاروں کے درمیان وقت مکمل کریں ۔"
+msgid ""
+"— Perfect your jump timing between rows to minimize time between block "
+"collections."
+msgstr ""
+"— بلاک کے مجموعوں کے درمیان وقت کو کم کرنے کے لئے قطاروں کے درمیان وقت مکمل "
+"کریں ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey.html.heex:44
 #, elixir-autogen, elixir-format
@@ -2714,18 +3145,28 @@ msgstr "— برف کے بند ( 2 )"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_sudden.html.heex:51
 #, elixir-autogen, elixir-format
-msgid "— Risky shots that go out cost you a whole game. Consistency beats flash in Sudden Death."
-msgstr "— خطرات کی وجہ سے آپ پورے کھیل میں حصہ لیتے ہیں ۔ اِس کے نتیجے میں بہت سے لوگ موت کا شکار ہو جاتے ہیں ۔"
+msgid ""
+"— Risky shots that go out cost you a whole game. Consistency beats flash in "
+"Sudden Death."
+msgstr ""
+"— خطرات کی وجہ سے آپ پورے کھیل میں حصہ لیتے ہیں ۔ اِس کے نتیجے میں بہت سے "
+"لوگ موت کا شکار ہو جاتے ہیں ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_night.html.heex:69
 #, elixir-autogen, elixir-format
-msgid "— Save your turbo boost for fog-free moments when you can actually see the road."
+msgid ""
+"— Save your turbo boost for fog-free moments when you can actually see the "
+"road."
 msgstr "— سڑک کو حقیقت میں دیکھ کر اپنے ٹربو کو محفوظ رکھیں"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_blitz.html.heex:50
 #, elixir-autogen, elixir-format
-msgid "— Scarce fuel means every depot matters. Plan your path to hit fuel depots even if it means fewer enemy kills."
-msgstr "— سکارس ایندھن کا مطلب ہر قسم کے کام ہیں ۔ اگرچہ اس کا مطلب یہ ہے کہ دُشمن کم‌ازکم ہلاک ہو جاتے ہیں توبھی ایندھن کو پکڑنے کیلئے اپنا راستہ بنائیں ۔"
+msgid ""
+"— Scarce fuel means every depot matters. Plan your path to hit fuel depots "
+"even if it means fewer enemy kills."
+msgstr ""
+"— سکارس ایندھن کا مطلب ہر قسم کے کام ہیں ۔ اگرچہ اس کا مطلب یہ ہے کہ دُشمن "
+"کم‌ازکم ہلاک ہو جاتے ہیں توبھی ایندھن کو پکڑنے کیلئے اپنا راستہ بنائیں ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis.html.heex:17
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_quick.html.heex:17
@@ -2736,8 +3177,12 @@ msgstr "— خدمت انجام دیں"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_sudden.html.heex:58
 #, elixir-autogen, elixir-format
-msgid "— Server alternates after every point. Know when you're serving to maximize advantage."
-msgstr "— ہر نکتے کے بعد سرور متبادل ہوتا ہے ۔ تمہیں معلوم ہے کہ جب آپ منافع بخش کام کر رہے ہیں."
+msgid ""
+"— Server alternates after every point. Know when you're serving to maximize "
+"advantage."
+msgstr ""
+"— ہر نکتے کے بعد سرور متبادل ہوتا ہے ۔ تمہیں معلوم ہے کہ جب آپ منافع بخش کام"
+" کر رہے ہیں."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders.html.heex:68
 #, elixir-autogen, elixir-format
@@ -2746,8 +3191,12 @@ msgstr "— مشترکہ پردے ، کوئی اجنبی شگاف نہیں ، ا
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_clean.html.heex:38
 #, elixir-autogen, elixir-format
-msgid "— Sharp turns slow you down. Plan your path 2-3 obstacles ahead for the smoothest line."
-msgstr "— شارپ آپ کو سست پڑ جاتا ہے ۔ سب سے آسان لائن کے لئے اپنے راستے 2-3 رکاوٹوں کا تعین کریں۔"
+msgid ""
+"— Sharp turns slow you down. Plan your path 2-3 obstacles ahead for the "
+"smoothest line."
+msgstr ""
+"— شارپ آپ کو سست پڑ جاتا ہے ۔ سب سے آسان لائن کے لئے اپنے راستے 2-3 رکاوٹوں "
+"کا تعین کریں۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey.html.heex:17
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey_blitz.html.heex:17
@@ -2758,8 +3207,12 @@ msgstr "— آپ کا سامنا کرتے وقت گولی چلانا"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_pacifist.html.heex:52
 #, elixir-autogen, elixir-format
-msgid "— Slow down for dense enemy clusters to maximize hits. Speed up in empty stretches to save fuel."
-msgstr "اِس کے علاوہ دُشمن کے بڑے بڑے بڑے ہجوم پر حملے ہوتے ہیں ۔ ایندھن کو بچانے کے لئے خالی جگہ میں جلدی کریں ۔"
+msgid ""
+"— Slow down for dense enemy clusters to maximize hits. Speed up in empty "
+"stretches to save fuel."
+msgstr ""
+"اِس کے علاوہ دُشمن کے بڑے بڑے بڑے ہجوم پر حملے ہوتے ہیں ۔ ایندھن کو بچانے کے"
+" لئے خالی جگہ میں جلدی کریں ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing.html.heex:54
 #, elixir-autogen, elixir-format
@@ -2768,18 +3221,30 @@ msgstr "— سپرسی رکاوٹوں ، سستے تالاب ، وسیع درو�
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_escape.html.heex:50
 #, elixir-autogen, elixir-format
-msgid "— Speed boosts keep you ahead of the avalanche. Missing one could be fatal later."
-msgstr "اِس کی وجہ یہ ہے کہ اِس کے نتیجے میں آپ کو اِس بات کا احساس ہوتا ہے کہ آپ اُس کی خدمت میں زیادہ وقت صرف کرتے ہیں ۔ کسی کی موت واقع ہو سکتی ہے ۔"
+msgid ""
+"— Speed boosts keep you ahead of the avalanche. Missing one could be fatal "
+"later."
+msgstr ""
+"اِس کی وجہ یہ ہے کہ اِس کے نتیجے میں آپ کو اِس بات کا احساس ہوتا ہے کہ آپ "
+"اُس کی خدمت میں زیادہ وقت صرف کرتے ہیں ۔ کسی کی موت واقع ہو سکتی ہے ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey_showdown.html.heex:69
 #, elixir-autogen, elixir-format
-msgid "— Standard 60% success rate. Don't commit to a tackle unless you're sure you're close enough."
-msgstr "— معیار 60% کامیابی کی شرح ۔ جب تک آپ کو یقین ہے کہ آپ کافی قریب ہیں ایک ملاقات کے لئے مت کریں."
+msgid ""
+"— Standard 60% success rate. Don't commit to a tackle unless you're sure "
+"you're close enough."
+msgstr ""
+"— معیار 60% کامیابی کی شرح ۔ جب تک آپ کو یقین ہے کہ آپ کافی قریب ہیں ایک "
+"ملاقات کے لئے مت کریں."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_ricochet.html.heex:65
 #, elixir-autogen, elixir-format
-msgid "— Standing near the ceiling or floor gives your bullets a shorter bounce path, making them harder to dodge."
-msgstr "— چھت یا فرش کے قریب کھڑے ہو کر آپ کی گولیاں تھوڑی دیر تک گول راستہ فراہم کرتی ہیں جس کی وجہ سے اُنہیں ایسا کرنا مشکل لگتا ہے ۔"
+msgid ""
+"— Standing near the ceiling or floor gives your bullets a shorter bounce "
+"path, making them harder to dodge."
+msgstr ""
+"— چھت یا فرش کے قریب کھڑے ہو کر آپ کی گولیاں تھوڑی دیر تک گول راستہ فراہم "
+"کرتی ہیں جس کی وجہ سے اُنہیں ایسا کرنا مشکل لگتا ہے ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:11
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_blitz.html.heex:11
@@ -2807,8 +3272,12 @@ msgstr "— چوری کرنے کی کوشش ! آپ +1 ٹکڑا، وہ منفی 1
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:55
 #, elixir-autogen, elixir-format
-msgid "— Stepping on your opponent's blocks steals them. Use it offensively when you're ahead."
-msgstr "— اپنے مخالف کے بلاکوں پر چھلانگ لگانا انہیں دھوکا دیتا ہے۔ جب آپ آگے بڑھ رہے ہیں تو اسے غیر سختی سے استعمال کریں۔"
+msgid ""
+"— Stepping on your opponent's blocks steals them. Use it offensively when "
+"you're ahead."
+msgstr ""
+"— اپنے مخالف کے بلاکوں پر چھلانگ لگانا انہیں دھوکا دیتا ہے۔ جب آپ آگے بڑھ "
+"رہے ہیں تو اسے غیر سختی سے استعمال کریں۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey_blitz.html.heex:23
@@ -2819,47 +3288,81 @@ msgstr "— جھوٹ بولنا"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey_blitz.html.heex:69
 #, elixir-autogen, elixir-format
-msgid "— The 25% speed boost makes long-range shots more effective. Catch the opponent off guard."
-msgstr "— 25% کی رفتار بڑھتی جاتی ہے جس سے لمبے عرصے میں تیر زیادہ اثر پڑتا ہے۔ مخالف گارڈ گارڈ بند."
+msgid ""
+"— The 25% speed boost makes long-range shots more effective. Catch the "
+"opponent off guard."
+msgstr ""
+"— 25% کی رفتار بڑھتی جاتی ہے جس سے لمبے عرصے میں تیر زیادہ اثر پڑتا ہے۔ "
+"مخالف گارڈ گارڈ بند."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey_blitz.html.heex:62
 #, elixir-autogen, elixir-format
-msgid "— The 80% success rate means tackling is almost always worth it. Chase the puck carrier relentlessly."
-msgstr "— 80% کامیابی کی شرح کا مطلب ہے ٹاکلنگ ہمیشہ قابلِ‌قدر ہے ۔ کی بورڈ آف لائن کا تختہ."
+msgid ""
+"— The 80% success rate means tackling is almost always worth it. Chase the "
+"puck carrier relentlessly."
+msgstr ""
+"— 80% کامیابی کی شرح کا مطلب ہے ٹاکلنگ ہمیشہ قابلِ‌قدر ہے ۔ کی بورڈ آف لائن "
+"کا تختہ."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_quick.html.heex:60
 #, elixir-autogen, elixir-format
-msgid "— The ball angle depends on where it hits your player. Position yourself to control shot direction."
-msgstr "— گیند کے زاویے کا انحصار اس بات پر ہے کہ یہ آپ کے کھلاڑی پر کس طرح حملہ کرتی ہے۔ گولی چلانے کے لئے خود کو محفوظ رکھیں۔"
+msgid ""
+"— The ball angle depends on where it hits your player. Position yourself to "
+"control shot direction."
+msgstr ""
+"— گیند کے زاویے کا انحصار اس بات پر ہے کہ یہ آپ کے کھلاڑی پر کس طرح حملہ "
+"کرتی ہے۔ گولی چلانے کے لئے خود کو محفوظ رکھیں۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_escape.html.heex:43
 #, elixir-autogen, elixir-format
-msgid "— The center of the course gives you the most options to dodge left or right as obstacles appear."
-msgstr "اس کورس کا مرکز آپ کو مشکلات کے پیشِ‌نظر بِلاوجہ یا درست کام کرنے کا بہترین طریقہ فراہم کرتا ہے ۔"
+msgid ""
+"— The center of the course gives you the most options to dodge left or right"
+" as obstacles appear."
+msgstr ""
+"اس کورس کا مرکز آپ کو مشکلات کے پیشِ‌نظر بِلاوجہ یا درست کام کرنے کا بہترین "
+"طریقہ فراہم کرتا ہے ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey_showdown.html.heex:55
 #, elixir-autogen, elixir-format
-msgid "— The first few goals are at normal puck speed. Build a lead before the puck becomes a missile."
-msgstr "— پہلے چند منصوبے عام طور پر انتہائی تیز رفتار پر ہوتے ہیں ۔ حساب لگا نے سے پہلے ایک لیڈر بنائیں"
+msgid ""
+"— The first few goals are at normal puck speed. Build a lead before the puck"
+" becomes a missile."
+msgstr ""
+"— پہلے چند منصوبے عام طور پر انتہائی تیز رفتار پر ہوتے ہیں ۔ حساب لگا نے سے "
+"پہلے ایک لیڈر بنائیں"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_stagecoach.html.heex:45
 #, elixir-autogen, elixir-format
-msgid "— The stagecoach bounces at a constant speed. Count the timing and fire during the gap windows."
-msgstr "— سٹیجک بونے مسلسل رفتار سے ۔ درمیانی کھڑکیوں کے دوران وقت اور آگ کا حساب لگائیں ۔"
+msgid ""
+"— The stagecoach bounces at a constant speed. Count the timing and fire "
+"during the gap windows."
+msgstr ""
+"— سٹیجک بونے مسلسل رفتار سے ۔ درمیانی کھڑکیوں کے دوران وقت اور آگ کا حساب "
+"لگائیں ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_stagecoach.html.heex:52
 #, elixir-autogen, elixir-format
-msgid "— The stagecoach spends the least time at the top and bottom of its bounce, creating wider shooting windows."
-msgstr "— سٹیجک اپنے بُک کے اوپر اور نیچے میں کم‌ازکم وقت گزارتا ہے جس سے وسیع‌وعریض کھڑکیاں بنائی جاتی ہیں ۔"
+msgid ""
+"— The stagecoach spends the least time at the top and bottom of its bounce, "
+"creating wider shooting windows."
+msgstr ""
+"— سٹیجک اپنے بُک کے اوپر اور نیچے میں کم‌ازکم وقت گزارتا ہے جس سے وسیع‌وعریض"
+" کھڑکیاں بنائی جاتی ہیں ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_clean.html.heex:52
 #, elixir-autogen, elixir-format
-msgid "— Tight gaps require micro-adjustments. Don't overcorrect and bounce between obstacles."
-msgstr "— ٹی‌ٹی‌ٹی‌ٹی‌اے کے ذریعے مائیکرو‌اِنمنٹ کی ضرورت ہوتی ہے ۔ رکاوٹوں کے درمیان میں رکاوٹوں اور بونے سے زیادہ نہیں."
+msgid ""
+"— Tight gaps require micro-adjustments. Don't overcorrect and bounce between"
+" obstacles."
+msgstr ""
+"— ٹی‌ٹی‌ٹی‌ٹی‌اے کے ذریعے مائیکرو‌اِنمنٹ کی ضرورت ہوتی ہے ۔ رکاوٹوں کے "
+"درمیان میں رکاوٹوں اور بونے سے زیادہ نہیں."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_pacifist.html.heex:59
 #, elixir-autogen, elixir-format
-msgid "— Touching the riverbank kills you instantly. Stay centered when the river narrows."
+msgid ""
+"— Touching the riverbank kills you instantly. Stay centered when the river "
+"narrows."
 msgstr "اِس سے آپ کو فوراً ہلاک کر دیتا ہے ۔ دریا تنگ ہونے پر مرکز رہیں۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey.html.heex:32
@@ -2869,78 +3372,132 @@ msgstr "— اسے خودبخود اُٹھا لینے کیلئے آزاد مصد
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_sprint.html.heex:65
 #, elixir-autogen, elixir-format
-msgid "— Weave through tight gaps between AI cars. Each overtake counts — even risky ones."
-msgstr "— اے آئی ایم گاڑیوں کے درمیان تنگ‌کُن رکاوٹوں سے نپٹنا ۔ ہر ایک کی اہمیت — حتیٰ‌کہ دہشت‌گردی بھی ہے ۔"
+msgid ""
+"— Weave through tight gaps between AI cars. Each overtake counts — even "
+"risky ones."
+msgstr ""
+"— اے آئی ایم گاڑیوں کے درمیان تنگ‌کُن رکاوٹوں سے نپٹنا ۔ ہر ایک کی اہمیت — "
+"حتیٰ‌کہ دہشت‌گردی بھی ہے ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey_showdown.html.heex:62
 #, elixir-autogen, elixir-format
-msgid "— When the puck is fast, stay between the puck and your goal. Reaction time shrinks."
-msgstr "— جب آپ کا بچہ تیز ہو جاتا ہے تو اُس کے اور اُس کی منزل کے درمیان رہیں ۔ دوبارہ وقت آہستہ‌آہستہ کم ہوتا جاتا ہے ۔"
+msgid ""
+"— When the puck is fast, stay between the puck and your goal. Reaction time "
+"shrinks."
+msgstr ""
+"— جب آپ کا بچہ تیز ہو جاتا ہے تو اُس کے اور اُس کی منزل کے درمیان رہیں ۔ "
+"دوبارہ وقت آہستہ‌آہستہ کم ہوتا جاتا ہے ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:41
 #, elixir-autogen, elixir-format
-msgid "— With 60° on the clock, you have time. Don't rush jumps and fall into the water."
-msgstr "— گھڑی میں ۶۰° کے ساتھ آپ کے پاس وقت ہے ۔ جلدی نہ کرو اور پانی میں گر جاؤ."
+msgid ""
+"— With 60° on the clock, you have time. Don't rush jumps and fall into the "
+"water."
+msgstr ""
+"— گھڑی میں ۶۰° کے ساتھ آپ کے پاس وقت ہے ۔ جلدی نہ کرو اور پانی میں گر جاؤ."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey_blitz.html.heex:55
 #, elixir-autogen, elixir-format
-msgid "— With 80% tackle success, holding the puck is dangerous. Shoot on sight."
-msgstr "— 80 فیصد کامیابی پر قابو پانے سے یہ عمل خطرناک ہوتا ہے ۔ آنکھوں پر گولی چلا."
+msgid ""
+"— With 80% tackle success, holding the puck is dangerous. Shoot on sight."
+msgstr ""
+"— 80 فیصد کامیابی پر قابو پانے سے یہ عمل خطرناک ہوتا ہے ۔ آنکھوں پر گولی "
+"چلا."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_blitz.html.heex:43
 #, elixir-autogen, elixir-format
-msgid "— With a 3-second cooldown, you can drop mines much more frequently. Use them to disrupt your opponent's rhythm."
-msgstr "— 3 سیکنڈ کے ٹھنڈا ہونے کے ساتھ ساتھ آپ زیادہ سے زیادہ منی اتار سکتے ہیں۔ آپ کے مخالف کے ربط کو خراب کرنے کے لئے ان کا استعمال."
+msgid ""
+"— With a 3-second cooldown, you can drop mines much more frequently. Use "
+"them to disrupt your opponent's rhythm."
+msgstr ""
+"— 3 سیکنڈ کے ٹھنڈا ہونے کے ساتھ ساتھ آپ زیادہ سے زیادہ منی اتار سکتے ہیں۔ آپ"
+" کے مخالف کے ربط کو خراب کرنے کے لئے ان کا استعمال."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_sprint.html.heex:58
 #, elixir-autogen, elixir-format
-msgid "— With clear visibility, use turbo when the road ahead is clear for maximum overtakes."
+msgid ""
+"— With clear visibility, use turbo when the road ahead is clear for maximum "
+"overtakes."
 msgstr "— واضح بصیرت کیساتھ ، جب سڑک بہت آگے بڑھتی ہے تو ٹربو استعمال کریں ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_blitz.html.heex:44
 #, elixir-autogen, elixir-format
-msgid "— With lowered combo thresholds (2 kills for a drop), rapid-fire is your best weapon against the opponent."
-msgstr "— نیچے والے کوپروں کے ساتھ (2 گرنے کے لیے ہلاکتیں)، تیزی سے فائرنگ مخالف کے خلاف بہترین ہتھیار ہے۔"
+msgid ""
+"— With lowered combo thresholds (2 kills for a drop), rapid-fire is your "
+"best weapon against the opponent."
+msgstr ""
+"— نیچے والے کوپروں کے ساتھ (2 گرنے کے لیے ہلاکتیں)، تیزی سے فائرنگ مخالف کے "
+"خلاف بہترین ہتھیار ہے۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_nml.html.heex:57
 #, elixir-autogen, elixir-format
-msgid "— With no obstacles, vertical movement is your only defense. Never stand still."
-msgstr "— کوئی رکاوٹ نہ ہونے کے ساتھ ، عمودی حرکت ہی آپ کا دفاع ہے ۔ اب بھی کھڑے نہیں."
+msgid ""
+"— With no obstacles, vertical movement is your only defense. Never stand "
+"still."
+msgstr ""
+"— کوئی رکاوٹ نہ ہونے کے ساتھ ، عمودی حرکت ہی آپ کا دفاع ہے ۔ اب بھی کھڑے "
+"نہیں."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_sudden.html.heex:44
 #, elixir-autogen, elixir-format
-msgid "— With one-point games, an ace or unreturnable serve is an instant game win."
-msgstr "— یکطرفہ کھیلوں کے ساتھ، ایک ace یا غیر قابل خدمت ایک فوری کھیل جیتنے والا کھیل ہے۔"
+msgid ""
+"— With one-point games, an ace or unreturnable serve is an instant game win."
+msgstr ""
+"— یکطرفہ کھیلوں کے ساتھ، ایک ace یا غیر قابل خدمت ایک فوری کھیل جیتنے والا "
+"کھیل ہے۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_quick.html.heex:39
 #, elixir-autogen, elixir-format
-msgid "— With only 3 games needed, losing even one game puts you at a serious disadvantage."
-msgstr "— محض ۳ گیمز کی ضرورت کیساتھ ، ایک گیم بھی آپ کو سنگین نقصان پہنچاتا ہے ۔"
+msgid ""
+"— With only 3 games needed, losing even one game puts you at a serious "
+"disadvantage."
+msgstr ""
+"— محض ۳ گیمز کی ضرورت کیساتھ ، ایک گیم بھی آپ کو سنگین نقصان پہنچاتا ہے ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_blitz.html.heex:64
 #, elixir-autogen, elixir-format
-msgid "— With only 5 sections, maximizing points per section is key. Prioritize high-value targets."
-msgstr "— صرف ۵ حصوں کے ساتھ ، ہر حصے میں کُل‌وقتی نقطۂ‌نظر قائم کرنا اہم ہے ۔ اعلیٰ قیمت کے ہدف کو اٹھانے سے پہلے."
+msgid ""
+"— With only 5 sections, maximizing points per section is key. Prioritize "
+"high-value targets."
+msgstr ""
+"— صرف ۵ حصوں کے ساتھ ، ہر حصے میں کُل‌وقتی نقطۂ‌نظر قائم کرنا اہم ہے ۔ اعلیٰ"
+" قیمت کے ہدف کو اٹھانے سے پہلے."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_peaceful.html.heex:41
 #, elixir-autogen, elixir-format
-msgid "— Without block stealing, the fastest path through the ice rows wins. Plan your circuit."
-msgstr "— چوری کے بغیر ، برف کی قطاروں کے ذریعے تیز ترین راستہ جیت جاتا ہے ۔ اپنے سرکٹ کا منصوبہ بنائیں ۔"
+msgid ""
+"— Without block stealing, the fastest path through the ice rows wins. Plan "
+"your circuit."
+msgstr ""
+"— چوری کے بغیر ، برف کی قطاروں کے ذریعے تیز ترین راستہ جیت جاتا ہے ۔ اپنے "
+"سرکٹ کا منصوبہ بنائیں ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_pacifist.html.heex:45
 #, elixir-autogen, elixir-format
-msgid "— Without mines to worry about, you can fly more aggressively. But don't forget to refuel — fuel depots are your lifeline."
-msgstr "— پریشانی کے بغیر آپ زیادہ پریشان ہو سکتے ہیں ۔ لیکن دوبارہ حاصل کرنے کے لئے بھول نہ جائیں — ایندھن کی گولیاں آپ کی گاڑی ہیں."
+msgid ""
+"— Without mines to worry about, you can fly more aggressively. But don't "
+"forget to refuel — fuel depots are your lifeline."
+msgstr ""
+"— پریشانی کے بغیر آپ زیادہ پریشان ہو سکتے ہیں ۔ لیکن دوبارہ حاصل کرنے کے لئے"
+" بھول نہ جائیں — ایندھن کی گولیاں آپ کی گاڑی ہیں."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_ricochet.html.heex:72
 #, elixir-autogen, elixir-format
-msgid "— You can only fire one bullet at a time. Don't waste shots — wait for a clear angle."
-msgstr "— آپ ایک وقت میں صرف ایک گولی جلا سکتے ہیں ۔ گولیوں کو ضائع نہ کریں — واضح زاویے کا انتظار کریں۔"
+msgid ""
+"— You can only fire one bullet at a time. Don't waste shots — wait for a "
+"clear angle."
+msgstr ""
+"— آپ ایک وقت میں صرف ایک گولی جلا سکتے ہیں ۔ گولیوں کو ضائع نہ کریں — واضح "
+"زاویے کا انتظار کریں۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_ricochet.html.heex:58
 #, elixir-autogen, elixir-format
-msgid "— Your last directional input sets your aim. Keep moving up and down to make your shots unpredictable."
-msgstr "— آپ کی آخری سمت اپنا مقصد قائم کرتی ہے ۔ آپ کی گولیوں کو ناقابل یقین بنانے کے لئے اوپر اور نیچے چلتے رہیں۔"
+msgid ""
+"— Your last directional input sets your aim. Keep moving up and down to make"
+" your shots unpredictable."
+msgstr ""
+"— آپ کی آخری سمت اپنا مقصد قائم کرتی ہے ۔ آپ کی گولیوں کو ناقابل یقین بنانے "
+"کے لئے اوپر اور نیچے چلتے رہیں۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey_blitz.html.heex:44
 #, elixir-autogen, elixir-format
@@ -2969,8 +3526,12 @@ msgstr "— آپ 300مس ( حرکت یا عمل) کے لیے حیران کن ہ�
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:2
 #, elixir-autogen, elixir-format
-msgid ". Only one browser window or tab can be connected with the same nickname at a time."
-msgstr ". . ایک وقت میں صرف ایک براؤزر ونڈو یا تبتی کو ایک ہی ڈسک سے منسلک کیا جا سکتا ہے۔"
+msgid ""
+". Only one browser window or tab can be connected with the same nickname at "
+"a time."
+msgstr ""
+". . ایک وقت میں صرف ایک براؤزر ونڈو یا تبتی کو ایک ہی ڈسک سے منسلک کیا جا "
+"سکتا ہے۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:69
 #, elixir-autogen, elixir-format
@@ -2979,8 +3540,11 @@ msgstr "ہر ریزپن کے بعد 2 سیکنڈ بے روزگاری کی کیف
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_block_breakers.html.heex:19
 #, elixir-autogen, elixir-format
-msgid "3 shared lives — if the ball exits top or bottom, both players lose a life"
-msgstr "3 مشترکہ زندگی — اگر گیند اوپر یا نیچے نکل جائے تو دونوں کھلاڑی اپنی زندگی کھو دیتے ہیں۔"
+msgid ""
+"3 shared lives — if the ball exits top or bottom, both players lose a life"
+msgstr ""
+"3 مشترکہ زندگی — اگر گیند اوپر یا نیچے نکل جائے تو دونوں کھلاڑی اپنی زندگی "
+"کھو دیتے ہیں۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_block_breakers.html.heex:25
 #, elixir-autogen, elixir-format
@@ -3005,14 +3569,22 @@ msgstr "ایک مرکزی ستارہ تمام جہازوں اور میزائلو
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:43
 #, elixir-autogen, elixir-format
-msgid "After each hit, both tanks respawn at starting positions with 2 seconds of invulnerability"
-msgstr "ہر جھٹکے کے بعد دونوں ٹینکوں نے پوزیشن شروع کر دی جس میں 2 سیکنڈ بے روزگاری ہے۔"
+msgid ""
+"After each hit, both tanks respawn at starting positions with 2 seconds of "
+"invulnerability"
+msgstr ""
+"ہر جھٹکے کے بعد دونوں ٹینکوں نے پوزیشن شروع کر دی جس میں 2 سیکنڈ بے روزگاری "
+"ہے۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_debris_field.html.heex:58
 #: lib/retro_hex_chat_web/controllers/help_content/feature_gravity_well.html.heex:60
 #, elixir-autogen, elixir-format
-msgid "All other rules are identical to Star Duel (first to 7, wraparound, hyperspace warp)"
-msgstr "دیگر تمام قوانین ستارے ڈیول کے مشابہ ہیں ( اول سے 7 تک، کو لپیٹے ہوئے، ہائیپر اسپیس وارپ)۔"
+msgid ""
+"All other rules are identical to Star Duel (first to 7, wraparound, "
+"hyperspace warp)"
+msgstr ""
+"دیگر تمام قوانین ستارے ڈیول کے مشابہ ہیں ( اول سے 7 تک، کو لپیٹے ہوئے، "
+"ہائیپر اسپیس وارپ)۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_block_breakers.html.heex:11
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:11
@@ -3027,8 +3599,12 @@ msgstr "اردو کلیدیں"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_debris_field.html.heex:51
 #, elixir-autogen, elixir-format
-msgid "Asteroids are static — same layout for both players, randomly generated per match"
-msgstr "دونوں کھلاڑیوں کے لئے ایک ہی سیٹ ہے جس کی وجہ سے ہر میچ کو متاثر کِیا جاتا ہے"
+msgid ""
+"Asteroids are static — same layout for both players, randomly generated per "
+"match"
+msgstr ""
+"دونوں کھلاڑیوں کے لئے ایک ہی سیٹ ہے جس کی وجہ سے ہر میچ کو متاثر کِیا جاتا "
+"ہے"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:39
 #, elixir-autogen, elixir-format
@@ -3038,7 +3614,9 @@ msgstr "خود کار محفوظ"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_block_breakers.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "Ball bounces off left/right walls but NOT top/bottom — that's your job"
-msgstr "Ball Bounces با بایاں بائیں جانب +ph08/ph08 دیواروں پر لیکن بالائی تپسٹھ/11===* یہ آپ کا کام ہے"
+msgstr ""
+"Ball Bounces با بایاں بائیں جانب +ph08/ph08 دیواروں پر لیکن بالائی "
+"تپسٹھ/11===* یہ آپ کا کام ہے"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_block_breakers.html.heex:36
 #, elixir-autogen, elixir-format
@@ -3052,7 +3630,9 @@ msgstr "ہر کہکشاں کے ساتھ بل تیزی سے چوٹ لگی اور 
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_block_breakers.html.heex:58
 #, elixir-autogen, elixir-format
-msgid "Based on Atari's Breakout (1976) — cooperative brick-breaking for two players."
+msgid ""
+"Based on Atari's Breakout (1976) — cooperative brick-breaking for two "
+"players."
 msgstr "اٹاری کے ٹوٹوٹ (1976ء) پر مبنی — دو کھلاڑیوں کے لیے سنگ میل کا کھیل۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:55
@@ -3062,8 +3642,11 @@ msgstr "اٹاری کی سرکوبی (1977ء) پر مبنی تھانہ ٹینک 
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:50
 #, elixir-autogen, elixir-format
-msgid "Based on Atari's Surround (1977) and Tron's Light Cycles — the original trail game."
-msgstr "اٹاری کے سیزن پر مبنی (1977ء) اور ترون کا نور سیوکس — ابتدائی مرحلے کا کھیل۔"
+msgid ""
+"Based on Atari's Surround (1977) and Tron's Light Cycles — the original "
+"trail game."
+msgstr ""
+"اٹاری کے سیزن پر مبنی (1977ء) اور ترون کا نور سیوکس — ابتدائی مرحلے کا کھیل۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:85
 #, elixir-autogen, elixir-format
@@ -3072,22 +3655,36 @@ msgstr "اِس سلسلے میں ایک مثال پر غور کریں ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:26
 #, elixir-autogen, elixir-format
-msgid "Both players move one cell per tick on a 60x40 grid (10 ticks per second)"
-msgstr "دونوں کھلاڑی 60x40 ڈرافٹ (10 ٹیکوں فی سیکنڈ) پر ایک سیل فی ٹیک منتقل کرتے ہیں۔"
+msgid ""
+"Both players move one cell per tick on a 60x40 grid (10 ticks per second)"
+msgstr ""
+"دونوں کھلاڑی 60x40 ڈرافٹ (10 ٹیکوں فی سیکنڈ) پر ایک سیل فی ٹیک منتقل کرتے "
+"ہیں۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_debris_field.html.heex:42
 #, elixir-autogen, elixir-format
-msgid "Colliding with an asteroid is instant death (scores a point for your opponent)"
+msgid ""
+"Colliding with an asteroid is instant death (scores a point for your "
+"opponent)"
 msgstr "آپ کے مخالف کے لئے ایک نقطہ"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_block_breakers.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Cooperative Breakout — Player 1 controls the bottom paddle, Player 2 controls the top. Work together to destroy all 50 neon blocks before running out of lives. The ball bounces between your paddles — miss it and both players lose a life."
-msgstr "اِس کی وجہ یہ ہے کہ کھلاڑیوں میں سے کوئی اِس بات پر زور نہیں دیتا کہ اُن کے جسم میں کیا ہے ۔ زندگی سے نکلنے سے پہلے تمام 50 نیون بلاکز کو تباہ کرنے کا کام کرتے ہیں۔ اگر آپ کو لگے کہ آپ کے بچے کو اِس بیماری میں مبتلا کر رہے ہیں تو اِس کی وجہ یہ ہے کہ وہ اِسے کھو بیٹھے ۔"
+msgid ""
+"Cooperative Breakout — Player 1 controls the bottom paddle, Player 2 "
+"controls the top. Work together to destroy all 50 neon blocks before running"
+" out of lives. The ball bounces between your paddles — miss it and both "
+"players lose a life."
+msgstr ""
+"اِس کی وجہ یہ ہے کہ کھلاڑیوں میں سے کوئی اِس بات پر زور نہیں دیتا کہ اُن کے "
+"جسم میں کیا ہے ۔ زندگی سے نکلنے سے پہلے تمام 50 نیون بلاکز کو تباہ کرنے کا "
+"کام کرتے ہیں۔ اگر آپ کو لگے کہ آپ کے بچے کو اِس بیماری میں مبتلا کر رہے ہیں "
+"تو اِس کی وجہ یہ ہے کہ وہ اِسے کھو بیٹھے ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:33
 #, elixir-autogen, elixir-format
-msgid "Crashing into any trail (yours or opponent's) or the arena wall kills you"
+msgid ""
+"Crashing into any trail (yours or opponent's) or the arena wall kills you"
 msgstr "کسی بھی راستے میں گھس کر یا کوئی بھی دیوار آپ کو مار ڈالتا ہے۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_gravity_well.html.heex:100
@@ -3099,8 +3696,12 @@ msgstr "ڈیبریس فیلڈ"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_block_breakers.html.heex:50
 #, elixir-autogen, elixir-format
-msgid "Destroy all 50 blocks to win (max 1500 points), or lose all 3 lives for game over"
-msgstr "جیتنے کے لیے تمام 50 بلاکس (مکس 1500 پوائنٹ) کو تباہ کر دیں یا کھیل کے لیے تمام 3 جیتے ہیں۔"
+msgid ""
+"Destroy all 50 blocks to win (max 1500 points), or lose all 3 lives for game"
+" over"
+msgstr ""
+"جیتنے کے لیے تمام 50 بلاکس (مکس 1500 پوائنٹ) کو تباہ کر دیں یا کھیل کے لیے "
+"تمام 3 جیتے ہیں۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:32
 #, elixir-autogen, elixir-format
@@ -3129,8 +3730,12 @@ msgstr "سب سے پہلے 7 ہلاک ہونے والے میچ جیت جاتے �
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_gravity_well.html.heex:51
 #, elixir-autogen, elixir-format
-msgid "Flying into the star's danger zone is instant death (scores a point for your opponent)"
-msgstr "ستارے کے خطرے کے علاقے میں پرواز فوری موت (اپنے مخالف کے لیے ایک نقطہ طے کرتا ہے) ہے۔"
+msgid ""
+"Flying into the star's danger zone is instant death (scores a point for your"
+" opponent)"
+msgstr ""
+"ستارے کے خطرے کے علاقے میں پرواز فوری موت (اپنے مخالف کے لیے ایک نقطہ طے "
+"کرتا ہے) ہے۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:41
 #, elixir-autogen, elixir-format
@@ -3146,8 +3751,12 @@ msgstr "عزتِ‌نفس"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_gravity_well.html.heex:44
 #, elixir-autogen, elixir-format
-msgid "Gravity curves missile trajectories — use the star to bend shots around obstacles"
-msgstr "کشش ثقل میزائل trajectories — ستارے کو رکاوٹوں کے گرد تیرنے کے لیے استعمال کرتے ہیں۔"
+msgid ""
+"Gravity curves missile trajectories — use the star to bend shots around "
+"obstacles"
+msgstr ""
+"کشش ثقل میزائل trajectories — ستارے کو رکاوٹوں کے گرد تیرنے کے لیے استعمال "
+"کرتے ہیں۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_gravity_well.html.heex:76
 #, elixir-autogen, elixir-format
@@ -3171,8 +3780,12 @@ msgstr "ہیکس پنگ"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:37
 #, elixir-autogen, elixir-format
-msgid "Hits score 1 point — most hits when the 2-minute timer runs out wins the round"
-msgstr "ہاٹ اسکور 1 پوائنٹ — زیادہ تر متاثرین جبکہ 2- منٹ ٹائمر آؤٹ آؤٹ بلے بازی کرتا ہے۔"
+msgid ""
+"Hits score 1 point — most hits when the 2-minute timer runs out wins the "
+"round"
+msgstr ""
+"ہاٹ اسکور 1 پوائنٹ — زیادہ تر متاثرین جبکہ 2- منٹ ٹائمر آؤٹ آؤٹ بلے بازی "
+"کرتا ہے۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:7
 #, elixir-autogen, elixir-format
@@ -3182,17 +3795,28 @@ msgstr "یہ کیسے کام کرتا ہے"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "Hyperspace warp: random position, 20% death chance, 3-second cooldown"
-msgstr "Hyper space Warp: حادثاتی پوزیشن، 20% موت کا امکان، 3- دوسرا ٹھنڈا ٹوٹ گیا۔"
+msgstr ""
+"Hyper space Warp: حادثاتی پوزیشن، 20% موت کا امکان، 3- دوسرا ٹھنڈا ٹوٹ گیا۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:40
 #, elixir-autogen, elixir-format
-msgid "If both players collide head-on in the same cell, the round is a draw (no points)"
-msgstr "اگر دونوں کھلاڑی ایک ہی سیل میں سر کے بلے باز ہوتے ہیں تو راؤنڈ ڈرائنگ (نہ پوائنٹ) ہوتا ہے۔"
+msgid ""
+"If both players collide head-on in the same cell, the round is a draw (no "
+"points)"
+msgstr ""
+"اگر دونوں کھلاڑی ایک ہی سیل میں سر کے بلے باز ہوتے ہیں تو راؤنڈ ڈرائنگ (نہ "
+"پوائنٹ) ہوتا ہے۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:20
 #, elixir-autogen, elixir-format
-msgid "If your connection drops unexpectedly, the client attempts to reconnect automatically with exponential backoff (up to 10 attempts). If all attempts fail, the session is considered"
-msgstr "اگر آپ کا تعلق غیرمتوقع طور پر خراب ہو جاتا ہے تو کلائنٹ خودبخود واپس لوٹنے کی کوشش کرتا ہے ( ۱۰ تا ۱۰ کوششیں ) ۔ تمام کوششوں کو ناکام بنا دیا جائے تو سیشن سمجھا جاتا ہے۔"
+msgid ""
+"If your connection drops unexpectedly, the client attempts to reconnect "
+"automatically with exponential backoff (up to 10 attempts). If all attempts "
+"fail, the session is considered"
+msgstr ""
+"اگر آپ کا تعلق غیرمتوقع طور پر خراب ہو جاتا ہے تو کلائنٹ خودبخود واپس لوٹنے "
+"کی کوشش کرتا ہے ( ۱۰ تا ۱۰ کوششیں ) ۔ تمام کوششوں کو ناکام بنا دیا جائے تو "
+"سیشن سمجھا جاتا ہے۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_debris_field.html.heex:88
 #, elixir-autogen, elixir-format
@@ -3202,7 +3826,9 @@ msgstr "جمع کي مشق کريں"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "Maze is randomly selected from 5 symmetrical layouts"
-msgstr "مَیں نے اُن سے کہا : ” مَیں اِس بات پر یقین رکھتا ہوں کہ مَیں اُن کے ساتھ ہوں ۔ “"
+msgstr ""
+"مَیں نے اُن سے کہا : ” مَیں اِس بات پر یقین رکھتا ہوں کہ مَیں اُن کے ساتھ "
+"ہوں ۔ “"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:33
 #, elixir-autogen, elixir-format
@@ -3217,7 +3843,9 @@ msgstr "اپنے جنگی جہاز کو ذہن میں رکھیں"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_debris_field.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "Missiles are destroyed when they hit asteroids — use them as cover"
-msgstr "جب اُنہوں نے ایک ایتھنز پر حملہ کِیا تو اُن کو پردہ کے طور پر استعمال کِیا جاتا ہے"
+msgstr ""
+"جب اُنہوں نے ایک ایتھنز پر حملہ کِیا تو اُن کو پردہ کے طور پر استعمال کِیا "
+"جاتا ہے"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:58
 #, elixir-autogen, elixir-format
@@ -3227,7 +3855,8 @@ msgstr "1.5 سیکنڈ کے بعد میزائل ختم ہو گئے اگر وہ �
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "Missiles inherit your ship's velocity plus their own thrust"
-msgstr "میزائل آپ کے جہاز کی رفتار کے ساتھ ساتھ ان کی رفتار بھی وارث ہوتے ہیں۔"
+msgstr ""
+"میزائل آپ کے جہاز کی رفتار کے ساتھ ساتھ ان کی رفتار بھی وارث ہوتے ہیں۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:34
 #, elixir-autogen, elixir-format
@@ -3236,18 +3865,29 @@ msgstr "مسیلے 2.5x ٹینک کی رفتار سے سفر کرتے ہیں۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Newtonian space combat in open vacuum. Thrust, rotate, and fire missiles while drifting through wraparound space. Use hyperspace warp to escape — but there's a 20% chance it kills you. First to 7 wins."
-msgstr "نیوکلیئر خلائی جہاز کھلے گیج میں لڑائی۔ اِس کی وجہ یہ ہے کہ اُس نے اِس علاقے کو گھیر رکھا ہے ۔ فرار ہونے کے لیے ہائیپر اسپیس وار استعمال کریں — لیکن 20% امکانات ہیں کہ وہ آپ کو مار دے۔ سب سے پہلے 7 فتح حاصل کی۔"
+msgid ""
+"Newtonian space combat in open vacuum. Thrust, rotate, and fire missiles "
+"while drifting through wraparound space. Use hyperspace warp to escape — but"
+" there's a 20% chance it kills you. First to 7 wins."
+msgstr ""
+"نیوکلیئر خلائی جہاز کھلے گیج میں لڑائی۔ اِس کی وجہ یہ ہے کہ اُس نے اِس علاقے"
+" کو گھیر رکھا ہے ۔ فرار ہونے کے لیے ہائیپر اسپیس وار استعمال کریں — لیکن 20%"
+" امکانات ہیں کہ وہ آپ کو مار دے۔ سب سے پہلے 7 فتح حاصل کی۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "No backward movement — plan your approach carefully"
-msgstr "کوئی بھی قدم اُٹھانے کا منصوبہ نہ بنائیں — اپنے قریب جانے کا منصوبہ بنائیں"
+msgstr ""
+"کوئی بھی قدم اُٹھانے کا منصوبہ نہ بنائیں — اپنے قریب جانے کا منصوبہ بنائیں"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:29
 #, elixir-autogen, elixir-format
-msgid "One missile per player at a time — you can't fire again until it expires or hits"
-msgstr "ایک وقت میں ایک میزائل فی کھلاڑی — آپ دوبارہ فائر نہیں کر سکتے جب تک کہ وہ دوبارہ یا متاثر نہ ہو"
+msgid ""
+"One missile per player at a time — you can't fire again until it expires or "
+"hits"
+msgstr ""
+"ایک وقت میں ایک میزائل فی کھلاڑی — آپ دوبارہ فائر نہیں کر سکتے جب تک کہ وہ "
+"دوبارہ یا متاثر نہ ہو"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_gravity_well.html.heex:69
 #, elixir-autogen, elixir-format
@@ -3256,13 +3896,25 @@ msgstr "اوربٹ، لڑنے نہیں کرتے"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_block_breakers.html.heex:38
 #, elixir-autogen, elixir-format
-msgid "Paddle hit angle affects ball direction — edges create steeper bounces (up to 60 degrees)"
-msgstr "Paddle نے زاویے کو بلے باز پر اثر انداز کر دیا — کناروں سے گزرنے والی ڈھلوانیں (یعنی 60 ڈگری تک ) بنتی ہیں۔"
+msgid ""
+"Paddle hit angle affects ball direction — edges create steeper bounces (up "
+"to 60 degrees)"
+msgstr ""
+"Paddle نے زاویے کو بلے باز پر اثر انداز کر دیا — کناروں سے گزرنے والی "
+"ڈھلوانیں (یعنی 60 ڈگری تک ) بنتی ہیں۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Race across a neon grid leaving a glowing trail behind you. Hit any trail or the wall and you're out. Trap your opponent to win. Both players move continuously at a fixed pace — there's no stopping, only choosing where to turn next. First to 3 round wins takes the match."
-msgstr "آپ کے پیچھے ایک رکاوٹ چھوڑ. کسی بھی پیچھے یا دیوار کو گرا دو اور تم باہر ہو. اپنے مخالف کھلاڑی کو جیتنے کے لئے. دونوں کھلاڑی مستقل طور پر طے شدہ رفتار سے حرکت کرتے ہیں — کوئی رکاوٹ نہیں، صرف اس بات کا انتخاب کرتے ہیں کہ اگلے مرحلے میں کس طرف رخ کیا جائے۔ سب سے پہلے 3 راؤنڈ جیت کر میچ لیتا ہے۔"
+msgid ""
+"Race across a neon grid leaving a glowing trail behind you. Hit any trail or"
+" the wall and you're out. Trap your opponent to win. Both players move "
+"continuously at a fixed pace — there's no stopping, only choosing where to "
+"turn next. First to 3 round wins takes the match."
+msgstr ""
+"آپ کے پیچھے ایک رکاوٹ چھوڑ. کسی بھی پیچھے یا دیوار کو گرا دو اور تم باہر ہو."
+" اپنے مخالف کھلاڑی کو جیتنے کے لئے. دونوں کھلاڑی مستقل طور پر طے شدہ رفتار "
+"سے حرکت کرتے ہیں — کوئی رکاوٹ نہیں، صرف اس بات کا انتخاب کرتے ہیں کہ اگلے "
+"مرحلے میں کس طرف رخ کیا جائے۔ سب سے پہلے 3 راؤنڈ جیت کر میچ لیتا ہے۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:2
 #, elixir-autogen, elixir-format
@@ -3287,7 +3939,8 @@ msgstr "حالات ختم ہو گئے"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:61
 #, elixir-autogen, elixir-format
 msgid "Ship-to-ship collision kills both players (no point awarded)"
-msgstr "جہاز سے چلنے والی کشتی دونوں کھلاڑیوں کو مار ڈالتی ہے (کسی نقاد کو نہیں)۔"
+msgstr ""
+"جہاز سے چلنے والی کشتی دونوں کھلاڑیوں کو مار ڈالتی ہے (کسی نقاد کو نہیں)۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:41
 #, elixir-autogen, elixir-format
@@ -3312,13 +3965,29 @@ msgstr "ستارے"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_debris_field.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Star Duel variant with 8 floating asteroids that block missiles and destroy ships on contact. Use the debris as cover — or watch it destroy you. The asteroid layout changes every match, forcing you to adapt your strategy on the fly."
-msgstr "اِس لئے اُس نے اُن سے کہا : ” اَے [ یہوواہ ] ! اِس کی بجائے آپ اِسے مٹا دیں گے ۔ ہر میچ تبدیل کر دیتا ہے، آپ کو پرواز پر اپنی حکمت عملی کو درست کرنے پر مجبور کرتا ہے."
+msgid ""
+"Star Duel variant with 8 floating asteroids that block missiles and destroy "
+"ships on contact. Use the debris as cover — or watch it destroy you. The "
+"asteroid layout changes every match, forcing you to adapt your strategy on "
+"the fly."
+msgstr ""
+"اِس لئے اُس نے اُن سے کہا : ” اَے [ یہوواہ ] ! اِس کی بجائے آپ اِسے مٹا دیں "
+"گے ۔ ہر میچ تبدیل کر دیتا ہے، آپ کو پرواز پر اپنی حکمت عملی کو درست کرنے پر "
+"مجبور کرتا ہے."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_gravity_well.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Star Duel variant with a central gravity star that pulls ships and missiles into curved trajectories. Use gravity slingshots for speed — but fly too close and the star kills you. Mastering orbital mechanics is the key to victory — every thrust and shot must account for the star's relentless pull."
-msgstr "ایک مرکزی کشش‌ثقل ستارے سے ٹکراتا ہے جو جہاز اور میزائلوں کو کششِ‌ثقل میں دھکیل دیتا ہے ۔ تیز رفتار کے لیے کششِ‌ثقل کی لہروں کا استعمال کریں — مگر اُڑنے والے بہت قریب اور ستارہ آپکو مار دیتا ہے ۔ مدار گردی میکانکیات کو فتح کرنے کی کُنجی ہے — ہر موڑ اور تیرنے والے کو ستارے کی بے ترتیب کشش کا حساب دینا چاہیے۔"
+msgid ""
+"Star Duel variant with a central gravity star that pulls ships and missiles "
+"into curved trajectories. Use gravity slingshots for speed — but fly too "
+"close and the star kills you. Mastering orbital mechanics is the key to "
+"victory — every thrust and shot must account for the star's relentless pull."
+msgstr ""
+"ایک مرکزی کشش‌ثقل ستارے سے ٹکراتا ہے جو جہاز اور میزائلوں کو کششِ‌ثقل میں "
+"دھکیل دیتا ہے ۔ تیز رفتار کے لیے کششِ‌ثقل کی لہروں کا استعمال کریں — مگر "
+"اُڑنے والے بہت قریب اور ستارہ آپکو مار دیتا ہے ۔ مدار گردی میکانکیات کو فتح "
+"کرنے کی کُنجی ہے — ہر موڑ اور تیرنے والے کو ستارے کی بے ترتیب کشش کا حساب "
+"دینا چاہیے۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:46
 #, elixir-autogen, elixir-format
@@ -3352,18 +4021,31 @@ msgstr "گردش؟ دونوں کھلاڑیوں کو کوئی گول جیتنے �
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_block_breakers.html.heex:28
 #, elixir-autogen, elixir-format
-msgid "Top rows are worth more: 50 (red), 40 (orange), 30 (yellow), 20 (green), 10 (cyan)"
-msgstr "اُوپر کی قطاریں زیادہ اہمیت رکھتی ہیں : 50 ( ریڈ ) 40 ( یانج ) ، 30 ( گرین ) ، 20 ( گرین ) ، 10 ( سیان ) ۔"
+msgid ""
+"Top rows are worth more: 50 (red), 40 (orange), 30 (yellow), 20 (green), 10 "
+"(cyan)"
+msgstr ""
+"اُوپر کی قطاریں زیادہ اہمیت رکھتی ہیں : 50 ( ریڈ ) 40 ( یانج ) ، 30 ( گرین )"
+" ، 20 ( گرین ) ، 10 ( سیان ) ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Top-down tank combat in a destructible maze. Rotate your tank, drive forward, and fire missiles at your opponent. One missile at a time — miss and you're vulnerable until it expires. 2-minute rounds, best of 3. Five maze layouts keep every match fresh."
-msgstr "ایک سرنگ میں اوپر بند ٹینک لڑا. اپنے ٹینک کو رکھیں، آگے بڑھیں اور اپنے مخالف پر فائر میزائل. ایک وقت میں ایک میزائل — گم ہو جاتا ہے اور جب تک اسے ختم نہ کیا جائے۔ 2- منٹ کے چکر، بہترین 3۔ پانچ سنچریاں ہر میچ کو تازہ رکھتی ہیں۔"
+msgid ""
+"Top-down tank combat in a destructible maze. Rotate your tank, drive "
+"forward, and fire missiles at your opponent. One missile at a time — miss "
+"and you're vulnerable until it expires. 2-minute rounds, best of 3. Five "
+"maze layouts keep every match fresh."
+msgstr ""
+"ایک سرنگ میں اوپر بند ٹینک لڑا. اپنے ٹینک کو رکھیں، آگے بڑھیں اور اپنے مخالف"
+" پر فائر میزائل. ایک وقت میں ایک میزائل — گم ہو جاتا ہے اور جب تک اسے ختم نہ"
+" کیا جائے۔ 2- منٹ کے چکر، بہترین 3۔ پانچ سنچریاں ہر میچ کو تازہ رکھتی ہیں۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:51
 #, elixir-autogen, elixir-format
-msgid "Up to 3 missiles in flight per player, with a brief cooldown between shots"
-msgstr "پرواز فی کھلاڑی میں 3 میزائل تک، گولیوں کے درمیان مختصر ٹھنڈا آؤٹ کے ساتھ"
+msgid ""
+"Up to 3 missiles in flight per player, with a brief cooldown between shots"
+msgstr ""
+"پرواز فی کھلاڑی میں 3 میزائل تک، گولیوں کے درمیان مختصر ٹھنڈا آؤٹ کے ساتھ"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_debris_field.html.heex:67
 #, elixir-autogen, elixir-format
@@ -3383,7 +4065,9 @@ msgstr "ڈی بگ"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_debris_field.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "Warp is extra risky — you might teleport onto an asteroid"
-msgstr "جنگ زیادہ نقصان‌دہ ہے — شاید آپ کسی ایسے علاقے میں جا کر بھی جا سکتے ہیں جہاں کوئی شخص گاڑی چلا سکتا ہے ۔"
+msgstr ""
+"جنگ زیادہ نقصان‌دہ ہے — شاید آپ کسی ایسے علاقے میں جا کر بھی جا سکتے ہیں "
+"جہاں کوئی شخص گاڑی چلا سکتا ہے ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_gravity_well.html.heex:90
 #, elixir-autogen, elixir-format
@@ -3392,7 +4076,9 @@ msgstr "وارپ خودکشی ہے۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:9
 #, elixir-autogen, elixir-format
-msgid "When you connect with a nickname that is already in use by another session (even your own in another tab or browser), the"
+msgid ""
+"When you connect with a nickname that is already in use by another session "
+"(even your own in another tab or browser), the"
 msgstr "جب آپ کوئی شِلہ اِس سے فارغ ہوں تو آپ اُس سے دوبارہ ملاقات کریں"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:29
@@ -3433,7 +4119,8 @@ msgstr "صرف فعال سیشن برائے %d"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "— 8 asteroids block missiles and kill ships on contact"
-msgstr "8 — ایک ایبٹ آباد میزائل میزائل مار کر رابطہ پر جہازوں کو مار دیتا ہے۔"
+msgstr ""
+"8 — ایک ایبٹ آباد میزائل میزائل مار کر رابطہ پر جہازوں کو مار دیتا ہے۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:76
 #, elixir-autogen, elixir-format
@@ -3447,8 +4134,12 @@ msgstr "— ہدایات کو تبدیل کریں ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_gravity_well.html.heex:84
 #, elixir-autogen, elixir-format
-msgid "— Dive toward the star for a speed boost, then slingshot around for a high-speed attack run. Risky but devastating."
-msgstr "— تیزی سے بڑھنے کے لئے ستارے کی طرف جائیں اور پھر اُوپر والے حملے کی وجہ سے اُس کے ارد گرد گھس جائیں ۔ خطرہ مگر تباہ کن."
+msgid ""
+"— Dive toward the star for a speed boost, then slingshot around for a high-"
+"speed attack run. Risky but devastating."
+msgstr ""
+"— تیزی سے بڑھنے کے لئے ستارے کی طرف جائیں اور پھر اُوپر والے حملے کی وجہ سے "
+"اُس کے ارد گرد گھس جائیں ۔ خطرہ مگر تباہ کن."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:17
 #, elixir-autogen, elixir-format
@@ -3457,13 +4148,21 @@ msgstr "نقل و حمل –"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_gravity_well.html.heex:77
 #, elixir-autogen, elixir-format
-msgid "— Fire missiles on curved paths by shooting tangentially past the star. Your opponent can't dodge what they can't predict."
-msgstr "— سڑکوں پر آتش‌فشاں تیرنے والے میزائل ۔ آپ کے مخالف وہ بتا نہیں سکتے جو نہیں کر سکتے."
+msgid ""
+"— Fire missiles on curved paths by shooting tangentially past the star. Your"
+" opponent can't dodge what they can't predict."
+msgstr ""
+"— سڑکوں پر آتش‌فشاں تیرنے والے میزائل ۔ آپ کے مخالف وہ بتا نہیں سکتے جو نہیں"
+" کر سکتے."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_debris_field.html.heex:75
 #, elixir-autogen, elixir-format
-msgid "— Hyperspace has a chance of dropping you on an asteroid. The more debris, the more dangerous warping becomes."
-msgstr "— ہیپاٹائٹس بی کی بیماری کی وجہ سے آپ کے جسم میں کوئی نقص نہیں ہے ۔ اِس سے بھی زیادہ نقصان ہوتا ہے ۔"
+msgid ""
+"— Hyperspace has a chance of dropping you on an asteroid. The more debris, "
+"the more dangerous warping becomes."
+msgstr ""
+"— ہیپاٹائٹس بی کی بیماری کی وجہ سے آپ کے جسم میں کوئی نقص نہیں ہے ۔ اِس سے "
+"بھی زیادہ نقصان ہوتا ہے ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_debris_field.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/feature_gravity_well.html.heex:32
@@ -3474,13 +4173,21 @@ msgstr "— ہائیپر اسپیس وارپ (اردو ٹیلی پورٹ، 20% �
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_gravity_well.html.heex:91
 #, elixir-autogen, elixir-format
-msgid "— Hyperspace warp can teleport you onto the star's danger zone. Only use it as an absolute last resort."
-msgstr "— ہائیپر اسپیس وارپ آپ کو ستارے کے خطرے کے علاقے پر ٹیلی پورٹ کر سکتے ہیں۔ صرف اسے آخری منزل کے طور پر استعمال کرتے ہیں."
+msgid ""
+"— Hyperspace warp can teleport you onto the star's danger zone. Only use it "
+"as an absolute last resort."
+msgstr ""
+"— ہائیپر اسپیس وارپ آپ کو ستارے کے خطرے کے علاقے پر ٹیلی پورٹ کر سکتے ہیں۔ "
+"صرف اسے آخری منزل کے طور پر استعمال کرتے ہیں."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_debris_field.html.heex:68
 #, elixir-autogen, elixir-format
-msgid "— Park behind a large asteroid and force your opponent to come to you. Patience wins in the debris field."
-msgstr "— پارک ایک بہت بڑا مجسّمہ پیچھے رکھیں اور اپنے مخالف کو آپ کے پاس آنے پر مجبور کریں ۔ صبر کا مظاہرہ کرتے ہوئے سوکھے میدان میں کامیاب ہو جاتا ہے ۔"
+msgid ""
+"— Park behind a large asteroid and force your opponent to come to you. "
+"Patience wins in the debris field."
+msgstr ""
+"— پارک ایک بہت بڑا مجسّمہ پیچھے رکھیں اور اپنے مخالف کو آپ کے پاس آنے پر "
+"مجبور کریں ۔ صبر کا مظاہرہ کرتے ہوئے سوکھے میدان میں کامیاب ہو جاتا ہے ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_debris_field.html.heex:17
 #: lib/retro_hex_chat_web/controllers/help_content/feature_gravity_well.html.heex:17
@@ -3503,8 +4210,12 @@ msgstr "— ٹینک"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_debris_field.html.heex:89
 #, elixir-autogen, elixir-format
-msgid "— Spend the first few seconds memorizing asteroid positions. The layout stays fixed for the entire match."
-msgstr "اِن میں سے چند ایک سیکنڈ بعد ہی اِن میں سے ایک کو اپنی جگہ پر رکھ لیں ۔ تمام میچ کے لئے خالی."
+msgid ""
+"— Spend the first few seconds memorizing asteroid positions. The layout "
+"stays fixed for the entire match."
+msgstr ""
+"اِن میں سے چند ایک سیکنڈ بعد ہی اِن میں سے ایک کو اپنی جگہ پر رکھ لیں ۔ تمام"
+" میچ کے لئے خالی."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_debris_field.html.heex:11
 #: lib/retro_hex_chat_web/controllers/help_content/feature_gravity_well.html.heex:11
@@ -3515,13 +4226,21 @@ msgstr "— آگے بڑھنا"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_gravity_well.html.heex:70
 #, elixir-autogen, elixir-format
-msgid "— Use lateral thrust to orbit the star instead of burning away from it. Orbiting conserves fuel and keeps you moving unpredictably."
-msgstr "— اُس سے دُور جلنے کی بجائے بعدازاں ستارے کو گھیرنے کیلئے استعمال کریں ۔ اِس کے علاوہ وہ آپ کی مدد بھی کرتا ہے ۔"
+msgid ""
+"— Use lateral thrust to orbit the star instead of burning away from it. "
+"Orbiting conserves fuel and keeps you moving unpredictably."
+msgstr ""
+"— اُس سے دُور جلنے کی بجائے بعدازاں ستارے کو گھیرنے کیلئے استعمال کریں ۔ اِس"
+" کے علاوہ وہ آپ کی مدد بھی کرتا ہے ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_debris_field.html.heex:82
 #, elixir-autogen, elixir-format
-msgid "— Use missiles to force your opponent toward asteroid clusters where they have less room to maneuver."
-msgstr "— اپنے مخالف کھلاڑی کو ایسے پھولوں پر مجبور کرنے کے لئے میزائل استعمال کریں جہاں اُن کے پاس کم جگہ نہیں ہے ۔"
+msgid ""
+"— Use missiles to force your opponent toward asteroid clusters where they "
+"have less room to maneuver."
+msgstr ""
+"— اپنے مخالف کھلاڑی کو ایسے پھولوں پر مجبور کرنے کے لئے میزائل استعمال کریں "
+"جہاں اُن کے پاس کم جگہ نہیں ہے ۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_block_breakers.html.heex:68
 #: lib/retro_hex_chat_web/controllers/help_content/feature_debris_field.html.heex:100

@@ -1,4 +1,4 @@
-# "msgid"s in this file come from arcade.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: vi; status: enabled; wave: 2.
+# "msgid"s in this file come from arcade.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=arcade to refresh catalogs.  Locale: vi; status: enabled; wave: 2.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -11,17 +11,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:51
+#: lib/retro_hex_chat/arcade/catalog.ex:52
 #, elixir-autogen, elixir-format
 msgid "32 levels — Doom II compatible"
 msgstr "32 mức — Số 2 tương thích"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:37
+#: lib/retro_hex_chat/arcade/catalog.ex:38
 #, elixir-autogen, elixir-format
 msgid "36 levels of open-source doom"
 msgstr "36 cấp mã nguồn mở"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:109
+#: lib/retro_hex_chat/arcade/catalog.ex:110
 #, elixir-autogen, elixir-format
 msgid ""
 "A Viking-themed total conversion with hand-drawn pixel art. Battle through "
@@ -30,7 +30,7 @@ msgstr ""
 "Một sự chuyển đổi hoàn toàn bằng nghệ thuật vẽ điểm ảnh bằng tay. Chiến đấu "
 "bằng cấp độ Bắc Âu với rìu, cung và ma thuật."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:53
+#: lib/retro_hex_chat/arcade/catalog.ex:54
 #, elixir-autogen, elixir-format
 msgid ""
 "A complete free replacement for DOOM II — 32 levels with the Super Shotgun. "
@@ -39,7 +39,7 @@ msgstr ""
 "Một sự thay thế hoàn toàn cho DOOM II — 32 tầng với súng siêu nòng. Hợp với "
 "hàng ngàn bản chỉnh sửa PWAD cộng đồng."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:136
+#: lib/retro_hex_chat/arcade/catalog.ex:137
 #, elixir-autogen, elixir-format
 msgid ""
 "A complete free replacement for Quake — original levels, art, and music "
@@ -48,7 +48,7 @@ msgstr ""
 "Một sự thay thế hoàn toàn cho Quake — mức độ nguyên thủy, nghệ thuật và âm "
 "nhạc dưới giấy phép BSD. Nội dung mã nguồn mở cộng đồng."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:39
+#: lib/retro_hex_chat/arcade/catalog.ex:40
 #, elixir-autogen, elixir-format
 msgid ""
 "A complete free replacement for Ultimate DOOM — 4 episodes, 36 levels. "
@@ -57,7 +57,7 @@ msgstr ""
 "Thay thế hoàn toàn miễn phí cho sự cai trị tối ưu — 4 tập, 36 cấp độ. Nghệ "
 "thuật, âm nhạc và mức độ ban đầu dưới giấy phép CND."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:95
+#: lib/retro_hex_chat/arcade/catalog.ex:96
 #, elixir-autogen, elixir-format
 msgid ""
 "A cyberpunk total conversion — hack through a dystopian future with new "
@@ -66,7 +66,7 @@ msgstr ""
 "Một cuộc cải đạo hoàn toàn trên mạng — xâm nhập vào tương lai của dân du mục"
 " với vũ khí mới, kẻ thù và cấp độ mới. Standalone v1.2 IWAD."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:234
+#: lib/retro_hex_chat/arcade/catalog.ex:235
 #, elixir-autogen, elixir-format
 msgid ""
 "A disturbing top-down cyberpunk adventure by Creative Reality. You are Ryan,"
@@ -138,7 +138,7 @@ msgstr ""
 "Các bố trí kiểu Arena có nghĩa là kẻ thù có thể đến từ bất kỳ hướng nào - "
 "tiếp tục di chuyển."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:172
+#: lib/retro_hex_chat/arcade/catalog.ex:173
 #, elixir-autogen, elixir-format
 msgid "Arrow keys move, Ctrl fire, Space open doors, Shift run, 1-4 weapons"
 msgstr "Phím mũi tên di chuyển, Ctrl Fire, space opens, Shift run, 1-4 vũ khí"
@@ -180,7 +180,7 @@ msgstr ""
 "súng săn tượng trưng, súng phóng tên lửa. Thiết kế cấp độ của John Romero và"
 " Sandy Petersen vẫn là một đẳng cấp trong thiết kế bản đồ FPS phi tuyến."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:197
+#: lib/retro_hex_chat/arcade/catalog.ex:198
 #, elixir-autogen, elixir-format
 msgid "Beneath a Steel Sky"
 msgstr "Bên dưới bầu trời thép"
@@ -200,7 +200,7 @@ msgstr ""
 " Union — một thành phố rộng lớn, mưu mô, được cai trị bởi siêu máy tính "
 "LINC."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:217
+#: lib/retro_hex_chat/arcade/catalog.ex:218
 #, elixir-autogen, elixir-format
 msgid ""
 "British real estate agent John Hacker must defeat the vampire Drascula in "
@@ -211,7 +211,7 @@ msgstr ""
 "trong thời điểm tiếng Tây Ban Nha vui nhộn này & click vào cuộc phiêu lưu "
 "đầy những tài liệu tham khảo về văn hóa nhạc pop và sự hài hước lố bịch."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:78
+#: lib/retro_hex_chat/arcade/catalog.ex:79
 #, elixir-autogen, elixir-format
 msgid "Chex Quest"
 msgstr "Chex find"
@@ -258,12 +258,12 @@ msgstr ""
 "Kết hợp các món hàng — một số câu đố đòi hỏi phải có sự kết hợp giữa các món"
 " đồ sáng tạo."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:215
+#: lib/retro_hex_chat/arcade/catalog.ex:216
 #, elixir-autogen, elixir-format
 msgid "Comedic Dracula parody adventure (1996)"
 msgstr "Cuộc phiêu lưu mua bán ma cà rồng Hài hước (1996)"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:249
+#: lib/retro_hex_chat/arcade/catalog.ex:250
 #, elixir-autogen, elixir-format
 msgid "Comic adventure in the Amazon (1995)"
 msgstr "Cuộc phiêu lưu truyện tranh ở Amazon (1995)"
@@ -346,12 +346,12 @@ msgstr "Ctrl"
 msgid "Ctrl + F5"
 msgstr "Ctrl + F5"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:198
+#: lib/retro_hex_chat/arcade/catalog.ex:199
 #, elixir-autogen, elixir-format
 msgid "Cyberpunk point & click adventure (1994)"
 msgstr "Name"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:93
+#: lib/retro_hex_chat/arcade/catalog.ex:94
 #, elixir-autogen, elixir-format
 msgid "Cyberpunk total conversion"
 msgstr "Comment"
@@ -365,17 +365,17 @@ msgstr ""
 "Kẻ thù của người Cyborg có thể cứng rắn hơn những con quái vật kinh điển — "
 "giữ khoảng cách."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:22
+#: lib/retro_hex_chat/arcade/catalog.ex:23
 #, elixir-autogen, elixir-format
 msgid "DOOM: Knee-Deep in the Dead"
 msgstr "Đầu gối trong xác chết"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:232
+#: lib/retro_hex_chat/arcade/catalog.ex:233
 #, elixir-autogen, elixir-format
 msgid "Dark cyberpunk adventure (1994)"
 msgstr "Cuộc phiêu lưu mạng tối (1994)"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:65
+#: lib/retro_hex_chat/arcade/catalog.ex:66
 #, elixir-autogen, elixir-format
 msgid "Deathmatch arena — open source"
 msgstr "Đấu trường sinh tử — Nguồn mở"
@@ -400,7 +400,7 @@ msgstr ""
 msgid "Drag item"
 msgstr "Gỡ bỏ mục"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:214
+#: lib/retro_hex_chat/arcade/catalog.ex:215
 #, elixir-autogen, elixir-format
 msgid "Drascula: The Vampire Strikes Back"
 msgstr "Ma cà rồng phản công lại"
@@ -418,7 +418,7 @@ msgstr ""
 "Anh John Hacker đi đến Transylvania và phải đánh bại tên ma cà rồng Bá tước "
 "Drascula, kẻ đã bắt cóc BJ xinh đẹp để làm cô dâu."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:231
+#: lib/retro_hex_chat/arcade/catalog.ex:232
 #, elixir-autogen, elixir-format
 msgid "Dreamweb"
 msgstr "Dreamweb"
@@ -459,13 +459,13 @@ msgstr ""
 "thanh trong không khí của Trent Reznor (Nine Inch Nals) làm tăng tính khí áp"
 " bức."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:23
-#: lib/retro_hex_chat/arcade/catalog.ex:121
+#: lib/retro_hex_chat/arcade/catalog.ex:24
+#: lib/retro_hex_chat/arcade/catalog.ex:122
 #, elixir-autogen, elixir-format
 msgid "Episode 1 — The Original"
 msgstr "Chương 1 — Phần nguyên thủy"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:164
+#: lib/retro_hex_chat/arcade/catalog.ex:165
 #, elixir-autogen, elixir-format
 msgid "Episode 1 — The Shareware Classic"
 msgstr "Tập 1 — Cổ điển"
@@ -492,7 +492,7 @@ msgstr "Tập 1 — Cổ điển"
 msgid "Esc"
 msgstr "Esc"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:200
+#: lib/retro_hex_chat/arcade/catalog.ex:201
 #, elixir-autogen, elixir-format
 msgid ""
 "Escape Union City and uncover your past in this cyberpunk classic by "
@@ -576,7 +576,7 @@ msgstr "Bắn"
 msgid "Flashlight toggle"
 msgstr "Comment"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:248
+#: lib/retro_hex_chat/arcade/catalog.ex:249
 #, elixir-autogen, elixir-format
 msgid "Flight of the Amazon Queen"
 msgstr "Chuyến bay của hoàng hậu Amazon"
@@ -594,7 +594,7 @@ msgstr ""
 " đến vùng đất bị rơi trong rừng Amazon trong khi vận chuyển một nữ diễn viên"
 " nổi tiếng."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:67
+#: lib/retro_hex_chat/arcade/catalog.ex:68
 #, elixir-autogen, elixir-format
 msgid ""
 "Free deathmatch-focused maps for DOOM. 32 arena-style levels designed for "
@@ -603,7 +603,7 @@ msgstr ""
 "Những bản đồ tự do tập trung vào cái chết cho Bộ Quốc phòng 32 tầng được "
 "thiết kế cho các hoạt động đa cầu thủ nhanh. Bằng lái xe."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:268
+#: lib/retro_hex_chat/arcade/catalog.ex:269
 #, elixir-autogen, elixir-format
 msgid ""
 "Free the village of Turnvale from the sorceress Selena. Revolution "
@@ -613,7 +613,7 @@ msgstr ""
 "Giải phóng làng Turvale khỏi phù thủy Selena. Trò chơi khởi đầu của phần mềm"
 " Cách mạng có hệ thống phòng chiếu ảo sáng tạo với các NPC tự động."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:64
+#: lib/retro_hex_chat/arcade/catalog.ex:65
 #, elixir-autogen, elixir-format
 msgid "FreeDM"
 msgstr "FreeDM"
@@ -638,7 +638,7 @@ msgstr ""
 "Kẻ thù của Freedoom thiết kế khác với của DOOM nhưng làm theo cách hành xử "
 "tương tự - học các loài mới."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:36
+#: lib/retro_hex_chat/arcade/catalog.ex:37
 #, elixir-autogen, elixir-format
 msgid "Freedoom: Phase 1"
 msgstr "Freedoom: Giai đoạn 1"
@@ -656,7 +656,7 @@ msgstr ""
 "mật. Tất cả các bản sao, kết cấu, hiệu ứng âm thanh, và các bản nhạc đều "
 "được tái tạo lại từ đầu bởi cộng đồng."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:50
+#: lib/retro_hex_chat/arcade/catalog.ex:51
 #, elixir-autogen, elixir-format
 msgid "Freedoom: Phase 2"
 msgstr "Freedoom: Giai đoạn 2"
@@ -672,7 +672,7 @@ msgstr ""
 "trên trái đất — 32 mức FPS cao với khẩu súng siêu huyền thoại. Tất cả tài "
 "sản là những tạo vật cộng đồng đầu tiên dưới giấy phép lái xe."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:92
+#: lib/retro_hex_chat/arcade/catalog.ex:93
 #, elixir-autogen, elixir-format
 msgid "HacX: Twitch 'n Kill"
 msgstr "HacX: Tpe 'n kill"
@@ -688,7 +688,7 @@ msgstr ""
 "II đã đứng vững. Thiết lập một tương lai bất ổn, anh đột nhập vào hệ thống "
 "an ninh công ty và những kẻ thù của người máy trong hành lang neon-lit."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:180
+#: lib/retro_hex_chat/arcade/catalog.ex:181
 #, elixir-autogen, elixir-format
 msgid "Half-Life: Uplink"
 msgstr "Nửa đời:"
@@ -800,7 +800,7 @@ msgstr "Vũ khí cuối dùng"
 msgid "Left Click"
 msgstr "Ấn trái"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:206
+#: lib/retro_hex_chat/arcade/catalog.ex:207
 #, elixir-autogen, elixir-format
 msgid ""
 "Left click interact/walk, Right click examine/verb menu, Drag inventory "
@@ -810,7 +810,7 @@ msgstr ""
 "kiểm kê để kết hợp. F5 tiết kiệm /load, Ctrl+F5 tùy chọn, Esc nhảy qua màn "
 "hình cắt"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:133
+#: lib/retro_hex_chat/arcade/catalog.ex:134
 #, elixir-autogen, elixir-format
 msgid "LibreQuake"
 msgstr "GenericName"
@@ -867,7 +867,7 @@ msgstr ""
 "Hãy nghe lính canh — bạn có thể nghe thấy kẻ thù qua cửa trước khi mở chúng "
 "ra."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:265
+#: lib/retro_hex_chat/arcade/catalog.ex:266
 #, elixir-autogen, elixir-format
 msgid "Lure of the Temptress"
 msgstr "Sự thèm muốn"
@@ -927,7 +927,7 @@ msgstr ""
 "Bản đồ có màu sắc gọn gàng và có vũ khí, hoàn hảo cho các phiên hành động "
 "nhanh chóng."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:266
+#: lib/retro_hex_chat/arcade/catalog.ex:267
 #, elixir-autogen, elixir-format
 msgid "Medieval fantasy adventure (1992)"
 msgstr "Cuộc phiêu lưu tưởng tượng thời trung cổ (1992)"
@@ -1037,7 +1037,7 @@ msgstr "Mở cửa/ sử dụng"
 msgid "Open verb menu"
 msgstr "Mở trình đơn động từ"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:134
+#: lib/retro_hex_chat/arcade/catalog.ex:135
 #, elixir-autogen, elixir-format
 msgid "Open-source Quake replacement"
 msgstr "Thay thế Quake mã nguồn mở"
@@ -1136,7 +1136,7 @@ msgid ""
 msgstr ""
 "Giai đoạn 2 mở rộng và phức tạp hơn giai đoạn 1 — khám phá kỹ những bí mật."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:251
+#: lib/retro_hex_chat/arcade/catalog.ex:252
 #, elixir-autogen, elixir-format
 msgid ""
 "Pilot Joe King crash-lands in the Amazon and stumbles into a mad scientist's"
@@ -1147,7 +1147,7 @@ msgstr ""
 " thành khủng long. Một cuộc phiêu lưu kiểu Indiana Jones vui nhộn với giọng "
 "nói đầy đủ."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:223
+#: lib/retro_hex_chat/arcade/catalog.ex:224
 #, elixir-autogen, elixir-format
 msgid ""
 "Point & click: left-click interact, right-click examine. Inventory at bottom"
@@ -1156,7 +1156,7 @@ msgstr ""
 "Nhấn & điểm: tương tác- nhấn chuột trái, kiểm tra nhấn chuột phải. Nhà phát "
 "minh ở dưới màn hình. F5 lưu/load, Esc bỏ qua hình ảnh cắt"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:257
+#: lib/retro_hex_chat/arcade/catalog.ex:258
 #, elixir-autogen, elixir-format
 msgid ""
 "Point & click: left-click interact, right-click examine. Inventory at top of"
@@ -1165,7 +1165,7 @@ msgstr ""
 "Nhấn & điểm: tương tác- nhấn chuột trái, kiểm tra nhấn chuột phải. Nhà phát "
 "minh ở trên màn hình. F5 lưu/load, Esc bỏ qua hình ảnh cắt"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:291
+#: lib/retro_hex_chat/arcade/catalog.ex:292
 #, elixir-autogen, elixir-format
 msgid ""
 "Point & click: left-click interact, right-click examine. Simple, streamlined"
@@ -1174,7 +1174,7 @@ msgstr ""
 "Nhấn & điểm: tương tác- nhấn chuột trái, kiểm tra nhấn chuột phải. Giao diện"
 " đơn giản, mạch điện. F5 lưu/load, Esc bỏ qua hình ảnh cắt"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:274
+#: lib/retro_hex_chat/arcade/catalog.ex:275
 #, elixir-autogen, elixir-format
 msgid ""
 "Point & click: left-click interact, right-click verb menu. NPCs follow their"
@@ -1183,7 +1183,7 @@ msgstr ""
 "Nhấn & điểm: tương tác- nhấn chuột trái, thực đơn động từ nhấn chuột phải. "
 "NPC làm theo lịch của họ. F5 lưu/load, Esc bỏ qua hình ảnh cắt"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:240
+#: lib/retro_hex_chat/arcade/catalog.ex:241
 #, elixir-autogen, elixir-format
 msgid ""
 "Point & click: left-click interact/walk, right-click examine. Inventory at "
@@ -1245,17 +1245,17 @@ msgstr ""
 " tố kinh hoàng của cơ thể khiến cho trò chơi có bầu không khí đáng lo ngại "
 "đặc biệt."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:146
+#: lib/retro_hex_chat/arcade/catalog.ex:147
 #, elixir-autogen, elixir-format
 msgid "Quake II: The Invasion"
 msgstr "Quake II: Sự xâm lăng"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:120
+#: lib/retro_hex_chat/arcade/catalog.ex:121
 #, elixir-autogen, elixir-format
 msgid "Quake: Dimension of the Doomed"
 msgstr "Quake: Sự hủy diệt"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:106
+#: lib/retro_hex_chat/arcade/catalog.ex:107
 #, elixir-autogen, elixir-format
 msgid "REKKR: Sunken Land"
 msgstr "Vùng đất Sunken"
@@ -1302,7 +1302,7 @@ msgid ""
 "Reload during quiet moments — don't get caught mid-reload in a firefight."
 msgstr "Nạp đạn trong những khoảnh khắc yên tĩnh - đừng để bị bắt giữa giờ."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:285
+#: lib/retro_hex_chat/arcade/catalog.ex:286
 #, elixir-autogen, elixir-format
 msgid ""
 "Rescue your grandfather from underground pirates in this charmingly absurd "
@@ -1492,7 +1492,7 @@ msgstr "Bỏ qua cảnh cắt"
 msgid "Skip dialogue line"
 msgstr "Bỏ qua dòng thoại"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:282
+#: lib/retro_hex_chat/arcade/catalog.ex:283
 #, elixir-autogen, elixir-format
 msgid "Soltys"
 msgstr "Solys"
@@ -1580,7 +1580,7 @@ msgid ""
 "than running straight."
 msgstr "Strafe - chạy nhanh hơn chạy thẳng."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:283
+#: lib/retro_hex_chat/arcade/catalog.ex:284
 #, elixir-autogen, elixir-format
 msgid "Surreal Polish puzzle adventure (1995)"
 msgstr "Cuộc phiêu lưu giải đố ở Ba Lan Surreal (1995)"
@@ -1637,7 +1637,7 @@ msgstr ""
 "Người phóng lựu đạn gây thiệt hại nặng nề trong các hành lang chật hẹp — lựu"
 " đạn dội xung quanh các góc."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:181
+#: lib/retro_hex_chat/arcade/catalog.ex:182
 #, elixir-autogen, elixir-format
 msgid "The Official Demo — 3 Unique Missions"
 msgstr "Nhân dạng chính thức — 3 sứ mạng đặc biệt"
@@ -1671,7 +1671,7 @@ msgid "The bow is effective at range but arrows are limited — aim carefully."
 msgstr ""
 "Cung có hiệu quả ở cự ly nhưng mũi tên thì có giới hạn — hãy nhắm cẩn thận."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:79
+#: lib/retro_hex_chat/arcade/catalog.ex:80
 #, elixir-autogen, elixir-format
 msgid "The cereal box classic"
 msgstr "Hộp ngũ cốc cổ điển"
@@ -1836,7 +1836,7 @@ msgstr ""
 "của phần mềm id, trò chơi chạy trên cùng một động cơ và hỗ trợ cùng một hệ "
 "sinh thái di chuyển."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:166
+#: lib/retro_hex_chat/arcade/catalog.ex:167
 #, elixir-autogen, elixir-format
 msgid ""
 "The grandfather of FPS games (1992) — 10 levels of castle-storming action. "
@@ -1874,7 +1874,7 @@ msgid ""
 "The interface is simple and streamlined — left-click does most of the work."
 msgstr "Giao diện rất đơn giản và có mạch — ấn trái hầu hết công việc."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:81
+#: lib/retro_hex_chat/arcade/catalog.ex:82
 #, elixir-autogen, elixir-format
 msgid ""
 "The legendary 1996 cereal box promotion — a kid-friendly total conversion of"
@@ -1902,7 +1902,7 @@ msgstr ""
 "Hệ thống vận động giống hệt với Quake — thỏ cũng nhảy nhót và nhảy lầu ở "
 "đây."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:183
+#: lib/retro_hex_chat/arcade/catalog.ex:184
 #, elixir-autogen, elixir-format
 msgid ""
 "The official Half-Life demo (1999) — 3 unique levels not found in the full "
@@ -1913,7 +1913,7 @@ msgstr ""
 "thấy trong toàn bộ trò chơi. Chiến đấu qua phòng thí nghiệm ngầm của Black "
 "Mesa. Được phân phối tự do bởi Valve."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:149
+#: lib/retro_hex_chat/arcade/catalog.ex:150
 #, elixir-autogen, elixir-format
 msgid ""
 "The official Quake II demo (1997) — full 3D FPS with Strogg invasion. Unit 1"
@@ -1924,7 +1924,7 @@ msgstr ""
 "Strogg. Đơn vị 1 của chiến dịch độc lập. Phần mềm cổ điển định nghĩa FPS "
 "online."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:25
+#: lib/retro_hex_chat/arcade/catalog.ex:26
 #, elixir-autogen, elixir-format
 msgid ""
 "The original Episode 1 of DOOM (1993) — 9 levels of demon-infested corridors"
@@ -1933,7 +1933,7 @@ msgstr ""
 "Tập đầu tiên của DOOM (1993) — 9 cấp độ hành lang bị quỷ ám trên Phobos. "
 "Phần mềm cổ điển đã bắt đầu tất cả."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:123
+#: lib/retro_hex_chat/arcade/catalog.ex:124
 #, elixir-autogen, elixir-format
 msgid ""
 "The original Episode 1 of Quake (1996) — full 3D FPS with Lovecraftian "
@@ -2133,7 +2133,7 @@ msgstr ""
 msgid "Turn left / right"
 msgstr "Rẽ trái / phải"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:147
+#: lib/retro_hex_chat/arcade/catalog.ex:148
 #, elixir-autogen, elixir-format
 msgid "Unit 1 — The Demo"
 msgstr "Đơn vị 1 — Minh họa"
@@ -2201,7 +2201,7 @@ msgstr ""
 "Dùng đèn pin (F) ở những vùng tối - nhưng hãy chú ý nó chia sẻ năng lượng "
 "với bộ đồ thể thao của bạn."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:107
+#: lib/retro_hex_chat/arcade/catalog.ex:108
 #, elixir-autogen, elixir-format
 msgid "Viking-themed standalone"
 msgstr "Name"
@@ -2221,24 +2221,24 @@ msgstr "Name"
 msgid "W / ↑"
 msgstr "W / ↑"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:128
-#: lib/retro_hex_chat/arcade/catalog.ex:141
+#: lib/retro_hex_chat/arcade/catalog.ex:129
+#: lib/retro_hex_chat/arcade/catalog.ex:142
 #, elixir-autogen, elixir-format
 msgid "WASD move, Mouse aim, Left click fire, E use"
 msgstr "Xuất phát, nhắm chuột, bắn bên trái, E sử dụng"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:31
-#: lib/retro_hex_chat/arcade/catalog.ex:45
-#: lib/retro_hex_chat/arcade/catalog.ex:59
-#: lib/retro_hex_chat/arcade/catalog.ex:73
-#: lib/retro_hex_chat/arcade/catalog.ex:87
-#: lib/retro_hex_chat/arcade/catalog.ex:101
-#: lib/retro_hex_chat/arcade/catalog.ex:115
+#: lib/retro_hex_chat/arcade/catalog.ex:32
+#: lib/retro_hex_chat/arcade/catalog.ex:46
+#: lib/retro_hex_chat/arcade/catalog.ex:60
+#: lib/retro_hex_chat/arcade/catalog.ex:74
+#: lib/retro_hex_chat/arcade/catalog.ex:88
+#: lib/retro_hex_chat/arcade/catalog.ex:102
+#: lib/retro_hex_chat/arcade/catalog.ex:116
 #, elixir-autogen, elixir-format
 msgid "WASD move, Mouse aim, Left click fire, E use, Space jump"
 msgstr "Được di chuyển, nhắm chuột, bắn bên trái, E sử dụng, nhảy không gian"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:155
+#: lib/retro_hex_chat/arcade/catalog.ex:156
 #, elixir-autogen, elixir-format
 msgid ""
 "WASD move, Mouse aim, Left click fire, E use, Space jump, C crouch, R reload"
@@ -2246,7 +2246,7 @@ msgstr ""
 "Di chuyển, nhắm chuột, nhấn chuột trái, bắn E sử dụng, nhảy không gian, cúi "
 "xuống, nạp đạn"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:189
+#: lib/retro_hex_chat/arcade/catalog.ex:190
 #, elixir-autogen, elixir-format
 msgid ""
 "WASD move, Mouse aim, Left click fire, E use, Space jump, Shift crouch, R "
@@ -2325,7 +2325,7 @@ msgstr ""
 " đài khi điệp viên Mỹ B.J. Blazowicz chiến đấu để thoát khỏi pháo đài của "
 "Quốc xã."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:163
+#: lib/retro_hex_chat/arcade/catalog.ex:164
 #, elixir-autogen, elixir-format
 msgid "Wolfenstein 3D: Escape from Castle"
 msgstr "Wolfstein 3D: trốn khỏi lâu đài"

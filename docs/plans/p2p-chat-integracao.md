@@ -1,5 +1,10 @@
 # PM = P2P — integração do Lobby ao chat principal
 
+> Historico/superseded: este plano descreve a primeira integracao P2P ao chat,
+> antes da unificacao mobile-first de P2P e conferencia. Nao use nomes de
+> janelas legadas deste arquivo como fonte atual. Fonte operacional atual:
+> `docs/reference/media-session-p2p-conference-current.md`.
+
 > Fase seguinte à integração do Virtual Space aos canais (`canal-espaco-integracao.md`).
 > Este documento mapeia o que existe hoje, o modelo alvo, a migração e os riscos —
 > para revisão conjunta antes de qualquer código.

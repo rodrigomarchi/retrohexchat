@@ -1,4 +1,4 @@
-# "msgid"s in this file come from arcade.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: ko; status: enabled; wave: 2.
+# "msgid"s in this file come from arcade.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=arcade to refresh catalogs.  Locale: ko; status: enabled; wave: 2.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -11,38 +11,38 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:51
+#: lib/retro_hex_chat/arcade/catalog.ex:52
 #, elixir-autogen, elixir-format
 msgid "32 levels — Doom II compatible"
 msgstr "32 레벨 — Doom II 호환"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:37
+#: lib/retro_hex_chat/arcade/catalog.ex:38
 #, elixir-autogen, elixir-format
 msgid "36 levels of open-source doom"
 msgstr "오픈 소스 돔의 36 수준"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:109
+#: lib/retro_hex_chat/arcade/catalog.ex:110
 #, elixir-autogen, elixir-format
 msgid ""
 "A Viking-themed total conversion with hand-drawn pixel art. Battle through "
 "Norse-inspired levels with axes, bows, and runic magic."
 msgstr "손으로 그려진 픽셀 아트로 바이킹 테마의 총 변환. 비소 영감을 얻은 레벨을 통해 전투, 활, 및 실행 마법."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:53
+#: lib/retro_hex_chat/arcade/catalog.ex:54
 #, elixir-autogen, elixir-format
 msgid ""
 "A complete free replacement for DOOM II — 32 levels with the Super Shotgun. "
 "Compatible with thousands of community-made PWAD mods."
 msgstr "DOOM II의 완전 무료 교체 - 슈퍼 샷건과 32 레벨. 수천 개의 커뮤니티 만든 PWAD 모드와 호환됩니다."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:136
+#: lib/retro_hex_chat/arcade/catalog.ex:137
 #, elixir-autogen, elixir-format
 msgid ""
 "A complete free replacement for Quake — original levels, art, and music "
 "under BSD license. Community-made open-source content."
 msgstr "Quake를위한 완벽한 무료 교체 - BSD 라이센스의 원본 수준, 예술 및 음악. 커뮤니티 제작 오픈 소스 콘텐츠."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:39
+#: lib/retro_hex_chat/arcade/catalog.ex:40
 #, elixir-autogen, elixir-format
 msgid ""
 "A complete free replacement for Ultimate DOOM — 4 episodes, 36 levels. "
@@ -50,14 +50,14 @@ msgid ""
 msgstr ""
 "Ultimate DOOM을위한 완벽한 무료 교체 - 4 에피소드, 36 레벨. BSD 면허의 밑에 본래 예술, 음악 및 수준."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:95
+#: lib/retro_hex_chat/arcade/catalog.ex:96
 #, elixir-autogen, elixir-format
 msgid ""
 "A cyberpunk total conversion — hack through a dystopian future with new "
 "weapons, enemies, and levels. Standalone v1.2 IWAD."
 msgstr "사이버펑크 총 변환 - 새로운 무기, 적, 수준으로 dystopian 미래를 통해 해킹. 독립 v1.2 IWAD."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:234
+#: lib/retro_hex_chat/arcade/catalog.ex:235
 #, elixir-autogen, elixir-format
 msgid ""
 "A disturbing top-down cyberpunk adventure by Creative Reality. You are Ryan,"
@@ -121,7 +121,7 @@ msgid ""
 "Arena-style layouts mean enemies can come from any direction — stay moving."
 msgstr "Arena-style 레이아웃은 적들이 어떤 방향으로 올 수 있음을 의미합니다."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:172
+#: lib/retro_hex_chat/arcade/catalog.ex:173
 #, elixir-autogen, elixir-format
 msgid "Arrow keys move, Ctrl fire, Space open doors, Shift run, 1-4 weapons"
 msgstr "화살표 키 이동, Ctrl 화재, 공간 열린 문, 이동 실행, 1-4 무기"
@@ -159,7 +159,7 @@ msgstr ""
 "당신의 방법을 싸울. John Romero 및 Sandy Petersen의 레벨 디자인은 비선형 FPS 맵 디자인에서 마스터 클래스를 "
 "유지합니다."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:197
+#: lib/retro_hex_chat/arcade/catalog.ex:198
 #, elixir-autogen, elixir-format
 msgid "Beneath a Steel Sky"
 msgstr "베네스 스틸 스카이"
@@ -177,7 +177,7 @@ msgstr ""
 "호주에 설정. Robert Foster는 \"Gap\"라고 알려진 방사성 폐기물에서 자랐지만, Supercomputer LINC에 의해 "
 "지배 된 대규모, stratified 메트로 폴리스에 납치되고 가져 왔습니다."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:217
+#: lib/retro_hex_chat/arcade/catalog.ex:218
 #, elixir-autogen, elixir-format
 msgid ""
 "British real estate agent John Hacker must defeat the vampire Drascula in "
@@ -187,7 +187,7 @@ msgstr ""
 "영국 부동산 에이전트 존 해커는이 스페인의 vampire Drascula를 물리 치고 팝 문화 참조와 absurd humor의 전체 "
 "모험을 클릭해야합니다."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:78
+#: lib/retro_hex_chat/arcade/catalog.ex:79
 #, elixir-autogen, elixir-format
 msgid "Chex Quest"
 msgstr "체스 퀘스트"
@@ -227,12 +227,12 @@ msgid ""
 "Combine inventory items — some puzzles require creative item combinations."
 msgstr "일부 퍼즐은 크리에이티브 아이템 조합이 필요합니다."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:215
+#: lib/retro_hex_chat/arcade/catalog.ex:216
 #, elixir-autogen, elixir-format
 msgid "Comedic Dracula parody adventure (1996)"
 msgstr "Comedic Dracula 패러디 모험 (1996)"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:249
+#: lib/retro_hex_chat/arcade/catalog.ex:250
 #, elixir-autogen, elixir-format
 msgid "Comic adventure in the Amazon (1995)"
 msgstr "아마존의 만화 모험 (1995)"
@@ -307,12 +307,12 @@ msgstr "Ctrl을"
 msgid "Ctrl + F5"
 msgstr "Ctrl + F5를"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:198
+#: lib/retro_hex_chat/arcade/catalog.ex:199
 #, elixir-autogen, elixir-format
 msgid "Cyberpunk point & click adventure (1994)"
 msgstr "사이버펑크 포인트 & 클릭 모험 (1994)"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:93
+#: lib/retro_hex_chat/arcade/catalog.ex:94
 #, elixir-autogen, elixir-format
 msgid "Cyberpunk total conversion"
 msgstr "Cyberpunk 총 변환"
@@ -324,17 +324,17 @@ msgid ""
 "distance."
 msgstr "Cyborg 적은 고전적인 DOOM 몬스터보다 힘든 수 있습니다 - 거리를 유지."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:22
+#: lib/retro_hex_chat/arcade/catalog.ex:23
 #, elixir-autogen, elixir-format
 msgid "DOOM: Knee-Deep in the Dead"
 msgstr "DOOM : 죽음에 무릎 깊은"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:232
+#: lib/retro_hex_chat/arcade/catalog.ex:233
 #, elixir-autogen, elixir-format
 msgid "Dark cyberpunk adventure (1994)"
 msgstr "다크 사이버펑크 모험 (1994)"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:65
+#: lib/retro_hex_chat/arcade/catalog.ex:66
 #, elixir-autogen, elixir-format
 msgid "Deathmatch arena — open source"
 msgstr "Deathmatch arena - 오픈 소스"
@@ -356,7 +356,7 @@ msgstr "surreal 논리에 의해 좌절하지 마십시오 — 그 매력의 일
 msgid "Drag item"
 msgstr "Drag 아이템"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:214
+#: lib/retro_hex_chat/arcade/catalog.ex:215
 #, elixir-autogen, elixir-format
 msgid "Drascula: The Vampire Strikes Back"
 msgstr "Drascula : Vampire 스트라이크 뒤"
@@ -373,7 +373,7 @@ msgstr ""
 " 영국 부동산 에이전트 존 해커는 Transylvania에 여행하고 자신의 신부를 만들기 위해 아름다운 BJ를 납치 한 Vampire "
 "Count Drascula를 패배해야합니다."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:231
+#: lib/retro_hex_chat/arcade/catalog.ex:232
 #, elixir-autogen, elixir-format
 msgid "Dreamweb"
 msgstr "드림웹"
@@ -409,13 +409,13 @@ msgstr ""
 "Shamblers, Fiends, Ogres 및 다른 nightmarish 생물과 채워진 otherworldly realms. Trent"
 " Reznor (Nine Inch Nails)의 대기 사운드 트랙은 oppressive 분위기에 추가합니다."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:23
-#: lib/retro_hex_chat/arcade/catalog.ex:121
+#: lib/retro_hex_chat/arcade/catalog.ex:24
+#: lib/retro_hex_chat/arcade/catalog.ex:122
 #, elixir-autogen, elixir-format
 msgid "Episode 1 — The Original"
 msgstr "에피소드 1 - 원본"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:164
+#: lib/retro_hex_chat/arcade/catalog.ex:165
 #, elixir-autogen, elixir-format
 msgid "Episode 1 — The Shareware Classic"
 msgstr "에피소드 1 — The Shareware Classic"
@@ -442,7 +442,7 @@ msgstr "에피소드 1 — The Shareware Classic"
 msgid "Esc"
 msgstr "제품 정보"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:200
+#: lib/retro_hex_chat/arcade/catalog.ex:201
 #, elixir-autogen, elixir-format
 msgid ""
 "Escape Union City and uncover your past in this cyberpunk classic by "
@@ -521,7 +521,7 @@ msgstr "불 무기"
 msgid "Flashlight toggle"
 msgstr "플래쉬 등 toggle"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:248
+#: lib/retro_hex_chat/arcade/catalog.ex:249
 #, elixir-autogen, elixir-format
 msgid "Flight of the Amazon Queen"
 msgstr "아마존 퀸의 비행"
@@ -537,14 +537,14 @@ msgstr ""
 "Amazon Queen (1995)의 비행은 인디애나 존스와 원숭이 섬의 스타일에서 만화 포인트 앤 클릭 모험입니다. Joe King으로"
 " 플레이하고, 유명한 여배우를 수송하면서 Amazon jungle의 비행기 충돌 랜드를 조종하는 조종사에 대한 전설."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:67
+#: lib/retro_hex_chat/arcade/catalog.ex:68
 #, elixir-autogen, elixir-format
 msgid ""
 "Free deathmatch-focused maps for DOOM. 32 arena-style levels designed for "
 "fast-paced multiplayer action. BSD license."
 msgstr "DOOM을위한 무료 사망 초점지도. 32은 빠른 속도로 멀티 플레이어 액션을 위해 설계되었습니다. BSD 라이센스."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:268
+#: lib/retro_hex_chat/arcade/catalog.ex:269
 #, elixir-autogen, elixir-format
 msgid ""
 "Free the village of Turnvale from the sorceress Selena. Revolution "
@@ -554,7 +554,7 @@ msgstr ""
 "Sorceress Selena에서 Turnvale의 마을 무료. 혁신적인 가상 극장 시스템을 갖춘 Revolution Software의 "
 "데뷔 게임."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:64
+#: lib/retro_hex_chat/arcade/catalog.ex:65
 #, elixir-autogen, elixir-format
 msgid "FreeDM"
 msgstr "무료DM"
@@ -577,7 +577,7 @@ msgid ""
 msgstr ""
 "Freedoom의 적 디자인은 DOOM과 다릅니다. 그러나 유사한 행동 패턴을 따르십시오. — 새로운 스프라이트를 배우십시오."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:36
+#: lib/retro_hex_chat/arcade/catalog.ex:37
 #, elixir-autogen, elixir-format
 msgid "Freedoom: Phase 1"
 msgstr "Freedoom: 단계 1"
@@ -593,7 +593,7 @@ msgstr ""
 "Freedoom: Phase 1은 궁극적 인 DOOM을위한 완벽한 무료 교체입니다 - 4 전체 에피소드 36 원래 수준, BSD 라이센스"
 " 아래. 모든 스프라이트, 질감, 음향 효과 및 음악 트랙은 커뮤니티의 스크래치에서 재현되었습니다."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:50
+#: lib/retro_hex_chat/arcade/catalog.ex:51
 #, elixir-autogen, elixir-format
 msgid "Freedoom: Phase 2"
 msgstr "Freedoom: 단계 2"
@@ -608,7 +608,7 @@ msgstr ""
 "Freedoom: Phase 2는 DOOM II의 완전 무료 교체입니다: 지구에 지옥 — 전설적인 슈퍼 샷건과 강렬한 FPS 액션의 32"
 " 수준. 모든 자산은 BSD 라이센스의 원본 커뮤니티 생성입니다."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:92
+#: lib/retro_hex_chat/arcade/catalog.ex:93
 #, elixir-autogen, elixir-format
 msgid "HacX: Twitch 'n Kill"
 msgstr "HacX : Twitch 'n 킬"
@@ -623,7 +623,7 @@ msgstr ""
 "HacX : Twitch 'n Kill (1997)는 독립을 겪은 DOOM II의 사이버펑크 총 변환입니다. dystopian 미래에 "
 "설정, 당신은 neon-lit 복도의 기업 보안 시스템과 cyborg 적을 통해 해킹."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:180
+#: lib/retro_hex_chat/arcade/catalog.ex:181
 #, elixir-autogen, elixir-format
 msgid "Half-Life: Uplink"
 msgstr "반감기: 업링크"
@@ -728,7 +728,7 @@ msgstr "사용 된 무기"
 msgid "Left Click"
 msgstr "왼쪽 클릭"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:206
+#: lib/retro_hex_chat/arcade/catalog.ex:207
 #, elixir-autogen, elixir-format
 msgid ""
 "Left click interact/walk, Right click examine/verb menu, Drag inventory "
@@ -737,7 +737,7 @@ msgstr ""
 "왼쪽 클릭/walk, 오른쪽 클릭 검사/verb 메뉴, Drag 재고 항목 결합. F5 저장/load, Ctrl + F5 옵션, 에스크로"
 " 건너 뛰기"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:133
+#: lib/retro_hex_chat/arcade/catalog.ex:134
 #, elixir-autogen, elixir-format
 msgid "LibreQuake"
 msgstr "리브쿼크"
@@ -787,7 +787,7 @@ msgid ""
 "Listen for guards — you can hear enemies through doors before opening them."
 msgstr "가드를 들어보세요 - 문을 열어서 적들을 수 있습니다."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:265
+#: lib/retro_hex_chat/arcade/catalog.ex:266
 #, elixir-autogen, elixir-format
 msgid "Lure of the Temptress"
 msgstr "유혹의 루어"
@@ -840,7 +840,7 @@ msgstr ""
 msgid "Maps are compact and weapon-dense — perfect for quick action sessions."
 msgstr "맵은 컴팩트하고 무기 밀도 - 빠른 행동 세션에 적합합니다."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:266
+#: lib/retro_hex_chat/arcade/catalog.ex:267
 #, elixir-autogen, elixir-format
 msgid "Medieval fantasy adventure (1992)"
 msgstr "명상 판타지 모험 (1992)"
@@ -944,7 +944,7 @@ msgstr "문 / 사용"
 msgid "Open verb menu"
 msgstr "메뉴 열기"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:134
+#: lib/retro_hex_chat/arcade/catalog.ex:135
 #, elixir-autogen, elixir-format
 msgid "Open-source Quake replacement"
 msgstr "오픈 소스 Quake 교체"
@@ -1031,7 +1031,7 @@ msgid ""
 "for secrets."
 msgstr "단계 2 단계는 단계 1보다 더 개방적이고 복잡합니다. 비밀을 위해 완전히 탐구하십시오."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:251
+#: lib/retro_hex_chat/arcade/catalog.ex:252
 #, elixir-autogen, elixir-format
 msgid ""
 "Pilot Joe King crash-lands in the Amazon and stumbles into a mad scientist's"
@@ -1041,7 +1041,7 @@ msgstr ""
 "아마존의 조종사 Joe King crash-lands와 공룡으로 인간을 돌리기 위해 광 과학자의 음모로 움직입니다. hilarious "
 "Indiana Jones-style point & click adventure 와 완전한 목소리 행동."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:223
+#: lib/retro_hex_chat/arcade/catalog.ex:224
 #, elixir-autogen, elixir-format
 msgid ""
 "Point & click: left-click interact, right-click examine. Inventory at bottom"
@@ -1049,7 +1049,7 @@ msgid ""
 msgstr ""
 "포인트 & 클릭: 왼쪽 클릭 상호 작용, 마우스 오른쪽 클릭. 스크린의 바닥에 발명. F5 저장/load, 조건 건너뛰기 cutscene"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:257
+#: lib/retro_hex_chat/arcade/catalog.ex:258
 #, elixir-autogen, elixir-format
 msgid ""
 "Point & click: left-click interact, right-click examine. Inventory at top of"
@@ -1057,7 +1057,7 @@ msgid ""
 msgstr ""
 "포인트 & 클릭: 왼쪽 클릭 상호 작용, 마우스 오른쪽 클릭. 화면 상단의 재고. F5 저장/load, 조건 건너뛰기 cutscene"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:291
+#: lib/retro_hex_chat/arcade/catalog.ex:292
 #, elixir-autogen, elixir-format
 msgid ""
 "Point & click: left-click interact, right-click examine. Simple, streamlined"
@@ -1066,7 +1066,7 @@ msgstr ""
 "포인트 & 클릭: 왼쪽 클릭 상호 작용, 마우스 오른쪽 클릭. 간단하고 간소화 된 인터페이스. F5 저장/load, 조건 건너뛰기 "
 "cutscene"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:274
+#: lib/retro_hex_chat/arcade/catalog.ex:275
 #, elixir-autogen, elixir-format
 msgid ""
 "Point & click: left-click interact, right-click verb menu. NPCs follow their"
@@ -1075,7 +1075,7 @@ msgstr ""
 "포인트 & 클릭: 왼쪽 클릭 상호 작용, 오른쪽 클릭 동사 메뉴. NPC는 자신의 일정을 따릅니다. F5 저장/load, 조건 건너뛰기 "
 "cutscene"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:240
+#: lib/retro_hex_chat/arcade/catalog.ex:241
 #, elixir-autogen, elixir-format
 msgid ""
 "Point & click: left-click interact/walk, right-click examine. Inventory at "
@@ -1128,17 +1128,17 @@ msgstr ""
 "Quake II는 인터커넥트 맵, 컬러 조명, 그리고 더 구조화된 narrative로 사명 기반 수준의 디자인을 도입했습니다. "
 "Strogg은 인간의 부품을 수확하는 사이버네틱 외계인입니다. - 신체 공포 요소는 독특하게 방해하는 분위기를 제공합니다."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:146
+#: lib/retro_hex_chat/arcade/catalog.ex:147
 #, elixir-autogen, elixir-format
 msgid "Quake II: The Invasion"
 msgstr "Quake II: 침략"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:120
+#: lib/retro_hex_chat/arcade/catalog.ex:121
 #, elixir-autogen, elixir-format
 msgid "Quake: Dimension of the Doomed"
 msgstr "Quake: 지배의 차원"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:106
+#: lib/retro_hex_chat/arcade/catalog.ex:107
 #, elixir-autogen, elixir-format
 msgid "REKKR: Sunken Land"
 msgstr "REKKR: 썬켄 랜드"
@@ -1179,7 +1179,7 @@ msgid ""
 "Reload during quiet moments — don't get caught mid-reload in a firefight."
 msgstr "조용한 순간 동안 다시로드 - 소방관에서 중간 부하를 잡지 마십시오."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:285
+#: lib/retro_hex_chat/arcade/catalog.ex:286
 #, elixir-autogen, elixir-format
 msgid ""
 "Rescue your grandfather from underground pirates in this charmingly absurd "
@@ -1357,7 +1357,7 @@ msgstr "채용 정보"
 msgid "Skip dialogue line"
 msgstr "연락처"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:282
+#: lib/retro_hex_chat/arcade/catalog.ex:283
 #, elixir-autogen, elixir-format
 msgid "Soltys"
 msgstr "뚱 베어"
@@ -1442,7 +1442,7 @@ msgid ""
 "than running straight."
 msgstr "Strafe-running (forward + strafe를 동시에)는 당신이 ~40% 빨리 달리기 보다는 움직입니다."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:283
+#: lib/retro_hex_chat/arcade/catalog.ex:284
 #, elixir-autogen, elixir-format
 msgid "Surreal Polish puzzle adventure (1995)"
 msgstr "Surreal 폴란드어 퍼즐 모험 (1995)"
@@ -1489,7 +1489,7 @@ msgid ""
 "around corners."
 msgstr "Grenade Launcher는 단단한 복도에서 파생됩니다 — 구석의 주위에 도약 grenades."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:181
+#: lib/retro_hex_chat/arcade/catalog.ex:182
 #, elixir-autogen, elixir-format
 msgid "The Official Demo — 3 Unique Missions"
 msgstr "공식 데모 - 3 독특한 임무"
@@ -1518,7 +1518,7 @@ msgstr "automap (Tab)는 maze-like 수준에서 최고의 친구입니다."
 msgid "The bow is effective at range but arrows are limited — aim carefully."
 msgstr "활은 범위에서 효과적이지만 화살표는 제한된다 — 신중하게 목표로."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:79
+#: lib/retro_hex_chat/arcade/catalog.ex:80
 #, elixir-autogen, elixir-format
 msgid "The cereal box classic"
 msgstr "cereal 상자 클래식"
@@ -1657,7 +1657,7 @@ msgstr ""
 "gameplay는 고전적인 DOOM 공식을 따릅니다: labyrinthine 수준, keycard 퍼즐 및 적의 무리를 가진 빠진 FPS"
 " 활동. 자산은 id Software의 원본과 다르지만, 게임은 동일한 엔진에서 실행되며 동일한 modding 생태계를 지원합니다."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:166
+#: lib/retro_hex_chat/arcade/catalog.ex:167
 #, elixir-autogen, elixir-format
 msgid ""
 "The grandfather of FPS games (1992) — 10 levels of castle-storming action. "
@@ -1689,7 +1689,7 @@ msgid ""
 "The interface is simple and streamlined — left-click does most of the work."
 msgstr "인터페이스는 간단하고 간소화되어 있습니다. 왼쪽 클릭은 대부분의 작업을 수행합니다."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:81
+#: lib/retro_hex_chat/arcade/catalog.ex:82
 #, elixir-autogen, elixir-format
 msgid ""
 "The legendary 1996 cereal box promotion — a kid-friendly total conversion of"
@@ -1711,7 +1711,7 @@ msgid ""
 " work here too."
 msgstr "운동 시스템은 Quake와 동일합니다. — bunny hopping과 strafe 점프는 여기에서 작동합니다."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:183
+#: lib/retro_hex_chat/arcade/catalog.ex:184
 #, elixir-autogen, elixir-format
 msgid ""
 "The official Half-Life demo (1999) — 3 unique levels not found in the full "
@@ -1721,7 +1721,7 @@ msgstr ""
 "공식 Half-Life 데모 (1999) - 전체 게임에서 발견되지 않는 3 독특한 수준. Black Mesa의 지하 실험실을 통해 "
 "싸움. 벨브에 의해 자유롭게 redistributable."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:149
+#: lib/retro_hex_chat/arcade/catalog.ex:150
 #, elixir-autogen, elixir-format
 msgid ""
 "The official Quake II demo (1997) — full 3D FPS with Strogg invasion. Unit 1"
@@ -1731,7 +1731,7 @@ msgstr ""
 "공식 Quake II 데모 (1997) - Strogg 침략과 전체 3D FPS. 단일 플레이어 캠페인의 단위 1. 온라인 FPS를 "
 "정의하는 공유웨어 클래식."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:25
+#: lib/retro_hex_chat/arcade/catalog.ex:26
 #, elixir-autogen, elixir-format
 msgid ""
 "The original Episode 1 of DOOM (1993) — 9 levels of demon-infested corridors"
@@ -1739,7 +1739,7 @@ msgid ""
 msgstr ""
 "DOOM의 원래 에피소드 1 (1993) - 포보에 악마 축제 복도의 9 수준. 모든 것을 시작시키는 shareware 고전."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:123
+#: lib/retro_hex_chat/arcade/catalog.ex:124
 #, elixir-autogen, elixir-format
 msgid ""
 "The original Episode 1 of Quake (1996) — full 3D FPS with Lovecraftian "
@@ -1913,7 +1913,7 @@ msgstr "모든 것을 시도하십시오 - 게임의 퍼즐 논리는 만화 코
 msgid "Turn left / right"
 msgstr "왼쪽 / 오른쪽"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:147
+#: lib/retro_hex_chat/arcade/catalog.ex:148
 #, elixir-autogen, elixir-format
 msgid "Unit 1 — The Demo"
 msgstr "단위 1 — 데모"
@@ -1974,7 +1974,7 @@ msgid ""
 "HEV suit's sprint."
 msgstr "어두운 지역에서 플래시 라이트 (F)를 사용하지만 HEV 소송의 스프린트와 힘을 공유합니다."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:107
+#: lib/retro_hex_chat/arcade/catalog.ex:108
 #, elixir-autogen, elixir-format
 msgid "Viking-themed standalone"
 msgstr "Viking 테마 독립"
@@ -1994,30 +1994,30 @@ msgstr "Viking 테마 독립"
 msgid "W / ↑"
 msgstr "W / ↑"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:128
-#: lib/retro_hex_chat/arcade/catalog.ex:141
+#: lib/retro_hex_chat/arcade/catalog.ex:129
+#: lib/retro_hex_chat/arcade/catalog.ex:142
 #, elixir-autogen, elixir-format
 msgid "WASD move, Mouse aim, Left click fire, E use"
 msgstr "WASD 이동, 마우스 목표, 왼쪽 클릭 화재, E 사용"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:31
-#: lib/retro_hex_chat/arcade/catalog.ex:45
-#: lib/retro_hex_chat/arcade/catalog.ex:59
-#: lib/retro_hex_chat/arcade/catalog.ex:73
-#: lib/retro_hex_chat/arcade/catalog.ex:87
-#: lib/retro_hex_chat/arcade/catalog.ex:101
-#: lib/retro_hex_chat/arcade/catalog.ex:115
+#: lib/retro_hex_chat/arcade/catalog.ex:32
+#: lib/retro_hex_chat/arcade/catalog.ex:46
+#: lib/retro_hex_chat/arcade/catalog.ex:60
+#: lib/retro_hex_chat/arcade/catalog.ex:74
+#: lib/retro_hex_chat/arcade/catalog.ex:88
+#: lib/retro_hex_chat/arcade/catalog.ex:102
+#: lib/retro_hex_chat/arcade/catalog.ex:116
 #, elixir-autogen, elixir-format
 msgid "WASD move, Mouse aim, Left click fire, E use, Space jump"
 msgstr "WASD 이동, 마우스 목표, 왼쪽 클릭 화재, E 사용, 공간 점프"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:155
+#: lib/retro_hex_chat/arcade/catalog.ex:156
 #, elixir-autogen, elixir-format
 msgid ""
 "WASD move, Mouse aim, Left click fire, E use, Space jump, C crouch, R reload"
 msgstr "WASD 이동, 마우스 목표, 왼쪽 클릭 화재, E 사용, 공간 점프, C crouch, R 다시로드"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:189
+#: lib/retro_hex_chat/arcade/catalog.ex:190
 #, elixir-autogen, elixir-format
 msgid ""
 "WASD move, Mouse aim, Left click fire, E use, Space jump, Shift crouch, R "
@@ -2086,7 +2086,7 @@ msgstr ""
 "Wolfenstein 3D (1992) — 첫 번째 사람 슈팅의 할아버지. 에피소드 1: \"Escape from Castle "
 "Wolfenstein\" — 10 미국 스파이 B.J. Blazkowicz는 Nazi 요새에서 자신의 길을 싸웁니다."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:163
+#: lib/retro_hex_chat/arcade/catalog.ex:164
 #, elixir-autogen, elixir-format
 msgid "Wolfenstein 3D: Escape from Castle"
 msgstr "Wolfenstein 3D : 성에서 탈출"

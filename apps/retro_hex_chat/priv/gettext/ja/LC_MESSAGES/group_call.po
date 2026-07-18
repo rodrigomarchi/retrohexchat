@@ -1,4 +1,4 @@
-# "msgid"s in this file come from group_call.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: ja; status: enabled; wave: 1.
+# "msgid"s in this file come from group_call.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=group_call to refresh catalogs.  Locale: ja; status: enabled; wave: 1.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -20,74 +20,64 @@ msgstr "チャンネル必須"
 #: lib/retro_hex_chat/group_call.ex:64
 #, elixir-autogen, elixir-format
 msgid "Channel not found"
-msgstr ""
-"の特長\n"
+msgstr "の特長\n"
 "チャンネルが見つかりません"
 
 #: lib/retro_hex_chat/group_call.ex:55
 #, elixir-autogen, elixir-format
 msgid "Could not create group call"
-msgstr ""
-"の特長\n"
+msgstr "の特長\n"
 "グループコールを作成できません"
 
 #: lib/retro_hex_chat/group_call.ex:59
 #, elixir-autogen, elixir-format
 msgid "Could not start group call"
-msgstr ""
-"の特長\n"
+msgstr "の特長\n"
 "グループコールを開始できません"
 
 #: lib/retro_hex_chat/group_call/policy.ex:112
 #, elixir-autogen, elixir-format
 msgid "Group call is no longer active"
-msgstr ""
-"の特長\n"
+msgstr "の特長\n"
 "グループコールが有効でない"
 
 #: lib/retro_hex_chat/group_call.ex:68
 #, elixir-autogen, elixir-format
 msgid "Group call rate limit reached. Try again in %{count} second."
 msgid_plural "Group call rate limit reached. Try again in %{count} seconds."
-msgstr[0] ""
-"の特長\n"
+msgstr[0] "の特長\n"
 "グループコール率の上限に達しました。 %{count} 秒でもう一度お試しください。"
 
 #: lib/retro_hex_chat/group_call.ex:397
 #, elixir-autogen, elixir-format
 msgid "Group calls are disabled"
-msgstr ""
-"の特長\n"
+msgstr "の特長\n"
 "グループ通話は無効です"
 
 #: lib/retro_hex_chat/group_call/policy.ex:143
 #: lib/retro_hex_chat/group_call/policy.ex:146
 #, elixir-autogen, elixir-format
 msgid "Insufficient privileges"
-msgstr ""
-"の特長\n"
+msgstr "の特長\n"
 "十分な権限"
 
 #: lib/retro_hex_chat/group_call/policy.ex:104
 #, elixir-autogen, elixir-format
 msgid "This channel already has an active group call"
-msgstr ""
-"の特長\n"
+msgstr "の特長\n"
 "このチャネルは既にアクティブなグループコールを持っています"
 
 #: lib/retro_hex_chat/group_call/policy.ex:98
 #, elixir-autogen, elixir-format
 msgid "You are not in this channel"
-msgstr ""
-"の特長\n"
+msgstr "の特長\n"
 "このチャンネルではない場合"
 
 #: lib/retro_hex_chat/group_call/policy.ex:80
 #: lib/retro_hex_chat/group_call/policy.ex:90
 #, elixir-autogen, elixir-format
 msgid "You must be registered to use group calls"
-msgstr ""
-"の特長\n"
+msgstr "の特長\n"
 "グループコールを使用するために登録する必要があります"
 
 #: lib/retro_hex_chat/group_call/policy.ex:123

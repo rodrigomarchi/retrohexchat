@@ -1,4 +1,4 @@
-# "msgid"s in this file come from arcade.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: nl; status: enabled; wave: 3.
+# "msgid"s in this file come from arcade.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=arcade to refresh catalogs.  Locale: nl; status: enabled; wave: 3.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -11,17 +11,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:51
+#: lib/retro_hex_chat/arcade/catalog.ex:52
 #, elixir-autogen, elixir-format
 msgid "32 levels — Doom II compatible"
 msgstr "32 niveaus compatibel met Doom II"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:37
+#: lib/retro_hex_chat/arcade/catalog.ex:38
 #, elixir-autogen, elixir-format
 msgid "36 levels of open-source doom"
 msgstr "36 niveaus van open-source doom"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:109
+#: lib/retro_hex_chat/arcade/catalog.ex:110
 #, elixir-autogen, elixir-format
 msgid ""
 "A Viking-themed total conversion with hand-drawn pixel art. Battle through "
@@ -30,7 +30,7 @@ msgstr ""
 "Een Viking-thema totale conversie met hand getekende pixel art. Strijd door "
 "Noorse-geïnspireerde niveaus met assen, bogen, en runen magie."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:53
+#: lib/retro_hex_chat/arcade/catalog.ex:54
 #, elixir-autogen, elixir-format
 msgid ""
 "A complete free replacement for DOOM II — 32 levels with the Super Shotgun. "
@@ -39,7 +39,7 @@ msgstr ""
 "Een volledige gratis vervanging voor DOOM II  Compatibel met duizenden "
 "community-made PWAD mods."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:136
+#: lib/retro_hex_chat/arcade/catalog.ex:137
 #, elixir-autogen, elixir-format
 msgid ""
 "A complete free replacement for Quake — original levels, art, and music "
@@ -48,7 +48,7 @@ msgstr ""
 "Een volledige gratis vervanger voor Quake originele levels, kunst en muziek "
 "onder BSD licentie. Community made open source content."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:39
+#: lib/retro_hex_chat/arcade/catalog.ex:40
 #, elixir-autogen, elixir-format
 msgid ""
 "A complete free replacement for Ultimate DOOM — 4 episodes, 36 levels. "
@@ -57,14 +57,14 @@ msgstr ""
 "Een volledige gratis vervanging voor Ultimate DOOM 4 afleveringen, 36 "
 "niveaus. Originele kunst, muziek en niveaus onder BSD licentie."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:95
+#: lib/retro_hex_chat/arcade/catalog.ex:96
 #, elixir-autogen, elixir-format
 msgid ""
 "A cyberpunk total conversion — hack through a dystopian future with new "
 "weapons, enemies, and levels. Standalone v1.2 IWAD."
 msgstr "Een cyberpunk totale conversie  Standalone v1.2 IWAD."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:234
+#: lib/retro_hex_chat/arcade/catalog.ex:235
 #, elixir-autogen, elixir-format
 msgid ""
 "A disturbing top-down cyberpunk adventure by Creative Reality. You are Ryan,"
@@ -133,7 +133,7 @@ msgstr ""
 "Arena-stijl lay-outs betekenen dat vijanden kunnen komen uit elke richting "
 "en blijven bewegen."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:172
+#: lib/retro_hex_chat/arcade/catalog.ex:173
 #, elixir-autogen, elixir-format
 msgid "Arrow keys move, Ctrl fire, Space open doors, Shift run, 1-4 weapons"
 msgstr ""
@@ -177,7 +177,7 @@ msgstr ""
 "shotgun, kettinggun, en raketwerper omvat. Het niveauontwerp van John Romero"
 " en Sandy Petersen blijft een masterclass in niet-lineaire FPS kaartontwerp."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:197
+#: lib/retro_hex_chat/arcade/catalog.ex:198
 #, elixir-autogen, elixir-format
 msgid "Beneath a Steel Sky"
 msgstr "Onder een stalen lucht"
@@ -197,7 +197,7 @@ msgstr ""
 " wordt ontvoerd en naar Union City gebracht, een massale, gelaagde metropool"
 " geregeerd door de supercomputer Linc."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:217
+#: lib/retro_hex_chat/arcade/catalog.ex:218
 #, elixir-autogen, elixir-format
 msgid ""
 "British real estate agent John Hacker must defeat the vampire Drascula in "
@@ -208,7 +208,7 @@ msgstr ""
 "hilarische Spaanse punt en klik avontuur vol popcultuur referenties en "
 "absurde humor."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:78
+#: lib/retro_hex_chat/arcade/catalog.ex:79
 #, elixir-autogen, elixir-format
 msgid "Chex Quest"
 msgstr "Chex Quest"
@@ -255,12 +255,12 @@ msgstr ""
 "Combineer inventaris items Sommige puzzels vereisen creatieve item "
 "combinaties."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:215
+#: lib/retro_hex_chat/arcade/catalog.ex:216
 #, elixir-autogen, elixir-format
 msgid "Comedic Dracula parody adventure (1996)"
 msgstr "Comedische Dracula parodie avontuur (1996)"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:249
+#: lib/retro_hex_chat/arcade/catalog.ex:250
 #, elixir-autogen, elixir-format
 msgid "Comic adventure in the Amazon (1995)"
 msgstr "Comic avontuur in de Amazone (1995)"
@@ -344,12 +344,12 @@ msgstr "Druk op CtrlO."
 msgid "Ctrl + F5"
 msgstr "Ctrl + F5"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:198
+#: lib/retro_hex_chat/arcade/catalog.ex:199
 #, elixir-autogen, elixir-format
 msgid "Cyberpunk point & click adventure (1994)"
 msgstr "Cyberpunk punt & klik avontuur (1994)"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:93
+#: lib/retro_hex_chat/arcade/catalog.ex:94
 #, elixir-autogen, elixir-format
 msgid "Cyberpunk total conversion"
 msgstr "Cyberpunk totale conversie"
@@ -363,17 +363,17 @@ msgstr ""
 "Cyborg vijanden kunnen taaier zijn dan klassieke DOOM monsters houden uw "
 "afstand."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:22
+#: lib/retro_hex_chat/arcade/catalog.ex:23
 #, elixir-autogen, elixir-format
 msgid "DOOM: Knee-Deep in the Dead"
 msgstr "Knie-diep in de dood"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:232
+#: lib/retro_hex_chat/arcade/catalog.ex:233
 #, elixir-autogen, elixir-format
 msgid "Dark cyberpunk adventure (1994)"
 msgstr "Donker cyberpunk avontuur (1994)"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:65
+#: lib/retro_hex_chat/arcade/catalog.ex:66
 #, elixir-autogen, elixir-format
 msgid "Deathmatch arena — open source"
 msgstr "Deathmatch arena open source"
@@ -399,7 +399,7 @@ msgstr ""
 msgid "Drag item"
 msgstr "Sleep-item"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:214
+#: lib/retro_hex_chat/arcade/catalog.ex:215
 #, elixir-autogen, elixir-format
 msgid "Drascula: The Vampire Strikes Back"
 msgstr "Drascula: De vampier slaat terug"
@@ -417,7 +417,7 @@ msgstr ""
 " Transsylvanië en moet de vampier graaf Drascula verslaan, die de prachtige "
 "BJ heeft ontvoerd om haar zijn bruid te maken."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:231
+#: lib/retro_hex_chat/arcade/catalog.ex:232
 #, elixir-autogen, elixir-format
 msgid "Dreamweb"
 msgstr "Droomweb"
@@ -459,13 +459,13 @@ msgstr ""
 " soundtrack van Trent Reznor (Nine Inch Nails) draagt bij aan de benauwende "
 "sfeer."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:23
-#: lib/retro_hex_chat/arcade/catalog.ex:121
+#: lib/retro_hex_chat/arcade/catalog.ex:24
+#: lib/retro_hex_chat/arcade/catalog.ex:122
 #, elixir-autogen, elixir-format
 msgid "Episode 1 — The Original"
 msgstr "Aflevering 1 - The Original"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:164
+#: lib/retro_hex_chat/arcade/catalog.ex:165
 #, elixir-autogen, elixir-format
 msgid "Episode 1 — The Shareware Classic"
 msgstr "Aflevering 1 De Shareware Classic"
@@ -492,7 +492,7 @@ msgstr "Aflevering 1 De Shareware Classic"
 msgid "Esc"
 msgstr "Esc"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:200
+#: lib/retro_hex_chat/arcade/catalog.ex:201
 #, elixir-autogen, elixir-format
 msgid ""
 "Escape Union City and uncover your past in this cyberpunk classic by "
@@ -576,7 +576,7 @@ msgstr "Vuurwapen"
 msgid "Flashlight toggle"
 msgstr "Schakelen met zaklamp"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:248
+#: lib/retro_hex_chat/arcade/catalog.ex:249
 #, elixir-autogen, elixir-format
 msgid "Flight of the Amazon Queen"
 msgstr "Vlucht van de Amazonekoningin"
@@ -594,7 +594,7 @@ msgstr ""
 "vliegtuig neerstort in de Amazone jungle terwijl je een beroemde actrice "
 "vervoert."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:67
+#: lib/retro_hex_chat/arcade/catalog.ex:68
 #, elixir-autogen, elixir-format
 msgid ""
 "Free deathmatch-focused maps for DOOM. 32 arena-style levels designed for "
@@ -603,7 +603,7 @@ msgstr ""
 "Gratis deathmatch-gerichte kaarten voor DOOM. 32 arena-stijl niveaus "
 "ontworpen voor snelle multiplayer actie. BSD licentie."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:268
+#: lib/retro_hex_chat/arcade/catalog.ex:269
 #, elixir-autogen, elixir-format
 msgid ""
 "Free the village of Turnvale from the sorceress Selena. Revolution "
@@ -613,7 +613,7 @@ msgstr ""
 "Bevrijd het dorp Turnvale van de tovenares Selena. Revolution Software's "
 "debuutspel met het innovatieve Virtual Theatre systeem met autonome NPC's."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:64
+#: lib/retro_hex_chat/arcade/catalog.ex:65
 #, elixir-autogen, elixir-format
 msgid "FreeDM"
 msgstr "FreeDM"
@@ -638,7 +638,7 @@ msgstr ""
 "Freedoom's vijandelijke ontwerpen verschillen van DOOM's, maar volg "
 "soortgelijke gedragspatronen en leer de nieuwe sprites."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:36
+#: lib/retro_hex_chat/arcade/catalog.ex:37
 #, elixir-autogen, elixir-format
 msgid "Freedoom: Phase 1"
 msgstr "Freedoom: Fase 1"
@@ -656,7 +656,7 @@ msgstr ""
 "licentie. Elke sprite, textuur, geluidseffect, en muziektrack is vanaf nul "
 "opnieuw gecreëerd door de gemeenschap."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:50
+#: lib/retro_hex_chat/arcade/catalog.ex:51
 #, elixir-autogen, elixir-format
 msgid "Freedoom: Phase 2"
 msgstr "Freedoom: Fase 2"
@@ -673,7 +673,7 @@ msgstr ""
 "Shotgun. Alle activa zijn originele community creaties onder de BSD "
 "licentie."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:92
+#: lib/retro_hex_chat/arcade/catalog.ex:93
 #, elixir-autogen, elixir-format
 msgid "HacX: Twitch 'n Kill"
 msgstr "HacX: Twitch 'n Kill"
@@ -689,7 +689,7 @@ msgstr ""
 "die ging standalone. In een dystopische toekomst hack je "
 "bedrijfsbeveiligingssystemen en cyborg vijanden in neon verlichte gangen."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:180
+#: lib/retro_hex_chat/arcade/catalog.ex:181
 #, elixir-autogen, elixir-format
 msgid "Half-Life: Uplink"
 msgstr "Halfleven: uplink"
@@ -803,7 +803,7 @@ msgstr "Laatste gebruikte wapen"
 msgid "Left Click"
 msgstr "Klik links"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:206
+#: lib/retro_hex_chat/arcade/catalog.ex:207
 #, elixir-autogen, elixir-format
 msgid ""
 "Left click interact/walk, Right click examine/verb menu, Drag inventory "
@@ -813,7 +813,7 @@ msgstr ""
 "inventaris items te combineren. F5 opslaan/load, Ctrl+F5 opties, Esc skip "
 "cutscene"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:133
+#: lib/retro_hex_chat/arcade/catalog.ex:134
 #, elixir-autogen, elixir-format
 msgid "LibreQuake"
 msgstr "LibreQuake"
@@ -871,7 +871,7 @@ msgstr ""
 "Luister naar bewakers, je kunt vijanden horen door deuren voordat je ze "
 "opent."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:265
+#: lib/retro_hex_chat/arcade/catalog.ex:266
 #, elixir-autogen, elixir-format
 msgid "Lure of the Temptress"
 msgstr "Lust van de Temptress"
@@ -931,7 +931,7 @@ msgid "Maps are compact and weapon-dense — perfect for quick action sessions."
 msgstr ""
 "Kaarten zijn compact en wapen-dense perfect voor snelle actie sessies."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:266
+#: lib/retro_hex_chat/arcade/catalog.ex:267
 #, elixir-autogen, elixir-format
 msgid "Medieval fantasy adventure (1992)"
 msgstr "Middeleeuwse fantasie avontuur (1992)"
@@ -1041,7 +1041,7 @@ msgstr "Open deuren / gebruik"
 msgid "Open verb menu"
 msgstr "Werkwoordmenu openen"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:134
+#: lib/retro_hex_chat/arcade/catalog.ex:135
 #, elixir-autogen, elixir-format
 msgid "Open-source Quake replacement"
 msgstr "Open-source Quake-vervanging"
@@ -1141,7 +1141,7 @@ msgstr ""
 "Fase 2 niveaus zijn opener en complexer dan fase 1 verkennen grondig voor "
 "geheimen."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:251
+#: lib/retro_hex_chat/arcade/catalog.ex:252
 #, elixir-autogen, elixir-format
 msgid ""
 "Pilot Joe King crash-lands in the Amazon and stumbles into a mad scientist's"
@@ -1153,7 +1153,7 @@ msgstr ""
 "hilarische Indiana Jones-stijl punt & klik avontuur met volledige stem "
 "acteren."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:223
+#: lib/retro_hex_chat/arcade/catalog.ex:224
 #, elixir-autogen, elixir-format
 msgid ""
 "Point & click: left-click interact, right-click examine. Inventory at bottom"
@@ -1162,7 +1162,7 @@ msgstr ""
 "Punt & klik: links-klik interactie, rechts-klik te onderzoeken. Inventaris "
 "onderaan het scherm. F5 save/load, Esc skip cutsceen"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:257
+#: lib/retro_hex_chat/arcade/catalog.ex:258
 #, elixir-autogen, elixir-format
 msgid ""
 "Point & click: left-click interact, right-click examine. Inventory at top of"
@@ -1171,7 +1171,7 @@ msgstr ""
 "Punt & klik: links-klik interactie, rechts-klik te onderzoeken. Inventaris "
 "bovenaan het scherm. F5 save/load, Esc skip cutsceen"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:291
+#: lib/retro_hex_chat/arcade/catalog.ex:292
 #, elixir-autogen, elixir-format
 msgid ""
 "Point & click: left-click interact, right-click examine. Simple, streamlined"
@@ -1180,7 +1180,7 @@ msgstr ""
 "Punt & klik: links-klik interactie, rechts-klik te onderzoeken. Eenvoudige, "
 "gestroomlijnde interface. F5 save/load, Esc skip cutsceen"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:274
+#: lib/retro_hex_chat/arcade/catalog.ex:275
 #, elixir-autogen, elixir-format
 msgid ""
 "Point & click: left-click interact, right-click verb menu. NPCs follow their"
@@ -1189,7 +1189,7 @@ msgstr ""
 "Punt & klik: links-klik interactie, rechts-klik werkwoord menu. NPC's volgen"
 " hun eigen schema's. F5 save/load, Esc skip cutsceen"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:240
+#: lib/retro_hex_chat/arcade/catalog.ex:241
 #, elixir-autogen, elixir-format
 msgid ""
 "Point & click: left-click interact/walk, right-click examine. Inventory at "
@@ -1249,17 +1249,17 @@ msgstr ""
 " zijn cybernetische buitenaardse wezens die mensen oogsten voor delen .. de "
 "lichaam horror elementen geven het spel een uniek verontrustende sfeer."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:146
+#: lib/retro_hex_chat/arcade/catalog.ex:147
 #, elixir-autogen, elixir-format
 msgid "Quake II: The Invasion"
 msgstr "Quake II: De invasie"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:120
+#: lib/retro_hex_chat/arcade/catalog.ex:121
 #, elixir-autogen, elixir-format
 msgid "Quake: Dimension of the Doomed"
 msgstr "Quake: Dimensie van de Verdoemden"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:106
+#: lib/retro_hex_chat/arcade/catalog.ex:107
 #, elixir-autogen, elixir-format
 msgid "REKKR: Sunken Land"
 msgstr "REKKR: Gezonken land"
@@ -1306,7 +1306,7 @@ msgid ""
 "Reload during quiet moments — don't get caught mid-reload in a firefight."
 msgstr "Herladen tijdens rustige momenten"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:285
+#: lib/retro_hex_chat/arcade/catalog.ex:286
 #, elixir-autogen, elixir-format
 msgid ""
 "Rescue your grandfather from underground pirates in this charmingly absurd "
@@ -1495,7 +1495,7 @@ msgstr "Skip cutsceen"
 msgid "Skip dialogue line"
 msgstr "Dialoogregel overslaan"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:282
+#: lib/retro_hex_chat/arcade/catalog.ex:283
 #, elixir-autogen, elixir-format
 msgid "Soltys"
 msgstr "Trouwen"
@@ -1586,7 +1586,7 @@ msgstr ""
 "Strafe-runn (forward + strafe gelijktijdig) maakt u bewegen ~ 40% sneller "
 "dan het uitvoeren van recht."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:283
+#: lib/retro_hex_chat/arcade/catalog.ex:284
 #, elixir-autogen, elixir-format
 msgid "Surreal Polish puzzle adventure (1995)"
 msgstr "Surreal Poolse puzzel avontuur (1995)"
@@ -1641,7 +1641,7 @@ msgstr ""
 "De Granade Launcher is verwoestend in nauwe gangen .. stuiteren granaten "
 "rond hoeken."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:181
+#: lib/retro_hex_chat/arcade/catalog.ex:182
 #, elixir-autogen, elixir-format
 msgid "The Official Demo — 3 Unique Missions"
 msgstr "De officiële demo 3 unieke missies"
@@ -1672,7 +1672,7 @@ msgstr ""
 "De boog is effectief op bereik, maar de pijlen zijn beperkt te richten "
 "zorgvuldig."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:79
+#: lib/retro_hex_chat/arcade/catalog.ex:80
 #, elixir-autogen, elixir-format
 msgid "The cereal box classic"
 msgstr "De klassieke cornflakes doos"
@@ -1829,7 +1829,7 @@ msgstr ""
 "van de originelen van id Software, draait het spel op dezelfde motor en "
 "ondersteunt hetzelfde modding ecosysteem."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:166
+#: lib/retro_hex_chat/arcade/catalog.ex:167
 #, elixir-autogen, elixir-format
 msgid ""
 "The grandfather of FPS games (1992) — 10 levels of castle-storming action. "
@@ -1868,7 +1868,7 @@ msgstr ""
 "De interface is eenvoudig en gestroomlijnd en links-klik doet het meeste "
 "werk."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:81
+#: lib/retro_hex_chat/arcade/catalog.ex:82
 #, elixir-autogen, elixir-format
 msgid ""
 "The legendary 1996 cereal box promotion — a kid-friendly total conversion of"
@@ -1896,7 +1896,7 @@ msgstr ""
 "Het bewegingssysteem is identiek aan Quake Bunny hopping en strafe "
 "springwerk hier ook."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:183
+#: lib/retro_hex_chat/arcade/catalog.ex:184
 #, elixir-autogen, elixir-format
 msgid ""
 "The official Half-Life demo (1999) — 3 unique levels not found in the full "
@@ -1906,7 +1906,7 @@ msgstr ""
 "De officiële Half-Life demo Vecht door Black Mesa's ondergrondse labs. "
 "Gratis herverdeelbaar door Valve."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:149
+#: lib/retro_hex_chat/arcade/catalog.ex:150
 #, elixir-autogen, elixir-format
 msgid ""
 "The official Quake II demo (1997) — full 3D FPS with Strogg invasion. Unit 1"
@@ -1917,7 +1917,7 @@ msgstr ""
 "invasie. Eenheid 1 van de singleplayer campagne. De shareware klassieker die"
 " online FPS gedefinieerd."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:25
+#: lib/retro_hex_chat/arcade/catalog.ex:26
 #, elixir-autogen, elixir-format
 msgid ""
 "The original Episode 1 of DOOM (1993) — 9 levels of demon-infested corridors"
@@ -1926,7 +1926,7 @@ msgstr ""
 "De originele aflevering 1 van DOOM (1993) 9 niveaus van door demonen "
 "geteisterde gangen op Phobos. De shareware klassieker die alles begon."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:123
+#: lib/retro_hex_chat/arcade/catalog.ex:124
 #, elixir-autogen, elixir-format
 msgid ""
 "The original Episode 1 of Quake (1996) — full 3D FPS with Lovecraftian "
@@ -2123,7 +2123,7 @@ msgstr ""
 msgid "Turn left / right"
 msgstr "Links / rechts"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:147
+#: lib/retro_hex_chat/arcade/catalog.ex:148
 #, elixir-autogen, elixir-format
 msgid "Unit 1 — The Demo"
 msgstr "Eenheid 1 De Demo"
@@ -2193,7 +2193,7 @@ msgstr ""
 "Gebruik de zaklamp (F) in donkere gebieden, maar let op het deelt macht met "
 "de sprint van je pak."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:107
+#: lib/retro_hex_chat/arcade/catalog.ex:108
 #, elixir-autogen, elixir-format
 msgid "Viking-themed standalone"
 msgstr "Viking-thema standalone"
@@ -2213,24 +2213,24 @@ msgstr "Viking-thema standalone"
 msgid "W / ↑"
 msgstr "W / ↑"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:128
-#: lib/retro_hex_chat/arcade/catalog.ex:141
+#: lib/retro_hex_chat/arcade/catalog.ex:129
+#: lib/retro_hex_chat/arcade/catalog.ex:142
 #, elixir-autogen, elixir-format
 msgid "WASD move, Mouse aim, Left click fire, E use"
 msgstr "WASD beweging, Muis doel, Linker klik vuur, E gebruik"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:31
-#: lib/retro_hex_chat/arcade/catalog.ex:45
-#: lib/retro_hex_chat/arcade/catalog.ex:59
-#: lib/retro_hex_chat/arcade/catalog.ex:73
-#: lib/retro_hex_chat/arcade/catalog.ex:87
-#: lib/retro_hex_chat/arcade/catalog.ex:101
-#: lib/retro_hex_chat/arcade/catalog.ex:115
+#: lib/retro_hex_chat/arcade/catalog.ex:32
+#: lib/retro_hex_chat/arcade/catalog.ex:46
+#: lib/retro_hex_chat/arcade/catalog.ex:60
+#: lib/retro_hex_chat/arcade/catalog.ex:74
+#: lib/retro_hex_chat/arcade/catalog.ex:88
+#: lib/retro_hex_chat/arcade/catalog.ex:102
+#: lib/retro_hex_chat/arcade/catalog.ex:116
 #, elixir-autogen, elixir-format
 msgid "WASD move, Mouse aim, Left click fire, E use, Space jump"
 msgstr "WASD beweging, Muis richten, Links klik vuur, E gebruik, Spatiesprong"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:155
+#: lib/retro_hex_chat/arcade/catalog.ex:156
 #, elixir-autogen, elixir-format
 msgid ""
 "WASD move, Mouse aim, Left click fire, E use, Space jump, C crouch, R reload"
@@ -2238,7 +2238,7 @@ msgstr ""
 "WASD beweging, Muis richten, Links klik vuur, E gebruik, Spatiesprong, C "
 "crouch, R herladen"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:189
+#: lib/retro_hex_chat/arcade/catalog.ex:190
 #, elixir-autogen, elixir-format
 msgid ""
 "WASD move, Mouse aim, Left click fire, E use, Space jump, Shift crouch, R "
@@ -2316,7 +2316,7 @@ msgstr ""
 "\"Escape from Castle Wolfenstein\" 10 niveaus van kasteel-stormende actie "
 "als Amerikaanse spion B.J. Blazkowicz vecht zijn weg uit een nazi fort."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:163
+#: lib/retro_hex_chat/arcade/catalog.ex:164
 #, elixir-autogen, elixir-format
 msgid "Wolfenstein 3D: Escape from Castle"
 msgstr "Wolfenstein 3D: Ontsnappen uit Castle"

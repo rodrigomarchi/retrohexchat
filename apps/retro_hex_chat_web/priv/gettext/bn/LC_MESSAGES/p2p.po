@@ -1,4 +1,4 @@
-# "msgid"s in this file come from p2p.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: bn; status: enabled; wave: 3.
+# "msgid"s in this file come from p2p.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=p2p to refresh catalogs.  Locale: bn; status: enabled; wave: 3.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -36,7 +36,7 @@ msgstr "(আপনি)"
 msgid "0 B/s"
 msgstr "0 B/s"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:108
+#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:124
 #, elixir-autogen, elixir-format
 msgid "Accept"
 msgstr "গ্রহণ করুন"
@@ -46,101 +46,106 @@ msgstr "গ্রহণ করুন"
 msgid "Audio Call"
 msgstr "অডিও কল"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:118
-#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:180
+#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:133
+#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:209
 #, elixir-autogen, elixir-format
 msgid "Cancel"
 msgstr "বাতিল"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:128
+#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:158
 #, elixir-autogen, elixir-format
 msgid "Cancelled"
 msgstr "বাতিল করা হয়েছে"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:131
+#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:161
 #, elixir-autogen, elixir-format
 msgid "Cancelled by %{nickname}"
 msgstr "বাতিল করা হয়েছে %{nickname}"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:75
+#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:90
 #, elixir-autogen, elixir-format
 msgid "Complete"
 msgstr "পুরোদমে"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:519
-#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:370
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:609
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:374
 #, elixir-autogen, elixir-format
 msgid "Connected"
 msgstr "সংযোগ"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:373
-#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:392
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:377
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:396
 #, elixir-autogen, elixir-format
 msgid "Connecting..."
 msgstr "সংযোগ স্থাপন করা হচ্ছে..."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:805
-#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:396
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:880
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:400
 #, elixir-autogen, elixir-format
 msgid "Disconnected"
 msgstr "বিচ্ছিন্ন"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:92
-#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:387
+#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:107
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:391
 #, elixir-autogen, elixir-format
 msgid "Failed"
 msgstr "ব্যর্থ"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:91
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:366
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:104
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:409
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:667
 #: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:303
 #, elixir-autogen, elixir-format
 msgid "File"
 msgstr "ফাইল"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:418
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:422
 #, elixir-autogen, elixir-format
 msgid "In Call"
 msgstr "কল"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:95
+#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:110
 #, elixir-autogen, elixir-format
 msgid "Pending..."
 msgstr "অসমাপ্ত"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:809
-#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:399
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:884
+#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:156
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:403
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:350
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:221
 #, elixir-autogen, elixir-format
 msgid "Ready"
 msgstr "প্রস্তুত"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:809
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:816
-#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:126
-#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:409
-#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:412
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:884
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:891
+#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:142
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:413
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:416
 #, elixir-autogen, elixir-format
 msgid "Receiving"
 msgstr "ই-মেইল আহরণ করা হচ্ছে"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:380
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:384
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:305
 #, elixir-autogen, elixir-format
 msgid "Reconnecting"
 msgstr "পুনরায় সংযোগ স্থাপন করা হচ্ছে"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:378
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:382
 #, elixir-autogen, elixir-format
 msgid "Reconnecting (%{attempt}/3)"
 msgstr "পুনরায় সংযোগ স্থাপন করা হচ্ছে%{attempt}/3)"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:85
+#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:100
 #, elixir-autogen, elixir-format
 msgid "Rejected"
 msgstr "প্রত্যাখ্যান করা হয়েছে"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:125
-#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:406
-#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:415
+#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:141
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:410
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:419
 #, elixir-autogen, elixir-format
 msgid "Sending"
 msgstr "আরোহী"
@@ -150,7 +155,7 @@ msgstr "আরোহী"
 msgid "Starting"
 msgstr "আরম্ভ করা হচ্ছে %s"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:363
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:365
 #, elixir-autogen, elixir-format
 msgid "Starting call..."
 msgstr "আরম্ভ করা হচ্ছে..."
@@ -170,146 +175,156 @@ msgstr "যাচাই করা হচ্ছে..."
 msgid "Video Call"
 msgstr "ভিডিও কল ( V)"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:402
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:406
 #, elixir-autogen, elixir-format
 msgid "Waiting..."
 msgstr "অপেক্ষা করা হচ্ছে ..."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:838
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:913
 #, elixir-autogen, elixir-format
 msgid "%{count} tracks"
 msgstr "%{count} ট্র্যাক"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:249
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:282
 #, elixir-autogen, elixir-format
 msgid "%{n} fps"
 msgstr "%{n} % 1 সেকেন্ড"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:174
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:194
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:201
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:256
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:263
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:453
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:460
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:195
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:221
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:228
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:289
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:296
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:543
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:550
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:687
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:688
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:710
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:711
 #, elixir-autogen, elixir-format
 msgid "%{n} kbps"
 msgstr "%{n} কিলোবাইট/সেকেন্ড"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:153
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:160
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:215
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:174
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:181
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:242
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:441
 #, elixir-autogen, elixir-format
 msgid "%{n} ms"
 msgstr "%{n} মিটার"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:167
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:208
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:270
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:188
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:235
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:303
 #, elixir-autogen, elixir-format
 msgid "%{n}%"
 msgstr "%{n}%"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:636
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:788
 #, elixir-autogen, elixir-format
 msgid "%{w}×%{h}"
 msgstr "%{w}×%{h}"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:259
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:275
 #, elixir-autogen, elixir-format
 msgid "1:1"
 msgstr "1:1"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:513
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:603
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:686
 #, elixir-autogen, elixir-format
 msgid "Active"
 msgstr "সক্রিয়"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:70
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:184
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:536
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:80
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:206
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:626
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:656
 #, elixir-autogen, elixir-format
 msgid "Audio"
 msgstr "অডিও"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:142
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:156
 #, elixir-autogen, elixir-format
 msgid "Audio and data channels can keep running."
 msgstr "অডিও এবং তথ্য চ্যানেল চলমান থাকতে পারে।"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:815
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:890
 #, elixir-autogen, elixir-format
 msgid "Audio call active"
 msgstr "অডিও কল সক্রিয়"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:848
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:923
 #, elixir-autogen, elixir-format
 msgid "Audio session"
 msgstr "অডিও সেশান"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:515
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:545
 #, elixir-autogen, elixir-format
 msgid "Auto layout"
 msgstr "স্বয়ংক্রিয় বিন্যাস"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:552
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:642
 #, elixir-autogen, elixir-format
 msgid "Bandwidth"
 msgstr "ব্যান্ডউইথ"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:551
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:641
 #, elixir-autogen, elixir-format
 msgid "CPU"
 msgstr "সি- পি- ইউ"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:537
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:627
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:166
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:352
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:94
 #, elixir-autogen, elixir-format
 msgid "Call"
 msgstr "কল"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:532
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:622
 #, elixir-autogen, elixir-format
 msgid "Call %{duration}"
 msgstr "কল %{duration}"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:557
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:870
-#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:127
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:647
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:945
+#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:129
 #, elixir-autogen, elixir-format
 msgid "Camera"
 msgstr "ক্যামেরা"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:239
+#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:268
 #, elixir-autogen, elixir-format
 msgid "Camera preview is off"
 msgstr "ক্যামেরা প্রাকদর্শন বন্ধ হয়ে গেছে"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:846
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:921
 #, elixir-autogen, elixir-format
 msgid "Camera session"
 msgstr "ক্যামেরা সচল"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:173
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:194
 #, elixir-autogen, elixir-format
 msgid "Capacity"
 msgstr "ধারণক্ষমতা"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:780
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:855
 #, elixir-autogen, elixir-format
 msgid "Change self view"
 msgstr "প্রদর্শন ক্ষেত্র পরিবর্তন করুন"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:219
+#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:248
 #, elixir-autogen, elixir-format
 msgid "Checking devices"
 msgstr "ডিভাইস পরীক্ষা করা হচ্ছে"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:561
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:651
 #, elixir-autogen, elixir-format
 msgid "Closed"
 msgstr "বন্ধ"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:555
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:585
 #, elixir-autogen, elixir-format
 msgid "Compact"
 msgstr "সংক্ষিপ্ত"
@@ -319,165 +334,168 @@ msgstr "সংক্ষিপ্ত"
 msgid "Connect with %{peer}"
 msgstr "সংযোগ স্থাপন করুন %{peer}"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:560
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:650
 #, elixir-autogen, elixir-format
 msgid "Connecting"
 msgstr "সংযোগ স্থাপন করা হচ্ছে"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:130
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:145
 #, elixir-autogen, elixir-format
 msgid "Connection"
 msgstr "সংযোগ"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:607
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:759
 #, elixir-autogen, elixir-format
 msgid "Data currently being received from the peer, in kilobits per second."
 msgstr ""
 "বর্তমানে সঙ্গীসাথিদের কাছ থেকে তথ্য পাওয়া যাচ্ছে, প্রতি সেকেন্ডে কিলোবিট।"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:610
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:762
 #, elixir-autogen, elixir-format
 msgid "Data currently being sent to the peer, in kilobits per second."
 msgstr "বর্তমানে সঙ্গীসাথিদের কাছে তথ্য পাঠানো হচ্ছে, প্রতি সেকেন্ডে কিলোবিট।"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:243
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:254
 #, elixir-autogen, elixir-format
 msgid "Direct call with %{peer}"
 msgstr "সরাসরি কল %{peer}"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:454
-#, elixir-autogen, elixir-format
-msgid "Dock statistics"
-msgstr "ডক সংক্রান্ত পরিসংখ্যান"
-
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:193
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:255
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:220
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:288
 #, elixir-autogen, elixir-format
 msgid "Download"
 msgstr "ডাউনলোড করা হয়েছে"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:601
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:753
 #, elixir-autogen, elixir-format
 msgid ""
 "Estimated bandwidth available for sending to the peer, in kilobits per "
 "second."
 msgstr "দ্রুতগতিতে ব্যান্ডউইডক্সের জন্য প্রস্তুত থাকা"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:545
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:635
 #, elixir-autogen, elixir-format
 msgid "Excellent"
 msgstr "উৎকৃষ্ট"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:464
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:445
 #, elixir-autogen, elixir-format
 msgid "Expand call window"
 msgstr "উইন্ডো প্রসারণযোগ্য উইন্ডো"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:547
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:637
 #, elixir-autogen, elixir-format
 msgid "Fair"
 msgstr "অনুকূল"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:305
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:345
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:353
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:97
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:227
 #, elixir-autogen, elixir-format
 msgid "Files"
 msgstr "ফাইল"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:774
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:849
 #, elixir-autogen, elixir-format
 msgid "Focus peer video"
 msgstr "পিয়ার ভিডিও ফোকাস"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:369
+#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:413
 #, elixir-autogen, elixir-format
 msgid "Force WebRTC through the relay to hide peer IPs. Latency can increase."
 msgstr ""
 "বলপূর্বক ওয়েবআরটিসি রিলেবল আইপি লুকিয়ে রাখতে বাধ্য করে। মর্যাদা বৃদ্ধি "
 "করতে পারে।"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:248
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:281
 #, elixir-autogen, elixir-format
 msgid "Frame rate"
 msgstr "ফ্রেমের হার"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:619
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:771
 #, elixir-autogen, elixir-format
 msgid "Frames per second of the received video. Higher is smoother."
 msgstr "ভিডিওর মধ্যে প্রতি সেকেন্ডে প্রতি সেকেন্ডে ইনপুটের সংখ্যা। আরও উঁচু."
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:276
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:309
 #, elixir-autogen, elixir-format
 msgid "Freezes"
 msgstr "শূণ্য স্থান"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:84
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:373
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:96
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:416
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:666
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:354
 #, elixir-autogen, elixir-format
 msgid "Game"
 msgstr "খেলা"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:294
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:328
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:100
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:230
 #, elixir-autogen, elixir-format
 msgid "Games"
 msgstr "খেলা"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:546
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:636
 #, elixir-autogen, elixir-format
 msgid "Good"
 msgstr "ভাল"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:778
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:853
 #, elixir-autogen, elixir-format
 msgid "Hide self view"
 msgstr "নিজস্ব প্রদর্শন আড়াল করুন"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:622
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:774
 #, elixir-autogen, elixir-format
 msgid "How many times the received video stalled momentarily."
 msgstr "কত বার ভিডিও পাওয়া যায়।"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:513
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:603
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:658
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:668
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:686
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:702
 #, elixir-autogen, elixir-format
 msgid "Idle"
 msgstr "নিষ্ক্রিয়"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:85
-#, elixir-autogen, elixir-format
-msgid "Initial media"
-msgstr "প্রারম্ভিক মিডিয়া"
-
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:159
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:214
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:180
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:241
 #, elixir-autogen, elixir-format
 msgid "Jitter"
 msgstr "মালিক"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:320
+#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:364
 #, elixir-autogen, elixir-format
 msgid "Join session"
 msgstr "সেশান যোগ দিন"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:521
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:611
 #, elixir-autogen, elixir-format
 msgid "Joining"
 msgstr "যোগ দিন"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:152
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:173
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:440
 #, elixir-autogen, elixir-format
 msgid "Latency"
 msgstr "স্বচ্ছতা"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:283
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:316
 #, elixir-autogen, elixir-format
 msgid "Limited by"
 msgstr "সীমা অতিক্রান্ত"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:146
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:167
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:433
 #, elixir-autogen, elixir-format
 msgid "MOS %{score}"
 msgstr "MOS %{score}"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:573
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:725
 #, elixir-autogen, elixir-format
 msgid ""
 "Mean Opinion Score (1-5): an overall call-quality estimate from latency, "
@@ -486,191 +504,190 @@ msgstr ""
 "মানে মতামতের স্কোর (১-৫): লতিষ্য, জেপি এবং ক্ষতির পরিমাণ সম্পূর্ণভাবে সমান। "
 "৫টা অসাধারণ; নিচে ৩.৫ জন খারাপ লাগছে।"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:349
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:549
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:395
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:639
 #, elixir-autogen, elixir-format
 msgid "Measuring"
 msgstr "অনুক্রম"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:466
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:556
 #, elixir-autogen, elixir-format
 msgid "Messages"
 msgstr "বার্তা"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:869
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:944
 #, elixir-autogen, elixir-format
 msgid "Mic"
 msgstr "মাউস"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:118
+#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:120
 #, elixir-autogen, elixir-format
 msgid "Microphone"
 msgstr "মাইক্রোফোন"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:465
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:446
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:521
 #, elixir-autogen, elixir-format
 msgid "Mini call window"
 msgstr "ছোট আড্ডা উইন্ডো"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:777
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:852
 #, elixir-autogen, elixir-format
 msgid "Move self view to picture-in-picture"
 msgstr "ছবির-মধ্যে-ছবি প্রদর্শন করা হবে"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:64
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:73
 #, elixir-autogen, elixir-format
 msgid "Network"
 msgstr "নেটওয়ার্ক"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:553
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:643
 #, elixir-autogen, elixir-format
 msgid "Nothing"
 msgstr "শূণ্য"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:559
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:649
 #, elixir-autogen, elixir-format
 msgid "Open"
 msgstr "খুলুন"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:554
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:644
 #, elixir-autogen, elixir-format
 msgid "Other"
 msgstr "অন্যান্য"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:871
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:946
 #, elixir-autogen, elixir-format
 msgid "Output"
 msgstr "আউটপুট"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:566
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:718
 #, elixir-autogen, elixir-format
 msgid ""
 "Overall connection health, rated from Excellent to Poor based on the MOS "
 "score."
 msgstr "মোট সংযোগ স্বাস্থ্য, যা এমওএস-এর স্কোর অনুসারে দরিদ্রের চেয়ে ভালো।"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:46
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:50
 #, elixir-autogen, elixir-format
 msgid "P2P call"
 msgstr "P2P কল"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:511
-#, elixir-autogen, elixir-format
-msgid "P2P layout and quality"
-msgstr "P2P বহির্বিন্যাস বিন্যাস এবং গুণমান"
-
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:361
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:374
 #, elixir-autogen, elixir-format
 msgid "P2P media controls"
 msgstr "P2P মিডিয়া নিয়ন্ত্রণ"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:58
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:62
 #, elixir-autogen, elixir-format
 msgid "P2P media is offline"
 msgstr "P2P মিডিয়া অফ-লাইন"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:340
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:380
 #, elixir-autogen, elixir-format
 msgid "P2P session with %{peer}"
 msgstr "P2P সেশানের সাথে %{peer}"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:166
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:207
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:269
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:187
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:234
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:302
 #, elixir-autogen, elixir-format
 msgid "Packet loss"
 msgstr "প্যাকেট"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:355
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:401
 #, elixir-autogen, elixir-format
 msgid "Peer offline"
 msgstr "সমকক্ষ অফ-লাইন"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:354
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:400
 #, elixir-autogen, elixir-format
 msgid "Peer online"
 msgstr "সমকক্ষ অন-লাইন"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:520
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:610
 #, elixir-autogen, elixir-format
 msgid "Pending"
 msgstr "অসমাপ্ত"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:594
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:746
 #, elixir-autogen, elixir-format
 msgid ""
 "Percentage of packets that never arrived. Above ~3% noticeably degrades "
 "quality."
 msgstr "প্রাপ্ত প্যাকেটের শতাংশ আগে আসে নি। উপরে: ৩% বিজ্ঞপ্তিমূলক গুণগত মান।"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:548
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:638
 #, elixir-autogen, elixir-format
 msgid "Poor"
 msgstr "কম"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:300
+#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:329
 #, elixir-autogen, elixir-format
 msgid "Prepare P2P Invite"
 msgstr "P2P আমন্ত্রণ প্রস্তুত করুন"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:215
+#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:244
 #, elixir-autogen, elixir-format
 msgid "Preview"
 msgstr "প্রাকদর্শন"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:156
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:384
+#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:184
 #, elixir-autogen, elixir-format
 msgid "Privacy relay"
 msgstr "গোপনীয়তা রিলে"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:306
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:324
 #, elixir-autogen, elixir-format
 msgid "Ready for private media"
 msgstr "ব্যক্তিগত মিডিয়ার জন্য প্রস্তুত"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:459
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:549
 #, elixir-autogen, elixir-format
 msgid "Received"
 msgstr "গৃহীত"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:847
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:922
 #, elixir-autogen, elixir-format
 msgid "Recv-only session"
 msgstr "শুধুমাত্র পাঠযোগ্য সেশান"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:376
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:419
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:355
 #, elixir-autogen, elixir-format
 msgid "Relay"
 msgstr "পরিবৃত্ত"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:373
+#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:417
 #, elixir-autogen, elixir-format
 msgid "Relay privacy is unavailable until TURN is configured on this server."
 msgstr ""
 "এই সার্ভারের মধ্যে কোনো পরিচয় প্রমাণ না করা অবধি টাইম- আউটরন কনফিগার করা "
 "হয়নি।"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:234
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:267
 #, elixir-autogen, elixir-format
 msgid "Resolution"
 msgstr "রেসোলিউশন"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:613
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:765
 #, elixir-autogen, elixir-format
 msgid "Resolution of the received video, in pixels."
 msgstr "ভিডিওর রেজল্যুশন, পিক্সেল অনুযায়ী নির্ধারিত"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:257
+#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:286
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:268
 #, elixir-autogen, elixir-format
 msgid "Retry"
 msgstr "পুনরায় চেষ্টা করুন"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:773
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:848
 #, elixir-autogen, elixir-format
 msgid "Return to split layout"
 msgstr "বিভক্ত করার জন্য চিহ্নিত বিন্যাসের তালিকা"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:580
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:732
 #, elixir-autogen, elixir-format
 msgid ""
 "Round-trip time for data to reach the peer and return. Lower is better; "
@@ -679,121 +696,122 @@ msgstr ""
 "সঙ্গীসাথিদের কাছে গিয়ে ফিরে আসার জন্য রাউন্ড-ত্রি-র সময়। নিচে নামার চেয়ে "
 "ভালো; ০৫০ মিটার বেশি।"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:534
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:556
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:624
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:646
 #, elixir-autogen, elixir-format
 msgid "Screen"
 msgstr "পর্দা"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:529
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:619
 #, elixir-autogen, elixir-format
 msgid "Screen %{duration}"
 msgstr "পর্দা %{duration}"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:842
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:917
 #, elixir-autogen, elixir-format
 msgid "Screen session"
 msgstr "পর্দা"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:440
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:651
 #, elixir-autogen, elixir-format
 msgid "Send clap"
 msgstr "কল পুনরুদ্ধার করুন"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:433
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:649
 #, elixir-autogen, elixir-format
 msgid "Send heart reaction"
 msgstr "হার্টের প্রতিক্রিয়া পাঠাও"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:319
+#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:363
 #, elixir-autogen, elixir-format
 msgid "Send invite"
 msgstr "আমন্ত্রণ পাঠাও"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:441
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:652
 #, elixir-autogen, elixir-format
 msgid "Send laugh"
 msgstr "হেসে নিন"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:438
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:650
 #, elixir-autogen, elixir-format
 msgid "Send thumbs up"
 msgstr "বুড়ো আঙ্গুল রাখুন"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:442
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:653
 #, elixir-autogen, elixir-format
 msgid "Send wow"
 msgstr "ওয়াও পাঠাও"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:452
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:542
 #, elixir-autogen, elixir-format
 msgid "Sent"
 msgstr "প্রেরণ করা"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:522
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:612
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:127
 #, elixir-autogen, elixir-format
 msgid "Session"
 msgstr "সেশান"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:420
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:422
 #, elixir-autogen, elixir-format
 msgid "Share screen"
 msgstr "শেয়ার"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:779
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:854
 #, elixir-autogen, elixir-format
 msgid "Show self view as tile"
 msgstr "বার্তা তালিকা - নতুন বার্তা"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:241
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:274
 #, elixir-autogen, elixir-format
 msgid "Source"
 msgstr "উৎস"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:545
-#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:136
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:575
+#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:138
 #, elixir-autogen, elixir-format
 msgid "Speaker"
 msgstr "স্পিকার"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:535
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:565
 #, elixir-autogen, elixir-format
 msgid "Split"
 msgstr "স্প্লিট"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:301
+#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:330
 #, elixir-autogen, elixir-format
 msgid "Start P2P Session"
 msgstr "P2P সেশন আরম্ভ করো"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:317
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:335
 #, elixir-autogen, elixir-format
 msgid "Start P2P media"
 msgstr "P2P মিডিয়া আরম্ভ করুন"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:99
+#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:100
 #, elixir-autogen, elixir-format
 msgid "Start with camera"
 msgstr "ক্যামেরা সহযোগে আরম্ভ করা হবে"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:92
+#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:93
 #, elixir-autogen, elixir-format
 msgid "Start with microphone"
 msgstr "মাইক্রোফোন সহযোগে আরম্ভ করা হবে"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:188
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:229
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:446
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:215
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:262
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:536
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "অবস্থা"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:419
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:421
 #, elixir-autogen, elixir-format
 msgid "Stop sharing screen"
 msgstr "পর্দা লক করার ব্যবস্থা বন্ধ করা হবে"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:305
+#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:334
 #, elixir-autogen, elixir-format
 msgid ""
 "The invite is sent after this setup. These media defaults apply when your "
@@ -802,7 +820,7 @@ msgstr ""
 "এই বৈশিষ্ট্যের পরে আমন্ত্রণ বার্তা পাঠানো হয়েছে। আপনার সঙ্গী যখন গ্রহণ করেন"
 " তখন এই মিডিয়া ডিফল্ট হয়ে যায়।"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:312
+#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:341
 #, elixir-autogen, elixir-format
 msgid ""
 "The private message, files, games and statistics become available after you "
@@ -811,54 +829,55 @@ msgstr ""
 "আপনি যোগদান করার পর ব্যক্তিগত বার্তা, ফাইল, খেলা ও পরিসংখ্যান উপলব্ধ করা "
 "হয়।"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:625
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:777
 #, elixir-autogen, elixir-format
 msgid "Total messages exchanged over this feature's data channel."
 msgstr ""
 "এই বৈশিষ্ট্য বিশিষ্ট তথ্য চ্যানেলের মধ্যে উপস্থিত মোট বার্তা বিনিময় করা হয়"
 " ।"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:104
+#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:106
 #, elixir-autogen, elixir-format
 msgid "Turn both off to join receive-only and start media later."
 msgstr "তারা উভয়ে কেবল মাত্র গ্রহণ করে মিডিয়া শুরু করে।"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:200
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:262
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:227
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:295
 #, elixir-autogen, elixir-format
 msgid "Upload"
 msgstr "আপলোড"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:587
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:739
 #, elixir-autogen, elixir-format
 msgid ""
 "Variation in packet arrival timing. High jitter causes choppy audio and "
 "video."
 msgstr "প্যাকেটে পরিবর্তন আসছে। হাই পিএমপি অডিও এবং ভিডিওর মাধ্যমে।"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:77
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:225
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:535
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:88
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:253
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:625
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:657
 #, elixir-autogen, elixir-format
 msgid "Video"
 msgstr "ভিডিও"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:814
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:889
 #, elixir-autogen, elixir-format
 msgid "Video call active"
 msgstr "ভিডিও আউটপুট সক্রিয়"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:105
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:119
 #, elixir-autogen, elixir-format
 msgid "What do these mean?"
 msgstr "এর মানে কী?"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:616
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:768
 #, elixir-autogen, elixir-format
 msgid "Whether the active video RTP is camera or shared screen."
 msgstr "ক্যামেরা অথবা শেয়ার করা ভিডিও যথেচ্ছভাবে প্রস্তুত করা হয়েছে কি না।"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:629
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:781
 #, elixir-autogen, elixir-format
 msgid ""
 "Why quality was capped: CPU means your device is too busy; Bandwidth means "
@@ -867,18 +886,19 @@ msgstr ""
 "কেন গুণগত মান ক্যাপড: CPU-র ব্যবহার খুবই ব্যস্ত; ব্যান্ডউইথের ক্ষেত্রে "
 "নেটওয়ার্ক খুবই ধীর।"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:187
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:207
 #, elixir-autogen, elixir-format
 msgid "You"
 msgstr "আপনি"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:186
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:206
 #, elixir-autogen, elixir-format
 msgid "Your screen"
 msgstr "আপনার পর্দা"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:802
-#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:293
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:877
+#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:322
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:190
 #, elixir-autogen, elixir-format
 msgid "peer"
 msgstr "পিয়ার"
@@ -887,3 +907,367 @@ msgstr "পিয়ার"
 #, elixir-autogen, elixir-format
 msgid "you"
 msgstr "তুমি"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:163
+#, elixir-autogen, elixir-format
+msgid "Direct P2P topology"
+msgstr "সরাসরি P2Pগেশন"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:385
+#, elixir-autogen, elixir-format
+msgid "Direct or relay"
+msgstr "সরাসরি অথবা রিলেক্স"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:194
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:277
+#, elixir-autogen, elixir-format
+msgid "End"
+msgstr "সমাপ্তি"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:185
+#, elixir-autogen, elixir-format
+msgid "Focus"
+msgstr "ফোকাস"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:347
+#, elixir-autogen, elixir-format
+msgid "Invite"
+msgstr "অদৃশ্য"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:348
+#, elixir-autogen, elixir-format
+msgid "Link"
+msgstr "লিংক"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:349
+#, elixir-autogen, elixir-format
+msgid "Live"
+msgstr "লাইভ"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:52
+#, elixir-autogen, elixir-format
+msgid "P2P"
+msgstr "P2P"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:42
+#, elixir-autogen, elixir-format
+msgid "P2P Session"
+msgstr "আলাপনের মধ্যে P2P সেশন"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:139
+#, elixir-autogen, elixir-format
+msgid "P2P activity"
+msgstr "P2P কর্ম"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:541
+#, elixir-autogen, elixir-format
+msgid "P2P layout"
+msgstr "P2P বিন্যাস"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:646
+#, elixir-autogen, elixir-format
+msgid "P2P reactions"
+msgstr "পি২পি প্রতিক্রিয়া"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:93
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:94
+#, elixir-autogen, elixir-format
+msgid "P2P session summary"
+msgstr "P2P সেশানের সংক্ষিপ্ত বিবরণ"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:368
+#, elixir-autogen, elixir-format
+msgid "P2P session with %{peer} - %{facets}"
+msgstr "%{peer}-এর সাথে P2P সেশন - %{facets}"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:485
+#, elixir-autogen, elixir-format
+msgid "P2P view and window controls"
+msgstr "P2P প্রদর্শন ও উইন্ডো নিয়ন্ত্রণ ব্যবস্থা"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:495
+#, elixir-autogen, elixir-format
+msgid "P2P window controls"
+msgstr "P2P উইন্ডো নিয়ন্ত্রণ"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:131
+#, elixir-autogen, elixir-format
+msgid "Quality"
+msgstr "গুণমান"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:639
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:640
+#, elixir-autogen, elixir-format
+msgid "Reactions"
+msgstr "প্রতিক্রিয়া"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:151
+#, elixir-autogen, elixir-format
+msgid "Session ready"
+msgstr "সেশন প্রস্তুত"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:176
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:103
+#, elixir-autogen, elixir-format
+msgid "Stats"
+msgstr "পরিসংখ্যান"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:356
+#, elixir-autogen, elixir-format
+msgid ""
+"When the network allows it, packets travel browser-to-browser instead of "
+"through the conference server."
+msgstr ""
+"নেটওয়ার্ক যখন এটি অনুমোদন করে, প্যাকেটের প্যাকেট ব্রাউজারের পরিবর্তে "
+"কনফারেন্স সার্ভারের মাধ্যমে."
+
+#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:349
+#, elixir-autogen, elixir-format
+msgid ""
+"Your browser uses the relay path for this session, while the session still "
+"stays one-to-one."
+msgstr ""
+"আপনার ব্রাউজার এই সেশনের জন্য রিলেপ রাস্তা ব্যবহার করে, কিন্তু সেশানটি এখনো "
+"এক-টু- একের বেশি থাকে।"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:382
+#, elixir-autogen, elixir-format
+msgid "privacy relay active"
+msgstr "ব্যক্তিগত পরিবাহক সক্রিয়"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:443
+#, elixir-autogen, elixir-format
+msgid "%{jitter} ms jitter / %{loss}% loss"
+msgstr "%{jitter} মাস অনুযায়ী ( M) %{loss}ক্ষতি"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:678
+#, elixir-autogen, elixir-format
+msgid "%{latency} ms / %{loss}% loss"
+msgstr "%{latency} মিটার/সেকেন্ড %{loss}ক্ষতি"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:693
+#, elixir-autogen, elixir-format
+msgid "%{source} / %{resolution} / %{fps} fps"
+msgstr "%{source} / %{resolution} / %{fps} % 1 সেকেন্ড"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:685
+#, elixir-autogen, elixir-format
+msgid "%{state} / %{down} down / %{up} up"
+msgstr "%{state} / %{down} - নিচে %{up} উপরে"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:708
+#, elixir-autogen, elixir-format
+msgid "%{state} / %{sent} sent / %{received} received"
+msgstr "%{state} / %{sent} প্রেরণ / %{received} গৃহীত"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:701
+#, elixir-autogen, elixir-format
+msgid "%{state} / %{source}"
+msgstr "%{state} / %{source}"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:119
+#, elixir-autogen, elixir-format
+msgid "Accept incoming file"
+msgstr "ফাইল গ্রহণ করা হবে"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:654
+#, elixir-autogen, elixir-format
+msgid "Audio + Video"
+msgstr "অডিও+ ভিডিও"
+
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:308
+#, elixir-autogen, elixir-format
+msgid "Automatic recovery did not reconnect. Retry or end the session."
+msgstr "স্বয়ংক্রিয় পুনরুদ্ধার পুনরায় করা সম্ভব হয়নি । সেশানের সমাপ্তি"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:671
+#, elixir-autogen, elixir-format
+msgid "Both live"
+msgstr "উভয় লাইভ"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:128
+#, elixir-autogen, elixir-format
+msgid "Cancel file transfer"
+msgstr "ফাইল বিনিময়ের কাজ বাতিল করুন"
+
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:304
+#, elixir-autogen, elixir-format
+msgid "Connection needs attention"
+msgstr "সংযোগ আবশ্যক"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:461
+#, elixir-autogen, elixir-format
+msgid "Data"
+msgstr "তথ্য"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:423
+#, elixir-autogen, elixir-format
+msgid "Direct preferred"
+msgstr "সরাসরি পছন্দ"
+
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:76
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:271
+#, elixir-autogen, elixir-format
+msgid "End P2P session"
+msgstr "P2P সেশন শেষ করুন"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:674
+#, elixir-autogen, elixir-format
+msgid "File live"
+msgstr "ফাইল"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:664
+#, elixir-autogen, elixir-format
+msgid "Game + File"
+msgstr "খেলা + ফাইল"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:675
+#, elixir-autogen, elixir-format
+msgid "Game + files"
+msgstr "খেলা + ফাইল"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:673
+#, elixir-autogen, elixir-format
+msgid "Game live"
+msgstr "খেলার কমান্ড"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:431
+#, elixir-autogen, elixir-format
+msgid "Health"
+msgstr "স্বাস্থ্য"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:145
+#, elixir-autogen, elixir-format
+msgid "Incoming file offer"
+msgstr "আগমনকারী ফাইল প্রস্তাব"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:453
+#, elixir-autogen, elixir-format
+msgid "Media"
+msgstr "মিডিয়া"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:85
+#, elixir-autogen, elixir-format
+msgid "Media defaults"
+msgstr "মিডিয়া ডিফল্ট"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:661
+#, elixir-autogen, elixir-format
+msgid "No video"
+msgstr "কোনো ভিডিও নয়"
+
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:68
+#, elixir-autogen, elixir-format
+msgid "Open P2P stats"
+msgstr "P2P পরিসংখ্যান খুলুন"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:434
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:513
+#, elixir-autogen, elixir-format
+msgid "Open stats"
+msgstr "পরিসংখ্যান"
+
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:40
+#, elixir-autogen, elixir-format
+msgid "P2P Session with %{peer}"
+msgstr "%{peer}-এর সাথে P2P সেশন"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:426
+#, elixir-autogen, elixir-format
+msgid "P2P health summary"
+msgstr "P2P স্বাস্থ্যের সংক্ষিপ্ত তথ্য"
+
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:43
+#, elixir-autogen, elixir-format
+msgid "P2P session controls"
+msgstr "P2P সেশন নিয়ন্ত্রণ"
+
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:87
+#, elixir-autogen, elixir-format
+msgid "P2P session sections"
+msgstr "P2P সেশান বিভাগ"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:291
+#, elixir-autogen, elixir-format
+msgid "Peer media state"
+msgstr "সমকক্ষ মিডিয়া অবস্থা"
+
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:229
+#, elixir-autogen, elixir-format
+msgid "Playing"
+msgstr "খেলা হচ্ছে"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:421
+#, elixir-autogen, elixir-format
+msgid "Relay on"
+msgstr "চালু করো"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:422
+#, elixir-autogen, elixir-format
+msgid "Relay unavailable"
+msgstr "উপলব্ধ নয়"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:148
+#, elixir-autogen, elixir-format
+msgid "Resuming transfer"
+msgstr "পুনরায় চালু করা হচ্ছে"
+
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:263
+#, elixir-autogen, elixir-format
+msgid "Retry P2P connection"
+msgstr "r2P সংযোগ পুনরায় চেষ্টা করুন"
+
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:317
+#, elixir-autogen, elixir-format
+msgid "Retrying the peer connection, attempt %{attempt} of 3."
+msgstr "পিয়ার সংযোগ পুনরায় চেষ্টা হচ্ছে, 3টির মধ্যে %{attempt}তম চেষ্টা।"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:150
+#, elixir-autogen, elixir-format
+msgid "Route and privacy"
+msgstr "রাউট এবং গোপনীয়তা"
+
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:312
+#, elixir-autogen, elixir-format
+msgid "The P2P media connection failed. Retry or end the session."
+msgstr "P2P মিডিয়া সংযোগ বিফল হয়েছে। সেশানের সমাপ্তি"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:150
+#, elixir-autogen, elixir-format
+msgid "Transfer cancelled"
+msgstr "সম্প্রচার বাতিল করা হয়েছে"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:149
+#, elixir-autogen, elixir-format
+msgid "Transfer complete"
+msgstr "স্থানান্তর সমাপ্ত"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:154
+#, elixir-autogen, elixir-format
+msgid "Transfer failed"
+msgstr "স্থানান্তর ব্যর্থ হয়েছে"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:146
+#, elixir-autogen, elixir-format
+msgid "Transfer in progress"
+msgstr "এক্সট্র্যাক্ট করা হচ্ছে"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:147
+#, elixir-autogen, elixir-format
+msgid "Transfer paused"
+msgstr "স্থগিত"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:151
+#, elixir-autogen, elixir-format
+msgid "Transfer rejected"
+msgstr "প্রত্যাখ্যান করা হয়েছে"
+
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:321
+#, elixir-autogen, elixir-format
+msgid "Trying to restore the peer connection."
+msgstr "সঙ্গীসাথিদের সংযোগ পুনরুদ্ধার করার চেষ্টা করছি।"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:144
+#, elixir-autogen, elixir-format
+msgid "Waiting for the peer to accept"
+msgstr "সঙ্গীসাথিরা গ্রহণের জন্য অপেক্ষা করছে"

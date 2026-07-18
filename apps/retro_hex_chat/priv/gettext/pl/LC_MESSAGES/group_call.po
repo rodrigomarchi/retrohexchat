@@ -1,4 +1,4 @@
-# "msgid"s in this file come from group_call.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: pl; status: enabled; wave: 3.
+# "msgid"s in this file come from group_call.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=group_call to refresh catalogs.  Locale: pl; status: enabled; wave: 3.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -41,15 +41,9 @@ msgstr "Połączenie grupowe nie jest już aktywne"
 #, elixir-autogen, elixir-format
 msgid "Group call rate limit reached. Try again in %{count} second."
 msgid_plural "Group call rate limit reached. Try again in %{count} seconds."
-msgstr[0] ""
-"Osiągnięto limit częstotliwości połączeń grupowych. Spróbuj jeszcze raz. "
-"%{count} drugi."
-msgstr[1] ""
-"Osiągnięto limit częstotliwości połączeń grupowych. Spróbuj jeszcze raz. "
-"%{count} Sekundy."
-msgstr[2] ""
-"Osiągnięto limit częstotliwości połączeń grupowych. Spróbuj jeszcze raz. "
-"%{count} Sekundy."
+msgstr[0] "Osiągnięto limit częstotliwości połączeń grupowych. Spróbuj jeszcze raz. %{count} drugi."
+msgstr[1] "Osiągnięto limit częstotliwości połączeń grupowych. Spróbuj jeszcze raz. %{count} Sekundy."
+msgstr[2] "Osiągnięto limit częstotliwości połączeń grupowych. Spróbuj jeszcze raz. %{count} Sekundy."
 
 #: lib/retro_hex_chat/group_call.ex:397
 #, elixir-autogen, elixir-format

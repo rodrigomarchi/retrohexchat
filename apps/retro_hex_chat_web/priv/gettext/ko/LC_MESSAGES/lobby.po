@@ -1,4 +1,4 @@
-# "msgid"s in this file come from lobby.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: ko; status: enabled; wave: 2.
+# "msgid"s in this file come from lobby.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=lobby to refresh catalogs.  Locale: ko; status: enabled; wave: 2.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -12,175 +12,145 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:109
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:202
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:223
 #, elixir-autogen, elixir-format
 msgid "%{peer} is muted"
 msgstr "%{peer}는 점멸됩니다."
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:88
-#, elixir-autogen, elixir-format
-msgid "%{peer} wants to play %{game}"
-msgstr "%{peer} 연극 %{game}"
-
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:88
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:139
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:153
 #, elixir-autogen, elixir-format
 msgid "%{peer}'s camera is off"
 msgstr "%{peer} 카메라가 꺼져 있습니다."
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:70
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:140
 #, elixir-autogen, elixir-format
 msgid "%{score} P2"
 msgstr "%{score} P2"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:96
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:186
 #, elixir-autogen, elixir-format
 msgid "Accept"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:79
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:146
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:150
 #, elixir-autogen, elixir-format
 msgid "Back to games"
 msgstr "게임으로 돌아가기"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:70
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:133
 #, elixir-autogen, elixir-format
 msgid "Browse files"
 msgstr "파일 검색"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:150
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:397
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:408
 #, elixir-autogen, elixir-format
 msgid "Camera Off"
 msgstr "카메라 끄기"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:149
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:396
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:407
 #, elixir-autogen, elixir-format
 msgid "Camera On"
 msgstr "카메라 On"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:29
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:55
 #, elixir-autogen, elixir-format
 msgid "Connect to play a game."
 msgstr "게임에 연결."
 
-#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:28
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:54
 #, elixir-autogen, elixir-format
 msgid "Connect to send a file."
 msgstr "파일을 보낼 수 있습니다."
 
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:47
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:60
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:64
 #, elixir-autogen, elixir-format
 msgid "Connect to start an audio or video call."
 msgstr "오디오 또는 비디오 통화를 시작하려면 연결하십시오."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/p2p_media_island.ex:304
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_media_island.ex:310
 #, elixir-autogen, elixir-format
 msgid "Could not access your microphone or camera."
 msgstr "마이크 또는 카메라에 액세스 할 수 없습니다."
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:100
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:194
 #, elixir-autogen, elixir-format
 msgid "Decline"
 msgstr "12 월"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:168
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:445
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:506
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:728
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:729
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:732
 #, elixir-autogen, elixir-format
 msgid "Devices"
 msgstr "제품정보"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:160
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:324
 #, elixir-autogen, elixir-format
 msgid "Draw."
 msgstr "파일 형식"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:59
-#, elixir-autogen, elixir-format
-msgid ""
-"Drop a file here, or browse. Transfers run alongside your call and game."
-msgstr "여기에 파일을 드롭, 또는 검색. 통화와 게임을 따라 실행합니다."
-
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:176
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:476
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:457
 #, elixir-autogen, elixir-format
 msgid "End call"
 msgstr "종료 전화"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:40
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:95
 #, elixir-autogen, elixir-format
 msgid "End game"
 msgstr "끝 게임"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/p2p_file_island.ex:150
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_file_island.ex:148
 #, elixir-autogen, elixir-format
 msgid "File transfer completed: %{name}"
 msgstr "파일 전송 완료: %{name}"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:61
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:127
 #, elixir-autogen, elixir-format
 msgid "Final Score"
 msgstr "최종 점수"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:193
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:525
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:555
 #, elixir-autogen, elixir-format
 msgid "Focus"
 msgstr "주요 특징"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:36
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:88
 #, elixir-autogen, elixir-format
 msgid "Game in progress"
 msgstr "진행중인 게임"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/p2p_game_island.ex:160
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_game_island.ex:159
 #, elixir-autogen, elixir-format
 msgid "Game over — %{game}: %{p1} × %{p2}"
 msgstr "게임 오버 — %{game}: %{p1} × %{p2}"
-
-#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:223
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:576
-#, elixir-autogen, elixir-format
-msgid "High quality"
-msgstr "높은 품질"
-
-#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:239
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:594
-#, elixir-autogen, elixir-format
-msgid "Low quality"
-msgstr "낮은 품질"
-
-#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:65
-#, elixir-autogen, elixir-format
-msgid "Max: %{size} MB"
-msgstr "최대: %{size} 사이트맵"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:211
 #, elixir-autogen, elixir-format
 msgid "Maximize"
 msgstr "채용공고"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:231
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:585
-#, elixir-autogen, elixir-format
-msgid "Medium quality"
-msgstr "중간 질"
-
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:128
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:374
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:386
 #, elixir-autogen, elixir-format
 msgid "Mute"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:66
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:136
 #, elixir-autogen, elixir-format
 msgid "P1 %{score}"
 msgstr "P1 %{score}"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:161
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:409
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:499
 #, elixir-autogen, elixir-format
 msgid "Picture-in-Picture"
 msgstr "그림에서 그림"
@@ -190,60 +160,202 @@ msgstr "그림에서 그림"
 msgid "Side by side"
 msgstr "옆 측"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:265
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:320
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:238
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:338
 #, elixir-autogen, elixir-format
 msgid "Start audio"
 msgstr "오디오 시작"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:285
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:308
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:258
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:326
 #, elixir-autogen, elixir-format
 msgid ""
 "Start audio or video — or the peer can, independently. You'll join "
 "automatically."
 msgstr "오디오 또는 비디오 시작 - 또는 동료는 독립적으로 할 수 있습니다. 자주 묻는 질문"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:274
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:329
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:247
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:346
 #, elixir-autogen, elixir-format
 msgid "Start video"
 msgstr "동영상 보기"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:139
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:385
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:397
 #, elixir-autogen, elixir-format
 msgid "Turn on camera"
 msgstr "카메라 켜기"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:119
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:365
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:378
 #, elixir-autogen, elixir-format
 msgid "Turn on microphone"
 msgstr "마이크 켜기"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:128
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:374
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:386
 #, elixir-autogen, elixir-format
 msgid "Unmute"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:110
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:212
 #, elixir-autogen, elixir-format
 msgid "Waiting for %{peer} to accept..."
 msgstr "대기 %{peer} 을 수락..."
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:159
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:323
 #, elixir-autogen, elixir-format
 msgid "You lose."
 msgstr "당신은 잃습니다."
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:158
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:322
 #, elixir-autogen, elixir-format
 msgid "You win!"
 msgstr "당신은 승리!"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:68
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:138
 #, elixir-autogen, elixir-format
 msgid "×"
 msgstr "& 시간;"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:268
+#, elixir-autogen, elixir-format
+msgid "%{count} games"
+msgstr "%{count}개 게임"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:169
+#, elixir-autogen, elixir-format
+msgid "%{peer} wants to play"
+msgstr "%{peer}님이 플레이하려고 합니다"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:181
+#, elixir-autogen, elixir-format
+msgid "Accept game invite"
+msgstr "게임 초대"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:168
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:172
+#, elixir-autogen, elixir-format
+msgid "Active"
+msgstr "지원하다"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:123
+#, elixir-autogen, elixir-format
+msgid "Call and game stay active with %{peer}."
+msgstr "통화와 게임은 %{peer}님과 계속 활성 상태입니다."
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:228
+#, elixir-autogen, elixir-format
+msgid "Cancel"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:224
+#, elixir-autogen, elixir-format
+msgid "Cancel game invite"
+msgstr "게임 초대"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:165
+#, elixir-autogen, elixir-format
+msgid "Check file"
+msgstr "자주 묻는 질문"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:189
+#, elixir-autogen, elixir-format
+msgid "Decline game invite"
+msgstr "Decline 게임 초대"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:120
+#, elixir-autogen, elixir-format
+msgid "Drop a file here or browse."
+msgstr "파일 삭제"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:34
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:72
+#, elixir-autogen, elixir-format
+msgid "Files"
+msgstr "파일 형식"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:276
+#, elixir-autogen, elixir-format
+msgid "Finished"
+msgstr "끝마친"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:35
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:66
+#, elixir-autogen, elixir-format
+msgid "Games"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:166
+#, elixir-autogen, elixir-format
+msgid "Incoming"
+msgstr "내 계정"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:282
+#, elixir-autogen, elixir-format
+msgid "Invite"
+msgstr "뚱 베어"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:81
+#, elixir-autogen, elixir-format
+msgid "Max %{size} MB"
+msgstr "최대 %{size} MB"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:167
+#, elixir-autogen, elixir-format
+msgid "Offering"
+msgstr "제품정보"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:169
+#, elixir-autogen, elixir-format
+msgid "Paused"
+msgstr "이용 약관"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:80
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:74
+#, elixir-autogen, elixir-format
+msgid "Peer %{peer}"
+msgstr "피어 %{peer}"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:273
+#, elixir-autogen, elixir-format
+msgid "Playing"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:97
+#, elixir-autogen, elixir-format
+msgid "Preparing file transfer."
+msgstr "파일 전송을 준비."
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:174
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:284
+#, elixir-autogen, elixir-format
+msgid "Ready"
+msgstr "지원하다"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:218
+#, elixir-autogen, elixir-format
+msgid "The call remains live while the invite is pending."
+msgstr "자주 묻는 질문"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:175
+#, elixir-autogen, elixir-format
+msgid "The call stays active while the game runs."
+msgstr "게임이 실행되는 동안 통화가 활성화됩니다."
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:279
+#, elixir-autogen, elixir-format
+msgid "Waiting"
+msgstr "뚱 베어"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:42
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:43
+#, elixir-autogen, elixir-format
+msgid "Waiting for P2P connection"
+msgstr "P2P 연결을 위한 대기"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:162
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:264
+#, elixir-autogen, elixir-format
+msgid "peer"
+msgstr "한국어"

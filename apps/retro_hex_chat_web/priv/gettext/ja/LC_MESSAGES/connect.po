@@ -1,4 +1,4 @@
-# "msgid"s in this file come from connect.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: ja; status: enabled; wave: 1.
+# "msgid"s in this file come from connect.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=connect to refresh catalogs.  Locale: ja; status: enabled; wave: 1.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -16,7 +16,7 @@ msgstr ""
 msgid "1-16 characters"
 msgstr "1-16 文字"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:253
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:252
 #: lib/retro_hex_chat_web/components/ui/shell/connect_status_bar.ex:42
 #, elixir-autogen, elixir-format
 msgid "Authentication"
@@ -24,7 +24,7 @@ msgstr "の特長\n"
 "認証"
 
 #: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:294
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:375
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:377
 #, elixir-autogen, elixir-format
 msgid "Back"
 msgstr "の特長\n"
@@ -42,16 +42,16 @@ msgid "Choose a password (min. 5 characters)..."
 msgstr "の特長\n"
 "パスワード(半角5文字)を選択してください。"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:349
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:350
 #, elixir-autogen, elixir-format
 msgid "Confirm password"
 msgstr "の特長\n"
 "パスワードの確認"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:223
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:222
 #: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:298
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:423
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:444
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:421
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:442
 #, elixir-autogen, elixir-format
 msgid "Connect"
 msgstr "の特長\n"
@@ -69,25 +69,25 @@ msgid "Connect to RetroHexChat"
 msgstr "の特長\n"
 "RetroHexChatに接続する"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:229
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:228
 #, elixir-autogen, elixir-format
 msgid "Connecting from another window ends the previous session."
 msgstr "の特長\n"
 "別のウィンドウからの接続は、前のセッションを終了します。"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:180
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:181
 #, elixir-autogen, elixir-format
 msgid "Enter your nickname..."
 msgstr "の特長\n"
 "ニックネームを入力してください。"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:278
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:277
 #, elixir-autogen, elixir-format
 msgid "Enter your password..."
 msgstr "の特長\n"
 "パスワードを入力してください。"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:105
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:91
 #, elixir-autogen, elixir-format
 msgid "Incorrect password"
 msgstr "パスワードが間違っている"
@@ -104,43 +104,43 @@ msgid "Nickname"
 msgstr "の特長\n"
 "ニックネーム"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:182
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:172
 #, elixir-autogen, elixir-format
 msgid "Nickname cannot be empty"
 msgstr "の特長\n"
 "ニックネームは空にすることはできません"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:191
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:181
 #, elixir-autogen, elixir-format
 msgid "Nickname cannot contain spaces"
 msgstr "の特長\n"
 "ニックネームはスペースを含まない"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:236
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:235
 #, elixir-autogen, elixir-format
 msgid "Nickname cleanup"
 msgstr "の特長\n"
 "ニックネームのクリーンアップ"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:179
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:169
 #, elixir-autogen, elixir-format
 msgid "Nickname must be a string"
 msgstr "の特長\n"
 "ニックネームは文字列でなければなりません"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:185
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:175
 #, elixir-autogen, elixir-format
 msgid "Nickname must be at most 16 characters"
 msgstr "の特長\n"
 "Nickname は 16 文字以上"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:188
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:178
 #, elixir-autogen, elixir-format
 msgid "Nickname must start with a letter or special character"
 msgstr "の特長\n"
 "ニックネームは、文字や特殊文字から始める必要があります"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:239
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:238
 #, elixir-autogen, elixir-format
 msgid "Nicknames unused for 7 days are automatically released."
 msgstr "の特長\n"
@@ -152,31 +152,31 @@ msgid "No spaces allowed"
 msgstr "の特長\n"
 "禁止スペース"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:228
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:227
 #, elixir-autogen, elixir-format
 msgid "One session per nickname"
 msgstr "の特長\n"
 "ニックネームごとの1セッション"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:267
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:266
 #: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:327
 #, elixir-autogen, elixir-format
 msgid "Password"
 msgstr "パスワード"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:126
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:106
 #, elixir-autogen, elixir-format
 msgid "Password must be at least 5 characters"
 msgstr "の特長\n"
 "パスワードは5文字以上でなければなりません"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:130
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:114
 #, elixir-autogen, elixir-format
 msgid "Passwords do not match"
 msgstr "の特長\n"
 "パスワードは一致しません"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:383
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:381
 #, elixir-autogen, elixir-format
 msgid "Register & Connect"
 msgstr "の特長\n"
@@ -189,7 +189,7 @@ msgid "Registration"
 msgstr "の特長\n"
 "会員登録"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:360
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:361
 #, elixir-autogen, elixir-format
 msgid "Repeat your password..."
 msgstr "の特長\n"
@@ -213,13 +213,13 @@ msgid "Session expired"
 msgstr "の特長\n"
 "セッション終了"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:231
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:230
 #, elixir-autogen, elixir-format
 msgid "Session expiry"
 msgstr "の特長\n"
 "セッション"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:232
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:231
 #, elixir-autogen, elixir-format
 msgid "Sessions expire after 10 failed reconnection attempts."
 msgstr "の特長\n"
@@ -231,7 +231,7 @@ msgid "The nickname %{nickname} is available! Choose a password to register it."
 msgstr "の特長\n"
 "ニックネーム %{nickname} が使えます! 登録するパスワードを選択します。"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:257
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:256
 #, elixir-autogen, elixir-format
 msgid "The nickname %{nickname} is registered. Please enter your password to continue."
 msgstr "の特長\n"

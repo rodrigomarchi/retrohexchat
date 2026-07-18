@@ -1,4 +1,4 @@
-# "msgid"s in this file come from ui.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: it; status: enabled; wave: 3.
+# "msgid"s in this file come from ui.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=ui to refresh catalogs.  Locale: it; status: enabled; wave: 3.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -11,10 +11,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:436
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:434
 #: lib/retro_hex_chat_web/components/ui/shell/app_header.ex:74
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:352
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:178
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:355
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:184
 #, elixir-autogen, elixir-format
 msgid "About RetroHexChat"
 msgstr "Informazioni su RetroHexChat"
@@ -33,7 +33,7 @@ msgid "Address Book"
 msgstr "Indirizzo Prenota"
 
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:105
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:158
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:164
 #: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:169
 #, elixir-autogen, elixir-format
 msgid "Admin Console"
@@ -73,7 +73,7 @@ msgid "Channel List"
 msgstr "Elenco dei canali"
 
 #: lib/retro_hex_chat_web/components/ui/layout/desktop.ex:297
-#: lib/retro_hex_chat_web/components/ui/layout/dialog.ex:198
+#: lib/retro_hex_chat_web/components/ui/layout/dialog.ex:201
 #: lib/retro_hex_chat_web/components/ui/layout/window.ex:145
 #: lib/retro_hex_chat_web/components/ui/primitives/sheet.ex:145
 #, elixir-autogen, elixir-format
@@ -144,14 +144,14 @@ msgid "Go to previous page"
 msgstr "Vai alla pagina precedente"
 
 #: lib/retro_hex_chat_web/components/ui/layout/window.ex:146
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:330
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:333
 #, elixir-autogen, elixir-format
 msgid "Help"
 msgstr "Aiuto"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:428
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:333
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:173
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:426
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:336
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:179
 #: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:180
 #, elixir-autogen, elixir-format
 msgid "Help Topics"
@@ -250,7 +250,7 @@ msgstr "Ripristino"
 msgid "Retry"
 msgstr "Reazione"
 
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:345
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:348
 #: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:105
 #, elixir-autogen, elixir-format
 msgid "Shortcut Cheatsheet"
@@ -320,7 +320,7 @@ msgstr "Account"
 msgid "Account Info"
 msgstr "Informazioni sul conto"
 
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:317
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:320
 #, elixir-autogen, elixir-format
 msgid "Arcade..."
 msgstr "Arcade..."
@@ -336,7 +336,7 @@ msgid "Back"
 msgstr "Indietro"
 
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:244
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:165
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:171
 #: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:161
 #, elixir-autogen, elixir-format
 msgid "Bot Management"
@@ -372,17 +372,17 @@ msgstr "Ctrl+ Shift+F"
 msgid "Edit Profile..."
 msgstr "Modifica profilo..."
 
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:149
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:155
 #, elixir-autogen, elixir-format
 msgid "End P2P Session"
 msgstr "Sessione finale P2P"
 
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:306
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:309
 #, elixir-autogen, elixir-format
 msgid "End Session"
 msgstr "Sessione finale"
 
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:314
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:317
 #, elixir-autogen, elixir-format
 msgid "Games"
 msgstr "Giochi"
@@ -407,7 +407,7 @@ msgstr "Identificare..."
 msgid "Loading"
 msgstr "Caricamento"
 
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:339
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:342
 #, elixir-autogen, elixir-format
 msgid "Message of the Day"
 msgstr "Messaggio del Giorno"
@@ -440,11 +440,6 @@ msgstr "Apertura..."
 msgid "P2P"
 msgstr "P2P"
 
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:142
-#, elixir-autogen, elixir-format
-msgid "P2P Statistics"
-msgstr "Statistiche P2P"
-
 #: lib/retro_hex_chat_web/components/ui/shell/status_bar_app.ex:269
 #, elixir-autogen, elixir-format
 msgid "P2P call active"
@@ -475,13 +470,13 @@ msgstr "P2P gioco attivo"
 msgid "P2P privacy relay active"
 msgstr "P2P privacy relay attivo"
 
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:284
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:135
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:285
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:137
 #, elixir-autogen, elixir-format
 msgid "Play a Game..."
 msgstr "Gioca a Game..."
 
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:323
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:326
 #, elixir-autogen, elixir-format
 msgid "Register & identify to play"
 msgstr "Registrati e identificati per giocare"
@@ -512,7 +507,7 @@ msgstr "Set Away"
 msgid "Set Away..."
 msgstr "Set Away..."
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:419
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:417
 #: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:31
 #, elixir-autogen, elixir-format
 msgid "Start"
@@ -535,7 +530,7 @@ msgstr "Avviare la chiamata video"
 msgid "Start a P2P Session..."
 msgstr "Avviare una sessione P2P..."
 
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:291
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:293
 #, elixir-autogen, elixir-format
 msgid "Statistics"
 msgstr "Statistiche"
@@ -557,7 +552,7 @@ msgstr "Piastrelle Windows Verticalmente"
 msgid "Timers"
 msgstr "Timer"
 
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:298
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:301
 #, elixir-autogen, elixir-format
 msgid "Toggle Privacy Mode"
 msgstr "Modalità Privacy"
@@ -567,3 +562,8 @@ msgstr "Modalità Privacy"
 #, elixir-autogen, elixir-format
 msgid "User Lookup"
 msgstr "Ricerca utente"
+
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:146
+#, elixir-autogen, elixir-format
+msgid "P2P Stats"
+msgstr "P2P Stats"

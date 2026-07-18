@@ -33,7 +33,7 @@ Aplicar o `Dialog Mobile Playbook` dialog por dialog, melhorando mobile e deskto
 - Concluido: User Lookup Dialog.
 - Concluido: Keyboard Shortcuts/Cheatsheet.
 - Revisao registrada: primeiros dialogs estruturantes em `docs/plans/dialogs-first-pass-review.md`.
-- Proximo recomendado: P2P Statistics, por ser uma janela de dados densos/gated em sessao P2P que deve exercitar metricas, scroll e estados sem virar tabela comprimida no mobile.
+- Frente P2P/Conferencia absorvida pelo plano de media sessions: P2P Stats deixou de ser janela independente e agora vive como secao do console P2P unificado.
 
 ## Registro
 

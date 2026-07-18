@@ -1,4 +1,4 @@
-# "msgid"s in this file come from help_space.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: ko; status: enabled; wave: 2.
+# "msgid"s in this file come from help_space.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=help_space to refresh catalogs.  Locale: ko; status: enabled; wave: 2.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -23,39 +23,22 @@ msgstr "수명 주기"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:2
 #, elixir-autogen, elixir-format
-msgid ""
-"A virtual space is the map view built into every channel. People who are "
-"present in the channel can switch from Chat to Space, walk around the shared"
-" 8-bit village, and keep using the same public channel conversation."
-msgstr ""
-"가상 공간은 모든 채널에 내장 된지도보기입니다. 채널에 존재하는 사람들은 채팅에서 스페이스로 전환 할 수 있으며 공유 8 비트 마을을 "
-"산책하고 같은 공공 채널 대화를 계속합니다."
+msgid "A virtual space is the map view built into every channel. People who are present in the channel can switch from Chat to Space, walk around the shared 8-bit village, and keep using the same public channel conversation."
+msgstr "가상 공간은 모든 채널에 내장 된지도보기입니다. 채널에 존재하는 사람들은 채팅에서 스페이스로 전환 할 수 있으며 공유 8 비트 마을을 산책하고 같은 공공 채널 대화를 계속합니다."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:23
 #, elixir-autogen, elixir-format
-msgid ""
-"Channel spaces are runtime state. They wake when someone views Space, mirror"
-" the current channel presence, and can be rebuilt from that presence when "
-"the view is opened again."
-msgstr ""
-"채널 공간은 런타임 상태입니다. 그들은 누군가가 우주를 볼 때 일어나, 현재 채널 존재를 거울, 전망이 다시 열릴 때 그 존재에서 재건 "
-"될 수있다."
+msgid "Channel spaces are runtime state. They wake when someone views Space, mirror the current channel presence, and can be rebuilt from that presence when the view is opened again."
+msgstr "채널 공간은 런타임 상태입니다. 그들은 누군가가 우주를 볼 때 일어나, 현재 채널 존재를 거울, 전망이 다시 열릴 때 그 존재에서 재건 될 수있다."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:16
 #, elixir-autogen, elixir-format
-msgid ""
-"Entering the channel makes your avatar available in Space. Move with the "
-"arrow keys or WASD while the canvas is focused; the server validates every "
-"step, so walls and furniture block movement for everyone equally."
-msgstr ""
-"채널을 입력하면 스페이스에서 avatar를 사용할 수 있습니다. 캔버스가 집중되는 동안 화살표 키 또는 WASD로 이동하십시오. 서버는 "
-"모든 단계, 그래서 벽 및 가구 블록 움직임을 동일하게 검증합니다."
+msgid "Entering the channel makes your avatar available in Space. Move with the arrow keys or WASD while the canvas is focused; the server validates every step, so walls and furniture block movement for everyone equally."
+msgstr "채널을 입력하면 스페이스에서 avatar를 사용할 수 있습니다. 캔버스가 집중되는 동안 화살표 키 또는 WASD로 이동하십시오. 서버는 모든 단계, 그래서 벽 및 가구 블록 움직임을 동일하게 검증합니다."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:9
 #, elixir-autogen, elixir-format
-msgid ""
-"Open any channel and use the Chat and Space buttons in the topic row. There "
-"is no separate invite card or space command for the channel map."
+msgid "Open any channel and use the Chat and Space buttons in the topic row. There is no separate invite card or space command for the channel map."
 msgstr "어떤 채널을 열고 주제의 행에 채팅 및 스페이스 버튼을 사용합니다. 채널 맵에 별도의 초대 카드 또는 공간 명령이 없습니다."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:7
@@ -70,25 +53,13 @@ msgstr "채용 정보"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:16
 #, elixir-autogen, elixir-format
-msgid ""
-"Click a card to enter the map wearing that character. Everyone else in the "
-"Space sees your choice immediately. The picker appears each time you enter, "
-"starting on your last pick, so you can switch characters whenever you like."
-msgstr ""
-"그 캐릭터를 착용하는 맵을 입력하는 카드를 클릭합니다. 스페이스에서 다른 사람은 즉시 선택을 볼 수 있습니다. 선택기는 당신이 입력한 "
-"때마다 나타납니다, 당신의 마지막 선택에 시작, 그래서 당신은 당신이 좋아하는 때마다 문자를 전환할 수 있습니다."
+msgid "Click a card to enter the map wearing that character. Everyone else in the Space sees your choice immediately. The picker appears each time you enter, starting on your last pick, so you can switch characters whenever you like."
+msgstr "그 캐릭터를 착용하는 맵을 입력하는 카드를 클릭합니다. 스페이스에서 다른 사람은 즉시 선택을 볼 수 있습니다. 선택기는 당신이 입력한 때마다 나타납니다, 당신의 마지막 선택에 시작, 그래서 당신은 당신이 좋아하는 때마다 문자를 전환할 수 있습니다."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:9
 #, elixir-autogen, elixir-format
-msgid ""
-"Eight characters are available: the Hero, plus the Sorceress, Knight, "
-"Archer, Barbarian, Rogue, Cleric and Monk. Each card shows an animated "
-"walking preview so you can see the sprite before you commit, and every "
-"character has its own attack animation too."
-msgstr ""
-"8개의 문자를 사용할 수 있습니다: 영웅, 플러스 Sorceress, Knight, Archer, Barbarian, Rogue, "
-"Cleric 및 Monk. 각 카드는 애니메이션 걷기 미리보기를 보여줍니다 그래서 당신이 커밋하기 전에 스프라이트를 볼 수 있으며, 모든"
-" 문자는 자신의 공격 애니메이션이 있습니다."
+msgid "Eight characters are available: the Hero, plus the Sorceress, Knight, Archer, Barbarian, Rogue, Cleric and Monk. Each card shows an animated walking preview so you can see the sprite before you commit, and every character has its own attack animation too."
+msgstr "8개의 문자를 사용할 수 있습니다: 영웅, 플러스 Sorceress, Knight, Archer, Barbarian, Rogue, Cleric 및 Monk. 각 카드는 애니메이션 걷기 미리보기를 보여줍니다 그래서 당신이 커밋하기 전에 스프라이트를 볼 수 있으며, 모든 문자는 자신의 공격 애니메이션이 있습니다."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:7
 #, elixir-autogen, elixir-format
@@ -97,9 +68,5 @@ msgstr "로스터"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:2
 #, elixir-autogen, elixir-format
-msgid ""
-"When you open a channel's Space, a character picker appears before the map "
-"loads. Pick who you want to be — the classic Hero or one of six adventuring "
-"classes."
-msgstr ""
-"채널의 스페이스를 열 때, 캐릭터 피커는 맵로드 전에 나타납니다. 당신이해야 할 선택 - 고전 영웅 또는 여섯 모험 클래스 중 하나."
+msgid "When you open a channel's Space, a character picker appears before the map loads. Pick who you want to be — the classic Hero or one of six adventuring classes."
+msgstr "채널의 스페이스를 열 때, 캐릭터 피커는 맵로드 전에 나타납니다. 당신이해야 할 선택 - 고전 영웅 또는 여섯 모험 클래스 중 하나."

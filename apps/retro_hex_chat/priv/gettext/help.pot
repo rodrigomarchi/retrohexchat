@@ -4474,11 +4474,6 @@ msgstr ""
 msgid "Choosing a Character"
 msgstr ""
 
-#: lib/retro_hex_chat/chat/help_topics/commands.ex:338
-#, elixir-autogen, elixir-format
-msgid "Invite someone to a P2P session that runs an audio/video call, file transfers, and games together over one connection. The invite arrives as a card in the private message — accepting it starts the session right there, with the session windows opening on the chat desktop. See also: P2P Sessions in Chat, P2P Lobby."
-msgstr ""
-
 #: lib/retro_hex_chat/chat/help_topics/features.ex:1015
 #, elixir-autogen, elixir-format
 msgid "Join a channel-scoped audio/video conference with pre-join device preview, layout controls, participant moderation, and live statistics. Conference moderation follows channel permissions: half-operators and above can moderate lower-ranked participants."
@@ -4487,16 +4482,6 @@ msgstr ""
 #: lib/retro_hex_chat/chat/help_topics/features.ex:1083
 #, elixir-autogen, elixir-format
 msgid "P2P Sessions in Chat"
-msgstr ""
-
-#: lib/retro_hex_chat/chat/help_topics/features.ex:1102
-#, elixir-autogen, elixir-format
-msgid "Run a P2P session without leaving the chat: /p2p <nick> sends an invite card into the private message, and the invited person accepts or declines right on the card. Once connected, the P2P menu (also mirrored in the Start menu) opens the session windows on the chat desktop: Call (audio/video), Files, Games and P2P Statistics. The conversation IS the private message — session events (connected, file received, game results, who ended it) are saved into the PM history as P2P lines, and the PM tab shows a small P2P icon while the session is live. The status bar always shows the active session: click it to bring the P2P windows to the front, or use its stop button to cancel a pending invite / end the session. You can hold ONE session at a time — accepting a new invite (or inviting someone else) asks to end the current session first. When a TURN relay is configured, Toggle Privacy Mode in the P2P menu forces the connection through the relay so your IP address is never shared with the peer. See also: P2P Lobby, Video Call, File Transfer, Private Messages."
-msgstr ""
-
-#: lib/retro_hex_chat/chat/help_topics/features.ex:1072
-#, elixir-autogen, elixir-format
-msgid "The P2P Lobby is the persistent peer-to-peer connection behind /p2p — one link that hosts a call, file transfers and games all at the same time. It lives inside the chat: accepting an invite opens the session windows right on the chat desktop, and ending any one activity never drops the others. See also: P2P Sessions in Chat."
 msgstr ""
 
 #: lib/retro_hex_chat/chat/help_topics/user_interface.ex:50
@@ -4532,4 +4517,19 @@ msgstr ""
 #: lib/retro_hex_chat/chat/help_topics/features.ex:3144
 #, elixir-autogen, elixir-format
 msgid "A multiplayer 8-bit virtual space built into every channel: people in the channel can switch from Chat to Space, walk around the shared map, and keep using the same channel conversation. Move with the Arrow keys, WASD or the on-screen pad in the bottom-right corner — tap for a single step or hold to walk continuously; Space or the pad's sword button swings your weapon. The translucent button in the top-right corner switches the space to fullscreen and back."
+msgstr ""
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:338
+#, elixir-autogen, elixir-format
+msgid "Invite someone to a P2P session that runs an audio/video call, file transfers, and games together over one connection. The invite arrives as a card in the private message — accepting it starts the session right there, with the P2P Session Console opening on the chat desktop. See also: P2P Sessions in Chat, P2P Lobby."
+msgstr ""
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1102
+#, elixir-autogen, elixir-format
+msgid "Run a P2P session without leaving the chat: /p2p <nick> sends an invite card into the private message, and the invited person accepts or declines right on the card. Once connected, the P2P menu (also mirrored in the Start menu) opens the P2P Session Console on the chat desktop with Call, Files, Games and Stats sections. The conversation IS the private message — session events (connected, file received, game results, who ended it) are saved into the PM history as P2P lines, and the PM tab shows a small P2P icon while the session is live. The status bar always shows the active session: click it to bring the P2P Session Console to the front, or use its stop button to cancel a pending invite / end the session. You can hold ONE session at a time — accepting a new invite (or inviting someone else) asks to end the current session first. When a TURN relay is configured, Toggle Privacy Mode in the P2P menu forces the connection through the relay so your IP address is never shared with the peer. See also: P2P Lobby, Video Call, File Transfer, Private Messages."
+msgstr ""
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1072
+#, elixir-autogen, elixir-format
+msgid "The P2P Lobby is the persistent peer-to-peer connection behind /p2p — one link that hosts a call, file transfers and games all at the same time. It lives inside the chat: accepting an invite opens the P2P Session Console right on the chat desktop, and ending any one activity never drops the others. See also: P2P Sessions in Chat."
 msgstr ""

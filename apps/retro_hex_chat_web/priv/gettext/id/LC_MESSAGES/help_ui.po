@@ -1,4 +1,4 @@
-# "msgid"s in this file come from help_ui.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: id; status: enabled; wave: 1.
+# "msgid"s in this file come from help_ui.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=help_ui to refresh catalogs.  Locale: id; status: enabled; wave: 1.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -1663,11 +1663,6 @@ msgstr ""
 "Buka atau tutup batang in- window Cari untuk mencari pesan. Anda juga dapat "
 "menekan Ctrl + Shift + F"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:7
-#, elixir-autogen, elixir-format
-msgid "P2P Call Window"
-msgstr "Jendela Panggilan P2P"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:74
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:82
 #, elixir-autogen, elixir-format
@@ -2033,19 +2028,6 @@ msgstr ""
 "Mode Pengguna saat ini mengekspos pengaturan wallop (+ w), yang memilih Anda"
 " ke pesan siaran operator."
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:8
-#, elixir-autogen, elixir-format
-msgid ""
-"When the P2P Call window is focused: Ctrl+Shift+ArrowUp — Toggle microphone "
-"Ctrl+Shift+ArrowLeft — Toggle camera Ctrl+Shift+ArrowRight — Next layout "
-"Ctrl+Shift+ArrowDown — Cycle self-view Ctrl+Shift+. — Toggle screen share "
-"Ctrl+Shift+Q — End call media"
-msgstr ""
-"Ketika jendela P2P Call difokuskan: Ctrl + Shift + ArrowUp - Jungkitkan "
-"mikropon Ctrl + Shift + ArrowLeft - Jungkitkan Ctrl + Shift + Shift + "
-"ArrowDown - Kl + Shift +. - Jungkitkan Ctrl share layar + Shift + Q - Akhir "
-"media panggilan"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:41
 #, elixir-autogen, elixir-format
 msgid ""
@@ -2182,3 +2164,21 @@ msgid "— The chat window cannot be closed; it only minimizes or restores."
 msgstr ""
 "- Jendela obrolan tidak dapat ditutup; ini hanya meminimalkan atau menyimpan"
 " kembali."
+
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "P2P Session Console"
+msgstr "Sesi P2P dalam Percakapan"
+
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:8
+#, elixir-autogen, elixir-format
+msgid ""
+"When the P2P Session Console is focused: Ctrl+Shift+ArrowUp — Toggle "
+"microphone Ctrl+Shift+ArrowLeft — Toggle camera Ctrl+Shift+ArrowRight — Next"
+" layout Ctrl+Shift+ArrowDown — Cycle self-view Ctrl+Shift+. — Toggle screen "
+"share Ctrl+Shift+Q — End call media"
+msgstr ""
+"Ketika Konsol Sesi P2P difokuskan: Ctrl + Shift + ArrowUp - Jungkitkan "
+"mikropon Ctrl + Shift + Arrowleft - Jungkitkan Ctrl + Shift + Shift + "
+"Arrowdown - Tampilan langsung Ctrl + Shift + + - Jungkitkan Ctrl share layar"
+" + Shift + Q - Akhir media panggilan"

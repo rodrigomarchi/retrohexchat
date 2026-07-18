@@ -1,4 +1,4 @@
-# "msgid"s in this file come from p2p.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: pt_BR; status: enabled; wave: 0.
+# "msgid"s in this file come from p2p.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=p2p to refresh catalogs.  Locale: pt_BR; status: enabled; wave: 0.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -179,4 +179,4 @@ msgstr "atordoamento:stun.l.google.com:19302"
 #: lib/retro_hex_chat/p2p/p2p.ex:57
 #, elixir-autogen, elixir-format
 msgid "turn:%{relay_ip}:%{listen_port}?transport=udp"
-msgstr "turn:%{relay_ip}:%{listen_port}?transport=udp"
+msgstr "turno:%{relay_ip}:%{listen_port}?transport=udp"

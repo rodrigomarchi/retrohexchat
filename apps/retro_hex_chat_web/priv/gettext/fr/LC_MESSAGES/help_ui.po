@@ -1,4 +1,4 @@
-# "msgid"s in this file come from help_ui.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: fr; status: enabled; wave: 1.
+# "msgid"s in this file come from help_ui.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=help_ui to refresh catalogs.  Locale: fr; status: enabled; wave: 1.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -1704,11 +1704,6 @@ msgstr ""
 "Ouvre ou ferme la barre de recherche pour rechercher des messages. Vous "
 "pouvez également appuyer sur Ctrl+Shift+F."
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:7
-#, elixir-autogen, elixir-format
-msgid "P2P Call Window"
-msgstr "Fenêtre d'appel P2P"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:74
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:82
 #, elixir-autogen, elixir-format
@@ -2083,20 +2078,6 @@ msgstr ""
 "Utilisateur Modes expose actuellement le réglage wallops (+w) qui vous opte "
 "pour les messages de diffusion de l'opérateur."
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:8
-#, elixir-autogen, elixir-format
-msgid ""
-"When the P2P Call window is focused: Ctrl+Shift+ArrowUp — Toggle microphone "
-"Ctrl+Shift+ArrowLeft — Toggle camera Ctrl+Shift+ArrowRight — Next layout "
-"Ctrl+Shift+ArrowDown — Cycle self-view Ctrl+Shift+. — Toggle screen share "
-"Ctrl+Shift+Q — End call media"
-msgstr ""
-"Lorsque la fenêtre d'appel P2P est focalisée: Ctrl+Shift+ArrowUp — "
-"Microphone toggle Ctrl+Shift+ArrowLeft — Caméra toggle Ctrl+Shift+ArrowRight"
-" — Prochaine mise en page Ctrl+Shift+ArrowDown — Auto-vue du cycle "
-"Ctrl+Shift+. — Basculer le partage d'écran Ctrl+Shift+Q — Médias d'appel "
-"final"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:41
 #, elixir-autogen, elixir-format
 msgid ""
@@ -2241,3 +2222,22 @@ msgid "— The chat window cannot be closed; it only minimizes or restores."
 msgstr ""
 "— La fenêtre de chat ne peut pas être fermée; elle minimise ou restaure "
 "seulement."
+
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "P2P Session Console"
+msgstr "Sessions P2P en discussion"
+
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:8
+#, elixir-autogen, elixir-format
+msgid ""
+"When the P2P Session Console is focused: Ctrl+Shift+ArrowUp — Toggle "
+"microphone Ctrl+Shift+ArrowLeft — Toggle camera Ctrl+Shift+ArrowRight — Next"
+" layout Ctrl+Shift+ArrowDown — Cycle self-view Ctrl+Shift+. — Toggle screen "
+"share Ctrl+Shift+Q — End call media"
+msgstr ""
+"Lorsque la console de session P2P est focalisée: Ctrl+Shift+ArrowUp — "
+"Microphone toggle Ctrl+Shift+ArrowLeft — Caméra toggle Ctrl+Shift+ArrowRight"
+" — Mise en page suivante Ctrl+Shift+ArrowDown — Auto-vue du cycle "
+"Ctrl+Shift+. — Basculer le partage d'écran Ctrl+Shift+Q — Médias d'appel "
+"final"

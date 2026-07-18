@@ -1,4 +1,4 @@
-# "msgid"s in this file come from lobby.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: bn; status: enabled; wave: 3.
+# "msgid"s in this file come from lobby.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=lobby to refresh catalogs.  Locale: bn; status: enabled; wave: 3.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -12,175 +12,145 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:109
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:202
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:223
 #, elixir-autogen, elixir-format
 msgid "%{peer} is muted"
 msgstr "%{peer} নিঃশব্দ অবস্থায় রয়েছে"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:88
-#, elixir-autogen, elixir-format
-msgid "%{peer} wants to play %{game}"
-msgstr "%{peer} খেলতে চাই %{game}"
-
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:88
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:139
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:153
 #, elixir-autogen, elixir-format
 msgid "%{peer}'s camera is off"
 msgstr "%{peer}ক্যামেরা বন্ধ"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:70
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:140
 #, elixir-autogen, elixir-format
 msgid "%{score} P2"
 msgstr "%{score} P2"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:96
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:186
 #, elixir-autogen, elixir-format
 msgid "Accept"
 msgstr "গ্রহণ করুন"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:79
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:146
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:150
 #, elixir-autogen, elixir-format
 msgid "Back to games"
 msgstr "যে খেলায় যোগ দিন"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:70
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:133
 #, elixir-autogen, elixir-format
 msgid "Browse files"
 msgstr "ফাইল ব্রাউজ করুন"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:150
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:397
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:408
 #, elixir-autogen, elixir-format
 msgid "Camera Off"
 msgstr "ক্যামেরা বন্ধ"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:149
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:396
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:407
 #, elixir-autogen, elixir-format
 msgid "Camera On"
 msgstr "ক্যামেরা সচল"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:29
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:55
 #, elixir-autogen, elixir-format
 msgid "Connect to play a game."
 msgstr "খেলায় যোগ দিন"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:28
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:54
 #, elixir-autogen, elixir-format
 msgid "Connect to send a file."
 msgstr "একটি ফাইল পাঠান"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:47
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:60
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:64
 #, elixir-autogen, elixir-format
 msgid "Connect to start an audio or video call."
 msgstr "অডিও অথবা ভিডিও কল আরম্ভ করার জন্য সংযোগ প্রস্তুত করা হবে।"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/p2p_media_island.ex:304
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_media_island.ex:310
 #, elixir-autogen, elixir-format
 msgid "Could not access your microphone or camera."
 msgstr "মাইক্রোফোন বা ক্যামেরা ব্যবহার করা সম্ভব হয়নি।"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:100
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:194
 #, elixir-autogen, elixir-format
 msgid "Decline"
 msgstr "প্রত্যাখ্যান করুন"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:168
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:445
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:506
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:728
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:729
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:732
 #, elixir-autogen, elixir-format
 msgid "Devices"
 msgstr "ডিভাইস"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:160
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:324
 #, elixir-autogen, elixir-format
 msgid "Draw."
 msgstr "টানো।"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:59
-#, elixir-autogen, elixir-format
-msgid ""
-"Drop a file here, or browse. Transfers run alongside your call and game."
-msgstr "ফাইল এখানে, অথবা ব্রাউজ করুন। আপনার কল এবং খেলার পাশাপাশি স্থানান্তর."
-
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:176
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:476
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:457
 #, elixir-autogen, elixir-format
 msgid "End call"
 msgstr "সমাপ্তি"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:40
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:95
 #, elixir-autogen, elixir-format
 msgid "End game"
 msgstr "খেলা শেষ করো ( শ)"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/p2p_file_island.ex:150
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_file_island.ex:148
 #, elixir-autogen, elixir-format
 msgid "File transfer completed: %{name}"
 msgstr "ফাইল বিনিময় সম্পন্ন: %{name}"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:61
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:127
 #, elixir-autogen, elixir-format
 msgid "Final Score"
 msgstr "সর্বশেষ স্কোর"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:193
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:525
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:555
 #, elixir-autogen, elixir-format
 msgid "Focus"
 msgstr "ফোকাস"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:36
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:88
 #, elixir-autogen, elixir-format
 msgid "Game in progress"
 msgstr "খেলায় চলছে"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/p2p_game_island.ex:160
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_game_island.ex:159
 #, elixir-autogen, elixir-format
 msgid "Game over — %{game}: %{p1} × %{p2}"
 msgstr "খেল খতম %{game}: %{p1} × %{p2}"
-
-#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:223
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:576
-#, elixir-autogen, elixir-format
-msgid "High quality"
-msgstr "গুণমান"
-
-#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:239
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:594
-#, elixir-autogen, elixir-format
-msgid "Low quality"
-msgstr "গুণমান"
-
-#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:65
-#, elixir-autogen, elixir-format
-msgid "Max: %{size} MB"
-msgstr "সর্বোচ্চ: %{size} মেগাবাইট"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:211
 #, elixir-autogen, elixir-format
 msgid "Maximize"
 msgstr "বড় করুন"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:231
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:585
-#, elixir-autogen, elixir-format
-msgid "Medium quality"
-msgstr "গুণমান"
-
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:128
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:374
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:386
 #, elixir-autogen, elixir-format
 msgid "Mute"
 msgstr "নিঃশব্দ"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:66
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:136
 #, elixir-autogen, elixir-format
 msgid "P1 %{score}"
 msgstr "P1 %{score}"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:161
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:409
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:499
 #, elixir-autogen, elixir-format
 msgid "Picture-in-Picture"
 msgstr "ছবির-মধ্যে-ছবি ( P)"
@@ -190,14 +160,14 @@ msgstr "ছবির-মধ্যে-ছবি ( P)"
 msgid "Side by side"
 msgstr "পার্শ্ববর্তী পেইন"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:265
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:320
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:238
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:338
 #, elixir-autogen, elixir-format
 msgid "Start audio"
 msgstr "অডিও আরম্ভ করা হবে"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:285
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:308
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:258
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:326
 #, elixir-autogen, elixir-format
 msgid ""
 "Start audio or video — or the peer can, independently. You'll join "
@@ -206,46 +176,189 @@ msgstr ""
 "অডিও বা ভিডিও — অথবা সঙ্গীসাথিরা স্বাধীন হতে পারে । তুমি স্বয়ংক্রিয়ভাবে "
 "যোগদান করবে।"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:274
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:329
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:247
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:346
 #, elixir-autogen, elixir-format
 msgid "Start video"
 msgstr "ভিডিও আরম্ভ করা হবে"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:139
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:385
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:397
 #, elixir-autogen, elixir-format
 msgid "Turn on camera"
 msgstr "ক্যামেরা সক্রিয় করা হবে"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:119
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:365
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:378
 #, elixir-autogen, elixir-format
 msgid "Turn on microphone"
 msgstr "মাইক্রোফোন চালু করুন"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:128
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:374
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:386
 #, elixir-autogen, elixir-format
 msgid "Unmute"
 msgstr "শব্দ চালু"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:110
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:212
 #, elixir-autogen, elixir-format
 msgid "Waiting for %{peer} to accept..."
 msgstr "অপেক্ষারত %{peer} গ্রহণ করার জন্য..."
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:159
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:323
 #, elixir-autogen, elixir-format
 msgid "You lose."
 msgstr "আপনি হেরে গিয়েছেন."
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:158
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:322
 #, elixir-autogen, elixir-format
 msgid "You win!"
 msgstr "আপনার জয়!"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:68
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:138
 #, elixir-autogen, elixir-format
 msgid "×"
 msgstr "সময় (T)"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:268
+#, elixir-autogen, elixir-format
+msgid "%{count} games"
+msgstr "%{count}টি গেম"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:169
+#, elixir-autogen, elixir-format
+msgid "%{peer} wants to play"
+msgstr "%{peer} খেলতে চায়"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:181
+#, elixir-autogen, elixir-format
+msgid "Accept game invite"
+msgstr "খেলার আমন্ত্রণ গ্রহণ করুন"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:168
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:172
+#, elixir-autogen, elixir-format
+msgid "Active"
+msgstr "সক্রিয়"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:123
+#, elixir-autogen, elixir-format
+msgid "Call and game stay active with %{peer}."
+msgstr "কল এবং গেম %{peer}-এর সাথে সক্রিয় থাকে।"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:228
+#, elixir-autogen, elixir-format
+msgid "Cancel"
+msgstr "বাতিল"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:224
+#, elixir-autogen, elixir-format
+msgid "Cancel game invite"
+msgstr "খেলা বাতিল করুন"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:165
+#, elixir-autogen, elixir-format
+msgid "Check file"
+msgstr "ফাইলের নাম পরীক্ষা করুন"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:189
+#, elixir-autogen, elixir-format
+msgid "Decline game invite"
+msgstr "খেলার আমন্ত্রণ প্রত্যাখ্যান করুন"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:120
+#, elixir-autogen, elixir-format
+msgid "Drop a file here or browse."
+msgstr "ফাইল এখানে অথবা ব্রাউজ করতে."
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:34
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:72
+#, elixir-autogen, elixir-format
+msgid "Files"
+msgstr "ফাইল"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:276
+#, elixir-autogen, elixir-format
+msgid "Finished"
+msgstr "সমাপ্ত"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:35
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:66
+#, elixir-autogen, elixir-format
+msgid "Games"
+msgstr "খেলা"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:166
+#, elixir-autogen, elixir-format
+msgid "Incoming"
+msgstr "আসন্ন"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:282
+#, elixir-autogen, elixir-format
+msgid "Invite"
+msgstr "অদৃশ্য"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:81
+#, elixir-autogen, elixir-format
+msgid "Max %{size} MB"
+msgstr "সর্বোচ্চ %{size} MB"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:167
+#, elixir-autogen, elixir-format
+msgid "Offering"
+msgstr "দান করা হচ্ছে"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:169
+#, elixir-autogen, elixir-format
+msgid "Paused"
+msgstr "সাময়িক বিরতি চলছে"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:80
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:74
+#, elixir-autogen, elixir-format
+msgid "Peer %{peer}"
+msgstr "পিয়ার %{peer}"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:273
+#, elixir-autogen, elixir-format
+msgid "Playing"
+msgstr "খেলা হচ্ছে"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:97
+#, elixir-autogen, elixir-format
+msgid "Preparing file transfer."
+msgstr "ফাইল বিনিময় প্রস্তুত করা হচ্ছে।"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:174
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:284
+#, elixir-autogen, elixir-format
+msgid "Ready"
+msgstr "প্রস্তুত"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:218
+#, elixir-autogen, elixir-format
+msgid "The call remains live while the invite is pending."
+msgstr ""
+"আমন্ত্রণ স্থগিত থাকার সময় এই আহ্বানটি সরাসরি সরাসরি সম্প্রচার করা হয়।"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:175
+#, elixir-autogen, elixir-format
+msgid "The call stays active while the game runs."
+msgstr "খেলা চালিয়ে যাওয়ার সময় ফোন সক্রিয় থাকে।"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:279
+#, elixir-autogen, elixir-format
+msgid "Waiting"
+msgstr "অপেক্ষারত"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:42
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:43
+#, elixir-autogen, elixir-format
+msgid "Waiting for P2P connection"
+msgstr "P2P সংযোগের অপেক্ষা করা হচ্ছে"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:162
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:264
+#, elixir-autogen, elixir-format
+msgid "peer"
+msgstr "পিয়ার"

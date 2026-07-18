@@ -1,4 +1,4 @@
-# "msgid"s in this file come from connect.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: bn; status: enabled; wave: 3.
+# "msgid"s in this file come from connect.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=connect to refresh catalogs.  Locale: bn; status: enabled; wave: 3.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -16,14 +16,14 @@ msgstr ""
 msgid "1-16 characters"
 msgstr "১-১৬ অক্ষর"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:253
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:252
 #: lib/retro_hex_chat_web/components/ui/shell/connect_status_bar.ex:42
 #, elixir-autogen, elixir-format
 msgid "Authentication"
 msgstr "অনুমোদন ব্যবস্থা"
 
 #: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:294
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:375
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:377
 #, elixir-autogen, elixir-format
 msgid "Back"
 msgstr "পূর্ববর্তী"
@@ -38,15 +38,15 @@ msgstr "বড় বা ছোট হাতের অক্ষর পৃথক�
 msgid "Choose a password (min. 5 characters)..."
 msgstr "পাসওয়ার্ড বেছে নিন..."
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:349
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:350
 #, elixir-autogen, elixir-format
 msgid "Confirm password"
 msgstr "পাসওয়ার্ড নিশ্চায়ন"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:223
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:222
 #: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:298
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:423
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:444
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:421
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:442
 #, elixir-autogen, elixir-format
 msgid "Connect"
 msgstr "সংযোগ স্থাপন করুন"
@@ -61,22 +61,22 @@ msgstr "সংযোগ করা হচ্ছে"
 msgid "Connect to RetroHexChat"
 msgstr "রেট্রো HxChat এর সাথে সংযোগ স্থাপন করো"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:229
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:228
 #, elixir-autogen, elixir-format
 msgid "Connecting from another window ends the previous session."
 msgstr "অন্য একটি উইণ্ডোর সাথে সংযোগ বিচ্ছিন্ন হয়ে গিয়েছে ।"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:180
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:181
 #, elixir-autogen, elixir-format
 msgid "Enter your nickname..."
 msgstr "আপনার ডাকনাম লিখুন..."
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:278
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:277
 #, elixir-autogen, elixir-format
 msgid "Enter your password..."
 msgstr "আপনার পাসওয়ার্ড লিখুন..."
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:105
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:91
 #, elixir-autogen, elixir-format
 msgid "Incorrect password"
 msgstr "ভুল পাসওয়ার্ড"
@@ -91,37 +91,37 @@ msgstr "অক্ষরের পরিবর্তে আরম্ভ করা
 msgid "Nickname"
 msgstr "ডাকনাম"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:182
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:172
 #, elixir-autogen, elixir-format
 msgid "Nickname cannot be empty"
 msgstr "ডাকনাম ফাঁকা রাখা যাবে না"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:191
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:181
 #, elixir-autogen, elixir-format
 msgid "Nickname cannot contain spaces"
 msgstr "ডাকনাম ব্যবহার করা যাবে না"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:236
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:235
 #, elixir-autogen, elixir-format
 msgid "Nickname cleanup"
 msgstr "ডাকনাম:"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:179
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:169
 #, elixir-autogen, elixir-format
 msgid "Nickname must be a string"
 msgstr "ডাকনামর নাম উল্লেখ করা আবশ্যক"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:185
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:175
 #, elixir-autogen, elixir-format
 msgid "Nickname must be at most 16 characters"
 msgstr "ডাকনামটি অবশ্যই ১৬টা অক্ষর থাকতে হবে"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:188
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:178
 #, elixir-autogen, elixir-format
 msgid "Nickname must start with a letter or special character"
 msgstr "ডাকনামটি অবশ্যই অক্ষর বা বিশেষ অক্ষর দিয়ে শুরু করতে হবে"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:239
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:238
 #, elixir-autogen, elixir-format
 msgid "Nicknames unused for 7 days are automatically released."
 msgstr "নিক নাম ৭ দিনের জন্য অব্যবহৃত।"
@@ -131,28 +131,28 @@ msgstr "নিক নাম ৭ দিনের জন্য অব্যবহ�
 msgid "No spaces allowed"
 msgstr "শূণ্যস্থান সন্নিবেশ করা হবে"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:228
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:227
 #, elixir-autogen, elixir-format
 msgid "One session per nickname"
 msgstr "ডাকনাম:"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:267
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:266
 #: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:327
 #, elixir-autogen, elixir-format
 msgid "Password"
 msgstr "পাসওয়ার্ড"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:126
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:106
 #, elixir-autogen, elixir-format
 msgid "Password must be at least 5 characters"
 msgstr "পাসওয়ার্ড অন্তত ৫ অক্ষর বিশিষ্ট হওয়া আবশ্যক"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:130
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:114
 #, elixir-autogen, elixir-format
 msgid "Passwords do not match"
 msgstr "পাসওয়ার্ডগুলি মিলছে না"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:383
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:381
 #, elixir-autogen, elixir-format
 msgid "Register & Connect"
 msgstr "Western (পশ্চিমি"
@@ -163,7 +163,7 @@ msgstr "Western (পশ্চিমি"
 msgid "Registration"
 msgstr "Western (পশ্চিমি"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:360
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:361
 #, elixir-autogen, elixir-format
 msgid "Repeat your password..."
 msgstr "আপনার পাসওয়ার্ড পুনরাবৃত্তি করুন..."
@@ -183,12 +183,12 @@ msgstr "সেশান সমাপ্ত হয়েছে"
 msgid "Session expired"
 msgstr "সেশানের মেয়াদ উত্তীর্ণ হয়েছে"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:231
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:230
 #, elixir-autogen, elixir-format
 msgid "Session expiry"
 msgstr "মেয়াদপূর্তীর তারিখ"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:232
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:231
 #, elixir-autogen, elixir-format
 msgid "Sessions expire after 10 failed reconnection attempts."
 msgstr "সেশন ১০ এর পর যে সেশন পুনঃসংযোগ ব্যর্থ হয়েছে তার মেয়াদ শেষ ।"
@@ -198,7 +198,7 @@ msgstr "সেশন ১০ এর পর যে সেশন পুনঃসং
 msgid "The nickname %{nickname} is available! Choose a password to register it."
 msgstr "ডাকনাম %{nickname} উপলব্ধ রয়েছে! নিবন্ধন করার জন্য একটি পাসওয়ার্ড বেছে নিন।"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:257
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:256
 #, elixir-autogen, elixir-format
 msgid "The nickname %{nickname} is registered. Please enter your password to continue."
 msgstr "ডাকনাম %{nickname} নিবন্ধন করা হয়েছে। অনুগ্রহ করে আপনার পাসওয়ার্ড লিখুন।"

@@ -1,4 +1,4 @@
-# "msgid"s in this file come from system.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: zh_hant; status: enabled; wave: 3.
+# "msgid"s in this file come from system.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=system to refresh catalogs.  Locale: zh_hant; status: enabled; wave: 3.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -127,7 +127,8 @@ msgstr "等待數據庫連接的時間"
 
 #: lib/retro_hex_chat_web/telemetry.ex:104
 #, elixir-autogen, elixir-format
-msgid "The time the connection spent waiting before being checked out for the query"
+msgid ""
+"The time the connection spent waiting before being checked out for the query"
 msgstr "連接在被檢查前等待的時間"
 
 #: lib/retro_hex_chat_web/telemetry.ex:114
@@ -327,124 +328,126 @@ msgstr "使用中的虛擬空間程序數量"
 #: lib/retro_hex_chat_web/telemetry.ex:191
 #, elixir-autogen, elixir-format
 msgid "retro_hex_chat.virtual_space.active_count.value"
-msgstr "retro_hex_chat.virtual_space.active_count.value"
+msgstr "retro hex chat.virtual space.active count.value (英語)."
 
 #: lib/retro_hex_chat_web/telemetry.ex:197
 #, elixir-autogen, elixir-format
 msgid "Current virtual space participant count by channel"
-msgstr "Current virtual space participant count by channel"
+msgstr "當前虛擬空間參與者按頻道計數"
 
 #: lib/retro_hex_chat_web/telemetry.ex:202
 #, elixir-autogen, elixir-format
 msgid "Number of virtual space movement steps"
-msgstr "Number of virtual space movement steps"
+msgstr "虛擬空間移動步驟的數目"
 
 #: lib/retro_hex_chat_web/telemetry.ex:208
 #, elixir-autogen, elixir-format
 msgid "Virtual space movement input handling duration"
-msgstr "Virtual space movement input handling duration"
+msgstr "虛擬空間移動輸入處理期限"
 
 #: lib/retro_hex_chat_web/telemetry.ex:195
 #, elixir-autogen, elixir-format
 msgid "retro_hex_chat.virtual_space.participant_count.value"
-msgstr "retro_hex_chat.virtual_space.participant_count.value"
+msgstr "retro hex chat.virtual space.participant count. 數值"
 
 #: lib/retro_hex_chat_web/telemetry.ex:200
 #, elixir-autogen, elixir-format
 msgid "retro_hex_chat.virtual_space.step.count"
-msgstr "retro_hex_chat.virtual_space.step.count"
+msgstr "retro hex chat.virtual space.step.count. [永久失效連結] (中文(簡體) )."
 
 #: lib/retro_hex_chat_web/telemetry.ex:205
 #, elixir-autogen, elixir-format
 msgid "retro_hex_chat.virtual_space.step.duration"
-msgstr "retro_hex_chat.virtual_space.step.duration"
+msgstr "retro hex chat.virtual space.step.dultation 互聯網檔案館的存檔,存檔日期2014-12-11."
 
 #: lib/retro_hex_chat_web/telemetry.ex:218
 #, elixir-autogen, elixir-format
 msgid "Number of active group-call peer processes"
-msgstr "Number of active group-call peer processes"
+msgstr "活躍的小組召喚同行程序數目"
 
 #: lib/retro_hex_chat_web/telemetry.ex:214
 #, elixir-autogen, elixir-format
 msgid "Number of active group-call room processes"
-msgstr "Number of active group-call room processes"
+msgstr "主動集體呼叫室程序的數目"
 
 #: lib/retro_hex_chat_web/telemetry.ex:223
 #, elixir-autogen, elixir-format
 msgid "Number of group-call join attempts"
-msgstr "Number of group-call join attempts"
+msgstr "集體召集的嘗試次數"
 
 #: lib/retro_hex_chat_web/telemetry.ex:238
 #, elixir-autogen, elixir-format
 msgid "Number of group-call media state updates"
-msgstr "Number of group-call media state updates"
+msgstr "羣調媒體狀態更新數"
 
 #: lib/retro_hex_chat_web/telemetry.ex:233
 #, elixir-autogen, elixir-format
 msgid "Number of group-call media tracks announced"
-msgstr "Number of group-call media tracks announced"
+msgstr "宣佈的團體呼叫媒體音軌數"
 
 #: lib/retro_hex_chat_web/telemetry.ex:243
 #, elixir-autogen, elixir-format
 msgid "Number of group-call moderator media actions"
-msgstr "Number of group-call moderator media actions"
+msgstr "集體召集的媒體行動次數"
 
 #: lib/retro_hex_chat_web/telemetry.ex:248
 #, elixir-autogen, elixir-format
 msgid "Number of group-call participant kick actions"
-msgstr "Number of group-call participant kick actions"
+msgstr "集體呼叫參與者踢球行動次數"
 
 #: lib/retro_hex_chat_web/telemetry.ex:228
 #, elixir-autogen, elixir-format
 msgid "Number of group-call participant leaves"
-msgstr "Number of group-call participant leaves"
+msgstr "集體召集參與人離職人數"
 
 #: lib/retro_hex_chat_web/telemetry.ex:253
 #, elixir-autogen, elixir-format
 msgid "Number of group-call rooms closed"
-msgstr "Number of group-call rooms closed"
+msgstr "關閉的小組呼叫室數目"
 
 #: lib/retro_hex_chat_web/telemetry.ex:217
 #, elixir-autogen, elixir-format
 msgid "retro_hex_chat.group_call.active_peers.value"
-msgstr "retro_hex_chat.group_call.active_peers.value"
+msgstr "retro hex chat.group call.active peers.value (英語)."
 
 #: lib/retro_hex_chat_web/telemetry.ex:213
 #, elixir-autogen, elixir-format
 msgid "retro_hex_chat.group_call.active_rooms.value"
-msgstr "retro_hex_chat.group_call.active_rooms.value"
+msgstr "retro hex chat.group call.active rooms.value (英語)."
 
 #: lib/retro_hex_chat_web/telemetry.ex:221
 #, elixir-autogen, elixir-format
 msgid "retro_hex_chat.group_call.join.count"
-msgstr "retro_hex_chat.group_call.join.count"
+msgstr "retro hex chat.group call.join.count (英語)."
 
 #: lib/retro_hex_chat_web/telemetry.ex:226
 #, elixir-autogen, elixir-format
 msgid "retro_hex_chat.group_call.leave.count"
-msgstr "retro_hex_chat.group_call.leave.count"
+msgstr "retro hex chat.group call.leave.count 頁面存檔備份."
 
 #: lib/retro_hex_chat_web/telemetry.ex:241
 #, elixir-autogen, elixir-format
 msgid "retro_hex_chat.group_call.media_moderated.count"
-msgstr "retro_hex_chat.group_call.media_moderated.count"
+msgstr "retro hex chat.group call.media modedated.count (英語)."
 
 #: lib/retro_hex_chat_web/telemetry.ex:236
 #, elixir-autogen, elixir-format
 msgid "retro_hex_chat.group_call.media_state.count"
-msgstr "retro_hex_chat.group_call.media_state.count"
+msgstr "retro hex chat.group call.media state.count (英語)."
 
 #: lib/retro_hex_chat_web/telemetry.ex:246
 #, elixir-autogen, elixir-format
 msgid "retro_hex_chat.group_call.participant_kicked.count"
-msgstr "retro_hex_chat.group_call.participant_kicked.count"
+msgstr ""
+"retro hex chat.group call.participant kicked. counts.commed.command. "
+"[永久失效連結] (簡體中文)."
 
 #: lib/retro_hex_chat_web/telemetry.ex:251
 #, elixir-autogen, elixir-format
 msgid "retro_hex_chat.group_call.room_closed.count"
-msgstr "retro_hex_chat.group_call.room_closed.count"
+msgstr "retro hex chat.group call.room closed.count (英語)."
 
 #: lib/retro_hex_chat_web/telemetry.ex:231
 #, elixir-autogen, elixir-format
 msgid "retro_hex_chat.group_call.track_added.count"
-msgstr "retro_hex_chat.group_call.track_added.count"
+msgstr "retro hex chat.group call.track add.count (英語)."

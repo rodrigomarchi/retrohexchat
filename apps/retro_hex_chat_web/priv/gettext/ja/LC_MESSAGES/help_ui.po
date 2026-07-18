@@ -1,4 +1,4 @@
-# "msgid"s in this file come from help_ui.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: ja; status: enabled; wave: 1.
+# "msgid"s in this file come from help_ui.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=help_ui to refresh catalogs.  Locale: ja; status: enabled; wave: 1.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -2026,13 +2026,6 @@ msgstr ""
 "の特長\n"
 "ウィンドウ内検索バーを開き、メッセージを検索します。 Ctrl+Shift+Fを押すこともできます。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:7
-#, elixir-autogen, elixir-format
-msgid "P2P Call Window"
-msgstr ""
-"の特長\n"
-"P2Pコールウィンドウ"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:74
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:82
 #, elixir-autogen, elixir-format
@@ -2419,17 +2412,6 @@ msgstr ""
 "の特長\n"
 "ユーザーモードは現在、オペレータ放送メッセージにあなたをオプトインするwallops(+w)設定を公開しています。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:8
-#, elixir-autogen, elixir-format
-msgid ""
-"When the P2P Call window is focused: Ctrl+Shift+ArrowUp — Toggle microphone "
-"Ctrl+Shift+ArrowLeft — Toggle camera Ctrl+Shift+ArrowRight — Next layout "
-"Ctrl+Shift+ArrowDown — Cycle self-view Ctrl+Shift+. — Toggle screen share "
-"Ctrl+Shift+Q — End call media"
-msgstr ""
-"の特長\n"
-"P2Pコールウィンドウがフォーカスされるとき: Ctrl + Shift + ArrowUp — マイクを切り替える Ctrl + Shift + ArrowLeft — Toggle camera Ctrl + Shift + ArrowRight — 次のレイアウト Ctrl + Shift + ArrowDown — サイクルセルフビュー Ctrl + Shift + Toggle スクリーン共有 Ctrl+Shift+Q — エンドコールメディア"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:41
 #, elixir-autogen, elixir-format
 msgid ""
@@ -2586,3 +2568,22 @@ msgid "— The chat window cannot be closed; it only minimizes or restores."
 msgstr ""
 "の特長\n"
 "— チャットウィンドウは閉じられません。それは最小化または復元のみです。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "P2P Session Console"
+msgstr ""
+"の特長\n"
+"チャットでのP2Pセッション"
+
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:8
+#, elixir-autogen, elixir-format
+msgid ""
+"When the P2P Session Console is focused: Ctrl+Shift+ArrowUp — Toggle "
+"microphone Ctrl+Shift+ArrowLeft — Toggle camera Ctrl+Shift+ArrowRight — Next"
+" layout Ctrl+Shift+ArrowDown — Cycle self-view Ctrl+Shift+. — Toggle screen "
+"share Ctrl+Shift+Q — End call media"
+msgstr ""
+"P2P セッションコンソールがフォーカスされるとき: Ctrl + Shift + ArrowUp — マイクをトグル + Shift + "
+"ArrowLeft — カメラをトグル + Shift + ArrowRight — 次のレイアウト Ctrl + Shift + ArrowDown "
+"— サイクルセルフビュー Ctrl + Shift + Toggle スクリーン共有 Ctrl+Shift+Q — エンドコールメディア"

@@ -1,4 +1,4 @@
-# "msgid"s in this file come from dialogs.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: ko; status: enabled; wave: 2.
+# "msgid"s in this file come from dialogs.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=dialogs to refresh catalogs.  Locale: ko; status: enabled; wave: 2.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -21,51 +21,46 @@ msgstr "·"
 msgid "%{channel} Settings"
 msgstr "%{channel} 계정 설정"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:546
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:543
 #, elixir-autogen, elixir-format
 msgid "%{count} entry"
 msgid_plural "%{count} entries"
 msgstr[0] "%{count} 이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:543
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:540
 #, elixir-autogen, elixir-format
 msgid "%{count} item"
 msgid_plural "%{count} items"
 msgstr[0] "%{count} 제품정보"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/paste_confirm_dialog.ex:49
+#: lib/retro_hex_chat_web/components/ui/dialogs/paste_confirm_dialog.ex:58
 #, elixir-autogen, elixir-format
 msgid "%{count} line"
 msgid_plural "%{count} lines"
 msgstr[0] "%{count} 제품정보"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/invite_dialog.ex:67
-#, elixir-autogen, elixir-format
-msgid "%{inviter} has invited you to join %{channel}."
-msgstr "%{inviter} 참여하기 %{channel}."
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:150
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:138
 #, elixir-autogen, elixir-format
 msgid "(you)"
 msgstr "(예)"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:325
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:346
 #, elixir-autogen, elixir-format
 msgid "/command $1"
 msgstr "/command $1"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:257
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:281
 #, elixir-autogen, elixir-format
 msgid "/join #channel"
 msgstr "/join #channel"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:247
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:275
 #, elixir-autogen, elixir-format
 msgid "/say Hello!"
 msgstr "/say Hello!"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:294
-#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:295
+#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:306
+#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:307
 #, elixir-autogen, elixir-format
 msgid "1 URL"
 msgid_plural "%{count} URLs"
@@ -91,53 +86,48 @@ msgstr ""
 msgid "About RetroHexChat"
 msgstr "RetroHexChat 소개"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/cheatsheet_dialog.ex:55
-#, elixir-autogen, elixir-format
-msgid "Action"
-msgstr "- 연혁"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:955
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1001
 #, elixir-autogen, elixir-format
 msgid "Actions"
 msgstr "관련 기사"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:192
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:883
-#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:229
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:161
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:211
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:927
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:172
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:188
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:186
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:308
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:369
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:525
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1199
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:311
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:366
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:555
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1270
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_dialog.ex:139
-#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:269
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:130
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:297
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:177
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:580
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:684
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:112
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:284
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:184
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:327
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:187
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:603
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:708
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:121
 #, elixir-autogen, elixir-format
 msgid "Add"
 msgstr "더 보기"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:169
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:206
 #, elixir-autogen, elixir-format
 msgid "Add Alias"
 msgstr "Alias 추가"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:368
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:396
 #, elixir-autogen, elixir-format
 msgid "Add Auto-Join Channel"
 msgstr "Auto-Join 채널 추가"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:569
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:600
 #, elixir-autogen, elixir-format
 msgid "Add Ban"
 msgstr "추가 Ban"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:630
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:662
 #, elixir-autogen, elixir-format
 msgid "Add Ban Exception"
 msgstr "Ban 예외 추가"
@@ -147,48 +137,48 @@ msgstr "Ban 예외 추가"
 msgid "Add Command — %{bot}"
 msgstr "명령 추가 — %{bot}"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:261
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:283
 #, elixir-autogen, elixir-format
 msgid "Add Contact"
 msgstr "연락처"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:301
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:318
 #, elixir-autogen, elixir-format
 msgid "Add Entry"
 msgstr "자주 묻는 질문"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:253
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:277
 #, elixir-autogen, elixir-format
 msgid "Add Highlight Word"
 msgstr "Highlight Word 추가"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:926
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:972
 #, elixir-autogen, elixir-format
 msgid "Add Ignore Entry"
 msgstr "Ignore 항목 추가"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:691
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:724
 #, elixir-autogen, elixir-format
 msgid "Add Invite Exception"
 msgstr "Invite 예외 추가"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:537
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:559
 #, elixir-autogen, elixir-format
 msgid "Add Nick Color"
 msgstr "닉 색상 추가"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:399
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:230
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:421
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:261
 #, elixir-autogen, elixir-format
 msgid "Add Notify Entry"
 msgstr "알림 받기"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:237
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:261
 #, elixir-autogen, elixir-format
 msgid "Add Perform Command"
 msgstr "수행 명령 추가"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:192
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:221
 #, elixir-autogen, elixir-format
 msgid "Add Rule"
 msgstr "추가 규칙"
@@ -203,47 +193,41 @@ msgstr "관리자 콘솔"
 msgid "Alias Editor"
 msgstr "Alias 편집기"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:952
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:998
 #, elixir-autogen, elixir-format
 msgid "All"
 msgstr "모든 것"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:120
-#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:121
+#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:128
 #: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:129
-#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:131
+#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:137
+#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:139
 #, elixir-autogen, elixir-format
 msgid "All Channels"
 msgstr "모든 채널"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:143
+#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:147
 #, elixir-autogen, elixir-format
 msgid "Anti-Spam (Duplicate Detection)"
 msgstr "Anti-Spam (Duplicate 탐지)"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:443
-#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:215
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:465
+#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:219
 #, elixir-autogen, elixir-format
 msgid "Apply"
 msgstr "지원하다"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1093
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1145
 #, elixir-autogen, elixir-format
 msgid "Apply Modes"
 msgstr "모드 적용"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/delete_confirm_dialog.ex:45
-#, elixir-autogen, elixir-format
-msgid ""
-"Are you sure you want to delete this message? This action cannot be undone."
-msgstr "이 메시지를 삭제하시겠습니까? 이 동작은 undone일 수 없습니다."
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/disconnect_confirm_dialog.ex:43
+#: lib/retro_hex_chat_web/components/ui/dialogs/disconnect_confirm_dialog.ex:52
 #, elixir-autogen, elixir-format
 msgid "Are you sure you want to disconnect from the server?"
 msgstr "서버에서 연결을 원하십니까?"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/paste_confirm_dialog.ex:68
+#: lib/retro_hex_chat_web/components/ui/dialogs/paste_confirm_dialog.ex:82
 #, elixir-autogen, elixir-format
 msgid "Are you sure you want to send all lines at once?"
 msgstr "한 번에 모든 라인을 보낼 수 있습니까?"
@@ -253,37 +237,37 @@ msgstr "한 번에 모든 라인을 보낼 수 있습니까?"
 msgid "Auto Respond"
 msgstr "자동 응답"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:183
+#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:189
 #, elixir-autogen, elixir-format
 msgid "Auto-Ignore"
 msgstr "자동 면역"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:163
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:171
 #, elixir-autogen, elixir-format
 msgid "Auto-Join"
 msgstr "자동 조인"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:122
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:128
 #, elixir-autogen, elixir-format
 msgid "Auto-add PM contacts to notify list"
 msgstr "Auto-add PM은 목록을 알리는 접촉"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:285
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:314
 #, elixir-autogen, elixir-format
 msgid "Background Color (optional):"
 msgstr "배경 색깔 (선택):"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:342
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:378
 #, elixir-autogen, elixir-format
 msgid "Background Color:"
 msgstr "배경 색깔:"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:153
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:154
 #, elixir-autogen, elixir-format
 msgid "Ban Exc."
 msgstr "금지."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:143
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:144
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_dialog.ex:60
 #, elixir-autogen, elixir-format
 msgid "Bans"
@@ -299,63 +283,63 @@ msgstr "Bot 관리"
 msgid "Bots"
 msgstr "로그아웃"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:232
+#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:238
 #, elixir-autogen, elixir-format
 msgid "Buddy Offline"
 msgstr "Buddy 오프라인"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:231
+#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:237
 #, elixir-autogen, elixir-format
 msgid "Buddy Online"
 msgstr "Buddy 온라인"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:307
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:377
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:444
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:514
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:585
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:656
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:986
-#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:220
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:262
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:329
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:399
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:466
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:536
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:607
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:678
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1032
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:267
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:300
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:120
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:190
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:429
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:608
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:669
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:730
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:805
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:445
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:640
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:702
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:764
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:840
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_dialog.ex:158
 #: lib/retro_hex_chat_web/components/ui/dialogs/confirm_dialog.ex:48
-#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:343
-#: lib/retro_hex_chat_web/components/ui/dialogs/delete_confirm_dialog.ex:67
-#: lib/retro_hex_chat_web/components/ui/dialogs/disconnect_confirm_dialog.ex:62
-#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:213
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:90
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:307
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:363
-#: lib/retro_hex_chat_web/components/ui/dialogs/invite_channel_picker_dialog.ex:86
-#: lib/retro_hex_chat_web/components/ui/dialogs/knock_request_dialog.ex:101
-#: lib/retro_hex_chat_web/components/ui/dialogs/mute_duration_dialog.ex:60
-#: lib/retro_hex_chat_web/components/ui/dialogs/nick_change_dialog.ex:106
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:277
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:348
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:370
+#: lib/retro_hex_chat_web/components/ui/dialogs/delete_confirm_dialog.ex:80
+#: lib/retro_hex_chat_web/components/ui/dialogs/disconnect_confirm_dialog.ex:78
+#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:223
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:89
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:338
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:401
+#: lib/retro_hex_chat_web/components/ui/dialogs/invite_channel_picker_dialog.ex:94
+#: lib/retro_hex_chat_web/components/ui/dialogs/knock_request_dialog.ex:115
+#: lib/retro_hex_chat_web/components/ui/dialogs/mute_duration_dialog.ex:78
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_change_dialog.ex:109
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:314
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:391
 #: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:81
-#: lib/retro_hex_chat_web/components/ui/dialogs/paste_confirm_dialog.ex:89
+#: lib/retro_hex_chat_web/components/ui/dialogs/paste_confirm_dialog.ex:105
 #: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:110
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:276
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:344
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:420
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:506
-#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:211
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:223
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:302
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:372
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:450
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:538
+#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:210
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:245
 #, elixir-autogen, elixir-format
 msgid "Cancel"
 msgstr "이름 *"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:73
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:137
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:203
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:139
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:215
 #, elixir-autogen, elixir-format
 msgid "Capabilities"
 msgstr "회사연혁"
@@ -365,97 +349,89 @@ msgstr "회사연혁"
 msgid "Change Nickname"
 msgstr "Nickname 변경"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/nick_change_dialog.ex:54
-#, elixir-autogen, elixir-format
-msgid "Changing nickname to:"
-msgstr "별명을 바꾸기:"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1294
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1473
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1543
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:125
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:260
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:83
-#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:141
-#: lib/retro_hex_chat_web/components/ui/dialogs/invite_channel_picker_dialog.ex:49
-#: lib/retro_hex_chat_web/components/ui/dialogs/knock_request_dialog.ex:58
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:381
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:468
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:650
-#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:207
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1311
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1490
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1560
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:167
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:272
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:149
+#: lib/retro_hex_chat_web/components/ui/dialogs/invite_channel_picker_dialog.ex:50
+#: lib/retro_hex_chat_web/components/ui/dialogs/knock_request_dialog.ex:62
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:410
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:499
+#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:188
+#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:236
 #, elixir-autogen, elixir-format
 msgid "Channel"
 msgstr "채널 :"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:227
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:256
 #, elixir-autogen, elixir-format
 msgid "Channel (optional)"
 msgstr "(선택) 채널"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/invite_dialog.ex:45
+#: lib/retro_hex_chat_web/components/ui/dialogs/invite_dialog.ex:51
 #, elixir-autogen, elixir-format
 msgid "Channel Invite"
 msgstr "채널 Invite"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:223
+#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:229
 #, elixir-autogen, elixir-format
 msgid "Channel Message"
 msgstr "채널 메시지"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1021
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1098
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1076
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1151
 #, elixir-autogen, elixir-format
 msgid "Channel Modes"
 msgstr "채널 모드"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:180
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:146
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:181
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:148
 #, elixir-autogen, elixir-format
 msgid "Channels"
 msgstr "채널 :"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/about_dialog.ex:47
-#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:150
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:158
 #, elixir-autogen, elixir-format
 msgid "Chat"
 msgstr "이름 *"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:119
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:144
-#: lib/retro_hex_chat_web/components/ui/dialogs/user_lookup_dialog.ex:163
+#: lib/retro_hex_chat_web/components/ui/dialogs/user_lookup_dialog.ex:181
 #, elixir-autogen, elixir-format
 msgid "Clear"
 msgstr "이름 *"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:148
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:57
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:574
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:635
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:696
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:763
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:605
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:667
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:729
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:797
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:75
-#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:73
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:227
+#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:72
 #, elixir-autogen, elixir-format
 msgid "Close"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:564
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:635
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:784
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:140
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:586
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:657
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:815
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:839
 #, elixir-autogen, elixir-format
 msgid "Color"
 msgstr "색깔: 회색"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:126
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:241
-#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:241
-#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:320
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:250
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:318
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:547
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:62
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:189
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:270
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:275
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:340
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:275
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:345
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:201
 #, elixir-autogen, elixir-format
 msgid "Command"
 msgstr "이름 *"
@@ -465,14 +441,14 @@ msgstr "이름 *"
 msgid "Command Prefix"
 msgstr "명령 접두사"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:155
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:226
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:159
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:157
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:238
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:167
 #, elixir-autogen, elixir-format
 msgid "Commands"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:97
+#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:96
 #, elixir-autogen, elixir-format
 msgid ""
 "Configure limits to prevent message flooding in channels and private "
@@ -480,22 +456,22 @@ msgid ""
 msgstr "채널 및 개인 메시지에 홍수를 방지하는 제한을 구성합니다."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/confirm_dialog.ex:46
-#: lib/retro_hex_chat_web/components/ui/dialogs/nick_change_dialog.ex:98
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_change_dialog.ex:100
 #, elixir-autogen, elixir-format
 msgid "Confirm"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:229
+#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:235
 #, elixir-autogen, elixir-format
 msgid "Connected"
 msgstr "연결하기"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:97
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:104
 #, elixir-autogen, elixir-format
 msgid "Contacts"
 msgstr "제품정보"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:114
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:131
 #, elixir-autogen, elixir-format
 msgid "Control"
 msgstr "제품정보"
@@ -505,7 +481,7 @@ msgstr "제품정보"
 msgid "Cooldown (s)"
 msgstr "쿨다운 (s)"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1334
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1351
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:116
 #, elixir-autogen, elixir-format
 msgid "Create"
@@ -516,7 +492,7 @@ msgstr "이름 *"
 msgid "Create New Bot"
 msgstr "새로운 봇 만들기"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:845
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:881
 #, elixir-autogen, elixir-format
 msgid "Created"
 msgstr "이름 *"
@@ -526,7 +502,7 @@ msgstr "이름 *"
 msgid "Custom Commands"
 msgstr "사용자 정의 명령"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:66
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:65
 #, elixir-autogen, elixir-format
 msgid "Custom Menus"
 msgstr "주문 메뉴"
@@ -536,134 +512,123 @@ msgstr "주문 메뉴"
 msgid "Date"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:105
-#: lib/retro_hex_chat_web/components/ui/dialogs/delete_confirm_dialog.ex:59
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:106
+#: lib/retro_hex_chat_web/components/ui/dialogs/delete_confirm_dialog.ex:71
 #, elixir-autogen, elixir-format
 msgid "Delete"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/delete_confirm_dialog.ex:39
+#: lib/retro_hex_chat_web/components/ui/dialogs/delete_confirm_dialog.ex:41
 #, elixir-autogen, elixir-format
 msgid "Delete Message"
 msgstr "메시지 삭제"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:762
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:764
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:53
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:173
-#: lib/retro_hex_chat_web/components/ui/dialogs/cheatsheet_dialog.ex:57
 #, elixir-autogen, elixir-format
 msgid "Description"
 msgstr "이름 *"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:92
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:480
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:477
 #, elixir-autogen, elixir-format
 msgid "Dice"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:473
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:507
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:470
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:504
 #, elixir-autogen, elixir-format
 msgid "Disable"
 msgstr "사용 방법"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:462
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:501
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:459
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:498
 #, elixir-autogen, elixir-format
 msgid "Disabled"
 msgstr "지원하다"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/disconnect_confirm_dialog.ex:54
+#: lib/retro_hex_chat_web/components/ui/dialogs/disconnect_confirm_dialog.ex:69
 #: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:121
 #, elixir-autogen, elixir-format
 msgid "Disconnect"
 msgstr "연결하기"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/disconnect_confirm_dialog.ex:37
+#: lib/retro_hex_chat_web/components/ui/dialogs/disconnect_confirm_dialog.ex:39
 #, elixir-autogen, elixir-format
 msgid "Disconnect from Server"
 msgstr "서버 차단"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:230
+#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:236
 #, elixir-autogen, elixir-format
 msgid "Disconnected"
 msgstr "연결하기"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:614
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:646
 #, elixir-autogen, elixir-format
 msgid "Down"
 msgstr "맨 위로"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:148
-#, elixir-autogen, elixir-format
-msgid "Duplicate limit:"
-msgstr "중복 제한:"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:962
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1008
 #, elixir-autogen, elixir-format
 msgid "Duration (leave empty for permanent)"
 msgstr "기간 (영주를 위해 비어 있는)"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:186
-#, elixir-autogen, elixir-format
-msgid "Duration:"
-msgstr "기간:"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:894
-#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:238
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:170
-#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:278
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:191
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:187
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:584
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:688
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:122
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:939
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:182
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:198
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:294
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:195
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:199
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:613
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:718
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:132
 #, elixir-autogen, elixir-format
 msgid "Edit"
 msgstr "제품정보"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:168
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:205
 #, elixir-autogen, elixir-format
 msgid "Edit Alias"
 msgstr "Alias 수정"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:454
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:484
 #, elixir-autogen, elixir-format
 msgid "Edit Auto-Join Channel"
 msgstr "자동 조인 채널 편집"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:331
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:353
 #, elixir-autogen, elixir-format
 msgid "Edit Contact"
 msgstr "연락처"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:302
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:319
 #, elixir-autogen, elixir-format
 msgid "Edit Entry"
 msgstr "연락처"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:332
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:363
 #, elixir-autogen, elixir-format
 msgid "Edit Highlight Color"
 msgstr "높은 조명 색상 편집"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:609
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:631
 #, elixir-autogen, elixir-format
 msgid "Edit Nick Color"
 msgstr "닉 색상 편집"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:468
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:301
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:490
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:338
 #, elixir-autogen, elixir-format
 msgid "Edit Notify Entry"
 msgstr "공지사항"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:305
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:331
 #, elixir-autogen, elixir-format
 msgid "Edit Perform Command"
 msgstr "수행 명령"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:193
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:222
 #, elixir-autogen, elixir-format
 msgid "Edit Rule"
 msgstr "편집 규칙"
@@ -673,66 +638,61 @@ msgstr "편집 규칙"
 msgid "Elixir"
 msgstr "언어 선택"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:123
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:473
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:508
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:470
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:505
 #, elixir-autogen, elixir-format
 msgid "Enable"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:626
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:658
 #, elixir-autogen, elixir-format
 msgid "Enable perform on connect"
 msgstr "연결에서 실행"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:462
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:500
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:459
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:497
 #, elixir-autogen, elixir-format
 msgid "Enabled"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:438
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:440
 #, elixir-autogen, elixir-format
 msgid "Enter admin command(s)... (one per line)"
 msgstr "admin 명령을 입력합니다. (라인당 하나)"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/nick_change_dialog.ex:76
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_change_dialog.ex:78
 #, elixir-autogen, elixir-format
 msgid "Enter password"
 msgstr "비밀번호"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:126
-#, elixir-autogen, elixir-format
-msgid "Event"
-msgstr "행사일정"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:164
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:166
 #, elixir-autogen, elixir-format
 msgid "Events"
 msgstr "(주)"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:121
-#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:188
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:149
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:228
 #, elixir-autogen, elixir-format
 msgid "Expansion"
 msgstr "확대하기"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1031
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1080
 #, elixir-autogen, elixir-format
 msgid "Expired"
 msgstr "구매하기"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:831
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:864
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:895
 #, elixir-autogen, elixir-format
 msgid "Expires"
 msgstr "패스워드"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:57
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:56
 #, elixir-autogen, elixir-format
 msgid "Filter channels..."
 msgstr "필터 채널 ..."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:128
+#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:187
 #, elixir-autogen, elixir-format
 msgid "Flash"
 msgstr "이름 *"
@@ -742,15 +702,15 @@ msgstr "이름 *"
 msgid "Flood Protection"
 msgstr "홍수 보호"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:128
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:123
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:130
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:124
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_dialog.ex:52
 #, elixir-autogen, elixir-format
 msgid "General"
 msgstr "주요사업"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:84
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:485
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:482
 #, elixir-autogen, elixir-format
 msgid "Greeter"
 msgstr "채용정보"
@@ -775,35 +735,35 @@ msgstr "지원하다"
 msgid "Hex"
 msgstr "사이트맵"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:60
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:59
 #, elixir-autogen, elixir-format
 msgid "Highlight Words"
 msgstr "높은 낱말"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:225
+#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:231
 #, elixir-autogen, elixir-format
 msgid "Highlight/Mention"
 msgstr "높은 빛/Mention"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:584
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:645
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:706
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:615
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:677
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:739
 #, elixir-autogen, elixir-format
 msgid "Hostmask"
 msgstr "호스트 마스크"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/invite_dialog.ex:89
+#: lib/retro_hex_chat_web/components/ui/dialogs/invite_dialog.ex:101
 #, elixir-autogen, elixir-format
 msgid "Ignore"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:163
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:164
 #, elixir-autogen, elixir-format
 msgid "Invite Exc."
 msgstr "더 알아보기"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1040
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1108
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1093
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1161
 #, elixir-autogen, elixir-format
 msgid "Invite Only (+i)"
 msgstr "Invite 만 (+i)"
@@ -813,60 +773,54 @@ msgstr "Invite 만 (+i)"
 msgid "Invite only (+i)"
 msgstr "Invite 만 (+i)"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:957
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1003
 #, elixir-autogen, elixir-format
 msgid "Invites"
 msgstr "제품정보"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:143
-#: lib/retro_hex_chat_web/components/ui/dialogs/invite_dialog.ex:80
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:148
+#: lib/retro_hex_chat_web/components/ui/dialogs/invite_dialog.ex:91
 #, elixir-autogen, elixir-format
 msgid "Join"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:396
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:481
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:651
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:425
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:512
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:697
 #, elixir-autogen, elixir-format
 msgid "Key"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1061
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1120
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1112
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1173
 #, elixir-autogen, elixir-format
 msgid "Key (+k)"
 msgstr "키 (+k)"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/cheatsheet_dialog.ex:56
-#, elixir-autogen, elixir-format
-msgid "Keys"
-msgstr "주요 특징"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/kick_dialog.ex:39
+#: lib/retro_hex_chat_web/components/ui/dialogs/kick_dialog.ex:41
 #, elixir-autogen, elixir-format
 msgid "Kicked from Channel"
 msgstr "채널에서 Kicked"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:240
-#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:307
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:325
 #, elixir-autogen, elixir-format
 msgid "Label"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:734
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:146
-#: lib/retro_hex_chat_web/components/ui/dialogs/user_lookup_dialog.ex:74
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:791
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:166
+#: lib/retro_hex_chat_web/components/ui/dialogs/user_lookup_dialog.ex:78
 #, elixir-autogen, elixir-format
 msgid "Last Seen"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:403
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:432
 #, elixir-autogen, elixir-format
 msgid "Leave empty if no key"
 msgstr "열쇠가 없는 경우에 빈을 남겨두십시오"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1078
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1127
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1129
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1180
 #, elixir-autogen, elixir-format
 msgid "Limit (+l)"
 msgstr "제한 (+l)"
@@ -876,18 +830,19 @@ msgstr "제한 (+l)"
 msgid "LiveView"
 msgstr "라이브뷰"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1164
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1217
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1241
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_dialog.ex:123
 #, elixir-autogen, elixir-format
 msgid "Mask"
 msgstr "제품정보"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:847
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:885
 #, elixir-autogen, elixir-format
 msgid "Members"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:486
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:483
 #, elixir-autogen, elixir-format
 msgid "Mention"
 msgstr "이름 *"
@@ -897,7 +852,7 @@ msgstr "이름 *"
 msgid "Mention Response"
 msgstr "Mention 응답"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:312
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:331
 #, elixir-autogen, elixir-format
 msgid "Menu item text"
 msgstr "메뉴 항목 텍스트"
@@ -907,27 +862,27 @@ msgstr "메뉴 항목 텍스트"
 msgid "Message Flood"
 msgstr "메시지 홍수"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:953
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:224
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:999
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:236
 #, elixir-autogen, elixir-format
 msgid "Messages"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1030
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1102
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1085
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1155
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_dialog.ex:105
 #, elixir-autogen, elixir-format
 msgid "Moderated (+m)"
 msgstr "형태 (+m)"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:964
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:981
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:96
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:481
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:478
 #, elixir-autogen, elixir-format
 msgid "Moderation"
 msgstr "회사연혁"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:133
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:134
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_dialog.ex:56
 #, elixir-autogen, elixir-format
 msgid "Modes"
@@ -939,22 +894,20 @@ msgstr "모드"
 msgid "MyBot"
 msgstr "내봇"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:229
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:241
 #, elixir-autogen, elixir-format
 msgid "N/A"
 msgstr "N/A"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:120
-#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:174
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:212
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:34
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:172
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:58
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:154
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:176
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:166
 #, elixir-autogen, elixir-format
 msgid "Name"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1016
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1065
 #, elixir-autogen, elixir-format
 msgid "Never"
 msgstr "이름 *"
@@ -964,131 +917,130 @@ msgstr "이름 *"
 msgid "New"
 msgstr "- 한국어"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:679
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:731
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:783
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:829
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:944
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1063
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1158
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1205
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1482
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:507
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:144
-#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:193
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:702
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:723
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:770
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:814
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:835
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:862
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:883
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:961
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1080
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1175
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1222
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1499
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:536
+#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:181
+#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:232
 #, elixir-autogen, elixir-format
 msgid "Nick"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:105
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:122
 #, elixir-autogen, elixir-format
 msgid "Nick Colors"
 msgstr "닉 색상"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/nick_change_dialog.ex:69
-#, elixir-autogen, elixir-format
-msgid "NickServ password:"
-msgstr "NickServ 암호:"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:132
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:140
 #, elixir-autogen, elixir-format
 msgid "Nicklist"
 msgstr "팟캐스트"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:270
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:340
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:408
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:477
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:546
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:618
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:935
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:292
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:362
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:430
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:499
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:568
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:640
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:981
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:44
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:176
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:463
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:182
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:479
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:502
 #: lib/retro_hex_chat_web/components/ui/dialogs/user_lookup_dialog.ex:43
 #, elixir-autogen, elixir-format
 msgid "Nickname"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:125
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:276
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:239
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:310
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:135
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:286
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:275
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:352
 #, elixir-autogen, elixir-format
 msgid "Nickname:"
 msgstr "이름:"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:293
+#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:305
 #, elixir-autogen, elixir-format
 msgid "No URLs captured"
 msgstr "캡처 된 URL 없음"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:127
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:132
 #, elixir-autogen, elixir-format
 msgid "No aliases configured. Click \"Add\" to create one."
 msgstr "구성되지 않음. \"Add\"를 클릭하여 하나를 만듭니다."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:674
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:680
 #, elixir-autogen, elixir-format
 msgid "No auto-join channels. Click Add to create one."
 msgstr "자동 조인 채널 없음. 클릭 한 번 만들기."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:230
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:232
 #, elixir-autogen, elixir-format
 msgid "No ban exceptions set."
 msgstr "금지 예외 설정 없음."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:217
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:219
 #, elixir-autogen, elixir-format
 msgid "No bans set on this channel."
 msgstr "이 채널에 설정 금지 없음."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:215
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:227
 #, elixir-autogen, elixir-format
 msgid "No capabilities configured"
 msgstr "설정된 기능"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:250
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:262
 #, elixir-autogen, elixir-format
 msgid "No channels assigned"
 msgstr "지정된 채널 없음"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:91
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:82
 #, elixir-autogen, elixir-format
 msgid "No channels found"
 msgstr "찾을 수 없음"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:570
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:576
 #, elixir-autogen, elixir-format
 msgid "No commands configured. Click Add to create one."
 msgstr "설정된 명령이 없습니다. 클릭 한 번 만들기."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:424
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:421
 #, elixir-autogen, elixir-format
 msgid "No configurable capabilities enabled."
 msgstr "설정 가능한 기능 없음."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:687
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:710
 #, elixir-autogen, elixir-format
 msgid "No contacts saved"
 msgstr "자주 묻는 질문"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:790
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:821
 #, elixir-autogen, elixir-format
 msgid "No custom colors set. Nicknames use automatic colors."
 msgstr "주문 색깔 세트 없음. Nicknames 사용 자동 색상."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:321
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:324
 #, elixir-autogen, elixir-format
 msgid "No custom commands"
 msgstr "사용자 지정 명령 없음"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1157
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1210
 #, elixir-autogen, elixir-format
 msgid "No entries."
 msgstr "항목 없음."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:740
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:757
 #, elixir-autogen, elixir-format
 msgid "No entries. Click Add to track a nickname."
 msgstr "항목 없음. 별명을 추적할 수 있습니다."
@@ -1098,63 +1050,67 @@ msgstr "항목 없음. 별명을 추적할 수 있습니다."
 msgid "No external messages (+n)"
 msgstr "외부 메시지 없음 (+n)"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:837
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:870
 #, elixir-autogen, elixir-format
 msgid "No ignored users. Click Add to ignore a nickname."
 msgstr "무시한 사용자 없음. 별명을 무시하는 추가를 클릭합니다."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:243
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:245
 #, elixir-autogen, elixir-format
 msgid "No invite exceptions set."
 msgstr "자주 묻는 질문"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/invite_dialog.ex:97
+#: lib/retro_hex_chat_web/components/ui/dialogs/invite_dialog.ex:111
 #, elixir-autogen, elixir-format
 msgid "No pending invites."
 msgstr "자주 묻는 질문"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:382
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:379
 #, elixir-autogen, elixir-format
 msgid "No recent events"
 msgstr "최근 행사"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/cheatsheet_dialog.ex:45
+#: lib/retro_hex_chat_web/components/ui/dialogs/cheatsheet_dialog.ex:42
 #, elixir-autogen, elixir-format
 msgid "No shortcuts defined."
 msgstr "정의된 단축키 없음."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:860
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:879
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:899
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:923
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:169
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:170
 #, elixir-autogen, elixir-format
 msgid "No topic set"
 msgstr "항목 없음"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:421
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:490
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:733
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:443
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:512
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:787
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:170
 #, elixir-autogen, elixir-format
 msgid "Note"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:253
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:323
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:289
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:365
 #, elixir-autogen, elixir-format
 msgid "Note:"
 msgstr "참고 :"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:284
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:353
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:680
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:306
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:375
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:703
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:729
 #, elixir-autogen, elixir-format
 msgid "Notes"
 msgstr "지원하다"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:956
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1002
 #, elixir-autogen, elixir-format
 msgid "Notices"
 msgstr "공지사항"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:101
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:113
 #, elixir-autogen, elixir-format
 msgid "Notify"
 msgstr "이름 *"
@@ -1165,67 +1121,73 @@ msgid "Notify List"
 msgstr "공지사항"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/about_dialog.ex:101
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:297
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:367
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:434
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:504
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:575
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:646
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:976
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:598
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:659
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:720
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:319
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:389
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:456
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:526
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:597
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:668
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1022
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:276
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:309
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:629
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:691
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:753
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_dialog.ex:154
 #: lib/retro_hex_chat_web/components/ui/dialogs/confirm_dialog.ex:47
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:86
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:353
-#: lib/retro_hex_chat_web/components/ui/dialogs/kick_dialog.ex:64
-#: lib/retro_hex_chat_web/components/ui/dialogs/mute_duration_dialog.ex:56
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:267
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:338
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:224
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:85
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:232
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:390
+#: lib/retro_hex_chat_web/components/ui/dialogs/kick_dialog.ex:91
+#: lib/retro_hex_chat_web/components/ui/dialogs/mute_duration_dialog.ex:68
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:303
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:380
 #: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:106
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:266
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:334
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:410
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:496
-#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:203
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:214
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:291
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:361
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:439
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:527
+#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:201
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:260
 #, elixir-autogen, elixir-format
 msgid "OK"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:758
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:372
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:783
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:415
 #, elixir-autogen, elixir-format
 msgid "Offline"
 msgstr "옵션 정보"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:272
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:319
 #, elixir-autogen, elixir-format
 msgid "On Join"
 msgstr "참여하기"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:274
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:321
 #, elixir-autogen, elixir-format
 msgid "On Nick Change"
 msgstr "Nick 변화"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:273
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:320
 #, elixir-autogen, elixir-format
 msgid "On Part"
 msgstr "에 부품"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:757
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:364
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:782
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:407
 #, elixir-autogen, elixir-format
 msgid "Online"
 msgstr "- 한국어"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:954
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1000
 #, elixir-autogen, elixir-format
 msgid "PMs"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/paste_confirm_dialog.ex:41
+#: lib/retro_hex_chat_web/components/ui/dialogs/paste_confirm_dialog.ex:43
 #, elixir-autogen, elixir-format
 msgid "Paste Confirmation"
 msgstr "Paste 확인"
@@ -1235,12 +1197,12 @@ msgstr "Paste 확인"
 msgid "Perform"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:134
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:139
 #, elixir-autogen, elixir-format
 msgid "Perform WHOIS on notify nicks when they come online"
 msgstr "온라인으로 와서 nicks를 알리는 WHOIS"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1025
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1074
 #, elixir-autogen, elixir-format
 msgid "Permanent"
 msgstr "이름 *"
@@ -1250,22 +1212,17 @@ msgstr "이름 *"
 msgid "Phoenix"
 msgstr "메인메뉴"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:188
+#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:145
 #, elixir-autogen, elixir-format
 msgid "Play"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:180
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:188
 #, elixir-autogen, elixir-format
 msgid "Prefix"
 msgstr "연락처"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:130
-#, elixir-autogen, elixir-format
-msgid "Preview"
-msgstr "다운로드"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:224
+#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:230
 #, elixir-autogen, elixir-format
 msgid "Private Message"
 msgstr "개인 메시지"
@@ -1276,36 +1233,36 @@ msgid "Public Chat Platform"
 msgstr "공공 채팅 플랫폼"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:108
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:484
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:481
 #, elixir-autogen, elixir-format
 msgid "RSS"
 msgstr "RSS 피드"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:203
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:905
-#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:247
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:179
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:286
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:359
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:539
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1209
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:223
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:951
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:192
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:208
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:292
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:354
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:570
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1281
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_dialog.ex:143
-#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:287
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:202
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:198
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:594
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:698
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:304
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:207
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:212
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:624
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:729
 #, elixir-autogen, elixir-format
 msgid "Remove"
 msgstr "기타 제품"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:209
+#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:219
 #, elixir-autogen, elixir-format
 msgid "Reset Defaults"
 msgstr "초기값"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:160
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:334
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:340
 #, elixir-autogen, elixir-format
 msgid "Response"
 msgstr "관련 기사"
@@ -1320,65 +1277,67 @@ msgstr "복고풍"
 msgid "RetroHexChat"
 msgstr "RetroHexChat을"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:445
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:447
 #, elixir-autogen, elixir-format
 msgid "Run"
 msgstr "지원하다"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:216
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:258
-#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:339
-#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:205
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:219
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:257
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:290
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:360
+#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:215
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:235
 #, elixir-autogen, elixir-format
 msgid "Save"
 msgstr "제품 정보"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:869
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:912
 #, elixir-autogen, elixir-format
 msgid "Save Topic"
 msgstr "Topic을 저장"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:106
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:483
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:480
 #, elixir-autogen, elixir-format
 msgid "Scheduler"
 msgstr "회사연혁"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:906
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1265
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:65
-#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:159
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:923
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1282
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:64
+#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:167
 #, elixir-autogen, elixir-format
 msgid "Search"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:151
+#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:159
 #, elixir-autogen, elixir-format
 msgid "Search URLs..."
 msgstr "URL을 검색 ..."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:76
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:75
 #, elixir-autogen, elixir-format
 msgid "Searching..."
 msgstr "검색..."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:116
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:117
 #, elixir-autogen, elixir-format
 msgid "Select a bot to view details"
 msgstr "봇 선택"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/paste_confirm_dialog.ex:81
+#: lib/retro_hex_chat_web/components/ui/dialogs/paste_confirm_dialog.ex:96
 #, elixir-autogen, elixir-format
 msgid "Send All"
 msgstr "모든 제품"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1169
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1222
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1253
 #, elixir-autogen, elixir-format
 msgid "Set At"
 msgstr "설정하기"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1166
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1219
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1247
 #, elixir-autogen, elixir-format
 msgid "Set By"
 msgstr "설정하기"
@@ -1388,24 +1347,25 @@ msgstr "설정하기"
 msgid "Set by"
 msgstr "설정하기"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:864
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:884
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:906
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:931
 #, elixir-autogen, elixir-format
 msgid "Set by %{nick}"
 msgstr "설정하기 %{nick}"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:681
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:347
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:704
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:734
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:354
 #, elixir-autogen, elixir-format
 msgid "Since"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/invite_dialog.ex:108
+#: lib/retro_hex_chat_web/components/ui/dialogs/invite_dialog.ex:123
 #, elixir-autogen, elixir-format
 msgid "Someone"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:127
+#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:151
 #, elixir-autogen, elixir-format
 msgid "Sound"
 msgstr "이름 *"
@@ -1415,17 +1375,16 @@ msgstr "이름 *"
 msgid "Sound Settings"
 msgstr "사운드 설정"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:221
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:233
 #, elixir-autogen, elixir-format
 msgid "Statistics"
 msgstr "관련 기사"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:732
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:184
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:263
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:460
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:338
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:145
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:774
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:194
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:278
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:457
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:341
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "주요연혁"
@@ -1435,38 +1394,27 @@ msgstr "주요연혁"
 msgid "The command that triggers this response (e.g. !hello)"
 msgstr "이 응답을 트리거하는 명령 (예 : !hello)"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/nick_change_dialog.ex:60
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_change_dialog.ex:63
 #, elixir-autogen, elixir-format
 msgid ""
 "This nickname is registered. Please enter the NickServ password to identify."
 msgstr "이 별명이 등록되어 있습니다. 확인하려면 NickServ 암호를 입력하십시오."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:109
-#, elixir-autogen, elixir-format
-msgid "Threshold:"
-msgstr "문턱:"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:221
+#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:195
+#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:240
 #, elixir-autogen, elixir-format
 msgid "Time"
 msgstr "(주)"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:124
-#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:165
-#, elixir-autogen, elixir-format
-msgid "Time window:"
-msgstr "시간 창:"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:855
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:874
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:894
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:918
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_dialog.ex:68
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:85
 #, elixir-autogen, elixir-format
 msgid "Topic"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1050
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1114
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1101
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1167
 #, elixir-autogen, elixir-format
 msgid "Topic Lock (+t)"
 msgstr "주제 자물쇠 (+t)"
@@ -1476,53 +1424,53 @@ msgstr "주제 자물쇠 (+t)"
 msgid "Topic settable by ops only (+t)"
 msgstr "ops만 (+t)"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:124
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:199
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:228
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:147
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:331
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:334
 #, elixir-autogen, elixir-format
 msgid "Trigger"
 msgstr "더 큰"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:101
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:482
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:479
 #, elixir-autogen, elixir-format
 msgid "Trivia"
 msgstr "트리비아"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:830
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:949
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:863
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:889
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:995
 #, elixir-autogen, elixir-format
 msgid "Type"
 msgstr "제품정보"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:425
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:427
 #, elixir-autogen, elixir-format
 msgid "Type a command and press Enter. Type \"help\" for available commands."
 msgstr "명령을 입력하고 Enter 키를 누릅니다. 사용 가능한 명령에 대한 \"help\"를 입력합니다."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:179
+#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:174
 #, elixir-autogen, elixir-format
 msgid "URL"
 msgstr "사이트 맵"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:48
+#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:47
 #, elixir-autogen, elixir-format
 msgid "URL Catcher"
 msgstr "URL 캐처"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:846
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1264
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:883
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1336
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:604
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:635
 #, elixir-autogen, elixir-format
 msgid "Up"
 msgstr "지원하다"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:228
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:240
 #, elixir-autogen, elixir-format
 msgid "Uptime"
 msgstr "현재 위치"
@@ -1532,28 +1480,28 @@ msgstr "현재 위치"
 msgid "Use {nick} for the caller's name, {channel} for the channel"
 msgstr "{nick} 를 호출자의 이름, {channel} 의 채널에 대 한"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:226
+#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:232
 #, elixir-autogen, elixir-format
 msgid "User Joined"
 msgstr "사용자 참여"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:228
+#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:234
 #, elixir-autogen, elixir-format
 msgid "User Kicked"
 msgstr "사용자 킥"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:227
+#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:233
 #, elixir-autogen, elixir-format
 msgid "User Left"
 msgstr "사용자 왼쪽"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:172
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:84
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:173
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:117
 #, elixir-autogen, elixir-format
 msgid "Users"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:201
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:242
 #, elixir-autogen, elixir-format
 msgid "Variables: $1–$9 (args), $nick (your nick), $chan (channel)"
 msgstr "변수: $1–$9 (args), $nick (당신의 니켈), $chan (채널)"
@@ -1563,7 +1511,7 @@ msgstr "변수: $1–$9 (args), $nick (당신의 니켈), $chan (채널)"
 msgid "Version %{version}"
 msgstr "이름 * %{version}"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/paste_confirm_dialog.ex:60
+#: lib/retro_hex_chat_web/components/ui/dialogs/paste_confirm_dialog.ex:74
 #, elixir-autogen, elixir-format
 msgid ""
 "Warning: This exceeds the flood protection limit. Messages may be throttled."
@@ -1574,100 +1522,90 @@ msgstr "경고: 이것은 홍수 보호 한계를 초과합니다. 메시지는 
 msgid "WebRTC"
 msgstr "웹RTC"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:139
-#, elixir-autogen, elixir-format
-msgid "Word"
-msgstr "이름 *"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:262
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:291
 #, elixir-autogen, elixir-format
 msgid "Word:"
 msgstr "단어 :"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/paste_confirm_dialog.ex:48
+#: lib/retro_hex_chat_web/components/ui/dialogs/paste_confirm_dialog.ex:57
 #, elixir-autogen, elixir-format
 msgid "You are about to send %{count} of text."
 msgstr "견적 요청 %{count} 본문내용"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/invite_dialog.ex:52
+#: lib/retro_hex_chat_web/components/ui/dialogs/invite_dialog.ex:60
 #, elixir-autogen, elixir-format
 msgid "You have been invited to join the following channels:"
 msgstr "다음 채널에 참여하도록 초대되었습니다:"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1132
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1185
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to change modes."
 msgstr "모드를 변경하려면 채널 연산자가 있어야 합니다."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:888
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:935
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to edit the topic."
 msgstr "주제를 편집하려면 채널 연산자가 있어야 합니다."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1214
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1286
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to manage this list."
 msgstr "이 목록을 관리하려면 채널 연산자가 있어야 합니다."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/kick_dialog.ex:46
-#, elixir-autogen, elixir-format
-msgid "You were kicked from %{channel} by %{kicker} (%{reason})."
-msgstr "당신은에서 킥 %{channel} 이름 * %{kicker} (%{reason})."
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/kick_dialog.ex:52
+#: lib/retro_hex_chat_web/components/ui/dialogs/kick_dialog.ex:60
 #, elixir-autogen, elixir-format
 msgid "You were kicked from the channel."
 msgstr "채널에서 시작되었습니다."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:194
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:234
 #, elixir-autogen, elixir-format
 msgid "e.g. /msg $1 hello!"
 msgstr "e.g. /msg $1 안녕하세요!"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:968
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1014
 #, elixir-autogen, elixir-format
 msgid "e.g. 5m, 1h, 2d"
 msgstr "e.g. 5m, 1h, 2d"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:179
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:219
 #, elixir-autogen, elixir-format
 msgid "e.g. hi"
 msgstr "사이트맵"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:160
+#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:164
 #, elixir-autogen, elixir-format
 msgid "identical msgs"
 msgstr "동일한 msgs"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:554
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:556
 #, elixir-autogen, elixir-format
 msgid "joined"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:120
+#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:121
 #, elixir-autogen, elixir-format
 msgid "messages"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:865
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:885
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:907
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:932
 #, elixir-autogen, elixir-format
 msgid "on %{date}"
 msgstr "에 의해 %{date}"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:555
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:557
 #, elixir-autogen, elixir-format
 msgid "parted"
 msgstr "뚱 베어"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:135
-#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:176
-#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:197
+#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:138
+#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:181
+#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:205
 #, elixir-autogen, elixir-format
 msgid "seconds"
 msgstr "지원하다"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1121
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1174
 #, elixir-autogen, elixir-format
 msgid "set"
 msgstr "설치하기"
@@ -1677,64 +1615,65 @@ msgstr "설치하기"
 msgid "© 2024–2026 RetroHexChat Contributors"
 msgstr "© 2024–2026 RetroHexChat 기여자"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:195
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:206
 #, elixir-autogen, elixir-format
 msgid "/me standup in 30 minutes"
 msgstr "/me standup in 30 minutes"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/mute_duration_dialog.ex:45
+#: lib/retro_hex_chat_web/components/ui/dialogs/mute_duration_dialog.ex:57
 #, elixir-autogen, elixir-format
 msgid "30m"
 msgstr "30m"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1381
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1382
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1398
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1399
 #, elixir-autogen, elixir-format
 msgid "Access list"
 msgstr "오시는 길"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1019
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1036
 #, elixir-autogen, elixir-format
 msgid "Account & Roles"
 msgstr "계정 및 역할"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:148
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:160
 #, elixir-autogen, elixir-format
 msgid "Add Timer"
 msgstr "타이머 추가"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1400
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1401
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1417
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1418
 #, elixir-autogen, elixir-format
 msgid "Add access"
 msgstr "자주 묻는 질문"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:466
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:482
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:508
 #, elixir-autogen, elixir-format
 msgid "Added By"
 msgstr "에 의해 추가"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:521
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:551
 #, elixir-autogen, elixir-format
 msgid "Adding..."
 msgstr "더 보기"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:648
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:650
 #, elixir-autogen, elixir-format
 msgid "Allocations"
 msgstr "회사 소개"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:581
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:583
 #, elixir-autogen, elixir-format
 msgid "Announce"
 msgstr "- 연혁"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:963
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1016
 #, elixir-autogen, elixir-format
 msgid "Apply Throttle"
 msgstr "Throttle 적용"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:403
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:417
 #, elixir-autogen, elixir-format
 msgid "Are you sure you want to drop %{channel}? This cannot be undone."
 msgstr "%{channel}을 삭제하시겠습니까? 이것은 undone일 수 없습니다."
@@ -1744,84 +1683,84 @@ msgstr "%{channel}을 삭제하시겠습니까? 이것은 undone일 수 없습�
 msgid "Audio/video tracks stop"
 msgstr "Audio/video 트랙 스톱"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:204
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:205
 #, elixir-autogen, elixir-format
 msgid "Audit Log"
 msgstr "감사 로그"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:451
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:473
 #, elixir-autogen, elixir-format
 msgid "Away"
 msgstr "오시는 길"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:398
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:414
 #, elixir-autogen, elixir-format
 msgid "Away message:"
 msgstr "Away 메시지:"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1123
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1433
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1140
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1450
 #, elixir-autogen, elixir-format
 msgid "Ban list"
 msgstr "Ban 목록"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:970
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:987
 #, elixir-autogen, elixir-format
 msgid "Ban user"
 msgstr "Ban 사용자"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:355
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:365
 #, elixir-autogen, elixir-format
 msgid "Bio (about me) — shown in /whois, max 200 chars"
 msgstr "생물 (약 나) - /whois, 최대 200 숯에서 보이는"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:196
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:197
 #, elixir-autogen, elixir-format
 msgid "Broadcast"
 msgstr "- 연혁"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1366
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1383
 #, elixir-autogen, elixir-format
 msgid "ChanServ admin"
 msgstr "ChanServ 관리자"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1372
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1373
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1389
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1390
 #, elixir-autogen, elixir-format
 msgid "ChanServ info"
 msgstr "ChanServ 정보"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:341
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:351
 #, elixir-autogen, elixir-format
 msgid "Change"
 msgstr "- 기타"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:328
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:338
 #, elixir-autogen, elixir-format
 msgid "Change nickname:"
 msgstr "별명 변경:"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:166
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:176
 #, elixir-autogen, elixir-format
 msgid "Claims your current nickname with a NickServ password."
 msgstr "NickServ 암호로 현재 별명을 부여합니다."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:419
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:441
 #, elixir-autogen, elixir-format
 msgid "Clear Away"
 msgstr "오시는 길"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:377
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:393
 #, elixir-autogen, elixir-format
 msgid "Clear Bio"
 msgstr "명확한 Bio"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:514
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:516
 #, elixir-autogen, elixir-format
 msgid "Clear MOTD"
 msgstr "명확한 MOTD"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:921
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:969
 #, elixir-autogen, elixir-format
 msgid "Clear Welcome"
 msgstr "구름 많음"
@@ -1841,128 +1780,129 @@ msgstr ""
 "이 창을 닫아 전체 P2P 세션을 %{peer} - 진행중인 모든 통화, 게임 또는 파일 전송이 중지됩니다. 세션을 유지하고 그냥 타이디"
 " 업, 대신 창을 최소화."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:419
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:434
 #, elixir-autogen, elixir-format
 msgid "Confirm Drop"
 msgstr "비밀번호"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:971
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:988
 #, elixir-autogen, elixir-format
 msgid "Confirm ban"
 msgstr "공지사항"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1348
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1365
 #, elixir-autogen, elixir-format
 msgid "Confirm delete"
 msgstr "자주 묻는 질문"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:991
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1008
 #, elixir-autogen, elixir-format
 msgid "Confirm kick"
 msgstr "확인 킥"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1001
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1018
 #, elixir-autogen, elixir-format
 msgid "Confirm mute"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1357
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1374
 #, elixir-autogen, elixir-format
 msgid "Confirm purge"
 msgstr "지갑 확인"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:982
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:999
 #, elixir-autogen, elixir-format
 msgid "Confirm unban"
 msgstr "자주 묻는 질문"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1011
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1028
 #, elixir-autogen, elixir-format
 msgid "Confirm unmute"
 msgstr "자주 묻는 질문"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:198
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:208
 #, elixir-autogen, elixir-format
 msgid "Confirm:"
 msgstr "이름:"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:228
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:229
 #, elixir-autogen, elixir-format
 msgid "Console"
 msgstr "회사 소개"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:464
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:466
 #, elixir-autogen, elixir-format
 msgid "Current MOTD"
 msgstr "현재 MOTD"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:165
+#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:168
 #, elixir-autogen, elixir-format
 msgid "Current P2P session closes first"
 msgstr "현재 P2P 세션은 첫 번째 닫습니다."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1032
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1049
 #, elixir-autogen, elixir-format
 msgid "Current nick"
 msgstr "현재 니켈"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:220
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:221
 #, elixir-autogen, elixir-format
 msgid "Danger Zone"
 msgstr "위험 구역"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1347
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1364
 #, elixir-autogen, elixir-format
 msgid "Delete channel"
 msgstr "비밀번호"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:230
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:240
 #, elixir-autogen, elixir-format
 msgid ""
 "Deletes this nickname registration after you confirm with its password."
 msgstr "비밀번호로 확인한 후 이 별명 등록을 삭제합니다."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1341
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1358
 #, elixir-autogen, elixir-format
 msgid "Destructive actions"
 msgstr "관련 기사"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:268
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:278
 #, elixir-autogen, elixir-format
 msgid "Disconnect a stale session that is holding a registered nickname."
 msgstr "등록된 별명을 들고 있는 stale 세션을 차단합니다."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:254
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:398
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:264
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:409
 #, elixir-autogen, elixir-format
 msgid "Drop Registration"
 msgstr "공지사항"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1114
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1115
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1422
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1423
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1131
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1132
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1439
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1440
 #, elixir-autogen, elixir-format
 msgid "Drop registration"
 msgstr "공지사항"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:228
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:238
 #, elixir-autogen, elixir-format
 msgid "Drop registration..."
 msgstr "드롭 등록 ..."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:415
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:430
 #, elixir-autogen, elixir-format
 msgid "Dropping..."
 msgstr "더 보기"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1223
-#: lib/retro_hex_chat_web/components/ui/dialogs/mute_duration_dialog.ex:37
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1240
+#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:193
+#: lib/retro_hex_chat_web/components/ui/dialogs/mute_duration_dialog.ex:49
 #, elixir-autogen, elixir-format
 msgid "Duration"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:147
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:159
 #, elixir-autogen, elixir-format
 msgid "Edit Timer"
 msgstr "Timer 편집"
@@ -1992,12 +1932,12 @@ msgid ""
 msgstr ""
 "현재 P2P 세션을 %{peer}로 종료하고 %{new_peer}로 시작하세요? 진행중인 모든 통화, 게임 또는 파일 전송은 중지됩니다."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/user_lookup_dialog.ex:52
+#: lib/retro_hex_chat_web/components/ui/dialogs/user_lookup_dialog.ex:53
 #, elixir-autogen, elixir-format
 msgid "Enter nickname..."
 msgstr "별명을 입력 ..."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:59
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:87
 #, elixir-autogen, elixir-format
 msgid "Every"
 msgstr "모든 제품"
@@ -2007,59 +1947,59 @@ msgstr "모든 제품"
 msgid "File transfers stop"
 msgstr "파일 전송 중지"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:345
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:350
 #, elixir-autogen, elixir-format
 msgid "Founder"
 msgstr "회사연혁"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1552
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1569
 #, elixir-autogen, elixir-format
 msgid "From nick"
 msgstr "nick에서"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:308
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:318
 #, elixir-autogen, elixir-format
 msgid "Ghost Session"
 msgstr "Ghost 세션"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:264
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:274
 #, elixir-autogen, elixir-format
 msgid "Ghost session..."
 msgstr "Ghost 세션 ..."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:404
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:420
 #, elixir-autogen, elixir-format
 msgid "Gone to lunch"
 msgstr "점심 식사"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:453
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:475
 #, elixir-autogen, elixir-format
 msgid "Guest"
 msgstr "(주)"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:394
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:410
 #, elixir-autogen, elixir-format
 msgid "I'm away"
 msgstr "내 계정"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:452
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:474
 #, elixir-autogen, elixir-format
 msgid "Identified"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:216
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:226
 #, elixir-autogen, elixir-format
 msgid "Identify"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:175
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:185
 #, elixir-autogen, elixir-format
 msgid "Identify (log in)"
 msgstr "(로그인)"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:826
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:958
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1308
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:832
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:975
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1325
 #, elixir-autogen, elixir-format
 msgid "Info"
 msgstr "- 한국어"
@@ -2074,48 +2014,48 @@ msgstr "채널에 Invite"
 msgid "Inviting"
 msgstr "회사 소개"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:949
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:970
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1002
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1023
 #, elixir-autogen, elixir-format
 msgid "Join throttle (seconds)"
 msgstr "throttle (둘째로) 가입"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:990
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1007
 #, elixir-autogen, elixir-format
 msgid "Kick user"
 msgstr "Kick 사용자"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:677
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:679
 #, elixir-autogen, elixir-format
 msgid "Last"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/knock_request_dialog.ex:71
+#: lib/retro_hex_chat_web/components/ui/dialogs/knock_request_dialog.ex:78
 #, elixir-autogen, elixir-format
 msgid "Leave a message for the channel operators (optional)"
 msgstr "채널 연산자에 대한 메시지를 남겨 (옵션)"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:188
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:189
 #, elixir-autogen, elixir-format
 msgid "MOTD"
 msgstr "사이트맵"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:752
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:754
 #, elixir-autogen, elixir-format
 msgid "Max channels"
 msgstr "최대 채널"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:96
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:104
 #, elixir-autogen, elixir-format
 msgid "Maximum 5 timers active. Stop one to add another."
 msgstr "최대 5 타이머 활성화. 다른 것을 추가하는 것을 중지하십시오."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:587
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:589
 #, elixir-autogen, elixir-format
 msgid "Message"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/knock_request_dialog.ex:63
+#: lib/retro_hex_chat_web/components/ui/dialogs/knock_request_dialog.ex:69
 #, elixir-autogen, elixir-format
 msgid "Message (optional)"
 msgstr "(선택) 메시지"
@@ -2125,104 +2065,99 @@ msgstr "(선택) 메시지"
 msgid "Minimize to keep it running"
 msgstr "실행을 유지하는 최소화"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1000
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1017
 #, elixir-autogen, elixir-format
 msgid "Mute user"
 msgstr "Mute 사용자"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/mute_duration_dialog.ex:26
+#: lib/retro_hex_chat_web/components/ui/dialogs/mute_duration_dialog.ex:42
 #, elixir-autogen, elixir-format
 msgid "Mute user: %{nick}"
 msgstr "사용자 음소거: %{nick}"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1649
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1666
 #, elixir-autogen, elixir-format
 msgid "NUKE EVERYTHING"
 msgstr "NUKE 전기"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:484
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:486
 #, elixir-autogen, elixir-format
 msgid "New MOTD"
 msgstr "새로운 MOTD"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1320
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1337
 #, elixir-autogen, elixir-format
 msgid "New channel"
 msgstr "새로운 채널"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:166
+#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:169
 #, elixir-autogen, elixir-format
 msgid "New invite starts after confirmation"
 msgstr "새로운 초대는 확인 후 시작"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1040
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1057
 #, elixir-autogen, elixir-format
 msgid "New nick"
 msgstr "새로운 니켈"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1167
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1184
 #, elixir-autogen, elixir-format
 msgid "New password"
 msgstr "새로운 비밀번호"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:61
-#, elixir-autogen, elixir-format
-msgid "Next Fire"
-msgstr "다음 불"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1089
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1106
 #, elixir-autogen, elixir-format
 msgid "NickServ admin"
 msgstr "NickServ 관리자"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1095
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1096
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1112
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1113
 #, elixir-autogen, elixir-format
 msgid "NickServ info"
 msgstr "NickServ 정보"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:489
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:518
 #, elixir-autogen, elixir-format
 msgid "No %{level} entries"
 msgstr "%{level} 항목 없음"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:472
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:474
 #, elixir-autogen, elixir-format
 msgid "No MOTD has been set."
 msgstr "MOTD가 설정되지 않았습니다."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:68
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:71
 #, elixir-autogen, elixir-format
 msgid "No active timers. Click Add to schedule one."
 msgstr "활성 타이머 없음. 자주 묻는 질문"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:904
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:935
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:951
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:983
 #, elixir-autogen, elixir-format
 msgid "No welcome message set."
 msgstr "환영 메시지 세트 없음."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:342
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:346
 #, elixir-autogen, elixir-format
 msgid "Not registered"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:926
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:943
 #, elixir-autogen, elixir-format
 msgid "Online only"
 msgstr "온라인 만"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:356
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:366
 #, elixir-autogen, elixir-format
 msgid "Only channel operators can register this channel."
 msgstr "만 채널 연산자는이 채널을 등록 할 수 있습니다."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:159
+#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:161
 #, elixir-autogen, elixir-format
 msgid "Only one P2P session can be active"
 msgstr "1개의 P2P 회의만 유효할 수 있습니다"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:436
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:458
 #, elixir-autogen, elixir-format
 msgid "Operator broadcast messages"
 msgstr "운영자 방송 메시지"
@@ -2232,137 +2167,138 @@ msgstr "운영자 방송 메시지"
 msgid "P2P games close"
 msgstr "P2P 게임 닫기"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:183
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:239
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:289
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:193
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:249
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:299
 #, elixir-autogen, elixir-format
 msgid "Password:"
 msgstr "비밀번호:"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:60
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:67
 #, elixir-autogen, elixir-format
 msgid "Presence"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1596
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1613
 #, elixir-autogen, elixir-format
 msgid "Preserved: admin_roles, audit_logs, server_bans, server_settings"
 msgstr "보존: admin roles, Audit logs, server bans, server settings"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:167
+#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:170
 #, elixir-autogen, elixir-format
 msgid "Privacy and relay settings carry over"
 msgstr "개인정보 및 릴레이 설정 수행"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:56
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:63
 #, elixir-autogen, elixir-format
 msgid "Profile"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1356
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1373
 #, elixir-autogen, elixir-format
 msgid "Purge messages"
 msgstr "Purge 메시지"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/user_lookup_dialog.ex:146
+#: lib/retro_hex_chat_web/components/ui/dialogs/user_lookup_dialog.ex:157
 #, elixir-autogen, elixir-format
 msgid "Query (PM)"
 msgstr "질문 (PM)"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1214
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1231
+#: lib/retro_hex_chat_web/components/ui/dialogs/kick_dialog.ex:71
 #, elixir-autogen, elixir-format
 msgid "Reason"
 msgstr "레아슨"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:434
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:456
 #, elixir-autogen, elixir-format
 msgid "Receive wallops (+w)"
 msgstr "wallops (+w)를 받으십시오"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:503
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:635
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:705
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:815
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:930
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1279
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:505
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:637
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:707
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:821
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:947
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1296
 #, elixir-autogen, elixir-format
 msgid "Refresh"
 msgstr "지원하다"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1640
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1657
 #, elixir-autogen, elixir-format
 msgid "Refresh preview"
 msgstr "새로 고침"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:215
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:225
 #, elixir-autogen, elixir-format
 msgid "Register"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:371
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:381
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:391
 #, elixir-autogen, elixir-format
 msgid "Register Channel"
 msgstr "비밀번호"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:164
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:174
 #, elixir-autogen, elixir-format
 msgid "Register this nickname"
 msgstr "이 별명"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:52
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:59
 #, elixir-autogen, elixir-format
 msgid "Register/Login"
 msgstr "등록/Login"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:341
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:345
 #, elixir-autogen, elixir-format
 msgid "Registered"
 msgstr "회사연혁"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:367
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:377
 #, elixir-autogen, elixir-format
 msgid "Registering..."
 msgstr "로그인 ..."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:776
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:173
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:782
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:174
 #, elixir-autogen, elixir-format
 msgid "Registration"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1411
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1412
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1428
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1429
 #, elixir-autogen, elixir-format
 msgid "Remove access"
 msgstr "자주 묻는 질문"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:535
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:566
 #, elixir-autogen, elixir-format
 msgid "Removing..."
 msgstr "관련 기사"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1047
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1064
 #, elixir-autogen, elixir-format
 msgid "Rename"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1027
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1044
 #, elixir-autogen, elixir-format
 msgid "Rename user"
 msgstr "사용자 이름"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:60
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:91
 #, elixir-autogen, elixir-format
 msgid "Repeat"
 msgstr "기타 제품"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:205
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:217
 #, elixir-autogen, elixir-format
 msgid "Repeating timer"
 msgstr "반복 타이머"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:142
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:147
 #, elixir-autogen, elixir-format
 msgid "Request Access..."
 msgstr "자주 묻는 질문"
@@ -2372,99 +2308,99 @@ msgstr "자주 묻는 질문"
 msgid "Request Channel Access"
 msgstr "채널 액세스"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1104
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1105
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1121
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1122
 #, elixir-autogen, elixir-format
 msgid "Reset password"
 msgstr "비밀번호 재설정"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:373
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:383
 #, elixir-autogen, elixir-format
 msgid "Save Bio"
 msgstr "저장 Bio"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:911
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:958
 #, elixir-autogen, elixir-format
 msgid "Save Welcome"
 msgstr "회사 소개"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:819
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:825
 #, elixir-autogen, elixir-format
 msgid "Save settings"
 msgstr "설정 저장"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:284
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:322
 #, elixir-autogen, elixir-format
 msgid "Seconds"
 msgstr "두 번째"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:283
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:321
 #, elixir-autogen, elixir-format
 msgid "Seconds (min 10)"
 msgstr "초 (10 분)"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/invite_channel_picker_dialog.ex:82
+#: lib/retro_hex_chat_web/components/ui/dialogs/invite_channel_picker_dialog.ex:84
 #, elixir-autogen, elixir-format
 msgid "Send Invite"
 msgstr "Invite 소개"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/knock_request_dialog.ex:97
+#: lib/retro_hex_chat_web/components/ui/dialogs/knock_request_dialog.ex:105
 #, elixir-autogen, elixir-format
 msgid "Send Request"
 msgstr "견적 요청"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:604
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:606
 #, elixir-autogen, elixir-format
 msgid "Send broadcast"
 msgstr "본문 바로가기"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:164
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:165
 #, elixir-autogen, elixir-format
 msgid "Server Settings"
 msgstr "Server 설정"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:744
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:746
 #, elixir-autogen, elixir-format
 msgid "Server name"
 msgstr "Server 이름"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:415
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:431
 #, elixir-autogen, elixir-format
 msgid "Set Away"
 msgstr "Away 설정"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:518
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:520
 #, elixir-autogen, elixir-format
 msgid "Set MOTD"
 msgstr "MOTD 설정"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1058
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1081
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1075
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1098
 #, elixir-autogen, elixir-format
 msgid "Set role"
 msgstr "설정 역할"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:833
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:839
 #, elixir-autogen, elixir-format
 msgid "Settings"
 msgstr "계정 설정"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:409
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:425
 #, elixir-autogen, elixir-format
 msgid "Shown to others via /whois."
 msgstr "/whois을 통해 다른 사람들에게 보여주세요."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:641
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:643
 #, elixir-autogen, elixir-format
 msgid "Stats"
 msgstr "통계 정보"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:127
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:137
 #, elixir-autogen, elixir-format
 msgid "Status:"
 msgstr "상태:"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:133
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:144
 #, elixir-autogen, elixir-format
 msgid "Stop"
 msgstr "이름 *"
@@ -2479,12 +2415,12 @@ msgstr "기타 제품"
 msgid "Switch P2P Session"
 msgstr "P2P 세션 전환"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1594
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1611
 #, elixir-autogen, elixir-format
 msgid "THIS CANNOT BE UNDONE"
 msgstr "이 CANNOT는"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:212
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:213
 #, elixir-autogen, elixir-format
 msgid "TURN"
 msgstr "사이트맵"
@@ -2494,221 +2430,405 @@ msgstr "사이트맵"
 msgid "The whole P2P session disconnects"
 msgstr "전체 P2P 세션을 분리"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:787
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:821
 #, elixir-autogen, elixir-format
 msgid "This cannot be undone without the new owner's cooperation."
 msgstr "이것은 새로운 소유자의 협력 없이 undone일 수 없습니다."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:177
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:187
 #, elixir-autogen, elixir-format
 msgid "This nickname is registered. Enter its NickServ password."
 msgstr "이 별명이 등록되어 있습니다. NickServ 암호를 입력하십시오."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:100
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:108
 #, elixir-autogen, elixir-format
 msgid "Timers are session-only and will be lost on disconnect."
 msgstr "Timers는 세션 전용이며 끊어질 것입니다."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:795
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:829
 #, elixir-autogen, elixir-format
 msgid "Transfer"
 msgstr "지원하다"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:758
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1002
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:792
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1056
 #, elixir-autogen, elixir-format
 msgid "Transfer Ownership"
 msgstr "회사연혁"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1390
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1391
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1407
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1408
 #, elixir-autogen, elixir-format
 msgid "Transfer founder"
 msgstr "회사연혁"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:773
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:807
 #, elixir-autogen, elixir-format
 msgid "Transfer ownership of %{channel} to:"
 msgstr "%{channel}의 소유권을:"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1501
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1560
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1518
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1577
 #, elixir-autogen, elixir-format
 msgid "Type channel name to confirm"
 msgstr "유형 채널 이름 확인"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1616
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1633
 #, elixir-autogen, elixir-format
 msgid "Type the server name to confirm: %{server_name}"
 msgstr "서버 이름을 입력하여 확인: %{server_name}"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:981
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:998
 #, elixir-autogen, elixir-format
 msgid "Unban user"
 msgstr "Unban 사용자"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1010
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1027
 #, elixir-autogen, elixir-format
 msgid "Unmute user"
 msgstr "사용자 정의"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:691
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:693
 #, elixir-autogen, elixir-format
 msgid "User"
 msgstr "사용자 이름"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/user_lookup_dialog.ex:103
+#: lib/retro_hex_chat_web/components/ui/dialogs/user_lookup_dialog.ex:112
 #, elixir-autogen, elixir-format
 msgid "User Lookup"
 msgstr "사용자 조회"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:64
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:71
 #, elixir-autogen, elixir-format
 msgid "User Modes"
 msgstr "사용자 모드"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:572
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:574
 #, elixir-autogen, elixir-format
 msgid "Wallops"
 msgstr "연락처"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:897
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:928
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:944
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:976
 #, elixir-autogen, elixir-format
 msgid "Welcome Message"
 msgstr "회사연혁"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:770
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:774
 #, elixir-autogen, elixir-format
 msgid "Welcome message"
 msgstr "감사합니다."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/user_lookup_dialog.ex:63
-#: lib/retro_hex_chat_web/components/ui/dialogs/user_lookup_dialog.ex:159
+#: lib/retro_hex_chat_web/components/ui/dialogs/user_lookup_dialog.ex:66
+#: lib/retro_hex_chat_web/components/ui/dialogs/user_lookup_dialog.ex:171
 #, elixir-autogen, elixir-format
 msgid "Whois"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/user_lookup_dialog.ex:134
+#: lib/retro_hex_chat_web/components/ui/dialogs/user_lookup_dialog.ex:144
 #, elixir-autogen, elixir-format
 msgid "Whowas"
 msgstr "인기 있는"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:796
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:802
 #, elixir-autogen, elixir-format
 msgid "Whowas retention"
 msgstr "Whowas 유지"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:148
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:158
 #, elixir-autogen, elixir-format
 msgid "You are identified with NickServ."
 msgstr "NickServ로 식별됩니다."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:545
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:576
 #, elixir-autogen, elixir-format
 msgid "You do not have permission to manage this list."
 msgstr "이 목록을 관리할 권한이 없습니다."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:983
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1036
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to change the join throttle."
 msgstr "채널 운영자가 참여 throttle을 변경해야합니다."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:941
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:989
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to edit the welcome message."
 msgstr "채널 운영자가 환영 메시지를 편집해야합니다."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:353
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:547
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:363
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:578
 #, elixir-autogen, elixir-format
 msgid "You must be identified with NickServ to use ChanServ."
 msgstr "ChanServ를 사용하려면 NickServ로 식별해야합니다."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/invite_channel_picker_dialog.ex:67
+#: lib/retro_hex_chat_web/components/ui/dialogs/invite_channel_picker_dialog.ex:68
 #, elixir-autogen, elixir-format
 msgid "You must be in a channel to invite someone"
 msgstr "누군가를 초대하기 위해 채널에 있어야합니다."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1075
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1092
 #, elixir-autogen, elixir-format
 msgid "admin"
 msgstr "관련 기사"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1493
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1510
 #, elixir-autogen, elixir-format
 msgid "aop"
 msgstr "뚱 베어"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/mute_duration_dialog.ex:49
+#: lib/retro_hex_chat_web/components/ui/dialogs/mute_duration_dialog.ex:61
 #, elixir-autogen, elixir-format
 msgid "blank = permanent; 30s/5m/1h/1d"
 msgstr "공백 = 영구; 30분/5m/1h/1d"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:788
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:794
 #, elixir-autogen, elixir-format
 msgid "closed"
 msgstr "닫힘"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:160
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:172
 #, elixir-autogen, elixir-format
 msgid "e.g. remind"
 msgstr "e.g. 알림"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:295
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:333
 #, elixir-autogen, elixir-format
 msgid "min 10s for repeating timers"
 msgstr "반복 타이머를 위한 분 10s"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:281
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:319
 #, elixir-autogen, elixir-format
 msgid "no"
 msgstr "없음"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:785
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:791
 #, elixir-autogen, elixir-format
 msgid "open"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:132
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:142
 #, elixir-autogen, elixir-format
 msgid "registered"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1072
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1089
 #, elixir-autogen, elixir-format
 msgid "server_operator"
 msgstr "서버 operator"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1492
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1509
 #, elixir-autogen, elixir-format
 msgid "sop"
 msgstr "사이트맵"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/invite_channel_picker_dialog.ex:101
-#: lib/retro_hex_chat_web/components/ui/dialogs/knock_request_dialog.ex:110
-#: lib/retro_hex_chat_web/components/ui/dialogs/mute_duration_dialog.ex:69
+#: lib/retro_hex_chat_web/components/ui/dialogs/invite_channel_picker_dialog.ex:109
+#: lib/retro_hex_chat_web/components/ui/dialogs/invite_dialog.ex:120
+#: lib/retro_hex_chat_web/components/ui/dialogs/knock_request_dialog.ex:124
+#: lib/retro_hex_chat_web/components/ui/dialogs/mute_duration_dialog.ex:87
 #, elixir-autogen, elixir-format
 msgid "unknown"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:133
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:143
 #, elixir-autogen, elixir-format
 msgid "unregistered"
 msgstr "관련 상품"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1073
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1090
 #, elixir-autogen, elixir-format
 msgid "user"
 msgstr "사용자 이름"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1494
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:1511
 #, elixir-autogen, elixir-format
 msgid "vop"
 msgstr "뚱 베어"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:279
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:280
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:317
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:318
 #, elixir-autogen, elixir-format
 msgid "yes"
 msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:341
+#, elixir-autogen, elixir-format
+msgid "Any"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/delete_confirm_dialog.ex:54
+#, elixir-autogen, elixir-format
+msgid "Are you sure you want to delete this message?"
+msgstr "이 메시지를 삭제하시겠습니까? 이 동작은 undone일 수 없습니다."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/kick_dialog.ex:66
+#, elixir-autogen, elixir-format
+msgid "By"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_change_dialog.ex:57
+#, elixir-autogen, elixir-format
+msgid "Changing nickname to"
+msgstr "별명을 바꾸기:"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:415
+#, elixir-autogen, elixir-format
+msgid "Color %{index}"
+msgstr "색상 %{index}"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:256
+#, elixir-autogen, elixir-format
+msgid "Custom menu entries"
+msgstr "주문 메뉴"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:417
+#, elixir-autogen, elixir-format
+msgid "Default"
+msgstr "기본 정보"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:152
+#, elixir-autogen, elixir-format
+msgid "Duplicate limit"
+msgstr "중복 제한:"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:122
+#, elixir-autogen, elixir-format
+msgid "Invite only"
+msgstr "Invite 만 (+i)"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/invite_dialog.ex:77
+#, elixir-autogen, elixir-format
+msgid "Invited by %{inviter}"
+msgstr "에 의해 초대 %{inviter}"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:121
+#, elixir-autogen, elixir-format
+msgid "Mode"
+msgstr "모드"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/mute_duration_dialog.ex:26
+#, elixir-autogen, elixir-format
+msgid "Mute User"
+msgstr "Mute 사용자"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:95
+#, elixir-autogen, elixir-format
+msgid "Next"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_change_dialog.ex:71
+#, elixir-autogen, elixir-format
+msgid "NickServ password"
+msgstr "NickServ 암호:"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:206
+#, elixir-autogen, elixir-format
+msgid "No URLs captured yet. Shared links will appear here."
+msgstr "아직 캡처 된 URL 없음. 공유 링크가 여기에 표시됩니다."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:134
+#, elixir-autogen, elixir-format
+msgid "No auto-respond rules configured. Click Add to create one."
+msgstr "자동 응답 규칙이 없습니다. 클릭 한 번 만들기."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:259
+#, elixir-autogen, elixir-format
+msgid "No custom menu entries yet."
+msgstr "아직 사용자 지정 메뉴 항목 없음."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:150
+#, elixir-autogen, elixir-format
+msgid "No highlight words configured. Click Add to create one."
+msgstr "설정된 강조 단어 없음. 클릭 한 번 만들기."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/user_lookup_dialog.ex:93
+#, elixir-autogen, elixir-format
+msgid "No lookup yet."
+msgstr "아직 볼 수 없습니다."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:425
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:426
+#, elixir-autogen, elixir-format
+msgid "No note"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:147
+#, elixir-autogen, elixir-format
+msgid "No notify nicks yet. Add a nick to track online status."
+msgstr "아직 nicks를 알리지 않습니다. 온라인 상태를 추적하기 위해 nick를 추가합니다."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:431
+#, elixir-autogen, elixir-format
+msgid "Now"
+msgstr "현재 위치"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:160
+#, elixir-autogen, elixir-format
+msgid "Off"
+msgstr "옵션 정보"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:159
+#, elixir-autogen, elixir-format
+msgid "On"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:142
+#, elixir-autogen, elixir-format
+msgid "Own nick"
+msgstr "자신의 nick"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:171
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:594
+#, elixir-autogen, elixir-format
+msgid "Position"
+msgstr "제품정보"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/paste_confirm_dialog.ex:62
+#, elixir-autogen, elixir-format
+msgid "Send them as a paced batch to the active conversation."
+msgstr "활동적인 대화로 진행된 배치로 보내세요."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/mute_duration_dialog.ex:40
+#, elixir-autogen, elixir-format
+msgid "Target"
+msgstr "제품정보"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/kick_dialog.ex:77
+#, elixir-autogen, elixir-format
+msgid "The channel tab was closed. You can rejoin if allowed."
+msgstr "채널 탭이 닫혔습니다. 허용한 경우 rejoin 할 수 있습니다."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/delete_confirm_dialog.ex:57
+#, elixir-autogen, elixir-format
+msgid "This action cannot be undone."
+msgstr "이 동작은 undone일 수 없습니다."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:109
+#, elixir-autogen, elixir-format
+msgid "Threshold"
+msgstr "문턱:"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:126
+#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:169
+#, elixir-autogen, elixir-format
+msgid "Time window"
+msgstr "시간 창:"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/kick_dialog.ex:56
+#, elixir-autogen, elixir-format
+msgid "You were kicked from %{channel}."
+msgstr "당신은에서 킥 %{channel}."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/disconnect_confirm_dialog.ex:55
+#, elixir-autogen, elixir-format
+msgid "Your current chat session will end."
+msgstr "현재 채팅 세션이 종료됩니다."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:699
+#, elixir-autogen, elixir-format
+msgid "none"
+msgstr "없음"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/kick_dialog.ex:100
+#, elixir-autogen, elixir-format
+msgid "the channel"
+msgstr "새로운 채널"

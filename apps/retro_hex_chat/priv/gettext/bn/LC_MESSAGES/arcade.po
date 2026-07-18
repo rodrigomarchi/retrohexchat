@@ -1,4 +1,4 @@
-# "msgid"s in this file come from arcade.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: bn; status: enabled; wave: 3.
+# "msgid"s in this file come from arcade.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=arcade to refresh catalogs.  Locale: bn; status: enabled; wave: 3.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -11,17 +11,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:51
+#: lib/retro_hex_chat/arcade/catalog.ex:52
 #, elixir-autogen, elixir-format
 msgid "32 levels — Doom II compatible"
 msgstr "৩২ স্তর — বিচার"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:37
+#: lib/retro_hex_chat/arcade/catalog.ex:38
 #, elixir-autogen, elixir-format
 msgid "36 levels of open-source doom"
 msgstr "খোলা- সোর্সের ৩৬ স্তর"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:109
+#: lib/retro_hex_chat/arcade/catalog.ex:110
 #, elixir-autogen, elixir-format
 msgid ""
 "A Viking-themed total conversion with hand-drawn pixel art. Battle through "
@@ -30,7 +30,7 @@ msgstr ""
 "হাতে আঁকা পিক্সেল আর্ট নিয়ে একটি ভিকিং-এর থিম সম্পূর্ণ পরিবর্তিত হয়েছে। "
 "তীর, ধনুক, এবং জাদু দিয়ে যুদ্ধ।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:53
+#: lib/retro_hex_chat/arcade/catalog.ex:54
 #, elixir-autogen, elixir-format
 msgid ""
 "A complete free replacement for DOOM II — 32 levels with the Super Shotgun. "
@@ -39,14 +39,14 @@ msgstr ""
 "ডিওএম ২-এর জন্য সম্পূর্ণভাবে এক মুক্ত জায়গা — সুপার শটগানের ৩২টি স্তর । "
 "হাজার হাজার কমিউনিটি তৈরি পিডিআর্সের সাথে সুসংগত।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:136
+#: lib/retro_hex_chat/arcade/catalog.ex:137
 #, elixir-autogen, elixir-format
 msgid ""
 "A complete free replacement for Quake — original levels, art, and music "
 "under BSD license. Community-made open-source content."
 msgstr "কোকুন — মূল স্তর, শিল্প এবং সংগীত কমিউনিটি তৈরি ওপেন সোর্স উপাদান।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:39
+#: lib/retro_hex_chat/arcade/catalog.ex:40
 #, elixir-autogen, elixir-format
 msgid ""
 "A complete free replacement for Ultimate DOOM — 4 episodes, 36 levels. "
@@ -55,7 +55,7 @@ msgstr ""
 "সর্বাধিক অর্থসংস্থান — ৪টি পর্ব, ৩৬টি মাত্রা । প্রাথমিক শিল্প, সঙ্গীত এবং "
 "খেলার মাত্রা BSD লাইসেন্সের অধীনে।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:95
+#: lib/retro_hex_chat/arcade/catalog.ex:96
 #, elixir-autogen, elixir-format
 msgid ""
 "A cyberpunk total conversion — hack through a dystopian future with new "
@@ -64,7 +64,7 @@ msgstr ""
 "একটা সাইবারপিঙ্ক সম্পূর্ণ রূপান্তর — নতুন অস্ত্র, শত্রু এবং স্তরের মাধ্যমে "
 "একটি কাল্পনিক ভবিষ্যতের মাধ্যমে হ্যাক করা । স্বতন্ত্র v1.2 IWAD."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:234
+#: lib/retro_hex_chat/arcade/catalog.ex:235
 #, elixir-autogen, elixir-format
 msgid ""
 "A disturbing top-down cyberpunk adventure by Creative Reality. You are Ryan,"
@@ -133,7 +133,7 @@ msgid ""
 "Arena-style layouts mean enemies can come from any direction — stay moving."
 msgstr "এভারো স্টাইলের মানে শত্রু যে কোন দিক থেকে আসতে পারে — চলন্ত থাকুন ।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:172
+#: lib/retro_hex_chat/arcade/catalog.ex:173
 #, elixir-autogen, elixir-format
 msgid "Arrow keys move, Ctrl fire, Space open doors, Shift run, 1-4 weapons"
 msgstr "অ্যারো কী সরান, Ctrl আগুন, স্পেস খোলা দরজা, Shift চালানো, ১-৪ অস্ত্র"
@@ -172,7 +172,7 @@ msgstr ""
 "গোলাবর্ষণ ব্যবহার করে। জন রোমো এবং স্যান্ডি পিটারসেন-এর নকশাটি অলাইনার "
 "এফপিএস ম্যাপ ডিজাইনে মাস্টার ক্লাস।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:197
+#: lib/retro_hex_chat/arcade/catalog.ex:198
 #, elixir-autogen, elixir-format
 msgid "Beneath a Steel Sky"
 msgstr "একটি স্টীল স্কাই অনুপযুক্ত"
@@ -191,7 +191,7 @@ msgstr ""
 "“দি গ্যাপ” নামে, কিন্তু তাকে অপহরণ করা হয় এবং ইউনিয়ন সিটিতে নিয়ে যাওয়া "
 "হয়।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:217
+#: lib/retro_hex_chat/arcade/catalog.ex:218
 #, elixir-autogen, elixir-format
 msgid ""
 "British real estate agent John Hacker must defeat the vampire Drascula in "
@@ -202,7 +202,7 @@ msgstr ""
 "ভ্যাম্পায়ারকে এই মজার স্প্যানিশ পয়েন্টে পরাজিত করতে হবে এবং পপ সংস্কৃতির "
 "বিষয় এবং অযৌক্তিক রসিকতা পূর্ণ অভিযান চালাতে হবে।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:78
+#: lib/retro_hex_chat/arcade/catalog.ex:79
 #, elixir-autogen, elixir-format
 msgid "Chex Quest"
 msgstr "চেক্সিপ"
@@ -247,12 +247,12 @@ msgid ""
 "Combine inventory items — some puzzles require creative item combinations."
 msgstr "কনটেমপোরাল জিনিসপত্র — কিছু ধাঁধার সৃজনশীল বৈশিষ্ট্যের দরকার ছিল ।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:215
+#: lib/retro_hex_chat/arcade/catalog.ex:216
 #, elixir-autogen, elixir-format
 msgid "Comedic Dracula parody adventure (1996)"
 msgstr "ভেন্ডর অতিকায় অভিযান (১৯৯৬)"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:249
+#: lib/retro_hex_chat/arcade/catalog.ex:250
 #, elixir-autogen, elixir-format
 msgid "Comic adventure in the Amazon (1995)"
 msgstr "আমাজনে কমিক অভিযান (১৯৯৫)"
@@ -333,12 +333,12 @@ msgstr "Ctrl"
 msgid "Ctrl + F5"
 msgstr "Ctrl+ F5"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:198
+#: lib/retro_hex_chat/arcade/catalog.ex:199
 #, elixir-autogen, elixir-format
 msgid "Cyberpunk point & click adventure (1994)"
 msgstr "সাইবারপাঙ্ক পয়েন্ট এবং অভিযান (১৯৯৪৪)"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:93
+#: lib/retro_hex_chat/arcade/catalog.ex:94
 #, elixir-autogen, elixir-format
 msgid "Cyberpunk total conversion"
 msgstr "মোট রূপান্তর"
@@ -352,17 +352,17 @@ msgstr ""
 "সাইবর্গের শত্রুরা ক্লাসিক ডুওএম দৈত্যদের চেয়ে বেশি শক্তিশালী হতে পারে — "
 "আপনার দূরত্ব বজায় রাখুন ।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:22
+#: lib/retro_hex_chat/arcade/catalog.ex:23
 #, elixir-autogen, elixir-format
 msgid "DOOM: Knee-Deep in the Dead"
 msgstr "DOOM: ডেড-এ শন-ডেপ"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:232
+#: lib/retro_hex_chat/arcade/catalog.ex:233
 #, elixir-autogen, elixir-format
 msgid "Dark cyberpunk adventure (1994)"
 msgstr "গাঢ় সাইবারপাইঙ্ক অভিযান (১৯৯/৪)"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:65
+#: lib/retro_hex_chat/arcade/catalog.ex:66
 #, elixir-autogen, elixir-format
 msgid "Deathmatch arena — open source"
 msgstr "মৃত্যুদণ্ড — উৎস"
@@ -386,7 +386,7 @@ msgstr "অবাস্তব যুক্তির দ্বারা হতা
 msgid "Drag item"
 msgstr "টেনে এনে ফেলুন"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:214
+#: lib/retro_hex_chat/arcade/catalog.ex:215
 #, elixir-autogen, elixir-format
 msgid "Drascula: The Vampire Strikes Back"
 msgstr "ডাসকুলা: রক্ত চোষা পিঠ"
@@ -403,7 +403,7 @@ msgstr ""
 "ব্রিটিশ রিয়েল স্টেট এজেন্ট জন হ্যাকার ট্রান্সপ্ল্যানের কাছে যায় আর অবশ্যই "
 "ভ্যাম্পায়ার কাউন্ট ড্রসকুলাকে পরাজিত করতে হবে, যে তার কনেকে অপহরণ করেছে।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:231
+#: lib/retro_hex_chat/arcade/catalog.ex:232
 #, elixir-autogen, elixir-format
 msgid "Dreamweb"
 msgstr "ড্রিম ওয়েবার"
@@ -444,13 +444,13 @@ msgstr ""
 "এবং অন্যান্য রাতের জীবিত প্রাণী দ্বারা পূর্ণ। ট্রন রেজনোর (নেঙ্ক নোয়েলস) "
 "বায়ুমণ্ডলীয় শব্দ সমূহ অত্যাচারী মেজাজ যোগ করে।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:23
-#: lib/retro_hex_chat/arcade/catalog.ex:121
+#: lib/retro_hex_chat/arcade/catalog.ex:24
+#: lib/retro_hex_chat/arcade/catalog.ex:122
 #, elixir-autogen, elixir-format
 msgid "Episode 1 — The Original"
 msgstr "পর্ব ১ — মূল উৎস"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:164
+#: lib/retro_hex_chat/arcade/catalog.ex:165
 #, elixir-autogen, elixir-format
 msgid "Episode 1 — The Shareware Classic"
 msgstr "পর্ব ১ — শেয়ারওয়্যার ক্লাসিক"
@@ -477,7 +477,7 @@ msgstr "পর্ব ১ — শেয়ারওয়্যার ক্ল�
 msgid "Esc"
 msgstr "এস. এস. ই."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:200
+#: lib/retro_hex_chat/arcade/catalog.ex:201
 #, elixir-autogen, elixir-format
 msgid ""
 "Escape Union City and uncover your past in this cyberpunk classic by "
@@ -560,7 +560,7 @@ msgstr "অস্ত্র"
 msgid "Flashlight toggle"
 msgstr "ফ্ল্যাশ অদলবদল"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:248
+#: lib/retro_hex_chat/arcade/catalog.ex:249
 #, elixir-autogen, elixir-format
 msgid "Flight of the Amazon Queen"
 msgstr "অ্যামাজান কুইনের ফ্লাইট"
@@ -577,7 +577,7 @@ msgstr ""
 "স্টাইলে এক কমিক পয়েন্ট এবং ক্লিক-এর অভিযান। আপনি জো কিং নামে একজন পাইলট "
 "হিসেবে খেলেন, যার বিমান আমাজন জঙ্গলে বিধ্বস্ত হয়।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:67
+#: lib/retro_hex_chat/arcade/catalog.ex:68
 #, elixir-autogen, elixir-format
 msgid ""
 "Free deathmatch-focused maps for DOOM. 32 arena-style levels designed for "
@@ -586,7 +586,7 @@ msgstr ""
 "DOOM এর জন্য মুক্ত মৃত্যুদণ্ড-প্রজেক্ট ম্যাপ ৩২, দ্রুত মাল্টিপ্লেয়ার "
 "অপারেশনের জন্য তৈরি করা হয়েছে। BSD লাইসেন্স।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:268
+#: lib/retro_hex_chat/arcade/catalog.ex:269
 #, elixir-autogen, elixir-format
 msgid ""
 "Free the village of Turnvale from the sorceress Selena. Revolution "
@@ -597,7 +597,7 @@ msgstr ""
 " স্বায়ত্তশাসিত এনপিসি সিস্টেমের মাধ্যমে উদ্ভাবনী ভার্চুয়াল থিয়েটার "
 "পদ্ধতিকে তুলে ধরেছে।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:64
+#: lib/retro_hex_chat/arcade/catalog.ex:65
 #, elixir-autogen, elixir-format
 msgid "FreeDM"
 msgstr "মুক্তDM"
@@ -622,7 +622,7 @@ msgstr ""
 "ফ্রিডোম এর শত্রু ডিজাইন করা হয়েছে ডওএম এর থেকে আলাদা কিন্তু একই ধরনের "
 "আচরণকে অনুসরণ করে — নতুন ভুতুড়েদের শিখতে।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:36
+#: lib/retro_hex_chat/arcade/catalog.ex:37
 #, elixir-autogen, elixir-format
 msgid "Freedoom: Phase 1"
 msgstr "ফ্রিডোম: প্রথম ধাপ"
@@ -640,7 +640,7 @@ msgstr ""
 "বিদ্বান, ইচ্ছুকতা, শব্দ প্রভাব এবং সঙ্গীত ট্র্যাক কমিউনিটি থেকে নতুন করে "
 "তৈরি করা হয়েছে।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:50
+#: lib/retro_hex_chat/arcade/catalog.ex:51
 #, elixir-autogen, elixir-format
 msgid "Freedoom: Phase 2"
 msgstr "ফ্রিডোম: দ্বিতীয় ধাপ"
@@ -656,7 +656,7 @@ msgstr ""
 "তীব্রভাবে এফপিএস-এর — সম্পূর্ণ মুক্ত জায়গা । সকল সম্পদই মূল কমিউনিটির তৈরি "
 "হয় BSD লাইসেন্সের অধীনে।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:92
+#: lib/retro_hex_chat/arcade/catalog.ex:93
 #, elixir-autogen, elixir-format
 msgid "HacX: Twitch 'n Kill"
 msgstr "HacX: Typhy হত্যা"
@@ -672,7 +672,7 @@ msgstr ""
 " রূপান্তর, যা সম্পূর্ণ স্বতন্ত্র। একটি কাল্পনিক ভবিষ্যতের জন্য প্রস্তুত, "
 "আপনি কর্পোরেট নিরাপত্তা সিস্টেম এবং সাইবর্গের শত্রুদের হ্যাক করে নিউরাল করি।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:180
+#: lib/retro_hex_chat/arcade/catalog.ex:181
 #, elixir-autogen, elixir-format
 msgid "Half-Life: Uplink"
 msgstr "অর্ধ- জীবন: আপলিঙ্ক"
@@ -782,7 +782,7 @@ msgstr "সর্বশেষ ব্যবহৃত অস্ত্র"
 msgid "Left Click"
 msgstr "বাম ক্লিক"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:206
+#: lib/retro_hex_chat/arcade/catalog.ex:207
 #, elixir-autogen, elixir-format
 msgid ""
 "Left click interact/walk, Right click examine/verb menu, Drag inventory "
@@ -792,7 +792,7 @@ msgstr ""
 "উদ্দেশ্যে চিহ্নিত সামগ্রী পরীক্ষা করা হয়। NAME OF TRANSLATORS F5 সংরক্ষণ "
 "করো <ff2\\2, Ctrl+F5 অপশনসমূহ, Escosting"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:133
+#: lib/retro_hex_chat/arcade/catalog.ex:134
 #, elixir-autogen, elixir-format
 msgid "LibreQuake"
 msgstr "Librirk"
@@ -846,7 +846,7 @@ msgid ""
 "Listen for guards — you can hear enemies through doors before opening them."
 msgstr "প্রহরীদের কথা শুনুন ।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:265
+#: lib/retro_hex_chat/arcade/catalog.ex:266
 #, elixir-autogen, elixir-format
 msgid "Lure of the Temptress"
 msgstr "টেম্পোরিয়ার লুজার"
@@ -904,7 +904,7 @@ msgid "Maps are compact and weapon-dense — perfect for quick action sessions."
 msgstr ""
 "মানচিত্রগুলো সংক্ষিপ্ত এবং অস্ত্রের মতো — দ্রুত পদক্ষেপের জন্য নিখুঁত।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:266
+#: lib/retro_hex_chat/arcade/catalog.ex:267
 #, elixir-autogen, elixir-format
 msgid "Medieval fantasy adventure (1992)"
 msgstr "Indoviversity unit symbol"
@@ -1010,7 +1010,7 @@ msgstr "খোলা দরজা খুলুন"
 msgid "Open verb menu"
 msgstr "ওপেন- জি- পি- এল"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:134
+#: lib/retro_hex_chat/arcade/catalog.ex:135
 #, elixir-autogen, elixir-format
 msgid "Open-source Quake replacement"
 msgstr "ওপেন- সোর্স কোয়েক প্রতিস্থাপন"
@@ -1107,7 +1107,7 @@ msgstr ""
 "পর্যায় ১ থেকে বেশি খোলা ও জটিল স্তরগুলো — গোপন বিষয়গুলোর জন্য পুরোপুরি "
 "অনুসন্ধান করে ।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:251
+#: lib/retro_hex_chat/arcade/catalog.ex:252
 #, elixir-autogen, elixir-format
 msgid ""
 "Pilot Joe King crash-lands in the Amazon and stumbles into a mad scientist's"
@@ -1118,7 +1118,7 @@ msgstr ""
 "জড়িয়ে পড়ে মানুষ ডাইনোসরে পরিণত হয়। একটি মজার ইন্ডিয়ানা জোন্স-এর স্টাইল "
 "পয়েন্ট এবং সম্পূর্ণ কন্ঠের অভিনয়ে ক্লিক করে।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:223
+#: lib/retro_hex_chat/arcade/catalog.ex:224
 #, elixir-autogen, elixir-format
 msgid ""
 "Point & click: left-click interact, right-click examine. Inventory at bottom"
@@ -1127,7 +1127,7 @@ msgstr ""
 "পয়েন্ট ক্লিক: বাঁদিক-ছে দুইবার ক্লিক করার ফলে খেলা যাবে । পর্দার নিচের "
 "দিকে. F5 সংরক্ষণ করো <ffapt> <fflay\\@sinking>, সংরক্ষণ করা হয়"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:257
+#: lib/retro_hex_chat/arcade/catalog.ex:258
 #, elixir-autogen, elixir-format
 msgid ""
 "Point & click: left-click interact, right-click examine. Inventory at top of"
@@ -1136,7 +1136,7 @@ msgstr ""
 "পয়েন্ট ক্লিক: বাঁদিক-ছে দুইবার ক্লিক করার ফলে খেলা যাবে । পর্দার উপরের "
 "দিকে. F5 সংরক্ষণ করো <ffapt> <fflay\\@sinking>, সংরক্ষণ করা হয়"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:291
+#: lib/retro_hex_chat/arcade/catalog.ex:292
 #, elixir-autogen, elixir-format
 msgid ""
 "Point & click: left-click interact, right-click examine. Simple, streamlined"
@@ -1145,7 +1145,7 @@ msgstr ""
 "পয়েন্ট ক্লিক: বাঁদিক-ছে দুইবার ক্লিক করার ফলে খেলা যাবে । সহজ, স্ট্রিমিং "
 "ইন্টারফেস। F5 সংরক্ষণ করো <ffapt> <fflay\\@sinking>, সংরক্ষণ করা হয়"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:274
+#: lib/retro_hex_chat/arcade/catalog.ex:275
 #, elixir-autogen, elixir-format
 msgid ""
 "Point & click: left-click interact, right-click verb menu. NPCs follow their"
@@ -1155,7 +1155,7 @@ msgstr ""
 " নিজস্ব তালিকা অনুসরণ করে। F5 সংরক্ষণ করো <ffapt> <fflay\\@sinking>, সংরক্ষণ"
 " করা হয়"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:240
+#: lib/retro_hex_chat/arcade/catalog.ex:241
 #, elixir-autogen, elixir-format
 msgid ""
 "Point & click: left-click interact/walk, right-click examine. Inventory at "
@@ -1213,17 +1213,17 @@ msgstr ""
 "কোয়েক-২ মিশনের সাথে ইন্টারঅ্যাকটিভ ম্যাপ, রঙিন লাইটিং, এবং আরো নির্মাণমূলক "
 "বর্ণনার মাধ্যমে। এ ছাড়া, মৃতপ্রায় জীবিত প্রাণীগুলোকে শনাক্ত করা হয়েছে ।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:146
+#: lib/retro_hex_chat/arcade/catalog.ex:147
 #, elixir-autogen, elixir-format
 msgid "Quake II: The Invasion"
 msgstr "কোয়েক ২য়: ইন্সবেশন"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:120
+#: lib/retro_hex_chat/arcade/catalog.ex:121
 #, elixir-autogen, elixir-format
 msgid "Quake: Dimension of the Doomed"
 msgstr "কম্পন: বাতিলকরণ"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:106
+#: lib/retro_hex_chat/arcade/catalog.ex:107
 #, elixir-autogen, elixir-format
 msgid "REKKR: Sunken Land"
 msgstr "রিকেক: Sunকেন ভূমি"
@@ -1269,7 +1269,7 @@ msgid ""
 "Reload during quiet moments — don't get caught mid-reload in a firefight."
 msgstr "কিছুক্ষণের মধ্যে পুনরায় লোড করা — আগুনের মাঝে ধরা না পড়া।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:285
+#: lib/retro_hex_chat/arcade/catalog.ex:286
 #, elixir-autogen, elixir-format
 msgid ""
 "Rescue your grandfather from underground pirates in this charmingly absurd "
@@ -1450,7 +1450,7 @@ msgstr "সিডি বিচ্ছিন্ন করুন"
 msgid "Skip dialogue line"
 msgstr "বন্ধ করুন"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:282
+#: lib/retro_hex_chat/arcade/catalog.ex:283
 #, elixir-autogen, elixir-format
 msgid "Soltys"
 msgstr "সমাধান"
@@ -1538,7 +1538,7 @@ msgstr ""
 "fraf-rung (এক সাথে একই সাথে) আপনাকে সরাসরি চালানোর চেয়ে ৪০% দ্রুত সরে যেতে "
 "বাধ্য করে।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:283
+#: lib/retro_hex_chat/arcade/catalog.ex:284
 #, elixir-autogen, elixir-format
 msgid "Surreal Polish puzzle adventure (1995)"
 msgstr "অসাধারণ পোলিশ ধাঁধা অভিযান (১৯৯৫)"
@@ -1591,7 +1591,7 @@ msgid ""
 "around corners."
 msgstr "গ্রেনেডের হাত থেকে রক্ষা পাওয়া"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:181
+#: lib/retro_hex_chat/arcade/catalog.ex:182
 #, elixir-autogen, elixir-format
 msgid "The Official Demo — 3 Unique Missions"
 msgstr "অফিসিয়াল ডেমো — ৩ স্বতন্ত্র অভিযান"
@@ -1623,7 +1623,7 @@ msgid "The bow is effective at range but arrows are limited — aim carefully."
 msgstr ""
 "তিরন্দাজ মাটির কাছাকাছি অথচ তীরগুলো সীমিত — মনোযোগের সঙ্গে লক্ষ করুন ।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:79
+#: lib/retro_hex_chat/arcade/catalog.ex:80
 #, elixir-autogen, elixir-format
 msgid "The cereal box classic"
 msgstr "ক্লাসিক বক্স ক্লাসিক"
@@ -1783,7 +1783,7 @@ msgstr ""
 "মূল উপাদান থেকে এই সম্পদ আলাদা হলেও একই ইঞ্জিনে খেলা চালানো হয় এবং একই "
 "ধরনের বাস্তুসংস্থানকে সমর্থন করে।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:166
+#: lib/retro_hex_chat/arcade/catalog.ex:167
 #, elixir-autogen, elixir-format
 msgid ""
 "The grandfather of FPS games (1992) — 10 levels of castle-storming action. "
@@ -1820,7 +1820,7 @@ msgid ""
 "The interface is simple and streamlined — left-click does most of the work."
 msgstr "ইন্টারফেসটি খুবই সহজ এবং স্ট্রিমলাইনড - বাম-দিকের অধিকাংশ কাজ করে না।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:81
+#: lib/retro_hex_chat/arcade/catalog.ex:82
 #, elixir-autogen, elixir-format
 msgid ""
 "The legendary 1996 cereal box promotion — a kid-friendly total conversion of"
@@ -1843,7 +1843,7 @@ msgid ""
 msgstr ""
 "এই আন্দোলন পদ্ধতি কোকুনের মতো — হুনিং ও বুদ্ধিবৃত্তিক কাজও এখানে চলে আসে ।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:183
+#: lib/retro_hex_chat/arcade/catalog.ex:184
 #, elixir-autogen, elixir-format
 msgid ""
 "The official Half-Life demo (1999) — 3 unique levels not found in the full "
@@ -1853,7 +1853,7 @@ msgstr ""
 "আনুষ্ঠানিকভাবে অর্ধ-জীবনের ডেমো (১৯৯৯) – ৩টি স্বতন্ত্র মাত্রা সম্পূর্ণ "
 "খেলায় পাওয়া যায়নি। ব্ল্যাক মেসার গোপন ল্যাবের সাথে যুদ্ধ। ( ১ করি."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:149
+#: lib/retro_hex_chat/arcade/catalog.ex:150
 #, elixir-autogen, elixir-format
 msgid ""
 "The official Quake II demo (1997) — full 3D FPS with Strogg invasion. Unit 1"
@@ -1864,7 +1864,7 @@ msgstr ""
 "ত্রিমাত্রিক এফপিএস। একক ওয়ান ওয়ান ওয়ান ওয়ান ফর ওয়ান ফর ওয়ান। শেয়ার "
 "শেয়ারিং ক্লাসিক, যা অনলাইন এফপিএস নির্ধারণ করে।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:25
+#: lib/retro_hex_chat/arcade/catalog.ex:26
 #, elixir-autogen, elixir-format
 msgid ""
 "The original Episode 1 of DOOM (1993) — 9 levels of demon-infested corridors"
@@ -1873,7 +1873,7 @@ msgstr ""
 "DOOM এর মূল পর্ব ১ (১৯৯৩)- হুবোসের উপর মন্দ করিডোরের ৯ মাত্রা। শেয়ারিং "
 "ক্লাসিক সব শুরু হয়েছে."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:123
+#: lib/retro_hex_chat/arcade/catalog.ex:124
 #, elixir-autogen, elixir-format
 msgid ""
 "The original Episode 1 of Quake (1996) — full 3D FPS with Lovecraftian "
@@ -2067,7 +2067,7 @@ msgstr ""
 msgid "Turn left / right"
 msgstr "ডানদিকে"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:147
+#: lib/retro_hex_chat/arcade/catalog.ex:148
 #, elixir-autogen, elixir-format
 msgid "Unit 1 — The Demo"
 msgstr "একক ১ — নমুনা"
@@ -2136,7 +2136,7 @@ msgstr ""
 "অন্ধকার এলাকায় উজ্জ্বল আলো ব্যবহার করুন (F) — কিন্তু লক্ষ্য করুন যে আপনার "
 "হেভি স্যুটের ছাপের সঙ্গে এর ক্ষমতা ভাগ করে দিন ।"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:107
+#: lib/retro_hex_chat/arcade/catalog.ex:108
 #, elixir-autogen, elixir-format
 msgid "Viking-themed standalone"
 msgstr "ভাইকিং-theme স্বতন্ত্র"
@@ -2156,24 +2156,24 @@ msgstr "ভাইকিং-theme স্বতন্ত্র"
 msgid "W / ↑"
 msgstr "W / ↑"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:128
-#: lib/retro_hex_chat/arcade/catalog.ex:141
+#: lib/retro_hex_chat/arcade/catalog.ex:129
+#: lib/retro_hex_chat/arcade/catalog.ex:142
 #, elixir-autogen, elixir-format
 msgid "WASD move, Mouse aim, Left click fire, E use"
 msgstr "EDO স্থানান্তর করা হয়েছে, মাউস লক্ষ্য, বাম ক্লিক ট্রিগার করুন"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:31
-#: lib/retro_hex_chat/arcade/catalog.ex:45
-#: lib/retro_hex_chat/arcade/catalog.ex:59
-#: lib/retro_hex_chat/arcade/catalog.ex:73
-#: lib/retro_hex_chat/arcade/catalog.ex:87
-#: lib/retro_hex_chat/arcade/catalog.ex:101
-#: lib/retro_hex_chat/arcade/catalog.ex:115
+#: lib/retro_hex_chat/arcade/catalog.ex:32
+#: lib/retro_hex_chat/arcade/catalog.ex:46
+#: lib/retro_hex_chat/arcade/catalog.ex:60
+#: lib/retro_hex_chat/arcade/catalog.ex:74
+#: lib/retro_hex_chat/arcade/catalog.ex:88
+#: lib/retro_hex_chat/arcade/catalog.ex:102
+#: lib/retro_hex_chat/arcade/catalog.ex:116
 #, elixir-autogen, elixir-format
 msgid "WASD move, Mouse aim, Left click fire, E use, Space jump"
 msgstr "সরানো হয়েছে, মাউসের লক্ষ্য, বাম বাটনে ক্লিক, ব্যবহার করে স্পেস জাম্প"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:155
+#: lib/retro_hex_chat/arcade/catalog.ex:156
 #, elixir-autogen, elixir-format
 msgid ""
 "WASD move, Mouse aim, Left click fire, E use, Space jump, C crouch, R reload"
@@ -2181,7 +2181,7 @@ msgstr ""
 "সক্রিয় করা হয়েছে, মাউসের লক্ষ্য, বাম বাটনে ক্লিক, ব্যবহার করে স্পেস লাফ, "
 "Colice, Round"
 
-#: lib/retro_hex_chat/arcade/catalog.ex:189
+#: lib/retro_hex_chat/arcade/catalog.ex:190
 #, elixir-autogen, elixir-format
 msgid ""
 "WASD move, Mouse aim, Left click fire, E use, Space jump, Shift crouch, R "
@@ -2255,7 +2255,7 @@ msgstr ""
 "উলফলিন থ্রিডিনো — প্রথম ব্যক্তি শুটারের দাদা । পর্ব ১: ক্যাসেল "
 "ওফেন্সেইনস্টেইনস্টেইন-এর কাছ থেকে – আমেরিকার গুপ্তচর বি. জে."
 
-#: lib/retro_hex_chat/arcade/catalog.ex:163
+#: lib/retro_hex_chat/arcade/catalog.ex:164
 #, elixir-autogen, elixir-format
 msgid "Wolfenstein 3D: Escape from Castle"
 msgstr "উল্ফলেন ত্রিমাত্রিক: ক্যাসেল থেকে মুক্তি"

@@ -1,4 +1,4 @@
-# "msgid"s in this file come from group_call.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: tr; status: enabled; wave: 2.
+# "msgid"s in this file come from group_call.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=group_call to refresh catalogs.  Locale: tr; status: enabled; wave: 2.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -41,8 +41,7 @@ msgstr "Grup çağrısı artık aktif değildir"
 #, elixir-autogen, elixir-format
 msgid "Group call rate limit reached. Try again in %{count} second."
 msgid_plural "Group call rate limit reached. Try again in %{count} seconds."
-msgstr[0] ""
-"Grup arama oranı sınırı ulaştı. %{count} ikinci olarak tekrar deneyin."
+msgstr[0] "Grup arama oranı sınırı ulaştı. %{count} ikinci olarak tekrar deneyin."
 msgstr[1] "Grup arama oranı sınırı ulaştı. %{count} saniyede tekrar deneyin."
 
 #: lib/retro_hex_chat/group_call.ex:397

@@ -1,4 +1,4 @@
-# "msgid"s in this file come from help_space.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: it; status: enabled; wave: 3.
+# "msgid"s in this file come from help_space.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=help_space to refresh catalogs.  Locale: it; status: enabled; wave: 3.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -23,48 +23,23 @@ msgstr "Ciclo di Vita"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:2
 #, elixir-autogen, elixir-format
-msgid ""
-"A virtual space is the map view built into every channel. People who are "
-"present in the channel can switch from Chat to Space, walk around the shared"
-" 8-bit village, and keep using the same public channel conversation."
-msgstr ""
-"Uno spazio virtuale è la mappa vista costruita in ogni canale. Le persone "
-"che sono presenti nel canale possono passare da Chat a Spazio, camminare "
-"intorno al comune villaggio a 8 bit, e continuare a utilizzare la stessa "
-"conversazione canale pubblico."
+msgid "A virtual space is the map view built into every channel. People who are present in the channel can switch from Chat to Space, walk around the shared 8-bit village, and keep using the same public channel conversation."
+msgstr "Uno spazio virtuale è la mappa vista costruita in ogni canale. Le persone che sono presenti nel canale possono passare da Chat a Spazio, camminare intorno al comune villaggio a 8 bit, e continuare a utilizzare la stessa conversazione canale pubblico."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:23
 #, elixir-autogen, elixir-format
-msgid ""
-"Channel spaces are runtime state. They wake when someone views Space, mirror"
-" the current channel presence, and can be rebuilt from that presence when "
-"the view is opened again."
-msgstr ""
-"Gli spazi del canale sono stati runtime. Si svegliano quando qualcuno vede "
-"Spazio, rispecchia la presenza del canale corrente, e può essere ricostruita"
-" da quella presenza quando la vista è aperta di nuovo."
+msgid "Channel spaces are runtime state. They wake when someone views Space, mirror the current channel presence, and can be rebuilt from that presence when the view is opened again."
+msgstr "Gli spazi del canale sono stati runtime. Si svegliano quando qualcuno vede Spazio, rispecchia la presenza del canale corrente, e può essere ricostruita da quella presenza quando la vista è aperta di nuovo."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:16
 #, elixir-autogen, elixir-format
-msgid ""
-"Entering the channel makes your avatar available in Space. Move with the "
-"arrow keys or WASD while the canvas is focused; the server validates every "
-"step, so walls and furniture block movement for everyone equally."
-msgstr ""
-"Entrare nel canale rende il vostro avatar disponibile nello spazio. Spostare"
-" con i tasti freccia o WASD mentre la tela è concentrata; il server "
-"convalida ogni passo, così pareti e mobili blocco movimento per tutti allo "
-"stesso modo."
+msgid "Entering the channel makes your avatar available in Space. Move with the arrow keys or WASD while the canvas is focused; the server validates every step, so walls and furniture block movement for everyone equally."
+msgstr "Entrare nel canale rende il vostro avatar disponibile nello spazio. Spostare con i tasti freccia o WASD mentre la tela è concentrata; il server convalida ogni passo, così pareti e mobili blocco movimento per tutti allo stesso modo."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:9
 #, elixir-autogen, elixir-format
-msgid ""
-"Open any channel and use the Chat and Space buttons in the topic row. There "
-"is no separate invite card or space command for the channel map."
-msgstr ""
-"Aprire qualsiasi canale e utilizzare i pulsanti Chat e spazio nella riga "
-"dell'argomento. Non c'è una carta d'invito separata o un comando spaziale "
-"per la mappa del canale."
+msgid "Open any channel and use the Chat and Space buttons in the topic row. There is no separate invite card or space command for the channel map."
+msgstr "Aprire qualsiasi canale e utilizzare i pulsanti Chat e spazio nella riga dell'argomento. Non c'è una carta d'invito separata o un comando spaziale per la mappa del canale."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:7
 #, elixir-autogen, elixir-format
@@ -78,28 +53,13 @@ msgstr "Scelta"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:16
 #, elixir-autogen, elixir-format
-msgid ""
-"Click a card to enter the map wearing that character. Everyone else in the "
-"Space sees your choice immediately. The picker appears each time you enter, "
-"starting on your last pick, so you can switch characters whenever you like."
-msgstr ""
-"Fare clic su una carta per inserire la mappa indossando quel carattere. "
-"Tutti gli altri nello spazio vedono la vostra scelta immediatamente. Il "
-"raccoglitore appare ogni volta che si entra, a partire dall'ultima scelta, "
-"in modo da poter cambiare i caratteri ogni volta che ti piace."
+msgid "Click a card to enter the map wearing that character. Everyone else in the Space sees your choice immediately. The picker appears each time you enter, starting on your last pick, so you can switch characters whenever you like."
+msgstr "Fare clic su una carta per inserire la mappa indossando quel carattere. Tutti gli altri nello spazio vedono la vostra scelta immediatamente. Il raccoglitore appare ogni volta che si entra, a partire dall'ultima scelta, in modo da poter cambiare i caratteri ogni volta che ti piace."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:9
 #, elixir-autogen, elixir-format
-msgid ""
-"Eight characters are available: the Hero, plus the Sorceress, Knight, "
-"Archer, Barbarian, Rogue, Cleric and Monk. Each card shows an animated "
-"walking preview so you can see the sprite before you commit, and every "
-"character has its own attack animation too."
-msgstr ""
-"Sono disponibili otto personaggi: l'Eroe, più la Sorceressa, il Cavaliere, "
-"l'Arco, il Barbaro, il Rogue, il Clerico e il Monk. Ogni carta mostra "
-"un'anteprima a piedi animata in modo da poter vedere lo sprite prima di "
-"impegnarsi, e ogni personaggio ha anche la sua animazione di attacco."
+msgid "Eight characters are available: the Hero, plus the Sorceress, Knight, Archer, Barbarian, Rogue, Cleric and Monk. Each card shows an animated walking preview so you can see the sprite before you commit, and every character has its own attack animation too."
+msgstr "Sono disponibili otto personaggi: l'Eroe, più la Sorceressa, il Cavaliere, l'Arco, il Barbaro, il Rogue, il Clerico e il Monk. Ogni carta mostra un'anteprima a piedi animata in modo da poter vedere lo sprite prima di impegnarsi, e ogni personaggio ha anche la sua animazione di attacco."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:7
 #, elixir-autogen, elixir-format
@@ -108,11 +68,5 @@ msgstr "Il Roster"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:2
 #, elixir-autogen, elixir-format
-msgid ""
-"When you open a channel's Space, a character picker appears before the map "
-"loads. Pick who you want to be — the classic Hero or one of six adventuring "
-"classes."
-msgstr ""
-"Quando si apre uno spazio di un canale, un raccoglitore di caratteri appare "
-"prima che la mappa carichi. Scegli chi vuoi essere — l'Eroe classico o una "
-"delle sei classi avventurose."
+msgid "When you open a channel's Space, a character picker appears before the map loads. Pick who you want to be — the classic Hero or one of six adventuring classes."
+msgstr "Quando si apre uno spazio di un canale, un raccoglitore di caratteri appare prima che la mappa carichi. Scegli chi vuoi essere — l'Eroe classico o una delle sei classi avventurose."

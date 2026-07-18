@@ -1,4 +1,4 @@
-# "msgid"s in this file come from system.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: ru; status: enabled; wave: 2.
+# "msgid"s in this file come from system.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=system to refresh catalogs.  Locale: ru; status: enabled; wave: 2.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -18,7 +18,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/telemetry.ex:108
 #, elixir-autogen, elixir-format
 msgid "Database"
-msgstr "Database"
+msgstr "База данных"
 
 #: lib/retro_hex_chat_web/telemetry.ex:151
 #: lib/retro_hex_chat_web/telemetry.ex:156

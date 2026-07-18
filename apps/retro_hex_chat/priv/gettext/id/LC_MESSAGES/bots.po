@@ -1,4 +1,4 @@
-# "msgid"s in this file come from bots.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: id; status: enabled; wave: 1.
+# "msgid"s in this file come from bots.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=bots to refresh catalogs.  Locale: id; status: enabled; wave: 1.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -69,7 +69,7 @@ msgstr "%{prefix} %{title} - %{link}"
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:371
 #, elixir-autogen, elixir-format
 msgid "%{rank}. %{name}: %{points}pts"
-msgstr "%{rank}. %{name}: %{points}pts"
+msgstr "%{rank}. %{name}: %{points}Kutip"
 
 #: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:87
 #: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:105

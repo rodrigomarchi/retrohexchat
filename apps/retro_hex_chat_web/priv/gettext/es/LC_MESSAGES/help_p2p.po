@@ -1,4 +1,4 @@
-# "msgid"s in this file come from help_p2p.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: es; status: enabled; wave: 1.
+# "msgid"s in this file come from help_p2p.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=help_p2p to refresh catalogs.  Locale: es; status: enabled; wave: 1.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -10,21 +10,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:13
-#, elixir-autogen, elixir-format
-msgid "(1.5 Mbps),"
-msgstr "(1,5 Mbps),"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:15
-#, elixir-autogen, elixir-format
-msgid "(150 Kbps) buttons to adjust the bitrate manually."
-msgstr "(150 Kbps) botones para ajustar el bitrate manualmente."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:14
-#, elixir-autogen, elixir-format
-msgid "(500 Kbps), or"
-msgstr "(500 Kbps) o"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:8
 #, elixir-autogen, elixir-format
@@ -130,11 +115,6 @@ msgstr "Llamada final"
 msgid "File Transfer"
 msgstr "Transferencia de Archivos"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:12
-#, elixir-autogen, elixir-format
-msgid "High"
-msgstr "Alto"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_media_devices.html.heex:18
 #, elixir-autogen, elixir-format
 msgid ""
@@ -180,32 +160,12 @@ msgstr "A ti"
 msgid "Live Switching"
 msgstr "Cambio en vivo"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:14
-#, elixir-autogen, elixir-format
-msgid "Low"
-msgstr "Baja"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:10
-#, elixir-autogen, elixir-format
-msgid "Manual Quality Adjustment"
-msgstr "Ajuste manual de calidad"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:98
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:67
 #, elixir-autogen, elixir-format
 msgid "Media Devices"
 msgstr "Media Devices"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:13
-#, elixir-autogen, elixir-format
-msgid "Medium"
-msgstr "Mediana"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:1
-#, elixir-autogen, elixir-format
-msgid "Monitor and adjust connection quality during calls."
-msgstr "Monitorear y ajustar la calidad de conexión durante las llamadas."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:13
 #, elixir-autogen, elixir-format
@@ -344,11 +304,6 @@ msgstr "Apaga la cámara"
 #, elixir-autogen, elixir-format
 msgid "Turn Camera Off/On"
 msgstr "Gire la cámara Off/On"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:12
-#, elixir-autogen, elixir-format
-msgid "Use the"
-msgstr "Usar el"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:49
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:27
@@ -525,16 +480,6 @@ msgstr ""
 "— por qué la calidad estaba tapada: CPU significa que tu dispositivo está "
 "demasiado ocupado; Bandwidth significa que la red es demasiado lenta."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:6
-#, elixir-autogen, elixir-format
-msgid ""
-". Either peer can start or stop their own microphone independently; if your "
-"peer starts media first, your Call window opens and you join automatically."
-msgstr ""
-". Cualquier par puede comenzar o detener su propio micrófono de forma "
-"independiente; si su par comienza los medios primero, su ventana de llamada "
-"se abre y se une automáticamente."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:9
 #, elixir-autogen, elixir-format
 msgid ""
@@ -544,23 +489,6 @@ msgstr ""
 ". Los medios P2P son autocontrolados: cualquiera de los pares puede iniciar "
 "cámara o micrófono independientemente, y el otro lado se une a la superficie"
 " de los medios automáticamente."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:90
-#, elixir-autogen, elixir-format
-msgid ""
-"A conference statistics window opens with the call and shows both server-"
-"side SFU state and live browser connection metrics. Use the stats/dock "
-"control in the conference header to arrange the call and statistics side by "
-"side without moving focus away from the call. Closing the statistics window "
-"leaves the conference, so minimize it to keep the session running."
-msgstr ""
-"Una ventana de estadísticas de conferencias se abre con la llamada y muestra"
-" tanto el lado del servidor SFU estado y las métricas de conexión del "
-"navegador en vivo. Utilice las estadísticas seleccionadasph0 títulos/ph0 "
-"Control de confianza en el encabezado de la conferencia para organizar la "
-"llamada y las estadísticas lado a lado sin alejarse de la llamada. Cerrar la"
-" ventana de estadísticas deja la conferencia, así que minimizarla para "
-"mantener la sesión en funcionamiento."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:16
 #, elixir-autogen, elixir-format
@@ -652,19 +580,6 @@ msgstr ""
 " o desde el botón restaura la cámara anterior cuando sea posible; el par ve "
 "una placa de pantalla."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:23
-#, elixir-autogen, elixir-format
-msgid ""
-"Closing any session window disconnects the whole session (after a "
-"confirmation); minimizing keeps everything running in the taskbar. The "
-"status bar always shows the active session — click it to bring the windows "
-"back to the front."
-msgstr ""
-"Cerrar cualquier ventana de sesión desconecta toda la sesión (después de una"
-" confirmación); minimizar mantiene todo funcionando en el barra de tareas. "
-"La barra de estado siempre muestra la sesión activa — haga clic en ella para"
-" traer las ventanas de vuelta al frente."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:21
 #, elixir-autogen, elixir-format
 msgid "Closing vs. Minimizing"
@@ -674,26 +589,6 @@ msgstr "Closing vs. Minimizing"
 #, elixir-autogen, elixir-format
 msgid "Conversations"
 msgstr "Conversaciones"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:35
-#, elixir-autogen, elixir-format
-msgid ""
-"Ctrl+Shift+. toggles screen sharing when the P2P Call window is focused. A "
-"shared screen automatically favors the focus layout."
-msgstr ""
-"Ctrl+Shift+. cambia de pantalla cuando la ventana P2P Call está enfocada. "
-"Una pantalla compartida favorece automáticamente el diseño de enfoque."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:34
-#, elixir-autogen, elixir-format
-msgid ""
-"Ctrl+Shift+Q in the focused P2P Call window ends only the call media. Use "
-"the status bar stop button or close confirmation to end the whole P2P "
-"session."
-msgstr ""
-"Ctrl+ Shift+ Q en la ventana P2P Call enfocada termina sólo los medios de "
-"llamada. Utilice el botón de parada de barras de estado o confirmación "
-"cercana para terminar toda la sesión P2P."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:64
 #, elixir-autogen, elixir-format
@@ -752,59 +647,10 @@ msgstr "Diseños"
 msgid "Media Controls"
 msgstr "Controles de medios"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:29
-#, elixir-autogen, elixir-format
-msgid ""
-"Messages during the session are regular private messages, saved like any "
-"other. Session events — connected, file received, game score, who ended it —"
-" are written into the PM history as P2P lines, so the story of the session "
-"survives it. While connected, the PM tab shows a small P2P icon."
-msgstr ""
-"Los mensajes durante la sesión son mensajes privados regulares, guardados "
-"como cualquier otro. Eventos de sesión — conectados, archivos recibidos, "
-"puntuación del juego, que lo terminó — están escritos en la historia de PM "
-"como líneas P2P, por lo que la historia de la sesión sobrevive. Mientras "
-"está conectado, la pestaña PM muestra un pequeño icono P2P."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "Moderation"
 msgstr "Moderación"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:22
-#, elixir-autogen, elixir-format
-msgid ""
-"Once connected, the P2P menu in the menu bar (mirrored in the Start menu) "
-"opens the session windows: Call for audio/video, Files for transfers, Games "
-"for the two-player arcade, and P2P Statistics for live telemetry. Windows "
-"auto-open on activity — an incoming file offer opens Files, a game proposal "
-"opens Games, and when your peer turns their camera or microphone on the Call"
-" window surfaces and you join automatically."
-msgstr ""
-"Una vez conectado, el menú P2P en la barra de menús (espejado en el menú "
-"Inicio) abre las ventanas de sesión: Llamar a audio correspond0 "
-"contactos/ph0 confidencial, Archivos para transferencias, Juegos para el "
-"arcade de dos jugadores y P2P Estadísticas para la telemetría en vivo. "
-"Windows auto-abierto en la actividad — una oferta de archivo entrante abre "
-"Archivos, una propuesta de juego abre Juegos, y cuando su par gira su cámara"
-" o micrófono en las superficies de la ventana de llamada y se une "
-"automáticamente."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:9
-#, elixir-autogen, elixir-format
-msgid ""
-"Once connected, the call starts automatically with each side's setup choices"
-" and the Files, Games and Statistics windows wait minimized on the taskbar. "
-"Everything runs concurrently over the same connection: share your screen, "
-"send a file during the call, start a game without hanging up. Ending any one"
-" activity never drops the others — only ending the session does."
-msgstr ""
-"Una vez conectado, la llamada comienza automáticamente con las opciones de "
-"configuración de cada lado y las ventanas de Archivos, Juegos y Estadísticas"
-" esperan minimizadas en la barra de tareas. Todo funciona simultáneamente "
-"sobre la misma conexión: compartir su pantalla, enviar un archivo durante la"
-" llamada, iniciar un juego sin colgar. Terminar cualquier actividad nunca "
-"deja caer a los demás — sólo termina la sesión."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:7
 #, elixir-autogen, elixir-format
@@ -820,17 +666,6 @@ msgstr "Una sesión a la vez"
 #, elixir-autogen, elixir-format
 msgid "P2P Sessions in Chat"
 msgstr "P2P Sesiones en Chat"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"P2P sessions run right inside the chat: the invite, the conversation and "
-"every feature window live on the chat desktop, anchored to the private "
-"message with your peer."
-msgstr ""
-"Las sesiones de P2P se ejecutan justo dentro del chat: la invitación, la "
-"conversación y cada ventana de características viven en el escritorio del "
-"chat, anclado al mensaje privado con su par."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:50
 #, elixir-autogen, elixir-format
@@ -925,52 +760,6 @@ msgstr "Altavoz y calidad"
 msgid "Statistics"
 msgstr "Estadísticas"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:43
-#, elixir-autogen, elixir-format
-msgid ""
-"The Call window uses the same media language as channel conferences: mic, "
-"camera, screen share, devices, PiP, layout, self-view, mini mode, docked "
-"statistics and reaction controls are icon buttons with tooltips. End Call "
-"stops only the media; closing a P2P window asks before ending the whole P2P "
-"session."
-msgstr ""
-"La ventana Call utiliza el mismo lenguaje mediático como conferencias de "
-"canal: micrófono, cámara, pantalla compartido, dispositivos, PiP, diseño, "
-"auto-visualización, mini modo, estadísticas docked y controles de reacción "
-"son botones de icono con punta de herramientas. End Call sólo para los "
-"medios; cerrar una ventana P2P pregunta antes de terminar toda la sesión "
-"P2P."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"The P2P Lobby is the persistent peer-to-peer connection behind /p2p: one "
-"link between two users that hosts a call, file transfers and games all at "
-"the same time. It lives inside the chat — setup happens before sending or "
-"accepting the invite, and accepting opens the session windows right on the "
-"chat desktop, next to your conversations."
-msgstr ""
-"El P2P Lobby es la persistente conexión entre pares detrás de <ph0 "
-"especificado/ph0 Contraseña: un enlace entre dos usuarios que acoge una "
-"llamada, transferencias de archivos y juegos al mismo tiempo. Vive dentro "
-"del chat — la configuración sucede antes de enviar o aceptar la invitación, "
-"y aceptar abre las ventanas de sesión justo en el escritorio del chat, junto"
-" a sus conversaciones."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"The P2P Statistics window shows live telemetry for the whole P2P session: "
-"WebRTC connection, audio, video or screen source, file transfer and game "
-"data channels. Click the ? button in the panel to see a short explanation of"
-" each metric inline, or hover any row for a tooltip."
-msgstr ""
-"La ventana P2P Statistics muestra telemetría en vivo para toda la sesión "
-"P2P: conexión WebRTC, fuente de audio, vídeo o pantalla, transferencia de "
-"archivos y canales de datos de juego. Haga clic en el botón ? en el panel "
-"para ver una explicación corta de cada línea métrica, o agitar cualquier "
-"fila para una punta de herramienta."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_media_devices.html.heex:9
 #, elixir-autogen, elixir-format
 msgid ""
@@ -987,11 +776,6 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "The PM Is the Conversation"
 msgstr "El PM es la conversación"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:20
-#, elixir-autogen, elixir-format
-msgid "The Session Windows"
-msgstr "La sesión de Windows"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:34
 #, elixir-autogen, elixir-format
@@ -1051,22 +835,6 @@ msgstr ""
 "y todavía puedes unirte solo para recibir. Los defectos de diseño y medios "
 "son recordados por su cuenta; las opciones de dispositivo específicas del "
 "navegador se recuerdan localmente."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:36
-#, elixir-autogen, elixir-format
-msgid ""
-"The status bar always shows your active session, wherever you are in the "
-"chat. It also shows compact badges for active call, file transfer, game, "
-"call quality and relay privacy. Click it to bring the P2P windows to the "
-"front (or open Statistics when none is open); the stop button next to it "
-"cancels a pending invite or ends the session, after a confirmation."
-msgstr ""
-"La barra de estado siempre muestra tu sesión activa, donde estés en el chat."
-" También muestra placas compactas para llamadas activas, transferencia de "
-"archivos, juego, calidad de llamada y privacidad de relé. Haga clic en él "
-"para llevar las ventanas P2P al frente (o abrir estadísticas cuando no hay "
-"ninguna abierta); el botón de parada junto a él cancela una invitación "
-"pendiente o termina la sesión, después de una confirmación."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:9
 #, elixir-autogen, elixir-format
@@ -1155,16 +923,6 @@ msgstr ""
 "mutila. Los atajos de conferencias no disparan desde campos de texto "
 "editables."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:49
-#, elixir-autogen, elixir-format
-msgid ""
-"When the P2P Call window is focused, Ctrl+Shift media shortcuts control "
-"microphone, camera, layout, self-view, screen share and end-call media."
-msgstr ""
-"Cuando la ventana P2P Call está enfocada, Ctrl+ Micrófono de control de los "
-"atajos de los medios de comunicación, cámara, diseño, visión propia, "
-"participación de pantalla y medios de llamada final."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:63
 #, elixir-autogen, elixir-format
 msgid ""
@@ -1177,24 +935,6 @@ msgstr ""
 "configuración o Toggle Privacy Mode en el menú P2P puede forzar toda la "
 "conexión a través del relé, por lo que su dirección IP nunca se comparte con"
 " su par. La preferencia se recuerda para futuras sesiones."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:22
-#, elixir-autogen, elixir-format
-msgid ""
-"With the P2P Call window focused, Ctrl+Shift+ArrowRight cycles layouts and "
-"Ctrl+Shift+ArrowDown cycles self-view."
-msgstr ""
-"Con la ventana P2P Call enfocada, Ctrl+Shift+ ArrowRight cycles layouts and "
-"Ctrl+Shift+ArrowDown cycles self-view."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:20
-#, elixir-autogen, elixir-format
-msgid ""
-"With the P2P Call window focused, Ctrl+Shift+ArrowUp toggles microphone "
-"state and Ctrl+Shift+ArrowLeft toggles camera state."
-msgstr ""
-"Con la ventana P2P Call enfocada, Ctrl+Shift+ ArrowUp toggles estado del "
-"micrófono y Ctrl+Shift+ ArrowLeft mueve el estado de la cámara."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:56
 #, elixir-autogen, elixir-format
@@ -1223,3 +963,239 @@ msgstr ""
 msgid "— resolution and frame rate of the received video or screen stream."
 msgstr ""
 "— resolución y tasa de marco de la secuencia de vídeo o pantalla recibida."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:12
+#, elixir-autogen, elixir-format
+msgid ""
+"Calls use conservative audio and video limits by default to favor stability "
+"over maximum image quality."
+msgstr ""
+"Las llamadas utilizan los límites de audio y vídeo conservadores por defecto"
+" para favorecer la estabilidad sobre la máxima calidad de imagen."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:29
+#, elixir-autogen, elixir-format
+msgid ""
+"Messages during the session are regular private messages, saved like any "
+"other. Session events — connected, file received, game score, who ended it —"
+" are written into the PM history as P2P lines, so the story of the session "
+"survives it. While a session exists, the peer's PM tab, PM sidebar row and "
+"PM topic bar show the same P2P indicator family used by channel conferences,"
+" with state and active call/file/game/relay facets."
+msgstr ""
+"Los mensajes durante la sesión son mensajes privados regulares, guardados "
+"como cualquier otro. Eventos de sesión — conectados, archivos recibidos, "
+"puntuación del juego, que lo terminó — están escritos en la historia de PM "
+"como líneas P2P, por lo que la historia de la sesión sobrevive. Mientras "
+"existe una sesión, la pestaña PM del par, la fila de la barra lateral PM y "
+"la barra de tema PM muestran la misma familia indicadora P2P utilizada por "
+"conferencias de canal, con llamada estatal y activa/file/game/relay facetas."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:1
+#, elixir-autogen, elixir-format
+msgid "Monitor connection quality during calls."
+msgstr "Supervisar la calidad de conexión durante las llamadas."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Stable Defaults"
+msgstr "Defectos estables"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:6
+#, elixir-autogen, elixir-format
+msgid ""
+". Either peer can start or stop their own microphone independently; if your "
+"peer starts media first, your Call section opens and you join automatically."
+msgstr ""
+". Cualquier par de pares puede comenzar o detener su propio micrófono "
+"independientemente; si su par comienza los medios primero, su sección de "
+"llamada se abre y se une automáticamente."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:23
+#, elixir-autogen, elixir-format
+msgid ""
+"Closing the P2P Session Console disconnects the whole session (after a "
+"confirmation); minimizing keeps everything running in the taskbar. The "
+"status bar always shows the active session — click it to bring the console "
+"back to the front."
+msgstr ""
+"Cerrar la Consola de Sesión P2P desconecta toda la sesión (después de una "
+"confirmación); minimizar mantiene todo funcionando en la barra de tareas. La"
+" barra de estado siempre muestra la sesión activa — haga clic en ella para "
+"traer la consola de vuelta al frente."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:35
+#, elixir-autogen, elixir-format
+msgid ""
+"Ctrl+Shift+. toggles screen sharing when the P2P Session Console is focused."
+" A shared screen automatically favors the focus layout."
+msgstr ""
+"Ctrl+Shift+. toggles screen sharing cuando la consola P2P Session está "
+"enfocada. Una pantalla compartida favorece automáticamente el diseño de "
+"enfoque."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:34
+#, elixir-autogen, elixir-format
+msgid ""
+"Ctrl+Shift+Q in the focused P2P Session Console ends only the call media. "
+"Use the status bar stop button or close confirmation to end the whole P2P "
+"session."
+msgstr ""
+"Ctrl+Shift+ Q en la Consola de Sesión P2P enfocada termina sólo los medios "
+"de llamada. Utilice el botón de parada de barras de estado o confirmación "
+"cercana para terminar toda la sesión P2P."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:22
+#, elixir-autogen, elixir-format
+msgid ""
+"Once connected, the P2P menu in the menu bar (mirrored in the Start menu) "
+"opens the P2P Session Console. Its sections cover Call for audio/video, "
+"Files for transfers, Games for the two-player arcade, and Stats for live "
+"telemetry. The console opens on activity: an incoming file offer selects "
+"Files, a game proposal selects Games, and when your peer turns their camera "
+"or microphone on the Call section surfaces and you join automatically."
+msgstr ""
+"Una vez conectado, el menú P2P en la barra de menús (espejado en el menú "
+"Inicio) abre la consola de sesión P2P. Sus secciones cubren Call for "
+"audio/video, Archivos para transferencias, Juegos para el arcade de dos "
+"jugadores, y Stats para la telemetría en vivo. La consola se abre en "
+"actividad: una oferta de archivo entrante selecciona Archivos, una propuesta"
+" de juego selecciona Juegos, y cuando su par gira su cámara o micrófono en "
+"las superficies de la sección Call y se une automáticamente."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:9
+#, elixir-autogen, elixir-format
+msgid ""
+"Once connected, the call starts automatically with each side's setup choices"
+" and the console keeps Files, Games and Stats one tap away. Everything runs "
+"concurrently over the same connection: share your screen, send a file during"
+" the call, start a game without hanging up. Ending any one activity never "
+"drops the others — only ending the session does."
+msgstr ""
+"Una vez conectado, la llamada comienza automáticamente con las opciones de "
+"configuración de cada lado y la consola mantiene a Files, Games y Stats un "
+"toque de distancia. Todo funciona simultáneamente sobre la misma conexión: "
+"compartir su pantalla, enviar un archivo durante la llamada, iniciar un "
+"juego sin colgar. Terminar cualquier actividad nunca deja caer a los demás —"
+" sólo termina la sesión."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"P2P sessions run right inside the chat: the invite, the conversation and the"
+" P2P Session Console live on the chat desktop, anchored to the private "
+"message with your peer."
+msgstr ""
+"Las sesiones de P2P se ejecutan justo dentro del chat: la invitación, la "
+"conversación y la consola P2P de sesión en vivo en el escritorio del chat, "
+"anclado al mensaje privado con su par."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:43
+#, elixir-autogen, elixir-format
+msgid ""
+"The Call section uses the same media language as channel conferences: mic, "
+"camera, screen share, devices, PiP, layout, self-view, mini mode, statistics"
+" and reaction controls are icon buttons with tooltips. End Call stops only "
+"the media; closing the P2P Session Console asks before ending the whole P2P "
+"session."
+msgstr ""
+"La sección Call utiliza el mismo lenguaje multimedia como conferencias de "
+"canales: micrófono, cámara, pantalla compartido, dispositivos, PiP, diseño, "
+"auto-visualización, mini modo, estadísticas y controles de reacción son "
+"botones de iconos con punta de herramientas. End Call sólo para los medios "
+"de comunicación; cerrar la consola P2P de sesión pide antes de terminar toda"
+" la sesión P2P."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"The P2P Lobby is the persistent peer-to-peer connection behind /p2p: one "
+"link between two users that hosts a call, file transfers and games all at "
+"the same time. It lives inside the chat — setup happens before sending or "
+"accepting the invite, and accepting opens the P2P Session Console right on "
+"the chat desktop, next to your conversations."
+msgstr ""
+"El P2P Lobby es la persistente conexión entre pares detrás /p2p: un enlace "
+"entre dos usuarios que acoge una llamada, transferencias de archivos y "
+"juegos al mismo tiempo. Vive dentro del chat — la configuración sucede antes"
+" de enviar o aceptar la invitación, y aceptar abre la consola de sesión P2P "
+"justo en el escritorio del chat, junto a tus conversaciones."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "The Session Console"
+msgstr "La consola de sesión"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"The Stats section of the P2P Session Console shows live telemetry for the "
+"whole P2P session: WebRTC connection, audio, video or screen source, file "
+"transfer and game data channels. Click the ? button in the panel to see a "
+"short explanation of each metric inline, or hover any row for a tooltip."
+msgstr ""
+"La sección Stats de la consola de sesión P2P muestra la telemetría en vivo "
+"para toda la sesión P2P: conexión WebRTC, audio, fuente de vídeo o pantalla,"
+" transferencia de archivos y canales de datos del juego. Haga clic en el "
+"botón ? en el panel para ver una explicación corta de cada línea métrica, o "
+"agitar cualquier fila para una punta de herramienta."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:90
+#, elixir-autogen, elixir-format
+msgid ""
+"The conference Stats section lives inside the same call window and shows "
+"both server-side SFU state and live browser connection metrics. Use the "
+"Stats tab in the conference header to inspect diagnostics without leaving "
+"the call surface. Closing the conference window leaves the conference, so "
+"minimize it to keep the session running."
+msgstr ""
+"La sección Stats de la conferencia vive dentro de la misma ventana de "
+"llamada y muestra tanto el estado SFU lado del servidor como las métricas de"
+" conexión del navegador en vivo. Utilice la pestaña Stats en el encabezado "
+"de la conferencia para inspeccionar el diagnóstico sin dejar la superficie "
+"de llamada. Cerrar la ventana de la conferencia deja la conferencia, así que"
+" minimizarla para mantener la sesión en funcionamiento."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:36
+#, elixir-autogen, elixir-format
+msgid ""
+"The status bar always shows your active session, wherever you are in the "
+"chat. It also shows compact badges for active call, file transfer, game, "
+"call quality and relay privacy. Click it to bring the P2P Session Console to"
+" the front; the stop button next to it cancels a pending invite or ends the "
+"session, after a confirmation."
+msgstr ""
+"La barra de estado siempre muestra tu sesión activa, donde estés en el chat."
+" También muestra placas compactas para llamadas activas, transferencia de "
+"archivos, juego, calidad de llamada y privacidad de relé. Haga clic en ella "
+"para llevar la consola de sesión P2P al frente; el botón de parada junto a "
+"él cancela una invitación pendiente o termina la sesión, después de una "
+"confirmación."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:49
+#, elixir-autogen, elixir-format
+msgid ""
+"When the P2P Session Console is focused, Ctrl+Shift media shortcuts control "
+"microphone, camera, layout, self-view, screen share and end-call media."
+msgstr ""
+"Cuando la consola de sesión P2P se centra, Ctrl+ Micrófono de control de los"
+" atajos de los medios de comunicación, cámara, diseño, visión propia, "
+"participación de pantalla y medios de llamada final."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:22
+#, elixir-autogen, elixir-format
+msgid ""
+"With the P2P Session Console focused, Ctrl+Shift+ArrowRight cycles layouts "
+"and Ctrl+Shift+ArrowDown cycles self-view."
+msgstr ""
+"Con la consola de sesión P2P enfocada, Ctrl+Shift+ArrowRight cycles layouts "
+"and Ctrl+Shift+ArrowDown cycles self-view."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:20
+#, elixir-autogen, elixir-format
+msgid ""
+"With the P2P Session Console focused, Ctrl+Shift+ArrowUp toggles microphone "
+"state and Ctrl+Shift+ArrowLeft toggles camera state."
+msgstr ""
+"Con la consola de sesión P2P enfocada, Ctrl+Shift+ArrowUp toggles micrófono "
+"state and Ctrl+Shift+ArrowLeft toggles camera state."

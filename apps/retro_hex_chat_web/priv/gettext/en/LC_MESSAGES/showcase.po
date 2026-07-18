@@ -1,4 +1,4 @@
-# "msgid"s in this file come from showcase.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: en; status: enabled; wave: 0.
+# "msgid"s in this file come from showcase.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=showcase to refresh catalogs.  Locale: en; status: enabled; wave: 0.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -214,8 +214,12 @@ msgstr ": Lorem ipsum dolor sit amet, consectetur adipiscing elit."
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/scroll_area_page.ex:80
 #, elixir-autogen, elixir-format
-msgid ": This is a wide line with lots of text to force both vertical and horizontal scrolling in the container."
-msgstr ": This is a wide line with lots of text to force both vertical and horizontal scrolling in the container."
+msgid ""
+": This is a wide line with lots of text to force both vertical and "
+"horizontal scrolling in the container."
+msgstr ""
+": This is a wide line with lots of text to force both vertical and "
+"horizontal scrolling in the container."
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:40
 #, elixir-autogen, elixir-format
@@ -247,8 +251,10 @@ msgstr "About Dialog"
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/accordion.ex:67
 #, elixir-autogen, elixir-format
-msgid "Absolutely. All components are local source code you can modify freely."
-msgstr "Absolutely. All components are local source code you can modify freely."
+msgid ""
+"Absolutely. All components are local source code you can modify freely."
+msgstr ""
+"Absolutely. All components are local source code you can modify freely."
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/checkbox.ex:33
 #, elixir-autogen, elixir-format
@@ -434,8 +440,14 @@ msgstr "Also ban the user after kicking"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/scroll_area_page.ex:59
 #, elixir-autogen, elixir-format
-msgid "Another long line: ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-msgstr "Another long line: ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+msgid ""
+"Another long line: ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ "
+"ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ "
+"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+msgstr ""
+"Another long line: ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ "
+"ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ "
+"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 #: lib/retro_hex_chat_web/live/showcase_live/chat/chat_layout_page.ex:45
 #, elixir-autogen, elixir-format
@@ -776,8 +788,12 @@ msgstr "Browse available channels and join one to start chatting."
 
 #: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:125
 #, elixir-autogen, elixir-format
-msgid "Brutus here — I keep the peace. Play nice and we'll get along. Type !rules if you need a reminder."
-msgstr "Brutus here — I keep the peace. Play nice and we'll get along. Type !rules if you need a reminder."
+msgid ""
+"Brutus here — I keep the peace. Play nice and we'll get along. Type !rules "
+"if you need a reminder."
+msgstr ""
+"Brutus here — I keep the peace. Play nice and we'll get along. Type !rules "
+"if you need a reminder."
 
 #: lib/retro_hex_chat_web/components/showcase_helpers.ex:33
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/button.ex:17
@@ -1024,8 +1040,12 @@ msgstr "Chat, channels, networking"
 
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:28
 #, elixir-autogen, elixir-format
-msgid "Chat-specific components — messages, nicklist, emoji picker, formatting toolbar, context menus, and more."
-msgstr "Chat-specific components — messages, nicklist, emoji picker, formatting toolbar, context menus, and more."
+msgid ""
+"Chat-specific components — messages, nicklist, emoji picker, formatting "
+"toolbar, context menus, and more."
+msgstr ""
+"Chat-specific components — messages, nicklist, emoji picker, formatting "
+"toolbar, context menus, and more."
 
 #: lib/retro_hex_chat_web/components/showcase_helpers.ex:128
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:74
@@ -1166,8 +1186,12 @@ msgstr "Complete"
 
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:38
 #, elixir-autogen, elixir-format
-msgid "Complex dialog composites — channel settings, perform, address book, sound settings, and 20+ more."
-msgstr "Complex dialog composites — channel settings, perform, address book, sound settings, and 20+ more."
+msgid ""
+"Complex dialog composites — channel settings, perform, address book, sound "
+"settings, and 20+ more."
+msgstr ""
+"Complex dialog composites — channel settings, perform, address book, sound "
+"settings, and 20+ more."
 
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:67
 #, elixir-autogen, elixir-format
@@ -2338,8 +2362,14 @@ msgstr "Interactive Demo"
 
 #: lib/retro_hex_chat_web/live/showcase_live/index.html.heex:13
 #, elixir-autogen, elixir-format
-msgid "Interactive catalog of all UI components used in RetroHexChat. Each component is a reusable, self-contained building block with generic callbacks — no hardcoded event names."
-msgstr "Interactive catalog of all UI components used in RetroHexChat. Each component is a reusable, self-contained building block with generic callbacks — no hardcoded event names."
+msgid ""
+"Interactive catalog of all UI components used in RetroHexChat. Each "
+"component is a reusable, self-contained building block with generic "
+"callbacks — no hardcoded event names."
+msgstr ""
+"Interactive catalog of all UI components used in RetroHexChat. Each "
+"component is a reusable, self-contained building block with generic "
+"callbacks — no hardcoded event names."
 
 #: lib/retro_hex_chat_web/components/showcase_helpers.ex:142
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/invite_dialog_page.ex:22
@@ -2506,12 +2536,12 @@ msgstr "Linux Ubuntu"
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:100
 #, elixir-autogen, elixir-format
 msgid "List of %&#123;channel_name, channel_key&#125; maps"
-msgstr "List of %{channel_name, channel_key} maps"
+msgstr "List of %&#123;channel_name, channel_key&#125; maps"
 
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:92
 #, elixir-autogen, elixir-format
 msgid "List of %&#123;position, command&#125; maps"
-msgstr "List of %{position, command} maps"
+msgstr "List of %&#123;position, command&#125; maps"
 
 #: lib/retro_hex_chat_web/live/showcase_live/index.html.heex:26
 #, elixir-autogen, elixir-format
@@ -3522,8 +3552,12 @@ msgstr "Row Selected"
 
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:18
 #, elixir-autogen, elixir-format
-msgid "SaladUI base widgets — buttons, inputs, badges, toggles, selects, and other atomic form controls."
-msgstr "SaladUI base widgets — buttons, inputs, badges, toggles, selects, and other atomic form controls."
+msgid ""
+"SaladUI base widgets — buttons, inputs, badges, toggles, selects, and other "
+"atomic form controls."
+msgstr ""
+"SaladUI base widgets — buttons, inputs, badges, toggles, selects, and other "
+"atomic form controls."
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/dialog_page.ex:61
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:151
@@ -4015,8 +4049,12 @@ msgstr "Strip Active"
 
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:23
 #, elixir-autogen, elixir-format
-msgid "Structural containers — dialogs, tabs, tables, menus, tree views, windows, and scroll areas."
-msgstr "Structural containers — dialogs, tabs, tables, menus, tree views, windows, and scroll areas."
+msgid ""
+"Structural containers — dialogs, tabs, tables, menus, tree views, windows, "
+"and scroll areas."
+msgstr ""
+"Structural containers — dialogs, tabs, tables, menus, tree views, windows, "
+"and scroll areas."
 
 #: lib/retro_hex_chat_web/live/showcase_live/chat/autocomplete_page.html.heex:87
 #, elixir-autogen, elixir-format
@@ -4155,13 +4193,19 @@ msgstr "This action cannot be undone."
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/alert_dialog_page.ex:46
 #, elixir-autogen, elixir-format
-msgid "This action cannot be undone. This will permanently delete your account and remove your data from our servers."
-msgstr "This action cannot be undone. This will permanently delete your account and remove your data from our servers."
+msgid ""
+"This action cannot be undone. This will permanently delete your account and "
+"remove your data from our servers."
+msgstr ""
+"This action cannot be undone. This will permanently delete your account and "
+"remove your data from our servers."
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/dialog_page.ex:98
 #, elixir-autogen, elixir-format
-msgid "This action cannot be undone. This will permanently delete your account."
-msgstr "This action cannot be undone. This will permanently delete your account."
+msgid ""
+"This action cannot be undone. This will permanently delete your account."
+msgstr ""
+"This action cannot be undone. This will permanently delete your account."
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/alert.ex:36
 #, elixir-autogen, elixir-format
@@ -4185,8 +4229,14 @@ msgstr "This is a tooltip"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/scroll_area_page.ex:53
 #, elixir-autogen, elixir-format
-msgid "This is a very long line that extends beyond the container width to demonstrate horizontal scrollbar behavior. It keeps going and going and going until you have to scroll right to read it all."
-msgstr "This is a very long line that extends beyond the container width to demonstrate horizontal scrollbar behavior. It keeps going and going and going until you have to scroll right to read it all."
+msgid ""
+"This is a very long line that extends beyond the container width to "
+"demonstrate horizontal scrollbar behavior. It keeps going and going and "
+"going until you have to scroll right to read it all."
+msgstr ""
+"This is a very long line that extends beyond the container width to "
+"demonstrate horizontal scrollbar behavior. It keeps going and going and "
+"going until you have to scroll right to read it all."
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/card.ex:42
 #, elixir-autogen, elixir-format
@@ -4230,8 +4280,12 @@ msgstr "This sheet slides in from the top."
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/alert_dialog_page.ex:96
 #, elixir-autogen, elixir-format
-msgid "This will permanently delete your account and all associated data. This action cannot be reversed."
-msgstr "This will permanently delete your account and all associated data. This action cannot be reversed."
+msgid ""
+"This will permanently delete your account and all associated data. This "
+"action cannot be reversed."
+msgstr ""
+"This will permanently delete your account and all associated data. This "
+"action cannot be reversed."
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/window.html.heex:80
 #, elixir-autogen, elixir-format
@@ -4364,8 +4418,12 @@ msgstr "Troll heading out? Cool cool. The lobby will keep your seat warm."
 
 #: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:119
 #, elixir-autogen, elixir-format
-msgid "Troll heading out? Cool cool. The lobby will keep your seat warm. We're always open. Like a 24/7 diner but with better Wi-Fi."
-msgstr "Troll heading out? Cool cool. The lobby will keep your seat warm. We're always open. Like a 24/7 diner but with better Wi-Fi."
+msgid ""
+"Troll heading out? Cool cool. The lobby will keep your seat warm. We're "
+"always open. Like a 24/7 diner but with better Wi-Fi."
+msgstr ""
+"Troll heading out? Cool cool. The lobby will keep your seat warm. We're "
+"always open. Like a 24/7 diner but with better Wi-Fi."
 
 #: lib/retro_hex_chat_web/live/showcase_live/shell/empty_state_page.ex:91
 #, elixir-autogen, elixir-format
@@ -4640,8 +4698,12 @@ msgstr "Whois"
 
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:33
 #, elixir-autogen, elixir-format
-msgid "Win98 app shell composites — toolbar app, status bar app, app header, config form, and empty states."
-msgstr "Win98 app shell composites — toolbar app, status bar app, app header, config form, and empty states."
+msgid ""
+"Win98 app shell composites — toolbar app, status bar app, app header, config"
+" form, and empty states."
+msgstr ""
+"Win98 app shell composites — toolbar app, status bar app, app header, config"
+" form, and empty states."
 
 #: lib/retro_hex_chat_web/live/showcase_live/assets/diagrams.ex:52
 #, elixir-autogen, elixir-format
@@ -4803,8 +4865,12 @@ msgstr "Wolf3D Engine"
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/accordion.ex:53
 #, elixir-autogen, elixir-format
-msgid "Yes! These new UI components are built with Tailwind for full responsiveness."
-msgstr "Yes! These new UI components are built with Tailwind for full responsiveness."
+msgid ""
+"Yes! These new UI components are built with Tailwind for full "
+"responsiveness."
+msgstr ""
+"Yes! These new UI components are built with Tailwind for full "
+"responsiveness."
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:73
 #, elixir-autogen, elixir-format
@@ -4989,8 +5055,10 @@ msgstr "Episode 1"
 
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:48
 #, elixir-autogen, elixir-format
-msgid "Arcade and solo game components — game cards, solo lobby, and arcade frame."
-msgstr "Arcade and solo game components — game cards, solo lobby, and arcade frame."
+msgid ""
+"Arcade and solo game components — game cards, solo lobby, and arcade frame."
+msgstr ""
+"Arcade and solo game components — game cards, solo lobby, and arcade frame."
 
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_connection_diagram_page.ex:101
 #, elixir-autogen, elixir-format
@@ -5052,8 +5120,10 @@ msgstr "P2P Connection Diagram"
 
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:43
 #, elixir-autogen, elixir-format
-msgid "Peer-to-peer session components — connection diagram and file transfer."
-msgstr "Peer-to-peer session components — connection diagram and file transfer."
+msgid ""
+"Peer-to-peer session components — connection diagram and file transfer."
+msgstr ""
+"Peer-to-peer session components — connection diagram and file transfer."
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/desktop.html.heex:44
 #, elixir-autogen, elixir-format

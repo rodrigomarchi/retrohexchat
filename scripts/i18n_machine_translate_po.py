@@ -57,6 +57,7 @@ WORD_RE = re.compile(r"[A-Za-z][A-Za-z']+")
 BATCH_SEPARATOR = "ZXQI18NSEPZXQ"
 PROTECTED_MODE = "batch"
 OPENCC_CONVERTER = None
+PLACEHOLDER_TOKEN_RE = re.compile(r"<ph\d+></ph\d+>")
 
 
 class IdentityTranslator:
@@ -274,9 +275,12 @@ def clear_fuzzy(entry) -> None:
 
 
 def translate_text(text: str, locale: str, translator, cache: dict) -> str:
+    if locale == "en":
+        return text
+
     cache_key = f"{locale}\u0000{text}"
 
-    if cache_key in cache:
+    if cache_key in cache and cache_value_is_usable(cache[cache_key]):
         return cache[cache_key]
 
     if not should_machine_translate(text):
@@ -303,7 +307,18 @@ def translate_texts(
     batch_size: int,
     batch_chars: int,
 ) -> None:
-    missing = [text for text in texts if f"{locale}\u0000{text}" not in cache]
+    if locale == "en":
+        for text in texts:
+            cache[f"{locale}\u0000{text}"] = text
+
+        return
+
+    missing = [
+        text
+        for text in texts
+        if f"{locale}\u0000{text}" not in cache
+        or not cache_value_is_usable(cache[f"{locale}\u0000{text}"])
+    ]
 
     if not missing:
         return
@@ -383,6 +398,10 @@ def should_machine_translate(text: str) -> bool:
         return False
 
     return True
+
+
+def cache_value_is_usable(value: str) -> bool:
+    return PLACEHOLDER_TOKEN_RE.search(value) is None
 
 
 def translate_with_protected_fragments(text: str, translator) -> str:

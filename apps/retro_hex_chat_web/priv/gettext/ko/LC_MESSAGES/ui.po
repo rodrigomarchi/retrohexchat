@@ -1,4 +1,4 @@
-# "msgid"s in this file come from ui.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: ko; status: enabled; wave: 2.
+# "msgid"s in this file come from ui.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=ui to refresh catalogs.  Locale: ko; status: enabled; wave: 2.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -11,10 +11,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:436
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:434
 #: lib/retro_hex_chat_web/components/ui/shell/app_header.ex:74
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:352
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:178
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:355
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:184
 #, elixir-autogen, elixir-format
 msgid "About RetroHexChat"
 msgstr "RetroHexChat 소개"
@@ -33,7 +33,7 @@ msgid "Address Book"
 msgstr "주소 책"
 
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:105
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:158
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:164
 #: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:169
 #, elixir-autogen, elixir-format
 msgid "Admin Console"
@@ -73,7 +73,7 @@ msgid "Channel List"
 msgstr "채널 목록"
 
 #: lib/retro_hex_chat_web/components/ui/layout/desktop.ex:297
-#: lib/retro_hex_chat_web/components/ui/layout/dialog.ex:198
+#: lib/retro_hex_chat_web/components/ui/layout/dialog.ex:201
 #: lib/retro_hex_chat_web/components/ui/layout/window.ex:145
 #: lib/retro_hex_chat_web/components/ui/primitives/sheet.ex:145
 #, elixir-autogen, elixir-format
@@ -144,14 +144,14 @@ msgid "Go to previous page"
 msgstr "본문 바로가기"
 
 #: lib/retro_hex_chat_web/components/ui/layout/window.ex:146
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:330
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:333
 #, elixir-autogen, elixir-format
 msgid "Help"
 msgstr "지원하다"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:428
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:333
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:173
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:426
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:336
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:179
 #: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:180
 #, elixir-autogen, elixir-format
 msgid "Help Topics"
@@ -250,7 +250,7 @@ msgstr "관련 상품"
 msgid "Retry"
 msgstr "관련 기사"
 
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:345
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:348
 #: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:105
 #, elixir-autogen, elixir-format
 msgid "Shortcut Cheatsheet"
@@ -319,7 +319,7 @@ msgstr "계좌정보"
 msgid "Account Info"
 msgstr "계정 정보"
 
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:317
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:320
 #, elixir-autogen, elixir-format
 msgid "Arcade..."
 msgstr "아케이드 ..."
@@ -335,7 +335,7 @@ msgid "Back"
 msgstr "이름 *"
 
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:244
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:165
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:171
 #: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:161
 #, elixir-autogen, elixir-format
 msgid "Bot Management"
@@ -371,17 +371,17 @@ msgstr "Ctrl + 시프트 + F"
 msgid "Edit Profile..."
 msgstr "편집 프로필 ..."
 
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:149
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:155
 #, elixir-autogen, elixir-format
 msgid "End P2P Session"
 msgstr "종료 P2P 세션"
 
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:306
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:309
 #, elixir-autogen, elixir-format
 msgid "End Session"
 msgstr "종료 세션"
 
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:314
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:317
 #, elixir-autogen, elixir-format
 msgid "Games"
 msgstr "이름 *"
@@ -406,7 +406,7 @@ msgstr "Identify ..."
 msgid "Loading"
 msgstr "제품정보"
 
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:339
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:342
 #, elixir-autogen, elixir-format
 msgid "Message of the Day"
 msgstr "오늘의 메시지"
@@ -439,11 +439,6 @@ msgstr "기타..."
 msgid "P2P"
 msgstr "P2P"
 
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:142
-#, elixir-autogen, elixir-format
-msgid "P2P Statistics"
-msgstr "P2P 통계"
-
 #: lib/retro_hex_chat_web/components/ui/shell/status_bar_app.ex:269
 #, elixir-autogen, elixir-format
 msgid "P2P call active"
@@ -474,13 +469,13 @@ msgstr "P2P 게임 활성"
 msgid "P2P privacy relay active"
 msgstr "P2P 프라이버시 릴레이 활성화"
 
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:284
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:135
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:285
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:137
 #, elixir-autogen, elixir-format
 msgid "Play a Game..."
 msgstr "게임 플레이"
 
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:323
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:326
 #, elixir-autogen, elixir-format
 msgid "Register & identify to play"
 msgstr "등록 및 재생 식별"
@@ -511,7 +506,7 @@ msgstr "Away 설정"
 msgid "Set Away..."
 msgstr "설정 Away ..."
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:419
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:417
 #: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:31
 #, elixir-autogen, elixir-format
 msgid "Start"
@@ -534,7 +529,7 @@ msgstr "Video Call 시작하기"
 msgid "Start a P2P Session..."
 msgstr "P2P 세션 시작..."
 
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:291
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:293
 #, elixir-autogen, elixir-format
 msgid "Statistics"
 msgstr "관련 기사"
@@ -556,7 +551,7 @@ msgstr "도와 Windows 수직으로"
 msgid "Timers"
 msgstr "계정 정보"
 
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:298
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:301
 #, elixir-autogen, elixir-format
 msgid "Toggle Privacy Mode"
 msgstr "웹 사이트"
@@ -566,3 +561,8 @@ msgstr "웹 사이트"
 #, elixir-autogen, elixir-format
 msgid "User Lookup"
 msgstr "사용자 조회"
+
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:146
+#, elixir-autogen, elixir-format
+msgid "P2P Stats"
+msgstr "P2P 통계"

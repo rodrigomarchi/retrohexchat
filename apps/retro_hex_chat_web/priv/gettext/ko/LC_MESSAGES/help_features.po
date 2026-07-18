@@ -1,4 +1,4 @@
-# "msgid"s in this file come from help_features.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: ko; status: enabled; wave: 2.
+# "msgid"s in this file come from help_features.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=help_features to refresh catalogs.  Locale: ko; status: enabled; wave: 2.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -5754,8 +5754,8 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid ""
 "item in the P2P menu. The preference is saved and remembered for future "
-"sessions. When enabled, the status bar and Statistics window show "
-"relay/privacy indicators."
+"sessions. When enabled, the status bar and Stats section show relay/privacy "
+"indicators."
 msgstr ""
 "P2P 메뉴의 아이템. 설정은 향후 세션에 저장되고 기억됩니다. 활성화되면 상태 표시 줄과 통계 창은 릴레이/privacy 표시줄을 "
 "표시합니다."

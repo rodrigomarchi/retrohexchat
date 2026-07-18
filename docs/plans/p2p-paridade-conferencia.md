@@ -1,5 +1,9 @@
 # P2P x conferencia - auditoria e plano de paridade
 
+> Historico/superseded: este plano foi executado antes da unificacao final das
+> sessoes de midia. Para o estado atual, use
+> `docs/reference/media-session-p2p-conference-current.md`.
+
 > Criado em 2026-07-12. Objetivo: elevar a comunicacao P2P para que o usuario
 > sinta que P2P e conferencia pertencem ao mesmo produto, mantendo as diferencas
 > corretas do contexto 1:1.

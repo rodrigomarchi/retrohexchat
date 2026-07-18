@@ -1,4 +1,4 @@
-# "msgid"s in this file come from help_space.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: hi; status: enabled; wave: 2.
+# "msgid"s in this file come from help_space.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=help_space to refresh catalogs.  Locale: hi; status: enabled; wave: 2.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -23,45 +23,23 @@ msgstr "जीवनचक्र"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:2
 #, elixir-autogen, elixir-format
-msgid ""
-"A virtual space is the map view built into every channel. People who are "
-"present in the channel can switch from Chat to Space, walk around the shared"
-" 8-bit village, and keep using the same public channel conversation."
-msgstr ""
-"एक आभासी स्थान हर चैनल में बनाया गया नक्शा है। जो लोग चैनल में मौजूद हैं वे "
-"चैट से स्पेस में स्विच कर सकते हैं, साझा 8-बिट गांव के आसपास चल सकते हैं और "
-"उसी सार्वजनिक चैनल वार्तालाप का उपयोग करते रहते हैं।"
+msgid "A virtual space is the map view built into every channel. People who are present in the channel can switch from Chat to Space, walk around the shared 8-bit village, and keep using the same public channel conversation."
+msgstr "एक आभासी स्थान हर चैनल में बनाया गया नक्शा है। जो लोग चैनल में मौजूद हैं वे चैट से स्पेस में स्विच कर सकते हैं, साझा 8-बिट गांव के आसपास चल सकते हैं और उसी सार्वजनिक चैनल वार्तालाप का उपयोग करते रहते हैं।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:23
 #, elixir-autogen, elixir-format
-msgid ""
-"Channel spaces are runtime state. They wake when someone views Space, mirror"
-" the current channel presence, and can be rebuilt from that presence when "
-"the view is opened again."
-msgstr ""
-"चैनल स्पेस रनटाइम स्टेट हैं। वे जागते हैं जब कोई स्पेस देखता है, वर्तमान "
-"चैनल की उपस्थिति को प्रतिबिंबित करता है, और उस उपस्थिति से पुनर्निर्माण किया"
-" जा सकता है जब दृश्य फिर से खोला जाता है।"
+msgid "Channel spaces are runtime state. They wake when someone views Space, mirror the current channel presence, and can be rebuilt from that presence when the view is opened again."
+msgstr "चैनल स्पेस रनटाइम स्टेट हैं। वे जागते हैं जब कोई स्पेस देखता है, वर्तमान चैनल की उपस्थिति को प्रतिबिंबित करता है, और उस उपस्थिति से पुनर्निर्माण किया जा सकता है जब दृश्य फिर से खोला जाता है।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:16
 #, elixir-autogen, elixir-format
-msgid ""
-"Entering the channel makes your avatar available in Space. Move with the "
-"arrow keys or WASD while the canvas is focused; the server validates every "
-"step, so walls and furniture block movement for everyone equally."
-msgstr ""
-"चैनल में प्रवेश करने से आपका अवतार अंतरिक्ष में उपलब्ध हो जाता है। तीर कुंजी"
-" या WASD के साथ ले जाएँ जबकि कैनवास केंद्रित है; सर्वर हर कदम को मान्य करता "
-"है, इसलिए दीवारों और फर्नीचर ब्लॉक आंदोलन सभी के लिए समान रूप से।"
+msgid "Entering the channel makes your avatar available in Space. Move with the arrow keys or WASD while the canvas is focused; the server validates every step, so walls and furniture block movement for everyone equally."
+msgstr "चैनल में प्रवेश करने से आपका अवतार अंतरिक्ष में उपलब्ध हो जाता है। तीर कुंजी या WASD के साथ ले जाएँ जबकि कैनवास केंद्रित है; सर्वर हर कदम को मान्य करता है, इसलिए दीवारों और फर्नीचर ब्लॉक आंदोलन सभी के लिए समान रूप से।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:9
 #, elixir-autogen, elixir-format
-msgid ""
-"Open any channel and use the Chat and Space buttons in the topic row. There "
-"is no separate invite card or space command for the channel map."
-msgstr ""
-"किसी भी चैनल को खोलें और विषय पंक्ति में चैट और स्पेस बटन का उपयोग करें। "
-"चैनल मानचित्र के लिए कोई अलग आमंत्रण कार्ड या स्पेस कमांड नहीं है।"
+msgid "Open any channel and use the Chat and Space buttons in the topic row. There is no separate invite card or space command for the channel map."
+msgstr "किसी भी चैनल को खोलें और विषय पंक्ति में चैट और स्पेस बटन का उपयोग करें। चैनल मानचित्र के लिए कोई अलग आमंत्रण कार्ड या स्पेस कमांड नहीं है।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:7
 #, elixir-autogen, elixir-format
@@ -75,28 +53,13 @@ msgstr "चुनना"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:16
 #, elixir-autogen, elixir-format
-msgid ""
-"Click a card to enter the map wearing that character. Everyone else in the "
-"Space sees your choice immediately. The picker appears each time you enter, "
-"starting on your last pick, so you can switch characters whenever you like."
-msgstr ""
-"उस चरित्र को पहनने वाले मानचित्र में प्रवेश करने के लिए एक कार्ड पर क्लिक "
-"करें। अंतरिक्ष में हर कोई अपनी पसंद को तुरंत देखता है। हर बार जब आप प्रवेश "
-"करते हैं, तो आपके अंतिम पिक पर शुरू होता है, इसलिए जब भी आप पसंद करते हैं तो"
-" आप पात्रों को स्विच कर सकते हैं।"
+msgid "Click a card to enter the map wearing that character. Everyone else in the Space sees your choice immediately. The picker appears each time you enter, starting on your last pick, so you can switch characters whenever you like."
+msgstr "उस चरित्र को पहनने वाले मानचित्र में प्रवेश करने के लिए एक कार्ड पर क्लिक करें। अंतरिक्ष में हर कोई अपनी पसंद को तुरंत देखता है। हर बार जब आप प्रवेश करते हैं, तो आपके अंतिम पिक पर शुरू होता है, इसलिए जब भी आप पसंद करते हैं तो आप पात्रों को स्विच कर सकते हैं।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:9
 #, elixir-autogen, elixir-format
-msgid ""
-"Eight characters are available: the Hero, plus the Sorceress, Knight, "
-"Archer, Barbarian, Rogue, Cleric and Monk. Each card shows an animated "
-"walking preview so you can see the sprite before you commit, and every "
-"character has its own attack animation too."
-msgstr ""
-"आठ वर्ण उपलब्ध हैं: हीरो, प्लस सोर्सेस, नाइट, आर्कर, बारबारियन, दुष्ट, "
-"क्लारिक और मोंक। प्रत्येक कार्ड एक एनिमेटेड वॉकिंग पूर्वावलोकन दिखाता है "
-"ताकि आप ऐसा करने से पहले स्प्राइट देख सकें और प्रत्येक चरित्र का अपना खुद का"
-" हमला एनीमेशन भी है।"
+msgid "Eight characters are available: the Hero, plus the Sorceress, Knight, Archer, Barbarian, Rogue, Cleric and Monk. Each card shows an animated walking preview so you can see the sprite before you commit, and every character has its own attack animation too."
+msgstr "आठ वर्ण उपलब्ध हैं: हीरो, प्लस सोर्सेस, नाइट, आर्कर, बारबारियन, दुष्ट, क्लारिक और मोंक। प्रत्येक कार्ड एक एनिमेटेड वॉकिंग पूर्वावलोकन दिखाता है ताकि आप ऐसा करने से पहले स्प्राइट देख सकें और प्रत्येक चरित्र का अपना खुद का हमला एनीमेशन भी है।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:7
 #, elixir-autogen, elixir-format
@@ -105,10 +68,5 @@ msgstr "रोस्टर"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:2
 #, elixir-autogen, elixir-format
-msgid ""
-"When you open a channel's Space, a character picker appears before the map "
-"loads. Pick who you want to be — the classic Hero or one of six adventuring "
-"classes."
-msgstr ""
-"जब आप एक चैनल की स्पेस खोलते हैं, तो एक चरित्र पिकर मैप लोड से पहले दिखाई "
-"देता है। आप कौन बनना चाहते हैं?"
+msgid "When you open a channel's Space, a character picker appears before the map loads. Pick who you want to be — the classic Hero or one of six adventuring classes."
+msgstr "जब आप एक चैनल की स्पेस खोलते हैं, तो एक चरित्र पिकर मैप लोड से पहले दिखाई देता है। आप कौन बनना चाहते हैं?"

@@ -1,4 +1,4 @@
-# "msgid"s in this file come from lobby.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: bn; status: enabled; wave: 3.
+# "msgid"s in this file come from lobby.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=lobby to refresh catalogs.  Locale: bn; status: enabled; wave: 3.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -14,8 +14,7 @@ msgstr ""
 #: lib/retro_hex_chat/lobby/policy.ex:81
 #, elixir-autogen, elixir-format
 msgid "An active lobby already exists with this user"
-msgstr ""
-"একটি সক্রিয় লব বর্তমানে এই ব্যবহারকারী দ্বারা বর্তমানে উপস্থিত রয়েছে"
+msgstr "একটি সক্রিয় লব বর্তমানে এই ব্যবহারকারী দ্বারা বর্তমানে উপস্থিত রয়েছে"
 
 #: lib/retro_hex_chat/lobby/policy.ex:60
 #, elixir-autogen, elixir-format

@@ -1,4 +1,4 @@
-# "msgid"s in this file come from showcase.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: tr; status: enabled; wave: 2.
+# "msgid"s in this file come from showcase.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=showcase to refresh catalogs.  Locale: tr; status: enabled; wave: 2.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -214,8 +214,12 @@ msgstr ": Lorem ipsum dolor amet, eksiltme eliti."
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/scroll_area_page.ex:80
 #, elixir-autogen, elixir-format
-msgid ": This is a wide line with lots of text to force both vertical and horizontal scrolling in the container."
-msgstr "Bu, konteynerde hem dikey hem de yatay kaydırmayı zorlamak için çok sayıda metin ile geniş bir çizgidir."
+msgid ""
+": This is a wide line with lots of text to force both vertical and "
+"horizontal scrolling in the container."
+msgstr ""
+"Bu, konteynerde hem dikey hem de yatay kaydırmayı zorlamak için çok sayıda "
+"metin ile geniş bir çizgidir."
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:40
 #, elixir-autogen, elixir-format
@@ -235,7 +239,29 @@ msgstr "AFK Pazartesi günü"
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/about_dialog_page.ex:35
 #, elixir-autogen, elixir-format
 msgid "About"
-msgstr "About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About"
+msgstr ""
+"About About About About About About About About About About About About "
+"About About About About About About About About About About About About "
+"About About About About About About About About About About About About "
+"About About About About About About About About About About About About "
+"About About About About About About About About About About About About "
+"About About About About About About About About About About About About "
+"About About About About About About About About About About About About "
+"About About About About About About About About About About About About "
+"About About About About About About About About About About About About "
+"About About About About About About About About About About About About "
+"About About About About About About About About About About About About "
+"About About About About About About About About About About About About "
+"About About About About About About About About About About About About "
+"About About About About About About About About About About About About "
+"About About About About About About About About About About About About "
+"About About About About About About About About About About About About "
+"About About About About About About About About About About About About "
+"About About About About About About About About About About About About "
+"About About About About About About About About About About About About "
+"About About About About About About About About About About About About "
+"About About About About About About About About About About About About "
+"About About About About"
 
 #: lib/retro_hex_chat_web/components/showcase_helpers.ex:114
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/about_dialog_page.ex:20
@@ -247,8 +273,11 @@ msgstr "Dialog Hakkında"
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/accordion.ex:67
 #, elixir-autogen, elixir-format
-msgid "Absolutely. All components are local source code you can modify freely."
-msgstr "Kesinlikle. Tüm bileşenler özgürce değiştirebileceğiniz yerel kaynak kodudur."
+msgid ""
+"Absolutely. All components are local source code you can modify freely."
+msgstr ""
+"Kesinlikle. Tüm bileşenler özgürce değiştirebileceğiniz yerel kaynak "
+"kodudur."
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/checkbox.ex:33
 #, elixir-autogen, elixir-format
@@ -434,8 +463,13 @@ msgstr "Ayrıca kullanıcıyı tekmelemeden sonra yasaklamak"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/scroll_area_page.ex:59
 #, elixir-autogen, elixir-format
-msgid "Another long line: ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-msgstr "Başka bir uzun çizgi: ABCDEFGACKLMNOPQRSTUVWXYZ ABCDEFGACKLMNOPQRSTUVWXYZ ABCDEFLERTUVWXYZ ABCDEFNOPQRSTUVW"
+msgid ""
+"Another long line: ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ "
+"ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ "
+"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+msgstr ""
+"Başka bir uzun çizgi: ABCDEFGACKLMNOPQRSTUVWXYZ ABCDEFGACKLMNOPQRSTUVWXYZ "
+"ABCDEFLERTUVWXYZ ABCDEFNOPQRSTUVW"
 
 #: lib/retro_hex_chat_web/live/showcase_live/chat/chat_layout_page.ex:45
 #, elixir-autogen, elixir-format
@@ -559,7 +593,9 @@ msgstr "Altmodules'ten Auto-discovered. Her diyagram kendi penceresini alır."
 #: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:105
 #, elixir-autogen, elixir-format
 msgid "Auto-discovered from submodules. New icons appear here automatically."
-msgstr "Altmodules'ten Auto-discovered. Yeni simgeler burada otomatik olarak görünüyor."
+msgstr ""
+"Altmodules'ten Auto-discovered. Yeni simgeler burada otomatik olarak "
+"görünüyor."
 
 #: lib/retro_hex_chat_web/components/showcase_helpers.ex:72
 #: lib/retro_hex_chat_web/live/showcase_live/chat/autocomplete_page.ex:17
@@ -772,12 +808,17 @@ msgstr "Göz Kanalları"
 #: lib/retro_hex_chat_web/live/showcase_live/shell/empty_state_page.ex:60
 #, elixir-autogen, elixir-format
 msgid "Browse available channels and join one to start chatting."
-msgstr "Mevcut kanallara göz atın ve sohbet etmeye başlamak için birine katılın."
+msgstr ""
+"Mevcut kanallara göz atın ve sohbet etmeye başlamak için birine katılın."
 
 #: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:125
 #, elixir-autogen, elixir-format
-msgid "Brutus here — I keep the peace. Play nice and we'll get along. Type !rules if you need a reminder."
-msgstr "Brutus burada — Barışı koruyorum. Güzel oynayın ve birlikte gideceğiz. Tip !rules eğer bir hatırlatmaya ihtiyacınız varsa."
+msgid ""
+"Brutus here — I keep the peace. Play nice and we'll get along. Type !rules "
+"if you need a reminder."
+msgstr ""
+"Brutus burada — Barışı koruyorum. Güzel oynayın ve birlikte gideceğiz. Tip "
+"!rules eğer bir hatırlatmaya ihtiyacınız varsa."
 
 #: lib/retro_hex_chat_web/components/showcase_helpers.ex:33
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/button.ex:17
@@ -1024,8 +1065,12 @@ msgstr "Chat, kanallar, ağ"
 
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:28
 #, elixir-autogen, elixir-format
-msgid "Chat-specific components — messages, nicklist, emoji picker, formatting toolbar, context menus, and more."
-msgstr "Chat-specific components - mesajlar, nicklist, emoji seçici, araç çubuğu, bağlam menüleri ve daha fazlası."
+msgid ""
+"Chat-specific components — messages, nicklist, emoji picker, formatting "
+"toolbar, context menus, and more."
+msgstr ""
+"Chat-specific components - mesajlar, nicklist, emoji seçici, araç çubuğu, "
+"bağlam menüleri ve daha fazlası."
 
 #: lib/retro_hex_chat_web/components/showcase_helpers.ex:128
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:74
@@ -1162,12 +1207,30 @@ msgstr "Compact Toolbar"
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/file_transfer_page.ex:74
 #, elixir-autogen, elixir-format
 msgid "Complete"
-msgstr "Tamam Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete"
+msgstr ""
+"Tamam Complete Complete Complete Complete Complete Complete Complete "
+"Complete Complete Complete Complete Complete Complete Complete Complete "
+"Complete Complete Complete Complete Complete Complete Complete Complete "
+"Complete Complete Complete Complete Complete Complete Complete Complete "
+"Complete Complete Complete Complete Complete Complete Complete Complete "
+"Complete Complete Complete Complete Complete Complete Complete Complete "
+"Complete Complete Complete Complete Complete Complete Complete Complete "
+"Complete Complete Complete Complete Complete Complete Complete Complete "
+"Complete Complete Complete Complete Complete Complete Complete Complete "
+"Complete Complete Complete Complete Complete Complete Complete Complete "
+"Complete Complete Complete Complete Complete Complete Complete Complete "
+"Complete Complete Complete Complete Complete Complete Complete Complete "
+"Complete Complete Complete Complete Complete Complete Complete Complete "
+"Complete Complete Complete Complete Complete Complete Complete Complete"
 
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:38
 #, elixir-autogen, elixir-format
-msgid "Complex dialog composites — channel settings, perform, address book, sound settings, and 20+ more."
-msgstr "Kompleks dialog kompozitleri - kanal ayarları, performans, adres kitabı, ses ayarları ve 20+ daha fazlası."
+msgid ""
+"Complex dialog composites — channel settings, perform, address book, sound "
+"settings, and 20+ more."
+msgstr ""
+"Kompleks dialog kompozitleri - kanal ayarları, performans, adres kitabı, ses"
+" ayarları ve 20+ daha fazlası."
 
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:67
 #, elixir-autogen, elixir-format
@@ -1899,7 +1962,16 @@ msgstr "Dosyalar"
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:196
 #, elixir-autogen, elixir-format
 msgid "Find"
-msgstr "Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find"
+msgstr ""
+"Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find "
+"Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find "
+"Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find "
+"Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find "
+"Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find "
+"Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find "
+"Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find "
+"Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find "
+"Find Find Find Find Find Find Find Find"
 
 #: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.html.heex:73
 #, elixir-autogen, elixir-format
@@ -1988,7 +2060,25 @@ msgstr "Gıda Kategori"
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/form_page.ex:26
 #, elixir-autogen, elixir-format
 msgid "Form"
-msgstr "Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form"
+msgstr ""
+"Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form "
+"Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form "
+"Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form "
+"Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form "
+"Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form "
+"Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form "
+"Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form "
+"Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form "
+"Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form "
+"Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form "
+"Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form "
+"Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form "
+"Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form "
+"Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form "
+"Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form "
+"Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form "
+"Form Form Form Form Form Form Form Form Form Form Form Form Form Form Form "
+"Form"
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/form_page.ex:29
 #, elixir-autogen, elixir-format
@@ -2064,7 +2154,9 @@ msgstr "Oyunlar"
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:82
 #, elixir-autogen, elixir-format
 msgid "General"
-msgstr "General General General General General General General General General General General General General General"
+msgstr ""
+"General General General General General General General General General "
+"General General General General General"
 
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:43
 #, elixir-autogen, elixir-format
@@ -2121,7 +2213,11 @@ msgstr "Merhaba, Dünya!"
 #: lib/retro_hex_chat_web/live/showcase_live/layout/toolbar_page.html.heex:124
 #, elixir-autogen, elixir-format
 msgid "Help"
-msgstr "Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım"
+msgstr ""
+"Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım"
+" Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım "
+"Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım"
+" Yardım Yardım Yardım"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/window.html.heex:55
 #, elixir-autogen, elixir-format
@@ -2334,12 +2430,30 @@ msgstr "Giriş:"
 #: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:116
 #, elixir-autogen, elixir-format
 msgid "Interactive Demo"
-msgstr "Etkileşimli Demo Etkileşimli Demo Etkileşimli Demo Etkileşimli Demo Etkileşimli Demo Etkileşimli Demo Etkileşimli Demo Etkileşimli Demo Etkileşimli Demo Etkileşimli Demo Etkileşimli Demo Etkileşimli Demo Etkileşimli Demo İnteraktif Demo Etkileşimli Demo Etkileşimli Demo İnteraktif Demo Etkileşimli Demo Etkileşimli Demo İnteraktif Demo Etkileşimli Demo Etkileşimli Demo İnteraktif Demo Etkileşimli Demo Etkileşimli Demo Etkileşimli Demo Etkileşimli Demo Etkileşimli Demo Etkileşimli Demo Etkileşimli Demo Etkileşimli Demo Etkileşimli Demo Etkileşimli Demo Etkileşimli Demo Etkileşimli Demo Etkileşimli Demo İnteraktif Demo Etkileşimli Demo Etkileşimli Demo İnteraktif Demo İnteraktif Demo Etkileşimli Demo İnteraktif Demo Etkileşimli Demo Etkileşimli Demo Etkileşimli Demo Etkileşimli Demo Etkileşimli Demo"
+msgstr ""
+"Etkileşimli Demo Etkileşimli Demo Etkileşimli Demo Etkileşimli Demo "
+"Etkileşimli Demo Etkileşimli Demo Etkileşimli Demo Etkileşimli Demo "
+"Etkileşimli Demo Etkileşimli Demo Etkileşimli Demo Etkileşimli Demo "
+"Etkileşimli Demo İnteraktif Demo Etkileşimli Demo Etkileşimli Demo "
+"İnteraktif Demo Etkileşimli Demo Etkileşimli Demo İnteraktif Demo "
+"Etkileşimli Demo Etkileşimli Demo İnteraktif Demo Etkileşimli Demo "
+"Etkileşimli Demo Etkileşimli Demo Etkileşimli Demo Etkileşimli Demo "
+"Etkileşimli Demo Etkileşimli Demo Etkileşimli Demo Etkileşimli Demo "
+"Etkileşimli Demo Etkileşimli Demo Etkileşimli Demo Etkileşimli Demo "
+"İnteraktif Demo Etkileşimli Demo Etkileşimli Demo İnteraktif Demo İnteraktif"
+" Demo Etkileşimli Demo İnteraktif Demo Etkileşimli Demo Etkileşimli Demo "
+"Etkileşimli Demo Etkileşimli Demo Etkileşimli Demo"
 
 #: lib/retro_hex_chat_web/live/showcase_live/index.html.heex:13
 #, elixir-autogen, elixir-format
-msgid "Interactive catalog of all UI components used in RetroHexChat. Each component is a reusable, self-contained building block with generic callbacks — no hardcoded event names."
-msgstr "RetroHexChat'de kullanılan tüm UI bileşenlerinin İnteraktif katalogu. Her bileşen yeniden kullanılabilir, kendi kendine özgü bir bina bloğu genel çağrıları ile - sert kodlanmış etkinlik isimleri yoktur."
+msgid ""
+"Interactive catalog of all UI components used in RetroHexChat. Each "
+"component is a reusable, self-contained building block with generic "
+"callbacks — no hardcoded event names."
+msgstr ""
+"RetroHexChat'de kullanılan tüm UI bileşenlerinin İnteraktif katalogu. Her "
+"bileşen yeniden kullanılabilir, kendi kendine özgü bir bina bloğu genel "
+"çağrıları ile - sert kodlanmış etkinlik isimleri yoktur."
 
 #: lib/retro_hex_chat_web/components/showcase_helpers.ex:142
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/invite_dialog_page.ex:22
@@ -3092,7 +3206,16 @@ msgstr "Operasyon başarıyla tamamlandı."
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:64
 #, elixir-autogen, elixir-format
 msgid "Operator"
-msgstr "Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera"
+msgstr ""
+"Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera "
+"Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera "
+"Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera "
+"Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera "
+"Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera "
+"Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera "
+"Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera "
+"Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera "
+"Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera"
 
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:77
 #, elixir-autogen, elixir-format
@@ -3136,7 +3259,7 @@ msgstr "P2P"
 #: lib/retro_hex_chat_web/live/showcase_live/layout/context_menu_page.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
-msgstr "P2P Oturumu"
+msgstr "P2P Sessions in Chat"
 
 #: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:41
 #, elixir-autogen, elixir-format
@@ -3522,8 +3645,12 @@ msgstr "Row Seçildi"
 
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:18
 #, elixir-autogen, elixir-format
-msgid "SaladUI base widgets — buttons, inputs, badges, toggles, selects, and other atomic form controls."
-msgstr "SaladUI baz widgets - düğmeler, girişler, badges, toggles, seçiciler ve diğer atom form kontrolleri."
+msgid ""
+"SaladUI base widgets — buttons, inputs, badges, toggles, selects, and other "
+"atomic form controls."
+msgstr ""
+"SaladUI baz widgets - düğmeler, girişler, badges, toggles, seçiciler ve "
+"diğer atom form kontrolleri."
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/dialog_page.ex:61
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:151
@@ -4015,8 +4142,12 @@ msgstr "Grafik"
 
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:23
 #, elixir-autogen, elixir-format
-msgid "Structural containers — dialogs, tabs, tables, menus, tree views, windows, and scroll areas."
-msgstr "Yapısal konteynerler - dialoglar, sekmeler, masalar, menüler, ağaç görüşleri, pencereler ve kaydırma alanları."
+msgid ""
+"Structural containers — dialogs, tabs, tables, menus, tree views, windows, "
+"and scroll areas."
+msgstr ""
+"Yapısal konteynerler - dialoglar, sekmeler, masalar, menüler, ağaç "
+"görüşleri, pencereler ve kaydırma alanları."
 
 #: lib/retro_hex_chat_web/live/showcase_live/chat/autocomplete_page.html.heex:87
 #, elixir-autogen, elixir-format
@@ -4155,12 +4286,17 @@ msgstr "Bu eylem geri alınamaz."
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/alert_dialog_page.ex:46
 #, elixir-autogen, elixir-format
-msgid "This action cannot be undone. This will permanently delete your account and remove your data from our servers."
-msgstr "Bu eylem geri alınamaz. Bu, hesabınızı kalıcı olarak silecektir ve verilerinizi sunucularımızdan çıkartacaktır."
+msgid ""
+"This action cannot be undone. This will permanently delete your account and "
+"remove your data from our servers."
+msgstr ""
+"Bu eylem geri alınamaz. Bu, hesabınızı kalıcı olarak silecektir ve "
+"verilerinizi sunucularımızdan çıkartacaktır."
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/dialog_page.ex:98
 #, elixir-autogen, elixir-format
-msgid "This action cannot be undone. This will permanently delete your account."
+msgid ""
+"This action cannot be undone. This will permanently delete your account."
 msgstr "Bu eylem geri alınamaz. Bu, hesabınızı kalıcı olarak silecektir."
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/alert.ex:36
@@ -4185,8 +4321,14 @@ msgstr "Bu bir alettip"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/scroll_area_page.ex:53
 #, elixir-autogen, elixir-format
-msgid "This is a very long line that extends beyond the container width to demonstrate horizontal scrollbar behavior. It keeps going and going and going until you have to scroll right to read it all."
-msgstr "Bu, konteyner genişliğinin ötesine uzanan çok uzun bir çizgidir ve yatay kaydırma çubuğu davranışını göstermek için. Bu devam eder ve devam eder ve hepsini okumak için doğru kaydırmanız gerekir."
+msgid ""
+"This is a very long line that extends beyond the container width to "
+"demonstrate horizontal scrollbar behavior. It keeps going and going and "
+"going until you have to scroll right to read it all."
+msgstr ""
+"Bu, konteyner genişliğinin ötesine uzanan çok uzun bir çizgidir ve yatay "
+"kaydırma çubuğu davranışını göstermek için. Bu devam eder ve devam eder ve "
+"hepsini okumak için doğru kaydırmanız gerekir."
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/card.ex:42
 #, elixir-autogen, elixir-format
@@ -4230,8 +4372,12 @@ msgstr "Bu sayfa en üstten kaydırır."
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/alert_dialog_page.ex:96
 #, elixir-autogen, elixir-format
-msgid "This will permanently delete your account and all associated data. This action cannot be reversed."
-msgstr "Bu, hesabınızı ve tüm ilişkili verileri kalıcı olarak silinecektir. Bu eylem terslanamaz."
+msgid ""
+"This will permanently delete your account and all associated data. This "
+"action cannot be reversed."
+msgstr ""
+"Bu, hesabınızı ve tüm ilişkili verileri kalıcı olarak silinecektir. Bu eylem"
+" terslanamaz."
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/window.html.heex:80
 #, elixir-autogen, elixir-format
@@ -4364,8 +4510,12 @@ msgstr "Troll dışarı çıkıyor? Cool cool. Lobi koltuğunuzu sıcak tutacakt
 
 #: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:119
 #, elixir-autogen, elixir-format
-msgid "Troll heading out? Cool cool. The lobby will keep your seat warm. We're always open. Like a 24/7 diner but with better Wi-Fi."
-msgstr "Troll dışarı çıkıyor? Cool cool. Lobi koltuğunuzu sıcak tutacaktır. Her zaman açıkız. 7/24 bir diner gibi ama daha iyi Wi-Fi ile."
+msgid ""
+"Troll heading out? Cool cool. The lobby will keep your seat warm. We're "
+"always open. Like a 24/7 diner but with better Wi-Fi."
+msgstr ""
+"Troll dışarı çıkıyor? Cool cool. Lobi koltuğunuzu sıcak tutacaktır. Her "
+"zaman açıkız. 7/24 bir diner gibi ama daha iyi Wi-Fi ile."
 
 #: lib/retro_hex_chat_web/live/showcase_live/shell/empty_state_page.ex:91
 #, elixir-autogen, elixir-format
@@ -4533,7 +4683,9 @@ msgstr "Kullanıcılar: 42, Channels: 8, Uptime: 3d 12h"
 #: lib/retro_hex_chat_web/live/showcase_live/shell/config_form_page.ex:104
 #, elixir-autogen, elixir-format
 msgid "Value"
-msgstr "Değer Değer Değer Değer Değer Değer Değer Değer Değer Değer Değer Değer Değer Değer"
+msgstr ""
+"Değer Değer Değer Değer Değer Değer Değer Değer Değer Değer Değer Değer "
+"Değer Değer"
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/progress.ex:26
 #, elixir-autogen, elixir-format
@@ -4640,8 +4792,12 @@ msgstr "Kim"
 
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:33
 #, elixir-autogen, elixir-format
-msgid "Win98 app shell composites — toolbar app, status bar app, app header, config form, and empty states."
-msgstr "Win98 uygulama kabuk kompozitleri - araç çubuğu uygulaması, durum bar uygulaması, uygulama başlığı, yapılandırılmış form ve boş devletler."
+msgid ""
+"Win98 app shell composites — toolbar app, status bar app, app header, config"
+" form, and empty states."
+msgstr ""
+"Win98 uygulama kabuk kompozitleri - araç çubuğu uygulaması, durum bar "
+"uygulaması, uygulama başlığı, yapılandırılmış form ve boş devletler."
 
 #: lib/retro_hex_chat_web/live/showcase_live/assets/diagrams.ex:52
 #, elixir-autogen, elixir-format
@@ -4803,8 +4959,12 @@ msgstr "Wolf3D Engine"
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/accordion.ex:53
 #, elixir-autogen, elixir-format
-msgid "Yes! These new UI components are built with Tailwind for full responsiveness."
-msgstr "Evet! Bu yeni UI bileşenleri tam duyarlılık için Tailwind ile inşa edilmiştir."
+msgid ""
+"Yes! These new UI components are built with Tailwind for full "
+"responsiveness."
+msgstr ""
+"Evet! Bu yeni UI bileşenleri tam duyarlılık için Tailwind ile inşa "
+"edilmiştir."
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:73
 #, elixir-autogen, elixir-format
@@ -4834,7 +4994,8 @@ msgstr "[Server] 5 dakika içinde bakım."
 #: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:169
 #, elixir-autogen, elixir-format
 msgid "bg-gradient-to-r from-primary to-[#1084d0]"
-msgstr "bg-gradient-to-r from-primary to-[#1084d0]"
+msgstr ""
+"bg-gradient-to-r from-primary to-[değiştir | kaynağı değiştir]#1084d0]"
 
 #: lib/retro_hex_chat_web/live/showcase_live/shell/config_form_page.ex:135
 #, elixir-autogen, elixir-format
@@ -4989,60 +5150,63 @@ msgstr "1. Bölüm 1"
 
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:48
 #, elixir-autogen, elixir-format
-msgid "Arcade and solo game components — game cards, solo lobby, and arcade frame."
-msgstr "Arcade and solo game components — game cards, solo lobby, and arcade frame."
+msgid ""
+"Arcade and solo game components — game cards, solo lobby, and arcade frame."
+msgstr ""
+"Arcade ve solo oyun bileşenleri - oyun kartları, yalnız lobi ve arcade "
+"çerçevesi."
 
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_connection_diagram_page.ex:101
 #, elixir-autogen, elixir-format
 msgid "Compact — File Transfer"
-msgstr "Compact — File Transfer"
+msgstr "Compact – File Transfer"
 
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_connection_diagram_page.ex:71
 #, elixir-autogen, elixir-format
 msgid "Compact — Ready"
-msgstr "Compact — Ready"
+msgstr "Compact – Ready – Ready"
 
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_connection_diagram_page.ex:85
 #, elixir-autogen, elixir-format
 msgid "Compact — Video Call"
-msgstr "Compact — Video Call"
+msgstr "Compact – Video Call"
 
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_connection_diagram_page.ex:57
 #, elixir-autogen, elixir-format
 msgid "Compact — Waiting"
-msgstr "Compact — Waiting"
+msgstr "Compact - Waiting - Waiting"
 
 #: lib/retro_hex_chat_web/components/showcase_helpers.ex:157
 #, elixir-autogen, elixir-format
 msgid "Connection Diagram"
-msgstr "Connection Diagram"
+msgstr "Bağlantı Diagram"
 
 #: lib/retro_hex_chat_web/components/showcase_helpers.ex:58
 #: lib/retro_hex_chat_web/live/showcase_live/layout/desktop.ex:17
 #: lib/retro_hex_chat_web/live/showcase_live/layout/desktop.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Desktop"
-msgstr "Desktop"
+msgstr "Masaüstü"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/desktop.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "Drag my title bar. Resize me from the bottom-right grip."
-msgstr "Drag my title bar. Resize me from the bottom-right grip."
+msgstr "Adım barını sürükleyin. Beni alt sağ kolundan yeniden şekillendirin."
 
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_connection_diagram_page.ex:117
 #, elixir-autogen, elixir-format
 msgid "Expanded — Ready"
-msgstr "Expanded — Ready"
+msgstr "genişletildi - Hazır"
 
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_connection_diagram_page.ex:131
 #, elixir-autogen, elixir-format
 msgid "Expanded — Video Call"
-msgstr "Expanded — Video Call"
+msgstr "Expanded – Video Call"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/desktop.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "Opened from the Start menu."
-msgstr "Opened from the Start menu."
+msgstr "Başlangıç menüsünden açıklandı."
 
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_connection_diagram_page.ex:38
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_connection_diagram_page.ex:53
@@ -5052,13 +5216,15 @@ msgstr "P2P Connection Diagram"
 
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:43
 #, elixir-autogen, elixir-format
-msgid "Peer-to-peer session components — connection diagram and file transfer."
-msgstr "Peer-to-peer session components — connection diagram and file transfer."
+msgid ""
+"Peer-to-peer session components — connection diagram and file transfer."
+msgstr ""
+"Peer-to-peer seans bileşenleri - bağlantı diyagramı ve dosya transferi."
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/desktop.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "Pinned — minimize only, no close."
-msgstr "Pinned — minimize only, no close."
+msgstr "Pinned – sadece, yakın değil."
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/desktop.html.heex:12
 #: lib/retro_hex_chat_web/live/showcase_live/layout/desktop.html.heex:57
@@ -5070,7 +5236,7 @@ msgstr "Readme"
 #: lib/retro_hex_chat_web/live/showcase_live/layout/desktop.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "Start"
-msgstr "Start"
+msgstr "Start Start Start Start Start"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/desktop.html.heex:37
 #: lib/retro_hex_chat_web/live/showcase_live/layout/desktop.html.heex:65
@@ -5082,4 +5248,4 @@ msgstr "Stats"
 #: lib/retro_hex_chat_web/live/showcase_live/layout/desktop.html.heex:5
 #, elixir-autogen, elixir-format
 msgid "Window manager"
-msgstr "Window manager"
+msgstr "Pencere yöneticisi"

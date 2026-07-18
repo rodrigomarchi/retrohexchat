@@ -1,4 +1,4 @@
-# "msgid"s in this file come from showcase.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: vi; status: enabled; wave: 2.
+# "msgid"s in this file come from showcase.pot.  Do not add, change, or remove msgids manually. Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=showcase to refresh catalogs.  Locale: vi; status: enabled; wave: 2.
 msgid ""
 msgstr ""
 "Project-Id-Version: RetroHexChat\n"
@@ -60,7 +60,9 @@ msgstr "*!"
 #: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:41
 #, elixir-autogen, elixir-format
 msgid "*adjusts monocle* Reginald here — your server concierge."
-msgstr "Chỉ có một hình đơn cầu* Regina ở đây & mdash; người quản lý máy chủ của bạn."
+msgstr ""
+"Chỉ có một hình đơn cầu* Regina ở đây & mdash; người quản lý máy chủ của "
+"bạn."
 
 #: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:32
 #, elixir-autogen, elixir-format
@@ -214,8 +216,12 @@ msgstr ": Lorem ipsum dolor ngồi amet, consictuur adipiscing elit."
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/scroll_area_page.ex:80
 #, elixir-autogen, elixir-format
-msgid ": This is a wide line with lots of text to force both vertical and horizontal scrolling in the container."
-msgstr "Đây là một dòng rộng với rất nhiều văn bản để ép buộc cả dọc và ngang cuộn trong container."
+msgid ""
+": This is a wide line with lots of text to force both vertical and "
+"horizontal scrolling in the container."
+msgstr ""
+"Đây là một dòng rộng với rất nhiều văn bản để ép buộc cả dọc và ngang cuộn "
+"trong container."
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:40
 #, elixir-autogen, elixir-format
@@ -247,8 +253,11 @@ msgstr "Giới thiệu"
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/accordion.ex:67
 #, elixir-autogen, elixir-format
-msgid "Absolutely. All components are local source code you can modify freely."
-msgstr "Chắc chắn rồi. Tất cả các thành phần là mã nguồn địa phương bạn có thể thay đổi tự do."
+msgid ""
+"Absolutely. All components are local source code you can modify freely."
+msgstr ""
+"Chắc chắn rồi. Tất cả các thành phần là mã nguồn địa phương bạn có thể thay "
+"đổi tự do."
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/checkbox.ex:33
 #, elixir-autogen, elixir-format
@@ -434,8 +443,14 @@ msgstr "Cũng cấm người dùng sau khi đá"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/scroll_area_page.ex:59
 #, elixir-autogen, elixir-format
-msgid "Another long line: ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-msgstr "Một dòng dài khác: ABCDEFGGHIJKKKKLNNNNPQRRRXXXZ ABCEFGGHLLLLLLGNNNNNNNNVPHIJKKLNNNNNTRRRXZ ABCEFGGGGHIJKLLNNNNNNNNPRXNNTXNNNNNNNNNNNNNLLLLLLLLLNNNNNNNNNNNNNNNNNNNNNLLLLLLNNNNNNNNNNNNNLLLLLLNNNNNNNNNNNNNNNNLLLLLLLLLLLLLNNNNNNNNNNNNNNNNNNNNNNNLLLLLLLLLLLLLLLLLLNNNNNNNNNNNNNNN"
+msgid ""
+"Another long line: ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ "
+"ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ "
+"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+msgstr ""
+"Một dòng dài khác: ABCDEFGGHIJKKKKLNNNNPQRRRXXXZ "
+"ABCEFGGHLLLLLLGNNNNNNNNVPHIJKKLNNNNNTRRRXZ "
+"ABCEFGGGGHIJKLLNNNNNNNNPRXNNTXNNNNNNNNNNNNNLLLLLLLLLNNNNNNNNNNNNNNNNNNNNNLLLLLLNNNNNNNNNNNNNLLLLLLNNNNNNNNNNNNNNNNLLLLLLLLLLLLLNNNNNNNNNNNNNNNNNNNNNNNLLLLLLLLLLLLLLLLLLNNNNNNNNNNNNNNN"
 
 #: lib/retro_hex_chat_web/live/showcase_live/chat/chat_layout_page.ex:45
 #, elixir-autogen, elixir-format
@@ -559,7 +574,9 @@ msgstr "Tự động được phát hiện từ submodules. Mỗi biểu đồ c
 #: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:105
 #, elixir-autogen, elixir-format
 msgid "Auto-discovered from submodules. New icons appear here automatically."
-msgstr "Tự động được phát hiện từ submodules. Các biểu tượng mới tự động xuất hiện ở đây."
+msgstr ""
+"Tự động được phát hiện từ submodules. Các biểu tượng mới tự động xuất hiện ở"
+" đây."
 
 #: lib/retro_hex_chat_web/components/showcase_helpers.ex:72
 #: lib/retro_hex_chat_web/live/showcase_live/chat/autocomplete_page.ex:17
@@ -776,8 +793,12 @@ msgstr "Duyệt các kênh sẵn sàng và tham gia một kênh để bắt đ�
 
 #: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:125
 #, elixir-autogen, elixir-format
-msgid "Brutus here — I keep the peace. Play nice and we'll get along. Type !rules if you need a reminder."
-msgstr "Brutus ở đây, tôi giữ hòa bình. Hãy tỏ ra tử tế và chúng ta sẽ hòa thuận. Kiểu!"
+msgid ""
+"Brutus here — I keep the peace. Play nice and we'll get along. Type !rules "
+"if you need a reminder."
+msgstr ""
+"Brutus ở đây, tôi giữ hòa bình. Hãy tỏ ra tử tế và chúng ta sẽ hòa thuận. "
+"Kiểu!"
 
 #: lib/retro_hex_chat_web/components/showcase_helpers.ex:33
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/button.ex:17
@@ -1024,8 +1045,12 @@ msgstr "Tán gẫu, kênh, mạng"
 
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:28
 #, elixir-autogen, elixir-format
-msgid "Chat-specific components — messages, nicklist, emoji picker, formatting toolbar, context menus, and more."
-msgstr "Thành phần cụ thể trong miệng — tin nhắn, sổ tay, bộ chọn emoji, định dạng thanh công cụ, trình đơn ngữ cảnh, và nhiều thứ khác nữa."
+msgid ""
+"Chat-specific components — messages, nicklist, emoji picker, formatting "
+"toolbar, context menus, and more."
+msgstr ""
+"Thành phần cụ thể trong miệng — tin nhắn, sổ tay, bộ chọn emoji, định dạng "
+"thanh công cụ, trình đơn ngữ cảnh, và nhiều thứ khác nữa."
 
 #: lib/retro_hex_chat_web/components/showcase_helpers.ex:128
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:74
@@ -1166,8 +1191,12 @@ msgstr "Hoàn tất"
 
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:38
 #, elixir-autogen, elixir-format
-msgid "Complex dialog composites — channel settings, perform, address book, sound settings, and 20+ more."
-msgstr "Hộp thoại phức tạp tổng hợp — thiết lập kênh, thực hiện, Sổ địa chỉ, thiết lập âm thanh, và thêm 20+."
+msgid ""
+"Complex dialog composites — channel settings, perform, address book, sound "
+"settings, and 20+ more."
+msgstr ""
+"Hộp thoại phức tạp tổng hợp — thiết lập kênh, thực hiện, Sổ địa chỉ, thiết "
+"lập âm thanh, và thêm 20+."
 
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:67
 #, elixir-autogen, elixir-format
@@ -1876,7 +1905,8 @@ msgstr "Name"
 #: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.ex:60
 #, elixir-autogen, elixir-format
 msgid "Fight through hordes of demons from Hell in this classic 1993 game."
-msgstr "Chiến đấu qua đám quỷ dữ từ địa ngục trong trò chơi năm 1993 cổ điển này."
+msgstr ""
+"Chiến đấu qua đám quỷ dữ từ địa ngục trong trò chơi năm 1993 cổ điển này."
 
 #: lib/retro_hex_chat_web/components/showcase_helpers.ex:159
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/file_transfer_page.ex:18
@@ -2256,7 +2286,8 @@ msgstr "Biểu tượng"
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:53
 #, elixir-autogen, elixir-format
 msgid "Icons catalog, SVG diagrams, and design tokens reference."
-msgstr "Danh mục các biểu tượng, sơ đồ SVG, và các biểu tượng thiết kế tham chiếu."
+msgstr ""
+"Danh mục các biểu tượng, sơ đồ SVG, và các biểu tượng thiết kế tham chiếu."
 
 #: lib/retro_hex_chat_web/live/showcase_live/chat/chat_context_menu_page.html.heex:31
 #, elixir-autogen, elixir-format
@@ -2338,8 +2369,14 @@ msgstr "Minh hoạ tương tác"
 
 #: lib/retro_hex_chat_web/live/showcase_live/index.html.heex:13
 #, elixir-autogen, elixir-format
-msgid "Interactive catalog of all UI components used in RetroHexChat. Each component is a reusable, self-contained building block with generic callbacks — no hardcoded event names."
-msgstr "Danh mục tương tác của tất cả các thành phần UI được dùng trong Retro HexChat. Mỗi thành phần là một khối xây dựng có thể tái sử dụng với những cuộc gọi chung — không có tên sự kiện được mã hóa."
+msgid ""
+"Interactive catalog of all UI components used in RetroHexChat. Each "
+"component is a reusable, self-contained building block with generic "
+"callbacks — no hardcoded event names."
+msgstr ""
+"Danh mục tương tác của tất cả các thành phần UI được dùng trong Retro "
+"HexChat. Mỗi thành phần là một khối xây dựng có thể tái sử dụng với những "
+"cuộc gọi chung — không có tên sự kiện được mã hóa."
 
 #: lib/retro_hex_chat_web/components/showcase_helpers.ex:142
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/invite_dialog_page.ex:22
@@ -2585,7 +2622,9 @@ msgstr "Xem / Nhắm"
 #: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.ex:70
 #, elixir-autogen, elixir-format
 msgid "Look for secret walls by pressing Use against suspicious textures"
-msgstr "Tìm kiếm những bức tường bí mật bằng cách sử dụng chống lại những kết cấu đáng ngờ"
+msgstr ""
+"Tìm kiếm những bức tường bí mật bằng cách sử dụng chống lại những kết cấu "
+"đáng ngờ"
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/sheet_page.html.heex:19
 #, elixir-autogen, elixir-format
@@ -3136,7 +3175,7 @@ msgstr "P2P"
 #: lib/retro_hex_chat_web/live/showcase_live/layout/context_menu_page.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
-msgstr "Phiên chạy P2P"
+msgstr "Phiên chạy P2P trong Chat"
 
 #: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:41
 #, elixir-autogen, elixir-format
@@ -3522,8 +3561,12 @@ msgstr "Hàng đã chọn"
 
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:18
 #, elixir-autogen, elixir-format
-msgid "SaladUI base widgets — buttons, inputs, badges, toggles, selects, and other atomic form controls."
-msgstr "Các ô điều khiển cơ bản SaladUI như nút, đầu vào, phù hiệu, chuyển đổi, chọn lọc và các loại điều khiển nguyên tử khác."
+msgid ""
+"SaladUI base widgets — buttons, inputs, badges, toggles, selects, and other "
+"atomic form controls."
+msgstr ""
+"Các ô điều khiển cơ bản SaladUI như nút, đầu vào, phù hiệu, chuyển đổi, chọn"
+" lọc và các loại điều khiển nguyên tử khác."
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/dialog_page.ex:61
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:151
@@ -4015,8 +4058,12 @@ msgstr "Bỏ hoạt động"
 
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:23
 #, elixir-autogen, elixir-format
-msgid "Structural containers — dialogs, tabs, tables, menus, tree views, windows, and scroll areas."
-msgstr "Thùng có cấu trúc — hộp thoại, thẻ, bảng, thực đơn, ô xem cây, cửa sổ và các khu vực cuộn."
+msgid ""
+"Structural containers — dialogs, tabs, tables, menus, tree views, windows, "
+"and scroll areas."
+msgstr ""
+"Thùng có cấu trúc — hộp thoại, thẻ, bảng, thực đơn, ô xem cây, cửa sổ và các"
+" khu vực cuộn."
 
 #: lib/retro_hex_chat_web/live/showcase_live/chat/autocomplete_page.html.heex:87
 #, elixir-autogen, elixir-format
@@ -4155,13 +4202,19 @@ msgstr "Không thể hủy bỏ hành động này."
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/alert_dialog_page.ex:46
 #, elixir-autogen, elixir-format
-msgid "This action cannot be undone. This will permanently delete your account and remove your data from our servers."
-msgstr "Không thể hủy bỏ hành động này. Tùy chọn này sẽ xoá hoàn toàn tài khoản của bạn và gỡ bỏ dữ liệu của bạn khỏi máy chủ của chúng tôi."
+msgid ""
+"This action cannot be undone. This will permanently delete your account and "
+"remove your data from our servers."
+msgstr ""
+"Không thể hủy bỏ hành động này. Tùy chọn này sẽ xoá hoàn toàn tài khoản của "
+"bạn và gỡ bỏ dữ liệu của bạn khỏi máy chủ của chúng tôi."
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/dialog_page.ex:98
 #, elixir-autogen, elixir-format
-msgid "This action cannot be undone. This will permanently delete your account."
-msgstr "Không thể hủy bỏ hành động này. Việc này sẽ xoá hoàn toàn tài khoản của bạn."
+msgid ""
+"This action cannot be undone. This will permanently delete your account."
+msgstr ""
+"Không thể hủy bỏ hành động này. Việc này sẽ xoá hoàn toàn tài khoản của bạn."
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/alert.ex:36
 #, elixir-autogen, elixir-format
@@ -4185,8 +4238,14 @@ msgstr "Đây là một tác giả"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/scroll_area_page.ex:53
 #, elixir-autogen, elixir-format
-msgid "This is a very long line that extends beyond the container width to demonstrate horizontal scrollbar behavior. It keeps going and going and going until you have to scroll right to read it all."
-msgstr "Đây là một đường rất dài mở rộng ra ngoài chiều rộng container để thể hiện hành vi cuộn ngang. Nó cứ tiếp tục đi và đi cho đến khi bạn phải di chuyển quyền để đọc tất cả."
+msgid ""
+"This is a very long line that extends beyond the container width to "
+"demonstrate horizontal scrollbar behavior. It keeps going and going and "
+"going until you have to scroll right to read it all."
+msgstr ""
+"Đây là một đường rất dài mở rộng ra ngoài chiều rộng container để thể hiện "
+"hành vi cuộn ngang. Nó cứ tiếp tục đi và đi cho đến khi bạn phải di chuyển "
+"quyền để đọc tất cả."
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/card.ex:42
 #, elixir-autogen, elixir-format
@@ -4230,8 +4289,12 @@ msgstr "Tờ giấy này ở trên cùng."
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/alert_dialog_page.ex:96
 #, elixir-autogen, elixir-format
-msgid "This will permanently delete your account and all associated data. This action cannot be reversed."
-msgstr "Tùy chọn này sẽ xoá hoàn toàn tài khoản của bạn và tất cả dữ liệu tương ứng. Hành động này không thể đảo ngược."
+msgid ""
+"This will permanently delete your account and all associated data. This "
+"action cannot be reversed."
+msgstr ""
+"Tùy chọn này sẽ xoá hoàn toàn tài khoản của bạn và tất cả dữ liệu tương ứng."
+" Hành động này không thể đảo ngược."
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/window.html.heex:80
 #, elixir-autogen, elixir-format
@@ -4364,8 +4427,12 @@ msgstr "Troll đi ra ngoài à? Tuyệt. Hành lang sẽ giữ ấm chỗ ngồi
 
 #: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:119
 #, elixir-autogen, elixir-format
-msgid "Troll heading out? Cool cool. The lobby will keep your seat warm. We're always open. Like a 24/7 diner but with better Wi-Fi."
-msgstr "Troll đi ra ngoài à? Tuyệt. Hành lang sẽ giữ ấm chỗ ngồi. Chúng tôi luôn mở cửa. Như một quán ăn 24/7 nhưng có Wi-Fi tốt hơn."
+msgid ""
+"Troll heading out? Cool cool. The lobby will keep your seat warm. We're "
+"always open. Like a 24/7 diner but with better Wi-Fi."
+msgstr ""
+"Troll đi ra ngoài à? Tuyệt. Hành lang sẽ giữ ấm chỗ ngồi. Chúng tôi luôn mở "
+"cửa. Như một quán ăn 24/7 nhưng có Wi-Fi tốt hơn."
 
 #: lib/retro_hex_chat_web/live/showcase_live/shell/empty_state_page.ex:91
 #, elixir-autogen, elixir-format
@@ -4640,8 +4707,12 @@ msgstr "Whois"
 
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:33
 #, elixir-autogen, elixir-format
-msgid "Win98 app shell composites — toolbar app, status bar app, app header, config form, and empty states."
-msgstr "Hệ vỏ ứng dụng Win98: ứng dụng thanh công cụ, ứng dụng trạng thái, tiêu đề ứng dụng, dạng cấu hình và trạng thái trống."
+msgid ""
+"Win98 app shell composites — toolbar app, status bar app, app header, config"
+" form, and empty states."
+msgstr ""
+"Hệ vỏ ứng dụng Win98: ứng dụng thanh công cụ, ứng dụng trạng thái, tiêu đề "
+"ứng dụng, dạng cấu hình và trạng thái trống."
 
 #: lib/retro_hex_chat_web/live/showcase_live/assets/diagrams.ex:52
 #, elixir-autogen, elixir-format
@@ -4803,8 +4874,12 @@ msgstr "Máy Wolf3D"
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/accordion.ex:53
 #, elixir-autogen, elixir-format
-msgid "Yes! These new UI components are built with Tailwind for full responsiveness."
-msgstr "Phải! Những thành phần UI mới này được xây dựng với gió ngược để đáp ứng đầy đủ."
+msgid ""
+"Yes! These new UI components are built with Tailwind for full "
+"responsiveness."
+msgstr ""
+"Phải! Những thành phần UI mới này được xây dựng với gió ngược để đáp ứng đầy"
+" đủ."
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:73
 #, elixir-autogen, elixir-format
@@ -4989,97 +5064,103 @@ msgstr "Tập 1"
 
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:48
 #, elixir-autogen, elixir-format
-msgid "Arcade and solo game components — game cards, solo lobby, and arcade frame."
-msgstr "Arcade and solo game components — game cards, solo lobby, and arcade frame."
+msgid ""
+"Arcade and solo game components — game cards, solo lobby, and arcade frame."
+msgstr ""
+"Các thành phần trò chơi điện tử và đơn lẻ — thẻ trò chơi, hành lang đơn và "
+"khung hình trò chơi điện tử."
 
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_connection_diagram_page.ex:101
 #, elixir-autogen, elixir-format
 msgid "Compact — File Transfer"
-msgstr "Compact — File Transfer"
+msgstr "Thuật toán — Truyền tập tin"
 
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_connection_diagram_page.ex:71
 #, elixir-autogen, elixir-format
 msgid "Compact — Ready"
-msgstr "Compact — Ready"
+msgstr "Tính toán — Sẵn sàng"
 
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_connection_diagram_page.ex:85
 #, elixir-autogen, elixir-format
 msgid "Compact — Video Call"
-msgstr "Compact — Video Call"
+msgstr "Thuật toán — Cuộc gọi video"
 
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_connection_diagram_page.ex:57
 #, elixir-autogen, elixir-format
 msgid "Compact — Waiting"
-msgstr "Compact — Waiting"
+msgstr "Đối chiếu — Chờ đợi"
 
 #: lib/retro_hex_chat_web/components/showcase_helpers.ex:157
 #, elixir-autogen, elixir-format
 msgid "Connection Diagram"
-msgstr "Connection Diagram"
+msgstr "Biểu đồ Kết nối"
 
 #: lib/retro_hex_chat_web/components/showcase_helpers.ex:58
 #: lib/retro_hex_chat_web/live/showcase_live/layout/desktop.ex:17
 #: lib/retro_hex_chat_web/live/showcase_live/layout/desktop.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Desktop"
-msgstr "Desktop"
+msgstr "Màn hình nền"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/desktop.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "Drag my title bar. Resize me from the bottom-right grip."
-msgstr "Drag my title bar. Resize me from the bottom-right grip."
+msgstr "Kéo thanh tựa ra. Đổi cỡ tôi từ dưới bên phải."
 
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_connection_diagram_page.ex:117
 #, elixir-autogen, elixir-format
 msgid "Expanded — Ready"
-msgstr "Expanded — Ready"
+msgstr "Mở rộng — Sẵn sàng"
 
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_connection_diagram_page.ex:131
 #, elixir-autogen, elixir-format
 msgid "Expanded — Video Call"
-msgstr "Expanded — Video Call"
+msgstr "Mở rộng — Cuộc gọi video"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/desktop.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "Opened from the Start menu."
-msgstr "Opened from the Start menu."
+msgstr "Mở từ thực đơn bắt đầu."
 
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_connection_diagram_page.ex:38
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_connection_diagram_page.ex:53
 #, elixir-autogen, elixir-format
 msgid "P2P Connection Diagram"
-msgstr "P2P Connection Diagram"
+msgstr "Biểu đồ kết nối P2P"
 
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:43
 #, elixir-autogen, elixir-format
-msgid "Peer-to-peer session components — connection diagram and file transfer."
-msgstr "Peer-to-peer session components — connection diagram and file transfer."
+msgid ""
+"Peer-to-peer session components — connection diagram and file transfer."
+msgstr ""
+"Thành phần phiên chạy bạn bè đến trang cá nhân — sơ đồ kết nối và truyền tập"
+" tin."
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/desktop.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "Pinned — minimize only, no close."
-msgstr "Pinned — minimize only, no close."
+msgstr "Bị ép — chỉ giảm thiểu, không gần."
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/desktop.html.heex:12
 #: lib/retro_hex_chat_web/live/showcase_live/layout/desktop.html.heex:57
 #: lib/retro_hex_chat_web/live/showcase_live/layout/desktop.html.heex:72
 #, elixir-autogen, elixir-format
 msgid "Readme"
-msgstr "Readme"
+msgstr "Đọc"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/desktop.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "Start"
-msgstr "Start"
+msgstr "Chạy"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/desktop.html.heex:37
 #: lib/retro_hex_chat_web/live/showcase_live/layout/desktop.html.heex:65
 #: lib/retro_hex_chat_web/live/showcase_live/layout/desktop.html.heex:78
 #, elixir-autogen, elixir-format
 msgid "Stats"
-msgstr "Stats"
+msgstr "Trạng thái"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/desktop.html.heex:5
 #, elixir-autogen, elixir-format
 msgid "Window manager"
-msgstr "Window manager"
+msgstr "Trình quản lý cửa sổ"

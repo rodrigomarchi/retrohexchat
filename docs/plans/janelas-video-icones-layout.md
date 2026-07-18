@@ -1,5 +1,9 @@
 # Janelas de video - plano de layout e icones 32/64
 
+> Historico/superseded: plano anterior aos ajustes finais da experiencia
+> P2P/conferencia unificada. Para o estado atual de superficies e secoes, use
+> `docs/reference/media-session-p2p-conference-current.md`.
+
 > Criado em 2026-07-15. Objetivo: melhorar as janelas `P2P Call` e
 > `Group Call` sem mudar a semantica das features. O plano ataca primeiro a
 > distribuicao dos controles, depois o tamanho dos icones atuais, e so entao uma
