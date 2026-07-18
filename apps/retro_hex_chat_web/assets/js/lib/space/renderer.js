@@ -54,8 +54,14 @@ const ISO_STEP_FACING = Object.freeze({
   "0,1": "south-west",
 });
 // After this long without moving, an iso avatar drops from idle (breathing) to
-// sleep (a seated doze).
+// sleep (a seated doze; south dozes on a 4-frame cycle, other facings hold a
+// static sitting rotation).
 const ISO_SLEEP_MS = 12000;
+// Avatars whose sheet carries a second idle variant (idle2) alternate between
+// the two stances on this slow cycle, spending IDLE2_SHARE of it on the variant.
+// The phase is offset per participant so a standing crowd never shifts in sync.
+const ISO_IDLE_CYCLE_MS = 9000;
+const ISO_IDLE2_SHARE = 1 / 3;
 
 export class Renderer {
   /**
@@ -669,9 +675,24 @@ export class Renderer {
       return { actionKind: "sleep", dir: m.dir8, frame: Math.floor(now / 300) % 4 };
     }
     if (meta.hasIdle) {
-      return { actionKind: "idle", dir: m.dir8, frame: Math.floor(now / 220) % 4 };
+      return {
+        actionKind: this._idleKind(participant, meta, now),
+        dir: m.dir8,
+        frame: Math.floor(now / 220) % 4,
+      };
     }
     return { actionKind: "walk", dir: m.dir8, frame: 0 };
+  }
+
+  // Which idle stance to show: avatars with a second idle block spend a slice
+  // of each cycle on it, phase-offset by the participant key.
+  _idleKind(participant, meta, now) {
+    if (!meta.hasIdle2) return "idle";
+    let seed = 0;
+    const key = String(participant.key ?? "");
+    for (let i = 0; i < key.length; i += 1) seed = (seed * 31 + key.charCodeAt(i)) >>> 0;
+    const t = (now + (seed % ISO_IDLE_CYCLE_MS)) % ISO_IDLE_CYCLE_MS;
+    return t < ISO_IDLE_CYCLE_MS * ISO_IDLE2_SHARE ? "idle2" : "idle";
   }
 
   // Track a participant's last tile, the time it last changed, and the 8-direction

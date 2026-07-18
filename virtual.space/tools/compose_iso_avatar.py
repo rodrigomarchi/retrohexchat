@@ -2,8 +2,9 @@
 """Compose an 8-direction isometric avatar sheet from a PixelLab export.
 
 Packs a premium 8-direction character's animations into one sheet the engine
-addresses via an iso avatar atlas entry. Handles whichever of walk/idle/attack/
-sleep actually exist (the roster is built up incrementally as animations land).
+addresses via an iso avatar atlas entry. Handles whichever of walk/idle/idle2/
+attack/sleep actually exist (the roster is built up incrementally as animations
+land).
 
 Usage:
     python3 tools/compose_iso_avatar.py <name>     # default: iso_knight
@@ -11,12 +12,14 @@ Usage:
 Input (raw PixelLab frames, kept in the repo so sheets recompose without
 re-spending generations):
     virtual.space/characters/<name>/pixellab/animations/<anim>/<dir>/*.png
-    (walk/idle/attack carry all 8 directions; sleep is south-only — a seated pose)
+    (walk/idle/attack carry all 8 directions; idle2 is an optional second idle
+    variant; sleep is a seated pose — south holds the 4-frame doze, the other
+    facings a single static sitting rotation each)
 
 Layout: every frame is cropped to ONE shared vertical window (feet flush to the
 bottom, full width kept so the body stays centred through the attack swing), then
-stacked in direction-major blocks in the fixed order walk, idle, attack, sleep —
-skipping any animation that has not been generated yet.
+stacked in direction-major blocks in the fixed order walk, idle, idle2, attack,
+sleep — skipping any animation that has not been generated yet.
 
 Deterministic: same frames in → identical bytes out. Writes the sheet PNG and a
 sibling ``<name>.geo.json`` (frame size + per-anim/-direction row offsets) so the
@@ -31,7 +34,7 @@ from PIL import Image
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 DIRS8 = ["south", "south-east", "east", "north-east", "north", "north-west", "west", "south-west"]
-ANIM_ORDER = ["walk", "idle", "attack", "sleep"]
+ANIM_ORDER = ["walk", "idle", "idle2", "attack", "sleep"]
 FRAMES = 4  # per animation, per direction
 
 
@@ -52,11 +55,10 @@ def build(name):
     )
     geo_out = os.path.join(os.path.dirname(out), name + ".geo.json")
 
-    # Gather whichever animations exist. sleep is south-only; the rest are 8-dir.
+    # Gather whichever animations and directions exist for each block.
     blocks = {}
     for anim in ANIM_ORDER:
-        dirs = ["south"] if anim == "sleep" else DIRS8
-        rows = [(ims, d) for d in dirs if (ims := _load(raw, anim, d)) is not None]
+        rows = [(ims, d) for d in DIRS8 if (ims := _load(raw, anim, d)) is not None]
         if rows:
             blocks[anim] = rows
     if not blocks:

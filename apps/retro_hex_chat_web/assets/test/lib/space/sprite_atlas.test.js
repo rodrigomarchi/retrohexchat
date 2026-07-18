@@ -34,7 +34,7 @@ describe("sprite atlas contract", () => {
       "cleric",
       "monk",
     ]);
-    expect(AVATAR_ACTIONS).toEqual(["walk", "sword", "idle", "sleep"]);
+    expect(AVATAR_ACTIONS).toEqual(["walk", "sword", "idle", "idle2", "sleep"]);
     expect(DIRECTIONS).toEqual([
       "south",
       "south-east",
@@ -106,26 +106,33 @@ describe("sprite atlas contract", () => {
 
   it("slices a fully-animated iso avatar's walk/idle/attack/sleep blocks by 8-direction facing", () => {
     const atlas = loadedAtlas();
-    // Hero: walk/idle/attack + south-only sleep, 188×142 frames, one row per direction.
+    // Hero: walk/idle/attack/sleep, all 8-dir, 188×142 frames, one row per direction.
     expect(atlas.avatar("hero", "south", 0)).toMatchObject({ sx: 0, sy: 0, sw: 188, sh: 142 });
     expect(atlas.avatar("hero", "south-east", 1)).toMatchObject({ sx: 188, sy: 142 });
     // idle block starts at 8*142, sword(attack) at 16*142.
     expect(atlas.avatar("hero", "south-east", 1, "idle")).toMatchObject({ sx: 188, sy: 1278 });
     expect(atlas.avatar("hero", "south", 2, "sword")).toMatchObject({ sx: 376, sy: 2272 });
-    // sleep is south-only; any facing resolves to the south row at 24*142.
-    expect(atlas.avatar("hero", "north", 0, "sleep")).toMatchObject({ sx: 0, sy: 3408 });
+    // sleep faces the avatar's own direction: south row at 24*142, north at 28*142.
+    expect(atlas.avatar("hero", "south", 0, "sleep")).toMatchObject({ sx: 0, sy: 3408 });
+    expect(atlas.avatar("hero", "north", 0, "sleep")).toMatchObject({ sx: 0, sy: 3976 });
     expect(atlas.avatarFrameCount("hero", "walk")).toBe(4);
+    // Hero has a single idle variant.
+    expect(atlas.avatarMeta("hero")).toMatchObject({ hasIdle: true, hasIdle2: false });
   });
 
-  it("slices the fully-animated knight across walk/idle/sword/sleep blocks", () => {
+  it("slices the fully-animated knight across walk/idle/idle2/sword/sleep blocks", () => {
     const atlas = loadedAtlas();
-    // 188×151 frames; walk rows 0.., idle 1208.., sword(attack) 2416.., sleep 3624.
+    // 188×151 frames; walk rows 0.., idle 1208.., idle2 2416.., sword(attack) 3624.., sleep 4832.
     expect(atlas.avatar("knight", "south", 0)).toMatchObject({ sx: 0, sy: 0, sw: 188, sh: 151 });
     expect(atlas.avatar("knight", "east", 1, "idle")).toMatchObject({ sx: 188, sy: 1510 });
-    expect(atlas.avatar("knight", "south", 2, "sword")).toMatchObject({ sx: 376, sy: 2416 });
-    // sleep is south-only; any facing resolves to the south row.
-    expect(atlas.avatar("knight", "north", 0, "sleep")).toMatchObject({ sx: 0, sy: 3624 });
+    // The knight carries a second idle stance (idle2) as a full 8-dir block.
+    expect(atlas.avatar("knight", "east", 1, "idle2")).toMatchObject({ sx: 188, sy: 2718 });
+    expect(atlas.avatar("knight", "south", 2, "sword")).toMatchObject({ sx: 376, sy: 3624 });
+    // sleep faces the avatar's own direction.
+    expect(atlas.avatar("knight", "south", 0, "sleep")).toMatchObject({ sx: 0, sy: 4832 });
+    expect(atlas.avatar("knight", "north", 0, "sleep")).toMatchObject({ sx: 0, sy: 5436 });
     expect(atlas.avatarFrameCount("knight", "sword")).toBe(4);
+    expect(atlas.avatarMeta("knight")).toMatchObject({ hasIdle: true, hasIdle2: true });
   });
 
   it("falls back to the default hero block for an unknown avatar id", () => {

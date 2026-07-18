@@ -492,3 +492,61 @@ describe("Renderer avatar actions", () => {
     expect(ctx.drawImage).toHaveBeenCalledWith(img, 0, 128, 32, 32, 992, 480, 64, 64);
   });
 });
+
+describe("Renderer avatar pose state machine", () => {
+  function poseRenderer(metaOverrides = {}) {
+    const atlas = {
+      tile: () => null,
+      avatar: () => ({ canvas: {} }),
+      avatarMeta: () => ({ hasIdle: true, hasIdle2: true, hasSleep: true, ...metaOverrides }),
+      avatarFrameCount: () => 4,
+    };
+    return build({ atlas }).renderer;
+  }
+
+  it("alternates an avatar with a second idle stance across the slow idle cycle", () => {
+    const renderer = poseRenderer();
+    const participant = { key: "u1", avatar: "knight", x: 3, y: 4 };
+    renderer._avatarPose(participant, 0);
+    const kinds = new Set();
+    // One full 9s cycle inside the idle band (after walk settles, before sleep).
+    for (let t = 1000; t < 10000; t += 200) {
+      kinds.add(renderer._avatarPose(participant, t).actionKind);
+    }
+    expect(kinds).toEqual(new Set(["idle", "idle2"]));
+  });
+
+  it("keeps a single-idle avatar on its only idle stance", () => {
+    const renderer = poseRenderer({ hasIdle2: false });
+    const participant = { key: "u2", avatar: "hero", x: 3, y: 4 };
+    renderer._avatarPose(participant, 0);
+    for (let t = 1000; t < 10000; t += 200) {
+      expect(renderer._avatarPose(participant, t).actionKind).toBe("idle");
+    }
+  });
+
+  it("desyncs the idle2 stretches of different participants by key", () => {
+    const renderer = poseRenderer();
+    const a = { key: "alice", avatar: "knight", x: 1, y: 1 };
+    const b = { key: "bob-the-long-key", avatar: "knight", x: 2, y: 2 };
+    renderer._avatarPose(a, 0);
+    renderer._avatarPose(b, 0);
+    const diverged = [];
+    for (let t = 1000; t < 10000; t += 200) {
+      diverged.push(
+        renderer._avatarPose(a, t).actionKind !== renderer._avatarPose(b, t).actionKind,
+      );
+    }
+    expect(diverged).toContain(true);
+  });
+
+  it("sleeps facing the direction of the last step", () => {
+    const renderer = poseRenderer();
+    const participant = { key: "u3", avatar: "knight", x: 3, y: 4 };
+    renderer._avatarPose(participant, 0);
+    participant.x = 2; // step (-1,0) reads as north-west on screen
+    renderer._avatarPose(participant, 100);
+    const pose = renderer._avatarPose(participant, 100 + 13000);
+    expect(pose).toMatchObject({ actionKind: "sleep", dir: "north-west" });
+  });
+});

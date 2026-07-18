@@ -32,40 +32,49 @@ export const DIRECTIONS = Object.freeze([
 const ISO_GEO = {
   iso_archer: {
     frameW: 188,
-    frameH: 141,
+    frameH: 142,
     cols: [0, 188, 376, 564],
     anims: {
       walk: {
         south: 0,
-        "south-east": 141,
-        east: 282,
-        "north-east": 423,
-        north: 564,
-        "north-west": 705,
-        west: 846,
-        "south-west": 987,
+        "south-east": 142,
+        east: 284,
+        "north-east": 426,
+        north: 568,
+        "north-west": 710,
+        west: 852,
+        "south-west": 994,
       },
       idle: {
-        south: 1128,
-        "south-east": 1269,
-        east: 1410,
-        "north-east": 1551,
-        north: 1692,
-        "north-west": 1833,
-        west: 1974,
-        "south-west": 2115,
+        south: 1136,
+        "south-east": 1278,
+        east: 1420,
+        "north-east": 1562,
+        north: 1704,
+        "north-west": 1846,
+        west: 1988,
+        "south-west": 2130,
       },
       attack: {
-        south: 2256,
-        "south-east": 2397,
-        east: 2538,
-        "north-east": 2679,
-        north: 2820,
-        "north-west": 2961,
-        west: 3102,
-        "south-west": 3243,
+        south: 2272,
+        "south-east": 2414,
+        east: 2556,
+        "north-east": 2698,
+        north: 2840,
+        "north-west": 2982,
+        west: 3124,
+        "south-west": 3266,
       },
-      sleep: { south: 3384 },
+      sleep: {
+        south: 3408,
+        "south-east": 3550,
+        east: 3692,
+        "north-east": 3834,
+        north: 3976,
+        "north-west": 4118,
+        west: 4260,
+        "south-west": 4402,
+      },
     },
   },
   iso_barbarian: {
@@ -103,7 +112,16 @@ const ISO_GEO = {
         west: 3080,
         "south-west": 3220,
       },
-      sleep: { south: 3360 },
+      sleep: {
+        south: 3360,
+        "south-east": 3500,
+        east: 3640,
+        "north-east": 3780,
+        north: 3920,
+        "north-west": 4060,
+        west: 4200,
+        "south-west": 4340,
+      },
     },
   },
   iso_cleric: {
@@ -141,7 +159,16 @@ const ISO_GEO = {
         west: 3168,
         "south-west": 3312,
       },
-      sleep: { south: 3456 },
+      sleep: {
+        south: 3456,
+        "south-east": 3600,
+        east: 3744,
+        "north-east": 3888,
+        north: 4032,
+        "north-west": 4176,
+        west: 4320,
+        "south-west": 4464,
+      },
     },
   },
   iso_hero: {
@@ -179,7 +206,16 @@ const ISO_GEO = {
         west: 3124,
         "south-west": 3266,
       },
-      sleep: { south: 3408 },
+      sleep: {
+        south: 3408,
+        "south-east": 3550,
+        east: 3692,
+        "north-east": 3834,
+        north: 3976,
+        "north-west": 4118,
+        west: 4260,
+        "south-west": 4402,
+      },
     },
   },
   iso_knight: {
@@ -207,7 +243,7 @@ const ISO_GEO = {
         west: 2114,
         "south-west": 2265,
       },
-      attack: {
+      idle2: {
         south: 2416,
         "south-east": 2567,
         east: 2718,
@@ -217,7 +253,26 @@ const ISO_GEO = {
         west: 3322,
         "south-west": 3473,
       },
-      sleep: { south: 3624 },
+      attack: {
+        south: 3624,
+        "south-east": 3775,
+        east: 3926,
+        "north-east": 4077,
+        north: 4228,
+        "north-west": 4379,
+        west: 4530,
+        "south-west": 4681,
+      },
+      sleep: {
+        south: 4832,
+        "south-east": 4983,
+        east: 5134,
+        "north-east": 5285,
+        north: 5436,
+        "north-west": 5587,
+        west: 5738,
+        "south-west": 5889,
+      },
     },
   },
   iso_monk: {
@@ -255,7 +310,16 @@ const ISO_GEO = {
         west: 3014,
         "south-west": 3151,
       },
-      sleep: { south: 3288 },
+      sleep: {
+        south: 3288,
+        "south-east": 3425,
+        east: 3562,
+        "north-east": 3699,
+        north: 3836,
+        "north-west": 3973,
+        west: 4110,
+        "south-west": 4247,
+      },
     },
   },
   iso_rogue: {
@@ -283,7 +347,7 @@ const ISO_GEO = {
         west: 1974,
         "south-west": 2115,
       },
-      attack: {
+      idle2: {
         south: 2256,
         "south-east": 2397,
         east: 2538,
@@ -293,7 +357,26 @@ const ISO_GEO = {
         west: 3102,
         "south-west": 3243,
       },
-      sleep: { south: 3384 },
+      attack: {
+        south: 3384,
+        "south-east": 3525,
+        east: 3666,
+        "north-east": 3807,
+        north: 3948,
+        "north-west": 4089,
+        west: 4230,
+        "south-west": 4371,
+      },
+      sleep: {
+        south: 4512,
+        "south-east": 4653,
+        east: 4794,
+        "north-east": 4935,
+        north: 5076,
+        "north-west": 5217,
+        west: 5358,
+        "south-west": 5499,
+      },
     },
   },
   iso_sorceress: {
@@ -321,7 +404,7 @@ const ISO_GEO = {
         west: 2212,
         "south-west": 2370,
       },
-      attack: {
+      idle2: {
         south: 2528,
         "south-east": 2686,
         east: 2844,
@@ -331,7 +414,26 @@ const ISO_GEO = {
         west: 3476,
         "south-west": 3634,
       },
-      sleep: { south: 3792 },
+      attack: {
+        south: 3792,
+        "south-east": 3950,
+        east: 4108,
+        "north-east": 4266,
+        north: 4424,
+        "north-west": 4582,
+        west: 4740,
+        "south-west": 4898,
+      },
+      sleep: {
+        south: 5056,
+        "south-east": 5214,
+        east: 5372,
+        "north-east": 5530,
+        north: 5688,
+        "north-west": 5846,
+        west: 6004,
+        "south-west": 6162,
+      },
     },
   },
 };
@@ -355,7 +457,7 @@ const AVATAR_SHEETS = Object.freeze(
 );
 
 // Build an avatar descriptor from its geometry. The game's "sword" action maps to
-// the "attack" block; an avatar without idle/sword/sleep falls back to walk.
+// the "attack" block; an avatar without idle/idle2/sword/sleep falls back to walk.
 function isoAvatar(id) {
   const geo = ISO_GEO[`iso_${id}`];
   const cols = geo.cols;
@@ -387,7 +489,7 @@ const AVATAR_BOUNDS = Object.freeze({
 });
 
 export const AVATAR_IDS = ROSTER;
-export const AVATAR_ACTIONS = Object.freeze(["walk", "sword", "idle", "sleep"]);
+export const AVATAR_ACTIONS = Object.freeze(["walk", "sword", "idle", "idle2", "sleep"]);
 
 /**
  * @param {{tileSize?: number, scale?: number, onReady?: Function}} [opts]
@@ -465,8 +567,8 @@ export function createSpriteAtlas(opts = {}) {
     const sheet = sheets.get(desc.sheet);
     if (!sheet) return null;
     // Resolve against the block's own facing keys, falling back to the first
-    // facing when a direction is absent (e.g. sleep is south-only, used for any
-    // direction).
+    // facing when a direction is absent (so a partially-generated block still
+    // renders from whichever facings it has).
     const direction = dir in block.rows ? dir : Object.keys(block.rows)[0];
     const n = block.cols.length;
     const idx = ((Math.trunc(frame) % n) + n) % n;
@@ -504,6 +606,7 @@ export function createSpriteAtlas(opts = {}) {
       const desc = AVATARS[id] ?? AVATARS[DEFAULT_AVATAR_ID];
       return {
         hasIdle: Boolean(desc.idle),
+        hasIdle2: Boolean(desc.idle2),
         hasSleep: Boolean(desc.sleep),
         scale: desc.scale ?? 1,
       };

@@ -40,9 +40,13 @@ without re-spending generations.
 
 ### Animations & facings
 
-Each character carries **walk + idle + attack** in all **8 iso facings**, plus a
-south-only **sleep** (a seated pose). The eight facings, in the row order every
-sheet is packed:
+Each character carries **walk + idle + attack + sleep** in all **8 iso
+facings** (sleep's south row is the 4-frame seated doze from the class's
+"sitting on the ground" sibling state; the other seven facings hold that state's
+static sitting rotations). Knight, rogue and sorceress additionally carry
+**idle2** — the second idle stance generated for them (breathing-idle; their
+`idle` block is calm-idle). The eight facings, in the row order every sheet is
+packed:
 
 ```
 south, south-east, east, north-east, north, north-west, west, south-west
@@ -50,13 +54,16 @@ south, south-east, east, north-east, north, north-west, west, south-west
 
 The game's `sword` action maps to the **attack** block (each class swings its
 own weapon — the weapon comes for free from the base sprite). `idle` and `sleep`
-are the resting states; an avatar missing any animation falls back to `walk`.
+are the resting states — the renderer alternates `idle`/`idle2` on a slow,
+per-participant-offset cycle where `idle2` exists, and `sleep` faces the
+avatar's own direction; an avatar missing any animation falls back to `walk`.
 
 ### Sheet layout (per character)
 
 `compose_iso_avatar.py` packs one sheet per character: **4 frames** per
 animation per direction, laid out **direction-major** in the fixed animation
-order `walk, idle, attack, sleep`, skipping any animation not yet generated.
+order `walk, idle, idle2, attack, sleep`, skipping any animation not yet
+generated.
 Every frame is cropped to **one shared vertical window** (feet flush to the
 bottom, full width kept so the body stays centred through the attack swing).
 
@@ -65,7 +72,8 @@ Geometry lives beside the sheet in `iso_<id>.geo.json`:
 ```json
 {"frameW": 188, "frameH": 142, "cols": [0, 188, 376, 564],
  "anims": {"walk": {"south": 0, "south-east": 142, ...},
-           "idle": {...}, "attack": {...}, "sleep": {"south": 3408}}}
+           "idle": {...}, "attack": {...},
+           "sleep": {"south": 3408, "south-east": 3550, ...}}}
 ```
 
 `frameW/frameH` is the cell size, `cols` are the four frame x-offsets, and each
@@ -160,7 +168,8 @@ eight. Generate it for `south` only; the atlas reuses it for any facing.
 - Some directions occasionally generate **3 or 5 frames instead of 4** — the
   compose script pads/truncates to exactly 4 (see §3).
 - After generating, **always verify coverage** before composing: every
-  direction of walk/idle/attack should have frames (and `sleep/south`).
+  direction of walk/idle/attack should have frames, plus the full `sleep` block
+  (4 doze frames in `sleep/south`, one static sitting rotation per other facing).
 
 ### 2f. Download the export
 
@@ -226,7 +235,7 @@ diamond foot, so the frame size is pure data — no renderer change per characte
   the `sword` action); a **single native iso geometry** — no special-cased legacy
   hero. `avatar(id, dir, frame, action)` resolves the rect, falling back to the
   default avatar and to `walk` / the first facing when an id/action/direction is
-  absent (so south-only `sleep` serves any facing).
+  absent (so a partially-generated block still serves every facing).
 
 `gen_iso_atlas.py` prints both the `AVATAR_SHEETS` entries and the `ISO_GEO`
 literal, so adding or regenerating a character is a **data change** you paste in.
@@ -262,8 +271,9 @@ In-game, the attack fires on the **Space** key (`ACTION_MAP` in `input.js`).
 
 ## 5. Add a new character — checklist
 
-1. **Generate** (§2): create (8-dir) + walk + idle + attack (8 dirs each) +
-   south sleep, using the locked params.
+1. **Generate** (§2): create (8-dir) + walk + idle + attack (8 dirs each),
+   plus the "sitting on the ground" sibling state (8-dir rotations + a south
+   breathing doze) that fills the `sleep` block, using the locked params.
 2. **Download & verify** coverage (§2e–2f), retrying flaky directions.
 3. **Compose** the sheet (§3); eyeball the blocks.
 4. **Regenerate the atlas data**: `python3 tools/gen_iso_atlas.py` and paste the
