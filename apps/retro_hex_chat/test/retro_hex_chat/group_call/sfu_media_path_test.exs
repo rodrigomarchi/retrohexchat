@@ -85,8 +85,10 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
       assert_eventually_server_stats_subscriber_count(ctx.token, alice_client.participant_id, 1)
       assert_eventually_server_stats_subscriber_count(ctx.token, bob_client.participant_id, 1)
 
-      send(bob_client.pid, {:send_rtp_sequence, :video, [1, 2, 3, 4, 5]})
-      assert_rtp_packet_count(:alice, :video, 5)
+      # Warm the forwarding path with the retrying burst helper first — a single
+      # finite sequence can be swallowed while the route is still negotiating.
+      # The gap/dup/reorder assertions below then ride an established path.
+      send_and_assert_video_rtp_counts(bob_client, [:alice])
       assert_eventually_active_track(ctx.room.id, bob_client.participant_id, "video", "camera")
 
       drain_probe_rtp()

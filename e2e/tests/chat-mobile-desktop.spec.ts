@@ -45,9 +45,7 @@ test.describe("chat desktop on a phone (stacked single-window)", () => {
     const mobileTaskSwitcherTrigger = page.getByTestId(
       "mobile-task-switcher-trigger",
     );
-    const mobileTaskSwitcherPanel = page.locator(
-      "[data-mobile-task-switcher]",
-    );
+    const mobileTaskSwitcherPanel = page.locator("[data-mobile-task-switcher]");
 
     // The shell remains complete on mobile, but dense horizontal controls
     // collapse behind semantic launchers.

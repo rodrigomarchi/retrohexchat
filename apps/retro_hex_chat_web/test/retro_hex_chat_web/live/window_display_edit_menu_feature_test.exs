@@ -23,6 +23,7 @@ defmodule RetroHexChatWeb.WindowDisplayEditMenuFeatureTest do
         |> Floki.parse_document!()
 
       assert trigger_labels(document) == [
+               "Menu",
                "File",
                "Edit",
                "View",
@@ -33,9 +34,11 @@ defmodule RetroHexChatWeb.WindowDisplayEditMenuFeatureTest do
                "Help"
              ]
 
+      # The mobile "Menu" trigger renders as the first nav section, so the
+      # desktop menus start at index 1.
       sections = Floki.find(document, "nav > div")
-      edit_section = Enum.at(sections, 1)
-      view_section = Enum.at(sections, 2)
+      edit_section = Enum.at(sections, 2)
+      view_section = Enum.at(sections, 3)
 
       assert menu_actions(edit_section) == ["clear_window", "copy_selection", "toggle_search"]
       refute "toggle_search" in menu_actions(view_section)
@@ -59,7 +62,7 @@ defmodule RetroHexChatWeb.WindowDisplayEditMenuFeatureTest do
       edit_trigger =
         document
         |> Floki.find("[data-menubar-trigger]")
-        |> Enum.at(1)
+        |> Enum.at(2)
 
       assert edit_trigger |> Floki.text() |> String.trim() == "Edit"
       assert Floki.attribute(edit_trigger, "data-disabled") == ["true"]
