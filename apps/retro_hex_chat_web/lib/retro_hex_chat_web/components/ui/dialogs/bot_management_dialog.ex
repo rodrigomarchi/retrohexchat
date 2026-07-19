@@ -66,7 +66,7 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
     <div class="bm-body flex flex-col md:flex-row gap-retro-8 md:h-[360px]">
       <%!-- Left panel: bot list --%>
       <div class="bm-sidebar w-full md:w-[180px] md:shrink-0 flex flex-col">
-        <div class="bm-section-heading text-xs font-bold mb-retro-4 flex items-center gap-retro-4">
+        <div class="text-xs font-bold mb-retro-4 flex items-center gap-retro-4">
           <Icons.icon_btn_bot_management class="w-[14px] h-[14px]" /> {dgettext("dialogs", "Bots")}
         </div>
         <div class="bm-bot-list-wrap flex-1 shadow-retro-sunken bg-white overflow-y-auto p-retro-2">
@@ -109,7 +109,7 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
       </div>
 
       <%!-- Right panel: details --%>
-      <div class="bm-detail flex-1 min-w-0">
+      <div class="flex-1 min-w-0">
         <div
           :if={@selected == nil}
           class="flex items-center justify-center h-full text-muted-foreground text-sm"
@@ -170,7 +170,7 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
 
             <%!-- General tab --%>
             <.tabs_content value="general">
-              <div class="bm-general space-y-retro-8 p-retro-4 text-sm">
+              <div class="space-y-retro-8 p-retro-4 text-sm">
                 <div class="bm-detail-row flex items-center gap-retro-8">
                   <span class="bm-detail-label font-bold w-[80px]">
                     {dgettext("dialogs", "Name")}:
@@ -254,7 +254,7 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
 
             <%!-- Channels tab --%>
             <.tabs_content value="channels">
-              <div class="bm-list-panel p-retro-4">
+              <div class="p-retro-4">
                 <div
                   :if={@channels == []}
                   class="text-center text-muted-foreground text-sm py-retro-16"
@@ -316,7 +316,7 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
 
             <%!-- Commands tab --%>
             <.tabs_content value="commands">
-              <div class="bm-list-panel p-retro-4">
+              <div class="p-retro-4">
                 <div
                   :if={@commands == []}
                   class="text-center text-muted-foreground text-sm py-retro-16"
@@ -371,7 +371,7 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
 
             <%!-- Events tab --%>
             <.tabs_content value="events">
-              <div class="bm-list-panel p-retro-4">
+              <div class="p-retro-4">
                 <div
                   :if={@events == []}
                   class="text-center text-muted-foreground text-sm py-retro-16"
@@ -413,17 +413,17 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
     assigns = assign(assigns, caps: caps, cap_names: cap_names)
 
     ~H"""
-    <div class="bm-capabilities p-retro-4">
+    <div class="p-retro-4">
       <div
         :if={@cap_names == []}
         class="text-center text-muted-foreground text-sm py-retro-16"
       >
         {dgettext("dialogs", "No configurable capabilities enabled.")}
       </div>
-      <div :if={@cap_names != []} class="bm-capability-list space-y-retro-8">
+      <div :if={@cap_names != []} class="space-y-retro-8">
         <fieldset
           :for={cap_name <- @cap_names}
-          class="bm-capability-card shadow-retro-field p-retro-8"
+          class="shadow-retro-field p-retro-8"
         >
           <legend class="text-xs font-bold px-1">{cap_display_name(cap_name)}</legend>
           <.cap_toggle_row

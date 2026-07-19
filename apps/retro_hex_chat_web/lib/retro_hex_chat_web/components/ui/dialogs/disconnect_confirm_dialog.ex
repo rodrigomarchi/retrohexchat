@@ -43,7 +43,7 @@ defmodule RetroHexChatWeb.Components.UI.DisconnectConfirmDialog do
         </.dialog_header>
 
         <.dialog_body class="cd-dialog-body">
-          <div class="cd-message-row cd-message-row--destructive">
+          <div class="cd-message-row">
             <span class="cd-message-icon" aria-hidden="true">
               <Icons.icon_btn_disconnect class="w-5 h-5" />
             </span>

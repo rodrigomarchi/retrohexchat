@@ -48,7 +48,7 @@ defmodule RetroHexChatWeb.Components.UI.ToolbarApp do
       <div class="toolbar-group relative">
         <.toolbar_button
           label={dgettext("ui", "Options")}
-          class="toolbar-group-toggle"
+          data-toolbar-group-toggle="true"
           data-toolbar-group="options"
         >
           <Icons.icon_group_tools class="w-[32px] h-[32px]" />

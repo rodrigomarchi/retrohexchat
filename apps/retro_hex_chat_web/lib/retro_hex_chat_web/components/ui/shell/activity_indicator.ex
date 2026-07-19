@@ -40,7 +40,7 @@ defmodule RetroHexChatWeb.Components.UI.ActivityIndicator do
       </span>
       <span
         :if={@show_text}
-        class={classes(["activity-indicator__text", text_size(@size)])}
+        class={text_size(@size)}
         {@text_attrs}
       >
         {@text}
@@ -63,18 +63,18 @@ defmodule RetroHexChatWeb.Components.UI.ActivityIndicator do
   def boot_activity_panel(assigns) do
     ~H"""
     <div
-      class={classes(["boot-activity-panel shadow-retro-window bg-surface p-[3px]", @class])}
+      class={classes(["shadow-retro-window bg-surface p-[3px]", @class])}
       role="status"
       aria-live="polite"
       aria-label={"#{@title}: #{@text}"}
       {@rest}
     >
-      <div class="boot-activity-panel__titlebar bg-title-bar flex items-center gap-1 px-[3px] py-[3px] text-xs font-bold text-white">
+      <div class="bg-title-bar flex items-center gap-1 px-[3px] py-[3px] text-xs font-bold text-white">
         <img src={@logo_src} alt="" class="h-4 w-4 shrink-0" />
         <span class="min-w-0 truncate">{@title}</span>
       </div>
 
-      <div class="boot-activity-panel__body flex flex-col items-center gap-retro-10 p-retro-24 text-center">
+      <div class="flex flex-col items-center gap-retro-10 p-retro-24 text-center">
         <img src={@logo_src} alt="" class="activity-indicator__brand h-12 w-12" />
         <div class="space-y-retro-4">
           <p class="text-sm font-bold leading-tight">{@title}</p>
@@ -113,10 +113,9 @@ defmodule RetroHexChatWeb.Components.UI.ActivityIndicator do
   defp activity_icon(assigns), do: ~H"<Icons.icon_hex_stone class={@class} />"
 
   defp indicator_class("panel"),
-    do:
-      "activity-indicator shadow-retro-field bg-white inline-flex items-center px-retro-8 py-retro-6"
+    do: "shadow-retro-field bg-white inline-flex items-center px-retro-8 py-retro-6"
 
-  defp indicator_class(_), do: "activity-indicator inline-flex items-center"
+  defp indicator_class(_), do: "inline-flex items-center"
 
   defp size_gap("sm"), do: "gap-retro-4"
   defp size_gap("lg"), do: "gap-retro-8"

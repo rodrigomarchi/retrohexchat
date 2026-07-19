@@ -54,7 +54,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessageTest do
       refute html =~ "&lt;alice&gt;"
     end
 
-    test "renders a non-interactive .chat-source origin with no data-nick" do
+    test "renders a non-interactive source origin with no data-nick" do
       html =
         render_component(&chat_message/1,
           type: "system",
@@ -62,8 +62,8 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessageTest do
           inner_block: %{inner_block: fn _, _ -> "joined" end}
         )
 
-      assert html =~ ~s(class="chat-source)
       assert html =~ "System"
+      assert html =~ ~s(title="System")
       refute html =~ "data-nick"
     end
 

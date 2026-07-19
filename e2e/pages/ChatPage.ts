@@ -1,12 +1,7 @@
 import { Page, Locator, expect } from "@playwright/test";
 
 export type AddressBookControlType =
-  | "all"
-  | "messages"
-  | "pms"
-  | "actions"
-  | "notices"
-  | "invites";
+  "all" | "messages" | "pms" | "actions" | "notices" | "invites";
 
 type ChannelCentralTab =
   | "general"
@@ -17,12 +12,16 @@ type ChannelCentralTab =
   | "registration";
 
 type ChannelCentralModeLabel =
-  | "Moderated (+m)"
-  | "Invite Only (+i)"
-  | "Topic Lock (+t)";
+  "Moderated (+m)" | "Invite Only (+i)" | "Topic Lock (+t)";
 
 function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function visibleContextMenuItem(page: Page, action: string): Locator {
+  return page.getByTestId(`context-menu-item-${action}`).filter({
+    visible: true,
+  });
 }
 
 // Page Object for the app ChatLive at /chat. Covers high-level shell
@@ -293,94 +292,97 @@ export class ChatPage {
     this.gamesMenuTrigger = page
       .locator("button[data-menubar-trigger]")
       .filter({ hasText: "Games" });
-    this.arcadeMenuItem = page.getByTestId("context-menu-item-open_arcade");
+    this.arcadeMenuItem = visibleContextMenuItem(page, "open_arcade");
     this.arcadeWindow = page.getByTestId("arcade-games-window");
     // context_menu_item exposes data-testid="context-menu-item-<action>".
-    this.disconnectMenuItem = page.getByTestId("context-menu-item-disconnect");
-    this.adminConsoleMenuItem = page.getByTestId(
-      "context-menu-item-open_admin_console",
+    this.disconnectMenuItem = visibleContextMenuItem(page, "disconnect");
+    this.adminConsoleMenuItem = visibleContextMenuItem(
+      page,
+      "open_admin_console",
     );
-    this.accountRegisterMenuItem = page.getByTestId(
-      "context-menu-item-open_account_register",
+    this.accountRegisterMenuItem = visibleContextMenuItem(
+      page,
+      "open_account_register",
     );
-    this.accountIdentifyMenuItem = page.getByTestId(
-      "context-menu-item-open_account_identify",
+    this.accountIdentifyMenuItem = visibleContextMenuItem(
+      page,
+      "open_account_identify",
     );
-    this.accountProfileMenuItem = page.getByTestId(
-      "context-menu-item-open_account_profile",
+    this.accountProfileMenuItem = visibleContextMenuItem(
+      page,
+      "open_account_profile",
     );
-    this.accountPresenceMenuItem = page.getByTestId(
-      "context-menu-item-open_account_presence",
+    this.accountPresenceMenuItem = visibleContextMenuItem(
+      page,
+      "open_account_presence",
     );
-    this.accountInfoMenuItem = page.getByTestId(
-      "context-menu-item-account_info",
+    this.accountInfoMenuItem = visibleContextMenuItem(page, "account_info");
+    this.clearWindowMenuItem = visibleContextMenuItem(page, "clear_window");
+    this.copySelectionMenuItem = visibleContextMenuItem(page, "copy_selection");
+    this.channelListMenuItem = visibleContextMenuItem(
+      page,
+      "toggle_channel_list",
     );
-    this.clearWindowMenuItem = page.getByTestId(
-      "context-menu-item-clear_window",
+    this.toggleConversationsMenuItem = visibleContextMenuItem(
+      page,
+      "toggle_conversations",
     );
-    this.copySelectionMenuItem = page.getByTestId(
-      "context-menu-item-copy_selection",
+    this.toggleNicklistMenuItem = visibleContextMenuItem(
+      page,
+      "toggle_nicklist",
     );
-    this.channelListMenuItem = page.getByTestId(
-      "context-menu-item-toggle_channel_list",
+    this.notifyListMenuItem = visibleContextMenuItem(
+      page,
+      "toggle_notify_list",
     );
-    this.toggleConversationsMenuItem = page.getByTestId(
-      "context-menu-item-toggle_conversations",
+    this.findMenuItem = visibleContextMenuItem(page, "toggle_search");
+    this.helpTopicsMenuItem = visibleContextMenuItem(page, "help_topics");
+    this.cheatsheetMenuItem = visibleContextMenuItem(page, "toggle_cheatsheet");
+    this.aboutMenuItem = visibleContextMenuItem(page, "show_about");
+    this.addressBookMenuItem = visibleContextMenuItem(
+      page,
+      "toggle_address_book",
     );
-    this.toggleNicklistMenuItem = page.getByTestId(
-      "context-menu-item-toggle_nicklist",
+    this.highlightWordsMenuItem = visibleContextMenuItem(
+      page,
+      "open_highlight_dialog",
     );
-    this.notifyListMenuItem = page.getByTestId(
-      "context-menu-item-toggle_notify_list",
+    this.channelCentralMenuItem = visibleContextMenuItem(
+      page,
+      "open_channel_central",
     );
-    this.findMenuItem = page.getByTestId("context-menu-item-toggle_search");
-    this.helpTopicsMenuItem = page.getByTestId("context-menu-item-help_topics");
-    this.cheatsheetMenuItem = page.getByTestId(
-      "context-menu-item-toggle_cheatsheet",
+    this.performMenuItem = visibleContextMenuItem(page, "open_perform_dialog");
+    this.soundSettingsMenuItem = visibleContextMenuItem(
+      page,
+      "open_sound_settings_dialog",
     );
-    this.aboutMenuItem = page.getByTestId("context-menu-item-show_about");
-    this.addressBookMenuItem = page.getByTestId(
-      "context-menu-item-toggle_address_book",
+    this.aliasEditorMenuItem = visibleContextMenuItem(
+      page,
+      "open_alias_dialog",
     );
-    this.highlightWordsMenuItem = page.getByTestId(
-      "context-menu-item-open_highlight_dialog",
+    this.floodProtectionMenuItem = visibleContextMenuItem(
+      page,
+      "open_flood_protection_dialog",
     );
-    this.channelCentralMenuItem = page.getByTestId(
-      "context-menu-item-open_channel_central",
+    this.customMenusMenuItem = visibleContextMenuItem(
+      page,
+      "open_custom_menus_dialog",
     );
-    this.performMenuItem = page.getByTestId(
-      "context-menu-item-open_perform_dialog",
+    this.autorespondMenuItem = visibleContextMenuItem(
+      page,
+      "open_autorespond_dialog",
     );
-    this.soundSettingsMenuItem = page.getByTestId(
-      "context-menu-item-open_sound_settings_dialog",
+    this.timersMenuItem = visibleContextMenuItem(page, "open_timers_dialog");
+    this.urlCatcherMenuItem = visibleContextMenuItem(
+      page,
+      "toggle_url_catcher",
     );
-    this.aliasEditorMenuItem = page.getByTestId(
-      "context-menu-item-open_alias_dialog",
+    this.userLookupMenuItem = visibleContextMenuItem(page, "open_user_lookup");
+    this.botManagementMenuItem = visibleContextMenuItem(
+      page,
+      "open_bot_dialog",
     );
-    this.floodProtectionMenuItem = page.getByTestId(
-      "context-menu-item-open_flood_protection_dialog",
-    );
-    this.customMenusMenuItem = page.getByTestId(
-      "context-menu-item-open_custom_menus_dialog",
-    );
-    this.autorespondMenuItem = page.getByTestId(
-      "context-menu-item-open_autorespond_dialog",
-    );
-    this.timersMenuItem = page.getByTestId(
-      "context-menu-item-open_timers_dialog",
-    );
-    this.urlCatcherMenuItem = page.getByTestId(
-      "context-menu-item-toggle_url_catcher",
-    );
-    this.userLookupMenuItem = page.getByTestId(
-      "context-menu-item-open_user_lookup",
-    );
-    this.botManagementMenuItem = page.getByTestId(
-      "context-menu-item-open_bot_dialog",
-    );
-    this.messageOfTheDayMenuItem = page.getByTestId(
-      "context-menu-item-show_motd",
-    );
+    this.messageOfTheDayMenuItem = visibleContextMenuItem(page, "show_motd");
     this.inlineHelp = page.getByTestId("inline-help");
     this.syntaxTooltip = page.getByTestId("syntax-tooltip");
     this.historySearch = page.getByTestId("history-search");

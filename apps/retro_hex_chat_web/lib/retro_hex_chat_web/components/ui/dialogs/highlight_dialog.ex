@@ -318,7 +318,7 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
               target={@target}
               selected={@selected_color}
               on_select="highlight_color_pick"
-              class="hl-color-picker hl-sub-color-picker"
+              class="hl-color-picker"
             />
           </div>
           <div class="hl-form-actions flex justify-end gap-1 mt-3">
@@ -381,7 +381,7 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
               target={@target}
               selected={@selected_color}
               on_select="highlight_color_pick"
-              class="hl-color-picker hl-sub-color-picker"
+              class="hl-color-picker"
             />
           </div>
           <div class="hl-form-actions flex justify-end gap-1 mt-3">

@@ -155,7 +155,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
 
   defp admin_console_tabs(assigns) do
     ~H"""
-    <.tabs :let={builder} id={"#{@id}-tabs"} default={@active_tab} class="ac-tabs">
+    <.tabs :let={builder} id={"#{@id}-tabs"} default={@active_tab}>
       <div class="ac-main-tabs-shell">
         <.tabs_list class="ac-main-tabs flex flex-wrap">
           <.admin_tab
@@ -884,7 +884,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
         disabled={@disabled}
         autocomplete="off"
         rows={@rows}
-        class="ac-settings-textarea w-full shadow-retro-sunken bg-white px-retro-4 py-retro-2 text-sm resize-y"
+        class="w-full shadow-retro-sunken bg-white px-retro-4 py-retro-2 text-sm resize-y"
       >{@value}</textarea>
     </div>
     """

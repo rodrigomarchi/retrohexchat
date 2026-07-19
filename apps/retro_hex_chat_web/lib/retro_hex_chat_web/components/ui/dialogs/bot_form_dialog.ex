@@ -29,7 +29,7 @@ defmodule RetroHexChatWeb.Components.UI.BotFormDialog do
       </.dialog_header>
       <form phx-submit="create_bot" class="bm-form flex min-h-0 flex-1 flex-col">
         <.dialog_body class="bm-form-body">
-          <div class="bm-form-fields space-y-retro-8">
+          <div class="space-y-retro-8">
             <div>
               <.label for="bot-name">{dgettext("dialogs", "Name")}</.label>
               <.input
@@ -68,7 +68,7 @@ defmodule RetroHexChatWeb.Components.UI.BotFormDialog do
                 <.input id="bot-cooldown" name="cooldown" type="number" value="3" class="w-[80px]" />
               </div>
             </div>
-            <fieldset class="bm-capability-fieldset shadow-retro-sunken p-retro-8">
+            <fieldset class="shadow-retro-sunken p-retro-8">
               <legend class="text-xs font-bold px-retro-4">
                 {dgettext("dialogs", "Capabilities")}
               </legend>
@@ -142,7 +142,7 @@ defmodule RetroHexChatWeb.Components.UI.BotFormDialog do
       <form phx-submit="bot_add_command" class="bm-form flex min-h-0 flex-1 flex-col">
         <input type="hidden" name="bot_name" value={@bot_name} />
         <.dialog_body class="bm-form-body">
-          <div class="bm-form-fields space-y-retro-8">
+          <div class="space-y-retro-8">
             <div>
               <.label for="cmd-trigger">{dgettext("dialogs", "Trigger")}</.label>
               <.input

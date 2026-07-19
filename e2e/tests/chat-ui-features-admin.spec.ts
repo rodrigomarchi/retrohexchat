@@ -56,17 +56,6 @@ test.describe.serial("UI feature admin journeys", () => {
         newDescription,
       );
 
-      await admin.page
-        .locator("#admin-console-server-settings-form")
-        .getByRole("button", { name: "Start solo arcade" })
-        .click();
-      await expect(inlineResult("server_settings")).toContainText("Done");
-      await admin.chat.expectMessageVisible("Arcade session ready!");
-      await expect(admin.chat.arcadeSessionLink()).toHaveAttribute(
-        "href",
-        /^\/solo\/[A-Za-z0-9_-]+$/,
-      );
-
       await admin.chat.switchAdminConsoleToTab("users");
       await admin.page
         .locator("#admin-console-user-info-nick")

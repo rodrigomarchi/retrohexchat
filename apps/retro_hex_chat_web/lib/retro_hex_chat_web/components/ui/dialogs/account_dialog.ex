@@ -130,7 +130,7 @@ defmodule RetroHexChatWeb.Components.UI.AccountDialog do
       )
 
     ~H"""
-    <div class="acct-tab-stack space-y-retro-8">
+    <div class="space-y-retro-8">
       <div class="acct-status-grid grid grid-cols-[90px_1fr] gap-retro-4 text-xs">
         <span class="font-bold">{dgettext("dialogs", "Nickname:")}</span>
         <span class="acct-value">{@nickname}</span>
@@ -162,7 +162,7 @@ defmodule RetroHexChatWeb.Components.UI.AccountDialog do
         :if={!@identified}
         phx-change="account_auth_change"
         phx-submit="account_register_submit"
-        class="acct-form space-y-retro-8"
+        class="space-y-retro-8"
       >
         <input type="hidden" name="mode" value={@form_mode} />
 
@@ -198,7 +198,7 @@ defmodule RetroHexChatWeb.Components.UI.AccountDialog do
             type="password"
             value={@auth_password}
             autocomplete="current-password"
-            class="acct-input text-xs h-7"
+            class="text-xs h-7"
             data-testid="account-password"
           />
         </div>
@@ -213,7 +213,7 @@ defmodule RetroHexChatWeb.Components.UI.AccountDialog do
             type="password"
             value={@auth_confirm}
             autocomplete="new-password"
-            class="acct-input text-xs h-7"
+            class="text-xs h-7"
             data-testid="account-confirm"
           />
         </div>
@@ -231,7 +231,7 @@ defmodule RetroHexChatWeb.Components.UI.AccountDialog do
       <form
         :if={@registered}
         phx-submit="account_drop_submit"
-        class="acct-form border-t border-border pt-retro-8 space-y-retro-6"
+        class="border-t border-border pt-retro-8 space-y-retro-6"
         data-testid="account-drop-registration"
       >
         <div class="text-xs space-y-retro-2">
@@ -253,7 +253,7 @@ defmodule RetroHexChatWeb.Components.UI.AccountDialog do
             name="password"
             type="password"
             autocomplete="current-password"
-            class="acct-input text-xs h-7"
+            class="text-xs h-7"
             data-testid="account-drop-password"
           />
         </div>
@@ -273,7 +273,7 @@ defmodule RetroHexChatWeb.Components.UI.AccountDialog do
         <summary class="cursor-pointer font-bold">
           {dgettext("dialogs", "Ghost session...")}
         </summary>
-        <form phx-submit="account_ghost_submit" class="acct-form mt-retro-8 space-y-retro-6">
+        <form phx-submit="account_ghost_submit" class="mt-retro-8 space-y-retro-6">
           <p class="text-muted-foreground">
             {dgettext(
               "dialogs",
@@ -289,7 +289,7 @@ defmodule RetroHexChatWeb.Components.UI.AccountDialog do
               id="account-ghost-nickname"
               name="nickname"
               maxlength="16"
-              class="acct-input text-xs h-7"
+              class="text-xs h-7"
               data-testid="account-ghost-nickname"
             />
           </div>
@@ -303,7 +303,7 @@ defmodule RetroHexChatWeb.Components.UI.AccountDialog do
               name="password"
               type="password"
               autocomplete="current-password"
-              class="acct-input text-xs h-7"
+              class="text-xs h-7"
               data-testid="account-ghost-password"
             />
           </div>
@@ -332,8 +332,8 @@ defmodule RetroHexChatWeb.Components.UI.AccountDialog do
 
   defp profile_tab(assigns) do
     ~H"""
-    <div class="acct-tab-stack space-y-retro-10">
-      <form phx-submit="account_change_nick_submit" class="acct-form space-y-retro-4">
+    <div class="space-y-retro-10">
+      <form phx-submit="account_change_nick_submit" class="space-y-retro-4">
         <label class="text-xs font-bold" for="account-new-nick">
           {dgettext("dialogs", "Change nickname:")}
         </label>
@@ -343,7 +343,7 @@ defmodule RetroHexChatWeb.Components.UI.AccountDialog do
             name="nickname"
             value={@nickname}
             maxlength="16"
-            class="acct-input acct-flex-input text-xs h-7"
+            class="acct-flex-input text-xs h-7"
             data-testid="account-new-nick"
           />
           <.button type="submit" size="sm" class="acct-action-button">
@@ -359,7 +359,7 @@ defmodule RetroHexChatWeb.Components.UI.AccountDialog do
       <form
         phx-change="account_profile_change"
         phx-submit="account_profile_submit"
-        class="acct-form space-y-retro-4"
+        class="space-y-retro-4"
       >
         <label class="acct-label text-xs font-bold" for="account-bio">
           {dgettext("dialogs", "Bio (about me) — shown in /whois, max 200 chars")}
@@ -404,7 +404,7 @@ defmodule RetroHexChatWeb.Components.UI.AccountDialog do
 
   defp presence_tab(assigns) do
     ~H"""
-    <form phx-submit="account_presence_submit" class="acct-form space-y-retro-8">
+    <form phx-submit="account_presence_submit" class="space-y-retro-8">
       <label class="acct-check-row flex items-center gap-retro-4 text-xs">
         <.checkbox name="away" value={@away} />
         {dgettext("dialogs", "I'm away")}
@@ -449,7 +449,7 @@ defmodule RetroHexChatWeb.Components.UI.AccountDialog do
 
   defp modes_tab(assigns) do
     ~H"""
-    <form phx-submit="account_user_modes_submit" class="acct-form space-y-retro-8">
+    <form phx-submit="account_user_modes_submit" class="space-y-retro-8">
       <label class="acct-check-row flex items-start gap-retro-4 text-xs">
         <.checkbox name="wallops" value={@wallops_enabled} />
         <span>

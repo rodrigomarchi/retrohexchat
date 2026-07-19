@@ -329,7 +329,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
       |> assign(:can_remove?, removable?(assigns.access_selected, assigns.access_nick))
 
     ~H"""
-    <div class="cc-registration space-y-2">
+    <div class="space-y-2">
       <div class="cc-status-card shadow-retro-field bg-white p-2" data-testid="cc-cs-status">
         <div class="cc-dialog-heading flex items-center gap-2 mb-2">
           <Icons.icon_shield class="w-[16px] h-[16px]" />
@@ -337,7 +337,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
         </div>
 
         <div class="cc-status-grid grid grid-cols-[86px_1fr] gap-1 text-xs">
-          <span class="cc-status-label text-muted-foreground">
+          <span class="text-muted-foreground">
             {dgettext("dialogs", "Status")}:
           </span>
           <span class="cc-status-value">
@@ -346,11 +346,11 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
               else: dgettext("dialogs", "Not registered")}
           </span>
           <%= if @registered? do %>
-            <span class="cc-status-label text-muted-foreground">
+            <span class="text-muted-foreground">
               {dgettext("dialogs", "Founder")}:
             </span>
             <span class="cc-status-value">{Map.get(@registration, :founder)}</span>
-            <span class="cc-status-label text-muted-foreground">
+            <span class="text-muted-foreground">
               {dgettext("dialogs", "Since")}:
             </span>
             <span class="cc-status-value">
@@ -411,7 +411,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
 
           <div
             :if={@confirm_drop}
-            class="cc-inline-confirm shadow-retro-field bg-surface p-2 space-y-2"
+            class="shadow-retro-field bg-surface p-2 space-y-2"
           >
             <p class="text-xs text-destructive">
               {dgettext("dialogs", "Are you sure you want to drop %{channel}? This cannot be undone.",
@@ -453,7 +453,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
         {@error_message}
       </p>
 
-      <div :if={@registered?} class="cc-access-section space-y-2" data-testid="cc-cs-access-section">
+      <div :if={@registered?} class="space-y-2" data-testid="cc-cs-access-section">
         <div class="cc-segmented-tabs inline-flex shadow-retro-field bg-surface p-[2px] gap-[2px]">
           <button
             :for={level <- access_levels()}
@@ -471,7 +471,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
           </button>
         </div>
 
-        <div class="cc-list-table-wrap cc-access-table overflow-y-auto max-h-[160px] shadow-retro-field bg-white">
+        <div class="cc-list-table-wrap overflow-y-auto max-h-[160px] shadow-retro-field bg-white">
           <.table class="cc-mobile-list-table" data-cc-mobile-list-table>
             <.table_header>
               <.table_row>
@@ -870,18 +870,18 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
 
   defp general_tab(assigns) do
     ~H"""
-    <div class="cc-general space-y-2">
+    <div class="space-y-2">
       <div class="cc-status-card shadow-retro-field bg-white p-2">
         <div class="cc-dialog-heading flex items-center gap-2 mb-2">
           <Icons.icon_tab_channel class="w-[16px] h-[16px]" />
           <span class="cc-dialog-title text-sm font-bold">{display_channel(@channel_name)}</span>
         </div>
         <div class="cc-status-grid grid grid-cols-2 gap-1 text-xs">
-          <span class="cc-status-label text-muted-foreground">
+          <span class="text-muted-foreground">
             {dgettext("dialogs", "Created")}:
           </span>
           <span class="cc-status-value">{@created_at || dgettext("dialogs", "Unknown")}</span>
-          <span class="cc-status-label text-muted-foreground">
+          <span class="text-muted-foreground">
             {dgettext("dialogs", "Members")}:
           </span>
           <span class="cc-status-value">{@member_count}</span>
@@ -1070,7 +1070,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
 
   defp modes_tab(assigns) do
     ~H"""
-    <div class="cc-modes space-y-2">
+    <div class="space-y-2">
       <form :if={@operator} phx-submit={@on_mode_apply} phx-target={@target}>
         <div class="cc-settings-panel shadow-retro-field bg-white p-2">
           <p class="text-xs font-bold mb-2">{dgettext("dialogs", "Channel Modes")}:</p>

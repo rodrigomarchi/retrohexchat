@@ -760,7 +760,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
         :for={entry <- @notify_list}
         id={"ab-notify-entry-#{entry.tracked_nickname}"}
         type="button"
-        class={row_class("ab-entry ab-notify-entry", @selected == entry.tracked_nickname)}
+        class={row_class("ab-entry", @selected == entry.tracked_nickname)}
         phx-click={@on_select}
         phx-target={@target}
         phx-value-nickname={entry.tracked_nickname}

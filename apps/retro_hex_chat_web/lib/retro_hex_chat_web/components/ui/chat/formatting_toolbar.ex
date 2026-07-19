@@ -98,7 +98,7 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
         <.toolbar_separator variant="compact" class="hidden md:block" />
 
         <%!-- Color picker toggle + dropdown --%>
-        <div class="format-color-picker-wrapper relative hidden items-center md:inline-flex">
+        <div class="relative hidden items-center md:inline-flex">
           <.toolbar_button
             variant="compact"
             label={dgettext("chat", "Color (Ctrl+Shift+D)")}

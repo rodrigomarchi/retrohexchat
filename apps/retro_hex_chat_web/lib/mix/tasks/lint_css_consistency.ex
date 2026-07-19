@@ -1,14 +1,15 @@
 defmodule Mix.Tasks.Lint.CssConsistency do
   @shortdoc "Audit CSS class consistency (unused definitions + missing references)"
   @moduledoc """
-  Scans CSS files for defined classes and templates/JS for referenced classes,
-  then reports two kinds of violations:
+  Scans custom CSS files for defined classes and templates/JS for referenced
+  classes, then reports two kinds of violations:
 
-  - **Unused** — classes defined in our CSS but never referenced anywhere
-  - **Missing** — classes referenced in templates/JS but never defined in any CSS
+  - **Unused** — custom CSS classes defined but never referenced anywhere
+  - **Missing** — product CSS classes referenced but never defined in custom CSS
 
   Vendor classes (retro design system) are parsed automatically and count as "known" definitions.
   Phoenix framework classes (phx-*) are hardcoded as known.
+  Tailwind utilities are intentionally ignored for the missing check.
 
   An allowlist file at `scripts/css_consistency_allowlist.txt` supports three sections:
   `[unused]`, `[missing]`, and `[dynamic-prefixes]`. Entries ending with `*` are
@@ -66,25 +67,43 @@ defmodule Mix.Tasks.Lint.CssConsistency do
   @impl Mix.Task
   @spec run(list()) :: :ok
   def run(_args) do
-    {unused_allow, missing_allow, dynamic_prefixes} = load_allowlist()
+    {unused_allow, missing_allow, explicit_dynamic_prefixes} = load_allowlist()
 
     defined = extract_defined_classes()
     vendor = extract_vendor_classes()
     referenced = extract_all_references()
     auto_prefixes = extract_auto_prefixes()
-    all_prefixes = Enum.uniq(dynamic_prefixes ++ auto_prefixes)
+    unused_prefixes = Enum.uniq(explicit_dynamic_prefixes ++ auto_prefixes)
 
     all_known = MapSet.union(MapSet.union(defined, vendor), @phoenix_classes)
 
     raw_unused = MapSet.difference(defined, referenced)
-    raw_missing = MapSet.difference(referenced, all_known)
+    raw_missing = missing_reference_candidates(referenced, all_known)
+    unused = filter_by_allowlist(raw_unused, unused_allow, unused_prefixes)
+    missing = filter_by_allowlist(raw_missing, missing_allow, explicit_dynamic_prefixes)
 
-    unused = filter_by_allowlist(raw_unused, unused_allow, all_prefixes)
-    missing = filter_by_allowlist(raw_missing, missing_allow, all_prefixes)
+    allowlist_violations =
+      validate_allowlist(
+        unused_allow,
+        missing_allow,
+        explicit_dynamic_prefixes,
+        raw_unused,
+        raw_missing
+      )
 
-    print_report(defined, referenced, vendor, unused_allow, missing_allow, unused, missing)
+    print_report(
+      defined,
+      referenced,
+      vendor,
+      unused_allow,
+      missing_allow,
+      allowlist_violations,
+      unused,
+      missing
+    )
 
-    violation_count = MapSet.size(unused) + MapSet.size(missing)
+    violation_count =
+      MapSet.size(unused) + MapSet.size(missing) + allowlist_violation_count(allowlist_violations)
 
     if violation_count > 0 do
       raise "#{violation_count} CSS consistency violation(s) found. See above for details."
@@ -103,7 +122,9 @@ defmodule Mix.Tasks.Lint.CssConsistency do
       generated_css?(path) or String.ends_with?(path, "showcase.css")
     end)
     |> Enum.reduce(%{}, fn file, acc ->
-      extract_classes_from_css(File.read!(file), short_css_path(file))
+      File.read!(file)
+      |> extract_classes_from_css(short_css_path(file))
+      |> Enum.reject(fn {class, _source} -> tailwind_reference?(class) end)
       |> Enum.reduce(acc, fn {class, source}, map ->
         Map.update(map, class, [source], &[source | &1])
       end)
@@ -169,42 +190,18 @@ defmodule Mix.Tasks.Lint.CssConsistency do
     MapSet.union(MapSet.union(template_refs, js_refs), domain_refs)
   end
 
-  # Paths that use Tailwind CSS (not the retro CSS system) — skip for consistency checks
-  @tailwind_paths [
-    "components/ui/",
-    "showcase_helpers.ex",
-    "live/showcase_live/",
-    "layouts/showcase.html.heex",
-    "live/landing_live/",
-    "landing_helpers.ex",
-    "layouts/landing_live.html.heex",
-    "live/help_live/",
-    "layouts/help_live.html.heex",
-    "live/chat_live/components/p2p_session_console.ex",
-    "live/app/",
-    "controllers/app/",
-    "layouts/chat.html.heex"
-  ]
-
   @doc false
   @spec extract_template_refs() :: MapSet.t()
   def extract_template_refs do
     ex_files =
       Path.wildcard("#{web_lib()}/**/*.ex")
       |> Enum.reject(&String.contains?(&1, "mix/tasks/"))
-      |> Enum.reject(&tailwind_path?/1)
 
-    heex_files =
-      Path.wildcard("#{web_lib()}/**/*.heex")
-      |> Enum.reject(&tailwind_path?/1)
+    heex_files = Path.wildcard("#{web_lib()}/**/*.heex")
 
     (ex_files ++ heex_files)
     |> Enum.flat_map(&extract_refs_from_template/1)
     |> MapSet.new()
-  end
-
-  defp tailwind_path?(path) do
-    Enum.any?(@tailwind_paths, &String.contains?(path, &1))
   end
 
   @doc false
@@ -383,12 +380,12 @@ defmodule Mix.Tasks.Lint.CssConsistency do
     do: find_matching_brace(rest, depth, pos + 1)
 
   defp class_helper_classes(content) do
-    # Look for defp.*_class functions and extract string literals
-    Regex.scan(~r/defp\s+\w+_class\b.*?(?=\n\s*(?:defp|def|@)\b|\z)/s, content)
+    # Look for defp.*_class / defp.*_classes helpers and extract string literals.
+    Regex.scan(~r/defp\s+\w+_class(?:es)?\b.*?(?=\n\s*(?:defp|def|@)\b|\z)/s, content)
     |> Enum.flat_map(fn [body] ->
-      Regex.scan(~r/"([a-zA-Z][a-zA-Z0-9_ -]*)"/, body)
-      |> Enum.flat_map(fn [_, classes] -> String.split(classes) end)
-      |> Enum.filter(&valid_class_name?/1)
+      body
+      |> remove_nested_interpolations()
+      |> extract_string_classes()
     end)
   end
 
@@ -409,15 +406,21 @@ defmodule Mix.Tasks.Lint.CssConsistency do
   end
 
   defp classlist_refs(content) do
-    Regex.scan(~r/classList\.\w+\(["']([^"']+)["']/, content)
-    |> Enum.flat_map(fn [_, classes] -> String.split(classes, ~r/[,\s]+/) end)
+    Regex.scan(~r/classList\.\w+\(([^)]*)\)/s, content)
+    |> Enum.flat_map(fn [_, args] ->
+      Regex.scan(~r/["']([^"']+)["']/, args)
+      |> Enum.flat_map(fn [_, classes] -> String.split(classes, ~r/[,\s]+/) end)
+    end)
     |> Enum.filter(&valid_class_name?/1)
   end
 
   defp queryselector_refs(content) do
-    # Handles compound selectors like .chat-link[data-url] or a.chat-link
-    Regex.scan(~r/querySelector(?:All)?\(["'][^"']*\.([a-zA-Z][a-zA-Z0-9_-]*)/, content)
-    |> Enum.map(fn [_, class] -> class end)
+    # Handles compound selectors like ".chat-link[data-url], .chat-action".
+    Regex.scan(~r/querySelector(?:All)?\((["'])(.*?)\1\)/s, content)
+    |> Enum.flat_map(fn [_, _quote, selector] ->
+      Regex.scan(~r/\.([a-zA-Z][a-zA-Z0-9_-]*)/, selector)
+      |> Enum.map(fn [_, class] -> class end)
+    end)
   end
 
   defp classname_refs(content) do
@@ -444,6 +447,294 @@ defmodule Mix.Tasks.Lint.CssConsistency do
     # Requires hyphen in class name to avoid false positives (e.g., time_formatter "hour")
     Regex.scan(~r/maybe_add\([^,]+,\s*"([a-zA-Z][a-zA-Z0-9]*-[a-zA-Z0-9_-]*)"/, content)
     |> Enum.map(fn [_, class] -> class end)
+  end
+
+  @doc false
+  @spec missing_references(MapSet.t(), MapSet.t(), MapSet.t(), [String.t()]) :: MapSet.t()
+  def missing_references(referenced, all_known, missing_allow, dynamic_prefixes) do
+    referenced
+    |> missing_reference_candidates(all_known)
+    |> filter_by_allowlist(missing_allow, dynamic_prefixes)
+  end
+
+  @doc false
+  @spec missing_reference_candidates(MapSet.t(), MapSet.t()) :: MapSet.t()
+  def missing_reference_candidates(referenced, all_known) do
+    referenced
+    |> MapSet.difference(all_known)
+    |> Enum.filter(&product_css_reference?/1)
+    |> MapSet.new()
+  end
+
+  @tailwind_exact_classes MapSet.new([
+                            "absolute",
+                            "antialiased",
+                            "block",
+                            "collapse",
+                            "container",
+                            "contents",
+                            "fixed",
+                            "flex",
+                            "flow-root",
+                            "grid",
+                            "group",
+                            "hidden",
+                            "inline",
+                            "inline-block",
+                            "inline-flex",
+                            "invisible",
+                            "isolate",
+                            "not-sr-only",
+                            "peer",
+                            "relative",
+                            "sr-only",
+                            "static",
+                            "sticky",
+                            "subpixel-antialiased",
+                            "table",
+                            "table-cell",
+                            "table-row",
+                            "truncate",
+                            "visible"
+                          ])
+
+  @tailwind_prefixes [
+    "accent-",
+    "align-",
+    "animate-",
+    "appearance-",
+    "aspect-",
+    "backdrop-",
+    "basis-",
+    "bg-",
+    "blur-",
+    "border-",
+    "bottom-",
+    "box-",
+    "break-",
+    "brightness-",
+    "caret-",
+    "clear-",
+    "col-",
+    "columns-",
+    "content-",
+    "contrast-",
+    "cursor-",
+    "decoration-",
+    "delay-",
+    "divide-",
+    "drop-shadow-",
+    "duration-",
+    "ease-",
+    "end-",
+    "fill-",
+    "filter-",
+    "flex-",
+    "float-",
+    "font-",
+    "from-",
+    "gap-",
+    "grayscale-",
+    "grid-",
+    "grow-",
+    "h-",
+    "hue-",
+    "inset-",
+    "invert-",
+    "items-",
+    "justify-",
+    "leading-",
+    "left-",
+    "line-clamp-",
+    "list-",
+    "m-",
+    "max-h-",
+    "max-w-",
+    "mb-",
+    "min-h-",
+    "min-w-",
+    "mix-",
+    "ml-",
+    "mr-",
+    "mt-",
+    "mx-",
+    "my-",
+    "object-",
+    "opacity-",
+    "order-",
+    "origin-",
+    "outline-",
+    "outline-offset-",
+    "overflow-",
+    "overscroll-",
+    "p-",
+    "pb-",
+    "place-",
+    "placeholder-",
+    "pl-",
+    "pointer-events-",
+    "pr-",
+    "pt-",
+    "px-",
+    "py-",
+    "resize-",
+    "right-",
+    "ring-",
+    "rotate-",
+    "row-",
+    "saturate-",
+    "scale-",
+    "scroll-",
+    "select-",
+    "self-",
+    "sepia-",
+    "shadow-",
+    "shrink-",
+    "size-",
+    "skew-",
+    "snap-",
+    "space-",
+    "start-",
+    "stroke-",
+    "table-",
+    "text-",
+    "to-",
+    "top-",
+    "tracking-",
+    "transform-",
+    "transition-",
+    "translate-",
+    "underline-offset-",
+    "via-",
+    "w-",
+    "whitespace-",
+    "z-"
+  ]
+
+  @product_css_prefixes [
+    "ab-",
+    "ac-",
+    "acct-",
+    "activity-indicator",
+    "al-",
+    "app-menu-bar",
+    "app-mobile-menu",
+    "ar-",
+    "autocomplete-",
+    "bm-",
+    "cc-",
+    "cd-",
+    "chat-",
+    "cl-",
+    "cm-",
+    "connection-banner",
+    "cs-",
+    "desktop-",
+    "desktop__",
+    "dialog-",
+    "file-transfer-",
+    "format-color-",
+    "fp-",
+    "game-media",
+    "group-call",
+    "hist-search",
+    "history-",
+    "hl-",
+    "icp-",
+    "input-masked",
+    "irc-",
+    "iv-",
+    "kd-",
+    "kr-",
+    "media-call",
+    "media-session",
+    "mobile-task-switcher",
+    "mud-",
+    "nc-",
+    "new-messages",
+    "nl-",
+    "p2p-",
+    "pf-",
+    "reconnect-overlay",
+    "retro-fieldset",
+    "rh-charsel",
+    "search-highlight",
+    "ss-",
+    "status-bar-connection",
+    "tm-",
+    "toast-",
+    "toolbar-group",
+    "tree-view",
+    "uc-",
+    "ul-",
+    "window"
+  ]
+
+  @product_css_exact_classes MapSet.new([
+                               "bsod",
+                               "cheatsheet-dialog",
+                               "context-color-picker",
+                               "selected",
+                               "title-bar",
+                               "title-bar-text"
+                             ])
+
+  @allowed_allowlist_globs MapSet.new([
+                             "desktop-window__resize--*",
+                             "hljs*",
+                             "irc-bg-*",
+                             "irc-fg-*",
+                             "p2p-diagram-strip--*",
+                             "p2p-diagram__badge--*",
+                             "p2p-diagram__browser-svg--*",
+                             "p2p-diagram__link--*",
+                             "rh-charsel-sprite--*"
+                           ])
+
+  defp product_css_reference?(class) do
+    normalized = normalized_utility_class(class)
+
+    not tailwind_reference?(class) and
+      (MapSet.member?(@product_css_exact_classes, normalized) or
+         Enum.any?(@product_css_prefixes, &String.starts_with?(normalized, &1)) or
+         String.contains?(normalized, "__") or String.contains?(normalized, "--"))
+  end
+
+  defp tailwind_reference?(class) do
+    normalized = normalized_utility_class(class)
+
+    cond do
+      normalized == "" -> false
+      arbitrary_utility?(normalized) -> true
+      MapSet.member?(@tailwind_exact_classes, normalized) -> true
+      Enum.any?(@tailwind_prefixes, &String.starts_with?(normalized, &1)) -> true
+      true -> false
+    end
+  end
+
+  defp normalized_utility_class(class) do
+    class
+    |> to_string()
+    |> String.trim()
+    |> String.trim_leading("!")
+    |> tailwind_variant_base()
+    |> String.trim_leading("!")
+    |> String.trim_leading("-")
+  end
+
+  defp tailwind_variant_base(class) do
+    if String.starts_with?(class, "[") and String.ends_with?(class, "]") do
+      class
+    else
+      class
+      |> String.split(":")
+      |> List.last()
+    end
+  end
+
+  defp arbitrary_utility?(class) do
+    (String.starts_with?(class, "[") and String.contains?(class, "]")) or
+      (String.contains?(class, "-[") and String.ends_with?(class, "]"))
   end
 
   # -- Allowlist --
@@ -505,6 +796,63 @@ defmodule Mix.Tasks.Lint.CssConsistency do
     Enum.any?(prefixes, &String.starts_with?(class, &1))
   end
 
+  @doc false
+  @spec validate_allowlist(MapSet.t(), MapSet.t(), [String.t()], MapSet.t(), MapSet.t()) :: %{
+          broad_globs: [String.t()],
+          unused: [String.t()],
+          missing: [String.t()],
+          dynamic_prefixes: [String.t()]
+        }
+  def validate_allowlist(unused_allow, missing_allow, dynamic_prefixes, raw_unused, raw_missing) do
+    all_raw = MapSet.union(raw_unused, raw_missing)
+
+    %{
+      broad_globs: broad_allowlist_globs(unused_allow, missing_allow),
+      unused: stale_allowlist_entries(unused_allow, raw_unused),
+      missing: stale_allowlist_entries(missing_allow, raw_missing),
+      dynamic_prefixes: stale_dynamic_prefixes(dynamic_prefixes, all_raw)
+    }
+  end
+
+  defp stale_allowlist_entries(allowlist, raw_classes) do
+    allowlist
+    |> Enum.reject(&allowlist_entry_matches?(&1, raw_classes))
+    |> Enum.sort()
+  end
+
+  defp allowlist_entry_matches?(entry, raw_classes) do
+    if String.ends_with?(entry, "*") do
+      prefix = String.trim_trailing(entry, "*")
+      Enum.any?(raw_classes, &String.starts_with?(&1, prefix))
+    else
+      MapSet.member?(raw_classes, entry)
+    end
+  end
+
+  defp stale_dynamic_prefixes(dynamic_prefixes, raw_classes) do
+    dynamic_prefixes
+    |> Enum.reject(fn prefix -> Enum.any?(raw_classes, &String.starts_with?(&1, prefix)) end)
+    |> Enum.sort()
+  end
+
+  defp broad_allowlist_globs(unused_allow, missing_allow) do
+    unused_allow
+    |> MapSet.union(missing_allow)
+    |> Enum.filter(fn entry ->
+      String.ends_with?(entry, "*") and not MapSet.member?(@allowed_allowlist_globs, entry)
+    end)
+    |> Enum.sort()
+  end
+
+  defp allowlist_violation_count(%{
+         broad_globs: broad_globs,
+         unused: unused,
+         missing: missing,
+         dynamic_prefixes: dynamic_prefixes
+       }) do
+    length(broad_globs) + length(unused) + length(missing) + length(dynamic_prefixes)
+  end
+
   # -- Helpers --
 
   defp valid_class_name?(name) do
@@ -524,9 +872,13 @@ defmodule Mix.Tasks.Lint.CssConsistency do
   @spec defined_class_sources() :: %{String.t() => [String.t()]}
   def defined_class_sources do
     Path.wildcard("#{css_dir()}/**/*.css")
-    |> Enum.reject(fn path -> generated_css?(path) or String.ends_with?(path, "app.css") end)
+    |> Enum.reject(fn path ->
+      generated_css?(path) or String.ends_with?(path, "showcase.css")
+    end)
     |> Enum.reduce(%{}, fn file, acc ->
-      extract_classes_from_css(File.read!(file), short_css_path(file))
+      File.read!(file)
+      |> extract_classes_from_css(short_css_path(file))
+      |> Enum.reject(fn {class, _source} -> tailwind_reference?(class) end)
       |> Enum.reduce(acc, &merge_class_source/2)
     end)
   end
@@ -543,11 +895,8 @@ defmodule Mix.Tasks.Lint.CssConsistency do
     ex_files =
       Path.wildcard("#{web_lib()}/**/*.ex")
       |> Enum.reject(&String.contains?(&1, "mix/tasks/"))
-      |> Enum.reject(&tailwind_path?/1)
 
-    heex_files =
-      Path.wildcard("#{web_lib()}/**/*.heex")
-      |> Enum.reject(&tailwind_path?/1)
+    heex_files = Path.wildcard("#{web_lib()}/**/*.heex")
 
     template_sources =
       (ex_files ++ heex_files)
@@ -573,7 +922,16 @@ defmodule Mix.Tasks.Lint.CssConsistency do
     end)
   end
 
-  defp print_report(defined, referenced, vendor, unused_allow, missing_allow, unused, missing) do
+  defp print_report(
+         defined,
+         referenced,
+         vendor,
+         unused_allow,
+         missing_allow,
+         allowlist_violations,
+         unused,
+         missing
+       ) do
     IO.puts("#{IO.ANSI.cyan()}Scanning CSS class consistency...#{IO.ANSI.reset()}")
     IO.puts("")
     IO.puts("#{IO.ANSI.cyan()}Summary:#{IO.ANSI.reset()}")
@@ -626,5 +984,32 @@ defmodule Mix.Tasks.Lint.CssConsistency do
         "Run '#{IO.ANSI.cyan()}make lint.css#{IO.ANSI.reset()}' again after fixing violations."
       )
     end
+
+    print_allowlist_violations(allowlist_violations)
+  end
+
+  defp print_allowlist_violations(%{
+         broad_globs: [],
+         unused: [],
+         missing: [],
+         dynamic_prefixes: []
+       }),
+       do: :ok
+
+  defp print_allowlist_violations(violations) do
+    IO.puts("")
+    IO.puts("#{IO.ANSI.red()}Stale CSS allowlist entries:#{IO.ANSI.reset()}")
+    print_stale_entries("broad-globs", violations.broad_globs)
+    print_stale_entries("unused", violations.unused)
+    print_stale_entries("missing", violations.missing)
+    print_stale_entries("dynamic-prefixes", violations.dynamic_prefixes)
+    IO.puts("")
+  end
+
+  defp print_stale_entries(_section, []), do: :ok
+
+  defp print_stale_entries(section, entries) do
+    IO.puts("  [#{section}]")
+    Enum.each(entries, &IO.puts("    #{&1}"))
   end
 end

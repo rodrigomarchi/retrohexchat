@@ -1,14 +1,14 @@
 /**
  * LiveView hook for collapsible toolbar groups.
  *
- * Each group has a toggle button (.toolbar-group-toggle) that shows/hides
+ * Each group has a toggle button ([data-toolbar-group-toggle]) that shows/hides
  * its dropdown (.toolbar-group-dropdown). Uses mousedown with preventDefault()
  * to avoid stealing focus from the chat input.
  */
 const ToolbarGroupHook = {
   mounted() {
     this.el.addEventListener("mousedown", (e) => {
-      const toggle = e.target.closest(".toolbar-group-toggle");
+      const toggle = e.target.closest("[data-toolbar-group-toggle]");
       if (!toggle) return;
       e.preventDefault();
 

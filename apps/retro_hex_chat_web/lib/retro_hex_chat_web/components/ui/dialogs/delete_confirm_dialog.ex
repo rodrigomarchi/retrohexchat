@@ -45,7 +45,7 @@ defmodule RetroHexChatWeb.Components.UI.DeleteConfirmDialog do
         </.dialog_header>
 
         <.dialog_body class="cd-dialog-body">
-          <div class="cd-message-row cd-message-row--destructive">
+          <div class="cd-message-row">
             <span class="cd-message-icon" aria-hidden="true">
               <Icons.icon_dialog_delete class="w-5 h-5" />
             </span>

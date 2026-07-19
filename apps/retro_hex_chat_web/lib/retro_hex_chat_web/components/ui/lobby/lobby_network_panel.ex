@@ -49,7 +49,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
       id="p2p-stats-scroll-preserver"
       phx-hook="PreserveScrollHook"
       data-preserve-scroll-target="parent"
-      class="lobby__stats flex flex-col gap-2"
+      class="flex flex-col gap-2"
       data-testid="lobby-network-panel"
     >
       <.session_header
@@ -147,7 +147,6 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
             icon={:icon_status_signal}
             open
             testid="p2p-stats-details-connection"
-            class="lobby__stats-section"
           >
             <div class="mb-1 flex items-center gap-2">
               <span
@@ -207,7 +206,6 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
             summary={p2p_audio_summary(@stats.audio)}
             icon={:icon_microphone}
             testid="p2p-stats-details-audio"
-            class="lobby__stats-section"
           >
             <dl class="grid grid-cols-2 gap-x-3 gap-y-[2px] text-xs">
               <.stat_status
@@ -254,7 +252,6 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
             summary={p2p_video_detail(@stats.video)}
             icon={:icon_camera}
             testid="p2p-stats-details-video"
-            class="lobby__stats-section"
           >
             <dl class="grid grid-cols-2 gap-x-3 gap-y-[2px] text-xs">
               <.stat_status
@@ -329,7 +326,6 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
             summary={p2p_channel_summary(@stats.game)}
             icon={:icon_joystick}
             testid="p2p-stats-details-game"
-            class="lobby__stats-section"
           >
             <.channel_metrics
               icon={:icon_joystick}
@@ -346,7 +342,6 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
             summary={p2p_channel_summary(@stats.file)}
             icon={:icon_file_send}
             testid="p2p-stats-details-file"
-            class="lobby__stats-section"
           >
             <.channel_metrics
               icon={:icon_file_send}

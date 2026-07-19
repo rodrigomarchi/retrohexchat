@@ -82,6 +82,19 @@ defmodule Mix.Tasks.Lint.CssConsistencyTest do
       assert "base-class" in refs
     end
 
+    test "extracts helper class tokens from interpolated helper strings" do
+      content = ~S|
+      defp message_classes(msg) do
+        "chat-message chat-message--#{Map.get(msg, :type, :normal)}"
+      end
+      |
+
+      file = write_temp_file(content)
+      refs = CssConsistency.extract_refs_from_template(file)
+      assert "chat-message" in refs
+      refute Enum.any?(refs, &String.contains?(&1, "#"))
+    end
+
     test "extracts classes from _class helper functions" do
       content = """
       defp tab_class(active) do
@@ -102,6 +115,13 @@ defmodule Mix.Tasks.Lint.CssConsistencyTest do
       file = write_temp_file_js(~s|el.classList.add("focused");|)
       refs = CssConsistency.extract_refs_from_js(file)
       assert "focused" in refs
+    end
+
+    test "extracts every string argument from classList calls" do
+      file = write_temp_file_js(~s|el.classList.add("first-state", "second-state");|)
+      refs = CssConsistency.extract_refs_from_js(file)
+      assert "first-state" in refs
+      assert "second-state" in refs
     end
 
     test "extracts classList.remove references" do
@@ -132,6 +152,13 @@ defmodule Mix.Tasks.Lint.CssConsistencyTest do
       file = write_temp_file_js(~s|el.querySelectorAll(".search-highlight");|)
       refs = CssConsistency.extract_refs_from_js(file)
       assert "search-highlight" in refs
+    end
+
+    test "extracts every class from compound querySelector selectors" do
+      file = write_temp_file_js(~s|el.querySelectorAll(".chat-content, .chat-action");|)
+      refs = CssConsistency.extract_refs_from_js(file)
+      assert "chat-content" in refs
+      assert "chat-action" in refs
     end
 
     test "extracts className assignment" do
@@ -204,6 +231,65 @@ defmodule Mix.Tasks.Lint.CssConsistencyTest do
       classes = MapSet.new(["chat-message--action", "chat-message--notice", "other"])
       result = CssConsistency.filter_by_allowlist(classes, MapSet.new(), ["chat-message--"])
       assert MapSet.equal?(result, MapSet.new(["other"]))
+    end
+  end
+
+  describe "missing_references/4" do
+    test "ignores Tailwind utilities while flagging product CSS references" do
+      referenced =
+        MapSet.new([
+          "flex",
+          "md:grid-cols-2",
+          "text-[10px]",
+          "cc-missing-class",
+          "chat-message--ghost"
+        ])
+
+      missing = CssConsistency.missing_references(referenced, MapSet.new(), MapSet.new(), [])
+
+      assert MapSet.equal?(missing, MapSet.new(["cc-missing-class", "chat-message--ghost"]))
+    end
+
+    test "requires explicit dynamic prefixes to suppress missing product classes" do
+      referenced = MapSet.new(["chat-message--notice"])
+      known = MapSet.new()
+
+      assert CssConsistency.missing_references(referenced, known, MapSet.new(), []) ==
+               MapSet.new(["chat-message--notice"])
+
+      assert CssConsistency.missing_references(referenced, known, MapSet.new(), [
+               "chat-message--"
+             ]) == MapSet.new()
+    end
+  end
+
+  describe "validate_allowlist/5" do
+    test "flags stale allowlist entries" do
+      violations =
+        CssConsistency.validate_allowlist(
+          MapSet.new(["dead-unused", "live-unused"]),
+          MapSet.new(["dead-missing", "live-missing"]),
+          ["live-dynamic--", "dead-dynamic--"],
+          MapSet.new(["live-unused"]),
+          MapSet.new(["live-missing", "live-dynamic--value"])
+        )
+
+      assert violations.unused == ["dead-unused"]
+      assert violations.missing == ["dead-missing"]
+      assert violations.dynamic_prefixes == ["dead-dynamic--"]
+    end
+
+    test "flags broad glob allowlist entries outside approved runtime namespaces" do
+      violations =
+        CssConsistency.validate_allowlist(
+          MapSet.new(["cc-*", "irc-fg-*"]),
+          MapSet.new(),
+          [],
+          MapSet.new(["cc-dialog", "irc-fg-1"]),
+          MapSet.new()
+        )
+
+      assert violations.broad_globs == ["cc-*"]
     end
   end
 

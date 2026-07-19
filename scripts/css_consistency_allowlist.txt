@@ -1,235 +1,49 @@
 # CSS Consistency Allowlist
-# Three sections: [unused], [missing], [dynamic-prefixes]
-# Lines starting with # are comments, blank lines are ignored.
-# Entries ending with * are glob patterns (prefix match).
-# Dynamic prefixes suppress matches in both directions.
+# Three sections: [unused], [missing], and [dynamic-prefixes].
+# Keep this file narrow: every entry must map to a current runtime, vendor, or
+# parser false-positive case. The linter fails stale entries and broad globs.
 
 [unused]
-# False positive — the selector scanner matches the ".png" in url("…avatars/x.png")
-# background-image declarations (retrohex.css avatar previews) as a class.
+# False positive: the selector scanner sees ".png" inside avatar image URLs.
 png
-# IRC format classes — generated dynamically by formatter.ex (irc-fg-0..15, irc-bg-0..15)
+
+# IRC formatter classes are generated from numeric color codes at runtime.
 irc-fg-*
 irc-bg-*
-# Utility classes — predefined library, may not all be used yet
-u-*
-# Password masking — applied via class="input-masked" in connect_live.ex
-input-masked
-# Highlight — generated dynamically by ChatHelpers.highlight_bg_class/1
-highlight-bg-default
-# JS-hook only — classes added dynamically via classList in JS hooks
-attempt-info
-char-counter--warning
-char-counter--danger
-connection-banner--disconnected
-connection-banner--reconnected
-connection-banner
-reconnect-overlay
-reconnect-overlay__window
-# Connection status — JS hook toggles these classes dynamically (ConnectionStatusHook)
-status-bar-connection--connecting
-status-bar-connection--reconnecting
-# Conversations user list — nick-away applied dynamically via user_item_class/1 in conversations.ex
-nick-away
-# Media call device panel — rendered dynamically by JS after enumerateDevices
-media-call__device-fallback
-media-call__device-label
-media-call__devices
-# Legacy utility — kept for backwards compat but currently unused
-licon-32
-# highlight.js theme — classes applied by highlight.js library at runtime (not in our templates)
+
+# highlight.js injects these token classes into rendered code blocks at runtime.
 hljs*
-# P2P connection diagram — BEM classes used by p2p_connection_diagram.ex (skipped by template scanner)
-p2p-diagram*
-# Virtual-space character-picker previews — used by components/ui/space_character_select.ex
-# (a Tailwind-path component skipped by the template scanner); the per-avatar
-# modifier is composed dynamically from the avatar id.
-rh-charsel-preview
-rh-charsel-sprite
+
+# P2P diagram state/browser modifiers are composed from connection state data.
+p2p-diagram-strip--*
+p2p-diagram__badge--*
+p2p-diagram__browser-svg--*
+p2p-diagram__link--*
+
+# Virtual-space character sprites are composed from the selected character id.
 rh-charsel-sprite--*
-# retrohex.css components — used by App templates in Tailwind paths (skipped by template scanner)
-retro-fieldset
-toolbar-group
-tree-view-marker-closed
-tree-view-marker-open
-# Chat mobile shell/components — used from live/app and components/ui paths that
-# are intentionally skipped by the consistency scanner.
-app-menu-bar
-app-menu-bar__desktop-menu
-app-menu-bar__mobile-menu
-app-menu-bar__mobile-trigger
-app-mobile-menu__categories
-app-mobile-menu__category
-app-mobile-menu__category-icon
-app-mobile-menu__category-label
-app-mobile-menu__content
-app-mobile-menu__panel
-app-mobile-menu__shell
-mobile-task-switcher
-mobile-task-switcher__item
-mobile-task-switcher__panel
-autocomplete-item
-app-menu-bar*
-app-mobile-menu*
-chat-app-root
-chat-channel-link
-chat-input-send-label
-chat-message
-chat-mobile-action
-chat-sidebar-overlay
-mobile-task-switcher*
-# Dialog mobile-first surfaces — these classes live in components/ui/* dialog
-# modules that are intentionally outside the CSS consistency template scanner.
-ab-*
-ac-*
-acct-*
-al-*
-ar-*
-bm-*
-cc-*
-cd-*
-cl-*
-cm-*
-cs-*
-fp-*
-hl-*
-icp-*
-iv-*
-kd-*
-kr-*
-mud-*
-nc-*
-nl-*
-pf-*
-ss-*
-tm-*
-uc-*
-ul-*
-tabs-content
-tabs-trigger
-# Utility classes defined by the generated CSS bundle but referenced from
-# skipped component paths.
-bg-selection-bg
-bg-white
-btn
-grid
-items-end
-justify-end
-overflow-x-auto
-shadow-retro-sunken
-text-muted-foreground
-# P2P/game media components — used by components/ui/* files (skipped by template scanner)
-activity-indicator__*
-game-media*
-p2p-media-call*
-# Group-call conference components — used by components/ui/group_call/* files
-# (skipped by the template scanner); keep only classes that are not also
-# discovered through the JS hook scanner.
-group-call-empty-tile
-group-call-panel--mini
-group-call-participant-reaction
-group-call-room
-group-call-video-badge
-group-call-video-surface
-group-call-video-tile--remote
-group-call-video-tile__empty
-group-call-video-tile__badges
-# Shared media-session components — used by components/ui/media_session/* files
-# (skipped by the template scanner).
-media-session-section-nav*
-# Desktop window manager — BEM classes applied via classes([...]) in components/ui/layout/desktop.ex
-# and toggled by WindowManagerHook (both skipped by the template scanner)
-desktop*
 
 [missing]
-# False positive — "system" is a comparison value inside class={...} expression
-system
-# JS-only — toast body queried via querySelector in notification_toast.js
-toast-body
-# Semantic modifier classes — used in dynamic class expressions, no distinct styling needed
-# Semantic container classes with no visual styling needed
-cheatsheet-dialog
-context-color-picker
-# Media call — semantic container, no visual styling needed
-media-call__video-area
-# False positive — "video" parsed from dynamic class expression "media-call--video"
-video
-# False positives — English text parsed as class refs from p2p_lobby.ex connection_state_class
-Connected
-Connection
-failed
-# False positive — "finished" is a comparison value in solo_lobby.ex class={...} expression
-finished
-# Menu bar — Tailwind classes toggled via classList in MenuBarHook
-bg-primary
-text-primary-foreground
-hover:bg-accent
-# Help layout — uses old app_header class from controller-era layout
-app-header-panels
-# Chat layout — Tailwind utility classes from tailwind.config.js (not in CSS files)
-bg-desktop
-font-system
-text-text
-# MessageViewport / Composer — transparent mount wrapper so the stateful component's
-# static root does not create a layout box (chat list stays a flex-fill child of the column)
-contents
-# Composer island — the bottom input panel keeps its flex-column slot fixed-height
-shrink-0
-# Diagram layout — Tailwind utility classes passed to SVG diagram components in help templates
-max-w-lg
-mx-auto
-my-4
-w-full
-# Help content helper components — Tailwind utility classes used by split HelpContent modules
-flex
-flex-shrink-0
-font-bold
-gap-1.5
-h-3.5
-hover:underline
-items-center
-mb-1.5
-mt-4
-text-link
-text-sm
-w-3.5
-# JS hooks — classes used by JS hooks for DOM manipulation and querySelector targeting.
-# These were previously defined in V1 retro CSS; now styled via Tailwind or used as selectors only.
+# JS-created/queried chat hooks with no standalone visual CSS.
 chat-action
 chat-content
-chat-link
 chat-link-preview
-chat-nick
 chat-reply-btn
 chat-timestamp
-connection-banner--visible
-reconnect-overlay--visible
-# Viewport detection hook toggles this semantic root class; no direct styling today.
-rhc-mobile-viewport
-conversations-join-flash
-dialog-overlay
-disabled
-file-transfer-drop-zone--active
-file-transfer-input
-focused
-format-color-dropdown
-format-color-dropdown--open
-game-canvas__stub
-hidden
+
+# Chat search/autocomplete hooks toggle these transient DOM states.
 hist-search-panel--open
 history-no-match
 history-no-match--visible
 history-search-input
-interactive-tooltip
 new-messages-btn
 new-messages-btn--visible
-p2p-diagram__dot
-p2p-diagram__dots
 search-highlight
 search-highlight-active
-selected
-title-bar
-title-bar-text
+
+# Runtime overlays and JS-created UI.
+dialog-overlay
+game-canvas__stub
 toast-actions
 toast-checkbox
 toast-container
@@ -237,45 +51,21 @@ toast-hiding
 toast-notification
 toast-text
 toast-visible
+
+# Legacy-free selector contracts: used by JS/runtime DOM, not by CSS.
+file-transfer-input
+selected
+title-bar
+title-bar-text
 window
 window-body
-# Session cards & message meta column — semantic classes (JS/testid selectors, no distinct CSS)
-chat-session-card
-chat-message-meta
-chat-source
-# Session card & message layout — Tailwind utility classes (not in CSS files)
-bg-canvas
-flex-1
-flex-col
-gap-0.5
-gap-1
-gap-2
-h-6
-h-full
-inline-block
-inline-flex
-items-start
-max-w-full
-mb-2
-min-w-0
-mt-1
-no-underline
-p-2
-px-2
-py-0.5
-shadow-retro-field
-shadow-retro-raised
-text-[10px]
-text-muted-foreground
-text-xs
-tracking-wide
-truncate
-uppercase
-w-24
-w-6
 
 [dynamic-prefixes]
-# Prefixes with dynamic suffixes (e.g. chat-message--#{type})
+# Message row type/status modifiers come from message domain state.
 chat-message--
-# Nick color classes — generated dynamically by nick_color_fn (nick-color-0..11)
+
+# Resizer direction handles are generated from a fixed direction list.
+desktop-window__resize--
+
+# Nick colors are generated from nickname hash or custom color selection.
 nick-color-

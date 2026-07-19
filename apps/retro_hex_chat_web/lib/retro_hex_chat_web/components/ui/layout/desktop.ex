@@ -66,7 +66,7 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
       data-persist={to_string(@persist)}
       data-escape-closes-windows={to_string(@escape_closes_windows)}
       data-window-loading-text={dgettext("ui", "Opening...")}
-      class={classes(["desktop flex flex-1 flex-col overflow-hidden", @class])}
+      class={classes(["flex flex-1 flex-col overflow-hidden", @class])}
       {@rest}
     >
       {render_slot(@header)}
@@ -469,10 +469,7 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
   @spec start_menu_separator(map()) :: Phoenix.LiveView.Rendered.t()
   def start_menu_separator(assigns) do
     ~H"""
-    <div class={
-      classes(["desktop-start-menu__separator shadow-retro-status my-[2px] h-[2px]", @class])
-    }>
-    </div>
+    <div class={classes(["shadow-retro-status my-[2px] h-[2px]", @class])}></div>
     """
   end
 
@@ -491,7 +488,7 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
     <div
       class={
         classes([
-          "desktop-tray shadow-retro-status flex shrink-0 items-center gap-2 px-2 py-[2px] text-xs",
+          "shadow-retro-status flex shrink-0 items-center gap-2 px-2 py-[2px] text-xs",
           @class
         ])
       }

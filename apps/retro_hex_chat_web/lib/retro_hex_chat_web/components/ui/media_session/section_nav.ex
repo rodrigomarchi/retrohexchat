@@ -28,12 +28,13 @@ defmodule RetroHexChatWeb.Components.UI.MediaSession.SectionNav do
   def section_nav(assigns) do
     ~H"""
     <nav
-      class={classes(["media-session-section-nav-shell min-w-0 items-start", @class])}
+      class={classes(["min-w-0 items-start", @class])}
       aria-label={@aria_label}
       data-testid={@testid}
     >
       <span
-        class="media-session-section-nav__cue media-session-section-nav__cue--start"
+        class="media-session-section-nav__cue"
+        data-scroll-cue-edge="start"
         aria-hidden="true"
       >
         &lt;
@@ -67,7 +68,8 @@ defmodule RetroHexChatWeb.Components.UI.MediaSession.SectionNav do
       </div>
 
       <span
-        class="media-session-section-nav__cue media-session-section-nav__cue--end"
+        class="media-session-section-nav__cue"
+        data-scroll-cue-edge="end"
         aria-hidden="true"
       >
         &gt;

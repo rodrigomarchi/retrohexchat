@@ -29,6 +29,8 @@ defmodule RetroHexChatWeb.Components.UI.MediaSession.SectionNavTest do
 
     assert html =~ ~s(data-testid="session-nav")
     assert html =~ ~s(data-scroll-cue="horizontal")
+    assert html =~ ~s(data-scroll-cue-edge="start")
+    assert html =~ ~s(data-scroll-cue-edge="end")
     assert html =~ "media-session-section-nav"
     assert html =~ "media-session-section-nav__item"
     assert html =~ ~s(phx-click="select_section")

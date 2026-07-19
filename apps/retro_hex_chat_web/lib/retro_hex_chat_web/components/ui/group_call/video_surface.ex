@@ -66,7 +66,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.VideoSurface do
         </div>
 
         <div
-          class="group-call-video-tile group-call-video-tile--local"
+          class="group-call-video-tile"
           data-group-call-video-tile
           data-group-call-local-tile
           data-participant-id={@call.participant_id}

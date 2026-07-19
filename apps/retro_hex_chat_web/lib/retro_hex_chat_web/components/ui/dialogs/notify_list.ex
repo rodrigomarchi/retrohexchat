@@ -254,7 +254,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
       show
       scope={:window}
       on_cancel={JS.push("notify_add_cancel", target: @target)}
-      class="nl-subdialog md:max-w-sm"
+      class="md:max-w-sm"
     >
       <.dialog_header
         id="notify-add-modal"
@@ -331,7 +331,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
       show
       scope={:window}
       on_cancel={JS.push("notify_edit_cancel", target: @target)}
-      class="nl-subdialog md:max-w-sm"
+      class="md:max-w-sm"
     >
       <.dialog_header
         id="notify-edit-modal"

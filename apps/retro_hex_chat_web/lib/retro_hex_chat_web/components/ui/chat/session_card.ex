@@ -36,7 +36,7 @@ defmodule RetroHexChatWeb.Components.UI.SessionCard do
 
     ~H"""
     <div
-      class="chat-session-card mt-1 inline-block max-w-full bg-canvas shadow-retro-field p-2 text-xs"
+      class="mt-1 inline-block max-w-full bg-canvas shadow-retro-field p-2 text-xs"
       data-testid="session-card"
       data-session-kind={to_string(@card.kind)}
       data-session-status={@card.status}

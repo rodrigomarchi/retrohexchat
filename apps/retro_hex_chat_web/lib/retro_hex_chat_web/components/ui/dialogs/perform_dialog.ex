@@ -582,7 +582,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
         data-testid="perform-command-row"
         data-position={entry.position}
         aria-pressed={@selected == entry.position}
-        class={row_class("pf-entry pf-command-entry", @selected == entry.position)}
+        class={row_class("pf-entry", @selected == entry.position)}
         phx-click={@on_select}
         phx-target={@target}
         phx-value-position={entry.position}

@@ -66,7 +66,7 @@ defmodule RetroHexChatWeb.Components.UI.PasteConfirmDialog do
 
             <div
               :if={@flood_warning}
-              class="cd-callout cd-callout--warning"
+              class="cd-callout"
               data-testid="paste-flood-warning"
             >
               <Icons.icon_warning class="w-4 h-4 shrink-0" />

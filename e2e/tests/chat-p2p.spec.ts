@@ -64,8 +64,8 @@ function p2pStatsDetails(
 async function expectMobileSectionNavCue(page: Page, testId: string) {
   const cue = await page.getByTestId(testId).evaluate((nav) => {
     const scroller = nav.querySelector('[data-scroll-cue="horizontal"]');
-    const start = nav.querySelector(".media-session-section-nav__cue--start");
-    const end = nav.querySelector(".media-session-section-nav__cue--end");
+    const start = nav.querySelector('[data-scroll-cue-edge="start"]');
+    const end = nav.querySelector('[data-scroll-cue-edge="end"]');
     const active = nav.querySelector('button[aria-pressed="true"]');
     const scrollerRect = scroller?.getBoundingClientRect();
     const activeRect = active?.getBoundingClientRect();

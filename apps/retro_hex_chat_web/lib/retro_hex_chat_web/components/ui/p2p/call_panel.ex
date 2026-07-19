@@ -45,7 +45,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
 
     ~H"""
     <div
-      class={["flex h-full min-h-0 flex-col gap-1 text-xs", @mini && "p2p-call-panel--mini"]}
+      class="flex h-full min-h-0 flex-col gap-1 text-xs"
       role="region"
       aria-label={dgettext("p2p", "P2P call")}
       data-testid="p2p-call-panel"
@@ -84,12 +84,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
 
         <div
           :if={@show_surface}
-          class={[
-            "lobby-media min-h-0 flex-1",
-            "lobby-media--#{@normalized_layout}",
-            "lobby-media--self-#{@self_view_mode}",
-            @mini && "lobby-media--mini"
-          ]}
+          class="min-h-0 flex-1"
           data-testid="p2p-call-surface"
           data-media-mode={@media_mode}
           data-call-layout={@normalized_layout}

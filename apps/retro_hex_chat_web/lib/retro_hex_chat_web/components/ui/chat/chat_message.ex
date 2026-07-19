@@ -56,8 +56,8 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
   retro monospace identity.
 
   `nick` renders the interactive `.chat-nick[data-nick]` handle (click, hover
-  card, PM, context menu). `source` renders a non-interactive `.chat-source`
-  origin label (e.g. "System", "Error", "MOTD") — never both. `meta_title`
+  card, PM, context menu). `source` renders a non-interactive origin label
+  (e.g. "System", "Error", "MOTD") — never both. `meta_title`
   carries the full datetime for the timestamp's hover/accessibility label.
 
   A pixel-art kind icon is prepended to that first line to signal the sender at a
@@ -71,7 +71,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
 
   attr :source, :string,
     default: nil,
-    doc: "Non-interactive origin label (rendered as .chat-source)"
+    doc: "Non-interactive origin label"
 
   attr :nick_color, :string, default: nil
   attr :meta_title, :string, default: nil, doc: "Full datetime for the timestamp hover/aria label"
@@ -104,7 +104,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
       data-message-id={@id}
       {@rest}
     >
-      <span class="chat-message-meta min-w-0 flex flex-col items-end leading-tight text-right">
+      <span class="min-w-0 flex flex-col items-end leading-tight text-right">
         <span class="flex min-w-0 max-w-full items-center gap-1">
           <.message_kind_icon kind={resolve_kind(@kind, @nick, @source, @type)} />
           <span
@@ -120,7 +120,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
           </span>
           <span
             :if={!@nick && @source}
-            class="chat-source min-w-0 truncate font-mono text-[13px] font-bold leading-tight"
+            class="min-w-0 truncate font-mono text-[13px] font-bold leading-tight"
             title={@source}
           >
             {@source}

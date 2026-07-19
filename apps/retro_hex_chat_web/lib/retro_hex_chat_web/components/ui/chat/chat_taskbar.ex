@@ -58,7 +58,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
     <div class="mobile-task-switcher relative hidden min-w-0 flex-1">
       <button
         type="button"
-        class="mobile-task-switcher__trigger desktop-taskbar__button shadow-retro-raised bg-surface inline-flex min-w-0 w-full items-center gap-1 px-2 py-[2px] text-xs"
+        class="desktop-taskbar__button shadow-retro-raised bg-surface inline-flex min-w-0 w-full items-center gap-1 px-2 py-[2px] text-xs"
         data-mobile-task-switcher-trigger
         data-testid="mobile-task-switcher-trigger"
         aria-haspopup="menu"
