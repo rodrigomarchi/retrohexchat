@@ -1,7 +1,12 @@
 import { Page, Locator, expect } from "@playwright/test";
 
 export type AddressBookControlType =
-  "all" | "messages" | "pms" | "actions" | "notices" | "invites";
+  | "all"
+  | "messages"
+  | "pms"
+  | "actions"
+  | "notices"
+  | "invites";
 
 type ChannelCentralTab =
   | "general"
@@ -12,7 +17,9 @@ type ChannelCentralTab =
   | "registration";
 
 type ChannelCentralModeLabel =
-  "Moderated (+m)" | "Invite Only (+i)" | "Topic Lock (+t)";
+  | "Moderated (+m)"
+  | "Invite Only (+i)"
+  | "Topic Lock (+t)";
 
 function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
