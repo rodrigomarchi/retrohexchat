@@ -3145,7 +3145,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "help",
             "A multiplayer 8-bit virtual space built into every channel: people in the channel can switch from Chat to Space, walk around the shared map, and keep using the same channel conversation. Move with the Arrow keys, WASD or the on-screen pad in the bottom-right corner — tap for a single step or hold to walk continuously; Space or the pad's sword button swings your weapon. The translucent button in the top-right corner switches the space to fullscreen and back."
           ),
-        see_also: ["feature-choose-character"]
+        see_also: ["feature-choose-character", "feature-space-combat"]
       },
       %{
         id: "feature-choose-character",
@@ -3171,7 +3171,31 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "help",
             "When you enter a Space, a character picker appears first: choose from the classic Hero or one of seven classes — Sorceress, Knight, Archer, Barbarian, Rogue, Cleric or Monk. Each shows an animated preview and has its own walking and attack animations; click one to enter the map wearing it, and everyone in the space sees your choice. The picker shows again each time you re-enter, defaulting to your last pick."
           ),
-        see_also: ["feature-virtual-spaces"]
+        see_also: ["feature-virtual-spaces", "feature-space-combat"]
+      },
+      %{
+        id: "feature-space-combat",
+        title: dgettext("help", "Space Combat"),
+        category: dgettext("help", "Virtual Spaces"),
+        keywords: [
+          "combat",
+          "attack",
+          "sword",
+          "hit",
+          "damage",
+          "hp",
+          "knockout",
+          "ko",
+          dgettext("help", "sword fight"),
+          dgettext("help", "health bar")
+        ],
+        icon: :icon_community,
+        description:
+          dgettext(
+            "help",
+            "Characters in a Space can spar with each other: press Space (or the pad's sword button) next to another standing character to land a hit. Each hit deals damage and shows a small health bar under their name; at zero HP the character is knocked down for a few seconds, then gets back up on their own with full health. Sitting characters are out of combat, and a knockout never has any lasting effect — it is all in good fun."
+          ),
+        see_also: ["feature-virtual-spaces", "feature-choose-character"]
       }
     ]
   end

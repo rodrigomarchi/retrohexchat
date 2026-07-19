@@ -550,3 +550,39 @@ describe("Renderer avatar pose state machine", () => {
     expect(pose).toMatchObject({ actionKind: "sleep", dir: "north-west" });
   });
 });
+
+describe("Renderer combat poses", () => {
+  function combatRenderer() {
+    const atlas = {
+      tile: () => null,
+      avatar: () => ({ canvas: {} }),
+      avatarMeta: () => ({ hasIdle: true, hasIdle2: false, hasSleep: true }),
+      avatarFrameCount: () => 4,
+    };
+    return build({ atlas }).renderer;
+  }
+
+  it("plays hit, ko and getup from the action stream", () => {
+    const renderer = combatRenderer();
+    for (const kind of ["hit", "ko", "getup"]) {
+      const participant = {
+        key: `u-${kind}`,
+        avatar: "knight",
+        x: 3,
+        y: 4,
+        pose: kind === "ko" ? "down" : "standing",
+        action: { kind, startedAt: 0, duration: 600 },
+      };
+      const pose = renderer._avatarPose(participant, 300);
+      expect(pose.actionKind).toBe(kind);
+    }
+  });
+
+  it("holds the last ko frame while a participant stays down", () => {
+    const renderer = combatRenderer();
+    const participant = { key: "u9", avatar: "knight", x: 3, y: 4, pose: "down", action: null };
+    renderer._avatarPose(participant, 0);
+    const pose = renderer._avatarPose(participant, 20000); // long past the sleep threshold
+    expect(pose).toMatchObject({ actionKind: "ko", frame: 3 });
+  });
+});

@@ -19,7 +19,9 @@ re-spending generations):
 Layout: every frame is cropped to ONE shared vertical window (feet flush to the
 bottom, full width kept so the body stays centred through the attack swing), then
 stacked in direction-major blocks in the fixed order walk, idle, idle2, attack,
-sleep — skipping any animation that has not been generated yet.
+sleep, hit, ko, getup — skipping any animation that has not been generated yet.
+hit/ko/getup are the combat reactions (taking a hit, falling knocked out,
+getting back up).
 
 Deterministic: same frames in → identical bytes out. Writes the sheet PNG and a
 sibling ``<name>.geo.json`` (frame size + per-anim/-direction row offsets) so the
@@ -34,7 +36,7 @@ from PIL import Image
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 DIRS8 = ["south", "south-east", "east", "north-east", "north", "north-west", "west", "south-west"]
-ANIM_ORDER = ["walk", "idle", "idle2", "attack", "sleep"]
+ANIM_ORDER = ["walk", "idle", "idle2", "attack", "sleep", "hit", "ko", "getup"]
 FRAMES = 4  # per animation, per direction
 
 

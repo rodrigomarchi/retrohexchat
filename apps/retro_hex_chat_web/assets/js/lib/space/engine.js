@@ -30,7 +30,11 @@ import { Renderer } from "./renderer.js";
 import { Interpolator } from "./interpolation.js";
 import { ChatState } from "./chat.js";
 
-const ACTION_DURATION_MS = 420;
+// Per-kind animation lengths; ko/getup are slower full-body motions. PRIORITY
+// decides which action wins when broadcasts overlap on one participant — a
+// knockout interrupts a swing, a swing never interrupts a reaction.
+const ACTION_DURATION_MS = { sword: 420, hit: 420, ko: 650, getup: 650 };
+const ACTION_PRIORITY = { sword: 0, getup: 1, hit: 2, ko: 3 };
 // Server step cadence fallback when the init config omits `step_ms`. Must match
 // the `:virtual_space_step_ms` default in the Elixir config.
 const DEFAULT_STEP_MS = 150;
@@ -218,6 +222,8 @@ export class SpaceEngine {
   predict(intent) {
     const self = this.selfKey ? this.participants.get(this.selfKey) : null;
     if (!self) return { moved: false };
+    // Knocked down: the server rejects every step, so don't predict any.
+    if (self.pose === "down") return { moved: false };
 
     const now = this._clock();
     if (this._lastStepAt !== null && now - this._lastStepAt < this._stepMs) {
@@ -270,7 +276,12 @@ export class SpaceEngine {
   /** Record an incoming `space_action` as a visual animation. */
   receiveAction(action) {
     const normalized = normalizeAction(action);
-    if (normalized.key === this.selfKey && this._activeAction(normalized.key, this._clock())) {
+    // Our own sword echo: the local prediction already plays it.
+    if (
+      normalized.kind === "sword" &&
+      normalized.key === this.selfKey &&
+      this._activeAction(normalized.key, this._clock())
+    ) {
       return false;
     }
     return this.triggerAction(normalized);
@@ -284,14 +295,19 @@ export class SpaceEngine {
   triggerAction(action) {
     const normalized = normalizeAction(action);
     const participant = normalized.key ? this.participants.get(normalized.key) : null;
-    if (!participant || participant.pose !== "standing") return false;
-    if (this._activeAction(normalized.key, this._clock())) return false;
+    if (!participant) return false;
+    // The ko broadcast arrives after the delta already flipped the pose to
+    // "down"; every other action only makes sense on a standing avatar.
+    if (normalized.kind !== "ko" && participant.pose !== "standing") return false;
+
+    const active = this._activeAction(normalized.key, this._clock());
+    if (active && ACTION_PRIORITY[normalized.kind] <= ACTION_PRIORITY[active.kind]) return false;
 
     this._actions.set(normalized.key, {
       kind: normalized.kind,
       dir: normalized.dir,
       startedAt: this._clock(),
-      duration: ACTION_DURATION_MS,
+      duration: ACTION_DURATION_MS[normalized.kind] ?? ACTION_DURATION_MS.sword,
     });
     return true;
   }

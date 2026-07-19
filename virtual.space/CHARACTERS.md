@@ -45,25 +45,31 @@ facings** (sleep's south row is the 4-frame seated doze from the class's
 "sitting on the ground" sibling state; the other seven facings hold that state's
 static sitting rotations). Knight, rogue and sorceress additionally carry
 **idle2** — the second idle stance generated for them (breathing-idle; their
-`idle` block is calm-idle). The eight facings, in the row order every sheet is
-packed:
+`idle` block is calm-idle). Every class also carries the three combat blocks,
+8-dir each: **hit** (taking-punch), **ko** (falling-back-death) and **getup**
+(getting-up). The eight facings, in the row order every sheet is packed:
 
 ```
 south, south-east, east, north-east, north, north-west, west, south-west
 ```
 
 The game's `sword` action maps to the **attack** block (each class swings its
-own weapon — the weapon comes for free from the base sprite). `idle` and `sleep`
-are the resting states — the renderer alternates `idle`/`idle2` on a slow,
-per-participant-offset cycle where `idle2` exists, and `sleep` faces the
-avatar's own direction; an avatar missing any animation falls back to `walk`.
+own weapon — the weapon comes for free from the base sprite), and the combat
+loop plays `hit` on a landed blow, `ko` falling at zero HP (the pose machine
+holds its last frame while the participant stays down) and `getup` on
+recovery. `idle` and `sleep` are the resting states — the renderer alternates
+`idle`/`idle2` on a slow, per-participant-offset cycle where `idle2` exists,
+and `sleep` faces the avatar's own direction; an avatar missing any animation
+falls back to `walk`.
 
 ### Sheet layout (per character)
 
 `compose_iso_avatar.py` packs one sheet per character: **4 frames** per
 animation per direction, laid out **direction-major** in the fixed animation
-order `walk, idle, idle2, attack, sleep`, skipping any animation not yet
-generated.
+order `walk, idle, idle2, attack, sleep, hit, ko, getup`, skipping any
+animation not yet generated. Templates that yield more than 4 frames are
+subsampled evenly to 4 at import time (never truncated — a cut motion reads
+as a glitch).
 Every frame is cropped to **one shared vertical window** (feet flush to the
 bottom, full width kept so the body stays centred through the attack swing).
 

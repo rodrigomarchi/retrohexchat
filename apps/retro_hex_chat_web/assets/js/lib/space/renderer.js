@@ -18,6 +18,11 @@ const SLAB_FACE_L = "191b26";
 const SLAB_FACE_R = "23262f";
 const LABEL_BG = "1b1d24";
 const LABEL_FG = "e8dcc0";
+// Combat HP bar under the nameplate: healthy green above half, amber below.
+const HP_MAX = 100;
+const HP_BAR_W = 26;
+const HP_FG_OK = "7ec850";
+const HP_FG_LOW = "d8a03a";
 const BUBBLE_BG = "e8dcc0";
 const BUBBLE_FG = "20232b";
 const SIGN_BG = "5a442e";
@@ -62,6 +67,9 @@ const ISO_SLEEP_MS = 12000;
 // The phase is offset per participant so a standing crowd never shifts in sync.
 const ISO_IDLE_CYCLE_MS = 9000;
 const ISO_IDLE2_SHARE = 1 / 3;
+// Ephemeral combat actions the pose machine plays from the action stream. A
+// KO'd participant (pose "down") holds the last ko frame between actions.
+const ISO_COMBAT_ACTIONS = new Set(["sword", "hit", "ko", "getup"]);
 
 export class Renderer {
   /**
@@ -655,17 +663,22 @@ export class Renderer {
 
   // Resolve a participant into an animation pose {actionKind, dir, frame}. Premium
   // 8-direction iso avatars face where they move and run a full state machine:
-  // attack (sword) > walk (moving) > sleep (long idle) > idle (breathing).
+  // combat (ko/hit/getup/sword) > down (KO'd, holds the fallen frame) >
+  // walk (moving) > sleep (long idle) > idle (breathing).
   _avatarPose(participant, now) {
     const meta = this.atlas?.avatarMeta?.(participant.avatar) ?? {};
-    const action = participant.action?.kind === "sword" ? participant.action : null;
+    const action = ISO_COMBAT_ACTIONS.has(participant.action?.kind) ? participant.action : null;
     const m = this._trackMotion(participant, now);
     if (action) {
       return {
-        actionKind: "sword",
+        actionKind: action.kind,
         dir: m.dir8,
         frame: this._actionFrame(participant, action, now),
       };
+    }
+    if (participant.pose === "down") {
+      const frames = this.atlas?.avatarFrameCount?.(participant.avatar, "ko") ?? 1;
+      return { actionKind: "ko", dir: m.dir8, frame: frames - 1 };
     }
     const still = now - m.t;
     if (still < 180) {
@@ -776,6 +789,20 @@ export class Renderer {
     ctx.fillRect(Math.round(cx - width / 2), Math.round(headY - 14), Math.round(width), 11);
     ctx.fillStyle = HASH + LABEL_FG;
     ctx.fillText(participant.nickname, Math.round(cx), Math.round(headY - 5));
+    this._drawHpBar(ctx, participant, cx, headY);
+  }
+
+  // A slim HP bar under the nameplate, only while the participant is hurt —
+  // untouched avatars keep the clean social look.
+  _drawHpBar(ctx, participant, cx, headY) {
+    const hp = participant.hp ?? HP_MAX;
+    if (hp >= HP_MAX) return;
+    const left = Math.round(cx - HP_BAR_W / 2);
+    const top = Math.round(headY - 2);
+    ctx.fillStyle = HASH + LABEL_BG;
+    ctx.fillRect(left, top, HP_BAR_W, 3);
+    ctx.fillStyle = HASH + (hp > HP_MAX / 2 ? HP_FG_OK : HP_FG_LOW);
+    ctx.fillRect(left + 1, top + 1, Math.round((HP_BAR_W - 2) * (hp / HP_MAX)), 1);
   }
 
   // Speech bubble above the nickname label. The text is drawn with fillText —

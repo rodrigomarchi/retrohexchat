@@ -33,6 +33,13 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
   # runtime assigns on join, before the player picks a character.
   @avatars ~w(hero knight sorceress archer barbarian rogue cleric monk)
 
+  # Melee combat: a sword swing damages one standing participant on the faced
+  # (else any adjacent) tile. At zero HP the target drops (pose "down") and gets
+  # back up on its own with full HP — sitting participants are out of combat.
+  @max_hp 100
+  @hit_damage 25
+  @ko_down_ms 5000
+
   @type participant :: %{
           key: String.t(),
           user_id: integer() | nil,
@@ -42,6 +49,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
           y: integer(),
           dir: String.t(),
           pose: String.t(),
+          hp: non_neg_integer(),
           seat_id: String.t() | nil,
           zone_id: String.t() | nil,
           online?: boolean(),
@@ -470,6 +478,21 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
     {:noreply, state}
   end
 
+  # A downed participant recovers on its own: full HP, back on their feet.
+  def handle_info({:space_getup, key}, state) do
+    case Map.get(state.participants, key) do
+      %{pose: "down"} = participant ->
+        recovered = %{Map.put(participant, :hp, @max_hp) | pose: "standing"}
+        state = put_in(state.participants[key], recovered)
+        state = broadcast_delta(state, key, recovered, recovered.input_seq)
+        state = broadcast_action(state, key, recovered, "getup", nil)
+        {:noreply, state}
+
+      _ ->
+        {:noreply, state}
+    end
+  end
+
   def handle_info(_message, state), do: {:noreply, state}
 
   # --- Private helpers ---
@@ -541,6 +564,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
         y: y,
         dir: dir,
         pose: "standing",
+        hp: @max_hp,
         seat_id: nil,
         zone_id: zone_at(state.map, x, y),
         moving?: false,
@@ -721,6 +745,9 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
       participant == nil or not participant.online? ->
         {:error, :not_participant, state}
 
+      participant.pose == "down" ->
+        {:error, :down, state}
+
       not valid_step?(payload) ->
         {:error, :invalid_step, state}
 
@@ -824,6 +851,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
 
     cond do
       not active_participant?(participant) -> {:reply, {:error, :not_participant}, state}
+      participant.pose == "down" -> {:reply, {:error, :down}, state}
       seat == nil -> {:reply, {:error, :invalid_target}, state}
       seat_taken?(state, seat_id, key) -> {:reply, {:error, :seat_taken}, state}
       not adjacent?(participant, seat) -> {:reply, {:error, :too_far}, state}
@@ -855,7 +883,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
 
   defp do_interact(state, _key, _payload), do: {:reply, {:error, :invalid_target}, state}
 
-  # --- Visual actions (no hitbox / no damage) ---
+  # --- Actions: the sword swing is the melee attack ---
 
   defp apply_action(state, key, %{kind: "sword"} = payload) do
     participant = Map.get(state.participants, key)
@@ -874,6 +902,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
         participant = Map.put(participant, :last_action_at, mono_ms())
         state = put_in(state.participants[key], participant)
         broadcast_action(state, key, participant, "sword", Map.get(payload, :dir))
+        state = resolve_swing(state, key, participant)
         {:ok, state}
     end
   end
@@ -916,6 +945,57 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
 
   defp valid_dir(dir) when dir in ["up", "down", "left", "right"], do: dir
   defp valid_dir(_), do: nil
+
+  # A swing connects with one standing participant: whoever is on the exact
+  # faced tile, else the first other participant standing adjacent (8-neighbour).
+  # Sitting and downed participants can't be hit.
+  defp resolve_swing(state, key, attacker) do
+    case swing_target(state, key, attacker) do
+      nil -> state
+      {target_key, target} -> apply_damage(state, target_key, target)
+    end
+  end
+
+  defp swing_target(state, key, attacker) do
+    {fx, fy} = faced_tile(attacker)
+
+    candidates =
+      state.participants
+      |> Enum.filter(fn {other_key, other} ->
+        other_key != key and active_participant?(other) and other.pose == "standing" and
+          abs(other.x - attacker.x) <= 1 and abs(other.y - attacker.y) <= 1
+      end)
+
+    Enum.find(candidates, fn {_k, other} -> other.x == fx and other.y == fy end) ||
+      List.first(candidates)
+  end
+
+  defp faced_tile(%{x: x, y: y, dir: dir}) do
+    case dir do
+      "right" -> {x + 1, y}
+      "left" -> {x - 1, y}
+      "down" -> {x, y + 1}
+      _ -> {x, y - 1}
+    end
+  end
+
+  defp apply_damage(state, target_key, target) do
+    hp = max(Map.get(target, :hp, @max_hp) - @hit_damage, 0)
+
+    if hp > 0 do
+      hurt = Map.put(target, :hp, hp)
+      state = put_in(state.participants[target_key], hurt)
+      state = broadcast_delta(state, target_key, hurt, hurt.input_seq)
+      broadcast_action(state, target_key, hurt, "hit", nil)
+    else
+      down = %{Map.put(target, :hp, 0) | pose: "down"}
+      state = put_in(state.participants[target_key], down)
+      state = broadcast_delta(state, target_key, down, down.input_seq)
+      state = broadcast_action(state, target_key, down, "ko", nil)
+      Process.send_after(self(), {:space_getup, target_key}, ko_down_ms())
+      state
+    end
+  end
 
   defp sit(state, key, participant, seat) do
     state = free_seat(state, participant)
@@ -1013,9 +1093,15 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
   defp action_cooldown_elapsed?(participant) do
     case Map.get(participant, :last_action_at) do
       nil -> true
-      last -> mono_ms() - last >= @action_cooldown_ms
+      last -> mono_ms() - last >= action_cooldown_ms()
     end
   end
+
+  defp action_cooldown_ms,
+    do: Application.get_env(:retro_hex_chat, :virtual_space_action_ms, @action_cooldown_ms)
+
+  defp ko_down_ms,
+    do: Application.get_env(:retro_hex_chat, :virtual_space_ko_down_ms, @ko_down_ms)
 
   defp mono_ms, do: System.monotonic_time(:millisecond)
 
@@ -1152,6 +1238,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
       dir: participant.dir,
       moving: Map.get(participant, :moving?, false),
       pose: participant.pose,
+      hp: Map.get(participant, :hp, @max_hp),
       seat_id: participant.seat_id,
       zone_id: participant.zone_id,
       muted: participant.muted?,

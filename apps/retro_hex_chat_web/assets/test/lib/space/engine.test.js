@@ -534,3 +534,65 @@ describe("SpaceEngine visual actions", () => {
     expect(engine.performAction("sword")).toEqual({ acted: false });
   });
 });
+
+describe("SpaceEngine combat actions", () => {
+  it("lets a hit interrupt a swing but never the reverse", () => {
+    const { engine, renderer, scheduler } = buildEngine();
+    const clock = 100;
+    engine.setClock(() => clock);
+    engine.start(tavernInit());
+
+    expect(engine.receiveAction({ key: "registered:2", kind: "sword", dir: "left" })).toBe(true);
+    expect(engine.receiveAction({ key: "registered:2", kind: "hit" })).toBe(true);
+    expect(engine.receiveAction({ key: "registered:2", kind: "sword", dir: "left" })).toBe(false);
+
+    scheduler.flush();
+    const state = renderer.draw.mock.calls.at(-1)[0];
+    expect(state.participants.get("registered:2").action).toMatchObject({ kind: "hit" });
+  });
+
+  it("plays the ko on an already-down participant and shields it from further hits", () => {
+    const { engine } = buildEngine();
+    engine.start(tavernInit());
+
+    // The server delta flips the pose before the ko action broadcast lands.
+    engine.applyDelta({
+      updates: { "registered:2": { nickname: "bob", x: 6, y: 5, pose: "down", hp: 0 } },
+    });
+
+    expect(engine.receiveAction({ key: "registered:2", kind: "ko" })).toBe(true);
+    expect(engine.receiveAction({ key: "registered:2", kind: "hit" })).toBe(false);
+  });
+
+  it("gives ko its longer duration so the fall plays out", () => {
+    const { engine, renderer, scheduler } = buildEngine();
+    let clock = 0;
+    engine.setClock(() => clock);
+    engine.start(tavernInit());
+
+    engine.applyDelta({
+      updates: { "registered:2": { nickname: "bob", x: 6, y: 5, pose: "down", hp: 0 } },
+    });
+    engine.receiveAction({ key: "registered:2", kind: "ko" });
+
+    clock = 500; // a sword (420ms) would already be over
+    scheduler.flush();
+    const state = renderer.draw.mock.calls.at(-1)[0];
+    expect(state.participants.get("registered:2").action).toMatchObject({ kind: "ko" });
+  });
+
+  it("does not predict movement while knocked down", () => {
+    const { engine } = buildEngine();
+    engine.start(
+      tavernInit({
+        snapshot: {
+          participants: {
+            "registered:1": { nickname: "alice", x: 5, y: 5, dir: "down", pose: "down", hp: 0 },
+          },
+        },
+      }),
+    );
+
+    expect(engine.predict({ dx: 1, dy: 0, dir: "right" })).toEqual({ moved: false });
+  });
+});

@@ -45,6 +45,14 @@ describe("normalizeParticipant", () => {
     expect(p.online).toBe(true);
     expect(p.seatId).toBe(null);
     expect(p.zoneId).toBe(null);
+    expect(p.hp).toBe(100);
+  });
+
+  it("passes through combat state (hp and the down pose)", () => {
+    const p = normalizeParticipant("registered:2", { nickname: "bob", pose: "down", hp: 0 });
+
+    expect(p.pose).toBe("down");
+    expect(p.hp).toBe(0);
   });
 
   it("coerces coordinates to integers and clamps direction", () => {
@@ -154,6 +162,12 @@ describe("normalizeAction", () => {
       kind: "sword",
       dir: "left",
     });
+  });
+
+  it("accepts the combat action kinds", () => {
+    for (const kind of ["hit", "ko", "getup"]) {
+      expect(normalizeAction({ key: "registered:2", kind }).kind).toBe(kind);
+    }
   });
 
   it("falls back safely for malformed action payloads", () => {

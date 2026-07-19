@@ -34,7 +34,16 @@ describe("sprite atlas contract", () => {
       "cleric",
       "monk",
     ]);
-    expect(AVATAR_ACTIONS).toEqual(["walk", "sword", "idle", "idle2", "sleep"]);
+    expect(AVATAR_ACTIONS).toEqual([
+      "walk",
+      "sword",
+      "idle",
+      "idle2",
+      "sleep",
+      "hit",
+      "ko",
+      "getup",
+    ]);
     expect(DIRECTIONS).toEqual([
       "south",
       "south-east",
@@ -106,15 +115,19 @@ describe("sprite atlas contract", () => {
 
   it("slices a fully-animated iso avatar's walk/idle/attack/sleep blocks by 8-direction facing", () => {
     const atlas = loadedAtlas();
-    // Hero: walk/idle/attack/sleep, all 8-dir, 188×142 frames, one row per direction.
-    expect(atlas.avatar("hero", "south", 0)).toMatchObject({ sx: 0, sy: 0, sw: 188, sh: 142 });
-    expect(atlas.avatar("hero", "south-east", 1)).toMatchObject({ sx: 188, sy: 142 });
-    // idle block starts at 8*142, sword(attack) at 16*142.
-    expect(atlas.avatar("hero", "south-east", 1, "idle")).toMatchObject({ sx: 188, sy: 1278 });
-    expect(atlas.avatar("hero", "south", 2, "sword")).toMatchObject({ sx: 376, sy: 2272 });
-    // sleep faces the avatar's own direction: south row at 24*142, north at 28*142.
-    expect(atlas.avatar("hero", "south", 0, "sleep")).toMatchObject({ sx: 0, sy: 3408 });
-    expect(atlas.avatar("hero", "north", 0, "sleep")).toMatchObject({ sx: 0, sy: 3976 });
+    // Hero: walk/idle/attack/sleep + hit/ko/getup, all 8-dir, 188×146 frames.
+    expect(atlas.avatar("hero", "south", 0)).toMatchObject({ sx: 0, sy: 0, sw: 188, sh: 146 });
+    expect(atlas.avatar("hero", "south-east", 1)).toMatchObject({ sx: 188, sy: 146 });
+    // idle block starts at 8*146, sword(attack) at 16*146.
+    expect(atlas.avatar("hero", "south-east", 1, "idle")).toMatchObject({ sx: 188, sy: 1314 });
+    expect(atlas.avatar("hero", "south", 2, "sword")).toMatchObject({ sx: 376, sy: 2336 });
+    // sleep faces the avatar's own direction: south row at 24*146, north at 28*146.
+    expect(atlas.avatar("hero", "south", 0, "sleep")).toMatchObject({ sx: 0, sy: 3504 });
+    expect(atlas.avatar("hero", "north", 0, "sleep")).toMatchObject({ sx: 0, sy: 4088 });
+    // combat blocks: hit at 32*146, ko at 40*146, getup at 48*146.
+    expect(atlas.avatar("hero", "south", 0, "hit")).toMatchObject({ sx: 0, sy: 4672 });
+    expect(atlas.avatar("hero", "south", 3, "ko")).toMatchObject({ sx: 564, sy: 5840 });
+    expect(atlas.avatar("hero", "south", 0, "getup")).toMatchObject({ sx: 0, sy: 7008 });
     expect(atlas.avatarFrameCount("hero", "walk")).toBe(4);
     // Hero has a single idle variant.
     expect(atlas.avatarMeta("hero")).toMatchObject({ hasIdle: true, hasIdle2: false });
@@ -122,7 +135,8 @@ describe("sprite atlas contract", () => {
 
   it("slices the fully-animated knight across walk/idle/idle2/sword/sleep blocks", () => {
     const atlas = loadedAtlas();
-    // 188×151 frames; walk rows 0.., idle 1208.., idle2 2416.., sword(attack) 3624.., sleep 4832.
+    // 188×151 frames; walk 0.., idle 1208.., idle2 2416.., sword(attack) 3624..,
+    // sleep 4832.., hit 6040.., ko 7248.., getup 8456.
     expect(atlas.avatar("knight", "south", 0)).toMatchObject({ sx: 0, sy: 0, sw: 188, sh: 151 });
     expect(atlas.avatar("knight", "east", 1, "idle")).toMatchObject({ sx: 188, sy: 1510 });
     // The knight carries a second idle stance (idle2) as a full 8-dir block.
@@ -131,20 +145,23 @@ describe("sprite atlas contract", () => {
     // sleep faces the avatar's own direction.
     expect(atlas.avatar("knight", "south", 0, "sleep")).toMatchObject({ sx: 0, sy: 4832 });
     expect(atlas.avatar("knight", "north", 0, "sleep")).toMatchObject({ sx: 0, sy: 5436 });
+    expect(atlas.avatar("knight", "east", 1, "hit")).toMatchObject({ sx: 188, sy: 6342 });
+    expect(atlas.avatar("knight", "south", 3, "ko")).toMatchObject({ sx: 564, sy: 7248 });
+    expect(atlas.avatar("knight", "north", 0, "getup")).toMatchObject({ sx: 0, sy: 9060 });
     expect(atlas.avatarFrameCount("knight", "sword")).toBe(4);
     expect(atlas.avatarMeta("knight")).toMatchObject({ hasIdle: true, hasIdle2: true });
   });
 
   it("falls back to the default hero block for an unknown avatar id", () => {
     const atlas = loadedAtlas();
-    expect(atlas.avatar("who", "south", 0)).toMatchObject({ sx: 0, sy: 0, sw: 188, sh: 142 });
+    expect(atlas.avatar("who", "south", 0)).toMatchObject({ sx: 0, sy: 0, sw: 188, sh: 146 });
   });
 
   it("auto-loads the roster sheets so the default hero renders on any map", () => {
     // Every iso avatar sheet loads on creation, independent of the active map — so
     // bots and anyone on the default avatar always draw.
     const atlas = createSpriteAtlas();
-    expect(atlas.avatar("hero", "south")).toMatchObject({ sx: 0, sy: 0, sw: 188, sh: 142 });
+    expect(atlas.avatar("hero", "south")).toMatchObject({ sx: 0, sy: 0, sw: 188, sh: 146 });
   });
 
   it("draws board modal art for a known asset id", () => {

@@ -27,8 +27,8 @@ export const SERVER_EVENTS = Object.freeze({
 });
 
 const DIRECTIONS = new Set(["up", "down", "left", "right"]);
-const POSES = new Set(["standing", "sitting"]);
-const ACTIONS = new Set(["sword"]);
+const POSES = new Set(["standing", "sitting", "down"]);
+const ACTIONS = new Set(["sword", "hit", "ko", "getup"]);
 
 /**
  * Normalize a single participant record into a fully-populated object.
@@ -45,6 +45,7 @@ export function normalizeParticipant(key, raw = {}) {
     y: toInt(raw.y, 0),
     dir: DIRECTIONS.has(raw.dir) ? raw.dir : "down",
     pose: POSES.has(raw.pose) ? raw.pose : "standing",
+    hp: toInt(raw.hp, 100),
     moving: raw.moving === true,
     online: raw.online !== false,
     muted: raw.muted === true,
