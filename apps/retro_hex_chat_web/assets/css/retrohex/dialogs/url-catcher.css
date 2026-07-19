@@ -1,0 +1,194 @@
+/* URL Catcher is a captured-content viewer: filters and sort stay compact, while
+   each URL becomes a readable entry with preview and source metadata. */
+.uc-dialog {
+  scrollbar-width: thin;
+}
+
+.uc-dialog:focus {
+  outline: none;
+}
+
+.uc-toolbar {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.uc-filter-form {
+  flex: 0 0 150px;
+  min-width: 0;
+}
+
+.uc-select-trigger {
+  width: 100%;
+  min-width: 0;
+}
+
+.uc-search-form {
+  display: flex;
+  min-width: 220px;
+  flex: 1 1 280px;
+  gap: 6px;
+}
+
+.uc-search-input {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.uc-sort-row {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 2px;
+  scrollbar-width: thin;
+}
+
+.uc-sort-button {
+  height: auto;
+  min-height: 24px;
+  flex: 0 0 auto;
+  gap: 4px;
+  padding: 2px 6px;
+  white-space: nowrap;
+}
+
+.uc-entry-list {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-height: 160px;
+  overscroll-behavior: contain;
+  padding: 6px;
+  background: #ffffff;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}
+
+.uc-entry,
+.uc-entry-url,
+.uc-preview-title,
+.uc-entry-meta,
+.uc-empty-state {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.uc-entry {
+  display: grid;
+  gap: 6px;
+  padding: 8px 10px;
+  border: 1px solid #808080;
+  background: #c0c0c0;
+  color: #000000;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}
+
+.uc-entry-url {
+  display: block;
+  font-family: "Courier New", "Lucida Console", ui-monospace, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
+  white-space: normal;
+}
+
+.uc-preview-title {
+  color: #606060;
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.uc-entry-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  color: #606060;
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.uc-meta-label {
+  margin-right: 3px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.uc-empty-state {
+  display: grid;
+  min-height: 112px;
+  place-items: center;
+  padding: 12px;
+  border: 1px dashed #808080;
+  background: #dfdfdf;
+  font-size: 12px;
+}
+
+.uc-action-button {
+  white-space: nowrap;
+}
+
+.uc-status-line {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.desktop--stacked .uc-dialog {
+  padding-bottom: 8px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.desktop--stacked .uc-toolbar {
+  align-items: stretch;
+  gap: 8px;
+}
+
+.desktop--stacked .uc-filter-form,
+.desktop--stacked .uc-search-form {
+  flex-basis: 100%;
+  width: 100%;
+}
+
+.desktop--stacked .uc-search-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.desktop--stacked .uc-sort-row {
+  padding-bottom: 4px;
+  scroll-padding-inline: 12px;
+}
+
+.desktop--stacked .uc-sort-button,
+.desktop--stacked .uc-action-button {
+  min-height: 40px;
+  padding-inline: 12px;
+}
+
+.desktop--stacked .uc-entry-list {
+  min-height: 136px;
+  max-height: min(46vh, 360px);
+  flex: 0 0 auto;
+}
+
+.desktop--stacked .uc-entry {
+  min-height: 86px;
+  padding: 9px 10px;
+}
+
+.desktop--stacked .uc-dialog input:not([type="checkbox"]):not([type="radio"]) {
+  min-height: 40px;
+  min-width: 0;
+  font-size: 16px;
+}
+

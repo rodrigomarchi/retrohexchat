@@ -1,0 +1,271 @@
+/* Custom Menus is a single mobile-first editor surface: the same entry-list
+   item appears on every viewport, while available space decides whether the
+   edit form sits beside or below the list. */
+.cm-dialog {
+  scrollbar-width: thin;
+}
+
+.cm-dialog:focus {
+  outline: none;
+}
+
+.cm-tabs-shell {
+  position: relative;
+}
+
+.cm-dialog .tabs-content {
+  min-height: 0;
+}
+
+.cm-editor {
+  min-height: 0;
+  align-items: flex-start;
+}
+
+.cm-list-pane {
+  min-width: 0;
+}
+
+.cm-entry-list {
+  display: grid;
+  gap: 6px;
+  min-height: 126px;
+  overscroll-behavior: contain;
+  padding: 6px;
+  background: #ffffff;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}
+
+.cm-menu-entry,
+.cm-entry-label,
+.cm-entry-command,
+.cm-form-label,
+.cm-edit-form {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.cm-menu-entry {
+  display: grid;
+  grid-template-columns: minmax(112px, 0.38fr) minmax(0, 1fr);
+  gap: 6px 12px;
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #808080;
+  background: #c0c0c0;
+  color: #000000;
+  text-align: left;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}
+
+.cm-menu-entry:hover {
+  background: #dfdfdf;
+}
+
+.cm-menu-entry:focus-visible {
+  outline: 2px solid #000000;
+  outline-offset: 1px;
+}
+
+.cm-menu-entry.bg-selection-bg {
+  background: #000080;
+  color: #ffffff;
+}
+
+.cm-entry-label {
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.cm-entry-command {
+  display: grid;
+  gap: 2px;
+  line-height: 1.35;
+}
+
+.cm-entry-command-label {
+  color: #606060;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.cm-menu-entry.bg-selection-bg .cm-entry-command-label {
+  color: inherit;
+}
+
+.cm-entry-command code {
+  font-family: "Courier New", "Lucida Console", ui-monospace, monospace;
+  font-size: 11px;
+  white-space: normal;
+}
+
+.cm-empty-state {
+  display: grid;
+  min-height: 94px;
+  place-items: center;
+  padding: 12px;
+  border: 1px dashed #808080;
+  background: #dfdfdf;
+  font-size: 12px;
+}
+
+.cm-action-row,
+.cm-form-actions,
+.cm-dialog-footer {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.cm-action-button {
+  white-space: nowrap;
+}
+
+.cm-edit-form {
+  width: 240px;
+  min-width: 220px;
+  max-width: 100%;
+}
+
+.cm-input {
+  min-width: 0;
+}
+
+.desktop--stacked .cm-dialog {
+  padding-bottom: 8px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.desktop--stacked .cm-tabs {
+  min-width: 0;
+}
+
+.desktop--stacked .cm-main-tabs {
+  flex-wrap: nowrap !important;
+  align-items: end;
+  gap: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 6px 6px 0;
+  scroll-padding-inline: 36px;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+}
+
+.desktop--stacked .cm-main-tabs::-webkit-scrollbar {
+  height: 6px;
+}
+
+.desktop--stacked .cm-main-tabs::-webkit-scrollbar-track {
+  background: #dfdfdf;
+}
+
+.desktop--stacked .cm-main-tabs::-webkit-scrollbar-thumb {
+  background: #808080;
+  border: 1px solid #606060;
+}
+
+.desktop--stacked .cm-tabs-shell::before,
+.desktop--stacked .cm-tabs-shell::after {
+  position: absolute;
+  top: 6px;
+  bottom: 1px;
+  z-index: 20;
+  display: flex;
+  width: 34px;
+  align-items: center;
+  color: #000080;
+  font-weight: 700;
+  opacity: 0;
+  pointer-events: none;
+  text-shadow: 1px 1px #ffffff;
+}
+
+.desktop--stacked .cm-tabs-shell::before {
+  content: "<";
+  left: 0;
+  justify-content: flex-start;
+  padding-left: 4px;
+  border-left: 1px solid #808080;
+  background: linear-gradient(270deg, rgb(192 192 192 / 0), #c0c0c0 58%);
+}
+
+.desktop--stacked .cm-tabs-shell::after {
+  content: ">";
+  right: 0;
+  justify-content: flex-end;
+  padding-right: 4px;
+  border-right: 1px solid #808080;
+  background: linear-gradient(90deg, rgb(192 192 192 / 0), #c0c0c0 58%);
+}
+
+.desktop--stacked .cm-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="channel"])::before,
+.desktop--stacked .cm-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="chat"])::before,
+.desktop--stacked .cm-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="nicklist"])::after,
+.desktop--stacked .cm-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="channel"])::after {
+  opacity: 1;
+}
+
+.desktop--stacked .cm-main-tabs .tabs-trigger {
+  flex: 0 0 auto;
+  min-height: 40px;
+  padding: 7px 12px 5px;
+}
+
+.desktop--stacked .cm-main-tabs .tabs-trigger[data-state="active"] {
+  padding-top: 9px;
+}
+
+.desktop--stacked .cm-tab-content {
+  padding: 8px;
+}
+
+.desktop--stacked .cm-editor {
+  flex-direction: column;
+  gap: 8px;
+}
+
+.desktop--stacked .cm-list-pane,
+.desktop--stacked .cm-edit-form {
+  width: 100%;
+}
+
+.desktop--stacked .cm-entry-list {
+  max-height: min(42vh, 320px);
+}
+
+.desktop--stacked .cm-menu-entry {
+  grid-template-columns: minmax(0, 1fr);
+  min-height: 64px;
+  padding: 9px 10px;
+}
+
+.desktop--stacked .cm-action-row,
+.desktop--stacked .cm-form-actions,
+.desktop--stacked .cm-dialog-footer {
+  gap: 6px;
+}
+
+.desktop--stacked .cm-action-button {
+  min-height: 40px;
+  padding-inline: 12px;
+}
+
+.desktop--stacked .cm-edit-form {
+  min-width: 0;
+}
+
+.desktop--stacked .cm-dialog input:not([type="checkbox"]):not([type="radio"]) {
+  min-height: 40px;
+  min-width: 0;
+  font-size: 16px;
+}
+

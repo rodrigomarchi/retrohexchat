@@ -58,9 +58,8 @@ defmodule RetroHexChatWeb.UserLookupFeatureTest do
         )
         |> Floki.parse_document!()
 
-      # Index 0 is the mobile "Menu" section; Tools is the 4th desktop menu.
-      sections = Floki.find(document, "nav > div")
-      tools_section = Enum.at(sections, 4)
+      sections = Floki.find(document, ".app-menu-bar__desktop-menu")
+      tools_section = Enum.at(sections, 3)
 
       assert "open_user_lookup" in menu_actions(tools_section)
 

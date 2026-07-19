@@ -1,0 +1,136 @@
+/* Mute duration is a tiny duration prompt; keep it compact while preserving a
+   touch-safe text field and a clear target/duration/action hierarchy. */
+.mud-dialog-wrap {
+  width: min(calc(100vw - 16px), 440px);
+  max-width: calc(100vw - 16px);
+  padding: 0;
+}
+
+.mud-dialog-wrap > [id$="-surface"] {
+  width: 100%;
+  min-height: 0;
+  max-height: calc(100dvh - 16px);
+}
+
+.mud-dialog-body {
+  display: grid;
+  flex: 0 1 auto;
+  gap: 10px;
+  padding: 12px;
+  overflow-y: auto;
+}
+
+.mud-form,
+.mud-target-copy,
+.mud-field-group {
+  display: grid;
+  min-width: 0;
+}
+
+.mud-form {
+  gap: 10px;
+}
+
+.mud-target-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: 8px;
+  min-width: 0;
+  padding: 8px;
+  background: #dfdfdf;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080;
+}
+
+.mud-target-icon {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  background: #ffffff;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}
+
+.mud-target-copy,
+.mud-field-group {
+  gap: 4px;
+}
+
+.mud-field-label,
+.mud-target-value,
+.mud-help-text {
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.mud-field-label {
+  color: #303030;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.mud-target-value {
+  color: #000080;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.mud-duration-input {
+  min-width: 0;
+  height: 36px;
+  font-size: 13px;
+}
+
+.mud-help-text {
+  color: #606060;
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.mud-action-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+  min-width: 0;
+}
+
+.mud-action-button {
+  min-width: 82px;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.desktop--stacked .mud-dialog-wrap {
+  width: min(calc(100vw - 16px), 420px);
+}
+
+.desktop--stacked .mud-duration-input,
+.desktop--stacked .mud-action-button {
+  min-height: 40px;
+}
+
+@media (max-width: 430px) {
+  .mud-dialog-body {
+    padding: 10px;
+  }
+
+  .mud-target-card {
+    padding: 8px;
+  }
+
+  .mud-action-button {
+    min-height: 40px;
+    padding-inline: 12px;
+  }
+}
+

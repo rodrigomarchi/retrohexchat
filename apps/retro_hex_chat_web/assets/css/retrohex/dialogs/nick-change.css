@@ -1,0 +1,149 @@
+/* Nick change is a short stateful form. It remains compact on mobile, but keeps
+   a touch-safe password field and right-aligned confirmation actions. */
+.nc-dialog-wrap {
+  width: min(calc(100vw - 16px), 500px);
+  max-width: calc(100vw - 16px);
+  padding: 0;
+}
+
+.nc-dialog-wrap > [id$="-surface"] {
+  width: 100%;
+  min-height: 0;
+  max-height: calc(100dvh - 16px);
+}
+
+.nc-dialog-body {
+  display: grid;
+  flex: 0 1 auto;
+  gap: 10px;
+  padding: 12px;
+  overflow-y: auto;
+}
+
+.nc-dialog-content,
+.nc-target-copy,
+.nc-field-group {
+  display: grid;
+  min-width: 0;
+}
+
+.nc-dialog-content {
+  gap: 10px;
+}
+
+.nc-target-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: 8px;
+  min-width: 0;
+  padding: 8px;
+  background: #dfdfdf;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080;
+}
+
+.nc-target-icon {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  background: #ffffff;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}
+
+.nc-target-copy,
+.nc-field-group {
+  gap: 4px;
+}
+
+.nc-field-label,
+.nc-target-value,
+.nc-notice,
+.nc-error {
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.nc-field-label {
+  color: #303030;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.nc-target-value {
+  color: #000080;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.nc-notice {
+  padding: 8px;
+  color: #303030;
+  font-size: 12px;
+  line-height: 1.4;
+  background: #c0c0c0;
+  box-shadow:
+    inset -1px -1px #808080,
+    inset 1px 1px #ffffff,
+    inset -2px -2px #0a0a0a,
+    inset 2px 2px #dfdfdf;
+}
+
+.nc-password-input {
+  min-width: 0;
+  height: 36px;
+  font-size: 13px;
+}
+
+.nc-error {
+  color: #800000;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.nc-dialog-footer {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+  padding: 0 12px 12px;
+}
+
+.nc-action-button {
+  min-width: 96px;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.desktop--stacked .nc-dialog-wrap {
+  width: min(calc(100vw - 16px), 420px);
+}
+
+.desktop--stacked .nc-password-input,
+.desktop--stacked .nc-action-button {
+  min-height: 40px;
+}
+
+@media (max-width: 430px) {
+  .nc-dialog-body {
+    padding: 10px;
+  }
+
+  .nc-target-card {
+    padding: 8px;
+  }
+
+  .nc-action-button {
+    min-height: 40px;
+    padding-inline: 12px;
+  }
+}
+

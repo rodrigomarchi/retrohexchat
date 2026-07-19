@@ -1,0 +1,544 @@
+/* ══════════════════════════════════════════════════════
+   P2P Connection Diagram — animated bilateral link
+   ══════════════════════════════════════════════════════ */
+
+/* ── Container ── */
+
+.p2p-diagram {
+  padding: 12px 8px;
+}
+
+.p2p-diagram__peers {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+/* ── Peer Panel ── */
+
+.p2p-diagram__peer {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 130px;
+  max-width: 160px;
+}
+
+.p2p-diagram__browser-icon {
+  width: 48px;
+  height: 48px;
+}
+
+.p2p-diagram__browser-svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Browser brand colors via CSS (not Elixir) */
+.p2p-diagram__browser-svg--chrome {
+  color: #4285f4;
+}
+.p2p-diagram__browser-svg--firefox {
+  color: #ff7139;
+}
+.p2p-diagram__browser-svg--safari {
+  color: #006cff;
+}
+.p2p-diagram__browser-svg--edge {
+  color: #0078d7;
+}
+.p2p-diagram__browser-svg--opera {
+  color: #ff1b2d;
+}
+
+/* ── Peer Info (whois) ── */
+
+.p2p-diagram__peer-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  text-align: center;
+}
+
+.p2p-diagram__peer-header {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.p2p-diagram__status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.p2p-diagram__status-dot--online {
+  background: var(--color-online);
+}
+
+.p2p-diagram__status-dot--offline {
+  background: var(--color-offline);
+  animation: diagram-pulse 2s ease-in-out infinite;
+}
+
+.p2p-diagram__nick {
+  font-weight: bold;
+  font-size: 0.875rem;
+}
+
+.p2p-diagram__you-label {
+  font-size: 0.75rem;
+  color: var(--color-muted);
+}
+
+.p2p-diagram__peer-status {
+  font-size: 0.75rem;
+  color: var(--color-muted);
+  font-style: italic;
+}
+
+.p2p-diagram__whois {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  margin-top: 2px;
+  font-size: 0.75rem;
+  color: var(--color-muted);
+}
+
+.p2p-diagram__whois-row {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  white-space: nowrap;
+}
+
+.p2p-diagram__whois-icon {
+  font-size: 10px;
+  line-height: 1;
+  width: 14px;
+  text-align: center;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.p2p-diagram__whois-svg {
+  width: 16px;
+  height: 16px;
+}
+
+.p2p-diagram__whois-value {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Link (connection line area) ── */
+
+.p2p-diagram__link {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-width: 100px;
+  padding-top: 16px;
+}
+
+.p2p-diagram__line-container {
+  position: relative;
+  width: 100%;
+  height: 4px;
+}
+
+.p2p-diagram__line {
+  position: absolute;
+  inset: 0;
+  border-radius: 2px;
+  background: #808080;
+}
+
+/* ── Dots (data flow particles) ── */
+
+.p2p-diagram__dots {
+  position: absolute;
+  inset: -3px 0;
+  height: 10px;
+  pointer-events: none;
+}
+
+.p2p-diagram__dot {
+  position: absolute;
+  top: 1px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-online);
+  opacity: 0;
+  transform: translateX(-50%);
+}
+
+/* ── Center Badge ── */
+
+.p2p-diagram__badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 4px 8px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  font-size: 0.75rem;
+  min-width: 80px;
+  text-align: center;
+}
+
+.p2p-diagram__badge-icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.p2p-diagram__badge-text {
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.p2p-diagram__badge-sub {
+  color: var(--color-muted);
+  white-space: nowrap;
+}
+
+.p2p-diagram__badge-progress {
+  width: 100%;
+}
+
+.p2p-diagram__badge-bar {
+  width: 100%;
+  height: 4px;
+  background: #e0e0e0;
+  border: 1px solid var(--color-border);
+}
+
+.p2p-diagram__badge-bar-fill {
+  width: var(--progress, 0%);
+  height: 100%;
+  background: var(--color-online);
+  transition: width 0.3s ease;
+}
+
+@media (max-width: 640px) {
+  #p2p-session-console .p2p-diagram {
+    padding: 6px 2px;
+    overflow: hidden;
+  }
+
+  #p2p-session-console .p2p-diagram__peers {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 6px;
+  }
+
+  #p2p-session-console .p2p-diagram__peer {
+    min-width: 0;
+    max-width: none;
+    width: 100%;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 6px;
+  }
+
+  #p2p-session-console .p2p-diagram__browser-icon {
+    width: 32px;
+    height: 32px;
+    flex: 0 0 auto;
+  }
+
+  #p2p-session-console .p2p-diagram__peer-info {
+    min-width: 0;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  #p2p-session-console .p2p-diagram__peer-header,
+  #p2p-session-console .p2p-diagram__whois-row {
+    max-width: 100%;
+  }
+
+  #p2p-session-console .p2p-diagram__nick,
+  #p2p-session-console .p2p-diagram__you-label,
+  #p2p-session-console .p2p-diagram__peer-status,
+  #p2p-session-console .p2p-diagram__whois-value {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  #p2p-session-console .p2p-diagram__link {
+    min-width: 0;
+    width: 100%;
+    padding-top: 0;
+  }
+
+  #p2p-session-console .p2p-diagram__badge {
+    min-width: 0;
+    max-width: 100%;
+    padding: 3px 6px;
+  }
+
+  #p2p-session-console .p2p-diagram__badge-text,
+  #p2p-session-console .p2p-diagram__badge-sub {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+/* ── State: Waiting ── */
+
+.p2p-diagram__link--waiting .p2p-diagram__line {
+  background: transparent;
+  border-bottom: 2px dotted #808080;
+  height: 0;
+  top: 2px;
+}
+
+.p2p-diagram__badge--waiting {
+  color: var(--color-muted);
+  border-color: #808080;
+}
+
+/* ── State: Ready ── */
+
+.p2p-diagram__link--ready .p2p-diagram__line {
+  background: repeating-linear-gradient(
+    90deg,
+    #606060 0,
+    #606060 8px,
+    transparent 8px,
+    transparent 14px
+  );
+}
+
+.p2p-diagram__badge--ready {
+  color: var(--color-muted);
+}
+
+/* ── State: Connecting ── */
+
+.p2p-diagram__link--connecting .p2p-diagram__line {
+  background: repeating-linear-gradient(
+    90deg,
+    var(--color-warning-alt) 0,
+    var(--color-warning-alt) 8px,
+    transparent 8px,
+    transparent 14px
+  );
+  background-size: 14px 100%;
+  animation: diagram-dash-scroll 0.8s linear infinite;
+}
+
+.p2p-diagram__badge--connecting {
+  color: var(--color-warning-alt);
+  border-color: var(--color-warning-alt);
+}
+
+/* ── State: Connected ── */
+
+.p2p-diagram__link--connected .p2p-diagram__line {
+  background: var(--color-online);
+  box-shadow: 0 0 6px var(--color-online);
+  animation: diagram-flash 0.6s ease-out;
+}
+
+.p2p-diagram__badge--connected {
+  color: var(--color-success);
+  border-color: var(--color-online);
+}
+
+/* ── State: Reconnecting ── */
+
+.p2p-diagram__link--reconnecting .p2p-diagram__line {
+  background: repeating-linear-gradient(
+    90deg,
+    var(--color-warning-alt) 0,
+    var(--color-warning-alt) 6px,
+    transparent 6px,
+    transparent 18px
+  );
+  background-size: 18px 100%;
+  animation: diagram-dash-scroll 1.2s linear infinite;
+}
+
+.p2p-diagram__badge--reconnecting {
+  color: var(--color-warning-alt);
+  border-color: var(--color-warning-alt);
+}
+
+/* ── State: Failed ── */
+
+.p2p-diagram__link--failed .p2p-diagram__line {
+  background: repeating-linear-gradient(
+    90deg,
+    var(--color-error) 0,
+    var(--color-error) 6px,
+    transparent 6px,
+    transparent 12px
+  );
+}
+
+.p2p-diagram__badge--failed {
+  color: var(--color-error);
+  border-color: var(--color-error);
+}
+
+/* ── State: Transferring ── */
+
+.p2p-diagram__link--transferring .p2p-diagram__line {
+  background: var(--color-online);
+  box-shadow: 0 0 8px var(--color-highlight-light);
+}
+
+.p2p-diagram__link--transferring .p2p-diagram__dot {
+  background: var(--color-highlight-light);
+}
+
+.p2p-diagram__badge--transferring {
+  border-color: var(--color-online);
+}
+
+/* ── State: Verifying ── */
+
+.p2p-diagram__link--verifying .p2p-diagram__line {
+  background: var(--color-online);
+  animation: diagram-pulse-line 1.5s ease-in-out infinite;
+}
+
+.p2p-diagram__badge--verifying {
+  color: var(--color-muted);
+  border-color: var(--color-online);
+}
+
+/* ── State: Audio Call ── */
+
+.p2p-diagram__link--audio-call .p2p-diagram__line {
+  background: var(--color-online);
+  box-shadow: 0 0 6px var(--color-success);
+}
+
+.p2p-diagram__link--audio-call .p2p-diagram__dot {
+  background: var(--color-success);
+}
+
+.p2p-diagram__badge--audio-call {
+  border-color: var(--color-online);
+}
+
+/* ── State: Video Call ── */
+
+.p2p-diagram__link--video-call .p2p-diagram__line {
+  background: var(--color-online);
+  height: 8px;
+  box-shadow: 0 0 12px var(--color-highlight-light);
+}
+
+.p2p-diagram__link--video-call .p2p-diagram__dot {
+  background: var(--color-highlight-light);
+  width: 10px;
+  height: 10px;
+}
+
+.p2p-diagram__badge--video-call {
+  border-color: var(--color-online);
+}
+
+/* ── State: Call Init ── */
+
+.p2p-diagram__link--call-init .p2p-diagram__line {
+  background: repeating-linear-gradient(
+    90deg,
+    var(--color-warning-alt) 0,
+    var(--color-warning-alt) 8px,
+    transparent 8px,
+    transparent 14px
+  );
+  background-size: 14px 100%;
+  animation: diagram-dash-scroll 0.8s linear infinite;
+}
+
+.p2p-diagram__badge--call-init {
+  color: var(--color-warning-alt);
+  border-color: var(--color-warning-alt);
+}
+
+/* ── Animations ── */
+
+@keyframes diagram-dash-scroll {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 28px 0;
+  }
+}
+
+@keyframes diagram-flash {
+  0% {
+    filter: brightness(2);
+  }
+  100% {
+    filter: brightness(1);
+  }
+}
+
+@keyframes diagram-pulse {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes diagram-pulse-line {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes activity-dot-blink {
+  0%,
+  45% {
+    opacity: 1;
+  }
+  46%,
+  100% {
+    opacity: 0.25;
+  }
+}
+
+@keyframes activity-icon-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 0.72;
+    transform: translateY(-1px);
+  }
+}
+

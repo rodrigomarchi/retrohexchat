@@ -1,0 +1,217 @@
+/* User Lookup is a compact query + result surface. The same structure works on
+   desktop and stacked mobile: compact form, scrollable result body, stable
+   action rows. */
+.ul-window,
+.ul-window-body,
+.ul-panel,
+.ul-form,
+.ul-result-region,
+.ul-result-card {
+  min-width: 0;
+}
+
+.desktop--stacked .ul-window {
+  min-width: 0 !important;
+}
+
+.ul-window-body {
+  overflow-x: hidden;
+}
+
+.ul-panel {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ul-form {
+  display: grid;
+  flex: 0 0 auto;
+  gap: 8px;
+}
+
+.ul-field-row {
+  display: grid;
+  min-width: 0;
+  gap: 4px;
+}
+
+.ul-field-label {
+  min-width: 0;
+  color: #202020;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.ul-field-control {
+  display: grid;
+  min-width: 0;
+  gap: 4px;
+}
+
+.ul-nickname-input {
+  min-width: 0;
+  height: 34px;
+  font-size: 13px;
+}
+
+.ul-error {
+  margin: 0;
+  color: var(--color-destructive, #a40000);
+  font-size: 12px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.ul-action-row,
+.ul-result-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+  min-width: 0;
+}
+
+.ul-action-button {
+  min-width: 86px;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.ul-result-region {
+  display: flex;
+  min-height: 0;
+  flex: 1 1 auto;
+  flex-direction: column;
+}
+
+.ul-empty-state {
+  display: flex;
+  min-height: 96px;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed #808080;
+  color: #606060;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.ul-result-card {
+  display: flex;
+  min-height: 0;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ul-result-header {
+  display: flex;
+  min-width: 0;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 4px;
+  color: #202020;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.ul-result-title {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.ul-result-list {
+  min-height: 0;
+  flex: 1 1 auto;
+  margin: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 8px;
+  background: #ffffff;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}
+
+.ul-result-row {
+  display: grid;
+  grid-template-columns: minmax(116px, 0.42fr) minmax(0, 1fr);
+  min-width: 0;
+  gap: 8px;
+  padding-block: 3px;
+}
+
+.ul-result-label,
+.ul-result-value {
+  min-width: 0;
+  font-size: 12px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.ul-result-label {
+  color: #202020;
+  font-weight: 700;
+}
+
+.ul-result-value {
+  color: #202020;
+}
+
+.desktop--stacked .ul-panel {
+  gap: 10px;
+}
+
+.desktop--stacked .ul-field-label,
+.desktop--stacked .ul-error,
+.desktop--stacked .ul-result-header,
+.desktop--stacked .ul-empty-state,
+.desktop--stacked .ul-result-label,
+.desktop--stacked .ul-result-value {
+  font-size: 13px;
+}
+
+.desktop--stacked .ul-nickname-input {
+  min-height: 42px;
+  font-size: 16px;
+}
+
+.desktop--stacked .ul-action-button {
+  min-height: 40px;
+  padding-inline: 12px;
+}
+
+.desktop--stacked .ul-result-row {
+  grid-template-columns: 1fr;
+  gap: 2px;
+  padding-block: 5px;
+}
+
+.desktop--stacked .ul-result-list {
+  padding: 10px;
+}
+
+@media (min-width: 760px) {
+  .ul-form {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+  }
+
+  .ul-action-row {
+    padding-bottom: 1px;
+  }
+}
+
+@media (max-width: 430px) {
+  .ul-action-button {
+    min-width: 104px;
+  }
+}
+

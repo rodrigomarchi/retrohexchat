@@ -1,0 +1,227 @@
+/* Notify List uses a single entry-list surface for tracked buddies, so note,
+   status and last-seen context remain readable on desktop and mobile. */
+.nl-dialog {
+  scrollbar-width: thin;
+}
+
+.nl-dialog:focus {
+  outline: none;
+}
+
+.nl-settings {
+  display: grid;
+  gap: 6px;
+}
+
+.nl-setting-row {
+  display: flex;
+  min-width: 0;
+  cursor: pointer;
+  align-items: flex-start;
+  gap: 6px;
+  font-size: 12px;
+  line-height: 1.35;
+  user-select: none;
+}
+
+.nl-setting-row span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.nl-entry-list {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-height: 170px;
+  overscroll-behavior: contain;
+  padding: 6px;
+  background: #ffffff;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}
+
+.nl-entry,
+.nl-entry-header,
+.nl-entry-name,
+.nl-entry-meta,
+.nl-entry-note,
+.nl-empty-state,
+.nl-sub-form {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.nl-entry {
+  display: grid;
+  gap: 6px;
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #808080;
+  background: #c0c0c0;
+  color: #000000;
+  text-align: left;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}
+
+.nl-entry:hover {
+  background: #dfdfdf;
+}
+
+.nl-entry:focus-visible {
+  outline: 2px solid #000000;
+  outline-offset: 1px;
+}
+
+.nl-entry.bg-selection-bg {
+  background: #000080;
+  color: #ffffff;
+}
+
+.nl-entry-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px 10px;
+}
+
+.nl-entry-name {
+  font-weight: 700;
+}
+
+.nl-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.nl-status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+}
+
+.nl-status--online .nl-status-dot {
+  background: #008000;
+}
+
+.nl-status--offline {
+  color: #606060;
+}
+
+.nl-status--offline .nl-status-dot {
+  background: #606060;
+}
+
+.nl-entry-meta,
+.nl-entry-note {
+  color: #606060;
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.nl-entry.bg-selection-bg .nl-status,
+.nl-entry.bg-selection-bg .nl-entry-meta,
+.nl-entry.bg-selection-bg .nl-entry-note {
+  color: inherit;
+}
+
+.nl-entry-meta-label {
+  margin-right: 3px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.nl-empty-state {
+  display: grid;
+  min-height: 112px;
+  place-items: center;
+  padding: 12px;
+  border: 1px dashed #808080;
+  background: #dfdfdf;
+  font-size: 12px;
+}
+
+.nl-action-row,
+.nl-form-actions,
+.nl-dialog-footer {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.nl-action-button {
+  white-space: nowrap;
+}
+
+.nl-sub-form,
+.nl-field {
+  display: grid;
+  gap: 8px;
+}
+
+.nl-input {
+  min-width: 0;
+}
+
+.nl-note-input {
+  min-height: 88px;
+}
+
+.desktop--stacked .nl-dialog {
+  padding-bottom: 8px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.desktop--stacked .nl-settings {
+  gap: 8px;
+}
+
+.desktop--stacked .nl-setting-row {
+  align-items: flex-start;
+  font-size: 13px;
+}
+
+.desktop--stacked .nl-entry-list {
+  min-height: 132px;
+  max-height: min(44vh, 340px);
+  flex: 0 0 auto;
+}
+
+.desktop--stacked .nl-entry {
+  min-height: 86px;
+  padding: 9px 10px;
+}
+
+.desktop--stacked .nl-action-row,
+.desktop--stacked .nl-form-actions,
+.desktop--stacked .nl-dialog-footer {
+  gap: 6px;
+}
+
+.desktop--stacked .nl-action-button {
+  min-height: 40px;
+  padding-inline: 12px;
+}
+
+.desktop--stacked .nl-dialog input:not([type="checkbox"]):not([type="radio"]),
+.desktop--stacked .nl-dialog textarea {
+  min-height: 40px;
+  min-width: 0;
+  font-size: 16px;
+}
+
+.desktop--stacked .nl-note-input {
+  min-height: 104px;
+}
+

@@ -1,0 +1,126 @@
+/* Compact confirmation dialogs use the same message-box pattern on desktop and
+   mobile: icon + copy + right-aligned actions, without stretching tiny prompts
+   into a full-height mobile screen. */
+.cd-dialog-wrap {
+  width: min(calc(100vw - 16px), 480px);
+  max-width: calc(100vw - 16px);
+  padding: 0;
+}
+
+.cd-dialog-wrap > [id$="-surface"] {
+  width: 100%;
+  min-height: 0;
+  max-height: calc(100dvh - 16px);
+}
+
+.cd-dialog-body {
+  display: grid;
+  flex: 0 1 auto;
+  gap: 10px;
+  padding: 12px;
+  overflow-y: auto;
+}
+
+.cd-message-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: 10px;
+  min-width: 0;
+}
+
+.cd-message-icon {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  background: #ffffff;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}
+
+.cd-message-copy,
+.cd-paste-stack {
+  display: grid;
+  min-width: 0;
+  gap: 6px;
+}
+
+.cd-message-text,
+.cd-message-note,
+.cd-message-question,
+.cd-callout {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.cd-message-text {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.cd-message-note,
+.cd-message-question {
+  margin: 0;
+  color: #606060;
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.cd-callout {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 8px;
+  background: #ffffff;
+  color: #000000;
+  font-size: 11px;
+  line-height: 1.35;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}
+
+.cd-callout p {
+  margin: 0;
+}
+
+.cd-dialog-footer {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+  padding: 0 12px 12px;
+}
+
+.cd-dialog-action {
+  min-width: 90px;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.desktop--stacked .cd-dialog-wrap {
+  width: min(calc(100vw - 16px), 420px);
+}
+
+.desktop--stacked .cd-dialog-action {
+  min-height: 40px;
+  padding-inline: 12px;
+}
+
+@media (max-width: 430px) {
+  .cd-message-row {
+    gap: 8px;
+  }
+
+  .cd-message-icon {
+    width: 28px;
+    height: 28px;
+  }
+}
+

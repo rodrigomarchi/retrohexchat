@@ -1,0 +1,231 @@
+/* Timers uses the list-editor pattern with timing metadata and a command
+   textarea so scheduling remains readable on both desktop and mobile. */
+.tm-dialog {
+  scrollbar-width: thin;
+}
+
+.tm-dialog:focus {
+  outline: none;
+}
+
+.tm-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tm-editor--editing {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 0.86fr);
+  align-items: start;
+}
+
+.tm-list-pane {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tm-timer-list {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-height: 148px;
+  flex: 1 1 auto;
+  overscroll-behavior: contain;
+  padding: 6px;
+  background: #ffffff;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}
+
+.tm-timer-entry,
+.tm-timer-name,
+.tm-timer-meta,
+.tm-timer-command,
+.tm-edit-form,
+.tm-note,
+.tm-error {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.tm-timer-entry {
+  display: grid;
+  gap: 6px;
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #808080;
+  background: #c0c0c0;
+  color: #000000;
+  text-align: left;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}
+
+.tm-timer-entry:hover {
+  background: #dfdfdf;
+}
+
+.tm-timer-entry:focus-visible {
+  outline: 2px solid #000000;
+  outline-offset: 1px;
+}
+
+.tm-timer-entry.bg-selection-bg {
+  background: #000080;
+  color: #ffffff;
+}
+
+.tm-timer-name {
+  font-family: "Courier New", "Lucida Console", ui-monospace, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.tm-timer-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  color: #606060;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.tm-timer-entry.bg-selection-bg .tm-timer-meta {
+  color: inherit;
+}
+
+.tm-timer-meta-label {
+  margin-right: 3px;
+  text-transform: uppercase;
+}
+
+.tm-timer-command {
+  font-family: "Courier New", "Lucida Console", ui-monospace, monospace;
+  font-size: 12px;
+  line-height: 1.35;
+  white-space: normal;
+}
+
+.tm-empty-state {
+  display: grid;
+  min-height: 96px;
+  place-items: center;
+  padding: 12px;
+  border: 1px dashed #808080;
+  background: #dfdfdf;
+  font-size: 12px;
+}
+
+.tm-note {
+  padding-inline: 2px;
+}
+
+.tm-action-row,
+.tm-form-actions,
+.tm-dialog-footer {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.tm-action-button {
+  white-space: nowrap;
+}
+
+.tm-edit-form {
+  display: flex;
+  max-height: 100%;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tm-form-fields,
+.tm-field {
+  display: grid;
+  gap: 4px;
+}
+
+.tm-form-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.tm-input {
+  min-width: 0;
+}
+
+.tm-command-input {
+  min-height: 88px;
+}
+
+.tm-repeat-row {
+  width: fit-content;
+  max-width: 100%;
+}
+
+.desktop--stacked .tm-dialog {
+  padding-bottom: 8px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.desktop--stacked .tm-editor,
+.desktop--stacked .tm-editor--editing {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+}
+
+.desktop--stacked .tm-timer-list {
+  min-height: 112px;
+  max-height: min(38vh, 300px);
+  flex: 0 0 auto;
+}
+
+.desktop--stacked .tm-timer-entry {
+  min-height: 74px;
+  padding: 9px 10px;
+}
+
+.desktop--stacked .tm-edit-form {
+  width: 100%;
+  max-height: none;
+}
+
+.desktop--stacked .tm-action-row,
+.desktop--stacked .tm-form-actions,
+.desktop--stacked .tm-dialog-footer {
+  gap: 6px;
+}
+
+.desktop--stacked .tm-action-button {
+  min-height: 40px;
+  padding-inline: 12px;
+}
+
+.desktop--stacked .tm-repeat-row {
+  min-height: 40px;
+  align-items: center;
+}
+
+.desktop--stacked .tm-dialog input:not([type="checkbox"]):not([type="radio"]),
+.desktop--stacked .tm-dialog textarea {
+  min-height: 40px;
+  min-width: 0;
+  font-size: 16px;
+}
+
+.desktop--stacked .tm-command-input {
+  min-height: 112px;
+}
+

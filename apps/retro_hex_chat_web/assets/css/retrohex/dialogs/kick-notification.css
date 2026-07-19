@@ -1,0 +1,139 @@
+/* Kick notification is also a compact message box, but it is a notification,
+   not a confirmation: it emphasizes channel, operator and reason as scanable
+   facts while preserving one mobile-first surface across desktop and mobile. */
+.kd-dialog-wrap {
+  width: min(calc(100vw - 16px), 460px);
+  max-width: calc(100vw - 16px);
+  padding: 0;
+}
+
+.kd-dialog-wrap > [id$="-surface"] {
+  width: 100%;
+  min-height: 0;
+  max-height: calc(100dvh - 16px);
+}
+
+.kd-dialog-body {
+  display: grid;
+  flex: 0 1 auto;
+  gap: 10px;
+  padding: 12px;
+  overflow-y: auto;
+}
+
+.kd-message-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: 10px;
+  min-width: 0;
+}
+
+.kd-message-icon {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  background: #ffffff;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}
+
+.kd-message-copy,
+.kd-details {
+  display: grid;
+  min-width: 0;
+}
+
+.kd-message-copy {
+  gap: 8px;
+}
+
+.kd-details {
+  gap: 4px;
+  margin: 0;
+}
+
+.kd-detail {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  align-items: start;
+  gap: 8px;
+  min-width: 0;
+}
+
+.kd-detail dt {
+  color: #606060;
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.kd-detail dd {
+  min-width: 0;
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.kd-message-title,
+.kd-message-note {
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.kd-message-title {
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.kd-message-note {
+  padding-top: 6px;
+  border-top: 1px solid #808080;
+  color: #606060;
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.kd-dialog-footer {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+  padding: 0 12px 12px;
+}
+
+.kd-dialog-action {
+  min-width: 84px;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.desktop--stacked .kd-dialog-wrap {
+  width: min(calc(100vw - 16px), 420px);
+}
+
+.desktop--stacked .kd-dialog-action {
+  min-height: 40px;
+  padding-inline: 12px;
+}
+
+@media (max-width: 430px) {
+  .kd-message-row {
+    gap: 8px;
+  }
+
+  .kd-message-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .kd-detail {
+    grid-template-columns: 1fr;
+    gap: 1px;
+  }
+}
+

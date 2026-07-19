@@ -1,0 +1,31 @@
+body {
+  font-family: "Source Code Pro", "Courier New", monospace;
+  font-size: 16px;
+  background-color: #008080;
+  color: #222222;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+:root {
+  --rhc-visual-viewport-height: 100dvh;
+  --rhc-visual-viewport-width: 100vw;
+  --rhc-visual-viewport-offset-top: 0px;
+  --rhc-visual-viewport-offset-left: 0px;
+  --rhc-keyboard-inset-bottom: 0px;
+}
+
+.chat-app-root {
+  bottom: auto;
+  width: 100vw;
+  width: var(--rhc-visual-viewport-width, 100vw);
+  height: 100dvh;
+  height: var(--rhc-visual-viewport-height, 100dvh);
+  transform: translate(
+    var(--rhc-visual-viewport-offset-left, 0px),
+    var(--rhc-visual-viewport-offset-top, 0px)
+  );
+}
+

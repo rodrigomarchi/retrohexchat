@@ -1,0 +1,167 @@
+/* Knock request is a small optional-message form reached from Channel List.
+   Keep it compact, highlight the target channel, and reserve vertical space
+   for validation states without stretching into a mobile page. */
+.kr-dialog-wrap {
+  width: min(calc(100vw - 16px), 500px);
+  max-width: calc(100vw - 16px);
+  padding: 0;
+}
+
+.kr-dialog-wrap > [id$="-surface"] {
+  width: 100%;
+  min-height: 0;
+  max-height: calc(100dvh - 16px);
+}
+
+.kr-dialog-body {
+  display: grid;
+  flex: 0 1 auto;
+  gap: 10px;
+  padding: 12px;
+  overflow-y: auto;
+}
+
+.kr-form,
+.kr-channel-copy,
+.kr-field-group {
+  display: grid;
+  min-width: 0;
+}
+
+.kr-form {
+  gap: 10px;
+}
+
+.kr-channel-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: 8px;
+  min-width: 0;
+  padding: 8px;
+  background: #dfdfdf;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080;
+}
+
+.kr-channel-icon {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  background: #ffffff;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}
+
+.kr-channel-copy,
+.kr-field-group {
+  gap: 4px;
+}
+
+.kr-field-label,
+.kr-channel-value,
+.kr-counter,
+.kr-error {
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.kr-field-label {
+  color: #303030;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.kr-channel-value {
+  color: #000080;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.kr-message-input {
+  min-width: 0;
+  min-height: 104px;
+  max-height: min(36dvh, 220px);
+  resize: vertical;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.kr-counter {
+  justify-self: end;
+  color: #606060;
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.kr-counter--error,
+.kr-error {
+  color: #800000;
+}
+
+.kr-error {
+  padding: 6px 8px;
+  background: #ffffff;
+  font-size: 11px;
+  line-height: 1.35;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}
+
+.kr-action-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+  min-width: 0;
+}
+
+.kr-action-button {
+  min-width: 116px;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.desktop--stacked .kr-dialog-wrap {
+  width: min(calc(100vw - 16px), 420px);
+}
+
+.desktop--stacked .kr-message-input {
+  min-height: 120px;
+  font-size: 16px;
+}
+
+.desktop--stacked .kr-action-button {
+  min-height: 40px;
+}
+
+@media (max-width: 430px) {
+  .kr-dialog-body {
+    padding: 10px;
+  }
+
+  .kr-channel-card {
+    padding: 8px;
+  }
+
+  .kr-message-input {
+    min-height: 118px;
+  }
+
+  .kr-action-button {
+    min-height: 40px;
+    padding-inline: 12px;
+  }
+}
+

@@ -1,0 +1,232 @@
+/* Auto Respond follows the list-editor pattern with enabled state, trigger,
+   channel scope and long command visible in the same entry surface. */
+.ar-dialog {
+  scrollbar-width: thin;
+}
+
+.ar-dialog:focus {
+  outline: none;
+}
+
+.ar-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ar-editor--editing {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.8fr);
+  align-items: start;
+}
+
+.ar-list-pane {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ar-rule-list {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-height: 148px;
+  flex: 1 1 auto;
+  overscroll-behavior: contain;
+  padding: 6px;
+  background: #ffffff;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}
+
+.ar-rule-entry,
+.ar-rule-trigger,
+.ar-rule-meta,
+.ar-rule-command,
+.ar-edit-form,
+.ar-error {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.ar-rule-entry {
+  display: grid;
+  gap: 6px;
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #808080;
+  background: #c0c0c0;
+  color: #000000;
+  text-align: left;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}
+
+.ar-rule-entry:hover {
+  background: #dfdfdf;
+}
+
+.ar-rule-entry:focus-visible {
+  outline: 2px solid #000000;
+  outline-offset: 1px;
+}
+
+.ar-rule-entry.bg-selection-bg {
+  background: #000080;
+  color: #ffffff;
+}
+
+.ar-rule-header,
+.ar-rule-meta,
+.ar-rule-status {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+}
+
+.ar-rule-header {
+  justify-content: space-between;
+}
+
+.ar-rule-trigger {
+  font-weight: 700;
+}
+
+.ar-rule-status {
+  color: #606060;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.ar-rule-entry.bg-selection-bg .ar-rule-status,
+.ar-rule-entry.bg-selection-bg .ar-rule-meta {
+  color: inherit;
+}
+
+.ar-rule-meta {
+  color: #606060;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.ar-rule-meta-label {
+  margin-right: 3px;
+  color: inherit;
+  text-transform: uppercase;
+}
+
+.ar-rule-command {
+  font-family: "Courier New", "Lucida Console", ui-monospace, monospace;
+  font-size: 12px;
+  line-height: 1.35;
+  white-space: normal;
+}
+
+.ar-empty-state {
+  display: grid;
+  min-height: 96px;
+  place-items: center;
+  padding: 12px;
+  border: 1px dashed #808080;
+  background: #dfdfdf;
+  font-size: 12px;
+}
+
+.ar-action-row,
+.ar-form-actions,
+.ar-dialog-footer {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.ar-action-button {
+  white-space: nowrap;
+}
+
+.ar-edit-form {
+  display: flex;
+  max-height: 100%;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ar-form-fields,
+.ar-field {
+  display: grid;
+  gap: 4px;
+}
+
+.ar-form-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.ar-input {
+  min-width: 0;
+}
+
+.ar-command-input {
+  min-height: 88px;
+}
+
+.desktop--stacked .ar-dialog {
+  padding-bottom: 8px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.desktop--stacked .ar-editor,
+.desktop--stacked .ar-editor--editing {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+}
+
+.desktop--stacked .ar-rule-list {
+  min-height: 112px;
+  max-height: min(38vh, 300px);
+  flex: 0 0 auto;
+}
+
+.desktop--stacked .ar-rule-entry {
+  min-height: 74px;
+  padding: 9px 10px;
+}
+
+.desktop--stacked .ar-edit-form {
+  width: 100%;
+  max-height: none;
+}
+
+.desktop--stacked .ar-action-row,
+.desktop--stacked .ar-form-actions,
+.desktop--stacked .ar-dialog-footer {
+  gap: 6px;
+}
+
+.desktop--stacked .ar-action-button {
+  min-height: 40px;
+  padding-inline: 12px;
+}
+
+.desktop--stacked .ar-dialog input:not([type="checkbox"]):not([type="radio"]),
+.desktop--stacked .ar-dialog textarea {
+  min-height: 40px;
+  min-width: 0;
+  font-size: 16px;
+}
+
+.desktop--stacked .ar-command-input {
+  min-height: 112px;
+}
+

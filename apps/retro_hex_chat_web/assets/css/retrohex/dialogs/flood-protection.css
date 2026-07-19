@@ -1,0 +1,188 @@
+/* Flood Protection is a compact settings form. The form must remain one
+   mobile-first interface while avoiding the old horizontal overflow from fixed
+   labels and desktop minimum window width. */
+.fp-window,
+.fp-window-body,
+.fp-panel,
+.fp-form {
+  min-width: 0;
+}
+
+.desktop--stacked .fp-window {
+  min-width: 0 !important;
+}
+
+.fp-window-body {
+  overflow-x: hidden;
+}
+
+.fp-panel {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  flex-direction: column;
+}
+
+.fp-form {
+  display: flex;
+  min-height: 0;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.fp-description {
+  min-width: 0;
+  margin: 0;
+  color: #606060;
+  font-size: 12px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.fp-section-grid {
+  display: grid;
+  min-height: 0;
+  flex: 1 1 auto;
+  align-content: start;
+  gap: 8px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 2px;
+}
+
+.fp-section {
+  min-width: 0;
+  margin: 0;
+  padding: 10px 8px 8px;
+  border: 0;
+  background: #c0c0c0;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}
+
+.fp-section-title {
+  max-width: 100%;
+  padding: 0 4px;
+  color: #000000;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.fp-setting-list {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.fp-setting-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: start;
+  gap: 4px;
+  min-width: 0;
+}
+
+.fp-setting-label {
+  min-width: 0;
+  color: #303030;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.fp-setting-control {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+}
+
+.fp-number-input {
+  flex: 0 0 88px;
+  width: 88px;
+  min-width: 88px;
+  height: 32px;
+  font-size: 13px;
+  text-align: right;
+}
+
+.fp-number-input--wide {
+  flex-basis: 104px;
+  width: 104px;
+  min-width: 104px;
+}
+
+.fp-unit {
+  min-width: 0;
+  color: #606060;
+  font-size: 12px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.fp-action-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+  min-width: 0;
+}
+
+.fp-action-button {
+  min-width: 96px;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.desktop--stacked .fp-description,
+.desktop--stacked .fp-setting-label,
+.desktop--stacked .fp-section-title,
+.desktop--stacked .fp-unit {
+  font-size: 13px;
+}
+
+.desktop--stacked .fp-number-input {
+  min-height: 40px;
+  width: 112px;
+  min-width: 112px;
+  flex-basis: 112px;
+  font-size: 16px;
+}
+
+.desktop--stacked .fp-action-button {
+  min-height: 40px;
+  padding-inline: 12px;
+}
+
+@media (min-width: 760px) {
+  .fp-section-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .fp-section:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 430px) {
+  .fp-section {
+    padding: 10px 8px 8px;
+  }
+
+  .fp-setting-control {
+    flex-wrap: wrap;
+  }
+
+  .fp-unit {
+    min-width: 0;
+  }
+}
+

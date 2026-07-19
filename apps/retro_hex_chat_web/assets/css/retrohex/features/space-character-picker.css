@@ -1,0 +1,148 @@
+/* Virtual-space character-picker previews: animated walk sprites sliced from the
+   avatar sheets. Class sheets are 144x144 (36px cells; the top row faces "down"
+   with four walk frames). The legacy hero is sliced from the 16x32 character
+   sheet. Cropping/positioning lives here (CSS) rather than in Elixir/JS. */
+.rh-charsel-preview {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 76px;
+  height: 76px;
+  overflow: hidden;
+}
+/* Every roster preview is a premium 8-direction iso sheet; each rule below sets
+   its own frame size / sheet dimensions / scale and cycles the south walk row. */
+.rh-charsel-sprite {
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  image-rendering: pixelated;
+  transform-origin: center bottom;
+  animation-duration: 0.66s;
+  animation-timing-function: steps(4);
+  animation-iteration-count: infinite;
+}
+.rh-charsel-sprite--hero {
+  width: 90px;
+  height: 68px;
+  background-image: url("/images/space/avatars/iso_hero.png");
+  background-size: 360px 1700px;
+  animation-name: rh-charsel-walk-hero;
+}
+@keyframes rh-charsel-walk-hero {
+  from {
+    background-position-x: 0;
+  }
+  to {
+    background-position-x: -360px;
+  }
+}
+.rh-charsel-sprite--knight {
+  width: 85px;
+  height: 68px;
+  background-image: url("/images/space/avatars/iso_knight.png");
+  background-size: 339px 1700px;
+  animation-name: rh-charsel-walk-knight;
+}
+@keyframes rh-charsel-walk-knight {
+  from {
+    background-position-x: 0;
+  }
+  to {
+    background-position-x: -339px;
+  }
+}
+.rh-charsel-sprite--sorceress {
+  width: 79px;
+  height: 68px;
+  background-image: url("/images/space/avatars/iso_sorceress.png");
+  background-size: 317px 1700px;
+  animation-name: rh-charsel-walk-sorceress;
+}
+@keyframes rh-charsel-walk-sorceress {
+  from {
+    background-position-x: 0;
+  }
+  to {
+    background-position-x: -317px;
+  }
+}
+.rh-charsel-sprite--archer {
+  width: 91px;
+  height: 68px;
+  background-image: url("/images/space/avatars/iso_archer.png");
+  background-size: 363px 1700px;
+  animation-name: rh-charsel-walk-archer;
+}
+@keyframes rh-charsel-walk-archer {
+  from {
+    background-position-x: 0;
+  }
+  to {
+    background-position-x: -363px;
+  }
+}
+.rh-charsel-sprite--barbarian {
+  width: 89px;
+  height: 68px;
+  background-image: url("/images/space/avatars/iso_barbarian.png");
+  background-size: 357px 1700px;
+  animation-name: rh-charsel-walk-barbarian;
+}
+@keyframes rh-charsel-walk-barbarian {
+  from {
+    background-position-x: 0;
+  }
+  to {
+    background-position-x: -357px;
+  }
+}
+.rh-charsel-sprite--rogue {
+  width: 89px;
+  height: 68px;
+  background-image: url("/images/space/avatars/iso_rogue.png");
+  background-size: 355px 1700px;
+  animation-name: rh-charsel-walk-rogue;
+}
+@keyframes rh-charsel-walk-rogue {
+  from {
+    background-position-x: 0;
+  }
+  to {
+    background-position-x: -355px;
+  }
+}
+.rh-charsel-sprite--cleric {
+  width: 89px;
+  height: 68px;
+  background-image: url("/images/space/avatars/iso_cleric.png");
+  background-size: 355px 1700px;
+  animation-name: rh-charsel-walk-cleric;
+}
+@keyframes rh-charsel-walk-cleric {
+  from {
+    background-position-x: 0;
+  }
+  to {
+    background-position-x: -355px;
+  }
+}
+.rh-charsel-sprite--monk {
+  width: 89px;
+  height: 68px;
+  background-image: url("/images/space/avatars/iso_monk.png");
+  background-size: 357px 1700px;
+  animation-name: rh-charsel-walk-monk;
+}
+@keyframes rh-charsel-walk-monk {
+  from {
+    background-position-x: 0;
+  }
+  to {
+    background-position-x: -357px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rh-charsel-sprite {
+    animation: none;
+  }
+}

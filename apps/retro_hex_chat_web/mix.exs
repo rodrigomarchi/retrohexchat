@@ -95,6 +95,7 @@ defmodule RetroHexChatWeb.MixProject do
       "assets.setup": ["esbuild.install --if-missing"],
       "assets.clean": [
         "cmd rm -rf priv/static/assets/js",
+        "cmd rm -rf assets/css/.generated",
         "cmd rm -f priv/static/assets/css/retrohex.css.gz",
         "cmd rm -f priv/static/cache_manifest.json"
       ],
@@ -106,7 +107,8 @@ defmodule RetroHexChatWeb.MixProject do
         "esbuild retro_hex_chat_web_retrohex_content_js",
         "cmd rm -rf priv/static/assets/js/chunks",
         "esbuild retro_hex_chat_web_app_js",
-        "cmd env BROWSERSLIST_IGNORE_OLD_DATA=1 assets/node_modules/.bin/tailwindcss -c assets/tailwind.config.js -i assets/css/retrohex.css -o priv/static/assets/css/retrohex.css"
+        "cmd node assets/scripts/bundle_retrohex_css.cjs",
+        "cmd env BROWSERSLIST_IGNORE_OLD_DATA=1 assets/node_modules/.bin/tailwindcss -c assets/tailwind.config.js -i assets/css/.generated/retrohex.css -o priv/static/assets/css/retrohex.css"
       ],
       "assets.deploy": [
         "assets.clean",
@@ -115,7 +117,8 @@ defmodule RetroHexChatWeb.MixProject do
         "esbuild retro_hex_chat_web_retrohex_content_js --minify",
         "cmd rm -rf priv/static/assets/js/chunks",
         "esbuild retro_hex_chat_web_app_js --minify",
-        "cmd env BROWSERSLIST_IGNORE_OLD_DATA=1 assets/node_modules/.bin/tailwindcss -c assets/tailwind.config.js -i assets/css/retrohex.css -o priv/static/assets/css/retrohex.css --minify",
+        "cmd node assets/scripts/bundle_retrohex_css.cjs",
+        "cmd env BROWSERSLIST_IGNORE_OLD_DATA=1 assets/node_modules/.bin/tailwindcss -c assets/tailwind.config.js -i assets/css/.generated/retrohex.css -o priv/static/assets/css/retrohex.css --minify",
         "phx.digest"
       ]
     ]

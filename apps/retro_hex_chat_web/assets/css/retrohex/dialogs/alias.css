@@ -1,0 +1,223 @@
+/* Alias is the base single-list editor: one entry-list surface and one
+   responsive edit form that improve desktop and mobile together. */
+.al-dialog {
+  scrollbar-width: thin;
+}
+
+.al-dialog:focus {
+  outline: none;
+}
+
+.al-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.al-editor--editing {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.82fr);
+  align-items: start;
+}
+
+.al-list-pane {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.al-entry-list {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-height: 134px;
+  flex: 1 1 auto;
+  overscroll-behavior: contain;
+  padding: 6px;
+  background: #ffffff;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}
+
+.al-alias-entry,
+.al-entry-name,
+.al-entry-expansion,
+.al-form-label,
+.al-edit-form,
+.al-hint,
+.al-warning,
+.al-error {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.al-alias-entry {
+  display: grid;
+  grid-template-columns: minmax(104px, max-content) minmax(0, 1fr);
+  gap: 6px 12px;
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #808080;
+  background: #c0c0c0;
+  color: #000000;
+  text-align: left;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}
+
+.al-alias-entry:hover {
+  background: #dfdfdf;
+}
+
+.al-alias-entry:focus-visible {
+  outline: 2px solid #000000;
+  outline-offset: 1px;
+}
+
+.al-alias-entry.bg-selection-bg {
+  background: #000080;
+  color: #ffffff;
+}
+
+.al-entry-name {
+  font-family: "Courier New", "Lucida Console", ui-monospace, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.al-entry-expansion {
+  display: grid;
+  gap: 2px;
+  line-height: 1.35;
+}
+
+.al-entry-expansion-label {
+  color: #606060;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.al-alias-entry.bg-selection-bg .al-entry-expansion-label {
+  color: inherit;
+}
+
+.al-entry-expansion code {
+  font-family: "Courier New", "Lucida Console", ui-monospace, monospace;
+  font-size: 11px;
+  white-space: normal;
+}
+
+.al-empty-state {
+  display: grid;
+  min-height: 98px;
+  place-items: center;
+  padding: 12px;
+  border: 1px dashed #808080;
+  background: #dfdfdf;
+  font-size: 12px;
+}
+
+.al-warning {
+  padding: 6px 8px;
+  border: 1px solid #808080;
+  background: #ffffcc;
+}
+
+.al-action-row,
+.al-form-actions,
+.al-dialog-footer {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.al-action-button {
+  white-space: nowrap;
+}
+
+.al-edit-form {
+  display: flex;
+  max-height: 100%;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.al-form-fields,
+.al-field {
+  display: grid;
+  gap: 4px;
+}
+
+.al-form-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.al-input {
+  min-width: 0;
+}
+
+.al-expansion-input {
+  min-height: 82px;
+}
+
+.desktop--stacked .al-dialog {
+  padding-bottom: 8px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.desktop--stacked .al-editor,
+.desktop--stacked .al-editor--editing {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+}
+
+.desktop--stacked .al-entry-list {
+  min-height: 104px;
+  max-height: min(36vh, 280px);
+  flex: 0 0 auto;
+}
+
+.desktop--stacked .al-alias-entry {
+  grid-template-columns: minmax(0, 1fr);
+  min-height: 64px;
+  padding: 9px 10px;
+}
+
+.desktop--stacked .al-action-row,
+.desktop--stacked .al-form-actions,
+.desktop--stacked .al-dialog-footer {
+  gap: 6px;
+}
+
+.desktop--stacked .al-action-button {
+  min-height: 40px;
+  padding-inline: 12px;
+}
+
+.desktop--stacked .al-edit-form {
+  max-height: none;
+}
+
+.desktop--stacked .al-dialog input:not([type="checkbox"]):not([type="radio"]),
+.desktop--stacked .al-dialog textarea {
+  min-height: 40px;
+  min-width: 0;
+  font-size: 16px;
+}
+
+.desktop--stacked .al-expansion-input {
+  min-height: 112px;
+}
+

@@ -1,0 +1,413 @@
+/* ── Desktop / window manager (WindowManagerHook) ──────────── */
+/* Geometry is driven by CSS custom properties set on the element by the hook. */
+.desktop-window {
+  left: var(--win-x, 24px);
+  top: var(--win-y, 24px);
+  width: var(--win-w, 360px);
+  height: var(--win-h, auto);
+  z-index: var(--win-z, 10);
+}
+.desktop-window--pending {
+  position: absolute;
+  pointer-events: none;
+}
+.desktop-window-opening {
+  @apply bg-surface shadow-retro-window flex h-full flex-col p-[3px] text-foreground;
+}
+.desktop-window-opening__titlebar {
+  @apply flex items-center gap-1 bg-title-bar px-[3px] py-[3px] text-xs font-bold text-white;
+}
+.desktop-window-opening__icon {
+  @apply h-4 w-4 shrink-0;
+}
+.desktop-window-opening__title {
+  @apply min-w-0 truncate;
+}
+.desktop-window-opening__body {
+  @apply flex flex-1 flex-col items-center justify-center gap-retro-8 p-retro-12 text-xs text-muted-foreground;
+}
+.desktop-window-opening__logo {
+  @apply h-8 w-8;
+}
+.desktop-window-opening__text {
+  @apply text-center text-muted-foreground;
+}
+/* Unfocused windows dim their title bar to the inactive gradient. */
+.desktop-window--blurred [data-window-titlebar] {
+  @apply bg-title-bar-inactive;
+}
+/* Win98 diagonal resize grip in the bottom-right corner. */
+.desktop-window__resize--grip {
+  background-image: linear-gradient(
+    135deg,
+    transparent 0,
+    transparent 45%,
+    #808080 45%,
+    #808080 55%,
+    transparent 55%,
+    transparent 65%,
+    #808080 65%,
+    #808080 75%,
+    transparent 75%
+  );
+}
+/* Invisible resize handles along every edge and corner (the SE corner is the
+   visible grip above). Edge strips stop short of the corners/grip zones. */
+.desktop-window__resize--n {
+  top: 0;
+  left: 10px;
+  right: 10px;
+  height: 4px;
+  cursor: ns-resize;
+}
+.desktop-window__resize--s {
+  bottom: 0;
+  left: 10px;
+  right: 18px;
+  height: 4px;
+  cursor: ns-resize;
+}
+.desktop-window__resize--e {
+  right: 0;
+  top: 10px;
+  bottom: 18px;
+  width: 4px;
+  cursor: ew-resize;
+}
+.desktop-window__resize--w {
+  left: 0;
+  top: 10px;
+  bottom: 10px;
+  width: 4px;
+  cursor: ew-resize;
+}
+.desktop-window__resize--nw {
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  cursor: nwse-resize;
+}
+.desktop-window__resize--ne {
+  top: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  cursor: nesw-resize;
+}
+.desktop-window__resize--sw {
+  bottom: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  cursor: nesw-resize;
+}
+/* A maximized window fills the workspace; resize handles make no sense there. */
+.desktop-window--maximized .desktop-window__resize {
+  display: none;
+}
+/* Taskbar context-menu items the hook marks inapplicable for the target window. */
+[data-taskbar-menu] [data-taskbar-menu-action][aria-disabled="true"] {
+  @apply text-disabled;
+  pointer-events: none;
+}
+/* Transient Win98 zoom wireframe that flies between a window and its taskbar
+   button on minimize/restore, or between the two geometries on maximize.
+   Geometry is driven by custom properties set by the WindowManagerHook. */
+.desktop-zoom {
+  @apply z-floating pointer-events-none fixed;
+  left: var(--zoom-x, 0px);
+  top: var(--zoom-y, 0px);
+  width: var(--zoom-w, 0px);
+  height: var(--zoom-h, 0px);
+  border: 2px dotted #808080;
+  transition:
+    left 0.16s linear,
+    top 0.16s linear,
+    width 0.16s linear,
+    height 0.16s linear;
+}
+/* Focused window's taskbar button looks pressed; flashing draws attention. */
+.desktop-taskbar__button.is-active {
+  @apply shadow-retro-sunken;
+}
+.desktop-taskbar__button.is-flashing {
+  @apply animate-pulse;
+}
+.mobile-task-switcher {
+  display: none;
+}
+.mobile-task-switcher__panel {
+  z-index: 60;
+}
+.mobile-task-switcher__item.is-active {
+  @apply shadow-retro-sunken;
+}
+/* Win98 desktop shortcuts: icon over a label, click to select, double-click opens. */
+.desktop__shortcuts {
+  max-height: 100%;
+}
+.desktop-shortcut {
+  @apply flex w-20 flex-col items-center gap-[2px] p-1 text-center;
+  cursor: default;
+}
+.desktop-shortcut__label {
+  @apply px-[2px] text-xs leading-tight text-white;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
+}
+.desktop-shortcut.is-selected .desktop-shortcut__icon {
+  @apply bg-primary/40;
+}
+.desktop-shortcut.is-selected .desktop-shortcut__label {
+  @apply bg-primary text-white;
+  text-shadow: none;
+}
+/* Narrow viewports drop window management: exactly one window is shown at a
+   time (the WM hook keeps only the focused window visible), filling the
+   workspace like a fullscreen mobile app. The taskbar is the window switcher. */
+.desktop--stacked .desktop__workspace {
+  overflow: hidden;
+}
+/* Shortcuts are window-management chrome — hidden in the stacked mobile layout. */
+.desktop--stacked .desktop__shortcuts {
+  display: none;
+}
+.desktop--stacked {
+  --rhc-chat-mobile-header-height: 40px;
+  overflow: clip;
+}
+.desktop--stacked .desktop-window {
+  position: absolute !important;
+  inset: 0 !important;
+  width: auto !important;
+  height: auto !important;
+  margin: 0;
+}
+/* Resize and geometry controls are meaningless when every window is fullscreen:
+   drop the resize handle and the minimize/maximize/restore title-bar buttons.
+   Only the title and the close (X) button remain (pinned windows show neither). */
+.desktop--stacked .desktop-window__resize,
+.desktop--stacked [data-window-control="minimize"],
+.desktop--stacked [data-window-control="maximize"],
+.desktop--stacked [data-window-control="restore"] {
+  display: none;
+}
+
+.desktop--stacked [data-testid="app-header"] {
+  position: relative;
+  z-index: 20;
+  min-height: var(--rhc-chat-mobile-header-height);
+  padding-inline: 4px;
+}
+
+.desktop--stacked .chat-sidebar-overlay {
+  top: var(--rhc-chat-mobile-header-height);
+  height: calc(var(--rhc-visual-viewport-height, 100dvh) - var(--rhc-chat-mobile-header-height));
+}
+
+.desktop--stacked .chat-mobile-action {
+  min-width: 36px;
+  min-height: 36px;
+}
+
+.rhc-keyboard-open .desktop--stacked .desktop-taskbar,
+.rhc-keyboard-open .desktop--stacked .desktop-start-menu {
+  display: none !important;
+}
+
+.desktop--stacked [data-window-titlebar] {
+  min-height: 36px;
+}
+
+.desktop--stacked [data-window-control="close"] {
+  min-width: 32px;
+  min-height: 32px;
+}
+
+.desktop--stacked [role="tablist"] {
+  min-height: 38px;
+  scrollbar-width: thin;
+}
+
+.desktop--stacked [role="tab"] {
+  min-height: 36px;
+  padding-inline: 10px;
+  touch-action: manipulation;
+}
+
+.desktop--stacked [role="tab"] button[aria-label] {
+  min-width: 30px;
+  min-height: 30px;
+}
+
+.desktop--stacked [data-testid="conversations"],
+.desktop--stacked [data-testid="nicklist"] {
+  -webkit-overflow-scrolling: touch;
+}
+
+.desktop--stacked [data-testid="conversations"] summary,
+.desktop--stacked [data-testid="conversations"] [data-channel],
+.desktop--stacked [data-testid="conversations"] [data-nick],
+.desktop--stacked [data-testid^="popular-"],
+.desktop--stacked [data-testid^="nicklist-item-"] {
+  min-height: 36px;
+  touch-action: manipulation;
+}
+
+.desktop--stacked [data-testid="conversations-close"],
+.desktop--stacked [data-testid^="join-"] {
+  min-width: 32px;
+  min-height: 32px;
+}
+
+.desktop--stacked [data-testid="chat-message-list"] {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+.desktop--stacked .chat-message {
+  padding-block: 4px;
+}
+
+.desktop--stacked .chat-nick,
+.desktop--stacked .chat-channel-link,
+.desktop--stacked .chat-link {
+  min-height: 30px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.desktop--stacked [data-testid="chat-input-form"] {
+  gap: 4px;
+  padding: 4px;
+}
+
+.desktop--stacked [data-testid="chat-input-field"] {
+  height: 40px;
+  min-height: 40px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  font-size: 16px;
+}
+
+.desktop--stacked [data-testid="chat-action-toggle"],
+.desktop--stacked [data-testid="emoji-picker-toggle"],
+.desktop--stacked [data-testid="chat-input-send"] {
+  min-height: 40px;
+}
+
+.desktop--stacked [data-testid="emoji-picker-toggle"] {
+  min-width: 40px;
+}
+
+.desktop--stacked [data-testid="chat-input-send"] {
+  min-width: 44px;
+  padding-inline: 10px;
+}
+
+.desktop--stacked .chat-input-send-label {
+  display: none;
+}
+
+.desktop--stacked [data-testid="search-bar"] {
+  max-height: min(45vh, 320px);
+  overflow-y: auto;
+}
+
+.desktop--stacked [data-testid="search-bar-input"] {
+  min-height: 40px;
+  font-size: 16px;
+}
+
+.desktop--stacked [data-testid="search-bar"] label,
+.desktop--stacked [data-testid="search-bar-prev"],
+.desktop--stacked [data-testid="search-bar-next"] {
+  min-height: 36px;
+}
+
+.desktop--stacked #autocomplete-dropdown,
+.desktop--stacked [data-testid="syntax-tooltip"] {
+  max-height: min(32vh, 220px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.rhc-keyboard-open .desktop--stacked #autocomplete-dropdown,
+.rhc-keyboard-open .desktop--stacked [data-testid="syntax-tooltip"] {
+  max-height: min(26vh, 180px);
+}
+
+.desktop--stacked #autocomplete-dropdown .autocomplete-item {
+  min-height: 36px;
+}
+
+.desktop--stacked [data-testid="syntax-tooltip"] {
+  margin-inline: 4px;
+}
+
+.desktop--stacked [data-testid="reply-bar"] {
+  min-height: 40px;
+}
+
+.desktop--stacked [data-testid="reply-bar-dismiss"] {
+  min-width: 36px;
+  min-height: 36px;
+}
+
+.desktop--stacked [data-testid="emoji-picker"] {
+  max-height: min(48vh, 340px);
+  overflow: hidden;
+}
+
+.rhc-keyboard-open .desktop--stacked [data-testid="emoji-picker"] {
+  max-height: min(34vh, 240px);
+}
+
+.desktop--stacked [data-testid="emoji-picker"] [phx-value-category] {
+  min-height: 36px;
+}
+
+.desktop--stacked [data-testid="emoji-picker"] [phx-value-emoji] {
+  min-width: 36px;
+  min-height: 36px;
+}
+
+.desktop--stacked .desktop-taskbar {
+  min-height: 40px;
+}
+
+.desktop--stacked .desktop-taskbar__buttons {
+  min-width: 0;
+  overflow: visible;
+}
+
+.desktop--stacked .desktop-taskbar__window-button {
+  display: none;
+}
+
+.desktop--stacked .mobile-task-switcher {
+  display: flex;
+}
+
+.desktop--stacked .mobile-task-switcher__panel {
+  position: fixed;
+  right: 4px;
+  bottom: 44px;
+  left: 4px;
+  max-height: min(62vh, 420px);
+  overflow-y: auto;
+}
+
+.desktop--stacked .mobile-task-switcher__item {
+  min-height: 38px;
+}
+
+.desktop--stacked .desktop-start-button,
+.desktop--stacked .desktop-taskbar__button {
+  min-height: 34px;
+}
+
+.desktop--stacked .desktop-start-menu__item {
+  min-height: 38px;
+}
+

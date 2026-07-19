@@ -1,0 +1,184 @@
+/* Sound Settings is a configuration matrix, but it should read as event-scoped
+   controls instead of a wide table. Desktop gains a compact two-column grid;
+   stacked mobile keeps the same entry pattern in one column. */
+.ss-dialog {
+  scrollbar-width: thin;
+}
+
+.ss-dialog:focus {
+  outline: none;
+}
+
+.ss-event-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-auto-rows: minmax(160px, auto);
+  align-content: start;
+  gap: 6px;
+  min-height: 170px;
+  overscroll-behavior: contain;
+  padding: 6px;
+  background: #ffffff;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}
+
+.ss-event-entry,
+.ss-event-header,
+.ss-event-name,
+.ss-event-controls,
+.ss-field,
+.ss-select-form,
+.ss-toggle-row {
+  min-width: 0;
+}
+
+.ss-event-entry {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  min-height: 160px;
+  padding: 8px 10px;
+  border: 1px solid #808080;
+  background: #c0c0c0;
+  color: #000000;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}
+
+.ss-event-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 6px 10px;
+}
+
+.ss-event-name {
+  flex: 1 1 120px;
+  overflow-wrap: anywhere;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.ss-preview-button,
+.ss-action-button {
+  white-space: nowrap;
+}
+
+.ss-event-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  gap: 8px;
+}
+
+.ss-field {
+  display: grid;
+  gap: 4px;
+}
+
+.ss-form-label {
+  color: #606060;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.ss-select-trigger {
+  width: 100%;
+  min-width: 0;
+}
+
+.ss-toggle-row {
+  display: inline-flex;
+  min-height: 32px;
+  justify-self: start;
+  cursor: pointer;
+  align-items: center;
+  gap: 6px;
+  padding-bottom: 3px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+  user-select: none;
+}
+
+.ss-dialog-footer {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+@media (min-width: 700px) {
+  .ss-event-list {
+    grid-auto-rows: minmax(104px, auto);
+  }
+
+  .ss-event-entry {
+    min-height: 104px;
+  }
+
+  .ss-event-controls {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+  }
+
+  .ss-toggle-row {
+    justify-self: end;
+  }
+}
+
+.desktop--stacked .ss-dialog {
+  padding-bottom: 8px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.desktop--stacked .ss-event-list {
+  grid-template-columns: minmax(0, 1fr);
+  grid-auto-rows: minmax(160px, auto);
+  min-height: 0;
+  max-height: none;
+  flex: 1 1 auto;
+}
+
+.desktop--stacked .ss-event-entry {
+  min-height: 160px;
+  padding: 9px 10px;
+}
+
+.desktop--stacked .ss-event-header {
+  align-items: center;
+}
+
+.desktop--stacked .ss-event-controls {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.desktop--stacked .ss-toggle-row {
+  min-height: 40px;
+  padding-bottom: 0;
+  font-size: 13px;
+}
+
+.desktop--stacked .ss-select-trigger {
+  min-height: 40px;
+  font-size: 16px;
+}
+
+.desktop--stacked .ss-preview-button,
+.desktop--stacked .ss-action-button {
+  min-height: 40px;
+  padding-inline: 12px;
+}
+
+.desktop--stacked .ss-dialog-footer {
+  gap: 6px;
+}
+

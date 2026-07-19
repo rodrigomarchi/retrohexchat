@@ -1,0 +1,219 @@
+/* Highlight Words uses the same list-editor language as Alias, with a compact
+   color surface for IRC background choices. */
+.hl-dialog {
+  scrollbar-width: thin;
+}
+
+.hl-dialog:focus {
+  outline: none;
+}
+
+.hl-content {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 8px;
+}
+
+.hl-list-pane {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hl-entry-list {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-height: 166px;
+  flex: 1 1 auto;
+  overscroll-behavior: contain;
+  padding: 6px;
+  background: #ffffff;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}
+
+.hl-highlight-entry,
+.hl-own-entry,
+.hl-entry-word,
+.hl-entry-color,
+.hl-empty-state,
+.hl-sub-form {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.hl-highlight-entry,
+.hl-own-entry {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px 12px;
+  width: 100%;
+  align-items: center;
+  padding: 8px 10px;
+  border: 1px solid #808080;
+  background: #c0c0c0;
+  color: #000000;
+  text-align: left;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}
+
+.hl-own-entry {
+  background: #dfdfdf;
+}
+
+.hl-highlight-entry:hover {
+  background: #dfdfdf;
+}
+
+.hl-highlight-entry:focus-visible {
+  outline: 2px solid #000000;
+  outline-offset: 1px;
+}
+
+.hl-highlight-entry.bg-selection-bg {
+  background: #000080;
+  color: #ffffff;
+}
+
+.hl-entry-word {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: baseline;
+  font-family: "Courier New", "Lucida Console", ui-monospace, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.hl-entry-tag {
+  color: #606060;
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 400;
+}
+
+.hl-entry-color {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  color: #606060;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.hl-highlight-entry.bg-selection-bg .hl-entry-color {
+  color: inherit;
+}
+
+.hl-color-swatch {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  border: 1px solid #404040;
+}
+
+.hl-empty-state {
+  display: grid;
+  min-height: 76px;
+  place-items: center;
+  padding: 12px;
+  border: 1px dashed #808080;
+  background: #dfdfdf;
+  font-size: 12px;
+}
+
+.hl-action-row,
+.hl-form-actions,
+.hl-dialog-footer {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.hl-action-button {
+  white-space: nowrap;
+}
+
+.hl-color-panel {
+  display: flex;
+  justify-content: flex-end;
+  min-width: 0;
+}
+
+.hl-color-picker {
+  width: fit-content;
+  max-width: 100%;
+}
+
+.hl-color-picker > div {
+  grid-template-columns: repeat(4, 22px);
+}
+
+.hl-color-picker button {
+  width: 20px;
+  height: 20px;
+}
+
+.hl-input {
+  min-width: 0;
+}
+
+.desktop--stacked .hl-dialog {
+  padding-bottom: 8px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.desktop--stacked .hl-content {
+  overflow-y: auto;
+}
+
+.desktop--stacked .hl-entry-list {
+  min-height: 128px;
+  max-height: min(42vh, 320px);
+  flex: 0 0 auto;
+}
+
+.desktop--stacked .hl-highlight-entry,
+.desktop--stacked .hl-own-entry {
+  grid-template-columns: minmax(0, 1fr);
+  min-height: 58px;
+  align-items: start;
+  padding: 9px 10px;
+}
+
+.desktop--stacked .hl-entry-color {
+  justify-content: flex-start;
+}
+
+.desktop--stacked .hl-action-row,
+.desktop--stacked .hl-form-actions,
+.desktop--stacked .hl-dialog-footer {
+  gap: 6px;
+}
+
+.desktop--stacked .hl-action-button {
+  min-height: 40px;
+  padding-inline: 12px;
+}
+
+.desktop--stacked .hl-color-panel {
+  justify-content: flex-end;
+}
+
+.desktop--stacked .hl-dialog input:not([type="checkbox"]):not([type="radio"]) {
+  min-height: 40px;
+  min-width: 0;
+  font-size: 16px;
+}
+

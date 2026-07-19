@@ -1,0 +1,225 @@
+/* Invite notification and invite picker are short, stateful invite surfaces.
+   They stay compact on mobile, keep actions right-aligned and render invite
+   details as a single responsive list rather than nested mini-windows. */
+.iv-dialog-wrap,
+.icp-dialog-wrap {
+  width: min(calc(100vw - 16px), 520px);
+  max-width: calc(100vw - 16px);
+  padding: 0;
+}
+
+.iv-dialog-wrap > [id$="-surface"],
+.icp-dialog-wrap > [id$="-surface"] {
+  width: 100%;
+  min-height: 0;
+  max-height: calc(100dvh - 16px);
+}
+
+.iv-dialog-body,
+.icp-dialog-body {
+  display: grid;
+  flex: 0 1 auto;
+  gap: 10px;
+  padding: 12px;
+  overflow-y: auto;
+}
+
+.iv-dialog-stack,
+.icp-form {
+  display: grid;
+  min-width: 0;
+  gap: 10px;
+}
+
+.iv-summary {
+  min-width: 0;
+  margin: 0;
+  color: #606060;
+  font-size: 12px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.iv-invite-list {
+  display: grid;
+  max-height: min(52dvh, 360px);
+  gap: 8px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.iv-invite-item {
+  display: grid;
+  min-width: 0;
+  gap: 8px;
+  padding: 8px;
+  background: #c0c0c0;
+  box-shadow:
+    inset -1px -1px #808080,
+    inset 1px 1px #ffffff,
+    inset -2px -2px #0a0a0a,
+    inset 2px 2px #dfdfdf;
+}
+
+.iv-invite-main,
+.iv-empty-state {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  min-width: 0;
+  gap: 8px;
+}
+
+.iv-invite-icon {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  background: #ffffff;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}
+
+.iv-invite-copy {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+}
+
+.iv-invite-channel,
+.iv-invite-meta,
+.iv-empty-state p {
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.iv-invite-channel {
+  color: #000080;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.iv-invite-meta,
+.iv-empty-state p {
+  color: #303030;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.iv-invite-actions,
+.icp-action-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+  min-width: 0;
+}
+
+.iv-action-button,
+.icp-action-button {
+  min-width: 88px;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.icp-target-row,
+.icp-field-group {
+  display: grid;
+  min-width: 0;
+  gap: 4px;
+}
+
+.icp-target-row {
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: baseline;
+  gap: 8px;
+  padding: 8px;
+  background: #dfdfdf;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080;
+}
+
+.icp-field-label {
+  color: #303030;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.icp-target-value {
+  min-width: 0;
+  color: #000000;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.icp-select {
+  min-width: 0;
+  font-size: 13px;
+}
+
+.icp-help-text,
+.icp-error-text {
+  min-width: 0;
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.icp-help-text {
+  color: #606060;
+}
+
+.icp-error-text {
+  color: #800000;
+}
+
+.desktop--stacked .iv-dialog-wrap,
+.desktop--stacked .icp-dialog-wrap {
+  width: min(calc(100vw - 16px), 420px);
+}
+
+.desktop--stacked .iv-action-button,
+.desktop--stacked .icp-action-button,
+.desktop--stacked .icp-select {
+  min-height: 40px;
+}
+
+@media (min-width: 560px) {
+  .iv-invite-item {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+  }
+}
+
+@media (max-width: 430px) {
+  .iv-dialog-body,
+  .icp-dialog-body {
+    padding: 10px;
+  }
+
+  .iv-invite-item {
+    padding: 8px;
+  }
+
+  .iv-action-button,
+  .icp-action-button {
+    min-height: 40px;
+    padding-inline: 12px;
+  }
+
+  .icp-target-row {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+}
+

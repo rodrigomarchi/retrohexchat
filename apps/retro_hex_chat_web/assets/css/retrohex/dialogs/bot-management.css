@@ -1,0 +1,458 @@
+/* Bot Management has a desktop split view plus inner tabs. On mobile the split
+   view becomes a stacked editor, with table-like bot data converted to list
+   rows so command/channel text is not clipped offscreen. */
+.bm-dialog {
+  scrollbar-width: thin;
+}
+
+.bm-scroll,
+.bm-bot-list-wrap,
+.bm-table-wrap,
+.bm-events-list {
+  overscroll-behavior: contain;
+}
+
+.bm-tabs-shell {
+  position: relative;
+}
+
+.bm-detail-value,
+.bm-capability-chip,
+.bm-capability-value,
+.bm-mobile-list-primary,
+.bm-mobile-list-meta,
+.bm-event-message,
+.bm-bot-list-item {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.bm-action-row,
+.bm-action-form,
+.bm-form-footer {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.bm-action-button,
+.bm-link-danger {
+  white-space: nowrap;
+}
+
+.bm-object-list {
+  display: grid;
+  max-height: 200px;
+  gap: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: #ffffff;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}
+
+.bm-object-entry {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: start;
+  min-width: 0;
+  padding: 7px 8px;
+  border-top: 1px solid #dfdfdf;
+}
+
+.bm-object-entry:first-child {
+  border-top: 0;
+}
+
+.bm-object-body {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+}
+
+.bm-object-primary,
+.bm-object-meta {
+  display: flex;
+  min-width: 0;
+  gap: 5px;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.bm-object-primary {
+  font-weight: 700;
+}
+
+.bm-object-meta {
+  color: #606060;
+}
+
+.bm-object-label {
+  flex: 0 0 auto;
+  font-weight: 700;
+}
+
+.bm-object-value {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.bm-object-action {
+  align-self: center;
+  padding: 2px 4px;
+}
+
+.desktop--stacked .bm-dialog {
+  padding-bottom: 8px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.desktop--stacked .bm-body {
+  gap: 12px;
+}
+
+.desktop--stacked .bm-sidebar {
+  gap: 4px;
+}
+
+.desktop--stacked .bm-bot-list-wrap {
+  flex: none;
+  max-height: 148px;
+}
+
+.desktop--stacked .bm-bot-list-item {
+  min-height: 38px;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+}
+
+.desktop--stacked .bm-action-row {
+  gap: 6px;
+}
+
+.desktop--stacked .bm-tabs {
+  min-width: 0;
+}
+
+.desktop--stacked .bm-main-tabs {
+  flex-wrap: nowrap !important;
+  align-items: end;
+  gap: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 6px 6px 0;
+  scroll-padding-inline: 36px;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+}
+
+.desktop--stacked .bm-main-tabs::-webkit-scrollbar {
+  height: 6px;
+}
+
+.desktop--stacked .bm-main-tabs::-webkit-scrollbar-track {
+  background: #dfdfdf;
+}
+
+.desktop--stacked .bm-main-tabs::-webkit-scrollbar-thumb {
+  background: #808080;
+  border: 1px solid #606060;
+}
+
+.desktop--stacked .bm-tabs-shell::before,
+.desktop--stacked .bm-tabs-shell::after {
+  position: absolute;
+  top: 6px;
+  bottom: 1px;
+  z-index: 20;
+  display: flex;
+  width: 34px;
+  align-items: center;
+  color: #000080;
+  font-weight: 700;
+  opacity: 0;
+  pointer-events: none;
+  text-shadow: 1px 1px #ffffff;
+}
+
+.desktop--stacked .bm-tabs-shell::before {
+  content: "<";
+  left: 0;
+  justify-content: flex-start;
+  padding-left: 4px;
+  border-left: 1px solid #808080;
+  background: linear-gradient(270deg, rgb(192 192 192 / 0), #c0c0c0 58%);
+}
+
+.desktop--stacked .bm-tabs-shell::after {
+  content: ">";
+  right: 0;
+  justify-content: flex-end;
+  padding-right: 4px;
+  border-right: 1px solid #808080;
+  background: linear-gradient(90deg, rgb(192 192 192 / 0), #c0c0c0 58%);
+}
+
+.desktop--stacked .bm-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="commands"])::before,
+.desktop--stacked .bm-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="events"])::before,
+.desktop--stacked .bm-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="general"])::after,
+.desktop--stacked .bm-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="capabilities"])::after,
+.desktop--stacked .bm-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="channels"])::after,
+.desktop--stacked .bm-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="commands"])::after {
+  opacity: 1;
+}
+
+.desktop--stacked .bm-main-tabs .tabs-trigger {
+  flex: 0 0 auto;
+  min-height: 40px;
+  padding: 7px 12px 5px;
+}
+
+.desktop--stacked .bm-main-tabs .tabs-trigger[data-state="active"] {
+  padding-top: 9px;
+}
+
+.desktop--stacked .bm-tabs .tabs-content {
+  padding: 8px;
+}
+
+.desktop--stacked .bm-detail-row {
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+}
+
+.desktop--stacked .bm-detail-label {
+  width: 7.5rem;
+  flex: 0 0 auto;
+}
+
+.desktop--stacked .bm-detail-value {
+  flex: 1 1 0;
+  line-height: 1.35;
+}
+
+.desktop--stacked .bm-capability-chip {
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.desktop--stacked .bm-stats-grid {
+  grid-template-columns: minmax(7.5rem, max-content) minmax(0, 1fr);
+}
+
+.desktop--stacked .bm-object-list {
+  max-height: none;
+  gap: 6px;
+  overflow: visible;
+  background: transparent;
+  box-shadow: none;
+}
+
+.desktop--stacked .bm-object-entry {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 6px;
+  padding: 10px;
+  border: 1px solid #808080;
+  background: #ffffff;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}
+
+.desktop--stacked .bm-object-primary,
+.desktop--stacked .bm-object-meta {
+  display: block;
+  font-size: 14px;
+}
+
+.desktop--stacked .bm-object-primary {
+  font-size: 15px;
+}
+
+.desktop--stacked .bm-object-label {
+  margin-right: 4px;
+}
+
+.desktop--stacked .bm-object-action {
+  justify-self: end;
+  min-height: 34px;
+  padding-inline: 8px;
+}
+
+.desktop--stacked .bm-table-wrap {
+  max-height: none;
+  overflow: visible;
+  background: transparent;
+  box-shadow: none;
+}
+
+.desktop--stacked .bm-mobile-list-table {
+  display: block;
+  width: 100%;
+}
+
+.desktop--stacked .bm-mobile-list-table thead {
+  display: none;
+}
+
+.desktop--stacked .bm-mobile-list-table tbody {
+  display: grid;
+  gap: 6px;
+}
+
+.desktop--stacked .bm-mobile-list-row {
+  display: block;
+  border: 1px solid #808080;
+  background: #ffffff;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}
+
+.desktop--stacked .bm-mobile-list-row td {
+  display: block;
+  width: 100%;
+  padding: 4px 8px;
+  border: 0;
+}
+
+.desktop--stacked .bm-mobile-list-primary {
+  padding-top: 8px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.desktop--stacked .bm-mobile-list-meta {
+  color: #606060;
+}
+
+.desktop--stacked .bm-mobile-list-meta.truncate {
+  max-width: none;
+  overflow: visible;
+  text-overflow: clip;
+  white-space: normal;
+}
+
+.desktop--stacked .bm-mobile-list-meta::before {
+  content: attr(data-label) ": ";
+  font-weight: 700;
+}
+
+.desktop--stacked .bm-mobile-list-action {
+  display: flex;
+  justify-content: flex-end;
+  padding-bottom: 8px;
+}
+
+.desktop--stacked .bm-action-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 6px;
+  align-items: end;
+}
+
+.desktop--stacked .bm-action-input {
+  width: 100%;
+  min-width: 0;
+}
+
+.desktop--stacked .bm-action-button,
+.desktop--stacked .bm-dialog button:not(.tabs-trigger) {
+  min-height: 40px;
+  padding-inline: 12px;
+}
+
+.desktop--stacked .bm-events-list {
+  max-height: none;
+}
+
+.desktop--stacked .bm-event-row {
+  display: grid;
+  gap: 2px;
+  padding: 6px;
+}
+
+.desktop--stacked .bm-event-time {
+  margin-right: 0;
+  font-weight: 700;
+}
+
+.desktop--stacked .bm-cap-toggle-row,
+.desktop--stacked .bm-capability-config {
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.desktop--stacked .bm-capability-key {
+  width: 7rem;
+  flex: 0 0 auto;
+}
+
+.desktop--stacked .bm-form-dialog {
+  max-width: 100% !important;
+}
+
+.desktop--stacked .bm-form-body {
+  padding: 10px;
+}
+
+.desktop--stacked .bm-form input,
+.desktop--stacked .bm-form select,
+.desktop--stacked .bm-form textarea,
+.desktop--stacked .bm-dialog input,
+.desktop--stacked .bm-dialog select,
+.desktop--stacked .bm-dialog textarea {
+  min-height: 40px;
+  font-size: 16px;
+}
+
+.desktop--stacked .bm-short-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 8px;
+}
+
+.desktop--stacked .bm-short-grid input {
+  width: 100%;
+}
+
+.desktop--stacked .bm-checkbox-grid {
+  gap: 8px;
+}
+
+.desktop--stacked .bm-checkbox-item {
+  min-width: 0;
+  align-items: flex-start;
+}
+
+.desktop--stacked .bm-checkbox-item label {
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.desktop--stacked .bm-form-footer {
+  gap: 6px;
+}
+
+@media (max-width: 430px) {
+  .desktop--stacked .bm-detail-label,
+  .desktop--stacked .bm-capability-key {
+    width: 6.5rem;
+  }
+
+  .desktop--stacked .bm-checkbox-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+

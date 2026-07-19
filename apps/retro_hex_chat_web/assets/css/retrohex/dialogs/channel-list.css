@@ -1,0 +1,241 @@
+/* Channel List is a browsable selector, not a data table. A single card-list
+   pattern keeps channel, topic, users and modes together on desktop and mobile. */
+.cl-dialog {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cl-search-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  min-width: 0;
+}
+
+.cl-search-input {
+  min-width: min(100%, 240px);
+  flex: 1 1 240px;
+}
+
+.cl-search-button,
+.cl-action-button {
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.cl-search-button {
+  min-width: 94px;
+}
+
+.cl-channel-list {
+  display: grid;
+  min-height: 0;
+  flex: 1 1 auto;
+  align-content: start;
+  gap: 8px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.cl-loading-state,
+.cl-empty-state {
+  display: grid;
+  min-height: 120px;
+  place-items: center;
+  gap: 8px;
+  padding: 16px;
+  color: #606060;
+  text-align: center;
+  background: #dfdfdf;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080;
+}
+
+.cl-empty-state p {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.cl-channel-entry {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 10px;
+  min-width: 0;
+  width: 100%;
+  padding: 8px;
+  color: #000000;
+  text-align: left;
+  background: #c0c0c0;
+  box-shadow:
+    inset -1px -1px #808080,
+    inset 1px 1px #ffffff,
+    inset -2px -2px #0a0a0a,
+    inset 2px 2px #dfdfdf;
+}
+
+.cl-channel-entry:hover {
+  background: #d0d0d0;
+}
+
+.cl-channel-entry--selected,
+.cl-channel-entry--selected:hover {
+  color: #ffffff;
+  background: #000080;
+}
+
+.cl-channel-main {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: 8px;
+  min-width: 0;
+}
+
+.cl-channel-icon {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  background: #ffffff;
+  color: #000000;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}
+
+.cl-channel-copy,
+.cl-channel-title-row,
+.cl-channel-meta {
+  min-width: 0;
+}
+
+.cl-channel-copy {
+  display: grid;
+  gap: 3px;
+}
+
+.cl-channel-title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+}
+
+.cl-channel-name,
+.cl-channel-topic,
+.cl-meta-label,
+.cl-meta-value {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.cl-channel-name {
+  color: #000080;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.cl-channel-entry--selected .cl-channel-name,
+.cl-channel-entry--selected .cl-channel-topic {
+  color: #ffffff;
+}
+
+.cl-channel-topic {
+  color: #303030;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.cl-channel-badge {
+  color: #000000;
+}
+
+.cl-channel-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.cl-meta-item {
+  display: grid;
+  min-width: 54px;
+  gap: 1px;
+  padding: 4px 6px;
+  color: #000000;
+  background: #dfdfdf;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080;
+}
+
+.cl-meta-label {
+  color: #606060;
+  font-size: 10px;
+  line-height: 1.2;
+}
+
+.cl-meta-value {
+  color: #000000;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.cl-action-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+  min-width: 0;
+}
+
+.cl-action-button {
+  min-width: 118px;
+}
+
+.desktop--stacked .cl-search-input {
+  min-height: 40px;
+  font-size: 16px;
+}
+
+.desktop--stacked .cl-search-button,
+.desktop--stacked .cl-action-button {
+  min-height: 40px;
+}
+
+.desktop--stacked .cl-channel-entry {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.desktop--stacked .cl-channel-meta {
+  justify-content: flex-start;
+  padding-left: 36px;
+}
+
+@media (max-width: 430px) {
+  .cl-search-input,
+  .cl-search-button {
+    flex-basis: 100%;
+  }
+
+  .cl-channel-entry {
+    padding: 8px;
+  }
+
+  .cl-channel-meta {
+    padding-left: 36px;
+  }
+}
+

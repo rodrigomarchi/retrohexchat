@@ -100,7 +100,7 @@ defmodule Mix.Tasks.Lint.CssConsistency do
   def extract_defined_classes do
     Path.wildcard("#{css_dir()}/**/*.css")
     |> Enum.reject(fn path ->
-      String.ends_with?(path, "showcase.css")
+      generated_css?(path) or String.ends_with?(path, "showcase.css")
     end)
     |> Enum.reduce(%{}, fn file, acc ->
       extract_classes_from_css(File.read!(file), short_css_path(file))
@@ -516,13 +516,15 @@ defmodule Mix.Tasks.Lint.CssConsistency do
     String.replace_prefix(path, "#{css_dir()}/", "")
   end
 
+  defp generated_css?(path), do: String.contains?(path, "/.generated/")
+
   # -- Reporting --
 
   @doc false
   @spec defined_class_sources() :: %{String.t() => [String.t()]}
   def defined_class_sources do
     Path.wildcard("#{css_dir()}/**/*.css")
-    |> Enum.reject(&String.ends_with?(&1, "app.css"))
+    |> Enum.reject(fn path -> generated_css?(path) or String.ends_with?(path, "app.css") end)
     |> Enum.reduce(%{}, fn file, acc ->
       extract_classes_from_css(File.read!(file), short_css_path(file))
       |> Enum.reduce(acc, &merge_class_source/2)

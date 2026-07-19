@@ -1,0 +1,159 @@
+/* Keyboard Shortcuts is static reference content. A responsive list keeps the
+   same information hierarchy on desktop and stacked mobile without table
+   columns collapsing around long key chords. */
+.cs-window,
+.cs-window-body,
+.cs-panel,
+.cs-group,
+.cs-shortcut-list,
+.cs-shortcut-entry {
+  min-width: 0;
+}
+
+.desktop--stacked .cs-window {
+  min-width: 0 !important;
+}
+
+.cs-window-body {
+  overflow-x: hidden;
+}
+
+.cs-panel {
+  display: flex;
+  min-height: 0;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 2px;
+}
+
+.cs-empty-state {
+  display: flex;
+  min-height: 120px;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed #808080;
+  color: #606060;
+  font-size: 12px;
+  line-height: 1.35;
+  text-align: center;
+}
+
+.cs-group {
+  display: grid;
+  gap: 6px;
+}
+
+.cs-group-title {
+  margin: 0;
+  min-width: 0;
+  background: linear-gradient(90deg, #000080, #1084d0);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
+  padding: 3px 5px;
+  overflow-wrap: anywhere;
+}
+
+.cs-shortcut-list {
+  display: grid;
+  gap: 6px;
+}
+
+.cs-shortcut-entry {
+  display: grid;
+  gap: 4px;
+  padding: 7px 8px;
+  background: #c0c0c0;
+  box-shadow:
+    inset -1px -1px #808080,
+    inset 1px 1px #ffffff,
+    inset -2px -2px #404040,
+    inset 2px 2px #dfdfdf;
+}
+
+.cs-shortcut-main {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 5px 8px;
+}
+
+.cs-shortcut-action {
+  min-width: 0;
+  flex: 1 1 128px;
+  color: #202020;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.cs-shortcut-key {
+  display: inline-flex;
+  max-width: 100%;
+  flex: 0 1 auto;
+  align-items: center;
+  justify-content: center;
+  background: #dfdfdf;
+  color: #202020;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 12px;
+  line-height: 1.2;
+  padding: 2px 5px;
+  overflow-wrap: anywhere;
+  text-align: center;
+  box-shadow:
+    inset -1px -1px #0a0a0a,
+    inset 1px 1px #ffffff,
+    inset -2px -2px #808080,
+    inset 2px 2px #dfdfdf;
+}
+
+.cs-shortcut-description {
+  margin: 0;
+  min-width: 0;
+  color: #505050;
+  font-size: 12px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.desktop--stacked .cs-panel {
+  gap: 12px;
+  padding-right: 0;
+}
+
+.desktop--stacked .cs-group {
+  gap: 8px;
+}
+
+.desktop--stacked .cs-group-title,
+.desktop--stacked .cs-shortcut-action,
+.desktop--stacked .cs-shortcut-key,
+.desktop--stacked .cs-shortcut-description,
+.desktop--stacked .cs-empty-state {
+  font-size: 13px;
+}
+
+.desktop--stacked .cs-shortcut-entry {
+  gap: 5px;
+  padding: 8px;
+}
+
+.desktop--stacked .cs-shortcut-key {
+  min-height: 28px;
+  padding: 3px 6px;
+}
+
+@media (min-width: 560px) {
+  .cs-shortcut-list {
+    grid-template-columns: repeat(2, minmax(240px, 1fr));
+  }
+}
+

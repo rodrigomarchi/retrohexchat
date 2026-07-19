@@ -2,9 +2,9 @@
 const plugin = require("tailwindcss/plugin");
 
 /*
- * Retro theme for Tailwind CSS — tokens mapped from foundation/tokens.css
- * This config is used ONLY by the /showcase route and UI primitive components.
- * It does NOT affect the existing retro platform CSS (app.css).
+ * RetroHexChat Tailwind theme.
+ * The CSS entrypoint is assets/css/retrohex.css; source modules live under
+ * assets/css/retrohex/ and are bundled into one browser stylesheet.
  */
 module.exports = {
   content: {

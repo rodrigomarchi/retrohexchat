@@ -1,0 +1,265 @@
+/* Perform is a two-list automation editor. Commands and auto-join channels use
+   the same entry-list surface on desktop and mobile; width only changes density. */
+.pf-dialog {
+  scrollbar-width: thin;
+}
+
+.pf-dialog:focus {
+  outline: none;
+}
+
+.pf-tabs-shell {
+  position: relative;
+}
+
+.pf-dialog .tabs-content {
+  min-height: 0;
+}
+
+.pf-entry-list {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-height: 132px;
+  overscroll-behavior: contain;
+  padding: 6px;
+  background: #ffffff;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}
+
+.pf-entry,
+.pf-entry-content,
+.pf-entry-label,
+.pf-entry-meta,
+.pf-sub-form {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.pf-entry {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 8px;
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #808080;
+  background: #c0c0c0;
+  color: #000000;
+  text-align: left;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}
+
+.pf-autojoin-entry {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.pf-entry:hover {
+  background: #dfdfdf;
+}
+
+.pf-entry:focus-visible {
+  outline: 2px solid #000000;
+  outline-offset: 1px;
+}
+
+.pf-entry.bg-selection-bg {
+  background: #000080;
+  color: #ffffff;
+}
+
+.pf-entry-index {
+  display: inline-flex;
+  min-width: 28px;
+  height: 24px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #808080;
+  background: #dfdfdf;
+  color: #000000;
+  font-family: "Courier New", "Lucida Console", ui-monospace, monospace;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.pf-entry-content {
+  display: grid;
+  gap: 3px;
+}
+
+.pf-entry-label {
+  font-family: "Courier New", "Lucida Console", ui-monospace, monospace;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.pf-entry-meta {
+  color: #606060;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.pf-entry.bg-selection-bg .pf-entry-meta {
+  color: inherit;
+}
+
+.pf-empty-state {
+  display: grid;
+  min-height: 96px;
+  place-items: center;
+  padding: 12px;
+  border: 1px dashed #808080;
+  background: #dfdfdf;
+  font-size: 12px;
+}
+
+.pf-action-row,
+.pf-form-actions,
+.pf-dialog-footer {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.pf-action-button {
+  white-space: nowrap;
+}
+
+.pf-toggle-row {
+  width: fit-content;
+  max-width: 100%;
+}
+
+.pf-command-input {
+  min-height: 78px;
+}
+
+.desktop--stacked .pf-dialog {
+  padding-bottom: 8px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.desktop--stacked .pf-tabs {
+  min-width: 0;
+}
+
+.desktop--stacked .pf-main-tabs {
+  flex-wrap: nowrap !important;
+  align-items: end;
+  gap: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 6px 6px 0;
+  scroll-padding-inline: 36px;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+}
+
+.desktop--stacked .pf-main-tabs::-webkit-scrollbar {
+  height: 6px;
+}
+
+.desktop--stacked .pf-main-tabs::-webkit-scrollbar-track {
+  background: #dfdfdf;
+}
+
+.desktop--stacked .pf-main-tabs::-webkit-scrollbar-thumb {
+  background: #808080;
+  border: 1px solid #606060;
+}
+
+.desktop--stacked .pf-tabs-shell::before,
+.desktop--stacked .pf-tabs-shell::after {
+  position: absolute;
+  top: 6px;
+  bottom: 1px;
+  z-index: 20;
+  display: flex;
+  width: 34px;
+  align-items: center;
+  color: #000080;
+  font-weight: 700;
+  opacity: 0;
+  pointer-events: none;
+  text-shadow: 1px 1px #ffffff;
+}
+
+.desktop--stacked .pf-tabs-shell::before {
+  content: "<";
+  left: 0;
+  justify-content: flex-start;
+  padding-left: 4px;
+  border-left: 1px solid #808080;
+  background: linear-gradient(270deg, rgb(192 192 192 / 0), #c0c0c0 58%);
+}
+
+.desktop--stacked .pf-tabs-shell::after {
+  content: ">";
+  right: 0;
+  justify-content: flex-end;
+  padding-right: 4px;
+  border-right: 1px solid #808080;
+  background: linear-gradient(90deg, rgb(192 192 192 / 0), #c0c0c0 58%);
+}
+
+.desktop--stacked .pf-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="autojoin"])::before,
+.desktop--stacked .pf-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="commands"])::after {
+  opacity: 1;
+}
+
+.desktop--stacked .pf-main-tabs .tabs-trigger {
+  flex: 0 0 auto;
+  min-height: 40px;
+  padding: 7px 12px 5px;
+}
+
+.desktop--stacked .pf-main-tabs .tabs-trigger[data-state="active"] {
+  padding-top: 9px;
+}
+
+.desktop--stacked .pf-tab-content {
+  padding: 8px;
+}
+
+.desktop--stacked .pf-entry-list {
+  max-height: min(42vh, 320px);
+}
+
+.desktop--stacked .pf-entry {
+  min-height: 64px;
+  padding: 9px 10px;
+}
+
+.desktop--stacked .pf-action-row,
+.desktop--stacked .pf-form-actions,
+.desktop--stacked .pf-dialog-footer {
+  gap: 6px;
+}
+
+.desktop--stacked .pf-action-button {
+  min-height: 40px;
+  padding-inline: 12px;
+}
+
+.desktop--stacked .pf-toggle-row {
+  min-height: 40px;
+  align-items: center;
+}
+
+.desktop--stacked .pf-dialog input:not([type="checkbox"]):not([type="radio"]),
+.desktop--stacked .pf-dialog textarea {
+  min-height: 40px;
+  min-width: 0;
+  font-size: 16px;
+}
+
+.desktop--stacked .pf-command-input {
+  min-height: 112px;
+}
+

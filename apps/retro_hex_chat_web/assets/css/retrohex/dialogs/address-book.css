@@ -1,0 +1,348 @@
+/* Address Book combines four tabs, table-backed lists and window-scoped
+   subdialogs. Desktop keeps the compact table treatment; stacked mobile uses a
+   discoverable tab strip and converts rows into readable cardlets. */
+.ab-dialog {
+  scrollbar-width: thin;
+}
+
+.ab-tabs-shell {
+  position: relative;
+}
+
+.ab-dialog .tabs-content {
+  min-height: 0;
+}
+
+.ab-table-wrap > .overflow-x-auto {
+  overscroll-behavior: contain;
+}
+
+.ab-action-row {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.ab-action-button {
+  white-space: nowrap;
+}
+
+.ab-mobile-list-primary,
+.ab-mobile-list-meta {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.ab-entry-list {
+  display: grid;
+  max-height: 220px;
+  gap: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: #ffffff;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}
+
+.ab-entry {
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  gap: 3px;
+  border: 0;
+  border-top: 1px solid #dfdfdf;
+  background: transparent;
+  padding: 7px 8px;
+  color: #202020;
+  text-align: left;
+}
+
+.ab-entry:first-of-type {
+  border-top: 0;
+}
+
+.ab-entry.bg-selection-bg {
+  background: #000080;
+  color: #ffffff;
+}
+
+.ab-entry-primary,
+.ab-entry-meta {
+  display: flex;
+  min-width: 0;
+  gap: 5px;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.ab-entry-primary {
+  font-weight: 700;
+}
+
+.ab-entry-meta {
+  color: #606060;
+}
+
+.ab-entry.bg-selection-bg .ab-entry-meta,
+.ab-entry.bg-selection-bg .text-muted-foreground {
+  color: inherit;
+}
+
+.ab-entry-label {
+  flex: 0 0 auto;
+  font-weight: 700;
+}
+
+.ab-entry-value {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.ab-entry-empty {
+  padding: 16px 8px;
+  color: #606060;
+  font-size: 12px;
+  line-height: 1.35;
+  text-align: center;
+}
+
+.ab-dialog .ab-mobile-list-table th:first-child,
+.ab-dialog .ab-mobile-list-table td:first-child,
+.ab-dialog .ab-mobile-list-table th:last-child,
+.ab-dialog .ab-mobile-list-table td:last-child {
+  white-space: nowrap;
+}
+
+.desktop--stacked .ab-dialog {
+  padding-bottom: 8px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.desktop--stacked .ab-tabs {
+  min-width: 0;
+}
+
+.desktop--stacked .ab-main-tabs {
+  flex-wrap: nowrap !important;
+  align-items: end;
+  gap: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 6px 6px 0;
+  scroll-padding-inline: 36px;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+}
+
+.desktop--stacked .ab-main-tabs::-webkit-scrollbar {
+  height: 6px;
+}
+
+.desktop--stacked .ab-main-tabs::-webkit-scrollbar-track {
+  background: #dfdfdf;
+}
+
+.desktop--stacked .ab-main-tabs::-webkit-scrollbar-thumb {
+  background: #808080;
+  border: 1px solid #606060;
+}
+
+.desktop--stacked .ab-tabs-shell::before,
+.desktop--stacked .ab-tabs-shell::after {
+  position: absolute;
+  top: 6px;
+  bottom: 1px;
+  z-index: 20;
+  display: flex;
+  width: 34px;
+  align-items: center;
+  color: #000080;
+  font-weight: 700;
+  opacity: 0;
+  pointer-events: none;
+  text-shadow: 1px 1px #ffffff;
+}
+
+.desktop--stacked .ab-tabs-shell::before {
+  content: "<";
+  left: 0;
+  justify-content: flex-start;
+  padding-left: 4px;
+  border-left: 1px solid #808080;
+  background: linear-gradient(270deg, rgb(192 192 192 / 0), #c0c0c0 58%);
+}
+
+.desktop--stacked .ab-tabs-shell::after {
+  content: ">";
+  right: 0;
+  justify-content: flex-end;
+  padding-right: 4px;
+  border-right: 1px solid #808080;
+  background: linear-gradient(90deg, rgb(192 192 192 / 0), #c0c0c0 58%);
+}
+
+.desktop--stacked .ab-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="colors"])::before,
+.desktop--stacked .ab-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="control"])::before,
+.desktop--stacked .ab-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="contacts"])::after,
+.desktop--stacked .ab-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="notify"])::after,
+.desktop--stacked .ab-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="colors"])::after {
+  opacity: 1;
+}
+
+.desktop--stacked .ab-main-tabs .tabs-trigger {
+  flex: 0 0 auto;
+  min-height: 40px;
+  padding: 7px 12px 5px;
+}
+
+.desktop--stacked .ab-main-tabs .tabs-trigger[data-state="active"] {
+  padding-top: 9px;
+}
+
+.desktop--stacked .ab-tab-content {
+  padding: 8px;
+}
+
+.desktop--stacked .ab-entry-list {
+  max-height: none;
+  gap: 6px;
+  overflow: visible;
+  background: transparent;
+  box-shadow: none;
+}
+
+.desktop--stacked .ab-entry {
+  gap: 6px;
+  padding: 10px;
+  border: 1px solid #808080;
+  background: #ffffff;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}
+
+.desktop--stacked .ab-entry.bg-selection-bg {
+  background: #000080;
+}
+
+.desktop--stacked .ab-entry-primary,
+.desktop--stacked .ab-entry-meta {
+  display: block;
+  font-size: 14px;
+}
+
+.desktop--stacked .ab-entry-primary {
+  font-size: 15px;
+}
+
+.desktop--stacked .ab-entry-label {
+  margin-right: 4px;
+}
+
+.desktop--stacked .ab-table-wrap > .overflow-x-auto {
+  overflow: visible;
+}
+
+.desktop--stacked .ab-mobile-list-table {
+  display: block;
+  width: 100%;
+}
+
+.desktop--stacked .ab-mobile-list-table thead {
+  display: none;
+}
+
+.desktop--stacked .ab-mobile-list-table tbody {
+  display: grid;
+  gap: 6px;
+}
+
+.desktop--stacked .ab-mobile-list-row {
+  display: block;
+  border: 1px solid #808080;
+  background: #ffffff;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}
+
+.desktop--stacked .ab-mobile-list-row.bg-selection-bg {
+  background: #000080;
+  color: #ffffff;
+}
+
+.desktop--stacked .ab-mobile-list-row td {
+  display: block;
+  width: 100%;
+  padding: 4px 8px;
+  border: 0;
+  white-space: normal;
+}
+
+.desktop--stacked .ab-mobile-list-primary {
+  padding-top: 8px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.desktop--stacked .ab-mobile-list-meta {
+  color: #606060;
+}
+
+.desktop--stacked .ab-mobile-list-row.bg-selection-bg .ab-mobile-list-meta {
+  color: inherit;
+}
+
+.desktop--stacked .ab-mobile-list-meta::before {
+  content: attr(data-label) ": ";
+  font-weight: 700;
+}
+
+.desktop--stacked .ab-color-swatch {
+  width: 24px;
+  height: 24px;
+}
+
+.desktop--stacked .ab-empty-row {
+  display: block;
+}
+
+.desktop--stacked .ab-empty-cell {
+  display: block;
+  width: 100%;
+}
+
+.desktop--stacked .ab-action-row {
+  gap: 6px;
+}
+
+.desktop--stacked .ab-action-button,
+.desktop--stacked .ab-dialog form > .flex.justify-end button {
+  min-height: 40px;
+  padding-inline: 12px;
+}
+
+.desktop--stacked .ab-dialog [id$="-picker"] button {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+}
+
+.desktop--stacked .ab-dialog input,
+.desktop--stacked .ab-dialog select,
+.desktop--stacked .ab-dialog textarea {
+  min-height: 40px;
+  min-width: 0;
+  font-size: 16px;
+}
+
+.desktop--stacked .ab-dialog textarea {
+  min-height: 104px;
+}
+

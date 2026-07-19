@@ -1,0 +1,48 @@
+.activity-indicator__icon,
+.activity-indicator__brand,
+.desktop-window-opening__logo {
+  animation: activity-icon-pulse 1.5s ease-in-out infinite;
+}
+
+.activity-indicator__dot,
+.desktop-window-opening__dot {
+  @apply bg-success inline-block h-1.5 w-1.5 shrink-0 rounded-full;
+  animation: activity-dot-blink 1s steps(2, end) infinite;
+}
+
+/* Autoscroll is driven imperatively by ScrollHook writing scrollTop; disable
+   the browser's native scroll anchoring so it never fights that pin (which
+   showed up as the message list jumping up then snapping back to the bottom). */
+#chat-messages {
+  overflow-anchor: none;
+}
+
+.message-viewport__channel-loader {
+  @apply mx-auto my-retro-12 flex w-fit;
+}
+
+.message-viewport__scroll-loader {
+  @apply mx-auto flex w-fit py-retro-8;
+}
+
+/* ── Reduced Motion ── */
+
+@media (prefers-reduced-motion: reduce) {
+  .p2p-diagram__line {
+    animation: none !important;
+  }
+  .p2p-diagram__dot {
+    display: none;
+  }
+  .p2p-diagram__status-dot--offline {
+    animation: none;
+  }
+  .activity-indicator__icon,
+  .activity-indicator__brand,
+  .activity-indicator__dot,
+  .desktop-window-opening__logo,
+  .desktop-window-opening__dot {
+    animation: none;
+  }
+}
+
