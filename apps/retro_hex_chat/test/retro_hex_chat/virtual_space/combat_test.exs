@@ -107,7 +107,7 @@ defmodule RetroHexChat.VirtualSpace.CombatTest do
       bob_key = ctx.bob
       assert_receive %{event: "space_action", payload: %{kind: "sword", key: alice_key}}
       assert alice_key == ctx.alice
-      assert_receive %{event: "space_action", payload: %{kind: "hit", key: ^bob_key}}
+      assert_receive %{event: "space_action", payload: %{kind: "hit", key: ^bob_key, damage: 25}}
       assert_receive %{event: "space_delta", payload: %{updates: %{^bob_key => %{hp: 75}}}}
 
       assert participant(ctx.channel_name, ctx.bob).hp == 75
@@ -141,7 +141,7 @@ defmodule RetroHexChat.VirtualSpace.CombatTest do
 
       for _ <- 1..4, do: assert(:ok = swing(ctx))
 
-      assert_receive %{event: "space_action", payload: %{kind: "ko", key: ^bob_key}}
+      assert_receive %{event: "space_action", payload: %{kind: "ko", key: ^bob_key, damage: 25}}
       downed = participant(ctx.channel_name, ctx.bob)
       assert downed.hp == 0
       assert downed.pose == "down"

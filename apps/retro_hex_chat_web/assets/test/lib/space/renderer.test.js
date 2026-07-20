@@ -586,3 +586,87 @@ describe("Renderer combat poses", () => {
     expect(pose).toMatchObject({ actionKind: "ko", frame: 3 });
   });
 });
+
+describe("Renderer combat feedback effects", () => {
+  function fxRenderer() {
+    const atlas = {
+      tile: () => null,
+      avatar: () => ({ canvas: {}, sw: 188, sh: 146 }),
+      avatarMeta: () => ({ hasIdle: true, hasSleep: true }),
+      avatarFrameCount: () => 4,
+      avatarBounds: () => ({ top: 49, foot: 140 }),
+      fx: () => null, // no fx sheet in tests; sparks skip drawing
+      fxFrameCount: () => 6,
+    };
+    return build({ atlas });
+  }
+
+  function hitState(overrides = {}) {
+    const participant = {
+      key: "victim",
+      nickname: "bob",
+      avatar: "hero",
+      x: 5,
+      y: 5,
+      pose: "standing",
+      hp: 75,
+      action: { kind: "hit", damage: 25, startedAt: 1000, duration: 420 },
+      ...overrides,
+    };
+    return { participants: new Map([[participant.key, participant]]), selfKey: null, now: 1050 };
+  }
+
+  it("floats a damage number for a hit and fades it out after its lifetime", () => {
+    const { ctx, renderer } = fxRenderer();
+    renderer.draw(hitState());
+    const texts = ctx.fillText.mock.calls.map((c) => c[0]);
+    expect(texts).toContain("-25");
+
+    // Long after the lifetime the number is gone.
+    ctx.fillText.mockClear();
+    renderer.draw({ ...hitState(), now: 5000 });
+    expect(ctx.fillText.mock.calls.map((c) => c[0])).not.toContain("-25");
+  });
+
+  it("spawns one effect per action instance, not per frame", () => {
+    const { ctx, renderer } = fxRenderer();
+    renderer.draw(hitState());
+    renderer.draw({ ...hitState(), now: 1100 });
+    const dmgCalls = ctx.fillText.mock.calls.filter((c) => c[0] === "-25");
+    // Two draws render the number twice (shadow+fill each), from ONE effect.
+    expect(renderer._fx).toHaveLength(1);
+    expect(dmgCalls.length).toBe(4);
+  });
+
+  it("shakes only the knocked-out player's own camera", () => {
+    const { renderer } = fxRenderer();
+    const ko = { kind: "ko", damage: 25, startedAt: 1000, duration: 650 };
+
+    // Spectator: someone else got KO'd — no shake.
+    renderer.draw(hitState({ action: ko, pose: "down" }));
+    expect(renderer._shakeAt).toBe(null);
+
+    // Victim: it's the local player — shake arms.
+    const { renderer: mine } = fxRenderer();
+    const state = hitState({ action: { ...ko, startedAt: 2000 }, pose: "down" });
+    state.selfKey = "victim";
+    state.now = 2010;
+    mine.draw(state);
+    expect(mine._shakeAt).not.toBe(null);
+    expect(mine._shakeOffset(2050)).not.toBe(null);
+    expect(mine._shakeOffset(2500)).toBe(null); // decayed
+  });
+
+  it("suppresses the shake under prefers-reduced-motion", () => {
+    const { renderer } = fxRenderer();
+    renderer._reducedMotion = true;
+    const state = hitState({
+      action: { kind: "ko", damage: 25, startedAt: 3000, duration: 650 },
+      pose: "down",
+    });
+    state.selfKey = "victim";
+    state.now = 3010;
+    renderer.draw(state);
+    expect(renderer._shakeAt).toBe(null);
+  });
+});

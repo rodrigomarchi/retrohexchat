@@ -306,6 +306,7 @@ export class SpaceEngine {
     this._actions.set(normalized.key, {
       kind: normalized.kind,
       dir: normalized.dir,
+      damage: normalized.damage ?? 0,
       startedAt: this._clock(),
       duration: ACTION_DURATION_MS[normalized.kind] ?? ACTION_DURATION_MS.sword,
     });

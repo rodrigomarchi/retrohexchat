@@ -171,3 +171,15 @@ describe("sprite atlas contract", () => {
     expect(board.canvas.width).toBeGreaterThan(0);
   });
 });
+
+describe("combat fx sheet", () => {
+  it("resolves impact effect frames on the fx strip and clamps the index", () => {
+    const atlas = createSpriteAtlas();
+    expect(atlas.fx("hit_spark", 0)).toMatchObject({ sx: 0, sy: 0, sw: 64, sh: 64 });
+    expect(atlas.fx("hit_spark", 3)).toMatchObject({ sx: 192, sy: 0 });
+    expect(atlas.fx("hit_spark", 99)).toMatchObject({ sx: 320 }); // clamps to last frame
+    expect(atlas.fx("ko_burst", 1)).toMatchObject({ sx: 96, sy: 64, sw: 96, sh: 96 });
+    expect(atlas.fxFrameCount("hit_spark")).toBe(6);
+    expect(atlas.fx("nope", 0)).toBe(null);
+  });
+});

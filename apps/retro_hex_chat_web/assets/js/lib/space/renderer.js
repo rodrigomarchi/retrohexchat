@@ -23,6 +23,19 @@ const HP_MAX = 100;
 const HP_BAR_W = 26;
 const HP_FG_OK = "7ec850";
 const HP_FG_LOW = "d8a03a";
+// Combat impact feedback, layered per hit: a white flash on the sprite, a
+// PixelLab spark/burst at the point of impact, and a floating damage number.
+// A knockout also nudges the *victim's own* camera briefly (skipped entirely
+// under prefers-reduced-motion).
+const FX_FLASH_MS = 120;
+const FX_SPARK_MS = 280;
+const FX_BURST_MS = 420;
+const FX_NUMBER_MS = 700;
+const FX_NUMBER_RISE_PX = 26;
+const FX_SHAKE_MS = 150;
+const FX_SHAKE_AMP_PX = 3;
+const DMG_FG = "ffd23e";
+const DMG_KO_FG = "ff6a4d";
 const BUBBLE_BG = "e8dcc0";
 const BUBBLE_FG = "20232b";
 const SIGN_BG = "5a442e";
@@ -94,6 +107,15 @@ export class Renderer {
     this.avatarScale = avatarScale ?? camera.scale;
     // Per-avatar last render position + time, to drive the walk animation.
     this._motion = new Map();
+    // Combat feedback state: which hit/ko action instances already spawned
+    // their effects, the live effect list, and the local-player shake clock.
+    this._fxSeen = new Map();
+    this._fx = [];
+    this._shakeAt = null;
+    this._flashCanvas = null;
+    this._reducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches === true;
   }
 
   resize() {
@@ -109,6 +131,13 @@ export class Renderer {
 
     const bubbles = state.bubbles ?? new Map();
     const now = state.now ?? (typeof performance !== "undefined" ? performance.now() : 0);
+
+    this._trackCombatFx(state, now);
+    const shake = this._shakeOffset(now);
+    if (shake) {
+      ctx.save();
+      ctx.translate(shake.x, shake.y);
+    }
 
     ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     ctx.fillStyle = HASH + VOID_BG;
@@ -136,12 +165,18 @@ export class Renderer {
     this._drawLighting(ctx);
     this._drawMapLabels(ctx);
 
+    // Impact sparks glow over the lit world; damage numbers float over labels.
+    this._drawCombatSparks(ctx, state.participants, now);
+
     const ordered = [...state.participants.values()].sort((a, b) => a.y - b.y);
     for (const participant of ordered) {
       this._drawLabel(ctx, participant);
       const text = bubbles.get(participant.key);
       if (text) this._drawBubble(ctx, participant, text);
     }
+    this._drawDamageNumbers(ctx, state.participants, now);
+
+    if (shake) ctx.restore();
   }
 
   destroy() {
@@ -642,7 +677,61 @@ export class Renderer {
     const f = this.projection.footAnchor(participant.x, participant.y);
     const s = this.camera.worldToScreen(f.x, f.y);
     const aw = sprite.sw * scale;
-    this._blit(ctx, sprite, Math.round(s.x - aw / 2), Math.round(s.y - foot * scale), scale);
+    const dx = Math.round(s.x - aw / 2);
+    const dy = Math.round(s.y - foot * scale);
+    this._blit(ctx, sprite, dx, dy, scale);
+
+    // Flash of pain: the frame's silhouette blinks white for a beat on a hit.
+    const action = participant.action;
+    if (
+      action &&
+      (action.kind === "hit" || action.kind === "ko") &&
+      now - action.startedAt < FX_FLASH_MS
+    ) {
+      this._blitFlash(ctx, sprite, dx, dy, scale);
+    }
+  }
+
+  // Draw the sprite's opaque silhouette in white over the just-drawn frame.
+  // The tint composes on a lazily-created offscreen canvas; environments
+  // without a real 2D context (tests) skip the flash silently.
+  _blitFlash(ctx, sprite, dx, dy, scale) {
+    if (!sprite.img || typeof document === "undefined") return;
+    if (!this._flashCanvas) {
+      try {
+        this._flashCanvas = document.createElement("canvas");
+      } catch {
+        return;
+      }
+    }
+    const off = this._flashCanvas;
+    const octx = off.getContext?.("2d");
+    if (!octx) return;
+    if (off.width < sprite.sw || off.height < sprite.sh) {
+      off.width = sprite.sw;
+      off.height = sprite.sh;
+    }
+    octx.clearRect(0, 0, off.width, off.height);
+    octx.globalCompositeOperation = "source-over";
+    octx.drawImage(
+      sprite.img,
+      sprite.sx,
+      sprite.sy,
+      sprite.sw,
+      sprite.sh,
+      0,
+      0,
+      sprite.sw,
+      sprite.sh,
+    );
+    octx.globalCompositeOperation = "source-in";
+    octx.fillStyle = HASH + LABEL_FG;
+    octx.fillRect(0, 0, sprite.sw, sprite.sh);
+    ctx.save();
+    ctx.globalAlpha = 0.8;
+    ctx.imageSmoothingEnabled = false;
+    ctx.drawImage(off, 0, 0, sprite.sw, sprite.sh, dx, dy, sprite.sw * scale, sprite.sh * scale);
+    ctx.restore();
   }
 
   // Screen anchor for a participant's avatar: the diamond foot (`footY`, where the
@@ -695,6 +784,98 @@ export class Renderer {
       };
     }
     return { actionKind: "walk", dir: m.dir8, frame: 0 };
+  }
+
+  // Register one set of layered effects per hit/ko action instance: a spark
+  // (or knockout burst) plus a floating damage number — and, when the local
+  // player is the one knocked out, a brief camera shake.
+  _trackCombatFx(state, now) {
+    for (const participant of state.participants.values()) {
+      const action = participant.action;
+      if (!action || (action.kind !== "hit" && action.kind !== "ko")) continue;
+      const id = `${participant.key}:${action.startedAt}`;
+      if (this._fxSeen.has(id)) continue;
+      this._fxSeen.set(id, now);
+      this._fx.push({
+        key: participant.key,
+        kind: action.kind,
+        damage: action.damage ?? 0,
+        startedAt: now,
+      });
+      if (action.kind === "ko" && participant.key === state.selfKey && !this._reducedMotion) {
+        this._shakeAt = now;
+      }
+    }
+    if (this._fxSeen.size > 64) {
+      for (const [id, at] of this._fxSeen) {
+        if (now - at > 5000) this._fxSeen.delete(id);
+      }
+    }
+  }
+
+  // The victim's own screen nudges once on a knockout: a small alternating
+  // offset that decays over FX_SHAKE_MS. Spectators' cameras never move.
+  _shakeOffset(now) {
+    if (this._shakeAt === null) return null;
+    const t = now - this._shakeAt;
+    if (t >= FX_SHAKE_MS) {
+      this._shakeAt = null;
+      return null;
+    }
+    const falloff = 1 - t / FX_SHAKE_MS;
+    const amp = FX_SHAKE_AMP_PX * falloff;
+    const sign = Math.floor(t / 40) % 2 === 0 ? 1 : -1;
+    return { x: Math.round(sign * amp), y: Math.round(-sign * amp * 0.5) };
+  }
+
+  _drawCombatSparks(ctx, participants, now) {
+    this._fx = this._fx.filter((fx) => {
+      const life = fx.kind === "ko" ? FX_BURST_MS : FX_SPARK_MS;
+      const participant = participants.get(fx.key);
+      if (!participant) return now - fx.startedAt < FX_NUMBER_MS;
+      const elapsed = now - fx.startedAt;
+      if (elapsed < life) {
+        const name = fx.kind === "ko" ? "ko_burst" : "hit_spark";
+        const frames = this.atlas?.fxFrameCount?.(name) ?? 0;
+        const sprite = frames > 0 && this.atlas?.fx?.(name, (elapsed / life) * frames);
+        if (sprite) {
+          const anchor = this._avatarAnchor(participant);
+          const cy = (anchor.footY + anchor.headY) / 2;
+          const s = this.avatarScale;
+          this._blit(
+            ctx,
+            sprite,
+            Math.round(anchor.x - (sprite.sw * s) / 2),
+            Math.round(cy - (sprite.sh * s) / 2),
+            s,
+          );
+        }
+      }
+      return now - fx.startedAt < FX_NUMBER_MS;
+    });
+  }
+
+  // Floating damage number: rises in an easing arc above the head and fades
+  // out over its last stretch. KO numbers use the hotter tone.
+  _drawDamageNumbers(ctx, participants, now) {
+    for (const fx of this._fx) {
+      if (fx.damage <= 0) continue;
+      const participant = participants.get(fx.key);
+      if (!participant) continue;
+      const progress = Math.min((now - fx.startedAt) / FX_NUMBER_MS, 1);
+      const anchor = this._avatarAnchor(participant);
+      const rise = FX_NUMBER_RISE_PX * (1 - (1 - progress) * (1 - progress));
+      const y = Math.round(anchor.headY - 18 - rise);
+      ctx.save();
+      ctx.font = LABEL_FONT;
+      ctx.textAlign = "center";
+      ctx.globalAlpha = progress < 0.6 ? 1 : 1 - (progress - 0.6) / 0.4;
+      ctx.fillStyle = HASH + LABEL_BG;
+      ctx.fillText(`-${fx.damage}`, Math.round(anchor.x) + 1, y + 1);
+      ctx.fillStyle = HASH + (fx.kind === "ko" ? DMG_KO_FG : DMG_FG);
+      ctx.fillText(`-${fx.damage}`, Math.round(anchor.x), y);
+      ctx.restore();
+    }
   }
 
   // Which idle stance to show: avatars with a second idle block spend a slice

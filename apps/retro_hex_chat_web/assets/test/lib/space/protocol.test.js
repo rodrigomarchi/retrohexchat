@@ -161,7 +161,13 @@ describe("normalizeAction", () => {
       key: "registered:1",
       kind: "sword",
       dir: "left",
+      damage: 0,
     });
+  });
+
+  it("carries the damage dealt on combat reactions", () => {
+    const action = normalizeAction({ key: "registered:2", kind: "hit", damage: 25 });
+    expect(action.damage).toBe(25);
   });
 
   it("accepts the combat action kinds", () => {

@@ -696,6 +696,14 @@ const AVATAR_SHEETS = Object.freeze(
   ROSTER.map((id) => ({ id: `av_iso_${id}`, src: `/images/space/avatars/iso_${id}.png` })),
 );
 
+// Combat impact effects: PixelLab burst animations packed as horizontal strips
+// stacked in /images/space/fx.png (frame i of an effect at x = i * w).
+const FX_SHEET = Object.freeze({ id: "fx_combat", src: "/images/space/fx.png" });
+const FX = Object.freeze({
+  hit_spark: { y: 0, w: 64, h: 64, frames: 6 },
+  ko_burst: { y: 64, w: 96, h: 96, frames: 6 },
+});
+
 // Build an avatar descriptor from its geometry. The game's "sword" action maps to
 // the "attack" block; an avatar without idle/idle2/sword/sleep falls back to walk.
 function isoAvatar(id) {
@@ -831,9 +839,21 @@ export function createSpriteAtlas(opts = {}) {
     };
   }
 
-  // Class avatar sheets are global (every map uses them), so the atlas loads
-  // them itself rather than depending on the map's tileset list.
+  // Resolve a combat effect frame (impact spark / knockout burst) to its rect
+  // on the fx sheet. One-shot strips: the caller clamps/expires by lifetime.
+  function fx(name, frame = 0) {
+    const spec = FX[name];
+    if (!spec) return null;
+    const sheet = sheets.get(FX_SHEET.id);
+    if (!sheet) return null;
+    const idx = Math.min(Math.max(Math.trunc(frame), 0), spec.frames - 1);
+    return { img: sheet.img, sx: idx * spec.w, sy: spec.y, sw: spec.w, sh: spec.h };
+  }
+
+  // Class avatar sheets and the fx sheet are global (every map uses them), so
+  // the atlas loads them itself rather than depending on the map's tileset list.
   loadTilesets(AVATAR_SHEETS);
+  loadTilesets([FX_SHEET]);
 
   return {
     tileSize,
@@ -844,6 +864,10 @@ export function createSpriteAtlas(opts = {}) {
     },
     tile,
     avatar,
+    fx,
+    fxFrameCount(name) {
+      return FX[name]?.frames ?? 0;
+    },
     avatarFrameCount(id, action = "walk") {
       const desc = AVATARS[id] ?? AVATARS[DEFAULT_AVATAR_ID];
       const block = desc[action] ?? desc.walk;

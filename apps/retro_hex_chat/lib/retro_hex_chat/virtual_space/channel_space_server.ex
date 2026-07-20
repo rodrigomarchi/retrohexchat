@@ -932,14 +932,19 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
     end
   end
 
-  defp broadcast_action(state, key, participant, kind, dir) do
-    broadcast(state.channel_name, "space_action", %{
-      server_time: System.system_time(:millisecond),
-      key: key,
-      kind: kind,
-      dir: valid_dir(dir) || participant.dir
-    })
+  defp broadcast_action(state, key, participant, kind, dir, extra \\ %{}) do
+    payload =
+      Map.merge(
+        %{
+          server_time: System.system_time(:millisecond),
+          key: key,
+          kind: kind,
+          dir: valid_dir(dir) || participant.dir
+        },
+        extra
+      )
 
+    broadcast(state.channel_name, "space_action", payload)
     state
   end
 
@@ -986,12 +991,12 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
       hurt = Map.put(target, :hp, hp)
       state = put_in(state.participants[target_key], hurt)
       state = broadcast_delta(state, target_key, hurt, hurt.input_seq)
-      broadcast_action(state, target_key, hurt, "hit", nil)
+      broadcast_action(state, target_key, hurt, "hit", nil, %{damage: @hit_damage})
     else
       down = %{Map.put(target, :hp, 0) | pose: "down"}
       state = put_in(state.participants[target_key], down)
       state = broadcast_delta(state, target_key, down, down.input_seq)
-      state = broadcast_action(state, target_key, down, "ko", nil)
+      state = broadcast_action(state, target_key, down, "ko", nil, %{damage: @hit_damage})
       Process.send_after(self(), {:space_getup, target_key}, ko_down_ms())
       state
     end

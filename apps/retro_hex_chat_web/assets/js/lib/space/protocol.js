@@ -114,6 +114,7 @@ export function normalizeAction(raw = {}) {
     key: typeof raw.key === "string" ? raw.key : null,
     kind: ACTIONS.has(raw.kind) ? raw.kind : "sword",
     dir: DIRECTIONS.has(raw.dir) ? raw.dir : "down",
+    damage: toInt(raw.damage, 0),
   };
 }
 
