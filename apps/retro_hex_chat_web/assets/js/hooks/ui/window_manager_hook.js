@@ -406,8 +406,6 @@ const WindowManagerHook = {
   // ── Click interactions (controls / taskbar / start menu) ───
 
   onClick(e) {
-    this.resetStackedScroll();
-
     const menuItem = e.target.closest("[data-taskbar-menu-action]");
     if (menuItem) {
       this.onTaskbarMenuAction(menuItem.dataset.taskbarMenuAction);
@@ -1024,9 +1022,11 @@ const WindowManagerHook = {
   focusWindow(id) {
     const win = this.windows[id];
     if (!win || !win.state.open || win.state.minimized) return;
+    const previousFocusedId = this.focusedId;
     this.focusedId = id;
     win.state.z = this.zCounter += 1;
     this.applyAll();
+    if (this.stacked && previousFocusedId !== id) this.resetStackedScrollSoon();
     this.persist();
   },
 
@@ -1236,6 +1236,8 @@ const WindowManagerHook = {
   },
 
   updateStacking() {
+    const wasStacked = this.stacked;
+    const previousFocusedId = this.focusedId;
     // Decide stacking from the viewport width, not the workspace width: at mount
     // the workspace has no laid-out width yet (dead render / page transition), so
     // measuring it there misclassifies a phone as a desktop. The desktop always
@@ -1257,9 +1259,15 @@ const WindowManagerHook = {
       if (!focused || !focused.state.open || focused.state.minimized) {
         this.focusTopmost();
       }
-      this.resetStackedScroll();
-      requestAnimationFrame(() => this.resetStackedScroll());
+      if (!wasStacked || previousFocusedId !== this.focusedId) {
+        this.resetStackedScrollSoon();
+      }
     }
+  },
+
+  resetStackedScrollSoon() {
+    this.resetStackedScroll();
+    requestAnimationFrame(() => this.resetStackedScroll());
   },
 
   resetStackedScroll() {

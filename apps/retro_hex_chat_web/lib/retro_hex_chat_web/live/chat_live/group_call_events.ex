@@ -496,7 +496,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   end
 
   def handle_event("group_call_offer_received", _payload, %{assigns: %{group_call: %{}}} = socket) do
-    {:halt, update_call(socket, &Map.put(&1, :status, :negotiating))}
+    {:halt, update_call(socket, &put_negotiating_status/1)}
   end
 
   def handle_event("group_call_peer_joined", payload, %{assigns: %{group_call: %{}}} = socket) do
@@ -621,8 +621,11 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   def handle_event("group_call_stats", payload, %{assigns: %{group_call: %{}}} = socket) do
     {:halt,
      update_call(socket, fn call ->
+       stats = GroupCallStats.normalize(payload)
+
        call
-       |> Map.put(:stats, GroupCallStats.normalize(payload))
+       |> Map.put(:stats, stats)
+       |> apply_stats_connection_state(stats)
        |> refresh_server_stats()
      end)}
   end
@@ -981,6 +984,19 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
         update_call(socket, &Map.put(&1, :connection_state, state))
     end
   end
+
+  defp put_negotiating_status(%{connection_state: "connected"} = call), do: call
+  defp put_negotiating_status(call), do: Map.put(call, :status, :negotiating)
+
+  defp apply_stats_connection_state(call, %{summary: %{connection_state: "connected"}}) do
+    call
+    |> Map.put(:connection_state, "connected")
+    |> Map.put(:status, :connected)
+    |> Map.put(:warning, nil)
+    |> Map.put(:error, nil)
+  end
+
+  defp apply_stats_connection_state(call, _stats), do: call
 
   defp toggle_media(socket, kind) do
     call = socket.assigns.group_call

@@ -19,6 +19,9 @@ defmodule RetroHexChatWeb.Components.UI.MediaSession.InspectorPanel do
 
   attr :title_class, :any, default: "truncate font-bold"
   attr :body_class, :any, default: "min-h-0 flex-1 overflow-auto p-1"
+  attr :body_id, :string, default: nil
+  attr :body_hook, :string, default: nil
+  attr :body_preserve_scroll_target, :string, default: nil
   attr :testid, :string, default: nil
   attr :body_testid, :string, default: nil
   attr :body_role, :string, default: nil
@@ -53,6 +56,9 @@ defmodule RetroHexChatWeb.Components.UI.MediaSession.InspectorPanel do
       </header>
 
       <div
+        id={@body_id}
+        phx-hook={@body_hook}
+        data-preserve-scroll-target={@body_preserve_scroll_target}
         class={classes([@body_class])}
         role={@body_role}
         aria-label={@body_aria_label}

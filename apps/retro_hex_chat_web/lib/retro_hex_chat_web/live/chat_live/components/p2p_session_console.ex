@@ -37,6 +37,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PSessionConsole do
       data-p2p-media-mode={Map.get(@p2p_session, :media_mode, "video")}
     >
       <.media_session_header
+        :if={@section != "call"}
         title={dgettext("p2p", "P2P Session with %{peer}", peer: peer_label(@p2p_session))}
         title_class="truncate text-xs font-bold leading-4"
         actions_class="flex shrink-0 items-center gap-1"
@@ -108,7 +109,13 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PSessionConsole do
       <.recovery_notice p2p_session={@p2p_session} />
 
       <div class="min-h-0 flex-1 overflow-hidden border border-border border-t-0 bg-canvas">
-        <div class={section_class(@section, "call")} data-testid="p2p-console-section-call">
+        <div
+          id="p2p-console-section-call-scroll"
+          phx-hook="PreserveScrollHook"
+          data-preserve-scroll-target="self"
+          class={section_class(@section, "call")}
+          data-testid="p2p-console-section-call"
+        >
           <.live_component
             module={P2PMediaIsland}
             id={P2PMediaIsland.id()}
@@ -123,7 +130,13 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PSessionConsole do
           />
         </div>
 
-        <div class={section_class(@section, "files")} data-testid="p2p-console-section-files">
+        <div
+          id="p2p-console-section-files-scroll"
+          phx-hook="PreserveScrollHook"
+          data-preserve-scroll-target="self"
+          class={section_class(@section, "files")}
+          data-testid="p2p-console-section-files"
+        >
           <.live_component
             module={P2PFileIsland}
             id={P2PFileIsland.id()}
@@ -134,7 +147,13 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PSessionConsole do
           />
         </div>
 
-        <div class={section_class(@section, "games")} data-testid="p2p-console-section-games">
+        <div
+          id="p2p-console-section-games-scroll"
+          phx-hook="PreserveScrollHook"
+          data-preserve-scroll-target="self"
+          class={section_class(@section, "games")}
+          data-testid="p2p-console-section-games"
+        >
           <.live_component
             module={P2PGameIsland}
             id={P2PGameIsland.id()}
@@ -143,7 +162,13 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PSessionConsole do
           />
         </div>
 
-        <div class={section_class(@section, "stats")} data-testid="p2p-console-section-stats">
+        <div
+          id="p2p-console-section-stats-scroll"
+          phx-hook="PreserveScrollHook"
+          data-preserve-scroll-target="self"
+          class={section_class(@section, "stats")}
+          data-testid="p2p-console-section-stats"
+        >
           <.lobby_network_panel
             :if={@section == "stats"}
             stats={@p2p_session.stats}
@@ -164,6 +189,13 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PSessionConsole do
       </div>
     </section>
     """
+  end
+
+  defp section_class(active_section, "call") do
+    [
+      "h-full min-h-0 overflow-hidden p-1",
+      active_section != "call" && "hidden"
+    ]
   end
 
   defp section_class(active_section, section) do

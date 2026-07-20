@@ -192,6 +192,62 @@ async function expectP2PConsoleLayoutStable(page: Page) {
   expect(metrics.horizontalScrollElements).toEqual([]);
 }
 
+async function expectP2PCallHasSingleInnerHeader(page: Page) {
+  const visibleHeaderCount = await page
+    .getByTestId("p2p-call-window")
+    .locator("header")
+    .evaluateAll((headers) =>
+      headers.filter((header) => {
+        const element = header as HTMLElement;
+        const rect = element.getBoundingClientRect();
+        const style = window.getComputedStyle(element);
+
+        return (
+          rect.width > 0 &&
+          rect.height > 0 &&
+          style.display !== "none" &&
+          style.visibility !== "hidden"
+        );
+      }).length,
+    );
+
+  expect(visibleHeaderCount).toBe(1);
+}
+
+async function expectP2PSectionScrollHooks(page: Page) {
+  for (const section of ["call", "files", "games", "stats"] as const) {
+    const sectionRoot = page.getByTestId(`p2p-console-section-${section}`);
+    await expect(sectionRoot).toHaveAttribute("phx-hook", "PreserveScrollHook");
+    await expect(sectionRoot).toHaveAttribute(
+      "data-preserve-scroll-target",
+      "self",
+    );
+  }
+}
+
+async function expectScrollStableAcrossStatsTick(page: Page, testId: string) {
+  const before = await page.getByTestId(testId).evaluate((element) => {
+    element.scrollTop = Math.max(1, element.scrollHeight - element.clientHeight);
+
+    return {
+      clientHeight: element.clientHeight,
+      scrollHeight: element.scrollHeight,
+      scrollTop: Math.round(element.scrollTop),
+    };
+  });
+
+  expect(before.scrollHeight).toBeGreaterThan(before.clientHeight + 8);
+  expect(before.scrollTop).toBeGreaterThan(0);
+
+  await page.waitForTimeout(3_200);
+
+  const after = await page
+    .getByTestId(testId)
+    .evaluate((element) => Math.round(element.scrollTop));
+
+  expect(after).toBeGreaterThanOrEqual(before.scrollTop - 2);
+}
+
 async function sendP2PInvite(user: P2PTestUser, targetNick: string) {
   await user.chat.sendMessage(`/p2p ${targetNick}`);
   await expect(user.page.getByTestId("p2p-setup-accept")).toBeVisible();
@@ -661,6 +717,8 @@ test.describe("In-chat P2P session", () => {
       await expect
         .poll(() => remoteVideoLive(alice.page), { timeout: 30_000 })
         .toBe(true);
+      await expectP2PCallHasSingleInnerHeader(alice.page);
+      await expectP2PSectionScrollHooks(alice.page);
 
       const initialRemote = await remoteVideoIdentity(alice.page);
       expect(initialRemote?.videoIdentity).toBeTruthy();
@@ -680,6 +738,7 @@ test.describe("In-chat P2P session", () => {
 
       await alice.page.getByTestId("p2p-call-mini-toggle").click();
       await expect(callPanel).toHaveAttribute("data-call-mini", "false");
+      await expectP2PCallHasSingleInnerHeader(alice.page);
       await expect
         .poll(() => remoteVideoIdentity(alice.page))
         .toEqual(initialRemote);
@@ -707,6 +766,13 @@ test.describe("In-chat P2P session", () => {
       await expect
         .poll(() => remoteVideoIdentity(alice.page))
         .toEqual(initialRemote);
+
+      await alice.page.setViewportSize({ width: 390, height: 844 });
+      await openP2PConsoleSection(alice.page, "stats");
+      await expectScrollStableAcrossStatsTick(
+        alice.page,
+        "p2p-console-section-stats",
+      );
     } finally {
       await closeP2PUsers([alice, bob]);
     }

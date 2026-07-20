@@ -6,6 +6,11 @@ import { Socket } from "phoenix";
 import { LiveSocket } from "phoenix_live_view";
 import topbar from "../vendor/topbar";
 import { buildHooks } from "./hooks/registry";
+import {
+  preserveScrollBeforeElUpdated,
+  preserveScrollPatchEnd,
+  preserveScrollPatchStart,
+} from "./hooks/ui/preserve_scroll_hook";
 import { createPlausibleTracker } from "./lib/analytics/plausible";
 import { getClientInfo } from "./lib/connection/client_info";
 import { loadCurrentLocaleCatalog } from "./lib/i18n";
@@ -24,6 +29,11 @@ const liveSocket = new LiveSocket("/live", Socket, {
     reconnect: !!localStorage.getItem("rhc_reconnect_state"),
   }),
   hooks: Hooks,
+  dom: {
+    onPatchStart: preserveScrollPatchStart,
+    onBeforeElUpdated: preserveScrollBeforeElUpdated,
+    onPatchEnd: preserveScrollPatchEnd,
+  },
 });
 
 // Show progress bar on live navigation and form submits

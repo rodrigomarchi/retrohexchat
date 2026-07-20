@@ -274,7 +274,11 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
   defp conference_view_rail(assigns) do
     ~H"""
     <.media_session_command_bar
-      class="flex shrink-0 flex-row flex-wrap content-start gap-1 border border-border bg-surface p-1 shadow-retro-sunken lg:flex-col"
+      class={[
+        "shrink-0 flex-row flex-wrap content-start gap-1 border border-border bg-surface p-1 shadow-retro-sunken lg:flex-col",
+        mobile_inspector_open?(@call) && "hidden lg:flex",
+        !mobile_inspector_open?(@call) && "flex"
+      ]}
       role="group"
       aria_label={dgettext("group_call", "Conference view controls")}
       testid="group-call-view-rail"
@@ -294,7 +298,11 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
   defp conference_bottom_controls(assigns) do
     ~H"""
     <.media_session_command_bar
-      class="flex shrink-0 flex-wrap items-center justify-center gap-1 border border-border bg-surface px-1 py-1 shadow-retro-sunken"
+      class={[
+        "shrink-0 flex-wrap items-center justify-center gap-1 border border-border bg-surface px-1 py-1 shadow-retro-sunken",
+        mobile_inspector_open?(@call) && "hidden lg:flex",
+        !mobile_inspector_open?(@call) && "flex"
+      ]}
       aria_label={dgettext("group_call", "Conference media controls")}
       testid="group-call-media-controls"
     >
@@ -538,8 +546,12 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
     <.media_session_inspector_panel
       title={dgettext("group_call", "Settings")}
       aria_label={dgettext("group_call", "Conference settings")}
+      body_id="group-call-settings-scroll"
+      body_hook="PreserveScrollHook"
+      body_preserve_scroll_target="self"
       body_class="grid min-h-0 gap-2 overflow-auto p-2"
       testid="group-call-settings-panel"
+      body_testid="group-call-settings-scroll"
     >
       <:icon>
         <Icons.icon_btn_settings class="h-4 w-4 shrink-0" />
@@ -601,6 +613,9 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
   defp conference_stats_panel(assigns) do
     ~H"""
     <section
+      id="group-call-inline-stats-scroll"
+      phx-hook="PreserveScrollHook"
+      data-preserve-scroll-target="self"
       class="min-h-0 overflow-auto border border-border bg-canvas p-2 shadow-retro-sunken"
       aria-label={dgettext("group_call", "Conference statistics")}
       data-testid="group-call-inline-stats"
@@ -641,6 +656,9 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
       ]}
       body_role="list"
       body_aria_label={dgettext("group_call", "Conference participant list")}
+      body_id="group-call-participants-scroll"
+      body_hook="PreserveScrollHook"
+      body_preserve_scroll_target="self"
       body_testid="group-call-participants"
     >
       <:icon>

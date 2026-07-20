@@ -77,6 +77,14 @@ function groupCallScreenShareToggle(page: Page) {
   return page.getByTestId("group-call-screen-share-toggle");
 }
 
+function groupCallViewRail(page: Page) {
+  return page.getByTestId("group-call-view-rail");
+}
+
+function groupCallMediaControls(page: Page) {
+  return page.getByTestId("group-call-media-controls");
+}
+
 function groupCallMuteAll(page: Page) {
   return page.getByTestId("group-call-mute-all");
 }
@@ -107,6 +115,10 @@ function groupCallTaskbarButton(page: Page) {
 
 function groupCallStatusBar(page: Page) {
   return page.getByTestId("status-bar-group-call");
+}
+
+function groupCallStatusAnnouncer(page: Page) {
+  return page.getByTestId("group-call-status-announcer");
 }
 
 function groupCallChannelBadge(page: Page) {
@@ -278,6 +290,55 @@ async function expectMediaSessionHeadersStable(page: Page, rootTestId: string) {
 
   expect(metrics.overflowHeaders).toEqual([]);
   expect(metrics.horizontalScrollHeaders).toEqual([]);
+}
+
+async function expectScrollStableAcrossStatsTick(page: Page, testId: string) {
+  const before = await page.getByTestId(testId).evaluate((element) => {
+    element.scrollTop = Math.max(1, element.scrollHeight - element.clientHeight);
+
+    return {
+      clientHeight: element.clientHeight,
+      scrollHeight: element.scrollHeight,
+      scrollTop: Math.round(element.scrollTop),
+    };
+  });
+
+  expect(before.scrollHeight).toBeGreaterThan(before.clientHeight + 8);
+  expect(before.scrollTop).toBeGreaterThan(0);
+
+  await page.waitForTimeout(3_200);
+
+  const after = await page
+    .getByTestId(testId)
+    .evaluate((element) => Math.round(element.scrollTop));
+
+  expect(after).toBeGreaterThanOrEqual(before.scrollTop - 2);
+}
+
+async function openGroupCallStatsDetails(page: Page) {
+  for (const testId of [
+    "group-call-stats-details-server",
+    "group-call-stats-details-server-runtime",
+    "group-call-stats-details-browser-connection",
+    "group-call-stats-details-audio",
+    "group-call-stats-details-video",
+    "group-call-stats-details-browser-summary",
+  ]) {
+    const group = page.getByTestId(testId);
+    await expect(group).toBeVisible();
+
+    const isOpen = await group.evaluate(
+      (element) => (element as HTMLDetailsElement).open,
+    );
+    if (!isOpen) {
+      await group.locator("summary").click();
+    }
+    await expect
+      .poll(() =>
+        group.evaluate((element) => (element as HTMLDetailsElement).open),
+      )
+      .toBe(true);
+  }
 }
 
 function remoteVideoTile(page: Page) {
@@ -794,6 +855,10 @@ test.describe("Channel group calls", () => {
 
       await groupCallSection(alice.page, "settings").click();
       await expect(groupCallSettingsPanel(alice.page)).toBeVisible();
+      await expect(alice.page.getByTestId("group-call-settings-scroll")).toHaveAttribute(
+        "phx-hook",
+        "PreserveScrollHook",
+      );
       await expect(groupCallSection(alice.page, "settings")).toHaveAttribute(
         "aria-pressed",
         "true",
@@ -803,6 +868,10 @@ test.describe("Channel group calls", () => {
       await expect(
         alice.page.getByTestId("group-call-participants"),
       ).toBeVisible();
+      await expect(alice.page.getByTestId("group-call-participants")).toHaveAttribute(
+        "phx-hook",
+        "PreserveScrollHook",
+      );
       await expect(groupCallSection(alice.page, "people")).toHaveAttribute(
         "aria-pressed",
         "true",
@@ -820,6 +889,10 @@ test.describe("Channel group calls", () => {
       await expect(groupCallInlineStats(alice.page)).toContainText(
         "Browser connection",
       );
+      await expect(groupCallInlineStats(alice.page)).toHaveAttribute(
+        "phx-hook",
+        "PreserveScrollHook",
+      );
       await expect(groupCallSection(alice.page, "stats")).toHaveAttribute(
         "aria-pressed",
         "true",
@@ -830,6 +903,9 @@ test.describe("Channel group calls", () => {
       await expect(groupCallWindow(alice.page)).toBeVisible();
       await expect(groupCallPanel(alice.page)).toBeVisible();
       await expect(groupCallInlineStats(alice.page)).toBeVisible();
+      await expect(groupCallVideoGrid(alice.page)).toBeHidden();
+      await expect(groupCallViewRail(alice.page)).toBeHidden();
+      await expect(groupCallMediaControls(alice.page)).toBeHidden();
       await expectMobileSectionNavCue(alice.page, "group-call-section-nav");
       await expectMediaSessionHeadersStable(alice.page, "group-call-panel");
 
@@ -887,6 +963,14 @@ test.describe("Channel group calls", () => {
         .toBe(true);
       await expectRemoteVideoFramesToAdvance(alice.page, "Alice");
       await expectRemoteVideoFramesToAdvance(bob.page, "Bob");
+      await expect(groupCallStatusAnnouncer(alice.page)).toContainText(
+        "Connected",
+        { timeout: 20_000 },
+      );
+      await expect(groupCallStatusAnnouncer(bob.page)).toContainText(
+        "Connected",
+        { timeout: 20_000 },
+      );
 
       await expect(
         alice.page.getByTestId("group-call-participants"),
@@ -906,6 +990,15 @@ test.describe("Channel group calls", () => {
       await expect(groupCallInlineStats(alice.page)).toContainText(
         "Peer connections",
       );
+      await alice.page.setViewportSize({ width: 390, height: 640 });
+      await expect(groupCallInlineStats(alice.page)).toBeVisible();
+      await openGroupCallStatsDetails(alice.page);
+      await expectScrollStableAcrossStatsTick(
+        alice.page,
+        "group-call-inline-stats",
+      );
+      await alice.page.setViewportSize({ width: 1280, height: 720 });
+      await expect(groupCallWindow(alice.page)).toBeVisible();
       await groupCallSection(alice.page, "call").click();
       await groupCallStatusBar(alice.page).click();
       await expect(groupCallWindow(alice.page)).toBeVisible();

@@ -84,7 +84,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
 
         <div
           :if={@show_surface}
-          class="min-h-0 flex-1"
+          class="flex min-h-0 flex-1 flex-col gap-1 overflow-hidden"
           data-testid="p2p-call-surface"
           data-media-mode={@media_mode}
           data-call-layout={@normalized_layout}
@@ -130,7 +130,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
                 <video
                   id="lobby-remote-video"
                   class={[
-                    "block h-full min-h-[160px] w-full bg-black object-contain",
+                    "block h-full min-h-0 w-full bg-black object-contain",
                     @peer_camera_off && "u-hidden"
                   ]}
                   autoplay
@@ -363,7 +363,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
 
   defp sending_controls(assigns) do
     ~H"""
-    <div class="grid gap-1">
+    <div class="relative z-10 grid shrink-0 gap-1">
       <.media_session_command_bar
         class="flex flex-wrap items-center justify-center gap-2 border border-border bg-surface px-2 py-2 shadow-retro-sunken"
         aria_label={dgettext("p2p", "P2P media controls")}
@@ -475,7 +475,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
   defp p2p_view_rail(assigns) do
     ~H"""
     <.media_session_command_bar
-      class="flex shrink-0 flex-row flex-wrap content-start gap-1 border border-border bg-surface p-1 shadow-retro-sunken lg:flex-col"
+      class="relative z-10 flex shrink-0 flex-row flex-wrap content-start gap-1 border border-border bg-surface p-1 shadow-retro-sunken lg:flex-col"
       role="group"
       aria_label={dgettext("p2p", "P2P view and window controls")}
       testid="p2p-call-view-rail"
@@ -759,25 +759,25 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
     media_session_icon_button_class(active?, tone, extra)
   end
 
-  defp p2p_stage_class(true), do: "grid min-h-0 gap-1"
+  defp p2p_stage_class(true), do: "grid min-h-0 flex-1 gap-1 overflow-hidden"
 
   defp p2p_stage_class(false) do
     classes([
-      "grid min-h-0 gap-1",
-      "lg:grid-cols-[3.25rem_minmax(0,1fr)]"
+      "grid min-h-0 flex-1 grid-rows-[auto_minmax(0,1fr)] gap-1 overflow-hidden",
+      "lg:grid-cols-[3.25rem_minmax(0,1fr)] lg:grid-rows-1"
     ])
   end
 
   @spec video_grid_class(String.t(), String.t(), boolean()) :: list()
   defp video_grid_class(_layout, _self_view, true) do
     [
-      "relative grid min-h-[104px] gap-1 overflow-hidden border border-border bg-black p-1 shadow-retro-sunken"
+      "relative grid h-full min-h-[104px] gap-1 overflow-hidden border border-border bg-black p-1 shadow-retro-sunken"
     ]
   end
 
   defp video_grid_class("split", "tile", false) do
     [
-      "relative grid min-h-[180px] gap-1 overflow-hidden border border-border bg-black p-1 shadow-retro-sunken",
+      "relative grid h-full min-h-0 gap-1 overflow-hidden border border-border bg-black p-1 shadow-retro-sunken",
       "sm:grid-cols-2"
     ]
   end
@@ -786,13 +786,13 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
 
   defp video_grid_class("compact", _self_view, false) do
     [
-      "relative grid min-h-[128px] gap-1 overflow-hidden border border-border bg-black p-1 shadow-retro-sunken"
+      "relative grid h-full min-h-0 gap-1 overflow-hidden border border-border bg-black p-1 shadow-retro-sunken"
     ]
   end
 
   defp video_grid_class(_layout, _self_view, false) do
     [
-      "relative grid min-h-[180px] gap-1 overflow-hidden border border-border bg-black p-1 shadow-retro-sunken"
+      "relative grid h-full min-h-0 gap-1 overflow-hidden border border-border bg-black p-1 shadow-retro-sunken"
     ]
   end
 

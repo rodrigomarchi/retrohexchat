@@ -964,6 +964,8 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       assert call.stats.audio.active
       assert call.stats.video.width == 1280
       assert call.stats.summary.remote_stream_count == 1
+      assert call.status == :connected
+      assert call.connection_state == "connected"
 
       view
       |> element(~s([data-testid="group-call-section-stats"]))
@@ -987,6 +989,25 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
 
       assert has_element?(view, ~s([data-testid="group-call-stats-health"]), "Good")
       assert render(view) =~ "1280x720"
+    end
+
+    test "renegotiation does not downgrade a connected conference status", %{conn: conn} do
+      %{view: view} = mount_identified(conn, "gcrs")
+
+      open_group_call(view)
+
+      call = group_call_assign(view)
+      cleanup_room(call.token)
+
+      render_click(view, "group_call_connection_state", %{"state" => "connected"})
+
+      assert group_call_assign(view).status == :connected
+      assert has_element?(view, ~s([data-testid="group-call-status-announcer"]), "Connected")
+
+      render_click(view, "group_call_offer_received", %{})
+
+      assert group_call_assign(view).status == :connected
+      assert has_element?(view, ~s([data-testid="group-call-status-announcer"]), "Connected")
     end
 
     test "screen share state updates controls, participant state, focus, and stats", %{conn: conn} do
