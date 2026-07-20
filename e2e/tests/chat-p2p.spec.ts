@@ -196,19 +196,20 @@ async function expectP2PCallHasSingleInnerHeader(page: Page) {
   const visibleHeaderCount = await page
     .getByTestId("p2p-call-window")
     .locator("header")
-    .evaluateAll((headers) =>
-      headers.filter((header) => {
-        const element = header as HTMLElement;
-        const rect = element.getBoundingClientRect();
-        const style = window.getComputedStyle(element);
+    .evaluateAll(
+      (headers) =>
+        headers.filter((header) => {
+          const element = header as HTMLElement;
+          const rect = element.getBoundingClientRect();
+          const style = window.getComputedStyle(element);
 
-        return (
-          rect.width > 0 &&
-          rect.height > 0 &&
-          style.display !== "none" &&
-          style.visibility !== "hidden"
-        );
-      }).length,
+          return (
+            rect.width > 0 &&
+            rect.height > 0 &&
+            style.display !== "none" &&
+            style.visibility !== "hidden"
+          );
+        }).length,
     );
 
   expect(visibleHeaderCount).toBe(1);
@@ -227,7 +228,10 @@ async function expectP2PSectionScrollHooks(page: Page) {
 
 async function expectScrollStableAcrossStatsTick(page: Page, testId: string) {
   const before = await page.getByTestId(testId).evaluate((element) => {
-    element.scrollTop = Math.max(1, element.scrollHeight - element.clientHeight);
+    element.scrollTop = Math.max(
+      1,
+      element.scrollHeight - element.clientHeight,
+    );
 
     return {
       clientHeight: element.clientHeight,

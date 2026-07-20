@@ -294,7 +294,10 @@ async function expectMediaSessionHeadersStable(page: Page, rootTestId: string) {
 
 async function expectScrollStableAcrossStatsTick(page: Page, testId: string) {
   const before = await page.getByTestId(testId).evaluate((element) => {
-    element.scrollTop = Math.max(1, element.scrollHeight - element.clientHeight);
+    element.scrollTop = Math.max(
+      1,
+      element.scrollHeight - element.clientHeight,
+    );
 
     return {
       clientHeight: element.clientHeight,
@@ -855,10 +858,9 @@ test.describe("Channel group calls", () => {
 
       await groupCallSection(alice.page, "settings").click();
       await expect(groupCallSettingsPanel(alice.page)).toBeVisible();
-      await expect(alice.page.getByTestId("group-call-settings-scroll")).toHaveAttribute(
-        "phx-hook",
-        "PreserveScrollHook",
-      );
+      await expect(
+        alice.page.getByTestId("group-call-settings-scroll"),
+      ).toHaveAttribute("phx-hook", "PreserveScrollHook");
       await expect(groupCallSection(alice.page, "settings")).toHaveAttribute(
         "aria-pressed",
         "true",
@@ -868,10 +870,9 @@ test.describe("Channel group calls", () => {
       await expect(
         alice.page.getByTestId("group-call-participants"),
       ).toBeVisible();
-      await expect(alice.page.getByTestId("group-call-participants")).toHaveAttribute(
-        "phx-hook",
-        "PreserveScrollHook",
-      );
+      await expect(
+        alice.page.getByTestId("group-call-participants"),
+      ).toHaveAttribute("phx-hook", "PreserveScrollHook");
       await expect(groupCallSection(alice.page, "people")).toHaveAttribute(
         "aria-pressed",
         "true",

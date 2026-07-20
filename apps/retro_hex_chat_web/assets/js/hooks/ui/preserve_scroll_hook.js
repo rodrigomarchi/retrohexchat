@@ -44,9 +44,7 @@ export function preserveScrollBeforeElUpdated(fromEl) {
 
   if (closestHookEl) hookEls.add(closestHookEl);
   if (fromEl.matches?.("[data-preserve-scroll-target]")) hookEls.add(fromEl);
-  fromEl
-    .querySelectorAll?.("[data-preserve-scroll-target]")
-    .forEach((el) => hookEls.add(el));
+  fromEl.querySelectorAll?.("[data-preserve-scroll-target]").forEach((el) => hookEls.add(el));
 
   for (const el of hookEls) {
     el[HOOK_INSTANCE_KEY]?.prepareForPatch();
