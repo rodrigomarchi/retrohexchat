@@ -1,5 +1,20 @@
 defmodule RetroHexChat.Services.NickServ do
-  @moduledoc "NickServ: Nick registration and protection service."
+  @moduledoc """
+  NickServ: nick registration and protection service.
+
+  Password hashing/verification (bcrypt) and all DB access run in the CALLER
+  process (e.g. the connecting LiveView), NOT inside this GenServer. bcrypt is
+  a deliberately expensive, CPU-bound dirty-NIF; running it inside a singleton
+  GenServer's `handle_call` would serialize every register/identify/registered?
+  behind one mailbox (head-of-line blocking), so a burst of logins would queue
+  and each wait seconds. Instead, N concurrent logins hash in N caller processes
+  in parallel (bounded only by dirty schedulers).
+
+  This GenServer owns ONLY cheap in-memory runtime state: the set of currently
+  `identified` nicknames and the per-nick identify-timeout `timers`. Concurrent
+  registration of the same nick is guarded by the DB unique index on `nickname`,
+  not by this process.
+  """
   use Gettext, backend: RetroHexChat.Gettext
   use GenServer
 
@@ -10,7 +25,9 @@ defmodule RetroHexChat.Services.NickServ do
 
   @default_identify_timeout_ms 60_000
 
-  # -- Public API --
+  # -- Public API (register/identify/registered?/info/ghost/drop/admin run in
+  #    the CALLER process; only the identified-set + timer state touches the
+  #    GenServer, via cheap calls/casts) --
 
   @spec start_link(keyword()) :: GenServer.on_start()
   def start_link(opts \\ []) do
@@ -22,47 +39,153 @@ defmodule RetroHexChat.Services.NickServ do
   @spec register(String.t(), String.t(), GenServer.server()) ::
           {:ok, String.t()} | {:error, String.t()}
   def register(nickname, password, server \\ __MODULE__) do
-    GenServer.call(server, {:register, nickname, password})
+    if Queries.get_setting("registration") == "closed" do
+      {:error,
+       dgettext("services", "Registration is currently closed by the server administrator")}
+    else
+      # bcrypt hash happens in RegisteredNick.registration_changeset, in THIS
+      # (caller) process. The DB unique index handles concurrent same-nick races.
+      case Queries.insert_registered_nick(nickname, password) do
+        {:ok, _} ->
+          GenServer.call(server, {:add_identified, nickname})
+
+          {:ok,
+           dgettext("services", "Nickname %{nickname} registered successfully",
+             nickname: nickname
+           )}
+
+        {:error, changeset} ->
+          {:error, format_changeset_error(changeset)}
+      end
+    end
   end
 
   @spec identify(String.t(), String.t(), GenServer.server()) ::
           {:ok, String.t()} | {:error, String.t()}
   def identify(nickname, password, server \\ __MODULE__) do
-    GenServer.call(server, {:identify, nickname, password})
+    case Queries.find_by_nickname(nickname) do
+      nil ->
+        # Equalize timing so an unregistered nick can't be told apart from a
+        # wrong password (user-enumeration guard). Runs in the caller.
+        Bcrypt.no_user_verify()
+
+        {:error,
+         dgettext("services", "Nickname %{nickname} is not registered", nickname: nickname)}
+
+      %RegisteredNick{} = nick ->
+        if RegisteredNick.verify_password(nick, password) do
+          Queries.update_last_seen(nick)
+          GenServer.call(server, {:mark_identified, nickname})
+
+          {:ok, dgettext("services", "You are now identified as %{nickname}", nickname: nickname)}
+        else
+          {:error, dgettext("services", "Invalid password")}
+        end
+    end
   end
 
   @spec registered?(String.t(), GenServer.server()) :: boolean()
-  def registered?(nickname, server \\ __MODULE__) do
-    GenServer.call(server, {:registered?, nickname})
+  def registered?(nickname, _server \\ __MODULE__) do
+    Queries.find_by_nickname(nickname) != nil
   end
 
   @spec info(String.t(), GenServer.server()) :: {:ok, map()} | {:error, String.t()}
   def info(nickname, server \\ __MODULE__) do
-    GenServer.call(server, {:info, nickname})
+    case Queries.find_by_nickname(nickname) do
+      nil ->
+        {:error,
+         dgettext("services", "Nickname %{nickname} is not registered", nickname: nickname)}
+
+      %RegisteredNick{} = nick ->
+        {:ok,
+         %{
+           nickname: nick.nickname,
+           registered_at: nick.registered_at,
+           last_seen_at: nick.last_seen_at,
+           identified: GenServer.call(server, {:identified?, nickname})
+         }}
+    end
   end
 
   @spec ghost(String.t(), String.t(), String.t(), GenServer.server()) ::
           {:ok, String.t()} | {:error, String.t()}
-  def ghost(target_nick, password, requester_nick, server \\ __MODULE__) do
-    GenServer.call(server, {:ghost, target_nick, password, requester_nick})
+  def ghost(target_nick, password, requester_nick, _server \\ __MODULE__) do
+    case Queries.find_by_nickname(target_nick) do
+      nil ->
+        {:error,
+         dgettext("services", "Nickname %{target_nick} is not registered",
+           target_nick: target_nick
+         )}
+
+      %RegisteredNick{} = nick ->
+        if RegisteredNick.verify_password(nick, password) do
+          broadcast_ghost_disconnect(target_nick, requester_nick)
+
+          {:ok,
+           dgettext("services", "Ghost command sent for %{target_nick}", target_nick: target_nick)}
+        else
+          {:error, dgettext("services", "Invalid password")}
+        end
+    end
   end
 
   @spec drop(String.t(), String.t(), GenServer.server()) ::
           {:ok, String.t()} | {:error, String.t()}
   def drop(nickname, password, server \\ __MODULE__) do
-    GenServer.call(server, {:drop, nickname, password})
+    case Queries.find_by_nickname(nickname) do
+      nil ->
+        {:error,
+         dgettext("services", "Nickname %{nickname} is not registered", nickname: nickname)}
+
+      %RegisteredNick{} = nick ->
+        if RegisteredNick.verify_password(nick, password) do
+          Queries.delete_registered_nick(nick)
+          GenServer.cast(server, {:remove_identified, nickname})
+          {:ok, dgettext("services", "Registration for %{nickname} dropped", nickname: nickname)}
+        else
+          {:error, dgettext("services", "Invalid password")}
+        end
+    end
   end
 
   @spec admin_drop(String.t(), GenServer.server()) ::
           {:ok, String.t()} | {:error, String.t()}
   def admin_drop(nickname, server \\ __MODULE__) do
-    GenServer.call(server, {:admin_drop, nickname})
+    case Queries.find_by_nickname(nickname) do
+      nil ->
+        {:error,
+         dgettext("services", "Nickname %{nickname} is not registered", nickname: nickname)}
+
+      %RegisteredNick{} = nick ->
+        Queries.delete_registered_nick(nick)
+        GenServer.cast(server, {:remove_identified, nickname})
+
+        {:ok,
+         dgettext("services", "Registration for %{nickname} dropped by admin", nickname: nickname)}
+    end
   end
 
   @spec admin_reset_password(String.t(), String.t(), GenServer.server()) ::
           {:ok, String.t()} | {:error, String.t()}
-  def admin_reset_password(nickname, new_password, server \\ __MODULE__) do
-    GenServer.call(server, {:admin_reset_password, nickname, new_password})
+  def admin_reset_password(nickname, new_password, _server \\ __MODULE__) do
+    case Queries.find_by_nickname(nickname) do
+      nil ->
+        {:error,
+         dgettext("services", "Nickname %{nickname} is not registered", nickname: nickname)}
+
+      %RegisteredNick{} ->
+        new_hash = Bcrypt.hash_pwd_salt(new_password)
+
+        case Queries.update_password_hash(nickname, new_hash) do
+          {:ok, _} ->
+            {:ok,
+             dgettext("services", "Password for %{nickname} has been reset", nickname: nickname)}
+
+          {:error, _} ->
+            {:error,
+             dgettext("services", "Failed to reset password for %{nickname}", nickname: nickname)}
+        end
+    end
   end
 
   @spec identified?(String.t(), GenServer.server()) :: boolean()
@@ -102,7 +225,8 @@ defmodule RetroHexChat.Services.NickServ do
     GenServer.cast(server, {:restore_identified, nickname})
   end
 
-  # -- GenServer callbacks --
+  # -- GenServer callbacks (cheap in-memory state only: identified set + timers,
+  #    no bcrypt, no heavy DB in the hot path) --
 
   @impl true
   def init(config) do
@@ -117,167 +241,22 @@ defmodule RetroHexChat.Services.NickServ do
   end
 
   @impl true
-  def handle_call({:register, nickname, password}, _from, state) do
-    if Queries.get_setting("registration") == "closed" do
-      {:reply,
-       {:error,
-        dgettext("services", "Registration is currently closed by the server administrator")},
-       state}
-    else
-      case Queries.insert_registered_nick(nickname, password) do
-        {:ok, _} ->
-          new_state = %{state | identified: MapSet.put(state.identified, nickname)}
-
-          {:reply,
-           {:ok,
-            dgettext("services", "Nickname %{nickname} registered successfully",
-              nickname: nickname
-            )}, new_state}
-
-        {:error, changeset} ->
-          msg = format_changeset_error(changeset)
-          {:reply, {:error, msg}, state}
-      end
-    end
+  def handle_call({:add_identified, nickname}, _from, state) do
+    # Registration auto-identifies (no timer to cancel, no broadcast — matches
+    # historical behavior; register callers don't expect :nickserv_identified).
+    {:reply, :ok, %{state | identified: MapSet.put(state.identified, nickname)}}
   end
 
-  def handle_call({:identify, nickname, password}, _from, state) do
-    case Queries.find_by_nickname(nickname) do
-      nil ->
-        {:reply,
-         {:error,
-          dgettext("services", "Nickname %{nickname} is not registered", nickname: nickname)},
-         state}
-
-      %RegisteredNick{} = nick ->
-        if RegisteredNick.verify_password(nick, password) do
-          Queries.update_last_seen(nick)
-          new_state = mark_identified(state, nickname)
-
-          {:reply,
-           {:ok,
-            dgettext("services", "You are now identified as %{nickname}", nickname: nickname)},
-           new_state}
-        else
-          {:reply, {:error, dgettext("services", "Invalid password")}, state}
-        end
-    end
-  end
-
-  def handle_call({:registered?, nickname}, _from, state) do
-    {:reply, Queries.find_by_nickname(nickname) != nil, state}
+  def handle_call({:mark_identified, nickname}, _from, state) do
+    {:reply, :ok, mark_identified(state, nickname)}
   end
 
   def handle_call({:identified?, nickname}, _from, state) do
     {:reply, MapSet.member?(state.identified, nickname), state}
   end
 
-  def handle_call({:info, nickname}, _from, state) do
-    case Queries.find_by_nickname(nickname) do
-      nil ->
-        {:reply,
-         {:error,
-          dgettext("services", "Nickname %{nickname} is not registered", nickname: nickname)},
-         state}
-
-      %RegisteredNick{} = nick ->
-        info = %{
-          nickname: nick.nickname,
-          registered_at: nick.registered_at,
-          last_seen_at: nick.last_seen_at,
-          identified: MapSet.member?(state.identified, nickname)
-        }
-
-        {:reply, {:ok, info}, state}
-    end
-  end
-
-  def handle_call({:ghost, target_nick, password, requester_nick}, _from, state) do
-    case Queries.find_by_nickname(target_nick) do
-      nil ->
-        {:reply,
-         {:error,
-          dgettext("services", "Nickname %{target_nick} is not registered",
-            target_nick: target_nick
-          )}, state}
-
-      %RegisteredNick{} = nick ->
-        handle_ghost_for_registered_nick(nick, target_nick, password, requester_nick, state)
-    end
-  end
-
   def handle_call(:list_identified, _from, state) do
     {:reply, MapSet.to_list(state.identified), state}
-  end
-
-  def handle_call({:drop, nickname, password}, _from, state) do
-    case Queries.find_by_nickname(nickname) do
-      nil ->
-        {:reply,
-         {:error,
-          dgettext("services", "Nickname %{nickname} is not registered", nickname: nickname)},
-         state}
-
-      %RegisteredNick{} = nick ->
-        if RegisteredNick.verify_password(nick, password) do
-          Queries.delete_registered_nick(nick)
-          new_state = %{state | identified: MapSet.delete(state.identified, nickname)}
-
-          {:reply,
-           {:ok,
-            dgettext("services", "Registration for %{nickname} dropped", nickname: nickname)},
-           new_state}
-        else
-          {:reply, {:error, dgettext("services", "Invalid password")}, state}
-        end
-    end
-  end
-
-  def handle_call({:admin_drop, nickname}, _from, state) do
-    case Queries.find_by_nickname(nickname) do
-      nil ->
-        {:reply,
-         {:error,
-          dgettext("services", "Nickname %{nickname} is not registered", nickname: nickname)},
-         state}
-
-      %RegisteredNick{} = nick ->
-        Queries.delete_registered_nick(nick)
-        new_state = %{state | identified: MapSet.delete(state.identified, nickname)}
-
-        {:reply,
-         {:ok,
-          dgettext("services", "Registration for %{nickname} dropped by admin",
-            nickname: nickname
-          )}, new_state}
-    end
-  end
-
-  def handle_call({:admin_reset_password, nickname, new_password}, _from, state) do
-    case Queries.find_by_nickname(nickname) do
-      nil ->
-        {:reply,
-         {:error,
-          dgettext("services", "Nickname %{nickname} is not registered", nickname: nickname)},
-         state}
-
-      %RegisteredNick{} ->
-        new_hash = Bcrypt.hash_pwd_salt(new_password)
-
-        case Queries.update_password_hash(nickname, new_hash) do
-          {:ok, _} ->
-            {:reply,
-             {:ok,
-              dgettext("services", "Password for %{nickname} has been reset", nickname: nickname)},
-             state}
-
-          {:error, _} ->
-            {:reply,
-             {:error,
-              dgettext("services", "Failed to reset password for %{nickname}", nickname: nickname)},
-             state}
-        end
-    end
   end
 
   @impl true
@@ -363,19 +342,6 @@ defmodule RetroHexChat.Services.NickServ do
          ) do
       :ok -> :ok
       {:error, reason} -> Logger.warning("PubSub identify broadcast failed: #{inspect(reason)}")
-    end
-  end
-
-  defp handle_ghost_for_registered_nick(nick, target_nick, password, requester_nick, state) do
-    if RegisteredNick.verify_password(nick, password) do
-      broadcast_ghost_disconnect(target_nick, requester_nick)
-
-      {:reply,
-       {:ok,
-        dgettext("services", "Ghost command sent for %{target_nick}", target_nick: target_nick)},
-       state}
-    else
-      {:reply, {:error, dgettext("services", "Invalid password")}, state}
     end
   end
 
