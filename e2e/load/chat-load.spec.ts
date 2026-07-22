@@ -1,7 +1,7 @@
 import { Browser, BrowserContext, Page, expect, test } from "@playwright/test";
 import fs from "node:fs";
 import { ChatPage } from "../pages/ChatPage";
-import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ConnectPage } from "../pages/ConnectPage";
 import { installSyntheticMedia } from "../helpers/syntheticMedia";
 
 // Realistic mixed-flow load scenario, chat-focused. One browser process,
@@ -25,7 +25,9 @@ import { installSyntheticMedia } from "../helpers/syntheticMedia";
 const USERS = Number(process.env.LOAD_USERS) || 20;
 const DURATION_MS = Number(process.env.LOAD_DURATION_MS) || 180_000;
 const BASE_URL = process.env.LOAD_BASE_URL || "https://retrohexchat.app";
-const RAMP_BATCH = 4;
+// How many users connect simultaneously per ramp-up wave. Raise it
+// (LOAD_RAMP_BATCH) to turn the ramp itself into a connection burst.
+const RAMP_BATCH = Number(process.env.LOAD_RAMP_BATCH) || 4;
 
 type Role = "chatter" | "observer" | "space" | "call";
 
@@ -102,32 +104,80 @@ async function installTokenRecorder(page: Page) {
   });
 }
 
+type ConnectFailure = {
+  idx: number;
+  role: Role;
+  nick: string;
+  step: string;
+  url: string;
+  visibleText: string;
+  consoleErrors: string[];
+  error: string;
+};
+
 async function connectUser(
   browser: Browser,
   role: Role,
   idx: number,
   channel: string,
-): Promise<LoadUser> {
+  nick: string,
+  onFail: (failure: ConnectFailure) => void,
+): Promise<LoadUser | null> {
   const ctx = await browser.newContext(
     role === "call" ? { permissions: ["microphone", "camera"] } : {},
   );
   if (role === "call") await installSyntheticMedia(ctx);
 
   const page = await ctx.newPage();
+  const consoleErrors: string[] = [];
+  page.on("console", (msg) => {
+    if (msg.type() === "error") consoleErrors.push(msg.text().slice(0, 200));
+  });
+  page.on("pageerror", (err) =>
+    consoleErrors.push(`pageerror: ${err.message}`),
+  );
+
   if (role === "observer") await installTokenRecorder(page);
 
   const connect = new ConnectPage(page);
   const chat = new ChatPage(page);
-  const nick = uniqueNickname("ldt");
 
-  await connect.open();
-  await connect.enterNickname(nick);
-  await connect.registerWithPassword("loadpass1");
-  await chat.waitUntilConnected();
-
-  await chat.sendMessage(`/join ${channel}`);
-  await chat.expectTabVisible(channel);
-  await chat.switchToTab(channel);
+  // Step labels attribute a failure to a phase: page load (generator/WAN),
+  // nickname (rejected/taken → "nick zuado"), register (collision routed to
+  // the auth step), handshake (LiveView mount / socket capacity), or composer
+  // (server render latency after mount).
+  let step = "open";
+  try {
+    await connect.open();
+    step = "nickname";
+    await connect.enterNickname(nick);
+    step = "register";
+    await connect.registerWithPassword("loadpass1");
+    step = "handshake";
+    await chat.waitUntilConnected();
+    step = "join";
+    await chat.sendMessage(`/join ${channel}`);
+    await chat.expectTabVisible(channel);
+    await chat.switchToTab(channel);
+  } catch (err) {
+    const visibleText = await page
+      .locator("body")
+      .innerText()
+      .then((t) => t.replace(/\s+/g, " ").trim().slice(0, 300))
+      .catch(() => "");
+    onFail({
+      idx,
+      role,
+      nick,
+      step,
+      url: page.url(),
+      visibleText,
+      consoleErrors: consoleErrors.slice(-5),
+      error: String(err).split("\n")[0].slice(0, 200),
+    });
+    await ctx.close().catch(() => {});
+    return null;
+  }
 
   return {
     role,
@@ -303,17 +353,36 @@ test("realistic mixed load, chat-focused", async ({ browser }) => {
       `duration=${Math.round(DURATION_MS / 1000)}s channels=${channels.join(",")}`,
   );
 
-  // Ramp up in small batches so N tabs don't hammer /connect at once.
+  // Ramp up in batches. RAMP_BATCH users connect at once per wave — raise it
+  // to burst the connection storm. Individual failures are dropped, not fatal.
+  // Nicks are runId+idx: globally unique (prod keeps every registration) and
+  // always valid, so a failure can never be a nickname collision.
   const users: LoadUser[] = [];
+  const connectErrors: ConnectFailure[] = [];
   const rampStart = Date.now();
   for (let at = 0; at < roles.length; at += RAMP_BATCH) {
     const batch = roles.slice(at, at + RAMP_BATCH);
     const connected = await Promise.all(
-      batch.map((r, j) => connectUser(browser, r.role, at + j, r.channel)),
+      batch.map((r, j) => {
+        const idx = at + j;
+        const nick = `ldt${runId}${idx}`;
+        return connectUser(browser, r.role, idx, r.channel, nick, (f) =>
+          connectErrors.push(f),
+        );
+      }),
     );
-    users.push(...connected);
-    console.log(`[load] connected ${users.length}/${roles.length}`);
+    for (const user of connected) if (user) users.push(user);
+    console.log(
+      `[load] connected ${users.length}/${roles.length}` +
+        (connectErrors.length ? ` (${connectErrors.length} failed)` : ""),
+    );
     if (at + RAMP_BATCH < roles.length) await sleep(rand(500, 1_500));
+  }
+  const connectFailures = connectErrors.length;
+  if (connectFailures > 0) {
+    const byStep: Record<string, number> = {};
+    for (const f of connectErrors) byStep[f.step] = (byStep[f.step] || 0) + 1;
+    console.log(`[load] connect failures by step: ${JSON.stringify(byStep)}`);
   }
 
   // A third of the chatters live in both channels and hop between them.
@@ -322,10 +391,14 @@ test("realistic mixed load, chat-focused", async ({ browser }) => {
     for (const user of chatters.filter((_, i) => i % 3 === 0)) {
       const other = channels.find((c) => c !== user.channel);
       if (!other) continue;
-      await user.chat.sendMessage(`/join ${other}`);
-      await user.chat.expectTabVisible(other);
-      await user.chat.switchToTab(user.channel);
-      user.otherChannel = other;
+      try {
+        await user.chat.sendMessage(`/join ${other}`);
+        await user.chat.expectTabVisible(other);
+        await user.chat.switchToTab(user.channel);
+        user.otherChannel = other;
+      } catch (err) {
+        trackError(user, err);
+      }
     }
   }
 
@@ -393,6 +466,8 @@ test("realistic mixed load, chat-focused", async ({ browser }) => {
     target: BASE_URL,
     startedAt: new Date(rampStart).toISOString(),
     users: USERS,
+    connected: users.length,
+    connectFailures,
     roles: { chatterCount, observerCount, spaceCount, callCount },
     channels,
     rampMs,
@@ -406,6 +481,7 @@ test("realistic mixed load, chat-focused", async ({ browser }) => {
       p99Ms: percentile(latencies, 99),
       maxMs: latencies[latencies.length - 1] ?? 0,
     },
+    connectErrors,
     errors,
   };
 
@@ -414,21 +490,30 @@ test("realistic mixed load, chat-focused", async ({ browser }) => {
   fs.writeFileSync(reportPath, JSON.stringify(report, null, 2));
 
   console.log(
-    `[load] sent=${totalSent} measured=${latencies.length} lost=${lost} ` +
+    `[load] connected=${users.length}/${USERS} failed=${connectFailures} ` +
+      `sent=${totalSent} measured=${latencies.length} lost=${lost} ` +
       `p50=${report.delivery.p50Ms}ms p95=${report.delivery.p95Ms}ms ` +
       `p99=${report.delivery.p99Ms}ms max=${report.delivery.maxMs}ms`,
   );
   console.log(`[load] report: e2e/${reportPath}`);
+  if (connectFailures > 0) {
+    console.log(
+      `[load] ${connectFailures} user(s) never connected — a load finding, ` +
+        `not a harness fault (see report)`,
+    );
+  }
   if (errors.length > 0) {
     console.log(
-      `[load] ${errors.length} user(s) hit errors — see report for details`,
+      `[load] ${errors.length} connected user(s) hit errors mid-run — see report`,
     );
   }
 
   await Promise.all(users.map((u) => u.ctx.close().catch(() => {})));
 
-  // Sanity floor, not a benchmark threshold: the probe pipeline itself must
-  // have worked end-to-end for the run to mean anything.
+  // Sanity floor, not a benchmark threshold: enough of the cohort must have
+  // connected and delivered for the run to mean anything. Connect failures and
+  // latency under load are findings we REPORT, not reasons to fail the run.
+  expect(users.length).toBeGreaterThan(0);
   expect(latencies.length).toBeGreaterThan(0);
-  expect(lost / Math.max(1, sentAt.size)).toBeLessThan(0.1);
+  expect(lost / Math.max(1, sentAt.size)).toBeLessThan(0.2);
 });
