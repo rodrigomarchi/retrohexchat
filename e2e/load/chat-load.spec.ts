@@ -28,6 +28,10 @@ const BASE_URL = process.env.LOAD_BASE_URL || "https://retrohexchat.app";
 // How many users connect simultaneously per ramp-up wave. Raise it
 // (LOAD_RAMP_BATCH) to turn the ramp itself into a connection burst.
 const RAMP_BATCH = Number(process.env.LOAD_RAMP_BATCH) || 4;
+// Persona mix. "mixed" (default) reserves 2 space + 2 call + observers.
+// "chat" makes EVERY user a chatter — used to test whether the heavy
+// canvas/WebRTC personas steal generator resources during the ramp.
+const PROFILE = process.env.LOAD_PROFILE || "mixed";
 
 type Role = "chatter" | "observer" | "space" | "call";
 
@@ -115,6 +119,24 @@ type ConnectFailure = {
   error: string;
 };
 
+// Per-phase client-side durations for a successful connect. This is the
+// empirical "where does the connect time go on our side" probe:
+//   openMs      goto /connect until the nickname form paints (page/asset load)
+//   authMs      nickname + register submit round-trips
+//   handshakeMs waitUntilConnected — the LiveView socket handshake
+//   composerMs  socket-ready → chat input actually fillable (render-diff apply;
+//               THIS is where a saturated client browser stalls behind the diff
+//               that flips @live_ready, even though the server already answered)
+type ConnectTiming = {
+  idx: number;
+  role: Role;
+  openMs: number;
+  authMs: number;
+  handshakeMs: number;
+  composerMs: number;
+  totalMs: number;
+};
+
 async function connectUser(
   browser: Browser,
   role: Role,
@@ -122,6 +144,7 @@ async function connectUser(
   channel: string,
   nick: string,
   onFail: (failure: ConnectFailure) => void,
+  onTiming: (timing: ConnectTiming) => void,
 ): Promise<LoadUser | null> {
   const ctx = await browser.newContext(
     role === "call" ? { permissions: ["microphone", "camera"] } : {},
@@ -145,20 +168,38 @@ async function connectUser(
   // Step labels attribute a failure to a phase: page load (generator/WAN),
   // nickname (rejected/taken → "nick zuado"), register (collision routed to
   // the auth step), handshake (LiveView mount / socket capacity), or composer
-  // (server render latency after mount).
+  // (client render-diff apply after the server's mount).
   let step = "open";
+  const t0 = Date.now();
   try {
     await connect.open();
+    const tOpen = Date.now();
     step = "nickname";
     await connect.enterNickname(nick);
     step = "register";
     await connect.registerWithPassword("loadpass1");
     step = "handshake";
+    const tAuth = Date.now();
     await chat.waitUntilConnected();
+    const tHandshake = Date.now();
+    step = "composer";
+    // Time the composer becoming interactive separately from the /join so the
+    // render-diff-apply gap is isolated from any channel-join round-trip.
+    await expect(chat.chatInput).toBeEnabled({ timeout: 15_000 });
+    const tComposer = Date.now();
     step = "join";
     await chat.sendMessage(`/join ${channel}`);
     await chat.expectTabVisible(channel);
     await chat.switchToTab(channel);
+    onTiming({
+      idx,
+      role,
+      openMs: tOpen - t0,
+      authMs: tAuth - tOpen,
+      handshakeMs: tHandshake - tAuth,
+      composerMs: tComposer - tHandshake,
+      totalMs: tComposer - t0,
+    });
   } catch (err) {
     const visibleText = await page
       .locator("body")
@@ -325,9 +366,15 @@ test("realistic mixed load, chat-focused", async ({ browser }) => {
   const channels =
     USERS >= 10 ? [`#ld${runId}a`, `#ld${runId}b`] : [`#ld${runId}a`];
 
-  const spaceCount = USERS >= 10 ? 2 : USERS >= 5 ? 1 : 0;
-  const callCount = USERS >= 10 ? 2 : 0;
-  const observerCount = Math.min(channels.length, Math.max(1, USERS - 2));
+  // "chat" profile: every user is a chatter (no heavy canvas/WebRTC personas),
+  // to isolate whether those steal generator resources during the ramp.
+  const heavy = PROFILE !== "chat" && USERS >= 10;
+  const spaceCount = heavy ? 2 : 0;
+  const callCount = heavy ? 2 : 0;
+  const observerCount =
+    PROFILE === "chat"
+      ? Math.min(channels.length, Math.max(1, USERS - 1))
+      : Math.min(channels.length, Math.max(1, USERS - 2));
   const chatterCount = USERS - spaceCount - callCount - observerCount;
 
   const roles: { role: Role; channel: string }[] = [];
@@ -347,7 +394,7 @@ test("realistic mixed load, chat-focused", async ({ browser }) => {
   }
 
   console.log(
-    `[load] target=${BASE_URL} users=${USERS} ` +
+    `[load] target=${BASE_URL} users=${USERS} profile=${PROFILE} ` +
       `(chatters=${chatterCount} observers=${observerCount} ` +
       `space=${spaceCount} call=${callCount}) ` +
       `duration=${Math.round(DURATION_MS / 1000)}s channels=${channels.join(",")}`,
@@ -359,6 +406,7 @@ test("realistic mixed load, chat-focused", async ({ browser }) => {
   // always valid, so a failure can never be a nickname collision.
   const users: LoadUser[] = [];
   const connectErrors: ConnectFailure[] = [];
+  const connectTimings: ConnectTiming[] = [];
   const rampStart = Date.now();
   for (let at = 0; at < roles.length; at += RAMP_BATCH) {
     const batch = roles.slice(at, at + RAMP_BATCH);
@@ -366,8 +414,14 @@ test("realistic mixed load, chat-focused", async ({ browser }) => {
       batch.map((r, j) => {
         const idx = at + j;
         const nick = `ldt${runId}${idx}`;
-        return connectUser(browser, r.role, idx, r.channel, nick, (f) =>
-          connectErrors.push(f),
+        return connectUser(
+          browser,
+          r.role,
+          idx,
+          r.channel,
+          nick,
+          (f) => connectErrors.push(f),
+          (t) => connectTimings.push(t),
         );
       }),
     );
@@ -384,6 +438,34 @@ test("realistic mixed load, chat-focused", async ({ browser }) => {
     for (const f of connectErrors) byStep[f.step] = (byStep[f.step] || 0) + 1;
     console.log(`[load] connect failures by step: ${JSON.stringify(byStep)}`);
   }
+
+  // Per-phase connect timing (successful connects) — attributes the client's
+  // connect cost to page-load vs socket vs render-diff-apply.
+  const phaseStat = (key: keyof ConnectTiming) => {
+    const xs = connectTimings
+      .map((t) => t[key] as number)
+      .sort((a, b) => a - b);
+    return {
+      p50: percentile(xs, 50),
+      p95: percentile(xs, 95),
+      max: xs.at(-1) ?? 0,
+    };
+  };
+  const timingSummary = {
+    open: phaseStat("openMs"),
+    auth: phaseStat("authMs"),
+    handshake: phaseStat("handshakeMs"),
+    composer: phaseStat("composerMs"),
+    total: phaseStat("totalMs"),
+  };
+  console.log(
+    `[load] connect phases (ms, p50/p95/max): ` +
+      `open ${timingSummary.open.p50}/${timingSummary.open.p95}/${timingSummary.open.max} · ` +
+      `auth ${timingSummary.auth.p50}/${timingSummary.auth.p95}/${timingSummary.auth.max} · ` +
+      `handshake ${timingSummary.handshake.p50}/${timingSummary.handshake.p95}/${timingSummary.handshake.max} · ` +
+      `composer ${timingSummary.composer.p50}/${timingSummary.composer.p95}/${timingSummary.composer.max} · ` +
+      `total ${timingSummary.total.p50}/${timingSummary.total.p95}/${timingSummary.total.max}`,
+  );
 
   // A third of the chatters live in both channels and hop between them.
   if (channels.length > 1) {
@@ -466,6 +548,8 @@ test("realistic mixed load, chat-focused", async ({ browser }) => {
     target: BASE_URL,
     startedAt: new Date(rampStart).toISOString(),
     users: USERS,
+    profile: PROFILE,
+    rampBatch: RAMP_BATCH,
     connected: users.length,
     connectFailures,
     roles: { chatterCount, observerCount, spaceCount, callCount },
@@ -473,6 +557,7 @@ test("realistic mixed load, chat-focused", async ({ browser }) => {
     rampMs,
     durationMs: DURATION_MS,
     messagesSent: totalSent,
+    connectPhasesMs: timingSummary,
     delivery: {
       measured: latencies.length,
       lost,
