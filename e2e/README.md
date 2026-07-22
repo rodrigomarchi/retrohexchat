@@ -53,6 +53,27 @@ e2e/
     └── connect-flow.spec.ts
 ```
 
+## Load testing (`load/`)
+
+`load/` holds a separate harness (own config, never picked up by the
+regression suite) that simulates N concurrent real-browser users against an
+**already-running** server — production by default:
+
+```bash
+make load.test                                    # 20 users, 3 min, https://retrohexchat.app
+LOAD_BASE_URL=http://localhost:4000 make load.test  # point at local dev
+LOAD_USERS=10 LOAD_DURATION_MS=60000 make load.test # smaller run
+```
+
+Personas: chatters (message cadence under the server rate limits), idle
+observers that measure end-to-end message delivery latency, virtual-space
+walkers, and a group-call pair with synthetic media (real SFU load). A JSON
+report with latency percentiles lands in `test-results/load-report-*.json`.
+
+Run it from a machine that is NOT hosting the server, and watch
+`/dev/dashboard` (or Grafana) on the target while it runs. Nicks are
+registered with the `ldt` prefix; channels are unique per run.
+
 ## Adding a test
 
 1. If the page is new, add a Page Object under `pages/`.

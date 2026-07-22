@@ -1,7 +1,7 @@
 .PHONY: help setup deps db.setup db.create db.migrate db.rollback db.reset db.seed \
        db.gen.migration server iex routes \
        test test.unit test.integration test.liveview test.feature test.all test.cover \
-       e2e e2e.headless e2e.ui e2e.install e2e.db.setup \
+       e2e e2e.headless e2e.ui e2e.install e2e.db.setup load.test \
        test.cover.all test.domain test.web test.failed test.seed test.file test.line \
        test.js test.js.watch \
        ci ci.quick \
@@ -17,7 +17,7 @@ DOMAIN_APP = apps/retro_hex_chat
 WEB_APP    = apps/retro_hex_chat_web
 E2E_DIR    = e2e
 PRETTIER   = $(WEB_APP)/assets/node_modules/.bin/prettier
-E2E_FORMAT_SOURCES = $(E2E_DIR)/*.json $(E2E_DIR)/*.ts $(E2E_DIR)/helpers $(E2E_DIR)/pages $(E2E_DIR)/tests
+E2E_FORMAT_SOURCES = $(E2E_DIR)/*.json $(E2E_DIR)/*.ts $(E2E_DIR)/helpers $(E2E_DIR)/pages $(E2E_DIR)/tests $(E2E_DIR)/load
 I18N_REQUIRED_LOCALES = pt_BR,es,fr,de,ja,zh_hans,id,ar,ru,hi,ko,tr,vi,bn,ur,zh_hant,pt_PT,it,pl,nl
 
 ifneq (,$(wildcard .env))
@@ -198,6 +198,9 @@ e2e.install: ## First-time: install npm deps + download Chromium
 e2e.db.setup: ## First-time: create + migrate the retro_hex_chat_e2e database
 	$(E2E_MIX) ecto.create
 	$(E2E_MIX) ecto.migrate
+
+load.test: ## Load test against a RUNNING server (default: production; LOAD_BASE_URL/LOAD_USERS/LOAD_DURATION_MS to override)
+	cd e2e && npx playwright test --config=load/load.config.ts
 
 # ---------------------------------------------------------------------
 # Static Analysis

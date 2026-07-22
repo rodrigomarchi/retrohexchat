@@ -437,7 +437,10 @@ async function expectRemoteVideoFramesToAdvance(page: Page, label: string) {
     )
     .toBe(true);
 
-  const baselineFrameCount = baseline?.frameCount || 0;
+  // TS cannot see the assignment inside the poll closure and narrows the
+  // variable back to its `null` initializer — assert the declared type.
+  const baselineFrameCount =
+    (baseline as RemoteVideoPlaybackSnapshot | null)?.frameCount || 0;
 
   await expect
     .poll(
