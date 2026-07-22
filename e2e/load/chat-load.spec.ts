@@ -39,6 +39,13 @@ const PROFILE = process.env.LOAD_PROFILE || "mixed";
 // Channels.Server, whose broadcast fan-out is O(N²) in one room). Exposes the
 // next single-process serialization the way the spread-out default can't.
 const HOTSPOT = process.env.LOAD_HOTSPOT === "1";
+// Reconnection thundering herd: after everyone connects, run this many
+// offline→online cycles. Each cycle cuts the network for ALL browsers at once
+// (every WebSocket drops), holds, then restores them together in one batch so
+// phoenix.js reconnects simultaneously — re-running the connected mount
+// (reconnect=true) for the whole fleet at the same instant. Reproduces the
+// post-deploy reconnect storm WITHOUT a deploy. 0 = normal persona run.
+const RECONNECT_CYCLES = Number(process.env.LOAD_RECONNECT) || 0;
 
 type Role = "chatter" | "observer" | "space" | "call";
 
@@ -374,6 +381,70 @@ async function runCall(user: LoadUser, deadline: number, video: boolean) {
   }
 }
 
+// Time from `since` until this user's LiveSocket reports connected again.
+// null = never came back within the window (a reconnect-storm casualty).
+async function measureReconnected(
+  user: LoadUser,
+  since: number,
+): Promise<number | null> {
+  try {
+    await user.page.waitForFunction(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      () => !!(window as any).liveSocket?.isConnected?.(),
+      { timeout: 30_000 },
+    );
+    return Date.now() - since;
+  } catch {
+    return null;
+  }
+}
+
+type ReconnectCycle = {
+  cycle: number;
+  reconnected: number;
+  failed: number;
+  p50Ms: number;
+  p95Ms: number;
+  maxMs: number;
+};
+
+async function runReconnectStorm(
+  users: LoadUser[],
+  cycles: number,
+): Promise<ReconnectCycle[]> {
+  const results: ReconnectCycle[] = [];
+  for (let c = 1; c <= cycles; c++) {
+    // Cut the network for the whole fleet at once — every WebSocket drops.
+    await Promise.all(users.map((u) => u.ctx.setOffline(true).catch(() => {})));
+    await sleep(4_000); // let the server observe the disconnects
+    // Restore everyone together → simultaneous reconnect = the herd.
+    const t = Date.now();
+    await Promise.all(
+      users.map((u) => u.ctx.setOffline(false).catch(() => {})),
+    );
+    const times = await Promise.all(users.map((u) => measureReconnected(u, t)));
+    const ms = times
+      .filter((x): x is number => x !== null)
+      .sort((a, b) => a - b);
+    const cycleResult: ReconnectCycle = {
+      cycle: c,
+      reconnected: ms.length,
+      failed: times.length - ms.length,
+      p50Ms: percentile(ms, 50),
+      p95Ms: percentile(ms, 95),
+      maxMs: ms.at(-1) ?? 0,
+    };
+    results.push(cycleResult);
+    console.log(
+      `[load] reconnect cycle ${c}/${cycles}: ${ms.length}/${users.length} back ` +
+        `(failed ${cycleResult.failed}) p50=${cycleResult.p50Ms}ms ` +
+        `p95=${cycleResult.p95Ms}ms max=${cycleResult.maxMs}ms`,
+    );
+    await sleep(5_000); // settle before the next cycle
+  }
+  return results;
+}
+
 function percentile(sorted: number[], p: number): number {
   if (sorted.length === 0) return 0;
   const at = Math.min(sorted.length - 1, Math.floor((p / 100) * sorted.length));
@@ -514,6 +585,53 @@ test("realistic mixed load, chat-focused", async ({ browser }) => {
   console.log(
     `[load] ramp-up done in ${Math.round(rampMs / 1000)}s, steady state begins`,
   );
+
+  // Reconnection thundering herd: run offline/online cycles instead of the
+  // normal persona loop, then report reconnect recovery.
+  if (RECONNECT_CYCLES > 0) {
+    // Barrier: never cut the network until the WHOLE fleet is truly up — every
+    // connected user must report liveSocket.isConnected() first, so the storm
+    // hits a fully-established fleet, not one still finishing its ramp.
+    const upBefore = await Promise.all(
+      users.map((u) =>
+        u.page
+          .waitForFunction(
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            () => !!(window as any).liveSocket?.isConnected?.(),
+            { timeout: 30_000 },
+          )
+          .then(() => true)
+          .catch(() => false),
+      ),
+    );
+    console.log(
+      `[load] all-connected barrier: ${upBefore.filter(Boolean).length}/${users.length} up before first cut`,
+    );
+    await sleep(3_000); // brief settle once everyone is up
+    const cycles = await runReconnectStorm(users, RECONNECT_CYCLES);
+    const report = {
+      target: BASE_URL,
+      startedAt: new Date(rampStart).toISOString(),
+      mode: "reconnect",
+      users: USERS,
+      connected: users.length,
+      connectFailures,
+      rampBatch: RAMP_BATCH,
+      rampMs,
+      reconnectCycles: cycles,
+    };
+    fs.mkdirSync("test-results", { recursive: true });
+    const reportPath = `test-results/load-report-${runId}.json`;
+    fs.writeFileSync(reportPath, JSON.stringify(report, null, 2));
+    console.log(`[load] report: e2e/${reportPath}`);
+    await Promise.all(users.map((u) => u.ctx.close().catch(() => {})));
+
+    const worstFailed = Math.max(...cycles.map((c) => c.failed));
+    expect(cycles.length).toBe(RECONNECT_CYCLES);
+    // Sanity floor: the herd must mostly recover (not a strict SLA).
+    expect(worstFailed).toBeLessThan(users.length);
+    return;
+  }
 
   const deadline = Date.now() + DURATION_MS;
   const sentAt = new Map<string, number>();
