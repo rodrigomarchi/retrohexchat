@@ -32,6 +32,13 @@ const RAMP_BATCH = Number(process.env.LOAD_RAMP_BATCH) || 4;
 // "chat" makes EVERY user a chatter — used to test whether the heavy
 // canvas/WebRTC personas steal generator resources during the ramp.
 const PROFILE = process.env.LOAD_PROFILE || "mixed";
+// Hotspot mode: concentrate EVERY user on ONE channel — a chunk in the chat
+// view and a chunk in the space view, ALL sending channel messages. The space
+// IS the channel (a game-view of it), so a space user both moves (→ the single
+// per-channel ChannelSpaceServer) and types (→ the single per-channel
+// Channels.Server, whose broadcast fan-out is O(N²) in one room). Exposes the
+// next single-process serialization the way the spread-out default can't.
+const HOTSPOT = process.env.LOAD_HOTSPOT === "1";
 
 type Role = "chatter" | "observer" | "space" | "call";
 
@@ -277,7 +284,11 @@ async function runChatter(
   }
 }
 
-async function runSpace(user: LoadUser, deadline: number) {
+async function runSpace(
+  user: LoadUser,
+  deadline: number,
+  sentAt: Map<string, number>,
+) {
   const page = user.page;
   try {
     await page
@@ -305,6 +316,7 @@ async function runSpace(user: LoadUser, deadline: number) {
     return;
   }
 
+  const canvas = page.locator('[data-testid="channel-space-shell"] canvas');
   while (Date.now() < deadline && user.errors.length < 8) {
     try {
       const key = pick(ARROWS);
@@ -312,6 +324,13 @@ async function runSpace(user: LoadUser, deadline: number) {
       await sleep(rand(250, 900));
       await user.page.keyboard.up(key);
       if (Math.random() < 0.2) await user.page.keyboard.press("Space");
+      // In hotspot mode the space user also types channel messages via the
+      // composer (visible in the space view) — same Channels.Server as chat.
+      // Refocus the canvas afterward so movement keeps working.
+      if (HOTSPOT && Math.random() < 0.35) {
+        await sendTimed(user, pick(CORPUS), sentAt);
+        await canvas.click({ force: true }).catch(() => {});
+      }
       await sleep(rand(200, 1_200));
     } catch (err) {
       trackError(user, err);
@@ -363,16 +382,23 @@ function percentile(sorted: number[], p: number): number {
 
 test("realistic mixed load, chat-focused", async ({ browser }) => {
   const runId = Math.random().toString(36).slice(2, 7);
-  const channels =
-    USERS >= 10 ? [`#ld${runId}a`, `#ld${runId}b`] : [`#ld${runId}a`];
+  // Hotspot: ONE channel for everyone. Otherwise the usual 1-2 channel spread.
+  const channels = HOTSPOT
+    ? [`#hot${runId}`]
+    : USERS >= 10
+      ? [`#ld${runId}a`, `#ld${runId}b`]
+      : [`#ld${runId}a`];
 
   // "chat" profile: every user is a chatter (no heavy canvas/WebRTC personas),
   // to isolate whether those steal generator resources during the ramp.
   const heavy = PROFILE !== "chat" && USERS >= 10;
-  const spaceCount = heavy ? 2 : 0;
-  const callCount = heavy ? 2 : 0;
-  const observerCount =
-    PROFILE === "chat"
+  // Hotspot: no calls, 2 observers, ~40% of users in the space (moving AND
+  // typing) and the rest chatting — all in the single channel.
+  const spaceCount = HOTSPOT ? Math.floor(USERS * 0.4) : heavy ? 2 : 0;
+  const callCount = HOTSPOT ? 0 : heavy ? 2 : 0;
+  const observerCount = HOTSPOT
+    ? 2
+    : PROFILE === "chat"
       ? Math.min(channels.length, Math.max(1, USERS - 1))
       : Math.min(channels.length, Math.max(1, USERS - 2));
   const chatterCount = USERS - spaceCount - callCount - observerCount;
@@ -394,7 +420,7 @@ test("realistic mixed load, chat-focused", async ({ browser }) => {
   }
 
   console.log(
-    `[load] target=${BASE_URL} users=${USERS} profile=${PROFILE} ` +
+    `[load] target=${BASE_URL} users=${USERS} profile=${HOTSPOT ? "hotspot" : PROFILE} ` +
       `(chatters=${chatterCount} observers=${observerCount} ` +
       `space=${spaceCount} call=${callCount}) ` +
       `duration=${Math.round(DURATION_MS / 1000)}s channels=${channels.join(",")}`,
@@ -499,7 +525,7 @@ test("realistic mixed load, chat-focused", async ({ browser }) => {
         case "chatter":
           return runChatter(user, deadline, sentAt);
         case "space":
-          return runSpace(user, deadline);
+          return runSpace(user, deadline, sentAt);
         case "call": {
           const video = callVideo;
           callVideo = false;
