@@ -51,6 +51,10 @@ defmodule RetroHexChatWeb.Components.UI.MenuBar do
   @doc """
   Renders one top-level menu: a trigger button plus its dropdown panel.
 
+  Every menu carries a mandatory semantic icon (16×16, from
+  `RetroHexChatWeb.Icons`) rendered before its label, so all menu bars read
+  consistently across screens.
+
   When `disabled` is true the trigger is grayed and the dropdown is not
   rendered at all — matching the hook, which ignores disabled triggers.
   """
@@ -61,7 +65,7 @@ defmodule RetroHexChatWeb.Components.UI.MenuBar do
   attr :trigger_class, :any, default: nil
   attr :label_class, :any, default: nil
   slot :inner_block, required: true, doc: "dropdown items (context_menu_* <li> elements)"
-  slot :icon, doc: "optional icon rendered before the trigger label"
+  slot :icon, required: true, doc: "semantic 16×16 icon rendered before the trigger label"
 
   @spec menu(map()) :: Phoenix.LiveView.Rendered.t()
   def menu(assigns) do
@@ -74,7 +78,7 @@ defmodule RetroHexChatWeb.Components.UI.MenuBar do
         class={@trigger_class}
         label_class={@label_class}
       >
-        <:icon :if={@icon != []}>{render_slot(@icon)}</:icon>
+        <:icon>{render_slot(@icon)}</:icon>
       </.menu_trigger>
       <.menu_dropdown :if={!@disabled}>
         {render_slot(@inner_block)}
@@ -90,7 +94,7 @@ defmodule RetroHexChatWeb.Components.UI.MenuBar do
   attr :testid, :string, default: nil
   attr :class, :any, default: nil
   attr :label_class, :any, default: nil
-  slot :icon
+  slot :icon, required: true
 
   defp menu_trigger(assigns) do
     ~H"""
@@ -112,10 +116,15 @@ defmodule RetroHexChatWeb.Components.UI.MenuBar do
       aria-haspopup="true"
       aria-label={@label}
     >
-      <span :if={@icon != []} class="inline-flex h-4 w-4 shrink-0 items-center justify-center">
+      <span class={
+        classes([
+          "inline-flex h-4 w-4 shrink-0 items-center justify-center",
+          @disabled && "opacity-50"
+        ])
+      }>
         {render_slot(@icon)}
       </span>
-      <span class={@label_class}>{@label}</span>
+      <span class={@label_class} data-menubar-label>{@label}</span>
     </button>
     """
   end

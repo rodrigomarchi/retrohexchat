@@ -61,7 +61,11 @@ defmodule RetroHexChatWeb.WindowDisplayEditMenuFeatureTest do
         |> Floki.find(".app-menu-bar__desktop-menu [data-menubar-trigger]")
         |> Enum.at(1)
 
-      assert edit_trigger |> Floki.text() |> String.trim() == "Edit"
+      assert edit_trigger
+             |> Floki.find("[data-menubar-label]")
+             |> Floki.text()
+             |> String.trim() == "Edit"
+
       assert Floki.attribute(edit_trigger, "data-disabled") == ["true"]
     end
   end
@@ -95,8 +99,8 @@ defmodule RetroHexChatWeb.WindowDisplayEditMenuFeatureTest do
 
   defp trigger_labels(document) do
     document
-    |> Floki.find(".app-menu-bar__desktop-menu [data-menubar-trigger]")
-    |> Enum.map(fn trigger -> trigger |> Floki.text() |> String.trim() end)
+    |> Floki.find(".app-menu-bar__desktop-menu [data-menubar-trigger] [data-menubar-label]")
+    |> Enum.map(fn label -> label |> Floki.text() |> String.trim() end)
   end
 
   defp menu_actions(section) do

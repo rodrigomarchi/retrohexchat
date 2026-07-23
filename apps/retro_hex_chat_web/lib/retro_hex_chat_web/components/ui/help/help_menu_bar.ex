@@ -28,6 +28,7 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpMenuBar do
     <.menu_bar id={@id} testid="help-menu-bar" class={@class} {@rest}>
       <%!-- Navigate menu --%>
       <.menu label={dgettext("help", "Navigate")}>
+        <:icon><Icons.icon_btn_next class="h-4 w-4" /></:icon>
         <.context_menu_item data-testid="help-menu-home">
           <:icon><Icons.icon_hex_stone class="h-[14px] w-[14px]" /></:icon>
           <.link navigate="/chat/help" class="block flex-1">
@@ -47,6 +48,7 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpMenuBar do
 
       <%!-- View menu (navigator tabs) --%>
       <.menu label={dgettext("help", "View")}>
+        <:icon><Icons.icon_channels class="h-4 w-4" /></:icon>
         <.context_menu_item
           on_click="help_nav_tab"
           phx-value-tab="contents"
@@ -77,6 +79,7 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpMenuBar do
 
       <%!-- Help menu --%>
       <.menu label={dgettext("help", "Help")}>
+        <:icon><Icons.icon_btn_help_topics class="h-4 w-4" /></:icon>
         <.context_menu_item on_click={show_modal("about-dialog")} data-testid="help-menu-about">
           <:icon><Icons.icon_dialog_about class="h-[14px] w-[14px]" /></:icon>
           {dgettext("help", "About RetroHexChat")}

@@ -29,6 +29,7 @@ defmodule RetroHexChatWeb.Components.UI.LanguageMenu do
 
     ~H"""
     <.menu label={dgettext("ui", "Language")} testid="language-menu-trigger" class={@class}>
+      <:icon><Icons.icon_globe class="h-4 w-4" /></:icon>
       <.language_menu_items
         mode={@mode}
         current_path={@current_path}

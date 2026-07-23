@@ -187,6 +187,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
     ~H"""
     <.menu_bar id="landing-menubar" testid="landing-menu-bar" class={@class}>
       <.menu label={dgettext("landing", "Navigate")}>
+        <:icon><Icons.icon_btn_next class="h-4 w-4" /></:icon>
         <.context_menu_item :for={p <- @pages} data-testid={"landing-menu-nav-#{p.page}"}>
           <:icon>{apply(Icons, p.icon, [%{class: "h-[14px] w-[14px]"}])}</:icon>
           <a href={p.path} class={["block flex-1", p.page == @active_page && "font-bold"]}>
@@ -196,6 +197,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
       </.menu>
 
       <.menu label={dgettext("landing", "Help")}>
+        <:icon><Icons.icon_btn_help_topics class="h-4 w-4" /></:icon>
         <.context_menu_item data-testid="landing-menu-docs">
           <:icon><Icons.icon_notepad class="h-[14px] w-[14px]" /></:icon>
           <a href="/chat/help" class="block flex-1">{dgettext("landing", "Documentation")}</a>

@@ -52,22 +52,27 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
       />
 
       <.menu class="app-menu-bar__desktop-menu" label={dgettext("ui", "File")} disabled={!@connected}>
+        <:icon><Icons.icon_folder class="h-4 w-4" /></:icon>
         <.file_menu_items is_admin={@is_admin} on_action={@on_action} />
       </.menu>
 
       <.menu class="app-menu-bar__desktop-menu" label={dgettext("ui", "Edit")} disabled={!@connected}>
+        <:icon><Icons.icon_copy class="h-4 w-4" /></:icon>
         <.edit_menu_items on_action={@on_action} />
       </.menu>
 
       <.menu class="app-menu-bar__desktop-menu" label={dgettext("ui", "View")} disabled={!@connected}>
+        <:icon><Icons.icon_channels class="h-4 w-4" /></:icon>
         <.view_menu_items on_action={@on_action} />
       </.menu>
 
       <.menu class="app-menu-bar__desktop-menu" label={dgettext("ui", "Tools")} disabled={!@connected}>
+        <:icon><Icons.icon_dialog_options class="h-4 w-4" /></:icon>
         <.tools_menu_items is_admin={@is_admin} on_action={@on_action} />
       </.menu>
 
       <.menu class="app-menu-bar__desktop-menu" label={dgettext("ui", "P2P")} disabled={!@connected}>
+        <:icon><Icons.icon_protocol_p2p_compact class="h-4 w-4" /></:icon>
         <.p2p_menu_items
           p2p_active={@p2p_active}
           p2p_turn_available={@p2p_turn_available}
@@ -76,6 +81,7 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
       </.menu>
 
       <.menu class="app-menu-bar__desktop-menu" label={dgettext("ui", "Games")} disabled={!@connected}>
+        <:icon><Icons.icon_game_arcade class="h-4 w-4" /></:icon>
         <.games_menu_items arcade_available={@arcade_available} on_action={@on_action} />
       </.menu>
 
@@ -91,6 +97,7 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
         disabled={false}
         testid="app-menu-help-trigger"
       >
+        <:icon><Icons.icon_btn_help_topics class="h-4 w-4" /></:icon>
         <.help_menu_items on_action={@on_action} />
       </.menu>
     </.menu_bar>
