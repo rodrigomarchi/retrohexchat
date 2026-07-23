@@ -17,11 +17,11 @@ defmodule RetroHexChat.Arcade.Service do
          token = generate_token(),
          {:ok, session} <- insert_session(token, creator_id),
          {:ok, _pid} <- Supervisor.start_child(session.token) do
-      Logger.info("Arcade session created: token=#{session.token}, creator=#{creator_id}")
+      Logger.debug("Arcade session created: session_id=#{session.id}, creator=#{creator_id}")
       {:ok, %{session: session, token: session.token}}
     else
       {:error, reason} = error ->
-        Logger.info("Arcade session denied: reason=#{inspect(reason)}, creator=#{creator_id}")
+        Logger.debug("Arcade session denied: reason=#{inspect(reason)}, creator=#{creator_id}")
         error
     end
   end
@@ -93,8 +93,8 @@ defmodule RetroHexChat.Arcade.Service do
         :ok
 
       session ->
-        Logger.info(
-          "Arcade closing previous session: token=#{session.token}, creator=#{creator_id}"
+        Logger.debug(
+          "Arcade closing previous session: session_id=#{session.id}, creator=#{creator_id}"
         )
 
         close_session(session.token, creator_id, "new_session")

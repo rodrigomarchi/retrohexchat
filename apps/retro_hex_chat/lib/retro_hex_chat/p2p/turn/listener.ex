@@ -70,18 +70,14 @@ defmodule RetroHexChat.P2P.Turn.Listener do
             handle_stun_message(socket, five_tuple, msg, config)
 
           {:error, reason} ->
-            Logger.warning(
-              "Failed to decode STUN packet, reason: #{inspect(reason)}, packet: #{inspect(packet)}"
-            )
+            Logger.debug("Failed to decode STUN packet, reason: #{inspect(reason)}")
         end
 
       1 ->
         handle_channel_message(five_tuple, packet)
 
       _other ->
-        Logger.warning(
-          "Received packet that is neither STUN formatted nor ChannelData, packet: #{inspect(packet)}"
-        )
+        Logger.debug("Received packet that is neither STUN formatted nor ChannelData")
     end
 
     Logger.metadata(client: nil)
@@ -121,7 +117,7 @@ defmodule RetroHexChat.P2P.Turn.Listener do
 
     handle_error = fn reason, socket, c_ip, c_port, msg ->
       {response, log_msg} = Utils.build_error(reason, msg.transaction_id, msg.type.method, config)
-      Logger.warning(log_msg)
+      log_turn_rejection(reason, log_msg)
       :ok = :socket.sendto(socket, response, %{family: :inet, addr: c_ip, port: c_port})
     end
 
@@ -160,7 +156,7 @@ defmodule RetroHexChat.P2P.Turn.Listener do
           ]
         )
 
-      Logger.info("Successfully created allocation, relay port: #{alloc_port}")
+      Logger.debug("Successfully created allocation, relay port: #{alloc_port}")
 
       {:ok, %Username{value: username}} = Message.get_attribute(msg, Username)
 
@@ -208,9 +204,7 @@ defmodule RetroHexChat.P2P.Turn.Listener do
         {response, _log_msg} =
           Utils.build_error(reason, msg.transaction_id, msg.type.method, config)
 
-        Logger.warning(
-          "No allocation and this is not an 'allocate'/'binding' request, message: #{inspect(msg)}"
-        )
+        Logger.debug("No allocation and this is not an 'allocate'/'binding' request")
 
         :ok = :socket.sendto(socket, response, %{family: :inet, addr: c_ip, port: c_port})
     end
@@ -222,9 +216,12 @@ defmodule RetroHexChat.P2P.Turn.Listener do
         AllocationHandler.process_channel_message(alloc, msg)
 
       {:error, :allocation_not_found} ->
-        Logger.warning("No allocation and is not a STUN message, silently discarded")
+        Logger.debug("No allocation and is not a STUN message, silently discarded")
     end
   end
+
+  defp log_turn_rejection(:out_of_ports, log_msg), do: Logger.warning(log_msg)
+  defp log_turn_rejection(_reason, log_msg), do: Logger.debug(log_msg)
 
   defp fetch_allocation(five_tuple) do
     case Registry.lookup(RetroHexChat.P2P.Turn.AllocationRegistry, five_tuple) do

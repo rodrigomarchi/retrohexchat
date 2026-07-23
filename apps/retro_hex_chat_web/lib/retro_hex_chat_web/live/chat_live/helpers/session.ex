@@ -289,7 +289,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
     current_nick = socket.assigns.session.nickname
 
     if restored_nick != nil and restored_nick != current_nick do
-      Logger.info(
+      Logger.debug(
         "Ignoring reconnect state from different user: #{restored_nick} != #{current_nick}"
       )
 

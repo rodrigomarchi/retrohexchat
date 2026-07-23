@@ -7,7 +7,7 @@ defmodule RetroHexChatWeb.GroupCallChannel do
   owned by the room runtime.
   """
 
-  use Phoenix.Channel
+  use Phoenix.Channel, log_join: :debug
 
   require Logger
 

@@ -35,6 +35,22 @@ defmodule RetroHexChat.GroupCall.Config do
   defp public_ip_mapper(nil), do: nil
 
   defp public_ip_mapper(public_ip) when is_tuple(public_ip) do
-    fn _host_ip -> public_ip end
+    if local_ip?(public_ip) do
+      nil
+    else
+      fn _host_ip -> public_ip end
+    end
+  end
+
+  defp local_ip?(ip) do
+    case :inet.getifaddrs() do
+      {:ok, ifaddrs} ->
+        Enum.any?(ifaddrs, fn {_name, opts} ->
+          Enum.any?(Keyword.get_values(opts, :addr), &(&1 == ip))
+        end)
+
+      {:error, _reason} ->
+        false
+    end
   end
 end

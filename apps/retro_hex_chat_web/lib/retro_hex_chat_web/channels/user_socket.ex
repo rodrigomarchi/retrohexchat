@@ -6,7 +6,7 @@ defmodule RetroHexChatWeb.UserSocket do
   signed join token (see `RetroHexChat.VirtualSpace.ChannelJoinToken`), so
   `connect/3` accepts everyone and never identifies the transport.
   """
-  use Phoenix.Socket
+  use Phoenix.Socket, log: :debug
 
   channel "space:*", RetroHexChatWeb.SpaceChannel
   channel "group_call:*", RetroHexChatWeb.GroupCallChannel

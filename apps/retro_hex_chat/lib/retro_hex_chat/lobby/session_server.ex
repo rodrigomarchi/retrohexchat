@@ -163,7 +163,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
 
           state = schedule_timeout(state, :pending_expiry, pending_timeout())
 
-          Logger.info("Lobby SessionServer started: token=#{token}")
+          Logger.debug("Lobby SessionServer started: session_id=#{session.id}")
           {:ok, state}
         end
     end
@@ -182,7 +182,10 @@ defmodule RetroHexChat.Lobby.SessionServer do
       role ->
         case attach_connection(state, role, caller_pid) do
           {:ok, state} ->
-            Logger.info("Lobby join: user=#{user_id}, role=#{role}, token=#{state.token}")
+            Logger.debug(
+              "Lobby join: user=#{user_id}, role=#{role}, session_id=#{state.session.id}"
+            )
+
             state = set_joined(state, role, true)
             broadcast(state.token, "lobby_peer_joined", %{user_id: user_id})
             {:reply, :ok, maybe_transition_to_lobby(state)}
@@ -317,7 +320,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
         {:noreply, state}
 
       role ->
-        Logger.info("Lobby leave: user=#{user_id}, role=#{role}, token=#{state.token}")
+        Logger.debug("Lobby leave: user=#{user_id}, role=#{role}, session_id=#{state.session.id}")
         {:noreply, begin_disconnect(state, role)}
     end
   end
@@ -430,7 +433,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
       %{ref: ref} ->
         Process.demonitor(ref, [:flush])
         user_id = user_id_for(state, role)
-        Logger.info("Lobby peer disconnected: role=#{role}, token=#{state.token}")
+        Logger.debug("Lobby peer disconnected: role=#{role}, session_id=#{state.session.id}")
 
         state =
           state
@@ -484,7 +487,10 @@ defmodule RetroHexChat.Lobby.SessionServer do
   defp user_id_for(state, :peer), do: state.session.peer_id
 
   defp do_transition(state, "lobby") do
-    Logger.info("Lobby transition: #{state.session.status} → lobby, token=#{state.token}")
+    Logger.debug(
+      "Lobby transition: #{state.session.status} → lobby, session_id=#{state.session.id}"
+    )
+
     state = cancel_timer(state, :pending_expiry)
 
     {:ok, session} =
@@ -500,7 +506,10 @@ defmodule RetroHexChat.Lobby.SessionServer do
   end
 
   defp do_transition(state, "connected") do
-    Logger.info("Lobby transition: #{state.session.status} → connected, token=#{state.token}")
+    Logger.debug(
+      "Lobby transition: #{state.session.status} → connected, session_id=#{state.session.id}"
+    )
+
     state = cancel_timer(state, :lobby_warning)
     state = cancel_timer(state, :lobby_expiry)
     state = cancel_timer(state, :connecting_timeout)
@@ -514,7 +523,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
   end
 
   defp do_close(state, reason, closed_by) do
-    Logger.info("Lobby close: token=#{state.token}, reason=#{reason}, by=#{closed_by}")
+    Logger.debug("Lobby close: session_id=#{state.session.id}, reason=#{reason}, by=#{closed_by}")
     state = cancel_all_timers(state)
     now = DateTime.utc_now()
 
@@ -531,7 +540,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
   end
 
   defp do_expire(state, reason) do
-    Logger.info("Lobby expired: token=#{state.token}, reason=#{reason}")
+    Logger.debug("Lobby expired: session_id=#{state.session.id}, reason=#{reason}")
     state = cancel_all_timers(state)
     now = DateTime.utc_now()
 
@@ -548,7 +557,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
   end
 
   defp do_fail(state, reason) do
-    Logger.warning("Lobby failed: token=#{state.token}, reason=#{reason}")
+    Logger.warning("Lobby failed: session_id=#{state.session.id}, reason=#{reason}")
     state = cancel_all_timers(state)
     now = DateTime.utc_now()
 
@@ -565,7 +574,9 @@ defmodule RetroHexChat.Lobby.SessionServer do
   end
 
   defp handle_propose_game(state, user_id, proposer_nick, game_id) do
-    Logger.info("Lobby game proposed: token=#{state.token}, game=#{game_id}, by=#{proposer_nick}")
+    Logger.debug(
+      "Lobby game proposed: session_id=#{state.session.id}, game=#{game_id}, by=#{proposer_nick}"
+    )
 
     request = %{
       proposer_id: user_id,
@@ -623,7 +634,9 @@ defmodule RetroHexChat.Lobby.SessionServer do
   end
 
   defp handle_finish_game(state, result) do
-    Logger.info("Lobby game finished: token=#{state.token}, game=#{state.game.game_id}")
+    Logger.debug(
+      "Lobby game finished: session_id=#{state.session.id}, game=#{state.game.game_id}"
+    )
 
     game = %{
       status: "finished",

@@ -61,9 +61,7 @@ defmodule RetroHexChat.Services.ChanExpiry do
     {count, purged_names} = Queries.purge_expired_channels(state.expiration_days)
 
     if count > 0 do
-      Logger.info(
-        "ChanExpiry: purged #{count} inactive channel(s): #{Enum.join(purged_names, ", ")}"
-      )
+      Logger.info("ChanExpiry: purged #{count} inactive channel(s)")
     end
 
     {count, purged_names}

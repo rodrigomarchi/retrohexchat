@@ -275,7 +275,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
 
         state = sync_channel_members(state)
 
-        Logger.info("VirtualSpace channel runtime started: channel=#{channel_name}")
+        Logger.debug("VirtualSpace channel runtime started: channel=#{channel_name}")
         {:ok, state}
     end
   end
@@ -316,7 +316,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
           seed_direct_message_member(acc, nickname)
         end)
 
-      Logger.info("VirtualSpace DM runtime started: space_id=#{space_id}")
+      Logger.debug("VirtualSpace DM runtime started: space_id=#{space_id}")
       {:ok, state}
     else
       {:error, :invalid_participants} -> {:stop, :invalid_participants}

@@ -8,7 +8,7 @@ defmodule RetroHexChat.P2P.Turn.Monitor do
 
     receive do
       {:DOWN, ^ref, :process, _object, _reason} ->
-        Logger.info("Closing TURN socket #{inspect(socket)}")
+        Logger.debug("Closing TURN socket #{inspect(socket)}")
         :ok = :socket.close(socket)
     end
   end

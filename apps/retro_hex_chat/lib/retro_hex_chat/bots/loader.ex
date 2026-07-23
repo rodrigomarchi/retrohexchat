@@ -35,7 +35,7 @@ defmodule RetroHexChat.Bots.Loader do
 
       case Supervisor.start_bot(bot_data) do
         {:ok, _pid} ->
-          Logger.info("BotLoader: started bot #{bot.nickname}")
+          Logger.debug("BotLoader: started bot #{bot.nickname}")
 
         {:error, reason} ->
           Logger.error("BotLoader: failed to start bot #{bot.nickname}: #{inspect(reason)}")

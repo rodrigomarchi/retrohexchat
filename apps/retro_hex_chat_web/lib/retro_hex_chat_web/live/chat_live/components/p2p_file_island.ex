@@ -135,7 +135,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PFileIsland do
 
   # A finished transfer returns to "ready" — the lobby connection stays alive.
   defp handle_ft(socket, "ft_completed", params) do
-    Logger.info("Lobby file completed: #{params["file_name"]}, token=#{socket.assigns.token}")
+    Logger.debug("Lobby file completed")
 
     # Single-writer rule: only the RECEIVING side persists the shared notice
     # (both hooks fire ft_completed; without a writer the line would land in

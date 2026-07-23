@@ -56,7 +56,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
         setup_joined_channel(socket, channel_name, session, join_mode)
 
       {:error, reason} when reason == "Already in channel" ->
-        Logger.info("Rejoining channel #{channel_name} (already a member in server)")
+        Logger.debug("Rejoining channel #{channel_name} (already a member in server)")
         setup_joined_channel(socket, channel_name, session, join_mode)
 
       {:error, reason} ->

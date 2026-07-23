@@ -68,7 +68,7 @@ defmodule RetroHexChat.Services.NickExpiry do
     end)
 
     if count > 0 do
-      Logger.info("NickExpiry: purged #{count} inactive nick(s): #{Enum.join(nicknames, ", ")}")
+      Logger.info("NickExpiry: purged #{count} inactive nick(s)")
     end
 
     handle_founder_succession(nicknames)

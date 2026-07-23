@@ -268,8 +268,8 @@ defmodule RetroHexChat.GroupCall.RoomServer do
       join_authorized_participant(state, actor, signal_pid, client_info, membership)
     else
       {:error, reason} = error ->
-        Logger.info("Group call join denied",
-          room_token: state.room.token,
+        Logger.debug("Group call join denied",
+          room_id: state.room.id,
           reason: inspect(reason)
         )
 
@@ -1026,7 +1026,7 @@ defmodule RetroHexChat.GroupCall.RoomServer do
 
             {:error, changeset} ->
               Logger.debug("Ignoring group call track persistence error",
-                room_token: state.room.token,
+                room_id: state.room.id,
                 participant_id: participant_id,
                 errors: inspect(changeset.errors)
               )
@@ -1045,7 +1045,7 @@ defmodule RetroHexChat.GroupCall.RoomServer do
   def handle_info({:peer_ready_timeout, participant_id}, state) do
     if Map.has_key?(state.pending_participants, participant_id) do
       Logger.warning("Group call participant did not become ready in time",
-        room_token: state.room.token,
+        room_id: state.room.id,
         participant_id: participant_id
       )
 
@@ -1087,8 +1087,8 @@ defmodule RetroHexChat.GroupCall.RoomServer do
       {:ok, participant_id} ->
         participant_reason = peer_down_reason(reason)
 
-        Logger.info("Group call peer down",
-          room_token: state.room.token,
+        Logger.debug("Group call peer down",
+          room_id: state.room.id,
           participant_id: participant_id,
           reason: inspect(reason),
           participant_reason: participant_reason
@@ -1548,7 +1548,7 @@ defmodule RetroHexChat.GroupCall.RoomServer do
 
       {:error, reason} ->
         Logger.debug("Ignoring group call screen-share track source update",
-          room_token: state.room.token,
+          room_id: state.room.id,
           participant_id: participant_id,
           reason: inspect(reason)
         )
@@ -1627,7 +1627,7 @@ defmodule RetroHexChat.GroupCall.RoomServer do
 
       {:error, reason} ->
         Logger.debug("Ignoring group call audit persistence error",
-          room_token: state.room.token,
+          room_id: state.room.id,
           event_type: event_type,
           reason: inspect(reason)
         )
@@ -1806,7 +1806,7 @@ defmodule RetroHexChat.GroupCall.RoomServer do
 
       {:error, reason} ->
         Logger.debug("Ignoring group call track state update error",
-          room_token: state.room.token,
+          room_id: state.room.id,
           participant_id: participant_id,
           reason: inspect(reason)
         )
@@ -1846,7 +1846,7 @@ defmodule RetroHexChat.GroupCall.RoomServer do
 
         {:error, update_reason} ->
           Logger.debug("Ignoring group call track end error",
-            room_token: state.room.token,
+            room_id: state.room.id,
             participant_id: participant_id,
             reason: inspect(update_reason)
           )

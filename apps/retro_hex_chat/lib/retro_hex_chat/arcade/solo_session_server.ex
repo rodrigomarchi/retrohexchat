@@ -96,7 +96,7 @@ defmodule RetroHexChat.Arcade.SoloSessionServer do
 
           state = schedule_timeout(state, :pending_expiry, pending_timeout())
 
-          Logger.info("Arcade SoloSessionServer started: token=#{token}")
+          Logger.debug("Arcade SoloSessionServer started: session_id=#{session.id}")
           {:ok, state}
         end
     end
@@ -109,7 +109,7 @@ defmodule RetroHexChat.Arcade.SoloSessionServer do
 
   def handle_call({:join, user_id}, _from, state) do
     if user_id == state.session.creator_id do
-      Logger.info("Arcade join: user=#{user_id}, token=#{state.token}")
+      Logger.debug("Arcade join: user=#{user_id}, session_id=#{state.session.id}")
       state = %{state | creator_joined: true}
       state = maybe_transition_to_lobby(state)
       {:reply, :ok, state}
@@ -138,7 +138,7 @@ defmodule RetroHexChat.Arcade.SoloSessionServer do
     if user_id != state.session.creator_id do
       {:reply, {:error, :not_creator}, state}
     else
-      Logger.info("Arcade select: token=#{state.token}, game=#{game_id}")
+      Logger.debug("Arcade select: session_id=#{state.session.id}, game=#{game_id}")
       state = do_transition(state, "playing", game_id)
       {:reply, :ok, state}
     end
@@ -170,7 +170,7 @@ defmodule RetroHexChat.Arcade.SoloSessionServer do
 
   @impl true
   def handle_info({:timeout, :pending_expiry}, state) do
-    Logger.info("Arcade timeout: pending_expiry, token=#{state.token}")
+    Logger.debug("Arcade timeout: pending_expiry, session_id=#{state.session.id}")
 
     if state.session.status == "pending" do
       state = do_expire(state, "pending_timeout")
@@ -181,7 +181,7 @@ defmodule RetroHexChat.Arcade.SoloSessionServer do
   end
 
   def handle_info({:timeout, :lobby_warning}, state) do
-    Logger.info("Arcade timeout: lobby_warning, token=#{state.token}")
+    Logger.debug("Arcade timeout: lobby_warning, session_id=#{state.session.id}")
 
     if state.session.status == "lobby" do
       broadcast(state.token, "arcade_inactivity_warning", %{expires_in_seconds: 300})
@@ -192,7 +192,7 @@ defmodule RetroHexChat.Arcade.SoloSessionServer do
   end
 
   def handle_info({:timeout, :lobby_expiry}, state) do
-    Logger.info("Arcade timeout: lobby_expiry, token=#{state.token}")
+    Logger.debug("Arcade timeout: lobby_expiry, session_id=#{state.session.id}")
 
     if state.session.status == "lobby" do
       state = do_expire(state, "lobby_inactivity")
@@ -213,7 +213,10 @@ defmodule RetroHexChat.Arcade.SoloSessionServer do
   end
 
   defp do_transition(state, "lobby") do
-    Logger.info("Arcade transition: #{state.session.status} → lobby, token=#{state.token}")
+    Logger.debug(
+      "Arcade transition: #{state.session.status} → lobby, session_id=#{state.session.id}"
+    )
+
     state = cancel_timer(state, :pending_expiry)
     now = DateTime.utc_now()
 
@@ -228,7 +231,10 @@ defmodule RetroHexChat.Arcade.SoloSessionServer do
   end
 
   defp do_transition(state, "playing", game_id) do
-    Logger.info("Arcade transition: #{state.session.status} → playing, token=#{state.token}")
+    Logger.debug(
+      "Arcade transition: #{state.session.status} → playing, session_id=#{state.session.id}"
+    )
+
     now = DateTime.utc_now()
     state = cancel_timer(state, :lobby_warning)
     state = cancel_timer(state, :lobby_expiry)
@@ -251,7 +257,7 @@ defmodule RetroHexChat.Arcade.SoloSessionServer do
   end
 
   defp do_finish(state) do
-    Logger.info("Arcade finished: token=#{state.token}")
+    Logger.debug("Arcade finished: session_id=#{state.session.id}")
     state = cancel_all_timers(state)
     now = DateTime.utc_now()
 
@@ -277,7 +283,10 @@ defmodule RetroHexChat.Arcade.SoloSessionServer do
   end
 
   defp do_close(state, reason, closed_by) do
-    Logger.info("Arcade close: token=#{state.token}, reason=#{reason}, by=#{closed_by}")
+    Logger.debug(
+      "Arcade close: session_id=#{state.session.id}, reason=#{reason}, by=#{closed_by}"
+    )
+
     state = cancel_all_timers(state)
     now = DateTime.utc_now()
 
@@ -298,7 +307,7 @@ defmodule RetroHexChat.Arcade.SoloSessionServer do
   end
 
   defp do_expire(state, reason) do
-    Logger.info("Arcade expired: token=#{state.token}, reason=#{reason}")
+    Logger.debug("Arcade expired: session_id=#{state.session.id}, reason=#{reason}")
     state = cancel_all_timers(state)
     now = DateTime.utc_now()
 

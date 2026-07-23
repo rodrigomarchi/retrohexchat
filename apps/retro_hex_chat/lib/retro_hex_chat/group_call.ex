@@ -51,7 +51,7 @@ defmodule RetroHexChat.GroupCall do
       {:ok, %{room: room, token: room.token}}
     else
       {:error, %Ecto.Changeset{} = changeset} ->
-        Logger.info("Group call room insert failed: #{inspect(changeset.errors)}")
+        Logger.warning("Group call room insert failed: #{inspect(changeset.errors)}")
         {:error, dgettext("group_call", "Could not create group call")}
 
       {:error, {:already_started, _pid}} ->

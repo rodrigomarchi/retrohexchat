@@ -159,7 +159,7 @@ defmodule RetroHexChat.GroupCall.PeerServer do
 
           {:error, reason} ->
             Logger.warning("Unable to apply group-call SDP answer",
-              room_token: state.room_token,
+              room_id: state.room_id,
               participant_id: state.participant.id,
               reason: inspect(reason)
             )
@@ -319,7 +319,7 @@ defmodule RetroHexChat.GroupCall.PeerServer do
 
   def handle_info({:DOWN, _ref, :process, pc, reason}, %{pc: pc} = state) do
     Logger.warning("Group-call peer connection stopped",
-      room_token: state.room_token,
+      room_id: state.room_id,
       participant_id: state.participant.id,
       reason: inspect(reason)
     )

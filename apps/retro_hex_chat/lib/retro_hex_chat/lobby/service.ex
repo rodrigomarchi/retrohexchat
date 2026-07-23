@@ -19,15 +19,15 @@ defmodule RetroHexChat.Lobby.Service do
          :ok <- Policy.can_create?(creator_id, peer_id),
          {:ok, session} <- insert_session(creator_id, peer_id),
          {:ok, _pid} <- Supervisor.start_child(session.token) do
-      Logger.info(
-        "Lobby session created: token=#{session.token}, creator=#{creator_id}, peer=#{peer_id}"
+      Logger.debug(
+        "Lobby session created: session_id=#{session.id}, creator=#{creator_id}, peer=#{peer_id}"
       )
 
       notify_peer(peer_id, session.token, creator_id)
       {:ok, %{session: session, token: session.token}}
     else
       {:error, reason} = error ->
-        Logger.info("Lobby session denied: reason=#{inspect(reason)}, creator=#{creator_id}")
+        Logger.debug("Lobby session denied: reason=#{inspect(reason)}, creator=#{creator_id}")
         error
     end
   end

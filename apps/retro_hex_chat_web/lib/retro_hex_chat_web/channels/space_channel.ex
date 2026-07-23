@@ -8,7 +8,7 @@ defmodule RetroHexChatWeb.SpaceChannel do
   the `space_init` payload (participant + snapshot). Domain broadcasts on the
   `space:#channel` PubSub topic are pushed through to the client verbatim.
   """
-  use Phoenix.Channel
+  use Phoenix.Channel, log_join: :debug
 
   require Logger
 
@@ -240,7 +240,7 @@ defmodule RetroHexChatWeb.SpaceChannel do
   defp join_error(:invalid_participants), do: "invalid_token"
 
   defp join_error(other) do
-    Logger.info("Space join denied: #{inspect(other)}")
+    Logger.debug("Space join denied: #{inspect(other)}")
     "access_denied"
   end
 

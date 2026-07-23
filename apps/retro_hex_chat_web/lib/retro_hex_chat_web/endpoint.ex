@@ -13,12 +13,12 @@ defmodule RetroHexChatWeb.Endpoint do
   ]
 
   socket "/socket", RetroHexChatWeb.UserSocket,
-    websocket: true,
+    websocket: [log: :debug],
     longpoll: false
 
   socket "/live", Phoenix.LiveView.Socket,
-    websocket: [connect_info: [session: @session_options]],
-    longpoll: [connect_info: [session: @session_options]]
+    websocket: [connect_info: [session: @session_options], log: :debug],
+    longpoll: [connect_info: [session: @session_options], log: :debug]
 
   # Serve at "/" the static files from "priv/static" directory.
   #
@@ -49,7 +49,7 @@ defmodule RetroHexChatWeb.Endpoint do
 
   plug RetroHexChatWeb.PromExPlug, path: "/metrics"
 
-  plug Plug.Telemetry, event_prefix: [:phoenix, :endpoint]
+  plug Plug.Telemetry, event_prefix: [:phoenix, :endpoint], log: :debug
 
   plug Plug.Parsers,
     parsers: [:urlencoded, :multipart, :json],

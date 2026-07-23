@@ -157,7 +157,7 @@ defmodule RetroHexChat.P2P.Turn.AllocationHandler do
 
       {:noreply, state}
     else
-      Logger.warning(
+      Logger.debug(
         "Received UDP datagram from #{:inet.ntoa(ip_addr)}, but no permission was created"
       )
 
@@ -245,7 +245,7 @@ defmodule RetroHexChat.P2P.Turn.AllocationHandler do
         {response, log_msg} =
           Utils.build_error(reason, msg.transaction_id, msg.type.method, state.config)
 
-        Logger.warning(log_msg)
+        log_turn_rejection(reason, log_msg)
 
         :ok =
           :socket.sendto(state.turn_socket, response, %{
@@ -284,7 +284,7 @@ defmodule RetroHexChat.P2P.Turn.AllocationHandler do
         {response, log_msg} =
           Utils.build_error(reason, msg.transaction_id, msg.type.method, state.config)
 
-        Logger.warning(log_msg)
+        log_turn_rejection(reason, log_msg)
 
         :ok =
           :socket.sendto(state.turn_socket, response, %{
@@ -307,7 +307,7 @@ defmodule RetroHexChat.P2P.Turn.AllocationHandler do
       false ->
         {:ok, %XORPeerAddress{address: addr}} = get_xor_peer_address(msg)
 
-        Logger.warning(
+        Logger.debug(
           "Error while processing 'indication' request, no permission for #{:inet.ntoa(addr)}"
         )
 
@@ -317,7 +317,7 @@ defmodule RetroHexChat.P2P.Turn.AllocationHandler do
         {_response, log_msg} =
           Utils.build_error(reason, msg.transaction_id, msg.type.method, state.config)
 
-        Logger.warning("Error while processing 'indication' request. " <> log_msg)
+        Logger.debug("Error while processing 'indication' request. " <> log_msg)
         {:ok, state}
     end
   end
@@ -353,7 +353,7 @@ defmodule RetroHexChat.P2P.Turn.AllocationHandler do
         {response, log_msg} =
           Utils.build_error(reason, msg.transaction_id, msg.type.method, state.config)
 
-        Logger.warning(log_msg)
+        log_turn_rejection(reason, log_msg)
 
         :ok =
           :socket.sendto(state.turn_socket, response, %{
@@ -366,10 +366,13 @@ defmodule RetroHexChat.P2P.Turn.AllocationHandler do
     end
   end
 
-  defp handle_message(msg, state) do
-    Logger.warning("Got unexpected TURN message: #{inspect(msg, limit: :infinity)}")
+  defp handle_message(_msg, state) do
+    Logger.debug("Got unexpected TURN message")
     {:ok, state}
   end
+
+  defp log_turn_rejection(:out_of_ports, log_msg), do: Logger.warning(log_msg)
+  defp log_turn_rejection(_reason, log_msg), do: Logger.debug(log_msg)
 
   defp install_or_refresh_permission(msg, state, opts \\ []) do
     case Message.get_all_attributes(msg, XORPeerAddress) do

@@ -124,7 +124,7 @@ defmodule RetroHexChat.Bots.Server do
     # Initialize capability timers (scheduler, rss, etc.)
     state = init_capability_timers(state)
 
-    Logger.info("Bot #{state.nickname} started with #{map_size(state.channels)} channels")
+    Logger.debug("Bot #{state.nickname} started with #{map_size(state.channels)} channels")
     {:ok, state}
   end
 
