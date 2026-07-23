@@ -11,6 +11,7 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEventsTest do
 
   alias RetroHexChat.Arcade
   alias RetroHexChat.Services.RegisteredNick
+  alias RetroHexChatWeb.Components.UI.MenuBarApp
 
   defp register(nickname) do
     {:ok, nick} =
@@ -46,6 +47,48 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEventsTest do
 
       assert arcade_session(view) == nil
       refute "arcade-games" in open_windows(view)
+    end
+
+    test "a game id opens the window already previewing that game", %{conn: conn} do
+      nick = "arcd#{uid()}"
+      register(nick)
+      {:ok, view, _} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
+
+      render_click(view, "toolbar_action", %{
+        "action" => "open_arcade",
+        "game-id" => "doom_shareware"
+      })
+
+      assert %{status: "lobby", previewed_game: %{id: "doom_shareware"}} = arcade_session(view)
+      assert "arcade-games" in open_windows(view)
+    end
+  end
+
+  describe "Games menu" do
+    test "lists every arcade game as a direct menu entry when available" do
+      document =
+        render_component(&MenuBarApp.menu_bar_app/1,
+          connected: true,
+          arcade_available: true,
+          on_action: "toolbar_action"
+        )
+        |> Floki.parse_document!()
+
+      for game <- Arcade.list_games() do
+        assert [_ | _] = Floki.find(document, ~s([data-testid="menu-game-#{game.id}"]))
+      end
+    end
+
+    test "hides the per-game entries when the arcade is unavailable" do
+      document =
+        render_component(&MenuBarApp.menu_bar_app/1,
+          connected: true,
+          arcade_available: false,
+          on_action: "toolbar_action"
+        )
+        |> Floki.parse_document!()
+
+      assert Floki.find(document, ~s([data-testid^="menu-game-"])) == []
     end
   end
 

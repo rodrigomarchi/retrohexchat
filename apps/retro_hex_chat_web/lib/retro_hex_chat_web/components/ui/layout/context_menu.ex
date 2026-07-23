@@ -84,6 +84,7 @@ defmodule RetroHexChatWeb.Components.UI.ContextMenu do
   attr :action, :string, default: nil, doc: "Action identifier passed as phx-value-action"
   attr :on_click, :any, default: nil, doc: "JS command or event name for click"
   attr :class, :string, default: nil
+  attr :testid, :string, default: nil, doc: "Overrides the action-derived data-testid"
   attr :rest, :global
   slot :icon, required: true, doc: "14×14 icon SVG — mandatory for visual consistency"
   slot :shortcut
@@ -106,7 +107,7 @@ defmodule RetroHexChatWeb.Components.UI.ContextMenu do
       phx-click={unless(@disabled, do: @on_click)}
       phx-value-action={unless(@disabled, do: @action)}
       aria-disabled={@disabled && "true"}
-      data-testid={if @action, do: "context-menu-item-#{@action}"}
+      data-testid={@testid || if(@action, do: "context-menu-item-#{@action}")}
       {@rest}
     >
       <span class="shrink-0 w-[14px] h-[14px] inline-flex items-center justify-center">

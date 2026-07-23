@@ -2355,6 +2355,12 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
               "The game library opens as a draggable, maximizable window right on the chat " <>
                 "desktop — no separate page. Launching a game opens it in a new browser " <>
                 "window so it gets full keyboard focus."
+            ) <>
+            " " <>
+            dgettext(
+              "help",
+              "Every game is also listed directly in the Games menu — pick one to jump " <>
+                "straight to its detail screen."
             ),
         see_also: [
           "feature-arcade-doom",

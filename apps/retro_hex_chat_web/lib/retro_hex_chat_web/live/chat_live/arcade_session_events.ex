@@ -8,7 +8,9 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEvents do
 
   Opening "Games → Arcade" (registered + identified only) creates a solo session
   (`Arcade.create_session` + `join_session`), subscribes to `"arcade:\#{token}"`
-  and opens the managed "arcade-games" window with the picker. Selecting a game
+  and opens the managed "arcade-games" window with the picker; an optional
+  `game-id` param (the per-game Games-menu items) lands directly on that game's
+  preview instead. Selecting a game
   drives the domain (`Arcade.select_game`); the resulting "playing" broadcast
   makes the host push `open_game_window` to the ArcadeSession JS hook, which
   `window.open`s the external WASM game and polls it — its close bubbles back as
@@ -40,8 +42,19 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEvents do
   # ── Client events ─────────────────────────────────────────────
 
   @spec handle_event(String.t(), map(), Socket.t()) :: {:cont | :halt, Socket.t()}
-  def handle_event("open_arcade", _params, socket) do
-    {:halt, open_arcade(socket)}
+  def handle_event("open_arcade", params, socket) do
+    socket = open_arcade(socket)
+
+    # A game-id (per-game Games-menu item) skips the picker and lands on that
+    # game's preview — only while the session sits in the lobby, so a running
+    # or finished game is never disturbed.
+    socket =
+      case {Map.get(params, "game-id"), socket.assigns[:arcade_session]} do
+        {game_id, %{status: "lobby"}} when is_binary(game_id) -> preview_game(socket, game_id)
+        _ -> socket
+      end
+
+    {:halt, socket}
   end
 
   def handle_event(
