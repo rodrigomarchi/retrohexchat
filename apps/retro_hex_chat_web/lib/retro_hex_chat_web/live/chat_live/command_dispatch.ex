@@ -35,6 +35,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
 
   alias RetroHexChat.Accounts.{ServerRoles, Session}
   alias RetroHexChat.Admin.GlobalMutes
+  alias RetroHexChat.Observability
 
   alias RetroHexChat.Chat.{
     AliasExpander,
@@ -44,7 +45,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
   }
 
   alias RetroHexChat.Channels.Server
-  alias RetroHexChat.Commands.{Dispatcher, Parser}
+  alias RetroHexChat.Commands.{Dispatcher, Parser, Registry}
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.Services.NickServ
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
@@ -75,6 +76,15 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
           non_neg_integer()
         ) :: {Phoenix.LiveView.Socket.t(), term()}
   def dispatch_command_with_result(socket, session, name, args, alias_depth \\ 0) do
+    Observability.span(
+      [:retro_hex_chat, :commands, :dispatch],
+      command_metadata(name, args, alias_depth),
+      fn -> do_dispatch_command_with_result(socket, session, name, args, alias_depth) end,
+      &classify_dispatched_command/1
+    )
+  end
+
+  defp do_dispatch_command_with_result(socket, session, name, args, alias_depth) do
     context = build_context(session, socket.assigns.show_status_tab)
 
     case try_alias_expansion(session, name, args, context, alias_depth) do
@@ -90,6 +100,31 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
         {error_event(socket, msg), result}
     end
   end
+
+  defp command_metadata(name, args, alias_depth) do
+    safe_name = safe_command_name(name)
+
+    %{
+      command: if(Registry.known?(safe_name), do: safe_name, else: "unknown"),
+      command_known: Registry.known?(safe_name),
+      argument_count: length(args),
+      alias_depth: alias_depth
+    }
+  end
+
+  defp classify_dispatched_command({_socket, {:error, _reason}}),
+    do: %{result: "error", reason: "command_error"}
+
+  defp classify_dispatched_command({_socket, _result}), do: %{result: "ok"}
+
+  defp safe_command_name(name) when is_binary(name) do
+    name
+    |> String.downcase()
+    |> String.replace(~r/[^a-z0-9_-]/, "_")
+    |> String.slice(0, 40)
+  end
+
+  defp safe_command_name(_name), do: "unknown"
 
   @spec send_plain_message(Phoenix.LiveView.Socket.t(), Session.t(), String.t(), map() | nil) ::
           Phoenix.LiveView.Socket.t()

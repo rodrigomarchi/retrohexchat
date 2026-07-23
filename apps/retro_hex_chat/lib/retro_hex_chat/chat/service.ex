@@ -7,17 +7,27 @@ defmodule RetroHexChat.Chat.Service do
   require Logger
 
   alias RetroHexChat.Chat.{Policy, Queries}
+  alias RetroHexChat.Observability
 
   @max_preview_length 100
 
   @spec send_message(String.t(), String.t(), String.t(), String.t(), keyword()) ::
           {:ok, RetroHexChat.Chat.Message.t()} | {:error, String.t()}
   def send_message(channel_name, nickname, content, type \\ "message", opts \\ []) do
+    Observability.span(
+      [:retro_hex_chat, :chat, :message, :send],
+      message_metadata(:channel, type, content, opts, %{"chat.channel" => channel_name}),
+      fn -> do_send_message(channel_name, nickname, content, type, opts) end
+    )
+  end
+
+  defp do_send_message(channel_name, nickname, content, type, opts) do
     reply_to_id = Keyword.get(opts, :reply_to_id)
 
     with :ok <- Policy.validate_content(content),
          {:ok, reply_attrs} <- resolve_reply_attrs(reply_to_id, :message),
          {:ok, message} <- do_insert_message(channel_name, nickname, content, type, reply_attrs) do
+      Observability.set_current_span_attributes(%{"chat.message.id" => message.id})
       broadcast_message(channel_name, message)
       {:ok, message}
     end
@@ -26,6 +36,18 @@ defmodule RetroHexChat.Chat.Service do
   @spec edit_message(integer(), String.t(), String.t()) ::
           {:ok, RetroHexChat.Chat.Message.t()} | {:error, String.t()}
   def edit_message(message_id, nickname, new_content) do
+    Observability.span(
+      [:retro_hex_chat, :chat, :message, :edit],
+      %{
+        "chat.message.id" => message_id,
+        conversation_type: "channel",
+        message_size_bytes: byte_size(new_content)
+      },
+      fn -> do_edit_message(message_id, nickname, new_content) end
+    )
+  end
+
+  defp do_edit_message(message_id, nickname, new_content) do
     with :ok <- Policy.validate_content(new_content),
          %{} = message <-
            Queries.get_message(message_id) || {:error, dgettext("chat", "Message not found.")},
@@ -41,6 +63,18 @@ defmodule RetroHexChat.Chat.Service do
   @spec edit_private_message(integer(), String.t(), String.t()) ::
           {:ok, RetroHexChat.Chat.PrivateMessage.t()} | {:error, String.t()}
   def edit_private_message(pm_id, nickname, new_content) do
+    Observability.span(
+      [:retro_hex_chat, :chat, :message, :edit],
+      %{
+        "chat.message.id" => pm_id,
+        conversation_type: "private",
+        message_size_bytes: byte_size(new_content)
+      },
+      fn -> do_edit_private_message(pm_id, nickname, new_content) end
+    )
+  end
+
+  defp do_edit_private_message(pm_id, nickname, new_content) do
     with :ok <- Policy.validate_content(new_content),
          %{} = pm <-
            Queries.get_private_message(pm_id) || {:error, dgettext("chat", "Message not found.")},
@@ -63,6 +97,14 @@ defmodule RetroHexChat.Chat.Service do
   @spec delete_message(integer(), String.t()) ::
           {:ok, RetroHexChat.Chat.Message.t()} | {:error, String.t()}
   def delete_message(message_id, nickname) do
+    Observability.span(
+      [:retro_hex_chat, :chat, :message, :delete],
+      %{"chat.message.id" => message_id, conversation_type: "channel"},
+      fn -> do_delete_message(message_id, nickname) end
+    )
+  end
+
+  defp do_delete_message(message_id, nickname) do
     with %{} = message <-
            Queries.get_message(message_id) || {:error, dgettext("chat", "Message not found.")},
          :ok <- Policy.can_delete?(message, nickname),
@@ -77,6 +119,14 @@ defmodule RetroHexChat.Chat.Service do
   @spec delete_private_message(integer(), String.t()) ::
           {:ok, RetroHexChat.Chat.PrivateMessage.t()} | {:error, String.t()}
   def delete_private_message(pm_id, nickname) do
+    Observability.span(
+      [:retro_hex_chat, :chat, :message, :delete],
+      %{"chat.message.id" => pm_id, conversation_type: "private"},
+      fn -> do_delete_private_message(pm_id, nickname) end
+    )
+  end
+
+  defp do_delete_private_message(pm_id, nickname) do
     with %{} = pm <-
            Queries.get_private_message(pm_id) || {:error, dgettext("chat", "Message not found.")},
          :ok <- Policy.can_delete?(Map.put(pm, :author_nickname, pm.sender_nickname), nickname),
@@ -91,6 +141,14 @@ defmodule RetroHexChat.Chat.Service do
   @spec send_system_message(String.t(), String.t()) ::
           {:ok, RetroHexChat.Chat.Message.t()} | {:error, any()}
   def send_system_message(channel_name, content) do
+    Observability.span(
+      [:retro_hex_chat, :chat, :message, :send],
+      message_metadata(:channel, "system", content, [], %{"chat.channel" => channel_name}),
+      fn -> do_send_system_message(channel_name, content) end
+    )
+  end
+
+  defp do_send_system_message(channel_name, content) do
     case Queries.insert_message(%{
            channel_name: channel_name,
            author_nickname: dgettext("chat", "System"),
@@ -109,11 +167,20 @@ defmodule RetroHexChat.Chat.Service do
   @spec send_private_message(String.t(), String.t(), String.t(), String.t(), keyword()) ::
           {:ok, RetroHexChat.Chat.PrivateMessage.t()} | {:error, String.t()}
   def send_private_message(sender, recipient, content, type \\ "message", opts \\ []) do
+    Observability.span(
+      [:retro_hex_chat, :chat, :message, :send],
+      message_metadata(:private, type, content, opts, %{}),
+      fn -> do_send_private_message(sender, recipient, content, type, opts) end
+    )
+  end
+
+  defp do_send_private_message(sender, recipient, content, type, opts) do
     reply_to_id = Keyword.get(opts, :reply_to_id)
 
     with :ok <- Policy.validate_content(content),
          {:ok, reply_attrs} <- resolve_reply_attrs(reply_to_id, :pm),
          {:ok, pm} <- do_insert_pm(sender, recipient, content, type, reply_attrs) do
+      Observability.set_current_span_attributes(%{"chat.message.id" => pm.id})
       broadcast_private_message(sender, recipient, pm)
       broadcast_private_activity(sender, recipient, pm)
       {:ok, pm}
@@ -291,13 +358,23 @@ defmodule RetroHexChat.Chat.Service do
       reply_to_preview: pm.reply_to_preview
     }
 
-    case Phoenix.PubSub.broadcast(RetroHexChat.PubSub, topic, %{event: "new_pm", payload: payload}) do
-      :ok ->
-        :ok
+    Observability.span(
+      [:retro_hex_chat, :chat, :message, :broadcast],
+      broadcast_metadata(:private, payload.type, "new_pm", pm.id),
+      fn ->
+        case Phoenix.PubSub.broadcast(RetroHexChat.PubSub, topic, %{
+               event: "new_pm",
+               payload: payload
+             }) do
+          :ok ->
+            :ok
 
-      {:error, reason} ->
-        Logger.warning("PubSub broadcast to #{topic} failed: #{inspect(reason)}")
-    end
+          {:error, reason} ->
+            Logger.warning("PubSub broadcast for private message failed: #{inspect(reason)}")
+            {:error, reason}
+        end
+      end
+    )
   end
 
   defp broadcast_private_activity(sender, recipient, pm) do
@@ -324,13 +401,28 @@ defmodule RetroHexChat.Chat.Service do
   defp broadcast_user_pm_activity(nickname, payload) do
     topic = "user:#{nickname}"
 
-    case Phoenix.PubSub.broadcast(RetroHexChat.PubSub, topic, {:pm_activity, payload}) do
-      :ok ->
-        :ok
+    Observability.span(
+      [:retro_hex_chat, :chat, :message, :broadcast],
+      broadcast_metadata(
+        :private,
+        Map.get(payload, :type),
+        "pm_activity",
+        Map.get(payload, :message_id)
+      ),
+      fn ->
+        case Phoenix.PubSub.broadcast(RetroHexChat.PubSub, topic, {:pm_activity, payload}) do
+          :ok ->
+            :ok
 
-      {:error, reason} ->
-        Logger.warning("PubSub broadcast to #{topic} failed: #{inspect(reason)}")
-    end
+          {:error, reason} ->
+            Logger.warning(
+              "PubSub broadcast for private message activity failed: #{inspect(reason)}"
+            )
+
+            {:error, reason}
+        end
+      end
+    )
   end
 
   defp broadcast_message(channel_name, message) do
@@ -346,16 +438,28 @@ defmodule RetroHexChat.Chat.Service do
       reply_to_preview: message.reply_to_preview
     }
 
-    case Phoenix.PubSub.broadcast(RetroHexChat.PubSub, "channel:#{channel_name}", %{
-           event: "new_message",
-           payload: payload
-         }) do
-      :ok ->
-        :ok
+    Observability.span(
+      [:retro_hex_chat, :chat, :message, :broadcast],
+      broadcast_metadata(:channel, payload.type, "new_message", message.id, %{
+        "chat.channel" => channel_name
+      }),
+      fn ->
+        case Phoenix.PubSub.broadcast(RetroHexChat.PubSub, "channel:#{channel_name}", %{
+               event: "new_message",
+               payload: payload
+             }) do
+          :ok ->
+            :ok
 
-      {:error, reason} ->
-        Logger.warning("PubSub broadcast to channel:#{channel_name} failed: #{inspect(reason)}")
-    end
+          {:error, reason} ->
+            Logger.warning(
+              "PubSub broadcast to channel:#{channel_name} failed: #{inspect(reason)}"
+            )
+
+            {:error, reason}
+        end
+      end
+    )
   end
 
   defp broadcast_edit(channel_name, message) do
@@ -428,4 +532,32 @@ defmodule RetroHexChat.Chat.Service do
   defp pm_topic(nick_a, nick_b) do
     [nick_a, nick_b] |> Enum.sort() |> Enum.join(":")
   end
+
+  defp message_metadata(conversation_type, type, content, opts, extra) do
+    Map.merge(
+      %{
+        conversation_type: Atom.to_string(conversation_type),
+        message_type: normalize_message_type(type),
+        message_size_bytes: byte_size(content),
+        has_reply: Keyword.has_key?(opts, :reply_to_id)
+      },
+      extra
+    )
+  end
+
+  defp broadcast_metadata(conversation_type, type, event, message_id, extra \\ %{}) do
+    Map.merge(
+      %{
+        "chat.message.id" => message_id,
+        conversation_type: Atom.to_string(conversation_type),
+        message_type: normalize_message_type(type),
+        event: event
+      },
+      extra
+    )
+  end
+
+  defp normalize_message_type(type) when is_atom(type), do: Atom.to_string(type)
+  defp normalize_message_type(type) when is_binary(type), do: type
+  defp normalize_message_type(_type), do: "unknown"
 end

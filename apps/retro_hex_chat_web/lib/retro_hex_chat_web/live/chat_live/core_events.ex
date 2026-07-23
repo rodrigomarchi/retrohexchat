@@ -30,6 +30,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Chat.{Policy, Queries, Service, UnreadTracker}
   alias RetroHexChat.Commands.Parser
+  alias RetroHexChat.Observability
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.Services.NickServ
   alias RetroHexChatWeb.ChatLive
@@ -425,10 +426,17 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
           Phoenix.LiveView.Socket.t()
   def dispatch_composer_input(socket, text, reply_to) do
     session = socket.assigns.session
+    parsed = Parser.parse(text)
 
-    socket
-    |> dispatch_parsed_input(session, Parser.parse(text), reply_to)
-    |> reset_activity()
+    Observability.span(
+      [:retro_hex_chat, :chat, :composer, :dispatch],
+      composer_metadata(parsed, text, reply_to),
+      fn ->
+        socket
+        |> dispatch_parsed_input(session, parsed, reply_to)
+        |> reset_activity()
+      end
+    )
   end
 
   defp dispatch_parsed_input(socket, session, {:message, text}, reply_to) do
@@ -495,6 +503,24 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   defp parse_pending_message_id("chat_messages-" <> id), do: parse_pending_message_id(id)
   defp parse_pending_message_id("pending_" <> _ = id), do: {:ok, id}
   defp parse_pending_message_id(_id), do: :error
+
+  defp composer_metadata(parsed, text, reply_to) do
+    %{
+      input_kind: parsed_kind(parsed),
+      message_size_bytes: byte_size(text),
+      has_reply: not is_nil(reply_to)
+    }
+  end
+
+  defp parsed_kind({:message, _text}), do: "message"
+  defp parsed_kind({:command, name, _args}), do: "command:#{safe_command_name(name)}"
+
+  defp safe_command_name(name) when is_binary(name) do
+    name
+    |> String.downcase()
+    |> String.replace(~r/[^a-z0-9_-]/, "_")
+    |> String.slice(0, 40)
+  end
 
   defp get_reply_parent(session, msg_id) do
     if session.active_pm do

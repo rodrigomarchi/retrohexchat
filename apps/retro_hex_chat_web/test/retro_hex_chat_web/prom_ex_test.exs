@@ -2,8 +2,9 @@ defmodule RetroHexChatWeb.PromExTest do
   use RetroHexChatWeb.ConnCase, async: false
 
   describe "RetroHexChat.PromEx.plugins/0" do
-    test "includes Ecto before the Repo starts" do
+    test "includes domain metrics and Ecto before the Repo starts" do
       assert [
+               RetroHexChat.PromEx.Plugins.Domain,
                {PromEx.Plugins.Ecto,
                 repos: [RetroHexChat.Repo], metric_prefix: [:retro_hex_chat_web, :prom_ex, :ecto]}
              ] = RetroHexChat.PromEx.plugins()

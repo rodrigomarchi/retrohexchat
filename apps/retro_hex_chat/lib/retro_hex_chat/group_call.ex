@@ -8,6 +8,7 @@ defmodule RetroHexChat.GroupCall do
 
   alias RetroHexChat.Channels
   alias RetroHexChat.Channels.Membership
+  alias RetroHexChat.Observability
 
   alias RetroHexChat.GroupCall.{
     Audit,
@@ -32,6 +33,12 @@ defmodule RetroHexChat.GroupCall do
   @spec create_channel_call(String.t(), actor(), keyword()) ::
           {:ok, %{room: Room.t(), token: String.t()}} | {:error, String.t()}
   def create_channel_call(channel_name, actor, opts \\ []) do
+    observe_group_call([:create], %{"chat.channel" => channel_name}, fn ->
+      do_create_channel_call(channel_name, actor, opts)
+    end)
+  end
+
+  defp do_create_channel_call(channel_name, actor, opts) do
     config = Config.from_application_env()
 
     with :ok <- check_enabled(config),
@@ -106,175 +113,236 @@ defmodule RetroHexChat.GroupCall do
   @spec join_call(String.t(), actor(), pid(), map(), map()) ::
           {:ok, map()} | {:error, term()}
   def join_call(token, actor, signal_pid, client_info \\ %{}, media_constraints \\ %{}) do
-    with {:ok, _pid} <- ensure_room_server(token) do
-      RoomServer.join(token, actor, signal_pid, client_info, media_constraints)
-    end
+    observe_group_call([:join], media_metadata(media_constraints), fn ->
+      with {:ok, _pid} <- ensure_room_server(token) do
+        RoomServer.join(token, actor, signal_pid, client_info, media_constraints)
+      end
+    end)
   end
 
   @spec leave_call(String.t(), integer(), String.t()) :: :ok | {:error, term()}
   def leave_call(token, participant_id, reason \\ "left") do
-    with {:ok, _pid} <- ensure_room_server(token) do
-      RoomServer.leave(token, participant_id, reason)
-    end
+    observe_group_call(
+      [:leave],
+      %{"group_call.participant.id" => participant_id, reason: normalize_reason(reason)},
+      fn ->
+        with {:ok, _pid} <- ensure_room_server(token) do
+          RoomServer.leave(token, participant_id, reason)
+        end
+      end
+    )
   end
 
   @spec answer(String.t(), integer(), String.t()) :: :ok | {:error, term()}
   def answer(token, participant_id, sdp_answer) do
-    with {:ok, _pid} <- ensure_room_server(token) do
-      RoomServer.apply_answer(token, participant_id, sdp_answer)
-    end
+    observe_group_call(
+      [:signaling, :answer],
+      %{"group_call.participant.id" => participant_id},
+      fn ->
+        with {:ok, _pid} <- ensure_room_server(token) do
+          RoomServer.apply_answer(token, participant_id, sdp_answer)
+        end
+      end
+    )
   end
 
   @spec add_ice_candidate(String.t(), integer(), map()) :: :ok | {:error, term()}
   def add_ice_candidate(token, participant_id, candidate) do
-    with {:ok, _pid} <- ensure_room_server(token) do
-      RoomServer.add_ice_candidate(token, participant_id, candidate)
-    end
+    observe_group_call(
+      [:signaling, :ice_candidate],
+      %{
+        "group_call.participant.id" => participant_id
+      },
+      fn ->
+        with {:ok, _pid} <- ensure_room_server(token) do
+          RoomServer.add_ice_candidate(token, participant_id, candidate)
+        end
+      end
+    )
   end
 
   @spec request_offer(String.t(), integer()) :: :ok | {:error, term()}
   def request_offer(token, participant_id) do
-    with {:ok, _pid} <- ensure_room_server(token) do
-      RoomServer.request_offer(token, participant_id)
-    end
+    observe_group_call(
+      [:signaling, :offer_request],
+      %{
+        "group_call.participant.id" => participant_id
+      },
+      fn ->
+        with {:ok, _pid} <- ensure_room_server(token) do
+          RoomServer.request_offer(token, participant_id)
+        end
+      end
+    )
   end
 
   @spec set_media_state(String.t(), integer(), map()) :: :ok | {:error, term()}
   def set_media_state(token, participant_id, media_state) do
-    with {:ok, _pid} <- ensure_room_server(token) do
-      RoomServer.set_media_state(token, participant_id, media_state)
-    end
+    observe_group_call([:media, :state], media_metadata(media_state), fn ->
+      with {:ok, _pid} <- ensure_room_server(token) do
+        RoomServer.set_media_state(token, participant_id, media_state)
+      end
+    end)
   end
 
   @spec set_screen_share_state(String.t(), integer(), boolean(), map()) ::
           {:ok, map()} | {:error, term()}
   def set_screen_share_state(token, participant_id, active?, screen_info \\ %{}) do
-    with {:ok, _pid} <- ensure_room_server(token) do
-      RoomServer.set_screen_share_state(token, participant_id, active?, screen_info)
-    end
+    observe_group_call(
+      [:media, :screen_share],
+      %{
+        "group_call.participant.id" => participant_id,
+        enabled: active?
+      },
+      fn ->
+        with {:ok, _pid} <- ensure_room_server(token) do
+          RoomServer.set_screen_share_state(token, participant_id, active?, screen_info)
+        end
+      end
+    )
   end
 
   @spec close_call(String.t(), actor(), String.t()) :: :ok | {:error, term()}
   def close_call(token, actor, reason \\ "moderation") do
-    with {:ok, _pid} <- ensure_room_server(token) do
-      RoomServer.close(token, actor, reason)
-    end
+    observe_group_call([:moderation, :close], %{reason: normalize_reason(reason)}, fn ->
+      with {:ok, _pid} <- ensure_room_server(token) do
+        RoomServer.close(token, actor, reason)
+      end
+    end)
   end
 
   @spec kick_participant(String.t(), actor(), integer()) :: :ok | {:error, term()}
   def kick_participant(token, actor, participant_id) do
-    with {:ok, _pid} <- ensure_room_server(token) do
-      RoomServer.kick_participant(token, actor, participant_id)
-    end
+    observe_group_call(
+      [:moderation, :kick],
+      %{"group_call.participant.id" => participant_id},
+      fn ->
+        with {:ok, _pid} <- ensure_room_server(token) do
+          RoomServer.kick_participant(token, actor, participant_id)
+        end
+      end
+    )
   end
 
   @spec force_kick_participant(String.t(), actor(), integer(), String.t()) ::
           :ok | {:error, term()}
   def force_kick_participant(token, actor, participant_id, reason \\ "kicked") do
-    with {:ok, _pid} <- ensure_room_server(token) do
-      RoomServer.force_kick_participant(token, actor, participant_id, reason)
-    end
+    observe_group_call(
+      [:moderation, :force_kick],
+      %{"group_call.participant.id" => participant_id, reason: normalize_reason(reason)},
+      fn ->
+        with {:ok, _pid} <- ensure_room_server(token) do
+          RoomServer.force_kick_participant(token, actor, participant_id, reason)
+        end
+      end
+    )
   end
 
   @spec mute_participant(String.t(), actor(), integer()) ::
           {:ok, Participant.t()} | {:error, term()}
   def mute_participant(token, actor, participant_id) do
-    with {:ok, _pid} <- ensure_room_server(token) do
-      RoomServer.set_participant_audio(token, actor, participant_id, false)
-    end
+    set_participant_media(token, actor, participant_id, :audio, false)
   end
 
   @spec unmute_participant(String.t(), actor(), integer()) ::
           {:ok, Participant.t()} | {:error, term()}
   def unmute_participant(token, actor, participant_id) do
-    with {:ok, _pid} <- ensure_room_server(token) do
-      RoomServer.set_participant_audio(token, actor, participant_id, true)
-    end
+    set_participant_media(token, actor, participant_id, :audio, true)
   end
 
   @spec block_participant_video(String.t(), actor(), integer()) ::
           {:ok, Participant.t()} | {:error, term()}
   def block_participant_video(token, actor, participant_id) do
-    with {:ok, _pid} <- ensure_room_server(token) do
-      RoomServer.set_participant_video(token, actor, participant_id, false)
-    end
+    set_participant_media(token, actor, participant_id, :video, false)
   end
 
   @spec unblock_participant_video(String.t(), actor(), integer()) ::
           {:ok, Participant.t()} | {:error, term()}
   def unblock_participant_video(token, actor, participant_id) do
-    with {:ok, _pid} <- ensure_room_server(token) do
-      RoomServer.set_participant_video(token, actor, participant_id, true)
-    end
+    set_participant_media(token, actor, participant_id, :video, true)
   end
 
   @spec block_participant_screen_share(String.t(), actor(), integer()) ::
           {:ok, Participant.t()} | {:error, term()}
   def block_participant_screen_share(token, actor, participant_id) do
-    with {:ok, _pid} <- ensure_room_server(token) do
-      RoomServer.set_participant_screen_share(token, actor, participant_id, false)
-    end
+    set_participant_media(token, actor, participant_id, :screen_share, false)
   end
 
   @spec unblock_participant_screen_share(String.t(), actor(), integer()) ::
           {:ok, Participant.t()} | {:error, term()}
   def unblock_participant_screen_share(token, actor, participant_id) do
-    with {:ok, _pid} <- ensure_room_server(token) do
-      RoomServer.set_participant_screen_share(token, actor, participant_id, true)
-    end
+    set_participant_media(token, actor, participant_id, :screen_share, true)
   end
 
   @spec mute_all_participants(String.t(), actor()) :: {:ok, map()} | {:error, term()}
   def mute_all_participants(token, actor) do
-    with {:ok, _pid} <- ensure_room_server(token) do
-      RoomServer.set_all_participants_media(token, actor, :audio, false)
-    end
+    set_all_participants_media(token, actor, :audio, false)
   end
 
   @spec block_all_participant_videos(String.t(), actor()) :: {:ok, map()} | {:error, term()}
   def block_all_participant_videos(token, actor) do
-    with {:ok, _pid} <- ensure_room_server(token) do
-      RoomServer.set_all_participants_media(token, actor, :video, false)
-    end
+    set_all_participants_media(token, actor, :video, false)
   end
 
   @spec lock_call(String.t(), actor()) :: {:ok, map()} | {:error, term()}
   def lock_call(token, actor) do
-    with {:ok, _pid} <- ensure_room_server(token) do
-      RoomServer.set_locked(token, actor, true)
-    end
+    set_call_lock(token, actor, true)
   end
 
   @spec unlock_call(String.t(), actor()) :: {:ok, map()} | {:error, term()}
   def unlock_call(token, actor) do
-    with {:ok, _pid} <- ensure_room_server(token) do
-      RoomServer.set_locked(token, actor, false)
-    end
+    set_call_lock(token, actor, false)
   end
 
   @spec set_hand_raised(String.t(), actor(), integer(), boolean()) ::
           {:ok, Participant.t()} | {:error, term()}
   def set_hand_raised(token, actor, participant_id, raised?) do
-    with {:ok, _pid} <- ensure_room_server(token) do
-      RoomServer.set_hand_raised(token, actor, participant_id, raised?)
-    end
+    observe_group_call(
+      [:moderation, :hand_raise],
+      %{
+        "group_call.participant.id" => participant_id,
+        enabled: raised?
+      },
+      fn ->
+        with {:ok, _pid} <- ensure_room_server(token) do
+          RoomServer.set_hand_raised(token, actor, participant_id, raised?)
+        end
+      end
+    )
   end
 
   @spec allow_participant_speak(String.t(), actor(), integer()) ::
           {:ok, Participant.t()} | {:error, term()}
   def allow_participant_speak(token, actor, participant_id) do
-    with {:ok, _pid} <- ensure_room_server(token) do
-      RoomServer.allow_participant_speak(token, actor, participant_id)
-    end
+    observe_group_call(
+      [:moderation, :allow_speak],
+      %{
+        "group_call.participant.id" => participant_id
+      },
+      fn ->
+        with {:ok, _pid} <- ensure_room_server(token) do
+          RoomServer.allow_participant_speak(token, actor, participant_id)
+        end
+      end
+    )
   end
 
   @spec send_reaction(String.t(), actor(), integer(), String.t()) ::
           {:ok, map()} | {:error, term()}
   def send_reaction(token, actor, participant_id, reaction) do
-    with {:ok, _pid} <- ensure_room_server(token),
-         :ok <- RateLimiter.check_reaction_rate(token, actor.user_id) do
-      RoomServer.send_reaction(token, actor, participant_id, reaction)
-    end
+    observe_group_call(
+      [:reaction, :send],
+      %{
+        "group_call.participant.id" => participant_id,
+        reaction: normalize_reason(reaction)
+      },
+      fn ->
+        with {:ok, _pid} <- ensure_room_server(token),
+             :ok <- RateLimiter.check_reaction_rate(token, actor.user_id) do
+          RoomServer.send_reaction(token, actor, participant_id, reaction)
+        end
+      end
+    )
   end
 
   @spec get_summary(String.t()) :: {:ok, map()} | {:error, :not_found}
@@ -354,6 +422,78 @@ defmodule RetroHexChat.GroupCall do
           {:ok, Track.t()} | {:error, Ecto.Changeset.t()}
   defdelegate update_track_status(track, new_status, extra_attrs \\ %{}), to: Queries
 
+  defp set_participant_media(token, actor, participant_id, kind, enabled?) do
+    observe_group_call(
+      [:moderation, :participant_media],
+      %{
+        "group_call.participant.id" => participant_id,
+        media_kind: kind,
+        enabled: enabled?
+      },
+      fn ->
+        with {:ok, _pid} <- ensure_room_server(token) do
+          update_participant_media(token, actor, participant_id, kind, enabled?)
+        end
+      end
+    )
+  end
+
+  defp update_participant_media(token, actor, participant_id, :audio, enabled?) do
+    RoomServer.set_participant_audio(token, actor, participant_id, enabled?)
+  end
+
+  defp update_participant_media(token, actor, participant_id, :video, enabled?) do
+    RoomServer.set_participant_video(token, actor, participant_id, enabled?)
+  end
+
+  defp update_participant_media(token, actor, participant_id, :screen_share, enabled?) do
+    RoomServer.set_participant_screen_share(token, actor, participant_id, enabled?)
+  end
+
+  defp set_all_participants_media(token, actor, kind, enabled?) do
+    observe_group_call(
+      [:moderation, :all_participant_media],
+      %{
+        media_kind: kind,
+        enabled: enabled?
+      },
+      fn ->
+        with {:ok, _pid} <- ensure_room_server(token) do
+          RoomServer.set_all_participants_media(token, actor, kind, enabled?)
+        end
+      end
+    )
+  end
+
+  defp set_call_lock(token, actor, locked?) do
+    observe_group_call([:moderation, :lock], %{enabled: locked?}, fn ->
+      with {:ok, _pid} <- ensure_room_server(token) do
+        RoomServer.set_locked(token, actor, locked?)
+      end
+    end)
+  end
+
+  defp observe_group_call(operation, metadata, fun) when is_list(operation) do
+    Observability.span([:retro_hex_chat, :group_call] ++ operation, metadata, fun)
+  end
+
+  defp media_metadata(media) when is_map(media) do
+    %{
+      audio: truthy?(Map.get(media, "audio") || Map.get(media, :audio)),
+      video: truthy?(Map.get(media, "video") || Map.get(media, :video)),
+      screen: truthy?(Map.get(media, "screen") || Map.get(media, :screen))
+    }
+  end
+
+  defp media_metadata(_media), do: %{}
+
+  defp truthy?(value) when value in [true, "true", 1, "1"], do: true
+  defp truthy?(_value), do: false
+
+  defp normalize_reason(reason) when is_atom(reason), do: Atom.to_string(reason)
+  defp normalize_reason(reason) when is_binary(reason), do: String.slice(reason, 0, 40)
+  defp normalize_reason(_reason), do: "unknown"
+
   defp persisted_server_stats(room, participants, tracks) do
     %{
       updated_at_ms: System.os_time(:millisecond),
@@ -429,14 +569,20 @@ defmodule RetroHexChat.GroupCall do
   end
 
   defp broadcast_channel_call_started(room) do
-    Phoenix.PubSub.broadcast(@pubsub, "channel:#{room.channel_name}", {
-      :group_call_started,
-      %{
-        channel: room.channel_name,
-        token: room.token,
-        event: Audit.last_event(room.metadata)
-      }
-    })
+    Observability.span(
+      [:retro_hex_chat, :group_call, :broadcast],
+      %{"chat.channel" => room.channel_name, event: "group_call_started"},
+      fn ->
+        Phoenix.PubSub.broadcast(@pubsub, "channel:#{room.channel_name}", {
+          :group_call_started,
+          %{
+            channel: room.channel_name,
+            token: room.token,
+            event: Audit.last_event(room.metadata)
+          }
+        })
+      end
+    )
   end
 
   defp membership_from_channel_state(%{members: members}) do

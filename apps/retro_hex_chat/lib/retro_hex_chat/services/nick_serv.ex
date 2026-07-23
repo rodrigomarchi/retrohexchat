@@ -20,6 +20,7 @@ defmodule RetroHexChat.Services.NickServ do
 
   require Logger
 
+  alias RetroHexChat.Observability
   alias RetroHexChat.Services.Queries
   alias RetroHexChat.Services.RegisteredNick
 
@@ -39,6 +40,14 @@ defmodule RetroHexChat.Services.NickServ do
   @spec register(String.t(), String.t(), GenServer.server()) ::
           {:ok, String.t()} | {:error, String.t()}
   def register(nickname, password, server \\ __MODULE__) do
+    Observability.span(
+      [:retro_hex_chat, :accounts, :nickserv, :register],
+      %{},
+      fn -> do_register(nickname, password, server) end
+    )
+  end
+
+  defp do_register(nickname, password, server) do
     if Queries.get_setting("registration") == "closed" do
       {:error,
        dgettext("services", "Registration is currently closed by the server administrator")}
@@ -63,6 +72,14 @@ defmodule RetroHexChat.Services.NickServ do
   @spec identify(String.t(), String.t(), GenServer.server()) ::
           {:ok, String.t()} | {:error, String.t()}
   def identify(nickname, password, server \\ __MODULE__) do
+    Observability.span(
+      [:retro_hex_chat, :accounts, :nickserv, :identify],
+      %{},
+      fn -> do_identify(nickname, password, server) end
+    )
+  end
+
+  defp do_identify(nickname, password, server) do
     case Queries.find_by_nickname(nickname) do
       nil ->
         # Equalize timing so an unregistered nick can't be told apart from a
@@ -110,6 +127,14 @@ defmodule RetroHexChat.Services.NickServ do
   @spec ghost(String.t(), String.t(), String.t(), GenServer.server()) ::
           {:ok, String.t()} | {:error, String.t()}
   def ghost(target_nick, password, requester_nick, _server \\ __MODULE__) do
+    Observability.span(
+      [:retro_hex_chat, :accounts, :nickserv, :ghost],
+      %{},
+      fn -> do_ghost(target_nick, password, requester_nick) end
+    )
+  end
+
+  defp do_ghost(target_nick, password, requester_nick) do
     case Queries.find_by_nickname(target_nick) do
       nil ->
         {:error,
@@ -132,6 +157,14 @@ defmodule RetroHexChat.Services.NickServ do
   @spec drop(String.t(), String.t(), GenServer.server()) ::
           {:ok, String.t()} | {:error, String.t()}
   def drop(nickname, password, server \\ __MODULE__) do
+    Observability.span(
+      [:retro_hex_chat, :accounts, :nickserv, :drop],
+      %{},
+      fn -> do_drop(nickname, password, server) end
+    )
+  end
+
+  defp do_drop(nickname, password, server) do
     case Queries.find_by_nickname(nickname) do
       nil ->
         {:error,
@@ -151,6 +184,14 @@ defmodule RetroHexChat.Services.NickServ do
   @spec admin_drop(String.t(), GenServer.server()) ::
           {:ok, String.t()} | {:error, String.t()}
   def admin_drop(nickname, server \\ __MODULE__) do
+    Observability.span(
+      [:retro_hex_chat, :accounts, :nickserv, :admin_drop],
+      %{},
+      fn -> do_admin_drop(nickname, server) end
+    )
+  end
+
+  defp do_admin_drop(nickname, server) do
     case Queries.find_by_nickname(nickname) do
       nil ->
         {:error,
@@ -168,6 +209,14 @@ defmodule RetroHexChat.Services.NickServ do
   @spec admin_reset_password(String.t(), String.t(), GenServer.server()) ::
           {:ok, String.t()} | {:error, String.t()}
   def admin_reset_password(nickname, new_password, _server \\ __MODULE__) do
+    Observability.span(
+      [:retro_hex_chat, :accounts, :nickserv, :admin_reset_password],
+      %{},
+      fn -> do_admin_reset_password(nickname, new_password) end
+    )
+  end
+
+  defp do_admin_reset_password(nickname, new_password) do
     case Queries.find_by_nickname(nickname) do
       nil ->
         {:error,

@@ -68,6 +68,7 @@ defmodule RetroHexChat.MixProject do
       {:ex_stun, "~> 0.2.0"},
       {:ex_webrtc, "~> 0.17.0"},
       {:ecto_psql_extras, "~> 0.8"},
+      {:opentelemetry, "~> 1.7"},
       {:prom_ex, "~> 1.11"},
       {:tz, "~> 0.28"},
 

@@ -14,6 +14,7 @@ defmodule RetroHexChat.PromEx do
   @spec plugins() :: [module() | {module(), keyword()}]
   def plugins do
     [
+      RetroHexChat.PromEx.Plugins.Domain,
       {PromEx.Plugins.Ecto, repos: [RetroHexChat.Repo], metric_prefix: @ecto_metric_prefix}
     ]
   end

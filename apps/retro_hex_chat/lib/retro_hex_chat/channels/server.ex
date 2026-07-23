@@ -15,6 +15,7 @@ defmodule RetroHexChat.Channels.Server do
   alias RetroHexChat.Channels.{Events, Masks, Membership, Modes, Policy, Queries, Registry}
   alias RetroHexChat.Chat
   alias RetroHexChat.Chat.Formatter
+  alias RetroHexChat.Observability
   alias RetroHexChat.Services.ChanServ
   alias RetroHexChat.Services.Queries, as: ServiceQueries
 
@@ -54,7 +55,12 @@ defmodule RetroHexChat.Channels.Server do
   def join(channel_name, nickname, password \\ nil, opts \\ []) do
     identified = Keyword.get(opts, :identified, false)
     bot = Keyword.get(opts, :bot, false)
-    GenServer.call(via(channel_name), {:join, nickname, password, identified, bot})
+
+    Observability.span(
+      [:retro_hex_chat, :channels, :membership, :join],
+      %{"chat.channel" => channel_name, identified: identified, bot: bot},
+      fn -> GenServer.call(via(channel_name), {:join, nickname, password, identified, bot}) end
+    )
   end
 
   @doc """
@@ -63,12 +69,20 @@ defmodule RetroHexChat.Channels.Server do
   """
   @spec part(String.t(), String.t(), String.t() | nil) :: :ok | {:error, String.t()}
   def part(channel_name, nickname, reason \\ nil) do
-    case Registry.lookup(channel_name) do
-      {:ok, pid} -> GenServer.call(pid, {:part, nickname, reason})
-      {:error, :not_found} -> {:error, dgettext("channels", "Channel not found")}
-    end
-  catch
-    :exit, _reason -> {:error, dgettext("channels", "Channel not found")}
+    Observability.span(
+      [:retro_hex_chat, :channels, :membership, :part],
+      %{"chat.channel" => channel_name, has_reason: is_binary(reason) and reason != ""},
+      fn ->
+        try do
+          case Registry.lookup(channel_name) do
+            {:ok, pid} -> GenServer.call(pid, {:part, nickname, reason})
+            {:error, :not_found} -> {:error, dgettext("channels", "Channel not found")}
+          end
+        catch
+          :exit, _reason -> {:error, dgettext("channels", "Channel not found")}
+        end
+      end
+    )
   end
 
   @doc """
@@ -88,7 +102,11 @@ defmodule RetroHexChat.Channels.Server do
         {type_or_opts, []}
       end
 
-    GenServer.call(via(channel_name), {:send_message, nickname, content, type, opts})
+    Observability.span(
+      [:retro_hex_chat, :chat, :message, :send],
+      message_metadata(type, content, opts, %{"chat.channel" => channel_name}),
+      fn -> GenServer.call(via(channel_name), {:send_message, nickname, content, type, opts}) end
+    )
   end
 
   @doc """
@@ -108,7 +126,15 @@ defmodule RetroHexChat.Channels.Server do
   @spec set_mode(String.t(), String.t(), String.t(), [String.t()]) ::
           :ok | {:error, String.t()}
   def set_mode(channel_name, nickname, mode_string, params \\ []) do
-    GenServer.call(via(channel_name), {:set_mode, nickname, mode_string, params})
+    Observability.span(
+      [:retro_hex_chat, :channels, :mode, :set],
+      %{
+        "chat.channel" => channel_name,
+        "irc.mode" => mode_string,
+        parameter_count: length(params)
+      },
+      fn -> GenServer.call(via(channel_name), {:set_mode, nickname, mode_string, params}) end
+    )
   end
 
   @doc """
@@ -117,7 +143,11 @@ defmodule RetroHexChat.Channels.Server do
   @spec kick(String.t(), String.t(), String.t(), String.t() | nil) ::
           :ok | {:error, String.t()}
   def kick(channel_name, operator_nick, target_nick, reason \\ nil) do
-    GenServer.call(via(channel_name), {:kick, operator_nick, target_nick, reason})
+    Observability.span(
+      [:retro_hex_chat, :channels, :moderation, :kick],
+      %{"chat.channel" => channel_name, has_reason: is_binary(reason) and reason != ""},
+      fn -> GenServer.call(via(channel_name), {:kick, operator_nick, target_nick, reason}) end
+    )
   end
 
   @doc """
@@ -126,7 +156,11 @@ defmodule RetroHexChat.Channels.Server do
   @spec ban(String.t(), String.t(), String.t(), String.t() | nil) ::
           :ok | {:error, String.t()}
   def ban(channel_name, operator_nick, target_nick, reason \\ nil) do
-    GenServer.call(via(channel_name), {:ban, operator_nick, target_nick, reason})
+    Observability.span(
+      [:retro_hex_chat, :channels, :moderation, :ban],
+      %{"chat.channel" => channel_name, has_reason: is_binary(reason) and reason != ""},
+      fn -> GenServer.call(via(channel_name), {:ban, operator_nick, target_nick, reason}) end
+    )
   end
 
   @doc """
@@ -142,7 +176,11 @@ defmodule RetroHexChat.Channels.Server do
   """
   @spec set_topic(String.t(), String.t(), String.t()) :: :ok | {:error, String.t()}
   def set_topic(channel_name, nickname, topic) do
-    GenServer.call(via(channel_name), {:set_topic, nickname, topic})
+    Observability.span(
+      [:retro_hex_chat, :channels, :topic, :set],
+      %{"chat.channel" => channel_name, topic_size_bytes: byte_size(topic)},
+      fn -> GenServer.call(via(channel_name), {:set_topic, nickname, topic}) end
+    )
   end
 
   @doc "Add a ban exception. Requires operator privilege."
@@ -323,40 +361,11 @@ defmodule RetroHexChat.Channels.Server do
   end
 
   def handle_call({:send_message, nickname, content, type, opts}, _from, state) do
-    with :ok <- RetroHexChat.Chat.Policy.validate_content(content),
-         :ok <- Policy.can_speak?(state.modes, state.membership, nickname),
-         :ok <- check_channel_mute(state, nickname) do
-      final_content =
-        if Modes.strip_colors?(state.modes) do
-          Formatter.strip(content)
-        else
-          content
-        end
-
-      reply_to_id = Keyword.get(opts, :reply_to_id)
-
-      {msg, id, timestamp} =
-        persist_and_get_id(state.name, nickname, final_content, type, reply_to_id)
-
-      payload = %{
-        id: id,
-        channel: state.name,
-        author: nickname,
-        content: final_content,
-        type: type,
-        timestamp: timestamp,
-        reply_to_id: msg && msg.reply_to_id,
-        reply_to_author: msg && msg.reply_to_author,
-        reply_to_preview: msg && msg.reply_to_preview
-      }
-
-      broadcast(state.name, %{event: "new_message", payload: payload})
-
-      {:reply, {:ok, id}, maybe_touch_activity(state)}
-    else
-      {:error, _} = err ->
-        {:reply, err, state}
-    end
+    Observability.span(
+      [:retro_hex_chat, :chat, :message, :handle],
+      message_metadata(type, content, opts, %{"chat.channel" => state.name}),
+      fn -> do_handle_send_message(nickname, content, type, opts, state) end
+    )
   end
 
   # Backward compat: old 4-element tuple without opts
@@ -783,6 +792,48 @@ defmodule RetroHexChat.Channels.Server do
   # Private Helpers
   # ──────────────────────────────────────────────────────────────
 
+  defp do_handle_send_message(nickname, content, type, opts, state) do
+    with :ok <- RetroHexChat.Chat.Policy.validate_content(content),
+         :ok <- Policy.can_speak?(state.modes, state.membership, nickname),
+         :ok <- check_channel_mute(state, nickname) do
+      final_content =
+        if Modes.strip_colors?(state.modes) do
+          Formatter.strip(content)
+        else
+          content
+        end
+
+      reply_to_id = Keyword.get(opts, :reply_to_id)
+
+      {msg, id, timestamp} =
+        persist_and_get_id(state.name, nickname, final_content, type, reply_to_id)
+
+      Observability.set_current_span_attributes(%{
+        "chat.message.id" => id,
+        "chat.message.persisted" => not is_nil(msg)
+      })
+
+      payload = %{
+        id: id,
+        channel: state.name,
+        author: nickname,
+        content: final_content,
+        type: type,
+        timestamp: timestamp,
+        reply_to_id: msg && msg.reply_to_id,
+        reply_to_author: msg && msg.reply_to_author,
+        reply_to_preview: msg && msg.reply_to_preview
+      }
+
+      broadcast(state.name, %{event: "new_message", payload: payload})
+
+      {:reply, {:ok, id}, maybe_touch_activity(state)}
+    else
+      {:error, _} = err ->
+        {:reply, err, state}
+    end
+  end
+
   defp extract_ban_operations(mode_string, params) do
     case String.split(mode_string, "", trim: true) do
       [sign | flags] when sign in ["+", "-"] ->
@@ -977,14 +1028,60 @@ defmodule RetroHexChat.Channels.Server do
   defp via(channel_name), do: Registry.via_tuple(channel_name)
 
   defp broadcast(channel_name, message) do
-    case Phoenix.PubSub.broadcast(@pubsub, "channel:#{channel_name}", message) do
-      :ok ->
-        :ok
+    {event, metadata} = broadcast_observability(channel_name, message)
 
-      {:error, reason} ->
-        Logger.warning("PubSub broadcast to channel:#{channel_name} failed: #{inspect(reason)}")
-    end
+    Observability.span(event, metadata, fn ->
+      case Phoenix.PubSub.broadcast(@pubsub, "channel:#{channel_name}", message) do
+        :ok ->
+          :ok
+
+        {:error, reason} ->
+          Logger.warning("PubSub broadcast to channel:#{channel_name} failed: #{inspect(reason)}")
+          {:error, reason}
+      end
+    end)
   end
+
+  defp message_metadata(type, content, opts, extra) do
+    Map.merge(
+      %{
+        conversation_type: "channel",
+        message_type: normalize_message_type(type),
+        message_size_bytes: byte_size(content),
+        has_reply: Keyword.has_key?(opts, :reply_to_id)
+      },
+      extra
+    )
+  end
+
+  defp broadcast_observability(
+         channel_name,
+         %{event: "new_message", payload: %{id: id, type: type}} = message
+       ) do
+    {[:retro_hex_chat, :chat, :message, :broadcast],
+     %{
+       "chat.channel" => channel_name,
+       "chat.message.id" => id,
+       conversation_type: "channel",
+       message_type: normalize_message_type(type),
+       event: Map.get(message, :event, "new_message")
+     }}
+  end
+
+  defp broadcast_observability(channel_name, message) do
+    {[:retro_hex_chat, :channels, :broadcast],
+     %{
+       "chat.channel" => channel_name,
+       event: channel_event_name(message)
+     }}
+  end
+
+  defp channel_event_name(%{event: event}) when is_binary(event), do: event
+  defp channel_event_name({event, _payload}) when is_atom(event), do: Atom.to_string(event)
+
+  defp normalize_message_type(type) when is_atom(type), do: Atom.to_string(type)
+  defp normalize_message_type(type) when is_binary(type), do: type
+  defp normalize_message_type(_type), do: "unknown"
 
   defp state_to_map(state) do
     %{

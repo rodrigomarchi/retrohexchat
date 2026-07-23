@@ -7,6 +7,7 @@ defmodule RetroHexChat.VirtualSpace do
   `RetroHexChat.VirtualSpace.*`.
   """
 
+  alias RetroHexChat.Observability
   alias RetroHexChat.VirtualSpace.ChannelSpaceServer
   alias RetroHexChat.VirtualSpace.DirectMessageSpace
   alias RetroHexChat.VirtualSpace.Map, as: SpaceMap
@@ -16,9 +17,18 @@ defmodule RetroHexChat.VirtualSpace do
           {:ok, %{participant: ChannelSpaceServer.participant(), snapshot: map(), map: map()}}
           | {:error, atom()}
   def join_channel_space(channel_name, actor) do
-    with :ok <- ensure_channel_space_process(channel_name) do
-      ChannelSpaceServer.join(channel_name, %{user_id: actor.user_id, nickname: actor.nickname})
-    end
+    Observability.span(
+      [:retro_hex_chat, :virtual_space, :join],
+      %{"chat.channel" => channel_name, space_kind: "channel"},
+      fn ->
+        with :ok <- ensure_channel_space_process(channel_name) do
+          ChannelSpaceServer.join(channel_name, %{
+            user_id: actor.user_id,
+            nickname: actor.nickname
+          })
+        end
+      end
+    )
   end
 
   @spec join_direct_message_space(String.t(), %{user_id: integer() | nil, nickname: String.t()}, [
@@ -27,37 +37,79 @@ defmodule RetroHexChat.VirtualSpace do
           {:ok, %{participant: ChannelSpaceServer.participant(), snapshot: map(), map: map()}}
           | {:error, atom()}
   def join_direct_message_space(space_id, actor, participants) do
-    with :ok <- ensure_direct_message_space_process(space_id, participants) do
-      ChannelSpaceServer.join_direct_message(space_id, %{
-        user_id: actor.user_id,
-        nickname: actor.nickname
-      })
-    end
+    Observability.span(
+      [:retro_hex_chat, :virtual_space, :join],
+      %{space_kind: "direct_message"},
+      fn ->
+        with :ok <- ensure_direct_message_space_process(space_id, participants) do
+          ChannelSpaceServer.join_direct_message(space_id, %{
+            user_id: actor.user_id,
+            nickname: actor.nickname
+          })
+        end
+      end
+    )
   end
 
   @spec input(String.t(), String.t(), ChannelSpaceServer.input_payload()) ::
           :ok | {:error, ChannelSpaceServer.input_error()}
-  defdelegate input(channel_name, participant_key, payload), to: ChannelSpaceServer
+  def input(channel_name, participant_key, payload) do
+    Observability.span(
+      [:retro_hex_chat, :virtual_space, :input],
+      %{"chat.channel" => channel_name, space_kind: "channel"},
+      fn -> ChannelSpaceServer.input(channel_name, participant_key, payload) end
+    )
+  end
 
   @spec input_direct_message(String.t(), String.t(), ChannelSpaceServer.input_payload()) ::
           :ok | {:error, ChannelSpaceServer.input_error()}
-  defdelegate input_direct_message(space_id, participant_key, payload), to: ChannelSpaceServer
+  def input_direct_message(space_id, participant_key, payload) do
+    Observability.span(
+      [:retro_hex_chat, :virtual_space, :input],
+      %{space_kind: "direct_message"},
+      fn -> ChannelSpaceServer.input_direct_message(space_id, participant_key, payload) end
+    )
+  end
 
   @spec interact(String.t(), String.t(), ChannelSpaceServer.interact_payload()) ::
           :ok | {:ok, %{modal: map()}} | {:error, atom()}
-  defdelegate interact(channel_name, participant_key, payload), to: ChannelSpaceServer
+  def interact(channel_name, participant_key, payload) do
+    Observability.span(
+      [:retro_hex_chat, :virtual_space, :interact],
+      %{"chat.channel" => channel_name, space_kind: "channel"},
+      fn -> ChannelSpaceServer.interact(channel_name, participant_key, payload) end
+    )
+  end
 
   @spec interact_direct_message(String.t(), String.t(), ChannelSpaceServer.interact_payload()) ::
           :ok | {:ok, %{modal: map()}} | {:error, atom()}
-  defdelegate interact_direct_message(space_id, participant_key, payload), to: ChannelSpaceServer
+  def interact_direct_message(space_id, participant_key, payload) do
+    Observability.span(
+      [:retro_hex_chat, :virtual_space, :interact],
+      %{space_kind: "direct_message"},
+      fn -> ChannelSpaceServer.interact_direct_message(space_id, participant_key, payload) end
+    )
+  end
 
   @spec action(String.t(), String.t(), ChannelSpaceServer.action_payload()) ::
           :ok | {:error, atom()}
-  defdelegate action(channel_name, participant_key, payload), to: ChannelSpaceServer
+  def action(channel_name, participant_key, payload) do
+    Observability.span(
+      [:retro_hex_chat, :virtual_space, :action],
+      %{"chat.channel" => channel_name, space_kind: "channel"},
+      fn -> ChannelSpaceServer.action(channel_name, participant_key, payload) end
+    )
+  end
 
   @spec action_direct_message(String.t(), String.t(), ChannelSpaceServer.action_payload()) ::
           :ok | {:error, atom()}
-  defdelegate action_direct_message(space_id, participant_key, payload), to: ChannelSpaceServer
+  def action_direct_message(space_id, participant_key, payload) do
+    Observability.span(
+      [:retro_hex_chat, :virtual_space, :action],
+      %{space_kind: "direct_message"},
+      fn -> ChannelSpaceServer.action_direct_message(space_id, participant_key, payload) end
+    )
+  end
 
   @spec avatars() :: [String.t()]
   defdelegate avatars(), to: ChannelSpaceServer
@@ -66,12 +118,23 @@ defmodule RetroHexChat.VirtualSpace do
   defdelegate step_ms(), to: ChannelSpaceServer
 
   @spec select_avatar(String.t(), String.t(), String.t()) :: :ok | {:error, atom()}
-  defdelegate select_avatar(channel_name, participant_key, avatar), to: ChannelSpaceServer
+  def select_avatar(channel_name, participant_key, avatar) do
+    Observability.span(
+      [:retro_hex_chat, :virtual_space, :avatar, :select],
+      %{"chat.channel" => channel_name, space_kind: "channel", avatar: avatar},
+      fn -> ChannelSpaceServer.select_avatar(channel_name, participant_key, avatar) end
+    )
+  end
 
   @spec select_avatar_direct_message(String.t(), String.t(), String.t()) ::
           :ok | {:error, atom()}
-  defdelegate select_avatar_direct_message(space_id, participant_key, avatar),
-    to: ChannelSpaceServer
+  def select_avatar_direct_message(space_id, participant_key, avatar) do
+    Observability.span(
+      [:retro_hex_chat, :virtual_space, :avatar, :select],
+      %{space_kind: "direct_message", avatar: avatar},
+      fn -> ChannelSpaceServer.select_avatar_direct_message(space_id, participant_key, avatar) end
+    )
+  end
 
   @spec leave_channel_space_viewer(String.t()) :: :ok
   defdelegate leave_channel_space_viewer(channel_name),

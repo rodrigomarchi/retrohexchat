@@ -5,6 +5,7 @@ defmodule RetroHexChat.Services.ChanServ do
 
   require Logger
 
+  alias RetroHexChat.Observability
   alias RetroHexChat.Services.NickServ
   alias RetroHexChat.Services.Queries
 
@@ -23,13 +24,21 @@ defmodule RetroHexChat.Services.ChanServ do
   @spec register(String.t(), String.t(), GenServer.server()) ::
           {:ok, String.t()} | {:error, String.t()}
   def register(channel_name, founder_nick, server \\ __MODULE__) do
-    GenServer.call(server, {:register, channel_name, founder_nick})
+    Observability.span(
+      [:retro_hex_chat, :channels, :registration, :register],
+      %{"chat.channel" => channel_name},
+      fn -> GenServer.call(server, {:register, channel_name, founder_nick}) end
+    )
   end
 
   @spec drop(String.t(), String.t(), GenServer.server()) ::
           {:ok, String.t()} | {:error, String.t()}
   def drop(channel_name, nickname, server \\ __MODULE__) do
-    GenServer.call(server, {:drop, channel_name, nickname})
+    Observability.span(
+      [:retro_hex_chat, :channels, :registration, :drop],
+      %{"chat.channel" => channel_name},
+      fn -> GenServer.call(server, {:drop, channel_name, nickname}) end
+    )
   end
 
   @spec info(String.t(), GenServer.server()) :: {:ok, map()} | {:error, String.t()}
@@ -101,22 +110,36 @@ defmodule RetroHexChat.Services.ChanServ do
         requester_nick,
         server \\ __MODULE__
       ) do
-    GenServer.call(
-      server,
-      {:manage_access, channel_name, action, level, target_nick, requester_nick}
+    Observability.span(
+      [:retro_hex_chat, :channels, :access, :manage],
+      %{"chat.channel" => channel_name, action: action, access_level: level},
+      fn ->
+        GenServer.call(
+          server,
+          {:manage_access, channel_name, action, level, target_nick, requester_nick}
+        )
+      end
     )
   end
 
   @spec admin_drop(String.t(), GenServer.server()) ::
           {:ok, String.t()} | {:error, String.t()}
   def admin_drop(channel_name, server \\ __MODULE__) do
-    GenServer.call(server, {:admin_drop, channel_name})
+    Observability.span(
+      [:retro_hex_chat, :channels, :registration, :admin_drop],
+      %{"chat.channel" => channel_name},
+      fn -> GenServer.call(server, {:admin_drop, channel_name}) end
+    )
   end
 
   @spec admin_transfer(String.t(), String.t(), GenServer.server()) ::
           {:ok, String.t()} | {:error, String.t()}
   def admin_transfer(channel_name, new_founder, server \\ __MODULE__) do
-    GenServer.call(server, {:admin_transfer, channel_name, new_founder})
+    Observability.span(
+      [:retro_hex_chat, :channels, :registration, :admin_transfer],
+      %{"chat.channel" => channel_name},
+      fn -> GenServer.call(server, {:admin_transfer, channel_name, new_founder}) end
+    )
   end
 
   @spec admin_manage_access(
@@ -128,7 +151,13 @@ defmodule RetroHexChat.Services.ChanServ do
         ) ::
           {:ok, String.t()} | {:error, String.t()}
   def admin_manage_access(channel_name, action, level, target_nick, server \\ __MODULE__) do
-    GenServer.call(server, {:admin_manage_access, channel_name, action, level, target_nick})
+    Observability.span(
+      [:retro_hex_chat, :channels, :access, :admin_manage],
+      %{"chat.channel" => channel_name, action: action, access_level: level},
+      fn ->
+        GenServer.call(server, {:admin_manage_access, channel_name, action, level, target_nick})
+      end
+    )
   end
 
   # ── GenServer callbacks ─────────────────────────────────────

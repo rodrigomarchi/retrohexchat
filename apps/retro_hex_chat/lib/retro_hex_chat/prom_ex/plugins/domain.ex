@@ -1,0 +1,156 @@
+defmodule RetroHexChat.PromEx.Plugins.Domain do
+  @moduledoc """
+  PromEx metrics for RetroHexChat product/domain telemetry.
+  """
+
+  use PromEx.Plugin
+
+  @generic_stop [:retro_hex_chat, :observability, :operation, :stop]
+  @generic_exception [:retro_hex_chat, :observability, :operation, :exception]
+  @chat_send_stop [:retro_hex_chat, :chat, :message, :send, :stop]
+  @chat_receive_stop [:retro_hex_chat, :chat, :message, :receive, :stop]
+  @chat_broadcast_stop [:retro_hex_chat, :chat, :message, :broadcast, :stop]
+  @command_dispatch_stop [:retro_hex_chat, :commands, :dispatch, :stop]
+
+  @impl true
+  def event_metrics(opts) do
+    metric_prefix = Keyword.get(opts, :metric_prefix, [:retro_hex_chat, :domain])
+
+    Event.build(
+      :retro_hex_chat_domain_event_metrics,
+      [
+        counter(
+          metric_prefix ++ [:operations, :total],
+          event_name: @generic_stop,
+          description: "Total number of instrumented domain operations.",
+          tag_values: &operation_tags/1,
+          tags: [:context, :operation, :result]
+        ),
+        distribution(
+          metric_prefix ++ [:operation, :duration, :milliseconds],
+          event_name: @generic_stop,
+          measurement: :duration,
+          description: "Duration of instrumented domain operations.",
+          reporter_options: [buckets: duration_buckets()],
+          tag_values: &operation_tags/1,
+          tags: [:context, :operation, :result],
+          unit: {:native, :millisecond}
+        ),
+        counter(
+          metric_prefix ++ [:operation, :exceptions, :total],
+          event_name: @generic_exception,
+          description: "Total number of exceptions in instrumented domain operations.",
+          tag_values: &exception_tags/1,
+          tags: [:context, :operation, :kind]
+        ),
+        distribution(
+          metric_prefix ++ [:chat, :message, :send, :duration, :milliseconds],
+          event_name: @chat_send_stop,
+          measurement: :duration,
+          description: "Chat message send duration.",
+          reporter_options: [buckets: duration_buckets()],
+          tag_values: &message_tags/1,
+          tags: [:conversation_type, :message_type, :result],
+          unit: {:native, :millisecond}
+        ),
+        distribution(
+          metric_prefix ++ [:chat, :message, :receive, :duration, :milliseconds],
+          event_name: @chat_receive_stop,
+          measurement: :duration,
+          description: "LiveView PubSub message receive/render preparation duration.",
+          reporter_options: [buckets: duration_buckets()],
+          tag_values: &receive_tags/1,
+          tags: [:conversation_type, :message_type, :active_context, :result],
+          unit: {:native, :millisecond}
+        ),
+        distribution(
+          metric_prefix ++ [:chat, :message, :broadcast, :duration, :milliseconds],
+          event_name: @chat_broadcast_stop,
+          measurement: :duration,
+          description: "Chat PubSub broadcast duration.",
+          reporter_options: [buckets: duration_buckets()],
+          tag_values: &broadcast_tags/1,
+          tags: [:conversation_type, :message_type, :event, :result],
+          unit: {:native, :millisecond}
+        ),
+        distribution(
+          metric_prefix ++ [:chat, :message, :size, :bytes],
+          event_name: @chat_send_stop,
+          measurement: fn _measurements, metadata -> Map.get(metadata, :message_size_bytes, 0) end,
+          description: "Chat message payload size in bytes.",
+          reporter_options: [buckets: [0, 64, 256, 1_024, 4_096, 16_384]],
+          tag_values: &message_tags/1,
+          tags: [:conversation_type, :message_type, :result],
+          unit: :byte
+        ),
+        distribution(
+          metric_prefix ++ [:commands, :dispatch, :duration, :milliseconds],
+          event_name: @command_dispatch_stop,
+          measurement: :duration,
+          description: "Command dispatch duration.",
+          reporter_options: [buckets: duration_buckets()],
+          tag_values: &command_tags/1,
+          tags: [:command, :result],
+          unit: {:native, :millisecond}
+        )
+      ]
+    )
+  end
+
+  defp operation_tags(metadata) do
+    %{
+      context: tag(metadata, :context),
+      operation: tag(metadata, :operation),
+      result: tag(metadata, :result, "ok")
+    }
+  end
+
+  defp exception_tags(metadata) do
+    metadata
+    |> operation_tags()
+    |> Map.put(:kind, tag(metadata, :kind, "error"))
+  end
+
+  defp message_tags(metadata) do
+    %{
+      conversation_type: tag(metadata, :conversation_type),
+      message_type: tag(metadata, :message_type),
+      result: tag(metadata, :result, "ok")
+    }
+  end
+
+  defp receive_tags(metadata) do
+    metadata
+    |> message_tags()
+    |> Map.put(:active_context, tag(metadata, :active_context, "unknown"))
+  end
+
+  defp broadcast_tags(metadata) do
+    metadata
+    |> message_tags()
+    |> Map.put(:event, tag(metadata, :event, "unknown"))
+  end
+
+  defp command_tags(metadata) do
+    %{
+      command: tag(metadata, :command),
+      result: tag(metadata, :result, "ok")
+    }
+  end
+
+  defp tag(metadata, key, default \\ "unknown") do
+    case Map.get(metadata, key, default) do
+      nil -> default
+      "" -> default
+      value when is_atom(value) -> Atom.to_string(value)
+      value when is_binary(value) -> value
+      value when is_boolean(value) -> to_string(value)
+      value when is_integer(value) -> Integer.to_string(value)
+      _value -> default
+    end
+  end
+
+  defp duration_buckets do
+    [1, 5, 10, 25, 50, 100, 250, 500, 1_000, 2_500, 5_000, 10_000, 30_000]
+  end
+end

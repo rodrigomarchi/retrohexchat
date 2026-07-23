@@ -31,6 +31,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
     UnreadTracker
   }
 
+  alias RetroHexChat.Observability
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
   alias RetroHexChatWeb.ChatLive.Helpers.Channel
   alias RetroHexChatWeb.ChatLive.Helpers.Messages, as: MessageHelpers
@@ -40,70 +41,19 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
   # ── Channel messages ──────────────────────────────────────
 
   def handle_info(%{event: "new_message", payload: payload}, socket) do
-    session = socket.assigns.session
-
-    msg_type =
-      case payload.type do
-        :action -> :action
-        :notice -> :notice
-        _ -> :message
-      end
-
-    if IgnoreList.ignored?(session.ignore_list, payload.author, msg_type) do
-      {:halt, socket}
-    else
-      socket = check_channel_duplicate(socket, payload)
-
-      if payload.type != :system and
-           DuplicateTracker.duplicate?(
-             socket.assigns.duplicate_tracker,
-             payload.author,
-             {:channel, payload.channel},
-             payload.content,
-             FloodProtection.get_spam_threshold(session.flood_protection),
-             FloodProtection.get_spam_window_seconds(session.flood_protection)
-           ) do
-        {:halt, socket}
-      else
-        socket = check_flood_and_auto_ignore(socket, payload.author, payload.type, session)
-        decorated = payload |> maybe_highlight(session) |> SessionCard.enrich()
-
-        socket =
-          socket
-          |> maybe_play_highlight_sound(decorated, session)
-          |> capture_urls(payload.content, payload.channel, :channel, payload.author)
-          |> maybe_push_highlight_tip(decorated)
-
-        {:halt, apply_new_message(socket, decorated, payload.channel, session)}
-      end
-    end
+    Observability.span(
+      [:retro_hex_chat, :chat, :message, :receive],
+      receive_metadata(:channel, payload, socket),
+      fn -> do_handle_new_message(payload, socket) end
+    )
   end
 
   def handle_info(%{event: "new_pm", payload: payload}, socket) do
-    session = socket.assigns.session
-    msg_type = private_ignore_type(payload.type)
-
-    if IgnoreList.ignored?(session.ignore_list, payload.sender, msg_type) do
-      {:halt, socket}
-    else
-      socket = check_pm_duplicate(socket, payload)
-
-      if DuplicateTracker.duplicate?(
-           socket.assigns.duplicate_tracker,
-           payload.sender,
-           {:pm, payload.sender},
-           payload.content,
-           FloodProtection.get_spam_threshold(session.flood_protection),
-           FloodProtection.get_spam_window_seconds(session.flood_protection)
-         ) do
-        {:halt, socket}
-      else
-        {:halt,
-         socket
-         |> push_event("tip_trigger", %{tip: "first_pm"})
-         |> apply_new_pm(payload, session)}
-      end
-    end
+    Observability.span(
+      [:retro_hex_chat, :chat, :message, :receive],
+      receive_metadata(:private, payload, socket),
+      fn -> do_handle_new_pm(payload, socket) end
+    )
   end
 
   # ── PM Typing PubSub Handlers ─────────────────────────────
@@ -252,6 +202,73 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
   def handle_info(_, socket), do: {:cont, socket}
 
   # ── Private helpers ───────────────────────────────────────
+
+  defp do_handle_new_message(payload, socket) do
+    session = socket.assigns.session
+
+    msg_type =
+      case payload.type do
+        :action -> :action
+        :notice -> :notice
+        _ -> :message
+      end
+
+    if IgnoreList.ignored?(session.ignore_list, payload.author, msg_type) do
+      {:halt, socket}
+    else
+      socket = check_channel_duplicate(socket, payload)
+
+      if payload.type != :system and
+           DuplicateTracker.duplicate?(
+             socket.assigns.duplicate_tracker,
+             payload.author,
+             {:channel, payload.channel},
+             payload.content,
+             FloodProtection.get_spam_threshold(session.flood_protection),
+             FloodProtection.get_spam_window_seconds(session.flood_protection)
+           ) do
+        {:halt, socket}
+      else
+        socket = check_flood_and_auto_ignore(socket, payload.author, payload.type, session)
+        decorated = payload |> maybe_highlight(session) |> SessionCard.enrich()
+
+        socket =
+          socket
+          |> maybe_play_highlight_sound(decorated, session)
+          |> capture_urls(payload.content, payload.channel, :channel, payload.author)
+          |> maybe_push_highlight_tip(decorated)
+
+        {:halt, apply_new_message(socket, decorated, payload.channel, session)}
+      end
+    end
+  end
+
+  defp do_handle_new_pm(payload, socket) do
+    session = socket.assigns.session
+    msg_type = private_ignore_type(payload.type)
+
+    if IgnoreList.ignored?(session.ignore_list, payload.sender, msg_type) do
+      {:halt, socket}
+    else
+      socket = check_pm_duplicate(socket, payload)
+
+      if DuplicateTracker.duplicate?(
+           socket.assigns.duplicate_tracker,
+           payload.sender,
+           {:pm, payload.sender},
+           payload.content,
+           FloodProtection.get_spam_threshold(session.flood_protection),
+           FloodProtection.get_spam_window_seconds(session.flood_protection)
+         ) do
+        {:halt, socket}
+      else
+        {:halt,
+         socket
+         |> push_event("tip_trigger", %{tip: "first_pm"})
+         |> apply_new_pm(payload, session)}
+      end
+    end
+  end
 
   defp route_notice(socket, _session, sender, content) do
     notice = notice_message(sender, content)
@@ -558,4 +575,37 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
       true -> false
     end
   end
+
+  defp receive_metadata(:channel, payload, socket) do
+    session = socket.assigns.session
+
+    %{
+      "chat.channel" => Map.get(payload, :channel),
+      "chat.message.id" => Map.get(payload, :id),
+      conversation_type: "channel",
+      message_type: normalize_message_type(Map.get(payload, :type)),
+      message_size_bytes: payload_size(payload),
+      active_context: Map.get(payload, :channel) == session.active_channel
+    }
+  end
+
+  defp receive_metadata(:private, payload, socket) do
+    session = socket.assigns.session
+    other_nick = pm_other_nick(payload, session.nickname)
+
+    %{
+      "chat.message.id" => Map.get(payload, :id),
+      conversation_type: "private",
+      message_type: normalize_message_type(Map.get(payload, :type)),
+      message_size_bytes: payload_size(payload),
+      active_context: session.active_pm == other_nick
+    }
+  end
+
+  defp payload_size(%{content: content}) when is_binary(content), do: byte_size(content)
+  defp payload_size(_payload), do: 0
+
+  defp normalize_message_type(type) when is_atom(type), do: Atom.to_string(type)
+  defp normalize_message_type(type) when is_binary(type), do: type
+  defp normalize_message_type(_type), do: "unknown"
 end
