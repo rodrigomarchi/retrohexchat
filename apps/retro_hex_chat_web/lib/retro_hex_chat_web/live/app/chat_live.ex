@@ -21,6 +21,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
   import RetroHexChatWeb.ChatLive.Components.ChatTabs
 
   # ── Chat components ──────────────────────────────────────────
+  import RetroHexChatWeb.Components.UI.ChatMobileActions
   import RetroHexChatWeb.Components.UI.TopicBar
   import RetroHexChatWeb.Components.UI.ChatTaskbar
   import RetroHexChatWeb.Components.UI.ChannelViewSwitcher

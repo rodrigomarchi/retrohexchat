@@ -17,6 +17,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
 
   import RetroHexChatWeb.Components.UI.IrcTabs
 
+  attr :class, :any, default: nil, doc: "Extra classes for the tab bar container"
   attr :channels, :list, default: [], doc: "Joined channel names, in order"
   attr :pm_tabs, :list, default: [], doc: "Open PM nicks, in order"
   attr :unread_counts, :map, default: %{}, doc: "Unread counts keyed by channel / \"pm:nick\""
@@ -53,7 +54,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
     assigns = assign(assigns, :tabs, build_tabs(assigns))
 
     ~H"""
-    <.irc_tab_bar>
+    <.irc_tab_bar class={@class}>
       <.irc_tab_item
         :for={tab <- @tabs}
         type={tab.type}

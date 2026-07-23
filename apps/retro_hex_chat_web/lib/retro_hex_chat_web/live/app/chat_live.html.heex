@@ -93,22 +93,26 @@
 
         <%!-- Chat area --%>
         <div class="flex flex-col flex-1 min-w-0 min-h-0 overflow-hidden">
-          <%!-- Tab bar (shrink, no grow) --%>
-          <.chat_tabs
-            channels={@session.channels}
-            pm_tabs={@open_pm_tabs}
-            unread_counts={@unread_counts}
-            status_unread={@status_unread}
-            show_status_tab={@show_status_tab}
-            active_channel={@session.active_channel}
-            active_pm={@session.active_pm}
-            nick_color_fn={@nick_color_fn}
-            p2p_peer={if @p2p_session, do: @p2p_session.peer_nick}
-            p2p_state={if @p2p_session, do: @p2p_session.state}
-            p2p_session={@p2p_session}
-            group_call_channels={@group_call_channels}
-            group_call_summaries={@group_call_channel_summaries}
-          />
+          <%!-- Tab bar row (shrink, no grow): mobile chat controls + tab strip --%>
+          <div class="flex items-stretch shrink-0 min-w-0">
+            <.chat_mobile_actions />
+            <.chat_tabs
+              class="flex-1 min-w-0"
+              channels={@session.channels}
+              pm_tabs={@open_pm_tabs}
+              unread_counts={@unread_counts}
+              status_unread={@status_unread}
+              show_status_tab={@show_status_tab}
+              active_channel={@session.active_channel}
+              active_pm={@session.active_pm}
+              nick_color_fn={@nick_color_fn}
+              p2p_peer={if @p2p_session, do: @p2p_session.peer_nick}
+              p2p_state={if @p2p_session, do: @p2p_session.state}
+              p2p_session={@p2p_session}
+              group_call_channels={@group_call_channels}
+              group_call_summaries={@group_call_channel_summaries}
+            />
+          </div>
 
           <% conversation_space = conversation_space(@session, @show_status_tab) %>
           <% space_view? = conversation_space && @channel_view == :space %>

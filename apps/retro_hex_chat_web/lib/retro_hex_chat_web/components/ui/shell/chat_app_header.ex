@@ -19,8 +19,6 @@ defmodule RetroHexChatWeb.Components.UI.ChatAppHeader do
   import RetroHexChatWeb.Components.UI.StatusBarApp
   import RetroHexChatWeb.Components.UI.Dialog, only: [show_modal: 1]
 
-  alias RetroHexChatWeb.Icons
-
   attr :nickname, :string, required: true
   attr :account_state, :atom, default: :guest, values: [:guest, :identified, :away]
   attr :away, :boolean, default: false
@@ -53,38 +51,6 @@ defmodule RetroHexChatWeb.Components.UI.ChatAppHeader do
   def chat_app_header(assigns) do
     ~H"""
     <.app_header on_logo_click={show_modal(@on_logo_action)}>
-      <:mobile_actions>
-        <button
-          type="button"
-          class="chat-mobile-action shadow-retro-raised bg-surface inline-flex h-6 w-6 shrink-0 items-center justify-center p-0 active:shadow-retro-sunken focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-black"
-          phx-click="toggle_conversations"
-          title={dgettext("chat", "Show conversations")}
-          aria-label={dgettext("chat", "Show conversations")}
-          data-testid="chat-mobile-conversations"
-        >
-          <Icons.icon_btn_toggle_conversations class="h-4 w-4" />
-        </button>
-        <button
-          type="button"
-          class="chat-mobile-action shadow-retro-raised bg-surface inline-flex h-6 w-6 shrink-0 items-center justify-center p-0 active:shadow-retro-sunken focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-black"
-          phx-click="toggle_nicklist"
-          title={dgettext("chat", "Show nicklist")}
-          aria-label={dgettext("chat", "Show nicklist")}
-          data-testid="chat-mobile-nicklist"
-        >
-          <Icons.icon_btn_toggle_nicklist class="h-4 w-4" />
-        </button>
-        <button
-          type="button"
-          class="chat-mobile-action shadow-retro-raised bg-surface inline-flex h-6 w-6 shrink-0 items-center justify-center p-0 active:shadow-retro-sunken focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-black"
-          phx-click="toggle_search"
-          title={dgettext("chat", "Find in chat")}
-          aria-label={dgettext("chat", "Find in chat")}
-          data-testid="chat-mobile-search"
-        >
-          <Icons.icon_btn_find class="h-4 w-4" />
-        </button>
-      </:mobile_actions>
       <:panels>
         <.menu_bar_app
           id="menubar"

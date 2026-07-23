@@ -200,9 +200,14 @@
   padding-inline: 4px;
 }
 
+/* Sidebars overlay the chat content but stop below the window chrome —
+   app header (40px) + window title bar (36px) + tab row with the mobile chat
+   controls (38px) — so conversations/nicklist/search stay one tap away while
+   a sidebar is open. */
 .desktop--stacked .chat-sidebar-overlay {
-  top: var(--rhc-chat-mobile-header-height);
-  height: calc(var(--rhc-visual-viewport-height, 100dvh) - var(--rhc-chat-mobile-header-height));
+  --rhc-chat-mobile-sidebar-top: calc(var(--rhc-chat-mobile-header-height) + 74px);
+  top: var(--rhc-chat-mobile-sidebar-top);
+  height: calc(var(--rhc-visual-viewport-height, 100dvh) - var(--rhc-chat-mobile-sidebar-top));
 }
 
 .desktop--stacked .chat-mobile-action {
