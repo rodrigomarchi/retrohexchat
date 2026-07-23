@@ -8,7 +8,7 @@ defmodule RetroHexChatWeb.SitemapController do
   alias RetroHexChatWeb.SEO
 
   @cache_key {__MODULE__, :sitemaps}
-  @chunk_size 25
+  @chunk_size 5
 
   @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def index(conn, _params) do

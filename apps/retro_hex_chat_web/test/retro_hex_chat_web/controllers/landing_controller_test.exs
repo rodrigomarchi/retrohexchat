@@ -442,8 +442,6 @@ defmodule RetroHexChatWeb.LandingLiveTest do
       assert body =~ "<loc>https://retrohexchat.app/pt-BR</loc>"
       assert body =~ "<loc>https://retrohexchat.app/features</loc>"
       assert body =~ "<loc>https://retrohexchat.app/pt-BR/features</loc>"
-      assert body =~ "<loc>https://retrohexchat.app/chat/help</loc>"
-      refute body =~ "<loc>https://retrohexchat.app/chat/help/welcome</loc>"
 
       assert body =~
                ~s(<xhtml:link rel="alternate" hreflang="pt-BR" href="https://retrohexchat.app/pt-BR/features" />)
@@ -456,15 +454,19 @@ defmodule RetroHexChatWeb.LandingLiveTest do
       refute body =~ "<lastmod>"
       refute body =~ "<changefreq>"
       refute body =~ "<priority>"
+
+      {_conn, help_body} =
+        sitemap_chunk_body_containing(conn, "<loc>https://retrohexchat.app/chat/help</loc>")
+
+      assert help_body =~ "<loc>https://retrohexchat.app/chat/help</loc>"
+      refute_sitemap_chunks_contain(conn, "<loc>https://retrohexchat.app/chat/help/welcome</loc>")
     end
 
     test "sitemap chunks support gzip responses", %{conn: conn} do
-      conn =
-        conn
-        |> put_req_header("accept-encoding", "gzip")
-        |> get("/sitemaps/public-1.xml")
-
-      body = conn |> response(200) |> :zlib.gunzip()
+      {conn, body} =
+        sitemap_chunk_body_containing(conn, "<loc>https://retrohexchat.app/chat/help</loc>",
+          gzip: true
+        )
 
       assert get_resp_header(conn, "content-encoding") == ["gzip"]
       assert get_resp_header(conn, "vary") == ["accept-encoding"]
@@ -476,6 +478,67 @@ defmodule RetroHexChatWeb.LandingLiveTest do
       conn = get(conn, "/sitemaps/missing.xml")
 
       assert response(conn, 404) == "Not found"
+    end
+  end
+
+  defp sitemap_chunk_body_containing(conn, snippet, opts \\ []) do
+    result =
+      conn
+      |> sitemap_chunk_paths()
+      |> Enum.find_value(fn path ->
+        chunk_conn =
+          conn
+          |> recycle()
+          |> maybe_accept_gzip(opts)
+          |> get(path)
+
+        body = sitemap_chunk_body(chunk_conn, opts)
+
+        if body =~ snippet do
+          {chunk_conn, body}
+        end
+      end)
+
+    result || flunk("expected one sitemap chunk to contain #{inspect(snippet)}")
+  end
+
+  defp refute_sitemap_chunks_contain(conn, snippet) do
+    conn
+    |> sitemap_chunk_paths()
+    |> Enum.each(fn path ->
+      chunk_conn = conn |> recycle() |> get(path)
+
+      refute response(chunk_conn, 200) =~ snippet
+    end)
+  end
+
+  defp sitemap_chunk_paths(conn) do
+    conn = conn |> recycle() |> get("/sitemap.xml")
+    body = response(conn, 200)
+
+    paths =
+      ~r|<loc>https://retrohexchat\.app(?<path>/sitemaps/public-\d+\.xml)</loc>|
+      |> Regex.scan(body, capture: :all_but_first)
+      |> List.flatten()
+
+    assert paths != []
+
+    paths
+  end
+
+  defp maybe_accept_gzip(conn, opts) do
+    if Keyword.get(opts, :gzip, false) do
+      put_req_header(conn, "accept-encoding", "gzip")
+    else
+      conn
+    end
+  end
+
+  defp sitemap_chunk_body(conn, opts) do
+    if Keyword.get(opts, :gzip, false) do
+      conn |> response(200) |> :zlib.gunzip()
+    else
+      response(conn, 200)
     end
   end
 end
