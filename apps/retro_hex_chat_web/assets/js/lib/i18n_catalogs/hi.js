@@ -72,7 +72,6 @@ export const HI = {
   "NET!": "नेट!",
   "NIGHT RACE": "नाइट रेस",
   "NO LIVES REMAINING": "नहीं रह रहा है",
-  "New messages": "नया संदेश",
   "Next round starting...": "अगले दौर शुरू ...",
   "No Man's Land": "नो मैन की भूमि",
   "No camera found.": "कोई कैमरा नहीं मिला।",

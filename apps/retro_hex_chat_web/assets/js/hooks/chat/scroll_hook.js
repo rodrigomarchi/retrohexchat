@@ -2,8 +2,8 @@
  * LiveView hook for infinite scroll and auto-scroll in chat messages.
  *
  * - Detects scroll-to-top and pushes "load_more" event
- * - Auto-scrolls to bottom when at bottom and new message arrives
- * - Shows "New messages" button when scrolled up and new message arrives
+ * - Keeps the newest message visible while the reader stays pinned to bottom
+ * - Stops live auto-scroll only after an intentional user scroll up
  * - Preserves scroll position during prepend of older messages
  * - Interactive elements: channel tooltips, nick hover cards, click actions
  */
@@ -36,11 +36,25 @@ import { t } from "../../lib/i18n.js";
 
 const LONG_PRESS_MS = 550;
 const MOVE_TOLERANCE_PX = 10;
+const USER_SCROLL_INTENT_MS = 1_000;
+const SCROLL_INTENT_KEYS = new Set([
+  "ArrowUp",
+  "ArrowDown",
+  "PageUp",
+  "PageDown",
+  "Home",
+  "End",
+  " ",
+]);
 
 const ScrollHook = {
   mounted() {
     this.chatEl = this.el;
     this.isAtBottom = true;
+    this.autoScrollPinned = true;
+    this.userScrollIntent = false;
+    this.userScrollIntentTimer = null;
+    this.pointerScrollIntentActive = false;
     this.initialScrollPending = true;
     this.repinHandle = null;
     this.pendingPrepend = false;
@@ -61,10 +75,19 @@ const ScrollHook = {
       this.handleScroll();
     });
 
-    // Listen for new messages button click
+    this._markUserScrollIntent = () => this.markUserScrollIntent();
+    this._keyScrollIntent = (e) => {
+      if (SCROLL_INTENT_KEYS.has(e.key)) this.markUserScrollIntent();
+    };
+    this.chatEl.addEventListener("wheel", this._markUserScrollIntent, { passive: true });
+    this.chatEl.addEventListener("touchstart", this._markUserScrollIntent, { passive: true });
+    this.chatEl.addEventListener("touchmove", this._markUserScrollIntent, { passive: true });
+    this.chatEl.addEventListener("keydown", this._keyScrollIntent);
+
+    // Server-side affordances can still request an explicit return to bottom.
     this.handleEvent("scroll_to_bottom", () => {
+      this.autoScrollPinned = true;
       this.scrollToBottom();
-      this.hideNewMessagesButton();
     });
 
     this.handleEvent("clear_chat_messages", () => {
@@ -122,7 +145,7 @@ const ScrollHook = {
 
       // Inserting a preview grows the row; keep the newest message in view if
       // we were already pinned to the bottom.
-      if (this.isAtBottom) {
+      if (this.autoScrollPinned) {
         this.scrollToBottom();
       }
     });
@@ -207,10 +230,23 @@ const ScrollHook = {
       cancelNickHoverTimer();
     });
 
-    this._pointerDown = (e) => this.startLongPress(e);
-    this._pointerMove = (e) => this.moveLongPress(e);
-    this._pointerUp = (e) => this.finishLongPress(e);
-    this._pointerCancel = () => this.cancelLongPress();
+    this._pointerDown = (e) => {
+      this.pointerScrollIntentActive = true;
+      this.markUserScrollIntent();
+      this.startLongPress(e);
+    };
+    this._pointerMove = (e) => {
+      if (this.pointerScrollIntentActive) this.markUserScrollIntent();
+      this.moveLongPress(e);
+    };
+    this._pointerUp = (e) => {
+      this.pointerScrollIntentActive = false;
+      this.finishLongPress(e);
+    };
+    this._pointerCancel = () => {
+      this.pointerScrollIntentActive = false;
+      this.cancelLongPress();
+    };
 
     this.chatEl.addEventListener("pointerdown", this._pointerDown);
     this.chatEl.addEventListener("pointermove", this._pointerMove);
@@ -375,7 +411,7 @@ const ScrollHook = {
     // applied in the same frame the content grows — no visible "jump up then
     // snap down", and no stranding above the newest message when rows, web
     // fonts, avatars, or images land late (e.g. returning from a virtual space
-    // or another channel). Only pins while the reader is already at the bottom.
+    // or another channel). Only pins while live auto-scroll is enabled.
     this.setupResizeObserver();
 
     // Observe DOM mutations for auto-scroll and prepend handling
@@ -393,13 +429,12 @@ const ScrollHook = {
         this.pendingPrepend = false;
       } else if (this.initialScrollPending) {
         this.scrollToBottom();
-        this.hideNewMessagesButton();
       } else if (this.isStreamResetMutation(mutations)) {
         this.repinToBottom();
-      } else if (this.isAtBottom) {
+      } else if (this.autoScrollPinned) {
         this.scrollToBottom();
       } else {
-        this.showNewMessagesButton();
+        this.isAtBottom = checkIsAtBottom(this.chatEl);
       }
     });
 
@@ -412,7 +447,7 @@ const ScrollHook = {
     if (typeof window.ResizeObserver !== "function") return;
 
     this.resizeObserver = new ResizeObserver(() => {
-      if (this.pendingPrepend || !this.isAtBottom || this.isHidden()) return;
+      if (this.pendingPrepend || !this.autoScrollPinned || this.isHidden()) return;
       this.scrollToBottom();
     });
 
@@ -444,9 +479,9 @@ const ScrollHook = {
   clearMessages() {
     this.chatEl.replaceChildren();
     this.isAtBottom = true;
+    this.autoScrollPinned = true;
     this.pendingPrepend = false;
     this.prevScrollHeight = this.chatEl.scrollHeight;
-    this.hideNewMessagesButton();
   },
 
   updated() {
@@ -468,7 +503,7 @@ const ScrollHook = {
       return;
     }
 
-    if (this.isAtBottom) {
+    if (this.autoScrollPinned) {
       this.scrollToBottom();
     }
   },
@@ -476,6 +511,7 @@ const ScrollHook = {
   destroyed() {
     this.cancelLongPress();
     this.cancelRepin();
+    this.clearUserScrollIntent();
     if (this.observer) {
       this.observer.disconnect();
     }
@@ -485,6 +521,10 @@ const ScrollHook = {
     if (this._viewportLeaveHandler) {
       document.documentElement.removeEventListener("mouseleave", this._viewportLeaveHandler);
     }
+    this.chatEl.removeEventListener("wheel", this._markUserScrollIntent);
+    this.chatEl.removeEventListener("touchstart", this._markUserScrollIntent);
+    this.chatEl.removeEventListener("touchmove", this._markUserScrollIntent);
+    this.chatEl.removeEventListener("keydown", this._keyScrollIntent);
     this.chatEl.removeEventListener("pointerdown", this._pointerDown);
     this.chatEl.removeEventListener("pointermove", this._pointerMove);
     this.chatEl.removeEventListener("pointerup", this._pointerUp);
@@ -496,17 +536,22 @@ const ScrollHook = {
   handleScroll() {
     if (this.initialScrollPending) {
       this.isAtBottom = true;
-      this.hideNewMessagesButton();
+      this.autoScrollPinned = true;
       return;
     }
 
     this.isAtBottom = checkIsAtBottom(this.chatEl);
 
     if (this.isAtBottom) {
-      this.hideNewMessagesButton();
+      this.autoScrollPinned = true;
+      this.clearUserScrollIntent();
+    } else if (this.userScrollIntent) {
+      this.autoScrollPinned = false;
+    } else if (this.autoScrollPinned) {
+      this.scrollToBottom();
     }
 
-    if (shouldLoadMore(this.chatEl.scrollTop)) {
+    if (this.userScrollIntent && shouldLoadMore(this.chatEl.scrollTop)) {
       this.pushEvent("load_more", {});
     }
   },
@@ -514,6 +559,7 @@ const ScrollHook = {
   scrollToBottom() {
     this.chatEl.scrollTop = this.chatEl.scrollHeight;
     this.isAtBottom = true;
+    this.autoScrollPinned = true;
   },
 
   // Pin to the bottom now, then correct once on the next frame. The immediate
@@ -524,7 +570,6 @@ const ScrollHook = {
     this.cancelRepin();
     this.initialScrollPending = true;
     this.scrollToBottom();
-    this.hideNewMessagesButton();
 
     if (typeof window.requestAnimationFrame !== "function") {
       this.initialScrollPending = false;
@@ -538,7 +583,6 @@ const ScrollHook = {
       if (!this.chatEl?.isConnected) return;
 
       this.scrollToBottom();
-      this.hideNewMessagesButton();
     });
   },
 
@@ -557,31 +601,21 @@ const ScrollHook = {
     );
   },
 
-  showNewMessagesButton() {
-    if (!this.chatEl.parentElement) return;
-
-    let btn = this.chatEl.parentElement.querySelector(".new-messages-btn");
-    if (!btn) {
-      btn = document.createElement("button");
-      btn.className = "new-messages-btn";
-      btn.textContent = t("New messages");
-      btn.addEventListener("click", () => {
-        this.scrollToBottom();
-        this.hideNewMessagesButton();
-        this.pushEvent("scroll_to_bottom", {});
-      });
-      this.chatEl.parentElement.appendChild(btn);
-    }
-    btn.classList.add("new-messages-btn--visible");
+  markUserScrollIntent() {
+    this.userScrollIntent = true;
+    if (this.userScrollIntentTimer) clearTimeout(this.userScrollIntentTimer);
+    this.userScrollIntentTimer = setTimeout(() => {
+      this.userScrollIntent = false;
+      this.userScrollIntentTimer = null;
+    }, USER_SCROLL_INTENT_MS);
   },
 
-  hideNewMessagesButton() {
-    if (!this.chatEl.parentElement) return;
-
-    const btn = this.chatEl.parentElement.querySelector(".new-messages-btn");
-    if (btn) {
-      btn.classList.remove("new-messages-btn--visible");
+  clearUserScrollIntent() {
+    if (this.userScrollIntentTimer) {
+      clearTimeout(this.userScrollIntentTimer);
     }
+    this.userScrollIntent = false;
+    this.userScrollIntentTimer = null;
   },
 
   detectAndPushContextMenu(e, msgEl) {

@@ -71,7 +71,6 @@ export const ZH_HANS = {
   "NET!": "内特!",
   "NIGHT RACE": "夜浣熊",
   "NO LIVES REMAINING": "没有生命在重复",
-  "New messages": "新消息",
   "Next round starting...": "下一轮开始...",
   "No Man's Land": "无主之地",
   "No camera found.": "没有找到相机 。",

@@ -71,7 +71,6 @@ export const TR = {
   "NET!": "NET!",
   "NIGHT RACE": "NIGHT RACE",
   "NO LIVES REMAINING": "NO LIVES REMAINING",
-  "New messages": "Yeni mesajlar",
   "Next round starting...": "Sonraki tur başlıyor...",
   "No Man's Land": "No Man's Land",
   "No camera found.": "Kamera bulunamadı.",

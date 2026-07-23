@@ -22,7 +22,6 @@ describe("ScrollHook", () => {
   function finishInitialScroll(hook) {
     hook.cancelRepin();
     hook.initialScrollPending = false;
-    hook.hideNewMessagesButton();
   }
 
   function messageNode(id = "1") {
@@ -51,7 +50,7 @@ describe("ScrollHook", () => {
       expect(hook.isAtBottom).toBe(true);
     });
 
-    it("detects not at bottom when scrolled up", () => {
+    it("detects not at bottom when the reader scrolls up", () => {
       // Simulate scroll position away from bottom
       Object.defineProperty(hook.el, "scrollHeight", { value: 1000, configurable: true });
       Object.defineProperty(hook.el, "clientHeight", { value: 200, configurable: true });
@@ -60,8 +59,10 @@ describe("ScrollHook", () => {
         writable: true,
         configurable: true,
       });
+      hook.markUserScrollIntent();
       hook.handleScroll();
       expect(hook.isAtBottom).toBe(false);
+      expect(hook.autoScrollPinned).toBe(false);
     });
 
     it("detects at bottom within threshold", () => {
@@ -74,6 +75,25 @@ describe("ScrollHook", () => {
       });
       hook.handleScroll();
       expect(hook.isAtBottom).toBe(true);
+      expect(hook.autoScrollPinned).toBe(true);
+    });
+
+    it("does not unpin live auto-scroll for non-user scroll/layout movement", () => {
+      Object.defineProperty(hook.el, "scrollHeight", { value: 1000, configurable: true });
+      Object.defineProperty(hook.el, "clientHeight", { value: 200, configurable: true });
+      Object.defineProperty(hook.el, "scrollTop", {
+        value: 100,
+        writable: true,
+        configurable: true,
+      });
+      hook.autoScrollPinned = true;
+      hook.userScrollIntent = false;
+      hook.scrollToBottom = vi.fn();
+
+      hook.handleScroll();
+
+      expect(hook.scrollToBottom).toHaveBeenCalled();
+      expect(hook.autoScrollPinned).toBe(true);
     });
   });
 
@@ -87,9 +107,8 @@ describe("ScrollHook", () => {
       hook.el.appendChild(messageNode("initial"));
       await flushMutations();
 
-      const btn = document.querySelector(".new-messages-btn");
       expect(hook.isAtBottom).toBe(true);
-      expect(btn?.classList.contains("new-messages-btn--visible")).not.toBe(true);
+      expect(document.querySelector(".new-messages-btn")).toBeNull();
     });
 
     it("does not trigger load_more while the initial scroll is settling", () => {
@@ -110,19 +129,32 @@ describe("ScrollHook", () => {
       hook.el.replaceChildren(messageNode("new"));
       await flushMutations();
 
-      const btn = document.querySelector(".new-messages-btn");
       expect(hook.isAtBottom).toBe(true);
-      expect(btn?.classList.contains("new-messages-btn--visible")).not.toBe(true);
+      expect(document.querySelector(".new-messages-btn")).toBeNull();
     });
 
-    it("still shows new messages when a live message arrives while scrolled up", async () => {
+    it("keeps live messages pinned when the reader has not scrolled up", async () => {
+      hook.autoScrollPinned = true;
       hook.isAtBottom = false;
+      hook.scrollToBottom = vi.fn();
 
       hook.el.appendChild(messageNode("live"));
       await flushMutations();
 
-      const btn = document.querySelector(".new-messages-btn");
-      expect(btn?.classList.contains("new-messages-btn--visible")).toBe(true);
+      expect(hook.scrollToBottom).toHaveBeenCalled();
+      expect(document.querySelector(".new-messages-btn")).toBeNull();
+    });
+
+    it("does not auto-scroll or show a button when a live message arrives after user scroll-up", async () => {
+      hook.autoScrollPinned = false;
+      hook.isAtBottom = false;
+      hook.scrollToBottom = vi.fn();
+
+      hook.el.appendChild(messageNode("live"));
+      await flushMutations();
+
+      expect(hook.scrollToBottom).not.toHaveBeenCalled();
+      expect(document.querySelector(".new-messages-btn")).toBeNull();
     });
 
     it("resettles to bottom when the hidden chat viewport becomes visible again", () => {
@@ -148,6 +180,7 @@ describe("ScrollHook", () => {
       Object.defineProperty(hook.el, "scrollTop", { value: 5, writable: true, configurable: true });
       Object.defineProperty(hook.el, "scrollHeight", { value: 1000, configurable: true });
       Object.defineProperty(hook.el, "clientHeight", { value: 200, configurable: true });
+      hook.markUserScrollIntent();
       hook.handleScroll();
       expect(hook.pushEvent).toHaveBeenCalledWith("load_more", {});
     });
@@ -316,7 +349,7 @@ describe("ScrollHook", () => {
 
     it("does not re-pin when the reader is scrolled up", () => {
       linkNode("https://example.com/");
-      hook.isAtBottom = false;
+      hook.autoScrollPinned = false;
       hook.scrollToBottom = vi.fn();
 
       simulateEvent(hook, "link_preview", { url: "https://example.com/", title: "Example" });
@@ -382,7 +415,7 @@ describe("ScrollHook", () => {
 
     it("does not re-pin on resize when the reader has scrolled up", () => {
       const h = mountWithResizeObserver();
-      h.isAtBottom = false;
+      h.autoScrollPinned = false;
       h.scrollToBottom = vi.fn();
 
       roCallback();

@@ -71,7 +71,6 @@ export const PT_PT = {
   "NET!": "NET!",
   "NIGHT RACE": "Corrida noturna",
   "NO LIVES REMAINING": "NÃO PERMANECE A VIDA",
-  "New messages": "Novas mensagens",
   "Next round starting...": "Próxima rodada a começar...",
   "No Man's Land": "Terra de Nenhum Homem",
   "No camera found.": "Nenhuma câmara encontrada.",

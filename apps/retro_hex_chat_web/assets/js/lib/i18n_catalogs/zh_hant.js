@@ -71,7 +71,6 @@ export const ZH_HANT = {
   "NET!": "內特!",
   "NIGHT RACE": "夜浣熊",
   "NO LIVES REMAINING": "沒有生命在重複",
-  "New messages": "新消息",
   "Next round starting...": "下一輪開始...",
   "No Man's Land": "無主之地",
   "No camera found.": "沒有找到相機 。",

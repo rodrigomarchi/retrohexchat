@@ -651,7 +651,6 @@ defmodule Mix.Tasks.Lint.CssConsistency do
     "mobile-task-switcher",
     "mud-",
     "nc-",
-    "new-messages",
     "nl-",
     "p2p-",
     "pf-",

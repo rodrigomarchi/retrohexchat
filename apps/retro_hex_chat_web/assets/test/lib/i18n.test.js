@@ -157,7 +157,6 @@ describe("pt-BR JS catalog", () => {
   it("contains critical UI, connection, and game translations", () => {
     expect(PT_BR).toMatchObject({
       Cancel: "Cancelar",
-      "New messages": "Novas mensagens",
       "⚠️ Disconnected — Reconnecting...": "⚠️ Desconectado — Reconectando...",
       "✓ Reconnected!": "✓ Reconectado!",
       "Integrity check failed": "Falha na verificação de integridade",

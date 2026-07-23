@@ -73,7 +73,6 @@ export const ES = {
   "NET!": "¡NET!",
   "NIGHT RACE": "NOCHE RACE",
   "NO LIVES REMAINING": "NO LIVES REMAINING",
-  "New messages": "Nuevos mensajes",
   "Next round starting...": "La próxima ronda comienza...",
   "No Man's Land": "No Man's Land",
   "No camera found.": "No hay cámara encontrada.",

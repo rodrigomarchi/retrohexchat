@@ -71,7 +71,6 @@ export const AR = {
   "NET!": "!",
   "NIGHT RACE": "الليل",
   "NO LIVES REMAINING": "لا توجد حيات",
-  "New messages": "رسائل جديدة",
   "Next round starting...": "الجولة القادمة تبدأ...",
   "No Man's Land": "لا أرض رجل",
   "No camera found.": "لم يتم العثور على الكاميرا",

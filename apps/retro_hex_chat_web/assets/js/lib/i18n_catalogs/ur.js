@@ -71,7 +71,6 @@ export const UR = {
   "NET!": "انتظار!",
   "NIGHT RACE": "نمبر ۹",
   "NO LIVES REMAINING": "کوئی جواب نہیں",
-  "New messages": "نئے پیغامات",
   "Next round starting...": "اگلا راؤنڈ شروع...",
   "No Man's Land": "کوئی بھی انسان کا ملک",
   "No camera found.": "کوئی کیمرے نہیں ملا.",

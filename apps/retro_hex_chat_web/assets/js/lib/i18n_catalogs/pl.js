@@ -73,7 +73,6 @@ export const PL = {
   "NET!": "NET!",
   "NIGHT RACE": "NOC RACE",
   "NO LIVES REMAINING": "NIE ŻYJE",
-  "New messages": "Nowe wiadomości",
   "Next round starting...": "Następna runda...",
   "No Man's Land": "{C: $398dc6} No Man 's Land {S: 15}",
   "No camera found.": "Nie znaleziono kamery.",

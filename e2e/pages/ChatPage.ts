@@ -821,6 +821,13 @@ export class ChatPage {
 
   async scrollMessagesToTop() {
     await this.messageList.evaluate((el) => {
+      el.dispatchEvent(
+        new WheelEvent("wheel", {
+          bubbles: true,
+          cancelable: true,
+          deltaY: -1000,
+        }),
+      );
       el.scrollTop = 0;
       el.dispatchEvent(new Event("scroll", { bubbles: true }));
     });

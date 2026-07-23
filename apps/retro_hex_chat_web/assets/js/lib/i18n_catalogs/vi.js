@@ -71,7 +71,6 @@ export const VI = {
   "NET!": "NAT!",
   "NIGHT RACE": "Đêm RACE",
   "NO LIVES REMAINING": "KHÔNG CÓ ĐỜI SỐNG TRONG SỰ SỐNG",
-  "New messages": "Comment",
   "Next round starting...": "Vòng tiếp theo bắt đầu...",
   "No Man's Land": "Vùng đất của loài người.",
   "No camera found.": "Không tìm thấy camera.",

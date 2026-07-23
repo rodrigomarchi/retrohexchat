@@ -72,7 +72,6 @@ export const BN = {
   "NET!": "NET!",
   "NIGHT RACE": "কঠিন",
   "NO LIVES REMAINING": "আর কিছু নয়",
-  "New messages": "নতুন বার্তা",
   "Next round starting...": "পরবর্তী রাউন্ড স্টার্ট হচ্ছে...",
   "No Man's Land": "কোন মানুষের ভূমি",
   "No camera found.": "কোনো ক্যামেরা খুঁজে পাওয়া যায়নি।",

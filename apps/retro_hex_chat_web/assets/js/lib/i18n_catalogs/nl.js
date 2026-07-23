@@ -72,7 +72,6 @@ export const NL = {
   "NET!": "NET!",
   "NIGHT RACE": "NACHTRAS",
   "NO LIVES REMAINING": "Geen leven meer.",
-  "New messages": "Nieuwe berichten",
   "Next round starting...": "Volgende ronde begint...",
   "No Man's Land": "Geen Man's Land",
   "No camera found.": "Geen camera gevonden.",

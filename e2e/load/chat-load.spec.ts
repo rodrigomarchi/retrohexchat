@@ -32,6 +32,8 @@ const RAMP_BATCH = Number(process.env.LOAD_RAMP_BATCH) || 4;
 // "chat" makes EVERY user a chatter — used to test whether the heavy
 // canvas/WebRTC personas steal generator resources during the ramp.
 const PROFILE = process.env.LOAD_PROFILE || "mixed";
+const CHANNEL_OVERRIDE = process.env.LOAD_CHANNEL;
+const OBSERVERS_TALK = process.env.LOAD_OBSERVERS_TALK === "1";
 // Hotspot mode: concentrate EVERY user on ONE channel — a chunk in the chat
 // view and a chunk in the space view, ALL sending channel messages. The space
 // IS the channel (a game-view of it), so a space user both moves (→ the single
@@ -454,11 +456,13 @@ function percentile(sorted: number[], p: number): number {
 test("realistic mixed load, chat-focused", async ({ browser }) => {
   const runId = Math.random().toString(36).slice(2, 7);
   // Hotspot: ONE channel for everyone. Otherwise the usual 1-2 channel spread.
-  const channels = HOTSPOT
-    ? [`#hot${runId}`]
-    : USERS >= 10
-      ? [`#ld${runId}a`, `#ld${runId}b`]
-      : [`#ld${runId}a`];
+  const channels = CHANNEL_OVERRIDE
+    ? [CHANNEL_OVERRIDE]
+    : HOTSPOT
+      ? [`#hot${runId}`]
+      : USERS >= 10
+        ? [`#ld${runId}a`, `#ld${runId}b`]
+        : [`#ld${runId}a`];
 
   // "chat" profile: every user is a chatter (no heavy canvas/WebRTC personas),
   // to isolate whether those steal generator resources during the ramp.
@@ -650,7 +654,9 @@ test("realistic mixed load, chat-focused", async ({ browser }) => {
           return runCall(user, deadline, video);
         }
         case "observer":
-          return sleep(Math.max(0, deadline - Date.now()));
+          return OBSERVERS_TALK
+            ? runChatter(user, deadline, sentAt)
+            : sleep(Math.max(0, deadline - Date.now()));
       }
     }),
   );

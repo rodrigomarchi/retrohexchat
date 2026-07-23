@@ -73,7 +73,6 @@ export const RU = {
   "NET!": "Нет!",
   "NIGHT RACE": "Ночная гонка",
   "NO LIVES REMAINING": "Жизнь не возвращается",
-  "New messages": "Новые сообщения",
   "Next round starting...": "Следующий раунд начинается...",
   "No Man's Land": "Ничья земля",
   "No camera found.": "Камеры не нашли.",

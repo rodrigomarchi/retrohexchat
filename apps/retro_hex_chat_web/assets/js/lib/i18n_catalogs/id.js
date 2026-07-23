@@ -71,7 +71,6 @@ export const ID = {
   "NET!": "NET!",
   "NIGHT RACE": "RACE MALAM",
   "NO LIVES REMAINING": "NO HIDUP MENINGAT",
-  "New messages": "Pesan baru",
   "Next round starting...": "Ronde berikutnya dimulai...",
   "No Man's Land": "No Man Land",
   "No camera found.": "Tidak ada kamera ditemukan.",

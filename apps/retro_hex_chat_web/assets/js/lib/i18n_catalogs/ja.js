@@ -71,7 +71,6 @@ export const JA = {
   "NET!": "ネット!",
   "NIGHT RACE": "ナイトレース",
   "NO LIVES REMAINING": "LIVESのリメインなし",
-  "New messages": "新しいメッセージ",
   "Next round starting...": "次のラウンドスタート...",
   "No Man's Land": "人の土地無し",
   "No camera found.": "カメラが見つかりません。",

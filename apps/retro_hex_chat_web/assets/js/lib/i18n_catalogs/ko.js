@@ -71,7 +71,6 @@ export const KO = {
   "NET!": "한국어",
   "NIGHT RACE": "밤 인종",
   "NO LIVES REMAINING": "라이브 채팅",
-  "New messages": "새로운 메시지",
   "Next round starting...": "다음 라운드 시작 ...",
   "No Man's Land": "남자의 땅",
   "No camera found.": "카메라가 없습니다.",
