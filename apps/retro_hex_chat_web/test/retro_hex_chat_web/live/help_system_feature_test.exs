@@ -37,7 +37,7 @@ defmodule RetroHexChatWeb.HelpSystemFeatureTest do
     end
 
     test "cross-reference links use topic URLs", %{conn: conn} do
-      {:ok, _view, html} = live(conn, "/chat/help/welcome")
+      {:ok, _view, html} = live(conn, "/chat/help")
 
       assert html =~ "Welcome to RetroHexChat"
     end
@@ -57,11 +57,26 @@ defmodule RetroHexChatWeb.HelpSystemFeatureTest do
     end
 
     test "sitemap includes help topics", %{conn: conn} do
-      conn = get(conn, "/sitemap.xml")
-      body = response(conn, 200)
+      sitemap_index =
+        conn
+        |> get("/sitemap.xml")
+        |> response(200)
 
-      assert body =~ "commands-overview"
-      assert body =~ "keyboard-shortcuts"
+      assert sitemap_index =~ "/sitemaps/public-1.xml"
+
+      topic_sitemap =
+        ~r|<loc>https://retrohexchat\.app(?<path>/sitemaps/public-\d+\.xml)</loc>|
+        |> Regex.scan(sitemap_index, capture: :all_but_first)
+        |> List.flatten()
+        |> Enum.map_join(fn path ->
+          conn
+          |> recycle()
+          |> get(path)
+          |> response(200)
+        end)
+
+      assert topic_sitemap =~ "commands-overview"
+      assert topic_sitemap =~ "keyboard-shortcuts"
     end
 
     test "menu bar has Help Topics link in chat", %{conn: conn} do

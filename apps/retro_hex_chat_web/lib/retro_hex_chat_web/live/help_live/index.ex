@@ -16,6 +16,8 @@ defmodule RetroHexChatWeb.HelpLive.Index do
   import RetroHexChatWeb.HelpLive.HelpHelpers
 
   alias RetroHexChat.Chat.HelpTopics
+  alias RetroHexChatWeb.{I18n, SEO}
+
   @default_topic "welcome"
 
   @impl true
@@ -61,17 +63,19 @@ defmodule RetroHexChatWeb.HelpLive.Index do
   @spec handle_params(map(), String.t(), Phoenix.LiveView.Socket.t()) ::
           {:noreply, Phoenix.LiveView.Socket.t()}
   def handle_params(params, _uri, socket) do
-    selected_topic = resolve_topic(params)
+    case resolve_topic(params) do
+      {:ok, selected_topic, canonical_path} ->
+        {:noreply,
+         socket
+         |> assign(:selected_topic, selected_topic)
+         |> assign(:page_title, page_title(selected_topic))
+         |> assign(:page_description, page_description(selected_topic))
+         |> assign(:canonical_path, canonical_path)
+         |> assign(:breadcrumb_items, breadcrumb_items(selected_topic, canonical_path))}
 
-    canonical_path =
-      if selected_topic, do: "/chat/help/#{selected_topic.id}", else: "/chat/help"
-
-    {:noreply,
-     socket
-     |> assign(:selected_topic, selected_topic)
-     |> assign(:page_title, page_title(selected_topic))
-     |> assign(:page_description, page_description(selected_topic))
-     |> assign(:canonical_path, canonical_path)}
+      {:redirect, path} ->
+        {:noreply, redirect(socket, to: path)}
+    end
   end
 
   @impl true
@@ -104,12 +108,28 @@ defmodule RetroHexChatWeb.HelpLive.Index do
   defp parse_tab("search"), do: :search
   defp parse_tab(_tab), do: :contents
 
-  @spec resolve_topic(map()) :: map() | nil
+  @spec resolve_topic(map()) :: {:ok, map(), String.t()} | {:redirect, String.t()}
+  defp resolve_topic(%{"topic" => @default_topic}), do: {:redirect, help_root_path()}
+
   defp resolve_topic(%{"topic" => topic_id}) do
-    HelpTopics.get_topic(topic_id) || HelpTopics.get_topic(@default_topic)
+    case HelpTopics.get_topic(topic_id) do
+      nil -> {:redirect, help_root_path()}
+      topic -> {:ok, topic, "/chat/help/#{topic.id}"}
+    end
   end
 
-  defp resolve_topic(_params), do: HelpTopics.get_topic(@default_topic)
+  defp resolve_topic(_params), do: {:ok, HelpTopics.get_topic(@default_topic), "/chat/help"}
+
+  defp help_root_path, do: SEO.localized_path("/chat/help", I18n.current_locale())
+
+  @spec breadcrumb_items(map(), String.t()) :: [{String.t(), String.t()}]
+  defp breadcrumb_items(%{id: @default_topic}, _canonical_path) do
+    [{"Home", "/"}, {"Help", "/chat/help"}]
+  end
+
+  defp breadcrumb_items(topic, canonical_path) do
+    [{"Home", "/"}, {"Help", "/chat/help"}, {topic.title, canonical_path}]
+  end
 
   @spec page_title(map() | nil) :: String.t()
   defp page_title(nil), do: dgettext("help", "Help — RetroHexChat")

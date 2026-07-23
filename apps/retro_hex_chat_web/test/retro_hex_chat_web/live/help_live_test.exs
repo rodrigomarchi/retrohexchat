@@ -66,11 +66,29 @@ defmodule RetroHexChatWeb.HelpLiveTest do
       assert html =~ "Ctrl+Shift"
     end
 
-    test "handles nonexistent topic by falling back to welcome", %{conn: conn} do
-      {:ok, _view, html} = live(conn, "/chat/help/nonexistent-topic-xyz")
+    test "redirects nonexistent topics to the canonical help root", %{conn: conn} do
+      assert {:error, {:redirect, %{to: "/chat/help"}}} =
+               live(conn, "/chat/help/nonexistent-topic-xyz")
+    end
+
+    test "redirects explicit welcome topic to the canonical help root", %{conn: conn} do
+      assert {:error, {:redirect, %{to: "/chat/help"}}} = live(conn, "/chat/help/welcome")
+    end
+
+    test "redirects localized explicit welcome topic to the localized help root", %{conn: conn} do
+      assert {:error, {:redirect, %{to: "/pt-BR/chat/help"}}} =
+               live(conn, "/pt-BR/chat/help/welcome")
+    end
+
+    test "help root is the canonical URL for the welcome topic", %{conn: conn} do
+      conn = get(conn, "/chat/help")
+      html = html_response(conn, 200)
 
       assert html =~ "Welcome to RetroHexChat"
       assert html =~ "Quick Start"
+      assert html =~ ~s(<link rel="canonical" href="https://retrohexchat.app/chat/help")
+      assert html =~ ~s(<meta property="og:url" content="https://retrohexchat.app/chat/help")
+      refute html =~ "https://retrohexchat.app/chat/help/welcome"
     end
 
     test "shows breadcrumbs for selected topic", %{conn: conn} do
@@ -123,6 +141,25 @@ defmodule RetroHexChatWeb.HelpLiveTest do
                ~s(rel="alternate" hreflang="x-default" href="https://retrohexchat.app/chat/help/commands-overview")
 
       refute html =~ "?locale="
+    end
+
+    test "topic structured data includes topic breadcrumb", %{conn: conn} do
+      conn = get(conn, "/chat/help/commands-overview")
+      document = conn |> html_response(200) |> Floki.parse_document!()
+
+      [{"script", _attrs, [json_ld_body]}] =
+        Floki.find(document, ~s(script[type="application/ld+json"]))
+
+      json_ld = json_ld_body |> String.trim() |> Jason.decode!()
+
+      assert json_ld["@type"] == "BreadcrumbList"
+
+      assert List.last(json_ld["itemListElement"]) == %{
+               "@type" => "ListItem",
+               "position" => 3,
+               "name" => "IRC Commands Reference",
+               "item" => "https://retrohexchat.app/chat/help/commands-overview"
+             }
     end
 
     test "shows content header with icon and title", %{conn: conn} do

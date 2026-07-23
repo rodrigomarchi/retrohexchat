@@ -7,7 +7,6 @@
     <% page_description =
       assigns[:page_description] ||
         "RetroHexChat help documentation. Learn about IRC commands, channel modes, features, and keyboard shortcuts." %>
-
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content={get_csrf_token()} />
@@ -57,12 +56,15 @@
 
     <%!-- JSON-LD Structured Data --%>
     <script type="application/ld+json">
-      {Phoenix.HTML.raw(
-        RetroHexChatWeb.SEO.breadcrumb_json_ld([
-          {"Home", "/"},
-          {"Help", "/chat/help"}
-        ])
-      )}
+      <%= Phoenix.HTML.raw(
+        RetroHexChatWeb.SEO.breadcrumb_json_ld(
+          assigns[:breadcrumb_items] ||
+            [
+              {"Home", "/"},
+              {"Help", "/chat/help"}
+            ]
+        )
+      ) %>
     </script>
 
     <%!-- Fonts --%>

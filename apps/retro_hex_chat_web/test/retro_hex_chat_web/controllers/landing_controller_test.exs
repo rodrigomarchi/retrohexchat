@@ -90,6 +90,15 @@ defmodule RetroHexChatWeb.LandingLiveTest do
         |> put_req_header("accept-language", "pt-BR,pt;q=0.9,en;q=0.8")
         |> get("/sitemap.xml")
 
+      assert response(conn, 200) =~ "<sitemapindex"
+    end
+
+    test "does not redirect sitemap chunk requests by browser locale", %{conn: conn} do
+      conn =
+        conn
+        |> put_req_header("accept-language", "pt-BR,pt;q=0.9,en;q=0.8")
+        |> get("/sitemaps/public-1.xml")
+
       assert response(conn, 200) =~ "<urlset"
     end
   end
@@ -176,6 +185,7 @@ defmodule RetroHexChatWeb.LandingLiveTest do
     test "contains SEO meta tags", %{conn: conn} do
       conn = get(conn, "/")
       body = html_response(conn, 200)
+      document = Floki.parse_document!(body)
 
       assert body =~ "Retro Hex Chat"
       assert body =~ ~s(name="description")
@@ -189,13 +199,18 @@ defmodule RetroHexChatWeb.LandingLiveTest do
       assert body =~ ~s(property="og:image:width" content="1200")
       assert body =~ ~s(property="og:image:height" content="630")
       assert body =~ ~s(name="twitter:card")
-      assert body =~ ~s(application/ld+json)
       assert body =~ ~s(rel="canonical" href="https://retrohexchat.app/")
 
       assert body =~
                ~s(rel="alternate" hreflang="pt-BR" href="https://retrohexchat.app/pt-BR")
 
       assert body =~ ~s(rel="alternate" hreflang="x-default" href="https://retrohexchat.app/")
+
+      [{"script", _attrs, [json_ld_body]}] =
+        Floki.find(document, ~s(script[type="application/ld+json"]))
+
+      assert json_ld_body |> String.trim() |> Jason.decode!() |> Map.fetch!("@type") ==
+               "SoftwareApplication"
     end
 
     test "uses English lang attribute", %{conn: conn} do
@@ -388,8 +403,37 @@ defmodule RetroHexChatWeb.LandingLiveTest do
       assert body =~ "Disallow: /p2p/"
     end
 
-    test "sitemap contains public URLs only", %{conn: conn} do
+    test "sitemap index points to chunked public sitemaps", %{conn: conn} do
       conn = get(conn, "/sitemap.xml")
+      body = response(conn, 200)
+
+      assert String.starts_with?(body, ~s(<?xml version="1.0" encoding="UTF-8"?>))
+      assert body =~ ~s(<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">)
+      assert body =~ "<loc>https://retrohexchat.app/sitemaps/public-1.xml</loc>"
+      assert [etag] = get_resp_header(conn, "etag")
+      assert String.starts_with?(etag, ~s(W/"))
+      assert get_resp_header(conn, "cache-control") == ["public, max-age=3600"]
+      refute body =~ "<urlset"
+      refute body =~ ~s(xmlns:xhtml="http://www.w3.org/1999/xhtml")
+      refute body =~ "?locale="
+    end
+
+    test "sitemap index supports conditional requests", %{conn: conn} do
+      conn = get(conn, "/sitemap.xml")
+      [etag] = get_resp_header(conn, "etag")
+
+      conn =
+        conn
+        |> recycle()
+        |> put_req_header("if-none-match", etag)
+        |> get("/sitemap.xml")
+
+      assert response(conn, 304) == ""
+      assert get_resp_header(conn, "etag") == [etag]
+    end
+
+    test "sitemap chunks contain public URLs only", %{conn: conn} do
+      conn = get(conn, "/sitemaps/public-1.xml")
       body = response(conn, 200)
 
       assert String.starts_with?(body, ~s(<?xml version="1.0" encoding="UTF-8"?>))
@@ -399,6 +443,7 @@ defmodule RetroHexChatWeb.LandingLiveTest do
       assert body =~ "<loc>https://retrohexchat.app/features</loc>"
       assert body =~ "<loc>https://retrohexchat.app/pt-BR/features</loc>"
       assert body =~ "<loc>https://retrohexchat.app/chat/help</loc>"
+      refute body =~ "<loc>https://retrohexchat.app/chat/help/welcome</loc>"
 
       assert body =~
                ~s(<xhtml:link rel="alternate" hreflang="pt-BR" href="https://retrohexchat.app/pt-BR/features" />)
@@ -411,6 +456,26 @@ defmodule RetroHexChatWeb.LandingLiveTest do
       refute body =~ "<lastmod>"
       refute body =~ "<changefreq>"
       refute body =~ "<priority>"
+    end
+
+    test "sitemap chunks support gzip responses", %{conn: conn} do
+      conn =
+        conn
+        |> put_req_header("accept-encoding", "gzip")
+        |> get("/sitemaps/public-1.xml")
+
+      body = conn |> response(200) |> :zlib.gunzip()
+
+      assert get_resp_header(conn, "content-encoding") == ["gzip"]
+      assert get_resp_header(conn, "vary") == ["accept-encoding"]
+      assert body =~ "<urlset"
+      assert body =~ "<loc>https://retrohexchat.app/chat/help</loc>"
+    end
+
+    test "unknown sitemap chunks return 404", %{conn: conn} do
+      conn = get(conn, "/sitemaps/missing.xml")
+
+      assert response(conn, 404) == "Not found"
     end
   end
 end

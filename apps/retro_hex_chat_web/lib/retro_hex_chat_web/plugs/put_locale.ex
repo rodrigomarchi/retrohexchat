@@ -69,6 +69,7 @@ defmodule RetroHexChatWeb.Plugs.PutLocale do
   end
 
   defp redirectable_public_path?("/sitemap.xml"), do: false
+  defp redirectable_public_path?("/sitemaps/" <> _name), do: false
   defp redirectable_public_path?(_path), do: true
 
   defp maybe_put_public_locale(conn, nil), do: conn

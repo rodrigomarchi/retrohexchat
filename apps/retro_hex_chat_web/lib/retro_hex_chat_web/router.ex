@@ -74,6 +74,7 @@ defmodule RetroHexChatWeb.Router do
     end
 
     get "/sitemap.xml", SitemapController, :index
+    get "/sitemaps/:name", SitemapController, :show
   end
 
   for locale_segment <- @localized_locale_segments do
