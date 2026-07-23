@@ -156,6 +156,7 @@ All icons are function components in submodules under `components/icons/`:
 | `Icons.Symbols` | Currency, stars, misc |
 | `Icons.Formatting` | Text formatting (bold, italic, etc.) — 14×14 |
 | `Icons.Games` | P2P game icons — 32×32 |
+| `Icons.Flags` | Language flags for the locale menu — 14×14 |
 
 **Adding a new icon:**
 1. Choose submodule by **what the icon depicts** (not where it's used)

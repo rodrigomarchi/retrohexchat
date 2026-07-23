@@ -26,6 +26,7 @@ defmodule RetroHexChatWeb.Icons do
   | `Icons.Symbols`  | Currency, stars, misc abstract symbols        |
   | `Icons.Formatting` | Text formatting (bold, italic, color, etc.) |
   | `Icons.Games`    | P2P game icons (32×32 pixel art)              |
+  | `Icons.Flags`    | Language flags for the locale menu (14×14)    |
 
   ## Icon Sizes
 
@@ -411,6 +412,30 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_game_soltys(assigns), to: RetroHexChatWeb.Icons.Games
   defdelegate icon_game_arcade(assigns), to: RetroHexChatWeb.Icons.Games
   defdelegate icon_game_generic(assigns), to: RetroHexChatWeb.Icons.Games
+
+  # ── Flags ──────────────────────────────────────────────
+  defdelegate flag_icon(assigns), to: RetroHexChatWeb.Icons.Flags
+  defdelegate icon_flag_en(assigns), to: RetroHexChatWeb.Icons.Flags
+  defdelegate icon_flag_pt_br(assigns), to: RetroHexChatWeb.Icons.Flags
+  defdelegate icon_flag_pt_pt(assigns), to: RetroHexChatWeb.Icons.Flags
+  defdelegate icon_flag_es(assigns), to: RetroHexChatWeb.Icons.Flags
+  defdelegate icon_flag_fr(assigns), to: RetroHexChatWeb.Icons.Flags
+  defdelegate icon_flag_de(assigns), to: RetroHexChatWeb.Icons.Flags
+  defdelegate icon_flag_ja(assigns), to: RetroHexChatWeb.Icons.Flags
+  defdelegate icon_flag_zh_hans(assigns), to: RetroHexChatWeb.Icons.Flags
+  defdelegate icon_flag_zh_hant(assigns), to: RetroHexChatWeb.Icons.Flags
+  defdelegate icon_flag_id(assigns), to: RetroHexChatWeb.Icons.Flags
+  defdelegate icon_flag_ar(assigns), to: RetroHexChatWeb.Icons.Flags
+  defdelegate icon_flag_ru(assigns), to: RetroHexChatWeb.Icons.Flags
+  defdelegate icon_flag_hi(assigns), to: RetroHexChatWeb.Icons.Flags
+  defdelegate icon_flag_ko(assigns), to: RetroHexChatWeb.Icons.Flags
+  defdelegate icon_flag_tr(assigns), to: RetroHexChatWeb.Icons.Flags
+  defdelegate icon_flag_vi(assigns), to: RetroHexChatWeb.Icons.Flags
+  defdelegate icon_flag_bn(assigns), to: RetroHexChatWeb.Icons.Flags
+  defdelegate icon_flag_ur(assigns), to: RetroHexChatWeb.Icons.Flags
+  defdelegate icon_flag_it(assigns), to: RetroHexChatWeb.Icons.Flags
+  defdelegate icon_flag_pl(assigns), to: RetroHexChatWeb.Icons.Flags
+  defdelegate icon_flag_nl(assigns), to: RetroHexChatWeb.Icons.Flags
 
   # ── New button icons (showcase design system) ──
   defdelegate icon_btn_open(assigns), to: RetroHexChatWeb.Icons.Files

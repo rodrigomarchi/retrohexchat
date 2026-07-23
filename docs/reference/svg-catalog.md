@@ -40,6 +40,39 @@ All SVGs extracted and organized in the SVG consolidation effort.
 | `icon_game_invaders` | Hex Invaders — Space Invader silhouette **[DONE]** |
 | `icon_game_generic` | Generic gamepad (fallback) **[DONE]** |
 
+### Icons.Flags (14x14)
+
+`apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/icons/flags.ex`
+
+National flags for the language menu — one per supported locale, drawn as a
+12×9 field inside a 1px outline. `flag_icon` dispatches by `locale` attr and
+falls back to the globe for unknown codes.
+
+| Function | Description |
+|----------|-------------|
+| `flag_icon` | Dispatcher by `locale` attr **[DONE]** |
+| `icon_flag_en` | United States (en) **[DONE]** |
+| `icon_flag_pt_br` | Brazil (pt_BR) **[DONE]** |
+| `icon_flag_pt_pt` | Portugal (pt_PT) **[DONE]** |
+| `icon_flag_es` | Spain (es) **[DONE]** |
+| `icon_flag_fr` | France (fr) **[DONE]** |
+| `icon_flag_de` | Germany (de) **[DONE]** |
+| `icon_flag_ja` | Japan (ja) **[DONE]** |
+| `icon_flag_zh_hans` | China (zh_hans) **[DONE]** |
+| `icon_flag_zh_hant` | Taiwan (zh_hant) **[DONE]** |
+| `icon_flag_id` | Indonesia (id) **[DONE]** |
+| `icon_flag_ar` | Saudi Arabia (ar) **[DONE]** |
+| `icon_flag_ru` | Russia (ru) **[DONE]** |
+| `icon_flag_hi` | India (hi) **[DONE]** |
+| `icon_flag_ko` | South Korea (ko) **[DONE]** |
+| `icon_flag_tr` | Turkey (tr) **[DONE]** |
+| `icon_flag_vi` | Vietnam (vi) **[DONE]** |
+| `icon_flag_bn` | Bangladesh (bn) **[DONE]** |
+| `icon_flag_ur` | Pakistan (ur) **[DONE]** |
+| `icon_flag_it` | Italy (it) **[DONE]** |
+| `icon_flag_pl` | Poland (pl) **[DONE]** |
+| `icon_flag_nl` | Netherlands (nl) **[DONE]** |
+
 ### Icons.CallControls (64x64 source, 32/64 rendered)
 
 `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/icons/call_controls.ex`

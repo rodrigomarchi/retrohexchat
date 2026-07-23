@@ -62,7 +62,7 @@ defmodule RetroHexChatWeb.Components.UI.LanguageMenu do
       class={locale.code == @current_locale && "font-bold text-text"}
       aria-current={locale.code == @current_locale && "true"}
     >
-      <:icon><Icons.icon_globe class="h-[14px] w-[14px]" /></:icon>
+      <:icon><Icons.flag_icon locale={locale.code} class="h-[14px] w-[14px]" /></:icon>
       <a
         href={locale.href}
         hreflang={locale.bcp47}

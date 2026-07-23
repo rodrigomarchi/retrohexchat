@@ -38,7 +38,9 @@ defmodule RetroHexChatWeb.ShowcaseLive.Assets.Icons do
     {RetroHexChatWeb.Icons.Formatting, dgettext("showcase", "Formatting"),
      dgettext("showcase", "Text formatting (14x14)")},
     {RetroHexChatWeb.Icons.Games, dgettext("showcase", "Games"),
-     dgettext("showcase", "P2P game icons (32x32)")}
+     dgettext("showcase", "P2P game icons (32x32)")},
+    {RetroHexChatWeb.Icons.Flags, dgettext("showcase", "Flags"),
+     dgettext("showcase", "Language flags (14x14)")}
   ]
 
   # Build a compile-time map of {module, function_name} => viewBox size
