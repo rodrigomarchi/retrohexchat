@@ -315,8 +315,7 @@ assets.setup: ## Install esbuild and Node.js dependencies
 	npm install --prefix $(WEB_APP)/assets
 
 assets.build: ## Build JS/CSS assets for development
-	mix esbuild retro_hex_chat_web
-	mix esbuild retro_hex_chat_web_css
+	cd $(WEB_APP) && mix assets.build
 
 assets.deploy: ## Build and minify assets for production
 	mix assets.deploy

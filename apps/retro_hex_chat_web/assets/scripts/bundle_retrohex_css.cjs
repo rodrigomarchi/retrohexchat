@@ -7,20 +7,46 @@ const outputDir = path.join(assetsRoot, "css", ".generated");
 const outputPath = path.join(outputDir, "retrohex.css");
 const cssRoot = path.join(assetsRoot, "css");
 
-const entry = fs.readFileSync(entryPath, "utf8");
+function bundle() {
+  const entry = fs.readFileSync(entryPath, "utf8");
 
-const bundled = entry.replace(
-  /^@import\s+"(\.\/retrohex\/[^"]+\.css)";\s*$/gm,
-  (_match, importPath) => {
-    const resolved = path.resolve(cssRoot, importPath);
+  const bundled = entry.replace(
+    /^@import\s+"(\.\/retrohex\/[^"]+\.css)";\s*$/gm,
+    (_match, importPath) => {
+      const resolved = path.resolve(cssRoot, importPath);
 
-    if (!resolved.startsWith(path.join(cssRoot, "retrohex") + path.sep)) {
-      throw new Error(`Refusing to import CSS outside source modules: ${importPath}`);
-    }
+      if (!resolved.startsWith(path.join(cssRoot, "retrohex") + path.sep)) {
+        throw new Error(`Refusing to import CSS outside source modules: ${importPath}`);
+      }
 
-    return fs.readFileSync(resolved, "utf8").trimEnd();
-  },
-);
+      return fs.readFileSync(resolved, "utf8").trimEnd();
+    },
+  );
 
-fs.mkdirSync(outputDir, { recursive: true });
-fs.writeFileSync(outputPath, `${bundled.trimEnd()}\n`);
+  fs.mkdirSync(outputDir, { recursive: true });
+  fs.writeFileSync(outputPath, `${bundled.trimEnd()}\n`);
+}
+
+bundle();
+
+// `--watch` keeps the generated bundle in sync while the dev server runs, so
+// Tailwind's own watcher always reads an entrypoint with the source modules
+// already inlined.
+if (process.argv.includes("--watch")) {
+  let pending = null;
+
+  const rebuild = () => {
+    clearTimeout(pending);
+    pending = setTimeout(() => {
+      try {
+        bundle();
+        console.log("[bundle_retrohex_css] rebuilt css/.generated/retrohex.css");
+      } catch (error) {
+        console.error(`[bundle_retrohex_css] ${error.message}`);
+      }
+    }, 50);
+  };
+
+  fs.watch(entryPath, rebuild);
+  fs.watch(path.join(cssRoot, "retrohex"), { recursive: true }, rebuild);
+}
