@@ -33,7 +33,8 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanelTest do
 
     assert html =~ ~s(data-testid="p2p-call-panel")
     assert html =~ ~s(data-testid="p2p-call-disconnected")
-    assert html =~ "Connect to start"
+    assert html =~ "Waiting for peer"
+    assert html =~ "Call controls become available"
     refute html =~ ~s(phx-hook="LobbyMediaHook")
   end
 

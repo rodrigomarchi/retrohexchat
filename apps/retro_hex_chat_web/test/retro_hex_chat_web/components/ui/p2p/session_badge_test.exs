@@ -6,6 +6,40 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadgeTest do
 
   @moduletag :unit
 
+  test "renders an idle PM entry that starts a P2P session for the peer" do
+    html =
+      render_component(&p2p_peer_entry/1,
+        peer: "alice",
+        current: true,
+        session: %{state: :idle, peer_nick: "alice"}
+      )
+
+    assert html =~ ~s(data-testid="p2p-peer-entry")
+    assert html =~ ~s(data-p2p-state="idle")
+    assert html =~ ~s(data-p2p-status="idle")
+    assert html =~ ~s(phx-click="p2p_start_pm_session")
+    assert html =~ ~s(phx-value-peer="alice")
+    assert html =~ "P2P"
+  end
+
+  test "renders a received pending request with header join and decline actions" do
+    html =
+      render_component(&p2p_peer_entry/1,
+        peer: "alice",
+        current: true,
+        session: %{state: :pending_received, role: :peer, token: "tok123", peer_nick: "alice"}
+      )
+
+    assert html =~ ~s(data-testid="p2p-peer-entry")
+    assert html =~ ~s(data-p2p-state="pending")
+    assert html =~ ~s(data-p2p-status="invite")
+    assert html =~ ~s(data-testid="p2p-peer-join")
+    assert html =~ ~s(phx-click="p2p_accept_invite")
+    assert html =~ ~s(phx-value-token="tok123")
+    assert html =~ ~s(data-testid="p2p-peer-decline")
+    assert html =~ ~s(phx-click="p2p_decline_invite")
+  end
+
   test "renders the rich PM entry with live facets and actions" do
     html =
       render_component(&p2p_peer_entry/1,

@@ -326,8 +326,8 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SetupDialog do
   defp outgoing?(_setup), do: false
 
   @spec setup_title(boolean()) :: String.t()
-  defp setup_title(true), do: dgettext("p2p", "Prepare P2P Invite")
-  defp setup_title(false), do: dgettext("p2p", "Start P2P Session")
+  defp setup_title(true), do: dgettext("p2p", "Start P2P Session")
+  defp setup_title(false), do: dgettext("p2p", "Join P2P Session")
 
   @spec setup_description(boolean()) :: String.t()
   defp setup_description(true) do

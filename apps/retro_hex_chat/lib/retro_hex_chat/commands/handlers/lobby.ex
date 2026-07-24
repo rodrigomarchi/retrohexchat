@@ -1,5 +1,5 @@
 defmodule RetroHexChat.Commands.Handlers.Lobby do
-  @moduledoc "Handler for /p2p <nickname> — open a P2P lobby (all features at once)."
+  @moduledoc "Handler for /p2p <nickname> — open a P2P session (all features at once)."
   use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
@@ -42,7 +42,7 @@ defmodule RetroHexChat.Commands.Handlers.Lobby do
       description:
         dgettext(
           "commands",
-          "Open a P2P lobby with another user: one persistent connection that runs an audio/video call, file transfers, and games all at the same time.\nRequires: both users must be registered and identified (/ns identify)."
+          "Open a P2P session with another user: one persistent connection that runs an audio/video call, file transfers, and games all at the same time.\nRequires: both users must be registered and identified (/ns identify)."
         ),
       examples: [dgettext("commands", "/p2p mario")]
     }
@@ -63,7 +63,7 @@ defmodule RetroHexChat.Commands.Handlers.Lobby do
       description:
         dgettext(
           "commands",
-          "Open a P2P lobby that hosts calls, file transfers, and games together over one connection.\nRequires: both users must be registered and identified (/ns identify)."
+          "Open a P2P session that hosts calls, file transfers, and games together over one connection.\nRequires: both users must be registered and identified (/ns identify)."
         ),
       category: :user,
       parameters: [
@@ -86,7 +86,7 @@ defmodule RetroHexChat.Commands.Handlers.Lobby do
 
   defp validate_not_self(target, %{nickname: nick}) do
     if String.downcase(target) == String.downcase(nick) do
-      {:error, dgettext("commands", "You cannot open a lobby with yourself.")}
+      {:error, dgettext("commands", "You cannot start a P2P session with yourself.")}
     else
       :ok
     end

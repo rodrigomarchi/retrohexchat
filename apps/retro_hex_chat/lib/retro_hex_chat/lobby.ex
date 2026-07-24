@@ -69,7 +69,7 @@ defmodule RetroHexChat.Lobby do
   end
 
   @doc """
-  Resolves a lobby session into a `t:summary/0` for rendering a rich invite card
+  Resolves a lobby session into a `t:summary/0` for transcript summaries
   (creator/peer nicks, lifecycle timestamps, duration and close reason).
   """
   @spec session_summary(String.t()) :: {:ok, summary()} | {:error, :not_found}
@@ -118,6 +118,27 @@ defmodule RetroHexChat.Lobby do
   def active_session_for_user(user_id) do
     user_id |> Queries.active_sessions_for_user() |> List.first()
   end
+
+  @doc """
+  Returns the most recent non-terminal P2P session between two registered nicks.
+
+  Used by the chat PM chrome to expose pending requests without depending on
+  the invite message currently being visible in the transcript.
+  """
+  @spec active_session_between_nicks(String.t(), String.t()) :: Session.t() | nil
+  def active_session_between_nicks(nick_a, nick_b)
+      when is_binary(nick_a) and is_binary(nick_b) do
+    with %{id: user_a_id} <- ServiceQueries.find_by_nickname(nick_a),
+         %{id: user_b_id} <- ServiceQueries.find_by_nickname(nick_b) do
+      user_a_id
+      |> Queries.active_sessions_between(user_b_id)
+      |> List.first()
+    else
+      _ -> nil
+    end
+  end
+
+  def active_session_between_nicks(_nick_a, _nick_b), do: nil
 
   @spec mark_webrtc_ready(String.t(), integer()) :: :ok | {:error, atom()}
   defdelegate mark_webrtc_ready(token, user_id), to: SessionServer

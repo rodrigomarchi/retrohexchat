@@ -772,6 +772,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
       group_call_prejoin: nil,
       group_call_prejoin_preferences: nil,
       p2p_session: nil,
+      p2p_pm_sessions: %{},
       p2p_pending: nil,
       p2p_setup: nil,
       arcade_session: nil,
@@ -995,4 +996,18 @@ defmodule RetroHexChatWeb.App.ChatLive do
   end
 
   defp p2p_session_for_active_pm(_p2p, _active_pm), do: nil
+
+  defp p2p_pm_session_for_active_pm(pm_sessions, active_pm)
+       when is_map(pm_sessions) and is_binary(active_pm) do
+    Map.get(pm_sessions, String.downcase(active_pm))
+  end
+
+  defp p2p_pm_session_for_active_pm(_pm_sessions, _active_pm), do: nil
+
+  defp p2p_idle_session_for_active_pm(%{active_pm: active_pm, identified: true})
+       when is_binary(active_pm) and active_pm != "" do
+    %{state: :idle, peer_nick: active_pm, role: :idle}
+  end
+
+  defp p2p_idle_session_for_active_pm(_session), do: nil
 end

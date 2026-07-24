@@ -1,6 +1,6 @@
 # Media sessions P2P + conferencia - estado atual
 
-Data: 2026-07-17
+Data: 2026-07-24
 
 Este documento e a fonte operacional curta para P2P e conferencia depois da
 unificacao mobile-first. Use este arquivo para implementacao, revisao e
@@ -18,6 +18,15 @@ ser tratados como historico, mesmo quando seus nomes mencionarem "atual".
   top-level independentes.
 - Estatisticas da conferencia sao uma secao da janela da conferencia, nao uma
   janela/dock separado.
+- P2P usa a mesma logica conceitual da conferencia: a acao vive no contexto da
+  conversa/sessao, nao em um card solto no transcript.
+- O PM mostra uma entrada `P2P` no topic/header quando pode iniciar, quando ha
+  request pendente, e quando a sessao esta conectada.
+- Convites P2P modernos sao request lines no PM. Start/Join/Decline ficam no
+  header do PM; cards acionaveis de P2P nao fazem parte do fluxo atual.
+- O criador ve o `P2P Session Console` imediatamente apos enviar a request
+  (`invite_sent`). O anchor WebRTC (`p2p-webrtc`) continua desmontado ate o
+  aceite, para nao iniciar signaling antes do consentimento do peer.
 
 ## Superficies vivas
 
@@ -30,6 +39,8 @@ ser tratados como historico, mesmo quando seus nomes mencionarem "atual".
 
 P2P:
 
+- `p2p_start_pm_session` inicia P2P a partir do PM header usando as mesmas
+  validacoes do `/p2p`.
 - `p2p_console_select` seleciona a secao da sessao.
 - `open_p2p_console/2` abre/foca `p2p-call` e grava a secao ativa.
 - Entradas de menu/Start para Files, Games e Stats devem apontar para
@@ -56,6 +67,9 @@ Nao reintroduzir estes caminhos sem uma decisao explicita de produto:
 - `group-call-stats`
 - `group-call-stats-window`
 - `group-call-dock-stats`
+- card acionavel de convite P2P no transcript
+- componente legado `P2PInviteCard`
+- enriquecimento `SessionCard.enrich/1` para `:p2p_invite`
 
 Seletores como `p2p-stats-*`, `p2p-files-*`, `p2p-games-*` e
 `group-call-stats-*` ainda podem existir como test IDs internos das secoes. Eles
@@ -71,6 +85,8 @@ nao sao evidencia de janelas legadas.
   `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live/windows.ex`.
 - A navegacao compartilhada por secoes fica em
   `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/ui/media_session/section_nav.ex`.
+- O fluxo E2E P2P atual fica em `e2e/tests/chat-p2p.spec.ts` e salva capturas
+  visuais em `e2e/test-results/p2p-flow-conference-parity/`.
 
 ## Guardrail para trabalho futuro
 

@@ -85,6 +85,41 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRowTest do
     assert notice =~ "notice text"
   end
 
+  test "renders P2P invite messages as a plain request line without card actions" do
+    html =
+      row(
+        %{
+          id: "p2p1",
+          author: "alice",
+          content: "P2P session invite - accept it on this card. /lobby/tok123",
+          type: :p2p_invite,
+          timestamp: @ts,
+          session_card: %{
+            kind: :lobby,
+            token: "tok123",
+            status: "pending",
+            terminal?: false,
+            created_by: "alice",
+            peer: "bob",
+            created_at: @ts,
+            connected_at: nil,
+            closed_at: nil,
+            closed_reason: nil,
+            duration_seconds: nil
+          }
+        },
+        %{viewer: "bob"}
+      )
+
+    assert html =~ "P2P request"
+    assert html =~ "Use the P2P control in this private message."
+    refute html =~ ~s(data-testid="session-card")
+    refute html =~ ~s(data-testid="p2p-invite-card")
+    refute html =~ "session-card-accept"
+    refute html =~ "session-card-decline"
+    refute html =~ "/lobby/tok123"
+  end
+
   test "renders a deleted placeholder instead of content" do
     html =
       row(%{

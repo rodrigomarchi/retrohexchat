@@ -4,7 +4,7 @@ defmodule RetroHexChatWeb.Components.UI.NicklistContextMenu do
 
   Composed from ContextMenu primitives. Supports:
   - PM, Whois, Add to Contacts, Set Nick Color, Ignore/Unignore
-  - P2P Lobby (if identified)
+  - P2P Session (if identified)
   - Operator actions: Kick, Ban, Give/Remove Op, Give/Remove Voice, Mute/Unmute
   - Custom nicklist menu items
   - Inline nick color picker sub-panel
@@ -130,7 +130,7 @@ defmodule RetroHexChatWeb.Components.UI.NicklistContextMenu do
         {if @is_target_ignored, do: dgettext("chat", "Unignore"), else: dgettext("chat", "Ignore")}
       </.context_menu_item>
 
-      <%!-- P2P lobby (only if viewer is identified) --%>
+      <%!-- P2P session (only if viewer is identified) --%>
       <.context_menu_separator :if={@viewer_is_identified && !@is_target_self} />
       <.context_menu_item
         :if={@viewer_is_identified && !@is_target_self}
@@ -139,7 +139,7 @@ defmodule RetroHexChatWeb.Components.UI.NicklistContextMenu do
         phx-value-nick={@target_nick}
       >
         <:icon><Icons.icon_protocol_p2p_compact class="w-[14px] h-[14px]" /></:icon>
-        {dgettext("chat", "P2P Lobby")}
+        {dgettext("chat", "P2P Session")}
       </.context_menu_item>
 
       <%!-- Op actions (only if viewer is op and not targeting self) --%>

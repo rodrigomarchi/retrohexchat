@@ -1,4 +1,5 @@
 import { test, expect, Page } from "@playwright/test";
+import { mkdirSync } from "node:fs";
 import {
   newP2PUser,
   closeP2PUsers,
@@ -6,9 +7,9 @@ import {
 } from "../helpers/p2pFlows";
 
 /**
- * In-chat P2P sessions (docs/plans/p2p-chat-integracao.md): the invite card
- * in the PM, accept/decline in place, the status-bar session area, and the
- * real WebRTC link established WITHOUT ever leaving /chat.
+ * In-chat P2P sessions (docs/plans/p2p-fluxo-como-conferencia.md): PM header
+ * entry, accept/decline in place, the status-bar session area, and the real
+ * WebRTC link established WITHOUT ever leaving /chat.
  */
 
 function statusBarP2P(page: Page) {
@@ -17,6 +18,13 @@ function statusBarP2P(page: Page) {
 
 function statusBarStop(page: Page) {
   return page.getByTestId("status-bar-p2p-stop");
+}
+
+const p2pFlowScreenshotDir = "test-results/p2p-flow-conference-parity";
+
+function p2pFlowScreenshot(name: string) {
+  mkdirSync(p2pFlowScreenshotDir, { recursive: true });
+  return `${p2pFlowScreenshotDir}/${name}.png`;
 }
 
 async function reportP2PRecoveryState(
@@ -259,13 +267,25 @@ async function sendP2PInvite(user: P2PTestUser, targetNick: string) {
     "Send invite",
   );
   await user.page.getByTestId("p2p-setup-accept").click();
+  await expect(user.page.getByTestId("p2p-call-window")).toBeVisible();
+  await expect(user.page.getByTestId("p2p-session-console")).toBeVisible();
+  await expect(user.page.getByTestId("p2p-call-disconnected")).toContainText(
+    "Waiting for peer",
+  );
+  await expect(user.page.getByTestId("p2p-webrtc")).toBeHidden();
 }
 
 async function acceptP2PInvite(
   page: Page,
   options: { audio?: boolean; video?: boolean } = {},
 ) {
-  await page.getByTestId("session-card-accept").click();
+  await expect(page.getByTestId("p2p-peer-entry")).toHaveAttribute(
+    "data-p2p-state",
+    "pending",
+  );
+  await expect(page.getByTestId("session-card-accept")).toHaveCount(0);
+  await expect(page.getByTestId("session-card-decline")).toHaveCount(0);
+  await page.getByTestId("p2p-peer-join").click();
   await expect(page.getByTestId("p2p-setup-accept")).toBeVisible();
   await expect(page.getByTestId("p2p-setup-preview")).toBeVisible();
 
@@ -301,6 +321,47 @@ async function remoteVideoLive(page: Page) {
     const stream = v?.srcObject as any;
     const track = stream?.getVideoTracks?.()[0];
     return !!track && track.readyState === "live" && track.muted === false;
+  });
+}
+
+async function remoteVideoHasVisibleFrame(page: Page) {
+  return page.evaluate(() => {
+    const video = document.getElementById(
+      "lobby-remote-video",
+    ) as HTMLVideoElement | null;
+
+    if (
+      !video ||
+      video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA ||
+      video.videoWidth === 0 ||
+      video.videoHeight === 0
+    ) {
+      return false;
+    }
+
+    const canvas = document.createElement("canvas");
+    canvas.width = 32;
+    canvas.height = 18;
+    const context = canvas.getContext("2d", { willReadFrequently: true });
+    if (!context) return false;
+
+    try {
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+      const { data } = context.getImageData(0, 0, canvas.width, canvas.height);
+      let visiblePixels = 0;
+
+      for (let index = 0; index < data.length; index += 4) {
+        const red = data[index] ?? 0;
+        const green = data[index + 1] ?? 0;
+        const blue = data[index + 2] ?? 0;
+
+        if (red + green + blue > 45) visiblePixels += 1;
+      }
+
+      return visiblePixels > 8;
+    } catch {
+      return false;
+    }
   });
 }
 
@@ -340,7 +401,7 @@ async function remoteVideoIdentity(page: Page) {
 }
 
 test.describe("In-chat P2P session", () => {
-  test("accepting the PM card connects both peers inside the chat", async ({
+  test("accepting from the PM header connects both peers inside the chat", async ({
     browser,
   }) => {
     const alice = await newP2PUser(browser, "callermax", { media: true });
@@ -350,8 +411,22 @@ test.describe("In-chat P2P session", () => {
       await sendP2PInvite(alice, bob.nick);
       await expect(statusBarP2P(alice.page)).toContainText("waiting for");
 
-      // Bob accepts right on the PM card — no page navigation.
+      const pendingImage = await alice.page
+        .getByTestId("p2p-call-window")
+        .screenshot({ path: p2pFlowScreenshot("p2p-pending-console") });
+      expect(pendingImage.byteLength).toBeGreaterThan(8_000);
+
+      // Bob receives the PM tab in the background, then accepts from the PM
+      // header — no page navigation and no actionable transcript card.
       await bob.chat.expectTabVisible(alice.nick);
+      await expect(bob.chat.tab(alice.nick)).toHaveAttribute(
+        "data-unread",
+        "true",
+      );
+      await expect(bob.chat.tab(alice.nick)).not.toHaveAttribute(
+        "aria-selected",
+        "true",
+      );
       await bob.chat.switchToTab(alice.nick);
       await acceptP2PInvite(bob.page);
 
@@ -378,6 +453,14 @@ test.describe("In-chat P2P session", () => {
         ).toBeVisible({ timeout: 20_000 });
       }
 
+      await expect
+        .poll(() => remoteVideoHasVisibleFrame(alice.page), { timeout: 20_000 })
+        .toBe(true);
+      const connectedImage = await alice.page
+        .getByTestId("p2p-call-window")
+        .screenshot({ path: p2pFlowScreenshot("p2p-connected-desktop") });
+      expect(connectedImage.byteLength).toBeGreaterThan(8_000);
+
       await alice.page.setViewportSize({ width: 768, height: 1024 });
       await expectP2PConsoleLayoutStable(alice.page);
       await expectMediaSessionHeadersStable(alice.page, "p2p-session-console");
@@ -385,6 +468,13 @@ test.describe("In-chat P2P session", () => {
       await expectMobileSectionNavCue(alice.page, "p2p-console-nav");
       await expectP2PConsoleLayoutStable(alice.page);
       await expectMediaSessionHeadersStable(alice.page, "p2p-session-console");
+      await expect
+        .poll(() => remoteVideoHasVisibleFrame(alice.page), { timeout: 10_000 })
+        .toBe(true);
+      const mobileImage = await alice.page
+        .getByTestId("p2p-call-window")
+        .screenshot({ path: p2pFlowScreenshot("p2p-connected-mobile") });
+      expect(mobileImage.byteLength).toBeGreaterThan(8_000);
       await alice.page.setViewportSize({ width: 1280, height: 720 });
       await expectP2PConsoleLayoutStable(alice.page);
       await expectMediaSessionHeadersStable(alice.page, "p2p-session-console");
@@ -423,6 +513,8 @@ test.describe("In-chat P2P session", () => {
   test("the auto-started call carries real video both ways; file and game share the connection", async ({
     browser,
   }) => {
+    test.setTimeout(75_000);
+
     const alice = await newP2PUser(browser, "cpg", {
       media: true,
       acceptDownloads: true,
@@ -609,6 +701,8 @@ test.describe("In-chat P2P session", () => {
   test("screen share marks the peer tile and the P2P stats video source", async ({
     browser,
   }) => {
+    test.setTimeout(75_000);
+
     const alice = await newP2PUser(browser, "cpi", { media: true });
     const bob = await newP2PUser(browser, "cpj", { media: true });
 
@@ -794,7 +888,7 @@ test.describe("In-chat P2P session", () => {
 
       await bob.chat.expectTabVisible(alice.nick);
       await bob.chat.switchToTab(alice.nick);
-      await bob.page.getByTestId("session-card-decline").click();
+      await bob.page.getByTestId("p2p-peer-decline").click();
 
       await alice.chat.expectMessageVisible("declined the P2P invite");
       await expect(statusBarP2P(alice.page)).toBeHidden();

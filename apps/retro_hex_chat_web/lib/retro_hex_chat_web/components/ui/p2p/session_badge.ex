@@ -18,6 +18,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
   attr :on_open_call, :any, default: "p2p_console_select"
   attr :on_open_stats, :any, default: "p2p_console_select"
   attr :on_stop, :any, default: "p2p_statusbar_stop"
+  attr :on_start, :any, default: "p2p_start_pm_session"
   attr :class, :any, default: nil
 
   @spec p2p_peer_entry(map()) :: Phoenix.LiveView.Rendered.t()
@@ -32,7 +33,9 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
     >
       <button
         type="button"
-        phx-click={@on_open}
+        phx-click={@primary_event}
+        phx-value-peer={@primary_peer}
+        phx-value-token={@primary_token}
         class={[
           "flex h-6 items-center justify-center gap-1 px-2 py-0 shadow-retro-raised bg-surface text-xs whitespace-nowrap",
           "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground",
@@ -82,6 +85,33 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
             />
           </span>
         </span>
+      </button>
+
+      <button
+        :if={@pending_received?}
+        type="button"
+        phx-click="p2p_accept_invite"
+        phx-value-token={@token}
+        disabled={is_nil(@token)}
+        class="flex h-6 items-center justify-center gap-1 px-2 py-0 shadow-retro-raised bg-surface text-xs font-bold text-primary focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground disabled:opacity-50"
+        data-testid="p2p-peer-join"
+      >
+        <Icons.icon_btn_join class="h-3.5 w-3.5" />
+        <span>{dgettext("p2p", "Join")}</span>
+      </button>
+
+      <button
+        :if={@pending_received?}
+        type="button"
+        phx-click="p2p_decline_invite"
+        phx-value-token={@token}
+        disabled={is_nil(@token)}
+        class="flex h-6 w-6 items-center justify-center shadow-retro-raised bg-surface text-destructive focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground disabled:opacity-50"
+        title={dgettext("p2p", "Decline P2P request")}
+        aria-label={dgettext("p2p", "Decline P2P request")}
+        data-testid="p2p-peer-decline"
+      >
+        <Icons.icon_reject class="h-3.5 w-3.5" />
       </button>
 
       <details class="relative h-6">
@@ -155,7 +185,42 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
 
           <div class="mt-2 grid grid-cols-2 gap-1">
             <button
-              :if={@status != :invite}
+              :if={@idle?}
+              type="button"
+              phx-click={@on_start}
+              phx-value-peer={@peer}
+              class="col-span-2 flex h-6 items-center justify-center gap-1 shadow-retro-raised bg-surface px-2 text-xs font-bold focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
+              data-testid="p2p-peer-start"
+            >
+              <Icons.icon_btn_join class="h-3.5 w-3.5" />
+              <span>{dgettext("p2p", "Start")}</span>
+            </button>
+            <button
+              :if={@pending_received?}
+              type="button"
+              phx-click="p2p_accept_invite"
+              phx-value-token={@token}
+              disabled={is_nil(@token)}
+              class="flex h-6 items-center justify-center gap-1 shadow-retro-raised bg-surface px-2 text-xs font-bold focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground disabled:opacity-50"
+              data-testid="p2p-peer-popover-join"
+            >
+              <Icons.icon_btn_join class="h-3.5 w-3.5" />
+              <span>{dgettext("p2p", "Join")}</span>
+            </button>
+            <button
+              :if={@pending_received?}
+              type="button"
+              phx-click="p2p_decline_invite"
+              phx-value-token={@token}
+              disabled={is_nil(@token)}
+              class="flex h-6 items-center justify-center gap-1 shadow-retro-raised bg-surface px-2 text-xs font-bold text-destructive focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground disabled:opacity-50"
+              data-testid="p2p-peer-popover-decline"
+            >
+              <Icons.icon_reject class="h-3.5 w-3.5" />
+              <span>{dgettext("p2p", "Decline")}</span>
+            </button>
+            <button
+              :if={!@idle? && !@pending_received?}
               type="button"
               phx-click={@on_open_call}
               phx-value-section="call"
@@ -166,6 +231,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
               <span>{dgettext("p2p", "Call")}</span>
             </button>
             <button
+              :if={!@idle? && !@pending_received?}
               type="button"
               phx-click={@on_open_stats}
               phx-value-section="stats"
@@ -176,6 +242,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
               <span>{dgettext("p2p", "Stats")}</span>
             </button>
             <button
+              :if={!@idle? && !@pending_received?}
               type="button"
               phx-click={@on_open}
               class="flex h-6 items-center justify-center gap-1 shadow-retro-raised bg-surface px-2 text-xs font-bold focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
@@ -185,6 +252,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
               <span>{dgettext("p2p", "Focus")}</span>
             </button>
             <button
+              :if={!@idle? && !@pending_received?}
               type="button"
               phx-click={@on_stop}
               class="flex h-6 items-center justify-center gap-1 shadow-retro-raised bg-surface px-2 text-xs font-bold text-destructive focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
@@ -280,6 +348,8 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
   defp assign_session(assigns) do
     session = normalize_session(assigns[:session], assigns[:state])
     state = value(session, :state)
+    role = value(session, :role)
+    token = value(session, :token)
     facets = facets(session)
     activity_facets = Enum.reject(facets, &(&1 == :relay))
     status = status(state, activity_facets)
@@ -287,10 +357,15 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
     quality_label = value(value(session, :call_summary), :quality_label)
     duration = value(value(session, :call_summary), :duration)
     turn_only = value(session, :turn_only) == true and value(session, :turn_configured) == true
+    idle? = state in [:idle, "idle"]
+    pending_received? = pending_received?(state, role)
 
     assigns
     |> assign(:session_data, session)
     |> assign(:active, session != nil)
+    |> assign(:idle?, idle?)
+    |> assign(:pending_received?, pending_received?)
+    |> assign(:token, token)
     |> assign(:facets, facets)
     |> assign(:status, status)
     |> assign(:visual_state, visual_state)
@@ -298,12 +373,32 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
     |> assign(:duration, duration)
     |> assign(:turn_only, turn_only)
     |> assign(:title, title(assigns.peer, status, facets))
+    |> assign(:primary_event, primary_event(assigns, idle?, pending_received?))
+    |> assign(:primary_peer, if(idle?, do: assigns.peer))
+    |> assign(:primary_token, if(pending_received?, do: token))
   end
 
   defp normalize_session(nil, nil), do: nil
   defp normalize_session(nil, state), do: %{state: state}
   defp normalize_session(session, _state) when is_map(session), do: session
 
+  defp pending_received?(state, role) do
+    state in [:pending_received, "pending_received"] or
+      (state in [:pending, "pending"] and role in [:peer, "peer"])
+  end
+
+  defp primary_event(assigns, true = _idle?, _pending_received?),
+    do: Map.get(assigns, :on_start, "p2p_start_pm_session")
+
+  defp primary_event(_assigns, _idle?, true = _pending_received?), do: "p2p_accept_invite"
+
+  defp primary_event(assigns, _idle?, _pending_received?),
+    do: Map.get(assigns, :on_open, "p2p_statusbar_click")
+
+  defp status(:idle, _activity_facets), do: :idle
+  defp status("idle", _activity_facets), do: :idle
+  defp status(:pending_received, _activity_facets), do: :invite
+  defp status("pending_received", _activity_facets), do: :invite
   defp status(:invite_sent, _activity_facets), do: :invite
   defp status("pending", _activity_facets), do: :invite
   defp status(:connected, []), do: :ready
@@ -312,6 +407,10 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
   defp status("connected", _activity_facets), do: :live
   defp status(_state, _activity_facets), do: :link
 
+  defp visual_state(:idle), do: "idle"
+  defp visual_state("idle"), do: "idle"
+  defp visual_state(:pending_received), do: "pending"
+  defp visual_state("pending_received"), do: "pending"
   defp visual_state(:invite_sent), do: "pending"
   defp visual_state("pending"), do: "pending"
   defp visual_state(:connected), do: "connected"
@@ -344,6 +443,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
   defp maybe_add_facet(facets, facet, true), do: facets ++ [facet]
   defp maybe_add_facet(facets, _facet, _false), do: facets
 
+  defp status_label(:idle), do: dgettext("p2p", "Ready")
   defp status_label(:invite), do: dgettext("p2p", "Invite")
   defp status_label(:link), do: dgettext("p2p", "Link")
   defp status_label(:live), do: dgettext("p2p", "Live")
@@ -353,6 +453,9 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
   defp facet_label(:file), do: dgettext("p2p", "Files")
   defp facet_label(:game), do: dgettext("p2p", "Game")
   defp facet_label(:relay), do: dgettext("p2p", "Relay")
+
+  defp title(peer, :idle, _facets),
+    do: dgettext("p2p", "Start P2P session with %{peer}", peer: peer)
 
   defp title(_peer, :invite, _facets), do: dgettext("chat", "P2P invite pending")
   defp title(_peer, :link, _facets), do: dgettext("chat", "P2P session connecting")
@@ -384,11 +487,13 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
   defp transport_label(true), do: dgettext("p2p", "Privacy relay")
   defp transport_label(_false), do: dgettext("p2p", "Direct or relay")
 
+  defp status_class(:idle), do: "border border-primary text-primary"
   defp status_class(:invite), do: "border border-warning text-warning"
   defp status_class(:link), do: "border border-warning-alt text-warning-alt"
   defp status_class(:live), do: "border border-success text-success"
   defp status_class(:ready), do: "border border-primary text-primary"
 
+  defp dot_class(:idle), do: "bg-primary"
   defp dot_class(:invite), do: "bg-warning"
   defp dot_class(:link), do: "bg-warning-alt"
   defp dot_class(:live), do: "bg-success"

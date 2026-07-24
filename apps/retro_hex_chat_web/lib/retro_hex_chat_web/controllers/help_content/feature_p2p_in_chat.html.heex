@@ -8,7 +8,7 @@
 <p>
   {dgettext(
     "help_p2p",
-    "Type /p2p <nick> (or use the nicklist context menu) to open setup before sending an invite. Confirming setup sends the invite card in the private message; the invited person clicks Accept to start their own setup and join in place, or Decline to refuse — the inviter is told either way."
+    "Type /p2p <nick> (or use the P2P control in the PM header/nicklist context menu) to open setup before sending a request. Confirming setup opens your P2P Session Console immediately and sends a P2P request line in the private message. The invited person's PM tab opens in the background with Join and Decline in the PM header, so they can respond in place without a separate lobby link."
   )}
 </p>
 <p>
@@ -28,7 +28,7 @@
 <p>
   {dgettext(
     "help_p2p",
-    "Messages during the session are regular private messages, saved like any other. Session events — connected, file received, game score, who ended it — are written into the PM history as P2P lines, so the story of the session survives it. While a session exists, the peer's PM tab, PM sidebar row and PM topic bar show the same P2P indicator family used by channel conferences, with state and active call/file/game/relay facets."
+    "Messages during the session are regular private messages, saved like any other. Session events — request sent, connected, file received, game score, who ended it — are written into the PM history as P2P lines, so the story of the session survives it without turning the transcript into a control surface. While a session exists, the peer's PM tab, PM sidebar row and PM topic bar show the same P2P indicator family used by channel conferences, with state and active call/file/game/relay facets."
   )}
 </p>
 <.help_h4 icon={:icon_p2p}>{dgettext("help_p2p", "The Status Bar Area")}</.help_h4>
@@ -68,7 +68,7 @@
 <.help_h4 icon={:icon_link}>{dgettext("help_p2p", "See Also")}</.help_h4>
 <p>
   <.help_link topic="cmd-p2p">{dgettext("help_p2p", "/p2p")}</.help_link>
-  · <.help_link topic="feature-universal-lobby">{dgettext("help_p2p", "P2P Lobby")}</.help_link>
+  · <.help_link topic="feature-universal-lobby">{dgettext("help_p2p", "P2P Session")}</.help_link>
   · <.help_link topic="feature-video-call">{dgettext("help_p2p", "Video Call")}</.help_link>
   · <.help_link topic="feature-file-transfer">{dgettext("help_p2p", "File Transfer")}</.help_link>
 </p>

@@ -12,8 +12,6 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
   import RetroHexChatWeb.Components.UI.InlineHelpCard
   import RetroHexChatWeb.Components.UI.MessageIndicators
   import RetroHexChatWeb.Components.UI.MessageReplyBlock
-  import RetroHexChatWeb.Components.UI.P2PInviteCard
-  import RetroHexChatWeb.Components.UI.SessionCard
 
   alias RetroHexChatWeb.App.ChatHelpers
 
@@ -22,7 +20,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
   attr :timestamp_format, :atom, required: true
   attr :timezone, :string, required: true
   attr :strip_formatting, :boolean, required: true
-  attr :viewer, :string, default: nil, doc: "Viewing user's nickname (P2P invite cards)"
+  attr :viewer, :string, default: nil, doc: "Legacy caller compatibility"
 
   @spec message_row_body(map()) :: Phoenix.LiveView.Rendered.t()
   def message_row_body(assigns) do
@@ -111,19 +109,13 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
         <.chat_message
           timestamp={ChatHelpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}
           meta_title={ChatHelpers.format_datetime(@msg.timestamp, @timezone)}
-          nick={@msg.author}
-          nick_color={@nick_color_fn.(@msg.author)}
+          source={dgettext("chat", "P2P")}
+          type="system"
         >
-          <.session_card
-            :if={Map.get(@msg, :session_card)}
-            card={@msg.session_card}
-            timezone={@timezone}
-            viewer={@viewer}
-          />
-          <.p2p_invite_card
-            :if={!Map.get(@msg, :session_card)}
-            label={ChatHelpers.extract_p2p_label(@msg.content)}
-          />
+          * {dgettext("chat", "P2P request")}
+          <span class="text-muted-foreground">
+            {dgettext("chat", "Use the P2P control in this private message.")}
+          </span>
         </.chat_message>
       <% _ -> %>
         <.message_reply_block

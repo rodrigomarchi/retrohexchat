@@ -134,8 +134,7 @@ defmodule RetroHexChat.Chat.Queries do
 
   @doc """
   The most recent P2P invite message between the pair referencing the given
-  session token — the row a live invite card re-renders from when the session
-  state changes.
+  session token — the transcript row refreshed when the session state changes.
   """
   @spec get_p2p_invite_between(String.t(), String.t(), String.t()) :: PrivateMessage.t() | nil
   def get_p2p_invite_between(nick_a, nick_b, token) do

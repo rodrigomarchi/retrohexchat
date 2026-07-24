@@ -139,6 +139,98 @@ describe("LobbyMediaHook auto-join", () => {
     expect(hook.videoOn).toBe(true);
   });
 
+  it("queues auto-start media until the peer connection is ready", async () => {
+    const ctx = setup();
+    hook = ctx.hook;
+
+    const audioTrack = { kind: "audio", enabled: true, stop: vi.fn() };
+    const videoTrack = { kind: "video", enabled: true, stop: vi.fn() };
+    const stream = {
+      getTracks: vi.fn(() => [audioTrack, videoTrack]),
+      getAudioTracks: vi.fn(() => [audioTrack]),
+      getVideoTracks: vi.fn(() => [videoTrack]),
+    };
+
+    Object.defineProperty(navigator, "mediaDevices", {
+      configurable: true,
+      value: {
+        getUserMedia: vi.fn().mockResolvedValue(stream),
+        enumerateDevices: vi.fn(async () => []),
+      },
+    });
+
+    await hook._startCall("video", { auto: true });
+    expect(navigator.mediaDevices.getUserMedia).not.toHaveBeenCalled();
+
+    const pc = {
+      addTrack: vi.fn((track) => ({ track })),
+      getTransceivers: vi.fn(() => []),
+    };
+
+    hook._handlePcReady(pc);
+
+    await vi.waitFor(() => {
+      expect(navigator.mediaDevices.getUserMedia).toHaveBeenCalled();
+      expect(pc.addTrack).toHaveBeenCalledWith(audioTrack, stream);
+      expect(pc.addTrack).toHaveBeenCalledWith(videoTrack, stream);
+      expect(hook.inCall).toBe(true);
+      expect(hook.videoOn).toBe(true);
+    });
+  });
+
+  it("republishes local media and drops stale remote tracks when the peer connection is replaced", async () => {
+    const ctx = setup();
+    hook = ctx.hook;
+
+    const audioTrack = { id: "audio-local", kind: "audio", readyState: "live", stop: vi.fn() };
+    const videoTrack = { id: "video-local", kind: "video", readyState: "live", stop: vi.fn() };
+    const oldRemoteTrack = {
+      id: "video-old-remote",
+      kind: "video",
+      readyState: "live",
+      muted: true,
+    };
+    const localStream = {
+      getTracks: vi.fn(() => [audioTrack, videoTrack]),
+      getAudioTracks: vi.fn(() => [audioTrack]),
+      getVideoTracks: vi.fn(() => [videoTrack]),
+    };
+    const oldRemoteStream = {
+      getTracks: vi.fn(() => [oldRemoteTrack]),
+      getVideoTracks: vi.fn(() => [oldRemoteTrack]),
+      getAudioTracks: vi.fn(() => []),
+    };
+    const oldPc = { id: "old-pc" };
+    const newPc = {
+      addTrack: vi.fn((track) => ({ track })),
+      getReceivers: vi.fn(() => []),
+      getTransceivers: vi.fn(() => []),
+    };
+
+    hook.pc = oldPc;
+    hook._sendersPc = oldPc;
+    hook.localStream = localStream;
+    hook.remoteStream = oldRemoteStream;
+    hook.remoteHasVideo = true;
+    hook.senders = [{ track: audioTrack }, { track: videoTrack }];
+    hook.inCall = true;
+    hook.audioOn = true;
+    hook.videoOn = true;
+    hook.callType = "video";
+
+    hook._handlePcReady(newPc);
+
+    await vi.waitFor(() => {
+      expect(newPc.addTrack).toHaveBeenCalledWith(audioTrack, localStream);
+      expect(newPc.addTrack).toHaveBeenCalledWith(videoTrack, localStream);
+      expect(hook._sendersPc).toBe(newPc);
+    });
+
+    expect(hook.senders.map((sender) => sender.track)).toEqual([audioTrack, videoTrack]);
+    expect(hook.remoteStream).toBeNull();
+    expect(hook.remoteHasVideo).toBe(false);
+  });
+
   it("asks the WebRTC hook to recover a remote video track stuck muted", () => {
     vi.useFakeTimers();
     const ctx = setup();
@@ -156,6 +248,40 @@ describe("LobbyMediaHook auto-join", () => {
       ([event]) => event.type === "lobby_media_recover",
     );
     expect(recover).toBeTruthy();
+
+    vi.useRealTimers();
+  });
+
+  it("escalates repeated stalled remote video recovery to a coordinated restart", () => {
+    vi.useFakeTimers();
+    const ctx = setup();
+    hook = ctx.hook;
+
+    ctx.handlers["lobby_media_join"]();
+    hook.remoteStream = {
+      getVideoTracks: () => [{ readyState: "live", muted: true }],
+    };
+
+    vi.advanceTimersByTime(6000);
+    vi.advanceTimersByTime(5000);
+
+    const recoveries = ctx.webrtcEl.dispatchEvent.mock.calls
+      .map(([event]) => event)
+      .filter((event) => event.type === "lobby_media_recover");
+
+    expect(recoveries.length).toBeGreaterThanOrEqual(2);
+    expect(recoveries[0].detail).toEqual(
+      expect.objectContaining({
+        restart: false,
+        reason: "remote_video_stalled",
+      }),
+    );
+    expect(recoveries.at(-1).detail).toEqual(
+      expect.objectContaining({
+        restart: true,
+        reason: "remote_video_stalled_restart",
+      }),
+    );
 
     vi.useRealTimers();
   });
@@ -178,6 +304,43 @@ describe("LobbyMediaHook auto-join", () => {
     expect(recover).toBeFalsy();
 
     vi.useRealTimers();
+  });
+
+  it("mutes the remote video element and starts playback when attaching a stream", async () => {
+    const remoteVideo = document.createElement("video");
+    const remoteAudio = document.createElement("audio");
+    const videoTrack = { id: "video-1", kind: "video", readyState: "live", stop: vi.fn() };
+    const audioTrack = { id: "audio-1", kind: "audio", readyState: "live", stop: vi.fn() };
+    const remoteStream = {
+      getVideoTracks: vi.fn(() => [videoTrack]),
+      getAudioTracks: vi.fn(() => [audioTrack]),
+      getTracks: vi.fn(() => [videoTrack, audioTrack]),
+    };
+    const playVideo = vi.spyOn(remoteVideo, "play").mockResolvedValue(undefined);
+    const playAudio = vi.spyOn(remoteAudio, "play").mockResolvedValue(undefined);
+    const ctx = setup({
+      querySelector: (selector) => {
+        if (selector === "#lobby-remote-video") return remoteVideo;
+        if (selector === "#lobby-remote-audio") return remoteAudio;
+        return null;
+      },
+    });
+    hook = ctx.hook;
+    hook.remoteStream = remoteStream;
+    hook.remoteHasVideo = true;
+
+    hook._attachMediaElements();
+    await Promise.resolve();
+
+    expect(remoteVideo.srcObject).toBe(remoteStream);
+    expect(remoteVideo.muted).toBe(true);
+    expect(remoteVideo.autoplay).toBe(true);
+    expect(remoteVideo.playsInline).toBe(true);
+    expect(playVideo).toHaveBeenCalled();
+    expect(remoteAudio.srcObject).toBe(remoteStream);
+    expect(remoteAudio.muted).toBe(false);
+    expect(remoteAudio.autoplay).toBe(true);
+    expect(playAudio).toHaveBeenCalled();
   });
 
   it("starts and stops screen sharing by replacing the published video track", async () => {

@@ -11,11 +11,12 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PMediaIslandTest do
     assert P2PMediaIsland.id() == "lobby-media-island"
   end
 
-  test "prompts to connect before the lobby is connected" do
+  test "shows a waiting state before the P2P session is connected" do
     html = render_component(P2PMediaIsland, id: P2PMediaIsland.id(), connected: false)
 
     refute html =~ ~s(data-testid="lobby-media-panel")
-    assert html =~ "Connect to start"
+    assert html =~ "Waiting for peer"
+    assert html =~ "Call controls become available"
   end
 
   test "mounts the media hook and offers start buttons when idle" do

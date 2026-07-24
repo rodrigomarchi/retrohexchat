@@ -59,9 +59,12 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
         <span class="flex h-20 w-20 items-center justify-center bg-canvas shadow-retro-sunken">
           <Icons.icon_protocol_p2p_compact class="h-16 w-16" />
         </span>
-        <div class="font-bold">{dgettext("p2p", "P2P media is offline")}</div>
+        <div class="font-bold">{dgettext("p2p", "Waiting for peer")}</div>
         <p class="max-w-[28rem] text-muted-foreground">
-          {dgettext("lobby", "Connect to start an audio or video call.")}
+          {dgettext(
+            "p2p",
+            "Call controls become available after the peer joins the P2P session."
+          )}
         </p>
       </div>
 

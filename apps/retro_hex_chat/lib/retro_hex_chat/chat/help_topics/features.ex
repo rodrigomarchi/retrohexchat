@@ -523,7 +523,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-session-cards",
-        title: dgettext("help", "P2P & Arcade Session Cards"),
+        title: dgettext("help", "Session Cards and P2P History"),
         category: dgettext("help", "Chat Display"),
         keywords: [
           "p2p",
@@ -533,13 +533,13 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "session",
           dgettext("help", "session card"),
           dgettext("help", "game link"),
-          dgettext("help", "lobby invite")
+          dgettext("help", "p2p request")
         ],
         icon: :icon_p2p,
         description:
           dgettext(
             "help",
-            "P2P lobby invites and Arcade links render as rich cards showing who created the session, its lifecycle (created, connected/started, ended), how long it ran, and a Join/Open button while it is still live. Finished sessions show their final state instead."
+            "Arcade links can render as rich cards with Join/Open actions while they are live. P2P requests use the PM header for Start/Join/Decline and keep transcript rows as inert history showing request, connected and ended states."
           ),
         see_also: ["feature-interactive-elements", "feature-message-layout"]
       },
@@ -989,7 +989,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           dgettext(
             "help",
             "Make video calls with camera controls, picture-in-picture, and quality settings. " <>
-              "See also: P2P Lobby."
+              "See also: P2P Session."
           )
       },
       %{
@@ -1054,7 +1054,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-universal-lobby",
-        title: dgettext("help", "P2P Lobby"),
+        title: dgettext("help", "P2P Session"),
         category: dgettext("help", "P2P & Calls"),
         keywords: [
           "lobby",
@@ -1071,7 +1071,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "The P2P Lobby is the persistent peer-to-peer connection behind /p2p — one link " <>
+            "The P2P Session is the persistent peer-to-peer connection behind /p2p — one link " <>
               "that hosts a call, file transfers and games all at the same time. It lives " <>
               "inside the chat: accepting an invite opens the P2P Session Console right on " <>
               "the chat desktop, and ending any one activity never drops the others. " <>
@@ -1101,9 +1101,10 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "Run a P2P session without leaving the chat: /p2p <nick> sends an invite card " <>
-              "into the private message, and the invited person accepts or declines right on " <>
-              "the card. Once connected, the P2P menu (also mirrored in the Start menu) opens " <>
+            "Run a P2P session without leaving the chat: /p2p <nick> opens setup, " <>
+              "shows the creator's P2P Session Console immediately, and sends a request " <>
+              "line into the private message. The invited person's PM tab opens in the " <>
+              "background with Join/Decline in the PM header. Once connected, the P2P menu (also mirrored in the Start menu) opens " <>
               "the P2P Session Console on the chat desktop with Call, Files, Games and " <>
               "Stats sections. The conversation IS the private message — session events " <>
               "(connected, file received, game results, who ended it) are saved into the PM " <>
@@ -1114,7 +1115,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
               "(or inviting someone else) asks to end the current session first. When a TURN " <>
               "relay is configured, Toggle Privacy Mode in the P2P menu forces the connection " <>
               "through the relay so your IP address is never shared with the peer. " <>
-              "See also: P2P Lobby, Video Call, File Transfer, Private Messages."
+              "See also: P2P Session, Video Call, File Transfer, Private Messages."
           )
       },
       %{
@@ -1186,7 +1187,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           dgettext(
             "help",
             "Send files directly to other users via peer-to-peer with drag-and-drop support. " <>
-              "See also: P2P Lobby."
+              "See also: P2P Session."
           )
       },
       %{

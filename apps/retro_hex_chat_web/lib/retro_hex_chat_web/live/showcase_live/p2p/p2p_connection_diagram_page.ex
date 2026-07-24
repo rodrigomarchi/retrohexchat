@@ -55,7 +55,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.P2P.P2PConnectionDiagramPage do
 
       <.showcase_card
         title={dgettext("showcase", "Compact — Waiting")}
-        description="Default compact diagram used by all P2P lobby states."
+        description="Default compact diagram used by all P2P session states."
       >
         <.p2p_connection_strip
           nickname="you"

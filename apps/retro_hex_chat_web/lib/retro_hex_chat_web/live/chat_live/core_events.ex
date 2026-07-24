@@ -45,7 +45,6 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
 
   alias RetroHexChatWeb.ChatLive.Helpers.Messages, as: MessageHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.PM
-  alias RetroHexChatWeb.ChatLive.Helpers.SessionCard
   alias RetroHexChatWeb.Endpoint
 
   # The composer input form (input_changed / send_input / toggle_action_mode /
@@ -633,7 +632,6 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
     |> maybe_add_field(msg, :reply_to_preview)
     |> maybe_add_field(msg, :edited_at)
     |> maybe_add_field(msg, :deleted_at)
-    |> SessionCard.enrich()
   end
 
   defp maybe_add_field(map, source, key) do

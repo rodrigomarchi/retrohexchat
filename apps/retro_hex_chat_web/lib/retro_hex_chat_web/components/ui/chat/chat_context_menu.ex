@@ -125,7 +125,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
       <:icon><Icons.icon_tab_contacts class="w-[14px] h-[14px]" /></:icon>
       {dgettext("chat", "Address Book")}
     </.context_menu_item>
-    <%!-- P2P lobby (only if viewer is identified) --%>
+    <%!-- P2P session (only if viewer is identified) --%>
     <.context_menu_separator :if={@viewer_is_identified} />
     <.context_menu_item
       :if={@viewer_is_identified}
@@ -138,7 +138,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
       phx-value-nick={@target_nick}
     >
       <:icon><Icons.icon_protocol_p2p_compact class="w-[14px] h-[14px]" /></:icon>
-      {dgettext("chat", "P2P Lobby")}
+      {dgettext("chat", "P2P Session")}
     </.context_menu_item>
     <%!-- Op actions (only if viewer is op and not targeting self) --%>
     <.context_menu_separator :if={@viewer_is_op && !@is_target_self} />

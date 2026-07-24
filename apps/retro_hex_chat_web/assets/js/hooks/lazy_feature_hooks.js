@@ -24,7 +24,7 @@ export const lazyFeatureHooks = {
       "lobby_renegotiate",
     ],
     readyEvent: "lobby_webrtc_ready",
-    reason: "P2P lobby WebRTC signaling is a heavy session feature.",
+    reason: "P2P session WebRTC signaling is a heavy session feature.",
   }),
   LobbyMediaHook: lazyFeatureHook({
     name: "LobbyMediaHook",
@@ -39,7 +39,7 @@ export const lazyFeatureHooks = {
       "lobby_media_join",
     ],
     readyEvent: "lobby_media_hook_ready",
-    reason: "P2P lobby media capture is only needed inside an active lobby.",
+    reason: "P2P session media capture is only needed inside an active lobby.",
   }),
   GroupCallWebRTCHook: lazyFeatureHook({
     name: "GroupCallWebRTCHook",
@@ -65,7 +65,7 @@ export const lazyFeatureHooks = {
     loader: () => import("./lobby/lobby_game_canvas_hook"),
     serverEvents: ["lobby_game_start", "lobby_game_end"],
     readyEvent: "lobby_game_canvas_ready",
-    reason: "P2P lobby game canvas and engine loading are heavy features.",
+    reason: "P2P session game canvas and engine loading are heavy features.",
   }),
   SpaceCanvasHook: lazyFeatureHook({
     name: "SpaceCanvasHook",

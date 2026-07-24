@@ -89,7 +89,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameP2pFlow do
       <path d="M186 30 l8 8 l-8 8 z" fill="#000" />
       <rect x="172" y="36" width="16" height="2" fill="#808080" />
 
-      <%!-- ── Step 2: P2P Lobby ── --%>
+      <%!-- ── Step 2: P2P Session ── --%>
       <%!-- Shadow --%>
       <rect x="200" y="14" width="120" height="60" fill="#000" />
       <%!-- Window --%>
@@ -119,7 +119,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameP2pFlow do
         font-family="Tahoma,sans-serif"
         font-weight="bold"
       >
-        {dgettext("diagrams", "P2P Lobby")}
+        {dgettext("diagrams", "P2P Session")}
       </text>
       <%!-- Content --%>
       <rect x="202" y="34" width="108" height="30" fill="#dfdfdf" stroke="#000" stroke-width="1" />

@@ -71,6 +71,11 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   attr :group_call_summaries, :map, default: %{}, doc: "Conference summaries keyed by channel"
   attr :p2p_peer, :string, default: nil, doc: "Peer nick for the active P2P session"
   attr :p2p_session, :map, default: nil, doc: "Active P2P session read model"
+
+  attr :p2p_pm_sessions, :map,
+    default: %{},
+    doc: "Pending P2P session read models keyed by downcased PM nick"
+
   attr :pm_conversations, :list, default: []
   attr :active_pm, :string, default: nil
   attr :unread_pms, :list, default: []
@@ -91,8 +96,6 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
 
   @spec conversations(map()) :: Phoenix.LiveView.Rendered.t()
   def conversations(assigns) do
-    assigns = assign(assigns, :p2p_peer_key, p2p_peer_key(assigns))
-
     ~H"""
     <div
       class={classes(["flex h-full min-h-0 flex-col", @class])}
@@ -185,8 +188,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
               flash={"pm:#{pm}" in @flash_channels}
               muted={"pm:#{pm}" in @muted_channels}
               nick_color={@nick_color_fn && @nick_color_fn.(pm)}
-              p2p={p2p_peer?(@p2p_peer_key, pm)}
-              p2p_session={if p2p_peer?(@p2p_peer_key, pm), do: @p2p_session}
+              p2p_session={p2p_session_for_pm(assigns, pm)}
               on_click={@on_pm_click}
             />
           </.tree_view_group>
@@ -314,7 +316,6 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   attr :flash, :boolean, default: false
   attr :muted, :boolean, default: false
   attr :nick_color, :string, default: nil
-  attr :p2p, :boolean, default: false
   attr :p2p_session, :map, default: nil
   attr :on_click, :any, default: nil
 
@@ -336,7 +337,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
     >
       <:icon><Icons.icon_tab_pm class="w-3 h-3" /></:icon>
       <span class={["flex-1 truncate", !@active && @nick_color]}>{@nick}</span>
-      <span :if={@p2p} class="shrink-0">
+      <span :if={@p2p_session} class="shrink-0">
         <.p2p_peer_glyph
           peer={@nick}
           session={@p2p_session}
@@ -392,11 +393,22 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
     if is_binary(peer), do: String.downcase(peer)
   end
 
-  defp p2p_peer?(p2p_peer_key, nick) when is_binary(p2p_peer_key) and is_binary(nick) do
-    p2p_peer_key == String.downcase(nick)
+  defp p2p_session_for_pm(assigns, nick) when is_binary(nick) do
+    key = String.downcase(nick)
+
+    cond do
+      p2p_peer_key(assigns) == key and is_map(assigns.p2p_session) ->
+        assigns.p2p_session
+
+      is_map(assigns.p2p_pm_sessions) ->
+        Map.get(assigns.p2p_pm_sessions, key)
+
+      true ->
+        nil
+    end
   end
 
-  defp p2p_peer?(_p2p_peer_key, _nick), do: false
+  defp p2p_session_for_pm(_assigns, _nick), do: nil
 
   defp value(nil, _key), do: nil
 

@@ -338,10 +338,10 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
           dgettext(
             "help",
             "Invite someone to a P2P session that runs an audio/video call, file transfers, " <>
-              "and games together over one connection. The invite arrives as a card in the " <>
-              "private message — accepting it starts the session right there, with the " <>
+              "and games together over one connection. The request arrives in the " <>
+              "private message and the PM header shows Join/Decline — accepting it starts the session right there, with the " <>
               "P2P Session Console opening on the chat desktop. " <>
-              "See also: P2P Sessions in Chat, P2P Lobby."
+              "See also: P2P Sessions in Chat, P2P Session."
           )
       },
       %{

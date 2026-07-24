@@ -23,7 +23,6 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
   alias RetroHexChatWeb.ChatLive.GroupCallEvents
   alias RetroHexChatWeb.ChatLive.Helpers.Presence, as: PresenceHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.Session, as: SessionHelpers
-  alias RetroHexChatWeb.ChatLive.Helpers.SessionCard
 
   @spec join_channel(Phoenix.LiveView.Socket.t(), String.t(), Session.t(), String.t() | nil) ::
           Phoenix.LiveView.Socket.t()
@@ -432,7 +431,6 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
     |> maybe_add(msg, :reply_to_preview)
     |> maybe_add(msg, :edited_at)
     |> maybe_add(msg, :deleted_at)
-    |> SessionCard.enrich()
   end
 
   defp maybe_add(map, source, key) do

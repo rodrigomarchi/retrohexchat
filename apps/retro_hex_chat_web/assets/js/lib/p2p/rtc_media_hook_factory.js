@@ -121,6 +121,10 @@ export function createRtcMediaHook(configInput) {
       this.screenShare = { active: false, stream: null, track: null, previousVideoTrack: null };
       this.watchdogInterval = null;
       this._stalledSince = null;
+      this._stalledRecoveries = 0;
+      this._stalledRecoveryEscalated = false;
+      this._pendingMediaCommands = [];
+      this._sendersPc = null;
 
       this._onPcReady = (event) => this._handlePcReady(event.detail.pc);
       this._onPcClosed = () => this._handlePcClosed();
@@ -293,10 +297,18 @@ export function createRtcMediaHook(configInput) {
     // --- PeerConnection lifecycle ---
 
     _handlePcReady(pc) {
+      const replacingPc = this.pc && this.pc !== pc;
       this.pc = pc;
       this.pc.ontrack = (event) => this._handleRemoteTrack(event);
+
+      if (replacingPc) {
+        this._resetRemoteMediaForNewConnection();
+      }
+
       this._adoptExistingRemoteTracks();
       this._attachMediaElements();
+      this._drainPendingMediaCommands();
+      this._republishLocalTracks();
     },
 
     _handlePcClosed() {
@@ -305,10 +317,58 @@ export function createRtcMediaHook(configInput) {
       }
     },
 
+    _queueMediaCommand(name, payload = {}) {
+      if (name === "start_call") {
+        this._pendingMediaCommands = this._pendingMediaCommands.filter(
+          (command) => command.name !== "start_call",
+        );
+      }
+
+      this._pendingMediaCommands.push({ name, payload });
+    },
+
+    _drainPendingMediaCommands() {
+      if (!this.pc || this._pendingMediaCommands.length === 0) return;
+
+      const commands = this._pendingMediaCommands.splice(0);
+      for (const command of commands) {
+        switch (command.name) {
+          case "start_call":
+            this._startCall(command.payload.type, command.payload.opts);
+            break;
+        }
+      }
+    },
+
+    async _republishLocalTracks() {
+      if (!this.pc || !this.localStream || this._sendersPc === this.pc) return;
+
+      const tracks = this.localStream.getTracks?.().filter((track) => track.readyState !== "ended");
+      if (!tracks || tracks.length === 0) return;
+
+      try {
+        this.senders = addMediaTracks(this.pc, this.localStream);
+        this._sendersPc = this.pc;
+        setCodecPreferences(this.pc);
+        await applyMediaProfile(this.pc, this.screenShare?.active ? "screen" : undefined);
+        this._reportMediaSource(this.screenShare?.active ? "screen" : "camera");
+      } catch (error) {
+        log.warn("[RtcMedia] Failed to republish local tracks after reconnect", error);
+        this._push(config.clientEvents.deviceFallback, {
+          message: t("Could not restore your microphone or camera after reconnecting."),
+        });
+      }
+    },
+
     // --- Call start/end ---
 
     async _startCall(type, opts = {}) {
-      if (!this.pc || this.startingCall) return;
+      if (!this.pc) {
+        this._queueMediaCommand("start_call", { type, opts });
+        return;
+      }
+
+      if (this.startingCall) return;
 
       const mediaMode = this.el?.dataset?.mediaMode || "video";
 
@@ -364,6 +424,7 @@ export function createRtcMediaHook(configInput) {
       }
 
       this.senders = addMediaTracks(this.pc, this.localStream);
+      this._sendersPc = this.pc;
       setCodecPreferences(this.pc);
       await applyMediaProfile(this.pc);
 
@@ -565,6 +626,7 @@ export function createRtcMediaHook(configInput) {
         removeMediaTracks(this.pc, this.senders);
         this.senders = [];
       }
+      this._sendersPc = null;
 
       this.remoteStream = null;
       this._clearMediaElements();
@@ -598,6 +660,8 @@ export function createRtcMediaHook(configInput) {
       if (!config.autoJoin || this.watchdogInterval) return;
 
       this._stalledSince = null;
+      this._stalledRecoveries = 0;
+      this._stalledRecoveryEscalated = false;
       this.watchdogInterval = setInterval(() => {
         this._adoptExistingRemoteTracks();
         const track = this._remoteVideoTrack();
@@ -605,6 +669,8 @@ export function createRtcMediaHook(configInput) {
 
         if (!stalledTrack) {
           this._stalledSince = null;
+          this._stalledRecoveries = 0;
+          this._stalledRecoveryEscalated = false;
           return;
         }
 
@@ -612,7 +678,17 @@ export function createRtcMediaHook(configInput) {
           this._stalledSince = Date.now();
         } else if (Date.now() - this._stalledSince > 3000) {
           this._stalledSince = null;
-          this._requestMediaRecovery();
+          this._stalledRecoveries += 1;
+
+          const restart = this._stalledRecoveries >= 2;
+          if (restart && this._stalledRecoveryEscalated) return;
+
+          if (restart) this._stalledRecoveryEscalated = true;
+
+          this._requestMediaRecovery({
+            restart,
+            reason: restart ? "remote_video_stalled_restart" : "remote_video_stalled",
+          });
         }
       }, 1000);
     },
@@ -623,12 +699,23 @@ export function createRtcMediaHook(configInput) {
         this.watchdogInterval = null;
       }
       this._stalledSince = null;
+      this._stalledRecoveries = 0;
+      this._stalledRecoveryEscalated = false;
     },
 
     _requestMediaRecovery(detail = {}) {
       if (this._webrtcEl) {
         this._webrtcEl.dispatchEvent(new CustomEvent("lobby_media_recover", { detail }));
       }
+    },
+
+    _resetRemoteMediaForNewConnection() {
+      this.remoteStream = null;
+      this.remoteHasVideo = false;
+      this._stalledSince = null;
+      this._stalledRecoveries = 0;
+      this._stalledRecoveryEscalated = false;
+      this._clearMediaElements();
     },
 
     _remoteVideoTrack() {
@@ -662,7 +749,7 @@ export function createRtcMediaHook(configInput) {
     _attachMediaElements() {
       if (this.localStream) {
         const localVideo = this._query(config.elementIds.localVideo);
-        this._setSrcObject(localVideo, this.localStream);
+        this._setSrcObject(localVideo, this.localStream, { muted: true });
       }
 
       if (this.remoteStream) {
@@ -673,10 +760,10 @@ export function createRtcMediaHook(configInput) {
           remoteVideo &&
           (this.remoteHasVideo || this.remoteStream.getVideoTracks?.().length > 0)
         ) {
-          this._setSrcObject(remoteVideo, this.remoteStream);
+          this._setSrcObject(remoteVideo, this.remoteStream, { muted: true });
         }
 
-        this._setSrcObject(remoteAudio, this.remoteStream);
+        this._setSrcObject(remoteAudio, this.remoteStream, { muted: false });
       }
     },
 
@@ -684,9 +771,23 @@ export function createRtcMediaHook(configInput) {
     // LiveView patch to #media-call (e.g. the 1s duration tick), and reassigning
     // the same MediaStream tears down and rebuilds the media pipeline, which the
     // user sees as a constant video flicker.
-    _setSrcObject(el, stream) {
-      if (el && el.srcObject !== stream) {
-        el.srcObject = stream;
+    _setSrcObject(el, stream, opts = {}) {
+      if (!el) return;
+
+      if (typeof opts.muted === "boolean") {
+        el.muted = opts.muted;
+      }
+      if ("autoplay" in el) el.autoplay = true;
+      if ("playsInline" in el) el.playsInline = true;
+
+      const changed = el.srcObject !== stream;
+      if (changed) el.srcObject = stream;
+
+      if (stream && typeof el.play === "function" && (changed || el.paused)) {
+        const play = el.play();
+        if (play && typeof play.catch === "function") {
+          play.catch((error) => log.warn("[RtcMedia] Media playback start failed", error));
+        }
       }
     },
 

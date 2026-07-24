@@ -62,7 +62,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SetupDialogTest do
     assert Floki.find(document, ~s([data-testid="p2p-setup-turn-only"][checked])) != []
   end
 
-  test "uses outgoing invite copy before a creator sends the invite" do
+  test "uses outgoing session copy before a creator sends the request" do
     html =
       render_dialog(%{
         kind: :outgoing,
@@ -71,7 +71,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SetupDialogTest do
         payload: %{target: "tank", target_id: 42, creator_id: 7}
       })
 
-    assert html =~ "Prepare P2P Invite"
+    assert html =~ "Start P2P Session"
     assert html =~ "The invite is sent after this setup"
     assert html =~ "Send invite"
   end

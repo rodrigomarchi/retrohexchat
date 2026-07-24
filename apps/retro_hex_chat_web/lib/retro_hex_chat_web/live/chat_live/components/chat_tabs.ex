@@ -41,6 +41,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
     default: nil,
     doc: "Full P2P session read model used for PM tab facets"
 
+  attr :p2p_pm_sessions, :map,
+    default: %{},
+    doc: "Pending P2P session read models keyed by downcased PM nick"
+
   attr :group_call_channels, :any,
     default: MapSet.new(),
     doc: "Channel names that currently have an active group call"
@@ -110,12 +114,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
         }
       end
 
-    p2p_peer = p2p_peer_key(assigns)
-    p2p_state = p2p_tab_state(assigns.p2p_state)
-
     pm_tabs =
       for pm <- assigns.pm_tabs do
-        tab_owns_p2p = p2p_peer == String.downcase(pm)
+        pm_p2p_session = p2p_session_for_pm(assigns, pm)
+        pm_p2p_state = p2p_tab_state(value(pm_p2p_session, :state) || assigns.p2p_state)
 
         %{
           type: "pm",
@@ -124,10 +126,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
           unread: Map.get(assigns.unread_counts, "pm:#{pm}", 0) > 0,
           closeable: true,
           nick_color: assigns.nick_color_fn.(pm),
-          p2p: tab_owns_p2p,
-          p2p_state: if(tab_owns_p2p, do: p2p_state),
-          p2p_session:
-            if(tab_owns_p2p, do: p2p_tab_session(assigns.p2p_session, pm, assigns.p2p_state)),
+          p2p: pm_p2p_session != nil,
+          p2p_state: pm_p2p_state,
+          p2p_session: pm_p2p_session,
           group_call: false,
           group_call_summary: nil
         }
@@ -147,9 +148,28 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
     if is_binary(peer), do: String.downcase(peer)
   end
 
-  defp p2p_tab_session(session, _pm, _state) when is_map(session), do: session
-  defp p2p_tab_session(_session, pm, state), do: %{peer_nick: pm, state: state}
+  defp p2p_session_for_pm(assigns, pm) when is_binary(pm) do
+    key = String.downcase(pm)
 
+    cond do
+      p2p_peer_key(assigns) == key and is_map(assigns.p2p_session) ->
+        assigns.p2p_session
+
+      p2p_peer_key(assigns) == key and assigns.p2p_state != nil ->
+        %{state: assigns.p2p_state, peer_nick: pm}
+
+      is_map(assigns.p2p_pm_sessions) ->
+        Map.get(assigns.p2p_pm_sessions, key)
+
+      true ->
+        nil
+    end
+  end
+
+  defp p2p_session_for_pm(_assigns, _pm), do: nil
+
+  defp p2p_tab_state(:idle), do: "idle"
+  defp p2p_tab_state(:pending_received), do: "pending"
   defp p2p_tab_state(:invite_sent), do: "pending"
   defp p2p_tab_state(:connected), do: "connected"
   defp p2p_tab_state(nil), do: nil

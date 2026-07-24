@@ -19,7 +19,6 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
   alias RetroHexChatWeb.ChatLive.Helpers.Session, as: SessionHelpers
-  alias RetroHexChatWeb.ChatLive.Helpers.SessionCard
 
   @spec load_pm_messages_with_pagination(Phoenix.LiveView.Socket.t(), String.t()) ::
           Phoenix.LiveView.Socket.t()
@@ -301,14 +300,13 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
   defp maybe_put_clear_token(assigns, _stream_items), do: assigns
 
   @doc """
-  Live invite card (plan §4.7): re-enriches the P2P invite row for the given
-  session and re-inserts it in place (same dom id), so the card never keeps
-  promising an Accept that would fail. Only matters when the PM with that
-  peer is on screen — a buffer opened later re-enriches on load anyway.
+  Refreshes the P2P invite transcript row for the given session and re-inserts
+  it in place (same dom id). Only matters when the PM with that peer is on
+  screen — a buffer opened later re-enriches on load anyway.
   """
-  @spec refresh_p2p_invite_card(Phoenix.LiveView.Socket.t(), String.t() | nil, String.t()) ::
+  @spec refresh_p2p_invite_row(Phoenix.LiveView.Socket.t(), String.t() | nil, String.t()) ::
           Phoenix.LiveView.Socket.t()
-  def refresh_p2p_invite_card(socket, peer_nick, token) when is_binary(peer_nick) do
+  def refresh_p2p_invite_row(socket, peer_nick, token) when is_binary(peer_nick) do
     active = socket.assigns.session.active_pm
 
     with true <- is_binary(active),
@@ -321,7 +319,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
     end
   end
 
-  def refresh_p2p_invite_card(socket, _peer_nick, _token), do: socket
+  def refresh_p2p_invite_row(socket, _peer_nick, _token), do: socket
 
   defp pm_to_stream_item(pm) do
     base = %{
@@ -338,7 +336,6 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
     |> maybe_add_field(pm, :reply_to_preview)
     |> maybe_add_field(pm, :edited_at)
     |> maybe_add_field(pm, :deleted_at)
-    |> SessionCard.enrich()
   end
 
   defp pm_field(map, keys) do

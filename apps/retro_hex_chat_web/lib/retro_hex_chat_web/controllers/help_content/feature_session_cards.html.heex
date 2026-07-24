@@ -1,27 +1,27 @@
 <p>
   {dgettext(
     "help_features",
-    "P2P lobby invites appear as rich session cards instead of a plain line with a link."
+    "Arcade sessions can appear as rich cards, while P2P requests use the PM header controls and leave a plain P2P line in the transcript."
   )}
 </p>
-<.help_h4 icon={:icon_p2p}>{dgettext("help_features", "What the Card Shows")}</.help_h4>
+<.help_h4 icon={:icon_p2p}>{dgettext("help_features", "What Session Summaries Show")}</.help_h4>
 <p>
   {dgettext(
     "help_features",
-    "A card names who created the session and walks through its lifecycle on a small timeline: when it was created, when it connected, and — once it is over — when it ended, how long it ran, and why it closed."
+    "Session summaries name who created the session and walk through its lifecycle on a small timeline: when it was created, when it connected, and — once it is over — when it ended, how long it ran, and why it closed."
   )}
 </p>
 <.help_h4 icon={:icon_btn_join}>{dgettext("help_features", "Live vs. Finished")}</.help_h4>
 <p>
   {dgettext(
     "help_features",
-    "While a session is still live the card offers a button — Join or Open lobby for P2P. Once the session has finished the card shows its final state and drops the button."
+    "While an Arcade session is still live the card can offer Join or Open. P2P Start, Join and Decline actions live in the PM header instead; finished P2P history shows final state only."
   )}
 </p>
 <.help_h4 icon={:icon_document_alert}>{dgettext("help_features", "Notes")}</.help_h4>
 <p>
   {dgettext(
     "help_features",
-    "If a session can no longer be found (for example, an old invite whose session was purged), the card falls back to the plain join link."
+    "If a legacy P2P invite line can no longer find its session, it stays as inert history instead of showing stale action buttons."
   )}
 </p>

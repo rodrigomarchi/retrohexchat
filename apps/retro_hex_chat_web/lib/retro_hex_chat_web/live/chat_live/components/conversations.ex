@@ -47,6 +47,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
        group_call_summaries: %{},
        p2p_peer: nil,
        p2p_session: nil,
+       p2p_pm_sessions: %{},
        conversations_sections: %{},
        channel_user_counts: %{},
        popular_channels: [],
@@ -72,6 +73,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
       :group_call_summaries,
       :p2p_peer,
       :p2p_session,
+      :p2p_pm_sessions,
       :conversations_sections,
       :channel_user_counts,
       :popular_channels,
@@ -121,6 +123,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
           group_call_summaries={@group_call_summaries}
           p2p_peer={@p2p_peer}
           p2p_session={@p2p_session}
+          p2p_pm_sessions={@p2p_pm_sessions}
           pm_conversations={@pm_conversations}
           active_pm={@active_pm}
           nick_color_fn={@nick_color_fn}

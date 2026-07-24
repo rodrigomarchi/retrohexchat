@@ -1,8 +1,8 @@
 defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
   @moduledoc """
-  In-chat P2P session flow (F2 of docs/plans/p2p-chat-integracao.md):
-  invite → accept/decline via the PM card, cancel via the status bar, and the
-  one-session-at-a-time switch. Asserts on synchronous LiveView state
+  In-chat P2P session flow (docs/plans/p2p-fluxo-como-conferencia.md):
+  PM entry → send request → accept/decline via the PM header, cancel via the
+  status bar, and the one-session-at-a-time switch. Asserts on synchronous LiveView state
   (`:sys.get_state`) and persisted domain rows — never on async stream diffs.
   """
   use RetroHexChatWeb.LiveViewCase, async: false
@@ -72,7 +72,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
 
       html = render(ctx.view_a)
       assert html =~ "p2p-setup-form"
-      assert html =~ "Prepare P2P Invite"
+      assert html =~ "Start P2P Session"
       assert html =~ "Send invite"
       assert p2p_assigns(ctx.view_a) == nil
       refute Lobby.active_session_for_user(ctx.a.id)
@@ -82,6 +82,26 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
       assert p2p_assigns(ctx.view_a) == nil
       refute Lobby.active_session_for_user(ctx.a.id)
       refute render(ctx.view_a) =~ "p2p-setup-form"
+    end
+
+    test "PM header exposes the idle P2P entry and opens the creator setup", %{conn: conn} do
+      ctx = mount_pair(conn, "p2pgw#{uid()}", "p2pgx#{uid()}")
+
+      render_click(ctx.view_a, "switch_pm", %{"nickname" => ctx.b.nickname})
+
+      html = render(ctx.view_a)
+      assert html =~ ~s(data-testid="p2p-peer-entry")
+      assert html =~ ~s(data-peer="#{ctx.b.nickname}")
+      assert html =~ ~s(data-p2p-state="idle")
+      assert html =~ ~s(phx-click="p2p_start_pm_session")
+      refute Lobby.active_session_for_user(ctx.a.id)
+
+      render_click(ctx.view_a, "p2p_start_pm_session", %{"peer" => ctx.b.nickname})
+
+      html = render(ctx.view_a)
+      assert html =~ "p2p-setup-form"
+      assert html =~ "Start P2P Session"
+      refute Lobby.active_session_for_user(ctx.a.id)
     end
 
     test "creator setup seeds media defaults before the peer accepts", %{conn: conn} do
@@ -106,6 +126,25 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
              }
 
       assert {:ok, %{status: "pending"}} = Lobby.get_session(session.token)
+    end
+
+    test "creator sees the P2P console immediately after sending the request", %{conn: conn} do
+      ctx = mount_pair(conn, "p2pgc#{uid()}", "p2pgd#{uid()}")
+      invite(ctx)
+
+      assert %{state: :invite_sent, role: :creator} = p2p_assigns(ctx.view_a)
+
+      html = render(ctx.view_a)
+      assert html =~ "p2p-call-window"
+      assert html =~ ~s(data-testid="p2p-session-console")
+      assert html =~ ~s(data-p2p-console-section="call")
+      assert html =~ "Waiting for peer"
+      refute html =~ ~s(data-testid="p2p-webrtc")
+
+      render_click(ctx.view_a, "p2p_console_select", %{"section" => "stats"})
+
+      assert p2p_assigns(ctx.view_a).console_section == "stats"
+      assert render(ctx.view_a) =~ ~s(data-testid="p2p-console-section-stats")
     end
 
     test "creator holds :invite_sent and the peer's accept joins both", %{conn: conn} do
@@ -134,16 +173,24 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
       assert {:ok, %{status: "lobby"}} = Lobby.get_session(session.token)
     end
 
-    test "the invited peer sees accept/decline buttons on the PM card", %{conn: conn} do
+    test "the invited peer joins from the PM header and sees no actionable invite card",
+         %{conn: conn} do
       ctx = mount_pair(conn, "p2pfc#{uid()}", "p2pfd#{uid()}")
-      invite(ctx)
+      session = invite(ctx)
 
       flush(ctx.view_b)
       render_click(ctx.view_b, "switch_pm", %{"nickname" => ctx.a.nickname})
 
       html = render(ctx.view_b)
-      assert html =~ "session-card-accept"
-      assert html =~ "session-card-decline"
+      assert html =~ ~s(data-testid="p2p-peer-entry")
+      assert html =~ ~s(data-p2p-state="pending")
+      assert html =~ ~s(data-testid="p2p-peer-join")
+      assert html =~ ~s(data-testid="p2p-peer-decline")
+      refute html =~ "session-card-accept"
+      refute html =~ "session-card-decline"
+
+      assert render_click(ctx.view_b, "p2p_accept_invite", %{"token" => session.token}) =~
+               "p2p-setup-dialog"
     end
 
     test "cancelling the setup leaves the invite pending and does not join", %{conn: conn} do

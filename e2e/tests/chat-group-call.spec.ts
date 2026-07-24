@@ -1,9 +1,17 @@
 import { test, expect, Page } from "@playwright/test";
+import { mkdirSync } from "node:fs";
 import { uniqueChannel } from "../helpers/chatUsers";
 import {
   closeGroupCallUsers,
   newGroupCallUser,
 } from "../helpers/groupCallUsers";
+
+const groupCallScreenshotDir = "test-results/group-call-visual-polish";
+
+function groupCallScreenshot(name: string) {
+  mkdirSync(groupCallScreenshotDir, { recursive: true });
+  return `${groupCallScreenshotDir}/${name}.png`;
+}
 
 function groupCallButton(page: Page) {
   return page.getByTestId("group-call-open");
@@ -848,7 +856,9 @@ test.describe("Channel group calls", () => {
         );
       }
 
-      const desktopImage = await groupCallWindow(alice.page).screenshot();
+      const desktopImage = await groupCallWindow(alice.page).screenshot({
+        path: groupCallScreenshot("conference-desktop"),
+      });
       expect(desktopImage.byteLength).toBeGreaterThan(8_000);
       await expectGroupCallLayoutStable(alice.page);
       await expectMediaSessionHeadersStable(alice.page, "group-call-panel");
@@ -913,7 +923,9 @@ test.describe("Channel group calls", () => {
       await expectMobileSectionNavCue(alice.page, "group-call-section-nav");
       await expectMediaSessionHeadersStable(alice.page, "group-call-panel");
 
-      const mobileImage = await groupCallWindow(alice.page).screenshot();
+      const mobileImage = await groupCallWindow(alice.page).screenshot({
+        path: groupCallScreenshot("conference-mobile"),
+      });
       expect(mobileImage.byteLength).toBeGreaterThan(8_000);
       await expectGroupCallLayoutStable(alice.page);
     } finally {

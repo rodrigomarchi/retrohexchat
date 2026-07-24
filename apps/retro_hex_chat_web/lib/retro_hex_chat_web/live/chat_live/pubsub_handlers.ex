@@ -180,7 +180,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
   def handle_info({:welcome_changed, _} = msg, socket),
     do: ServerMessages.handle_info(msg, socket)
 
-  # ── P2P lobby: invite notification ───────────────────────
+  # ── P2P session: invite notification ─────────────────────
 
   def handle_info(%{event: "lobby_invite"} = msg, socket) do
     import RetroHexChatWeb.ChatLive.Helpers, only: [push_status_message: 3]
@@ -191,11 +191,10 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
       {:halt, socket}
     else
       {:halt,
-       push_status_message(
-         socket,
-         dgettext("chat", "P2P invite from %{from} — accept it in your private messages.",
-           from: from
-         ),
+       socket
+       |> RetroHexChatWeb.ChatLive.P2PSessionEvents.refresh_pm_session_read_model(from)
+       |> push_status_message(
+         dgettext("chat", "P2P request from %{from} - join it from the PM header.", from: from),
          :system
        )}
     end

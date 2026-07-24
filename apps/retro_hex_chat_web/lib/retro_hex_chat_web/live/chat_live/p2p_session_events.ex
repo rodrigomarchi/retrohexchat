@@ -27,6 +27,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   alias Phoenix.LiveView.Socket
   alias RetroHexChat.Chat.Schemas.UserPreference
   alias RetroHexChat.Chat.Service, as: ChatService
+  alias RetroHexChat.Commands.Handlers.Lobby, as: LobbyCommand
   alias RetroHexChat.Lobby
   alias RetroHexChat.Lobby.Schema.Session, as: LobbySession
   alias RetroHexChat.P2P
@@ -152,9 +153,8 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   def handle_event(
         "p2p_console_select",
         %{"section" => section},
-        %{assigns: %{p2p_session: %{state: state}}} = socket
-      )
-      when state != :invite_sent do
+        %{assigns: %{p2p_session: %{}}} = socket
+      ) do
     {:halt, open_p2p_console(socket, section)}
   end
 
@@ -326,6 +326,10 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
     request_stop(socket)
   end
 
+  def handle_event("p2p_start_pm_session", params, socket) do
+    {:halt, start_pm_session(socket, params)}
+  end
+
   def handle_event("p2p_accept_invite", %{"token" => token}, socket) do
     {:halt, request_accept(socket, token)}
   end
@@ -491,7 +495,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   def handle_info(%{event: "lobby_" <> _rest, token: token} = msg, socket) do
     case socket.assigns.p2p_session do
       %{token: ^token} = p2p -> handle_session_event(msg, socket, p2p)
-      _ -> {:halt, socket}
+      _ -> {:halt, handle_pm_read_model_event(msg, socket, token)}
     end
   end
 
@@ -580,8 +584,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
         {:halt, finish_session(socket, payload[:reason] || status)}
 
       status == "lobby" ->
-        # Both joined: the pending invite card loses its accept CTA.
-        {:halt, PMHelper.refresh_p2p_invite_card(socket, p2p.peer_nick, p2p.token)}
+        {:halt, drop_pm_read_model(socket, p2p.peer_nick)}
 
       true ->
         {:halt, socket}
@@ -672,7 +675,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
              |> Messages.system_event(
                dgettext(
                  "chat",
-                 "%{peer} accepted the invite - connecting... the P2P session will open shortly.",
+                 "%{peer} accepted the P2P request - connecting...",
                  peer: p2p.peer_nick || dgettext("chat", "The other user")
                )
              )}
@@ -891,6 +894,23 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   # windows consume their own relays through their islands/hooks.
   defp handle_session_event(_msg, socket, _p2p), do: {:halt, socket}
 
+  defp handle_pm_read_model_event(
+         %{event: "lobby_status_changed", payload: %{status: status}},
+         socket,
+         token
+       ) do
+    if LobbySession.terminal?(status) do
+      drop_pm_read_model_by_token(socket, token)
+    else
+      socket
+    end
+  end
+
+  defp handle_pm_read_model_event(%{event: "lobby_session_closed"}, socket, token),
+    do: drop_pm_read_model_by_token(socket, token)
+
+  defp handle_pm_read_model_event(_msg, socket, _token), do: socket
+
   # ── Session lifecycle (called from mount / invite helper) ─────
 
   @doc """
@@ -908,9 +928,14 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
       role = if db_session.creator_id == user_id, do: :creator, else: :peer
 
       case {db_session.status, role} do
-        {"pending", :peer} -> socket
-        {"pending", :creator} -> subscribe_invite_sent(socket, db_session.token, user_id)
-        _ -> attach_session(socket, db_session.token, user_id, role)
+        {"pending", :peer} ->
+          put_pm_read_model(socket, pm_read_model(socket, db_session, user_id))
+
+        {"pending", :creator} ->
+          subscribe_invite_sent(socket, db_session.token, user_id)
+
+        _ ->
+          attach_session(socket, db_session.token, user_id, role)
       end
     else
       _ -> socket
@@ -926,6 +951,29 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   def start_as_creator(socket, token, creator_id) do
     subscribe_invite_sent(socket, token, creator_id)
   end
+
+  @doc """
+  Refreshes the PM-level P2P read model for a peer without joining the session.
+
+  This backs the PM header/tab/sidebar pending state. It intentionally never
+  calls `Lobby.join_session/2`, so a received pending request remains consented
+  only after the user submits the setup dialog.
+  """
+  @spec refresh_pm_session_read_model(Socket.t(), String.t() | nil) :: Socket.t()
+  def refresh_pm_session_read_model(socket, peer_nick) when is_binary(peer_nick) do
+    nickname = socket.assigns.session.nickname
+    user_id = resolve_user_id(nickname)
+
+    case {user_id, Lobby.active_session_between_nicks(nickname, peer_nick)} do
+      {user_id, %LobbySession{} = db_session} when is_integer(user_id) ->
+        put_pm_read_model(socket, pm_read_model(socket, db_session, user_id))
+
+      _ ->
+        drop_pm_read_model(socket, peer_nick)
+    end
+  end
+
+  def refresh_pm_session_read_model(socket, _peer_nick), do: socket
 
   @doc """
   Opens the same P2P setup used by incoming invites before an outgoing invite is
@@ -946,7 +994,10 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
 
   defp subscribe_invite_sent(socket, token, user_id) do
     Phoenix.PubSub.subscribe(@pubsub, "lobby:#{token}")
-    put_p2p(socket, new_session(socket, token, user_id, :creator, :invite_sent))
+
+    socket
+    |> put_p2p(new_session(socket, token, user_id, :creator, :invite_sent))
+    |> open_p2p_console("call")
   end
 
   defp new_session(socket, token, user_id, role, state) do
@@ -974,6 +1025,74 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
       turn_configured: P2P.turn_configured?()
     }
   end
+
+  defp pm_read_model(socket, %LobbySession{} = db_session, user_id) do
+    role = if db_session.creator_id == user_id, do: :creator, else: :peer
+
+    %{
+      token: db_session.token,
+      user_id: user_id,
+      role: role,
+      peer_nick: peer_nick_for(db_session.token, user_id),
+      state: pm_read_model_state(db_session.status, role),
+      stats: P2PStats.empty(),
+      info_open: false,
+      peer_online: false,
+      peer_info: %{},
+      file_summary: nil,
+      call_summary: nil,
+      game_summary: nil,
+      recovery: empty_p2p_recovery(),
+      console_section: "call",
+      media_mode: "video",
+      call_mini: false,
+      turn_only: load_turn_only(socket.assigns.session.nickname),
+      turn_configured: P2P.turn_configured?()
+    }
+  end
+
+  defp pm_read_model_state("pending", :peer), do: :pending_received
+  defp pm_read_model_state("pending", :creator), do: :invite_sent
+  defp pm_read_model_state("connected", _role), do: :connected
+  defp pm_read_model_state("lobby", _role), do: :joining
+  defp pm_read_model_state(_status, _role), do: :connecting
+
+  defp put_pm_read_model(socket, %{peer_nick: peer_nick, token: token} = read_model)
+       when is_binary(peer_nick) do
+    unless socket.assigns[:p2p_session] && socket.assigns.p2p_session.token == token do
+      Phoenix.PubSub.subscribe(@pubsub, "lobby:#{token}")
+    end
+
+    update(socket, :p2p_pm_sessions, fn sessions ->
+      sessions
+      |> normalize_pm_sessions()
+      |> Map.put(String.downcase(peer_nick), read_model)
+    end)
+  end
+
+  defp put_pm_read_model(socket, _read_model), do: socket
+
+  defp drop_pm_read_model(socket, peer_nick) when is_binary(peer_nick) do
+    update(socket, :p2p_pm_sessions, fn sessions ->
+      sessions
+      |> normalize_pm_sessions()
+      |> Map.delete(String.downcase(peer_nick))
+    end)
+  end
+
+  defp drop_pm_read_model(socket, _peer_nick), do: socket
+
+  defp drop_pm_read_model_by_token(socket, token) when is_binary(token) do
+    update(socket, :p2p_pm_sessions, fn sessions ->
+      sessions
+      |> normalize_pm_sessions()
+      |> Enum.reject(fn {_peer, read_model} -> read_model[:token] == token end)
+      |> Map.new()
+    end)
+  end
+
+  defp normalize_pm_sessions(sessions) when is_map(sessions), do: sessions
+  defp normalize_pm_sessions(_sessions), do: %{}
 
   defp share_client_info(socket, p2p) do
     broadcast(p2p.token, "lobby_client_info", %{
@@ -1035,6 +1154,27 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
           {:error, message} ->
             Messages.system_event(socket, message)
         end
+    end
+  end
+
+  defp start_pm_session(socket, params) do
+    peer = params["peer"] || socket.assigns.session.active_pm
+
+    if is_binary(peer) and peer != "" do
+      context = %{
+        nickname: socket.assigns.session.nickname,
+        identified: socket.assigns.session.identified
+      }
+
+      case LobbyCommand.execute([peer], context) do
+        {:ok, :ui_action, :lobby_invite, payload} ->
+          LobbyInvite.handle_lobby_invite(socket, socket.assigns.session, payload)
+
+        {:error, message} ->
+          Messages.error_event(socket, message)
+      end
+    else
+      socket
     end
   end
 
@@ -1173,6 +1313,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
       socket
       |> attach_session(token, user_id, :peer)
       |> apply_setup_options(setup_opts)
+      |> open_p2p_console("call")
       |> notify_invite_accepted()
     else
       {:error, message} -> Messages.system_event(socket, message)
@@ -1199,7 +1340,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
       socket,
       dgettext(
         "chat",
-        "Invite accepted - connecting... the P2P session will open shortly."
+        "P2P request accepted - connecting..."
       )
     )
   end
@@ -1220,7 +1361,9 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
               dgettext("chat", "%{nick} declined the P2P invite.", nick: nickname)
             )
 
-            PMHelper.refresh_p2p_invite_card(socket, creator, token)
+            socket
+            |> drop_pm_read_model(creator)
+            |> PMHelper.refresh_p2p_invite_row(creator, token)
 
           {:error, message} ->
             Messages.system_event(socket, message)
@@ -1365,7 +1508,10 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
     p2p = socket.assigns.p2p_session
 
     socket =
-      socket |> detach_session(p2p) |> PMHelper.refresh_p2p_invite_card(p2p.peer_nick, p2p.token)
+      socket
+      |> detach_session(p2p)
+      |> drop_pm_read_model(p2p.peer_nick)
+      |> PMHelper.refresh_p2p_invite_row(p2p.peer_nick, p2p.token)
 
     if reason in @persisted_by_actor do
       socket
