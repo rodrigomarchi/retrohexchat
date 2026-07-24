@@ -31,6 +31,26 @@ defmodule RetroHexChat.P2P.P2PTest do
   end
 
   describe "ice_servers/1" do
+    setup do
+      original_listener_count = Application.get_env(:retro_hex_chat, :turn_listener_count)
+      original_relay_ip = Application.get_env(:retro_hex_chat, :turn_relay_ip)
+      original_listen_port = Application.get_env(:retro_hex_chat, :turn_listen_port)
+      original_locale = Gettext.get_locale(RetroHexChat.Gettext)
+
+      Application.put_env(:retro_hex_chat, :turn_listener_count, 1)
+      Application.put_env(:retro_hex_chat, :turn_relay_ip, {203, 0, 113, 42})
+      Application.put_env(:retro_hex_chat, :turn_listen_port, 3478)
+
+      on_exit(fn ->
+        restore_env(:turn_listener_count, original_listener_count)
+        restore_env(:turn_relay_ip, original_relay_ip)
+        restore_env(:turn_listen_port, original_listen_port)
+        Gettext.put_locale(RetroHexChat.Gettext, original_locale)
+      end)
+
+      :ok
+    end
+
     test "returns credentials with correct TTL from config" do
       config = Turn.Config.from_application_env()
       expected_ttl = config.credentials_lifetime
@@ -61,6 +81,20 @@ defmodule RetroHexChat.P2P.P2PTest do
 
       # Only urls, username, credential keys
       assert Map.keys(server) |> Enum.sort() == [:credential, :urls, :username]
+    end
+
+    test "returns protocol URLs that are not localized" do
+      Gettext.put_locale(RetroHexChat.Gettext, "pt_BR")
+
+      assert [%{urls: ["turn:203.0.113.42:3478?transport=udp"]}] =
+               P2P.ice_servers("test-user-pt-br")
+    end
+
+    test "returns STUN URL that is not localized when TURN is disabled" do
+      Gettext.put_locale(RetroHexChat.Gettext, "pt_BR")
+      Application.put_env(:retro_hex_chat, :turn_listener_count, 0)
+
+      assert [%{urls: ["stun:stun.l.google.com:19302"]}] = P2P.ice_servers("test-user-pt-br")
     end
   end
 
@@ -116,4 +150,7 @@ defmodule RetroHexChat.P2P.P2PTest do
       assert {:error, :invalid_signal} = P2P.validate_signal(signal)
     end
   end
+
+  defp restore_env(key, nil), do: Application.delete_env(:retro_hex_chat, key)
+  defp restore_env(key, value), do: Application.put_env(:retro_hex_chat, key, value)
 end

@@ -3,6 +3,7 @@ import { defineConfig, devices } from "@playwright/test";
 const e2ePort = process.env.E2E_PORT || "4003";
 const pgPort = process.env.PGPORT || process.env.TEST_DB_PORT || "5433";
 const baseURL = process.env.E2E_BASE_URL || `http://localhost:${e2ePort}`;
+const browserChannel = process.env.PLAYWRIGHT_CHANNEL || undefined;
 
 // Local-only regression suite. Server runs at MIX_ENV=e2e on E2E_PORT with
 // a dedicated retro_hex_chat_e2e database (see config/e2e.exs).
@@ -34,6 +35,7 @@ export default defineConfig({
       testIgnore: /.*mobile.*\.spec\.ts/,
       use: {
         ...devices["Desktop Chrome"],
+        ...(browserChannel ? { channel: browserChannel } : {}),
         // Set SLOW_MO=300 (ms) when running headed to watch the spec unfold.
         launchOptions: {
           slowMo: Number(process.env.SLOW_MO) || 0,

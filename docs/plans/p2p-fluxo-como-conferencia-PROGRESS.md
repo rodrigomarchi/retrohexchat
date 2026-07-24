@@ -393,3 +393,63 @@ Aprendizado:
 - A evidencia atual e mais forte que a da iteracao anterior: P2P passou duas
   vezes em suite completa apos a correcao, e a suite combinada P2P +
   conferencia tambem passou.
+
+## Iteracao 5 - incidente producao pt-BR/TURN
+
+Escopo:
+
+- Diagnosticar a falha real reportada em producao, com dois browsers/duas
+  maquinas e tambem dois browsers na mesma maquina, onde a sessao ficava em
+  `P2P: ligar...` e terminava com erro de conexao.
+
+Teste primeiro:
+
+- Adicionado E2E localizado em `pt_BR` para P2P com privacy relay/TURN.
+- O teste foi executado contra a producao ainda sem fix e reproduziu a falha:
+  a sessao nao saiu de `P2P: ligar...` dentro de 30s.
+
+Falha observada:
+
+- Loki mostrou `Lobby failed: reason=connecting_timeout` nas sessoes manuais.
+- Tempo mostrou eventos `ChatLive.handle_event#lobby_failed` vindos dos dois
+  clientes antes do timeout do servidor, indicando falha client-side na criacao
+  ou conexao WebRTC.
+- A causa raiz estava em `RetroHexChat.P2P.ice_servers/1`: URLs tecnicas de
+  ICE usavam `dgettext/3`. Em `pt_BR`, a URL TURN virava
+  `turno:<ip>:3478?transport=udp`, esquema invalido para
+  `RTCPeerConnection`.
+
+Implementacao:
+
+- `P2P.ice_servers/1` agora retorna URLs literais de protocolo:
+  `turn:<ip>:<port>?transport=udp` e `stun:stun.l.google.com:19302`, sem
+  Gettext.
+- Teste de dominio cobre `pt_BR` com TURN habilitado e TURN desabilitado,
+  garantindo que STUN/TURN nao sejam localizados.
+- Playwright ganhou suporte a `PLAYWRIGHT_CHANNEL=chrome`, permitindo validar
+  com o Chrome instalado.
+- Helpers E2E ganharam abertura em locale especifica; waits basicos do
+  `ChatPage` deixaram de depender de textos em ingles.
+
+Validacao:
+
+- `rtk mix test apps/retro_hex_chat/test/retro_hex_chat/p2p/p2p_test.exs`
+  - 15 tests, 0 failures.
+- `rtk npx tsc -p tsconfig.json --noEmit` em `e2e/`
+  - TypeScript: sem erros.
+- `rtk env E2E_PORT=4018 PLAYWRIGHT_CHANNEL=chrome npx playwright test tests/chat-p2p.spec.ts -g "accepting from the PM header connects|pt-BR privacy relay setup" --project=chromium --reporter=line`
+  - 2 tests, 0 failures.
+- `rtk env E2E_BASE_URL=https://retrohexchat.app PLAYWRIGHT_CHANNEL=chrome npx playwright test tests/chat-p2p.spec.ts -g "pt-BR privacy relay setup" --project=chromium --reporter=line`
+  - contra producao antes do fix: falhou reproduzindo `P2P: ligar...`.
+- `rtk mix test`
+  - `retro_hex_chat`: 15 properties, 2734 tests, 0 failures.
+  - `retro_hex_chat_web`: 794 tests, 0 failures, 263 excluded.
+
+Aprendizado:
+
+- Dados de protocolo nunca devem passar por i18n. Esse bug ficava invisivel em
+  E2E ingles e so aparecia em usuarios com locale traduzida e TURN configurado.
+- A diferenca entre producao e E2E nao era navegador nem rede; era locale.
+- Para sessoes P2P, os traces de `lobby_failed` sao decisivos, mas ainda faltam
+  params do motivo no tracing atual. Quando necessario, adicionar log
+  estruturado de `reason` no evento `lobby_failed`.

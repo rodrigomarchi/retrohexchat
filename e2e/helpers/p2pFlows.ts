@@ -18,6 +18,7 @@ export type P2PTestUser = {
 
 type NewP2PUserOptions = {
   acceptDownloads?: boolean;
+  locale?: string;
   media?:
     | boolean
     | "camera-denied"
@@ -348,6 +349,10 @@ export async function newP2PUser(
     contextOptions.acceptDownloads = options.acceptDownloads;
   }
 
+  if (options.locale) {
+    contextOptions.locale = options.locale.replace("_", "-");
+  }
+
   if (options.media) {
     contextOptions.permissions = options.permissions || [
       "microphone",
@@ -376,7 +381,7 @@ export async function newP2PUser(
   const nick = uniqueNickname(prefix);
   const password = "pass12345";
 
-  await connect.open();
+  await connect.open(options.locale);
   await connect.enterNickname(nick);
   await connect.registerWithPassword(password);
   await chat.waitUntilConnected();

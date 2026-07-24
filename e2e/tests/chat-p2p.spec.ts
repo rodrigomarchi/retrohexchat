@@ -277,7 +277,7 @@ async function sendP2PInvite(user: P2PTestUser, targetNick: string) {
 
 async function acceptP2PInvite(
   page: Page,
-  options: { audio?: boolean; video?: boolean } = {},
+  options: { audio?: boolean; video?: boolean; turnOnly?: boolean } = {},
 ) {
   await expect(page.getByTestId("p2p-peer-entry")).toHaveAttribute(
     "data-p2p-state",
@@ -307,6 +307,12 @@ async function acceptP2PInvite(
     } else {
       await expect(videoToggle).not.toBeChecked();
     }
+  }
+
+  if (options.turnOnly !== undefined) {
+    await page.getByTestId("p2p-setup-advanced").locator("summary").click();
+    await expect(page.getByTestId("p2p-setup-turn-only")).toBeEnabled();
+    await page.getByTestId("p2p-setup-turn-only").setChecked(options.turnOnly);
   }
 
   await page.getByTestId("p2p-setup-accept").click();
@@ -598,6 +604,51 @@ test.describe("In-chat P2P session", () => {
         .poll(() => remoteVideoLive(alice.page), { timeout: 15_000 })
         .toBe(true);
       await expect(statusBarP2P(alice.page)).toContainText(`P2P: ${bob.nick}`);
+    } finally {
+      await closeP2PUsers([alice, bob]);
+    }
+  });
+
+  test("pt-BR privacy relay setup connects both peers when TURN is available", async ({
+    browser,
+  }) => {
+    test.setTimeout(60_000);
+
+    const alice = await newP2PUser(browser, "relayp2pa", {
+      locale: "pt_BR",
+      media: true,
+    });
+    const bob = await newP2PUser(browser, "relayp2pb", {
+      locale: "pt_BR",
+      media: true,
+    });
+
+    try {
+      await alice.chat.sendMessage(`/p2p ${bob.nick}`);
+      await expect(alice.page.getByTestId("p2p-setup-accept")).toBeVisible();
+      await alice.page
+        .getByTestId("p2p-setup-advanced")
+        .locator("summary")
+        .click();
+      test.skip(
+        await alice.page.getByTestId("p2p-setup-turn-only").isDisabled(),
+        "TURN relay is not configured in this environment.",
+      );
+      await alice.page.getByTestId("p2p-setup-turn-only").setChecked(true);
+      await alice.page.getByTestId("p2p-setup-accept").click();
+
+      await bob.chat.expectTabVisible(alice.nick);
+      await bob.chat.switchToTab(alice.nick);
+      await acceptP2PInvite(bob.page, { turnOnly: true });
+
+      await expect(statusBarP2P(alice.page)).toContainText(`P2P: ${bob.nick}`, {
+        timeout: 30_000,
+      });
+      await expect(statusBarP2P(bob.page)).toContainText(`P2P: ${alice.nick}`, {
+        timeout: 30_000,
+      });
+      await expect(alice.page.getByTestId("status-bar-p2p-relay")).toBeVisible();
+      await expect(bob.page.getByTestId("status-bar-p2p-relay")).toBeVisible();
     } finally {
       await closeP2PUsers([alice, bob]);
     }

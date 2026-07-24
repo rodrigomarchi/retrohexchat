@@ -5,8 +5,6 @@ defmodule RetroHexChat.P2P do
   `SignalingRateLimit`). The session lifecycle itself lives in
   `RetroHexChat.Lobby`.
   """
-  use Gettext, backend: RetroHexChat.Gettext
-
   alias RetroHexChat.P2P.Turn.{Auth, Config}
 
   @spec turn_configured?() :: boolean()
@@ -54,17 +52,14 @@ defmodule RetroHexChat.P2P do
       [
         %{
           urls: [
-            dgettext("p2p", "turn:%{relay_ip}:%{listen_port}?transport=udp",
-              relay_ip: relay_ip,
-              listen_port: listen_port
-            )
+            "turn:#{relay_ip}:#{listen_port}?transport=udp"
           ],
           username: creds.username,
           credential: creds.password
         }
       ]
     else
-      [%{urls: [dgettext("p2p", "stun:stun.l.google.com:19302")]}]
+      [%{urls: ["stun:stun.l.google.com:19302"]}]
     end
   end
 end

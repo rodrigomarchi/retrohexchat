@@ -54,7 +54,7 @@ export class ConnectPage {
     await this.nicknameInput.fill(nick);
   }
 
-  async open() {
+  async open(locale?: string) {
     // Suppress contextual-tip toasts in E2E. They are non-deterministic
     // onboarding UI (e.g. the "first_join" tip fires on the #lobby auto-join)
     // that overlays the menu bar and flakes menu-driven specs. The hook reads
@@ -66,7 +66,10 @@ export class ConnectPage {
         /* localStorage unavailable — ignore */
       }
     });
-    await this.page.goto("/connect");
+    const target = locale
+      ? `/locale/${locale}?return_to=/connect`
+      : "/connect";
+    await this.page.goto(target);
     await expect(this.nicknameInput).toBeVisible();
   }
 

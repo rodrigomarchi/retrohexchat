@@ -639,7 +639,9 @@ export class ChatPage {
   async waitUntilConnected() {
     await expect(this.page).toHaveURL(/\/chat(\?.*)?$/);
     await expect(this.menuBar).toBeVisible();
-    await expect(this.fileMenuTrigger).toBeEnabled();
+    await expect(
+      this.page.locator("button[data-menubar-trigger]").first(),
+    ).toBeEnabled();
     // Phoenix LiveView exposes window.liveSocket once initialized.
     // isConnected() returns true after the WebSocket handshake — at that
     // point phx-hook mounted() callbacks (including MenuBarHook) have run.
@@ -673,7 +675,7 @@ export class ChatPage {
     await expect(targetTab).toHaveAttribute("aria-selected", "true");
     await expect(this.chatInput).toHaveAttribute(
       "placeholder",
-      new RegExp(`Message to ${escapeRegExp(name)}`),
+      new RegExp(escapeRegExp(name)),
     );
   }
 
