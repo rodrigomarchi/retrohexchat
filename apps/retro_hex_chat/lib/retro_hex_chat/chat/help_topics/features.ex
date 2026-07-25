@@ -162,6 +162,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "chanserv",
           "registration tab",
           "access lists",
+          dgettext("help", "access lists tab"),
           "tabs"
         ],
         icon: :icon_dialog_channel_central,
@@ -1293,36 +1294,194 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           )
       },
       %{
+        id: "feature-admin-server-settings",
+        title: dgettext("help", "Admin Server Settings"),
+        category: dgettext("help", "Admin & Server"),
+        keywords: [
+          "admin",
+          "server settings",
+          "configuration",
+          dgettext("help", "server name"),
+          "registration",
+          "whowas",
+          "max channels",
+          "welcome message"
+        ],
+        icon: :icon_server,
+        description:
+          dgettext(
+            "help",
+            "Edit the server's name, description, welcome message, channel limit and registration policy."
+          ),
+        see_also: ["feature-admin-console", "cmd-admin-server"]
+      },
+      %{
+        id: "feature-admin-audit-log",
+        title: dgettext("help", "Admin Audit Log"),
+        category: dgettext("help", "Admin & Server"),
+        keywords: [
+          "admin",
+          "audit log",
+          "history",
+          "who did what",
+          "log"
+        ],
+        icon: :icon_notepad,
+        description:
+          dgettext(
+            "help",
+            "Read the administrative history, filtered by row count and by the admin who acted."
+          ),
+        see_also: ["feature-admin-console", "cmd-admin-log"]
+      },
+      %{
+        id: "feature-admin-motd",
+        title: dgettext("help", "Admin MOTD"),
+        category: dgettext("help", "Admin & Server"),
+        keywords: [
+          "admin",
+          "motd",
+          "message of the day",
+          "setmotd",
+          "clearmotd",
+          "welcome"
+        ],
+        icon: :icon_notepad,
+        description: dgettext("help", "Set, replace or clear the server's message of the day."),
+        see_also: [
+          "feature-admin-console",
+          "cmd-motd",
+          "cmd-setmotd",
+          "cmd-clearmotd",
+          "ui-message-of-the-day"
+        ]
+      },
+      %{
+        id: "feature-admin-turn",
+        title: dgettext("help", "Admin TURN"),
+        category: dgettext("help", "Admin & Server"),
+        keywords: [
+          "admin",
+          "turn",
+          "relay",
+          "webrtc",
+          "allocations",
+          "stats"
+        ],
+        icon: :icon_websocket,
+        description: dgettext("help", "Read TURN relay statistics and active allocations."),
+        see_also: ["feature-admin-console", "cmd-admin-turn", "feature-network-stats"]
+      },
+      %{
+        id: "feature-admin-broadcast",
+        title: dgettext("help", "Admin Broadcast"),
+        category: dgettext("help", "Admin & Server"),
+        keywords: [
+          "admin",
+          "broadcast",
+          "wallops",
+          "announce",
+          "announcement",
+          "server message"
+        ],
+        icon: :icon_megaphone,
+        description:
+          dgettext("help", "Send a wallops to +w users or an announcement to everyone connected."),
+        see_also: [
+          "feature-admin-console",
+          "feature-server-broadcasts",
+          "cmd-wallops",
+          "cmd-announce"
+        ]
+      },
+      %{
+        id: "feature-admin-danger-zone",
+        title: dgettext("help", "Admin Danger Zone"),
+        category: dgettext("help", "Admin & Server"),
+        keywords: [
+          "admin",
+          "danger zone",
+          "nuke",
+          "factory reset",
+          "wipe",
+          "reset server"
+        ],
+        icon: :icon_warning,
+        description:
+          dgettext(
+            "help",
+            "Preview and execute a full server wipe, guarded by typing the server name."
+          ),
+        see_also: ["feature-admin-console", "cmd-admin-nuke"]
+      },
+      %{
+        id: "feature-admin-channels",
+        title: dgettext("help", "Admin Channels"),
+        category: dgettext("help", "Admin & Server"),
+        keywords: [
+          "admin",
+          "channels",
+          dgettext("help", "channel delete"),
+          dgettext("help", "channel purge"),
+          "create",
+          dgettext("help", "chanserv admin"),
+          "access list",
+          "transfer",
+          "drop",
+          "banlist"
+        ],
+        icon: :icon_channels,
+        description:
+          dgettext(
+            "help",
+            "Inspect, create, delete and purge channels, and administer their ChanServ registration."
+          ),
+        see_also: [
+          "feature-admin-console",
+          "feature-admin-users",
+          "cmd-admin-channel",
+          "cmd-admin-cs"
+        ]
+      },
+      %{
+        id: "feature-admin-users",
+        title: dgettext("help", "Admin Users"),
+        category: dgettext("help", "Admin & Server"),
+        keywords: [
+          "admin",
+          "users",
+          dgettext("help", "user moderation"),
+          dgettext("help", "user roles"),
+          "ban",
+          "unban",
+          "kick",
+          "mute",
+          "unmute",
+          "rename",
+          dgettext("help", "nickserv admin"),
+          "resetpass",
+          "drop"
+        ],
+        icon: :icon_community,
+        description:
+          dgettext(
+            "help",
+            "Moderate users, manage accounts and roles, and run NickServ admin actions."
+          ),
+        see_also: [
+          "feature-admin-console",
+          "cmd-admin-user",
+          "cmd-admin-ns",
+          "channel-permissions"
+        ]
+      },
+      %{
         id: "feature-admin-console",
         title: dgettext("help", "Admin Console"),
         category: dgettext("help", "Admin & Server"),
         keywords: [
           "admin",
           "console",
-          "server settings",
-          "server settings tab",
-          "users",
-          "users tab",
-          "user moderation",
-          "user roles",
-          "nickserv admin",
-          "channels",
-          "channels tab",
-          "channel delete",
-          "channel purge",
-          "chanserv admin",
-          "motd",
-          "motd tab",
-          "setmotd",
-          "clearmotd",
-          "broadcast",
-          "audit log",
-          "audit log tab",
-          "turn",
-          "turn tab",
-          "danger zone",
-          "danger zone tab",
-          "console tab",
           "batch",
           "script",
           "commands",

@@ -1,0 +1,34 @@
+<p>
+  {dgettext(
+    "help_features",
+    "Admin Server Settings is one of the server administration windows. Open it from File > Admin; it opens as a desktop window you can drag, resize, minimize to the taskbar, and close with its title-bar X."
+  )}
+</p>
+<.help_h4 icon={:icon_server}>{dgettext("help_features", "What it edits")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "The form writes the server's configuration record: name, description, welcome message, channel limit, registration policy and how long whowas entries are kept. Saving dispatches one change per field you actually altered, so the result strip can report several lines at once."
+  )}
+</p>
+<.help_h4 icon={:icon_btn_refresh}>{dgettext("help_features", "Reading it back")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "The two panes below the form show what the server reports right now, from /admin server info and /admin server settings. Refresh re-reads both without leaving the window."
+  )}
+</p>
+<.help_h4 icon={:icon_lock}>{dgettext("help_features", "Access")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "Only server administrators may edit. Server operators can open the window and read the panes, but every control is disabled and the server refuses the change regardless."
+  )}
+</p>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="feature-admin-console">
+    {dgettext("help_features", "admin console")}
+  </.help_link>
+  · <.help_link topic="cmd-admin-server">{dgettext("help_features", "/admin server")}</.help_link>
+</p>

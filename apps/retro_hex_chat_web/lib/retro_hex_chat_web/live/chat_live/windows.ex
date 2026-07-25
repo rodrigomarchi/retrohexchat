@@ -32,7 +32,7 @@ defmodule RetroHexChatWeb.ChatLive.Windows do
   end
 
   @managed MapSet.new(
-             ~w(account address-book admin-console-dialog alias arcade-games auto-respond bot-management-dialog cheatsheet custom-menus flood-protection highlight notify-list perform sound-settings timers user-lookup)
+             ~w(account address-book admin-audit-log admin-broadcast admin-channels admin-console admin-danger-zone admin-motd admin-server-settings admin-turn admin-users alias arcade-games auto-respond bot-management-dialog cheatsheet custom-menus flood-protection highlight notify-list perform sound-settings timers user-lookup)
            )
 
   @doc "Whether the window's lifecycle is server-owned."

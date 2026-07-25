@@ -58,6 +58,12 @@ function buildDesktop() {
       <button data-window-start></button>
       <div data-window-start-menu class="u-hidden">
         <button data-window-open="call"></button>
+        <div data-start-submenu data-submenu-open="false">
+          <button data-start-submenu-trigger>Admin</button>
+          <div data-start-submenu-panel class="u-hidden">
+            <button data-window-open="conn" data-testid="start-menu-item-open_admin"></button>
+          </div>
+        </div>
       </div>
       <button data-window-taskbar="conn"></button>
       <button data-window-taskbar="chat"></button>
@@ -540,6 +546,82 @@ describe("WindowManagerHook", () => {
 
     expect(hook.windows.call.state.open).toBe(true);
     expect(menu.classList.contains("u-hidden")).toBe(true);
+  });
+
+  describe("Start menu groups", () => {
+    function submenu() {
+      return el.querySelector("[data-start-submenu]");
+    }
+
+    function panelHidden() {
+      return el.querySelector("[data-start-submenu-panel]").classList.contains("u-hidden");
+    }
+
+    function openStartMenu() {
+      el.querySelector("[data-window-start-menu]").classList.remove("u-hidden");
+    }
+
+    it("opens a group panel on trigger click", () => {
+      openStartMenu();
+      el.querySelector("[data-start-submenu-trigger]").click();
+
+      expect(panelHidden()).toBe(false);
+      expect(submenu().dataset.submenuOpen).toBe("true");
+    });
+
+    it("keeps the Start menu open when a group trigger is clicked", () => {
+      openStartMenu();
+      el.querySelector("[data-start-submenu-trigger]").click();
+
+      const menu = el.querySelector("[data-window-start-menu]");
+      expect(menu.classList.contains("u-hidden")).toBe(false);
+    });
+
+    it("toggles the group closed on a second click", () => {
+      openStartMenu();
+      el.querySelector("[data-start-submenu-trigger]").click();
+      el.querySelector("[data-start-submenu-trigger]").click();
+
+      expect(panelHidden()).toBe(true);
+    });
+
+    it("opens a group on hover", () => {
+      openStartMenu();
+      submenu().dispatchEvent(new MouseEvent("pointerover", { bubbles: true }));
+
+      expect(panelHidden()).toBe(false);
+    });
+
+    it("closes the group when hovering a sibling row", () => {
+      openStartMenu();
+      el.querySelector("[data-start-submenu-trigger]").click();
+
+      el.querySelector('[data-window-start-menu] > [data-window-open="call"]').dispatchEvent(
+        new MouseEvent("pointerover", { bubbles: true }),
+      );
+
+      expect(panelHidden()).toBe(true);
+    });
+
+    it("opens a window from inside a group and closes the whole menu", () => {
+      openStartMenu();
+      el.querySelector("[data-start-submenu-trigger]").click();
+      el.querySelector('[data-start-submenu-panel] [data-window-open="conn"]').click();
+
+      const menu = el.querySelector("[data-window-start-menu]");
+      expect(menu.classList.contains("u-hidden")).toBe(true);
+      expect(panelHidden()).toBe(true);
+    });
+
+    it("closes open groups when the Start menu itself closes", () => {
+      openStartMenu();
+      el.querySelector("[data-start-submenu-trigger]").click();
+
+      hook.closeStartMenu();
+
+      expect(panelHidden()).toBe(true);
+      expect(submenu().dataset.submenuOpen).toBe("false");
+    });
   });
 
   it("persists window state to localStorage", () => {

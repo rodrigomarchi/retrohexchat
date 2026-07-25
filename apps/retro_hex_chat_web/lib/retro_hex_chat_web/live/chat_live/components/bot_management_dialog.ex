@@ -40,7 +40,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.BotManagementDialog do
     events: [],
     stats: nil,
     tab: :general,
-    editing_field: nil,
     show_new_bot: false,
     show_add_command: false
   }
@@ -73,9 +72,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.BotManagementDialog do
         commands={@commands}
         events={@events}
         stats={@stats}
-        active_tab={@tab}
         is_admin={@is_admin}
-        editing_field={@editing_field}
       />
 
       <.new_bot_dialog id="new-bot-dialog" show={@show_new_bot} on_close="close_new_bot_dialog" />

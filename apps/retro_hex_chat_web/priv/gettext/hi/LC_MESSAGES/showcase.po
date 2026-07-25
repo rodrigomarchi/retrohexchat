@@ -42,17 +42,12 @@ msgstr "(empty - history search कुछ भी नहीं)"
 msgid "(empty — scroll_loader renders nothing)"
 msgstr "(empty - स्क्रॉल loader कुछ भी नहीं देता)"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:58
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:63
 #, elixir-autogen, elixir-format
 msgid "*!*@*.bad.isp"
 msgstr "*************"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_dialog_page.ex:24
-#, elixir-autogen, elixir-format
-msgid "*!*@bad.host.com"
-msgstr "* @bad.host.com"
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:48
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:53
 #, elixir-autogen, elixir-format
 msgid "*!*@troll.host"
 msgstr "****************"
@@ -317,9 +312,7 @@ msgstr "संपर्क जोड़ें"
 msgid "Add users to your address book."
 msgstr "उपयोगकर्ताओं को अपनी एड्रेस बुक में जोड़ें।"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:96
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:101
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:106
 #, elixir-autogen, elixir-format
 msgid "Add/Remove buttons"
 msgstr "जोड़ें/Remove बटन"
@@ -339,21 +332,21 @@ msgstr "न्यू अली"
 msgid "Address Book"
 msgstr "पता पुस्तिका"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:49
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:59
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:69
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:54
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:64
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:74
 #, elixir-autogen, elixir-format
 msgid "Admin"
 msgstr "व्यवस्थापक"
 
 #: lib/retro_hex_chat_web/components/showcase_helpers.ex:116
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_console_dialog_page.ex:59
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_console_dialog_page.ex:55
 #, elixir-autogen, elixir-format
 msgid "Admin Console"
 msgstr "व्यवस्थापक कंसोल"
 
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_console_dialog_page.ex:20
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_console_dialog_page.ex:56
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_console_dialog_page.ex:52
 #, elixir-autogen, elixir-format
 msgid "Admin Console Dialog"
 msgstr "व्यवस्थापक कंसोल डायलॉग"
@@ -387,7 +380,7 @@ msgstr "चेतावनी"
 msgid "Alias Configuration"
 msgstr "उपनाम विन्यास"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:118
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:132
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:29
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:39
 #, elixir-autogen, elixir-format
@@ -519,7 +512,7 @@ msgstr "तीर"
 msgid "Ask your questions here"
 msgstr "यहाँ अपने प्रश्न पूछिए"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:166
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:178
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:52
 #, elixir-autogen, elixir-format
 msgid "Assets"
@@ -545,7 +538,7 @@ msgstr "ऑडियो कॉल"
 msgid "Audio, video, devices"
 msgstr "ऑडियो, वीडियो, उपकरण"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:119
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:133
 #, elixir-autogen, elixir-format
 msgid "Auto Respond"
 msgstr "ऑटो जवाब"
@@ -572,7 +565,7 @@ msgid "Auto-discovered from submodules. Each diagram gets its own window."
 msgstr ""
 "सबमॉड्यूल से ऑटो-डिस्कवरी। प्रत्येक आरेख को अपनी खुद की खिड़की मिलती है।"
 
-#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:105
+#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:107
 #, elixir-autogen, elixir-format
 msgid "Auto-discovered from submodules. New icons appear here automatically."
 msgstr ""
@@ -619,26 +612,6 @@ msgstr "बैज"
 #, elixir-autogen, elixir-format
 msgid "Ban"
 msgstr "बन"
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:99
-#, elixir-autogen, elixir-format
-msgid "Ban Exc."
-msgstr "Ban Exc."
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:100
-#, elixir-autogen, elixir-format
-msgid "Ban exception masks"
-msgstr "प्रतिबंध अपवाद मास्क"
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:95
-#, elixir-autogen, elixir-format
-msgid "Ban masks with set_by/set_at"
-msgstr "Set by साथ मुखौटा/set_at"
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:94
-#, elixir-autogen, elixir-format
-msgid "Bans"
-msgstr "बैन"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/context_menu_page.html.heex:5
 #: lib/retro_hex_chat_web/live/showcase_live/shell/empty_state_page.ex:30
@@ -738,7 +711,7 @@ msgstr "बोल्ड"
 msgid "Border Radius"
 msgstr "सीमा त्रिज्या"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:121
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:135
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/bot_management_dialog_page.ex:60
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:84
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:251
@@ -900,31 +873,24 @@ msgstr "बदलाव सफलतापूर्वक बचाया गय
 msgid "Channel"
 msgstr "चैनल"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:123
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:137
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:217
 #, elixir-autogen, elixir-format
 msgid "Channel Central"
 msgstr "चैनल सेंट्रल"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:27
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:31
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Channel Central Dialog"
 msgstr "चैनल सेंट्रल डायलॉग"
-
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:125
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_dialog_page.ex:21
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_dialog_page.ex:34
-#, elixir-autogen, elixir-format
-msgid "Channel Dialog"
-msgstr "चैनल डायलॉग"
 
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/url_catcher_page.ex:115
 #, elixir-autogen, elixir-format
 msgid "Channel Filtered"
 msgstr "चैनल फ़िल्टर"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:127
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:139
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_list_page.ex:18
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_list_page.ex:43
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_list_page.ex:46
@@ -945,12 +911,6 @@ msgstr "चैनल मेनू"
 #, elixir-autogen, elixir-format
 msgid "Channel Mode"
 msgstr "चैनल मोड"
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_dialog_page.ex:37
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_dialog_page.ex:42
-#, elixir-autogen, elixir-format
-msgid "Channel Settings"
-msgstr "चैनल सेटिंग"
 
 #: lib/retro_hex_chat_web/live/showcase_live/chat/conversations_page.html.heex:69
 #, elixir-autogen, elixir-format
@@ -1053,7 +1013,7 @@ msgstr ""
 "चैट विशिष्ट घटक — संदेश, nicklist, इमोजी पिकर, स्वरूपण टूलबार, संदर्भ मेनू, "
 "और अधिक।"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:128
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:140
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:74
 #, elixir-autogen, elixir-format
 msgid "Cheatsheet"
@@ -1204,7 +1164,7 @@ msgstr ""
 msgid "Component Attributes"
 msgstr "घटक गुण"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:200
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:212
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:60
 #, elixir-autogen, elixir-format
 msgid "Component Showcase"
@@ -1237,7 +1197,7 @@ msgstr "एप्लिकेशन के लिए घटना ध्वन�
 msgid "Confirm Action"
 msgstr "कार्रवाई की पुष्टि"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:130
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:142
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/confirm_dialog_page.ex:21
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/confirm_dialog_page.ex:30
 #, elixir-autogen, elixir-format
@@ -1432,7 +1392,7 @@ msgstr "कस्टम कॉलम"
 msgid "Custom Max Length"
 msgstr "कस्टम मैक्स लंबाई"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:132
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:144
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:238
 #, elixir-autogen, elixir-format
 msgid "Custom Menus"
@@ -1554,7 +1514,7 @@ msgstr "खाता हटाएं"
 msgid "Delete Channel"
 msgstr "चैनल हटाएं"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:134
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:146
 #, elixir-autogen, elixir-format
 msgid "Delete Confirm"
 msgstr "Delete Confirm"
@@ -1576,7 +1536,7 @@ msgstr "संदेश भेजना"
 msgid "Description"
 msgstr "विवरण"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:219
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:231
 #, elixir-autogen, elixir-format
 msgid "Design System"
 msgstr "डिजाइन प्रणाली"
@@ -1598,7 +1558,7 @@ msgstr "विनाशकारी पुष्टिकरण"
 msgid "Development discussion"
 msgstr "विकास चर्चा"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:168
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:180
 #: lib/retro_hex_chat_web/live/showcase_live/assets/diagrams.ex:21
 #: lib/retro_hex_chat_web/live/showcase_live/assets/diagrams.ex:70
 #, elixir-autogen, elixir-format
@@ -1684,7 +1644,7 @@ msgstr "विकलांग आइटम"
 msgid "Disconnect"
 msgstr "डिस्कनेक्ट"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:136
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:148
 #, elixir-autogen, elixir-format
 msgid "Disconnect Confirm"
 msgstr "डिस्कनेक्ट करें"
@@ -1909,7 +1869,7 @@ msgstr "फील्डसेट"
 msgid "Fight through hordes of demons from Hell in this classic 1993 game."
 msgstr "इस क्लासिक 1993 के खेल में हेल से राक्षसों की भीड़ के माध्यम से लड़ो।"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:159
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:171
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/file_transfer_page.ex:18
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/file_transfer_page.ex:27
 #, elixir-autogen, elixir-format
@@ -1952,7 +1912,7 @@ msgstr "फ्लैश"
 msgid "Flash taskbar"
 msgstr "फ्लैश टास्कबार"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:138
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:150
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:230
 #, elixir-autogen, elixir-format
 msgid "Flood Protection"
@@ -2063,7 +2023,7 @@ msgstr "पूर्ण सेटिंग्स"
 msgid "Full Sidebar"
 msgstr "पूर्ण साइडबार"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:163
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:175
 #: lib/retro_hex_chat_web/live/showcase_live/games/game_cards_page.ex:20
 #: lib/retro_hex_chat_web/live/showcase_live/games/game_cards_page.html.heex:2
 #, elixir-autogen, elixir-format
@@ -2085,7 +2045,7 @@ msgstr "गेम स्क्रीन"
 msgid "Game on!"
 msgstr "पर खेल!"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:161
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:173
 #: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:40
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:47
 #, elixir-autogen, elixir-format
@@ -2195,7 +2155,7 @@ msgstr "छिपे हुए आइटम 1"
 msgid "Hidden Item 2"
 msgstr "छिपे हुए आइटम 2"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:140
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:152
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/highlight_dialog_page.ex:22
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/highlight_dialog_page.ex:36
 #, elixir-autogen, elixir-format
@@ -2277,9 +2237,9 @@ msgstr "आईआरसी टैब"
 msgid "Icon Sizes"
 msgstr "आइकन आकार"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:169
-#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:79
-#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:103
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:181
+#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:81
+#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:105
 #, elixir-autogen, elixir-format
 msgid "Icons"
 msgstr "प्रतीक"
@@ -2378,22 +2338,12 @@ msgstr ""
 "जेनेरिक कॉलबैक के साथ एक पुन: प्रयोज्य, स्वयं निर्मित भवन ब्लॉक है - कोई "
 "हार्डकोडित घटना नाम नहीं।"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:142
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:154
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/invite_dialog_page.ex:22
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/invite_dialog_page.ex:31
 #, elixir-autogen, elixir-format
 msgid "Invite Dialog"
 msgstr "Invite Dialog"
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:104
-#, elixir-autogen, elixir-format
-msgid "Invite Exc."
-msgstr "Invite Exc."
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:105
-#, elixir-autogen, elixir-format
-msgid "Invite exception masks"
-msgstr "Invite अपवाद मास्क"
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/accordion.ex:49
 #, elixir-autogen, elixir-format
@@ -2441,7 +2391,7 @@ msgstr "कीबोर्ड शॉर्टकट"
 msgid "Kick"
 msgstr "किक"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:143
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:155
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/kick_dialog_page.ex:20
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/kick_dialog_page.ex:27
 #, elixir-autogen, elixir-format
@@ -2656,7 +2606,7 @@ msgid "Media"
 msgstr "मीडिया"
 
 #: lib/retro_hex_chat_web/components/showcase_helpers.ex:61
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:206
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:218
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:70
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.ex:18
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:2
@@ -2798,7 +2748,7 @@ msgstr "अगला"
 msgid "Next tab"
 msgstr "अगला टैब"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:144
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:156
 #, elixir-autogen, elixir-format
 msgid "Nick Change"
 msgstr "निक चेंज"
@@ -2923,7 +2873,7 @@ msgstr "अधिसूचना"
 msgid "Notifications, info, warnings"
 msgstr "अधिसूचनाएं, सूचना, चेतावनी"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:146
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:158
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/notify_list_page.ex:21
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/notify_list_page.ex:37
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/notify_list_page.ex:40
@@ -3009,7 +2959,7 @@ msgstr "ओपन (Empty)"
 msgid "Open (Row Selected)"
 msgstr "खुला (Row Selected)"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_console_dialog_page.ex:64
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_console_dialog_page.ex:60
 #, elixir-autogen, elixir-format
 msgid "Open Admin Console"
 msgstr "ओपन व्यवस्थापक कंसोल"
@@ -3166,7 +3116,7 @@ msgstr "संदेश"
 msgid "Owner"
 msgstr "मालिक"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:155
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:167
 #, elixir-autogen, elixir-format
 msgid "P2P"
 msgstr "P2P"
@@ -3262,7 +3212,7 @@ msgstr "पेस्ट 5 लाइन्स"
 msgid "Paste Blocked"
 msgstr "चिपकाएँ अवरुद्ध"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:147
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:159
 #, elixir-autogen, elixir-format
 msgid "Paste Confirm"
 msgstr "पेस्ट करें पुष्टि करें"
@@ -3290,7 +3240,7 @@ msgstr "लोग"
 msgid "Perform"
 msgstr "प्रदर्शन"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:149
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:161
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.ex:21
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:2
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:5
@@ -3485,7 +3435,7 @@ msgstr "पंजीकृत निक"
 msgid "Regular"
 msgstr "नियमित"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:46
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "Regular User View"
 msgstr "नियमित उपयोगकर्ता दृश्य"
@@ -3930,7 +3880,7 @@ msgstr "छोटा"
 msgid "Solo Arcade game logos/cover art"
 msgstr "एकल आर्केड खेल लोगो/cover कला"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:164
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:176
 #: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.ex:80
 #: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.html.heex:2
 #, elixir-autogen, elixir-format
@@ -3953,7 +3903,7 @@ msgstr "द्वारा क्रमबद्ध Nick (Ascending)"
 msgid "Sound"
 msgstr "ध्वनि"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:151
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:163
 #, elixir-autogen, elixir-format
 msgid "Sound Settings"
 msgstr "ध्वनि सेटिंग्स"
@@ -4405,8 +4355,8 @@ msgstr "कुल"
 msgid "Tree View"
 msgstr "वृक्ष देखें"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:54
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:79
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:59
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:84
 #: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar.html.heex:59
 #: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar.html.heex:107
 #, elixir-autogen, elixir-format
@@ -4457,7 +4407,7 @@ msgstr "प्रकार"
 msgid "Typography"
 msgstr "Typography"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:153
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:165
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/url_catcher_page.ex:54
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/url_catcher_page.ex:65
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/url_catcher_page.ex:68
@@ -4904,7 +4854,7 @@ msgstr "शून्य परिणाम"
 msgid "[Server] Maintenance in 5 minutes."
 msgstr "[सर्वर] 5 मिनट में रखरखाव।"
 
-#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:169
+#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:171
 #, elixir-autogen, elixir-format
 msgid "bg-gradient-to-r from-primary to-[#1084d0]"
 msgstr "Bg-gradient-to-r from-primary to-#1084d0]"
@@ -4924,7 +4874,7 @@ msgstr "E-Mail   साइटमैप"
 msgid "eve has joined #lobby"
 msgstr "ईव में शामिल हो गए हैं #lobby"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:68
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:73
 #, elixir-autogen, elixir-format
 msgid "friend!*@troll.host"
 msgstr "दोस्त!*@troll.host"
@@ -4984,8 +4934,7 @@ msgstr "हिन्दी; हिंदी"
 msgid "report.pdf"
 msgstr "रिपोर्ट"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:53
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_dialog_page.ex:25
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:58
 #, elixir-autogen, elixir-format
 msgid "spammer!*@*"
 msgstr "स्पैमर"
@@ -5025,7 +4974,7 @@ msgstr "पाठ-x - 12px - कैप्शन टेक्स्ट"
 msgid "user@example.com"
 msgstr "user@example.com"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:78
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:83
 #, elixir-autogen, elixir-format
 msgid "vip!*@*.good.isp"
 msgstr "vip!"
@@ -5086,7 +5035,7 @@ msgstr "कॉम्पैक्ट - वीडियो कॉल"
 msgid "Compact — Waiting"
 msgstr "कॉम्पैक्ट - प्रतीक्षा"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:157
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:169
 #, elixir-autogen, elixir-format
 msgid "Connection Diagram"
 msgstr "कनेक्शन आरेख"
@@ -5168,3 +5117,197 @@ msgstr "झंडे"
 #, elixir-autogen, elixir-format
 msgid "Language flags (14x14)"
 msgstr "भाषा के झंडे (14x14)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_channels_dialog_page.ex:48
+#, elixir-autogen, elixir-format
+msgid ""
+"*** Channel List (2 results) ***\n"
+"  #lobby\n"
+"  #dev"
+msgstr ""
+"*** चैनल सूची (2 परिणाम) ***\n"
+"#lobby\n"
+"#dev"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_users_dialog_page.ex:49
+#, elixir-autogen, elixir-format
+msgid "*** No active server bans."
+msgstr "*** कोई सक्रिय सर्वर प्रतिबंध नहीं है।"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_channels_dialog_page.ex:49
+#, elixir-autogen, elixir-format
+msgid "*** No bans in #lobby"
+msgstr "#lobby में कोई प्रतिबंध नहीं"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_users_dialog_page.ex:48
+#, elixir-autogen, elixir-format
+msgid ""
+"*** User List (2 results) ***\n"
+"  Ada [registered]\n"
+"  Grace"
+msgstr ""
+"*** उपयोगकर्ता सूची (2 परिणाम) ***\n"
+"Ada [registered]\n"
+"ग्रेस"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:120
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_channels_dialog_page.ex:38
+#, elixir-autogen, elixir-format
+msgid "Admin Channels"
+msgstr "व्यवस्थापक चैनल"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_channels_dialog_page.ex:20
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_channels_dialog_page.ex:35
+#, elixir-autogen, elixir-format
+msgid "Admin Channels Dialog"
+msgstr "व्यवस्थापक चैनल"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:118
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_users_dialog_page.ex:38
+#, elixir-autogen, elixir-format
+msgid "Admin Users"
+msgstr "व्यवस्थापक"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_users_dialog_page.ex:20
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_users_dialog_page.ex:35
+#, elixir-autogen, elixir-format
+msgid "Admin Users Dialog"
+msgstr "व्यवस्थापक उपयोगकर्ता संवाद"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:124
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_audit_log_dialog_page.ex:38
+#, elixir-autogen, elixir-format
+msgid "Audit Log"
+msgstr "ऑडिट लॉग"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_audit_log_dialog_page.ex:20
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_audit_log_dialog_page.ex:35
+#, elixir-autogen, elixir-format
+msgid "Audit Log Dialog"
+msgstr "ऑडिट लॉग डायलॉग"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:128
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_broadcast_dialog_page.ex:38
+#, elixir-autogen, elixir-format
+msgid "Broadcast"
+msgstr "प्रसारण"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_broadcast_dialog_page.ex:20
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_broadcast_dialog_page.ex:35
+#, elixir-autogen, elixir-format
+msgid "Broadcast Dialog"
+msgstr "प्रसारण"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:130
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_danger_zone_dialog_page.ex:38
+#, elixir-autogen, elixir-format
+msgid "Danger Zone"
+msgstr "Danger जोन"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_danger_zone_dialog_page.ex:20
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_danger_zone_dialog_page.ex:35
+#, elixir-autogen, elixir-format
+msgid "Danger Zone Dialog"
+msgstr "Danger जोन Dialog"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:126
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_motd_dialog_page.ex:38
+#, elixir-autogen, elixir-format
+msgid "MOTD"
+msgstr "साइटमैप"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_motd_dialog_page.ex:20
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_motd_dialog_page.ex:35
+#, elixir-autogen, elixir-format
+msgid "MOTD Dialog"
+msgstr "MOTD Dialog"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_channels_dialog_page.ex:43
+#, elixir-autogen, elixir-format
+msgid "Open Admin Channels"
+msgstr "ओपन एडमिन चैनल"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_users_dialog_page.ex:43
+#, elixir-autogen, elixir-format
+msgid "Open Admin Users"
+msgstr "व्यवस्थापक उपयोगकर्ता"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_audit_log_dialog_page.ex:43
+#, elixir-autogen, elixir-format
+msgid "Open Audit Log"
+msgstr "ओपन ऑडिट लॉग"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_broadcast_dialog_page.ex:43
+#, elixir-autogen, elixir-format
+msgid "Open Broadcast"
+msgstr "खुला प्रसारण"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_danger_zone_dialog_page.ex:43
+#, elixir-autogen, elixir-format
+msgid "Open Danger Zone"
+msgstr "ओपन खतरे ज़ोन"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_motd_dialog_page.ex:43
+#, elixir-autogen, elixir-format
+msgid "Open MOTD"
+msgstr "ओपन MOTD"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_server_settings_dialog_page.ex:43
+#, elixir-autogen, elixir-format
+msgid "Open Server Settings"
+msgstr "ओपन सर्वर सेटिंग"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_turn_dialog_page.ex:43
+#, elixir-autogen, elixir-format
+msgid "Open TURN"
+msgstr "ओपन टर्न"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:122
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_server_settings_dialog_page.ex:38
+#, elixir-autogen, elixir-format
+msgid "Server Settings"
+msgstr "सर्वर सेटिंग"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_server_settings_dialog_page.ex:20
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_server_settings_dialog_page.ex:35
+#, elixir-autogen, elixir-format
+msgid "Server Settings Dialog"
+msgstr "सर्वर सेटिंग"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:127
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_turn_dialog_page.ex:38
+#, elixir-autogen, elixir-format
+msgid "TURN"
+msgstr "टर्न"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_turn_dialog_page.ex:20
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_turn_dialog_page.ex:35
+#, elixir-autogen, elixir-format
+msgid "TURN Dialog"
+msgstr "TURN Dialog"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:94
+#, elixir-autogen, elixir-format
+msgid "Access Lists"
+msgstr "प्रवेश सूची"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:96
+#, elixir-autogen, elixir-format
+msgid "Bans, ban exceptions and invite exceptions behind a type selector"
+msgstr ""
+"प्रतिबंध, प्रतिबंध अपवाद और एक प्रकार के चयनकर्ता के पीछे अपवाद आमंत्रित"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:106
+#, elixir-autogen, elixir-format
+msgid "ChanServ registration and SOP/AOP/VOP access lists"
+msgstr "ChanServ पंजीकरण और SOP/AOP/VOP एक्सेस सूची"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:108
+#, elixir-autogen, elixir-format
+msgid "Register, drop, access management"
+msgstr "रजिस्टर, ड्रॉप, एक्सेस मैनेजमेंट"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:104
+#, elixir-autogen, elixir-format
+msgid "Registration"
+msgstr "पंजीकरण"

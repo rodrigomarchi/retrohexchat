@@ -22,10 +22,7 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
   attr :commands, :list, default: []
   attr :events, :list, default: []
   attr :stats, :any, default: nil
-  attr :active_tab, :atom, default: :general
   attr :is_admin, :boolean, default: false
-  attr :editing_field, :any, default: nil
-  attr :capabilities, :list, default: [], doc: "Available capability names for the selected bot"
   attr :on_close, :any, default: nil
 
   @spec bot_management_dialog(map()) :: Phoenix.LiveView.Rendered.t()
@@ -123,8 +120,6 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
                 <.tabs_trigger
                   builder={%{id: "bot-tabs", default: "general"}}
                   value="general"
-                  phx-click="bot_dialog_tab"
-                  phx-value-tab="general"
                 >
                   <:icon><Icons.icon_tab_general class="w-[16px] h-[16px]" /></:icon>
                   {dgettext("dialogs", "General")}
@@ -132,8 +127,6 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
                 <.tabs_trigger
                   builder={%{id: "bot-tabs", default: "general"}}
                   value="capabilities"
-                  phx-click="bot_dialog_tab"
-                  phx-value-tab="capabilities"
                 >
                   <:icon><Icons.icon_tab_control class="w-[16px] h-[16px]" /></:icon>
                   {dgettext("dialogs", "Capabilities")}
@@ -141,8 +134,6 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
                 <.tabs_trigger
                   builder={%{id: "bot-tabs", default: "general"}}
                   value="channels"
-                  phx-click="bot_dialog_tab"
-                  phx-value-tab="channels"
                 >
                   <:icon><Icons.icon_tab_channel class="w-[16px] h-[16px]" /></:icon>
                   {dgettext("dialogs", "Channels")}
@@ -150,8 +141,6 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
                 <.tabs_trigger
                   builder={%{id: "bot-tabs", default: "general"}}
                   value="commands"
-                  phx-click="bot_dialog_tab"
-                  phx-value-tab="commands"
                 >
                   <:icon><Icons.icon_tab_commands class="w-[16px] h-[16px]" /></:icon>
                   {dgettext("dialogs", "Commands")}
@@ -159,8 +148,6 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
                 <.tabs_trigger
                   builder={%{id: "bot-tabs", default: "general"}}
                   value="events"
-                  phx-click="bot_dialog_tab"
-                  phx-value-tab="events"
                 >
                   <:icon><Icons.icon_clock class="w-[16px] h-[16px]" /></:icon>
                   {dgettext("dialogs", "Events")}

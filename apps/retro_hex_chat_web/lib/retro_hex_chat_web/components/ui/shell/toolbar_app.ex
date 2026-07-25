@@ -165,8 +165,64 @@ defmodule RetroHexChatWeb.Components.UI.ToolbarApp do
           <%!-- Admin (conditional) --%>
           <.dropdown_item
             :if={@is_admin}
+            icon_fn={:icon_community}
+            label={dgettext("ui", "Users")}
+            action="open_admin_users"
+            on_action={@on_action}
+          />
+          <.dropdown_item
+            :if={@is_admin}
+            icon_fn={:icon_channels}
+            label={dgettext("ui", "Channels")}
+            action="open_admin_channels"
+            on_action={@on_action}
+          />
+          <.dropdown_item
+            :if={@is_admin}
+            icon_fn={:icon_server}
+            label={dgettext("ui", "Server Settings")}
+            action="open_admin_server_settings"
+            on_action={@on_action}
+          />
+          <.dropdown_item
+            :if={@is_admin}
+            icon_fn={:icon_notepad}
+            label={dgettext("ui", "Audit Log")}
+            action="open_admin_audit_log"
+            on_action={@on_action}
+          />
+          <.dropdown_item
+            :if={@is_admin}
+            icon_fn={:icon_notepad}
+            label={dgettext("ui", "MOTD")}
+            action="open_admin_motd"
+            on_action={@on_action}
+          />
+          <.dropdown_item
+            :if={@is_admin}
+            icon_fn={:icon_websocket}
+            label={dgettext("ui", "TURN")}
+            action="open_admin_turn"
+            on_action={@on_action}
+          />
+          <.dropdown_item
+            :if={@is_admin}
+            icon_fn={:icon_megaphone}
+            label={dgettext("ui", "Broadcast")}
+            action="open_admin_broadcast"
+            on_action={@on_action}
+          />
+          <.dropdown_item
+            :if={@is_admin}
+            icon_fn={:icon_warning}
+            label={dgettext("ui", "Danger Zone")}
+            action="open_admin_danger_zone"
+            on_action={@on_action}
+          />
+          <.dropdown_item
+            :if={@is_admin}
             icon_fn={:icon_dialog_admin_console}
-            label={dgettext("ui", "Admin Console")}
+            label={dgettext("ui", "Console")}
             action="open_admin_console"
             on_action={@on_action}
           />

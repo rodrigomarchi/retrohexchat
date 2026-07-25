@@ -42,17 +42,12 @@ msgstr "(مفرغة - التاريخ لا يجعل شيئا)"
 msgid "(empty — scroll_loader renders nothing)"
 msgstr "لا شيء"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:58
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:63
 #, elixir-autogen, elixir-format
 msgid "*!*@*.bad.isp"
 msgstr "*@*.bad.isp"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_dialog_page.ex:24
-#, elixir-autogen, elixir-format
-msgid "*!*@bad.host.com"
-msgstr "*@bad.host.com"
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:48
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:53
 #, elixir-autogen, elixir-format
 msgid "*!*@troll.host"
 msgstr "*@troll.host"
@@ -313,9 +308,7 @@ msgstr "إضافة إلى الاتصالات"
 msgid "Add users to your address book."
 msgstr "أضف مستخدمين لكتاب عنوانك"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:96
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:101
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:106
 #, elixir-autogen, elixir-format
 msgid "Add/Remove buttons"
 msgstr "أزرار مضافة"
@@ -335,21 +328,21 @@ msgstr "إضافة إليا الجديدة"
 msgid "Address Book"
 msgstr "العنوان"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:49
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:59
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:69
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:54
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:64
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:74
 #, elixir-autogen, elixir-format
 msgid "Admin"
 msgstr "Admin"
 
 #: lib/retro_hex_chat_web/components/showcase_helpers.ex:116
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_console_dialog_page.ex:59
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_console_dialog_page.ex:55
 #, elixir-autogen, elixir-format
 msgid "Admin Console"
 msgstr "أمين كونسول"
 
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_console_dialog_page.ex:20
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_console_dialog_page.ex:56
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_console_dialog_page.ex:52
 #, elixir-autogen, elixir-format
 msgid "Admin Console Dialog"
 msgstr "Admin Console Dialog"
@@ -383,7 +376,7 @@ msgstr "إنذار"
 msgid "Alias Configuration"
 msgstr "Alias Configuration"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:118
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:132
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:29
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:39
 #, elixir-autogen, elixir-format
@@ -514,7 +507,7 @@ msgstr "الأسهم"
 msgid "Ask your questions here"
 msgstr "إسأل أسئلتك هنا"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:166
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:178
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:52
 #, elixir-autogen, elixir-format
 msgid "Assets"
@@ -540,7 +533,7 @@ msgstr "Audio Call"
 msgid "Audio, video, devices"
 msgstr "الصوت، الفيديو، الأجهزة"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:119
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:133
 #, elixir-autogen, elixir-format
 msgid "Auto Respond"
 msgstr "Auto Respond"
@@ -566,7 +559,7 @@ msgstr "Auto-whois Enabled"
 msgid "Auto-discovered from submodules. Each diagram gets its own window."
 msgstr "تم كشفها من تحتية كل رسم بياني يحصل على نافذته الخاصة"
 
-#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:105
+#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:107
 #, elixir-autogen, elixir-format
 msgid "Auto-discovered from submodules. New icons appear here automatically."
 msgstr "تم كشفها من تحتية ظهور أيقونات جديدة هنا تلقائيا."
@@ -612,26 +605,6 @@ msgstr "Badge"
 #, elixir-autogen, elixir-format
 msgid "Ban"
 msgstr "Ban"
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:99
-#, elixir-autogen, elixir-format
-msgid "Ban Exc."
-msgstr "(بان إكس)"
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:100
-#, elixir-autogen, elixir-format
-msgid "Ban exception masks"
-msgstr "أقنعة استثناءات الحظر"
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:95
-#, elixir-autogen, elixir-format
-msgid "Ban masks with set_by/set_at"
-msgstr "أقنعة حظر معدة"
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:94
-#, elixir-autogen, elixir-format
-msgid "Bans"
-msgstr "الحظر"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/context_menu_page.html.heex:5
 #: lib/retro_hex_chat_web/live/showcase_live/shell/empty_state_page.ex:30
@@ -731,7 +704,7 @@ msgstr "Bold"
 msgid "Border Radius"
 msgstr "Border Radius"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:121
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:135
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/bot_management_dialog_page.ex:60
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:84
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:251
@@ -892,31 +865,24 @@ msgstr "لقد تم إنقاذ التغييرات بنجاح"
 msgid "Channel"
 msgstr "القناة"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:123
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:137
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:217
 #, elixir-autogen, elixir-format
 msgid "Channel Central"
 msgstr "القناة المركزية"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:27
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:31
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Channel Central Dialog"
 msgstr "القناة الوسطى"
-
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:125
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_dialog_page.ex:21
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_dialog_page.ex:34
-#, elixir-autogen, elixir-format
-msgid "Channel Dialog"
-msgstr "قناة Dialog"
 
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/url_catcher_page.ex:115
 #, elixir-autogen, elixir-format
 msgid "Channel Filtered"
 msgstr "مقطورة"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:127
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:139
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_list_page.ex:18
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_list_page.ex:43
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_list_page.ex:46
@@ -937,12 +903,6 @@ msgstr "Channel Menu"
 #, elixir-autogen, elixir-format
 msgid "Channel Mode"
 msgstr "Channel Mode"
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_dialog_page.ex:37
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_dialog_page.ex:42
-#, elixir-autogen, elixir-format
-msgid "Channel Settings"
-msgstr "Channel Settings"
 
 #: lib/retro_hex_chat_web/live/showcase_live/chat/conversations_page.html.heex:69
 #, elixir-autogen, elixir-format
@@ -1045,7 +1005,7 @@ msgstr ""
 "العناصر الخاصة بالسلاسل - الرسائل، النيكل، المخلل الإيموجي، شكل حزام "
 "الأدوات، السياق، والأكثر."
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:128
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:140
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:74
 #, elixir-autogen, elixir-format
 msgid "Cheatsheet"
@@ -1196,7 +1156,7 @@ msgstr ""
 msgid "Component Attributes"
 msgstr "العناصر"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:200
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:212
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:60
 #, elixir-autogen, elixir-format
 msgid "Component Showcase"
@@ -1229,7 +1189,7 @@ msgstr "الحدث المؤمن يبدو طلباً"
 msgid "Confirm Action"
 msgstr "الإجراء المؤكد"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:130
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:142
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/confirm_dialog_page.ex:21
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/confirm_dialog_page.ex:30
 #, elixir-autogen, elixir-format
@@ -1424,7 +1384,7 @@ msgstr "الكولونات العرفية"
 msgid "Custom Max Length"
 msgstr "Custom Max Length"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:132
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:144
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:238
 #, elixir-autogen, elixir-format
 msgid "Custom Menus"
@@ -1546,7 +1506,7 @@ msgstr "يحذف الحساب"
 msgid "Delete Channel"
 msgstr "تحذف القناة"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:134
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:146
 #, elixir-autogen, elixir-format
 msgid "Delete Confirm"
 msgstr "تحذف"
@@ -1568,7 +1528,7 @@ msgstr "تحذف الرسالة"
 msgid "Description"
 msgstr "الوصف"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:219
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:231
 #, elixir-autogen, elixir-format
 msgid "Design System"
 msgstr "نظام التصميم"
@@ -1590,7 +1550,7 @@ msgstr "تأكيد قاطع"
 msgid "Development discussion"
 msgstr "مناقشة التنمية"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:168
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:180
 #: lib/retro_hex_chat_web/live/showcase_live/assets/diagrams.ex:21
 #: lib/retro_hex_chat_web/live/showcase_live/assets/diagrams.ex:70
 #, elixir-autogen, elixir-format
@@ -1675,7 +1635,7 @@ msgstr "البنود المعوقة"
 msgid "Disconnect"
 msgstr "الفصل"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:136
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:148
 #, elixir-autogen, elixir-format
 msgid "Disconnect Confirm"
 msgstr "الكشف عن المعلومات"
@@ -1900,7 +1860,7 @@ msgstr "الميدان"
 msgid "Fight through hordes of demons from Hell in this classic 1993 game."
 msgstr "حارب من خلال هرود الشياطين من الجحيم في هذه اللعبة الكلاسيكية 1993."
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:159
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:171
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/file_transfer_page.ex:18
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/file_transfer_page.ex:27
 #, elixir-autogen, elixir-format
@@ -1943,7 +1903,7 @@ msgstr "فلاش"
 msgid "Flash taskbar"
 msgstr "Flash taskbar"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:138
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:150
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:230
 #, elixir-autogen, elixir-format
 msgid "Flood Protection"
@@ -2054,7 +2014,7 @@ msgstr "المجموعة الكاملة"
 msgid "Full Sidebar"
 msgstr "كامل الجانب"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:163
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:175
 #: lib/retro_hex_chat_web/live/showcase_live/games/game_cards_page.ex:20
 #: lib/retro_hex_chat_web/live/showcase_live/games/game_cards_page.html.heex:2
 #, elixir-autogen, elixir-format
@@ -2076,7 +2036,7 @@ msgstr "Game Screens"
 msgid "Game on!"
 msgstr "اللعبة على!"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:161
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:173
 #: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:40
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:47
 #, elixir-autogen, elixir-format
@@ -2186,7 +2146,7 @@ msgstr "البند ١"
 msgid "Hidden Item 2"
 msgstr "البند 2"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:140
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:152
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/highlight_dialog_page.ex:22
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/highlight_dialog_page.ex:36
 #, elixir-autogen, elixir-format
@@ -2268,9 +2228,9 @@ msgstr "IRC Tabs"
 msgid "Icon Sizes"
 msgstr "Icon Sizes"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:169
-#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:79
-#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:103
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:181
+#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:81
+#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:105
 #, elixir-autogen, elixir-format
 msgid "Icons"
 msgstr "Icons"
@@ -2369,22 +2329,12 @@ msgstr ""
 "تشات\". وكل عنصر من هذه العناصر عبارة عن لبنة بناء قابلة لإعادة الاستخدام، "
 "مكتفية ذاتيا، مع انتكاسات عامة - لا توجد أسماء مثبتة بدقة."
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:142
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:154
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/invite_dialog_page.ex:22
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/invite_dialog_page.ex:31
 #, elixir-autogen, elixir-format
 msgid "Invite Dialog"
 msgstr "Invite Dialog"
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:104
-#, elixir-autogen, elixir-format
-msgid "Invite Exc."
-msgstr "دعوة إكس."
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:105
-#, elixir-autogen, elixir-format
-msgid "Invite exception masks"
-msgstr "أقنعة استثناء دعوة"
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/accordion.ex:49
 #, elixir-autogen, elixir-format
@@ -2432,7 +2382,7 @@ msgstr "SLEboard Shortcuts"
 msgid "Kick"
 msgstr "Kick"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:143
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:155
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/kick_dialog_page.ex:20
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/kick_dialog_page.ex:27
 #, elixir-autogen, elixir-format
@@ -2646,7 +2596,7 @@ msgid "Media"
 msgstr "وسائط الإعلام"
 
 #: lib/retro_hex_chat_web/components/showcase_helpers.ex:61
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:206
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:218
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:70
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.ex:18
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:2
@@ -2788,7 +2738,7 @@ msgstr "التالي"
 msgid "Next tab"
 msgstr "الحساب التالي"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:144
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:156
 #, elixir-autogen, elixir-format
 msgid "Nick Change"
 msgstr "نيك"
@@ -2913,7 +2863,7 @@ msgstr "الإخطار"
 msgid "Notifications, info, warnings"
 msgstr "الإخطارات والمعلومات والإنذارات"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:146
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:158
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/notify_list_page.ex:21
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/notify_list_page.ex:37
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/notify_list_page.ex:40
@@ -2999,7 +2949,7 @@ msgstr "مفتوح ( فارغ)"
 msgid "Open (Row Selected)"
 msgstr "مفتوح (مختار)"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_console_dialog_page.ex:64
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_console_dialog_page.ex:60
 #, elixir-autogen, elixir-format
 msgid "Open Admin Console"
 msgstr "Open Admin Console"
@@ -3156,7 +3106,7 @@ msgstr "رسالة ذاتية"
 msgid "Owner"
 msgstr "المالك"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:155
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:167
 #, elixir-autogen, elixir-format
 msgid "P2P"
 msgstr "P2P"
@@ -3252,7 +3202,7 @@ msgstr "المراعي 5 خطوط"
 msgid "Paste Blocked"
 msgstr "معصم"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:147
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:159
 #, elixir-autogen, elixir-format
 msgid "Paste Confirm"
 msgstr "Paste Confirm"
@@ -3280,7 +3230,7 @@ msgstr "الناس"
 msgid "Perform"
 msgstr "الأداء"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:149
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:161
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.ex:21
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:2
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:5
@@ -3475,7 +3425,7 @@ msgstr "(نيك) المسجل"
 msgid "Regular"
 msgstr "عادية"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:46
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "Regular User View"
 msgstr "مستعمل منتظم"
@@ -3921,7 +3871,7 @@ msgstr "صغيرة"
 msgid "Solo Arcade game logos/cover art"
 msgstr "ندوب لعبة \"سولو أركيد\"/cover الفن"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:164
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:176
 #: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.ex:80
 #: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.html.heex:2
 #, elixir-autogen, elixir-format
@@ -3944,7 +3894,7 @@ msgstr "تغذيته (نيك)"
 msgid "Sound"
 msgstr "الصوت"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:151
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:163
 #, elixir-autogen, elixir-format
 msgid "Sound Settings"
 msgstr "Sound Settings"
@@ -4391,8 +4341,8 @@ msgstr "المجموع"
 msgid "Tree View"
 msgstr "تري فيو"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:54
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:79
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:59
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:84
 #: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar.html.heex:59
 #: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar.html.heex:107
 #, elixir-autogen, elixir-format
@@ -4443,7 +4393,7 @@ msgstr "الأنواع"
 msgid "Typography"
 msgstr "رسم الخرائط"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:153
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:165
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/url_catcher_page.ex:54
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/url_catcher_page.ex:65
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/url_catcher_page.ex:68
@@ -4890,7 +4840,7 @@ msgstr "صفر النتائج"
 msgid "[Server] Maintenance in 5 minutes."
 msgstr "الصيانة خلال 5 دقائق"
 
-#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:169
+#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:171
 #, elixir-autogen, elixir-format
 msgid "bg-gradient-to-r from-primary to-[#1084d0]"
 msgstr "bg-gradient-to-r from-primary to-[<ph0>"
@@ -4910,7 +4860,7 @@ msgstr "mail@example.com"
 msgid "eve has joined #lobby"
 msgstr "(إيف) انضمّت إلى (إكس بي إكس)"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:68
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:73
 #, elixir-autogen, elixir-format
 msgid "friend!*@troll.host"
 msgstr "صديق*"
@@ -4970,8 +4920,7 @@ msgstr "أقرأ"
 msgid "report.pdf"
 msgstr "Report.pdf"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:53
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_dialog_page.ex:25
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:58
 #, elixir-autogen, elixir-format
 msgid "spammer!*@*"
 msgstr "spammer*@*"
@@ -5011,7 +4960,7 @@ msgstr "النص الحرفي"
 msgid "user@example.com"
 msgstr "user@example.com"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:78
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:83
 #, elixir-autogen, elixir-format
 msgid "vip!*@*.good.isp"
 msgstr "vip*@*.good.isp"
@@ -5074,7 +5023,7 @@ msgstr "العهد - نداء الفيديو"
 msgid "Compact — Waiting"
 msgstr "العهد - الانتظار"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:157
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:169
 #, elixir-autogen, elixir-format
 msgid "Connection Diagram"
 msgstr "Connection Diagram"
@@ -5156,3 +5105,196 @@ msgstr "أعلام"
 #, elixir-autogen, elixir-format
 msgid "Language flags (14x14)"
 msgstr "أعلام اللغات (14x14)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_channels_dialog_page.ex:48
+#, elixir-autogen, elixir-format
+msgid ""
+"*** Channel List (2 results) ***\n"
+"  #lobby\n"
+"  #dev"
+msgstr ""
+"*** قائمة بالقناة )نتائج(***\n"
+"ph<\n"
+"ph1<"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_users_dialog_page.ex:49
+#, elixir-autogen, elixir-format
+msgid "*** No active server bans."
+msgstr "*** لا حظر فعال للخادم."
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_channels_dialog_page.ex:49
+#, elixir-autogen, elixir-format
+msgid "*** No bans in #lobby"
+msgstr "*** لا يوجد حظر في نظام &quot; الفاو &quot;"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_users_dialog_page.ex:48
+#, elixir-autogen, elixir-format
+msgid ""
+"*** User List (2 results) ***\n"
+"  Ada [registered]\n"
+"  Grace"
+msgstr ""
+"*** قائمة المستخدمين (نتائج)***\n"
+"Ada [registered]\n"
+"غريس"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:120
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_channels_dialog_page.ex:38
+#, elixir-autogen, elixir-format
+msgid "Admin Channels"
+msgstr "قناة أمين"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_channels_dialog_page.ex:20
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_channels_dialog_page.ex:35
+#, elixir-autogen, elixir-format
+msgid "Admin Channels Dialog"
+msgstr "Admin Channels Dialog"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:118
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_users_dialog_page.ex:38
+#, elixir-autogen, elixir-format
+msgid "Admin Users"
+msgstr "المستعملون"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_users_dialog_page.ex:20
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_users_dialog_page.ex:35
+#, elixir-autogen, elixir-format
+msgid "Admin Users Dialog"
+msgstr "Admin Users Dialog"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:124
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_audit_log_dialog_page.ex:38
+#, elixir-autogen, elixir-format
+msgid "Audit Log"
+msgstr "سجل مراجعة الحسابات"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_audit_log_dialog_page.ex:20
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_audit_log_dialog_page.ex:35
+#, elixir-autogen, elixir-format
+msgid "Audit Log Dialog"
+msgstr "سجل مراجعة الحسابات"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:128
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_broadcast_dialog_page.ex:38
+#, elixir-autogen, elixir-format
+msgid "Broadcast"
+msgstr "بث"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_broadcast_dialog_page.ex:20
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_broadcast_dialog_page.ex:35
+#, elixir-autogen, elixir-format
+msgid "Broadcast Dialog"
+msgstr "Radiocast Dialog"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:130
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_danger_zone_dialog_page.ex:38
+#, elixir-autogen, elixir-format
+msgid "Danger Zone"
+msgstr "منطقة الخطر"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_danger_zone_dialog_page.ex:20
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_danger_zone_dialog_page.ex:35
+#, elixir-autogen, elixir-format
+msgid "Danger Zone Dialog"
+msgstr "Dialog منطقة الخطر"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:126
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_motd_dialog_page.ex:38
+#, elixir-autogen, elixir-format
+msgid "MOTD"
+msgstr "MOTD"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_motd_dialog_page.ex:20
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_motd_dialog_page.ex:35
+#, elixir-autogen, elixir-format
+msgid "MOTD Dialog"
+msgstr "MOTD Dialog"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_channels_dialog_page.ex:43
+#, elixir-autogen, elixir-format
+msgid "Open Admin Channels"
+msgstr "قناة أمين مفتوحة"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_users_dialog_page.ex:43
+#, elixir-autogen, elixir-format
+msgid "Open Admin Users"
+msgstr "المستعملون المفتوحون"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_audit_log_dialog_page.ex:43
+#, elixir-autogen, elixir-format
+msgid "Open Audit Log"
+msgstr "سجل المراجعة المفتوحة"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_broadcast_dialog_page.ex:43
+#, elixir-autogen, elixir-format
+msgid "Open Broadcast"
+msgstr "البث المفتوح"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_danger_zone_dialog_page.ex:43
+#, elixir-autogen, elixir-format
+msgid "Open Danger Zone"
+msgstr "منطقة الخطر المفتوحة"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_motd_dialog_page.ex:43
+#, elixir-autogen, elixir-format
+msgid "Open MOTD"
+msgstr "Open MOTD"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_server_settings_dialog_page.ex:43
+#, elixir-autogen, elixir-format
+msgid "Open Server Settings"
+msgstr "\"السيرفر ستينغز\""
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_turn_dialog_page.ex:43
+#, elixir-autogen, elixir-format
+msgid "Open TURN"
+msgstr "فتح TURN"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:122
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_server_settings_dialog_page.ex:38
+#, elixir-autogen, elixir-format
+msgid "Server Settings"
+msgstr "Server Settings"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_server_settings_dialog_page.ex:20
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_server_settings_dialog_page.ex:35
+#, elixir-autogen, elixir-format
+msgid "Server Settings Dialog"
+msgstr "Server Settings Dialog"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:127
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_turn_dialog_page.ex:38
+#, elixir-autogen, elixir-format
+msgid "TURN"
+msgstr "TURN"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_turn_dialog_page.ex:20
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_turn_dialog_page.ex:35
+#, elixir-autogen, elixir-format
+msgid "TURN Dialog"
+msgstr "TURN Dialog"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:94
+#, elixir-autogen, elixir-format
+msgid "Access Lists"
+msgstr "قوائم الدخول"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:96
+#, elixir-autogen, elixir-format
+msgid "Bans, ban exceptions and invite exceptions behind a type selector"
+msgstr "حظر الاستثناءات ودعوة الاستثناءات من نوع ما"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:106
+#, elixir-autogen, elixir-format
+msgid "ChanServ registration and SOP/AOP/VOP access lists"
+msgstr "ChanServ registration and SOPph0>SION/ph0<"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:108
+#, elixir-autogen, elixir-format
+msgid "Register, drop, access management"
+msgstr "السجل، التسرب، إدارة الدخول"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:104
+#, elixir-autogen, elixir-format
+msgid "Registration"
+msgstr "التسجيل"

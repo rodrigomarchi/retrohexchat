@@ -9,6 +9,9 @@ defmodule RetroHexChatWeb.Components.UI.MenuBar do
     * `menu/1` — one top-level menu: a `[data-menubar-trigger]` and its
       `[data-menubar-dropdown]` panel as siblings under a single wrapper, the
       structure the hook relies on (`trigger.parentElement` → `querySelector`).
+    * `submenu/1` — a nested panel inside a dropdown, on its own
+      `[data-menubar-submenu]` / `[data-menubar-submenu-panel]` contract so the
+      hook can open it without the parent dropdown's sweep closing it.
 
   A disabled menu grays its trigger and omits its dropdown entirely (the hook
   bails on `data-disabled="true"`). Dropdown items are supplied by the caller as
@@ -20,6 +23,8 @@ defmodule RetroHexChatWeb.Components.UI.MenuBar do
   (`MenuBarApp` for chat); nothing here is screen-specific.
   """
   use RetroHexChatWeb.Component
+
+  alias RetroHexChatWeb.Icons
 
   @doc """
   Renders the menu bar `<nav>` — the mount point for `MenuBarHook`.
@@ -84,6 +89,71 @@ defmodule RetroHexChatWeb.Components.UI.MenuBar do
         {render_slot(@inner_block)}
       </.menu_dropdown>
     </div>
+    """
+  end
+
+  @doc """
+  Renders a nested submenu as one row inside a dropdown.
+
+  The row looks and reads like a `context_menu_item`, plus a right-pointing
+  chevron, and reveals its own panel of `<li>` items. Use it to group a family
+  of related commands that would otherwise bloat the parent dropdown.
+
+  The panel deliberately does NOT carry `data-menubar-dropdown`: the hook's
+  `_closeAll`/`_openMenu` sweep every element with that attribute, so reusing it
+  here would make a submenu open and close with its parent. It carries
+  `data-menubar-submenu-panel` instead, and the hook drives it separately.
+
+  On desktop the panel flies out to the right of the parent row. In the stacked
+  (mobile) shell it expands inline instead — a flyout would be clipped by the
+  mobile menu's `overflow: hidden` — which is CSS-only (`app-menu.css`); the
+  open/close contract is identical on both.
+  """
+  attr :label, :string, required: true
+  attr :testid, :string, default: nil
+  attr :class, :any, default: nil
+  slot :icon, required: true, doc: "14×14 icon SVG, matching context_menu_item"
+  slot :inner_block, required: true, doc: "submenu items (context_menu_* <li> elements)"
+
+  @spec submenu(map()) :: Phoenix.LiveView.Rendered.t()
+  def submenu(assigns) do
+    ~H"""
+    <li
+      class={classes(["menubar-submenu group/submenu relative list-none", @class])}
+      data-menubar-submenu
+      data-submenu-open="false"
+      role="none"
+    >
+      <div
+        class={
+          classes([
+            "flex items-center gap-retro-6 px-retro-16 py-2.5 md:py-[2px] min-h-[44px] md:min-h-0",
+            "whitespace-nowrap text-sm md:text-xs cursor-pointer select-none",
+            "hover:bg-selection-bg hover:text-selection-fg",
+            "group-data-[submenu-open=true]/submenu:bg-selection-bg",
+            "group-data-[submenu-open=true]/submenu:text-selection-fg"
+          ])
+        }
+        data-menubar-submenu-trigger
+        data-testid={@testid}
+        aria-haspopup="true"
+      >
+        <span class="shrink-0 w-[14px] h-[14px] inline-flex items-center justify-center">
+          {render_slot(@icon)}
+        </span>
+        <span class="flex-1">{@label}</span>
+        <Icons.icon_chevron_right class="ml-retro-24 h-[14px] w-[14px] shrink-0" />
+      </div>
+
+      <div
+        class="menubar-submenu__panel u-hidden absolute left-full top-0 min-w-[180px] p-[3px] bg-surface text-foreground shadow-retro-window z-dropdown"
+        data-menubar-submenu-panel
+      >
+        <ul class="list-none m-0 p-retro-2">
+          {render_slot(@inner_block)}
+        </ul>
+      </div>
+    </li>
     """
   end
 

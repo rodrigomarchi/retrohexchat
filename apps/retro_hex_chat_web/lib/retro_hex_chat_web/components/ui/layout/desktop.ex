@@ -463,6 +463,63 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
     """
   end
 
+  @doc """
+  Renders a nested group inside the Start menu.
+
+  The row reads like a `start_menu_item/1` plus a right-pointing chevron, and
+  reveals its own panel of items. Use it to keep a family of related entries out
+  of the flat list — the Start menu has no scroll of its own, so a long flat list
+  simply grows past the top of the screen.
+
+  Driven by `WindowManagerHook` through `data-start-submenu` /
+  `data-start-submenu-panel`. On desktop the panel flies out to the right; in
+  the stacked shell it expands inline (CSS only, `window-manager.css`).
+  """
+  attr :label, :string, required: true
+  attr :testid, :string, default: nil
+  attr :class, :any, default: nil
+  slot :icon, required: true
+  slot :inner_block, required: true, doc: "start_menu_item/1 elements"
+
+  @spec start_menu_submenu(map()) :: Phoenix.LiveView.Rendered.t()
+  def start_menu_submenu(assigns) do
+    ~H"""
+    <div
+      class={classes(["desktop-start-submenu group/start relative", @class])}
+      data-start-submenu
+      data-submenu-open="false"
+    >
+      <button
+        type="button"
+        class={
+          classes([
+            "desktop-start-menu__item flex w-full items-center gap-2 px-2 py-1 text-left text-xs",
+            "hover:bg-primary hover:text-white",
+            "group-data-[submenu-open=true]/start:bg-primary",
+            "group-data-[submenu-open=true]/start:text-white"
+          ])
+        }
+        data-start-submenu-trigger
+        data-testid={@testid}
+        aria-haspopup="true"
+      >
+        <span class="inline-flex h-4 w-4 shrink-0 items-center justify-center">
+          {render_slot(@icon)}
+        </span>
+        <span class="flex-1 truncate">{@label}</span>
+        <Icons.icon_chevron_right class="h-[14px] w-[14px] shrink-0" />
+      </button>
+
+      <div
+        class="desktop-start-submenu__panel u-hidden absolute bottom-0 left-full z-floating w-56 p-[3px] bg-surface text-foreground shadow-retro-window"
+        data-start-submenu-panel
+      >
+        {render_slot(@inner_block)}
+      </div>
+    </div>
+    """
+  end
+
   @doc "Renders a horizontal separator inside a Start menu."
   attr :class, :any, default: nil
 

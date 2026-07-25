@@ -42,17 +42,12 @@ msgstr "(empty — history_search renders nothing)"
 msgid "(empty — scroll_loader renders nothing)"
 msgstr "(empty — scroll_loader renders nothing)"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:58
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:63
 #, elixir-autogen, elixir-format
 msgid "*!*@*.bad.isp"
 msgstr "*!*@*.bad.isp"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_dialog_page.ex:24
-#, elixir-autogen, elixir-format
-msgid "*!*@bad.host.com"
-msgstr "*!*@bad.host.com"
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:48
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:53
 #, elixir-autogen, elixir-format
 msgid "*!*@troll.host"
 msgstr "*!*@troll.host"
@@ -214,9 +209,7 @@ msgstr ": Lorem ipsum dolor sit amet, consectetur adipiscing elit."
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/scroll_area_page.ex:80
 #, elixir-autogen, elixir-format
-msgid ""
-": This is a wide line with lots of text to force both vertical and "
-"horizontal scrolling in the container."
+msgid ": This is a wide line with lots of text to force both vertical and horizontal scrolling in the container."
 msgstr ""
 ": This is a wide line with lots of text to force both vertical and "
 "horizontal scrolling in the container."
@@ -251,8 +244,7 @@ msgstr "About Dialog"
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/accordion.ex:67
 #, elixir-autogen, elixir-format
-msgid ""
-"Absolutely. All components are local source code you can modify freely."
+msgid "Absolutely. All components are local source code you can modify freely."
 msgstr ""
 "Absolutely. All components are local source code you can modify freely."
 
@@ -314,9 +306,7 @@ msgstr "Add to Contacts"
 msgid "Add users to your address book."
 msgstr "Add users to your address book."
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:96
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:101
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:106
 #, elixir-autogen, elixir-format
 msgid "Add/Remove buttons"
 msgstr "Add/Remove buttons"
@@ -336,21 +326,21 @@ msgstr "Adding New Alias"
 msgid "Address Book"
 msgstr "Address Book"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:49
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:59
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:69
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:54
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:64
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:74
 #, elixir-autogen, elixir-format
 msgid "Admin"
 msgstr "Admin"
 
 #: lib/retro_hex_chat_web/components/showcase_helpers.ex:116
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_console_dialog_page.ex:59
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_console_dialog_page.ex:55
 #, elixir-autogen, elixir-format
 msgid "Admin Console"
 msgstr "Admin Console"
 
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_console_dialog_page.ex:20
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_console_dialog_page.ex:56
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_console_dialog_page.ex:52
 #, elixir-autogen, elixir-format
 msgid "Admin Console Dialog"
 msgstr "Admin Console Dialog"
@@ -384,7 +374,7 @@ msgstr "Alerts"
 msgid "Alias Configuration"
 msgstr "Alias Configuration"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:118
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:132
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:29
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:39
 #, elixir-autogen, elixir-format
@@ -440,10 +430,7 @@ msgstr "Also ban the user after kicking"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/scroll_area_page.ex:59
 #, elixir-autogen, elixir-format
-msgid ""
-"Another long line: ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ "
-"ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ "
-"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+msgid "Another long line: ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 msgstr ""
 "Another long line: ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ "
 "ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ "
@@ -516,7 +503,7 @@ msgstr "Arrows"
 msgid "Ask your questions here"
 msgstr "Ask your questions here"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:166
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:178
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:52
 #, elixir-autogen, elixir-format
 msgid "Assets"
@@ -542,7 +529,7 @@ msgstr "Audio Call"
 msgid "Audio, video, devices"
 msgstr "Audio, video, devices"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:119
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:133
 #, elixir-autogen, elixir-format
 msgid "Auto Respond"
 msgstr "Auto Respond"
@@ -568,7 +555,7 @@ msgstr "Auto-Whois Enabled"
 msgid "Auto-discovered from submodules. Each diagram gets its own window."
 msgstr "Auto-discovered from submodules. Each diagram gets its own window."
 
-#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:105
+#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:107
 #, elixir-autogen, elixir-format
 msgid "Auto-discovered from submodules. New icons appear here automatically."
 msgstr "Auto-discovered from submodules. New icons appear here automatically."
@@ -614,26 +601,6 @@ msgstr "Badge"
 #, elixir-autogen, elixir-format
 msgid "Ban"
 msgstr "Ban"
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:99
-#, elixir-autogen, elixir-format
-msgid "Ban Exc."
-msgstr "Ban Exc."
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:100
-#, elixir-autogen, elixir-format
-msgid "Ban exception masks"
-msgstr "Ban exception masks"
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:95
-#, elixir-autogen, elixir-format
-msgid "Ban masks with set_by/set_at"
-msgstr "Ban masks with set_by/set_at"
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:94
-#, elixir-autogen, elixir-format
-msgid "Bans"
-msgstr "Bans"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/context_menu_page.html.heex:5
 #: lib/retro_hex_chat_web/live/showcase_live/shell/empty_state_page.ex:30
@@ -733,7 +700,7 @@ msgstr "Bold"
 msgid "Border Radius"
 msgstr "Border Radius"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:121
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:135
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/bot_management_dialog_page.ex:60
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:84
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:251
@@ -788,9 +755,7 @@ msgstr "Browse available channels and join one to start chatting."
 
 #: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:125
 #, elixir-autogen, elixir-format
-msgid ""
-"Brutus here — I keep the peace. Play nice and we'll get along. Type !rules "
-"if you need a reminder."
+msgid "Brutus here — I keep the peace. Play nice and we'll get along. Type !rules if you need a reminder."
 msgstr ""
 "Brutus here — I keep the peace. Play nice and we'll get along. Type !rules "
 "if you need a reminder."
@@ -894,31 +859,24 @@ msgstr "Changes have been saved successfully."
 msgid "Channel"
 msgstr "Channel"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:123
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:137
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:217
 #, elixir-autogen, elixir-format
 msgid "Channel Central"
 msgstr "Channel Central"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:27
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:31
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Channel Central Dialog"
 msgstr "Channel Central Dialog"
-
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:125
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_dialog_page.ex:21
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_dialog_page.ex:34
-#, elixir-autogen, elixir-format
-msgid "Channel Dialog"
-msgstr "Channel Dialog"
 
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/url_catcher_page.ex:115
 #, elixir-autogen, elixir-format
 msgid "Channel Filtered"
 msgstr "Channel Filtered"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:127
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:139
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_list_page.ex:18
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_list_page.ex:43
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_list_page.ex:46
@@ -939,12 +897,6 @@ msgstr "Channel Menu"
 #, elixir-autogen, elixir-format
 msgid "Channel Mode"
 msgstr "Channel Mode"
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_dialog_page.ex:37
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_dialog_page.ex:42
-#, elixir-autogen, elixir-format
-msgid "Channel Settings"
-msgstr "Channel Settings"
 
 #: lib/retro_hex_chat_web/live/showcase_live/chat/conversations_page.html.heex:69
 #, elixir-autogen, elixir-format
@@ -1040,14 +992,12 @@ msgstr "Chat, channels, networking"
 
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:28
 #, elixir-autogen, elixir-format
-msgid ""
-"Chat-specific components — messages, nicklist, emoji picker, formatting "
-"toolbar, context menus, and more."
+msgid "Chat-specific components — messages, nicklist, emoji picker, formatting toolbar, context menus, and more."
 msgstr ""
 "Chat-specific components — messages, nicklist, emoji picker, formatting "
 "toolbar, context menus, and more."
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:128
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:140
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:74
 #, elixir-autogen, elixir-format
 msgid "Cheatsheet"
@@ -1186,9 +1136,7 @@ msgstr "Complete"
 
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:38
 #, elixir-autogen, elixir-format
-msgid ""
-"Complex dialog composites — channel settings, perform, address book, sound "
-"settings, and 20+ more."
+msgid "Complex dialog composites — channel settings, perform, address book, sound settings, and 20+ more."
 msgstr ""
 "Complex dialog composites — channel settings, perform, address book, sound "
 "settings, and 20+ more."
@@ -1198,7 +1146,7 @@ msgstr ""
 msgid "Component Attributes"
 msgstr "Component Attributes"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:200
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:212
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:60
 #, elixir-autogen, elixir-format
 msgid "Component Showcase"
@@ -1231,7 +1179,7 @@ msgstr "Configure event sounds for the application."
 msgid "Confirm Action"
 msgstr "Confirm Action"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:130
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:142
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/confirm_dialog_page.ex:21
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/confirm_dialog_page.ex:30
 #, elixir-autogen, elixir-format
@@ -1426,7 +1374,7 @@ msgstr "Custom Columns"
 msgid "Custom Max Length"
 msgstr "Custom Max Length"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:132
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:144
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:238
 #, elixir-autogen, elixir-format
 msgid "Custom Menus"
@@ -1548,7 +1496,7 @@ msgstr "Delete Account"
 msgid "Delete Channel"
 msgstr "Delete Channel"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:134
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:146
 #, elixir-autogen, elixir-format
 msgid "Delete Confirm"
 msgstr "Delete Confirm"
@@ -1570,7 +1518,7 @@ msgstr "Delete Message"
 msgid "Description"
 msgstr "Description"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:219
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:231
 #, elixir-autogen, elixir-format
 msgid "Design System"
 msgstr "Design System"
@@ -1592,7 +1540,7 @@ msgstr "Destructive Confirmation"
 msgid "Development discussion"
 msgstr "Development discussion"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:168
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:180
 #: lib/retro_hex_chat_web/live/showcase_live/assets/diagrams.ex:21
 #: lib/retro_hex_chat_web/live/showcase_live/assets/diagrams.ex:70
 #, elixir-autogen, elixir-format
@@ -1677,7 +1625,7 @@ msgstr "Disabled Items"
 msgid "Disconnect"
 msgstr "Disconnect"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:136
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:148
 #, elixir-autogen, elixir-format
 msgid "Disconnect Confirm"
 msgstr "Disconnect Confirm"
@@ -1902,7 +1850,7 @@ msgstr "Fieldset"
 msgid "Fight through hordes of demons from Hell in this classic 1993 game."
 msgstr "Fight through hordes of demons from Hell in this classic 1993 game."
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:159
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:171
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/file_transfer_page.ex:18
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/file_transfer_page.ex:27
 #, elixir-autogen, elixir-format
@@ -1945,7 +1893,7 @@ msgstr "Flash"
 msgid "Flash taskbar"
 msgstr "Flash taskbar"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:138
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:150
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:230
 #, elixir-autogen, elixir-format
 msgid "Flood Protection"
@@ -2056,7 +2004,7 @@ msgstr "Full Settings"
 msgid "Full Sidebar"
 msgstr "Full Sidebar"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:163
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:175
 #: lib/retro_hex_chat_web/live/showcase_live/games/game_cards_page.ex:20
 #: lib/retro_hex_chat_web/live/showcase_live/games/game_cards_page.html.heex:2
 #, elixir-autogen, elixir-format
@@ -2078,7 +2026,7 @@ msgstr "Game Screens"
 msgid "Game on!"
 msgstr "Game on!"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:161
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:173
 #: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:40
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:47
 #, elixir-autogen, elixir-format
@@ -2188,7 +2136,7 @@ msgstr "Hidden Item 1"
 msgid "Hidden Item 2"
 msgstr "Hidden Item 2"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:140
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:152
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/highlight_dialog_page.ex:22
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/highlight_dialog_page.ex:36
 #, elixir-autogen, elixir-format
@@ -2270,9 +2218,9 @@ msgstr "IRC Tabs"
 msgid "Icon Sizes"
 msgstr "Icon Sizes"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:169
-#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:79
-#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:103
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:181
+#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:81
+#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:105
 #, elixir-autogen, elixir-format
 msgid "Icons"
 msgstr "Icons"
@@ -2362,31 +2310,18 @@ msgstr "Interactive Demo"
 
 #: lib/retro_hex_chat_web/live/showcase_live/index.html.heex:13
 #, elixir-autogen, elixir-format
-msgid ""
-"Interactive catalog of all UI components used in RetroHexChat. Each "
-"component is a reusable, self-contained building block with generic "
-"callbacks — no hardcoded event names."
+msgid "Interactive catalog of all UI components used in RetroHexChat. Each component is a reusable, self-contained building block with generic callbacks — no hardcoded event names."
 msgstr ""
 "Interactive catalog of all UI components used in RetroHexChat. Each "
 "component is a reusable, self-contained building block with generic "
 "callbacks — no hardcoded event names."
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:142
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:154
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/invite_dialog_page.ex:22
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/invite_dialog_page.ex:31
 #, elixir-autogen, elixir-format
 msgid "Invite Dialog"
 msgstr "Invite Dialog"
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:104
-#, elixir-autogen, elixir-format
-msgid "Invite Exc."
-msgstr "Invite Exc."
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:105
-#, elixir-autogen, elixir-format
-msgid "Invite exception masks"
-msgstr "Invite exception masks"
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/accordion.ex:49
 #, elixir-autogen, elixir-format
@@ -2434,7 +2369,7 @@ msgstr "Keyboard Shortcuts"
 msgid "Kick"
 msgstr "Kick"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:143
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:155
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/kick_dialog_page.ex:20
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/kick_dialog_page.ex:27
 #, elixir-autogen, elixir-format
@@ -2648,7 +2583,7 @@ msgid "Media"
 msgstr "Media"
 
 #: lib/retro_hex_chat_web/components/showcase_helpers.ex:61
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:206
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:218
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:70
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.ex:18
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:2
@@ -2790,7 +2725,7 @@ msgstr "Next"
 msgid "Next tab"
 msgstr "Next tab"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:144
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:156
 #, elixir-autogen, elixir-format
 msgid "Nick Change"
 msgstr "Nick Change"
@@ -2915,7 +2850,7 @@ msgstr "Notification"
 msgid "Notifications, info, warnings"
 msgstr "Notifications, info, warnings"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:146
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:158
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/notify_list_page.ex:21
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/notify_list_page.ex:37
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/notify_list_page.ex:40
@@ -3001,7 +2936,7 @@ msgstr "Open (Empty)"
 msgid "Open (Row Selected)"
 msgstr "Open (Row Selected)"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_console_dialog_page.ex:64
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_console_dialog_page.ex:60
 #, elixir-autogen, elixir-format
 msgid "Open Admin Console"
 msgstr "Open Admin Console"
@@ -3158,7 +3093,7 @@ msgstr "Own message"
 msgid "Owner"
 msgstr "Owner"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:155
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:167
 #, elixir-autogen, elixir-format
 msgid "P2P"
 msgstr "P2P"
@@ -3254,7 +3189,7 @@ msgstr "Paste 5 Lines"
 msgid "Paste Blocked"
 msgstr "Paste Blocked"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:147
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:159
 #, elixir-autogen, elixir-format
 msgid "Paste Confirm"
 msgstr "Paste Confirm"
@@ -3282,7 +3217,7 @@ msgstr "People"
 msgid "Perform"
 msgstr "Perform"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:149
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:161
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.ex:21
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:2
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:5
@@ -3477,7 +3412,7 @@ msgstr "Registered Nick"
 msgid "Regular"
 msgstr "Regular"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:46
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "Regular User View"
 msgstr "Regular User View"
@@ -3552,9 +3487,7 @@ msgstr "Row Selected"
 
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:18
 #, elixir-autogen, elixir-format
-msgid ""
-"SaladUI base widgets — buttons, inputs, badges, toggles, selects, and other "
-"atomic form controls."
+msgid "SaladUI base widgets — buttons, inputs, badges, toggles, selects, and other atomic form controls."
 msgstr ""
 "SaladUI base widgets — buttons, inputs, badges, toggles, selects, and other "
 "atomic form controls."
@@ -3923,7 +3856,7 @@ msgstr "Small"
 msgid "Solo Arcade game logos/cover art"
 msgstr "Solo Arcade game logos/cover art"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:164
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:176
 #: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.ex:80
 #: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.html.heex:2
 #, elixir-autogen, elixir-format
@@ -3946,7 +3879,7 @@ msgstr "Sorted by Nick (Ascending)"
 msgid "Sound"
 msgstr "Sound"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:151
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:163
 #, elixir-autogen, elixir-format
 msgid "Sound Settings"
 msgstr "Sound Settings"
@@ -4049,9 +3982,7 @@ msgstr "Strip Active"
 
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:23
 #, elixir-autogen, elixir-format
-msgid ""
-"Structural containers — dialogs, tabs, tables, menus, tree views, windows, "
-"and scroll areas."
+msgid "Structural containers — dialogs, tabs, tables, menus, tree views, windows, and scroll areas."
 msgstr ""
 "Structural containers — dialogs, tabs, tables, menus, tree views, windows, "
 "and scroll areas."
@@ -4193,17 +4124,14 @@ msgstr "This action cannot be undone."
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/alert_dialog_page.ex:46
 #, elixir-autogen, elixir-format
-msgid ""
-"This action cannot be undone. This will permanently delete your account and "
-"remove your data from our servers."
+msgid "This action cannot be undone. This will permanently delete your account and remove your data from our servers."
 msgstr ""
 "This action cannot be undone. This will permanently delete your account and "
 "remove your data from our servers."
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/dialog_page.ex:98
 #, elixir-autogen, elixir-format
-msgid ""
-"This action cannot be undone. This will permanently delete your account."
+msgid "This action cannot be undone. This will permanently delete your account."
 msgstr ""
 "This action cannot be undone. This will permanently delete your account."
 
@@ -4229,10 +4157,7 @@ msgstr "This is a tooltip"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/scroll_area_page.ex:53
 #, elixir-autogen, elixir-format
-msgid ""
-"This is a very long line that extends beyond the container width to "
-"demonstrate horizontal scrollbar behavior. It keeps going and going and "
-"going until you have to scroll right to read it all."
+msgid "This is a very long line that extends beyond the container width to demonstrate horizontal scrollbar behavior. It keeps going and going and going until you have to scroll right to read it all."
 msgstr ""
 "This is a very long line that extends beyond the container width to "
 "demonstrate horizontal scrollbar behavior. It keeps going and going and "
@@ -4280,9 +4205,7 @@ msgstr "This sheet slides in from the top."
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/alert_dialog_page.ex:96
 #, elixir-autogen, elixir-format
-msgid ""
-"This will permanently delete your account and all associated data. This "
-"action cannot be reversed."
+msgid "This will permanently delete your account and all associated data. This action cannot be reversed."
 msgstr ""
 "This will permanently delete your account and all associated data. This "
 "action cannot be reversed."
@@ -4398,8 +4321,8 @@ msgstr "Total"
 msgid "Tree View"
 msgstr "Tree View"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:54
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:79
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:59
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:84
 #: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar.html.heex:59
 #: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar.html.heex:107
 #, elixir-autogen, elixir-format
@@ -4418,9 +4341,7 @@ msgstr "Troll heading out? Cool cool. The lobby will keep your seat warm."
 
 #: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:119
 #, elixir-autogen, elixir-format
-msgid ""
-"Troll heading out? Cool cool. The lobby will keep your seat warm. We're "
-"always open. Like a 24/7 diner but with better Wi-Fi."
+msgid "Troll heading out? Cool cool. The lobby will keep your seat warm. We're always open. Like a 24/7 diner but with better Wi-Fi."
 msgstr ""
 "Troll heading out? Cool cool. The lobby will keep your seat warm. We're "
 "always open. Like a 24/7 diner but with better Wi-Fi."
@@ -4450,7 +4371,7 @@ msgstr "Types"
 msgid "Typography"
 msgstr "Typography"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:153
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:165
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/url_catcher_page.ex:54
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/url_catcher_page.ex:65
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/url_catcher_page.ex:68
@@ -4698,9 +4619,7 @@ msgstr "Whois"
 
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:33
 #, elixir-autogen, elixir-format
-msgid ""
-"Win98 app shell composites — toolbar app, status bar app, app header, config"
-" form, and empty states."
+msgid "Win98 app shell composites — toolbar app, status bar app, app header, config form, and empty states."
 msgstr ""
 "Win98 app shell composites — toolbar app, status bar app, app header, config"
 " form, and empty states."
@@ -4865,9 +4784,7 @@ msgstr "Wolf3D Engine"
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/accordion.ex:53
 #, elixir-autogen, elixir-format
-msgid ""
-"Yes! These new UI components are built with Tailwind for full "
-"responsiveness."
+msgid "Yes! These new UI components are built with Tailwind for full responsiveness."
 msgstr ""
 "Yes! These new UI components are built with Tailwind for full "
 "responsiveness."
@@ -4897,7 +4814,7 @@ msgstr "Zero Results"
 msgid "[Server] Maintenance in 5 minutes."
 msgstr "[Server] Maintenance in 5 minutes."
 
-#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:169
+#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:171
 #, elixir-autogen, elixir-format
 msgid "bg-gradient-to-r from-primary to-[#1084d0]"
 msgstr "bg-gradient-to-r from-primary to-[#1084d0]"
@@ -4917,7 +4834,7 @@ msgstr "email@example.com"
 msgid "eve has joined #lobby"
 msgstr "eve has joined #lobby"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:68
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:73
 #, elixir-autogen, elixir-format
 msgid "friend!*@troll.host"
 msgstr "friend!*@troll.host"
@@ -4977,8 +4894,7 @@ msgstr "readme.txt"
 msgid "report.pdf"
 msgstr "report.pdf"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:53
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_dialog_page.ex:25
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:58
 #, elixir-autogen, elixir-format
 msgid "spammer!*@*"
 msgstr "spammer!*@*"
@@ -5018,7 +4934,7 @@ msgstr "text-xs — 12px — Caption text"
 msgid "user@example.com"
 msgstr "user@example.com"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:78
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:83
 #, elixir-autogen, elixir-format
 msgid "vip!*@*.good.isp"
 msgstr "vip!*@*.good.isp"
@@ -5055,8 +4971,7 @@ msgstr "Episode 1"
 
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:48
 #, elixir-autogen, elixir-format
-msgid ""
-"Arcade and solo game components — game cards, solo lobby, and arcade frame."
+msgid "Arcade and solo game components — game cards, solo lobby, and arcade frame."
 msgstr ""
 "Arcade and solo game components — game cards, solo lobby, and arcade frame."
 
@@ -5080,7 +4995,7 @@ msgstr "Compact — Video Call"
 msgid "Compact — Waiting"
 msgstr "Compact — Waiting"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:157
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:169
 #, elixir-autogen, elixir-format
 msgid "Connection Diagram"
 msgstr "Connection Diagram"
@@ -5120,8 +5035,7 @@ msgstr "P2P Connection Diagram"
 
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:43
 #, elixir-autogen, elixir-format
-msgid ""
-"Peer-to-peer session components — connection diagram and file transfer."
+msgid "Peer-to-peer session components — connection diagram and file transfer."
 msgstr ""
 "Peer-to-peer session components — connection diagram and file transfer."
 
@@ -5163,3 +5077,190 @@ msgstr "Flags"
 #, elixir-autogen, elixir-format
 msgid "Language flags (14x14)"
 msgstr "Language flags (14x14)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_channels_dialog_page.ex:48
+#, elixir-autogen, elixir-format
+msgid "*** Channel List (2 results) ***\n  #lobby\n  #dev"
+msgstr ""
+"*** Channel List (2 results) ***\n"
+"  #lobby\n"
+"  #dev"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_users_dialog_page.ex:49
+#, elixir-autogen, elixir-format
+msgid "*** No active server bans."
+msgstr "*** No active server bans."
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_channels_dialog_page.ex:49
+#, elixir-autogen, elixir-format
+msgid "*** No bans in #lobby"
+msgstr "*** No bans in #lobby"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_users_dialog_page.ex:48
+#, elixir-autogen, elixir-format
+msgid "*** User List (2 results) ***\n  Ada [registered]\n  Grace"
+msgstr ""
+"*** User List (2 results) ***\n"
+"  Ada [registered]\n"
+"  Grace"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:120
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_channels_dialog_page.ex:38
+#, elixir-autogen, elixir-format
+msgid "Admin Channels"
+msgstr "Admin Channels"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_channels_dialog_page.ex:20
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_channels_dialog_page.ex:35
+#, elixir-autogen, elixir-format
+msgid "Admin Channels Dialog"
+msgstr "Admin Channels Dialog"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:118
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_users_dialog_page.ex:38
+#, elixir-autogen, elixir-format
+msgid "Admin Users"
+msgstr "Admin Users"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_users_dialog_page.ex:20
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_users_dialog_page.ex:35
+#, elixir-autogen, elixir-format
+msgid "Admin Users Dialog"
+msgstr "Admin Users Dialog"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:124
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_audit_log_dialog_page.ex:38
+#, elixir-autogen, elixir-format
+msgid "Audit Log"
+msgstr "Audit Log"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_audit_log_dialog_page.ex:20
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_audit_log_dialog_page.ex:35
+#, elixir-autogen, elixir-format
+msgid "Audit Log Dialog"
+msgstr "Audit Log Dialog"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:128
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_broadcast_dialog_page.ex:38
+#, elixir-autogen, elixir-format
+msgid "Broadcast"
+msgstr "Broadcast"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_broadcast_dialog_page.ex:20
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_broadcast_dialog_page.ex:35
+#, elixir-autogen, elixir-format
+msgid "Broadcast Dialog"
+msgstr "Broadcast Dialog"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:130
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_danger_zone_dialog_page.ex:38
+#, elixir-autogen, elixir-format
+msgid "Danger Zone"
+msgstr "Danger Zone"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_danger_zone_dialog_page.ex:20
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_danger_zone_dialog_page.ex:35
+#, elixir-autogen, elixir-format
+msgid "Danger Zone Dialog"
+msgstr "Danger Zone Dialog"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:126
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_motd_dialog_page.ex:38
+#, elixir-autogen, elixir-format
+msgid "MOTD"
+msgstr "MOTD"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_motd_dialog_page.ex:20
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_motd_dialog_page.ex:35
+#, elixir-autogen, elixir-format
+msgid "MOTD Dialog"
+msgstr "MOTD Dialog"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_channels_dialog_page.ex:43
+#, elixir-autogen, elixir-format
+msgid "Open Admin Channels"
+msgstr "Open Admin Channels"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_users_dialog_page.ex:43
+#, elixir-autogen, elixir-format
+msgid "Open Admin Users"
+msgstr "Open Admin Users"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_audit_log_dialog_page.ex:43
+#, elixir-autogen, elixir-format
+msgid "Open Audit Log"
+msgstr "Open Audit Log"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_broadcast_dialog_page.ex:43
+#, elixir-autogen, elixir-format
+msgid "Open Broadcast"
+msgstr "Open Broadcast"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_danger_zone_dialog_page.ex:43
+#, elixir-autogen, elixir-format
+msgid "Open Danger Zone"
+msgstr "Open Danger Zone"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_motd_dialog_page.ex:43
+#, elixir-autogen, elixir-format
+msgid "Open MOTD"
+msgstr "Open MOTD"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_server_settings_dialog_page.ex:43
+#, elixir-autogen, elixir-format
+msgid "Open Server Settings"
+msgstr "Open Server Settings"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_turn_dialog_page.ex:43
+#, elixir-autogen, elixir-format
+msgid "Open TURN"
+msgstr "Open TURN"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:122
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_server_settings_dialog_page.ex:38
+#, elixir-autogen, elixir-format
+msgid "Server Settings"
+msgstr "Server Settings"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_server_settings_dialog_page.ex:20
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_server_settings_dialog_page.ex:35
+#, elixir-autogen, elixir-format
+msgid "Server Settings Dialog"
+msgstr "Server Settings Dialog"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:127
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_turn_dialog_page.ex:38
+#, elixir-autogen, elixir-format
+msgid "TURN"
+msgstr "TURN"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_turn_dialog_page.ex:20
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_turn_dialog_page.ex:35
+#, elixir-autogen, elixir-format
+msgid "TURN Dialog"
+msgstr "TURN Dialog"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:94
+#, elixir-autogen, elixir-format
+msgid "Access Lists"
+msgstr "Access Lists"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:96
+#, elixir-autogen, elixir-format
+msgid "Bans, ban exceptions and invite exceptions behind a type selector"
+msgstr "Bans, ban exceptions and invite exceptions behind a type selector"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:106
+#, elixir-autogen, elixir-format
+msgid "ChanServ registration and SOP/AOP/VOP access lists"
+msgstr "ChanServ registration and SOP/AOP/VOP access lists"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:108
+#, elixir-autogen, elixir-format
+msgid "Register, drop, access management"
+msgstr "Register, drop, access management"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:104
+#, elixir-autogen, elixir-format
+msgid "Registration"
+msgstr "Registration"

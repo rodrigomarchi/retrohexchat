@@ -1878,17 +1878,6 @@ msgstr ""
 "статус регистрации, зарегистрировать незарегистрированный канал, отказаться "
 "от канала в качестве основателя и управлять списками доступа SOP, AOP и VOP."
 
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:12
-#, elixir-autogen, elixir-format
-msgid ""
-"Open Channel Central for a channel you have joined, then choose Registration"
-" after Invite Exceptions. The status area shows whether the channel is "
-"registered and who the founder is."
-msgstr ""
-"Для канала, к которому вы присоединились, выберите Регистрация после "
-"приглашения Исключения. Статусная зона показывает, зарегистрирован ли канал "
-"и кто является учредителем."
-
 #: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:10
 #, elixir-autogen, elixir-format
 msgid ""
@@ -2054,3 +2043,14 @@ msgstr ""
 "Кнопка в панели инструментов. Каналы только для приглашений (+i) помечены "
 "знаком +i; выберите один и выберите Request Access ... для отправки запроса "
 "на стук своим операторам."
+
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:12
+#, elixir-autogen, elixir-format
+msgid ""
+"Open Channel Central for a channel you have joined, then choose Registration"
+" after Access Lists. The status area shows whether the channel is registered"
+" and who the founder is."
+msgstr ""
+"Для канала, к которому вы присоединились, выберите Регистрация после Списков"
+" доступа. Статусная зона показывает, зарегистрирован ли канал и кто является"
+" учредителем."

@@ -253,6 +253,7 @@ const WindowManagerHook = {
   bindEvents() {
     this._onPointerDown = (e) => this.onPointerDown(e);
     this._onClick = (e) => this.onClick(e);
+    this._onStartMenuPointerOver = (e) => this.onStartMenuPointerOver(e);
     this._onDblClick = (e) => this.onDblClick(e);
     this._onContextMenu = (e) => this.onContextMenu(e);
     this._onKeyDown = (e) => this.onKeyDown(e);
@@ -263,6 +264,7 @@ const WindowManagerHook = {
 
     this.el.addEventListener("pointerdown", this._onPointerDown);
     this.el.addEventListener("click", this._onClick);
+    this.el.addEventListener("pointerover", this._onStartMenuPointerOver);
     this.el.addEventListener("dblclick", this._onDblClick);
     this.el.addEventListener("contextmenu", this._onContextMenu);
     document.addEventListener("keydown", this._onKeyDown);
@@ -283,6 +285,7 @@ const WindowManagerHook = {
   unbindEvents() {
     this.el.removeEventListener("pointerdown", this._onPointerDown);
     this.el.removeEventListener("click", this._onClick);
+    this.el.removeEventListener("pointerover", this._onStartMenuPointerOver);
     this.el.removeEventListener("dblclick", this._onDblClick);
     this.el.removeEventListener("contextmenu", this._onContextMenu);
     document.removeEventListener("keydown", this._onKeyDown);
@@ -451,6 +454,8 @@ const WindowManagerHook = {
       return;
     }
 
+    if (this.onStartMenuClick(e)) return;
+
     const opener = e.target.closest("[data-window-open]");
     if (opener) {
       // Window roots used to carry data-window-open as initial state. Keep this
@@ -467,6 +472,10 @@ const WindowManagerHook = {
 
     // Any other click inside the start menu (e.g. a server-action item) closes it.
     if (e.target.closest("[data-window-start-menu]")) this.closeStartMenu();
+  },
+
+  onStartMenuPointerOver(e) {
+    this.onStartMenuHover(e);
   },
 
   onDblClick(e) {
@@ -1200,12 +1209,69 @@ const WindowManagerHook = {
 
   toggleStartMenu() {
     const menu = this.startMenu();
-    if (menu) menu.classList.toggle("u-hidden");
+    if (!menu) return;
+    menu.classList.toggle("u-hidden");
+    if (menu.classList.contains("u-hidden")) this.closeStartSubmenus(menu);
   },
 
   closeStartMenu() {
     const menu = this.startMenu();
-    if (menu) menu.classList.add("u-hidden");
+    if (!menu) return;
+    menu.classList.add("u-hidden");
+    this.closeStartSubmenus(menu);
+  },
+
+  // Groups inside the Start menu open on hover and on click. Hovering any
+  // ungrouped row closes them, so at most one flyout shows at a time.
+  onStartMenuHover(e) {
+    const menu = this.startMenu();
+    if (!menu || menu.classList.contains("u-hidden")) return;
+    if (!e.target.closest || !menu.contains(e.target)) return;
+
+    const submenu = e.target.closest("[data-start-submenu]");
+    if (submenu) {
+      this.openStartSubmenu(submenu);
+      return;
+    }
+
+    if (e.target.closest("[data-window-start-menu] button")) this.closeStartSubmenus(menu);
+  },
+
+  onStartMenuClick(e) {
+    const trigger = e.target.closest?.("[data-start-submenu-trigger]");
+    if (!trigger) return false;
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    const submenu = trigger.closest("[data-start-submenu]");
+    if (!submenu) return true;
+
+    if (submenu.dataset.submenuOpen === "true") {
+      this.setStartSubmenu(submenu, false);
+    } else {
+      this.openStartSubmenu(submenu);
+    }
+
+    return true;
+  },
+
+  openStartSubmenu(submenu) {
+    const menu = this.startMenu();
+    if (menu) this.closeStartSubmenus(menu, submenu);
+    this.setStartSubmenu(submenu, true);
+  },
+
+  closeStartSubmenus(root, except = null) {
+    root.querySelectorAll("[data-start-submenu]").forEach((submenu) => {
+      if (submenu !== except) this.setStartSubmenu(submenu, false);
+    });
+  },
+
+  setStartSubmenu(submenu, open) {
+    submenu.dataset.submenuOpen = open ? "true" : "false";
+    const panel = submenu.querySelector("[data-start-submenu-panel]");
+    if (panel) panel.classList.toggle("u-hidden", !open);
   },
 
   onDocPointerDown(e) {

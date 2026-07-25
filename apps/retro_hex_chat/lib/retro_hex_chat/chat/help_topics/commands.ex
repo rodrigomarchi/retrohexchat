@@ -525,7 +525,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         keywords: [
           "admin",
           "user",
-          "users tab",
+          "admin users",
           "ban",
           "kick",
           "mute",
@@ -539,7 +539,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
             "help",
             "Manage server users: list, info, ban/unban, kick, mute/unmute, rename, set role."
           ),
-        see_also: ["feature-admin-console", "cmd-admin-log"]
+        see_also: ["feature-admin-users", "feature-admin-console", "cmd-admin-log"]
       },
       %{
         id: "cmd-admin-channel",
@@ -560,7 +560,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
             "help",
             "Manage server channels: list, info, create, delete, purge messages, view bans."
           ),
-        see_also: ["feature-admin-console", "cmd-admin-cs"]
+        see_also: ["feature-admin-channels", "feature-admin-console", "cmd-admin-cs"]
       },
       %{
         id: "cmd-admin-ns",

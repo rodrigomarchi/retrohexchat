@@ -375,13 +375,15 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
       action="disconnect"
       on_action={@on_action}
     />
-    <.menu_item
+    <.context_menu_separator :if={@is_admin} />
+    <.submenu
       :if={@is_admin}
-      icon_fn={:icon_dialog_admin_console}
-      label={dgettext("ui", "Admin Console")}
-      action="open_admin_console"
-      on_action={@on_action}
-    />
+      label={dgettext("ui", "Admin")}
+      testid="app-menu-admin-submenu"
+    >
+      <:icon><Icons.icon_shield class="h-[14px] w-[14px]" /></:icon>
+      <.admin_menu_items on_action={@on_action} />
+    </.submenu>
     """
   end
 
@@ -632,6 +634,71 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
       <:icon><Icons.game_icon game_id={game.id} class="w-[14px] h-[14px]" /></:icon>
       {game.name}
     </.context_menu_item>
+    """
+  end
+
+  attr :on_action, :any, default: nil
+
+  # Server administration. Rendered only for admins and server operators.
+  # Each entry opens its own focused window; entries land here as the Admin
+  # Console's tabs are split out.
+  defp admin_menu_items(assigns) do
+    ~H"""
+    <.menu_item
+      icon_fn={:icon_community}
+      label={dgettext("ui", "Users")}
+      action="open_admin_users"
+      on_action={@on_action}
+    />
+    <.menu_item
+      icon_fn={:icon_channels}
+      label={dgettext("ui", "Channels")}
+      action="open_admin_channels"
+      on_action={@on_action}
+    />
+    <.menu_item
+      icon_fn={:icon_server}
+      label={dgettext("ui", "Server Settings")}
+      action="open_admin_server_settings"
+      on_action={@on_action}
+    />
+    <.menu_item
+      icon_fn={:icon_notepad}
+      label={dgettext("ui", "Audit Log")}
+      action="open_admin_audit_log"
+      on_action={@on_action}
+    />
+    <.menu_item
+      icon_fn={:icon_notepad}
+      label={dgettext("ui", "MOTD")}
+      action="open_admin_motd"
+      on_action={@on_action}
+    />
+    <.menu_item
+      icon_fn={:icon_websocket}
+      label={dgettext("ui", "TURN")}
+      action="open_admin_turn"
+      on_action={@on_action}
+    />
+    <.menu_item
+      icon_fn={:icon_megaphone}
+      label={dgettext("ui", "Broadcast")}
+      action="open_admin_broadcast"
+      on_action={@on_action}
+    />
+    <.menu_item
+      icon_fn={:icon_warning}
+      label={dgettext("ui", "Danger Zone")}
+      action="open_admin_danger_zone"
+      on_action={@on_action}
+    />
+    <.context_menu_separator />
+    <.menu_item
+      icon_fn={:icon_dialog_admin_console}
+      label={dgettext("ui", "Console")}
+      action="open_admin_console"
+      on_action={@on_action}
+    />
     """
   end
 

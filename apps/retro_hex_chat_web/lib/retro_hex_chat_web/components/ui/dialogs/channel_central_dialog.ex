@@ -2,12 +2,14 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   @moduledoc """
   Win98-style Channel Central dialog component for the showcase design system.
 
-  Provides a 5-tab dialog for viewing and managing channel properties:
-  General (topic, info), Modes (moderated, invite-only, etc.),
-  Bans, Ban Exceptions, and Invite Exceptions.
+  Provides a 4-tab dialog for viewing and managing channel properties:
+  General (topic, info), Modes (moderated, invite-only, etc.), Access Lists
+  (bans, ban exceptions and invite exceptions behind a type selector), and
+  Registration (ChanServ).
 
   Matches v1 event contracts: tab switching via `on_tab`, topic save via
-  `phx-submit`, modes via `phx-submit`, ban selection via per-list callbacks.
+  `phx-submit`, modes via `phx-submit`, access-list selection via `on_list_*`
+  callbacks carrying the active list type.
   """
   use RetroHexChatWeb.Component
 
@@ -21,7 +23,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   alias RetroHexChatWeb.Icons
 
   @doc """
-  Renders a Win98-style Channel Central dialog with 5 tabs.
+  Renders a Win98-style Channel Central dialog with 4 tabs.
 
   ## Examples
 
@@ -32,9 +34,9 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
         topic="Welcome to the lobby!"
         operator={true}
         on_tab="channel_central_tab"
-        on_ban_select="cc_ban_select"
-        on_ban_ex_select="cc_ban_ex_select"
-        on_invite_ex_select="cc_invite_ex_select"
+        list_type="bans"
+        on_list_type="cc_list_type"
+        on_list_select="cc_list_select"
       />
   """
   attr :id, :string, required: true
@@ -59,12 +61,9 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   attr :cs_confirm_drop, :boolean, default: false
   attr :identified, :boolean, default: false
   attr :modes, :map, default: %{}
-  attr :bans, :list, default: []
-  attr :ban_exceptions, :list, default: []
-  attr :invite_exceptions, :list, default: []
-  attr :ban_selected, :string, default: nil
-  attr :ban_ex_selected, :string, default: nil
-  attr :invite_ex_selected, :string, default: nil
+  attr :list_type, :string, default: "bans", doc: "Active access list (bans/exceptions)"
+  attr :list_entries, :list, default: []
+  attr :list_selected, :string, default: nil
   attr :on_tab, :any, default: nil, doc: "Tab switch event (phx-value-tab=value)"
   attr :on_topic_save, :any, default: nil
   attr :on_welcome_save, :any, default: nil
@@ -74,15 +73,10 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   attr :on_transfer_close, :any, default: nil
   attr :on_transfer_submit, :any, default: nil
   attr :on_mode_apply, :any, default: nil
-  attr :on_ban_add, :any, default: nil
-  attr :on_ban_remove, :any, default: nil
-  attr :on_ban_select, :any, default: nil, doc: "Ban row select event (phx-value-nickname)"
-  attr :on_ban_ex_add, :any, default: nil
-  attr :on_ban_ex_remove, :any, default: nil
-  attr :on_ban_ex_select, :any, default: nil, doc: "Ban exception row select event"
-  attr :on_invite_ex_add, :any, default: nil
-  attr :on_invite_ex_remove, :any, default: nil
-  attr :on_invite_ex_select, :any, default: nil, doc: "Invite exception row select event"
+  attr :on_list_type, :any, default: nil, doc: "Access list switch event (phx-value-list=type)"
+  attr :on_list_add, :any, default: nil
+  attr :on_list_remove, :any, default: nil
+  attr :on_list_select, :any, default: nil, doc: "List row select event (phx-value-nickname)"
   attr :on_cs_register, :any, default: nil
   attr :on_cs_drop_request, :any, default: nil
   attr :on_cs_drop, :any, default: nil
@@ -92,9 +86,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   attr :on_cs_access_add, :any, default: nil
   attr :on_cs_access_select, :any, default: nil
   attr :on_cs_access_remove, :any, default: nil
-  attr :show_add_ban_dialog, :boolean, default: false
-  attr :show_add_ban_ex_dialog, :boolean, default: false
-  attr :show_add_invite_ex_dialog, :boolean, default: false
+  attr :show_add_list_entry_dialog, :boolean, default: false
   attr :show_transfer_dialog, :boolean, default: false
 
   @spec channel_central_panel(map()) :: Phoenix.LiveView.Rendered.t()
@@ -135,33 +127,13 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
             </.tabs_trigger>
             <.tabs_trigger
               builder={builder}
-              value="bans"
+              value="access_lists"
               phx-click={@on_tab}
               phx-target={@target}
-              phx-value-tab="bans"
+              phx-value-tab="access_lists"
             >
               <:icon><Icons.icon_tab_bans class="w-4 h-4" /></:icon>
-              {dgettext("dialogs", "Bans")}
-            </.tabs_trigger>
-            <.tabs_trigger
-              builder={builder}
-              value="ban_exceptions"
-              phx-click={@on_tab}
-              phx-target={@target}
-              phx-value-tab="ban_exceptions"
-            >
-              <:icon><Icons.icon_tab_exceptions class="w-4 h-4" /></:icon>
-              {dgettext("dialogs", "Ban Exc.")}
-            </.tabs_trigger>
-            <.tabs_trigger
-              builder={builder}
-              value="invite_exceptions"
-              phx-click={@on_tab}
-              phx-target={@target}
-              phx-value-tab="invite_exceptions"
-            >
-              <:icon><Icons.icon_tab_exceptions class="w-4 h-4" /></:icon>
-              {dgettext("dialogs", "Invite Exc.")}
+              {dgettext("dialogs", "Access Lists")}
             </.tabs_trigger>
             <.tabs_trigger
               builder={builder}
@@ -207,42 +179,17 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
           />
         </.tabs_content>
 
-        <.tabs_content value="bans" builder={builder}>
-          <.list_tab
+        <.tabs_content value="access_lists" builder={builder}>
+          <.access_lists_tab
             target={@target}
-            entries={@bans}
-            selected={@ban_selected}
+            list_type={@list_type}
+            entries={@list_entries}
+            selected={@list_selected}
             operator={@operator}
-            on_add={@on_ban_add}
-            on_remove={@on_ban_remove}
-            on_select={@on_ban_select}
-            empty_label={dgettext("dialogs", "No bans set on this channel.")}
-          />
-        </.tabs_content>
-
-        <.tabs_content value="ban_exceptions" builder={builder}>
-          <.list_tab
-            target={@target}
-            entries={@ban_exceptions}
-            selected={@ban_ex_selected}
-            operator={@operator}
-            on_add={@on_ban_ex_add}
-            on_remove={@on_ban_ex_remove}
-            on_select={@on_ban_ex_select}
-            empty_label={dgettext("dialogs", "No ban exceptions set.")}
-          />
-        </.tabs_content>
-
-        <.tabs_content value="invite_exceptions" builder={builder}>
-          <.list_tab
-            target={@target}
-            entries={@invite_exceptions}
-            selected={@invite_ex_selected}
-            operator={@operator}
-            on_add={@on_invite_ex_add}
-            on_remove={@on_invite_ex_remove}
-            on_select={@on_invite_ex_select}
-            empty_label={dgettext("dialogs", "No invite exceptions set.")}
+            on_list_type={@on_list_type}
+            on_add={@on_list_add}
+            on_remove={@on_list_remove}
+            on_select={@on_list_select}
           />
         </.tabs_content>
 
@@ -271,12 +218,12 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
         </.tabs_content>
       </.tabs>
 
-      <%!-- Ban Add Sub-Dialog --%>
-      <.ban_add_sub_form :if={@show_add_ban_dialog} target={@target} />
-      <%!-- Ban Exception Add Sub-Dialog --%>
-      <.ban_ex_add_sub_form :if={@show_add_ban_ex_dialog} target={@target} />
-      <%!-- Invite Exception Add Sub-Dialog --%>
-      <.invite_ex_add_sub_form :if={@show_add_invite_ex_dialog} target={@target} />
+      <%!-- Access List Entry Add Sub-Dialog --%>
+      <.list_entry_add_sub_form
+        :if={@show_add_list_entry_dialog}
+        target={@target}
+        list_type={@list_type}
+      />
       <%!-- Ownership Transfer Sub-Dialog --%>
       <.transfer_confirm_sub_form
         :if={@show_transfer_dialog}
@@ -585,42 +532,46 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
 
   # ── Sub-Forms ─────────────────────────────────────────
 
+  attr :list_type, :string, required: true
+
   attr :target, :any, default: nil
 
-  defp ban_add_sub_form(assigns) do
+  defp list_entry_add_sub_form(assigns) do
+    assigns = assign(assigns, :title, add_entry_title(assigns.list_type))
+
     ~H"""
     <div
       class="cc-subdialog-overlay absolute inset-0 z-modal-above bg-black/50 flex items-center justify-center"
       data-escape-guard
-      data-testid="cc-add-ban-dialog"
+      data-access-list={@list_type}
+      data-testid="cc-add-list-entry-dialog"
     >
       <div class="cc-subdialog bg-surface shadow-retro-window p-[3px] w-full max-w-sm">
         <div class="bg-title-bar flex items-center gap-retro-4 px-retro-2 py-retro-2">
-          <span class="text-xs font-bold text-white truncate select-none">
-            {dgettext("dialogs", "Add Ban")}
-          </span>
+          <span class="text-xs font-bold text-white truncate select-none">{@title}</span>
           <div class="ml-auto">
             <button
               type="button"
               aria-label={dgettext("dialogs", "Close")}
-              phx-click="cc_close_add_ban"
+              phx-click="cc_close_add_list_entry"
               phx-target={@target}
             />
           </div>
         </div>
         <div class="p-2">
-          <form phx-submit="cc_add_ban" phx-target={@target}>
+          <form phx-submit="cc_add_list_entry" phx-target={@target}>
+            <input type="hidden" name="list" value={@list_type} />
             <div class="flex flex-col gap-1.5">
-              <label class="text-xs font-bold" for="cc-ban-nick">
+              <label class="text-xs font-bold" for="cc-list-entry-mask">
                 {dgettext("dialogs", "Hostmask")}:
               </label>
               <.input
                 type="text"
-                id="cc-ban-nick"
+                id="cc-list-entry-mask"
                 name="nickname"
                 autofocus
                 class="w-full"
-                data-testid="cc-ban-nick-input"
+                data-testid="cc-list-entry-input"
               />
             </div>
             <div class="cc-action-row flex justify-end gap-1 mt-2">
@@ -633,131 +584,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
                 size="sm"
                 variant="outline"
                 class="cc-action-button"
-                phx-click="cc_close_add_ban"
-                phx-target={@target}
-              >
-                <:icon><Icons.icon_close /></:icon>
-                {dgettext("dialogs", "Cancel")}
-              </.button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-    """
-  end
-
-  attr :target, :any, default: nil
-
-  defp ban_ex_add_sub_form(assigns) do
-    ~H"""
-    <div
-      class="cc-subdialog-overlay absolute inset-0 z-modal-above bg-black/50 flex items-center justify-center"
-      data-escape-guard
-      data-testid="cc-add-ban-ex-dialog"
-    >
-      <div class="cc-subdialog bg-surface shadow-retro-window p-[3px] w-full max-w-sm">
-        <div class="bg-title-bar flex items-center gap-retro-4 px-retro-2 py-retro-2">
-          <span class="text-xs font-bold text-white truncate select-none">
-            {dgettext("dialogs", "Add Ban Exception")}
-          </span>
-          <div class="ml-auto">
-            <button
-              type="button"
-              aria-label={dgettext("dialogs", "Close")}
-              phx-click="cc_close_add_ban_ex"
-              phx-target={@target}
-            />
-          </div>
-        </div>
-        <div class="p-2">
-          <form phx-submit="cc_add_ban_exception" phx-target={@target}>
-            <div class="flex flex-col gap-1.5">
-              <label class="text-xs font-bold" for="cc-ban-ex-nick">
-                {dgettext("dialogs", "Hostmask")}:
-              </label>
-              <.input
-                type="text"
-                id="cc-ban-ex-nick"
-                name="nickname"
-                autofocus
-                class="w-full"
-                data-testid="cc-ban-ex-nick-input"
-              />
-            </div>
-            <div class="cc-action-row flex justify-end gap-1 mt-2">
-              <.button type="submit" size="sm" class="cc-action-button">
-                <:icon><Icons.icon_checkmark /></:icon>
-                {dgettext("dialogs", "OK")}
-              </.button>
-              <.button
-                type="button"
-                size="sm"
-                variant="outline"
-                class="cc-action-button"
-                phx-click="cc_close_add_ban_ex"
-                phx-target={@target}
-              >
-                <:icon><Icons.icon_close /></:icon>
-                {dgettext("dialogs", "Cancel")}
-              </.button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-    """
-  end
-
-  attr :target, :any, default: nil
-
-  defp invite_ex_add_sub_form(assigns) do
-    ~H"""
-    <div
-      class="cc-subdialog-overlay absolute inset-0 z-modal-above bg-black/50 flex items-center justify-center"
-      data-escape-guard
-      data-testid="cc-add-invite-ex-dialog"
-    >
-      <div class="cc-subdialog bg-surface shadow-retro-window p-[3px] w-full max-w-sm">
-        <div class="bg-title-bar flex items-center gap-retro-4 px-retro-2 py-retro-2">
-          <span class="text-xs font-bold text-white truncate select-none">
-            {dgettext("dialogs", "Add Invite Exception")}
-          </span>
-          <div class="ml-auto">
-            <button
-              type="button"
-              aria-label={dgettext("dialogs", "Close")}
-              phx-click="cc_close_add_invite_ex"
-              phx-target={@target}
-            />
-          </div>
-        </div>
-        <div class="p-2">
-          <form phx-submit="cc_add_invite_exception" phx-target={@target}>
-            <div class="flex flex-col gap-1.5">
-              <label class="text-xs font-bold" for="cc-invite-ex-nick">
-                {dgettext("dialogs", "Hostmask")}:
-              </label>
-              <.input
-                type="text"
-                id="cc-invite-ex-nick"
-                name="nickname"
-                autofocus
-                class="w-full"
-                data-testid="cc-invite-ex-nick-input"
-              />
-            </div>
-            <div class="cc-action-row flex justify-end gap-1 mt-2">
-              <.button type="submit" size="sm" class="cc-action-button">
-                <:icon><Icons.icon_checkmark /></:icon>
-                {dgettext("dialogs", "OK")}
-              </.button>
-              <.button
-                type="button"
-                size="sm"
-                variant="outline"
-                class="cc-action-button"
-                phx-click="cc_close_add_invite_ex"
+                phx-click="cc_close_add_list_entry"
                 phx-target={@target}
               >
                 <:icon><Icons.icon_close /></:icon>
@@ -1189,102 +1016,126 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
     """
   end
 
-  # ── List Tab (Bans / Ban Exceptions / Invite Exceptions) ──
+  # ── Access Lists Tab (Bans / Ban Exceptions / Invite Exceptions) ──
 
+  attr :list_type, :string, required: true
   attr :entries, :list, required: true
   attr :selected, :string, default: nil
   attr :operator, :boolean, default: false
+  attr :on_list_type, :any, default: nil
   attr :on_add, :any, default: nil
   attr :on_remove, :any, default: nil
   attr :on_select, :any, default: nil, doc: "Row select event (phx-value-nickname)"
-  attr :empty_label, :string, default: nil
 
   attr :target, :any, default: nil
 
-  defp list_tab(assigns) do
-    has_selection = assigns.selected != nil
+  defp access_lists_tab(assigns) do
+    active = normalize_list_type(assigns.list_type)
 
     assigns =
       assigns
-      |> assign(:has_selection, has_selection)
-      |> assign(:empty_label, assigns.empty_label || dgettext("dialogs", "No entries."))
+      |> assign(:active_list, active)
+      |> assign(:has_selection, assigns.selected != nil)
+      |> assign(:empty_label, empty_list_label(active))
 
     ~H"""
-    <div class="cc-list-table-wrap overflow-y-auto max-h-[180px] shadow-retro-field bg-white mb-2">
-      <.table class="cc-mobile-list-table" data-cc-mobile-list-table>
-        <.table_header>
-          <.table_row>
-            <.table_head class="text-xs px-2 py-1">{dgettext("dialogs", "Mask")}</.table_head>
-            <.table_head class="w-[80px] text-xs px-2 py-1">
-              {dgettext("dialogs", "Set By")}
-            </.table_head>
-            <.table_head class="w-[100px] text-xs px-2 py-1">
-              {dgettext("dialogs", "Set At")}
-            </.table_head>
-          </.table_row>
-        </.table_header>
-        <.table_body>
-          <.table_row
-            :for={entry <- @entries}
-            class={
-              classes([
-                "cc-mobile-list-row cursor-pointer text-xs",
-                @selected == entry.mask && "bg-primary text-white"
-              ])
-            }
-            phx-click={@on_select}
-            phx-target={@target}
-            phx-value-nickname={entry.mask}
-          >
-            <.table_cell
-              class="cc-mobile-list-primary px-2 py-1 text-xs font-mono"
-              data-label={dgettext("dialogs", "Mask")}
-            >
-              {entry.mask}
-            </.table_cell>
-            <.table_cell
-              class="cc-mobile-list-meta px-2 py-1 text-xs"
-              data-label={dgettext("dialogs", "Set By")}
-            >
-              {entry.set_by}
-            </.table_cell>
-            <.table_cell
-              class="cc-mobile-list-meta px-2 py-1 text-xs"
-              data-label={dgettext("dialogs", "Set At")}
-            >
-              {entry.set_at}
-            </.table_cell>
-          </.table_row>
-          <tr :if={@entries == []} class="cc-empty-row">
-            <td colspan="3" class="cc-empty-cell px-2 py-4 text-xs text-center text-muted-foreground">
-              {@empty_label}
-            </td>
-          </tr>
-        </.table_body>
-      </.table>
-    </div>
+    <div class="space-y-2">
+      <div class="cc-segmented-tabs inline-flex shadow-retro-field bg-surface p-[2px] gap-[2px]">
+        <button
+          :for={list_type <- list_types()}
+          type="button"
+          class={[
+            "cc-segmented-tab px-2 py-1 text-xs shadow-retro-raised active:shadow-retro-sunken",
+            @active_list == list_type && "bg-selection-bg text-selection-fg"
+          ]}
+          phx-click={@on_list_type}
+          phx-target={@target}
+          phx-value-list={list_type}
+          data-testid={"cc-list-type-#{list_type}"}
+        >
+          {list_type_label(list_type)}
+        </button>
+      </div>
 
-    <div :if={@operator} class="cc-action-row flex gap-1">
-      <.button size="sm" class="cc-action-button" phx-click={@on_add} phx-target={@target}>
-        <:icon><Icons.icon_btn_add /></:icon>
-        {dgettext("dialogs", "Add")}
-      </.button>
-      <.button
-        size="sm"
-        variant="destructive"
-        class="cc-action-button"
-        phx-click={@on_remove}
-        phx-target={@target}
-        disabled={!@has_selection}
-      >
-        <:icon><Icons.icon_btn_remove /></:icon>
-        {dgettext("dialogs", "Remove")}
-      </.button>
-    </div>
+      <div class="cc-list-table-wrap overflow-y-auto max-h-[180px] shadow-retro-field bg-white">
+        <.table class="cc-mobile-list-table" data-cc-mobile-list-table>
+          <.table_header>
+            <.table_row>
+              <.table_head class="text-xs px-2 py-1">{dgettext("dialogs", "Mask")}</.table_head>
+              <.table_head class="w-[80px] text-xs px-2 py-1">
+                {dgettext("dialogs", "Set By")}
+              </.table_head>
+              <.table_head class="w-[100px] text-xs px-2 py-1">
+                {dgettext("dialogs", "Set At")}
+              </.table_head>
+            </.table_row>
+          </.table_header>
+          <.table_body>
+            <.table_row
+              :for={entry <- @entries}
+              class={
+                classes([
+                  "cc-mobile-list-row cursor-pointer text-xs",
+                  @selected == entry.mask && "bg-primary text-white"
+                ])
+              }
+              phx-click={@on_select}
+              phx-target={@target}
+              phx-value-nickname={entry.mask}
+            >
+              <.table_cell
+                class="cc-mobile-list-primary px-2 py-1 text-xs font-mono"
+                data-label={dgettext("dialogs", "Mask")}
+              >
+                {entry.mask}
+              </.table_cell>
+              <.table_cell
+                class="cc-mobile-list-meta px-2 py-1 text-xs"
+                data-label={dgettext("dialogs", "Set By")}
+              >
+                {entry.set_by}
+              </.table_cell>
+              <.table_cell
+                class="cc-mobile-list-meta px-2 py-1 text-xs"
+                data-label={dgettext("dialogs", "Set At")}
+              >
+                {entry.set_at}
+              </.table_cell>
+            </.table_row>
+            <tr :if={@entries == []} class="cc-empty-row">
+              <td
+                colspan="3"
+                class="cc-empty-cell px-2 py-4 text-xs text-center text-muted-foreground"
+              >
+                {@empty_label}
+              </td>
+            </tr>
+          </.table_body>
+        </.table>
+      </div>
 
-    <p :if={!@operator} class="text-[10px] text-muted-foreground italic">
-      {dgettext("dialogs", "You must be a channel operator to manage this list.")}
-    </p>
+      <div :if={@operator} class="cc-action-row flex gap-1">
+        <.button size="sm" class="cc-action-button" phx-click={@on_add} phx-target={@target}>
+          <:icon><Icons.icon_btn_add /></:icon>
+          {dgettext("dialogs", "Add")}
+        </.button>
+        <.button
+          size="sm"
+          variant="destructive"
+          class="cc-action-button"
+          phx-click={@on_remove}
+          phx-target={@target}
+          disabled={!@has_selection}
+        >
+          <:icon><Icons.icon_btn_remove /></:icon>
+          {dgettext("dialogs", "Remove")}
+        </.button>
+      </div>
+
+      <p :if={!@operator} class="text-[10px] text-muted-foreground italic">
+        {dgettext("dialogs", "You must be a channel operator to manage this list.")}
+      </p>
+    </div>
     """
   end
 
@@ -1309,6 +1160,35 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
 
   @spec access_levels() :: [String.t()]
   defp access_levels, do: ~w(sop aop vop)
+
+  @spec list_types() :: [String.t()]
+  defp list_types, do: ~w(bans ban_exceptions invite_exceptions)
+
+  @spec normalize_list_type(String.t() | nil) :: String.t()
+  defp normalize_list_type(list_type)
+       when list_type in ~w(bans ban_exceptions invite_exceptions),
+       do: list_type
+
+  defp normalize_list_type(_list_type), do: "bans"
+
+  @spec list_type_label(String.t()) :: String.t()
+  defp list_type_label("bans"), do: dgettext("dialogs", "Bans")
+  defp list_type_label("ban_exceptions"), do: dgettext("dialogs", "Ban Exc.")
+  defp list_type_label("invite_exceptions"), do: dgettext("dialogs", "Invite Exc.")
+
+  @spec empty_list_label(String.t()) :: String.t()
+  defp empty_list_label("bans"), do: dgettext("dialogs", "No bans set on this channel.")
+  defp empty_list_label("ban_exceptions"), do: dgettext("dialogs", "No ban exceptions set.")
+  defp empty_list_label("invite_exceptions"), do: dgettext("dialogs", "No invite exceptions set.")
+
+  @spec add_entry_title(String.t()) :: String.t()
+  defp add_entry_title(list_type) do
+    case normalize_list_type(list_type) do
+      "bans" -> dgettext("dialogs", "Add Ban")
+      "ban_exceptions" -> dgettext("dialogs", "Add Ban Exception")
+      "invite_exceptions" -> dgettext("dialogs", "Add Invite Exception")
+    end
+  end
 
   @spec normalize_access_level(String.t() | nil) :: String.t()
   defp normalize_access_level(level) when level in ~w(sop aop vop), do: level

@@ -1763,14 +1763,6 @@ msgid ""
 "manage SOP, AOP, and VOP access lists."
 msgstr "打開頻道中央並選擇註冊標籤來查看註冊狀態,註冊一個未註冊的頻道,將一個頻道降爲創建者,並管理SOP,AOP和VOP訪問列表."
 
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:12
-#, elixir-autogen, elixir-format
-msgid ""
-"Open Channel Central for a channel you have joined, then choose Registration"
-" after Invite Exceptions. The status area shows whether the channel is "
-"registered and who the founder is."
-msgstr "爲您加入的頻道打開頻道中心, 然後在邀請例外之後選擇註冊 。 狀態區域顯示頻道是否註冊,創始人是誰."
-
 #: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:10
 #, elixir-autogen, elixir-format
 msgid ""
@@ -1909,3 +1901,11 @@ msgid ""
 " select one and choose Request Access... to send a knock request to its "
 "operators."
 msgstr "按鈕。 只邀請 (+i) 頻道被標記爲 +i 徽章; 選擇一個並選擇 Access... 向它的操作員發送敲門請求 。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:12
+#, elixir-autogen, elixir-format
+msgid ""
+"Open Channel Central for a channel you have joined, then choose Registration"
+" after Access Lists. The status area shows whether the channel is registered"
+" and who the founder is."
+msgstr "爲您加入的頻道打開頻道中心,然後在訪問列表後選擇註冊。 狀態區域顯示頻道是否註冊,創始人是誰."

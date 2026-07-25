@@ -11,7 +11,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat_web/live/help_live/index.ex:116
+#: lib/retro_hex_chat_web/live/help_live/index.ex:143
 #, elixir-autogen, elixir-format
 msgid "%{topic} — RetroHexChat Help"
 msgstr "%{topic} — RetroHexChat 帮助"
@@ -108,9 +108,7 @@ msgstr "3. 选择密码(最少5个字符)并单击"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:16
 #, elixir-autogen, elixir-format
-msgid ""
-"3. On success, you join the chat already identified — the 60-second identify"
-" timer is skipped."
+msgid "3. On success, you join the chat already identified — the 60-second identify timer is skipped."
 msgstr "3. 一旦成功,您将加入已经确认的聊天——60秒识别计时器被跳过。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:13
@@ -130,8 +128,7 @@ msgstr "4. 用途"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:35
 #, elixir-autogen, elixir-format
-msgid ""
-"4. Your nickname is registered and you join the chat already identified."
+msgid "4. Your nickname is registered and you join the chat already identified."
 msgstr "4. 您的昵称已注册, 您加入已确认的聊天 。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:49
@@ -212,13 +209,10 @@ msgstr "输入"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:24
 #, elixir-autogen, elixir-format
-msgid ""
-"Every nickname must be registered before entering the chat. When you connect"
-" with a new nickname, you'll be asked to choose a password to register it. "
-"On future visits, you'll enter your password to log in."
+msgid "Every nickname must be registered before entering the chat. When you connect with a new nickname, you'll be asked to choose a password to register it. On future visits, you'll enter your password to log in."
 msgstr "每个昵称在进入聊天前都必须注册. 与新昵称连接时,会要求您选择一个密码来注册. 以后访问时,会输入密码登录."
 
-#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:79
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:81
 #: lib/retro_hex_chat_web/components/ui/help/help_status_bar.ex:51
 #: lib/retro_hex_chat_web/components/ui/help/help_status_bar.ex:53
 #: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:334
@@ -239,7 +233,7 @@ msgid "Help navigation"
 msgstr "帮助导航"
 
 #: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:54
-#: lib/retro_hex_chat_web/live/help_live/index.ex:115
+#: lib/retro_hex_chat_web/live/help_live/index.ex:142
 #, elixir-autogen, elixir-format
 msgid "Help — RetroHexChat"
 msgstr "帮助 — retroHexChat"
@@ -355,24 +349,17 @@ msgstr "retroHexChat 帮助"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:2
 #, elixir-autogen, elixir-format
-msgid ""
-"RetroHexChat handles all authentication directly on the connection screen — "
-"no need to run"
+msgid "RetroHexChat handles all authentication directly on the connection screen — no need to run"
 msgstr "RetroHexChat 直接处理连接屏幕上的所有认证——不需要运行"
 
-#: lib/retro_hex_chat_web/live/help_live/index.ex:120
+#: lib/retro_hex_chat_web/live/help_live/index.ex:147
 #, elixir-autogen, elixir-format
-msgid ""
-"RetroHexChat help documentation. Learn about IRC commands, channel modes, "
-"features, and keyboard shortcuts."
+msgid "RetroHexChat help documentation. Learn about IRC commands, channel modes, features, and keyboard shortcuts."
 msgstr "RetroHexChat 帮助文档. 学习 IRC 命令,频道模式,特性,以及键盘快捷键."
 
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:2
 #, elixir-autogen, elixir-format
-msgid ""
-"RetroHexChat is a web-based IRC client with an authentic retro look and "
-"feel. It supports channels, private messages, text formatting, nick "
-"services, and much more."
+msgid "RetroHexChat is a web-based IRC client with an authentic retro look and feel. It supports channels, private messages, text formatting, nick services, and much more."
 msgstr ""
 "RetroHexChat是一个基于网络的IRC客户端,具有真实的retro外观和感觉. 它支持频道,私人信息,文本格式化,昵称服务,以及更多."
 
@@ -407,8 +394,7 @@ msgstr "这打开了一个PM标签。 或者,发送一个单一信息:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:2
 #, elixir-autogen, elixir-format
-msgid ""
-"To connect to RetroHexChat, enter a nickname on the connect screen and click"
+msgid "To connect to RetroHexChat, enter a nickname on the connect screen and click"
 msgstr "要连接到 RetroHexChat,请在连接屏幕上输入昵称并单击"
 
 #: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:11
@@ -418,15 +404,12 @@ msgstr "使用用户列表"
 
 #: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:2
 #, elixir-autogen, elixir-format
-msgid ""
-"You can send private messages to other users that only the two of you can "
-"see."
+msgid "You can send private messages to other users that only the two of you can see."
 msgstr "您可以向其他用户发送只有你们两个能看见的私人消息."
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:50
 #, elixir-autogen, elixir-format
-msgid ""
-"are automatically freed. Connect regularly to keep your registration. See"
+msgid "are automatically freed. Connect regularly to keep your registration. See"
 msgstr "自动释放。 定期连接以保留您的注册 。 见"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:29
@@ -451,9 +434,7 @@ msgstr "手动的"
 
 #: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:15
 #, elixir-autogen, elixir-format
-msgid ""
-"to open a PM tab. You can also double-click a nickname to open a PM "
-"directly."
+msgid "to open a PM tab. You can also double-click a nickname to open a PM directly."
 msgstr "打开 PM 标签。 您也可以双击昵称直接打开 PM 。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:19
@@ -478,9 +459,7 @@ msgstr "- 出现了密码提示 。 输入密码并单击"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:35
 #, elixir-autogen, elixir-format
-msgid ""
-"— A registration form appears. Choose a password (minimum 5 characters) and "
-"confirm it. Click"
+msgid "— A registration form appears. Choose a password (minimum 5 characters) and confirm it. Click"
 msgstr "- 出现了登记表。 选择密码( 最少 5 个字符) 并确认它 。 单击"
 
 #: lib/retro_hex_chat_web/components/ui/help/help_status_bar.ex:35
@@ -493,12 +472,12 @@ msgstr "%{count} 专题"
 msgid "/notice"
 msgstr "/notice"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:82
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:85
 #, elixir-autogen, elixir-format
 msgid "About RetroHexChat"
 msgstr "关于反转HexChat"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:40
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:41
 #: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:171
 #, elixir-autogen, elixir-format
 msgid "Back"
@@ -509,7 +488,7 @@ msgstr "回来"
 msgid "Back to chat"
 msgstr "继续聊天"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:56
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:58
 #: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:220
 #, elixir-autogen, elixir-format
 msgid "Contents"
@@ -517,24 +496,22 @@ msgstr "目录"
 
 #: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:21
 #, elixir-autogen, elixir-format
-msgid ""
-"For a lightweight message that does not open a PM tab on the recipient's "
-"side, choose Send Notice from a nickname context menu or use"
+msgid "For a lightweight message that does not open a PM tab on the recipient's side, choose Send Notice from a nickname context menu or use"
 msgstr "对于不打开收件人一侧的 PM 标签的轻量级信件,请从昵称上下文菜单中选择发送通知或使用"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:44
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:45
 #: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:179
 #, elixir-autogen, elixir-format
 msgid "Forward"
 msgstr "前进"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:34
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:35
 #: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:183
 #, elixir-autogen, elixir-format
 msgid "Home"
 msgstr "页 次"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:64
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:66
 #: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:221
 #, elixir-autogen, elixir-format
 msgid "Index"
@@ -555,7 +532,7 @@ msgstr "没有话题匹配\"%{query}\"."
 msgid "Notice Command"
 msgstr "通知命令"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:72
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:74
 #: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:222
 #: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:358
 #, elixir-autogen, elixir-format
@@ -572,7 +549,7 @@ msgstr "搜索话题..."
 msgid "Type in the search box to find topics."
 msgstr "在搜索框中键入查找话题。"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:49
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:50
 #, elixir-autogen, elixir-format
 msgid "View"
 msgstr "视图"

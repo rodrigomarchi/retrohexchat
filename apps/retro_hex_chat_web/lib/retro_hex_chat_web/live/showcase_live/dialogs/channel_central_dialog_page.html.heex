@@ -16,12 +16,11 @@
         member_count={42}
         operator={true}
         modes={@sample_modes}
-        bans={@sample_bans}
-        ban_exceptions={@sample_ban_exceptions}
-        invite_exceptions={@sample_invite_exceptions}
-        ban_selected={@ban_selected}
-        ban_ex_selected={@ban_ex_selected}
-        invite_ex_selected={@invite_ex_selected}
+        list_type={@list_type}
+        list_entries={@sample_lists[@list_type]}
+        list_selected={@list_selected}
+        on_list_type="cc_list_type"
+        on_list_select="cc_list_select"
       />
     </div>
 
@@ -33,11 +32,13 @@
       topic_set_by="Troll"
       operator=&#123;true&#125;
       modes=&#123;%&#123;moderated: false, invite_only: true&#125;&#125;
-      bans=&#123;@bans&#125;
+      list_type="bans"
+      list_entries=&#123;@bans&#125;
       on_topic_save="save-topic"
       on_mode_apply="apply-modes"
-      on_ban_add="add-ban"
-      on_ban_remove="remove-ban"
+      on_list_type="switch-list"
+      on_list_add="add-entry"
+      on_list_remove="remove-entry"
       /&gt;
     </.code_example>
   </.showcase_card>
@@ -57,16 +58,15 @@
         member_count={128}
         operator={false}
         modes={%{moderated: true, invite_only: false, topic_lock: true, key: nil, limit: 200}}
-        bans={@sample_bans}
-        ban_exceptions={[]}
-        invite_exceptions={[]}
+        list_type="bans"
+        list_entries={@sample_lists["bans"]}
       />
     </div>
   </.showcase_card>
 
   <.showcase_card
     title={dgettext("showcase", "Tabs Overview")}
-    description="The dialog has 5 tabs for comprehensive channel management."
+    description="The dialog has 4 tabs for comprehensive channel management."
   >
     <div class="overflow-x-auto">
       <table class="w-full text-xs">
@@ -91,19 +91,21 @@
             <td class="px-2 py-1">{dgettext("showcase", "Apply modes button, field editing")}</td>
           </tr>
           <tr class="border-b">
-            <td class="px-2 py-1 font-bold">{dgettext("showcase", "Bans")}</td>
-            <td class="px-2 py-1">{dgettext("showcase", "Ban masks with set_by/set_at")}</td>
-            <td class="px-2 py-1">{dgettext("showcase", "Add/Remove buttons")}</td>
-          </tr>
-          <tr class="border-b">
-            <td class="px-2 py-1 font-bold">{dgettext("showcase", "Ban Exc.")}</td>
-            <td class="px-2 py-1">{dgettext("showcase", "Ban exception masks")}</td>
+            <td class="px-2 py-1 font-bold">{dgettext("showcase", "Access Lists")}</td>
+            <td class="px-2 py-1">
+              {dgettext(
+                "showcase",
+                "Bans, ban exceptions and invite exceptions behind a type selector"
+              )}
+            </td>
             <td class="px-2 py-1">{dgettext("showcase", "Add/Remove buttons")}</td>
           </tr>
           <tr>
-            <td class="px-2 py-1 font-bold">{dgettext("showcase", "Invite Exc.")}</td>
-            <td class="px-2 py-1">{dgettext("showcase", "Invite exception masks")}</td>
-            <td class="px-2 py-1">{dgettext("showcase", "Add/Remove buttons")}</td>
+            <td class="px-2 py-1 font-bold">{dgettext("showcase", "Registration")}</td>
+            <td class="px-2 py-1">
+              {dgettext("showcase", "ChanServ registration and SOP/AOP/VOP access lists")}
+            </td>
+            <td class="px-2 py-1">{dgettext("showcase", "Register, drop, access management")}</td>
           </tr>
         </tbody>
       </table>

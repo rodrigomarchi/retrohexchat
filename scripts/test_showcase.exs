@@ -57,7 +57,6 @@ routes = [
   "/showcase/connection-status",
   "/showcase/confirm-dialog",
   "/showcase/options-dialog",
-  "/showcase/channel-dialog",
   "/showcase/address-book",
   "/showcase/about-dialog",
   "/showcase/channel-list",
@@ -67,7 +66,15 @@ routes = [
   "/showcase/media-controls",
   "/showcase/file-transfer",
   "/showcase/bot-manager",
-  "/showcase/admin-console",
+  "/showcase/admin-console-dialog",
+  "/showcase/admin-users-dialog",
+  "/showcase/admin-channels-dialog",
+  "/showcase/admin-server-settings-dialog",
+  "/showcase/admin-audit-log-dialog",
+  "/showcase/admin-motd-dialog",
+  "/showcase/admin-turn-dialog",
+  "/showcase/admin-broadcast-dialog",
+  "/showcase/admin-danger-zone-dialog",
   "/showcase/chat-layout"
 ]
 

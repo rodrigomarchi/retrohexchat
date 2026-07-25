@@ -225,7 +225,6 @@ defmodule RetroHexChatWeb.Router do
       # Dialogs
       live "/confirm-dialog", Dialogs.ConfirmDialogPage
 
-      live "/channel-dialog", Dialogs.ChannelDialogPage
       live "/address-book", Dialogs.AddressBookPage
       live "/about-dialog", Dialogs.AboutDialogPage
       live "/channel-list", Dialogs.ChannelListPage
@@ -248,6 +247,14 @@ defmodule RetroHexChatWeb.Router do
       live "/perform-dialog", Dialogs.PerformDialogPage
       live "/channel-central-dialog", Dialogs.ChannelCentralDialogPage
       live "/admin-console-dialog", Dialogs.AdminConsoleDialogPage
+      live "/admin-users-dialog", Dialogs.AdminUsersDialogPage
+      live "/admin-channels-dialog", Dialogs.AdminChannelsDialogPage
+      live "/admin-server-settings-dialog", Dialogs.AdminServerSettingsDialogPage
+      live "/admin-audit-log-dialog", Dialogs.AdminAuditLogDialogPage
+      live "/admin-motd-dialog", Dialogs.AdminMotdDialogPage
+      live "/admin-turn-dialog", Dialogs.AdminTurnDialogPage
+      live "/admin-broadcast-dialog", Dialogs.AdminBroadcastDialogPage
+      live "/admin-danger-zone-dialog", Dialogs.AdminDangerZoneDialogPage
       live "/bot-management-dialog", Dialogs.BotManagementDialogPage
 
       # P2P

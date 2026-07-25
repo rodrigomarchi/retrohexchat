@@ -45,10 +45,6 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AdminConsoleDialogPage do
     {:noreply, assign(socket, show_console: !socket.assigns.show_console)}
   end
 
-  def handle_event("close_admin_console", _params, socket) do
-    {:noreply, assign(socket, show_console: false)}
-  end
-
   @impl true
   def render(assigns) do
     ~H"""
@@ -67,14 +63,17 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AdminConsoleDialogPage do
           id="admin-console-demo"
           show={@show_console}
           results={@results}
-          on_close="toggle_console"
+          on_run="toggle_console"
+          on_clear="toggle_console"
+          on_cancel="toggle_console"
         />
         <.code_example>
           &lt;.admin_console_dialog
           id="admin-console"
           show=&#123;@show_console&#125;
           results=&#123;@results&#125;
-          on_close="close_admin_console"
+          on_run="admin_console_run"
+          on_clear="admin_console_clear"
           /&gt;
         </.code_example>
       </.showcase_card>

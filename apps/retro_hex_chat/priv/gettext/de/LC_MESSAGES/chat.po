@@ -107,16 +107,15 @@ msgstr "Ding High"
 msgid "Ding Low"
 msgstr "Ding Low"
 
-#: lib/retro_hex_chat/chat/policy.ex:41 lib/retro_hex_chat/chat/policy.ex:70
+#: lib/retro_hex_chat/chat/policy.ex:41
+#: lib/retro_hex_chat/chat/policy.ex:70
 #, elixir-autogen, elixir-format
 msgid "Edit window has expired."
 msgstr "Fenster bearbeiten ist abgelaufen."
 
 #: lib/retro_hex_chat/chat/alias_expander.ex:30
 #, elixir-autogen, elixir-format
-msgid ""
-"Expansion must not contain command chaining characters (|, &&, ;, or "
-"newlines)"
+msgid "Expansion must not contain command chaining characters (|, &&, ;, or newlines)"
 msgstr ""
 "Erweiterung darf keine Befehlskettenzeichen enthalten (|, &&, ; oder "
 "Neulinien)"
@@ -128,26 +127,28 @@ msgstr "Formatierung"
 
 #: lib/retro_hex_chat/chat/timer_manager.ex:111
 #, elixir-autogen, elixir-format
-msgid ""
-"Invalid timer name. Use only letters, numbers, hyphens, underscores (max "
-"%{max_name_length} chars)."
+msgid "Invalid timer name. Use only letters, numbers, hyphens, underscores (max %{max_name_length} chars)."
 msgstr ""
 "Ungültiger Timername. Verwenden Sie nur Buchstaben, Zahlen, Bindestriche, "
 "Unterstriche (maximal %{max_name_length} Zeichen)."
 
-#: lib/retro_hex_chat/chat/policy.ex:18 lib/retro_hex_chat/chat/policy.ex:24
+#: lib/retro_hex_chat/chat/policy.ex:18
+#: lib/retro_hex_chat/chat/policy.ex:24
 #, elixir-autogen, elixir-format
 msgid "Message cannot be empty"
 msgstr "Nachricht kann nicht leer sein"
 
-#: lib/retro_hex_chat/chat/policy.ex:38 lib/retro_hex_chat/chat/policy.ex:60
+#: lib/retro_hex_chat/chat/policy.ex:38
+#: lib/retro_hex_chat/chat/policy.ex:60
 #: lib/retro_hex_chat/chat/policy.ex:81
 #, elixir-autogen, elixir-format
 msgid "Message has already been deleted."
 msgstr "Nachricht wurde bereits gelöscht."
 
-#: lib/retro_hex_chat/chat/service.ex:31 lib/retro_hex_chat/chat/service.ex:46
-#: lib/retro_hex_chat/chat/service.ex:67 lib/retro_hex_chat/chat/service.ex:81
+#: lib/retro_hex_chat/chat/service.ex:53
+#: lib/retro_hex_chat/chat/service.ex:80
+#: lib/retro_hex_chat/chat/service.ex:109
+#: lib/retro_hex_chat/chat/service.ex:131
 #, elixir-autogen, elixir-format
 msgid "Message not found."
 msgstr "Nachricht nicht gefunden."
@@ -247,13 +248,14 @@ msgstr "Open/close die ignorierte Liste"
 msgid "Open/close the keyboard shortcut cheatsheet"
 msgstr "Open/close Tastaturkürzel Cheatsheet"
 
-#: lib/retro_hex_chat/chat/service.ex:130
-#: lib/retro_hex_chat/chat/service.ex:147
+#: lib/retro_hex_chat/chat/service.ex:197
+#: lib/retro_hex_chat/chat/service.ex:214
 #, elixir-autogen, elixir-format
 msgid "Original message not found."
 msgstr "Originalnachricht nicht gefunden."
 
-#: lib/retro_hex_chat/chat/policy.ex:44 lib/retro_hex_chat/chat/policy.ex:109
+#: lib/retro_hex_chat/chat/policy.ex:44
+#: lib/retro_hex_chat/chat/policy.ex:109
 #, elixir-autogen, elixir-format
 msgid "Please wait a few seconds before editing again."
 msgstr "Bitte warten Sie ein paar Sekunden, bevor Sie wieder bearbeiten."
@@ -341,7 +343,7 @@ msgid "Switch to window 9"
 msgstr "Schalter zum Fenster 9"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:281
-#: lib/retro_hex_chat/chat/service.ex:96
+#: lib/retro_hex_chat/chat/service.ex:154
 #, elixir-autogen, elixir-format
 msgid "System"
 msgstr "System"
@@ -428,7 +430,8 @@ msgstr "Fenster 9"
 msgid "You cannot delete other users' messages."
 msgstr "Sie können die Nachrichten anderer Benutzer nicht löschen."
 
-#: lib/retro_hex_chat/chat/policy.ex:35 lib/retro_hex_chat/chat/policy.ex:57
+#: lib/retro_hex_chat/chat/policy.ex:35
+#: lib/retro_hex_chat/chat/policy.ex:57
 #, elixir-autogen, elixir-format
 msgid "You cannot edit other users' messages."
 msgstr "Sie können die Nachrichten anderer Benutzer nicht bearbeiten."

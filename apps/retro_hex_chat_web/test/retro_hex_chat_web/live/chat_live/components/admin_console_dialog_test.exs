@@ -1,72 +1,61 @@
 defmodule RetroHexChatWeb.ChatLive.Components.AdminConsoleDialogTest do
   use RetroHexChatWeb.ConnCase, async: true
 
+  @moduletag :unit
+
   import Phoenix.LiveViewTest
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChatWeb.ChatLive.Components.AdminConsoleDialog
 
-  @moduletag :unit
+  defp island(assigns) do
+    session = %Session{Session.new("TestAdmin") | identified: true}
 
-  # "TestAdmin" is in config/test.exs `admins:` → admin? + admin_only? true,
-  # root_admin? false (not in root_admins). The component derives the per-control
-  # permission flags from this session in render/1.
-  defp admin_session, do: "TestAdmin" |> Session.new() |> Session.set_identified(true)
-
-  defp dialog(overrides) do
-    base = %{id: AdminConsoleDialog.id(), session: admin_session()}
-    render_component(AdminConsoleDialog, Map.merge(base, overrides))
+    render_component(
+      AdminConsoleDialog,
+      Map.merge(%{id: AdminConsoleDialog.id(), session: session}, assigns)
+    )
   end
 
-  test "exposes a stable id" do
+  test "exposes a stable id the parent can send_update to" do
     assert AdminConsoleDialog.id() == "admin-console-dialog"
   end
 
-  test "renders the bare windowed panel with no modal chrome" do
-    # The island is a desktop window now: it renders the content panel (the
-    # `desktop_window` supplies the title bar/close), never the modal dialog.
-    html = dialog(%{})
+  test "renders the bare panel, with no dialog chrome of its own" do
+    html = island(%{})
 
-    assert html =~ ~s(id="admin-console-dialog-mount")
+    assert html =~ ~s(data-testid="admin-console-panel")
     assert html =~ ~s(id="admin-console-dialog-content")
-    assert html =~ ~s(data-testid="admin-console-panel")
-    refute html =~ "phx-show-modal"
-    refute html =~ "admin-console-dialog-show-trigger"
+    refute html =~ ~s(aria-modal="true")
   end
 
-  test "renders the console output area (default active tab)" do
-    html = dialog(%{})
+  test "renders the runner: an output transcript and a command input" do
+    html = island(%{})
 
-    assert html =~ ~s(data-testid="admin-console-panel")
     assert html =~ ~s(data-testid="admin-console-output")
+    assert html =~ ~s(id="admin-console-input")
+    assert html =~ ~s(phx-submit="admin_console_run")
+    assert html =~ ~s(phx-click="admin_console_clear")
   end
 
-  test "renders the active tab content from owned display assigns" do
-    html =
-      dialog(%{
-        show: true,
-        active_tab: "users",
-        users_text: "*** User List (1 results) ***\n  AdminUser",
-        users_search: "Admin"
-      })
+  test "invites a first command while the transcript is empty" do
+    html = island(%{})
 
-    assert html =~ ~s(data-testid="admin-console-tab-users")
-    assert html =~ "AdminUser"
-    assert html =~ ~s(phx-submit="admin_console_refresh_users")
+    assert html =~ "Type a command and press Enter."
   end
 
-  test "derives the per-control permission flags from the session" do
-    # admin_only (TestAdmin) grants the role form, but only root_admin may set
-    # the admin role — TestAdmin is not a root admin, so the option is disabled.
-    html = dialog(%{show: true, active_tab: "users"})
+  test "renders a transcript entry with its echoed line" do
+    html = island(%{results: [%{line: "/admin server info", status: :ok, message: "*** Server"}]})
 
-    assert html =~ ~s(phx-submit="admin_console_user_role")
-    assert html =~ ~s(value="admin" disabled)
+    assert html =~ "/admin server info"
+    assert html =~ "*** Server"
   end
 
-  test "owns and renders the filter/draft read-model" do
-    html = dialog(%{show: true, active_tab: "channels", channels_search: "#lobby-search"})
+  test "marks a failed line apart from a successful one" do
+    ok = island(%{results: [%{line: "/ok", status: :ok, message: "fine"}]})
+    err = island(%{results: [%{line: "/nope", status: :error, message: "boom"}]})
 
-    assert html =~ "#lobby-search"
+    assert ok =~ "text-green-400"
+    assert err =~ "text-red-400"
   end
 end

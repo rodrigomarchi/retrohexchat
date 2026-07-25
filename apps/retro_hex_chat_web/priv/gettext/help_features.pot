@@ -93,11 +93,6 @@ msgstr ""
 msgid "). Invalid regex patterns show an inline error."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:65
-#, elixir-autogen, elixir-format
-msgid "). Lines starting with"
-msgstr ""
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_away_reply.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "* YourNick is away: Gone for lunch"
@@ -279,16 +274,6 @@ msgstr ""
 msgid ". It only activates on unexpected connection loss."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:13
-#, elixir-autogen, elixir-format
-msgid ". Only channel operators can add or remove ban exceptions."
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:13
-#, elixir-autogen, elixir-format
-msgid ". Only channel operators can add or remove invite exceptions."
-msgstr ""
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autorespond.html.heex:40
 #, elixir-autogen, elixir-format
 msgid ". Rules can be enabled/disabled individually via the checkbox in the dialog."
@@ -314,7 +299,7 @@ msgstr ""
 msgid ". Your 5 most recently used commands appear at the top."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:105
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "/admin Command"
 msgstr ""
@@ -329,6 +314,7 @@ msgstr ""
 msgid "/alias add <name> <expansion>"
 msgstr ""
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_broadcast.html.heex:31
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:70
 #: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:86
@@ -375,12 +361,12 @@ msgid "/away Gone for lunch"
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:27
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "/ban Command"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:112
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_motd.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "/clearmotd"
@@ -461,13 +447,13 @@ msgstr ""
 msgid "/mode +x"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:58
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "/mode Command"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:110
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_motd.html.heex:33
 #: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:13
 #: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:47
 #: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:80
@@ -583,7 +569,7 @@ msgstr ""
 msgid "/quit Your message here"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:111
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_motd.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "/setmotd"
@@ -619,7 +605,7 @@ msgstr ""
 msgid "/timer stop <name>"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:60
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "/topic Command"
 msgstr ""
@@ -642,6 +628,7 @@ msgstr ""
 msgid "/unignore Command"
 msgstr ""
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_broadcast.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:66
 #: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:85
@@ -874,7 +861,13 @@ msgstr ""
 msgid "A real-time character counter appears near the input box showing"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:95
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_audit_log.html.heex:14
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_broadcast.html.heex:14
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:41
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_motd.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_server_settings.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "Access"
 msgstr ""
@@ -1054,15 +1047,9 @@ msgstr ""
 msgid "Available Toggles"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:12
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "Ban Exceptions"
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:20
-#, elixir-autogen, elixir-format
-msgid "Ban Exceptions:"
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:2
@@ -1073,11 +1060,6 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "Ban exceptions are managed through the"
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "Bans:"
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_command_syntax_tooltip.html.heex:27
@@ -1180,6 +1162,7 @@ msgstr ""
 msgid "Channel Autocomplete"
 msgstr ""
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:60
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:13
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:13
@@ -1238,7 +1221,7 @@ msgstr ""
 msgid "Channel operators can set a welcome message shown once to users when they first join. The message is not shown to the user who set it, and not repeated on rejoin within the same session."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "Channel operators see editable controls and can modify settings directly. Non-operators see read-only views of the channel configuration."
 msgstr ""
@@ -1633,7 +1616,7 @@ msgstr ""
 msgid "Display"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:40
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "Double-click a channel in the conversations sidebar, or go to"
 msgstr ""
@@ -1756,11 +1739,6 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sounds.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Event Types"
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:93
-#, elixir-autogen, elixir-format
-msgid "Example Script"
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:39
@@ -2066,11 +2044,6 @@ msgstr ""
 msgid "Initial connection in progress."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:63
-#, elixir-autogen, elixir-format
-msgid "Input Format"
-msgstr ""
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_emoji.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Inserting"
@@ -2102,16 +2075,10 @@ msgstr ""
 msgid "Interactive elements do not trigger during text selection. The nick hover card does not appear for your own nickname. Hover tooltips dismiss when the mouse leaves the viewport."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:67
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:59
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invites.html.heex:44
-#: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "Invite Exceptions"
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:24
-#, elixir-autogen, elixir-format
-msgid "Invite Exceptions:"
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:2
@@ -2223,16 +2190,6 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "Link Previews:"
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:22
-#, elixir-autogen, elixir-format
-msgid "Manage ban exceptions (+e) that let specific users bypass bans."
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:26
-#, elixir-autogen, elixir-format
-msgid "Manage invite exceptions (+I) that let specific users bypass invite-only mode."
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:22
@@ -2556,18 +2513,13 @@ msgstr ""
 msgid "Only search messages that mention your nickname."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:97
-#, elixir-autogen, elixir-format
-msgid "Only server administrators and server operators can access the Admin Console. Non-admin users will see an error message if they attempt to open it."
-msgstr ""
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_timestamp_format.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Open"
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:27
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:7
@@ -2665,7 +2617,6 @@ msgstr ""
 msgid "Per-Type Filtering:"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:124
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_reconnect.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "Perform / Auto-Commands"
@@ -2681,7 +2632,7 @@ msgstr ""
 msgid "Perform List"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Permissions"
 msgstr ""
@@ -2773,7 +2724,7 @@ msgstr ""
 msgid "Ready"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "Real-Time Updates"
 msgstr ""
@@ -2973,7 +2924,15 @@ msgid "Search through messages in the current channel or PM with real-time highl
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:34
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:102
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_audit_log.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_broadcast.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_danger_zone.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_motd.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_server_settings.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_turn.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_aliases.html.heex:55
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:77
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_reconnect.html.heex:49
@@ -2981,7 +2940,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autorespond.html.heex:52
 #: lib/retro_hex_chat_web/controllers/help_content/feature_away_reply.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:25
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invites.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/feature_command_syntax_tooltip.html.heex:47
@@ -3225,7 +3184,6 @@ msgid "Tab"
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:7
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Tabs"
@@ -3306,7 +3264,7 @@ msgstr ""
 msgid "The dialog shows: the channel name, who kicked you, and the reason (if provided). Example: \"You have been kicked from #general by AdminNick: spam\""
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "The dialog updates in real time when other users change channel settings, so you always see the current state."
 msgstr ""
@@ -3457,7 +3415,7 @@ msgstr ""
 msgid "Tools > Auto-Respond"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:40
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "Tools > Channel Central"
 msgstr ""
@@ -3616,11 +3574,6 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_display_settings.html.heex:3
 #, elixir-autogen, elixir-format
 msgid "View"
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:18
-#, elixir-autogen, elixir-format
-msgid "View and manage the channel ban list."
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:14
@@ -3808,11 +3761,6 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_reconnect.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "are made. If all attempts fail, you are automatically redirected to the Connect screen with a"
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:70
-#, elixir-autogen, elixir-format
-msgid "are treated as comments and skipped. Empty lines are also ignored."
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autocomplete.html.heex:29
@@ -4429,7 +4377,7 @@ msgstr ""
 msgid "⚡ icon + gray"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:94
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "# Inspect server state /admin server info /admin channel list /admin cs info #general /setmotd Welcome to RetroHexChat!"
 msgstr ""
@@ -4439,67 +4387,27 @@ msgstr ""
 msgid ", toolbar Options > Timers, or by running"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:20
-#, elixir-autogen, elixir-format
-msgid "- active-channel snapshots, search, Info, Create, Delete, Purge, selected-channel banlist output, and ChanServ admin actions."
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:45
-#, elixir-autogen, elixir-format
-msgid "- guarded factory-reset controls."
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:47
-#, elixir-autogen, elixir-format
-msgid "- raw batch command execution."
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:40
-#, elixir-autogen, elixir-format
-msgid "- read-only TURN relay stats and active allocations from /admin turn."
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:35
-#, elixir-autogen, elixir-format
-msgid "- read-only administrative history with Last and User filters."
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:15
-#, elixir-autogen, elixir-format
-msgid "- registered-user snapshots, search, online-only filtering, banlist output, Info lookups, moderation actions, roles, rename, and NickServ admin actions."
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:30
-#, elixir-autogen, elixir-format
-msgid "- send wallops to +w users or announcements to every connected user."
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:25
-#, elixir-autogen, elixir-format
-msgid "- view the current Message of the Day, edit it with /setmotd, or clear it with /clearmotd."
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:109
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "/admin channel"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:117
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_danger_zone.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "/admin nuke"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:106
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_server_settings.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "/admin server"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:65
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "/admin server info"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:107
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "/admin user"
 msgstr ""
@@ -4566,6 +4474,8 @@ msgstr ""
 msgid "Account widget with nickname and identity or away state."
 msgstr ""
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:51
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "Admin Console"
@@ -4581,11 +4491,6 @@ msgstr ""
 msgid "Announcements go to every connected user and bypass ignore filters. Only server administrators can send them."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:34
-#, elixir-autogen, elixir-format
-msgid "Audit Log"
-msgstr ""
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "Auto Respond"
@@ -4596,17 +4501,12 @@ msgstr ""
 msgid "Away Status"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:29
-#, elixir-autogen, elixir-format
-msgid "Broadcast"
-msgstr ""
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:8
 #, elixir-autogen, elixir-format
 msgid "Broadcast Tab"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:71
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "ChanServ Registration Tab"
 msgstr ""
@@ -4614,21 +4514,6 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Changing Nicknames"
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:19
-#, elixir-autogen, elixir-format
-msgid "Channels"
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:56
-#, elixir-autogen, elixir-format
-msgid "Channels Tab"
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:46
-#, elixir-autogen, elixir-format
-msgid "Console"
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:80
@@ -4641,13 +4526,8 @@ msgstr ""
 msgid "Current channel or private message name, user count, and online buddy badge."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:44
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:86
-#, elixir-autogen, elixir-format
-msgid "Danger Zone"
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:104
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "Desktop & Windows"
 msgstr ""
@@ -4692,11 +4572,6 @@ msgstr ""
 msgid "In Admin Console > Broadcast, choose Wallops or Announce, enter a message, and send it through the same command handlers as /wallops and /announce."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:65
-#, elixir-autogen, elixir-format
-msgid "In the Console tab, each line should be a slash command (e.g.,"
-msgstr ""
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "Last Seen"
@@ -4712,17 +4587,6 @@ msgstr ""
 msgid "Live vs. Finished"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:24
-#, elixir-autogen, elixir-format
-msgid "MOTD"
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:72
-#, elixir-autogen, elixir-format
-msgid "MOTD Tab"
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:120
 #: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:83
 #, elixir-autogen, elixir-format
 msgid "Message of the Day Menu"
@@ -4780,12 +4644,12 @@ msgstr ""
 msgid "Profile Bio"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "Register the channel with ChanServ, drop registration as founder, and manage SOP, AOP, and VOP lists."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:31
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Registration:"
 msgstr ""
@@ -4810,24 +4674,9 @@ msgstr ""
 msgid "Sender Icons"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:115
-#, elixir-autogen, elixir-format
-msgid "Server Broadcasts"
-msgstr ""
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Server Broadcasts covers operator wallops and administrator announcements sent from the Admin Console Broadcast tab or slash commands."
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "Server Settings"
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:79
-#, elixir-autogen, elixir-format
-msgid "Server Settings Tab"
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:34
@@ -4835,34 +4684,9 @@ msgstr ""
 msgid "Set away when you are unavailable. The status-bar quick action can mark you away or back, and the Presence tab lets you set a custom message."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:39
-#, elixir-autogen, elixir-format
-msgid "TURN"
-msgstr ""
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "The Account dialog profile tab can start a nickname change. Registered target nicknames still require the NickServ password in the confirmation flow."
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "The Admin Console is a tabbed server administration panel for inspecting and managing server state. Open it from the File menu, the Start menu Admin group, or the toolbar; it opens as a desktop window you can drag, resize, minimize to the taskbar, and close with its title-bar X. The Console tab keeps the raw batch command runner for provisioning and power-user workflows."
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:58
-#, elixir-autogen, elixir-format
-msgid "The Channels tab reads /admin channel list as a point-in-time snapshot. Use Search before Refresh, enter a channel and choose Info to run /admin channel info and load its banlist, enter a new channel name and choose Create to run /admin channel create, type a channel name into the confirmation field before Delete or Purge, or use ChanServ admin forms for info, drop, transfer, and access-list commands."
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:88
-#, elixir-autogen, elixir-format
-msgid "The Danger Zone tab previews /admin nuke, shows the preserved tables, and requires typing the current server name before it dispatches /admin nuke --confirm."
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:74
-#, elixir-autogen, elixir-format
-msgid "The MOTD tab shows the current Message of the Day and gives administrators Set MOTD, Clear MOTD, and Refresh controls. Server operators can view the tab, but editing still requires administrator privileges."
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:7
@@ -4873,11 +4697,6 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "The URL Catcher is a desktop window — drag, resize, minimize to its taskbar button, or press Escape to close it. URLs keep being captured while it is closed. Also available from the Start menu."
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:51
-#, elixir-autogen, elixir-format
-msgid "The Users tab reads /admin user list and /admin user banlist as point-in-time snapshots. Use Search and Online only before Refresh, enter a nick and choose Info to run /admin user info, use the moderation forms to confirm ban/unban, kick, mute, and unmute actions, or use Account & Roles and NickServ admin forms for rename, role, info, drop, and password reset commands."
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invites.html.heex:2
@@ -4933,16 +4752,6 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "User Lookup collects Whois and Last Seen lookups in one place. Open it from Tools > User Lookup, or right-click a nickname in the nick list or chat area."
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:14
-#, elixir-autogen, elixir-format
-msgid "Users"
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:49
-#, elixir-autogen, elixir-format
-msgid "Users Tab"
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:18
@@ -5010,11 +4819,6 @@ msgstr ""
 msgid ", or in an active P2P session use the"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:10
-#, elixir-autogen, elixir-format
-msgid "- server information and editable settings."
-msgstr ""
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "A card names who created the session and walks through its lifecycle on a small timeline: when it was created, when it connected, and — once it is over — when it ended, how long it ran, and why it closed."
@@ -5045,11 +4849,6 @@ msgstr ""
 msgid "Shortcuts are grouped into categories such as Navigation, Conference, Formatting and System. Each category shows a table with Action and Binding columns."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:81
-#, elixir-autogen, elixir-format
-msgid "The Server Settings tab reads /admin server info and /admin server settings, then saves changed fields with /admin server set."
-msgstr ""
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Toggle Privacy Mode"
@@ -5063,4 +4862,412 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "item in the P2P menu. The preference is saved and remembered for future sessions. When enabled, the status bar and Stats section show relay/privacy indicators."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:10
+#, elixir-autogen, elixir-format
+msgid ". Lines starting with"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:57
+#, elixir-autogen, elixir-format
+msgid "/admin cs"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_audit_log.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "/admin log"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:54
+#, elixir-autogen, elixir-format
+msgid "/admin ns"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_turn.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "/admin turn"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "Account & roles"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "Admin Audit Log"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_audit_log.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Admin Audit Log is one of the server administration windows. Open it from File > Admin; it opens as a desktop window you can drag, resize, minimize to the taskbar, and close with its title-bar X."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "Admin Broadcast"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_broadcast.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Admin Broadcast is one of the server administration windows. Open it from File > Admin; it opens as a desktop window you can drag, resize, minimize to the taskbar, and close with its title-bar X."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "Admin Channels"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Admin Channels is the server-wide channel administration window. Open it from File > Admin > Channels; it opens as a desktop window you can drag, resize, minimize to the taskbar, and close with its title-bar X."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:56
+#, elixir-autogen, elixir-format
+msgid "Admin Danger Zone"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_danger_zone.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Admin Danger Zone is one of the server administration windows. Open it from File > Admin; it opens as a desktop window you can drag, resize, minimize to the taskbar, and close with its title-bar X."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "Admin MOTD"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_motd.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Admin MOTD is one of the server administration windows. Open it from File > Admin; it opens as a desktop window you can drag, resize, minimize to the taskbar, and close with its title-bar X."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "Admin Server Settings"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_server_settings.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Admin Server Settings is one of the server administration windows. Open it from File > Admin; it opens as a desktop window you can drag, resize, minimize to the taskbar, and close with its title-bar X."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:53
+#, elixir-autogen, elixir-format
+msgid "Admin TURN"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_turn.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Admin TURN is one of the server administration windows. Open it from File > Admin; it opens as a desktop window you can drag, resize, minimize to the taskbar, and close with its title-bar X."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "Admin Users"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Admin Users is the server-wide user administration window. Open it from File > Admin > Users; it opens as a desktop window you can drag, resize, minimize to the taskbar, and close with its title-bar X. It gathers everything you can do about a person: moderating them, changing their account, and administering their NickServ registration."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Ban, Unban, Kick, Mute and Unmute each take their own nick, so acting on several people in a row never applies an action to a stale selection. Ban accepts an optional reason and duration; Kick accepts a reason; Mute accepts a duration. Leaving a duration blank makes the action permanent."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "ChanServ admin"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "ChanServ info reads a registration and Access list reads its SOP/AOP/VOP entries. Add access and Remove access take a nick and a level. Transfer founder hands the channel to another nick. Drop registration deletes the registration and is not reversible."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:57
+#, elixir-autogen, elixir-format
+msgid "Channel Permissions"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_motd.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Clear MOTD removes it entirely — users connecting afterwards see no message of the day until one is set again."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_motd.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Clearing it"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "Creating"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "Delete removes the channel entirely; Purge deletes its messages and optionally only those from one nick. Both require the channel name typed a second time into the confirm field, and so does Drop registration. The server checks that too — it is not a client-side formality."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "Destructive actions"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Each line is a slash command, for example"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Enter a nick in the Nick field and choose Info to run /admin user info for a single account."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Entering a channel in the Channel field and choosing Info runs /admin channel info and also loads that channel's ban list at the bottom of the window. The ban list follows whatever channel you last inspected."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "Everything the other admin windows do with forms can be done here as a script. That makes it the tool for provisioning a server in one pass, or for anything the focused windows do not expose."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Example script"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Finding a channel"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Finding a user"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Input format"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "Moderation"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "New channel plus Create runs /admin channel create, which both creates and registers the channel."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "NickServ admin"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "NickServ info reads a registration, Reset password sets a new one without knowing the old, and Drop registration deletes it. Dropping is not reversible."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "Only server administrators and server operators can open it. The console runs under a privileged context that forces admin rights and lifts the per-user channel limit, so that gate is the only thing between a caller and privileged execution."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:43
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:43
+#, elixir-autogen, elixir-format
+msgid "Only server administrators and server operators can open this window. Server operators see it read-only: the controls are disabled, and the server refuses the action even if the control is bypassed."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_server_settings.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "Only server administrators may edit. Server operators can open the window and read the panes, but every control is disabled and the server refuses the change regardless."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_motd.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "Only server administrators may edit. Server operators can read the current message but the editor and both write buttons are disabled."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_audit_log.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Only server administrators may refresh. The window is read-only for everyone: there is nothing here to change."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_server_settings.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Reading it back"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_audit_log.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Reading the log"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "Rename changes a registered nickname. Set role assigns server_operator or removes admin roles by setting user. Only a root administrator can grant the admin role — the option is disabled for everyone else."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_broadcast.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Server operators may send wallops. Announce is administrators only, and the radio is disabled for anyone else. If neither is available the Send button is disabled entirely."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_motd.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Setting it"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_turn.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Snapshots, not a feed"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "The Admin Console is a batch command runner. Open it from File > Admin > Console; it opens as a desktop window you can drag, resize, minimize to the taskbar, and close with its title-bar X."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_danger_zone.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "The button stays disabled until you type the server's current name. The server checks the same thing when the form is submitted, so a stale button is never what authorizes a wipe — if the server was renamed after the preview loaded, the submission is refused."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_danger_zone.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "The confirmation"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_server_settings.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "The form writes the server's configuration record: name, description, welcome message, channel limit, registration policy and how long whowas entries are kept. Saving dispatches one change per field you actually altered, so the result strip can report several lines at once."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "The list reads /admin channel list as a point-in-time snapshot — it does not update on its own. Type into Search before choosing Refresh to narrow it."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "The list reads /admin user list as a point-in-time snapshot — it does not update on its own. Type into Search and tick Online only before choosing Refresh to narrow it. The ban list below reads /admin user banlist under the same search term, so filtering the list filters both."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_turn.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "The numbers are from the last time Refresh ran. Nothing here updates on its own."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_motd.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "The pane at the top shows the message that is set right now, so you can see what you are about to replace. Set MOTD writes the editor's contents; submitting an empty editor is the same as clearing."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_danger_zone.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "The preview lists what /admin nuke would delete. Admin roles, audit logs, server bans and server settings survive it; everything else does not. This cannot be undone."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_server_settings.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "The two panes below the form show what the server reports right now, from /admin server info and /admin server settings. Refresh re-reads both without leaving the window."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_audit_log.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "The window reads /admin log as a point-in-time snapshot — it does not follow new entries. Last bounds how many rows come back, and User narrows it to one admin. Leaving Last blank falls back to 20 rather than asking for everything."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_broadcast.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Two reaches"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_turn.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Two read-only panes: relay statistics and the allocations currently held. If no TURN relay is configured the stats pane says so rather than showing zeros."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_broadcast.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Wallops goes only to users who opted in with mode +w. Announce goes to everyone connected, whether they asked for it or not — reserve it for things people genuinely need to see."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_danger_zone.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "What a wipe removes"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_server_settings.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "What it edits"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_turn.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "What it shows"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "Why use it"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_audit_log.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_broadcast.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_danger_zone.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_motd.html.heex:31
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_server_settings.html.heex:31
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_turn.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "admin console"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "are comments and are skipped, as are empty lines."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_broadcast.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "server broadcasts"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:13
+#, elixir-autogen, elixir-format
+msgid ", with the list selector set to Ban Exc. Only channel operators can add or remove ban exceptions."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:13
+#, elixir-autogen, elixir-format
+msgid ", with the list selector set to Invite Exc. Only channel operators can add or remove invite exceptions."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:12
+#: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "Access Lists"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Access Lists:"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "One list at a time, picked with the selector at the top of the tab: bans, ban exceptions (+e) that let specific users bypass bans, and invite exceptions (+I) that let specific users bypass invite-only mode."
 msgstr ""

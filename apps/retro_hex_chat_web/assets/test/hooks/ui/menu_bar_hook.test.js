@@ -14,7 +14,16 @@ describe("MenuBarHook", () => {
         <div class="relative inline-flex">
           <button data-menubar-trigger>File</button>
           <div data-menubar-dropdown class="u-hidden">
-            <ul><li>Disconnect</li><li>Settings</li></ul>
+            <ul>
+              <li>Disconnect</li>
+              <li>Settings</li>
+              <li data-menubar-submenu data-submenu-open="false">
+                <div data-menubar-submenu-trigger>Admin</div>
+                <div data-menubar-submenu-panel class="u-hidden">
+                  <ul><li data-testid="context-menu-item-open_admin_users">Users</li></ul>
+                </div>
+              </li>
+            </ul>
           </div>
         </div>
         <div class="relative inline-flex">
@@ -142,6 +151,96 @@ describe("MenuBarHook", () => {
       viewTrigger.dispatchEvent(new MouseEvent("mouseenter", { bubbles: true }));
 
       expect(dropdowns()[2].classList.contains("u-hidden")).toBe(true);
+    });
+  });
+
+  // ── submenus ────────────────────────────────────────
+
+  describe("submenus", () => {
+    function submenu() {
+      return hook.el.querySelector("[data-menubar-submenu]");
+    }
+
+    function submenuPanel() {
+      return hook.el.querySelector("[data-menubar-submenu-panel]");
+    }
+
+    function submenuHidden() {
+      return submenuPanel().classList.contains("u-hidden");
+    }
+
+    function clickSubmenuTrigger() {
+      hook.el
+        .querySelector("[data-menubar-submenu-trigger]")
+        .dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    }
+
+    it("opens the submenu panel on trigger click", () => {
+      clickTrigger(0);
+      clickSubmenuTrigger();
+
+      expect(submenuHidden()).toBe(false);
+      expect(submenu().dataset.submenuOpen).toBe("true");
+    });
+
+    it("keeps the parent dropdown open when the submenu trigger is clicked", () => {
+      clickTrigger(0);
+      clickSubmenuTrigger();
+
+      expect(dropdowns()[0].classList.contains("u-hidden")).toBe(false);
+    });
+
+    it("toggles the submenu closed on a second trigger click", () => {
+      clickTrigger(0);
+      clickSubmenuTrigger();
+      clickSubmenuTrigger();
+
+      expect(submenuHidden()).toBe(true);
+    });
+
+    it("opens the submenu on hover", () => {
+      clickTrigger(0);
+      submenu().dispatchEvent(new MouseEvent("mouseenter", { bubbles: true }));
+
+      expect(submenuHidden()).toBe(false);
+    });
+
+    it("closes the submenu when hovering a sibling row", () => {
+      clickTrigger(0);
+      clickSubmenuTrigger();
+
+      const sibling = dropdowns()[0].querySelector("li");
+      sibling.dispatchEvent(new MouseEvent("mouseenter", { bubbles: true }));
+
+      expect(submenuHidden()).toBe(true);
+    });
+
+    it("closes everything when a leaf inside the submenu is clicked", () => {
+      clickTrigger(0);
+      clickSubmenuTrigger();
+
+      submenuPanel()
+        .querySelector("li")
+        .dispatchEvent(new MouseEvent("click", { bubbles: true }));
+
+      expect(submenuHidden()).toBe(true);
+      expect(dropdowns()[0].classList.contains("u-hidden")).toBe(true);
+    });
+
+    it("closes the submenu on Escape", () => {
+      clickTrigger(0);
+      clickSubmenuTrigger();
+      document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+
+      expect(submenuHidden()).toBe(true);
+    });
+
+    it("closes the submenu when switching to another top-level menu", () => {
+      clickTrigger(0);
+      clickSubmenuTrigger();
+      clickTrigger(2);
+
+      expect(submenuHidden()).toBe(true);
     });
   });
 

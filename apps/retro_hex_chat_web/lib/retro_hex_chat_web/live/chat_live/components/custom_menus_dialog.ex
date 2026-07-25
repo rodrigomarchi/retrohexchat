@@ -14,7 +14,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.CustomMenusDialog do
   - `{:saved, selected}` — entry saved; show it selected, leave edit mode
   - `{:error, message}`  — validation error inside the edit form
   - `:deleted`           — entry removed; clear selection
-  - `:reset`             — close cleanup
   """
   use RetroHexChatWeb, :live_component
 
@@ -148,16 +147,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.CustomMenusDialog do
 
   defp dispatch(socket, :deleted),
     do: assign(socket, selected: nil, editing: false, error: nil)
-
-  defp dispatch(socket, :reset) do
-    assign(socket,
-      selected: nil,
-      editing: false,
-      draft_label: "",
-      draft_command: "",
-      error: nil
-    )
-  end
 
   defp dispatch(socket, _unknown), do: socket
 

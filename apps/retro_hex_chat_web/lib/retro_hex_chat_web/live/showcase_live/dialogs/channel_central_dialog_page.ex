@@ -12,8 +12,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.ChannelCentralDialogPage do
   import RetroHexChatWeb.ShowcaseHelpers
 
   @impl true
-  def handle_event("select_entry", %{"mask" => mask}, socket) do
-    {:noreply, assign(socket, ban_selected: mask)}
+  def handle_event("cc_list_type", %{"list" => list_type}, socket) do
+    {:noreply, assign(socket, list_type: list_type, list_selected: nil)}
+  end
+
+  def handle_event("cc_list_select", %{"nickname" => mask}, socket) do
+    {:noreply, assign(socket, list_selected: mask)}
   end
 
   def handle_event(_event, _params, socket) do
@@ -26,12 +30,13 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.ChannelCentralDialogPage do
      assign(socket,
        page_title: dgettext("showcase", "Channel Central Dialog"),
        active_page: :channel_central_dialog,
-       ban_selected: nil,
-       ban_ex_selected: nil,
-       invite_ex_selected: nil,
-       sample_bans: sample_bans(),
-       sample_ban_exceptions: sample_ban_exceptions(),
-       sample_invite_exceptions: sample_invite_exceptions(),
+       list_type: "bans",
+       list_selected: nil,
+       sample_lists: %{
+         "bans" => sample_bans(),
+         "ban_exceptions" => sample_ban_exceptions(),
+         "invite_exceptions" => sample_invite_exceptions()
+       },
        sample_modes: sample_modes()
      )}
   end

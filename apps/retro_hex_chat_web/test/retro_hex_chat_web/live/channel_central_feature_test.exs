@@ -55,7 +55,7 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       assert html =~ "Members:"
     end
 
-    test "1.5 all 5 tabs are visible and switchable", %{conn: conn} do
+    test "1.5 all 4 tabs are visible and switchable", %{conn: conn} do
       view = connect_user(conn, "E2ECcTb#{uid()}")
       open_cc(view, "#lobby")
 
@@ -67,17 +67,21 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       html = cc(view, "channel_central_tab", %{"tab" => "modes"})
       assert html =~ "Moderated (+m)"
 
-      # Switch to Bans
-      html = cc(view, "channel_central_tab", %{"tab" => "bans"})
+      # Access Lists opens on Bans
+      html = cc(view, "channel_central_tab", %{"tab" => "access_lists"})
       assert html =~ "No bans"
 
       # Switch to Ban Exceptions
-      html = cc(view, "channel_central_tab", %{"tab" => "ban_exceptions"})
+      html = cc_list(view, "ban_exceptions")
       assert html =~ "No ban exceptions"
 
       # Switch to Invite Exceptions
-      html = cc(view, "channel_central_tab", %{"tab" => "invite_exceptions"})
+      html = cc_list(view, "invite_exceptions")
       assert html =~ "No invite exceptions"
+
+      # Registration is still its own tab
+      html = cc(view, "channel_central_tab", %{"tab" => "registration"})
+      assert html =~ "Not registered"
     end
 
     test "1.6 non-operator sees read-only view (no edit controls)", %{conn: conn} do
@@ -98,17 +102,19 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       assert html =~ "disabled"
       refute html =~ "Apply Modes"
 
-      # Bans tab — no Add/Remove buttons
-      html = cc(view, "channel_central_tab", %{"tab" => "bans"})
-      refute html =~ "cc_open_add_ban"
+      # Access Lists / Bans — no Add/Remove buttons
+      html = cc(view, "channel_central_tab", %{"tab" => "access_lists"})
+      refute html =~ "cc_open_add_list_entry"
       assert html =~ "channel operator to manage"
 
-      # Ban Exceptions tab — no buttons
-      html = cc(view, "channel_central_tab", %{"tab" => "ban_exceptions"})
+      # Ban Exceptions — no buttons
+      html = cc_list(view, "ban_exceptions")
+      refute html =~ "cc_open_add_list_entry"
       assert html =~ "channel operator to manage"
 
-      # Invite Exceptions tab — no buttons
-      html = cc(view, "channel_central_tab", %{"tab" => "invite_exceptions"})
+      # Invite Exceptions — no buttons
+      html = cc_list(view, "invite_exceptions")
+      refute html =~ "cc_open_add_list_entry"
       assert html =~ "channel operator to manage"
     end
 
@@ -126,10 +132,10 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       html = cc(view, "channel_central_tab", %{"tab" => "modes"})
       assert html =~ "Apply Modes"
 
-      # Bans tab — Add/Remove buttons visible
-      html = cc(view, "channel_central_tab", %{"tab" => "bans"})
-      assert html =~ "cc_open_add_ban"
-      assert html =~ "cc_remove_ban"
+      # Access Lists — Add/Remove buttons visible
+      html = cc(view, "channel_central_tab", %{"tab" => "access_lists"})
+      assert html =~ "cc_open_add_list_entry"
+      assert html =~ "cc_remove_list_entry"
     end
 
     test "1.8 empty bans shows placeholder", %{conn: conn} do
@@ -139,7 +145,7 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       render_click(view, "switch_channel", %{"channel" => channel})
       open_cc(view, channel)
 
-      html = cc(view, "channel_central_tab", %{"tab" => "bans"})
+      html = cc(view, "channel_central_tab", %{"tab" => "access_lists"})
       assert html =~ "No bans"
     end
   end
@@ -385,13 +391,17 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       render_click(view, "switch_channel", %{"channel" => channel})
       open_cc(view, channel)
 
-      cc(view, "channel_central_tab", %{"tab" => "bans"})
-      cc(view, "cc_open_add_ban")
+      cc(view, "channel_central_tab", %{"tab" => "access_lists"})
+      cc(view, "cc_open_add_list_entry")
 
       html = render(view)
-      assert html =~ "cc-add-ban-dialog"
+      assert html =~ "cc-add-list-entry-dialog"
+      assert html =~ ~s(data-access-list="bans")
+      assert html =~ "Add Ban"
 
-      view |> element("form[phx-submit=cc_add_ban]") |> render_submit(%{"nickname" => "Spammer"})
+      view
+      |> element("form[phx-submit=cc_add_list_entry]")
+      |> render_submit(%{"nickname" => "Spammer"})
 
       html = render(view)
       assert html =~ "Spammer"
@@ -407,13 +417,13 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       Server.ban(channel, nick, "TempBan")
       open_cc(view, channel)
 
-      cc(view, "channel_central_tab", %{"tab" => "bans"})
+      cc(view, "channel_central_tab", %{"tab" => "access_lists"})
 
       html = render(view)
       assert html =~ "TempBan"
 
-      cc(view, "cc_ban_select", %{"nickname" => "TempBan"})
-      cc(view, "cc_remove_ban")
+      cc(view, "cc_list_select", %{"nickname" => "TempBan"})
+      cc(view, "cc_remove_list_entry")
 
       html = render(view)
       # After removing, the ban table should show the empty placeholder
@@ -433,14 +443,17 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       render_click(view, "switch_channel", %{"channel" => channel})
       open_cc(view, channel)
 
-      cc(view, "channel_central_tab", %{"tab" => "ban_exceptions"})
-      cc(view, "cc_open_add_ban_ex")
+      cc(view, "channel_central_tab", %{"tab" => "access_lists"})
+      cc_list(view, "ban_exceptions")
+      cc(view, "cc_open_add_list_entry")
 
       html = render(view)
-      assert html =~ "cc-add-ban-ex-dialog"
+      assert html =~ "cc-add-list-entry-dialog"
+      assert html =~ ~s(data-access-list="ban_exceptions")
+      assert html =~ "Add Ban Exception"
 
       view
-      |> element("form[phx-submit=cc_add_ban_exception]")
+      |> element("form[phx-submit=cc_add_list_entry]")
       |> render_submit(%{"nickname" => "Exempt1"})
 
       html = render(view)
@@ -457,12 +470,12 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       Server.add_ban_exception(channel, nick, "ExUser")
       open_cc(view, channel)
 
-      cc(view, "channel_central_tab", %{"tab" => "ban_exceptions"})
-      html = render(view)
+      cc(view, "channel_central_tab", %{"tab" => "access_lists"})
+      html = cc_list(view, "ban_exceptions")
       assert html =~ "ExUser"
 
-      cc(view, "cc_ban_ex_select", %{"nickname" => "ExUser"})
-      cc(view, "cc_remove_ban_exception")
+      cc(view, "cc_list_select", %{"nickname" => "ExUser"})
+      cc(view, "cc_remove_list_entry")
 
       html = render(view)
       # After removing, the ban exceptions table should show the empty placeholder
@@ -476,8 +489,8 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       render_click(view, "switch_channel", %{"channel" => channel})
       open_cc(view, channel)
 
-      cc(view, "channel_central_tab", %{"tab" => "ban_exceptions"})
-      html = render(view)
+      cc(view, "channel_central_tab", %{"tab" => "access_lists"})
+      html = cc_list(view, "ban_exceptions")
       assert html =~ "No ban exceptions"
     end
   end
@@ -494,14 +507,17 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       render_click(view, "switch_channel", %{"channel" => channel})
       open_cc(view, channel)
 
-      cc(view, "channel_central_tab", %{"tab" => "invite_exceptions"})
-      cc(view, "cc_open_add_invite_ex")
+      cc(view, "channel_central_tab", %{"tab" => "access_lists"})
+      cc_list(view, "invite_exceptions")
+      cc(view, "cc_open_add_list_entry")
 
       html = render(view)
-      assert html =~ "cc-add-invite-ex-dialog"
+      assert html =~ "cc-add-list-entry-dialog"
+      assert html =~ ~s(data-access-list="invite_exceptions")
+      assert html =~ "Add Invite Exception"
 
       view
-      |> element("form[phx-submit=cc_add_invite_exception]")
+      |> element("form[phx-submit=cc_add_list_entry]")
       |> render_submit(%{"nickname" => "InvUser"})
 
       html = render(view)
@@ -518,12 +534,12 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       Server.add_invite_exception(channel, nick, "InvEx1")
       open_cc(view, channel)
 
-      cc(view, "channel_central_tab", %{"tab" => "invite_exceptions"})
-      html = render(view)
+      cc(view, "channel_central_tab", %{"tab" => "access_lists"})
+      html = cc_list(view, "invite_exceptions")
       assert html =~ "InvEx1"
 
-      cc(view, "cc_invite_ex_select", %{"nickname" => "InvEx1"})
-      cc(view, "cc_remove_invite_exception")
+      cc(view, "cc_list_select", %{"nickname" => "InvEx1"})
+      cc(view, "cc_remove_list_entry")
 
       html = render(view)
       # After removing, the invite exceptions table should show the empty placeholder
@@ -537,8 +553,8 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       render_click(view, "switch_channel", %{"channel" => channel})
       open_cc(view, channel)
 
-      cc(view, "channel_central_tab", %{"tab" => "invite_exceptions"})
-      html = render(view)
+      cc(view, "channel_central_tab", %{"tab" => "access_lists"})
+      html = cc_list(view, "invite_exceptions")
       assert html =~ "No invite exceptions"
     end
   end
@@ -589,9 +605,30 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
 
       Server.ban(channel, nick, "RtBanned")
       render(view)
-      cc(view, "channel_central_tab", %{"tab" => "bans"})
+      cc(view, "channel_central_tab", %{"tab" => "access_lists"})
       html = render(view)
       assert html =~ "RtBanned"
+    end
+
+    test "7.4 switching access list type drops the stale selection", %{conn: conn} do
+      channel = "#e2ert4-#{uid()}"
+      nick = "E2ERt4#{uid()}"
+      view = connect_user(conn, nick)
+      submit_command_sync(view, "/join #{channel}")
+      render_click(view, "switch_channel", %{"channel" => channel})
+
+      Server.ban(channel, nick, "SelBan")
+      open_cc(view, channel)
+
+      cc(view, "channel_central_tab", %{"tab" => "access_lists"})
+      cc(view, "cc_list_select", %{"nickname" => "SelBan"})
+
+      # Remove is enabled while the ban is selected...
+      refute has_element?(view, ~s([phx-click="cc_remove_list_entry"][disabled]))
+
+      # ...and disabled again once the list type changes under it.
+      cc_list(view, "ban_exceptions")
+      assert has_element?(view, ~s([phx-click="cc_remove_list_entry"][disabled]))
     end
   end
 
@@ -648,6 +685,14 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
         Enum.map_join(params, "", fn {k, v} -> "[phx-value-#{k}='#{v}']" end)
 
     view |> element(selector) |> render_click()
+  end
+
+  # Switches the Access Lists tab between bans / ban exceptions / invite
+  # exceptions. The tab itself is reached with cc(view, "channel_central_tab", …).
+  defp cc_list(view, list_type) do
+    view
+    |> element(~s([data-testid="cc-list-type-#{list_type}"]))
+    |> render_click()
   end
 
   defp open_cc(view, channel) do

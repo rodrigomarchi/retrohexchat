@@ -1,0 +1,109 @@
+/* Shared surface for the admin windows.
+
+   Each admin window is the same kind of thing: dense privileged forms, long
+   preformatted output, and a result strip. They share this language so the set
+   reads as one tool rather than a pile of unrelated dialogs, and so the mobile
+   work below is done once instead of per window.
+
+   Apply `adm-dialog` to the panel root and `adm-scroll` to its scroll region. */
+.adm-dialog {
+  scrollbar-width: thin;
+}
+
+.adm-scroll {
+  overscroll-behavior: contain;
+}
+
+.adm-dialog input,
+.adm-dialog select,
+.adm-dialog textarea,
+.adm-dialog pre,
+.adm-dialog [data-testid="admin-inline-result"] {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.adm-dialog pre {
+  scrollbar-width: thin;
+}
+
+/* ── Stacked (mobile) ──────────────────────────────────────── */
+.desktop--stacked .adm-dialog {
+  padding-bottom: 8px;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Every multi-column grid collapses: these windows are form-dense and two
+   columns at phone width leaves inputs unusably narrow. */
+.desktop--stacked .adm-dialog .grid {
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+
+/* Filter rows (`<div class="flex flex-wrap items-end">`) become a field plus a
+   right-aligned action, so the submit button never wraps under a lone label. */
+.desktop--stacked .adm-dialog form > .items-end {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 6px;
+  align-items: end;
+}
+
+.desktop--stacked .adm-dialog form > .items-end > div {
+  min-width: 0 !important;
+  width: 100%;
+}
+
+.desktop--stacked .adm-dialog form > .items-end > label {
+  justify-self: end;
+}
+
+.desktop--stacked .adm-dialog form > .items-end > button,
+.desktop--stacked .adm-dialog form > .items-end > .btn,
+.desktop--stacked .adm-dialog .justify-end > button {
+  justify-self: end;
+}
+
+.desktop--stacked .adm-dialog form > .items-end > button,
+.desktop--stacked .adm-dialog form > .items-end > .btn {
+  grid-column: 2;
+}
+
+/* 16px keeps iOS from zooming the viewport on focus; 40px is the touch target. */
+.desktop--stacked .adm-dialog input,
+.desktop--stacked .adm-dialog select,
+.desktop--stacked .adm-dialog textarea {
+  min-height: 40px;
+  font-size: 16px;
+}
+
+.desktop--stacked .adm-dialog textarea {
+  line-height: 1.35;
+}
+
+.desktop--stacked .adm-dialog button {
+  min-height: 40px;
+  padding-inline: 12px;
+  white-space: nowrap;
+}
+
+.desktop--stacked .adm-dialog pre {
+  max-width: 100%;
+  line-height: 1.35;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* The boxed action forms (one nick + its extras) stack their fields full-width. */
+.desktop--stacked .adm-dialog form.shadow-retro-sunken {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.desktop--stacked .adm-dialog form.shadow-retro-sunken input,
+.desktop--stacked .adm-dialog form.shadow-retro-sunken select {
+  width: 100%;
+}
+
+.desktop--stacked .adm-dialog .shadow-retro-sunken.bg-white {
+  min-width: 0;
+}

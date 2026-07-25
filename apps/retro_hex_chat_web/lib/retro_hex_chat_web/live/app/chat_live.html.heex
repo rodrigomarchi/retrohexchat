@@ -795,9 +795,9 @@
           server-side authz for a forged window_open; the render guard here is
           the second line of defense (no admin content for non-admins). --%>
     <.desktop_window
-      :if={admin?(@session) and "admin-console-dialog" in @open_windows}
-      id="admin-console-dialog"
-      title={dgettext("chat", "Admin Console")}
+      :if={admin?(@session) and "admin-console" in @open_windows}
+      id="admin-console"
+      title={dgettext("chat", "Console")}
       managed
       default_x={140}
       default_y={50}
@@ -812,6 +812,193 @@
       <.live_component
         module={RetroHexChatWeb.ChatLive.Components.AdminConsoleDialog}
         id={RetroHexChatWeb.ChatLive.Components.AdminConsoleDialog.id()}
+        session={@session}
+      />
+    </.desktop_window>
+
+    <%!-- Admin Users — server-managed, admin-gated. Same authz model as the
+          admin console: the open event gates, the render guard is the second
+          line of defense against a forged window_open. --%>
+    <.desktop_window
+      :if={admin?(@session) and "admin-users" in @open_windows}
+      id="admin-users"
+      title={dgettext("chat", "Users")}
+      managed
+      default_x={150}
+      default_y={60}
+      width={680}
+      height={580}
+      min_width={520}
+      min_height={400}
+      body_class="flex min-h-0 flex-col p-2"
+      data-testid="admin-users-window"
+    >
+      <:icon><Icons.icon_community class="h-4 w-4" /></:icon>
+      <.live_component
+        module={RetroHexChatWeb.ChatLive.Components.AdminUsersDialog}
+        id={RetroHexChatWeb.ChatLive.Components.AdminUsersDialog.id()}
+        session={@session}
+      />
+    </.desktop_window>
+
+    <%!-- Admin Channels — server-managed, admin-gated. Same authz model as the
+          admin console. --%>
+    <.desktop_window
+      :if={admin?(@session) and "admin-channels" in @open_windows}
+      id="admin-channels"
+      title={dgettext("chat", "Channels")}
+      managed
+      default_x={160}
+      default_y={70}
+      width={680}
+      height={580}
+      min_width={520}
+      min_height={400}
+      body_class="flex min-h-0 flex-col p-2"
+      data-testid="admin-channels-window"
+    >
+      <:icon><Icons.icon_channels class="h-4 w-4" /></:icon>
+      <.live_component
+        module={RetroHexChatWeb.ChatLive.Components.AdminChannelsDialog}
+        id={RetroHexChatWeb.ChatLive.Components.AdminChannelsDialog.id()}
+        session={@session}
+      />
+    </.desktop_window>
+
+    <%!-- Admin Server Settings — server-managed, admin-gated. --%>
+    <.desktop_window
+      :if={admin?(@session) and "admin-server-settings" in @open_windows}
+      id="admin-server-settings"
+      title={dgettext("chat", "Server Settings")}
+      managed
+      default_x={170}
+      default_y={80}
+      width={700}
+      height={600}
+      min_width={480}
+      min_height={360}
+      body_class="flex min-h-0 flex-col p-2"
+      data-testid="admin-server-settings-window"
+    >
+      <:icon><Icons.icon_server class="h-4 w-4" /></:icon>
+      <.live_component
+        module={RetroHexChatWeb.ChatLive.Components.AdminServerSettingsDialog}
+        id={RetroHexChatWeb.ChatLive.Components.AdminServerSettingsDialog.id()}
+        session={@session}
+      />
+    </.desktop_window>
+
+    <%!-- Admin Audit Log — server-managed, admin-gated. --%>
+    <.desktop_window
+      :if={admin?(@session) and "admin-audit-log" in @open_windows}
+      id="admin-audit-log"
+      title={dgettext("chat", "Audit Log")}
+      managed
+      default_x={180}
+      default_y={90}
+      width={620}
+      height={500}
+      min_width={480}
+      min_height={360}
+      body_class="flex min-h-0 flex-col p-2"
+      data-testid="admin-audit-log-window"
+    >
+      <:icon><Icons.icon_notepad class="h-4 w-4" /></:icon>
+      <.live_component
+        module={RetroHexChatWeb.ChatLive.Components.AdminAuditLogDialog}
+        id={RetroHexChatWeb.ChatLive.Components.AdminAuditLogDialog.id()}
+        session={@session}
+      />
+    </.desktop_window>
+
+    <%!-- Admin MOTD — server-managed, admin-gated. --%>
+    <.desktop_window
+      :if={admin?(@session) and "admin-motd" in @open_windows}
+      id="admin-motd"
+      title={dgettext("chat", "MOTD")}
+      managed
+      default_x={190}
+      default_y={100}
+      width={600}
+      height={480}
+      min_width={480}
+      min_height={360}
+      body_class="flex min-h-0 flex-col p-2"
+      data-testid="admin-motd-window"
+    >
+      <:icon><Icons.icon_notepad class="h-4 w-4" /></:icon>
+      <.live_component
+        module={RetroHexChatWeb.ChatLive.Components.AdminMotdDialog}
+        id={RetroHexChatWeb.ChatLive.Components.AdminMotdDialog.id()}
+        session={@session}
+      />
+    </.desktop_window>
+
+    <%!-- Admin TURN — server-managed, admin-gated. --%>
+    <.desktop_window
+      :if={admin?(@session) and "admin-turn" in @open_windows}
+      id="admin-turn"
+      title={dgettext("chat", "TURN")}
+      managed
+      default_x={200}
+      default_y={110}
+      width={640}
+      height={460}
+      min_width={480}
+      min_height={360}
+      body_class="flex min-h-0 flex-col p-2"
+      data-testid="admin-turn-window"
+    >
+      <:icon><Icons.icon_websocket class="h-4 w-4" /></:icon>
+      <.live_component
+        module={RetroHexChatWeb.ChatLive.Components.AdminTurnDialog}
+        id={RetroHexChatWeb.ChatLive.Components.AdminTurnDialog.id()}
+        session={@session}
+      />
+    </.desktop_window>
+
+    <%!-- Admin Broadcast — server-managed, admin-gated. --%>
+    <.desktop_window
+      :if={admin?(@session) and "admin-broadcast" in @open_windows}
+      id="admin-broadcast"
+      title={dgettext("chat", "Broadcast")}
+      managed
+      default_x={210}
+      default_y={120}
+      width={560}
+      height={460}
+      min_width={480}
+      min_height={360}
+      body_class="flex min-h-0 flex-col p-2"
+      data-testid="admin-broadcast-window"
+    >
+      <:icon><Icons.icon_megaphone class="h-4 w-4" /></:icon>
+      <.live_component
+        module={RetroHexChatWeb.ChatLive.Components.AdminBroadcastDialog}
+        id={RetroHexChatWeb.ChatLive.Components.AdminBroadcastDialog.id()}
+        session={@session}
+      />
+    </.desktop_window>
+
+    <%!-- Admin Danger Zone — server-managed, admin-gated. --%>
+    <.desktop_window
+      :if={admin?(@session) and "admin-danger-zone" in @open_windows}
+      id="admin-danger-zone"
+      title={dgettext("chat", "Danger Zone")}
+      managed
+      default_x={220}
+      default_y={130}
+      width={600}
+      height={520}
+      min_width={480}
+      min_height={360}
+      body_class="flex min-h-0 flex-col p-2"
+      data-testid="admin-danger-zone-window"
+    >
+      <:icon><Icons.icon_warning class="h-4 w-4" /></:icon>
+      <.live_component
+        module={RetroHexChatWeb.ChatLive.Components.AdminDangerZoneDialog}
+        id={RetroHexChatWeb.ChatLive.Components.AdminDangerZoneDialog.id()}
         session={@session}
       />
     </.desktop_window>

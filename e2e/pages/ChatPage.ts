@@ -8,13 +8,10 @@ export type AddressBookControlType =
   | "notices"
   | "invites";
 
-type ChannelCentralTab =
-  | "general"
-  | "modes"
-  | "bans"
-  | "ban_exceptions"
-  | "invite_exceptions"
-  | "registration";
+type ChannelCentralTab = "general" | "modes" | "access_lists" | "registration";
+
+// The Access Lists tab holds all three per-channel lists behind a type selector.
+type ChannelCentralAccessList = "bans" | "ban_exceptions" | "invite_exceptions";
 
 type ChannelCentralModeLabel =
   | "Moderated (+m)"
@@ -47,7 +44,10 @@ export class ChatPage {
   readonly arcadeMenuItem: Locator;
   readonly arcadeWindow: Locator;
   readonly disconnectMenuItem: Locator;
+  readonly adminSubmenuTrigger: Locator;
   readonly adminConsoleMenuItem: Locator;
+  readonly adminUsersMenuItem: Locator;
+  readonly adminChannelsMenuItem: Locator;
   readonly accountRegisterMenuItem: Locator;
   readonly accountIdentifyMenuItem: Locator;
   readonly accountProfileMenuItem: Locator;
@@ -218,6 +218,12 @@ export class ChatPage {
   readonly knockRequestDialog: Locator;
   readonly muteDurationDialog: Locator;
   readonly botManagementDialog: Locator;
+  readonly adminChannelsWindow: Locator;
+  readonly adminChannelsPanel: Locator;
+  readonly adminChannelsInlineResult: Locator;
+  readonly adminUsersWindow: Locator;
+  readonly adminUsersPanel: Locator;
+  readonly adminUsersInlineResult: Locator;
   readonly adminConsoleDialog: Locator;
   readonly adminConsoleInput: Locator;
   readonly adminConsoleOutput: Locator;
@@ -303,9 +309,17 @@ export class ChatPage {
     this.arcadeWindow = page.getByTestId("arcade-games-window");
     // context_menu_item exposes data-testid="context-menu-item-<action>".
     this.disconnectMenuItem = visibleContextMenuItem(page, "disconnect");
+    this.adminSubmenuTrigger = page
+      .getByTestId("app-menu-admin-submenu")
+      .locator("visible=true");
     this.adminConsoleMenuItem = visibleContextMenuItem(
       page,
       "open_admin_console",
+    );
+    this.adminUsersMenuItem = visibleContextMenuItem(page, "open_admin_users");
+    this.adminChannelsMenuItem = visibleContextMenuItem(
+      page,
+      "open_admin_channels",
     );
     this.accountRegisterMenuItem = visibleContextMenuItem(
       page,
@@ -588,6 +602,16 @@ export class ChatPage {
     );
     this.adminConsoleDialog = page.locator(
       '[data-testid="admin-console-window"]',
+    );
+    this.adminChannelsWindow = page.getByTestId("admin-channels-window");
+    this.adminChannelsPanel = page.getByTestId("admin-channels-panel");
+    this.adminChannelsInlineResult = this.adminChannelsPanel.getByTestId(
+      "admin-inline-result",
+    );
+    this.adminUsersWindow = page.getByTestId("admin-users-window");
+    this.adminUsersPanel = page.getByTestId("admin-users-panel");
+    this.adminUsersInlineResult = this.adminUsersPanel.getByTestId(
+      "admin-inline-result",
     );
     this.adminConsoleInput = page.locator("#admin-console-input");
     this.adminConsoleOutput = page.getByTestId("admin-console-output");
@@ -1053,8 +1077,8 @@ export class ChatPage {
     return this.channelCentralDialog.locator(`.tabs-content[value="${tab}"]`);
   }
 
-  channelCentralEntry(tab: ChannelCentralTab, nick: string): Locator {
-    return this.channelCentralPanel(tab)
+  channelCentralEntry(nick: string): Locator {
+    return this.channelCentralPanel("access_lists")
       .locator("tbody tr")
       .filter({ hasText: nick })
       .first();
@@ -1179,11 +1203,59 @@ export class ChatPage {
     await expect(this.disconnectMenuItem).toBeVisible();
   }
 
-  async openAdminConsoleFromMenu() {
+  // The admin windows live behind File > Admin, so every opener expands the
+  // submenu first.
+  async openAdminSubmenu() {
     await this.openFileMenu();
+    await expect(this.adminSubmenuTrigger).toBeVisible();
+    await this.adminSubmenuTrigger.click();
+  }
+
+  async openAdminConsoleFromMenu() {
+    await this.openAdminSubmenu();
     await expect(this.adminConsoleMenuItem).toBeVisible();
     await this.adminConsoleMenuItem.click();
     await expect(this.adminConsoleDialog).toBeVisible();
+  }
+
+  async openAdminUsersFromMenu() {
+    await this.openAdminSubmenu();
+    await expect(this.adminUsersMenuItem).toBeVisible();
+    await this.adminUsersMenuItem.click();
+    await expect(this.adminUsersWindow).toBeVisible();
+  }
+
+  async openAdminChannelsFromMenu() {
+    await this.openAdminSubmenu();
+    await expect(this.adminChannelsMenuItem).toBeVisible();
+    await this.adminChannelsMenuItem.click();
+    await expect(this.adminChannelsWindow).toBeVisible();
+  }
+
+  /**
+   * Open any admin window by its opener action, e.g. "open_admin_motd".
+   * The focused windows are alike enough that one helper covers them all.
+   */
+  async openAdminWindow(action: string) {
+    const windowId = action.replace(/^open_/, "").replaceAll("_", "-");
+    await this.openAdminSubmenu();
+    const item = visibleContextMenuItem(this.page, action);
+    await expect(item).toBeVisible();
+    await item.click();
+    await expect(this.page.getByTestId(`${windowId}-window`)).toBeVisible();
+    return this.page.getByTestId(`${windowId}-panel`);
+  }
+
+  adminWindowResult(windowId: string) {
+    return this.page
+      .getByTestId(`${windowId}-panel`)
+      .getByTestId("admin-inline-result");
+  }
+
+  async closeAdminWindow(windowId: string) {
+    await this.page
+      .locator(`[data-window-id="${windowId}"] [data-window-control="close"]`)
+      .click();
   }
 
   async openAccountRegisterFromMenu() {
@@ -1289,23 +1361,6 @@ export class ChatPage {
     await expect(this.botManagementDialog).toBeVisible();
   }
 
-  async switchAdminConsoleToTab(tab: string) {
-    await this.adminConsoleDialog.evaluate((dialog) => {
-      dialog.scrollTop = 0;
-    });
-    const trigger = this.adminConsoleDialog.locator(
-      `button.tabs-trigger[phx-value-tab="${tab}"]`,
-    );
-    await trigger.scrollIntoViewIfNeeded();
-    await trigger.dispatchEvent("click");
-    if (tab === "console") {
-      await expect(this.adminConsoleOutput).toBeVisible();
-      return;
-    }
-    const contentTestId = `admin-console-tab-${tab.replaceAll("_", "-")}`;
-    await expect(this.page.getByTestId(contentTestId)).toBeVisible();
-  }
-
   async setChannelCentralInviteOnly(enabled: boolean) {
     await this.setChannelCentralMode("Invite Only (+i)", enabled);
   }
@@ -1365,21 +1420,11 @@ export class ChatPage {
   }
 
   async addChannelCentralBan(nick: string) {
-    await this.addChannelCentralListEntry(
-      "bans",
-      nick,
-      "cc-add-ban-dialog",
-      "cc-ban-nick-input",
-    );
+    await this.addChannelCentralListEntry("bans", nick);
   }
 
   async addChannelCentralBanException(nick: string) {
-    await this.addChannelCentralListEntry(
-      "ban_exceptions",
-      nick,
-      "cc-add-ban-ex-dialog",
-      "cc-ban-ex-nick-input",
-    );
+    await this.addChannelCentralListEntry("ban_exceptions", nick);
   }
 
   async removeChannelCentralBanException(nick: string) {
@@ -1387,44 +1432,45 @@ export class ChatPage {
   }
 
   async addChannelCentralInviteException(nick: string) {
-    await this.addChannelCentralListEntry(
-      "invite_exceptions",
-      nick,
-      "cc-add-invite-ex-dialog",
-      "cc-invite-ex-nick-input",
-    );
+    await this.addChannelCentralListEntry("invite_exceptions", nick);
   }
 
   async removeChannelCentralInviteException(nick: string) {
     await this.removeChannelCentralListEntry("invite_exceptions", nick);
   }
 
-  async addChannelCentralListEntry(
-    tab: ChannelCentralTab,
-    nick: string,
-    dialogTestId: string,
-    inputTestId: string,
-  ) {
-    await this.switchChannelCentralToTab(tab);
-    const panel = this.channelCentralPanel(tab);
-    await panel.getByRole("button", { name: "Add" }).click();
-    const dialog = this.page.getByTestId(dialogTestId);
-    await expect(dialog).toBeVisible();
-    await dialog.getByTestId(inputTestId).fill(nick);
-    await dialog.getByRole("button", { name: "OK" }).click();
-    await expect(dialog).toHaveCount(0);
-    await expect(this.channelCentralEntry(tab, nick)).toBeVisible();
+  async switchChannelCentralToAccessList(list: ChannelCentralAccessList) {
+    await this.switchChannelCentralToTab("access_lists");
+    await this.channelCentralDialog.getByTestId(`cc-list-type-${list}`).click();
   }
 
-  async removeChannelCentralListEntry(tab: ChannelCentralTab, nick: string) {
-    await this.switchChannelCentralToTab(tab);
-    const row = this.channelCentralEntry(tab, nick);
+  async addChannelCentralListEntry(
+    list: ChannelCentralAccessList,
+    nick: string,
+  ) {
+    await this.switchChannelCentralToAccessList(list);
+    const panel = this.channelCentralPanel("access_lists");
+    await panel.getByRole("button", { name: "Add" }).click();
+    const dialog = this.page.getByTestId("cc-add-list-entry-dialog");
+    await expect(dialog).toHaveAttribute("data-access-list", list);
+    await dialog.getByTestId("cc-list-entry-input").fill(nick);
+    await dialog.getByRole("button", { name: "OK" }).click();
+    await expect(dialog).toHaveCount(0);
+    await expect(this.channelCentralEntry(nick)).toBeVisible();
+  }
+
+  async removeChannelCentralListEntry(
+    list: ChannelCentralAccessList,
+    nick: string,
+  ) {
+    await this.switchChannelCentralToAccessList(list);
+    const row = this.channelCentralEntry(nick);
     await expect(row).toBeVisible();
     await row.click();
-    await this.channelCentralPanel(tab)
+    await this.channelCentralPanel("access_lists")
       .getByRole("button", { name: "Remove" })
       .click();
-    await expect(this.channelCentralEntry(tab, nick)).toHaveCount(0);
+    await expect(this.channelCentralEntry(nick)).toHaveCount(0);
   }
 
   // Opens the Tools menu and waits for `item` to be visible, retrying the

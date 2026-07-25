@@ -202,7 +202,6 @@
 /* First-pass dialog tab strips originally used edge fades over the scroll
    content. Reserve real gutters so scroll cues no longer cover tab labels. */
 .desktop--stacked .cc-main-tabs-shell,
-.desktop--stacked .ac-main-tabs-shell,
 .desktop--stacked .bm-tabs-shell,
 .desktop--stacked .ab-tabs-shell,
 .desktop--stacked .acct-tabs-shell {
@@ -211,7 +210,6 @@
 }
 
 .desktop--stacked .cc-main-tabs,
-.desktop--stacked .ac-main-tabs,
 .desktop--stacked .bm-main-tabs,
 .desktop--stacked .ab-main-tabs,
 .desktop--stacked .acct-main-tabs {
@@ -221,7 +219,6 @@
 }
 
 .desktop--stacked .cc-main-tabs .tabs-trigger,
-.desktop--stacked .ac-main-tabs .tabs-trigger,
 .desktop--stacked .bm-main-tabs .tabs-trigger,
 .desktop--stacked .ab-main-tabs .tabs-trigger,
 .desktop--stacked .acct-main-tabs .tabs-trigger {
@@ -232,8 +229,6 @@
 
 .desktop--stacked .cc-main-tabs-shell::before,
 .desktop--stacked .cc-main-tabs-shell::after,
-.desktop--stacked .ac-main-tabs-shell::before,
-.desktop--stacked .ac-main-tabs-shell::after,
 .desktop--stacked .bm-tabs-shell::before,
 .desktop--stacked .bm-tabs-shell::after,
 .desktop--stacked .ab-tabs-shell::before,
@@ -258,7 +253,6 @@
 }
 
 .desktop--stacked .cc-main-tabs-shell::before,
-.desktop--stacked .ac-main-tabs-shell::before,
 .desktop--stacked .bm-tabs-shell::before,
 .desktop--stacked .ab-tabs-shell::before,
 .desktop--stacked .acct-tabs-shell::before {
@@ -269,7 +263,6 @@
 }
 
 .desktop--stacked .cc-main-tabs-shell::after,
-.desktop--stacked .ac-main-tabs-shell::after,
 .desktop--stacked .bm-tabs-shell::after,
 .desktop--stacked .ab-tabs-shell::after,
 .desktop--stacked .acct-tabs-shell::after {
@@ -289,22 +282,6 @@
 .desktop--stacked .cc-main-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="bans"])::after,
 .desktop--stacked .cc-main-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="ban_exceptions"])::after,
 .desktop--stacked .cc-main-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="invite_exceptions"])::after,
-.desktop--stacked .ac-main-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="users"])::before,
-.desktop--stacked .ac-main-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="channels"])::before,
-.desktop--stacked .ac-main-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="motd"])::before,
-.desktop--stacked .ac-main-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="broadcast"])::before,
-.desktop--stacked .ac-main-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="audit_log"])::before,
-.desktop--stacked .ac-main-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="turn"])::before,
-.desktop--stacked .ac-main-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="danger_zone"])::before,
-.desktop--stacked .ac-main-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="console"])::before,
-.desktop--stacked .ac-main-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="server_settings"])::after,
-.desktop--stacked .ac-main-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="users"])::after,
-.desktop--stacked .ac-main-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="channels"])::after,
-.desktop--stacked .ac-main-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="motd"])::after,
-.desktop--stacked .ac-main-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="broadcast"])::after,
-.desktop--stacked .ac-main-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="audit_log"])::after,
-.desktop--stacked .ac-main-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="turn"])::after,
-.desktop--stacked .ac-main-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="danger_zone"])::after,
 .desktop--stacked .bm-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="capabilities"])::before,
 .desktop--stacked .bm-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="channels"])::before,
 .desktop--stacked .bm-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="commands"])::before,

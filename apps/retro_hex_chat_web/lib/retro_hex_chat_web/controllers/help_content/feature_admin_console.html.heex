@@ -1,126 +1,60 @@
 <p>
   {dgettext(
     "help_features",
-    "The Admin Console is a tabbed server administration panel for inspecting and managing server state. Open it from the File menu, the Start menu Admin group, or the toolbar; it opens as a desktop window you can drag, resize, minimize to the taskbar, and close with its title-bar X. The Console tab keeps the raw batch command runner for provisioning and power-user workflows."
+    "The Admin Console is a batch command runner. Open it from File > Admin > Console; it opens as a desktop window you can drag, resize, minimize to the taskbar, and close with its title-bar X."
   )}
 </p>
-<.help_h4 icon={:icon_tab_general}>{dgettext("help_features", "Tabs")}</.help_h4>
+<.help_h4 icon={:icon_code}>{dgettext("help_features", "Input format")}</.help_h4>
 <p>
-  <strong>{dgettext("help_features", "Server Settings")}</strong>
-  {dgettext(
+  {dgettext("help_features", "Each line is a slash command, for example")}
+  <code>{dgettext("help_features", "/admin server info")}</code>{dgettext(
     "help_features",
-    "- server information and editable settings."
-  )}<br />
-  <strong>{dgettext("help_features", "Users")}</strong>
-  {dgettext(
-    "help_features",
-    "- registered-user snapshots, search, online-only filtering, banlist output, Info lookups, moderation actions, roles, rename, and NickServ admin actions."
-  )}<br />
-  <strong>{dgettext("help_features", "Channels")}</strong>
-  {dgettext(
-    "help_features",
-    "- active-channel snapshots, search, Info, Create, Delete, Purge, selected-channel banlist output, and ChanServ admin actions."
-  )}<br />
-  <strong>{dgettext("help_features", "MOTD")}</strong>
-  {dgettext(
-    "help_features",
-    "- view the current Message of the Day, edit it with /setmotd, or clear it with /clearmotd."
-  )}<br />
-  <strong>{dgettext("help_features", "Broadcast")}</strong>
-  {dgettext(
-    "help_features",
-    "- send wallops to +w users or announcements to every connected user."
-  )}<br />
-  <strong>{dgettext("help_features", "Audit Log")}</strong>
-  {dgettext(
-    "help_features",
-    "- read-only administrative history with Last and User filters."
-  )}<br />
-  <strong>{dgettext("help_features", "TURN")}</strong>
-  {dgettext(
-    "help_features",
-    "- read-only TURN relay stats and active allocations from /admin turn."
-  )}<br />
-  <strong>{dgettext("help_features", "Danger Zone")}</strong>
-  {dgettext("help_features", "- guarded factory-reset controls.")}<br />
-  <strong>{dgettext("help_features", "Console")}</strong>
-  {dgettext("help_features", "- raw batch command execution.")}
-</p>
-<.help_h4 icon={:icon_tab_nicklist}>{dgettext("help_features", "Users Tab")}</.help_h4>
-<p>
-  {dgettext(
-    "help_features",
-    "The Users tab reads /admin user list and /admin user banlist as point-in-time snapshots. Use Search and Online only before Refresh, enter a nick and choose Info to run /admin user info, use the moderation forms to confirm ban/unban, kick, mute, and unmute actions, or use Account & Roles and NickServ admin forms for rename, role, info, drop, and password reset commands."
-  )}
-</p>
-<.help_h4 icon={:icon_channels}>{dgettext("help_features", "Channels Tab")}</.help_h4>
-<p>
-  {dgettext(
-    "help_features",
-    "The Channels tab reads /admin channel list as a point-in-time snapshot. Use Search before Refresh, enter a channel and choose Info to run /admin channel info and load its banlist, enter a new channel name and choose Create to run /admin channel create, type a channel name into the confirmation field before Delete or Purge, or use ChanServ admin forms for info, drop, transfer, and access-list commands."
-  )}
-</p>
-<.help_h4 icon={:icon_code}>{dgettext("help_features", "Input Format")}</.help_h4>
-<p>
-  {dgettext("help_features", "In the Console tab, each line should be a slash command (e.g.,")} <code>{dgettext("help_features", "/admin server info")}</code>{dgettext(
-    "help_features",
-    "). Lines starting with"
+    ". Lines starting with"
   )}
   <code>#</code>
-  {dgettext("help_features", "are treated as comments and skipped. Empty lines are also ignored.")}
+  {dgettext("help_features", "are comments and are skipped, as are empty lines.")}
 </p>
-<.help_h4 icon={:icon_notepad}>{dgettext("help_features", "MOTD Tab")}</.help_h4>
+<.help_h4 icon={:icon_terminal}>{dgettext("help_features", "Why use it")}</.help_h4>
 <p>
   {dgettext(
     "help_features",
-    "The MOTD tab shows the current Message of the Day and gives administrators Set MOTD, Clear MOTD, and Refresh controls. Server operators can view the tab, but editing still requires administrator privileges."
+    "Everything the other admin windows do with forms can be done here as a script. That makes it the tool for provisioning a server in one pass, or for anything the focused windows do not expose."
   )}
 </p>
-<.help_h4 icon={:icon_server}>{dgettext("help_features", "Server Settings Tab")}</.help_h4>
-<p>
-  {dgettext(
-    "help_features",
-    "The Server Settings tab reads /admin server info and /admin server settings, then saves changed fields with /admin server set."
-  )}
-</p>
-<.help_h4 icon={:icon_warning}>{dgettext("help_features", "Danger Zone")}</.help_h4>
-<p>
-  {dgettext(
-    "help_features",
-    "The Danger Zone tab previews /admin nuke, shows the preserved tables, and requires typing the current server name before it dispatches /admin nuke --confirm."
-  )}
-</p>
-<.help_h4 icon={:icon_checkmark}>{dgettext("help_features", "Example Script")}</.help_h4>
+<.help_h4 icon={:icon_checkmark}>{dgettext("help_features", "Example script")}</.help_h4>
 <pre><code>{dgettext("help_features", "# Inspect server state /admin server info /admin channel list /admin cs info #general /setmotd Welcome to RetroHexChat!")}</code></pre>
 <.help_h4 icon={:icon_lock}>{dgettext("help_features", "Access")}</.help_h4>
 <p>
   {dgettext(
     "help_features",
-    "Only server administrators and server operators can access the Admin Console. Non-admin users will see an error message if they attempt to open it."
+    "Only server administrators and server operators can open it. The console runs under a privileged context that forces admin rights and lifts the per-user channel limit, so that gate is the only thing between a caller and privileged execution."
   )}
 </p>
 <.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="ui-desktop">{dgettext("help_features", "Desktop & Windows")}</.help_link>
+  <.help_link topic="feature-admin-users">{dgettext("help_features", "Admin Users")}</.help_link>
+  ·
+  <.help_link topic="feature-admin-channels">
+    {dgettext("help_features", "Admin Channels")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-admin-server-settings">
+    {dgettext("help_features", "Admin Server Settings")}
+  </.help_link>
+  · <.help_link topic="feature-admin-motd">{dgettext("help_features", "Admin MOTD")}</.help_link>
+  ·
+  <.help_link topic="feature-admin-broadcast">
+    {dgettext("help_features", "Admin Broadcast")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-admin-audit-log">
+    {dgettext("help_features", "Admin Audit Log")}
+  </.help_link>
+  · <.help_link topic="feature-admin-turn">{dgettext("help_features", "Admin TURN")}</.help_link>
+  ·
+  <.help_link topic="feature-admin-danger-zone">
+    {dgettext("help_features", "Admin Danger Zone")}
+  </.help_link>
   · <.help_link topic="cmd-admin">{dgettext("help_features", "/admin Command")}</.help_link>
-  · <.help_link topic="cmd-admin-server">{dgettext("help_features", "/admin server")}</.help_link>
-  · <.help_link topic="cmd-admin-user">{dgettext("help_features", "/admin user")}</.help_link>
-  ·
-  <.help_link topic="cmd-admin-channel">{dgettext("help_features", "/admin channel")}</.help_link>
-  · <.help_link topic="cmd-motd">{dgettext("help_features", "/motd")}</.help_link>
-  · <.help_link topic="cmd-setmotd">{dgettext("help_features", "/setmotd")}</.help_link>
-  · <.help_link topic="cmd-clearmotd">{dgettext("help_features", "/clearmotd")}</.help_link>
-  ·
-  <.help_link topic="feature-server-broadcasts">
-    {dgettext("help_features", "Server Broadcasts")}
-  </.help_link>
-  · <.help_link topic="cmd-admin-nuke">{dgettext("help_features", "/admin nuke")}</.help_link>
-  ·
-  <.help_link topic="ui-message-of-the-day">
-    {dgettext("help_features", "Message of the Day Menu")}
-  </.help_link>
-  ·
-  <.help_link topic="feature-perform">
-    {dgettext("help_features", "Perform / Auto-Commands")}
-  </.help_link>
+  · <.help_link topic="ui-desktop">{dgettext("help_features", "Desktop & Windows")}</.help_link>
 </p>

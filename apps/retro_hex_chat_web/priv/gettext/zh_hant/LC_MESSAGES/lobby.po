@@ -11,14 +11,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:109
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:223
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:218
 #, elixir-autogen, elixir-format
 msgid "%{peer} is muted"
 msgstr "%{peer} 已變音"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:88
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:153
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:148
 #, elixir-autogen, elixir-format
 msgid "%{peer}'s camera is off"
 msgstr "%{peer}的相機關閉"
@@ -44,14 +42,12 @@ msgstr "回到遊戲中"
 msgid "Browse files"
 msgstr "瀏覽文件"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:150
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:408
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:403
 #, elixir-autogen, elixir-format
 msgid "Camera Off"
 msgstr "關閉相機"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:149
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:407
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:402
 #, elixir-autogen, elixir-format
 msgid "Camera On"
 msgstr "相機打開"
@@ -66,7 +62,6 @@ msgstr "連接到遊戲中 。"
 msgid "Connect to send a file."
 msgstr "連接以發送文件 。"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:47
 #: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:64
 #, elixir-autogen, elixir-format
 msgid "Connect to start an audio or video call."
@@ -82,11 +77,10 @@ msgstr "無法訪問您的麥克風或相機 。"
 msgid "Decline"
 msgstr "縮寫"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:168
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:506
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:728
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:729
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:732
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:501
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:723
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:724
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:727
 #, elixir-autogen, elixir-format
 msgid "Devices"
 msgstr "設備"
@@ -96,8 +90,7 @@ msgstr "設備"
 msgid "Draw."
 msgstr "畫畫."
 
-#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:176
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:457
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:452
 #, elixir-autogen, elixir-format
 msgid "End call"
 msgstr "結束呼叫"
@@ -117,8 +110,7 @@ msgstr "文件傳輸完成: %{name}"
 msgid "Final Score"
 msgstr "最後得分數"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:193
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:555
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:550
 #, elixir-autogen, elixir-format
 msgid "Focus"
 msgstr "焦點"
@@ -133,13 +125,7 @@ msgstr "遊戲中"
 msgid "Game over — %{game}: %{p1} × %{p2}"
 msgstr "遊戲過-%{game}:%{p1}×%{p2}"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:211
-#, elixir-autogen, elixir-format
-msgid "Maximize"
-msgstr "最大化"
-
-#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:128
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:386
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:381
 #, elixir-autogen, elixir-format
 msgid "Mute"
 msgstr "靜音"
@@ -149,51 +135,37 @@ msgstr "靜音"
 msgid "P1 %{score}"
 msgstr "P1 %{score} (中文(簡體) )."
 
-#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:161
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:499
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:494
 #, elixir-autogen, elixir-format
 msgid "Picture-in-Picture"
 msgstr "圖片"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:202
-#, elixir-autogen, elixir-format
-msgid "Side by side"
-msgstr "並肩作戰"
-
-#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:238
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:338
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:333
 #, elixir-autogen, elixir-format
 msgid "Start audio"
 msgstr "開始音頻"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:258
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:326
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:321
 #, elixir-autogen, elixir-format
-msgid ""
-"Start audio or video — or the peer can, independently. You'll join "
-"automatically."
+msgid "Start audio or video — or the peer can, independently. You'll join automatically."
 msgstr "啓動音頻或視頻——或對等者可以獨立啓動. 你會自動加入。"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:247
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:346
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:341
 #, elixir-autogen, elixir-format
 msgid "Start video"
 msgstr "開始視頻"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:139
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:397
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:392
 #, elixir-autogen, elixir-format
 msgid "Turn on camera"
 msgstr "打開相機"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:119
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:378
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:373
 #, elixir-autogen, elixir-format
 msgid "Turn on microphone"
 msgstr "打開麥克風"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:128
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:386
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:381
 #, elixir-autogen, elixir-format
 msgid "Unmute"
 msgstr "解開"

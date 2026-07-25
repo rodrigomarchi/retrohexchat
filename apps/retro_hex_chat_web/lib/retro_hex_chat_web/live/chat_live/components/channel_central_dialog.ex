@@ -1,7 +1,7 @@
 defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
   @moduledoc """
   Stateful island for Channel Central — the per-channel admin mini-app
-  (general/modes/bans/exceptions/registration-access tabs + 4 sub-form modals).
+  (general/modes/access-lists/registration-access tabs + 2 sub-form modals).
 
   Owns the ENTIRE dialog: every `channel_central_*` and `show_cc_*` assign that
   used to live in the parent `assign_defaults`, plus all of the event handling
@@ -10,7 +10,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
   `send_update` and forwards live channel updates from PubSub.
 
   Every UI event targets this component (`phx-target={@myself}` threaded through
-  the design-system `channel_central_panel/1`), so the 4 add/transfer sub-forms
+  the design-system `channel_central_panel/1`), so the add/transfer sub-forms
   (`fixed inset-0` overlays) submit to the component that owns their DOM subtree —
   the component-id matches, so LiveView preserves the typed input across the
   background re-renders that channel PubSub triggers (the modal-in-modal
@@ -42,9 +42,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
     channel_central_state: nil,
     channel_central_operator: false,
     channel_central_owner: false,
-    channel_central_ban_selected: nil,
-    channel_central_ban_ex_selected: nil,
-    channel_central_invite_ex_selected: nil,
+    channel_central_list_type: "bans",
+    channel_central_list_selected: nil,
     channel_central_notice: nil,
     channel_central_transfer_error: nil,
     channel_central_registration: nil,
@@ -53,9 +52,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
     channel_central_access_nick: "",
     channel_central_cs_error: nil,
     channel_central_cs_confirm_drop: false,
-    show_cc_add_ban_dialog: false,
-    show_cc_add_ban_ex_dialog: false,
-    show_cc_add_invite_ex_dialog: false,
+    show_cc_add_list_entry_dialog: false,
     show_cc_transfer_dialog: false
   }
 
@@ -258,44 +255,28 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
     end
   end
 
-  # ── Selection ────────────────────────────────────────────────────
+  # ── Access lists (bans / ban exceptions / invite exceptions) ─────
 
-  def handle_event("cc_ban_select", %{"nickname" => nick}, socket) do
-    {:noreply, assign(socket, channel_central_ban_selected: nick)}
+  # Switching list type drops the selection: a mask picked in one list is not a
+  # row of the next one, and Remove acts on whatever is selected.
+  def handle_event("cc_list_type", %{"list" => list_type}, socket) do
+    {:noreply,
+     assign(socket,
+       channel_central_list_type: normalize_list_type(list_type),
+       channel_central_list_selected: nil
+     )}
   end
 
-  def handle_event("cc_ban_ex_select", %{"nickname" => nick}, socket) do
-    {:noreply, assign(socket, channel_central_ban_ex_selected: nick)}
+  def handle_event("cc_list_select", %{"nickname" => mask}, socket) do
+    {:noreply, assign(socket, channel_central_list_selected: mask)}
   end
 
-  def handle_event("cc_invite_ex_select", %{"nickname" => nick}, socket) do
-    {:noreply, assign(socket, channel_central_invite_ex_selected: nick)}
+  def handle_event("cc_open_add_list_entry", _params, socket) do
+    {:noreply, assign(socket, show_cc_add_list_entry_dialog: true)}
   end
 
-  # ── Add/Close sub-form dialogs ───────────────────────────────────
-
-  def handle_event("cc_open_add_ban", _params, socket) do
-    {:noreply, assign(socket, show_cc_add_ban_dialog: true)}
-  end
-
-  def handle_event("cc_close_add_ban", _params, socket) do
-    {:noreply, assign(socket, show_cc_add_ban_dialog: false)}
-  end
-
-  def handle_event("cc_open_add_ban_ex", _params, socket) do
-    {:noreply, assign(socket, show_cc_add_ban_ex_dialog: true)}
-  end
-
-  def handle_event("cc_close_add_ban_ex", _params, socket) do
-    {:noreply, assign(socket, show_cc_add_ban_ex_dialog: false)}
-  end
-
-  def handle_event("cc_open_add_invite_ex", _params, socket) do
-    {:noreply, assign(socket, show_cc_add_invite_ex_dialog: true)}
-  end
-
-  def handle_event("cc_close_add_invite_ex", _params, socket) do
-    {:noreply, assign(socket, show_cc_add_invite_ex_dialog: false)}
+  def handle_event("cc_close_add_list_entry", _params, socket) do
+    {:noreply, assign(socket, show_cc_add_list_entry_dialog: false)}
   end
 
   # ── Topic & Modes ────────────────────────────────────────────────
@@ -406,131 +387,40 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
     end
   end
 
-  # ── Bans ─────────────────────────────────────────────────────────
-
-  def handle_event("cc_add_ban", %{"nickname" => nick}, socket) do
+  def handle_event("cc_add_list_entry", %{"nickname" => mask} = params, socket) do
+    list_type = normalize_list_type(params["list"] || socket.assigns.channel_central_list_type)
     channel = socket.assigns.channel_central_channel
     operator = socket.assigns.session.nickname
 
-    case Server.ban(channel, operator, nick) do
+    case add_list_entry(list_type, channel, operator, mask) do
       :ok ->
         {:noreply,
          socket
-         |> assign(show_cc_add_ban_dialog: false)
+         |> assign(show_cc_add_list_entry_dialog: false)
          |> refresh_channel_central()}
 
       {:error, msg} ->
-        {:noreply, bubble_error(socket, dgettext("chat", "Ban error: %{message}", message: msg))}
+        {:noreply, bubble_error(socket, add_error_message(list_type, msg))}
     end
   end
 
-  def handle_event("cc_remove_ban", _params, socket) do
-    nick = socket.assigns.channel_central_ban_selected
+  def handle_event("cc_remove_list_entry", _params, socket) do
+    list_type = normalize_list_type(socket.assigns.channel_central_list_type)
+    mask = socket.assigns.channel_central_list_selected
 
-    if nick do
+    if mask do
       channel = socket.assigns.channel_central_channel
       operator = socket.assigns.session.nickname
 
-      case Server.unban(channel, operator, nick) do
+      case remove_list_entry(list_type, channel, operator, mask) do
         :ok ->
           {:noreply,
            socket
-           |> assign(channel_central_ban_selected: nil)
+           |> assign(channel_central_list_selected: nil)
            |> refresh_channel_central()}
 
         {:error, msg} ->
-          {:noreply,
-           bubble_error(socket, dgettext("chat", "Unban error: %{message}", message: msg))}
-      end
-    else
-      {:noreply, socket}
-    end
-  end
-
-  # ── Ban Exceptions ───────────────────────────────────────────────
-
-  def handle_event("cc_add_ban_exception", %{"nickname" => nick}, socket) do
-    channel = socket.assigns.channel_central_channel
-    operator = socket.assigns.session.nickname
-
-    case Server.add_ban_exception(channel, operator, nick) do
-      :ok ->
-        {:noreply,
-         socket
-         |> assign(show_cc_add_ban_ex_dialog: false)
-         |> refresh_channel_central()}
-
-      {:error, msg} ->
-        {:noreply,
-         bubble_error(socket, dgettext("chat", "Ban exception error: %{message}", message: msg))}
-    end
-  end
-
-  def handle_event("cc_remove_ban_exception", _params, socket) do
-    nick = socket.assigns.channel_central_ban_ex_selected
-
-    if nick do
-      channel = socket.assigns.channel_central_channel
-      operator = socket.assigns.session.nickname
-
-      case Server.remove_ban_exception(channel, operator, nick) do
-        :ok ->
-          {:noreply,
-           socket
-           |> assign(channel_central_ban_ex_selected: nil)
-           |> refresh_channel_central()}
-
-        {:error, msg} ->
-          {:noreply,
-           bubble_error(socket, dgettext("chat", "Ban exception error: %{message}", message: msg))}
-      end
-    else
-      {:noreply, socket}
-    end
-  end
-
-  # ── Invite Exceptions ────────────────────────────────────────────
-
-  def handle_event("cc_add_invite_exception", %{"nickname" => nick}, socket) do
-    channel = socket.assigns.channel_central_channel
-    operator = socket.assigns.session.nickname
-
-    case Server.add_invite_exception(channel, operator, nick) do
-      :ok ->
-        {:noreply,
-         socket
-         |> assign(show_cc_add_invite_ex_dialog: false)
-         |> refresh_channel_central()}
-
-      {:error, msg} ->
-        {:noreply,
-         bubble_error(
-           socket,
-           dgettext("chat", "Invite exception error: %{message}", message: msg)
-         )}
-    end
-  end
-
-  def handle_event("cc_remove_invite_exception", _params, socket) do
-    nick = socket.assigns.channel_central_invite_ex_selected
-
-    if nick do
-      channel = socket.assigns.channel_central_channel
-      operator = socket.assigns.session.nickname
-
-      case Server.remove_invite_exception(channel, operator, nick) do
-        :ok ->
-          {:noreply,
-           socket
-           |> assign(channel_central_invite_ex_selected: nil)
-           |> refresh_channel_central()}
-
-        {:error, msg} ->
-          {:noreply,
-           bubble_error(
-             socket,
-             dgettext("chat", "Invite exception error: %{message}", message: msg)
-           )}
+          {:noreply, bubble_error(socket, remove_error_message(list_type, msg))}
       end
     else
       {:noreply, socket}
@@ -553,9 +443,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
         cc_welcome_message: channel_central_welcome_message(state),
         cc_throttle_seconds: channel_central_throttle_seconds(state),
         cc_modes: channel_central_modes(state),
-        cc_bans: channel_central_bans(state),
-        cc_ban_exceptions: channel_central_ban_exceptions(state),
-        cc_invite_exceptions: channel_central_invite_exceptions(state)
+        cc_list_entries: channel_central_list_entries(state, assigns.channel_central_list_type)
       )
 
     ~H"""
@@ -584,15 +472,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
         cs_confirm_drop={@channel_central_cs_confirm_drop}
         identified={@session.identified}
         modes={@cc_modes}
-        bans={@cc_bans}
-        ban_exceptions={@cc_ban_exceptions}
-        invite_exceptions={@cc_invite_exceptions}
-        ban_selected={@channel_central_ban_selected}
-        ban_ex_selected={@channel_central_ban_ex_selected}
-        invite_ex_selected={@channel_central_invite_ex_selected}
-        show_add_ban_dialog={@show_cc_add_ban_dialog}
-        show_add_ban_ex_dialog={@show_cc_add_ban_ex_dialog}
-        show_add_invite_ex_dialog={@show_cc_add_invite_ex_dialog}
+        list_type={@channel_central_list_type}
+        list_entries={@cc_list_entries}
+        list_selected={@channel_central_list_selected}
+        show_add_list_entry_dialog={@show_cc_add_list_entry_dialog}
         show_transfer_dialog={@show_cc_transfer_dialog}
         on_tab={JS.push("channel_central_tab", target: @myself)}
         on_topic_save="cc_set_topic"
@@ -603,15 +486,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
         on_transfer_close="cc_close_transfer"
         on_transfer_submit="cc_transfer_ownership"
         on_mode_apply="cc_apply_modes"
-        on_ban_add="cc_open_add_ban"
-        on_ban_remove="cc_remove_ban"
-        on_ban_select="cc_ban_select"
-        on_ban_ex_add="cc_open_add_ban_ex"
-        on_ban_ex_remove="cc_remove_ban_exception"
-        on_ban_ex_select="cc_ban_ex_select"
-        on_invite_ex_add="cc_open_add_invite_ex"
-        on_invite_ex_remove="cc_remove_invite_exception"
-        on_invite_ex_select="cc_invite_ex_select"
+        on_list_type="cc_list_type"
+        on_list_add="cc_open_add_list_entry"
+        on_list_remove="cc_remove_list_entry"
+        on_list_select="cc_list_select"
         on_cs_register="cc_cs_register"
         on_cs_drop_request="cc_cs_drop_request"
         on_cs_drop="cc_cs_drop"
@@ -714,6 +592,55 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
     send(self(), {:cc_system_error, message})
     socket
   end
+
+  # ── Access list helpers ──────────────────────────────────────────
+
+  defp normalize_list_type(list_type)
+       when list_type in ~w(bans ban_exceptions invite_exceptions),
+       do: list_type
+
+  defp normalize_list_type(_list_type), do: "bans"
+
+  defp list_state_key("bans"), do: :bans
+  defp list_state_key("ban_exceptions"), do: :ban_exceptions
+  defp list_state_key("invite_exceptions"), do: :invite_exceptions
+  defp list_state_key(_list_type), do: :bans
+
+  defp add_list_entry("bans", channel, operator, mask),
+    do: Server.ban(channel, operator, mask)
+
+  defp add_list_entry("ban_exceptions", channel, operator, mask),
+    do: Server.add_ban_exception(channel, operator, mask)
+
+  defp add_list_entry("invite_exceptions", channel, operator, mask),
+    do: Server.add_invite_exception(channel, operator, mask)
+
+  defp remove_list_entry("bans", channel, operator, mask),
+    do: Server.unban(channel, operator, mask)
+
+  defp remove_list_entry("ban_exceptions", channel, operator, mask),
+    do: Server.remove_ban_exception(channel, operator, mask)
+
+  defp remove_list_entry("invite_exceptions", channel, operator, mask),
+    do: Server.remove_invite_exception(channel, operator, mask)
+
+  defp add_error_message("bans", msg),
+    do: dgettext("chat", "Ban error: %{message}", message: msg)
+
+  defp add_error_message("ban_exceptions", msg),
+    do: dgettext("chat", "Ban exception error: %{message}", message: msg)
+
+  defp add_error_message("invite_exceptions", msg),
+    do: dgettext("chat", "Invite exception error: %{message}", message: msg)
+
+  defp remove_error_message("bans", msg),
+    do: dgettext("chat", "Unban error: %{message}", message: msg)
+
+  defp remove_error_message("ban_exceptions", msg),
+    do: dgettext("chat", "Ban exception error: %{message}", message: msg)
+
+  defp remove_error_message("invite_exceptions", msg),
+    do: dgettext("chat", "Invite exception error: %{message}", message: msg)
 
   # ── ChanServ helpers ─────────────────────────────────────────────
 
@@ -923,18 +850,13 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
 
   # ── Derived render data (from channel_central_state) ─────────────
 
-  defp channel_central_bans(nil), do: []
-  defp channel_central_bans(state), do: state |> Map.get(:bans, []) |> Enum.map(&to_list_entry/1)
+  defp channel_central_list_entries(nil, _list_type), do: []
 
-  defp channel_central_ban_exceptions(nil), do: []
-
-  defp channel_central_ban_exceptions(state),
-    do: state |> Map.get(:ban_exceptions, []) |> Enum.map(&to_list_entry/1)
-
-  defp channel_central_invite_exceptions(nil), do: []
-
-  defp channel_central_invite_exceptions(state),
-    do: state |> Map.get(:invite_exceptions, []) |> Enum.map(&to_list_entry/1)
+  defp channel_central_list_entries(state, list_type) do
+    state
+    |> Map.get(list_state_key(list_type), [])
+    |> Enum.map(&to_list_entry/1)
+  end
 
   defp channel_central_modes(nil), do: %{}
   defp channel_central_modes(state), do: Map.get(state, :modes_detail, %{})

@@ -1,0 +1,62 @@
+<p>
+  {dgettext(
+    "help_features",
+    "Admin Channels is the server-wide channel administration window. Open it from File > Admin > Channels; it opens as a desktop window you can drag, resize, minimize to the taskbar, and close with its title-bar X."
+  )}
+</p>
+<.help_h4 icon={:icon_btn_search}>{dgettext("help_features", "Finding a channel")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "The list reads /admin channel list as a point-in-time snapshot — it does not update on its own. Type into Search before choosing Refresh to narrow it."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_features",
+    "Entering a channel in the Channel field and choosing Info runs /admin channel info and also loads that channel's ban list at the bottom of the window. The ban list follows whatever channel you last inspected."
+  )}
+</p>
+<.help_h4 icon={:icon_btn_add}>{dgettext("help_features", "Creating")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "New channel plus Create runs /admin channel create, which both creates and registers the channel."
+  )}
+</p>
+<.help_h4 icon={:icon_warning}>{dgettext("help_features", "Destructive actions")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "Delete removes the channel entirely; Purge deletes its messages and optionally only those from one nick. Both require the channel name typed a second time into the confirm field, and so does Drop registration. The server checks that too — it is not a client-side formality."
+  )}
+</p>
+<.help_h4 icon={:icon_tab_registration}>{dgettext("help_features", "ChanServ admin")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "ChanServ info reads a registration and Access list reads its SOP/AOP/VOP entries. Add access and Remove access take a nick and a level. Transfer founder hands the channel to another nick. Drop registration deletes the registration and is not reversible."
+  )}
+</p>
+<.help_h4 icon={:icon_lock}>{dgettext("help_features", "Access")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "Only server administrators and server operators can open this window. Server operators see it read-only: the controls are disabled, and the server refuses the action even if the control is bypassed."
+  )}
+</p>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="feature-admin-console">
+    {dgettext("help_features", "Admin Console")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-admin-users">{dgettext("help_features", "Admin Users")}</.help_link>
+  ·
+  <.help_link topic="cmd-admin-channel">{dgettext("help_features", "/admin channel")}</.help_link>
+  · <.help_link topic="cmd-admin-cs">{dgettext("help_features", "/admin cs")}</.help_link>
+  ·
+  <.help_link topic="feature-channel-central">
+    {dgettext("help_features", "Channel Central")}
+  </.help_link>
+</p>

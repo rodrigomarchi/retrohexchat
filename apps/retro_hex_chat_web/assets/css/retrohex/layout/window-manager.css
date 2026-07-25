@@ -403,6 +403,43 @@
   min-height: 34px;
 }
 
+/* ── Start menu groups ─────────────────────────────────────── */
+/* The group row is the flyout's positioning anchor. */
+.desktop-start-submenu {
+  position: relative;
+}
+
+/* Hidden by .u-hidden; showing it must restore a block layout. */
+.desktop-start-submenu__panel:not(.u-hidden) {
+  display: block;
+}
+
+/* Flyouts overlap the parent row by the panel's own padding, so the pointer can
+   cross into them without passing over a dead gap. */
+.desktop-start-submenu__panel {
+  margin-left: -3px;
+}
+
+/* No scroll on the desktop menu: `overflow` would make it a clipping context and
+   swallow the flyouts, which escape to the right. Length is handled by grouping
+   instead — the same answer the menu bar dropdowns use. */
+
+/* Stacked shells expand groups inline, so there is no flyout to clip and the
+   menu can safely cap and scroll. */
+.desktop--stacked .desktop-start-menu {
+  max-height: min(72vh, 560px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.desktop--stacked .desktop-start-submenu__panel {
+  position: static;
+  width: auto;
+  margin-left: 0;
+  padding-left: 16px;
+  box-shadow: none;
+}
+
 .desktop--stacked .desktop-start-menu__item {
   min-height: 38px;
 }

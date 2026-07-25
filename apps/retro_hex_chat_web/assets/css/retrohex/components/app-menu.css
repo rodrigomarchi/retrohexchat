@@ -33,6 +33,31 @@
   cursor: default;
 }
 
+/* ── Submenus ──────────────────────────────────────────────── */
+/* The panel is hidden by .u-hidden; showing it must restore a block layout
+   rather than inherit the parent row's flex. */
+.menubar-submenu__panel:not(.u-hidden) {
+  display: block;
+}
+
+/* Desktop flyouts overlap the parent row by the panel's own padding so the
+   pointer can cross into them without passing over a dead gap. */
+.menubar-submenu__panel {
+  margin-left: -3px;
+}
+
+/* Stacked (mobile) shells expand the submenu inline. A flyout would be clipped:
+   the mobile dropdown is a fixed box with overflow:hidden and the content pane
+   scrolls (see .app-mobile-menu__content), so an absolutely positioned panel
+   escaping to the right is simply not reachable. */
+.desktop--stacked .menubar-submenu__panel {
+  position: static;
+  min-width: 0;
+  margin-left: 0;
+  padding-left: 16px;
+  box-shadow: none;
+}
+
 .app-menu-bar__mobile-menu {
   display: none;
 }

@@ -2,15 +2,15 @@
 
 Single source of truth for the browser-level Playwright suite.
 
-**Last reviewed:** 2026-07-12
+**Last reviewed:** 2026-07-25
 
 ## Current Coverage
 
-- **192 spec files** under `e2e/tests/`.
-- **337 Playwright `test()` cases**.
+- **194 spec files** under `e2e/tests/`.
+- **342 Playwright `test()` cases**.
 - **Auth/lifecycle:** 17 mapped flows, all done.
 - **Chat foundation:** 25 mapped flows, all done.
-- **Chat extended coverage:** 338 mapped flows, 337 done, 1 intentionally blocked.
+- **Chat extended coverage:** 343 mapped flows, 342 done, 1 intentionally blocked.
 - **Open todo/investigate items in this catalog:** none. Planned backlog lives in `TEST_BACKLOG.md`.
 - **Blocked item:** M13, confirmed `/admin nuke --confirm`, until a disposable isolated E2E profile exists.
 
@@ -28,7 +28,12 @@ Single source of truth for the browser-level Playwright suite.
 | UI8  | Invite picker invites from a joined channel; Channel List knock request sends real knock flow                                           | `tests/chat-ui-features-channel.spec.ts` | 06       | done   |
 | UI9  | Channel Central applies welcome message, join throttle, and ownership transfer                                                          | `tests/chat-ui-features-channel.spec.ts` | 09       | done   |
 | UI10 | Channel Central registration tab performs ChanServ register and AOP add/remove                                                          | `tests/chat-ui-features-channel.spec.ts` | 11       | done   |
-| UI11 | Admin Console tabs cover safe server settings, users, channels, MOTD, broadcast, audit log, TURN, danger preview, and raw console paths | `tests/chat-ui-features-admin.spec.ts`   | 12       | done   |
+| UI11 | Admin journeys across the split windows: server settings, MOTD, broadcast, audit log, TURN, danger preview, console | `tests/chat-ui-features-admin.spec.ts`   | 12       | done   |
+| UI11e | All nine admin windows open from File > Admin and close from their title bar | `tests/chat-ui-features-admin.spec.ts`   | 12       | done   |
+| UI11a | Admin Users window: info lookup and mute/unmute from File > Admin > Users | `tests/chat-admin-users-window.spec.ts`   | 12       | done   |
+| UI11b | Admin Users window opens from the File > Admin submenu and closes from its title bar | `tests/chat-admin-users-window.spec.ts`   | 12       | done   |
+| UI11c | Admin Channels window: create, inspect, and delete with typed confirmation | `tests/chat-admin-channels-window.spec.ts`   | 12       | done   |
+| UI11d | Admin Channels window opens from the File > Admin submenu and closes from its title bar | `tests/chat-admin-channels-window.spec.ts`   | 12       | done   |
 
 ## Operating Rules
 

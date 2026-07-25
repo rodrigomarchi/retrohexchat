@@ -130,12 +130,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
       dgettext("chat", "User Lookup"),
       :icon_btn_search
     )
-    |> add_window(
-      assigns.is_admin && window_open?(assigns.open_windows, "admin-console-dialog"),
-      "admin-console-dialog",
-      dgettext("chat", "Admin Console"),
-      :icon_dialog_admin_console
-    )
+    |> add_admin_windows(assigns)
     |> add_window(
       assigns.is_admin && window_open?(assigns.open_windows, "bot-management-dialog"),
       "bot-management-dialog",
@@ -223,6 +218,28 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
       :icon_dialog_address_book
     )
   end
+
+  # The nine admin windows share one gate, so they enter the taskbar as a set
+  # rather than as nine branches of the main pipeline.
+  @admin_windows [
+    {"admin-users", dgettext("chat", "Users"), :icon_community},
+    {"admin-channels", dgettext("chat", "Channels"), :icon_channels},
+    {"admin-server-settings", dgettext("chat", "Server Settings"), :icon_server},
+    {"admin-audit-log", dgettext("chat", "Audit Log"), :icon_notepad},
+    {"admin-motd", dgettext("chat", "MOTD"), :icon_notepad},
+    {"admin-turn", dgettext("chat", "TURN"), :icon_websocket},
+    {"admin-broadcast", dgettext("chat", "Broadcast"), :icon_megaphone},
+    {"admin-danger-zone", dgettext("chat", "Danger Zone"), :icon_warning},
+    {"admin-console", dgettext("chat", "Console"), :icon_dialog_admin_console}
+  ]
+
+  defp add_admin_windows(windows, %{is_admin: true} = assigns) do
+    Enum.reduce(@admin_windows, windows, fn {id, label, icon_fn}, acc ->
+      add_window(acc, window_open?(assigns.open_windows, id), id, label, icon_fn)
+    end)
+  end
+
+  defp add_admin_windows(windows, _assigns), do: windows
 
   defp add_window(windows, condition, id, label, icon_fn, opts \\ [])
 

@@ -1,0 +1,32 @@
+<p>
+  {dgettext(
+    "help_features",
+    "Admin Broadcast is one of the server administration windows. Open it from File > Admin; it opens as a desktop window you can drag, resize, minimize to the taskbar, and close with its title-bar X."
+  )}
+</p>
+<.help_h4 icon={:icon_megaphone}>{dgettext("help_features", "Two reaches")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "Wallops goes only to users who opted in with mode +w. Announce goes to everyone connected, whether they asked for it or not — reserve it for things people genuinely need to see."
+  )}
+</p>
+<.help_h4 icon={:icon_lock}>{dgettext("help_features", "Access")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "Server operators may send wallops. Announce is administrators only, and the radio is disabled for anyone else. If neither is available the Send button is disabled entirely."
+  )}
+</p>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="feature-admin-console">
+    {dgettext("help_features", "admin console")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-server-broadcasts">
+    {dgettext("help_features", "server broadcasts")}
+  </.help_link>
+  · <.help_link topic="cmd-wallops">{dgettext("help_features", "/wallops")}</.help_link>
+  · <.help_link topic="cmd-announce">{dgettext("help_features", "/announce")}</.help_link>
+</p>

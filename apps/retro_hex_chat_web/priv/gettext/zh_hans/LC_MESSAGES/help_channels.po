@@ -1763,14 +1763,6 @@ msgid ""
 "manage SOP, AOP, and VOP access lists."
 msgstr "打开频道中央并选择注册标签来查看注册状态,注册一个未注册的频道,将一个频道降为创建者,并管理SOP,AOP和VOP访问列表."
 
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:12
-#, elixir-autogen, elixir-format
-msgid ""
-"Open Channel Central for a channel you have joined, then choose Registration"
-" after Invite Exceptions. The status area shows whether the channel is "
-"registered and who the founder is."
-msgstr "为您加入的频道打开频道中心, 然后在邀请例外之后选择注册 。 状态区域显示频道是否注册,创始人是谁."
-
 #: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:10
 #, elixir-autogen, elixir-format
 msgid ""
@@ -1909,3 +1901,11 @@ msgid ""
 " select one and choose Request Access... to send a knock request to its "
 "operators."
 msgstr "按钮。 只邀请 (+i) 频道被标记为 +i 徽章; 选择一个并选择 Access... 向它的操作员发送敲门请求 。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:12
+#, elixir-autogen, elixir-format
+msgid ""
+"Open Channel Central for a channel you have joined, then choose Registration"
+" after Access Lists. The status area shows whether the channel is registered"
+" and who the founder is."
+msgstr "为您加入的频道打开频道中心,然后在访问列表后选择注册。 状态区域显示频道是否注册,创始人是谁."

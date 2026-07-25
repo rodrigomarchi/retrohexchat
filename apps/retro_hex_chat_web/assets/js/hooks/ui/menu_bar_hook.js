@@ -34,6 +34,15 @@ const MenuBarHook = {
       "mouseenter",
       (e) => {
         if (!this._activeMenu) return;
+
+        // Inside an open dropdown, hovering a row drives the submenus rather
+        // than the top-level menus.
+        const row = e.target.closest?.("[data-menubar-dropdown] li");
+        if (row) {
+          this._trackSubmenuHover(row);
+          return;
+        }
+
         const trigger = e.target.closest("[data-menubar-trigger]");
         if (!trigger || trigger.dataset.disabled === "true") return;
         const menu = trigger.parentElement;
@@ -65,6 +74,27 @@ const MenuBarHook = {
 
         this._copyCurrentSelection();
         this._closeAll();
+        return;
+      }
+
+      // A submenu row is an <li> inside a dropdown, so it would otherwise hit
+      // the close-everything branch below. Toggle it instead.
+      const submenuTrigger = e.target.closest("[data-menubar-submenu-trigger]");
+
+      if (submenuTrigger) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const submenu = submenuTrigger.closest("[data-menubar-submenu]");
+
+        if (submenu) {
+          if (submenu.dataset.submenuOpen === "true") {
+            this._setSubmenu(submenu, false);
+          } else {
+            this._openSubmenu(submenu);
+          }
+        }
+
         return;
       }
 
@@ -105,6 +135,9 @@ const MenuBarHook = {
 
   _closeAll() {
     this.el.querySelectorAll("[data-menubar-dropdown]").forEach((d) => d.classList.add("u-hidden"));
+    this.el
+      .querySelectorAll("[data-menubar-submenu]")
+      .forEach((submenu) => this._setSubmenu(submenu, false));
     this.el.querySelectorAll("[data-menubar-trigger]").forEach((t) => {
       t.classList.remove("bg-primary", "text-primary-foreground");
       if (t.dataset.disabled !== "true") {
@@ -112,6 +145,38 @@ const MenuBarHook = {
       }
     });
     this._activeMenu = null;
+  },
+
+  // Hovering a submenu row opens it; hovering any sibling row closes the
+  // submenus of that dropdown, so at most one flyout is ever showing.
+  _trackSubmenuHover(row) {
+    const submenu = row.closest("[data-menubar-submenu]");
+
+    if (submenu) {
+      this._openSubmenu(submenu);
+      return;
+    }
+
+    const dropdown = row.closest("[data-menubar-dropdown]");
+    if (dropdown) this._closeSiblingSubmenus(dropdown, null);
+  },
+
+  _openSubmenu(submenu) {
+    const dropdown = submenu.closest("[data-menubar-dropdown]");
+    if (dropdown) this._closeSiblingSubmenus(dropdown, submenu);
+    this._setSubmenu(submenu, true);
+  },
+
+  _closeSiblingSubmenus(dropdown, except) {
+    dropdown.querySelectorAll("[data-menubar-submenu]").forEach((submenu) => {
+      if (submenu !== except) this._setSubmenu(submenu, false);
+    });
+  },
+
+  _setSubmenu(submenu, open) {
+    submenu.dataset.submenuOpen = open ? "true" : "false";
+    const panel = submenu.querySelector("[data-menubar-submenu-panel]");
+    if (panel) panel.classList.toggle("u-hidden", !open);
   },
 
   _activateMobileMenuCategory(category) {

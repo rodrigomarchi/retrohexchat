@@ -104,11 +104,6 @@ msgid "). Invalid regex patterns show an inline error."
 msgstr ""
 "- হ্যা. রেগুলার এক্সপ্রেশনের মধ্যে ভুল রেগুলার এক্সপ্রেশন উপস্থিত রয়েছে।"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:65
-#, elixir-autogen, elixir-format
-msgid "). Lines starting with"
-msgstr "- হ্যা. প্রারম্ভিক ফন্ট"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_away_reply.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "* YourNick is away: Gone for lunch"
@@ -305,16 +300,6 @@ msgstr "- অসুস্থ-"
 msgid ". It only activates on unexpected connection loss."
 msgstr "এটা অপ্রত্যাশিত সংযোগ হারিয়ে যাওয়ার ব্যাপারে সক্রিয়।"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:13
-#, elixir-autogen, elixir-format
-msgid ". Only channel operators can add or remove ban exceptions."
-msgstr "শুধুমাত্র চ্যানেল অপারেটররা যোগ বা নিষেধাজ্ঞা অপসারণ করতে পারেন।"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:13
-#, elixir-autogen, elixir-format
-msgid ". Only channel operators can add or remove invite exceptions."
-msgstr "কেবল চ্যানেল অপারেটররা যোগ বা আমন্ত্রণ জানাতে পারেন।"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autorespond.html.heex:40
 #, elixir-autogen, elixir-format
 msgid ""
@@ -351,7 +336,7 @@ msgstr ""
 msgid ". Your 5 most recently used commands appear at the top."
 msgstr "..তোমার ৫ টা সম্প্রতি খোলা হয়েছে."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:105
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "/admin Command"
 msgstr "/admin Command"
@@ -366,6 +351,7 @@ msgstr "/alias Command"
 msgid "/alias add <name> <expansion>"
 msgstr "/alias add <name> <expansion>"
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_broadcast.html.heex:31
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:70
 #: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:86
@@ -412,12 +398,12 @@ msgid "/away Gone for lunch"
 msgstr "/away Gone for lunch"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:27
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "/ban Command"
 msgstr "/ban Command"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:112
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_motd.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "/clearmotd"
@@ -498,13 +484,13 @@ msgstr "/mode #general +o"
 msgid "/mode +x"
 msgstr "/mode +x"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:58
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "/mode Command"
 msgstr "/mode Command"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:110
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_motd.html.heex:33
 #: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:13
 #: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:47
 #: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:80
@@ -620,7 +606,7 @@ msgstr "/quit Command"
 msgid "/quit Your message here"
 msgstr "/quit Your message here"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:111
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_motd.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "/setmotd"
@@ -656,7 +642,7 @@ msgstr "/timer remind 1800 /me standup in 30 minutes"
 msgid "/timer stop <name>"
 msgstr "/timer stop <name>"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:60
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "/topic Command"
 msgstr "/topic Command"
@@ -679,6 +665,7 @@ msgstr "/umode +w"
 msgid "/unignore Command"
 msgstr "/unignore Command"
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_broadcast.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:66
 #: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:85
@@ -957,7 +944,13 @@ msgstr "একটি ঘোষনাসূচক শব্দ বাজানো
 msgid "A real-time character counter appears near the input box showing"
 msgstr "একটি বাস্তব-সময় অক্ষর পাল্টান ইনপুট বক্সের কাছে দেখায়"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:95
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_audit_log.html.heex:14
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_broadcast.html.heex:14
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:41
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_motd.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_server_settings.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "Access"
 msgstr "ব্যবহারের অধিকার"
@@ -1177,16 +1170,10 @@ msgstr "উপলব্ধ বিন্যাস"
 msgid "Available Toggles"
 msgstr "উপলব্ধ"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:12
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "Ban Exceptions"
 msgstr "এক্সেপশন ব্যতিক্রম"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:20
-#, elixir-autogen, elixir-format
-msgid "Ban Exceptions:"
-msgstr "নিষিদ্ধ ব্যতিক্রম:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:2
 #, elixir-autogen, elixir-format
@@ -1203,11 +1190,6 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Ban exceptions are managed through the"
 msgstr "নিষিদ্ধ ব্যতিক্রম দ্বারা পরিচালিত"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "Bans:"
-msgstr "বানস:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_command_syntax_tooltip.html.heex:27
 #, elixir-autogen, elixir-format
@@ -1315,6 +1297,7 @@ msgstr "চ্যানেল"
 msgid "Channel Autocomplete"
 msgstr "স্বয়ংক্রিয়-সম্পুর্ণ ব্যবস্থার প্রযোজ্য হেডার"
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:60
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:13
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:13
@@ -1384,7 +1367,7 @@ msgstr ""
 "বার্তা পাঠাতে পারবেন। ব্যবহারকারীর দ্বারা এটি নির্দিষ্ট করা হয়নি ও একই "
 "সেশানের মধ্যে পুনরায় স্থাপন করা সম্ভব নয়।"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:36
 #, elixir-autogen, elixir-format
 msgid ""
 "Channel operators see editable controls and can modify settings directly. "
@@ -1817,7 +1800,7 @@ msgstr "বিচ্ছিন্ন করুন"
 msgid "Display"
 msgstr "প্রদর্শন"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:40
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "Double-click a channel in the conversations sidebar, or go to"
 msgstr ""
@@ -1976,11 +1959,6 @@ msgstr "এস্কেপ:"
 #, elixir-autogen, elixir-format
 msgid "Event Types"
 msgstr "ইভেন্টের ধরন"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:93
-#, elixir-autogen, elixir-format
-msgid "Example Script"
-msgstr "নমুনা বাক্য"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:39
 #, elixir-autogen, elixir-format
@@ -2347,11 +2325,6 @@ msgstr "একটি চ্যানেলে:"
 msgid "Initial connection in progress."
 msgstr "প্রারম্ভিক সংযোগ বর্তমানে চলছে।"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:63
-#, elixir-autogen, elixir-format
-msgid "Input Format"
-msgstr "ইনপুট বিন্যাস"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_emoji.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Inserting"
@@ -2388,17 +2361,11 @@ msgstr ""
 "টি নির্বাচন আপনার ডাকনামে ডাকনামকৃত কার্ড দৃশ্যমান নয় । মাউস ভিউপোর্ট ত্যাগ"
 " করলে ভাসমান টুল বাতিল হয়ে যাবে।"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:67
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:59
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invites.html.heex:44
-#: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "Invite Exceptions"
 msgstr "অংশগ্রহণকারীদের আমন্ত্রণ জানান"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:24
-#, elixir-autogen, elixir-format
-msgid "Invite Exceptions:"
-msgstr "অংশগ্রহণকারীদের আমন্ত্রণ জানান:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:2
 #, elixir-autogen, elixir-format
@@ -2516,22 +2483,6 @@ msgstr "সীমা"
 #, elixir-autogen, elixir-format
 msgid "Link Previews:"
 msgstr "লিঙ্কের পূর্বদৃশ্য:"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:22
-#, elixir-autogen, elixir-format
-msgid "Manage ban exceptions (+e) that let specific users bypass bans."
-msgstr ""
-"নিষিদ্ধকরণ (++) পরিচালনা করুন যাতে নির্দিষ্ট ব্যবহারকারী নিষেধাজ্ঞা এড়িয়ে "
-"যেতে পারেন।"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:26
-#, elixir-autogen, elixir-format
-msgid ""
-"Manage invite exceptions (+I) that let specific users bypass invite-only "
-"mode."
-msgstr ""
-"ব্যতিক্রমসমূহ পরিচালনা করুন (+I) যার মাধ্যমে নির্দিষ্ট ব্যবহারকারীকে "
-"আমন্ত্রণ জানানো হবে।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:22
 #, elixir-autogen, elixir-format
@@ -2902,24 +2853,13 @@ msgstr ""
 msgid "Only search messages that mention your nickname."
 msgstr "শুধুমাত্র আপনার ডাকনাম সন্ধান করো"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:97
-#, elixir-autogen, elixir-format
-msgid ""
-"Only server administrators and server operators can access the Admin "
-"Console. Non-admin users will see an error message if they attempt to open "
-"it."
-msgstr ""
-"শুধুমাত্র সার্ভার ও সার্ভার অপারেটররা প্রশাসনিক কনসোল ব্যবহার করতে পারবেন। "
-"ব্যবহারকারী দ্বারা কোনো বার্তা খোলার প্রচেষ্টা হলে, ব্যবহারকারীকে সূচিত করার"
-" প্রচেষ্টা করা হবে।"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_timestamp_format.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Open"
 msgstr "খুলুন"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:27
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:7
@@ -3025,7 +2965,6 @@ msgstr "সমকক্ষ সংক্রান্ত তথ্য (কে- আ
 msgid "Per-Type Filtering:"
 msgstr "প্রতি"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:124
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_reconnect.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "Perform / Auto-Commands"
@@ -3041,7 +2980,7 @@ msgstr "ডায়লগ প্রদর্শন"
 msgid "Perform List"
 msgstr "তালিকা তৈরি করুন"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Permissions"
 msgstr "অনুমতি"
@@ -3154,7 +3093,7 @@ msgstr "হার"
 msgid "Ready"
 msgstr "প্রস্তুত"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "Real-Time Updates"
 msgstr "প্রকৃত সময় আপডেট"
@@ -3419,7 +3358,15 @@ msgstr ""
 "বার্তা অনুসন্ধান করা হবে ।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:34
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:102
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_audit_log.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_broadcast.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_danger_zone.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_motd.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_server_settings.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_turn.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_aliases.html.heex:55
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:77
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_reconnect.html.heex:49
@@ -3427,7 +3374,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autorespond.html.heex:52
 #: lib/retro_hex_chat_web/controllers/help_content/feature_away_reply.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:25
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invites.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/feature_command_syntax_tooltip.html.heex:47
@@ -3707,7 +3654,6 @@ msgid "Tab"
 msgstr "ট্যাব"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:7
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Tabs"
@@ -3843,7 +3789,7 @@ msgstr ""
 " উদাহরণস্বরূপ: \" <fotib\\2t/f0> থেকে আপনাকে বিতাড়ন করা হয়েছে। "
 "অ্যাডমিননিক: স্প্যাম"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:43
 #, elixir-autogen, elixir-format
 msgid ""
 "The dialog updates in real time when other users change channel settings, so"
@@ -4048,7 +3994,7 @@ msgstr "সরঞ্জাম উপনাম সম্পাদন ব্যব
 msgid "Tools > Auto-Respond"
 msgstr "সরঞ্জাম স্বয়ংক্রিয়-সংযোগ"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:40
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "Tools > Channel Central"
 msgstr "সরঞ্জাম চ্যানেল মধ্যName"
@@ -4227,11 +4173,6 @@ msgstr "ভিডিও কল ( V)"
 #, elixir-autogen, elixir-format
 msgid "View"
 msgstr "প্রদর্শন"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:18
-#, elixir-autogen, elixir-format
-msgid "View and manage the channel ban list."
-msgstr "চ্যানেল নিষিদ্ধ তালিকা প্রদর্শন এবং পরিচালনা করুন।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:14
 #, elixir-autogen, elixir-format
@@ -4492,13 +4433,6 @@ msgid ""
 msgstr ""
 "তৈরি। যদি সমস্ত চেষ্টা ব্যর্থ হয়, তবে আপনি স্বয়ংক্রিয়ভাবে ঐ পর্দায় "
 "সংযুক্ত হন"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:70
-#, elixir-autogen, elixir-format
-msgid "are treated as comments and skipped. Empty lines are also ignored."
-msgstr ""
-"তাদের সাথে মন্তব্য করা হয়েছে এবং তারা তা এড়িয়ে যাচ্ছে। ফাঁকা লাইনও "
-"উপেক্ষা করা হচ্ছে।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autocomplete.html.heex:29
 #, elixir-autogen, elixir-format
@@ -5165,7 +5099,7 @@ msgstr "• সংযোগ বিচ্ছিন্ন করা হয়ে�
 msgid "⚡ icon + gray"
 msgstr "ICO আইকন + ধূসর"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:94
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:25
 #, elixir-autogen, elixir-format
 msgid ""
 "# Inspect server state /admin server info /admin channel list /admin cs info"
@@ -5179,80 +5113,27 @@ msgstr ""
 msgid ", toolbar Options > Timers, or by running"
 msgstr "টুলবার অপশন টাইমার, অথবা চলমান অবস্থায়"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:20
-#, elixir-autogen, elixir-format
-msgid ""
-"- active-channel snapshots, search, Info, Create, Delete, Purge, selected-"
-"channel banlist output, and ChanServ admin actions."
-msgstr ""
-"- সক্রিয়-চ্যানেলের ছবি, অনুসন্ধান, তথ্য, অপসারণ, অপসারণ, অপসারণ, "
-"নির্বাচিতচ্যানেল-লিস্ট আউটপুট, এবং চ্যানসটেমরপ কাজ।"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:45
-#, elixir-autogen, elixir-format
-msgid "- guarded factory-reset controls."
-msgstr "- গার্ড ফ্যাক্টরি নিয়ন্ত্রণ."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:47
-#, elixir-autogen, elixir-format
-msgid "- raw batch command execution."
-msgstr "- raw ব্যাচ কমান্ড সঞ্চালন."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:40
-#, elixir-autogen, elixir-format
-msgid "- read-only TURN relay stats and active allocations from /admin turn."
-msgstr ""
-"- শুধুমাত্র টরেন্ট পরিসংখ্যান পড়া এবং <flotp/f0 > থেকে সক্রিয় সংযোগ।"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:35
-#, elixir-autogen, elixir-format
-msgid "- read-only administrative history with Last and User filters."
-msgstr "- শেষ আর ব্যবহারকারীর ফিল্টারে শুধু প্রশাসনিক ইতিহাস পড়া।"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:15
-#, elixir-autogen, elixir-format
-msgid ""
-"- registered-user snapshots, search, online-only filtering, banlist output, "
-"Info lookups, moderation actions, roles, rename, and NickServ admin actions."
-msgstr ""
-"- নিবন্ধিত ব্যবহারকারীর ছবি, অনুসন্ধান, কেবল অনলাইন ফিল্টারিং, নিষিদ্ধ "
-"তালিকা, তথ্য অন্বেষণ, সংশোধনমূলক কাজ, ভূমিকা, নাম, নাম, নাম, এবং নিক "
-"এক্সপেরিমেন্ট-এর কার্যক্রম।"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:30
-#, elixir-autogen, elixir-format
-msgid "- send wallops to +w users or announcements to every connected user."
-msgstr "- সবগুলো কম্পিউটারের সাথে সংযুক্ত ব্যবহারকারীর ঘোষণা দিতে বলো।"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:25
-#, elixir-autogen, elixir-format
-msgid ""
-"- view the current Message of the Day, edit it with /setmotd, or clear it "
-"with /clearmotd."
-msgstr ""
-"-দিন বর্তমান বার্তা প্রদর্শন করুন, <fotif/fted> সহযোগে এটি সম্পাদনা করুন।"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:109
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "/admin channel"
 msgstr "/admin channel"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:117
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_danger_zone.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "/admin nuke"
 msgstr "/admin nuke"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:106
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_server_settings.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "/admin server"
 msgstr "/admin server"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:65
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "/admin server info"
 msgstr "/admin server info"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:107
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "/admin user"
 msgstr "/admin user"
@@ -5321,6 +5202,8 @@ msgstr ""
 "অ্যাকাউন্ট ডাকনাম ও অাইডেন্টিটি ডাকনামের বা অনুপস্থিত অবস্থায় ব্যবহৃত "
 "উইজেট।"
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:51
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "Admin Console"
@@ -5340,11 +5223,6 @@ msgstr ""
 "সকল সংযুক্ত ব্যবহারকারীদের কাছে ঘোষণা করা হবে এবং উপেক্ষা করা হবে। শুধু "
 "সার্ভারই তাদের পাঠাতে পারে।"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:34
-#, elixir-autogen, elixir-format
-msgid "Audit Log"
-msgstr "আওয়াজের লগ"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "Auto Respond"
@@ -5355,17 +5233,12 @@ msgstr "সাড়া"
 msgid "Away Status"
 msgstr "অনুপস্থিত অবস্থা"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:29
-#, elixir-autogen, elixir-format
-msgid "Broadcast"
-msgstr "সম্প্রচার"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:8
 #, elixir-autogen, elixir-format
 msgid "Broadcast Tab"
 msgstr "ব্রডকাস্ট ট্যাব"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:71
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "ChanServ Registration Tab"
 msgstr "চাঁদ নিবন্ধন ট্যাব"
@@ -5374,21 +5247,6 @@ msgstr "চাঁদ নিবন্ধন ট্যাব"
 #, elixir-autogen, elixir-format
 msgid "Changing Nicknames"
 msgstr "ডাকনাম পরিবর্তন"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:19
-#, elixir-autogen, elixir-format
-msgid "Channels"
-msgstr "চ্যানেল"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:56
-#, elixir-autogen, elixir-format
-msgid "Channels Tab"
-msgstr "চ্যানেল ট্যাব"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:46
-#, elixir-autogen, elixir-format
-msgid "Console"
-msgstr "কনসোল"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:80
 #, elixir-autogen, elixir-format
@@ -5403,13 +5261,8 @@ msgstr ""
 "বর্তমান চ্যানেল বা ব্যক্তিগত বার্তা নাম, ব্যবহারকারী গণনা এবং অনলাইন বন্ধু "
 "ব্যাজ।"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:44
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:86
-#, elixir-autogen, elixir-format
-msgid "Danger Zone"
-msgstr "বিপদ সংকেত"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:104
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "Desktop & Windows"
 msgstr "ডেস্কটপ (W)"
@@ -5473,12 +5326,6 @@ msgstr ""
 "এটি একই কমান্ডের মাধ্যমে http://ffo.0 <fff > এবং <1\\-1> ব্যবহার করে এটি "
 "পাঠান।"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:65
-#, elixir-autogen, elixir-format
-msgid "In the Console tab, each line should be a slash command (e.g.,"
-msgstr ""
-"ট্যাব ট্যাব ট্যাব- এ প্রত্যেক লাইন একটি '/' (স্ল্যাশ চিহ্ন) থাকা উচিত,"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "Last Seen"
@@ -5499,17 +5346,6 @@ msgstr ""
 msgid "Live vs. Finished"
 msgstr "লাইভ v v সমাপ্ত"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:24
-#, elixir-autogen, elixir-format
-msgid "MOTD"
-msgstr "MOTD"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:72
-#, elixir-autogen, elixir-format
-msgid "MOTD Tab"
-msgstr "MOTD ট্যাব"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:120
 #: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:83
 #, elixir-autogen, elixir-format
 msgid "Message of the Day Menu"
@@ -5584,7 +5420,7 @@ msgstr "ব্যক্তিগত ব্যবহারকারী মোড"
 msgid "Profile Bio"
 msgstr "প্রোফাইল বায়ো"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:25
 #, elixir-autogen, elixir-format
 msgid ""
 "Register the channel with ChanServ, drop registration as founder, and manage"
@@ -5593,7 +5429,7 @@ msgstr ""
 "চ্যানফরোর এই চ্যানেল নিবন্ধন করা, নিবন্ধন প্রক্রিয়াকে প্রতিষ্ঠাতা, ওপিও, "
 "এবং ভিওআইপি তালিকা পরিচালনা করা।"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:31
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Registration:"
 msgstr "নিবন্ধন:"
@@ -5637,11 +5473,6 @@ msgstr "রুটের নীতি"
 msgid "Sender Icons"
 msgstr "প্রেরক আইকন"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:115
-#, elixir-autogen, elixir-format
-msgid "Server Broadcasts"
-msgstr "সার্ভারের ব্রডকাস্ট"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:2
 #, elixir-autogen, elixir-format
 msgid ""
@@ -5651,16 +5482,6 @@ msgstr ""
 "সার্ভার ব্রডকাস্টের মাধ্যমে অপারেটর ওয়ালপ এবং প্রশাসক ঘোষণা দেয় যে, "
 "প্রশাসনিক কনসোল ব্রডকাস্ট ট্যাব বা কমান্ড থেকে প্রেরিত হয়েছে।"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "Server Settings"
-msgstr "এক্স সার্ভার বৈশিষ্ট্যাবলী"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:79
-#, elixir-autogen, elixir-format
-msgid "Server Settings Tab"
-msgstr "সার্ভারের উইন্ডোর বৈশিষ্ট্য"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:34
 #, elixir-autogen, elixir-format
 msgid ""
@@ -5669,11 +5490,6 @@ msgid ""
 msgstr ""
 "প্রেরণের সময় অনুপস্থিত। স্ট্যাটাস- বার এই কর্ম দ্বারা আপনি অথবা ফিরে যেতে "
 "পারেন, এবং উপস্থিতি ট্যাব দ্বারা একটি স্বনির্ধারিত বার্তা নির্ধারণ করা হয় ।"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:39
-#, elixir-autogen, elixir-format
-msgid "TURN"
-msgstr "ছাকন"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:18
 #, elixir-autogen, elixir-format
@@ -5685,61 +5501,6 @@ msgstr ""
 "অ্যাকাউন্ট প্রোফাইল ডায়লগ বক্স দ্বারা একটি ডাকনাম পরিবর্তন করা যাবে। "
 "নিবন্ধিত লক্ষ্যবস্তুর ডাকনাম এখনও নিশ্চিত হওয়ার আগে ডাকনামের পাসওয়ার্ড "
 "প্রয়োজন।"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"The Admin Console is a tabbed server administration panel for inspecting and"
-" managing server state. Open it from the File menu, the Start menu Admin "
-"group, or the toolbar; it opens as a desktop window you can drag, resize, "
-"minimize to the taskbar, and close with its title-bar X. The Console tab "
-"keeps the raw batch command runner for provisioning and power-user "
-"workflows."
-msgstr ""
-"প্রশাসনিক কনসোল একটি ট্যাব সার্ভার প্রশাসন প্যানেল দ্বারা সার্ভার "
-"ব্যবস্থাপনার জন্য চেষ্টা করা হচ্ছে। ফাইল মেনু থেকে এটি খুলুন, মেনু এন্ট্রি "
-"গ্রুপ, বা টুলবার- এ খোলো; এটি এমন একটি ডেস্কটপ, যা আপনি উইন্ডোকে কনফিগার "
-"করতে পারেন, মাপ পরিবর্তন, উইন্ডোর শিরোনাম পরিবর্তন, এবং এর শিরোনাম-বার বন্ধ "
-"করতে পারবেন । কনসোল ট্যাব উদ্ধার ও বিদ্যুৎ সরবরাহের জন্য Setream কমান্ড রান "
-"করতে ব্যবহৃত হয়।"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:58
-#, elixir-autogen, elixir-format
-msgid ""
-"The Channels tab reads /admin channel list as a point-in-time snapshot. Use "
-"Search before Refresh, enter a channel and choose Info to run /admin channel"
-" info and load its banlist, enter a new channel name and choose Create to "
-"run /admin channel create, type a channel name into the confirmation field "
-"before Delete or Purge, or use ChanServ admin forms for info, drop, "
-"transfer, and access-list commands."
-msgstr ""
-"চ্যানেলের ট্যাবগুলো পড়ার সময় <fiff/ <fiff 0> চ্যানেল রূপে চিহ্নিত করা হয়।"
-" রিফ্রেশ করার পূর্বে সন্ধান করুন, একটি চ্যানেলে প্রবেশ করান এবং <f1/f1F1>, "
-"একটি নতুন চ্যানেলের নাম লিখুন ও সেগুলির উপর প্রবেশ করান। একটি নতুন চ্যানেলের"
-" নাম লিখুন ও <f222> তৈরি করুন, অপসারণের পূর্বে নিশ্চিত করুন, মোছার জন্য একটি"
-" চ্যানেল তৈরি করুন, অথবা স্থানান্তর করুন।"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:88
-#, elixir-autogen, elixir-format
-msgid ""
-"The Danger Zone tab previews /admin nuke, shows the preserved tables, and "
-"requires typing the current server name before it dispatches /admin nuke "
-"--confirm."
-msgstr ""
-"DConfs জোন ট্যাবের প্রাকদর্শন <fot\\@help> <ftw\\@oke>, সংরক্ষিত টেবিল "
-"প্রদর্শন করে, বর্তমান সার্ভারে উপস্থিত নামগুলি প্রদর্শন করা হয়। <f1> ও "
-"<fff1> নির্দিষ্ট করে।"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:74
-#, elixir-autogen, elixir-format
-msgid ""
-"The MOTD tab shows the current Message of the Day and gives administrators "
-"Set MOTD, Clear MOTD, and Refresh controls. Server operators can view the "
-"tab, but editing still requires administrator privileges."
-msgstr ""
-"MOTD ট্যাব দিনের বর্তমান বার্তা প্রদর্শন করে এবং অ্যাডমিনস্ট্রেটর সেট MOD, "
-"সংরক্ষণ এবং রিফ্রেশ করে। সার্ভার অপারেটর দ্বারা ট্যাব প্রদর্শন করা সম্ভব, "
-"কিন্তু এখনো সম্পাদনার জন্য প্রশাসনিক অধিকার আবশ্যক।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:7
 #, elixir-autogen, elixir-format
@@ -5756,24 +5517,6 @@ msgstr ""
 "URL ধরে নিন একটি ডেস্কটপ উইন্ডোর উপর, পার্শ্ববর্তী বার অথবা তার টাস্কবারে "
 "ছেড়ে দিন অথবা এটি বন্ধ করার জন্য ক্লিক করুন । বন্ধ করার সময় URL- টি আটক "
 "রাখা হবে । মেনু থেকে উপলব্ধ অতিরিক্ত তথ্য।"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:51
-#, elixir-autogen, elixir-format
-msgid ""
-"The Users tab reads /admin user list and /admin user banlist as point-in-"
-"time snapshots. Use Search and Online only before Refresh, enter a nick and "
-"choose Info to run /admin user info, use the moderation forms to confirm "
-"ban/unban, kick, mute, and unmute actions, or use Account & Roles and "
-"NickServ admin forms for rename, role, info, drop, and password reset "
-"commands."
-msgstr ""
-"ব্যবহারকারী ট্যাবগুলো পড়া হয়। ব্যবহারকারী তালিকা যে সমস্ত ব্যবহারকারীর "
-"তালিকা এবং <fot1> নির্দিষ্ট সময়ে ব্যবহারকারীদের নিষিদ্ধ করা হয়। পুনরায় "
-"লোড করার পূর্বে অনুসন্ধান ও অনলাইন ব্যবহার করুন, <f222/ user/ user/ user2> -"
-" এ প্রয়োগ করুন। অনুমোদিত ফর্মটি নিশ্চিত করার জন্য, ব্যবহারকারীর তথ্য "
-"নিশ্চিত করতে, %.0s/ 33x3, নিঃশব্দ ও acor- র প্রয়োগ করুন অথবা অ্যাকাউন্টের "
-"ভূমিকা, ভূমিকা, বা নাম, তথ্য, পাসওয়ার্ড, এবং অনুমোদন, অনুমোদন, এবং পুনরায় "
-"সংযোগের পূর্বে অনুমোদন করুন।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invites.html.heex:2
 #, elixir-autogen, elixir-format
@@ -5884,16 +5627,6 @@ msgstr ""
 "সংক্রান্ত তালিকা থেকে এটি খুলুন, অথবা কোনো উপনামের তালিকায় ডানদিকের বাটন "
 "ক্লিক করুন ।"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:14
-#, elixir-autogen, elixir-format
-msgid "Users"
-msgstr "ব্যবহারকারী"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:49
-#, elixir-autogen, elixir-format
-msgid "Users Tab"
-msgstr "ব্যবহারকারী"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:18
 #, elixir-autogen, elixir-format
 msgid ""
@@ -5999,11 +5732,6 @@ msgstr ""
 msgid ", or in an active P2P session use the"
 msgstr "- অথবা সক্রিয় P2P সেশন ব্যবহার করা হবে"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:10
-#, elixir-autogen, elixir-format
-msgid "- server information and editable settings."
-msgstr "- সার্ভার সংক্রান্ত তথ্য ও সম্পাদনযোগ্য বৈশিষ্ট্য ।"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:9
 #, elixir-autogen, elixir-format
 msgid ""
@@ -6057,15 +5785,6 @@ msgstr ""
 "শর্টকাটগুলি শ্রেণীতে গ্রুপ করা হয় যেমন ন্যাভিগেশন, কনফারেন্স, ফরম্যাট এবং "
 "সিস্টেম। প্রত্যেক শ্রেণী ক্রিয়া এবং বাইন্ডিং দিয়ে টেবিল প্রদর্শন করে ।"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:81
-#, elixir-autogen, elixir-format
-msgid ""
-"The Server Settings tab reads /admin server info and /admin server settings,"
-" then saves changed fields with /admin server set."
-msgstr ""
-"সার্ভার দ্বারা ট্যাবের তথ্য পাঠ করা হয়। সার্ভার দ্বারা ব্যবহৃত স্কিমার "
-"বৈশিষ্ট্যের মান <f মন পরিবর্তন করা হয় ও <fফেল>"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Toggle Privacy Mode"
@@ -6092,3 +5811,644 @@ msgstr ""
 "P2P মেনুর মধ্যে উপস্থিত বস্তু। পছন্দসই মান সংরক্ষিত হয়েছে ও ভবিষ্যতের "
 "সেশানের জন্য স্মরণ করা হয়। সক্রিয় করা হলে, অবস্থাসূচক বার ও পরিসংখ্যান "
 "প্রদর্শন করা হবে।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:10
+#, elixir-autogen, elixir-format
+msgid ". Lines starting with"
+msgstr "শুরু করার প্রক্রিয়া"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:57
+#, elixir-autogen, elixir-format
+msgid "/admin cs"
+msgstr "/admin cs"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_audit_log.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "/admin log"
+msgstr "/admin log"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:54
+#, elixir-autogen, elixir-format
+msgid "/admin ns"
+msgstr "/admin ns"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_turn.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "/admin turn"
+msgstr "/admin turn"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "Account & roles"
+msgstr "অ্যাকাউন্ট & ভূমিকা"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "Admin Audit Log"
+msgstr "প্রশাসনিক লগ"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_audit_log.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"Admin Audit Log is one of the server administration windows. Open it from "
+"File > Admin; it opens as a desktop window you can drag, resize, minimize to"
+" the taskbar, and close with its title-bar X."
+msgstr ""
+"প্রশাসনিক ভেন্ডর লগিন সার্ভার প্রশাসনের একটি অংশ। ফাইল > অ্যাডমিন দিয়ে "
+"খোলো; এটি এমন একটি ডেস্কটপ ফাইল, যা আপনি টেনে আনতে পারেন, মাপ পরিবর্তন করুন,"
+" এবং এর শিরোনাম- বার সহ বন্ধ করুন ।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "Admin Broadcast"
+msgstr "অ্যাডমিন ব্রডকাস্ট"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_broadcast.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"Admin Broadcast is one of the server administration windows. Open it from "
+"File > Admin; it opens as a desktop window you can drag, resize, minimize to"
+" the taskbar, and close with its title-bar X."
+msgstr ""
+"প্রশাসনিক সম্প্রচার সার্ভার প্রশাসনের জানালার একটি। ফাইল > অ্যাডমিন দিয়ে "
+"খোলো; এটি এমন একটি ডেস্কটপ ফাইল, যা আপনি টেনে আনতে পারেন, মাপ পরিবর্তন করুন,"
+" এবং এর শিরোনাম- বার সহ বন্ধ করুন ।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "Admin Channels"
+msgstr "প্রশাসনিক চ্যানেল"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"Admin Channels is the server-wide channel administration window. Open it "
+"from File > Admin > Channels; it opens as a desktop window you can drag, "
+"resize, minimize to the taskbar, and close with its title-bar X."
+msgstr ""
+"প্রশাসনিক চ্যানেল হল সার্ভার- ব্যাপী চ্যানেল প্রশাসন উইন্ডো। ফাইল থেকে এটি "
+"খুলুন > অ্যাডমিন > > > চ্যানেল; এটি একটি ডেস্কটপ উইন্ডোর মধ্যে খোলা হয়, যা "
+"আপনি উইন্ডোকে টেনে, মাপ পরিবর্তন এবং এর শিরোনাম-বার বন্ধ করতে পারেন ।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:56
+#, elixir-autogen, elixir-format
+msgid "Admin Danger Zone"
+msgstr "প্রশাসনিক বিপদসীমা"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_danger_zone.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"Admin Danger Zone is one of the server administration windows. Open it from "
+"File > Admin; it opens as a desktop window you can drag, resize, minimize to"
+" the taskbar, and close with its title-bar X."
+msgstr ""
+"প্রশাসনিক বিপদজনক জোন সার্ভার প্রশাসনের একটি জানালা। ফাইল > অ্যাডমিন দিয়ে "
+"খোলো; এটি এমন একটি ডেস্কটপ ফাইল, যা আপনি টেনে আনতে পারেন, মাপ পরিবর্তন করুন,"
+" এবং এর শিরোনাম- বার সহ বন্ধ করুন ।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "Admin MOTD"
+msgstr "প্রশাসনিক MOD"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_motd.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"Admin MOTD is one of the server administration windows. Open it from File > "
+"Admin; it opens as a desktop window you can drag, resize, minimize to the "
+"taskbar, and close with its title-bar X."
+msgstr ""
+"প্রশাসনিক MOTD একটি সার্ভার প্রশাসন উইন্ডো। ফাইল > অ্যাডমিন দিয়ে খোলো; এটি "
+"এমন একটি ডেস্কটপ ফাইল, যা আপনি টেনে আনতে পারেন, মাপ পরিবর্তন করুন, এবং এর "
+"শিরোনাম- বার সহ বন্ধ করুন ।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "Admin Server Settings"
+msgstr "প্রশাসনিক বৈশিষ্ট্য"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_server_settings.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"Admin Server Settings is one of the server administration windows. Open it "
+"from File > Admin; it opens as a desktop window you can drag, resize, "
+"minimize to the taskbar, and close with its title-bar X."
+msgstr ""
+"প্রশাসনিক সার্ভার দ্বারা বর্তমানে ব্যবহৃত সার্ভার উইন্ডোর মধ্যে একটি হওয়া "
+"আবশ্যক। ফাইল > অ্যাডমিন দিয়ে খোলো; এটি এমন একটি ডেস্কটপ ফাইল, যা আপনি টেনে "
+"আনতে পারেন, মাপ পরিবর্তন করুন, এবং এর শিরোনাম- বার সহ বন্ধ করুন ।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:53
+#, elixir-autogen, elixir-format
+msgid "Admin TURN"
+msgstr "প্রশাসনিক কর্ম"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_turn.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"Admin TURN is one of the server administration windows. Open it from File > "
+"Admin; it opens as a desktop window you can drag, resize, minimize to the "
+"taskbar, and close with its title-bar X."
+msgstr ""
+"প্রশাসনিক টরন সার্ভার প্রশাসনের একটি জানালা। ফাইল > অ্যাডমিন দিয়ে খোলো; এটি"
+" এমন একটি ডেস্কটপ ফাইল, যা আপনি টেনে আনতে পারেন, মাপ পরিবর্তন করুন, এবং এর "
+"শিরোনাম- বার সহ বন্ধ করুন ।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "Admin Users"
+msgstr "প্রশাসনিক ব্যবহারকারী"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"Admin Users is the server-wide user administration window. Open it from File"
+" > Admin > Users; it opens as a desktop window you can drag, resize, "
+"minimize to the taskbar, and close with its title-bar X. It gathers "
+"everything you can do about a person: moderating them, changing their "
+"account, and administering their NickServ registration."
+msgstr ""
+"প্রশাসনিক ব্যবহারকারী দ্বারা বর্তমানে ব্যবহৃত ব্যবহারকারী উইন্ডো ফাইল থেকে "
+"এটি খুলুন > Config > > > > ব্যবহারকারীদের দ্বারা এটি খোলা হয়; এটি একটি "
+"ডেস্কটপ উইন্ডো হিসেবে খোলা হয়, মাপ পরিবর্তন করে টাস্কবার থেকে, এবং এর "
+"শিরোনাম- বার সহযোগে বন্ধ হয়ে যাবে । আপনি একজন ব্যক্তির জন্য যা করতে পারেন, "
+"তা সংগ্রহ করে থাকেন: তাদেরকে তাড়া করা, তাদের একাউন্ট পরিবর্তন করা, এবং "
+"নিকস্টিড নিবন্ধন ব্যবস্থা করা।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:22
+#, elixir-autogen, elixir-format
+msgid ""
+"Ban, Unban, Kick, Mute and Unmute each take their own nick, so acting on "
+"several people in a row never applies an action to a stale selection. Ban "
+"accepts an optional reason and duration; Kick accepts a reason; Mute accepts"
+" a duration. Leaving a duration blank makes the action permanent."
+msgstr ""
+"বান, আনবান, কিক, নিঃশব্দ এবং অমার্জিত প্রতিটি ব্যক্তি নিজের উপনাম গ্রহণ করে,"
+" তাই এক সারিতে বেশ কয়েকজন লোকের অভিনয় করে। নিষিদ্ধ একটি ঐচ্ছিক কারণ এবং "
+"সময়কাল গ্রহণ করে; একটি কারণ গ্রহণ করুন; নিঃশব্দে প্রত্যাখ্যান করুন। ফাঁকা "
+"সময় রেখে কাজ স্থায়ী হয় ।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "ChanServ admin"
+msgstr "চ্যান চীন"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:36
+#, elixir-autogen, elixir-format
+msgid ""
+"ChanServ info reads a registration and Access list reads its SOP/AOP/VOP "
+"entries. Add access and Remove access take a nick and a level. Transfer "
+"founder hands the channel to another nick. Drop registration deletes the "
+"registration and is not reversible."
+msgstr ""
+"চ্যানফরেস্ট তথ্য একটি নিবন্ধন এবং প্রবেশাধিকার তালিকা পাঠ করে। এর উদ্দেশ্য "
+"হল, http://plot. উপনাম ব্যবহারের উদ্দেশ্যে একটি উপনাম যোগ করুন। "
+"প্রতিষ্ঠাতাকে অন্য চ্যানেলে হস্তান্তর করুন। নিবন্ধন বাতিল করা হয়েছে এবং "
+"পুনরায় করা সম্ভব নয়।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:57
+#, elixir-autogen, elixir-format
+msgid "Channel Permissions"
+msgstr "চ্যানেলের অনুমতি"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_motd.html.heex:16
+#, elixir-autogen, elixir-format
+msgid ""
+"Clear MOTD removes it entirely — users connecting afterwards see no message "
+"of the day until one is set again."
+msgstr ""
+"MOTD সম্পূর্ণ সরিয়ে ফেলে- ব্যবহারকারীদের সংযোগ বিচ্ছিন্ন করে দেয়। এরপর "
+"দিনের সাথে সংযোগ স্থাপন করে।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_motd.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Clearing it"
+msgstr "মুছে ফেলা হয়েছে"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "Creating"
+msgstr "তৈরি করা হচ্ছে"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:29
+#, elixir-autogen, elixir-format
+msgid ""
+"Delete removes the channel entirely; Purge deletes its messages and "
+"optionally only those from one nick. Both require the channel name typed a "
+"second time into the confirm field, and so does Drop registration. The "
+"server checks that too — it is not a client-side formality."
+msgstr ""
+"এটি সমগ্র চ্যানেল থেকে সরিয়ে ফেলা হবে; এর বার্তা মুছে ফেলা হবে এবং "
+"শুধুমাত্র একটি ডাকনাম থেকে উপদেশ দেওয়া হবে। দুটি চ্যানেলের নাম এই নিশ্চিত "
+"করার ক্ষেত্রে দ্বিতীয় যে নাম লেখা হয়েছে, তা হচ্ছে ড্রপ নিবন্ধন করা। "
+"সার্ভারও চেক করে- এটি ক্লায়েন্ট-অভিজ্ঞতা নয়।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "Destructive actions"
+msgstr "তালিকা"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Each line is a slash command, for example"
+msgstr "প্রত্যেক লাইন উদাহরণস্বরূপ, একটি স্ল্যাশ চিহ্ন"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:15
+#, elixir-autogen, elixir-format
+msgid ""
+"Enter a nick in the Nick field and choose Info to run /admin user info for a"
+" single account."
+msgstr ""
+"ডাকনামের মধ্যে একটি ডাকনাম লিখুন এবং একটি একক অ্যাকাউন্টের জন্য <f > "
+"ব্যবহারকারীর তথ্য সঞ্চালন করুন।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:15
+#, elixir-autogen, elixir-format
+msgid ""
+"Entering a channel in the Channel field and choosing Info runs /admin "
+"channel info and also loads that channel's ban list at the bottom of the "
+"window. The ban list follows whatever channel you last inspected."
+msgstr ""
+"চ্যানেলের মধ্যে চ্যানেলের ক্ষেত্রে চ্যানেলের উদ্দেশ্যে চ্যানেল আরম্ভ করা হয়"
+" এবং ইনফো রানিং <fot> চ্যানেল সংক্রান্ত তথ্য নির্বাচন করে ও চ্যানেলের নীচের "
+"অংশে চ্যানেলের তালিকা থেকে প্রতিরোধ করা হয়। নিষিদ্ধ তালিকায় আপনি শেষ যে "
+"চ্যানেলগুলো পরীক্ষা করেছেন সেগুলো দেখা যায়।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:19
+#, elixir-autogen, elixir-format
+msgid ""
+"Everything the other admin windows do with forms can be done here as a "
+"script. That makes it the tool for provisioning a server in one pass, or for"
+" anything the focused windows do not expose."
+msgstr ""
+"অন্য যে উইণ্ডোটি ফর্ম দিয়ে তৈরি করা যাবে সেগুলো স্ক্রিপ্ট হিসেবে এখানে করা "
+"যাবে । এর ফলে, কোনো একটা পাসে একটা সার্ভারের আয়োজন করার টুল তৈরি হয়, অথবা "
+"যে কোন বিষয়ের উপর মনোযোগ প্রদান করে না ।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Example script"
+msgstr "নমুনা বাক্য"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Finding a channel"
+msgstr "একটি চ্যানেল অনুসন্ধান করা হচ্ছে"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Finding a user"
+msgstr "একটি ব্যবহারকারী অনুসন্ধান করা হচ্ছে"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Input format"
+msgstr "ইনপুট বিন্যাস"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "Moderation"
+msgstr "মাঝারি তুষার"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:22
+#, elixir-autogen, elixir-format
+msgid ""
+"New channel plus Create runs /admin channel create, which both creates and "
+"registers the channel."
+msgstr ""
+"নতুন চ্যানেলের মধ্যে সঞ্চালিত হবে <fot; <FPL <4\\-0> চ্যানেল নির্মাণ করা "
+"হবে, দুটো তৈরি ও নিবন্ধন করা হবে।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "NickServ admin"
+msgstr "নিকারস্টার"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:36
+#, elixir-autogen, elixir-format
+msgid ""
+"NickServ info reads a registration, Reset password sets a new one without "
+"knowing the old, and Drop registration deletes it. Dropping is not "
+"reversible."
+msgstr ""
+"নিকসিউমার তথ্য একটি নিবন্ধনে পড়া হয়, পুনরায় পাসওয়ার্ড তৈরি করে পুরোনো "
+"পাসওয়ার্ড না লিখে নতুন করে তৈরি করা হয়। হাত ধোয়া ঠিক নয়।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:28
+#, elixir-autogen, elixir-format
+msgid ""
+"Only server administrators and server operators can open it. The console "
+"runs under a privileged context that forces admin rights and lifts the per-"
+"user channel limit, so that gate is the only thing between a caller and "
+"privileged execution."
+msgstr ""
+"শুধুমাত্র সার্ভার ও সার্ভার অপারেটররা এটি খুলতে পারে। এই কনসোল একটি বিশেষ "
+"প্রেক্ষাপটের মধ্যে দিয়ে যায়, যার ফলে নিরাপত্তা বাহিনী প্রশাসনের অধিকার এবং"
+" সকল ব্যবহারকারীর চ্যানেলের সীমা বাড়িয়ে দেয়।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:43
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:43
+#, elixir-autogen, elixir-format
+msgid ""
+"Only server administrators and server operators can open this window. Server"
+" operators see it read-only: the controls are disabled, and the server "
+"refuses the action even if the control is bypassed."
+msgstr ""
+"এই উইন্ডো শুধুমাত্র সার্ভার ও সার্ভারের দ্বারা উইন্ডো খোলা যাবে। সার্ভার "
+"অপারেটররা দেখতে পায় যে: নিয়ন্ত্রণ নিষ্ক্রিয় রয়েছে এবং সার্ভার এই কাজটি "
+"অস্বীকার করছে যদিও নিয়ন্ত্রণ পাশ করা হচ্ছে।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_server_settings.html.heex:23
+#, elixir-autogen, elixir-format
+msgid ""
+"Only server administrators may edit. Server operators can open the window "
+"and read the panes, but every control is disabled and the server refuses the"
+" change regardless."
+msgstr ""
+"শুধুমাত্র অ্যাডমিনস্ট্রেটরs সম্পাদনা করতে পারেন। সার্ভার অপারেটররা জানালা "
+"খুলে দিতে পারে আর প্যান- পেন পড়তে পারে, কিন্তু প্রতিবার নিয়ন্ত্রণ "
+"নিষ্ক্রিয় হয়ে যায়।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_motd.html.heex:23
+#, elixir-autogen, elixir-format
+msgid ""
+"Only server administrators may edit. Server operators can read the current "
+"message but the editor and both write buttons are disabled."
+msgstr ""
+"শুধুমাত্র অ্যাডমিনস্ট্রেটরs সম্পাদনা করতে পারেন। সার্ভার অপারেটর বর্তমান "
+"বার্তা পাঠ করতে পারে কিন্তু সম্পাদক নিষ্ক্রিয় করা আছে।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_audit_log.html.heex:16
+#, elixir-autogen, elixir-format
+msgid ""
+"Only server administrators may refresh. The window is read-only for "
+"everyone: there is nothing here to change."
+msgstr ""
+"শুধুমাত্র প্রশাসকের দ্বারা সমর্থিত হওয়ার সম্ভাবনা রয়েছে। জানালাটি শুধু "
+"সবার জন্যই পড়া যায়: পরিবর্তনের আর কোন উপায় নেই।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_server_settings.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Reading it back"
+msgstr "আবার পড়া"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_audit_log.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Reading the log"
+msgstr "লগ ফাইল পড়া হচ্ছে"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:29
+#, elixir-autogen, elixir-format
+msgid ""
+"Rename changes a registered nickname. Set role assigns server_operator or "
+"removes admin roles by setting user. Only a root administrator can grant the"
+" admin role — the option is disabled for everyone else."
+msgstr ""
+"নিবন্ধিত ডাকনাম পরিবর্তন করো ব্যবহারকারী দ্বারা davation দ্বারা সার্ভার "
+"ভূমিকা নির্ধারণ অথবা বাতিল করা হয়। শুধুমাত্র একটি root দ্বারা বর্হিভূত "
+"ভূমিকা প্রদান করা যাবে — এই বিকল্প নিষ্ক্রিয় করা যাবে ।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_broadcast.html.heex:16
+#, elixir-autogen, elixir-format
+msgid ""
+"Server operators may send wallops. Announce is administrators only, and the "
+"radio is disabled for anyone else. If neither is available the Send button "
+"is disabled entirely."
+msgstr ""
+"সার্ভার অপারেটররা হয়তো ওয়ালপস পাঠাতে পারে। ঘোষণা শুধু প্রশাসক, আর রেডিও "
+"কারো জন্য নিষ্ক্রিয়। প্রেরণের অপশন বিদ্যমান নয়।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_motd.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Setting it"
+msgstr "এটা সেট করা হচ্ছে"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_turn.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Snapshots, not a feed"
+msgstr "Shuss, ফিড নয়"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"The Admin Console is a batch command runner. Open it from File > Admin > "
+"Console; it opens as a desktop window you can drag, resize, minimize to the "
+"taskbar, and close with its title-bar X."
+msgstr ""
+"প্রশাসনিক কনসোল হলো ব্যাচ কমান্ড রানার। ফাইল থেকে এটি খুলুন > অ্যাডমিন > > >"
+" কনসোল; এটি একটি ডেস্কটপ উইন্ডোর মধ্যে খোলা হয়, যা উইন্ডোকে আপনি টেনে আনতে "
+"পারেন, টাস্কবার থেকে প্রস্থান করে ও এর শিরোনাম- বার সহযোগে বন্ধ হয়ে যাবে ।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_danger_zone.html.heex:16
+#, elixir-autogen, elixir-format
+msgid ""
+"The button stays disabled until you type the server's current name. The "
+"server checks the same thing when the form is submitted, so a stale button "
+"is never what authorizes a wipe — if the server was renamed after the "
+"preview loaded, the submission is refused."
+msgstr ""
+"সংরক্ষণ না করা পর্যন্ত বাটন নিষ্ক্রিয় থাকবে । ফর্ম ফর্ম জমা দেওয়া হলে "
+"সার্ভার সেই একই জিনিষ পরীক্ষা করে। সুতরাং একটি পুরনো ফাইল পরিচয় প্রমাণ "
+"প্রক্রিয়া কখনোই অনুমোদন করেনা- যদি সার্ভার লোড করা হয় তাহলে এন্ট্রিটি "
+"প্রাকদর্শন করা হবে না।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_danger_zone.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "The confirmation"
+msgstr "নিশ্চিতি"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_server_settings.html.heex:9
+#, elixir-autogen, elixir-format
+msgid ""
+"The form writes the server's configuration record: name, description, "
+"welcome message, channel limit, registration policy and how long whowas "
+"entries are kept. Saving dispatches one change per field you actually "
+"altered, so the result strip can report several lines at once."
+msgstr ""
+"সার্ভার কনফিগারেশনের বর্ণনার রেকর্ড: নাম, বর্ণনা, বার্তা, চ্যানেল সীমা, "
+"নিবন্ধন পলিসি এবং কত সময় ধরে লেখা আছে তা লিখুন । আপনি যে কোন ক্ষেত্রে একবার"
+" পরিবর্তন করেন, তার ফলে ফলাফল একই সময়ে বেশ কিছু লাইন প্রকাশ করতে পারে।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:9
+#, elixir-autogen, elixir-format
+msgid ""
+"The list reads /admin channel list as a point-in-time snapshot — it does not"
+" update on its own. Type into Search before choosing Refresh to narrow it."
+msgstr ""
+"তালিকার মধ্যে উপস্থিত তালিকা <fof0> <int-interface internet> একটি end-"
+"interface-time দ্বারা চিহ্নিত করা হয় না। গতি হ্রাসের পূর্বে অনুসন্ধানের "
+"পূর্বে টাইপ করুন ।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:9
+#, elixir-autogen, elixir-format
+msgid ""
+"The list reads /admin user list as a point-in-time snapshot — it does not "
+"update on its own. Type into Search and tick Online only before choosing "
+"Refresh to narrow it. The ban list below reads /admin user banlist under the"
+" same search term, so filtering the list filters both."
+msgstr ""
+"তালিকার মধ্যে উপস্থিত তালিকা <fof0> ব্যবহারকারীর নামের তালিকা। etc/interind-"
+"in-interface'র ক্ষেত্রে এটি কোনো আপডেট করা হয় না। অনুসন্ধান ও টিকতে টাইপ "
+"করুন । নীচে নিষিদ্ধ তালিকা পড়া হল। একই অনুসন্ধানের ক্ষেত্রে ব্যবহারকারীর "
+"নিষিদ্ধ তালিকা, সুতরাং ফিল্টার ফিল্টার ফিল্টার ফিল্টারও ফিল্টার করা হয়।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_turn.html.heex:16
+#, elixir-autogen, elixir-format
+msgid ""
+"The numbers are from the last time Refresh ran. Nothing here updates on its "
+"own."
+msgstr "শেষবারের মতো দেখা যায়। এখানে কোন তাজা সংবাদ নেই।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_motd.html.heex:9
+#, elixir-autogen, elixir-format
+msgid ""
+"The pane at the top shows the message that is set right now, so you can see "
+"what you are about to replace. Set MOTD writes the editor's contents; "
+"submitting an empty editor is the same as clearing."
+msgstr ""
+"উপরে প্রদর্শিত বস্তুটিকে এখনই নির্ধারণ করা হয়েছে। এখন আপনি কী দেখতে পারেন "
+"তা দেখো। সেট MOTD সম্পাদক- এর বিষয়বস্তু লিখুন; একটি ফাঁকা সম্পাদককে দেওয়া "
+"হলে সেই একই কথা ।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_danger_zone.html.heex:9
+#, elixir-autogen, elixir-format
+msgid ""
+"The preview lists what /admin nuke would delete. Admin roles, audit logs, "
+"server bans and server settings survive it; everything else does not. This "
+"cannot be undone."
+msgstr ""
+"প্রিন্ট করার জন্য চিহ্নিত পূর্বদৃশ্যের তালিকা। <fonly> <0\\-0> উপস্থিত "
+"থাকলে, মুছে ফেলা হবে। প্রশাসনিক ভূমিকা, অডিট লগ, সার্ভার নিষেধাজ্ঞা এবং "
+"সার্ভারের বৈশিষ্ট্যগুলি এই অবস্থায় পাওয়া যায় না; সব কিছু সম্পন্ন হয় না। "
+"এই কাজ নাকচ করা যাবে না।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_server_settings.html.heex:16
+#, elixir-autogen, elixir-format
+msgid ""
+"The two panes below the form show what the server reports right now, from "
+"/admin server info and /admin server settings. Refresh re-reads both without"
+" leaving the window."
+msgstr ""
+"সার্ভার থেকে প্রাপ্ত বৈশিষ্ট্যগুলির তথ্য সার্ভারের মধ্যে প্রদর্শন করা হবে। "
+"<ftp> ও <server> উল্লেখ করা আবশ্যক। উইন্ডো থেকে প্রস্থান না করে নতুন করে "
+"পড়া হবে।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_audit_log.html.heex:9
+#, elixir-autogen, elixir-format
+msgid ""
+"The window reads /admin log as a point-in-time snapshot — it does not follow"
+" new entries. Last bounds how many rows come back, and User narrows it to "
+"one admin. Leaving Last blank falls back to 20 rather than asking for "
+"everything."
+msgstr ""
+"উইন্ডো s readss পড়া <ftplot/int-interface-time রূপে লগ করা হয় না। এটা নতুন"
+" এন্ট্রি অনুসরণ করে না। শেষ সীমা হল কত সারি ফিরে এসেছে, আর ব্যবহারকারী এটাকে"
+" একজন প্রশাসকের কাছে সীমাবদ্ধ করে দেয়। শেষ ফাঁকা জায়গায় সবকিছু চাইতে বরং "
+"২০ থেকে ২০ ফেরত যায়।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_broadcast.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Two reaches"
+msgstr "দুই ভাগ"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_turn.html.heex:9
+#, elixir-autogen, elixir-format
+msgid ""
+"Two read-only panes: relay statistics and the allocations currently held. If"
+" no TURN relay is configured the stats pane says so rather than showing "
+"zeros."
+msgstr ""
+"দু'টি মাত্র: পরিসংখ্যান এবং বরাদ্দগুলো বর্তমানে স্থগিত রয়েছে। যদি কোন "
+"টরেন্ট রিলে না কনফিগার করা হয় তবে পরিসংখ্যান পেনের ফোন নাম্বারটি বলছে, "
+"শূন্য দেখানোর পরিবর্তে।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_broadcast.html.heex:9
+#, elixir-autogen, elixir-format
+msgid ""
+"Wallops goes only to users who opted in with mode +w. Announce goes to "
+"everyone connected, whether they asked for it or not — reserve it for things"
+" people genuinely need to see."
+msgstr ""
+"ওয়ালপস কেবলমাত্র ব্যবহারকারীদের কাছে যায় যারা মোড +w দিয়ে বের হয়ে যায়। "
+"ঘোষণা সকলের কাছে যায়, তারা তা চায় কি না, তা চায় কি না, তা - ই ।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_danger_zone.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "What a wipe removes"
+msgstr "কি মুছে ফেলা যাবে"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_server_settings.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "What it edits"
+msgstr "কি সম্পাদনা"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_turn.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "What it shows"
+msgstr "কি দেখায়"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "Why use it"
+msgstr "কেন এটা ব্যবহার কর"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_audit_log.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_broadcast.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_danger_zone.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_motd.html.heex:31
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_server_settings.html.heex:31
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_turn.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "admin console"
+msgstr "বন কনসোল"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "are comments and are skipped, as are empty lines."
+msgstr "মন্তব্য এসেছে এবং ধরা পড়েছে, যেমনটা ফাঁকা লাইন।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_broadcast.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "server broadcasts"
+msgstr "সম্প্রচারকারী সার্ভার"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:13
+#, elixir-autogen, elixir-format
+msgid ""
+", with the list selector set to Ban Exc. Only channel operators can add or "
+"remove ban exceptions."
+msgstr ""
+"নির্বাচিত তালিকা প্রস্তুত করা হয়েছে। শুধুমাত্র চ্যানেলের অপারেটররা যোগ অথবা"
+" নিষিদ্ধ ব্যতিক্রম যোগ করতে পারেন।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:13
+#, elixir-autogen, elixir-format
+msgid ""
+", with the list selector set to Invite Exc. Only channel operators can add "
+"or remove invite exceptions."
+msgstr ""
+"তালিকা নির্বাচক দ্বারা এক্সকড্স্ক সেট করা হয়। শুধুমাত্র চ্যানেলের অপারেটররা"
+" যোগ অথবা আমন্ত্রণ জানাতে পারেন।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:12
+#: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "Access Lists"
+msgstr "তালিকা ব্যবহার করো"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Access Lists:"
+msgstr "উপলব্ধ তালিকা:"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:18
+#, elixir-autogen, elixir-format
+msgid ""
+"One list at a time, picked with the selector at the top of the tab: bans, "
+"ban exceptions (+e) that let specific users bypass bans, and invite "
+"exceptions (+I) that let specific users bypass invite-only mode."
+msgstr ""
+"ট্যাবের উপরে নির্বাচকের একটি তালিকাতে নির্বাচন করা হয়েছে: নিষিদ্ধ, "
+"ব্যতিক্রমসমূহ (+), সুনির্দিষ্ট ব্যবহারকারীকে নিষিদ্ধ করা হয়েছে এবং এর "
+"ব্যতিক্রমসমূহ উপেক্ষা করতে দেয়া হয়েছে।"

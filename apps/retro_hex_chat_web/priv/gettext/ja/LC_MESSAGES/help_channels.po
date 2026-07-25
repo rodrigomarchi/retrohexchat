@@ -2201,15 +2201,6 @@ msgstr ""
 "の特長\n"
 "チャンネル中央を開き、登録ステータスを確認するために登録タブを選択し、登録されていないチャンネルを登録し、チャンネルを創設者としてドロップし、SOP、AOP、VOPアクセスリストを管理します。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:12
-#, elixir-autogen, elixir-format
-msgid ""
-"Open Channel Central for a channel you have joined, then choose Registration"
-" after Invite Exceptions. The status area shows whether the channel is "
-"registered and who the founder is."
-msgstr ""
-"参加したチャンネルでチャンネル中央を開くと、招待状後に登録を選択します。 ステータスエリアは、チャンネルが登録されているか、創設者であるかを示します。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:10
 #, elixir-autogen, elixir-format
 msgid ""
@@ -2389,3 +2380,13 @@ msgid ""
 msgstr ""
 "の特長\n"
 "ツールバーのボタン。 招待のみ (+i) チャネルは +i バッジでマークされます。 1 つを選択し、リクエスト アクセス... を選択して、オペレーターにノックリクエストを送信します。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:12
+#, elixir-autogen, elixir-format
+msgid ""
+"Open Channel Central for a channel you have joined, then choose Registration"
+" after Access Lists. The status area shows whether the channel is registered"
+" and who the founder is."
+msgstr ""
+"参加したチャンネル用のチャンネル中央を開き、アクセスリストの後に登録を選択します。 "
+"ステータスエリアは、チャンネルが登録されているか、創設者であるかを示します。"
