@@ -160,6 +160,39 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
           label={dgettext("ui", "End P2P Session")}
           icon_fn={:icon_btn_disconnect}
         />
+        <%!-- Account --%>
+        <.start_menu_separator />
+        <.start_menu_submenu
+          label={dgettext("ui", "Account")}
+          testid="start-menu-account-submenu"
+        >
+          <:icon><Icons.icon_status_user class="h-4 w-4" /></:icon>
+          <.app_item
+            action="open_account_dialog"
+            on_action={@on_action}
+            label={dgettext("ui", "Account")}
+            icon_fn={:icon_status_user}
+          />
+          <.app_item
+            action="open_profile_dialog"
+            on_action={@on_action}
+            label={dgettext("ui", "Profile")}
+            icon_fn={:icon_btn_profile}
+          />
+          <.app_item
+            action="open_away_dialog"
+            on_action={@on_action}
+            label={dgettext("ui", "Away")}
+            icon_fn={:icon_btn_away}
+          />
+          <.app_item
+            action="open_user_modes_dialog"
+            on_action={@on_action}
+            label={dgettext("ui", "User Modes")}
+            icon_fn={:icon_btn_user_modes}
+          />
+        </.start_menu_submenu>
+
         <%!-- Admin (permission-gated) --%>
         <.start_menu_separator :if={@is_admin} />
         <.start_menu_submenu

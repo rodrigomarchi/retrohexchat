@@ -737,7 +737,7 @@
       />
     </.desktop_window>
 
-    <%!-- Account — server-managed: every opener re-seeds tab/auth-mode/bio. --%>
+    <%!-- Account — server-managed: opening refreshes the NickServ identity. --%>
     <.desktop_window
       :if={"account" in @open_windows}
       id="account"
@@ -746,9 +746,9 @@
       default_x={180}
       default_y={70}
       width={560}
-      height={520}
+      height={480}
       min_width={420}
-      min_height={360}
+      min_height={340}
       body_class="flex min-h-0 flex-col p-2"
       data-testid="account-window"
     >
@@ -760,8 +760,75 @@
         account_state={Session.identity_state(@session)}
         registered={@account_registered}
         identified={@session.identified}
+      />
+    </.desktop_window>
+
+    <%!-- Profile — server-managed: the bio draft seeds from the session on open. --%>
+    <.desktop_window
+      :if={"profile" in @open_windows}
+      id="profile"
+      title={dgettext("chat", "Profile")}
+      managed
+      default_x={210}
+      default_y={100}
+      width={520}
+      height={380}
+      min_width={400}
+      min_height={300}
+      body_class="flex min-h-0 flex-col p-2"
+      data-testid="profile-window"
+    >
+      <:icon><Icons.icon_dialog_profile class="h-4 w-4" /></:icon>
+      <.live_component
+        module={RetroHexChatWeb.ChatLive.Components.ProfileDialog}
+        id={RetroHexChatWeb.ChatLive.Components.ProfileDialog.id()}
+        nickname={@session.nickname}
+      />
+    </.desktop_window>
+
+    <%!-- Away — server-managed: a pure view over the session's away state. --%>
+    <.desktop_window
+      :if={"away" in @open_windows}
+      id="away"
+      title={dgettext("chat", "Away")}
+      managed
+      default_x={240}
+      default_y={130}
+      width={440}
+      height={320}
+      min_width={360}
+      min_height={260}
+      body_class="flex min-h-0 flex-col p-2"
+      data-testid="away-window"
+    >
+      <:icon><Icons.icon_dialog_away class="h-4 w-4" /></:icon>
+      <.live_component
+        module={RetroHexChatWeb.ChatLive.Components.AwayDialog}
+        id={RetroHexChatWeb.ChatLive.Components.AwayDialog.id()}
         away={@session.away}
         away_message={@session.away_message || @account_last_away_message || ""}
+      />
+    </.desktop_window>
+
+    <%!-- User Modes — server-managed: a pure view over the session's umodes. --%>
+    <.desktop_window
+      :if={"user-modes" in @open_windows}
+      id="user-modes"
+      title={dgettext("chat", "User Modes")}
+      managed
+      default_x={270}
+      default_y={160}
+      width={400}
+      height={260}
+      min_width={340}
+      min_height={220}
+      body_class="flex min-h-0 flex-col p-2"
+      data-testid="user-modes-window"
+    >
+      <:icon><Icons.icon_dialog_user_modes class="h-4 w-4" /></:icon>
+      <.live_component
+        module={RetroHexChatWeb.ChatLive.Components.UserModesDialog}
+        id={RetroHexChatWeb.ChatLive.Components.UserModesDialog.id()}
         wallops_enabled={Session.has_mode?(@session, :wallops)}
       />
     </.desktop_window>

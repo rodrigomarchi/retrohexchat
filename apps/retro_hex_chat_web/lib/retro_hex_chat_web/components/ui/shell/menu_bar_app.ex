@@ -347,19 +347,25 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
     <.menu_item
       icon_fn={:icon_dialog_nick}
       label={dgettext("ui", "Change Nickname...")}
-      action="open_account_profile"
+      action="open_profile_dialog"
       on_action={@on_action}
     />
     <.menu_item
-      icon_fn={:icon_status_user}
+      icon_fn={:icon_btn_profile}
       label={dgettext("ui", "Edit Profile...")}
-      action="open_account_profile"
+      action="open_profile_dialog"
       on_action={@on_action}
     />
     <.menu_item
-      icon_fn={:icon_btn_dnd}
+      icon_fn={:icon_btn_away}
       label={dgettext("ui", "Set Away...")}
-      action="open_account_presence"
+      action="open_away_dialog"
+      on_action={@on_action}
+    />
+    <.menu_item
+      icon_fn={:icon_btn_user_modes}
+      label={dgettext("ui", "User Modes...")}
+      action="open_user_modes_dialog"
       on_action={@on_action}
     />
     <.menu_item

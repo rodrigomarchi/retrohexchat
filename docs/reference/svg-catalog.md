@@ -111,6 +111,17 @@ falls back to the globe for unknown codes.
 
 ## New Icons in Existing Submodules (16x16)
 
+### People
+
+`apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/icons/people.ex`
+
+| Function | Description |
+|----------|-------------|
+| `icon_dialog_profile` | ID card with portrait + bio lines — Profile title bar and taskbar **[DONE]** |
+| `icon_btn_profile` | ID card outline, toolbar weight — Profile menu/start menu/toolbar **[DONE]** |
+| `icon_dialog_user_modes` | Person + mode flag — User Modes title bar and taskbar **[DONE]** |
+| `icon_btn_user_modes` | Person + mode flag, toolbar weight — User Modes menu/start menu/toolbar **[DONE]** |
+
 ### Communication
 
 `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/icons/communication.ex`
@@ -161,6 +172,8 @@ falls back to the globe for unknown codes.
 
 | Function | Description |
 |----------|-------------|
+| `icon_dialog_away` | Clock — Away window title bar and taskbar **[DONE]** |
+| `icon_btn_away` | Clock outline, toolbar weight — Away menu/start menu/toolbar **[DONE]** |
 | `icon_btn_dnd` | Moon (normal) **[DONE]** |
 | `icon_btn_dnd_active` | Moon + red slash (active) **[DONE]** |
 | `icon_btn_help_topics` | Question mark in circle **[DONE]** |

@@ -1,20 +1,12 @@
-/* Account is a form-heavy desktop window: keep desktop dense, but make stacked
-   mobile expose tabs, long text, and action rows without relying on squeezed
-   one-line controls. */
+/* Shared by the four account windows (Account, Profile, Away, User Modes):
+   form-heavy panels that stay dense on desktop while stacked mobile gets
+   full-size controls and wrapping action rows. */
 .acct-dialog {
   scrollbar-width: thin;
 }
 
 .acct-dialog:focus {
   outline: none;
-}
-
-.acct-tabs-shell {
-  position: relative;
-}
-
-.acct-dialog .tabs-content {
-  min-height: 0;
 }
 
 .acct-value,
@@ -58,91 +50,6 @@
 .desktop--stacked .acct-dialog {
   padding-bottom: 8px;
   -webkit-overflow-scrolling: touch;
-}
-
-.desktop--stacked .acct-tabs {
-  min-width: 0;
-}
-
-.desktop--stacked .acct-main-tabs {
-  flex-wrap: nowrap !important;
-  align-items: end;
-  gap: 0;
-  overflow-x: auto;
-  overflow-y: hidden;
-  padding: 6px 6px 0;
-  scroll-padding-inline: 36px;
-  scrollbar-width: thin;
-  -webkit-overflow-scrolling: touch;
-}
-
-.desktop--stacked .acct-main-tabs::-webkit-scrollbar {
-  height: 6px;
-}
-
-.desktop--stacked .acct-main-tabs::-webkit-scrollbar-track {
-  background: #dfdfdf;
-}
-
-.desktop--stacked .acct-main-tabs::-webkit-scrollbar-thumb {
-  background: #808080;
-  border: 1px solid #606060;
-}
-
-.desktop--stacked .acct-tabs-shell::before,
-.desktop--stacked .acct-tabs-shell::after {
-  position: absolute;
-  top: 6px;
-  bottom: 1px;
-  z-index: 20;
-  display: flex;
-  width: 34px;
-  align-items: center;
-  color: #000080;
-  font-weight: 700;
-  opacity: 0;
-  pointer-events: none;
-  text-shadow: 1px 1px #ffffff;
-}
-
-.desktop--stacked .acct-tabs-shell::before {
-  content: "<";
-  left: 0;
-  justify-content: flex-start;
-  padding-left: 4px;
-  border-left: 1px solid #808080;
-  background: linear-gradient(270deg, rgb(192 192 192 / 0), #c0c0c0 58%);
-}
-
-.desktop--stacked .acct-tabs-shell::after {
-  content: ">";
-  right: 0;
-  justify-content: flex-end;
-  padding-right: 4px;
-  border-right: 1px solid #808080;
-  background: linear-gradient(90deg, rgb(192 192 192 / 0), #c0c0c0 58%);
-}
-
-.desktop--stacked .acct-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="presence"])::before,
-.desktop--stacked .acct-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="modes"])::before,
-.desktop--stacked .acct-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="register"])::after,
-.desktop--stacked .acct-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="profile"])::after,
-.desktop--stacked .acct-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="presence"])::after {
-  opacity: 1;
-}
-
-.desktop--stacked .acct-main-tabs .tabs-trigger {
-  flex: 0 0 auto;
-  min-height: 40px;
-  padding: 7px 12px 5px;
-}
-
-.desktop--stacked .acct-main-tabs .tabs-trigger[data-state="active"] {
-  padding-top: 9px;
-}
-
-.desktop--stacked .acct-tab-content {
-  padding: 8px;
 }
 
 .desktop--stacked .acct-status-grid {
@@ -203,16 +110,14 @@
    content. Reserve real gutters so scroll cues no longer cover tab labels. */
 .desktop--stacked .cc-main-tabs-shell,
 .desktop--stacked .bm-tabs-shell,
-.desktop--stacked .ab-tabs-shell,
-.desktop--stacked .acct-tabs-shell {
+.desktop--stacked .ab-tabs-shell {
   overflow: hidden;
   padding-inline: 24px;
 }
 
 .desktop--stacked .cc-main-tabs,
 .desktop--stacked .bm-main-tabs,
-.desktop--stacked .ab-main-tabs,
-.desktop--stacked .acct-main-tabs {
+.desktop--stacked .ab-main-tabs {
   padding: 6px 112px 0 0;
   scroll-padding-inline: 28px;
   scroll-snap-type: x mandatory;
@@ -220,8 +125,7 @@
 
 .desktop--stacked .cc-main-tabs .tabs-trigger,
 .desktop--stacked .bm-main-tabs .tabs-trigger,
-.desktop--stacked .ab-main-tabs .tabs-trigger,
-.desktop--stacked .acct-main-tabs .tabs-trigger {
+.desktop--stacked .ab-main-tabs .tabs-trigger {
   scroll-margin-inline: 28px;
   scroll-snap-align: start;
   scroll-snap-stop: always;
@@ -232,9 +136,7 @@
 .desktop--stacked .bm-tabs-shell::before,
 .desktop--stacked .bm-tabs-shell::after,
 .desktop--stacked .ab-tabs-shell::before,
-.desktop--stacked .ab-tabs-shell::after,
-.desktop--stacked .acct-tabs-shell::before,
-.desktop--stacked .acct-tabs-shell::after {
+.desktop--stacked .ab-tabs-shell::after {
   position: absolute;
   top: 6px;
   bottom: 1px;
@@ -254,8 +156,7 @@
 
 .desktop--stacked .cc-main-tabs-shell::before,
 .desktop--stacked .bm-tabs-shell::before,
-.desktop--stacked .ab-tabs-shell::before,
-.desktop--stacked .acct-tabs-shell::before {
+.desktop--stacked .ab-tabs-shell::before {
   content: "<";
   left: 0;
   border-left: 1px solid #808080;
@@ -264,8 +165,7 @@
 
 .desktop--stacked .cc-main-tabs-shell::after,
 .desktop--stacked .bm-tabs-shell::after,
-.desktop--stacked .ab-tabs-shell::after,
-.desktop--stacked .acct-tabs-shell::after {
+.desktop--stacked .ab-tabs-shell::after {
   content: ">";
   right: 0;
   border-right: 1px solid #808080;
@@ -273,15 +173,11 @@
 }
 
 .desktop--stacked .cc-main-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="modes"])::before,
-.desktop--stacked .cc-main-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="bans"])::before,
-.desktop--stacked .cc-main-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="ban_exceptions"])::before,
-.desktop--stacked .cc-main-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="invite_exceptions"])::before,
+.desktop--stacked .cc-main-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="access_lists"])::before,
 .desktop--stacked .cc-main-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="registration"])::before,
 .desktop--stacked .cc-main-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="general"])::after,
 .desktop--stacked .cc-main-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="modes"])::after,
-.desktop--stacked .cc-main-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="bans"])::after,
-.desktop--stacked .cc-main-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="ban_exceptions"])::after,
-.desktop--stacked .cc-main-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="invite_exceptions"])::after,
+.desktop--stacked .cc-main-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="access_lists"])::after,
 .desktop--stacked .bm-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="capabilities"])::before,
 .desktop--stacked .bm-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="channels"])::before,
 .desktop--stacked .bm-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="commands"])::before,
@@ -295,13 +191,6 @@
 .desktop--stacked .ab-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="control"])::before,
 .desktop--stacked .ab-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="contacts"])::after,
 .desktop--stacked .ab-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="notify"])::after,
-.desktop--stacked .ab-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="colors"])::after,
-.desktop--stacked .acct-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="profile"])::before,
-.desktop--stacked .acct-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="presence"])::before,
-.desktop--stacked .acct-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="modes"])::before,
-.desktop--stacked .acct-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="register"])::after,
-.desktop--stacked .acct-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="profile"])::after,
-.desktop--stacked .acct-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="presence"])::after {
+.desktop--stacked .ab-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="colors"])::after {
   opacity: 1;
 }
-

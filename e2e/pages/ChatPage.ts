@@ -51,7 +51,8 @@ export class ChatPage {
   readonly accountRegisterMenuItem: Locator;
   readonly accountIdentifyMenuItem: Locator;
   readonly accountProfileMenuItem: Locator;
-  readonly accountPresenceMenuItem: Locator;
+  readonly accountAwayMenuItem: Locator;
+  readonly accountUserModesMenuItem: Locator;
   readonly accountInfoMenuItem: Locator;
   readonly clearWindowMenuItem: Locator;
   readonly copySelectionMenuItem: Locator;
@@ -203,6 +204,9 @@ export class ChatPage {
   readonly autorespondDialog: Locator;
   readonly autorespondEditForm: Locator;
   readonly accountDialog: Locator;
+  readonly profileDialog: Locator;
+  readonly awayDialog: Locator;
+  readonly userModesDialog: Locator;
   readonly accountPasswordInput: Locator;
   readonly accountConfirmInput: Locator;
   readonly accountDropPasswordInput: Locator;
@@ -331,13 +335,16 @@ export class ChatPage {
       page,
       "open_account_identify",
     );
+    // "Change Nickname..." and "Edit Profile..." are two File-menu items with
+    // the same action — a pre-existing duplication that the split inherited.
     this.accountProfileMenuItem = visibleContextMenuItem(
       page,
-      "open_account_profile",
-    );
-    this.accountPresenceMenuItem = visibleContextMenuItem(
+      "open_profile_dialog",
+    ).first();
+    this.accountAwayMenuItem = visibleContextMenuItem(page, "open_away_dialog");
+    this.accountUserModesMenuItem = visibleContextMenuItem(
       page,
-      "open_account_presence",
+      "open_user_modes_dialog",
     );
     this.accountInfoMenuItem = visibleContextMenuItem(page, "account_info");
     this.clearWindowMenuItem = visibleContextMenuItem(page, "clear_window");
@@ -581,12 +588,15 @@ export class ChatPage {
     this.autorespondDialog = page.getByTestId("auto-respond-window");
     this.autorespondEditForm = this.autorespondDialog.locator("form");
     this.accountDialog = page.getByTestId("account-window");
+    this.profileDialog = page.getByTestId("profile-window");
+    this.awayDialog = page.getByTestId("away-window");
+    this.userModesDialog = page.getByTestId("user-modes-window");
     this.accountPasswordInput = page.getByTestId("account-password");
     this.accountConfirmInput = page.getByTestId("account-confirm");
     this.accountDropPasswordInput = page.getByTestId("account-drop-password");
     this.accountNewNickInput = page.getByTestId("account-new-nick");
-    this.accountBioInput = page.getByTestId("account-bio");
-    this.accountAwayMessageInput = page.getByTestId("account-away-message");
+    this.accountBioInput = page.getByTestId("profile-bio");
+    this.accountAwayMessageInput = page.getByTestId("away-message");
     this.accountGhostNicknameInput = page.getByTestId("account-ghost-nickname");
     this.accountGhostPasswordInput = page.getByTestId("account-ghost-password");
     this.timersDialog = page.getByTestId("timers-window");
@@ -1276,7 +1286,21 @@ export class ChatPage {
     await this.openFileMenu();
     await expect(this.accountProfileMenuItem).toBeVisible();
     await this.accountProfileMenuItem.click();
-    await expect(this.accountDialog).toBeVisible();
+    await expect(this.profileDialog).toBeVisible();
+  }
+
+  async openAwayFromMenu() {
+    await this.openFileMenu();
+    await expect(this.accountAwayMenuItem).toBeVisible();
+    await this.accountAwayMenuItem.click();
+    await expect(this.awayDialog).toBeVisible();
+  }
+
+  async openUserModesFromMenu() {
+    await this.openFileMenu();
+    await expect(this.accountUserModesMenuItem).toBeVisible();
+    await this.accountUserModesMenuItem.click();
+    await expect(this.userModesDialog).toBeVisible();
   }
 
   async openNewBotDialog() {

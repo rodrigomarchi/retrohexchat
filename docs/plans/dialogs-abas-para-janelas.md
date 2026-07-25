@@ -161,6 +161,12 @@ Passa a rodar só na abertura de `account` — que é a única que exibe o resul
 > IRC vão morar. Se ao implementar a janela parecer absurda em uso real,
 > reabrir a decisão antes de seguir — não improvisar um meio-termo.
 
+> **✅ Executado em 2026-07-25.** As 4 janelas nasceram; `user-modes` foi
+> mantida como planejado (a decisão foi reconfirmada antes de começar). O hook
+> monolítico virou 4 (`account`/`profile`/`away`/`user_modes`), `sync_identity`
+> passou a rodar só na abertura de `account`, e a família de 4 janelas
+> compartilha `account.css` com o prefixo `acct-`. Detalhes no PROGRESS.
+
 ### 4.3 Address Book → 3 janelas + deduplicação do Notify
 
 A aba Notify duplica a janela `notify-list`: mesmo `NotifyOps`, mesmos nomes de
@@ -486,7 +492,7 @@ crescente; a Fase 3 valida o playbook no menor split possível antes de escalar.
 | 2 | **Limpeza** | Tudo em §6, menos o que saiu junto com o Admin | 0 | ✅ feito |
 | 3 | **Channel Central** | 6 → 4 abas, funde as 3 listas de acesso | 0 | ✅ feito |
 | 4 | **Perform** | `perform` + `autojoin` | +1 | ✅ feito |
-| 5 | **Account** | `account` + `profile` + `away` + `user-modes` | +3 | ⬜ pendente |
+| 5 | **Account** | `account` + `profile` + `away` + `user-modes` | +3 | ✅ feito |
 | 6 | **Address Book** | `address-book` + `nick-colors` + `ignore-list`; aba Notify absorvida por `notify-list` | +2 | ⬜ pendente |
 
 **Fase 0b: metade feita.** O start menu ganhou grupos (`start_menu_submenu/1`)

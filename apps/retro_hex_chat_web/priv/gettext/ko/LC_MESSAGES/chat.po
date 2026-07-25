@@ -41,77 +41,77 @@ msgstr "%{position}: %{status} %{trigger} %{channel} → %{command}"
 msgid "  /%{name} → %{expansion}"
 msgstr "  /%{name} → %{expansion}"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:923
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:929
 #, elixir-autogen, elixir-format
 msgid "  /cs aop #channel add <nick>    — Add an Auto Operator"
 msgstr "  /cs aop #channel add <nick>    — Add an Auto Operator"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:925
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:931
 #, elixir-autogen, elixir-format
 msgid "  /cs info #channel              — View channel registration info"
 msgstr "  /cs info #channel              — View channel registration info"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:921
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:927
 #, elixir-autogen, elixir-format
 msgid "  /cs register #channel          — Register a channel you operate"
 msgstr "  /cs register #channel          — Register a channel you operate"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:922
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:928
 #, elixir-autogen, elixir-format
 msgid "  /cs sop #channel add <nick>    — Add a Super Operator"
 msgstr "  /cs sop #channel add <nick>    — Add a Super Operator"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:924
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:930
 #, elixir-autogen, elixir-format
 msgid "  /cs vop #channel add <nick>    — Add an Auto Voice user"
 msgstr "  /cs vop #channel add <nick>    — Add an Auto Voice user"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:895
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:901
 #, elixir-autogen, elixir-format
 msgid "  /help            — View full help"
 msgstr "  /help            — View full help"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:896
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:902
 #, elixir-autogen, elixir-format
 msgid "  /help commands   — List all commands"
 msgstr "  /help commands   — List all commands"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:892
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:898
 #, elixir-autogen, elixir-format
 msgid "  /join #channel   — Join a channel"
 msgstr "  /join #channel   — Join a channel"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:893
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:899
 #, elixir-autogen, elixir-format
 msgid "  /msg nick text   — Send a private message"
 msgstr "  /msg nick text   — Send a private message"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:894
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:900
 #, elixir-autogen, elixir-format
 msgid "  /nick new_nick   — Change your nickname"
 msgstr "  /nick new_nick   — Change your nickname"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:955
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:961
 #, elixir-autogen, elixir-format
 msgid "  /ns drop <password>       — Permanently unregister your nickname"
 msgstr "  /ns drop <password>       — Permanently unregister your nickname"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:954
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:960
 #, elixir-autogen, elixir-format
 msgid "  /ns ghost <nick> <pass>   — Disconnect a ghost session"
 msgstr "  /ns ghost <nick> <pass>   — Disconnect a ghost session"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:952
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:958
 #, elixir-autogen, elixir-format
 msgid "  /ns identify <password>   — Identify (log in) for this session"
 msgstr "  /ns identify <password>   — Identify (log in) for this session"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:953
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:959
 #, elixir-autogen, elixir-format
 msgid "  /ns info [nickname]       — Look up registration info"
 msgstr "  /ns info [nickname]       — Look up registration info"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:951
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:957
 #, elixir-autogen, elixir-format
 msgid "  /ns register <password>   — Register your current nickname"
 msgstr "  /ns register <password>   — Register your current nickname"
@@ -126,27 +126,27 @@ msgstr "등록: 없음"
 msgid "  Registered: yes (%{status})"
 msgstr "  등록 : 예 (%{status})"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:930
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:936
 #, elixir-autogen, elixir-format
 msgid "  • Channels expire after 7 days of inactivity"
 msgstr "• 채널은 유효성 7 일 후에 만료됩니다"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:931
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:937
 #, elixir-autogen, elixir-format
 msgid "  • If a founder's nick expires, the next ranked user is promoted"
 msgstr "• 설립자의 니켈이 만료되면 다음 등급의 사용자는 승진됩니다."
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:958
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:964
 #, elixir-autogen, elixir-format
 msgid "  • Nicks are case sensitive — \"Alice\" and \"alice\" are different"
 msgstr "• Nicks는 민감합니다 - \"Alice\"와 \"alice\"는 다릅니다"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:959
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:965
 #, elixir-autogen, elixir-format
 msgid "  • Nicks expire after 7 days of inactivity"
 msgstr "• Nicks는 사실의 7 일 후에 만료됩니다"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:960
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:966
 #, elixir-autogen, elixir-format
 msgid "  • Switching to a registered nick gives you 60s to identify"
 msgstr "• 등록 된 니켈로 전환하면 60을 식별 할 수 있습니다."
@@ -633,12 +633,12 @@ msgstr "* 귀하의 알림 목록 buddy %{old_nick} 현재 알려진 %{new_nick}
 msgid "/join #channel to get started"
 msgstr "/join #channel to get started"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:889
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:895
 #, elixir-autogen, elixir-format
 msgid "A real-time chat platform with a retro look and feel."
 msgstr "복고풍과 느낌을 가진 실시간 채팅 플랫폼."
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:927
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:933
 #, elixir-autogen, elixir-format
 msgid "Access hierarchy: Owner > SOP > AOP > VOP"
 msgstr "액세스 계층: 소유자 > SOP > AOP > VOP"
@@ -667,7 +667,7 @@ msgid "Added %{nickname} to notify list"
 msgstr "지원하다 %{nickname} 본문 바로가기"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:126
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:223
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:241
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:399
 #, elixir-autogen, elixir-format
 msgid "Address Book"
@@ -750,9 +750,11 @@ msgstr ""
 "유효한 명령: %{commands}\n"
 "제품정보 /help <command> 자세한 내용은, 또는 전체 도움말 시스템에 대한 메뉴에서 도움말 주제를 엽니 다."
 
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:136
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:113
-#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:69
-#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:197
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:793
+#: lib/retro_hex_chat_web/live/chat_live/away_events.ex:35
+#: lib/retro_hex_chat_web/live/chat_live/away_events.ex:50
 #: lib/retro_hex_chat_web/live/chat_live/components/hover_card.ex:117
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:152
 #: lib/retro_hex_chat_web/live/chat_live/hover_events.ex:136
@@ -867,7 +869,7 @@ msgstr "강조 표시 할 수 없습니다: %{reason}"
 msgid "Case sensitive"
 msgstr "케이스 민감한"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:917
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:923
 #, elixir-autogen, elixir-format
 msgid "ChanServ manages channel registration and access control."
 msgstr "ChanServ는 채널 등록 및 액세스 제어를 관리합니다."
@@ -920,9 +922,9 @@ msgstr "채널 필터는 #"
 msgid "Channel ownership transferred to %{target}."
 msgstr "Channel 소유권 이전 %{target}."
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:232
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:250
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:170
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:872
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:939
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:130
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:191
 #, elixir-autogen, elixir-format
@@ -987,7 +989,7 @@ msgid "Command too long (max 500 characters)"
 msgstr "명령 너무 긴 (최대 500 문자)"
 
 #: lib/retro_hex_chat_web/components/ui/chat/connection_status.ex:98
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:853
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:859
 #: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:266
 #, elixir-autogen, elixir-format
 msgid "Connected"
@@ -998,7 +1000,7 @@ msgstr "연결하기"
 msgid "Connected to %{server}"
 msgstr "연결하기 %{server}"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:858
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:864
 #: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:268
 #, elixir-autogen, elixir-format
 msgid "Connecting..."
@@ -1556,7 +1558,7 @@ msgstr "Nick 색상 항목 찾을 수 없습니다"
 msgid "Nick color list is full (max 50)"
 msgstr "닉 컬러 목록은 가득 (최대 50)"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:945
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:951
 #, elixir-autogen, elixir-format
 msgid ""
 "NickServ protects your nickname with a password so nobody else can use it."
@@ -1641,7 +1643,7 @@ msgstr "기타"
 msgid "Online"
 msgstr "- 한국어"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:899
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:905
 #, elixir-autogen, elixir-format
 msgid "Open /chat/help in a new tab."
 msgstr "기타 /chat/help 새 탭에서."
@@ -1733,8 +1735,8 @@ msgstr "뚱 베어"
 msgid "Query (PM)"
 msgstr "질문 (PM)"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:920
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:950
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:926
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:956
 #, elixir-autogen, elixir-format
 msgid "Quick start:"
 msgstr "빠른 시작:"
@@ -1761,7 +1763,7 @@ msgstr "이름 *"
 msgid "Regex"
 msgstr "레덱스"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:918
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:924
 #, elixir-autogen, elixir-format
 msgid "Register your channel to protect it when no operators are online."
 msgstr "채널을 등록하면 운영자가 온라인 때 보호 할 수 있습니다."
@@ -1816,10 +1818,10 @@ msgid "Reset (Ctrl+Shift+X)"
 msgstr "리셋 (Ctrl+Shift+X)"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:105
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:714
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:885
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:720
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:891
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:54
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1071
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1138
 #, elixir-autogen, elixir-format
 msgid "RetroHexChat"
 msgstr "RetroHexChat을"
@@ -1839,8 +1841,8 @@ msgstr "로얄 블루"
 msgid "Rule not found"
 msgstr "찾을 수 없음"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:929
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:957
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:935
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:963
 #, elixir-autogen, elixir-format
 msgid "Rules:"
 msgstr "규칙:"
@@ -2000,7 +2002,7 @@ msgstr "이 초대는 만료되었습니다."
 msgid "Timer '%{name}' not found"
 msgstr "타이머 '%{name}찾을 수 없음"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:898
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:904
 #, elixir-autogen, elixir-format
 msgid "Tip: Go to Help > Help Topics for the full documentation."
 msgstr "팁: 도움으로 이동 > 전체 문서를 위한 도움말 주제."
@@ -2025,12 +2027,12 @@ msgstr "주제 세트: %{topic}"
 msgid "Travel & Places"
 msgstr "여행 & 장소"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:933
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:939
 #, elixir-autogen, elixir-format
 msgid "Type /help chanserv or /help channel-permissions for full details."
 msgstr "제품정보 /help chanserv 또는 /help 가득 차있는 세부사항을 위한 수로 방출."
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:962
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:968
 #, elixir-autogen, elixir-format
 msgid "Type /help nickserv for full details."
 msgstr "제품정보 /help 전체 세부사항을 위한 nickserv."
@@ -2099,7 +2101,7 @@ msgstr "오후 5시"
 msgid "Updated note for %{nickname}"
 msgstr "자주 묻는 질문 %{nickname}"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:891
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:897
 #, elixir-autogen, elixir-format
 msgid "Useful commands:"
 msgstr "유용한 명령:"
@@ -2144,7 +2146,7 @@ msgstr "감사합니다. %{channel} 설정되었습니다."
 msgid "Welcome message updated."
 msgstr "공지사항"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:888
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:894
 #, elixir-autogen, elixir-format
 msgid "Welcome to %{server_name}!"
 msgstr "제품정보 %{server_name}!"
@@ -2325,7 +2327,7 @@ msgstr "[BotService] 명령 '%{trigger}' 제거."
 msgid "[BotService] Failed to create bot '%{name}': %{message}"
 msgstr "[봇서비스] 봇 만들기 실패 '%{name}': %{message}"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:916
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:922
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] Channel Services Online"
 msgstr "[ChanServ] 온라인 채널 서비스"
@@ -2335,7 +2337,7 @@ msgstr "[ChanServ] 온라인 채널 서비스"
 msgid "[NickServ] %{reason}. You are now %{nickname}"
 msgstr "[NickServ]에 대하여 %{reason}. 현재 %{nickname}"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:944
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:950
 #, elixir-autogen, elixir-format
 msgid "[NickServ] Nickname Services Online"
 msgstr "[NickServ] Nickname 서비스 온라인"
@@ -2493,19 +2495,19 @@ msgstr "계좌정보"
 msgid "Action message cannot be empty"
 msgstr "활동 메시지는 빈번하지 않습니다"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:187
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:205
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:331
 #, elixir-autogen, elixir-format
 msgid "Alias Editor"
 msgstr "Alias 편집기"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:163
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:181
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:614
 #, elixir-autogen, elixir-format
 msgid "Arcade"
 msgstr "주요 특징"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:199
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:217
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:375
 #, elixir-autogen, elixir-format
 msgid "Auto Respond"
@@ -2516,13 +2518,13 @@ msgstr "자동 응답"
 msgid "Bio"
 msgstr "제품정보"
 
-#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:316
+#: lib/retro_hex_chat_web/live/chat_live/profile_events.ex:100
 #, elixir-autogen, elixir-format
 msgid "Bio is limited to 200 characters; extra text was not kept."
 msgstr "바이오는 200 문자로 제한됩니다. 추가 텍스트는 유지되지 않았습니다."
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:137
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1034
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:155
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1101
 #, elixir-autogen, elixir-format
 msgid "Bot Management"
 msgstr "Bot 관리"
@@ -2569,7 +2571,7 @@ msgstr "액세스 레벨을 선택하십시오."
 msgid "Contact note"
 msgstr "연락처"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:193
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:211
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:353
 #, elixir-autogen, elixir-format
 msgid "Custom Menus"
@@ -2635,13 +2637,13 @@ msgstr "오류 수정"
 msgid "Failed to update bot status."
 msgstr "봇 상태를 업데이트하는 실패."
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:181
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:199
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:521
 #, elixir-autogen, elixir-format
 msgid "Flood Protection"
 msgstr "홍수 보호"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:169
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:187
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:307
 #, elixir-autogen, elixir-format
 msgid "Highlight Words"
@@ -2709,8 +2711,8 @@ msgstr "%{channel} 로드 중..."
 msgid "Loading older messages..."
 msgstr "이전 메시지 로딩 ..."
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:235
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:941
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:253
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1008
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:96
 #, elixir-autogen, elixir-format
 msgid "MOTD"
@@ -2733,7 +2735,7 @@ msgstr "Mute (채널)"
 msgid "Nickname"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:140
+#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:101
 #, elixir-autogen, elixir-format
 msgid "Nickname is required"
 msgstr "Nickname이 필요합니다."
@@ -2765,7 +2767,7 @@ msgstr "공지 메시지가 비어있을 수 없습니다"
 msgid "Notice to %{target}:"
 msgstr "%{target}님에게 알림:"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:217
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:235
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:425
 #, elixir-autogen, elixir-format
 msgid "Notify List"
@@ -2793,25 +2795,25 @@ msgstr "만 채널 연산자는이 채널을 등록 할 수 있습니다."
 msgid "Only the founder can drop a channel."
 msgstr "창립자만이 채널을 드롭 할 수 있습니다."
 
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1072
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1139
 #, elixir-autogen, elixir-format
 msgid "Opening chat..."
 msgstr "오픈 채팅 ..."
 
-#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:88
-#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:103
-#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:143
+#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:50
+#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:64
+#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:104
 #, elixir-autogen, elixir-format
 msgid "Password is required"
 msgstr "비밀번호"
 
-#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:85
-#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:120
+#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:47
+#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:81
 #, elixir-autogen, elixir-format
 msgid "Passwords do not match"
 msgstr "비밀번호는 일치하지 않습니다."
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:205
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:223
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:449
 #, elixir-autogen, elixir-format
 msgid "Perform"
@@ -2886,7 +2888,7 @@ msgstr "동작 메시지 보내기 (/me)"
 msgid "Shared channels"
 msgstr "공유 채널"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:175
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:193
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:497
 #, elixir-autogen, elixir-format
 msgid "Sound Settings"
@@ -2903,7 +2905,7 @@ msgstr "제한 오류: %{message}"
 msgid "Timer not found"
 msgstr "찾을 수 없음"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:143
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:161
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:649
 #, elixir-autogen, elixir-format
 msgid "Timers"
@@ -2925,7 +2927,7 @@ msgid "Type the server name to confirm."
 msgstr "서버 이름을 입력하여 확인합니다."
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:106
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:797
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:864
 #, elixir-autogen, elixir-format
 msgid "URL Catcher"
 msgstr "URL 캐처"
@@ -2936,8 +2938,8 @@ msgstr "URL 캐처"
 msgid "Unmute (channel)"
 msgstr "Unmute (채널)"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:130
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:773
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:148
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:840
 #, elixir-autogen, elixir-format
 msgid "User Lookup"
 msgstr "사용자 조회"
@@ -2975,7 +2977,7 @@ msgstr "무엇을 하고 있습니까? (/me 모드)"
 msgid "Whois: %{target}"
 msgstr "%{target}님의 Whois"
 
-#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:304
+#: lib/retro_hex_chat_web/live/chat_live/profile_events.ex:88
 #, elixir-autogen, elixir-format
 msgid "You are already using that nickname"
 msgstr "당신은 이미 그 별명을 사용하여"
@@ -3183,7 +3185,7 @@ msgstr "P2P 세션 %{peer} 종료"
 msgid "P2P session with %{peer} — %{facets}. Click to focus"
 msgstr "P2P 세션 %{peer} - %{facets} 공지사항"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:267
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:285
 #: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:169
 #, elixir-autogen, elixir-format
 msgid "P2P: %{peer}"
@@ -3293,7 +3295,7 @@ msgstr "P2P 마이크"
 msgid "Toggle P2P Screen Share"
 msgstr "토글 P2P 스크린 공유"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:856
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:862
 #, elixir-autogen, elixir-format
 msgid "Waiting for peer..."
 msgstr "동료를위한 대기 ..."
@@ -3384,7 +3386,7 @@ msgid "Joining..."
 msgstr "가입 ..."
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:141
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:270
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:288
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:142
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:551
 #, elixir-autogen, elixir-format
@@ -3431,44 +3433,44 @@ msgstr "초점 P2P 통화 창에서 화면 공유 시작 또는 중지"
 msgid "Admin tools are restricted to server administrators."
 msgstr "관리자 도구는 서버 관리자에 제한됩니다."
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:234
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:918
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:252
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:985
 #, elixir-autogen, elixir-format
 msgid "Audit Log"
 msgstr "감사 로그"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:237
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:987
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:255
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1054
 #, elixir-autogen, elixir-format
 msgid "Broadcast"
 msgstr "- 연혁"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:239
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:823
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:257
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:890
 #, elixir-autogen, elixir-format
 msgid "Console"
 msgstr "회사 소개"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:238
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1010
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:256
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1077
 #, elixir-autogen, elixir-format
 msgid "Danger Zone"
 msgstr "위험 구역"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:233
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:895
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:251
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:962
 #, elixir-autogen, elixir-format
 msgid "Server Settings"
 msgstr "Server 설정"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:236
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:964
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:254
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1031
 #, elixir-autogen, elixir-format
 msgid "TURN"
 msgstr "사이트맵"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:231
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:848
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:249
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:915
 #, elixir-autogen, elixir-format
 msgid "Users"
 msgstr "이름 *"
@@ -3478,7 +3480,7 @@ msgstr "이름 *"
 msgid "%{peer} accepted the P2P request - connecting..."
 msgstr "%{peer} P2P 요청을 허용 - 연결 ..."
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:211
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:229
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:473
 #, elixir-autogen, elixir-format
 msgid "Auto-Join"
@@ -3513,3 +3515,15 @@ msgstr "P2P 세션 요청. PM에서 P2P 제어를 사용합니다. /lobby/%{toke
 #, elixir-autogen, elixir-format
 msgid "Use the P2P control in this private message."
 msgstr "이 개인 메시지에서 P2P 제어를 사용합니다."
+
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:130
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:770
+#, elixir-autogen, elixir-format
+msgid "Profile"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:142
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:817
+#, elixir-autogen, elixir-format
+msgid "User Modes"
+msgstr "사용자 모드"

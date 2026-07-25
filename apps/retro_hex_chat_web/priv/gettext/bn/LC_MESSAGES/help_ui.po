@@ -1657,11 +1657,6 @@ msgstr "অনুমতি"
 msgid "Pinned"
 msgstr "পিন করা"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:32
-#, elixir-autogen, elixir-format
-msgid "Presence"
-msgstr "উপস্থিতি"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Profile"
@@ -1671,27 +1666,6 @@ msgstr "প্রোফাইল"
 #, elixir-autogen, elixir-format
 msgid "Register / Identify"
 msgstr "প্রমাণীকরণ"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:18
-#, elixir-autogen, elixir-format
-msgid ""
-"Register claims your current nickname with NickServ. Identify logs this "
-"session into an already registered nickname. The dialog adapts to the "
-"nickname state: unregistered nicknames show Register, registered nicknames "
-"show Identify and Drop registration, and NickServ password errors stay "
-"inline. Advanced Ghost session disconnects a stale session after you enter "
-"that nickname and its password."
-msgstr ""
-"রেজিস্টারে আপনার ডাকনাম দাবি করা হয় নিনাম অফলাইন। বর্তমানে নিবন্ধিত উপনাম "
-"সহযোগে এই সেশান সনাক্ত করুন। ডাকনামের সাথে খাপ খাইয়ে নিন: নিবন্ধনকৃত "
-"ডাকনাম, নিবন্ধনকৃত ডাকনাম, নিবন্ধনকৃত নাম পরিচয় প্রমাণ এবং ড্রপ- নিবন্ধন "
-"প্রক্রিয়া, এবং নিকটেম পাসওয়ার্ড ভুল বলে। পরে কোনো উচ্চ পর্যায়ের ঘোস্ট "
-"সেশন সংযোগ বিচ্ছিন্ন করে যখন আপনি ডাকনাম ও এর পাসওয়ার্ড ভুল জেনেছিলেন ।"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "Register/Login"
-msgstr "রেজিস্টার করা হবে<0\\-2>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:25
 #, elixir-autogen, elixir-format
@@ -1739,16 +1713,6 @@ msgstr "অবস্থা বার অ্যাকাউন্ট উইজে
 #, elixir-autogen, elixir-format
 msgid "Taskbar"
 msgstr "টাস্কবার"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"The Account dialog brings nickname identity, profile, presence, and personal"
-" user modes into one place. Open it from the status-bar account widget or "
-"the File > Account menu."
-msgstr ""
-"অ্যাকাউন্ট ডায়ালগ নামের একটি ডাকনাম, প্রোফাইল এবং ব্যক্তিগত মোড এক স্থানে "
-"নিয়ে এসেছে। খোলা ফাইল থেকে এটি খুলুন অ্যাকাউন্ট মেনু।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:18
 #, elixir-autogen, elixir-format
@@ -1880,17 +1844,6 @@ msgstr ""
 msgid "The tray at the right end of the taskbar shows a clock."
 msgstr "টাস্কবারের ডান প্রান্তে ট্রেটি ঘড়ি দেখায়।"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:10
-#, elixir-autogen, elixir-format
-msgid ""
-"The widget shows your current nickname and state: Guest, Identified, or "
-"Away. Click it to open the Account dialog. The adjacent away button quickly "
-"toggles between away and back."
-msgstr ""
-"উইজেট আপনার বর্তমান ডাকনাম ও অবস্থা দেখায়: অতিথি, বা অনুপস্থিত অ্যাকাউন্ট "
-"ডায়লগ খোলার জন্য ক্লিক করুন। পার্শ্ববর্তী বাটন নিষ্ক্রিয় করা হলে, বিনা "
-"বিলম্বে পুনরায় বিচ্ছিন্ন করা হবে।"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:67
 #, elixir-autogen, elixir-format
 msgid ""
@@ -1958,26 +1911,6 @@ msgstr "সংযোগ বিচ্ছিন্ন অথবা পুনরা
 msgid "Toolbar"
 msgstr "টুলবার"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:34
-#, elixir-autogen, elixir-format
-msgid ""
-"Use Presence to set a custom away message or clear away status. Away state "
-"is visible in user lists and whois output."
-msgstr ""
-"স্বনির্ধারিত বার্তা নির্ধারণ অথবা বাতিল করার জন্য চিহ্নিত করুন। "
-"ব্যবহারকারীদের তালিকা ও etc‌স-র পরিবর্তে ব্যবহারকারীদের তালিকা থেকে প্রাপ্ত।"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:26
-#, elixir-autogen, elixir-format
-msgid ""
-"Use Profile to change your nickname or edit your bio. Nickname changes are "
-"validated before the confirmation dialog opens. The bio is shown in /whois "
-"and is limited to 200 characters with a live counter."
-msgstr ""
-"আপনার ডাকনাম পরিবর্তন বা সম্পাদনা করতে প্রোফাইল ব্যবহার করুন । নিশ্চিত করার "
-"পূর্বে ডাকনাম পরিবর্তন কার্যকর করা হয়েছে । এই প্রাণীটি একটি লাইভ কাউন্টারের"
-" মাধ্যমে ২০০ অক্ষরের মধ্যে সীমাবদ্ধ রয়েছে।"
-
 #: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "User Lookup"
@@ -1987,15 +1920,6 @@ msgstr "ব্যবহারকারীর নাম"
 #, elixir-autogen, elixir-format
 msgid "User Modes"
 msgstr "ব্যবহারকারী মোড"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:42
-#, elixir-autogen, elixir-format
-msgid ""
-"User Modes currently exposes the wallops (+w) setting, which opts you in to "
-"operator broadcast messages."
-msgstr ""
-"ব্যবহারকারী মোডগুলো বর্তমানে দেয়ালস (+w) সেটের বৈশিষ্ট্য উন্মোচন করে, যা "
-"আপনাকে অপারেটরের বার্তা সম্প্রচার করতে বাধা দেয়।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:41
 #, elixir-autogen, elixir-format
@@ -2152,3 +2076,83 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
 msgstr "P2P সেশন"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Account"
+msgstr "অ্যাকাউন্ট"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"Account settings live in four windows — Account, Profile, Away and User "
+"Modes — all reachable from the File > Account menu, the Start menu's Account"
+" group, or the toolbar. The status-bar account widget opens Account "
+"directly."
+msgstr ""
+"অ্যাকাউন্ট সংক্রান্ত চারটি উইন্ডোর মধ্যে অন্তর্ভুক্ত বৈশিষ্ট্য — অ্যাকাউন্ট,"
+" প্রোফাইল, এবং ব্যবহারকারীর মোডগুলি থেকে সকল সংযোগ বিচ্ছিন্ন করুন। "
+"অ্যাকাউন্ট মেনু, মেনু অথবা টুলবার-এর অ্যাকাউন্টের বৈশিষ্ট্য। স্ট্যাটাস-বার "
+"অ্যাকাউন্টের ক্ষেত্রে সরাসরি অ্যাকাউন্ট খোলা হবে।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "Away"
+msgstr "অনুপস্থিত"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:18
+#, elixir-autogen, elixir-format
+msgid ""
+"Register claims your current nickname with NickServ. Identify logs this "
+"session into an already registered nickname. The window adapts to the "
+"nickname state: unregistered nicknames show Register, registered nicknames "
+"show Identify and Drop registration, and NickServ password errors stay "
+"inline. Ghost session disconnects a stale session after you enter that "
+"nickname and its password."
+msgstr ""
+"রেজিস্টারে আপনার ডাকনাম দাবি করা হয় নিনাম অফলাইন। বর্তমানে নিবন্ধিত উপনাম "
+"সহযোগে এই সেশান সনাক্ত করুন। ডাকনামের সঙ্গে খাপ খাইয়ে নিন: নিবন্ধনকৃত "
+"ডাকনাম, নিবন্ধনকৃত ডাকনাম, নিবন্ধনকৃত নাম পরিচয় প্রমাণ এবং ড্রপ- নিবন্ধনের "
+"জন্য নিবন্ধন করা হয়েছে, এবং নিকটেম পাসওয়ার্ড ইনলাইনে থাকে। চিহ্নিত উপনাম ও"
+" এর পাসওয়ার্ড সহযোগে কোনো পুরোনো সেশান বিচ্ছিন্ন করা হবে।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:10
+#, elixir-autogen, elixir-format
+msgid ""
+"The widget shows your current nickname and state: Guest, Identified, or "
+"Away. Click it to open the Account window. The adjacent away button quickly "
+"toggles between away and back without opening anything."
+msgstr ""
+"উইজেট আপনার বর্তমান ডাকনাম ও অবস্থা দেখায়: অতিথি, বা অনুপস্থিত অ্যাকাউন্ট "
+"উইন্ডো খোলার জন্য ক্লিক করুন। পার্শ্ববর্তী বাটন টেপা হলে, কোন কিছু না করেই "
+"পুনরায় শুরু করা হবে।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:34
+#, elixir-autogen, elixir-format
+msgid ""
+"Use the Away window to set a custom away message or clear away status. Away "
+"state is visible in user lists and whois output."
+msgstr ""
+"সংরক্ষণ অথবা অনুপস্থিত অবস্থা রূপে সংরক্ষণ করা হবে। ব্যবহারকারীদের তালিকা ও "
+"etc‌স-র পরিবর্তে ব্যবহারকারীদের তালিকা থেকে প্রাপ্ত।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:26
+#, elixir-autogen, elixir-format
+msgid ""
+"Use the Profile window to change your nickname or edit your bio. Nickname "
+"changes are validated before the confirmation dialog opens. The bio is shown"
+" in /whois and is limited to 200 characters with a live counter."
+msgstr ""
+"আপনার ডাকনাম পরিবর্তন বা সম্পাদনা করতে প্রোফাইল ব্যবহার করুন । নিশ্চিত করার "
+"পূর্বে ডাকনাম পরিবর্তন কার্যকর করা হয়েছে । এই প্রাণীটি একটি লাইভ কাউন্টারের"
+" মাধ্যমে ২০০ অক্ষরের মধ্যে সীমাবদ্ধ রয়েছে।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:42
+#, elixir-autogen, elixir-format
+msgid ""
+"User Modes currently exposes the wallops (+w) setting, which opts you in to "
+"operator broadcast messages. Further IRC user modes land in this window."
+msgstr ""
+"ব্যবহারকারী মোডগুলো বর্তমানে দেয়ালস (+w) সেটের বৈশিষ্ট্য উন্মোচন করে, যা "
+"আপনাকে অপারেটরের বার্তা সম্প্রচার করতে বাধা দেয়। এই উইন্ডোতে IRC "
+"ব্যবহারকারী মোড চিহ্নিত করুন।"

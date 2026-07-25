@@ -220,6 +220,80 @@ defmodule RetroHexChatWeb.Icons.People do
 
   attr :class, :string, default: nil
 
+  @spec icon_dialog_profile(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_dialog_profile(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <!-- Card -->
+      <rect x="1" y="3" width="14" height="11" fill="#c0c0c0" stroke="#000" stroke-width="1" />
+      <rect x="2" y="4" width="12" height="1" fill="#fff" />
+      
+    <!-- Portrait -->
+      <rect x="3" y="6" width="4" height="3" fill="#000080" />
+      <polygon points="2,13 8,13 8,11 6,9 4,9 2,11" fill="#000080" />
+      
+    <!-- Bio lines -->
+      <rect x="9" y="6" width="5" height="1" fill="#000080" />
+      <rect x="9" y="8" width="5" height="1" fill="#808080" />
+      <rect x="9" y="10" width="4" height="1" fill="#808080" />
+    </svg>
+    """
+  end
+
+  # -- Toolbar: Profile --
+
+  attr :class, :string, default: nil
+
+  @spec icon_btn_profile(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_btn_profile(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <path d="M1 3h14v11H1V3z M2 4v9h12V4H2z" fill="#000080" />
+      <path d="M4 6h3v3H4V6z M3 12v-1l1-1h3l1 1v1H3z" fill="#000080" />
+      <path d="M10 6h4v1h-4V6z M10 9h4v1h-4V9z M10 11h3v1h-3v-1z" fill="#808080" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_dialog_user_modes(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_dialog_user_modes(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <!-- Shadow -->
+      <rect x="3" y="3" width="5" height="4" fill="#000" />
+      <polygon points="1,14 9,14 9,11 7,9 3,9 1,11" fill="#000" />
+      
+    <!-- Person -->
+      <rect x="2" y="2" width="5" height="4" fill="#000080" stroke="#000" stroke-width="1" />
+      <polygon points="0,13 8,13 8,11 6,9 2,9 0,11" fill="#000080" stroke="#000" stroke-width="1" />
+      
+    <!-- Mode flag (+) -->
+      <rect x="10" y="4" width="5" height="5" fill="#c0c0c0" stroke="#000" stroke-width="1" />
+      <rect x="12" y="5" width="1" height="3" fill="#000080" />
+      <rect x="11" y="6" width="3" height="1" fill="#000080" />
+    </svg>
+    """
+  end
+
+  # -- Toolbar: User Modes --
+
+  attr :class, :string, default: nil
+
+  @spec icon_btn_user_modes(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_btn_user_modes(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <path d="M2 2h5v4H2V2z M0 13v-2l2-2h4l2 2v2H0z" fill="#000080" />
+      <path d="M10 4h5v5h-5V4z M11 5v3h3V5h-3z" fill="#000080" />
+      <path d="M12 5h1v3h-1V5z M11 6h3v1h-3V6z" fill="#000080" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
   @spec icon_status_user(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_status_user(assigns) do
     ~H"""

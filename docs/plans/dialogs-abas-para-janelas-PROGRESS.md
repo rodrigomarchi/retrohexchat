@@ -25,7 +25,8 @@ previa, e as decisões tomadas em execução. Aprendizados duráveis migram para
 | 9 | `admin-console` — monólito deletado, recriado só com o REPL | ✅ feito | — |
 | 10 | **Limpeza** (§6 do plano) | ✅ feito | — |
 | 11 | **Channel Central** — 6→4 abas (fusão das 3 listas de acesso) | ✅ feito | `a0289349` |
-| 12 | **Perform** — `perform` + `autojoin` (2 abas → 2 janelas) | ✅ feito | — |
+| 12 | **Perform** — `perform` + `autojoin` (2 abas → 2 janelas) | ✅ feito | `8d493faa` |
+| 13 | **Account** — 4 abas → 4 janelas | ✅ feito | — |
 
 Ordem: o Admin Console (era a Fase 6 do plano) foi promovido a primeiro caso por
 ser o mais complexo — é ele que deriva o playbook.
@@ -574,6 +575,91 @@ se aplica — ela pressupõe arquivos separáveis. Mas absorver **não** é bara
 orce o diff semântico + restauração + reparo + tradução manual do resíduo. Se a
 dívida alheia for grande, um commit separado de `chore(i18n)` provavelmente sai
 melhor do que carregá-la junto.
+
+---
+
+## Fase 5 — Account → 4 janelas ✅ 2026-07-25
+
+**Feito.** As 4 abas viraram `account`, `profile`, `away` e `user-modes`.
+Janelas: 31 → 34. A decisão do §4.2 sobre `user-modes` foi reconfirmada com o
+usuário **antes** de começar, conforme a nota do plano pedia.
+
+Por janela: apresentacional, island, hook de eventos, `@managed`, bloco
+`desktop_window`, taskbar, entradas nas três superfícies, teste de island. Mais
+um teste de feature compartilhado (as 4 janelas são uma família, um arquivo com
+a tabela `@account_windows` cobre todas) e a jornada e2e migrada.
+
+**Validação:** `make ci` **9/9** · 9/9 entry points · 219/219 nas suítes de
+componentes · 2/2 e2e (jornada de conta + tools menu) · 5 gates de i18n verdes.
+
+### O hook monolítico se divide junto com as abas
+
+`account_events.ex` tinha 369 linhas e cuidava de tudo. Virou quatro:
+`account_events` (auth/drop/ghost/info), `profile_events` (nick + bio),
+`away_events` (away + toggle da status bar) e `user_modes_events` (umode).
+
+**Ganho previsto no plano, confirmado:** `sync_identity/1` (2 lookups NickServ)
+rodava em **toda** abertura, de qualquer aba. Agora roda só na abertura de
+`account` — a única janela que exibe o resultado.
+
+### Aprendizados novos
+
+- **Não crie substrato quando ele já existe.** Ia extrair um `AccountOps` com
+  `dispatch/3` e `dispatch_with_result/3`, mas os dois são wrappers de uma linha
+  sobre `CommandDispatch`, que **já é** o módulo compartilhado. Os quatro hooks
+  chamam `CommandDispatch` direto. A regra do §3 (contar consumidores) é para
+  código que ainda não tem casa — não para embrulhar o que já tem.
+- **Sem aba, o `auth_mode` deixa de ser parâmetro.** O monólito carregava
+  `auth_mode` como estado e o passava por 8 funções, porque a aba precisava
+  lembrar em qual modo abriu. Sem aba, o modo é **derivado** de
+  `NickServ.registered?/1` na hora — o formulário nunca ofereceu escolha. Saíram
+  o assign, o parâmetro de 6 funções e a cláusula `{:auth_reset, mode}`.
+- **Uma família de 4 compartilha CSS.** Seguindo a regra que escrevi na Fase 4
+  ("família grande compartilha, par extraído duplica"), as 4 janelas ficaram com
+  `account.css` e o prefixo `acct-` — que continua honesto, porque as quatro
+  **são** configurações de conta. O shell de abas saiu (~85 linhas).
+- **O teste de entry points precisou de duas tabelas, não uma.** O menu bar abre
+  `account` por dois itens específicos de papel (Register.../Identify...), não
+  por uma ação genérica. Uma tabela `window => ação canônica` (para o teste de
+  mount/unmount) e outra `window => ações aceitáveis` (para o teste das três
+  superfícies). Assumir uma ação por janela reprovou no menu bar pelo motivo
+  errado.
+
+### CSS morto que a Fase 3 deixou passar
+
+Ao limpar os seletores `acct-` do bloco compartilhado no fim de `account.css`,
+achei que os seletores `cc-main-tabs-shell` ainda citavam `bans`,
+`ban_exceptions` e `invite_exceptions` — abas que **a Fase 3 removeu**.
+Corrigidos para `access_lists`.
+
+**Por que o lint não pegou:** `lint.css_consistency` casa nomes de classe, e
+esses são valores dentro de `:has(... [data-target="..."])` — seletores de
+atributo, não classes. **Regra:** ao renomear ou remover uma aba, grepar o CSS
+pelo *valor* dela (`data-target="<aba>"`), não só pelo prefixo da feature.
+
+### O tradutor automático: terceira rodada, mesmo padrão
+
+112 traduções colaterais destruídas. Mas desta vez cometi um erro de
+procedimento: **rodei a restauração enquanto o tradutor ainda escrevia.**
+Restaurou 169, sobraram 50. O `nohup` desacopla o processo e a notificação de
+conclusão do harness é do *shell que o lançou*, não do processo.
+
+**Regra:** antes de comparar contra o snapshot, confirme que o log terminou com
+a linha `files=… rewritten=… translated_entries=…`. Um `tail` que mostra só
+`WARNING` significa que ainda está rodando.
+
+### Em aberto para o usuário
+
+- **Dois itens de menu com a mesma ação.** "Change Nickname..." e "Edit
+  Profile..." no File > Account sempre apontaram para o mesmo destino
+  (`open_account_profile`, agora `open_profile_dialog`). Com a janela Profile
+  contendo as duas features, a redundância ficou visível. **Não removi** — é
+  decisão de produto, não movimentação de código. O page object do e2e usa
+  `.first()` e o comentário explica por quê.
+- **`account` ganhou entradas no toolbar e no start menu**, onde não existia
+  antes (só menu bar + status bar). Fiz isso para o grupo de 4 ficar coerente e
+  para cumprir o contrato §8.9 das 3 superfícies; é a única adição de ponto de
+  entrada da fase.
 
 ---
 

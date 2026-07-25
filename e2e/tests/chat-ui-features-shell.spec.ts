@@ -49,22 +49,18 @@ test.describe.serial("UI feature shell journeys", () => {
         user.chat.accountDialog.getByTestId("account-identified-state"),
       ).toBeVisible();
 
-      await user.chat.accountDialog
-        .getByRole("button", { name: "Profile" })
-        .click();
+      await user.chat.openAccountProfileFromMenu();
       await user.chat.accountBioInput.fill(bio);
-      await user.chat.accountDialog
+      await user.chat.profileDialog
         .getByRole("button", { name: "Save Bio" })
         .click();
 
-      await user.chat.accountDialog
-        .getByRole("button", { name: "Presence" })
-        .click();
-      await user.chat.accountDialog
+      await user.chat.openAwayFromMenu();
+      await user.chat.awayDialog
         .locator('input[type="checkbox"][name="away"]')
         .check();
       await user.chat.accountAwayMessageInput.fill("reviewing UI features");
-      await user.chat.accountDialog
+      await user.chat.awayDialog
         .getByRole("button", { name: "Set Away" })
         .click();
       await expect(user.chat.statusBarAccountWidget).toContainText("Away");
@@ -73,19 +69,17 @@ test.describe.serial("UI feature shell journeys", () => {
         "Back",
       );
 
-      await user.chat.accountDialog
-        .getByRole("button", { name: "User Modes" })
-        .click();
-      await user.chat.accountDialog
+      await user.chat.openUserModesFromMenu();
+      await user.chat.userModesDialog
         .locator('input[type="checkbox"][name="wallops"]')
         .check();
-      await user.chat.accountDialog
+      await user.chat.userModesDialog
         .getByRole("button", { name: "Apply" })
         .click();
-      await user.chat.accountDialog
+      await user.chat.userModesDialog
         .locator('[data-window-control="close"]')
         .click();
-      await expect(user.chat.accountDialog).toBeHidden();
+      await expect(user.chat.userModesDialog).toBeHidden();
       await user.chat.switchToStatusTab();
       await user.chat.expectStatusMessageVisible("User mode +w enabled.");
 

@@ -1,7 +1,7 @@
 <p>
   {dgettext(
     "help_ui",
-    "The Account dialog brings nickname identity, profile, presence, and personal user modes into one place. Open it from the status-bar account widget or the File > Account menu."
+    "Account settings live in four windows — Account, Profile, Away and User Modes — all reachable from the File > Account menu, the Start menu's Account group, or the toolbar. The status-bar account widget opens Account directly."
   )}
 </p>
 
@@ -9,39 +9,39 @@
 <p>
   {dgettext(
     "help_ui",
-    "The widget shows your current nickname and state: Guest, Identified, or Away. Click it to open the Account dialog. The adjacent away button quickly toggles between away and back."
+    "The widget shows your current nickname and state: Guest, Identified, or Away. Click it to open the Account window. The adjacent away button quickly toggles between away and back without opening anything."
   )}
 </p>
 
-<.help_h4 icon={:icon_lock}>{dgettext("help_ui", "Register/Login")}</.help_h4>
+<.help_h4 icon={:icon_lock}>{dgettext("help_ui", "Account")}</.help_h4>
 <p>
   {dgettext(
     "help_ui",
-    "Register claims your current nickname with NickServ. Identify logs this session into an already registered nickname. The dialog adapts to the nickname state: unregistered nicknames show Register, registered nicknames show Identify and Drop registration, and NickServ password errors stay inline. Advanced Ghost session disconnects a stale session after you enter that nickname and its password."
+    "Register claims your current nickname with NickServ. Identify logs this session into an already registered nickname. The window adapts to the nickname state: unregistered nicknames show Register, registered nicknames show Identify and Drop registration, and NickServ password errors stay inline. Ghost session disconnects a stale session after you enter that nickname and its password."
   )}
 </p>
 
-<.help_h4 icon={:icon_status_user}>{dgettext("help_ui", "Profile")}</.help_h4>
+<.help_h4 icon={:icon_dialog_profile}>{dgettext("help_ui", "Profile")}</.help_h4>
 <p>
   {dgettext(
     "help_ui",
-    "Use Profile to change your nickname or edit your bio. Nickname changes are validated before the confirmation dialog opens. The bio is shown in /whois and is limited to 200 characters with a live counter."
+    "Use the Profile window to change your nickname or edit your bio. Nickname changes are validated before the confirmation dialog opens. The bio is shown in /whois and is limited to 200 characters with a live counter."
   )}
 </p>
 
-<.help_h4 icon={:icon_btn_dnd}>{dgettext("help_ui", "Presence")}</.help_h4>
+<.help_h4 icon={:icon_dialog_away}>{dgettext("help_ui", "Away")}</.help_h4>
 <p>
   {dgettext(
     "help_ui",
-    "Use Presence to set a custom away message or clear away status. Away state is visible in user lists and whois output."
+    "Use the Away window to set a custom away message or clear away status. Away state is visible in user lists and whois output."
   )}
 </p>
 
-<.help_h4 icon={:icon_tab_modes}>{dgettext("help_ui", "User Modes")}</.help_h4>
+<.help_h4 icon={:icon_dialog_user_modes}>{dgettext("help_ui", "User Modes")}</.help_h4>
 <p>
   {dgettext(
     "help_ui",
-    "User Modes currently exposes the wallops (+w) setting, which opts you in to operator broadcast messages."
+    "User Modes currently exposes the wallops (+w) setting, which opts you in to operator broadcast messages. Further IRC user modes land in this window."
   )}
 </p>
 

@@ -1600,11 +1600,6 @@ msgstr "제출"
 msgid "Pinned"
 msgstr "연락처"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:32
-#, elixir-autogen, elixir-format
-msgid "Presence"
-msgstr "이름 *"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Profile"
@@ -1614,25 +1609,6 @@ msgstr "이름 *"
 #, elixir-autogen, elixir-format
 msgid "Register / Identify"
 msgstr "등록 / ID"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:18
-#, elixir-autogen, elixir-format
-msgid ""
-"Register claims your current nickname with NickServ. Identify logs this "
-"session into an already registered nickname. The dialog adapts to the "
-"nickname state: unregistered nicknames show Register, registered nicknames "
-"show Identify and Drop registration, and NickServ password errors stay "
-"inline. Advanced Ghost session disconnects a stale session after you enter "
-"that nickname and its password."
-msgstr ""
-"등록은 NickServ와 현재 별명을 주장합니다. 이 세션을 이미 등록한 별명으로 로그인합니다. 대화 상자는 별명 상태에 적응합니다. "
-"등록 된 별명 표시 등록, 등록 된 별명 표시 식별 및 드롭 등록 및 NickServ 암호 오류는 인라인으로 유지됩니다. 고급 Ghost"
-" 세션은 별명과 암호를 입력한 후 stale 세션을 분리합니다."
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "Register/Login"
-msgstr "등록/Login"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:25
 #, elixir-autogen, elixir-format
@@ -1677,16 +1653,6 @@ msgstr "Status-Bar 계정 위젯"
 #, elixir-autogen, elixir-format
 msgid "Taskbar"
 msgstr "작업바"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"The Account dialog brings nickname identity, profile, presence, and personal"
-" user modes into one place. Open it from the status-bar account widget or "
-"the File > Account menu."
-msgstr ""
-"계정 대화 상자는 별명 정체성, 프로필, 존재 및 개인 사용자 모드를 한 곳에서 가져옵니다. status-bar 계정 위젯 또는 파일에서"
-" 열기 > 계정 메뉴."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:18
 #, elixir-autogen, elixir-format
@@ -1803,15 +1769,6 @@ msgstr ""
 msgid "The tray at the right end of the taskbar shows a clock."
 msgstr "작업바의 오른쪽 끝에 트레이는 시계를 보여줍니다."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:10
-#, elixir-autogen, elixir-format
-msgid ""
-"The widget shows your current nickname and state: Guest, Identified, or "
-"Away. Click it to open the Account dialog. The adjacent away button quickly "
-"toggles between away and back."
-msgstr ""
-"위젯은 현재 별명과 상태를 보여줍니다: 게스트, 식별, 또는 Away. 계정 대화 상자를 엽니다. 즉시 단추를 빨리 뒤집습니다."
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:67
 #, elixir-autogen, elixir-format
 msgid ""
@@ -1870,25 +1827,6 @@ msgstr "Timers는 분리 또는 페이지 재로드에 손실됩니다."
 msgid "Toolbar"
 msgstr "도구 모음"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:34
-#, elixir-autogen, elixir-format
-msgid ""
-"Use Presence to set a custom away message or clear away status. Away state "
-"is visible in user lists and whois output."
-msgstr ""
-"사용자 정의 메시지를 설정하거나 상태를 삭제하는 Presence를 사용합니다. Away 상태는 사용자 목록과 whois 산출에서 눈에 "
-"보입니다."
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:26
-#, elixir-autogen, elixir-format
-msgid ""
-"Use Profile to change your nickname or edit your bio. Nickname changes are "
-"validated before the confirmation dialog opens. The bio is shown in /whois "
-"and is limited to 200 characters with a live counter."
-msgstr ""
-"프로필을 사용하여 별명을 바꾸거나 생명을 편집하십시오. Nickname 변경은 확인 대화 상자가 열립니다. 생물은 /whois에서 "
-"보이며, 라이브 카운터에서 200 문자로 제한됩니다."
-
 #: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "User Lookup"
@@ -1898,13 +1836,6 @@ msgstr "사용자 조회"
 #, elixir-autogen, elixir-format
 msgid "User Modes"
 msgstr "사용자 모드"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:42
-#, elixir-autogen, elixir-format
-msgid ""
-"User Modes currently exposes the wallops (+w) setting, which opts you in to "
-"operator broadcast messages."
-msgstr "사용자 모드는 현재 연산자 방송 메시지에 당신을 선택 하는 wallops (+w) 설정 노출."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:41
 #, elixir-autogen, elixir-format
@@ -2048,3 +1979,76 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
 msgstr "P2P 세션"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Account"
+msgstr "계좌정보"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"Account settings live in four windows — Account, Profile, Away and User "
+"Modes — all reachable from the File > Account menu, the Start menu's Account"
+" group, or the toolbar. The status-bar account widget opens Account "
+"directly."
+msgstr ""
+"계정 설정은 4 개의 창에서 라이브 — 계정, 프로필, Away 및 사용자 모드 - 파일에서 모두 도달 > 계정 메뉴, 시작 메뉴의 계정"
+" 그룹 또는 도구 모음. Status-bar 계정 위젯은 직접 계정을 엽니 다."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "Away"
+msgstr "오시는 길"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:18
+#, elixir-autogen, elixir-format
+msgid ""
+"Register claims your current nickname with NickServ. Identify logs this "
+"session into an already registered nickname. The window adapts to the "
+"nickname state: unregistered nicknames show Register, registered nicknames "
+"show Identify and Drop registration, and NickServ password errors stay "
+"inline. Ghost session disconnects a stale session after you enter that "
+"nickname and its password."
+msgstr ""
+"등록은 NickServ와 현재 별명을 주장합니다. 이 세션을 이미 등록한 별명으로 로그인합니다. 이 창은 별명 상태에 적응합니다. 등록 "
+"된 별명 표시 등록, 등록 된 별명 표시 식별 및 드롭 등록, NickServ 암호 오류는 인라인으로 유지됩니다. Ghost 세션은 "
+"별명과 암호를 입력한 후 stale 세션을 분리합니다."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:10
+#, elixir-autogen, elixir-format
+msgid ""
+"The widget shows your current nickname and state: Guest, Identified, or "
+"Away. Click it to open the Account window. The adjacent away button quickly "
+"toggles between away and back without opening anything."
+msgstr ""
+"위젯은 현재 별명과 상태를 보여줍니다: 게스트, 식별, 또는 Away. 계정 창을 엽니다. 인접한 버튼은 빠르게 모든 것을 열지 않고 "
+"뒤로 견인합니다."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:34
+#, elixir-autogen, elixir-format
+msgid ""
+"Use the Away window to set a custom away message or clear away status. Away "
+"state is visible in user lists and whois output."
+msgstr ""
+"Away 창을 사용하여 사용자 정의 메시지를 설정하거나 상태를 삭제합니다. Away 상태는 사용자 목록과 whois 산출에서 눈에 "
+"보입니다."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:26
+#, elixir-autogen, elixir-format
+msgid ""
+"Use the Profile window to change your nickname or edit your bio. Nickname "
+"changes are validated before the confirmation dialog opens. The bio is shown"
+" in /whois and is limited to 200 characters with a live counter."
+msgstr ""
+"프로필 창을 사용하여 별명을 바꾸거나 생명을 편집하십시오. Nickname 변경은 확인 대화 상자가 열립니다. 생물은 /whois에서 "
+"보이며, 라이브 카운터에서 200 문자로 제한됩니다."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:42
+#, elixir-autogen, elixir-format
+msgid ""
+"User Modes currently exposes the wallops (+w) setting, which opts you in to "
+"operator broadcast messages. Further IRC user modes land in this window."
+msgstr ""
+"사용자 모드는 현재 연산자 방송 메시지에 당신을 선택 하는 wallops (+w) 설정 노출. 이 창에서 더 많은 IRC 사용자 모드 "
+"땅."

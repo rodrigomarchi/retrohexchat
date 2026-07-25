@@ -385,6 +385,42 @@ defmodule RetroHexChatWeb.Icons.Alerts do
     """
   end
 
+  attr :class, :string, default: nil
+
+  @spec icon_dialog_away(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_dialog_away(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <!-- Shadow -->
+      <circle cx="9" cy="9" r="6" fill="#000" />
+      
+    <!-- Clock face -->
+      <circle cx="8" cy="8" r="6" fill="#fff" stroke="#000" stroke-width="1" />
+      
+    <!-- Hands pointing away-from-desk o'clock -->
+      <rect x="7" y="4" width="1" height="5" fill="#000080" />
+      <rect x="7" y="8" width="4" height="1" fill="#000080" />
+    </svg>
+    """
+  end
+
+  # -- Toolbar: Away --
+
+  attr :class, :string, default: nil
+
+  @spec icon_btn_away(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_btn_away(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <path
+        d="M6 1h4v1h2v1h1v1h1v2h1v4h-1v2h-1v1h-1v1h-2v1H6v-1H4v-1H3v-1H2v-2H1V6h1V4h1V3h1V2h2V1z M6 3H5v1H4v1H3v2H2v2h1v2h1v1h1v1h1v1h4v-1h1v-1h1v-1h1V9h1V7h-1V5h-1V4h-1V3H6z"
+        fill="#000080"
+      />
+      <path d="M7 4h1v5H7V4z M8 8h3v1H8V8z" fill="#000080" />
+    </svg>
+    """
+  end
+
   # -- Toolbar: DND --
 
   attr :class, :string, default: nil

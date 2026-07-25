@@ -3,12 +3,34 @@ defmodule RetroHexChatWeb.AccountEntryPointsFeatureTest do
 
   @moduletag :liveview_feature
 
+  alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Channels.{Registry, Supervisor}
   alias RetroHexChat.Services.NickServ
 
   alias RetroHexChatWeb.Components.UI.{
     MenuBarApp,
-    StatusBarApp
+    StartMenuApp,
+    StatusBarApp,
+    ToolbarApp
+  }
+
+  # window id => the canonical action that opens it
+  @account_windows %{
+    "account" => "open_account_dialog",
+    "profile" => "open_profile_dialog",
+    "away" => "open_away_dialog",
+    "user-modes" => "open_user_modes_dialog"
+  }
+
+  # A surface may reach a window through any of these. The File menu opens
+  # Account through the role-specific Register/Identify items rather than a
+  # generic one, so a single-action assertion would fail there for the wrong
+  # reason.
+  @account_window_actions %{
+    "account" => ~w(open_account_dialog open_account_register open_account_identify),
+    "profile" => ~w(open_profile_dialog),
+    "away" => ~w(open_away_dialog),
+    "user-modes" => ~w(open_user_modes_dialog)
   }
 
   setup do
@@ -27,15 +49,32 @@ defmodule RetroHexChatWeb.AccountEntryPointsFeatureTest do
       assert menu_html =~ "Account"
       assert menu_html =~ ~s(data-testid="context-menu-item-open_account_register")
       assert menu_html =~ ~s(data-testid="context-menu-item-open_account_identify")
-      assert menu_html =~ ~s(data-testid="context-menu-item-open_account_profile")
-      assert menu_html =~ ~s(data-testid="context-menu-item-open_account_presence")
+      assert menu_html =~ ~s(data-testid="context-menu-item-open_profile_dialog")
+      assert menu_html =~ ~s(data-testid="context-menu-item-open_away_dialog")
+      assert menu_html =~ ~s(data-testid="context-menu-item-open_user_modes_dialog")
       assert menu_html =~ ~s(data-testid="context-menu-item-account_info")
       assert menu_html =~ "Register Nickname"
       assert menu_html =~ "Identify"
       assert menu_html =~ "Change Nickname"
       assert menu_html =~ "Edit Profile"
       assert menu_html =~ "Set Away"
+      assert menu_html =~ "User Modes"
       assert menu_html =~ "Account Info"
+    end
+
+    # The account group is action-driven on all three surfaces — it deliberately
+    # avoids the start menu's `data-window-open` items, because opening Account
+    # and Profile has server-side work attached (identity sync, bio seeding).
+    test "all three navigation surfaces offer every account window" do
+      for {surface, html} <- surfaces() do
+        for {window, actions} <- @account_window_actions do
+          assert Enum.any?(actions, fn action ->
+                   html =~ ~s(data-testid="context-menu-item-#{action}") or
+                     html =~ ~s(data-testid="start-menu-item-#{action}")
+                 end),
+                 "#{surface} should offer #{window}"
+        end
+      end
     end
 
     test "status bar component renders account state and quick away action" do
@@ -55,22 +94,45 @@ defmodule RetroHexChatWeb.AccountEntryPointsFeatureTest do
       assert html =~ ~s(title="Set Away")
     end
 
-    test "toolbar actions open Account window entry tabs", %{conn: conn} do
+    test "every account window mounts managed and unmounts when closed", %{conn: conn} do
       view = connect_user(conn, "Acct#{uid()}")
 
-      refute has_element?(view, ~s([data-testid="account-window"]))
+      for {window, action} <- @account_windows do
+        refute has_element?(view, ~s([data-window-id="#{window}"])),
+               "#{window} should not be mounted before opening"
+
+        render_click(view, "toolbar_action", %{"action" => action})
+
+        assert has_element?(view, ~s([data-window-id="#{window}"][data-window-managed="true"])),
+               "#{window} should mount as a managed window"
+
+        assert_push_event(view, "window_command", %{action: "open", id: ^window})
+
+        render_hook(view, "window_closed", %{"id" => window})
+
+        refute has_element?(view, ~s([data-window-id="#{window}"])),
+               "#{window} should unmount when closed"
+      end
+    end
+
+    test "each window carries only its own feature", %{conn: conn} do
+      view = connect_user(conn, "Split#{uid()}")
 
       render_click(view, "toolbar_action", %{"action" => "open_account_register"})
+      html = render(view)
+      assert html =~ ~s(data-testid="account-panel")
+      refute html =~ "Bio (about me)"
+      refute html =~ "Away message"
+      refute html =~ "Receive wallops"
 
-      assert_push_event(view, "window_command", %{action: "open", id: "account"})
-      assert has_element?(view, ~s([data-testid="account-window"]))
-      assert render(view) =~ "Register/Login"
-
-      render_click(view, "toolbar_action", %{"action" => "open_account_profile"})
+      render_click(view, "toolbar_action", %{"action" => "open_profile_dialog"})
       assert render(view) =~ "Bio (about me)"
 
-      render_click(view, "toolbar_action", %{"action" => "open_account_presence"})
+      render_click(view, "toolbar_action", %{"action" => "open_away_dialog"})
       assert render(view) =~ "Away message"
+
+      render_click(view, "toolbar_action", %{"action" => "open_user_modes_dialog"})
+      assert render(view) =~ "Receive wallops"
     end
   end
 
@@ -102,26 +164,70 @@ defmodule RetroHexChatWeb.AccountEntryPointsFeatureTest do
       assert html =~ "[NickServ] Invalid password"
     end
 
-    test "profile tab validates nickname inline before opening nick change flow", %{conn: conn} do
+    test "profile window validates nickname inline before opening nick change flow", %{conn: conn} do
       view = connect_user(conn, "Nick#{uid()}")
 
-      render_click(view, "toolbar_action", %{"action" => "open_account_profile"})
+      render_click(view, "toolbar_action", %{"action" => "open_profile_dialog"})
 
-      render_submit(view, "account_change_nick_submit", %{"nickname" => "bad nick"})
+      render_submit(view, "profile_change_nick_submit", %{"nickname" => "bad nick"})
       html = render(view)
 
-      assert html =~ ~s(data-testid="account-nick-error")
+      assert html =~ ~s(data-testid="profile-nick-error")
       assert html =~ "Nickname cannot contain spaces"
       refute html =~ "bad nick"
 
       new_nick = "New#{uid()}"
-      render_submit(view, "account_change_nick_submit", %{"nickname" => new_nick})
+      render_submit(view, "profile_change_nick_submit", %{"nickname" => new_nick})
       html = render(view)
 
       assert html =~ ~s(data-testid="nick-change-dialog")
       assert html =~ new_nick
     end
+
+    test "away window sets and clears the away state", %{conn: conn} do
+      view = connect_user(conn, "Away#{uid()}")
+
+      render_click(view, "toolbar_action", %{"action" => "open_away_dialog"})
+
+      render_submit(view, "away_submit", %{"away" => "true", "away_message" => "Gone fishing"})
+      assert session(view).away
+      assert session(view).away_message == "Gone fishing"
+
+      render_click(view, "away_clear")
+      refute session(view).away
+    end
+
+    test "user modes window toggles wallops", %{conn: conn} do
+      view = connect_user(conn, "Umode#{uid()}")
+
+      render_click(view, "toolbar_action", %{"action" => "open_user_modes_dialog"})
+
+      render_submit(view, "user_modes_submit", %{"wallops" => "true"})
+      assert Session.has_mode?(session(view), :wallops)
+
+      render_submit(view, "user_modes_submit", %{})
+      refute Session.has_mode?(session(view), :wallops)
+    end
   end
+
+  defp surfaces do
+    [
+      {"menu bar",
+       render_component(&MenuBarApp.menu_bar_app/1,
+         connected: true,
+         on_action: "toolbar_action"
+       )},
+      {"start menu",
+       render_component(&StartMenuApp.start_menu_app/1, on_action: "toolbar_action")},
+      {"toolbar",
+       render_component(&ToolbarApp.toolbar_app/1,
+         connected: true,
+         on_action: "toolbar_action"
+       )}
+    ]
+  end
+
+  defp session(view), do: :sys.get_state(view.pid).socket.assigns.session
 
   defp connect_user(conn, nick) do
     {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")

@@ -168,6 +168,31 @@ defmodule RetroHexChatWeb.Components.UI.ToolbarApp do
             action="open_bot_dialog"
             on_action={@on_action}
           />
+          <%!-- Account items --%>
+          <.dropdown_item
+            icon_fn={:icon_status_user}
+            label={dgettext("ui", "Account")}
+            action="open_account_dialog"
+            on_action={@on_action}
+          />
+          <.dropdown_item
+            icon_fn={:icon_btn_profile}
+            label={dgettext("ui", "Profile")}
+            action="open_profile_dialog"
+            on_action={@on_action}
+          />
+          <.dropdown_item
+            icon_fn={:icon_btn_away}
+            label={dgettext("ui", "Away")}
+            action="open_away_dialog"
+            on_action={@on_action}
+          />
+          <.dropdown_item
+            icon_fn={:icon_btn_user_modes}
+            label={dgettext("ui", "User Modes")}
+            action="open_user_modes_dialog"
+            on_action={@on_action}
+          />
           <%!-- Admin (conditional) --%>
           <.dropdown_item
             :if={@is_admin}

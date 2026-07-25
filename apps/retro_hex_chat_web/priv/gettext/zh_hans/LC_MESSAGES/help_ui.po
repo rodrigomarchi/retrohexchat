@@ -1580,11 +1580,6 @@ msgstr "权限"
 msgid "Pinned"
 msgstr "绑定"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:32
-#, elixir-autogen, elixir-format
-msgid "Presence"
-msgstr "出席情况"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Profile"
@@ -1594,25 +1589,6 @@ msgstr "简介"
 #, elixir-autogen, elixir-format
 msgid "Register / Identify"
 msgstr "登记册/识别"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:18
-#, elixir-autogen, elixir-format
-msgid ""
-"Register claims your current nickname with NickServ. Identify logs this "
-"session into an already registered nickname. The dialog adapts to the "
-"nickname state: unregistered nicknames show Register, registered nicknames "
-"show Identify and Drop registration, and NickServ password errors stay "
-"inline. Advanced Ghost session disconnects a stale session after you enter "
-"that nickname and its password."
-msgstr ""
-"注册员用NickServ 来申请你的昵称 将此会话记录为已注册的昵称 。 "
-"对话框适应昵称状态:未注册的昵称显示注册,注册的昵称显示识别和丢弃注册,NickServ密码错误保留在内. 高级 Ghost "
-"会话在输入昵称及其密码后断开 stale 会话 。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "Register/Login"
-msgstr "注册/Login"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:25
 #, elixir-autogen, elixir-format
@@ -1656,14 +1632,6 @@ msgstr "状态栏账户部件"
 #, elixir-autogen, elixir-format
 msgid "Taskbar"
 msgstr "任务栏"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"The Account dialog brings nickname identity, profile, presence, and personal"
-" user modes into one place. Open it from the status-bar account widget or "
-"the File > Account menu."
-msgstr "账户对话框将昵称身份、配置、存在和个人用户模式带入一个地方。 从状态栏账户部件或文件打开 > 账户菜单 。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:18
 #, elixir-autogen, elixir-format
@@ -1773,14 +1741,6 @@ msgstr "该表显示每个活动计时器名称,间隔,重复模式,下一场火
 msgid "The tray at the right end of the taskbar shows a clock."
 msgstr "任务栏右端的托盘显示一个时钟."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:10
-#, elixir-autogen, elixir-format
-msgid ""
-"The widget shows your current nickname and state: Guest, Identified, or "
-"Away. Click it to open the Account dialog. The adjacent away button quickly "
-"toggles between away and back."
-msgstr "部件显示您的当前昵称和状态: 来宾、 身份识别或退出 。 单击它打开账户对话框 。 相邻的离线按钮快速切换到离线和后退之间."
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:67
 #, elixir-autogen, elixir-format
 msgid ""
@@ -1839,22 +1799,6 @@ msgstr "断开或重新装入页面时丢失计时器"
 msgid "Toolbar"
 msgstr "工具栏"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:34
-#, elixir-autogen, elixir-format
-msgid ""
-"Use Presence to set a custom away message or clear away status. Away state "
-"is visible in user lists and whois output."
-msgstr "使用“ 存在” 设置自定义消息或清除消息状态 。 Away状态在用户列表和输出者中可见."
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:26
-#, elixir-autogen, elixir-format
-msgid ""
-"Use Profile to change your nickname or edit your bio. Nickname changes are "
-"validated before the confirmation dialog opens. The bio is shown in /whois "
-"and is limited to 200 characters with a live counter."
-msgstr ""
-"使用配置文件来更改您的昵称或编辑您的生物 。 在确认对话框打开前验证昵称更改 。 生物显示于 /whois 并且仅限200个有直播计数器的字符."
-
 #: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "User Lookup"
@@ -1864,13 +1808,6 @@ msgstr "用户查询"
 #, elixir-autogen, elixir-format
 msgid "User Modes"
 msgstr "用户模式"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:42
-#, elixir-autogen, elixir-format
-msgid ""
-"User Modes currently exposes the wallops (+w) setting, which opts you in to "
-"operator broadcast messages."
-msgstr "用户模式当前会曝光wallops(+w)设置,该设置选择您进入操作员广播消息."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:41
 #, elixir-autogen, elixir-format
@@ -2011,3 +1948,68 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
 msgstr "P2P会议"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Account"
+msgstr "账户"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"Account settings live in four windows — Account, Profile, Away and User "
+"Modes — all reachable from the File > Account menu, the Start menu's Account"
+" group, or the toolbar. The status-bar account widget opens Account "
+"directly."
+msgstr ""
+"账户设置在四个窗口——账户、配置文件、离开和用户模式——都可从文件获取 > 账户菜单、“启动”菜单账户组或工具栏。 状态栏账户部件直接打开账户 。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "Away"
+msgstr "走开"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:18
+#, elixir-autogen, elixir-format
+msgid ""
+"Register claims your current nickname with NickServ. Identify logs this "
+"session into an already registered nickname. The window adapts to the "
+"nickname state: unregistered nicknames show Register, registered nicknames "
+"show Identify and Drop registration, and NickServ password errors stay "
+"inline. Ghost session disconnects a stale session after you enter that "
+"nickname and its password."
+msgstr ""
+"注册员用NickServ 来申请你的昵称 将此会话记录为已注册的昵称 。 "
+"窗口适应昵称状态:未注册的昵称显示注册,注册的昵称显示识别和丢弃注册,NickServ密码错误保留在内. Ghost 会话在输入昵称及其密码后断开一个 "
+"stale 会话 。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:10
+#, elixir-autogen, elixir-format
+msgid ""
+"The widget shows your current nickname and state: Guest, Identified, or "
+"Away. Click it to open the Account window. The adjacent away button quickly "
+"toggles between away and back without opening anything."
+msgstr "部件显示您的当前昵称和状态: 来宾、 身份识别或退出 。 单击它打开账户窗口。 相邻的离家按钮迅速在离家和退家之间切换,没有打开任何东西."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:34
+#, elixir-autogen, elixir-format
+msgid ""
+"Use the Away window to set a custom away message or clear away status. Away "
+"state is visible in user lists and whois output."
+msgstr "使用 Away 窗口设置自定义消息或清除 。 Away状态在用户列表和输出者中可见."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:26
+#, elixir-autogen, elixir-format
+msgid ""
+"Use the Profile window to change your nickname or edit your bio. Nickname "
+"changes are validated before the confirmation dialog opens. The bio is shown"
+" in /whois and is limited to 200 characters with a live counter."
+msgstr ""
+"使用配置文件窗口来更改您的昵称或编辑您的 Bio 。 在确认对话框打开前验证昵称更改 。 生物显示在/whois中,并限于200个带有活计数器的字符."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:42
+#, elixir-autogen, elixir-format
+msgid ""
+"User Modes currently exposes the wallops (+w) setting, which opts you in to "
+"operator broadcast messages. Further IRC user modes land in this window."
+msgstr "用户模式当前会曝光wallops(+w)设置,该设置选择您进入操作员广播消息. 在此窗口中进一步登陆 IRC 用户模式 。"

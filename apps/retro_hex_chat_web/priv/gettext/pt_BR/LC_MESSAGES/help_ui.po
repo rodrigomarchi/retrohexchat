@@ -1701,11 +1701,6 @@ msgstr "Permissões"
 msgid "Pinned"
 msgstr "Pinado"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:32
-#, elixir-autogen, elixir-format
-msgid "Presence"
-msgstr "Presença"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Profile"
@@ -1715,28 +1710,6 @@ msgstr "Perfil"
 #, elixir-autogen, elixir-format
 msgid "Register / Identify"
 msgstr "Registo / Identificação"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:18
-#, elixir-autogen, elixir-format
-msgid ""
-"Register claims your current nickname with NickServ. Identify logs this "
-"session into an already registered nickname. The dialog adapts to the "
-"nickname state: unregistered nicknames show Register, registered nicknames "
-"show Identify and Drop registration, and NickServ password errors stay "
-"inline. Advanced Ghost session disconnects a stale session after you enter "
-"that nickname and its password."
-msgstr ""
-"O registo reclama o seu apelido actual com o NickServ. Identificar os "
-"registos desta sessão num apelido já registado. A janela adapta- se ao "
-"estado do apelido: os apelidos não registados mostram o Registo, os apelidos"
-" registados mostram o registo Identificar e Soltar e os erros de senha do "
-"NickServ permanecem em linha. A sessão avançada do Ghost desconecta uma "
-"sessão antiga depois de digitar esse apelido e sua senha."
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "Register/Login"
-msgstr "Registo/Login"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:25
 #, elixir-autogen, elixir-format
@@ -1785,17 +1758,6 @@ msgstr "Widget de Conta de Barra de Estado"
 #, elixir-autogen, elixir-format
 msgid "Taskbar"
 msgstr "Barra de tarefas"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"The Account dialog brings nickname identity, profile, presence, and personal"
-" user modes into one place. Open it from the status-bar account widget or "
-"the File > Account menu."
-msgstr ""
-"O diálogo Conta traz identidade de apelido, perfil, presença e modos de "
-"usuário pessoal em um só lugar. Abra-o a partir do widget de conta da barra "
-"de estado ou do Arquivo > Menu da conta."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:18
 #, elixir-autogen, elixir-format
@@ -1934,17 +1896,6 @@ msgid "The tray at the right end of the taskbar shows a clock."
 msgstr ""
 "A bandeja na extremidade direita da barra de tarefas mostra um relógio."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:10
-#, elixir-autogen, elixir-format
-msgid ""
-"The widget shows your current nickname and state: Guest, Identified, or "
-"Away. Click it to open the Account dialog. The adjacent away button quickly "
-"toggles between away and back."
-msgstr ""
-"O widget mostra seu apelido e estado atual: Convidado, Identificado ou "
-"Ausente. Clique nele para abrir o diálogo Conta. O botão de distância "
-"adjacente alterna rapidamente entre distância e volta."
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:67
 #, elixir-autogen, elixir-format
 msgid ""
@@ -2012,27 +1963,6 @@ msgstr "Os timers são perdidos ao desconectar ou recarregar a página"
 msgid "Toolbar"
 msgstr "Barra de Ferramentas"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:34
-#, elixir-autogen, elixir-format
-msgid ""
-"Use Presence to set a custom away message or clear away status. Away state "
-"is visible in user lists and whois output."
-msgstr ""
-"Use a presença para definir uma mensagem de distância personalizada ou "
-"limpar o estado. O estado ausente é visível nas listas de usuários e no "
-"resultado whois."
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:26
-#, elixir-autogen, elixir-format
-msgid ""
-"Use Profile to change your nickname or edit your bio. Nickname changes are "
-"validated before the confirmation dialog opens. The bio is shown in /whois "
-"and is limited to 200 characters with a live counter."
-msgstr ""
-"Use Perfil para alterar seu apelido ou editar sua biografia. As alterações "
-"de apelido são validadas antes da janela de confirmação abrir. O bio é "
-"mostrado em /whois e é limitado a 200 caracteres com um contador ao vivo."
-
 #: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "User Lookup"
@@ -2042,15 +1972,6 @@ msgstr "Procurar pelo Usuário"
 #, elixir-autogen, elixir-format
 msgid "User Modes"
 msgstr "Modos de usuário"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:42
-#, elixir-autogen, elixir-format
-msgid ""
-"User Modes currently exposes the wallops (+w) setting, which opts you in to "
-"operator broadcast messages."
-msgstr ""
-"Os Modos de Usuário atualmente expõem a configuração wallops (+w), que opta "
-"por operar mensagens de transmissão."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:41
 #, elixir-autogen, elixir-format
@@ -2211,3 +2132,86 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
 msgstr "Sessão P2P"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Account"
+msgstr "Conta"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"Account settings live in four windows — Account, Profile, Away and User "
+"Modes — all reachable from the File > Account menu, the Start menu's Account"
+" group, or the toolbar. The status-bar account widget opens Account "
+"directly."
+msgstr ""
+"As configurações da conta vivem em quatro janelas — Conta, Perfil, Longe e "
+"Modos do Usuário — todas acessíveis a partir do Arquivo > Menu Conta, o "
+"grupo Conta do menu Iniciar ou a barra de ferramentas. O elemento da barra "
+"de estado da conta abre a conta diretamente."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "Away"
+msgstr "Longe"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:18
+#, elixir-autogen, elixir-format
+msgid ""
+"Register claims your current nickname with NickServ. Identify logs this "
+"session into an already registered nickname. The window adapts to the "
+"nickname state: unregistered nicknames show Register, registered nicknames "
+"show Identify and Drop registration, and NickServ password errors stay "
+"inline. Ghost session disconnects a stale session after you enter that "
+"nickname and its password."
+msgstr ""
+"O registo reclama o seu apelido actual com o NickServ. Identificar os "
+"registos desta sessão num apelido já registado. A janela se adapta ao estado"
+" do apelido: apelidos não registrados mostram Registro, apelidos registrados"
+" mostram Registro de identificação e soltar, e erros de senha NickServ "
+"permanecem em linha. A sessão fantasma desconecta uma sessão antiga depois "
+"de digitar esse apelido e sua senha."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:10
+#, elixir-autogen, elixir-format
+msgid ""
+"The widget shows your current nickname and state: Guest, Identified, or "
+"Away. Click it to open the Account window. The adjacent away button quickly "
+"toggles between away and back without opening anything."
+msgstr ""
+"O widget mostra seu apelido e estado atual: Convidado, Identificado ou "
+"Ausente. Clique nele para abrir a janela Conta. O botão de distância "
+"adjacente alterna rapidamente entre longe e para trás sem abrir nada."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:34
+#, elixir-autogen, elixir-format
+msgid ""
+"Use the Away window to set a custom away message or clear away status. Away "
+"state is visible in user lists and whois output."
+msgstr ""
+"Use a janela Away para definir uma mensagem de distância personalizada ou "
+"limpar o estado. O estado ausente é visível nas listas de usuários e no "
+"resultado whois."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:26
+#, elixir-autogen, elixir-format
+msgid ""
+"Use the Profile window to change your nickname or edit your bio. Nickname "
+"changes are validated before the confirmation dialog opens. The bio is shown"
+" in /whois and is limited to 200 characters with a live counter."
+msgstr ""
+"Use a janela Perfil para alterar seu apelido ou editar sua biografia. As "
+"alterações de apelido são validadas antes da janela de confirmação abrir. O "
+"bio é mostrado em /whois e é limitado a 200 caracteres com um contador ao "
+"vivo."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:42
+#, elixir-autogen, elixir-format
+msgid ""
+"User Modes currently exposes the wallops (+w) setting, which opts you in to "
+"operator broadcast messages. Further IRC user modes land in this window."
+msgstr ""
+"Os Modos de Usuário atualmente expõem a configuração wallops (+w), que opta "
+"por operar mensagens de transmissão. Outros modos de usuário IRC aterrissam "
+"nesta janela."

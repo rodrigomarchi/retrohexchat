@@ -1668,11 +1668,6 @@ msgstr "اجازت"
 msgid "Pinned"
 msgstr "پینین"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:32
-#, elixir-autogen, elixir-format
-msgid "Presence"
-msgstr "پاس"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Profile"
@@ -1682,26 +1677,6 @@ msgstr "پرنٹ"
 #, elixir-autogen, elixir-format
 msgid "Register / Identify"
 msgstr "رجسٹر / تصویر"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:18
-#, elixir-autogen, elixir-format
-msgid ""
-"Register claims your current nickname with NickServ. Identify logs this "
-"session into an already registered nickname. The dialog adapts to the "
-"nickname state: unregistered nicknames show Register, registered nicknames "
-"show Identify and Drop registration, and NickServ password errors stay "
-"inline. Advanced Ghost session disconnects a stale session after you enter "
-"that nickname and its password."
-msgstr ""
-"رجسٹر نکسیر کے ساتھ آپ کے موجودہ ناول کا دعویٰ کرتا ہے۔ اس سیشن کو پہلے ہی "
-"رجسٹرڈ لاگس میں محفوظ کریں. اِس کی وجہ یہ ہے کہ اِن میں سے ہر ایک کو اِس بات"
-" پر غور کرنا چاہئے کہ آیا اِس میں کوئی شک ہے یا نہیں ۔ سیشن کو دوبارہ شروع "
-"کریں"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "Register/Login"
-msgstr "مصنف:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:25
 #, elixir-autogen, elixir-format
@@ -1747,17 +1722,6 @@ msgstr "سٹیٹس"
 #, elixir-autogen, elixir-format
 msgid "Taskbar"
 msgstr "دستیاب"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"The Account dialog brings nickname identity, profile, presence, and personal"
-" user modes into one place. Open it from the status-bar account widget or "
-"the File > Account menu."
-msgstr ""
-"اکاؤنٹ پلگ انس کی شناخت، پروڈیوس، موجودگی اور ذاتی صارف موڈ کو ایک جگہ میں "
-"لاتا ہے۔ اسے ریاستِ دَور کے حساب سے ڈاؤن‌لوڈ کریں یا پھر فائل رولر کی "
-"معلومات بھیج دیں اکاؤنٹ مینو"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:18
 #, elixir-autogen, elixir-format
@@ -1887,16 +1851,6 @@ msgstr ""
 msgid "The tray at the right end of the taskbar shows a clock."
 msgstr "کام کے ٹھیک اختتام پر ٹرک گھڑیال ظاہر کرتا ہے۔"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:10
-#, elixir-autogen, elixir-format
-msgid ""
-"The widget shows your current nickname and state: Guest, Identified, or "
-"Away. Click it to open the Account dialog. The adjacent away button quickly "
-"toggles between away and back."
-msgstr ""
-"وجے اپنے موجودہ ناولوں اور ریاست کو دکھاتا ہے: مہمانوں، آئینی یا دور۔ کھاتہ "
-"کھولنے کے ليے اسے کلک کريں اِس کے ساتھ‌ساتھ اُس کا رشتہ اُٹھ جاتا ہے ۔"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:67
 #, elixir-autogen, elixir-format
 msgid ""
@@ -1963,27 +1917,6 @@ msgstr "Timers on settlement یا صفحہ ہستی پر کھو جاتے ہیں�
 msgid "Toolbar"
 msgstr "بند"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:34
-#, elixir-autogen, elixir-format
-msgid ""
-"Use Presence to set a custom away message or clear away status. Away state "
-"is visible in user lists and whois output."
-msgstr ""
-"فرضی پیغام یا واضح طور پر دُور رہنے والی حالت کو مقرر کرنے کیلئے فوری "
-"استعمال کریں ۔ دور دراز ریاست صارف کی فہرستوں میں نظر آتی ہے اور باہر نکل "
-"جاتی ہے۔"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:26
-#, elixir-autogen, elixir-format
-msgid ""
-"Use Profile to change your nickname or edit your bio. Nickname changes are "
-"validated before the confirmation dialog opens. The bio is shown in /whois "
-"and is limited to 200 characters with a live counter."
-msgstr ""
-"اپنے حیاتیاتی ردوبدل یا ترمیم کرنے کے لیے پرو فا ئل کا استعمال کریں۔ تصدیق "
-"شروع کرنے سے پہلے نکنام تبدیل کیا جاتا ہے۔ حیاتیات میں دکھایا جاتا ہے۔ "
-"/whois اور 200 حروف تک محدود ہے جس میں زندہ مقابلے ہیں۔"
-
 #: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "User Lookup"
@@ -1993,15 +1926,6 @@ msgstr "صارف کا منظر"
 #, elixir-autogen, elixir-format
 msgid "User Modes"
 msgstr "صارف طریقہ"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:42
-#, elixir-autogen, elixir-format
-msgid ""
-"User Modes currently exposes the wallops (+w) setting, which opts you in to "
-"operator broadcast messages."
-msgstr ""
-"صارف موڈ فی الحال دیواروں (+w) سیٹ کو کھوجتا ہے، جو آپ کو آپریٹر براڈ کے "
-"پیغامات کے لئے پسند کرتا ہے۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:41
 #, elixir-autogen, elixir-format
@@ -2155,3 +2079,81 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
 msgstr "پَک"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Account"
+msgstr "اکاؤنٹ"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"Account settings live in four windows — Account, Profile, Away and User "
+"Modes — all reachable from the File > Account menu, the Start menu's Account"
+" group, or the toolbar. The status-bar account widget opens Account "
+"directly."
+msgstr ""
+"اکاؤنٹ کی ترتیبات چار ونڈوز میں رہتی ہیں — اکاؤنٹ، Profile، آؤٹ اور صارف "
+"موڈس — سب سے قابل رسائی فائل آن لائن آئی ڈی — اکاؤنٹ مینو، منٹ کا گروپ یا "
+"فائل نصب کریں۔ اسٹیٹ بار اکاؤنٹ ونگ براہ راست اکاؤنٹ کھول دیتا ہے۔"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "Away"
+msgstr "دور دراز"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:18
+#, elixir-autogen, elixir-format
+msgid ""
+"Register claims your current nickname with NickServ. Identify logs this "
+"session into an already registered nickname. The window adapts to the "
+"nickname state: unregistered nicknames show Register, registered nicknames "
+"show Identify and Drop registration, and NickServ password errors stay "
+"inline. Ghost session disconnects a stale session after you enter that "
+"nickname and its password."
+msgstr ""
+"رجسٹر نکسیر کے ساتھ آپ کے موجودہ ناول کا دعویٰ کرتا ہے۔ اس سیشن کو پہلے ہی "
+"رجسٹرڈ لاگس میں محفوظ کریں. ونڈوز ایکسچینج ریاست سے مطابقت رکھتی ہے : "
+"نامناسب طور پر نامناسب شو رجسٹر ، نامناسب نامزدگی ظاہر کرتے اور رجسٹریشن کو "
+"رجسٹریشن کرتے ہیں اور نکسیرو پاس ورڈ غلطیوں کو لائن میں رکھتے ہیں ۔ داخل "
+"ہونے کے بعد سیشن سیشن شروع کریں اور اس کے پاس ورڈ"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:10
+#, elixir-autogen, elixir-format
+msgid ""
+"The widget shows your current nickname and state: Guest, Identified, or "
+"Away. Click it to open the Account window. The adjacent away button quickly "
+"toggles between away and back without opening anything."
+msgstr ""
+"وجے اپنے موجودہ ناولوں اور ریاست کو دکھاتا ہے: مہمانوں، آئینی یا دور۔ کھاتہ "
+"ونڈو کھولنے کے ليے اسے کلک کريں اِس کے ساتھ‌ساتھ اُس کا رشتہ اُٹھ جاتا ہے ۔"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:34
+#, elixir-autogen, elixir-format
+msgid ""
+"Use the Away window to set a custom away message or clear away status. Away "
+"state is visible in user lists and whois output."
+msgstr ""
+"رمزِ بعید تکلم یا صاف دُور حالت مرتب کرنے کے لیے رفتہ رفتہ کھڑکی کا استعمال "
+"کریں۔ دور دراز کی ریاست صارف فہرستوں میں نظر آتی ہے اور کس طرح کی برآمد ہوتی"
+" ہے۔"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:26
+#, elixir-autogen, elixir-format
+msgid ""
+"Use the Profile window to change your nickname or edit your bio. Nickname "
+"changes are validated before the confirmation dialog opens. The bio is shown"
+" in /whois and is limited to 200 characters with a live counter."
+msgstr ""
+"پرو فا ئل ونڈو استعمال کر نے کے ليے اپنے بائیو ترمیم کر نے کے ليے تصدیق شروع"
+" کرنے سے پہلے نکنام تبدیل کیا جاتا ہے۔ حیاتیات کو http://ph08/ph08/ph08 میں "
+"ظاہر کیا گیا ہے اور زندہ مقابلے کے ساتھ 200 حروف تک محدود ہے۔"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:42
+#, elixir-autogen, elixir-format
+msgid ""
+"User Modes currently exposes the wallops (+w) setting, which opts you in to "
+"operator broadcast messages. Further IRC user modes land in this window."
+msgstr ""
+"صارف موڈ فی الحال دیواروں (+w) سیٹ کو کھوجتا ہے، جو آپ کو آپریٹر براڈ کے "
+"پیغامات کے لئے پسند کرتا ہے۔ اس دریچے میں مزید IRC صارف کا موڈ زمین کرتا ہے۔"

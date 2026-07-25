@@ -1,6 +1,11 @@
 defmodule RetroHexChatWeb.ChatLive.AccountEvents do
   @moduledoc """
-  Handle Account dialog and status-bar account events.
+  Handle the Account window (register/identify, drop registration, ghost
+  session) and the status-bar account widget.
+
+  `sync_identity/1` runs two NickServ lookups, so it fires only when this window
+  opens — it is the one that displays the result. The sibling account windows
+  (Profile, Away, User Modes) do not pay for it.
 
   Attached as `attach_hook(:account_events, :handle_event, ...)` in ChatLive.mount/3.
   """
@@ -10,88 +15,45 @@ defmodule RetroHexChatWeb.ChatLive.AccountEvents do
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
-  alias RetroHexChat.Accounts.{NicknameValidator, Session}
+  alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Services.NickServ
   alias RetroHexChatWeb.ChatLive.CommandDispatch
   alias RetroHexChatWeb.ChatLive.Components.AccountDialog
   alias RetroHexChatWeb.ChatLive.Helpers
   alias RetroHexChatWeb.ChatLive.Windows
 
-  @max_bio_graphemes 200
-
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:halt, Phoenix.LiveView.Socket.t()} | {:cont, Phoenix.LiveView.Socket.t()}
 
-  def handle_event("open_account_dialog", _params, socket) do
-    {:halt, open_account(socket, "register", default_auth_mode(socket))}
-  end
-
-  def handle_event("open_account_register", _params, socket) do
-    {:halt, open_account(socket, "register", "register")}
-  end
-
-  def handle_event("open_account_identify", _params, socket) do
-    {:halt, open_account(socket, "register", "identify")}
-  end
-
-  def handle_event("open_account_profile", _params, socket) do
-    {:halt,
-     socket
-     |> open_account("profile", default_auth_mode(socket))
-     |> dispatch("bio", [])}
-  end
-
-  def handle_event("open_account_presence", _params, socket) do
-    {:halt, open_account(socket, "presence", default_auth_mode(socket))}
-  end
-
-  def handle_event("open_account_modes", _params, socket) do
-    {:halt, open_account(socket, "modes", default_auth_mode(socket))}
-  end
+  def handle_event("open_account_dialog", _params, socket), do: {:halt, open(socket)}
+  def handle_event("open_account_register", _params, socket), do: {:halt, open(socket)}
+  def handle_event("open_account_identify", _params, socket), do: {:halt, open(socket)}
 
   def handle_event("close_account_dialog", _params, socket) do
     {:halt, push_event(socket, "window_command", %{action: "close", id: "account"})}
   end
 
   def handle_event("account_info", _params, socket) do
-    {:halt, dispatch(socket, "ns", ["info"])}
-  end
-
-  def handle_event("toggle_account_away", _params, socket) do
-    session = socket.assigns.session
-
-    if session.away do
-      {:halt,
-       socket
-       |> remember_away_message()
-       |> dispatch("away", [])}
-    else
-      message = socket.assigns.account_last_away_message || dgettext("chat", "Away")
-
-      {:halt,
-       socket
-       |> dispatch("away", [message])
-       |> assign(account_last_away_message: message)}
-    end
+    {:halt, CommandDispatch.dispatch_command(socket, socket.assigns.session, "ns", ["info"])}
   end
 
   def handle_event("account_register_submit", params, socket) do
-    mode = normalize_auth_mode(socket, params["mode"] || "register")
+    mode = auth_mode(socket)
     password = params["password"] || ""
     confirm = params["confirm"] || ""
 
     cond do
       mode == "register" and password != confirm ->
-        {:halt, auth_error(socket, "register", dgettext("chat", "Passwords do not match"))}
+        {:halt, auth_error(socket, dgettext("chat", "Passwords do not match"))}
 
       password == "" ->
-        {:halt, auth_error(socket, mode, dgettext("chat", "Password is required"))}
+        {:halt, auth_error(socket, dgettext("chat", "Password is required"))}
 
       mode == "identify" ->
-        {:halt, submit_nickserv(socket, "identify", [password], "identify")}
+        {:halt, submit_nickserv(socket, "identify", [password])}
 
       true ->
-        {:halt, submit_nickserv(socket, "register", [password], "register")}
+        {:halt, submit_nickserv(socket, "register", [password])}
     end
   end
 
@@ -99,15 +61,14 @@ defmodule RetroHexChatWeb.ChatLive.AccountEvents do
     password = params["password"] || ""
 
     if password == "" do
-      {:halt,
-       auth_error(socket, default_auth_mode(socket), dgettext("chat", "Password is required"))}
+      {:halt, auth_error(socket, dgettext("chat", "Password is required"))}
     else
-      {:halt, submit_nickserv(socket, "drop", [password], default_auth_mode(socket))}
+      {:halt, submit_nickserv(socket, "drop", [password])}
     end
   end
 
   def handle_event("account_auth_change", params, socket) do
-    mode = normalize_auth_mode(socket, params["mode"] || "register")
+    mode = auth_mode(socket)
     password = params["password"] || ""
     confirm = params["confirm"] || ""
 
@@ -125,7 +86,7 @@ defmodule RetroHexChatWeb.ChatLive.AccountEvents do
 
     send_update(AccountDialog,
       id: AccountDialog.id(),
-      action: {:auth, mode, valid?, error, %{password: password, confirm: confirm}}
+      action: {:auth, valid?, error, %{password: password, confirm: confirm}}
     )
 
     {:halt, socket}
@@ -143,201 +104,26 @@ defmodule RetroHexChatWeb.ChatLive.AccountEvents do
         {:halt, ghost_error(socket, dgettext("chat", "Password is required"))}
 
       true ->
-        {:halt, submit_nickserv(socket, "ghost", [nickname, password], default_auth_mode(socket))}
+        {:halt, submit_nickserv(socket, "ghost", [nickname, password])}
     end
-  end
-
-  def handle_event("account_change_nick_submit", %{"nickname" => nickname}, socket) do
-    nickname = String.trim(nickname)
-
-    case validate_nickname_change(socket.assigns.session.nickname, nickname) do
-      :ok ->
-        {socket, result} =
-          CommandDispatch.dispatch_command_with_result(
-            socket,
-            socket.assigns.session,
-            "nick",
-            [nickname]
-          )
-
-        case result do
-          {:error, message} -> {:halt, nick_error(socket, message)}
-          _result -> {:halt, nick_error(socket, nil)}
-        end
-
-      {:error, message} ->
-        {:halt, nick_error(socket, message)}
-    end
-  end
-
-  def handle_event("account_profile_change", %{"bio" => bio}, socket) do
-    {draft, warning} = normalize_bio_draft(bio)
-    send_update(AccountDialog, id: AccountDialog.id(), action: {:bio, draft, warning})
-    {:halt, socket}
-  end
-
-  def handle_event("account_profile_submit", %{"bio" => bio}, socket) do
-    {bio, warning} = normalize_bio_draft(bio)
-    args = if String.trim(bio) == "", do: ["clear"], else: [bio]
-    send_update(AccountDialog, id: AccountDialog.id(), action: {:bio, bio, warning})
-    {:halt, dispatch(socket, "bio", args)}
-  end
-
-  def handle_event("account_clear_bio", _params, socket) do
-    send_update(AccountDialog, id: AccountDialog.id(), action: {:bio, "", nil})
-    {:halt, dispatch(socket, "bio", ["clear"])}
-  end
-
-  def handle_event("account_presence_submit", params, socket) do
-    message =
-      params
-      |> Map.get("away_message", "")
-      |> String.trim()
-      |> case do
-        "" -> dgettext("chat", "Away")
-        value -> value
-      end
-
-    if truthy?(Map.get(params, "away", "true")) do
-      {:halt,
-       socket
-       |> dispatch("away", [message])
-       |> assign(account_last_away_message: message)}
-    else
-      {:halt,
-       socket
-       |> remember_away_message(message)
-       |> dispatch("away", [])}
-    end
-  end
-
-  def handle_event("account_clear_away", _params, socket) do
-    {:halt,
-     socket
-     |> remember_away_message()
-     |> dispatch("away", [])}
-  end
-
-  def handle_event("account_user_modes_submit", params, socket) do
-    mode_string = if truthy?(params["wallops"]), do: "+w", else: "-w"
-    {:halt, dispatch(socket, "umode", [mode_string])}
   end
 
   def handle_event(_event, _params, socket), do: {:cont, socket}
 
-  defp open_account(socket, tab, auth_mode) do
-    socket = sync_identity(socket)
-    normalized = normalize_auth_mode(socket, auth_mode)
-    bio = Session.get_bio(socket.assigns.session) || ""
-
-    Windows.open_with(socket, "account", AccountDialog,
-      id: AccountDialog.id(),
-      action: {:open, tab, normalized, bio}
-    )
-  end
-
-  defp submit_nickserv(socket, subcommand, args, auth_mode) do
-    {socket, result} =
-      CommandDispatch.dispatch_command_with_result(
-        socket,
-        socket.assigns.session,
-        "ns",
-        [subcommand | args]
-      )
-
-    case result do
-      {:error, message} ->
-        socket = sync_identity(socket)
-        reflect_nickserv_error(socket, subcommand, message, auth_mode)
-        socket
-
-      _result ->
-        socket = sync_identity(socket)
-
-        send_update(AccountDialog,
-          id: AccountDialog.id(),
-          action: {:auth_reset, default_auth_mode(socket)}
-        )
-
-        socket
-    end
-  end
-
-  defp reflect_nickserv_error(socket, "ghost", message, _auth_mode) do
-    send_update(AccountDialog, id: AccountDialog.id(), action: {:ghost_error, message})
+  @doc "Opens/focuses the Account window, refreshing the NickServ identity first."
+  @spec open(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
+  def open(socket) do
     socket
+    |> sync_identity()
+    |> Windows.open("account")
   end
 
-  defp reflect_nickserv_error(socket, _subcommand, message, auth_mode) do
-    auth_error(socket, normalize_auth_mode(socket, auth_mode), message)
-  end
-
-  defp auth_error(socket, mode, message) do
-    send_update(AccountDialog, id: AccountDialog.id(), action: {:auth_error, mode, message})
-    socket
-  end
-
-  defp ghost_error(socket, message) do
-    send_update(AccountDialog, id: AccountDialog.id(), action: {:ghost_error, message})
-    socket
-  end
-
-  defp nick_error(socket, message) do
-    send_update(AccountDialog, id: AccountDialog.id(), action: {:nick_error, message})
-    socket
-  end
-
-  defp normalize_auth_mode(socket, requested_mode) do
-    registered =
-      Map.get(socket.assigns, :account_registered, false) ||
-        NickServ.registered?(socket.assigns.session.nickname)
-
-    cond do
-      registered -> "identify"
-      requested_mode == "register" -> "register"
-      true -> "register"
-    end
-  end
-
-  defp validate_nickname_change(current_nickname, new_nickname) do
-    if new_nickname == current_nickname do
-      {:error, dgettext("chat", "You are already using that nickname")}
-    else
-      NicknameValidator.validate(new_nickname)
-    end
-  end
-
-  defp normalize_bio_draft(bio) do
-    bio = bio || ""
-    draft = String.slice(bio, 0, @max_bio_graphemes)
-
-    warning =
-      if String.length(bio) > @max_bio_graphemes do
-        dgettext("chat", "Bio is limited to 200 characters; extra text was not kept.")
-      end
-
-    {draft, warning}
-  end
-
-  defp remember_away_message(socket, fallback \\ nil) do
-    message = socket.assigns.session.away_message || fallback
-
-    case message do
-      nil -> socket
-      "" -> socket
-      value -> assign(socket, account_last_away_message: value)
-    end
-  end
-
-  defp default_auth_mode(socket) do
-    if NickServ.registered?(socket.assigns.session.nickname), do: "identify", else: "register"
-  end
-
-  defp dispatch(socket, name, args) do
-    CommandDispatch.dispatch_command(socket, socket.assigns.session, name, args)
-  end
-
-  defp sync_identity(socket) do
+  @doc """
+  Refreshes `session.identified` and the `account_registered` snapshot from
+  NickServ, loading the persisted data on a fresh identification.
+  """
+  @spec sync_identity(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
+  def sync_identity(socket) do
     session = socket.assigns.session
     registered = NickServ.registered?(session.nickname)
     identified = NickServ.identified?(session.nickname)
@@ -353,6 +139,51 @@ defmodule RetroHexChatWeb.ChatLive.AccountEvents do
     |> maybe_rebuild_nick_color_fn(session, identified, was_identified)
   end
 
+  defp submit_nickserv(socket, subcommand, args) do
+    {socket, result} =
+      CommandDispatch.dispatch_command_with_result(
+        socket,
+        socket.assigns.session,
+        "ns",
+        [subcommand | args]
+      )
+
+    case result do
+      {:error, message} ->
+        socket
+        |> sync_identity()
+        |> reflect_nickserv_error(subcommand, message)
+
+      _result ->
+        socket = sync_identity(socket)
+        send_update(AccountDialog, id: AccountDialog.id(), action: :auth_reset)
+        socket
+    end
+  end
+
+  defp reflect_nickserv_error(socket, "ghost", message), do: ghost_error(socket, message)
+  defp reflect_nickserv_error(socket, _subcommand, message), do: auth_error(socket, message)
+
+  defp auth_error(socket, message) do
+    send_update(AccountDialog, id: AccountDialog.id(), action: {:auth_error, message})
+    socket
+  end
+
+  defp ghost_error(socket, message) do
+    send_update(AccountDialog, id: AccountDialog.id(), action: {:ghost_error, message})
+    socket
+  end
+
+  # The nickname is either registered (identify) or not (register); the form
+  # never offers a choice, so the mode is derived rather than taken from params.
+  defp auth_mode(socket) do
+    registered =
+      Map.get(socket.assigns, :account_registered, false) ||
+        NickServ.registered?(socket.assigns.session.nickname)
+
+    if registered, do: "identify", else: "register"
+  end
+
   defp maybe_load_persisted_data(session, nickname, true, false),
     do: Helpers.load_persisted_data(session, nickname)
 
@@ -362,8 +193,4 @@ defmodule RetroHexChatWeb.ChatLive.AccountEvents do
     do: Helpers.rebuild_nick_color_fn(socket, session)
 
   defp maybe_rebuild_nick_color_fn(socket, _session, _identified, _was_identified), do: socket
-
-  defp truthy?(true), do: true
-  defp truthy?("true"), do: true
-  defp truthy?(_value), do: false
 end

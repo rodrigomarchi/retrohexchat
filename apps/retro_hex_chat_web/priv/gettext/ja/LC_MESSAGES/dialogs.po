@@ -255,8 +255,8 @@ msgstr ""
 "の特長\n"
 "スパム対策(重複検知)"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:465
 #: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:219
+#: lib/retro_hex_chat_web/components/ui/dialogs/user_modes_dialog.ex:44
 #, elixir-autogen, elixir-format
 msgid "Apply"
 msgstr ""
@@ -1202,8 +1202,8 @@ msgstr ""
 "の特長\n"
 "ニックネーム"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:135
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:286
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:49
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:200
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:275
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:352
 #, elixir-autogen, elixir-format
@@ -2127,14 +2127,14 @@ msgstr ""
 "の特長\n"
 "監査ログ"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:473
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:245
 #, elixir-autogen, elixir-format
 msgid "Away"
 msgstr ""
 "の特長\n"
 "アウェイ"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:414
+#: lib/retro_hex_chat_web/components/ui/dialogs/away_dialog.ex:40
 #, elixir-autogen, elixir-format
 msgid "Away message:"
 msgstr ""
@@ -2156,7 +2156,7 @@ msgstr ""
 "の特長\n"
 "禁止ユーザー"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:365
+#: lib/retro_hex_chat_web/components/ui/dialogs/profile_dialog.ex:67
 #, elixir-autogen, elixir-format
 msgid "Bio (about me) — shown in /whois, max 200 chars"
 msgstr ""
@@ -2185,35 +2185,35 @@ msgstr ""
 "の特長\n"
 "チャンサーブ情報"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:351
+#: lib/retro_hex_chat_web/components/ui/dialogs/profile_dialog.ex:53
 #, elixir-autogen, elixir-format
 msgid "Change"
 msgstr ""
 "の特長\n"
 "アクセス"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:338
+#: lib/retro_hex_chat_web/components/ui/dialogs/profile_dialog.ex:40
 #, elixir-autogen, elixir-format
 msgid "Change nickname:"
 msgstr ""
 "の特長\n"
 "ニックネームの変更:"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:176
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:90
 #, elixir-autogen, elixir-format
 msgid "Claims your current nickname with a NickServ password."
 msgstr ""
 "の特長\n"
 "NickServパスワードで現在のニックネームを宣言します。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:441
+#: lib/retro_hex_chat_web/components/ui/dialogs/away_dialog.ex:67
 #, elixir-autogen, elixir-format
 msgid "Clear Away"
 msgstr ""
 "の特長\n"
 "明確な道"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:393
+#: lib/retro_hex_chat_web/components/ui/dialogs/profile_dialog.ex:95
 #, elixir-autogen, elixir-format
 msgid "Clear Bio"
 msgstr ""
@@ -2305,7 +2305,7 @@ msgstr ""
 "の特長\n"
 "unmute の確認"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:208
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:122
 #, elixir-autogen, elixir-format
 msgid "Confirm:"
 msgstr ""
@@ -2347,7 +2347,7 @@ msgstr ""
 "の特長\n"
 "チャネルの削除"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:240
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:154
 #, elixir-autogen, elixir-format
 msgid ""
 "Deletes this nickname registration after you confirm with its password."
@@ -2362,14 +2362,14 @@ msgstr ""
 "の特長\n"
 "破壊的な行動"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:278
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:192
 #, elixir-autogen, elixir-format
 msgid "Disconnect a stale session that is holding a registered nickname."
 msgstr ""
 "の特長\n"
 "登録されたニックネームを保持しているストールセッションを切断します。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:264
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:178
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:356
 #, elixir-autogen, elixir-format
 msgid "Drop Registration"
@@ -2387,7 +2387,7 @@ msgstr ""
 "の特長\n"
 "ドロップ登録"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:238
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:152
 #, elixir-autogen, elixir-format
 msgid "Drop registration..."
 msgstr "ドロップ登録..."
@@ -2482,56 +2482,56 @@ msgstr ""
 "の特長\n"
 "ニックネームから"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:318
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:232
 #, elixir-autogen, elixir-format
 msgid "Ghost Session"
 msgstr ""
 "の特長\n"
 "ゴーストセッション"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:274
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:188
 #, elixir-autogen, elixir-format
 msgid "Ghost session..."
 msgstr ""
 "の特長\n"
 "Ghostセッション..."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:420
+#: lib/retro_hex_chat_web/components/ui/dialogs/away_dialog.ex:46
 #, elixir-autogen, elixir-format
 msgid "Gone to lunch"
 msgstr ""
 "の特長\n"
 "お弁当"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:475
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:247
 #, elixir-autogen, elixir-format
 msgid "Guest"
 msgstr ""
 "の特長\n"
 "ゲスト"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:410
+#: lib/retro_hex_chat_web/components/ui/dialogs/away_dialog.ex:36
 #, elixir-autogen, elixir-format
 msgid "I'm away"
 msgstr ""
 "の特長\n"
 "お問い合わせ"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:474
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:246
 #, elixir-autogen, elixir-format
 msgid "Identified"
 msgstr ""
 "の特長\n"
 "識別される"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:226
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:140
 #, elixir-autogen, elixir-format
 msgid "Identify"
 msgstr ""
 "の特長\n"
 "ログイン"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:185
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:99
 #, elixir-autogen, elixir-format
 msgid "Identify (log in)"
 msgstr ""
@@ -2756,7 +2756,7 @@ msgstr ""
 "の特長\n"
 "1つのP2Pセッションのみ有効"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:458
+#: lib/retro_hex_chat_web/components/ui/dialogs/user_modes_dialog.ex:37
 #, elixir-autogen, elixir-format
 msgid "Operator broadcast messages"
 msgstr ""
@@ -2768,21 +2768,14 @@ msgstr ""
 msgid "P2P games close"
 msgstr "P2Pゲームクローズ"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:193
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:249
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:299
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:107
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:163
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:213
 #, elixir-autogen, elixir-format
 msgid "Password:"
 msgstr ""
 "の特長\n"
 "パスワード:"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:67
-#, elixir-autogen, elixir-format
-msgid "Presence"
-msgstr ""
-"の特長\n"
-"プレゼンス"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_danger_zone_dialog.ex:78
 #, elixir-autogen, elixir-format
@@ -2797,13 +2790,6 @@ msgid "Privacy and relay settings carry over"
 msgstr ""
 "の特長\n"
 "プライバシーとリレー設定が引き継ぎ"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:63
-#, elixir-autogen, elixir-format
-msgid "Profile"
-msgstr ""
-"の特長\n"
-"プロフィール"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:190
 #, elixir-autogen, elixir-format
@@ -2825,7 +2811,7 @@ msgstr ""
 "の特長\n"
 "ログイン"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:456
+#: lib/retro_hex_chat_web/components/ui/dialogs/user_modes_dialog.ex:35
 #, elixir-autogen, elixir-format
 msgid "Receive wallops (+w)"
 msgstr ""
@@ -2851,7 +2837,7 @@ msgstr ""
 "の特長\n"
 "プレビュー"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:225
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:139
 #, elixir-autogen, elixir-format
 msgid "Register"
 msgstr ""
@@ -2866,19 +2852,12 @@ msgstr ""
 "の特長\n"
 "チャンネル登録"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:174
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:88
 #, elixir-autogen, elixir-format
 msgid "Register this nickname"
 msgstr ""
 "の特長\n"
 "このニックネームを登録する"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:59
-#, elixir-autogen, elixir-format
-msgid "Register/Login"
-msgstr ""
-"の特長\n"
-"登録/Login"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:292
 #, elixir-autogen, elixir-format
@@ -2967,7 +2946,7 @@ msgstr ""
 "の特長\n"
 "パスワードの再設定"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:383
+#: lib/retro_hex_chat_web/components/ui/dialogs/profile_dialog.ex:85
 #, elixir-autogen, elixir-format
 msgid "Save Bio"
 msgstr ""
@@ -3035,7 +3014,7 @@ msgstr ""
 "の特長\n"
 "サーバー名"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:431
+#: lib/retro_hex_chat_web/components/ui/dialogs/away_dialog.ex:57
 #, elixir-autogen, elixir-format
 msgid "Set Away"
 msgstr ""
@@ -3064,7 +3043,7 @@ msgstr ""
 "の特長\n"
 "コンテンツ"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:425
+#: lib/retro_hex_chat_web/components/ui/dialogs/away_dialog.ex:51
 #, elixir-autogen, elixir-format
 msgid "Shown to others via /whois."
 msgstr ""
@@ -3078,7 +3057,7 @@ msgstr ""
 "の特長\n"
 "統計情報"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:137
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:51
 #, elixir-autogen, elixir-format
 msgid "Status:"
 msgstr ""
@@ -3134,7 +3113,7 @@ msgstr ""
 "の特長\n"
 "新規のオーナーのご協力なく、元に戻すことはできません。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:187
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:101
 #, elixir-autogen, elixir-format
 msgid "This nickname is registered. Enter its NickServ password."
 msgstr ""
@@ -3218,13 +3197,6 @@ msgstr ""
 "の特長\n"
 "ユーザー検索"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:71
-#, elixir-autogen, elixir-format
-msgid "User Modes"
-msgstr ""
-"の特長\n"
-"ユーザーモード"
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_broadcast_dialog.ex:73
 #, elixir-autogen, elixir-format
 msgid "Wallops"
@@ -3269,7 +3241,7 @@ msgstr ""
 "の特長\n"
 "誰が保持するのか"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:158
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:72
 #, elixir-autogen, elixir-format
 msgid "You are identified with NickServ."
 msgstr ""
@@ -3366,7 +3338,7 @@ msgstr ""
 "の特長\n"
 "オープン"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:142
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:56
 #, elixir-autogen, elixir-format
 msgid "registered"
 msgstr ""
@@ -3395,7 +3367,7 @@ msgstr ""
 msgid "unknown"
 msgstr "インフォメーション"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:143
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:57
 #, elixir-autogen, elixir-format
 msgid "unregistered"
 msgstr "未登録"

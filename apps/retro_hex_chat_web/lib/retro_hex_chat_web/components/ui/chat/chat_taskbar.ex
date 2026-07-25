@@ -125,6 +125,24 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
       :icon_status_user
     )
     |> add_window(
+      window_open?(assigns.open_windows, "profile"),
+      "profile",
+      dgettext("chat", "Profile"),
+      :icon_dialog_profile
+    )
+    |> add_window(
+      window_open?(assigns.open_windows, "away"),
+      "away",
+      dgettext("chat", "Away"),
+      :icon_dialog_away
+    )
+    |> add_window(
+      window_open?(assigns.open_windows, "user-modes"),
+      "user-modes",
+      dgettext("chat", "User Modes"),
+      :icon_dialog_user_modes
+    )
+    |> add_window(
       window_open?(assigns.open_windows, "user-lookup"),
       "user-lookup",
       dgettext("chat", "User Lookup"),

@@ -242,6 +242,13 @@ contrato `data-start-submenu` / `data-start-submenu-panel`. Contratos separados
 de propósito: são hooks diferentes, e reusar o atributo do outro faz um fechar o
 painel do outro.
 
+**Nem toda janela tem uma única ação de abertura.** No Account, o menu bar abre a
+janela `account` por dois itens específicos de papel ("Register Nickname..." e
+"Identify..."), não por um genérico. Um teste com a tabela `janela => ação` falha
+ali pelo motivo errado. Use duas tabelas: `janela => ação canônica` (para o teste
+de mount/unmount) e `janela => ações aceitáveis` (para o teste das três
+superfícies).
+
 **E as três não abrem a janela do mesmo jeito.** Menu bar e toolbar emitem a
 ação (`open_<x>`); o start menu, via `<.window_item window="<id>">`, fala direto
 com o window manager por `data-window-open` — o servidor monta a janela
@@ -256,6 +263,21 @@ estado específico, use `Windows.open/2` e **não** escreva a cláusula
 seguinte já reconstrói o estado que a diretiva resetaria. `open_with/4` existe
 para o caso oposto (abrir apontando para algo), e usá-lo sem necessidade nasce
 como código morto.
+
+**E o estado que existia só para a aba lembrar em qual modo abriu some junto.**
+No Account, `auth_mode` era assign, era parâmetro de 6 funções e tinha cláusula
+de reset própria — tudo porque a aba precisava reabrir no mesmo modo. Sem aba, o
+modo é **derivado** na hora (`NickServ.registered?/1`), já que o formulário nunca
+ofereceu escolha. Procure por parâmetros que só existem para sobreviver ao
+fechamento da aba.
+
+**Não crie substrato que já existe.** Ao dividir um hook monolítico, o impulso é
+extrair um `<Feature>Ops` com os helpers comuns. Antes, confira se o helper não é
+só um wrapper de uma linha sobre um módulo compartilhado que já existe
+(`CommandDispatch`, `Helpers`). No Account, `dispatch/3` e
+`dispatch_with_result/3` eram exatamente isso — os quatro hooks passaram a
+chamar `CommandDispatch` direto. A regra de contar consumidores (§3) é para
+código sem casa, não para reembrulhar o que já tem uma.
 
 **Três superfícies listam a janela, não uma.** Menu bar, start menu e toolbar
 são arquivos separados. Esquecer duas delas não quebra nada: a janela
@@ -295,16 +317,32 @@ os usos — tópicos de ajuda referenciam ícones **como átomo**
 grep -rn ":icon_tab_<x>" apps/
 ```
 
-**CSS: família grande compartilha, par extraído duplica.** As 9 janelas admin
+**CSS: família compartilha, par extraído duplica.** As 9 janelas admin
 compartilham `dialogs/admin.css` (`adm-dialog`, `adm-scroll`), que já carrega
 todo o trabalho mobile — nenhum arquivo novo por janela. Já um par nascido de um
 split de duas abas segue o contrato literal do plano (§8.13): arquivo próprio,
 prefixo próprio (`perform.css`/`pf-` + `autojoin.css`/`aj-`). ~100 linhas
 duplicadas valem menos que um prefixo que mente sobre a janela em que mora.
 
+A fatia do Account confirmou o outro lado: 4 janelas irmãs ficaram com um
+`account.css` só, prefixo `acct-` — que continua honesto porque as quatro **são**
+configurações de conta. O corte fica entre 2 (duplica) e 4 (compartilha).
+
 De qualquer forma, **o CSS do shell de abas morre junto com o shell**: 80 linhas
-de scroller mobile saíram do `perform.css`, do mesmo jeito que os `.ac-main-tabs*`
-saíram do `account.css` na fatia do Admin.
+de scroller mobile saíram do `perform.css`, ~85 do `account.css`, do mesmo jeito
+que os `.ac-main-tabs*` saíram na fatia do Admin.
+
+**Grepe o CSS pelo valor da aba, não só pelo prefixo.** Os blocos de scroller
+mobile são compartilhados entre diálogos e selecionam a aba ativa por
+`:has(.tabs-trigger[data-state="active"][data-target="<aba>"])`. Isso é seletor
+de **atributo**, então `lint.css_consistency` — que casa nomes de classe — não
+enxerga. Na fatia do Account achei seletores `cc-main-tabs-shell` ainda citando
+`bans`/`ban_exceptions`/`invite_exceptions`, abas que a fatia do Channel Central
+tinha removido duas fases antes:
+
+```sh
+grep -rn 'data-target="<aba removida>"' apps/*/assets/css/
+```
 
 ### 5.5 Deletar do monólito — 9 lugares
 

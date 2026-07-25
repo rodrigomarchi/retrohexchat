@@ -227,7 +227,7 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
       },
       %{
         id: "ui-account-dialog",
-        title: dgettext("help", "Account Dialog"),
+        title: dgettext("help", "Account Windows"),
         category: dgettext("help", "User Interface"),
         keywords: [
           "account",
@@ -243,13 +243,15 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
           "unregister",
           "ghost",
           "nickname validation",
+          "user modes",
+          "wallops",
           dgettext("help", "status bar")
         ],
         icon: :icon_status_user,
         description:
           dgettext(
             "help",
-            "Manage nickname registration, profile bio, away status, and user modes from the Account dialog."
+            "Manage nickname registration, profile bio, away status, and user modes from the four Account windows."
           )
       },
       %{

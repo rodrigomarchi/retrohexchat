@@ -115,6 +115,10 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_role_voiced(assigns), to: RetroHexChatWeb.Icons.People
   defdelegate icon_role_regular(assigns), to: RetroHexChatWeb.Icons.People
   defdelegate icon_status_user(assigns), to: RetroHexChatWeb.Icons.People
+  defdelegate icon_dialog_profile(assigns), to: RetroHexChatWeb.Icons.People
+  defdelegate icon_btn_profile(assigns), to: RetroHexChatWeb.Icons.People
+  defdelegate icon_dialog_user_modes(assigns), to: RetroHexChatWeb.Icons.People
+  defdelegate icon_btn_user_modes(assigns), to: RetroHexChatWeb.Icons.People
   defdelegate icon_tab_nicklist(assigns), to: RetroHexChatWeb.Icons.People
 
   # ── Communication ───────────────────────────────────────
@@ -340,6 +344,8 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_group_help(assigns), to: RetroHexChatWeb.Icons.Alerts
   defdelegate icon_lightbulb(assigns), to: RetroHexChatWeb.Icons.Alerts
   defdelegate icon_btn_dnd(assigns), to: RetroHexChatWeb.Icons.Alerts
+  defdelegate icon_dialog_away(assigns), to: RetroHexChatWeb.Icons.Alerts
+  defdelegate icon_btn_away(assigns), to: RetroHexChatWeb.Icons.Alerts
   defdelegate icon_btn_dnd_active(assigns), to: RetroHexChatWeb.Icons.Alerts
   defdelegate icon_btn_help_topics(assigns), to: RetroHexChatWeb.Icons.Alerts
 
