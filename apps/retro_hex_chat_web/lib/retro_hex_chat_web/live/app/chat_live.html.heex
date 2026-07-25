@@ -391,8 +391,8 @@
       />
     </.desktop_window>
 
-    <%!-- Address Book — server-managed four-tab mini-app; open-on-tab via
-          send_update after the window mounts; seven window-scoped sub-forms. --%>
+    <%!-- Address Book — server-managed: the saved contacts, with two
+          window-scoped add/edit sub-forms. --%>
     <.desktop_window
       :if={"address-book" in @open_windows}
       id="address-book"
@@ -400,10 +400,10 @@
       managed
       default_x={100}
       default_y={50}
-      width={720}
-      height={560}
-      min_width={560}
-      min_height={400}
+      width={640}
+      height={480}
+      min_width={480}
+      min_height={340}
       body_class="flex min-h-0 flex-col p-2"
       data-testid="address-book-window"
     >
@@ -414,6 +414,54 @@
         session={@session}
         nick_color_fn={@nick_color_fn}
         timezone={@timezone}
+      />
+    </.desktop_window>
+
+    <%!-- Nick Colors — server-managed: the per-nickname color overrides, with
+          the palette editor in two window-scoped sub-forms. --%>
+    <.desktop_window
+      :if={"nick-colors" in @open_windows}
+      id="nick-colors"
+      title={dgettext("chat", "Nick Colors")}
+      managed
+      default_x={140}
+      default_y={90}
+      width={520}
+      height={440}
+      min_width={420}
+      min_height={320}
+      body_class="flex min-h-0 flex-col p-2"
+      data-testid="nick-colors-window"
+    >
+      <:icon><Icons.icon_dialog_nick_colors class="h-4 w-4" /></:icon>
+      <.live_component
+        module={RetroHexChatWeb.ChatLive.Components.NickColorsDialog}
+        id={RetroHexChatWeb.ChatLive.Components.NickColorsDialog.id()}
+        session={@session}
+      />
+    </.desktop_window>
+
+    <%!-- Ignore List — server-managed: the ignored nicknames, with a
+          window-scoped add sub-form. The expiry timers live on the host. --%>
+    <.desktop_window
+      :if={"ignore-list" in @open_windows}
+      id="ignore-list"
+      title={dgettext("chat", "Ignore List")}
+      managed
+      default_x={170}
+      default_y={110}
+      width={560}
+      height={440}
+      min_width={440}
+      min_height={320}
+      body_class="flex min-h-0 flex-col p-2"
+      data-testid="ignore-list-window"
+    >
+      <:icon><Icons.icon_dialog_ignore_list class="h-4 w-4" /></:icon>
+      <.live_component
+        module={RetroHexChatWeb.ChatLive.Components.IgnoreListDialog}
+        id={RetroHexChatWeb.ChatLive.Components.IgnoreListDialog.id()}
+        session={@session}
       />
     </.desktop_window>
 
@@ -438,6 +486,7 @@
         module={RetroHexChatWeb.ChatLive.Components.NotifyListDialog}
         id={RetroHexChatWeb.ChatLive.Components.NotifyListDialog.id()}
         session={@session}
+        timezone={@timezone}
       />
     </.desktop_window>
 

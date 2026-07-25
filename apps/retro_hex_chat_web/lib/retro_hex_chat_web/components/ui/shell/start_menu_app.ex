@@ -44,6 +44,16 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
           icon_fn={:icon_tab_notify}
         />
         <.window_item
+          window="nick-colors"
+          label={dgettext("ui", "Nick Colors")}
+          icon_fn={:icon_btn_nick_colors}
+        />
+        <.window_item
+          window="ignore-list"
+          label={dgettext("ui", "Ignore List")}
+          icon_fn={:icon_btn_ignore_list}
+        />
+        <.window_item
           window="highlight"
           label={dgettext("ui", "Highlight Words")}
           icon_fn={:icon_btn_highlight_words}

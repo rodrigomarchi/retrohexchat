@@ -42,6 +42,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
   attr :auto_add_pm, :boolean, default: true, doc: "Auto-add PM contacts checkbox state"
   attr :on_toggle_auto_add_pm, :any, default: nil, doc: "Auto-add PM checkbox callback"
   attr :on_close, :any, default: nil, doc: "Close button callback"
+  attr :timezone, :string, default: nil, doc: "Timezone for the Last Seen column"
 
   @spec notify_list(map()) :: Phoenix.LiveView.Rendered.t()
   def notify_list(assigns) do
@@ -100,6 +101,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
   attr :auto_add_pm, :boolean, default: true
   attr :on_toggle_auto_add_pm, :any, default: nil
   attr :on_close, :any, default: nil
+  attr :timezone, :string, default: nil
 
   @spec notify_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def notify_panel(assigns) do
@@ -164,7 +166,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
               </span>
               <span class="nl-entry-meta">
                 <span class="nl-entry-meta-label">{dgettext("dialogs", "Last Seen")}</span>
-                {last_seen_label(entry)}
+                {last_seen_label(entry, @timezone)}
               </span>
               <span class="nl-entry-note">
                 <span class="nl-entry-meta-label">{dgettext("dialogs", "Note")}</span>
@@ -428,14 +430,27 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
     end
   end
 
-  defp last_seen_label(%{online: true}), do: dgettext("dialogs", "Now")
+  # Timestamps are rendered in the viewer's timezone — the behaviour the Address
+  # Book's Notify tab had, adopted here when that tab was absorbed.
+  defp last_seen_label(%{online: true}, _timezone), do: dgettext("dialogs", "Now")
 
-  defp last_seen_label(entry) do
+  defp last_seen_label(entry, timezone) do
     case Map.get(entry, :last_seen_at) do
-      nil -> "--"
-      "" -> "--"
-      %DateTime{} = value -> Calendar.strftime(value, "%Y-%m-%d %H:%M")
+      nil -> dgettext("dialogs", "Never")
+      "" -> dgettext("dialogs", "Never")
+      %DateTime{} = value -> value |> shift_timezone(timezone) |> Calendar.strftime("%d/%m %H:%M")
       value -> to_string(value)
+    end
+  end
+
+  @spec shift_timezone(DateTime.t(), String.t() | nil) :: DateTime.t()
+  defp shift_timezone(dt, nil), do: dt
+  defp shift_timezone(dt, "Etc/UTC"), do: dt
+
+  defp shift_timezone(dt, timezone) do
+    case DateTime.shift_zone(dt, timezone) do
+      {:ok, shifted} -> shifted
+      {:error, _} -> dt
     end
   end
 end

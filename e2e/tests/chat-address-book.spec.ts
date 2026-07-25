@@ -57,34 +57,28 @@ test.describe("Address Book", () => {
     await chat.addressBookDialog.getByTestId("contact-remove").click();
     await expect(chat.addressBookContactRow(contactNick)).toHaveCount(0);
 
-    await chat.switchAddressBookToTab("Notify");
-    await chat.addressBookDialog.getByTestId("ab-notify-add").click();
-    form = page.getByTestId("ab-notify-add-form");
-    await form.locator("#ab-notify-add-nick").fill(notifyNick);
-    await form.locator("#ab-notify-add-note").fill(notifyNote);
+    await chat.openNotifyListFromViewMenu();
+    await chat.notifyListDialog.getByTestId("notify-list-add").click();
+    form = page.getByTestId("notify-add-form");
+    await form.locator("#notify-add-nickname").fill(notifyNick);
+    await form.locator("#notify-add-note").fill(notifyNote);
     await submitDialogForm(form);
-    await expect(chat.addressBookNotifyRow(notifyNick)).toContainText(
-      notifyNote,
-    );
-    await expect(chat.addressBookNotifyRow(notifyNick)).toContainText(
-      "Offline",
-    );
+    await expect(chat.notifyListRow(notifyNick)).toContainText(notifyNote);
+    await expect(chat.notifyListRow(notifyNick)).toContainText("Offline");
 
-    await chat.addressBookNotifyRow(notifyNick).click();
-    await chat.addressBookDialog.getByTestId("ab-notify-edit").click();
-    form = page.getByTestId("ab-notify-edit-form");
-    await form.locator("#ab-notify-edit-note").fill(notifyEdited);
+    await chat.notifyListRow(notifyNick).click();
+    await chat.notifyListDialog.getByTestId("notify-list-edit").click();
+    form = page.getByTestId("notify-edit-form");
+    await form.locator("#notify-edit-note").fill(notifyEdited);
     await submitDialogForm(form);
-    await expect(chat.addressBookNotifyRow(notifyNick)).toContainText(
-      notifyEdited,
-    );
+    await expect(chat.notifyListRow(notifyNick)).toContainText(notifyEdited);
 
-    await chat.addressBookNotifyRow(notifyNick).click();
-    await chat.addressBookDialog.getByTestId("ab-notify-remove").click();
-    await expect(chat.addressBookNotifyRow(notifyNick)).toHaveCount(0);
+    await chat.notifyListRow(notifyNick).click();
+    await chat.notifyListDialog.getByTestId("notify-list-remove").click();
+    await expect(chat.notifyListRow(notifyNick)).toHaveCount(0);
 
-    await chat.switchAddressBookToTab("Nick Colors");
-    await chat.addressBookDialog.getByTestId("nick-color-add").click();
+    await chat.openNickColorsFromMenu();
+    await chat.nickColorsDialog.getByTestId("nick-color-add").click();
     form = page.getByTestId("nick-color-add-form");
     await form.locator("#nick-color-add-nick").fill(colorNick);
     await form.getByRole("button", { name: "Color 4: Red" }).click();
@@ -95,7 +89,7 @@ test.describe("Address Book", () => {
     );
 
     await chat.addressBookNickColorRow(colorNick).click();
-    await chat.addressBookDialog.getByTestId("nick-color-edit").click();
+    await chat.nickColorsDialog.getByTestId("nick-color-edit").click();
     form = page.getByTestId("nick-color-edit-form");
     await form.getByRole("button", { name: "Color 5: Maroon" }).click();
     await submitDialogForm(form);
@@ -105,11 +99,11 @@ test.describe("Address Book", () => {
     );
 
     await chat.addressBookNickColorRow(colorNick).click();
-    await chat.addressBookDialog.getByTestId("nick-color-remove").click();
+    await chat.nickColorsDialog.getByTestId("nick-color-remove").click();
     await expect(chat.addressBookNickColorRow(colorNick)).toHaveCount(0);
 
-    await chat.switchAddressBookToTab("Control");
-    await chat.addressBookDialog.getByTestId("control-add").click();
+    await chat.openIgnoreListFromMenu();
+    await chat.ignoreListDialog.getByTestId("control-add").click();
     form = page.getByTestId("control-add-form");
     await form.locator("#control-add-nick").fill(controlNick);
     await form.locator("#control-add-type").selectOption("messages");
@@ -119,7 +113,7 @@ test.describe("Address Book", () => {
     );
 
     await chat.addressBookControlRow(controlNick).click();
-    await chat.addressBookDialog.getByTestId("control-remove").click();
+    await chat.ignoreListDialog.getByTestId("control-remove").click();
     await expect(chat.addressBookControlRow(controlNick)).toHaveCount(0);
 
     await chat.closeAddressBook();
@@ -132,9 +126,9 @@ test.describe("Address Book", () => {
     const message = `custom color message ${Date.now()}`;
 
     await chat.openAddressBookFromMenu();
-    await chat.switchAddressBookToTab("Nick Colors");
+    await chat.openNickColorsFromMenu();
 
-    await chat.addressBookDialog.getByTestId("nick-color-add").click();
+    await chat.nickColorsDialog.getByTestId("nick-color-add").click();
     const form = page.getByTestId("nick-color-add-form");
     await form.locator("#nick-color-add-nick").fill(nick);
     await form.getByRole("button", { name: "Color 4: Red" }).click();

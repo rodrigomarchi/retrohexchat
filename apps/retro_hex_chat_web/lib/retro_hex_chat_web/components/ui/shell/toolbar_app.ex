@@ -96,6 +96,18 @@ defmodule RetroHexChatWeb.Components.UI.ToolbarApp do
             on_action={@on_action}
           />
           <.dropdown_item
+            icon_fn={:icon_btn_nick_colors}
+            label={dgettext("ui", "Nick Colors")}
+            action="open_nick_colors_dialog"
+            on_action={@on_action}
+          />
+          <.dropdown_item
+            icon_fn={:icon_btn_ignore_list}
+            label={dgettext("ui", "Ignore List")}
+            action="open_ignore_list_dialog"
+            on_action={@on_action}
+          />
+          <.dropdown_item
             icon_fn={:icon_btn_highlight_words}
             label={dgettext("ui", "Highlight Words")}
             action="open_highlight_dialog"

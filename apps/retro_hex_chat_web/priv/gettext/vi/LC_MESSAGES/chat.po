@@ -41,77 +41,77 @@ msgstr "  %{position}: %{status} %{trigger} %{channel} → %{command}"
 msgid "  /%{name} → %{expansion}"
 msgstr "  /%{name} → %{expansion}"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:929
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:933
 #, elixir-autogen, elixir-format
 msgid "  /cs aop #channel add <nick>    — Add an Auto Operator"
 msgstr "  /cs aop #channel add <nick>    — Add an Auto Operator"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:931
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:935
 #, elixir-autogen, elixir-format
 msgid "  /cs info #channel              — View channel registration info"
 msgstr "  /cs info #channel              — View channel registration info"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:927
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:931
 #, elixir-autogen, elixir-format
 msgid "  /cs register #channel          — Register a channel you operate"
 msgstr "  /cs register #channel          — Register a channel you operate"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:928
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:932
 #, elixir-autogen, elixir-format
 msgid "  /cs sop #channel add <nick>    — Add a Super Operator"
 msgstr "  /cs sop #channel add <nick>    — Add a Super Operator"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:930
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:934
 #, elixir-autogen, elixir-format
 msgid "  /cs vop #channel add <nick>    — Add an Auto Voice user"
 msgstr "  /cs vop #channel add <nick>    — Add an Auto Voice user"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:901
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:905
 #, elixir-autogen, elixir-format
 msgid "  /help            — View full help"
 msgstr "  /help            — View full help"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:902
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:906
 #, elixir-autogen, elixir-format
 msgid "  /help commands   — List all commands"
 msgstr "  /help commands   — List all commands"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:898
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:902
 #, elixir-autogen, elixir-format
 msgid "  /join #channel   — Join a channel"
 msgstr "  /join #channel   — Join a channel"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:899
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:903
 #, elixir-autogen, elixir-format
 msgid "  /msg nick text   — Send a private message"
 msgstr "  /msg nick text   — Send a private message"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:900
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:904
 #, elixir-autogen, elixir-format
 msgid "  /nick new_nick   — Change your nickname"
 msgstr "  /nick new_nick   — Change your nickname"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:961
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:965
 #, elixir-autogen, elixir-format
 msgid "  /ns drop <password>       — Permanently unregister your nickname"
 msgstr "  /ns drop <password>       — Permanently unregister your nickname"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:960
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:964
 #, elixir-autogen, elixir-format
 msgid "  /ns ghost <nick> <pass>   — Disconnect a ghost session"
 msgstr "  /ns ghost <nick> <pass>   — Disconnect a ghost session"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:958
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:962
 #, elixir-autogen, elixir-format
 msgid "  /ns identify <password>   — Identify (log in) for this session"
 msgstr "  /ns identify <password>   — Identify (log in) for this session"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:959
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:963
 #, elixir-autogen, elixir-format
 msgid "  /ns info [nickname]       — Look up registration info"
 msgstr "  /ns info [nickname]       — Look up registration info"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:957
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:961
 #, elixir-autogen, elixir-format
 msgid "  /ns register <password>   — Register your current nickname"
 msgstr "  /ns register <password>   — Register your current nickname"
@@ -126,29 +126,29 @@ msgstr "Đăng ký:"
 msgid "  Registered: yes (%{status})"
 msgstr "  Đăng ký: có (%{status})"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:936
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:940
 #, elixir-autogen, elixir-format
 msgid "  • Channels expire after 7 days of inactivity"
 msgstr "• Các kênh ngừng hoạt động sau 7 ngày"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:937
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:941
 #, elixir-autogen, elixir-format
 msgid "  • If a founder's nick expires, the next ranked user is promoted"
 msgstr ""
 "• Nếu vết xước của người sáng lập hết hạn, người dùng xếp hạng tiếp theo sẽ "
 "được thăng chức"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:964
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:968
 #, elixir-autogen, elixir-format
 msgid "  • Nicks are case sensitive — \"Alice\" and \"alice\" are different"
 msgstr "• Nicks rất nhạy cảm — \"Ace\" và \"lice\" khác nhau"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:965
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:969
 #, elixir-autogen, elixir-format
 msgid "  • Nicks expire after 7 days of inactivity"
 msgstr "• Sau 7 ngày ngưng hoạt động, Nicks ngưng hoạt động"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:966
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:970
 #, elixir-autogen, elixir-format
 msgid "  • Switching to a registered nick gives you 60s to identify"
 msgstr "• Chuyển sang một vết xước đã đăng ký cho bạn 60"
@@ -212,7 +212,7 @@ msgstr "%{field}: %{errors}"
 msgid "%{message} (%{reason})"
 msgstr "%{message} (%{reason})"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:566
+#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:175
 #, elixir-autogen, elixir-format
 msgid "%{nickname} already has a custom color"
 msgstr "%{nickname} đã có màu riêng"
@@ -237,12 +237,12 @@ msgstr "%{nickname} trái"
 msgid "%{nickname} has left (%{reason})"
 msgstr "%{nickname} đã rời khỏi (%{reason})"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:284
+#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:131
 #, elixir-autogen, elixir-format
 msgid "%{nickname} has no custom color"
 msgstr "%{nickname} không có màu riêng"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:558
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:222
 #: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:245
 #, elixir-autogen, elixir-format
 msgid "%{nickname} is already in your contacts"
@@ -259,8 +259,8 @@ msgstr "%{nickname} đã nằm trong danh sách thông báo của bạn"
 msgid "%{nickname} is away: %{message}"
 msgstr "%{nickname} là đi: %{message}"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:161
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:187
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:121
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:147
 #, elixir-autogen, elixir-format
 msgid "%{nickname} is not in your contacts"
 msgstr "%{nickname} không liên lạc được"
@@ -386,7 +386,7 @@ msgstr "* %{nickname} Bỏ qua cập nhật thành: %{type}"
 msgid "* %{nickname} is no longer auto-ignored"
 msgstr "* %{nickname} không còn bị mất mặt tự động"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:366
+#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:115
 #: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:309
 #: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:755
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/ignore.ex:91
@@ -406,7 +406,7 @@ msgstr "* %{nickname} không còn bị bỏ qua ( quá giờ)"
 msgid "* %{nickname} is now ignored"
 msgstr "* %{nickname} bị bỏ qua"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:335
+#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:84
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/ignore.ex:57
 #, elixir-autogen, elixir-format
 msgid "* %{nickname} is now ignored (%{type})"
@@ -639,13 +639,13 @@ msgstr ""
 msgid "/join #channel to get started"
 msgstr "/join #channel to get started"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:895
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:899
 #, elixir-autogen, elixir-format
 msgid "A real-time chat platform with a retro look and feel."
 msgstr ""
 "Một nền tảng chat thời gian thực với một cái nhìn ngược lại và cảm giác."
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:933
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:937
 #, elixir-autogen, elixir-format
 msgid "Access hierarchy: Owner > SOP > AOP > VOP"
 msgstr "Phân cấp truy cập: Sở hữu > SOP > AOP > VOP"
@@ -660,7 +660,7 @@ msgstr "Hoạt động"
 msgid "Add to Contacts"
 msgstr "Contact & mới"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:120
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:80
 #: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:236
 #: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:488
 #, elixir-autogen, elixir-format
@@ -674,7 +674,7 @@ msgid "Added %{nickname} to notify list"
 msgstr "Đã thêm %{nickname} để thông báo danh sách"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:126
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:241
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:253
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:399
 #, elixir-autogen, elixir-format
 msgid "Address Book"
@@ -760,7 +760,7 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:136
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:113
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:793
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:842
 #: lib/retro_hex_chat_web/live/chat_live/away_events.ex:35
 #: lib/retro_hex_chat_web/live/chat_live/away_events.ex:50
 #: lib/retro_hex_chat_web/live/chat_live/components/hover_card.ex:117
@@ -849,7 +849,7 @@ msgstr "Thôi"
 msgid "Cannot add highlight: %{reason}"
 msgstr "Không thể thêm tô sáng: %{reason}"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:555
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:219
 #: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:253
 #, elixir-autogen, elixir-format
 msgid "Cannot add yourself to contacts"
@@ -877,7 +877,7 @@ msgstr "Không thể cập nhật: %{reason}"
 msgid "Case sensitive"
 msgstr "Phân biệt chữ hoa/ thường"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:923
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:927
 #, elixir-autogen, elixir-format
 msgid "ChanServ manages channel registration and access control."
 msgstr "ChanServ quản lý việc đăng ký và điều khiển truy cập kênh."
@@ -930,9 +930,9 @@ msgstr "Bộ lọc kênh phải bắt đầu với #"
 msgid "Channel ownership transferred to %{target}."
 msgstr "Comment %{target}."
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:250
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:262
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:170
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:939
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:988
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:130
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:191
 #, elixir-autogen, elixir-format
@@ -997,7 +997,7 @@ msgid "Command too long (max 500 characters)"
 msgstr "Lệnh quá lâu ( 500 ký tự)"
 
 #: lib/retro_hex_chat_web/components/ui/chat/connection_status.ex:98
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:859
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:863
 #: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:266
 #, elixir-autogen, elixir-format
 msgid "Connected"
@@ -1008,7 +1008,7 @@ msgstr "Đã kết nối"
 msgid "Connected to %{server}"
 msgstr "Đã kết nối %{server}"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:864
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:868
 #: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:268
 #, elixir-autogen, elixir-format
 msgid "Connecting..."
@@ -1040,7 +1040,7 @@ msgstr "Mất kết nối."
 msgid "Contact"
 msgstr "Contact & mới"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:561
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:225
 #, elixir-autogen, elixir-format
 msgid "Contact list is full (max 100 entries)"
 msgstr "Danh sách liên lạc đầy đủ"
@@ -1169,7 +1169,7 @@ msgstr "Mở rộng quá lâu ( 500 ký tự)"
 msgid "Failed to add auto-join channel: %{reason}"
 msgstr "Lỗi thêm kênh tự động truy cập: %{reason}"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:346
+#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:95
 #, elixir-autogen, elixir-format
 msgid "Failed to add ignore: %{reason}"
 msgstr "Lỗi thêm bỏ qua: %{reason}"
@@ -1308,8 +1308,8 @@ msgid "Invalid alias name. Use only letters, numbers, hyphens, underscores."
 msgstr ""
 "Tên bí danh không hợp lệ. Chỉ dùng chữ cái, số, dấu gạch nối, dấu gạch nối."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:260
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:572
+#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:107
+#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:181
 #, elixir-autogen, elixir-format
 msgid "Invalid color"
 msgstr "Không hợp lệ"
@@ -1319,7 +1319,7 @@ msgstr "Không hợp lệ"
 msgid "Invalid command. Commands must start with /"
 msgstr "Lệnh không hợp lệ. Lệnh phải bắt đầu với /"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:319
+#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:68
 #, elixir-autogen, elixir-format
 msgid "Invalid duration format. Use: 5m, 2h, or 1d"
 msgstr "Định dạng thời gian không hợp lệ. Dùng: 5m, 2h, hay 1d"
@@ -1344,8 +1344,8 @@ msgstr "Chuỗi chế độ không hợp lệ"
 msgid "Invalid name. Use letters, numbers, hyphens, underscores."
 msgstr "Tên không hợp lệ. Dùng chữ cái, số, dấu gạch nối, gạch nối."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:563
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:571
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:227
+#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:180
 #, elixir-autogen, elixir-format
 msgid "Invalid nickname"
 msgstr "Tên"
@@ -1556,18 +1556,18 @@ msgstr "Kế"
 msgid "Next: %{parameter}"
 msgstr "Tiếp theo: %{parameter}"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:257
+#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:104
 #, elixir-autogen, elixir-format
 msgid "Nick color entry not found"
 msgstr "Không tìm thấy mục nhập màu của Nick"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:569
+#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:178
 #: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:345
 #, elixir-autogen, elixir-format
 msgid "Nick color list is full (max 50)"
 msgstr "Danh sách màu Nick đầy (50)"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:951
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:955
 #, elixir-autogen, elixir-format
 msgid ""
 "NickServ protects your nickname with a password so nobody else can use it."
@@ -1601,7 +1601,7 @@ msgstr "Không có kênh"
 msgid "No command at position %{position}"
 msgstr "Không có lệnh tại vị trí %{position}"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:143
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:103
 #, elixir-autogen, elixir-format
 msgid "No contact selected"
 msgstr "Chưa chọn liên lạc"
@@ -1654,7 +1654,7 @@ msgstr "Đối tượng"
 msgid "Online"
 msgstr "Trực tuyến"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:905
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:909
 #, elixir-autogen, elixir-format
 msgid "Open /chat/help in a new tab."
 msgstr "Mở <ph0></i> <ph1>trong một hóa đơn mới."
@@ -1746,8 +1746,8 @@ msgstr "Màu tím"
 msgid "Query (PM)"
 msgstr "Truy vấn (PM)"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:926
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:956
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:930
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:960
 #, elixir-autogen, elixir-format
 msgid "Quick start:"
 msgstr "Chạy nhanh:"
@@ -1774,7 +1774,7 @@ msgstr "Đỏ"
 msgid "Regex"
 msgstr "Regex"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:924
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:928
 #, elixir-autogen, elixir-format
 msgid "Register your channel to protect it when no operators are online."
 msgstr ""
@@ -1786,7 +1786,7 @@ msgstr ""
 msgid "Registered"
 msgstr "Đã đăng ký"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:179
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:139
 #, elixir-autogen, elixir-format
 msgid "Removed %{nickname} from contacts"
 msgstr "Đã gỡ bỏ %{nickname} từ liên lạc"
@@ -1797,7 +1797,7 @@ msgstr "Đã gỡ bỏ %{nickname} từ liên lạc"
 msgid "Removed %{nickname} from notify list"
 msgstr "Đã gỡ bỏ %{nickname} từ danh sách thông báo"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:276
+#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:123
 #, elixir-autogen, elixir-format
 msgid "Removed custom color for %{nickname}"
 msgstr "Màu tự chọn đã gỡ bỏ cho %{nickname}"
@@ -1832,10 +1832,10 @@ msgid "Reset (Ctrl+Shift+X)"
 msgstr "Đặt lại (Ctrl+Sift+X)"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:105
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:720
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:891
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:724
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:895
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:54
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1138
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1187
 #, elixir-autogen, elixir-format
 msgid "RetroHexChat"
 msgstr "Name"
@@ -1855,8 +1855,8 @@ msgstr "Xanh nước biển"
 msgid "Rule not found"
 msgstr "Không tìm thấy quy tắc"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:935
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:963
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:939
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:967
 #, elixir-autogen, elixir-format
 msgid "Rules:"
 msgstr "Luật:"
@@ -2016,7 +2016,7 @@ msgstr "Lời mời này hết hạn"
 msgid "Timer '%{name}' not found"
 msgstr "Đồng hồ hẹn giờ%{name}Không tìm thấy"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:904
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:908
 #, elixir-autogen, elixir-format
 msgid "Tip: Go to Help > Help Topics for the full documentation."
 msgstr ""
@@ -2042,12 +2042,12 @@ msgstr "Bộ mục lục: %{topic}"
 msgid "Travel & Places"
 msgstr "Nơi đi"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:939
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:943
 #, elixir-autogen, elixir-format
 msgid "Type /help chanserv or /help channel-permissions for full details."
 msgstr "Loại <ph0></i> cơ khí hoặc <ph1> kênh truyền tải cho chi tiết đầy đủ."
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:968
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:972
 #, elixir-autogen, elixir-format
 msgid "Type /help nickserv for full details."
 msgstr "Loại <ph0></i> Nickserv cho chi tiết đầy đủ."
@@ -2109,14 +2109,14 @@ msgstr "Kênh"
 msgid "Unmute PM"
 msgstr "Không phân tích"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:153
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:113
 #: lib/retro_hex_chat_web/live/chat_live/notify_ops.ex:62
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:101
 #, elixir-autogen, elixir-format
 msgid "Updated note for %{nickname}"
 msgstr "Ghi chú đã cập nhật cho %{nickname}"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:897
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:901
 #, elixir-autogen, elixir-format
 msgid "Useful commands:"
 msgstr "Lệnh hữu ích:"
@@ -2161,7 +2161,7 @@ msgstr "Gửi tin nhắn tới %{channel} Đã sẵn sàng."
 msgid "Welcome message updated."
 msgstr "Tin nhắn mới."
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:894
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:898
 #, elixir-autogen, elixir-format
 msgid "Welcome to %{server_name}!"
 msgstr "Chào mừng đến với %{server_name}!"
@@ -2227,7 +2227,7 @@ msgstr "Ngươi được biết đến với cái tên %{nickname}"
 msgid "You are setting: %{flag} (%{label})"
 msgstr "Bạn đang đặt: %{flag} (%{label})"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:312
+#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:61
 #, elixir-autogen, elixir-format
 msgid "You cannot ignore yourself"
 msgstr "Anh không thể bỏ qua bản thân"
@@ -2342,7 +2342,7 @@ msgstr "Lệnh '%{trigger}Loại bỏ."
 msgid "[BotService] Failed to create bot '%{name}': %{message}"
 msgstr "[BotService] Lỗi tạo robot%{name}': %{message}"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:922
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:926
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] Channel Services Online"
 msgstr "Dịch vụ kênh trực tuyến"
@@ -2352,7 +2352,7 @@ msgstr "Dịch vụ kênh trực tuyến"
 msgid "[NickServ] %{reason}. You are now %{nickname}"
 msgstr "[NickServ] %{reason}Giờ thì... %{nickname}"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:950
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:954
 #, elixir-autogen, elixir-format
 msgid "[NickServ] Nickname Services Online"
 msgstr "Nickname Service trên mạng"
@@ -2382,7 +2382,7 @@ msgstr "[Chào mừng] %{message}"
 msgid "[message deleted]"
 msgstr "[ Thông báo đã xoá]"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:535
+#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:156
 #, elixir-autogen, elixir-format
 msgid "all"
 msgstr "Tất cả"
@@ -2422,7 +2422,7 @@ msgstr "bay tới xem thử"
 msgid "identified"
 msgstr "Nhận diện"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:538
+#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:159
 #, elixir-autogen, elixir-format
 msgid "invites"
 msgstr "mời"
@@ -2432,7 +2432,7 @@ msgstr "mời"
 msgid "is typing..."
 msgstr "đang gõ..."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:536
+#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:157
 #: lib/retro_hex_chat_web/live/chat_live/components/message_viewport.ex:152
 #, elixir-autogen, elixir-format
 msgid "messages"
@@ -2443,7 +2443,7 @@ msgstr "tin nhắn"
 msgid "not identified"
 msgstr "chưa xác định"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:537
+#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:158
 #, elixir-autogen, elixir-format
 msgid "notices"
 msgstr "thông báo"
@@ -2500,7 +2500,7 @@ msgid "* Missing invite target"
 msgstr "Thiếu khách mời"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:124
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:744
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:793
 #, elixir-autogen, elixir-format
 msgid "Account"
 msgstr "Tài khoản"
@@ -2517,7 +2517,7 @@ msgid "Alias Editor"
 msgstr "Trình biên soạn Alias"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:181
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:614
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:663
 #, elixir-autogen, elixir-format
 msgid "Arcade"
 msgstr "Mái vòm"
@@ -2539,7 +2539,7 @@ msgid "Bio is limited to 200 characters; extra text was not kept."
 msgstr "Sinh học chỉ có 200 ký tự; không giữ thêm văn bản."
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:155
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1101
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1150
 #, elixir-autogen, elixir-format
 msgid "Bot Management"
 msgstr "Quản lý Bot"
@@ -2554,13 +2554,13 @@ msgstr "Thôi thông báo"
 msgid "Channel Central"
 msgstr "Kênh"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:720
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:769
 #, elixir-autogen, elixir-format
 msgid "Channel Central: %{channel}"
 msgstr "Kênh giữa: %{channel}"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:107
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:672
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:721
 #, elixir-autogen, elixir-format
 msgid "Channel List"
 msgstr "Kênh"
@@ -2653,7 +2653,7 @@ msgid "Failed to update bot status."
 msgstr "Lỗi cập nhật trạng thái robot."
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:199
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:521
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:570
 #, elixir-autogen, elixir-format
 msgid "Flood Protection"
 msgstr "Bảo vệ lũ lụt"
@@ -2690,7 +2690,7 @@ msgid "Join throttle set to %{seconds} seconds."
 msgstr "Giới hạn tham gia đã được đặt thành %{seconds} giây."
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:112
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:696
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:745
 #, elixir-autogen, elixir-format
 msgid "Keyboard Shortcuts"
 msgstr "Phím tắt"
@@ -2726,8 +2726,8 @@ msgstr "Đang tải %{channel}..."
 msgid "Loading older messages..."
 msgstr "Đang tải các tin nhắn cũ..."
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:253
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1008
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:265
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1057
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:96
 #, elixir-autogen, elixir-format
 msgid "MOTD"
@@ -2783,7 +2783,7 @@ msgid "Notice to %{target}:"
 msgstr "Thông báo tới %{target}:"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:235
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:425
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:473
 #, elixir-autogen, elixir-format
 msgid "Notify List"
 msgstr "Thông báo Danh sách"
@@ -2810,7 +2810,7 @@ msgstr "Chỉ có người điều khiển kênh này mới có thể đăng ký
 msgid "Only the founder can drop a channel."
 msgstr "Chỉ có người sáng lập mới có thể bỏ kênh."
 
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1139
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1188
 #, elixir-autogen, elixir-format
 msgid "Opening chat..."
 msgstr "Đang mở trò chuyện..."
@@ -2829,7 +2829,7 @@ msgid "Passwords do not match"
 msgstr "Mật khẩu không trùng"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:223
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:449
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:498
 #, elixir-autogen, elixir-format
 msgid "Perform"
 msgstr "Thực hiện"
@@ -2904,7 +2904,7 @@ msgid "Shared channels"
 msgstr "Các kênh chia sẻ"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:193
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:497
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:546
 #, elixir-autogen, elixir-format
 msgid "Sound Settings"
 msgstr "Thiết lập âm thanh"
@@ -2921,7 +2921,7 @@ msgid "Timer not found"
 msgstr "Không tìm thấy đồng hồ hẹn giờ"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:161
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:649
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:698
 #, elixir-autogen, elixir-format
 msgid "Timers"
 msgstr "Đồng hồ"
@@ -2942,7 +2942,7 @@ msgid "Type the server name to confirm."
 msgstr "Gõ tên máy phục vụ để xác nhận."
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:106
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:864
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:913
 #, elixir-autogen, elixir-format
 msgid "URL Catcher"
 msgstr "Trình bắt URL"
@@ -2954,7 +2954,7 @@ msgid "Unmute (channel)"
 msgstr "Chưa phân (cho phép)"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:148
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:840
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:889
 #, elixir-autogen, elixir-format
 msgid "User Lookup"
 msgstr "Tra tìm người dùng"
@@ -3200,7 +3200,7 @@ msgstr "Phiên chạy P2P với %{peer} kết thúc."
 msgid "P2P session with %{peer} — %{facets}. Click to focus"
 msgstr "Phiên chạy P2P với %{peer} — %{facets}. Nhấn vào để tiêu điểm"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:285
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:297
 #: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:169
 #, elixir-autogen, elixir-format
 msgid "P2P: %{peer}"
@@ -3312,7 +3312,7 @@ msgstr "Bật/ tắt máy vi âm P2P"
 msgid "Toggle P2P Screen Share"
 msgstr "Bật/ tắt chia sẻ màn hình P2P"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:862
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:866
 #, elixir-autogen, elixir-format
 msgid "Waiting for peer..."
 msgstr "Đang đợi bạn bè..."
@@ -3405,9 +3405,9 @@ msgid "Joining..."
 msgstr "Tham gia..."
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:141
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:288
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:300
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:142
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:551
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:600
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
 msgstr "Phiên chạy P2P trong Chat"
@@ -3452,44 +3452,44 @@ msgstr "Chạy hoặc dừng chia sẻ màn hình trong cửa sổ cuộc gọi 
 msgid "Admin tools are restricted to server administrators."
 msgstr "Công cụ quản trị bị hạn chế trong nhà quản trị máy phục vụ."
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:252
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:985
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:264
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1034
 #, elixir-autogen, elixir-format
 msgid "Audit Log"
 msgstr "Bản ghi thử ra"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:255
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1054
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:267
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1103
 #, elixir-autogen, elixir-format
 msgid "Broadcast"
 msgstr "Quảng bá"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:257
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:890
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:269
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:939
 #, elixir-autogen, elixir-format
 msgid "Console"
 msgstr "Bàn điều khiển"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:256
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1077
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:268
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1126
 #, elixir-autogen, elixir-format
 msgid "Danger Zone"
 msgstr "Vùng nguy hiểm"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:251
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:962
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:263
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1011
 #, elixir-autogen, elixir-format
 msgid "Server Settings"
 msgstr "Thiết lập máy phục vụ"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:254
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1031
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:266
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1080
 #, elixir-autogen, elixir-format
 msgid "TURN"
 msgstr "Quay"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:249
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:915
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:261
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:964
 #, elixir-autogen, elixir-format
 msgid "Users"
 msgstr "Người dùng"
@@ -3500,7 +3500,7 @@ msgid "%{peer} accepted the P2P request - connecting..."
 msgstr "%{peer} đã chấp nhận yêu cầu P2P - đang kết nối..."
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:229
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:473
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:522
 #, elixir-autogen, elixir-format
 msgid "Auto-Join"
 msgstr "Name"
@@ -3538,13 +3538,25 @@ msgid "Use the P2P control in this private message."
 msgstr "Dùng bộ điều khiển P2P trong tin nhắn riêng này."
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:130
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:770
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:819
 #, elixir-autogen, elixir-format
 msgid "Profile"
 msgstr "Hồ sơ"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:142
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:817
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:866
 #, elixir-autogen, elixir-format
 msgid "User Modes"
 msgstr "Chế độ người dùng"
+
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:247
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:449
+#, elixir-autogen, elixir-format
+msgid "Ignore List"
+msgstr "Bỏ qua Danh sách"
+
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:241
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:425
+#, elixir-autogen, elixir-format
+msgid "Nick Colors"
+msgstr "Comment"

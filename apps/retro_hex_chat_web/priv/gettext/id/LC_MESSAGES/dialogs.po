@@ -82,13 +82,12 @@ msgstr ""
 msgid "About RetroHexChat"
 msgstr "Tentang RetroHexChat"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1001
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:193
 #, elixir-autogen, elixir-format
 msgid "Actions"
 msgstr "Aksi"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:211
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:927
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:307
 #: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:172
 #: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:188
 #: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:148
@@ -100,7 +99,9 @@ msgstr "Aksi"
 #: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:284
 #: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:184
 #: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:327
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:187
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:68
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:302
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:189
 #: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:168
 #: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:121
 #, elixir-autogen, elixir-format
@@ -132,7 +133,7 @@ msgstr "Tambah Batas Eksepsi"
 msgid "Add Command — %{bot}"
 msgstr "Tambah Perintah — %{bot}"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:283
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:105
 #, elixir-autogen, elixir-format
 msgid "Add Contact"
 msgstr "Tambah Kontak"
@@ -147,7 +148,7 @@ msgstr "Tambah Entri"
 msgid "Add Highlight Word"
 msgstr "Tambah Kata Penandaan"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:972
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:164
 #, elixir-autogen, elixir-format
 msgid "Add Ignore Entry"
 msgstr "Tambah Entri Abaikan"
@@ -157,13 +158,12 @@ msgstr "Tambah Entri Abaikan"
 msgid "Add Invite Exception"
 msgstr "Tambah Eksepsi Undang"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:559
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:105
 #, elixir-autogen, elixir-format
 msgid "Add Nick Color"
 msgstr "Tambah Warna Nick"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:421
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:261
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:263
 #, elixir-autogen, elixir-format
 msgid "Add Notify Entry"
 msgstr "Tambah Entri Pemberitahuan"
@@ -188,7 +188,7 @@ msgstr "Konsol admin"
 msgid "Alias Editor"
 msgstr "Penyunting Alias"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:998
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:190
 #, elixir-autogen, elixir-format
 msgid "All"
 msgstr "Semua"
@@ -242,7 +242,7 @@ msgstr "Otomatis-Abaikan"
 msgid "Auto-Join"
 msgstr "Otomatis-Gabung"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:128
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:130
 #, elixir-autogen, elixir-format
 msgid "Auto-add PM contacts to notify list"
 msgstr "Otomatis tambahkan kontak PM ke daftar pemberitahuan"
@@ -287,13 +287,8 @@ msgstr "Teman Offline"
 msgid "Buddy Online"
 msgstr "Buddy Online"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:329
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:399
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:466
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:536
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:607
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:678
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1032
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:151
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:221
 #: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:267
 #: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:300
 #: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:77
@@ -312,12 +307,15 @@ msgstr "Buddy Online"
 #: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:89
 #: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:338
 #: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:401
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:224
 #: lib/retro_hex_chat_web/components/ui/dialogs/invite_channel_picker_dialog.ex:94
 #: lib/retro_hex_chat_web/components/ui/dialogs/knock_request_dialog.ex:115
 #: lib/retro_hex_chat_web/components/ui/dialogs/mute_duration_dialog.ex:78
 #: lib/retro_hex_chat_web/components/ui/dialogs/nick_change_dialog.ex:109
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:314
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:391
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:153
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:224
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:316
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:393
 #: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:81
 #: lib/retro_hex_chat_web/components/ui/dialogs/paste_confirm_dialog.ex:105
 #: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:86
@@ -398,17 +396,17 @@ msgstr "Hapus"
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:54
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:555
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:624
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:75
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:227
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:76
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:229
 #: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:72
 #, elixir-autogen, elixir-format
 msgid "Close"
 msgstr "Tutup"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:586
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:657
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:815
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:839
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:132
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:203
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:247
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:271
 #, elixir-autogen, elixir-format
 msgid "Color"
 msgstr "Warna"
@@ -452,16 +450,6 @@ msgstr "Konfirmasi"
 #, elixir-autogen, elixir-format
 msgid "Connected"
 msgstr "Terhubung"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:104
-#, elixir-autogen, elixir-format
-msgid "Contacts"
-msgstr "Kontak"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:131
-#, elixir-autogen, elixir-format
-msgid "Control"
-msgstr "Kendali"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:67
 #, elixir-autogen, elixir-format
@@ -551,18 +539,19 @@ msgstr "Terputus"
 msgid "Down"
 msgstr "Turun"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1008
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:200
 #, elixir-autogen, elixir-format
 msgid "Duration (leave empty for permanent)"
 msgstr "Durasi (tinggalkan kosong untuk permanen)"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:939
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:319
 #: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:182
 #: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:198
 #: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:158
 #: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:294
 #: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:195
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:199
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:314
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:201
 #: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:178
 #: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:132
 #, elixir-autogen, elixir-format
@@ -579,7 +568,7 @@ msgstr "Sunting Alias"
 msgid "Edit Auto-Join Channel"
 msgstr "Sunting Kanal Auto- Gabung"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:353
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:175
 #, elixir-autogen, elixir-format
 msgid "Edit Contact"
 msgstr "Sunting Kontak"
@@ -594,13 +583,12 @@ msgstr "Sunting Entri"
 msgid "Edit Highlight Color"
 msgstr "Sunting Warna Penandaan"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:631
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:177
 #, elixir-autogen, elixir-format
 msgid "Edit Nick Color"
 msgstr "Ubah Warna Nick"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:490
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:338
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:340
 #, elixir-autogen, elixir-format
 msgid "Edit Notify Entry"
 msgstr "Sunting Entri Pemberitahuan"
@@ -658,13 +646,13 @@ msgstr "Kejadian"
 msgid "Expansion"
 msgstr "Ekspansi"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1080
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:249
 #, elixir-autogen, elixir-format
 msgid "Expired"
 msgstr "Kadaluwarsa"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:864
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:895
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:107
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:138
 #, elixir-autogen, elixir-format
 msgid "Expires"
 msgstr "Kadaluwarsa"
@@ -747,7 +735,7 @@ msgstr "Undang Exc."
 msgid "Invite Only (+i)"
 msgstr "Hanya Undang (+ i)"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1003
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:195
 #, elixir-autogen, elixir-format
 msgid "Invites"
 msgstr "Undangan"
@@ -781,8 +769,7 @@ msgstr "Ditendang dari Kanal"
 msgid "Label"
 msgstr "Label"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:791
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:166
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:168
 #: lib/retro_hex_chat_web/components/ui/dialogs/user_lookup_dialog.ex:78
 #, elixir-autogen, elixir-format
 msgid "Last Seen"
@@ -835,8 +822,8 @@ msgstr "Teks butir menu"
 msgid "Message Flood"
 msgstr "Flood Pesan"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:999
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:223
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:191
 #, elixir-autogen, elixir-format
 msgid "Messages"
 msgstr "Pesan"
@@ -878,7 +865,8 @@ msgstr "N/A"
 msgid "Name"
 msgstr "Nama"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1065
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:439
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:440
 #, elixir-autogen, elixir-format
 msgid "Never"
 msgstr "Tidak pernah"
@@ -888,45 +876,37 @@ msgstr "Tidak pernah"
 msgid "New"
 msgstr "Baru"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:702
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:723
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:770
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:814
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:835
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:862
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:883
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:243
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:264
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:322
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:142
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:261
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:362
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:483
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:105
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:126
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:246
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:267
 #: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:181
 #: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:232
 #, elixir-autogen, elixir-format
 msgid "Nick"
 msgstr "Nick"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:122
-#, elixir-autogen, elixir-format
-msgid "Nick Colors"
-msgstr "Warna Nick"
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:140
 #, elixir-autogen, elixir-format
 msgid "Nicklist"
 msgstr "Daftar Panggilan"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:292
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:362
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:430
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:499
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:568
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:640
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:981
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:114
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:184
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:44
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:169
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:426
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:449
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:173
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:114
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:186
 #: lib/retro_hex_chat_web/components/ui/dialogs/user_lookup_dialog.ex:43
 #, elixir-autogen, elixir-format
 msgid "Nickname"
@@ -934,8 +914,8 @@ msgstr "Nama panggilan"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:49
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:200
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:275
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:352
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:277
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:354
 #, elixir-autogen, elixir-format
 msgid "Nickname:"
 msgstr "Nama panggilan:"
@@ -991,12 +971,12 @@ msgstr ""
 msgid "No configurable capabilities enabled."
 msgstr "Tidak ada kemampuan yang dapat diatur."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:710
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:251
 #, elixir-autogen, elixir-format
 msgid "No contacts saved"
 msgstr "Tak ada kontak yang disimpan"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:821
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:253
 #, elixir-autogen, elixir-format
 msgid "No custom colors set. Nicknames use automatic colors."
 msgstr ""
@@ -1008,12 +988,7 @@ msgstr ""
 msgid "No custom commands"
 msgstr "Tidak ada perintah gubahan"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:757
-#, elixir-autogen, elixir-format
-msgid "No entries. Click Add to track a nickname."
-msgstr "Tidak ada entri. Klik Tambah untuk melacak nama panggilan."
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:870
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:113
 #, elixir-autogen, elixir-format
 msgid "No ignored users. Click Add to ignore a nickname."
 msgstr ""
@@ -1048,51 +1023,38 @@ msgstr "Tidak ada jalan pintas yang didefinisikan."
 msgid "No topic set"
 msgstr "Tidak ada topik yang diset"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:443
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:512
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:787
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:170
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:172
 #, elixir-autogen, elixir-format
 msgid "Note"
 msgstr "Catatan"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:289
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:365
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:291
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:367
 #, elixir-autogen, elixir-format
 msgid "Note:"
 msgstr "Catatan:"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:306
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:375
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:703
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:729
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:128
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:197
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:244
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:270
 #, elixir-autogen, elixir-format
 msgid "Notes"
 msgstr "Catatan"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1002
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:194
 #, elixir-autogen, elixir-format
 msgid "Notices"
 msgstr "Pemberitahuan"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:113
-#, elixir-autogen, elixir-format
-msgid "Notify"
-msgstr "Beritahu"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:50
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:51
 #, elixir-autogen, elixir-format
 msgid "Notify List"
 msgstr "Daftar Pemberitahuan"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/about_dialog.ex:101
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:319
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:389
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:456
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:526
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:597
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:668
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1022
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:141
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:211
 #: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:276
 #: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:309
 #: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:73
@@ -1105,10 +1067,13 @@ msgstr "Daftar Pemberitahuan"
 #: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:85
 #: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:232
 #: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:390
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:214
 #: lib/retro_hex_chat_web/components/ui/dialogs/kick_dialog.ex:91
 #: lib/retro_hex_chat_web/components/ui/dialogs/mute_duration_dialog.ex:68
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:303
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:380
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:143
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:214
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:305
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:382
 #: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:82
 #: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:235
 #: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:302
@@ -1119,8 +1084,7 @@ msgstr "Daftar Pemberitahuan"
 msgid "OK"
 msgstr "OK"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:783
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:415
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:417
 #, elixir-autogen, elixir-format
 msgid "Offline"
 msgstr "Luring"
@@ -1140,13 +1104,12 @@ msgstr "Pada perubahan Nick"
 msgid "On Part"
 msgstr "Pada Bagian"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:782
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:407
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:409
 #, elixir-autogen, elixir-format
 msgid "Online"
 msgstr "Daring"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1000
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:192
 #, elixir-autogen, elixir-format
 msgid "PMs"
 msgstr "PM"
@@ -1161,12 +1124,12 @@ msgstr "Konfirmasi Tempel"
 msgid "Perform"
 msgstr "Lakukan"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:139
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:141
 #, elixir-autogen, elixir-format
 msgid "Perform WHOIS on notify nicks when they come online"
 msgstr "Lakukan WHOIS pada pemberitahuan nicks ketika mereka datang online"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1074
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:243
 #, elixir-autogen, elixir-format
 msgid "Permanent"
 msgstr "Permanent"
@@ -1202,8 +1165,7 @@ msgstr "Platform Percakapan Publik"
 msgid "RSS"
 msgstr "RSS"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:223
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:951
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:331
 #: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:192
 #: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:208
 #: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:169
@@ -1213,7 +1175,9 @@ msgstr "RSS"
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1131
 #: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:304
 #: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:207
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:212
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:80
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:326
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:214
 #: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:189
 #, elixir-autogen, elixir-format
 msgid "Remove"
@@ -1311,8 +1275,8 @@ msgstr "Set Oleh"
 msgid "Set by %{nick}"
 msgstr "Diatur oleh %{nick}"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:704
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:734
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:245
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:275
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:301
 #, elixir-autogen, elixir-format
 msgid "Since"
@@ -1338,7 +1302,6 @@ msgstr "Pengaturan Suara"
 msgid "Statistics"
 msgstr "Statistik"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:774
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:181
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:265
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:444
@@ -1391,9 +1354,9 @@ msgstr "Trigger"
 msgid "Trivia"
 msgstr "Trivia"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:863
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:889
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:995
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:106
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:132
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:187
 #, elixir-autogen, elixir-format
 msgid "Type"
 msgstr "Tipe"
@@ -1518,7 +1481,7 @@ msgstr "Kau ditendang dari saluran."
 msgid "e.g. /msg $1 hello!"
 msgstr "mis. /msg $1 halo!"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1014
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:206
 #, elixir-autogen, elixir-format
 msgid "e.g. 5m, 1h, 2d"
 msgstr "e.g. 5m, 1h, 2d"
@@ -2691,20 +2654,20 @@ msgstr ""
 msgid "No lookup yet."
 msgstr "Belum ada pemeriksaan."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:425
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:426
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:427
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:428
 #, elixir-autogen, elixir-format
 msgid "No note"
 msgstr "Tidak ada catatan"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:147
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:149
 #, elixir-autogen, elixir-format
 msgid "No notify nicks yet. Add a nick to track online status."
 msgstr ""
 "Belum ada pemberitahuan. Tambahkan sebuah nama panggilan untuk melacak "
 "status daring."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:431
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:435
 #, elixir-autogen, elixir-format
 msgid "Now"
 msgstr "Sekarang"

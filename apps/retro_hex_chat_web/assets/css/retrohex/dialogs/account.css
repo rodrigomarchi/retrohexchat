@@ -109,23 +109,20 @@
 /* First-pass dialog tab strips originally used edge fades over the scroll
    content. Reserve real gutters so scroll cues no longer cover tab labels. */
 .desktop--stacked .cc-main-tabs-shell,
-.desktop--stacked .bm-tabs-shell,
-.desktop--stacked .ab-tabs-shell {
+.desktop--stacked .bm-tabs-shell {
   overflow: hidden;
   padding-inline: 24px;
 }
 
 .desktop--stacked .cc-main-tabs,
-.desktop--stacked .bm-main-tabs,
-.desktop--stacked .ab-main-tabs {
+.desktop--stacked .bm-main-tabs {
   padding: 6px 112px 0 0;
   scroll-padding-inline: 28px;
   scroll-snap-type: x mandatory;
 }
 
 .desktop--stacked .cc-main-tabs .tabs-trigger,
-.desktop--stacked .bm-main-tabs .tabs-trigger,
-.desktop--stacked .ab-main-tabs .tabs-trigger {
+.desktop--stacked .bm-main-tabs .tabs-trigger {
   scroll-margin-inline: 28px;
   scroll-snap-align: start;
   scroll-snap-stop: always;
@@ -134,9 +131,7 @@
 .desktop--stacked .cc-main-tabs-shell::before,
 .desktop--stacked .cc-main-tabs-shell::after,
 .desktop--stacked .bm-tabs-shell::before,
-.desktop--stacked .bm-tabs-shell::after,
-.desktop--stacked .ab-tabs-shell::before,
-.desktop--stacked .ab-tabs-shell::after {
+.desktop--stacked .bm-tabs-shell::after {
   position: absolute;
   top: 6px;
   bottom: 1px;
@@ -155,8 +150,7 @@
 }
 
 .desktop--stacked .cc-main-tabs-shell::before,
-.desktop--stacked .bm-tabs-shell::before,
-.desktop--stacked .ab-tabs-shell::before {
+.desktop--stacked .bm-tabs-shell::before {
   content: "<";
   left: 0;
   border-left: 1px solid #808080;
@@ -164,8 +158,7 @@
 }
 
 .desktop--stacked .cc-main-tabs-shell::after,
-.desktop--stacked .bm-tabs-shell::after,
-.desktop--stacked .ab-tabs-shell::after {
+.desktop--stacked .bm-tabs-shell::after {
   content: ">";
   right: 0;
   border-right: 1px solid #808080;
@@ -185,12 +178,6 @@
 .desktop--stacked .bm-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="general"])::after,
 .desktop--stacked .bm-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="capabilities"])::after,
 .desktop--stacked .bm-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="channels"])::after,
-.desktop--stacked .bm-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="commands"])::after,
-.desktop--stacked .ab-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="notify"])::before,
-.desktop--stacked .ab-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="colors"])::before,
-.desktop--stacked .ab-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="control"])::before,
-.desktop--stacked .ab-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="contacts"])::after,
-.desktop--stacked .ab-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="notify"])::after,
-.desktop--stacked .ab-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="colors"])::after {
+.desktop--stacked .bm-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="commands"])::after {
   opacity: 1;
 }

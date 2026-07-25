@@ -104,15 +104,26 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         keywords: [
           dgettext("help", "address book"),
           "contacts",
-          dgettext("help", "nick colors"),
-          dgettext("help", "color override")
+          dgettext("help", "contact notes")
         ],
         icon: :icon_dialog_address_book,
+        description: dgettext("help", "Keep a list of contacts with notes about each person."),
+        see_also: ["feature-nick-colors", "feature-ignore-list", "feature-notify-list"]
+      },
+      %{
+        id: "feature-nick-colors",
+        title: dgettext("help", "Nick Colors"),
+        category: dgettext("help", "Contacts & Notify"),
+        keywords: [
+          dgettext("help", "nick colors"),
+          dgettext("help", "color override"),
+          "palette",
+          "colour"
+        ],
+        icon: :icon_dialog_nick_colors,
         description:
-          dgettext(
-            "help",
-            "Manage contacts, assign custom nick colors, and organize your notify list."
-          )
+          dgettext("help", "Assign a fixed color to a nickname, overriding the automatic one."),
+        see_also: ["feature-address-book"]
       },
       %{
         id: "feature-highlight-words",

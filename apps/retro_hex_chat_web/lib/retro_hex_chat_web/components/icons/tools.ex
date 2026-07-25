@@ -253,6 +253,45 @@ defmodule RetroHexChatWeb.Icons.Tools do
 
   attr :class, :string, default: nil
 
+  @spec icon_dialog_nick_colors(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_dialog_nick_colors(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <!-- Shadow -->
+      <rect x="3" y="3" width="12" height="11" fill="#000" />
+      <!-- Swatch card -->
+      <rect x="2" y="2" width="12" height="11" fill="#fff" stroke="#000" stroke-width="1" />
+      <!-- Palette rows -->
+      <rect x="3" y="3" width="3" height="3" fill="#FF0000" />
+      <rect x="6" y="3" width="3" height="3" fill="#008000" />
+      <rect x="9" y="3" width="4" height="3" fill="#000080" />
+      <rect x="3" y="6" width="3" height="3" fill="#FFD700" />
+      <rect x="6" y="6" width="3" height="3" fill="#008080" />
+      <rect x="9" y="6" width="4" height="3" fill="#C0C0C0" />
+      <!-- Nick line -->
+      <rect x="3" y="10" width="10" height="2" fill="#000080" />
+    </svg>
+    """
+  end
+
+  # -- Toolbar: Nick Colors --
+
+  attr :class, :string, default: nil
+
+  @spec icon_btn_nick_colors(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_btn_nick_colors(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <path d="M2 2h12v11H2V2z M3 3v9h10V3H3z" fill="#000080" />
+      <rect x="4" y="4" width="3" height="3" fill="#000080" />
+      <rect x="8" y="4" width="4" height="3" fill="#808080" />
+      <rect x="4" y="9" width="8" height="2" fill="#000080" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
   @spec icon_tab_colors(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_tab_colors(assigns) do
     ~H"""

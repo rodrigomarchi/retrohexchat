@@ -226,11 +226,6 @@ msgstr "Een nieuwe versie is beschikbaar."
 msgid "A retro-styled chat application built with Phoenix LiveView."
 msgstr "Een retro-stijl chat applicatie gebouwd met Phoenix LiveView."
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/address_book_page.ex:38
-#, elixir-autogen, elixir-format
-msgid "AFK since Monday"
-msgstr "AFK sinds maandag"
-
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/about_dialog_page.ex:35
 #, elixir-autogen, elixir-format
 msgid "About"
@@ -321,8 +316,8 @@ msgstr "Nieuwe Alias toevoegen"
 
 #: lib/retro_hex_chat_web/components/showcase_helpers.ex:115
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/address_book_page.ex:18
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/address_book_page.ex:61
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/address_book_page.ex:64
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/address_book_page.ex:40
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/address_book_page.ex:43
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:63
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:201
 #, elixir-autogen, elixir-format
@@ -336,7 +331,7 @@ msgstr "Adresboek"
 msgid "Admin"
 msgstr "Beheerder"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:116
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:118
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_console_dialog_page.ex:55
 #, elixir-autogen, elixir-format
 msgid "Admin Console"
@@ -377,7 +372,7 @@ msgstr "Waarschuwingen"
 msgid "Alias Configuration"
 msgstr "Aliasconfiguratie"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:132
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:134
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:29
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:39
 #, elixir-autogen, elixir-format
@@ -509,7 +504,7 @@ msgstr "Pijlen"
 msgid "Ask your questions here"
 msgstr "Stel hier uw vragen"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:180
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:182
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:52
 #, elixir-autogen, elixir-format
 msgid "Assets"
@@ -536,7 +531,7 @@ msgstr "Audiogesprek"
 msgid "Audio, video, devices"
 msgstr "Audio, video, apparaten"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:133
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:135
 #, elixir-autogen, elixir-format
 msgid "Auto Respond"
 msgstr "Automatisch antwoord"
@@ -710,7 +705,7 @@ msgstr "Vet"
 msgid "Border Radius"
 msgstr "Straal rand"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:135
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:137
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/bot_management_dialog_page.ex:60
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:84
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:251
@@ -872,7 +867,7 @@ msgstr "Wijzigingen zijn succesvol opgeslagen."
 msgid "Channel"
 msgstr "Kanaal"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:137
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:139
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:217
 #, elixir-autogen, elixir-format
 msgid "Channel Central"
@@ -889,7 +884,7 @@ msgstr "Kanaal-centrale dialoog"
 msgid "Channel Filtered"
 msgstr "Kanaal gefilterd"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:139
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:141
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_list_page.ex:18
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_list_page.ex:43
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_list_page.ex:46
@@ -1012,7 +1007,7 @@ msgstr ""
 "Chat-specifieke componenten berichten, nicklist, emoji picker, formatteren "
 "werkbalk, context menu's, en meer."
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:140
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:142
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:74
 #, elixir-autogen, elixir-format
 msgid "Cheatsheet"
@@ -1164,7 +1159,7 @@ msgstr ""
 msgid "Component Attributes"
 msgstr "Componentattributen"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:214
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:216
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:60
 #, elixir-autogen, elixir-format
 msgid "Component Showcase"
@@ -1197,7 +1192,7 @@ msgstr "Gebeurtenisgeluiden instellen voor de toepassing."
 msgid "Confirm Action"
 msgstr "Actie bevestigen"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:142
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:144
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/confirm_dialog_page.ex:21
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/confirm_dialog_page.ex:30
 #, elixir-autogen, elixir-format
@@ -1392,7 +1387,7 @@ msgstr "Aangepaste kolommen"
 msgid "Custom Max Length"
 msgstr "Aangepaste maximale lengte"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:144
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:146
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:238
 #, elixir-autogen, elixir-format
 msgid "Custom Menus"
@@ -1515,7 +1510,7 @@ msgstr "Account verwijderen"
 msgid "Delete Channel"
 msgstr "Kanaal verwijderen"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:146
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:148
 #, elixir-autogen, elixir-format
 msgid "Delete Confirm"
 msgstr "Bevestigen verwijderen"
@@ -1538,7 +1533,7 @@ msgstr "Bericht verwijderen"
 msgid "Description"
 msgstr "Omschrijving"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:233
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:235
 #, elixir-autogen, elixir-format
 msgid "Design System"
 msgstr "Ontwerpsysteem"
@@ -1560,7 +1555,7 @@ msgstr "Destructieve bevestiging"
 msgid "Development discussion"
 msgstr "Ontwikkelingsdiscussie"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:182
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:184
 #: lib/retro_hex_chat_web/live/showcase_live/assets/diagrams.ex:21
 #: lib/retro_hex_chat_web/live/showcase_live/assets/diagrams.ex:70
 #, elixir-autogen, elixir-format
@@ -1646,7 +1641,7 @@ msgstr "Uitgeschakelde items"
 msgid "Disconnect"
 msgstr "Verbinding verbreken"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:148
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:150
 #, elixir-autogen, elixir-format
 msgid "Disconnect Confirm"
 msgstr "Verbinding verbreken"
@@ -1866,7 +1861,7 @@ msgstr "Fieldset"
 msgid "Fight through hordes of demons from Hell in this classic 1993 game."
 msgstr "Vecht door hordes demonen uit de hel in dit klassieke 1993 spel."
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:173
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:175
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/file_transfer_page.ex:18
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/file_transfer_page.ex:27
 #, elixir-autogen, elixir-format
@@ -1909,7 +1904,7 @@ msgstr "Flits"
 msgid "Flash taskbar"
 msgstr "Flitstaakbalk"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:150
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:152
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:230
 #, elixir-autogen, elixir-format
 msgid "Flood Protection"
@@ -2020,7 +2015,7 @@ msgstr "Volledige instellingen"
 msgid "Full Sidebar"
 msgstr "Volledige zijbalk"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:177
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:179
 #: lib/retro_hex_chat_web/live/showcase_live/games/game_cards_page.ex:20
 #: lib/retro_hex_chat_web/live/showcase_live/games/game_cards_page.html.heex:2
 #, elixir-autogen, elixir-format
@@ -2042,7 +2037,7 @@ msgstr "Spelschermen"
 msgid "Game on!"
 msgstr "Game on!"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:175
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:177
 #: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:40
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:47
 #, elixir-autogen, elixir-format
@@ -2152,7 +2147,7 @@ msgstr "Verborgen punt 1"
 msgid "Hidden Item 2"
 msgstr "Verborgen punt 2"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:152
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:154
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/highlight_dialog_page.ex:22
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/highlight_dialog_page.ex:36
 #, elixir-autogen, elixir-format
@@ -2234,7 +2229,7 @@ msgstr "IRC-tabbladen"
 msgid "Icon Sizes"
 msgstr "Pictogramgroottes"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:183
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:185
 #: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:81
 #: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:105
 #, elixir-autogen, elixir-format
@@ -2266,6 +2261,10 @@ msgstr "Inactief"
 msgid "Ignore"
 msgstr "Negeren"
 
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:117
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/ignore_list_page.ex:18
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/ignore_list_page.ex:43
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/ignore_list_page.ex:46
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:71
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:209
 #, elixir-autogen, elixir-format
@@ -2335,7 +2334,7 @@ msgstr ""
 " onderdeel is een herbruikbare, zelfstandige bouwsteen met generieke "
 "callbacks en geen hardgecodeerde evenementnamen."
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:154
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:156
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/invite_dialog_page.ex:22
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/invite_dialog_page.ex:31
 #, elixir-autogen, elixir-format
@@ -2388,7 +2387,7 @@ msgstr "Sneltoetsen"
 msgid "Kick"
 msgstr "Schoppen"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:155
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:157
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/kick_dialog_page.ex:20
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/kick_dialog_page.ex:27
 #, elixir-autogen, elixir-format
@@ -2604,7 +2603,7 @@ msgid "Media"
 msgstr "Media"
 
 #: lib/retro_hex_chat_web/components/showcase_helpers.ex:61
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:220
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:222
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:70
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.ex:18
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:2
@@ -2746,7 +2745,7 @@ msgstr "Volgende"
 msgid "Next tab"
 msgstr "Volgende tabblad"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:156
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:158
 #, elixir-autogen, elixir-format
 msgid "Nick Change"
 msgstr "Nick-wijziging"
@@ -2757,7 +2756,11 @@ msgstr "Nick-wijziging"
 msgid "Nick Change Dialog"
 msgstr "Dialoogvenster Nick wijzigen"
 
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:116
 #: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:91
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/nick_colors_page.ex:18
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/nick_colors_page.ex:40
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/nick_colors_page.ex:43
 #, elixir-autogen, elixir-format
 msgid "Nick Colors"
 msgstr "Nick kleuren"
@@ -2871,7 +2874,7 @@ msgstr "Kennisgeving"
 msgid "Notifications, info, warnings"
 msgstr "Kennisgevingen, informatie, waarschuwingen"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:158
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:160
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/notify_list_page.ex:21
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/notify_list_page.ex:37
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/notify_list_page.ex:40
@@ -3114,7 +3117,7 @@ msgstr "Eigen bericht"
 msgid "Owner"
 msgstr "Eigenaar"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:169
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:171
 #, elixir-autogen, elixir-format
 msgid "P2P"
 msgstr "P2P"
@@ -3210,7 +3213,7 @@ msgstr "Plakken 5 regels"
 msgid "Paste Blocked"
 msgstr "Geblokkeerd plakken"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:159
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:161
 #, elixir-autogen, elixir-format
 msgid "Paste Confirm"
 msgstr "Bevestigen plakken"
@@ -3238,7 +3241,7 @@ msgstr "Mensen"
 msgid "Perform"
 msgstr "Uitvoeren"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:161
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:163
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.ex:21
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:2
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:5
@@ -3877,7 +3880,7 @@ msgstr "Klein"
 msgid "Solo Arcade game logos/cover art"
 msgstr "Solo Arcade spellogo's/cover art"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:178
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:180
 #: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.ex:80
 #: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.html.heex:2
 #, elixir-autogen, elixir-format
@@ -3900,7 +3903,7 @@ msgstr "Gesorteerd door Nick (oplopend)"
 msgid "Sound"
 msgstr "Geluid"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:165
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:167
 #, elixir-autogen, elixir-format
 msgid "Sound Settings"
 msgstr "Geluidsinstellingen"
@@ -4406,7 +4409,7 @@ msgstr "Typen"
 msgid "Typography"
 msgstr "Typografie"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:167
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:169
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/url_catcher_page.ex:54
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/url_catcher_page.ex:65
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/url_catcher_page.ex:68
@@ -5034,7 +5037,7 @@ msgstr "Compacte videogesprekken"
 msgid "Compact — Waiting"
 msgstr "Compact wachten"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:171
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:173
 #, elixir-autogen, elixir-format
 msgid "Connection Diagram"
 msgstr "Verbindingsdiagram"
@@ -5149,7 +5152,7 @@ msgstr ""
 "Ada [geregistreerd]\n"
 "Grace"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:120
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:122
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_channels_dialog_page.ex:38
 #, elixir-autogen, elixir-format
 msgid "Admin Channels"
@@ -5161,7 +5164,7 @@ msgstr "Beheerkanalen"
 msgid "Admin Channels Dialog"
 msgstr "Beheerkanalendialoog"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:118
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:120
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_users_dialog_page.ex:38
 #, elixir-autogen, elixir-format
 msgid "Admin Users"
@@ -5173,7 +5176,7 @@ msgstr "Beheerders"
 msgid "Admin Users Dialog"
 msgstr "Dialoogvenster Beheerders"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:124
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:126
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_audit_log_dialog_page.ex:38
 #, elixir-autogen, elixir-format
 msgid "Audit Log"
@@ -5185,7 +5188,7 @@ msgstr "Auditlog"
 msgid "Audit Log Dialog"
 msgstr "Accountlogvenster"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:128
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:130
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_broadcast_dialog_page.ex:38
 #, elixir-autogen, elixir-format
 msgid "Broadcast"
@@ -5197,7 +5200,7 @@ msgstr "Uitzending"
 msgid "Broadcast Dialog"
 msgstr "Omroepdialoog"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:130
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:132
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_danger_zone_dialog_page.ex:38
 #, elixir-autogen, elixir-format
 msgid "Danger Zone"
@@ -5209,7 +5212,7 @@ msgstr "Gevaarszone"
 msgid "Danger Zone Dialog"
 msgstr "Gevaarzonedialoog"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:126
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:128
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_motd_dialog_page.ex:38
 #, elixir-autogen, elixir-format
 msgid "MOTD"
@@ -5261,7 +5264,7 @@ msgstr "Serverinstellingen openen"
 msgid "Open TURN"
 msgstr "TURN openen"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:122
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:124
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_server_settings_dialog_page.ex:38
 #, elixir-autogen, elixir-format
 msgid "Server Settings"
@@ -5273,7 +5276,7 @@ msgstr "Serverinstellingen"
 msgid "Server Settings Dialog"
 msgstr "Serverinstellingendialoog"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:127
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:129
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_turn_dialog_page.ex:38
 #, elixir-autogen, elixir-format
 msgid "TURN"
@@ -5312,7 +5315,7 @@ msgstr "Registreren, laten vallen, toegang beheren"
 msgid "Registration"
 msgstr "Registratie"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:163
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:165
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.ex:21
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:2
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:5

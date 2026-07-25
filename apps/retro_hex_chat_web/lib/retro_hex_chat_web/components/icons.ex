@@ -257,6 +257,7 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_tab_exceptions(assigns), to: RetroHexChatWeb.Icons.Security
   defdelegate icon_tab_registration(assigns), to: RetroHexChatWeb.Icons.Security
   defdelegate icon_privacy(assigns), to: RetroHexChatWeb.Icons.Security
+  defdelegate icon_dialog_ignore_list(assigns), to: RetroHexChatWeb.Icons.Security
   defdelegate icon_btn_ignore_list(assigns), to: RetroHexChatWeb.Icons.Security
   defdelegate icon_btn_flood_protection(assigns), to: RetroHexChatWeb.Icons.Security
 
@@ -310,6 +311,8 @@ defmodule RetroHexChatWeb.Icons do
   # ── Tools ───────────────────────────────────────────────
   defdelegate icon_wrench(assigns), to: RetroHexChatWeb.Icons.Tools
   defdelegate icon_palette(assigns), to: RetroHexChatWeb.Icons.Tools
+  defdelegate icon_dialog_nick_colors(assigns), to: RetroHexChatWeb.Icons.Tools
+  defdelegate icon_btn_nick_colors(assigns), to: RetroHexChatWeb.Icons.Tools
   defdelegate icon_btn_edit(assigns), to: RetroHexChatWeb.Icons.Tools
   defdelegate icon_btn_save(assigns), to: RetroHexChatWeb.Icons.Tools
   defdelegate icon_btn_apply(assigns), to: RetroHexChatWeb.Icons.Tools

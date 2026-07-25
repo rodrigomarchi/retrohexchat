@@ -226,6 +226,8 @@ defmodule RetroHexChatWeb.Router do
       live "/confirm-dialog", Dialogs.ConfirmDialogPage
 
       live "/address-book", Dialogs.AddressBookPage
+      live "/nick-colors", Dialogs.NickColorsPage
+      live "/ignore-list", Dialogs.IgnoreListPage
       live "/about-dialog", Dialogs.AboutDialogPage
       live "/channel-list", Dialogs.ChannelListPage
       live "/highlight-dialog", Dialogs.HighlightDialogPage

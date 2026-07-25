@@ -182,7 +182,7 @@ msgstr ""
 ", het systeem stelt passende argumenten voor bijnamen voor "
 "gebruikersopdrachten, kanalen voor kanaalcommando's."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:29
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:28
 #, elixir-autogen, elixir-format
 msgid ", use the toolbar button, or go to"
 msgstr ", gebruik de werkbalk knop, of ga naar"
@@ -1010,6 +1010,7 @@ msgid "Adding Users"
 msgstr "Gebruikers toevoegen"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_highlight_words.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "Address Book"
@@ -1561,11 +1562,6 @@ msgstr "Verbindingsstaten"
 msgid "Connection lost — shown in red."
 msgstr "Verbinding verloren in rood."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "Contacts:"
-msgstr "Contacten:"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ignore_list.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "Context Menu:"
@@ -1573,6 +1569,7 @@ msgstr "Contextmenu:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_copy.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/feature_interactive_elements.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:22
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:45
 #, elixir-autogen, elixir-format
@@ -1612,11 +1609,6 @@ msgstr "Controle"
 #, elixir-autogen, elixir-format
 msgid "Control how your P2P connection works to protect your privacy."
 msgstr "Controleer hoe uw P2P-verbinding werkt om uw privacy te beschermen."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:20
-#, elixir-autogen, elixir-format
-msgid "Control:"
-msgstr "Controle:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:47
 #, elixir-autogen, elixir-format
@@ -1682,7 +1674,7 @@ msgstr "Ctrl+ Shift"
 msgid "Ctrl+Shift+/"
 msgstr "Ctrl+Shift+/"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:29
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ignore_list.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "Ctrl+Shift+A"
@@ -2124,6 +2116,7 @@ msgid "Global Announcements"
 msgstr "Globale mededelingen"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_flood_protection.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "Go to"
 msgstr "Ga naar"
@@ -2160,7 +2153,7 @@ msgstr ""
 msgid "Highlight"
 msgstr "Oplichten"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Highlight Words"
 msgstr "Woorden markeren"
@@ -2518,21 +2511,6 @@ msgstr "Grenswaarden"
 msgid "Link Previews:"
 msgstr "Linkvoorbeelden:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:22
-#, elixir-autogen, elixir-format
-msgid ""
-"Manage per-type ignore entries for messages, PMs, actions, notices, and "
-"invites."
-msgstr ""
-"Beheer per type negeer items voor berichten, PM's, acties, mededelingen en "
-"uitnodigingen."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:14
-#, elixir-autogen, elixir-format
-msgid "Manage your buddy list (synced with Notify List window)."
-msgstr ""
-"Beheer je vriendenlijst (gesynchroniseerd met het venster van de lijst)."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:8
 #, elixir-autogen, elixir-format
 msgid "Managing Ban Exceptions"
@@ -2814,7 +2792,7 @@ msgstr ""
 msgid "Notices respect the ignore system. Use"
 msgstr "Merken respecteren het negeersysteem. Gebruik"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/feature_highlight_words.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ignore_list.html.heex:63
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sounds.html.heex:80
@@ -2822,11 +2800,6 @@ msgstr "Merken respecteren het negeersysteem. Gebruik"
 #, elixir-autogen, elixir-format
 msgid "Notify List"
 msgstr "Lijst aanmelden"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:12
-#, elixir-autogen, elixir-format
-msgid "Notify:"
-msgstr "Waarschuwing:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:16
 #, elixir-autogen, elixir-format
@@ -2895,9 +2868,10 @@ msgstr "Alleen zoekberichten die je bijnaam vermelden."
 msgid "Open"
 msgstr "Open"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:7
 #, elixir-autogen, elixir-format
@@ -2948,11 +2922,6 @@ msgstr "Of gebruik de"
 #, elixir-autogen, elixir-format
 msgid "Orange"
 msgstr "sinaasappel"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:18
-#, elixir-autogen, elixir-format
-msgid "Override display colors for specific nicks across the UI."
-msgstr "Schermkleuren negeren voor specifieke nicks over de UI."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autorespond.html.heex:26
 #, elixir-autogen, elixir-format
@@ -3025,7 +2994,7 @@ msgstr "Persistentie"
 msgid "Persistence:"
 msgstr "Persistentie:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:29
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/feature_command_syntax_tooltip.html.heex:41
@@ -3392,7 +3361,7 @@ msgid ""
 msgstr ""
 "Zoeken door berichten in het huidige kanaal of PM met realtime highlighting."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:33
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_audit_log.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_broadcast.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:48
@@ -3435,6 +3404,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mute.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:50
@@ -3635,11 +3605,6 @@ msgstr "Staten"
 msgid "Status Bar"
 msgstr "Statusbalk"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:10
-#, elixir-autogen, elixir-format
-msgid "Store notes about users with add/edit/remove."
-msgstr "Notities over gebruikers opslaan met add/edit/remove."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:18
 #, elixir-autogen, elixir-format
 msgid ""
@@ -3686,7 +3651,6 @@ msgstr "Syntaxlijn alleen compact en onopvallend."
 msgid "Tab"
 msgstr "Tab"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Tabs"
@@ -3696,15 +3660,6 @@ msgstr "Tabbladen"
 #, elixir-autogen, elixir-format
 msgid "Text Formatting"
 msgstr "Tekstopmaak"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"The Address Book (Ctrl+Shift+A) organizes your contacts, notify list, nick "
-"color overrides, and future ignore management in one window."
-msgstr ""
-"Het Adresboek (Ctrl+Shift+A) organiseert uw contacten, meldingenlijst, nick "
-"kleur overrides, en toekomstige negeren beheer in één venster."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ignore_list.html.heex:2
 #, elixir-autogen, elixir-format
@@ -4007,7 +3962,7 @@ msgstr "Nicklist aan/uit:"
 msgid "Toggle the visibility of UI elements from the"
 msgstr "Schakel de zichtbaarheid van UI-elementen uit de"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "Tools > Address Book"
 msgstr "Hulpmiddelen > Adresboek"
@@ -6561,3 +6516,104 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "with no arguments."
 msgstr "zonder ruzie."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:18
+#, elixir-autogen, elixir-format
+msgid ", or right-click a nickname and choose Set Nick Color."
+msgstr ""
+", of klik met de rechtermuisknop op een bijnaam en kies Nick Color "
+"instellen."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:9
+#, elixir-autogen, elixir-format
+msgid ""
+"Add a contact with an optional note, edit the note later, or remove the "
+"entry. The list shows when you first talked to each person, in your "
+"timezone."
+msgstr ""
+"Voeg een contact toe met een optionele noot, bewerk de noot later of "
+"verwijder het item. De lijst laat zien wanneer je voor het eerst met elke "
+"persoon sprak, in je tijdzone."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "Assigning a Color"
+msgstr "Een kleur toewijzen"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:11
+#, elixir-autogen, elixir-format
+msgid ""
+"Choose Add, type the nickname, and pick a swatch from the 16-color IRC "
+"palette. Select an existing row and choose Edit to change its color, or "
+"Remove to fall back to the automatic color."
+msgstr ""
+"Kies Toevoegen, typ de bijnaam en kies een swatch uit het 16-kleuren IRC "
+"palet. Selecteer een bestaande rij en kies Bewerken om de kleur te wijzigen,"
+" of Verwijderen om terug te vallen naar de automatische kleur."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Contacts"
+msgstr "Contacten"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Ignore List:"
+msgstr "Lijst negeren:"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"Nick Colors lets you pin a specific color to a nickname. Without an "
+"override, RetroHexChat derives a color from the nickname itself, so the same"
+" person always looks the same — an override wins whenever you want a "
+"particular person to stand out."
+msgstr ""
+"Met Nick Colors kun je een specifieke kleur aan een bijnaam koppelen. Zonder"
+" een override, RetroHexChat ontleent een kleur van de bijnaam zelf, dus "
+"dezelfde persoon ziet er altijd hetzelfde uit een override wint wanneer u "
+"wilt dat een bepaalde persoon opvalt."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "Notify List:"
+msgstr "Berichtenlijst:"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Related Windows"
+msgstr "Verwante vensters"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"The Address Book (Ctrl+Shift+A) is your saved-contacts list: store notes "
+"about people you talk to. Nick colors, the ignore list and notify tracking "
+"each have their own window."
+msgstr ""
+"Het Adresboek (Ctrl+Shift+A) is uw opgeslagen contactenlijst: sla notities "
+"op over mensen waarmee u praat. Nick kleuren, de negeer lijst en notificatie"
+" bijhouden elk hebben hun eigen venster."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Tools > Nick Colors"
+msgstr "Hulpmiddelen > Nick kleuren"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "override display colors for specific nicks across the UI."
+msgstr "schermkleuren overschrijven voor specifieke nicks over de UI."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:19
+#, elixir-autogen, elixir-format
+msgid ""
+"per-type ignore entries for messages, PMs, actions, notices, and invites."
+msgstr ""
+"per type negeer items voor berichten, PM's, acties, mededelingen en "
+"uitnodigingen."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "track when specific nicknames come online."
+msgstr "track wanneer specifieke bijnamen online komen."

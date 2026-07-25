@@ -175,7 +175,7 @@ msgid ""
 "channels for channel commands."
 msgstr ", 시스템은 적절한 인수를 제안합니다 - 사용자 명령의 별명, 채널 명령의 채널."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:29
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:28
 #, elixir-autogen, elixir-format
 msgid ", use the toolbar button, or go to"
 msgstr ", 도구 모음 버튼을 사용, 또는 이동"
@@ -950,6 +950,7 @@ msgid "Adding Users"
 msgstr "사용자 정의"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_highlight_words.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "Address Book"
@@ -1466,11 +1467,6 @@ msgstr "연결 국가"
 msgid "Connection lost — shown in red."
 msgstr "연결 손실 - 빨간색으로 표시."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "Contacts:"
-msgstr "연락처:"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ignore_list.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "Context Menu:"
@@ -1478,6 +1474,7 @@ msgstr "Context 메뉴:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_copy.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/feature_interactive_elements.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:22
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:45
 #, elixir-autogen, elixir-format
@@ -1515,11 +1512,6 @@ msgstr "제품정보"
 #, elixir-autogen, elixir-format
 msgid "Control how your P2P connection works to protect your privacy."
 msgstr "P2P 연결이 귀하의 개인 정보를 보호하는 방법을 제어하십시오."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:20
-#, elixir-autogen, elixir-format
-msgid "Control:"
-msgstr "제어:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:47
 #, elixir-autogen, elixir-format
@@ -1585,7 +1577,7 @@ msgstr "Ctrl + 지원하다"
 msgid "Ctrl+Shift+/"
 msgstr "Ctrl + 시프트 + /"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:29
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ignore_list.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "Ctrl+Shift+A"
@@ -2003,6 +1995,7 @@ msgid "Global Announcements"
 msgstr "글로벌 공지"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_flood_protection.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "Go to"
 msgstr "오시는 길"
@@ -2035,7 +2028,7 @@ msgstr "게스트 사용자는 PM 추적 만 (통합은 차단에 손실됩니�
 msgid "Highlight"
 msgstr "높은 빛"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Highlight Words"
 msgstr "높은 낱말"
@@ -2371,18 +2364,6 @@ msgstr "제한 사항"
 msgid "Link Previews:"
 msgstr "링크 미리보기:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:22
-#, elixir-autogen, elixir-format
-msgid ""
-"Manage per-type ignore entries for messages, PMs, actions, notices, and "
-"invites."
-msgstr "메시지, PM, 행동, 통지 및 초대에 대한 per-type 무시 항목을 관리합니다."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:14
-#, elixir-autogen, elixir-format
-msgid "Manage your buddy list (synced with Notify List window)."
-msgstr "친구 목록 관리 (notify List window와 동기화)."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:8
 #, elixir-autogen, elixir-format
 msgid "Managing Ban Exceptions"
@@ -2654,7 +2635,7 @@ msgstr ""
 msgid "Notices respect the ignore system. Use"
 msgstr "공지는 무시 시스템을 존중합니다. 제품 정보"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/feature_highlight_words.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ignore_list.html.heex:63
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sounds.html.heex:80
@@ -2662,11 +2643,6 @@ msgstr "공지는 무시 시스템을 존중합니다. 제품 정보"
 #, elixir-autogen, elixir-format
 msgid "Notify List"
 msgstr "공지사항"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:12
-#, elixir-autogen, elixir-format
-msgid "Notify:"
-msgstr "이름:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:16
 #, elixir-autogen, elixir-format
@@ -2731,9 +2707,10 @@ msgstr "별명을 언급하는 만 검색 메시지."
 msgid "Open"
 msgstr "기타"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:7
 #, elixir-autogen, elixir-format
@@ -2784,11 +2761,6 @@ msgstr "또는 사용"
 #, elixir-autogen, elixir-format
 msgid "Orange"
 msgstr "담당자: Ms."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:18
-#, elixir-autogen, elixir-format
-msgid "Override display colors for specific nicks across the UI."
-msgstr "UI를 통해 특정 니켈에 대한 오버라이드 디스플레이 색상."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autorespond.html.heex:26
 #, elixir-autogen, elixir-format
@@ -2858,7 +2830,7 @@ msgstr "이름 *"
 msgid "Persistence:"
 msgstr "보증:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:29
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/feature_command_syntax_tooltip.html.heex:41
@@ -3189,7 +3161,7 @@ msgid ""
 "highlighting."
 msgstr "현재 채널 또는 PM의 메시지를 통해 실시간 강조 표시."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:33
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_audit_log.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_broadcast.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:48
@@ -3232,6 +3204,7 @@ msgstr "현재 채널 또는 PM의 메시지를 통해 실시간 강조 표시."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mute.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:50
@@ -3422,11 +3395,6 @@ msgstr "한국어"
 msgid "Status Bar"
 msgstr "상태 바"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:10
-#, elixir-autogen, elixir-format
-msgid "Store notes about users with add/edit/remove."
-msgstr "사용자에 대한 저장 메모 추가/edit/remove."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:18
 #, elixir-autogen, elixir-format
 msgid ""
@@ -3468,7 +3436,6 @@ msgstr "Syntax line only — 컴팩트하고 unobtrusive."
 msgid "Tab"
 msgstr "탭 탭"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Tabs"
@@ -3478,15 +3445,6 @@ msgstr "탭"
 #, elixir-autogen, elixir-format
 msgid "Text Formatting"
 msgstr "텍스트 포맷"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"The Address Book (Ctrl+Shift+A) organizes your contacts, notify list, nick "
-"color overrides, and future ignore management in one window."
-msgstr ""
-"주소록(Ctrl+Shift+A)은 연락처를 구성하고, 목록, nick color overrides, 그리고 미래는 하나의 창에서 관리를 "
-"무시합니다."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ignore_list.html.heex:2
 #, elixir-autogen, elixir-format
@@ -3754,7 +3712,7 @@ msgstr "닉리스트:"
 msgid "Toggle the visibility of UI elements from the"
 msgstr "UI 요소의 가시성을 토대로"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "Tools > Address Book"
 msgstr "도구 > 주소 책"
@@ -6108,3 +6066,93 @@ msgstr "수행 창을 열려면 수행 목록을 관리하기위한 시각적 �
 #, elixir-autogen, elixir-format
 msgid "with no arguments."
 msgstr "인수 없음."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:18
+#, elixir-autogen, elixir-format
+msgid ", or right-click a nickname and choose Set Nick Color."
+msgstr ", 또는 별명을 클릭 하 고 설정 닉 색상을 선택합니다."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:9
+#, elixir-autogen, elixir-format
+msgid ""
+"Add a contact with an optional note, edit the note later, or remove the "
+"entry. The list shows when you first talked to each person, in your "
+"timezone."
+msgstr "옵션 노트와 접촉을 추가, 메모를 편집, 또는 항목을 제거. 목록은 각 사람에게 처음 이야기 할 때 보여줍니다. 시간대."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "Assigning a Color"
+msgstr "색상 할당"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:11
+#, elixir-autogen, elixir-format
+msgid ""
+"Choose Add, type the nickname, and pick a swatch from the 16-color IRC "
+"palette. Select an existing row and choose Edit to change its color, or "
+"Remove to fall back to the automatic color."
+msgstr ""
+"추가를 선택하고 별명을 입력하고 16 색 IRC 팔레트에서 시계를 선택합니다. 기존의 행을 선택하고 편집을 선택하여 색상을 변경하거나 "
+"자동 색상으로 다시 제거하십시오."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Contacts"
+msgstr "제품정보"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Ignore List:"
+msgstr "Ignore 목록:"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"Nick Colors lets you pin a specific color to a nickname. Without an "
+"override, RetroHexChat derives a color from the nickname itself, so the same"
+" person always looks the same — an override wins whenever you want a "
+"particular person to stand out."
+msgstr ""
+"Nick 색상은 별명으로 특정 색상을 핀 할 수 있습니다. override없이, RetroHexChat은 별명 자체에서 색상을 파생, "
+"그래서 같은 사람이 항상 동일 보인다 - 특정 사람을 원할 때마다 오버라이드 승리."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "Notify List:"
+msgstr "비밀번호:"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Related Windows"
+msgstr "관련 Windows"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"The Address Book (Ctrl+Shift+A) is your saved-contacts list: store notes "
+"about people you talk to. Nick colors, the ignore list and notify tracking "
+"each have their own window."
+msgstr ""
+"주소록(Ctrl+Shift+A)은 저장된 연락처 목록입니다: 당신이 이야기하는 사람들에 대한 메모를 저장합니다. 닉 색상, 무시 목록 및"
+" 각 추적 통지 자신의 창."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Tools > Nick Colors"
+msgstr "도구 > 닉 색상"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "override display colors for specific nicks across the UI."
+msgstr "UI를 통해 특정 니켈에 대한 오버라이드 디스플레이 색상."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:19
+#, elixir-autogen, elixir-format
+msgid ""
+"per-type ignore entries for messages, PMs, actions, notices, and invites."
+msgstr "per-type은 메시지, PM, 행동, 통지 및 초대에 대한 항목을 무시합니다."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "track when specific nicknames come online."
+msgstr "특정 별명이 온라인으로 올 때 추적."

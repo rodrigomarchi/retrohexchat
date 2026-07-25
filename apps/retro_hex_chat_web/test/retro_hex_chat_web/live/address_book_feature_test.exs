@@ -31,12 +31,6 @@ defmodule RetroHexChatWeb.AddressBookFeatureTest do
     view |> element("[data-testid='#{testid}']") |> render_submit(params)
   end
 
-  defp ab_tab(view, tab) do
-    view
-    |> element("#address-book-dialog-tabs .tabs-trigger[data-target='#{tab}']")
-    |> render_click()
-  end
-
   # ══════════════════════════════════════════════════════════════
   # US1 — Dialog Shell (T042)
   # ══════════════════════════════════════════════════════════════
@@ -50,39 +44,15 @@ defmodule RetroHexChatWeb.AddressBookFeatureTest do
       assert html =~ "address-book-dialog"
     end
 
-    test "four tab headers visible", %{conn: conn} do
-      view = connect_user(conn, "E2EAbTabs#{uid()}")
+    test "the window carries contacts only", %{conn: conn} do
+      view = connect_user(conn, "E2EAbScope#{uid()}")
       render_click(view, "toggle_address_book")
       html = render(view)
 
-      assert html =~ "Contacts"
-      assert html =~ "Notify"
-      assert html =~ "Colors"
-      assert html =~ "Control"
-    end
-
-    test "tab switching works — each tab shows its content", %{conn: conn} do
-      view = connect_user(conn, "E2EAbSwitch#{uid()}")
-      render_click(view, "toggle_address_book")
-
-      # Default is contacts
-      assert render(view) =~ "No contacts saved"
-
-      # Switch to Notify
-      html = ab_tab(view, "notify")
-      assert html =~ "No entries. Click Add to track a nickname."
-
-      # Switch to Nick Colors
-      html = ab_tab(view, "colors")
-      assert html =~ "No custom colors set. Nicknames use automatic colors."
-
-      # Switch to Control
-      html = ab_tab(view, "control")
-      assert html =~ "No ignored users. Click Add to ignore a nickname."
-
-      # Back to Contacts
-      html = ab_tab(view, "contacts")
       assert html =~ "No contacts saved"
+      refute html =~ "No entries. Click Add to track a nickname."
+      refute html =~ "No custom colors set. Nicknames use automatic colors."
+      refute html =~ "No ignored users. Click Add to ignore a nickname."
     end
 
     test "the window X reports the close and the island unmounts", %{conn: conn} do
@@ -216,192 +186,6 @@ defmodule RetroHexChatWeb.AddressBookFeatureTest do
   # ══════════════════════════════════════════════════════════════
   # US3 — Notify Tab (T044)
   # ══════════════════════════════════════════════════════════════
-
-  describe "US3: Notify Tab" do
-    test "notify tab shows existing buddies added via /notify command", %{conn: conn} do
-      view = connect_user(conn, "E2ENtSync#{uid()}")
-
-      # Add buddy via /notify command
-      view
-      |> element(~s([data-testid="chat-input-form"]))
-      |> render_submit(%{"input" => "/notify add SyncBud"})
-
-      Process.sleep(50)
-
-      # Open address book and switch to notify tab
-      render_click(view, "toggle_address_book")
-      ab_tab(view, "notify")
-
-      html = render(view)
-      assert html =~ "SyncBud"
-    end
-
-    test "add buddy via notify tab", %{conn: conn} do
-      view = connect_user(conn, "E2ENtAdd#{uid()}")
-      render_click(view, "toggle_address_book")
-      ab_tab(view, "notify")
-
-      # Open add dialog
-      ab_click(view, "notify_add_dialog")
-      assert render(view) =~ "Add Notify Entry"
-
-      # Submit
-      ab_form(view, "ab-notify-add-form", %{"nickname" => "NtBuddy", "note" => "my notify buddy"})
-      html = render(view)
-
-      assert html =~ "NtBuddy"
-      assert html =~ "my notify buddy"
-    end
-
-    test "remove buddy via notify tab", %{conn: conn} do
-      view = connect_user(conn, "E2ENtRm#{uid()}")
-      render_click(view, "toggle_address_book")
-      ab_tab(view, "notify")
-
-      # Add then select and remove
-      ab_click(view, "notify_add_dialog")
-      ab_form(view, "ab-notify-add-form", %{"nickname" => "RmNotify", "note" => ""})
-      assert render(view) =~ "RmNotify"
-
-      ab_select(view, "notify_select", "RmNotify")
-      ab_click(view, "notify_remove")
-
-      html = render(view)
-      refute html =~ "ab-notify-entry-RmNotify"
-      assert html =~ "No entries. Click Add to track a nickname."
-    end
-  end
-
-  # ══════════════════════════════════════════════════════════════
-  # US4 — Nick Colors Tab (T045)
-  # ══════════════════════════════════════════════════════════════
-
-  describe "US4: Nick Colors Tab" do
-    test "add nick color override", %{conn: conn} do
-      view = connect_user(conn, "E2ENcAdd#{uid()}")
-      render_click(view, "toggle_address_book")
-      ab_tab(view, "colors")
-
-      # Open add dialog
-      ab_click(view, "nick_color_add_dialog")
-      assert render(view) =~ "Add Nick Color"
-
-      # Submit with color 4 (Red)
-      ab_form(view, "nick-color-add-form", %{"nickname" => "ColorBud", "color_index" => "4"})
-      html = render(view)
-
-      assert html =~ "ColorBud"
-      assert html =~ "Red"
-      assert html =~ "irc-bg-4"
-    end
-
-    test "edit color", %{conn: conn} do
-      view = connect_user(conn, "E2ENcEdit#{uid()}")
-      render_click(view, "toggle_address_book")
-      ab_tab(view, "colors")
-
-      # Add with Red (4)
-      ab_click(view, "nick_color_add_dialog")
-      ab_form(view, "nick-color-add-form", %{"nickname" => "EditClr", "color_index" => "4"})
-      assert render(view) =~ "Red"
-
-      # Select and edit to Blue (12)
-      ab_select(view, "nick_color_select", "EditClr")
-      ab_click(view, "nick_color_edit_dialog")
-      assert render(view) =~ "Edit Nick Color"
-
-      ab_form(view, "nick-color-edit-form", %{"nickname" => "EditClr", "color_index" => "12"})
-      html = render(view)
-
-      assert html =~ "Blue"
-      assert html =~ "irc-bg-12"
-    end
-
-    test "remove override", %{conn: conn} do
-      view = connect_user(conn, "E2ENcRm#{uid()}")
-      render_click(view, "toggle_address_book")
-      ab_tab(view, "colors")
-
-      # Add
-      ab_click(view, "nick_color_add_dialog")
-      ab_form(view, "nick-color-add-form", %{"nickname" => "RmClr", "color_index" => "4"})
-      assert render(view) =~ "RmClr"
-
-      # Select and remove
-      ab_select(view, "nick_color_select", "RmClr")
-      ab_click(view, "nick_color_remove")
-
-      html = render(view)
-      refute html =~ "nick-color-entry-RmClr"
-      assert html =~ "No custom colors set. Nicknames use automatic colors."
-    end
-  end
-
-  # ══════════════════════════════════════════════════════════════
-  # US5 + Context Menu (T046)
-  # ══════════════════════════════════════════════════════════════
-
-  describe "US5: Control Tab and Context Menu" do
-    test "control tab placeholder message", %{conn: conn} do
-      view = connect_user(conn, "E2ECtrl#{uid()}")
-      render_click(view, "toggle_address_book")
-      ab_tab(view, "control")
-
-      html = render(view)
-      assert html =~ "No ignored users. Click Add to ignore a nickname."
-    end
-
-    test "context menu 'Add to Contacts' adds nick to contacts", %{conn: conn} do
-      view = connect_user(conn, "E2ECtxAdd#{uid()}")
-
-      # Trigger context menu on a nick
-      render_click(view, "nick_right_click", %{
-        "nick" => "CtxFriend",
-        "x" => "100",
-        "y" => "200"
-      })
-
-      # Click "Add to Contacts" via nicklist context menu action dispatcher
-      render_click(view, "nicklist_context_action", %{"action" => "context_add_contact"})
-
-      # Open address book and verify contact is present
-      render_click(view, "toggle_address_book")
-      html = render(view)
-      assert html =~ "CtxFriend"
-    end
-
-    test "context menu 'Set Nick Color' -> color picker -> color applied", %{conn: conn} do
-      view = connect_user(conn, "E2ECtxClr#{uid()}")
-
-      # Trigger context menu
-      render_click(view, "nick_right_click", %{
-        "nick" => "ClrTarget",
-        "x" => "100",
-        "y" => "200"
-      })
-
-      # Click "Set Nick Color" via nicklist context menu action dispatcher
-      render_click(view, "nicklist_context_action", %{"action" => "context_set_nick_color"})
-      html = render(view)
-      assert html =~ "color-swatch-"
-
-      # Pick a color (Red = 4) via nicklist context menu action dispatcher.
-      # The color swatch carries the target nick as phx-value-nick.
-      render_click(view, "nicklist_context_action", %{
-        "action" => "context_pick_color",
-        "color_index" => "4",
-        "nick" => "ClrTarget"
-      })
-
-      # Verify in nick colors tab
-      render_click(view, "toggle_address_book")
-      ab_tab(view, "colors")
-      html = render(view)
-
-      assert html =~ "ClrTarget"
-      assert html =~ "Red"
-    end
-  end
 
   # ══════════════════════════════════════════════════════════════
   # Private Helpers

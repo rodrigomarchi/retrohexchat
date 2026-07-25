@@ -236,6 +236,18 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
       :icon_tab_notify
     )
     |> add_window(
+      window_open?(assigns.open_windows, "nick-colors"),
+      "nick-colors",
+      dgettext("chat", "Nick Colors"),
+      :icon_dialog_nick_colors
+    )
+    |> add_window(
+      window_open?(assigns.open_windows, "ignore-list"),
+      "ignore-list",
+      dgettext("chat", "Ignore List"),
+      :icon_dialog_ignore_list
+    )
+    |> add_window(
       window_open?(assigns.open_windows, "address-book"),
       "address-book",
       dgettext("chat", "Address Book"),

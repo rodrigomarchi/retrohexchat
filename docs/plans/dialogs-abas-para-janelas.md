@@ -193,6 +193,11 @@ timezone da standalone (`notify_list.ex:431-440`). O comportamento com timezone
 Atalhos: `Ctrl+Shift+A` continua em `address-book`. `Ctrl+Shift+G` (hoje
 `AddressBookEvents.open(socket, "control")`) passa a abrir `ignore-list`.
 
+> **✅ Executado em 2026-07-25.** As 4 abas viraram 3 janelas + a dedup: a aba
+> Notify morreu e a janela `notify-list` absorveu os timestamps com timezone
+> que só a aba tinha. Janelas 34 → 36, fechando o total previsto no §3.
+> Detalhes no PROGRESS.
+
 Correção de contrato incluída: os attrs duplicados `@selected_index` e
 `@contacts_selected` (`address_book_dialog.ex:470,482`, mesmo valor por dois
 caminhos) colapsam em um só no módulo novo.
@@ -493,17 +498,17 @@ crescente; a Fase 3 valida o playbook no menor split possível antes de escalar.
 | 3 | **Channel Central** | 6 → 4 abas, funde as 3 listas de acesso | 0 | ✅ feito |
 | 4 | **Perform** | `perform` + `autojoin` | +1 | ✅ feito |
 | 5 | **Account** | `account` + `profile` + `away` + `user-modes` | +3 | ✅ feito |
-| 6 | **Address Book** | `address-book` + `nick-colors` + `ignore-list`; aba Notify absorvida por `notify-list` | +2 | ⬜ pendente |
+| 6 | **Address Book** | `address-book` + `nick-colors` + `ignore-list`; aba Notify absorvida por `notify-list` | +2 | ✅ feito |
 
 **Fase 0b: metade feita.** O start menu ganhou grupos (`start_menu_submenu/1`)
 e teto de altura com scroll. **A taskbar continua devendo agrupamento** — 30
 janelas numa faixa `overflow-x-auto` de botões truncados em `12ch`. Ainda não
 dói (só as abertas aparecem), mas resolver antes das próximas fatias.
 
-**Fase 6 é a maior por larga margem** — 9 janelas × 19 pontos do contrato. Pode
-ser subdividida em 6a (os 3 sub-apps: users, channels, console) e 6b (as 6
-janelas magras), com CI verde entre as duas. O monólito só é deletado no fim de
-6b.
+~~**Fase 6 é a maior por larga margem** — 9 janelas × 19 pontos do contrato.~~
+**Nota obsoleta:** escrita quando o Admin Console *era* a fase 6. Ele foi
+promovido a primeiro caso e concluído na Fase 1; este parágrafo descrevia
+trabalho já feito e não se aplica à Fase 6 atual (Address Book).
 
 ---
 

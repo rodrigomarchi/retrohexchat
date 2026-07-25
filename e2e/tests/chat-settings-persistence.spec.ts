@@ -107,8 +107,8 @@ test.describe("Chat settings persistence", () => {
     await chat.switchToTab("#lobby");
 
     await chat.openAddressBookFromMenu();
-    await chat.switchAddressBookToTab("Nick Colors");
-    await chat.addressBookDialog.getByTestId("nick-color-add").click();
+    await chat.openNickColorsFromMenu();
+    await chat.nickColorsDialog.getByTestId("nick-color-add").click();
     const form = page.getByTestId("nick-color-add-form");
     await form.locator("#nick-color-add-nick").fill(nick);
     await form.getByRole("button", { name: "Color 4: Red" }).click();
@@ -194,8 +194,8 @@ test.describe("Chat settings persistence", () => {
     await chat.switchToTab("#lobby");
 
     await chat.openAddressBookFromMenu();
-    await chat.switchAddressBookToTab("Nick Colors");
-    await chat.addressBookDialog.getByTestId("nick-color-add").click();
+    await chat.openNickColorsFromMenu();
+    await chat.nickColorsDialog.getByTestId("nick-color-add").click();
     const form = page.getByTestId("nick-color-add-form");
     await form.locator("#nick-color-add-nick").fill(guestNick);
     await form.getByRole("button", { name: "Color 4: Red" }).click();

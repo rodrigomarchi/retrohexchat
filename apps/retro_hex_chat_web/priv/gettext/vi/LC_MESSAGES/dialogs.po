@@ -82,13 +82,12 @@ msgstr ""
 msgid "About RetroHexChat"
 msgstr "Giới thiệu về Retro HexChat"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1001
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:193
 #, elixir-autogen, elixir-format
 msgid "Actions"
 msgstr "Hành động"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:211
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:927
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:307
 #: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:172
 #: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:188
 #: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:148
@@ -100,7 +99,9 @@ msgstr "Hành động"
 #: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:284
 #: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:184
 #: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:327
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:187
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:68
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:302
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:189
 #: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:168
 #: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:121
 #, elixir-autogen, elixir-format
@@ -132,7 +133,7 @@ msgstr "Thêm ngoại lệ cấm"
 msgid "Add Command — %{bot}"
 msgstr "Thêm lệnh — %{bot}"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:283
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:105
 #, elixir-autogen, elixir-format
 msgid "Add Contact"
 msgstr "Contact & mới"
@@ -147,7 +148,7 @@ msgstr "Thêm mục"
 msgid "Add Highlight Word"
 msgstr "Thêm từ tô sáng"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:972
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:164
 #, elixir-autogen, elixir-format
 msgid "Add Ignore Entry"
 msgstr "Thêm mục bỏ qua"
@@ -157,13 +158,12 @@ msgstr "Thêm mục bỏ qua"
 msgid "Add Invite Exception"
 msgstr "Thêm ngoại lệ được mời"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:559
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:105
 #, elixir-autogen, elixir-format
 msgid "Add Nick Color"
 msgstr "Thêm màu Nick"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:421
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:261
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:263
 #, elixir-autogen, elixir-format
 msgid "Add Notify Entry"
 msgstr "Thêm mục đã chọn"
@@ -188,7 +188,7 @@ msgstr "Bàn điều khiển Quản trị"
 msgid "Alias Editor"
 msgstr "Trình biên soạn Alias"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:998
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:190
 #, elixir-autogen, elixir-format
 msgid "All"
 msgstr "Tất cả"
@@ -242,7 +242,7 @@ msgstr "Name"
 msgid "Auto-Join"
 msgstr "Name"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:128
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:130
 #, elixir-autogen, elixir-format
 msgid "Auto-add PM contacts to notify list"
 msgstr "Name"
@@ -287,13 +287,8 @@ msgstr "Buddy Offline"
 msgid "Buddy Online"
 msgstr "Buddy Online"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:329
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:399
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:466
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:536
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:607
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:678
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1032
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:151
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:221
 #: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:267
 #: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:300
 #: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:77
@@ -312,12 +307,15 @@ msgstr "Buddy Online"
 #: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:89
 #: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:338
 #: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:401
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:224
 #: lib/retro_hex_chat_web/components/ui/dialogs/invite_channel_picker_dialog.ex:94
 #: lib/retro_hex_chat_web/components/ui/dialogs/knock_request_dialog.ex:115
 #: lib/retro_hex_chat_web/components/ui/dialogs/mute_duration_dialog.ex:78
 #: lib/retro_hex_chat_web/components/ui/dialogs/nick_change_dialog.ex:109
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:314
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:391
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:153
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:224
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:316
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:393
 #: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:81
 #: lib/retro_hex_chat_web/components/ui/dialogs/paste_confirm_dialog.ex:105
 #: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:86
@@ -398,17 +396,17 @@ msgstr "& Xoá"
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:54
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:555
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:624
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:75
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:227
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:76
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:229
 #: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:72
 #, elixir-autogen, elixir-format
 msgid "Close"
 msgstr "Đóng"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:586
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:657
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:815
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:839
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:132
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:203
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:247
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:271
 #, elixir-autogen, elixir-format
 msgid "Color"
 msgstr "Màu"
@@ -453,16 +451,6 @@ msgstr "Xác nhận"
 #, elixir-autogen, elixir-format
 msgid "Connected"
 msgstr "Đã kết nối"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:104
-#, elixir-autogen, elixir-format
-msgid "Contacts"
-msgstr "Liên lạc"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:131
-#, elixir-autogen, elixir-format
-msgid "Control"
-msgstr "Ctrl"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:67
 #, elixir-autogen, elixir-format
@@ -552,18 +540,19 @@ msgstr "Ngắt kết nối"
 msgid "Down"
 msgstr "& Xuống"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1008
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:200
 #, elixir-autogen, elixir-format
 msgid "Duration (leave empty for permanent)"
 msgstr "Kéo dài (để trống cho vĩnh viễn)"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:939
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:319
 #: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:182
 #: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:198
 #: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:158
 #: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:294
 #: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:195
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:199
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:314
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:201
 #: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:178
 #: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:132
 #, elixir-autogen, elixir-format
@@ -580,7 +569,7 @@ msgstr "Sửa bí danh"
 msgid "Edit Auto-Join Channel"
 msgstr "Kênh tự động sửa"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:353
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:175
 #, elixir-autogen, elixir-format
 msgid "Edit Contact"
 msgstr "Contact & mới"
@@ -595,13 +584,12 @@ msgstr "Sửa mục"
 msgid "Edit Highlight Color"
 msgstr "Sửa màu tô sáng"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:631
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:177
 #, elixir-autogen, elixir-format
 msgid "Edit Nick Color"
 msgstr "Sửa màu Nick"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:490
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:338
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:340
 #, elixir-autogen, elixir-format
 msgid "Edit Notify Entry"
 msgstr "Sửa đổi mục nhập"
@@ -659,13 +647,13 @@ msgstr "Sự kiện"
 msgid "Expansion"
 msgstr "Mở rộng"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1080
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:249
 #, elixir-autogen, elixir-format
 msgid "Expired"
 msgstr "Hạn dùng"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:864
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:895
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:107
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:138
 #, elixir-autogen, elixir-format
 msgid "Expires"
 msgstr "Hạn sử dụng"
@@ -748,7 +736,7 @@ msgstr "Mời Exc."
 msgid "Invite Only (+i)"
 msgstr "Chỉ mời (+i)"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1003
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:195
 #, elixir-autogen, elixir-format
 msgid "Invites"
 msgstr "Mời"
@@ -782,8 +770,7 @@ msgstr "Bị đá ra khỏi kênh"
 msgid "Label"
 msgstr "Nhãn"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:791
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:166
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:168
 #: lib/retro_hex_chat_web/components/ui/dialogs/user_lookup_dialog.ex:78
 #, elixir-autogen, elixir-format
 msgid "Last Seen"
@@ -836,8 +823,8 @@ msgstr "Mục trình đơn"
 msgid "Message Flood"
 msgstr "Comment"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:999
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:223
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:191
 #, elixir-autogen, elixir-format
 msgid "Messages"
 msgstr "Thông điệp"
@@ -879,7 +866,8 @@ msgstr "N/A"
 msgid "Name"
 msgstr "Tên"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1065
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:439
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:440
 #, elixir-autogen, elixir-format
 msgid "Never"
 msgstr "Không bao giờ"
@@ -889,45 +877,37 @@ msgstr "Không bao giờ"
 msgid "New"
 msgstr "Mới"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:702
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:723
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:770
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:814
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:835
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:862
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:883
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:243
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:264
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:322
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:142
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:261
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:362
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:483
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:105
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:126
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:246
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:267
 #: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:181
 #: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:232
 #, elixir-autogen, elixir-format
 msgid "Nick"
 msgstr "Nick"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:122
-#, elixir-autogen, elixir-format
-msgid "Nick Colors"
-msgstr "Comment"
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:140
 #, elixir-autogen, elixir-format
 msgid "Nicklist"
 msgstr "Nicklist"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:292
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:362
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:430
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:499
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:568
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:640
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:981
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:114
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:184
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:44
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:169
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:426
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:449
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:173
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:114
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:186
 #: lib/retro_hex_chat_web/components/ui/dialogs/user_lookup_dialog.ex:43
 #, elixir-autogen, elixir-format
 msgid "Nickname"
@@ -935,8 +915,8 @@ msgstr "Biệt danh"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:49
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:200
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:275
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:352
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:277
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:354
 #, elixir-autogen, elixir-format
 msgid "Nickname:"
 msgstr "Biệt danh:"
@@ -991,12 +971,12 @@ msgstr "Không có lệnh được cấu hình. Nhấn vào để tạo một."
 msgid "No configurable capabilities enabled."
 msgstr "Không bật được khả năng cấu hình."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:710
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:251
 #, elixir-autogen, elixir-format
 msgid "No contacts saved"
 msgstr "Không lưu liên lạc"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:821
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:253
 #, elixir-autogen, elixir-format
 msgid "No custom colors set. Nicknames use automatic colors."
 msgstr "Không có bộ màu tự chọn. Biệt danh dùng màu tự động."
@@ -1006,12 +986,7 @@ msgstr "Không có bộ màu tự chọn. Biệt danh dùng màu tự động."
 msgid "No custom commands"
 msgstr "Không có lệnh riêng"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:757
-#, elixir-autogen, elixir-format
-msgid "No entries. Click Add to track a nickname."
-msgstr "Không có mục nhập. Nhấn vào để theo dõi một biệt danh."
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:870
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:113
 #, elixir-autogen, elixir-format
 msgid "No ignored users. Click Add to ignore a nickname."
 msgstr "Không bỏ qua người dùng. Nhấn vào để bỏ qua một biệt danh."
@@ -1044,51 +1019,38 @@ msgstr "Chưa xác định phím tắt."
 msgid "No topic set"
 msgstr "Chưa đặt chủ đề"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:443
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:512
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:787
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:170
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:172
 #, elixir-autogen, elixir-format
 msgid "Note"
 msgstr "Ghi chú"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:289
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:365
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:291
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:367
 #, elixir-autogen, elixir-format
 msgid "Note:"
 msgstr "Ghi chú:"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:306
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:375
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:703
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:729
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:128
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:197
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:244
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:270
 #, elixir-autogen, elixir-format
 msgid "Notes"
 msgstr "Ghi chú"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1002
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:194
 #, elixir-autogen, elixir-format
 msgid "Notices"
 msgstr "Thông báo"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:113
-#, elixir-autogen, elixir-format
-msgid "Notify"
-msgstr "Thông báo"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:50
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:51
 #, elixir-autogen, elixir-format
 msgid "Notify List"
 msgstr "Thông báo Danh sách"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/about_dialog.ex:101
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:319
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:389
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:456
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:526
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:597
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:668
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1022
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:141
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:211
 #: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:276
 #: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:309
 #: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:73
@@ -1101,10 +1063,13 @@ msgstr "Thông báo Danh sách"
 #: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:85
 #: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:232
 #: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:390
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:214
 #: lib/retro_hex_chat_web/components/ui/dialogs/kick_dialog.ex:91
 #: lib/retro_hex_chat_web/components/ui/dialogs/mute_duration_dialog.ex:68
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:303
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:380
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:143
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:214
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:305
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:382
 #: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:82
 #: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:235
 #: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:302
@@ -1115,8 +1080,7 @@ msgstr "Thông báo Danh sách"
 msgid "OK"
 msgstr "Được rồi"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:783
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:415
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:417
 #, elixir-autogen, elixir-format
 msgid "Offline"
 msgstr "Comment"
@@ -1136,13 +1100,12 @@ msgstr "Theo thay đổi của Nick"
 msgid "On Part"
 msgstr "Phần"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:782
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:407
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:409
 #, elixir-autogen, elixir-format
 msgid "Online"
 msgstr "Trực tuyến"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1000
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:192
 #, elixir-autogen, elixir-format
 msgid "PMs"
 msgstr "Giờ"
@@ -1157,12 +1120,12 @@ msgstr "Dán xác nhận"
 msgid "Perform"
 msgstr "Thực hiện"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:139
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:141
 #, elixir-autogen, elixir-format
 msgid "Perform WHOIS on notify nicks when they come online"
 msgstr "Thực hiện WHOIS trên các bản thông báo khi họ lên mạng"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1074
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:243
 #, elixir-autogen, elixir-format
 msgid "Permanent"
 msgstr "Thường xuyên"
@@ -1198,8 +1161,7 @@ msgstr "Nền tảng trò chuyện công cộng"
 msgid "RSS"
 msgstr "Name"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:223
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:951
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:331
 #: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:192
 #: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:208
 #: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:169
@@ -1209,7 +1171,9 @@ msgstr "Name"
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1131
 #: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:304
 #: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:207
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:212
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:80
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:326
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:214
 #: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:189
 #, elixir-autogen, elixir-format
 msgid "Remove"
@@ -1307,8 +1271,8 @@ msgstr "Đặt theo"
 msgid "Set by %{nick}"
 msgstr "Đặt & theo %{nick}"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:704
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:734
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:245
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:275
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:301
 #, elixir-autogen, elixir-format
 msgid "Since"
@@ -1334,7 +1298,6 @@ msgstr "Thiết lập âm thanh"
 msgid "Statistics"
 msgstr "Thống kê"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:774
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:181
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:265
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:444
@@ -1386,9 +1349,9 @@ msgstr "Trigger"
 msgid "Trivia"
 msgstr "Trivia"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:863
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:889
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:995
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:106
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:132
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:187
 #, elixir-autogen, elixir-format
 msgid "Type"
 msgstr "Kiểu"
@@ -1513,7 +1476,7 @@ msgstr "Anh bị đá khỏi kênh truyền hình."
 msgid "e.g. /msg $1 hello!"
 msgstr "Xin chào."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1014
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:206
 #, elixir-autogen, elixir-format
 msgid "e.g. 5m, 1h, 2d"
 msgstr "e.g. 5m, 1h, 2d"
@@ -2678,18 +2641,18 @@ msgstr "Không có lời tô sáng được cấu hình. Nhấn vào để tạo
 msgid "No lookup yet."
 msgstr "Chưa thấy gì."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:425
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:426
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:427
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:428
 #, elixir-autogen, elixir-format
 msgid "No note"
 msgstr "Không ghi chú"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:147
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:149
 #, elixir-autogen, elixir-format
 msgid "No notify nicks yet. Add a nick to track online status."
 msgstr "Chưa có thông báo. Thêm một vết xước để theo dõi tình trạng online."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:431
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:435
 #, elixir-autogen, elixir-format
 msgid "Now"
 msgstr "Bây giờ"

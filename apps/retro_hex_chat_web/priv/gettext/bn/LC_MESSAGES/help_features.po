@@ -183,7 +183,7 @@ msgstr ""
 "সিস্টেম দ্বারা সুনির্দিষ্ট আর্গুমেন্ট নির্ধারণ করা হয় - ব্যবহারকারীর "
 "কমান্ডের জন্য উপনাম, চ্যানেল কমান্ডের জন্য উল্লিখিত উপনাম।"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:29
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:28
 #, elixir-autogen, elixir-format
 msgid ", use the toolbar button, or go to"
 msgstr "টুলবারকে ব্যবহৃত একক"
@@ -990,6 +990,7 @@ msgid "Adding Users"
 msgstr "ব্যবহারকারী যোগ করুন"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_highlight_words.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "Address Book"
@@ -1532,11 +1533,6 @@ msgstr "সংযোগ ব্যবস্থা"
 msgid "Connection lost — shown in red."
 msgstr "সংযোগ বিচ্ছিন্ন হয়েছে ।"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "Contacts:"
-msgstr "পরিচিতি:"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ignore_list.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "Context Menu:"
@@ -1544,6 +1540,7 @@ msgstr "কনটেক্সট মেনু:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_copy.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/feature_interactive_elements.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:22
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:45
 #, elixir-autogen, elixir-format
@@ -1585,11 +1582,6 @@ msgid "Control how your P2P connection works to protect your privacy."
 msgstr ""
 "আপনার P2P সংযোগ কিভাবে আপনার গোপনীয়তা রক্ষা করতে কাজ করে তা নিয়ন্ত্রণ "
 "করুন।"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:20
-#, elixir-autogen, elixir-format
-msgid "Control:"
-msgstr "নিয়ন্ত্রণ:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:47
 #, elixir-autogen, elixir-format
@@ -1655,7 +1647,7 @@ msgstr "Ctrl+ স্থানান্তর"
 msgid "Ctrl+Shift+/"
 msgstr "Ctrl+Shift+X+S"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:29
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ignore_list.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "Ctrl+Shift+A"
@@ -2092,6 +2084,7 @@ msgid "Global Announcements"
 msgstr "বিশ্বব্যাপী ঘোষণা"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_flood_protection.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "Go to"
 msgstr "যাও"
@@ -2126,7 +2119,7 @@ msgstr "অতিথিবৃন্দ (কেবল সংযোগ বিচ�
 msgid "Highlight"
 msgstr "উজ্জ্বল"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Highlight Words"
 msgstr "শব্দ উজ্জ্বল করা হবে"
@@ -2475,19 +2468,6 @@ msgstr "সীমা"
 msgid "Link Previews:"
 msgstr "লিঙ্কের পূর্বদৃশ্য:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:22
-#, elixir-autogen, elixir-format
-msgid ""
-"Manage per-type ignore entries for messages, PMs, actions, notices, and "
-"invites."
-msgstr ""
-"বার্তা, প্রধানমন্ত্রী, কর্ম, খেয়াল করুন এবং আমন্ত্রণের প্রতি উপেক্ষা করুন।"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:14
-#, elixir-autogen, elixir-format
-msgid "Manage your buddy list (synced with Notify List window)."
-msgstr "আপনার বন্ধুর তালিকা পরিচালনা করুন (মেনে তালিকায়)।"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:8
 #, elixir-autogen, elixir-format
 msgid "Managing Ban Exceptions"
@@ -2768,7 +2748,7 @@ msgstr ""
 msgid "Notices respect the ignore system. Use"
 msgstr "লক্ষ করুন যে, উপেক্ষিত সিস্টেমকে সম্মান করা হয়েছে। ব্যবহার"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/feature_highlight_words.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ignore_list.html.heex:63
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sounds.html.heex:80
@@ -2776,11 +2756,6 @@ msgstr "লক্ষ করুন যে, উপেক্ষিত সিস্�
 #, elixir-autogen, elixir-format
 msgid "Notify List"
 msgstr "তালিকা ঘোষণা করুন"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:12
-#, elixir-autogen, elixir-format
-msgid "Notify:"
-msgstr "বিজ্ঞপ্তি:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:16
 #, elixir-autogen, elixir-format
@@ -2849,9 +2824,10 @@ msgstr "শুধুমাত্র আপনার ডাকনাম সন্
 msgid "Open"
 msgstr "খুলুন"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:7
 #, elixir-autogen, elixir-format
@@ -2902,11 +2878,6 @@ msgstr "অথবা ব্যবহার"
 #, elixir-autogen, elixir-format
 msgid "Orange"
 msgstr "কমলা"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:18
-#, elixir-autogen, elixir-format
-msgid "Override display colors for specific nicks across the UI."
-msgstr "UI এর মাধ্যমে সুনির্দিষ্ট উপনামের ক্ষেত্রে প্রদর্শন করা হবে ।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autorespond.html.heex:26
 #, elixir-autogen, elixir-format
@@ -2982,7 +2953,7 @@ msgstr "শাস্তি"
 msgid "Persistence:"
 msgstr "সাদৃশ্য:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:29
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/feature_command_syntax_tooltip.html.heex:41
@@ -3343,7 +3314,7 @@ msgstr ""
 "বর্তমান চ্যানেলের মধ্যে, বর্তমান অথবা প্রধানমন্ত্রী দ্বারা ের মধ্যে প্রাপ্ত "
 "বার্তা অনুসন্ধান করা হবে ।"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:33
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_audit_log.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_broadcast.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:48
@@ -3386,6 +3357,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mute.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:50
@@ -3588,13 +3560,6 @@ msgstr "অবস্থা"
 msgid "Status Bar"
 msgstr "স্ট্যাটাস বার"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:10
-#, elixir-autogen, elixir-format
-msgid "Store notes about users with add/edit/remove."
-msgstr ""
-"অন্তর্ভুক্ত করা নোট যোগ করুন।<f\\-1\\/f1\\-1} সহ ব্যবহারকারীদের মধ্যে নোট "
-"সংরক্ষণ করা হবে।"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:18
 #, elixir-autogen, elixir-format
 msgid ""
@@ -3639,7 +3604,6 @@ msgstr "সিন্টেক্স লাইন — কেবলমাত্র
 msgid "Tab"
 msgstr "ট্যাব"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Tabs"
@@ -3649,15 +3613,6 @@ msgstr "ট্যাব"
 #, elixir-autogen, elixir-format
 msgid "Text Formatting"
 msgstr "টেক্সট বিন্যাস"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"The Address Book (Ctrl+Shift+A) organizes your contacts, notify list, nick "
-"color overrides, and future ignore management in one window."
-msgstr ""
-"ঠিকানা-বই (Ctrl+Shift+A) আপনার পরিচিতি তালিকা, বিজ্ঞপ্তি তালিকা, রঙের রঙ, "
-"এবং ভবিষ্যতে কোনো উইন্ডোর মধ্যে উপেক্ষা করা হবে না ।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ignore_list.html.heex:2
 #, elixir-autogen, elixir-format
@@ -3955,7 +3910,7 @@ msgstr "ডাকনাম:"
 msgid "Toggle the visibility of UI elements from the"
 msgstr "UI উপাদানের প্রদর্শন টগল করুন"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "Tools > Address Book"
 msgstr "সরঞ্জাম ঠিকানা-বই"
@@ -6467,3 +6422,97 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "with no arguments."
 msgstr "যুক্তি দিয়ে নয়।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:18
+#, elixir-autogen, elixir-format
+msgid ", or right-click a nickname and choose Set Nick Color."
+msgstr "উপনাম অথবা ডানদিকের নাম উল্লিখিত হওয়া আবশ্যক।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:9
+#, elixir-autogen, elixir-format
+msgid ""
+"Add a contact with an optional note, edit the note later, or remove the "
+"entry. The list shows when you first talked to each person, in your "
+"timezone."
+msgstr ""
+"প্রয়োজন অনুসারে ঐচ্ছিক কোনো নোট যোগ করুন, অথবা এন্ট্রি মুছে ফেলুন। যখন আপনি"
+" প্রথম একজন ব্যক্তির সাথে কথা বলেছিলেন, আপনার সময়ের মধ্যে।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "Assigning a Color"
+msgstr "রঙ নির্ধারণ করুন"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:11
+#, elixir-autogen, elixir-format
+msgid ""
+"Choose Add, type the nickname, and pick a swatch from the 16-color IRC "
+"palette. Select an existing row and choose Edit to change its color, or "
+"Remove to fall back to the automatic color."
+msgstr ""
+"নাম যোগ, ধরন বেছে নিন, এবং ১৬-টি রঙ প্যালেট থেকে একটি DCo চিহ্নিত করুন। একটি"
+" উপস্থিত সারি বেছে নিন ও এটির রঙ পরিবর্তন করতে, অথবা স্বয়ংক্রিয় রং "
+"নির্বাচন করে।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Contacts"
+msgstr "পরিচিতি"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Ignore List:"
+msgstr "উপেক্ষা করো তালিকা"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"Nick Colors lets you pin a specific color to a nickname. Without an "
+"override, RetroHexChat derives a color from the nickname itself, so the same"
+" person always looks the same — an override wins whenever you want a "
+"particular person to stand out."
+msgstr ""
+"ডাকনামের রং আপনাকে একটি নির্দিষ্ট রঙে পার্জ করুন। আপনি যদি কোনো নির্দিষ্ট "
+"ব্যক্তি চান, তা হলে আপনি হয়তো সেই একই ব্যক্তির সঙ্গে একমত হবেন ।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "Notify List:"
+msgstr "তালিকা ঘোষণা করো:"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Related Windows"
+msgstr "এই উইন্ডো"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"The Address Book (Ctrl+Shift+A) is your saved-contacts list: store notes "
+"about people you talk to. Nick colors, the ignore list and notify tracking "
+"each have their own window."
+msgstr ""
+"ঠিকানা-বই (Ctrl-Shift+A) আপনার সংরক্ষিত পরিচিতি তালিকার মধ্যে উপস্থিত "
+"রয়েছে: আপনার সাথে কথা বলার জন্য এই নোট সংরক্ষণ করা হবে। নিক রঙ, উপেক্ষা করে"
+" প্রতিটি তালিকাকে তার নিজস্ব উইন্ডোতে চিহ্নিত করা হবে।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Tools > Nick Colors"
+msgstr "সরঞ্জাম ডাকনামের রং"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "override display colors for specific nicks across the UI."
+msgstr "UI- র মধ্যে উপস্থিত সুনির্দিষ্ট উপনামের জন্য প্রদর্শন করা হবে।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:19
+#, elixir-autogen, elixir-format
+msgid ""
+"per-type ignore entries for messages, PMs, actions, notices, and invites."
+msgstr "সকল বার্তা, প্রধানমন্ত্রী, কর্ম, খেয়াল এবং আমন্ত্রণের প্রতি উপেক্ষা।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "track when specific nicknames come online."
+msgstr "যখন সুনির্দিষ্ট ডাকনাম অনলাইনে আসে।"

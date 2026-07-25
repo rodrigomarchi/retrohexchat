@@ -58,6 +58,8 @@ routes = [
   "/showcase/confirm-dialog",
   "/showcase/options-dialog",
   "/showcase/address-book",
+  "/showcase/nick-colors",
+  "/showcase/ignore-list",
   "/showcase/about-dialog",
   "/showcase/channel-list",
   "/showcase/highlight-dialog",

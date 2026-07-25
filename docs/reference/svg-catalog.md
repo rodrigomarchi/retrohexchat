@@ -148,6 +148,8 @@ falls back to the globe for unknown codes.
 
 | Function | Description |
 |----------|-------------|
+| `icon_dialog_nick_colors` | Palette swatch card — Nick Colors title bar and taskbar **[DONE]** |
+| `icon_btn_nick_colors` | Palette card outline, toolbar weight — Nick Colors menu/start menu/toolbar **[DONE]** |
 | `icon_btn_find` | Magnifying glass **[DONE]** |
 | `icon_btn_settings` | Gear **[DONE]** |
 | `icon_btn_address_book` | Notebook with lines **[DONE]** |
@@ -162,6 +164,7 @@ falls back to the globe for unknown codes.
 
 | Function | Description |
 |----------|-------------|
+| `icon_dialog_ignore_list` | Person + red deny ring — Ignore List title bar and taskbar **[DONE]** |
 | `icon_btn_ignore_list` | Person with ban circle **[DONE]** |
 | `icon_btn_flood_protection` | Shield with lock **[DONE]** |
 | `icon_tab_registration` | Shield tab icon for Channel Central registration **[DONE]** |

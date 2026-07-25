@@ -47,10 +47,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.NotifyListDialog do
      socket
      |> assign(:id, @id)
      |> assign(@initial)
-     |> assign(session: nil)}
+     |> assign(session: nil, timezone: "Etc/UTC")}
   end
 
-  # passthrough context (session)
+  # passthrough context (session, timezone)
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def update(assigns, socket), do: {:ok, assign(socket, assigns)}
 
@@ -164,6 +164,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.NotifyListDialog do
         id={@id}
         target={@myself}
         entries={@entries}
+        timezone={@timezone}
         selected_entry={@notify_selected}
         selected_note={@selected_note}
         auto_whois={@auto_whois}

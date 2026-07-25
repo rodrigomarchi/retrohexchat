@@ -2,10 +2,11 @@
 
 Plano: `dialogs-abas-para-janelas.md` · Progresso: `dialogs-abas-para-janelas-PROGRESS.md`
 
-Duas receitas, uma por operação. **Extração** (§1–§10) tira uma aba do diálogo e
-a promove a janela do desktop; derivada das 9 janelas do Admin Console
-(2026-07-25). **Fusão** (§11) funde abas irmãs numa só; derivada do Channel
-Central (2026-07-25). O que está aqui foi feito, não imaginado.
+Três receitas.  **Extração** (§1–§10) tira uma aba do diálogo e
+a promove a janela do desktop; derivada das 9 janelas do Admin Console.
+**Fusão** (§11–§13) funde abas irmãs numa só; derivada do Channel Central.
+**Dedup** (§13b) mata uma aba que duplica uma janela existente; derivada do
+Address Book. Tudo de 2026-07-25, e tudo feito — não imaginado.
 
 Qual usar: §1 (extração) e §11.1 (fusão) respondem.
 
@@ -131,6 +132,13 @@ grep -n "^  def handle_event" island.ex   # confirma o bloco contíguo
 ```
 
 ### 5.2 Apresentacional
+
+**Fatie o original, não interpole texto novo.** Extrair blocos do arquivo antigo
+por intervalo de linhas é seguro e exato. Montar o arquivo novo com f-strings
+Python não é: `#{@id}` do Elixir colide com a interpolação da linguagem
+hospedeira e vaza literal, e um intervalo errado corta uma função no meio. Na
+fatia do Address Book isso custou três rodadas de conserto. Escreva o arquivo
+novo direto, com a ferramenta de escrita.
 
 Duas funções públicas. `<x>_dialog/1` é a variante emoldurada que **só o
 showcase usa**; `<x>_panel/1` é o corpo nu que a janela monta.
@@ -331,6 +339,16 @@ configurações de conta. O corte fica entre 2 (duplica) e 4 (compartilha).
 De qualquer forma, **o CSS do shell de abas morre junto com o shell**: 80 linhas
 de scroller mobile saíram do `perform.css`, ~85 do `account.css`, do mesmo jeito
 que os `.ac-main-tabs*` saíram na fatia do Admin.
+
+**O CSS do shell de abas está sempre em dois lugares.** O arquivo da feature
+tem o dele, e há um bloco compartilhado (hoje em `account.css`) que agrupa os
+scrollers mobile de vários diálogos por prefixo. Ao matar um shell de abas,
+limpe os dois — o `lint.css_consistency` acusa, mas só depois de você ter feito
+metade.
+
+**E não filtre CSS por linha.** Remover as linhas de um prefixo de uma lista de
+seletores multi-linha apaga também a que carrega o `{`. Depois de qualquer
+edição programática, confira `count("{") == count("}")` antes de rodar o lint.
 
 **Grepe o CSS pelo valor da aba, não só pelo prefixo.** Os blocos de scroller
 mobile são compartilhados entre diálogos e selecionam a aba ativa por
@@ -882,6 +900,26 @@ não significa nada para eles.
 verificava a ausência do botão Add só na aba Bans; com um único componente para
 os três tipos, verificar os três custa duas linhas e cobre a regressão de "o
 gate sumiu num tipo só".
+
+## 13b. Deduplicar uma aba contra uma janela que já existe
+
+Quando a aba duplica uma janela standalone (Address Book × Notify List), a
+janela vence — mas **primeiro migre o que só a aba tinha**. Diff campo a campo
+antes de apagar: na fatia do Address Book era o timestamp com timezone, e sem
+migrar teria sido uma regressão silenciosa para quem usava a aba.
+
+**Nem tudo da aba é melhor.** A aba mostrava `—` para contato online; a
+standalone mostra "Now". Migrar `—` teria piorado a janela vencedora. Migre o
+que é superior, não o que é diferente — e registre a escolha.
+
+**Os testes da aba mudam de seletor, não de significado.** Eles vão para o
+arquivo da janela vencedora e passam a falar a markup dela
+(`.text-success` → `.nl-status--online`, id → `data-testid`, cópia do estado
+vazio). Se uma asserção não tem tradução possível, ela provavelmente comparava
+as **duas** superfícies — e essa, sim, morre com a dedup, porque não há mais o
+que comparar.
+
+---
 
 ## 14. Ajuda: fundir não é só renomear
 

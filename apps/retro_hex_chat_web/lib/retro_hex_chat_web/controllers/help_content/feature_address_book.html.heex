@@ -1,28 +1,27 @@
 <p>
   {dgettext(
     "help_features",
-    "The Address Book (Ctrl+Shift+A) organizes your contacts, notify list, nick color overrides, and future ignore management in one window."
+    "The Address Book (Ctrl+Shift+A) is your saved-contacts list: store notes about people you talk to. Nick colors, the ignore list and notify tracking each have their own window."
   )}
 </p>
-<.help_h4 icon={:icon_tab_channel}>{dgettext("help_features", "Tabs")}</.help_h4>
+<.help_h4 icon={:icon_dialog_address_book}>{dgettext("help_features", "Contacts")}</.help_h4>
 <p>
-  <strong>{dgettext("help_features", "Contacts:")}</strong>
-  {dgettext("help_features", "Store notes about users with add/edit/remove.")}<br />
-  <strong>
-    {dgettext("help_features", "Notify:")}
-  </strong>
-  {dgettext("help_features", "Manage your buddy list (synced with Notify List window).")}<br />
-  <strong>
-    {dgettext("help_features", "Nick Colors:")}
-  </strong>
-  {dgettext("help_features", "Override display colors for specific nicks across the UI.")}<br />
-  <strong>
-    {dgettext("help_features", "Control:")}
-  </strong>
   {dgettext(
     "help_features",
-    "Manage per-type ignore entries for messages, PMs, actions, notices, and invites."
+    "Add a contact with an optional note, edit the note later, or remove the entry. The list shows when you first talked to each person, in your timezone."
   )}
+</p>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "Related Windows")}</.help_h4>
+<p>
+  <strong>{dgettext("help_features", "Nick Colors:")}</strong>
+  {dgettext("help_features", "override display colors for specific nicks across the UI.")}<br />
+  <strong>{dgettext("help_features", "Ignore List:")}</strong>
+  {dgettext(
+    "help_features",
+    "per-type ignore entries for messages, PMs, actions, notices, and invites."
+  )}<br />
+  <strong>{dgettext("help_features", "Notify List:")}</strong>
+  {dgettext("help_features", "track when specific nicknames come online.")}
 </p>
 <.help_h4 icon={:icon_folder}>{dgettext("help_features", "Opening")}</.help_h4>
 <p>

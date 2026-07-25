@@ -405,6 +405,27 @@ defmodule RetroHexChatWeb.Icons.Security do
     """
   end
 
+  attr :class, :string, default: nil
+
+  @spec icon_dialog_ignore_list(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_dialog_ignore_list(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <!-- Shadow -->
+      <rect x="4" y="3" width="6" height="5" fill="#000" />
+      <polygon points="2,15 12,15 12,11 10,9 4,9 2,11" fill="#000" />
+      
+    <!-- Person (white for dark bg) -->
+      <rect x="3" y="2" width="6" height="5" fill="#fff" stroke="#000" stroke-width="1" />
+      <polygon points="1,14 11,14 11,10 9,8 3,8 1,10" fill="#fff" stroke="#000" stroke-width="1" />
+      
+    <!-- Deny ring -->
+      <circle cx="11" cy="11" r="4" fill="none" stroke="#FF0000" stroke-width="2" />
+      <path d="M8 14 L14 8" stroke="#FF0000" stroke-width="2" />
+    </svg>
+    """
+  end
+
   # -- Toolbar: Ignore List --
 
   attr :class, :string, default: nil

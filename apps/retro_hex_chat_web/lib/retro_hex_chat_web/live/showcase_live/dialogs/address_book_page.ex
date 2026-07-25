@@ -29,27 +29,6 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AddressBookPage do
            first_contact_date: DateTime.add(DateTime.utc_now(), -7, :day)
          },
          %{contact_nickname: "carol", note: "", first_contact_date: DateTime.utc_now()}
-       ],
-       notify_list: [
-         %{tracked_nickname: "alice", online: true, note: nil, last_seen_at: nil},
-         %{
-           tracked_nickname: "dave",
-           online: false,
-           note: dgettext("showcase", "AFK since Monday"),
-           last_seen_at: DateTime.add(DateTime.utc_now(), -120, :minute)
-         }
-       ],
-       nick_colors: [
-         %{target_nickname: "alice", color_index: 4},
-         %{target_nickname: "bob", color_index: 2}
-       ],
-       control_list: [
-         %{nickname: "spammer", ignore_type: :all, expires_at: nil},
-         %{
-           nickname: "troll",
-           ignore_type: :pms,
-           expires_at: DateTime.add(DateTime.utc_now(), 3600, :second)
-         }
        ]
      )}
   end
@@ -62,15 +41,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AddressBookPage do
 
       <.showcase_card
         title={dgettext("showcase", "Address Book")}
-        description="Contact list with color assignments — the panel composes into a desktop window in the chat."
+        description="Saved contacts with notes — the panel composes into a desktop window in the chat."
       >
         <div class="h-[420px] shadow-retro-field overflow-hidden p-2">
           <.address_book_panel
             id="address-book-demo"
             contacts={@contacts}
-            notify_list={@notify_list}
-            nick_colors={@nick_colors}
-            control_list={@control_list}
             nick_color_fn={fn nick -> "nick-color-#{:erlang.phash2(nick, 12)}" end}
           />
         </div>

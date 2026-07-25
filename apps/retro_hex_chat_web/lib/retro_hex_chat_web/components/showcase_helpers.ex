@@ -113,6 +113,8 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
      [
        {dgettext_noop("showcase", "About Dialog"), "about-dialog", "/showcase/about-dialog"},
        {dgettext_noop("showcase", "Address Book"), "address-book", "/showcase/address-book"},
+       {dgettext_noop("showcase", "Nick Colors"), "nick-colors", "/showcase/nick-colors"},
+       {dgettext_noop("showcase", "Ignore List"), "ignore-list", "/showcase/ignore-list"},
        {dgettext_noop("showcase", "Admin Console"), "admin-console-dialog",
         "/showcase/admin-console-dialog"},
        {dgettext_noop("showcase", "Admin Users"), "admin-users-dialog",
@@ -371,6 +373,8 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
     "connection-status" => :icon_status_signal,
     "confirm-dialog" => :icon_warning,
     "address-book" => :icon_dialog_address_book,
+    "nick-colors" => :icon_dialog_nick_colors,
+    "ignore-list" => :icon_dialog_ignore_list,
     "about-dialog" => :icon_lightbulb,
     "admin-console-dialog" => :icon_dialog_admin_console,
     "admin-users-dialog" => :icon_community,

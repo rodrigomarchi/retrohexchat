@@ -154,15 +154,14 @@ test.describe("Notify list commands", () => {
       );
       await alice.chat.closeNotifyList();
 
-      await alice.chat.openAddressBookFromMenu();
-      await alice.chat.switchAddressBookToNotifyTab();
-      await expect(alice.chat.addressBookNotifyRow(targetNick)).toContainText(
+      await alice.chat.openNotifyListFromViewMenu();
+      await expect(alice.chat.notifyListRow(targetNick)).toContainText(
         editedNote,
       );
-      await expect(alice.chat.addressBookNotifyRow(targetNick)).toContainText(
+      await expect(alice.chat.notifyListRow(targetNick)).toContainText(
         "Offline",
       );
-      await alice.chat.closeAddressBook();
+      await alice.chat.closeNotifyList();
 
       await alice.chat.sendMessage(`/notify remove ${targetNick}`);
       await alice.chat.expectStatusMessageVisible(
@@ -173,10 +172,9 @@ test.describe("Notify list commands", () => {
       await alice.chat.sendMessage("/notify list");
       await alice.chat.expectStatusMessageVisible("Your notify list is empty");
 
-      await alice.chat.openAddressBookFromMenu();
-      await alice.chat.switchAddressBookToNotifyTab();
-      await expect(alice.chat.addressBookNotifyRow(targetNick)).toHaveCount(0);
-      await alice.chat.closeAddressBook();
+      await alice.chat.openNotifyListFromViewMenu();
+      await expect(alice.chat.notifyListRow(targetNick)).toHaveCount(0);
+      await alice.chat.closeNotifyList();
     } finally {
       await closeUsers([alice]);
     }

@@ -70,7 +70,7 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   end
 
   defp dispatch_action(:toggle_ignore_dialog, socket) do
-    AddressBookEvents.open(socket, "control")
+    Windows.open(socket, "ignore-list")
   end
 
   defp dispatch_action(:toggle_highlight_dialog, socket) do

@@ -41,77 +41,77 @@ msgstr "%{position}: %{status} %{trigger} %{channel} → %{command} (英语)."
 msgid "  /%{name} → %{expansion}"
 msgstr "  /%{name} → %{expansion}"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:929
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:933
 #, elixir-autogen, elixir-format
 msgid "  /cs aop #channel add <nick>    — Add an Auto Operator"
 msgstr "  /cs aop #channel add <nick>    — Add an Auto Operator"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:931
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:935
 #, elixir-autogen, elixir-format
 msgid "  /cs info #channel              — View channel registration info"
 msgstr "  /cs info #channel              — View channel registration info"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:927
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:931
 #, elixir-autogen, elixir-format
 msgid "  /cs register #channel          — Register a channel you operate"
 msgstr "  /cs register #channel          — Register a channel you operate"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:928
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:932
 #, elixir-autogen, elixir-format
 msgid "  /cs sop #channel add <nick>    — Add a Super Operator"
 msgstr "  /cs sop #channel add <nick>    — Add a Super Operator"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:930
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:934
 #, elixir-autogen, elixir-format
 msgid "  /cs vop #channel add <nick>    — Add an Auto Voice user"
 msgstr "  /cs vop #channel add <nick>    — Add an Auto Voice user"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:901
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:905
 #, elixir-autogen, elixir-format
 msgid "  /help            — View full help"
 msgstr "  /help            — View full help"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:902
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:906
 #, elixir-autogen, elixir-format
 msgid "  /help commands   — List all commands"
 msgstr "  /help commands   — List all commands"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:898
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:902
 #, elixir-autogen, elixir-format
 msgid "  /join #channel   — Join a channel"
 msgstr "  /join #channel   — Join a channel"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:899
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:903
 #, elixir-autogen, elixir-format
 msgid "  /msg nick text   — Send a private message"
 msgstr "  /msg nick text   — Send a private message"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:900
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:904
 #, elixir-autogen, elixir-format
 msgid "  /nick new_nick   — Change your nickname"
 msgstr "  /nick new_nick   — Change your nickname"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:961
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:965
 #, elixir-autogen, elixir-format
 msgid "  /ns drop <password>       — Permanently unregister your nickname"
 msgstr "  /ns drop <password>       — Permanently unregister your nickname"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:960
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:964
 #, elixir-autogen, elixir-format
 msgid "  /ns ghost <nick> <pass>   — Disconnect a ghost session"
 msgstr "  /ns ghost <nick> <pass>   — Disconnect a ghost session"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:958
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:962
 #, elixir-autogen, elixir-format
 msgid "  /ns identify <password>   — Identify (log in) for this session"
 msgstr "  /ns identify <password>   — Identify (log in) for this session"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:959
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:963
 #, elixir-autogen, elixir-format
 msgid "  /ns info [nickname]       — Look up registration info"
 msgstr "  /ns info [nickname]       — Look up registration info"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:957
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:961
 #, elixir-autogen, elixir-format
 msgid "  /ns register <password>   — Register your current nickname"
 msgstr "  /ns register <password>   — Register your current nickname"
@@ -126,27 +126,27 @@ msgstr "已登记:无"
 msgid "  Registered: yes (%{status})"
 msgstr "登记人数:是(%{status})"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:936
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:940
 #, elixir-autogen, elixir-format
 msgid "  • Channels expire after 7 days of inactivity"
 msgstr "• 频道在7天后失效"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:937
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:941
 #, elixir-autogen, elixir-format
 msgid "  • If a founder's nick expires, the next ranked user is promoted"
 msgstr "• 如果创建者的昵称过期, 将提升下一个排名的用户"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:964
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:968
 #, elixir-autogen, elixir-format
 msgid "  • Nicks are case sensitive — \"Alice\" and \"alice\" are different"
 msgstr "• 尼克斯对案件敏感——\"爱丽丝\"和\"爱丽丝\"不同"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:965
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:969
 #, elixir-autogen, elixir-format
 msgid "  • Nicks expire after 7 days of inactivity"
 msgstr "• 尼克在7天无活动后过期"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:966
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:970
 #, elixir-autogen, elixir-format
 msgid "  • Switching to a registered nick gives you 60s to identify"
 msgstr "• 切换到注册的昵称,可以识别60多个人"
@@ -210,7 +210,7 @@ msgstr "%{field}: %{errors} (英语)."
 msgid "%{message} (%{reason})"
 msgstr "%{message} (%{reason}) (英语)."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:566
+#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:175
 #, elixir-autogen, elixir-format
 msgid "%{nickname} already has a custom color"
 msgstr "%{nickname} 已有自定义颜色"
@@ -235,12 +235,12 @@ msgstr "%{nickname}已经离开"
 msgid "%{nickname} has left (%{reason})"
 msgstr "%{nickname}已离开(%{reason})"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:284
+#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:131
 #, elixir-autogen, elixir-format
 msgid "%{nickname} has no custom color"
 msgstr "%{nickname} 没有自定义颜色"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:558
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:222
 #: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:245
 #, elixir-autogen, elixir-format
 msgid "%{nickname} is already in your contacts"
@@ -257,8 +257,8 @@ msgstr "%{nickname} 已经在您的通知列表中"
 msgid "%{nickname} is away: %{message}"
 msgstr "%{nickname}已离开: %{message}"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:161
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:187
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:121
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:147
 #, elixir-autogen, elixir-format
 msgid "%{nickname} is not in your contacts"
 msgstr "%{nickname} 在您的联系人中"
@@ -384,7 +384,7 @@ msgstr "* %{nickname} 忽略更新为: %{type}"
 msgid "* %{nickname} is no longer auto-ignored"
 msgstr "* %{nickname}不再自动受电"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:366
+#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:115
 #: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:309
 #: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:755
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/ignore.ex:91
@@ -404,7 +404,7 @@ msgstr "* %{nickname}不再被忽略(计时器过期)"
 msgid "* %{nickname} is now ignored"
 msgstr "* %{nickname} 现在被忽略"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:335
+#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:84
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/ignore.ex:57
 #, elixir-autogen, elixir-format
 msgid "* %{nickname} is now ignored (%{type})"
@@ -633,12 +633,12 @@ msgstr "* 您的通知列表好友 %{old_nick} 现在称为 %{new_nick}"
 msgid "/join #channel to get started"
 msgstr "/join #channel to get started"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:895
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:899
 #, elixir-autogen, elixir-format
 msgid "A real-time chat platform with a retro look and feel."
 msgstr "一个实时聊天平台,具有回顾的外观和感觉."
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:933
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:937
 #, elixir-autogen, elixir-format
 msgid "Access hierarchy: Owner > SOP > AOP > VOP"
 msgstr "访问等级: 所有者 > SOP > AOP > VOP"
@@ -653,7 +653,7 @@ msgstr "活动"
 msgid "Add to Contacts"
 msgstr "添加到联系人"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:120
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:80
 #: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:236
 #: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:488
 #, elixir-autogen, elixir-format
@@ -667,7 +667,7 @@ msgid "Added %{nickname} to notify list"
 msgstr "添加 %{nickname} 以通知列表"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:126
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:241
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:253
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:399
 #, elixir-autogen, elixir-format
 msgid "Address Book"
@@ -752,7 +752,7 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:136
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:113
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:793
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:842
 #: lib/retro_hex_chat_web/live/chat_live/away_events.ex:35
 #: lib/retro_hex_chat_web/live/chat_live/away_events.ex:50
 #: lib/retro_hex_chat_web/live/chat_live/components/hover_card.ex:117
@@ -841,7 +841,7 @@ msgstr "取消"
 msgid "Cannot add highlight: %{reason}"
 msgstr "无法添加突出显示: %{reason}"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:555
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:219
 #: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:253
 #, elixir-autogen, elixir-format
 msgid "Cannot add yourself to contacts"
@@ -869,7 +869,7 @@ msgstr "无法更新突出显示: %{reason}"
 msgid "Case sensitive"
 msgstr "区分大小写"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:923
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:927
 #, elixir-autogen, elixir-format
 msgid "ChanServ manages channel registration and access control."
 msgstr "ChanServ管理频道注册和访问控制."
@@ -922,9 +922,9 @@ msgstr "频道过滤器必须从 # 开始"
 msgid "Channel ownership transferred to %{target}."
 msgstr "频道所有权转移到%{target}."
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:250
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:262
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:170
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:939
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:988
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:130
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:191
 #, elixir-autogen, elixir-format
@@ -989,7 +989,7 @@ msgid "Command too long (max 500 characters)"
 msgstr "命令太长( 最多500个字符)"
 
 #: lib/retro_hex_chat_web/components/ui/chat/connection_status.ex:98
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:859
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:863
 #: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:266
 #, elixir-autogen, elixir-format
 msgid "Connected"
@@ -1000,7 +1000,7 @@ msgstr "已连接"
 msgid "Connected to %{server}"
 msgstr "连接到 %{server}"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:864
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:868
 #: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:268
 #, elixir-autogen, elixir-format
 msgid "Connecting..."
@@ -1032,7 +1032,7 @@ msgstr "连接丢失 。"
 msgid "Contact"
 msgstr "联系人"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:561
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:225
 #, elixir-autogen, elixir-format
 msgid "Contact list is full (max 100 entries)"
 msgstr "联系人列表已完整( 最多 100 个条目)"
@@ -1161,7 +1161,7 @@ msgstr "扩展太长( 最大500 个字符)"
 msgid "Failed to add auto-join channel: %{reason}"
 msgstr "无法添加自动加入频道：%{reason}"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:346
+#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:95
 #, elixir-autogen, elixir-format
 msgid "Failed to add ignore: %{reason}"
 msgstr "无法添加忽略项：%{reason}"
@@ -1299,8 +1299,8 @@ msgstr "密码错误"
 msgid "Invalid alias name. Use only letters, numbers, hyphens, underscores."
 msgstr "无效的别名 。 只使用字母,数字,连字符,下划线."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:260
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:572
+#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:107
+#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:181
 #, elixir-autogen, elixir-format
 msgid "Invalid color"
 msgstr "无效的颜色"
@@ -1310,7 +1310,7 @@ msgstr "无效的颜色"
 msgid "Invalid command. Commands must start with /"
 msgstr "无效的命令 。 命令必须从 / 开始"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:319
+#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:68
 #, elixir-autogen, elixir-format
 msgid "Invalid duration format. Use: 5m, 2h, or 1d"
 msgstr "无效的时长格式 。 使用:5米、2小时或1小时"
@@ -1335,8 +1335,8 @@ msgstr "无效的模式字符串 。"
 msgid "Invalid name. Use letters, numbers, hyphens, underscores."
 msgstr "无效的名称 。 使用字母,数字,连字符,下划线."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:563
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:571
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:227
+#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:180
 #, elixir-autogen, elixir-format
 msgid "Invalid nickname"
 msgstr "无效的昵称"
@@ -1547,18 +1547,18 @@ msgstr "ưμ㼯A"
 msgid "Next: %{parameter}"
 msgstr "下一个:%{parameter}"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:257
+#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:104
 #, elixir-autogen, elixir-format
 msgid "Nick color entry not found"
 msgstr "找不到昵称颜色条目"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:569
+#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:178
 #: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:345
 #, elixir-autogen, elixir-format
 msgid "Nick color list is full (max 50)"
 msgstr "昵称颜色列表是满的( 最大 50)"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:951
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:955
 #, elixir-autogen, elixir-format
 msgid ""
 "NickServ protects your nickname with a password so nobody else can use it."
@@ -1590,7 +1590,7 @@ msgstr "没有频道"
 msgid "No command at position %{position}"
 msgstr "%{position} 位置没有命令"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:143
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:103
 #, elixir-autogen, elixir-format
 msgid "No contact selected"
 msgstr "未选择联系人"
@@ -1643,7 +1643,7 @@ msgstr "对象"
 msgid "Online"
 msgstr "在线"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:905
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:909
 #, elixir-autogen, elixir-format
 msgid "Open /chat/help in a new tab."
 msgstr "在新标签中打开 /chat/help."
@@ -1735,8 +1735,8 @@ msgstr "紫色"
 msgid "Query (PM)"
 msgstr "查询( PM)"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:926
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:956
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:930
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:960
 #, elixir-autogen, elixir-format
 msgid "Quick start:"
 msgstr "快速开始 :"
@@ -1763,7 +1763,7 @@ msgstr "红色"
 msgid "Regex"
 msgstr "缩写"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:924
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:928
 #, elixir-autogen, elixir-format
 msgid "Register your channel to protect it when no operators are online."
 msgstr "在没有操作员在线时注册您的频道以保护它 。"
@@ -1774,7 +1774,7 @@ msgstr "在没有操作员在线时注册您的频道以保护它 。"
 msgid "Registered"
 msgstr "已登记"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:179
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:139
 #, elixir-autogen, elixir-format
 msgid "Removed %{nickname} from contacts"
 msgstr "从联系人中删除 %{nickname}"
@@ -1785,7 +1785,7 @@ msgstr "从联系人中删除 %{nickname}"
 msgid "Removed %{nickname} from notify list"
 msgstr "从通知列表中删除 %{nickname}"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:276
+#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:123
 #, elixir-autogen, elixir-format
 msgid "Removed custom color for %{nickname}"
 msgstr "删除 %{nickname} 的自定义颜色"
@@ -1818,10 +1818,10 @@ msgid "Reset (Ctrl+Shift+X)"
 msgstr "重置( Ctrl+Shift) 。"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:105
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:720
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:891
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:724
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:895
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:54
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1138
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1187
 #, elixir-autogen, elixir-format
 msgid "RetroHexChat"
 msgstr "反转HexChat"
@@ -1841,8 +1841,8 @@ msgstr "皇家蓝"
 msgid "Rule not found"
 msgstr "未找到规则"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:935
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:963
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:939
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:967
 #, elixir-autogen, elixir-format
 msgid "Rules:"
 msgstr "规则:"
@@ -2002,7 +2002,7 @@ msgstr "此邀请已过期"
 msgid "Timer '%{name}' not found"
 msgstr "找不到计时器“ %{name} ”"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:904
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:908
 #, elixir-autogen, elixir-format
 msgid "Tip: Go to Help > Help Topics for the full documentation."
 msgstr "提示: 去帮助 > 帮助主题用于完整文档 。"
@@ -2027,12 +2027,12 @@ msgstr "专题集: %{topic}"
 msgid "Travel & Places"
 msgstr "旅行地点( P)"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:939
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:943
 #, elixir-autogen, elixir-format
 msgid "Type /help chanserv or /help channel-permissions for full details."
 msgstr "/help chanserv或/help型频道许可,详细信息."
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:968
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:972
 #, elixir-autogen, elixir-format
 msgid "Type /help nickserv for full details."
 msgstr "/help Nickserv 类型,以获取全部细节."
@@ -2094,14 +2094,14 @@ msgstr "解密频道"
 msgid "Unmute PM"
 msgstr "解密的首相"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:153
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:113
 #: lib/retro_hex_chat_web/live/chat_live/notify_ops.ex:62
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:101
 #, elixir-autogen, elixir-format
 msgid "Updated note for %{nickname}"
 msgstr "%{nickname}的最新说明"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:897
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:901
 #, elixir-autogen, elixir-format
 msgid "Useful commands:"
 msgstr "有用的命令 :"
@@ -2146,7 +2146,7 @@ msgstr "%{channel}的欢迎信已经设置 。"
 msgid "Welcome message updated."
 msgstr "欢迎电文更新 。"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:894
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:898
 #, elixir-autogen, elixir-format
 msgid "Welcome to %{server_name}!"
 msgstr "欢迎来到%{server_name}!"
@@ -2212,7 +2212,7 @@ msgstr "你现在被称为%{nickname}"
 msgid "You are setting: %{flag} (%{label})"
 msgstr "您正在设置: %{flag}( %{label})"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:312
+#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:61
 #, elixir-autogen, elixir-format
 msgid "You cannot ignore yourself"
 msgstr "你不能无视自己"
@@ -2327,7 +2327,7 @@ msgstr "[BotService] 命令'%{trigger}''被移除."
 msgid "[BotService] Failed to create bot '%{name}': %{message}"
 msgstr "[BotService] 无法创建机器人 '%{name}'：%{message}"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:922
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:926
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] Channel Services Online"
 msgstr "[ChanServ]频道服务在线"
@@ -2337,7 +2337,7 @@ msgstr "[ChanServ]频道服务在线"
 msgid "[NickServ] %{reason}. You are now %{nickname}"
 msgstr "[NickServ] %{reason}. (美国英语). 你现在是%{nickname}"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:950
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:954
 #, elixir-autogen, elixir-format
 msgid "[NickServ] Nickname Services Online"
 msgstr "[NickServ] 昵称服务在线"
@@ -2365,7 +2365,7 @@ msgstr "[欢迎] %{message}"
 msgid "[message deleted]"
 msgstr "[信息删除]"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:535
+#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:156
 #, elixir-autogen, elixir-format
 msgid "all"
 msgstr "全部"
@@ -2405,7 +2405,7 @@ msgstr "徘徊以预览"
 msgid "identified"
 msgstr "确定"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:538
+#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:159
 #, elixir-autogen, elixir-format
 msgid "invites"
 msgstr "邀请"
@@ -2415,7 +2415,7 @@ msgstr "邀请"
 msgid "is typing..."
 msgstr "正在输入..."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:536
+#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:157
 #: lib/retro_hex_chat_web/live/chat_live/components/message_viewport.ex:152
 #, elixir-autogen, elixir-format
 msgid "messages"
@@ -2426,7 +2426,7 @@ msgstr "信件"
 msgid "not identified"
 msgstr "未识别"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:537
+#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:158
 #, elixir-autogen, elixir-format
 msgid "notices"
 msgstr "通知"
@@ -2483,7 +2483,7 @@ msgid "* Missing invite target"
 msgstr "* 缺少邀请目标"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:124
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:744
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:793
 #, elixir-autogen, elixir-format
 msgid "Account"
 msgstr "账户"
@@ -2500,7 +2500,7 @@ msgid "Alias Editor"
 msgstr "别名编辑器"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:181
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:614
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:663
 #, elixir-autogen, elixir-format
 msgid "Arcade"
 msgstr "拱门"
@@ -2522,7 +2522,7 @@ msgid "Bio is limited to 200 characters; extra text was not kept."
 msgstr "Bio限定为200个字符;额外文本没有保存."
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:155
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1101
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1150
 #, elixir-autogen, elixir-format
 msgid "Bot Management"
 msgstr "瓶装管理"
@@ -2537,13 +2537,13 @@ msgstr "取消通知"
 msgid "Channel Central"
 msgstr "中央频道"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:720
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:769
 #, elixir-autogen, elixir-format
 msgid "Channel Central: %{channel}"
 msgstr "频道中心：%{channel}"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:107
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:672
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:721
 #, elixir-autogen, elixir-format
 msgid "Channel List"
 msgstr "频道列表"
@@ -2636,7 +2636,7 @@ msgid "Failed to update bot status."
 msgstr "更新 bot 状态失败 。"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:199
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:521
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:570
 #, elixir-autogen, elixir-format
 msgid "Flood Protection"
 msgstr "防洪"
@@ -2673,7 +2673,7 @@ msgid "Join throttle set to %{seconds} seconds."
 msgstr "加入限流已设置为 %{seconds} 秒。"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:112
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:696
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:745
 #, elixir-autogen, elixir-format
 msgid "Keyboard Shortcuts"
 msgstr "键盘快捷键"
@@ -2709,8 +2709,8 @@ msgstr "正在加载 %{channel}..."
 msgid "Loading older messages..."
 msgstr "正在装入旧信件..."
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:253
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1008
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:265
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1057
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:96
 #, elixir-autogen, elixir-format
 msgid "MOTD"
@@ -2766,7 +2766,7 @@ msgid "Notice to %{target}:"
 msgstr "通知 %{target}："
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:235
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:425
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:473
 #, elixir-autogen, elixir-format
 msgid "Notify List"
 msgstr "通知名单"
@@ -2793,7 +2793,7 @@ msgstr "只有频道运营商可以注册此频道."
 msgid "Only the founder can drop a channel."
 msgstr "只有创始人才能丢弃一个频道."
 
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1139
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1188
 #, elixir-autogen, elixir-format
 msgid "Opening chat..."
 msgstr "正在打开聊天..."
@@ -2812,7 +2812,7 @@ msgid "Passwords do not match"
 msgstr "密码不匹配"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:223
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:449
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:498
 #, elixir-autogen, elixir-format
 msgid "Perform"
 msgstr "执行"
@@ -2887,7 +2887,7 @@ msgid "Shared channels"
 msgstr "共享频道"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:193
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:497
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:546
 #, elixir-autogen, elixir-format
 msgid "Sound Settings"
 msgstr "声音设置"
@@ -2904,7 +2904,7 @@ msgid "Timer not found"
 msgstr "未找到计时器"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:161
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:649
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:698
 #, elixir-autogen, elixir-format
 msgid "Timers"
 msgstr "计时器"
@@ -2925,7 +2925,7 @@ msgid "Type the server name to confirm."
 msgstr "输入服务器名以确认 。"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:106
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:864
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:913
 #, elixir-autogen, elixir-format
 msgid "URL Catcher"
 msgstr "URL 抓取器"
@@ -2937,7 +2937,7 @@ msgid "Unmute (channel)"
 msgstr "解密( 频道)"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:148
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:840
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:889
 #, elixir-autogen, elixir-format
 msgid "User Lookup"
 msgstr "用户查询"
@@ -3183,7 +3183,7 @@ msgstr "P2P会话的%{peer}结束."
 msgid "P2P session with %{peer} — %{facets}. Click to focus"
 msgstr "P2P会话带%{peer}-%{facets}. 单击以聚焦"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:285
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:297
 #: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:169
 #, elixir-autogen, elixir-format
 msgid "P2P: %{peer}"
@@ -3293,7 +3293,7 @@ msgstr "切换 P2P 麦克风"
 msgid "Toggle P2P Screen Share"
 msgstr "切换 P2P 屏幕共享"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:862
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:866
 #, elixir-autogen, elixir-format
 msgid "Waiting for peer..."
 msgstr "正在等待对等点..."
@@ -3384,9 +3384,9 @@ msgid "Joining..."
 msgstr "正在加入..."
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:141
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:288
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:300
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:142
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:551
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:600
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
 msgstr "P2P 聊天会话"
@@ -3431,44 +3431,44 @@ msgstr "在焦点 P2P 呼叫窗口中启动或停止屏幕共享"
 msgid "Admin tools are restricted to server administrators."
 msgstr "管理工具仅限于服务器管理员."
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:252
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:985
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:264
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1034
 #, elixir-autogen, elixir-format
 msgid "Audit Log"
 msgstr "审计日志"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:255
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1054
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:267
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1103
 #, elixir-autogen, elixir-format
 msgid "Broadcast"
 msgstr "广播"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:257
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:890
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:269
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:939
 #, elixir-autogen, elixir-format
 msgid "Console"
 msgstr "控制台"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:256
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1077
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:268
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1126
 #, elixir-autogen, elixir-format
 msgid "Danger Zone"
 msgstr "危险区"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:251
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:962
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:263
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1011
 #, elixir-autogen, elixir-format
 msgid "Server Settings"
 msgstr "服务器设置"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:254
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1031
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:266
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1080
 #, elixir-autogen, elixir-format
 msgid "TURN"
 msgstr "土耳其"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:249
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:915
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:261
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:964
 #, elixir-autogen, elixir-format
 msgid "Users"
 msgstr "用户"
@@ -3479,7 +3479,7 @@ msgid "%{peer} accepted the P2P request - connecting..."
 msgstr "%{peer}接受了P2P请求 - 连接."
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:229
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:473
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:522
 #, elixir-autogen, elixir-format
 msgid "Auto-Join"
 msgstr "自动加入"
@@ -3515,13 +3515,25 @@ msgid "Use the P2P control in this private message."
 msgstr "在此私有信件中使用 P2P 控制 。"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:130
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:770
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:819
 #, elixir-autogen, elixir-format
 msgid "Profile"
 msgstr "简介"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:142
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:817
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:866
 #, elixir-autogen, elixir-format
 msgid "User Modes"
 msgstr "用户模式"
+
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:247
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:449
+#, elixir-autogen, elixir-format
+msgid "Ignore List"
+msgstr "忽略列表"
+
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:241
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:425
+#, elixir-autogen, elixir-format
+msgid "Nick Colors"
+msgstr "昵称颜色"

@@ -65,6 +65,8 @@ export class ChatPage {
   readonly cheatsheetMenuItem: Locator;
   readonly aboutMenuItem: Locator;
   readonly addressBookMenuItem: Locator;
+  readonly nickColorsMenuItem: Locator;
+  readonly ignoreListMenuItem: Locator;
   readonly highlightWordsMenuItem: Locator;
   readonly channelCentralMenuItem: Locator;
   readonly performMenuItem: Locator;
@@ -174,6 +176,8 @@ export class ChatPage {
   readonly notifyAutoAddPmToggle: Locator;
   readonly notifyAutoWhoisToggle: Locator;
   readonly addressBookDialog: Locator;
+  readonly nickColorsDialog: Locator;
+  readonly ignoreListDialog: Locator;
   readonly channelListDialog: Locator;
   readonly channelCentralDialog: Locator;
   readonly aliasDialog: Locator;
@@ -369,6 +373,14 @@ export class ChatPage {
     this.helpTopicsMenuItem = visibleContextMenuItem(page, "help_topics");
     this.cheatsheetMenuItem = visibleContextMenuItem(page, "toggle_cheatsheet");
     this.aboutMenuItem = visibleContextMenuItem(page, "show_about");
+    this.nickColorsMenuItem = visibleContextMenuItem(
+      page,
+      "open_nick_colors_dialog",
+    );
+    this.ignoreListMenuItem = visibleContextMenuItem(
+      page,
+      "open_ignore_list_dialog",
+    );
     this.addressBookMenuItem = visibleContextMenuItem(
       page,
       "toggle_address_book",
@@ -547,6 +559,8 @@ export class ChatPage {
     );
     this.notifyAutoWhoisToggle = page.locator("#notify-list-dialog-auto-whois");
     this.addressBookDialog = page.getByTestId("address-book-window");
+    this.nickColorsDialog = page.getByTestId("nick-colors-window");
+    this.ignoreListDialog = page.getByTestId("ignore-list-window");
     this.channelListDialog = page.getByTestId("channel-list-window");
     this.channelCentralDialog = page.getByTestId("channel-central-window");
     this.aliasDialog = page.getByTestId("alias-window");
@@ -973,10 +987,6 @@ export class ChatPage {
 
   notifyListRow(nick: string): Locator {
     return this.page.getByTestId(`notify-list-row-${nick}`);
-  }
-
-  addressBookNotifyRow(nick: string): Locator {
-    return this.page.locator(`[id="ab-notify-entry-${nick}"]`);
   }
 
   addressBookContactRow(nick: string): Locator {
@@ -1569,16 +1579,16 @@ export class ChatPage {
     await expect(this.customMenusDialog).toBeVisible();
   }
 
-  async switchAddressBookToNotifyTab() {
-    await this.addressBookDialog
-      .getByRole("button", { name: "Notify" })
-      .click();
+  async openNickColorsFromMenu() {
+    await this.openToolsMenuItem(this.nickColorsMenuItem);
+    await this.nickColorsMenuItem.click();
+    await expect(this.nickColorsDialog).toBeVisible();
   }
 
-  async switchAddressBookToTab(
-    tab: "Contacts" | "Notify" | "Nick Colors" | "Control",
-  ) {
-    await this.addressBookDialog.getByRole("button", { name: tab }).click();
+  async openIgnoreListFromMenu() {
+    await this.openToolsMenuItem(this.ignoreListMenuItem);
+    await this.ignoreListMenuItem.click();
+    await expect(this.ignoreListDialog).toBeVisible();
   }
 
   async addAddressBookContact(nick: string, note: string) {
@@ -1592,8 +1602,8 @@ export class ChatPage {
   }
 
   async addAddressBookNickColor(nick: string, colorIndex: number) {
-    await this.switchAddressBookToTab("Nick Colors");
-    await this.addressBookDialog.getByTestId("nick-color-add").click();
+    await this.openNickColorsFromMenu();
+    await this.nickColorsDialog.getByTestId("nick-color-add").click();
     const form = this.page.getByTestId("nick-color-add-form");
     await expect(form).toBeVisible();
     await form.locator("#nick-color-add-nick").fill(nick);
@@ -1608,9 +1618,9 @@ export class ChatPage {
   }
 
   async editAddressBookNickColor(nick: string, colorIndex: number) {
-    await this.switchAddressBookToTab("Nick Colors");
+    await this.openNickColorsFromMenu();
     await this.addressBookNickColorRow(nick).click();
-    await this.addressBookDialog.getByTestId("nick-color-edit").click();
+    await this.nickColorsDialog.getByTestId("nick-color-edit").click();
     const form = this.page.getByTestId("nick-color-edit-form");
     await expect(form).toBeVisible();
     await form
@@ -1624,9 +1634,9 @@ export class ChatPage {
   }
 
   async removeAddressBookNickColor(nick: string) {
-    await this.switchAddressBookToTab("Nick Colors");
+    await this.openNickColorsFromMenu();
     await this.addressBookNickColorRow(nick).click();
-    await this.addressBookDialog.getByTestId("nick-color-remove").click();
+    await this.nickColorsDialog.getByTestId("nick-color-remove").click();
     await expect(this.addressBookNickColorRow(nick)).toHaveCount(0);
   }
 
@@ -1635,8 +1645,8 @@ export class ChatPage {
     type: AddressBookControlType,
     duration = "",
   ) {
-    await this.switchAddressBookToTab("Control");
-    await this.addressBookDialog.getByTestId("control-add").click();
+    await this.openIgnoreListFromMenu();
+    await this.ignoreListDialog.getByTestId("control-add").click();
     const form = this.page.getByTestId("control-add-form");
     await expect(form).toBeVisible();
     await form.locator("#control-add-nick").fill(nick);
@@ -1647,9 +1657,9 @@ export class ChatPage {
   }
 
   async removeAddressBookControlEntry(nick: string) {
-    await this.switchAddressBookToTab("Control");
+    await this.openIgnoreListFromMenu();
     await this.addressBookControlRow(nick).click();
-    await this.addressBookDialog.getByTestId("control-remove").click();
+    await this.ignoreListDialog.getByTestId("control-remove").click();
     await expect(this.addressBookControlRow(nick)).toHaveCount(0);
   }
 

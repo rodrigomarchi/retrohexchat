@@ -26,7 +26,8 @@ previa, e as decisões tomadas em execução. Aprendizados duráveis migram para
 | 10 | **Limpeza** (§6 do plano) | ✅ feito | — |
 | 11 | **Channel Central** — 6→4 abas (fusão das 3 listas de acesso) | ✅ feito | `a0289349` |
 | 12 | **Perform** — `perform` + `autojoin` (2 abas → 2 janelas) | ✅ feito | `8d493faa` |
-| 13 | **Account** — 4 abas → 4 janelas | ✅ feito | — |
+| 13 | **Account** — 4 abas → 4 janelas | ✅ feito | `449d056f` |
+| 14 | **Address Book** — 4 abas → 3 janelas + dedup do Notify | ✅ feito | — |
 
 Ordem: o Admin Console (era a Fase 6 do plano) foi promovido a primeiro caso por
 ser o mais complexo — é ele que deriva o playbook.
@@ -660,6 +661,63 @@ a linha `files=… rewritten=… translated_entries=…`. Um `tail` que mostra s
   antes (só menu bar + status bar). Fiz isso para o grupo de 4 ficar coerente e
   para cumprir o contrato §8.9 das 3 superfícies; é a única adição de ponto de
   entrada da fase.
+
+---
+
+## Fase 6 — Address Book → 3 janelas + dedup ✅ 2026-07-25
+
+**Feito.** As 4 abas viraram `address-book` (Contacts), `nick-colors` e
+`ignore-list`; a aba Notify morreu e a janela `notify-list` absorveu o que só
+ela tinha. Janelas: 34 → **36** — o total previsto no §3 do plano.
+
+**Validação:** `make ci` **9/9** · 45/45 nas suítes `liveview` divididas · 20/20
+feature · 218/218 componentes · **16/16 e2e** (address-book, notify, notify
+settings, ignore, settings persistence) · 5 gates de i18n verdes.
+
+### A dedup: o que a janela standalone teve de aprender
+
+O plano mandava migrar os timestamps com timezone antes de matar a aba, e era
+mesmo o único ponto em que a aba era superior. A standalone formatava em UTC
+(`%Y-%m-%d %H:%M`) e mostrava `--` para nunca-visto; passou a usar o timezone do
+usuário com `%d/%m %H:%M` e "Never", que era o comportamento da aba.
+
+**Uma coisa eu não migrei de propósito:** a aba mostrava `—` quando o contato
+está online; a standalone mostra **"Now"**. O plano lista `—` como fato da
+implementação da aba, mas "Now" responde melhor à pergunta "Last seen". Mantive
+"Now" — é melhoria da janela vencedora, não perda da aba.
+
+### Aprendizados novos
+
+- **Não gere Elixir com template de string em Python.** Tentei montar os três
+  apresentacionais concatenando blocos com f-strings e `#{...}` do Elixir vazou
+  literalmente (`#{'#'}{@id}`), além de cortar um `crud_buttons` no meio. Custou
+  três rodadas de conserto. **Fatiar** o arquivo original por intervalo de linhas
+  é seguro; **interpolar** o texto novo não é. Escreva o arquivo direto.
+- **Um `assert` de i18n não protege o CSS.** `lint.css_consistency` achou 11
+  classes órfãs — todo o scroller de abas do `address-book.css` **mais** os
+  `.ab-tabs-shell`/`.ab-main-tabs` que viviam no bloco compartilhado de
+  `account.css`. É o mesmo achado da Fase 5 em espelho: o CSS do shell de abas
+  está sempre em dois lugares.
+- **Filtro por linha quebra CSS multi-seletor.** Removi as linhas `.ab-*` do
+  bloco compartilhado com um filtro de linha e apaguei justamente as que
+  fechavam a lista de seletores, deixando 7 blocos sem `{`. Conferir
+  `count('{') == count('}')` depois de qualquer edição programática em CSS.
+- **Testes de aba deduplicada mudam de seletor, não de significado.** Os testes
+  da aba Notify foram para `notify_list_test.exs` e precisaram traduzir
+  `.text-success` → `.nl-status--online`, `#ab-notify-entry-X` →
+  `[data-testid="notify-list-row-X"]` e a cópia do estado vazio. As asserções
+  ("mostra Online", "lista vazia", "Remove desabilitado sem seleção") são as
+  mesmas — o que mudou foi a implementação vencedora, que é o ponto da dedup.
+- **Uma asserção morreu com significado, e tudo bem.** O e2e verificava que a
+  aba Notify e a janela standalone mostravam os mesmos dados. Com uma superfície
+  só, a asserção não tem o que comparar. Substituída por reabrir a standalone,
+  preservando as asserções de dado.
+
+### A nota obsoleta do §9 do plano
+
+"Fase 6 é a maior por larga margem — 9 janelas" foi escrita quando o Admin
+Console *era* a fase 6. Ele virou a Fase 1; o parágrafo descrevia trabalho já
+feito. Marcado como obsoleto no plano.
 
 ---
 

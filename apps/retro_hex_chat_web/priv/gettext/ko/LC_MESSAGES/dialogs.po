@@ -81,13 +81,12 @@ msgstr ""
 msgid "About RetroHexChat"
 msgstr "RetroHexChat 소개"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1001
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:193
 #, elixir-autogen, elixir-format
 msgid "Actions"
 msgstr "관련 기사"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:211
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:927
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:307
 #: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:172
 #: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:188
 #: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:148
@@ -99,7 +98,9 @@ msgstr "관련 기사"
 #: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:284
 #: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:184
 #: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:327
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:187
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:68
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:302
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:189
 #: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:168
 #: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:121
 #, elixir-autogen, elixir-format
@@ -131,7 +132,7 @@ msgstr "Ban 예외 추가"
 msgid "Add Command — %{bot}"
 msgstr "명령 추가 — %{bot}"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:283
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:105
 #, elixir-autogen, elixir-format
 msgid "Add Contact"
 msgstr "연락처"
@@ -146,7 +147,7 @@ msgstr "자주 묻는 질문"
 msgid "Add Highlight Word"
 msgstr "Highlight Word 추가"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:972
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:164
 #, elixir-autogen, elixir-format
 msgid "Add Ignore Entry"
 msgstr "Ignore 항목 추가"
@@ -156,13 +157,12 @@ msgstr "Ignore 항목 추가"
 msgid "Add Invite Exception"
 msgstr "Invite 예외 추가"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:559
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:105
 #, elixir-autogen, elixir-format
 msgid "Add Nick Color"
 msgstr "닉 색상 추가"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:421
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:261
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:263
 #, elixir-autogen, elixir-format
 msgid "Add Notify Entry"
 msgstr "알림 받기"
@@ -187,7 +187,7 @@ msgstr "관리자 콘솔"
 msgid "Alias Editor"
 msgstr "Alias 편집기"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:998
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:190
 #, elixir-autogen, elixir-format
 msgid "All"
 msgstr "모든 것"
@@ -241,7 +241,7 @@ msgstr "자동 면역"
 msgid "Auto-Join"
 msgstr "자동 조인"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:128
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:130
 #, elixir-autogen, elixir-format
 msgid "Auto-add PM contacts to notify list"
 msgstr "Auto-add PM은 목록을 알리는 접촉"
@@ -286,13 +286,8 @@ msgstr "Buddy 오프라인"
 msgid "Buddy Online"
 msgstr "Buddy 온라인"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:329
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:399
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:466
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:536
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:607
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:678
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1032
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:151
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:221
 #: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:267
 #: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:300
 #: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:77
@@ -311,12 +306,15 @@ msgstr "Buddy 온라인"
 #: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:89
 #: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:338
 #: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:401
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:224
 #: lib/retro_hex_chat_web/components/ui/dialogs/invite_channel_picker_dialog.ex:94
 #: lib/retro_hex_chat_web/components/ui/dialogs/knock_request_dialog.ex:115
 #: lib/retro_hex_chat_web/components/ui/dialogs/mute_duration_dialog.ex:78
 #: lib/retro_hex_chat_web/components/ui/dialogs/nick_change_dialog.ex:109
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:314
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:391
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:153
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:224
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:316
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:393
 #: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:81
 #: lib/retro_hex_chat_web/components/ui/dialogs/paste_confirm_dialog.ex:105
 #: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:86
@@ -397,17 +395,17 @@ msgstr "이름 *"
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:54
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:555
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:624
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:75
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:227
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:76
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:229
 #: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:72
 #, elixir-autogen, elixir-format
 msgid "Close"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:586
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:657
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:815
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:839
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:132
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:203
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:247
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:271
 #, elixir-autogen, elixir-format
 msgid "Color"
 msgstr "색깔: 회색"
@@ -450,16 +448,6 @@ msgstr "이름 *"
 #, elixir-autogen, elixir-format
 msgid "Connected"
 msgstr "연결하기"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:104
-#, elixir-autogen, elixir-format
-msgid "Contacts"
-msgstr "제품정보"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:131
-#, elixir-autogen, elixir-format
-msgid "Control"
-msgstr "제품정보"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:67
 #, elixir-autogen, elixir-format
@@ -549,18 +537,19 @@ msgstr "연결하기"
 msgid "Down"
 msgstr "맨 위로"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1008
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:200
 #, elixir-autogen, elixir-format
 msgid "Duration (leave empty for permanent)"
 msgstr "기간 (영주를 위해 비어 있는)"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:939
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:319
 #: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:182
 #: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:198
 #: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:158
 #: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:294
 #: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:195
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:199
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:314
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:201
 #: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:178
 #: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:132
 #, elixir-autogen, elixir-format
@@ -577,7 +566,7 @@ msgstr "Alias 수정"
 msgid "Edit Auto-Join Channel"
 msgstr "자동 조인 채널 편집"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:353
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:175
 #, elixir-autogen, elixir-format
 msgid "Edit Contact"
 msgstr "연락처"
@@ -592,13 +581,12 @@ msgstr "연락처"
 msgid "Edit Highlight Color"
 msgstr "높은 조명 색상 편집"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:631
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:177
 #, elixir-autogen, elixir-format
 msgid "Edit Nick Color"
 msgstr "닉 색상 편집"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:490
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:338
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:340
 #, elixir-autogen, elixir-format
 msgid "Edit Notify Entry"
 msgstr "공지사항"
@@ -656,13 +644,13 @@ msgstr "(주)"
 msgid "Expansion"
 msgstr "확대하기"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1080
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:249
 #, elixir-autogen, elixir-format
 msgid "Expired"
 msgstr "구매하기"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:864
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:895
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:107
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:138
 #, elixir-autogen, elixir-format
 msgid "Expires"
 msgstr "패스워드"
@@ -745,7 +733,7 @@ msgstr "더 알아보기"
 msgid "Invite Only (+i)"
 msgstr "Invite 만 (+i)"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1003
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:195
 #, elixir-autogen, elixir-format
 msgid "Invites"
 msgstr "제품정보"
@@ -779,8 +767,7 @@ msgstr "채널에서 Kicked"
 msgid "Label"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:791
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:166
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:168
 #: lib/retro_hex_chat_web/components/ui/dialogs/user_lookup_dialog.ex:78
 #, elixir-autogen, elixir-format
 msgid "Last Seen"
@@ -833,8 +820,8 @@ msgstr "메뉴 항목 텍스트"
 msgid "Message Flood"
 msgstr "메시지 홍수"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:999
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:223
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:191
 #, elixir-autogen, elixir-format
 msgid "Messages"
 msgstr "이름 *"
@@ -876,7 +863,8 @@ msgstr "N/A"
 msgid "Name"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1065
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:439
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:440
 #, elixir-autogen, elixir-format
 msgid "Never"
 msgstr "이름 *"
@@ -886,45 +874,37 @@ msgstr "이름 *"
 msgid "New"
 msgstr "- 한국어"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:702
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:723
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:770
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:814
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:835
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:862
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:883
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:243
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:264
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:322
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:142
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:261
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:362
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:483
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:105
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:126
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:246
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:267
 #: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:181
 #: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:232
 #, elixir-autogen, elixir-format
 msgid "Nick"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:122
-#, elixir-autogen, elixir-format
-msgid "Nick Colors"
-msgstr "닉 색상"
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:140
 #, elixir-autogen, elixir-format
 msgid "Nicklist"
 msgstr "팟캐스트"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:292
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:362
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:430
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:499
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:568
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:640
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:981
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:114
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:184
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:44
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:169
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:426
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:449
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:173
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:114
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:186
 #: lib/retro_hex_chat_web/components/ui/dialogs/user_lookup_dialog.ex:43
 #, elixir-autogen, elixir-format
 msgid "Nickname"
@@ -932,8 +912,8 @@ msgstr "이름 *"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:49
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:200
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:275
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:352
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:277
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:354
 #, elixir-autogen, elixir-format
 msgid "Nickname:"
 msgstr "이름:"
@@ -988,12 +968,12 @@ msgstr "설정된 명령이 없습니다. 클릭 한 번 만들기."
 msgid "No configurable capabilities enabled."
 msgstr "설정 가능한 기능 없음."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:710
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:251
 #, elixir-autogen, elixir-format
 msgid "No contacts saved"
 msgstr "자주 묻는 질문"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:821
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:253
 #, elixir-autogen, elixir-format
 msgid "No custom colors set. Nicknames use automatic colors."
 msgstr "주문 색깔 세트 없음. Nicknames 사용 자동 색상."
@@ -1003,12 +983,7 @@ msgstr "주문 색깔 세트 없음. Nicknames 사용 자동 색상."
 msgid "No custom commands"
 msgstr "사용자 지정 명령 없음"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:757
-#, elixir-autogen, elixir-format
-msgid "No entries. Click Add to track a nickname."
-msgstr "항목 없음. 별명을 추적할 수 있습니다."
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:870
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:113
 #, elixir-autogen, elixir-format
 msgid "No ignored users. Click Add to ignore a nickname."
 msgstr "무시한 사용자 없음. 별명을 무시하는 추가를 클릭합니다."
@@ -1041,51 +1016,38 @@ msgstr "정의된 단축키 없음."
 msgid "No topic set"
 msgstr "항목 없음"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:443
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:512
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:787
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:170
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:172
 #, elixir-autogen, elixir-format
 msgid "Note"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:289
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:365
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:291
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:367
 #, elixir-autogen, elixir-format
 msgid "Note:"
 msgstr "참고 :"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:306
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:375
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:703
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:729
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:128
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:197
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:244
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:270
 #, elixir-autogen, elixir-format
 msgid "Notes"
 msgstr "지원하다"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1002
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:194
 #, elixir-autogen, elixir-format
 msgid "Notices"
 msgstr "공지사항"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:113
-#, elixir-autogen, elixir-format
-msgid "Notify"
-msgstr "이름 *"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:50
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:51
 #, elixir-autogen, elixir-format
 msgid "Notify List"
 msgstr "공지사항"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/about_dialog.ex:101
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:319
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:389
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:456
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:526
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:597
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:668
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1022
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:141
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:211
 #: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:276
 #: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:309
 #: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:73
@@ -1098,10 +1060,13 @@ msgstr "공지사항"
 #: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:85
 #: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:232
 #: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:390
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:214
 #: lib/retro_hex_chat_web/components/ui/dialogs/kick_dialog.ex:91
 #: lib/retro_hex_chat_web/components/ui/dialogs/mute_duration_dialog.ex:68
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:303
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:380
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:143
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:214
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:305
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:382
 #: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:82
 #: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:235
 #: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:302
@@ -1112,8 +1077,7 @@ msgstr "공지사항"
 msgid "OK"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:783
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:415
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:417
 #, elixir-autogen, elixir-format
 msgid "Offline"
 msgstr "옵션 정보"
@@ -1133,13 +1097,12 @@ msgstr "Nick 변화"
 msgid "On Part"
 msgstr "에 부품"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:782
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:407
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:409
 #, elixir-autogen, elixir-format
 msgid "Online"
 msgstr "- 한국어"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1000
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:192
 #, elixir-autogen, elixir-format
 msgid "PMs"
 msgstr "이름 *"
@@ -1154,12 +1117,12 @@ msgstr "Paste 확인"
 msgid "Perform"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:139
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:141
 #, elixir-autogen, elixir-format
 msgid "Perform WHOIS on notify nicks when they come online"
 msgstr "온라인으로 와서 nicks를 알리는 WHOIS"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1074
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:243
 #, elixir-autogen, elixir-format
 msgid "Permanent"
 msgstr "이름 *"
@@ -1195,8 +1158,7 @@ msgstr "공공 채팅 플랫폼"
 msgid "RSS"
 msgstr "RSS 피드"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:223
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:951
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:331
 #: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:192
 #: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:208
 #: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:169
@@ -1206,7 +1168,9 @@ msgstr "RSS 피드"
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1131
 #: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:304
 #: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:207
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:212
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:80
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:326
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:214
 #: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:189
 #, elixir-autogen, elixir-format
 msgid "Remove"
@@ -1304,8 +1268,8 @@ msgstr "설정하기"
 msgid "Set by %{nick}"
 msgstr "설정하기 %{nick}"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:704
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:734
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:245
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:275
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:301
 #, elixir-autogen, elixir-format
 msgid "Since"
@@ -1331,7 +1295,6 @@ msgstr "사운드 설정"
 msgid "Statistics"
 msgstr "관련 기사"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:774
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:181
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:265
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:444
@@ -1382,9 +1345,9 @@ msgstr "더 큰"
 msgid "Trivia"
 msgstr "트리비아"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:863
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:889
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:995
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:106
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:132
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:187
 #, elixir-autogen, elixir-format
 msgid "Type"
 msgstr "제품정보"
@@ -1507,7 +1470,7 @@ msgstr "채널에서 시작되었습니다."
 msgid "e.g. /msg $1 hello!"
 msgstr "e.g. /msg $1 안녕하세요!"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:1014
+#: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:206
 #, elixir-autogen, elixir-format
 msgid "e.g. 5m, 1h, 2d"
 msgstr "e.g. 5m, 1h, 2d"
@@ -2664,18 +2627,18 @@ msgstr "설정된 강조 단어 없음. 클릭 한 번 만들기."
 msgid "No lookup yet."
 msgstr "아직 볼 수 없습니다."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:425
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:426
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:427
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:428
 #, elixir-autogen, elixir-format
 msgid "No note"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:147
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:149
 #, elixir-autogen, elixir-format
 msgid "No notify nicks yet. Add a nick to track online status."
 msgstr "아직 nicks를 알리지 않습니다. 온라인 상태를 추적하기 위해 nick를 추가합니다."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:431
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:435
 #, elixir-autogen, elixir-format
 msgid "Now"
 msgstr "현재 위치"
