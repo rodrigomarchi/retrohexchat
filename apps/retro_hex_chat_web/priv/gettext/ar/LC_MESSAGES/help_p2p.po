@@ -389,14 +389,6 @@ msgstr "Limited by"
 msgid "Metrics"
 msgstr "القياسات"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:48
-#: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:52
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:71
-#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:65
-#, elixir-autogen, elixir-format
-msgid "P2P Lobby"
-msgstr "P2P Lobby"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Packet loss"
@@ -797,18 +789,6 @@ msgstr ""
 "الانضمام فقط. وتُذكر الأعطال التي تصيب الشباب ووسائط الإعلام لحسابكم؛ ويُذكر"
 " على الصعيد المحلي اختيارات الأجهزة الخاصة بالأخشاب."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:9
-#, elixir-autogen, elixir-format
-msgid ""
-"Type /p2p <nick> (or use the nicklist context menu) to open setup before "
-"sending an invite. Confirming setup sends the invite card in the private "
-"message; the invited person clicks Accept to start their own setup and join "
-"in place, or Decline to refuse — the inviter is told either way."
-msgstr ""
-"النوع ph1 /ph1 / < 第2.号建议); ويرسل تأكيد الإنشاء بطاقة الدعوة في الرسالة "
-"الخاصة؛ ويقر الشخص المدعو قبول بدء إنشاءه والانضمام إليه، أو يعلن رفضه - "
-"ويقال للمدعي في أي من الحالتين."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:16
 #, elixir-autogen, elixir-format
 msgid ""
@@ -921,23 +901,6 @@ msgstr ""
 "وتستخدم المكالمات حدودا سمعية وفيديو متحفظة عن طريق التقصير في خدمة "
 "الاستقرار على جودة الصورة القصوى."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:29
-#, elixir-autogen, elixir-format
-msgid ""
-"Messages during the session are regular private messages, saved like any "
-"other. Session events — connected, file received, game score, who ended it —"
-" are written into the PM history as P2P lines, so the story of the session "
-"survives it. While a session exists, the peer's PM tab, PM sidebar row and "
-"PM topic bar show the same P2P indicator family used by channel conferences,"
-" with state and active call/file/game/relay facets."
-msgstr ""
-"والرسائل خلال الدورة هي رسائل خاصة منتظمة تُحفظ مثل أي رسائل أخرى. وتُكتب "
-"أحداث الدورة - المرتبطة بالملفات الواردة، وسجلات اللعبة، التي انتهت - في "
-"تاريخ PM بوصفها خطوط P2P، وبالتالي فإن قصة الدورة لا تزال قائمة. في حين أن "
-"هناك جلسة، تابوت من قبل النظراء، الصف الجانبي لـ بي إم و حانة الموضوع PM "
-"تظهر نفس فئة مؤشر P2P التي تستخدمها المؤتمرات القناة، مع نداء حكومي "
-"ونشط/file/game/relay وجوه."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:1
 #, elixir-autogen, elixir-format
 msgid "Monitor connection quality during calls."
@@ -1042,20 +1005,6 @@ msgstr ""
 "النداء النهائي عن وسائط الإعلام فقط؛ وإغلاق دورة P2P Console يسأل قبل إنهاء "
 "دورة P2P بأكملها."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"The P2P Lobby is the persistent peer-to-peer connection behind /p2p: one "
-"link between two users that hosts a call, file transfers and games all at "
-"the same time. It lives inside the chat — setup happens before sending or "
-"accepting the invite, and accepting opens the P2P Session Console right on "
-"the chat desktop, next to your conversations."
-msgstr ""
-"الـ (بي 2 بي لوبي) هو تواصل مستمر بين الأقران /p2p: صلة واحدة بين اثنين من "
-"المستعملين الذين يستضيفون مكالمة ونقل الملفات والألعاب في نفس الوقت. ويعيش "
-"داخل الدردشة - يتم الإعداد قبل إرسال الدعوة أو قبولها، وقبول فتح دورة P2P "
-"كونسول مباشرة على مكتب الدردشة، بجانب محادثاتك."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "The Session Console"
@@ -1129,3 +1078,58 @@ msgid ""
 msgstr ""
 "With the P2P Session Console focused, Ctrl+Shift+ArrowUp toggles microphone "
 "state and Ctrl+Shift+ArrowLeft toggles camera state."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:29
+#, elixir-autogen, elixir-format
+msgid ""
+"Messages during the session are regular private messages, saved like any "
+"other. Session events — request sent, connected, file received, game score, "
+"who ended it — are written into the PM history as P2P lines, so the story of"
+" the session survives it without turning the transcript into a control "
+"surface. While a session exists, the peer's PM tab, PM sidebar row and PM "
+"topic bar show the same P2P indicator family used by channel conferences, "
+"with state and active call/file/game/relay facets."
+msgstr ""
+"والرسائل خلال الدورة هي رسائل خاصة منتظمة تُحفظ مثل أي رسائل أخرى. وتُكتب "
+"أحداث الدورة - أي الطلب المرسل، والمتصل، والملف المستلم، وسجل اللعبة، الذي "
+"أنهى ذلك - إلى تاريخ PM باعتباره خطوط P2P، وبالتالي فإن قصة الدورة تبقى دون "
+"تحويل السيناريو إلى سطح السيطرة. في حين أن هناك جلسة، تابوت من قبل النظراء، "
+"الصف الجانبي لـ (بي إم بي بار) و (بي إم) يظهرون نفس العائلة التي تستخدمها "
+"مؤتمرات القناة،"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:52
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:71
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:65
+#, elixir-autogen, elixir-format
+msgid "P2P Session"
+msgstr "P2P Session"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"The P2P Session is the persistent peer-to-peer connection behind /p2p: one "
+"link between two users that hosts a call, file transfers and games all at "
+"the same time. It lives inside the chat — setup happens before sending or "
+"accepting the invite, and accepting opens the P2P Session Console right on "
+"the chat desktop, next to your conversations."
+msgstr ""
+"The P2P Session is the persistent peer-to-peer connection behind >ph0./ph0: "
+"one link between two users that hosts a call, file transfers and games all "
+"at the same time. ويعيش داخل الدردشة - يتم الإعداد قبل إرسال الدعوة أو "
+"قبولها، وقبول فتح دورة P2P كونسول مباشرة على مكتب الدردشة، بجانب محادثاتك."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:9
+#, elixir-autogen, elixir-format
+msgid ""
+"Type /p2p <nick> (or use the P2P control in the PM header/nicklist context "
+"menu) to open setup before sending a request. Confirming setup opens your "
+"P2P Session Console immediately and sends a P2P request line in the private "
+"message. The invited person's PM tab opens in the background with Join and "
+"Decline in the PM header, so they can respond in place without a separate "
+"lobby link."
+msgstr ""
+"النوع ph1 /ph1 < 第ph.号建议); التثبيت يفتح دورتك \"كونسول\" فوراً ويرسل خط طلب "
+"\"بي2 بي\" في الرسالة الخاصة تابوت الشخص المدعو يفتح في الخلفية مع (جوين) "
+"و(ديكلين) في رأس رئيس الشرطة، حتى يتمكنوا من الرد في المكان دون وصلة ردهة "
+"منفصلة."

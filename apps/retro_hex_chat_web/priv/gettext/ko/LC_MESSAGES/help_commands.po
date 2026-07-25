@@ -4980,16 +4980,6 @@ msgstr ""
 "이름 사용자, 설정 서버 역할, 및 실행 /admin "
 "ns/drop</ph5></ph5></ph6></ph5></ph6></ph6></ph6></ph6></ph6></ph6></ph5></ph6></ph5></ph5></ph5></ph5></ph6></ph5></ph5></ph5></ph5></ph5></ph5></ph5></ph5></ph5></ph5></ph5></ph5></ph5></ph5></ph5></ph5></ph5></ph5></ph5></ph5></"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"Open a P2P Lobby with another user: a single persistent peer-to-peer "
-"connection that hosts every feature at once — an audio or video call, file "
-"transfers, and games — all running at the same time."
-msgstr ""
-"다른 사용자와 P2P 로비를 엽니 다: 한 번에 모든 기능을 호스팅하는 단일 영구 피어 - 투 - 피어 연결 - 오디오 또는 비디오 "
-"통화, 파일 전송 및 게임 - 동시에 모든 실행."
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:11
 #, elixir-autogen, elixir-format
 msgid ""
@@ -5007,11 +4997,6 @@ msgstr ""
 "+i 배지를 보여줍니다; 당신이 이미하지 않은 것을 선택할 때, 액세스 요청 변경... 및 노크 요청 대화 상자를 엽니 다. secret"
 " (+s) 채널은 목록에서 완전히 숨겨져 있습니다. Private (+p) 채널은 그들의 이름을 표시하지만 그들의 항목이 아닙니다. "
 "탈출을 누르거나 닫기를 클릭하여 대화 상자를 해소하십시오."
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:32
-#, elixir-autogen, elixir-format
-msgid "P2P Lobby"
-msgstr "P2P 로비"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:2
 #, elixir-autogen, elixir-format
@@ -5149,11 +5134,6 @@ msgstr ""
 "초대 전용 채널을 표시하고 액세스 요청을 변경 ..., 옵션 200-character 메시지와 동일한 노크 요청 흐름을 엽니 다. "
 "연산자는 다음 당신을 초대 여부를 결정할 수 있습니다"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:27
-#, elixir-autogen, elixir-format
-msgid "You cannot open a lobby with yourself."
-msgstr "로비를 직접 열 수 없습니다."
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "aop add/del/list <nick>"
@@ -5226,11 +5206,6 @@ msgstr ""
 "선호, 봇, P2P 세션)를 파괴합니다. 서버 관리자 역할이 필요합니다. Admin Console Danger Zone 탭은 실행하기 "
 "전에 서버 이름을 입력해야합니다."
 
-#: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:124
-#, elixir-autogen, elixir-format
-msgid "— Open the P2P Lobby (call, files, and games)"
-msgstr "- P2P 로비(콜, 파일, 게임)를 엽니다."
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mute.html.heex:18
 #, elixir-autogen, elixir-format
 msgid ""
@@ -5238,26 +5213,52 @@ msgid ""
 "mute."
 msgstr "— 30s, 5m, 1h 또는 1d와 같은 선택적인 내구 토큰. 영원한 미소를 위한 Omit."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "— The user to open a P2P Lobby with."
-msgstr "— P2P 로비를 엽니다."
+msgid ""
+"Open a P2P Session with another user: a single persistent peer-to-peer "
+"connection that hosts every feature at once — an audio or video call, file "
+"transfers, and games — all running at the same time."
+msgstr ""
+"다른 사용자와 함께 P2P 세션을 엽니 다 : 한 번에 모든 기능을 호스팅하는 단일 영구 피어 - 투 - 피어 연결 - 오디오 또는 "
+"비디오 통화, 파일 전송 및 게임 - 동시에 모든 실행."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "P2P Session"
+msgstr "P2P 세션"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "You cannot start a P2P session with yourself."
+msgstr "P2P 세션을 직접 시작할 수 없습니다."
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:16
 #, elixir-autogen, elixir-format
 msgid ""
 "opens a setup dialog first, so you can preview camera, choose "
 "microphone/camera/speaker, pick receive-only, and enable privacy relay "
-"before the invite is sent. After you confirm, the other user receives an "
-"invite card in your private message. When they accept, the connection is "
+"before the request is sent. After you confirm, the other user receives a P2P"
+" request in your private message, the PM tab opens in the background, and "
+"Join/Decline appear in the PM header. When they accept, the connection is "
 "established right there in the chat: the call starts with each side's chosen"
 " defaults and the P2P Session Console opens with Call, Files, Games and "
 "Stats sections. Several activities run together over the one connection; "
 "ending one keeps the others alive. Closing the console disconnects the "
 "session (after a confirmation) — minimize to keep it running."
 msgstr ""
-"설정 대화 상자를 먼저 열고, 카메라를 미리 볼 수 있으므로, 마이크/camera/speaker를 선택하고 수신 전용을 선택하고 초대하기"
-" 전에 개인 정보 보호 릴레이를 활성화하십시오. 확인 후, 다른 사용자는 개인 메시지에 초대 카드를받습니다. 그들이 동의 할 때, 연결은"
-" 채팅에 있음을 설정한다 : 통화는 각 측면의 선택 기본과 세션 창 (채널, 파일, 게임, 통계) 채팅 바탕 화면에 열다. 몇몇 활동은 "
-"1개의 연결을 통해 함께 달립니다; 1개는 다른 사람을 살아있게 지킵니다. 세션 창을 닫는 것은 세션을 차단합니다 (확인 후) - 작업을"
-" 최소화합니다."
+"설정 대화 상자를 먼저 열고, 카메라를 미리 볼 수 있으므로, 마이크/camera/speaker를 선택하고 수신 전용을 선택하고 요청이 "
+"전송되기 전에 개인 정보 보호 릴레이를 활성화하십시오. 확인 후, 다른 사용자는 개인 메시지에서 P2P 요청을받습니다. PM 탭은 배경에"
+" 열려 있으며 Join/Decline는 PM 헤더에 나타납니다. 그들이 받아들일 때, 연결은 채팅에 있는 권리가 있습니다: 통화는 각 "
+"측면의 선택된 기본으로 시작하고 P2P 세션 콘솔은 통화, 파일, 게임 및 통계 섹션으로 엽니다. 몇몇 활동은 1개의 연결을 통해 함께 "
+"달립니다; 1개는 다른 사람을 살아있게 지킵니다. 콘솔을 닫는 세션 (확인 후) - 실행을 유지하기 위해 최소화."
+
+#: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:124
+#, elixir-autogen, elixir-format
+msgid "— Open the P2P Session (call, files, and games)"
+msgstr "- P2P 세션 (콜, 파일 및 게임)을 엽니다."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "— The user to open a P2P Session with."
+msgstr "— P2P 세션을 엽니다."

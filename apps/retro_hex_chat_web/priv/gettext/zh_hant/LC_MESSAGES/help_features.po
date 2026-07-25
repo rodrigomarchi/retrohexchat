@@ -341,13 +341,14 @@ msgid "/announce"
 msgstr "/announce"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:74
-#: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:79
+#: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:78
+#: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:83
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autocomplete.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "/autojoin"
 msgstr "/autojoin"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "/autojoin Command"
 msgstr "/autojoin Command"
@@ -437,7 +438,7 @@ msgid "/jo"
 msgstr "/jo"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:5
-#: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:80
+#: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:84
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autocomplete.html.heex:15
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autocomplete.html.heex:48
 #, elixir-autogen, elixir-format
@@ -542,12 +543,12 @@ msgid "/ns identify"
 msgstr "/ns identify"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:8
-#: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:81
+#: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:85
 #, elixir-autogen, elixir-format
 msgid "/part"
 msgstr "/part"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "/perform Command"
 msgstr "/perform Command"
@@ -664,7 +665,7 @@ msgstr "1. 經營者使用"
 msgid "1. Click and drag to select text in the chat area."
 msgstr "1. 單擊並拖動在聊天區選擇文本。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:41
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "1. Perform commands execute sequentially."
 msgstr "1. 依次執行命令。"
@@ -684,7 +685,7 @@ msgstr "1. 鍵入命令後加空格(例如,"
 msgid "10 attempts"
 msgstr "10次嘗試"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:41
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "2. Auto-join channels are joined after all perform commands complete."
 msgstr "2. 在所有執行命令完成後,自動連接通道被加入。"
@@ -1042,7 +1043,8 @@ msgstr "自動添加 PM 聯繫人"
 msgid "Auto-Ignore:"
 msgstr "自動忽略 :"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:17
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "Auto-Join Channels"
 msgstr "自動連接通道"
@@ -1052,7 +1054,7 @@ msgstr "自動連接通道"
 msgid "Auto-Join on Invite"
 msgstr "應邀請自動加入"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:52
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "Auto-Reconnect"
 msgstr "自動重聯"
@@ -1061,14 +1063,6 @@ msgstr "自動重聯"
 #, elixir-autogen, elixir-format
 msgid "Auto-Whois"
 msgstr "自動身份"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:18
-#, elixir-autogen, elixir-format
-msgid ""
-"Auto-join channels are separate from perform commands. They are joined after"
-" all perform commands complete, ensuring that NickServ identification and "
-"other setup happens first."
-msgstr "自動聯播頻道與表演指令分開. 它們在所有執行命令完成後被加入,確保NickServ識別和其他設置首先發生."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:22
 #, elixir-autogen, elixir-format
@@ -1580,7 +1574,7 @@ msgstr "Ctrl+Shift+/ (中文(簡體) )."
 msgid "Ctrl+Shift+A"
 msgstr "縮寫+ 移動+ A級"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "Ctrl+Shift+E"
 msgstr "縮寫+ 移動+E"
@@ -1802,7 +1796,7 @@ msgstr "編輯的信件顯示一個小的\"(editado)\"標記. 翻過它看編輯
 msgid "Empty edit:"
 msgstr "空編輯 :"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Enable / Disable"
 msgstr "啓用/ 禁用"
@@ -1852,7 +1846,7 @@ msgstr "逃脫:"
 msgid "Event Types"
 msgstr "事件類型"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "Execution Order"
 msgstr "執行令"
@@ -2541,7 +2535,7 @@ msgstr "尼克: 尼克:"
 msgid "NickName is typing..."
 msgstr "NickName 正在輸入..."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:82
+#: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:86
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:70
 #, elixir-autogen, elixir-format
 msgid "NickServ"
@@ -2804,11 +2798,6 @@ msgstr "按類型過濾 :"
 msgid "Perform / Auto-Commands"
 msgstr "執行/ 自動命令"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:23
-#, elixir-autogen, elixir-format
-msgid "Perform Dialog"
-msgstr "執行對話框"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Perform List"
@@ -2837,7 +2826,7 @@ msgstr "持久性 :"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_enhanced_history.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ignore_list.html.heex:11
 #: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:11
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:25
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:61
 #: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:9
@@ -3163,7 +3152,7 @@ msgstr "在當前頻道或PM中以實時突出顯示搜索消息."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_turn.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_aliases.html.heex:55
-#: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:77
+#: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:81
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_reconnect.html.heex:49
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autocomplete.html.heex:73
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autorespond.html.heex:52
@@ -3198,7 +3187,7 @@ msgstr "在當前頻道或PM中以實時突出顯示搜索消息."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:50
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:46
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/feature_quit_message.html.heex:20
@@ -3462,13 +3451,6 @@ msgid ""
 "receive notifications in the Status tab."
 msgstr "當特定用戶上線或下線時通知列表音軌. 您在狀態標籤中收到通知 。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"The Perform system lets you define commands that execute automatically every"
-" time you connect, followed by a list of channels to join."
-msgstr "表演系統允許您定義每次連接時自動執行的命令,然後是加入的頻道列表."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:2
 #, elixir-autogen, elixir-format
 msgid ""
@@ -3590,7 +3572,7 @@ msgstr "此暱稱可供任何人註冊"
 msgid "The perform list contains commands (e.g.,"
 msgstr "表演列表包含命令(例如,"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:36
 #, elixir-autogen, elixir-format
 msgid ""
 "The perform system can be toggled on or off. When disabled, no commands "
@@ -4149,11 +4131,6 @@ msgstr "字符鍵。"
 msgid "combinations to avoid conflicting with browser shortcuts."
 msgstr "組合,以避免與瀏覽器快捷鍵衝突。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:75
-#, elixir-autogen, elixir-format
-msgid "command for finer control."
-msgstr "用於更細的控制。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_char_counter.html.heex:3
 #, elixir-autogen, elixir-format
 msgid "current/maximum"
@@ -4300,11 +4277,6 @@ msgstr "選項卡。"
 msgid "to accept the match, or"
 msgstr "接受比賽,或"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:14
-#, elixir-autogen, elixir-format
-msgid "to add commands, or manage them visually in the Perform Dialog."
-msgstr "以添加命令,或在“表演對話框”中以視覺方式管理命令。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_enhanced_history.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "to cancel."
@@ -4367,13 +4339,6 @@ msgid ""
 "to open an inline search bar. Type to filter history entries by substring "
 "match. Press"
 msgstr "打開內聯網搜索欄。 類型通過子字符串匹配過濾歷史條目 。 新聞"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:27
-#, elixir-autogen, elixir-format
-msgid ""
-"to open the Perform Dialog, which provides a visual interface for managing "
-"both the perform list and auto-join channels."
-msgstr "打開“表演對話框”,該對話框爲管理表演列表和自動連接通道提供了視覺界面。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:13
 #, elixir-autogen, elixir-format
@@ -4953,13 +4918,6 @@ msgid ""
 msgstr ""
 "身份和存在覆蓋你對其他用戶的外觀:你的暱稱,NickServ登錄狀態, profile bio, away status,以及個人用戶模式."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:23
-#, elixir-autogen, elixir-format
-msgid ""
-"If a session can no longer be found (for example, an old invite whose "
-"session was purged), the card falls back to the plain join link."
-msgstr "如果一個會話再也找不到(例如,一箇舊邀請,其會話被清除),卡片會倒回到平原結合鏈接."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:10
 #, elixir-autogen, elixir-format
 msgid ""
@@ -5038,13 +4996,6 @@ msgid ""
 msgstr ""
 "基於目標當前角色的運算符和語音條目切換:Give Op (+o)成爲刪除Op (-o),Give Voice (+v)成爲刪除Voice (-v). "
 "靜音(通道)打開持續時間提示;對永久靜音留空,或輸入30s,5m,1h,或1d. Unmute(通道)立即刪除頻道級的啞聲."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_connection_diagram.html.heex:78
-#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:94
-#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:39
-#, elixir-autogen, elixir-format
-msgid "P2P Lobby"
-msgstr "P2P 大廳"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:40
 #, elixir-autogen, elixir-format
@@ -5241,11 +5192,6 @@ msgid ""
 "operators and administrators can send them."
 msgstr "Wallops 消息只發送給啓用 +w 的用戶 /umode +w. 服務器操作員和管理員可以發送."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:7
-#, elixir-autogen, elixir-format
-msgid "What the Card Shows"
-msgstr "顯示什麼牌"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:15
 #, elixir-autogen, elixir-format
 msgid ""
@@ -5319,15 +5265,6 @@ msgstr "沒有爭論。 對話框列出活動計時器,並提供添加,編輯和
 msgid ", or in an active P2P session use the"
 msgstr ",或者在活動的 P2P 會話中使用"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:9
-#, elixir-autogen, elixir-format
-msgid ""
-"A card names who created the session and walks through its lifecycle on a "
-"small timeline: when it was created, when it connected, and — once it is "
-"over — when it ended, how long it ran, and why it closed."
-msgstr ""
-"一個創建了會話的卡片名,並在一個小的時段上走過它的生命週期:當它創建時,當它連接時,以及——一旦它結束時——它結束時,它持續了多久,爲什麼它關閉."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:16
 #, elixir-autogen, elixir-format
 msgid ""
@@ -5344,13 +5281,6 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "In the P2P setup dialog, check"
 msgstr "在 P2P 設置對話框中檢查"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"P2P lobby invites appear as rich session cards instead of a plain line with "
-"a link."
-msgstr "P2P大堂邀請函作爲豐富的會話卡出現,而不是帶鏈接的平話."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:14
 #, elixir-autogen, elixir-format
@@ -5369,14 +5299,6 @@ msgstr "快捷鍵分爲導航、會議、格式和系統等類別。 每個類�
 #, elixir-autogen, elixir-format
 msgid "Toggle Privacy Mode"
 msgstr "切換隱私模式"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:16
-#, elixir-autogen, elixir-format
-msgid ""
-"While a session is still live the card offers a button — Join or Open lobby "
-"for P2P. Once the session has finished the card shows its final state and "
-"drops the button."
-msgstr "當一個會話仍在直播時,卡片會提供一個按鈕——加入或打開P2P的大廳. 一旦會話完成卡片顯示其最終狀態並放下按鈕."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:17
 #, elixir-autogen, elixir-format
@@ -5947,3 +5869,97 @@ msgid ""
 "ban exceptions (+e) that let specific users bypass bans, and invite "
 "exceptions (+I) that let specific users bypass invite-only mode."
 msgstr "一次一個列表,與選擇器一起在標籤的頂端選擇:禁止,禁止例外(+e)讓特定用戶繞過禁止,邀請例外(+I)讓特定用戶繞過只邀請模式."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"Arcade sessions can appear as rich cards, while P2P requests use the PM "
+"header controls and leave a plain P2P line in the transcript."
+msgstr "弧形會話可以作爲豐富的卡片出現,而P2P請求則使用PM頭控件,並在筆錄中留下一個普通的P2P線."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:20
+#, elixir-autogen, elixir-format
+msgid ""
+"Auto-join channels live in their own window and are joined after all perform"
+" commands complete, ensuring that NickServ identification and other setup "
+"happens first."
+msgstr "自動join頻道在自己的窗口中生活,並在所有執行命令完成後被加入,確保NickServ識別和其他設置首先發生."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:23
+#, elixir-autogen, elixir-format
+msgid ""
+"If a legacy P2P invite line can no longer find its session, it stays as "
+"inert history instead of showing stale action buttons."
+msgstr "如果遺留的 P2P 邀請行無法再找到它的會話,則它會一直作爲惰性歷史而不顯示 Stale 動作按鈕."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_connection_diagram.html.heex:78
+#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:94
+#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:39
+#, elixir-autogen, elixir-format
+msgid "P2P Session"
+msgstr "P2P會議"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:87
+#, elixir-autogen, elixir-format
+msgid "Perform"
+msgstr "執行"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Perform Window"
+msgstr "執行窗口"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:9
+#, elixir-autogen, elixir-format
+msgid ""
+"Session summaries name who created the session and walk through its "
+"lifecycle on a small timeline: when it was created, when it connected, and —"
+" once it is over — when it ended, how long it ran, and why it closed."
+msgstr ""
+"會話摘要名稱是創建會話,並在一個小的時段上走過它的生命週期:當它被創建,當它連接起來,並且——一旦它結束——當它結束,它持續了多久,爲什麼它關閉."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"The Perform system lets you define commands that execute automatically every"
+" time you connect. Channels are handled separately, in Auto-Join."
+msgstr "表演系統允許您定義每次連接時自動執行的命令 。 頻道分別處理,以自動Join形式."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "What Session Summaries Show"
+msgstr "顯示什麼會話摘要"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:16
+#, elixir-autogen, elixir-format
+msgid ""
+"While an Arcade session is still live the card can offer Join or Open. P2P "
+"Start, Join and Decline actions live in the PM header instead; finished P2P "
+"history shows final state only."
+msgstr ""
+"當Arcade會話仍在直播時,卡片可以提供加盟或開放. P2P Start, join and decepte actions sive in the "
+"PM header 代替; 已完成的 P2P 歷史僅顯示最終狀態."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:75
+#, elixir-autogen, elixir-format
+msgid ""
+"command, or visually in the Auto-Join window — open it from Tools > Auto-"
+"Join, or by typing"
+msgstr "命令,或視窗中的自動Join窗口中——從工具 > 自動Join中打開,或輸入"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "to add commands, or manage them visually in the Perform window."
+msgstr "以添加命令,或在“表演”窗口中以視覺方式管理命令。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:29
+#, elixir-autogen, elixir-format
+msgid ""
+"to open the Perform window, which provides a visual interface for managing "
+"the perform list."
+msgstr "打開“表演”窗口,該窗口爲管理表演列表提供了一個視覺界面。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:79
+#, elixir-autogen, elixir-format
+msgid "with no arguments."
+msgstr "沒有爭論。"

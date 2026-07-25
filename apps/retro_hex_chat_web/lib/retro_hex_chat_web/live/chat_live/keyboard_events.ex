@@ -24,7 +24,7 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   alias RetroHexChatWeb.ChatLive.AddressBookEvents
   alias RetroHexChatWeb.ChatLive.GroupCallEvents
   alias RetroHexChatWeb.ChatLive.NavigationEvents
-  alias RetroHexChatWeb.ChatLive.PerformAutojoinEvents
+  alias RetroHexChatWeb.ChatLive.PerformEvents
   alias RetroHexChatWeb.ChatLive.SearchEvents
   alias RetroHexChatWeb.ChatLive.Windows
 
@@ -82,7 +82,7 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   end
 
   defp dispatch_action(:toggle_perform_dialog, socket) do
-    PerformAutojoinEvents.open(socket)
+    PerformEvents.open(socket)
   end
 
   defp dispatch_action(:toggle_cheatsheet, socket) do

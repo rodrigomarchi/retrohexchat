@@ -139,12 +139,12 @@ msgstr "/msg $1 goodbye!"
 msgid "/msg $1 hello!"
 msgstr "/msg $1 hello!"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:61
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "/msg NickServ IDENTIFY ***"
 msgstr "/msg NickServ IDENTIFY ***"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:56
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "/msg NickServ IDENTIFY mySecretPass"
 msgstr "/msg NickServ IDENTIFY mySecretPass"
@@ -512,7 +512,7 @@ msgstr "Mũi tên"
 msgid "Ask your questions here"
 msgstr "Hãy hỏi ở đây"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:178
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:180
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:52
 #, elixir-autogen, elixir-format
 msgid "Assets"
@@ -523,7 +523,8 @@ msgstr "Tài sản"
 msgid "Attempting to reconnect..."
 msgstr "Đang cố kết nối lại..."
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:74
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:61
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "Attribute"
 msgstr "Thuộc tính"
@@ -1158,12 +1159,13 @@ msgstr ""
 "Hộp thoại phức tạp tổng hợp — thiết lập kênh, thực hiện, Sổ địa chỉ, thiết "
 "lập âm thanh, và thêm 20+."
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:67
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:54
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "Component Attributes"
 msgstr "Thuộc tính thành phần"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:212
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:214
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:60
 #, elixir-autogen, elixir-format
 msgid "Component Showcase"
@@ -1446,7 +1448,8 @@ msgstr "Chế độ tối"
 #: lib/retro_hex_chat_web/live/showcase_live/chat/emoji_picker_page.ex:27
 #: lib/retro_hex_chat_web/live/showcase_live/chat/formatting_toolbar_page.ex:30
 #: lib/retro_hex_chat_web/live/showcase_live/chat/search_bar_page.ex:27
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:76
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:63
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:71
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/sound_settings_dialog_page.ex:24
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/sound_settings_dialog_page.ex:27
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/sound_settings_dialog_page.ex:28
@@ -1530,12 +1533,13 @@ msgstr "Xoá hộp thoại xác nhận"
 msgid "Delete Message"
 msgstr "Xoá thông điệp"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:77
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:64
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:72
 #, elixir-autogen, elixir-format
 msgid "Description"
 msgstr "Mô tả"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:231
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:233
 #, elixir-autogen, elixir-format
 msgid "Design System"
 msgstr "Hệ thống Thiết kế"
@@ -1557,7 +1561,7 @@ msgstr "Xác nhận tháo gỡ"
 msgid "Development discussion"
 msgstr "Thảo luận về phát triển"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:180
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:182
 #: lib/retro_hex_chat_web/live/showcase_live/assets/diagrams.ex:21
 #: lib/retro_hex_chat_web/live/showcase_live/assets/diagrams.ex:70
 #, elixir-autogen, elixir-format
@@ -1576,7 +1580,8 @@ msgstr "Hộp thoại"
 msgid "Dialog Style"
 msgstr "Comment"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:85
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:72
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "Dialog element ID"
 msgstr "ID yếu tố hộp thoại"
@@ -1668,7 +1673,7 @@ msgstr "Ngắt kết nối"
 msgid "Disconnected State"
 msgstr "Trạng thái ngắt kết nối"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:60
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "Display:"
 msgstr "Màn hình:"
@@ -1775,7 +1780,7 @@ msgstr "Trạng thái rỗng"
 msgid "Enable notifications"
 msgstr "Bật thông báo"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:107
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:94
 #, elixir-autogen, elixir-format
 msgid "Enable perform on connect"
 msgstr "Bật hoạt động khi kết nối"
@@ -1824,11 +1829,6 @@ msgstr "Sự kiện"
 msgid "Event Sounds"
 msgstr "Âm thanh sự kiện"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:114
-#, elixir-autogen, elixir-format
-msgid "Event callbacks (tab, select, add, edit, remove, etc.)"
-msgstr "Gọi ngược sự kiện (b, chọn, thêm, chỉnh sửa, gỡ bỏ, v. v.)"
-
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:164
 #, elixir-autogen, elixir-format
 msgid "Exit"
@@ -1868,7 +1868,7 @@ msgid "Fight through hordes of demons from Hell in this classic 1993 game."
 msgstr ""
 "Chiến đấu qua đám quỷ dữ từ địa ngục trong trò chơi năm 1993 cổ điển này."
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:171
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:173
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/file_transfer_page.ex:18
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/file_transfer_page.ex:27
 #, elixir-autogen, elixir-format
@@ -2022,7 +2022,7 @@ msgstr "Thiết lập đầy đủ"
 msgid "Full Sidebar"
 msgstr "Thanh bên đầy đủ"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:175
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:177
 #: lib/retro_hex_chat_web/live/showcase_live/games/game_cards_page.ex:20
 #: lib/retro_hex_chat_web/live/showcase_live/games/game_cards_page.html.heex:2
 #, elixir-autogen, elixir-format
@@ -2044,7 +2044,7 @@ msgstr "Màn hình Trò chơi"
 msgid "Game on!"
 msgstr "Bắt đầu!"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:173
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:175
 #: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:40
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:47
 #, elixir-autogen, elixir-format
@@ -2236,7 +2236,7 @@ msgstr "Thẻ IRC"
 msgid "Icon Sizes"
 msgstr "Cỡ biểu tượng"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:181
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:183
 #: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:81
 #: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:105
 #, elixir-autogen, elixir-format
@@ -2317,7 +2317,7 @@ msgstr "Thông tin"
 msgid "Input"
 msgstr "Nhập"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:54
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "Input:"
 msgstr "Nhập:"
@@ -2490,12 +2490,12 @@ msgstr "Liên kết"
 msgid "Linux Ubuntu"
 msgstr "Linux Ubuntu"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:100
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:79
 #, elixir-autogen, elixir-format
 msgid "List of %&#123;channel_name, channel_key&#125; maps"
 msgstr "Danh sách %&<p0></i></i> <i>Biểu đồ  tên , kênh key& <ph1></i> bản đồ"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:92
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:87
 #, elixir-autogen, elixir-format
 msgid "List of %&#123;position, command&#125; maps"
 msgstr "Danh sách %&<p0>>>ph0> Định vị, lệnh & <ph1></i> bản đồ"
@@ -2607,7 +2607,7 @@ msgid "Media"
 msgstr "Vật chứa"
 
 #: lib/retro_hex_chat_web/components/showcase_helpers.ex:61
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:218
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:220
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:70
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.ex:18
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:2
@@ -3117,7 +3117,7 @@ msgstr "Comment"
 msgid "Owner"
 msgstr "Sở hữu"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:167
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:169
 #, elixir-autogen, elixir-format
 msgid "P2P"
 msgstr "P2P"
@@ -3181,7 +3181,7 @@ msgstr "Mật khẩu"
 msgid "Password Error State"
 msgstr "Trạng thái lỗi mật khẩu"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:49
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "Password Masking"
 msgstr "Lọc mật khẩu"
@@ -3882,7 +3882,7 @@ msgstr "Nhỏ"
 msgid "Solo Arcade game logos/cover art"
 msgstr "Trò chơi trí tuệ Solo"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:176
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:178
 #: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.ex:80
 #: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.html.heex:2
 #, elixir-autogen, elixir-format
@@ -3905,7 +3905,7 @@ msgstr "Sắp xếp bởi Nick"
 msgid "Sound"
 msgstr "Âm thanh"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:163
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:165
 #, elixir-autogen, elixir-format
 msgid "Sound Settings"
 msgstr "Thiết lập âm thanh"
@@ -4389,7 +4389,8 @@ msgstr ""
 msgid "Try a different search term."
 msgstr "Thử từ tìm kiếm khác xem."
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:75
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:62
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:70
 #, elixir-autogen, elixir-format
 msgid "Type"
 msgstr "Kiểu"
@@ -4409,7 +4410,7 @@ msgstr "Kiểu"
 msgid "Typography"
 msgstr "Typography"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:165
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:167
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/url_catcher_page.ex:54
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/url_catcher_page.ex:65
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/url_catcher_page.ex:68
@@ -4896,7 +4897,8 @@ msgstr "MacOS 10.15"
 msgid "notes.md"
 msgstr "ghi chép.md"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:110
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:89
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:97
 #, elixir-autogen, elixir-format
 msgid "on_*"
 msgstr "vào"
@@ -5039,7 +5041,7 @@ msgstr "Thuật toán — Cuộc gọi video"
 msgid "Compact — Waiting"
 msgstr "Đối chiếu — Chờ đợi"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:169
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:171
 #, elixir-autogen, elixir-format
 msgid "Connection Diagram"
 msgstr "Biểu đồ Kết nối"
@@ -5316,3 +5318,52 @@ msgstr "Đăng ký, thả, quản lý truy cập"
 #, elixir-autogen, elixir-format
 msgid "Registration"
 msgstr "Đăng ký"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:163
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.ex:21
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:2
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:5
+#, elixir-autogen, elixir-format
+msgid "Auto-Join Dialog"
+msgstr "Hộp thoại tự độngJoin"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:93
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:101
+#, elixir-autogen, elixir-format
+msgid "Event callbacks (select, add, edit, remove, etc.)"
+msgstr "Cuộc gọi ngược lại sự kiện (chọn, thêm, chỉnh sửa, gỡ bỏ, v. v.)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "Key Masking"
+msgstr "Mặt nạ phím"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "Key: ***"
+msgstr "Khóa: ***"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:48
+#, elixir-autogen, elixir-format
+msgid "Key: none"
+msgstr "Khóa:"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Open Auto-Join"
+msgstr "Tự động mở"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:86
+#, elixir-autogen, elixir-format
+msgid "Selected channel name"
+msgstr "Tên kênh đã chọn"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:43
+#, elixir-autogen, elixir-format
+msgid "With key:"
+msgstr "Với phím:"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "Without key:"
+msgstr "Không có phím:"

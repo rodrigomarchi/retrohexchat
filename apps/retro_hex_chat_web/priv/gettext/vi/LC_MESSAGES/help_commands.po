@@ -5229,17 +5229,6 @@ msgstr ""
 "kick, câm, hoặc unmute hành động, thay đổi tên người dùng, đặt vai trò máy "
 "phục vụ, và chạy /admin Thông tin ns/drop/resetpass Không gõ lệnh."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"Open a P2P Lobby with another user: a single persistent peer-to-peer "
-"connection that hosts every feature at once — an audio or video call, file "
-"transfers, and games — all running at the same time."
-msgstr ""
-"Mở một P2P Lobby với một người dùng khác: một kết nối đồng đẳng liên tục mà "
-"chủ thể tất cả các tính năng cùng một lúc — một cuộc gọi âm thanh hoặc "
-"video, chuyển tập tin, và trò chơi — tất cả đều chạy cùng một lúc."
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:11
 #, elixir-autogen, elixir-format
 msgid ""
@@ -5260,11 +5249,6 @@ msgstr ""
 " cập... và mở một hộp thoại yêu cầu gõ. Các kênh bí mật (+s) bị ẩn hoàn toàn"
 " ra danh sách. Các kênh riêng (+p) hiển thị tên nhưng không hiển thị chủ đề."
 " Nhấn nút Thoát hoặc nhấn chuột để bỏ qua hộp thoại."
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:32
-#, elixir-autogen, elixir-format
-msgid "P2P Lobby"
-msgstr "P2P Lobby"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:2
 #, elixir-autogen, elixir-format
@@ -5420,11 +5404,6 @@ msgstr ""
 "yêu cầu truy cập, mở cùng một yêu cầu gõ với một tin nhắn 200-chacter tùy "
 "chọn. Sau đó tổng đài có thể quyết định có nên mời bạn sử dụng"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:27
-#, elixir-autogen, elixir-format
-msgid "You cannot open a lobby with yourself."
-msgstr "Anh không thể mở hành lang một mình."
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "aop add/del/list <nick>"
@@ -5503,11 +5482,6 @@ msgstr ""
 "phục vụ. Thẻ vùng điều khiển nguy hiểm cần thiết gõ tên máy phục vụ trước "
 "khi thực hiện."
 
-#: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:124
-#, elixir-autogen, elixir-format
-msgid "— Open the P2P Lobby (call, files, and games)"
-msgstr "— Mở cửa sổ dòng lệnh P2P (gọi điện thoại, tập tin và trò chơi)"
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mute.html.heex:18
 #, elixir-autogen, elixir-format
 msgid ""
@@ -5516,30 +5490,58 @@ msgid ""
 msgstr ""
 "— Thời gian tùy chọn như 30, 5m, 1h hoặc 1d. Món nợ để bị câm vĩnh viễn."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "— The user to open a P2P Lobby with."
-msgstr "- Người dùng để mở P2P Lobby."
+msgid ""
+"Open a P2P Session with another user: a single persistent peer-to-peer "
+"connection that hosts every feature at once — an audio or video call, file "
+"transfers, and games — all running at the same time."
+msgstr ""
+"Mở một phiên chạy P2P với một người dùng khác: một kết nối đồng đẳng liên "
+"tục mà chủ thể tất cả các tính năng cùng một lúc — một cuộc gọi âm thanh "
+"hoặc video, chuyển tập tin, và trò chơi — tất cả đều chạy cùng một lúc."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "P2P Session"
+msgstr "Phiên chạy P2P"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "You cannot start a P2P session with yourself."
+msgstr "Bạn không thể bắt đầu một phiên họp P2P với chính mình."
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:16
 #, elixir-autogen, elixir-format
 msgid ""
 "opens a setup dialog first, so you can preview camera, choose "
 "microphone/camera/speaker, pick receive-only, and enable privacy relay "
-"before the invite is sent. After you confirm, the other user receives an "
-"invite card in your private message. When they accept, the connection is "
+"before the request is sent. After you confirm, the other user receives a P2P"
+" request in your private message, the PM tab opens in the background, and "
+"Join/Decline appear in the PM header. When they accept, the connection is "
 "established right there in the chat: the call starts with each side's chosen"
 " defaults and the P2P Session Console opens with Call, Files, Games and "
 "Stats sections. Several activities run together over the one connection; "
 "ending one keeps the others alive. Closing the console disconnects the "
 "session (after a confirmation) — minimize to keep it running."
 msgstr ""
-"opens a setup dialog first, so you can preview camera, choose "
-"microphone/camera/speaker, pick receive-only, and enable privacy relay "
-"before the invite is sent. After you confirm, the other user receives an "
-"invite card in your private message. When they accept, the connection is "
-"established right there in the chat: the call starts with each side's chosen"
-" defaults and the session windows (Call, Files, Games, Statistics) open on "
-"the chat desktop. Several activities run together over the one connection; "
-"ending one keeps the others alive. Closing any session window disconnects "
-"the session (after a confirmation) — minimize to keep it running."
+"mở một hộp thoại thiết lập trước, để bạn có thể xem thử máy ảnh, chọn "
+"microphone <ph0> <ph1>, chọn chỉ người nhận, và bật trình tiếp riêng tư "
+"trước khi yêu cầu được gửi. Sau khi xác nhận, người dùng khác nhận được một "
+"yêu cầu P2P trong tin nhắn riêng của bạn, tab PM mở ở phía sau, và tham gia "
+"<ph2></i> xuất hiện trên máy làm việc PM. Khi họ chấp nhận, kết nối được "
+"thiết lập ngay tại đây trong trò chuyện: cuộc gọi bắt đầu với các mặc định "
+"của mỗi bên và điều khiển phiên chạy P2P mở đầu với Call, file, Games và "
+"Stats. Một số hoạt động đi cùng nhau qua một kết nối; kết thúc một trong giữ"
+" cho những người khác sống. Đóng bàn giao tiếp sẽ ngắt kết nối phiên chạy "
+"(sau khi xác nhận) — giảm thiểu để nó tiếp tục chạy."
+
+#: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:124
+#, elixir-autogen, elixir-format
+msgid "— Open the P2P Session (call, files, and games)"
+msgstr "— Mở phiên chạy P2P (gọi, tập tin và trò chơi)"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "— The user to open a P2P Session with."
+msgstr "- Người dùng để mở phiên chạy P2P."

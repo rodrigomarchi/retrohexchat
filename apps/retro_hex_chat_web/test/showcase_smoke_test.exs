@@ -105,6 +105,7 @@ defmodule RetroHexChatWeb.ShowcaseSmokeTest do
     "/showcase/solo-lobby",
     "/showcase/chat-context-menu",
     "/showcase/perform-dialog",
+    "/showcase/autojoin-dialog",
     "/showcase/channel-central-dialog"
   ]
 

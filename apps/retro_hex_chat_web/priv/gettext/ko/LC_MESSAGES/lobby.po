@@ -11,12 +11,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:218
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:224
 #, elixir-autogen, elixir-format
 msgid "%{peer} is muted"
 msgstr "%{peer}는 점멸됩니다."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:148
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:154
 #, elixir-autogen, elixir-format
 msgid "%{peer}'s camera is off"
 msgstr "%{peer} 카메라가 꺼져 있습니다."
@@ -42,12 +42,12 @@ msgstr "게임으로 돌아가기"
 msgid "Browse files"
 msgstr "파일 검색"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:403
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:409
 #, elixir-autogen, elixir-format
 msgid "Camera Off"
 msgstr "카메라 끄기"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:402
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:408
 #, elixir-autogen, elixir-format
 msgid "Camera On"
 msgstr "카메라 On"
@@ -62,12 +62,7 @@ msgstr "게임에 연결."
 msgid "Connect to send a file."
 msgstr "파일을 보낼 수 있습니다."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:64
-#, elixir-autogen, elixir-format
-msgid "Connect to start an audio or video call."
-msgstr "오디오 또는 비디오 통화를 시작하려면 연결하십시오."
-
-#: lib/retro_hex_chat_web/live/chat_live/components/p2p_media_island.ex:310
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_media_island.ex:311
 #, elixir-autogen, elixir-format
 msgid "Could not access your microphone or camera."
 msgstr "마이크 또는 카메라에 액세스 할 수 없습니다."
@@ -77,10 +72,10 @@ msgstr "마이크 또는 카메라에 액세스 할 수 없습니다."
 msgid "Decline"
 msgstr "12 월"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:501
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:723
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:724
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:727
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:508
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:732
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:733
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:736
 #, elixir-autogen, elixir-format
 msgid "Devices"
 msgstr "제품정보"
@@ -90,7 +85,7 @@ msgstr "제품정보"
 msgid "Draw."
 msgstr "파일 형식"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:452
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:458
 #, elixir-autogen, elixir-format
 msgid "End call"
 msgstr "종료 전화"
@@ -110,7 +105,7 @@ msgstr "파일 전송 완료: %{name}"
 msgid "Final Score"
 msgstr "최종 점수"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:550
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:559
 #, elixir-autogen, elixir-format
 msgid "Focus"
 msgstr "주요 특징"
@@ -125,7 +120,7 @@ msgstr "진행중인 게임"
 msgid "Game over — %{game}: %{p1} × %{p2}"
 msgstr "게임 오버 — %{game}: %{p1} × %{p2}"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:381
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:387
 #, elixir-autogen, elixir-format
 msgid "Mute"
 msgstr "이름 *"
@@ -135,37 +130,39 @@ msgstr "이름 *"
 msgid "P1 %{score}"
 msgstr "P1 %{score}"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:494
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:501
 #, elixir-autogen, elixir-format
 msgid "Picture-in-Picture"
 msgstr "그림에서 그림"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:333
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:339
 #, elixir-autogen, elixir-format
 msgid "Start audio"
 msgstr "오디오 시작"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:321
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:327
 #, elixir-autogen, elixir-format
-msgid "Start audio or video — or the peer can, independently. You'll join automatically."
+msgid ""
+"Start audio or video — or the peer can, independently. You'll join "
+"automatically."
 msgstr "오디오 또는 비디오 시작 - 또는 동료는 독립적으로 할 수 있습니다. 자주 묻는 질문"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:341
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:347
 #, elixir-autogen, elixir-format
 msgid "Start video"
 msgstr "동영상 보기"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:392
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:398
 #, elixir-autogen, elixir-format
 msgid "Turn on camera"
 msgstr "카메라 켜기"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:373
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:379
 #, elixir-autogen, elixir-format
 msgid "Turn on microphone"
 msgstr "마이크 켜기"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:381
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:387
 #, elixir-autogen, elixir-format
 msgid "Unmute"
 msgstr "이름 *"

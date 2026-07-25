@@ -377,13 +377,14 @@ msgid "/announce"
 msgstr "/announce"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:74
-#: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:79
+#: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:78
+#: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:83
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autocomplete.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "/autojoin"
 msgstr "/autojoin"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "/autojoin Command"
 msgstr "/autojoin Command"
@@ -473,7 +474,7 @@ msgid "/jo"
 msgstr "/jo"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:5
-#: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:80
+#: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:84
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autocomplete.html.heex:15
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autocomplete.html.heex:48
 #, elixir-autogen, elixir-format
@@ -578,12 +579,12 @@ msgid "/ns identify"
 msgstr "/ns identify"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:8
-#: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:81
+#: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:85
 #, elixir-autogen, elixir-format
 msgid "/part"
 msgstr "/part"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "/perform Command"
 msgstr "/perform Command"
@@ -702,7 +703,7 @@ msgstr ""
 "1. Cliquez et faites glisser pour sélectionner le texte dans la zone de "
 "discussion."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:41
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "1. Perform commands execute sequentially."
 msgstr "1. Exécuter les commandes séquentiellement."
@@ -722,7 +723,7 @@ msgstr "1. Tapez une commande suivie d'un espace (par exemple,"
 msgid "10 attempts"
 msgstr "10 tentatives"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:41
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "2. Auto-join channels are joined after all perform commands complete."
 msgstr ""
@@ -1142,7 +1143,8 @@ msgstr "Auto-Ajouter des contacts PM"
 msgid "Auto-Ignore:"
 msgstr "Ignorer automatiquement:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:17
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "Auto-Join Channels"
 msgstr "Auto-Jouer les canaux"
@@ -1152,7 +1154,7 @@ msgstr "Auto-Jouer les canaux"
 msgid "Auto-Join on Invite"
 msgstr "Auto-Rejoindre sur Inviter"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:52
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "Auto-Reconnect"
 msgstr "Connexion automatique"
@@ -1161,18 +1163,6 @@ msgstr "Connexion automatique"
 #, elixir-autogen, elixir-format
 msgid "Auto-Whois"
 msgstr "Auto-Whois"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:18
-#, elixir-autogen, elixir-format
-msgid ""
-"Auto-join channels are separate from perform commands. They are joined after"
-" all perform commands complete, ensuring that NickServ identification and "
-"other setup happens first."
-msgstr ""
-"Les canaux de jointure automatique sont séparés des commandes d'exécution. "
-"Ils sont rejoints après que toutes les commandes soient terminées, assurant "
-"que l'identification NickServ et d'autres configurations se produisent en "
-"premier."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:22
 #, elixir-autogen, elixir-format
@@ -1728,7 +1718,7 @@ msgstr "Ctrl+Shift+/"
 msgid "Ctrl+Shift+A"
 msgstr "Ctrl+ Maj+ A"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "Ctrl+Shift+E"
 msgstr "Ctrl+ Maj+E"
@@ -1971,7 +1961,7 @@ msgstr ""
 msgid "Empty edit:"
 msgstr "Correction vide :"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Enable / Disable"
 msgstr "Activer / Désactiver"
@@ -2023,7 +2013,7 @@ msgstr "Échapper :"
 msgid "Event Types"
 msgstr "Types d'événements"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "Execution Order"
 msgstr "Ordre d'exécution"
@@ -2774,7 +2764,7 @@ msgstr "Oui."
 msgid "NickName is typing..."
 msgstr "NickName est en train de taper..."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:82
+#: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:86
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:70
 #, elixir-autogen, elixir-format
 msgid "NickServ"
@@ -3053,11 +3043,6 @@ msgstr "Filtrage par type:"
 msgid "Perform / Auto-Commands"
 msgstr "Exécution / Commandes automatiques"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:23
-#, elixir-autogen, elixir-format
-msgid "Perform Dialog"
-msgstr "Effectuer la boîte de dialogue"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Perform List"
@@ -3086,7 +3071,7 @@ msgstr "Persistance:"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_enhanced_history.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ignore_list.html.heex:11
 #: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:11
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:25
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:61
 #: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:9
@@ -3462,7 +3447,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_turn.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_aliases.html.heex:55
-#: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:77
+#: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:81
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_reconnect.html.heex:49
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autocomplete.html.heex:73
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autorespond.html.heex:52
@@ -3497,7 +3482,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:50
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:46
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/feature_quit_message.html.heex:20
@@ -3787,16 +3772,6 @@ msgstr ""
 "La liste d'alerte suit lorsque des utilisateurs spécifiques viennent en "
 "ligne ou vont hors ligne. Vous recevez des notifications dans l'onglet État."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"The Perform system lets you define commands that execute automatically every"
-" time you connect, followed by a list of channels to join."
-msgstr ""
-"Le système Perform vous permet de définir des commandes qui s'exécutent "
-"automatiquement à chaque connexion, suivies d'une liste de canaux à "
-"rejoindre."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:2
 #, elixir-autogen, elixir-format
 msgid ""
@@ -3954,7 +3929,7 @@ msgstr "Le surnom devient disponible pour tout le monde pour s'inscrire"
 msgid "The perform list contains commands (e.g.,"
 msgstr "La liste d'exécution contient des commandes (par exemple,"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:36
 #, elixir-autogen, elixir-format
 msgid ""
 "The perform system can be toggled on or off. When disabled, no commands "
@@ -4600,11 +4575,6 @@ msgid "combinations to avoid conflicting with browser shortcuts."
 msgstr ""
 "combinaisons pour éviter les conflits avec les raccourcis du navigateur."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:75
-#, elixir-autogen, elixir-format
-msgid "command for finer control."
-msgstr "commande pour un contrôle plus fin."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_char_counter.html.heex:3
 #, elixir-autogen, elixir-format
 msgid "current/maximum"
@@ -4766,13 +4736,6 @@ msgstr "onglet."
 msgid "to accept the match, or"
 msgstr "d'accepter le match, ou"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:14
-#, elixir-autogen, elixir-format
-msgid "to add commands, or manage them visually in the Perform Dialog."
-msgstr ""
-"pour ajouter des commandes ou les gérer visuellement dans la boîte de "
-"dialogue Perform."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_enhanced_history.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "to cancel."
@@ -4843,16 +4806,6 @@ msgid ""
 msgstr ""
 "pour ouvrir une barre de recherche en ligne. Tapez pour filtrer les entrées "
 "d'historique par sous-chaîne. Appuyez sur"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:27
-#, elixir-autogen, elixir-format
-msgid ""
-"to open the Perform Dialog, which provides a visual interface for managing "
-"both the perform list and auto-join channels."
-msgstr ""
-"ouvrir la boîte de dialogue Perform Dialog, qui fournit une interface "
-"visuelle pour gérer à la fois la liste des performances et les canaux "
-"d'accès automatique."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:13
 #, elixir-autogen, elixir-format
@@ -5453,16 +5406,6 @@ msgstr ""
 " utilisateurs : votre pseudonyme, l'état de connexion de NickServ, le profil"
 " bio, le statut absent et les modes d'utilisateur personnels."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:23
-#, elixir-autogen, elixir-format
-msgid ""
-"If a session can no longer be found (for example, an old invite whose "
-"session was purged), the card falls back to the plain join link."
-msgstr ""
-"Si une session ne peut plus être trouvée (par exemple, une ancienne "
-"invitation dont la session a été purgée), la carte revient au lien de "
-"jointure."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:10
 #, elixir-autogen, elixir-format
 msgid ""
@@ -5552,13 +5495,6 @@ msgstr ""
 "devient Supprimer Voix (-v). Mute (canal) ouvre une invite de durée; "
 "laissez-la vide pour une mute permanente, ou entrez 30s, 5m, 1h ou 1d. "
 "Unmute (canal) supprime immédiatement le mute au niveau du canal."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_connection_diagram.html.heex:78
-#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:94
-#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:39
-#, elixir-autogen, elixir-format
-msgid "P2P Lobby"
-msgstr "Lobby P2P"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:40
 #, elixir-autogen, elixir-format
@@ -5802,11 +5738,6 @@ msgstr ""
 " /umode +w. Les opérateurs de serveurs et les administrateurs peuvent les "
 "envoyer."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:7
-#, elixir-autogen, elixir-format
-msgid "What the Card Shows"
-msgstr "Ce que la carte montre"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:15
 #, elixir-autogen, elixir-format
 msgid ""
@@ -5899,18 +5830,6 @@ msgstr ""
 msgid ", or in an active P2P session use the"
 msgstr ", ou dans une session P2P active utiliser"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:9
-#, elixir-autogen, elixir-format
-msgid ""
-"A card names who created the session and walks through its lifecycle on a "
-"small timeline: when it was created, when it connected, and — once it is "
-"over — when it ended, how long it ran, and why it closed."
-msgstr ""
-"Un nom de carte qui a créé la session et qui traverse son cycle de vie sur "
-"une petite chronologie: quand elle a été créée, quand elle s'est connectée, "
-"et — une fois terminée — quand elle a pris fin, combien de temps elle a "
-"couru, et pourquoi elle a fermé."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:16
 #, elixir-autogen, elixir-format
 msgid ""
@@ -5932,15 +5851,6 @@ msgstr ""
 msgid "In the P2P setup dialog, check"
 msgstr "Dans la boîte de dialogue de configuration P2P, vérifiez"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"P2P lobby invites appear as rich session cards instead of a plain line with "
-"a link."
-msgstr ""
-"Lobby P2P invites apparaissent comme des cartes de session riches au lieu "
-"d'une ligne simple avec un lien."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "Privacy relay"
@@ -5961,17 +5871,6 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Toggle Privacy Mode"
 msgstr "Activer le mode de confidentialité"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:16
-#, elixir-autogen, elixir-format
-msgid ""
-"While a session is still live the card offers a button — Join or Open lobby "
-"for P2P. Once the session has finished the card shows its final state and "
-"drops the button."
-msgstr ""
-"Alors qu'une session est toujours en direct la carte offre un bouton — "
-"Joindre ou ouvrir le lobby pour P2P. Une fois la session terminée, la carte "
-"affiche son état final et lâche le bouton."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:17
 #, elixir-autogen, elixir-format
@@ -6655,3 +6554,119 @@ msgstr ""
 "utilisateurs de contourner les interdictions, et invite les exceptions (+I) "
 "qui permettent à certains utilisateurs de contourner uniquement le mode "
 "invite."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"Arcade sessions can appear as rich cards, while P2P requests use the PM "
+"header controls and leave a plain P2P line in the transcript."
+msgstr ""
+"Les sessions d'arcade peuvent apparaître comme des cartes riches, tandis que"
+" les requêtes P2P utilisent les commandes d'en-tête PM et laissent une ligne"
+" P2P simple dans la transcription."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:20
+#, elixir-autogen, elixir-format
+msgid ""
+"Auto-join channels live in their own window and are joined after all perform"
+" commands complete, ensuring that NickServ identification and other setup "
+"happens first."
+msgstr ""
+"Les chaînes d'accès automatique vivent dans leur propre fenêtre et sont "
+"jointes après que toutes les commandes soient terminées, assurant que "
+"l'identification NickServ et d'autres configurations se produisent en "
+"premier."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:23
+#, elixir-autogen, elixir-format
+msgid ""
+"If a legacy P2P invite line can no longer find its session, it stays as "
+"inert history instead of showing stale action buttons."
+msgstr ""
+"Si une ligne d'invitation P2P n'arrive plus à trouver sa session, elle reste"
+" inerte au lieu de montrer des boutons d'action."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_connection_diagram.html.heex:78
+#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:94
+#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:39
+#, elixir-autogen, elixir-format
+msgid "P2P Session"
+msgstr "Séance P2P"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:87
+#, elixir-autogen, elixir-format
+msgid "Perform"
+msgstr "Exécution"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Perform Window"
+msgstr "Effectuer la fenêtre"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:9
+#, elixir-autogen, elixir-format
+msgid ""
+"Session summaries name who created the session and walk through its "
+"lifecycle on a small timeline: when it was created, when it connected, and —"
+" once it is over — when it ended, how long it ran, and why it closed."
+msgstr ""
+"Les résumés de la session nomment qui a créé la session et traverse son "
+"cycle de vie sur une petite chronologie: quand elle a été créée, quand elle "
+"s'est connectée, et — une fois terminée — quand elle a pris fin, combien de "
+"temps elle a couru, et pourquoi elle a fermé."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"The Perform system lets you define commands that execute automatically every"
+" time you connect. Channels are handled separately, in Auto-Join."
+msgstr ""
+"Le système Perform vous permet de définir les commandes qui s'exécutent "
+"automatiquement à chaque connexion. Les canaux sont traités séparément, dans"
+" Auto-Join."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "What Session Summaries Show"
+msgstr "Ce que les résumés de séance montrent"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:16
+#, elixir-autogen, elixir-format
+msgid ""
+"While an Arcade session is still live the card can offer Join or Open. P2P "
+"Start, Join and Decline actions live in the PM header instead; finished P2P "
+"history shows final state only."
+msgstr ""
+"Alors qu'une session Arcade est toujours en direct la carte peut offrir Join"
+" ou Open. P2P Start, Join et Decline actions live dans l'en-tête PM à la "
+"place; l'historique fini P2P affiche l'état final seulement."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:75
+#, elixir-autogen, elixir-format
+msgid ""
+"command, or visually in the Auto-Join window — open it from Tools > Auto-"
+"Join, or by typing"
+msgstr ""
+"commande, ou visuellement dans la fenêtre d'Auto-Join — l'ouvrir à partir "
+"d'Outils > Auto-Join, ou en tapant"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "to add commands, or manage them visually in the Perform window."
+msgstr ""
+"pour ajouter des commandes, ou les gérer visuellement dans la fenêtre "
+"Perform."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:29
+#, elixir-autogen, elixir-format
+msgid ""
+"to open the Perform window, which provides a visual interface for managing "
+"the perform list."
+msgstr ""
+"pour ouvrir la fenêtre Perform, qui fournit une interface visuelle pour "
+"gérer la liste des performers."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:79
+#, elixir-autogen, elixir-format
+msgid "with no arguments."
+msgstr "sans argumentation."

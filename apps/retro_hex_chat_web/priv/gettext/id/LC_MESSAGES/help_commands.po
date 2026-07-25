@@ -5271,17 +5271,6 @@ msgstr ""
 "larangan < ph3 > < / ph3 >, tendang, atau hapus, atau ganti nama pengguna, "
 "atur peran, dan < berkas > tanpa < f / 5 > < phns >"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"Open a P2P Lobby with another user: a single persistent peer-to-peer "
-"connection that hosts every feature at once — an audio or video call, file "
-"transfers, and games — all running at the same time."
-msgstr ""
-"Buka Lobby P2P dengan pengguna lain: koneksi peer-to-peer tunggal bahwa host"
-" setiap fitur sekaligus - panggilan audio atau video, transfer file, dan "
-"game - semua berjalan pada waktu yang sama."
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:11
 #, elixir-autogen, elixir-format
 msgid ""
@@ -5303,11 +5292,6 @@ msgstr ""
 "membuka dialog permintaan mengetuk. Saluran rahasia (+ s) benar-benar "
 "tersembunyi dari daftar. Jalur pribadi (+ p) menunjukkan nama mereka tapi "
 "bukan topik mereka. Tekan Escape atau klik Tutup untuk mengabaikan dialog."
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:32
-#, elixir-autogen, elixir-format
-msgid "P2P Lobby"
-msgstr "Lobby P2P"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:2
 #, elixir-autogen, elixir-format
@@ -5466,11 +5450,6 @@ msgstr ""
 "yang sama dengan pesan opsional 200- karakter. Operator kemudian dapat "
 "memutuskan apakah akan mengundang Anda menggunakan"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:27
-#, elixir-autogen, elixir-format
-msgid "You cannot open a lobby with yourself."
-msgstr "Kau tak bisa membuka lobi dengan dirimu sendiri."
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "aop add/del/list <nick>"
@@ -5555,11 +5534,6 @@ msgstr ""
 "bans, dan pengaturan server. Membutuhkan peran administrator server. tab "
 "Admin Console Danger Zone membutuhkan mengetik nama server sebelum eksekusi."
 
-#: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:124
-#, elixir-autogen, elixir-format
-msgid "— Open the P2P Lobby (call, files, and games)"
-msgstr "- Buka Lobby P2P (panggilan, berkas, dan permainan)"
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mute.html.heex:18
 #, elixir-autogen, elixir-format
 msgid ""
@@ -5569,18 +5543,35 @@ msgstr ""
 "- Durasi opsional token seperti 30, 5m, 1h, atau 1d. Pinjam untuk bisu "
 "permanen."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "— The user to open a P2P Lobby with."
-msgstr "- Pengguna untuk membuka Lobby P2P."
+msgid ""
+"Open a P2P Session with another user: a single persistent peer-to-peer "
+"connection that hosts every feature at once — an audio or video call, file "
+"transfers, and games — all running at the same time."
+msgstr ""
+"Buka sesi P2P dengan pengguna lain: koneksi peer-to-peer tunggal yang host "
+"setiap fitur sekaligus - panggilan audio atau video, transfer file, dan game"
+" - semua berjalan pada waktu yang sama."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "P2P Session"
+msgstr "Sesi P2P"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "You cannot start a P2P session with yourself."
+msgstr "Anda tidak dapat memulai sesi P2P dengan diri sendiri."
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:16
 #, elixir-autogen, elixir-format
 msgid ""
 "opens a setup dialog first, so you can preview camera, choose "
 "microphone/camera/speaker, pick receive-only, and enable privacy relay "
-"before the invite is sent. After you confirm, the other user receives an "
-"invite card in your private message. When they accept, the connection is "
+"before the request is sent. After you confirm, the other user receives a P2P"
+" request in your private message, the PM tab opens in the background, and "
+"Join/Decline appear in the PM header. When they accept, the connection is "
 "established right there in the chat: the call starts with each side's chosen"
 " defaults and the P2P Session Console opens with Call, Files, Games and "
 "Stats sections. Several activities run together over the one connection; "
@@ -5589,11 +5580,22 @@ msgid ""
 msgstr ""
 "membuka dialog setup pertama, sehingga Anda dapat pratilik kamera, pilih "
 "mikrofon < ph0 > < / ph0 > < ph1 > < / ph1 >, pilih penerima -saja, dan "
-"aktifkan relay privasi sebelum undangan dikirim. Setelah Anda "
-"mengkonfirmasi, pengguna lain menerima kartu undangan dalam pesan pribadi "
-"Anda. Ketika mereka menerima, koneksi didirikan di sana dalam percakapan: "
-"panggilan dimulai dengan kesalahan yang dipilih oleh setiap pihak dan "
-"jendela sesi (Call, Files, Games, Statistik) dibuka pada desktop obrolan. "
-"Beberapa kegiatan berjalan bersama atas satu koneksi; berakhir satu membuat "
-"yang lain hidup. Menutup setiap jendela sesi memutuskan koneksi sesi "
-"(setelah konfirmasi) - meminimalkan agar tetap berjalan."
+"aktifkan relay privasi sebelum permintaan dikirim. Setelah Anda "
+"mengkonfirmasi, pengguna lain menerima permintaan P2P dalam pesan pribadi "
+"Anda, tab PM dibuka di latar belakang, dan Gabung < ph2 > < / p2 > muncul di"
+" PM header. Ketika mereka menerima, koneksi didirikan di sana dalam "
+"percakapan: panggilan dimulai dengan kesalahan yang dipilih oleh setiap "
+"pihak dan Konsol Sesi P2P dibuka dengan Bagian Call, Files, Games dan Stats."
+" Beberapa kegiatan berjalan bersama atas satu koneksi; berakhir satu membuat"
+" yang lain hidup. Menutup konsol memutuskan koneksi sesi (setelah "
+"konfirmasi) - meminimalkan agar konsol tetap berjalan."
+
+#: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:124
+#, elixir-autogen, elixir-format
+msgid "— Open the P2P Session (call, files, and games)"
+msgstr "- Buka Sesi P2P (panggilan, berkas, dan permainan)"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "— The user to open a P2P Session with."
+msgstr "- Pengguna untuk membuka sesi P2P dengan."

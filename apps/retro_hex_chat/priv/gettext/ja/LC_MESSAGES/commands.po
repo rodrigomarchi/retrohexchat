@@ -3830,33 +3830,33 @@ msgstr ""
 "の特長\n"
 "set, コマンド, addcmd, delcmd, help."
 
-#: lib/retro_hex_chat/commands/handlers/lobby.ex:64
-#, elixir-autogen, elixir-format
-msgid ""
-"Open a P2P lobby that hosts calls, file transfers, and games together over one connection.\n"
-"Requires: both users must be registered and identified (/ns identify)."
-msgstr ""
-"通話、ファイル転送、ゲームを1つにまとめてホストするP2Pロビーを開きます。\n"
-"必須: どちらのユーザーが登録され、識別される必要があります (/ns 識別)。"
-
-#: lib/retro_hex_chat/commands/handlers/lobby.ex:43
-#, elixir-autogen, elixir-format
-msgid ""
-"Open a P2P lobby with another user: one persistent connection that runs an audio/video call, file transfers, and games all at the same time.\n"
-"Requires: both users must be registered and identified (/ns identify)."
-msgstr ""
-"の特長\n"
-"別のユーザーでP2Pロビーを開きます。1つの永続的な接続で、Audio/video コール、ファイル転送、ゲームを同時に実行します。\n"
-"必須: どちらのユーザーが登録され、識別される必要があります (/ns 識別)。"
-
 #: lib/retro_hex_chat/commands/handlers/lobby.ex:99
 #, elixir-autogen, elixir-format
 msgid "User '%{nickname}' is offline."
 msgstr "ユーザー '%{nickname}' はオフラインです。"
 
-#: lib/retro_hex_chat/commands/handlers/lobby.ex:89
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:64
 #, elixir-autogen, elixir-format
-msgid "You cannot open a lobby with yourself."
+msgid ""
+"Open a P2P session that hosts calls, file transfers, and games together over one connection.\n"
+"Requires: both users must be registered and identified (/ns identify)."
+msgstr ""
+"通話、ファイル転送、ゲームを1つの接続でホストするP2Pセッションを開きます。\n"
+"必須: どちらのユーザーが登録され、識別される必要があります (/ns 識別)。"
+
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:43
+#, elixir-autogen, elixir-format
+msgid ""
+"Open a P2P session with another user: one persistent connection that runs an audio/video call, file transfers, and games all at the same time.\n"
+"Requires: both users must be registered and identified (/ns identify)."
 msgstr ""
 "の特長\n"
-"ロビーを自分で開くことはできません。"
+"別のユーザーで P2P セッションを開きます。1つの永続的な接続で、オーディオ/video コール、ファイル転送、ゲームを同時に実行します。\n"
+"必須: どちらのユーザーが登録され、識別される必要があります (/ns 識別)。"
+
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:89
+#, elixir-autogen, elixir-format
+msgid "You cannot start a P2P session with yourself."
+msgstr ""
+"の特長\n"
+"P2P セッションを自分で起動することはできません。"

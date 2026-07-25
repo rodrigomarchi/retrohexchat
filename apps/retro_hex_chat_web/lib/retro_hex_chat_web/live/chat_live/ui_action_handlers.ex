@@ -48,7 +48,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActionHandlers do
   )a
 
   @autojoin_actions ~w(
-    autojoin_list_display autojoin_add autojoin_remove autojoin_clear
+    open_autojoin_dialog autojoin_list_display autojoin_add autojoin_remove autojoin_clear
   )a
 
   @invite_actions ~w(send_invite toggle_auto_join_on_invite)a

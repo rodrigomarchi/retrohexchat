@@ -72,7 +72,9 @@ msgstr "닫기 그룹 통화?"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:94
 #, elixir-autogen, elixir-format
-msgid "Closing this window leaves the group call in %{channel}. To keep the call running and just tidy up, minimize the window instead."
+msgid ""
+"Closing this window leaves the group call in %{channel}. To keep the call "
+"running and just tidy up, minimize the window instead."
 msgstr ""
 "이 창을 닫는 것은 %{channel}에서 그룹 호출을 나타낸다. 호출 실행을 유지하고 그냥 tidy up, 대신 창을 최소화."
 
@@ -130,15 +132,17 @@ msgstr "End 그룹 호출"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:111
 #, elixir-autogen, elixir-format
-msgid "End the group call in %{channel} for everyone? All participants will be disconnected."
+msgid ""
+"End the group call in %{channel} for everyone? All participants will be "
+"disconnected."
 msgstr "그룹 호출 종료 %{channel} 모두? 모든 참가자는 차단됩니다."
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:272
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:276
 #: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:37
 #: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:354
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1074
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1075
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:558
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:586
 #: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:89
 #, elixir-autogen, elixir-format
 msgid "Group Call"
@@ -238,7 +242,9 @@ msgstr "그룹 호출"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:86
 #, elixir-autogen, elixir-format
-msgid "Leave the group call in %{channel}? Your microphone and camera will disconnect."
+msgid ""
+"Leave the group call in %{channel}? Your microphone and camera will "
+"disconnect."
 msgstr "%{channel} 에서 그룹 통화를 남겨주세요. 마이크와 카메라가 분리됩니다."
 
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1477
@@ -309,7 +315,9 @@ msgstr "관련 항목"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:102
 #, elixir-autogen, elixir-format
-msgid "You are already in a group call in %{channel}. Leave it and join the call in %{new_channel}?"
+msgid ""
+"You are already in a group call in %{channel}. Leave it and join the call in"
+" %{new_channel}?"
 msgstr "%{channel} 에서 그룹 통화에 이미 있습니다. %{new_channel} 에서 통화를 남겨주세요."
 
 #: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:721
@@ -435,7 +443,9 @@ msgstr "%{inbound} / %{fanout} 팬아웃"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:67
 #, elixir-autogen, elixir-format
-msgid "%{level} quality: RTT %{rtt} ms, loss %{loss}%, %{bitrate} kbps, %{fps} fps, freezes %{freezes}"
+msgid ""
+"%{level} quality: RTT %{rtt} ms, loss %{loss}%, %{bitrate} kbps, %{fps} fps,"
+" freezes %{freezes}"
 msgstr ""
 "%{level} 품질: RTT %{rtt} ms, 손실 %{loss}%, %{bitrate} kbps, %{fps} fps, "
 "%{freezes}"
@@ -509,7 +519,8 @@ msgstr "%{sent} 위 / %{received} 아래로"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:358
 #, elixir-autogen, elixir-format
-msgid "%{state} conference in %{channel}: %{count}/%{max} participants, %{duration}"
+msgid ""
+"%{state} conference in %{channel}: %{count}/%{max} participants, %{duration}"
 msgstr "%{state} 컨퍼런스 %{channel}: %{count}/%{max} 참가자, %{duration}"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:545
@@ -1118,7 +1129,9 @@ msgstr "모든 저랭크 참가자"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:128
 #, elixir-autogen, elixir-format
-msgid "Mute all lower-ranked participants in %{channel}? They cannot unmute until a moderator allows their microphone again."
+msgid ""
+"Mute all lower-ranked participants in %{channel}? They cannot unmute until a"
+" moderator allows their microphone again."
 msgstr "%{channel}의 모든 저랭크 참가자는? 모드러레이터가 마이크를 다시 허용 할 때까지 그들은 무언 할 수 없습니다."
 
 #: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:630
@@ -1298,7 +1311,10 @@ msgstr "원격 스트림"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:119
 #, elixir-autogen, elixir-format
-msgid "Remove %{target} from %{channel}? This will ban them from the channel, disconnect them from the conference, and prevent them from rejoining until a channel operator unbans them."
+msgid ""
+"Remove %{target} from %{channel}? This will ban them from the channel, "
+"disconnect them from the conference, and prevent them from rejoining until a"
+" channel operator unbans them."
 msgstr ""
 "%{target} 을 %{channel} 에서 제거하세요? 이 채널에서 그들을 금지, 회의에서 분리, 채널 운영자가 그들을 악화 할 "
 "때까지 기뻐에서 그들을 방지."
@@ -1539,7 +1555,9 @@ msgstr "모든 저전력 카메라를 끄"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:136
 #, elixir-autogen, elixir-format
-msgid "Turn off cameras for all lower-ranked participants in %{channel}? They cannot turn camera back on until a moderator allows it again."
+msgid ""
+"Turn off cameras for all lower-ranked participants in %{channel}? They "
+"cannot turn camera back on until a moderator allows it again."
 msgstr "%{channel}의 모든 저랭크 참가자들을 위한 카메라를 끄세요? 카메라를 다시 모드로 설정할 수 없습니다."
 
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1407
@@ -1646,7 +1664,9 @@ msgstr "컨퍼런스"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/pre_join_dialog.ex:202
 #, elixir-autogen, elixir-format
-msgid "Each browser sends media to the room server; the server routes streams to the other participants."
+msgid ""
+"Each browser sends media to the room server; the server routes streams to "
+"the other participants."
 msgstr "각 브라우저는 룸 서버에 미디어를 보냅니다. 서버 경로는 다른 참가자에게 스트림합니다."
 
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:871
@@ -1718,7 +1738,9 @@ msgstr "오디오 + 비디오"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/pre_join_dialog.ex:71
 #, elixir-autogen, elixir-format
-msgid "Choose how you enter the room. You can change media and layout after joining."
+msgid ""
+"Choose how you enter the room. You can change media and layout after "
+"joining."
 msgstr "방에 들어가는 방법을 선택하십시오. 가입 후 미디어 및 레이아웃을 변경할 수 있습니다."
 
 #: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:53

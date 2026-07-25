@@ -1,0 +1,137 @@
+/* Auto-Join edits the channels joined on connect. Rows carry no ordinal, so the
+   entry is a single column — the one shape difference from the Perform list. */
+.aj-dialog {
+  scrollbar-width: thin;
+}
+
+.aj-dialog:focus {
+  outline: none;
+}
+
+.aj-entry-list {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-height: 132px;
+  overscroll-behavior: contain;
+  padding: 6px;
+  background: #ffffff;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}
+
+.aj-entry,
+.aj-entry-content,
+.aj-entry-label,
+.aj-entry-meta,
+.aj-sub-form {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.aj-entry {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #808080;
+  background: #c0c0c0;
+  color: #000000;
+  text-align: left;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}
+
+.aj-entry:hover {
+  background: #dfdfdf;
+}
+
+.aj-entry:focus-visible {
+  outline: 2px solid #000000;
+  outline-offset: 1px;
+}
+
+.aj-entry.bg-selection-bg {
+  background: #000080;
+  color: #ffffff;
+}
+
+.aj-entry-content {
+  display: grid;
+  gap: 3px;
+}
+
+.aj-entry-label {
+  font-family: "Courier New", "Lucida Console", ui-monospace, monospace;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.aj-entry-meta {
+  color: #606060;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.aj-entry.bg-selection-bg .aj-entry-meta {
+  color: inherit;
+}
+
+.aj-empty-state {
+  display: grid;
+  min-height: 96px;
+  place-items: center;
+  padding: 12px;
+  border: 1px dashed #808080;
+  background: #dfdfdf;
+  font-size: 12px;
+}
+
+.aj-action-row,
+.aj-form-actions,
+.aj-dialog-footer {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.aj-action-button {
+  white-space: nowrap;
+}
+
+.desktop--stacked .aj-dialog {
+  padding-bottom: 8px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.desktop--stacked .aj-entry-list {
+  max-height: min(42vh, 320px);
+}
+
+.desktop--stacked .aj-entry {
+  min-height: 64px;
+  padding: 9px 10px;
+}
+
+.desktop--stacked .aj-action-row,
+.desktop--stacked .aj-form-actions,
+.desktop--stacked .aj-dialog-footer {
+  gap: 6px;
+}
+
+.desktop--stacked .aj-action-button {
+  min-height: 40px;
+  padding-inline: 12px;
+}
+
+.desktop--stacked .aj-dialog input:not([type="checkbox"]):not([type="radio"]) {
+  min-height: 40px;
+  min-width: 0;
+  font-size: 16px;
+}

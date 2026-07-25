@@ -11,12 +11,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5);\n"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:218
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:224
 #, elixir-autogen, elixir-format
 msgid "%{peer} is muted"
 msgstr "%{peer} طين"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:148
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:154
 #, elixir-autogen, elixir-format
 msgid "%{peer}'s camera is off"
 msgstr "%{peer}الكاميرا مغلقة"
@@ -42,12 +42,12 @@ msgstr "العودة إلى الألعاب"
 msgid "Browse files"
 msgstr "Browse files"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:403
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:409
 #, elixir-autogen, elixir-format
 msgid "Camera Off"
 msgstr "آلة تصوير"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:402
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:408
 #, elixir-autogen, elixir-format
 msgid "Camera On"
 msgstr "آلة تصوير"
@@ -62,12 +62,7 @@ msgstr "اتصل للعب لعبة"
 msgid "Connect to send a file."
 msgstr "إتّصلْ لإرسال a ملف."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:64
-#, elixir-autogen, elixir-format
-msgid "Connect to start an audio or video call."
-msgstr "إتّصلْ ليَبْدأُ a نداء صوتي أَو فيديو."
-
-#: lib/retro_hex_chat_web/live/chat_live/components/p2p_media_island.ex:310
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_media_island.ex:311
 #, elixir-autogen, elixir-format
 msgid "Could not access your microphone or camera."
 msgstr "لم أستطع الوصول إلى مكبر الصوت أو الكاميرا"
@@ -77,10 +72,10 @@ msgstr "لم أستطع الوصول إلى مكبر الصوت أو الكام�
 msgid "Decline"
 msgstr "Decline"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:501
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:723
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:724
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:727
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:508
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:732
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:733
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:736
 #, elixir-autogen, elixir-format
 msgid "Devices"
 msgstr "الأجهزة"
@@ -90,7 +85,7 @@ msgstr "الأجهزة"
 msgid "Draw."
 msgstr "سحب."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:452
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:458
 #, elixir-autogen, elixir-format
 msgid "End call"
 msgstr "النداء النهائي"
@@ -110,7 +105,7 @@ msgstr "أنجز نقل الملفات: %{name}"
 msgid "Final Score"
 msgstr "العدد النهائي"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:550
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:559
 #, elixir-autogen, elixir-format
 msgid "Focus"
 msgstr "التركيز"
@@ -125,7 +120,7 @@ msgstr "اللعبة قيد التنفيذ"
 msgid "Game over — %{game}: %{p1} × %{p2}"
 msgstr "انتهت اللعبة %{game}: %{p1} × %{p2}"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:381
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:387
 #, elixir-autogen, elixir-format
 msgid "Mute"
 msgstr "Mute"
@@ -135,39 +130,41 @@ msgstr "Mute"
 msgid "P1 %{score}"
 msgstr "P1 %{score}"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:494
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:501
 #, elixir-autogen, elixir-format
 msgid "Picture-in-Picture"
 msgstr "الصورة في الصورة"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:333
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:339
 #, elixir-autogen, elixir-format
 msgid "Start audio"
 msgstr "ابدأ بالصوت"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:321
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:327
 #, elixir-autogen, elixir-format
-msgid "Start audio or video — or the peer can, independently. You'll join automatically."
+msgid ""
+"Start audio or video — or the peer can, independently. You'll join "
+"automatically."
 msgstr ""
 "ابدأ التصوير الصوتي أو الفيديو - أو يمكن للأقران، بشكل مستقل. ستنضمين "
 "تلقائياً"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:341
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:347
 #, elixir-autogen, elixir-format
 msgid "Start video"
 msgstr "بدء الفيديو"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:392
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:398
 #, elixir-autogen, elixir-format
 msgid "Turn on camera"
 msgstr "شغل الكاميرا"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:373
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:379
 #, elixir-autogen, elixir-format
 msgid "Turn on microphone"
 msgstr "شغل الميكروفون"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:381
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:387
 #, elixir-autogen, elixir-format
 msgid "Unmute"
 msgstr "غير لطيف"

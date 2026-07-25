@@ -120,6 +120,12 @@ defmodule RetroHexChatWeb.Components.UI.ToolbarApp do
             on_action={@on_action}
           />
           <.dropdown_item
+            icon_fn={:icon_btn_autojoin}
+            label={dgettext("ui", "Auto-Join")}
+            action="open_autojoin_dialog"
+            on_action={@on_action}
+          />
+          <.dropdown_item
             icon_fn={:icon_btn_sounds}
             label={dgettext("ui", "Sounds")}
             action="open_sound_settings_dialog"

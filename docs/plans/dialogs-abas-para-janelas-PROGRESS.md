@@ -24,7 +24,8 @@ previa, e as decisões tomadas em execução. Aprendizados duráveis migram para
 | 8 | `admin-danger-zone` | ✅ feito | — |
 | 9 | `admin-console` — monólito deletado, recriado só com o REPL | ✅ feito | — |
 | 10 | **Limpeza** (§6 do plano) | ✅ feito | — |
-| 11 | **Channel Central** — 6→4 abas (fusão das 3 listas de acesso) | ✅ feito | — |
+| 11 | **Channel Central** — 6→4 abas (fusão das 3 listas de acesso) | ✅ feito | `a0289349` |
+| 12 | **Perform** — `perform` + `autojoin` (2 abas → 2 janelas) | ✅ feito | — |
 
 Ordem: o Admin Console (era a Fase 6 do plano) foi promovido a primeiro caso por
 ser o mais complexo — é ele que deriva o playbook.
@@ -477,6 +478,102 @@ Depois de traduzir: diff semântico contra o snapshot pré-merge comparando
 - **O flake de P2P subiu de frequência e continua sem causa.** Ver
   "Testes flaky" abaixo — investigado a fundo no rebase, duas hipóteses
   descartadas.
+
+---
+
+## Fase 4 — Perform → `perform` + `autojoin` ✅ 2026-07-25
+
+**Feito.** As duas abas viraram duas janelas. Janelas: 30 → 31.
+
+Por janela: apresentacional (`_dialog/1` framed + `_panel/1`), island, hook de
+eventos próprio, `@managed`, bloco `desktop_window`, taskbar, entrada nas três
+superfícies, página de showcase + 4 registros, teste de island, teste de
+feature, page object e spec e2e, tópico de ajuda.
+
+**Validação:** `make ci` **9/9** · 133/133 nas suítes tocadas (feature + island +
+showcase smoke) · `lint.css` 0/0/0.
+
+### O que a extração pura confirmou do playbook
+
+A Parte I funcionou sem emenda — foi a primeira extração feita **lendo** o
+playbook em vez de derivá-lo. Os 7 pontos de wiring, a ordem "nada é deletado
+antes de o substituto compilar" e a escada de verificação bateram. Duas notas
+novas:
+
+- **Sem aba, não há diretiva de abertura.** As duas janelas trocaram
+  `Windows.open_with/4` por `Windows.open/2` e apagaram a cláusula
+  `update(%{open: ...})`. Como a janela é gerenciada, fechar desmonta o island —
+  o estado que a diretiva resetava é reconstruído no mount seguinte. Manter a
+  cláusula seria código morto nascendo junto com a janela.
+- **O hook compartilhado se divide junto.** `perform_autojoin_events.ex` (um
+  módulo, dois donos) virou `perform_events.ex` + `autojoin_events.ex`. O nome
+  composto era o rastro de que ali moravam duas features.
+
+### Aprendizados novos
+
+- **As três superfícies de entrada não têm o mesmo contrato.** Menu bar e
+  toolbar emitem a ação (`data-testid="context-menu-item-open_autojoin_dialog"`);
+  o **start menu** abre a janela direto pelo window manager
+  (`data-window-open="autojoin"`, testid `start-menu-item-autojoin`). Meu teste
+  de entry points nasceu com a asserção do Admin — um `or` entre os dois shapes —
+  e reprovou. Corrigido para cada superfície asseriar **o seu** contrato: um `or`
+  teria deixado passar uma entrada faltando na superfície ímpar, que é
+  exatamente o furo do E3.
+- **Ícone de aba vira ícone de janela.** `icon_tab_autojoin` ficaria órfão (o
+  prefixo `icon_tab_` mente numa janela sem abas). Virou o par
+  `icon_dialog_autojoin` + `icon_btn_autojoin`, com os 4 usos em tópicos de
+  ajuda repontados. **Checar os usos como átomo** (`icon: :icon_tab_autojoin`) —
+  grep pelo nome da função não os acha.
+- **CSS: aqui a duplicação venceu o compartilhamento.** O Admin compartilhou
+  `admin.css` entre 9 janelas irmãs; com 2, segui o contrato literal do plano
+  (§8.13) e criei `autojoin.css` com prefixo `aj-`. `perform.css` perdeu 80
+  linhas do scroller de abas mobile que morreram com o shell — o mesmo padrão do
+  `.ac-main-tabs*` no Admin. **Regra:** família grande compartilha, par
+  extraído duplica.
+- **`window_item` do start menu não aceita `action`.** Ele emite
+  `data-window-open` e o testid é o **id da janela**, não o da ação. Perform já
+  era assim; copiar o padrão do vizinho antes de escrever o teste teria evitado
+  a reprovação.
+
+### A dívida de i18n que o rebase entregou
+
+Os 6 commits de P2P que chegaram do upstream renomearam "P2P Lobby" → "P2P
+Session" **sem re-extrair os catálogos**. O `extract` desta fase acusou 17
+`.pot` alterados: 6 meus, 11 deles.
+
+Tentei a disciplina de escopo do playbook (reverter o que não é meu), mas
+`help.pot`, `chat.pot` e `help_features.pot` estão **misturados** — carregam as
+minhas strings e as deles no mesmo arquivo. Reverter perderia as minhas; manter
+sem tratar deixa entradas vazias que o `catalog.check` reprova.
+
+**Decisão:** absorver a dívida inteira — extract completo, merge dos 17 domínios,
+tradução dos 20 locales. Nenhum arquivo de código P2P foi tocado (decisão §12.2
+intacta); o que entrou foram catálogos, que são arquivos compartilhados e não
+têm dono por feature.
+
+**O custo foi bem maior do que eu estimei.** A rodada gerou 1.470 entradas novas
+e **354 traduções existentes destruídas** — domínios como `chat`, `group_call`,
+`p2p`, `commands` e `lobby` são cheios de strings em fallback inglês com
+placeholders, e o tradutor automático varre o arquivo inteiro. Amostra do dano:
+`"%{field}: %{errors}"` → `"<ph0>/ph0>: <ph1>/ph1>"`,
+`"5:%{seconds}"` → `"৫:২ <f00>"`.
+
+Limpeza em três passos, nesta ordem:
+
+1. **Restaurar as 354** a partir do snapshot pré-merge (comparando `msgstr`
+   **e** `msgstr_plural`). Sobrou 0 colateral, 1.470 novas preservadas.
+2. **Reparar placeholders** nas 45 entradas novas que os perderam
+   (`i18n_repair_placeholder_mismatches.py`) — mas atenção: o reparo devolve o
+   **inglês** para recuperar os `%{}`, o que troca `placeholder.check` verde por
+   `source-fallback.check` vermelho.
+3. **Traduzir essas 45 à mão** (5 strings × 9 locales: ar, bn, de, es, id, it,
+   pl, ur, vi). Os outros 11 locales o tradutor acertou.
+
+**Regra revisada:** quando um catálogo fica misturado, a disciplina de escopo não
+se aplica — ela pressupõe arquivos separáveis. Mas absorver **não** é barato:
+orce o diff semântico + restauração + reparo + tradução manual do resíduo. Se a
+dívida alheia for grande, um commit separado de `chore(i18n)` provavelmente sai
+melhor do que carregá-la junto.
 
 ---
 

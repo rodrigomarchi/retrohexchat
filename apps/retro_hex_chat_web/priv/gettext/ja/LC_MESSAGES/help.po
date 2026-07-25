@@ -11,7 +11,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat_web/live/help_live/index.ex:143
+#: lib/retro_hex_chat_web/live/help_live/index.ex:135
 #, elixir-autogen, elixir-format
 msgid "%{topic} — RetroHexChat Help"
 msgstr "%{topic} — RetroHexChat ヘルプ"
@@ -126,7 +126,9 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:16
 #, elixir-autogen, elixir-format
-msgid "3. On success, you join the chat already identified — the 60-second identify timer is skipped."
+msgid ""
+"3. On success, you join the chat already identified — the 60-second identify"
+" timer is skipped."
 msgstr ""
 "の特長\n"
 "3。 成功すると、すでに識別されたチャットに参加します。 60秒の識別タイマーがスキップされます。"
@@ -154,7 +156,8 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:35
 #, elixir-autogen, elixir-format
-msgid "4. Your nickname is registered and you join the chat already identified."
+msgid ""
+"4. Your nickname is registered and you join the chat already identified."
 msgstr ""
 "の特長\n"
 "4。 あなたのニックネームは登録され、あなたはすでに識別されたチャットに参加します。"
@@ -263,7 +266,10 @@ msgstr "お問い合わせ"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:24
 #, elixir-autogen, elixir-format
-msgid "Every nickname must be registered before entering the chat. When you connect with a new nickname, you'll be asked to choose a password to register it. On future visits, you'll enter your password to log in."
+msgid ""
+"Every nickname must be registered before entering the chat. When you connect"
+" with a new nickname, you'll be asked to choose a password to register it. "
+"On future visits, you'll enter your password to log in."
 msgstr ""
 "の特長\n"
 "チャットに入る前にすべてのニックネームを登録する必要があります。 新規のニックネームに接続すると、登録するパスワードを選択してください。 今後の訪問では、パスワードを入力してログインします。"
@@ -295,7 +301,6 @@ msgstr ""
 "ヘルプナビゲーション"
 
 #: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:54
-#: lib/retro_hex_chat_web/live/help_live/index.ex:142
 #, elixir-autogen, elixir-format
 msgid "Help — RetroHexChat"
 msgstr ""
@@ -453,21 +458,19 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "RetroHexChat handles all authentication directly on the connection screen — no need to run"
+msgid ""
+"RetroHexChat handles all authentication directly on the connection screen — "
+"no need to run"
 msgstr ""
 "の特長\n"
 "RetroHexChat は、接続画面に直接すべての認証を処理します。実行する必要はありません。"
 
-#: lib/retro_hex_chat_web/live/help_live/index.ex:147
-#, elixir-autogen, elixir-format
-msgid "RetroHexChat help documentation. Learn about IRC commands, channel modes, features, and keyboard shortcuts."
-msgstr ""
-"の特長\n"
-"RetroHexChat はドキュメントのヘルプです。 IRC コマンド、チャンネルモード、機能、キーボードショートカットについて学びます。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "RetroHexChat is a web-based IRC client with an authentic retro look and feel. It supports channels, private messages, text formatting, nick services, and much more."
+msgid ""
+"RetroHexChat is a web-based IRC client with an authentic retro look and "
+"feel. It supports channels, private messages, text formatting, nick "
+"services, and much more."
 msgstr ""
 "RetroHexChatは、本物のレトロな外観と感じのWebベースのIRCクライアントです。 "
 "チャネル、プライベートメッセージ、テキストのフォーマット、ニックネームサービスなどをサポートしています。"
@@ -513,7 +516,8 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "To connect to RetroHexChat, enter a nickname on the connect screen and click"
+msgid ""
+"To connect to RetroHexChat, enter a nickname on the connect screen and click"
 msgstr ""
 "の特長\n"
 "RetroHexChatに接続するには、接続画面にニックネームを入力し、クリックします"
@@ -527,14 +531,17 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "You can send private messages to other users that only the two of you can see."
+msgid ""
+"You can send private messages to other users that only the two of you can "
+"see."
 msgstr ""
 "の特長\n"
 "プライベートメッセージを他のユーザーに送ることができます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:50
 #, elixir-autogen, elixir-format
-msgid "are automatically freed. Connect regularly to keep your registration. See"
+msgid ""
+"are automatically freed. Connect regularly to keep your registration. See"
 msgstr ""
 "の特長\n"
 "自動的に解放されます。 定期的に接続して登録を続けます。 お問い合わせ"
@@ -569,7 +576,9 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:15
 #, elixir-autogen, elixir-format
-msgid "to open a PM tab. You can also double-click a nickname to open a PM directly."
+msgid ""
+"to open a PM tab. You can also double-click a nickname to open a PM "
+"directly."
 msgstr ""
 "の特長\n"
 "PMタブを開きます。 ニックネームをダブルクリックしてPMを直接開くこともできます。"
@@ -604,7 +613,9 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:35
 #, elixir-autogen, elixir-format
-msgid "— A registration form appears. Choose a password (minimum 5 characters) and confirm it. Click"
+msgid ""
+"— A registration form appears. Choose a password (minimum 5 characters) and "
+"confirm it. Click"
 msgstr ""
 "の特長\n"
 "— 登録フォームが表示されます。 パスワード(最小5文字)を選択し、確認します。 クリック"
@@ -649,7 +660,9 @@ msgstr "コンテンツ"
 
 #: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:21
 #, elixir-autogen, elixir-format
-msgid "For a lightweight message that does not open a PM tab on the recipient's side, choose Send Notice from a nickname context menu or use"
+msgid ""
+"For a lightweight message that does not open a PM tab on the recipient's "
+"side, choose Send Notice from a nickname context menu or use"
 msgstr ""
 "の特長\n"
 "受信側でPMタブを開けない軽量メッセージの場合、ニックネームのコンテキストメニューから通知を送信するか、または使用してください。"

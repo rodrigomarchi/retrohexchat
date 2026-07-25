@@ -67,6 +67,7 @@ export class ChatPage {
   readonly highlightWordsMenuItem: Locator;
   readonly channelCentralMenuItem: Locator;
   readonly performMenuItem: Locator;
+  readonly autojoinMenuItem: Locator;
   readonly soundSettingsMenuItem: Locator;
   readonly aliasEditorMenuItem: Locator;
   readonly floodProtectionMenuItem: Locator;
@@ -193,6 +194,7 @@ export class ChatPage {
   readonly urlCatcherSearch: Locator;
   readonly urlCatcherRows: Locator;
   readonly performDialog: Locator;
+  readonly autojoinDialog: Locator;
   readonly performAddDialog: Locator;
   readonly performEditDialog: Locator;
   readonly autojoinAddDialog: Locator;
@@ -373,6 +375,10 @@ export class ChatPage {
       "open_channel_central",
     );
     this.performMenuItem = visibleContextMenuItem(page, "open_perform_dialog");
+    this.autojoinMenuItem = visibleContextMenuItem(
+      page,
+      "open_autojoin_dialog",
+    );
     this.soundSettingsMenuItem = visibleContextMenuItem(
       page,
       "open_sound_settings_dialog",
@@ -566,6 +572,7 @@ export class ChatPage {
     this.urlCatcherSearch = page.getByTestId("url-catcher-search");
     this.urlCatcherRows = this.urlCatcherDialog.getByTestId("url-catcher-row");
     this.performDialog = page.getByTestId("perform-window");
+    this.autojoinDialog = page.getByTestId("autojoin-window");
     this.performAddDialog = page.getByTestId("perform-add-dialog");
     this.performEditDialog = page.getByTestId("perform-edit-dialog");
     this.autojoinAddDialog = page.getByTestId("autojoin-add-dialog");
@@ -1835,11 +1842,11 @@ export class ChatPage {
   }
 
   performCommandsPanel(): Locator {
-    return this.performDialog.locator('.tabs-content[value="commands"]');
+    return this.performDialog.getByTestId("perform-panel");
   }
 
-  performAutojoinPanel(): Locator {
-    return this.performDialog.locator('.tabs-content[value="autojoin"]');
+  autojoinPanel(): Locator {
+    return this.autojoinDialog.getByTestId("autojoin-panel");
   }
 
   async addPerformCommand(command: string) {
@@ -1879,22 +1886,26 @@ export class ChatPage {
     await expect(this.performDialog).toBeHidden();
   }
 
-  async switchPerformDialogToAutojoinTab() {
-    await this.performDialog.getByRole("button", { name: "Auto-Join" }).click();
-    await expect(this.performAutojoinPanel()).toBeVisible();
+  async openAutojoinDialogFromMenu() {
+    await this.openToolsMenuItem(this.autojoinMenuItem);
+    await this.autojoinMenuItem.click();
+    await expect(this.autojoinDialog).toBeVisible();
+  }
+
+  async closeAutojoinDialog() {
+    await this.autojoinDialog.locator('[data-window-control="close"]').click();
+    await expect(this.autojoinDialog).toBeHidden();
   }
 
   autojoinRow(channel: string): Locator {
-    return this.performAutojoinPanel()
+    return this.autojoinPanel()
       .getByTestId("autojoin-row")
       .filter({ hasText: channel })
       .first();
   }
 
   async addAutojoinEntry(channel: string, key = "") {
-    await this.performAutojoinPanel()
-      .getByRole("button", { name: "Add" })
-      .click();
+    await this.autojoinPanel().getByRole("button", { name: "Add" }).click();
     await expect(this.autojoinAddDialog).toBeVisible();
     await this.autojoinAddDialog
       .locator("#autojoin-channel-input")
@@ -1907,9 +1918,7 @@ export class ChatPage {
 
   async editAutojoinKey(channel: string, key: string) {
     await this.autojoinRow(channel).click();
-    await this.performAutojoinPanel()
-      .getByRole("button", { name: "Edit" })
-      .click();
+    await this.autojoinPanel().getByRole("button", { name: "Edit" }).click();
     await expect(this.autojoinEditDialog).toBeVisible();
     await this.autojoinEditDialog.locator("#autojoin-edit-key").fill(key);
     await this.autojoinEditDialog.getByRole("button", { name: "OK" }).click();
@@ -1918,9 +1927,7 @@ export class ChatPage {
 
   async removeAutojoinEntry(channel: string) {
     await this.autojoinRow(channel).click();
-    await this.performAutojoinPanel()
-      .getByRole("button", { name: "Remove" })
-      .click();
+    await this.autojoinPanel().getByRole("button", { name: "Remove" }).click();
     await expect(this.autojoinRow(channel)).toHaveCount(0);
   }
 

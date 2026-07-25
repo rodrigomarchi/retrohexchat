@@ -3238,30 +3238,30 @@ msgstr ""
 msgid "set, commands, addcmd, delcmd, help.\n"
 msgstr "thiết lập, lệnh, addcmd, delcmd, help."
 
-#: lib/retro_hex_chat/commands/handlers/lobby.ex:64
-#, elixir-autogen, elixir-format
-msgid ""
-"Open a P2P lobby that hosts calls, file transfers, and games together over one connection.\n"
-"Requires: both users must be registered and identified (/ns identify)."
-msgstr ""
-"Mở một hành lang P2P mà chủ thể gọi, chuyển tập tin, và trò chơi cùng nhau trên một kết nối.\n"
-"Yêu cầu: cần phải đăng ký và nhận diện cả hai người dùng (<ph0>}."
-
-#: lib/retro_hex_chat/commands/handlers/lobby.ex:43
-#, elixir-autogen, elixir-format
-msgid ""
-"Open a P2P lobby with another user: one persistent connection that runs an audio/video call, file transfers, and games all at the same time.\n"
-"Requires: both users must be registered and identified (/ns identify)."
-msgstr ""
-"Mở một hành lang P2P với một người dùng khác: một kết nối bền bỉ chạy một cuộc gọi, chuyển tập tin, và trò chơi cùng một lúc.\n"
-"Yêu cầu: cần phải đăng ký và nhận diện cả hai người dùng (<ph1>}."
-
 #: lib/retro_hex_chat/commands/handlers/lobby.ex:99
 #, elixir-autogen, elixir-format
 msgid "User '%{nickname}' is offline."
 msgstr "Người dùng '%{nickname}' đang ngoại tuyến."
 
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:64
+#, elixir-autogen, elixir-format
+msgid ""
+"Open a P2P session that hosts calls, file transfers, and games together over one connection.\n"
+"Requires: both users must be registered and identified (/ns identify)."
+msgstr ""
+"Mở một phiên chạy P2P mà máy gọi, chuyển tập tin, và trò chơi cùng nhau qua kết nối.\n"
+"Yêu cầu: cần phải đăng ký và nhận diện cả hai người dùng (<ph0>}."
+
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:43
+#, elixir-autogen, elixir-format
+msgid ""
+"Open a P2P session with another user: one persistent connection that runs an audio/video call, file transfers, and games all at the same time.\n"
+"Requires: both users must be registered and identified (/ns identify)."
+msgstr ""
+"Mở một phiên chạy P2P với người dùng khác: một kết nối bền bỉ chạy một cuộc gọi, chuyển tập tin, và trò chơi cùng một lúc.\n"
+"Yêu cầu: cần phải đăng ký và nhận diện cả hai người dùng (<ph1>}."
+
 #: lib/retro_hex_chat/commands/handlers/lobby.ex:89
 #, elixir-autogen, elixir-format
-msgid "You cannot open a lobby with yourself."
-msgstr "Anh không thể mở hành lang một mình."
+msgid "You cannot start a P2P session with yourself."
+msgstr "Bạn không thể bắt đầu một phiên họp P2P với chính mình."

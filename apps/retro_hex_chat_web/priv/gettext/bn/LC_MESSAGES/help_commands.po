@@ -5222,17 +5222,6 @@ msgstr ""
 "<fotp/f1> থেকে এটি পরীক্ষা করে দেখতে দেওয়া হবে। <file225> ব্যবহারকারীর "
 "ক্ষেত্রে, <f25> অথবা <f> বস্তু অচিরেই উপেক্ষা করা হবে।"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"Open a P2P Lobby with another user: a single persistent peer-to-peer "
-"connection that hosts every feature at once — an audio or video call, file "
-"transfers, and games — all running at the same time."
-msgstr ""
-"একটি P2P Lobiby অন্য একজন ব্যবহারকারী দিয়ে খোলো: একটি স্ব-প্রতিষ্ঠিত সহযোগী"
-" যে সকল বৈশিষ্ট্য একসাথে থাকে - অডিও বা ভিডিও কল, ফাইল স্থানান্তর এবং খেলা "
-"একই সময়ে চলমান।"
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:11
 #, elixir-autogen, elixir-format
 msgid ""
@@ -5253,11 +5242,6 @@ msgstr ""
 " গোপন (+s) চ্যানেলগুলো তালিকা থেকে সম্পূর্ণ আড়াল করা হয়েছে। ব্যক্তিগত (+p)"
 " চ্যানেল দ্বারা তাদের নাম প্রদর্শন করা হয় কিন্তু তাদের বিষয়বস্তু নয়। "
 "ডায়লগ বন্ধ করার জন্য লগ-আউট করে ক্লিক করুন।"
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:32
-#, elixir-autogen, elixir-format
-msgid "P2P Lobby"
-msgstr "P2P Lybib"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:2
 #, elixir-autogen, elixir-format
@@ -5415,11 +5399,6 @@ msgstr ""
 "ক্ষেত্রে পরিবর্তন সাধন করার জন্য শুধুমাত্র একটি চ্যানেল চিহ্নিত করা হয়. "
 "অপারেটর তাহলে আপনি ব্যবহার করে আমন্ত্রণ জানাতে সিদ্ধান্ত নিতে পারেন"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:27
-#, elixir-autogen, elixir-format
-msgid "You cannot open a lobby with yourself."
-msgstr "তুমি নিজে লব খুলতে পারবে না।"
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "aop add/del/list <nick>"
@@ -5498,11 +5477,6 @@ msgstr ""
 "সার্ভার ভূমিকা প্রয়োজন। প্রশাসনিক কনসোল DCSS জোন ট্যাবের নাম পরিবর্তনের "
 "জন্য এক্স- সার্ভার প্রয়োজন ।"
 
-#: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:124
-#, elixir-autogen, elixir-format
-msgid "— Open the P2P Lobby (call, files, and games)"
-msgstr "— P2P Lobby, ফাইল এবং খেলা"
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mute.html.heex:18
 #, elixir-autogen, elixir-format
 msgid ""
@@ -5511,18 +5485,35 @@ msgid ""
 msgstr ""
 "* — ঐচ্ছিক সময়ের গণনা যেমন ৩০, ৫ম, ১ বা ১ অধ্যায় । স্থায়ী নিঃশব্দে।"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "— The user to open a P2P Lobby with."
-msgstr "* ব্যবহারকারী একটি পি."
+msgid ""
+"Open a P2P Session with another user: a single persistent peer-to-peer "
+"connection that hosts every feature at once — an audio or video call, file "
+"transfers, and games — all running at the same time."
+msgstr ""
+"অন্য একটি ব্যবহারকারীর সঙ্গে একটি P2P সেশন খোলো: একটি স্ব-প্রতিযোগ যে একটি "
+"স্থায়ী সহযোগীর সঙ্গে সকল বৈশিষ্ট্য- অডিও অথবা ভিডিও কল, ফাইল পরিবহণ, এবং "
+"খেলা একই সময়ে চলমান।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "P2P Session"
+msgstr "P2P সেশন"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "You cannot start a P2P session with yourself."
+msgstr "আপনি নিজে থেকে P2P সেশন চালু করতে পারেন না ।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:16
 #, elixir-autogen, elixir-format
 msgid ""
 "opens a setup dialog first, so you can preview camera, choose "
 "microphone/camera/speaker, pick receive-only, and enable privacy relay "
-"before the invite is sent. After you confirm, the other user receives an "
-"invite card in your private message. When they accept, the connection is "
+"before the request is sent. After you confirm, the other user receives a P2P"
+" request in your private message, the PM tab opens in the background, and "
+"Join/Decline appear in the PM header. When they accept, the connection is "
 "established right there in the chat: the call starts with each side's chosen"
 " defaults and the P2P Session Console opens with Call, Files, Games and "
 "Stats sections. Several activities run together over the one connection; "
@@ -5530,11 +5521,22 @@ msgid ""
 "session (after a confirmation) — minimize to keep it running."
 msgstr ""
 "সেট- আপ ডায়ালগ প্রথমে প্রদর্শিত হবে, যার ফলে আপনি প্রাকদর্শন ক্যামেরা "
-"নির্বাচন করতে পারেন, http://fffotif/ff1.1/f1F1, শুধুমাত্র গ্রহণের পূর্বে "
-"গোপনীয়তা রি-চার্জ করুন। আপনি নিশ্চিত হওয়ার পর অন্য ব্যবহারকারী আপনার "
-"ব্যক্তিগত বার্তায় একটি কার্ড পায়। যখন তারা গ্রহণ করে, সংযোগটি ঠিক আছে: একে"
-" অপরের সাথে সংযোগ স্থাপন করা হয় এবং প্রত্যেক পক্ষ থেকে ডিফল্ট সেশন এবং "
-"সেশনগুলি (কাস, গেম, পরিসংখ্যান, ইত্যাদি) খোলো । একটা সংযোগের ওপর বেশ কয়েকটি"
-" কার্যক্রম একসঙ্গে কাজ করে; শেষ হয় অন্যদের জীবিত রাখে । কোন সেশন উইন্ডো "
-"বন্ধ করে দিলে সেটি সেশন বন্ধ হয়ে যাবে ( ঘোষনা করা হবে) - এর ফলে রেখে দেওয়া"
-" হবে ।"
+"নির্বাচন করতে পারেন, http://fflotif/ff1.1/f1F1, শুধুমাত্র গ্রহণের পূর্বে "
+"ব্যক্তিগত তথ্য গ্রহণ করুন। যখন আপনি নিশ্চিত করবেন যে অন্য ব্যবহারকারী আপনার "
+"ব্যক্তিগত বার্তাতে একটি পি২পি অনুরোধ করেছেন, প্রধানমন্ত্রী ট্যাব "
+"ব্যাকগ্রাউন্ডে খুলবেন এবং পিএমপি/এফ২ প্রধানমন্ত্রী হেডারে যোগদান করবেন। যখন "
+"তারা গ্রহণ করে, সংযোগটি ঠিক করা হল: আড্ডার সময় কল আরম্ভ হয় প্রত্যেক পক্ষ "
+"থেকে ডিফল্ট এবং পি২পি সেশন কনসোল কল, ফাইল, গেম এবং পরিসংখ্যান বিভাগে। একটা "
+"সংযোগের ওপর বেশ কয়েকটি কার্যক্রম একসঙ্গে কাজ করে; শেষ হয় অন্যদের জীবিত "
+"রাখে । সেশান বন্ধ করে সেশান বন্ধ করা হবে ( নিশ্চিতির মাধ্যমে) — প্রতিরোধ করা"
+" হবে।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:124
+#, elixir-autogen, elixir-format
+msgid "— Open the P2P Session (call, files, and games)"
+msgstr "— P2P সেশনটি খুলুন (call, ফাইল এবং খেলা)"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "— The user to open a P2P Session with."
+msgstr "— ব্যবহারকারী একটি পি."

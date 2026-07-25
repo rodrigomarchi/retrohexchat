@@ -3259,30 +3259,30 @@ msgstr "servidor, usuario, canal, ns, cs, debug, log, turn, o nuke"
 msgid "set, commands, addcmd, delcmd, help.\n"
 msgstr "set, commands, addcmd, delcmd, help."
 
-#: lib/retro_hex_chat/commands/handlers/lobby.ex:64
-#, elixir-autogen, elixir-format
-msgid ""
-"Open a P2P lobby that hosts calls, file transfers, and games together over one connection.\n"
-"Requires: both users must be registered and identified (/ns identify)."
-msgstr ""
-"Abra un lobby P2P que alberga llamadas, transferencias de archivos y juegos juntos sobre una conexión.\n"
-"Requerimientos: ambos usuarios deben ser registrados e identificados (Logros/ph0 especificado)."
-
-#: lib/retro_hex_chat/commands/handlers/lobby.ex:43
-#, elixir-autogen, elixir-format
-msgid ""
-"Open a P2P lobby with another user: one persistent connection that runs an audio/video call, file transfers, and games all at the same time.\n"
-"Requires: both users must be registered and identified (/ns identify)."
-msgstr ""
-"Abra un lobby P2P con otro usuario: una conexión persistente que ejecute un audio armonizado/ph0 Contraseña llamada, transferencias de archivos y juegos al mismo tiempo.\n"
-"Requerimientos: ambos usuarios deben ser registrados e identificados (Locutor 1 contacto/ph1 confianza identificar)."
-
 #: lib/retro_hex_chat/commands/handlers/lobby.ex:99
 #, elixir-autogen, elixir-format
 msgid "User '%{nickname}' is offline."
 msgstr "El usuario '%{nickname}' está desconectado."
 
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:64
+#, elixir-autogen, elixir-format
+msgid ""
+"Open a P2P session that hosts calls, file transfers, and games together over one connection.\n"
+"Requires: both users must be registered and identified (/ns identify)."
+msgstr ""
+"Abra una sesión P2P que acoge llamadas, transferencias de archivos y juegos juntos sobre una conexión.\n"
+"Requerimientos: ambos usuarios deben ser registrados e identificados (Logros/ph0 especificado)."
+
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:43
+#, elixir-autogen, elixir-format
+msgid ""
+"Open a P2P session with another user: one persistent connection that runs an audio/video call, file transfers, and games all at the same time.\n"
+"Requires: both users must be registered and identified (/ns identify)."
+msgstr ""
+"Abrir una sesión de P2P con otro usuario: una conexión persistente que ejecuta un audio armonizado/ph0 Contraseña llamada, transferencias de archivos y juegos al mismo tiempo.\n"
+"Requerimientos: ambos usuarios deben ser registrados e identificados (Locutor 1 contacto/ph1 confianza identificar)."
+
 #: lib/retro_hex_chat/commands/handlers/lobby.ex:89
 #, elixir-autogen, elixir-format
-msgid "You cannot open a lobby with yourself."
-msgstr "No puedes abrir un vestíbulo contigo mismo."
+msgid "You cannot start a P2P session with yourself."
+msgstr "No puedes empezar una sesión de P2P contigo mismo."

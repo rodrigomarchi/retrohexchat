@@ -89,7 +89,7 @@ test.describe("Perform dialog", () => {
     await chat.expectStatusMessageVisible(`* Performing: ${editedCommand}`);
   });
 
-  test("autojoin tab adds, edits, removes, and affects reconnect behavior (U7)", async ({
+  test("Auto-Join window adds, edits, removes, and affects reconnect behavior (U7)", async ({
     page,
   }) => {
     const { chat, nick, password } = await signedInUser(page, "ajdlg");
@@ -97,15 +97,14 @@ test.describe("Perform dialog", () => {
     const removedChannel = uniqueChannel("ajrm");
     const editedKey = `edited-${Date.now()}`;
 
-    await chat.openPerformDialogFromMenu();
-    await chat.switchPerformDialogToAutojoinTab();
+    await chat.openAutojoinDialogFromMenu();
     await chat.addAutojoinEntry(keyedChannel, "first-key");
     await expect(chat.autojoinRow(keyedChannel)).toContainText("***");
     await chat.addAutojoinEntry(removedChannel);
 
     await chat.editAutojoinKey(keyedChannel, editedKey);
     await chat.autojoinRow(keyedChannel).click();
-    await chat.performDialog.getByRole("button", { name: "Edit" }).click();
+    await chat.autojoinDialog.getByRole("button", { name: "Edit" }).click();
     await expect(
       chat.autojoinEditDialog.locator("#autojoin-edit-key"),
     ).toHaveValue(editedKey);
@@ -115,7 +114,7 @@ test.describe("Perform dialog", () => {
     await expect(chat.autojoinEditDialog).toBeHidden();
 
     await chat.removeAutojoinEntry(removedChannel);
-    await chat.closePerformDialog();
+    await chat.closeAutojoinDialog();
 
     await chat.sendMessage("/clear");
     await chat.sendMessage("/autojoin list");
@@ -131,10 +130,9 @@ test.describe("Perform dialog", () => {
     await chat.switchToStatusTab();
     await chat.expectStatusMessageVisible(`* Auto-joining ${keyedChannel}...`);
 
-    await chat.openPerformDialogFromMenu();
-    await chat.switchPerformDialogToAutojoinTab();
+    await chat.openAutojoinDialogFromMenu();
     await chat.removeAutojoinEntry(keyedChannel);
-    await chat.closePerformDialog();
+    await chat.closeAutojoinDialog();
 
     await chat.switchToTab("#lobby");
     await chat.sendMessage("/clear");

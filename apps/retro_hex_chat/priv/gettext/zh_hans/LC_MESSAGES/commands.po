@@ -3178,30 +3178,30 @@ msgstr "服务器、用户、频道、ns、cs、调试、日志、转弯或核�
 msgid "set, commands, addcmd, delcmd, help.\n"
 msgstr "设置、命令、添加、调试、帮助。"
 
-#: lib/retro_hex_chat/commands/handlers/lobby.ex:64
-#, elixir-autogen, elixir-format
-msgid ""
-"Open a P2P lobby that hosts calls, file transfers, and games together over one connection.\n"
-"Requires: both users must be registered and identified (/ns identify)."
-msgstr ""
-"打开一个P2P大堂,通过一个连接,主机呼叫,文件传输,和游戏一起进行.\n"
-"要求:两个用户都必须注册和识别(/ns识别)."
-
-#: lib/retro_hex_chat/commands/handlers/lobby.ex:43
-#, elixir-autogen, elixir-format
-msgid ""
-"Open a P2P lobby with another user: one persistent connection that runs an audio/video call, file transfers, and games all at the same time.\n"
-"Requires: both users must be registered and identified (/ns identify)."
-msgstr ""
-"与另一个用户打开一个P2P大堂:一个持续连接,运行一个音频/video的呼叫,文件传输,以及游戏全部同时运行.\n"
-"要求:两个用户都必须注册和识别(/ns识别)."
-
 #: lib/retro_hex_chat/commands/handlers/lobby.ex:99
 #, elixir-autogen, elixir-format
 msgid "User '%{nickname}' is offline."
 msgstr "用户 '%{nickname}' 已离线。"
 
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:64
+#, elixir-autogen, elixir-format
+msgid ""
+"Open a P2P session that hosts calls, file transfers, and games together over one connection.\n"
+"Requires: both users must be registered and identified (/ns identify)."
+msgstr ""
+"打开一个P2P会话,通过一个连接,主机调用,文件传输和游戏一起进行.\n"
+"要求:两个用户都必须注册和识别(/ns识别)."
+
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:43
+#, elixir-autogen, elixir-format
+msgid ""
+"Open a P2P session with another user: one persistent connection that runs an audio/video call, file transfers, and games all at the same time.\n"
+"Requires: both users must be registered and identified (/ns identify)."
+msgstr ""
+"与另一个用户打开一个P2P会话:一个持续连接,同时运行一个音频/video呼叫,文件传输,以及游戏.\n"
+"要求:两个用户都必须注册和识别(/ns识别)."
+
 #: lib/retro_hex_chat/commands/handlers/lobby.ex:89
 #, elixir-autogen, elixir-format
-msgid "You cannot open a lobby with yourself."
-msgstr "你不能自己开大厅"
+msgid "You cannot start a P2P session with yourself."
+msgstr "您无法启动 P2P 会话 。"

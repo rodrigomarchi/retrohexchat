@@ -137,12 +137,12 @@ msgstr "/msg $1 goodbye!"
 msgid "/msg $1 hello!"
 msgstr "/msg $1 hello!"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:61
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "/msg NickServ IDENTIFY ***"
 msgstr "/msg NickServ IDENTIFY ***"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:56
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "/msg NickServ IDENTIFY mySecretPass"
 msgstr "/msg NickServ IDENTIFY mySecretPass"
@@ -509,7 +509,7 @@ msgstr "তীরচিহ্ন"
 msgid "Ask your questions here"
 msgstr "এখানে আপনার প্রশ্ন জিজ্ঞাসা"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:178
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:180
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:52
 #, elixir-autogen, elixir-format
 msgid "Assets"
@@ -520,7 +520,8 @@ msgstr "আসসেট"
 msgid "Attempting to reconnect..."
 msgstr "পুনরায় সংযোগ করার প্রচেষ্টা করা হচ্ছে..."
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:74
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:61
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "Attribute"
 msgstr "বৈশিষ্ট্য"
@@ -1158,12 +1159,13 @@ msgid ""
 msgstr ""
 "জটিল আলোচনাগুলো — চ্যানেল সেটিংস, ঠিকানা, শব্দ সেটিং এবং ২০+ এর — সমান ।"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:67
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:54
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "Component Attributes"
 msgstr "অংশের বৈশিষ্ট্য"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:212
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:214
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:60
 #, elixir-autogen, elixir-format
 msgid "Component Showcase"
@@ -1446,7 +1448,8 @@ msgstr "কালো মোড"
 #: lib/retro_hex_chat_web/live/showcase_live/chat/emoji_picker_page.ex:27
 #: lib/retro_hex_chat_web/live/showcase_live/chat/formatting_toolbar_page.ex:30
 #: lib/retro_hex_chat_web/live/showcase_live/chat/search_bar_page.ex:27
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:76
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:63
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:71
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/sound_settings_dialog_page.ex:24
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/sound_settings_dialog_page.ex:27
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/sound_settings_dialog_page.ex:28
@@ -1530,12 +1533,13 @@ msgstr "ডায়লগ মুছে ফেলুনComment"
 msgid "Delete Message"
 msgstr "বার্তা মুছে ফেলো"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:77
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:64
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:72
 #, elixir-autogen, elixir-format
 msgid "Description"
 msgstr "বিবরণ"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:231
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:233
 #, elixir-autogen, elixir-format
 msgid "Design System"
 msgstr "সিস্টেমName"
@@ -1557,7 +1561,7 @@ msgstr "ডি-স্ট্রেট সংক্রান্ত নিশ্চ
 msgid "Development discussion"
 msgstr "ডেভেলপমেন্ট আলোচনা"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:180
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:182
 #: lib/retro_hex_chat_web/live/showcase_live/assets/diagrams.ex:21
 #: lib/retro_hex_chat_web/live/showcase_live/assets/diagrams.ex:70
 #, elixir-autogen, elixir-format
@@ -1576,7 +1580,8 @@ msgstr "ডায়ালগ"
 msgid "Dialog Style"
 msgstr "ডায়লগের বিন্যাস"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:85
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:72
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "Dialog element ID"
 msgstr "ডায়লগ বক্সের ID"
@@ -1668,7 +1673,7 @@ msgstr "বিচ্ছিন্ন"
 msgid "Disconnected State"
 msgstr "সংযোগ বিচ্ছিন্ন হয়েছে"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:60
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "Display:"
 msgstr "প্রদর্শন:"
@@ -1775,7 +1780,7 @@ msgstr "ফাঁকা অবস্থা"
 msgid "Enable notifications"
 msgstr "বিজ্ঞপ্তি সক্রিয় করা হবে"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:107
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:94
 #, elixir-autogen, elixir-format
 msgid "Enable perform on connect"
 msgstr "সংযোগ সক্রিয় করুন"
@@ -1824,11 +1829,6 @@ msgstr "ইভেন্ট"
 msgid "Event Sounds"
 msgstr "ইভেন্টের শব্দ"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:114
-#, elixir-autogen, elixir-format
-msgid "Event callbacks (tab, select, add, edit, remove, etc.)"
-msgstr "ইভেন্ট বৈশিষ্ট্য (ট্যাব, নির্বাচন, যোগ, অপসারণ, অপসারণ, ইত্যাদি)"
-
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:164
 #, elixir-autogen, elixir-format
 msgid "Exit"
@@ -1867,7 +1867,7 @@ msgstr "ক্ষেত্র"
 msgid "Fight through hordes of demons from Hell in this classic 1993 game."
 msgstr "এই ক্লাসিক গেমের মাধ্যমে মন্দ আত্মাদের সাথে লড়াই করা।"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:171
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:173
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/file_transfer_page.ex:18
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/file_transfer_page.ex:27
 #, elixir-autogen, elixir-format
@@ -2021,7 +2021,7 @@ msgstr "সম্পূর্ণ বৈশিষ্ট্য"
 msgid "Full Sidebar"
 msgstr "ফুল- বার"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:175
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:177
 #: lib/retro_hex_chat_web/live/showcase_live/games/game_cards_page.ex:20
 #: lib/retro_hex_chat_web/live/showcase_live/games/game_cards_page.html.heex:2
 #, elixir-autogen, elixir-format
@@ -2043,7 +2043,7 @@ msgstr "খেলার পর্দা %s"
 msgid "Game on!"
 msgstr "খেল খতম!"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:173
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:175
 #: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:40
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:47
 #, elixir-autogen, elixir-format
@@ -2235,7 +2235,7 @@ msgstr "IRC ট্যাব"
 msgid "Icon Sizes"
 msgstr "আইকনের আয়তন"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:181
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:183
 #: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:81
 #: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:105
 #, elixir-autogen, elixir-format
@@ -2315,7 +2315,7 @@ msgstr "তথ্য"
 msgid "Input"
 msgstr "ইনপুট"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:54
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "Input:"
 msgstr "ইনপুট: ( I)"
@@ -2489,12 +2489,12 @@ msgstr "লিংক"
 msgid "Linux Ubuntu"
 msgstr "লিনাক্স উবুন্টু"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:100
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:79
 #, elixir-autogen, elixir-format
 msgid "List of %&#123;channel_name, channel_key&#125; maps"
 msgstr "%d ও <f >-এর তালিকা"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:92
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:87
 #, elixir-autogen, elixir-format
 msgid "List of %&#123;position, command&#125; maps"
 msgstr "% 1 ও <f >-এর তালিকা"
@@ -2605,7 +2605,7 @@ msgid "Media"
 msgstr "মিডিয়া"
 
 #: lib/retro_hex_chat_web/components/showcase_helpers.ex:61
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:218
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:220
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:70
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.ex:18
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:2
@@ -3115,7 +3115,7 @@ msgstr "নিজস্ব বার্তা"
 msgid "Owner"
 msgstr "মালিক"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:167
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:169
 #, elixir-autogen, elixir-format
 msgid "P2P"
 msgstr "P2P"
@@ -3179,7 +3179,7 @@ msgstr "পাসওয়ার্ড"
 msgid "Password Error State"
 msgstr "পাসওয়ার্ডের ত্রুটি"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:49
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "Password Masking"
 msgstr "পাসওয়ার্ড দ্বারা মাস্ক নির্ধারণ করা হচ্ছে"
@@ -3880,7 +3880,7 @@ msgstr "ক্ষুদ্র"
 msgid "Solo Arcade game logos/cover art"
 msgstr "Sol আর্কেড গেম লোগোগুলো <flot>/f0\\-0>"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:176
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:178
 #: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.ex:80
 #: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.html.heex:2
 #, elixir-autogen, elixir-format
@@ -3903,7 +3903,7 @@ msgstr "ছোট থেকে বড়"
 msgid "Sound"
 msgstr "শব্দ"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:163
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:165
 #, elixir-autogen, elixir-format
 msgid "Sound Settings"
 msgstr "শব্দ সংক্রান্ত বৈশিষ্ট্য"
@@ -4384,7 +4384,8 @@ msgstr ""
 msgid "Try a different search term."
 msgstr "ভিন্ন অনুসন্ধানের নির্দেশক শব্দ সহযোগে পুনরায় প্রচেষ্টা করুন।"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:75
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:62
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:70
 #, elixir-autogen, elixir-format
 msgid "Type"
 msgstr "ধরন"
@@ -4404,7 +4405,7 @@ msgstr "ধরন"
 msgid "Typography"
 msgstr "টাইপোগ্রাফি"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:165
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:167
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/url_catcher_page.ex:54
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/url_catcher_page.ex:65
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/url_catcher_page.ex:68
@@ -4888,7 +4889,8 @@ msgstr "ম্যাকওএস ১০.১৫"
 msgid "notes.md"
 msgstr "নোট."
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:110
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:89
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:97
 #, elixir-autogen, elixir-format
 msgid "on_*"
 msgstr "পরেরটা"
@@ -5029,7 +5031,7 @@ msgstr "সংক্ষিপ্ত - ভিডিও কল"
 msgid "Compact — Waiting"
 msgstr "সংক্ষিপ্ত — অপেক্ষা"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:169
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:171
 #, elixir-autogen, elixir-format
 msgid "Connection Diagram"
 msgstr "সংযোগের রেখাচিত্র"
@@ -5306,3 +5308,52 @@ msgstr "রেজিস্টার, ড্রপ-ডাউন, ব্যবহ�
 #, elixir-autogen, elixir-format
 msgid "Registration"
 msgstr "Western (পশ্চিমি"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:163
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.ex:21
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:2
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:5
+#, elixir-autogen, elixir-format
+msgid "Auto-Join Dialog"
+msgstr "স্বয়ংক্রিয়-যোগ ডায়ালগ"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:93
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:101
+#, elixir-autogen, elixir-format
+msgid "Event callbacks (select, add, edit, remove, etc.)"
+msgstr "ইভেন্ট বৈশিষ্ট্য (%s, যোগ, অপসারণ ইত্যাদি)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "Key Masking"
+msgstr "কি মাস্ক"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "Key: ***"
+msgstr "কী:"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:48
+#, elixir-autogen, elixir-format
+msgid "Key: none"
+msgstr "কি: শূণ্য"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Open Auto-Join"
+msgstr "স্বয়ংক্রিয়ভাবে যোগ দিন"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:86
+#, elixir-autogen, elixir-format
+msgid "Selected channel name"
+msgstr "নির্বাচিত চ্যানেল নাম"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:43
+#, elixir-autogen, elixir-format
+msgid "With key:"
+msgstr "কি সহযোগে:"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "Without key:"
+msgstr "কী (key):"

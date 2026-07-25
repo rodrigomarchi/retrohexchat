@@ -137,12 +137,12 @@ msgstr "/msg $1 goodbye!"
 msgid "/msg $1 hello!"
 msgstr "/msg $1 hello!"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:61
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "/msg NickServ IDENTIFY ***"
 msgstr "/msg NickServ IDENTIFY ***"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:56
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "/msg NickServ IDENTIFY mySecretPass"
 msgstr "/msg NickServ IDENTIFY mySecretPass"
@@ -505,7 +505,7 @@ msgstr "箭头"
 msgid "Ask your questions here"
 msgstr "问你的问题"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:178
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:180
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:52
 #, elixir-autogen, elixir-format
 msgid "Assets"
@@ -516,7 +516,8 @@ msgstr "资产"
 msgid "Attempting to reconnect..."
 msgstr "试图重新连接..."
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:74
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:61
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "Attribute"
 msgstr "属性"
@@ -1143,12 +1144,13 @@ msgid ""
 "settings, and 20+ more."
 msgstr "复杂的对话框复合材料——频道设置,表演,地址簿,声音设置,以及20+以上."
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:67
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:54
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "Component Attributes"
 msgstr "组件属性"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:212
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:214
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:60
 #, elixir-autogen, elixir-format
 msgid "Component Showcase"
@@ -1431,7 +1433,8 @@ msgstr "黑暗模式"
 #: lib/retro_hex_chat_web/live/showcase_live/chat/emoji_picker_page.ex:27
 #: lib/retro_hex_chat_web/live/showcase_live/chat/formatting_toolbar_page.ex:30
 #: lib/retro_hex_chat_web/live/showcase_live/chat/search_bar_page.ex:27
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:76
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:63
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:71
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/sound_settings_dialog_page.ex:24
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/sound_settings_dialog_page.ex:27
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/sound_settings_dialog_page.ex:28
@@ -1515,12 +1518,13 @@ msgstr "删除确认对话框"
 msgid "Delete Message"
 msgstr "删除信件"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:77
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:64
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:72
 #, elixir-autogen, elixir-format
 msgid "Description"
 msgstr "说明"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:231
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:233
 #, elixir-autogen, elixir-format
 msgid "Design System"
 msgstr "设计系统"
@@ -1542,7 +1546,7 @@ msgstr "破坏性确认"
 msgid "Development discussion"
 msgstr "发展讨论"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:180
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:182
 #: lib/retro_hex_chat_web/live/showcase_live/assets/diagrams.ex:21
 #: lib/retro_hex_chat_web/live/showcase_live/assets/diagrams.ex:70
 #, elixir-autogen, elixir-format
@@ -1561,7 +1565,8 @@ msgstr "对话框"
 msgid "Dialog Style"
 msgstr "对话框样式"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:85
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:72
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "Dialog element ID"
 msgstr "对话框元素 ID"
@@ -1653,7 +1658,7 @@ msgstr "断开连接"
 msgid "Disconnected State"
 msgstr "断开状态"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:60
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "Display:"
 msgstr "显示 :"
@@ -1760,7 +1765,7 @@ msgstr "空状态"
 msgid "Enable notifications"
 msgstr "启用通知"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:107
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:94
 #, elixir-autogen, elixir-format
 msgid "Enable perform on connect"
 msgstr "连接时启用执行"
@@ -1809,11 +1814,6 @@ msgstr "活动"
 msgid "Event Sounds"
 msgstr "事件声音"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:114
-#, elixir-autogen, elixir-format
-msgid "Event callbacks (tab, select, add, edit, remove, etc.)"
-msgstr "事件召回( tab, 选择, 添加, 编辑, 删除等)"
-
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:164
 #, elixir-autogen, elixir-format
 msgid "Exit"
@@ -1852,7 +1852,7 @@ msgstr "字段集"
 msgid "Fight through hordes of demons from Hell in this classic 1993 game."
 msgstr "在1993年的经典游戏中通过地狱恶魔群战斗."
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:171
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:173
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/file_transfer_page.ex:18
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/file_transfer_page.ex:27
 #, elixir-autogen, elixir-format
@@ -2006,7 +2006,7 @@ msgstr "完整设置"
 msgid "Full Sidebar"
 msgstr "完整侧边栏"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:175
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:177
 #: lib/retro_hex_chat_web/live/showcase_live/games/game_cards_page.ex:20
 #: lib/retro_hex_chat_web/live/showcase_live/games/game_cards_page.html.heex:2
 #, elixir-autogen, elixir-format
@@ -2028,7 +2028,7 @@ msgstr "游戏屏幕"
 msgid "Game on!"
 msgstr "比赛开始!"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:173
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:175
 #: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:40
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:47
 #, elixir-autogen, elixir-format
@@ -2220,7 +2220,7 @@ msgstr "IRC 标签"
 msgid "Icon Sizes"
 msgstr "图标大小"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:181
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:183
 #: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:81
 #: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:105
 #, elixir-autogen, elixir-format
@@ -2300,7 +2300,7 @@ msgstr "资讯"
 msgid "Input"
 msgstr "投入"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:54
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "Input:"
 msgstr "输入 :"
@@ -2471,12 +2471,12 @@ msgstr "链接"
 msgid "Linux Ubuntu"
 msgstr "Linux 乌邦图"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:100
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:79
 #, elixir-autogen, elixir-format
 msgid "List of %&#123;channel_name, channel_key&#125; maps"
 msgstr "QQPH0X; 频道 名称, 频道  key PH1X; 地图"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:92
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:87
 #, elixir-autogen, elixir-format
 msgid "List of %&#123;position, command&#125; maps"
 msgstr "QQPH0X; 位置, 命令QQPH1X; 地图"
@@ -2586,7 +2586,7 @@ msgid "Media"
 msgstr "媒体"
 
 #: lib/retro_hex_chat_web/components/showcase_helpers.ex:61
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:218
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:220
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:70
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.ex:18
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:2
@@ -3096,7 +3096,7 @@ msgstr "拥有信件"
 msgid "Owner"
 msgstr "拥有者"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:167
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:169
 #, elixir-autogen, elixir-format
 msgid "P2P"
 msgstr "P2P"
@@ -3160,7 +3160,7 @@ msgstr "密码"
 msgid "Password Error State"
 msgstr "密码错误状态"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:49
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "Password Masking"
 msgstr "密码遮掩"
@@ -3859,7 +3859,7 @@ msgstr "小点"
 msgid "Solo Arcade game logos/cover art"
 msgstr "Solo Arcade 游戏标志/cover艺术"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:176
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:178
 #: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.ex:80
 #: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.html.heex:2
 #, elixir-autogen, elixir-format
@@ -3882,7 +3882,7 @@ msgstr "由 Nick( 递升) 排序"
 msgid "Sound"
 msgstr "声音"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:163
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:165
 #, elixir-autogen, elixir-format
 msgid "Sound Settings"
 msgstr "声音设置"
@@ -4354,7 +4354,8 @@ msgstr "巨怪要出去吗? 凉爽。 大厅会保暖的 我们总是开放。 �
 msgid "Try a different search term."
 msgstr "尝试不同的搜索名词 。"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:75
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:62
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:70
 #, elixir-autogen, elixir-format
 msgid "Type"
 msgstr "类型"
@@ -4374,7 +4375,7 @@ msgstr "类型"
 msgid "Typography"
 msgstr "类型"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:165
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:167
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/url_catcher_page.ex:54
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/url_catcher_page.ex:65
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/url_catcher_page.ex:68
@@ -4857,7 +4858,8 @@ msgstr "马科斯10.15"
 msgid "notes.md"
 msgstr "页:1"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:110
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:89
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:97
 #, elixir-autogen, elixir-format
 msgid "on_*"
 msgstr "{\\fn黑体\\fs22\\bord1\\shad0\\3aHBE\\4aH00\\fscx67\\fscy66\\2cHFFFFFF\\3cH808080}你是谁?"
@@ -4998,7 +5000,7 @@ msgstr "紧凑——视频呼叫"
 msgid "Compact — Waiting"
 msgstr "压缩——等待"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:169
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:171
 #, elixir-autogen, elixir-format
 msgid "Connection Diagram"
 msgstr "连接图"
@@ -5273,3 +5275,52 @@ msgstr "注册、放下、访问管理"
 #, elixir-autogen, elixir-format
 msgid "Registration"
 msgstr "登记"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:163
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.ex:21
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:2
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:5
+#, elixir-autogen, elixir-format
+msgid "Auto-Join Dialog"
+msgstr "自动Join 对话框"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:93
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:101
+#, elixir-autogen, elixir-format
+msgid "Event callbacks (select, add, edit, remove, etc.)"
+msgstr "事件召回( 选择、 添加、 编辑、 删除等)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "Key Masking"
+msgstr "密钥遮盖"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "Key: ***"
+msgstr "密钥: ***"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:48
+#, elixir-autogen, elixir-format
+msgid "Key: none"
+msgstr "密钥: 无"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Open Auto-Join"
+msgstr "打开自动join"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:86
+#, elixir-autogen, elixir-format
+msgid "Selected channel name"
+msgstr "选定频道名称"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:43
+#, elixir-autogen, elixir-format
+msgid "With key:"
+msgstr "带有密钥 :"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "Without key:"
+msgstr "没有密钥 :"

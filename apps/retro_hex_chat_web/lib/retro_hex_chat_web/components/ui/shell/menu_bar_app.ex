@@ -489,6 +489,12 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
       action="open_perform_dialog"
       on_action={@on_action}
     />
+    <.menu_item
+      icon_fn={:icon_btn_autojoin}
+      label={dgettext("ui", "Auto-Join")}
+      action="open_autojoin_dialog"
+      on_action={@on_action}
+    />
     <.context_menu_separator />
     <.menu_item
       icon_fn={:icon_btn_sounds}

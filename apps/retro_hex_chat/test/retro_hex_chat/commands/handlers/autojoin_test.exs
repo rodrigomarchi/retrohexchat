@@ -79,9 +79,8 @@ defmodule RetroHexChat.Commands.Handlers.AutoJoinTest do
   # ── execute/2 ────────────────────────────────────────────
 
   describe "execute/2" do
-    test "bare /autojoin opens perform dialog on autojoin tab" do
-      assert {:ok, :ui_action, :open_perform_dialog, %{tab: "autojoin"}} =
-               AutoJoin.execute([], @context)
+    test "bare /autojoin opens the Auto-Join window" do
+      assert {:ok, :ui_action, :open_autojoin_dialog, %{}} = AutoJoin.execute([], @context)
     end
 
     test "list returns autojoin_list_display ui_action" do

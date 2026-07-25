@@ -397,14 +397,6 @@ msgstr "Giới hạn bởi"
 msgid "Metrics"
 msgstr "Bộ đo"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:48
-#: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:52
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:71
-#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:65
-#, elixir-autogen, elixir-format
-msgid "P2P Lobby"
-msgstr "P2P Lobby"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Packet loss"
@@ -819,19 +811,6 @@ msgstr ""
 "khoản của bạn; các tùy chọn thiết bị đặc trưng cho trình duyệt được ghi nhớ "
 "cục bộ."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:9
-#, elixir-autogen, elixir-format
-msgid ""
-"Type /p2p <nick> (or use the nicklist context menu) to open setup before "
-"sending an invite. Confirming setup sends the invite card in the private "
-"message; the invited person clicks Accept to start their own setup and join "
-"in place, or Decline to refuse — the inviter is told either way."
-msgstr ""
-"Kiểu /p2p <ph0>/ph0> (hoặc sử dụng trình đơn ngữ cảnh Nicklist) để mở thiết "
-"lập trước khi gửi giấy mời. Xác nhận sự sắp đặt này gửi thiệp mời trong "
-"thông điệp cá nhân; người được mời sẽ chấp nhận để bắt đầu việc riêng của họ"
-" và tham gia, hoặc Decline từ chối — người mời được cho biết cách nào."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:16
 #, elixir-autogen, elixir-format
 msgid ""
@@ -948,24 +927,6 @@ msgstr ""
 "Cuộc gọi sử dụng giới hạn âm thanh và video bảo thủ theo mặc định để ưu tiên"
 " ổn định hơn chất lượng ảnh tối đa."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:29
-#, elixir-autogen, elixir-format
-msgid ""
-"Messages during the session are regular private messages, saved like any "
-"other. Session events — connected, file received, game score, who ended it —"
-" are written into the PM history as P2P lines, so the story of the session "
-"survives it. While a session exists, the peer's PM tab, PM sidebar row and "
-"PM topic bar show the same P2P indicator family used by channel conferences,"
-" with state and active call/file/game/relay facets."
-msgstr ""
-"Thông điệp trong phiên họp là tin nhắn cá nhân thường xuyên, được lưu như "
-"mọi thông điệp khác. Các sự kiện phiên chạy — kết nối, tập tin nhận được, "
-"điểm số trò chơi, kết thúc — được ghi vào lịch sử PM như là dòng P2P, vì thế"
-" câu chuyện về phiên họp vẫn tồn tại. Trong khi một phiên chạy tồn tại, tab "
-"PM của ngang hàng hàng và chủ đề PM hiển thị cùng một họ chỉ thị P2P sử dụng"
-" bởi các hội nghị kênh, với trạng thái và cuộc gọi chủ đề/file/game/relay "
-"Những khía cạnh."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:1
 #, elixir-autogen, elixir-format
 msgid "Monitor connection quality during calls."
@@ -1078,20 +1039,6 @@ msgstr ""
 "thúc cuộc gọi chỉ dừng các phương tiện truyền thông; đóng bàn điều khiển P2P"
 " yêu cầu trước khi kết thúc toàn bộ phiên chạy P2P."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"The P2P Lobby is the persistent peer-to-peer connection behind /p2p: one "
-"link between two users that hosts a call, file transfers and games all at "
-"the same time. It lives inside the chat — setup happens before sending or "
-"accepting the invite, and accepting opens the P2P Session Console right on "
-"the chat desktop, next to your conversations."
-msgstr ""
-"P2P Lobby là liên kết liên tục-to-peer phía sau /p2p: một liên kết giữa hai "
-"người dùng mà máy một cuộc gọi, chuyển tập tin và trò chơi cùng một lúc. Nó "
-"sống trong chat — thiết lập trước khi gửi hoặc nhận lời mời, và chấp nhận mở"
-" bàn điều khiển phiên họp P2P ngay bên cạnh màn hình chat."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "The Session Console"
@@ -1168,3 +1115,62 @@ msgid ""
 msgstr ""
 "Với điều khiển P2P tiêu điểm, Ctrl+Sift+Arrow Up bật lên trạng thái micro và"
 " Ctrl+Sift+Arrowft toggles trạng thái máy ảnh."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:29
+#, elixir-autogen, elixir-format
+msgid ""
+"Messages during the session are regular private messages, saved like any "
+"other. Session events — request sent, connected, file received, game score, "
+"who ended it — are written into the PM history as P2P lines, so the story of"
+" the session survives it without turning the transcript into a control "
+"surface. While a session exists, the peer's PM tab, PM sidebar row and PM "
+"topic bar show the same P2P indicator family used by channel conferences, "
+"with state and active call/file/game/relay facets."
+msgstr ""
+"Thông điệp trong phiên họp là tin nhắn cá nhân thường xuyên, được lưu như "
+"mọi thông điệp khác. Các sự kiện phiên chạy — yêu cầu được gửi, kết nối, tập"
+" tin được nhận, điểm số trò chơi, kết thúc — được ghi vào lịch sử PM như là "
+"dòng P2P, vì vậy câu chuyện của phiên chạy tồn tại mà không chuyển bản sao "
+"thành bề mặt điều khiển. Trong khi một phiên họp đang diễn ra, thanh PM, "
+"hàng ghế phụ và chủ đề PM hiển thị cùng một họ P2P sử dụng bởi các hội nghị "
+"kênh, với tình trạng và cuộc gọi khẩn cấp <ph0><ph1></i> <ph1> <ph1> <ph2> "
+"<ph2>******* các khía cạnh."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:52
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:71
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:65
+#, elixir-autogen, elixir-format
+msgid "P2P Session"
+msgstr "Phiên chạy P2P"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"The P2P Session is the persistent peer-to-peer connection behind /p2p: one "
+"link between two users that hosts a call, file transfers and games all at "
+"the same time. It lives inside the chat — setup happens before sending or "
+"accepting the invite, and accepting opens the P2P Session Console right on "
+"the chat desktop, next to your conversations."
+msgstr ""
+"Phiên chạy P2P là kết nối đồng đẳng liên tục phía sau <ph0>: một liên kết "
+"giữa hai người dùng mà host một cuộc gọi, chuyển tập tin và trò chơi cùng "
+"một lúc. Nó sống trong chat — thiết lập trước khi gửi hoặc nhận lời mời, và "
+"chấp nhận mở bàn điều khiển phiên họp P2P ngay bên cạnh màn hình chat."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:9
+#, elixir-autogen, elixir-format
+msgid ""
+"Type /p2p <nick> (or use the P2P control in the PM header/nicklist context "
+"menu) to open setup before sending a request. Confirming setup opens your "
+"P2P Session Console immediately and sends a P2P request line in the private "
+"message. The invited person's PM tab opens in the background with Join and "
+"Decline in the PM header, so they can respond in place without a separate "
+"lobby link."
+msgstr ""
+"Gõ <ph1></i> <ph1> <ph0> <ph2> <ph2> (hoặc dùng bộ điều khiển P2P trong máy "
+"điều khiển PM <ph3>} để mở thiết lập trước khi gửi yêu cầu. Xác nhận mở "
+"thiết lập phiên chạy P2P ngay lập tức và gửi một dòng yêu cầu P2P trong tin "
+"nhắn riêng. Thẻ thông hành của người được mời mở ở phía sau cùng với Enter "
+"and Decline ở Thủ đô, để họ có thể phản ứng đúng chỗ mà không cần một đường "
+"dây khác."

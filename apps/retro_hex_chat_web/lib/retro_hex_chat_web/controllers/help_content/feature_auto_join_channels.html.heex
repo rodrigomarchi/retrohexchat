@@ -72,7 +72,11 @@
 <p>
   {dgettext("help_features", "You can also manage your auto-join list manually with the")}
   <code>{dgettext("help_features", "/autojoin")}</code>
-  {dgettext("help_features", "command for finer control.")}
+  {dgettext(
+    "help_features",
+    "command, or visually in the Auto-Join window — open it from Tools > Auto-Join, or by typing"
+  )} <code>{dgettext("help_features", "/autojoin")}</code>
+  {dgettext("help_features", "with no arguments.")}
 </p>
 <.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
@@ -80,4 +84,5 @@
   · <.help_link topic="cmd-join">{dgettext("help_features", "/join")}</.help_link>
   · <.help_link topic="cmd-part">{dgettext("help_features", "/part")}</.help_link>
   · <.help_link topic="nickserv">{dgettext("help_features", "NickServ")}</.help_link>
+  · <.help_link topic="feature-perform">{dgettext("help_features", "Perform")}</.help_link>
 </p>

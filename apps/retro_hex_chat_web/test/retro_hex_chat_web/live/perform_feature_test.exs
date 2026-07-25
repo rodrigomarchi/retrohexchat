@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.PerformFeatureTest do
   @moduledoc """
   End-to-end tests for the Perform / Auto-Commands feature (009).
+  The auto-join channel list has its own window: `autojoin_feature_test.exs`.
   Run with: mix test --only liveview_feature
   """
   use RetroHexChatWeb.LiveViewCase, async: false
@@ -76,7 +77,7 @@ defmodule RetroHexChatWeb.PerformFeatureTest do
       view = connect_user(conn, "E2EDlA#{uid()}")
 
       open_perform(view)
-      click(view, "perform_dialog_add")
+      click(view, "perform_add")
       submit_form(view, "perform-add-dialog", %{"command" => "/join #dlgtest"})
 
       html = render(view)
@@ -87,26 +88,24 @@ defmodule RetroHexChatWeb.PerformFeatureTest do
       view = connect_user(conn, "E2EDlR#{uid()}")
 
       open_perform(view)
-      click(view, "perform_dialog_add")
+      click(view, "perform_add")
       submit_form(view, "perform-add-dialog", %{"command" => "/join #dlgrem"})
 
       select_perform(view, 0)
-      click(view, "perform_dialog_remove")
+      click(view, "perform_remove")
 
       html = render(view)
       refute html =~ "/join #dlgrem"
     end
 
-    test "tab switching between commands and autojoin", %{conn: conn} do
+    test "the window is the command list only — auto-join has its own", %{conn: conn} do
       view = connect_user(conn, "E2ETab#{uid()}")
 
       open_perform(view)
 
-      # Both tab panels render when the dialog is open (switching is client-side
-      # CSS); their empty-state copy is present regardless of the active tab.
       html = render(view)
       assert html =~ "No commands configured"
-      assert html =~ "No auto-join channels"
+      refute html =~ "No auto-join channels"
     end
 
     test "enable/disable toggle", %{conn: conn} do
@@ -124,7 +123,7 @@ defmodule RetroHexChatWeb.PerformFeatureTest do
       view = connect_user(conn, "E2EPwd#{uid()}")
 
       open_perform(view)
-      click(view, "perform_dialog_add")
+      click(view, "perform_add")
       submit_form(view, "perform-add-dialog", %{"command" => "/ns identify mysecret"})
 
       html = render(view)
@@ -231,8 +230,8 @@ defmodule RetroHexChatWeb.PerformFeatureTest do
     view
   end
 
-  # The Perform dialog is a stateful island; its events target the component, so
-  # tests fire them element-based. Opening is async (send_update), so flush.
+  # The Perform window is a stateful island; its events target the component, so
+  # tests fire them element-based.
   defp open_perform(view) do
     render_click(view, "open_perform_dialog")
     render(view)

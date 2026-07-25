@@ -5977,16 +5977,6 @@ msgstr ""
 "の特長\n"
 "[ファイル] → [管理者コンソール] を開き、ユーザーが /admin ユーザーリストのスナップショットをリフレッシュし、検索とオンラインのみのフィルタを適用し、/admin ユーザ情報でニックネームを調べ、/admin ユーザバンリストの出力を見直し、ban/unban、キック、ミュート、またはアンミュートアクション、リネームユーザー、サーバーのロールを設定し、<ph4></ph2></ph2></ph2> ユーザバンリストの出力を実行します。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"Open a P2P Lobby with another user: a single persistent peer-to-peer "
-"connection that hosts every feature at once — an audio or video call, file "
-"transfers, and games — all running at the same time."
-msgstr ""
-"の特長\n"
-"P2Pロビーを別のユーザーで開きます: 一度にすべての機能をホストする単一の永続的なピアツーピア接続 - オーディオまたはビデオ通話、ファイル転送、およびゲーム - 同時に実行されます。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:11
 #, elixir-autogen, elixir-format
 msgid ""
@@ -6001,13 +5991,6 @@ msgid ""
 msgstr ""
 "の特長\n"
 "チャンネルリストダイアログをインラインで表示し、利用可能なすべてのチャンネルをユーザー数とトピックで表示します。 検索ボックスを使用して、名前またはトピックによってチャンネルをフィルタリングできます。 開いたチャネルの横にある [参加] ボタンをクリックして、直接参加します。 Invite-only (+i) チャネルは +i バッジを表示します。 既に存在していないものを選択すると、リクエストアクセスの変更に参加して、ノックリクエストダイアログを開きます。 秘密 (+s) チャネルはリストから完全に隠されます。 プライベート (+p) チャンネルは自分の名前ではなく、そのトピックを示す。 エスケープを押すか、[閉じる]をクリックしてダイアログを解除します。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:32
-#, elixir-autogen, elixir-format
-msgid "P2P Lobby"
-msgstr ""
-"の特長\n"
-"P2Pロビー"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:2
 #, elixir-autogen, elixir-format
@@ -6162,13 +6145,6 @@ msgstr ""
 "の特長\n"
 "チャンネルをノックすると、そのチャンネルのすべての演算子と所有者がニックネームとオプションのメッセージを示す通知を受け取ります。 チャンネルリストは、+iバッジ付きの招待チャンネルをマークし、リクエストアクセスに参加...、オプション200文字メッセージで同じノックリクエストフローを開きます。 オペレータは、あなたが使用して招待するかどうかを決定することができます"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:27
-#, elixir-autogen, elixir-format
-msgid "You cannot open a lobby with yourself."
-msgstr ""
-"の特長\n"
-"ロビーを自分で開くことはできません。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "aop add/del/list <nick>"
@@ -6262,13 +6238,6 @@ msgstr ""
 "の特長\n"
 "— 工場はシステム全体をリセットします。 管理者ロール、監査ログ、サーバー禁止、サーバー設定を除くすべてのデータ(ユーザー、チャンネル、メッセージ、設定、ボット、P2Pセッション)を破壊します。 サーバー管理者権限が必要です。 Admin Console Danger Zoneタブでは、実行前にサーバー名を入力する必要があります。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:124
-#, elixir-autogen, elixir-format
-msgid "— Open the P2P Lobby (call, files, and games)"
-msgstr ""
-"の特長\n"
-"— P2Pロビーを開きます(電話、ファイル、ゲーム)"
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mute.html.heex:18
 #, elixir-autogen, elixir-format
 msgid ""
@@ -6278,20 +6247,38 @@ msgstr ""
 "の特長\n"
 "— 30s、5m、1h、1d などのオプションの期間トークン。 恒久的なミュートのための省略。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "— The user to open a P2P Lobby with."
+msgid ""
+"Open a P2P Session with another user: a single persistent peer-to-peer "
+"connection that hosts every feature at once — an audio or video call, file "
+"transfers, and games — all running at the same time."
+msgstr ""
+"P2P セッションを別のユーザーで開きます: 一度にすべての機能をホストする単一の永続的なピアツーピア接続 - "
+"オーディオまたはビデオ通話、ファイル転送、ゲーム - 同時に実行されます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "P2P Session"
 msgstr ""
 "の特長\n"
-"— P2P ロビーを開くユーザ。"
+"P2Pセッション"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "You cannot start a P2P session with yourself."
+msgstr ""
+"の特長\n"
+"P2P セッションを自分で起動することはできません。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:16
 #, elixir-autogen, elixir-format
 msgid ""
 "opens a setup dialog first, so you can preview camera, choose "
 "microphone/camera/speaker, pick receive-only, and enable privacy relay "
-"before the invite is sent. After you confirm, the other user receives an "
-"invite card in your private message. When they accept, the connection is "
+"before the request is sent. After you confirm, the other user receives a P2P"
+" request in your private message, the PM tab opens in the background, and "
+"Join/Decline appear in the PM header. When they accept, the connection is "
 "established right there in the chat: the call starts with each side's chosen"
 " defaults and the P2P Session Console opens with Call, Files, Games and "
 "Stats sections. Several activities run together over the one connection; "
@@ -6299,4 +6286,18 @@ msgid ""
 "session (after a confirmation) — minimize to keep it running."
 msgstr ""
 "の特長\n"
-"セットアップダイアログを最初に開くので、カメラをプレビューしたり、micro/camera</ph1></ph1>を選択し、受信専用を選択し、招待が送信される前にプライバシーリレーを有効にすることができます。 確認後、他のユーザーはプライベートメッセージに招待カードを受け取ります。 彼らが受け入れるとき, 接続は、チャットにそこにあります: 呼び出しは、各サイドの選択したデフォルトとセッションウィンドウで始まります (電話, ファイル, ゲーム, 統計) チャットデスクトップで開きます. 複数のアクティビティが1つのコネクション上で一緒に実行されます。 1つを終了すると、他の人が生き残ります。 セッションウィンドウを閉じると、セッション(確認後)が切断されます。"
+"セットアップダイアログを最初に開くので、カメラをプレビューしたり、マイク/camera</ph1></ph1>を選択し、受信専用を選択し、リクエストが送信される前にプライバシーリレーを有効にすることができます。 確認後、他のユーザーはプライベートメッセージでP2Pリクエストを受信し、PMタブはバックグラウンドで開き、PMヘッダーにJoin/Declineが現れます。 彼らが受け入れるとき, 接続は、チャットの右側に確立されます: 呼び出しは、各サイドの選択したデフォルトで始まり、P2Pセッションコンソールは、コールで開きます, ファイル, ゲームと統計セクション. 複数のアクティビティが1つのコネクション上で一緒に実行されます。 1つを終了すると、他の人が生き残ります。 コンソールを閉じると、セッションを切断(確認後) — 実行を最小限に抑えます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:124
+#, elixir-autogen, elixir-format
+msgid "— Open the P2P Session (call, files, and games)"
+msgstr ""
+"の特長\n"
+"— P2Pセッション(通話、ファイル、ゲーム)を開きます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "— The user to open a P2P Session with."
+msgstr ""
+"の特長\n"
+"— P2P セッションを開くユーザー。"

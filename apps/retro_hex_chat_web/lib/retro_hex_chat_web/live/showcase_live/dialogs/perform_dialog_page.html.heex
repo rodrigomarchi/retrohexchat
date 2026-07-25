@@ -3,7 +3,7 @@
 
   <.showcase_card
     title={dgettext("showcase", "Perform Dialog")}
-    description="Win98-style dialog for managing auto-execute commands and auto-join channels on connect."
+    description="Win98-style dialog for managing the commands executed automatically on connect."
   >
     <.button phx-click={show_modal("perform-demo")}>
       <:icon><Icons.icon_btn_perform /></:icon>
@@ -13,12 +13,9 @@
     <.perform_dialog
       id="perform-demo"
       show={false}
-      active_tab={@active_tab}
-      perform_entries={@sample_commands}
-      perform_selected={@perform_selected}
-      perform_enabled={@perform_enabled}
-      autojoin_entries={@sample_autojoin}
-      autojoin_selected={@autojoin_selected}
+      entries={@sample_commands}
+      selected={@selected}
+      enabled={@enabled}
       on_select="select-perform"
       on_toggle_enabled="toggle-perform-enabled"
     />
@@ -27,11 +24,9 @@
       &lt;.perform_dialog
       id="perform"
       show=&#123;true&#125;
-      perform_entries=&#123;@commands&#125;
-      perform_selected=&#123;@selected&#125;
-      perform_enabled=&#123;@enabled&#125;
-      autojoin_entries=&#123;@autojoin&#125;
-      autojoin_selected=&#123;@autojoin_selected&#125;
+      entries=&#123;@commands&#125;
+      selected=&#123;@selected&#125;
+      enabled=&#123;@enabled&#125;
       on_select="select"
       on_add="add"
       on_edit="edit"
@@ -85,7 +80,7 @@
             <td class="px-2 py-1">{dgettext("showcase", "Dialog element ID")}</td>
           </tr>
           <tr class="border-b">
-            <td class="px-2 py-1 font-mono">perform_entries</td>
+            <td class="px-2 py-1 font-mono">entries</td>
             <td class="px-2 py-1">list</td>
             <td class="px-2 py-1">[]</td>
             <td class="px-2 py-1">
@@ -93,15 +88,7 @@
             </td>
           </tr>
           <tr class="border-b">
-            <td class="px-2 py-1 font-mono">autojoin_entries</td>
-            <td class="px-2 py-1">list</td>
-            <td class="px-2 py-1">[]</td>
-            <td class="px-2 py-1">
-              {dgettext("showcase", "List of %&#123;channel_name, channel_key&#125; maps")}
-            </td>
-          </tr>
-          <tr class="border-b">
-            <td class="px-2 py-1 font-mono">perform_enabled</td>
+            <td class="px-2 py-1 font-mono">enabled</td>
             <td class="px-2 py-1">boolean</td>
             <td class="px-2 py-1">true</td>
             <td class="px-2 py-1">{dgettext("showcase", "Enable perform on connect")}</td>
@@ -111,7 +98,7 @@
             <td class="px-2 py-1">any</td>
             <td class="px-2 py-1">nil</td>
             <td class="px-2 py-1">
-              {dgettext("showcase", "Event callbacks (tab, select, add, edit, remove, etc.)")}
+              {dgettext("showcase", "Event callbacks (select, add, edit, remove, etc.)")}
             </td>
           </tr>
         </tbody>

@@ -395,14 +395,6 @@ msgstr "সীমা অতিক্রান্ত"
 msgid "Metrics"
 msgstr "মেট্রিক"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:48
-#: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:52
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:71
-#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:65
-#, elixir-autogen, elixir-format
-msgid "P2P Lobby"
-msgstr "P2P Lybib"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Packet loss"
@@ -806,20 +798,6 @@ msgstr ""
 "ডিফল্ট লগ-ইনের জন্য স্মরণ করা হয়; ব্রাউজারের জন্য সুনির্দিষ্ট ডিভাইস রূপে "
 "নির্ধারিত হয়।"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:9
-#, elixir-autogen, elixir-format
-msgid ""
-"Type /p2p <nick> (or use the nicklist context menu) to open setup before "
-"sending an invite. Confirming setup sends the invite card in the private "
-"message; the invited person clicks Accept to start their own setup and join "
-"in place, or Decline to refuse — the inviter is told either way."
-msgstr ""
-"কোনো আমন্ত্রণ পাঠানোর পূর্বে http://ph22/f2/f22/EC মেনুর জন্য "
-"http://ph222/ECOPL ব্যবহার করুন। প্রস্তুতি গ্রহণ করার আগে আমন্ত্রণপত্র "
-"ব্যক্তিগত বার্তার মধ্যে প্রেরণ করা হবে; আমন্ত্রণকারী ব্যক্তি নিজে নিজে থেকেই"
-" সেট গ্রহণ করে তার সাথে যোগ দিতে বা প্রত্যাখ্যান করতে বাধ্য হন, হয় "
-"আমন্ত্রণকারীকে বলা হয় ।"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:16
 #, elixir-autogen, elixir-format
 msgid ""
@@ -931,22 +909,6 @@ msgstr ""
 "সর্বোচ্চ ছবির গুণগত মান অনুসারে রক্ষণশীল অডিও এবং ভিডিওর সীমাকে ব্যবহার করা "
 "হয়।"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:29
-#, elixir-autogen, elixir-format
-msgid ""
-"Messages during the session are regular private messages, saved like any "
-"other. Session events — connected, file received, game score, who ended it —"
-" are written into the PM history as P2P lines, so the story of the session "
-"survives it. While a session exists, the peer's PM tab, PM sidebar row and "
-"PM topic bar show the same P2P indicator family used by channel conferences,"
-" with state and active call/file/game/relay facets."
-msgstr ""
-"স্বনির্ধারিত বার্তা মুছে ফেলুন সেশন ঘটনা — সংযুক্ত হওয়া, খেলা শেষ করা, খেলা"
-" শেষ করা হয়েছে - পি২পি লাইনের প্রধানমন্ত্রীর ইতিহাসে লেখা। একটি অধিবেশন "
-"চলাকালীন, সমকক্ষ-এর প্রধানমন্ত্রীর ট্যাব, পি. ২.পি. বার এবং পি. পি.পি. বার "
-"একই পরিবার প্রদর্শন করে চ্যানেল কনফারেন্স, এবং সক্রিয় কলের "
-"মাধ্যমে/file/game/relay রাস্তা।"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:1
 #, elixir-autogen, elixir-format
 msgid "Monitor connection quality during calls."
@@ -1055,21 +1017,6 @@ msgstr ""
 "প্রতিক্রিয়া টুলের মাধ্যমে। শেষ কল শুধুমাত্র মিডিয়া বন্ধ করা হবে; পি২পি "
 "সেশনটি সম্পূর্ণ সেশন সমাপ্ত হওয়ার আগে প্রশ্ন করা হচ্ছে।"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"The P2P Lobby is the persistent peer-to-peer connection behind /p2p: one "
-"link between two users that hosts a call, file transfers and games all at "
-"the same time. It lives inside the chat — setup happens before sending or "
-"accepting the invite, and accepting opens the P2P Session Console right on "
-"the chat desktop, next to your conversations."
-msgstr ""
-"পি২পি লোবি হচ্ছে পিং-পর্তুগীজ-পেরি সংযোগ /p2p: দুই ব্যবহারকারীর মধ্যে একটি "
-"সংযোগ যে দুটি ব্যবহারকারী একটি কল, ফাইল স্থানান্তর এবং একই সময়ে সকল খেলা "
-"যাবে। চ্যাটের মধ্যে জীবন শুরু হয় — আমন্ত্রণ পাঠানোর আগে অথবা গ্রহণ করার "
-"আগে, P2P সেশানের মাধ্যমে P2P সেশন কনসোল খুলে দেওয়া হয়, যা চ্যাটের পরবর্তী "
-"সময়ে আপনার কথোপকথনের জন্য।"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "The Session Console"
@@ -1144,3 +1091,61 @@ msgid ""
 msgstr ""
 "P2P সেশন কনসোলের উপর মনোযোগ প্রদান করে, Ctrl+Shift+RE8আপ স্টেট এবং "
 "Ctrl+Shift+RE+RALS+RALS-রেল ক্যামেরাটি টগল করে।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:29
+#, elixir-autogen, elixir-format
+msgid ""
+"Messages during the session are regular private messages, saved like any "
+"other. Session events — request sent, connected, file received, game score, "
+"who ended it — are written into the PM history as P2P lines, so the story of"
+" the session survives it without turning the transcript into a control "
+"surface. While a session exists, the peer's PM tab, PM sidebar row and PM "
+"topic bar show the same P2P indicator family used by channel conferences, "
+"with state and active call/file/game/relay facets."
+msgstr ""
+"স্বনির্ধারিত বার্তা মুছে ফেলুন অধিবেশনের ঘটনা — সংযোগ করা, ফাইল পাঠানো, খেলা"
+" শেষ করার অনুরোধ, খেলা শেষ করা হয়েছে — পি২পি লাইনের প্রধানমন্ত্রীর ইতিহাসে "
+"লেখা শেষ হয়, তাই অধিবেশনের গল্প থেকে রক্ষা পায়, যাতে সেটাকে নিয়ন্ত্রণ করা"
+" না যায় । যখন একটি অধিবেশন চলছে, সঙ্গীসাথিদের প্রধানমন্ত্রীর ট্যাব, "
+"প্রধানমন্ত্রীর সারি এবং প্রধানমন্ত্রীর বার একই ধরনের পি২পি নির্দেশক পরিবার "
+"প্রদর্শন করছে চ্যানেল কনফারেন্সের মাধ্যমে, রাষ্ট্র এবং সক্রিয় ফোন কল "
+"দ্বারা।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:52
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:71
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:65
+#, elixir-autogen, elixir-format
+msgid "P2P Session"
+msgstr "P2P সেশন"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"The P2P Session is the persistent peer-to-peer connection behind /p2p: one "
+"link between two users that hosts a call, file transfers and games all at "
+"the same time. It lives inside the chat — setup happens before sending or "
+"accepting the invite, and accepting opens the P2P Session Console right on "
+"the chat desktop, next to your conversations."
+msgstr ""
+"P2P সেশনটি <f0\\-0\\/f0\\/p0\\ - এর পেছনে স্থায়ী সংযোগের একটি: দুই "
+"ব্যবহারকারীর মধ্যে একটি সংযোগ একটি কল, ফাইল ট্রান্সফার এবং একই সময়ে সকল "
+"খেলা করা হয়। চ্যাটের মধ্যে জীবন শুরু হয় — আমন্ত্রণ পাঠানোর আগে অথবা গ্রহণ "
+"করার আগে, P2P সেশানের মাধ্যমে P2P সেশন কনসোল খুলে দেওয়া হয়, যা চ্যাটের "
+"পরবর্তী সময়ে আপনার কথোপকথনের জন্য।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:9
+#, elixir-autogen, elixir-format
+msgid ""
+"Type /p2p <nick> (or use the P2P control in the PM header/nicklist context "
+"menu) to open setup before sending a request. Confirming setup opens your "
+"P2P Session Console immediately and sends a P2P request line in the private "
+"message. The invited person's PM tab opens in the background with Join and "
+"Decline in the PM header, so they can respond in place without a separate "
+"lobby link."
+msgstr ""
+"ধরন <f12 <fotp1> <ff222>। একটি অনুরোধ পাঠানোর পূর্বে সেট করা আবশ্যক। "
+"বৈশিষ্ট্য নির্ধারণ আপনার P2P সেশন কনসোল অবিলম্বে খোলো এবং ব্যক্তিগত বার্তাতে"
+" একটি P2P আবেদন পাঠাও। আমন্ত্রণকারী ব্যক্তির প্রধানমন্ত্রীর ট্যাবগুলো একসাথে"
+" যোগ করে পিএম হেডারের পেছনে খোলা থাকে, যাতে তারা ভিন্ন লবির লিঙ্ক ছাড়া "
+"সাড়া না দেয়।"

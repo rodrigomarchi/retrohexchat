@@ -242,6 +242,21 @@ contrato `data-start-submenu` / `data-start-submenu-panel`. Contratos separados
 de propósito: são hooks diferentes, e reusar o atributo do outro faz um fechar o
 painel do outro.
 
+**E as três não abrem a janela do mesmo jeito.** Menu bar e toolbar emitem a
+ação (`open_<x>`); o start menu, via `<.window_item window="<id>">`, fala direto
+com o window manager por `data-window-open` — o servidor monta a janela
+gerenciada ao receber o evento `window_open`. Consequência para o teste: o
+testid do start menu é `start-menu-item-<window-id>`, **não**
+`start-menu-item-open_<x>`. Copie o padrão da janela vizinha antes de escrever a
+asserção.
+
+**Sem aba, não há diretiva de abertura.** Se a janela nova não precisa abrir num
+estado específico, use `Windows.open/2` e **não** escreva a cláusula
+`update(%{open: ...})`: a janela gerenciada desmonta ao fechar, então o `mount/1`
+seguinte já reconstrói o estado que a diretiva resetaria. `open_with/4` existe
+para o caso oposto (abrir apontando para algo), e usá-lo sem necessidade nasce
+como código morto.
+
 **Três superfícies listam a janela, não uma.** Menu bar, start menu e toolbar
 são arquivos separados. Esquecer duas delas não quebra nada: a janela
 simplesmente não existe a partir dali, e nenhum teste padrão percebe. Foi o que
@@ -271,9 +286,25 @@ O bloco da janela, com o guard de render como segunda linha de defesa:
 (`icon_dialog_<x>` e `icon_btn_<x>`) mais o `defdelegate` em `icons.ex` — e
 esquecer o delegate quebra a taskbar **em runtime, não em compile**.
 
-**CSS:** as janelas admin compartilham `dialogs/admin.css` (`adm-dialog`,
-`adm-scroll`), que já carrega todo o trabalho mobile. Nenhum arquivo novo por
-janela.
+**O `icon_tab_<x>` da aba extraída fica órfão.** O prefixo mente numa janela sem
+abas: aposente-o em favor do par `icon_dialog_` / `icon_btn_`. Cuidado ao caçar
+os usos — tópicos de ajuda referenciam ícones **como átomo**
+(`icon: :icon_tab_autojoin`), então um grep pelo nome da função não os encontra:
+
+```sh
+grep -rn ":icon_tab_<x>" apps/
+```
+
+**CSS: família grande compartilha, par extraído duplica.** As 9 janelas admin
+compartilham `dialogs/admin.css` (`adm-dialog`, `adm-scroll`), que já carrega
+todo o trabalho mobile — nenhum arquivo novo por janela. Já um par nascido de um
+split de duas abas segue o contrato literal do plano (§8.13): arquivo próprio,
+prefixo próprio (`perform.css`/`pf-` + `autojoin.css`/`aj-`). ~100 linhas
+duplicadas valem menos que um prefixo que mente sobre a janela em que mora.
+
+De qualquer forma, **o CSS do shell de abas morre junto com o shell**: 80 linhas
+de scroller mobile saíram do `perform.css`, do mesmo jeito que os `.ac-main-tabs*`
+saíram do `account.css` na fatia do Admin.
 
 ### 5.5 Deletar do monólito — 9 lugares
 
@@ -591,6 +622,40 @@ mexeu em 7, e `chat.pot`/`ui.pot` perderam msgids porque a **fase anterior**
 Reverter isso teria mantido o `i18n.gettext.check` vermelho preservando strings
 de handlers que não existem mais. Antes de reverter um `.pot`, diffe: se ele só
 perdeu msgids de código que morreu, ele está certo e você está atrasado.
+
+**E a disciplina de escopo não se aplica a catálogo misturado.** Na fatia do
+Perform, um rebase trouxe 6 commits de P2P que renomearam strings sem
+re-extrair; o extract acusou 17 `.pot`, 11 alheios. Três deles —
+`help.pot`, `chat.pot`, `help_features.pot` — carregavam as minhas strings **e**
+as deles no mesmo arquivo. Reverter perderia as minhas; manter sem tratar deixa
+entradas vazias que o `catalog.check` reprova.
+
+Quando isso acontece, a escolha é binária: absorver a dívida inteira (extract
+completo + merge + tradução) ou entregar o gate vermelho. Traduzir catálogo não
+é tocar no código da feature alheia — **mas não é barato**. Na fatia do Perform a
+absorção rendeu 1.470 entradas novas e **354 traduções existentes destruídas**,
+porque os domínios alheios (`chat`, `group_call`, `p2p`, `commands`, `lobby`)
+estão cheios de strings em fallback inglês com placeholders que o tradutor
+automático moe.
+
+Orce os três passos de limpeza antes de decidir; se a dívida alheia for grande,
+um `chore(i18n)` separado sai melhor.
+
+### Os três passos de limpeza depois de uma rodada grande
+
+1. **Restaurar o colateral** — diff semântico contra o snapshot pré-merge
+   (`msgstr` **e** `msgstr_plural`) e devolver toda entrada que já existia. Só as
+   entradas novas ficam.
+2. **Reparar placeholders** com `i18n_repair_placeholder_mismatches.py`. Saiba o
+   que ele faz: para recuperar os `%{}` ele devolve o **inglês**. Isso deixa
+   `placeholder.check` verde e derruba `source-fallback.check`.
+3. **Traduzir à mão o resíduo do passo 2.** Na fatia do Perform foram 45
+   entradas (5 strings × 9 locales); os outros 11 locales o tradutor acertou de
+   primeira. Cinco strings curtas escritas à mão custam menos que outra rodada
+   de máquina.
+
+Os gates só ficam todos verdes depois dos três — cada um cobre o buraco que o
+anterior abre.
 
 ### Não confunda deriva de referência com rewrap
 

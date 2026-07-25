@@ -396,14 +396,6 @@ msgstr "Ograniczone przez"
 msgid "Metrics"
 msgstr "Metrics"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:48
-#: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:52
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:71
-#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:65
-#, elixir-autogen, elixir-format
-msgid "P2P Lobby"
-msgstr "Lobby P2P"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Packet loss"
@@ -823,21 +815,6 @@ msgstr ""
 "można dołączyć tylko receive-. Układ i domyślne media są zapamiętywane dla "
 "Twojego konta; wybór urządzeń w przeglądarce jest zapamiętywany lokalnie."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:9
-#, elixir-autogen, elixir-format
-msgid ""
-"Type /p2p <nick> (or use the nicklist context menu) to open setup before "
-"sending an invite. Confirming setup sends the invite card in the private "
-"message; the invited person clicks Accept to start their own setup and join "
-"in place, or Decline to refuse — the inviter is told either way."
-msgstr ""
-"Typ < ph1 > < / ph1 > < ph0 > < ph2 > < / ph2 > > (lub użyj menu "
-"kontekstowego nicklist), aby otworzyć konfigurację przed wysłaniem "
-"zaproszenia. Potwierdzenie konfiguracji wysyła kartę zaproszenia w prywatnej"
-" wiadomości; zaproszona osoba kliknęła przycisk Akceptuj, aby rozpocząć "
-"własną konfigurację i połączyć się na miejscu, lub Odrzucić odmówić - "
-"inviter jest powiedziane w obu kierunkach."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:16
 #, elixir-autogen, elixir-format
 msgid ""
@@ -956,21 +933,6 @@ msgstr ""
 "Rozmowy używają konserwatywnych limitów audio i wideo domyślnie, aby "
 "sprzyjać stabilności nad maksymalną jakością obrazu."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:29
-#, elixir-autogen, elixir-format
-msgid ""
-"Messages during the session are regular private messages, saved like any "
-"other. Session events — connected, file received, game score, who ended it —"
-" are written into the PM history as P2P lines, so the story of the session "
-"survives it. While a session exists, the peer's PM tab, PM sidebar row and "
-"PM topic bar show the same P2P indicator family used by channel conferences,"
-" with state and active call/file/game/relay facets."
-msgstr ""
-"Wiadomości podczas sesji są zwykłymi wiadomościami prywatnymi, zapisywanymi "
-"jak każdy inny. Zdarzenia sesyjne - połączone, otrzymane pliki, wynik gry, "
-"który je zakończył - są zapisane w historii PM jako linie P2P, więc historia"
-" sesji przetrwa. Podczas połączenia karta PM pokazuje małą ikonę P2P."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:1
 #, elixir-autogen, elixir-format
 msgid "Monitor connection quality during calls."
@@ -1082,21 +1044,6 @@ msgstr ""
 "podpowiedzi. End Call zatrzymuje tylko media; zamykanie okna P2P pyta przed "
 "zakończeniem całej sesji P2P."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"The P2P Lobby is the persistent peer-to-peer connection behind /p2p: one "
-"link between two users that hosts a call, file transfers and games all at "
-"the same time. It lives inside the chat — setup happens before sending or "
-"accepting the invite, and accepting opens the P2P Session Console right on "
-"the chat desktop, next to your conversations."
-msgstr ""
-"Lobby P2P to stałe połączenie peer- to- peer za < ph0 > < / ph0 >: jedno "
-"połączenie pomiędzy dwoma użytkownikami, którzy posiadają połączenie, "
-"przesyłanie plików i gry jednocześnie. Żyje wewnątrz czatu - konfiguracja "
-"odbywa się przed wysłaniem lub przyjęciem zaproszenia, a akceptacja otwiera "
-"okna sesji tuż na pulpicie czatu, obok rozmów."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "The Session Console"
@@ -1174,3 +1121,63 @@ msgid ""
 msgstr ""
 "Z ustawionym oknem P2P Call, Ctrl + Shift + ArrowUp włącza stan mikrofonu i "
 "Ctrl + Shift + ArrowLeft włącza stan kamery."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:29
+#, elixir-autogen, elixir-format
+msgid ""
+"Messages during the session are regular private messages, saved like any "
+"other. Session events — request sent, connected, file received, game score, "
+"who ended it — are written into the PM history as P2P lines, so the story of"
+" the session survives it without turning the transcript into a control "
+"surface. While a session exists, the peer's PM tab, PM sidebar row and PM "
+"topic bar show the same P2P indicator family used by channel conferences, "
+"with state and active call/file/game/relay facets."
+msgstr ""
+"Wiadomości podczas sesji są zwykłymi wiadomościami prywatnymi, zapisywanymi "
+"jak każdy inny. Zdarzenia sesyjne - prośba wysłana, połączona, otrzymany "
+"plik, wynik gry, który ją zakończył - są zapisywane w historii PM jako linie"
+" P2P, więc historia sesji przetrwa go bez zmieniania zapisu w powierzchnię "
+"kontrolną. Podczas gdy sesja istnieje, zakładka P2P, rząd boczny PM i pasek "
+"tematyczny PM pokazują tę samą rodzinę wskaźników P2P używaną przez "
+"konferencje kanałowe, ze stanem i aktywnym wywołaniem < ph0 > < / ph1 > < / "
+"ph1 > < ph2 > < / ph2 >."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:52
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:71
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:65
+#, elixir-autogen, elixir-format
+msgid "P2P Session"
+msgstr "Sesja P2P"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"The P2P Session is the persistent peer-to-peer connection behind /p2p: one "
+"link between two users that hosts a call, file transfers and games all at "
+"the same time. It lives inside the chat — setup happens before sending or "
+"accepting the invite, and accepting opens the P2P Session Console right on "
+"the chat desktop, next to your conversations."
+msgstr ""
+"Sesja P2P jest trwałym połączeniem peer- to- peer za < ph0 > < / ph0 >: "
+"jedno połączenie pomiędzy dwoma użytkownikami, którzy prowadzą połączenie, "
+"przesyłanie plików i gry jednocześnie. Mieszka wewnątrz czatu - konfiguracja"
+" odbywa się przed wysłaniem lub przyjęciem zaproszenia, a akceptacja otwiera"
+" konsolę sesyjną P2P bezpośrednio na pulpicie czatu, obok rozmów."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:9
+#, elixir-autogen, elixir-format
+msgid ""
+"Type /p2p <nick> (or use the P2P control in the PM header/nicklist context "
+"menu) to open setup before sending a request. Confirming setup opens your "
+"P2P Session Console immediately and sends a P2P request line in the private "
+"message. The invited person's PM tab opens in the background with Join and "
+"Decline in the PM header, so they can respond in place without a separate "
+"lobby link."
+msgstr ""
+"Typ < ph1 > < / ph1 > < ph0 > < ph2 > < / ph2 > > (lub użyj sterowania P2P w"
+" nagłówku PM < ph3 > < / ph3 > menu kontekstowe), aby otworzyć konfigurację "
+"przed wysłaniem wniosku. Potwierdzenie konfiguracji natychmiast otwiera "
+"konsolę sesyjną P2P i wysyła linię zapytania P2P w prywatnej wiadomości. "
+"Zaproszona karta PM otwiera się w tle z Dołącz i Zmniejsz w nagłówku PM, "
+"dzięki czemu mogą reagować w miejscu bez oddzielnego linka lobby."

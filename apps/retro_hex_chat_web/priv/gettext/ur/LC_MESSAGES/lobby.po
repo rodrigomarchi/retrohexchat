@@ -11,12 +11,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:218
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:224
 #, elixir-autogen, elixir-format
 msgid "%{peer} is muted"
 msgstr "%{peer} دوبارہ حل کیا گیا ہے"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:148
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:154
 #, elixir-autogen, elixir-format
 msgid "%{peer}'s camera is off"
 msgstr "%{peer}'س کیمرے بند ہے"
@@ -42,12 +42,12 @@ msgstr "کھیلوں میں واپس"
 msgid "Browse files"
 msgstr "Brunse فائلیں"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:403
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:409
 #, elixir-autogen, elixir-format
 msgid "Camera Off"
 msgstr "میانمار"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:402
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:408
 #, elixir-autogen, elixir-format
 msgid "Camera On"
 msgstr "کیمرون پر"
@@ -62,12 +62,7 @@ msgstr "کھيلنے کے ليے لنک"
 msgid "Connect to send a file."
 msgstr "فائل بھیجنے پر پابندی."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:64
-#, elixir-autogen, elixir-format
-msgid "Connect to start an audio or video call."
-msgstr "کسی آڈیو یا ویڈیو کال شروع کرنے کے لئے وابستہ."
-
-#: lib/retro_hex_chat_web/live/chat_live/components/p2p_media_island.ex:310
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_media_island.ex:311
 #, elixir-autogen, elixir-format
 msgid "Could not access your microphone or camera."
 msgstr "آپ کے محور یا کیمرے تک رسائی حاصل نہیں کر سکتے."
@@ -77,10 +72,10 @@ msgstr "آپ کے محور یا کیمرے تک رسائی حاصل نہیں ک�
 msgid "Decline"
 msgstr "فیصلہ"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:501
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:723
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:724
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:727
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:508
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:732
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:733
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:736
 #, elixir-autogen, elixir-format
 msgid "Devices"
 msgstr "آلہ"
@@ -90,7 +85,7 @@ msgstr "آلہ"
 msgid "Draw."
 msgstr "پڑھو."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:452
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:458
 #, elixir-autogen, elixir-format
 msgid "End call"
 msgstr "ختم کال"
@@ -110,7 +105,7 @@ msgstr "فائل ٹرانسفر مکمل ہوا: %{name}"
 msgid "Final Score"
 msgstr "فائنل سکور"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:550
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:559
 #, elixir-autogen, elixir-format
 msgid "Focus"
 msgstr "توجہ دیں"
@@ -125,7 +120,7 @@ msgstr "ترقی میں کھیل"
 msgid "Game over — %{game}: %{p1} × %{p2}"
 msgstr "کھیل ختم — %{game}: %{p1} × %{p2}"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:381
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:387
 #, elixir-autogen, elixir-format
 msgid "Mute"
 msgstr "خاموش"
@@ -135,39 +130,41 @@ msgstr "خاموش"
 msgid "P1 %{score}"
 msgstr "P1 %{score}"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:494
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:501
 #, elixir-autogen, elixir-format
 msgid "Picture-in-Picture"
 msgstr "تصویر-in-پا-"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:333
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:339
 #, elixir-autogen, elixir-format
 msgid "Start audio"
 msgstr "آڈیو شروع کریں"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:321
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:327
 #, elixir-autogen, elixir-format
-msgid "Start audio or video — or the peer can, independently. You'll join automatically."
+msgid ""
+"Start audio or video — or the peer can, independently. You'll join "
+"automatically."
 msgstr ""
 "آڈیو یا ویڈیو کا آغاز کریں — یا پھر ہم‌جنس‌پسندی سے کر سکتے ہیں ۔ آپ خود "
 "بخود شامل ہو جائیں گے۔"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:341
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:347
 #, elixir-autogen, elixir-format
 msgid "Start video"
 msgstr "ویڈیو شروع کریں"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:392
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:398
 #, elixir-autogen, elixir-format
 msgid "Turn on camera"
 msgstr "کیمرے پر موڑ"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:373
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:379
 #, elixir-autogen, elixir-format
 msgid "Turn on microphone"
 msgstr "عرفیت پر نظر ڈالیں"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:381
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:387
 #, elixir-autogen, elixir-format
 msgid "Unmute"
 msgstr "غیر متصل"

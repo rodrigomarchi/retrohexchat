@@ -11,7 +11,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/retro_hex_chat_web/live/help_live/index.ex:143
+#: lib/retro_hex_chat_web/live/help_live/index.ex:135
 #, elixir-autogen, elixir-format
 msgid "%{topic} — RetroHexChat Help"
 msgstr "%{topic} [ পাদটীকা]"
@@ -108,7 +108,9 @@ msgstr "৩) পাসওয়ার্ড লিখুন (৫ অক্ষর
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:16
 #, elixir-autogen, elixir-format
-msgid "3. On success, you join the chat already identified — the 60-second identify timer is skipped."
+msgid ""
+"3. On success, you join the chat already identified — the 60-second identify"
+" timer is skipped."
 msgstr ""
 "৩) সাফল্যে, আপনি ইতিমধ্যেই চ্যাটে যোগ দিয়েছেন- ৬০ সেকেন্ডের পরিচয় পাওয়া "
 "টাইমারটি বাদ পড়েছে।"
@@ -130,7 +132,8 @@ msgstr "৪."
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:35
 #, elixir-autogen, elixir-format
-msgid "4. Your nickname is registered and you join the chat already identified."
+msgid ""
+"4. Your nickname is registered and you join the chat already identified."
 msgstr "ডাকনাম ৪."
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:49
@@ -213,7 +216,10 @@ msgstr "লিখুন"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:24
 #, elixir-autogen, elixir-format
-msgid "Every nickname must be registered before entering the chat. When you connect with a new nickname, you'll be asked to choose a password to register it. On future visits, you'll enter your password to log in."
+msgid ""
+"Every nickname must be registered before entering the chat. When you connect"
+" with a new nickname, you'll be asked to choose a password to register it. "
+"On future visits, you'll enter your password to log in."
 msgstr ""
 "চ্যাটের আগে প্রতিটি ডাকনাম নিবন্ধন করতে হবে। যখন আপনি একটি নতুন ডাকনামে "
 "সংযোগ করেন, আপনাকে একটি পাসওয়ার্ড দিতে হবে। ভবিষ্যতে দেখা করতে, লগ-ইন করতে "
@@ -240,7 +246,6 @@ msgid "Help navigation"
 msgstr "সহায়তা"
 
 #: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:54
-#: lib/retro_hex_chat_web/live/help_live/index.ex:142
 #, elixir-autogen, elixir-format
 msgid "Help — RetroHexChat"
 msgstr "সাহায্য — বিপরীত লিঙ্গ"
@@ -356,21 +361,19 @@ msgstr "রেট্রো HoxChat সাহায্য"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "RetroHexChat handles all authentication directly on the connection screen — no need to run"
+msgid ""
+"RetroHexChat handles all authentication directly on the connection screen — "
+"no need to run"
 msgstr ""
 "রেট্রো HxChat-র সাথে সংযোগ পর্দায় সরাসরি অনুমোদন করা হয় - সংযোগের ক্ষেত্রে"
 " কোনো আবশ্যক নয়"
 
-#: lib/retro_hex_chat_web/live/help_live/index.ex:147
-#, elixir-autogen, elixir-format
-msgid "RetroHexChat help documentation. Learn about IRC commands, channel modes, features, and keyboard shortcuts."
-msgstr ""
-"রেট্রো HxChat নথি নথিপত্রের সহায়তা করে। IRC কমান্ড, চ্যানেল মোড, বৈশিষ্ট্য "
-"এবং কীবোর্ড শর্টকাট সম্পর্কে শিখুন।"
-
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "RetroHexChat is a web-based IRC client with an authentic retro look and feel. It supports channels, private messages, text formatting, nick services, and much more."
+msgid ""
+"RetroHexChat is a web-based IRC client with an authentic retro look and "
+"feel. It supports channels, private messages, text formatting, nick "
+"services, and much more."
 msgstr ""
 "রেট্রো HxChat একটি ওয়েব ভিত্তিক IRC ক্লায়েন্ট যার আসল রেট্রো চেহারা ও "
 "অনুভূতি রয়েছে। এটি চ্যানেলের সমর্থন করে, ব্যক্তিগত বার্তা, টেক্সট সংকলন, "
@@ -407,7 +410,8 @@ msgstr "এটি একটি প্রধানমন্ত্রী ট্য
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "To connect to RetroHexChat, enter a nickname on the connect screen and click"
+msgid ""
+"To connect to RetroHexChat, enter a nickname on the connect screen and click"
 msgstr ""
 "রেট্রো HulaChat-র সাথে সংযোগ স্থাপন করার উদ্দেশ্যে পুরোনো উপনাম ও পর্দার "
 "মধ্যে সংযোগ স্থাপন করা হয়"
@@ -419,14 +423,17 @@ msgstr "ব্যবহারকারী তালিকা ব্যবহা�
 
 #: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "You can send private messages to other users that only the two of you can see."
+msgid ""
+"You can send private messages to other users that only the two of you can "
+"see."
 msgstr ""
 "আপনি শুধুমাত্র যে দু'জন দেখতে পাচ্ছেন, তাদের মধ্যে আপনি ব্যক্তিগত বার্তা "
 "পাঠাতে পারেন।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:50
 #, elixir-autogen, elixir-format
-msgid "are automatically freed. Connect regularly to keep your registration. See"
+msgid ""
+"are automatically freed. Connect regularly to keep your registration. See"
 msgstr ""
 "স্বয়ংক্রিয় মুক্তি। আপনার নিবন্ধন বজায় রাখার জন্য নিয়মিতভাবে যোগাযোগ করুন"
 " । দেখুন"
@@ -453,7 +460,9 @@ msgstr "স্বয়ং।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:15
 #, elixir-autogen, elixir-format
-msgid "to open a PM tab. You can also double-click a nickname to open a PM directly."
+msgid ""
+"to open a PM tab. You can also double-click a nickname to open a PM "
+"directly."
 msgstr ""
 "একটি প্রধানমন্ত্রী ট্যাব খোলার জন্য। সরাসরি একটি প্রধানমন্ত্রীকে খোলার জন্য "
 "আপনি দুইবার ক্লিক করতে পারেন।"
@@ -480,7 +489,9 @@ msgstr "— একটি পাসওয়ার্ড প্রম্পট �
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:35
 #, elixir-autogen, elixir-format
-msgid "— A registration form appears. Choose a password (minimum 5 characters) and confirm it. Click"
+msgid ""
+"— A registration form appears. Choose a password (minimum 5 characters) and "
+"confirm it. Click"
 msgstr "( প্রকা. পাসওয়ার্ড বেছে নিন (৫ অক্ষর) এবং নিশ্চিত করুন। ক্লিক করুন"
 
 #: lib/retro_hex_chat_web/components/ui/help/help_status_bar.ex:35
@@ -517,7 +528,9 @@ msgstr "বিষয়বস্তু"
 
 #: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:21
 #, elixir-autogen, elixir-format
-msgid "For a lightweight message that does not open a PM tab on the recipient's side, choose Send Notice from a nickname context menu or use"
+msgid ""
+"For a lightweight message that does not open a PM tab on the recipient's "
+"side, choose Send Notice from a nickname context menu or use"
 msgstr ""
 "প্রাপকদের না ফোকাসে কোন পি- জি- আই- ডি বার্তা পাঠানোর জন্য একটি মেনু থেকে "
 "নির্বাচন করুন"

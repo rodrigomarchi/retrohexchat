@@ -345,13 +345,14 @@ msgid "/announce"
 msgstr "/announce"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:74
-#: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:79
+#: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:78
+#: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:83
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autocomplete.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "/autojoin"
 msgstr "/autojoin"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "/autojoin Command"
 msgstr "/autojoin Command"
@@ -441,7 +442,7 @@ msgid "/jo"
 msgstr "/jo"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:5
-#: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:80
+#: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:84
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autocomplete.html.heex:15
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autocomplete.html.heex:48
 #, elixir-autogen, elixir-format
@@ -546,12 +547,12 @@ msgid "/ns identify"
 msgstr "/ns identify"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:8
-#: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:81
+#: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:85
 #, elixir-autogen, elixir-format
 msgid "/part"
 msgstr "/part"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "/perform Command"
 msgstr "/perform Command"
@@ -668,7 +669,7 @@ msgstr "1. 연산자 사용"
 msgid "1. Click and drag to select text in the chat area."
 msgstr "1. 채팅 영역에서 텍스트를 선택하고 드래그합니다."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:41
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "1. Perform commands execute sequentially."
 msgstr "1. 명령어를 실행한다."
@@ -688,7 +689,7 @@ msgstr "1. 명령을 공백(e.g.,"
 msgid "10 attempts"
 msgstr "10 시도"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:41
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "2. Auto-join channels are joined after all perform commands complete."
 msgstr "2. 자동 조인 채널은 모든 실행 명령을 완료 한 후 결합됩니다."
@@ -1052,7 +1053,8 @@ msgstr "자동 추가 PM 연락처"
 msgid "Auto-Ignore:"
 msgstr "자동 면역:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:17
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "Auto-Join Channels"
 msgstr "자동 조인 채널"
@@ -1062,7 +1064,7 @@ msgstr "자동 조인 채널"
 msgid "Auto-Join on Invite"
 msgstr "Invite에 자동 조인"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:52
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "Auto-Reconnect"
 msgstr "자동 연결"
@@ -1071,16 +1073,6 @@ msgstr "자동 연결"
 #, elixir-autogen, elixir-format
 msgid "Auto-Whois"
 msgstr "자동차-Whois"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:18
-#, elixir-autogen, elixir-format
-msgid ""
-"Auto-join channels are separate from perform commands. They are joined after"
-" all perform commands complete, ensuring that NickServ identification and "
-"other setup happens first."
-msgstr ""
-"Auto-join 채널은 실행 명령에서 분리됩니다. 그들은 모든 수행 명령을 완료 한 후 결합되어 NickServ ID 및 기타 설정이 "
-"먼저 발생합니다."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:22
 #, elixir-autogen, elixir-format
@@ -1599,7 +1591,7 @@ msgstr "Ctrl + 시프트 + /"
 msgid "Ctrl+Shift+A"
 msgstr "Ctrl + 이동 + ·"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "Ctrl+Shift+E"
 msgstr "Ctrl + 이동+E"
@@ -1825,7 +1817,7 @@ msgstr "편집 된 메시지는 작은 \"(editado)\"태그를 보여줍니다. �
 msgid "Empty edit:"
 msgstr "빈 편집:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Enable / Disable"
 msgstr "/ 비활성화"
@@ -1875,7 +1867,7 @@ msgstr "탈출 :"
 msgid "Event Types"
 msgstr "이벤트 유형"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "Execution Order"
 msgstr "실행 명령"
@@ -2578,7 +2570,7 @@ msgstr "닉:"
 msgid "NickName is typing..."
 msgstr "NickName은..."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:82
+#: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:86
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:70
 #, elixir-autogen, elixir-format
 msgid "NickServ"
@@ -2845,11 +2837,6 @@ msgstr "Per 유형 필터링:"
 msgid "Perform / Auto-Commands"
 msgstr "수행 / 자동 컴파일"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:23
-#, elixir-autogen, elixir-format
-msgid "Perform Dialog"
-msgstr "Dialog 받기"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Perform List"
@@ -2878,7 +2865,7 @@ msgstr "보증:"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_enhanced_history.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ignore_list.html.heex:11
 #: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:11
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:25
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:61
 #: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:9
@@ -3213,7 +3200,7 @@ msgstr "현재 채널 또는 PM의 메시지를 통해 실시간 강조 표시."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_turn.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_aliases.html.heex:55
-#: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:77
+#: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:81
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_reconnect.html.heex:49
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autocomplete.html.heex:73
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autorespond.html.heex:52
@@ -3248,7 +3235,7 @@ msgstr "현재 채널 또는 PM의 메시지를 통해 실시간 강조 표시."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:50
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:46
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/feature_quit_message.html.heex:20
@@ -3518,13 +3505,6 @@ msgid ""
 "receive notifications in the Status tab."
 msgstr "특정 사용자가 온라인 또는 오프라인으로 올 때 알림 목록 트랙. 상태 탭에서 알림을받습니다."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"The Perform system lets you define commands that execute automatically every"
-" time you connect, followed by a list of channels to join."
-msgstr "실행 시스템은 당신이 연결 때마다 자동으로 실행 명령을 정의 할 수 있습니다, 채널의 목록에 따라 가입."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:2
 #, elixir-autogen, elixir-format
 msgid ""
@@ -3658,7 +3638,7 @@ msgstr "누구나 등록할 수 있습니다."
 msgid "The perform list contains commands (e.g.,"
 msgstr "실행 목록은 명령을 포함합니다 (예를들면,"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:36
 #, elixir-autogen, elixir-format
 msgid ""
 "The perform system can be toggled on or off. When disabled, no commands "
@@ -4236,11 +4216,6 @@ msgstr "문자."
 msgid "combinations to avoid conflicting with browser shortcuts."
 msgstr "브라우저 단축키와 충돌 방지를 위한 조합."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:75
-#, elixir-autogen, elixir-format
-msgid "command for finer control."
-msgstr "Finer 제어 명령."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_char_counter.html.heex:3
 #, elixir-autogen, elixir-format
 msgid "current/maximum"
@@ -4387,11 +4362,6 @@ msgstr "탭."
 msgid "to accept the match, or"
 msgstr "일치, 또는"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:14
-#, elixir-autogen, elixir-format
-msgid "to add commands, or manage them visually in the Perform Dialog."
-msgstr "명령을 추가하거나 Dialog에서 시각적으로 관리하십시오."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_enhanced_history.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "to cancel."
@@ -4454,13 +4424,6 @@ msgid ""
 "to open an inline search bar. Type to filter history entries by substring "
 "match. Press"
 msgstr "인라인 검색 표시 줄을 엽니다. substring 경기에 의해 기록 항목을 필터링하는 유형. 제품정보"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:27
-#, elixir-autogen, elixir-format
-msgid ""
-"to open the Perform Dialog, which provides a visual interface for managing "
-"both the perform list and auto-join channels."
-msgstr "수행 목록 및 자동 조인 채널을 관리하기위한 시각적 인터페이스를 제공하는 수행 Dialog를 엽니 다."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:13
 #, elixir-autogen, elixir-format
@@ -5043,13 +5006,6 @@ msgstr ""
 "Identity and presence cover how you appear to other users: 당신의 별명, NickServ "
 "로그인 상태, 프로필 바이오, 멀리 상태, 및 개인 사용자 모드."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:23
-#, elixir-autogen, elixir-format
-msgid ""
-"If a session can no longer be found (for example, an old invite whose "
-"session was purged), the card falls back to the plain join link."
-msgstr "세션이 더 이상 찾을 수없는 경우 (예를 들어, 세션이 순화 된 오래된 초대), 카드는 일반 가입 링크로 돌아갑니다."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:10
 #, elixir-autogen, elixir-format
 msgid ""
@@ -5131,13 +5087,6 @@ msgstr ""
 "연산자 및 음성 항목 toggle 대상의 현재 역할에 따라: Op (+o)가 Op (-o)를 제거하고, Voice (+v)는 Voice "
 "(-v)를 제거한다. Mute (채널)는 기간 프롬프트를 엽니 다; 영구적 인 분을 위해 공백을두고, 또는 30s, 5m, 1h 또는 "
 "1d를 입력하십시오. Unmute (channel)는 즉시 수로 수준 mute를 제거합니다."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_connection_diagram.html.heex:78
-#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:94
-#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:39
-#, elixir-autogen, elixir-format
-msgid "P2P Lobby"
-msgstr "P2P 로비"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:40
 #, elixir-autogen, elixir-format
@@ -5345,11 +5294,6 @@ msgid ""
 msgstr ""
 "Wallops 메시지는 /umode +w로 +w를 활성화하는 사용자에게만 이동합니다. 서버 운영자 및 관리자는 그들을 보낼 수 있습니다."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:7
-#, elixir-autogen, elixir-format
-msgid "What the Card Shows"
-msgstr "카드 쇼"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:15
 #, elixir-autogen, elixir-format
 msgid ""
@@ -5427,16 +5371,6 @@ msgstr "인수 없음. 대화 상자는 활성 타이머를 나열하고 원시 
 msgid ", or in an active P2P session use the"
 msgstr "P2P 세션에서는"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:9
-#, elixir-autogen, elixir-format
-msgid ""
-"A card names who created the session and walks through its lifecycle on a "
-"small timeline: when it was created, when it connected, and — once it is "
-"over — when it ended, how long it ran, and why it closed."
-msgstr ""
-"세션을 생성하고 작은 타임라인의 수명주기를 통해 산책하는 카드명: 그것이 생성되었을 때, 연결될 때, 그리고 — 일단 끝낼 때, 얼마나 "
-"오래 ran, 그리고 왜 닫히는."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:16
 #, elixir-autogen, elixir-format
 msgid ""
@@ -5454,13 +5388,6 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "In the P2P setup dialog, check"
 msgstr "P2P 설정 대화에서 확인"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"P2P lobby invites appear as rich session cards instead of a plain line with "
-"a link."
-msgstr "P2P 로비는 링크가 있는 일반 라인 대신 풍부한 세션 카드로 표시됩니다."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:14
 #, elixir-autogen, elixir-format
@@ -5481,16 +5408,6 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Toggle Privacy Mode"
 msgstr "웹 사이트"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:16
-#, elixir-autogen, elixir-format
-msgid ""
-"While a session is still live the card offers a button — Join or Open lobby "
-"for P2P. Once the session has finished the card shows its final state and "
-"drops the button."
-msgstr ""
-"세션은 여전히 카드를 제공하는 동안 버튼 - P2P에 가입하거나 개방 로비. 세션이 완료되면 카드가 최종 상태를 표시하고 버튼을 "
-"삭제합니다."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:17
 #, elixir-autogen, elixir-format
@@ -6092,3 +6009,102 @@ msgid ""
 msgstr ""
 "한 번에 한 목록, 탭 상단의 selector로 선택: 금지, 금지 예외 (+e) 특정 사용자 우회 금지를 허용하고 특정 사용자 우회 "
 "초대 전용 모드를 허용하는 예외 (+I)."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"Arcade sessions can appear as rich cards, while P2P requests use the PM "
+"header controls and leave a plain P2P line in the transcript."
+msgstr ""
+"아케이드 세션은 풍부한 카드로 나타날 수 있으며, P2P 요청은 PM 헤더 컨트롤을 사용하며, 성적표에서 일반 P2P 라인을 남길 수 "
+"있습니다."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:20
+#, elixir-autogen, elixir-format
+msgid ""
+"Auto-join channels live in their own window and are joined after all perform"
+" commands complete, ensuring that NickServ identification and other setup "
+"happens first."
+msgstr ""
+"Auto-join 채널은 자신의 창에 살고 있으며 모든 수행 명령이 완료된 후 가입되며 NickServ ID 및 기타 설정이 먼저 "
+"발생합니다."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:23
+#, elixir-autogen, elixir-format
+msgid ""
+"If a legacy P2P invite line can no longer find its session, it stays as "
+"inert history instead of showing stale action buttons."
+msgstr "레거시 P2P 초대 라인이 더 이상 세션을 찾을 수없는 경우 stale 액션 버튼을 보여주는 대신 비활성 역사로 유지됩니다."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_connection_diagram.html.heex:78
+#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:94
+#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:39
+#, elixir-autogen, elixir-format
+msgid "P2P Session"
+msgstr "P2P 세션"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:87
+#, elixir-autogen, elixir-format
+msgid "Perform"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Perform Window"
+msgstr "창을 실행"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:9
+#, elixir-autogen, elixir-format
+msgid ""
+"Session summaries name who created the session and walk through its "
+"lifecycle on a small timeline: when it was created, when it connected, and —"
+" once it is over — when it ended, how long it ran, and why it closed."
+msgstr ""
+"세션을 생성하고 작은 타임 라인에서 수명주기를 통해 산책 한 세션 요약 이름 : 그것이 생성되었을 때, 연결 될 때, 그리고 - 한 번 "
+"이상 - 종료 될 때, 얼마나 오래되고, 왜 닫히지."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"The Perform system lets you define commands that execute automatically every"
+" time you connect. Channels are handled separately, in Auto-Join."
+msgstr "실행 시스템은 당신이 연결 때마다 자동으로 실행 명령을 정의 할 수 있습니다. 채널은 자동 조인에서 별도로 처리됩니다."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "What Session Summaries Show"
+msgstr "세션 요약보기"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:16
+#, elixir-autogen, elixir-format
+msgid ""
+"While an Arcade session is still live the card can offer Join or Open. P2P "
+"Start, Join and Decline actions live in the PM header instead; finished P2P "
+"history shows final state only."
+msgstr ""
+"아케이드 세션은 여전히 카드가 Join 또는 Open을 제공 할 수 있습니다. P2P 시작, 참여 및 Decline 작업은 PM 헤더 "
+"대신 라이브; 완료 P2P 역사는 최종 상태 만 보여줍니다."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:75
+#, elixir-autogen, elixir-format
+msgid ""
+"command, or visually in the Auto-Join window — open it from Tools > Auto-"
+"Join, or by typing"
+msgstr "명령, 또는 Auto-Join 창에서 시각적으로 — 도구에서 열다 > Auto-Join, 또는 입력하여"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "to add commands, or manage them visually in the Perform window."
+msgstr "명령을 추가하거나 실행 창에서 시각적으로 관리하십시오."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:29
+#, elixir-autogen, elixir-format
+msgid ""
+"to open the Perform window, which provides a visual interface for managing "
+"the perform list."
+msgstr "수행 창을 열려면 수행 목록을 관리하기위한 시각적 인터페이스를 제공합니다."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:79
+#, elixir-autogen, elixir-format
+msgid "with no arguments."
+msgstr "인수 없음."

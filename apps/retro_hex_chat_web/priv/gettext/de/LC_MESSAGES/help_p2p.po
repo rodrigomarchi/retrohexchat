@@ -399,14 +399,6 @@ msgstr "Begrenzt von"
 msgid "Metrics"
 msgstr "Metriken"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:48
-#: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:52
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:71
-#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:65
-#, elixir-autogen, elixir-format
-msgid "P2P Lobby"
-msgstr "P2P Lobby"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Packet loss"
@@ -830,21 +822,6 @@ msgstr ""
 "werden für Ihr Konto erinnert; Browser-spezifische Gerätewahlen werden lokal"
 " erinnert."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:9
-#, elixir-autogen, elixir-format
-msgid ""
-"Type /p2p <nick> (or use the nicklist context menu) to open setup before "
-"sending an invite. Confirming setup sends the invite card in the private "
-"message; the invited person clicks Accept to start their own setup and join "
-"in place, or Decline to refuse — the inviter is told either way."
-msgstr ""
-"Typ <ph1>/ph1> <ph0><ph2>/ph2>>>>>> (oder verwenden Sie das Nicklist-"
-"Kontextmenü) zum Öffnen der Einrichtung, bevor Sie eine Einladung senden. "
-"Bestätigen Setup sendet die Einladungskarte in der privaten Nachricht; die "
-"eingeladene Person klickt Akzeptieren, um ihren eigenen Setup zu starten und"
-" sich an Ort und Stelle anzuschließen, oder Decline zu weigern — der "
-"Einladende wird entweder erzählt."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:16
 #, elixir-autogen, elixir-format
 msgid ""
@@ -966,24 +943,6 @@ msgstr ""
 "Anrufe verwenden konservative Audio- und Videogrenzen standardmäßig, um "
 "Stabilität über maximale Bildqualität zu bevorzugen."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:29
-#, elixir-autogen, elixir-format
-msgid ""
-"Messages during the session are regular private messages, saved like any "
-"other. Session events — connected, file received, game score, who ended it —"
-" are written into the PM history as P2P lines, so the story of the session "
-"survives it. While a session exists, the peer's PM tab, PM sidebar row and "
-"PM topic bar show the same P2P indicator family used by channel conferences,"
-" with state and active call/file/game/relay facets."
-msgstr ""
-"Nachrichten während der Sitzung sind regelmäßige private Nachrichten, wie "
-"jede andere gespeichert. Session-Ereignisse – verbunden, Datei empfangen, "
-"Spiel-Score, die es beendet – werden in die PM-Geschichte als P2P-Linien "
-"geschrieben, so dass die Geschichte der Sitzung überlebt. Während eine "
-"Sitzung besteht, zeigen die PM-Tab, PM-Seitenleiste und PM-Themenleiste die "
-"gleiche P2P-Indikatorfamilie, die von Kanalkonferenzen verwendet wird, mit "
-"Zustand und aktivem Ruf/file/game/relay Facetten."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:1
 #, elixir-autogen, elixir-format
 msgid "Monitor connection quality during calls."
@@ -1097,21 +1056,6 @@ msgstr ""
 "Tooltips. End Call stoppt nur die Medien; Schließen der P2P Session Console "
 "fragt, bevor die gesamte P2P-Sitzung beendet wird."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"The P2P Lobby is the persistent peer-to-peer connection behind /p2p: one "
-"link between two users that hosts a call, file transfers and games all at "
-"the same time. It lives inside the chat — setup happens before sending or "
-"accepting the invite, and accepting opens the P2P Session Console right on "
-"the chat desktop, next to your conversations."
-msgstr ""
-"Die P2P Lobby ist die anhaltende Peer-to-Peer-Verbindung hinter /p2p: eine "
-"Verbindung zwischen zwei Benutzern, die einen Anruf, Dateiübertragungen und "
-"Spiele gleichzeitig hosten. Es lebt innerhalb des Chats - Setup passiert, "
-"bevor Sie die Einladung senden oder akzeptieren, und das Annehmen öffnet die"
-" P2P Session Console direkt auf dem Chat-Desktop, neben Ihren Gesprächen."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "The Session Console"
@@ -1189,3 +1133,65 @@ msgid ""
 msgstr ""
 "Mit der P2P Session Console fokussiert, Ctrl+Shift+ArrowUp toggles "
 "Mikrofonzustand und Ctrl+Shift+ArrowLeft toggles Kamerazustand."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:29
+#, elixir-autogen, elixir-format
+msgid ""
+"Messages during the session are regular private messages, saved like any "
+"other. Session events — request sent, connected, file received, game score, "
+"who ended it — are written into the PM history as P2P lines, so the story of"
+" the session survives it without turning the transcript into a control "
+"surface. While a session exists, the peer's PM tab, PM sidebar row and PM "
+"topic bar show the same P2P indicator family used by channel conferences, "
+"with state and active call/file/game/relay facets."
+msgstr ""
+"Nachrichten während der Sitzung sind regelmäßige private Nachrichten, wie "
+"jede andere gespeichert. Session-Ereignisse – Anfrage gesendet, verbunden, "
+"Datei empfangen, Spiel-Score, die es beendet – werden in die PM-Geschichte "
+"als P2P-Linien geschrieben, so dass die Geschichte der Sitzung überlebt, "
+"ohne das Transkript in eine Kontrollfläche zu verwandeln. Während eine "
+"Sitzung besteht, zeigen die Registerkarte PM, PM-Seitenleiste und PM-"
+"Themenleiste die gleiche P2P-Indikatorfamilie, die von Kanalkonferenzen "
+"verwendet wird, mit staatlichen und aktiven "
+"Call<ph0>/ph0>>ph1>/ph1>>ph2>/ph2>-facetten."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:52
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:71
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:65
+#, elixir-autogen, elixir-format
+msgid "P2P Session"
+msgstr "Sitzungsperiode"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"The P2P Session is the persistent peer-to-peer connection behind /p2p: one "
+"link between two users that hosts a call, file transfers and games all at "
+"the same time. It lives inside the chat — setup happens before sending or "
+"accepting the invite, and accepting opens the P2P Session Console right on "
+"the chat desktop, next to your conversations."
+msgstr ""
+"Die P2P Session ist die persistente Peer-to-Peer-Verbindung hinter "
+"<ph0>/ph0>: eine Verbindung zwischen zwei Benutzern, die einen Anruf, "
+"Dateiübertragungen und Spiele gleichzeitig hosten. Es lebt innerhalb des "
+"Chats - Setup passiert, bevor Sie die Einladung senden oder akzeptieren, und"
+" das Annehmen öffnet die P2P Session Console direkt auf dem Chat-Desktop, "
+"neben Ihren Gesprächen."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:9
+#, elixir-autogen, elixir-format
+msgid ""
+"Type /p2p <nick> (or use the P2P control in the PM header/nicklist context "
+"menu) to open setup before sending a request. Confirming setup opens your "
+"P2P Session Console immediately and sends a P2P request line in the private "
+"message. The invited person's PM tab opens in the background with Join and "
+"Decline in the PM header, so they can respond in place without a separate "
+"lobby link."
+msgstr ""
+"Typ <ph1>/ph1> <ph0><ph2>/ph2>>>>>>> (oder verwenden Sie die P2P-Steuerung "
+"im PM-Header<ph3>/ph3>-Kontextmenü), um die Einrichtung vor dem Senden einer"
+" Anfrage zu öffnen. Bestätigen Setup öffnet Ihre P2P Session Console sofort "
+"und sendet eine P2P-Anforderungszeile in der privaten Nachricht. Die PM-Tab "
+"öffnet im Hintergrund mit Join und Decline im PM-Header, so dass sie ohne "
+"separate Lobby-Link an Ort und Stelle reagieren können."

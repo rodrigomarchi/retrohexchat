@@ -745,8 +745,8 @@ defmodule RetroHexChatWeb.Icons.Communication do
 
   attr :class, :string, default: nil
 
-  @spec icon_tab_autojoin(map()) :: Phoenix.LiveView.Rendered.t()
-  def icon_tab_autojoin(assigns) do
+  @spec icon_dialog_autojoin(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_dialog_autojoin(assigns) do
     ~H"""
     <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
       <!-- Hash symbol -->
@@ -754,6 +754,27 @@ defmodule RetroHexChatWeb.Icons.Communication do
       <rect x="9" y="3" width="2" height="10" fill="#000080" />
       <rect x="3" y="6" width="10" height="2" fill="#000080" />
       <rect x="3" y="9" width="10" height="2" fill="#000080" />
+      
+    <!-- Auto-entry arrow -->
+      <rect x="1" y="12" width="5" height="2" fill="#008000" />
+      <polygon points="6,10 6,16 10,13" fill="#00FF00" stroke="#000" stroke-width="1" />
+    </svg>
+    """
+  end
+
+  # -- Toolbar: Auto-Join --
+
+  attr :class, :string, default: nil
+
+  @spec icon_btn_autojoin(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_btn_autojoin(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <path
+        d="M6 1h2v3h2V1h2v3h2v2h-2v3h2v2h-2v3h-2v-3H8v3H6v-3H4V9h2V6H4V4h2V1z M8 6h2v3H8V6z"
+        fill="#000080"
+      />
+      <path d="M0 12h4v1H0v-1z M3 10h1v5H3v-5z" fill="#008000" />
     </svg>
     """
   end

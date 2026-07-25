@@ -245,6 +245,7 @@ defmodule RetroHexChatWeb.Router do
       live "/cheatsheet-dialog", Dialogs.CheatsheetDialogPage
       live "/nick-change-dialog", Dialogs.NickChangeDialogPage
       live "/perform-dialog", Dialogs.PerformDialogPage
+      live "/autojoin-dialog", Dialogs.AutojoinDialogPage
       live "/channel-central-dialog", Dialogs.ChannelCentralDialogPage
       live "/admin-console-dialog", Dialogs.AdminConsoleDialogPage
       live "/admin-users-dialog", Dialogs.AdminUsersDialogPage

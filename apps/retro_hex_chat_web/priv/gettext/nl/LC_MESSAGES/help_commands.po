@@ -5296,17 +5296,6 @@ msgstr ""
 "acties, gebruikers te hernoemen, serverrollen in te stellen en /admin ns-"
 "info /drop/resetpass uit te voeren zonder de commando's te typen."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"Open a P2P Lobby with another user: a single persistent peer-to-peer "
-"connection that hosts every feature at once — an audio or video call, file "
-"transfers, and games — all running at the same time."
-msgstr ""
-"Open een P2P Lobby met een andere gebruiker: een enkele persistente peer-to-"
-"peer verbinding die elke functie tegelijk host een audio-of videogesprek, "
-"bestand transfers, en games die allemaal tegelijkertijd draaien."
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:11
 #, elixir-autogen, elixir-format
 msgid ""
@@ -5328,11 +5317,6 @@ msgstr ""
 " klopverzoekdialoog. Geheime (+s) kanalen zijn volledig verborgen van de "
 "lijst. Privé (+p) kanalen tonen hun naam maar niet hun onderwerp. Druk op "
 "Escape of klik op Sluiten om het dialoogvenster te verwijderen."
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:32
-#, elixir-autogen, elixir-format
-msgid "P2P Lobby"
-msgstr "P2P Lobby"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:2
 #, elixir-autogen, elixir-format
@@ -5493,11 +5477,6 @@ msgstr ""
 "200-karakter bericht. Exploitanten kunnen dan beslissen of ze u willen "
 "uitnodigen"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:27
-#, elixir-autogen, elixir-format
-msgid "You cannot open a lobby with yourself."
-msgstr "Je kunt geen lobby openen met jezelf."
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "aop add/del/list <nick>"
@@ -5578,11 +5557,6 @@ msgstr ""
 "de rol van serverbeheerder. Het tabblad Beheerconsole Gevaarzone vereist het"
 " typen van de servernaam voor de uitvoering."
 
-#: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:124
-#, elixir-autogen, elixir-format
-msgid "— Open the P2P Lobby (call, files, and games)"
-msgstr "Open de P2P Lobby (call, files, and games)"
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mute.html.heex:18
 #, elixir-autogen, elixir-format
 msgid ""
@@ -5591,32 +5565,59 @@ msgid ""
 msgstr ""
 "Optionele duur token zoals 30s, 5m, 1h, of 1d. Voor permanente stilte."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "— The user to open a P2P Lobby with."
-msgstr "De gebruiker om een P2P Lobby mee te openen."
+msgid ""
+"Open a P2P Session with another user: a single persistent peer-to-peer "
+"connection that hosts every feature at once — an audio or video call, file "
+"transfers, and games — all running at the same time."
+msgstr ""
+"Open een P2P Session met een andere gebruiker: een enkele persistente peer-"
+"to-peer verbinding die elke functie tegelijk host een audio-of videogesprek,"
+" bestand transfers, en games die tegelijkertijd draaien."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "P2P Session"
+msgstr "P2P-sessie"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "You cannot start a P2P session with yourself."
+msgstr "Je kunt geen P2P sessie starten met jezelf."
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:16
 #, elixir-autogen, elixir-format
 msgid ""
 "opens a setup dialog first, so you can preview camera, choose "
 "microphone/camera/speaker, pick receive-only, and enable privacy relay "
-"before the invite is sent. After you confirm, the other user receives an "
-"invite card in your private message. When they accept, the connection is "
+"before the request is sent. After you confirm, the other user receives a P2P"
+" request in your private message, the PM tab opens in the background, and "
+"Join/Decline appear in the PM header. When they accept, the connection is "
 "established right there in the chat: the call starts with each side's chosen"
 " defaults and the P2P Session Console opens with Call, Files, Games and "
 "Stats sections. Several activities run together over the one connection; "
 "ending one keeps the others alive. Closing the console disconnects the "
 "session (after a confirmation) — minimize to keep it running."
 msgstr ""
-"opent eerst een dialoogvenster voor het instellen, zodat u de camera kunt "
-"bekijken, microfoon <ph0> </ph0>/speaker kunt kiezen, alleen ontvangen kunt "
-"kiezen en privacyrelais kunt inschakelen voordat de uitnodiging wordt "
-"verzonden. Na bevestiging ontvangt de andere gebruiker een uitnodigingskaart"
-" in uw privébericht. Wanneer ze accepteren, wordt de verbinding daar in de "
-"chat gevestigd: de oproep begint met de gekozen standaardinstellingen van "
-"elke kant en de sessievensters (Call, Files, Games, Statistieken) openen op "
-"het chatbureaublad. Verschillende activiteiten lopen samen over de ene "
-"verbinding; het einde houdt de andere in leven. Het sluiten van een "
-"sessievenster sluit de sessie (na een bevestiging) af om het draaiende te "
-"houden."
+"opent eerst een instellingsdialoog, zodat u de camera kunt bekijken, een "
+"microfoon <ph0> </ph0> /speaker kunt kiezen, alleen ontvangen kunt kiezen en"
+" privacyrelais kunt inschakelen voordat het verzoek wordt verzonden. Nadat u"
+" bevestigt dat de andere gebruiker een P2P-verzoek ontvangt in uw privé-"
+"bericht, opent het PM-tabblad op de achtergrond en verschijnt /Decline in de"
+" PM-koptekst. Wanneer ze accepteren, wordt de verbinding daar in de chat "
+"gelegd: de oproep begint met de gekozen standaardinstellingen van elke zijde"
+" en de P2P Session Console opent met Call, Files, Games en Stats secties. "
+"Verschillende activiteiten lopen samen over de ene verbinding; het einde "
+"houdt de andere in leven. Het sluiten van de console schakelt de sessie (na "
+"een bevestiging) uit."
+
+#: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:124
+#, elixir-autogen, elixir-format
+msgid "— Open the P2P Session (call, files, and games)"
+msgstr "Open de P2P-sessie (oproep, bestanden en games)"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "— The user to open a P2P Session with."
+msgstr "De gebruiker om een P2P-sessie mee te openen."

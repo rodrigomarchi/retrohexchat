@@ -20,26 +20,19 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.PerformDialogPage do
      assign(socket,
        page_title: dgettext("showcase", "Perform Dialog"),
        active_page: :perform_dialog,
-       perform_selected: nil,
-       autojoin_selected: nil,
-       active_tab: "commands",
-       perform_enabled: true,
-       sample_commands: sample_commands(),
-       sample_autojoin: sample_autojoin()
+       selected: nil,
+       enabled: true,
+       sample_commands: sample_commands()
      )}
   end
 
   @impl true
   def handle_event("select-perform", %{"position" => pos}, socket) do
-    {:noreply, assign(socket, perform_selected: String.to_integer(pos))}
-  end
-
-  def handle_event("select-autojoin", %{"channel" => channel}, socket) do
-    {:noreply, assign(socket, autojoin_selected: channel)}
+    {:noreply, assign(socket, selected: String.to_integer(pos))}
   end
 
   def handle_event("toggle-perform-enabled", _params, socket) do
-    {:noreply, assign(socket, perform_enabled: !socket.assigns.perform_enabled)}
+    {:noreply, assign(socket, enabled: !socket.assigns.enabled)}
   end
 
   def handle_event(_event, _params, socket) do
@@ -55,15 +48,6 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.PerformDialogPage do
       %{position: 3, command: "/mode +x"},
       %{position: 4, command: "/join #dev"},
       %{position: 5, command: "/ns identify anotherPass"}
-    ]
-  end
-
-  defp sample_autojoin do
-    [
-      %{channel_name: "#lobby", channel_key: nil},
-      %{channel_name: "#secret", channel_key: "key123"},
-      %{channel_name: "#dev", channel_key: nil},
-      %{channel_name: "#vip", channel_key: "s3cret"}
     ]
   end
 end

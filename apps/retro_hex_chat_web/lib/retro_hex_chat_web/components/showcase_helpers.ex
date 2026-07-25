@@ -160,6 +160,8 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
         "/showcase/paste-confirm-dialog"},
        {dgettext_noop("showcase", "Perform Dialog"), "perform-dialog",
         "/showcase/perform-dialog"},
+       {dgettext_noop("showcase", "Auto-Join Dialog"), "autojoin-dialog",
+        "/showcase/autojoin-dialog"},
        {dgettext_noop("showcase", "Sound Settings"), "sound-settings-dialog",
         "/showcase/sound-settings-dialog"},
        {dgettext_noop("showcase", "URL Catcher"), "url-catcher", "/showcase/url-catcher"}
@@ -409,6 +411,7 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
     "solo-lobby" => :icon_joystick,
     "chat-context-menu" => :icon_dialog_custom_menus,
     "perform-dialog" => :icon_dialog_perform,
+    "autojoin-dialog" => :icon_dialog_autojoin,
     "channel-central-dialog" => :icon_dialog_channel_central
   }
 

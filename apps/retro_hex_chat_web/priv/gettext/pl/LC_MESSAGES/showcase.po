@@ -138,12 +138,12 @@ msgstr "/msg $1 goodbye!"
 msgid "/msg $1 hello!"
 msgstr "/msg $1 hello!"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:61
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "/msg NickServ IDENTIFY ***"
 msgstr "/msg NickServ IDENTIFY ***"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:56
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "/msg NickServ IDENTIFY mySecretPass"
 msgstr "/msg NickServ IDENTIFY mySecretPass"
@@ -511,7 +511,7 @@ msgstr "Strzałki"
 msgid "Ask your questions here"
 msgstr "Zadaj tu swoje pytania"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:178
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:180
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:52
 #, elixir-autogen, elixir-format
 msgid "Assets"
@@ -522,7 +522,8 @@ msgstr "Aktywa"
 msgid "Attempting to reconnect..."
 msgstr "Próba ponownego połączenia..."
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:74
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:61
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "Attribute"
 msgstr "Atrybut"
@@ -1158,12 +1159,13 @@ msgstr ""
 "Kompleksowe kompozycje dialogowe - ustawienia kanału, wykonanie, książka "
 "adresowa, ustawienia dźwiękowe i 20 + więcej."
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:67
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:54
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "Component Attributes"
 msgstr "Atrybuty komponentów"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:212
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:214
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:60
 #, elixir-autogen, elixir-format
 msgid "Component Showcase"
@@ -1446,7 +1448,8 @@ msgstr "Tryb ciemny"
 #: lib/retro_hex_chat_web/live/showcase_live/chat/emoji_picker_page.ex:27
 #: lib/retro_hex_chat_web/live/showcase_live/chat/formatting_toolbar_page.ex:30
 #: lib/retro_hex_chat_web/live/showcase_live/chat/search_bar_page.ex:27
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:76
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:63
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:71
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/sound_settings_dialog_page.ex:24
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/sound_settings_dialog_page.ex:27
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/sound_settings_dialog_page.ex:28
@@ -1530,12 +1533,13 @@ msgstr "Usuń okno Potwierdź"
 msgid "Delete Message"
 msgstr "Usuń wiadomość"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:77
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:64
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:72
 #, elixir-autogen, elixir-format
 msgid "Description"
 msgstr "Opis"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:231
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:233
 #, elixir-autogen, elixir-format
 msgid "Design System"
 msgstr "System projektowania"
@@ -1557,7 +1561,7 @@ msgstr "Potwierdzenie zniszczenia"
 msgid "Development discussion"
 msgstr "Dyskusja na temat rozwoju"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:180
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:182
 #: lib/retro_hex_chat_web/live/showcase_live/assets/diagrams.ex:21
 #: lib/retro_hex_chat_web/live/showcase_live/assets/diagrams.ex:70
 #, elixir-autogen, elixir-format
@@ -1576,7 +1580,8 @@ msgstr "Okno dialogowe"
 msgid "Dialog Style"
 msgstr "Styl okna dialogowego"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:85
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:72
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "Dialog element ID"
 msgstr "Identyfikator elementu dialogowego"
@@ -1670,7 +1675,7 @@ msgstr "Rozłączone"
 msgid "Disconnected State"
 msgstr "Państwo wyłączone"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:60
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "Display:"
 msgstr "Wyświetlacz:"
@@ -1777,7 +1782,7 @@ msgstr "Pusty stan"
 msgid "Enable notifications"
 msgstr "Włącz powiadomienia"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:107
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:94
 #, elixir-autogen, elixir-format
 msgid "Enable perform on connect"
 msgstr "Włącz wykonanie przy podłączeniu"
@@ -1826,11 +1831,6 @@ msgstr "Zdarzenie"
 msgid "Event Sounds"
 msgstr "Dźwięki zdarzeń"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:114
-#, elixir-autogen, elixir-format
-msgid "Event callbacks (tab, select, add, edit, remove, etc.)"
-msgstr "Wywołania zdarzeń (zakładka, wybierz, dodaj, edytuj, usuń itp.)"
-
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:164
 #, elixir-autogen, elixir-format
 msgid "Exit"
@@ -1869,7 +1869,7 @@ msgstr "Fieldset"
 msgid "Fight through hordes of demons from Hell in this classic 1993 game."
 msgstr "Walka przez hordy demonów z piekła w tej klasycznej grze 1993."
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:171
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:173
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/file_transfer_page.ex:18
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/file_transfer_page.ex:27
 #, elixir-autogen, elixir-format
@@ -2023,7 +2023,7 @@ msgstr "Pełne ustawienia"
 msgid "Full Sidebar"
 msgstr "Pełny pasek boczny"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:175
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:177
 #: lib/retro_hex_chat_web/live/showcase_live/games/game_cards_page.ex:20
 #: lib/retro_hex_chat_web/live/showcase_live/games/game_cards_page.html.heex:2
 #, elixir-autogen, elixir-format
@@ -2045,7 +2045,7 @@ msgstr "Screens gry"
 msgid "Game on!"
 msgstr "Gra rozpoczęta!"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:173
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:175
 #: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:40
 #: lib/retro_hex_chat_web/live/showcase_live/index.ex:47
 #, elixir-autogen, elixir-format
@@ -2237,7 +2237,7 @@ msgstr "IRC Tabs"
 msgid "Icon Sizes"
 msgstr "Rozmiary ikon"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:181
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:183
 #: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:81
 #: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:105
 #, elixir-autogen, elixir-format
@@ -2317,7 +2317,7 @@ msgstr "Informacja"
 msgid "Input"
 msgstr "Wejście"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:54
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "Input:"
 msgstr "Wejście:"
@@ -2490,14 +2490,14 @@ msgstr "Związek"
 msgid "Linux Ubuntu"
 msgstr "Linux Ubuntu"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:100
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:79
 #, elixir-autogen, elixir-format
 msgid "List of %&#123;channel_name, channel_key&#125; maps"
 msgstr ""
 "Lista% & < ph0 > < / ph0 >; channel _ name, channel _ key & < ph1 > < / ph1 "
 ">; mapy"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:92
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:87
 #, elixir-autogen, elixir-format
 msgid "List of %&#123;position, command&#125; maps"
 msgstr ""
@@ -2608,7 +2608,7 @@ msgid "Media"
 msgstr "Media"
 
 #: lib/retro_hex_chat_web/components/showcase_helpers.ex:61
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:218
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:220
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:70
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.ex:18
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:2
@@ -3118,7 +3118,7 @@ msgstr "Własna wiadomość"
 msgid "Owner"
 msgstr "Właściciel"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:167
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:169
 #, elixir-autogen, elixir-format
 msgid "P2P"
 msgstr "P2P"
@@ -3182,7 +3182,7 @@ msgstr "Hasło"
 msgid "Password Error State"
 msgstr "Stan błędu hasła"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:49
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "Password Masking"
 msgstr "Maskowanie hasłem"
@@ -3883,7 +3883,7 @@ msgstr "Małe"
 msgid "Solo Arcade game logos/cover art"
 msgstr "Logo gry Solo Arcade < ph0 > < / ph0 > sztuka"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:176
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:178
 #: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.ex:80
 #: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.html.heex:2
 #, elixir-autogen, elixir-format
@@ -3906,7 +3906,7 @@ msgstr "Sortowane przez Nicka (Ascending)"
 msgid "Sound"
 msgstr "Dźwięk"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:163
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:165
 #, elixir-autogen, elixir-format
 msgid "Sound Settings"
 msgstr "Ustawienia dźwięku"
@@ -4389,7 +4389,8 @@ msgstr ""
 msgid "Try a different search term."
 msgstr "Spróbuj innego określenia wyszukiwania."
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:75
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:62
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:70
 #, elixir-autogen, elixir-format
 msgid "Type"
 msgstr "Rodzaj"
@@ -4409,7 +4410,7 @@ msgstr "Rodzaje"
 msgid "Typography"
 msgstr "Typografia"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:165
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:167
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/url_catcher_page.ex:54
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/url_catcher_page.ex:65
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/url_catcher_page.ex:68
@@ -4895,7 +4896,8 @@ msgstr "macOS 10, 15"
 msgid "notes.md"
 msgstr "nutes.md"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:110
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:89
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:97
 #, elixir-autogen, elixir-format
 msgid "on_*"
 msgstr "On _ BAR _ *"
@@ -5037,7 +5039,7 @@ msgstr "Kompaktowy - wywołanie wideo"
 msgid "Compact — Waiting"
 msgstr "Kompaktowy - Czekanie"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:169
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:171
 #, elixir-autogen, elixir-format
 msgid "Connection Diagram"
 msgstr "Schemat połączenia"
@@ -5313,3 +5315,52 @@ msgstr "Rejestr, spadek, zarządzanie dostępem"
 #, elixir-autogen, elixir-format
 msgid "Registration"
 msgstr "Rejestracja"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:163
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.ex:21
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:2
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:5
+#, elixir-autogen, elixir-format
+msgid "Auto-Join Dialog"
+msgstr "Auto- Dołącz do okna dialogowego"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:93
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:101
+#, elixir-autogen, elixir-format
+msgid "Event callbacks (select, add, edit, remove, etc.)"
+msgstr "Wywołania zdarzeń (wybierz, dodaj, edytuj, usuń itp.)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "Key Masking"
+msgstr "Maskowanie klucza"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "Key: ***"
+msgstr "Klucz: * * *"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:48
+#, elixir-autogen, elixir-format
+msgid "Key: none"
+msgstr "Klucz: brak"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Open Auto-Join"
+msgstr "Otwórz auto- Dołącz"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:86
+#, elixir-autogen, elixir-format
+msgid "Selected channel name"
+msgstr "Wybrana nazwa kanału"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:43
+#, elixir-autogen, elixir-format
+msgid "With key:"
+msgstr "Klucz:"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "Without key:"
+msgstr "Bez klucza:"

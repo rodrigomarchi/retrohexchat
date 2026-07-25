@@ -3263,30 +3263,30 @@ msgstr "server, pengguna, saluran, ns, cs, debug, log, putar, atau nuke"
 msgid "set, commands, addcmd, delcmd, help.\n"
 msgstr "set, perintah, addcmd, delcmd, bantuan."
 
-#: lib/retro_hex_chat/commands/handlers/lobby.ex:64
-#, elixir-autogen, elixir-format
-msgid ""
-"Open a P2P lobby that hosts calls, file transfers, and games together over one connection.\n"
-"Requires: both users must be registered and identified (/ns identify)."
-msgstr ""
-"Buka lobi P2P yang host panggilan, transfer file, dan permainan bersama-sama atas satu koneksi.\n"
-"Pertanyaan: kedua pengguna harus terdaftar dan diidentifikasi (< ph0 > < / ph0 > identifikasi)."
-
-#: lib/retro_hex_chat/commands/handlers/lobby.ex:43
-#, elixir-autogen, elixir-format
-msgid ""
-"Open a P2P lobby with another user: one persistent connection that runs an audio/video call, file transfers, and games all at the same time.\n"
-"Requires: both users must be registered and identified (/ns identify)."
-msgstr ""
-"Buka lobi P2P dengan pengguna lain: satu koneksi gigih yang menjalankan audio < ph0 > < / ph0 > memanggil, transfer file, dan permainan semua pada saat yang sama.\n"
-"Pertanyaan: kedua pengguna harus terdaftar dan diidentifikasi (< ph1 > < / ph1 > identifikasi)."
-
 #: lib/retro_hex_chat/commands/handlers/lobby.ex:99
 #, elixir-autogen, elixir-format
 msgid "User '%{nickname}' is offline."
 msgstr "Pengguna '%{nickname}' sedang offline."
 
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:64
+#, elixir-autogen, elixir-format
+msgid ""
+"Open a P2P session that hosts calls, file transfers, and games together over one connection.\n"
+"Requires: both users must be registered and identified (/ns identify)."
+msgstr ""
+"Buka sesi P2P yang host panggil, transfer file, dan permainan bersama-sama atas satu koneksi.\n"
+"Pertanyaan: kedua pengguna harus terdaftar dan diidentifikasi (< ph0 > < / ph0 > identifikasi)."
+
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:43
+#, elixir-autogen, elixir-format
+msgid ""
+"Open a P2P session with another user: one persistent connection that runs an audio/video call, file transfers, and games all at the same time.\n"
+"Requires: both users must be registered and identified (/ns identify)."
+msgstr ""
+"Buka sesi P2P dengan pengguna lain: satu koneksi gigih yang menjalankan audio < ph0 > < / ph0 > memanggil, transfer berkas, dan permainan semua pada saat yang sama.\n"
+"Pertanyaan: kedua pengguna harus terdaftar dan diidentifikasi (< ph1 > < / ph1 > identifikasi)."
+
 #: lib/retro_hex_chat/commands/handlers/lobby.ex:89
 #, elixir-autogen, elixir-format
-msgid "You cannot open a lobby with yourself."
-msgstr "Kau tak bisa membuka lobi dengan dirimu sendiri."
+msgid "You cannot start a P2P session with yourself."
+msgstr "Anda tidak dapat memulai sesi P2P dengan diri sendiri."

@@ -72,7 +72,9 @@ msgstr "Звонок в закрытую группу?"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:94
 #, elixir-autogen, elixir-format
-msgid "Closing this window leaves the group call in %{channel}. To keep the call running and just tidy up, minimize the window instead."
+msgid ""
+"Closing this window leaves the group call in %{channel}. To keep the call "
+"running and just tidy up, minimize the window instead."
 msgstr ""
 "Закрытие этого окна оставляет групповой вызов в %{channel}. Чтобы звонок "
 "продолжался и просто убирался, сведите к минимуму окно."
@@ -131,17 +133,19 @@ msgstr "Конечный групповой звонок"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:111
 #, elixir-autogen, elixir-format
-msgid "End the group call in %{channel} for everyone? All participants will be disconnected."
+msgid ""
+"End the group call in %{channel} for everyone? All participants will be "
+"disconnected."
 msgstr ""
 "Завершить групповой вызов в %{channel} для всех? Все участники будут "
 "отключены."
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:272
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:276
 #: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:37
 #: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:354
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1074
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1075
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:558
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:586
 #: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:89
 #, elixir-autogen, elixir-format
 msgid "Group Call"
@@ -241,7 +245,9 @@ msgstr "Оставьте групповой звонок"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:86
 #, elixir-autogen, elixir-format
-msgid "Leave the group call in %{channel}? Your microphone and camera will disconnect."
+msgid ""
+"Leave the group call in %{channel}? Your microphone and camera will "
+"disconnect."
 msgstr ""
 "Оставить групповой вызов в %{channel}? Ваш микрофон и камера будут "
 "отключены."
@@ -314,7 +320,9 @@ msgstr "Безымянный участник"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:102
 #, elixir-autogen, elixir-format
-msgid "You are already in a group call in %{channel}. Leave it and join the call in %{new_channel}?"
+msgid ""
+"You are already in a group call in %{channel}. Leave it and join the call in"
+" %{new_channel}?"
 msgstr ""
 "Вы уже находитесь в групповом вызове %{channel}. Оставить его и "
 "присоединиться к вызову в %{new_channel}?"
@@ -454,7 +462,9 @@ msgstr "%{inbound} в / %{fanout}"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:67
 #, elixir-autogen, elixir-format
-msgid "%{level} quality: RTT %{rtt} ms, loss %{loss}%, %{bitrate} kbps, %{fps} fps, freezes %{freezes}"
+msgid ""
+"%{level} quality: RTT %{rtt} ms, loss %{loss}%, %{bitrate} kbps, %{fps} fps,"
+" freezes %{freezes}"
 msgstr ""
 "%{level} качество: RTT %{rtt} ms, потеря %{loss}%, %{bitrate} kbps, %{fps} "
 "fps, заморозка %{freezes}"
@@ -528,7 +538,8 @@ msgstr "%{sent} вверх %{received} вниз"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:358
 #, elixir-autogen, elixir-format
-msgid "%{state} conference in %{channel}: %{count}/%{max} participants, %{duration}"
+msgid ""
+"%{state} conference in %{channel}: %{count}/%{max} participants, %{duration}"
 msgstr ""
 "%{state} конференция в %{channel}: %{count}/%{max} участники %{duration}"
 
@@ -1138,7 +1149,9 @@ msgstr "Мутировать всех участников с более низ�
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:128
 #, elixir-autogen, elixir-format
-msgid "Mute all lower-ranked participants in %{channel}? They cannot unmute until a moderator allows their microphone again."
+msgid ""
+"Mute all lower-ranked participants in %{channel}? They cannot unmute until a"
+" moderator allows their microphone again."
 msgstr ""
 "Смешайте всех участников с более низким рейтингом в %{channel}? Они не могут"
 " расстегнуть, пока модератор снова не разрешит их микрофон."
@@ -1321,7 +1334,10 @@ msgstr "Удаленные потоки"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:119
 #, elixir-autogen, elixir-format
-msgid "Remove %{target} from %{channel}? This will ban them from the channel, disconnect them from the conference, and prevent them from rejoining until a channel operator unbans them."
+msgid ""
+"Remove %{target} from %{channel}? This will ban them from the channel, "
+"disconnect them from the conference, and prevent them from rejoining until a"
+" channel operator unbans them."
 msgstr ""
 "Удалить %{target} из %{channel} Это запретит им выходить из канала, отключит"
 " их от конференции и не позволит им воссоединиться до тех пор, пока оператор"
@@ -1563,7 +1579,9 @@ msgstr "Выключите все камеры с низким рейтинго�
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:136
 #, elixir-autogen, elixir-format
-msgid "Turn off cameras for all lower-ranked participants in %{channel}? They cannot turn camera back on until a moderator allows it again."
+msgid ""
+"Turn off cameras for all lower-ranked participants in %{channel}? They "
+"cannot turn camera back on until a moderator allows it again."
 msgstr ""
 "Выключите камеры для всех участников с более низким рейтингом в %{channel} "
 "Они не могут включить камеру до тех пор, пока модератор не позволит ей "
@@ -1675,7 +1693,9 @@ msgstr "Конференционный контроль"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/pre_join_dialog.ex:202
 #, elixir-autogen, elixir-format
-msgid "Each browser sends media to the room server; the server routes streams to the other participants."
+msgid ""
+"Each browser sends media to the room server; the server routes streams to "
+"the other participants."
 msgstr ""
 "Каждый браузер отправляет медиа на сервер комнаты; сервер направляет потоки "
 "другим участникам."
@@ -1749,7 +1769,9 @@ msgstr "Аудио + видео"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/pre_join_dialog.ex:71
 #, elixir-autogen, elixir-format
-msgid "Choose how you enter the room. You can change media and layout after joining."
+msgid ""
+"Choose how you enter the room. You can change media and layout after "
+"joining."
 msgstr ""
 "Выберите, как войти в комнату. Вы можете изменить медиа и макет после "
 "присоединения."

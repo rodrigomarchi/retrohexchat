@@ -41,7 +41,7 @@ defmodule RetroHexChat.Commands.Handlers.AutoJoin do
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute([], _context) do
-    {:ok, :ui_action, :open_perform_dialog, %{tab: "autojoin"}}
+    {:ok, :ui_action, :open_autojoin_dialog, %{}}
   end
 
   def execute(["list"], _context) do

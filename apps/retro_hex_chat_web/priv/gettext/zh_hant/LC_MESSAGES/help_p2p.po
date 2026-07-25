@@ -377,14 +377,6 @@ msgstr "受限制"
 msgid "Metrics"
 msgstr "計量"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:48
-#: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:52
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:71
-#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:65
-#, elixir-autogen, elixir-format
-msgid "P2P Lobby"
-msgstr "P2P 大廳"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Packet loss"
@@ -735,17 +727,6 @@ msgstr ""
 "連接前對話框允許您預覽您的相機, 選擇麥克風、 相機和揚聲器設備, 並決定是否與麥克風或相機連接 。 權限與設備故障顯示重試動作, "
 "您仍然可以只加入收件人 。 您的賬戶會記住佈局和媒體默認; 本地會記住針對瀏覽器的設備選擇 。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:9
-#, elixir-autogen, elixir-format
-msgid ""
-"Type /p2p <nick> (or use the nicklist context menu) to open setup before "
-"sending an invite. Confirming setup sends the invite card in the private "
-"message; the invited person clicks Accept to start their own setup and join "
-"in place, or Decline to refuse — the inviter is told either way."
-msgstr ""
-"類型 /p2p <ph0><>/ph0>(或使用暱稱列表上下文菜單)在發送邀請前打開設置. "
-"確認設置在私人信件中發送邀請卡;被邀請者點擊接受啓動自己的設置並加入到原位,或降級拒絕——邀請者被告知了任意一種方式."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:16
 #, elixir-autogen, elixir-format
 msgid ""
@@ -840,20 +821,6 @@ msgid ""
 "over maximum image quality."
 msgstr "電話默認使用保守的音頻和視頻限制,以偏好穩定性而不是最大圖像質量."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:29
-#, elixir-autogen, elixir-format
-msgid ""
-"Messages during the session are regular private messages, saved like any "
-"other. Session events — connected, file received, game score, who ended it —"
-" are written into the PM history as P2P lines, so the story of the session "
-"survives it. While a session exists, the peer's PM tab, PM sidebar row and "
-"PM topic bar show the same P2P indicator family used by channel conferences,"
-" with state and active call/file/game/relay facets."
-msgstr ""
-"會話中的信件是普通的私人信件,像其他信件一樣保存. "
-"會話事件——連接,文件接收,遊戲得分,誰結束它——被寫進PM歷史,作爲P2P線,所以會話故事生存下來. 雖然存在會話, 同行的 PM 標籤、 PM "
-"側邊欄和 PM 主題欄顯示頻道會議使用的 P2P 指示家族, 狀態和主動調用/file/game/relay 層面。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:1
 #, elixir-autogen, elixir-format
 msgid "Monitor connection quality during calls."
@@ -942,18 +909,6 @@ msgstr ""
 "\"呼叫\"部分使用與頻道會議相同的媒體語言:麥克,相機,屏幕共享,設備,PiP,佈局,自視,迷你模式,統計和反應控制是帶有工具提示的圖標按鈕. "
 "結束調用只停止媒體;關閉 P2P 會話控制檯後再結束整個 P2P 會話."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"The P2P Lobby is the persistent peer-to-peer connection behind /p2p: one "
-"link between two users that hosts a call, file transfers and games all at "
-"the same time. It lives inside the chat — setup happens before sending or "
-"accepting the invite, and accepting opens the P2P Session Console right on "
-"the chat desktop, next to your conversations."
-msgstr ""
-"P2P前廳是背後持續的對等連接 /p2p:兩個同時託管一個呼叫,文件傳輸和遊戲的用戶之間的一個鏈接. "
-"它生活在聊天內部——在發送或接受邀請之前進行設置,接受在聊天桌面右側的P2P會話控制檯,在您的談話旁邊打開."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "The Session Console"
@@ -1014,3 +969,53 @@ msgid ""
 "With the P2P Session Console focused, Ctrl+Shift+ArrowUp toggles microphone "
 "state and Ctrl+Shift+ArrowLeft toggles camera state."
 msgstr "隨着P2P會話控制檯的聚焦,Ctrl+Shift+ArrowUp切換麥克風狀態和Ctrl+Shift+ArrowLeft切換相機狀態."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:29
+#, elixir-autogen, elixir-format
+msgid ""
+"Messages during the session are regular private messages, saved like any "
+"other. Session events — request sent, connected, file received, game score, "
+"who ended it — are written into the PM history as P2P lines, so the story of"
+" the session survives it without turning the transcript into a control "
+"surface. While a session exists, the peer's PM tab, PM sidebar row and PM "
+"topic bar show the same P2P indicator family used by channel conferences, "
+"with state and active call/file/game/relay facets."
+msgstr ""
+"會話中的信件是普通的私人信件,像其他信件一樣保存. "
+"會話事件——請求發送,連接,文件接收,遊戲得分,誰結束了它——被寫入PM歷史,作爲P2P線條,所以會話的故事在它倖存下來,而沒有將記錄稿變成一個控制表面."
+" 儘管存在一個會話, 端點的 PM 標籤、 PM 側邊欄和 PM 話題欄顯示頻道會議使用的相同的 P2P 指示家族, 狀態和主動調用<ph0></ "
+"ph0></ ph1></ ph1></ ph2> 。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:52
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:71
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:65
+#, elixir-autogen, elixir-format
+msgid "P2P Session"
+msgstr "P2P會議"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"The P2P Session is the persistent peer-to-peer connection behind /p2p: one "
+"link between two users that hosts a call, file transfers and games all at "
+"the same time. It lives inside the chat — setup happens before sending or "
+"accepting the invite, and accepting opens the P2P Session Console right on "
+"the chat desktop, next to your conversations."
+msgstr ""
+"P2P會話是<ph0>/ph0>背後的持續對等連接:兩個同時託管一個呼叫,文件傳輸和遊戲的用戶之間的一個鏈接. "
+"它生活在聊天內部——在發送或接受邀請之前進行設置,接受在聊天桌面右側的P2P會話控制檯,在您的談話旁邊打開."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:9
+#, elixir-autogen, elixir-format
+msgid ""
+"Type /p2p <nick> (or use the P2P control in the PM header/nicklist context "
+"menu) to open setup before sending a request. Confirming setup opens your "
+"P2P Session Console immediately and sends a P2P request line in the private "
+"message. The invited person's PM tab opens in the background with Join and "
+"Decline in the PM header, so they can respond in place without a separate "
+"lobby link."
+msgstr ""
+"類型/p2p<ph0><</ph2>>/ph2>>(或使用PM標題/nicklist上下文菜單中的P2P控制)在發送請求前打開設置. "
+"確認設置立即打開您的 P2P 會話控制檯,並在私人信件中發送 P2P 請求行 。 受邀人士的PM標籤在背景中打開,在PM頭部有Join and "
+"Regione,這樣他們就可以在不另設大廳鏈接的情況下就位響應."

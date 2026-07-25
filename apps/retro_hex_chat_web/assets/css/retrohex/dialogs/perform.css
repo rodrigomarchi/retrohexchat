@@ -1,19 +1,11 @@
-/* Perform is a two-list automation editor. Commands and auto-join channels use
-   the same entry-list surface on desktop and mobile; width only changes density. */
+/* Perform edits the commands run on connect. The entry list is the same surface
+   on desktop and mobile; width only changes density. */
 .pf-dialog {
   scrollbar-width: thin;
 }
 
 .pf-dialog:focus {
   outline: none;
-}
-
-.pf-tabs-shell {
-  position: relative;
-}
-
-.pf-dialog .tabs-content {
-  min-height: 0;
 }
 
 .pf-entry-list {
@@ -55,10 +47,6 @@
     inset 1px 1px #808080,
     inset -2px -2px #dfdfdf,
     inset 2px 2px #0a0a0a;
-}
-
-.pf-autojoin-entry {
-  grid-template-columns: minmax(0, 1fr);
 }
 
 .pf-entry:hover {
@@ -145,88 +133,6 @@
   -webkit-overflow-scrolling: touch;
 }
 
-.desktop--stacked .pf-tabs {
-  min-width: 0;
-}
-
-.desktop--stacked .pf-main-tabs {
-  flex-wrap: nowrap !important;
-  align-items: end;
-  gap: 0;
-  overflow-x: auto;
-  overflow-y: hidden;
-  padding: 6px 6px 0;
-  scroll-padding-inline: 36px;
-  scrollbar-width: thin;
-  -webkit-overflow-scrolling: touch;
-}
-
-.desktop--stacked .pf-main-tabs::-webkit-scrollbar {
-  height: 6px;
-}
-
-.desktop--stacked .pf-main-tabs::-webkit-scrollbar-track {
-  background: #dfdfdf;
-}
-
-.desktop--stacked .pf-main-tabs::-webkit-scrollbar-thumb {
-  background: #808080;
-  border: 1px solid #606060;
-}
-
-.desktop--stacked .pf-tabs-shell::before,
-.desktop--stacked .pf-tabs-shell::after {
-  position: absolute;
-  top: 6px;
-  bottom: 1px;
-  z-index: 20;
-  display: flex;
-  width: 34px;
-  align-items: center;
-  color: #000080;
-  font-weight: 700;
-  opacity: 0;
-  pointer-events: none;
-  text-shadow: 1px 1px #ffffff;
-}
-
-.desktop--stacked .pf-tabs-shell::before {
-  content: "<";
-  left: 0;
-  justify-content: flex-start;
-  padding-left: 4px;
-  border-left: 1px solid #808080;
-  background: linear-gradient(270deg, rgb(192 192 192 / 0), #c0c0c0 58%);
-}
-
-.desktop--stacked .pf-tabs-shell::after {
-  content: ">";
-  right: 0;
-  justify-content: flex-end;
-  padding-right: 4px;
-  border-right: 1px solid #808080;
-  background: linear-gradient(90deg, rgb(192 192 192 / 0), #c0c0c0 58%);
-}
-
-.desktop--stacked .pf-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="autojoin"])::before,
-.desktop--stacked .pf-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="commands"])::after {
-  opacity: 1;
-}
-
-.desktop--stacked .pf-main-tabs .tabs-trigger {
-  flex: 0 0 auto;
-  min-height: 40px;
-  padding: 7px 12px 5px;
-}
-
-.desktop--stacked .pf-main-tabs .tabs-trigger[data-state="active"] {
-  padding-top: 9px;
-}
-
-.desktop--stacked .pf-tab-content {
-  padding: 8px;
-}
-
 .desktop--stacked .pf-entry-list {
   max-height: min(42vh, 320px);
 }
@@ -262,4 +168,3 @@
 .desktop--stacked .pf-command-input {
   min-height: 112px;
 }
-

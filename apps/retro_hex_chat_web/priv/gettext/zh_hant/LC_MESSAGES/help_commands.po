@@ -4929,14 +4929,6 @@ msgstr ""
 "用戶禁止列表輸出, 確認禁止/unban, kick, mute, 或 Unmute 動作, 重命名用戶, 設置服務器角色, 並運行 /admin ns"
 " 信息/drop/resetpass 不輸入命令。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"Open a P2P Lobby with another user: a single persistent peer-to-peer "
-"connection that hosts every feature at once — an audio or video call, file "
-"transfers, and games — all running at the same time."
-msgstr "與另一個用戶打開一個P2P前廳:一個單一的持久對等連接,同時託管每個功能——音頻或視頻通話,文件傳輸,遊戲——都同時運行."
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:11
 #, elixir-autogen, elixir-format
 msgid ""
@@ -4952,11 +4944,6 @@ msgstr ""
 "打開頻道列表對話框作爲內線覆蓋,以顯示所有可用的頻道及其用戶數和主題 。 您可以使用搜索框按名稱或主題過濾頻道。 單擊打開的頻道旁邊的連接按鈕直接加入。"
 " 只邀請 (+i) 頻道顯示 +i 徽章; 當您選擇一個尚未進入時, 請加入更改請求訪問... 並打開一個敲門請求對話框 。 "
 "機密(+s)頻道完全隱藏在列表中. 私人(+p)頻道顯示它們的名字,但不顯示它們的主題. 按“ 逃逸” 鍵或點擊“ 關閉” 以刪除對話框 。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:32
-#, elixir-autogen, elixir-format
-msgid "P2P Lobby"
-msgstr "P2P 大廳"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:2
 #, elixir-autogen, elixir-format
@@ -5088,11 +5075,6 @@ msgstr ""
 "當您點擊頻道時, 該頻道的所有操作員和所有者都會收到一個通知, 顯示您的暱稱和可選消息 。 頻道列表標記只邀請頻道帶有+i徽章,並更改 Jong to "
 "Request Access...,該頻道以可選的200字符消息打開相同的敲門請求流. 操作員可以決定是否邀請您使用"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:27
-#, elixir-autogen, elixir-format
-msgid "You cannot open a lobby with yourself."
-msgstr "你不能自己開大廳"
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "aop add/del/list <nick>"
@@ -5164,11 +5146,6 @@ msgstr ""
 "——工廠重置整個系統. 銷燬所有數據(用戶、頻道、消息、首選項、bots、P2P會話),但管理者角色、審計日誌、服務器禁令和服務器設置除外。 "
 "需要服務器管理員角色 。 管理控制檯危險區標籤需要在執行前輸入服務器名稱 。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:124
-#, elixir-autogen, elixir-format
-msgid "— Open the P2P Lobby (call, files, and games)"
-msgstr "——開放P2P前廳(電話,文件和遊戲)."
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mute.html.heex:18
 #, elixir-autogen, elixir-format
 msgid ""
@@ -5176,30 +5153,49 @@ msgid ""
 "mute."
 msgstr "——可選期限標誌,如30s,5m,1h,或1d. 永遠的啞巴。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "— The user to open a P2P Lobby with."
-msgstr "- 開P2P大廳的用戶。"
+msgid ""
+"Open a P2P Session with another user: a single persistent peer-to-peer "
+"connection that hosts every feature at once — an audio or video call, file "
+"transfers, and games — all running at the same time."
+msgstr "與另一個用戶打開一個P2P會話:一個單一的持久對等連接,同時託管每個功能——一個音頻或視頻呼叫,文件傳輸,和遊戲——都同時運行."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "P2P Session"
+msgstr "P2P會議"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "You cannot start a P2P session with yourself."
+msgstr "您無法啓動 P2P 會話 。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:16
 #, elixir-autogen, elixir-format
 msgid ""
 "opens a setup dialog first, so you can preview camera, choose "
 "microphone/camera/speaker, pick receive-only, and enable privacy relay "
-"before the invite is sent. After you confirm, the other user receives an "
-"invite card in your private message. When they accept, the connection is "
+"before the request is sent. After you confirm, the other user receives a P2P"
+" request in your private message, the PM tab opens in the background, and "
+"Join/Decline appear in the PM header. When they accept, the connection is "
 "established right there in the chat: the call starts with each side's chosen"
 " defaults and the P2P Session Console opens with Call, Files, Games and "
 "Stats sections. Several activities run together over the one connection; "
 "ending one keeps the others alive. Closing the console disconnects the "
 "session (after a confirmation) — minimize to keep it running."
 msgstr ""
-"opens a setup dialog first, so you can preview camera, choose "
-"microphone/camera/speaker, pick receive-only, and enable privacy relay "
-"before the invite is sent. After you confirm, the other user receives an "
-"invite card in your private message. When they accept, the connection is "
-"established right there in the chat: the call starts with each side's chosen"
-" defaults and the session windows (Call, Files, Games, Statistics) open on "
-"the chat desktop. Several activities run together over the one connection; "
-"ending one keeps the others alive. Closing any session window disconnects "
-"the session (after a confirmation) — minimize to keep it running."
+"首先打開一個設置對話框,這樣您就可以預覽相機,選擇麥克風/camera</ph1></ph1>,只選擇接收,並在請求發送前啓用隱私中繼. 在您確認後, "
+"其他用戶會在您的私人信件中收到 P2P 請求, PM 標籤在背景中打開, 並在 PM 標題中顯示 join/Decline 。 "
+"當他們接受時,連接在聊天中就在那裏建立:調用開始於雙方選擇的默認值,而P2P會話控制檯則以調用,文件,遊戲和Stats部分打開. "
+"幾個活動一起貫穿於一個環節;一個環節結束,使另一個環節保持生命. 關閉控制檯會斷開會話(在確認後)——儘量減少使其運行."
+
+#: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:124
+#, elixir-autogen, elixir-format
+msgid "— Open the P2P Session (call, files, and games)"
+msgstr "——打開P2P會話(呼叫,文件和遊戲)."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "— The user to open a P2P Session with."
+msgstr "—— 打開 P2P 會話的用戶。"

@@ -127,6 +127,8 @@ falls back to the globe for unknown codes.
 | `icon_btn_auto_respond` | Speech bubble + arrow **[DONE]** |
 | `icon_btn_url_catcher` | Globe with dot **[DONE]** |
 | `icon_btn_channel_central` | House **[DONE]** |
+| `icon_dialog_autojoin` | Hash + green entry arrow — Auto-Join title bar and taskbar **[DONE]** |
+| `icon_btn_autojoin` | Hash + entry arrow, toolbar weight — Auto-Join menu/start menu/toolbar **[DONE]** |
 | `icon_globe` | Wireframe globe (browser/locale/timezone fields) **[DONE]** |
 
 ### Tools

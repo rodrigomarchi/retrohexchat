@@ -367,21 +367,25 @@ defmodule RetroHexChatWeb.App.ChatLive do
     {:noreply, ChatLive.Helpers.error_event(socket, message)}
   end
 
-  # Perform dialog bubbles validation errors to the chat surface.
+  # Perform and Auto-Join bubble validation errors to the chat surface.
   def handle_info({:perform_system_error, message}, socket) do
     {:noreply, ChatLive.Helpers.error_event(socket, message)}
   end
 
-  # Perform/AutoJoin list mutations: the dialog owns the work; the parent owns the
+  def handle_info({:autojoin_system_error, message}, socket) do
+    {:noreply, ChatLive.Helpers.error_event(socket, message)}
+  end
+
+  # Perform/Auto-Join list mutations: the dialog owns the work; the parent owns the
   # session read-model and the fire-and-forget persistence.
-  def handle_info({:perform_dialog_session, session, :perform}, socket) do
+  def handle_info({:perform_dialog_session, session}, socket) do
     {:noreply,
      socket
      |> assign(session: session)
      |> ChatLive.Helpers.maybe_persist_perform_list(session)}
   end
 
-  def handle_info({:perform_dialog_session, session, :autojoin}, socket) do
+  def handle_info({:autojoin_dialog_session, session}, socket) do
     {:noreply,
      socket
      |> assign(session: session)
@@ -586,7 +590,8 @@ defmodule RetroHexChatWeb.App.ChatLive do
     &ChatLive.ChannelCentralEvents.handle_event/3,
     &ChatLive.NavigationEvents.handle_event/3,
     &ChatLive.SearchEvents.handle_event/3,
-    &ChatLive.PerformAutojoinEvents.handle_event/3,
+    &ChatLive.PerformEvents.handle_event/3,
+    &ChatLive.AutojoinEvents.handle_event/3,
     &ChatLive.ChannelListEvents.handle_event/3,
     &ChatLive.MenuToolbarEvents.handle_event/3,
     &ChatLive.UserLookupEvents.handle_event/3,
@@ -649,7 +654,8 @@ defmodule RetroHexChatWeb.App.ChatLive do
       {:channel_central_events, &ChatLive.ChannelCentralEvents.handle_event/3},
       {:navigation_events, &ChatLive.NavigationEvents.handle_event/3},
       {:search_events, &ChatLive.SearchEvents.handle_event/3},
-      {:perform_autojoin_events, &ChatLive.PerformAutojoinEvents.handle_event/3},
+      {:perform_events, &ChatLive.PerformEvents.handle_event/3},
+      {:autojoin_events, &ChatLive.AutojoinEvents.handle_event/3},
       {:channel_list_events, &ChatLive.ChannelListEvents.handle_event/3},
       {:menu_toolbar_events, &ChatLive.MenuToolbarEvents.handle_event/3},
       {:composer_events, &ComposerEvents.handle_event/3},

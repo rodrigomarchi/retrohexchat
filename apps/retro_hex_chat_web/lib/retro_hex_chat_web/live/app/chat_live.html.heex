@@ -441,9 +441,8 @@
       />
     </.desktop_window>
 
-    <%!-- Perform — server-managed: two-tab mini-app (perform + auto-join) with
-          window-scoped add/edit sub-forms; open-on-tab via send_update after
-          the window mounts. --%>
+    <%!-- Perform — server-managed: the connect-time command list, with
+          window-scoped add/edit sub-forms. --%>
     <.desktop_window
       :if={"perform" in @open_windows}
       id="perform"
@@ -451,10 +450,10 @@
       managed
       default_x={190}
       default_y={130}
-      width={680}
-      height={500}
-      min_width={520}
-      min_height={360}
+      width={620}
+      height={460}
+      min_width={480}
+      min_height={340}
       body_class="flex min-h-0 flex-col p-2"
       data-testid="perform-window"
     >
@@ -462,6 +461,30 @@
       <.live_component
         module={RetroHexChatWeb.ChatLive.Components.PerformDialog}
         id={RetroHexChatWeb.ChatLive.Components.PerformDialog.id()}
+        session={@session}
+      />
+    </.desktop_window>
+
+    <%!-- Auto-Join — server-managed: the connect-time channel list, with
+          window-scoped add/edit sub-forms. --%>
+    <.desktop_window
+      :if={"autojoin" in @open_windows}
+      id="autojoin"
+      title={dgettext("chat", "Auto-Join")}
+      managed
+      default_x={230}
+      default_y={160}
+      width={520}
+      height={420}
+      min_width={420}
+      min_height={320}
+      body_class="flex min-h-0 flex-col p-2"
+      data-testid="autojoin-window"
+    >
+      <:icon><Icons.icon_dialog_autojoin class="h-4 w-4" /></:icon>
+      <.live_component
+        module={RetroHexChatWeb.ChatLive.Components.AutojoinDialog}
+        id={RetroHexChatWeb.ChatLive.Components.AutojoinDialog.id()}
         session={@session}
       />
     </.desktop_window>

@@ -72,7 +72,9 @@ msgstr "Cuộc gọi nhóm kết thúc?"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:94
 #, elixir-autogen, elixir-format
-msgid "Closing this window leaves the group call in %{channel}. To keep the call running and just tidy up, minimize the window instead."
+msgid ""
+"Closing this window leaves the group call in %{channel}. To keep the call "
+"running and just tidy up, minimize the window instead."
 msgstr ""
 "Đóng cửa sổ này để lại cuộc gọi nhóm %{channel}Để giữ cho cuộc gọi được chạy"
 " và chỉ dọn dẹp, giảm thiểu cửa sổ."
@@ -131,17 +133,19 @@ msgstr "Cuộc gọi nhóm kết thúc"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:111
 #, elixir-autogen, elixir-format
-msgid "End the group call in %{channel} for everyone? All participants will be disconnected."
+msgid ""
+"End the group call in %{channel} for everyone? All participants will be "
+"disconnected."
 msgstr ""
 "Kết thúc cuộc gọi nhóm %{channel} Cho tất cả mọi người? Tất cả những người "
 "tham gia sẽ bị ngắt kết nối."
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:272
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:276
 #: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:37
 #: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:354
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1074
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1075
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:558
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:586
 #: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:89
 #, elixir-autogen, elixir-format
 msgid "Group Call"
@@ -241,7 +245,9 @@ msgstr "Để lại cuộc gọi nhóm"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:86
 #, elixir-autogen, elixir-format
-msgid "Leave the group call in %{channel}? Your microphone and camera will disconnect."
+msgid ""
+"Leave the group call in %{channel}? Your microphone and camera will "
+"disconnect."
 msgstr ""
 "Để lại cuộc gọi nhóm %{channel}Micro và camera của bạn sẽ bị ngắt kết nối."
 
@@ -313,7 +319,9 @@ msgstr "Những người không biết tham gia"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:102
 #, elixir-autogen, elixir-format
-msgid "You are already in a group call in %{channel}. Leave it and join the call in %{new_channel}?"
+msgid ""
+"You are already in a group call in %{channel}. Leave it and join the call in"
+" %{new_channel}?"
 msgstr ""
 "Bạn đã được trong một cuộc gọi nhóm %{channel}Bỏ nó lại và tham gia cuộc gọi"
 " %{new_channel}?"
@@ -441,7 +449,9 @@ msgstr "%{inbound} trong / %{fanout} fanout"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:67
 #, elixir-autogen, elixir-format
-msgid "%{level} quality: RTT %{rtt} ms, loss %{loss}%, %{bitrate} kbps, %{fps} fps, freezes %{freezes}"
+msgid ""
+"%{level} quality: RTT %{rtt} ms, loss %{loss}%, %{bitrate} kbps, %{fps} fps,"
+" freezes %{freezes}"
 msgstr ""
 "%{level} chất lượng: RTT %{rtt} ms, mất %{loss}%, %{bitrate} kbps, %{fps} "
 "fps, đóng băng %{freezes}"
@@ -515,7 +525,8 @@ msgstr "%{sent} Lên / %{received} & Xuống"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:358
 #, elixir-autogen, elixir-format
-msgid "%{state} conference in %{channel}: %{count}/%{max} participants, %{duration}"
+msgid ""
+"%{state} conference in %{channel}: %{count}/%{max} participants, %{duration}"
 msgstr ""
 "%{state} họp trong %{channel}: %{count}/%{max} Những người tham gia, "
 "%{duration}"
@@ -1128,7 +1139,9 @@ msgstr "Mute tất cả những người tham gia cấp thấp"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:128
 #, elixir-autogen, elixir-format
-msgid "Mute all lower-ranked participants in %{channel}? They cannot unmute until a moderator allows their microphone again."
+msgid ""
+"Mute all lower-ranked participants in %{channel}? They cannot unmute until a"
+" moderator allows their microphone again."
 msgstr ""
 "Mute tất cả những người tham gia cấp thấp hơn trong %{channel}Họ không thể "
 "thiếu suy nghĩ cho đến khi một người điều hòa lại cho phép micro của họ."
@@ -1311,7 +1324,10 @@ msgstr "Dòng từ xa"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:119
 #, elixir-autogen, elixir-format
-msgid "Remove %{target} from %{channel}? This will ban them from the channel, disconnect them from the conference, and prevent them from rejoining until a channel operator unbans them."
+msgid ""
+"Remove %{target} from %{channel}? This will ban them from the channel, "
+"disconnect them from the conference, and prevent them from rejoining until a"
+" channel operator unbans them."
 msgstr ""
 "Bỏ %{target} từ %{channel}Hả? Điều này sẽ cấm họ từ kênh truyền hình, ngắt "
 "kết nối họ với hội nghị, và ngăn cản họ quay trở lại cho đến khi một người "
@@ -1553,7 +1569,9 @@ msgstr "Tắt mọi máy ảnh có kích cỡ thấp"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:136
 #, elixir-autogen, elixir-format
-msgid "Turn off cameras for all lower-ranked participants in %{channel}? They cannot turn camera back on until a moderator allows it again."
+msgid ""
+"Turn off cameras for all lower-ranked participants in %{channel}? They "
+"cannot turn camera back on until a moderator allows it again."
 msgstr ""
 "Tắt máy ảnh cho tất cả những người tham gia cấp thấp tham gia %{channel}Họ "
 "không thể quay máy quay lại cho đến khi người điều hòa cho phép."
@@ -1662,7 +1680,9 @@ msgstr "Điều khiển hội nghị"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/pre_join_dialog.ex:202
 #, elixir-autogen, elixir-format
-msgid "Each browser sends media to the room server; the server routes streams to the other participants."
+msgid ""
+"Each browser sends media to the room server; the server routes streams to "
+"the other participants."
 msgstr ""
 "Mỗi trình duyệt gửi phương tiện đến máy phục vụ phòng; các luồng máy chủ cho"
 " những người tham gia khác."
@@ -1736,7 +1756,9 @@ msgstr "Âm thanh + Ảnh động"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/pre_join_dialog.ex:71
 #, elixir-autogen, elixir-format
-msgid "Choose how you enter the room. You can change media and layout after joining."
+msgid ""
+"Choose how you enter the room. You can change media and layout after "
+"joining."
 msgstr ""
 "Chọn cách vào phòng. Bạn có thể thay đổi phương tiện truyền thông và bố trí "
 "sau khi tham gia."

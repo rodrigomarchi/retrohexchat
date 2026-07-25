@@ -5246,17 +5246,6 @@ msgstr ""
 "किक, mute, या unmute एक्शन, उपयोगकर्ताओं का नाम बदलने, सर्वर भूमिकाओं को सेट"
 " करते हैं, और /admin ns info/drop/resetpass"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"Open a P2P Lobby with another user: a single persistent peer-to-peer "
-"connection that hosts every feature at once — an audio or video call, file "
-"transfers, and games — all running at the same time."
-msgstr ""
-"एक अन्य उपयोगकर्ता के साथ एक P2P लॉबी खोलें: एक एकल लगातार सहकर्मी से "
-"सहकर्मी कनेक्शन जो एक बार में हर सुविधा को होस्ट करता है - एक ऑडियो या "
-"वीडियो कॉल, फ़ाइल ट्रांसफर और गेम - सभी एक ही समय में चल रहा है।"
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:11
 #, elixir-autogen, elixir-format
 msgid ""
@@ -5277,11 +5266,6 @@ msgstr ""
 "एक्सेस करने के लिए परिवर्तन में शामिल हों. गुप्त (+) चैनल पूरी तरह से सूची "
 "से छिपे हुए हैं। निजी (+p) चैनल अपना नाम दिखाते हैं लेकिन उनका विषय नहीं है।"
 " प्रेस एस्केप या क्लिक करें संवाद को खारिज करने के लिए बंद करें।"
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:32
-#, elixir-autogen, elixir-format
-msgid "P2P Lobby"
-msgstr "P2P लॉबी"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:2
 #, elixir-autogen, elixir-format
@@ -5437,11 +5421,6 @@ msgstr ""
 " बिल्ला और परिवर्तन के साथ आमंत्रित चैनलों को इंगित करता है। तब आप तय कर "
 "सकते हैं कि क्या आप उपयोग करने के लिए आमंत्रित करते हैं"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:27
-#, elixir-autogen, elixir-format
-msgid "You cannot open a lobby with yourself."
-msgstr "आप अपने साथ एक लॉबी नहीं खोल सकते हैं।"
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "aop add/del/list <nick>"
@@ -5520,11 +5499,6 @@ msgstr ""
 "आवश्यकता है। व्यवस्थापक कंसोल खतरे क्षेत्र टैब को निष्पादन से पहले सर्वर नाम"
 " टाइप करने की आवश्यकता होती है।"
 
-#: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:124
-#, elixir-autogen, elixir-format
-msgid "— Open the P2P Lobby (call, files, and games)"
-msgstr "- P2P लॉबी (call, फाइलें और गेम्स) खोलें।"
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mute.html.heex:18
 #, elixir-autogen, elixir-format
 msgid ""
@@ -5533,18 +5507,35 @@ msgid ""
 msgstr ""
 "- वैकल्पिक अवधि टोकन जैसे 30s, 5m, 1h, या 1d। स्थायी mute के लिए Omit।"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "— The user to open a P2P Lobby with."
-msgstr "- उपयोगकर्ता P2P लॉबी खोलने के लिए।"
+msgid ""
+"Open a P2P Session with another user: a single persistent peer-to-peer "
+"connection that hosts every feature at once — an audio or video call, file "
+"transfers, and games — all running at the same time."
+msgstr ""
+"एक दूसरे उपयोगकर्ता के साथ एक P2P सत्र खोलें: एक एकल लगातार सहकर्मी से "
+"सहकर्मी कनेक्शन जो एक बार में हर सुविधा को होस्ट करता है - एक ऑडियो या "
+"वीडियो कॉल, फ़ाइल ट्रांसफर और गेम - सभी एक ही समय में चल रहा है।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "P2P Session"
+msgstr "P2P सत्र"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "You cannot start a P2P session with yourself."
+msgstr "आप अपने साथ P2P सत्र शुरू नहीं कर सकते।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:16
 #, elixir-autogen, elixir-format
 msgid ""
 "opens a setup dialog first, so you can preview camera, choose "
 "microphone/camera/speaker, pick receive-only, and enable privacy relay "
-"before the invite is sent. After you confirm, the other user receives an "
-"invite card in your private message. When they accept, the connection is "
+"before the request is sent. After you confirm, the other user receives a P2P"
+" request in your private message, the PM tab opens in the background, and "
+"Join/Decline appear in the PM header. When they accept, the connection is "
 "established right there in the chat: the call starts with each side's chosen"
 " defaults and the P2P Session Console opens with Call, Files, Games and "
 "Stats sections. Several activities run together over the one connection; "
@@ -5552,11 +5543,22 @@ msgid ""
 "session (after a confirmation) — minimize to keep it running."
 msgstr ""
 "पहले एक सेटअप संवाद खोलता है, इसलिए आप कैमरा पूर्वावलोकन कर सकते हैं, "
-"माइक्रोफोन /camera/speaker चुनें, केवल प्राप्त करें, और निमंत्रण भेजने से "
-"पहले गोपनीयता रिले सक्षम करें। आपकी पुष्टि के बाद, अन्य उपयोगकर्ता को आपके "
-"निजी संदेश में एक आमंत्रण कार्ड प्राप्त होता है। जब वे स्वीकार करते हैं, तो "
-"कनेक्शन को चैट में ठीक ही स्थापित किया जाता है: कॉल प्रत्येक पक्ष के चुने गए"
-" डिफ़ॉल्ट और सत्र की खिड़कियों (कैल, फ़ाइलें, खेल, सांख्यिकी) के साथ शुरू "
-"होता है। कई गतिविधियाँ एक साथ चल रही हैं; अंत में दूसरों को जीवित रखता है। "
-"किसी भी सत्र विंडो को बंद करने से सत्र (एक पुष्टि के बाद) डिस्कनेक्ट हो जाता"
-" है - इसे चलाने के लिए कम से कम।"
+"माइक्रोफोन /camera/speaker चुनें, केवल प्राप्त करें, और अनुरोध भेजने से पहले"
+" गोपनीयता रिले सक्षम करें। आपकी पुष्टि के बाद, अन्य उपयोगकर्ता को आपके निजी "
+"संदेश में P2P अनुरोध प्राप्त होता है, PM टैब पृष्ठभूमि में खुलता है, और "
+"Join/Decline PM हेडर में दिखाई देता है। जब वे स्वीकार करते हैं, तो कनेक्शन "
+"चैट में सही स्थापित होता है: कॉल प्रत्येक पक्ष के चुने गए डिफ़ॉल्ट के साथ "
+"शुरू होता है और पी2पी सत्र कंसोल कॉल, फाइल्स, गेम्स और आँकड़े सेक्शन के साथ "
+"खुलता है। कई गतिविधियाँ एक साथ चल रही हैं; अंत में दूसरों को जीवित रखता है। "
+"कंसोल को बंद करने से सत्र (एक पुष्टि के बाद) डिस्कनेक्ट हो जाता है - इसे "
+"चलाने के लिए कम से कम।"
+
+#: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:124
+#, elixir-autogen, elixir-format
+msgid "— Open the P2P Session (call, files, and games)"
+msgstr "- P2P सत्र खोलें (call, फ़ाइलें, और खेल)"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "— The user to open a P2P Session with."
+msgstr "- उपयोगकर्ता के साथ एक P2P सत्र खोलने के लिए।"

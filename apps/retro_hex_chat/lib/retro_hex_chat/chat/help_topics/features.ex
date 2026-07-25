@@ -263,17 +263,17 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "auto-commands",
           dgettext("help", "auto commands"),
           dgettext("help", "on connect"),
-          "autojoin",
-          "auto-join",
           dgettext("help", "perform list"),
+          dgettext("help", "perform window"),
           dgettext("help", "auto execute")
         ],
         icon: :icon_dialog_perform,
         description:
           dgettext(
             "help",
-            "Configure commands and channels that execute automatically when you connect."
-          )
+            "Configure the commands that run automatically when you connect."
+          ),
+        see_also: ["cmd-perform", "feature-auto-join-channels", "feature-auto-reconnect"]
       },
       %{
         id: "feature-auto-reconnect",
@@ -1242,14 +1242,17 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "channel",
           "persistence",
           "rejoin",
-          "reconnect"
+          "reconnect",
+          dgettext("help", "auto-join window"),
+          dgettext("help", "channel key")
         ],
-        icon: :icon_tab_autojoin,
+        icon: :icon_dialog_autojoin,
         description:
           dgettext(
             "help",
             "Channels are automatically remembered and rejoined when you reconnect."
-          )
+          ),
+        see_also: ["cmd-autojoin", "feature-perform", "cmd-join", "cmd-part"]
       },
       %{
         id: "feature-single-session",

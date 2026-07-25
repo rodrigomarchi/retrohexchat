@@ -1,0 +1,100 @@
+<.showcase_layout active_page={@active_page}>
+  <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Auto-Join Dialog")}</h2>
+
+  <.showcase_card
+    title={dgettext("showcase", "Auto-Join Dialog")}
+    description="Win98-style dialog for managing the channels joined automatically on connect."
+  >
+    <.button phx-click={show_modal("autojoin-demo")}>
+      <:icon><Icons.icon_btn_autojoin /></:icon>
+      {dgettext("showcase", "Open Auto-Join")}
+    </.button>
+
+    <.autojoin_dialog
+      id="autojoin-demo"
+      show={false}
+      entries={@sample_entries}
+      selected={@selected}
+      on_select="select-autojoin"
+    />
+
+    <.code_example>
+      &lt;.autojoin_dialog
+      id="autojoin"
+      show=&#123;true&#125;
+      entries=&#123;@entries&#125;
+      selected=&#123;@selected&#125;
+      on_select="select"
+      on_add="add"
+      on_edit="edit"
+      on_remove="remove"
+      on_ok="save"
+      on_cancel="cancel"
+      /&gt;
+    </.code_example>
+  </.showcase_card>
+
+  <.showcase_card
+    title={dgettext("showcase", "Key Masking")}
+    description="Channel keys are never displayed — a channel either has one or it does not."
+  >
+    <div class="shadow-retro-field bg-white p-2">
+      <p class="text-xs mb-1">
+        <span class="font-bold">{dgettext("showcase", "With key:")}</span>
+        <code class="font-mono">{dgettext("showcase", "Key: ***")}</code>
+      </p>
+      <p class="text-xs">
+        <span class="font-bold">{dgettext("showcase", "Without key:")}</span>
+        <code class="font-mono">{dgettext("showcase", "Key: none")}</code>
+      </p>
+    </div>
+  </.showcase_card>
+
+  <.showcase_card
+    title={dgettext("showcase", "Component Attributes")}
+    description="Full list of supported attributes for the autojoin_dialog component."
+  >
+    <div class="overflow-x-auto">
+      <table class="w-full text-xs">
+        <thead>
+          <tr class="border-b">
+            <th class="text-left px-2 py-1">{dgettext("showcase", "Attribute")}</th>
+            <th class="text-left px-2 py-1">{dgettext("showcase", "Type")}</th>
+            <th class="text-left px-2 py-1">{dgettext("showcase", "Default")}</th>
+            <th class="text-left px-2 py-1">{dgettext("showcase", "Description")}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b">
+            <td class="px-2 py-1 font-mono">id</td>
+            <td class="px-2 py-1">string</td>
+            <td class="px-2 py-1">required</td>
+            <td class="px-2 py-1">{dgettext("showcase", "Dialog element ID")}</td>
+          </tr>
+          <tr class="border-b">
+            <td class="px-2 py-1 font-mono">entries</td>
+            <td class="px-2 py-1">list</td>
+            <td class="px-2 py-1">[]</td>
+            <td class="px-2 py-1">
+              {dgettext("showcase", "List of %&#123;channel_name, channel_key&#125; maps")}
+            </td>
+          </tr>
+          <tr class="border-b">
+            <td class="px-2 py-1 font-mono">selected</td>
+            <td class="px-2 py-1">string</td>
+            <td class="px-2 py-1">nil</td>
+            <td class="px-2 py-1">{dgettext("showcase", "Selected channel name")}</td>
+          </tr>
+          <tr>
+            <td class="px-2 py-1 font-mono">{dgettext("showcase", "on_*")}</td>
+            <td class="px-2 py-1">any</td>
+            <td class="px-2 py-1">nil</td>
+            <td class="px-2 py-1">
+              {dgettext("showcase", "Event callbacks (select, add, edit, remove, etc.)")}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </.showcase_card>
+</.showcase_layout>

@@ -3224,30 +3224,30 @@ msgstr "সার্ভার, ব্যবহারকারী, চ্যা�
 msgid "set, commands, addcmd, delcmd, help.\n"
 msgstr "নির্ধারিত কমান্ড, cmd, ডেলcmd, সাহায্য।"
 
-#: lib/retro_hex_chat/commands/handlers/lobby.ex:64
-#, elixir-autogen, elixir-format
-msgid ""
-"Open a P2P lobby that hosts calls, file transfers, and games together over one connection.\n"
-"Requires: both users must be registered and identified (/ns identify)."
-msgstr ""
-"একটি P2P লবি খুলুন যেটা হোস্ট কল করে, ফাইল ট্রান্সফার, এবং একটি সংযোগের মাধ্যমে একসাথে খেলা যাবে ।\n"
-"আবশ্যক: দু'টি ব্যবহারকারীদেরকে নিবন্ধন করতে হবে এবং সনাক্ত করতে হবে (উদাহরণস্বরূপ <0\\-40}/fffo।"
-
-#: lib/retro_hex_chat/commands/handlers/lobby.ex:43
-#, elixir-autogen, elixir-format
-msgid ""
-"Open a P2P lobby with another user: one persistent connection that runs an audio/video call, file transfers, and games all at the same time.\n"
-"Requires: both users must be registered and identified (/ns identify)."
-msgstr ""
-"একটি P2P লব অন্য ব্যবহারকারীর সাথে খোলা হবে: একটি লাগাতার সংযোগ যে একটি অডিও কল/f02f02 কল, ফাইল ট্রান্সফার, এবং সব সময়ে খেলা হবে।\n"
-"আবশ্যক: দু'টি ব্যবহারকারীকে নিবন্ধন করতে হবে এবং সনাক্ত করতে হবে (<f1\\-1>)।"
-
 #: lib/retro_hex_chat/commands/handlers/lobby.ex:99
 #, elixir-autogen, elixir-format
 msgid "User '%{nickname}' is offline."
 msgstr "ব্যবহারকারী '%{nickname}' অফলাইন।"
 
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:64
+#, elixir-autogen, elixir-format
+msgid ""
+"Open a P2P session that hosts calls, file transfers, and games together over one connection.\n"
+"Requires: both users must be registered and identified (/ns identify)."
+msgstr ""
+"একটি P2P সেশন খুলুন যা হোস্টরা কল করে, পাঠানো হয় এবং একটি সংযোগের মাধ্যমে একসঙ্গে খেলা যায় ।\n"
+"আবশ্যক: দু'টি ব্যবহারকারীদেরকে নিবন্ধন করতে হবে এবং সনাক্ত করতে হবে (উদাহরণস্বরূপ <0\\-40}/fffo।"
+
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:43
+#, elixir-autogen, elixir-format
+msgid ""
+"Open a P2P session with another user: one persistent connection that runs an audio/video call, file transfers, and games all at the same time.\n"
+"Requires: both users must be registered and identified (/ns identify)."
+msgstr ""
+"ভিন্ন ব্যবহারকারীর সাথে একটি P2P সেশন খুলুন: একটি অডিও সংযোগ চালনা করে যা একটি অডিও কল/f02fo কল, ফাইল পরিবহণ, এবং সব সময়ে খেলা করে।\n"
+"আবশ্যক: দু'টি ব্যবহারকারীকে নিবন্ধন করতে হবে এবং সনাক্ত করতে হবে (<f1\\-1>)।"
+
 #: lib/retro_hex_chat/commands/handlers/lobby.ex:89
 #, elixir-autogen, elixir-format
-msgid "You cannot open a lobby with yourself."
-msgstr "তুমি নিজে লব খুলতে পারবে না।"
+msgid "You cannot start a P2P session with yourself."
+msgstr "আপনি নিজে থেকে P2P সেশন চালু করতে পারেন না ।"

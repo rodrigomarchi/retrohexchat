@@ -3179,30 +3179,30 @@ msgstr "서버, 사용자, 채널, ns, cs, 디버그, 로그, 턴, 또는 nuke"
 msgid "set, commands, addcmd, delcmd, help.\n"
 msgstr "설정, 명령, addcmd, delcmd, 도움."
 
-#: lib/retro_hex_chat/commands/handlers/lobby.ex:64
-#, elixir-autogen, elixir-format
-msgid ""
-"Open a P2P lobby that hosts calls, file transfers, and games together over one connection.\n"
-"Requires: both users must be registered and identified (/ns identify)."
-msgstr ""
-"P2P 로비를 열어서 통화, 파일 전송 및 게임이 하나 이상의 연결됩니다.\n"
-"요구 사항 : 둘 모두 등록하고 식별해야합니다 (/ns 식별)."
-
-#: lib/retro_hex_chat/commands/handlers/lobby.ex:43
-#, elixir-autogen, elixir-format
-msgid ""
-"Open a P2P lobby with another user: one persistent connection that runs an audio/video call, file transfers, and games all at the same time.\n"
-"Requires: both users must be registered and identified (/ns identify)."
-msgstr ""
-"다른 사용자와 P2P 로비를 엽니다: 오디오/video 통화, 파일 전송 및 게임이 동시에 실행되는 영구 연결.\n"
-"요구 사항 : 둘 모두 등록하고 식별해야합니다 (/ns 식별)."
-
 #: lib/retro_hex_chat/commands/handlers/lobby.ex:99
 #, elixir-autogen, elixir-format
 msgid "User '%{nickname}' is offline."
 msgstr "사용자 '%{nickname}'님은 오프라인입니다."
 
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:64
+#, elixir-autogen, elixir-format
+msgid ""
+"Open a P2P session that hosts calls, file transfers, and games together over one connection.\n"
+"Requires: both users must be registered and identified (/ns identify)."
+msgstr ""
+"P2P 세션을 열어서 통화, 파일 전송 및 게임이 하나 이상의 연결됩니다.\n"
+"요구 사항 : 둘 모두 등록하고 식별해야합니다 (/ns 식별)."
+
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:43
+#, elixir-autogen, elixir-format
+msgid ""
+"Open a P2P session with another user: one persistent connection that runs an audio/video call, file transfers, and games all at the same time.\n"
+"Requires: both users must be registered and identified (/ns identify)."
+msgstr ""
+"다른 사용자와 함께 P2P 세션을 엽니 다 : 오디오를 실행하는 하나의 영구 연결/video 통화, 파일 전송 및 동시에 모든 게임.\n"
+"요구 사항 : 둘 모두 등록하고 식별해야합니다 (/ns 식별)."
+
 #: lib/retro_hex_chat/commands/handlers/lobby.ex:89
 #, elixir-autogen, elixir-format
-msgid "You cannot open a lobby with yourself."
-msgstr "로비를 직접 열 수 없습니다."
+msgid "You cannot start a P2P session with yourself."
+msgstr "P2P 세션을 직접 시작할 수 없습니다."

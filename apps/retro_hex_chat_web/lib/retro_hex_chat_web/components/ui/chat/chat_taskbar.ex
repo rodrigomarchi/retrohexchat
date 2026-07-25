@@ -206,6 +206,12 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
       :icon_dialog_perform
     )
     |> add_window(
+      window_open?(assigns.open_windows, "autojoin"),
+      "autojoin",
+      dgettext("chat", "Auto-Join"),
+      :icon_dialog_autojoin
+    )
+    |> add_window(
       window_open?(assigns.open_windows, "notify-list"),
       "notify-list",
       dgettext("chat", "Notify List"),

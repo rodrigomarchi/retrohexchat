@@ -498,16 +498,6 @@ msgstr ""
 "の特長\n"
 "メトリック"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:48
-#: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:52
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:71
-#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:65
-#, elixir-autogen, elixir-format
-msgid "P2P Lobby"
-msgstr ""
-"の特長\n"
-"P2Pロビー"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Packet loss"
@@ -940,17 +930,6 @@ msgstr ""
 "の特長\n"
 "カメラをプレビューし、マイク、カメラ、スピーカーのデバイスを選択し、マイクやカメラが有効になっているかどうかを決定します。 パーミッションとデバイス障害は、リトリーアクションを表示し、受信のみに参加できます。 レイアウトとメディアのデフォルトは、アカウントに記憶されます。ブラウザ固有のデバイス選択はローカルに記憶されます。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:9
-#, elixir-autogen, elixir-format
-msgid ""
-"Type /p2p <nick> (or use the nicklist context menu) to open setup before "
-"sending an invite. Confirming setup sends the invite card in the private "
-"message; the invited person clicks Accept to start their own setup and join "
-"in place, or Decline to refuse — the inviter is told either way."
-msgstr ""
-"の特長\n"
-"/p2p <ph0></ph0>(またはnicklistのコンテキストメニューを使用する)を入力して、招待を送信する前にセットアップを開きます。 セットアップの確認は、招待状をプライベートメッセージで送信します。招待された人は、受諾をクリックして、自分のセットアップを開始し、所定の場所に参加するか、または拒否するDeclineをクリックします。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:16
 #, elixir-autogen, elixir-format
 msgid ""
@@ -1050,21 +1029,6 @@ msgid ""
 "Calls use conservative audio and video limits by default to favor stability "
 "over maximum image quality."
 msgstr "コールは、保存性のあるオーディオとビデオの制限をデフォルトで使用して、最大画質の安定性を優先します。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:29
-#, elixir-autogen, elixir-format
-msgid ""
-"Messages during the session are regular private messages, saved like any "
-"other. Session events — connected, file received, game score, who ended it —"
-" are written into the PM history as P2P lines, so the story of the session "
-"survives it. While a session exists, the peer's PM tab, PM sidebar row and "
-"PM topic bar show the same P2P indicator family used by channel conferences,"
-" with state and active call/file/game/relay facets."
-msgstr ""
-"セッション中のメッセージは、他のメッセージのように保存されます。 セッションイベント — "
-"接続されたファイル、受信したゲームスコア、終了したゲームスコア、P2P ラインとして PM の歴史に書かれているので、セッションの物語はそれを生き残る。"
-" セッションが存在する間、ピアの PM タブ、PM サイドバーの行と PM トピックバーは、チャネル会議で使用される同じ P2P "
-"インジケーターファミリーを、状態とアクティブコールで表示します。/file/game/relay ファセット。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:1
 #, elixir-autogen, elixir-format
@@ -1168,18 +1132,6 @@ msgstr ""
 "の特長\n"
 "コールセクションは、マイク、カメラ、画面共有、デバイス、PiP、レイアウト、セルフビュー、ミニモード、統計、反応制御などのチャネル会議と同じメディア言語を使用します。 エンドコールはメディアのみを停止します。P2P セッションコンソールを閉じると、P2P セッション全体を終了します。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"The P2P Lobby is the persistent peer-to-peer connection behind /p2p: one "
-"link between two users that hosts a call, file transfers and games all at "
-"the same time. It lives inside the chat — setup happens before sending or "
-"accepting the invite, and accepting opens the P2P Session Console right on "
-"the chat desktop, next to your conversations."
-msgstr ""
-"P2Pロビーは、持続的なピアツーピア接続です。 /p2p: 通話、ファイル転送、ゲームを同時にホストする2人のユーザー間の1つのリンク。 "
-"チャット内での生活 — 招待状を送受信する前にセットアップが起こり、会話の横にあるチャットデスクトップでP2Pセッションコンソールを開くことができます。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "The Session Console"
@@ -1248,3 +1200,56 @@ msgid ""
 msgstr ""
 "の特長\n"
 "P2Pセッションコンソールは、Ctrl+Shift+ArrowUpがマイクの状態をトグルし、Ctrl+Shift+ArrowLeftはカメラの状態をトグルします。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:29
+#, elixir-autogen, elixir-format
+msgid ""
+"Messages during the session are regular private messages, saved like any "
+"other. Session events — request sent, connected, file received, game score, "
+"who ended it — are written into the PM history as P2P lines, so the story of"
+" the session survives it without turning the transcript into a control "
+"surface. While a session exists, the peer's PM tab, PM sidebar row and PM "
+"topic bar show the same P2P indicator family used by channel conferences, "
+"with state and active call/file/game/relay facets."
+msgstr ""
+"セッション中のメッセージは、他のメッセージのように保存されます。 セッションイベント — 送信、接続、受信したファイル、ゲームスコア、終了したユーザーが"
+" P2P ラインとして PM の歴史に書かれているので、セッションの物語は、トランスクリプトをコントロール面に変えずに生き残る。 "
+"セッションが存在する間、ピアの PM タブ、PM サイドバーの行と PM トピックバーは、チャンネル会議で使用している同じ P2P "
+"インジケーターファミリーを表示し、state と Active call/file</ph1></ph1></ph2></ph2> が直面している。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:52
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:71
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:65
+#, elixir-autogen, elixir-format
+msgid "P2P Session"
+msgstr ""
+"の特長\n"
+"P2Pセッション"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"The P2P Session is the persistent peer-to-peer connection behind /p2p: one "
+"link between two users that hosts a call, file transfers and games all at "
+"the same time. It lives inside the chat — setup happens before sending or "
+"accepting the invite, and accepting opens the P2P Session Console right on "
+"the chat desktop, next to your conversations."
+msgstr ""
+"の特長\n"
+"P2Pセッションは、/p2pの背後にある持続的なピアツーピア接続です。2人のユーザーが同時にコール、ファイル転送、ゲームをホストする1つのリンクです。 チャット内での生活 — 招待状を送受信する前にセットアップが起こり、会話の横にあるチャットデスクトップでP2Pセッションコンソールを開くことができます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:9
+#, elixir-autogen, elixir-format
+msgid ""
+"Type /p2p <nick> (or use the P2P control in the PM header/nicklist context "
+"menu) to open setup before sending a request. Confirming setup opens your "
+"P2P Session Console immediately and sends a P2P request line in the private "
+"message. The invited person's PM tab opens in the background with Join and "
+"Decline in the PM header, so they can respond in place without a separate "
+"lobby link."
+msgstr ""
+"/p2p "
+"<ph0></ph0>(またはPMヘッダ/nicklistコンテクストメニューのP2P制御を使用する)を入力し、リクエストを送信する前にセットアップを開く。"
+" セットアップがP2Pセッションコンソールをすぐに開き、プライベートメッセージでP2Pリクエストラインを送信します。 招待された人の PM タブは、PM"
+" ヘッダの Join と Decline でバックグラウンドで開きますので、別のロビーリンクなしで場所に応答できます。"

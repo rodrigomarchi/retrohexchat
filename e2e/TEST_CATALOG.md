@@ -397,8 +397,8 @@ make ci
 | U3  | Sound Settings OK/Apply/Cancel/Preview persists only intended settings                                       | `tests/chat-sound-settings.spec.ts`             | P2       | done   |
 | U4  | Sound mute/status-bar setting and Sound Settings preview stay in sync across rerenders/reconnect             | `tests/chat-sound-settings.spec.ts`             | P2       | done   |
 | U5  | Flood Protection save/reset/cancel paths update effective paste flood behavior only when intended            | `tests/chat-flood-protection.spec.ts`           | P1       | done   |
-| U6  | Perform dialog edit/move/toggle-enabled paths mirror slash command behavior and reconnect execution          | `tests/chat-perform-dialog.spec.ts`             | P1       | done   |
-| U7  | Autojoin dialog add/edit/remove paths mirror slash command behavior and reconnect execution                  | `tests/chat-perform-dialog.spec.ts`             | P1       | done   |
+| U6  | Perform window edit/move/toggle-enabled paths mirror slash command behavior and reconnect execution          | `tests/chat-perform-dialog.spec.ts`             | P1       | done   |
+| U7  | Auto-Join window add/edit/remove paths mirror slash command behavior and reconnect execution                 | `tests/chat-perform-dialog.spec.ts`             | P1       | done   |
 | U8  | Autorespond dialog add/edit/toggle/delete validates fields and mirrors slash list output                     | `tests/chat-autorespond-dialog.spec.ts`         | P1       | done   |
 | U9  | Custom Menus dialog validates duplicate labels, empty command, command chaining, and tab-specific menu types | `tests/chat-custom-menus-dialog.spec.ts`        | P1       | done   |
 | U10 | Alias dialog validates duplicate aliases, empty expansion, recursion warning, and cancel/discard behavior    | `tests/chat-alias-dialog-edges.spec.ts`         | P1       | done   |

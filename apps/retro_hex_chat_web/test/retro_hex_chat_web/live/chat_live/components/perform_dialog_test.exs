@@ -4,16 +4,15 @@ defmodule RetroHexChatWeb.ChatLive.Components.PerformDialogTest do
   import Phoenix.LiveViewTest
 
   alias RetroHexChat.Accounts.Session
-  alias RetroHexChat.Chat.{AutoJoinList, PerformList}
+  alias RetroHexChat.Chat.PerformList
   alias RetroHexChatWeb.ChatLive.Components.PerformDialog
 
   @moduletag :unit
 
-  defp session(perform_list \\ PerformList.new(), autojoin_list \\ AutoJoinList.new()) do
+  defp session(perform_list \\ PerformList.new()) do
     "Nick"
     |> Session.new()
     |> Session.set_perform_list(perform_list)
-    |> Session.set_autojoin_list(autojoin_list)
   end
 
   defp dialog(overrides) do
@@ -25,13 +24,12 @@ defmodule RetroHexChatWeb.ChatLive.Components.PerformDialogTest do
     assert PerformDialog.id() == "perform-dialog"
   end
 
-  test "renders the bare panel with both tab panels" do
+  test "renders the bare command panel" do
     html = dialog(%{})
 
     assert html =~ ~s(data-testid="perform-panel")
     refute html =~ "phx-show-modal"
     assert html =~ "No commands configured"
-    assert html =~ "No auto-join channels"
   end
 
   test "renders perform entries from the session, password-masked" do
@@ -41,27 +39,15 @@ defmodule RetroHexChatWeb.ChatLive.Components.PerformDialogTest do
       render_component(PerformDialog, %{
         id: PerformDialog.id(),
         session: session(list),
-        perform_selected: 0
+        selected: 0
       })
 
     assert html =~ "/ns identify ***"
     refute html =~ "hunter2"
   end
 
-  test "renders autojoin entries from the session" do
-    {:ok, list} = AutoJoinList.add_entry(AutoJoinList.new(), "#lobby", nil)
-
-    html =
-      render_component(PerformDialog, %{
-        id: PerformDialog.id(),
-        session: session(PerformList.new(), list)
-      })
-
-    assert html =~ "#lobby"
-  end
-
-  test "renders the perform add sub-form when its flag is set" do
-    html = dialog(%{show_perform_add_dialog: true})
+  test "renders the add sub-form when its flag is set" do
+    html = dialog(%{show_add_dialog: true})
 
     assert html =~ ~s(data-testid="perform-add-dialog")
     assert html =~ ~s(phx-target=)

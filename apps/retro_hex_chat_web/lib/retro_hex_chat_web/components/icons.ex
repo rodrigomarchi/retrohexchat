@@ -134,7 +134,8 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_link(assigns), to: RetroHexChatWeb.Icons.Communication
   defdelegate icon_dialog_invite(assigns), to: RetroHexChatWeb.Icons.Communication
   defdelegate icon_dialog_url(assigns), to: RetroHexChatWeb.Icons.Communication
-  defdelegate icon_tab_autojoin(assigns), to: RetroHexChatWeb.Icons.Communication
+  defdelegate icon_dialog_autojoin(assigns), to: RetroHexChatWeb.Icons.Communication
+  defdelegate icon_btn_autojoin(assigns), to: RetroHexChatWeb.Icons.Communication
   defdelegate icon_tab_channel(assigns), to: RetroHexChatWeb.Icons.Communication
   defdelegate icon_tab_pm(assigns), to: RetroHexChatWeb.Icons.Communication
   defdelegate icon_tab_conversations(assigns), to: RetroHexChatWeb.Icons.Communication

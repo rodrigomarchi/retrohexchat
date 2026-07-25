@@ -209,6 +209,12 @@ e o payload `%{tab: ...}` desaparece junto com o roteamento em
 
 `Ctrl+Shift+E` continua em `perform`.
 
+> **✅ Executado em 2026-07-25.** As duas janelas nasceram sem shell de abas —
+> `open_with` deu lugar a `Windows.open/2` nas duas, porque sem aba não há
+> diretiva de abertura. `perform_autojoin_events.ex` virou `perform_events.ex` +
+> `autojoin_events.ex`; o ícone `icon_tab_autojoin` foi aposentado em favor do
+> par `icon_dialog_autojoin` / `icon_btn_autojoin`. Detalhes no PROGRESS.
+
 ---
 
 ## 5. Reshape (sem janela nova)
@@ -479,7 +485,7 @@ crescente; a Fase 3 valida o playbook no menor split possível antes de escalar.
 | 1 | **Admin Console** | 9 janelas; monólito deletado | +8 | ✅ feito |
 | 2 | **Limpeza** | Tudo em §6, menos o que saiu junto com o Admin | 0 | ✅ feito |
 | 3 | **Channel Central** | 6 → 4 abas, funde as 3 listas de acesso | 0 | ✅ feito |
-| 4 | **Perform** | `perform` + `autojoin` | +1 | ⬜ pendente |
+| 4 | **Perform** | `perform` + `autojoin` | +1 | ✅ feito |
 | 5 | **Account** | `account` + `profile` + `away` + `user-modes` | +3 | ⬜ pendente |
 | 6 | **Address Book** | `address-book` + `nick-colors` + `ignore-list`; aba Notify absorvida por `notify-list` | +2 | ⬜ pendente |
 

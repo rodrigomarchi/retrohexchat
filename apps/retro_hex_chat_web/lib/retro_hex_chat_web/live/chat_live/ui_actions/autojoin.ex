@@ -12,9 +12,14 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Autojoin do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Chat.AutoJoinList
+  alias RetroHexChatWeb.ChatLive.AutojoinEvents
 
   @spec handle_ui_action(Phoenix.LiveView.Socket.t(), atom(), map()) ::
           Phoenix.LiveView.Socket.t()
+
+  def handle_ui_action(socket, :open_autojoin_dialog, _payload) do
+    AutojoinEvents.open(socket)
+  end
 
   def handle_ui_action(socket, :autojoin_list_display, _payload) do
     session = socket.assigns.session

@@ -56,6 +56,11 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
         />
         <.window_item window="perform" label={dgettext("ui", "Perform")} icon_fn={:icon_btn_perform} />
         <.window_item
+          window="autojoin"
+          label={dgettext("ui", "Auto-Join")}
+          icon_fn={:icon_btn_autojoin}
+        />
+        <.window_item
           window="sound-settings"
           label={dgettext("ui", "Sounds")}
           icon_fn={:icon_btn_sounds}

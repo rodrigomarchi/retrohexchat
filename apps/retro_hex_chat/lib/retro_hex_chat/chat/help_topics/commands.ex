@@ -45,7 +45,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
           "channel",
           dgettext("help", "on connect")
         ],
-        icon: :icon_tab_autojoin,
+        icon: :icon_dialog_autojoin,
         description:
           dgettext(
             "help",

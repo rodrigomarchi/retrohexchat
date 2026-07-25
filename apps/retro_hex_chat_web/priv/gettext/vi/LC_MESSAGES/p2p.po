@@ -79,7 +79,7 @@ msgstr "Đã kết nối"
 msgid "Connecting..."
 msgstr "Đang kết nối..."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:875
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:884
 #: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:400
 #, elixir-autogen, elixir-format
 msgid "Disconnected"
@@ -109,26 +109,28 @@ msgstr "In Call"
 msgid "Pending..."
 msgstr "Đang đợi..."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:879
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:888
 #: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:156
 #: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:403
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:350
-#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:253
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:446
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:450
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:282
 #, elixir-autogen, elixir-format
 msgid "Ready"
 msgstr "Chào."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:879
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:886
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:888
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:895
 #: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:142
 #: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:413
 #: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:416
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:280
 #, elixir-autogen, elixir-format
 msgid "Receiving"
 msgstr "Nhận"
 
 #: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:384
-#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:337
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:372
 #, elixir-autogen, elixir-format
 msgid "Reconnecting"
 msgstr "Đang kết nối lại"
@@ -180,7 +182,7 @@ msgstr "Cuộc gọi phim"
 msgid "Waiting..."
 msgstr "Đang đợi..."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:908
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:917
 #, elixir-autogen, elixir-format
 msgid "%{count} tracks"
 msgstr "%{count} vết"
@@ -225,7 +227,8 @@ msgstr "%{n}%"
 msgid "%{w}×%{h}"
 msgstr "%{w}×%{h}"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:270
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:276
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:62
 #, elixir-autogen, elixir-format
 msgid "1:1"
 msgstr "1:1"
@@ -240,26 +243,27 @@ msgstr "Hoạt động"
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:205
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:621
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:651
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:279
 #, elixir-autogen, elixir-format
 msgid "Audio"
 msgstr "Âm thanh"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:151
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:157
 #, elixir-autogen, elixir-format
 msgid "Audio and data channels can keep running."
 msgstr "Các kênh âm thanh và dữ liệu có thể tiếp tục chạy."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:885
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:894
 #, elixir-autogen, elixir-format
 msgid "Audio call active"
 msgstr "Comment"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:918
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:927
 #, elixir-autogen, elixir-format
 msgid "Audio session"
 msgstr "Phiên chạy âm thanh"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:540
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:549
 #, elixir-autogen, elixir-format
 msgid "Auto layout"
 msgstr "Tự động bố trí"
@@ -275,9 +279,9 @@ msgid "CPU"
 msgstr "CPU"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:622
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:166
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:352
-#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:95
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:231
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:452
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:125
 #, elixir-autogen, elixir-format
 msgid "Call"
 msgstr "nhỏ"
@@ -288,7 +292,7 @@ msgid "Call %{duration}"
 msgstr "nhỏ %{duration}"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:642
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:940
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:949
 #: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:129
 #, elixir-autogen, elixir-format
 msgid "Camera"
@@ -299,7 +303,7 @@ msgstr "Máy ảnh"
 msgid "Camera preview is off"
 msgstr "Không xem thử máy ảnh"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:916
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:925
 #, elixir-autogen, elixir-format
 msgid "Camera session"
 msgstr "Phiên chạy máy ảnh"
@@ -309,7 +313,7 @@ msgstr "Phiên chạy máy ảnh"
 msgid "Capacity"
 msgstr "Khả năng"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:850
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:859
 #, elixir-autogen, elixir-format
 msgid "Change self view"
 msgstr "Thay đổi ô xem"
@@ -324,7 +328,7 @@ msgstr "Thiết bị kiểm tra"
 msgid "Closed"
 msgstr "Đóng cửa"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:580
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:589
 #, elixir-autogen, elixir-format
 msgid "Compact"
 msgstr "Tính"
@@ -354,7 +358,8 @@ msgstr "Dữ liệu hiện đang được nhận từ đồng nghiệp, trong kg
 msgid "Data currently being sent to the peer, in kilobits per second."
 msgstr "Dữ liệu hiện đang được gửi đến ngang hàng, trong kg mỗi giây."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:249
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:255
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:41
 #, elixir-autogen, elixir-format
 msgid "Direct call with %{peer}"
 msgstr "Cuộc gọi trực tiếp với %{peer}"
@@ -367,7 +372,9 @@ msgstr "Tải về"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:748
 #, elixir-autogen, elixir-format
-msgid "Estimated bandwidth available for sending to the peer, in kilobits per second."
+msgid ""
+"Estimated bandwidth available for sending to the peer, in kilobits per "
+"second."
 msgstr ""
 "Có thể ước lượng băng thông sẵn có để gửi đến ngang hàng, theo kg mỗi giây."
 
@@ -376,7 +383,8 @@ msgstr ""
 msgid "Excellent"
 msgstr "Xuất sắc"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:440
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:446
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:89
 #, elixir-autogen, elixir-format
 msgid "Expand call window"
 msgstr "Mở rộng cửa sổ cuộc gọi"
@@ -387,14 +395,14 @@ msgid "Fair"
 msgstr "Công bằng"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:341
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:353
-#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:98
-#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:259
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:453
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:128
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:294
 #, elixir-autogen, elixir-format
 msgid "Files"
 msgstr "Tập tin"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:844
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:853
 #, elixir-autogen, elixir-format
 msgid "Focus peer video"
 msgstr "Tiêu điểm video ngang hàng"
@@ -423,14 +431,14 @@ msgstr "Đứng yên"
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:96
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:411
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:661
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:354
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:454
 #, elixir-autogen, elixir-format
 msgid "Game"
 msgstr "Trò chơi"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:325
-#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:101
-#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:262
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:131
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:297
 #, elixir-autogen, elixir-format
 msgid "Games"
 msgstr "Trò chơi"
@@ -440,7 +448,7 @@ msgstr "Trò chơi"
 msgid "Good"
 msgstr "Tốt"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:848
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:857
 #, elixir-autogen, elixir-format
 msgid "Hide self view"
 msgstr "Ẩn ô xem"
@@ -494,7 +502,9 @@ msgstr "MOS %{score}"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:720
 #, elixir-autogen, elixir-format
-msgid "Mean Opinion Score (1-5): an overall call-quality estimate from latency, jitter and loss. 5 is excellent; below 3.5 feels poor."
+msgid ""
+"Mean Opinion Score (1-5): an overall call-quality estimate from latency, "
+"jitter and loss. 5 is excellent; below 3.5 feels poor."
 msgstr ""
 "Trung bình điểm ý kiến (1-5: một ước tính tổng thể về tính chất lượng điện "
 "thoại từ sự chậm trễ, hoang mang và mất mát. 5 là tuyệt vời; dưới 3.5 cảm "
@@ -511,7 +521,7 @@ msgstr "Đo"
 msgid "Messages"
 msgstr "Thông điệp"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:939
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:948
 #, elixir-autogen, elixir-format
 msgid "Mic"
 msgstr "Mic"
@@ -521,13 +531,14 @@ msgstr "Mic"
 msgid "Microphone"
 msgstr "Microphone"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:441
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:516
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:447
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:525
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:90
 #, elixir-autogen, elixir-format
 msgid "Mini call window"
 msgstr "Comment"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:847
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:856
 #, elixir-autogen, elixir-format
 msgid "Move self view to picture-in-picture"
 msgstr "Di chuyển ô xem của mình sang Hình ảnh hoá"
@@ -552,30 +563,27 @@ msgstr "Mở"
 msgid "Other"
 msgstr "Khác"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:941
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:950
 #, elixir-autogen, elixir-format
 msgid "Output"
 msgstr "Xuất"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:713
 #, elixir-autogen, elixir-format
-msgid "Overall connection health, rated from Excellent to Poor based on the MOS score."
+msgid ""
+"Overall connection health, rated from Excellent to Poor based on the MOS "
+"score."
 msgstr "Sức khỏe kết nối quá mức, từ tuyệt vời đến nghèo dựa trên điểm MOS."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:50
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:51
 #, elixir-autogen, elixir-format
 msgid "P2P call"
 msgstr "Cuộc gọi P2P"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:369
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:375
 #, elixir-autogen, elixir-format
 msgid "P2P media controls"
 msgstr "Điều khiển phương tiện P2P"
-
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:62
-#, elixir-autogen, elixir-format
-msgid "P2P media is offline"
-msgstr "Phương tiện P2P đã tắt"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:375
 #, elixir-autogen, elixir-format
@@ -606,7 +614,9 @@ msgstr "Đang đợi"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:741
 #, elixir-autogen, elixir-format
-msgid "Percentage of packets that never arrived. Above ~3% noticeably degrades quality."
+msgid ""
+"Percentage of packets that never arrived. Above ~3% noticeably degrades "
+"quality."
 msgstr ""
 "Phần trăm gói hàng chưa từng đến. Trên ~3% chất lượng phân hủy đáng chú ý."
 
@@ -615,23 +625,18 @@ msgstr ""
 msgid "Poor"
 msgstr "Tội nghiệp"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:329
-#, elixir-autogen, elixir-format
-msgid "Prepare P2P Invite"
-msgstr "Chuẩn bị giấy mời P2P"
-
 #: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:244
 #, elixir-autogen, elixir-format
 msgid "Preview"
 msgstr "Xem thử"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:384
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:487
 #: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:184
 #, elixir-autogen, elixir-format
 msgid "Privacy relay"
 msgstr "Chuyển tiếp riêng tư"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:319
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:325
 #, elixir-autogen, elixir-format
 msgid "Ready for private media"
 msgstr "Sẵn sàng cho phương tiện riêng"
@@ -641,13 +646,13 @@ msgstr "Sẵn sàng cho phương tiện riêng"
 msgid "Received"
 msgstr "Nhận được"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:917
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:926
 #, elixir-autogen, elixir-format
 msgid "Recv-only session"
 msgstr "Chỉ phiên chạy"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:414
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:355
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:455
 #, elixir-autogen, elixir-format
 msgid "Relay"
 msgstr "Tiếp lại"
@@ -669,19 +674,21 @@ msgid "Resolution of the received video, in pixels."
 msgstr "Độ phân giải của video đã nhận, theo điểm ảnh."
 
 #: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:286
-#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:300
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:335
 #, elixir-autogen, elixir-format
 msgid "Retry"
 msgstr "Thử lại"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:843
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:852
 #, elixir-autogen, elixir-format
 msgid "Return to split layout"
 msgstr "Trở về bố trí tách"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:727
 #, elixir-autogen, elixir-format
-msgid "Round-trip time for data to reach the peer and return. Lower is better; under ~150 ms feels instant."
+msgid ""
+"Round-trip time for data to reach the peer and return. Lower is better; "
+"under ~150 ms feels instant."
 msgstr ""
 "Thời gian lưu trữ dữ liệu liên tục để đạt được ngang hàng và trở lại. Thấp "
 "hơn là tốt hơn; dưới ~ 150 ms cảm thấy ngay lập tức."
@@ -697,17 +704,17 @@ msgstr "Màn hình"
 msgid "Screen %{duration}"
 msgstr "Màn hình %{duration}"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:912
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:921
 #, elixir-autogen, elixir-format
 msgid "Screen session"
 msgstr "Phiên chạy"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:646
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:655
 #, elixir-autogen, elixir-format
 msgid "Send clap"
 msgstr "Cho người vỗ tay"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:644
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:653
 #, elixir-autogen, elixir-format
 msgid "Send heart reaction"
 msgstr "Name"
@@ -717,17 +724,17 @@ msgstr "Name"
 msgid "Send invite"
 msgstr "Gởi giấy mời"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:647
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:656
 #, elixir-autogen, elixir-format
 msgid "Send laugh"
 msgstr "Gửi nụ cười"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:645
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:654
 #, elixir-autogen, elixir-format
 msgid "Send thumbs up"
 msgstr "Gửi ngón cái lên"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:648
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:657
 #, elixir-autogen, elixir-format
 msgid "Send wow"
 msgstr "Name"
@@ -738,17 +745,17 @@ msgid "Sent"
 msgstr "Gửi"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:607
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:127
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:157
 #, elixir-autogen, elixir-format
 msgid "Session"
 msgstr "Phiên chạy"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:417
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:423
 #, elixir-autogen, elixir-format
 msgid "Share screen"
 msgstr "Chia sẻ màn hình"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:849
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:858
 #, elixir-autogen, elixir-format
 msgid "Show self view as tile"
 msgstr "Hiện ô xem dạng ô vuông"
@@ -758,23 +765,23 @@ msgstr "Hiện ô xem dạng ô vuông"
 msgid "Source"
 msgstr "Nguồn"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:570
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:579
 #: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:138
 #, elixir-autogen, elixir-format
 msgid "Speaker"
 msgstr "Phát ngôn viên"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:560
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:569
 #, elixir-autogen, elixir-format
 msgid "Split"
 msgstr "Chia ra"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:330
+#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:329
 #, elixir-autogen, elixir-format
 msgid "Start P2P Session"
 msgstr "Chạy phiên chạy P2P"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:330
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:336
 #, elixir-autogen, elixir-format
 msgid "Start P2P media"
 msgstr "Khởi động phương tiện P2P"
@@ -796,21 +803,25 @@ msgstr "Bắt đầu với microphone"
 msgid "Status"
 msgstr "Trạng thái"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:416
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:422
 #, elixir-autogen, elixir-format
 msgid "Stop sharing screen"
 msgstr "Dừng chia sẻ màn hình"
 
 #: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:334
 #, elixir-autogen, elixir-format
-msgid "The invite is sent after this setup. These media defaults apply when your peer accepts."
+msgid ""
+"The invite is sent after this setup. These media defaults apply when your "
+"peer accepts."
 msgstr ""
 "Lời mời được gửi sau khi thiết lập xong. Mặc định của phương tiện này được "
 "áp dụng khi bạn chấp nhận."
 
 #: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:341
 #, elixir-autogen, elixir-format
-msgid "The private message, files, games and statistics become available after you join."
+msgid ""
+"The private message, files, games and statistics become available after you "
+"join."
 msgstr ""
 "Thông điệp cá nhân, tập tin, trò chơi và thống kê trở nên phổ biến sau khi "
 "bạn tham gia."
@@ -833,7 +844,9 @@ msgstr "Tải lên"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:734
 #, elixir-autogen, elixir-format
-msgid "Variation in packet arrival timing. High jitter causes choppy audio and video."
+msgid ""
+"Variation in packet arrival timing. High jitter causes choppy audio and "
+"video."
 msgstr ""
 "Thay đổi trong thời gian gói đồ. Sự bồn chồn cao gây ra âm thanh và video."
 
@@ -841,11 +854,12 @@ msgstr ""
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:251
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:620
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:652
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:278
 #, elixir-autogen, elixir-format
 msgid "Video"
 msgstr "Ảnh động"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:884
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:893
 #, elixir-autogen, elixir-format
 msgid "Video call active"
 msgstr "Comment"
@@ -862,24 +876,26 @@ msgstr "Dù máy ảnh có hoạt động RP hay chia sẻ màn hình."
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:776
 #, elixir-autogen, elixir-format
-msgid "Why quality was capped: CPU means your device is too busy; Bandwidth means the network is too slow."
+msgid ""
+"Why quality was capped: CPU means your device is too busy; Bandwidth means "
+"the network is too slow."
 msgstr ""
 "Tại sao chất lượng bị bao phủ: CPU nghĩa là thiết bị của bạn quá bận rộn; "
 "băng thông nghĩa là mạng lưới quá chậm."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:202
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:208
 #, elixir-autogen, elixir-format
 msgid "You"
 msgstr "Ngươi"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:201
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:207
 #, elixir-autogen, elixir-format
 msgid "Your screen"
 msgstr "Màn hình"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:872
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:881
 #: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:322
-#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:222
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:252
 #, elixir-autogen, elixir-format
 msgid "peer"
 msgstr "ngang hàng"
@@ -894,120 +910,125 @@ msgstr "anh"
 msgid "Direct P2P topology"
 msgstr "Siêu dữ liệu P2P trực tiếp"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:385
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:488
 #, elixir-autogen, elixir-format
 msgid "Direct or relay"
 msgstr "Trực tiếp hay chuyển tiếp"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:194
-#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:309
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:262
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:344
 #, elixir-autogen, elixir-format
 msgid "End"
 msgstr "Cuối"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:185
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:252
 #, elixir-autogen, elixir-format
 msgid "Focus"
 msgstr "Tiêu điểm"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:347
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:447
 #, elixir-autogen, elixir-format
 msgid "Invite"
 msgstr "Mời"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:348
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:448
 #, elixir-autogen, elixir-format
 msgid "Link"
 msgstr "Liên kết"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:349
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:449
 #, elixir-autogen, elixir-format
 msgid "Live"
 msgstr "Sống"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:52
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:55
 #, elixir-autogen, elixir-format
 msgid "P2P"
 msgstr "P2P"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:42
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:45
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
 msgstr "Phiên chạy P2P trong Chat"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:139
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:169
 #, elixir-autogen, elixir-format
 msgid "P2P activity"
 msgstr "Hoạt động P2P"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:536
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:545
 #, elixir-autogen, elixir-format
 msgid "P2P layout"
 msgstr "Bố trí P2P"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:641
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:650
 #, elixir-autogen, elixir-format
 msgid "P2P reactions"
 msgstr "Phản ứng P2P"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:93
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:94
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:123
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:124
 #, elixir-autogen, elixir-format
 msgid "P2P session summary"
 msgstr "Tóm tắt phiên chạy P2P"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:368
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:471
 #, elixir-autogen, elixir-format
 msgid "P2P session with %{peer} - %{facets}"
 msgstr "Phiên P2P với %{peer} - %{facets}"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:480
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:487
 #, elixir-autogen, elixir-format
 msgid "P2P view and window controls"
 msgstr "Điều khiển ô xem và cửa sổ P2P"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:490
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:497
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:45
 #, elixir-autogen, elixir-format
 msgid "P2P window controls"
 msgstr "Điều khiển cửa sổ P2P"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:131
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:161
 #, elixir-autogen, elixir-format
 msgid "Quality"
 msgstr "Chất lượng"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:634
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:635
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:643
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:644
 #, elixir-autogen, elixir-format
 msgid "Reactions"
 msgstr "Phản ứng"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:151
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:181
 #, elixir-autogen, elixir-format
 msgid "Session ready"
 msgstr "Phiên chạy sẵn sàng"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:176
-#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:104
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:242
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:134
 #, elixir-autogen, elixir-format
 msgid "Stats"
 msgstr "Trạng thái"
 
 #: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:356
 #, elixir-autogen, elixir-format
-msgid "When the network allows it, packets travel browser-to-browser instead of through the conference server."
+msgid ""
+"When the network allows it, packets travel browser-to-browser instead of "
+"through the conference server."
 msgstr ""
 "Khi mạng cho phép nó, gói tin du lịch đến trình duyệt thay vì thông qua máy "
 "chủ hội nghị."
 
 #: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:349
 #, elixir-autogen, elixir-format
-msgid "Your browser uses the relay path for this session, while the session still stays one-to-one."
+msgid ""
+"Your browser uses the relay path for this session, while the session still "
+"stays one-to-one."
 msgstr ""
 "Trình duyệt của bạn sử dụng đường dẫn chuyển tiếp cho phiên chạy này, trong "
 "khi phiên chạy vẫn còn lại một trên một."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:382
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:485
 #, elixir-autogen, elixir-format
 msgid "privacy relay active"
 msgstr "Chuyển tiếp riêng tư"
@@ -1052,7 +1073,7 @@ msgstr "Chấp nhận tập tin gửi tới"
 msgid "Audio + Video"
 msgstr "Âm thanh + Ảnh động"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:340
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:375
 #, elixir-autogen, elixir-format
 msgid "Automatic recovery did not reconnect. Retry or end the session."
 msgstr "Tự động phục hồi không kết nối lại. Thử lại hoặc kết thúc phiên chạy."
@@ -1067,7 +1088,7 @@ msgstr "Cả hai đều sống."
 msgid "Cancel file transfer"
 msgstr "Hủy truyền tập tin"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:336
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:371
 #, elixir-autogen, elixir-format
 msgid "Connection needs attention"
 msgstr "Kết nối cần sự chú ý"
@@ -1082,8 +1103,8 @@ msgstr "Dữ liệu"
 msgid "Direct preferred"
 msgstr "Thích trực tiếp"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:77
-#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:303
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:107
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:338
 #, elixir-autogen, elixir-format
 msgid "End P2P session"
 msgstr "Kết thúc phiên chạy P2P"
@@ -1133,43 +1154,28 @@ msgstr "Mặc định phương tiện"
 msgid "No video"
 msgstr "Không có video"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:69
-#, elixir-autogen, elixir-format
-msgid "Open P2P stats"
-msgstr "Mở định dạng P2P"
-
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:429
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:508
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:435
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:516
 #, elixir-autogen, elixir-format
 msgid "Open stats"
 msgstr "Mở mã số"
-
-#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:41
-#, elixir-autogen, elixir-format
-msgid "P2P Session with %{peer}"
-msgstr "Phiên P2P với %{peer}"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:421
 #, elixir-autogen, elixir-format
 msgid "P2P health summary"
 msgstr "Bản tóm tắt sức khỏe P2P"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:44
-#, elixir-autogen, elixir-format
-msgid "P2P session controls"
-msgstr "Điều khiển phiên chạy P2P"
-
-#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:88
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:118
 #, elixir-autogen, elixir-format
 msgid "P2P session sections"
 msgstr "Phần phiên chạy P2P"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:286
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:292
 #, elixir-autogen, elixir-format
 msgid "Peer media state"
 msgstr "Tình trạng phương tiện ngang hàng"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:261
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:296
 #, elixir-autogen, elixir-format
 msgid "Playing"
 msgstr "Đang phát"
@@ -1189,12 +1195,12 @@ msgstr "Không thể phục hồi lại"
 msgid "Resuming transfer"
 msgstr "Đang truyền"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:295
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:330
 #, elixir-autogen, elixir-format
 msgid "Retry P2P connection"
 msgstr "Thử lại kết nối P2P"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:349
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:384
 #, elixir-autogen, elixir-format
 msgid "Retrying the peer connection, attempt %{attempt} of 3."
 msgstr "Đang thử lại kết nối ngang hàng, lần thử %{attempt}/3."
@@ -1204,7 +1210,7 @@ msgstr "Đang thử lại kết nối ngang hàng, lần thử %{attempt}/3."
 msgid "Route and privacy"
 msgstr "Name"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:344
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:379
 #, elixir-autogen, elixir-format
 msgid "The P2P media connection failed. Retry or end the session."
 msgstr "Kết nối phương tiện P2P thất bại. Thử lại hoặc kết thúc phiên chạy."
@@ -1239,7 +1245,7 @@ msgstr "Truyền:"
 msgid "Transfer rejected"
 msgstr "Truyền:"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:353
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:388
 #, elixir-autogen, elixir-format
 msgid "Trying to restore the peer connection."
 msgstr "Cố gắng khôi phục kết nối ngang hàng."
@@ -1248,3 +1254,51 @@ msgstr "Cố gắng khôi phục kết nối ngang hàng."
 #, elixir-autogen, elixir-format
 msgid "Waiting for the peer to accept"
 msgstr "Đợi bạn đồng hành chấp nhận"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:65
+#, elixir-autogen, elixir-format
+msgid "Call controls become available after the peer joins the P2P session."
+msgstr ""
+"Điều khiển cuộc gọi trở nên sẵn sàng sau khi bạn bè tham gia phiên họp P2P."
+
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:220
+#, elixir-autogen, elixir-format
+msgid "Decline"
+msgstr "Xóa"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:110
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:111
+#, elixir-autogen, elixir-format
+msgid "Decline P2P request"
+msgstr "Yêu cầu giải mã P2P"
+
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:281
+#, elixir-autogen, elixir-format
+msgid "Invite pending"
+msgstr "Mời"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:100
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:208
+#, elixir-autogen, elixir-format
+msgid "Join"
+msgstr "Tham gia"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:330
+#, elixir-autogen, elixir-format
+msgid "Join P2P Session"
+msgstr "Tham gia phiên chạy P2P"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:196
+#, elixir-autogen, elixir-format
+msgid "Start"
+msgstr "Chạy"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:458
+#, elixir-autogen, elixir-format
+msgid "Start P2P session with %{peer}"
+msgstr "Bắt đầu phiên P2P với %{peer}"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:63
+#, elixir-autogen, elixir-format
+msgid "Waiting for peer"
+msgstr "Đang đợi đồng hồ"

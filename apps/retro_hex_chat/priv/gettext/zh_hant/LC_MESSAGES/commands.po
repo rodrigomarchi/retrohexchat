@@ -3175,30 +3175,30 @@ msgstr "服務器、用戶、頻道、ns、cs、調試、日誌、轉彎或核�
 msgid "set, commands, addcmd, delcmd, help.\n"
 msgstr "設置、命令、添加、調試、幫助。"
 
-#: lib/retro_hex_chat/commands/handlers/lobby.ex:64
-#, elixir-autogen, elixir-format
-msgid ""
-"Open a P2P lobby that hosts calls, file transfers, and games together over one connection.\n"
-"Requires: both users must be registered and identified (/ns identify)."
-msgstr ""
-"打開一個P2P大堂,通過一個連接,主機呼叫,文件傳輸,和遊戲一起進行.\n"
-"要求:兩個用戶都必須註冊和識別(/ns識別)."
-
-#: lib/retro_hex_chat/commands/handlers/lobby.ex:43
-#, elixir-autogen, elixir-format
-msgid ""
-"Open a P2P lobby with another user: one persistent connection that runs an audio/video call, file transfers, and games all at the same time.\n"
-"Requires: both users must be registered and identified (/ns identify)."
-msgstr ""
-"與另一個用戶打開一個P2P大堂:一個持續連接,運行一個音頻/video的呼叫,文件傳輸,以及遊戲全部同時運行.\n"
-"要求:兩個用戶都必須註冊和識別(/ns識別)."
-
 #: lib/retro_hex_chat/commands/handlers/lobby.ex:99
 #, elixir-autogen, elixir-format
 msgid "User '%{nickname}' is offline."
 msgstr "使用者 '%{nickname}' 已離線。"
 
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:64
+#, elixir-autogen, elixir-format
+msgid ""
+"Open a P2P session that hosts calls, file transfers, and games together over one connection.\n"
+"Requires: both users must be registered and identified (/ns identify)."
+msgstr ""
+"打開一個P2P會話,通過一個連接,主機調用,文件傳輸和遊戲一起進行.\n"
+"要求:兩個用戶都必須註冊和識別(/ns識別)."
+
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:43
+#, elixir-autogen, elixir-format
+msgid ""
+"Open a P2P session with another user: one persistent connection that runs an audio/video call, file transfers, and games all at the same time.\n"
+"Requires: both users must be registered and identified (/ns identify)."
+msgstr ""
+"與另一個用戶打開一個P2P會話:一個持續連接,同時運行一個音頻/video呼叫,文件傳輸,以及遊戲.\n"
+"要求:兩個用戶都必須註冊和識別(/ns識別)."
+
 #: lib/retro_hex_chat/commands/handlers/lobby.ex:89
 #, elixir-autogen, elixir-format
-msgid "You cannot open a lobby with yourself."
-msgstr "你不能自己開大廳"
+msgid "You cannot start a P2P session with yourself."
+msgstr "您無法啓動 P2P 會話 。"

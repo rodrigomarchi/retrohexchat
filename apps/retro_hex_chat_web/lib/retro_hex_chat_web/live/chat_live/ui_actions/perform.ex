@@ -12,14 +12,13 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Perform do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Chat.PerformList
-  alias RetroHexChatWeb.ChatLive.PerformAutojoinEvents
+  alias RetroHexChatWeb.ChatLive.PerformEvents
 
   @spec handle_ui_action(Phoenix.LiveView.Socket.t(), atom(), map()) ::
           Phoenix.LiveView.Socket.t()
 
-  def handle_ui_action(socket, :open_perform_dialog, payload) do
-    tab = Map.get(payload, :tab, "commands")
-    PerformAutojoinEvents.open(socket, tab)
+  def handle_ui_action(socket, :open_perform_dialog, _payload) do
+    PerformEvents.open(socket)
   end
 
   def handle_ui_action(socket, :perform_list_display, _payload) do
