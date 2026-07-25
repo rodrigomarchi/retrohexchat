@@ -131,17 +131,9 @@ defmodule RetroHexChatWeb.HelpLive.Index do
     [{"Home", "/"}, {"Help", "/chat/help"}, {topic.title, canonical_path}]
   end
 
-  @spec page_title(map() | nil) :: String.t()
-  defp page_title(nil), do: dgettext("help", "Help — RetroHexChat")
+  @spec page_title(map()) :: String.t()
   defp page_title(topic), do: dgettext("help", "%{topic} — RetroHexChat Help", topic: topic.title)
 
-  @spec page_description(map() | nil) :: String.t()
-  defp page_description(nil) do
-    dgettext(
-      "help",
-      "RetroHexChat help documentation. Learn about IRC commands, channel modes, features, and keyboard shortcuts."
-    )
-  end
-
+  @spec page_description(map()) :: String.t()
   defp page_description(topic), do: topic.description
 end

@@ -25,6 +25,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   use Gettext, backend: RetroHexChatWeb.Gettext
 
   alias Phoenix.LiveView.Socket
+  alias RetroHexChat.Accounts.ServerRoles
   alias RetroHexChat.Chat.Schemas.UserPreference
   alias RetroHexChat.Chat.Service, as: ChatService
   alias RetroHexChat.Commands.Handlers.Lobby, as: LobbyCommand
@@ -44,10 +45,10 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   alias RetroHexChatWeb.ChatLive.Windows
 
   @pubsub RetroHexChat.PubSub
-  @p2p_console_width 760
-  @p2p_console_height 520
-  @p2p_console_x 360
-  @p2p_console_y 48
+  @p2p_console_width 640
+  @p2p_console_height 430
+  @p2p_console_x 448
+  @p2p_console_y 72
 
   # ── Client events (WebRTC hooks + P2P UI) ─────────────────────
 
@@ -1161,10 +1162,8 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
     peer = params["peer"] || socket.assigns.session.active_pm
 
     if is_binary(peer) and peer != "" do
-      context = %{
-        nickname: socket.assigns.session.nickname,
-        identified: socket.assigns.session.identified
-      }
+      session = socket.assigns.session
+      context = lobby_command_context(session)
 
       case LobbyCommand.execute([peer], context) do
         {:ok, :ui_action, :lobby_invite, payload} ->
@@ -1176,6 +1175,20 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
     else
       socket
     end
+  end
+
+  defp lobby_command_context(session) do
+    %{
+      nickname: session.nickname,
+      identified: session.identified,
+      active_channel: session.active_channel,
+      channels: session.channels,
+      owner_in: [],
+      operator_in: [],
+      half_operator_in: [],
+      is_admin: ServerRoles.admin?(session.nickname, session.identified),
+      is_server_operator: ServerRoles.server_operator?(session.nickname, session.identified)
+    }
   end
 
   # ── Private ───────────────────────────────────────────────────
