@@ -149,10 +149,11 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
       :icon_btn_timers
     )
     |> add_window(
-      p2p_ready?(assigns.p2p_session),
+      assigns.p2p_session,
       "p2p-call",
       p2p_call_label(assigns.p2p_session),
-      :icon_protocol_p2p_compact
+      :icon_protocol_p2p_compact,
+      testid: "p2p-call-taskbar"
     )
     |> add_window(
       assigns.group_call,
@@ -238,9 +239,6 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
   defp window_open?(open_windows, id) when is_binary(id) do
     MapSet.member?(open_windows || MapSet.new(), id)
   end
-
-  defp p2p_ready?(%{state: state}), do: state != :invite_sent
-  defp p2p_ready?(_p2p_session), do: false
 
   defp p2p_call_label(%{peer_nick: peer_nick}) when peer_nick not in [nil, ""] do
     dgettext("chat", "P2P: %{peer}", peer: peer_nick)

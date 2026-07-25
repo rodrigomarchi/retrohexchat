@@ -31,6 +31,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
   attr :devices, :map, default: nil
   attr :media_mode, :string, default: "video"
   attr :mini, :boolean, default: false
+  attr :show_header, :boolean, default: true
 
   @spec call_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def call_panel(assigns) do
@@ -76,6 +77,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
         data-testid="lobby-media-panel"
       >
         <.call_header
+          :if={@show_header}
           call={@call}
           connected={@connected}
           peer_media={@peer_media}
@@ -101,6 +103,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
               call_layout={@call_layout}
               self_view={@self_view_mode}
               peer_media={@peer_media}
+              parent_header_controls={!@show_header}
             />
 
             <div
@@ -474,6 +477,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
   attr :call_layout, :string, required: true
   attr :self_view, :string, required: true
   attr :peer_media, :map, required: true
+  attr :parent_header_controls, :boolean, default: false
 
   defp p2p_view_rail(assigns) do
     ~H"""
@@ -508,6 +512,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
           <CallControls.icon_call_devices class="h-4 w-4" />
         </.p2p_call_button>
         <.p2p_call_button
+          :if={!@parent_header_controls}
           label={dgettext("p2p", "Open stats")}
           phx-click="p2p_console_select"
           phx-value-section="stats"
@@ -516,6 +521,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
           <CallControls.icon_call_stats class="h-4 w-4" />
         </.p2p_call_button>
         <.p2p_call_button
+          :if={!@parent_header_controls}
           label={dgettext("p2p", "Mini call window")}
           phx-click="p2p_toggle_call_mini"
           data-testid="p2p-call-mini-toggle"

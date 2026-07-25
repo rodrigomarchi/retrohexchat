@@ -136,6 +136,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PMediaIsland do
         devices={@devices}
         media_mode={@media_mode}
         mini={@mini}
+        show_header={false}
       />
     </div>
     """

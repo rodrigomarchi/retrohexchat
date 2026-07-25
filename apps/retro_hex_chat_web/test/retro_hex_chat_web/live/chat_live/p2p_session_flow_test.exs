@@ -138,8 +138,21 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
       assert html =~ "p2p-call-window"
       assert html =~ ~s(data-testid="p2p-session-console")
       assert html =~ ~s(data-p2p-console-section="call")
+      assert html =~ ~s(data-testid="p2p-call-header")
+      assert length(Regex.scan(~r/data-testid="p2p-call-header"/, html)) == 1
       assert html =~ "Waiting for peer"
       refute html =~ ~s(data-testid="p2p-webrtc")
+
+      assert has_element?(
+               ctx.view_a,
+               ~s([data-testid="p2p-call-window"][data-window-initial-open="true"][data-window-default-maximized="true"][data-window-default-x="448"][data-window-default-y="72"][data-window-default-width="640"][data-window-default-height="430"][data-window-min-width="500"][data-window-min-height="320"])
+             )
+
+      assert has_element?(
+               ctx.view_a,
+               ~s([data-testid="p2p-call-taskbar"][data-window-taskbar="p2p-call"]),
+               "P2P:"
+             )
 
       render_click(ctx.view_a, "p2p_console_select", %{"section" => "stats"})
 
@@ -282,11 +295,13 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
       # The PM-level session indicator has an explicit Call action.
       render_click(ctx.view_a, "p2p_console_select", %{"section" => "call"})
       assert p2p_assigns(ctx.view_a).console_section == "call"
-      assert render(ctx.view_a) =~ "p2p-call-window"
+      connected_html = render(ctx.view_a)
+      assert connected_html =~ "p2p-call-window"
+      assert length(Regex.scan(~r/data-testid="p2p-call-header"/, connected_html)) == 1
 
       assert has_element?(
                ctx.view_a,
-               ~s([data-testid="p2p-call-window"][data-window-default-maximized="true"])
+               ~s([data-testid="p2p-call-window"][data-window-initial-open="true"][data-window-default-maximized="true"][data-window-default-width="640"][data-window-default-height="430"])
              )
 
       # A telemetry sample from the WebRTC hook lands normalized in the panel.

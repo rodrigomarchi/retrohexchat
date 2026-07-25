@@ -17,6 +17,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PSessionConsole do
 
   alias RetroHexChatWeb.ChatLive.Components.{P2PFileIsland, P2PGameIsland, P2PMediaIsland}
   alias RetroHexChatWeb.Icons
+  alias RetroHexChatWeb.Icons.CallControls
 
   @sections ~w(call files games stats)
 
@@ -37,23 +38,40 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PSessionConsole do
       data-p2p-media-mode={Map.get(@p2p_session, :media_mode, "video")}
     >
       <.media_session_header
-        :if={@section != "call"}
-        title={dgettext("p2p", "P2P Session with %{peer}", peer: peer_label(@p2p_session))}
+        title={dgettext("p2p", "Direct call with %{peer}", peer: peer_label(@p2p_session))}
         title_class="truncate text-xs font-bold leading-4"
-        actions_class="flex shrink-0 items-center gap-1"
-        actions_label={dgettext("p2p", "P2P session controls")}
+        meta_class="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-0.5 text-[10px] leading-3 text-muted-foreground"
+        actions_class="flex max-w-full shrink-0 flex-wrap items-center justify-end gap-1"
+        actions_label={dgettext("p2p", "P2P window controls")}
+        testid="p2p-call-header"
       >
         <:icon>
           <Icons.icon_protocol_p2p_compact class="h-4 w-4 shrink-0" />
         </:icon>
         <:meta>
-          <span class="inline-flex items-center gap-1">
+          <span
+            class="inline-flex min-w-0 items-center gap-1 truncate"
+            aria-live="polite"
+            data-testid="p2p-call-status-announcer"
+          >
             <Icons.icon_status_signal class={["h-3.5 w-3.5 shrink-0", quality_class(@p2p_session)]} />
             {connection_label(@p2p_session, @connection_label)}
           </span>
           <span class="inline-flex items-center gap-1">
-            <Icons.icon_camera class="h-3.5 w-3.5 shrink-0" />
-            {call_label(@p2p_session)}
+            <Icons.icon_status_user class="h-3.5 w-3.5 shrink-0" />
+            {dgettext("p2p", "1:1")}
+          </span>
+          <span class="inline-flex items-center gap-1">
+            <CallControls.icon_call_webrtc class="h-3.5 w-3.5 shrink-0" />
+            {call_status_label(@p2p_session)}
+          </span>
+          <span
+            :if={call_duration_label(@p2p_session)}
+            class="inline-flex items-center gap-1 font-bold"
+            data-testid="p2p-call-duration"
+          >
+            <Icons.icon_clock class="h-3.5 w-3.5 shrink-0" />
+            {call_duration_label(@p2p_session)}
           </span>
           <span class="inline-flex items-center gap-1">
             <Icons.icon_file_send class="h-3.5 w-3.5 shrink-0" />
@@ -66,12 +84,24 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PSessionConsole do
         </:meta>
         <:actions>
           <.media_session_icon_button
-            label={dgettext("p2p", "Open P2P stats")}
-            phx-click="p2p_console_select"
-            phx-value-section="stats"
-            data-testid="p2p-console-header-stats"
+            label={
+              if Map.get(@p2p_session, :call_mini, false),
+                do: dgettext("p2p", "Expand call window"),
+                else: dgettext("p2p", "Mini call window")
+            }
+            active={Map.get(@p2p_session, :call_mini, false)}
+            pressed={Map.get(@p2p_session, :call_mini, false)}
+            phx-click="p2p_toggle_call_mini"
+            data-testid="p2p-call-mini-toggle"
           >
-            <Icons.icon_status_signal class="h-4 w-4" />
+            <CallControls.icon_call_expand
+              :if={Map.get(@p2p_session, :call_mini, false)}
+              class="h-4 w-4"
+            />
+            <CallControls.icon_call_mini
+              :if={!Map.get(@p2p_session, :call_mini, false)}
+              class="h-4 w-4"
+            />
           </.media_session_icon_button>
           <.media_session_icon_button
             label={dgettext("p2p", "End P2P session")}
@@ -245,12 +275,17 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PSessionConsole do
   defp quality_class(%{state: :connected}), do: "text-success"
   defp quality_class(_p2p), do: "text-muted-foreground"
 
-  defp call_label(%{call_summary: %{duration: duration}})
+  defp call_status_label(%{call_summary: %{type: "video"}}), do: dgettext("p2p", "Video")
+  defp call_status_label(%{call_summary: %{type: "audio"}}), do: dgettext("p2p", "Audio")
+  defp call_status_label(%{call_summary: %{type: "receiving"}}), do: dgettext("p2p", "Receiving")
+  defp call_status_label(%{state: :invite_sent}), do: dgettext("p2p", "Invite pending")
+  defp call_status_label(_p2p), do: dgettext("p2p", "Ready")
+
+  defp call_duration_label(%{call_summary: %{duration: duration}})
        when is_binary(duration) and duration != "",
        do: duration
 
-  defp call_label(%{call_summary: %{type: type}}) when is_binary(type), do: type
-  defp call_label(_p2p), do: dgettext("p2p", "Ready")
+  defp call_duration_label(_p2p), do: nil
 
   defp file_label(%{file_summary: %{percent: percent}}) when not is_nil(percent),
     do: "#{percent}%"

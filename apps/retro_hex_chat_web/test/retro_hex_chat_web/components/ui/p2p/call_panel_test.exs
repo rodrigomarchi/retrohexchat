@@ -50,6 +50,13 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanelTest do
     refute html =~ ~s(data-lobby-media-action="end-call")
   end
 
+  test "can delegate the canonical call header to the parent console" do
+    html = render_panel(show_header: false)
+
+    assert html =~ ~s(id="lobby-media")
+    refute html =~ ~s(data-testid="p2p-call-header")
+  end
+
   test "active video call preserves hook ids and exposes rich controls" do
     html =
       render_panel(

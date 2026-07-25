@@ -528,14 +528,14 @@
           do: dgettext("chat", "P2P Session"),
           else: @p2p_session.peer_nick
       }
-      open={false}
+      open
       on_close="p2p_window_close"
-      default_x={360}
-      default_y={48}
-      width={760}
-      height={520}
-      min_width={320}
-      min_height={360}
+      default_x={448}
+      default_y={72}
+      width={640}
+      height={430}
+      min_width={500}
+      min_height={320}
       body_class="h-full min-h-0 overflow-hidden p-1"
       data-testid="p2p-call-window"
     >
