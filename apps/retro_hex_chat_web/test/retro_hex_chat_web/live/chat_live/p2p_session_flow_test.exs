@@ -621,10 +621,10 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
       assert_push_event(ctx.view_a, "window_command", %{
         action: "set_geometry",
         id: "p2p-call",
-        width: 760,
-        height: 520,
-        x: 360,
-        y: 48
+        width: 640,
+        height: 430,
+        x: 448,
+        y: 72
       })
     end
 
