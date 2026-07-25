@@ -647,7 +647,9 @@ test.describe("In-chat P2P session", () => {
       await expect(statusBarP2P(bob.page)).toContainText(`P2P: ${alice.nick}`, {
         timeout: 30_000,
       });
-      await expect(alice.page.getByTestId("status-bar-p2p-relay")).toBeVisible();
+      await expect(
+        alice.page.getByTestId("status-bar-p2p-relay"),
+      ).toBeVisible();
       await expect(bob.page.getByTestId("status-bar-p2p-relay")).toBeVisible();
     } finally {
       await closeP2PUsers([alice, bob]);

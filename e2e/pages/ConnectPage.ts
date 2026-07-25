@@ -66,9 +66,7 @@ export class ConnectPage {
         /* localStorage unavailable — ignore */
       }
     });
-    const target = locale
-      ? `/locale/${locale}?return_to=/connect`
-      : "/connect";
+    const target = locale ? `/locale/${locale}?return_to=/connect` : "/connect";
     await this.page.goto(target);
     await expect(this.nicknameInput).toBeVisible();
   }

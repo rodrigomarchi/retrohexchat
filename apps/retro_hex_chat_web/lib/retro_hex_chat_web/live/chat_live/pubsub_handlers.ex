@@ -15,6 +15,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
   use Gettext, backend: RetroHexChatWeb.Gettext
 
   alias RetroHexChat.Chat.IgnoreList
+  alias RetroHexChatWeb.ChatLive.P2PSessionEvents
 
   alias __MODULE__.{ChannelState, Membership, Messages, Presence, ServerMessages}
 
@@ -192,7 +193,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
     else
       {:halt,
        socket
-       |> RetroHexChatWeb.ChatLive.P2PSessionEvents.refresh_pm_session_read_model(from)
+       |> P2PSessionEvents.refresh_pm_session_read_model(from)
        |> push_status_message(
          dgettext("chat", "P2P request from %{from} - join it from the PM header.", from: from),
          :system

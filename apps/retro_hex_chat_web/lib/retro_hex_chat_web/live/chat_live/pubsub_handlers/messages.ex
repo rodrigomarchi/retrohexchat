@@ -36,6 +36,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
   alias RetroHexChatWeb.ChatLive.Helpers.Channel
   alias RetroHexChatWeb.ChatLive.Helpers.Messages, as: MessageHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.PM
+  alias RetroHexChatWeb.ChatLive.P2PSessionEvents
 
   # ── Channel messages ──────────────────────────────────────
 
@@ -419,7 +420,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
   defp maybe_mark_pm_activity_unread(socket, _sender, _direction), do: socket
 
   defp maybe_refresh_p2p_pm_read_model(socket, peer, :invite),
-    do: RetroHexChatWeb.ChatLive.P2PSessionEvents.refresh_pm_session_read_model(socket, peer)
+    do: P2PSessionEvents.refresh_pm_session_read_model(socket, peer)
 
   defp maybe_refresh_p2p_pm_read_model(socket, _peer, _type), do: socket
 
