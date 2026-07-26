@@ -93,7 +93,7 @@ Stage 1 (parallel):          Stage 2 (parallel, after compile):
   ├─ JS lint                   ├─ credo
   ├─ JS tests                  ├─ CSS lint
   ├─ i18n tooling tests        ├─ tests (unit + integration + liveview)
-  └─ i18n quality              ├─ E2E tests (separate worker)
+  └─ i18n quality              ├─ feature tests (separate worker)
                                └─ dialyzer
 ```
 
@@ -101,12 +101,23 @@ Stage 1 (parallel):          Stage 2 (parallel, after compile):
 Tests are split into two parallel workers for maximum throughput.
 The two i18n checks need no third-party Python packages, so they run anywhere.
 
+**Browser E2E (Playwright) is NOT part of `make ci`** — it is local only, by
+design. The "feature tests" worker is `mix test --only liveview_feature`, not
+Playwright. After touching anything under `e2e/`, run that spec yourself:
+
+```bash
+MIX_ENV=e2e PGPORT=5433 mix assets.build   # skipping this serves stale CSS/JS
+cd e2e && npx playwright test tests/<file>.spec.ts
+```
+
+Target a single file — never run the whole Playwright suite locally.
+
 **Options:**
 - `make ci` — all 11 checks (standard)
 - `make ci.quick` — skip dialyzer (faster iteration)
 - `elixir scripts/ci.exs --only compile,credo` — specific checks only
 
-**NEVER** skip dialyzer, E2E tests, JS tests, JS lint, or CSS lint.
+**NEVER** skip dialyzer, JS tests, JS lint, or CSS lint.
 **NEVER** run checks individually or via manual parallel Bash calls — use the script.
 If any check fails, the task is NOT complete.
 
