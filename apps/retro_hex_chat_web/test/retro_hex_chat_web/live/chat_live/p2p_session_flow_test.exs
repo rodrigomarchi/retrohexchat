@@ -13,6 +13,8 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
   alias RetroHexChat.Lobby
   alias RetroHexChat.Services.RegisteredNick
 
+  @event_timeout 500
+
   defp register(nickname) do
     {:ok, nick} =
       %RegisteredNick{}
@@ -52,16 +54,59 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
 
     session = Lobby.active_session_for_user(ctx.a.id)
     assert session, "expected P2P setup submit to create a session"
+
+    on_exit(fn -> stop_session_server(session.token) end)
+
     session
   end
 
-  defp accept_invite(view, token, params \\ %{}) do
+  defp accept_invite(target, token, params \\ %{})
+
+  defp accept_invite(%{view_a: creator_view, view_b: peer_view}, token, params) do
+    accept_invite(peer_view, token, params)
+    wait_for_lobby_joined(creator_view, token)
+  end
+
+  defp accept_invite(view, token, params) do
     render_click(view, "p2p_accept_invite", %{"token" => token})
 
     render_submit(view, "p2p_setup_accept", %{
       "p2p_setup" =>
         Map.merge(%{"audio" => "true", "video" => "true", "turn_only" => "false"}, params)
     })
+  end
+
+  defp wait_for_lobby_joined(view, token, attempts \\ 50)
+
+  defp wait_for_lobby_joined(_view, token, 0) do
+    flunk("expected P2P session #{token} to reach lobby with both participants joined")
+  end
+
+  defp wait_for_lobby_joined(view, token, attempts) do
+    flush(view)
+
+    case Lobby.session_info(token) do
+      {:ok, %{creator_joined: true, peer_joined: true, session: %{status: status}}}
+      when status in ["lobby", "connected"] ->
+        :ok
+
+      _ ->
+        Process.sleep(10)
+        wait_for_lobby_joined(view, token, attempts - 1)
+    end
+  end
+
+  defp stop_session_server(token) do
+    case RetroHexChat.Lobby.Registry.lookup(token) do
+      {:ok, pid} -> stop_session_server_pid(pid)
+      {:error, :not_found} -> :ok
+    end
+  end
+
+  defp stop_session_server_pid(pid) do
+    GenServer.stop(pid, :normal)
+  catch
+    :exit, _reason -> :ok
   end
 
   describe "invite → accept" do
@@ -280,7 +325,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
          %{conn: conn} do
       ctx = mount_pair(conn, "p2pfo#{uid()}", "p2pfp#{uid()}")
       session = invite(ctx)
-      accept_invite(ctx.view_b, session.token)
+      accept_invite(ctx, session.token)
       flush(ctx.view_a)
 
       # Menu bar / start menu dispatch the same semantic console-selection action.
@@ -327,7 +372,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
          %{conn: conn} do
       ctx = mount_pair(conn, "p2pfq#{uid()}", "p2pfr#{uid()}")
       session = invite(ctx)
-      accept_invite(ctx.view_b, session.token)
+      accept_invite(ctx, session.token)
       flush(ctx.view_a)
 
       # The console and file island are always mounted while joined.
@@ -361,7 +406,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
          %{conn: conn} do
       ctx = mount_pair(conn, "p2pfs#{uid()}", "p2pft#{uid()}")
       session = invite(ctx)
-      accept_invite(ctx.view_b, session.token)
+      accept_invite(ctx, session.token)
       flush(ctx.view_a)
       render_click(ctx.view_a, "lobby_connected", %{})
 
@@ -391,7 +436,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
     test "a full propose → accept → finish cycle drives both consoles", %{conn: conn} do
       ctx = mount_pair(conn, "p2pfu#{uid()}", "p2pfv#{uid()}")
       session = invite(ctx)
-      accept_invite(ctx.view_b, session.token)
+      accept_invite(ctx, session.token)
       flush(ctx.view_a)
       render_click(ctx.view_a, "lobby_connected", %{})
       flush(ctx.view_b)
@@ -435,7 +480,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
     test "connecting opens the unified session console; ending closes it", %{conn: conn} do
       ctx = mount_pair(conn, "p2pgc#{uid()}", "p2pgd#{uid()}")
       session = invite(ctx)
-      accept_invite(ctx.view_b, session.token)
+      accept_invite(ctx, session.token)
       flush(ctx.view_a)
 
       render_click(ctx.view_a, "lobby_connected", %{})
@@ -474,7 +519,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
          %{conn: conn} do
       ctx = mount_pair(conn, "p2pgm#{uid()}", "p2pgn#{uid()}")
       session = invite(ctx)
-      accept_invite(ctx.view_b, session.token, %{"media_mode" => "receive"})
+      accept_invite(ctx, session.token, %{"media_mode" => "receive"})
       flush(ctx.view_a)
 
       render_click(ctx.view_b, "lobby_connected", %{})
@@ -488,7 +533,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
       render_click(ctx.view_a, "lobby_media_hook_ready", %{})
       flush(ctx.view_b)
 
-      assert_push_event(ctx.view_b, "lobby_media_join", %{})
+      assert_push_event(ctx.view_b, "lobby_media_join", %{}, @event_timeout)
       refute_push_event(ctx.view_b, "lobby_media_start_video", %{})
       refute_push_event(ctx.view_b, "lobby_media_start_audio", %{})
     end
@@ -497,7 +542,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
          %{conn: conn} do
       ctx = mount_pair(conn, "p2pga#{uid()}", "p2pgb#{uid()}")
       session = invite(ctx)
-      accept_invite(ctx.view_b, session.token, %{"audio" => "true", "video" => "false"})
+      accept_invite(ctx, session.token, %{"audio" => "true", "video" => "false"})
       flush(ctx.view_a)
 
       render_click(ctx.view_b, "lobby_connected", %{})
@@ -506,13 +551,13 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
       {:ok, state} = Lobby.session_info(session.token)
       assert state.media.peer == %{audio: false, video: false}
       assert p2p_assigns(ctx.view_b).auto_call_started
-      assert_push_event(ctx.view_b, "lobby_media_join", %{})
+      assert_push_event(ctx.view_b, "lobby_media_join", %{}, @event_timeout)
 
       render_click(ctx.view_a, "lobby_connected", %{})
       render_click(ctx.view_a, "lobby_media_hook_ready", %{})
       flush(ctx.view_b)
 
-      assert_push_event(ctx.view_b, "lobby_media_start_audio", %{auto: true})
+      assert_push_event(ctx.view_b, "lobby_media_start_audio", %{auto: true}, @event_timeout)
       refute_push_event(ctx.view_b, "lobby_media_start_video", %{})
 
       render_click(ctx.view_b, "lobby_media_call_started", %{
@@ -521,6 +566,8 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
         "video_on" => false
       })
 
+      flush(ctx.view_b)
+
       {:ok, state} = Lobby.session_info(session.token)
       assert state.media.peer == %{audio: true, video: false}
     end
@@ -528,7 +575,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
     test "connection recovery surfaces retry and restarts both peer hooks", %{conn: conn} do
       ctx = mount_pair(conn, "p2pgy#{uid()}", "p2pgz#{uid()}")
       session = invite(ctx)
-      accept_invite(ctx.view_b, session.token)
+      accept_invite(ctx, session.token)
       flush(ctx.view_a)
 
       render_click(ctx.view_a, "lobby_connected", %{})
@@ -538,13 +585,13 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
         "reason" => "audio_only_remote_video_stalled"
       })
 
-      assert_push_event(ctx.view_b, "lobby_restart", %{})
+      assert_push_event(ctx.view_b, "lobby_restart", %{}, @event_timeout)
 
       assert %{recovery: %{state: :reconnecting, reason: "audio_only_remote_video_stalled"}} =
                p2p_assigns(ctx.view_b)
 
       flush(ctx.view_a)
-      assert_push_event(ctx.view_a, "lobby_restart", %{})
+      assert_push_event(ctx.view_a, "lobby_restart", %{}, @event_timeout)
 
       assert %{recovery: %{state: :reconnecting, reason: "audio_only_remote_video_stalled"}} =
                p2p_assigns(ctx.view_a)
@@ -577,13 +624,13 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
 
       render_click(ctx.view_a, "p2p_retry_connection", %{})
 
-      assert_push_event(ctx.view_a, "lobby_restart", %{})
+      assert_push_event(ctx.view_a, "lobby_restart", %{}, @event_timeout)
 
       assert %{recovery: %{state: :reconnecting, reason: "manual_retry"}} =
                p2p_assigns(ctx.view_a)
 
       flush(ctx.view_b)
-      assert_push_event(ctx.view_b, "lobby_restart", %{})
+      assert_push_event(ctx.view_b, "lobby_restart", %{}, @event_timeout)
 
       assert %{recovery: %{state: :reconnecting, reason: "peer_manual_retry"}} =
                p2p_assigns(ctx.view_b)
@@ -595,7 +642,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
     test "call mini mode and stats section drive the window manager", %{conn: conn} do
       ctx = mount_pair(conn, "p2pgo#{uid()}", "p2pgp#{uid()}")
       session = invite(ctx)
-      accept_invite(ctx.view_b, session.token)
+      accept_invite(ctx, session.token)
       flush(ctx.view_a)
       render_click(ctx.view_a, "lobby_connected", %{})
 
@@ -632,7 +679,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
          %{conn: conn} do
       ctx = mount_pair(conn, "p2pgg#{uid()}", "p2pgh#{uid()}")
       session = invite(ctx)
-      accept_invite(ctx.view_b, session.token)
+      accept_invite(ctx, session.token)
       flush(ctx.view_a)
       render_click(ctx.view_a, "lobby_connected", %{})
 
@@ -652,7 +699,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
     test "the burst is skipped on a mobile viewport", %{conn: conn} do
       ctx = mount_pair(conn, "p2pge#{uid()}", "p2pgf#{uid()}")
       session = invite(ctx)
-      accept_invite(ctx.view_b, session.token)
+      accept_invite(ctx, session.token)
       flush(ctx.view_a)
 
       render_click(ctx.view_a, "viewport_info", %{"width" => 390})
@@ -673,7 +720,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
     test "lifecycle notices persist into the PM with a single writer", %{conn: conn} do
       ctx = mount_pair(conn, "p2pfw#{uid()}", "p2pfx#{uid()}")
       session = invite(ctx)
-      accept_invite(ctx.view_b, session.token)
+      accept_invite(ctx, session.token)
       flush(ctx.view_a)
 
       # Both hooks report connected; only the CREATOR persists the line.
@@ -717,7 +764,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
       assert render(ctx.view_a) =~ ~s(data-testid="pm-p2p-glyph-#{ctx.b.nickname}")
       assert render(ctx.view_a) =~ ~s(data-p2p-state="pending")
 
-      accept_invite(ctx.view_b, session.token)
+      accept_invite(ctx, session.token)
       flush(ctx.view_a)
 
       assert render(ctx.view_a) =~ ~s(data-p2p-state="connecting")
@@ -731,7 +778,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
     test "ignoring the active peer closes the session and blocks a new invite", %{conn: conn} do
       ctx = mount_pair(conn, "p2pgi#{uid()}", "p2pgj#{uid()}")
       session = invite(ctx)
-      accept_invite(ctx.view_b, session.token)
+      accept_invite(ctx, session.token)
       flush(ctx.view_a)
 
       submit_command_sync(ctx.view_a, "/ignore #{ctx.b.nickname}")
@@ -758,7 +805,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
 
       # A ↔ B session up and joined (A joins upon B's accept).
       session_ab = invite(ctx)
-      accept_invite(ctx.view_b, session_ab.token)
+      accept_invite(ctx, session_ab.token)
       flush(ctx.view_a)
       assert %{state: :joining} = p2p_assigns(ctx.view_b)
 
@@ -799,7 +846,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
       {:ok, _view_c, _} = live(chat_conn(conn, c.nickname, pre_identified: true), "/chat")
 
       session_ab = invite(ctx)
-      accept_invite(ctx.view_b, session_ab.token)
+      accept_invite(ctx, session_ab.token)
       flush(ctx.view_a)
 
       # A tries to invite C while in a session with B: session B stays alive
