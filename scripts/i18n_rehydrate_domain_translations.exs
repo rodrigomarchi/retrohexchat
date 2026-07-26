@@ -119,7 +119,7 @@ defmodule I18nRehydrateDomainTranslations do
   end
 
   defp default_plural_msgstr(locale, msgid, msgid_plural) do
-    single_form_uses_plural = locale.code in ~w(id ja zh_hans ko vi zh_hant)
+    single_form_uses_plural = locale.code in ~w(id ja zh_hans zh_hant)
 
     locale
     |> nplurals()

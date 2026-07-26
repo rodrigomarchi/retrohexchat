@@ -14,7 +14,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "#lobby (12)"
-msgstr "<ph0>"
+msgstr "#lobby (12)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:42
 #, elixir-autogen, elixir-format
@@ -405,8 +405,8 @@ msgid ""
 "For PMs, it shows \"Private conversation with <nickname>\". For the Status "
 "tab, it shows \"RetroHexChat Status\"."
 msgstr ""
-"Per le PMs, mostra \"Conversazione privata con <ph0> μι ι ι < > < < > > > . "
-"Per la scheda Stato, mostra \"RetroHexChat Status\"."
+"Per i PM, mostra \"Conversazione privata con <nickname>\". Per la scheda "
+"Stato, mostra \"RetroHexChat Status\"."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:35
 #, elixir-autogen, elixir-format
@@ -1381,9 +1381,9 @@ msgid ""
 msgstr ""
 "Bot Management è la finestra di amministrazione per la creazione, "
 "l'ispezione, l'attivazione e il mantenimento di bot sul lato server. Aprirlo"
-" da Strumenti > Bot Management, il gruppo di menu Start Admin, la barra "
-"degli strumenti a discesa Opzioni, o digitando <ph0>±/ph0> senza argomenti "
-"come amministratore o operatore server. Si apre come una finestra desktop è "
+" da Strumenti > Bot Management, il gruppo Start menu Admin, il menu Opzioni "
+"barra degli strumenti a discesa, o digitando /bot senza argomenti come "
+"amministratore o operatore del server. Si apre come una finestra desktop è "
 "possibile trascinare, ridimensionare, ridurre al minimo la barra delle "
 "applicazioni, e chiudere con la sua barra del titolo X."
 
@@ -1395,9 +1395,9 @@ msgid ""
 "custom commands with /bot list, /bot info, and /bot commands."
 msgstr ""
 "Bot Management è visibile solo agli amministratori server identificati e "
-"agli operatori del server. Gli utenti abituali possono ancora elencare i "
-"bot, ispezionare le informazioni sul bot e visualizzare i comandi "
-"personalizzati con <ph0> </ph0> elenco, <ph1> Indirizzo/ph1> info, e <ph2>"
+"agli operatori del server. Gli utenti regolari possono ancora elencare bot, "
+"ispezionare informazioni bot e visualizzare comandi personalizzati con /bot "
+"lista, /bot info e /bot comandi."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:62
 #, elixir-autogen, elixir-format
@@ -1449,7 +1449,7 @@ msgid ""
 "This runs the same action as /clear and cannot be undone."
 msgstr ""
 "Cancella tutti i messaggi dal canale attivo o finestra di conversazione "
-"privata. Questo comporta la stessa azione di <ph0> </ph0> e non può essere "
+"privata. Questo funziona la stessa azione di /clear e non può essere "
 "annullata."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:18
@@ -1848,9 +1848,9 @@ msgid ""
 "unsaved draft."
 msgstr ""
 "La finestra Timers gestisce i comandi programmati solo in sessione. Aprirlo "
-"da Strumenti > Timer, il menu Start, le opzioni della barra degli strumenti "
-"> Timer, o digitando <ph0> È una finestra desktop: trascinare, "
-"ridimensionare, ridurre al minimo il pulsante della barra delle "
+"da Strumenti > Timer, il menu Start, la barra degli strumenti Opzioni > "
+"Timer, o digitando /timer senza argomenti. È una finestra desktop: "
+"trascinare, ridimensionare, ridurre al minimo il pulsante della barra delle "
 "applicazioni, o premere Escape per chiuderlo. La chiusura scarta qualsiasi "
 "bozza non salvata."
 
@@ -1914,8 +1914,7 @@ msgid ""
 "> User Lookup, a nickname context menu, /whois, or /whowas."
 msgstr ""
 "Non c'è alcuna scorciatoia da tastiera dedicata per User Lookup. Aprirlo da "
-"Strumenti > User Lookup, un menu contestuale soprannominato, <ph0> ̧/ph0>, o"
-" <ph1>"
+"Strumenti > User Lookup, un menu contestuale soprannome, /whois, o /whowas."
 
 #: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:16
 #, elixir-autogen, elixir-format
@@ -1923,8 +1922,8 @@ msgid ""
 "There is no dedicated keyboard shortcut for the /me action toggle. Type /me "
 "directly, or click the * button in a channel input."
 msgstr ""
-"Non c'è alcun collegamento di tastiera dedicato per l'azione <ph0> ̧/ph0> . "
-"Digitare il tasto * in un canale di input."
+"Non c'è alcuna scorciatoia da tastiera dedicata per l'azione /me. Digitare "
+"/me direttamente, o fare clic sul pulsante * in un ingresso del canale."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:55
 #, elixir-autogen, elixir-format
@@ -2101,8 +2100,7 @@ msgstr "— Aprire la barra di ricerca da Modifica > Trovare o Ctrl+Shift+F."
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "— Runs /ns info for your current nickname."
-msgstr ""
-"— Esegue <ph0> < /ph0> informazioni per il vostro soprannome corrente."
+msgstr "— Esegue /ns informazioni per il vostro soprannome corrente."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:23
 #, elixir-autogen, elixir-format
@@ -2214,8 +2212,8 @@ msgid ""
 msgstr ""
 "Usa la finestra Profilo per cambiare il tuo soprannome o modificare il tuo "
 "bio. Le modifiche al nick vengono convalidate prima dell'apertura della "
-"finestra di dialogo di conferma. Il bio è mostrato in <ph0> </ph0> ed è "
-"limitato a 200 caratteri con un contatore live."
+"finestra di dialogo di conferma. Il bio è mostrato in /whois ed è limitato a"
+" 200 caratteri con un contatore live."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:42
 #, elixir-autogen, elixir-format

@@ -581,22 +581,22 @@ msgstr "未知的轉彎子命令 : %{subcmd}. 嘗試: 數據、 分配"
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:137
 #, elixir-autogen, elixir-format
 msgid "Usage: /admin channel <list|info|create|delete|purge|banlist>"
-msgstr "用法:/admin頻道<ph0><</ph2></ph2>>>"
+msgstr "用法: /admin頻道 <list|info|create|delete|purge|banlist>"
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:103
 #, elixir-autogen, elixir-format
 msgid "Usage: /admin cs <drop|info|transfer|access> [args]"
-msgstr "用法:/admin cs<ph0><</ph2></ph2>>>[args]"
+msgstr "用法:/admin cms <drop|info|transfer|access> [args]"
 
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:67
 #, elixir-autogen, elixir-format
 msgid "Usage: /admin debug <connections|processes|memory>"
-msgstr "用法:/admin調試<ph0><</ph2></ph2>>>"
+msgstr "用法: /admin調試 <connections|processes|memory>"
 
 #: lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:51
 #, elixir-autogen, elixir-format
 msgid "Usage: /admin ns <drop|info|resetpass> [args]"
-msgstr "用法:/adminns<ph0><</ph2></ph2>>>[args]"
+msgstr "用法: /admin ns <drop|info|resetpass> [args] (韓語)."
 
 #: lib/retro_hex_chat/commands/handlers/admin/nuke.ex:25
 #, elixir-autogen, elixir-format
@@ -606,19 +606,18 @@ msgstr "用法:/admin核武器[-確認]"
 #: lib/retro_hex_chat/commands/handlers/admin/server.ex:113
 #, elixir-autogen, elixir-format
 msgid "Usage: /admin server <info|set|get|settings>"
-msgstr "用法:/admin 服務器<ph0><</ph2></ph2>>>"
+msgstr "用法:/admin服務器 <info|set|get|settings>"
 
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:29
 #, elixir-autogen, elixir-format
 msgid "Usage: /admin turn <stats|allocations>"
-msgstr "用法:/admin 轉動<ph0><</ph2></ph2>>>"
+msgstr "用法:/admin轉<stats|allocations>"
 
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:181
 #, elixir-autogen, elixir-format
-msgid ""
-"Usage: /admin user "
-"<list|info|ban|unban|kick|mute|unmute|rename|role|banlist>"
-msgstr "用法:/admin用戶<ph0><</ph2></ph2>>>"
+msgid "Usage: /admin user <list|info|ban|unban|kick|mute|unmute|rename|role|banlist>"
+msgstr ""
+"用法: /admin用戶 <list|info|ban|unban|kick|mute|unmute|rename|role|banlist>"
 
 #: lib/retro_hex_chat/commands/handlers/admin/server.ex:40
 #, elixir-autogen, elixir-format
@@ -646,52 +645,6 @@ msgstr "[ChanServ]%{message}"
 msgid "[NickServ] %{message}"
 msgstr "[尼克塞 %{message}"
 
-#: lib/retro_hex_chat/admin.ex:263
-#, elixir-autogen, elixir-format
-msgid "channel.create"
-msgstr "頻道. 創建"
-
-#: lib/retro_hex_chat/admin.ex:289
-#, elixir-autogen, elixir-format
-msgid "channel.delete"
-msgstr "頻道.刪除"
-
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:46
-#, elixir-autogen, elixir-format
-msgid "channel.info"
-msgstr "頻道. info"
-
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:14
-#, elixir-autogen, elixir-format
-msgid "channel.list"
-msgstr "頻道.列表"
-
-#: lib/retro_hex_chat/admin.ex:307
-#, elixir-autogen, elixir-format
-msgid "channel.purge"
-msgstr "頻道. purge"
-
-#: lib/retro_hex_chat/admin.ex:242
-#: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:60
-#, elixir-autogen, elixir-format
-msgid "cs.access"
-msgstr "cs. 准入"
-
-#: lib/retro_hex_chat/admin.ex:213
-#, elixir-autogen, elixir-format
-msgid "cs.drop"
-msgstr "cs. 投籃"
-
-#: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:19
-#, elixir-autogen, elixir-format
-msgid "cs.info"
-msgstr "cs.info (英語)."
-
-#: lib/retro_hex_chat/admin.ex:226
-#, elixir-autogen, elixir-format
-msgid "cs.transfer"
-msgstr "cs. 轉讓"
-
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:205
 #, elixir-autogen, elixir-format
 msgid "expires %{expires_at}"
@@ -707,90 +660,10 @@ msgstr "用於 %{duration}"
 msgid "max_channels must be a positive integer"
 msgstr "最大頻道必須是正整數"
 
-#: lib/retro_hex_chat/admin.ex:176
-#, elixir-autogen, elixir-format
-msgid "ns.drop"
-msgstr "編號投放"
-
-#: lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:22
-#, elixir-autogen, elixir-format
-msgid "ns.info"
-msgstr "編號. info"
-
-#: lib/retro_hex_chat/admin.ex:196
-#, elixir-autogen, elixir-format
-msgid "ns.resetpass"
-msgstr "ns.resetpass (英語)."
-
 #: lib/retro_hex_chat/commands/handlers/admin/server.ex:131
 #, elixir-autogen, elixir-format
 msgid "registration must be 'open' or 'closed'"
 msgstr "註冊必須“ 打開” 或“ 關閉 ”"
-
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:31
-#, elixir-autogen, elixir-format
-msgid "server.info"
-msgstr "服務器。 info"
-
-#: lib/retro_hex_chat/admin.ex:372
-#, elixir-autogen, elixir-format
-msgid "server.set"
-msgstr "服務器. set"
-
-#: lib/retro_hex_chat/admin.ex:444
-#, elixir-autogen, elixir-format
-msgid "system.nuke"
-msgstr "系統. nuke"
-
-#: lib/retro_hex_chat/admin.ex:428
-#, elixir-autogen, elixir-format
-msgid "system.nuke_preview"
-msgstr "system.nuke 預覽"
-
-#: lib/retro_hex_chat/admin.ex:34
-#, elixir-autogen, elixir-format
-msgid "user.ban"
-msgstr "用戶.ban"
-
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:45
-#, elixir-autogen, elixir-format
-msgid "user.info"
-msgstr "用戶。 info"
-
-#: lib/retro_hex_chat/admin.ex:82
-#, elixir-autogen, elixir-format
-msgid "user.kick"
-msgstr "用戶. kick"
-
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:15
-#, elixir-autogen, elixir-format
-msgid "user.list"
-msgstr "用戶.列表"
-
-#: lib/retro_hex_chat/admin.ex:97
-#, elixir-autogen, elixir-format
-msgid "user.mute"
-msgstr "用戶.mute"
-
-#: lib/retro_hex_chat/admin.ex:129
-#, elixir-autogen, elixir-format
-msgid "user.rename"
-msgstr "用戶. rename"
-
-#: lib/retro_hex_chat/admin.ex:507 lib/retro_hex_chat/admin.ex:528
-#, elixir-autogen, elixir-format
-msgid "user.role"
-msgstr "用戶.作用"
-
-#: lib/retro_hex_chat/admin.ex:70
-#, elixir-autogen, elixir-format
-msgid "user.unban"
-msgstr "用戶. unban"
-
-#: lib/retro_hex_chat/admin.ex:119
-#, elixir-autogen, elixir-format
-msgid "user.unmute"
-msgstr "用戶.unmute"
 
 #: lib/retro_hex_chat/commands/handlers/admin/server.ex:140
 #, elixir-autogen, elixir-format

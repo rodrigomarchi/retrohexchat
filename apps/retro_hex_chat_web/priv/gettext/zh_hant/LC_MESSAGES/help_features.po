@@ -291,7 +291,7 @@ msgstr "。它僅在意外的連接丟失時激活。"
 #, elixir-autogen, elixir-format
 msgid ""
 ". Rules can be enabled/disabled individually via the checkbox in the dialog."
-msgstr "。規則可以通過對話框中的複選框單獨啓用<ph0>/ph0>。"
+msgstr "。規則可以通過對話框中的複選框單獨啓用/disabled。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_custom_menus.html.heex:35
 #, elixir-autogen, elixir-format
@@ -879,7 +879,7 @@ msgstr ":當有人給你派了PM,而對話已經不在你的列表中時,它會�
 #, elixir-autogen, elixir-format
 msgid ""
 ": Your own joins/parts/nick changes never trigger your auto-respond rules."
-msgstr ":你自己加入的/parts</ph1>/ph1> 變化永遠不會觸發自動對應的規則."
+msgstr ": 您自己加入的 /parts/nick 更改不會觸發您的自動響應規則 。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:18
 #, elixir-autogen, elixir-format
@@ -1006,7 +1006,7 @@ msgstr "向上箭頭"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "Arrow Up/Down"
-msgstr "向上箭頭<ph0>/ph0>"
+msgstr "向上箭頭/Down"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:17
 #, elixir-autogen, elixir-format
@@ -1728,8 +1728,7 @@ msgid ""
 "During audio/video calls, the line shows bidirectional data flow dots. The "
 "center badge displays the call type, duration, and quality level. Video "
 "calls show a thicker line to indicate higher bandwidth."
-msgstr ""
-"在音頻<ph0>/ph0>通話時,該行顯示雙向數據流點. 中心徽章顯示呼叫類型,持續時間,和質量級別. 視頻通話顯示有更厚的線表示更高的帶寬."
+msgstr "在音頻/video通話時,該行顯示雙向數據流點. 中心徽章顯示呼叫類型,持續時間,和質量級別. 視頻通話顯示有更厚的線表示更高的帶寬."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_reconnect.html.heex:27
 #, elixir-autogen, elixir-format
@@ -2564,7 +2563,7 @@ msgstr "沒有收到任何答覆——可能失去聯繫。"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_timestamp_format.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "None"
-msgstr "無"
+msgstr "None"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_lag_indicator.html.heex:9
 #, elixir-autogen, elixir-format
@@ -2666,7 +2665,7 @@ msgstr "只有提到你暱稱的搜索信息 。"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_timestamp_format.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Open"
-msgstr "打開"
+msgstr "Open"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:30
@@ -3067,8 +3066,8 @@ msgid ""
 "Quote/Reply (disabled), Ignore Sender. If the message contains URLs, Open "
 "Link and Copy URL also appear."
 msgstr ""
-"右鍵單擊一般聊天區域以查看: 複製信件, 複製選中文本, 引用<ph0>/ph0> (已失效), 忽略發送器 。 如果信件包含 URL, 打開鏈接和複製"
-" URL 也會出現 。"
+"右鍵單擊一般聊天區域以查看: Copy Message, Copy September Text, Quote/Reply (已失效), 忽略發送器 。"
+" 如果信件包含 URL, 打開鏈接和複製 URL 也會出現 。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_delete.html.heex:4
 #, elixir-autogen, elixir-format
@@ -3077,8 +3076,8 @@ msgid ""
 "dialog appears with Confirmar/Cancelar buttons. Press Escape or click "
 "Cancelar to dismiss."
 msgstr ""
-"右鍵單擊您的消息並選擇“ Apagar mensagem ” 。 以 Avirar<ph0>/ph0> 按鈕顯示確認對話框 。 按“ 逃逸” 鍵或點擊“"
-" 取消” 鍵以刪除 。"
+"右鍵單擊您的消息並選擇“ Apagar mensagem ” 。 出現了帶有確認/Cancelar按鈕的確認對話框 。 按“ 逃逸” 鍵或點擊“ 取消”"
+" 鍵以刪除 。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_interactive_elements.html.heex:37
 #, elixir-autogen, elixir-format
@@ -4198,7 +4197,7 @@ msgstr "或進入"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_custom_menus.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "or open"
-msgstr "打開"
+msgstr "or open"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_aliases.html.heex:11
 #, elixir-autogen, elixir-format
@@ -4214,7 +4213,7 @@ msgstr "面板,從 Timestamps 中選擇您首選的格式。 單擊"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "prefix (distinct from regular <Nick> messages)"
-msgstr "前綴( 從正則 <ph0\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ >"
+msgstr "前綴( 從普通 <Nick> 信件中區分)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autocomplete.html.heex:34
 #, elixir-autogen, elixir-format
@@ -4790,7 +4789,7 @@ msgstr "管理控制檯"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Announcements"
-msgstr "通知"
+msgstr "Announcements"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:26
 #, elixir-autogen, elixir-format
@@ -4822,7 +4821,7 @@ msgstr "ChanServ 註冊標籤"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Changing Nicknames"
-msgstr "更改暱稱"
+msgstr "Changing Nicknames"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:80
 #, elixir-autogen, elixir-format
@@ -5448,7 +5447,7 @@ msgid ""
 "founder hands the channel to another nick. Drop registration deletes the "
 "registration and is not reversible."
 msgstr ""
-"ChanServ信息讀取註冊和訪問列表讀取其SOP/AOP</ph1>/ph1>條目. 添加訪問和刪除訪問需要暱稱和一個關卡 。 "
+"ChanServ信息讀取註冊信息,Access列表讀取其SOP/AOP/VOP條目. 添加訪問和刪除訪問需要暱稱和一個關卡 。 "
 "將頻道的創建者交給另一個暱稱. 丟棄註冊刪除註冊,不可逆轉."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:57
@@ -5716,7 +5715,7 @@ msgid ""
 "server bans and server settings survive it; everything else does not. This "
 "cannot be undone."
 msgstr ""
-"預覽中列出了<ph0>/ph0> 核武器將刪除的內容。 管理角色,審計日誌,服務器禁令和服務器設置都倖存下來;其他一切則不然. 這一點是無法消除的。"
+"預覽中列出了 /admin 核武器將刪除的內容 。 管理角色,審計日誌,服務器禁令和服務器設置都倖存下來;其他一切則不然. 這一點是無法消除的。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_server_settings.html.heex:16
 #, elixir-autogen, elixir-format

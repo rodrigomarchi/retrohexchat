@@ -619,9 +619,7 @@ msgstr "Использование: /admin поворот <stats|allocations>"
 
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:181
 #, elixir-autogen, elixir-format
-msgid ""
-"Usage: /admin user "
-"<list|info|ban|unban|kick|mute|unmute|rename|role|banlist>"
+msgid "Usage: /admin user <list|info|ban|unban|kick|mute|unmute|rename|role|banlist>"
 msgstr ""
 "Использование: /admin пользователь "
 "<list|info|ban|unban|kick|mute|unmute|rename|role|banlist>"
@@ -652,52 +650,6 @@ msgstr "[ЧанСерв] %{message}"
 msgid "[NickServ] %{message}"
 msgstr "[НикСерв] %{message}"
 
-#: lib/retro_hex_chat/admin.ex:263
-#, elixir-autogen, elixir-format
-msgid "channel.create"
-msgstr "Создать канал"
-
-#: lib/retro_hex_chat/admin.ex:289
-#, elixir-autogen, elixir-format
-msgid "channel.delete"
-msgstr "Channel.delete"
-
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:46
-#, elixir-autogen, elixir-format
-msgid "channel.info"
-msgstr "Channel.info"
-
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:14
-#, elixir-autogen, elixir-format
-msgid "channel.list"
-msgstr "канал, список"
-
-#: lib/retro_hex_chat/admin.ex:307
-#, elixir-autogen, elixir-format
-msgid "channel.purge"
-msgstr "Channel.purge"
-
-#: lib/retro_hex_chat/admin.ex:242
-#: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:60
-#, elixir-autogen, elixir-format
-msgid "cs.access"
-msgstr "cs.доступ"
-
-#: lib/retro_hex_chat/admin.ex:213
-#, elixir-autogen, elixir-format
-msgid "cs.drop"
-msgstr "cs.drop"
-
-#: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:19
-#, elixir-autogen, elixir-format
-msgid "cs.info"
-msgstr "cs.info"
-
-#: lib/retro_hex_chat/admin.ex:226
-#, elixir-autogen, elixir-format
-msgid "cs.transfer"
-msgstr "cs.transfer"
-
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:205
 #, elixir-autogen, elixir-format
 msgid "expires %{expires_at}"
@@ -713,90 +665,10 @@ msgstr "для %{duration}"
 msgid "max_channels must be a positive integer"
 msgstr "max каналы должны быть положительным целым числом"
 
-#: lib/retro_hex_chat/admin.ex:176
-#, elixir-autogen, elixir-format
-msgid "ns.drop"
-msgstr "ns.drop"
-
-#: lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:22
-#, elixir-autogen, elixir-format
-msgid "ns.info"
-msgstr "ns.info"
-
-#: lib/retro_hex_chat/admin.ex:196
-#, elixir-autogen, elixir-format
-msgid "ns.resetpass"
-msgstr "ns.resetpass"
-
 #: lib/retro_hex_chat/commands/handlers/admin/server.ex:131
 #, elixir-autogen, elixir-format
 msgid "registration must be 'open' or 'closed'"
 msgstr "Регистрация должна быть «открытой» или «закрытой»"
-
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:31
-#, elixir-autogen, elixir-format
-msgid "server.info"
-msgstr "server.info"
-
-#: lib/retro_hex_chat/admin.ex:372
-#, elixir-autogen, elixir-format
-msgid "server.set"
-msgstr "server.set"
-
-#: lib/retro_hex_chat/admin.ex:444
-#, elixir-autogen, elixir-format
-msgid "system.nuke"
-msgstr "Системные.nuke"
-
-#: lib/retro_hex_chat/admin.ex:428
-#, elixir-autogen, elixir-format
-msgid "system.nuke_preview"
-msgstr "system.nuke preview"
-
-#: lib/retro_hex_chat/admin.ex:34
-#, elixir-autogen, elixir-format
-msgid "user.ban"
-msgstr "пользователь"
-
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:45
-#, elixir-autogen, elixir-format
-msgid "user.info"
-msgstr "user.info"
-
-#: lib/retro_hex_chat/admin.ex:82
-#, elixir-autogen, elixir-format
-msgid "user.kick"
-msgstr "user.kick"
-
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:15
-#, elixir-autogen, elixir-format
-msgid "user.list"
-msgstr "пользователь"
-
-#: lib/retro_hex_chat/admin.ex:97
-#, elixir-autogen, elixir-format
-msgid "user.mute"
-msgstr "user.mute"
-
-#: lib/retro_hex_chat/admin.ex:129
-#, elixir-autogen, elixir-format
-msgid "user.rename"
-msgstr "user.rename"
-
-#: lib/retro_hex_chat/admin.ex:507 lib/retro_hex_chat/admin.ex:528
-#, elixir-autogen, elixir-format
-msgid "user.role"
-msgstr "user.ro"
-
-#: lib/retro_hex_chat/admin.ex:70
-#, elixir-autogen, elixir-format
-msgid "user.unban"
-msgstr "пользователь.unban"
-
-#: lib/retro_hex_chat/admin.ex:119
-#, elixir-autogen, elixir-format
-msgid "user.unmute"
-msgstr "пользователь.unmute"
 
 #: lib/retro_hex_chat/commands/handlers/admin/server.ex:140
 #, elixir-autogen, elixir-format

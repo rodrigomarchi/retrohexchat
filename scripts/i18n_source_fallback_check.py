@@ -16,29 +16,9 @@ from i18n_js_catalogs import (
     locale_catalog_path,
     read_catalogs,
 )
+from i18n.locales import codes as enabled_locale_codes
 
-DEFAULT_LOCALES = (
-    "pt_BR",
-    "es",
-    "fr",
-    "de",
-    "ja",
-    "zh_hans",
-    "id",
-    "ar",
-    "ru",
-    "hi",
-    "ko",
-    "tr",
-    "vi",
-    "bn",
-    "ur",
-    "zh_hant",
-    "pt_PT",
-    "it",
-    "pl",
-    "nl",
-)
+DEFAULT_LOCALES = enabled_locale_codes()
 PLACEHOLDER_RE = re.compile(r"%\{[A-Za-z0-9_]+\}")
 WORD_RE = re.compile(r"[A-Za-z]{2,}")
 

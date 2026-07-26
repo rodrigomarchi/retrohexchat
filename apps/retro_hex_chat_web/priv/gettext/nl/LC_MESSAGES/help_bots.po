@@ -20,17 +20,17 @@ msgstr "! /bot GreeterBot-cooldown 3000 /bot GreeterBot-prefix instellen?"
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:156
 #, elixir-autogen, elixir-format
 msgid "!Bot answer <text>"
-msgstr "!Bot antwoord <ph0></ph0>"
+msgstr "!Bot antwoord <text>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "!Bot rss add <url> <#channel>"
-msgstr "!Bot rss voegt <ph0> </ph0> <ph1></ph1>"
+msgstr "!Bot rss toevoegen <url> <#channel>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "!Bot rss check <id>"
-msgstr "!Bot rss controleren <ph0></ph0>"
+msgstr "!Bot rss controle <id>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:22
 #, elixir-autogen, elixir-format
@@ -40,17 +40,17 @@ msgstr "!Bot rss lijst"
 #: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "!Bot rss remove <id>"
-msgstr "!Bot rss verwijder <ph0></ph0>"
+msgstr "!Bot rss verwijder <id>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "!Bot schedule add daily <HH:MM> <#channel> <message>"
-msgstr "!Bot schema voegt dagelijks <ph0> </ph0> <ph1><</ph1> <ph2><</ph2>"
+msgstr "!Bot schema dagelijks toevoegen <HH:MM> <#channel> <message>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "!Bot schedule add interval <min> <#channel> <message>"
-msgstr "!Bot schedule add interval <ph0><</ph0> <ph1><</ph1> <ph2><</ph2>"
+msgstr "!Bot schema toevoegen interval <min> <#channel> <message>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:34
 #, elixir-autogen, elixir-format
@@ -60,7 +60,7 @@ msgstr "!Bot schema lijst"
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "!Bot schedule remove <id>"
-msgstr "!Bot schema verwijderen <ph0></ph0>"
+msgstr "!Bot schema verwijderen <id>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_trivia.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:155
@@ -77,7 +77,7 @@ msgstr "! Bot trivia start"
 #: lib/retro_hex_chat_web/controllers/help_content/bot_trivia.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "!Bot trivia start <category>"
-msgstr "!Bot trivia start <ph0></ph0>"
+msgstr "!Bot trivia start <category>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_trivia.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:155
@@ -95,7 +95,7 @@ msgstr "!BotName help"
 #: lib/retro_hex_chat_web/controllers/help_content/bot_dice.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "!BotName roll <notation> !BotName roll (uses default notation)"
-msgstr "!BotName roll <ph0></ph0 !Bot Naamrol (gebruik standaardnotatie)"
+msgstr "!BotName roll <notation> !Bot Naamrol (gebruik standaardnotatie)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_custom_commands.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:27
@@ -131,9 +131,9 @@ msgid ""
 "https://example.com/rss news !MyBot rss list !MyBot rss check f1a2b3 !MyBot "
 "rss remove f1a2b3"
 msgstr ""
-"!MyBot rss toevoegen <ph2></ph2<ph3><</ph3> #news !MyBot rss toevoegen "
-"<ph4><</ph4><ph5><</ph5> nieuws !MyBot rss lijst !MyBot rss controle f1a2b3 "
-"!MyBot rsss verwijderen f1a2b3"
+"!MyBot rss toevoegen https://blog.example.com/feed.xml #news !MyBot rss "
+"toevoegen https://example.com/rss nieuws !MyBot rss lijst !MyBot rss "
+"controle f1a2b3 !MyBot rss verwijderen f1a2b3"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:77
 #, elixir-autogen, elixir-format
@@ -1321,12 +1321,12 @@ msgstr "De gebruiker die het commando heeft aangeroepen"
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "!BotName roll <notation>"
-msgstr "!BotName roll <ph0></ph0>"
+msgstr "!BotName roll <notation>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:71
 #, elixir-autogen, elixir-format
 msgid "!BotName rss add <url> <#channel>"
-msgstr "!BotName rss add <ph0></ph0> <ph1></ph1>"
+msgstr "!BotName rss toevoegen <url> <#channel>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:55
 #, elixir-autogen, elixir-format
@@ -1578,8 +1578,8 @@ msgid ""
 "— posts scheduled/periodic messages to channels. Supports interval (every N "
 "minutes) and daily (at HH:MM UTC) schedules"
 msgstr ""
-"Posten die zijn gepland<ph0> </ph0> berichten naar kanalen. Ondersteunt "
-"interval (elke N minuten) en dagelijkse (op HH:MM UTC) schema's"
+"Posts ingepland/periodic berichten naar kanalen. Ondersteunt interval (elke "
+"N minuten) en dagelijkse (op HH:MM UTC) schema's"
 
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:12
 #, elixir-autogen, elixir-format

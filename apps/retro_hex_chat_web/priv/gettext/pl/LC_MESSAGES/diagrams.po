@@ -606,7 +606,7 @@ msgstr "Serwer (sygnalizacja)"
 #: lib/retro_hex_chat_web/components/diagrams/p2p_flow.ex:100
 #, elixir-autogen, elixir-format
 msgid "Server exchanges signaling (SDP/ICE)"
-msgstr "Sygnalizacja wymiany serwerów (SDP < ph0 > < / ph0 >)"
+msgstr "Sygnalizacja wymiany serwerów (SDP/ICE)"
 
 #: lib/retro_hex_chat_web/components/diagrams/p2p_flow.ex:265
 #, elixir-autogen, elixir-format
@@ -616,7 +616,7 @@ msgstr "Serwer jest poza pętlą"
 #: lib/retro_hex_chat_web/components/diagrams/security.ex:320
 #, elixir-autogen, elixir-format
 msgid "Server never sees voice/video data"
-msgstr "Serwer nigdy nie widzi głosu < ph0 > < / ph0 > danych"
+msgstr "Serwer nigdy nie widzi danych głosowych /video"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_p2p_flow.ex:214
 #, elixir-autogen, elixir-format
@@ -649,9 +649,8 @@ msgid ""
 "Two security layers: browser to server via HTTPS/WSS with TLS, and browser "
 "to browser via DTLS-SRTP for P2P calls"
 msgstr ""
-"Dwie warstwy zabezpieczeń: przeglądarka do serwera przez HTTPS < ph0 > < / "
-"ph0 > z TLS, a przeglądarka do przeglądarki przez DTLS- SRTP dla połączeń "
-"P2P"
+"Dwie warstwy zabezpieczeń: przeglądarka do serwera przez HTTPS/WSS z TLS, a "
+"przeglądarka do przeglądarki przez DTLS- SRTP dla połączeń P2P"
 
 #: lib/retro_hex_chat_web/components/diagrams/arcade_halflife.ex:86
 #, elixir-autogen, elixir-format
@@ -784,8 +783,8 @@ msgid ""
 "P2P multiplayer games flow: type /p2p command, join lobby, select game, play"
 " via WebRTC DataChannel between two players"
 msgstr ""
-"P2P multiplayer games flow: type < ph0 > < / ph0 > command, join lobby, "
-"select game, play via WebRTC DataChannel between two players"
+"P2P multiplayer gry przepływu: polecenie typu /p2p, dołącz lobby, wybierz "
+"grę, grać za pośrednictwem WebRTC DataChannel między dwoma graczami"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:18
 #, elixir-autogen, elixir-format
@@ -799,7 +798,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:65
 #, elixir-autogen, elixir-format
 msgid "▸ Arcade"
-msgstr "-------------------------------------------------- Arcade"
+msgstr "▸ Arcade"
 
 #: lib/retro_hex_chat_web/components/diagrams/conference_topology.ex:18
 #, elixir-autogen, elixir-format

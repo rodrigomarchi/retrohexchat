@@ -829,7 +829,7 @@ msgstr "背景提示"
 msgid ""
 "Controls: Arrow keys (Left/Right rotate, Up forward) or A/D/W, Space or "
 "Shift to fire."
-msgstr "控件:箭鍵(Left/Right旋轉,向上)或A/D</ph2></ph2>,空間或移向火."
+msgstr "控件:箭鍵(Left/Right旋轉,向上旋轉)或A/D/W,Space或Shift to fire."
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:1718
 #, elixir-autogen, elixir-format
@@ -884,13 +884,13 @@ msgstr "控件:要移動的箭頭鍵或WASD,要服務到空格或Shift."
 #: lib/retro_hex_chat/chat/help_topics/features.ex:2456
 #, elixir-autogen, elixir-format
 msgid "Controls: Arrow keys or WASD to move, Space or Shift to shoot/tackle."
-msgstr "控件:要移動的箭頭密鑰或WASD,要射擊<ph0>/ph0>的空格或Shift。"
+msgstr "控件:要移動的箭頭鍵或WASD,要射擊的空間或Shift /tackle."
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:2330
 #: lib/retro_hex_chat/chat/help_topics/features.ex:2359
 #, elixir-autogen, elixir-format
 msgid "Controls: Arrow keys or WASD to move, Up/Down to jump between rows."
-msgstr "控件:要移動的箭頭密鑰或 WASD, 上<ph0>/ph0> 在行間跳動。"
+msgstr "控件:要移動的箭鍵或WASD,在行間跳動的Up/Down."
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:1885
 #, elixir-autogen, elixir-format
@@ -908,12 +908,12 @@ msgstr "控件:箭鍵或WASD推/rotate,空格向射擊,下/S向曲速."
 #: lib/retro_hex_chat/chat/help_topics/features.ex:1801
 #, elixir-autogen, elixir-format
 msgid "Controls: Arrow keys to move/speed, Space to fire, Shift to drop mine."
-msgstr "控件: 要移動<ph0>/ph0> 的箭鍵, 要開火的空格, 要丟掉的空格 。"
+msgstr "控件:箭鍵可以移動/speed,空格可以開火,動格可以放下我的."
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:1781
 #, elixir-autogen, elixir-format
 msgid "Controls: Arrow keys to move/speed, Space to fire."
-msgstr "控件:要移動<ph0>/ph0>的箭鍵, 空格來開火 。"
+msgstr "控制器:箭鍵可以移動/speed,空間可以開火."
 
 #: lib/retro_hex_chat/chat/help_topics/user_interface.ex:66
 #, elixir-autogen, elixir-format
@@ -1765,7 +1765,7 @@ msgstr "沒有計時器——先進5球. 每進一球,球都加速了"
 #: lib/retro_hex_chat/chat/help_topics/features.ex:311
 #, elixir-autogen, elixir-format
 msgid "Notices"
-msgstr "通知"
+msgstr "Notices"
 
 #: lib/retro_hex_chat/chat/help_topics.ex:54
 #: lib/retro_hex_chat/chat/help_topics.ex:83
@@ -2092,7 +2092,7 @@ msgstr "沉沒的土地"
 msgid ""
 "RPG dice rolling with standard notation (NdS, modifiers, keep "
 "highest/lowest)."
-msgstr "RPG 骰子滾動帶有標準標記(NdS,修改器,保持最高<ph0>/ph0>)."
+msgstr "RPG 骰子滾動帶有標準標記(NdS,調製器,保持最高/lowest)."
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:1545
 #, elixir-autogen, elixir-format
@@ -2560,7 +2560,7 @@ msgstr "Tab-complete暱稱,命令,頻道,和模糊匹配的emoji."
 msgid ""
 "Temperature timer adds urgency. Controls: Arrow keys or WASD to move, "
 "Up/Down to jump between rows."
-msgstr "溫度計時器增加了緊迫性. 控件:要移動的箭頭密鑰或 WASD, 上<ph0>/ph0> 在行間跳動。"
+msgstr "溫度計時器增加了緊迫性. 控件:要移動的箭鍵或WASD,在行間跳動的Up/Down."
 
 #: lib/retro_hex_chat/chat/help_topics.ex:57
 #: lib/retro_hex_chat/chat/help_topics.ex:86
@@ -5030,8 +5030,8 @@ msgid ""
 "transcript rows as inert history showing request, connected and ended "
 "states."
 msgstr ""
-"街機鏈接在直播時可以通過 join /Open 動作作爲豐富的卡片渲染. P2P請求使用 PM 頭來啓動 /Join</ph2></ph2> "
-"並保留記錄行作爲惰性歷史來顯示請求,連接和結束狀態."
+"街機鏈接在直播時可以使用 join/Open 動作作爲豐富的卡片渲染. "
+"P2P請求使用PM頭用於Start/Join/Decline,並保留記錄行作爲惰性歷史顯示請求,連接和結束狀態."
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:283
 #, elixir-autogen, elixir-format
@@ -5047,10 +5047,8 @@ msgid ""
 "starts the session right there, with the P2P Session Console opening on the "
 "chat desktop. See also: P2P Sessions in Chat, P2P Session."
 msgstr ""
-"邀請某人蔘加一個 P2P 會話, "
-"該會話會運行一個音頻<ph0}\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"
-" 請求在私人信件中到達, PM 頭部顯示 join/Decline —— 接受它從那裏開始會話, P2P 會話控制檯在聊天桌面上打開 。 另見: "
-"Chat中的P2P會話,P2P會話."
+"請某人蔘加一個P2P會話,通過一個連接運行一個音頻/video呼叫,文件傳輸,和遊戲. 請求在私人信件中到達,PM頭顯示爲 "
+"join/Decline——接受它從那裏開始會話,在聊天桌面上打開P2P會話控制檯. 另見: Chat中的P2P會話,P2P會話."
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:1001
 #, elixir-autogen, elixir-format
@@ -5084,8 +5082,8 @@ msgid ""
 "through the relay so your IP address is never shared with the peer. See "
 "also: P2P Session, Video Call, File Transfer, Private Messages."
 msgstr ""
-"運行一個 P2P 會話而不離開聊天:/p2p<ph0><</ph2></ph2>>>打開設置,立即顯示創建者的 P2P "
-"會話控制檯,並向私人信件發送請求行. 請訪問的 PM 標籤在背景中打開, 在 PM 頭部有 join/Decline 。 "
+"在不離開聊天的情況下運行一個 P2P 會話: /p2p <nick> 打開設置,立即顯示創建者的 P2P 會話控制檯,並將請求行發送到私人信件中. "
+"受邀人士的PM標籤在背景中打開,在PM頭部有JUIN/Decline. "
 "連接後,P2P菜單(亦在Start菜單中反射)在聊天桌面上打開了P2P會話控制檯,包含Call,File,Games和Stats等部分. "
 "對話是私人消息——會話事件(連接,收到文件,遊戲結果,誰結束)被保存到PM歷史中作爲P2P線條,PM標籤在會話直播時會顯示一個小的P2P圖標. "
 "狀態欄總是顯示活動會話:單擊它將 P2P 會話控制檯帶到前面,或者使用它的停止按鈕取消待決邀請/結束會話. "
@@ -5113,7 +5111,7 @@ msgid ""
 "right on the chat desktop, and ending any one activity never drops the "
 "others. See also: P2P Sessions in Chat."
 msgstr ""
-"P2P會話是<ph0>/ph0>背後的持續對等連接——一個同時託管一個呼叫,文件傳輸和遊戲的鏈接. "
+"P2P會話是/p2p背後持續的對等連接——一個同時託管一個呼叫,文件傳輸和遊戲的鏈接. "
 "它住在聊天內部:接受邀請後,在聊天桌面上右側打開P2P會話控制檯,結束任何一項活動都不會放棄其他活動. 另見:聊天中的P2P會話."
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:1257

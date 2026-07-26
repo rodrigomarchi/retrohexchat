@@ -159,7 +159,7 @@ msgstr "/topic Command"
 #: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Can: kick regular/voiced users, set +v/-v"
-msgstr "Può: calciare gli utenti abituali di <ph0> </ph0>, impostare +v/-v"
+msgstr "Can: kick regolari/voiced utenti, set +v/-v"
 
 #: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:9
 #, elixir-autogen, elixir-format
@@ -190,8 +190,8 @@ msgid ""
 "channel modes, kick/ban users, and set the topic. They cannot kick owners."
 msgstr ""
 "Garantisce lo stato dell'operatore del canale a un utente (prefisso @). Gli "
-"operatori possono cambiare le modalità dei canali, dare il via agli utenti "
-"<ph0> Non possono cacciare i proprietari."
+"operatori possono cambiare le modalità dei canali, gli utenti kick/ban e "
+"impostare l'argomento. Non possono cacciare i proprietari."
 
 #: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:2
 #, elixir-autogen, elixir-format
@@ -212,10 +212,10 @@ msgid ""
 "users of lower rank and grant/revoke voice (+v), but cannot set channel "
 "modes or ban users."
 msgstr ""
-"Garantisce lo stato di metà operatore a un utente (prefisso %). I meta-"
-"operatori possono calciare gli utenti di rango inferiore e concedere la voce"
-" <ph0> </ph0> (+v), ma non possono impostare le modalità di canale o vietare"
-" gli utenti."
+"Garantisce lo stato di metà operatore a un utente (prefisso %). I metà "
+"operatori possono dare calci agli utenti di rango inferiore e concedere la "
+"voce /revoke (+v), ma non possono impostare le modalità di canale o vietare "
+"gli utenti."
 
 #: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:2
 #, elixir-autogen, elixir-format
@@ -278,8 +278,8 @@ msgid ""
 "exclusive with +p (private)."
 msgstr ""
 "Rende il canale segreto. I canali segreti non appaiono nell'elenco dei "
-"canali ( <ph0> < / f0>) per i non membri e sono nascosti dall'output <ph1> "
-"̧/ph1>. Mutualmente esclusivo con +p (privato)."
+"canali (/list) per i non membri e sono nascosti dall'uscita /whois. "
+"Mutualmente esclusivo con +p (privato)."
 
 #: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:11
 #, elixir-autogen, elixir-format
@@ -375,8 +375,8 @@ msgid ""
 "server-side before delivery."
 msgstr ""
 "Strisce tutti i codici di formattazione da messaggi, tra cui grassetto, "
-"italico, sottolinea, codici a colori, e inverso. I messaggi e le azioni "
-"<ph0> </ph0> vengono elaborati sul lato server prima della consegna."
+"italico, sottolinea, codici a colori, e inverso. I messaggi e le azioni /me "
+"vengono elaborati lato server prima della consegna."
 
 #: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:14
@@ -803,7 +803,7 @@ msgstr ": Può parlare in canali moderati (+)."
 #: lib/retro_hex_chat_web/controllers/help_content/channel_modes_overview.html.heex:81
 #, elixir-autogen, elixir-format
 msgid ": Channel hidden from /list and /whois."
-msgstr ": Canale nascosto da <ph0> </ph0> e <ph1>"
+msgstr ": Canale nascosto da /list e /whois."
 
 #: lib/retro_hex_chat_web/controllers/help_content/channel_modes_overview.html.heex:17
 #, elixir-autogen, elixir-format
@@ -818,12 +818,12 @@ msgstr ": proprietario del canale con pieno controllo (~)."
 #: lib/retro_hex_chat_web/controllers/help_content/channel_modes_overview.html.heex:88
 #, elixir-autogen, elixir-format
 msgid ": Channel shown as \"Prv\" in /list."
-msgstr ": Canale indicato come \"Prv\" in <ph0>"
+msgstr ": Canale indicato come \"Prv\" in /list."
 
 #: lib/retro_hex_chat_web/controllers/help_content/channel_modes_overview.html.heex:109
 #, elixir-autogen, elixir-format
 msgid ": Disable /knock requests."
-msgstr ": Disattivare le richieste <ph0> < /ph0> ."
+msgstr ": Disattiva richieste /knock."
 
 #: lib/retro_hex_chat_web/controllers/help_content/channel_permissions.html.heex:93
 #, elixir-autogen, elixir-format
@@ -1714,10 +1714,8 @@ msgid ""
 "Add and Remove run the same actions as /cs <level> add <nick> and /cs "
 "<level> del <nick>."
 msgstr ""
-"Aggiungere e rimuovere eseguire le stesse azioni di <ph4> < <ph4> <ph0> "
-"<ph0> μ < < <ph5> > aggiungere <ph1> < < <ph1> < < <ph6> > e <ph7> <ph7> < "
-"<ph2> < < <ph8> < < < < < < <ph8> > > > > > > < < < < < < < < < > > > > > > "
-"> > > > > > > > > > > > > > > > > > > > > > >"
+"Aggiungere e rimuovere eseguire le stesse azioni di /cs <level> aggiungere "
+"<nick> e /cs <level> del <nick>."
 
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_access.html.heex:42
 #, elixir-autogen, elixir-format
@@ -1833,8 +1831,7 @@ msgstr "Controllo dei disabili"
 #, elixir-autogen, elixir-format
 msgid "Drop Registration confirms before running the same action as /cs drop."
 msgstr ""
-"La registrazione di goccia conferma prima di eseguire la stessa azione di "
-"<ph0> ̧/ph0> drop."
+"Drop Registrazione conferma prima di eseguire la stessa azione di /cs drop."
 
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_access.html.heex:39
 #, elixir-autogen, elixir-format
@@ -1925,7 +1922,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "Register Channel runs the same action as /cs register."
-msgstr "Registrare Canale svolge la stessa azione del registro <ph0> </ph0> ."
+msgstr "Register Channel svolge la stessa azione del registro /cs."
 
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_access.html.heex:28
 #, elixir-autogen, elixir-format
@@ -1953,7 +1950,8 @@ msgstr "Gli utenti SOP possono gestire le liste AOP e VOP."
 #, elixir-autogen, elixir-format
 msgid "SOP, AOP, and VOP sub-tabs show the same lists as /cs <level> list."
 msgstr ""
-"Le sotto-tavole SOP, AOP e VOP mostrano gli stessi elenchi dell'elenco <ph1>"
+"Le sotto-tavole SOP, AOP e VOP mostrano gli stessi elenchi dell'elenco /cs "
+"<level>."
 
 #: lib/retro_hex_chat_web/controllers/help_content/channel_permissions.html.heex:50
 #, elixir-autogen, elixir-format

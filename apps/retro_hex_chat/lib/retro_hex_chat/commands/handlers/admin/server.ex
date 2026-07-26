@@ -28,7 +28,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Server do
     uptime_days = div(uptime_hours, 24)
     remaining_hours = rem(uptime_hours, 24)
 
-    AuditLogs.log(context.nickname, dgettext("admin", "server.info"))
+    AuditLogs.log(context.nickname, "server.info")
 
     desc_line = if server_desc, do: "\n#{server_desc}", else: ""
 

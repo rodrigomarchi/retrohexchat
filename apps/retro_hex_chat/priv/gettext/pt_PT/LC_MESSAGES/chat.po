@@ -106,15 +106,16 @@ msgstr "Ding Alto"
 msgid "Ding Low"
 msgstr "Ding Baixo"
 
-#: lib/retro_hex_chat/chat/policy.ex:41
-#: lib/retro_hex_chat/chat/policy.ex:70
+#: lib/retro_hex_chat/chat/policy.ex:41 lib/retro_hex_chat/chat/policy.ex:70
 #, elixir-autogen, elixir-format
 msgid "Edit window has expired."
 msgstr "A janela de edição expirou."
 
 #: lib/retro_hex_chat/chat/alias_expander.ex:30
 #, elixir-autogen, elixir-format
-msgid "Expansion must not contain command chaining characters (|, &&, ;, or newlines)"
+msgid ""
+"Expansion must not contain command chaining characters (|, &&, ;, or "
+"newlines)"
 msgstr ""
 "Expansão não deve conter caracteres de encadeamento de comandos (!, & &, ;, "
 "ou novas linhas)"
@@ -126,26 +127,25 @@ msgstr "Formatação"
 
 #: lib/retro_hex_chat/chat/timer_manager.ex:111
 #, elixir-autogen, elixir-format
-msgid "Invalid timer name. Use only letters, numbers, hyphens, underscores (max %{max_name_length} chars)."
+msgid ""
+"Invalid timer name. Use only letters, numbers, hyphens, underscores (max "
+"%{max_name_length} chars)."
 msgstr ""
 "Nome do cronômetro inválido. Use apenas letras, números, hífens, sublinha "
 "(máx. %{max_name_length} chars)."
 
-#: lib/retro_hex_chat/chat/policy.ex:18
-#: lib/retro_hex_chat/chat/policy.ex:24
+#: lib/retro_hex_chat/chat/policy.ex:18 lib/retro_hex_chat/chat/policy.ex:24
 #, elixir-autogen, elixir-format
 msgid "Message cannot be empty"
 msgstr "A mensagem não pode estar vazia"
 
-#: lib/retro_hex_chat/chat/policy.ex:38
-#: lib/retro_hex_chat/chat/policy.ex:60
+#: lib/retro_hex_chat/chat/policy.ex:38 lib/retro_hex_chat/chat/policy.ex:60
 #: lib/retro_hex_chat/chat/policy.ex:81
 #, elixir-autogen, elixir-format
 msgid "Message has already been deleted."
 msgstr "A mensagem já foi apagada."
 
-#: lib/retro_hex_chat/chat/service.ex:53
-#: lib/retro_hex_chat/chat/service.ex:80
+#: lib/retro_hex_chat/chat/service.ex:53 lib/retro_hex_chat/chat/service.ex:80
 #: lib/retro_hex_chat/chat/service.ex:109
 #: lib/retro_hex_chat/chat/service.ex:131
 #, elixir-autogen, elixir-format
@@ -253,8 +253,7 @@ msgstr "Abrir/close a folha de atalho do teclado"
 msgid "Original message not found."
 msgstr "A mensagem original não foi encontrada."
 
-#: lib/retro_hex_chat/chat/policy.ex:44
-#: lib/retro_hex_chat/chat/policy.ex:109
+#: lib/retro_hex_chat/chat/policy.ex:44 lib/retro_hex_chat/chat/policy.ex:109
 #, elixir-autogen, elixir-format
 msgid "Please wait a few seconds before editing again."
 msgstr "Por favor, aguarde alguns segundos antes de editar novamente."
@@ -356,23 +355,23 @@ msgstr "Alternar a Pesquisa"
 #: lib/retro_hex_chat/chat/timer_manager.ex:92
 #, elixir-autogen, elixir-format
 msgid "Usage: /timer <name> <seconds> <command>"
-msgstr "Uso: /timer <ph0></ph0> <ph1><</ph1> <ph2></ph2>>"
+msgstr "Uso: /timer <name> <seconds> <command>"
 
 #: lib/retro_hex_chat/chat/timer_manager.ex:29
 #, elixir-autogen, elixir-format
 msgid "Usage: /timer <name> [repeat] <seconds> <command>"
-msgstr "Uso: /timer <ph0></ph0> [repetir] <ph1></ph1> <ph2><</ph2</ph6>>"
+msgstr "Uso: /timer <name> [repetir] <seconds> <command>"
 
 #: lib/retro_hex_chat/chat/timer_manager.ex:63
 #: lib/retro_hex_chat/chat/timer_manager.ex:67
 #, elixir-autogen, elixir-format
 msgid "Usage: /timer <name> repeat <seconds> <command>"
-msgstr "Utilização: /timer <ph0></ph0> repetição <ph1><</ph1> <ph2></ph2>>"
+msgstr "Uso: /timer <name> repetir <seconds> <command>"
 
 #: lib/retro_hex_chat/chat/timer_manager.ex:37
 #, elixir-autogen, elixir-format
 msgid "Usage: /timer stop <name>"
-msgstr "Uso: /timer stop <ph0></ph0>"
+msgstr "Uso: /timer parar <name>"
 
 #: lib/retro_hex_chat/chat/sound_settings.ex:41
 #, elixir-autogen, elixir-format
@@ -429,8 +428,7 @@ msgstr "Janela 9"
 msgid "You cannot delete other users' messages."
 msgstr "Você não pode excluir as mensagens de outros usuários."
 
-#: lib/retro_hex_chat/chat/policy.ex:35
-#: lib/retro_hex_chat/chat/policy.ex:57
+#: lib/retro_hex_chat/chat/policy.ex:35 lib/retro_hex_chat/chat/policy.ex:57
 #, elixir-autogen, elixir-format
 msgid "You cannot edit other users' messages."
 msgstr "Você não pode editar as mensagens de outros usuários."

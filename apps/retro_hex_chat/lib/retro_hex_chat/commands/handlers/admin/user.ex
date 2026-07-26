@@ -12,7 +12,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.User do
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute(["list" | opts], context) do
     {search, online_only} = parse_list_opts(opts)
-    AuditLogs.log(context.nickname, dgettext("admin", "user.list"))
+    AuditLogs.log(context.nickname, "user.list")
     registered = Queries.list_registered_nicks(search: search)
     online_nicks = online_nicknames()
 
@@ -42,7 +42,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.User do
 
   def execute(["info", nick], context) do
     nick = strip_at(nick)
-    AuditLogs.log(context.nickname, dgettext("admin", "user.info"), {"user", nick})
+    AuditLogs.log(context.nickname, "user.info", {"user", nick})
 
     case Queries.find_by_nickname(nick) do
       nil ->

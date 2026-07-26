@@ -14,7 +14,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "#lobby (12)"
-msgstr "< ph0 > < / ph0 > (12)"
+msgstr "#lobby (12)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:42
 #, elixir-autogen, elixir-format
@@ -408,8 +408,8 @@ msgid ""
 "For PMs, it shows \"Private conversation with <nickname>\". For the Status "
 "tab, it shows \"RetroHexChat Status\"."
 msgstr ""
-"Dla PMs, pokazuje \"Prywatna rozmowa z < ph0 > < < ph1 > < / ph1 > >\". Dla "
-"zakładki Status, pokazuje \"RetroHexChat Status\"."
+"Dla PMs, pokazuje \"Prywatna rozmowa z <nickname>\". Dla zakładki Status "
+"pokazuje \"RetroHexChat Status\"."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:35
 #, elixir-autogen, elixir-format
@@ -1088,7 +1088,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/ui_status_tab.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "notify list online/offline, wallops."
-msgstr "lista zgłoszeń online < ph0 > < / ph0 >, wallopy."
+msgstr "listowie powiadomień online/offline, wallopy."
 
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:10
 #, elixir-autogen, elixir-format
@@ -1381,12 +1381,11 @@ msgid ""
 "can drag, resize, minimize to the taskbar, and close with its title-bar X."
 msgstr ""
 "Bot Management jest oknem administracyjnym do tworzenia, kontroli, włączania"
-" i utrzymywania botów po stronie serwera. Otwórz go z narzędzia > "
-"Zarządzanie botem, grupy Admin menu Start, rozwijanego paska narzędzi Opcje "
-"lub wpisując < ph0 > < / ph0 > bez argumentów jako administrator lub "
-"operator serwera. Otwiera się ono jako okno pulpitu, które można przeciągać,"
-" zmieniać rozmiar, minimalizować do paska zadań i zamykać za pomocą paska "
-"ustawień X."
+" i utrzymywania botów po stronie serwera. Otwórz z narzędzi > Bot "
+"Management, grupa Admin Menu Start, rozwijany pasek narzędzi Opcje lub "
+"wpisując /bot bez argumentów jako administrator lub operator serwera. "
+"Otwiera się ono jako okno pulpitu, które można przeciągać, zmieniać rozmiar,"
+" minimalizować do paska zadań i zamykać za pomocą paska ustawień X."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:50
 #, elixir-autogen, elixir-format
@@ -1397,8 +1396,8 @@ msgid ""
 msgstr ""
 "Bot Management jest widoczny tylko dla zidentyfikowanych administratorów "
 "serwerów i operatorów serwerów. Regularni użytkownicy mogą nadal wymieniać "
-"boty, sprawdzać informacje o bocie i przeglądać własne polecenia z listą < "
-"ph0 > < / ph0 >, < ph1 > < / ph1 > info i < ph2 > < / ph2 > polecenia."
+"boty, sprawdzać informacje o bocie i przeglądać własne polecenia z listą "
+"/bot, informacjami /bot i poleceniami /bot."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:62
 #, elixir-autogen, elixir-format
@@ -1448,7 +1447,7 @@ msgid ""
 "This runs the same action as /clear and cannot be undone."
 msgstr ""
 "Usuwa wszystkie wiadomości z aktywnego kanału lub prywatnego okna rozmowy. "
-"Działa to tak samo jak < ph0 > < / ph0 > i nie może zostać cofnięte."
+"Działa to tak samo jak /clear i nie może zostać cofnięte."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:18
 #, elixir-autogen, elixir-format
@@ -1840,10 +1839,10 @@ msgid ""
 "unsaved draft."
 msgstr ""
 "Okno Timers zarządza tylko poleceniami sesyjnymi. Otwórz z narzędzi > "
-"Timery, menu Start, opcje paska narzędzi > Timery lub wpisując < ph0 > < / "
-"ph0 > bez argumentów. To jest okno pulpitu: przeciągnij, przerost, "
-"zminimalizować do jego przycisku paska zadań, lub naciśnij Escape, aby go "
-"zamknąć. Zamykanie odrzuca każdy niezapisany szkic."
+"Terminy, menu Start, opcje paska narzędzi > Czas, lub wpisując /timer bez "
+"argumentów. To jest okno pulpitu: przeciągnij, przerost, zminimalizować do "
+"jego przycisku paska zadań, lub naciśnij Escape, aby go zamknąć. Zamykanie "
+"odrzuca każdy niezapisany szkic."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:7
 #, elixir-autogen, elixir-format
@@ -1903,8 +1902,8 @@ msgid ""
 "> User Lookup, a nickname context menu, /whois, or /whowas."
 msgstr ""
 "Nie ma dedykowanego skrótu klawiszowego dla wyszukiwania użytkowników. "
-"Otwórz go z narzędzi > Poszukiwanie użytkownika, menu kontekstowe nick, < "
-"ph0 > < / ph0 >, lub < ph1 > < / ph1 >."
+"Otwórz go z Narzędzia > Poszukiwanie użytkownika, menu kontekstowe nick, "
+"/whois lub /whowas."
 
 #: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:16
 #, elixir-autogen, elixir-format
@@ -1912,9 +1911,8 @@ msgid ""
 "There is no dedicated keyboard shortcut for the /me action toggle. Type /me "
 "directly, or click the * button in a channel input."
 msgstr ""
-"Nie ma dedykowanego skrótu klawiszowego dla przełączania akcji < ph0 > < / "
-"ph0 >. Wpisz < ph1 > < / ph1 > bezpośrednio lub kliknij przycisk * na "
-"wejściu kanału."
+"Nie ma dedykowanego skrótu klawiszowego dla przełączania akcji /me. Wpisz "
+"/me bezpośrednio, lub kliknij przycisk * w wejściu kanału."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:55
 #, elixir-autogen, elixir-format
@@ -2084,7 +2082,7 @@ msgstr "- Otwórz pasek wyszukiwania z Edycji > Znajdź lub Ctrl + Shift + F."
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "— Runs /ns info for your current nickname."
-msgstr "- Biega < ph0 > < / ph0 > Informacje o aktualnym pseudonimie."
+msgstr "- Uruchamia informacje o /ns dla Twojego aktualnego przezwiska."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:23
 #, elixir-autogen, elixir-format
@@ -2192,8 +2190,7 @@ msgid ""
 msgstr ""
 "Użyj okna Profil, aby zmienić swój pseudonim lub edytować bio. Zmiany nazwy "
 "nickname są zatwierdzane przed otwarciem okna potwierdzenia. Bio jest "
-"pokazane w < ph0 > < / ph0 > i jest ograniczone do 200 znaków z licznikiem "
-"na żywo."
+"pokazane w /whois i jest ograniczone do 200 znaków z licznikiem na żywo."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:42
 #, elixir-autogen, elixir-format

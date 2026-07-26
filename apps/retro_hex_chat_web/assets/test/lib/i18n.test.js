@@ -2,24 +2,17 @@ import { describe, expect, it, beforeEach } from "vitest";
 
 import { currentLocale, jt, loadCatalog, normalizeLocale, t } from "../../js/lib/i18n.js";
 import {
-  AR,
-  BN,
   DE,
   ES,
   FR,
-  HI,
   ID,
   IT,
   JA,
-  KO,
   NL,
   PL,
   PT_BR,
   PT_PT,
   RU,
-  TR,
-  UR,
-  VI,
   ZH_HANS,
   ZH_HANT,
 } from "../../js/lib/i18n_catalog.js";
@@ -48,16 +41,7 @@ describe("i18n runtime", () => {
     expect(normalizeLocale("zh-TW")).toBe("zh_hant");
     expect(normalizeLocale("zh-HK")).toBe("zh_hant");
     expect(normalizeLocale("id-ID")).toBe("id");
-    expect(normalizeLocale("ar-SA")).toBe("ar");
-    expect(normalizeLocale("bn-BD")).toBe("bn");
-    expect(normalizeLocale("bn-IN")).toBe("bn");
     expect(normalizeLocale("ru-RU")).toBe("ru");
-    expect(normalizeLocale("hi-IN")).toBe("hi");
-    expect(normalizeLocale("ko-KR")).toBe("ko");
-    expect(normalizeLocale("tr-TR")).toBe("tr");
-    expect(normalizeLocale("ur-PK")).toBe("ur");
-    expect(normalizeLocale("ur-IN")).toBe("ur");
-    expect(normalizeLocale("vi-VN")).toBe("vi");
     expect(normalizeLocale(null)).toBe("en");
   });
 
@@ -105,27 +89,12 @@ describe("i18n runtime", () => {
     );
   });
 
-  it("translates Bengali strings and interpolates parameters", async () => {
-    document.documentElement.setAttribute("lang", "bn-BD");
-    await loadCatalog("bn-BD");
+  it("translates Russian strings and interpolates parameters", async () => {
+    document.documentElement.setAttribute("lang", "ru-RU");
+    await loadCatalog("ru-RU");
 
-    expect(t("Blocked file type: %{0}", { 0: ".exe" })).toBe("অবরুদ্ধ ফাইলের ধরন: .exe");
-    expect(t("PLAYER %{0} WINS!", { 0: "1" })).toBe("খেলোয়াড় 1 জিতেছে!");
-  });
-
-  it("translates Urdu strings and interpolates parameters", async () => {
-    document.documentElement.setAttribute("lang", "ur-PK");
-    await loadCatalog("ur-PK");
-
-    expect(t("Blocked file type: %{0}", { 0: ".exe" })).toBe("مسدود فائل کی قسم: .exe");
-    expect(t("PLAYER %{0} WINS!", { 0: "1" })).toBe("کھلاڑی 1 جیت گیا!");
-  });
-
-  it("translates Traditional Chinese strings and interpolates parameters", async () => {
-    document.documentElement.setAttribute("lang", "zh-TW");
-    await loadCatalog("zh-TW");
-
-    expect(t("PLAYER %{0} WINS!", { 0: "1" })).toBe("玩家 1 獲勝！");
+    expect(t("Blocked file type: %{0}", { 0: ".exe" })).toBe("Заблокированный тип файла: .exe");
+    expect(t("PLAYER %{0} WINS!", { 0: "1" })).toBe("ИГРОК 1 ПОБЕЖДАЕТ!");
   });
 
   it("translates Italian strings and interpolates parameters", async () => {
@@ -134,6 +103,13 @@ describe("i18n runtime", () => {
 
     expect(t("Blocked file type: %{0}", { 0: ".exe" })).toBe("Tipo di file bloccato: .exe");
     expect(t("PLAYER %{0} WINS!", { 0: "1" })).toBe("GIOCATORE 1 VINCE!");
+  });
+
+  it("translates Traditional Chinese strings and interpolates parameters", async () => {
+    document.documentElement.setAttribute("lang", "zh-TW");
+    await loadCatalog("zh-TW");
+
+    expect(t("PLAYER %{0} WINS!", { 0: "1" })).toBe("玩家 1 獲勝！");
   });
 
   it("translates Polish strings and interpolates parameters", async () => {
@@ -168,28 +144,7 @@ describe("pt-BR JS catalog", () => {
 
 describe("expanded JS catalogs", () => {
   it("preserves interpolation placeholders in every locale", () => {
-    const catalogs = [
-      AR,
-      BN,
-      DE,
-      ES,
-      FR,
-      HI,
-      ID,
-      IT,
-      JA,
-      KO,
-      NL,
-      PL,
-      PT_BR,
-      PT_PT,
-      RU,
-      TR,
-      UR,
-      VI,
-      ZH_HANS,
-      ZH_HANT,
-    ];
+    const catalogs = [DE, ES, FR, ID, IT, JA, NL, PL, PT_BR, PT_PT, RU, ZH_HANS, ZH_HANT];
     const placeholders = (message) => new Set(message.match(/%\{[A-Za-z0-9_]+\}/g) || []);
 
     for (const catalog of catalogs) {

@@ -14,7 +14,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "#lobby (12)"
-msgstr "< ph0 > < / ph0 > (12)"
+msgstr "#lobby (12)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:42
 #, elixir-autogen, elixir-format
@@ -1365,11 +1365,11 @@ msgid ""
 "can drag, resize, minimize to the taskbar, and close with its title-bar X."
 msgstr ""
 "Bot Management adalah jendela admin untuk menciptakan, memeriksa, "
-"memungkinkan, dan mempertahankan robot sisi server-. Buka ini dari Manajemen"
-" Alat > Bot, grup Start menu Admin, Opsi toolbar dropdown, atau dengan "
-"mengetik < ph0 > < / ph0 > tanpa argumen sebagai operator admin atau server."
-" Ini dibuka sebagai jendela desktop Anda dapat menyeret, mengubah ukuran, "
-"meminimalkan ke taskbar, dan menutup dengan judul-bar X"
+"memungkinkan, dan mempertahankan robot sisi server-. Buka dari Perkakas > "
+"Manajemen Bot, grup Admin menu awal, opsi bilah alat menurun, atau dengan "
+"mengetik /bot tanpa argumen sebagai operator admin atau server. Ini dibuka "
+"sebagai jendela desktop Anda dapat menyeret, mengubah ukuran, meminimalkan "
+"ke taskbar, dan menutup dengan judul-bar X"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:50
 #, elixir-autogen, elixir-format
@@ -1379,9 +1379,8 @@ msgid ""
 "custom commands with /bot list, /bot info, and /bot commands."
 msgstr ""
 "Manajemen Bot hanya terlihat pada alamat server dan operator server yang "
-"diidentifikasi. Pengguna reguler masih dapat daftar bot, info robot "
-"pemeriksaan, dan lihat perintah gubahan dengan < ph0 > < / ph0 > list, < ph1"
-" > < / ph1 > info, dan < ph2 > < / ph2 > perintah."
+"diidentifikasi. Pengguna biasa masih bisa daftar bot, info robot, dan lihat "
+"perintah kustom dengan daftar /bot, informasi /bot, dan perintah /bot."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:62
 #, elixir-autogen, elixir-format
@@ -1432,8 +1431,7 @@ msgid ""
 "This runs the same action as /clear and cannot be undone."
 msgstr ""
 "Menghapus semua pesan dari saluran aktif atau jendela percakapan pribadi. "
-"Ini menjalankan aksi yang sama seperti < ph0 > < / ph0 > dan tidak dapat "
-"dibatalkan."
+"Hal ini berjalan sama dengan /clear dan tidak dapat dibatalkan."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:18
 #, elixir-autogen, elixir-format
@@ -1817,8 +1815,8 @@ msgid ""
 "unsaved draft."
 msgstr ""
 "Jendela Penghitung waktu mengelola sesi - hanya perintah yang dijadwalkan. "
-"Buka dari Perkakas > Waktu, menu awal, pilihan bilah alat > Penghitung, atau"
-" dengan mengetik < ph0 > < / ph0 > tanpa argumen. Ini adalah jendela "
+"Buka dari Perkakas > Pencatat waktu, menu awal, Opsi bilah alat > Penghitung"
+" waktu, atau dengan mengetik /timer tanpa argumen. Ini adalah jendela "
 "desktop: seret, ubah ukuran, perkecil tombol taskbar, atau tekan Escape "
 "untuk menutupnya. Menutup diskon setiap draft yang belum disimpan."
 
@@ -1879,9 +1877,8 @@ msgid ""
 "There is no dedicated keyboard shortcut for User Lookup. Open it from Tools "
 "> User Lookup, a nickname context menu, /whois, or /whowas."
 msgstr ""
-"Tak ada pintasan papan tik khusus bagi Pencarian Pengguna. Buka dari "
-"Pencarian Pengguna >, menu konteks nama panggilan, < ph0 > < / ph0 >, atau <"
-" ph1 > < / ph1 >."
+"Tak ada pintasan papan tik khusus bagi Pencarian Pengguna. Buka dari Alat > "
+"Pencarian Pengguna, menu konteks nama panggilan, /whois, atau /whowas."
 
 #: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:16
 #, elixir-autogen, elixir-format
@@ -1889,9 +1886,8 @@ msgid ""
 "There is no dedicated keyboard shortcut for the /me action toggle. Type /me "
 "directly, or click the * button in a channel input."
 msgstr ""
-"Tidak ada pintasan papan tik didedikasikan bagi < ph0 > < / ph0 > aksi "
-"toggle. Ketik < ph1 > < / ph1 > secara langsung, atau klik tombol * dalam "
-"sebuah masukan saluran."
+"Tidak ada pintasan papan tik didedikasikan untuk aksi toggle /me. Ketik /me "
+"secara langsung, atau klik tombol * dalam sebuah masukan saluran."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:55
 #, elixir-autogen, elixir-format
@@ -2062,7 +2058,7 @@ msgstr "- Buka batang pencarian dari Sunting > Cari atau Ctrl + Shift + F"
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "— Runs /ns info for your current nickname."
-msgstr "- Runs < ph0 > < / ph0 > info untuk nama panggilan Anda saat ini."
+msgstr "- Menjalankan /ns info untuk nama panggilan Anda saat ini."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:23
 #, elixir-autogen, elixir-format
@@ -2172,8 +2168,7 @@ msgid ""
 msgstr ""
 "Gunakan jendela Profil untuk mengubah nama panggilan Anda atau sunting bio "
 "Anda. Perubahan nama panggilan divalidasi sebelum dialog konfirmasi dibuka. "
-"Bio ini ditampilkan dalam < ph0 > < / ph0 > dan terbatas kepada 200 karakter"
-" dengan counter hidup."
+"Bio ditunjukkan dalam /whois dan terbatas 200 karakter dengan counter hidup."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:42
 #, elixir-autogen, elixir-format

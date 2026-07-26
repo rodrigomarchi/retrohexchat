@@ -179,7 +179,7 @@ msgstr "FUE"
 #: lib/retro_hex_chat_web/components/diagrams/arcade_scummvm.ex:95
 #, elixir-autogen, elixir-format
 msgid "Give"
-msgstr "#"
+msgstr "Give"
 
 #: lib/retro_hex_chat_web/components/diagrams/arcade_halflife.ex:53
 #, elixir-autogen, elixir-format
@@ -614,7 +614,7 @@ msgstr "Server (segnale)"
 #: lib/retro_hex_chat_web/components/diagrams/p2p_flow.ex:100
 #, elixir-autogen, elixir-format
 msgid "Server exchanges signaling (SDP/ICE)"
-msgstr "Scambi del server di segnalazione (SDP <ph0> < /ph0>)"
+msgstr "Segnalazione degli scambi di server (SDP/ICE)"
 
 #: lib/retro_hex_chat_web/components/diagrams/p2p_flow.ex:265
 #, elixir-autogen, elixir-format
@@ -657,8 +657,8 @@ msgid ""
 "Two security layers: browser to server via HTTPS/WSS with TLS, and browser "
 "to browser via DTLS-SRTP for P2P calls"
 msgstr ""
-"Due livelli di sicurezza: browser al server tramite HTTPS <ph0> </ph0> con "
-"TLS e browser al browser tramite DTLS-SRTP per chiamate P2P"
+"Due livelli di sicurezza: browser per server tramite HTTPS/WSS con TLS, e "
+"browser per browser tramite DTLS-SRTP per chiamate P2P"
 
 #: lib/retro_hex_chat_web/components/diagrams/arcade_halflife.ex:86
 #, elixir-autogen, elixir-format
@@ -791,9 +791,8 @@ msgid ""
 "P2P multiplayer games flow: type /p2p command, join lobby, select game, play"
 " via WebRTC DataChannel between two players"
 msgstr ""
-"Flusso di giochi multigiocatore P2P: tipo <ph0> < /ph0> comando, unisciti "
-"alla lobby, seleziona il gioco, gioca tramite WebRTC DataChannel tra due "
-"giocatori"
+"Flusso di giochi multiplayer P2P: comando /p2p, unisciti alla lobby, "
+"seleziona il gioco, gioca tramite WebRTC DataChannel tra due giocatori"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:18
 #, elixir-autogen, elixir-format

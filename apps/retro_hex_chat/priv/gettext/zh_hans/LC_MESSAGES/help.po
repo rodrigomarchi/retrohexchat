@@ -1765,7 +1765,7 @@ msgstr "没有计时器——先进5球. 每进一球,球都加速了"
 #: lib/retro_hex_chat/chat/help_topics/features.ex:311
 #, elixir-autogen, elixir-format
 msgid "Notices"
-msgstr "通知"
+msgstr "Notices"
 
 #: lib/retro_hex_chat/chat/help_topics.ex:54
 #: lib/retro_hex_chat/chat/help_topics.ex:83
@@ -5030,8 +5030,8 @@ msgid ""
 "transcript rows as inert history showing request, connected and ended "
 "states."
 msgstr ""
-"街机链接在直播时可以通过 join /Open 动作作为丰富的卡片渲染. P2P请求使用 PM 头来启动 /Join</ph2></ph2> "
-"并保留记录行作为惰性历史来显示请求,连接和结束状态."
+"街机链接在直播时可以使用 join/Open 动作作为丰富的卡片渲染. "
+"P2P请求使用PM头用于Start/Join/Decline,并保留记录行作为惰性历史显示请求,连接和结束状态."
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:283
 #, elixir-autogen, elixir-format
@@ -5047,10 +5047,8 @@ msgid ""
 "starts the session right there, with the P2P Session Console opening on the "
 "chat desktop. See also: P2P Sessions in Chat, P2P Session."
 msgstr ""
-"邀请某人参加一个 P2P 会话, "
-"该会话会运行一个音频<ph0}\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"
-" 请求在私人信件中到达, PM 头部显示 join/Decline —— 接受它从那里开始会话, P2P 会话控制台在聊天桌面上打开 。 另见: "
-"Chat中的P2P会话,P2P会话."
+"请某人参加一个P2P会话,通过一个连接运行一个音频/video呼叫,文件传输,和游戏. 请求在私人信件中到达,PM头显示为 "
+"join/Decline——接受它从那里开始会话,在聊天桌面上打开P2P会话控制台. 另见: Chat中的P2P会话,P2P会话."
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:1001
 #, elixir-autogen, elixir-format
@@ -5084,8 +5082,8 @@ msgid ""
 "through the relay so your IP address is never shared with the peer. See "
 "also: P2P Session, Video Call, File Transfer, Private Messages."
 msgstr ""
-"运行一个 P2P 会话而不离开聊天:/p2p<ph0><</ph2></ph2>>>打开设置,立即显示创建者的 P2P "
-"会话控制台,并向私人信件发送请求行. 请访问的 PM 标签在背景中打开, 在 PM 头部有 join/Decline 。 "
+"在不离开聊天的情况下运行一个 P2P 会话: /p2p <nick> 打开设置,立即显示创建者的 P2P 会话控制台,并将请求行发送到私人信件中. "
+"受邀人士的PM标签在背景中打开,在PM头部有JUIN/Decline. "
 "连接后,P2P菜单(亦在Start菜单中反射)在聊天桌面上打开了P2P会话控制台,包含Call,File,Games和Stats等部分. "
 "对话是私人消息——会话事件(连接,收到文件,游戏结果,谁结束)被保存到PM历史中作为P2P线条,PM标签在会话直播时会显示一个小的P2P图标. "
 "状态栏总是显示活动会话:单击它将 P2P 会话控制台带到前面,或者使用它的停止按钮取消待决邀请/结束会话. "
@@ -5113,7 +5111,7 @@ msgid ""
 "right on the chat desktop, and ending any one activity never drops the "
 "others. See also: P2P Sessions in Chat."
 msgstr ""
-"P2P会话是<ph0>/ph0>背后的持续对等连接——一个同时托管一个呼叫,文件传输和游戏的链接. "
+"P2P会话是/p2p背后持续的对等连接——一个同时托管一个呼叫,文件传输和游戏的链接. "
 "它住在聊天内部:接受邀请后,在聊天桌面上右侧打开P2P会话控制台,结束任何一项活动都不会放弃其他活动. 另见:聊天中的P2P会话."
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:1257

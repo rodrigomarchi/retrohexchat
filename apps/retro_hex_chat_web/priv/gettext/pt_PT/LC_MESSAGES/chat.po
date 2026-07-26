@@ -542,7 +542,7 @@ msgstr "* Nova atividade"
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/settings.ex:53
 #, elixir-autogen, elixir-format
 msgid "* No bio set. Use /bio <text> to set one."
-msgstr "* Nenhum conjunto biológico. Usar /bio <ph0></ph0 para definir um."
+msgstr "* Nenhum conjunto biológico. Use /bio <text> para definir um."
 
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:80
 #, elixir-autogen, elixir-format
@@ -762,7 +762,7 @@ msgid ""
 "Type /help <command> for details, or open Help Topics from the menu for the full help system."
 msgstr ""
 "Comandos disponíveis: %{commands}\n"
-"Digite /help <ph0></ph0 para detalhes, ou abra Tópicos de Ajuda do menu para o sistema de ajuda completo."
+"Digite /help <command> para detalhes ou abra Tópicos de Ajuda do menu para o sistema de ajuda completo."
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:216
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:113
@@ -2371,7 +2371,7 @@ msgid ""
 "/ns identify <password> or you will be renamed."
 msgstr ""
 "[NickServ] Esta alcunha está registada. Você tem 60 segundos para "
-"identificar via /ns identificar <ph0><</ph0 ou você será renomeado."
+"identificar via /ns identificar <password> ou você será renomeado."
 
 #: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/server_messages.ex:37
 #, elixir-autogen, elixir-format
@@ -3255,8 +3255,8 @@ msgstr "Espaço"
 msgid ""
 "Start a P2P session with /p2p <nick>, or right-click a user in the nicklist."
 msgstr ""
-"Inicie uma sessão de P2P com /p2p <ph0><</ph0, ou clique com o botão direito"
-" de um usuário na lista de nicks."
+"Inicie uma sessão P2P com /p2p <nick>, ou clique com o botão direito do "
+"mouse em um usuário na nicklist."
 
 #: lib/retro_hex_chat_web/live/chat_live/components/cheatsheet_dialog.ex:77
 #, elixir-autogen, elixir-format

@@ -22,16 +22,7 @@ defmodule RetroHexChatWeb.I18nTest do
       assert I18n.normalize_locale("zh-TW") == "zh_hant"
       assert I18n.normalize_locale("zh-HK") == "zh_hant"
       assert I18n.normalize_locale("id-ID") == "id"
-      assert I18n.normalize_locale("ar-SA") == "ar"
-      assert I18n.normalize_locale("bn-BD") == "bn"
-      assert I18n.normalize_locale("bn-IN") == "bn"
       assert I18n.normalize_locale("ru-RU") == "ru"
-      assert I18n.normalize_locale("hi-IN") == "hi"
-      assert I18n.normalize_locale("ko-KR") == "ko"
-      assert I18n.normalize_locale("tr-TR") == "tr"
-      assert I18n.normalize_locale("ur-PK") == "ur"
-      assert I18n.normalize_locale("ur-IN") == "ur"
-      assert I18n.normalize_locale("vi-VN") == "vi"
     end
 
     test "rejects unsupported locales" do
@@ -78,14 +69,15 @@ defmodule RetroHexChatWeb.I18nTest do
       assert {"pl", "Polski"} in I18n.supported_locales()
       assert {"zh_hans", "简体中文"} in I18n.supported_locales()
       assert {"zh_hant", "繁體中文"} in I18n.supported_locales()
-      assert {"ar", "العربية"} in I18n.supported_locales()
-      assert {"bn", "বাংলা"} in I18n.supported_locales()
       assert {"ru", "Русский"} in I18n.supported_locales()
-      assert {"hi", "हिन्दी"} in I18n.supported_locales()
-      assert {"ko", "한국어"} in I18n.supported_locales()
-      assert {"tr", "Türkçe"} in I18n.supported_locales()
-      assert {"ur", "اردو"} in I18n.supported_locales()
-      assert {"vi", "Tiếng Việt"} in I18n.supported_locales()
+      assert {"fr", "Français"} in I18n.supported_locales()
+      assert {"de", "Deutsch"} in I18n.supported_locales()
+      assert {"ja", "日本語"} in I18n.supported_locales()
+      assert {"id", "Bahasa Indonesia"} in I18n.supported_locales()
+    end
+
+    test "covers exactly the enabled locale set" do
+      assert length(I18n.supported_locales()) == 14
     end
   end
 
@@ -100,13 +92,11 @@ defmodule RetroHexChatWeb.I18nTest do
   test "html_dir/0 returns the text direction for the active locale" do
     on_exit(fn -> I18n.put_locale("en") end)
 
-    I18n.put_locale("ar")
+    for {code, _label} <- I18n.supported_locales() do
+      I18n.put_locale(code)
 
-    assert I18n.html_dir() == "rtl"
-
-    I18n.put_locale("ur")
-
-    assert I18n.html_dir() == "rtl"
+      assert I18n.html_dir() == "ltr"
+    end
   end
 
   test "open_graph_locale/0 returns a locale tag for SEO metadata" do

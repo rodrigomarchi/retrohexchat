@@ -435,14 +435,7 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_flag_zh_hans(assigns), to: RetroHexChatWeb.Icons.Flags
   defdelegate icon_flag_zh_hant(assigns), to: RetroHexChatWeb.Icons.Flags
   defdelegate icon_flag_id(assigns), to: RetroHexChatWeb.Icons.Flags
-  defdelegate icon_flag_ar(assigns), to: RetroHexChatWeb.Icons.Flags
   defdelegate icon_flag_ru(assigns), to: RetroHexChatWeb.Icons.Flags
-  defdelegate icon_flag_hi(assigns), to: RetroHexChatWeb.Icons.Flags
-  defdelegate icon_flag_ko(assigns), to: RetroHexChatWeb.Icons.Flags
-  defdelegate icon_flag_tr(assigns), to: RetroHexChatWeb.Icons.Flags
-  defdelegate icon_flag_vi(assigns), to: RetroHexChatWeb.Icons.Flags
-  defdelegate icon_flag_bn(assigns), to: RetroHexChatWeb.Icons.Flags
-  defdelegate icon_flag_ur(assigns), to: RetroHexChatWeb.Icons.Flags
   defdelegate icon_flag_it(assigns), to: RetroHexChatWeb.Icons.Flags
   defdelegate icon_flag_pl(assigns), to: RetroHexChatWeb.Icons.Flags
   defdelegate icon_flag_nl(assigns), to: RetroHexChatWeb.Icons.Flags

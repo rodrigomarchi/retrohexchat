@@ -88,18 +88,6 @@
     status: :enabled
   },
   %{
-    code: "ar",
-    bcp47: "ar",
-    open_graph: "ar_AR",
-    label: "العربية",
-    direction: "rtl",
-    plural_forms:
-      "nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5);",
-    aliases: ~w(ar ar_SA ar_EG),
-    wave: 2,
-    status: :enabled
-  },
-  %{
     code: "ru",
     bcp47: "ru",
     open_graph: "ru_RU",
@@ -109,72 +97,6 @@
       "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);",
     aliases: ~w(ru ru_RU),
     wave: 2,
-    status: :enabled
-  },
-  %{
-    code: "hi",
-    bcp47: "hi",
-    open_graph: "hi_IN",
-    label: "हिन्दी",
-    direction: "ltr",
-    plural_forms: "nplurals=2; plural=(n != 1);",
-    aliases: ~w(hi hi_IN),
-    wave: 2,
-    status: :enabled
-  },
-  %{
-    code: "ko",
-    bcp47: "ko",
-    open_graph: "ko_KR",
-    label: "한국어",
-    direction: "ltr",
-    plural_forms: "nplurals=1; plural=0;",
-    aliases: ~w(ko ko_KR),
-    wave: 2,
-    status: :enabled
-  },
-  %{
-    code: "tr",
-    bcp47: "tr",
-    open_graph: "tr_TR",
-    label: "Türkçe",
-    direction: "ltr",
-    plural_forms: "nplurals=2; plural=(n > 1);",
-    aliases: ~w(tr tr_TR),
-    wave: 2,
-    status: :enabled
-  },
-  %{
-    code: "vi",
-    bcp47: "vi",
-    open_graph: "vi_VN",
-    label: "Tiếng Việt",
-    direction: "ltr",
-    plural_forms: "nplurals=1; plural=0;",
-    aliases: ~w(vi vi_VN),
-    wave: 2,
-    status: :enabled
-  },
-  %{
-    code: "bn",
-    bcp47: "bn",
-    open_graph: "bn_BD",
-    label: "বাংলা",
-    direction: "ltr",
-    plural_forms: "nplurals=2; plural=(n != 1);",
-    aliases: ~w(bn bn_BD bn_IN),
-    wave: 3,
-    status: :enabled
-  },
-  %{
-    code: "ur",
-    bcp47: "ur",
-    open_graph: "ur_PK",
-    label: "اردو",
-    direction: "rtl",
-    plural_forms: "nplurals=2; plural=(n != 1);",
-    aliases: ~w(ur ur_PK ur_IN),
-    wave: 3,
     status: :enabled
   },
   %{

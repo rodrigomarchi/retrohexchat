@@ -548,9 +548,7 @@ msgstr "* Nowa aktywność"
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/settings.ex:53
 #, elixir-autogen, elixir-format
 msgid "* No bio set. Use /bio <text> to set one."
-msgstr ""
-"* No bio set. Użyj < ph1 > < / ph1 > < ph0 > < < ph2 > < / ph2 > > do "
-"ustawienia jednego."
+msgstr "* No bio set. Użyj /bio <text>, aby ustawić jeden."
 
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:80
 #, elixir-autogen, elixir-format
@@ -769,7 +767,7 @@ msgid ""
 "Type /help <command> for details, or open Help Topics from the menu for the full help system."
 msgstr ""
 "Dostępne polecenia: %{commands}\n"
-"Rodzaj /help < ph0 > </ph0> dla szczegółów, lub otworzyć Tematy Pomoc z menu dla pełnego systemu pomocy."
+"Wpisz /help <command> w celu uzyskania szczegółów lub otwórz Tematy Pomocy z menu dla pełnego systemu pomocy."
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:216
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:113
@@ -878,7 +876,7 @@ msgstr "Nie można dodać się do listy powiadomień"
 #: lib/retro_hex_chat_web/live/chat_live/helpers/pm.ex:154
 #, elixir-autogen, elixir-format
 msgid "Cannot send text to status window. Use /commands."
-msgstr "Nie można wysłać tekstu do okna stanu. Użyj < ph0 > < / ph0 >."
+msgstr "Nie można wysłać tekstu do okna stanu. Użyj /commands."
 
 #: lib/retro_hex_chat_web/live/chat_live/components/highlight_dialog.ex:150
 #, elixir-autogen, elixir-format
@@ -1672,7 +1670,7 @@ msgstr "Online"
 #: lib/retro_hex_chat_web/live/app/chat_live.ex:909
 #, elixir-autogen, elixir-format
 msgid "Open /chat/help in a new tab."
-msgstr "Otwórz < ph0 > < / ph0 > < ph1 > < / ph1 > w nowej zakładce."
+msgstr "Otwórz /chat/help w nowej zakładce."
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:216
 #, elixir-autogen, elixir-format
@@ -2020,8 +2018,7 @@ msgstr "Polecenie to nie może być dodane do listy wykonań"
 #, elixir-autogen, elixir-format
 msgid "The server Message of the Day has been updated. Type /motd to view."
 msgstr ""
-"Serwer Wiadomość Dnia został zaktualizowany. Typ < ph0 > < / ph0 > do "
-"wyświetlenia."
+"Serwer Wiadomość Dnia został zaktualizowany. Typ /motd do wyświetlenia."
 
 #: lib/retro_hex_chat_web/live/chat_live/invite_events.ex:30
 #, elixir-autogen, elixir-format
@@ -2062,13 +2059,12 @@ msgstr "Podróże i miejsca"
 #, elixir-autogen, elixir-format
 msgid "Type /help chanserv or /help channel-permissions for full details."
 msgstr ""
-"Type < ph0 > < / ph0 > chanserv lub < ph1 > < / ph1 > channel-permissions "
-"for complete details."
+"Typ /help chanserv lub /help channel- uprawnienia dla pełnych szczegółów."
 
 #: lib/retro_hex_chat_web/live/app/chat_live.ex:972
 #, elixir-autogen, elixir-format
 msgid "Type /help nickserv for full details."
-msgstr "Typ < ph0 > < / ph0 > nickserv dla uzyskania pełnych informacji."
+msgstr "Typ /help nickserv dla pełnych szczegółów."
 
 #: lib/retro_hex_chat_web/live/app/chat_helpers.ex:145
 #: lib/retro_hex_chat_web/live/app/chat_helpers.ex:158
@@ -2381,9 +2377,9 @@ msgid ""
 "[NickServ] This nickname is registered. You have 60 seconds to identify via "
 "/ns identify <password> or you will be renamed."
 msgstr ""
-"[NickServ] Ta ksywka jest zarejestrowana. Masz 60 sekund na identyfikację "
-"przez < ph1 > < / ph1 > identyfikacja < ph0 > < < ph2 > < / ph2 > > lub "
-"zostanie zmieniona nazwa."
+"[NickServ] Ta ksywka jest zarejestrowana. Masz 60 sekund, aby zidentyfikować"
+" za pośrednictwem /ns zidentyfikować <password> lub zostanie zmieniona "
+"nazwa."
 
 #: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/server_messages.ex:37
 #, elixir-autogen, elixir-format
@@ -2917,7 +2913,7 @@ msgstr "Wyślij wiadomość..."
 #: lib/retro_hex_chat_web/components/ui/chat/chat_input.ex:139
 #, elixir-autogen, elixir-format
 msgid "Send action message (/me)"
-msgstr "Wyślij komunikat akcji (< ph0 > < / ph0 >)"
+msgstr "Wyślij wiadomość akcji (/me)"
 
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:135
 #, elixir-autogen, elixir-format
@@ -3006,7 +3002,7 @@ msgstr "Wiadomość powitalna zachowana."
 #: lib/retro_hex_chat_web/components/ui/chat/chat_input.ex:190
 #, elixir-autogen, elixir-format
 msgid "What are you doing? (/me mode)"
-msgstr "Co robisz? (< ph0 > < / ph0 > Tryb)"
+msgstr "Co robisz? (tryb /me)"
 
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:177
 #, elixir-autogen, elixir-format
@@ -3269,8 +3265,8 @@ msgstr "Przestrzeń"
 msgid ""
 "Start a P2P session with /p2p <nick>, or right-click a user in the nicklist."
 msgstr ""
-"Rozpocznij sesję P2P z < ph1 > < / ph1 > < ph0 > < ph2 > < / ph2 > > lub "
-"kliknij prawym przyciskiem myszy użytkownika na nicklist."
+"Rozpocznij sesję P2P z /p2p <nick> lub kliknij prawym przyciskiem myszy "
+"użytkownika na nicklist."
 
 #: lib/retro_hex_chat_web/live/chat_live/components/cheatsheet_dialog.ex:77
 #, elixir-autogen, elixir-format
@@ -3347,8 +3343,8 @@ msgid ""
 "You must be registered and identified to play. Use /ns register and /ns "
 "identify first."
 msgstr ""
-"Musisz być zarejestrowany i zidentyfikowany do gry. Użyj < ph0 > < / ph0 > "
-"rejestrować i < ph1 > < / ph1 > najpierw identyfikować."
+"Musisz być zarejestrowany i zidentyfikowany do gry. Użyj najpierw rejestru "
+"/ns i identyfikacji /ns."
 
 #: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:482
 #: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:197

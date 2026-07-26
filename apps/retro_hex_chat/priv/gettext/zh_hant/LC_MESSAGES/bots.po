@@ -583,7 +583,7 @@ msgstr "無效的 URL 。 從http://或https://開始"
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:179
 #, elixir-autogen, elixir-format
 msgid "Invalid dice notation '%{notation}'. Use format: NdS, NdS+M, NdSkh/klN"
-msgstr "無效的骰子標記“ %{notation} ” 。 使用格式:NDS、NDS+M、NDSkh<ph0>/ph0>"
+msgstr "無效的骰子標記“ %{notation} ” 。 使用格式:NDS、NDS+M、NDSkh/klN"
 
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:275
 #, elixir-autogen, elixir-format
@@ -728,7 +728,7 @@ msgstr "最小間隔爲 %{minutes}分鐘."
 #: lib/retro_hex_chat/bots/capabilities/rss.ex:193
 #, elixir-autogen, elixir-format
 msgid "Missing channel. Usage: rss add <url> <#channel>"
-msgstr "頻道不見了 用法:rs 添加 <ph0><</ph2></ph2>>/ph1><</ph3>>/ph3>>/ph3>>]"
+msgstr "頻道不見了 用法:rs 添加 <url> <#channel>"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:470
 #, elixir-autogen, elixir-format
@@ -910,7 +910,7 @@ msgstr "第 %{number}/%{total} 題：%{question}"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:415
 #, elixir-autogen, elixir-format
 msgid "Queen"
-msgstr "皇后 皇后 皇后 皇后"
+msgstr "Queen"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:411
 #, elixir-autogen, elixir-format
@@ -1205,7 +1205,7 @@ msgstr "未知的種子格式( 預期 RSS 2. 0 或 Atom)"
 #: lib/retro_hex_chat/bots/capabilities/rss.ex:196
 #, elixir-autogen, elixir-format
 msgid "Usage: rss add <url> <#channel>"
-msgstr "用法:rs 添加 <ph0><</ph2></ph2>>/ph1><</ph3>>/ph3>>/ph3>>]"
+msgstr "用法:rs 添加 <url> <#channel>"
 
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:215
 #, elixir-autogen, elixir-format
@@ -1213,9 +1213,7 @@ msgid ""
 "Usage: schedule add interval <min> <#channel> <message> OR schedule add "
 "daily <HH:MM> <#channel> <message>"
 msgstr ""
-"用法:時刻表增加間隔 <ph0><</ph6>>/ph6>>/ph7>>/ph7>>/ph2><</ph8>>/ph8>>/ OR時刻表每天增加間隔 "
-"<ph3><</ph9>>/ph4><</ph10>>/ph10>>/ph5><</ph11></ph11>>/ph11>>/ph11>>/ph1>>/phl"
-" OR/phl OR/phl OR/pl OR/phl OR/phl OR/pl OR/pl OR/pl OR/pl OR/pl OR."
+"用法:計劃增加間隔<min> <#channel> <message> OR計劃增加每日<HH:MM> <#channel> <message>"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:90
 #, elixir-autogen, elixir-format

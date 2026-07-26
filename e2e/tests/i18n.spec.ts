@@ -63,19 +63,19 @@ test.describe("Internationalization", () => {
     }
   });
 
-  test("switches to Arabic with RTL document direction", async ({ page }) => {
+  test("switches to Japanese and survives a reload", async ({ page }) => {
     await page.goto("/connect");
 
-    await chooseLanguage(page, "ar");
+    await chooseLanguage(page, "ja");
 
     await expect(page).toHaveURL(/\/connect$/);
-    await expect(page.locator("html")).toHaveAttribute("lang", "ar");
-    await expect(page.locator("html")).toHaveAttribute("dir", "rtl");
+    await expect(page.locator("html")).toHaveAttribute("lang", "ja");
+    await expect(page.locator("html")).toHaveAttribute("dir", "ltr");
 
     await page.reload();
 
-    await expect(page.locator("html")).toHaveAttribute("lang", "ar");
-    await expect(page.locator("html")).toHaveAttribute("dir", "rtl");
+    await expect(page.locator("html")).toHaveAttribute("lang", "ja");
+    await expect(page.locator("html")).toHaveAttribute("dir", "ltr");
   });
 
   test("keeps pt-BR through registration into the chat shell", async ({
@@ -108,10 +108,10 @@ test.describe("Internationalization", () => {
 
     await expect(page).toHaveURL(/\/chat(\?.*)?$/);
 
-    await chooseLanguage(page, "ar");
+    await chooseLanguage(page, "ja");
 
     await expect(page).toHaveURL(/\/chat$/);
-    await expect(page.locator("html")).toHaveAttribute("lang", "ar");
-    await expect(page.locator("html")).toHaveAttribute("dir", "rtl");
+    await expect(page.locator("html")).toHaveAttribute("lang", "ja");
+    await expect(page.locator("html")).toHaveAttribute("dir", "ltr");
   });
 });

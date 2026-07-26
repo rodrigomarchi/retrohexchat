@@ -77,7 +77,7 @@ msgstr "!Bot trivia start"
 #: lib/retro_hex_chat_web/controllers/help_content/bot_trivia.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "!Bot trivia start <category>"
-msgstr "!Bot trivia start <ph0>>ph1>/ph1>"
+msgstr "!Bot trivia start <category>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_trivia.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:155
@@ -131,8 +131,9 @@ msgid ""
 "https://example.com/rss news !MyBot rss list !MyBot rss check f1a2b3 !MyBot "
 "rss remove f1a2b3"
 msgstr ""
-"!MyBot rss add <ph2>ph6>/ph6>>ph3>ph3>ph7>/ph7>> <ph10>/ph10>/ph10> !MyBot "
-"rs add <ph4><ph8>/ph8>>>ph5>ph9>/ph9>> news !MyBot rs list"
+"!MyBot rss add https://blog.example.com/feed.xml #news !MyBot rss add "
+"https://example.com/rss news !MyBot rss list !MyBot rss check f1a2b3 !MyBot "
+"rss remove f1a2b3"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:77
 #, elixir-autogen, elixir-format
@@ -1323,7 +1324,7 @@ msgstr "— der Benutzer, der den Befehl aufgerufen hat"
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "!BotName roll <notation>"
-msgstr "!BotName roll <ph0>>ph1>>"
+msgstr "!BotName roll <notation>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:71
 #, elixir-autogen, elixir-format
@@ -1673,8 +1674,8 @@ msgid ""
 "regular users see the bot list."
 msgstr ""
 "Mit dem Befehl können Administratoren und Serverbetreiber Bots erstellen, "
-"konfigurieren und verwalten. Running <ph0>/ph0> ohne Argumente öffnet Bot "
-"Management für Admins, während regelmäßige Benutzer die Bot-Liste sehen."
+"konfigurieren und verwalten. /bot ohne Argumente öffnet Bot Management für "
+"Admins, während regelmäßige Benutzer die Bot-Liste sehen."
 
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:177
 #, elixir-autogen, elixir-format

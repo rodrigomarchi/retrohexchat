@@ -19,7 +19,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.NickServ do
 
   def execute(["info", nick], context) do
     nick = strip_at(nick)
-    AuditLogs.log(context.nickname, dgettext("admin", "ns.info"), {"user", nick})
+    AuditLogs.log(context.nickname, "ns.info", {"user", nick})
 
     case NickServ.info(nick) do
       {:ok, info} ->

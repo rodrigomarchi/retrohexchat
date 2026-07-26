@@ -6,7 +6,7 @@
 # No compilation needed — this is a standalone .exs script.
 #
 # Pipeline:
-#   Stage 1: compile first, then JS lint + JS tests in parallel
+#   Stage 1: compile first, then JS lint + JS tests + i18n checks in parallel
 #   Stage 2 (parallel, after compile): format + credo + CSS lint + tests + feature tests
 #   Stage 3 (isolated, after stage 2): dialyzer (runs alone to avoid protocol consolidation races)
 #
@@ -14,13 +14,13 @@
 # Ecto SQL Sandbox ensures each process gets isolated DB transactions.
 #
 # Usage:
-#   elixir scripts/ci.exs              # run all 9 checks
+#   elixir scripts/ci.exs              # run all 11 checks
 #   elixir scripts/ci.exs --quick      # skip dialyzer
 #   elixir scripts/ci.exs --only compile,credo
 
 defmodule CI do
   @compile_check "compile"
-  @stage1_independent ["lint_js", "js_tests"]
+  @stage1_independent ["lint_js", "js_tests", "py_tests", "i18n_quality"]
   @stage2_after_compile ["format", "credo", "lint_css", "test", "test_feature"]
   @stage3_isolated ["dialyzer"]
 
@@ -34,6 +34,16 @@ defmodule CI do
       label: "JS Tests",
       cmd: "npm",
       args: ["test", "--prefix", "apps/retro_hex_chat_web/assets"]
+    },
+    "py_tests" => %{
+      label: "i18n Tooling Tests",
+      cmd: "python3",
+      args: ["-m", "unittest", "discover", "-s", "scripts", "-t", "scripts", "-p", "test_*.py"]
+    },
+    "i18n_quality" => %{
+      label: "i18n Quality",
+      cmd: "python3",
+      args: ["scripts/i18n_quality_check.py", "--fail-on-findings"]
     },
     "format" => %{label: "Format", cmd: "make", args: ["format.check"]},
     "credo" => %{label: "Credo", cmd: "mix", args: ["credo", "--strict"]},

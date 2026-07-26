@@ -4177,7 +4177,7 @@ msgstr "multiple tab"
 #: lib/retro_hex_chat/chat/help_topics/features.ex:748
 #, elixir-autogen, elixir-format
 msgid "mute channel"
-msgstr "undo-type"
+msgstr "mute channel"
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:524
 #, elixir-autogen, elixir-format
@@ -4875,8 +4875,8 @@ msgid ""
 "Reference for all /bot subcommands and the admin dialog opened by /bot with "
 "no arguments."
 msgstr ""
-"Referensi untuk semua < ph0 > < / ph0 > subcommands dan dialog admin dibuka "
-"oleh < ph1 > < / ph1 > tanpa argumen."
+"Referensi untuk semua subperintah /bot dan dialog admin dibuka oleh /bot "
+"tanpa argumen."
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:31
 #, elixir-autogen, elixir-format
@@ -4963,8 +4963,8 @@ msgid ""
 "with the toolbar button. See also: Call Quality, Connection Diagram."
 msgstr ""
 "Panel jaringan selama panggilan menunjukkan kesehatan sambungan langsung (a "
-"MOS skor), latensi, jitter, kerugian paket, atas < ph0 > < / ph0 > bitrate, "
-"resolusi video dan laju frame, dan apakah kualitas dibatasi oleh CPU atau "
+"MOS skor), latensi, jitter, kerugian paket, bitrate up/download, resolusi "
+"video dan laju bingkai, dan apakah kualitas dibatasi oleh CPU atau "
 "bandwidth. Gulingkan dengan tombol bilah alat. Lihat juga: Hubungi Kualitas,"
 " Diagram Koneksi."
 
@@ -5005,8 +5005,8 @@ msgid ""
 "Transfer channel ownership to another member from Channel Central or "
 "/transfer."
 msgstr ""
-"Transfer kepemilikan saluran ke anggota lain dari Channel Central atau < ph0"
-" > < / ph0 >."
+"Transfer kepemilikan saluran ke anggota lain dari Channel Central atau "
+"/transfer."
 
 #: lib/retro_hex_chat/chat/help_topics/services.ex:118
 #, elixir-autogen, elixir-format
@@ -5162,7 +5162,7 @@ msgstr "menu alat"
 #: lib/retro_hex_chat/chat/help_topics/user_interface.ex:136
 #, elixir-autogen, elixir-format
 msgid "unmute channel"
-msgstr "undo-type"
+msgstr "unmute channel"
 
 #: lib/retro_hex_chat/chat/help_topics/commands.ex:465
 #: lib/retro_hex_chat/chat/help_topics/commands.ex:485
@@ -5201,10 +5201,10 @@ msgid ""
 "moderation follows channel permissions: half-operators and above can "
 "moderate lower-ranked participants."
 msgstr ""
-"Bergabung dengan saluran-scoped audio < ph0 > < / ph0 > konferensi dengan "
-"pre- join preview perangkat, kontrol tata letak, moderasi peserta, dan "
-"statistik hidup. Moderasi konferensi mengikuti izin saluran: setengah "
-"operator dan di atas dapat moderat peserta peringkat rendah."
+"Bergabung dengan konferensi audio/video saluran dengan pratinjau perangkat, "
+"tata letak kontrol, moderasi peserta, dan statistik hidup. Moderasi "
+"konferensi mengikuti izin saluran: setengah operator dan di atas dapat "
+"moderat peserta peringkat rendah."
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:1095
 #, elixir-autogen, elixir-format
@@ -5486,10 +5486,10 @@ msgid ""
 "transcript rows as inert history showing request, connected and ended "
 "states."
 msgstr ""
-"Arkade link dapat membuat kartu kaya dengan Bergabung < ph0 > < / ph0 > aksi"
-" ketika mereka hidup. P2P meminta menggunakan kepala PM untuk Start < ph1 > "
-"< / ph1 > < ph2 > < / ph2 > dan menjaga baris transkrip sebagai riwayat "
-"inert menunjukkan permintaan, terhubung dan berakhir negara bagian."
+"Arkade link dapat membuat sebagai kartu kaya dengan Join/Open tindakan "
+"sementara mereka hidup. P2P meminta menggunakan kepala PM untuk "
+"Start/JoinX/Decline dan menjaga baris transkrip sebagai baris riwayat inert "
+"menunjukkan permintaan, tersambung dan berakhir negara."
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:283
 #, elixir-autogen, elixir-format
@@ -5507,11 +5507,11 @@ msgid ""
 "starts the session right there, with the P2P Session Console opening on the "
 "chat desktop. See also: P2P Sessions in Chat, P2P Session."
 msgstr ""
-"Undang seseorang ke sesi P2P yang menjalankan audio < ph0 > < / ph0 > "
-"panggilan, transfer file, dan permainan bersama-sama selama satu koneksi. "
-"Permintaan tiba dalam pesan pribadi dan kepala PM menunjukkan Join < ph1 > <"
-" / ph1 > - menerimanya dimulai sesi di sana, dengan pembukaan Konsol P2P "
-"Sesi di desktop obrolan. Lihat juga: Sesi P2P dalam Sesi Chat, P2P."
+"Undang seseorang untuk sesi P2P yang menjalankan panggilan audio/video, "
+"transfer file, dan permainan bersama-sama melalui satu koneksi. Permintaan "
+"tiba dalam pesan pribadi dan kepala PM menunjukkan Join/Decline - "
+"menerimanya dimulai sesi di sana, dengan P2P Sesi Console membuka pada "
+"desktop percakapan. Lihat juga: Sesi P2P dalam Sesi Chat, P2P."
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:1001
 #, elixir-autogen, elixir-format
@@ -5547,21 +5547,20 @@ msgid ""
 "through the relay so your IP address is never shared with the peer. See "
 "also: P2P Session, Video Call, File Transfer, Private Messages."
 msgstr ""
-"Jalankan sesi P2P tanpa meninggalkan percakapan: < ph1 > < / ph1 > < ph0 > <"
-" ph2 > < / ph2 > buka setup, menampilkan konsol sesi P2P pencipta segera, "
-"dan mengirim baris permintaan ke pesan pribadi. Tab PM orang yang diundang "
-"dibuka di latar belakang dengan Gabung < ph3 > < / ph3 > dalam kepala PM. "
-"Setelah tersambung, menu P2P (juga dicermin di menu Start) membuka Konsol "
-"Sesi P2P pada desktop obrolan dengan Bagian Call, Files, Games dan Stats. "
-"Percakapan ini adalah pesan pribadi - acara sesi (tersambung, diterima "
-"berkas, hasil permainan, yang mengakhirinya) disimpan ke dalam sejarah PM "
-"sebagai baris P2P, dan tab PM menampilkan sebuah ikon P2P kecil ketika sesi "
-"hidup. Batang status selalu menampilkan sesi aktif: klik itu untuk membawa "
-"Konsol Sesi P2P ke depan, atau gunakan tombol stop untuk membatalkan "
-"undangan tertunda / mengakhiri sesi. Anda dapat mengadakan SATU sesi pada "
-"satu waktu - menerima undangan baru (atau mengundang orang lain) meminta "
-"untuk mengakhiri sesi saat ini terlebih dahulu. Ketika relay TURN "
-"dikonfigurasi, Jungkitkan Mode Privasi dalam menu P2P memaksa koneksi "
+"Jalankan sesi P2P tanpa meninggalkan percakapan: /p2p <nick> membuka setup, "
+"menunjukkan Konsol Sesi P2P pencipta segera, dan mengirim baris permintaan "
+"ke pesan pribadi. Tab PM orang diundang dibuka di latar belakang dengan "
+"JoinX/Decline di kepala PM. Setelah tersambung, menu P2P (juga dicermin di "
+"menu Start) membuka Konsol Sesi P2P pada desktop obrolan dengan Bagian Call,"
+" Files, Games dan Stats. Percakapan ini adalah pesan pribadi - acara sesi "
+"(tersambung, diterima berkas, hasil permainan, yang mengakhirinya) disimpan "
+"ke dalam sejarah PM sebagai baris P2P, dan tab PM menampilkan sebuah ikon "
+"P2P kecil ketika sesi hidup. Batang status selalu menampilkan sesi aktif: "
+"klik itu untuk membawa Konsol Sesi P2P ke depan, atau gunakan tombol stop "
+"untuk membatalkan undangan tertunda / mengakhiri sesi. Anda dapat mengadakan"
+" SATU sesi pada satu waktu - menerima undangan baru (atau mengundang orang "
+"lain) meminta untuk mengakhiri sesi saat ini terlebih dahulu. Ketika relay "
+"TURN dikonfigurasi, Jungkitkan Mode Privasi dalam menu P2P memaksa koneksi "
 "melalui relay sehingga alamat IP Anda tidak pernah dibagikan kepada peer. "
 "Lihat juga: Sesi P2P, Video Call, Transfer File, Pesan Pribadi."
 
@@ -5588,11 +5587,11 @@ msgid ""
 "right on the chat desktop, and ending any one activity never drops the "
 "others. See also: P2P Sessions in Chat."
 msgstr ""
-"Sesi P2P adalah koneksi peer-to- peer yang gigih di belakang < ph0 > < / ph0"
-" > - satu link yang host panggilan, transfer berkas dan permainan semua pada"
-" saat yang sama. Ia tinggal di dalam percakapan: menerima undangan membuka "
-"Konsol Sesi P2P tepat di desktop obrolan, dan mengakhiri aktivitas apapun "
-"tidak pernah menjatuhkan yang lain. Lihat juga: sesi P2P dalam Percakapan."
+"Sesi P2P adalah koneksi persisten peerto-peer di belakang /p2p - satu link "
+"yang host panggilan, transfer file dan permainan semua pada saat yang sama. "
+"Ia tinggal di dalam percakapan: menerima undangan membuka Konsol Sesi P2P "
+"tepat di desktop obrolan, dan mengakhiri aktivitas apapun tidak pernah "
+"menjatuhkan yang lain. Lihat juga: sesi P2P dalam Percakapan."
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:1257
 #, elixir-autogen, elixir-format

@@ -106,15 +106,16 @@ msgstr "叮噹高"
 msgid "Ding Low"
 msgstr "小叮噹"
 
-#: lib/retro_hex_chat/chat/policy.ex:41
-#: lib/retro_hex_chat/chat/policy.ex:70
+#: lib/retro_hex_chat/chat/policy.ex:41 lib/retro_hex_chat/chat/policy.ex:70
 #, elixir-autogen, elixir-format
 msgid "Edit window has expired."
 msgstr "編輯窗口已過期 。"
 
 #: lib/retro_hex_chat/chat/alias_expander.ex:30
 #, elixir-autogen, elixir-format
-msgid "Expansion must not contain command chaining characters (|, &&, ;, or newlines)"
+msgid ""
+"Expansion must not contain command chaining characters (|, &&, ;, or "
+"newlines)"
 msgstr "擴展不得包含命令鏈字符(QQ, QQ, 或新行)"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:280
@@ -124,24 +125,23 @@ msgstr "格式化"
 
 #: lib/retro_hex_chat/chat/timer_manager.ex:111
 #, elixir-autogen, elixir-format
-msgid "Invalid timer name. Use only letters, numbers, hyphens, underscores (max %{max_name_length} chars)."
+msgid ""
+"Invalid timer name. Use only letters, numbers, hyphens, underscores (max "
+"%{max_name_length} chars)."
 msgstr "無效的計時器名稱 。 只使用字母,數字,連字符,下劃線(最大 %{max_name_length}字符)."
 
-#: lib/retro_hex_chat/chat/policy.ex:18
-#: lib/retro_hex_chat/chat/policy.ex:24
+#: lib/retro_hex_chat/chat/policy.ex:18 lib/retro_hex_chat/chat/policy.ex:24
 #, elixir-autogen, elixir-format
 msgid "Message cannot be empty"
 msgstr "信件不能爲空"
 
-#: lib/retro_hex_chat/chat/policy.ex:38
-#: lib/retro_hex_chat/chat/policy.ex:60
+#: lib/retro_hex_chat/chat/policy.ex:38 lib/retro_hex_chat/chat/policy.ex:60
 #: lib/retro_hex_chat/chat/policy.ex:81
 #, elixir-autogen, elixir-format
 msgid "Message has already been deleted."
 msgstr "信件已被刪除 。"
 
-#: lib/retro_hex_chat/chat/service.ex:53
-#: lib/retro_hex_chat/chat/service.ex:80
+#: lib/retro_hex_chat/chat/service.ex:53 lib/retro_hex_chat/chat/service.ex:80
 #: lib/retro_hex_chat/chat/service.ex:109
 #: lib/retro_hex_chat/chat/service.ex:131
 #, elixir-autogen, elixir-format
@@ -166,12 +166,12 @@ msgstr "沒有活動定時器 。"
 #: lib/retro_hex_chat/chat/sound_settings.ex:27
 #, elixir-autogen, elixir-format
 msgid "None"
-msgstr "無"
+msgstr "None"
 
 #: lib/retro_hex_chat/chat/sound_settings.ex:39
 #, elixir-autogen, elixir-format
 msgid "Notify"
-msgstr "通知"
+msgstr "Notify"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:63
 #, elixir-autogen, elixir-format
@@ -221,7 +221,7 @@ msgstr "打開/close 突出顯示單詞設置"
 #: lib/retro_hex_chat/chat/key_bindings.ex:58
 #, elixir-autogen, elixir-format
 msgid "Open/close search bar"
-msgstr "打開<ph0>/ph0> 搜索欄"
+msgstr "Open/close 搜索欄"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:82
 #, elixir-autogen, elixir-format
@@ -231,17 +231,17 @@ msgstr "打開 /close URL 捕捉器"
 #: lib/retro_hex_chat/chat/key_bindings.ex:64
 #, elixir-autogen, elixir-format
 msgid "Open/close the address book"
-msgstr "打開地址簿<ph0>/ph0>"
+msgstr "地址簿 Open/close"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:70
 #, elixir-autogen, elixir-format
 msgid "Open/close the ignore list"
-msgstr "打開忽略列表<ph0>/ph0>"
+msgstr "忽略列表的 Open/close"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:131
 #, elixir-autogen, elixir-format
 msgid "Open/close the keyboard shortcut cheatsheet"
-msgstr "打開<ph0>/ph0> 鍵盤快捷鍵"
+msgstr "Open/close 鍵盤快捷鍵"
 
 #: lib/retro_hex_chat/chat/service.ex:197
 #: lib/retro_hex_chat/chat/service.ex:214
@@ -249,8 +249,7 @@ msgstr "打開<ph0>/ph0> 鍵盤快捷鍵"
 msgid "Original message not found."
 msgstr "找不到原始信件 。"
 
-#: lib/retro_hex_chat/chat/policy.ex:44
-#: lib/retro_hex_chat/chat/policy.ex:109
+#: lib/retro_hex_chat/chat/policy.ex:44 lib/retro_hex_chat/chat/policy.ex:109
 #, elixir-autogen, elixir-format
 msgid "Please wait a few seconds before editing again."
 msgstr "請稍候幾秒鐘再編輯."
@@ -350,24 +349,23 @@ msgstr "切換搜索"
 #: lib/retro_hex_chat/chat/timer_manager.ex:92
 #, elixir-autogen, elixir-format
 msgid "Usage: /timer <name> <seconds> <command>"
-msgstr "用法:/timer<ph0><</ph4>>/p4>>><ph1><</p5>>/p5>>><ph2><</p6>>/p6>>>"
+msgstr "使用量: /timer <name> <seconds> <command>"
 
 #: lib/retro_hex_chat/chat/timer_manager.ex:29
 #, elixir-autogen, elixir-format
 msgid "Usage: /timer <name> [repeat] <seconds> <command>"
-msgstr ""
-"用法:/timer<ph0><</ph4>>/ph4>>/>>>[重複]<ph1><</ph5></ph><ph2><</ph6>>/>>>"
+msgstr "用法:/timer <name> [重複]<seconds> <command>"
 
 #: lib/retro_hex_chat/chat/timer_manager.ex:63
 #: lib/retro_hex_chat/chat/timer_manager.ex:67
 #, elixir-autogen, elixir-format
 msgid "Usage: /timer <name> repeat <seconds> <command>"
-msgstr "用法:/timer<ph0><</ph4>>/ph/重複<ph1><</ph/ph/<><ph2><</></ph/>>>"
+msgstr "用法:/timer <name>重複<seconds> <command>"
 
 #: lib/retro_hex_chat/chat/timer_manager.ex:37
 #, elixir-autogen, elixir-format
 msgid "Usage: /timer stop <name>"
-msgstr "用法:/timer 停<ph0><</ph2></ph2>>>"
+msgstr "用法:/timer停止<name>"
 
 #: lib/retro_hex_chat/chat/sound_settings.ex:41
 #, elixir-autogen, elixir-format
@@ -424,8 +422,7 @@ msgstr "窗口 9"
 msgid "You cannot delete other users' messages."
 msgstr "您不能刪除其他用戶的消息 。"
 
-#: lib/retro_hex_chat/chat/policy.ex:35
-#: lib/retro_hex_chat/chat/policy.ex:57
+#: lib/retro_hex_chat/chat/policy.ex:35 lib/retro_hex_chat/chat/policy.ex:57
 #, elixir-autogen, elixir-format
 msgid "You cannot edit other users' messages."
 msgstr "您不能編輯其他用戶的消息 。"

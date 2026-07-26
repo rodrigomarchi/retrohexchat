@@ -15,8 +15,7 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "! /bot set GreeterBot cooldown 3000 /bot set GreeterBot prefix ?"
 msgstr ""
-"! < ph0 > < / ph0 > set GreeterBot ochłodzenie 3000 < ph1 > < / ph1 > set "
-"GreeterBot przedrostek?"
+"/bot zestaw GreeterBot ochłodzić 3000 /bot zestaw GreeterBot przedrostek?"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_trivia.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:156
@@ -27,12 +26,12 @@ msgstr "Odpowiedź na pytanie:"
 #: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "!Bot rss add <url> <#channel>"
-msgstr "! Bot rss add < ph0 > < ph2 > < / ph2 > > < ph1 > < ph3 > < / ph3 > >"
+msgstr "Bot rss add <url> <#channel>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "!Bot rss check <id>"
-msgstr "! Sprawdzanie poziomu rss < ph0 > < < ph1 > < / ph1 > >"
+msgstr "Sprawdź <id>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:22
 #, elixir-autogen, elixir-format
@@ -42,21 +41,17 @@ msgstr "Lista bot rss"
 #: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "!Bot rss remove <id>"
-msgstr "! Usuwanie przeszkód RSS < ph0 > < < ph1 > < / ph1 > >"
+msgstr "Bot rss usunąć <id>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "!Bot schedule add daily <HH:MM> <#channel> <message>"
-msgstr ""
-"! Schemat botów dodawany codziennie < ph0 > < ph3 > < / ph3 > > < ph1 > < "
-"ph4 > < / ph4 > > < ph2 > < < ph5 > < / ph5 > >"
+msgstr "! Plan bot dodać codziennie <HH:MM> <#channel> <message>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "!Bot schedule add interval <min> <#channel> <message>"
-msgstr ""
-"! Schemat bot dodaj przedział < ph0 > < ph3 > < / ph3 > > < ph1 > < ph4 > < "
-"/ ph4 > > < ph2 > < < ph5 > < / ph5 > >"
+msgstr "! Plan bot dodać interwał <min> <#channel> <message>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:34
 #, elixir-autogen, elixir-format
@@ -66,7 +61,7 @@ msgstr "Lista planów bot"
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "!Bot schedule remove <id>"
-msgstr "! Schemat bot usunąć < ph0 > < ph1 > < / ph1 > >"
+msgstr "Harmonogram usunięcia <id>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_trivia.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:155
@@ -83,7 +78,7 @@ msgstr "Bot trivia start"
 #: lib/retro_hex_chat_web/controllers/help_content/bot_trivia.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "!Bot trivia start <category>"
-msgstr "! Bot trivia start < ph0 > < < ph1 > < / ph1 > >"
+msgstr "Bot trivia start <category>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_trivia.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:155
@@ -101,9 +96,7 @@ msgstr "Bot Name help"
 #: lib/retro_hex_chat_web/controllers/help_content/bot_dice.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "!BotName roll <notation> !BotName roll (uses default notation)"
-msgstr ""
-"! Bot Name rolla < ph0 > < ph1 > < / ph1 > >! Bot Nazwa rolki (używa "
-"domyślnej notacji)"
+msgstr "!BotName roll <notation> !BotName roll (uses default notation)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_custom_commands.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:27
@@ -139,9 +132,9 @@ msgid ""
 "https://example.com/rss news !MyBot rss list !MyBot rss check f1a2b3 !MyBot "
 "rss remove f1a2b3"
 msgstr ""
-"MyBot rss add < ph2 > < < ph6 > < / ph6 > > < ph3 > < ph7 > < / ph7 > > < "
-"ph10 > < / ph10 >! MyBot rss add < ph4 > < ph8 > < / ph8 > > < ph5 > < ph9 >"
-" < / ph9 > > news! MyBot rss check f1a2b3! MyBot rss remove f1a2b3"
+"MyBot rss add https://blog.example.com/feed.xml #news! MyBot rss add "
+"https://example.com/rss news! MyBot rss list! MyBot rss check f1a2b3! MyBot "
+"rss remove f1a2b3"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:77
 #, elixir-autogen, elixir-format
@@ -150,9 +143,8 @@ msgid ""
 "daily 09:00 #general Good morning, team! !MyBot schedule list !MyBot "
 "schedule remove s1a2b3"
 msgstr ""
-"! Harmonogram MyBot dodać interwał 60 < ph0 > < / ph0 > Zrób sobie przerwę!!"
-" Harmonogram MyBot dodać codziennie 09: 00 < ph1 > < / ph1 > Dzień dobry, "
-"drużyno!"
+"Harmonogram MyBot dodać interwał 60 #general Zrób sobie przerwę!! "
+"Harmonogram MyBot dodać codziennie 09: 00 #general Dzień dobry, drużyno!"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_moderation.html.heex:54
 #, elixir-autogen, elixir-format
@@ -320,7 +312,7 @@ msgstr "Dodaj powtarzający się harmonogram"
 #: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "Add an RSS/Atom feed"
-msgstr "Dodaj RSS < ph0 > < / ph0 > pasza"
+msgstr "Dodaj paszę RSS/Atom"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_dice.html.heex:33
 #, elixir-autogen, elixir-format
@@ -870,8 +862,8 @@ msgid ""
 "lowest options."
 msgstr ""
 "Funkcja Dice dodaje RPG- styl kości toczenia do bot. Użytkownicy mogą toczyć"
-" kostkami przy użyciu standardowej notacji tabelowej z modyfikatorami i "
-"najwyższą zawartością < ph0 > < / ph0 > opcji."
+" kostkami przy użyciu standardowej notacji tabeli z modyfikatorami i opcje "
+"keep- highest/keep-lowest."
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_moderation.html.heex:2
 #, elixir-autogen, elixir-format
@@ -958,8 +950,7 @@ msgstr "Użyj"
 #, elixir-autogen, elixir-format
 msgid "Uses HTTP conditional requests (ETag/Last-Modified) for efficiency"
 msgstr ""
-"Wykorzystuje warunkowe żądania HTTP (ETag < ph0 > < / ph0 >) dla "
-"efektywności"
+"Wykorzystuje warunkowe żądania HTTP (Etag/Last-Modified) dla efektywności"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_moderation.html.heex:11
 #, elixir-autogen, elixir-format
@@ -1329,13 +1320,12 @@ msgstr "- użytkownik, który powołał się na polecenie"
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "!BotName roll <notation>"
-msgstr "! Bot Name rolla < ph0 > < < ph1 > < / ph1 > >"
+msgstr "Bot Name roll <notation>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:71
 #, elixir-autogen, elixir-format
 msgid "!BotName rss add <url> <#channel>"
-msgstr ""
-"! BotName rss add < ph0 > < < ph2 > < / ph2 > > < ph1 > < ph3 > < / ph3 > >"
+msgstr "! BotName rss add <url> <#channel>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:55
 #, elixir-autogen, elixir-format
@@ -1578,8 +1568,7 @@ msgstr "- zachować najniższe K kości (np.,"
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:67
 #, elixir-autogen, elixir-format
 msgid "— monitors RSS/Atom feeds and posts new items to channels. Use"
-msgstr ""
-"- monitoruje RSS < ph0 > < / ph0 > karmy i posty do kanałów. Stosowanie"
+msgstr "- monitoruje kanały RSS/Atom i umieszcza nowe elementy. Stosowanie"
 
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:61
 #, elixir-autogen, elixir-format
@@ -1587,8 +1576,8 @@ msgid ""
 "— posts scheduled/periodic messages to channels. Supports interval (every N "
 "minutes) and daily (at HH:MM UTC) schedules"
 msgstr ""
-"- posty zaplanowane < ph0 > < / ph0 > wiadomości do kanałów. Obsługuje "
-"interwał (co N minut) i harmonogramy dzienne (przy HH: MM UTC)"
+"- posty planowane wiadomości /periodic do kanałów. Obsługuje interwał (co N "
+"minut) i harmonogramy dzienne (przy HH: MM UTC)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:12
 #, elixir-autogen, elixir-format
@@ -1680,9 +1669,9 @@ msgid ""
 "regular users see the bot list."
 msgstr ""
 "polecenie pozwala administratorom i operatorom serwerów tworzyć, "
-"konfigurować i zarządzać robotami. Uruchomienie < ph0 > < / ph0 > bez "
-"argumentów otwiera Bot Management dla admin, podczas gdy regularni "
-"użytkownicy widzą listę botów."
+"konfigurować i zarządzać robotami. Uruchomienie /bot bez argumentów otwiera "
+"Bot Management dla adminsów, podczas gdy regularni użytkownicy widzą listę "
+"botów."
 
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:177
 #, elixir-autogen, elixir-format

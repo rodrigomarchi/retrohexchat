@@ -1077,7 +1077,7 @@ msgstr "Arrow Up"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "Arrow Up/Down"
-msgstr "Pfeil nach oben<ph0>>>"
+msgstr "Arrow Up/Down"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:17
 #, elixir-autogen, elixir-format
@@ -1639,7 +1639,7 @@ msgstr "Kopie Bestätigung"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "Copy Feedback"
-msgstr "Zurück zur Übersicht"
+msgstr "Copy Feedback"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_aliases.html.heex:7
 #, elixir-autogen, elixir-format
@@ -2589,7 +2589,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "Mensagem para #channel — / para comandos"
-msgstr "Mensagem para <ph0>/ph0> — / para comandos"
+msgstr "Mensagem para #channel — / para comandos"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:15
 #, elixir-autogen, elixir-format
@@ -2639,7 +2639,7 @@ msgstr "Nachricht Menü"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "Message Reply"
-msgstr "Nachricht senden"
+msgstr "Message Reply"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:7
 #, elixir-autogen, elixir-format
@@ -4066,7 +4066,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_interactive_elements.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "URL Catcher"
-msgstr "Zurück zur Übersicht"
+msgstr "URL Catcher"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:24
 #, elixir-autogen, elixir-format
@@ -4076,7 +4076,7 @@ msgstr "URL Catcher Window:"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "URL Menu"
-msgstr "Zurück zur Übersicht"
+msgstr "URL Menu"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_interactive_elements.html.heex:7
 #, elixir-autogen, elixir-format
@@ -4407,7 +4407,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_timestamp_format.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "[DD/MM HH:MM]"
-msgstr "[DD<ph0>/ph0> HH:MM]"
+msgstr "[DD/MM HH:MM]"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_timestamp_format.html.heex:12
 #, elixir-autogen, elixir-format
@@ -5114,8 +5114,8 @@ msgid ""
 "# Inspect server state /admin server info /admin channel list /admin cs info"
 " #general /setmotd Welcome to RetroHexChat!"
 msgstr ""
-"# Inspect server state <ph0>/ph0> server info <ph1>/ph1> Channel List "
-"<ph2>/ph2> cs info <ph4>/ph4> <ph3>/ph3> Willkommen bei RetroHexChat!"
+"# Inspect server state /admin server info /admin Kanalliste /admin cs info "
+"#general /setmotd Welcome to RetroHexChat!"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:29
 #, elixir-autogen, elixir-format
@@ -5326,7 +5326,7 @@ msgid ""
 msgstr ""
 "In Admin Console > Broadcast, wählen Sie Wallops oder Announce, geben Sie "
 "eine Nachricht ein und senden Sie sie über die gleichen Kommando-Handler wie"
-" <ph0>/ph0> und <ph1>/ph1>."
+" /wallops und /announce."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:14
 #, elixir-autogen, elixir-format
@@ -5439,11 +5439,11 @@ msgid ""
 "controls notifications for the conversation; it is different from the "
 "channel-level user mute in nickname menus."
 msgstr ""
-"Rechtsklicken Sie auf einen Kanal in der Gesprächsseitenleiste, um zu sehen:"
-" Mark as Read, Mute<ph0>/ph0> Kanal, Name kopieren, Kanal verlassen, "
-"Kanaleinstellungen. Diese Mute steuert Benachrichtigungen für das Gespräch; "
-"es unterscheidet sich von der Channel-Level-Benutzer mute in Spitznamen-"
-"Menüs."
+"Klicken Sie mit der rechten Maustaste auf einen Kanal in der "
+"Gesprächsseitenleiste, um zu sehen: Mark as Read, Mute/Unmute Channel, Copy "
+"Name, Leave Channel, Channel Settings. Diese Mute steuert Benachrichtigungen"
+" für das Gespräch; es unterscheidet sich von der Channel-Level-Benutzer mute"
+" in Spitznamen-Menüs."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:11
 #, elixir-autogen, elixir-format
@@ -5455,13 +5455,13 @@ msgid ""
 " Channel operators also see: Invite to Channel..., Kick, Ban, status-aware "
 "Give/Remove Voice, status-aware Give/Remove Op, and Mute/Unmute (channel)."
 msgstr ""
-"Rechtsklicken Sie auf einen Spitznamen in einer Chat-Nachricht zu sehen: "
-"Private Nachricht, Whois, Last Seen (Whowas), Copy Nick, Ignore<ph0>/ph0>, "
-"Add to Address Book, Set Nick Color. Registrierte Benutzer sehen auch "
-"P2P-Aktionen: P2P-Session, Audio-Call, Video-Call, Send File (ausgewählt, "
-"wenn Ziel nicht registriert ist oder selbst). Kanalbetreiber sehen auch: "
-"Invit to Channel..., Kick, Ban, status-aware Give<ph1>/ph1> Voice, status-"
-"aware Give<ph2>/ph2> Op und Mute<ph3>/ph3> (channel)."
+"Klicken Sie mit der rechten Maustaste auf einen Spitznamen in einer Chat-"
+"Nachricht zu sehen: Private Nachricht, Whois, Last Seen (Whowas), Copy Nick,"
+" Ignore/Unignore, Add to Address Book, Set Nick Color. Registrierte Benutzer"
+" sehen auch P2P-Aktionen: P2P-Session, Audio-Call, Video-Call, Send File "
+"(ausgewählt, wenn Ziel nicht registriert ist oder selbst). Kanalbetreiber "
+"sehen auch: Invite to Channel..., Kick, Ban, status-aware Give/Remove Voice,"
+" status-aware Give/Remove Op und Mute/Unmute (Kanal)."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:33
 #, elixir-autogen, elixir-format
@@ -5529,8 +5529,8 @@ msgid ""
 "Ignore options."
 msgstr ""
 "Das Kanaleinladesystem ermöglicht es den Betreibern von Einlade-only "
-"(+i)-Kanälen, bestimmte Benutzer anzuschließen. Operatoren können <ph0>/ph0>"
-" oder mit der rechten Maustaste einen Spitz in der Spitzliste eingeben und "
+"(+i)-Kanälen, bestimmte Benutzer anzuschließen. Operatoren können /invite "
+"oder mit der rechten Maustaste einen Nick in der Nickliste eingeben und "
 "wählen Invite to Channel... um einen ihrer angeschlossenen Kanäle "
 "auszuwählen. Eingeladene Benutzer erhalten einen Retro-Stil Dialog mit Fügen"
 " und Ignorieren Optionen."
@@ -5589,7 +5589,7 @@ msgid ""
 " a nickname context menu, /whois, or /whowas."
 msgstr ""
 "Es gibt keine dedizierte Tastenkombination für User Lookup. Verwenden Sie "
-"das Menü Tools, ein Nickname Kontextmenü, <ph0>/ph0> oder <ph1>/ph1>."
+"das Menü Tools, ein Nickname Kontextmenü, /whois oder /whowas."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:66
 #, elixir-autogen, elixir-format
@@ -5641,8 +5641,8 @@ msgid ""
 "Wallops messages go only to users who enabled +w with /umode +w. Server "
 "operators and administrators can send them."
 msgstr ""
-"Wallops-Nachrichten gehen nur an Benutzer, die +w mit <ph0>/ph0> +w "
-"aktiviert haben. Serverbetreiber und Administratoren können sie senden."
+"Wallops-Nachrichten gehen nur an Benutzer, die +w mit /umode +w aktiviert "
+"haben. Server-Operatoren und Administratoren können sie senden."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:15
 #, elixir-autogen, elixir-format
@@ -5710,8 +5710,8 @@ msgstr ""
 "oder das Startmenü) um benutzerdefinierte Triggerworte mit optionalen "
 "Hintergrundfarben hinzuzufügen. Es ist ein Desktop-Fenster — Drag, resize, "
 "Minimieren zu seiner Taskleiste Knopf, oder drücken Sie Escape, um es zu "
-"schließen; die Add<ph0>/ph0> Formen offen als kleine Modals zentriert über "
-"das Fenster."
+"schließen; die Add/Edit Formen offen als kleine Modals zentriert über das "
+"Fenster."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:37
 #, elixir-autogen, elixir-format
@@ -5787,8 +5787,8 @@ msgid ""
 "indicators."
 msgstr ""
 "Artikel im P2P Menü. Die Präferenz wird gespeichert und für zukünftige "
-"Sitzungen erinnert. Wenn aktiviert, zeigen die Statusleiste und das Fenster "
-"Statistik Relais<ph0>/ph0> Indikatoren."
+"Sitzungen erinnert. Wenn aktiviert, zeigen die Statusleiste und Stats "
+"Abschnitt Relais/privacy Indikatoren."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:10
 #, elixir-autogen, elixir-format
@@ -5983,11 +5983,11 @@ msgid ""
 "founder hands the channel to another nick. Drop registration deletes the "
 "registration and is not reversible."
 msgstr ""
-"ChanServ info liest eine Registrierungs- und Zugangsliste liest ihre "
-"SOP<ph0>/ph0>>ph1>/ph1> Einträge. Fügen Sie Zugang hinzu und Entfernen Sie "
-"den Zugang nehmen einen Nick und eine Ebene. Transfer Gründer bringt den "
-"Kanal zu einem anderen Nick. Drop-Registrierung löscht die Registrierung und"
-" ist nicht reversibel."
+"ChanServ info liest eine Registrierung und Access-Liste liest seine "
+"SOP/AOP/VOP Einträge. Fügen Sie Zugang hinzu und Entfernen Sie den Zugang "
+"nehmen einen Nick und eine Ebene. Transfer Gründer bringt den Kanal zu einem"
+" anderen Nick. Drop-Registrierung löscht die Registrierung und ist nicht "
+"reversibel."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:57
 #, elixir-autogen, elixir-format
@@ -6043,7 +6043,7 @@ msgid ""
 "Enter a nick in the Nick field and choose Info to run /admin user info for a"
 " single account."
 msgstr ""
-"Geben Sie einen Nick im Nick-Feld ein und wählen Sie Info, um <ph0>/ph0> "
+"Geben Sie einen Nick im Nick-Feld ein und wählen Sie Info, um /admin "
 "Benutzerinfos für ein einzelnes Konto auszuführen."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:15
@@ -6054,8 +6054,8 @@ msgid ""
 "window. The ban list follows whatever channel you last inspected."
 msgstr ""
 "Die Eingabe eines Kanals im Channel-Feld und die Auswahl von Info läuft "
-"<ph0>/ph0> Kanalinfo und lädt auch die Verbotsliste dieses Kanals am unteren"
-" Rand des Fensters. Die Verbotsliste folgt jedem Kanal, den Sie zuletzt "
+"/admin Kanalinfo und lädt auch die Banliste dieses Kanals am unteren Rand "
+"des Fensters. Die Verbotsliste folgt jedem Kanal, den Sie zuletzt "
 "kontrolliert haben."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:19
@@ -6101,8 +6101,8 @@ msgid ""
 "New channel plus Create runs /admin channel create, which both creates and "
 "registers the channel."
 msgstr ""
-"Neue Kanal plus Erstellen Sie Runs <ph0>/ph0> Kanal erstellen, die beide den"
-" Kanal erstellen und registrieren."
+"Neuer Kanal plus Erstellt den /admin-Kanal, der den Kanal erstellt und "
+"registriert."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:34
 #, elixir-autogen, elixir-format
@@ -6269,9 +6269,9 @@ msgid ""
 "The list reads /admin channel list as a point-in-time snapshot — it does not"
 " update on its own. Type into Search before choosing Refresh to narrow it."
 msgstr ""
-"Die Liste liest <ph0>/ph0> Kanalliste als Punkt-in-time Snapshot — sie "
-"aktualisiert sich nicht auf eigene Faust. Geben Sie in die Suche ein, bevor "
-"Sie Refresh wählen, um sie zu verengen."
+"Die Liste liest die /admin Kanalliste als Punkt-in-time Snapshot – sie "
+"aktualisiert nicht auf eigene Faust. Geben Sie in die Suche ein, bevor Sie "
+"Refresh wählen, um sie zu verengen."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:9
 #, elixir-autogen, elixir-format
@@ -6281,11 +6281,11 @@ msgid ""
 "Refresh to narrow it. The ban list below reads /admin user banlist under the"
 " same search term, so filtering the list filters both."
 msgstr ""
-"Die Liste liest <ph0>/ph0> Benutzerliste als Punkt-in-time Snapshot — sie "
-"aktualisiert sich nicht auf eigene Faust. Geben Sie in Search und tick "
-"Online nur, bevor Sie Refresh, um es zu verengen. Die unten stehende "
-"Verbotsliste liest <ph1>/ph1> user banlist unter demselben Suchbegriff, so "
-"dass die Listenfilter beide Filter filtern."
+"Die Liste liest /admin Benutzerliste als Punkt-in-time Snapshot — es wird "
+"nicht auf eigene Faust aktualisiert. Geben Sie in Search und tick Online "
+"nur, bevor Sie Refresh, um es zu verengen. Die unten stehende Verbotsliste "
+"liest /admin-Benutzerbanlist unter dem gleichen Suchbegriff, so dass die "
+"Listenfilter beide filtern."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_turn.html.heex:16
 #, elixir-autogen, elixir-format
@@ -6314,9 +6314,9 @@ msgid ""
 "server bans and server settings survive it; everything else does not. This "
 "cannot be undone."
 msgstr ""
-"Die Vorschau listet auf, was <ph0>/ph0> nuke würde löschen. Admin Rollen, "
-"Audit Protokolle, Serververbote und Servereinstellungen überleben es; alles "
-"andere nicht. Das kann nicht rückgängig gemacht werden."
+"Die Vorschau listet auf, was /admin nuke löschen würde. Admin Rollen, Audit "
+"Protokolle, Serververbote und Servereinstellungen überleben es; alles andere"
+" nicht. Das kann nicht rückgängig gemacht werden."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_server_settings.html.heex:16
 #, elixir-autogen, elixir-format
@@ -6325,9 +6325,9 @@ msgid ""
 "/admin server info and /admin server settings. Refresh re-reads both without"
 " leaving the window."
 msgstr ""
-"Die beiden Felder unterhalb des Formulars zeigen, was der Server jetzt von "
-"<ph0>/ph0> Serverinfo und <ph1>/ph1> Servereinstellungen meldet. Refresh re-"
-"reads beide, ohne das Fenster zu verlassen."
+"Die beiden Bereiche unterhalb des Formulars zeigen, was der Server gerade "
+"berichtet, von /admin Server-Info und /admin Server-Einstellungen. Refresh "
+"re-reads beide, ohne das Fenster zu verlassen."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_audit_log.html.heex:9
 #, elixir-autogen, elixir-format
@@ -6337,10 +6337,10 @@ msgid ""
 "one admin. Leaving Last blank falls back to 20 rather than asking for "
 "everything."
 msgstr ""
-"Das Fenster liest <ph0>/ph0> log als Punkt-in-time Snapshot — es folgt nicht"
-" neuen Einträgen. Letzte Grenzen, wie viele Zeilen zurückkommen, und "
-"Benutzer verengt es zu einem Admin. Leaving Last leer fällt zurück auf 20 "
-"anstatt nach allem zu fragen."
+"Das Fenster liest /admin-Log als Punkt-in-time Snapshot – es folgt nicht "
+"neuen Einträgen. Letzte Grenzen, wie viele Zeilen zurückkommen, und Benutzer"
+" verengt es zu einem Admin. Leaving Last leer fällt zurück auf 20 anstatt "
+"nach allem zu fragen."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_broadcast.html.heex:7
 #, elixir-autogen, elixir-format
@@ -6629,7 +6629,7 @@ msgstr "Benachrichtigung:"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "Related Windows"
-msgstr "In den Warenkorb"
+msgstr "Related Windows"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:2
 #, elixir-autogen, elixir-format

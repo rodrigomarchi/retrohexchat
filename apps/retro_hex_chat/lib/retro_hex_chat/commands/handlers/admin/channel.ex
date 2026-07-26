@@ -11,7 +11,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Channel do
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute(["list" | opts], context) do
     search = find_opt(opts, "--search")
-    AuditLogs.log(context.nickname, dgettext("admin", "channel.list"))
+    AuditLogs.log(context.nickname, "channel.list")
 
     channels =
       case Registry.select(RetroHexChat.Channels.ChannelRegistry, [{{:"$1", :_, :_}, [], [:"$1"]}]) do
@@ -43,7 +43,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Channel do
   end
 
   def execute(["info", channel], context) do
-    AuditLogs.log(context.nickname, dgettext("admin", "channel.info"), {"channel", channel})
+    AuditLogs.log(context.nickname, "channel.info", {"channel", channel})
 
     case Server.get_state(channel) do
       {:ok, state} ->

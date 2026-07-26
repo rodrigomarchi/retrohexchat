@@ -4063,7 +4063,7 @@ msgstr "Indikator Belum Dibaca"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_enhanced_history.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Up/Down"
-msgstr "Up < ph0 > < / ph0 >"
+msgstr "Up/Down"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_copy.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mute.html.heex:2
@@ -5056,9 +5056,8 @@ msgid ""
 "# Inspect server state /admin server info /admin channel list /admin cs info"
 " #general /setmotd Welcome to RetroHexChat!"
 msgstr ""
-"# Inspeksi keadaan server < ph0 > < / ph0 > informasi server < ph1 > < / ph1"
-" > daftar saluran < ph2 > < / ph2 > cs info < ph4 > < / ph4 > < ph3 > < / "
-"ph3 > < / ph3 > Selamat datang di RetroHexChat!"
+"# Inspeksi server state /admin info daftar saluran /admin /admin cs info "
+"#general /setmotd Selamat datang di RetroHexChat!"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:29
 #, elixir-autogen, elixir-format
@@ -5267,8 +5266,8 @@ msgid ""
 "and send it through the same command handlers as /wallops and /announce."
 msgstr ""
 "Dalam Admin Console > Broadcast, pilih Wallops atau Announce, masukkan "
-"pesan, dan kirim melalui penangan perintah yang sama sebagai < ph0 > < / ph0"
-" > dan < ph1 > < / ph1 >."
+"sebuah pesan, dan kirim melalui handler perintah yang sama sebagai /wallops "
+"dan /announce."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:14
 #, elixir-autogen, elixir-format
@@ -5382,9 +5381,9 @@ msgid ""
 "channel-level user mute in nickname menus."
 msgstr ""
 "Klik kanal dalam bilah sisi percakapan untuk melihat: Tandai sebagai Baca, "
-"Mute < ph0 > < / ph0 > undo-type Tombol bisu ini mengontrol pemberitahuan "
-"untuk percakapan; berbeda dari tingkat penyadapan pengguna pada menu nama "
-"panggilan."
+"Mute/Unmute Channel, Salin Nama, Tinggalkan Kanal, Pengaturan Saluran. "
+"Tombol bisu ini mengontrol pemberitahuan untuk percakapan; berbeda dari "
+"tingkat penyadapan pengguna pada menu nama panggilan."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:11
 #, elixir-autogen, elixir-format
@@ -5397,13 +5396,12 @@ msgid ""
 "Give/Remove Voice, status-aware Give/Remove Op, and Mute/Unmute (channel)."
 msgstr ""
 "Klik nama panggilan dalam pesan obrolan untuk melihat: Whois, Last View "
-"(Whowas), Salin Nick, Abaikan < ph0 > < / ph0 >, Tambahkan ke Buku Alamat, "
-"Atur Warna Nick. Pengguna terdaftar juga melihat aksi P2P: Sesi P2P, "
-"Panggilan Audio, Panggilan Video, Kirim Berkas (dinonaktifkan jika target "
-"tidak terdaftar atau sendiri). Operator saluran juga melihat: Undang ke "
-"Saluran..., Kick, Ban, status - sadar Berikan < p1 > < / ph1 > Voice, "
-"status- sadar Berikan < ph2 > < / ph2 > Op, dan Mute < ph3 > < / ph3 > "
-"(saluran)."
+"(Whowas), Salin Nick, Adoe/Unignore, Tambahkan ke Buku Alamat, Atur Nick "
+"Color. Pengguna terdaftar juga melihat aksi P2P: Sesi P2P, Panggilan Audio, "
+"Panggilan Video, Kirim Berkas (dinonaktifkan jika target tidak terdaftar "
+"atau sendiri). Operator saluran juga melihat: Undang ke Saluran..., Kick, "
+"Ban, status - sadar Give/Remove Voice, status- sadar Give/Remove Op, dan "
+"Mute/Unmute (channel)."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:33
 #, elixir-autogen, elixir-format
@@ -5472,10 +5470,9 @@ msgid ""
 msgstr ""
 "Sistem undangan saluran memungkinkan operator dari invite- hanya (+ i) "
 "saluran untuk mengundang pengguna tertentu untuk bergabung. Operator dapat "
-"mengetik < ph0 > < / ph0 > atau kanan klik sebuah nick dalam nicklist dan "
-"pilih Undang ke Channel... untuk memilih salah satu dari saluran tergabung "
-"mereka. Pengguna yang diundang menerima dialog bergaya retro- dengan opsi "
-"Gabung dan Abaikan."
+"mengetik /invite atau kanan klik sebuah nick dalam nicklist dan pilih Undang"
+" ke Channel... untuk memilih salah satu saluran yang bergabung. Pengguna "
+"yang diundang menerima dialog bergaya retro- dengan opsi Gabung dan Abaikan."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:42
 #, elixir-autogen, elixir-format
@@ -5531,8 +5528,7 @@ msgid ""
 " a nickname context menu, /whois, or /whowas."
 msgstr ""
 "Tak ada pintasan papan tik khusus bagi Pencarian Pengguna. Gunakan menu "
-"Piranti, menu konteks nama panggilan, < ph0 > < / ph0 >, atau < ph1 > < / "
-"ph1 >."
+"Piranti, menu konteks nama panggilan, /whois, atau /whowas."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:66
 #, elixir-autogen, elixir-format
@@ -5584,8 +5580,8 @@ msgid ""
 "Wallops messages go only to users who enabled +w with /umode +w. Server "
 "operators and administrators can send them."
 msgstr ""
-"Wallops pesan hanya pergi ke pengguna yang aktif + w dengan < ph0 > < / ph0 "
-"> + w. Operator server dan administrator dapat mengirim mereka."
+"Wallops pesan hanya pergi ke pengguna yang aktif + w dengan /umode + w. "
+"Operator server dan administrator dapat mengirim mereka."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:15
 #, elixir-autogen, elixir-format
@@ -5649,8 +5645,8 @@ msgid ""
 msgstr ""
 "atau menu awal) untuk menambahkan kata pemicu gubahan dengan warna latar "
 "belakang opsional. Ini adalah jendela desktop - seret, ubah ukuran, perkecil"
-" tombol taskbar, atau tekan Escape untuk menutupnya; Tambah < ph0 > < / ph0 "
-"> bentuk terbuka sebagai modals kecil berpusat di atas jendela."
+" tombol taskbar, atau tekan Escape untuk menutupnya; formulir Add/Edit "
+"terbuka sebagai modals kecil yang berpusat di atas jendela."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:37
 #, elixir-autogen, elixir-format
@@ -5726,8 +5722,8 @@ msgid ""
 "indicators."
 msgstr ""
 "item dalam menu P2P. Pilihan disimpan dan diingat untuk sesi mendatang. "
-"Ketika diaktifkan, bilah status dan tampilan jendela Statistik tampilkan "
-"relai < ph0 > < / ph0 > indikator."
+"Ketika diaktifkan, baris status dan bagian Stats menampilkan indikator "
+"relay/privacy."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:10
 #, elixir-autogen, elixir-format
@@ -5924,11 +5920,10 @@ msgid ""
 "founder hands the channel to another nick. Drop registration deletes the "
 "registration and is not reversible."
 msgstr ""
-"informasi ChanServ membaca sebuah pendaftaran dan daftar Akses membaca nya "
-"SOP < ph0 > < / ph0 > < ph1 > < / ph1 > masukan. Tambahkan akses dan Hapus "
-"akses mengambil nick dan tingkat. Pendiri transfer menyerahkan saluran ke "
-"nick lain. Jatuhkan registrasi menghapus pendaftaran dan tidak dapat "
-"dikembalikan."
+"Informasi ChanServ membaca daftar pendaftaran dan Akses yang dibaca entri "
+"SOP/AOP/VOP nya. Tambahkan akses dan Hapus akses mengambil nick dan tingkat."
+" Pendiri transfer menyerahkan saluran ke nick lain. Jatuhkan registrasi "
+"menghapus pendaftaran dan tidak dapat dikembalikan."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:57
 #, elixir-autogen, elixir-format
@@ -5985,7 +5980,7 @@ msgid ""
 " single account."
 msgstr ""
 "Masukkan sebuah nama panggilan dalam bidang Nick dan pilih Info untuk "
-"menjalankan < ph0 > < / ph0 > info pengguna untuk satu akun."
+"menjalankan info pengguna /admin untuk satu akun."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:15
 #, elixir-autogen, elixir-format
@@ -5994,10 +5989,9 @@ msgid ""
 "channel info and also loads that channel's ban list at the bottom of the "
 "window. The ban list follows whatever channel you last inspected."
 msgstr ""
-"Memasuki saluran dalam bidang Channel dan memilih Info berjalan < ph0 > < / "
-"ph0 > informasi saluran dan juga memuat daftar larangan saluran di bagian "
-"bawah jendela. Daftar larangan mengikuti saluran apapun yang terakhir kau "
-"periksa."
+"Memasuki saluran dalam daerah Channel dan memilih Info menjalankan info "
+"saluran /admin dan juga memuat daftar larangan saluran di bawah jendela. "
+"Daftar larangan mengikuti saluran apapun yang terakhir kau periksa."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:19
 #, elixir-autogen, elixir-format
@@ -6042,8 +6036,8 @@ msgid ""
 "New channel plus Create runs /admin channel create, which both creates and "
 "registers the channel."
 msgstr ""
-"Saluran baru ditambah Buat runs < ph0 > < / ph0 > buat saluran, yang baik "
-"membuat dan mendaftarkan saluran."
+"Kanal baru ditambah Membuat kanal /admin yang mana keduanya menciptakan dan "
+"mendaftarkan kanal."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:34
 #, elixir-autogen, elixir-format
@@ -6207,7 +6201,7 @@ msgid ""
 "The list reads /admin channel list as a point-in-time snapshot — it does not"
 " update on its own. Type into Search before choosing Refresh to narrow it."
 msgstr ""
-"Daftar dibaca < ph0 > < / ph0 > daftar saluran sebagai titik -in-time "
+"Daftar tersebut membaca daftar saluran /admin sebagai titik dalam waktu "
 "snapshot - tidak update sendiri. Ketik ke Pencarian sebelum memilih Refresh "
 "untuk mempersempit."
 
@@ -6219,11 +6213,11 @@ msgid ""
 "Refresh to narrow it. The ban list below reads /admin user banlist under the"
 " same search term, so filtering the list filters both."
 msgstr ""
-"Daftar dibaca < ph0 > < / ph0 > daftar pengguna sebagai titik -in-time "
+"Daftar tersebut membaca daftar pengguna /admin sebagai titik dalam waktu "
 "snapshot - tidak update sendiri. Ketik ke Pencarian dan centang Daring hanya"
 " sebelum memilih Refresh untuk mempersempit. Daftar larangan di bawah ini "
-"membaca < ph1 > < / ph1 > daftar pengguna di bawah istilah pencarian yang "
-"sama, sehingga penyaringan daftar keduanya."
+"membaca daftar pengguna /admin di bawah istilah pencarian yang sama, "
+"sehingga menyaring penyaring daftar keduanya."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_turn.html.heex:16
 #, elixir-autogen, elixir-format
@@ -6252,9 +6246,9 @@ msgid ""
 "server bans and server settings survive it; everything else does not. This "
 "cannot be undone."
 msgstr ""
-"Daftar pratilik apa yang akan dihapus < ph0 > < / ph0 > nuke. Peran admin, "
-"log audit, server bans dan pengaturan server bertahan; semuanya tidak. Ini "
-"tidak bisa dibatalkan."
+"Daftar pratinjau apa yang /admin nuke akan menghapus. Peran admin, log "
+"audit, server bans dan pengaturan server bertahan; semuanya tidak. Ini tidak"
+" bisa dibatalkan."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_server_settings.html.heex:16
 #, elixir-autogen, elixir-format
@@ -6263,9 +6257,9 @@ msgid ""
 "/admin server info and /admin server settings. Refresh re-reads both without"
 " leaving the window."
 msgstr ""
-"Dua panel di bawah formulir menampilkan laporan server sekarang, dari < ph0 "
-"> < / ph0 > informasi server dan < ph1 > < / ph1 > pengaturan server. "
-"Segarkan kembali membaca keduanya tanpa meninggalkan jendela."
+"Dua panel di bawah formulir ini menunjukkan laporan server sekarang, dari "
+"info server /admin dan pengaturan server /admin. Segarkan kembali membaca "
+"keduanya tanpa meninggalkan jendela."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_audit_log.html.heex:9
 #, elixir-autogen, elixir-format
@@ -6275,10 +6269,10 @@ msgid ""
 "one admin. Leaving Last blank falls back to 20 rather than asking for "
 "everything."
 msgstr ""
-"Jendela dibaca < ph0 > < / ph0 > log sebagai titik -in-time snapshot - itu "
-"tidak mengikuti masukan baru. Batas terakhir berapa banyak baris yang "
-"kembali, dan Pengguna mempersempit ke satu admin. Meninggalkan kosong "
-"terakhir jatuh kembali ke 20 daripada meminta untuk segalanya."
+"Jendela ini membaca catatan /admin sebagai titik dalam waktu snapshot - itu "
+"tidak mengikuti entri baru. Batas terakhir berapa banyak baris yang kembali,"
+" dan Pengguna mempersempit ke satu admin. Meninggalkan kosong terakhir jatuh"
+" kembali ke 20 daripada meminta untuk segalanya."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_broadcast.html.heex:7
 #, elixir-autogen, elixir-format

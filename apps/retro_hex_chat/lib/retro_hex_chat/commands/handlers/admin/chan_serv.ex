@@ -16,7 +16,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.ChanServ do
   end
 
   def execute(["info", channel], context) do
-    AuditLogs.log(context.nickname, dgettext("admin", "cs.info"), {"channel", channel})
+    AuditLogs.log(context.nickname, "cs.info", {"channel", channel})
 
     case ChanServ.info(channel) do
       {:ok, info} ->
@@ -57,7 +57,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.ChanServ do
   end
 
   def execute(["access", channel], context) do
-    AuditLogs.log(context.nickname, dgettext("admin", "cs.access"), {"channel", channel})
+    AuditLogs.log(context.nickname, "cs.access", {"channel", channel})
     access = Queries.list_access(channel)
 
     text =

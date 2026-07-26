@@ -386,7 +386,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_channel.html.heex:75
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_cs.html.heex:73
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:39
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:65
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:60
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_ns.html.heex:47
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:47
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:123
@@ -457,7 +457,7 @@ msgstr ""
 msgid "/admin log"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:61
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "/admin log /admin log --last 50 /admin log --user Admin --last 10"
 msgstr ""
@@ -504,7 +504,7 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin.html.heex:14
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:40
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:70
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:65
 #, elixir-autogen, elixir-format
 msgid "/admin server"
 msgstr ""
@@ -1848,7 +1848,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_channel.html.heex:70
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_cs.html.heex:68
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:34
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:60
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:55
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_ns.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:118
@@ -2536,7 +2536,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_channel.html.heex:73
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_cs.html.heex:71
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:37
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:58
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_ns.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:121
@@ -3034,39 +3034,9 @@ msgstr ""
 msgid "action text"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:43
-#, elixir-autogen, elixir-format
-msgid "channel.create"
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:43
-#, elixir-autogen, elixir-format
-msgid "channel.delete"
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:44
-#, elixir-autogen, elixir-format
-msgid "channel.purge"
-msgstr ""
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "commands are masked in the list display for security. Running"
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:52
-#, elixir-autogen, elixir-format
-msgid "cs.access"
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:51
-#, elixir-autogen, elixir-format
-msgid "cs.drop"
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:51
-#, elixir-autogen, elixir-format
-msgid "cs.transfer"
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:36
@@ -3146,16 +3116,6 @@ msgstr ""
 msgid "new topic text"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:47
-#, elixir-autogen, elixir-format
-msgid "ns.drop"
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:48
-#, elixir-autogen, elixir-format
-msgid "ns.resetpass"
-msgstr ""
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_away.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "on you will see your away message. To come back, simply run"
@@ -3194,16 +3154,6 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:21
 #, elixir-autogen, elixir-format
 msgid "send a message in one step, use"
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:56
-#, elixir-autogen, elixir-format
-msgid "server.info"
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:55
-#, elixir-autogen, elixir-format
-msgid "server.set"
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:20
@@ -3259,41 +3209,6 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_wallops.html.heex:15
 #, elixir-autogen, elixir-format
 msgid "user mode (via"
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:35
-#, elixir-autogen, elixir-format
-msgid "user.ban"
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:36
-#, elixir-autogen, elixir-format
-msgid "user.kick"
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:39
-#, elixir-autogen, elixir-format
-msgid "user.mute"
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:39
-#, elixir-autogen, elixir-format
-msgid "user.rename"
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:40
-#, elixir-autogen, elixir-format
-msgid "user.role"
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:35
-#, elixir-autogen, elixir-format
-msgid "user.unban"
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:39
-#, elixir-autogen, elixir-format
-msgid "user.unmute"
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:16
@@ -4289,7 +4204,7 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_channel.html.heex:78
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_cs.html.heex:76
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:68
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:63
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:126
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:37

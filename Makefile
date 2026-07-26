@@ -5,7 +5,7 @@
        test.cover.all test.domain test.web test.failed test.seed test.file test.line \
        test.js test.js.watch \
        ci ci.quick \
-       i18n.audit i18n.audit.check i18n.status i18n.catalog.check i18n.catalog.size.check i18n.placeholder.check i18n.source-fallback.check i18n.locales.add i18n.wave1.add i18n.gettext.extract i18n.gettext.merge i18n.gettext.rebuild i18n.gettext.check \
+       i18n.audit i18n.audit.check i18n.status i18n.catalog.check i18n.catalog.size.check i18n.placeholder.check i18n.source-fallback.check i18n.quality.check i18n.repair i18n.tooling.test i18n.locales.add i18n.wave1.add i18n.gettext.extract i18n.gettext.merge i18n.gettext.rebuild i18n.gettext.check \
        lint format format.check credo dialyzer lint.js lint.js.fix lint.css lint.bundle precommit compile \
        assets.setup assets.build assets.deploy \
        clean clean.deps clean.build clean.all \
@@ -18,7 +18,7 @@ WEB_APP    = apps/retro_hex_chat_web
 E2E_DIR    = e2e
 PRETTIER   = $(WEB_APP)/assets/node_modules/.bin/prettier
 E2E_FORMAT_SOURCES = $(E2E_DIR)/*.json $(E2E_DIR)/*.ts $(E2E_DIR)/helpers $(E2E_DIR)/pages $(E2E_DIR)/tests $(E2E_DIR)/load
-I18N_REQUIRED_LOCALES = pt_BR,es,fr,de,ja,zh_hans,id,ar,ru,hi,ko,tr,vi,bn,ur,zh_hant,pt_PT,it,pl,nl
+I18N_REQUIRED_LOCALES = pt_BR,es,fr,de,ja,zh_hans,id,ru,zh_hant,pt_PT,it,pl,nl
 
 ifneq (,$(wildcard .env))
 include .env
@@ -264,14 +264,24 @@ i18n.audit.check: ## Fail when hardcoded user-visible strings are found
 i18n.status: ## Report translated, empty, and fuzzy Gettext catalog entries
 	elixir scripts/i18n_po_status.exs
 
-i18n.catalog.check: ## Fail while required catalogs have empty/fuzzy entries, unsafe placeholders, English fallbacks, or oversized files
+i18n.catalog.check: ## Fail while required catalogs have empty/fuzzy entries, unsafe placeholders, English fallbacks, oversized files, or unusable translations
 	elixir scripts/i18n_po_status.exs --fail-on-untranslated --fail-locale $(I18N_REQUIRED_LOCALES)
 	elixir scripts/i18n_catalog_size_check.exs --fail-on-exceed --max-lines 12000
 	mix run --no-start scripts/i18n_placeholder_check.exs --fail-on-findings
 	python3 scripts/i18n_source_fallback_check.py --locales $(I18N_REQUIRED_LOCALES) --fail-on-findings
+	python3 scripts/i18n_quality_check.py --locales $(I18N_REQUIRED_LOCALES) --fail-on-findings
 
 i18n.catalog.size.check: ## Fail when any Gettext catalog exceeds the readable size limit
 	elixir scripts/i18n_catalog_size_check.exs --fail-on-exceed --max-lines 12000
+
+i18n.quality.check: ## Fail on collapsed, degenerate, or sentinel-leaking translations
+	python3 scripts/i18n_quality_check.py --locales $(I18N_REQUIRED_LOCALES) --fail-on-findings
+
+i18n.repair: ## Repair unusable catalog entries (needs the translation venv)
+	python3 scripts/i18n_repair_catalogs.py --locales $(I18N_REQUIRED_LOCALES) --write
+
+i18n.tooling.test: ## Run the i18n Python tooling test suite
+	python3 -m unittest discover -s scripts -t scripts -p 'test_*.py'
 
 i18n.placeholder.check: ## Fail when translated strings lose Gettext placeholders
 	mix run --no-start scripts/i18n_placeholder_check.exs --fail-on-findings

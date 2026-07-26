@@ -14,15 +14,13 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "! /bot set GreeterBot cooldown 3000 /bot set GreeterBot prefix ?"
-msgstr ""
-"! <ph0> < /ph0> set GreeterBot cooldown 3000 <ph1> < < <ph1> Set GreeterBot "
-"prefisso?"
+msgstr "! /bot set GreeterBot cooldown 3000 /bot set GreeterBot prefisso?"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_trivia.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:156
 #, elixir-autogen, elixir-format
 msgid "!Bot answer <text>"
-msgstr "Risposta del gruppo <ph0>"
+msgstr "!Bot risponde <text>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:18
 #, elixir-autogen, elixir-format
@@ -46,17 +44,18 @@ msgstr "Elenco dei punti"
 #: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "!Bot rss remove <id>"
-msgstr "!"
+msgstr "!Bot rss rimuovere <id>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "!Bot schedule add daily <HH:MM> <#channel> <message>"
-msgstr "Il programma aggiunge ogni giorno <ph0>"
+msgstr ""
+"!Bot pianificazione aggiungere ogni giorno <HH:MM> <#channel> <message>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "!Bot schedule add interval <min> <#channel> <message>"
-msgstr "Il programma aggiunge intervallo <ph0>"
+msgstr "!Bot pianificazione aggiungere intervallo <min> <#channel> <message>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:34
 #, elixir-autogen, elixir-format
@@ -87,7 +86,7 @@ msgstr "!"
 #: lib/retro_hex_chat_web/controllers/help_content/bot_trivia.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "!Bot trivia start <category>"
-msgstr "!"
+msgstr "!Bot trivia avviare <category>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_trivia.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:155
@@ -153,9 +152,9 @@ msgid ""
 "daily 09:00 #general Good morning, team! !MyBot schedule list !MyBot "
 "schedule remove s1a2b3"
 msgstr ""
-"!Il mio programma aggiunge l'intervallo 60 <ph0> Fai una pausa! !Il mio "
-"programma aggiunge ogni giorno 09:00 <ph1> Buongiorno, squadra! Elenco dei "
-"programmi MyBot!Il mio programma rimuove s1a2b3"
+"!Il mio programma aggiunge intervallo 60 #general Fai una pausa! !Il mio "
+"programma aggiunge ogni giorno 09:00 #general Buongiorno, squadra! Elenco "
+"dei programmi MyBot!Il mio programma rimuove s1a2b3"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_moderation.html.heex:54
 #, elixir-autogen, elixir-format
@@ -965,7 +964,7 @@ msgstr "Utilizzare"
 #, elixir-autogen, elixir-format
 msgid "Uses HTTP conditional requests (ETag/Last-Modified) for efficiency"
 msgstr ""
-"Utilizza le richieste condizionali HTTP (ETag <ph0> < /ph0>) per "
+"Utilizza le richieste condizionali HTTP (ETag/Last-Modified) per "
 "l'efficienza"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_moderation.html.heex:11
@@ -1337,7 +1336,7 @@ msgstr "— l'utente che ha invocato il comando"
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "!BotName roll <notation>"
-msgstr "!"
+msgstr "!BotName roll <notation>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:71
 #, elixir-autogen, elixir-format
@@ -1693,9 +1692,9 @@ msgid ""
 "regular users see the bot list."
 msgstr ""
 "comando consente agli amministratori e agli operatori del server di creare, "
-"configurare e gestire i bot. Correre <ph0> </ph0> senza argomenti apre Bot "
+"configurare e gestire i bot. Eseguire /bot senza argomenti apre Bot "
 "Management per gli amministratori, mentre gli utenti regolari vedono "
-"l'elenco dei bot."
+"l'elenco bot."
 
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:177
 #, elixir-autogen, elixir-format

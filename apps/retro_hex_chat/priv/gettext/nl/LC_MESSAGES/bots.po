@@ -732,7 +732,7 @@ msgstr "Het minimale interval is %{minutes} minuten."
 #: lib/retro_hex_chat/bots/capabilities/rss.ex:193
 #, elixir-autogen, elixir-format
 msgid "Missing channel. Usage: rss add <url> <#channel>"
-msgstr "Ontbrekend kanaal. Gebruik: rss voeg <ph0> </ph0> <ph1> </ph1>"
+msgstr "Ontbrekend kanaal. Gebruik: rss <url> <#channel> toevoegen"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:470
 #, elixir-autogen, elixir-format
@@ -1209,7 +1209,7 @@ msgstr "Onbekend voerformaat (verwachte RSS 2.0 of Atom)"
 #: lib/retro_hex_chat/bots/capabilities/rss.ex:196
 #, elixir-autogen, elixir-format
 msgid "Usage: rss add <url> <#channel>"
-msgstr "Gebruik: rss voeg <ph0> </ph0> <ph1> </ph1>"
+msgstr "Gebruik: rss <url> <#channel> toevoegen"
 
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:215
 #, elixir-autogen, elixir-format
@@ -1217,8 +1217,8 @@ msgid ""
 "Usage: schedule add interval <min> <#channel> <message> OR schedule add "
 "daily <HH:MM> <#channel> <message>"
 msgstr ""
-"Gebruik: schedule add interval <ph0></ph0 <ph1><<<ph7><ph2><<</ph2 OF schema"
-" add daily <ph3><<</ph3> <ph4><</ph4> <ph5><</ph5>"
+"Gebruik: schema toevoegen interval <min> <#channel> <message> OF schema "
+"dagelijks toevoegen <HH:MM> <#channel> <message>"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:90
 #, elixir-autogen, elixir-format

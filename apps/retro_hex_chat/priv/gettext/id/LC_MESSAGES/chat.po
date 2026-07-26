@@ -107,15 +107,16 @@ msgstr "Ding Tinggi"
 msgid "Ding Low"
 msgstr "Ding Rendah"
 
-#: lib/retro_hex_chat/chat/policy.ex:41
-#: lib/retro_hex_chat/chat/policy.ex:70
+#: lib/retro_hex_chat/chat/policy.ex:41 lib/retro_hex_chat/chat/policy.ex:70
 #, elixir-autogen, elixir-format
 msgid "Edit window has expired."
 msgstr "Jendela Sunting telah kadaluwarsa."
 
 #: lib/retro_hex_chat/chat/alias_expander.ex:30
 #, elixir-autogen, elixir-format
-msgid "Expansion must not contain command chaining characters (|, &&, ;, or newlines)"
+msgid ""
+"Expansion must not contain command chaining characters (|, &&, ;, or "
+"newlines)"
 msgstr ""
 "Ekspansi tak boleh memuat karakter chaining perintah (Selain 124;, &, atau "
 "baris baru)"
@@ -127,26 +128,25 @@ msgstr "Memformat"
 
 #: lib/retro_hex_chat/chat/timer_manager.ex:111
 #, elixir-autogen, elixir-format
-msgid "Invalid timer name. Use only letters, numbers, hyphens, underscores (max %{max_name_length} chars)."
+msgid ""
+"Invalid timer name. Use only letters, numbers, hyphens, underscores (max "
+"%{max_name_length} chars)."
 msgstr ""
 "Nama timer tidak valid. Gunakan hanya huruf, angka, tanda hubung, garis "
 "bawah (maksimum chars %{max_name_length})."
 
-#: lib/retro_hex_chat/chat/policy.ex:18
-#: lib/retro_hex_chat/chat/policy.ex:24
+#: lib/retro_hex_chat/chat/policy.ex:18 lib/retro_hex_chat/chat/policy.ex:24
 #, elixir-autogen, elixir-format
 msgid "Message cannot be empty"
 msgstr "Pesan tidak dapat kosong"
 
-#: lib/retro_hex_chat/chat/policy.ex:38
-#: lib/retro_hex_chat/chat/policy.ex:60
+#: lib/retro_hex_chat/chat/policy.ex:38 lib/retro_hex_chat/chat/policy.ex:60
 #: lib/retro_hex_chat/chat/policy.ex:81
 #, elixir-autogen, elixir-format
 msgid "Message has already been deleted."
 msgstr "Pesan telah dihapus."
 
-#: lib/retro_hex_chat/chat/service.ex:53
-#: lib/retro_hex_chat/chat/service.ex:80
+#: lib/retro_hex_chat/chat/service.ex:53 lib/retro_hex_chat/chat/service.ex:80
 #: lib/retro_hex_chat/chat/service.ex:109
 #: lib/retro_hex_chat/chat/service.ex:131
 #, elixir-autogen, elixir-format
@@ -254,8 +254,7 @@ msgstr "Open/close tombol pintas cheatsheet"
 msgid "Original message not found."
 msgstr "Pesan asli tidak ditemukan."
 
-#: lib/retro_hex_chat/chat/policy.ex:44
-#: lib/retro_hex_chat/chat/policy.ex:109
+#: lib/retro_hex_chat/chat/policy.ex:44 lib/retro_hex_chat/chat/policy.ex:109
 #, elixir-autogen, elixir-format
 msgid "Please wait a few seconds before editing again."
 msgstr "Harap tunggu beberapa detik sebelum mengedit lagi."
@@ -428,8 +427,7 @@ msgstr "Jendela 9"
 msgid "You cannot delete other users' messages."
 msgstr "Anda tidak dapat menghapus pesan pengguna lain."
 
-#: lib/retro_hex_chat/chat/policy.ex:35
-#: lib/retro_hex_chat/chat/policy.ex:57
+#: lib/retro_hex_chat/chat/policy.ex:35 lib/retro_hex_chat/chat/policy.ex:57
 #, elixir-autogen, elixir-format
 msgid "You cannot edit other users' messages."
 msgstr "Anda tidak dapat menyunting pesan pengguna lain."

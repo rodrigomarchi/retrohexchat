@@ -5,9 +5,7 @@ defmodule RetroHexChatWeb.Icons.Flags do
   Each supported locale maps to the flag conventionally associated with the
   language: en → US, pt_BR → Brazil, pt_PT → Portugal, es → Spain, fr → France,
   de → Germany, ja → Japan, zh_hans → China, zh_hant → Taiwan, id → Indonesia,
-  ar → Saudi Arabia, ru → Russia, hi → India, ko → South Korea, tr → Turkey,
-  vi → Vietnam, bn → Bangladesh, ur → Pakistan, it → Italy, pl → Poland,
-  nl → Netherlands.
+  ru → Russia, it → Italy, pl → Poland, nl → Netherlands.
 
   Flags render as a 12×9 field inside a 1px black outline, vertically centered
   in the 14×14 viewBox — the same footprint as the other 14×14 menu icons.
@@ -32,14 +30,7 @@ defmodule RetroHexChatWeb.Icons.Flags do
   def flag_icon(%{locale: "zh_hans"} = assigns), do: icon_flag_zh_hans(assigns)
   def flag_icon(%{locale: "zh_hant"} = assigns), do: icon_flag_zh_hant(assigns)
   def flag_icon(%{locale: "id"} = assigns), do: icon_flag_id(assigns)
-  def flag_icon(%{locale: "ar"} = assigns), do: icon_flag_ar(assigns)
   def flag_icon(%{locale: "ru"} = assigns), do: icon_flag_ru(assigns)
-  def flag_icon(%{locale: "hi"} = assigns), do: icon_flag_hi(assigns)
-  def flag_icon(%{locale: "ko"} = assigns), do: icon_flag_ko(assigns)
-  def flag_icon(%{locale: "tr"} = assigns), do: icon_flag_tr(assigns)
-  def flag_icon(%{locale: "vi"} = assigns), do: icon_flag_vi(assigns)
-  def flag_icon(%{locale: "bn"} = assigns), do: icon_flag_bn(assigns)
-  def flag_icon(%{locale: "ur"} = assigns), do: icon_flag_ur(assigns)
   def flag_icon(%{locale: "it"} = assigns), do: icon_flag_it(assigns)
   def flag_icon(%{locale: "pl"} = assigns), do: icon_flag_pl(assigns)
   def flag_icon(%{locale: "nl"} = assigns), do: icon_flag_nl(assigns)
@@ -198,20 +189,6 @@ defmodule RetroHexChatWeb.Icons.Flags do
 
   attr :class, :string, default: nil
 
-  @spec icon_flag_ar(map()) :: Phoenix.LiveView.Rendered.t()
-  def icon_flag_ar(assigns) do
-    ~H"""
-    <svg class={@class} viewBox="0 0 14 14" shape-rendering="crispEdges" aria-hidden="true">
-      <rect x="0" y="2" width="14" height="11" fill="#000" />
-      <rect x="1" y="3" width="12" height="9" fill="#006C35" />
-      <rect x="3" y="5" width="8" height="1.2" fill="#fff" />
-      <rect x="3" y="8.2" width="7" height="0.8" fill="#fff" />
-    </svg>
-    """
-  end
-
-  attr :class, :string, default: nil
-
   @spec icon_flag_ru(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_flag_ru(assigns) do
     ~H"""
@@ -220,102 +197,6 @@ defmodule RetroHexChatWeb.Icons.Flags do
       <rect x="1" y="3" width="12" height="3" fill="#fff" />
       <rect x="1" y="6" width="12" height="3" fill="#0039A6" />
       <rect x="1" y="9" width="12" height="3" fill="#D52B1E" />
-    </svg>
-    """
-  end
-
-  attr :class, :string, default: nil
-
-  @spec icon_flag_hi(map()) :: Phoenix.LiveView.Rendered.t()
-  def icon_flag_hi(assigns) do
-    ~H"""
-    <svg class={@class} viewBox="0 0 14 14" shape-rendering="crispEdges" aria-hidden="true">
-      <rect x="0" y="2" width="14" height="11" fill="#000" />
-      <rect x="1" y="3" width="12" height="3" fill="#FF9933" />
-      <rect x="1" y="6" width="12" height="3" fill="#fff" />
-      <rect x="1" y="9" width="12" height="3" fill="#138808" />
-      <circle cx="7" cy="7.5" r="1.1" fill="none" stroke="#000080" stroke-width="0.5" />
-    </svg>
-    """
-  end
-
-  attr :class, :string, default: nil
-
-  @spec icon_flag_ko(map()) :: Phoenix.LiveView.Rendered.t()
-  def icon_flag_ko(assigns) do
-    ~H"""
-    <svg class={@class} viewBox="0 0 14 14" shape-rendering="crispEdges" aria-hidden="true">
-      <rect x="0" y="2" width="14" height="11" fill="#000" />
-      <rect x="1" y="3" width="12" height="9" fill="#fff" />
-      <path d="M4.6 7.5 a2.4 2.4 0 0 1 4.8 0 z" fill="#CD2E3A" />
-      <path d="M4.6 7.5 a2.4 2.4 0 0 0 4.8 0 z" fill="#0047A0" />
-      <rect x="1.8" y="4" width="1.4" height="0.4" fill="#1a1a1a" />
-      <rect x="10.8" y="4" width="1.4" height="0.4" fill="#1a1a1a" />
-      <rect x="1.8" y="10.6" width="1.4" height="0.4" fill="#1a1a1a" />
-      <rect x="10.8" y="10.6" width="1.4" height="0.4" fill="#1a1a1a" />
-    </svg>
-    """
-  end
-
-  attr :class, :string, default: nil
-
-  @spec icon_flag_tr(map()) :: Phoenix.LiveView.Rendered.t()
-  def icon_flag_tr(assigns) do
-    ~H"""
-    <svg class={@class} viewBox="0 0 14 14" shape-rendering="crispEdges" aria-hidden="true">
-      <rect x="0" y="2" width="14" height="11" fill="#000" />
-      <rect x="1" y="3" width="12" height="9" fill="#E30A17" />
-      <circle cx="5.8" cy="7.5" r="2.2" fill="#fff" />
-      <circle cx="6.5" cy="7.5" r="1.8" fill="#E30A17" />
-      <polygon
-        points="9.3,6.6 9.51,7.21 10.16,7.22 9.64,7.61 9.83,8.23 9.3,7.86 8.77,8.23 8.96,7.61 8.44,7.22 9.09,7.21"
-        fill="#fff"
-      />
-    </svg>
-    """
-  end
-
-  attr :class, :string, default: nil
-
-  @spec icon_flag_vi(map()) :: Phoenix.LiveView.Rendered.t()
-  def icon_flag_vi(assigns) do
-    ~H"""
-    <svg class={@class} viewBox="0 0 14 14" shape-rendering="crispEdges" aria-hidden="true">
-      <rect x="0" y="2" width="14" height="11" fill="#000" />
-      <rect x="1" y="3" width="12" height="9" fill="#DA251D" />
-      <polygon
-        points="7,5.3 7.52,6.79 9.09,6.82 7.84,7.77 8.29,9.28 7,8.38 5.71,9.28 6.16,7.77 4.91,6.82 6.48,6.79"
-        fill="#FFFF00"
-      />
-    </svg>
-    """
-  end
-
-  attr :class, :string, default: nil
-
-  @spec icon_flag_bn(map()) :: Phoenix.LiveView.Rendered.t()
-  def icon_flag_bn(assigns) do
-    ~H"""
-    <svg class={@class} viewBox="0 0 14 14" shape-rendering="crispEdges" aria-hidden="true">
-      <rect x="0" y="2" width="14" height="11" fill="#000" />
-      <rect x="1" y="3" width="12" height="9" fill="#006A4E" />
-      <circle cx="6.4" cy="7.5" r="2.3" fill="#F42A41" />
-    </svg>
-    """
-  end
-
-  attr :class, :string, default: nil
-
-  @spec icon_flag_ur(map()) :: Phoenix.LiveView.Rendered.t()
-  def icon_flag_ur(assigns) do
-    ~H"""
-    <svg class={@class} viewBox="0 0 14 14" shape-rendering="crispEdges" aria-hidden="true">
-      <rect x="0" y="2" width="14" height="11" fill="#000" />
-      <rect x="1" y="3" width="3" height="9" fill="#fff" />
-      <rect x="4" y="3" width="9" height="9" fill="#01411C" />
-      <circle cx="8.7" cy="7.7" r="2" fill="#fff" />
-      <circle cx="9.4" cy="7.4" r="1.7" fill="#01411C" />
-      <rect x="10.2" y="4.9" width="0.9" height="0.9" fill="#fff" />
     </svg>
     """
   end

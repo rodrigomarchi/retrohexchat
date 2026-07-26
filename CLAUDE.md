@@ -68,7 +68,7 @@ This runs the full CI pipeline first, then deploys to production (Sun).
 NEVER use `make deploy-sun` directly — it skips CI validation.
 
 ```
-Phase 1: CI Validation (make ci — 9 parallel checks, ~64s)
+Phase 1: CI Validation (make ci — 11 parallel checks, ~64s)
     ↓ (only if all checks pass)
 Phase 2: Deploy
     └─ Sun (production) — scp + ssh deploy.sh
@@ -82,26 +82,27 @@ Phase 2: Deploy
 ## CI-Equivalent Validation (MANDATORY before declaring any task complete)
 
 **ALWAYS use `make ci`** (or `elixir scripts/ci.exs`) to validate code.
-This is a standalone Elixir script that runs all 9 CI checks with maximum parallelism.
+This is a standalone Elixir script that runs all 11 CI checks with maximum parallelism.
 No other validation method is acceptable.
 
-**Pipeline (2-stage parallel execution, 9 checks):**
+**Pipeline (2-stage parallel execution, 11 checks):**
 
 ```
-Stage 1 (parallel):        Stage 2 (parallel, after compile):
-  ├─ compile                 ├─ format
-  ├─ JS lint                 ├─ credo
-  └─ JS tests                ├─ CSS lint
-                             ├─ tests (unit + integration + liveview)
-                             ├─ E2E tests (separate worker)
-                             └─ dialyzer
+Stage 1 (parallel):          Stage 2 (parallel, after compile):
+  ├─ compile                   ├─ format
+  ├─ JS lint                   ├─ credo
+  ├─ JS tests                  ├─ CSS lint
+  ├─ i18n tooling tests        ├─ tests (unit + integration + liveview)
+  └─ i18n quality              ├─ E2E tests (separate worker)
+                               └─ dialyzer
 ```
 
 **Performance:** ~64s parallel vs ~104s serial (**38% faster**).
 Tests are split into two parallel workers for maximum throughput.
+The two i18n checks need no third-party Python packages, so they run anywhere.
 
 **Options:**
-- `make ci` — all 9 checks (standard)
+- `make ci` — all 11 checks (standard)
 - `make ci.quick` — skip dialyzer (faster iteration)
 - `elixir scripts/ci.exs --only compile,credo` — specific checks only
 
@@ -180,6 +181,51 @@ Same pattern: `attr :class` + `@spec` + `~H""" <svg> """`.
 ### Catalog
 
 See `docs/reference/svg-catalog.md` for full inventory. Visit `/showcase/icons` (dev only) to browse all icons visually.
+
+## i18n
+
+`config/i18n_locales.exs` is the **single source of truth** for the supported set.
+Adding or dropping a language is a one-file edit: the Makefile list, the browser
+catalog exports, and the Python checkers all derive from it via
+`scripts/i18n/locales.py`. Never hardcode a locale list anywhere else.
+
+Enabled: `en` + `pt_BR, pt_PT, es, fr, de, it, nl, pl, ru, id, ja, zh_hans, zh_hant`.
+All are LTR — the RTL code path is retained but currently unexercised.
+
+### Tooling (`scripts/i18n/`)
+
+| Module | Responsibility |
+|--------|----------------|
+| `locales` | the supported set, parsed from the Elixir registry |
+| `protection` | masking fragments a translator must not touch |
+| `quality` | guards deciding whether output is fit to ship |
+| `translator` | engines behind one interface, injectable in tests |
+| `pipeline` | batching and fallbacks, pure of I/O and engine choice |
+| `catalogs` | all catalog filesystem access |
+
+Keep the modules pure and the engine injected — `ScriptedTranslator` is how the
+tests drive the pipeline without Argos models. Add a regression test to
+`scripts/tests/` for every translation defect you find in the wild.
+
+### Rules
+
+- **Never `dgettext` an identifier.** Audit-log action keys (`channel.create`),
+  service names, and command syntax are literals. Translating them corrupts the
+  audit log, which persists whatever string it is handed.
+- **A bad translation is worse than English.** The pipeline rejects output that
+  loses a placeholder, keeps a sentinel, loops, or collapses, and keeps the
+  source instead so a human can see it needs work.
+- **Never mask fragments with markup-shaped tokens.** Models treat them as tags
+  and mangle them; sentinels are bare alphanumerics (`XPH0X`).
+
+```bash
+make i18n.quality.check   # collapsed / degenerate / sentinel-leaking entries
+make i18n.tooling.test    # the Python tooling suite
+make i18n.repair          # re-translate unusable entries (needs the venv)
+```
+
+`make i18n.repair` needs `argostranslate polib opencc-python-reimplemented` in a
+throwaway venv; everything in `make ci` runs on stdlib alone.
 
 ## Help System (mandatory)
 
