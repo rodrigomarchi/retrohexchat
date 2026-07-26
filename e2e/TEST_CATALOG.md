@@ -2,15 +2,15 @@
 
 Single source of truth for the browser-level Playwright suite.
 
-**Last reviewed:** 2026-07-25
+**Last reviewed:** 2026-07-26
 
 ## Current Coverage
 
-- **194 spec files** under `e2e/tests/`.
-- **342 Playwright `test()` cases**.
+- **195 spec files** under `e2e/tests/`.
+- **368 Playwright `test()` cases**.
 - **Auth/lifecycle:** 17 mapped flows, all done.
 - **Chat foundation:** 25 mapped flows, all done.
-- **Chat extended coverage:** 343 mapped flows, 342 done, 1 intentionally blocked.
+- **Chat extended coverage:** 344 mapped flows, 343 done, 1 intentionally blocked.
 - **Open todo/investigate items in this catalog:** none. Planned backlog lives in `TEST_BACKLOG.md`.
 - **Blocked item:** M13, confirmed `/admin nuke --confirm`, until a disposable isolated E2E profile exists.
 
@@ -387,6 +387,7 @@ make ci
 | T10 | Shortcut cheatsheet opens from Help menu and shortcut, lists active bindings, and does not submit draft input                                   | `tests/chat-cheatsheet.spec.ts`          | P2       | done   |
 | T11 | Dialog title close, cancel buttons, and backdrop paths close major dialogs consistently                                                         | `tests/chat-dialog-close.spec.ts`        | P2       | done   |
 | T12 | Reconnect state disables destructive shell menus while keeping Help accessible and preserving draft input                                       | `tests/chat-reconnect-shell.spec.ts`     | P1       | done   |
+| T13 | Taskbar collapses a window family into one grouped entry, expands it, and drops back to a plain button                                          | `tests/chat-taskbar-groups.spec.ts`      | P2       | done   |
 
 ## Backlog U - Dialog CRUD And Settings Depth
 

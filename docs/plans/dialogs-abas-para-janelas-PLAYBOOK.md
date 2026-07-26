@@ -724,6 +724,26 @@ os dois casos; ler cinco delas distingue.
 
 ---
 
+## 9b. Popup dentro de um scroller é `fixed`, não `absolute`
+
+A faixa de botões da taskbar é `overflow-x-auto`. Um container de scroll **clipa
+nos dois eixos** — `overflow-y: visible` não é honrado quando o outro eixo é
+`auto` —, então um flyout `absolute bottom-full` é cortado e os cliques caem no
+que está atrás dele. O sintoma no Playwright é
+`subtree intercepts pointer events` com o elemento reportado como "visible,
+enabled and stable".
+
+O repo já resolvia isso nos menus de contexto da taskbar: painel `fixed`,
+posicionado pelo hook a partir do `getBoundingClientRect()` do gatilho, com
+`clamp` na largura da viewport. Siga esse caminho.
+
+**E o contrato de atributos é sempre separado.** `data-taskbar-group` não é
+`data-start-submenu`, do mesmo jeito que o submenu do menu bar não é o do start
+menu: raízes diferentes, hooks diferentes, e reusar o atributo faz um fechar o
+painel do outro. Terceira vez que isso apareceu nesta série.
+
+---
+
 ## 10. Prettier: use o do repo
 
 `npx prettier` baixa outra versão e discorda do que o `make format.check` roda.
@@ -732,6 +752,15 @@ Sempre:
 ```sh
 apps/retro_hex_chat_web/assets/node_modules/.bin/prettier --write <arquivo>
 ```
+
+## 10b. Edição programática: âncora única ou `count=1`
+
+`str.replace` em Python troca **todas** as ocorrências. Numa fatia isso corrompeu
+uma asserção pré-existente de outro teste (`toBe("chat")` → `toBe("call")`), e a
+quebra pareceu regressão no código de produção. Use âncora com contexto
+suficiente para ser única, ou passe `count=1` — e leia o `git diff` do arquivo
+antes de rodar a suíte: ele mostra na hora se você tocou mais linhas do que
+pretendia.
 
 ---
 

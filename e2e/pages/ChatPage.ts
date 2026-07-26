@@ -1579,6 +1579,20 @@ export class ChatPage {
     await expect(this.customMenusDialog).toBeVisible();
   }
 
+  taskbarGroup(family: string): Locator {
+    return this.page.getByTestId(`taskbar-group-${family}`);
+  }
+
+  taskbarGroupPanel(family: string): Locator {
+    return this.taskbarGroup(family)
+      .locator("xpath=..")
+      .locator("[data-taskbar-group-panel]");
+  }
+
+  taskbarButton(windowId: string): Locator {
+    return this.page.locator(`[data-window-taskbar="${windowId}"]`).first();
+  }
+
   async openNickColorsFromMenu() {
     await this.openToolsMenuItem(this.nickColorsMenuItem);
     await this.nickColorsMenuItem.click();

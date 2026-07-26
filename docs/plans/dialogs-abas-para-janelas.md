@@ -492,7 +492,7 @@ crescente; a Fase 3 valida o playbook no menor split possível antes de escalar.
 | # | Fase | Conteúdo | Janelas novas | Status |
 |---|---|---|---|---|
 | 0 | **Infra de navegação** | Submenu (componente + JS + mobile) | 0 | ✅ feito |
-| 0b | **Resto da infra de navegação** | Grupos e scroll no start menu ✅ · agrupamento na taskbar ⬜ | 0 | 🟡 parcial |
+| 0b | **Resto da infra de navegação** | Grupos e scroll no start menu ✅ · agrupamento na taskbar ✅ | 0 | ✅ feito |
 | 1 | **Admin Console** | 9 janelas; monólito deletado | +8 | ✅ feito |
 | 2 | **Limpeza** | Tudo em §6, menos o que saiu junto com o Admin | 0 | ✅ feito |
 | 3 | **Channel Central** | 6 → 4 abas, funde as 3 listas de acesso | 0 | ✅ feito |
@@ -500,10 +500,15 @@ crescente; a Fase 3 valida o playbook no menor split possível antes de escalar.
 | 5 | **Account** | `account` + `profile` + `away` + `user-modes` | +3 | ✅ feito |
 | 6 | **Address Book** | `address-book` + `nick-colors` + `ignore-list`; aba Notify absorvida por `notify-list` | +2 | ✅ feito |
 
-**Fase 0b: metade feita.** O start menu ganhou grupos (`start_menu_submenu/1`)
-e teto de altura com scroll. **A taskbar continua devendo agrupamento** — 30
-janelas numa faixa `overflow-x-auto` de botões truncados em `12ch`. Ainda não
-dói (só as abertas aparecem), mas resolver antes das próximas fatias.
+**Fase 0b: concluída em 2026-07-26**, fechando o plano. O start menu ganhou
+grupos (`start_menu_submenu/1`) e teto de altura com scroll; a taskbar ganhou
+`taskbar_group/1`, que colapsa uma família de janelas numa entrada só —
+**apenas quando 2+ da família estão abertas**, porque agrupar uma janela
+solitária custaria um clique e não esconderia nada.
+
+Famílias: admin (9), account (4), contacts (4, incluindo `notify-list`) e
+on-connect (2). O grupo assume a posição do primeiro membro, então os botões não
+saltam de lugar quando uma janela irmã abre.
 
 ~~**Fase 6 é a maior por larga margem** — 9 janelas × 19 pontos do contrato.~~
 **Nota obsoleta:** escrita quando o Admin Console *era* a fase 6. Ele foi
@@ -545,7 +550,7 @@ parte do trabalho de teste — orçar.
 | **Janelas triviais.** `admin-broadcast` (59 LOC markup, 25 de handler, zero leitura) e `user-modes` (1 checkbox) recebem o aparato completo de 19 pontos | Custo desproporcional | Aceito por decisão de granularidade 1:1. Revisitar se em uso a janela parecer absurda — reabrir a decisão, não improvisar |
 | **Fase 0 é infra pura sem entrega visível** e é bloqueante | Pode ser pulada sob pressão | Nenhuma janela nova entra antes dela. Regra dura |
 | **44 arquivos de catálogo por lote de strings** (`ui` × 22, `chat` × 22), mais `dialogs`/`help_*` | Churn enorme, `make i18n.catalog.check` reprova | Fluxo cirúrgico do §8.15. Traduzir de verdade, nunca deixar seed em inglês |
-| **Taskbar em 36 botões** sem agrupamento | ~4.000px de scroll horizontal | Agrupamento entra na Fase 0; as 9 admin sob uma entrada é o mínimo |
+| ~~**Taskbar em 36 botões** sem agrupamento~~ | ~4.000px de scroll horizontal | **Resolvido na 0b** (2026-07-26): 4 famílias colapsam em uma entrada cada a partir de 2 janelas abertas |
 | **Réplica manual do Tools no showcase** (`menu_page.html.heex:181-253`) | Divergência silenciosa | Atualizar na mesma fase; não há check automático |
 | **Geometria salva em localStorage** (`rhc:desktop:*`) fica órfã para os ids aposentados | Usuário perde posição de janela | Aceito, sem migração |
 | **Estado inconsistente Danger Zone ↔ Server Settings** existe hoje e sobrevive ao split | Bug preservado | Documentado como bug conhecido; corrigir fora deste refactor |

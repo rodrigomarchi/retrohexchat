@@ -22,7 +22,13 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
 
   @spec chat_taskbar(map()) :: Phoenix.LiveView.Rendered.t()
   def chat_taskbar(assigns) do
-    assigns = assign(assigns, :taskbar_windows, taskbar_windows(assigns))
+    windows = taskbar_windows(assigns)
+
+    assigns =
+      assign(assigns,
+        taskbar_windows: windows,
+        taskbar_slots: group_windows(windows)
+      )
 
     ~H"""
     <.taskbar id="chat-taskbar">
@@ -30,15 +36,35 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
         <.start_menu_app id="chat-start-menu" is_admin={@is_admin} p2p_active={@p2p_session != nil} />
       </:start>
 
-      <.taskbar_button
-        :for={window <- @taskbar_windows}
-        window={window.id}
-        label={window.label}
-        class="desktop-taskbar__window-button"
-        data-testid={Map.get(window, :testid)}
-      >
-        <:icon>{apply(Icons, window.icon_fn, [%{class: "h-4 w-4"}])}</:icon>
-      </.taskbar_button>
+      <%= for slot <- @taskbar_slots do %>
+        <.taskbar_group
+          :if={slot.kind == :group}
+          label={slot.label}
+          count={length(slot.windows)}
+          testid={"taskbar-group-#{slot.family}"}
+        >
+          <:icon>{apply(Icons, slot.icon_fn, [%{class: "h-4 w-4"}])}</:icon>
+          <.taskbar_button
+            :for={window <- slot.windows}
+            window={window.id}
+            label={window.label}
+            class="desktop-taskbar__group-item w-full"
+            data-testid={Map.get(window, :testid)}
+          >
+            <:icon>{apply(Icons, window.icon_fn, [%{class: "h-4 w-4"}])}</:icon>
+          </.taskbar_button>
+        </.taskbar_group>
+
+        <.taskbar_button
+          :if={slot.kind == :window}
+          window={slot.window.id}
+          label={slot.window.label}
+          class="desktop-taskbar__window-button"
+          data-testid={Map.get(slot.window, :testid)}
+        >
+          <:icon>{apply(Icons, slot.window.icon_fn, [%{class: "h-4 w-4"}])}</:icon>
+        </.taskbar_button>
+      <% end %>
 
       <.mobile_task_switcher windows={@taskbar_windows} />
 
@@ -98,6 +124,60 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
       </div>
     </div>
     """
+  end
+
+  # Window families that collapse into one taskbar entry. The taskbar is a
+  # single `overflow-x-auto` strip of 12ch-truncated buttons, so 36 windows would
+  # be ~4000px of horizontal scroll if every open one claimed its own button.
+  #
+  # A family collapses only while TWO OR MORE of its windows are open: grouping a
+  # lone window would add a click and hide nothing. Order is preserved — the
+  # group takes the position of its first member, so buttons never jump around as
+  # sibling windows open.
+  @families [
+    {:admin, dgettext("chat", "Admin"), :icon_shield,
+     ~w(admin-users admin-channels admin-server-settings admin-audit-log admin-motd admin-turn
+        admin-broadcast admin-danger-zone admin-console)},
+    {:account, dgettext("chat", "Account"), :icon_status_user,
+     ~w(account profile away user-modes)},
+    {:contacts, dgettext("chat", "Contacts"), :icon_dialog_address_book,
+     ~w(address-book nick-colors ignore-list notify-list)},
+    {:connect, dgettext("chat", "On Connect"), :icon_dialog_perform, ~w(perform autojoin)}
+  ]
+
+  @doc false
+  @spec group_windows([map()]) :: [map()]
+  def group_windows(windows) do
+    family_of = family_index()
+
+    windows
+    |> Enum.reduce({[], %{}}, fn window, {slots, seen} ->
+      case Map.get(family_of, window.id) do
+        nil -> {slots ++ [{:window, window}], seen}
+        family -> {maybe_placeholder(slots, family, seen), Map.put(seen, family, true)}
+      end
+    end)
+    |> then(fn {slots, _seen} -> Enum.map(slots, &expand_slot(&1, windows)) end)
+  end
+
+  defp maybe_placeholder(slots, family, seen) do
+    if Map.has_key?(seen, family), do: slots, else: slots ++ [{:family, family}]
+  end
+
+  defp expand_slot({:window, window}, _windows), do: %{kind: :window, window: window}
+
+  defp expand_slot({:family, family}, windows) do
+    {^family, label, icon_fn, ids} = Enum.find(@families, &(elem(&1, 0) == family))
+    members = Enum.filter(windows, &(&1.id in ids))
+
+    case members do
+      [only] -> %{kind: :window, window: only}
+      many -> %{kind: :group, family: family, label: label, icon_fn: icon_fn, windows: many}
+    end
+  end
+
+  defp family_index do
+    for {family, _label, _icon, ids} <- @families, id <- ids, into: %{}, do: {id, family}
   end
 
   defp taskbar_windows(assigns) do

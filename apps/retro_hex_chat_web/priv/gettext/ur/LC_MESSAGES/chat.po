@@ -676,7 +676,7 @@ msgid "Added %{nickname} to notify list"
 msgstr "شامل کیے گئے %{nickname} فہرست میں شامل"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:126
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:253
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:333
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:399
 #, elixir-autogen, elixir-format
 msgid "Address Book"
@@ -761,7 +761,7 @@ msgstr ""
 "دستیاب احکام: %{commands}\n"
 "قسم /help محمد علی مکی makki.ma@gmail.com اردو زبان/ph0مکمل مدد نظام کے لیے مینو سے مینو کی جانب سے اوپری ٹیکوں کے لیے جگہ"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:136
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:216
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:113
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:842
 #: lib/retro_hex_chat_web/live/chat_live/away_events.ex:35
@@ -935,7 +935,7 @@ msgstr "چینل فیلڈر کا آغاز #"
 msgid "Channel ownership transferred to %{target}."
 msgstr "چینل کی ملکیت منتقل ہو گئی %{target}."
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:262
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:342
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:170
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:988
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:130
@@ -1835,7 +1835,7 @@ msgstr "تفریح %{author}"
 msgid "Reset (Ctrl+Shift+X)"
 msgstr "کرویئشا (Ctrl+Shit+X)"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:105
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:185
 #: lib/retro_hex_chat_web/live/app/chat_live.ex:724
 #: lib/retro_hex_chat_web/live/app/chat_live.ex:895
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:54
@@ -2505,7 +2505,8 @@ msgstr "* مفقود دعوتی چینل"
 msgid "* Missing invite target"
 msgstr "* مفقود ہدف کو دعوت دیتا ہے۔"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:124
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:141
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:204
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:793
 #, elixir-autogen, elixir-format
 msgid "Account"
@@ -2516,19 +2517,19 @@ msgstr "اکاؤنٹ"
 msgid "Action message cannot be empty"
 msgstr "ایکشن پیغام خالی نہیں کیا جا سکتا"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:205
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:285
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:331
 #, elixir-autogen, elixir-format
 msgid "Alias Editor"
 msgstr "ایڈیٹر"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:181
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:261
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:663
 #, elixir-autogen, elixir-format
 msgid "Arcade"
 msgstr "عرفیت"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:217
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:297
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:375
 #, elixir-autogen, elixir-format
 msgid "Auto Respond"
@@ -2544,7 +2545,7 @@ msgstr "بایو"
 msgid "Bio is limited to 200 characters; extra text was not kept."
 msgstr "Bio صرف 200 حروف تک محدود ہے؛ مزید متن نہیں رکھا گیا۔"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:155
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:235
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1150
 #, elixir-autogen, elixir-format
 msgid "Bot Management"
@@ -2555,7 +2556,7 @@ msgstr "بھٹ انتظام"
 msgid "Cancel notice"
 msgstr "نظر انداز کریں"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:118
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:198
 #, elixir-autogen, elixir-format
 msgid "Channel Central"
 msgstr "چینل وسطی"
@@ -2565,7 +2566,7 @@ msgstr "چینل وسطی"
 msgid "Channel Central: %{channel}"
 msgstr "چینل سینٹر: %{channel}"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:107
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:187
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:721
 #, elixir-autogen, elixir-format
 msgid "Channel List"
@@ -2592,7 +2593,7 @@ msgstr "رسائی کی سطح منتخب کیجئے۔"
 msgid "Contact note"
 msgstr "رابطہ کریں"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:211
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:291
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:353
 #, elixir-autogen, elixir-format
 msgid "Custom Menus"
@@ -2658,13 +2659,13 @@ msgstr "خامی"
 msgid "Failed to update bot status."
 msgstr "بوٹ حالت کو تجدید کرنے میں ناکامی"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:199
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:279
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:570
 #, elixir-autogen, elixir-format
 msgid "Flood Protection"
 msgstr "طوفان سے بچاؤ"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:187
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:267
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:307
 #, elixir-autogen, elixir-format
 msgid "Highlight Words"
@@ -2695,7 +2696,7 @@ msgstr "اس میں داخلے کے لیے ضروری ہے کہ ایک غیر م
 msgid "Join throttle set to %{seconds} seconds."
 msgstr "شمولیت کی حد %{seconds} سیکنڈ پر سیٹ کر دی گئی۔"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:112
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:192
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:745
 #, elixir-autogen, elixir-format
 msgid "Keyboard Shortcuts"
@@ -2732,7 +2733,7 @@ msgstr "%{channel} لوڈ ہو رہا ہے..."
 msgid "Loading older messages..."
 msgstr "پرانی پیغامات لوڈ کریں..."
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:265
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:345
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1057
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:96
 #, elixir-autogen, elixir-format
@@ -2788,7 +2789,7 @@ msgstr "غور کریں پیغام خالی نہیں کیا جا سکتا"
 msgid "Notice to %{target}:"
 msgstr "%{target} کے لیے نوٹس:"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:235
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:315
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:473
 #, elixir-autogen, elixir-format
 msgid "Notify List"
@@ -2834,7 +2835,7 @@ msgstr "پاس ورڈ مطلوب ہے"
 msgid "Passwords do not match"
 msgstr "پاس ورڈ میل نہیں کھاتا"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:223
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:303
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:498
 #, elixir-autogen, elixir-format
 msgid "Perform"
@@ -2909,7 +2910,7 @@ msgstr "ایکشن پیام بھیجو ( سزا دینے والا)"
 msgid "Shared channels"
 msgstr "شیئر کردہ چینل"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:193
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:273
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:546
 #, elixir-autogen, elixir-format
 msgid "Sound Settings"
@@ -2926,7 +2927,7 @@ msgstr "حد بندی کی خرابی: %{message}"
 msgid "Timer not found"
 msgstr "ٹائمر نہیں پائی گئی"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:161
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:241
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:698
 #, elixir-autogen, elixir-format
 msgid "Timers"
@@ -2947,7 +2948,7 @@ msgstr "تصدیق کرنے کے لیے چینل کا نام ٹائپ کریں."
 msgid "Type the server name to confirm."
 msgstr "تصدیق کرنے کے لیے سرور کا نام قسم."
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:106
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:186
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:913
 #, elixir-autogen, elixir-format
 msgid "URL Catcher"
@@ -2959,7 +2960,7 @@ msgstr "طےشدہ"
 msgid "Unmute (channel)"
 msgstr "غیر متصل"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:148
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:228
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:889
 #, elixir-autogen, elixir-format
 msgid "User Lookup"
@@ -3206,7 +3207,7 @@ msgstr "سان فرانسسکو سیشن %{peer} ختم ہو گیا ۔"
 msgid "P2P session with %{peer} — %{facets}. Click to focus"
 msgstr "سان فرانسسکو سیشن %{peer} — %{facets}پر کلک کرو"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:297
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:377
 #: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:169
 #, elixir-autogen, elixir-format
 msgid "P2P: %{peer}"
@@ -3414,7 +3415,7 @@ msgid "Joining..."
 msgstr "شامل کیا گیا..."
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:141
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:300
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:380
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:142
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:600
 #, elixir-autogen, elixir-format
@@ -3461,43 +3462,43 @@ msgstr "مرکزی پی2 پی کال ونڈو میں شروع یا بند کرو
 msgid "Admin tools are restricted to server administrators."
 msgstr "انتظامی آلات سرور منتظمین تک محدود ہیں۔"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:264
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:344
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1034
 #, elixir-autogen, elixir-format
 msgid "Audit Log"
 msgstr "ایدھی لاگ"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:267
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:347
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1103
 #, elixir-autogen, elixir-format
 msgid "Broadcast"
 msgstr "براڈ بینڈ"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:269
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:349
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:939
 #, elixir-autogen, elixir-format
 msgid "Console"
 msgstr "پرنٹ"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:268
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:348
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1126
 #, elixir-autogen, elixir-format
 msgid "Danger Zone"
 msgstr "معجزہ"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:263
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:343
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1011
 #, elixir-autogen, elixir-format
 msgid "Server Settings"
 msgstr "سرور ترتیبات"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:266
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:346
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1080
 #, elixir-autogen, elixir-format
 msgid "TURN"
 msgstr "ترکی"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:261
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:341
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:964
 #, elixir-autogen, elixir-format
 msgid "Users"
@@ -3508,7 +3509,7 @@ msgstr "صارفین"
 msgid "%{peer} accepted the P2P request - connecting..."
 msgstr "%{peer} نے P2P درخواست قبول کر لی - رابطہ ہو رہا ہے..."
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:229
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:309
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:522
 #, elixir-autogen, elixir-format
 msgid "Auto-Join"
@@ -3546,26 +3547,41 @@ msgstr ""
 msgid "Use the P2P control in this private message."
 msgstr "اس نجی پیغام میں P2P کنٹرول استعمال کریں۔"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:130
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:210
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:819
 #, elixir-autogen, elixir-format
 msgid "Profile"
 msgstr "پرنٹ"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:142
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:222
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:866
 #, elixir-autogen, elixir-format
 msgid "User Modes"
 msgstr "صارف طریقہ"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:247
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:327
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:449
 #, elixir-autogen, elixir-format
 msgid "Ignore List"
 msgstr "فہرست بند کریں"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:241
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:321
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:425
 #, elixir-autogen, elixir-format
 msgid "Nick Colors"
 msgstr "نک رنگ"
+
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:138
+#, elixir-autogen, elixir-format
+msgid "Admin"
+msgstr "ناظم"
+
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:143
+#, elixir-autogen, elixir-format
+msgid "Contacts"
+msgstr "روابط"
+
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:145
+#, elixir-autogen, elixir-format
+msgid "On Connect"
+msgstr "نظر انداز کریں"

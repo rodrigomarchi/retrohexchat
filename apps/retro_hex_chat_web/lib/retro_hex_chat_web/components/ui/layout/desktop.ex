@@ -366,6 +366,70 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
   end
 
   @doc """
+  Renders one taskbar button standing for a family of open windows.
+
+  A family collapses only while **two or more** of its windows are open —
+  a group wrapping a single window would cost a click and buy nothing. The
+  trigger shows how many are open; clicking it reveals a panel of the family's
+  windows, and clicking one of those focuses it exactly like a plain taskbar
+  button (the items carry `data-window-taskbar` themselves).
+
+  Driven by `WindowManagerHook` through `data-taskbar-group` /
+  `data-taskbar-group-panel` — a contract of its own, not the Start menu's: the
+  two live in different roots and reusing the attribute would make each close
+  the other's panel.
+
+  The panel is `fixed` and anchored by the hook, not `absolute`: the button strip
+  is an `overflow-x-auto` scroller, which clips an upward flyout on both axes.
+  The taskbar's right-click menus solve it the same way.
+  """
+  attr :label, :string, required: true
+  attr :count, :integer, required: true
+  attr :testid, :string, default: nil
+  attr :class, :any, default: nil
+  slot :icon, required: true
+  slot :inner_block, required: true, doc: "taskbar_button/1 elements"
+
+  @spec taskbar_group(map()) :: Phoenix.LiveView.Rendered.t()
+  def taskbar_group(assigns) do
+    ~H"""
+    <div
+      class={classes(["desktop-taskbar__group group/taskgroup relative shrink-0", @class])}
+      data-taskbar-group
+      data-group-open="false"
+    >
+      <button
+        type="button"
+        class={
+          classes([
+            "desktop-taskbar__button shadow-retro-raised bg-surface",
+            "inline-flex shrink-0 items-center gap-1 px-2 py-[2px] text-xs",
+            "group-data-[group-open=true]/taskgroup:shadow-retro-sunken"
+          ])
+        }
+        data-taskbar-group-trigger
+        data-testid={@testid}
+        aria-haspopup="true"
+        aria-expanded="false"
+      >
+        <span class="inline-flex h-4 w-4 shrink-0 items-center justify-center">
+          {render_slot(@icon)}
+        </span>
+        <span class="max-w-[12ch] truncate">{@label}</span>
+        <span class="text-primary shrink-0 font-bold tabular-nums">{@count}</span>
+      </button>
+
+      <div
+        class="desktop-taskbar__group-panel u-hidden fixed z-floating min-w-[180px] p-[3px] bg-surface text-foreground shadow-retro-window"
+        data-taskbar-group-panel
+      >
+        {render_slot(@inner_block)}
+      </div>
+    </div>
+    """
+  end
+
+  @doc """
   Renders the Start button that toggles the Start menu.
   """
   attr :label, :string, required: true

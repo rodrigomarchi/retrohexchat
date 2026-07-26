@@ -21,6 +21,7 @@
  *   - `[data-window-start]`         Start button (toggles the menu)
  *   - `[data-window-start-menu]`    Start menu popup
  *   - `[data-window-open=<id>]`     opens/focuses a window (e.g. a menu item)
+ *   - `[data-taskbar-group]`        taskbar button standing for a window family
  *   - `[data-taskbar-menu=<kind>]`  right-click menu (window | desktop)
  *   - `[data-taskbar-menu-action]`  item inside a taskbar menu
  *
@@ -441,9 +442,18 @@ const WindowManagerHook = {
       return;
     }
 
+    const groupTrigger = e.target.closest("[data-taskbar-group-trigger]");
+    if (groupTrigger) {
+      this.toggleTaskbarGroup(groupTrigger.closest("[data-taskbar-group]"));
+      return;
+    }
+
     const taskBtn = e.target.closest("[data-window-taskbar]");
     if (taskBtn) {
       if (e.target.closest("[data-mobile-task-switcher-item]")) this.closeMobileTaskSwitcher();
+      // Picking a window out of a group closes the panel — the click already
+      // did what the panel was open for.
+      if (e.target.closest("[data-taskbar-group-panel]")) this.closeTaskbarGroups();
       this.onTaskbarClick(taskBtn.dataset.windowTaskbar, taskBtn);
       return;
     }
@@ -598,6 +608,7 @@ const WindowManagerHook = {
       this.closeTaskbarMenus();
       this.closeStartMenu();
       this.closeMobileTaskSwitcher();
+      this.closeTaskbarGroups();
       return;
     }
 
@@ -627,6 +638,9 @@ const WindowManagerHook = {
     if (start && !start.classList.contains("u-hidden")) return true;
     const mobileTaskSwitcher = this.mobileTaskSwitcher();
     if (mobileTaskSwitcher && !mobileTaskSwitcher.classList.contains("u-hidden")) return true;
+    for (const group of this.taskbarGroups()) {
+      if (group.dataset.groupOpen === "true") return true;
+    }
     for (const menu of this.el.querySelectorAll("[data-taskbar-menu]")) {
       if (!menu.classList.contains("u-hidden")) return true;
     }
@@ -1268,6 +1282,42 @@ const WindowManagerHook = {
     });
   },
 
+  taskbarGroups() {
+    return Array.from(this.el.querySelectorAll("[data-taskbar-group]"));
+  },
+
+  toggleTaskbarGroup(group) {
+    if (!group) return;
+    const open = group.dataset.groupOpen === "true";
+    this.closeTaskbarGroups();
+    if (!open) this.setTaskbarGroup(group, true);
+  },
+
+  closeTaskbarGroups(except = null) {
+    this.taskbarGroups().forEach((group) => {
+      if (group !== except) this.setTaskbarGroup(group, false);
+    });
+  },
+
+  setTaskbarGroup(group, open) {
+    group.dataset.groupOpen = open ? "true" : "false";
+    const panel = group.querySelector("[data-taskbar-group-panel]");
+    const trigger = group.querySelector("[data-taskbar-group-trigger]");
+    if (trigger) trigger.setAttribute("aria-expanded", open ? "true" : "false");
+    if (!panel) return;
+
+    panel.classList.toggle("u-hidden", !open);
+    if (!open || !trigger) return;
+
+    // The strip is an overflow scroller, so the panel is `fixed` and anchored
+    // here: left-aligned with its trigger, opening upward off the taskbar.
+    const rect = trigger.getBoundingClientRect();
+    const x = clamp(rect.left, 0, Math.max(0, window.innerWidth - panel.offsetWidth));
+    const y = Math.max(0, rect.top - panel.offsetHeight - 2);
+    panel.style.left = `${x}px`;
+    panel.style.top = `${y}px`;
+  },
+
   setStartSubmenu(submenu, open) {
     submenu.dataset.submenuOpen = open ? "true" : "false";
     const panel = submenu.querySelector("[data-start-submenu-panel]");
@@ -1276,6 +1326,7 @@ const WindowManagerHook = {
 
   onDocPointerDown(e) {
     if (!e.target.closest("[data-taskbar-menu]")) this.closeTaskbarMenus();
+    if (!e.target.closest("[data-taskbar-group]")) this.closeTaskbarGroups();
     if (
       !e.target.closest("[data-mobile-task-switcher]") &&
       !e.target.closest("[data-mobile-task-switcher-trigger]")

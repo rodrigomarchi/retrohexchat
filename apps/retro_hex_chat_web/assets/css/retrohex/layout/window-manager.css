@@ -134,6 +134,35 @@
 .desktop-taskbar__button.is-flashing {
   @apply animate-pulse;
 }
+/* ── Taskbar groups ────────────────────────────────────────── */
+/* One button standing for a family of open windows; its panel opens upward,
+   because the taskbar sits at the bottom of the desktop. */
+.desktop-taskbar__group-panel {
+  max-height: min(60vh, 420px);
+  overflow-y: auto;
+}
+
+/* Hidden by .u-hidden; showing it must restore a block layout. */
+.desktop-taskbar__group-panel:not(.u-hidden) {
+  display: block;
+}
+
+/* Inside the panel the buttons are rows, not chips: full width, left-aligned,
+   and the label may use the whole width instead of truncating at 12ch. */
+.desktop-taskbar__group-item {
+  justify-content: flex-start;
+  width: 100%;
+  margin-bottom: 2px;
+}
+
+.desktop-taskbar__group-item:last-child {
+  margin-bottom: 0;
+}
+
+.desktop-taskbar__group-item > span:nth-child(2) {
+  max-width: none;
+}
+
 .mobile-task-switcher {
   display: none;
 }
@@ -377,7 +406,8 @@
   overflow: visible;
 }
 
-.desktop--stacked .desktop-taskbar__window-button {
+.desktop--stacked .desktop-taskbar__window-button,
+.desktop--stacked .desktop-taskbar__group {
   display: none;
 }
 

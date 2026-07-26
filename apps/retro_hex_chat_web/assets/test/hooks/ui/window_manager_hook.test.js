@@ -66,6 +66,12 @@ function buildDesktop() {
         </div>
       </div>
       <button data-window-taskbar="conn"></button>
+      <div data-taskbar-group data-group-open="false">
+        <button data-taskbar-group-trigger data-testid="taskbar-group-admin">Admin</button>
+        <div data-taskbar-group-panel class="u-hidden">
+          <button data-window-taskbar="call" class="desktop-taskbar__group-item"></button>
+        </div>
+      </div>
       <button data-window-taskbar="chat"></button>
       <button data-window-taskbar="call"></button>
       ${taskbarMenusMarkup()}
@@ -546,6 +552,67 @@ describe("WindowManagerHook", () => {
 
     expect(hook.windows.call.state.open).toBe(true);
     expect(menu.classList.contains("u-hidden")).toBe(true);
+  });
+
+  describe("taskbar groups", () => {
+    function group() {
+      return el.querySelector("[data-taskbar-group]");
+    }
+
+    function panelHidden() {
+      return el.querySelector("[data-taskbar-group-panel]").classList.contains("u-hidden");
+    }
+
+    function trigger() {
+      return el.querySelector("[data-taskbar-group-trigger]");
+    }
+
+    it("opens the group panel on trigger click", () => {
+      trigger().click();
+
+      expect(panelHidden()).toBe(false);
+      expect(group().dataset.groupOpen).toBe("true");
+      expect(trigger().getAttribute("aria-expanded")).toBe("true");
+    });
+
+    it("toggles the panel closed on a second click", () => {
+      trigger().click();
+      trigger().click();
+
+      expect(panelHidden()).toBe(true);
+      expect(trigger().getAttribute("aria-expanded")).toBe("false");
+    });
+
+    it("closes the panel when a window inside it is picked", () => {
+      trigger().click();
+      el.querySelector("[data-taskbar-group-panel] [data-window-taskbar]").click();
+
+      expect(panelHidden()).toBe(true);
+    });
+
+    it("focuses the window picked out of the group", () => {
+      trigger().click();
+      el.querySelector("[data-taskbar-group-panel] [data-window-taskbar]").click();
+
+      expect(hook.focusedId).toBe("call");
+    });
+
+    it("closes on a pointerdown outside the group", () => {
+      trigger().click();
+      document.body.dispatchEvent(new MouseEvent("pointerdown", { bubbles: true }));
+
+      expect(panelHidden()).toBe(true);
+    });
+
+    it("Escape closes the panel and leaves the windows alone", () => {
+      trigger().click();
+      const before = el.querySelectorAll('[data-window][data-window-open="true"]').length;
+
+      document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
+
+      expect(panelHidden()).toBe(true);
+      expect(el.querySelectorAll('[data-window][data-window-open="true"]').length).toBe(before);
+    });
   });
 
   describe("Start menu groups", () => {

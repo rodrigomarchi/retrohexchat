@@ -27,7 +27,8 @@ previa, e as decisões tomadas em execução. Aprendizados duráveis migram para
 | 11 | **Channel Central** — 6→4 abas (fusão das 3 listas de acesso) | ✅ feito | `a0289349` |
 | 12 | **Perform** — `perform` + `autojoin` (2 abas → 2 janelas) | ✅ feito | `8d493faa` |
 | 13 | **Account** — 4 abas → 4 janelas | ✅ feito | `449d056f` |
-| 14 | **Address Book** — 4 abas → 3 janelas + dedup do Notify | ✅ feito | — |
+| 14 | **Address Book** — 4 abas → 3 janelas + dedup do Notify | ✅ feito | `ba8d0b3e` |
+| 15 | **Fase 0b** — agrupamento na taskbar (fecha o plano) | ✅ feito | — |
 
 Ordem: o Admin Console (era a Fase 6 do plano) foi promovido a primeiro caso por
 ser o mais complexo — é ele que deriva o playbook.
@@ -718,6 +719,66 @@ implementação da aba, mas "Now" responde melhor à pergunta "Last seen". Manti
 "Fase 6 é a maior por larga margem — 9 janelas" foi escrita quando o Admin
 Console *era* a fase 6. Ele virou a Fase 1; o parágrafo descrevia trabalho já
 feito. Marcado como obsoleto no plano.
+
+---
+
+## Fase 0b — agrupamento na taskbar ✅ 2026-07-26 (fecha o plano)
+
+**Feito.** A última pendência do plano original. `taskbar_group/1` colapsa uma
+família de janelas numa entrada só, com painel próprio.
+
+**Validação:** `make ci` **9/9** · 80/80 `window_manager_hook.test.js` (6 novos)
+· 9/9 no teste novo de agrupamento · 6/6 e2e (grupos + desktop/mobile/reconnect)
+· 5 gates de i18n verdes.
+
+### A regra que define o desenho
+
+**Uma família colapsa só a partir de 2 janelas abertas.** Com uma só, o grupo
+custaria um clique e não esconderia nada — é como o Windows 7 se comporta, e é o
+que evita que a taskbar fique cheia de grupos de um item.
+
+**O grupo assume a posição do primeiro membro.** Sem isso os botões saltariam de
+lugar cada vez que uma janela irmã abrisse.
+
+Famílias: admin (9), account (4), contacts (4 — inclui `notify-list`, que é da
+mesma família semântica) e on-connect (2: perform + autojoin).
+
+### O painel tem de ser `fixed`, não `absolute`
+
+Primeira tentativa: `absolute bottom-full` como o painel do start menu. O e2e
+reprovou com "subtree intercepts pointer events" — a faixa de botões é um
+`overflow-x-auto`, e **um container de scroll clipa nos dois eixos**, então um
+flyout para cima é cortado. `overflow-y: visible` não resolve: com
+`overflow-x: auto` a spec computa o outro eixo para `auto` também.
+
+A solução já existia no repo: os menus de contexto da taskbar são `fixed` e
+posicionados pelo hook a partir do `getBoundingClientRect()` do gatilho. Segui o
+mesmo caminho. **Regra:** dentro de um scroller, popup é `fixed` + âncora por JS.
+
+### Contrato separado, de novo
+
+`data-taskbar-group` / `data-taskbar-group-panel`, não os atributos do start
+menu — pela mesma razão do Passo 0.5: são raízes diferentes e reusar o atributo
+faria um fechar o painel do outro. Terceira vez que essa regra aparece; já está
+no playbook.
+
+### Erro que cometi: `str.replace` sem limite em teste
+
+Ao ajustar a asserção do meu teste novo, o `t.replace("...toBe(\"chat\")", "...toBe(\"call\")")`
+em Python pegou **todas** as ocorrências e corrompeu uma asserção pré-existente
+do `stacked (mobile) mode`. O teste quebrou e por um momento pareceu regressão
+minha no hook.
+
+**Regra:** edição programática em arquivo de teste usa âncora com contexto
+suficiente para ser única, ou `count=1`. E o `git diff` do arquivo é a
+verificação — foi ele que mostrou duas linhas alteradas onde eu esperava uma.
+
+### Contadores do TEST_CATALOG.md estavam defasados antes desta sessão
+
+O cabeçalho dizia 194 specs / 342 casos; o real no início da sessão era
+**192 / 362**. Recalculei da fonte (195 / 368 agora). É exatamente a "deriva
+silenciosa, sem check automático" que o playbook lista — só que ela já existia,
+não foi introduzida aqui.
 
 ---
 
