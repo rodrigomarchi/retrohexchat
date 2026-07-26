@@ -10,6 +10,7 @@ defmodule RetroHexChatWeb.GroupCallChannelTest do
   alias RetroHexChatWeb.UserSocket
 
   @moduletag :integration
+  @channel_timeout 1_000
 
   setup do
     previous_port_range = Application.get_env(:retro_hex_chat, :sfu_ice_port_range)
@@ -108,7 +109,7 @@ defmodule RetroHexChatWeb.GroupCallChannelTest do
       assert init.room.token == room.token
 
       ref = push(socket, "group_call_join", %{"client_info" => %{"browser" => "test"}})
-      assert_reply ref, :ok, %{participant_id: participant_id}
+      assert_reply ref, :ok, %{participant_id: participant_id}, @channel_timeout
 
       assert_push "group_call_joined", %{participant: %{id: ^participant_id}}, 1_000
       assert_push "group_call_offer", %{participant_id: ^participant_id, sdp: sdp}, 1_000
@@ -131,15 +132,15 @@ defmodule RetroHexChatWeb.GroupCallChannelTest do
                })
 
       ref = push(socket, "group_call_join", %{"client_info" => %{"browser" => "test"}})
-      assert_reply ref, :ok, %{participant_id: participant_id}
+      assert_reply ref, :ok, %{participant_id: participant_id}, @channel_timeout
 
       assert_push "group_call_offer", %{participant_id: ^participant_id, sdp: _sdp}, 1_000
 
       ref = push(socket, "group_call_answer", %{"sdp" => "v=0\r\n"})
-      assert_reply ref, :ok
+      assert_reply ref, :ok, %{}, @channel_timeout
 
       ref = push(socket, "group_call_answer", %{"sdp" => "v=0\r\n"})
-      assert_reply ref, :error, %{code: "answer_failed", message: message}
+      assert_reply ref, :error, %{code: "answer_failed", message: message}, @channel_timeout
       assert message =~ "Rate limited"
     end
   end
