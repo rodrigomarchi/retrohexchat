@@ -6,17 +6,26 @@
  * Also detects the browser timezone and injects it into the hidden form
  * so that the session cookie carries the user's timezone.
  */
+import { getClientInfo } from "../../lib/connection/client_info";
+
 const ConnectFormHook = {
   mounted() {
-    // Detect browser timezone and populate the hidden field immediately
+    this.populateClientFields();
+
+    this.handleEvent("submit_connect", () => {
+      this.populateClientFields();
+      const form = document.getElementById("connect-session-form");
+      if (form) form.requestSubmit();
+    });
+  },
+
+  populateClientFields() {
     const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "Etc/UTC";
     const tzInput = document.getElementById("connect-timezone-input");
     if (tzInput) tzInput.value = tz;
 
-    this.handleEvent("submit_connect", () => {
-      const form = document.getElementById("connect-session-form");
-      if (form) form.requestSubmit();
-    });
+    const clientInfoInput = document.getElementById("connect-client-info-input");
+    if (clientInfoInput) clientInfoInput.value = JSON.stringify(getClientInfo());
   },
 };
 

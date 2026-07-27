@@ -1,7 +1,9 @@
 defmodule RetroHexChatWeb.SessionControllerTest do
   use RetroHexChatWeb.ConnCase
 
+  alias RetroHexChat.Accounts.TrustedDevices
   alias RetroHexChat.Services.NickServ
+  alias RetroHexChatWeb.App.TrustedDeviceCookie
 
   @moduletag :integration
 
@@ -39,6 +41,68 @@ defmodule RetroHexChatWeb.SessionControllerTest do
       assert redirected_to(conn) == "/chat"
       assert get_session(conn, :chat_nickname) == "AuthNick"
       assert get_session(conn, :chat_pre_identified) == true
+    end
+
+    test "valid auth_token can remember the current device", %{conn: conn} do
+      nick = "Remember#{uid()}"
+      NickServ.register(nick, "pass123")
+      token = Phoenix.Token.sign(RetroHexChatWeb.Endpoint, "nickserv_identify", nick)
+
+      conn =
+        post(conn, ~p"/chat/session", %{
+          "nickname" => nick,
+          "auth_token" => token,
+          "remember_device" => "true",
+          "device_label" => "Office terminal",
+          "client_info" => Jason.encode!(%{"browser" => "Firefox 140", "os" => "macOS 15"})
+        })
+
+      assert redirected_to(conn) == "/chat"
+      assert get_session(conn, :chat_pre_identified) == true
+      assert device_id = get_session(conn, :trusted_device_id)
+
+      assert [%{nickname: ^nick, label: "Office terminal"}] =
+               TrustedDevices.remembered_nicks(device_id)
+
+      assert conn.resp_cookies[TrustedDeviceCookie.name()].http_only
+    end
+
+    test "trusted device login sets pre_identified without a password token", %{conn: conn} do
+      nick = "Quick#{uid()}"
+      NickServ.register(nick, "pass123")
+      {:ok, %{cookie_value: cookie}} = TrustedDevices.remember_nick(nil, nick)
+
+      conn =
+        conn
+        |> put_req_cookie(TrustedDeviceCookie.name(), cookie)
+        |> post(~p"/chat/session", %{
+          "nickname" => nick,
+          "trusted_device_login" => "true"
+        })
+
+      assert redirected_to(conn) == "/chat"
+      assert get_session(conn, :chat_nickname) == nick
+      assert get_session(conn, :chat_pre_identified) == true
+      assert get_session(conn, :trusted_device_id)
+    end
+
+    test "trusted device login rejects an untrusted nick", %{conn: conn} do
+      first = "TrustA#{uid()}"
+      second = "TrustB#{uid()}"
+      NickServ.register(first, "pass123")
+      NickServ.register(second, "pass123")
+      {:ok, %{cookie_value: cookie}} = TrustedDevices.remember_nick(nil, first)
+
+      conn =
+        conn
+        |> put_req_cookie(TrustedDeviceCookie.name(), cookie)
+        |> post(~p"/chat/session", %{
+          "nickname" => second,
+          "trusted_device_login" => "true"
+        })
+
+      assert redirected_to(conn) == "/connect"
+      refute get_session(conn, :chat_nickname)
     end
 
     test "invalid auth_token redirects to /", %{conn: conn} do
@@ -128,6 +192,18 @@ defmodule RetroHexChatWeb.SessionControllerTest do
       assert redirected_to(conn) == "/connect?reason=disconnected"
       assert get_session(conn, :locale) == "pt_BR"
       refute get_session(conn, :chat_nickname)
+    end
+
+    test "forget_device clears the trusted device cookie", %{conn: conn} do
+      conn =
+        conn
+        |> init_test_session(%{chat_nickname: "ForgetNick", trusted_device_id: 123})
+        |> put_req_cookie(TrustedDeviceCookie.name(), "selector.secret")
+        |> get(~p"/chat/session/clear?reason=disconnected&forget_device=true")
+
+      assert redirected_to(conn) == "/connect?reason=disconnected"
+      assert conn.resp_cookies[TrustedDeviceCookie.name()].max_age == 0
+      refute get_session(conn, :trusted_device_id)
     end
   end
 end

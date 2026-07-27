@@ -201,6 +201,12 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
             label={dgettext("ui", "User Modes")}
             icon_fn={:icon_btn_user_modes}
           />
+          <.app_item
+            action="open_trusted_terminals_dialog"
+            on_action={@on_action}
+            label={dgettext("ui", "Trusted Terminals")}
+            icon_fn={:icon_devices}
+          />
         </.start_menu_submenu>
 
         <%!-- Admin (permission-gated) --%>

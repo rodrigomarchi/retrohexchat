@@ -469,11 +469,15 @@ defmodule RetroHexChat.Commands.AutocompleteTest do
   describe "search_subcommands/2" do
     test "returns all subcommands with empty partial" do
       results = Autocomplete.search_subcommands("ns", "")
-      assert length(results) == 6
+      assert length(results) == 10
       assert Enum.all?(results, &(&1.type == :subcommand))
       names = Enum.map(results, & &1.name)
       assert "register" in names
       assert "identify" in names
+      assert "devices" in names
+      assert "sessions" in names
+      assert "revoke-device" in names
+      assert "kill-session" in names
     end
 
     test "fuzzy matches subcommand name" do
@@ -503,7 +507,7 @@ defmodule RetroHexChat.Commands.AutocompleteTest do
 
     test "works for all commands with subcommands" do
       for {cmd, expected_count} <- [
-            {"ns", 6},
+            {"ns", 10},
             {"cs", 7},
             {"autojoin", 4},
             {"alias", 3},

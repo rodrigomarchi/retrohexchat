@@ -6,7 +6,10 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Connection do
   import Phoenix.Component, only: [assign: 3]
   import Phoenix.LiveView, only: [push_event: 3]
 
+  alias RetroHexChat.Accounts.TrustedDevices
+
   @type lag_status :: :normal | :warning | :critical | :timeout
+  @touch_interval_seconds 60
 
   @doc """
   Classify a lag measurement into a status level.
@@ -28,7 +31,9 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Connection do
   """
   @spec handle_ping(Phoenix.LiveView.Socket.t(), map()) :: Phoenix.LiveView.Socket.t()
   def handle_ping(socket, %{"client_time" => client_time}) do
-    push_event(socket, "pong", %{client_time: client_time})
+    socket
+    |> maybe_touch_device_session()
+    |> push_event("pong", %{client_time: client_time})
   end
 
   def handle_ping(socket, _params), do: socket
@@ -44,4 +49,25 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Connection do
   end
 
   def handle_lag_update(socket, _params), do: socket
+
+  defp maybe_touch_device_session(socket) do
+    session_ref = socket.assigns[:chat_device_session_ref]
+    last_touch = socket.assigns[:last_device_session_touch_at]
+    now = DateTime.utc_now()
+
+    if session_ref && touch_due?(last_touch, now) do
+      TrustedDevices.touch_session(session_ref)
+      assign(socket, :last_device_session_touch_at, now)
+    else
+      socket
+    end
+  end
+
+  defp touch_due?(nil, _now), do: true
+
+  defp touch_due?(%DateTime{} = last_touch, now) do
+    DateTime.diff(now, last_touch, :second) >= @touch_interval_seconds
+  end
+
+  defp touch_due?(_last_touch, _now), do: true
 end

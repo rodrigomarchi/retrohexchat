@@ -49,7 +49,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
   import RetroHexChatWeb.Components.UI.AboutDialog
 
   # ── Domain aliases ────────────────────────────────────────────
-  alias RetroHexChat.Accounts.{NicknameValidator, Session}
+  alias RetroHexChat.Accounts.{NicknameValidator, Session, TrustedDevices}
   alias RetroHexChat.Admin.ServerBans
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Services.{Motd, Queries}
@@ -68,6 +68,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
   alias RetroHexChatWeb.ChatLive
   alias RetroHexChatWeb.ChatLive.ChatContext
   alias RetroHexChatWeb.ChatLive.Components.{ConversationsContextMenu, UserContextMenus}
+  alias RetroHexChatWeb.ChatLive.Helpers.PathHelpers
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.Timezone
 
@@ -105,6 +106,12 @@ defmodule RetroHexChatWeb.App.ChatLive do
     default_channel = Application.get_env(:retro_hex_chat, :default_channel, "#lobby")
     takeover_expected? = takeover_expected?(default_channel, nickname)
     takeover_ref = make_ref()
+    timezone = resolve_timezone(http_session, socket)
+    connect_params = get_connect_params(socket) || %{}
+    client_info = SessionHelpers.parse_client_info(connect_params)
+    trusted_device_id = normalize_trusted_device_id(http_session["trusted_device_id"])
+    chat_device_session = start_chat_device_session(nickname, trusted_device_id, client_info)
+    chat_device_session_ref = trusted_device_session_ref(chat_device_session)
 
     Phoenix.PubSub.broadcast(
       RetroHexChat.PubSub,
@@ -123,6 +130,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "server:announcements")
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "server:wallops")
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "server:settings")
+    subscribe_chat_device_session(chat_device_session_ref)
 
     Phoenix.PubSub.broadcast(
       RetroHexChat.PubSub,
@@ -130,9 +138,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
       {:user_connected, %{nickname: nickname}}
     )
 
-    timezone = resolve_timezone(http_session, socket)
-    connect_params = get_connect_params(socket) || %{}
-    client_info = SessionHelpers.parse_client_info(connect_params)
     reconnecting? = connect_params["reconnect"] == true
     previous_nickname = Map.get(socket.assigns.flash, "nick_changed_from")
     pre_identified = http_session["chat_pre_identified"] == true
@@ -144,7 +149,13 @@ defmodule RetroHexChatWeb.App.ChatLive do
       socket
       |> attach_all_hooks()
       |> assign_defaults(session)
-      |> assign(timezone: timezone, client_info: client_info)
+      |> assign(
+        timezone: timezone,
+        client_info: client_info,
+        trusted_device_id: trusted_device_id,
+        chat_device_session_ref: chat_device_session_ref,
+        last_device_session_touch_at: DateTime.utc_now()
+      )
       |> ChatLive.Helpers.join_channel(default_channel, session)
       |> ChatLive.Helpers.maybe_join_channel(join_channel)
       |> maybe_broadcast_nick_changed(previous_nickname, nickname)
@@ -203,7 +214,10 @@ defmodule RetroHexChatWeb.App.ChatLive do
     |> assign_defaults(session)
     |> assign(
       timezone: Timezone.validate(http_session["chat_timezone"]),
-      client_info: %{}
+      client_info: %{},
+      trusted_device_id: normalize_trusted_device_id(http_session["trusted_device_id"]),
+      chat_device_session_ref: nil,
+      last_device_session_touch_at: nil
     )
   end
 
@@ -216,6 +230,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
     if session do
       quit_reason = socket.assigns[:quit_reason] || dgettext("chat", "Leaving")
 
+      TrustedDevices.record_session_stop(socket.assigns[:chat_device_session_ref], quit_reason)
       Queries.update_last_seen_by_nickname(session.nickname)
 
       Phoenix.PubSub.broadcast(
@@ -518,6 +533,16 @@ defmodule RetroHexChatWeb.App.ChatLive do
     {:noreply, socket}
   end
 
+  def handle_info({:trusted_terminals_disconnect_current, reason}, socket) do
+    path =
+      PathHelpers.session_clear_path(socket, reason, forget_device: true)
+
+    {:noreply,
+     socket
+     |> Phoenix.LiveView.push_event("intentional_disconnect", %{})
+     |> Phoenix.LiveView.redirect(to: path)}
+  end
+
   # ── Catch-all handle_info ─────────────────────────────────────
 
   def handle_info({_ref, _result}, socket), do: {:noreply, socket}
@@ -570,6 +595,33 @@ defmodule RetroHexChatWeb.App.ChatLive do
     Timezone.validate(tz)
   end
 
+  defp start_chat_device_session(nickname, trusted_device_id, client_info) do
+    case TrustedDevices.record_session_start(nickname, trusted_device_id, client_info) do
+      {:ok, session} -> session
+      {:error, _changeset} -> nil
+    end
+  end
+
+  defp trusted_device_session_ref(%{session_ref: session_ref}), do: session_ref
+  defp trusted_device_session_ref(_session), do: nil
+
+  defp subscribe_chat_device_session(nil), do: :ok
+
+  defp subscribe_chat_device_session(session_ref) do
+    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "chat_device_session:#{session_ref}")
+  end
+
+  defp normalize_trusted_device_id(id) when is_integer(id), do: id
+
+  defp normalize_trusted_device_id(id) when is_binary(id) do
+    case Integer.parse(id) do
+      {parsed, ""} -> parsed
+      _ -> nil
+    end
+  end
+
+  defp normalize_trusted_device_id(_id), do: nil
+
   # ── Hook dispatch ─────────────────────────────────────────────
   # Ordered list of event hook functions. Used by both attach_all_hooks/1
   # (to register LiveView hooks) and dispatch_to_hooks/3 (to simulate the
@@ -586,6 +638,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
     &ChatLive.HighlightEvents.handle_event/3,
     &ChatLive.SettingsDialogsEvents.handle_event/3,
     &ChatLive.AccountEvents.handle_event/3,
+    &ChatLive.TrustedTerminalsEvents.handle_event/3,
     &ChatLive.ProfileEvents.handle_event/3,
     &ChatLive.AwayEvents.handle_event/3,
     &ChatLive.UserModesEvents.handle_event/3,
@@ -654,6 +707,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
       {:highlight_events, &ChatLive.HighlightEvents.handle_event/3},
       {:settings_dialogs_events, &ChatLive.SettingsDialogsEvents.handle_event/3},
       {:account_events, &ChatLive.AccountEvents.handle_event/3},
+      {:trusted_terminals_events, &ChatLive.TrustedTerminalsEvents.handle_event/3},
       {:profile_events, &ChatLive.ProfileEvents.handle_event/3},
       {:away_events, &ChatLive.AwayEvents.handle_event/3},
       {:user_modes_events, &ChatLive.UserModesEvents.handle_event/3},
@@ -796,7 +850,10 @@ defmodule RetroHexChatWeb.App.ChatLive do
       p2p_setup: nil,
       arcade_session: nil,
       mobile_viewport: false,
-      mobile_panel_restore: nil
+      mobile_panel_restore: nil,
+      trusted_device_id: nil,
+      chat_device_session_ref: nil,
+      last_device_session_touch_at: nil
     )
   end
 

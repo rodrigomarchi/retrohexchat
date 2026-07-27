@@ -3,8 +3,10 @@ defmodule RetroHexChat.Commands.Handlers.NsTest do
 
   @moduletag :integration
 
+  alias RetroHexChat.Accounts.TrustedDevices
   alias RetroHexChat.Commands.Dispatcher
   alias RetroHexChat.Commands.Handlers.Ns
+  alias RetroHexChat.Repo
   alias RetroHexChat.Services.NickServ
   alias RetroHexChat.Services.Queries
 
@@ -123,6 +125,62 @@ defmodule RetroHexChat.Commands.Handlers.NsTest do
     end
   end
 
+  describe "execute/2 - devices and sessions" do
+    test "lists trusted devices for an identified nick" do
+      nick = "NsDev#{uid()}"
+      {:ok, _} = Queries.insert_registered_nick(nick, "secret123")
+      {:ok, %{device: device}} = TrustedDevices.remember_nick(nil, nick, label: "IRC laptop")
+
+      context = %{@base_context | nickname: nick, identified: true}
+
+      assert {:ok, :system, %{content: content}} = Ns.execute(["devices"], context)
+      assert content =~ "Trusted terminals"
+      assert content =~ "##{device.id}"
+      assert content =~ "IRC laptop"
+    end
+
+    test "lists and kills active sessions for an identified nick" do
+      nick = "NsSess#{uid()}"
+      {:ok, _} = Queries.insert_registered_nick(nick, "secret123")
+      {:ok, session} = TrustedDevices.record_session_start(nick, nil, %{"browser" => "Lynx"})
+
+      context = %{@base_context | nickname: nick, identified: true}
+
+      assert {:ok, :system, %{content: content}} = Ns.execute(["sessions"], context)
+      assert content =~ "Active sessions"
+      assert content =~ "##{session.id}"
+      assert content =~ "Lynx"
+
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "chat_device_session:#{session.session_ref}")
+
+      assert {:ok, :system, %{content: killed}} =
+               Ns.execute(["kill-session", "#{session.id}"], context)
+
+      assert killed =~ "Session #{session.id} ended"
+      assert_receive {:force_disconnect, %{reason: _}}
+      assert Repo.get!(RetroHexChat.Accounts.ChatDeviceSession, session.id).disconnected_at
+    end
+
+    test "revokes a trusted device for an identified nick" do
+      nick = "NsRevoke#{uid()}"
+      {:ok, _} = Queries.insert_registered_nick(nick, "secret123")
+      {:ok, %{device: device, cookie_value: cookie}} = TrustedDevices.remember_nick(nil, nick)
+
+      context = %{@base_context | nickname: nick, identified: true}
+
+      assert {:ok, :system, %{content: content}} =
+               Ns.execute(["revoke-device", "#{device.id}"], context)
+
+      assert content =~ "Trusted terminal #{device.id} revoked"
+      assert {:error, :revoked} = TrustedDevices.authorize_cookie(cookie, nick)
+    end
+
+    test "requires identification for trusted terminal management" do
+      assert {:error, msg} = Ns.execute(["devices"], @base_context)
+      assert msg =~ "identified"
+    end
+  end
+
   describe "execute/2 - help (via dispatcher)" do
     test "dispatcher intercepts help and returns show_command_help" do
       assert {:ok, :ui_action, :show_command_help, %{help: help}} =
@@ -190,4 +248,6 @@ defmodule RetroHexChat.Commands.Handlers.NsTest do
       assert is_list(help.examples)
     end
   end
+
+  defp uid, do: rem(System.unique_integer([:positive]), 100_000)
 end

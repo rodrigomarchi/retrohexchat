@@ -97,6 +97,7 @@ defmodule RetroHexChatWeb.Router do
   pipeline :app do
     plug :accepts, ["html"]
     plug :fetch_session
+    plug RetroHexChatWeb.Plugs.PutTrustedDevice
     plug RetroHexChatWeb.Plugs.PutLocale
     plug :fetch_live_flash
     plug :put_root_layout, html: {RetroHexChatWeb.Layouts, :chat}

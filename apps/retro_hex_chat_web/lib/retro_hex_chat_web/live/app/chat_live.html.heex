@@ -819,6 +819,32 @@
       />
     </.desktop_window>
 
+    <%!-- Trusted Terminals — server-managed: revocable device/session management. --%>
+    <.desktop_window
+      :if={"trusted-terminals" in @open_windows}
+      id="trusted-terminals"
+      title={dgettext("chat", "Trusted Terminals")}
+      managed
+      default_x={150}
+      default_y={60}
+      width={800}
+      height={620}
+      min_width={520}
+      min_height={380}
+      body_class="flex min-h-0 flex-col p-2"
+      data-testid="trusted-terminals-window"
+    >
+      <:icon><Icons.icon_devices class="h-4 w-4" /></:icon>
+      <.live_component
+        module={RetroHexChatWeb.ChatLive.Components.TrustedTerminalsDialog}
+        id={RetroHexChatWeb.ChatLive.Components.TrustedTerminalsDialog.id()}
+        session={@session}
+        timezone={@timezone}
+        trusted_device_id={@trusted_device_id}
+        chat_device_session_ref={@chat_device_session_ref}
+      />
+    </.desktop_window>
+
     <%!-- Profile — server-managed: the bio draft seeds from the session on open. --%>
     <.desktop_window
       :if={"profile" in @open_windows}

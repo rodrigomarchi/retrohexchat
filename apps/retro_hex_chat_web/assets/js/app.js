@@ -10,7 +10,7 @@ import {
   preserveScrollBeforeElUpdated,
   preserveScrollPatchEnd,
   preserveScrollPatchStart,
-} from "./hooks/ui/preserve_scroll_hook";
+} from "./hooks/registry";
 import { createPlausibleTracker } from "./lib/analytics/plausible";
 import { getClientInfo } from "./lib/connection/client_info";
 import { loadCurrentLocaleCatalog } from "./lib/i18n";

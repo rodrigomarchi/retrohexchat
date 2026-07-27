@@ -20,6 +20,7 @@ defmodule RetroHexChat.Services.NickServ do
 
   require Logger
 
+  alias RetroHexChat.Accounts.TrustedDevices
   alias RetroHexChat.Observability
   alias RetroHexChat.Services.Queries
   alias RetroHexChat.Services.RegisteredNick
@@ -172,6 +173,7 @@ defmodule RetroHexChat.Services.NickServ do
 
       %RegisteredNick{} = nick ->
         if RegisteredNick.verify_password(nick, password) do
+          TrustedDevices.revoke_all_for_nick(nickname, nickname)
           Queries.delete_registered_nick(nick)
           GenServer.cast(server, {:remove_identified, nickname})
           {:ok, dgettext("services", "Registration for %{nickname} dropped", nickname: nickname)}
@@ -198,6 +200,7 @@ defmodule RetroHexChat.Services.NickServ do
          dgettext("services", "Nickname %{nickname} is not registered", nickname: nickname)}
 
       %RegisteredNick{} = nick ->
+        TrustedDevices.revoke_all_for_nick(nickname, "NickServ")
         Queries.delete_registered_nick(nick)
         GenServer.cast(server, {:remove_identified, nickname})
 
@@ -227,6 +230,8 @@ defmodule RetroHexChat.Services.NickServ do
 
         case Queries.update_password_hash(nickname, new_hash) do
           {:ok, _} ->
+            TrustedDevices.revoke_all_for_nick(nickname, "NickServ")
+
             {:ok,
              dgettext("services", "Password for %{nickname} has been reset", nickname: nickname)}
 

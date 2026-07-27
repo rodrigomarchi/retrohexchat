@@ -35,16 +35,35 @@
   <code>
     {dgettext("help_commands", "drop <password>")}
   </code>
-  {dgettext("help_commands", "— Permanently unregister your nickname.")}
+  {dgettext("help_commands", "— Permanently unregister your nickname.")}<br />
+  <code>
+    {dgettext("help_commands", "devices")}
+  </code>
+  {dgettext("help_commands", "— List trusted terminals remembered for your nickname.")}<br />
+  <code>
+    {dgettext("help_commands", "sessions")}
+  </code>
+  {dgettext("help_commands", "— List active sessions using your nickname.")}<br />
+  <code>
+    {dgettext("help_commands", "revoke-device <id|all>")}
+  </code>
+  {dgettext("help_commands", "— Revoke trusted terminal login and end its active sessions.")}<br />
+  <code>
+    {dgettext("help_commands", "kill-session <id|all>")}
+  </code>
+  {dgettext("help_commands", "— End active sessions without changing trusted terminal status.")}
 </p>
 <.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
   <li>{dgettext("help_commands", "Password is required for register, identify, and drop")}</li>
   <li>{dgettext("help_commands", "Ghost requires the registered nickname's password")}</li>
+  <li>
+    {dgettext("help_commands", "Trusted terminal management requires NickServ identification")}
+  </li>
   <li>{dgettext("help_commands", "You must be using the nickname you want to register")}</li>
 </ul>
 <.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
-<pre>{dgettext("help_commands", "/ns register mySecurePassword /ns identify mySecurePassword /ns info Alice /ns ghost MyNick mySecurePassword /ns drop mySecurePassword")}</pre>
+<pre>{dgettext("help_commands", "/ns register mySecurePassword /ns identify mySecurePassword /ns info Alice /ns devices /ns sessions /ns revoke-device 12 /ns kill-session 44 /ns ghost MyNick mySecurePassword /ns drop mySecurePassword")}</pre>
 <.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
   <.help_link topic="cmd-cs">{dgettext("help_commands", "/cs")}</.help_link>

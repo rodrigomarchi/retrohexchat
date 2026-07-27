@@ -15,11 +15,14 @@ defmodule RetroHexChatWeb.App.ConnectLive do
   import RetroHexChatWeb.Components.UI.ConnectScreen
 
   alias RetroHexChat.Accounts.NicknameValidator
+  alias RetroHexChat.Accounts.TrustedDevices
   alias RetroHexChat.Services.NickServ
 
   @impl true
   @spec mount(map(), map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(_params, _session, socket) do
+  def mount(_params, session, socket) do
+    trusted_device_id = session["trusted_device_id"]
+
     {:ok,
      assign(socket,
        nickname: "",
@@ -29,6 +32,11 @@ defmodule RetroHexChatWeb.App.ConnectLive do
        password_error: nil,
        step: :nickname,
        auth_token: nil,
+       trusted_device_id: trusted_device_id,
+       remembered_nicks: TrustedDevices.remembered_nicks(trusted_device_id),
+       trusted_device_login: false,
+       remember_device: false,
+       device_label: "",
        submit_connect: false,
        page_title: dgettext("connect", "Connect - RetroHexChat")
      )}
@@ -54,26 +62,32 @@ defmodule RetroHexChatWeb.App.ConnectLive do
   def handle_event("connect", %{"nickname" => nickname}, socket) do
     case validate_nickname(nickname) do
       :ok ->
-        if NickServ.registered?(nickname) do
-          {:noreply,
-           assign(socket, step: :password, nickname: nickname, password: "", password_error: nil)}
-        else
-          {:noreply,
-           assign(socket,
-             step: :register,
-             nickname: nickname,
-             password: "",
-             password_confirm: "",
-             password_error: nil
-           )}
-        end
+        route_valid_nickname(socket, nickname)
 
       {:error, msg} ->
         {:noreply, assign(socket, nickname: nickname, nickname_error: msg)}
     end
   end
 
-  def handle_event("authenticate", %{"password" => password}, socket) do
+  def handle_event("connect_remembered", %{"nickname" => nickname}, socket) do
+    if TrustedDevices.nick_remembered?(socket.assigns.trusted_device_id, nickname) do
+      {:noreply,
+       socket
+       |> assign(
+         nickname: nickname,
+         auth_token: nil,
+         trusted_device_login: true,
+         remember_device: false,
+         device_label: "",
+         submit_connect: true
+       )
+       |> push_event("submit_connect", %{})}
+    else
+      {:noreply, assign(socket, nickname_error: dgettext("connect", "Trusted login expired"))}
+    end
+  end
+
+  def handle_event("authenticate", %{"password" => password} = params, socket) do
     nickname = socket.assigns.nickname
 
     case NickServ.identify(nickname, password) do
@@ -83,7 +97,7 @@ defmodule RetroHexChatWeb.App.ConnectLive do
 
         {:noreply,
          socket
-         |> assign(auth_token: token, submit_connect: true)
+         |> assign_auth_success(token, params)
          |> push_event("submit_connect", %{})}
 
       {:error, _msg} ->
@@ -122,7 +136,7 @@ defmodule RetroHexChatWeb.App.ConnectLive do
 
             {:noreply,
              socket
-             |> assign(auth_token: token, submit_connect: true)
+             |> assign_auth_success(token, params)
              |> push_event("submit_connect", %{})}
 
           {:error, msg} ->
@@ -181,4 +195,55 @@ defmodule RetroHexChatWeb.App.ConnectLive do
     do: dgettext("connect", "Nickname cannot contain spaces")
 
   defp translate_nickname_error(message), do: message
+
+  defp route_valid_nickname(socket, nickname) do
+    cond do
+      TrustedDevices.nick_remembered?(socket.assigns.trusted_device_id, nickname) ->
+        {:noreply,
+         socket
+         |> assign(
+           nickname: nickname,
+           nickname_error: nil,
+           auth_token: nil,
+           trusted_device_login: true,
+           remember_device: false,
+           device_label: "",
+           submit_connect: true
+         )
+         |> push_event("submit_connect", %{})}
+
+      NickServ.registered?(nickname) ->
+        {:noreply,
+         assign(socket,
+           step: :password,
+           nickname: nickname,
+           password: "",
+           password_error: nil,
+           trusted_device_login: false
+         )}
+
+      true ->
+        {:noreply,
+         assign(socket,
+           step: :register,
+           nickname: nickname,
+           password: "",
+           password_confirm: "",
+           password_error: nil,
+           trusted_device_login: false
+         )}
+    end
+  end
+
+  defp assign_auth_success(socket, token, params) do
+    assign(socket,
+      auth_token: token,
+      trusted_device_login: false,
+      remember_device: truthy?(params["remember_device"]),
+      device_label: params["device_label"] || "",
+      submit_connect: true
+    )
+  end
+
+  defp truthy?(value), do: value in [true, "true", "on", "1", 1]
 end

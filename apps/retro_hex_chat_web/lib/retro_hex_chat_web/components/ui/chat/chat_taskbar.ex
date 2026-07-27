@@ -139,7 +139,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
      ~w(admin-users admin-channels admin-server-settings admin-audit-log admin-motd admin-turn
         admin-broadcast admin-danger-zone admin-console)},
     {:account, dgettext("chat", "Account"), :icon_status_user,
-     ~w(account profile away user-modes)},
+     ~w(account trusted-terminals profile away user-modes)},
     {:contacts, dgettext("chat", "Contacts"), :icon_dialog_address_book,
      ~w(address-book nick-colors ignore-list notify-list)},
     {:connect, dgettext("chat", "On Connect"), :icon_dialog_perform, ~w(perform autojoin)}
@@ -203,6 +203,12 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
       "account",
       dgettext("chat", "Account"),
       :icon_status_user
+    )
+    |> add_window(
+      window_open?(assigns.open_windows, "trusted-terminals"),
+      "trusted-terminals",
+      dgettext("chat", "Trusted Terminals"),
+      :icon_devices
     )
     |> add_window(
       window_open?(assigns.open_windows, "profile"),

@@ -12,6 +12,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
   import RetroHexChatWeb.Components.UI.Alert
   import RetroHexChatWeb.Components.UI.AppHeader
   import RetroHexChatWeb.Components.UI.Button
+  import RetroHexChatWeb.Components.UI.Checkbox
   import RetroHexChatWeb.Components.UI.ConnectStatusBar
   import RetroHexChatWeb.Components.UI.Desktop
   import RetroHexChatWeb.Components.UI.Dialog, only: [show_modal: 1]
@@ -29,6 +30,10 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
   attr :password_confirm, :string, required: true
   attr :password_error, :string, default: nil
   attr :auth_token, :string, default: nil
+  attr :remembered_nicks, :list, default: []
+  attr :trusted_device_login, :boolean, default: false
+  attr :remember_device, :boolean, default: false
+  attr :device_label, :string, default: ""
   attr :flash, :map, default: %{}
   attr :csrf_token, :string, required: true
   attr :chat_session_path, :string, required: true
@@ -59,6 +64,9 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
           password={@password}
           password_confirm={@password_confirm}
           password_error={@password_error}
+          remembered_nicks={@remembered_nicks}
+          remember_device={@remember_device}
+          device_label={@device_label}
           flash={@flash}
         />
 
@@ -72,6 +80,9 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
         chat_session_path={@chat_session_path}
         nickname={@nickname}
         auth_token={@auth_token}
+        trusted_device_login={@trusted_device_login}
+        remember_device={@remember_device}
+        device_label={@device_label}
       />
       <.about_dialog id="about-dialog" />
     </div>
@@ -84,6 +95,9 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
   attr :password, :string, required: true
   attr :password_confirm, :string, required: true
   attr :password_error, :string, default: nil
+  attr :remembered_nicks, :list, default: []
+  attr :remember_device, :boolean, default: false
+  attr :device_label, :string, default: ""
   attr :flash, :map, default: %{}
 
   defp connect_window(assigns) do
@@ -117,6 +131,9 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
         password={@password}
         password_confirm={@password_confirm}
         password_error={@password_error}
+        remembered_nicks={@remembered_nicks}
+        remember_device={@remember_device}
+        device_label={@device_label}
       />
     </.desktop_window>
     """
@@ -128,10 +145,17 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
   attr :password, :string, required: true
   attr :password_confirm, :string, required: true
   attr :password_error, :string, default: nil
+  attr :remembered_nicks, :list, default: []
+  attr :remember_device, :boolean, default: false
+  attr :device_label, :string, default: ""
 
   defp connect_step(%{step: :nickname} = assigns) do
     ~H"""
-    <.connect_nickname_step nickname={@nickname} nickname_error={@nickname_error} />
+    <.connect_nickname_step
+      nickname={@nickname}
+      nickname_error={@nickname_error}
+      remembered_nicks={@remembered_nicks}
+    />
     """
   end
 
@@ -141,6 +165,8 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
       nickname={@nickname}
       password={@password}
       password_error={@password_error}
+      remember_device={@remember_device}
+      device_label={@device_label}
     />
     """
   end
@@ -152,16 +178,46 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
       password={@password}
       password_confirm={@password_confirm}
       password_error={@password_error}
+      remember_device={@remember_device}
+      device_label={@device_label}
     />
     """
   end
 
   attr :nickname, :string, required: true
   attr :nickname_error, :string, default: nil
+  attr :remembered_nicks, :list, default: []
 
   defp connect_nickname_step(assigns) do
     ~H"""
     <form phx-submit="connect">
+      <div
+        :if={@remembered_nicks != []}
+        class="mb-3 space-y-retro-4"
+        data-testid="remembered-nicks"
+      >
+        <p class="text-xs font-bold flex items-center gap-retro-4">
+          <Icons.icon_devices class="w-4 h-4" />
+          {dgettext("connect", "Trusted terminal")}
+        </p>
+        <div class="grid gap-retro-4">
+          <button
+            :for={entry <- @remembered_nicks}
+            type="button"
+            class="shadow-retro-raised bg-surface px-2 py-1 text-left text-xs hover:bg-selection-bg hover:text-selection-fg focus-visible:outline focus-visible:outline-2 focus-visible:outline-black"
+            phx-click="connect_remembered"
+            phx-value-nickname={entry.nickname}
+            data-testid={"remembered-nick-#{entry.nickname}"}
+          >
+            <span class="inline-flex items-center gap-retro-4 min-w-0">
+              <Icons.icon_status_user class="w-3.5 h-3.5 shrink-0" />
+              <span class="truncate font-bold">{entry.nickname}</span>
+              <span class="truncate text-muted-foreground">{entry.label}</span>
+            </span>
+          </button>
+        </div>
+      </div>
+
       <.retro_fieldset legend={dgettext("connect", "User Information")}>
         <.field_row stacked>
           <.label for="nickname">
@@ -245,6 +301,8 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
   attr :nickname, :string, required: true
   attr :password, :string, required: true
   attr :password_error, :string, default: nil
+  attr :remember_device, :boolean, default: false
+  attr :device_label, :string, default: ""
 
   defp connect_password_step(assigns) do
     ~H"""
@@ -288,6 +346,8 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
         </p>
       </.retro_fieldset>
 
+      <.remember_terminal_fields remember_device={@remember_device} device_label={@device_label} />
+
       <div class="flex justify-end gap-2 mt-4">
         <.button type="button" variant="outline" phx-click="back" data-testid="back-btn">
           <:icon><Icons.icon_btn_prev /></:icon>
@@ -306,6 +366,8 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
   attr :password, :string, required: true
   attr :password_confirm, :string, required: true
   attr :password_error, :string, default: nil
+  attr :remember_device, :boolean, default: false
+  attr :device_label, :string, default: ""
 
   defp connect_register_step(assigns) do
     ~H"""
@@ -371,6 +433,8 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
         </p>
       </.retro_fieldset>
 
+      <.remember_terminal_fields remember_device={@remember_device} device_label={@device_label} />
+
       <div class="flex justify-end gap-2 mt-4">
         <.button type="button" variant="outline" phx-click="back" data-testid="back-btn">
           <:icon><Icons.icon_btn_prev /></:icon>
@@ -408,6 +472,44 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
   defp notice_icon(%{icon: :clock} = assigns), do: ~H"<Icons.icon_clock class={@class} />"
   defp notice_icon(%{icon: :warning} = assigns), do: ~H"<Icons.icon_warning class={@class} />"
   defp notice_icon(assigns), do: ~H"<Icons.icon_connect class={@class} />"
+
+  attr :remember_device, :boolean, default: false
+  attr :device_label, :string, default: ""
+
+  defp remember_terminal_fields(assigns) do
+    ~H"""
+    <div class="mt-3 p-2 bg-canvas shadow-retro-field text-xs space-y-retro-6">
+      <label class="flex items-start gap-retro-4">
+        <.checkbox
+          id="remember-device"
+          name="remember_device"
+          value={@remember_device}
+          data-testid="remember-device"
+        />
+        <span class="min-w-0">
+          <span class="font-bold">{dgettext("connect", "Remember this terminal")}</span>
+          <span class="block text-muted-foreground">
+            {dgettext("connect", "Use this browser for faster NickServ login later.")}
+          </span>
+        </span>
+      </label>
+      <div class="space-y-retro-2">
+        <label for="device-label" class="font-bold">
+          {dgettext("connect", "Terminal label:")}
+        </label>
+        <.input
+          id="device-label"
+          name="device_label"
+          value={@device_label}
+          maxlength="100"
+          placeholder={dgettext("connect", "Home laptop")}
+          class="h-7 text-xs"
+          data-testid="device-label"
+        />
+      </div>
+    </div>
+    """
+  end
 
   defp connect_taskbar(assigns) do
     ~H"""
@@ -455,6 +557,9 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
   attr :chat_session_path, :string, required: true
   attr :nickname, :string, required: true
   attr :auth_token, :string, default: nil
+  attr :trusted_device_login, :boolean, default: false
+  attr :remember_device, :boolean, default: false
+  attr :device_label, :string, default: ""
 
   defp connect_session_form(assigns) do
     ~H"""
@@ -462,7 +567,11 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
       <input type="hidden" name="_csrf_token" value={@csrf_token} />
       <input type="hidden" name="nickname" value={@nickname} />
       <input :if={@auth_token} type="hidden" name="auth_token" value={@auth_token} />
+      <input type="hidden" name="trusted_device_login" value={to_string(@trusted_device_login)} />
+      <input type="hidden" name="remember_device" value={to_string(@remember_device)} />
+      <input type="hidden" name="device_label" value={@device_label} />
       <input type="hidden" name="timezone" id="connect-timezone-input" value="Etc/UTC" />
+      <input type="hidden" name="client_info" id="connect-client-info-input" value="{}" />
     </form>
     """
   end
