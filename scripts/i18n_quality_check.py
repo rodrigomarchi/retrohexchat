@@ -18,13 +18,14 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 
-from i18n import catalogs, locales  # noqa: E402
+from i18n import catalogs, glossary, locales  # noqa: E402
 from i18n.protection import has_sentinel_residue  # noqa: E402
 from i18n.quality import (  # noqa: E402
     COLLAPSE_THRESHOLD,
     find_collapses,
     find_shared_headings,
     introduced_degeneration,
+    looks_like_mojibake,
 )
 
 
@@ -66,6 +67,9 @@ def check_locale(code: str, args: argparse.Namespace) -> int:
     pairs: list[tuple[str, str]] = []
     degenerate: list[tuple[str, str]] = []
     residue: list[tuple[str, str]] = []
+    drifted: list[tuple[str, str]] = []
+    mojibake: list[tuple[str, str]] = []
+    curated = glossary.for_locale(code)
 
     for path in catalogs.po_files(code):
         for source, translated in catalogs.read_po_pairs(path):
@@ -77,11 +81,21 @@ def check_locale(code: str, args: argparse.Namespace) -> int:
             if has_sentinel_residue(translated):
                 residue.append((source, translated))
 
+            wanted = curated.get(source.strip())
+
+            if wanted is not None and translated.strip() != wanted:
+                drifted.append((source, f"{translated} (expected {wanted!r})"))
+
+            if looks_like_mojibake(translated):
+                mojibake.append((source, translated))
+
     collapses = find_collapses(pairs, args.collapse_threshold)
     headings = find_shared_headings(pairs, args.collapse_threshold)
     findings = (
         len(degenerate)
         + len(residue)
+        + len(drifted)
+        + len(mojibake)
         + sum(len(sources) for sources in collapses.values())
         + sum(len(sources) for sources in headings.values())
     )
@@ -94,6 +108,8 @@ def check_locale(code: str, args: argparse.Namespace) -> int:
     report_grouped("injected heading", "headings", headings, args.max_examples)
     report_simple("degenerate", degenerate, args.max_examples)
     report_simple("residue", residue, args.max_examples)
+    report_simple("glossary drift", drifted, args.max_examples)
+    report_simple("mojibake", mojibake, args.max_examples)
     return findings
 
 

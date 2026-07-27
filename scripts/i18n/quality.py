@@ -40,6 +40,73 @@ def is_degenerate(text: str) -> bool:
     return bool(DEGENERATE_CHAR_RUN.search(text))
 
 
+# Full stops only. "!" and "?" are expressive choices a translator may make,
+# and an ellipsis is a UI convention meaning "opens a dialog".
+TRAILING_STOP = (".", "。", "．")
+# Two scripts in one short label is normal — a brand, a unit, "IRC チャンネル".
+# Three is not: it means the bytes were corrupted rather than translated.
+MOJIBAKE_SCRIPT_LIMIT = 3
+
+
+def has_trailing_stop(source: str, translated: str) -> bool:
+    """True when a label gained sentence punctuation the source lacks.
+
+    Buttons and menu items are not sentences: "Sim." and "いいえ。" are wrong
+    where the source says "Yes" and "No".
+
+    Applied only to the curated glossary, never to short strings in general —
+    those are mostly game hints and chat phrases ("Got it", "Robert Downey Jr")
+    where a full stop is correct, and gating on them buries the real findings.
+    """
+    if source.strip().endswith(TRAILING_STOP):
+        return False
+
+    stripped = translated.strip()
+
+    if not stripped.endswith(TRAILING_STOP):
+        return False
+
+    # "Settings..." opens a dialog; that is a convention, not a sentence.
+    if stripped.endswith(("...", "…", "。。。")):
+        return False
+
+    # Several languages write ordinals with a trailing dot ("lat 80.").
+    return not (len(stripped) >= 2 and stripped[-2].isdigit())
+
+
+def _script_of(char: str) -> str | None:
+    import unicodedata
+
+    try:
+        name = unicodedata.name(char)
+    except ValueError:
+        return None
+
+    for block in ("LATIN", "GREEK", "CYRILLIC", "ARABIC", "HANGUL"):
+        if name.startswith(block):
+            return block
+
+    if name.startswith(("CJK", "HIRAGANA", "KATAKANA")):
+        return "CJK"
+
+    return None
+
+
+def looks_like_mojibake(text: str) -> bool:
+    """True when one short string mixes too many writing systems.
+
+    "Next" came back from the Chinese model as "ưμ㼯A" — a Vietnamese vowel, a
+    Greek mu, a rare CJK ideograph and a Latin letter. That is corrupted bytes,
+    and no per-string translation check would call it wrong.
+    """
+    if len(text) > 24:
+        return False
+
+    scripts = {script for script in map(_script_of, text) if script}
+
+    return len(scripts) >= MOJIBAKE_SCRIPT_LIMIT
+
+
 def introduced_degeneration(source: str, translated: str) -> bool:
     """True when the repetition is the model's doing, not the source's.
 

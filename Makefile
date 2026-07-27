@@ -5,7 +5,7 @@
        test.cover.all test.domain test.web test.failed test.seed test.file test.line \
        test.js test.js.watch \
        ci ci.quick \
-       i18n.audit i18n.audit.check i18n.status i18n.catalog.check i18n.catalog.size.check i18n.placeholder.check i18n.source-fallback.check i18n.quality.check i18n.repair i18n.tooling.test i18n.locales.add i18n.wave1.add i18n.gettext.extract i18n.gettext.merge i18n.gettext.rebuild i18n.gettext.check \
+       i18n.audit i18n.audit.check i18n.status i18n.catalog.check i18n.catalog.size.check i18n.placeholder.check i18n.source-fallback.check i18n.quality.check i18n.glossary i18n.repair i18n.tooling.test i18n.locales.add i18n.wave1.add i18n.gettext.extract i18n.gettext.merge i18n.gettext.rebuild i18n.gettext.check \
        lint format format.check credo dialyzer lint.js lint.js.fix lint.css lint.bundle precommit compile \
        assets.setup assets.build assets.deploy \
        clean clean.deps clean.build clean.all \
@@ -276,6 +276,9 @@ i18n.catalog.size.check: ## Fail when any Gettext catalog exceeds the readable s
 
 i18n.quality.check: ## Fail on collapsed, degenerate, or sentinel-leaking translations
 	python3 scripts/i18n_quality_check.py --locales $(I18N_REQUIRED_LOCALES) --fail-on-findings
+
+i18n.glossary: ## Apply the curated UI label glossary to the catalogs
+	python3 scripts/i18n_apply_glossary.py --locales $(I18N_REQUIRED_LOCALES) --write
 
 i18n.repair: ## Repair unusable catalog entries (needs the translation venv)
 	python3 scripts/i18n_repair_catalogs.py --locales $(I18N_REQUIRED_LOCALES) --write

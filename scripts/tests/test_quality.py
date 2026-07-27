@@ -12,9 +12,11 @@ from i18n.quality import (
     batch_is_contaminated,
     find_collapses,
     find_shared_headings,
+    has_trailing_stop,
     introduced_degeneration,
     is_degenerate,
     is_usable_translation,
+    looks_like_mojibake,
 )
 
 
@@ -47,6 +49,45 @@ class IntroducedDegenerationTest(unittest.TestCase):
         demo = "Another long line: " + "ABCDEFGHIJKLMNOPQRSTUVWXYZ " * 5
 
         self.assertFalse(introduced_degeneration(demo, demo))
+
+
+class TrailingStopTest(unittest.TestCase):
+    def test_flags_a_full_stop_the_source_lacks(self):
+        self.assertTrue(has_trailing_stop("Yes", "Sim."))
+        self.assertTrue(has_trailing_stop("No", "いいえ。"))
+
+    def test_allows_a_full_stop_the_source_has(self):
+        self.assertFalse(has_trailing_stop("Done.", "Feito."))
+
+    def test_allows_an_ellipsis(self):
+        # "Settings..." is the convention for "opens a dialog".
+        self.assertFalse(has_trailing_stop("Settings", "Einstellungen..."))
+        self.assertFalse(has_trailing_stop("Settings", "設定…"))
+
+    def test_allows_an_ordinal_dot(self):
+        # Polish writes decades as "lat 80."
+        self.assertFalse(has_trailing_stop("Late 1980s", "Pod koniec lat 80."))
+
+    def test_allows_a_clean_label(self):
+        self.assertFalse(has_trailing_stop("Yes", "Sim"))
+
+
+class MojibakeTest(unittest.TestCase):
+    def test_flags_three_scripts_in_one_short_label(self):
+        # zh shipped this as the translation of "Next".
+        self.assertTrue(looks_like_mojibake("ưμ㼯A"))
+
+    def test_allows_a_single_script(self):
+        for value in ("下一步", "Próximo", "Далее", "キャンセル", "OK"):
+            self.assertFalse(looks_like_mojibake(value), value)
+
+    def test_allows_two_scripts(self):
+        # A borrowed brand next to native text is normal.
+        self.assertFalse(looks_like_mojibake("IRC チャンネル"))
+        self.assertFalse(looks_like_mojibake("Отмена P2P"))
+
+    def test_ignores_long_strings(self):
+        self.assertFalse(looks_like_mojibake("ưμ㼯A" + "x" * 30))
 
 
 class UsableTranslationTest(unittest.TestCase):

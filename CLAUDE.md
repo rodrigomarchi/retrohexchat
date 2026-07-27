@@ -213,6 +213,7 @@ All are LTR — the RTL code path is retained but currently unexercised.
 | `translator` | engines behind one interface, injectable in tests |
 | `pipeline` | batching and fallbacks, pure of I/O and engine choice |
 | `catalogs` | all catalog filesystem access |
+| `glossary` | curated translations for the universal UI vocabulary |
 
 Keep the modules pure and the engine injected — `ScriptedTranslator` is how the
 tests drive the pipeline without Argos models. Add a regression test to
@@ -228,10 +229,17 @@ tests drive the pipeline without Argos models. Add a regression test to
   source instead so a human can see it needs work.
 - **Never mask fragments with markup-shaped tokens.** Models treat them as tags
   and mangle them; sentinels are bare alphanumerics (`XPH0X`).
+- **UI labels are a glossary, not a translation task.** One- and two-word labels
+  have no sentence around them, so models pick the conversational sense: "OK"
+  became "Está bem.", "No" became "Numéro", "Mute" became "Mignon". Add new
+  button, menu and status labels to `scripts/i18n/glossary.py` rather than
+  letting the pipeline guess. `OK` stays literal everywhere except Chinese
+  (`确定`/`確定`), and no label ends in a full stop.
 
 ```bash
-make i18n.quality.check   # collapsed / degenerate / sentinel-leaking entries
+make i18n.quality.check   # collapse / degenerate / residue / glossary drift
 make i18n.tooling.test    # the Python tooling suite
+make i18n.glossary        # apply the curated UI label glossary
 make i18n.repair          # re-translate unusable entries (needs the venv)
 ```
 
