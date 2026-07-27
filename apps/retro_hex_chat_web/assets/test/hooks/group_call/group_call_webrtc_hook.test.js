@@ -568,7 +568,6 @@ describe("GroupCallWebRTCHook media fallback", () => {
       mode: "focus",
       focused_participant_id: 456,
       self_view: "tile",
-      sidebar_open: true,
     });
 
     const videoAfterFocus = hook.el.querySelector('[data-stream-id="stream-456"] video');

@@ -12,14 +12,17 @@ defmodule RetroHexChatWeb.Components.UI.MediaSession.SectionNav do
   attr :testid, :string, required: true
   attr :testid_prefix, :string, required: true
 
-  attr :class, :any, default: "flex shrink-0 border border-border bg-muted shadow-retro-sunken"
+  attr :class, :any,
+    default: "flex shrink-0 flex-wrap border border-border bg-muted shadow-retro-sunken"
 
   attr :scroller_class, :any, default: "flex min-w-0 flex-1 gap-1 overflow-x-auto px-1 py-1"
 
   attr :button_class, :any, default: nil
 
+  # Full width below sm so the controls wrap under the sections instead of
+  # squeezing the scroller until the active section scrolls out of sight.
   attr :actions_class, :any,
-    default: "flex shrink-0 flex-wrap items-center justify-end gap-1 px-1 py-1"
+    default: "flex w-full shrink-0 flex-wrap items-center justify-end gap-1 px-1 py-1 sm:w-auto"
 
   attr :actions_label, :string, default: nil
 

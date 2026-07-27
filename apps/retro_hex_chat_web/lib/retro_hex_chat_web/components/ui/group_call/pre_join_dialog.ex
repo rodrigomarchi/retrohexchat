@@ -156,13 +156,6 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoinDialog do
                       </div>
 
                       <div class="grid min-w-0 gap-2">
-                        <.toggle_row
-                          name="group_call_prejoin[sidebar_open]"
-                          checked={@layout.sidebar_open}
-                          icon={:icon_tab_nicklist}
-                          label={dgettext("group_call", "Show participants panel")}
-                          testid="group-call-prejoin-sidebar"
-                        />
                         <div class="grid min-w-0 grid-cols-2 gap-2">
                           <.simple_select
                             name="group_call_prejoin[layout_mode]"
@@ -292,12 +285,11 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoinDialog do
   defp layout(%{layout: layout}) when is_map(layout) do
     %{
       mode: Map.get(layout, :mode, :auto),
-      sidebar_open: Map.get(layout, :sidebar_open, true),
       self_view: Map.get(layout, :self_view, :tile)
     }
   end
 
-  defp layout(_prejoin), do: %{mode: :auto, sidebar_open: true, self_view: :tile}
+  defp layout(_prejoin), do: %{mode: :auto, self_view: :tile}
 
   defp channel_name(%{channel_name: channel_name})
        when is_binary(channel_name) and channel_name != "",

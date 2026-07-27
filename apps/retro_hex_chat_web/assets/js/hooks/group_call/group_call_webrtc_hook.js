@@ -604,7 +604,6 @@ const GroupCallWebRTCHook = {
       focusedParticipantId: this._stringOrNull(this.el.dataset.focusedParticipantId),
       focusedStreamId: null,
       selfView: this._normalizeSelfView(this.el.dataset.selfView),
-      sidebarOpen: this.el.dataset.sidebarOpen !== "false",
       pinnedParticipantIds: this._idsFromValue(this.el.dataset.pinnedParticipantIds),
     };
   },
@@ -618,7 +617,6 @@ const GroupCallWebRTCHook = {
     );
     const focusedStreamId = this._payloadValue(payload, "focused_stream_id", "focusedStreamId");
     const selfView = this._payloadValue(payload, "self_view", "selfView");
-    const sidebarOpen = this._payloadValue(payload, "sidebar_open", "sidebarOpen");
     const selfParticipantId = this._payloadValue(
       payload,
       "self_participant_id",
@@ -643,7 +641,6 @@ const GroupCallWebRTCHook = {
           : this._stringOrNull(focusedStreamId),
       selfView:
         selfView === undefined ? this.layoutState.selfView : this._normalizeSelfView(selfView),
-      sidebarOpen: sidebarOpen === undefined ? this.layoutState.sidebarOpen : sidebarOpen !== false,
       pinnedParticipantIds:
         pinnedParticipantIds === undefined
           ? this.layoutState.pinnedParticipantIds
@@ -864,7 +861,6 @@ const GroupCallWebRTCHook = {
 
     this.el.dataset.layoutMode = this.layoutState.mode;
     this.el.dataset.selfView = this.layoutState.selfView;
-    this.el.dataset.sidebarOpen = String(this.layoutState.sidebarOpen);
     this.el.dataset.pinnedParticipantIds = (this.layoutState.pinnedParticipantIds || []).join(",");
     if (this.layoutState.focusedParticipantId) {
       this.el.dataset.focusedParticipantId = this.layoutState.focusedParticipantId;

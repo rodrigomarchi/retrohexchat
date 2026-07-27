@@ -42,7 +42,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PSessionConsole do
         testid="p2p-console-nav"
         testid_prefix="p2p-console-nav"
         actions_label={dgettext("p2p", "P2P window controls")}
-        class="flex shrink-0 border border-border bg-muted shadow-retro-sunken"
+        class="flex shrink-0 flex-wrap border border-border bg-muted shadow-retro-sunken"
         button_class="min-w-[4.75rem]"
       >
         <:item section="call" active={@section == "call"} label={dgettext("p2p", "Call")}>
@@ -219,7 +219,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PSessionConsole do
       aria-live="polite"
       data-testid="p2p-call-status-announcer"
     >
-      <Icons.icon_status_signal class={["h-3.5 w-3.5 shrink-0", quality_class(@p2p_session)]} />
+      <Icons.icon_status_signal class="h-3.5 w-3.5 shrink-0" />
       {connection_label(@p2p_session, @connection_label)}
     </span>
     <span class="inline-flex items-center gap-1" data-testid="p2p-call-kind">
@@ -253,13 +253,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PSessionConsole do
   defp connection_label(%{state: :joining}, _label), do: dgettext("chat", "Joining...")
   defp connection_label(%{state: :connecting}, _label), do: dgettext("chat", "Connecting...")
   defp connection_label(_p2p, _label), do: dgettext("chat", "Preparing")
-
-  defp quality_class(%{recovery: %{state: :failed}}), do: "text-destructive"
-  defp quality_class(%{recovery: %{state: :reconnecting}}), do: "text-warning"
-  defp quality_class(%{stats: %{connection: %{level: "poor"}}}), do: "text-destructive"
-  defp quality_class(%{stats: %{connection: %{level: "fair"}}}), do: "text-warning"
-  defp quality_class(%{state: :connected}), do: "text-success"
-  defp quality_class(_p2p), do: "text-muted-foreground"
 
   defp call_status_label(%{call_summary: %{type: "video"}}), do: dgettext("p2p", "Video")
   defp call_status_label(%{call_summary: %{type: "audio"}}), do: dgettext("p2p", "Audio")

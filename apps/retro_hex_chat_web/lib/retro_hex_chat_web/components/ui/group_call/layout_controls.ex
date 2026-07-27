@@ -14,7 +14,6 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.LayoutControls do
 
   attr :call, :map, default: nil
   attr :on_layout_mode, :any, default: "group_call_layout_mode"
-  attr :on_toggle_sidebar, :any, default: "group_call_toggle_sidebar"
   attr :on_cycle_self_view, :any, default: "group_call_cycle_self_view"
   attr :on_clear_focus, :any, default: "group_call_clear_focus"
   attr :orientation, :string, values: ~w(horizontal vertical), default: "horizontal"
@@ -68,16 +67,6 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.LayoutControls do
       >
         <CallControls.icon_call_layout_speaker class="h-4 w-4" />
       </.layout_button>
-
-      <.media_session_icon_button
-        label={dgettext("group_call", "Toggle participants panel")}
-        active={sidebar_open?(@call)}
-        pressed={sidebar_open?(@call)}
-        phx-click={@on_toggle_sidebar}
-        data-testid="group-call-layout-sidebar"
-      >
-        <CallControls.icon_call_participants class="h-4 w-4" />
-      </.media_session_icon_button>
 
       <.media_session_icon_button
         label={self_view_title(@call)}
@@ -146,9 +135,6 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.LayoutControls do
        do: mode
 
   defp layout_mode(_call), do: :auto
-
-  defp sidebar_open?(%{layout: %{sidebar_open: false}}), do: false
-  defp sidebar_open?(_call), do: true
 
   defp self_view(%{layout: %{self_view: mode}}) when mode in [:tile, :pip, :hidden], do: mode
   defp self_view(_call), do: :tile

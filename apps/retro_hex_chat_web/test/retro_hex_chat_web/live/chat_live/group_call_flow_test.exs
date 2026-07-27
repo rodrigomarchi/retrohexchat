@@ -108,7 +108,6 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
           "video" => "true",
           "layout_mode" => "auto",
           "self_view" => "tile",
-          "sidebar_open" => "true",
           "audio_input_id" => "",
           "video_input_id" => "",
           "audio_output_id" => ""
@@ -126,6 +125,13 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
   defp open_group_call(view, overrides \\ %{}) do
     open_prejoin(view)
     confirm_prejoin(view, overrides)
+  end
+
+  # The participant panel is bound to the People tab, so anything asserting on
+  # participant rows has to open that section first.
+  defp open_people_section(view) do
+    render_click(view, "group_call_console_select", %{"section" => "people"})
+    view
   end
 
   defp join_runtime_group_call(call, nick) do
@@ -220,8 +226,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
         "audio" => "false",
         "video" => "false",
         "layout_mode" => "focus",
-        "self_view" => "hidden",
-        "sidebar_open" => "false"
+        "self_view" => "hidden"
       })
 
       call = group_call_assign(view)
@@ -230,7 +235,6 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       assert call.media == %{audio: false, video: false}
       assert call.layout.mode == :focus
       assert call.layout.self_view == :hidden
-      refute call.layout.sidebar_open
 
       assert has_element?(
                view,
@@ -249,8 +253,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
             "media" => %{"audio" => false, "video" => false},
             "layout" => %{
               "mode" => "focus",
-              "self_view" => "hidden",
-              "sidebar_open" => false
+              "self_view" => "hidden"
             }
           }
         }
@@ -265,7 +268,6 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       refute prejoin.media.video
       assert prejoin.layout.mode == :focus
       assert prejoin.layout.self_view == :hidden
-      refute prejoin.layout.sidebar_open
 
       refute has_element?(view, ~s([data-testid="group-call-prejoin-audio"][checked]))
       refute has_element?(view, ~s([data-testid="group-call-prejoin-video-toggle"][checked]))
@@ -361,6 +363,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       %{nick: nick, view: view} = mount_identified(conn, "gcfd")
 
       open_group_call(view)
+      open_people_section(view)
 
       assert_push_event(view, "window_command", %{action: "open", id: "group-call"})
 
@@ -482,6 +485,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       %{nick: nick, view: view} = mount_identified(conn, "gcfl")
 
       open_group_call(view)
+      open_people_section(view)
 
       assert_push_event(view, "window_command", %{action: "open", id: "group-call"})
 
@@ -543,16 +547,21 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       assert group_call_assign(view).layout.self_view == :pip
       assert_push_event(view, "group_call_layout_state", %{self_view: "pip"})
 
-      render_click(view, "group_call_toggle_sidebar", %{})
-      refute group_call_assign(view).layout.sidebar_open
-      assert_push_event(view, "group_call_layout_state", %{sidebar_open: false})
+      # The participant panel follows the People tab, not a separate toggle.
+      render_click(view, "group_call_console_select", %{"section" => "call"})
+      assert group_call_assign(view).layout.console_section == :call
       refute has_element?(view, ~s([data-testid="group-call-participants"]))
+
+      render_click(view, "group_call_console_select", %{"section" => "people"})
+      assert group_call_assign(view).layout.console_section == :people
+      assert has_element?(view, ~s([data-testid="group-call-participants"]))
     end
 
     test "advanced layouts follow speaker state and pin participants", %{conn: conn} do
       %{nick: nick, view: view} = mount_identified(conn, "gcsp")
 
       open_group_call(view)
+      open_people_section(view)
 
       call = group_call_assign(view)
       cleanup_room(call.token)
@@ -710,6 +719,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       %{nick: nick, view: view} = mount_identified(conn, "gcax")
 
       open_group_call(view)
+      open_people_section(view)
 
       call = group_call_assign(view)
       cleanup_room(call.token)
@@ -789,6 +799,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       %{view: view} = mount_identified(conn, "gcef")
 
       open_group_call(view, %{"audio" => "false", "video" => "false"})
+      open_people_section(view)
 
       call = group_call_assign(view)
       cleanup_room(call.token)
@@ -851,6 +862,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       %{view: view} = mount_identified(conn, "gcmi")
 
       open_group_call(view)
+      open_people_section(view)
 
       call = group_call_assign(view)
       cleanup_room(call.token)
@@ -1014,6 +1026,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       %{nick: nick, view: view} = mount_identified(conn, "gcsh")
 
       open_group_call(view)
+      open_people_section(view)
 
       call = group_call_assign(view)
       cleanup_room(call.token)
@@ -1111,6 +1124,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       %{nick: nick, view: view} = mount_identified(conn, "gcql")
 
       open_group_call(view)
+      open_people_section(view)
 
       call = group_call_assign(view)
       cleanup_room(call.token)
@@ -1189,6 +1203,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       %{nick: nick, view: view} = mount_identified(conn, "gcrx")
 
       open_group_call(view)
+      open_people_section(view)
 
       call = group_call_assign(view)
       cleanup_room(call.token)
@@ -1474,6 +1489,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       %{nick: nick, view: view} = mount_identified(conn, "gcfm")
 
       open_group_call(view)
+      open_people_section(view)
 
       assert_push_event(view, "window_command", %{action: "open", id: "group-call"})
 
@@ -1529,6 +1545,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       %{nick: nick, view: view} = mount_identified(conn, "gcpm")
 
       open_group_call(view)
+      open_people_section(view)
 
       call = group_call_assign(view)
       cleanup_room(call.token)
@@ -1832,6 +1849,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       {:ok, _state} = Server.join(channel, target.nickname, nil, identified: true)
 
       open_group_call(moderator.view)
+      open_people_section(moderator.view)
 
       call = group_call_assign(moderator.view)
       cleanup_room(call.token)
@@ -1935,6 +1953,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       {:ok, _state} = Server.join(channel, target.nickname, nil, identified: true)
 
       open_group_call(moderator.view)
+      open_people_section(moderator.view)
 
       call = group_call_assign(moderator.view)
       cleanup_room(call.token)
@@ -2029,6 +2048,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       submit_command_sync(target.view, "/join #{channel}")
 
       open_group_call(moderator.view)
+      open_people_section(moderator.view)
 
       mod_call = group_call_assign(moderator.view)
       cleanup_room(mod_call.token)

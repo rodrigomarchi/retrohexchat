@@ -208,7 +208,6 @@ const GroupCallPreJoinHook = {
 
     this._setCheckbox("audio", preferences.audio);
     this._setCheckbox("video", preferences.video);
-    this._setCheckbox("sidebar_open", preferences.sidebar_open);
     this._setSelect("layout_mode", preferences.layout_mode);
     this._setSelect("self_view", preferences.self_view);
     this._setSelect("audio_input_id", preferences.audio_input_id);
@@ -241,7 +240,6 @@ const GroupCallPreJoinHook = {
     return {
       audio: this._checkbox("audio", true),
       video: this._checkbox("video", true),
-      sidebar_open: this._checkbox("sidebar_open", true),
       layout_mode: this._field("layout_mode") || "auto",
       self_view: this._field("self_view") || "tile",
       audio_input_id: this._field("audio_input_id") || "",

@@ -482,7 +482,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
   defp p2p_view_rail(assigns) do
     ~H"""
     <.media_session_command_bar
-      class="relative z-10 flex shrink-0 flex-row flex-wrap content-start gap-1 border border-border bg-surface p-1 shadow-retro-sunken lg:flex-col"
+      class="relative z-10 flex shrink-0 flex-row flex-wrap content-start justify-center gap-1 border border-border bg-surface p-1 shadow-retro-sunken lg:flex-col lg:justify-start"
       role="group"
       aria_label={dgettext("p2p", "P2P view and window controls")}
       testid="p2p-call-view-rail"

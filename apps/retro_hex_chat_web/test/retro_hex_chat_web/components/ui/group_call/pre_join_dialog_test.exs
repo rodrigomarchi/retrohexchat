@@ -21,7 +21,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoinDialogTest do
         channel_name: "#lobby",
         user_id: 1,
         media: %{audio: true, video: true},
-        layout: %{mode: :auto, sidebar_open: true, self_view: :tile},
+        layout: %{mode: :auto, self_view: :tile},
         devices: %{
           "audioinput" => [%{"id" => "mic-1", "label" => "External studio microphone"}],
           "videoinput" => [%{"id" => "cam-1", "label" => "External camera"}],

@@ -391,12 +391,6 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
 
   def handle_event("group_call_focus_next", _params, socket), do: {:halt, socket}
 
-  def handle_event("group_call_toggle_sidebar", _params, %{assigns: %{group_call: %{}}} = socket) do
-    {:halt, toggle_sidebar(socket)}
-  end
-
-  def handle_event("group_call_toggle_sidebar", _params, socket), do: {:halt, socket}
-
   def handle_event("group_call_cycle_self_view", _params, %{assigns: %{group_call: %{}}} = socket) do
     {:halt, cycle_self_view(socket)}
   end
@@ -837,7 +831,6 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
         call
         |> layout()
         |> Map.put(:console_section, :people)
-        |> Map.put(:sidebar_open, true)
 
       %{call | layout: layout}
     end)
@@ -1059,7 +1052,6 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
         call
         |> layout()
         |> Map.put(:mode, String.to_existing_atom(mode))
-        |> maybe_open_sidebar_for_mode()
         |> maybe_focus_for_mode(call)
 
       %{call | layout: layout}
@@ -1076,24 +1068,6 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
 
     set_layout_mode(socket, mode)
   end
-
-  defp toggle_sidebar(socket) do
-    update_call(socket, fn call ->
-      layout = layout(call)
-      sidebar_open = !Map.get(layout, :sidebar_open, true)
-
-      layout =
-        layout
-        |> Map.put(:sidebar_open, sidebar_open)
-        |> layout_for_sidebar(sidebar_open)
-
-      %{call | layout: layout}
-    end)
-    |> push_group_call_layout()
-  end
-
-  defp layout_for_sidebar(layout, true), do: layout
-  defp layout_for_sidebar(layout, false), do: Map.put(layout, :mode, :auto)
 
   defp cycle_self_view(socket) do
     update_call(socket, fn call ->
@@ -2085,7 +2059,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
       layout:
         defaults.layout
         |> Map.merge(normalize_prejoin_layout(preferences))
-        |> Map.take([:mode, :focused_participant_id, :sidebar_open, :self_view, :mini]),
+        |> Map.take([:mode, :focused_participant_id, :self_view, :mini]),
       device_preferences:
         defaults.device_preferences
         |> Map.merge(normalize_prejoin_device_preferences(preferences))
@@ -2117,13 +2091,9 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
     mode = preference_value(value(preferences, :layout_mode), value(layout, :mode))
     self_view = preference_value(value(preferences, :self_view), value(layout, :self_view))
 
-    sidebar_open =
-      preference_value(value(preferences, :sidebar_open), value(layout, :sidebar_open))
-
     %{
       mode: layout_mode(mode),
       focused_participant_id: nil,
-      sidebar_open: boolean_preference(sidebar_open, true),
       self_view: self_view_mode(self_view),
       mini: false
     }
@@ -2197,8 +2167,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
       },
       "layout" => %{
         "mode" => Atom.to_string(preferences.layout.mode),
-        "self_view" => Atom.to_string(preferences.layout.self_view),
-        "sidebar_open" => preferences.layout.sidebar_open
+        "self_view" => Atom.to_string(preferences.layout.self_view)
       }
     }
   end
@@ -2272,7 +2241,6 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
     %{
       mode: :auto,
       focused_participant_id: nil,
-      sidebar_open: true,
       self_view: :tile,
       console_section: :call,
       mini: false,
@@ -2303,9 +2271,6 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   end
 
   defp normalize_console_section(_section), do: :call
-
-  defp maybe_open_sidebar_for_mode(%{mode: :sidebar} = layout), do: %{layout | sidebar_open: true}
-  defp maybe_open_sidebar_for_mode(layout), do: layout
 
   defp maybe_focus_for_mode(%{mode: :speaker} = layout, call) do
     %{
@@ -2407,7 +2372,6 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
     %{
       mode: Atom.to_string(layout.mode),
       focused_participant_id: layout.focused_participant_id,
-      sidebar_open: layout.sidebar_open,
       self_view: Atom.to_string(layout.self_view),
       mini: Map.get(layout, :mini, false),
       pinned_participant_ids: layout.pinned_participant_ids,

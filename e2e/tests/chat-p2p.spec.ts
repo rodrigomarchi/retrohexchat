@@ -74,7 +74,9 @@ async function expectMobileSectionNavCue(page: Page, testId: string) {
     const scroller = nav.querySelector('[data-scroll-cue="horizontal"]');
     const start = nav.querySelector('[data-scroll-cue-edge="start"]');
     const end = nav.querySelector('[data-scroll-cue-edge="end"]');
-    const active = nav.querySelector('button[aria-pressed="true"]');
+    // Scope to the scroller: the nav also holds window-control buttons that
+    // carry aria-pressed and sit outside it by design.
+    const active = scroller?.querySelector('button[aria-pressed="true"]');
     const scrollerRect = scroller?.getBoundingClientRect();
     const activeRect = active?.getBoundingClientRect();
 
@@ -687,7 +689,7 @@ test.describe("In-chat P2P session", () => {
         .poll(() => localP2PTrackEnabled(bob.page, "video"))
         .toBe(null);
 
-      await expect(bob.page.getByTestId("p2p-call-header")).toContainText(
+      await expect(bob.page.getByTestId("p2p-call-kind")).toContainText(
         "Receiving",
       );
       await expect(bob.page.getByTestId("p2p-call-enable-audio")).toBeVisible();
@@ -741,7 +743,7 @@ test.describe("In-chat P2P session", () => {
       await expect
         .poll(() => localP2PTrackEnabled(bob.page, "video"))
         .toBe(null);
-      await expect(bob.page.getByTestId("p2p-call-header")).toContainText(
+      await expect(bob.page.getByTestId("p2p-call-kind")).toContainText(
         "Audio",
       );
       await expect(bob.page.getByTestId("p2p-call-toggle-mute")).toBeVisible();

@@ -75,7 +75,7 @@ defmodule RetroHexChatWeb.Components.UI.Window do
         </span>
         <span
           :if={@meta != []}
-          class="hidden sm:flex min-w-0 items-center gap-2 mr-6 text-[10px] leading-3 text-white/80"
+          class="window-title-meta hidden sm:flex min-w-0 items-center gap-2 mr-6 text-[10px] leading-3 text-white"
         >
           {render_slot(@meta)}
         </span>

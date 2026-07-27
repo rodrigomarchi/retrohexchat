@@ -45,7 +45,6 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
   attr :on_focus_participant, :any, default: "group_call_focus_participant"
   attr :on_toggle_pin_participant, :any, default: "group_call_toggle_pin_participant"
   attr :on_layout_mode, :any, default: "group_call_layout_mode"
-  attr :on_toggle_sidebar, :any, default: "group_call_toggle_sidebar"
   attr :on_cycle_self_view, :any, default: "group_call_cycle_self_view"
   attr :on_toggle_mini, :any, default: "group_call_toggle_mini"
   attr :on_clear_focus, :any, default: "group_call_clear_focus"
@@ -90,7 +89,6 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
           :if={@call && !mini_mode?(@call)}
           call={@call}
           on_layout_mode={@on_layout_mode}
-          on_toggle_sidebar={@on_toggle_sidebar}
           on_cycle_self_view={@on_cycle_self_view}
           on_clear_focus={@on_clear_focus}
         />
@@ -114,7 +112,6 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
             :if={settings_section?(@call) && !mini_mode?(@call)}
             call={@call}
             on_layout_mode={@on_layout_mode}
-            on_toggle_sidebar={@on_toggle_sidebar}
             on_cycle_self_view={@on_cycle_self_view}
             on_clear_focus={@on_clear_focus}
           />
@@ -244,7 +241,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
       aria-live="polite"
       data-testid="group-call-status-announcer"
     >
-      <Icons.icon_status_signal class={["h-3.5 w-3.5 shrink-0", status_icon_class(@call)]} />
+      <Icons.icon_status_signal class="h-3.5 w-3.5 shrink-0" />
       <span class="truncate">{status_label(@call)}</span>
     </span>
     <span
@@ -265,11 +262,16 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
   defp conference_view_rail(assigns) do
     ~H"""
     <.media_session_command_bar
-      class={[
-        "shrink-0 flex-row flex-wrap content-start gap-1 border border-border bg-surface p-1 shadow-retro-sunken lg:flex-col",
-        mobile_inspector_open?(@call) && "hidden lg:flex",
-        !mobile_inspector_open?(@call) && "flex"
-      ]}
+      class={
+        [
+          # Laid out as a row until lg, where it becomes the vertical rail beside
+          # the stage. Centre it only while it is a row: on the column the same
+          # rule would push the buttons to the middle of a full-height rail.
+          "shrink-0 flex-row flex-wrap content-start justify-center gap-1 border border-border bg-surface p-1 shadow-retro-sunken lg:flex-col lg:justify-start",
+          mobile_inspector_open?(@call) && "hidden lg:flex",
+          !mobile_inspector_open?(@call) && "flex"
+        ]
+      }
       role="group"
       aria_label={dgettext("group_call", "Conference view controls")}
       testid="group-call-view-rail"
@@ -278,7 +280,6 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
         call={@call}
         orientation="vertical"
         on_layout_mode={@on_layout_mode}
-        on_toggle_sidebar={@on_toggle_sidebar}
         on_cycle_self_view={@on_cycle_self_view}
         on_clear_focus={@on_clear_focus}
       />
@@ -569,7 +570,6 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
             orientation="horizontal"
             class="justify-end"
             on_layout_mode={@on_layout_mode}
-            on_toggle_sidebar={@on_toggle_sidebar}
             on_cycle_self_view={@on_cycle_self_view}
             on_clear_focus={@on_clear_focus}
           />
@@ -585,7 +585,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
             icon={:icon_tab_nicklist}
             label={dgettext("group_call", "People")}
             value={
-              if sidebar_open?(@call),
+              if show_participants?(@call),
                 do: dgettext("group_call", "Visible"),
                 else: dgettext("group_call", "Hidden")
             }
@@ -1123,10 +1123,12 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
   defp mobile_inspector_open?(call),
     do: !mini_mode?(call) && console_section(call) in [:people, :settings, :stats]
 
+  # The People tab is the only switch for the participant panel. It used to be
+  # gated by a separate sidebar toggle that defaulted to open, so on desktop the
+  # panel was always there and the labelled tab did nothing — the working control
+  # was an unlabelled icon in the view rail.
   defp show_participants?(call),
-    do:
-      sidebar_open?(call) && !mini_mode?(call) && !settings_section?(call) &&
-        !stats_section?(call)
+    do: console_section(call) == :people && !mini_mode?(call)
 
   defp workspace_class(call) do
     classes([
@@ -1139,9 +1141,6 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
 
   defp mini_mode?(%{layout: %{mini: true}}), do: true
   defp mini_mode?(_call), do: false
-
-  defp sidebar_open?(%{layout: %{sidebar_open: false}}), do: false
-  defp sidebar_open?(_call), do: true
 
   defp settings_section?(call), do: console_section(call) == :settings
   defp stats_section?(call), do: console_section(call) == :stats

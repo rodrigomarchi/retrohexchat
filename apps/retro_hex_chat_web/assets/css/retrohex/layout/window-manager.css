@@ -36,6 +36,15 @@
 .desktop-window--blurred [data-window-titlebar] {
   @apply bg-title-bar-inactive;
 }
+/* Live status shown next to a window title.
+   The 16×16 icons are drawn with the fixed Win98 palette — the navy used for
+   glyph bodies is the title bar's own colour, so they vanish against it. Flatten
+   every glyph to a white silhouette instead of maintaining a second icon set:
+   a Win98 title bar is monochrome anyway, and the adjacent label already names
+   the state that the colour used to encode. */
+.window-title-meta svg {
+  filter: brightness(0) invert(1);
+}
 /* Win98 diagonal resize grip in the bottom-right corner. */
 .desktop-window__resize--grip {
   background-image: linear-gradient(

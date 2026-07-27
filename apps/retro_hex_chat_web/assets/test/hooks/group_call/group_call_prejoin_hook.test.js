@@ -23,7 +23,6 @@ function formFixture() {
       </section>
       <input type="checkbox" name="group_call_prejoin[audio]" checked />
       <input type="checkbox" name="group_call_prejoin[video]" checked />
-      <input type="checkbox" name="group_call_prejoin[sidebar_open]" checked />
       <select name="group_call_prejoin[layout_mode]">
         <option value="auto" selected>Auto</option>
         <option value="focus">Focus</option>
@@ -135,7 +134,6 @@ describe("GroupCallPreJoinHook", () => {
       JSON.stringify({
         audio: false,
         video: false,
-        sidebar_open: false,
         layout_mode: "focus",
         self_view: "hidden",
         audio_input_id: "mic-1",
@@ -160,7 +158,6 @@ describe("GroupCallPreJoinHook", () => {
     expect(hook.pushEvent).toHaveBeenCalledWith("group_call_prejoin_preferences_loaded", {
       audio: false,
       video: false,
-      sidebar_open: false,
       layout_mode: "focus",
       self_view: "hidden",
       audio_input_id: "mic-1",
@@ -363,7 +360,6 @@ describe("GroupCallPreJoinHook", () => {
     expect(hook.pushEvent).toHaveBeenCalledWith("p2p_setup_preferences_loaded", {
       audio: true,
       video: false,
-      sidebar_open: true,
       layout_mode: "auto",
       self_view: "tile",
       audio_input_id: "mic-p2p",

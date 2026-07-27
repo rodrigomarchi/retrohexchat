@@ -32,7 +32,6 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.VideoSurface do
       data-focused-participant-id={focused_participant_id(@call)}
       data-pinned-participant-ids={pinned_participant_ids(@call)}
       data-self-view={self_view(@call)}
-      data-sidebar-open={sidebar_open?(@call)}
       class="group-call-room min-h-0"
       role="region"
       aria-label={dgettext("group_call", "Conference media")}
@@ -251,9 +250,6 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.VideoSurface do
 
   defp self_view(%{layout: %{self_view: mode}}) when mode in [:tile, :pip, :hidden], do: mode
   defp self_view(_call), do: :tile
-
-  defp sidebar_open?(%{layout: %{sidebar_open: false}}), do: false
-  defp sidebar_open?(_call), do: true
 
   defp media_enabled?(%{media: media}, :screen), do: Map.get(media, :screen, false) == true
   defp media_enabled?(%{media: media}, key), do: Map.get(media, key, true) == true
