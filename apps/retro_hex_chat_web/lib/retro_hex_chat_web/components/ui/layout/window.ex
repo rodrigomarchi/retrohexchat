@@ -40,6 +40,11 @@ defmodule RetroHexChatWeb.Components.UI.Window do
 
   slot :icon, required: true, doc: "16×16 title bar icon — mandatory for Win98 consistency"
 
+  slot :meta,
+    doc:
+      "Live status shown after the title, for windows whose subject has a connection state. " <>
+        "Hidden below sm: a narrow title bar has no room for it, and the status bar repeats it."
+
   @spec window_title_bar(map()) :: Phoenix.LiveView.Rendered.t()
   def window_title_bar(assigns) do
     assigns = assign(assigns, :controls, ensure_close(assigns.controls, assigns.force_close))
@@ -62,7 +67,18 @@ defmodule RetroHexChatWeb.Components.UI.Window do
         <span class="flex-shrink-0 w-[16px] h-[16px] inline-flex items-center justify-center">
           {render_slot(@icon)}
         </span>
-        <span class="font-bold text-white text-xs truncate mr-6">{@title}</span>
+        <span class={[
+          "font-bold text-white text-xs truncate",
+          @meta == [] && "mr-6"
+        ]}>
+          {@title}
+        </span>
+        <span
+          :if={@meta != []}
+          class="hidden sm:flex min-w-0 items-center gap-2 mr-6 text-[10px] leading-3 text-white/80"
+        >
+          {render_slot(@meta)}
+        </span>
       </div>
       <div class="flex flex-shrink-0">
         <button

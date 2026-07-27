@@ -65,23 +65,6 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
       data-mini-mode={to_string(mini_mode?(@call))}
       data-testid="group-call-panel"
     >
-      <.call_header
-        :if={!mini_mode?(@call)}
-        call={@call}
-        on_close_room={@on_close_room}
-        on_toggle_audio={@on_toggle_audio}
-        on_toggle_video={@on_toggle_video}
-        on_toggle_hand={@on_toggle_hand}
-        on_leave={@on_leave}
-        on_toggle_mini={@on_toggle_mini}
-        on_layout_mode={@on_layout_mode}
-        on_toggle_sidebar={@on_toggle_sidebar}
-        on_cycle_self_view={@on_cycle_self_view}
-        on_clear_focus={@on_clear_focus}
-        on_mute_all={@on_mute_all}
-        on_camera_off_all={@on_camera_off_all}
-        on_toggle_lock={@on_toggle_lock}
-      />
       <.mini_header
         :if={mini_mode?(@call)}
         call={@call}
@@ -95,6 +78,11 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
         :if={@call && !mini_mode?(@call)}
         call={@call}
         on_console_select={@on_console_select}
+        on_close_room={@on_close_room}
+        on_toggle_mini={@on_toggle_mini}
+        on_mute_all={@on_mute_all}
+        on_camera_off_all={@on_camera_off_all}
+        on_toggle_lock={@on_toggle_lock}
       />
 
       <div class={workspace_class(@call)}>
@@ -189,39 +177,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
       >
         <Icons.icon_btn_settings class="h-4 w-4" />
       </:item>
-    </.section_nav>
-    """
-  end
 
-  defp call_header(assigns) do
-    ~H"""
-    <.media_session_header
-      title={channel_name(@call)}
-      meta_class="flex min-w-0 items-center gap-2 text-[10px] leading-3 text-muted-foreground"
-      actions_class="flex max-w-full shrink-0 flex-wrap items-center justify-end gap-1"
-      actions_label={dgettext("group_call", "Conference window controls")}
-    >
-      <:icon>
-        <Icons.icon_protocol_conference_compact class="h-4 w-4 shrink-0" />
-      </:icon>
-      <:meta>
-        <span
-          class="inline-flex min-w-0 items-center gap-1 truncate"
-          aria-live="polite"
-          data-testid="group-call-status-announcer"
-        >
-          <Icons.icon_status_signal class={["h-4 w-4 shrink-0", status_icon_class(@call)]} />
-          <span class="truncate">{status_label(@call)}</span>
-        </span>
-        <span class="inline-flex items-center gap-1">
-          <Icons.icon_status_user class="h-4 w-4 shrink-0" />
-          {participant_count(@call)}
-        </span>
-        <span class="inline-flex items-center gap-1">
-          <CallControls.icon_call_webrtc class="h-4 w-4 shrink-0" />
-          {track_count(@call)}
-        </span>
-      </:meta>
       <:actions>
         <.group_call_button
           label={dgettext("group_call", "Switch to compact conference mode")}
@@ -267,7 +223,42 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
           <CallControls.icon_call_camera_off class="h-4 w-4" />
         </.group_call_button>
       </:actions>
-    </.media_session_header>
+    </.section_nav>
+    """
+  end
+
+  @doc """
+  Conference status for the window title bar.
+
+  Lives here so the labels stay with the call state they describe, while the
+  window that renders them is declared in the chat shell.
+  """
+  attr :call, :map, default: nil
+
+  @spec conference_title_meta(map()) :: Phoenix.LiveView.Rendered.t()
+  def conference_title_meta(assigns) do
+    ~H"""
+    <span
+      :if={@call}
+      class="inline-flex min-w-0 items-center gap-1 truncate"
+      aria-live="polite"
+      data-testid="group-call-status-announcer"
+    >
+      <Icons.icon_status_signal class={["h-3.5 w-3.5 shrink-0", status_icon_class(@call)]} />
+      <span class="truncate">{status_label(@call)}</span>
+    </span>
+    <span
+      :if={@call}
+      class="inline-flex items-center gap-1"
+      data-testid="group-call-title-participants"
+    >
+      <Icons.icon_status_user class="h-3.5 w-3.5 shrink-0" />
+      {participant_count(@call)}
+    </span>
+    <span :if={@call} class="inline-flex items-center gap-1" data-testid="group-call-title-tracks">
+      <CallControls.icon_call_webrtc class="h-3.5 w-3.5 shrink-0" />
+      {track_count(@call)}
+    </span>
     """
   end
 

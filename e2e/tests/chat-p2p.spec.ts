@@ -200,7 +200,9 @@ async function expectP2PConsoleLayoutStable(page: Page) {
   expect(metrics.horizontalScrollElements).toEqual([]);
 }
 
-async function expectP2PCallHasSingleInnerHeader(page: Page) {
+// The session header moved into the window title bar, so the call window must
+// carry no inner header of its own: the chrome is the title bar plus the nav row.
+async function expectP2PCallHasNoInnerHeader(page: Page) {
   const visibleHeaderCount = await page
     .getByTestId("p2p-call-window")
     .locator("header")
@@ -220,7 +222,7 @@ async function expectP2PCallHasSingleInnerHeader(page: Page) {
         }).length,
     );
 
-  expect(visibleHeaderCount).toBe(1);
+  expect(visibleHeaderCount).toBe(0);
 }
 
 async function expectP2PSectionScrollHooks(page: Page) {
@@ -868,7 +870,7 @@ test.describe("In-chat P2P session", () => {
       await expect
         .poll(() => remoteVideoLive(alice.page), { timeout: 30_000 })
         .toBe(true);
-      await expectP2PCallHasSingleInnerHeader(alice.page);
+      await expectP2PCallHasNoInnerHeader(alice.page);
       await expectP2PSectionScrollHooks(alice.page);
 
       const initialRemote = await remoteVideoIdentity(alice.page);
@@ -889,7 +891,7 @@ test.describe("In-chat P2P session", () => {
 
       await alice.page.getByTestId("p2p-call-mini-toggle").click();
       await expect(callPanel).toHaveAttribute("data-call-mini", "false");
-      await expectP2PCallHasSingleInnerHeader(alice.page);
+      await expectP2PCallHasNoInnerHeader(alice.page);
       await expect
         .poll(() => remoteVideoIdentity(alice.page))
         .toEqual(initialRemote);

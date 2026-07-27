@@ -18,11 +18,21 @@ defmodule RetroHexChatWeb.Components.UI.MediaSession.SectionNav do
 
   attr :button_class, :any, default: nil
 
+  attr :actions_class, :any,
+    default: "flex shrink-0 flex-wrap items-center justify-end gap-1 px-1 py-1"
+
+  attr :actions_label, :string, default: nil
+
   slot :item, required: true do
     attr :section, :string, required: true
     attr :label, :string, required: true
     attr :active, :boolean, required: true
   end
+
+  slot :actions,
+    doc:
+      "Window-level controls pinned to the trailing edge. They sit outside the scroller so " <>
+        "they stay reachable when the section buttons overflow."
 
   @spec section_nav(map()) :: Phoenix.LiveView.Rendered.t()
   def section_nav(assigns) do
@@ -74,6 +84,15 @@ defmodule RetroHexChatWeb.Components.UI.MediaSession.SectionNav do
       >
         &gt;
       </span>
+
+      <div
+        :if={@actions != []}
+        class={classes([@actions_class])}
+        role={if @actions_label, do: "toolbar"}
+        aria-label={@actions_label}
+      >
+        {render_slot(@actions)}
+      </div>
     </nav>
     """
   end

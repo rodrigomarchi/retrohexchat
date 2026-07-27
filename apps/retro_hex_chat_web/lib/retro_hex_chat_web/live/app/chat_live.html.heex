@@ -612,6 +612,12 @@
       data-testid="p2p-call-window"
     >
       <:icon><Icons.icon_protocol_p2p_compact class="h-4 w-4" /></:icon>
+      <:meta>
+        <P2PSessionConsole.p2p_title_meta
+          p2p_session={@p2p_session}
+          connection_label={p2p_connection_label(@p2p_session)}
+        />
+      </:meta>
       <.live_component
         module={RetroHexChatWeb.ChatLive.Components.P2PSessionConsole}
         id="p2p-session-console"
@@ -645,6 +651,7 @@
       data-testid="group-call-window"
     >
       <:icon><Icons.icon_protocol_conference_compact class="h-4 w-4" /></:icon>
+      <:meta><GroupCallPanelUI.conference_title_meta call={@group_call} /></:meta>
       <.live_component
         module={RetroHexChatWeb.ChatLive.Components.GroupCallPanel}
         id={RetroHexChatWeb.ChatLive.Components.GroupCallPanel.id()}

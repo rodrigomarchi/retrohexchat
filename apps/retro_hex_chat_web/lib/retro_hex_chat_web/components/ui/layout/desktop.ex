@@ -172,6 +172,10 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
   attr :rest, :global, doc: "extra attrs on the window root, e.g. data-testid"
 
   slot :icon, required: true, doc: "16×16 title bar icon"
+
+  slot :meta,
+    doc: "Live status shown after the title — see window_title_bar/1. Hidden on narrow windows."
+
   slot :inner_block, required: true, doc: "window body content"
 
   @spec desktop_window(map()) :: Phoenix.LiveView.Rendered.t()
@@ -204,6 +208,7 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
           data-window-titlebar
         >
           <:icon>{render_slot(@icon)}</:icon>
+          <:meta :if={@meta != []}>{render_slot(@meta)}</:meta>
         </.window_title_bar>
 
         <.window_body class={classes(["overflow-auto", @body_class])}>

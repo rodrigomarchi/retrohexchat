@@ -11,7 +11,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PSessionConsole do
 
   import RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel
   import RetroHexChatWeb.Components.UI.MediaSession.ActionButton
-  import RetroHexChatWeb.Components.UI.MediaSession.Header
   import RetroHexChatWeb.Components.UI.MediaSession.IconButton
   import RetroHexChatWeb.Components.UI.MediaSession.SectionNav
 
@@ -37,51 +36,28 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PSessionConsole do
       data-p2p-console-section={@section}
       data-p2p-media-mode={Map.get(@p2p_session, :media_mode, "video")}
     >
-      <.media_session_header
-        title={dgettext("p2p", "Direct call with %{peer}", peer: peer_label(@p2p_session))}
-        title_class="truncate text-xs font-bold leading-4"
-        meta_class="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-0.5 text-[10px] leading-3 text-muted-foreground"
-        actions_class="flex max-w-full shrink-0 flex-wrap items-center justify-end gap-1"
+      <.section_nav
+        aria_label={dgettext("p2p", "P2P session sections")}
+        event="p2p_console_select"
+        testid="p2p-console-nav"
+        testid_prefix="p2p-console-nav"
         actions_label={dgettext("p2p", "P2P window controls")}
-        testid="p2p-call-header"
+        class="flex shrink-0 border border-border bg-muted shadow-retro-sunken"
+        button_class="min-w-[4.75rem]"
       >
-        <:icon>
-          <Icons.icon_protocol_p2p_compact class="h-4 w-4 shrink-0" />
-        </:icon>
-        <:meta>
-          <span
-            class="inline-flex min-w-0 items-center gap-1 truncate"
-            aria-live="polite"
-            data-testid="p2p-call-status-announcer"
-          >
-            <Icons.icon_status_signal class={["h-3.5 w-3.5 shrink-0", quality_class(@p2p_session)]} />
-            {connection_label(@p2p_session, @connection_label)}
-          </span>
-          <span class="inline-flex items-center gap-1">
-            <Icons.icon_status_user class="h-3.5 w-3.5 shrink-0" />
-            {dgettext("p2p", "1:1")}
-          </span>
-          <span class="inline-flex items-center gap-1">
-            <CallControls.icon_call_webrtc class="h-3.5 w-3.5 shrink-0" />
-            {call_status_label(@p2p_session)}
-          </span>
-          <span
-            :if={call_duration_label(@p2p_session)}
-            class="inline-flex items-center gap-1 font-bold"
-            data-testid="p2p-call-duration"
-          >
-            <Icons.icon_clock class="h-3.5 w-3.5 shrink-0" />
-            {call_duration_label(@p2p_session)}
-          </span>
-          <span class="inline-flex items-center gap-1">
-            <Icons.icon_file_send class="h-3.5 w-3.5 shrink-0" />
-            {file_label(@p2p_session)}
-          </span>
-          <span class="inline-flex items-center gap-1">
-            <Icons.icon_game_arcade class="h-3.5 w-3.5 shrink-0" />
-            {game_label(@p2p_session)}
-          </span>
-        </:meta>
+        <:item section="call" active={@section == "call"} label={dgettext("p2p", "Call")}>
+          <Icons.icon_camera class="h-4 w-4" />
+        </:item>
+        <:item section="files" active={@section == "files"} label={dgettext("p2p", "Files")}>
+          <Icons.icon_file_send class="h-4 w-4" />
+        </:item>
+        <:item section="games" active={@section == "games"} label={dgettext("p2p", "Games")}>
+          <Icons.icon_game_arcade class="h-4 w-4" />
+        </:item>
+        <:item section="stats" active={@section == "stats"} label={dgettext("p2p", "Stats")}>
+          <Icons.icon_status_signal class="h-4 w-4" />
+        </:item>
+
         <:actions>
           <.media_session_icon_button
             label={
@@ -112,28 +88,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PSessionConsole do
             <Icons.icon_btn_disconnect class="h-4 w-4" />
           </.media_session_icon_button>
         </:actions>
-      </.media_session_header>
-
-      <.section_nav
-        aria_label={dgettext("p2p", "P2P session sections")}
-        event="p2p_console_select"
-        testid="p2p-console-nav"
-        testid_prefix="p2p-console-nav"
-        class="flex shrink-0 border-x border-border bg-muted shadow-retro-sunken"
-        button_class="min-w-[4.75rem]"
-      >
-        <:item section="call" active={@section == "call"} label={dgettext("p2p", "Call")}>
-          <Icons.icon_camera class="h-4 w-4" />
-        </:item>
-        <:item section="files" active={@section == "files"} label={dgettext("p2p", "Files")}>
-          <Icons.icon_file_send class="h-4 w-4" />
-        </:item>
-        <:item section="games" active={@section == "games"} label={dgettext("p2p", "Games")}>
-          <Icons.icon_game_arcade class="h-4 w-4" />
-        </:item>
-        <:item section="stats" active={@section == "stats"} label={dgettext("p2p", "Stats")}>
-          <Icons.icon_status_signal class="h-4 w-4" />
-        </:item>
       </.section_nav>
 
       <.recovery_notice p2p_session={@p2p_session} />
@@ -248,8 +202,40 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PSessionConsole do
   defp p2p_connected?(%{state: :connected}), do: true
   defp p2p_connected?(_p2p), do: false
 
-  defp peer_label(%{peer_nick: peer}) when peer not in [nil, ""], do: peer
-  defp peer_label(_p2p), do: dgettext("p2p", "peer")
+  @doc """
+  P2P session status for the window title bar.
+
+  Only the session-wide state belongs here — the file and game counters are
+  section-specific and already have their own tabs.
+  """
+  attr :p2p_session, :map, required: true
+  attr :connection_label, :string, default: nil
+
+  @spec p2p_title_meta(map()) :: Phoenix.LiveView.Rendered.t()
+  def p2p_title_meta(assigns) do
+    ~H"""
+    <span
+      class="inline-flex min-w-0 items-center gap-1 truncate"
+      aria-live="polite"
+      data-testid="p2p-call-status-announcer"
+    >
+      <Icons.icon_status_signal class={["h-3.5 w-3.5 shrink-0", quality_class(@p2p_session)]} />
+      {connection_label(@p2p_session, @connection_label)}
+    </span>
+    <span class="inline-flex items-center gap-1" data-testid="p2p-call-kind">
+      <CallControls.icon_call_webrtc class="h-3.5 w-3.5 shrink-0" />
+      {call_status_label(@p2p_session)}
+    </span>
+    <span
+      :if={call_duration_label(@p2p_session)}
+      class="inline-flex items-center gap-1 font-bold"
+      data-testid="p2p-call-duration"
+    >
+      <Icons.icon_clock class="h-3.5 w-3.5 shrink-0" />
+      {call_duration_label(@p2p_session)}
+    </span>
+    """
+  end
 
   defp connection_label(_p2p, label) when is_binary(label) and label != "", do: label
 
@@ -286,17 +272,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PSessionConsole do
        do: duration
 
   defp call_duration_label(_p2p), do: nil
-
-  defp file_label(%{file_summary: %{percent: percent}}) when not is_nil(percent),
-    do: "#{percent}%"
-
-  defp file_label(%{file_summary: %{status: status}}) when is_binary(status), do: status
-  defp file_label(_p2p), do: dgettext("p2p", "Files")
-
-  defp game_label(%{game_summary: %{active?: true}}), do: dgettext("p2p", "Playing")
-  defp game_label(_p2p), do: dgettext("p2p", "Games")
-
-  attr :p2p_session, :map, required: true
 
   defp recovery_notice(assigns) do
     assigns = assign(assigns, :recovery, Map.get(assigns.p2p_session, :recovery, %{}))

@@ -39,6 +39,9 @@ defmodule RetroHexChatWeb.App.ChatLive do
   import RetroHexChatWeb.Components.UI.P2P.SessionBadge
   import RetroHexChatWeb.Components.UI.GroupCall.PreJoinDialog
 
+  alias RetroHexChatWeb.ChatLive.Components.P2PSessionConsole
+  alias RetroHexChatWeb.Components.UI.GroupCall.Panel, as: GroupCallPanelUI
+
   # ── Solo arcade window body ──────────────────────────────────
   import RetroHexChatWeb.Components.UI.SoloLobby
 

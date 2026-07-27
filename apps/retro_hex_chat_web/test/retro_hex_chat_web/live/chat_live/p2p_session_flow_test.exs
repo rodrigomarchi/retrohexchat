@@ -183,8 +183,9 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
       assert html =~ "p2p-call-window"
       assert html =~ ~s(data-testid="p2p-session-console")
       assert html =~ ~s(data-p2p-console-section="call")
-      assert html =~ ~s(data-testid="p2p-call-header")
-      assert length(Regex.scan(~r/data-testid="p2p-call-header"/, html)) == 1
+      assert html =~ ~s(data-testid="p2p-console-nav")
+      assert length(Regex.scan(~r/data-testid="p2p-console-nav"/, html)) == 1
+      assert length(Regex.scan(~r/data-testid="p2p-call-status-announcer"/, html)) == 1
       assert html =~ "Waiting for peer"
       refute html =~ ~s(data-testid="p2p-webrtc")
 
@@ -342,7 +343,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
       assert p2p_assigns(ctx.view_a).console_section == "call"
       connected_html = render(ctx.view_a)
       assert connected_html =~ "p2p-call-window"
-      assert length(Regex.scan(~r/data-testid="p2p-call-header"/, connected_html)) == 1
+      assert length(Regex.scan(~r/data-testid="p2p-console-nav"/, connected_html)) == 1
 
       assert has_element?(
                ctx.view_a,
