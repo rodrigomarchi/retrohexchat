@@ -202,5 +202,31 @@ describe("lib/input", () => {
       autoResize(el, 100);
       expect(el.style.height).toBeDefined();
     });
+
+    it("keeps an empty textarea to one row even when placeholder inflates scrollHeight", () => {
+      const el = document.createElement("textarea");
+      document.body.appendChild(el);
+      el.value = "";
+      el.placeholder = "Message to #lobby - / for commands";
+      el.style.minHeight = "40px";
+      Object.defineProperty(el, "scrollHeight", { configurable: true, value: 82 });
+
+      autoResize(el, 100);
+
+      expect(el.style.height).toBe("40px");
+      expect(el.style.overflowY).toBe("hidden");
+    });
+
+    it("still expands non-empty textarea content up to the maximum height", () => {
+      const el = document.createElement("textarea");
+      document.body.appendChild(el);
+      el.value = "line 1\nline 2\nline 3";
+      Object.defineProperty(el, "scrollHeight", { configurable: true, value: 82 });
+
+      autoResize(el, 100);
+
+      expect(el.style.height).toBe("82px");
+      expect(el.style.overflowY).toBe("hidden");
+    });
   });
 });

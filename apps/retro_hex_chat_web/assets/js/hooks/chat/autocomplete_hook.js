@@ -39,6 +39,7 @@ const AutocompleteHook = {
     // Auto-resize: mobile keeps the composer compact so autocomplete, reply and
     // syntax panels still have room above the keyboard.
     this.configureTextareaSizing();
+    autoResize(this.inputEl, this.maxHeight);
     this.onViewportResize = () => {
       this.configureTextareaSizing();
       autoResize(this.inputEl, this.maxHeight);
@@ -299,6 +300,7 @@ const AutocompleteHook = {
     this.handleEvent("composer_placeholder", ({ placeholder }) => {
       this.serverPlaceholder = placeholder;
       this.inputEl.placeholder = placeholder;
+      autoResize(this.inputEl, this.maxHeight);
     });
 
     this.handleEvent("clear_input", () => {

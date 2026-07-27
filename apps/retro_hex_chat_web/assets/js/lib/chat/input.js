@@ -118,12 +118,29 @@ export function getArgumentContext(cmdName) {
  */
 export function computeMaxHeight(el, maxLines) {
   const style = getComputedStyle(el);
-  const lineHeight = parseFloat(style.lineHeight) || 18.2;
-  const paddingTop = parseFloat(style.paddingTop) || 0;
-  const paddingBottom = parseFloat(style.paddingBottom) || 0;
-  const borderTop = parseFloat(style.borderTopWidth) || 0;
-  const borderBottom = parseFloat(style.borderBottomWidth) || 0;
+  const lineHeight = parsePixelValue(style.lineHeight, 18.2);
+  const paddingTop = parsePixelValue(style.paddingTop);
+  const paddingBottom = parsePixelValue(style.paddingBottom);
+  const borderTop = parsePixelValue(style.borderTopWidth);
+  const borderBottom = parsePixelValue(style.borderBottomWidth);
   return lineHeight * maxLines + paddingTop + paddingBottom + borderTop + borderBottom;
+}
+
+function computeSingleLineHeight(el) {
+  const style = getComputedStyle(el);
+  const lineHeight = parsePixelValue(style.lineHeight, 18.2);
+  const paddingTop = parsePixelValue(style.paddingTop);
+  const paddingBottom = parsePixelValue(style.paddingBottom);
+  const borderTop = parsePixelValue(style.borderTopWidth);
+  const borderBottom = parsePixelValue(style.borderBottomWidth);
+  const minHeight = parsePixelValue(style.minHeight);
+
+  return Math.max(minHeight, lineHeight + paddingTop + paddingBottom + borderTop + borderBottom);
+}
+
+function parsePixelValue(value, fallback = 0) {
+  const parsed = Number.parseFloat(value);
+  return Number.isFinite(parsed) ? parsed : fallback;
 }
 
 /**
@@ -133,6 +150,12 @@ export function computeMaxHeight(el, maxLines) {
  * @param {number} maxHeight
  */
 export function autoResize(el, maxHeight) {
+  if (!el.value) {
+    el.style.height = computeSingleLineHeight(el) + "px";
+    el.style.overflowY = "hidden";
+    return;
+  }
+
   el.style.height = "auto";
   const newHeight = Math.min(el.scrollHeight, maxHeight);
   el.style.height = newHeight + "px";
