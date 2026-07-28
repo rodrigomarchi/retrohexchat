@@ -1104,6 +1104,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
     defp p2p_system_messages(nick_a, nick_b) do
       nick_a
       |> ChatQueries.list_private_messages(nick_b)
+      |> Map.fetch!(:items)
       |> Enum.filter(&(&1.type == "p2p_system"))
     end
 

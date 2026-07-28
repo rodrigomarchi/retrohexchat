@@ -87,6 +87,17 @@ defmodule RetroHexChatWeb.ChatLive.AdminOps do
   def result_status({:error, _}), do: :error
   def result_status(_), do: :ok
 
+  @doc """
+  The structured listing a dispatcher reply carries, or nil.
+
+  A listing command answers with both halves — the text the chat prints and the
+  table a window renders. Windows that have been converted read this; the rest
+  keep reading `result_message/1`.
+  """
+  @spec result_table(term()) :: RetroHexChat.Admin.Table.t() | nil
+  def result_table({:ok, _type, %{table: %RetroHexChat.Admin.Table{} = table}}), do: table
+  def result_table(_result), do: nil
+
   @doc "Human-readable line for a dispatcher reply."
   @spec result_message(term()) :: String.t()
   def result_message({:ok, :system, %{content: text}}), do: text

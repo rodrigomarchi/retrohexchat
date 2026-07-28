@@ -74,6 +74,37 @@ Run it from a machine that is NOT hosting the server, and watch
 `/dev/dashboard` (or Grafana) on the target while it runs. Nicks are
 registered with the `ldt` prefix; channels are unique per run.
 
+## Visual evidence (`E2E_SHOTS`)
+
+**Never write a throwaway spec just to capture a screenshot.** Evidence is an
+opt-in step inside the real spec:
+
+```ts
+import { shot } from "../helpers/screenshots";
+
+await chat.openChannelList();
+await shot(page, "channel-list-first-page");
+await shot(chat.channelListPanel, "channel-list-end-marker"); // frame one window
+```
+
+`shot()` is a **no-op unless `E2E_SHOTS` is set**, so a spec carrying evidence
+points behaves exactly like one that does not on a normal run — same timing,
+same I/O, same result. Capture with:
+
+```bash
+make e2e.shots FILE=tests/chat-infinite-scroll.spec.ts
+```
+
+Files land in `e2e/screenshots/<spec>/<test>/<nn>-<name>.png`, numbered in call
+order so the sequence reads as the story of the journey, and are attached to the
+Playwright HTML report. The directory is gitignored — evidence is regenerated on
+demand, never committed.
+
+Why this and not `screenshot: "on"` in the config: that captures everything on
+every run, which is noise plus wall clock on a 368-case serial suite. Why not a
+disposable spec: it is a tool thrown away after one use, and the next person
+needing the same picture writes it again.
+
 ## Adding a test
 
 1. If the page is new, add a Page Object under `pages/`.
@@ -81,3 +112,5 @@ registered with the `ldt` prefix; channels are unique per run.
 3. Use unique data per run (see `uniqueNickname()`) so tests stay
    isolated without needing a DB reset.
 4. Prefer `getByTestId`, `getByRole`, or `#id` selectors.
+5. Add `shot()` calls at the states worth seeing (see above) — they cost
+   nothing when `E2E_SHOTS` is unset.

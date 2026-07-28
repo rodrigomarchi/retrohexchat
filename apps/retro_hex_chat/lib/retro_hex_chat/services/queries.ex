@@ -4,6 +4,7 @@ defmodule RetroHexChat.Services.Queries do
 
   import Ecto.Query
 
+  alias RetroHexChat.Page
   alias RetroHexChat.Repo
   alias RetroHexChat.Services.AccessListEntry
   alias RetroHexChat.Services.Ban
@@ -13,6 +14,10 @@ defmodule RetroHexChat.Services.Queries do
   alias RetroHexChat.Services.RegisteredChannel
   alias RetroHexChat.Services.RegisteredNick
   alias RetroHexChat.Services.ServerSetting
+
+  # Curated lists grow only when an operator adds an entry, never from traffic.
+  # The bound exists so the query cannot be unbounded, not to stop anyone.
+  @max_curated 500
 
   # ── Nick functions ──────────────────────────────────────────
 
@@ -201,11 +206,20 @@ defmodule RetroHexChat.Services.Queries do
     end
   end
 
+  @doc """
+  A channel's access list, by level.
+
+  Bounded rather than paginated: the sort key is `level`, which changes whenever
+  an operator promotes or demotes someone, and a keyset cursor over a mutable
+  sort key lets rows move between pages — an entry could be skipped entirely
+  while paging. The list is also curated, entry by entry, by operators.
+  """
   @spec list_access(String.t()) :: [AccessListEntry.t()]
   def list_access(channel_name) do
     from(a in AccessListEntry,
       where: a.channel_name == ^channel_name,
-      order_by: a.level
+      order_by: a.level,
+      limit: @max_curated
     )
     |> Repo.all()
   end
@@ -248,9 +262,45 @@ defmodule RetroHexChat.Services.Queries do
     end
   end
 
-  @spec list_bans(String.t()) :: [Ban.t()]
-  def list_bans(channel_name) do
-    from(b in Ban, where: b.channel_name == ^channel_name)
+  @doc """
+  **Every** ban on a channel, for enforcement and cleanup.
+
+  Not paginated: this feeds the channel server's state, which decides who is
+  refused at join, and the expiry routines, which must see every row to clean
+  up. A page here would silently stop enforcing every ban past the page size.
+
+  There is deliberately no paginated sibling for a screen to call. Bans are only
+  written here for **registered** channels, so this table is a partial record and
+  the channel process's own set of masks is the authority for what a moderator
+  sees. Channel Central renders that set, capped and disclosed — a paginated
+  query over these rows would show nothing at all on an unregistered channel.
+  """
+  @spec all_bans(String.t()) :: [Ban.t()]
+  def all_bans(channel_name) do
+    from(b in Ban, where: b.channel_name == ^channel_name, order_by: [desc: b.id])
+    |> Repo.all()
+  end
+
+  @doc """
+  Every access entry on a channel, for enforcement and cleanup. See `all_bans/1`.
+  """
+  @spec all_access(String.t()) :: [AccessListEntry.t()]
+  def all_access(channel_name) do
+    from(a in AccessListEntry, where: a.channel_name == ^channel_name, order_by: a.level)
+    |> Repo.all()
+  end
+
+  @doc "Every ban exception on a channel, for enforcement and cleanup. See `all_bans/1`."
+  @spec all_ban_exceptions(String.t()) :: [BanException.t()]
+  def all_ban_exceptions(channel_name) do
+    from(e in BanException, where: e.channel_name == ^channel_name, order_by: e.inserted_at)
+    |> Repo.all()
+  end
+
+  @doc "Every invite exception on a channel, for enforcement and cleanup. See `all_bans/1`."
+  @spec all_invite_exceptions(String.t()) :: [InviteException.t()]
+  def all_invite_exceptions(channel_name) do
+    from(e in InviteException, where: e.channel_name == ^channel_name, order_by: e.inserted_at)
     |> Repo.all()
   end
 
@@ -280,11 +330,13 @@ defmodule RetroHexChat.Services.Queries do
     end
   end
 
+  @doc "A channel's ban exceptions. Curated by operators, so bounded."
   @spec list_ban_exceptions(String.t()) :: [BanException.t()]
   def list_ban_exceptions(channel_name) do
     from(e in BanException,
       where: e.channel_name == ^channel_name,
-      order_by: e.inserted_at
+      order_by: e.inserted_at,
+      limit: @max_curated
     )
     |> Repo.all()
   end
@@ -315,27 +367,42 @@ defmodule RetroHexChat.Services.Queries do
     end
   end
 
+  @doc "A channel's invite exceptions. Curated by operators, so bounded."
   @spec list_invite_exceptions(String.t()) :: [InviteException.t()]
   def list_invite_exceptions(channel_name) do
     from(e in InviteException,
       where: e.channel_name == ^channel_name,
-      order_by: e.inserted_at
+      order_by: e.inserted_at,
+      limit: @max_curated
     )
     |> Repo.all()
   end
 
   # ── Admin queries ────────────────────────────────────────
 
-  @spec list_registered_nicks(keyword()) :: [RegisteredNick.t()]
+  @doc """
+  One page of registered nicks, alphabetical.
+
+  Carries the total matching the same filter, so a caller that shows a count
+  reports how many exist rather than how many happened to fit on the page — the
+  admin user list used to print the page size as if it were the total.
+  """
+  @spec list_registered_nicks(keyword()) :: Page.t()
   def list_registered_nicks(opts \\ []) do
     search = Keyword.get(opts, :search)
     limit = Keyword.get(opts, :limit, 100)
 
-    RegisteredNick
-    |> maybe_search_nick(search)
-    |> order_by([n], asc: n.nickname)
-    |> limit(^limit)
-    |> Repo.all()
+    query = maybe_search_nick(RegisteredNick, search)
+
+    page =
+      query
+      |> maybe_after_nick(Keyword.get(opts, :cursor))
+      |> order_by([n], asc: n.nickname)
+      |> limit(^Page.limit_with_lookahead(limit))
+      |> Repo.all()
+      |> Page.new(limit, & &1.nickname)
+
+    Page.with_total(page, Repo.aggregate(query, :count))
   end
 
   @spec count_registered_nicks() :: non_neg_integer()
@@ -356,6 +423,10 @@ defmodule RetroHexChat.Services.Queries do
         |> Repo.update()
     end
   end
+
+  # Alphabetical keyset: the cursor is the last nickname on the page.
+  defp maybe_after_nick(query, nil), do: query
+  defp maybe_after_nick(query, cursor), do: where(query, [n], n.nickname > ^cursor)
 
   defp maybe_search_nick(query, nil), do: query
 
@@ -390,9 +461,10 @@ defmodule RetroHexChat.Services.Queries do
     end
   end
 
+  @doc "Every server setting, by key. Curated by admins, so bounded."
   @spec list_settings() :: [ServerSetting.t()]
   def list_settings do
-    from(s in ServerSetting, order_by: s.key) |> Repo.all()
+    from(s in ServerSetting, order_by: s.key, limit: @max_curated) |> Repo.all()
   end
 
   @spec delete_setting(String.t()) :: :ok

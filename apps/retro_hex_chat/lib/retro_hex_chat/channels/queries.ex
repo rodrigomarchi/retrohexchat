@@ -15,9 +15,9 @@ defmodule RetroHexChat.Channels.Queries do
         nil
 
       channel ->
-        bans = ServiceQueries.list_bans(channel_name)
-        ban_exceptions = ServiceQueries.list_ban_exceptions(channel_name)
-        invite_exceptions = ServiceQueries.list_invite_exceptions(channel_name)
+        bans = ServiceQueries.all_bans(channel_name)
+        ban_exceptions = ServiceQueries.all_ban_exceptions(channel_name)
+        invite_exceptions = ServiceQueries.all_invite_exceptions(channel_name)
 
         %{
           topic: channel.topic || "",

@@ -36,11 +36,4 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelListDialogTest do
     assert html =~ "channel_list_filter"
     assert html =~ "channel_list_select"
   end
-
-  test "filter_channels/2 matches name or topic, case-insensitive" do
-    assert ChannelListDialog.filter_channels(@channels, "") == @channels
-    assert [%{name: "#elixir"}] = ChannelListDialog.filter_channels(@channels, "ELIXIR")
-    assert [%{name: "#secret"}] = ChannelListDialog.filter_channels(@channels, "members")
-    assert [] == ChannelListDialog.filter_channels(@channels, "nope")
-  end
 end

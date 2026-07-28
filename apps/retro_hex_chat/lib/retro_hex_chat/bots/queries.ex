@@ -6,7 +6,14 @@ defmodule RetroHexChat.Bots.Queries do
   import Ecto.Query
 
   alias RetroHexChat.Bots.{Bot, BotChannelConfig, BotCustomCommand, BotEventLog}
+  alias RetroHexChat.Page
   alias RetroHexChat.Repo
+
+  # Curated lists: they grow only when an administrator creates an entry, never
+  # from traffic, so they take a bound instead of a cursor. Set far above any
+  # plausible real configuration — it exists so the query cannot be unbounded,
+  # not to stop anyone.
+  @max_curated 500
 
   # ── Bot CRUD ──────────────────────────────────────────────────
 
@@ -30,20 +37,23 @@ defmodule RetroHexChat.Bots.Queries do
     Repo.get_by(Bot, nickname: nickname)
   end
 
+  @doc """
+  Every bot on the server, alphabetical.
+
+  Bounded rather than paginated: bots only exist because an administrator
+  created one, so the list grows by decision, not by traffic. The bound also
+  cannot be reached by accident — see `@max_curated`.
+  """
   @spec list_bots() :: [Bot.t()]
   def list_bots do
-    Bot |> order_by(:name) |> Repo.all()
-  end
-
-  @spec list_bots_by_creator(String.t()) :: [Bot.t()]
-  def list_bots_by_creator(nickname) do
-    Bot |> where(created_by: ^nickname) |> order_by(:name) |> Repo.all()
+    Bot |> order_by(:name) |> limit(@max_curated) |> Repo.all()
   end
 
   @spec list_enabled_bots() :: [Bot.t()]
   def list_enabled_bots do
     Bot
     |> where(enabled: true)
+    |> limit(@max_curated)
     |> preload([:channel_configs, :custom_commands])
     |> Repo.all()
   end
@@ -86,10 +96,12 @@ defmodule RetroHexChat.Bots.Queries do
     :ok
   end
 
+  @doc "A bot's channel configuration. Bounded for the same reason as `list_bots/0`."
   @spec list_channel_configs(integer()) :: [BotChannelConfig.t()]
   def list_channel_configs(bot_id) do
     BotChannelConfig
     |> where(bot_id: ^bot_id)
+    |> limit(@max_curated)
     |> order_by(:channel_name)
     |> Repo.all()
   end
@@ -124,26 +136,39 @@ defmodule RetroHexChat.Bots.Queries do
     :ok
   end
 
+  @doc "A bot's custom commands. Bounded for the same reason as `list_bots/0`."
   @spec list_custom_commands(integer()) :: [BotCustomCommand.t()]
   def list_custom_commands(bot_id) do
     BotCustomCommand
     |> where(bot_id: ^bot_id)
+    |> limit(@max_curated)
     |> order_by(:trigger)
     |> Repo.all()
   end
 
   # ── Event Log ─────────────────────────────────────────────────
 
-  @spec list_event_logs(integer(), keyword()) :: [BotEventLog.t()]
+  @doc """
+  One page of a bot's event log, newest first.
+
+  Ordered by id rather than `inserted_at`: the log is append-only, so id order is
+  the same chronology and gives a cursor that cannot tie or drift.
+  """
+  @spec list_event_logs(integer(), keyword()) :: Page.t()
   def list_event_logs(bot_id, opts \\ []) do
     limit = Keyword.get(opts, :limit, 50)
 
     BotEventLog
     |> where(bot_id: ^bot_id)
-    |> order_by([e], desc: e.inserted_at)
-    |> limit(^limit)
+    |> maybe_before(Keyword.get(opts, :cursor))
+    |> order_by([e], desc: e.id)
+    |> limit(^Page.limit_with_lookahead(limit))
     |> Repo.all()
+    |> Page.new(limit, & &1.id)
   end
+
+  defp maybe_before(query, nil), do: query
+  defp maybe_before(query, cursor), do: where(query, [e], e.id < ^cursor)
 
   @spec log_event(integer(), String.t(), String.t() | nil, map()) ::
           {:ok, BotEventLog.t()} | {:error, Ecto.Changeset.t()}

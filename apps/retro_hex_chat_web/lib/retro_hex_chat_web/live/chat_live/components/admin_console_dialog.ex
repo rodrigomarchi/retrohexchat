@@ -28,12 +28,18 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminConsoleDialog do
 
   @id "admin-console-dialog"
 
+  # The console transcript is an ephemeral session buffer, not a database list:
+  # there is nothing older to page back to, so it takes a cap rather than
+  # pagination. Without one it grew for the lifetime of the session, and the
+  # `++` append made every run cost more than the last.
+  @max_results 200
+
   @spec id() :: String.t()
   def id, do: @id
 
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def mount(socket) do
-    {:ok, socket |> assign(:id, @id) |> assign(results: [], session: nil)}
+    {:ok, socket |> assign(:id, @id) |> assign(results: [], dropped: 0, session: nil)}
   end
 
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
@@ -43,7 +49,14 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminConsoleDialog do
           {:noreply, Phoenix.LiveView.Socket.t()}
   def handle_event("admin_console_run", %{"input" => input}, socket) do
     if AdminOps.admin?(socket) do
-      {:noreply, assign(socket, results: socket.assigns.results ++ execute_batch(input, socket))}
+      combined = socket.assigns.results ++ execute_batch(input, socket)
+      results = cap(combined)
+
+      # Once a line scrolls off the top of the transcript it is gone, so the
+      # count is the only remaining evidence it was ever run.
+      dropped = socket.assigns.dropped + max(length(combined) - length(results), 0)
+
+      {:noreply, assign(socket, results: results, dropped: dropped)}
     else
       {:noreply, AdminOps.error_event(socket, AdminOps.restricted_message())}
     end
@@ -51,7 +64,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminConsoleDialog do
 
   def handle_event("admin_console_clear", _params, socket) do
     if AdminOps.admin?(socket) do
-      {:noreply, assign(socket, results: [])}
+      # Clearing the transcript clears the record of what fell off it too.
+      {:noreply, assign(socket, results: [], dropped: 0)}
     else
       {:noreply, AdminOps.error_event(socket, AdminOps.restricted_message())}
     end
@@ -65,6 +79,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminConsoleDialog do
         id={@id}
         target={@myself}
         results={@results}
+        dropped={@dropped}
         on_run="admin_console_run"
         on_clear="admin_console_clear"
       />
@@ -188,4 +203,13 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminConsoleDialog do
 
   defp comment?("#" <> _), do: true
   defp comment?(_), do: false
+
+  # Keeps the most recent results; older ones fall off the top.
+  @spec cap([map()]) :: [map()]
+  defp cap(results) do
+    case length(results) - @max_results do
+      excess when excess > 0 -> Enum.drop(results, excess)
+      _ -> results
+    end
+  end
 end

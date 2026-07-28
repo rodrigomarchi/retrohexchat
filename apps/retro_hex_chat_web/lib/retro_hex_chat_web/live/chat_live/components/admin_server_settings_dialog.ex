@@ -26,6 +26,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminServerSettingsDialog do
   @initial %{
     info: nil,
     settings_text: nil,
+    settings_table: nil,
     values: %{},
     result: nil,
     loaded?: false
@@ -71,6 +72,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminServerSettingsDialog do
         target={@myself}
         info={@info}
         settings_text={@settings_text}
+        settings_table={@settings_table}
         values={@values}
         result={@result}
         can_edit={@can_edit}
@@ -96,6 +98,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminServerSettingsDialog do
     assign(socket,
       info: AdminOps.result_message(info),
       settings_text: AdminOps.result_message(settings),
+      settings_table: AdminOps.result_table(settings),
       values: Admin.server_settings_values(),
       result: result || AdminOps.first_error_entry([info, settings])
     )

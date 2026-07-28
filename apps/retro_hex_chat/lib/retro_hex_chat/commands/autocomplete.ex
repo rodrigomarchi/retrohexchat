@@ -11,6 +11,8 @@ defmodule RetroHexChat.Commands.Autocomplete do
   """
   use Gettext, backend: RetroHexChat.Gettext
 
+  alias RetroHexChat.Channels.Directory
+
   # Result types
 
   @type command_result :: %{
@@ -377,60 +379,56 @@ defmodule RetroHexChat.Commands.Autocomplete do
 
   @doc """
   Lists visible channels with user counts, applying secret/private visibility rules.
+
+  Reads the directory snapshot each channel publishes into its own registry
+  entry — one ETS select — rather than a synchronous `Server.get_state/1` per
+  channel, which made opening the channel list cost N blocking round trips.
+
+  Pass `search:` to filter by name or topic before visibility is applied.
   """
-  @spec list_visible_channels([String.t()]) :: [map()]
-  def list_visible_channels(user_channels) do
-    alias RetroHexChat.Channels.{Registry, Server}
-
-    Registry.registry_name()
-    |> Elixir.Registry.select([{{:"$1", :"$2", :"$3"}, [], [{{:"$1", :"$2"}}]}])
-    |> Enum.map(fn {channel_name, _pid} ->
-      case Server.get_state(channel_name) do
-        {:ok, state} ->
-          apply_channel_visibility(channel_name, state, channel_name in user_channels)
-
-        {:error, _} ->
-          nil
-      end
-    end)
-    |> Enum.reject(&is_nil/1)
-    |> Enum.sort_by(& &1.name)
+  @spec list_visible_channels([String.t()], keyword()) :: [map()]
+  def list_visible_channels(user_channels, opts \\ []) do
+    case Keyword.get(opts, :search) do
+      nil -> Directory.all()
+      term -> Directory.search(term)
+    end
+    |> Enum.flat_map(&visible_channel(&1, &1.name in user_channels))
   end
 
-  defp apply_channel_visibility(_channel_name, state, false = _is_member) do
+  # Secret channels are invisible to non-members; private ones appear only as a
+  # placeholder row, which is why this returns a list rather than a value.
+  defp visible_channel(snapshot, false = _is_member) do
     cond do
-      Map.get(state.modes_detail, :secret, false) ->
-        nil
+      snapshot.secret? ->
+        []
 
-      Map.get(state.modes_detail, :private, false) ->
-        %{
-          name: "Prv",
-          topic: nil,
-          user_count: state.member_count,
-          joined?: false,
-          invite_only?: false,
-          modes: ""
-        }
+      snapshot.private? ->
+        [
+          %{
+            name: "Prv",
+            topic: nil,
+            user_count: snapshot.member_count,
+            joined?: false,
+            invite_only?: false,
+            modes: ""
+          }
+        ]
 
       true ->
-        channel_result(state, false)
+        [channel_result(snapshot, false)]
     end
   end
 
-  defp apply_channel_visibility(channel_name, state, true = _is_member) do
-    state
-    |> channel_result(true)
-    |> Map.put(:name, channel_name)
-  end
+  defp visible_channel(snapshot, true = _is_member), do: [channel_result(snapshot, true)]
 
-  defp channel_result(state, joined?) do
+  defp channel_result(snapshot, joined?) do
     %{
-      name: state.name,
-      topic: state.topic,
-      user_count: state.member_count,
+      name: snapshot.name,
+      topic: snapshot.topic,
+      user_count: snapshot.member_count,
       joined?: joined?,
-      invite_only?: Map.get(state.modes_detail, :invite_only, false),
-      modes: Map.get(state, :modes, "")
+      invite_only?: snapshot.invite_only?,
+      modes: snapshot.modes
     }
   end
 

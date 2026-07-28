@@ -198,7 +198,7 @@ defmodule RetroHexChat.Commands.Handlers.Ns do
   end
 
   defp call_sessions(nickname) do
-    case TrustedDevices.list_sessions_for_nick(nickname) do
+    case TrustedDevices.list_sessions_for_nick(nickname).items do
       [] ->
         service_message(dgettext("commands", "No active sessions for this nickname."))
 

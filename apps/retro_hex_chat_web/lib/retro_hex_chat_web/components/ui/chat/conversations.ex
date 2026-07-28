@@ -25,6 +25,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.EmptyState
   import RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge
+  import RetroHexChatWeb.Components.UI.ListStates
   import RetroHexChatWeb.Components.UI.P2P.SessionBadge
   import RetroHexChatWeb.Components.UI.TreeView
 
@@ -77,6 +78,11 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
     doc: "Pending P2P session read models keyed by downcased PM nick"
 
   attr :pm_conversations, :list, default: []
+
+  attr :pm_conversations_truncated, :boolean,
+    default: false,
+    doc: "The account has more conversations than the sidebar restored"
+
   attr :active_pm, :string, default: nil
   attr :unread_pms, :list, default: []
 
@@ -190,6 +196,12 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
               nick_color={@nick_color_fn && @nick_color_fn.(pm)}
               p2p_session={p2p_session_for_pm(assigns, pm)}
               on_click={@on_pm_click}
+            />
+
+            <.list_end_marker
+              :if={@pm_conversations_truncated}
+              text={dgettext("chat", "Older conversations are not listed")}
+              testid="conversations-pms-truncated"
             />
           </.tree_view_group>
 

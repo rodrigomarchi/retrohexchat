@@ -74,6 +74,7 @@ defmodule RetroHexChatWeb.AwayReplyFeatureTest do
   defp away_replies(away_nick, sender) do
     away_nick
     |> Queries.list_private_messages(sender)
+    |> Map.fetch!(:items)
     |> Enum.filter(&(&1.sender_nickname == away_nick and &1.content =~ "is away"))
   end
 end

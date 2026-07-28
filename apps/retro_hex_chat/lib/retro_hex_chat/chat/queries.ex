@@ -6,9 +6,13 @@ defmodule RetroHexChat.Chat.Queries do
   import Ecto.Query
 
   alias RetroHexChat.Chat.{Message, PrivateMessage}
+  alias RetroHexChat.Page
   alias RetroHexChat.Repo
 
   @default_limit 50
+
+  # See `list_pm_partners/2` — a bound, not a page size.
+  @max_pm_partners 500
 
   @spec insert_message(map()) :: {:ok, Message.t()} | {:error, Ecto.Changeset.t()}
   def insert_message(attrs) do
@@ -24,17 +28,24 @@ defmodule RetroHexChat.Chat.Queries do
     |> Repo.insert()
   end
 
-  @spec list_messages(String.t(), keyword()) :: [Message.t()]
+  @doc """
+  One page of a channel's history, newest first.
+
+  Options: `:limit` (page size) and `:cursor` (the `next_cursor` of the previous
+  page). Returns a `Page`, whose `has_more` is decided by the database — apply
+  presentation filters with `Page.filter/2` so they cannot truncate pagination.
+  """
+  @spec list_messages(String.t(), keyword()) :: Page.t()
   def list_messages(channel_name, opts \\ []) do
     limit = Keyword.get(opts, :limit, @default_limit)
-    before_id = Keyword.get(opts, :before_id)
 
     Message
     |> where([m], m.channel_name == ^channel_name)
-    |> maybe_before(before_id)
+    |> maybe_before(Keyword.get(opts, :cursor))
     |> order_by([m], desc: m.id)
-    |> limit(^limit)
+    |> limit(^Page.limit_with_lookahead(limit))
     |> Repo.all()
+    |> Page.new(limit, & &1.id)
   end
 
   @spec get_message(integer()) :: Message.t() | nil
@@ -73,11 +84,22 @@ defmodule RetroHexChat.Chat.Queries do
 
   # ── PM Partners ──
 
-  @spec list_pm_partners(String.t(), keyword()) :: [
-          %{nickname: String.t(), last_message_at: DateTime.t()}
-        ]
+  @doc """
+  A nick's conversation partners, most recently active first.
+
+  Bounded rather than paginated, and not by choice: the sort key is the time of
+  the last message, so **every incoming PM reorders the list**. A keyset cursor
+  over it would let a conversation slide across the page boundary between
+  requests and be skipped entirely.
+
+  The bound is high enough that reaching it means something unusual, so the page
+  it returns carries `has_more` and no cursor: enough for the sidebar to say the
+  list is not whole, and nothing to page with, which is the honest shape for a
+  list that cannot be paged.
+  """
+  @spec list_pm_partners(String.t(), keyword()) :: Page.t()
   def list_pm_partners(nickname, opts \\ []) do
-    limit = Keyword.get(opts, :limit, @default_limit)
+    limit = Keyword.get(opts, :limit, @max_pm_partners)
 
     sent_query =
       from pm in PrivateMessage,
@@ -111,9 +133,11 @@ defmodule RetroHexChat.Chat.Queries do
           last_message_at: max(s.last_message_at)
         },
         order_by: [desc: max(s.last_message_at)],
-        limit: ^limit
+        limit: ^Page.limit_with_lookahead(limit)
 
-    Repo.all(union_query)
+    union_query
+    |> Repo.all()
+    |> Page.new(limit, fn _partner -> nil end)
   end
 
   # ── Private Messages ──
@@ -151,10 +175,12 @@ defmodule RetroHexChat.Chat.Queries do
     |> Repo.one()
   end
 
-  @spec list_private_messages(String.t(), String.t(), keyword()) :: [PrivateMessage.t()]
+  @doc """
+  One page of a conversation, newest first. Same contract as `list_messages/2`.
+  """
+  @spec list_private_messages(String.t(), String.t(), keyword()) :: Page.t()
   def list_private_messages(nick_a, nick_b, opts \\ []) do
     limit = Keyword.get(opts, :limit, @default_limit)
-    before_id = Keyword.get(opts, :before_id)
 
     PrivateMessage
     |> where(
@@ -162,10 +188,11 @@ defmodule RetroHexChat.Chat.Queries do
       (pm.sender_nickname == ^nick_a and pm.recipient_nickname == ^nick_b) or
         (pm.sender_nickname == ^nick_b and pm.recipient_nickname == ^nick_a)
     )
-    |> maybe_before(before_id)
+    |> maybe_before(Keyword.get(opts, :cursor))
     |> order_by([pm], desc: pm.id)
-    |> limit(^limit)
+    |> limit(^Page.limit_with_lookahead(limit))
     |> Repo.all()
+    |> Page.new(limit, & &1.id)
   end
 
   @spec get_private_message(integer()) :: PrivateMessage.t() | nil

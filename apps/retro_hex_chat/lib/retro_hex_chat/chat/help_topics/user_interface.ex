@@ -71,7 +71,8 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
           dgettext(
             "help",
             "Navigate channels and private conversations using the left-side conversations panel."
-          )
+          ),
+        see_also: ["ui-lists", "ui-tab-bar"]
       },
       %{
         id: "ui-tab-bar",
@@ -101,7 +102,8 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
           dgettext(
             "help",
             "View and interact with users in the current channel through the right-side user list."
-          )
+          ),
+        see_also: ["ui-lists"]
       },
       %{
         id: "ui-topic-bar",
@@ -160,6 +162,28 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
             "help",
             "View server messages, connection events, and system notifications in the Status tab."
           )
+      },
+      %{
+        id: "ui-lists",
+        title: dgettext("help", "Long Lists & Loading More"),
+        category: dgettext("help", "User Interface"),
+        keywords: [
+          dgettext("help", "load more"),
+          dgettext("help", "infinite scroll"),
+          dgettext("help", "scroll back"),
+          dgettext("help", "end of list"),
+          dgettext("help", "older messages"),
+          "pagination",
+          "scrollback"
+        ],
+        icon: :icon_btn_channel_list,
+        description:
+          dgettext(
+            "help",
+            "How long lists load a page at a time as you scroll, how to load the next page " <>
+              "from the keyboard, and how to tell the end of a list from a list still loading."
+          ),
+        see_also: ["ui-desktop", "ui-nicklist", "ui-conversations", "keyboard-shortcuts"]
       },
       %{
         id: "ui-message-of-the-day",

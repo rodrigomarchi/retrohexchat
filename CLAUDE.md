@@ -112,6 +112,19 @@ cd e2e && npx playwright test tests/<file>.spec.ts
 
 Target a single file — never run the whole Playwright suite locally.
 
+**Screenshots: never write a throwaway spec to capture one.** Visual evidence is
+an opt-in step *inside* the real spec, via the `shot()` helper
+(`e2e/helpers/screenshots.ts`). It is inert unless `E2E_SHOTS` is set, so a spec
+carrying evidence points behaves exactly like one that does not on a normal run.
+
+```bash
+make e2e.shots FILE=tests/<file>.spec.ts   # → e2e/screenshots/<spec>/<test>/
+```
+
+Add `await shot(page, "state-name")` — or a `Locator` to frame one window — at
+the moments worth seeing. A disposable spec deleted after the picture is a tool
+thrown away; the same call left in the suite is evidence anyone can regenerate.
+
 **Options:**
 - `make ci` — all 11 checks (standard)
 - `make ci.quick` — skip dialyzer (faster iteration)

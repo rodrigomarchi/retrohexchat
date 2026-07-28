@@ -8,20 +8,43 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Messages do
   use Gettext, backend: RetroHexChatWeb.Gettext
 
   alias RetroHexChat.Chat.IgnoreList
+  alias RetroHexChat.Page
   alias RetroHexChatWeb.ChatLive.Components.{MessageViewport, StatusViewport}
 
   @spec visible_channel_messages([map()], map()) :: [map()]
   def visible_channel_messages(messages, ignore_list) do
-    Enum.reject(messages, fn msg ->
-      ignored_author?(ignore_list, channel_author(msg), channel_message_type(msg))
-    end)
+    Enum.filter(messages, &visible_channel_message?(&1, ignore_list))
   end
 
   @spec visible_private_messages([map()], map()) :: [map()]
   def visible_private_messages(messages, ignore_list) do
-    Enum.reject(messages, fn msg ->
-      ignored_author?(ignore_list, private_sender(msg), private_message_type(msg))
-    end)
+    Enum.filter(messages, &visible_private_message?(&1, ignore_list))
+  end
+
+  @doc """
+  Hides ignored authors from a page **without touching its pagination state**.
+
+  Going through `Page.filter/2` rather than rebuilding the struct is what keeps
+  an ignored author from ending pagination for the whole channel.
+  """
+  @spec visible_channel_page(Page.t(), map()) :: Page.t()
+  def visible_channel_page(%Page{} = page, ignore_list) do
+    Page.filter(page, &visible_channel_message?(&1, ignore_list))
+  end
+
+  @spec visible_private_page(Page.t(), map()) :: Page.t()
+  def visible_private_page(%Page{} = page, ignore_list) do
+    Page.filter(page, &visible_private_message?(&1, ignore_list))
+  end
+
+  @spec visible_channel_message?(map(), map()) :: boolean()
+  def visible_channel_message?(msg, ignore_list) do
+    not ignored_author?(ignore_list, channel_author(msg), channel_message_type(msg))
+  end
+
+  @spec visible_private_message?(map(), map()) :: boolean()
+  def visible_private_message?(msg, ignore_list) do
+    not ignored_author?(ignore_list, private_sender(msg), private_message_type(msg))
   end
 
   @spec system_message(String.t()) :: map()

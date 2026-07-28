@@ -1,6 +1,12 @@
 defmodule RetroHexChatWeb.ChatLive.Components.TrustedTerminalsDialog do
   @moduledoc """
   Stateful island for the Trusted Terminals managed window.
+
+  Owns two paginated lists — live sessions and security events — through
+  `PaginatedList`. The remembered devices beside them are a capped list rather
+  than a page: they are ordered by `last_seen_at`, and a keyset cursor over a
+  key that moves would let a device slip between pages unseen, which on a
+  security panel is worse than any truncation.
   """
   use RetroHexChatWeb, :live_component
 
@@ -9,37 +15,58 @@ defmodule RetroHexChatWeb.ChatLive.Components.TrustedTerminalsDialog do
   import RetroHexChatWeb.Components.UI.TrustedTerminalsDialog
 
   alias RetroHexChat.Accounts.TrustedDevices
+  alias RetroHexChat.Page
+  alias RetroHexChatWeb.PaginatedList
 
   @id "trusted-terminals-dialog"
 
+  @sessions_page_size 25
+  @events_page_size 20
+
   @spec id() :: String.t()
   def id, do: @id
+
+  # The inputs a snapshot is taken from. A refresh is only free-standing while
+  # the lists are plain lists; with streams, refreshing on every parent render
+  # would reset the pages a reader had already loaded, so it happens on open, on
+  # a change of identity, and after a mutation — never as a side effect of the
+  # parent re-rendering.
+  @identity [:session, :trusted_device_id, :chat_device_session_ref]
 
   @impl true
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def mount(socket) do
     {:ok,
-     assign(socket,
+     socket
+     |> assign(
        id: @id,
        session: nil,
        timezone: "Etc/UTC",
        trusted_device_id: nil,
        chat_device_session_ref: nil,
        devices: [],
-       sessions: [],
-       events: [],
+       loaded?: false,
        status_kind: nil,
        status_message: nil
+     )
+     |> PaginatedList.init(:sessions,
+       page_size: @sessions_page_size,
+       dom_id: &"trusted-session-row-#{&1.id}"
+     )
+     |> PaginatedList.init(:events,
+       page_size: @events_page_size,
+       dom_id: &"trusted-event-row-#{&1.id}"
      )}
   end
 
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def update(assigns, socket) do
-    {:ok,
-     socket
-     |> assign(assigns)
-     |> refresh_snapshot()}
+    updated = assign(socket, assigns)
+
+    if identity_changed?(socket, updated),
+      do: {:ok, refresh_snapshot(updated)},
+      else: {:ok, updated}
   end
 
   @impl true
@@ -50,6 +77,25 @@ defmodule RetroHexChatWeb.ChatLive.Components.TrustedTerminalsDialog do
      socket
      |> put_status(:ok, dgettext("chat", "Trusted terminals refreshed."))
      |> refresh_snapshot()}
+  end
+
+  def handle_event("load_more_sessions", _params, socket) do
+    nickname = nickname(socket)
+    session_ref = socket.assigns.chat_device_session_ref
+
+    {:noreply,
+     PaginatedList.load(
+       socket,
+       :sessions,
+       &TrustedDevices.list_sessions_for_nick(nickname, session_ref, &1)
+     )}
+  end
+
+  def handle_event("load_more_events", _params, socket) do
+    nickname = nickname(socket)
+
+    {:noreply,
+     PaginatedList.load(socket, :events, &TrustedDevices.list_events_for_nick(nickname, &1))}
   end
 
   def handle_event("trusted_terminals_rename_device", params, socket) do
@@ -177,8 +223,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.TrustedTerminalsDialog do
         current_device_id={@trusted_device_id}
         current_session_ref={@chat_device_session_ref}
         devices={@devices}
-        sessions={@sessions}
-        events={@events}
+        sessions={@streams.sessions}
+        sessions_state={@paginated.sessions}
+        events={@streams.events}
+        events_state={@paginated.events}
         timezone={@timezone}
         status_kind={@status_kind}
         status_message={@status_message}
@@ -193,13 +241,32 @@ defmodule RetroHexChatWeb.ChatLive.Components.TrustedTerminalsDialog do
       TrustedDevices.snapshot_for_nick(
         nickname(socket),
         socket.assigns.trusted_device_id,
-        socket.assigns.chat_device_session_ref
+        socket.assigns.chat_device_session_ref,
+        sessions_limit: @sessions_page_size,
+        events_limit: @events_page_size
       )
 
-    assign(socket, snapshot)
+    socket
+    |> assign(devices: snapshot.devices, loaded?: true)
+    |> PaginatedList.reset(:sessions, snapshot.sessions)
+    |> PaginatedList.reset(:events, snapshot.events)
   end
 
-  defp refresh_snapshot(socket), do: assign(socket, devices: [], sessions: [], events: [])
+  defp refresh_snapshot(socket) do
+    socket
+    |> assign(devices: [], loaded?: true)
+    |> PaginatedList.reset(:sessions, Page.empty())
+    |> PaginatedList.reset(:events, Page.empty())
+  end
+
+  # A snapshot is worth retaking when the identity it was taken for changed, or
+  # when there is no snapshot yet.
+  @spec identity_changed?(Phoenix.LiveView.Socket.t(), Phoenix.LiveView.Socket.t()) :: boolean()
+  defp identity_changed?(%{assigns: %{loaded?: false}}, _updated), do: true
+
+  defp identity_changed?(%{assigns: before}, %{assigns: now}) do
+    Enum.any?(@identity, &(Map.get(before, &1) != Map.get(now, &1)))
+  end
 
   defp put_status(socket, kind, message) do
     assign(socket, status_kind: kind, status_message: message)

@@ -28,6 +28,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminChannelsDialog do
 
   @initial %{
     channels_text: nil,
+    channels_table: nil,
     channels_banlist_text: nil,
     channels_result: nil,
     channels_search: "",
@@ -140,6 +141,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminChannelsDialog do
         id={@id}
         target={@myself}
         text={@channels_text}
+        table={@channels_table}
         banlist_text={@channels_banlist_text}
         result={@channels_result}
         search={@channels_search}
@@ -205,6 +207,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminChannelsDialog do
 
     assign(socket,
       channels_text: AdminOps.result_message(list),
+      channels_table: AdminOps.result_table(list),
       channels_banlist_text: banlist_text(banlist),
       channels_search: search,
       channels_info_channel: info_channel,

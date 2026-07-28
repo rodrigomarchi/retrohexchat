@@ -50,7 +50,7 @@ defmodule RetroHexChat.Chat.QueriesTest do
           type: "message"
         })
 
-      messages = Queries.list_messages("#lobby")
+      messages = Queries.list_messages("#lobby").items
       assert length(messages) == 2
       # Most recent first
       assert hd(messages).content == "Second"
@@ -66,7 +66,7 @@ defmodule RetroHexChat.Chat.QueriesTest do
         })
       end
 
-      messages = Queries.list_messages("#lobby")
+      messages = Queries.list_messages("#lobby").items
       assert length(messages) == 50
     end
 
@@ -86,7 +86,7 @@ defmodule RetroHexChat.Chat.QueriesTest do
 
       # Get messages before the 5th message (cursor)
       cursor_msg = Enum.at(msgs, 4)
-      older = Queries.list_messages("#lobby", before_id: cursor_msg.id)
+      older = Queries.list_messages("#lobby", cursor: cursor_msg.id).items
       assert length(older) == 4
     end
   end
@@ -173,7 +173,7 @@ defmodule RetroHexChat.Chat.QueriesTest do
 
   describe "list_pm_partners/2" do
     test "returns empty list when user has no PM history" do
-      assert [] == Queries.list_pm_partners("NoHistory")
+      assert [] == Queries.list_pm_partners("NoHistory").items
     end
 
     test "returns distinct PM partners ordered by most recent message" do
@@ -199,7 +199,7 @@ defmodule RetroHexChat.Chat.QueriesTest do
           content: "Hi Alice back"
         })
 
-      partners = Queries.list_pm_partners("Alice")
+      partners = Queries.list_pm_partners("Alice").items
       nicks = Enum.map(partners, & &1.nickname)
 
       # Bob is most recent (last message), then Charlie
@@ -214,7 +214,7 @@ defmodule RetroHexChat.Chat.QueriesTest do
           content: "Hello Eve"
         })
 
-      partners = Queries.list_pm_partners("Eve")
+      partners = Queries.list_pm_partners("Eve").items
       assert [%{nickname: "Dave"}] = partners
     end
 
@@ -233,7 +233,7 @@ defmodule RetroHexChat.Chat.QueriesTest do
           content: "Hi Grace"
         })
 
-      partners = Queries.list_pm_partners("Frank")
+      partners = Queries.list_pm_partners("Frank").items
       nicks = Enum.map(partners, & &1.nickname)
       assert nicks == ["Grace"]
       refute "Frank" in nicks
@@ -249,11 +249,11 @@ defmodule RetroHexChat.Chat.QueriesTest do
 
       {:ok, _} = Queries.soft_delete_pm(pm, DateTime.utc_now())
 
-      partners = Queries.list_pm_partners("Hank")
+      partners = Queries.list_pm_partners("Hank").items
       assert [] == partners
     end
 
-    test "limits results to 50 by default" do
+    test "the default bound does not truncate a realistic conversation list" do
       for i <- 1..55 do
         nick = "Partner#{String.pad_leading("#{i}", 3, "0")}"
 
@@ -265,8 +265,10 @@ defmodule RetroHexChat.Chat.QueriesTest do
           })
       end
 
-      partners = Queries.list_pm_partners("LimitTest")
-      assert length(partners) == 50
+      # The default is a bound far above any real conversation count, not a page
+      # size — 55 partners all come back.
+      partners = Queries.list_pm_partners("LimitTest").items
+      assert length(partners) == 55
     end
 
     test "respects custom limit option" do
@@ -279,7 +281,7 @@ defmodule RetroHexChat.Chat.QueriesTest do
           })
       end
 
-      partners = Queries.list_pm_partners("Custom", limit: 3)
+      partners = Queries.list_pm_partners("Custom", limit: 3).items
       assert length(partners) == 3
     end
 
@@ -291,7 +293,7 @@ defmodule RetroHexChat.Chat.QueriesTest do
           content: "Check timestamp"
         })
 
-      [partner] = Queries.list_pm_partners("TimeTest")
+      [partner] = Queries.list_pm_partners("TimeTest").items
       assert %DateTime{} = partner.last_message_at
     end
 
@@ -310,7 +312,7 @@ defmodule RetroHexChat.Chat.QueriesTest do
           content: "Hello"
         })
 
-      partners = Queries.list_pm_partners("Jack")
+      partners = Queries.list_pm_partners("Jack").items
       assert length(partners) == 1
       assert [%{nickname: "Jill"}] = partners
     end

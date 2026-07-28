@@ -46,7 +46,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminChannelsDialogTest do
              |> Floki.parse_fragment!()
              |> Floki.find("#admin-channels-output")
 
-    assert pane |> Floki.text() |> String.starts_with?("***")
+    # The pane renders the listing as rows, so its table element is what proves
+    # the load ran on mount.
+    assert [_table] = Floki.find(pane, ~s([data-testid="admin-channels-table"]))
   end
 
   test "leaves the ban list empty until a channel is named" do

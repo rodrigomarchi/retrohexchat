@@ -38,6 +38,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
        active_channel: nil,
        active_pm: nil,
        pm_conversations: [],
+       pm_conversations_truncated: false,
        unread_counts: %{},
        highlight_channels: MapSet.new(),
        flash_channels: MapSet.new(),
@@ -64,6 +65,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
       :active_channel,
       :active_pm,
       :pm_conversations,
+      :pm_conversations_truncated,
       :unread_counts,
       :highlight_channels,
       :flash_channels,
@@ -125,6 +127,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
           p2p_session={@p2p_session}
           p2p_pm_sessions={@p2p_pm_sessions}
           pm_conversations={@pm_conversations}
+          pm_conversations_truncated={@pm_conversations_truncated}
           active_pm={@active_pm}
           nick_color_fn={@nick_color_fn}
           channel_user_counts={@channel_user_counts}

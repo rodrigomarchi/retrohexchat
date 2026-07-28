@@ -178,7 +178,6 @@ defmodule RetroHexChatWeb.Router do
       live "/avatar", Primitives.Avatar
       live "/breadcrumb", Primitives.BreadcrumbPage
       live "/dropdown-menu", Primitives.DropdownMenuPage
-      live "/pagination", Primitives.PaginationPage
       live "/alert-dialog", Primitives.AlertDialogPage
       live "/popover", Primitives.PopoverPage
       live "/sheet", Primitives.SheetPage
@@ -195,6 +194,7 @@ defmodule RetroHexChatWeb.Router do
       live "/fieldset", Layout.FieldsetPage
       live "/context-menu", Layout.ContextMenuPage
       live "/scroll-area", Layout.ScrollAreaPage
+      live "/list-states", Layout.ListStatesPage
       live "/toast", Layout.ToastPage
       live "/tree-view", Layout.TreeViewPage
 
@@ -214,7 +214,6 @@ defmodule RetroHexChatWeb.Router do
       live "/reply-bar", Chat.ReplyBarPage
       live "/connection-status", Chat.ConnectionStatusPage
       live "/color-picker", Chat.ColorPickerPage
-      live "/scroll-loader", Chat.ScrollLoaderPage
       live "/history-search", Chat.HistorySearchPage
       live "/chat-layout", Chat.ChatLayoutPage
       live "/conversations-context-menu", Chat.ConversationsContextMenuPage

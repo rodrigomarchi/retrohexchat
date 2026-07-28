@@ -198,6 +198,28 @@ describe("MenuBarHook", () => {
       expect(submenuHidden()).toBe(true);
     });
 
+    // Hovering a row opens its submenu, and a pointer always hovers a row on
+    // its way to clicking it. Treating that click as a toggle closed the
+    // submenu the hover had just opened, so the flyout could not be reached
+    // with a mouse at all — only with a keyboard or a touch tap.
+    it("stays open when the pointer hovers the trigger and then clicks it", () => {
+      clickTrigger(0);
+      submenu().dispatchEvent(new MouseEvent("mouseenter", { bubbles: true }));
+      clickSubmenuTrigger();
+
+      expect(submenuHidden()).toBe(false);
+      expect(submenu().dataset.submenuOpen).toBe("true");
+    });
+
+    it("still closes on a deliberate second click after that", () => {
+      clickTrigger(0);
+      submenu().dispatchEvent(new MouseEvent("mouseenter", { bubbles: true }));
+      clickSubmenuTrigger();
+      clickSubmenuTrigger();
+
+      expect(submenuHidden()).toBe(true);
+    });
+
     it("opens the submenu on hover", () => {
       clickTrigger(0);
       submenu().dispatchEvent(new MouseEvent("mouseenter", { bubbles: true }));

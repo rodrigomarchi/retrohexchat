@@ -86,7 +86,9 @@ defmodule RetroHexChatWeb.AdminChannelsFeatureTest do
 
       html = render(view)
 
-      assert html =~ "*** Channel List"
+      # The window renders rows now, not the command's text block.
+      assert html =~ ~s(data-testid="admin-channels-table")
+      assert html =~ ~s(data-row-id="#{channel}")
       assert html =~ channel
 
       view

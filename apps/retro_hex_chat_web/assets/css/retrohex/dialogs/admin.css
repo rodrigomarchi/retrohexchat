@@ -14,6 +14,12 @@
   overscroll-behavior: contain;
 }
 
+/* Sits above the transcript, in the console's own palette, so it reads as part
+   of the terminal rather than as chrome around it. */
+.adm-transcript-trimmed {
+  @apply pb-retro-4 text-yellow-400 italic;
+}
+
 .adm-dialog input,
 .adm-dialog select,
 .adm-dialog textarea,

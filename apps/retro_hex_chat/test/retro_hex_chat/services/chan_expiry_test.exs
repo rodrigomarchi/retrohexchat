@@ -102,7 +102,7 @@ defmodule RetroHexChat.Services.ChanExpiryTest do
       assert count == 1
 
       assert Queries.list_access("#cleanup-chan") == []
-      assert Queries.list_bans("#cleanup-chan") == []
+      assert Queries.all_bans("#cleanup-chan") == []
       assert Queries.list_ban_exceptions("#cleanup-chan") == []
       assert Queries.list_invite_exceptions("#cleanup-chan") == []
       assert Queries.get_welcome_message("#cleanup-chan") == nil

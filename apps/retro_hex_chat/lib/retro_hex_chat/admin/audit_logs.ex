@@ -9,6 +9,7 @@ defmodule RetroHexChat.Admin.AuditLogs do
   require Logger
 
   alias RetroHexChat.Admin.AuditLog
+  alias RetroHexChat.Page
   alias RetroHexChat.Repo
 
   @spec log(String.t(), String.t(), {String.t(), String.t()} | nil, map()) :: :ok
@@ -39,18 +40,28 @@ defmodule RetroHexChat.Admin.AuditLogs do
       :ok
   end
 
-  @spec list(keyword()) :: [AuditLog.t()]
+  @doc """
+  One page of the audit log, newest first.
+
+  Ordered by id rather than `inserted_at`: the log is append-only, so id order is
+  the same chronology and gives a cursor that cannot tie or drift.
+
+  Accepts `:last` as a synonym for `:limit`, which is what the `/admin log`
+  flag has always been called.
+  """
+  @spec list(keyword()) :: Page.t()
   def list(opts \\ []) do
-    last = Keyword.get(opts, :last, 50)
-    actor = Keyword.get(opts, :actor)
-    action = Keyword.get(opts, :action)
+    limit = Keyword.get(opts, :limit) || Keyword.get(opts, :last, 50)
+    cursor = Keyword.get(opts, :cursor)
 
     AuditLog
-    |> maybe_filter_actor(actor)
-    |> maybe_filter_action(action)
-    |> order_by([l], desc: l.inserted_at)
-    |> limit(^last)
+    |> maybe_filter_actor(Keyword.get(opts, :actor))
+    |> maybe_filter_action(Keyword.get(opts, :action))
+    |> then(&if cursor, do: where(&1, [l], l.id < ^cursor), else: &1)
+    |> order_by([l], desc: l.id)
+    |> limit(^Page.limit_with_lookahead(limit))
     |> Repo.all()
+    |> Page.new(limit, & &1.id)
   end
 
   defp maybe_filter_actor(query, nil), do: query

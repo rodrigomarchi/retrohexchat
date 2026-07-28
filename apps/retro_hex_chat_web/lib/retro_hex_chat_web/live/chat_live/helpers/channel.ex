@@ -14,6 +14,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Chat.Queries
   alias RetroHexChat.Chat.UnreadTracker
+  alias RetroHexChat.Page
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
 
@@ -262,29 +263,25 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
         ) ::
           Phoenix.LiveView.Socket.t()
   def load_channel_messages_with_pagination(socket, channel_name, limit \\ 50) do
-    raw_messages = Queries.list_messages(channel_name, limit: limit)
-
-    visible_messages =
-      raw_messages
-      |> Enum.reject(&cleared_channel_message?(socket, channel_name, &1))
-      |> Messages.visible_channel_messages(socket.assigns.session.ignore_list)
-
-    oldest_id =
-      case List.last(visible_messages) do
-        nil -> nil
-        msg -> msg.id
-      end
+    # Both filters go through `Page.filter/2`, so neither can shorten the page
+    # into claiming there is nothing older. `has_more` and the cursor come from
+    # what the database returned, before anything was hidden.
+    page =
+      channel_name
+      |> Queries.list_messages(limit: limit)
+      |> Page.filter(&(not cleared_channel_message?(socket, channel_name, &1)))
+      |> Messages.visible_channel_page(socket.assigns.session.ignore_list)
 
     stream_items =
-      visible_messages
+      page.items
       |> Enum.reverse()
       |> Enum.map(&message_to_stream_item/1)
 
     socket
     |> assign(
-      oldest_message_id: oldest_id,
-      has_more: length(visible_messages) == limit,
-      loaded_message_count: length(visible_messages),
+      oldest_message_id: page.next_cursor,
+      has_more: page.has_more,
+      loaded_message_count: length(page.items),
       loading_more: false
     )
     |> MessageViewport.reset(stream_items)

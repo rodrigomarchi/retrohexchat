@@ -22,6 +22,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminServerSettingsDialog do
   attr :target, :any, default: nil
   attr :info, :string, default: nil
   attr :settings_text, :string, default: nil
+  attr :settings_table, :any, default: nil, doc: "%Admin.Table{} for the settings"
   attr :values, :map, default: %{}
   attr :result, :any, default: nil
   attr :can_edit, :boolean, default: false
@@ -48,6 +49,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminServerSettingsDialog do
   attr :target, :any, default: nil
   attr :info, :string, default: nil
   attr :settings_text, :string, default: nil
+  attr :settings_table, :any, default: nil, doc: "%Admin.Table{} for the settings"
   attr :values, :map, default: %{}
   attr :result, :any, default: nil
   attr :can_edit, :boolean, default: false
@@ -170,10 +172,17 @@ defmodule RetroHexChatWeb.Components.UI.AdminServerSettingsDialog do
             </div>
             <div>
               <div class="text-xs font-bold mb-retro-4">{dgettext("dialogs", "Settings")}</div>
-              <pre
+              <div
                 id="admin-server-settings-output"
-                class="shadow-retro-sunken bg-white min-h-[120px] max-h-[180px] overflow-y-auto p-retro-8 text-xs whitespace-pre-wrap"
-              ><%= @settings_text || "" %></pre>
+                class="shadow-retro-sunken bg-white min-h-[120px] max-h-[180px] overflow-y-auto retro-scrollbar"
+              >
+                <.admin_table
+                  table={@settings_table}
+                  text={@settings_text}
+                  testid="admin-server-settings-table"
+                  empty_title={dgettext("dialogs", "No server settings configured")}
+                />
+              </div>
             </div>
           </div>
 

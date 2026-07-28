@@ -22,6 +22,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminChannelsDialog do
   attr :show, :boolean, default: false
   attr :target, :any, default: nil
   attr :text, :string, default: nil
+  attr :table, :any, default: nil, doc: "%Admin.Table{} for the channel list"
   attr :banlist_text, :string, default: nil
   attr :result, :any, default: nil
   attr :search, :string, default: ""
@@ -63,6 +64,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminChannelsDialog do
   attr :id, :string, required: true
   attr :target, :any, default: nil
   attr :text, :string, default: nil
+  attr :table, :any, default: nil, doc: "%Admin.Table{} for the channel list"
   attr :banlist_text, :string, default: nil
   attr :result, :any, default: nil
   attr :search, :string, default: ""
@@ -114,10 +116,17 @@ defmodule RetroHexChatWeb.Components.UI.AdminChannelsDialog do
             </div>
           </form>
 
-          <pre
+          <div
             id="admin-channels-output"
-            class="shadow-retro-sunken bg-white min-h-[120px] max-h-[190px] overflow-y-auto p-retro-8 text-xs whitespace-pre-wrap"
-          ><%= @text || "" %></pre>
+            class="shadow-retro-sunken bg-white min-h-[120px] max-h-[190px] overflow-y-auto retro-scrollbar"
+          >
+            <.admin_table
+              table={@table}
+              text={@text}
+              testid="admin-channels-table"
+              empty_title={dgettext("dialogs", "No active channels")}
+            />
+          </div>
 
           <div class="grid gap-retro-8 md:grid-cols-2">
             <form id="admin-channels-info-form" phx-submit={@on_info} phx-target={@target}>

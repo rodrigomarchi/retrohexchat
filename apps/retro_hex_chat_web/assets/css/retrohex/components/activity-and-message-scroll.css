@@ -25,6 +25,16 @@
   @apply mx-auto flex w-fit py-retro-8;
 }
 
+/* Sits above the first message rather than inside the stream, so it reads as
+   the top edge of the scrollback the same way the loaders do. */
+.message-viewport__end-marker {
+  @apply px-retro-8 py-retro-4;
+}
+
+.message-viewport__skeleton {
+  @apply px-retro-8;
+}
+
 /* ── Reduced Motion ── */
 
 @media (prefers-reduced-motion: reduce) {

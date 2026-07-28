@@ -37,7 +37,7 @@ defmodule RetroHexChat.Chat.QueriesPerformanceTest do
 
       # Benchmark: The first page (newest 50)
       {time_us, first_page} =
-        :timer.tc(fn -> Queries.list_messages(channel, limit: 50) end)
+        :timer.tc(fn -> Queries.list_messages(channel, limit: 50).items end)
 
       assert length(first_page) == 50
       time_ms = time_us / 1000
@@ -48,7 +48,7 @@ defmodule RetroHexChat.Chat.QueriesPerformanceTest do
 
       {time_us2, second_page} =
         :timer.tc(fn ->
-          Queries.list_messages(channel, limit: 50, before_id: last_on_page.id)
+          Queries.list_messages(channel, limit: 50, cursor: last_on_page.id).items
         end)
 
       assert length(second_page) == 50
@@ -61,7 +61,7 @@ defmodule RetroHexChat.Chat.QueriesPerformanceTest do
 
       {time_us3, deep_page} =
         :timer.tc(fn ->
-          Queries.list_messages(channel, limit: 50, before_id: deep_cursor)
+          Queries.list_messages(channel, limit: 50, cursor: deep_cursor).items
         end)
 
       assert length(deep_page) == 50

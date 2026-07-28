@@ -13,6 +13,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.ListStates
   import RetroHexChatWeb.Components.UI.Tabs
   import RetroHexChatWeb.Components.UI.Table
   import RetroHexChatWeb.Components.UI.Button
@@ -63,6 +64,11 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   attr :modes, :map, default: %{}
   attr :list_type, :string, default: "bans", doc: "Active access list (bans/exceptions)"
   attr :list_entries, :list, default: []
+
+  attr :list_total, :integer,
+    default: nil,
+    doc: "How many entries the channel actually holds, for the truncation strip"
+
   attr :list_selected, :string, default: nil
   attr :on_tab, :any, default: nil, doc: "Tab switch event (phx-value-tab=value)"
   attr :on_topic_save, :any, default: nil
@@ -184,6 +190,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
             target={@target}
             list_type={@list_type}
             entries={@list_entries}
+            total={@list_total}
             selected={@list_selected}
             operator={@operator}
             on_list_type={@on_list_type}
@@ -1020,6 +1027,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
 
   attr :list_type, :string, required: true
   attr :entries, :list, required: true
+  attr :total, :integer, default: nil, doc: "Entries the channel holds, for the truncation strip"
   attr :selected, :string, default: nil
   attr :operator, :boolean, default: false
   attr :on_list_type, :any, default: nil
@@ -1103,16 +1111,19 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
               </.table_cell>
             </.table_row>
             <tr :if={@entries == []} class="cc-empty-row">
-              <td
-                colspan="3"
-                class="cc-empty-cell px-2 py-4 text-xs text-center text-muted-foreground"
-              >
-                {@empty_label}
+              <td colspan="3" class="cc-empty-cell">
+                <.list_empty_state title={@empty_label} icon={:people} />
               </td>
             </tr>
           </.table_body>
         </.table>
       </div>
+
+      <.list_count_strip
+        shown={length(@entries)}
+        total={@total}
+        data-testid="cc-list-count-strip"
+      />
 
       <div :if={@operator} class="cc-action-row flex gap-1">
         <.button size="sm" class="cc-action-button" phx-click={@on_add} phx-target={@target}>

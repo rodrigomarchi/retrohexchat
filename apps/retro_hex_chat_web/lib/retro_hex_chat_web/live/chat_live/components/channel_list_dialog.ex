@@ -24,19 +24,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelListDialog do
   @spec id() :: String.t()
   def id, do: @id
 
-  @doc "Filters channels by name/topic substring (case-insensitive)."
-  @spec filter_channels([map()], String.t()) :: [map()]
-  def filter_channels(channels, ""), do: channels
-
-  def filter_channels(channels, search) do
-    term = String.downcase(search)
-
-    Enum.filter(channels, fn ch ->
-      String.contains?(String.downcase(ch.name), term) or
-        String.contains?(String.downcase(ch.topic || ""), term)
-    end)
-  end
-
   @impl true
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def mount(socket) do
@@ -58,14 +45,12 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelListDialog do
     {:ok, assign(socket, selected: nil)}
   end
 
-  def update(%{action: {:filter, search}}, socket) do
-    filtered = filter_channels(socket.assigns.channels, search)
-
+  def update(%{action: {:filter, search, channels}}, socket) do
     selected =
-      if Enum.any?(filtered, &(&1.name == socket.assigns.selected)),
+      if Enum.any?(channels, &(&1.name == socket.assigns.selected)),
         do: socket.assigns.selected
 
-    {:ok, assign(socket, search: search, selected: selected)}
+    {:ok, assign(socket, search: search, channels: channels, selected: selected)}
   end
 
   def update(%{action: {:select, channel}}, socket) do
@@ -84,13 +69,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelListDialog do
   @impl true
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()
   def render(assigns) do
-    assigns = assign(assigns, filtered: filter_channels(assigns.channels, assigns.search))
-
     ~H"""
     <div id={"#{@id}-mount"} class="contents">
       <.channel_list_panel
         id={@id}
-        channels={@filtered}
+        channels={@channels}
         search={@search}
         selected_channel={@selected}
         loading={@loading}

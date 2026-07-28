@@ -102,14 +102,14 @@ defmodule RetroHexChat.Services.ChanServTest do
       {:ok, _} = Queries.add_ban("#banchan", "Troll2", "CsBanF")
 
       # Verify bans exist
-      bans = Queries.list_bans("#banchan")
+      bans = Queries.all_bans("#banchan")
       assert length(bans) == 2
 
       # Drop the channel — should clean up bans
       assert {:ok, _} = ChanServ.drop("#banchan", "CsBanF", ctx.server)
 
       # Bans should be removed
-      assert Queries.list_bans("#banchan") == []
+      assert Queries.all_bans("#banchan") == []
     end
 
     test "dropping channel removes ban exceptions and invite exceptions", ctx do

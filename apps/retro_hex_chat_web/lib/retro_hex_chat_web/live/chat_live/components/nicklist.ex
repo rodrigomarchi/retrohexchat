@@ -21,9 +21,15 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
   """
   use RetroHexChatWeb, :live_component
 
+  import RetroHexChatWeb.Components.UI.ListStates
   import RetroHexChatWeb.Components.UI.Nicklist
 
   @id "nicklist"
+
+  # A busy channel can hold more members than anyone scrolls through, and every
+  # one of them would be a DOM row. Rendering is bounded and the total is shown,
+  # so a capped list never presents itself as the whole membership.
+  @max_rendered 500
 
   @doc "Stable component id used by the parent for `send_update/2`."
   @spec id() :: String.t()
@@ -39,6 +45,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
     send_update(__MODULE__, id: @id, action: {:reset, users})
     socket
   end
+
+  @doc "How many member rows the list renders at most."
+  @spec max_rendered() :: pos_integer()
+  def max_rendered, do: @max_rendered
 
   @doc "Inserts or updates a single user row. Returns the socket."
   @spec upsert(Phoenix.LiveView.Socket.t(), map()) :: Phoenix.LiveView.Socket.t()
@@ -59,14 +69,17 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
   def mount(socket) do
     {:ok,
      socket
-     |> assign(id: @id, visible: false, nick_color_fn: fn _nick -> nil end)
+     |> assign(id: @id, visible: false, total: 0, nick_color_fn: fn _nick -> nil end)
      |> stream(:users, [], dom_id: &row_dom_id/1)}
   end
 
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def update(%{action: {:reset, users}}, socket) do
-    {:ok, stream(socket, :users, users, reset: true, dom_id: &row_dom_id/1)}
+    {:ok,
+     socket
+     |> assign(total: length(users))
+     |> stream(:users, Enum.take(users, @max_rendered), reset: true, dom_id: &row_dom_id/1)}
   end
 
   def update(%{action: {:upsert, user}}, socket) do
@@ -89,6 +102,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
   @impl true
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()
   def render(assigns) do
+    assigns = assign(assigns, max_rendered: @max_rendered)
+
     ~H"""
     <div id={"#{@id}-mount"} class="flex h-full shrink-0">
       <.nicklist_sidebar
@@ -107,6 +122,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
           nick_color={@nick_color_fn.(user.nickname)}
           data-nick={user.nickname}
         />
+        <.list_count_strip shown={min(@total, @max_rendered)} total={@total} />
       </.nicklist_sidebar>
     </div>
     """

@@ -47,12 +47,6 @@ defmodule RetroHexChat.Bots.QueriesTest do
       assert hd(bots).name == "ABot"
     end
 
-    test "list_bots_by_creator/1 filters by creator" do
-      {:ok, _} = Queries.create_bot(@valid_bot_attrs)
-      {:ok, _} = Queries.create_bot(%{name: "Other", nickname: "Other", created_by: "other"})
-      assert length(Queries.list_bots_by_creator("admin")) == 1
-    end
-
     test "update_bot/2 updates optional fields" do
       {:ok, bot} = Queries.create_bot(@valid_bot_attrs)
       {:ok, updated} = Queries.update_bot(bot, %{description: "A test bot"})
@@ -132,7 +126,7 @@ defmodule RetroHexChat.Bots.QueriesTest do
       {:ok, _} = Queries.log_event(bot.id, "second", "#general")
       {:ok, _} = Queries.log_event(bot.id, "third", "#general")
 
-      events = Queries.list_event_logs(bot.id)
+      events = Queries.list_event_logs(bot.id).items
       assert length(events) == 3
       assert hd(events).event_type == "third"
     end
@@ -144,13 +138,13 @@ defmodule RetroHexChat.Bots.QueriesTest do
         Queries.log_event(bot.id, "event_#{i}", "#general")
       end
 
-      events = Queries.list_event_logs(bot.id, limit: 2)
+      events = Queries.list_event_logs(bot.id, limit: 2).items
       assert length(events) == 2
     end
 
     test "returns empty list for bot with no events" do
       {:ok, bot} = Queries.create_bot(@valid_bot_attrs)
-      assert Queries.list_event_logs(bot.id) == []
+      assert Queries.list_event_logs(bot.id).items == []
     end
 
     test "returns only events for the specified bot_id" do
@@ -162,7 +156,7 @@ defmodule RetroHexChat.Bots.QueriesTest do
       {:ok, _} = Queries.log_event(bot1.id, "bot1_event", "#general")
       {:ok, _} = Queries.log_event(bot2.id, "bot2_event", "#general")
 
-      events = Queries.list_event_logs(bot1.id)
+      events = Queries.list_event_logs(bot1.id).items
       assert length(events) == 1
       assert hd(events).event_type == "bot1_event"
     end

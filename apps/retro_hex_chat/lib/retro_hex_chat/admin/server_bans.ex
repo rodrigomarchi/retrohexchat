@@ -5,7 +5,10 @@ defmodule RetroHexChat.Admin.ServerBans do
   import Ecto.Query
 
   alias RetroHexChat.Admin.{BanCache, ServerBan}
+  alias RetroHexChat.Page
   alias RetroHexChat.Repo
+
+  @default_page_size 50
 
   @spec ban(String.t(), String.t(), String.t() | nil, DateTime.t() | nil) ::
           {:ok, ServerBan.t()} | {:error, String.t()}
@@ -55,13 +58,36 @@ defmodule RetroHexChat.Admin.ServerBans do
   @spec banned?(String.t()) :: boolean()
   def banned?(nickname), do: BanCache.banned?(nickname)
 
-  @spec list_active_bans() :: [ServerBan.t()]
-  def list_active_bans do
-    from(b in ServerBan,
-      where: b.active == true,
-      order_by: [desc: b.inserted_at]
-    )
+  @doc """
+  **Every** active ban, for the enforcement cache.
+
+  Deliberately not paginated and deliberately not sharing a function with the
+  admin listing: `BanCache` seeds the ETS table that decides whether a
+  connection is refused, so a page of it would silently stop enforcing every ban
+  past the page size.
+  """
+  @spec all_active_bans() :: [ServerBan.t()]
+  def all_active_bans do
+    from(b in ServerBan, where: b.active == true, order_by: [desc: b.id])
     |> Repo.all()
+  end
+
+  @doc """
+  One page of the active server bans, newest first — for the admin listing.
+
+  Ordered by id rather than `inserted_at`: bans are append-only, so id order is
+  the same chronology and the cursor cannot tie or drift.
+  """
+  @spec list_active_bans(keyword()) :: Page.t()
+  def list_active_bans(opts \\ []) do
+    limit = Keyword.get(opts, :limit, @default_page_size)
+    cursor = Keyword.get(opts, :cursor)
+
+    from(b in ServerBan, where: b.active == true, order_by: [desc: b.id])
+    |> then(&if cursor, do: where(&1, [b], b.id < ^cursor), else: &1)
+    |> limit(^Page.limit_with_lookahead(limit))
+    |> Repo.all()
+    |> Page.new(limit, & &1.id)
   end
 
   @spec expire_bans() :: non_neg_integer()

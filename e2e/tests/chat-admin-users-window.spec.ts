@@ -23,10 +23,10 @@ test.describe.serial("Admin Users window", () => {
     try {
       await admin.chat.openAdminUsersFromMenu();
 
-      // The list loads with the window — there is no tab to click any more.
-      await expect(admin.page.locator("#admin-users-output")).toContainText(
-        "User List",
-      );
+      // The list loads with the window, rendered as rows rather than a text block.
+      await expect(
+        admin.page.locator('[data-testid="admin-users-table"]'),
+      ).toBeVisible();
 
       await admin.page.locator("#admin-users-info-nick").fill(target.nick);
       await admin.page
