@@ -24,6 +24,8 @@ defmodule RetroHexChatWeb.Components.UI.AdminUsersDialog do
   attr :target, :any, default: nil
   attr :text, :string, default: nil
   attr :banlist_text, :string, default: nil
+  attr :table, :any, default: nil, doc: "%Admin.Table{} for the user list"
+  attr :banlist_table, :any, default: nil, doc: "%Admin.Table{} for the ban list"
   attr :result, :any, default: nil
   attr :search, :string, default: ""
   attr :online_only, :boolean, default: false
@@ -31,6 +33,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminUsersDialog do
   attr :can_refresh, :boolean, default: false
   attr :can_set_admin_role, :boolean, default: false
   attr :on_refresh, :any, default: nil
+  attr :on_load_more, :string, default: nil
   attr :on_info, :any, default: nil
   attr :on_ban, :any, default: nil
   attr :on_unban, :any, default: nil
@@ -68,6 +71,8 @@ defmodule RetroHexChatWeb.Components.UI.AdminUsersDialog do
   attr :target, :any, default: nil
   attr :text, :string, default: nil
   attr :banlist_text, :string, default: nil
+  attr :table, :any, default: nil, doc: "%Admin.Table{} for the user list"
+  attr :banlist_table, :any, default: nil, doc: "%Admin.Table{} for the ban list"
   attr :result, :any, default: nil
   attr :search, :string, default: ""
   attr :online_only, :boolean, default: false
@@ -75,6 +80,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminUsersDialog do
   attr :can_refresh, :boolean, default: false
   attr :can_set_admin_role, :boolean, default: false
   attr :on_refresh, :any, default: nil
+  attr :on_load_more, :string, default: nil
   attr :on_info, :any, default: nil
   attr :on_ban, :any, default: nil
   attr :on_unban, :any, default: nil
@@ -130,10 +136,19 @@ defmodule RetroHexChatWeb.Components.UI.AdminUsersDialog do
             </div>
           </form>
 
-          <pre
+          <div
             id="admin-users-output"
-            class="shadow-retro-sunken bg-white min-h-[140px] max-h-[210px] overflow-y-auto p-retro-8 text-xs whitespace-pre-wrap"
-          ><%= @text || "" %></pre>
+            class="shadow-retro-sunken bg-white min-h-[140px] max-h-[210px] overflow-y-auto retro-scrollbar"
+          >
+            <.admin_table
+              table={@table}
+              text={@text}
+              testid="admin-users-table"
+              target={@target}
+              on_load_more={@on_load_more}
+              empty_title={dgettext("dialogs", "No users found")}
+            />
+          </div>
 
           <form id="admin-users-info-form" phx-submit={@on_info} phx-target={@target}>
             <div class="flex flex-wrap items-end gap-retro-6">
@@ -319,10 +334,17 @@ defmodule RetroHexChatWeb.Components.UI.AdminUsersDialog do
 
           <div>
             <div class="text-xs font-bold mb-retro-4">{dgettext("dialogs", "Ban list")}</div>
-            <pre
+            <div
               id="admin-users-banlist"
-              class="shadow-retro-sunken bg-white min-h-[84px] max-h-[150px] overflow-y-auto p-retro-8 text-xs whitespace-pre-wrap"
-            ><%= @banlist_text || "" %></pre>
+              class="shadow-retro-sunken bg-white min-h-[84px] max-h-[150px] overflow-y-auto retro-scrollbar"
+            >
+              <.admin_table
+                table={@banlist_table}
+                text={@banlist_text}
+                testid="admin-users-banlist-table"
+                empty_title={dgettext("dialogs", "No active server bans")}
+              />
+            </div>
           </div>
 
           <.inline_result result={@result} />

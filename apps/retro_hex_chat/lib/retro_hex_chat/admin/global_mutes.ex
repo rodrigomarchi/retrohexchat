@@ -17,9 +17,4 @@ defmodule RetroHexChat.Admin.GlobalMutes do
   def muted?(nickname) do
     GlobalMuteTable.muted?(nickname)
   end
-
-  @spec list_mutes() :: [{String.t(), :permanent | integer()}]
-  def list_mutes do
-    GlobalMuteTable.list_mutes()
-  end
 end

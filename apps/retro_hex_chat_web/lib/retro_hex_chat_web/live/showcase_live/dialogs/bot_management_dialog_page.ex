@@ -13,6 +13,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.BotManagementDialogPage do
   import RetroHexChatWeb.Components.UI.Dialog, only: [show_modal: 1]
   import RetroHexChatWeb.ShowcaseHelpers
   alias RetroHexChatWeb.Icons
+  alias RetroHexChatWeb.PaginatedList.State
 
   @impl true
   def mount(_params, _session, socket) do
@@ -41,13 +42,14 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.BotManagementDialogPage do
        selected: List.first(bots),
        channels: [%{name: "#general", status: "joined"}, %{name: "#games", status: "joined"}],
        commands: [%{trigger: "!roll", response: dgettext("showcase", "Rolls a dice (1-20)")}],
-       events: [
-         %{timestamp: "12:30", message: dgettext("showcase", "DiceBot joined #general")},
-         %{timestamp: "12:31", message: dgettext("showcase", "DiceBot responded to !roll")}
-       ],
+       events_state: State.new(),
        stats: %{messages: 1234, commands: 567, uptime: dgettext("showcase", "3d 12h")},
        is_admin: true
-     )}
+     )
+     |> stream(:events, [
+       %{id: 1, timestamp: "12:30", message: dgettext("showcase", "DiceBot joined #general")},
+       %{id: 2, timestamp: "12:31", message: dgettext("showcase", "DiceBot responded to !roll")}
+     ])}
   end
 
   @impl true
@@ -70,7 +72,8 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.BotManagementDialogPage do
           selected={@selected}
           channels={@channels}
           commands={@commands}
-          events={@events}
+          events={@streams.events}
+          events_state={@events_state}
           stats={@stats}
           is_admin={@is_admin}
         />

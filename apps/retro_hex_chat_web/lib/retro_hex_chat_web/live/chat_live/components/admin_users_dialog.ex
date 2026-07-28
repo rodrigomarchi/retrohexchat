@@ -21,6 +21,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminUsersDialog do
 
   import RetroHexChatWeb.Components.UI.AdminUsersDialog
 
+  alias RetroHexChat.Admin.Table
   alias RetroHexChatWeb.ChatLive.{AdminOps, ChatContext}
 
   @id "admin-users-dialog"
@@ -30,6 +31,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminUsersDialog do
 
   @initial %{
     users_text: nil,
+    users_table: nil,
+    users_banlist_table: nil,
     users_banlist_text: nil,
     users_result: nil,
     users_search: "",
@@ -60,6 +63,21 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminUsersDialog do
           {:noreply, Phoenix.LiveView.Socket.t()}
   def handle_event("admin_users_refresh", params, socket) do
     guarded(socket, fn -> {:noreply, assign_snapshot(socket, params, nil)} end)
+  end
+
+  @doc """
+  Fetches the page after the last nickname on screen and adds it underneath.
+
+  The cursor is a nickname because the listing is ordered alphabetically; asking
+  by id would skip and repeat rows.
+  """
+  def handle_event("admin_users_load_more", _params, socket) do
+    guarded(socket, fn ->
+      case socket.assigns.users_table && Table.next_cursor(socket.assigns.users_table) do
+        nil -> {:noreply, socket}
+        cursor -> {:noreply, append_users_page(socket, cursor)}
+      end
+    end)
   end
 
   def handle_event("admin_users_info", %{"nick" => nick}, socket) do
@@ -128,7 +146,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminUsersDialog do
         id={@id}
         target={@myself}
         text={@users_text}
+        table={@users_table}
+        on_load_more="admin_users_load_more"
         banlist_text={@users_banlist_text}
+        banlist_table={@users_banlist_table}
         result={@users_result}
         search={@users_search}
         online_only={@users_online_only}
@@ -188,11 +209,32 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminUsersDialog do
 
     assign(socket,
       users_text: AdminOps.result_message(list),
+      users_table: AdminOps.result_table(list),
       users_banlist_text: AdminOps.result_message(banlist),
+      users_banlist_table: AdminOps.result_table(banlist),
       users_search: search,
       users_online_only: online_only,
       users_result: result || AdminOps.first_error_entry([list, banlist])
     )
+  end
+
+  defp append_users_page(socket, cursor) do
+    args =
+      list_args(socket.assigns.users_search, socket.assigns.users_online_only) ++
+        ["--after", to_string(cursor)]
+
+    result = dispatch_raw(socket, args)
+
+    case AdminOps.result_table(result) do
+      %Table{} = next ->
+        assign(socket,
+          users_table: Table.append(socket.assigns.users_table, next),
+          users_result: AdminOps.first_error_entry([result])
+        )
+
+      _ ->
+        assign(socket, users_result: AdminOps.first_error_entry([result]))
+    end
   end
 
   defp search_term(_socket, %{"search" => search}), do: trim(search)

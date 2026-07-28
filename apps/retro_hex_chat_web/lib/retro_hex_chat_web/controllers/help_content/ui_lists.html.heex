@@ -1,0 +1,66 @@
+<p>
+  {dgettext(
+    "help_ui",
+    "Lists that can grow without limit — the message history, the security log of a terminal, a bot's event log — do not load all at once. They load one page at a time, and fetch the next page as you approach the edge of what is already there."
+  )}
+</p>
+
+<h3>{dgettext("help_ui", "Scrolling")}</h3>
+<ul>
+  <li>
+    {dgettext(
+      "help_ui",
+      "Scroll toward the edge of a list and the next page loads shortly before you reach it, so reading is not interrupted."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_ui",
+      "In the message history, older messages load above what you are reading and your place is kept — the text you were reading does not move."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_ui",
+      "A page loads only after you scroll it yourself. The chat scrolling to a new message never loads history on its own."
+    )}
+  </li>
+</ul>
+
+<h3>{dgettext("help_ui", "Load More")}</h3>
+<p>
+  {dgettext(
+    "help_ui",
+    "Every paginated list also has a Load More button beneath it. It does exactly what reaching the edge does, and it is the way to page through a list with the keyboard or a screen reader, without a scroll gesture. It disappears when there is nothing left to load."
+  )}
+</p>
+
+<h3>{dgettext("help_ui", "Knowing where a list ends")}</h3>
+<ul>
+  <li>
+    <strong>{dgettext("help_ui", "End of list")}</strong> {dgettext(
+      "help_ui",
+      "— A marker closes the list when everything has been loaded. Without it, the end of a list is indistinguishable from a page that never arrived."
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_ui", "Showing N of M")}</strong> {dgettext(
+      "help_ui",
+      "— Some lists are capped rather than paginated, and say so. A count like this means the list on screen is not the whole list."
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_ui", "Empty")}</strong> {dgettext(
+      "help_ui",
+      "— A list with nothing in it says so plainly, so an empty list is never mistaken for one still loading."
+    )}
+  </li>
+</ul>
+
+<h3>{dgettext("help_ui", "Why some lists are capped instead")}</h3>
+<p>
+  {dgettext(
+    "help_ui",
+    "A few lists show a high fixed number of entries instead of paging: the user list, remembered nicknames, your conversations, and the trusted terminals themselves. These are ordered by something that changes while you look at them — who spoke last, when a terminal was last used — so paging through them could skip an entry that moved. Where that risk exists the whole list is shown up to a generous limit, and any truncation is stated rather than hidden."
+  )}
+</p>

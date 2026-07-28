@@ -132,7 +132,7 @@ defmodule RetroHexChat.Chat.ServiceTest do
       assert pm.sender_nickname == "rod"
 
       # Verify it can be read back
-      messages = Queries.list_private_messages("rod", "Troll")
+      messages = Queries.list_private_messages("rod", "Troll").items
       assert length(messages) == 1
       assert hd(messages).content =~ "/p2p/"
     end
@@ -141,21 +141,21 @@ defmodule RetroHexChat.Chat.ServiceTest do
       {:ok, _} = Service.send_private_message("rod", "Troll", "msg1")
       {:ok, _} = Service.send_private_message("Troll", "rod", "msg2")
 
-      messages = Queries.list_private_messages("rod", "Troll")
+      messages = Queries.list_private_messages("rod", "Troll").items
       assert length(messages) == 2
     end
 
     test "list_pm_partners includes lowercase nick sender" do
       {:ok, _} = Service.send_private_message("rod", "Troll", "hi there")
 
-      partners = Queries.list_pm_partners("Troll")
+      partners = Queries.list_pm_partners("Troll").items
       assert Enum.any?(partners, &(&1.nickname == "rod"))
     end
 
     test "list_pm_partners includes lowercase nick recipient" do
       {:ok, _} = Service.send_private_message("Troll", "rod", "hi there")
 
-      partners = Queries.list_pm_partners("rod")
+      partners = Queries.list_pm_partners("rod").items
       assert Enum.any?(partners, &(&1.nickname == "Troll"))
     end
   end

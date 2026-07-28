@@ -320,6 +320,30 @@ describe("ScrollHook", () => {
       simulateEvent(hook, "prepend_start", {});
       expect(hook.pendingPrepend).toBe(true);
     });
+
+    // The server sends `prepend_start` from one render and the rows themselves
+    // from the LiveComponent's send_update in another. When LiveView flushes
+    // both in one payload the event can arrive with the rows already in the
+    // DOM, and a height captured then is the height *after* the prepend — the
+    // difference comes out zero and the reader is thrown to the top. Measuring
+    // in beforeUpdate() is what the framework does guarantee runs first.
+    it("measures the height before the patch, not when the event arrives", () => {
+      Object.defineProperty(hook.el, "scrollHeight", {
+        configurable: true,
+        value: 1000,
+      });
+
+      simulateEvent(hook, "prepend_start", {});
+
+      Object.defineProperty(hook.el, "scrollHeight", {
+        configurable: true,
+        value: 4000,
+      });
+      hook.beforeUpdate();
+
+      expect(hook.prevScrollHeight).toBe(4000);
+      expect(hook.pendingPrepend).toBe(true);
+    });
   });
 
   // ── link previews ──────────────────────────────────────

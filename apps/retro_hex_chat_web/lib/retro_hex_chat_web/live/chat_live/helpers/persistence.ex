@@ -146,10 +146,10 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Persistence do
 
   @spec restore_pm_conversations(Session.t(), String.t()) :: Session.t()
   def restore_pm_conversations(session, nick) do
-    partners = Queries.list_pm_partners(nick)
-    nicks = Enum.map(partners, & &1.nickname)
+    page = Queries.list_pm_partners(nick)
+    nicks = Enum.map(page.items, & &1.nickname)
 
-    %{session | pm_conversations: nicks}
+    %{session | pm_conversations: nicks, pm_conversations_truncated: page.has_more}
   end
 
   @spec sync_notify_online_status(Session.t()) :: Session.t()

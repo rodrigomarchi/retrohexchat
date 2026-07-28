@@ -7,10 +7,13 @@ defmodule RetroHexChatWeb.Components.UI.TrustedTerminalsDialog do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.ListStates
+
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Input
 
   alias RetroHexChatWeb.Icons
+  alias RetroHexChatWeb.PaginatedList.State
   alias RetroHexChatWeb.Timezone
 
   attr :id, :string, required: true
@@ -20,8 +23,18 @@ defmodule RetroHexChatWeb.Components.UI.TrustedTerminalsDialog do
   attr :current_device_id, :integer, default: nil
   attr :current_session_ref, :string, default: nil
   attr :devices, :list, default: []
-  attr :sessions, :list, default: []
-  attr :events, :list, default: []
+  attr :sessions, :any, default: [], doc: "Stream of live sessions"
+
+  attr :sessions_state, :map,
+    default: nil,
+    doc: "PaginatedList.State for the sessions list; nil renders it without pagination"
+
+  attr :events, :any, default: [], doc: "Stream of security events"
+
+  attr :events_state, :map,
+    default: nil,
+    doc: "PaginatedList.State for the events list; nil renders it without pagination"
+
   attr :timezone, :string, default: "Etc/UTC"
   attr :status_kind, :atom, default: nil
   attr :status_message, :string, default: nil
@@ -120,9 +133,10 @@ defmodule RetroHexChatWeb.Components.UI.TrustedTerminalsDialog do
                 <section class="flex min-h-0 flex-col gap-retro-4">
                   <.section_title icon={:devices} label={dgettext("dialogs", "Trusted Terminals")} />
                   <div class="min-h-[180px] flex-1 overflow-y-auto bg-white p-1 shadow-retro-field retro-scrollbar">
-                    <div :if={@devices == []} class="p-3 text-muted-foreground">
-                      {dgettext("dialogs", "No trusted terminals for this nickname.")}
-                    </div>
+                    <.list_empty_state
+                      :if={@devices == []}
+                      title={dgettext("dialogs", "No trusted terminals for this nickname.")}
+                    />
 
                     <div
                       :for={device <- @devices}
@@ -211,13 +225,26 @@ defmodule RetroHexChatWeb.Components.UI.TrustedTerminalsDialog do
                 <div class="grid min-h-0 gap-retro-8">
                   <section class="flex min-h-0 flex-col gap-retro-4">
                     <.section_title icon={:sessions} label={dgettext("dialogs", "Active Sessions")} />
-                    <div class="min-h-[150px] overflow-y-auto bg-white p-1 shadow-retro-field retro-scrollbar">
-                      <div :if={@sessions == []} class="p-3 text-muted-foreground">
-                        {dgettext("dialogs", "No active sessions.")}
-                      </div>
-
+                    <.list_empty_state
+                      :if={State.empty?(@sessions_state)}
+                      icon={:people}
+                      title={dgettext("dialogs", "No active sessions.")}
+                    />
+                    <div
+                      :if={not State.empty?(@sessions_state)}
+                      id={"#{@id}-sessions"}
+                      class="max-h-[220px] min-h-[150px] overflow-y-auto bg-white p-1 shadow-retro-field retro-scrollbar"
+                      phx-hook="InfiniteScrollHook"
+                      phx-update="stream"
+                      data-edge="bottom"
+                      data-target={@target}
+                      data-event="load_more_sessions"
+                      data-has-more={to_string(State.more?(@sessions_state))}
+                      data-loading={to_string(State.loading?(@sessions_state))}
+                    >
                       <div
-                        :for={session <- @sessions}
+                        :for={{dom_id, session} <- @sessions}
+                        id={dom_id}
                         class="border-b border-border p-2 last:border-b-0"
                         data-testid={"trusted-session-#{session.id}"}
                       >
@@ -255,17 +282,48 @@ defmodule RetroHexChatWeb.Components.UI.TrustedTerminalsDialog do
                         </div>
                       </div>
                     </div>
+                    <.list_load_more_button
+                      :if={State.more?(@sessions_state)}
+                      target={@target}
+                      event="load_more_sessions"
+                      loading={State.loading?(@sessions_state)}
+                      testid="trusted-sessions-load-more"
+                    />
+                    <.list_announcer state={@sessions_state} />
+                    <.list_error_retry
+                      :if={State.error?(@sessions_state)}
+                      target={@target}
+                      on_retry="load_more_sessions"
+                      text={dgettext("dialogs", "Could not load more sessions.")}
+                    />
+                    <.list_end_marker
+                      :if={State.exhausted?(@sessions_state)}
+                      text={dgettext("dialogs", "No older sessions")}
+                      testid="trusted-sessions-end"
+                    />
                   </section>
 
                   <section class="flex min-h-0 flex-col gap-retro-4">
                     <.section_title icon={:events} label={dgettext("dialogs", "Recent Activity")} />
-                    <div class="min-h-[140px] overflow-y-auto bg-white p-1 shadow-retro-field retro-scrollbar">
-                      <div :if={@events == []} class="p-3 text-muted-foreground">
-                        {dgettext("dialogs", "No terminal activity yet.")}
-                      </div>
-
+                    <.list_empty_state
+                      :if={State.empty?(@events_state)}
+                      title={dgettext("dialogs", "No terminal activity yet.")}
+                    />
+                    <div
+                      :if={not State.empty?(@events_state)}
+                      id={"#{@id}-events"}
+                      class="max-h-[220px] min-h-[140px] overflow-y-auto bg-white p-1 shadow-retro-field retro-scrollbar"
+                      phx-hook="InfiniteScrollHook"
+                      phx-update="stream"
+                      data-edge="bottom"
+                      data-target={@target}
+                      data-event="load_more_events"
+                      data-has-more={to_string(State.more?(@events_state))}
+                      data-loading={to_string(State.loading?(@events_state))}
+                    >
                       <div
-                        :for={event <- @events}
+                        :for={{dom_id, event} <- @events}
+                        id={dom_id}
                         class="grid gap-retro-2 border-b border-border p-2 last:border-b-0"
                         data-testid={"trusted-event-#{event.id}"}
                       >
@@ -276,6 +334,25 @@ defmodule RetroHexChatWeb.Components.UI.TrustedTerminalsDialog do
                         <div class="text-muted-foreground">{event_metadata(event, @timezone)}</div>
                       </div>
                     </div>
+                    <.list_load_more_button
+                      :if={State.more?(@events_state)}
+                      target={@target}
+                      event="load_more_events"
+                      loading={State.loading?(@events_state)}
+                      testid="trusted-events-load-more"
+                    />
+                    <.list_announcer state={@events_state} />
+                    <.list_error_retry
+                      :if={State.error?(@events_state)}
+                      target={@target}
+                      on_retry="load_more_events"
+                      text={dgettext("dialogs", "Could not load more activity.")}
+                    />
+                    <.list_end_marker
+                      :if={State.exhausted?(@events_state)}
+                      text={dgettext("dialogs", "No older activity")}
+                      testid="trusted-events-end"
+                    />
                   </section>
                 </div>
               </div>

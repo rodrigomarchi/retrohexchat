@@ -23,12 +23,12 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
   }
 
   alias RetroHexChat.Services.NickServ
+  alias RetroHexChatWeb.ChatLive.Components.MessageViewport
   alias RetroHexChatWeb.ChatLive.Components.Nicklist
   alias RetroHexChatWeb.ChatLive.Helpers.Channel, as: ChannelHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
   alias RetroHexChatWeb.ChatLive.Helpers.PathHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.Persistence
-  alias RetroHexChatWeb.ChatLive.Helpers.PM
   alias RetroHexChatWeb.ChatLive.Helpers.Presence, as: PresenceHelpers
 
   # ── Nick color functions ───────────────────────────────────
@@ -55,28 +55,25 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
     |> Nicklist.reset(Map.get(socket.assigns, :channel_users, []))
   end
 
+  @doc """
+  Re-renders the visible messages after a presentation change.
+
+  Streams do not restyle existing rows, so a nick-colour change has to re-stream
+  them — but it does not have to re-read them. The viewport keeps the rows it
+  rendered, so this costs nothing at the database. It used to re-run the history
+  query for every message loaded, which after a long scrollback meant thousands
+  of rows fetched to paint them a different colour.
+  """
   @spec refresh_active_message_stream(Phoenix.LiveView.Socket.t(), Session.t()) ::
           Phoenix.LiveView.Socket.t()
-  def refresh_active_message_stream(socket, session) do
-    limit = max(socket.assigns[:loaded_message_count] || 50, 50)
-
-    cond do
-      present?(session.active_pm) ->
-        PM.load_pm_messages_with_pagination(socket, session.active_pm, limit)
-
-      present?(session.active_channel) ->
-        ChannelHelpers.load_channel_messages_with_pagination(
-          socket,
-          session.active_channel,
-          limit
-        )
-
-      true ->
-        socket
-    end
-  end
+  def refresh_active_message_stream(socket, _session), do: MessageViewport.restyle(socket)
 
   # ── URL capture ────────────────────────────────────────────
+
+  # Newest first, and bounded: the catcher is a session-scoped buffer of what
+  # scrolled past, not a database list, so there is nothing older to page back
+  # to. Unbounded it grew for the whole session inside the LiveView process.
+  @max_captured_urls 200
 
   @spec capture_urls(Phoenix.LiveView.Socket.t(), String.t(), String.t(), atom(), String.t()) ::
           Phoenix.LiveView.Socket.t()
@@ -97,8 +94,17 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
           })
         end)
 
+      combined = new_entries ++ socket.assigns.url_catcher_entries
+      entries = Enum.take(combined, @max_captured_urls)
+
+      # Counting what the buffer refused is the only way the window can say so:
+      # once a link is dropped there is nothing left to infer it from, and a
+      # full buffer is not proof that anything was discarded.
+      dropped =
+        (socket.assigns[:url_catcher_dropped] || 0) + max(length(combined) - length(entries), 0)
+
       socket
-      |> assign(url_catcher_entries: new_entries ++ socket.assigns.url_catcher_entries)
+      |> assign(url_catcher_entries: entries, url_catcher_dropped: dropped)
       |> maybe_fetch_previews(urls)
     end
   end
@@ -545,7 +551,4 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
       :miss -> spawn_preview_fetch(url, lv_pid)
     end
   end
-
-  defp present?(value) when is_binary(value), do: String.trim(value) != ""
-  defp present?(_value), do: false
 end

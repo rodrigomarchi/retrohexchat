@@ -4,40 +4,37 @@ defmodule RetroHexChat.Commands.Handlers.Admin.User do
 
   alias RetroHexChat.Accounts.ServerRoles
   alias RetroHexChat.Admin
-  alias RetroHexChat.Admin.{AuditLogs, ServerBans}
+  alias RetroHexChat.Admin.{AuditLogs, ServerBans, Table}
   alias RetroHexChat.Commands.{Duration, Handler}
+  alias RetroHexChat.Page
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.Services.{NickServ, Queries}
 
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute(["list" | opts], context) do
-    {search, online_only} = parse_list_opts(opts)
+    {search, online_only, after_nick} = parse_list_opts(opts)
     AuditLogs.log(context.nickname, "user.list")
-    registered = Queries.list_registered_nicks(search: search)
+    page = Queries.list_registered_nicks(search: search, cursor: after_nick)
     online_nicks = online_nicknames()
 
-    entries =
+    # The online filter is presentation, so it goes through Page.filter/2 and
+    # cannot touch the page's own accounting.
+    visible =
       if online_only do
-        Enum.filter(registered, fn n -> n.nickname in online_nicks end)
+        Page.filter(page, &(&1.nickname in online_nicks))
       else
-        registered
+        page
       end
 
     text =
-      if entries == [] do
+      if visible.items == [] do
         dgettext("admin", "*** No users found.")
       else
-        header =
-          dgettext("admin", "*** User List (%{entries_count} results) ***",
-            entries_count: length(entries)
-          )
-
-        lines = Enum.map(entries, &format_user_entry(&1, online_nicks))
-
-        Enum.join([header | lines], "\n")
+        lines = Enum.map(visible.items, &format_user_entry(&1, online_nicks))
+        Enum.join([list_header(visible, online_only) | lines], "\n")
       end
 
-    {:ok, :system, %{content: text}}
+    {:ok, :system, %{content: text, table: user_table(visible, online_nicks)}}
   end
 
   def execute(["info", nick], context) do
@@ -149,7 +146,8 @@ defmodule RetroHexChat.Commands.Handlers.Admin.User do
   end
 
   def execute(["banlist" | opts], _context) do
-    bans = ServerBans.list_active_bans()
+    page = ServerBans.list_active_bans()
+    bans = page.items
     search = find_opt(opts, "--search")
 
     filtered =
@@ -173,7 +171,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.User do
         Enum.join([header | lines], "\n")
       end
 
-    {:ok, :system, %{content: text}}
+    {:ok, :system, %{content: text, table: ban_table(filtered)}}
   end
 
   def execute([], _context) do
@@ -189,6 +187,66 @@ defmodule RetroHexChat.Commands.Handlers.Admin.User do
   end
 
   # ── Helpers ──────────────────────────────────────────────
+  defp ban_table(bans) do
+    Table.from_list(
+      [
+        Table.column(:nickname, dgettext("admin", "Nick")),
+        Table.column(:reason, dgettext("admin", "Reason")),
+        Table.column(:banned_by, dgettext("admin", "By")),
+        Table.column(:expires_at, dgettext("admin", "Expires"))
+      ],
+      bans,
+      fn ban ->
+        %{
+          id: ban.nickname,
+          nickname: ban.nickname,
+          reason: ban.reason,
+          banned_by: ban.banned_by,
+          expires_at: ban.expires_at
+        }
+      end
+    )
+  end
+
+  defp user_table(page, online_nicks) do
+    Table.from_page(
+      [
+        Table.column(:nickname, dgettext("admin", "Nick")),
+        Table.column(:online, dgettext("admin", "Online"))
+      ],
+      page,
+      fn nick ->
+        %{
+          id: nick.nickname,
+          nickname: nick.nickname,
+          online: nick.nickname in online_nicks,
+          registered_at: nick.registered_at,
+          last_seen_at: nick.last_seen_at
+        }
+      end
+    )
+  end
+
+  # The count is the number of registered nicks that MATCH, not the number that
+  # fit on this page — the old header printed the page length and so reported
+  # "100 results" on a server with thousands.
+  defp list_header(%Page{} = page, online_only) do
+    shown = length(page.items)
+
+    cond do
+      online_only ->
+        dgettext("admin", "*** User List (%{shown} online) ***", shown: shown)
+
+      page.total && page.total > shown ->
+        dgettext("admin", "*** User List (showing %{shown} of %{total}) ***",
+          shown: shown,
+          total: page.total
+        )
+
+      true ->
+        dgettext("admin", "*** User List (%{entries_count} results) ***", entries_count: shown)
+    end
+  end
 
   defp format_user_entry(n, online_nicks) do
     online = if n.nickname in online_nicks, do: "online", else: "offline"
@@ -227,7 +285,10 @@ defmodule RetroHexChat.Commands.Handlers.Admin.User do
   defp parse_list_opts(opts) do
     search = find_opt(opts, "--search")
     online = "--online" in opts
-    {search, online}
+    # The Users window asks for the page after the last nickname it holds. The
+    # cursor is the nickname because the listing is ordered by it.
+    after_nick = find_opt(opts, "--after")
+    {search, online, after_nick}
   end
 
   defp parse_ban_opts(opts) do

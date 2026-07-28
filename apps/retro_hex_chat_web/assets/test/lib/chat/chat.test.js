@@ -1,6 +1,5 @@
 import {
   isAtBottom,
-  shouldLoadMore,
   detectContextTarget,
   buildMessageText,
   collectUrls,
@@ -35,23 +34,6 @@ describe("lib/chat", () => {
     it("uses custom threshold", () => {
       expect(isAtBottom(mockEl(1000, 780, 200), 10)).toBe(false);
       expect(isAtBottom(mockEl(1000, 795, 200), 10)).toBe(true);
-    });
-  });
-
-  // ── shouldLoadMore ─────────────────────────────────────
-
-  describe("shouldLoadMore", () => {
-    it("returns true near top", () => {
-      expect(shouldLoadMore(5)).toBe(true);
-    });
-
-    it("returns false when away from top", () => {
-      expect(shouldLoadMore(100)).toBe(false);
-    });
-
-    it("uses custom threshold", () => {
-      expect(shouldLoadMore(15, 20)).toBe(true);
-      expect(shouldLoadMore(25, 20)).toBe(false);
     });
   });
 

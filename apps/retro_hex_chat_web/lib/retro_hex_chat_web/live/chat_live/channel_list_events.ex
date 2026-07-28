@@ -56,8 +56,16 @@ defmodule RetroHexChatWeb.ChatLive.ChannelListEvents do
     {:halt, open(socket)}
   end
 
+  # The filter re-reads the directory with the term applied at the source rather
+  # than handing the island the whole list to sift through.
   def handle_event("channel_list_filter", %{"search" => search}, socket) do
-    send_update(ChannelListDialog, id: ChannelListDialog.id(), action: {:filter, search})
+    channels = Autocomplete.list_visible_channels(socket.assigns.session.channels, search: search)
+
+    send_update(ChannelListDialog,
+      id: ChannelListDialog.id(),
+      action: {:filter, search, channels}
+    )
+
     {:halt, socket}
   end
 

@@ -7,12 +7,15 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.ListStates
+
   import RetroHexChatWeb.Components.UI.Dialog
   import RetroHexChatWeb.Components.UI.Tabs
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Separator
 
   alias RetroHexChatWeb.Icons
+  alias RetroHexChatWeb.PaginatedList.State
 
   attr :id, :string, required: true
   attr :show, :boolean, default: false
@@ -20,7 +23,13 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
   attr :selected, :any, default: nil
   attr :channels, :list, default: []
   attr :commands, :list, default: []
-  attr :events, :list, default: []
+  attr :events, :any, default: [], doc: "Stream of the event log"
+
+  attr :events_state, :map,
+    default: nil,
+    doc: "PaginatedList.State for the event log; nil renders the log without pagination"
+
+  attr :events_target, :any, default: nil, doc: "phx-target of the owning island"
   attr :stats, :any, default: nil
   attr :is_admin, :boolean, default: false
   attr :on_close, :any, default: nil
@@ -360,17 +369,19 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
             <.tabs_content value="events">
               <div class="p-retro-4">
                 <div
-                  :if={@events == []}
-                  class="text-center text-muted-foreground text-sm py-retro-16"
-                >
-                  {dgettext("dialogs", "No recent events")}
-                </div>
-                <div
-                  :if={@events != []}
-                  class="bm-events-list shadow-retro-sunken bg-white overflow-y-auto max-h-[240px] p-retro-2"
+                  id="bm-events-list"
+                  class="bm-events-list shadow-retro-sunken bg-white overflow-y-auto max-h-[240px] p-retro-2 retro-scrollbar"
+                  phx-hook="InfiniteScrollHook"
+                  phx-update="stream"
+                  data-edge="bottom"
+                  data-target={@events_target}
+                  data-event="load_more"
+                  data-has-more={to_string(State.more?(@events_state))}
+                  data-loading={to_string(State.loading?(@events_state))}
                 >
                   <div
-                    :for={event <- @events}
+                    :for={{dom_id, event} <- @events}
+                    id={dom_id}
                     class="bm-event-row text-xs py-retro-2 border-b border-separator last:border-0"
                   >
                     <span class="bm-event-time text-muted-foreground mr-retro-4">
@@ -379,6 +390,20 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
                     <span class="bm-event-message">{Map.get(event, :message, "")}</span>
                   </div>
                 </div>
+                <.list_load_more_button
+                  :if={State.more?(@events_state)}
+                  target={@events_target}
+                  loading={State.loading?(@events_state)}
+                  testid="bot-events-load-more"
+                />
+                <.list_announcer state={@events_state} />
+                <.list_error_retry
+                  :if={State.error?(@events_state)}
+                  target={@events_target}
+                  on_retry="load_more"
+                  text={dgettext("dialogs", "Could not load more events.")}
+                />
+                <.list_end_marker :if={State.exhausted?(@events_state)} />
               </div>
             </.tabs_content>
           </.tabs>
@@ -550,4 +575,8 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
   defp bot_channel_name(%{name: name}) when is_binary(name), do: name
   defp bot_channel_name(%{channel_name: name}) when is_binary(name), do: name
   defp bot_channel_name(_ch), do: ""
+
+  # The presentational component is rendered standalone (showcase, direct
+  # render_component in tests) as well as from the island. Without pagination
+  # state it simply renders the rows it was handed.
 end

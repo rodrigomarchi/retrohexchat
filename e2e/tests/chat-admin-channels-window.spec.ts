@@ -24,10 +24,10 @@ test.describe.serial("Admin Channels window", () => {
     try {
       await admin.chat.openAdminChannelsFromMenu();
 
-      // The list loads with the window — there is no tab to click any more.
-      await expect(admin.page.locator("#admin-channels-output")).toContainText(
-        "Channel List",
-      );
+      // The list loads with the window, rendered as rows rather than a text block.
+      await expect(
+        admin.page.locator('[data-testid="admin-channels-table"]'),
+      ).toBeVisible();
 
       await admin.page.locator("#admin-channels-create-name").fill(channel);
       await admin.page

@@ -18,11 +18,13 @@ defmodule RetroHexChatWeb.Components.UI.AdminAuditLogDialog do
   attr :show, :boolean, default: false
   attr :target, :any, default: nil
   attr :text, :string, default: nil
+  attr :table, :any, default: nil, doc: "%Admin.Table{} for the log"
   attr :last, :string, default: "20"
   attr :user, :string, default: ""
   attr :result, :any, default: nil
   attr :can_refresh, :boolean, default: false
   attr :on_refresh, :any, default: nil
+  attr :on_load_more, :string, default: nil
   attr :on_cancel, :any, default: nil
 
   @doc "Framed variant with dialog chrome — used by the showcase page."
@@ -43,11 +45,13 @@ defmodule RetroHexChatWeb.Components.UI.AdminAuditLogDialog do
   attr :id, :string, required: true
   attr :target, :any, default: nil
   attr :text, :string, default: nil
+  attr :table, :any, default: nil, doc: "%Admin.Table{} for the log"
   attr :last, :string, default: "20"
   attr :user, :string, default: ""
   attr :result, :any, default: nil
   attr :can_refresh, :boolean, default: false
   attr :on_refresh, :any, default: nil
+  attr :on_load_more, :string, default: nil
 
   @spec admin_audit_log_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def admin_audit_log_panel(assigns) do
@@ -96,10 +100,19 @@ defmodule RetroHexChatWeb.Components.UI.AdminAuditLogDialog do
             </div>
           </form>
 
-          <pre
+          <div
             id="admin-audit-log-output"
-            class="shadow-retro-sunken bg-white min-h-[190px] max-h-[260px] overflow-y-auto p-retro-8 text-xs whitespace-pre-wrap"
-          ><%= @text || "" %></pre>
+            class="shadow-retro-sunken bg-white min-h-[190px] max-h-[260px] overflow-y-auto retro-scrollbar"
+          >
+            <.admin_table
+              table={@table}
+              text={@text}
+              testid="admin-audit-log-table"
+              target={@target}
+              on_load_more={@on_load_more}
+              empty_title={dgettext("dialogs", "No audit log entries found")}
+            />
+          </div>
 
           <.inline_result result={@result} />
         </div>

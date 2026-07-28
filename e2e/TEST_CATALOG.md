@@ -2,12 +2,12 @@
 
 Single source of truth for the browser-level Playwright suite.
 
-**Last reviewed:** 2026-07-26
+**Last reviewed:** 2026-07-28
 
 ## Current Coverage
 
-- **195 spec files** under `e2e/tests/`.
-- **368 Playwright `test()` cases**.
+- **197 spec files** under `e2e/tests/`.
+- **371 Playwright `test()` cases**.
 - **Auth/lifecycle:** 17 mapped flows, all done.
 - **Chat foundation:** 25 mapped flows, all done.
 - **Chat extended coverage:** 344 mapped flows, 343 done, 1 intentionally blocked.
@@ -320,6 +320,9 @@ make ci
 | P8  | Browser reload keeps chat session and reconnects LiveView cleanly  | `tests/chat-reconnect.spec.ts`                              | P1       | done   |
 | P9  | Reconnect UI disables input and preserves typed draft              | `tests/chat-reconnect.spec.ts`                              | P2       | done   |
 | P10 | Scroll loader loads older channel/PM history without duplicates    | `tests/chat-history-pagination.spec.ts`                     | P2       | done   |
+| P10a | Scrolling back loads the older page, keeps the reader's place, and marks the beginning of history | `tests/chat-infinite-scroll.spec.ts` | P1 | done |
+| P10b | Pagination survives an ignored author filling the first page (`has_more` comes from the database) | `tests/chat-infinite-scroll.spec.ts` | P1 | done |
+| P10c | Trusted Terminals security log pages past the first page and closes with an end marker | `tests/chat-trusted-terminals-pagination.spec.ts` | P2 | done |
 | P11 | `/whois` idle increases and resets after command/message           | `tests/chat-idle.spec.ts`                                   | P2       | done   |
 | P12 | PM typing indicator appears and clears after timeout or send       | `tests/chat-typing-indicator.spec.ts`                       | P1       | done   |
 

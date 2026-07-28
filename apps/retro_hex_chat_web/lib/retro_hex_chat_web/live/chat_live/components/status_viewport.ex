@@ -4,7 +4,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.StatusViewport do
   row per status line (MOTD, system events, errors, routed notices), so the status
   log re-renders only when a status line is appended — not on every parent re-render.
 
-  The log is bounded: only the most recent `@status_limit` rows are kept in the DOM.
+  The log is bounded: only the most recent `@status_limit` rows are kept in the
+  DOM. The status log is not persisted, so there is no earlier page to fetch —
+  the cap is the right bound, but it is disclosed rather than silent: once it is
+  reached the pane says so, instead of presenting a truncated log as complete.
 
   The parent keeps the unread/visibility read-model (`status_unread`, `show_status_tab`)
   that the IRC tab badge and navigation read; it pushes each new status line here via
@@ -14,6 +17,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.StatusViewport do
   use RetroHexChatWeb, :live_component
 
   import RetroHexChatWeb.Components.UI.ChatMessage
+  import RetroHexChatWeb.Components.UI.ListStates
 
   alias RetroHexChatWeb.App.ChatHelpers
 
@@ -40,7 +44,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.StatusViewport do
        id: @id,
        timestamp_format: :dd_mm_hh_mm,
        timezone: "Etc/UTC",
-       show_status_tab: false
+       show_status_tab: false,
+       inserted: 0
      )
      |> stream(:status_messages, [], limit: -@status_limit)}
   end
@@ -48,7 +53,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.StatusViewport do
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def update(%{action: {:insert, msg}}, socket) do
-    {:ok, stream_insert(socket, :status_messages, msg, limit: -@status_limit)}
+    {:ok,
+     socket
+     |> assign(inserted: socket.assigns.inserted + 1)
+     |> stream_insert(:status_messages, msg, limit: -@status_limit)}
   end
 
   def update(assigns, socket) do
@@ -67,6 +75,12 @@ defmodule RetroHexChatWeb.ChatLive.Components.StatusViewport do
   def render(assigns) do
     ~H"""
     <div id={"#{@id}-mount"} class="contents">
+      <.list_end_marker
+        :if={discarded?(@inserted)}
+        text={dgettext("chat", "Older status lines were discarded")}
+        class={if @show_status_tab, do: nil, else: "hidden"}
+      />
+
       <.chat_message_list
         fill
         hidden={!@show_status_tab}
@@ -88,6 +102,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.StatusViewport do
     </div>
     """
   end
+
+  # True once the cap has dropped at least one line.
+  @spec discarded?(non_neg_integer()) :: boolean()
+  defp discarded?(inserted), do: inserted > @status_limit
 
   # Origin label shown in the compact meta column so a status line is never a
   # bare timestamp. Interactive nicks are never used on the status tab.

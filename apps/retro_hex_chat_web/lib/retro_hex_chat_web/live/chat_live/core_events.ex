@@ -31,6 +31,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   alias RetroHexChat.Chat.{Policy, Queries, Service, UnreadTracker}
   alias RetroHexChat.Commands.Parser
   alias RetroHexChat.Observability
+  alias RetroHexChat.Page
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.Services.NickServ
   alias RetroHexChatWeb.ChatLive
@@ -46,6 +47,8 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   alias RetroHexChatWeb.ChatLive.Helpers.Messages, as: MessageHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.PM
   alias RetroHexChatWeb.Endpoint
+
+  @page_size 50
 
   # The composer input form (input_changed / send_input / toggle_action_mode /
   # cancel_notice_mode) is owned by the Composer LiveComponent (phx-target).
@@ -577,43 +580,41 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
 
     cond do
       session.active_pm ->
-        older_messages =
+        page =
           Queries.list_private_messages(session.nickname, session.active_pm,
-            limit: 50,
-            before_id: oldest_id
+            limit: @page_size,
+            cursor: oldest_id
           )
 
-        PM.prepend_older_pm_messages(assign(socket, loading_more: true), older_messages)
+        PM.prepend_older_pm_messages(assign(socket, loading_more: true), page)
 
       session.active_channel ->
-        channel = session.active_channel
-        older_messages = Queries.list_messages(channel, limit: 50, before_id: oldest_id)
-        prepend_older_messages(assign(socket, loading_more: true), older_messages)
+        page = Queries.list_messages(session.active_channel, limit: @page_size, cursor: oldest_id)
+        prepend_older_messages(assign(socket, loading_more: true), page)
 
       true ->
         socket
     end
   end
 
-  defp prepend_older_messages(socket, []) do
-    assign(socket, loading_more: false, has_more: false)
+  defp prepend_older_messages(socket, %Page{items: []} = page) do
+    assign(socket, loading_more: false, has_more: page.has_more)
   end
 
-  defp prepend_older_messages(socket, older_messages) do
-    new_oldest = List.last(older_messages)
-
+  defp prepend_older_messages(socket, %Page{} = page) do
     stream_items =
-      older_messages
-      |> MessageHelpers.visible_channel_messages(socket.assigns.session.ignore_list)
+      page
+      |> MessageHelpers.visible_channel_page(socket.assigns.session.ignore_list)
+      |> Map.fetch!(:items)
       |> Enum.reverse()
       |> Enum.map(&message_to_stream_item/1)
 
     socket
     |> assign(
       loading_more: false,
-      oldest_message_id: new_oldest.id,
-      has_more: length(older_messages) == 50,
-      loaded_message_count: (socket.assigns[:loaded_message_count] || 50) + length(older_messages)
+      oldest_message_id: page.next_cursor,
+      has_more: page.has_more,
+      loaded_message_count: (socket.assigns[:loaded_message_count] || 50) + length(page.items)
     )
     |> push_event("prepend_start", %{})
     |> MessageViewport.prepend(stream_items)

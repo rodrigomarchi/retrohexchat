@@ -9,11 +9,11 @@
  */
 import {
   isAtBottom as checkIsAtBottom,
-  shouldLoadMore,
   detectContextTarget,
   buildMessageText,
   collectUrls,
 } from "../../lib/chat/chat.js";
+import { isNearEdge } from "../../lib/ui/infinite_scroll.js";
 import { insertAtCursor } from "../../lib/chat/input.js";
 import {
   scrollToMessage,
@@ -484,6 +484,16 @@ const ScrollHook = {
     this.prevScrollHeight = this.chatEl.scrollHeight;
   },
 
+  // Runs immediately before LiveView patches this element, which is the only
+  // moment guaranteed to be "before the rows land". The `prepend_start` event
+  // that flags a prepend travels in a different render from the rows, and when
+  // LiveView flushes both together the event can arrive with the rows already
+  // in the DOM — a height captured then yields a zero difference and drops the
+  // reader at the top of the history instead of where they were reading.
+  beforeUpdate() {
+    this.prevScrollHeight = this.chatEl.scrollHeight;
+  },
+
   updated() {
     const clearToken = this.el.dataset.clearToken || "";
     if (clearToken !== this.lastClearToken) {
@@ -551,7 +561,10 @@ const ScrollHook = {
       this.scrollToBottom();
     }
 
-    if (this.userScrollIntent && shouldLoadMore(this.chatEl.scrollTop)) {
+    // The shared detector fires a screenful early instead of only at the very
+    // top, so paging back reads as continuous rather than as a stop-and-wait at
+    // each page boundary.
+    if (this.userScrollIntent && isNearEdge(this.chatEl, "top")) {
       this.pushEvent("load_more", {});
     }
   },

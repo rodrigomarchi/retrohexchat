@@ -21,6 +21,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   attr :show, :boolean, default: false
   attr :target, :any, default: nil
   attr :results, :list, default: []
+  attr :dropped, :integer, default: 0, doc: "Lines the transcript discarded to stay bounded"
   attr :on_run, :any, default: nil
   attr :on_clear, :any, default: nil
   attr :on_cancel, :any, default: nil
@@ -43,6 +44,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   attr :id, :string, required: true
   attr :target, :any, default: nil
   attr :results, :list, default: []
+  attr :dropped, :integer, default: 0, doc: "Lines the transcript discarded to stay bounded"
   attr :on_run, :any, default: nil
   attr :on_clear, :any, default: nil
 
@@ -61,6 +63,12 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
             id="admin-console-output"
             data-testid="admin-console-output"
           >
+            <%!-- The transcript keeps only the most recent lines; saying how
+                  many scrolled off is the only record that they ran. --%>
+            <div :if={@dropped > 0} class="adm-transcript-trimmed" data-testid="admin-console-trimmed">
+              {dgettext("dialogs", "%{count} earlier lines were dropped", count: @dropped)}
+            </div>
+
             <div
               :for={result <- @results}
               class={[

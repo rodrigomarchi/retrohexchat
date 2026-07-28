@@ -429,7 +429,7 @@ defmodule RetroHexChat.Bots.BotLifecycleTest do
       # Give async Task time to log
       Process.sleep(300)
 
-      events = Queries.list_event_logs(bot.id)
+      events = Queries.list_event_logs(bot.id).items
       assert events != []
       assert Enum.any?(events, &(&1.event_type == "message_response"))
     end

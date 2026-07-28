@@ -68,16 +68,16 @@ defmodule RetroHexChat.Services.ChanExpiry do
   end
 
   defp cleanup_channel(channel_name) do
-    Queries.list_access(channel_name)
+    Queries.all_access(channel_name)
     |> Enum.each(fn entry -> Queries.remove_access(channel_name, entry.nickname) end)
 
-    Queries.list_bans(channel_name)
+    Queries.all_bans(channel_name)
     |> Enum.each(fn ban -> Queries.remove_ban(channel_name, ban.banned_nickname) end)
 
-    Queries.list_ban_exceptions(channel_name)
+    Queries.all_ban_exceptions(channel_name)
     |> Enum.each(fn entry -> Queries.remove_ban_exception(channel_name, entry.nickname) end)
 
-    Queries.list_invite_exceptions(channel_name)
+    Queries.all_invite_exceptions(channel_name)
     |> Enum.each(fn entry -> Queries.remove_invite_exception(channel_name, entry.nickname) end)
 
     Queries.delete_welcome_message(channel_name)

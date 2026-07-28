@@ -1,7 +1,7 @@
 .PHONY: help setup deps db.setup db.create db.migrate db.rollback db.reset db.seed \
        db.gen.migration server iex routes \
        test test.unit test.integration test.liveview test.feature test.all test.cover \
-       e2e e2e.headless e2e.ui e2e.install e2e.db.setup load.test \
+       e2e e2e.headless e2e.ui e2e.shots e2e.install e2e.db.setup load.test \
        test.cover.all test.domain test.web test.failed test.seed test.file test.line \
        test.js test.js.watch \
        ci ci.quick \
@@ -15,6 +15,10 @@
 
 DOMAIN_APP = apps/retro_hex_chat
 WEB_APP    = apps/retro_hex_chat_web
+
+# Throwaway target for the CSS build check, so proving the stylesheet compiles
+# never overwrites the bundle a running server is serving.
+CSS_BUILD_CHECK_OUT = $(shell mktemp -t retrohex-css-check)
 E2E_DIR    = e2e
 PRETTIER   = $(WEB_APP)/assets/node_modules/.bin/prettier
 E2E_FORMAT_SOURCES = $(E2E_DIR)/*.json $(E2E_DIR)/*.ts $(E2E_DIR)/helpers $(E2E_DIR)/pages $(E2E_DIR)/tests $(E2E_DIR)/load
@@ -191,6 +195,12 @@ e2e.headless: ## Run Playwright headless (faster, no browser window)
 e2e.ui: ## Run Playwright in interactive UI mode (play/pause/inspect)
 	cd e2e && $(E2E_ENV) npm run test:ui
 
+e2e.shots: ## Capture visual evidence from a spec: make e2e.shots FILE=tests/x.spec.ts
+	@test -n "$(FILE)" || { echo "usage: make e2e.shots FILE=tests/<file>.spec.ts"; exit 1; }
+	$(E2E_MIX) assets.build
+	cd e2e && $(E2E_ENV) E2E_SHOTS=1 npx playwright test $(FILE)
+	@echo "Screenshots: e2e/screenshots/"
+
 e2e.install: ## First-time: install npm deps + download Chromium
 	cd e2e && npm install
 	cd e2e && npm run install:browsers
@@ -245,6 +255,19 @@ lint.css: ## Audit inline styles and CSS class consistency
 	@mix lint.inline_styles
 	@mix lint.css_consistency
 	@mix audit.styles --strict
+	@$(MAKE) --no-print-directory lint.css.build
+
+# The three audits above read the stylesheet; none of them compile it. An
+# `@apply` of a utility that does not exist passes every one of them and then
+# fails the real build, which serves the previous CSS — so the app looks fine
+# locally and every E2E run is quietly styled by a stale bundle.
+lint.css.build: ## Prove the stylesheet compiles
+	@cd $(WEB_APP) && node assets/scripts/bundle_retrohex_css.cjs
+	@cd $(WEB_APP) && env BROWSERSLIST_IGNORE_OLD_DATA=1 \
+		assets/node_modules/.bin/tailwindcss \
+		-c assets/tailwind.config.js \
+		-i assets/css/.generated/retrohex.css \
+		-o $(CSS_BUILD_CHECK_OUT)
 
 lint.bundle: ## Enforce frontend bundle budgets
 	npm run bundle:budget --prefix $(WEB_APP)/assets

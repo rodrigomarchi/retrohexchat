@@ -43,8 +43,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminUsersDialogTest do
 
   test "loads the user list on mount rather than waiting for an open directive" do
     # The window is server-managed: mounting IS opening, so the snapshot has to
-    # be there on the first render. The dispatcher always answers with a `***`
-    # line, so an empty pane would mean the load never ran.
+    # be there on the first render. The pane renders the listing as rows, so its
+    # table element is what proves the load ran.
     html = island(%{})
 
     assert [pane] =
@@ -52,7 +52,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminUsersDialogTest do
              |> Floki.parse_fragment!()
              |> Floki.find("#admin-users-output")
 
-    assert pane |> Floki.text() |> String.starts_with?("***")
+    assert [_table] = Floki.find(pane, ~s([data-testid="admin-users-table"]))
   end
 
   test "reserves the admin role option for root admins" do

@@ -88,10 +88,18 @@ const MenuBarHook = {
         const submenu = submenuTrigger.closest("[data-menubar-submenu]");
 
         if (submenu) {
-          if (submenu.dataset.submenuOpen === "true") {
+          // A pointer hovers a row on its way to clicking it, so by the time
+          // the click lands the hover has already opened the flyout. Toggling
+          // on every click therefore closed it again, which put the submenu out
+          // of reach of a mouse entirely. Only a click on a submenu that a
+          // previous *click* opened counts as "put it away".
+          const openedByClick =
+            submenu.dataset.submenuOpen === "true" && submenu.dataset.submenuVia === "click";
+
+          if (openedByClick) {
             this._setSubmenu(submenu, false);
           } else {
-            this._openSubmenu(submenu);
+            this._openSubmenu(submenu, "click");
           }
         }
 
@@ -161,10 +169,16 @@ const MenuBarHook = {
     if (dropdown) this._closeSiblingSubmenus(dropdown, null);
   },
 
-  _openSubmenu(submenu) {
+  _openSubmenu(submenu, via = "hover") {
     const dropdown = submenu.closest("[data-menubar-dropdown]");
     if (dropdown) this._closeSiblingSubmenus(dropdown, submenu);
-    this._setSubmenu(submenu, true);
+
+    // Hovering inside an already-clicked submenu must not downgrade it back to
+    // "hover", or the click that put it away would open it instead.
+    const alreadyClicked =
+      submenu.dataset.submenuOpen === "true" && submenu.dataset.submenuVia === "click";
+
+    this._setSubmenu(submenu, true, alreadyClicked ? "click" : via);
   },
 
   _closeSiblingSubmenus(dropdown, except) {
@@ -173,8 +187,18 @@ const MenuBarHook = {
     });
   },
 
-  _setSubmenu(submenu, open) {
+  // `via` records what opened the flyout — a hover or a deliberate click — so
+  // the click handler can tell "the pointer just arrived here" from "the reader
+  // is clicking this a second time to put it away".
+  _setSubmenu(submenu, open, via = "hover") {
     submenu.dataset.submenuOpen = open ? "true" : "false";
+
+    if (open) {
+      submenu.dataset.submenuVia = via;
+    } else {
+      delete submenu.dataset.submenuVia;
+    }
+
     const panel = submenu.querySelector("[data-menubar-submenu-panel]");
     if (panel) panel.classList.toggle("u-hidden", !open);
   },

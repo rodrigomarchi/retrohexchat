@@ -16,17 +16,6 @@ export function isAtBottom(el, threshold = 50) {
 }
 
 /**
- * Check if the user has scrolled near the top (should load more).
- *
- * @param {number} scrollTop
- * @param {number} [threshold=10]
- * @returns {boolean}
- */
-export function shouldLoadMore(scrollTop, threshold = 10) {
-  return scrollTop < threshold;
-}
-
-/**
  * Detect the context menu target from a right-click event within a message.
  *
  * Priority: nick > URL > channel > message (most specific wins).

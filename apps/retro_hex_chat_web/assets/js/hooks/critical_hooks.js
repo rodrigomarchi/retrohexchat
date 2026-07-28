@@ -17,6 +17,7 @@ import SoundHook from "./input/sound_hook";
 import TitleFlashHook from "./notifications/title_flash_hook";
 import MenuBarHook from "./ui/menu_bar_hook";
 import MenuRepositionHook from "./ui/menu_reposition_hook";
+import InfiniteScrollHook from "./ui/infinite_scroll_hook";
 import PreserveScrollHook from "./ui/preserve_scroll_hook";
 import ToolbarGroupHook from "./ui/toolbar_group_hook";
 import ConversationsHook from "./ui/conversations_hook";
@@ -74,6 +75,7 @@ export const criticalHooks = {
   TitleFlashHook: TitleFlashHook,
   MenuBarHook: MenuBarHook,
   MenuRepositionHook: MenuRepositionHook,
+  InfiniteScrollHook: InfiniteScrollHook,
   PreserveScrollHook: PreserveScrollHook,
   ToolbarGroupHook: ToolbarGroupHook,
   ConversationsHook: ConversationsHook,

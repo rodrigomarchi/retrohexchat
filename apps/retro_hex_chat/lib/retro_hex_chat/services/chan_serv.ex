@@ -333,7 +333,7 @@ defmodule RetroHexChat.Services.ChanServ do
   end
 
   defp cleanup_channel(channel_name) do
-    Enum.each(Queries.list_access(channel_name), fn entry ->
+    Enum.each(Queries.all_access(channel_name), fn entry ->
       case Queries.remove_access(channel_name, entry.nickname) do
         :ok ->
           :ok
@@ -345,7 +345,7 @@ defmodule RetroHexChat.Services.ChanServ do
       end
     end)
 
-    Enum.each(Queries.list_bans(channel_name), fn ban ->
+    Enum.each(Queries.all_bans(channel_name), fn ban ->
       case Queries.remove_ban(channel_name, ban.banned_nickname) do
         :ok ->
           :ok
@@ -361,11 +361,11 @@ defmodule RetroHexChat.Services.ChanServ do
   end
 
   defp cleanup_exceptions(channel_name) do
-    Enum.each(Queries.list_ban_exceptions(channel_name), fn entry ->
+    Enum.each(Queries.all_ban_exceptions(channel_name), fn entry ->
       Queries.remove_ban_exception(channel_name, entry.nickname)
     end)
 
-    Enum.each(Queries.list_invite_exceptions(channel_name), fn entry ->
+    Enum.each(Queries.all_invite_exceptions(channel_name), fn entry ->
       Queries.remove_invite_exception(channel_name, entry.nickname)
     end)
   end

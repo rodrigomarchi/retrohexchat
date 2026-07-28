@@ -52,7 +52,7 @@ defmodule RetroHexChat.Chat.QueriesPmTest do
           content: "Second"
         })
 
-      messages = Queries.list_private_messages("Alice", "Bob")
+      messages = Queries.list_private_messages("Alice", "Bob").items
       assert length(messages) == 2
       # Most recent first
       assert hd(messages).content == "Second"
@@ -67,8 +67,8 @@ defmodule RetroHexChat.Chat.QueriesPmTest do
         })
 
       # Query with reversed order should still find the message
-      messages_ab = Queries.list_private_messages("Alice", "Bob")
-      messages_ba = Queries.list_private_messages("Bob", "Alice")
+      messages_ab = Queries.list_private_messages("Alice", "Bob").items
+      messages_ba = Queries.list_private_messages("Bob", "Alice").items
 
       assert length(messages_ab) == 1
       assert length(messages_ba) == 1
@@ -90,7 +90,7 @@ defmodule RetroHexChat.Chat.QueriesPmTest do
           content: "For Charlie"
         })
 
-      messages = Queries.list_private_messages("Alice", "Bob")
+      messages = Queries.list_private_messages("Alice", "Bob").items
       assert length(messages) == 1
       assert hd(messages).content == "For Bob"
     end
@@ -104,7 +104,7 @@ defmodule RetroHexChat.Chat.QueriesPmTest do
         })
       end
 
-      messages = Queries.list_private_messages("Alice", "Bob")
+      messages = Queries.list_private_messages("Alice", "Bob").items
       assert length(messages) == 50
     end
 
@@ -122,7 +122,7 @@ defmodule RetroHexChat.Chat.QueriesPmTest do
         end
 
       cursor_pm = Enum.at(pms, 4)
-      older = Queries.list_private_messages("Alice", "Bob", before_id: cursor_pm.id)
+      older = Queries.list_private_messages("Alice", "Bob", cursor: cursor_pm.id).items
       assert length(older) == 4
     end
   end

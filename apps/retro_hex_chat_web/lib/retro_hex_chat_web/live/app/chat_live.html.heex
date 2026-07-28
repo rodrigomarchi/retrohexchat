@@ -76,6 +76,7 @@
           active_channel={@session.active_channel}
           active_pm={@session.active_pm}
           pm_conversations={@session.pm_conversations}
+          pm_conversations_truncated={@session.pm_conversations_truncated}
           unread_counts={@unread_counts}
           highlight_channels={@highlight_channels}
           flash_channels={@flash_channels}
@@ -198,6 +199,7 @@
                   edit_mode_message_id={@edit_mode_message_id}
                   show_status_tab={@show_status_tab}
                   loading_more={@loading_more}
+                  has_more={@has_more}
                   loading_channel={@loading_channel}
                   viewer={@session.nickname}
                 />
@@ -959,6 +961,7 @@
         module={RetroHexChatWeb.ChatLive.Components.UrlCatcherDialog}
         id={RetroHexChatWeb.ChatLive.Components.UrlCatcherDialog.id()}
         entries={@url_catcher_entries}
+        dropped={@url_catcher_dropped}
         timezone={@timezone}
       />
     </.desktop_window>

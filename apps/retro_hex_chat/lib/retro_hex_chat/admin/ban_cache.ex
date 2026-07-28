@@ -48,7 +48,8 @@ defmodule RetroHexChat.Admin.BanCache do
   end
 
   defp seed_from_db do
-    ServerBans.list_active_bans()
+    # Every ban, not a page — this table is what refuses a connection.
+    ServerBans.all_active_bans()
     |> Enum.each(fn ban ->
       :ets.insert(@table, {ban.nickname, ban.expires_at})
     end)

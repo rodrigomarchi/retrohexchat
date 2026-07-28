@@ -24,7 +24,8 @@ defmodule RetroHexChat.Chat.HelpTopics.KeyboardShortcuts do
           dgettext(
             "help",
             "Complete reference of keyboard shortcuts for navigation, messaging, and interface control."
-          )
+          ),
+        see_also: ["ui-lists"]
       }
     ]
   end

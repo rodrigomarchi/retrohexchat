@@ -13,6 +13,7 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Dialog
+  import RetroHexChatWeb.Components.UI.ListStates
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Input
   import RetroHexChatWeb.Components.UI.Select
@@ -26,6 +27,10 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
   attr :entries, :list,
     default: [],
     doc: "List of CapturedURL structs"
+
+  attr :dropped, :integer,
+    default: 0,
+    doc: "Links the session buffer discarded to stay within its bound"
 
   attr :sort_column, :atom, default: :timestamp, doc: "Column currently sorted on"
   attr :sort_direction, :atom, default: :desc, doc: "Sort direction: :asc or :desc"
@@ -52,6 +57,7 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
           <.url_catcher_panel
             id={@id}
             entries={@entries}
+            dropped={@dropped}
             sort_column={@sort_column}
             sort_direction={@sort_direction}
             filter_channel={@filter_channel}
@@ -83,6 +89,7 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
   """
   attr :id, :string, required: true
   attr :entries, :list, default: [], doc: "List of CapturedURL structs"
+  attr :dropped, :integer, default: 0, doc: "Links discarded to stay within the buffer's bound"
   attr :sort_column, :atom, default: :timestamp
   attr :sort_direction, :atom, default: :desc
   attr :filter_channel, :string, default: nil
@@ -202,9 +209,21 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
 
           <%!-- URL list --%>
           <div class={classes(["uc-entry-list flex-1 overflow-y-auto retro-scrollbar", @table_class])}>
-            <div :if={@entries == []} class="uc-empty-state text-center text-muted-foreground">
-              {dgettext("dialogs", "No URLs captured yet. Shared links will appear here.")}
-            </div>
+            <.list_empty_state
+              :if={@entries == []}
+              class="uc-empty-state"
+              title={dgettext("dialogs", "No URLs captured yet.")}
+              text={dgettext("dialogs", "Shared links will appear here.")}
+            />
+
+            <%!-- The catcher keeps only the most recent links, so once it is
+                  full the oldest are gone for good. Saying how many were
+                  discarded is the only record that they existed. --%>
+            <.list_end_marker
+              :if={@dropped > 0}
+              text={dgettext("dialogs", "%{count} older links were not kept", count: @dropped)}
+              testid="url-catcher-dropped"
+            />
 
             <article
               :for={entry <- @entries}

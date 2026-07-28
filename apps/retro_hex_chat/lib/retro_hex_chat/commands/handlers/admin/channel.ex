@@ -4,6 +4,8 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Channel do
 
   alias RetroHexChat.Admin
   alias RetroHexChat.Admin.AuditLogs
+  alias RetroHexChat.Admin.Table
+  alias RetroHexChat.Channels.Directory
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Commands.Handler
   alias RetroHexChat.Services.Queries
@@ -13,33 +15,25 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Channel do
     search = find_opt(opts, "--search")
     AuditLogs.log(context.nickname, "channel.list")
 
-    channels =
-      case Registry.select(RetroHexChat.Channels.ChannelRegistry, [{{:"$1", :_, :_}, [], [:"$1"]}]) do
-        list -> list
-      end
-
-    filtered =
-      if search do
-        Enum.filter(channels, &String.contains?(&1, search))
-      else
-        channels
-      end
+    # The directory snapshot each channel publishes carries the member count, so
+    # listing no longer costs one synchronous call per channel.
+    snapshots = if search, do: Directory.search(search), else: Directory.all()
 
     text =
-      if filtered == [] do
+      if snapshots == [] do
         dgettext("admin", "*** No active channels.")
       else
         header =
           dgettext("admin", "*** Channel List (%{filtered_count}) ***",
-            filtered_count: length(filtered)
+            filtered_count: length(snapshots)
           )
 
-        lines = Enum.map(filtered, &format_channel_entry/1)
+        lines = Enum.map(snapshots, &format_channel_entry/1)
 
         Enum.join([header | lines], "\n")
       end
 
-    {:ok, :system, %{content: text}}
+    {:ok, :system, %{content: text, table: channel_table(snapshots)}}
   end
 
   def execute(["info", channel], context) do
@@ -141,21 +135,35 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Channel do
     {:error, "Unknown channel subcommand: #{subcmd}"}
   end
 
-  defp format_channel_entry(name) do
-    registered = Queries.find_registered_channel(name) != nil
-
-    member_count =
-      case Server.get_state(name) do
-        {:ok, state} -> state.member_count
-        _ -> 0
-      end
-
-    reg = if registered, do: " [registered]", else: ""
+  defp format_channel_entry(snapshot) do
+    reg = if registered?(snapshot.name), do: " [registered]", else: ""
 
     dgettext("admin", "  %{name} (%{member_count} members)%{reg}",
-      name: name,
-      member_count: member_count,
+      name: snapshot.name,
+      member_count: snapshot.member_count,
       reg: reg
+    )
+  end
+
+  defp registered?(name), do: Queries.find_registered_channel(name) != nil
+
+  defp channel_table(snapshots) do
+    Table.from_list(
+      [
+        Table.column(:name, dgettext("admin", "Channel")),
+        Table.column(:member_count, dgettext("admin", "Members")),
+        Table.column(:registered, dgettext("admin", "Registered"))
+      ],
+      snapshots,
+      fn snapshot ->
+        %{
+          id: snapshot.name,
+          name: snapshot.name,
+          member_count: snapshot.member_count,
+          topic: snapshot.topic,
+          registered: registered?(snapshot.name)
+        }
+      end
     )
   end
 

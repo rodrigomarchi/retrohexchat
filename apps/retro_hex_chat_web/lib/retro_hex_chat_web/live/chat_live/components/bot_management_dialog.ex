@@ -25,8 +25,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.BotManagementDialog do
   import RetroHexChatWeb.Components.UI.BotFormDialog
 
   alias RetroHexChat.Bots.Queries
+  alias RetroHexChatWeb.PaginatedList
 
   @id "bot-management-dialog"
+  @events_page_size 50
 
   @spec id() :: String.t()
   def id, do: @id
@@ -37,7 +39,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.BotManagementDialog do
     selected: nil,
     channels: [],
     commands: [],
-    events: [],
     stats: nil,
     tab: :general,
     show_new_bot: false,
@@ -55,8 +56,37 @@ defmodule RetroHexChatWeb.ChatLive.Components.BotManagementDialog do
      |> assign(:id, @id)
      |> assign(:is_admin, false)
      |> assign(@owned_defaults)
-     |> assign(:bots, Queries.list_bots())}
+     |> assign(:bots, Queries.list_bots())
+     |> PaginatedList.init(:events, page_size: @events_page_size)}
   end
+
+  @doc """
+  Fetches the next page of the selected bot's event log.
+
+  The island owns this: the parent hook loads the first page when a bot is
+  selected and hands it over, but paging deeper never leaves the component.
+  """
+  @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
+          {:noreply, Phoenix.LiveView.Socket.t()}
+  def handle_event("load_more", _params, %{assigns: %{selected: nil}} = socket) do
+    {:noreply, socket}
+  end
+
+  def handle_event("load_more", _params, socket) do
+    bot_id = socket.assigns.selected.id
+
+    {:noreply, PaginatedList.load(socket, :events, &Queries.list_event_logs(bot_id, &1))}
+  end
+
+  @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
+  def update(%{events: %RetroHexChat.Page{} = page} = assigns, socket) do
+    {:ok,
+     socket
+     |> assign(Map.delete(assigns, :events))
+     |> PaginatedList.reset(:events, page)}
+  end
+
+  def update(assigns, socket), do: {:ok, assign(socket, assigns)}
 
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()
   def render(assigns) do
@@ -70,7 +100,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.BotManagementDialog do
         selected={@selected}
         channels={@channels}
         commands={@commands}
-        events={@events}
+        events={@streams.events}
+        events_state={@paginated.events}
+        events_target={@myself}
         stats={@stats}
         is_admin={@is_admin}
       />

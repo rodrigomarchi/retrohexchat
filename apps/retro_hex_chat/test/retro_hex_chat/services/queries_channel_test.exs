@@ -113,17 +113,17 @@ defmodule RetroHexChat.Services.QueriesChannelTest do
     end
   end
 
-  describe "list_bans/1" do
+  describe "all_bans/1" do
     test "returns all bans for a channel" do
       {:ok, _} = Queries.add_ban("#listbans", "bad1", "op1")
       {:ok, _} = Queries.add_ban("#listbans", "bad2", "op1")
 
-      bans = Queries.list_bans("#listbans")
+      bans = Queries.all_bans("#listbans")
       assert length(bans) == 2
     end
 
     test "returns empty list when no bans" do
-      assert [] == Queries.list_bans("#nobans")
+      assert [] == Queries.all_bans("#nobans")
     end
   end
 

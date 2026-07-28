@@ -801,6 +801,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
       cc_window_channel: nil,
       unread_counts: %{},
       url_catcher_entries: [],
+      url_catcher_dropped: 0,
       ignore_timers: %{},
       pending_invites: [],
       reconnect_active_channel: nil,

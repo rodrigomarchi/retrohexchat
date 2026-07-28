@@ -14,6 +14,7 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
   alias RetroHexChat.Accounts.TrustedDevice
   alias RetroHexChat.Accounts.TrustedDeviceEvent
   alias RetroHexChat.Accounts.TrustedDeviceNick
+  alias RetroHexChat.Page
   alias RetroHexChat.Repo
   alias RetroHexChat.Services.RegisteredNick
 
@@ -22,6 +23,10 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
   @secret_bytes 32
   @default_ttl_days 90
   @max_events 20
+  @default_page_size 50
+
+  # A bound, not a page size — see `list_devices_for_nick/2`.
+  @max_devices 200
 
   @type remember_result :: %{
           device: TrustedDevice.t(),
@@ -64,6 +69,12 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
     end
   end
 
+  @doc """
+  The nicks a device remembers, most recently used first.
+
+  Bounded for the same reason as `list_devices_for_nick/2`: the sort key is
+  `last_used_at`, which changes every time a nick is used on the device.
+  """
   @spec remembered_nicks(integer() | nil) :: [map()]
   def remembered_nicks(nil), do: []
 
@@ -86,7 +97,8 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
         device_id: d.id,
         label: d.label,
         last_used_at: g.last_used_at
-      }
+      },
+      limit: @max_devices
     )
     |> Repo.all()
   end
@@ -207,15 +219,51 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
     :ok
   end
 
-  @spec snapshot_for_nick(String.t(), integer() | nil, String.t() | nil) :: map()
-  def snapshot_for_nick(nickname, current_device_id \\ nil, current_session_ref \\ nil) do
+  @doc """
+  Everything the Trusted Terminals window shows on open.
+
+  `sessions` and `events` are first pages; `devices` is the whole (capped) list.
+
+  The page sizes come from the caller, because how many rows to fetch is a
+  property of the window doing the showing. `:sessions_limit` and `:events_limit`
+  fall back to the domain defaults for anyone who has no opinion.
+  """
+  @spec snapshot_for_nick(String.t(), integer() | nil, String.t() | nil, keyword()) :: map()
+  def snapshot_for_nick(
+        nickname,
+        current_device_id \\ nil,
+        current_session_ref \\ nil,
+        opts \\ []
+      ) do
     %{
       devices: list_devices_for_nick(nickname, current_device_id),
-      sessions: list_sessions_for_nick(nickname, current_session_ref),
-      events: list_events_for_nick(nickname)
+      sessions:
+        list_sessions_for_nick(nickname, current_session_ref, limit_opt(opts, :sessions_limit)),
+      events: list_events_for_nick(nickname, limit_opt(opts, :events_limit))
     }
   end
 
+  @spec limit_opt(keyword(), atom()) :: keyword()
+  defp limit_opt(opts, key) do
+    case Keyword.get(opts, key) do
+      nil -> []
+      limit -> [limit: limit]
+    end
+  end
+
+  @doc """
+  A nick's remembered devices, most recently used first.
+
+  **Capped rather than paginated, deliberately.** The list is ordered by
+  `last_seen_at`, which changes every time a device is used — a keyset cursor
+  over a mutable sort key lets rows move between pages, so a device could be
+  skipped entirely while paging. Skipping one here means the owner cannot see
+  a device they may want to revoke, which is worse than any truncation.
+
+  The cap is set far above any plausible number of live devices per nick, and
+  expired and revoked devices are already excluded, so it exists as a bound
+  rather than as a limit anyone reaches.
+  """
   @spec list_devices_for_nick(String.t(), integer() | nil) :: [map()]
   def list_devices_for_nick(nickname, current_device_id \\ nil) do
     now = DateTime.utc_now()
@@ -231,6 +279,7 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
         where: is_nil(d.revoked_at),
         where: d.expires_at > ^now,
         order_by: [desc: d.last_seen_at],
+        limit: @max_devices,
         select: {d, g}
       )
       |> Repo.all()
@@ -260,18 +309,30 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
     end)
   end
 
-  @spec list_sessions_for_nick(String.t(), String.t() | nil) :: [map()]
-  def list_sessions_for_nick(nickname, current_session_ref \\ nil) do
+  @doc """
+  One page of a nick's live sessions, newest first.
+
+  Ordered by id rather than `connected_at`: sessions are inserted on connect, so
+  id order is the same chronology and the cursor stays stable.
+  """
+  @spec list_sessions_for_nick(String.t(), String.t() | nil, keyword()) :: Page.t()
+  def list_sessions_for_nick(nickname, current_session_ref \\ nil, opts \\ []) do
+    limit = Keyword.get(opts, :limit, @default_page_size)
+    cursor = Keyword.get(opts, :cursor)
+
     from(s in ChatDeviceSession,
       left_join: d in TrustedDevice,
       on: d.id == s.trusted_device_id,
       where: s.nickname == ^nickname,
       where: is_nil(s.disconnected_at),
-      order_by: [desc: s.connected_at],
+      order_by: [desc: s.id],
+      limit: ^Page.limit_with_lookahead(limit),
       select: {s, d}
     )
+    |> then(&if cursor, do: where(&1, [s], s.id < ^cursor), else: &1)
     |> Repo.all()
-    |> Enum.map(&session_row_to_map(&1, current_session_ref))
+    |> Page.new(limit, fn {session, _device} -> session.id end)
+    |> Page.map(&session_row_to_map(&1, current_session_ref))
   end
 
   defp session_row_to_map({session, device}, current_session_ref) do
@@ -302,20 +363,31 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
     Map.get(client_info, key) || Map.get(device, field)
   end
 
-  @spec list_events_for_nick(String.t(), non_neg_integer()) :: [map()]
-  def list_events_for_nick(nickname, limit \\ @max_events) do
+  @doc """
+  One page of a nick's security events, newest first.
+
+  Ordered by id rather than `inserted_at`: the log is append-only, so id order is
+  the same chronology and gives a cursor that cannot tie or drift.
+  """
+  @spec list_events_for_nick(String.t(), keyword()) :: Page.t()
+  def list_events_for_nick(nickname, opts \\ []) do
+    limit = Keyword.get(opts, :limit, @max_events)
+    cursor = Keyword.get(opts, :cursor)
+
     from(e in TrustedDeviceEvent,
       join: n in RegisteredNick,
       on: n.id == e.registered_nick_id,
       left_join: d in TrustedDevice,
       on: d.id == e.trusted_device_id,
       where: n.nickname == ^nickname,
-      order_by: [desc: e.inserted_at],
-      limit: ^limit,
+      order_by: [desc: e.id],
+      limit: ^Page.limit_with_lookahead(limit),
       select: {e, d}
     )
+    |> then(&if cursor, do: where(&1, [e], e.id < ^cursor), else: &1)
     |> Repo.all()
-    |> Enum.map(fn {event, device} ->
+    |> Page.new(limit, fn {event, _device} -> event.id end)
+    |> Page.map(fn {event, device} ->
       %{
         id: event.id,
         action: event.action,

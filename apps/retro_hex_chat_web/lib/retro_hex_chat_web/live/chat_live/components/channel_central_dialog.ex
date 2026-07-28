@@ -32,6 +32,18 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
 
   @id "channel-central-dialog"
 
+  # How many ban/exception rows the window will draw.
+  #
+  # These lists cannot be paginated by cursor: they are the channel process's own
+  # `MapSet`s of masks, not database rows — bans are only persisted for
+  # *registered* channels, so the database is a partial record and the process
+  # state is the authority. A ceiling on the render is therefore the honest
+  # answer, and it is disclosed rather than applied in silence.
+  #
+  # Set far above any real moderation list; it exists so a pathological channel
+  # cannot draw tens of thousands of rows into the DOM.
+  @max_listed_entries 200
+
   @spec id() :: String.t()
   def id, do: @id
 
@@ -432,9 +444,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()
   def render(assigns) do
     state = assigns.channel_central_state
+    list = channel_central_list_entries(state, assigns.channel_central_list_type)
 
     assigns =
       assign(assigns,
+        cc_list_total: list.total,
         cc_topic: channel_central_topic(state),
         cc_topic_set_by: channel_central_topic_set_by(state),
         cc_topic_set_at: channel_central_topic_set_at(state, assigns.timezone),
@@ -443,7 +457,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
         cc_welcome_message: channel_central_welcome_message(state),
         cc_throttle_seconds: channel_central_throttle_seconds(state),
         cc_modes: channel_central_modes(state),
-        cc_list_entries: channel_central_list_entries(state, assigns.channel_central_list_type)
+        cc_list_entries: list.entries
       )
 
     ~H"""
@@ -474,6 +488,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
         modes={@cc_modes}
         list_type={@channel_central_list_type}
         list_entries={@cc_list_entries}
+        list_total={@cc_list_total}
         list_selected={@channel_central_list_selected}
         show_add_list_entry_dialog={@show_cc_add_list_entry_dialog}
         show_transfer_dialog={@show_cc_transfer_dialog}
@@ -850,12 +865,20 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
 
   # ── Derived render data (from channel_central_state) ─────────────
 
-  defp channel_central_list_entries(nil, _list_type), do: []
+  @doc false
+  @spec channel_central_list_entries(map() | nil, String.t()) :: %{
+          entries: [map()],
+          total: non_neg_integer()
+        }
+  def channel_central_list_entries(nil, _list_type), do: %{entries: [], total: 0}
 
-  defp channel_central_list_entries(state, list_type) do
-    state
-    |> Map.get(list_state_key(list_type), [])
-    |> Enum.map(&to_list_entry/1)
+  def channel_central_list_entries(state, list_type) do
+    all = state |> Map.get(list_state_key(list_type), []) |> Enum.to_list()
+
+    %{
+      entries: all |> Enum.take(@max_listed_entries) |> Enum.map(&to_list_entry/1),
+      total: length(all)
+    }
   end
 
   defp channel_central_modes(nil), do: %{}

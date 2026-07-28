@@ -103,7 +103,9 @@ defmodule RetroHexChatWeb.AdminUsersFeatureTest do
 
       html = render(view)
 
-      assert html =~ "*** User List"
+      # The window renders rows now, not the command's text block.
+      assert html =~ ~s(data-testid="admin-users-table")
+      assert html =~ ~s(data-row-id="#{nick}")
       assert html =~ nick
       assert html =~ "No active server bans"
 
@@ -135,7 +137,7 @@ defmodule RetroHexChatWeb.AdminUsersFeatureTest do
       html = render(view)
 
       assert html =~ "#{nick} has been server-banned"
-      assert Enum.any?(ServerBans.list_active_bans(), &(&1.nickname == nick))
+      assert Enum.any?(ServerBans.all_active_bans(), &(&1.nickname == nick))
 
       view
       |> form("#admin-users-unban-form", %{"nick" => nick})
@@ -144,7 +146,7 @@ defmodule RetroHexChatWeb.AdminUsersFeatureTest do
       html = render(view)
 
       assert html =~ "#{nick} has been unbanned from the server."
-      refute Enum.any?(ServerBans.list_active_bans(), &(&1.nickname == nick))
+      refute Enum.any?(ServerBans.all_active_bans(), &(&1.nickname == nick))
 
       view
       |> form("#admin-users-mute-form", %{"nick" => nick, "duration" => "15m"})

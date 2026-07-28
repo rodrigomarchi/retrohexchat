@@ -4,6 +4,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Server do
 
   alias RetroHexChat.Admin
   alias RetroHexChat.Admin.AuditLogs
+  alias RetroHexChat.Admin.Table
   alias RetroHexChat.Commands.Handler
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.Services.Queries
@@ -106,7 +107,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Server do
         Enum.join([header | lines], "\n")
       end
 
-    {:ok, :system, %{content: text}}
+    {:ok, :system, %{content: text, table: settings_table(settings)}}
   end
 
   def execute([], _context) do
@@ -118,6 +119,25 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Server do
   end
 
   @spec validate_setting_value(String.t(), String.t()) :: :ok | {:error, String.t()}
+  defp settings_table(settings) do
+    Table.from_list(
+      [
+        Table.column(:key, dgettext("admin", "Key")),
+        Table.column(:value, dgettext("admin", "Value")),
+        Table.column(:updated_by, dgettext("admin", "Updated by"))
+      ],
+      settings,
+      fn setting ->
+        %{
+          id: setting.key,
+          key: setting.key,
+          value: setting.value,
+          updated_by: setting.updated_by
+        }
+      end
+    )
+  end
+
   defp validate_setting_value("max_channels", value) do
     case Integer.parse(value) do
       {n, ""} when n > 0 -> :ok

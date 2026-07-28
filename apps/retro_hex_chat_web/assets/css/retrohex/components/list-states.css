@@ -1,0 +1,109 @@
+/* Shared states for every paginated list: empty, end, load-more, truncated,
+   error, skeleton. The empty state itself is UI.EmptyState, which already
+   carries its own layout — only the list-specific trim lives here. The
+   per-dialog empty states these replace each carried their own prefix (cl-,
+   uc-, ul-, pf-, cm-, ab-, nl-, tm-, cc-, ar-, iv-, al-). */
+
+.list-empty-state {
+  @apply py-retro-16;
+}
+
+.list-empty-state__text {
+  @apply text-muted-foreground text-xs;
+}
+
+/* ── End of list ── */
+
+.list-end-marker {
+  @apply flex items-center gap-retro-8 px-retro-12 py-retro-8;
+}
+
+.list-end-marker__rule {
+  @apply bg-border h-px flex-1;
+}
+
+.list-end-marker__label {
+  @apply text-muted-foreground shrink-0 text-xs uppercase tracking-wide;
+}
+
+/* ── Load more (keyboard path to pagination) ── */
+
+.list-load-more {
+  @apply flex justify-center py-retro-8;
+}
+
+.list-load-more__button {
+  @apply shadow-retro-raised bg-surface px-retro-12 py-retro-4 text-xs;
+}
+
+.list-load-more__button:active:not(:disabled) {
+  @apply shadow-retro-sunken;
+}
+
+.list-load-more__button:disabled {
+  @apply text-muted-foreground cursor-default;
+}
+
+/* ── Truncation disclosure ── */
+
+.list-count-strip {
+  @apply text-muted-foreground px-retro-8 py-retro-4 text-center text-xs;
+}
+
+/* ── Failed page ── */
+
+.list-error-retry {
+  @apply flex items-center justify-center gap-retro-8 px-retro-12 py-retro-8 text-xs;
+}
+
+.list-error-retry__icon {
+  @apply text-destructive shrink-0;
+}
+
+.list-error-retry__button {
+  @apply shadow-retro-raised bg-surface px-retro-8 py-retro-2 text-xs;
+}
+
+.list-error-retry__button:active {
+  @apply shadow-retro-sunken;
+}
+
+/* ── First-load skeleton ── */
+
+.list-skeleton {
+  @apply flex flex-col gap-retro-4 p-retro-8;
+}
+
+/* Sizing only — the pulse and surface come from UI.Skeleton. */
+.list-skeleton__row {
+  @apply h-retro-16 w-full;
+}
+
+.list-skeleton__row:nth-child(even) {
+  @apply w-4/5;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .list-skeleton__row {
+    animation: none;
+  }
+}
+
+/* ── Admin listings rendered as rows ── */
+
+.admin-table__grid {
+  @apply border-collapse;
+}
+
+.admin-table__head {
+  @apply bg-surface sticky top-0 px-retro-6 py-retro-2 text-left font-bold;
+  @apply border-b border-border;
+}
+
+.admin-table__row:nth-child(even) {
+  @apply bg-muted/30;
+}
+
+.admin-table__cell {
+  @apply px-retro-6 py-retro-2 align-top;
+}
