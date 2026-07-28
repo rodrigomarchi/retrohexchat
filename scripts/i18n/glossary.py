@@ -81,6 +81,17 @@ _ROWS = {
     "Download":     ("Baixar", "Transferir", "Descargar", "Télécharger", "Herunterladen", "Scarica", "Downloaden", "Pobierz", "Скачать", "Unduh", "ダウンロード", "下载", "下載"),
     "Export":       ("Exportar", "Exportar", "Exportar", "Exporter", "Exportieren", "Esporta", "Exporteren", "Eksportuj", "Экспорт", "Ekspor", "エクスポート", "导出", "匯出"),
 
+    # ── Long lists ────────────────────────────────────────────
+    # The vocabulary every paginated list draws on. Curated here because these
+    # are the labels a reader meets in fourteen different windows: they have to
+    # read the same in all of them.
+    "Load more":    ("Carregar mais", "Carregar mais", "Cargar más", "Charger plus", "Mehr laden", "Carica altri", "Meer laden", "Załaduj więcej", "Загрузить ещё", "Muat lebih banyak", "さらに読み込む", "加载更多", "載入更多"),
+    "Load More":    ("Carregar mais", "Carregar mais", "Cargar más", "Charger plus", "Mehr laden", "Carica altri", "Meer laden", "Załaduj więcej", "Загрузить ещё", "Muat lebih banyak", "さらに読み込む", "加载更多", "載入更多"),
+    "Try again":    ("Tentar novamente", "Tentar novamente", "Reintentar", "Réessayer", "Erneut versuchen", "Riprova", "Opnieuw proberen", "Spróbuj ponownie", "Повторить попытку", "Coba lagi", "再試行", "重试", "重試"),
+    "End of list":  ("Fim da lista", "Fim da lista", "Fin de la lista", "Fin de la liste", "Ende der Liste", "Fine dell'elenco", "Einde van de lijst", "Koniec listy", "Конец списка", "Akhir daftar", "リストの終わり", "列表结束", "清單結束"),
+    "Revoke":       ("Revogar", "Revogar", "Revocar", "Révoquer", "Widerrufen", "Revoca", "Intrekken", "Odwołaj", "Отозвать", "Cabut", "失効", "撤销", "撤銷"),
+    "Forget":       ("Esquecer", "Esquecer", "Olvidar", "Oublier", "Vergessen", "Dimentica", "Vergeten", "Zapomnij", "Забыть", "Lupakan", "削除", "忘记", "忘記"),
+
     # ── Application chrome ────────────────────────────────────
     "Help":         ("Ajuda", "Ajuda", "Ayuda", "Aide", "Hilfe", "Aiuto", "Help", "Pomoc", "Справка", "Bantuan", "ヘルプ", "帮助", "說明"),
     "Settings":     ("Configurações", "Definições", "Ajustes", "Paramètres", "Einstellungen", "Impostazioni", "Instellingen", "Ustawienia", "Настройки", "Pengaturan", "設定", "设置", "設定"),

@@ -16,7 +16,7 @@ msgstr ""
 msgid "+s and +p are mutually exclusive"
 msgstr "+s 和 +p 相互排斥"
 
-#: lib/retro_hex_chat/channels/server.ex:1134
+#: lib/retro_hex_chat/channels/server.ex:1173
 #, elixir-autogen, elixir-format
 msgid "Already in channel"
 msgstr "已经在频道中"
@@ -26,8 +26,8 @@ msgstr "已经在频道中"
 msgid "Bad channel key (+k)"
 msgstr "不良频道密钥 (+k)"
 
-#: lib/retro_hex_chat/channels/server.ex:454
-#: lib/retro_hex_chat/channels/server.ex:908
+#: lib/retro_hex_chat/channels/server.ex:464
+#: lib/retro_hex_chat/channels/server.ex:922
 #, elixir-autogen, elixir-format
 msgid "Banned"
 msgstr "被禁绝"
@@ -62,20 +62,20 @@ msgstr "频道只邀请( +i)"
 msgid "Channel is moderated (+m). You need voice (+v) to speak."
 msgstr "频道由主持人主持(+m). 您需要语音( +v) 才能发言 。"
 
-#: lib/retro_hex_chat/channels/server.ex:662
+#: lib/retro_hex_chat/channels/server.ex:674
 #, elixir-autogen, elixir-format
 msgid "Channel is not invite-only"
 msgstr "频道不只邀请"
 
-#: lib/retro_hex_chat/channels/server.ex:1159
+#: lib/retro_hex_chat/channels/server.ex:1198
 #, elixir-autogen, elixir-format
 msgid "Channel join throttle active, please try again shortly"
 msgstr "频道加入节流阀活动, 请再试一次"
 
-#: lib/retro_hex_chat/channels/server.ex:79
-#: lib/retro_hex_chat/channels/server.ex:82
-#: lib/retro_hex_chat/channels/server.ex:264
-#: lib/retro_hex_chat/channels/server.ex:267
+#: lib/retro_hex_chat/channels/server.ex:89
+#: lib/retro_hex_chat/channels/server.ex:92
+#: lib/retro_hex_chat/channels/server.ex:274
+#: lib/retro_hex_chat/channels/server.ex:277
 #, elixir-autogen, elixir-format
 msgid "Channel not found"
 msgstr "找不到频道"
@@ -84,9 +84,9 @@ msgstr "找不到频道"
 #: lib/retro_hex_chat/channels/policy.ex:117
 #: lib/retro_hex_chat/channels/policy.ex:142
 #: lib/retro_hex_chat/channels/policy.ex:143
-#: lib/retro_hex_chat/channels/server.ex:705
-#: lib/retro_hex_chat/channels/server.ex:719
-#: lib/retro_hex_chat/channels/server.ex:722
+#: lib/retro_hex_chat/channels/server.ex:717
+#: lib/retro_hex_chat/channels/server.ex:731
+#: lib/retro_hex_chat/channels/server.ex:734
 #, elixir-autogen, elixir-format
 msgid "Insufficient privileges"
 msgstr "权限不足"
@@ -102,43 +102,43 @@ msgstr "设置频道模式的权限不足"
 msgid "Invalid mode string: must start with + or -"
 msgstr "无效模式字符串:必须从 + 或 - 开始"
 
-#: lib/retro_hex_chat/channels/server.ex:665
+#: lib/retro_hex_chat/channels/server.ex:677
 #, elixir-autogen, elixir-format
 msgid "Knocking is disabled for this channel"
 msgstr "此频道禁用敲门"
 
-#: lib/retro_hex_chat/channels/server.ex:359
+#: lib/retro_hex_chat/channels/server.ex:369
 #, elixir-autogen, elixir-format
 msgid "Not in channel"
 msgstr "不在频道中"
 
-#: lib/retro_hex_chat/channels/server.ex:772
+#: lib/retro_hex_chat/channels/server.ex:785
 #, elixir-autogen, elixir-format
 msgid "Only the channel owner can transfer ownership"
 msgstr "只有频道所有者才能转让所有权"
 
-#: lib/retro_hex_chat/channels/server.ex:979
+#: lib/retro_hex_chat/channels/server.ex:993
 #, elixir-autogen, elixir-format
 msgid "User %{target} is not in channel"
 msgstr "用户 %{target} 不在频道"
 
-#: lib/retro_hex_chat/channels/server.ex:702
-#: lib/retro_hex_chat/channels/server.ex:776
+#: lib/retro_hex_chat/channels/server.ex:714
+#: lib/retro_hex_chat/channels/server.ex:790
 #, elixir-autogen, elixir-format
 msgid "User is not in channel"
 msgstr "用户不在频道"
 
-#: lib/retro_hex_chat/channels/server.ex:672
+#: lib/retro_hex_chat/channels/server.ex:684
 #, elixir-autogen, elixir-format
 msgid "You are already in that channel"
 msgstr "你已经在频道里了"
 
-#: lib/retro_hex_chat/channels/server.ex:669
+#: lib/retro_hex_chat/channels/server.ex:681
 #, elixir-autogen, elixir-format
 msgid "You are banned from that channel"
 msgstr "禁止您进入频道"
 
-#: lib/retro_hex_chat/channels/server.ex:1022
+#: lib/retro_hex_chat/channels/server.ex:1036
 #, elixir-autogen, elixir-format
 msgid "You are muted in this channel"
 msgstr "你在这个频道里哑了"
@@ -155,10 +155,10 @@ msgstr "你不在这频道里"
 msgid "You cannot ban yourself"
 msgstr "你不能禁锢自己"
 
-#: lib/retro_hex_chat/channels/server.ex:515
-#: lib/retro_hex_chat/channels/server.ex:541
-#: lib/retro_hex_chat/channels/server.ex:567
-#: lib/retro_hex_chat/channels/server.ex:593
+#: lib/retro_hex_chat/channels/server.ex:525
+#: lib/retro_hex_chat/channels/server.ex:551
+#: lib/retro_hex_chat/channels/server.ex:577
+#: lib/retro_hex_chat/channels/server.ex:603
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator"
 msgstr "您必须是频道操作员"
@@ -168,8 +168,8 @@ msgstr "您必须是频道操作员"
 msgid "You must be a channel operator to change the topic"
 msgstr "您必须是频道操作员才能更改话题"
 
-#: lib/retro_hex_chat/channels/server.ex:611
-#: lib/retro_hex_chat/channels/server.ex:924
+#: lib/retro_hex_chat/channels/server.ex:622
+#: lib/retro_hex_chat/channels/server.ex:938
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to unban users"
 msgstr "您必须是取消禁用用户的频道操作员"

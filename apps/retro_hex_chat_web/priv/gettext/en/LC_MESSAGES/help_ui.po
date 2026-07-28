@@ -101,7 +101,7 @@ msgstr "Audio Call:"
 msgid "Auto-Respond"
 msgstr "Auto-Respond"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "Autocomplete"
 msgstr "Autocomplete"
@@ -206,7 +206,7 @@ msgstr "Color Palette"
 msgid "Colors"
 msgstr "Colors"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "Command Syntax Tooltip"
 msgstr "Command Syntax Tooltip"
@@ -314,7 +314,7 @@ msgstr ""
 "Empty state messages disappear automatically when content arrives. The text "
 "is not selectable."
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:43
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "Enhanced History"
 msgstr "Enhanced History"
@@ -623,7 +623,7 @@ msgstr "Roles"
 msgid "Save to your address book."
 msgstr "Save to your address book."
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:52
 #: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "Search"
@@ -641,7 +641,7 @@ msgstr "Sections"
 
 #: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:33
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:25
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:40
 #: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:60
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:56
 #: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:65
@@ -677,7 +677,7 @@ msgstr "Services:"
 msgid "Set Nick Color:"
 msgstr "Set Nick Color:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "Shortcut Cheatsheet"
 msgstr "Shortcut Cheatsheet"
@@ -1393,7 +1393,7 @@ msgstr "Desktop:"
 msgid "Edit"
 msgstr "Edit"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:47
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:54
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:54
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:224
 #, elixir-autogen, elixir-format
@@ -1761,7 +1761,7 @@ msgstr "Timers are lost on disconnect or page reload"
 msgid "Toolbar"
 msgstr "Toolbar"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:46
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "User Lookup"
 msgstr "User Lookup"
@@ -1948,3 +1948,93 @@ msgstr "Use the Profile window to change your nickname or edit your bio. Nicknam
 #, elixir-autogen, elixir-format
 msgid "User Modes currently exposes the wallops (+w) setting, which opts you in to operator broadcast messages. Further IRC user modes land in this window."
 msgstr "User Modes currently exposes the wallops (+w) setting, which opts you in to operator broadcast messages. Further IRC user modes land in this window."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_lists.html.heex:62
+#, elixir-autogen, elixir-format
+msgid "A few lists show a high fixed number of entries instead of paging: the user list, remembered nicknames, your conversations, and the trusted terminals themselves. These are ordered by something that changes while you look at them — who spoke last, when a terminal was last used — so paging through them could skip an entry that moved. Where that risk exists the whole list is shown up to a generous limit, and any truncation is stated rather than hidden."
+msgstr "A few lists show a high fixed number of entries instead of paging: the user list, remembered nicknames, your conversations, and the trusted terminals themselves. These are ordered by something that changes while you look at them — who spoke last, when a terminal was last used — so paging through them could skip an entry that moved. Where that risk exists the whole list is shown up to a generous limit, and any truncation is stated rather than hidden."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_lists.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "A page loads only after you scroll it yourself. The chat scrolling to a new message never loads history on its own."
+msgstr "A page loads only after you scroll it yourself. The chat scrolling to a new message never loads history on its own."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_lists.html.heex:53
+#, elixir-autogen, elixir-format
+msgid "Empty"
+msgstr "Empty"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_lists.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "End of list"
+msgstr "End of list"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_lists.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "Every paginated list also has a Load More button beneath it. It does exactly what reaching the edge does, and it is the way to page through a list with the keyboard or a screen reader, without a scroll gesture. It disappears when there is nothing left to load."
+msgstr "Every paginated list also has a Load More button beneath it. It does exactly what reaching the edge does, and it is the way to page through a list with the keyboard or a screen reader, without a scroll gesture. It disappears when there is nothing left to load."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_lists.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "In the message history, older messages load above what you are reading and your place is kept — the text you were reading does not move."
+msgstr "In the message history, older messages load above what you are reading and your place is kept — the text you were reading does not move."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_lists.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "Knowing where a list ends"
+msgstr "Knowing where a list ends"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_lists.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Lists that can grow without limit — the message history, the security log of a terminal, a bot's event log — do not load all at once. They load one page at a time, and fetch the next page as you approach the edge of what is already there."
+msgstr "Lists that can grow without limit — the message history, the security log of a terminal, a bot's event log — do not load all at once. They load one page at a time, and fetch the next page as you approach the edge of what is already there."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_lists.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "Load More"
+msgstr "Load More"
+
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "Long Lists"
+msgstr "Long Lists"
+
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "Long lists load the next page as you scroll toward the edge. There is no shortcut for that gesture, so every paginated list also carries a Load More button beneath it — that button is the keyboard path through a long list."
+msgstr "Long lists load the next page as you scroll toward the edge. There is no shortcut for that gesture, so every paginated list also carries a Load More button beneath it — that button is the keyboard path through a long list."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_lists.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "Scroll toward the edge of a list and the next page loads shortly before you reach it, so reading is not interrupted."
+msgstr "Scroll toward the edge of a list and the next page loads shortly before you reach it, so reading is not interrupted."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_lists.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "Scrolling"
+msgstr "Scrolling"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_lists.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "Showing N of M"
+msgstr "Showing N of M"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_lists.html.heex:60
+#, elixir-autogen, elixir-format
+msgid "Why some lists are capped instead"
+msgstr "Why some lists are capped instead"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_lists.html.heex:53
+#, elixir-autogen, elixir-format
+msgid "— A list with nothing in it says so plainly, so an empty list is never mistaken for one still loading."
+msgstr "— A list with nothing in it says so plainly, so an empty list is never mistaken for one still loading."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_lists.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "— A marker closes the list when everything has been loaded. Without it, the end of a list is indistinguishable from a page that never arrived."
+msgstr "— A marker closes the list when everything has been loaded. Without it, the end of a list is indistinguishable from a page that never arrived."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_lists.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "— Some lists are capped rather than paginated, and say so. A count like this means the list on screen is not the whole list."
+msgstr "— Some lists are capped rather than paginated, and say so. A count like this means the list on screen is not the whole list."

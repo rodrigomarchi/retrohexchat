@@ -21,12 +21,12 @@ msgstr "    %{nickname} [%{level}] (added by %{added_by})"
 msgid "  %{client} -> relay port %{alloc_port}"
 msgstr "  %{client} -> relay port %{alloc_port}"
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:99
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:100
 #, elixir-autogen, elixir-format
 msgid "  %{key} = '%{value}' (by %{updated_by})"
 msgstr "  %{key} = '%{value}' (by %{updated_by})"
 
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:155
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:141
 #, elixir-autogen, elixir-format
 msgid "  %{name} (%{member_count} members)%{reg}"
 msgstr "  %{name} (%{member_count} members)%{reg}"
@@ -41,12 +41,12 @@ msgstr "  %{name} (%{pid})"
 msgid "  %{nickname} [%{level}] (added by %{added_by})"
 msgstr "  %{nickname} [%{level}] (added by %{added_by})"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:196
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:254
 #, elixir-autogen, elixir-format
 msgid "  %{nickname} [registered] [%{online}]"
 msgstr "  %{nickname} [registered] [%{online}]"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:210
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:268
 #, elixir-autogen, elixir-format
 msgid "  %{nickname} — %{reason} (by %{banned_by}, %{expires})"
 msgstr "  %{nickname} — %{reason} (by %{banned_by}, %{expires})"
@@ -71,7 +71,7 @@ msgstr "  Access list: (empty)"
 msgid "  Active allocations: %{active}\n"
 msgstr "  Active allocations: %{active}\n"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:72
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:69
 #, elixir-autogen, elixir-format
 msgid "  Admin: %{is_admin}\n"
 msgstr "  Admin: %{is_admin}\n"
@@ -81,7 +81,7 @@ msgstr "  Admin: %{is_admin}\n"
 msgid "  Atoms: %{atom}\n"
 msgstr "  Atoms: %{atom}\n"
 
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:78
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:72
 #, elixir-autogen, elixir-format
 msgid "  Bans: %{state_bans_count}\n"
 msgstr "  Bans: %{state_bans_count}\n"
@@ -111,13 +111,13 @@ msgstr "  Founder: %{founder}\n"
 msgid "  Identified: %{identified}"
 msgstr "  Identified: %{identified}"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:71
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:68
 #, elixir-autogen, elixir-format
 msgid "  Identified: %{identified}\n"
 msgstr "  Identified: %{identified}\n"
 
 #: lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:31
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:69
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:66
 #, elixir-autogen, elixir-format
 msgid "  Last seen: %{last_seen_at}\n"
 msgstr "  Last seen: %{last_seen_at}\n"
@@ -132,23 +132,23 @@ msgstr "  Listen port: %{listen_port}\n"
 msgid "  Listeners: %{listener_count}\n"
 msgstr "  Listeners: %{listener_count}\n"
 
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:73
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:67
 #, elixir-autogen, elixir-format
 msgid "  Members (%{member_count}): %{members}\n"
 msgstr "  Members (%{member_count}): %{members}\n"
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:40
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:77
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:71
 #, elixir-autogen, elixir-format
 msgid "  Modes: %{modes}\n"
 msgstr "  Modes: %{modes}\n"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:54
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:51
 #, elixir-autogen, elixir-format
 msgid "  Online: %{online}"
 msgstr "  Online: %{online}"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:70
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:67
 #, elixir-autogen, elixir-format
 msgid "  Online: %{online}\n"
 msgstr "  Online: %{online}\n"
@@ -165,22 +165,22 @@ msgstr "  Processes: %{processes}\n"
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:36
 #: lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:28
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:66
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:63
 #, elixir-autogen, elixir-format
 msgid "  Registered: %{registered_at}\n"
 msgstr "  Registered: %{registered_at}\n"
 
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:65
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:59
 #, elixir-autogen, elixir-format
 msgid "  Registered: no"
 msgstr "  Registered: no"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:53
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:50
 #, elixir-autogen, elixir-format
 msgid "  Registered: no\n"
 msgstr "  Registered: no\n"
 
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:61
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:55
 #, elixir-autogen, elixir-format
 msgid "  Registered: yes (founder: %{founder_nickname})"
 msgstr "  Registered: yes (founder: %{founder_nickname})"
@@ -195,7 +195,7 @@ msgstr "  Relay IP: %{relay_ip}\n"
 msgid "  Relay ports: %{used_ports}/%{total_ports} in use\n"
 msgstr "  Relay ports: %{used_ports}/%{total_ports} in use\n"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:73
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:70
 #, elixir-autogen, elixir-format
 msgid "  Server operator: %{is_oper}"
 msgstr "  Server operator: %{is_oper}"
@@ -206,7 +206,7 @@ msgid "  Status: running\n"
 msgstr "  Status: running\n"
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:39
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:72
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:66
 #, elixir-autogen, elixir-format
 msgid "  Topic: %{topic}\n"
 msgstr "  Topic: %{topic}\n"
@@ -216,7 +216,7 @@ msgstr "  Topic: %{topic}\n"
 msgid "  Total: %{total}\n"
 msgstr "  Total: %{total}\n"
 
-#: lib/retro_hex_chat/commands/handlers/admin/log.ex:48
+#: lib/retro_hex_chat/commands/handlers/admin/log.ex:77
 #, elixir-autogen, elixir-format
 msgid "  [%{time}] %{actor} %{action}%{target}%{details}"
 msgstr "  [%{time}] %{actor} %{action}%{target}%{details}"
@@ -236,7 +236,7 @@ msgstr " for %{duration_seconds}"
 msgid " permanently"
 msgstr " permanently"
 
-#: lib/retro_hex_chat/commands/handlers/admin/log.ex:39
+#: lib/retro_hex_chat/commands/handlers/admin/log.ex:68
 #, elixir-autogen, elixir-format
 msgid " → %{target_type}:%{target_id}"
 msgstr " → %{target_type}:%{target_id}"
@@ -261,7 +261,7 @@ msgstr "%{nickname} has been server-banned%{duration_text}."
 msgid "%{nickname} has been set as %{role}."
 msgstr "%{nickname} has been set as %{role}."
 
-#: lib/retro_hex_chat/admin/server_bans.ex:51
+#: lib/retro_hex_chat/admin/server_bans.ex:54
 #, elixir-autogen, elixir-format
 msgid "%{nickname} has been unbanned"
 msgstr "%{nickname} has been unbanned"
@@ -276,7 +276,7 @@ msgstr "%{nickname} has been unbanned from the server."
 msgid "%{nickname} has been unmuted."
 msgstr "%{nickname} has been unmuted."
 
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:55
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:49
 #, elixir-autogen, elixir-format
 msgid "%{nick} (%{role})"
 msgstr "%{nick} (%{role})"
@@ -286,17 +286,17 @@ msgstr "%{nick} (%{role})"
 msgid "%{old_nick} has been renamed to %{new_nick}."
 msgstr "%{old_nick} has been renamed to %{new_nick}."
 
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:68
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:62
 #, elixir-autogen, elixir-format
 msgid "(none)"
 msgstr "(none)"
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:82
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:83
 #, elixir-autogen, elixir-format
 msgid "*** %{key} = '%{value}'"
 msgstr "*** %{key} = '%{value}'"
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:83
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:84
 #, elixir-autogen, elixir-format
 msgid "*** %{key} is not set"
 msgstr "*** %{key} is not set"
@@ -305,24 +305,24 @@ msgstr "*** %{key} is not set"
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:54
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:88
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:97
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:92
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:99
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:107
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:86
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:93
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:101
 #: lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:15
 #: lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:45
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:57
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:84
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:93
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:103
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:112
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:120
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:128
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:143
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:58
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:81
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:90
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:100
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:109
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:117
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:125
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:140
 #, elixir-autogen, elixir-format
 msgid "*** %{message}"
 msgstr "*** %{message}"
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:36
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:37
 #, elixir-autogen, elixir-format
 msgid "*** %{server_name} ***%{desc_line}\n"
 msgstr "*** %{server_name} ***%{desc_line}\n"
@@ -347,7 +347,7 @@ msgstr "*** Active Channel Processes (%{channels_count}) ***"
 msgid "*** Active TURN Allocations (%{entries_count}) ***"
 msgstr "*** Active TURN Allocations (%{entries_count}) ***"
 
-#: lib/retro_hex_chat/commands/handlers/admin/log.ex:23
+#: lib/retro_hex_chat/commands/handlers/admin/log.ex:29
 #, elixir-autogen, elixir-format
 msgid "*** Audit Log (%{entries_count} entries) ***"
 msgstr "*** Audit Log (%{entries_count} entries) ***"
@@ -357,17 +357,17 @@ msgstr "*** Audit Log (%{entries_count} entries) ***"
 msgid "*** BEAM Memory ***\n"
 msgstr "*** BEAM Memory ***\n"
 
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:120
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:114
 #, elixir-autogen, elixir-format
 msgid "*** Ban List for %{channel} (%{bans_count}) ***"
 msgstr "*** Ban List for %{channel} (%{bans_count}) ***"
 
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:33
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:27
 #, elixir-autogen, elixir-format
 msgid "*** Channel List (%{filtered_count}) ***"
 msgstr "*** Channel List (%{filtered_count}) ***"
 
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:71
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:65
 #, elixir-autogen, elixir-format
 msgid "*** Channel: %{channel}\n"
 msgstr "*** Channel: %{channel}\n"
@@ -397,32 +397,32 @@ msgstr "*** No active TURN allocations."
 msgid "*** No active channel processes."
 msgstr "*** No active channel processes."
 
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:30
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:24
 #, elixir-autogen, elixir-format
 msgid "*** No active channels."
 msgstr "*** No active channels."
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:164
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:162
 #, elixir-autogen, elixir-format
 msgid "*** No active server bans."
 msgstr "*** No active server bans."
 
-#: lib/retro_hex_chat/commands/handlers/admin/log.ex:20
+#: lib/retro_hex_chat/commands/handlers/admin/log.ex:26
 #, elixir-autogen, elixir-format
 msgid "*** No audit log entries found."
 msgstr "*** No audit log entries found."
 
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:117
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:111
 #, elixir-autogen, elixir-format
 msgid "*** No bans in %{channel}."
 msgstr "*** No bans in %{channel}."
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:93
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:94
 #, elixir-autogen, elixir-format
 msgid "*** No server settings configured."
 msgstr "*** No server settings configured."
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:28
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:31
 #, elixir-autogen, elixir-format
 msgid "*** No users found."
 msgstr "*** No users found."
@@ -447,12 +447,12 @@ msgstr "*** SYSTEM NUKED — %{total} records destroyed ***"
 msgid "*** SYSTEM NUKED — No records to delete."
 msgstr "*** SYSTEM NUKED — No records to delete."
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:167
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:165
 #, elixir-autogen, elixir-format
 msgid "*** Server Ban List (%{filtered_count}) ***"
 msgstr "*** Server Ban List (%{filtered_count}) ***"
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:95
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:96
 #, elixir-autogen, elixir-format
 msgid "*** Server Settings ***"
 msgstr "*** Server Settings ***"
@@ -467,13 +467,13 @@ msgstr "*** TURN Server Stats ***\n"
 msgid "*** TURN server is not configured (listener_count = 0)"
 msgstr "*** TURN server is not configured (listener_count = 0)"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:31
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:247
 #, elixir-autogen, elixir-format
 msgid "*** User List (%{entries_count} results) ***"
 msgstr "*** User List (%{entries_count} results) ***"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:52
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:65
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:49
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:62
 #, elixir-autogen, elixir-format
 msgid "*** User: %{nick}\n"
 msgstr "*** User: %{nick}\n"
@@ -488,7 +488,7 @@ msgstr "*** [ChanServ] %{name}\n"
 msgid "*** [NickServ] %{nick}\n"
 msgstr "*** [NickServ] %{nick}\n"
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:41
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:42
 #, elixir-autogen, elixir-format
 msgid "Active channels: %{channel_count}\n"
 msgstr "Active channels: %{channel_count}\n"
@@ -498,7 +498,7 @@ msgstr "Active channels: %{channel_count}\n"
 msgid "Admin roles removed from %{nickname}."
 msgstr "Admin roles removed from %{nickname}."
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:44
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:45
 #, elixir-autogen, elixir-format
 msgid "BEAM uptime: %{uptime_days}d %{remaining_hours}h"
 msgstr "BEAM uptime: %{uptime_days}d %{remaining_hours}h"
@@ -523,7 +523,7 @@ msgstr "Channel %{channel_name} has been deleted."
 msgid "Kicked by administrator"
 msgstr "Kicked by administrator"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:208
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:266
 #, elixir-autogen, elixir-format
 msgid "No reason"
 msgstr "No reason"
@@ -533,7 +533,7 @@ msgstr "No reason"
 msgid "No reason given"
 msgstr "No reason given"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:139
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:136
 #, elixir-autogen, elixir-format
 msgid "Only root admins can promote users to admin"
 msgstr "Only root admins can promote users to admin"
@@ -553,12 +553,12 @@ msgstr "Purged %{count} messages from %{channel_name}."
 msgid "Purged %{count} messages from %{from_nick} in %{channel_name}."
 msgstr "Purged %{count} messages from %{from_nick} in %{channel_name}."
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:42
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:43
 #, elixir-autogen, elixir-format
 msgid "Registered nicks: %{nick_count}\n"
 msgstr "Registered nicks: %{nick_count}\n"
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:43
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:44
 #, elixir-autogen, elixir-format
 msgid "Registration: %{registration}\n"
 msgstr "Registration: %{registration}\n"
@@ -578,7 +578,7 @@ msgstr "Server setting '%{key}' set to '%{value}'."
 msgid "Unknown turn subcommand: %{subcmd}. Try: stats, allocations"
 msgstr "Unknown turn subcommand: %{subcmd}. Try: stats, allocations"
 
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:137
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:131
 #, elixir-autogen, elixir-format
 msgid "Usage: /admin channel <list|info|create|delete|purge|banlist>"
 msgstr "Usage: /admin channel <list|info|create|delete|purge|banlist>"
@@ -603,7 +603,7 @@ msgstr "Usage: /admin ns <drop|info|resetpass> [args]"
 msgid "Usage: /admin nuke [--confirm]"
 msgstr "Usage: /admin nuke [--confirm]"
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:113
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:114
 #, elixir-autogen, elixir-format
 msgid "Usage: /admin server <info|set|get|settings>"
 msgstr "Usage: /admin server <info|set|get|settings>"
@@ -613,14 +613,14 @@ msgstr "Usage: /admin server <info|set|get|settings>"
 msgid "Usage: /admin turn <stats|allocations>"
 msgstr "Usage: /admin turn <stats|allocations>"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:181
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:179
 #, elixir-autogen, elixir-format
 msgid "Usage: /admin user <list|info|ban|unban|kick|mute|unmute|rename|role|banlist>"
 msgstr ""
 "Usage: /admin user "
 "<list|info|ban|unban|kick|mute|unmute|rename|role|banlist>"
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:40
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:41
 #, elixir-autogen, elixir-format
 msgid "Users online: %{online_count}\n"
 msgstr "Users online: %{online_count}\n"
@@ -646,7 +646,7 @@ msgstr "[ChanServ] %{message}"
 msgid "[NickServ] %{message}"
 msgstr "[NickServ] %{message}"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:205
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:263
 #, elixir-autogen, elixir-format
 msgid "expires %{expires_at}"
 msgstr "expires %{expires_at}"
@@ -656,17 +656,103 @@ msgstr "expires %{expires_at}"
 msgid "for %{duration}"
 msgstr "for %{duration}"
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:124
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:144
 #, elixir-autogen, elixir-format
 msgid "max_channels must be a positive integer"
 msgstr "max_channels must be a positive integer"
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:131
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:151
 #, elixir-autogen, elixir-format
 msgid "registration must be 'open' or 'closed'"
 msgstr "registration must be 'open' or 'closed'"
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:140
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:160
 #, elixir-autogen, elixir-format
 msgid "whowas_retention_seconds must be an integer from 1 to 86400"
 msgstr "whowas_retention_seconds must be an integer from 1 to 86400"
+
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:238
+#, elixir-autogen, elixir-format
+msgid "*** User List (%{shown} online) ***"
+msgstr "*** User List (%{shown} online) ***"
+
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:241
+#, elixir-autogen, elixir-format
+msgid "*** User List (showing %{shown} of %{total}) ***"
+msgstr "*** User List (showing %{shown} of %{total}) ***"
+
+#: lib/retro_hex_chat/commands/handlers/admin/log.ex:46
+#, elixir-autogen, elixir-format
+msgid "Action"
+msgstr "Action"
+
+#: lib/retro_hex_chat/commands/handlers/admin/log.ex:45
+#, elixir-autogen, elixir-format
+msgid "Actor"
+msgstr "Actor"
+
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:195
+#, elixir-autogen, elixir-format
+msgid "By"
+msgstr "By"
+
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:153
+#, elixir-autogen, elixir-format
+msgid "Channel"
+msgstr "Channel"
+
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:196
+#, elixir-autogen, elixir-format
+msgid "Expires"
+msgstr "Expires"
+
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:125
+#, elixir-autogen, elixir-format
+msgid "Key"
+msgstr "Key"
+
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:154
+#, elixir-autogen, elixir-format
+msgid "Members"
+msgstr "Members"
+
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:193
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:214
+#, elixir-autogen, elixir-format
+msgid "Nick"
+msgstr "Nick"
+
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:215
+#, elixir-autogen, elixir-format
+msgid "Online"
+msgstr "Online"
+
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:194
+#, elixir-autogen, elixir-format
+msgid "Reason"
+msgstr "Reason"
+
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:155
+#, elixir-autogen, elixir-format
+msgid "Registered"
+msgstr "Registered"
+
+#: lib/retro_hex_chat/commands/handlers/admin/log.ex:47
+#, elixir-autogen, elixir-format
+msgid "Target"
+msgstr "Target"
+
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:127
+#, elixir-autogen, elixir-format
+msgid "Updated by"
+msgstr "Updated by"
+
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:126
+#, elixir-autogen, elixir-format
+msgid "Value"
+msgstr "Value"
+
+#: lib/retro_hex_chat/commands/handlers/admin/log.ex:44
+#, elixir-autogen, elixir-format
+msgid "When"
+msgstr "When"

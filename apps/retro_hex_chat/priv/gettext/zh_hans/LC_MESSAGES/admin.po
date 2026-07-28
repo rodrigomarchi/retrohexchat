@@ -21,12 +21,12 @@ msgstr "%{nickname} [%{level}] (由%{added_by}添加)."
 msgid "  %{client} -> relay port %{alloc_port}"
 msgstr "%{client} - > 中继端口 %{alloc_port}"
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:99
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:100
 #, elixir-autogen, elixir-format
 msgid "  %{key} = '%{value}' (by %{updated_by})"
 msgstr "%{key} = '%{value}' (由 %{updated_by} 编写)"
 
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:155
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:141
 #, elixir-autogen, elixir-format
 msgid "  %{name} (%{member_count} members)%{reg}"
 msgstr "%{name}(%{member_count}成员) %{reg}"
@@ -41,12 +41,12 @@ msgstr "%{name} (%{pid}) (英语)."
 msgid "  %{nickname} [%{level}] (added by %{added_by})"
 msgstr "%{nickname} [%{level}] (由%{added_by}添加)."
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:196
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:254
 #, elixir-autogen, elixir-format
 msgid "  %{nickname} [registered] [%{online}]"
 msgstr "  %{nickname} [已注册] [%{online}]"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:210
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:268
 #, elixir-autogen, elixir-format
 msgid "  %{nickname} — %{reason} (by %{banned_by}, %{expires})"
 msgstr "%{nickname} - %{reason}(由%{banned_by},%{expires}拍摄)."
@@ -71,7 +71,7 @@ msgstr "访问列表 : (空)"
 msgid "  Active allocations: %{active}\n"
 msgstr "积极拨款:%{active}"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:72
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:69
 #, elixir-autogen, elixir-format
 msgid "  Admin: %{is_admin}\n"
 msgstr "行政:%{is_admin}"
@@ -81,7 +81,7 @@ msgstr "行政:%{is_admin}"
 msgid "  Atoms: %{atom}\n"
 msgstr "原子: %{atom}"
 
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:78
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:72
 #, elixir-autogen, elixir-format
 msgid "  Bans: %{state_bans_count}\n"
 msgstr "禁令:%{state_bans_count}"
@@ -111,13 +111,13 @@ msgstr "创建者: %{founder}"
 msgid "  Identified: %{identified}"
 msgstr "确认日期: %{identified}"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:71
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:68
 #, elixir-autogen, elixir-format
 msgid "  Identified: %{identified}\n"
 msgstr "确认日期: %{identified}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:31
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:69
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:66
 #, elixir-autogen, elixir-format
 msgid "  Last seen: %{last_seen_at}\n"
 msgstr "最后一次见到: %{last_seen_at}"
@@ -132,23 +132,23 @@ msgstr "听文端口: %{listen_port}"
 msgid "  Listeners: %{listener_count}\n"
 msgstr "听众:%{listener_count}"
 
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:73
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:67
 #, elixir-autogen, elixir-format
 msgid "  Members (%{member_count}): %{members}\n"
 msgstr "成员(%{member_count}):%{members}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:40
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:77
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:71
 #, elixir-autogen, elixir-format
 msgid "  Modes: %{modes}\n"
 msgstr "模式: %{modes}"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:54
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:51
 #, elixir-autogen, elixir-format
 msgid "  Online: %{online}"
 msgstr "在线: %{online}"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:70
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:67
 #, elixir-autogen, elixir-format
 msgid "  Online: %{online}\n"
 msgstr "在线: %{online}"
@@ -165,22 +165,22 @@ msgstr "过程: %{processes}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:36
 #: lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:28
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:66
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:63
 #, elixir-autogen, elixir-format
 msgid "  Registered: %{registered_at}\n"
 msgstr "登记: %{registered_at}"
 
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:65
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:59
 #, elixir-autogen, elixir-format
 msgid "  Registered: no"
 msgstr "已登记:无"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:53
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:50
 #, elixir-autogen, elixir-format
 msgid "  Registered: no\n"
 msgstr "已登记:无"
 
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:61
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:55
 #, elixir-autogen, elixir-format
 msgid "  Registered: yes (founder: %{founder_nickname})"
 msgstr "注册:是(创始人:%{founder_nickname})"
@@ -195,7 +195,7 @@ msgstr "中继IP: %{relay_ip}"
 msgid "  Relay ports: %{used_ports}/%{total_ports} in use\n"
 msgstr "  中继端口使用中：%{used_ports}/%{total_ports}\n"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:73
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:70
 #, elixir-autogen, elixir-format
 msgid "  Server operator: %{is_oper}"
 msgstr "服务器操作员: %{is_oper}"
@@ -206,7 +206,7 @@ msgid "  Status: running\n"
 msgstr "状态: 运行"
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:39
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:72
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:66
 #, elixir-autogen, elixir-format
 msgid "  Topic: %{topic}\n"
 msgstr "题目:%{topic}"
@@ -216,7 +216,7 @@ msgstr "题目:%{topic}"
 msgid "  Total: %{total}\n"
 msgstr "共计:%{total}"
 
-#: lib/retro_hex_chat/commands/handlers/admin/log.ex:48
+#: lib/retro_hex_chat/commands/handlers/admin/log.ex:77
 #, elixir-autogen, elixir-format
 msgid "  [%{time}] %{actor} %{action}%{target}%{details}"
 msgstr ""
@@ -239,7 +239,7 @@ msgstr "用于%{duration_seconds}"
 msgid " permanently"
 msgstr "永久"
 
-#: lib/retro_hex_chat/commands/handlers/admin/log.ex:39
+#: lib/retro_hex_chat/commands/handlers/admin/log.ex:68
 #, elixir-autogen, elixir-format
 msgid " → %{target_type}:%{target_id}"
 msgstr "• %{target_type}:%{target_id}"
@@ -264,7 +264,7 @@ msgstr "%{nickname}已被服务器屏蔽%{duration_text}."
 msgid "%{nickname} has been set as %{role}."
 msgstr "%{nickname}被设定为%{role}."
 
-#: lib/retro_hex_chat/admin/server_bans.ex:51
+#: lib/retro_hex_chat/admin/server_bans.ex:54
 #, elixir-autogen, elixir-format
 msgid "%{nickname} has been unbanned"
 msgstr "%{nickname} 已被禁用"
@@ -279,7 +279,7 @@ msgstr "%{nickname}已经从服务器中解禁."
 msgid "%{nickname} has been unmuted."
 msgstr "%{nickname}已经解冻."
 
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:55
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:49
 #, elixir-autogen, elixir-format
 msgid "%{nick} (%{role})"
 msgstr "%{nick} (%{role}) (英语)."
@@ -289,17 +289,17 @@ msgstr "%{nick} (%{role}) (英语)."
 msgid "%{old_nick} has been renamed to %{new_nick}."
 msgstr "%{old_nick}更名为%{new_nick}."
 
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:68
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:62
 #, elixir-autogen, elixir-format
 msgid "(none)"
 msgstr "(无)"
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:82
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:83
 #, elixir-autogen, elixir-format
 msgid "*** %{key} = '%{value}'"
 msgstr "*** %{key} = “%{value}”"
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:83
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:84
 #, elixir-autogen, elixir-format
 msgid "*** %{key} is not set"
 msgstr "*** %{key} 没有设置"
@@ -308,24 +308,24 @@ msgstr "*** %{key} 没有设置"
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:54
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:88
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:97
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:92
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:99
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:107
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:86
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:93
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:101
 #: lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:15
 #: lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:45
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:57
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:84
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:93
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:103
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:112
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:120
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:128
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:143
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:58
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:81
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:90
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:100
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:109
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:117
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:125
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:140
 #, elixir-autogen, elixir-format
 msgid "*** %{message}"
 msgstr "*** 第%{message}号"
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:36
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:37
 #, elixir-autogen, elixir-format
 msgid "*** %{server_name} ***%{desc_line}\n"
 msgstr "*** %{server_name} ***%{desc_line}"
@@ -350,7 +350,7 @@ msgstr "*** 活跃频道进程（%{channels_count}）***"
 msgid "*** Active TURN Allocations (%{entries_count}) ***"
 msgstr "*** 土耳其现行拨款(%{entries_count})***"
 
-#: lib/retro_hex_chat/commands/handlers/admin/log.ex:23
+#: lib/retro_hex_chat/commands/handlers/admin/log.ex:29
 #, elixir-autogen, elixir-format
 msgid "*** Audit Log (%{entries_count} entries) ***"
 msgstr "*** 审计日志(%{entries_count}条目)***"
@@ -360,17 +360,17 @@ msgstr "*** 审计日志(%{entries_count}条目)***"
 msgid "*** BEAM Memory ***\n"
 msgstr "*** BEAM 记忆 ***"
 
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:120
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:114
 #, elixir-autogen, elixir-format
 msgid "*** Ban List for %{channel} (%{bans_count}) ***"
 msgstr "*** %{channel} 的封禁列表（%{bans_count}）***"
 
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:33
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:27
 #, elixir-autogen, elixir-format
 msgid "*** Channel List (%{filtered_count}) ***"
 msgstr "*** 频道列表(%{filtered_count}) ***"
 
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:71
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:65
 #, elixir-autogen, elixir-format
 msgid "*** Channel: %{channel}\n"
 msgstr "*** 频道: %{channel}"
@@ -400,32 +400,32 @@ msgstr "*** 没有积极的TURN拨款。"
 msgid "*** No active channel processes."
 msgstr "*** 没有活动频道进程。"
 
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:30
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:24
 #, elixir-autogen, elixir-format
 msgid "*** No active channels."
 msgstr "*** 无活动频道。"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:164
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:162
 #, elixir-autogen, elixir-format
 msgid "*** No active server bans."
 msgstr "*** 没有活动服务器禁令。"
 
-#: lib/retro_hex_chat/commands/handlers/admin/log.ex:20
+#: lib/retro_hex_chat/commands/handlers/admin/log.ex:26
 #, elixir-autogen, elixir-format
 msgid "*** No audit log entries found."
 msgstr "*** 没有发现审计日志条目。"
 
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:117
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:111
 #, elixir-autogen, elixir-format
 msgid "*** No bans in %{channel}."
 msgstr "*** %{channel}没有禁令。"
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:93
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:94
 #, elixir-autogen, elixir-format
 msgid "*** No server settings configured."
 msgstr "*** 没有配置服务器设置 。"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:28
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:31
 #, elixir-autogen, elixir-format
 msgid "*** No users found."
 msgstr "*** 没有找到用户。"
@@ -450,12 +450,12 @@ msgstr "*** 系统已 NUKE — 已销毁 %{total} 条记录 ***"
 msgid "*** SYSTEM NUKED — No records to delete."
 msgstr "*** System NUKED——无记录可删除。"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:167
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:165
 #, elixir-autogen, elixir-format
 msgid "*** Server Ban List (%{filtered_count}) ***"
 msgstr "*** 服务器封禁列表（%{filtered_count}）***"
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:95
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:96
 #, elixir-autogen, elixir-format
 msgid "*** Server Settings ***"
 msgstr "*** 服务器设置 ***"
@@ -470,13 +470,13 @@ msgstr "*** TURN服务器Stats ***"
 msgid "*** TURN server is not configured (listener_count = 0)"
 msgstr "*** TURN 服务器没有配置( listen count = 0)"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:31
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:247
 #, elixir-autogen, elixir-format
 msgid "*** User List (%{entries_count} results) ***"
 msgstr "*** 用户列表(%{entries_count}结果) ***"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:52
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:65
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:49
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:62
 #, elixir-autogen, elixir-format
 msgid "*** User: %{nick}\n"
 msgstr "*** 用户: %{nick}"
@@ -491,7 +491,7 @@ msgstr "*** [ChanServ] %{name} (中文(简体) )."
 msgid "*** [NickServ] %{nick}\n"
 msgstr "*** [尼克服务] %{nick}"
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:41
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:42
 #, elixir-autogen, elixir-format
 msgid "Active channels: %{channel_count}\n"
 msgstr "活动频道: %{channel_count}"
@@ -501,7 +501,7 @@ msgstr "活动频道: %{channel_count}"
 msgid "Admin roles removed from %{nickname}."
 msgstr "从%{nickname}中取消了管理角色."
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:44
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:45
 #, elixir-autogen, elixir-format
 msgid "BEAM uptime: %{uptime_days}d %{remaining_hours}h"
 msgstr "BEAM 运行时间：%{uptime_days}天 %{remaining_hours}小时"
@@ -526,7 +526,7 @@ msgstr "%{channel_name}频道已被删除."
 msgid "Kicked by administrator"
 msgstr "被管理员踢出"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:208
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:266
 #, elixir-autogen, elixir-format
 msgid "No reason"
 msgstr "没有原因"
@@ -536,7 +536,7 @@ msgstr "没有原因"
 msgid "No reason given"
 msgstr "没有给出理由"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:139
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:136
 #, elixir-autogen, elixir-format
 msgid "Only root admins can promote users to admin"
 msgstr "只有根管理员可以推动用户管理"
@@ -556,12 +556,12 @@ msgstr "来自%{channel_name}的净化%{count}消息."
 msgid "Purged %{count} messages from %{from_nick} in %{channel_name}."
 msgstr "%{channel_name}中的%{from_nick}的净化%{count}消息."
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:42
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:43
 #, elixir-autogen, elixir-format
 msgid "Registered nicks: %{nick_count}\n"
 msgstr "注册昵称: %{nick_count}"
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:43
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:44
 #, elixir-autogen, elixir-format
 msgid "Registration: %{registration}\n"
 msgstr "登记:%{registration}"
@@ -581,7 +581,7 @@ msgstr "服务器设置“ %{key}” 设置为“ %{value} ” 。"
 msgid "Unknown turn subcommand: %{subcmd}. Try: stats, allocations"
 msgstr "未知转弯子命令: %{subcmd}. 尝试: 数据、 分配"
 
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:137
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:131
 #, elixir-autogen, elixir-format
 msgid "Usage: /admin channel <list|info|create|delete|purge|banlist>"
 msgstr "用法: /admin频道 <list|info|create|delete|purge|banlist>"
@@ -606,7 +606,7 @@ msgstr "用法: /admin ns <drop|info|resetpass> [args] (韩语)."
 msgid "Usage: /admin nuke [--confirm]"
 msgstr "用法:/admin核武器[-确认]"
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:113
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:114
 #, elixir-autogen, elixir-format
 msgid "Usage: /admin server <info|set|get|settings>"
 msgstr "用法:/admin服务器 <info|set|get|settings>"
@@ -616,13 +616,13 @@ msgstr "用法:/admin服务器 <info|set|get|settings>"
 msgid "Usage: /admin turn <stats|allocations>"
 msgstr "用法:/admin转<stats|allocations>"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:181
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:179
 #, elixir-autogen, elixir-format
 msgid "Usage: /admin user <list|info|ban|unban|kick|mute|unmute|rename|role|banlist>"
 msgstr ""
 "用法: /admin用户 <list|info|ban|unban|kick|mute|unmute|rename|role|banlist>"
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:40
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:41
 #, elixir-autogen, elixir-format
 msgid "Users online: %{online_count}\n"
 msgstr "用户在线: %{online_count}"
@@ -648,7 +648,7 @@ msgstr "[ChanServ] %{message} (韩语)."
 msgid "[NickServ] %{message}"
 msgstr "[尼克塞尔] %{message}"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:205
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:263
 #, elixir-autogen, elixir-format
 msgid "expires %{expires_at}"
 msgstr "过期 %{expires_at}"
@@ -658,17 +658,103 @@ msgstr "过期 %{expires_at}"
 msgid "for %{duration}"
 msgstr "用于%{duration}"
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:124
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:144
 #, elixir-autogen, elixir-format
 msgid "max_channels must be a positive integer"
 msgstr "最大频道必须是正整数"
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:131
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:151
 #, elixir-autogen, elixir-format
 msgid "registration must be 'open' or 'closed'"
 msgstr "注册必须“ 打开” 或“ 关闭 ”"
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:140
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:160
 #, elixir-autogen, elixir-format
 msgid "whowas_retention_seconds must be an integer from 1 to 86400"
 msgstr "1 到 86400 的整数"
+
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:238
+#, elixir-autogen, elixir-format
+msgid "*** User List (%{shown} online) ***"
+msgstr "*** 用户列表（%{shown} 人在线）***"
+
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:241
+#, elixir-autogen, elixir-format
+msgid "*** User List (showing %{shown} of %{total}) ***"
+msgstr "*** 用户列表（显示 %{shown} / %{total}）***"
+
+#: lib/retro_hex_chat/commands/handlers/admin/log.ex:46
+#, elixir-autogen, elixir-format
+msgid "Action"
+msgstr "操作"
+
+#: lib/retro_hex_chat/commands/handlers/admin/log.ex:45
+#, elixir-autogen, elixir-format
+msgid "Actor"
+msgstr "操作者"
+
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:195
+#, elixir-autogen, elixir-format
+msgid "By"
+msgstr "由"
+
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:153
+#, elixir-autogen, elixir-format
+msgid "Channel"
+msgstr "频道"
+
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:196
+#, elixir-autogen, elixir-format
+msgid "Expires"
+msgstr "到期"
+
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:125
+#, elixir-autogen, elixir-format
+msgid "Key"
+msgstr "键"
+
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:154
+#, elixir-autogen, elixir-format
+msgid "Members"
+msgstr "成员"
+
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:193
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:214
+#, elixir-autogen, elixir-format
+msgid "Nick"
+msgstr "昵称"
+
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:215
+#, elixir-autogen, elixir-format
+msgid "Online"
+msgstr "在线"
+
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:194
+#, elixir-autogen, elixir-format
+msgid "Reason"
+msgstr "原因"
+
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:155
+#, elixir-autogen, elixir-format
+msgid "Registered"
+msgstr "已注册"
+
+#: lib/retro_hex_chat/commands/handlers/admin/log.ex:47
+#, elixir-autogen, elixir-format
+msgid "Target"
+msgstr "目标"
+
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:127
+#, elixir-autogen, elixir-format
+msgid "Updated by"
+msgstr "更新者"
+
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:126
+#, elixir-autogen, elixir-format
+msgid "Value"
+msgstr "值"
+
+#: lib/retro_hex_chat/commands/handlers/admin/log.ex:44
+#, elixir-autogen, elixir-format
+msgid "When"
+msgstr "时间"
