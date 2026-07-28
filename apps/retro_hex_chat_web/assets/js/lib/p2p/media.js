@@ -856,6 +856,94 @@ export function collectFeatureSnapshotFromReports(stats) {
 }
 
 /**
+ * Collect coarse connection activity counters from getStats().
+ *
+ * This intentionally ignores identity-bearing fields. It is used only to decide
+ * whether a `disconnected` state is still moving media/data before escalating to
+ * an ICE restart.
+ * @param {RTCPeerConnection|null} pc
+ * @returns {Promise<object|null>}
+ */
+export async function collectConnectionActivity(pc) {
+  if (!pc?.getStats) return null;
+
+  try {
+    return collectConnectionActivityFromReports(await pc.getStats());
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Build a low-cardinality activity snapshot from an RTCStatsReport.
+ * @param {RTCStatsReport|Map<string, object>} stats
+ * @returns {object}
+ */
+export function collectConnectionActivityFromReports(stats) {
+  const activity = {
+    bytesReceived: 0,
+    bytesSent: 0,
+    packetsReceived: 0,
+    packetsSent: 0,
+    messagesReceived: 0,
+    messagesSent: 0,
+  };
+
+  stats?.forEach?.((report) => {
+    if (report.type === "candidate-pair" && report.state === "succeeded") {
+      activity.bytesReceived += report.bytesReceived || 0;
+      activity.bytesSent += report.bytesSent || 0;
+      activity.packetsReceived += report.packetsReceived || 0;
+      activity.packetsSent += report.packetsSent || 0;
+    }
+
+    if (report.type === "transport") {
+      activity.bytesReceived += report.bytesReceived || 0;
+      activity.bytesSent += report.bytesSent || 0;
+      activity.packetsReceived += report.packetsReceived || 0;
+      activity.packetsSent += report.packetsSent || 0;
+    }
+
+    if (report.type === "inbound-rtp") {
+      activity.bytesReceived += report.bytesReceived || 0;
+      activity.packetsReceived += report.packetsReceived || 0;
+    }
+
+    if (report.type === "outbound-rtp") {
+      activity.bytesSent += report.bytesSent || 0;
+      activity.packetsSent += report.packetsSent || 0;
+    }
+
+    if (report.type === "data-channel") {
+      activity.bytesReceived += report.bytesReceived || 0;
+      activity.bytesSent += report.bytesSent || 0;
+      activity.messagesReceived += report.messagesReceived || 0;
+      activity.messagesSent += report.messagesSent || 0;
+    }
+  });
+
+  return activity;
+}
+
+/**
+ * @param {object|null} previous
+ * @param {object|null} current
+ * @returns {boolean}
+ */
+export function hasConnectionActivity(previous, current) {
+  if (!previous || !current) return false;
+
+  return (
+    current.bytesReceived > previous.bytesReceived ||
+    current.bytesSent > previous.bytesSent ||
+    current.packetsReceived > previous.packetsReceived ||
+    current.packetsSent > previous.packetsSent ||
+    current.messagesReceived > previous.messagesReceived ||
+    current.messagesSent > previous.messagesSent
+  );
+}
+
+/**
  * Turn two per-feature snapshots into the always-complete statistics payload.
  * Every section is always present; counters become rates over the interval and a
  * missing stream simply reads zero (idle), never absent.

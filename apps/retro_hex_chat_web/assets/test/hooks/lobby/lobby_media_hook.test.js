@@ -139,6 +139,90 @@ describe("LobbyMediaHook auto-join", () => {
     expect(hook.videoOn).toBe(true);
   });
 
+  it("falls back to the default camera when the active camera disappears", async () => {
+    const ctx = setup();
+    hook = ctx.hook;
+    let deviceChangeHandler = null;
+    let tracks;
+
+    const audioTrack = {
+      kind: "audio",
+      enabled: true,
+      stop: vi.fn(),
+      getSettings: vi.fn(() => ({ deviceId: "mic-1" })),
+    };
+    const oldVideoTrack = {
+      kind: "video",
+      enabled: true,
+      stop: vi.fn(),
+      getSettings: vi.fn(() => ({ deviceId: "cam-old" })),
+    };
+    const newVideoTrack = {
+      kind: "video",
+      enabled: true,
+      stop: vi.fn(),
+      getSettings: vi.fn(() => ({ deviceId: "cam-new" })),
+    };
+
+    tracks = [audioTrack, oldVideoTrack];
+    const stream = {
+      getTracks: vi.fn(() => tracks),
+      getAudioTracks: vi.fn(() => tracks.filter((track) => track.kind === "audio")),
+      getVideoTracks: vi.fn(() => tracks.filter((track) => track.kind === "video")),
+      removeTrack: vi.fn((track) => {
+        tracks = tracks.filter((candidate) => candidate !== track);
+      }),
+      addTrack: vi.fn((track) => {
+        tracks.push(track);
+      }),
+    };
+    const newVideoStream = {
+      getTracks: vi.fn(() => [newVideoTrack]),
+      getAudioTracks: vi.fn(() => []),
+      getVideoTracks: vi.fn(() => [newVideoTrack]),
+    };
+    const audioSender = { track: audioTrack };
+    const videoSender = {
+      track: oldVideoTrack,
+      replaceTrack: vi.fn(async (track) => {
+        videoSender.track = track;
+      }),
+      getParameters: vi.fn(() => ({ encodings: [{}] })),
+      setParameters: vi.fn(async () => {}),
+    };
+
+    Object.defineProperty(navigator, "mediaDevices", {
+      configurable: true,
+      value: {
+        getUserMedia: vi.fn().mockResolvedValueOnce(stream).mockResolvedValueOnce(newVideoStream),
+        enumerateDevices: vi.fn(async () => [
+          { kind: "audioinput", deviceId: "mic-1", label: "Mic" },
+          { kind: "videoinput", deviceId: "cam-new", label: "Camera" },
+        ]),
+        addEventListener: vi.fn((event, handler) => {
+          if (event === "devicechange") deviceChangeHandler = handler;
+        }),
+        removeEventListener: vi.fn(),
+      },
+    });
+
+    hook.pc = {
+      addTrack: vi.fn((track) => (track.kind === "audio" ? audioSender : videoSender)),
+      getTransceivers: vi.fn(() => []),
+    };
+
+    await hook._startCall("video");
+    await deviceChangeHandler();
+
+    expect(videoSender.replaceTrack).toHaveBeenCalledWith(newVideoTrack);
+    expect(oldVideoTrack.stop).toHaveBeenCalled();
+    expect(hook.localStream.getVideoTracks()).toEqual([newVideoTrack]);
+    expect(ctx.pushed).toContainEqual({
+      event: "lobby_media_device_fallback",
+      payload: { message: "Device disconnected, using default device" },
+    });
+  });
+
   it("queues auto-start media until the peer connection is ready", async () => {
     const ctx = setup();
     hook = ctx.hook;
@@ -248,6 +332,79 @@ describe("LobbyMediaHook auto-join", () => {
       ([event]) => event.type === "lobby_media_recover",
     );
     expect(recover).toBeTruthy();
+
+    vi.useRealTimers();
+  });
+
+  it("asks the WebRTC hook to recover when expected remote video never arrives", () => {
+    vi.useFakeTimers();
+    const ctx = setup();
+    hook = ctx.hook;
+    hook.pc = { getReceivers: vi.fn(() => []), getStats: vi.fn(async () => new Map()) };
+
+    ctx.handlers["lobby_media_peer_media"]({ audio: true, video: true });
+    ctx.handlers["lobby_media_join"]({ expected_video: true });
+
+    vi.advanceTimersByTime(6000);
+
+    const recover = ctx.webrtcEl.dispatchEvent.mock.calls
+      .map(([event]) => event)
+      .find((event) => event.type === "lobby_media_recover");
+
+    expect(recover).toBeTruthy();
+    expect(recover.detail).toEqual(
+      expect.objectContaining({
+        restart: false,
+        reason: "remote_video_missing",
+      }),
+    );
+
+    vi.useRealTimers();
+  });
+
+  it("escalates missing remote video recovery to a coordinated restart", () => {
+    vi.useFakeTimers();
+    const ctx = setup();
+    hook = ctx.hook;
+    hook.pc = { getReceivers: vi.fn(() => []), getStats: vi.fn(async () => new Map()) };
+
+    ctx.handlers["lobby_media_peer_media"]({ audio: true, video: true });
+    ctx.handlers["lobby_media_join"]({ expected_video: true });
+
+    vi.advanceTimersByTime(6000);
+    vi.advanceTimersByTime(5000);
+
+    const recoveries = ctx.webrtcEl.dispatchEvent.mock.calls
+      .map(([event]) => event)
+      .filter((event) => event.type === "lobby_media_recover");
+
+    expect(recoveries.length).toBeGreaterThanOrEqual(2);
+    expect(recoveries.at(-1).detail).toEqual(
+      expect.objectContaining({
+        restart: true,
+        reason: "remote_video_missing_restart",
+      }),
+    );
+
+    vi.useRealTimers();
+  });
+
+  it("does not recover missing remote video when the peer camera is off", () => {
+    vi.useFakeTimers();
+    const ctx = setup();
+    hook = ctx.hook;
+    hook.pc = { getReceivers: vi.fn(() => []), getStats: vi.fn(async () => new Map()) };
+
+    ctx.handlers["lobby_media_peer_media"]({ audio: true, video: true });
+    ctx.handlers["lobby_media_peer_camera"]({ off: true });
+    ctx.handlers["lobby_media_join"]({ expected_video: true });
+
+    vi.advanceTimersByTime(8000);
+
+    const recoveries = ctx.webrtcEl.dispatchEvent.mock.calls.filter(
+      ([event]) => event.type === "lobby_media_recover",
+    );
+    expect(recoveries).toHaveLength(0);
 
     vi.useRealTimers();
   });

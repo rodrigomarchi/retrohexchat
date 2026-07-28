@@ -252,6 +252,28 @@ defmodule RetroHexChatWeb.Telemetry do
         tags: [:reason],
         description: dgettext("system", "Number of group-call rooms closed"),
         reporter_options: [nav: dgettext("system", "Domain")]
+      ),
+
+      # Domain Metrics – Call Recovery
+      sum(dgettext("system", "retro_hex_chat.calls.recovery.transition.count"),
+        tags: [:surface, :state, :reason, :trigger, :manual_retry],
+        description:
+          dgettext(
+            "system",
+            "Number of P2P and group-call recovery state transitions by reason"
+          ),
+        reporter_options: [nav: dgettext("system", "Domain")]
+      ),
+      sum(dgettext("system", "retro_hex_chat.calls.client_error.count"),
+        tags: [:surface, :code, :phase],
+        description:
+          dgettext("system", "Number of P2P and group-call client media/signaling errors"),
+        reporter_options: [nav: dgettext("system", "Domain")]
+      ),
+      sum(dgettext("system", "retro_hex_chat.calls.signaling.replay.count"),
+        tags: [:surface, :action, :reason],
+        description: dgettext("system", "Number of P2P signaling replay outcomes"),
+        reporter_options: [nav: dgettext("system", "Domain")]
       )
     ]
   end

@@ -60,10 +60,11 @@ defmodule RetroHexChat.GroupCall.PeerServer do
     }
   end
 
-  @spec apply_sdp_answer(integer(), integer(), String.t()) :: :ok | {:error, term()}
-  def apply_sdp_answer(room_id, participant_id, answer_sdp) do
+  @spec apply_sdp_answer(integer(), integer(), String.t(), String.t() | nil) ::
+          :ok | {:error, term()}
+  def apply_sdp_answer(room_id, participant_id, answer_sdp, offer_id \\ nil) do
     with {:ok, pid} <- Registry.lookup_peer({:peer, room_id, participant_id}) do
-      GenServer.cast(pid, {:apply_sdp_answer, answer_sdp})
+      GenServer.cast(pid, {:apply_sdp_answer, answer_sdp, offer_id})
     end
   end
 
@@ -113,7 +114,7 @@ defmodule RetroHexChat.GroupCall.PeerServer do
 
     {:ok, pc} = PeerConnection.start_link(pc_opts)
     Process.monitor(pc)
-    Process.link(args.signal_pid)
+    signal_ref = Process.monitor(args.signal_pid)
 
     state = %{
       room_pid: args.room_pid,
@@ -121,6 +122,7 @@ defmodule RetroHexChat.GroupCall.PeerServer do
       room_token: args.room_token,
       participant: participant,
       signal_pid: args.signal_pid,
+      signal_ref: signal_ref,
       pc: pc,
       inbound_tracks: %{video: nil, audio: nil},
       inbound_video_ready?: false,
@@ -129,6 +131,9 @@ defmodule RetroHexChat.GroupCall.PeerServer do
       pending_peers: MapSet.new(),
       pending_remote_candidates: [],
       last_answer_sdp: nil,
+      last_answer_offer_id: nil,
+      current_offer_id: nil,
+      offer_seq: 0,
       config: args.config
     }
 
@@ -142,30 +147,49 @@ defmodule RetroHexChat.GroupCall.PeerServer do
   end
 
   @impl true
-  def handle_cast({:apply_sdp_answer, answer_sdp}, state) do
+  def handle_cast({:apply_sdp_answer, answer_sdp, offer_id}, state) do
     answer = struct(SessionDescription, type: :answer, sdp: answer_sdp)
 
     state =
-      if duplicate_answer?(state, answer_sdp) do
-        state
-      else
-        case PeerConnection.set_remote_description(state.pc, answer) do
-          :ok ->
-            state
-            |> Map.put(:last_answer_sdp, answer_sdp)
-            |> flush_pending_remote_candidates()
-            |> subscribe_to_new_tracks()
-            |> handle_pending_peers()
+      cond do
+        duplicate_answer?(state, answer_sdp, offer_id) ->
+          state
 
-          {:error, reason} ->
-            Logger.warning("Unable to apply group-call SDP answer",
-              room_id: state.room_id,
-              participant_id: state.participant.id,
-              reason: inspect(reason)
-            )
+        stale_answer?(state, offer_id) ->
+          Logger.debug("Ignoring stale group-call SDP answer",
+            room_id: state.room_id,
+            participant_id: state.participant.id,
+            offer_id: inspect(offer_id),
+            current_offer_id: inspect(state.current_offer_id)
+          )
 
-            state
-        end
+          state
+
+        true ->
+          case PeerConnection.set_remote_description(state.pc, answer) do
+            :ok ->
+              state
+              |> Map.put(:last_answer_sdp, answer_sdp)
+              |> Map.put(:last_answer_offer_id, offer_id)
+              |> Map.put(:current_offer_id, nil)
+              |> flush_pending_remote_candidates()
+              |> subscribe_to_new_tracks()
+              |> handle_pending_peers()
+
+            {:error, reason} ->
+              Logger.warning("Unable to apply group-call SDP answer",
+                room_id: state.room_id,
+                participant_id: state.participant.id,
+                reason: inspect(reason)
+              )
+
+              send_channel_event(state.signal_pid, "group_call_error", %{
+                code: "answer_failed",
+                message: "Could not apply media answer"
+              })
+
+              state
+          end
       end
 
     {:noreply, state}
@@ -327,6 +351,19 @@ defmodule RetroHexChat.GroupCall.PeerServer do
     {:stop, {:shutdown, :peer_connection_closed}, state}
   end
 
+  def handle_info(
+        {:DOWN, ref, :process, signal_pid, reason},
+        %{signal_ref: ref, signal_pid: signal_pid} = state
+      ) do
+    Logger.debug("Group-call signaling channel stopped",
+      room_id: state.room_id,
+      participant_id: state.participant.id,
+      reason: inspect(reason)
+    )
+
+    {:stop, {:shutdown, :signal_channel_closed}, state}
+  end
+
   def handle_info(_message, state) do
     {:noreply, state}
   end
@@ -421,9 +458,13 @@ defmodule RetroHexChat.GroupCall.PeerServer do
     {:ok, offer} = PeerConnection.create_offer(state.pc, ice_restart: opts[:ice_restart?] == true)
     :ok = PeerConnection.set_local_description(state.pc, offer)
 
+    offer_seq = state.offer_seq + 1
+    offer_id = "gc-#{state.participant.id}-#{offer_seq}"
+    state = %{state | offer_seq: offer_seq, current_offer_id: offer_id, last_answer_sdp: nil}
+
     send_offer_payload(state, offer)
 
-    %{state | last_answer_sdp: nil}
+    state
   end
 
   defp resend_pending_offer(state) do
@@ -440,6 +481,7 @@ defmodule RetroHexChat.GroupCall.PeerServer do
     send_channel_event(state.signal_pid, "group_call_offer", %{
       sdp: offer.sdp,
       participant_id: state.participant.id,
+      offer_id: state.current_offer_id,
       ice_servers: P2P.ice_servers(to_string(state.participant.id))
     })
   end
@@ -451,9 +493,32 @@ defmodule RetroHexChat.GroupCall.PeerServer do
   end
 
   defp add_remote_candidate(state, candidate_json) do
-    candidate = ICECandidate.from_json(candidate_json)
-    _ = PeerConnection.add_ice_candidate(state.pc, candidate)
+    with {:ok, candidate} <- decode_ice_candidate(candidate_json),
+         :ok <- PeerConnection.add_ice_candidate(state.pc, candidate) do
+      :ok
+    else
+      {:error, reason} ->
+        Logger.warning("Unable to add group-call ICE candidate",
+          room_id: state.room_id,
+          participant_id: state.participant.id,
+          reason: inspect(reason)
+        )
+
+        send_channel_event(state.signal_pid, "group_call_error", %{
+          code: "ice_failed",
+          message: "Could not apply media candidate"
+        })
+    end
+
     state
+  end
+
+  defp decode_ice_candidate(candidate_json) do
+    {:ok, ICECandidate.from_json(candidate_json)}
+  rescue
+    error -> {:error, error}
+  catch
+    kind, reason -> {:error, {kind, reason}}
   end
 
   defp broadcast_packet(peer_tracks, kind, packet) do
@@ -501,10 +566,20 @@ defmodule RetroHexChat.GroupCall.PeerServer do
     end
   end
 
-  defp duplicate_answer?(state, answer_sdp) do
+  defp duplicate_answer?(state, answer_sdp, offer_id) do
     state.last_answer_sdp == answer_sdp and
+      (is_nil(offer_id) or state.last_answer_offer_id == offer_id) and
       PeerConnection.get_signaling_state(state.pc) == :stable
   end
+
+  defp stale_answer?(_state, nil), do: false
+
+  defp stale_answer?(%{current_offer_id: current_offer_id}, offer_id)
+       when is_binary(current_offer_id),
+       do: offer_id != current_offer_id
+
+  defp stale_answer?(%{last_answer_offer_id: last_answer_offer_id}, offer_id),
+    do: offer_id != last_answer_offer_id
 
   defp update_peer_track_mungers(state, kind) do
     peer_tracks =

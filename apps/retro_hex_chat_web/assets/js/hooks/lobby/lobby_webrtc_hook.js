@@ -18,15 +18,27 @@ import {
   addIceCandidate,
   close,
   onConnectionStateChange,
+  onIceConnectionStateChange,
   onIceCandidate,
   onDataChannel,
   createDataChannel,
   RETRY_CONFIG,
 } from "../../lib/p2p/webrtc.js";
-import { collectFeatureSnapshot, deriveFeatureStats } from "../../lib/p2p/media.js";
+import {
+  collectConnectionActivity,
+  collectFeatureSnapshot,
+  deriveFeatureStats,
+  hasConnectionActivity,
+} from "../../lib/p2p/media.js";
 
 // How often the always-on statistics window refreshes its per-feature metrics.
 const STATS_INTERVAL_MS = 2500;
+const ICE_CANDIDATE_FAILURE_LIMIT = 3;
+const SIGNAL_REPLAY_DELAY_MS = 1500;
+const SIGNAL_REPLAY_MAX_ATTEMPTS = 3;
+const RENEGOTIATION_RETRY_DELAY_MS = 1200;
+const RENEGOTIATION_RETRY_MAX_ATTEMPTS = 3;
+const DISCONNECTED_ACTIVITY_DEFERRAL_LIMIT = 2;
 
 // Negotiation model: the INITIATOR is the single offerer. Both peers can still
 // add media at any time (self-controlled audio/video), but only the initiator
@@ -41,7 +53,18 @@ const LobbyWebRTCHook = {
     this.iceServers = null;
     this.turnOnly = false;
     this.retryCount = 0;
+    this.recoveryTimer = null;
+    this.recoveryFailed = false;
+    this.failedReason = null;
+    this.signalingEpoch = 0;
+    this.offerSeq = 0;
+    this.currentOfferId = null;
+    this.activeRemoteOfferId = null;
+    this.lastRemoteAnswerOfferId = null;
+    this.lastRemoteAnswerSdp = null;
+    this.connectionResetPending = false;
     this.disconnectedTimer = null;
+    this.disconnectedActivityDeferrals = 0;
     this.role = null;
     this.negotiating = false;
     this.renegotiationQueued = false;
@@ -49,27 +72,38 @@ const LobbyWebRTCHook = {
     this.fileChannel = null;
     this.gameChannel = null;
     this.pendingIceCandidates = [];
+    this.remoteIceCandidateKeys = new Set();
+    this.iceCandidateFailures = 0;
     this._pendingDescription = null;
     this.statsTimer = null;
     this._statsPrev = null;
+    this.signalReplayTimer = null;
+    this.signalReplayAttempts = 0;
+    this.renegotiationRetryTimer = null;
+    this.renegotiationRetryAttempts = 0;
+    this.renegotiationRetryPayload = null;
     this.videoSource = "camera";
     this.recoveryStateEventHandler = (event) => {
       const payload = event.detail || {};
 
       if (payload.state === "failed") {
-        this.pushEvent("lobby_failed", {
-          reason: payload.reason || "failed",
-          manual_retry: payload.manual_retry !== false,
+        this._notifyFailed(payload.reason || "failed", {
+          manualRetry: payload.manual_retry !== false,
         });
       } else if (payload.state === "reconnecting") {
-        this.pushEvent("lobby_retry", { attempt: payload.attempt || null });
+        this._markRecovering();
+        this.pushEvent("lobby_retry", {
+          attempt: payload.attempt || null,
+          reason: payload.reason || "auto_retry",
+        });
       }
     };
 
     this.handleEvent("lobby_start_offer", (data) => this._handleStartOffer(data));
     this.handleEvent("lobby_start_answer", (data) => this._handleStartAnswer(data));
-    this.handleEvent("lobby_restart", () => this._handleRestart());
+    this.handleEvent("lobby_restart", (data = {}) => this._handleRestart(data));
     this.handleEvent("lobby_signal", (data) => this._handleSignal(data));
+    this.handleEvent("lobby_signal_replay", (data) => this._handleSignalReplay(data));
     // Answerer → initiator request to (re)offer after the answerer added tracks.
     this.handleEvent("lobby_renegotiate", (data = {}) => this._handleRenegotiate(data));
 
@@ -103,6 +137,11 @@ const LobbyWebRTCHook = {
     this._cleanup();
   },
 
+  reconnected() {
+    this._requestSignalReplay("liveview_reconnected");
+    this._scheduleSignalReplay("liveview_reconnected");
+  },
+
   // --- Server event handlers ---
 
   // The initiator owns the two outgoing data channels; creating them triggers
@@ -114,11 +153,13 @@ const LobbyWebRTCHook = {
     this.iceServers = ice_servers;
     this.turnOnly = !!turn_only;
     this.role = "initiator";
+    this._markRecovering();
     // NB: do NOT reset pendingIceCandidates here — the peer's ICE candidates can
     // arrive before this event and must survive until the PC has a remote desc.
 
     try {
       await this._createConnection();
+      this._scheduleSignalReplay("start_offer");
     } catch (error) {
       this._failConnection("offer", error);
     }
@@ -132,11 +173,13 @@ const LobbyWebRTCHook = {
     this.iceServers = ice_servers;
     this.turnOnly = !!turn_only;
     this.role = "answerer";
+    this._markRecovering();
     // NB: do NOT reset pendingIceCandidates here — the initiator's ICE candidates
     // routinely arrive before this event and must survive until setRemoteDescription.
 
     try {
       await this._createConnection();
+      this._scheduleSignalReplay("start_answer");
       // The initiator's offer can arrive before this event; apply it now.
       if (this._pendingDescription) {
         const pending = this._pendingDescription;
@@ -148,27 +191,38 @@ const LobbyWebRTCHook = {
     }
   },
 
-  async _handleRestart() {
+  async _handleRestart({ epoch, ice_servers, turn_only, reason } = {}) {
+    if (ice_servers) this.iceServers = ice_servers;
+    if (typeof turn_only === "boolean") this.turnOnly = turn_only;
+    const restartReason = reason || "manual_retry";
+
     if (!this.role || !this.iceServers) {
       this.pushEvent("lobby_failed", { reason: "restart_unavailable" });
       return;
     }
 
     this._clearDisconnectedTimer();
+    this._clearRecoveryTimer();
+    this._markRecovering();
     this._stopStatsPolling();
     this.retryCount = 0;
 
     try {
-      await this._createConnection();
+      await this._createConnection({ epoch });
 
       if (this.role === "initiator") {
         window.setTimeout(() => {
           if (!this.pc || this.negotiating || this.pc.signalingState !== "stable") return;
-          this._maybeOffer();
+          this._maybeOffer([], { connectionReset: true, recover: true });
         }, 0);
+      } else {
+        this._requestRenegotiation(true, {
+          reason: restartReason,
+          connectionReset: true,
+        });
       }
     } catch (error) {
-      this._failConnection("manual_retry", error);
+      this._failConnection(restartReason, error);
     }
   },
 
@@ -180,9 +234,33 @@ const LobbyWebRTCHook = {
     }
   },
 
+  async _handleSignalReplay({ events = [] } = {}) {
+    for (const entry of events || []) {
+      const event = entry?.event;
+      const payload = entry?.payload || {};
+
+      if (event === "lobby_signal") {
+        await this._handleSignal(payload);
+      } else if (event === "lobby_renegotiate") {
+        await this._handleRenegotiate(payload);
+      }
+    }
+  },
+
   // --- Single-offerer negotiation ---
 
   async _handleRemoteDescription(data) {
+    const epoch = this._normalizeEpoch(data.epoch);
+
+    if (this._isStaleEpoch(epoch)) {
+      log.warn("[Lobby] Ignoring stale remote description", {
+        remoteEpoch: epoch,
+        currentEpoch: this.signalingEpoch,
+        type: data.type,
+      });
+      return;
+    }
+
     // The offer can arrive before the answerer's "lobby_start_answer" event has
     // built the PC. Buffer it (we only ever keep the latest) so _handleStartAnswer
     // can apply it once the connection — and its ICE servers — exist.
@@ -193,20 +271,60 @@ const LobbyWebRTCHook = {
 
     try {
       if (data.type === "offer") {
+        if (data.offer_id && this.activeRemoteOfferId === data.offer_id) return;
+
+        if (epoch && epoch > this.signalingEpoch) {
+          if (data.connection_reset) {
+            await this._createConnection({ epoch });
+          } else {
+            this.signalingEpoch = epoch;
+          }
+        }
+
         // Answerer path: apply the initiator's offer and answer it.
         await this.pc.setRemoteDescription({ type: "offer", sdp: data.sdp });
         await this._flushPendingIceCandidates();
         await this.pc.setLocalDescription();
+        this.activeRemoteOfferId = data.offer_id || null;
+        this._clearRenegotiationRetry();
         this.pushEvent("lobby_signal", {
           type: this.pc.localDescription.type,
           sdp: this.pc.localDescription.sdp,
+          epoch: this.signalingEpoch,
+          offer_id: this.activeRemoteOfferId,
         });
       } else {
+        if (
+          (data.offer_id && this.lastRemoteAnswerOfferId === data.offer_id) ||
+          (!data.offer_id && data.sdp && this.lastRemoteAnswerSdp === data.sdp)
+        ) {
+          return;
+        }
+
+        if (epoch && epoch !== this.signalingEpoch) {
+          log.warn("[Lobby] Ignoring answer for a different epoch", {
+            remoteEpoch: epoch,
+            currentEpoch: this.signalingEpoch,
+          });
+          return;
+        }
+
+        if (data.offer_id && this.currentOfferId && data.offer_id !== this.currentOfferId) {
+          log.warn("[Lobby] Ignoring answer for a stale offer", {
+            offerId: data.offer_id,
+            currentOfferId: this.currentOfferId,
+          });
+          return;
+        }
+
         // Initiator path: apply the answerer's answer, then drain any queued
         // renegotiation that arrived while this one was in flight.
         await this.pc.setRemoteDescription({ type: "answer", sdp: data.sdp });
         await this._flushPendingIceCandidates();
+        this.lastRemoteAnswerOfferId = data.offer_id || null;
+        this.lastRemoteAnswerSdp = data.sdp || null;
         this.negotiating = false;
+        this.currentOfferId = null;
         if (this.renegotiationQueued) {
           this.renegotiationQueued = false;
           this._maybeOffer();
@@ -214,25 +332,50 @@ const LobbyWebRTCHook = {
       }
     } catch (error) {
       this.negotiating = false;
-      log.warn("[Lobby] Failed to apply remote description", error);
+      this.currentOfferId = null;
+      this._recoverSignalingFailure("remote_description", error);
     }
   },
 
   // Answerer asks the initiator to (re)offer after it added local tracks. The
   // request carries the track kinds so the initiator can pre-create matching
   // recvonly transceivers, keeping the m-line layout aligned on both sides.
-  _requestRenegotiation(recover = false) {
-    const kinds = this.pc
-      .getTransceivers()
+  _requestRenegotiation(recover = false, options = {}) {
+    const transceivers = this.pc?.getTransceivers?.() || [];
+    const kinds = transceivers
       .map((t) => t.sender && t.sender.track && t.sender.track.kind)
       .filter(Boolean);
-    this.pushEvent("lobby_renegotiate", { kinds, recover });
+    const payload = {
+      kinds,
+      recover,
+      epoch: this.signalingEpoch,
+      reason: options.reason || null,
+      attempt: options.attempt || null,
+      connection_reset: options.connectionReset === true,
+    };
+
+    this.pushEvent("lobby_renegotiate", payload);
+    this._scheduleRenegotiationRetry(payload);
   },
 
-  _handleRenegotiate({ kinds = [], recover = false }) {
+  async _handleRenegotiate({ kinds = [], recover = false, epoch, connection_reset }) {
     if (this.role !== "initiator" || !this.pc) return;
-    if (recover && this.pc.restartIce) this.pc.restartIce();
-    this._maybeOffer(kinds);
+    const requestedEpoch = this._normalizeEpoch(epoch);
+    if (this._isStaleEpoch(requestedEpoch)) return;
+
+    if (connection_reset) {
+      try {
+        await this._createConnection({ epoch: requestedEpoch || undefined });
+      } catch (error) {
+        this._failConnection("renegotiate_reset", error);
+        return;
+      }
+    } else if (recover) {
+      this._advanceSignalingEpoch(requestedEpoch);
+      if (this.pc.restartIce) this.pc.restartIce();
+    }
+
+    this._maybeOffer(kinds, { recover, connectionReset: connection_reset === true });
   },
 
   // Recover a stalled media stream. Only the initiator can restart ICE, so the
@@ -240,15 +383,17 @@ const LobbyWebRTCHook = {
   _recoverMedia() {
     if (!this.pc) return;
     if (this.role === "initiator") {
+      this._advanceSignalingEpoch();
       if (this.pc.restartIce) this.pc.restartIce();
-      this._maybeOffer();
+      this._maybeOffer([], { recover: true });
     } else {
-      this._requestRenegotiation(true);
+      this._advanceSignalingEpoch();
+      this._requestRenegotiation(true, { reason: "media_recover" });
     }
   },
 
   // Initiator-only. Serialized so two changes can't race into two offers.
-  async _maybeOffer(ensureKinds = []) {
+  async _maybeOffer(ensureKinds = [], options = {}) {
     if (this.role !== "initiator" || !this.pc) return;
 
     if (this.negotiating || this.pc.signalingState !== "stable") {
@@ -266,13 +411,23 @@ const LobbyWebRTCHook = {
         this._ensureReceivingTransceiver(kind);
       }
       await this.pc.setLocalDescription();
+      this.offerSeq += 1;
+      this.currentOfferId = `p2p-${this.signalingEpoch}-${this.offerSeq}`;
+      const connectionReset = options.connectionReset || this.connectionResetPending;
+      this.connectionResetPending = false;
       this.pushEvent("lobby_signal", {
         type: this.pc.localDescription.type,
         sdp: this.pc.localDescription.sdp,
+        epoch: this.signalingEpoch,
+        offer_id: this.currentOfferId,
+        recover: options.recover === true,
+        connection_reset: connectionReset === true,
       });
+      this._scheduleSignalReplay("offer_wait");
     } catch (error) {
       this.negotiating = false;
-      log.warn("[Lobby] Failed to create offer", error);
+      this.currentOfferId = null;
+      this._recoverSignalingFailure("offer_create", error);
     }
   },
 
@@ -294,15 +449,29 @@ const LobbyWebRTCHook = {
   async _handleRemoteCandidate(data) {
     if (!data.candidate) return;
 
+    const epoch = this._normalizeEpoch(data.epoch);
+    if (this._isStaleEpoch(epoch)) return;
+    const key = this._remoteCandidateKey(data.candidate, epoch);
+    if (this.remoteIceCandidateKeys.has(key)) return;
+
     if (!this.pc || !this.pc.remoteDescription) {
-      this.pendingIceCandidates.push(data.candidate);
+      if (this._pendingIceCandidateKeys().has(key)) return;
+      this.pendingIceCandidates.push({ candidate: data.candidate, epoch });
+      return;
+    }
+
+    if (epoch && epoch > this.signalingEpoch) {
+      if (this._pendingIceCandidateKeys().has(key)) return;
+      this.pendingIceCandidates.push({ candidate: data.candidate, epoch });
       return;
     }
 
     try {
       await addIceCandidate(this.pc, data.candidate);
+      this.remoteIceCandidateKeys.add(key);
+      this.iceCandidateFailures = 0;
     } catch (error) {
-      log.warn("[Lobby] Failed to add ICE candidate", error);
+      this._recordIceCandidateFailure(error);
     }
   },
 
@@ -312,24 +481,84 @@ const LobbyWebRTCHook = {
     }
 
     const candidates = this.pendingIceCandidates.splice(0);
-    for (const candidate of candidates) {
+    const keep = [];
+    for (const entry of candidates) {
+      const candidate = entry.candidate || entry;
+      const epoch = this._normalizeEpoch(entry.epoch);
+      const key = this._remoteCandidateKey(candidate, epoch);
+
+      if (this._isStaleEpoch(epoch)) continue;
+      if (this.remoteIceCandidateKeys.has(key)) continue;
+      if (epoch && epoch > this.signalingEpoch) {
+        keep.push(entry);
+        continue;
+      }
+
       try {
         await addIceCandidate(this.pc, candidate);
+        this.remoteIceCandidateKeys.add(key);
+        this.iceCandidateFailures = 0;
       } catch (error) {
-        log.warn("[Lobby] Failed to flush ICE candidate", error);
+        this._recordIceCandidateFailure(error);
       }
+    }
+    this.pendingIceCandidates.push(...keep);
+  },
+
+  _pendingIceCandidateKeys() {
+    return new Set(
+      this.pendingIceCandidates.map((entry) =>
+        this._remoteCandidateKey(entry.candidate || entry, this._normalizeEpoch(entry.epoch)),
+      ),
+    );
+  },
+
+  _remoteCandidateKey(candidate, epoch = null) {
+    return [
+      epoch || "",
+      candidate?.candidate || "",
+      candidate?.sdpMid || "",
+      candidate?.sdpMLineIndex ?? "",
+    ].join("|");
+  },
+
+  _recordIceCandidateFailure(error) {
+    log.warn("[Lobby] Failed to add ICE candidate", error);
+    this.iceCandidateFailures = (this.iceCandidateFailures || 0) + 1;
+
+    if (this.iceCandidateFailures >= ICE_CANDIDATE_FAILURE_LIMIT) {
+      this._recoverSignalingFailure("ice_candidate", error);
     }
   },
 
   // --- Connection management ---
 
-  async _createConnection() {
+  async _createConnection({ epoch } = {}) {
+    const nextEpoch = this._nextConnectionEpoch(epoch);
+
     if (this.pc) {
       // Rebuilding for a retry: candidates/descriptions for the old PC are stale.
       close(this.pc);
-      this.pendingIceCandidates = [];
+      this.pendingIceCandidates = this.pendingIceCandidates.filter((entry) => {
+        const pendingEpoch = this._normalizeEpoch(entry.epoch);
+        return pendingEpoch && pendingEpoch >= nextEpoch;
+      });
       this._pendingDescription = null;
     }
+
+    this.signalingEpoch = nextEpoch;
+    this.offerSeq = 0;
+    this.currentOfferId = null;
+    this.activeRemoteOfferId = null;
+    this.lastRemoteAnswerOfferId = null;
+    this.lastRemoteAnswerSdp = null;
+    this.connectionResetPending = true;
+    this.remoteIceCandidateKeys = new Set();
+    this.iceCandidateFailures = 0;
+    this._clearSignalReplayTimer();
+    this._clearRenegotiationRetry();
+    this.signalReplayAttempts = 0;
+    this.renegotiationRetryAttempts = 0;
 
     const servers = this.iceServers || [];
     this.pc = createPeerConnection(servers, { turnOnly: this.turnOnly });
@@ -346,11 +575,13 @@ const LobbyWebRTCHook = {
             sdpMid: candidate.sdpMid,
             sdpMLineIndex: candidate.sdpMLineIndex,
           },
+          epoch: this.signalingEpoch,
         });
       }
     });
 
     onConnectionStateChange(this.pc, (state) => this._handleConnectionStateChange(state));
+    onIceConnectionStateChange(this.pc, (state) => this._handleIceConnectionStateChange(state));
 
     this.pc.onicecandidateerror = (event) => {
       log.warn("[Lobby] ICE candidate error", event.errorCode, event.errorText);
@@ -428,6 +659,10 @@ const LobbyWebRTCHook = {
     switch (state) {
       case "connected":
         this._clearDisconnectedTimer();
+        this._clearRecoveryTimer();
+        this._clearSignalReplayTimer();
+        this._markRecovering();
+        this.disconnectedActivityDeferrals = 0;
         this.retryCount = 0;
         this.el._peerConnection = this.pc;
         this.pushEvent("lobby_connected", {});
@@ -436,13 +671,13 @@ const LobbyWebRTCHook = {
         break;
 
       case "disconnected":
-        this._startDisconnectedGracePeriod();
+        this._startDisconnectedGracePeriod("connection_disconnected");
         break;
 
       case "failed":
         this._clearDisconnectedTimer();
         this._stopStatsPolling();
-        this._handleFailure();
+        this._handleFailure("connection_failed");
         break;
 
       case "closed":
@@ -452,48 +687,274 @@ const LobbyWebRTCHook = {
     }
   },
 
-  _startDisconnectedGracePeriod() {
-    this._clearDisconnectedTimer();
-    this.disconnectedTimer = setTimeout(() => {
+  _handleIceConnectionStateChange(state) {
+    switch (state) {
+      case "connected":
+      case "completed":
+        this._clearDisconnectedTimer();
+        this._clearSignalReplayTimer();
+        break;
+
+      case "disconnected":
+        this._startDisconnectedGracePeriod("ice_disconnected");
+        break;
+
+      case "failed":
+        this._clearDisconnectedTimer();
+        this._stopStatsPolling();
+        this._handleFailure("ice_failed");
+        break;
+
+      case "closed":
+        this._clearDisconnectedTimer();
+        this._stopStatsPolling();
+        break;
+    }
+  },
+
+  _startDisconnectedGracePeriod(reason = "disconnected", { preserveDeferrals = false } = {}) {
+    const hadDisconnectedTimer = !!this.disconnectedTimer;
+    this._clearDisconnectedTimer({ resetDeferrals: !preserveDeferrals });
+    const pc = this.pc;
+    const beforeActivity = collectConnectionActivity(pc);
+
+    if (!preserveDeferrals && !hadDisconnectedTimer) {
+      this.pushEvent("lobby_recovery_pending", { reason });
+    }
+
+    this.disconnectedTimer = setTimeout(async () => {
       this.disconnectedTimer = null;
-      if (this.pc && this.pc.connectionState === "disconnected") {
-        this._handleFailure();
+      if (this.pc !== pc) return;
+
+      if (
+        this.pc &&
+        (this.pc.connectionState === "disconnected" ||
+          this.pc.iceConnectionState === "disconnected")
+      ) {
+        if (await this._deferDisconnectedRecoveryForActivity(beforeActivity, reason)) {
+          return;
+        }
+
+        this._handleFailure(reason);
       }
     }, RETRY_CONFIG.disconnectedGracePeriod);
   },
 
-  _handleFailure() {
+  async _deferDisconnectedRecoveryForActivity(beforeActivity, reason) {
+    const before = await beforeActivity;
+    const after = await collectConnectionActivity(this.pc);
+
+    if (!hasConnectionActivity(before, after)) {
+      this.disconnectedActivityDeferrals = 0;
+      return false;
+    }
+
+    const deferrals = this.disconnectedActivityDeferrals || 0;
+
+    if (deferrals >= DISCONNECTED_ACTIVITY_DEFERRAL_LIMIT) {
+      this.disconnectedActivityDeferrals = 0;
+      return false;
+    }
+
+    this.disconnectedActivityDeferrals = deferrals + 1;
+    log.debug("[Lobby] Deferring disconnected recovery while media/data still moves", {
+      reason,
+      deferrals: this.disconnectedActivityDeferrals,
+    });
+    this._startDisconnectedGracePeriod(reason, { preserveDeferrals: true });
+    return true;
+  },
+
+  _handleFailure(reason = "auto_retry") {
+    if (this.recoveryFailed || this.recoveryTimer) return;
+
+    this._clearSignalReplayTimer();
+    this._clearRenegotiationRetry();
+
     if (this.retryCount < RETRY_CONFIG.maxAttempts) {
       const attempt = this.retryCount + 1;
       const delay = RETRY_CONFIG.delays[this.retryCount];
       this.retryCount = attempt;
+      const retryReason = reason || "auto_retry";
 
-      this.pushEvent("lobby_retry", { attempt });
+      this.pushEvent("lobby_retry", { attempt, reason: retryReason });
 
-      setTimeout(async () => {
+      this.recoveryTimer = setTimeout(async () => {
+        this.recoveryTimer = null;
+        if (this.recoveryFailed) return;
+
         try {
           // Rebuilding the connection re-creates the data channels on the
           // initiator, which triggers onnegotiationneeded → a fresh offer.
           await this._createConnection();
+          if (this.role === "answerer") {
+            this._requestRenegotiation(true, {
+              attempt,
+              reason: retryReason,
+              connectionReset: true,
+            });
+          }
         } catch (error) {
           this._failConnection("retry", error);
         }
       }, delay);
     } else {
-      this.pushEvent("lobby_failed", { reason: "max_retries_exhausted" });
+      this._notifyFailed("max_retries_exhausted");
     }
   },
 
   _failConnection(phase, error) {
     log.error(`[Lobby] connection ${phase} failed`, error);
-    this.pushEvent("lobby_failed", { reason: `${phase}_failed` });
+    this._notifyFailed(`${phase}_failed`);
   },
 
-  _clearDisconnectedTimer() {
+  _recoverSignalingFailure(phase, error) {
+    log.warn(`[Lobby] signaling ${phase} failed`, error);
+    this._handleFailure(phase);
+  },
+
+  _normalizeEpoch(value) {
+    const number = Number(value);
+    return Number.isInteger(number) && number > 0 ? number : null;
+  },
+
+  _nextConnectionEpoch(value) {
+    const requested = this._normalizeEpoch(value);
+    if (requested && requested >= this.signalingEpoch) return requested;
+    return this.signalingEpoch + 1;
+  },
+
+  _advanceSignalingEpoch(value) {
+    const requested = this._normalizeEpoch(value);
+    if (requested && requested > this.signalingEpoch) {
+      this.signalingEpoch = requested;
+    } else {
+      this.signalingEpoch += 1;
+    }
+    this.offerSeq = 0;
+    this.currentOfferId = null;
+  },
+
+  _isStaleEpoch(epoch) {
+    return !!epoch && this.signalingEpoch > 0 && epoch < this.signalingEpoch;
+  },
+
+  _markRecovering() {
+    this.recoveryFailed = false;
+    this.failedReason = null;
+  },
+
+  _notifyFailed(reason, { manualRetry = true } = {}) {
+    if (this.recoveryFailed) return;
+
+    this._clearRecoveryTimer();
+    this.recoveryFailed = true;
+    this.failedReason = reason;
+    this.pushEvent("lobby_failed", {
+      reason,
+      manual_retry: manualRetry,
+    });
+  },
+
+  _clearDisconnectedTimer({ resetDeferrals = true } = {}) {
     if (this.disconnectedTimer) {
       clearTimeout(this.disconnectedTimer);
       this.disconnectedTimer = null;
     }
+    if (resetDeferrals) this.disconnectedActivityDeferrals = 0;
+  },
+
+  _clearRecoveryTimer() {
+    if (this.recoveryTimer) {
+      clearTimeout(this.recoveryTimer);
+      this.recoveryTimer = null;
+    }
+  },
+
+  _scheduleSignalReplay(reason) {
+    if (this.signalReplayTimer || this.signalReplayAttempts >= SIGNAL_REPLAY_MAX_ATTEMPTS) return;
+
+    const attempt = this.signalReplayAttempts + 1;
+    this.signalReplayAttempts = attempt;
+
+    this.signalReplayTimer = setTimeout(() => {
+      this.signalReplayTimer = null;
+      if (!this._needsSignalReplay()) return;
+
+      this._requestSignalReplay(reason, attempt);
+      this._scheduleSignalReplay(reason);
+    }, SIGNAL_REPLAY_DELAY_MS * attempt);
+  },
+
+  _needsSignalReplay() {
+    if (!this.pc || this.recoveryFailed) return false;
+    return (
+      !["connected"].includes(this.pc.connectionState) && this.pc.iceConnectionState !== "completed"
+    );
+  },
+
+  _requestSignalReplay(reason, attempt = null) {
+    if (!this.role) return;
+
+    this.pushEvent("lobby_signal_replay_request", {
+      reason,
+      attempt,
+      epoch: this.signalingEpoch || null,
+      offer_id: this.currentOfferId || this.activeRemoteOfferId || this.lastRemoteAnswerOfferId,
+    });
+  },
+
+  _clearSignalReplayTimer() {
+    if (this.signalReplayTimer) {
+      clearTimeout(this.signalReplayTimer);
+      this.signalReplayTimer = null;
+    }
+  },
+
+  _scheduleRenegotiationRetry(payload) {
+    if (this.role === "answerer") {
+      this.renegotiationRetryPayload = payload;
+    }
+
+    if (
+      this.role !== "answerer" ||
+      this.renegotiationRetryTimer ||
+      this.renegotiationRetryAttempts >= RENEGOTIATION_RETRY_MAX_ATTEMPTS
+    ) {
+      return;
+    }
+
+    const attempt = this.renegotiationRetryAttempts + 1;
+    this.renegotiationRetryAttempts = attempt;
+
+    this.renegotiationRetryTimer = setTimeout(() => {
+      this.renegotiationRetryTimer = null;
+      if (this.role !== "answerer" || !this.pc || this.recoveryFailed) return;
+
+      this.pushEvent("lobby_renegotiate", {
+        ...this.renegotiationRetryPayload,
+        retry_attempt: attempt,
+      });
+
+      if (attempt >= RENEGOTIATION_RETRY_MAX_ATTEMPTS) {
+        this._recoverSignalingFailure(
+          "renegotiate_request",
+          new Error("renegotiation request was not answered"),
+        );
+        return;
+      }
+
+      this._scheduleRenegotiationRetry(this.renegotiationRetryPayload);
+    }, RENEGOTIATION_RETRY_DELAY_MS * attempt);
+  },
+
+  _clearRenegotiationRetry() {
+    if (this.renegotiationRetryTimer) {
+      clearTimeout(this.renegotiationRetryTimer);
+      this.renegotiationRetryTimer = null;
+    }
+    this.renegotiationRetryPayload = null;
+    this.renegotiationRetryAttempts = 0;
   },
 
   // --- Always-on statistics ---
@@ -518,6 +979,13 @@ const LobbyWebRTCHook = {
       const stats = deriveFeatureStats(this._statsPrev, snapshot);
       this._statsPrev = snapshot;
       stats.video.source = this.videoSource;
+      stats.summary = {
+        connection_state: this.pc.connectionState || "",
+        ice_connection_state: this.pc.iceConnectionState || "",
+        signaling_epoch: this.signalingEpoch || 0,
+        offer_id:
+          this.currentOfferId || this.activeRemoteOfferId || this.lastRemoteAnswerOfferId || "",
+      };
       this.pushEvent("lobby_stats", stats);
     } catch (error) {
       log.warn("[Lobby] Failed to sample stats", error);
@@ -534,6 +1002,9 @@ const LobbyWebRTCHook = {
 
   _cleanup() {
     this._clearDisconnectedTimer();
+    this._clearRecoveryTimer();
+    this._clearSignalReplayTimer();
+    this._clearRenegotiationRetry();
     this._stopStatsPolling();
     this.el._peerConnection = null;
     this.el._fileTransferChannel = null;
@@ -549,6 +1020,11 @@ const LobbyWebRTCHook = {
     }
     this.fileChannel = null;
     this.gameChannel = null;
+    this.pendingIceCandidates = [];
+    this.remoteIceCandidateKeys = new Set();
+    this.iceCandidateFailures = 0;
+    this.signalReplayAttempts = 0;
+    this.renegotiationRetryAttempts = 0;
 
     if (this.pc) {
       close(this.pc);

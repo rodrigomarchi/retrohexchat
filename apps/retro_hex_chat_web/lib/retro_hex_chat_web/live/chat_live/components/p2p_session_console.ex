@@ -167,6 +167,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PSessionConsole do
             call_summary={@p2p_session.call_summary}
             file_summary={@p2p_session.file_summary}
             game_summary={@p2p_session.game_summary}
+            recovery={@p2p_session.recovery}
             turn_only={@p2p_session.turn_only}
           />
         </div>
@@ -195,9 +196,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PSessionConsole do
     do: normalize_section(Atom.to_string(section))
 
   defp normalize_section(_section), do: "call"
-
-  defp p2p_connected?(%{recovery: %{state: state}}) when state in [:reconnecting, :failed],
-    do: false
 
   defp p2p_connected?(%{state: :connected}), do: true
   defp p2p_connected?(_p2p), do: false
@@ -343,8 +341,28 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PSessionConsole do
     dgettext("p2p", "Automatic recovery did not reconnect. Retry or end the session.")
   end
 
+  defp recovery_message(%{state: :failed, reason: "reattach_blocked"}) do
+    dgettext(
+      "p2p",
+      "This session is still active in another window. Close that window, retry, or end this session."
+    )
+  end
+
+  defp recovery_message(%{state: :failed, reason: "reattach_failed"}) do
+    dgettext("p2p", "Could not restore this P2P session. Retry or end the session.")
+  end
+
   defp recovery_message(%{state: :failed}) do
     dgettext("p2p", "The P2P media connection failed. Retry or end the session.")
+  end
+
+  defp recovery_message(%{state: :reconnecting, reason: "reattach_pending"}) do
+    dgettext("p2p", "Restoring this P2P session after reconnect.")
+  end
+
+  defp recovery_message(%{state: :reconnecting, reason: reason})
+       when reason in ["connection_disconnected", "ice_disconnected"] do
+    dgettext("p2p", "Peer media connection was interrupted. Recovery is monitoring the link.")
   end
 
   defp recovery_message(%{state: :reconnecting, attempt: attempt})

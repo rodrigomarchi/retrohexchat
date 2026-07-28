@@ -64,6 +64,7 @@ function normalizeConfig(config) {
       startAudio: config.serverEvents?.startAudio,
       startVideo: config.serverEvents?.startVideo,
       endCall: config.serverEvents?.endCall,
+      peerMedia: config.serverEvents?.peerMedia,
       peerMuted: config.serverEvents?.peerMuted,
       peerCamera: config.serverEvents?.peerCamera,
       upgradeAccepted: config.serverEvents?.upgradeAccepted,
@@ -118,11 +119,15 @@ export function createRtcMediaHook(configInput) {
       this.inCall = false;
       this.audioOn = false;
       this.videoOn = false;
+      this.peerMedia = { audio: false, video: false };
+      this.peerCameraOff = false;
+      this.expectedRemoteVideo = false;
       this.screenShare = { active: false, stream: null, track: null, previousVideoTrack: null };
       this.watchdogInterval = null;
       this._stalledSince = null;
       this._stalledRecoveries = 0;
       this._stalledRecoveryEscalated = false;
+      this._remoteVideoIssueKind = null;
       this._pendingMediaCommands = [];
       this._sendersPc = null;
 
@@ -149,6 +154,9 @@ export function createRtcMediaHook(configInput) {
       this._handleServerEvent(config.serverEvents.endCall, (payload = {}) =>
         this._endCall(payload.reason || "ended", { notify: payload.notify === true }),
       );
+      this._handleServerEvent(config.serverEvents.peerMedia, (payload = {}) =>
+        this._handlePeerMedia(payload),
+      );
       this._handleServerEvent(config.serverEvents.peerMuted, ({ muted }) =>
         this._handlePeerMuted(muted),
       );
@@ -165,7 +173,9 @@ export function createRtcMediaHook(configInput) {
       this._handleServerEvent(config.serverEvents.setPreset, ({ preset }) =>
         this._handleSetPreset(preset),
       );
-      this._handleServerEvent(config.serverEvents.joinCall, () => this._joinCall());
+      this._handleServerEvent(config.serverEvents.joinCall, (payload = {}) =>
+        this._joinCall(payload),
+      );
 
       this._wireControls();
       document.addEventListener("keydown", this._onShortcutKeydown, true);
@@ -373,7 +383,7 @@ export function createRtcMediaHook(configInput) {
       const mediaMode = this.el?.dataset?.mediaMode || "video";
 
       if (opts.auto === true && mediaMode === "receive") {
-        this._joinCall();
+        this._joinCall(opts);
         return;
       }
 
@@ -387,7 +397,7 @@ export function createRtcMediaHook(configInput) {
       if (this.callType && !receiverEnablingAudio) return;
 
       if (receiverEnablingAudio) {
-        this._joinCall();
+        this._joinCall(opts);
         this._enableAudioAfterReceiveReady();
         return;
       }
@@ -432,6 +442,7 @@ export function createRtcMediaHook(configInput) {
       this.inCall = true;
       this.audioOn = true;
       this.videoOn = type === "video";
+      this._setExpectedRemoteVideo(opts.expected_video === true || opts.expectedVideo === true);
       this.startTime = this.startTime || Date.now();
       this.muted = false;
       this.cameraOff = false;
@@ -460,12 +471,13 @@ export function createRtcMediaHook(configInput) {
     // Enter the call as a pure receiver (auto-join), without acquiring any media.
     // The server has already marked us a participant; we just light up the call
     // surface, timers and watchdog so the incoming stream renders and recovers.
-    _joinCall() {
+    _joinCall(opts = {}) {
       if (this.inCall) return;
       this.inCall = true;
       this.callType = "receiving";
       this.audioOn = false;
       this.videoOn = false;
+      this._setExpectedRemoteVideo(opts.expected_video === true || opts.expectedVideo === true);
       this.screenShare = { active: false, stream: null, track: null, previousVideoTrack: null };
       this.muted = false;
       this.cameraOff = false;
@@ -640,6 +652,9 @@ export function createRtcMediaHook(configInput) {
       this.inCall = false;
       this.audioOn = false;
       this.videoOn = false;
+      this.peerMedia = { audio: false, video: false };
+      this.peerCameraOff = false;
+      this.expectedRemoteVideo = false;
       // The send-toggle flags are per-track state; clear them with the tracks so a
       // later call does not inherit a stale mute/camera-off from the previous one.
       this.muted = false;
@@ -662,16 +677,20 @@ export function createRtcMediaHook(configInput) {
       this._stalledSince = null;
       this._stalledRecoveries = 0;
       this._stalledRecoveryEscalated = false;
+      this._remoteVideoIssueKind = null;
       this.watchdogInterval = setInterval(() => {
         this._adoptExistingRemoteTracks();
         const track = this._remoteVideoTrack();
-        const stalledTrack = track?.readyState === "live" && !this._remoteVideoFlowing();
+        const issue = this._remoteVideoIssue(track);
 
-        if (!stalledTrack) {
-          this._stalledSince = null;
-          this._stalledRecoveries = 0;
-          this._stalledRecoveryEscalated = false;
+        if (!issue) {
+          this._resetRemoteVideoIssue();
           return;
+        }
+
+        if (this._remoteVideoIssueKind !== issue.kind) {
+          this._resetRemoteVideoIssue();
+          this._remoteVideoIssueKind = issue.kind;
         }
 
         if (!this._stalledSince) {
@@ -687,7 +706,7 @@ export function createRtcMediaHook(configInput) {
 
           this._requestMediaRecovery({
             restart,
-            reason: restart ? "remote_video_stalled_restart" : "remote_video_stalled",
+            reason: restart ? issue.restartReason : issue.reason,
           });
         }
       }, 1000);
@@ -701,6 +720,7 @@ export function createRtcMediaHook(configInput) {
       this._stalledSince = null;
       this._stalledRecoveries = 0;
       this._stalledRecoveryEscalated = false;
+      this._remoteVideoIssueKind = null;
     },
 
     _requestMediaRecovery(detail = {}) {
@@ -715,6 +735,7 @@ export function createRtcMediaHook(configInput) {
       this._stalledSince = null;
       this._stalledRecoveries = 0;
       this._stalledRecoveryEscalated = false;
+      this._remoteVideoIssueKind = null;
       this._clearMediaElements();
     },
 
@@ -733,6 +754,48 @@ export function createRtcMediaHook(configInput) {
         remoteVideo.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA &&
         remoteVideo.videoWidth > 0 &&
         remoteVideo.videoHeight > 0
+      );
+    },
+
+    _remoteVideoIssue(track) {
+      if (track?.readyState === "live") {
+        if (!this._remoteVideoFlowing()) {
+          return {
+            kind: "stalled",
+            reason: "remote_video_stalled",
+            restartReason: "remote_video_stalled_restart",
+          };
+        }
+
+        return null;
+      }
+
+      if (this._expectsRemoteVideo()) {
+        return {
+          kind: "missing",
+          reason: "remote_video_missing",
+          restartReason: "remote_video_missing_restart",
+        };
+      }
+
+      return null;
+    },
+
+    _resetRemoteVideoIssue() {
+      this._stalledSince = null;
+      this._stalledRecoveries = 0;
+      this._stalledRecoveryEscalated = false;
+      this._remoteVideoIssueKind = null;
+    },
+
+    _setExpectedRemoteVideo(expected) {
+      this.expectedRemoteVideo = expected === true && this.peerCameraOff !== true;
+      if (!this.expectedRemoteVideo) this._resetRemoteVideoIssue();
+    },
+
+    _expectsRemoteVideo() {
+      return (
+        config.autoJoin && this.inCall && this.expectedRemoteVideo && this.peerCameraOff !== true
       );
     },
 
@@ -1146,12 +1209,21 @@ export function createRtcMediaHook(configInput) {
 
     // --- Peer state ---
 
+    _handlePeerMedia(payload = {}) {
+      const audio = payload.audio === true;
+      const video = payload.video === true;
+
+      this.peerMedia = { audio, video };
+      this._setExpectedRemoteVideo(video);
+    },
+
     _handlePeerMuted(_muted) {
       // LiveView re-renders the indicator.
     },
 
-    _handlePeerCamera(_off) {
-      // LiveView re-renders the indicator.
+    _handlePeerCamera(off) {
+      this.peerCameraOff = off === true;
+      this._setExpectedRemoteVideo(this.peerMedia.video === true);
     },
 
     // --- Device management ---
@@ -1274,27 +1346,53 @@ export function createRtcMediaHook(configInput) {
 
         const devices = await enumerateDevices();
         const currentAudioTrack = this.localStream.getAudioTracks()[0];
-        if (!currentAudioTrack) return;
+        if (currentAudioTrack) {
+          const currentDeviceId = currentAudioTrack.getSettings?.().deviceId;
+          const stillAvailable = devices.audioinput.some(
+            (device) => device.deviceId === currentDeviceId,
+          );
 
-        const currentDeviceId = currentAudioTrack.getSettings?.().deviceId;
-        const stillAvailable = devices.audioinput.some(
-          (device) => device.deviceId === currentDeviceId,
+          if (!stillAvailable) {
+            try {
+              this.localStream = await switchAudioInput(this.localStream, this.senders, "default");
+              // Preserve the mute state across the automatic fallback to the default mic.
+              toggleTrack(this.localStream, "audio", !this.muted);
+              this._push(config.clientEvents.deviceFallback, {
+                message: t("Device disconnected, using default device"),
+              });
+            } catch (error) {
+              // Falling back to the default mic also failed — the peer can no longer
+              // hear this user. Surface it instead of leaving them silently muted.
+              log.error("[RtcMedia] Audio device fallback failed", error);
+              this._push(config.clientEvents.deviceFallback, {
+                message: t("Your microphone is unavailable. Check your audio devices."),
+              });
+            }
+          }
+        }
+
+        const currentVideoTrack = this.localStream.getVideoTracks()[0];
+        if (!currentVideoTrack || this.screenShare?.active) return;
+
+        const currentVideoDeviceId = currentVideoTrack.getSettings?.().deviceId;
+        const videoStillAvailable = devices.videoinput.some(
+          (device) => device.deviceId === currentVideoDeviceId,
         );
 
-        if (!stillAvailable) {
+        if (!videoStillAvailable) {
           try {
-            this.localStream = await switchAudioInput(this.localStream, this.senders, "default");
-            // Preserve the mute state across the automatic fallback to the default mic.
-            toggleTrack(this.localStream, "audio", !this.muted);
+            this.localStream = await switchVideoInput(this.localStream, this.senders, null);
+            toggleTrack(this.localStream, "video", !this.cameraOff);
             this._push(config.clientEvents.deviceFallback, {
               message: t("Device disconnected, using default device"),
             });
           } catch (error) {
-            // Falling back to the default mic also failed — the peer can no longer
-            // hear this user. Surface it instead of leaving them silently muted.
-            log.error("[RtcMedia] Audio device fallback failed", error);
+            log.error("[RtcMedia] Video device fallback failed", error);
+            this.cameraOff = true;
+            toggleTrack(this.localStream, "video", false);
+            this._push(config.clientEvents.cameraChanged, { off: true });
             this._push(config.clientEvents.deviceFallback, {
-              message: t("Your microphone is unavailable. Check your audio devices."),
+              message: t("Your camera is unavailable. Check your video devices."),
             });
           }
         }

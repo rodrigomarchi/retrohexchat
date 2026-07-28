@@ -108,6 +108,13 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PMediaIsland do
   def update(%{action: {:peer_media_changed, payload}} = assigns, socket) do
     socket = assign_context(socket, assigns)
     socket = assign(socket, peer_media: %{audio: payload.audio, video: payload.video})
+
+    socket =
+      push_event(socket, "lobby_media_peer_media", %{
+        audio: payload.audio,
+        video: payload.video
+      })
+
     {:ok, surface_peer_media(socket, payload.audio or payload.video)}
   end
 
@@ -387,11 +394,14 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PMediaIsland do
   end
 
   defp push_peer_media_surface_command(%{assigns: %{media_mode: "receive"}} = socket) do
-    push_event(socket, "lobby_media_join", %{})
+    push_event(socket, "lobby_media_join", %{expected_video: socket.assigns.peer_media.video})
   end
 
   defp push_peer_media_surface_command(%{assigns: %{media_mode: "audio"}} = socket) do
-    push_event(socket, "lobby_media_start_audio", %{auto: true})
+    push_event(socket, "lobby_media_start_audio", %{
+      auto: true,
+      expected_video: socket.assigns.peer_media.video
+    })
   end
 
   defp push_peer_media_surface_command(socket) do
@@ -400,7 +410,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PMediaIsland do
         do: "lobby_media_start_video",
         else: "lobby_media_start_audio"
 
-    push_event(socket, event, %{auto: true})
+    push_event(socket, event, %{auto: true, expected_video: socket.assigns.peer_media.video})
   end
 
   # The host owns the cross-cutting read-model (taskbar badge + Statistics strip);

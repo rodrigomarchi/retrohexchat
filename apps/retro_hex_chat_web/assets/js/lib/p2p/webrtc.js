@@ -89,6 +89,15 @@ export function onConnectionStateChange(pc, callback) {
 }
 
 /**
+ * Register callback for ICE connection state changes.
+ * @param {RTCPeerConnection} pc
+ * @param {(state: RTCIceConnectionState) => void} callback
+ */
+export function onIceConnectionStateChange(pc, callback) {
+  pc.oniceconnectionstatechange = () => callback(pc.iceConnectionState);
+}
+
+/**
  * Register callback for new ICE candidates.
  * @param {RTCPeerConnection} pc
  * @param {(candidate: RTCIceCandidate | null) => void} callback

@@ -118,10 +118,13 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
       assert_eventually_server_stats_subscriber_count(ctx.token, alice_client.participant_id, 1)
       assert_eventually_server_stats_subscriber_count(ctx.token, bob_client.participant_id, 1)
 
+      send_and_assert_video_rtp_counts(bob_client, [:alice])
+      drain_probe_rtp()
+
       before =
         server_rtp_snapshot(ctx.token, bob_client.participant_id, alice_client.participant_id)
 
-      send(bob_client.pid, {:send_rtp_sequence, :video, Enum.to_list(1..20)})
+      send(bob_client.pid, {:send_rtp_sequence, :video, Enum.to_list(100..119)})
       assert_rtp_packet_count(:alice, :video, 20)
 
       first =
@@ -134,7 +137,7 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
 
       drain_probe_rtp()
 
-      send(bob_client.pid, {:send_rtp_sequence, :video, Enum.to_list(30..45)})
+      send(bob_client.pid, {:send_rtp_sequence, :video, Enum.to_list(130..145)})
       assert_rtp_packet_count(:alice, :video, 16)
 
       second =

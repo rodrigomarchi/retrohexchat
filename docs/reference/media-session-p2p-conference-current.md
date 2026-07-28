@@ -7,6 +7,9 @@ unificacao mobile-first. Use este arquivo para implementacao, revisao e
 auditoria. Documentos antigos com capturas de tela ou planos anteriores devem
 ser tratados como historico, mesmo quando seus nomes mencionarem "atual".
 
+Para o mapa tecnico de handshake, sinalizacao, recovery e lacunas de
+resiliencia, use `docs/reference/call-handshake-resilience-map.md`.
+
 ## Contrato de produto
 
 - Existe uma superficie principal por sessao de midia.

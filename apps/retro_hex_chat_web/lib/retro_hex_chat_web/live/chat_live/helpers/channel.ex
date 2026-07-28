@@ -80,6 +80,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
       show_status_tab: false
     )
     |> GroupCallEvents.refresh_channel_call_state(channel_name)
+    |> GroupCallEvents.rehydrate()
     |> tap(fn _ -> send_update(Composer, id: Composer.id(), reset_input: true) end)
     |> load_channel_users(channel_name)
     |> load_channel_user_count(channel_name)
@@ -101,6 +102,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
     socket
     |> assign(session: new_session)
     |> GroupCallEvents.refresh_channel_call_state(channel_name)
+    |> GroupCallEvents.rehydrate()
     |> load_channel_user_count(channel_name)
     |> push_event("channel_joined_flash", %{channel: channel_name})
     |> SessionHelpers.push_reconnect_state()

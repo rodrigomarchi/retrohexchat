@@ -63,11 +63,36 @@ defmodule RetroHexChat.GroupCall.RoomServer do
     )
   end
 
-  @spec apply_answer(String.t(), integer(), String.t()) :: :ok | {:error, term()}
-  def apply_answer(room_token, participant_id, sdp) do
+  @spec rejoin(String.t(), map(), integer() | nil, pid(), map(), map()) ::
+          {:ok, map()} | {:error, atom() | String.t()}
+  def rejoin(
+        room_token,
+        actor,
+        previous_participant_id,
+        signal_pid,
+        client_info \\ %{},
+        media_constraints \\ %{}
+      ) do
     GenServer.call(
       GroupRegistry.room_via_tuple({:room, room_token}),
-      {:apply_answer, participant_id, sdp}
+      {:rejoin, actor, previous_participant_id, signal_pid, client_info, media_constraints}
+    )
+  end
+
+  @spec disconnect(String.t(), integer(), pid(), String.t()) :: :ok | {:error, term()}
+  def disconnect(room_token, participant_id, signal_pid, reason \\ "channel_closed") do
+    GenServer.call(
+      GroupRegistry.room_via_tuple({:room, room_token}),
+      {:disconnect, participant_id, signal_pid, reason}
+    )
+  end
+
+  @spec apply_answer(String.t(), integer(), String.t(), String.t() | nil) ::
+          :ok | {:error, term()}
+  def apply_answer(room_token, participant_id, sdp, offer_id \\ nil) do
+    GenServer.call(
+      GroupRegistry.room_via_tuple({:room, room_token}),
+      {:apply_answer, participant_id, sdp, offer_id}
     )
   end
 
@@ -278,8 +303,38 @@ defmodule RetroHexChat.GroupCall.RoomServer do
     end
   end
 
-  def handle_call({:apply_answer, participant_id, sdp}, _from, state) do
-    reply = PeerServer.apply_sdp_answer(state.room.id, participant_id, sdp)
+  def handle_call(
+        {:rejoin, actor, previous_participant_id, signal_pid, client_info, _media_constraints},
+        _from,
+        state
+      ) do
+    with :ok <- check_enabled(state),
+         {:ok, channel_state} <- Channels.Server.get_state(state.room.channel_name),
+         membership = membership_from_channel_state(channel_state),
+         :ok <-
+           Policy.can_join?(actor.user_id, actor.nickname, state.room, membership) do
+      rejoin_authorized_participant(
+        state,
+        actor,
+        previous_participant_id,
+        signal_pid,
+        client_info,
+        membership
+      )
+    else
+      {:error, reason} = error ->
+        Logger.debug("Group call rejoin denied",
+          room_id: state.room.id,
+          reason: inspect(reason)
+        )
+
+        telemetry(:join, %{count: 1}, %{result: :denied, reason: inspect(reason)})
+        {:reply, error, state}
+    end
+  end
+
+  def handle_call({:apply_answer, participant_id, sdp, offer_id}, _from, state) do
+    reply = PeerServer.apply_sdp_answer(state.room.id, participant_id, sdp, offer_id)
     {:reply, reply, state}
   end
 
@@ -538,6 +593,22 @@ defmodule RetroHexChat.GroupCall.RoomServer do
 
   def handle_call({:leave, participant_id, reason}, _from, state) do
     {:reply, :ok, leave_participant(state, participant_id, reason)}
+  end
+
+  def handle_call({:disconnect, participant_id, signal_pid, reason}, _from, state) do
+    state =
+      case participant_data(state, participant_id) do
+        {:ok, %{channel_pid: ^signal_pid}, _bucket} ->
+          leave_participant(state, participant_id, reason, "disconnected")
+
+        {:ok, _data, _bucket} ->
+          state
+
+        {:error, _reason} ->
+          state
+      end
+
+    {:reply, :ok, state}
   end
 
   def handle_call(:summary, _from, state) do
@@ -927,6 +998,23 @@ defmodule RetroHexChat.GroupCall.RoomServer do
     end
   end
 
+  defp rejoin_authorized_participant(
+         state,
+         actor,
+         previous_participant_id,
+         signal_pid,
+         client_info,
+         membership
+       ) do
+    case authorized_rejoin_participant(state, actor, previous_participant_id) do
+      {:ok, participant_id, data} ->
+        reconnect_authorized_participant(state, participant_id, data, signal_pid, client_info)
+
+      :not_found ->
+        join_authorized_participant(state, actor, signal_pid, client_info, membership)
+    end
+  end
+
   defp reconnect_authorized_participant(state, participant_id, data, signal_pid, client_info) do
     case reconnect_participant(state, participant_id, data, signal_pid, client_info) do
       {:ok, participant, state} ->
@@ -1162,8 +1250,40 @@ defmodule RetroHexChat.GroupCall.RoomServer do
     end
   end
 
+  defp authorized_rejoin_participant(state, actor, participant_id)
+       when is_integer(participant_id) do
+    case participant_data(state, participant_id) do
+      {:ok, %{participant: participant} = data, _bucket}
+      when participant.registered_nick_id == actor.user_id ->
+        normalized = String.downcase(actor.nickname)
+
+        if participant.normalized_nickname == normalized do
+          {:ok, participant_id, data}
+        else
+          :not_found
+        end
+
+      _other ->
+        :not_found
+    end
+  end
+
+  defp authorized_rejoin_participant(_state, _actor, _participant_id), do: :not_found
+
   defp reconnect_participant(state, participant_id, data, signal_pid, client_info) do
     cancel_timer(data.timer_ref)
+    old_peer_pid = data.peer_pid
+
+    state =
+      state
+      |> update_in([:participants], &Map.delete(&1, participant_id))
+      |> update_in([:pending_participants], &Map.delete(&1, participant_id))
+      |> delete_peer_pid_mapping(old_peer_pid)
+      |> end_participant_tracks(participant_id, "rejoin")
+
+    if is_pid(old_peer_pid) and Process.alive?(old_peer_pid) do
+      PeerSupervisor.terminate_peer(state.room.id, participant_id)
+    end
 
     now = DateTime.utc_now()
 
@@ -1174,13 +1294,18 @@ defmodule RetroHexChat.GroupCall.RoomServer do
            reason: nil
          }) do
       {:ok, participant} ->
-        state = update_in(state.participants, &Map.delete(&1, participant_id))
         put_participant_pending(state, participant, signal_pid)
 
       {:error, reason} ->
         {:error, reason}
     end
   end
+
+  defp delete_peer_pid_mapping(state, peer_pid) when is_pid(peer_pid) do
+    update_in(state, [:peer_pid_to_participant_id], &Map.delete(&1, peer_pid))
+  end
+
+  defp delete_peer_pid_mapping(state, _peer_pid), do: state
 
   defp put_participant_pending(state, participant, signal_pid) do
     state = cancel_peerless_timer(state)

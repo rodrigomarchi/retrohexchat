@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import GroupCallWebRTCHook from "../../../js/hooks/group_call/group_call_webrtc_hook.js";
 
@@ -20,8 +20,10 @@ function setupHook() {
   hook.pushEvent = vi.fn();
   hook.channel = { push: vi.fn() };
   hook.pendingCandidates = [];
+  hook.remoteCandidateFailures = 0;
   hook.offerQueue = Promise.resolve();
   hook.lastAnsweredOfferSdp = null;
+  hook.lastAnsweredOfferId = null;
   hook.layoutState = {
     mode: "auto",
     focusedParticipantId: null,
@@ -35,8 +37,11 @@ function setupHook() {
   hook.tracksByStreamId = new Map();
   hook.tracksByWebrtcTrackId = new Map();
   hook.remoteTiles = new Map();
+  hook.remoteVideoStalls = new Map();
   hook.statsTimer = null;
   hook.statsPrev = null;
+  hook.localSenders = [];
+  hook._sendersPc = null;
   hook.participantStatsPrev = null;
   hook.participantQualityById = new Map();
   hook.activeSpeakerParticipantId = null;
@@ -47,7 +52,12 @@ function setupHook() {
   hook.screenShareBlocked = false;
   hook.recoveryTimer = null;
   hook.recoveryAttempts = 0;
+  hook.recoveryActivityDeferrals = 0;
   hook.maxRecoveryAttempts = 3;
+  hook.offerWatchdogTimer = null;
+  hook.offerWatchdogAttempts = 0;
+  hook.rejoinEpoch = 0;
+  hook.rejoining = false;
 
   hooks.push(hook);
   return hook;
@@ -145,11 +155,63 @@ class MockPeerConnection {
     this.addEventListener = vi.fn();
     this.addTrack = vi.fn();
     this.connectionState = "connected";
+    this.iceConnectionState = "connected";
+    this.oniceconnectionstatechange = null;
     this.getStats = vi.fn(async () => new Map());
+    this.close = vi.fn();
   }
 }
 
+function pushWithReceivers() {
+  const receivers = {};
+  const push = {
+    receive: vi.fn((status, callback) => {
+      receivers[status] = callback;
+      return push;
+    }),
+  };
+
+  return { push, receivers };
+}
+
+function activityStats({
+  bytesReceived = 0,
+  bytesSent = 0,
+  packetsReceived = 0,
+  packetsSent = 0,
+  messagesReceived = 0,
+  messagesSent = 0,
+} = {}) {
+  return new Map([
+    [
+      "candidate-pair",
+      {
+        type: "candidate-pair",
+        state: "succeeded",
+        bytesReceived,
+        bytesSent,
+        packetsReceived,
+        packetsSent,
+      },
+    ],
+    [
+      "data",
+      {
+        type: "data-channel",
+        bytesReceived: 0,
+        bytesSent: 0,
+        messagesReceived,
+        messagesSent,
+      },
+    ],
+  ]);
+}
+
 describe("GroupCallWebRTCHook media fallback", () => {
+  beforeEach(() => {
+    vi.spyOn(HTMLMediaElement.prototype, "play").mockResolvedValue(undefined);
+  });
+
   afterEach(() => {
     for (const hook of hooks) {
       hook._stopStatsPolling?.();
@@ -174,7 +236,8 @@ describe("GroupCallWebRTCHook media fallback", () => {
 
     await hook._ensureLocalTracks();
 
-    expect(hook.localStream).toBe(null);
+    expect(hook.localStream).not.toBe(null);
+    expect(hook.localStream.getTracks()).toEqual([]);
     expect(hook.pc.addTrack).not.toHaveBeenCalled();
     expect(hook.pushEvent).toHaveBeenCalledWith("group_call_client_warning", {
       code: "media_capture_failed",
@@ -220,6 +283,52 @@ describe("GroupCallWebRTCHook media fallback", () => {
     expect(navigator.mediaDevices.getUserMedia).not.toHaveBeenCalled();
     expect(hook.localStream).toBe(emptyStream);
     expect(hook._attachLocalStream).toHaveBeenCalledWith(emptyStream);
+  });
+
+  it("acquires and publishes a missing microphone track when audio is enabled later", async () => {
+    const hook = setupHook();
+    const audioTrack = { id: "audio-late", kind: "audio", readyState: "live", enabled: true };
+    const localTracks = [];
+    const localStream = {
+      addTrack: vi.fn((track) => localTracks.push(track)),
+      getTracks: vi.fn(() => localTracks),
+      getAudioTracks: vi.fn(() => localTracks.filter((track) => track.kind === "audio")),
+      getVideoTracks: vi.fn(() => []),
+    };
+    const captureStream = {
+      getTracks: vi.fn(() => [audioTrack]),
+      getAudioTracks: vi.fn(() => [audioTrack]),
+      getVideoTracks: vi.fn(() => []),
+    };
+    const pushResult = pushWithReceivers().push;
+
+    hook.localStream = localStream;
+    hook.mediaEnabled = { audio: false, video: false };
+    hook.participantId = 12;
+    hook.channel = { push: vi.fn(() => pushResult) };
+    hook.pc = { addTrack: vi.fn((track) => ({ track })) };
+
+    Object.defineProperty(navigator, "mediaDevices", {
+      configurable: true,
+      value: {
+        getUserMedia: vi.fn().mockResolvedValue(captureStream),
+      },
+    });
+
+    hook._publishLocalMediaState({ audio: true, video: false });
+
+    await vi.waitFor(() => {
+      expect(navigator.mediaDevices.getUserMedia).toHaveBeenCalled();
+      expect(hook.pc.addTrack).toHaveBeenCalledWith(audioTrack, localStream);
+      expect(hook.channel.push).toHaveBeenCalledWith("group_call_request_offer", {
+        attempt: 0,
+        trigger: "local_media_added",
+      });
+      expect(hook.channel.push).toHaveBeenCalledWith("group_call_media_state", {
+        audio: true,
+        video: false,
+      });
+    });
   });
 
   it("keeps the local tile empty-state copy synchronized with live media state", () => {
@@ -409,6 +518,25 @@ describe("GroupCallWebRTCHook media fallback", () => {
     expect(hook.channel.push).toHaveBeenCalledTimes(1);
     expect(hook.channel.push).toHaveBeenCalledWith("group_call_answer", {
       sdp: "answer-sdp",
+      offer_id: null,
+    });
+  });
+
+  it("echoes offer_id in the SDP answer and ignores repeats by id", async () => {
+    const hook = setupNegotiationHook();
+    const pc = new MockPeerConnection();
+    vi.stubGlobal("RTCPeerConnection", function RTCPeerConnectionMock() {
+      return pc;
+    });
+
+    await hook._handleOffer({ sdp: "offer-sdp-v1", ice_servers: [], offer_id: "gc-12-1" });
+    await hook._handleOffer({ sdp: "offer-sdp-v1", ice_servers: [], offer_id: "gc-12-1" });
+
+    expect(pc.setRemoteDescription).toHaveBeenCalledTimes(1);
+    expect(hook.channel.push).toHaveBeenCalledTimes(1);
+    expect(hook.channel.push).toHaveBeenCalledWith("group_call_answer", {
+      sdp: "answer-sdp",
+      offer_id: "gc-12-1",
     });
   });
 
@@ -451,6 +579,7 @@ describe("GroupCallWebRTCHook media fallback", () => {
     expect(pc.createAnswer).toHaveBeenCalled();
     expect(hook.channel.push).toHaveBeenCalledWith("group_call_answer", {
       sdp: "answer-sdp",
+      offer_id: null,
     });
     expect(hook.pushEvent).not.toHaveBeenCalledWith(
       "group_call_client_error",
@@ -513,6 +642,205 @@ describe("GroupCallWebRTCHook media fallback", () => {
     });
   });
 
+  it("defers disconnected recovery while getStats still shows activity", async () => {
+    vi.useFakeTimers();
+    const hook = setupHook();
+    const pushResult = {
+      receive: vi.fn(() => pushResult),
+    };
+    const statsQueue = [
+      activityStats({ bytesReceived: 100, bytesSent: 50, packetsReceived: 2, packetsSent: 1 }),
+      activityStats({ bytesReceived: 200, bytesSent: 50, packetsReceived: 3, packetsSent: 1 }),
+      activityStats({ bytesReceived: 200, bytesSent: 50, packetsReceived: 3, packetsSent: 1 }),
+    ];
+    hook.channel = { push: vi.fn(() => pushResult) };
+    hook.pc = {
+      connectionState: "disconnected",
+      getStats: vi.fn(async () => statsQueue.shift() || activityStats()),
+    };
+
+    hook._handleConnectionStateChange();
+    await vi.advanceTimersByTimeAsync(1000);
+
+    expect(hook.channel.push).not.toHaveBeenCalledWith(
+      "group_call_request_offer",
+      expect.any(Object),
+    );
+
+    await vi.advanceTimersByTimeAsync(1000);
+
+    expect(hook.channel.push).toHaveBeenCalledWith("group_call_request_offer", {
+      attempt: 1,
+      trigger: "auto",
+    });
+  });
+
+  it("uses ICE failed as a group-call recovery signal", async () => {
+    vi.useFakeTimers();
+    const hook = setupHook();
+    const pushResult = {
+      receive: vi.fn(() => pushResult),
+    };
+    hook.channel = { push: vi.fn(() => pushResult) };
+    hook.pc = { connectionState: "connected", iceConnectionState: "failed" };
+
+    hook._handleIceConnectionStateChange();
+
+    expect(hook.pushEvent).toHaveBeenCalledWith(
+      "group_call_recovery_state",
+      expect.objectContaining({
+        state: "reconnecting",
+        reason: "ice_failed",
+        attempt: 1,
+      }),
+    );
+
+    await vi.advanceTimersByTimeAsync(1000);
+
+    expect(hook.channel.push).toHaveBeenCalledWith("group_call_request_offer", {
+      attempt: 1,
+      trigger: "auto",
+    });
+  });
+
+  it("requests a fresh offer when the initial group-call offer is not received", async () => {
+    vi.useFakeTimers();
+    const hook = setupHook();
+    const pushResult = {
+      receive: vi.fn(() => pushResult),
+    };
+
+    hook.channel = { push: vi.fn(() => pushResult) };
+
+    hook._handleJoined({ participants: [], tracks: [] });
+    hook.pushEvent.mockClear();
+
+    await vi.advanceTimersByTimeAsync(1500);
+
+    expect(hook.channel.push).toHaveBeenCalledWith("group_call_request_offer", {
+      attempt: 1,
+      trigger: "offer_watchdog",
+      reason: "join",
+    });
+    expect(hook.pushEvent).toHaveBeenCalledWith(
+      "group_call_recovery_state",
+      expect.objectContaining({
+        state: "reconnecting",
+        reason: "offer_not_received",
+        trigger: "offer_watchdog",
+        attempt: 1,
+      }),
+    );
+
+    await vi.advanceTimersByTimeAsync(3000);
+    await vi.advanceTimersByTimeAsync(4500);
+    await vi.advanceTimersByTimeAsync(1500);
+
+    expect(hook.pushEvent).toHaveBeenCalledWith(
+      "group_call_recovery_state",
+      expect.objectContaining({
+        state: "failed",
+        reason: "offer_not_received",
+        trigger: "offer_watchdog",
+        manual_retry: true,
+      }),
+    );
+  });
+
+  it("does not request offer replay when an offer is already applied", async () => {
+    vi.useFakeTimers();
+    const hook = setupHook();
+    const pushResult = {
+      receive: vi.fn(() => pushResult),
+    };
+
+    hook.channel = { push: vi.fn(() => pushResult) };
+    hook.pc = { remoteDescription: { type: "offer", sdp: "offer-sdp" } };
+
+    hook._handleJoined({ participants: [], tracks: [] });
+    hook.pushEvent.mockClear();
+
+    await vi.advanceTimersByTimeAsync(5000);
+
+    expect(hook.channel.push).not.toHaveBeenCalledWith(
+      "group_call_request_offer",
+      expect.any(Object),
+    );
+  });
+
+  it("recovers after repeated remote ICE candidate failures and resets on success", async () => {
+    vi.useFakeTimers();
+    vi.spyOn(console, "warn").mockImplementation(() => {});
+    const hook = setupHook();
+    const candidate = { candidate: "bad-candidate", sdpMid: "0", sdpMLineIndex: 0 };
+
+    hook.pc = {
+      remoteDescription: { type: "offer", sdp: "remote" },
+      addIceCandidate: vi
+        .fn()
+        .mockRejectedValueOnce(new Error("m-line mismatch"))
+        .mockRejectedValueOnce(new Error("m-line mismatch"))
+        .mockResolvedValueOnce(undefined)
+        .mockRejectedValue(new Error("m-line mismatch")),
+    };
+    hook.pushEvent.mockClear();
+
+    await hook._handleRemoteCandidate(candidate);
+    await hook._handleRemoteCandidate(candidate);
+
+    expect(hook.pushEvent).not.toHaveBeenCalledWith(
+      "group_call_recovery_state",
+      expect.objectContaining({ reason: "ice_candidate_failed" }),
+    );
+
+    await hook._handleRemoteCandidate(candidate);
+    await hook._handleRemoteCandidate(candidate);
+    await hook._handleRemoteCandidate(candidate);
+
+    expect(hook.pushEvent).not.toHaveBeenCalledWith(
+      "group_call_recovery_state",
+      expect.objectContaining({ reason: "ice_candidate_failed" }),
+    );
+
+    await hook._handleRemoteCandidate(candidate);
+
+    expect(hook.pushEvent).toHaveBeenCalledWith(
+      "group_call_recovery_state",
+      expect.objectContaining({
+        state: "reconnecting",
+        reason: "ice_candidate_failed",
+        attempt: 1,
+      }),
+    );
+  });
+
+  it("requests a fresh offer when a remote video tile stops rendering", () => {
+    const hook = setupHook();
+    const pushResult = {
+      receive: vi.fn(() => pushResult),
+    };
+    hook.channel = { push: vi.fn(() => pushResult) };
+
+    hook._handleRemoteVideoStalled("stream-456", "no-video-dimensions");
+
+    expect(hook.pushEvent).toHaveBeenCalledWith(
+      "group_call_recovery_state",
+      expect.objectContaining({
+        state: "reconnecting",
+        reason: "no-video-dimensions",
+        trigger: "remote_video_stalled",
+      }),
+    );
+    expect(hook.channel.push).toHaveBeenCalledWith("group_call_request_offer", {
+      attempt: 1,
+      trigger: "remote_video_stalled",
+    });
+
+    hook._handleRemoteVideoStalled("stream-456", "not-ready");
+
+    expect(hook.channel.push).toHaveBeenCalledTimes(1);
+  });
+
   it("requests a fresh offer immediately when manual retry is triggered", () => {
     const hook = setupHook();
     const pushResult = {
@@ -530,6 +858,77 @@ describe("GroupCallWebRTCHook media fallback", () => {
       attempt: 1,
       trigger: "manual",
     });
+  });
+
+  it("rejoins the SFU media endpoint when request_offer reports peer_not_ready", () => {
+    const hook = setupLayoutHook();
+    const requestOffer = pushWithReceivers();
+    const rejoin = pushWithReceivers();
+    const pc = { close: vi.fn(), connectionState: "failed" };
+    const oldTile = document.createElement("div");
+    oldTile.dataset.groupCallVideoTile = "";
+    oldTile.dataset.local = "false";
+    oldTile.dataset.streamId = "old-stream";
+
+    hook.participantId = 42;
+    hook.recoveryAttempts = 1;
+    hook.pc = pc;
+    hook.remoteTiles.set("old-stream", oldTile);
+    hook._videoGrid().appendChild(oldTile);
+    hook.tracksById.set("track-1", { id: "track-1" });
+    hook.channel = {
+      push: vi.fn((event) => {
+        if (event === "group_call_request_offer") return requestOffer.push;
+        if (event === "group_call_join") return rejoin.push;
+        return pushWithReceivers().push;
+      }),
+    };
+
+    hook._retryConnection("manual");
+    requestOffer.receivers.error({
+      code: "rejoin_required",
+      message: "Media endpoint must rejoin",
+    });
+
+    expect(pc.close).toHaveBeenCalled();
+    expect(oldTile.isConnected).toBe(false);
+    expect(hook.rejoinEpoch).toBe(1);
+    expect(hook.pc).toBeNull();
+    expect(hook.tracksById.size).toBe(0);
+    expect(hook.channel.push).toHaveBeenCalledWith(
+      "group_call_join",
+      expect.objectContaining({
+        trigger: "rejoin",
+        previous_participant_id: 42,
+        rejoin_epoch: 1,
+      }),
+    );
+    expect(hook.pushEvent).toHaveBeenCalledWith(
+      "group_call_recovery_state",
+      expect.objectContaining({ state: "rejoining", trigger: "manual" }),
+    );
+  });
+
+  it("republishes existing local tracks on a newly created peer connection", async () => {
+    const hook = setupNegotiationHook();
+    const audioTrack = { id: "audio-1", kind: "audio", enabled: true };
+    const stream = {
+      getTracks: vi.fn(() => [audioTrack]),
+      getAudioTracks: vi.fn(() => [audioTrack]),
+      getVideoTracks: vi.fn(() => []),
+    };
+    const pc = new MockPeerConnection();
+
+    hook.localStream = stream;
+    hook._sendersPc = { old: true };
+    vi.stubGlobal("RTCPeerConnection", function RTCPeerConnectionMock() {
+      return pc;
+    });
+
+    await hook._processOffer({ sdp: "offer-after-rejoin", ice_servers: [] });
+
+    expect(pc.addTrack).toHaveBeenCalledWith(audioTrack, stream);
+    expect(hook._sendersPc).toBe(pc);
   });
 
   it("keeps the same remote video element and stream while focusing a participant", () => {
@@ -574,6 +973,52 @@ describe("GroupCallWebRTCHook media fallback", () => {
     expect(videoAfterFocus).toBe(video);
     expect(videoAfterFocus.srcObject).toBe(stream);
     expect(tile.dataset.focused).toBe("true");
+  });
+
+  it("watches remote video tiles for stalled rendering and requests recovery", async () => {
+    vi.useFakeTimers();
+    const hook = setupLayoutHook();
+    const pushResult = {
+      receive: vi.fn(() => pushResult),
+    };
+    const videoTrack = { id: "track-456", kind: "video", readyState: "live", muted: false };
+    const stream = {
+      id: "stream-456",
+      getTracks: vi.fn(() => [videoTrack]),
+      getAudioTracks: vi.fn(() => []),
+      getVideoTracks: vi.fn(() => [videoTrack]),
+    };
+
+    hook.channel = { push: vi.fn(() => pushResult) };
+    hook._syncLayoutState({
+      participants: [{ id: 456, nickname: "Ada", media_state: { audio: true, video: true } }],
+      tracks: [
+        {
+          id: 1,
+          participant_id: 456,
+          kind: "video",
+          status: "active",
+          stream_id: "stream-456",
+          webrtc_track_id: "track-456",
+        },
+      ],
+    });
+
+    hook._attachRemoteStream(stream, videoTrack);
+    await Promise.resolve();
+    await vi.advanceTimersByTimeAsync(1800);
+
+    expect(hook.channel.push).toHaveBeenCalledWith("group_call_request_offer", {
+      attempt: 1,
+      trigger: "remote_video_stalled",
+    });
+    expect(hook.pushEvent).toHaveBeenCalledWith(
+      "group_call_recovery_state",
+      expect.objectContaining({
+        state: "reconnecting",
+        trigger: "remote_video_stalled",
+      }),
+    );
   });
 
   it("builds remote tiles from the rendered icon template", () => {
@@ -753,6 +1198,8 @@ describe("GroupCallWebRTCHook media fallback", () => {
     hook.participantsById.set("123", { id: "123" });
     hook.remoteTiles.set("stream-456", document.createElement("div"));
     hook.tracksById.set("track-1", { id: "track-1" });
+    hook.lastAnsweredOfferId = "gc-12-1";
+    hook.rejoinEpoch = 2;
 
     await hook._sampleStats();
 
@@ -766,6 +1213,8 @@ describe("GroupCallWebRTCHook media fallback", () => {
           remote_stream_count: 1,
           track_count: 1,
           screen_share_active: false,
+          offer_id: "gc-12-1",
+          rejoin_epoch: 2,
         }),
       }),
     );

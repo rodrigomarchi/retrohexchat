@@ -11,9 +11,15 @@ defmodule RetroHexChatWeb.GroupCallChannel do
 
   require Logger
 
+  alias RetroHexChat.Calls.Events, as: CallEvents
   alias RetroHexChat.GroupCall
   alias RetroHexChat.GroupCall.JoinToken
   alias RetroHexChat.GroupCall.RateLimiter
+
+  @max_sdp_bytes 256_000
+  @max_candidate_bytes 4_096
+  @max_mid_bytes 64
+  @max_offer_id_bytes 80
 
   @impl true
   def join("group_call:" <> room_token, params, socket) do
@@ -30,10 +36,13 @@ defmodule RetroHexChatWeb.GroupCallChannel do
       {:ok, %{version: 1, room: room_payload(room)}, socket}
     else
       false ->
+        CallEvents.emit_client_error(:group_call, "invalid_token", %{phase: "channel_join"})
         {:error, %{reason: "invalid_token"}}
 
       {:error, reason} ->
-        {:error, %{reason: join_error(reason, room_token)}}
+        code = join_error(reason, room_token)
+        CallEvents.emit_client_error(:group_call, code, %{phase: "channel_join"})
+        {:error, %{reason: code}}
     end
   end
 
@@ -42,16 +51,28 @@ defmodule RetroHexChatWeb.GroupCallChannel do
     actor = %{user_id: socket.assigns.user_id, nickname: socket.assigns.nickname}
     client_info = Map.get(payload, "client_info", %{})
     media_constraints = Map.get(payload, "media_constraints", %{})
+    previous_participant_id = previous_participant_id(payload)
 
     result =
       with :ok <- RateLimiter.check_join_rate(socket.assigns.user_id) do
-        GroupCall.join_call(
-          socket.assigns.room_token,
-          actor,
-          self(),
-          client_info,
-          media_constraints
-        )
+        if is_integer(previous_participant_id) do
+          GroupCall.rejoin_call(
+            socket.assigns.room_token,
+            actor,
+            previous_participant_id,
+            self(),
+            client_info,
+            media_constraints
+          )
+        else
+          GroupCall.join_call(
+            socket.assigns.room_token,
+            actor,
+            self(),
+            client_info,
+            media_constraints
+          )
+        end
       end
 
     case result do
@@ -62,19 +83,29 @@ defmodule RetroHexChatWeb.GroupCallChannel do
 
       {:error, reason} ->
         payload = %{code: "join_failed", message: error_message(reason)}
+        CallEvents.emit_client_error(:group_call, payload.code, %{phase: "join"})
         push(socket, "group_call_error", payload)
         {:reply, {:error, payload}, socket}
     end
   end
 
-  def handle_in("group_call_answer", %{"sdp" => sdp}, socket) when is_binary(sdp) do
-    with {:ok, participant_id} <- fetch_participant_id(socket),
+  def handle_in("group_call_answer", %{"sdp" => sdp} = payload, socket) do
+    with {:ok, sdp} <- validate_sdp(sdp),
+         {:ok, offer_id} <- validate_offer_id(Map.get(payload, "offer_id")),
+         {:ok, participant_id} <- fetch_participant_id(socket),
          :ok <- check_signal_rate(socket),
-         :ok <- GroupCall.answer(socket.assigns.room_token, participant_id, sdp) do
+         :ok <-
+           GroupCall.answer(
+             socket.assigns.room_token,
+             participant_id,
+             sdp,
+             offer_id
+           ) do
       {:reply, :ok, socket}
     else
       {:error, reason} ->
         payload = %{code: "answer_failed", message: error_message(reason)}
+        CallEvents.emit_client_error(:group_call, payload.code, %{phase: "answer"})
         push(socket, "group_call_error", payload)
         {:reply, {:error, payload}, socket}
     end
@@ -82,16 +113,25 @@ defmodule RetroHexChatWeb.GroupCallChannel do
 
   def handle_in("group_call_ice_candidate", %{"candidate" => candidate}, socket)
       when is_map(candidate) do
-    with {:ok, participant_id} <- fetch_participant_id(socket),
+    with {:ok, candidate} <- validate_candidate(candidate),
+         {:ok, participant_id} <- fetch_participant_id(socket),
          :ok <- check_signal_rate(socket),
          :ok <- GroupCall.add_ice_candidate(socket.assigns.room_token, participant_id, candidate) do
       {:reply, :ok, socket}
     else
       {:error, reason} ->
         payload = %{code: "ice_failed", message: error_message(reason)}
+        CallEvents.emit_client_error(:group_call, payload.code, %{phase: "ice_candidate"})
         push(socket, "group_call_error", payload)
         {:reply, {:error, payload}, socket}
     end
+  end
+
+  def handle_in("group_call_ice_candidate", _payload, socket) do
+    payload = %{code: "ice_failed", message: error_message(:invalid_signal)}
+    CallEvents.emit_client_error(:group_call, payload.code, %{phase: "ice_candidate"})
+    push(socket, "group_call_error", payload)
+    {:reply, {:error, payload}, socket}
   end
 
   def handle_in("group_call_request_offer", _payload, socket) do
@@ -101,7 +141,8 @@ defmodule RetroHexChatWeb.GroupCallChannel do
       {:reply, :ok, socket}
     else
       {:error, reason} ->
-        payload = %{code: "request_offer_failed", message: error_message(reason)}
+        payload = %{code: request_offer_error_code(reason), message: error_message(reason)}
+        CallEvents.emit_client_error(:group_call, payload.code, %{phase: "request_offer"})
         push(socket, "group_call_error", payload)
         {:reply, {:error, payload}, socket}
     end
@@ -167,7 +208,7 @@ defmodule RetroHexChatWeb.GroupCallChannel do
       :ok = GroupCall.leave_call(socket.assigns.room_token, participant_id, "left")
     end
 
-    {:reply, :ok, socket}
+    {:reply, :ok, assign(socket, :participant_id, nil)}
   end
 
   def handle_in(_event, _payload, socket) do
@@ -184,7 +225,7 @@ defmodule RetroHexChatWeb.GroupCallChannel do
   def terminate(_reason, socket) do
     case socket.assigns do
       %{room_token: room_token, participant_id: participant_id} ->
-        GroupCall.leave_call(room_token, participant_id, "channel_closed")
+        GroupCall.disconnect_call(room_token, participant_id, self(), "channel_closed")
 
       _ ->
         :ok
@@ -203,6 +244,23 @@ defmodule RetroHexChatWeb.GroupCallChannel do
 
   defp verify_join_token(_params, _room_token), do: {:error, :invalid_token}
 
+  defp previous_participant_id(payload) when is_map(payload) do
+    payload
+    |> Map.get("previous_participant_id", Map.get(payload, :previous_participant_id))
+    |> normalize_participant_id()
+  end
+
+  defp normalize_participant_id(value) when is_integer(value), do: value
+
+  defp normalize_participant_id(value) when is_binary(value) do
+    case Integer.parse(value) do
+      {participant_id, ""} -> participant_id
+      _other -> nil
+    end
+  end
+
+  defp normalize_participant_id(_value), do: nil
+
   defp fetch_participant_id(socket) do
     case socket.assigns[:participant_id] do
       participant_id when is_integer(participant_id) -> {:ok, participant_id}
@@ -216,6 +274,56 @@ defmodule RetroHexChatWeb.GroupCallChannel do
 
   defp truthy?(value) when value in [true, "true", "on", "1", 1], do: true
   defp truthy?(_value), do: false
+
+  defp validate_sdp(sdp)
+       when is_binary(sdp) and sdp != "" and byte_size(sdp) <= @max_sdp_bytes,
+       do: {:ok, sdp}
+
+  defp validate_sdp(_sdp), do: {:error, :invalid_signal}
+
+  defp validate_offer_id(nil), do: {:ok, nil}
+
+  defp validate_offer_id(offer_id)
+       when is_binary(offer_id) and offer_id != "" and byte_size(offer_id) <= @max_offer_id_bytes,
+       do: {:ok, offer_id}
+
+  defp validate_offer_id(_offer_id), do: {:error, :invalid_signal}
+
+  defp validate_candidate(%{} = candidate) do
+    candidate_text = Map.get(candidate, "candidate")
+    sdp_mid = Map.get(candidate, "sdpMid")
+    sdp_m_line_index = Map.get(candidate, "sdpMLineIndex")
+
+    cond do
+      not (is_binary(candidate_text) and candidate_text != "" and
+               byte_size(candidate_text) <= @max_candidate_bytes) ->
+        {:error, :invalid_signal}
+
+      not valid_mid?(sdp_mid) ->
+        {:error, :invalid_signal}
+
+      not valid_m_line_index?(sdp_m_line_index) ->
+        {:error, :invalid_signal}
+
+      is_nil(sdp_mid) and is_nil(sdp_m_line_index) ->
+        {:error, :invalid_signal}
+
+      true ->
+        {:ok,
+         %{"candidate" => candidate_text}
+         |> maybe_put_candidate_value("sdpMid", sdp_mid)
+         |> maybe_put_candidate_value("sdpMLineIndex", sdp_m_line_index)}
+    end
+  end
+
+  defp valid_mid?(nil), do: true
+  defp valid_mid?(mid), do: is_binary(mid) and byte_size(mid) <= @max_mid_bytes
+
+  defp valid_m_line_index?(nil), do: true
+  defp valid_m_line_index?(index), do: is_integer(index) and index >= 0 and index < 128
+
+  defp maybe_put_candidate_value(candidate, _key, nil), do: candidate
+  defp maybe_put_candidate_value(candidate, key, value), do: Map.put(candidate, key, value)
 
   defp room_payload(room) do
     %{
@@ -235,9 +343,14 @@ defmodule RetroHexChatWeb.GroupCallChannel do
   defp error_message(%Ecto.Changeset{}), do: "Invalid group call state"
   defp error_message(:not_joined), do: "Join the group call before signaling"
   defp error_message(:not_found), do: "Group call not found"
+  defp error_message(:peer_not_ready), do: "Media endpoint must rejoin"
+  defp error_message(:invalid_signal), do: "Invalid media signaling payload"
   defp error_message(:invalid_reaction), do: "Reaction is not available"
   defp error_message(:not_allowed), do: "Reaction is not allowed"
   defp error_message({:rate_limited, seconds}), do: "Rate limited. Try again in #{seconds}s"
   defp error_message(reason) when is_binary(reason), do: reason
   defp error_message(reason), do: inspect(reason)
+
+  defp request_offer_error_code(:peer_not_ready), do: "rejoin_required"
+  defp request_offer_error_code(_reason), do: "request_offer_failed"
 end

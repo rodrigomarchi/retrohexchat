@@ -32,6 +32,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
   @connecting_timeout :timer.seconds(30)
   @game_request_timeout :timer.seconds(60)
   @rejoin_grace_timeout :timer.seconds(30)
+  @max_signaling_candidates 64
 
   @pubsub RetroHexChat.PubSub
 
@@ -85,6 +86,17 @@ defmodule RetroHexChat.Lobby.SessionServer do
   @spec mark_webrtc_ready(String.t(), integer()) :: :ok | {:error, atom()}
   def mark_webrtc_ready(token, user_id) do
     call(token, {:webrtc_ready, user_id})
+  end
+
+  @spec record_signaling_event(String.t(), integer(), String.t(), map()) :: :ok | {:error, atom()}
+  def record_signaling_event(token, user_id, event, payload)
+      when event in ["lobby_signal", "lobby_renegotiate"] and is_map(payload) do
+    call(token, {:record_signaling_event, user_id, event, payload})
+  end
+
+  @spec signaling_replay(String.t(), integer()) :: {:ok, [map()]} | {:error, atom()}
+  def signaling_replay(token, user_id) do
+    call(token, {:signaling_replay, user_id})
   end
 
   @spec close(String.t(), integer(), String.t()) :: :ok | {:error, String.t()}
@@ -152,6 +164,8 @@ defmodule RetroHexChat.Lobby.SessionServer do
             connections: %{creator: nil, peer: nil},
             webrtc_ready: %{creator: false, peer: false},
             signaling_started: false,
+            signaling_seq: 0,
+            signaling_replay: empty_signaling_replay(),
             media: %{
               creator: %{audio: false, video: false},
               peer: %{audio: false, video: false}
@@ -204,6 +218,23 @@ defmodule RetroHexChat.Lobby.SessionServer do
       role ->
         state = put_in(state, [:webrtc_ready, role], true)
         {:reply, :ok, maybe_start_signaling(state)}
+    end
+  end
+
+  def handle_call({:record_signaling_event, user_id, event, payload}, _from, state) do
+    case role_of(state, user_id) do
+      nil ->
+        {:reply, {:error, :not_participant}, state}
+
+      role ->
+        {:reply, :ok, do_record_signaling_event(state, role, event, payload)}
+    end
+  end
+
+  def handle_call({:signaling_replay, user_id}, _from, state) do
+    case role_of(state, user_id) do
+      nil -> {:reply, {:error, :not_participant}, state}
+      role -> {:reply, {:ok, signaling_replay_events(state, role)}, state}
     end
   end
 
@@ -414,12 +445,40 @@ defmodule RetroHexChat.Lobby.SessionServer do
   defp maybe_start_signaling(state) do
     if not state.signaling_started and state.session.status in ~w(lobby connected) and
          state.webrtc_ready.creator and state.webrtc_ready.peer do
-      broadcast(state.token, "lobby_start_signaling", %{})
+      broadcast(state.token, "lobby_start_signaling", start_signaling_payload(state))
       %{state | signaling_started: true}
     else
       state
     end
   end
+
+  defp start_signaling_payload(state) do
+    if signaling_restart_required?(state) do
+      %{
+        restart: true,
+        reason: "signaling_snapshot_lost"
+      }
+    else
+      %{}
+    end
+  end
+
+  defp signaling_restart_required?(%{session: %{status: "connected"}} = state) do
+    signaling_replay_empty?(state.signaling_replay)
+  end
+
+  defp signaling_restart_required?(_state), do: false
+
+  defp signaling_replay_empty?(replay) when is_map(replay) do
+    replay
+    |> Map.values()
+    |> Enum.all?(fn role_state ->
+      is_nil(role_state.description) and role_state.candidates == [] and
+        is_nil(role_state.renegotiate)
+    end)
+  end
+
+  defp signaling_replay_empty?(_replay), do: true
 
   # A user's LiveView going away (crash, refresh, tab close) or an explicit
   # `leave` both land here: drop the connection, reset that side's WebRTC
@@ -441,6 +500,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
           |> set_joined(role, false)
           |> put_in([:webrtc_ready, role], false)
           |> Map.put(:signaling_started, false)
+          |> reset_signaling_replay()
 
         broadcast(state.token, "lobby_peer_disconnected", %{user_id: user_id, role: role})
         schedule_timeout(state, {:rejoin_grace, role}, rejoin_grace_timeout())
@@ -485,6 +545,128 @@ defmodule RetroHexChat.Lobby.SessionServer do
 
   defp user_id_for(state, :creator), do: state.session.creator_id
   defp user_id_for(state, :peer), do: state.session.peer_id
+
+  defp do_record_signaling_event(state, role, event, payload) do
+    {state, payload} = next_signaling_payload(state, payload)
+    role_state = Map.get(state.signaling_replay, role, empty_signaling_role())
+
+    role_state =
+      case event do
+        "lobby_signal" -> record_signal_payload(role_state, payload)
+        "lobby_renegotiate" -> %{role_state | renegotiate: payload}
+      end
+
+    put_in(state, [:signaling_replay, role], role_state)
+  end
+
+  defp next_signaling_payload(state, payload) do
+    seq = state.signaling_seq + 1
+    {%{state | signaling_seq: seq}, Map.put(payload, :server_seq, seq)}
+  end
+
+  defp record_signal_payload(role_state, %{type: type} = payload)
+       when type in ["offer", "answer"] do
+    epoch = signal_epoch(payload)
+
+    candidates =
+      role_state.candidates
+      |> Enum.filter(fn candidate ->
+        candidate_epoch = signal_epoch(candidate)
+        epoch && candidate_epoch && candidate_epoch >= epoch
+      end)
+
+    %{role_state | description: payload, candidates: candidates, renegotiate: nil}
+  end
+
+  defp record_signal_payload(role_state, %{type: "ice-candidate"} = payload) do
+    if stale_candidate_for_description?(payload, role_state.description) do
+      role_state
+    else
+      %{role_state | candidates: append_signaling_candidate(role_state.candidates, payload)}
+    end
+  end
+
+  defp record_signal_payload(role_state, _payload), do: role_state
+
+  defp append_signaling_candidate(candidates, payload) do
+    candidates
+    |> Kernel.++([payload])
+    |> Enum.uniq_by(&candidate_key/1)
+    |> Enum.take(-@max_signaling_candidates)
+  end
+
+  defp stale_candidate_for_description?(_candidate, nil), do: false
+
+  defp stale_candidate_for_description?(candidate, description) do
+    candidate_epoch = signal_epoch(candidate)
+    description_epoch = signal_epoch(description)
+
+    candidate_epoch && description_epoch && candidate_epoch < description_epoch
+  end
+
+  defp signaling_replay_events(state, role) do
+    remote_role = other_role(role)
+    remote = Map.get(state.signaling_replay, remote_role, empty_signaling_role())
+
+    []
+    |> maybe_add_replay_event("lobby_signal", remote.description)
+    |> add_replay_candidates(remote.candidates)
+    |> maybe_add_replay_event_for_role(role, "lobby_renegotiate", remote.renegotiate)
+    |> Enum.sort_by(&server_seq/1)
+  end
+
+  defp maybe_add_replay_event(events, _event, nil), do: events
+
+  defp maybe_add_replay_event(events, event, payload) do
+    [%{event: event, payload: Map.put(payload, :replay, true)} | events]
+  end
+
+  defp add_replay_candidates(events, candidates) do
+    Enum.reduce(candidates, events, fn candidate, acc ->
+      maybe_add_replay_event(acc, "lobby_signal", candidate)
+    end)
+  end
+
+  defp maybe_add_replay_event_for_role(events, :creator, event, payload),
+    do: maybe_add_replay_event(events, event, payload)
+
+  defp maybe_add_replay_event_for_role(events, _role, _event, _payload), do: events
+
+  defp server_seq(%{payload: %{server_seq: seq}}) when is_integer(seq), do: seq
+  defp server_seq(_event), do: 0
+
+  defp candidate_key(payload) do
+    candidate = Map.get(payload, :candidate) || Map.get(payload, "candidate") || %{}
+
+    {
+      signal_epoch(payload),
+      Map.get(candidate, "candidate") || Map.get(candidate, :candidate),
+      Map.get(candidate, "sdpMid") || Map.get(candidate, :sdpMid),
+      Map.get(candidate, "sdpMLineIndex") || Map.get(candidate, :sdpMLineIndex)
+    }
+  end
+
+  defp signal_epoch(payload) do
+    case Map.get(payload, :epoch) || Map.get(payload, "epoch") do
+      epoch when is_integer(epoch) and epoch > 0 -> epoch
+      _ -> nil
+    end
+  end
+
+  defp other_role(:creator), do: :peer
+  defp other_role(:peer), do: :creator
+
+  defp reset_signaling_replay(state) do
+    %{state | signaling_seq: 0, signaling_replay: empty_signaling_replay()}
+  end
+
+  defp empty_signaling_replay do
+    %{creator: empty_signaling_role(), peer: empty_signaling_role()}
+  end
+
+  defp empty_signaling_role do
+    %{description: nil, candidates: [], renegotiate: nil}
+  end
 
   defp do_transition(state, "lobby") do
     Logger.debug(

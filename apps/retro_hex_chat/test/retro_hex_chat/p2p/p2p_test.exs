@@ -100,10 +100,22 @@ defmodule RetroHexChat.P2P.P2PTest do
 
   describe "validate_signal/1" do
     test "accepts valid offer" do
-      signal = %{"type" => "offer", "sdp" => "v=0\r\n..."}
+      signal = %{
+        "type" => "offer",
+        "sdp" => "v=0\r\n...",
+        "epoch" => 2,
+        "offer_id" => "p2p-2-1",
+        "recover" => true,
+        "connection_reset" => true
+      }
+
       assert {:ok, validated} = P2P.validate_signal(signal)
       assert validated.type == "offer"
       assert validated.sdp == "v=0\r\n..."
+      assert validated.epoch == 2
+      assert validated.offer_id == "p2p-2-1"
+      assert validated.recover == true
+      assert validated.connection_reset == true
     end
 
     test "accepts valid answer" do
@@ -114,10 +126,11 @@ defmodule RetroHexChat.P2P.P2PTest do
 
     test "accepts valid ice-candidate" do
       candidate = %{"candidate" => "candidate:1 1 udp ...", "sdpMid" => "0"}
-      signal = %{"type" => "ice-candidate", "candidate" => candidate}
+      signal = %{"type" => "ice-candidate", "candidate" => candidate, "epoch" => 3}
       assert {:ok, validated} = P2P.validate_signal(signal)
       assert validated.type == "ice-candidate"
       assert validated.candidate == candidate
+      assert validated.epoch == 3
     end
 
     test "rejects invalid type" do
@@ -147,6 +160,20 @@ defmodule RetroHexChat.P2P.P2PTest do
 
     test "rejects empty sdp" do
       signal = %{"type" => "offer", "sdp" => ""}
+      assert {:error, :invalid_signal} = P2P.validate_signal(signal)
+    end
+
+    test "rejects oversized sdp" do
+      signal = %{"type" => "offer", "sdp" => String.duplicate("a", 256_001)}
+      assert {:error, :invalid_signal} = P2P.validate_signal(signal)
+    end
+
+    test "rejects malformed ice-candidate" do
+      signal = %{
+        "type" => "ice-candidate",
+        "candidate" => %{"candidate" => "candidate:1 1 udp ..."}
+      }
+
       assert {:error, :invalid_signal} = P2P.validate_signal(signal)
     end
   end

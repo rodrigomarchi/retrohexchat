@@ -353,6 +353,51 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.StatsPanel do
           />
         </dl>
       </.media_session_diagnostics_group>
+
+      <.media_session_diagnostics_group
+        title={dgettext("group_call", "Recovery")}
+        summary={recovery_summary(@call)}
+        icon={:icon_warning}
+        testid="group-call-stats-details-recovery"
+      >
+        <dl class="grid grid-cols-2 gap-x-3 gap-y-[2px]">
+          <.stat_row
+            icon={:icon_status_signal}
+            label={dgettext("group_call", "State")}
+            value={recovery_state_label(@call)}
+          />
+          <.stat_row
+            icon={:icon_warning}
+            label={dgettext("group_call", "Reason")}
+            value={technical_label(recovery_field(@call, :reason))}
+          />
+          <.stat_row
+            icon={:icon_btn_connect_lightning}
+            label={dgettext("group_call", "Trigger")}
+            value={technical_label(recovery_field(@call, :trigger))}
+          />
+          <.stat_row
+            icon={:icon_btn_timers}
+            label={dgettext("group_call", "Attempt")}
+            value={recovery_attempt_label(@call)}
+          />
+          <.stat_row
+            icon={:icon_clock}
+            label={dgettext("group_call", "Next retry")}
+            value={next_retry_label(@call)}
+          />
+          <.stat_row
+            icon={:icon_protocol_conference}
+            label={dgettext("group_call", "Offer")}
+            value={technical_label(get_in(@stats, [:summary, :offer_id]))}
+          />
+          <.stat_row
+            icon={:icon_webrtc}
+            label={dgettext("group_call", "Rejoin")}
+            value={rejoin_epoch_label(@stats)}
+          />
+        </dl>
+      </.media_session_diagnostics_group>
     </div>
     """
   end
@@ -528,6 +573,67 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.StatsPanel do
       ice: connection_state(call, stats)
     )
   end
+
+  defp recovery_summary(call) do
+    dgettext("group_call", "%{state} / %{reason}",
+      state: recovery_state_label(call),
+      reason: technical_label(recovery_field(call, :reason))
+    )
+  end
+
+  defp recovery_state_label(call), do: call |> recovery_field(:state) |> recovery_state_text()
+
+  defp recovery_state_text(:connected), do: dgettext("group_call", "Connected")
+  defp recovery_state_text(:connecting), do: dgettext("group_call", "Connecting")
+  defp recovery_state_text(:reconnecting), do: dgettext("group_call", "Reconnecting")
+  defp recovery_state_text(:rejoining), do: dgettext("group_call", "Rejoining")
+  defp recovery_state_text(:negotiating), do: dgettext("group_call", "Negotiating")
+  defp recovery_state_text(:failed), do: dgettext("group_call", "Failed")
+
+  defp recovery_state_text(state) when is_atom(state) and not is_nil(state),
+    do: Atom.to_string(state)
+
+  defp recovery_state_text(state) when is_binary(state) and state != "", do: state
+  defp recovery_state_text(_state), do: dgettext("group_call", "Idle")
+
+  defp recovery_attempt_label(call) do
+    attempt = recovery_field(call, :attempt)
+    max_attempts = recovery_field(call, :max_attempts)
+
+    cond do
+      is_integer(attempt) and attempt > 0 and is_integer(max_attempts) and max_attempts > 0 ->
+        "#{attempt}/#{max_attempts}"
+
+      is_integer(attempt) and attempt > 0 ->
+        Integer.to_string(attempt)
+
+      true ->
+        dgettext("group_call", "None")
+    end
+  end
+
+  defp next_retry_label(call) do
+    case recovery_field(call, :next_retry_ms) do
+      ms when is_integer(ms) and ms > 0 -> dgettext("group_call", "%{n} ms", n: ms)
+      _ms -> dgettext("group_call", "None")
+    end
+  end
+
+  defp rejoin_epoch_label(%{summary: %{rejoin_epoch: epoch}})
+       when is_integer(epoch) and epoch > 0,
+       do: dgettext("group_call", "Epoch %{epoch}", epoch: epoch)
+
+  defp rejoin_epoch_label(_stats), do: dgettext("group_call", "None")
+
+  defp recovery_field(%{recovery: recovery}, key) when is_map(recovery),
+    do: field(recovery, key, nil)
+
+  defp recovery_field(_call, _key), do: nil
+
+  defp technical_label(value) when is_binary(value) and value != "", do: value
+  defp technical_label(value) when is_atom(value) and not is_nil(value), do: Atom.to_string(value)
+  defp technical_label(value) when is_integer(value), do: Integer.to_string(value)
+  defp technical_label(_value), do: dgettext("group_call", "None")
 
   defp participant_count(_call, %{summary: %{participant_count: count}}) when count > 0,
     do: count

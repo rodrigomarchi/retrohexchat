@@ -21,6 +21,13 @@ defmodule RetroHexChatWeb.Router do
     pipe_through :api
 
     get "/healthz", HealthController, :index
+    get "/calls/healthz", CallsHealthController, :show
+
+    if Application.compile_env(:retro_hex_chat, :e2e_fault_injection?, false) do
+      post "/e2e/group-call-peer/terminate",
+           E2EFaultController,
+           :terminate_group_call_peer
+    end
   end
 
   scope "/", RetroHexChatWeb do

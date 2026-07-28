@@ -120,6 +120,30 @@ defmodule RetroHexChat.GroupCall do
     end)
   end
 
+  @spec rejoin_call(String.t(), actor(), integer() | nil, pid(), map(), map()) ::
+          {:ok, map()} | {:error, term()}
+  def rejoin_call(
+        token,
+        actor,
+        previous_participant_id,
+        signal_pid,
+        client_info \\ %{},
+        media_constraints \\ %{}
+      ) do
+    observe_group_call([:join], media_metadata(media_constraints), fn ->
+      with {:ok, _pid} <- ensure_room_server(token) do
+        RoomServer.rejoin(
+          token,
+          actor,
+          previous_participant_id,
+          signal_pid,
+          client_info,
+          media_constraints
+        )
+      end
+    end)
+  end
+
   @spec leave_call(String.t(), integer(), String.t()) :: :ok | {:error, term()}
   def leave_call(token, participant_id, reason \\ "left") do
     observe_group_call(
@@ -133,14 +157,27 @@ defmodule RetroHexChat.GroupCall do
     )
   end
 
-  @spec answer(String.t(), integer(), String.t()) :: :ok | {:error, term()}
-  def answer(token, participant_id, sdp_answer) do
+  @spec disconnect_call(String.t(), integer(), pid(), String.t()) :: :ok | {:error, term()}
+  def disconnect_call(token, participant_id, signal_pid, reason \\ "channel_closed") do
+    observe_group_call(
+      [:leave],
+      %{"group_call.participant.id" => participant_id, reason: normalize_reason(reason)},
+      fn ->
+        with {:ok, _pid} <- ensure_room_server(token) do
+          RoomServer.disconnect(token, participant_id, signal_pid, reason)
+        end
+      end
+    )
+  end
+
+  @spec answer(String.t(), integer(), String.t(), String.t() | nil) :: :ok | {:error, term()}
+  def answer(token, participant_id, sdp_answer, offer_id \\ nil) do
     observe_group_call(
       [:signaling, :answer],
       %{"group_call.participant.id" => participant_id},
       fn ->
         with {:ok, _pid} <- ensure_room_server(token) do
-          RoomServer.apply_answer(token, participant_id, sdp_answer)
+          RoomServer.apply_answer(token, participant_id, sdp_answer, offer_id)
         end
       end
     )

@@ -236,9 +236,108 @@ defmodule RetroHexChat.Lobby.SessionServerTest do
       refute_received %{event: "lobby_start_signaling"}
     end
 
+    test "connected session without replay snapshot requests a clean WebRTC restart", ctx do
+      :ok = SessionServer.transition(ctx.token, :connected)
+      stop_server(ctx.token)
+      {:ok, _pid} = Supervisor.start_child(ctx.token)
+
+      :ok = SessionServer.join(ctx.token, ctx.creator.id)
+      :ok = SessionServer.join(ctx.token, ctx.peer.id)
+      :ok = SessionServer.mark_webrtc_ready(ctx.token, ctx.creator.id)
+      :ok = SessionServer.mark_webrtc_ready(ctx.token, ctx.peer.id)
+
+      assert_receive %{
+        event: "lobby_start_signaling",
+        payload: %{restart: true, reason: "signaling_snapshot_lost"}
+      }
+
+      stop_server(ctx.token)
+    end
+
     test "rejects readiness from a non-participant", ctx do
       stranger = create_registered_nick("rdys#{System.unique_integer([:positive])}")
       assert {:error, :not_participant} = SessionServer.mark_webrtc_ready(ctx.token, stranger.id)
+    end
+
+    test "stores bounded signaling replay for the opposite participant", ctx do
+      assert :ok =
+               SessionServer.record_signaling_event(ctx.token, ctx.creator.id, "lobby_signal", %{
+                 type: "offer",
+                 sdp: "offer-sdp",
+                 epoch: 3,
+                 offer_id: "p2p-3-1",
+                 from: ctx.creator.id
+               })
+
+      for index <- 1..70 do
+        assert :ok =
+                 SessionServer.record_signaling_event(
+                   ctx.token,
+                   ctx.creator.id,
+                   "lobby_signal",
+                   %{
+                     type: "ice-candidate",
+                     candidate: %{
+                       "candidate" => "candidate:#{index} 1 udp 1 127.0.0.1 #{index} typ host",
+                       "sdpMid" => "0"
+                     },
+                     epoch: 3,
+                     from: ctx.creator.id
+                   }
+                 )
+      end
+
+      assert :ok =
+               SessionServer.record_signaling_event(
+                 ctx.token,
+                 ctx.peer.id,
+                 "lobby_renegotiate",
+                 %{
+                   from: ctx.peer.id,
+                   kinds: ["video"],
+                   recover: true,
+                   epoch: 4,
+                   reason: "media_recover",
+                   attempt: 1,
+                   connection_reset: false
+                 }
+               )
+
+      assert {:ok, peer_events} = SessionServer.signaling_replay(ctx.token, ctx.peer.id)
+
+      assert [%{event: "lobby_signal", payload: %{type: "offer", replay: true}} | rest] =
+               peer_events
+
+      assert length(rest) == 64
+      assert List.first(rest).payload.candidate["candidate"] =~ "candidate:7 "
+      assert List.last(rest).payload.candidate["candidate"] =~ "candidate:70 "
+
+      assert {:ok, creator_events} = SessionServer.signaling_replay(ctx.token, ctx.creator.id)
+
+      assert [
+               %{
+                 event: "lobby_renegotiate",
+                 payload: %{reason: "media_recover", replay: true}
+               }
+             ] = creator_events
+    end
+
+    test "clears signaling replay when a participant disconnects", ctx do
+      assert :ok =
+               SessionServer.record_signaling_event(ctx.token, ctx.creator.id, "lobby_signal", %{
+                 type: "offer",
+                 sdp: "offer-sdp",
+                 epoch: 1,
+                 offer_id: "p2p-1-1",
+                 from: ctx.creator.id
+               })
+
+      assert {:ok, [_event]} = SessionServer.signaling_replay(ctx.token, ctx.peer.id)
+
+      SessionServer.leave(ctx.token, ctx.creator.id)
+      assert_receive %{event: "lobby_peer_disconnected", payload: %{role: :creator}}
+
+      assert {:ok, []} = SessionServer.signaling_replay(ctx.token, ctx.peer.id)
     end
   end
 

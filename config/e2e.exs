@@ -41,6 +41,9 @@ config :phoenix, :plug_init_mode, :runtime
 config :phoenix_live_view,
   enable_expensive_runtime_checks: true
 
+config :retro_hex_chat,
+  e2e_fault_injection?: true
+
 # Server roles — mirror test config so e2e specs can rely on them.
 config :retro_hex_chat,
   admins: ["TestAdmin"],

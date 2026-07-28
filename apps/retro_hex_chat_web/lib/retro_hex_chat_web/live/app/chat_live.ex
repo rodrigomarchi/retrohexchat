@@ -162,6 +162,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
       |> ChatLive.Helpers.maybe_start_nickserv_timer(nickname, pre_identified, reconnecting?)
       |> ChatLive.Helpers.maybe_trigger_perform()
       |> ChatLive.P2PSessionEvents.rehydrate()
+      |> ChatLive.GroupCallEvents.rehydrate()
 
     # A reconnect (deploy / socket drop) or a reload of a live session restores
     # silently: replaying the connect sound, MOTD, welcome and announcements on

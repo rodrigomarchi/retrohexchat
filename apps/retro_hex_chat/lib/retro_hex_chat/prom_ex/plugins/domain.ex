@@ -11,6 +11,9 @@ defmodule RetroHexChat.PromEx.Plugins.Domain do
   @chat_receive_stop [:retro_hex_chat, :chat, :message, :receive, :stop]
   @chat_broadcast_stop [:retro_hex_chat, :chat, :message, :broadcast, :stop]
   @command_dispatch_stop [:retro_hex_chat, :commands, :dispatch, :stop]
+  @call_recovery_transition [:retro_hex_chat, :calls, :recovery, :transition]
+  @call_client_error [:retro_hex_chat, :calls, :client_error]
+  @call_signaling_replay [:retro_hex_chat, :calls, :signaling, :replay]
 
   @impl true
   def event_metrics(opts) do
@@ -92,6 +95,27 @@ defmodule RetroHexChat.PromEx.Plugins.Domain do
           tag_values: &command_tags/1,
           tags: [:command, :result],
           unit: {:native, :millisecond}
+        ),
+        counter(
+          metric_prefix ++ [:calls, :recovery, :transitions, :total],
+          event_name: @call_recovery_transition,
+          description: "Total number of P2P and group-call recovery state transitions.",
+          tag_values: &call_recovery_tags/1,
+          tags: [:surface, :state, :reason, :trigger, :manual_retry]
+        ),
+        counter(
+          metric_prefix ++ [:calls, :client, :errors, :total],
+          event_name: @call_client_error,
+          description: "Total number of P2P and group-call client-side media/signaling errors.",
+          tag_values: &call_error_tags/1,
+          tags: [:surface, :code, :phase]
+        ),
+        counter(
+          metric_prefix ++ [:calls, :signaling, :replay, :total],
+          event_name: @call_signaling_replay,
+          description: "Total number of P2P signaling replay outcomes.",
+          tag_values: &call_replay_tags/1,
+          tags: [:surface, :action, :reason]
         )
       ]
     )
@@ -135,6 +159,32 @@ defmodule RetroHexChat.PromEx.Plugins.Domain do
     %{
       command: tag(metadata, :command),
       result: tag(metadata, :result, "ok")
+    }
+  end
+
+  defp call_recovery_tags(metadata) do
+    %{
+      surface: tag(metadata, :surface),
+      state: tag(metadata, :state),
+      reason: tag(metadata, :reason),
+      trigger: tag(metadata, :trigger),
+      manual_retry: tag(metadata, :manual_retry, "false")
+    }
+  end
+
+  defp call_error_tags(metadata) do
+    %{
+      surface: tag(metadata, :surface),
+      code: tag(metadata, :code),
+      phase: tag(metadata, :phase)
+    }
+  end
+
+  defp call_replay_tags(metadata) do
+    %{
+      surface: tag(metadata, :surface),
+      action: tag(metadata, :action),
+      reason: tag(metadata, :reason)
     }
   end
 

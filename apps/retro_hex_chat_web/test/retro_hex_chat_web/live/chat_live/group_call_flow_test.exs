@@ -3,6 +3,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
 
   @moduletag :liveview_feature
 
+  alias RetroHexChat.Calls.Events, as: CallEvents
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Chat.Schemas.UserPreference
   alias RetroHexChat.GroupCall
@@ -37,6 +38,26 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
 
   defp active_channel(view), do: :sys.get_state(view.pid).socket.assigns.session.active_channel
   defp flush(view), do: :sys.get_state(view.pid)
+
+  defp attach_call_telemetry do
+    test_pid = self()
+    handler_id = {__MODULE__, make_ref()}
+
+    :telemetry.attach_many(
+      handler_id,
+      [
+        CallEvents.recovery_transition_event(),
+        CallEvents.client_error_event(),
+        CallEvents.signaling_replay_event()
+      ],
+      fn event, measurements, metadata, _config ->
+        send(test_pid, {:call_telemetry, event, measurements, metadata})
+      end,
+      nil
+    )
+
+    on_exit(fn -> :telemetry.detach(handler_id) end)
+  end
 
   defp channel_role_rank("owner"), do: 4
   defp channel_role_rank("operator"), do: 3
@@ -199,6 +220,90 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
                view,
                ~s([data-testid="group-call-webrtc"][phx-hook="GroupCallWebRTCHook"][data-group-call-token="#{call.token}"])
              )
+    end
+
+    test "rehydrates an active conference participant after reconnect", %{conn: conn} do
+      %{nick: nick, view: view} = mount_identified(conn, "gchr")
+
+      open_group_call(view)
+      call = group_call_assign(view)
+      cleanup_room(call.token)
+
+      payload = join_runtime_group_call(call, nick)
+      mark_runtime_ready(call, payload)
+
+      assert :ok =
+               GroupCall.disconnect_call(
+                 call.token,
+                 payload.participant.id,
+                 self(),
+                 "channel_closed"
+               )
+
+      {:ok, reconnect_view, _html} =
+        live(chat_conn(conn, nick.nickname, pre_identified: true), "/chat")
+
+      rehydrated = group_call_assign(reconnect_view)
+
+      assert rehydrated.token == call.token
+      assert rehydrated.channel_name == call.channel_name
+      assert rehydrated.participant_id == payload.participant.id
+      assert rehydrated.status == :reconnecting
+      assert rehydrated.recovery.state == :rejoining
+
+      assert has_element?(reconnect_view, ~s([data-testid="status-bar-group-call"]))
+      assert has_element?(reconnect_view, ~s([data-testid="group-call-window"]))
+
+      assert has_element?(
+               reconnect_view,
+               ~s([data-testid="group-call-webrtc"][data-participant-id="#{payload.participant.id}"])
+             )
+    end
+
+    test "rehydrates a restored channel conference after deferred reconnect rejoin", %{
+      conn: conn
+    } do
+      %{nick: nick, view: view} = mount_identified(conn, "gcrd")
+      channel = "#gcrd#{uid()}"
+
+      submit_command_sync(view, "/join #{channel}")
+      open_group_call(view)
+
+      call = group_call_assign(view)
+      cleanup_room(call.token)
+
+      payload = join_runtime_group_call(call, nick)
+      mark_runtime_ready(call, payload)
+
+      assert :ok =
+               GroupCall.disconnect_call(
+                 call.token,
+                 payload.participant.id,
+                 self(),
+                 "channel_closed"
+               )
+
+      {:ok, reconnect_view, _html} =
+        live(chat_conn(conn, nick.nickname, pre_identified: true), "/chat")
+
+      render_hook(reconnect_view, "restore_session", %{
+        "nickname" => nick.nickname,
+        "channels" => ["#lobby", channel],
+        "active_channel" => channel,
+        "active_pm" => nil
+      })
+
+      send(reconnect_view.pid, {:execute_rejoin, 1, ["#lobby", channel]})
+      render(reconnect_view)
+
+      rehydrated = group_call_assign(reconnect_view)
+
+      assert rehydrated.token == call.token
+      assert rehydrated.channel_name == channel
+      assert rehydrated.participant_id == payload.participant.id
+
+      assert has_element?(reconnect_view, ~s([data-testid="status-bar-group-call"]))
+      assert has_element?(reconnect_view, ~s([data-testid="group-call-window"]))
     end
 
     test "pre-join cancel does not create or join a conference", %{conn: conn} do
@@ -784,9 +889,21 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
                "Network quality degraded."
              )
 
+      attach_call_telemetry()
+
       render_click(view, "group_call_client_error", %{
+        "code" => "media_negotiation_failed",
         "message" => "Media connection failed."
       })
+
+      assert_receive {:call_telemetry, event, %{count: 1},
+                      %{
+                        surface: "group_call",
+                        code: "media_negotiation_failed",
+                        phase: "liveview_client_error"
+                      }}
+
+      assert event == CallEvents.client_error_event()
 
       assert has_element?(
                view,
@@ -834,13 +951,30 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
 
       assert has_element?(view, ~s([data-testid="group-call-warning"]), "receive-only")
 
+      attach_call_telemetry()
+
       render_click(view, "group_call_recovery_state", %{
         "state" => "failed",
+        "reason" => "offer_not_received",
+        "trigger" => "offer_watchdog",
         "manual_retry" => true,
         "attempt" => 3,
         "max_attempts" => 3,
         "message" => "Media recovery failed. Retry the media connection."
       })
+
+      assert_receive {:call_telemetry, event, %{count: 1},
+                      %{
+                        surface: "group_call",
+                        state: "failed",
+                        reason: "offer_not_received",
+                        trigger: "offer_watchdog",
+                        attempt: 3,
+                        max_attempts: 3,
+                        manual_retry: true
+                      }}
+
+      assert event == CallEvents.recovery_transition_event()
 
       assert has_element?(
                view,

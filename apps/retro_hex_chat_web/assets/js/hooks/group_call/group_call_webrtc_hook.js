@@ -9,8 +9,11 @@ import { t } from "../../lib/i18n.js";
 import { log } from "../../lib/logger.js";
 import {
   acquireDisplayMedia,
+  attachMediaStream,
+  collectConnectionActivity,
   collectFeatureSnapshotFromReports,
   deriveFeatureStats,
+  hasConnectionActivity,
   applyMediaProfile,
   applySenderProfile,
   applyTrackHints,
@@ -22,7 +25,11 @@ import {
 const LAYOUT_MODES = new Set(["auto", "grid", "focus", "sidebar", "speaker"]);
 const SELF_VIEW_MODES = new Set(["tile", "pip", "hidden"]);
 const STATS_INTERVAL_MS = 2500;
+const ICE_CANDIDATE_FAILURE_LIMIT = 3;
+const OFFER_WATCHDOG_DELAY_MS = 1500;
+const OFFER_WATCHDOG_MAX_ATTEMPTS = 3;
 const RECOVERY_BACKOFF_MS = [1000, 2000, 4000];
+const DISCONNECTED_ACTIVITY_DEFERRAL_LIMIT = 2;
 const PUSH_TO_TALK_KEYS = new Set(["z", "Z"]);
 
 function hasOwn(object, key) {
@@ -37,6 +44,16 @@ function isEditableKeyboardTarget(target) {
   );
 }
 
+function emptyMediaStream() {
+  if (typeof MediaStream === "function") return new MediaStream();
+
+  return {
+    getTracks: () => [],
+    getAudioTracks: () => [],
+    getVideoTracks: () => [],
+  };
+}
+
 const GroupCallWebRTCHook = {
   mounted() {
     this.roomToken = this.el.dataset.groupCallToken;
@@ -46,7 +63,8 @@ const GroupCallWebRTCHook = {
     this.socket = null;
     this.channel = null;
     this.pendingCandidates = [];
-    this.participantId = null;
+    this.remoteCandidateFailures = 0;
+    this.participantId = this._stringOrNull(this.el.dataset.participantId);
     this.mediaEnabled = this._mediaStateFromDataset();
     this.serverAudioMuted = false;
     this.serverVideoBlocked = false;
@@ -54,17 +72,26 @@ const GroupCallWebRTCHook = {
     this.closing = false;
     this.offerQueue = Promise.resolve();
     this.lastAnsweredOfferSdp = null;
+    this.lastAnsweredOfferId = null;
     this.layoutState = this._layoutStateFromDataset();
     this.participantsById = new Map();
     this.tracksById = new Map();
     this.tracksByStreamId = new Map();
     this.tracksByWebrtcTrackId = new Map();
     this.remoteTiles = new Map();
+    this.remoteVideoStalls = new Map();
     this.statsTimer = null;
     this.statsPrev = null;
+    this.localSenders = [];
+    this._sendersPc = null;
     this.recoveryTimer = null;
     this.recoveryAttempts = 0;
+    this.recoveryActivityDeferrals = 0;
     this.maxRecoveryAttempts = RECOVERY_BACKOFF_MS.length;
+    this.offerWatchdogTimer = null;
+    this.offerWatchdogAttempts = 0;
+    this.rejoinEpoch = 0;
+    this.rejoining = false;
     this.participantStatsPrev = null;
     this.participantQualityById = new Map();
     this.activeSpeakerParticipantId = null;
@@ -162,15 +189,7 @@ const GroupCallWebRTCHook = {
       join_token: this.joinToken,
     });
 
-    this.channel.on("group_call_joined", (payload) => {
-      this.participantId = payload?.participant?.id || null;
-      this._upsertParticipant(payload?.participant);
-      this._syncParticipants(payload?.participants || []);
-      this._syncTracks(payload?.tracks || []);
-      this._syncLocalTile();
-      this.pushEvent("group_call_client_joined", payload);
-      this.channel?.push("group_call_media_state", this.mediaEnabled);
-    });
+    this.channel.on("group_call_joined", (payload) => this._handleJoined(payload));
     this.channel.on("group_call_offer", (payload) => {
       this.pushEvent("group_call_offer_received", {
         participant_id: payload?.participant_id,
@@ -249,17 +268,7 @@ const GroupCallWebRTCHook = {
     this.channel
       .join()
       .receive("ok", () => {
-        this.channel
-          .push("group_call_join", {
-            client_info: this._clientInfo(),
-            media_constraints: this.mediaEnabled,
-          })
-          .receive("error", (reply) => {
-            this._notifyError(reply?.message || t("Unable to join group call"), "join_failed");
-          })
-          .receive("timeout", () => {
-            this._notifyError(t("Group call join timed out"), "join_timeout");
-          });
+        this._joinGroupCall("initial");
       })
       .receive("error", (reply) => {
         log.warn("[group-call] channel join rejected", reply);
@@ -274,19 +283,82 @@ const GroupCallWebRTCHook = {
       });
   },
 
+  _joinGroupCall(trigger = "initial", extra = {}) {
+    const push = this.channel?.push("group_call_join", {
+      client_info: this._clientInfo(),
+      media_constraints: this.mediaEnabled,
+      previous_participant_id: extra.previousParticipantId || this.participantId,
+      rejoin_epoch: this.rejoinEpoch,
+      trigger,
+    });
+
+    if (!push?.receive) {
+      this._notifyError(t("Unable to join group call"), "join_failed");
+      return null;
+    }
+
+    push
+      .receive("error", (reply) => {
+        this.rejoining = false;
+        if (trigger !== "initial") {
+          this._publishRecoveryState({
+            state: "failed",
+            trigger,
+            attempt: this.recoveryAttempts,
+            max_attempts: this.maxRecoveryAttempts,
+            manual_retry: true,
+            message: reply?.message || t("Unable to join group call"),
+          });
+        }
+        this._notifyError(reply?.message || t("Unable to join group call"), "join_failed");
+      })
+      .receive("timeout", () => {
+        this.rejoining = false;
+        if (trigger !== "initial") {
+          this._publishRecoveryState({
+            state: "failed",
+            trigger,
+            attempt: this.recoveryAttempts,
+            max_attempts: this.maxRecoveryAttempts,
+            manual_retry: true,
+            message: t("Group call join timed out"),
+          });
+        }
+        this._notifyError(t("Group call join timed out"), "join_timeout");
+      });
+
+    return push;
+  },
+
   _handleOffer(payload) {
     this.offerQueue = this.offerQueue.catch(() => {}).then(() => this._processOffer(payload || {}));
 
     return this.offerQueue;
   },
 
-  async _processOffer({ sdp, ice_servers }) {
+  _handleJoined(payload = {}) {
+    this.participantId = payload?.participant?.id || null;
+    this.rejoining = false;
+    this._upsertParticipant(payload?.participant);
+    this._syncParticipants(payload?.participants || []);
+    this._syncTracks(payload?.tracks || []);
+    this._syncLocalTile();
+    this.pushEvent("group_call_client_joined", payload);
+    this.channel?.push("group_call_media_state", this.mediaEnabled);
+    this._scheduleOfferWatchdog("join");
+  },
+
+  async _processOffer({ sdp, ice_servers, offer_id }) {
     if (!sdp) {
       this._notifyError(t("Group call media negotiation failed"), "media_negotiation_failed");
       return;
     }
 
-    if (this.lastAnsweredOfferSdp === sdp) {
+    if (
+      (offer_id && this.lastAnsweredOfferId === offer_id) ||
+      (!offer_id && this.lastAnsweredOfferSdp === sdp)
+    ) {
+      this._clearOfferWatchdog();
       return;
     }
 
@@ -301,8 +373,11 @@ const GroupCallWebRTCHook = {
 
       this.channel.push("group_call_answer", {
         sdp: this.pc.localDescription.sdp,
+        offer_id: offer_id || null,
       });
       this.lastAnsweredOfferSdp = sdp;
+      this.lastAnsweredOfferId = offer_id || null;
+      this._clearOfferWatchdog();
     } catch (error) {
       log.warn("[group-call] failed to handle offer", error);
       this._notifyError(t("Group call media negotiation failed"), "media_negotiation_failed");
@@ -313,8 +388,10 @@ const GroupCallWebRTCHook = {
     if (this.pc) return;
 
     this.pc = new RTCPeerConnection({ iceServers });
+    this.remoteCandidateFailures = 0;
 
     this.pc.onconnectionstatechange = () => this._handleConnectionStateChange();
+    this.pc.oniceconnectionstatechange = () => this._handleIceConnectionStateChange();
 
     this.pc.onicecandidate = (event) => {
       if (!event.candidate) return;
@@ -331,10 +408,15 @@ const GroupCallWebRTCHook = {
   },
 
   async _ensureLocalTracks() {
-    if (this.localStream) return;
+    if (this.localStream) {
+      await this._publishLocalTracks();
+      this._attachLocalStream(this.localStream);
+      this._applyMediaEnabled();
+      return;
+    }
 
     if (!this.mediaEnabled.audio && !this.mediaEnabled.video) {
-      this.localStream = new MediaStream();
+      this.localStream = emptyMediaStream();
       this._attachLocalStream(this.localStream);
       this._applyMediaEnabled();
       return;
@@ -349,11 +431,28 @@ const GroupCallWebRTCHook = {
         t("Could not access your microphone or camera. You joined receive-only."),
         "media_capture_failed",
       );
+      this.localStream = emptyMediaStream();
+      this._attachLocalStream(this.localStream);
+      this.mediaEnabled = { audio: false, video: false };
+      this._applyMediaEnabled();
+      this._syncLocalTile();
+      this._pushLocalMediaState();
       return;
     }
 
+    await this._publishLocalTracks();
+    this._attachLocalStream(this.localStream);
+    this._applyMediaEnabled();
+  },
+
+  async _publishLocalTracks() {
+    if (!this.pc || !this.localStream || this._sendersPc === this.pc) return;
+
+    this.localSenders = [];
+
     for (const track of this.localStream.getTracks()) {
       const sender = this.pc.addTrack(track, this.localStream);
+      this.localSenders.push(sender);
 
       if (track.kind === "video") {
         this.videoSender = sender;
@@ -362,8 +461,7 @@ const GroupCallWebRTCHook = {
     }
 
     await applyMediaProfile(this.pc);
-    this._attachLocalStream(this.localStream);
-    this._applyMediaEnabled();
+    this._sendersPc = this.pc;
   },
 
   async _handleRemoteCandidate(candidate) {
@@ -376,8 +474,18 @@ const GroupCallWebRTCHook = {
 
     try {
       await this.pc.addIceCandidate(candidate);
+      this.remoteCandidateFailures = 0;
     } catch (error) {
-      log.warn("[group-call] failed to add ICE candidate", error);
+      this._recordRemoteCandidateFailure(error);
+    }
+  },
+
+  _recordRemoteCandidateFailure(error) {
+    log.warn("[group-call] failed to add ICE candidate", error);
+    this.remoteCandidateFailures = (this.remoteCandidateFailures || 0) + 1;
+
+    if (this.remoteCandidateFailures >= ICE_CANDIDATE_FAILURE_LIMIT) {
+      this._scheduleRecovery("ice_candidate_failed");
     }
   },
 
@@ -424,7 +532,12 @@ const GroupCallWebRTCHook = {
       tile.insertBefore(video, tile.firstChild);
     }
 
-    video.srcObject = stream;
+    attachMediaStream(video, stream, {
+      muted: false,
+      onVideoStalled: ({ reason }) => {
+        this._handleRemoteVideoStalled(streamId, reason);
+      },
+    });
     this._applyAudioOutput(video);
     this._applyTrackToTile(tile, streamId, track);
     this._applyLayout();
@@ -695,6 +808,7 @@ const GroupCallWebRTCHook = {
       if (tile.dataset.participantId !== id) continue;
       tile.remove();
       this.remoteTiles.delete(streamId);
+      this.remoteVideoStalls?.delete(streamId);
     }
 
     if (this.layoutState.focusedParticipantId === id) {
@@ -1288,14 +1402,37 @@ const GroupCallWebRTCHook = {
   },
 
   _publishLocalMediaState(media, { mirrorToLiveView = false } = {}) {
-    this.mediaEnabled = {
+    const desired = {
       audio: media.audio !== false && !this.serverAudioMuted,
       video: media.video !== false && !this.serverVideoBlocked,
     };
 
+    this.mediaEnabled = desired;
     this._applyMediaEnabled();
     this._syncLocalTile();
 
+    if (this._needsOnDemandMedia(desired)) {
+      this._ensureRequestedLocalTracks(desired)
+        .catch((error) => {
+          log.warn("[group-call] on-demand media capture failed", error);
+          this._notifyWarning(
+            t("Could not access your microphone or camera."),
+            "media_capture_failed",
+          );
+        })
+        .finally(() => {
+          this.mediaEnabled = this._actualMediaState(desired);
+          this._applyMediaEnabled();
+          this._syncLocalTile();
+          this._pushLocalMediaState(mirrorToLiveView);
+        });
+      return;
+    }
+
+    this._pushLocalMediaState(mirrorToLiveView);
+  },
+
+  _pushLocalMediaState(mirrorToLiveView = false) {
     if (this.participantId) {
       this.channel?.push("group_call_media_state", this.mediaEnabled);
     }
@@ -1303,6 +1440,83 @@ const GroupCallWebRTCHook = {
     if (mirrorToLiveView) {
       this.pushEvent("group_call_media_state_forced", this.mediaEnabled);
     }
+  },
+
+  _needsOnDemandMedia(desired) {
+    if (!this.pc) return false;
+    return (
+      (desired.audio && !this._hasLocalAudioTrack()) ||
+      (desired.video && !this._hasLocalVideoTrack())
+    );
+  },
+
+  async _ensureRequestedLocalTracks(desired) {
+    if (!this.pc) return;
+
+    const needsAudio = desired.audio && !this._hasLocalAudioTrack();
+    const needsVideo = desired.video && !this._hasLocalVideoTrack();
+    if (!needsAudio && !needsVideo) return;
+
+    const stream = await navigator.mediaDevices.getUserMedia({
+      audio: needsAudio
+        ? this._withDevice(getAudioConstraints(), this.devicePreferences.audioInputId)
+        : false,
+      video: needsVideo
+        ? this._withDevice(getVideoConstraints(), this.devicePreferences.videoInputId)
+        : false,
+    });
+
+    applyTrackHints(stream);
+    this._mergeLocalStream(stream);
+
+    for (const track of stream.getTracks()) {
+      const sender = this.pc.addTrack(track, this.localStream || stream);
+      this.localSenders.push(sender);
+
+      if (track.kind === "video") {
+        this.videoSender = sender;
+        this.cameraVideoTrack = track;
+      }
+    }
+
+    await applyMediaProfile(this.pc);
+    this._sendersPc = this.pc;
+    this._attachLocalStream(this.localStream || stream);
+    this._requestOfferAfterLocalMediaChange();
+  },
+
+  _mergeLocalStream(stream) {
+    if (!this.localStream || !this.localStream.getTracks) {
+      this.localStream = stream;
+      return;
+    }
+
+    if (typeof this.localStream.addTrack !== "function") {
+      if ((this.localStream.getTracks?.() || []).length === 0) this.localStream = stream;
+      return;
+    }
+
+    for (const track of stream.getTracks()) {
+      this.localStream.addTrack(track);
+    }
+  },
+
+  _actualMediaState(desired) {
+    return {
+      audio: desired.audio && this._hasLocalAudioTrack(),
+      video: desired.video && this._hasLocalVideoTrack(),
+    };
+  },
+
+  _requestOfferAfterLocalMediaChange() {
+    const push = this.channel?.push("group_call_request_offer", {
+      attempt: this.recoveryAttempts,
+      trigger: "local_media_added",
+    });
+
+    push?.receive?.("error", (reply) => {
+      if (reply?.code === "rejoin_required") this._rejoinConnection("local_media_added", reply);
+    });
   },
 
   _applyMediaEnabled() {
@@ -1368,12 +1582,19 @@ const GroupCallWebRTCHook = {
     );
   },
 
+  _hasLocalVideoTrack() {
+    return (this.localStream?.getVideoTracks?.() || []).some(
+      (track) => track.readyState !== "ended",
+    );
+  },
+
   _handleConnectionStateChange() {
     const state = this.pc?.connectionState || "";
 
     this.pushEvent("group_call_connection_state", { state });
 
     if (state === "connected") {
+      this._clearOfferWatchdog();
       this._clearRecovery("connected");
       return;
     }
@@ -1391,10 +1612,31 @@ const GroupCallWebRTCHook = {
     }
   },
 
-  _scheduleRecovery(reason) {
+  _handleIceConnectionStateChange() {
+    const state = this.pc?.iceConnectionState || "";
+
+    if (state === "connected" || state === "completed") {
+      this._clearRecovery("ice_connected");
+      return;
+    }
+
+    if (state === "checking") {
+      this._publishRecoveryState({
+        state: "connecting",
+        message: t("Group call media is connecting."),
+      });
+      return;
+    }
+
+    if (state === "disconnected" || state === "failed") {
+      this._scheduleRecovery(`ice_${state}`);
+    }
+  },
+
+  _scheduleRecovery(reason, { countAttempt = true } = {}) {
     if (this.recoveryTimer) return;
 
-    if (this.recoveryAttempts >= this.maxRecoveryAttempts) {
+    if (countAttempt && this.recoveryAttempts >= this.maxRecoveryAttempts) {
       this._publishRecoveryState({
         state: "failed",
         reason,
@@ -1406,9 +1648,12 @@ const GroupCallWebRTCHook = {
       return;
     }
 
-    const attempt = this.recoveryAttempts + 1;
+    const attempt = countAttempt ? this.recoveryAttempts + 1 : this.recoveryAttempts || 1;
     const delay = RECOVERY_BACKOFF_MS[Math.min(attempt - 1, RECOVERY_BACKOFF_MS.length - 1)];
-    this.recoveryAttempts = attempt;
+    if (countAttempt) this.recoveryAttempts = attempt;
+    const beforeActivity = this._disconnectedRecoveryReason(reason)
+      ? collectConnectionActivity(this.pc)
+      : null;
 
     this._publishRecoveryState({
       state: "reconnecting",
@@ -1419,10 +1664,149 @@ const GroupCallWebRTCHook = {
       message: t("Group call media connection interrupted. Trying to recover."),
     });
 
-    this.recoveryTimer = setTimeout(() => {
+    this.recoveryTimer = setTimeout(async () => {
       this.recoveryTimer = null;
+
+      if (await this._deferDisconnectedRecoveryForActivity(reason, beforeActivity)) {
+        return;
+      }
+
       this._retryConnection("auto");
     }, delay);
+  },
+
+  _disconnectedRecoveryReason(reason) {
+    return reason === "disconnected" || reason === "ice_disconnected";
+  },
+
+  async _deferDisconnectedRecoveryForActivity(reason, beforeActivity) {
+    if (!beforeActivity || !this._disconnectedRecoveryReason(reason)) return false;
+
+    const before = await beforeActivity;
+    const after = await collectConnectionActivity(this.pc);
+
+    if (!hasConnectionActivity(before, after)) {
+      this.recoveryActivityDeferrals = 0;
+      return false;
+    }
+
+    const deferrals = this.recoveryActivityDeferrals || 0;
+
+    if (deferrals >= DISCONNECTED_ACTIVITY_DEFERRAL_LIMIT) {
+      this.recoveryActivityDeferrals = 0;
+      return false;
+    }
+
+    this.recoveryActivityDeferrals = deferrals + 1;
+    log.debug("[group-call] deferring recovery while media/data still moves", {
+      reason,
+      deferrals: this.recoveryActivityDeferrals,
+    });
+    this._scheduleRecovery(reason, { countAttempt: false });
+    return true;
+  },
+
+  _scheduleOfferWatchdog(trigger = "join") {
+    if (
+      this.offerWatchdogTimer ||
+      this.offerWatchdogAttempts >= OFFER_WATCHDOG_MAX_ATTEMPTS ||
+      !this._needsOfferWatchdog()
+    ) {
+      return;
+    }
+
+    const attempt = this.offerWatchdogAttempts + 1;
+    this.offerWatchdogAttempts = attempt;
+
+    this.offerWatchdogTimer = setTimeout(() => {
+      this.offerWatchdogTimer = null;
+      if (!this._needsOfferWatchdog()) return;
+
+      this._requestOfferFromWatchdog(trigger, attempt);
+
+      if (attempt >= OFFER_WATCHDOG_MAX_ATTEMPTS) {
+        this.offerWatchdogTimer = setTimeout(() => {
+          this.offerWatchdogTimer = null;
+          if (this._needsOfferWatchdog()) {
+            this._publishRecoveryState({
+              state: "failed",
+              reason: "offer_not_received",
+              trigger: "offer_watchdog",
+              attempt,
+              max_attempts: OFFER_WATCHDOG_MAX_ATTEMPTS,
+              manual_retry: true,
+              message: t("Media offer was not received. Retry the media connection."),
+            });
+          }
+        }, OFFER_WATCHDOG_DELAY_MS);
+        return;
+      }
+
+      this._scheduleOfferWatchdog(trigger);
+    }, OFFER_WATCHDOG_DELAY_MS * attempt);
+  },
+
+  _needsOfferWatchdog() {
+    return !this.closing && !this.rejoining && !this.pc?.remoteDescription;
+  },
+
+  _requestOfferFromWatchdog(trigger, attempt) {
+    this._publishRecoveryState({
+      state: "reconnecting",
+      reason: "offer_not_received",
+      trigger: "offer_watchdog",
+      attempt,
+      max_attempts: OFFER_WATCHDOG_MAX_ATTEMPTS,
+      message: t("Waiting for media offer. Requesting a fresh offer."),
+    });
+
+    const push = this.channel?.push("group_call_request_offer", {
+      attempt,
+      trigger: "offer_watchdog",
+      reason: trigger,
+    });
+
+    if (!push?.receive) {
+      this._publishRecoveryState({
+        state: "failed",
+        reason: "offer_not_received",
+        trigger: "offer_watchdog",
+        attempt,
+        max_attempts: OFFER_WATCHDOG_MAX_ATTEMPTS,
+        manual_retry: true,
+        message: t("Media recovery failed. Retry the media connection."),
+      });
+      return;
+    }
+
+    push
+      .receive("error", (reply) => {
+        if (reply?.code === "rejoin_required") {
+          this._rejoinConnection("offer_watchdog", reply);
+          return;
+        }
+
+        this._publishRecoveryState({
+          state: "failed",
+          reason: reply?.code || "offer_not_received",
+          trigger: "offer_watchdog",
+          attempt,
+          max_attempts: OFFER_WATCHDOG_MAX_ATTEMPTS,
+          manual_retry: true,
+          message: reply?.message || t("Media recovery failed. Retry the media connection."),
+        });
+      })
+      .receive("timeout", () => {
+        this._publishRecoveryState({
+          state: "failed",
+          reason: "offer_request_timeout",
+          trigger: "offer_watchdog",
+          attempt,
+          max_attempts: OFFER_WATCHDOG_MAX_ATTEMPTS,
+          manual_retry: true,
+          message: t("Media recovery timed out. Retry the media connection."),
+        });
+      });
   },
 
   _retryConnection(trigger = "manual") {
@@ -1448,8 +1832,25 @@ const GroupCallWebRTCHook = {
       trigger,
     });
 
+    if (!push?.receive) {
+      this._publishRecoveryState({
+        state: "failed",
+        trigger,
+        attempt,
+        max_attempts: this.maxRecoveryAttempts,
+        manual_retry: true,
+        message: t("Media recovery failed. Retry the media connection."),
+      });
+      return;
+    }
+
     push
-      ?.receive?.("error", (reply) => {
+      .receive("error", (reply) => {
+        if (reply?.code === "rejoin_required") {
+          this._rejoinConnection(trigger, reply);
+          return;
+        }
+
         this._publishRecoveryState({
           state: "failed",
           trigger,
@@ -1459,7 +1860,7 @@ const GroupCallWebRTCHook = {
           message: reply?.message || t("Media recovery failed. Retry the media connection."),
         });
       })
-      ?.receive?.("timeout", () => {
+      .receive("timeout", () => {
         this._publishRecoveryState({
           state: "failed",
           trigger,
@@ -1471,6 +1872,93 @@ const GroupCallWebRTCHook = {
       });
   },
 
+  _handleRemoteVideoStalled(streamId, reason = "remote_video_stalled") {
+    const key = this._stringOrNull(streamId);
+    if (!key || this.remoteVideoStalls?.get(key) === true) return;
+
+    this.remoteVideoStalls.set(key, true);
+    this._publishRecoveryState({
+      state: "reconnecting",
+      reason,
+      trigger: "remote_video_stalled",
+      attempt: this.recoveryAttempts || 1,
+      max_attempts: this.maxRecoveryAttempts,
+      message: t("Remote video stopped rendering. Trying to recover the media path."),
+    });
+    this._retryConnection("remote_video_stalled");
+  },
+
+  _rejoinConnection(trigger = "manual", reply = {}) {
+    if (this.rejoining) return;
+
+    const previousParticipantId = this.participantId;
+    this.rejoining = true;
+    this.rejoinEpoch += 1;
+
+    this._publishRecoveryState({
+      state: "rejoining",
+      trigger,
+      attempt: this.recoveryAttempts,
+      max_attempts: this.maxRecoveryAttempts,
+      manual_retry: false,
+      message: reply?.message || t("Rejoining the media session."),
+    });
+
+    this._prepareTransportRejoin();
+    this._joinGroupCall("rejoin", { previousParticipantId });
+  },
+
+  _prepareTransportRejoin() {
+    this._stopStatsPolling();
+    this._clearOfferWatchdog();
+    this.pendingCandidates = [];
+    this.remoteCandidateFailures = 0;
+    this.offerQueue = Promise.resolve();
+    this.lastAnsweredOfferSdp = null;
+    this.lastAnsweredOfferId = null;
+
+    this._clearScreenShareForRejoin();
+
+    if (this.pc) {
+      this.pc.onconnectionstatechange = null;
+      this.pc.onicecandidate = null;
+      this.pc.ontrack = null;
+      this.pc.close();
+    }
+
+    this.pc = null;
+    this.localSenders = [];
+    this._sendersPc = null;
+    this.videoSender = null;
+    this.cameraVideoTrack = this.localStream?.getVideoTracks?.()[0] || null;
+
+    this._clearRemoteTilesForRejoin();
+  },
+
+  _clearScreenShareForRejoin() {
+    if (!this.screenShare?.active) return;
+
+    if (this.screenShare.track) this.screenShare.track.onended = null;
+    this._stopStream(this.screenShare.stream);
+    this.screenShare = { active: false, stream: null, track: null };
+    this._publishScreenShareState(false, null, null);
+    if (this.localStream) this._attachLocalStream(this.localStream);
+    this._syncLocalTile();
+  },
+
+  _clearRemoteTilesForRejoin() {
+    for (const tile of this.remoteTiles?.values?.() || []) {
+      tile.remove();
+    }
+
+    this.remoteTiles?.clear();
+    this.remoteVideoStalls?.clear();
+    this.tracksById?.clear();
+    this.tracksByStreamId?.clear();
+    this.tracksByWebrtcTrackId?.clear();
+    this._applyLayout();
+  },
+
   _clearRecovery(reason = "connected") {
     if (this.recoveryTimer) {
       clearTimeout(this.recoveryTimer);
@@ -1478,6 +1966,10 @@ const GroupCallWebRTCHook = {
     }
 
     this.recoveryAttempts = 0;
+    this.recoveryActivityDeferrals = 0;
+    this.remoteCandidateFailures = 0;
+    this._clearOfferWatchdog();
+    this.remoteVideoStalls?.clear();
     this._publishRecoveryState({
       state: "connected",
       reason,
@@ -1504,6 +1996,15 @@ const GroupCallWebRTCHook = {
 
   _notifyWarning(message, code = "media_warning") {
     this.pushEvent("group_call_client_warning", { code, message });
+  },
+
+  _clearOfferWatchdog() {
+    if (this.offerWatchdogTimer) {
+      clearTimeout(this.offerWatchdogTimer);
+      this.offerWatchdogTimer = null;
+    }
+
+    this.offerWatchdogAttempts = 0;
   },
 
   _startStatsPolling() {
@@ -1534,6 +2035,8 @@ const GroupCallWebRTCHook = {
           remote_stream_count: this.remoteTiles.size,
           track_count: this.tracksById.size,
           screen_share_active: this.screenShare?.active === true,
+          offer_id: this.lastAnsweredOfferId || "",
+          rejoin_epoch: this.rejoinEpoch || 0,
         },
       });
 
@@ -1843,11 +2346,11 @@ const GroupCallWebRTCHook = {
       document.removeEventListener("keyup", this.pushToTalkKeyupHandler, true);
     }
     this._stopStatsPolling();
+    this._clearOfferWatchdog();
     if (this.recoveryTimer) {
       clearTimeout(this.recoveryTimer);
       this.recoveryTimer = null;
     }
-    this.channel?.push("group_call_leave", {});
     this.channel?.leave();
     this.socket?.disconnect();
 
@@ -1860,9 +2363,11 @@ const GroupCallWebRTCHook = {
     this.localStream = null;
     this.pc = null;
     this.pendingCandidates = [];
+    this.remoteCandidateFailures = 0;
     this.participantId = null;
     this.offerQueue = Promise.resolve();
     this.lastAnsweredOfferSdp = null;
+    this.lastAnsweredOfferId = null;
     this.videoSender = null;
     this.cameraVideoTrack = null;
     this.screenShare = { active: false, stream: null, track: null };
@@ -1872,6 +2377,7 @@ const GroupCallWebRTCHook = {
     this.pushToTalkActive = false;
     this.pushToTalkRestoreAudio = null;
     this.recoveryAttempts = 0;
+    this.offerWatchdogAttempts = 0;
     this.participantStatsPrev = null;
     this.activeSpeakerParticipantId = null;
     for (const timer of this.reactionTimers?.values?.() || []) {
@@ -1884,6 +2390,7 @@ const GroupCallWebRTCHook = {
     this.tracksByStreamId?.clear();
     this.tracksByWebrtcTrackId?.clear();
     this.remoteTiles?.clear();
+    this.remoteVideoStalls?.clear();
   },
 };
 

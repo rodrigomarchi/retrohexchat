@@ -13,6 +13,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   use Gettext, backend: RetroHexChatWeb.Gettext
 
   alias Phoenix.LiveView.Socket
+  alias RetroHexChat.Calls.Events, as: CallEvents
   alias RetroHexChat.Channels.Membership
   alias RetroHexChat.Channels.Policy, as: ChannelPolicy
   alias RetroHexChat.Channels.Server
@@ -31,6 +32,31 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   @self_view_cycle [:tile, :pip, :hidden]
 
   @type event_result :: {:cont | :halt, Socket.t()}
+
+  @spec rehydrate(Socket.t()) :: Socket.t()
+  def rehydrate(
+        %{assigns: %{session: %{nickname: nickname, channels: channels, identified: true}}} =
+          socket
+      )
+      when is_binary(nickname) and is_list(channels) do
+    {socket, summaries} =
+      channels
+      |> Enum.filter(&is_binary/1)
+      |> Enum.reduce({socket, []}, fn channel_name, {socket, summaries} ->
+        case active_channel_summary(channel_name) do
+          nil ->
+            {mark_channel_call_inactive(socket, channel_name), summaries}
+
+          summary ->
+            {mark_channel_call_active(socket, channel_name, summary),
+             [{channel_name, summary} | summaries]}
+        end
+      end)
+
+    maybe_reattach_active_participant(socket, Enum.reverse(summaries), nickname)
+  end
+
+  def rehydrate(socket), do: socket
 
   @spec refresh_channel_call_state(Socket.t(), String.t() | nil) :: Socket.t()
   def refresh_channel_call_state(socket, channel_name) when is_binary(channel_name) do
@@ -189,6 +215,11 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   def handle_event("group_call_console_select", _params, socket), do: {:halt, socket}
 
   def handle_event("group_call_retry", _params, %{assigns: %{group_call: %{}}} = socket) do
+    CallEvents.emit_recovery_transition(:group_call, :negotiating, "manual_retry", %{
+      manual_retry: false,
+      trigger: "manual"
+    })
+
     socket =
       update_call(socket, fn call ->
         call
@@ -198,6 +229,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
         |> Map.put(:recovery, %{
           empty_recovery()
           | state: :negotiating,
+            reason: "manual_retry",
             trigger: "manual",
             manual_retry: false,
             message: dgettext("group_call", "Requesting a fresh media offer.")
@@ -609,6 +641,9 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   end
 
   def handle_event("group_call_recovery_state", payload, %{assigns: %{group_call: %{}}} = socket) do
+    recovery = normalize_recovery(payload)
+    emit_group_call_recovery_transition(recovery)
+
     {:halt, update_call(socket, &apply_recovery_state(&1, payload))}
   end
 
@@ -652,6 +687,10 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   end
 
   def handle_event("group_call_client_error", payload, %{assigns: %{group_call: %{}}} = socket) do
+    CallEvents.emit_client_error(:group_call, value(payload, :code) || "connection_failed", %{
+      phase: "liveview_client_error"
+    })
+
     message = value(payload, :message) || dgettext("group_call", "Group call connection failed.")
 
     socket =
@@ -822,6 +861,85 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
 
   defp open_call_windows(socket), do: Windows.open(socket, @window_id)
 
+  defp maybe_reattach_active_participant(
+         %{assigns: %{group_call: %{}}} = socket,
+         _summaries,
+         _nickname
+       ),
+       do: socket
+
+  defp maybe_reattach_active_participant(socket, summaries, nickname) do
+    case rehydratable_participant(summaries, nickname) do
+      {channel_name, summary, participant} ->
+        reattach_active_participant(socket, channel_name, summary, participant)
+
+      nil ->
+        socket
+    end
+  end
+
+  defp rehydratable_participant(summaries, nickname) do
+    Enum.find_value(summaries, fn {channel_name, summary} ->
+      room = value(summary, :room)
+      room_id = normalize_id(value(room, :id))
+
+      with room_id when is_integer(room_id) <- room_id,
+           participant when not is_nil(participant) <-
+             GroupCall.active_participant(room_id, nickname) do
+        {channel_name, summary, participant}
+      else
+        _other -> nil
+      end
+    end)
+  end
+
+  defp reattach_active_participant(socket, channel_name, summary, participant) do
+    room = normalize_room(value(summary, :room))
+    token = value(room, :token)
+    user_id = value(participant, :registered_nick_id)
+    nickname = socket.assigns.session.nickname
+
+    if is_binary(token) and is_integer(user_id) do
+      preferences =
+        socket.assigns[:group_call_prejoin_preferences] ||
+          load_prejoin_preferences(nickname) ||
+          default_prejoin_preferences()
+
+      join_token = JoinToken.sign(token, channel_name, user_id, nickname)
+      recovery_message = recovery_message(:rejoining)
+
+      recovery = %{
+        empty_recovery()
+        | state: :rejoining,
+          reason: "liveview_mount",
+          trigger: "rehydrate",
+          message: recovery_message
+      }
+
+      CallEvents.emit_recovery_transition(:group_call, :rejoining, "liveview_mount", %{
+        manual_retry: false,
+        trigger: "rehydrate"
+      })
+
+      call =
+        summary
+        |> new_call(token, channel_name, user_id, nickname, join_token, preferences)
+        |> Map.put(:participant_id, participant.id)
+        |> Map.put(:self_role, participant.channel_role_snapshot)
+        |> Map.put(:status, :reconnecting)
+        |> Map.put(:warning, recovery_message)
+        |> Map.put(:recovery, recovery)
+        |> put_participant(normalize_participant(participant))
+
+      socket
+      |> assign(group_call: call, group_call_pending: nil, group_call_prejoin: nil)
+      |> mark_channel_call_active(channel_name, summary)
+      |> open_call_windows()
+    else
+      socket
+    end
+  end
+
   defp select_console_section(socket, "stats"), do: put_console_section(socket, :stats)
 
   defp select_console_section(socket, "people") do
@@ -929,6 +1047,11 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   defp apply_connection_state(socket, state) do
     case to_string(state) do
       "connected" ->
+        CallEvents.emit_recovery_transition(:group_call, :connected, "connection_state", %{
+          manual_retry: false,
+          trigger: "connection_state"
+        })
+
         update_call(socket, fn call ->
           call
           |> Map.put(:connection_state, state)
@@ -940,6 +1063,16 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
       "disconnected" ->
         message =
           dgettext("group_call", "Group call media connection interrupted. Trying to recover.")
+
+        CallEvents.emit_recovery_transition(
+          :group_call,
+          :reconnecting,
+          "connection_disconnected",
+          %{
+            manual_retry: false,
+            trigger: "connection_state"
+          }
+        )
 
         update_call(socket, fn call ->
           call
@@ -955,6 +1088,15 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
             "group_call",
             "Group call media connection failed. Retry the media connection."
           )
+
+        CallEvents.emit_recovery_transition(:group_call, :failed, "connection_failed", %{
+          manual_retry: true,
+          trigger: "connection_state"
+        })
+
+        CallEvents.emit_client_error(:group_call, "connection_failed", %{
+          phase: "connection_state"
+        })
 
         socket =
           update_call(socket, fn call ->
@@ -1778,6 +1920,12 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
         |> Map.put(:warning, message)
         |> Map.put(:error, nil)
 
+      :rejoining ->
+        call
+        |> Map.put(:status, :reconnecting)
+        |> Map.put(:warning, message)
+        |> Map.put(:error, nil)
+
       :negotiating ->
         call
         |> Map.put(:status, :negotiating)
@@ -1815,6 +1963,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
       "connected" -> :connected
       "connecting" -> :connecting
       "reconnecting" -> :reconnecting
+      "rejoining" -> :rejoining
       "negotiating" -> :negotiating
       "failed" -> :failed
       "degraded" -> :degraded
@@ -1828,6 +1977,9 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   defp recovery_message(:reconnecting),
     do: dgettext("group_call", "Group call media connection interrupted. Trying to recover.")
 
+  defp recovery_message(:rejoining),
+    do: dgettext("group_call", "Rejoining the media session.")
+
   defp recovery_message(:negotiating),
     do: dgettext("group_call", "Requesting a fresh media offer.")
 
@@ -1835,6 +1987,16 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
     do: dgettext("group_call", "Media recovery failed. Retry the media connection.")
 
   defp recovery_message(_state), do: nil
+
+  defp emit_group_call_recovery_transition(recovery) do
+    CallEvents.emit_recovery_transition(:group_call, recovery.state, recovery.reason, %{
+      attempt: recovery.attempt,
+      max_attempts: recovery.max_attempts,
+      next_retry_ms: recovery.next_retry_ms,
+      manual_retry: recovery.manual_retry,
+      trigger: recovery.trigger
+    })
+  end
 
   defp put_participant_quality(call, payload) do
     valid_ids =

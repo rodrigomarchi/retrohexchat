@@ -26,6 +26,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
 
   alias Phoenix.LiveView.Socket
   alias RetroHexChat.Accounts.ServerRoles
+  alias RetroHexChat.Calls.Events, as: CallEvents
   alias RetroHexChat.Chat.Schemas.UserPreference
   alias RetroHexChat.Chat.Service, as: ChatService
   alias RetroHexChat.Commands.Handlers.Lobby, as: LobbyCommand
@@ -49,14 +50,20 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   @p2p_console_height 430
   @p2p_console_x 448
   @p2p_console_y 72
+  @reattach_retry_delays [250, 500, 1_000, 2_000, 4_000]
 
   # ── Client events (WebRTC hooks + P2P UI) ─────────────────────
 
   @spec handle_event(String.t(), map(), Socket.t()) :: {:cont | :halt, Socket.t()}
   def handle_event("lobby_webrtc_ready", _params, %{assigns: %{p2p_session: %{}}} = socket) do
     p2p = socket.assigns.p2p_session
-    Lobby.mark_webrtc_ready(p2p.token, p2p.user_id)
-    {:halt, socket}
+
+    if Map.get(p2p, :reattach_pending, false) do
+      {:halt, put_p2p(socket, Map.put(p2p, :client_webrtc_ready, true))}
+    else
+      _ = Lobby.mark_webrtc_ready(p2p.token, p2p.user_id)
+      {:halt, push_signal_replay(socket, p2p, %{"reason" => "webrtc_ready"})}
+    end
   end
 
   def handle_event("lobby_signal", params, %{assigns: %{p2p_session: %{}}} = socket) do
@@ -65,10 +72,23 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
 
     with :ok <- rate_limiter.check_signal_rate(p2p.token, p2p.user_id),
          {:ok, validated} <- P2P.validate_signal(params) do
-      broadcast(p2p.token, "lobby_signal", Map.put(validated, :from, p2p.user_id))
+      payload = Map.put(validated, :from, p2p.user_id)
+      _ = Lobby.record_signaling_event(p2p.token, p2p.user_id, "lobby_signal", payload)
+      broadcast(p2p.token, "lobby_signal", payload)
+    else
+      {:error, reason} ->
+        emit_p2p_client_error(signal_error_code(reason), "signal")
     end
 
     {:halt, socket}
+  end
+
+  def handle_event(
+        "lobby_signal_replay_request",
+        params,
+        %{assigns: %{p2p_session: %{}}} = socket
+      ) do
+    {:halt, push_signal_replay(socket, socket.assigns.p2p_session, params)}
   end
 
   def handle_event("lobby_connected", _params, %{assigns: %{p2p_session: %{}}} = socket) do
@@ -81,12 +101,24 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   # tracks (single-offerer model — only the initiator emits offers).
   def handle_event("lobby_renegotiate", params, %{assigns: %{p2p_session: %{}}} = socket) do
     p2p = socket.assigns.p2p_session
+    rate_limiter = SignalingRateLimit.configured_module()
 
-    broadcast(p2p.token, "lobby_renegotiate", %{
-      from: p2p.user_id,
-      kinds: Map.get(params, "kinds", []),
-      recover: Map.get(params, "recover", false)
-    })
+    if :ok == rate_limiter.check_signal_rate(p2p.token, p2p.user_id) do
+      payload = %{
+        from: p2p.user_id,
+        kinds: safe_track_kinds(Map.get(params, "kinds", [])),
+        recover: boolean_param(params, "recover"),
+        epoch: integer_param(params, "epoch"),
+        reason: short_string_param(params, "reason", 80),
+        attempt: integer_param(params, "attempt"),
+        connection_reset: boolean_param(params, "connection_reset")
+      }
+
+      _ = Lobby.record_signaling_event(p2p.token, p2p.user_id, "lobby_renegotiate", payload)
+      broadcast(p2p.token, "lobby_renegotiate", payload)
+    else
+      emit_p2p_client_error("rate_limited", "renegotiate")
+    end
 
     {:halt, socket}
   end
@@ -96,7 +128,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
         %{"state" => "disconnected"},
         %{assigns: %{p2p_session: %{}}} = socket
       ) do
-    {:halt, mark_p2p_reconnecting(socket, nil, "disconnected")}
+    {:halt, mark_p2p_reconnecting(socket, nil, "disconnected", %{trigger: "connection_state"})}
   end
 
   def handle_event("lobby_state_change", _params, %{assigns: %{p2p_session: %{}}} = socket) do
@@ -105,28 +137,66 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
 
   def handle_event("lobby_failed", params, %{assigns: %{p2p_session: %{}}} = socket) do
     reason = params["reason"] || params[:reason] || "failed"
+    duplicate? = p2p_failed?(socket.assigns.p2p_session, reason)
 
-    {:halt,
-     socket
-     |> mark_p2p_failed(reason)
-     |> open_p2p_console("call")
-     |> Messages.system_event(dgettext("chat", "P2P connection failed."))}
+    socket =
+      socket
+      |> mark_p2p_failed(reason)
+      |> open_p2p_console("call")
+
+    socket =
+      if duplicate? do
+        socket
+      else
+        Messages.system_event(socket, dgettext("chat", "P2P connection failed."))
+      end
+
+    {:halt, socket}
   end
 
   def handle_event("lobby_retry", params, %{assigns: %{p2p_session: %{}}} = socket) do
     attempt = integer_param(params, "attempt")
-    {:halt, mark_p2p_reconnecting(socket, attempt, "auto_retry")}
+    reason = short_string_param(params, "reason", 80) || "auto_retry"
+    {:halt, mark_p2p_reconnecting(socket, attempt, reason, %{trigger: "auto"})}
+  end
+
+  def handle_event("lobby_recovery_pending", params, %{assigns: %{p2p_session: %{}}} = socket) do
+    reason = short_string_param(params, "reason", 80) || "disconnected"
+    {:halt, mark_p2p_reconnecting(socket, nil, reason, %{trigger: "disconnected"})}
   end
 
   def handle_event("p2p_retry_connection", _params, %{assigns: %{p2p_session: %{}}} = socket) do
     p2p = socket.assigns.p2p_session
 
-    broadcast(p2p.token, "lobby_manual_retry", %{from: p2p.user_id})
+    if reattach_retry?(p2p) do
+      emit_p2p_recovery_transition(p2p, :reconnecting, "reattach_pending", %{
+        manual_retry: false,
+        trigger: "manual"
+      })
 
-    {:halt,
-     socket
-     |> mark_p2p_reconnecting(nil, "manual_retry")
-     |> push_event("lobby_restart", %{})}
+      p2p =
+        p2p
+        |> Map.put(:reattach_pending, true)
+        |> Map.put(:recovery, %{
+          state: :reconnecting,
+          attempt: nil,
+          reason: "reattach_pending",
+          trigger: "manual",
+          manual_retry: false
+        })
+
+      {:halt,
+       socket
+       |> put_p2p(p2p)
+       |> schedule_reattach_retry(p2p.token, p2p.user_id, p2p.role, 1)}
+    else
+      broadcast(p2p.token, "lobby_manual_retry", %{from: p2p.user_id})
+
+      {:halt,
+       socket
+       |> mark_p2p_reconnecting(nil, "manual_retry", %{trigger: "manual"})
+       |> push_event("lobby_restart", webrtc_payload(p2p))}
+    end
   end
 
   def handle_event("lobby_media_restart", params, %{assigns: %{p2p_session: %{}}} = socket) do
@@ -137,8 +207,8 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
 
     {:halt,
      socket
-     |> mark_p2p_reconnecting(nil, reason)
-     |> push_event("lobby_restart", %{})}
+     |> mark_p2p_reconnecting(nil, reason, %{trigger: "media_restart"})
+     |> push_event("lobby_restart", webrtc_payload(p2p))}
   end
 
   def handle_event("lobby_stats", payload, %{assigns: %{p2p_session: %{}}} = socket) do
@@ -162,22 +232,34 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   def handle_event("p2p_console_select", _params, socket), do: {:halt, socket}
 
   # Privacy mode: force every P2P connection through the TURN relay (hides
-  # the direct peer IP). Persisted per user; applies from the next
-  # (re)signaling round.
+  # the direct peer IP). Persisted per user; if WebRTC is already active, the
+  # connection is restarted immediately so the transport policy is real now.
   def handle_event("p2p_toggle_privacy", _params, %{assigns: %{p2p_session: %{}}} = socket) do
     p2p = socket.assigns.p2p_session
     new_value = not p2p.turn_only
     save_turn_only(socket.assigns.session.nickname, new_value)
+    p2p = %{p2p | turn_only: new_value}
 
     label =
       if new_value,
         do: dgettext("chat", "Privacy mode enabled — the P2P connection will use the relay."),
         else: dgettext("chat", "Privacy mode disabled.")
 
-    {:halt,
-     socket
-     |> put_p2p(%{p2p | turn_only: new_value})
-     |> Messages.system_event(label)}
+    socket =
+      socket
+      |> put_p2p(p2p)
+      |> Messages.system_event(label)
+
+    if p2p_webrtc_active?(p2p) do
+      broadcast(p2p.token, "lobby_manual_retry", %{from: p2p.user_id, reason: "privacy_changed"})
+
+      {:halt,
+       socket
+       |> mark_p2p_reconnecting(nil, "privacy_changed", %{trigger: "privacy"})
+       |> push_event("lobby_restart", webrtc_payload(p2p))}
+    else
+      {:halt, socket}
+    end
   end
 
   def handle_event("p2p_start_audio", _params, %{assigns: %{p2p_session: %{}}} = socket) do
@@ -504,6 +586,16 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   # PubsubHandlers consumed lobby_invite before this hook.
   def handle_info(%{event: "lobby_" <> _rest}, socket), do: {:halt, socket}
 
+  def handle_info({:p2p_reattach_retry, token, user_id, role, attempt}, socket) do
+    case socket.assigns.p2p_session do
+      %{token: ^token, reattach_pending: true} ->
+        {:halt, retry_attach_session(socket, token, user_id, role, attempt)}
+
+      _ ->
+        {:halt, socket}
+    end
+  end
+
   def handle_info({:p2p_console_section, section}, socket) do
     {:halt, open_p2p_console(socket, section)}
   end
@@ -592,8 +684,16 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
     end
   end
 
-  defp handle_session_event(%{event: "lobby_start_signaling"}, socket, p2p) do
-    {:halt, start_webrtc(socket, p2p)}
+  defp handle_session_event(
+         %{event: "lobby_start_signaling", payload: payload},
+         socket,
+         p2p
+       ) do
+    if truthy?(value(payload, :restart)) do
+      {:halt, restart_webrtc_from_signaling(socket, p2p, value(payload, :reason))}
+    else
+      {:halt, start_webrtc(socket, p2p)}
+    end
   end
 
   defp handle_session_event(
@@ -619,13 +719,17 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
       {:halt,
        push_event(socket, "lobby_renegotiate", %{
          kinds: payload[:kinds] || [],
-         recover: payload[:recover] || false
+         recover: payload[:recover] || false,
+         epoch: payload[:epoch],
+         reason: payload[:reason],
+         attempt: payload[:attempt],
+         connection_reset: payload[:connection_reset] || false
        })}
     end
   end
 
   defp handle_session_event(
-         %{event: "lobby_manual_retry", payload: %{from: from}},
+         %{event: "lobby_manual_retry", payload: %{from: from} = payload},
          socket,
          p2p
        ) do
@@ -634,9 +738,9 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
     else
       {:halt,
        socket
-       |> mark_p2p_reconnecting(nil, "peer_manual_retry")
+       |> mark_p2p_reconnecting(nil, payload[:reason] || "peer_manual_retry", %{trigger: "peer"})
        |> open_p2p_console("call")
-       |> push_event("lobby_restart", %{})}
+       |> push_event("lobby_restart", webrtc_payload(p2p))}
     end
   end
 
@@ -650,9 +754,11 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
     else
       {:halt,
        socket
-       |> mark_p2p_reconnecting(nil, payload[:reason] || "peer_media_restart")
+       |> mark_p2p_reconnecting(nil, payload[:reason] || "peer_media_restart", %{
+         trigger: "peer"
+       })
        |> open_p2p_console("call")
-       |> push_event("lobby_restart", %{})}
+       |> push_event("lobby_restart", webrtc_payload(p2p))}
     end
   end
 
@@ -1009,6 +1115,8 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
       peer_nick: peer_nick_for(token, user_id),
       state: state,
       webrtc_started: false,
+      reattach_pending: false,
+      client_webrtc_ready: false,
       stats: P2PStats.empty(),
       info_open: false,
       peer_online: false,
@@ -1036,6 +1144,8 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
       role: role,
       peer_nick: peer_nick_for(db_session.token, user_id),
       state: pm_read_model_state(db_session.status, role),
+      reattach_pending: false,
+      client_webrtc_ready: false,
       stats: P2PStats.empty(),
       info_open: false,
       peer_online: false,
@@ -1410,13 +1520,16 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   # Already connected (duplicate hook event / PubSub echo): keep the console in
   # place, but clear any transient recovery banner from a completed retry.
   defp enter_connected(socket, %{state: :connected} = p2p) do
-    put_p2p(socket, %{p2p | recovery: empty_p2p_recovery()})
+    emit_p2p_connected(p2p)
+    put_p2p(socket, %{p2p | webrtc_started: true, recovery: empty_p2p_recovery()})
   end
 
   defp enter_connected(socket, p2p) do
+    emit_p2p_connected(p2p)
+
     socket
     |> maybe_persist_connected(p2p)
-    |> put_p2p(%{p2p | state: :connected, recovery: empty_p2p_recovery()})
+    |> put_p2p(%{p2p | state: :connected, webrtc_started: true, recovery: empty_p2p_recovery()})
     |> burst_windows()
   end
 
@@ -1495,14 +1608,101 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
         |> share_client_info(p2p)
 
       {:error, :already_joined} ->
-        Messages.system_event(
-          socket,
-          dgettext("chat", "This P2P session is already active in another window.")
-        )
+        begin_reattach_wait(socket, token, user_id, role)
 
       {:error, message} ->
         Messages.system_event(socket, message)
     end
+  end
+
+  defp begin_reattach_wait(socket, token, user_id, role) do
+    Phoenix.PubSub.subscribe(@pubsub, "lobby:#{token}")
+
+    p2p =
+      socket
+      |> new_session(token, user_id, role, :joining)
+      |> Map.merge(%{
+        peer_online: true,
+        reattach_pending: true,
+        recovery: %{
+          state: :reconnecting,
+          attempt: nil,
+          reason: "reattach_pending",
+          trigger: "reattach",
+          manual_retry: false
+        }
+      })
+
+    emit_p2p_recovery_transition(p2p, :reconnecting, "reattach_pending", %{
+      manual_retry: false,
+      trigger: "reattach"
+    })
+
+    socket
+    |> put_p2p(p2p)
+    |> open_p2p_console("call")
+    |> schedule_reattach_retry(token, user_id, role, 1)
+  end
+
+  defp retry_attach_session(socket, token, user_id, role, attempt) do
+    case Lobby.join_session(token, user_id) do
+      :ok ->
+        p2p =
+          socket.assigns.p2p_session
+          |> Map.put(:state, :joining)
+          |> Map.put(:peer_online, true)
+          |> Map.put(:reattach_pending, false)
+          |> Map.put(:webrtc_started, false)
+          |> Map.put(:recovery, empty_p2p_recovery())
+
+        socket =
+          socket
+          |> put_p2p(p2p)
+          |> share_client_info(p2p)
+
+        if Map.get(p2p, :client_webrtc_ready, false) do
+          _ = Lobby.mark_webrtc_ready(token, user_id)
+          push_signal_replay(socket, p2p, %{"reason" => "reattach_ready"})
+        else
+          socket
+        end
+
+      {:error, :already_joined} ->
+        maybe_continue_reattach(socket, token, user_id, role, attempt)
+
+      {:error, message} ->
+        socket
+        |> fail_reattach(message)
+    end
+  end
+
+  defp maybe_continue_reattach(socket, token, user_id, role, attempt) do
+    if attempt < length(@reattach_retry_delays) do
+      schedule_reattach_retry(socket, token, user_id, role, attempt + 1)
+    else
+      socket
+      |> mark_p2p_failed("reattach_blocked")
+      |> Messages.system_event(
+        dgettext(
+          "chat",
+          "This P2P session is still active in another window. Close that window or end this session here."
+        )
+      )
+    end
+  end
+
+  defp fail_reattach(socket, message) do
+    socket
+    |> mark_p2p_failed("reattach_failed")
+    |> Messages.system_event(message)
+  end
+
+  defp schedule_reattach_retry(socket, token, user_id, role, attempt) do
+    delay =
+      Enum.at(@reattach_retry_delays, max(attempt - 1, 0), List.last(@reattach_retry_delays))
+
+    Process.send_after(self(), {:p2p_reattach_retry, token, user_id, role, attempt}, delay)
+    socket
   end
 
   defp detach_session(socket, p2p) do
@@ -1538,8 +1738,6 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   defp start_webrtc(socket, %{webrtc_started: true} = _p2p), do: socket
 
   defp start_webrtc(socket, p2p) do
-    ice_servers = P2P.ice_servers(to_string(p2p.user_id))
-
     event =
       case p2p.role do
         :creator -> "lobby_start_offer"
@@ -1548,16 +1746,97 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
 
     socket
     |> put_p2p(%{p2p | state: :connecting, webrtc_started: true})
-    |> push_event(event, %{
-      ice_servers: ice_servers,
+    |> push_event(event, webrtc_payload(p2p))
+  end
+
+  defp restart_webrtc_from_signaling(socket, p2p, reason) do
+    reason = reason || "signaling_restart"
+
+    emit_p2p_recovery_transition(p2p, :reconnecting, reason, %{
+      manual_retry: false,
+      trigger: "server"
+    })
+
+    p2p = %{
+      p2p
+      | recovery: %{
+          state: :reconnecting,
+          attempt: nil,
+          reason: reason,
+          trigger: "server",
+          manual_retry: false
+        },
+        stats: P2PStats.empty()
+    }
+
+    socket =
+      socket
+      |> put_p2p(p2p)
+      |> open_p2p_console("call")
+
+    if p2p.webrtc_started do
+      push_event(socket, "lobby_restart", Map.put(webrtc_payload(p2p), :reason, reason))
+    else
+      start_webrtc(socket, p2p)
+    end
+  end
+
+  defp webrtc_payload(p2p) do
+    %{
+      ice_servers: P2P.ice_servers(to_string(p2p.user_id)),
       role: to_string(p2p.role),
       turn_only: p2p.turn_only && p2p.turn_configured
-    })
+    }
+  end
+
+  defp push_signal_replay(socket, p2p, params) do
+    reason = short_string_param(params, "reason", 80)
+    attempt = integer_param(params, "attempt")
+    metadata = %{reason: reason, attempt: attempt, role: p2p.role}
+
+    case Lobby.signaling_replay(p2p.token, p2p.user_id) do
+      {:ok, []} ->
+        CallEvents.emit_signaling_replay(
+          :p2p,
+          :empty,
+          Map.put(metadata, :event_count, 0)
+        )
+
+        socket
+
+      {:ok, events} ->
+        CallEvents.emit_signaling_replay(
+          :p2p,
+          :served,
+          Map.put(metadata, :event_count, length(events))
+        )
+
+        push_event(socket, "lobby_signal_replay", %{
+          events: events,
+          reason: reason,
+          request_epoch: integer_param(params, "epoch"),
+          attempt: attempt
+        })
+
+      _ ->
+        CallEvents.emit_signaling_replay(:p2p, :failed, metadata)
+        socket
+    end
+  end
+
+  defp p2p_webrtc_active?(p2p) do
+    Map.get(p2p, :webrtc_started, false) || p2p.state in [:connecting, :connected]
   end
 
   defp put_p2p(socket, p2p), do: assign(socket, p2p_session: p2p)
 
-  defp mark_p2p_reconnecting(socket, attempt, reason) do
+  defp mark_p2p_reconnecting(socket, attempt, reason, metadata) do
+    emit_p2p_recovery_transition(socket.assigns[:p2p_session], :reconnecting, reason, %{
+      attempt: attempt,
+      manual_retry: false,
+      trigger: metadata[:trigger]
+    })
+
     update(socket, :p2p_session, fn
       nil ->
         nil
@@ -1569,6 +1848,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
               state: :reconnecting,
               attempt: attempt,
               reason: reason,
+              trigger: metadata[:trigger],
               manual_retry: false
             },
             stats: P2PStats.empty()
@@ -1577,6 +1857,15 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   end
 
   defp mark_p2p_failed(socket, reason) do
+    p2p = socket.assigns[:p2p_session]
+
+    emit_p2p_recovery_transition(p2p, :failed, reason, %{
+      manual_retry: true,
+      phase: "connection"
+    })
+
+    CallEvents.emit_client_error(:p2p, reason, %{phase: "connection"})
+
     update(socket, :p2p_session, fn
       nil ->
         nil
@@ -1588,6 +1877,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
               state: :failed,
               attempt: nil,
               reason: reason,
+              trigger: "connection",
               manual_retry: true
             },
             stats: P2PStats.empty()
@@ -1595,8 +1885,19 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
     end)
   end
 
+  defp p2p_failed?(%{recovery: %{state: :failed, reason: reason}}, reason), do: true
+  defp p2p_failed?(_p2p, _reason), do: false
+
+  defp reattach_retry?(%{reattach_pending: true}), do: true
+
+  defp reattach_retry?(%{recovery: %{reason: reason}})
+       when reason in ~w(reattach_blocked reattach_failed),
+       do: true
+
+  defp reattach_retry?(_p2p), do: false
+
   defp empty_p2p_recovery do
-    %{state: :idle, attempt: nil, reason: nil, manual_retry: false}
+    %{state: :idle, attempt: nil, reason: nil, trigger: nil, manual_retry: false}
   end
 
   defp joinable_summary(token) do
@@ -1717,6 +2018,45 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
 
   defp normalize_device_list(_devices), do: []
 
+  defp emit_p2p_connected(p2p) do
+    case p2p_recovery_state(p2p) do
+      state when state in [:reconnecting, :failed] ->
+        emit_p2p_recovery_transition(p2p, :connected, p2p_recovery_reason(p2p), %{
+          manual_retry: false,
+          trigger: "connected"
+        })
+
+      _state ->
+        :ok
+    end
+  end
+
+  defp emit_p2p_recovery_transition(nil, _state, _reason, _metadata), do: :ok
+
+  defp emit_p2p_recovery_transition(p2p, state, reason, metadata) when is_map(p2p) do
+    CallEvents.emit_recovery_transition(
+      :p2p,
+      state,
+      reason,
+      Map.put(metadata, :role, Map.get(p2p, :role))
+    )
+  end
+
+  defp emit_p2p_client_error(code, phase) do
+    CallEvents.emit_client_error(:p2p, code, %{phase: phase})
+  end
+
+  defp signal_error_code(:invalid_signal), do: "invalid_signal"
+  defp signal_error_code(:rate_limited), do: "rate_limited"
+  defp signal_error_code({:rate_limited, _retry_after}), do: "rate_limited"
+  defp signal_error_code(_reason), do: "signal_rejected"
+
+  defp p2p_recovery_state(%{recovery: %{state: state}}), do: state
+  defp p2p_recovery_state(_p2p), do: nil
+
+  defp p2p_recovery_reason(%{recovery: %{reason: reason}}) when not is_nil(reason), do: reason
+  defp p2p_recovery_reason(_p2p), do: "connected"
+
   defp clean_device_id(nil), do: nil
   defp clean_device_id(""), do: nil
   defp clean_device_id(device_id) when is_binary(device_id), do: device_id
@@ -1727,6 +2067,23 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   end
 
   defp value(_map, _key), do: nil
+
+  defp safe_track_kinds(kinds) when is_list(kinds) do
+    kinds
+    |> Enum.filter(&(&1 in ["audio", "video"]))
+    |> Enum.uniq()
+  end
+
+  defp safe_track_kinds(_kinds), do: []
+
+  defp boolean_param(map, key), do: truthy?(value(map, key))
+
+  defp short_string_param(map, key, max_bytes) do
+    case value(map, key) do
+      value when is_binary(value) -> String.slice(value, 0, max_bytes)
+      _ -> nil
+    end
+  end
 
   defp integer_param(map, key) do
     case value(map, key) do

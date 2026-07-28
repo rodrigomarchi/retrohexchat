@@ -12,6 +12,8 @@ import {
   formatDuration,
   mapQualityLevel,
   getStatsSnapshot,
+  collectConnectionActivityFromReports,
+  hasConnectionActivity,
   computeMos,
   mosToLevel,
   deriveStats,
@@ -439,6 +441,91 @@ describe("Quality Monitoring", () => {
       expect(snap.roundTripTime).toBe(0);
       expect(snap.hasVideo).toBe(false);
       expect(snap.qualityLimitationReason).toBe("none");
+    });
+  });
+
+  describe("connection activity snapshots", () => {
+    it("aggregates low-cardinality activity counters from WebRTC reports", () => {
+      const activity = collectConnectionActivityFromReports(
+        new Map([
+          [
+            "pair",
+            {
+              type: "candidate-pair",
+              state: "succeeded",
+              bytesReceived: 100,
+              bytesSent: 40,
+              packetsReceived: 4,
+              packetsSent: 2,
+            },
+          ],
+          [
+            "transport",
+            {
+              type: "transport",
+              bytesReceived: 70,
+              bytesSent: 30,
+              packetsReceived: 3,
+              packetsSent: 1,
+            },
+          ],
+          [
+            "inbound",
+            {
+              type: "inbound-rtp",
+              bytesReceived: 20,
+              packetsReceived: 2,
+            },
+          ],
+          [
+            "outbound",
+            {
+              type: "outbound-rtp",
+              bytesSent: 10,
+              packetsSent: 1,
+            },
+          ],
+          [
+            "data",
+            {
+              type: "data-channel",
+              bytesReceived: 5,
+              bytesSent: 6,
+              messagesReceived: 1,
+              messagesSent: 2,
+            },
+          ],
+        ]),
+      );
+
+      expect(activity).toEqual({
+        bytesReceived: 195,
+        bytesSent: 86,
+        packetsReceived: 9,
+        packetsSent: 4,
+        messagesReceived: 1,
+        messagesSent: 2,
+      });
+    });
+
+    it("detects progress only when counters advance", () => {
+      const previous = {
+        bytesReceived: 100,
+        bytesSent: 50,
+        packetsReceived: 3,
+        packetsSent: 2,
+        messagesReceived: 1,
+        messagesSent: 1,
+      };
+
+      expect(
+        hasConnectionActivity(previous, {
+          ...previous,
+          packetsReceived: 4,
+        }),
+      ).toBe(true);
+      expect(hasConnectionActivity(previous, { ...previous })).toBe(false);
+      expect(hasConnectionActivity(null, { ...previous })).toBe(false);
     });
   });
 

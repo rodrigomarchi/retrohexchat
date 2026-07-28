@@ -7,6 +7,7 @@ import {
   addIceCandidate,
   close,
   onConnectionStateChange,
+  onIceConnectionStateChange,
   onIceCandidate,
   onDataChannel,
   RETRY_CONFIG,
@@ -18,7 +19,9 @@ class MockRTCPeerConnection {
     this.localDescription = null;
     this.remoteDescription = null;
     this.connectionState = "new";
+    this.iceConnectionState = "new";
     this.onconnectionstatechange = null;
+    this.oniceconnectionstatechange = null;
     this.onicecandidate = null;
     this.ondatachannel = null;
     this._closed = false;
@@ -157,6 +160,20 @@ describe("webrtc.js", () => {
       pc.connectionState = "connected";
       pc.onconnectionstatechange();
       expect(callback).toHaveBeenCalledWith("connected");
+    });
+  });
+
+  describe("onIceConnectionStateChange", () => {
+    it("registers callback for ICE state changes", () => {
+      const pc = createPeerConnection([]);
+      const callback = vi.fn();
+      onIceConnectionStateChange(pc, callback);
+
+      expect(pc.oniceconnectionstatechange).toBeDefined();
+
+      pc.iceConnectionState = "failed";
+      pc.oniceconnectionstatechange();
+      expect(callback).toHaveBeenCalledWith("failed");
     });
   });
 

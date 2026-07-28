@@ -23,6 +23,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.VideoSurface do
       phx-update="ignore"
       data-group-call-token={@call.token}
       data-join-token={@call.join_token}
+      data-participant-id={@call.participant_id}
       data-audio={to_string(media_enabled?(@call, :audio))}
       data-video={to_string(media_enabled?(@call, :video))}
       data-audio-input-id={device_preference(@call, :audio_input_id)}

@@ -9,6 +9,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
 
   @moduletag :liveview_feature
 
+  alias RetroHexChat.Calls.Events, as: CallEvents
   alias RetroHexChat.Chat.Queries, as: ChatQueries
   alias RetroHexChat.Lobby
   alias RetroHexChat.Services.RegisteredNick
@@ -37,6 +38,26 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
   defp p2p_assigns(view), do: :sys.get_state(view.pid).socket.assigns.p2p_session
 
   defp flush(view), do: :sys.get_state(view.pid)
+
+  defp attach_call_telemetry do
+    test_pid = self()
+    handler_id = {__MODULE__, make_ref()}
+
+    :telemetry.attach_many(
+      handler_id,
+      [
+        CallEvents.recovery_transition_event(),
+        CallEvents.client_error_event(),
+        CallEvents.signaling_replay_event()
+      ],
+      fn event, measurements, metadata, _config ->
+        send(test_pid, {:call_telemetry, event, measurements, metadata})
+      end,
+      nil
+    )
+
+    on_exit(fn -> :telemetry.detach(handler_id) end)
+  end
 
   defp submit_outgoing_setup(view, params \\ %{}) do
     render_submit(view, "p2p_setup_accept", %{
@@ -93,6 +114,60 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
       _ ->
         Process.sleep(10)
         wait_for_lobby_joined(view, token, attempts - 1)
+    end
+  end
+
+  defp wait_until(fun, attempts \\ 50)
+
+  defp wait_until(_fun, 0), do: flunk("condition was not met in time")
+
+  defp wait_until(fun, attempts) do
+    if fun.() do
+      :ok
+    else
+      Process.sleep(20)
+      wait_until(fun, attempts - 1)
+    end
+  end
+
+  defp hold_lobby_slot(token, user_id) do
+    parent = self()
+
+    holder =
+      spawn(fn ->
+        result = retry_join_lobby_slot(token, user_id, 50)
+        send(parent, {:lobby_slot_holder_joined, self(), result})
+
+        receive do
+          :release -> :ok
+        end
+      end)
+
+    assert_receive {:lobby_slot_holder_joined, ^holder, result}, @event_timeout
+    assert result == :ok
+
+    on_exit(fn ->
+      if Process.alive?(holder), do: send(holder, :release)
+    end)
+
+    holder
+  end
+
+  defp retry_join_lobby_slot(token, user_id, attempts)
+
+  defp retry_join_lobby_slot(token, user_id, 0), do: Lobby.join_session(token, user_id)
+
+  defp retry_join_lobby_slot(token, user_id, attempts) do
+    case Lobby.join_session(token, user_id) do
+      :ok ->
+        :ok
+
+      {:error, :already_joined} ->
+        Process.sleep(10)
+        retry_join_lobby_slot(token, user_id, attempts - 1)
+
+      error ->
+        error
     end
   end
 
@@ -579,12 +654,30 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
       accept_invite(ctx, session.token)
       flush(ctx.view_a)
 
+      render_click(ctx.view_a, "lobby_webrtc_ready", %{})
+      render_click(ctx.view_b, "lobby_webrtc_ready", %{})
+
+      assert_push_event(ctx.view_a, "lobby_start_offer", %{role: "creator"}, @event_timeout)
+      assert_push_event(ctx.view_b, "lobby_start_answer", %{role: "peer"}, @event_timeout)
+
       render_click(ctx.view_a, "lobby_connected", %{})
       render_click(ctx.view_b, "lobby_connected", %{})
+
+      attach_call_telemetry()
 
       render_click(ctx.view_b, "lobby_media_restart", %{
         "reason" => "audio_only_remote_video_stalled"
       })
+
+      assert_receive {:call_telemetry, event, %{count: 1},
+                      %{
+                        surface: "p2p",
+                        state: "reconnecting",
+                        reason: "audio_only_remote_video_stalled",
+                        trigger: "media_restart"
+                      }}
+
+      assert event == CallEvents.recovery_transition_event()
 
       assert_push_event(ctx.view_b, "lobby_restart", %{}, @event_timeout)
 
@@ -600,16 +693,68 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
       render_click(ctx.view_a, "lobby_connected", %{})
       render_click(ctx.view_b, "lobby_connected", %{})
 
-      render_click(ctx.view_a, "lobby_retry", %{"attempt" => "2"})
+      render_click(ctx.view_a, "lobby_recovery_pending", %{"reason" => "ice_disconnected"})
+
+      assert_receive {:call_telemetry, ^event, %{count: 1},
+                      %{
+                        surface: "p2p",
+                        state: "reconnecting",
+                        reason: "ice_disconnected",
+                        trigger: "disconnected"
+                      }}
 
       assert %{
-               recovery: %{state: :reconnecting, attempt: 2, manual_retry: false}
+               recovery: %{
+                 state: :reconnecting,
+                 reason: "ice_disconnected",
+                 attempt: nil,
+                 manual_retry: false
+               }
              } = p2p_assigns(ctx.view_a)
+
+      assert render(ctx.view_a) =~ "Peer media connection was interrupted"
+
+      render_click(ctx.view_a, "lobby_connected", %{})
+      assert %{recovery: %{state: :idle}} = p2p_assigns(ctx.view_a)
+
+      render_click(ctx.view_a, "lobby_retry", %{"attempt" => "2", "reason" => "ice_failed"})
+
+      assert %{
+               recovery: %{
+                 state: :reconnecting,
+                 reason: "ice_failed",
+                 attempt: 2,
+                 manual_retry: false
+               }
+             } = p2p_assigns(ctx.view_a)
+
+      assert_receive {:call_telemetry, ^event, %{count: 1},
+                      %{
+                        surface: "p2p",
+                        state: "reconnecting",
+                        reason: "ice_failed",
+                        trigger: "auto",
+                        attempt: 2
+                      }}
 
       assert render(ctx.view_a) =~ ~s(data-testid="p2p-recovery-banner")
       assert render(ctx.view_a) =~ "Retrying the peer connection"
+      assert render(ctx.view_a) =~ ~s(data-testid="lobby-media-panel")
 
       render_click(ctx.view_a, "lobby_failed", %{"reason" => "max_retries_exhausted"})
+
+      assert_receive {:call_telemetry, ^event, %{count: 1},
+                      %{
+                        surface: "p2p",
+                        state: "failed",
+                        reason: "max_retries_exhausted",
+                        manual_retry: true
+                      }}
+
+      assert_receive {:call_telemetry, client_error_event, %{count: 1},
+                      %{surface: "p2p", code: "max_retries_exhausted", phase: "connection"}}
+
+      assert client_error_event == CallEvents.client_error_event()
 
       assert %{
                recovery: %{
@@ -622,6 +767,22 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
       html = render(ctx.view_a)
       assert html =~ ~s(data-p2p-recovery-state="failed")
       assert html =~ ~s(data-testid="p2p-retry-connection")
+      assert html =~ ~s(data-testid="lobby-media-panel")
+      failed_message_count = length(Regex.scan(~r/P2P connection failed\./, html))
+      assert failed_message_count > 0
+
+      ctx.view_a
+      |> element(~s([data-testid="p2p-end-from-recovery"]))
+      |> render_click()
+
+      assert render(ctx.view_a) =~ ~s(data-testid="p2p-confirm-dialog")
+      render_click(ctx.view_a, "p2p_confirm_cancel", %{})
+
+      render_click(ctx.view_a, "lobby_failed", %{"reason" => "max_retries_exhausted"})
+
+      html = render(ctx.view_a)
+      assert html =~ ~s(data-p2p-recovery-state="failed")
+      assert length(Regex.scan(~r/P2P connection failed\./, html)) == failed_message_count
 
       render_click(ctx.view_a, "p2p_retry_connection", %{})
 
@@ -638,6 +799,234 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
 
       render_click(ctx.view_a, "lobby_connected", %{})
       assert %{recovery: %{state: :idle}} = p2p_assigns(ctx.view_a)
+    end
+
+    test "privacy relay toggle restarts active WebRTC with the current policy", %{conn: conn} do
+      ctx = mount_pair(conn, "p2phe#{uid()}", "p2phf#{uid()}")
+      session = invite(ctx)
+      accept_invite(ctx, session.token)
+      flush(ctx.view_a)
+
+      render_click(ctx.view_a, "lobby_connected", %{})
+      render_click(ctx.view_b, "lobby_connected", %{})
+
+      render_click(ctx.view_a, "p2p_toggle_privacy", %{})
+
+      assert %{
+               turn_only: true,
+               recovery: %{state: :reconnecting, reason: "privacy_changed"}
+             } = p2p_assigns(ctx.view_a)
+
+      assert_push_event(
+        ctx.view_a,
+        "lobby_restart",
+        %{role: "creator", turn_only: true},
+        @event_timeout
+      )
+
+      flush(ctx.view_b)
+
+      assert_push_event(
+        ctx.view_b,
+        "lobby_restart",
+        %{role: "peer", turn_only: false},
+        @event_timeout
+      )
+
+      assert %{recovery: %{state: :reconnecting, reason: "privacy_changed"}} =
+               p2p_assigns(ctx.view_b)
+    end
+
+    test "server-side signaling reset restarts active peer hooks", %{conn: conn} do
+      ctx = mount_pair(conn, "p2phk#{uid()}", "p2phl#{uid()}")
+      session = invite(ctx)
+      accept_invite(ctx, session.token)
+      flush(ctx.view_a)
+
+      render_click(ctx.view_a, "lobby_connected", %{})
+      render_click(ctx.view_b, "lobby_connected", %{})
+
+      attach_call_telemetry()
+
+      Phoenix.PubSub.broadcast(RetroHexChat.PubSub, "lobby:#{session.token}", %{
+        event: "lobby_start_signaling",
+        payload: %{restart: true, reason: "signaling_snapshot_lost"},
+        token: session.token
+      })
+
+      assert_push_event(
+        ctx.view_a,
+        "lobby_restart",
+        %{role: "creator", reason: "signaling_snapshot_lost"},
+        @event_timeout
+      )
+
+      assert_push_event(
+        ctx.view_b,
+        "lobby_restart",
+        %{role: "peer", reason: "signaling_snapshot_lost"},
+        @event_timeout
+      )
+
+      assert %{recovery: %{state: :reconnecting, reason: "signaling_snapshot_lost"}} =
+               p2p_assigns(ctx.view_a)
+
+      assert %{recovery: %{state: :reconnecting, reason: "signaling_snapshot_lost"}} =
+               p2p_assigns(ctx.view_b)
+
+      assert_receive {:call_telemetry, event, %{count: 1},
+                      %{
+                        surface: "p2p",
+                        state: "reconnecting",
+                        reason: "signaling_snapshot_lost",
+                        trigger: "server"
+                      }}
+
+      assert event == CallEvents.recovery_transition_event()
+    end
+
+    test "signal replay request returns stored remote SDP and ICE", %{conn: conn} do
+      ctx = mount_pair(conn, "p2phi#{uid()}", "p2phj#{uid()}")
+      session = invite(ctx)
+      accept_invite(ctx, session.token)
+      flush(ctx.view_a)
+
+      assert :ok =
+               Lobby.record_signaling_event(session.token, ctx.a.id, "lobby_signal", %{
+                 type: "offer",
+                 sdp: "offer-sdp",
+                 epoch: 2,
+                 offer_id: "p2p-2-1",
+                 from: ctx.a.id
+               })
+
+      assert :ok =
+               Lobby.record_signaling_event(session.token, ctx.a.id, "lobby_signal", %{
+                 type: "ice-candidate",
+                 candidate: %{
+                   "candidate" => "candidate:1 1 udp 1 127.0.0.1 9 typ host",
+                   "sdpMid" => "0"
+                 },
+                 epoch: 2,
+                 from: ctx.a.id
+               })
+
+      attach_call_telemetry()
+
+      render_click(ctx.view_b, "lobby_signal_replay_request", %{
+        "reason" => "test_replay",
+        "epoch" => "2",
+        "attempt" => "1"
+      })
+
+      assert_receive {:call_telemetry, event, %{count: 1},
+                      %{
+                        surface: "p2p",
+                        action: "served",
+                        reason: "test_replay",
+                        attempt: 1,
+                        event_count: 2
+                      }}
+
+      assert event == CallEvents.signaling_replay_event()
+
+      assert_push_event(
+        ctx.view_b,
+        "lobby_signal_replay",
+        %{
+          reason: "test_replay",
+          request_epoch: 2,
+          attempt: 1,
+          events: [
+            %{event: "lobby_signal", payload: %{type: "offer", replay: true}},
+            %{event: "lobby_signal", payload: %{type: "ice-candidate", replay: true}}
+          ]
+        },
+        @event_timeout
+      )
+    end
+
+    test "rehydrate waits for a stale owner and reattaches when the slot is free",
+         %{conn: conn} do
+      ctx = mount_pair(conn, "p2pha#{uid()}", "p2phb#{uid()}")
+      session = invite(ctx)
+      accept_invite(ctx, session.token)
+      flush(ctx.view_a)
+      flush(ctx.view_b)
+
+      render_click(ctx.view_a, "lobby_connected", %{})
+      render_click(ctx.view_b, "lobby_connected", %{})
+
+      Lobby.leave(session.token, ctx.a.id)
+      holder = hold_lobby_slot(session.token, ctx.a.id)
+
+      {:ok, reconnect_view, _html} =
+        live(chat_conn(conn, ctx.a.nickname, pre_identified: true), "/chat")
+
+      assert %{
+               token: token,
+               reattach_pending: true,
+               recovery: %{state: :reconnecting, reason: "reattach_pending"}
+             } = p2p_assigns(reconnect_view)
+
+      assert token == session.token
+      html = render(reconnect_view)
+      assert html =~ "Restoring this P2P session after reconnect."
+      refute html =~ "This P2P session is already active in another window."
+
+      render_click(reconnect_view, "lobby_webrtc_ready", %{})
+      render_click(ctx.view_b, "lobby_webrtc_ready", %{})
+      send(holder, :release)
+
+      assert_push_event(
+        reconnect_view,
+        "lobby_start_offer",
+        %{role: "creator"},
+        1_500
+      )
+
+      assert %{
+               state: :connecting,
+               reattach_pending: false,
+               recovery: %{state: :reconnecting, reason: "signaling_snapshot_lost"}
+             } = p2p_assigns(reconnect_view)
+    end
+
+    test "reattach recovery end button can close a session owned by a stale window",
+         %{conn: conn} do
+      ctx = mount_pair(conn, "p2phc#{uid()}", "p2phd#{uid()}")
+      session = invite(ctx)
+      accept_invite(ctx, session.token)
+      flush(ctx.view_a)
+
+      render_click(ctx.view_a, "lobby_connected", %{})
+
+      Lobby.leave(session.token, ctx.a.id)
+      _holder = hold_lobby_slot(session.token, ctx.a.id)
+
+      {:ok, reconnect_view, _html} =
+        live(chat_conn(conn, ctx.a.nickname, pre_identified: true), "/chat")
+
+      assert %{reattach_pending: true} = p2p_assigns(reconnect_view)
+
+      reconnect_view
+      |> element(~s([data-testid="p2p-end-from-recovery"]))
+      |> render_click()
+
+      assert render(reconnect_view) =~ ~s(data-testid="p2p-confirm-dialog")
+
+      render_click(reconnect_view, "p2p_confirm_end", %{})
+      flush(reconnect_view)
+
+      assert {:ok, %{status: "closed", closed_reason: "user_closed"}} =
+               Lobby.get_session(session.token)
+
+      assert p2p_assigns(reconnect_view) == nil
+
+      wait_until(fn ->
+        flush(ctx.view_b)
+        p2p_assigns(ctx.view_b) == nil
+      end)
     end
 
     test "call mini mode and stats section drive the window manager", %{conn: conn} do

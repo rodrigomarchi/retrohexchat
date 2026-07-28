@@ -24,6 +24,7 @@ const LobbyMediaHook = createRtcMediaHook({
     startAudio: "lobby_media_start_audio",
     startVideo: "lobby_media_start_video",
     endCall: "lobby_media_end_call",
+    peerMedia: "lobby_media_peer_media",
     peerMuted: "lobby_media_peer_muted",
     peerCamera: "lobby_media_peer_camera",
     setPreset: "lobby_media_set_preset",

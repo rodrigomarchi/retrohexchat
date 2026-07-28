@@ -12,6 +12,8 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanelTest do
     stats =
       P2PStats.empty()
       |> put_in([:video, :source], "screen")
+      |> put_in([:summary, :signaling_epoch], 7)
+      |> put_in([:summary, :offer_id], "p2p-7-1")
 
     html =
       render_component(&lobby_network_panel/1,
@@ -24,6 +26,13 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanelTest do
         call_summary: %{type: "video", duration: "00:01:02"},
         file_summary: %{status: "sending", file_name: "report.pdf"},
         game_summary: %{active?: true},
+        recovery: %{
+          state: :reconnecting,
+          reason: "ice_disconnected",
+          trigger: "auto",
+          attempt: 2,
+          manual_retry: false
+        },
         turn_only: true
       )
 
@@ -39,6 +48,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanelTest do
     assert html =~ ~s(data-testid="p2p-stats-tab-game")
     assert html =~ ~s(data-testid="p2p-stats-tab-file")
     assert html =~ ~s(data-testid="p2p-stats-details-connection")
+    assert html =~ ~s(data-testid="p2p-stats-details-recovery")
     assert html =~ ~s(data-testid="p2p-stats-details-audio")
     assert html =~ ~s(data-testid="p2p-stats-details-video")
     assert html =~ ~s(data-testid="p2p-stats-details-game")
@@ -53,6 +63,10 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanelTest do
     assert html =~ ~s(data-testid="p2p-stats-relay")
     assert html =~ "Source"
     assert html =~ "Screen"
+    assert html =~ "ice_disconnected"
+    assert html =~ "auto"
+    assert html =~ "Epoch 7"
+    assert html =~ "p2p-7-1"
 
     document = Floki.parse_document!(html)
 

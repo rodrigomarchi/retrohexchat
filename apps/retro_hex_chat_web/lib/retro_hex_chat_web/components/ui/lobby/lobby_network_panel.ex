@@ -40,6 +40,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
   attr :call_summary, :map, default: nil
   attr :file_summary, :map, default: nil
   attr :game_summary, :map, default: nil
+  attr :recovery, :map, default: %{}
   attr :turn_only, :boolean, default: false
 
   @spec lobby_network_panel(map()) :: Phoenix.LiveView.Rendered.t()
@@ -61,6 +62,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
         call_summary={@call_summary}
         file_summary={@file_summary}
         game_summary={@game_summary}
+        recovery={@recovery}
         turn_only={@turn_only}
       />
 
@@ -193,6 +195,58 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
                 label={dgettext("p2p", "Capacity")}
                 value={dgettext("p2p", "%{n} kbps", n: @stats.connection.available_kbps)}
                 tip={net_metric_tip(:capacity)}
+                info_open={@info_open}
+              />
+            </dl>
+          </.media_session_diagnostics_group>
+
+          <.media_session_diagnostics_group
+            title={dgettext("p2p", "Recovery")}
+            summary={p2p_recovery_summary(@recovery)}
+            icon={:icon_warning}
+            testid="p2p-stats-details-recovery"
+          >
+            <dl class="grid grid-cols-2 gap-x-3 gap-y-[2px] text-xs">
+              <.stat_row
+                icon={:icon_status_signal}
+                label={dgettext("p2p", "State")}
+                value={p2p_recovery_state_label(@recovery)}
+                tip={net_metric_tip(:recovery_state)}
+                info_open={@info_open}
+              />
+              <.stat_row
+                icon={:icon_warning}
+                label={dgettext("p2p", "Reason")}
+                value={technical_label(Map.get(@recovery || %{}, :reason))}
+                tip={net_metric_tip(:recovery_reason)}
+                info_open={@info_open}
+              />
+              <.stat_row
+                icon={:icon_btn_connect_lightning}
+                label={dgettext("p2p", "Trigger")}
+                value={technical_label(Map.get(@recovery || %{}, :trigger))}
+                tip={net_metric_tip(:recovery_trigger)}
+                info_open={@info_open}
+              />
+              <.stat_row
+                icon={:icon_btn_timers}
+                label={dgettext("p2p", "Attempt")}
+                value={p2p_attempt_label(@recovery)}
+                tip={net_metric_tip(:recovery_attempt)}
+                info_open={@info_open}
+              />
+              <.stat_row
+                icon={:icon_webrtc}
+                label={dgettext("p2p", "Signaling")}
+                value={p2p_signaling_label(@stats)}
+                tip={net_metric_tip(:signaling_epoch)}
+                info_open={@info_open}
+              />
+              <.stat_row
+                icon={:icon_protocol_p2p_compact}
+                label={dgettext("p2p", "Offer")}
+                value={technical_label(get_in(@stats, [:summary, :offer_id]))}
+                tip={net_metric_tip(:offer_id)}
                 info_open={@info_open}
               />
             </dl>
@@ -363,6 +417,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
   attr :call_summary, :map, default: nil
   attr :file_summary, :map, default: nil
   attr :game_summary, :map, default: nil
+  attr :recovery, :map, default: %{}
   attr :turn_only, :boolean, default: false
 
   defp session_header(assigns) do
@@ -676,6 +731,35 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
     )
   end
 
+  defp p2p_recovery_summary(recovery) do
+    dgettext("p2p", "%{state} / %{reason}",
+      state: p2p_recovery_state_label(recovery),
+      reason: technical_label(Map.get(recovery || %{}, :reason))
+    )
+  end
+
+  defp p2p_recovery_state_label(%{state: :idle}), do: dgettext("p2p", "Idle")
+  defp p2p_recovery_state_label(%{state: :reconnecting}), do: dgettext("p2p", "Reconnecting")
+  defp p2p_recovery_state_label(%{state: :failed}), do: dgettext("p2p", "Failed")
+  defp p2p_recovery_state_label(%{state: state}) when is_atom(state), do: Atom.to_string(state)
+  defp p2p_recovery_state_label(_recovery), do: dgettext("p2p", "Idle")
+
+  defp p2p_attempt_label(%{attempt: attempt}) when is_integer(attempt) and attempt > 0,
+    do: Integer.to_string(attempt)
+
+  defp p2p_attempt_label(_recovery), do: dgettext("p2p", "None")
+
+  defp p2p_signaling_label(%{summary: %{signaling_epoch: epoch}})
+       when is_integer(epoch) and epoch > 0,
+       do: dgettext("p2p", "Epoch %{epoch}", epoch: epoch)
+
+  defp p2p_signaling_label(_stats), do: dgettext("p2p", "Not started")
+
+  defp technical_label(value) when is_binary(value) and value != "", do: value
+  defp technical_label(value) when is_atom(value) and not is_nil(value), do: Atom.to_string(value)
+  defp technical_label(value) when is_integer(value), do: Integer.to_string(value)
+  defp technical_label(_value), do: dgettext("p2p", "None")
+
   defp p2p_audio_summary(audio) do
     dgettext("p2p", "%{state} / %{down} down / %{up} up",
       state: if(audio.active, do: dgettext("p2p", "Active"), else: dgettext("p2p", "Idle")),
@@ -749,6 +833,24 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
         "p2p",
         "Estimated bandwidth available for sending to the peer, in kilobits per second."
       )
+
+  defp net_metric_tip(:recovery_state),
+    do: dgettext("p2p", "Current recovery state reported by the call connection.")
+
+  defp net_metric_tip(:recovery_reason),
+    do: dgettext("p2p", "Low-cardinality reason for the latest recovery transition.")
+
+  defp net_metric_tip(:recovery_trigger),
+    do: dgettext("p2p", "Source that triggered recovery, such as browser, peer or server.")
+
+  defp net_metric_tip(:recovery_attempt),
+    do: dgettext("p2p", "Current automatic retry attempt for this recovery cycle.")
+
+  defp net_metric_tip(:signaling_epoch),
+    do: dgettext("p2p", "Current P2P signaling generation used to ignore stale SDP and ICE.")
+
+  defp net_metric_tip(:offer_id),
+    do: dgettext("p2p", "Current offer identifier used to ignore stale answers and candidates.")
 
   defp net_metric_tip(:download),
     do: dgettext("p2p", "Data currently being received from the peer, in kilobits per second.")

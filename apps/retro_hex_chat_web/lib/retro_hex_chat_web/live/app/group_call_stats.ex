@@ -48,7 +48,9 @@ defmodule RetroHexChatWeb.App.GroupCallStats do
           value(summary, "connection_state", value(payload, "connection_state", "")),
         participant_count: value(summary, "participant_count", 0),
         remote_stream_count: value(summary, "remote_stream_count", 0),
-        track_count: value(summary, "track_count", 0)
+        track_count: value(summary, "track_count", 0),
+        offer_id: value(summary, "offer_id", ""),
+        rejoin_epoch: value(summary, "rejoin_epoch", 0)
       }
     }
   end
@@ -131,7 +133,9 @@ defmodule RetroHexChatWeb.App.GroupCallStats do
         connection_state: "",
         participant_count: 0,
         remote_stream_count: 0,
-        track_count: 0
+        track_count: 0,
+        offer_id: "",
+        rejoin_epoch: 0
       }
     }
   end
@@ -235,6 +239,7 @@ defmodule RetroHexChatWeb.App.GroupCallStats do
   defp atom_key("outbound_packets"), do: :outbound_packets
   defp atom_key("outbound_peer_count"), do: :outbound_peer_count
   defp atom_key("outbound_rtp"), do: :outbound_rtp
+  defp atom_key("offer_id"), do: :offer_id
   defp atom_key("packets"), do: :packets
   defp atom_key("packets_received"), do: :packets_received
   defp atom_key("packets_sent"), do: :packets_sent
@@ -245,6 +250,7 @@ defmodule RetroHexChatWeb.App.GroupCallStats do
   defp atom_key("pending_count"), do: :pending_count
   defp atom_key("pli_count"), do: :pli_count
   defp atom_key("remote_stream_count"), do: :remote_stream_count
+  defp atom_key("rejoin_epoch"), do: :rejoin_epoch
   defp atom_key("room"), do: :room
   defp atom_key("rtt_ms"), do: :rtt_ms
   defp atom_key("signaling_state"), do: :signaling_state
