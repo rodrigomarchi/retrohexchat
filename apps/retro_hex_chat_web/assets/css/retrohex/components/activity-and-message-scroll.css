@@ -25,20 +25,8 @@
   @apply mx-auto flex w-fit py-retro-8;
 }
 
-/* Sits above the first message rather than inside the stream, so it reads as
-   the top edge of the scrollback the same way the loaders do. */
-.message-viewport__end-marker {
-  @apply px-retro-8 py-retro-4;
-}
-
 .message-viewport__skeleton {
   @apply px-retro-8;
-}
-
-/* Space reserved but nothing drawn: the box exists from the first render so a
-   prepend never has to compensate for the ornament appearing. */
-.message-viewport__end-marker--pending {
-  visibility: hidden;
 }
 
 /* ── Reduced Motion ── */
