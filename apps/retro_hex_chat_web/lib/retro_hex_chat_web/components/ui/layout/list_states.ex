@@ -68,31 +68,37 @@ defmodule RetroHexChatWeb.Components.UI.ListStates do
   end
 
   @doc """
-  Closes a paginated list once there is nothing more to fetch.
+  Closes a list, as an ornament rather than a sentence.
 
-  Without it the end of a list is indistinguishable from a load that never
-  finished — the reader waits at the edge for rows that are not coming.
+  Without something here the edge of a list is indistinguishable from a load
+  that never finished — the reader waits for rows that are not coming.
+
+  It is drawn, not written. A band of English text across a Portuguese chat is
+  worse than no marker at all, and this is a mark, not a message: `:start` says
+  "this is all there is", `:more` says "there is more you cannot reach". The
+  spoken equivalent is `list_announcer/1`, which is why the ornament itself is
+  hidden from assistive technology instead of carrying a translated label.
   """
-  attr :text, :string, default: nil
-  attr :class, :string, default: nil
+  attr :variant, :atom, values: [:start, :more], default: :start
+  attr :class, :any, default: nil
   attr :testid, :string, default: "list-end-marker"
   attr :rest, :global
 
   @spec list_end_marker(map()) :: Phoenix.LiveView.Rendered.t()
   def list_end_marker(assigns) do
-    assigns = assign_new(assigns, :label, fn -> assigns.text || dgettext("ui", "End of list") end)
-
     ~H"""
     <div
       class={classes(["list-end-marker", @class])}
       data-testid={@testid}
-      role="status"
-      aria-live="polite"
+      data-variant={@variant}
+      aria-hidden="true"
       {@rest}
     >
-      <span class="list-end-marker__rule" aria-hidden="true"></span>
-      <span class="list-end-marker__label">{@label}</span>
-      <span class="list-end-marker__rule" aria-hidden="true"></span>
+      <span class="list-end-marker__rule"></span>
+      <span class="list-end-marker__ornament">
+        <.end_ornament variant={@variant} />
+      </span>
+      <span class="list-end-marker__rule"></span>
     </div>
     """
   end
@@ -266,6 +272,21 @@ defmodule RetroHexChatWeb.Components.UI.ListStates do
   end
 
   # ── Internals ────────────────────────────────────────────────────
+
+  attr :variant, :atom, required: true
+
+  @spec end_ornament(map()) :: Phoenix.LiveView.Rendered.t()
+  defp end_ornament(%{variant: :more} = assigns) do
+    ~H"""
+    <Icons.icon_list_more class="list-end-marker__icon" />
+    """
+  end
+
+  defp end_ornament(assigns) do
+    ~H"""
+    <Icons.icon_list_start class="list-end-marker__icon" />
+    """
+  end
 
   # What a reader who cannot see the list needs told after a load: how much
   # arrived, or that there is nothing further to ask for. The loading indicator

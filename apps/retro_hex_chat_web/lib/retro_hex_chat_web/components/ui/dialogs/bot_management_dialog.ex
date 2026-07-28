@@ -403,7 +403,7 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
                   on_retry="load_more"
                   text={dgettext("dialogs", "Could not load more events.")}
                 />
-                <.list_end_marker :if={State.exhausted?(@events_state)} />
+                <.list_end_marker :if={State.exhausted?(@events_state)} variant={:start} />
               </div>
             </.tabs_content>
           </.tabs>

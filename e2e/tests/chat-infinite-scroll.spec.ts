@@ -19,8 +19,6 @@ import { shot } from "../helpers/screenshots";
  *  2. A message hidden by the ignore list does not end pagination — `has_more`
  *     comes from the database, before any presentation filter runs. This is the
  *     bug the pagination contract was built to make inexpressible.
- *  3. The top of a fully-loaded history is marked, so it cannot be mistaken for
- *     a page that never arrived.
  *
  * Seeding is done by one nick talking to itself on purpose: flood protection
  * exempts your own messages, so a single user can fill a channel at speed
@@ -104,7 +102,7 @@ async function scrollMetrics(chat: ChatPage) {
 }
 
 test.describe("Chat infinite scroll", () => {
-  test("loads older messages on scroll back, keeps the reader's place, and marks the top", async ({
+  test("loads older messages on scroll back and keeps the reader's place", async ({
     browser,
   }) => {
     test.setTimeout(180_000);
@@ -128,8 +126,6 @@ test.describe("Chat infinite scroll", () => {
         alice.chat.messageRows.filter({ hasText: seedText(marker, 1) }),
       ).toHaveCount(0);
 
-      // Nothing has been loaded past the first page, so the top is still open.
-      await expect(alice.page.getByTestId("chat-history-end")).toHaveCount(0);
       await shot(alice.page, "first-page-loaded");
 
       const oldestBefore = await alice.chat.messageRows
@@ -161,14 +157,7 @@ test.describe("Chat infinite scroll", () => {
       // content they were reading jumps away under them.
       expect(Math.abs(after.scrollTop - grew)).toBeLessThanOrEqual(4);
 
-      // Everything is loaded now, so the scrollback closes with a marker rather
-      // than leaving the reader waiting at the edge.
-      await expect(alice.page.getByTestId("chat-history-end")).toBeVisible({
-        timeout: 20_000,
-      });
-      // Framed as the whole page: the marker is a sibling above the scrolling
-      // list, so cropping to the list would cut off the very thing being shown.
-      await shot(alice.page, "history-end-marker");
+      await shot(alice.page, "history-fully-loaded");
     } finally {
       await closeUsers([alice] satisfies TestUser[]);
     }
@@ -209,8 +198,6 @@ test.describe("Chat infinite scroll", () => {
       await expect(
         alice.chat.messageRows.filter({ hasText: noisy }),
       ).toHaveCount(0);
-      await expect(alice.page.getByTestId("chat-history-end")).toHaveCount(0);
-
       await alice.chat.scrollMessagesToTop();
 
       await expect(

@@ -281,6 +281,8 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_pad_right(assigns), to: RetroHexChatWeb.Icons.Arrows
 
   # ── Marks ───────────────────────────────────────────────
+  defdelegate icon_list_start(assigns), to: RetroHexChatWeb.Icons.Marks
+  defdelegate icon_list_more(assigns), to: RetroHexChatWeb.Icons.Marks
   defdelegate icon_btn_add(assigns), to: RetroHexChatWeb.Icons.Marks
   defdelegate icon_btn_remove(assigns), to: RetroHexChatWeb.Icons.Marks
   defdelegate icon_btn_ok(assigns), to: RetroHexChatWeb.Icons.Marks

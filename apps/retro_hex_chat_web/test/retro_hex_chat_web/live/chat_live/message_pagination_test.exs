@@ -175,49 +175,20 @@ defmodule RetroHexChatWeb.ChatLive.MessagePaginationTest do
     end
   end
 
-  # A history that has ended and one whose page never arrived look identical
-  # without a marker: both are just rows that stop. The reader waits at the top
-  # of the second one forever.
-  describe "the end of the scrollback" do
-    test "is marked once there is nothing older to fetch", %{conn: conn} do
+  # There is deliberately no end-of-scrollback ornament in the chat. The only
+  # place it could sit and tell the truth is inside the scrolling element, at
+  # the top of the content — and putting it there changes the container's height
+  # in the same patch that prepends a page, which defeats the scroll
+  # compensation and throws the reader out of the history they just loaded.
+  # Outside the scrolling element it becomes a fixed banner claiming "beginning
+  # of history" wherever the reader is, which is worse than no marker at all.
+  describe "the top of the scrollback" do
+    test "carries no marker, rather than one that is always on screen", %{conn: conn} do
       channel = "#pagmark#{uid()}"
       ensure_channel(channel)
       seed(channel, 5, "Seeder")
 
       view = connect_user(conn, "PagK#{uid()}")
-      render_click(view, "switch_channel", %{"channel" => channel})
-
-      assert has_element?(view, ~s([data-testid="chat-history-end"]))
-    end
-
-    test "is absent while older pages remain", %{conn: conn} do
-      channel = "#pagnomark#{uid()}"
-      ensure_channel(channel)
-      seed(channel, 60, "Seeder")
-
-      view = connect_user(conn, "PagN#{uid()}")
-      render_click(view, "switch_channel", %{"channel" => channel})
-
-      refute has_element?(view, ~s([data-testid="chat-history-end"]))
-    end
-
-    test "appears after the last page is loaded", %{conn: conn} do
-      channel = "#pagmarkend#{uid()}"
-      ensure_channel(channel)
-      seed(channel, 60, "Seeder")
-
-      view = connect_user(conn, "PagQ#{uid()}")
-      render_click(view, "switch_channel", %{"channel" => channel})
-      render_click(view, "load_more", %{})
-
-      assert has_element?(view, ~s([data-testid="chat-history-end"]))
-    end
-
-    test "is absent from an empty channel, where it would read as a failure", %{conn: conn} do
-      channel = "#pagempty#{uid()}"
-      ensure_channel(channel)
-
-      view = connect_user(conn, "PagZ#{uid()}")
       render_click(view, "switch_channel", %{"channel" => channel})
 
       refute has_element?(view, ~s([data-testid="chat-history-end"]))

@@ -22,8 +22,14 @@
   @apply bg-border h-px flex-1;
 }
 
-.list-end-marker__label {
-  @apply text-muted-foreground shrink-0 text-xs uppercase tracking-wide;
+/* The ornament sits in a gap in the rule rather than on top of it, so the two
+   read as one drawn divider instead of an icon dropped over a line. */
+.list-end-marker__ornament {
+  @apply flex shrink-0 items-center justify-center px-retro-4;
+}
+
+.list-end-marker__icon {
+  @apply h-4 w-4;
 }
 
 /* ── Load more (keyboard path to pagination) ── */

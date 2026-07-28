@@ -35,6 +35,12 @@
   @apply px-retro-8;
 }
 
+/* Space reserved but nothing drawn: the box exists from the first render so a
+   prepend never has to compensate for the ornament appearing. */
+.message-viewport__end-marker--pending {
+  visibility: hidden;
+}
+
 /* ── Reduced Motion ── */
 
 @media (prefers-reduced-motion: reduce) {

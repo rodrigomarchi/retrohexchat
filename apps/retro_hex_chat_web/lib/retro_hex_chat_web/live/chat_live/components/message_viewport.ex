@@ -56,10 +56,18 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
     socket
   end
 
-  @doc "Prepends a chronological page of older messages. Returns the socket."
-  @spec prepend(Phoenix.LiveView.Socket.t(), [map()]) :: Phoenix.LiveView.Socket.t()
-  def prepend(socket, items) do
-    send_update(__MODULE__, id: @id, action: {:prepend, items})
+  @doc """
+  Prepends a chronological page of older messages. Returns the socket.
+
+  `has_more` travels with the rows rather than arriving separately from the
+  parent's own render. It decides whether the beginning-of-history ornament
+  shows, and that ornament lives inside the scrolling element — so if it landed
+  in a second patch the scroll hook would compensate for one of the two DOM
+  changes and throw the reader away from what they were reading.
+  """
+  @spec prepend(Phoenix.LiveView.Socket.t(), [map()], boolean()) :: Phoenix.LiveView.Socket.t()
+  def prepend(socket, items, has_more) do
+    send_update(__MODULE__, id: @id, action: {:prepend, items}, has_more: has_more)
     socket
   end
 
@@ -127,8 +135,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   # Items arrive oldest-first; inserting reversed at position 0 lands them in
   # order above the existing rows (a load-more must never reset the stream —
   # ephemeral system lines are not in the DB and would vanish).
-  def update(%{action: {:prepend, items}}, socket) do
-    socket = track(socket, fn rendered -> items ++ rendered end)
+  def update(%{action: {:prepend, items}} = assigns, socket) do
+    socket =
+      socket
+      |> assign(:has_more, Map.get(assigns, :has_more, socket.assigns.has_more))
+      |> track(fn rendered -> items ++ rendered end)
 
     {:ok,
      items
@@ -215,16 +226,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
         data-testid="scroll-loader"
       />
 
-      <%!-- Closes the scrollback. Without it the top of a fully-loaded history
-            is indistinguishable from a page that never arrived, which is the
-            state the reader waits at forever. --%>
-      <.list_end_marker
-        :if={history_complete?(assigns)}
-        text={dgettext("chat", "Beginning of history")}
-        class="message-viewport__end-marker"
-        testid="chat-history-end"
-      />
-
       <.chat_message_list
         id="chat-messages"
         fill
@@ -234,6 +235,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
         data-clear-token={@chat_clear_token}
         data-interactions-hook="MessageInteractionsHook"
       >
+        <%!-- Inside the scrolling element, above the oldest row: this marks the
+              top of the scrollback, so it has to scroll with it. As a sibling of
+              the list it became a fixed banner that claimed "beginning of
+              history" no matter where the reader was. It only renders once
+              has_more is false, so nothing is ever prepended above it. --%>
         <MessageRow.message_row
           :for={{dom_id, msg} <- @streams.chat_messages}
           dom_id={dom_id}
@@ -248,16 +254,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
       </.chat_message_list>
     </div>
     """
-  end
-
-  # The scrollback is complete when the server has nothing older, there is
-  # something on screen for the marker to close, and no load is in flight —
-  # otherwise "beginning of history" would appear over an empty or still-filling
-  # viewport and read as a failure rather than an ending.
-  @spec history_complete?(map()) :: boolean()
-  defp history_complete?(assigns) do
-    not assigns.has_more and not assigns.loading_more and
-      is_nil(assigns.loading_channel) and assigns.rendered != []
   end
 
   # The rows currently on screen, kept alongside the stream because a stream

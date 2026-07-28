@@ -298,7 +298,6 @@ defmodule RetroHexChatWeb.Components.UI.TrustedTerminalsDialog do
                     />
                     <.list_end_marker
                       :if={State.exhausted?(@sessions_state)}
-                      text={dgettext("dialogs", "No older sessions")}
                       testid="trusted-sessions-end"
                     />
                   </section>
@@ -350,7 +349,6 @@ defmodule RetroHexChatWeb.Components.UI.TrustedTerminalsDialog do
                     />
                     <.list_end_marker
                       :if={State.exhausted?(@events_state)}
-                      text={dgettext("dialogs", "No older activity")}
                       testid="trusted-events-end"
                     />
                   </section>

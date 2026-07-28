@@ -217,12 +217,13 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
             />
 
             <%!-- The catcher keeps only the most recent links, so once it is
-                  full the oldest are gone for good. Saying how many were
-                  discarded is the only record that they existed. --%>
-            <.list_end_marker
-              :if={@dropped > 0}
-              text={dgettext("dialogs", "%{count} older links were not kept", count: @dropped)}
-              testid="url-catcher-dropped"
+                  full the oldest are gone for good. The count is the only
+                  record that they existed, so this one stays numeric rather
+                  than becoming an ornament. --%>
+            <.list_count_strip
+              shown={length(@entries)}
+              total={length(@entries) + @dropped}
+              data-testid="url-catcher-dropped"
             />
 
             <article

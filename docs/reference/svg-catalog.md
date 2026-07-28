@@ -202,6 +202,8 @@ falls back to the globe for unknown codes.
 |----------|-------------|
 | `icon_fullscreen_enter` | Corner brackets expanding outward (currentColor) for the space fullscreen toggle **[DONE]** |
 | `icon_fullscreen_exit` | Windowed-mode square outline (currentColor) for the space fullscreen toggle **[DONE]** |
+| `icon_list_start` | Arrow risen into a ceiling — the top of a fully-loaded list, for `list_end_marker` **[DONE]** |
+| `icon_list_more` | Rules receding and paling — a list truncated beyond reach, for `list_end_marker` **[DONE]** |
 
 ### Arrows
 

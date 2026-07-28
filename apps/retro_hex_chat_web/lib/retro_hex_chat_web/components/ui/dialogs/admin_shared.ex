@@ -102,6 +102,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminShared do
 
       <.list_end_marker
         :if={@on_load_more && @table.rows != [] && not Table.has_more?(@table)}
+        variant={:start}
         testid={"#{@testid}-end"}
       />
     </div>

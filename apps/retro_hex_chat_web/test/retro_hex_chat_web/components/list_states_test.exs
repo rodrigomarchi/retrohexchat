@@ -32,17 +32,38 @@ defmodule RetroHexChatWeb.Components.UI.ListStatesTest do
   end
 
   describe "list_end_marker/1" do
-    test "tells the reader the list is exhausted" do
+    test "closes the list with a drawn ornament" do
       html = render_component(&list_end_marker/1, %{})
 
       assert html =~ ~s(data-testid="list-end-marker")
+      assert html =~ "<svg", "the marker is drawn, not written"
     end
 
-    test "is announced politely rather than interrupting" do
+    # A band of English across a Portuguese chat was worse than no marker at
+    # all. Carrying no words is what makes the same ornament serve every locale.
+    test "carries no translatable text" do
       html = render_component(&list_end_marker/1, %{})
 
-      assert html =~ ~s(role="status")
-      assert html =~ ~s(aria-live="polite")
+      refute html =~ "End of list"
+      assert String.replace(html, ~r/<[^>]*>/, "") |> String.trim() == ""
+    end
+
+    test "is hidden from assistive technology, which the announcer serves instead" do
+      html = render_component(&list_end_marker/1, %{})
+
+      assert html =~ ~s(aria-hidden="true")
+    end
+
+    test "an exhausted list and a truncated one do not draw the same mark" do
+      # One says "this is all there is", the other "there is more you cannot
+      # reach". The same ornament for both would put a full stop under a
+      # truncated list.
+      finished = render_component(&list_end_marker/1, %{variant: :start})
+      truncated = render_component(&list_end_marker/1, %{variant: :more})
+
+      assert finished =~ ~s(data-variant="start")
+      assert truncated =~ ~s(data-variant="more")
+      refute finished == truncated
     end
   end
 

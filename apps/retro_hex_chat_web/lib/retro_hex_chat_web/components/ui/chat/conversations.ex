@@ -200,7 +200,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
 
             <.list_end_marker
               :if={@pm_conversations_truncated}
-              text={dgettext("chat", "Older conversations are not listed")}
+              variant={:more}
               testid="conversations-pms-truncated"
             />
           </.tree_view_group>

@@ -17,7 +17,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.StatusViewport do
   use RetroHexChatWeb, :live_component
 
   import RetroHexChatWeb.Components.UI.ChatMessage
-  import RetroHexChatWeb.Components.UI.ListStates
 
   alias RetroHexChatWeb.App.ChatHelpers
 
@@ -75,12 +74,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.StatusViewport do
   def render(assigns) do
     ~H"""
     <div id={"#{@id}-mount"} class="contents">
-      <.list_end_marker
-        :if={discarded?(@inserted)}
-        text={dgettext("chat", "Older status lines were discarded")}
-        class={if @show_status_tab, do: nil, else: "hidden"}
-      />
-
       <.chat_message_list
         fill
         hidden={!@show_status_tab}
@@ -102,10 +95,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.StatusViewport do
     </div>
     """
   end
-
-  # True once the cap has dropped at least one line.
-  @spec discarded?(non_neg_integer()) :: boolean()
-  defp discarded?(inserted), do: inserted > @status_limit
 
   # Origin label shown in the compact meta column so a status line is never a
   # bare timestamp. Interactive nicks are never used on the status tab.

@@ -49,12 +49,13 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.ListStatesPage do
 
       <.showcase_card
         title={dgettext("showcase", "End Marker")}
-        description="Closes a paginated list. Without it, the end is indistinguishable from a load that never finished."
+        description="Closes a paginated list. Drawn rather than written, so the same ornament serves every locale — the spoken equivalent is the announcer. `start` says this is all there is; `more` says there is more you cannot reach."
       >
         <div class="shadow-retro-field bg-white">
-          <.list_end_marker />
+          <.list_end_marker variant={:start} />
+          <.list_end_marker variant={:more} />
         </div>
-        <.code_example>&lt;.list_end_marker /&gt;</.code_example>
+        <.code_example>&lt;.list_end_marker variant=&#123;:start&#125; /&gt;</.code_example>
       </.showcase_card>
 
       <.showcase_card

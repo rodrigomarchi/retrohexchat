@@ -448,4 +448,60 @@ defmodule RetroHexChatWeb.Icons.Marks do
     </svg>
     """
   end
+
+  @doc """
+  The start of a list — an arrow risen into a ceiling it cannot pass.
+
+  Marks the top of a fully-loaded scrollback. Drawn rather than written so the
+  same ornament serves every locale; the spoken equivalent is carried by the
+  list announcer, which is why this is `aria-hidden`.
+  """
+  attr :class, :string, default: nil
+
+  @spec icon_list_start(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_list_start(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <!-- Ceiling: raised win98 bar, highlight above, shadow below -->
+      <rect x="2" y="2" width="12" height="1" fill="#fff" />
+      <rect x="2" y="3" width="12" height="2" fill="#dfdfdf" />
+      <rect x="2" y="5" width="12" height="1" fill="#808080" />
+      <rect x="2" y="2" width="12" height="4" fill="none" stroke="#000" stroke-width="1" />
+      <!-- Arrow head, stopped by the ceiling -->
+      <rect x="7" y="8" width="2" height="1" fill="#000" />
+      <rect x="6" y="9" width="4" height="1" fill="#000" />
+      <rect x="5" y="10" width="6" height="1" fill="#000" />
+      <rect x="4" y="11" width="8" height="1" fill="#000" />
+      <!-- Inner light, so the head reads as raised rather than flat -->
+      <rect x="7" y="9" width="2" height="1" fill="#000080" />
+      <rect x="6" y="10" width="4" height="1" fill="#000080" />
+      <!-- Stem -->
+      <rect x="7" y="12" width="2" height="2" fill="#000" />
+    </svg>
+    """
+  end
+
+  @doc """
+  More of a list exists than is shown — rules trailing off into the distance.
+
+  Distinct from `icon_list_start/1` on purpose: one says "this is all there is",
+  the other says "there is more you cannot reach". Conflating them would put a
+  full stop under a truncated list.
+  """
+  attr :class, :string, default: nil
+
+  @spec icon_list_more(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_list_more(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <!-- Three rules, each narrower and paler: the list receding out of reach -->
+      <rect x="2" y="3" width="12" height="1" fill="#fff" />
+      <rect x="2" y="4" width="12" height="2" fill="#000" />
+      <rect x="4" y="8" width="8" height="1" fill="#fff" />
+      <rect x="4" y="9" width="8" height="2" fill="#555" />
+      <rect x="6" y="12" width="4" height="1" fill="#fff" />
+      <rect x="6" y="13" width="4" height="2" fill="#a0a0a0" />
+    </svg>
+    """
+  end
 end
