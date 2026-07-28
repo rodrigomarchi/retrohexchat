@@ -39,9 +39,20 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
 
   @id "message-viewport"
 
-  # Three pages of scrollback stay in the DOM; older rows are dropped as the
-  # reader keeps going. Without a cap, paging back through a long history grows
-  # the document without bound.
+  # The live tail is capped: a session that sits in a busy channel for a day
+  # cannot grow the document without bound.
+  #
+  # The cap applies to arriving messages only, never to scrollback. LiveView
+  # prunes a negative limit from the *front* of the list, which is exactly where
+  # a prepended page lands — a capped prepend is removed by the same patch that
+  # inserted it, while the server's cursor has already moved past those rows, so
+  # the reader can never ask for them again. Capping both ends of a list only
+  # one of which can be refetched is what turns a page into a page spent.
+  #
+  # Once the reader has paged back, `scrollback?` lifts the cap for the rest of
+  # their stay in the channel: an arriving message must not push the oldest row
+  # they just loaded out of the document either. Switching channel or PM resets
+  # the stream and the flag together.
   @page_size 50
   @dom_limit @page_size * 3
 
@@ -56,18 +67,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
     socket
   end
 
-  @doc """
-  Prepends a chronological page of older messages. Returns the socket.
-
-  `has_more` travels with the rows rather than arriving separately from the
-  parent's own render. It decides whether the beginning-of-history ornament
-  shows, and that ornament lives inside the scrolling element — so if it landed
-  in a second patch the scroll hook would compensate for one of the two DOM
-  changes and throw the reader away from what they were reading.
-  """
-  @spec prepend(Phoenix.LiveView.Socket.t(), [map()], boolean()) :: Phoenix.LiveView.Socket.t()
-  def prepend(socket, items, has_more) do
-    send_update(__MODULE__, id: @id, action: {:prepend, items}, has_more: has_more)
+  @doc "Prepends a chronological page of older messages. Returns the socket."
+  @spec prepend(Phoenix.LiveView.Socket.t(), [map()]) :: Phoenix.LiveView.Socket.t()
+  def prepend(socket, items) do
+    send_update(__MODULE__, id: @id, action: {:prepend, items})
     socket
   end
 
@@ -115,10 +118,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
        edit_mode_message_id: nil,
        show_status_tab: false,
        loading_more: false,
-       has_more: false,
        loading_channel: nil,
        viewer: nil,
-       rendered: []
+       rendered: [],
+       scrollback?: false
      )
      |> stream(:chat_messages, [], limit: -@dom_limit)}
   end
@@ -129,22 +132,23 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
     {:ok,
      socket
      |> track(fn rendered -> upsert(rendered, msg) end)
-     |> stream_insert(:chat_messages, msg, limit: -@dom_limit)}
+     |> stream_insert(:chat_messages, msg, tail_opts(socket))}
   end
 
   # Items arrive oldest-first; inserting reversed at position 0 lands them in
   # order above the existing rows (a load-more must never reset the stream —
-  # ephemeral system lines are not in the DB and would vanish).
-  def update(%{action: {:prepend, items}} = assigns, socket) do
-    socket =
-      socket
-      |> assign(:has_more, Map.get(assigns, :has_more, socket.assigns.has_more))
-      |> track(fn rendered -> items ++ rendered end)
-
+  # ephemeral system lines are not in the DB and would vanish). No limit: see
+  # the note on `@dom_limit` — a limit here deletes the page being inserted.
+  def update(%{action: {:prepend, items}}, socket) do
     {:ok,
      items
      |> Enum.reverse()
-     |> Enum.reduce(socket, &stream_insert(&2, :chat_messages, &1, at: 0, limit: -@dom_limit))}
+     |> Enum.reduce(
+       socket
+       |> assign(:scrollback?, true)
+       |> track(fn rendered -> items ++ rendered end),
+       &stream_insert(&2, :chat_messages, &1, at: 0)
+     )}
   end
 
   def update(%{action: {:delete, id}}, socket) do
@@ -154,18 +158,27 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
      |> stream_delete(:chat_messages, %{id: id})}
   end
 
+  # A reset is a new context — the scrollback the reader had loaded belongs to
+  # the channel they left, so the cap comes back with it.
   def update(%{action: {:reset, items}}, socket) do
     {:ok,
      socket
+     |> assign(:scrollback?, false)
      |> track(fn _rendered -> items end)
      |> stream(:chat_messages, items, reset: true, limit: -@dom_limit)}
   end
 
   # Re-streaming what is already held is what makes a presentation change cost
-  # nothing at the database.
+  # nothing at the database. The limit is the number of rows being re-streamed,
+  # so restyling a loaded scrollback cannot silently shorten it.
   def update(%{action: :restyle}, socket) do
+    rendered = socket.assigns.rendered
+
     {:ok,
-     stream(socket, :chat_messages, socket.assigns.rendered, reset: true, limit: -@dom_limit)}
+     stream(socket, :chat_messages, rendered,
+       reset: true,
+       limit: -max(@dom_limit, length(rendered))
+     )}
   end
 
   def update(assigns, socket) do
@@ -178,7 +191,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
       :edit_mode_message_id,
       :show_status_tab,
       :loading_more,
-      :has_more,
       :loading_channel,
       :viewer
     ]
@@ -235,11 +247,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
         data-clear-token={@chat_clear_token}
         data-interactions-hook="MessageInteractionsHook"
       >
-        <%!-- Inside the scrolling element, above the oldest row: this marks the
-              top of the scrollback, so it has to scroll with it. As a sibling of
-              the list it became a fixed banner that claimed "beginning of
-              history" no matter where the reader was. It only renders once
-              has_more is false, so nothing is ever prepended above it. --%>
+        <%!-- Nothing but rows lives in here. An end-of-history marker would have
+              to sit above the oldest row, inside the scrolling element, and that
+              changes the container's height in the same patch that prepends a
+              page — which is what the scroll compensation measures. See
+              `message_pagination_test.exs`, "the top of the scrollback". --%>
         <MessageRow.message_row
           :for={{dom_id, msg} <- @streams.chat_messages}
           dom_id={dom_id}
@@ -257,13 +269,22 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   end
 
   # The rows currently on screen, kept alongside the stream because a stream
-  # cannot be read back. Trimmed to the same cap as the DOM, from the same end,
-  # so the two never disagree about what is rendered.
+  # cannot be read back. Trimmed by the same rule as the DOM, from the same end,
+  # so the two never disagree about what is rendered — including once a
+  # scrollback has lifted the cap, where trimming here would make `restyle/1`
+  # re-stream a shorter list than the one on screen.
   @spec track(Phoenix.LiveView.Socket.t(), ([map()] -> [map()])) :: Phoenix.LiveView.Socket.t()
   defp track(socket, fun) do
-    rendered = socket.assigns.rendered |> fun.() |> Enum.take(-@dom_limit)
+    rendered = fun.(socket.assigns.rendered)
+    rendered = if socket.assigns.scrollback?, do: rendered, else: Enum.take(rendered, -@dom_limit)
     assign(socket, rendered: rendered)
   end
+
+  # An arriving message drops the oldest row once the tail is full, and drops
+  # nothing at all once the reader has paged back.
+  @spec tail_opts(Phoenix.LiveView.Socket.t()) :: keyword()
+  defp tail_opts(%{assigns: %{scrollback?: true}}), do: []
+  defp tail_opts(_socket), do: [limit: -@dom_limit]
 
   @spec upsert([map()], map()) :: [map()]
   defp upsert(rendered, msg) do

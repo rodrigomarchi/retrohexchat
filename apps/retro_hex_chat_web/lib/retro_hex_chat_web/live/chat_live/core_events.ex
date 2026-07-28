@@ -617,7 +617,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
       loaded_message_count: (socket.assigns[:loaded_message_count] || 50) + length(page.items)
     )
     |> push_event("prepend_start", %{})
-    |> MessageViewport.prepend(stream_items, page.has_more)
+    |> MessageViewport.prepend(stream_items)
   end
 
   defp message_to_stream_item(msg) do

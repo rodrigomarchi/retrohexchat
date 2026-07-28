@@ -28,8 +28,9 @@ defmodule RetroHexChatWeb.PaginatedList do
   above the existing rows, matching how the domain hands back a chronological
   page of older rows.
 
-  The DOM is capped at `State.dom_limit/1` rows, so scrolling a long way back
-  cannot grow the page without bound.
+  A bottom-edge list is capped at `State.dom_limit/1` rows in the DOM, so
+  scrolling a long way down cannot grow the page without bound. A prepend is
+  deliberately uncapped — see `prepend/3`.
   """
 
   require Logger
@@ -123,6 +124,12 @@ defmodule RetroHexChatWeb.PaginatedList do
   Items arrive oldest-first; inserting them reversed at position 0 lands them in
   order above what is already there. A prepend must never reset the stream —
   ephemeral rows that are not in the database would vanish.
+
+  It carries no DOM limit either. LiveView prunes a negative limit from the
+  front of the list, which is where a prepend lands: the page is removed by the
+  same patch that inserted it, and since the cursor has already advanced past
+  those rows the reader can never ask for them again. A top-edge list is bounded
+  by how far its reader scrolls, not by a cap that eats what it just fetched.
   """
   @spec prepend(Phoenix.LiveView.Socket.t(), atom(), Page.t()) :: Phoenix.LiveView.Socket.t()
   def prepend(socket, name, %Page{} = page) do
@@ -136,8 +143,11 @@ defmodule RetroHexChatWeb.PaginatedList do
   @spec insert_all(Phoenix.LiveView.Socket.t(), atom(), [term()], keyword()) ::
           Phoenix.LiveView.Socket.t()
   defp insert_all(socket, name, items, opts) do
-    limit = -State.dom_limit(state(socket, name))
-    opts = Keyword.put(opts, :limit, limit)
+    opts =
+      case Keyword.fetch(opts, :at) do
+        {:ok, 0} -> opts
+        _appended -> Keyword.put(opts, :limit, -State.dom_limit(state(socket, name)))
+      end
 
     Enum.reduce(items, socket, &stream_insert(&2, name, &1, opts))
   end

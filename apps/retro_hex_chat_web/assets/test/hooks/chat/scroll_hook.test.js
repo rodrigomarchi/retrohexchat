@@ -182,7 +182,30 @@ describe("ScrollHook", () => {
       Object.defineProperty(hook.el, "clientHeight", { value: 200, configurable: true });
       hook.markUserScrollIntent();
       hook.handleScroll();
-      expect(hook.pushEvent).toHaveBeenCalledWith("load_more", {});
+      expect(hook.pushEvent).toHaveBeenCalledWith("load_more", {}, expect.any(Function));
+    });
+
+    // A wheel flick inside the trigger zone fires a scroll event per frame.
+    // Without the gate each one asked for another page, so a single gesture
+    // fetched a dozen of them.
+    it("asks for one page at a time until the server replies", () => {
+      Object.defineProperty(hook.el, "scrollTop", { value: 5, writable: true, configurable: true });
+      Object.defineProperty(hook.el, "scrollHeight", { value: 1000, configurable: true });
+      Object.defineProperty(hook.el, "clientHeight", { value: 200, configurable: true });
+      hook.pushEvent.mockClear();
+      hook.markUserScrollIntent();
+
+      hook.handleScroll();
+      hook.handleScroll();
+      hook.handleScroll();
+
+      const loadMoreCalls = () => hook.pushEvent.mock.calls.filter((c) => c[0] === "load_more");
+      expect(loadMoreCalls()).toHaveLength(1);
+
+      // The reply re-arms it, whether or not the page had anything in it.
+      loadMoreCalls()[0][2]();
+      hook.handleScroll();
+      expect(loadMoreCalls()).toHaveLength(2);
     });
 
     it("does not push load_more when away from top", () => {

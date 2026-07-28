@@ -13,6 +13,7 @@ defmodule RetroHexChatWeb.ChatLive.MessagePaginationTest do
 
   alias RetroHexChat.Channels.{Registry, Supervisor}
   alias RetroHexChat.Chat.Queries
+  alias RetroHexChatWeb.ChatLive.Components.MessageViewport
 
   defp connect_user(conn, nick) do
     {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
@@ -50,6 +51,24 @@ defmodule RetroHexChatWeb.ChatLive.MessagePaginationTest do
           type: "message"
         })
     end
+  end
+
+  # How many rows the message viewport is holding — its own mirror of the
+  # browser's list, read out of the component's assigns.
+  defp viewport_rows(view), do: view |> viewport_rendered() |> length()
+
+  defp viewport_rendered(view) do
+    {components, _ids, _uuid} = view.pid |> :sys.get_state() |> Map.fetch!(:components)
+
+    Enum.find_value(components, fn
+      {_cid, {MessageViewport, _id, assigns, _private, _prints}} -> assigns.rendered
+      _other -> nil
+    end)
+  end
+
+  # The oldest row the viewport is holding — the one a capped prepend would eat.
+  defp viewport_oldest(view) do
+    view |> viewport_rendered() |> List.first() |> Map.fetch!(:id)
   end
 
   defp pagination(view) do
@@ -152,8 +171,7 @@ defmodule RetroHexChatWeb.ChatLive.MessagePaginationTest do
 
   # The assigns above say a page was fetched; this says it reached the markup.
   # The two are not the same claim, and only the second one is what a reader
-  # sees — the browser drops these rows again (see the plan's PROGRESS), so the
-  # server side needs a guard of its own to keep that diagnosis honest.
+  # sees.
   describe "the fetched page reaches the rendered stream" do
     test "older messages are in the markup after load_more", %{conn: conn} do
       channel = "#pagrender#{uid()}"
@@ -172,6 +190,68 @@ defmodule RetroHexChatWeb.ChatLive.MessagePaginationTest do
 
       assert html =~ "padded-001", "the older page must render, not just update the assigns"
       assert html =~ "padded-060", "and the newest page must survive the prepend"
+    end
+  end
+
+  # The DOM cap used to apply to both ends of the list. LiveView prunes a
+  # negative limit from the front, which is where a prepended page lands, so
+  # from the third page back every page was deleted by the patch that inserted
+  # it — and the cursor had already moved past it, so it could not be asked for
+  # again. Measured in the browser: 700 messages fetched and dropped while the
+  # reader stayed on the same 150 rows (`e2e/tests/chat-scrollback-audit.spec.ts`).
+  #
+  # The viewport's `rendered` is its mirror of what the browser holds, so it is
+  # where that rule can be asserted without a browser: the test client applies
+  # no stream limit at all, which is exactly why the markup assertion above
+  # passed throughout.
+  describe "paging back past the DOM cap" do
+    test "keeps every page the reader loaded", %{conn: conn} do
+      channel = "#pagcap#{uid()}"
+      ensure_channel(channel)
+      seed(channel, 260, "Seeder")
+
+      view = connect_user(conn, "PagX#{uid()}")
+      render_click(view, "switch_channel", %{"channel" => channel})
+      for _ <- 1..4, do: render_click(view, "load_more", %{})
+
+      assert viewport_rows(view) == 250,
+             "five pages of 50 were loaded; the reader must still have all of them"
+    end
+
+    test "an arriving message does not push the oldest loaded row out", %{conn: conn} do
+      channel = "#pagtail#{uid()}"
+      ensure_channel(channel)
+      seed(channel, 260, "Seeder")
+
+      view = connect_user(conn, "PagT#{uid()}")
+      render_click(view, "switch_channel", %{"channel" => channel})
+      for _ <- 1..4, do: render_click(view, "load_more", %{})
+
+      before_rows = viewport_rows(view)
+      before_oldest = viewport_oldest(view)
+      submit_command_sync(view, "still here")
+
+      assert viewport_oldest(view) == before_oldest,
+             "the live message is added to the scrollback, not traded for its oldest row"
+
+      assert viewport_rows(view) > before_rows
+    end
+
+    test "switching channel gives the cap back", %{conn: conn} do
+      channel = "#pagswap#{uid()}"
+      other = "#pagswapb#{uid()}"
+      ensure_channel(channel)
+      ensure_channel(other)
+      seed(channel, 260, "Seeder")
+      seed(other, 10, "Seeder")
+
+      view = connect_user(conn, "PagW#{uid()}")
+      render_click(view, "switch_channel", %{"channel" => channel})
+      for _ <- 1..4, do: render_click(view, "load_more", %{})
+      render_click(view, "switch_channel", %{"channel" => other})
+
+      assert viewport_rows(view) <= 50,
+             "the scrollback belonged to the channel the reader left"
     end
   end
 

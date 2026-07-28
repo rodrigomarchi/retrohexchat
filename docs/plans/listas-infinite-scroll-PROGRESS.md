@@ -868,3 +868,87 @@ rodadas seguidas fecharam o plano a partir do resumo e erraram, porque o resumo
 registrava o que a rodada anterior *achava* ter deixado pendente, não o que a
 tela de fato faz. A auditoria que funcionou foi mecânica: para cada linha da §9,
 grep pelo componente de estado na tela e leitura da função de domínio.
+
+## Auditoria pós-entrega (2026-07-28, terceira sessão)
+
+Auditoria do que foi entregue, com massa de dados de verdade: mil mensagens
+numeradas (`msg-0001`…`msg-1000`) semeadas direto no banco e a rolagem feita no
+browser, medindo **quais** linhas estão na tela a cada salto. Spec permanente:
+`e2e/tests/chat-scrollback-audit.spec.ts` (+ `e2e/helpers/seedHistory.ts`).
+
+### O defeito crítico: o teto de DOM comia a página que acabara de chegar
+
+O `MessageViewport` passou a streamar com `limit: -150` nas quatro mutações,
+inclusive no prepend. **O LiveView poda um limite negativo pela frente da
+lista** (`dom_patch.js`, `maybeLimitStream`), que é exatamente onde um prepend
+aterrissa: da terceira página para trás, cada linha inserida em `at: 0` era
+removida pelo mesmo patch que a inseriu.
+
+Medido no browser, antes do conserto:
+
+```
+round 0  rows= 50  window=951..1000
+round 1  rows=150  window=851..1000
+round 2  rows=150  window=851..1000   ← daqui em diante, nada mais entra
+oldest on screen: msg-851
+fetched then dropped: 1400 linhas (msg-151 … msg-850)
+```
+
+Pior que travar: o cursor do servidor **avançava** a cada pedido, então as 700
+mensagens buscadas e descartadas ficavam inalcançáveis para o resto da sessão.
+O histórico do canal terminava em 150 linhas para qualquer leitor.
+
+Por que o `make ci` verde não pegava: o cliente de teste do LiveView **não
+aplica `limit` nenhum** (`Phoenix.LiveViewTest` não tem o código de poda), então
+a asserção "a página mais velha chegou ao markup" passava enquanto o browser
+jogava a mesma página fora. O comentário do próprio teste registrava a suspeita
+("o browser derruba essas linhas de novo") sem que ela virasse guarda.
+
+Conserto: **o teto vale para a cauda viva, nunca para o scrollback.** Um prepend
+não leva limite; um `scrollback?` no island suspende o teto da cauda depois que
+o leitor pagina, para que a mensagem que chega não empurre para fora a linha
+mais velha que ele acabou de carregar. Um `reset` (troca de canal/PM, `/clear`)
+devolve o teto junto com o contexto. `PaginatedList.prepend/3` tinha o mesmo
+defeito latente — nenhuma tela usava prepend ainda — e foi corrigido junto.
+
+Guardas: `message_pagination_test.exs`, describe "paging back past the DOM cap"
+(3 testes, sobre o `rendered` do island, que é o espelho servidor do DOM) e a
+spec E2E acima.
+
+### O gatilho de borda do chat não tinha trava de "em voo"
+
+O `InfiniteScrollHook` tem `pending`; o `ScrollHook` do chat não tinha nada. Um
+evento de scroll por frame dentro dos 400px do topo = um `load_more` por frame.
+Medido: **duas páginas por gesto** no teste, e um flick de roda real gera dezenas
+de eventos. Agora `handleScroll` só pede uma página e re-arma no *reply* do
+servidor (não no próximo patch, senão uma página vazia trava a paginação).
+
+### Verificado e correto
+
+- Índice `(channel_name, id)`: com 300 mil linhas, `#quiet` (canal que silenciou
+  cedo) sai de 295.001 linhas varridas / 4653 buffers / 24,7ms para 4 buffers /
+  0,05ms. A migration 20260728120000 faz o que promete.
+- Índices de PM: `(sender, recipient, id)` e `(recipient, sender, id)` cobrem o
+  keyset de `list_private_messages/3`.
+- `PaginatedList.append` (listas de borda inferior) com limite negativo está
+  correto: poda pela frente, que é o lado por onde o leitor já passou.
+
+### Achados abertos (não consertados nesta sessão)
+
+1. **As strings novas de lista nunca foram extraídas.** `Load more`,
+   `Try again`, `End of list.`, `Could not load more items.`,
+   `The list is empty.`, `Showing %{shown} of %{total}`,
+   `%{count} items loaded.` não existem em nenhum catálogo — inglês nos 13
+   locales. É o mesmo defeito que o commit 228f8a07 consertou para o marcador,
+   consertado só para as strings que ele apagou. Rótulos curtos são glossário
+   (`scripts/i18n/glossary.py`), não tradução automática.
+2. **`loading_more` nunca é verdadeiro num render.** O handler marca e desmarca
+   no mesmo `handle_event`, então o indicador "Loading older messages..." é
+   inalcançável e a trava que ele deveria dar é inócua (a trava de verdade agora
+   é a do hook).
+3. **`loaded_message_count` é estado morto** desde que o restyle deixou de
+   refazer a consulta: escrito em cinco lugares, lido em nenhum.
+4. **Admin Channels perde o canal digitado entre tentativas** — causa concreta:
+   o input de `channel_action_form` não tem `value`, então não sobrevive a um
+   re-render. Pré-existente a este plano, e ainda derruba
+   `chat-admin-channels-window.spec.ts`.

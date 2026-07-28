@@ -58,6 +58,7 @@ const ScrollHook = {
     this.initialScrollPending = true;
     this.repinHandle = null;
     this.pendingPrepend = false;
+    this.loadPending = false;
     this.prevScrollHeight = this.chatEl.scrollHeight;
     this.wasHidden = this.isHidden();
     this.mouseDownPos = null;
@@ -564,9 +565,22 @@ const ScrollHook = {
     // The shared detector fires a screenful early instead of only at the very
     // top, so paging back reads as continuous rather than as a stop-and-wait at
     // each page boundary.
-    if (this.userScrollIntent && isNearEdge(this.chatEl, "top")) {
-      this.pushEvent("load_more", {});
+    if (this.userScrollIntent && !this.loadPending && isNearEdge(this.chatEl, "top")) {
+      this.requestOlderPage();
     }
+  },
+
+  // One page in flight at a time. A single wheel flick inside the trigger zone
+  // fires a scroll event per frame, and without this gate each one asked for
+  // another page: one gesture fetched a dozen of them, all of which the server
+  // had to read and the browser had to render. The gate lifts on the server's
+  // reply rather than on the next patch, so a page that turns out to be empty
+  // still re-arms it.
+  requestOlderPage() {
+    this.loadPending = true;
+    this.pushEvent("load_more", {}, () => {
+      this.loadPending = false;
+    });
   },
 
   scrollToBottom() {

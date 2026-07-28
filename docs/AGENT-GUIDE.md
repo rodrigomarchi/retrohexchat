@@ -335,6 +335,16 @@ becomes a thin orchestrator; each island owns its own state, events, and streams
   lists/classes *inside* `render/1`, render with a normal `:for`. Isolation still comes free —
   but only if you pass **stable references**: an inline `for` comprehension in the parent
   template makes a new list every render. Move the comprehension into the component.
+- **A DOM `limit` caps the end the reader can come back to, never the end they cannot.**
+  LiveView prunes a *negative* limit from the **front** of the list and a positive one from the
+  back — and a prepend (`at: 0`) lands at the front, so `stream_insert(…, at: 0, limit: -150)`
+  deletes the page in the same patch that inserted it. The chat scrollback shipped that way:
+  paging back died at 150 rows while the cursor kept advancing, so 700 fetched messages became
+  unreachable for the session. Cap the live tail; leave scrollback uncapped
+  (`MessageViewport`, `scrollback?`).
+- **`Phoenix.LiveViewTest` applies no stream limit at all.** Every assertion about *which* rows
+  a stream holds is a claim about the server's intent, never about the browser's list — a
+  capped list is only observable in a real browser (`e2e/tests/chat-scrollback-audit.spec.ts`).
 - **A missed stream callsite is a runtime error, not a compile error** —
   `stream_insert(socket, :chat_messages, …)` still compiles. The completeness gate for a
   stream refactor is `grep -rn ":chat_messages"`, not the compiler; then drop

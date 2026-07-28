@@ -160,7 +160,16 @@ componente de `ListStates` na tela e leia a função de domínio.
 | Item | Estado real |
 |---|---|
 | **1.3** paginação do chat no island | **não será feito**: 1.4 foi resolvido sem ele (o `MessageViewport` guarda `rendered`), o ganho restante é só uniformidade |
-| Admin Channels: exclusão perde o canal digitado | **pré-existente**, provado em `origin/main` (§5); o formulário limpa o campo entre tentativas e a spec assume que persiste |
+| Admin Channels: exclusão perde o canal digitado | **pré-existente**, provado em `origin/main` (§5); causa: o input de `channel_action_form` não tem `value` e não sobrevive a um re-render |
+| Strings novas de lista (`Load more`, `End of list.`, …) | **nunca extraídas**: inglês nos 13 locales — ver a auditoria pós-entrega no PROGRESS |
+
+**A auditoria pós-entrega (PROGRESS, última seção) achou um defeito crítico já
+corrigido:** o teto de DOM podava pela frente da lista, que é onde um prepend
+aterrissa, então o scrollback do chat morria em 150 linhas e gastava as páginas
+seguintes sem mostrá-las. Regra que ficou: **teto vale para a cauda viva, nunca
+para o scrollback.** O cliente de teste do LiveView não aplica `limit`, então
+essa classe de defeito só aparece no browser — a guarda é
+`e2e/tests/chat-scrollback-audit.spec.ts`.
 
 Todo o resto do inventário está fechado — ver o PROGRESS, seção "Terceira
 rodada". As 25 superfícies com tela hoje se dividem em: paginação alcançável
