@@ -241,7 +241,10 @@ defmodule RetroHexChatWeb.App.ChatLive do
       )
 
       ChatLive.Helpers.safe_untrack_user("presence:global", session.nickname)
-      WhowasCache.record(session.nickname, session.channels, quit_reason)
+
+      unless socket.assigns[:skip_whowas_record] do
+        WhowasCache.record(session.nickname, session.channels, quit_reason)
+      end
 
       unless socket.assigns[:skip_channel_cleanup] do
         ChatLive.Helpers.cleanup_channels(session, quit_reason)

@@ -1,7 +1,7 @@
 <p>
   <strong>{dgettext("help_commands", "DESTRUCTIVE")}</strong> {dgettext(
     "help_commands",
-    "— Factory reset the entire system. Destroys all data (users, channels, messages, preferences, bots, P2P sessions) except admin roles, audit logs, server bans, and server settings. Requires server administrator role. The Admin Console Danger Zone tab requires typing the server name before execution."
+    "— Factory reset the entire system. Destroys all data (users, channels, messages, preferences, bots, P2P sessions) except admin roles, audit logs, server bans, and server settings. The registration setting is reopened so an admin nick can be recreated. Requires server administrator role. The Admin Console Danger Zone tab requires typing the server name before execution."
   )}
 </p>
 
@@ -36,7 +36,12 @@
     )}
   </li>
   <li><code>server_bans</code> {dgettext("help_commands", "— Active server bans")}</li>
-  <li><code>server_settings</code> {dgettext("help_commands", "— Server configuration")}</li>
+  <li>
+    <code>server_settings</code> {dgettext(
+      "help_commands",
+      "— Server configuration; registration is reset to open"
+    )}
+  </li>
 </ul>
 
 <.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>

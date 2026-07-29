@@ -10,7 +10,7 @@ defmodule RetroHexChat.Admin do
 
   require Logger
 
-  alias RetroHexChat.Accounts.NicknameValidator
+  alias RetroHexChat.Accounts.{ChatDeviceSession, NicknameValidator}
   alias RetroHexChat.Admin.{AuditLogs, GlobalMutes, RoleCache, ServerBans}
   alias RetroHexChat.Bots
   alias RetroHexChat.Channels
@@ -386,7 +386,7 @@ defmodule RetroHexChat.Admin do
 
   # ── System Nuke ─────────────────────────────────────────────
 
-  @nuke_schemas [
+  @nuke_targets [
     {"messages", RetroHexChat.Chat.Message},
     {"private_messages", RetroHexChat.Chat.PrivateMessage},
     {"bans", RetroHexChat.Services.Ban},
@@ -411,6 +411,16 @@ defmodule RetroHexChat.Admin do
     {"sound_settings", RetroHexChat.Chat.Schemas.SoundSetting},
     {"notice_routing_settings", RetroHexChat.Chat.Schemas.NoticeRoutingSetting},
     {"user_preferences", RetroHexChat.Chat.Schemas.UserPreference},
+    {"group_call_tracks", RetroHexChat.GroupCall.Schema.Track},
+    {"group_call_participants", RetroHexChat.GroupCall.Schema.Participant},
+    {"group_call_rooms", RetroHexChat.GroupCall.Schema.Room},
+    {"lobby_sessions", RetroHexChat.Lobby.Schema.Session},
+    {"solo_sessions", RetroHexChat.Arcade.Schema.SoloSession},
+    {"game_sessions", "game_sessions"},
+    {"trusted_device_events", RetroHexChat.Accounts.TrustedDeviceEvent},
+    {"trusted_device_nicks", RetroHexChat.Accounts.TrustedDeviceNick},
+    {"chat_device_sessions", RetroHexChat.Accounts.ChatDeviceSession},
+    {"trusted_devices", RetroHexChat.Accounts.TrustedDevice},
     {"bot_event_log", RetroHexChat.Bots.BotEventLog},
     {"bot_custom_commands", RetroHexChat.Bots.BotCustomCommand},
     {"bot_channel_configs", RetroHexChat.Bots.BotChannelConfig},
@@ -428,8 +438,8 @@ defmodule RetroHexChat.Admin do
     AuditLogs.log(admin, "system.nuke_preview")
 
     counts =
-      Enum.map(@nuke_schemas, fn {name, schema} ->
-        count = Repo.aggregate(from(_ in schema), :count)
+      Enum.map(@nuke_targets, fn {name, source} ->
+        count = Repo.aggregate(from(_ in source), :count)
         {name, count}
       end)
 
@@ -441,23 +451,29 @@ defmodule RetroHexChat.Admin do
     import Ecto.Query
     alias RetroHexChat.Repo
 
+    connected_targets = connected_targets(admin)
+
     AuditLogs.log(admin, "system.nuke", {"system", "all"}, %{
       action: "factory_reset"
     })
 
     multi =
-      Enum.reduce(@nuke_schemas, Ecto.Multi.new(), fn {name, schema}, multi ->
-        Ecto.Multi.delete_all(multi, String.to_atom(name), from(_ in schema))
+      @nuke_targets
+      |> Enum.reduce(Ecto.Multi.new(), fn {name, source}, multi ->
+        Ecto.Multi.delete_all(multi, String.to_atom(name), from(_ in source))
+      end)
+      |> Ecto.Multi.run(:registration_open, fn _repo, _changes ->
+        Queries.upsert_setting("registration", "open", admin)
       end)
 
     case Repo.transaction(multi) do
       {:ok, results} ->
-        shutdown_all_bots()
-        shutdown_all_channels()
-        broadcast_system_nuke()
+        reset_runtime_state()
+        broadcast_system_nuke(admin)
+        force_disconnect_connected_users(admin, connected_targets)
 
         summary =
-          Enum.map(@nuke_schemas, fn {name, _schema} ->
+          Enum.map(@nuke_targets, fn {name, _source} ->
             {count, _} = Map.get(results, String.to_atom(name), {0, nil})
             {name, count}
           end)
@@ -470,26 +486,148 @@ defmodule RetroHexChat.Admin do
     end
   end
 
+  defp connected_targets(admin) do
+    nicknames = connected_nicknames(admin)
+
+    %{
+      nicknames: nicknames,
+      session_refs: active_chat_device_session_refs(nicknames)
+    }
+  end
+
+  defp connected_nicknames(admin) do
+    RetroHexChat.Presence.Tracker.list_users("presence:global")
+    |> Enum.map(& &1.nickname)
+    |> then(&[admin | &1])
+    |> Enum.reject(&is_nil/1)
+    |> Enum.uniq()
+  rescue
+    e ->
+      Logger.warning("Nuke online user lookup failed: #{inspect(e)}")
+      [admin]
+  end
+
+  defp active_chat_device_session_refs(nicknames) do
+    import Ecto.Query
+    alias RetroHexChat.Repo
+
+    from(s in ChatDeviceSession,
+      where: is_nil(s.disconnected_at),
+      where: s.nickname not in ^nicknames,
+      select: s.session_ref
+    )
+    |> Repo.all()
+  rescue
+    e ->
+      Logger.warning("Nuke active device session lookup failed: #{inspect(e)}")
+      []
+  end
+
+  defp reset_runtime_state do
+    shutdown_all_bots()
+
+    [
+      {RetroHexChat.GroupCall.PeerSupervisor, "group-call peer"},
+      {RetroHexChat.GroupCall.RoomSupervisor, "group-call room"},
+      {RetroHexChat.Lobby.Supervisor, "lobby"},
+      {RetroHexChat.Arcade.Supervisor, "arcade"},
+      {RetroHexChat.VirtualSpace.Supervisor, "virtual space"},
+      {RetroHexChat.P2P.Turn.AllocationSupervisor, "TURN allocation"},
+      {Channels.Supervisor, "channel"}
+    ]
+    |> Enum.each(fn {supervisor, label} -> shutdown_dynamic_supervisor(supervisor, label) end)
+
+    clear_ephemeral_user_state()
+  end
+
   defp shutdown_all_bots do
     Bots.Supervisor.stop_all()
   rescue
     e -> Logger.warning("Bot shutdown during nuke failed: #{inspect(e)}")
   end
 
-  defp shutdown_all_channels do
-    children = DynamicSupervisor.which_children(Channels.Supervisor)
-
-    Enum.each(children, fn {_, pid, _, _} ->
-      if is_pid(pid), do: Channels.Supervisor.stop_child(pid)
-    end)
+  defp shutdown_dynamic_supervisor(supervisor, label) do
+    if Process.whereis(supervisor) do
+      supervisor
+      |> DynamicSupervisor.which_children()
+      |> Enum.each(fn {_, pid, _, _} ->
+        if is_pid(pid), do: DynamicSupervisor.terminate_child(supervisor, pid)
+      end)
+    end
   rescue
-    e -> Logger.warning("Channel shutdown during nuke failed: #{inspect(e)}")
+    e -> Logger.warning("#{label} shutdown during nuke failed: #{inspect(e)}")
   end
 
-  defp broadcast_system_nuke do
-    Phoenix.PubSub.broadcast(@pubsub, "server:settings", {:system_nuked, %{}})
+  defp clear_ephemeral_user_state do
+    clear_nickserv_runtime_state()
+    clear_ets_table(:global_mutes, "global mute")
+    clear_ets_table(RetroHexChat.RateLimit.Table.table_name(), "chat rate limit")
+    clear_ets_table(RetroHexChat.P2P.RateLimitTable.table_name(), "P2P rate limit")
+    clear_ets_table(RetroHexChat.Chat.LinkPreview.Cache, "link preview")
+    RetroHexChat.Presence.WhowasCache.clear()
+  rescue
+    e -> Logger.warning("Ephemeral state cleanup during nuke failed: #{inspect(e)}")
+  end
+
+  defp clear_nickserv_runtime_state do
+    if Process.whereis(NickServ) do
+      NickServ.clear_runtime_state()
+    end
+  rescue
+    e -> Logger.warning("NickServ runtime cleanup during nuke failed: #{inspect(e)}")
+  catch
+    :exit, reason ->
+      Logger.warning("NickServ runtime cleanup during nuke failed: #{inspect(reason)}")
+  end
+
+  defp clear_ets_table(table, label) do
+    case :ets.whereis(table) do
+      :undefined -> :ok
+      _tid -> :ets.delete_all_objects(table)
+    end
+  rescue
+    e -> Logger.warning("#{label} ETS cleanup during nuke failed: #{inspect(e)}")
+  end
+
+  defp broadcast_system_nuke(admin) do
+    Phoenix.PubSub.broadcast(
+      @pubsub,
+      "server:settings",
+      {:system_nuked, nuke_disconnect_payload(admin)}
+    )
   rescue
     e -> Logger.warning("Nuke broadcast failed: #{inspect(e)}")
+  end
+
+  defp force_disconnect_connected_users(admin, %{nicknames: nicknames, session_refs: session_refs}) do
+    payload = nuke_disconnect_payload(admin)
+
+    Enum.each(nicknames, fn nickname ->
+      Phoenix.PubSub.broadcast(
+        @pubsub,
+        "user:#{nickname}",
+        {:force_disconnect, Map.put(payload, :nickname, nickname)}
+      )
+    end)
+
+    Enum.each(session_refs, fn session_ref ->
+      Phoenix.PubSub.broadcast(
+        @pubsub,
+        "chat_device_session:#{session_ref}",
+        {:force_disconnect, Map.put(payload, :session_ref, session_ref)}
+      )
+    end)
+  rescue
+    e -> Logger.warning("Nuke force disconnect failed: #{inspect(e)}")
+  end
+
+  defp nuke_disconnect_payload(admin) do
+    %{
+      force_disconnect: true,
+      reason: dgettext("admin", "System reset by administrator %{admin}", admin: admin),
+      system_nuke: true,
+      skip_whowas: true
+    }
   end
 
   # ── Private ─────────────────────────────────────────────────

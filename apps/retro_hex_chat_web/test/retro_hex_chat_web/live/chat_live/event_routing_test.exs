@@ -17,4 +17,29 @@ defmodule RetroHexChatWeb.ChatLive.EventRoutingTest do
       assert render(view) =~ ~s(data-testid="chat-input-form")
     end
   end
+
+  describe "system nuke broadcasts" do
+    test "globally force-disconnect connected chat sessions", %{conn: conn} do
+      nick = "NukeRoute#{uid()}"
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      _ = :sys.get_state(view.pid)
+      assert RetroHexChat.Presence.Tracker.online?("channel:#lobby", nick)
+
+      Phoenix.PubSub.broadcast(
+        RetroHexChat.PubSub,
+        "server:settings",
+        {:system_nuked,
+         %{
+           force_disconnect: true,
+           reason: "system-reset",
+           system_nuke: true,
+           skip_whowas: true
+         }}
+      )
+
+      assert_push_event(view, "intentional_disconnect", %{}, 1_000)
+      refute RetroHexChat.Presence.Tracker.online?("channel:#lobby", nick)
+      assert_redirect(view, "/chat/session/clear?reason=system-reset")
+    end
+  end
 end

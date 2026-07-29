@@ -651,7 +651,10 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
             "help",
             "Factory reset — destroys ALL data (users, channels, messages, preferences, bots, P2P sessions) "
           ) <>
-            dgettext("help", "except admin roles, audit logs, and server bans. ") <>
+            dgettext(
+              "help",
+              "except admin roles, audit logs, server bans, and server settings; registration is reopened for recovery. "
+            ) <>
             dgettext(
               "help",
               "Run without --confirm for a preview; with --confirm to execute. IRREVERSIBLE."

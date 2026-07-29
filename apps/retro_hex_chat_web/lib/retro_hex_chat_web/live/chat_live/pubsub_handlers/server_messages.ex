@@ -12,6 +12,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ServerMessages do
   alias RetroHexChat.Accounts.Session
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
   alias RetroHexChatWeb.ChatLive.Helpers.Session, as: SessionHelper
+  alias RetroHexChatWeb.ChatLive.PubsubHandlers.Membership
 
   @spec handle_info(tuple(), Phoenix.LiveView.Socket.t()) :: {:halt, Phoenix.LiveView.Socket.t()}
 
@@ -117,7 +118,11 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ServerMessages do
      )}
   end
 
-  def handle_info({:system_nuked, _}, socket) do
+  def handle_info({:system_nuked, %{force_disconnect: true} = payload}, socket) do
+    Membership.handle_info({:force_disconnect, payload}, socket)
+  end
+
+  def handle_info({:system_nuked, _payload}, socket) do
     {:halt, system_event(socket, dgettext("chat", "System reset initiated by an administrator."))}
   end
 end

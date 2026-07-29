@@ -40,7 +40,10 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Nuke do
       dgettext("admin", "*** Run /admin nuke --confirm to execute. THIS CANNOT BE UNDONE.")
 
     preserved =
-      dgettext("admin", "*** Preserved: admin_roles, audit_logs, server_bans, server_settings")
+      dgettext(
+        "admin",
+        "*** Preserved: admin_roles, audit_logs, server_bans, server_settings (registration reopens)"
+      )
 
     if lines == [] do
       dgettext("admin", "*** NUKE PREVIEW — Nothing to delete. System is already clean.")

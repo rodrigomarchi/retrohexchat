@@ -143,6 +143,20 @@ defmodule RetroHexChat.Services.NickServTest do
       # Should NOT receive a timeout since timer was cancelled
       refute_receive {:force_rename, _}, 200
     end
+
+    test "clear_runtime_state removes identified nicks and suppresses pending timers", %{
+      server: server
+    } do
+      {:ok, _} = NickServ.register("ClearNick", "secret123", server)
+      assert NickServ.identified?("ClearNick", server)
+
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:ClearNick")
+      NickServ.start_identify_timer("ClearNick", server)
+
+      assert :ok = NickServ.clear_runtime_state(server)
+      refute NickServ.identified?("ClearNick", server)
+      refute_receive {:force_rename, _}, 200
+    end
   end
 
   describe "identify broadcasts :nickserv_identified" do

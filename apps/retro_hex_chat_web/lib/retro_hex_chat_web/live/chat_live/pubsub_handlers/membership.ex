@@ -204,12 +204,16 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
   # ── Force disconnect/rename ───────────────────────────────
 
   def handle_info({:force_disconnect, %{reason: reason} = payload}, socket) do
-    cleanup_channels(socket.assigns.session)
+    unless socket.assigns[:skip_channel_cleanup] || Map.get(payload, :skip_channel_cleanup, false) do
+      cleanup_channels(socket.assigns.session, reason)
+    end
+
     maybe_ack_force_disconnect(payload)
 
     {:halt,
      socket
      |> assign(skip_channel_cleanup: true)
+     |> assign(skip_whowas_record: Map.get(payload, :skip_whowas, false))
      |> push_event("intentional_disconnect", %{})
      |> push_event("clear_client_state", %{})
      |> Phoenix.LiveView.redirect(to: PathHelpers.session_clear_path(socket, reason))}
@@ -397,13 +401,14 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
 
   defp maybe_ack_force_disconnect(_payload), do: :ok
 
-  defp cleanup_channels(session) do
+  defp cleanup_channels(session, reason) do
     NickServ.cancel_identify_timer(session.nickname)
+    reason = reason || dgettext("chat", "Connection lost")
 
     Enum.each(session.channels, fn channel ->
       try do
         Tracker.untrack_user("channel:#{channel}", session.nickname)
-        Server.part(channel, session.nickname, dgettext("chat", "Connection lost"))
+        Server.part(channel, session.nickname, reason)
       rescue
         e ->
           require Logger

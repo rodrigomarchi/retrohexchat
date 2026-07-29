@@ -267,6 +267,11 @@ defmodule RetroHexChat.Services.NickServ do
     GenServer.cast(server, {:remove_identified, nickname})
   end
 
+  @spec clear_runtime_state(GenServer.server()) :: :ok
+  def clear_runtime_state(server \\ __MODULE__) do
+    GenServer.call(server, :clear_runtime_state)
+  end
+
   @doc """
   Re-mark a nickname as identified without a password, for a reconnect that
   already proves prior identification (a signed `chat_pre_identified` session).
@@ -313,6 +318,12 @@ defmodule RetroHexChat.Services.NickServ do
     {:reply, MapSet.to_list(state.identified), state}
   end
 
+  def handle_call(:clear_runtime_state, _from, state) do
+    Enum.each(state.timers, fn {_nickname, ref} -> Process.cancel_timer(ref) end)
+
+    {:reply, :ok, %{state | identified: MapSet.new(), timers: %{}}}
+  end
+
   @impl true
   def handle_cast({:start_identify_timer, nickname}, state) do
     timer_ref =
@@ -347,21 +358,25 @@ defmodule RetroHexChat.Services.NickServ do
 
   @impl true
   def handle_info({:identify_timeout, nickname}, state) do
-    new_timers = Map.delete(state.timers, nickname)
+    case Map.pop(state.timers, nickname) do
+      {nil, _timers} ->
+        {:noreply, state}
 
-    case Phoenix.PubSub.broadcast(
-           RetroHexChat.PubSub,
-           "user:#{nickname}",
-           {:force_rename, %{reason: dgettext("services", "Identify timeout (60s)")}}
-         ) do
-      :ok ->
-        :ok
+      {_ref, new_timers} ->
+        case Phoenix.PubSub.broadcast(
+               RetroHexChat.PubSub,
+               "user:#{nickname}",
+               {:force_rename, %{reason: dgettext("services", "Identify timeout (60s)")}}
+             ) do
+          :ok ->
+            :ok
 
-      {:error, reason} ->
-        Logger.warning("PubSub broadcast to user:#{nickname} failed: #{inspect(reason)}")
+          {:error, reason} ->
+            Logger.warning("PubSub broadcast to user:#{nickname} failed: #{inspect(reason)}")
+        end
+
+        {:noreply, %{state | timers: new_timers}}
     end
-
-    {:noreply, %{state | timers: new_timers}}
   end
 
   def handle_info(_msg, state), do: {:noreply, state}
