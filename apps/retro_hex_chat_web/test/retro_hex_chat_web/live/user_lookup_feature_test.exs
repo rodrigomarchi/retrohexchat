@@ -78,6 +78,24 @@ defmodule RetroHexChatWeb.UserLookupFeatureTest do
       assert has_element?(view, ~s([data-testid="user-lookup-window"]))
       assert render(view) =~ "Enter nickname..."
     end
+
+    test "PM conversation toolbar opens User Lookup for the active peer", %{conn: conn} do
+      target = "LookupPeer#{uid()}"
+      _target_view = connect_user(conn, target)
+      view = connect_user(conn, "LookupPm#{uid()}")
+
+      render_click(view, "nicklist_dblclick", %{"nick" => target})
+
+      view
+      |> element(~s([data-testid="conversation-toolbar-user-lookup"]))
+      |> render_click()
+
+      assert_push_event(view, "window_command", %{action: "open", id: "user-lookup"})
+
+      html = render(view)
+      assert html =~ "Whois: #{target}"
+      assert has_element?(view, ~s([data-testid="user-lookup-nickname"][value="#{target}"]))
+    end
   end
 
   describe "lookup dialog command mapping" do

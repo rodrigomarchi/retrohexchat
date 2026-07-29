@@ -45,6 +45,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.UserLookupDialog do
     {:ok, assign(socket, nick: "", error: nil)}
   end
 
+  def update(%{action: {:open, nickname}}, socket) do
+    {:ok, assign(socket, nick: nickname || "", error: nil)}
+  end
+
   def update(%{action: {:error, message}}, socket) do
     {:ok, assign(socket, error: message)}
   end

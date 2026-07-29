@@ -37,6 +37,18 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       assert render(view) =~ "Channel Central: #lobby"
     end
 
+    test "1.2b conversation toolbar opens Channel Central for the active channel", %{conn: conn} do
+      view = connect_user(conn, "E2ECcTb#{uid()}")
+
+      view
+      |> element(~s([data-testid="conversation-toolbar-channel-central"]))
+      |> render_click()
+
+      assert_push_event(view, "window_command", %{action: "open", id: "channel-central"})
+      assert has_element?(view, ~s([data-testid="channel-central-window"]))
+      assert render(view) =~ "Channel Central: #lobby"
+    end
+
     test "1.3 programmatic close resets the island and closes the window", %{conn: conn} do
       view = connect_user(conn, "E2ECcEs#{uid()}")
       open_cc(view, "#lobby")

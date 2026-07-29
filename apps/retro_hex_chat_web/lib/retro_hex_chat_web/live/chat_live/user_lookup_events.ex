@@ -31,6 +31,21 @@ defmodule RetroHexChatWeb.ChatLive.UserLookupEvents do
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:halt | :cont, Phoenix.LiveView.Socket.t()}
+  def handle_event("open_user_lookup", %{"nickname" => nickname}, socket) do
+    nickname = String.trim(nickname || "")
+
+    socket =
+      if nickname == "" do
+        open(socket)
+      else
+        socket
+        |> open_prefilled(nickname)
+        |> dispatch_lookup("whois", nickname)
+      end
+
+    {:halt, socket}
+  end
+
   def handle_event("open_user_lookup", _params, socket) do
     {:halt, open(socket)}
   end
@@ -86,6 +101,15 @@ defmodule RetroHexChatWeb.ChatLive.UserLookupEvents do
 
   defp dispatch_lookup(socket, command, nickname) do
     CommandDispatch.dispatch_command(socket, socket.assigns.session, command, [nickname])
+  end
+
+  defp open_prefilled(socket, nickname) do
+    socket
+    |> assign(lookup_result: nil)
+    |> Windows.open_with("user-lookup", UserLookupDialog,
+      id: UserLookupDialog.id(),
+      action: {:open, nickname}
+    )
   end
 
   defp lookup_nick(params) do

@@ -132,6 +132,9 @@
               conversations_open={@show_conversations}
               nicklist_open={@show_nicklist && !@session.active_pm && !@show_status_tab}
               search_open={@search_visible}
+              active_channel={@session.active_channel}
+              active_pm={@session.active_pm}
+              show_status_tab={@show_status_tab}
             />
 
             <div
