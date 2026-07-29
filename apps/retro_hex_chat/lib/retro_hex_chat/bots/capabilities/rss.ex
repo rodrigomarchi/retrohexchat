@@ -466,16 +466,79 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
 
   @spec format_items([FeedParser.feed_item()], String.t() | nil) :: [String.t()]
   defp format_items(items, feed_title) do
-    prefix = if feed_title, do: dgettext("bots", "[%{title}]", title: feed_title), else: "[RSS]"
+    Enum.map(items, &format_item(&1, feed_title))
+  end
 
-    Enum.map(items, fn item ->
-      dgettext("bots", "%{prefix} %{title} — %{link}",
-        prefix: prefix,
-        title: item.title,
-        link: item.link
-      )
+  # One line, three jobs, in the order the eye needs them: which wire it came
+  # from, what happened, and where to read it. Undifferentiated text made all
+  # three compete — a source name as loud as the headline, and a URL as loud as
+  # both, wrapping across lines.
+  @ctrl_bold <<0x02>>
+  @ctrl_colour <<0x03>>
+  @ctrl_reset <<0x0F>>
+
+  # Fixed hex against the window's white, so these are picked to stay legible on
+  # it: navy carries the source, grey retires the link out of the way. The
+  # headline keeps the default colour — it is the thing being read.
+  @colour_source "02"
+  @colour_link "14"
+
+  # A source label is a name, not a sentence; a headline that runs past this is
+  # a paper title, and the link carries the whole of it.
+  @source_limit 24
+  @headline_limit 140
+
+  @doc """
+  A feed item as one readable line.
+
+  Public so the shape can be asserted on directly: this is the house style for
+  every RSS bot, not a per-bot decision, and it is the part a reader actually
+  meets.
+  """
+  @spec format_item(FeedParser.feed_item(), String.t() | nil) :: String.t()
+  def format_item(item, feed_title) do
+    source = feed_title |> source_label() |> truncate(@source_limit)
+    headline = item.title |> to_string() |> collapse_space() |> truncate(@headline_limit)
+
+    colour(@colour_source, @ctrl_bold <> "[" <> source <> "]") <>
+      " " <> headline <> link_suffix(item.link)
+  end
+
+  # Publishers put their whole positioning statement in the feed title —
+  # "cs.LG updates on arXiv.org", "Phys.org - latest science and technology news
+  # stories", "Al Jazeera – Breaking News, World News and Video". As a label
+  # repeated on every line that is noise, and truncating it lands mid-sentence.
+  # The part before the first separator is the name; the rest is the tagline.
+  @label_separators [" updates on ", " - ", " – ", " — ", " | ", ": "]
+
+  @spec source_label(String.t() | nil) :: String.t()
+  def source_label(nil), do: dgettext("bots", "RSS")
+
+  def source_label(title) do
+    title = collapse_space(title)
+
+    Enum.reduce(@label_separators, title, fn separator, current ->
+      case String.split(current, separator, parts: 2) do
+        [head, _tail] when head != "" -> head
+        _ -> current
+      end
     end)
   end
+
+  @spec link_suffix(String.t() | nil) :: String.t()
+  defp link_suffix(link) when is_binary(link) and link != "" do
+    " " <> colour(@colour_link, link)
+  end
+
+  defp link_suffix(_link), do: ""
+
+  @spec colour(String.t(), String.t()) :: String.t()
+  defp colour(code, text), do: @ctrl_colour <> code <> text <> @ctrl_reset
+
+  # Feed titles arrive with newlines and runs of spaces from the source's own
+  # markup; a headline that carries them breaks the line before it is truncated.
+  @spec collapse_space(String.t()) :: String.t()
+  defp collapse_space(text), do: text |> String.split() |> Enum.join(" ")
 
   @spec find_feed([map()], String.t()) :: map() | nil
   defp find_feed(feeds, id), do: Enum.find(feeds, &(&1["id"] == id))

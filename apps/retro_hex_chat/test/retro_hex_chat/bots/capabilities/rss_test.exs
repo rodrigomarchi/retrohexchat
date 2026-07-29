@@ -309,4 +309,81 @@ defmodule RetroHexChat.Bots.Capabilities.RSSTest do
       assert to_post == []
     end
   end
+
+  describe "format_item/2 — the house style for every RSS bot" do
+    @bold <<0x02>>
+    @colour <<0x03>>
+    @reset <<0x0F>>
+
+    defp an_item(opts \\ []) do
+      %{
+        title: Keyword.get(opts, :title, "A headline"),
+        link: Keyword.get(opts, :link, "https://example.com/a"),
+        guid: nil,
+        published: nil
+      }
+    end
+
+    test "the source is bold and coloured, the headline plain, the link retired" do
+      line = RSS.format_item(an_item(), "The GitHub Blog")
+
+      assert line ==
+               @colour <>
+                 "02" <>
+                 @bold <>
+                 "[The GitHub Blog]" <>
+                 @reset <> " A headline " <> @colour <> "14" <> "https://example.com/a" <> @reset
+    end
+
+    test "a publisher's tagline does not become the label" do
+      assert RSS.format_item(an_item(), "cs.LG updates on arXiv.org") =~ "[cs.LG]"
+
+      assert RSS.format_item(an_item(), "Phys.org - latest science and technology news") =~
+               "[Phys.org]"
+
+      assert RSS.format_item(an_item(), "Al Jazeera – Breaking News, World News") =~
+               "[Al Jazeera]"
+    end
+
+    test "a name with no tagline is left alone" do
+      assert RSS.format_item(an_item(), "Anime News Network") =~ "[Anime News Network]"
+      assert RSS.format_item(an_item(), "Krebs on Security") =~ "[Krebs on Security]"
+    end
+
+    test "a paper-length headline is cut, and the link still carries the rest" do
+      long = String.duplicate("word ", 60)
+      line = RSS.format_item(an_item(title: long), "Src")
+
+      assert String.contains?(line, "...")
+      assert String.contains?(line, "https://example.com/a")
+      assert String.length(line) < 220, "a headline that wraps three times is what we replaced"
+    end
+
+    test "newlines from the publisher's markup do not break the line" do
+      line = RSS.format_item(an_item(title: "Two\n\n  lines   here"), "Src")
+
+      refute line =~ "\n"
+      assert line =~ "Two lines here"
+    end
+
+    test "an item with no link is still a readable line" do
+      line = RSS.format_item(an_item(link: ""), "Src")
+
+      assert line =~ "[Src]"
+      assert line =~ "A headline"
+      refute String.ends_with?(line, " ")
+    end
+
+    test "a feed that never gave its title still gets a label" do
+      assert RSS.format_item(an_item(), nil) =~ "[RSS]"
+    end
+
+    test "every colour used is legible on the window's white" do
+      # 0 is white, 8/9/11 wash out, 15 is near-white: none may be used here.
+      line = RSS.format_item(an_item(), "Src")
+      codes = ~r/#{@colour}(\d{2})/ |> Regex.scan(line) |> Enum.map(&List.last/1)
+
+      assert codes == ["02", "14"]
+    end
+  end
 end

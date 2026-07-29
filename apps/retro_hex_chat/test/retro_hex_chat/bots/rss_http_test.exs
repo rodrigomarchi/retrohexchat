@@ -166,7 +166,8 @@ defmodule RetroHexChat.Bots.RSSHTTPTest do
       assert length(lines) == 1
       line = hd(lines)
 
-      assert line =~ "Notícias — the wire", "the feed's own title should prefix the item"
+      assert line =~ "[Notícias]",
+             "the label is the publisher's name, not its whole tagline"
 
       assert line =~ "It’s here — the “long-awaited” one…",
              "the characters that broke the parser against every real feed"

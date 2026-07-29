@@ -329,6 +329,12 @@ included, is joined explicitly.
 # ══════════════════════════════════════════════════════════
 #  5. Wire-room bots
 # ══════════════════════════════════════════════════════════
+# Every RSS bot writes the same line, so a reader learns to scan it once: the
+# source bold in navy, the headline plain — it is the thing being read — and the
+# link in grey, present but out of the way. Publishers put their whole tagline in
+# the feed title ("cs.LG updates on arXiv.org"); the label keeps the name and
+# drops the rest.
+#
 # A feed's first poll happens within seconds and posts one headline — enough to
 # show it works — then remembers the rest of the page and reports only what
 # arrives afterwards. Both the feed list and the record of what has been
