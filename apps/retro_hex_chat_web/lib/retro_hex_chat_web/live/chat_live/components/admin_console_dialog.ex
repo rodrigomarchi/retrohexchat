@@ -32,7 +32,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminConsoleDialog do
   # there is nothing older to page back to, so it takes a cap rather than
   # pagination. Without one it grew for the lifetime of the session, and the
   # `++` append made every run cost more than the last.
-  @max_results 200
+  # Comfortably more than the provisioning script, which is the reason anyone
+  # pastes a batch this size. At 200 the transcript dropped its own opening
+  # lines, so the one question worth asking — did all of it work? — could not be
+  # answered from the thing that ran it.
+  @max_results 600
 
   @spec id() :: String.t()
   def id, do: @id
@@ -176,7 +180,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminConsoleDialog do
     %{
       ctx
       | active_channel: channel_name,
-        channels: Enum.uniq([channel_name | ctx.channels]),
+        # `channels` is only ever read to enforce the per-user channel cap, and
+        # this batch was given an empty list precisely to sit outside it.
+        # Accumulating here put it straight back: provisioning stopped at the
+        # tenth room with "Maximum channel limit reached".
         owner_in: Enum.uniq([channel_name | ctx.owner_in]),
         operator_in: Enum.uniq([channel_name | ctx.operator_in])
     }

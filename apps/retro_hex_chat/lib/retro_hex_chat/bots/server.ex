@@ -202,13 +202,35 @@ defmodule RetroHexChat.Bots.Server do
 
   def handle_call({:reload_capabilities, capabilities}, _from, state) do
     new_capabilities = build_capabilities(capabilities)
-    # Initialize states for newly added capabilities, keep existing states
     new_states = init_capability_states(new_capabilities)
 
+    # Keep live state — a trivia round in progress, a flood counter — except
+    # where the capability's truth lives in the config it was just handed. A
+    # feed added from the admin dialog arrives that way, and preserving the old
+    # in-memory list would quietly discard it.
     merged_states =
-      Map.merge(new_states, state.capability_states, fn _k, _new, existing -> existing end)
+      Map.merge(new_states, state.capability_states, fn name, fresh, existing ->
+        if durable?(new_capabilities, name), do: fresh, else: existing
+      end)
 
-    {:reply, :ok, %{state | capabilities: new_capabilities, capability_states: merged_states}}
+    state = %{state | capabilities: new_capabilities, capability_states: merged_states}
+
+    # A reload can add or remove what there is to poll.
+    state = Enum.reduce(Map.keys(merged_states), state, &reconcile_timers(&2, &1))
+
+    {:reply, :ok, state}
+  end
+
+  @spec durable?([{atom(), module(), map()}], atom()) :: boolean()
+  defp durable?(capabilities, cap_name) do
+    case Enum.find(capabilities, fn {name, _mod, _cfg} -> name == cap_name end) do
+      {_name, module, _cfg} ->
+        Code.ensure_loaded!(module)
+        function_exported?(module, :durable_keys, 0) and module.durable_keys() != []
+
+      nil ->
+        false
+    end
   end
 
   @impl true
@@ -292,7 +314,7 @@ defmodule RetroHexChat.Bots.Server do
          not channel_enabled?(state, channel) or bot_nickname?(payload.nickname) do
       state
     else
-      context = build_context(state, channel)
+      context = state |> build_context(channel) |> with_author(payload.nickname)
 
       # 1. Run passive capabilities (moderation) — always run, no cooldown
       state = dispatch_passive_capabilities(payload.content, payload.nickname, context, state)
@@ -403,10 +425,29 @@ defmodule RetroHexChat.Bots.Server do
         {:cont, {:ignore, acc}}
 
       {:reply, text, new_cap_state} ->
-        {:halt, {{:reply, text}, update_capability_state(acc, name, new_cap_state)}}
+        acc = acc |> update_capability_state(name, new_cap_state) |> reconcile_timers(name)
+        {:halt, {{:reply, text}, acc}}
 
       result ->
         {:halt, {result, acc}}
+    end
+  end
+
+  # A command can change what there is to poll — `rss add` is the whole point of
+  # the capability and used to leave the feed sitting there, never fetched,
+  # because timers were only ever created at boot. Rebuilding this capability's
+  # timers from its new state is idempotent and cheap at these sizes.
+  @spec reconcile_timers(state(), atom()) :: state()
+  defp reconcile_timers(state, cap_name) do
+    with {^cap_name, module, config} <- find_capability(state, cap_name),
+         true <- function_exported?(module, :init_timers, 4) do
+      cap_state = Map.get(state.capability_states, cap_name, %{})
+
+      state
+      |> cancel_capability_timers(cap_name)
+      |> module.init_timers(cap_name, config, cap_state)
+    else
+      _ -> state
     end
   end
 
@@ -480,7 +521,63 @@ defmodule RetroHexChat.Bots.Server do
 
   @spec update_capability_state(state(), atom(), map()) :: state()
   defp update_capability_state(state, cap_name, new_state) do
-    %{state | capability_states: Map.put(state.capability_states, cap_name, new_state)}
+    state = %{state | capability_states: Map.put(state.capability_states, cap_name, new_state)}
+    persist_durable_state(state, cap_name, new_state)
+  end
+
+  # Everything a capability keeps in memory dies with the process, which is right
+  # for a trivia round and wrong for the list of feeds an operator typed and the
+  # memory of which items were already announced. A capability names the keys it
+  # cannot afford to lose; those ride back into its stored config.
+  @spec persist_durable_state(state(), atom(), map()) :: state()
+  defp persist_durable_state(state, cap_name, new_state) do
+    with {_name, module, config} <- find_capability(state, cap_name),
+         true <- function_exported?(module, :durable_keys, 0),
+         slice when slice != %{} <- durable_slice(module, new_state),
+         false <- slice_matches_config?(slice, config) do
+      write_durable_slice(state, cap_name, slice)
+    else
+      _ -> state
+    end
+  end
+
+  @spec durable_slice(module(), map()) :: map()
+  defp durable_slice(module, cap_state) do
+    Code.ensure_loaded!(module)
+
+    for key <- module.durable_keys(),
+        Map.has_key?(cap_state, key),
+        into: %{},
+        do: {to_string(key), Map.get(cap_state, key)}
+  end
+
+  @spec slice_matches_config?(map(), map()) :: boolean()
+  defp slice_matches_config?(slice, config) do
+    Enum.all?(slice, fn {key, value} -> Map.get(config, key) == value end)
+  end
+
+  # Re-read rather than rebuild the whole capability map from memory: a
+  # concurrent `/bot set` must not be clobbered by a poll finishing late.
+  @spec write_durable_slice(state(), atom(), map()) :: state()
+  defp write_durable_slice(state, cap_name, slice) do
+    key = to_string(cap_name)
+
+    case Queries.get_bot(state.bot_id) do
+      nil ->
+        state
+
+      bot ->
+        merged = Map.merge(Map.get(bot.capabilities, key, %{}), slice)
+        Queries.update_bot(bot, %{capabilities: Map.put(bot.capabilities, key, merged)})
+
+        capabilities =
+          Enum.map(state.capabilities, fn
+            {^cap_name, mod, config} -> {cap_name, mod, Map.merge(config, slice)}
+            other -> other
+          end)
+
+        %{state | capabilities: capabilities}
+    end
   end
 
   @spec apply_channel_overrides(map(), atom(), map()) :: map()
@@ -605,8 +702,33 @@ defmodule RetroHexChat.Bots.Server do
       command_prefix: state.command_prefix,
       config: %{},
       capability_state: %{},
-      channel_overrides: Map.get(channel_data, :capability_overrides, %{})
+      channel_overrides: Map.get(channel_data, :capability_overrides, %{}),
+      # Who is asking, and with what standing. Without this a capability cannot
+      # tell an operator from a passer-by, which is how `rss add` became a way
+      # for anyone to aim the server at a URL of their choosing.
+      author: nil,
+      author_privileged?: false
     }
+  end
+
+  # Resolved per message rather than carried in state: roles change while the
+  # bot is sitting in the channel.
+  @spec with_author(map(), String.t()) :: map()
+  defp with_author(context, author) do
+    %{context | author: author, author_privileged?: privileged?(context.channel, author)}
+  end
+
+  @spec privileged?(String.t(), String.t()) :: boolean()
+  defp privileged?(channel, nickname) do
+    case Channels.Server.get_state(channel) do
+      {:ok, %{owners: owners, operators: operators}} ->
+        nickname in owners or nickname in operators
+
+      _ ->
+        false
+    end
+  catch
+    :exit, _ -> false
   end
 
   @spec build_initial_state(map()) :: state()

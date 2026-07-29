@@ -13,6 +13,8 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
   @behaviour RetroHexChat.Bots.Capability
 
   alias RetroHexChat.Bots.Capabilities.RSS.FeedParser
+  alias RetroHexChat.Bots.Capabilities.RSS.Fetcher
+  alias RetroHexChat.Bots.Capabilities.RSS.UrlGuard
   alias RetroHexChat.Bots.Server
 
   require Logger
@@ -25,6 +27,18 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
   @spec description() :: String.t()
   def description, do: dgettext("bots", "RSS feed reader that posts updates to channels")
 
+  # The feed list and, inside it, the record of what has already been announced.
+  # Both have to outlive a deploy: without the first the bot forgets its feeds,
+  # without the second it greets the restart by republishing the whole feed.
+  @impl true
+  @spec durable_keys() :: [atom()]
+  def durable_keys, do: [:feeds]
+
+  # How many item identities to remember per feed. Comfortably more than any
+  # feed's window, so an item cannot rotate out of memory while still on the
+  # page and come back as news.
+  @seen_limit 200
+
   @impl true
   @spec init_state(map()) :: map()
   def init_state(config) do
@@ -32,26 +46,50 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
     poll_interval_ms = Map.get(config, "poll_interval_min", 30) * 60 * 1000
 
     %{
-      feeds:
-        Enum.map(feeds, fn f ->
-          Map.merge(
-            %{"last_seen_link" => nil, "etag" => nil, "last_modified" => nil, "title" => nil},
-            f
-          )
-        end),
+      feeds: Enum.map(feeds, &normalize_feed/1),
       poll_interval_ms: poll_interval_ms
     }
   end
 
+  # Feeds stored before the seen-set existed carry a single `last_seen_link`.
+  # Seeding from it keeps that one item from being announced twice.
+  @spec normalize_feed(map()) :: map()
+  defp normalize_feed(feed) do
+    seen =
+      case {Map.get(feed, "seen"), Map.get(feed, "last_seen_link")} do
+        {seen, _} when is_list(seen) -> seen
+        {_, link} when is_binary(link) -> [link]
+        _ -> []
+      end
+
+    Map.merge(
+      %{
+        "etag" => nil,
+        "last_modified" => nil,
+        "title" => nil,
+        "last_error" => nil,
+        "last_polled_at" => nil
+      },
+      Map.put(feed, "seen", seen)
+    )
+  end
+
   @impl true
   @spec init_timers(map(), atom(), map(), map()) :: map()
+  # Waiting half an hour to find out whether a feed works is how a feature gets
+  # called broken. A feed that has never been polled is polled almost at once —
+  # which also primes its seen-set, so the first real poll announces only what
+  # arrived after the operator added it. Feeds already running keep their cadence.
+  @first_poll_delay_ms 3_000
+
   def init_timers(server_state, cap_name, config, cap_state) do
     interval = Map.get(config, "poll_interval_min", 30) * 60 * 1000
 
     Enum.reduce(cap_state.feeds, server_state, fn feed, acc ->
       payload = %{type: :poll, feed_id: feed["id"], channel: feed["channel"]}
+      delay = if feed["last_polled_at"], do: interval, else: @first_poll_delay_ms
 
-      Server.schedule_capability_timer(acc, cap_name, payload, interval)
+      Server.schedule_capability_timer(acc, cap_name, payload, delay)
     end)
   end
 
@@ -65,11 +103,33 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
     config = ctx.config
 
     case parse_command(content, prefix, bot_name) do
-      {:rss, "list"} -> handle_list(state)
-      {:rss, "add " <> rest} -> handle_add(rest, state, config)
-      {:rss, "remove " <> id} -> handle_remove(String.trim(id), state)
-      {:rss, "check " <> id} -> handle_check(String.trim(id), state, config)
-      :ignore -> :ignore
+      {:rss, "list"} ->
+        handle_list(state)
+
+      {:rss, "add " <> rest} ->
+        if_privileged(ctx, fn -> handle_add(rest, state, config) end)
+
+      {:rss, "remove " <> id} ->
+        if_privileged(ctx, fn -> handle_remove(String.trim(id), state) end)
+
+      {:rss, "check " <> id} ->
+        if_privileged(ctx, fn -> handle_check(String.trim(id), state, config) end)
+
+      :ignore ->
+        :ignore
+    end
+  end
+
+  # Reading the feed list is harmless. Changing it points the server's own HTTP
+  # client at a URL somebody chose, and aims the output at a channel they may not
+  # even be in — that belongs to whoever runs the room.
+  @spec if_privileged(map(), (-> RetroHexChat.Bots.Capability.capability_result())) ::
+          RetroHexChat.Bots.Capability.capability_result()
+  defp if_privileged(ctx, fun) do
+    if Map.get(ctx, :author_privileged?, false) do
+      fun.()
+    else
+      {:reply, dgettext("bots", "Only channel operators can change the feed list.")}
     end
   end
 
@@ -201,30 +261,38 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
   @spec add_feed(String.t(), String.t(), map()) ::
           RetroHexChat.Bots.Capability.capability_result()
   defp add_feed(url, channel, state) do
-    if valid_url?(url) do
-      id = generate_id()
+    case UrlGuard.check(url) do
+      :ok ->
+        do_add_feed(url, channel, state)
 
-      feed = %{
-        "id" => id,
-        "url" => url,
-        "channel" => channel,
-        "title" => nil,
-        "last_seen_link" => nil,
-        "etag" => nil,
-        "last_modified" => nil
-      }
-
-      new_state = %{state | feeds: state.feeds ++ [feed]}
-
-      {:reply,
-       dgettext("bots", "Feed '%{id}' added: %{url} → %{channel}",
-         id: id,
-         url: url,
-         channel: channel
-       ), new_state}
-    else
-      {:reply, dgettext("bots", "Invalid URL. Must start with http:// or https://")}
+      {:error, reason} ->
+        {:reply, dgettext("bots", "Refusing %{url}: %{reason}", url: url, reason: reason)}
     end
+  end
+
+  @spec do_add_feed(String.t(), String.t(), map()) ::
+          RetroHexChat.Bots.Capability.capability_result()
+  defp do_add_feed(url, channel, state) do
+    id = generate_id()
+
+    feed = %{
+      "id" => id,
+      "url" => url,
+      "channel" => channel,
+      "title" => nil,
+      "seen" => [],
+      "etag" => nil,
+      "last_modified" => nil,
+      "last_polled_at" => nil,
+      "last_error" => nil
+    }
+
+    {:reply,
+     dgettext("bots", "Feed '%{id}' added: %{url} → %{channel}",
+       id: id,
+       url: url,
+       channel: channel
+     ), %{state | feeds: state.feeds ++ [feed]}}
   end
 
   @spec handle_remove(String.t(), map()) :: RetroHexChat.Bots.Capability.capability_result()
@@ -268,11 +336,11 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
         process_feed_response(feed, xml, headers, state, max_items)
 
       {:not_modified} ->
-        {:ignore, state}
+        {:ignore, note_poll(state, feed, nil)}
 
       {:error, reason} ->
         Logger.warning("RSS fetch error for #{feed["url"]}: #{inspect(reason)}")
-        {:ignore, state}
+        {:ignore, note_poll(state, feed, describe_error(reason))}
     end
   end
 
@@ -281,90 +349,99 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
   defp process_feed_response(feed, xml, headers, state, max_items) do
     case FeedParser.parse(xml) do
       {:ok, feed_info} ->
-        new_items = filter_new_items(feed_info.items, feed["last_seen_link"])
-        items_to_post = Enum.take(new_items, max_items)
+        publish(feed, feed_info, headers, state, max_items)
 
-        updated_feed =
-          feed
-          |> Map.put("title", feed_info.title || feed["title"])
-          |> maybe_update_last_seen(items_to_post)
-          |> Map.put("etag", headers[:etag])
-          |> Map.put("last_modified", headers[:last_modified])
-
-        new_state = update_feed(state, feed["id"], updated_feed)
-
-        if items_to_post == [] do
-          {:ignore, new_state}
-        else
-          lines = format_items(items_to_post, feed_info.title || feed["title"])
-          {{:multi_reply, lines}, new_state}
-        end
-
-      {:error, _reason} ->
-        {:ignore, state}
+      {:error, reason} ->
+        {:ignore, note_poll(state, feed, "unreadable feed: #{inspect(reason)}")}
     end
+  end
+
+  @spec publish(map(), FeedParser.feed_info(), map(), map(), integer()) ::
+          {RetroHexChat.Bots.Capability.capability_result(), map()}
+  defp publish(feed, feed_info, headers, state, max_items) do
+    seen = feed["seen"] || []
+    {to_post, newly_seen} = plan_publication(seen, feed_info.items, max_items)
+
+    updated =
+      feed
+      |> Map.put("title", feed_info.title || feed["title"])
+      |> Map.put("etag", headers[:etag])
+      |> Map.put("last_modified", headers[:last_modified])
+      # Only what was actually posted is marked seen, so anything over the
+      # per-poll ceiling is picked up next time rather than lost.
+      |> Map.put("seen", Enum.take(newly_seen ++ seen, @seen_limit))
+      |> Map.put("last_polled_at", DateTime.utc_now() |> DateTime.to_iso8601())
+      |> Map.put("last_error", nil)
+
+    new_state = update_feed(state, feed["id"], updated)
+
+    if to_post == [] do
+      {:ignore, new_state}
+    else
+      {{:multi_reply, format_items(to_post, updated["title"])}, new_state}
+    end
+  end
+
+  @doc """
+  Decides what to announce, given what has already been announced.
+
+  Pure on purpose: this is the whole "only new items, never twice" rule, and it
+  is worth testing without a network in the way.
+
+    * The first sight of a feed is not news — remember the page, say nothing.
+      An operator adding a feed wants what happens next, not an archive dump.
+    * An item is recognised by identity, not by position, so a feed that pins a
+      post to the top or reorders on update cannot make old news look new.
+    * Only what is actually posted is marked seen, so anything above the
+      per-poll ceiling waits for the next poll instead of being lost.
+
+  Returns `{items_to_post, identities_to_remember}`, oldest first.
+  """
+  @spec plan_publication([String.t()], [FeedParser.feed_item()], pos_integer()) ::
+          {[FeedParser.feed_item()], [String.t()]}
+  def plan_publication([], items, _max_items), do: {[], Enum.map(items, &identity/1)}
+
+  def plan_publication(seen, items, max_items) do
+    batch =
+      items
+      |> Enum.reject(&(identity(&1) in seen))
+      |> Enum.reverse()
+      |> Enum.take(max_items)
+
+    {batch, Enum.map(batch, &identity/1)}
+  end
+
+  # An item's identity: its guid when the feed publishes one, its link otherwise.
+  # Comparing identities rather than walking down from the newest makes the check
+  # immune to feeds that pin an item to the top or reorder on update.
+  @spec identity(FeedParser.feed_item()) :: String.t()
+  defp identity(item) do
+    case Map.get(item, :guid) do
+      guid when is_binary(guid) and guid != "" -> guid
+      _ -> item.link || item.title
+    end
+  end
+
+  @spec describe_error(term()) :: String.t()
+  defp describe_error({:blocked, reason}), do: reason
+  defp describe_error(%{reason: reason}), do: inspect(reason)
+  defp describe_error(reason) when is_binary(reason), do: reason
+  defp describe_error(reason), do: inspect(reason)
+
+  @spec note_poll(map(), map(), String.t() | nil) :: map()
+  defp note_poll(state, feed, error) do
+    updated =
+      feed
+      |> Map.put("last_polled_at", DateTime.utc_now() |> DateTime.to_iso8601())
+      |> Map.put("last_error", error)
+
+    update_feed(state, feed["id"], updated)
   end
 
   @spec fetch_feed(String.t(), String.t() | nil, String.t() | nil) ::
           {:ok, String.t(), map()} | {:not_modified} | {:error, term()}
   defp fetch_feed(url, etag, last_modified) do
-    headers = build_conditional_headers(etag, last_modified)
-
-    case Req.get(url, headers: headers, receive_timeout: 15_000) do
-      {:ok, %{status: 200, body: body, headers: resp_headers}} ->
-        {:ok, body, parse_cache_headers(resp_headers)}
-
-      {:ok, %{status: 304}} ->
-        {:not_modified}
-
-      {:ok, %{status: status}} ->
-        {:error, dgettext("bots", "HTTP %{status}", status: status)}
-
-      {:error, reason} ->
-        {:error, reason}
-    end
-  rescue
-    e -> {:error, Exception.message(e)}
-  end
-
-  @spec build_conditional_headers(String.t() | nil, String.t() | nil) :: [
-          {String.t(), String.t()}
-        ]
-  defp build_conditional_headers(etag, last_modified) do
-    headers = [{"user-agent", dgettext("bots", "RetroHexChat-RSS/1.0")}]
-    headers = if etag, do: [{"if-none-match", etag} | headers], else: headers
-    if last_modified, do: [{"if-modified-since", last_modified} | headers], else: headers
-  end
-
-  @spec parse_cache_headers(%{String.t() => [String.t()]}) :: map()
-  defp parse_cache_headers(headers) do
-    etag = get_header(headers, "etag")
-    last_mod = get_header(headers, "last-modified")
-    %{etag: etag, last_modified: last_mod}
-  end
-
-  @spec get_header(%{String.t() => [String.t()]}, String.t()) :: String.t() | nil
-  defp get_header(headers, name) do
-    case Map.get(headers, name) do
-      [value | _] -> value
-      _ -> nil
-    end
-  end
-
-  # ── Feed Processing ──
-
-  @spec filter_new_items([FeedParser.feed_item()], String.t() | nil) :: [FeedParser.feed_item()]
-  defp filter_new_items(items, nil), do: items
-
-  defp filter_new_items(items, last_seen_link) do
-    Enum.take_while(items, fn item -> item.link != last_seen_link end)
-  end
-
-  @spec maybe_update_last_seen(map(), [FeedParser.feed_item()]) :: map()
-  defp maybe_update_last_seen(feed, []), do: feed
-
-  defp maybe_update_last_seen(feed, [first | _]) do
-    Map.put(feed, "last_seen_link", first.link)
+    Fetcher.impl().fetch(url, etag, last_modified)
   end
 
   @spec format_items([FeedParser.feed_item()], String.t() | nil) :: [String.t()]
@@ -380,24 +457,13 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
     end)
   end
 
-  # ── Helpers ──
-
   @spec find_feed([map()], String.t()) :: map() | nil
   defp find_feed(feeds, id), do: Enum.find(feeds, &(&1["id"] == id))
 
   @spec update_feed(map(), String.t(), map()) :: map()
   defp update_feed(state, id, updated_feed) do
-    new_feeds =
-      Enum.map(state.feeds, fn f ->
-        if f["id"] == id, do: updated_feed, else: f
-      end)
-
+    new_feeds = Enum.map(state.feeds, fn f -> if f["id"] == id, do: updated_feed, else: f end)
     %{state | feeds: new_feeds}
-  end
-
-  @spec valid_url?(String.t()) :: boolean()
-  defp valid_url?(url) do
-    String.starts_with?(url, "http://") or String.starts_with?(url, "https://")
   end
 
   @spec generate_id() :: String.t()

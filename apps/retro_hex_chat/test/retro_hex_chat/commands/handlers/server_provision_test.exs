@@ -182,6 +182,53 @@ defmodule RetroHexChat.Commands.Handlers.ServerProvisionTest do
     end
   end
 
+  test "every feed it seeds is one the bot can actually deliver", %{lines: lines} do
+    # `/bot rss add <bot> <url> <channel>` fails at run time if the bot was never
+    # created, was never put in that channel, or the address is one the guard
+    # refuses. All three are visible here, before anyone pastes the script.
+    parsed = Enum.map(lines, &args/1)
+    created = for ["bot", "create", name | _] <- parsed, into: MapSet.new(), do: name
+
+    memberships =
+      for ["bot", "join", bot, chan | _] <- parsed,
+          into: MapSet.new(),
+          do: {bot, String.downcase(chan)}
+
+    seeded = for ["bot", "rss", "add", bot, url, chan | _] <- parsed, do: {bot, url, chan}
+
+    refute seeded == [], "expected the script to seed feeds"
+
+    for {bot, url, chan} <- seeded do
+      assert MapSet.member?(created, bot), "#{bot} carries a feed but is never created"
+
+      assert MapSet.member?(memberships, {bot, String.downcase(chan)}),
+             "#{bot} is told to post to #{chan} but never joins it"
+
+      assert String.starts_with?(url, "http://") or String.starts_with?(url, "https://"),
+             "#{url} is not an address the guard will fetch"
+    end
+  end
+
+  test "a feed is seeded only after its bot is in the room", %{lines: lines} do
+    parsed = Enum.map(lines, &args/1)
+
+    {_joined, offenders} =
+      Enum.reduce(parsed, {MapSet.new(), []}, fn
+        ["bot", "join", bot, chan | _], {joined, bad} ->
+          {MapSet.put(joined, {bot, String.downcase(chan)}), bad}
+
+        ["bot", "rss", "add", bot, _url, chan | _], {joined, bad} ->
+          key = {bot, String.downcase(chan)}
+          {joined, if(MapSet.member?(joined, key), do: bad, else: [key | bad])}
+
+        _line, acc ->
+          acc
+      end)
+
+    assert offenders == [],
+           "feeds seeded before the bot joins the room: #{inspect(offenders)}"
+  end
+
   test "no channel is topic'd or moded before it is joined", %{lines: lines} do
     parsed = Enum.map(lines, &args/1)
 

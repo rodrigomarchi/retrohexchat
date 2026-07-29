@@ -446,13 +446,115 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
           />
           <div
             :for={{key, val} <- cap_config_fields(@caps[cap_name])}
+            :if={not feed_list?(cap_name, key)}
             class="bm-capability-config flex items-center gap-retro-4 text-xs mt-retro-2"
           >
             <span class="bm-capability-key font-bold w-[100px]">{key}:</span>
             <span class="bm-capability-value">{inspect_cap_value(val)}</span>
           </div>
+          <.rss_feeds
+            :if={cap_name == "rss"}
+            feeds={Map.get(@caps["rss"] || %{}, "feeds", [])}
+            bot_name={@selected.name}
+            is_admin={@is_admin}
+          />
         </fieldset>
       </div>
+    </div>
+    """
+  end
+
+  attr :feeds, :list, default: []
+  attr :bot_name, :string, required: true
+  attr :is_admin, :boolean, default: false
+
+  # "1 item" tells an administrator nothing about a feed list. What they need is
+  # which feed goes to which room, whether the last poll worked, and why it did
+  # not — the question "is it running?" answered without opening the logs.
+  @spec rss_feeds(map()) :: Phoenix.LiveView.Rendered.t()
+  defp rss_feeds(assigns) do
+    ~H"""
+    <div class="mt-retro-4" data-testid="rss-feeds">
+      <div
+        :if={@feeds == []}
+        class="text-center text-muted-foreground text-sm py-retro-16"
+      >
+        {dgettext("dialogs", "No feeds yet. Add one and it will start polling.")}
+      </div>
+
+      <div :if={@feeds != []} class="bm-object-list" role="list">
+        <article
+          :for={feed <- @feeds}
+          class="bm-object-entry"
+          role="listitem"
+          data-testid={"rss-feed-#{feed["id"]}"}
+        >
+          <div class="bm-object-body">
+            <div class="bm-object-primary">
+              <span class="bm-object-label">{dgettext("dialogs", "Feed")}</span>
+              <span class="bm-object-value">
+                {feed["title"] || truncate(feed["url"], 48)}
+              </span>
+            </div>
+            <div class="bm-object-meta">
+              <span class="bm-object-label">{dgettext("dialogs", "Posts to")}</span>
+              <span class="bm-object-value">{feed["channel"]}</span>
+            </div>
+            <div class="bm-object-meta">
+              <span class="bm-object-label">{dgettext("dialogs", "Last checked")}</span>
+              <span class="bm-object-value">
+                {feed["last_polled_at"] || dgettext("dialogs", "never")}
+              </span>
+            </div>
+            <div :if={feed["last_error"]} class="bm-object-meta" data-testid="rss-feed-error">
+              <span class="bm-object-label">{dgettext("dialogs", "Problem")}</span>
+              <span class="bm-object-value text-red-700">{feed["last_error"]}</span>
+            </div>
+          </div>
+          <button
+            :if={@is_admin}
+            type="button"
+            class="bm-link-danger bm-object-action text-red-700 hover:underline text-xs"
+            phx-click="bot_rss_remove_feed"
+            phx-value-bot_name={@bot_name}
+            phx-value-feed_id={feed["id"]}
+            data-testid={"rss-remove-#{feed["id"]}"}
+          >
+            {dgettext("dialogs", "Remove")}
+          </button>
+        </article>
+      </div>
+
+      <form
+        :if={@is_admin}
+        id="rss-add-feed-form"
+        phx-submit="bot_rss_add_feed"
+        class="bm-action-form flex gap-retro-4 mt-retro-4"
+      >
+        <input type="hidden" name="bot_name" value={@bot_name} />
+        <input
+          type="url"
+          name="url"
+          required
+          placeholder="https://example.com/feed.xml"
+          class="bm-action-input flex-1 text-sm shadow-retro-sunken bg-white px-retro-4 py-retro-2"
+          autocomplete="off"
+          data-testid="rss-feed-url"
+        />
+        <input
+          type="text"
+          name="channel"
+          required
+          placeholder="#news"
+          class="bm-action-input w-[120px] text-sm shadow-retro-sunken bg-white px-retro-4 py-retro-2"
+          autocomplete="off"
+          data-testid="rss-feed-channel"
+        />
+        <.button type="submit" size="sm" class="bm-action-button" data-testid="rss-add-feed">
+          <:icon><Icons.icon_btn_add class="w-[14px] h-[14px]" /></:icon>
+          {dgettext("dialogs", "Add")}
+        </.button>
+      </form>
     </div>
     """
   end
@@ -483,6 +585,19 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
       </button>
     </div>
     """
+  end
+
+  # The feed list has its own panel; the generic key/value row would render it
+  # as "1 item".
+  @spec feed_list?(String.t(), String.t()) :: boolean()
+  defp feed_list?("rss", "feeds"), do: true
+  defp feed_list?(_cap, _key), do: false
+
+  @spec truncate(String.t() | nil, pos_integer()) :: String.t()
+  defp truncate(nil, _max), do: ""
+
+  defp truncate(text, max) do
+    if String.length(text) > max, do: String.slice(text, 0, max - 1) <> "…", else: text
   end
 
   @spec cap_display_name(String.t()) :: String.t()

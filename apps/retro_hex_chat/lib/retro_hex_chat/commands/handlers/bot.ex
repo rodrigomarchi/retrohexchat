@@ -4,7 +4,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Bots.Capabilities.{CustomCommands, Greeter, Help, Mention}
-  alias RetroHexChat.Bots.{Lifecycle, Policy, Queries, Server, Supervisor}
+  alias RetroHexChat.Bots.{Feeds, Lifecycle, Policy, Queries, Server, Supervisor}
   alias RetroHexChat.Commands.Handler
 
   # Setting names are identifiers a user types verbatim, so they are interpolated
@@ -63,6 +63,42 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
 
   def execute(["info", name], _context) do
     do_info(name)
+  end
+
+  # Feeds are the one part of a bot's configuration that a provisioning script
+  # could not reach: they live inside the rss capability's config, and `/bot set`
+  # only ever handled scalars.
+  def execute(["rss", "add", bot_name, url, channel], context) do
+    with :ok <- Policy.authorize(context) do
+      do_rss(bot_name, &Feeds.add(&1, url, channel), fn _bot ->
+        dgettext("commands", "[BotService] Feed added to %{name}: %{url} → %{channel}",
+          name: bot_name,
+          url: url,
+          channel: channel
+        )
+      end)
+    end
+  end
+
+  def execute(["rss", "remove", bot_name, feed_id], context) do
+    with :ok <- Policy.authorize(context) do
+      do_rss(bot_name, &Feeds.remove(&1, feed_id), fn _bot ->
+        dgettext("commands", "[BotService] Feed '%{id}' removed from %{name}.",
+          id: feed_id,
+          name: bot_name
+        )
+      end)
+    end
+  end
+
+  def execute(["rss", "list", bot_name], _context) do
+    case Queries.get_bot_by_name(bot_name) do
+      nil ->
+        {:error, dgettext("commands", "[BotService] Bot '%{name}' not found.", name: bot_name)}
+
+      bot ->
+        {:ok, :system, %{content: format_feed_list(bot_name, Feeds.list(bot))}}
+    end
   end
 
   def execute(["join", bot_name, channel], context) do
@@ -205,6 +241,43 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
   end
 
   @spec do_destroy(String.t()) :: Handler.result()
+  @spec do_rss(String.t(), (map() -> {:ok, map()} | {:error, String.t()}), (map() -> String.t())) ::
+          Handler.result()
+  defp do_rss(bot_name, action, message) do
+    case Queries.get_bot_by_name(bot_name) do
+      nil ->
+        {:error, dgettext("commands", "[BotService] Bot '%{name}' not found.", name: bot_name)}
+
+      bot ->
+        case action.(bot) do
+          {:ok, updated} ->
+            {:ok, :system, %{content: message.(updated)}}
+
+          {:error, reason} ->
+            {:error, dgettext("commands", "[BotService] %{reason}", reason: reason)}
+        end
+    end
+  end
+
+  @spec format_feed_list(String.t(), [map()]) :: String.t()
+  defp format_feed_list(bot_name, []) do
+    dgettext("commands", "[BotService] %{name} carries no feeds.", name: bot_name)
+  end
+
+  defp format_feed_list(bot_name, feeds) do
+    lines =
+      Enum.map_join(feeds, "\n", fn feed ->
+        dgettext("commands", "  %{id} | %{channel} | %{url} | last checked: %{when}",
+          id: feed["id"],
+          channel: feed["channel"],
+          url: feed["url"],
+          when: feed["last_polled_at"] || dgettext("commands", "never")
+        )
+      end)
+
+    dgettext("commands", "[BotService] Feeds for %{name}:", name: bot_name) <> "\n" <> lines
+  end
+
   defp do_destroy(name) do
     case Queries.get_bot_by_name(name) do
       nil ->

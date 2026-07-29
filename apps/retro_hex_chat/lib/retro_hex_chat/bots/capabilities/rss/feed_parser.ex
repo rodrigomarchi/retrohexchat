@@ -9,6 +9,9 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.FeedParser do
   @type feed_item :: %{
           title: String.t(),
           link: String.t(),
+          # RSS <guid> / Atom <id>: the publisher's own name for the item, and
+          # the only identity that stays put when a link is rewritten.
+          guid: String.t() | nil,
           published: String.t() | nil
         }
 
@@ -38,9 +41,14 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.FeedParser do
 
   @spec safe_xml_parse(String.t()) :: {:ok, tuple()} | {:error, term()}
   defp safe_xml_parse(xml_string) do
-    charlist = String.to_charlist(xml_string)
+    # Bytes, not codepoints. `String.to_charlist/1` hands xmerl a list of
+    # Unicode codepoints, but xmerl reads its input as bytes and decodes them
+    # according to the document's own declaration — so a codepoint above 255
+    # arrives as an illegal character. Every real feed has one: a curly
+    # apostrophe, an en dash, an ellipsis. This rejected all of them.
+    bytes = :binary.bin_to_list(xml_string)
     # Use apply to avoid compile-time warning about xmerl not being loaded yet
-    {doc, _rest} = apply(:xmerl_scan, :string, [charlist, [quiet: true]])
+    {doc, _rest} = apply(:xmerl_scan, :string, [bytes, [quiet: true]])
     {:ok, doc}
   rescue
     e -> {:error, Exception.message(e)}
@@ -86,6 +94,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.FeedParser do
     %{
       title: child_text(item, :title) || dgettext("bots", "(no title)"),
       link: child_text(item, :link) || "",
+      guid: child_text(item, :guid),
       published: child_text(item, :pubDate)
     }
   end
@@ -104,6 +113,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.FeedParser do
     %{
       title: child_text(entry, :title) || dgettext("bots", "(no title)"),
       link: atom_link(entry) || "",
+      guid: child_text(entry, :id),
       published: child_text(entry, :published) || child_text(entry, :updated)
     }
   end

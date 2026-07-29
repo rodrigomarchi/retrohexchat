@@ -26,6 +26,13 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler do
   @spec description() :: String.t()
   def description, do: dgettext("bots", "Scheduled and periodic messages")
 
+  # A schedule an operator set up is a standing instruction, not scratch state:
+  # it has to be there after a deploy, or the room goes quiet without anyone
+  # touching anything.
+  @impl true
+  @spec durable_keys() :: [atom()]
+  def durable_keys, do: [:schedules]
+
   @impl true
   @spec init_state(map()) :: map()
   def init_state(config) do
@@ -71,10 +78,10 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler do
         handle_list(state)
 
       {:schedule, "add " <> rest} ->
-        handle_add(rest, state, config)
+        if_privileged(ctx, fn -> handle_add(rest, state, config) end)
 
       {:schedule, "remove " <> id} ->
-        handle_remove(String.trim(id), state)
+        if_privileged(ctx, fn -> handle_remove(String.trim(id), state) end)
 
       :ignore ->
         :ignore
@@ -149,6 +156,18 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler do
       %{trigger: "schedule list", description: dgettext("bots", "List active schedules")},
       %{trigger: "schedule remove", description: dgettext("bots", "Remove a schedule")}
     ]
+  end
+
+  # Reading the schedule is harmless; adding one makes the bot speak on a timer
+  # in a room, which belongs to whoever runs it.
+  @spec if_privileged(map(), (-> RetroHexChat.Bots.Capability.capability_result())) ::
+          RetroHexChat.Bots.Capability.capability_result()
+  defp if_privileged(ctx, fun) do
+    if Map.get(ctx, :author_privileged?, false) do
+      fun.()
+    else
+      {:reply, dgettext("bots", "Only channel operators can change the schedule.")}
+    end
   end
 
   # ── Command Parsing ──

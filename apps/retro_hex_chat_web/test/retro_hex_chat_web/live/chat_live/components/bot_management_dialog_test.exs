@@ -43,4 +43,72 @@ defmodule RetroHexChatWeb.ChatLive.Components.BotManagementDialogTest do
 
     assert html =~ "TriviaBot"
   end
+
+  describe "the RSS feeds panel" do
+    defp bot_with_feeds(feeds) do
+      %{
+        name: "Gazeta",
+        nickname: "Gazeta",
+        enabled: true,
+        capabilities: %{"rss" => %{"enabled" => true, "feeds" => feeds}}
+      }
+    end
+
+    test "invites a first feed when there are none" do
+      html = dialog(%{show_bot: true, selected: bot_with_feeds([]), is_admin: true})
+
+      assert html =~ ~s(data-testid="rss-feeds")
+      assert html =~ "No feeds yet"
+      assert html =~ ~s(data-testid="rss-add-feed")
+    end
+
+    test "shows where each feed posts and when it was last checked" do
+      feed = %{
+        "id" => "f1",
+        "url" => "https://example.com/atom.xml",
+        "channel" => "#news",
+        "title" => "Example Daily",
+        "last_polled_at" => "2026-07-29T12:00:00Z",
+        "last_error" => nil
+      }
+
+      html = dialog(%{show_bot: true, selected: bot_with_feeds([feed]), is_admin: true})
+
+      assert html =~ ~s(data-testid="rss-feed-f1")
+      assert html =~ "Example Daily"
+      assert html =~ "#news"
+      assert html =~ "2026-07-29T12:00:00Z"
+      assert html =~ ~s(data-testid="rss-remove-f1")
+    end
+
+    test "surfaces why the last poll failed" do
+      feed = %{
+        "id" => "f2",
+        "url" => "https://example.com/atom.xml",
+        "channel" => "#news",
+        "last_error" => "example.com does not resolve (nxdomain)"
+      }
+
+      html = dialog(%{show_bot: true, selected: bot_with_feeds([feed]), is_admin: true})
+
+      assert html =~ ~s(data-testid="rss-feed-error")
+      assert html =~ "nxdomain"
+    end
+
+    test "a feed list is never rendered as a bare item count" do
+      feed = %{"id" => "f3", "url" => "https://example.com/f", "channel" => "#news"}
+      html = dialog(%{show_bot: true, selected: bot_with_feeds([feed]), is_admin: true})
+
+      refute html =~ "1 item"
+    end
+
+    test "an onlooker gets no controls" do
+      feed = %{"id" => "f4", "url" => "https://example.com/f", "channel" => "#news"}
+      html = dialog(%{show_bot: true, selected: bot_with_feeds([feed]), is_admin: false})
+
+      assert html =~ ~s(data-testid="rss-feed-f4")
+      refute html =~ ~s(data-testid="rss-remove-f4")
+      refute html =~ ~s(data-testid="rss-add-feed")
+    end
+  end
 end

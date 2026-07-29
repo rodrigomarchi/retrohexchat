@@ -11,7 +11,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
   alias RetroHexChat.Accounts.ServerRoles
   alias RetroHexChat.Bots.Capabilities.{CustomCommands, Dice, Greeter, Help, Mention, Moderation}
   alias RetroHexChat.Bots.Capabilities.{RSS, Scheduler, Trivia}
-  alias RetroHexChat.Bots.{Lifecycle, Queries, Server, Supervisor}
+  alias RetroHexChat.Bots.{Feeds, Lifecycle, Queries, Server, Supervisor}
   alias RetroHexChatWeb.ChatLive.Components.BotManagementDialog
   alias RetroHexChatWeb.ChatLive.Windows
 
@@ -263,6 +263,32 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
     {:halt, do_toggle_capability(bot, cap_name, socket)}
   end
 
+  # ── RSS feeds ──
+
+  def handle_event(
+        "bot_rss_add_feed",
+        %{"bot_name" => bot_name, "url" => url, "channel" => channel},
+        socket
+      ) do
+    if admin?(socket.assigns.session) do
+      {:halt, do_rss_add(Queries.get_bot_by_name(bot_name), url, channel, socket)}
+    else
+      {:halt, error_event(socket, dgettext("chat", "Only admins can manage bots."))}
+    end
+  end
+
+  def handle_event(
+        "bot_rss_remove_feed",
+        %{"bot_name" => bot_name, "feed_id" => feed_id},
+        socket
+      ) do
+    if admin?(socket.assigns.session) do
+      {:halt, do_rss_remove(Queries.get_bot_by_name(bot_name), feed_id, socket)}
+    else
+      {:halt, error_event(socket, dgettext("chat", "Only admins can manage bots."))}
+    end
+  end
+
   def handle_event(_event, _params, socket) do
     {:cont, socket}
   end
@@ -344,6 +370,43 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
     case RetroHexChat.Bots.Registry.lookup(nickname) do
       {:ok, _} -> fun.(nickname)
       {:error, :not_found} -> :ok
+    end
+  end
+
+  defp do_rss_add(nil, _url, _channel, socket) do
+    error_event(socket, dgettext("chat", "[BotService] Bot not found."))
+  end
+
+  defp do_rss_add(bot, url, channel, socket) do
+    case Feeds.add(bot, url, channel) do
+      {:ok, updated} ->
+        socket
+        |> put_bot(selected: updated)
+        |> system_event(
+          dgettext("chat", "[BotService] Feed added: %{url} → %{channel}",
+            url: url,
+            channel: channel
+          )
+        )
+
+      {:error, reason} ->
+        error_event(socket, dgettext("chat", "[BotService] %{reason}", reason: reason))
+    end
+  end
+
+  defp do_rss_remove(nil, _feed_id, socket) do
+    error_event(socket, dgettext("chat", "[BotService] Bot not found."))
+  end
+
+  defp do_rss_remove(bot, feed_id, socket) do
+    case Feeds.remove(bot, feed_id) do
+      {:ok, updated} ->
+        socket
+        |> put_bot(selected: updated)
+        |> system_event(dgettext("chat", "[BotService] Feed removed."))
+
+      {:error, reason} ->
+        error_event(socket, dgettext("chat", "[BotService] %{reason}", reason: reason))
     end
   end
 

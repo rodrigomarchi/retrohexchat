@@ -88,6 +88,65 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.FeedParserTest do
     end
   end
 
+  describe "parse/1 — the characters real feeds actually contain" do
+    # Every feed in the wild carries a curly apostrophe, an en dash or an
+    # ellipsis. Handing xmerl a list of codepoints instead of bytes made each of
+    # those an illegal character, and the parser rejected the whole document:
+    # BBC, Hacker News, the GitHub blog and Reddit all failed on this alone.
+    @typographic """
+    <?xml version="1.0" encoding="UTF-8"?>
+    <rss version="2.0">
+      <channel>
+        <title>Notícias — o jornal</title>
+        <item>
+          <title>It’s here — the “long-awaited” release…</title>
+          <link>https://example.com/1</link>
+          <guid>urn:example:1</guid>
+        </item>
+        <item>
+          <title>Ação, coração e emoção</title>
+          <link>https://example.com/2</link>
+          <guid>urn:example:2</guid>
+        </item>
+      </channel>
+    </rss>
+    """
+
+    test "reads a feed with curly quotes, dashes and accents" do
+      assert {:ok, feed} = FeedParser.parse(@typographic)
+
+      assert feed.title == "Notícias — o jornal"
+      assert length(feed.items) == 2
+
+      [first, second] = feed.items
+      assert first.title == "It’s here — the “long-awaited” release…"
+      assert second.title == "Ação, coração e emoção"
+    end
+
+    test "keeps the publisher's own identity for each item" do
+      {:ok, feed} = FeedParser.parse(@typographic)
+
+      assert Enum.map(feed.items, & &1.guid) == ["urn:example:1", "urn:example:2"]
+    end
+
+    test "reads an Atom entry's id" do
+      atom = """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <feed xmlns="http://www.w3.org/2005/Atom">
+        <title>Diário</title>
+        <entry>
+          <title>Está tudo bem — mesmo</title>
+          <id>tag:example.com,2026:1</id>
+          <link href="https://example.com/a"/>
+        </entry>
+      </feed>
+      """
+
+      assert {:ok, feed} = FeedParser.parse(atom)
+      assert [%{guid: "tag:example.com,2026:1", title: "Está tudo bem — mesmo"}] = feed.items
+    end
+  end
+
   describe "parse/1 — errors" do
     test "rejects invalid XML" do
       assert {:error, _} = FeedParser.parse("not xml at all")

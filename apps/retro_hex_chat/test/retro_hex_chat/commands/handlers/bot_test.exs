@@ -165,6 +165,80 @@ defmodule RetroHexChat.Commands.Handlers.BotTest do
     end
   end
 
+  describe "execute rss — seeding feeds from a script" do
+    alias RetroHexChat.Bots.Feeds
+
+    @public "https://93.184.216.34/feed.xml"
+
+    setup do
+      Bot.execute(["create", "BotCmdTest"], @admin_ctx)
+      bot = Queries.get_bot_by_name("BotCmdTest")
+      {:ok, _} = Queries.add_channel_config(bot.id, "#wire")
+      :ok
+    end
+
+    test "adds a feed to a bot" do
+      assert {:ok, :system, %{content: content}} =
+               Bot.execute(["rss", "add", "BotCmdTest", @public, "#wire"], @admin_ctx)
+
+      assert content =~ "Feed added"
+
+      assert [%{"url" => @public, "channel" => "#wire"}] =
+               Feeds.list(Queries.get_bot_by_name("BotCmdTest"))
+    end
+
+    test "refuses an address the server should not fetch" do
+      assert {:error, msg} =
+               Bot.execute(
+                 ["rss", "add", "BotCmdTest", "http://169.254.169.254/x", "#wire"],
+                 @admin_ctx
+               )
+
+      assert msg =~ "public"
+    end
+
+    test "refuses a room the bot has not joined" do
+      assert {:error, msg} =
+               Bot.execute(["rss", "add", "BotCmdTest", @public, "#elsewhere"], @admin_ctx)
+
+      assert msg =~ "not in #elsewhere"
+    end
+
+    test "a regular user cannot point a bot at a URL" do
+      assert {:error, msg} =
+               Bot.execute(["rss", "add", "BotCmdTest", @public, "#wire"], @user_ctx)
+
+      assert msg =~ "Only admins"
+    end
+
+    test "lists what a bot carries, and says so when it carries nothing" do
+      assert {:ok, :system, %{content: empty}} =
+               Bot.execute(["rss", "list", "BotCmdTest"], @user_ctx)
+
+      assert empty =~ "no feeds"
+
+      Bot.execute(["rss", "add", "BotCmdTest", @public, "#wire"], @admin_ctx)
+
+      assert {:ok, :system, %{content: listed}} =
+               Bot.execute(["rss", "list", "BotCmdTest"], @user_ctx)
+
+      assert listed =~ @public
+      assert listed =~ "#wire"
+      assert listed =~ "never"
+    end
+
+    test "removes a feed by the id it was given" do
+      Bot.execute(["rss", "add", "BotCmdTest", @public, "#wire"], @admin_ctx)
+      [%{"id" => id}] = Feeds.list(Queries.get_bot_by_name("BotCmdTest"))
+
+      assert {:ok, :system, %{content: content}} =
+               Bot.execute(["rss", "remove", "BotCmdTest", id], @admin_ctx)
+
+      assert content =~ "removed"
+      assert Feeds.list(Queries.get_bot_by_name("BotCmdTest")) == []
+    end
+  end
+
   describe "execute destroy" do
     test "admin can destroy a bot" do
       Bot.execute(["create", "BotCmdTest"], @admin_ctx)

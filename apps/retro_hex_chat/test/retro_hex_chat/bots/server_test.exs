@@ -592,4 +592,110 @@ defmodule RetroHexChat.Bots.ServerTest do
       await_order_bot_line("Try !help for my commands.")
     end
   end
+
+  describe "durable capability state" do
+    alias RetroHexChat.Bots.Queries
+
+    setup do
+      {:ok, bot} =
+        Queries.create_bot(%{
+          name: "DurableBot",
+          nickname: "DurableBot",
+          created_by: "admin",
+          capabilities: %{"rss" => %{"enabled" => true, "feeds" => []}}
+        })
+
+      on_exit(fn -> Supervisor.stop_bot("DurableBot") end)
+      {:ok, bot: bot}
+    end
+
+    test "a feed added at runtime is still there after the process dies", %{bot: bot} do
+      {:ok, pid} =
+        Supervisor.start_bot(%{
+          id: bot.id,
+          name: bot.name,
+          nickname: bot.nickname,
+          command_prefix: "!",
+          created_by: "admin",
+          enabled: true,
+          cooldown_ms: 0,
+          capabilities: bot.capabilities,
+          channel_configs: [],
+          custom_commands: []
+        })
+
+      :sys.replace_state(pid, fn s ->
+        feeds = [%{"id" => "f1", "url" => "https://example.com/feed.xml", "channel" => "#news"}]
+        update_in(s.capability_states, &Map.put(&1, :rss, %{feeds: feeds, poll_interval_ms: 1}))
+      end)
+
+      # Reach the persistence path the same way a poll does.
+      send(pid, {:capability_timer, :rss, %{type: :noop}})
+      Process.sleep(50)
+
+      stored = Queries.get_bot(bot.id).capabilities
+
+      assert [%{"id" => "f1", "url" => "https://example.com/feed.xml"}] =
+               get_in(stored, ["rss", "feeds"]),
+             "the feed an operator typed must outlive the process that held it"
+    end
+  end
+
+  describe "a feed added at runtime gets polled" do
+    @rss_bot %{
+      id: 991,
+      name: "FeedTimerBot",
+      nickname: "FeedTimerBot",
+      command_prefix: "!",
+      created_by: "admin",
+      enabled: true,
+      cooldown_ms: 0,
+      capabilities: %{"rss" => %{"enabled" => true, "feeds" => []}},
+      channel_configs: [%{channel_name: "#feedtest", enabled: true, capability_overrides: %{}}],
+      custom_commands: []
+    }
+
+    setup do
+      {:ok, chan} = RetroHexChat.Channels.Supervisor.start_child("#feedtest")
+      # First human in owns the room, which is the standing the command requires.
+      {:ok, _} = RetroHexChat.Channels.Server.join("#feedtest", "operator")
+
+      on_exit(fn ->
+        Supervisor.stop_bot("FeedTimerBot")
+        if Process.alive?(chan), do: RetroHexChat.Channels.Supervisor.stop_child(chan)
+      end)
+
+      :ok
+    end
+
+    test "adding a feed schedules its poll" do
+      {:ok, pid} = Supervisor.start_bot(@rss_bot)
+
+      assert :sys.get_state(pid).capability_timers == %{},
+             "nothing to poll before a feed exists"
+
+      send(pid, %{
+        event: "new_message",
+        payload: %{
+          id: 1,
+          channel: "#feedtest",
+          author: "operator",
+          content: "!FeedTimerBot rss add https://93.184.216.34/feed.xml #feedtest",
+          type: :message,
+          timestamp: DateTime.utc_now(),
+          reply_to_id: nil,
+          reply_to_author: nil,
+          reply_to_preview: nil
+        }
+      })
+
+      Process.sleep(80)
+      timers = :sys.get_state(pid).capability_timers
+
+      assert map_size(timers) == 1,
+             "a feed nobody polls is a feed that never publishes"
+
+      assert [{:rss, %{type: :poll}}] = Map.values(timers)
+    end
+  end
 end

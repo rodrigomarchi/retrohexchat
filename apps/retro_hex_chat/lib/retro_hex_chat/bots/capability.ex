@@ -88,12 +88,27 @@ defmodule RetroHexChat.Bots.Capability do
   @callback reschedule_delay(payload :: term(), cap_state :: map()) ::
               {:reschedule, non_neg_integer(), term()} | :no_reschedule
 
+  @doc """
+  Runtime state keys worth surviving a restart, written back into the bot's
+  stored config whenever they change.
+
+  Most capability state is scratch — a trivia round in progress, a flood counter
+  — and losing it on deploy costs nothing. Some of it is the opposite: a feed
+  list the operator typed, and the memory of which items were already published.
+  Without this, an RSS bot forgets its feeds on every deploy, and if it did
+  remember them it would announce the whole feed again.
+
+  Keys are strings matching the capability's own state map. Default: none.
+  """
+  @callback durable_keys() :: [atom()]
+
   @optional_callbacks [
     commands: 0,
     init_state: 1,
     handle_timer: 3,
     passive?: 0,
     init_timers: 4,
-    reschedule_delay: 2
+    reschedule_delay: 2,
+    durable_keys: 0
   ]
 end

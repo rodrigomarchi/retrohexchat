@@ -32,6 +32,12 @@ const BOTS = [
   "Pixel",
   "Murphy",
   "Tiao",
+  "Gazeta",
+  "Freeman",
+  "Cassandra",
+  "Ada",
+  "Curie",
+  "Yuki",
   "Harold",
 ];
 const CHANNELS = [
@@ -41,6 +47,12 @@ const CHANNELS = [
   "#retro",
   "#tech",
   "#brasil",
+  "#news",
+  "#foss",
+  "#security",
+  "#ai",
+  "#science",
+  "#anime",
   "#help",
 ];
 
@@ -80,9 +92,18 @@ async function teardown(page: Page) {
   const lines = [
     ...BOTS.map((b) => `/bot destroy ${b}`),
     ...CHANNELS.flatMap((c) => [`/join ${c}`, "/cs drop"]),
+    // A sentinel to wait on: the console echoes each line as it runs, and
+    // "not empty" only proves the first one landed. Starting the real script
+    // while this batch was still deleting bots left half of them behind.
+    "/bot list",
   ];
   await runInConsole(page, lines.join("\n"));
-  await expect(page.getByTestId("admin-console-output")).not.toBeEmpty();
+  await expect(page.getByTestId("admin-console-output")).toContainText(
+    "/bot list",
+    {
+      timeout: 30_000,
+    },
+  );
   await page.getByRole("button", { name: "Clear" }).click();
 }
 
@@ -162,7 +183,7 @@ test.describe("server provisioning script", () => {
 
       // A custom command answers in its short form.
       await visitor.chat.sendMessage("!tour");
-      await visitor.chat.expectMessageVisible("Seven rooms, no filler");
+      await visitor.chat.expectMessageVisible("Talk to people in #lobby");
 
       // Cooldowns are per channel: give the bot its second back before asking
       // again, or the next command is dropped in silence.

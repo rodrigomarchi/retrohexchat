@@ -1,10 +1,10 @@
 # RetroHexChat — Production Provisioning
 
-Seven channels, seven bots. Every choice below traces to `scripts/research/irc_census`
+Thirteen channels, thirteen bots. Every choice below traces to `scripts/research/irc_census`
 — a live `/LIST` sweep of 95 public IRC networks, of which 59 answered with 49,973
 channels. Regenerate it with `scripts/research/irc_census/run.sh`.
 
-## Why these seven
+## Why these thirteen
 
 The census kills the intuition that a new server should offer a room per interest.
 Forty-four percent of listed channels on IRC hold exactly one person, and the median
@@ -52,13 +52,13 @@ included, is joined explicitly.
 ```
 # ══════════════════════════════════════════════════════════
 #  RetroHexChat — Production Setup
-#  7 channels · 7 bots · derived from the IRC census
+#  13 channels · 13 bots · derived from the IRC census
 # ══════════════════════════════════════════════════════════
 
 # ── 1. Server ────────────────────────────────────────────
 /admin server set server_name RetroHexChat
 /admin server set server_description The retro chat experience you never knew you missed. Windows 98 called — it wants you back.
-/admin server set welcome_message Welcome to RetroHexChat. Seven rooms, no filler. Type /help to get started.
+/admin server set welcome_message Welcome to RetroHexChat. Thirteen rooms, none of them empty. Type /help to get started.
 /admin server set registration open
 
 # ── 2. Channels ──────────────────────────────────────────
@@ -107,11 +107,65 @@ included, is joined explicitly.
 /topic Canal brasileiro — bate-papo em português. Chega aí, senta e fica à vontade.
 /mode +tn
 
+# #news — politics/news is fragmented across 28 networks with no owner: the
+# largest room holds 450 and the p90 is 77. Driven by feeds, not opinion.
+/join #news
+/cs register
+/topic News — headlines pulled from feeds by Gazeta. !Gazeta rss list to see the sources.
+/mode +tn
+
 # #help — the most universal channel on IRC: alive on 30 of the 59 networks
 # that answered the census.
 /join #help
 /cs register
 /topic Lost? Ask here. !Harold faq for the basics, or /help and F1 for the manual.
+/mode +tn
+
+# ══════════════════════════════════════════════════════════
+#  2b. Wire rooms — subjects that survive on a feed
+# ══════════════════════════════════════════════════════════
+# The "few rooms, densely populated" rule is about conversation. A room with
+# three people and nothing happening is dead; a room with three people and a
+# wire still has something on it every hour. Feeds are the only way a small
+# server offers something before it has a crowd — so these rooms are judged by
+# whether anyone owns the subject, not by whether we can out-populate it.
+
+# #foss — linux/foss is the largest technical block on IRC (987 live rooms,
+# 49,263 occupancy), but the rooms that hold it are project support: #linux
+# holds 2,494 because its regulars answer questions. Nobody owns the *news*:
+# the census found no live #foss room on any network.
+/join #foss
+/cs register
+/topic Free software news — releases, kernels, distros. Fed by LWN, Phoronix and It's FOSS.
+/mode +tn
+
+# #security — the densest subject measured: only 57 live rooms, but a p90 of
+# 178, the highest of any category. People who arrive stay. Advisories are the
+# archetypal feed content.
+/join #security
+/cs register
+/topic Security advisories — CISA, Krebs, The Hacker News. Read before you patch.
+/mode +tn
+
+# #ai — seven live rooms across three networks in the whole census, the
+# emptiest subject measured and the busiest one outside IRC. Nobody has claimed it.
+/join #ai
+/cs register
+/topic Machine learning — arXiv preprints and model releases as they land.
+/mode +tn
+
+# #science — 76 live rooms spread over 13 networks, the biggest holding 163.
+# Distributed demand, no owner.
+/join #science
+/cs register
+/topic Science — arXiv astrophysics, NASA and Phys.org. Bring questions.
+/mode +tn
+
+# #anime — alive on 12 networks with 802 people between them, and the largest
+# room holds only 279. A familiar name with a weak incumbent.
+/join #anime
+/cs register
+/topic Anime — news and episode releases via Anime News Network and LiveChart.
 /mode +tn
 
 # ══════════════════════════════════════════════════════════
@@ -140,6 +194,12 @@ included, is joined explicitly.
 /bot join Brutus #retro
 /bot join Brutus #tech
 /bot join Brutus #brasil
+/bot join Brutus #news
+/bot join Brutus #foss
+/bot join Brutus #security
+/bot join Brutus #ai
+/bot join Brutus #science
+/bot join Brutus #anime
 /bot join Brutus #help
 
 # ══════════════════════════════════════════════════════════
@@ -158,9 +218,9 @@ included, is joined explicitly.
 /bot set Patches farewell {nickname} heading out? The lobby keeps your seat warm. We're always open.
 /bot set Patches mention_response Patches here. Need directions? !tour for the grand tour, or just ask.
 
-/bot addcmd Patches tour Seven rooms, no filler: #trivia (quiz with a scoreboard), #arcade (DOOM in your browser), #retro (Amiga to DOS), #tech (pub talk), #brasil (em português), #help (when stuck).
-/bot addcmd Patches rooms #lobby #trivia #arcade #retro #tech #brasil #help — that's all of them, and that's on purpose.
-/bot addcmd Patches why Seven rooms because a split crowd is an empty crowd. The median live IRC channel holds fourteen people, {nickname}. We'd rather all be in one place.
+/bot addcmd Patches tour Talk to people in #lobby, #brasil and #tech. Play in #trivia and #arcade. Read the wire in #news, #foss, #security, #ai, #science and #anime. #retro is for anything that booted from a floppy, #help for when you are stuck.
+/bot addcmd Patches rooms #lobby #trivia #arcade #retro #tech #brasil #news #foss #security #ai #science #anime #help — thirteen, and every one of them has something in it.
+/bot addcmd Patches why The median live IRC channel holds fourteen people, {nickname}, so we keep one place to talk rather than four. The wire rooms are different: a feed gives a room something to show before it has a crowd.
 /bot addcmd Patches about RetroHexChat: a retro-styled chat built with Elixir and Phoenix LiveView. Windows 98 met a chat room and they fell in love.
 
 /bot join Patches #lobby
@@ -199,6 +259,11 @@ included, is joined explicitly.
 
 /bot join Pixel #arcade
 /bot join Pixel #retro
+# Low-volume feeds: a couple of posts a week, so a two-hour cadence is plenty.
+/bot set Pixel rss_interval 120
+/bot set Pixel rss_max_items 2
+/bot rss add Pixel https://hackaday.com/category/retrocomputing/feed/ #retro
+/bot rss add Pixel https://www.vintagecomputing.com/index.php/feed #retro
 
 # ── Murphy — #tech, the pessimistic sysadmin ─────────────
 /bot create Murphy Senior Incident Survivor and Professional Pessimist
@@ -215,6 +280,10 @@ included, is joined explicitly.
 /bot addcmd Murphy upstream Project support belongs upstream, {nickname} — their maintainers are what make those rooms worth sitting in. This is the pub, not the help desk.
 
 /bot join Murphy #tech
+/bot set Murphy rss_interval 30
+/bot set Murphy rss_max_items 2
+/bot rss add Murphy https://news.ycombinator.com/rss #tech
+/bot rss add Murphy https://github.blog/feed/ #tech
 
 # ── Tiao — #brasil (ASCII name: bot nicknames are [a-zA-Z][a-zA-Z0-9_-]*) ──
 /bot create Tiao Anfitriao do canal brasileiro
@@ -229,6 +298,113 @@ included, is joined explicitly.
 /bot addcmd Tiao regras Regra única: não seja babaca. O resto a gente resolve conversando.
 
 /bot join Tiao #brasil
+/bot set Tiao rss_interval 30
+/bot set Tiao rss_max_items 2
+/bot rss add Tiao https://tecnoblog.net/feed/ #brasil
+/bot rss add Tiao https://rss.tecmundo.com.br/feed #brasil
+
+# ── Gazeta — #news ───────────────────────────────────────
+# Feeds are stored on the bot and survive a restart, along with the record of
+# what has already been posted — so a deploy does not replay the day's news.
+# The first poll of a new feed is silent by design: it learns the page, then
+# reports only what arrives afterwards.
+/bot create Gazeta Editor of the wire desk
+/bot set Gazeta prefix !
+/bot set Gazeta cooldown 1000
+/bot set Gazeta rss_interval 20
+/bot set Gazeta rss_max_feeds 5
+/bot set Gazeta rss_max_items 3
+/bot set Gazeta greeting Welcome to #news, {nickname}. Headlines arrive on their own — !Gazeta rss list for the sources.
+/bot set Gazeta farewell Off to make your own news, {nickname}?
+/bot set Gazeta mention_response I post what the feeds send. !Gazeta rss list for the sources, !sources for how this works.
+
+/bot addcmd Gazeta sources Headlines here come from RSS and Atom feeds, checked every twenty minutes. Only what is new since the last check gets posted — never the same item twice, even after a restart.
+/bot addcmd Gazeta quiet No headlines for a while? Either nothing was published or a feed is failing. An operator can check with !Gazeta rss list.
+
+/bot join Gazeta #news
+/bot rss add Gazeta https://feeds.bbci.co.uk/news/world/rss.xml #news
+/bot rss add Gazeta https://www.aljazeera.com/xml/rss/all.xml #news
+
+# ══════════════════════════════════════════════════════════
+#  5. Wire-room bots
+# ══════════════════════════════════════════════════════════
+# A feed's first poll is silent by design: it records the page as it stands and
+# announces only what appears afterwards. Both the feed list and the record of
+# what has been published are stored on the bot, so a deploy does not replay the
+# day. Intervals are set per bot — arXiv publishes hundreds a day, Hackaday a
+# handful a week.
+
+# ── Freeman — #foss ──────────────────────────────────────
+/bot create Freeman Keeper of the release notes
+/bot set Freeman prefix !
+/bot set Freeman cooldown 1000
+/bot set Freeman rss_interval 30
+/bot set Freeman rss_max_items 3
+/bot set Freeman greeting Welcome to #foss, {nickname}. Releases arrive on their own — !sources for where from.
+/bot set Freeman mention_response I carry the release notes. !sources for the list, !why for what this room is.
+/bot addcmd Freeman sources LWN, Phoronix and It's FOSS, checked every half hour. Only what is new since the last check gets posted.
+/bot addcmd Freeman why Support for a project belongs with that project — #linux on Libera holds 2,494 people because its regulars answer questions. This room is the news, which nobody was carrying.
+/bot join Freeman #foss
+/bot rss add Freeman https://lwn.net/headlines/newrss #foss
+/bot rss add Freeman https://www.phoronix.com/rss.php #foss
+/bot rss add Freeman https://itsfoss.com/feed/ #foss
+
+# ── Cassandra — #security ────────────────────────────────
+/bot create Cassandra Bearer of advisories nobody reads in time
+/bot set Cassandra prefix !
+/bot set Cassandra cooldown 1000
+/bot set Cassandra rss_interval 30
+/bot set Cassandra rss_max_items 3
+/bot set Cassandra greeting {nickname}, welcome. I post advisories. You will read them later and wish you had read them now.
+/bot set Cassandra mention_response I warn; that is the whole job. !sources for where the warnings come from.
+/bot addcmd Cassandra sources CISA advisories, Krebs on Security and The Hacker News, checked every half hour.
+/bot addcmd Cassandra patch The advisory is not the fix. Read it, find your version, then patch. In that order, {nickname}.
+/bot join Cassandra #security
+/bot rss add Cassandra https://www.cisa.gov/cybersecurity-advisories/all.xml #security
+/bot rss add Cassandra https://krebsonsecurity.com/feed/ #security
+/bot rss add Cassandra https://feeds.feedburner.com/TheHackersNews #security
+
+# ── Ada — #ai ────────────────────────────────────────────
+/bot create Ada Reader of preprints
+/bot set Ada prefix !
+/bot set Ada cooldown 1000
+/bot set Ada rss_interval 60
+/bot set Ada rss_max_items 3
+/bot set Ada greeting {nickname}! Preprints and model releases land here on their own. !sources for where from.
+/bot set Ada mention_response arXiv and Hugging Face, hourly. !sources for the list.
+/bot addcmd Ada sources arXiv cs.LG, arXiv cs.AI and the Hugging Face blog, checked hourly — three items at a time, because arXiv publishes hundreds a day.
+/bot addcmd Ada why The whole of IRC has seven live rooms on this subject, across three networks. It is the emptiest subject we measured and the busiest one outside.
+/bot join Ada #ai
+/bot rss add Ada http://export.arxiv.org/rss/cs.LG #ai
+/bot rss add Ada http://export.arxiv.org/rss/cs.AI #ai
+/bot rss add Ada https://huggingface.co/blog/feed.xml #ai
+
+# ── Curie — #science ─────────────────────────────────────
+/bot create Curie Keeper of the observations
+/bot set Curie prefix !
+/bot set Curie cooldown 1000
+/bot set Curie rss_interval 60
+/bot set Curie rss_max_items 3
+/bot set Curie greeting Welcome, {nickname}. Astrophysics preprints, NASA and Phys.org arrive here hourly.
+/bot set Curie mention_response !sources for where the science comes from.
+/bot addcmd Curie sources arXiv astro-ph, NASA news releases and Phys.org, checked hourly.
+/bot join Curie #science
+/bot rss add Curie http://export.arxiv.org/rss/astro-ph #science
+/bot rss add Curie https://www.nasa.gov/news-release/feed/ #science
+/bot rss add Curie https://phys.org/rss-feed/ #science
+
+# ── Yuki — #anime ────────────────────────────────────────
+/bot create Yuki Watcher of the seasonal charts
+/bot set Yuki prefix !
+/bot set Yuki cooldown 1000
+/bot set Yuki rss_interval 30
+/bot set Yuki rss_max_items 3
+/bot set Yuki greeting {nickname}! News and episode drops land here. !sources for where from.
+/bot set Yuki mention_response Anime News Network and LiveChart, every half hour. !sources for the list.
+/bot addcmd Yuki sources Anime News Network for news, LiveChart for episode releases. Checked every half hour.
+/bot join Yuki #anime
+/bot rss add Yuki https://www.animenewsnetwork.com/all/rss.xml #anime
+/bot rss add Yuki https://www.livechart.me/feeds/episodes #anime
 
 # ── Harold — #help ───────────────────────────────────────
 /bot create Harold Senior Assistant to the Help Department
@@ -241,7 +417,7 @@ included, is joined explicitly.
 /bot addcmd Harold faq How do I register? /identify. Join a room? /join #name. Private message? /msg nick. Look cool? Not in my manual, {nickname}.
 /bot addcmd Harold commands /help for topics · /nick to rename · /join to enter · /msg to whisper · /identify to register. F1 opens the manual.
 /bot addcmd Harold stuck Step 1: don't panic. Step 2: /help. Step 3: ask here. Step 4: profit.
-/bot addcmd Harold rooms #lobby #trivia #arcade #retro #tech #brasil #help.
+/bot addcmd Harold rooms #lobby #trivia #arcade #retro #tech #brasil #news #foss #security #ai #science #anime #help.
 
 /bot join Harold #help
 ```
@@ -279,6 +455,12 @@ the capability is created by that first `/bot set`:
 | `#retro` | Brutus, **Pixel** | 26 = largest `#retro` on IRC · 84 = largest retro room of any name |
 | `#tech` | Brutus, **Murphy** | 60 |
 | `#brasil` | Brutus, **Tiao** | 58 = largest `#brasil` on IRC |
+| `#news` | Brutus, **Gazeta** | 77 = top 10% of news rooms |
+| `#foss` | Brutus, **Freeman** | the census found no live `#foss` room anywhere |
+| `#security` | Brutus, **Cassandra** | 178 = p90, the densest subject measured |
+| `#ai` | Brutus, **Ada** | 7 live rooms exist on all of IRC |
+| `#science` | Brutus, **Curie** | 163 = largest `#science` on IRC |
+| `#anime` | Brutus, **Yuki** | 279 = largest `#anime` on IRC |
 | `#help` | Brutus, **Harold** | 40 |
 
 All channels are `+tn`. Rules live in `!Brutus rules` and the `#lobby` topic rather
@@ -291,9 +473,15 @@ than a moderated `#rules` nobody reads.
 | **Brutus** | all 7 | `moderation` (passive), `custom_commands` | spam and flood, everywhere |
 | **Patches** | `#lobby` | `greeter`, `dice`, `custom_commands` | doorman, explains the seven rooms |
 | **Wanda** | `#trivia` | **`trivia`**, `dice`, `greeter` | quiz host with a scoreboard |
-| **Pixel** | `#arcade`, `#retro` | `greeter`, `custom_commands` | arcade catalogue, retro curation |
-| **Murphy** | `#tech` | `greeter`, `custom_commands` | pub talk, redirects support upstream |
-| **Tiao** | `#brasil` | `greeter`, `custom_commands` | anfitrião em português |
+| **Pixel** | `#arcade`, `#retro` | **`rss`**, `greeter`, `custom_commands` | arcade catalogue; Hackaday and Vintage Computing |
+| **Murphy** | `#tech` | **`rss`**, `greeter`, `custom_commands` | pub talk; Hacker News and the GitHub blog |
+| **Tiao** | `#brasil` | **`rss`**, `greeter`, `custom_commands` | anfitrião; Tecnoblog e TecMundo |
+| **Gazeta** | `#news` | **`rss`**, `greeter`, `custom_commands` | the wire desk; feeds survive a restart |
+| **Freeman** | `#foss` | **`rss`**, `greeter`, `custom_commands` | LWN, Phoronix, It's FOSS |
+| **Cassandra** | `#security` | **`rss`**, `greeter`, `custom_commands` | CISA, Krebs, The Hacker News |
+| **Ada** | `#ai` | **`rss`**, `greeter`, `custom_commands` | arXiv cs.LG / cs.AI, Hugging Face |
+| **Curie** | `#science` | **`rss`**, `greeter`, `custom_commands` | arXiv astro-ph, NASA, Phys.org |
+| **Yuki** | `#anime` | **`rss`**, `greeter`, `custom_commands` | Anime News Network, LiveChart |
 | **Harold** | `#help` | `help`, `custom_commands` | Clippy, self-aware |
 
 Every bot also carries `greeter`, `custom_commands`, `help` and `mention` — those four
@@ -303,13 +491,23 @@ come with creation.
 
 ## What this script deliberately does not do
 
-**No RSS, no schedules.** Both capabilities work at runtime, but `capability_states`
-is never written back to the database: a feed added with `!Murphy rss add <url>`, or a
-schedule added with `!Patches schedule add`, is gone at the next restart, and no
-`/bot set` seeds them. Provisioning something that evaporates is worse than not
-provisioning it. This is also why there is no `#news` channel — it would have been a
-room whose entire purpose died on deploy. Persisting the `feeds` and `schedules` lists
-back into `bot.capabilities` is what unlocks both.
+**Every feed here was fetched and parsed before it was written down.** Twenty-seven
+candidates were tried; the two that answered 404 and 403, and one that parsed to zero
+items, are not in this script. Re-check them the same way with
+`scripts/research/irc_census`-style throwaway runs, or simply watch `!Bot rss list`.
+
+Feeds can also be managed without the console — from the bot dialog's Capabilities tab,
+or in the channel by an operator:
+
+```
+!Freeman rss add https://example.com/feed.xml #foss
+```
+
+All three routes write to the same place and survive a restart, along with the record of
+what has already been posted.
+
+**No schedules.** `!Bot schedule add` persists now too, but nothing here needs one; a
+room that speaks on a timer with nothing to say is worse than a quiet one.
 
 **No `game`, `llm` or `script` capabilities.** All three are stubs — `handle_message`
 returns `:ignore` and `commands` returns `[]`.
