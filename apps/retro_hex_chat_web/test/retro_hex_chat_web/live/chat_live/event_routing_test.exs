@@ -3,6 +3,9 @@ defmodule RetroHexChatWeb.ChatLive.EventRoutingTest do
 
   @moduletag :liveview_feature
 
+  alias RetroHexChat.Presence.Tracker
+  alias RetroHexChat.PubSub
+
   # Guards the dispatch fall-through contract: an event that no hook in
   # @event_hook_fns claims must NOT crash the user's session — the socket is
   # returned untouched and the LiveView keeps rendering.
@@ -23,10 +26,10 @@ defmodule RetroHexChatWeb.ChatLive.EventRoutingTest do
       nick = "NukeRoute#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       _ = :sys.get_state(view.pid)
-      assert RetroHexChat.Presence.Tracker.online?("channel:#lobby", nick)
+      assert Tracker.online?("channel:#lobby", nick)
 
       Phoenix.PubSub.broadcast(
-        RetroHexChat.PubSub,
+        PubSub,
         "server:settings",
         {:system_nuked,
          %{
@@ -38,7 +41,7 @@ defmodule RetroHexChatWeb.ChatLive.EventRoutingTest do
       )
 
       assert_push_event(view, "intentional_disconnect", %{}, 1_000)
-      refute RetroHexChat.Presence.Tracker.online?("channel:#lobby", nick)
+      refute Tracker.online?("channel:#lobby", nick)
       assert_redirect(view, "/chat/session/clear?reason=system-reset")
     end
   end

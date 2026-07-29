@@ -14,7 +14,11 @@ defmodule RetroHexChat.Admin do
   alias RetroHexChat.Admin.{AuditLogs, GlobalMutes, RoleCache, ServerBans}
   alias RetroHexChat.Bots
   alias RetroHexChat.Channels
+  alias RetroHexChat.Chat.LinkPreview.Cache, as: LinkPreviewCache
   alias RetroHexChat.Commands.Duration
+  alias RetroHexChat.P2P.RateLimitTable, as: P2PRateLimitTable
+  alias RetroHexChat.Presence.{Tracker, WhowasCache}
+  alias RetroHexChat.RateLimit.Table, as: ChatRateLimitTable
   alias RetroHexChat.Services.{ChanServ, NickServ, Queries}
 
   @pubsub RetroHexChat.PubSub
@@ -496,7 +500,7 @@ defmodule RetroHexChat.Admin do
   end
 
   defp connected_nicknames(admin) do
-    RetroHexChat.Presence.Tracker.list_users("presence:global")
+    Tracker.list_users("presence:global")
     |> Enum.map(& &1.nickname)
     |> then(&[admin | &1])
     |> Enum.reject(&is_nil/1)
@@ -547,24 +551,33 @@ defmodule RetroHexChat.Admin do
   end
 
   defp shutdown_dynamic_supervisor(supervisor, label) do
-    if Process.whereis(supervisor) do
-      supervisor
-      |> DynamicSupervisor.which_children()
-      |> Enum.each(fn {_, pid, _, _} ->
-        if is_pid(pid), do: DynamicSupervisor.terminate_child(supervisor, pid)
-      end)
+    case Process.whereis(supervisor) do
+      nil -> :ok
+      _pid -> terminate_dynamic_supervisor_children(supervisor)
     end
   rescue
     e -> Logger.warning("#{label} shutdown during nuke failed: #{inspect(e)}")
   end
 
+  defp terminate_dynamic_supervisor_children(supervisor) do
+    supervisor
+    |> DynamicSupervisor.which_children()
+    |> Enum.each(&terminate_dynamic_supervisor_child(supervisor, &1))
+  end
+
+  defp terminate_dynamic_supervisor_child(supervisor, {_, pid, _, _}) when is_pid(pid) do
+    DynamicSupervisor.terminate_child(supervisor, pid)
+  end
+
+  defp terminate_dynamic_supervisor_child(_supervisor, _child), do: :ok
+
   defp clear_ephemeral_user_state do
     clear_nickserv_runtime_state()
     clear_ets_table(:global_mutes, "global mute")
-    clear_ets_table(RetroHexChat.RateLimit.Table.table_name(), "chat rate limit")
-    clear_ets_table(RetroHexChat.P2P.RateLimitTable.table_name(), "P2P rate limit")
-    clear_ets_table(RetroHexChat.Chat.LinkPreview.Cache, "link preview")
-    RetroHexChat.Presence.WhowasCache.clear()
+    clear_ets_table(ChatRateLimitTable.table_name(), "chat rate limit")
+    clear_ets_table(P2PRateLimitTable.table_name(), "P2P rate limit")
+    clear_ets_table(LinkPreviewCache, "link preview")
+    WhowasCache.clear()
   rescue
     e -> Logger.warning("Ephemeral state cleanup during nuke failed: #{inspect(e)}")
   end
