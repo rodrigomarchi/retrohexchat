@@ -43,14 +43,11 @@ defmodule RetroHexChatWeb.Components.UI.ChatInput do
   attr :disabled, :boolean, default: false
   attr :autofocus, :boolean, default: false
   attr :show_toolbar, :boolean, default: true
-  attr :action_enabled, :boolean, default: false
-  attr :action_active, :boolean, default: false
   attr :notice_target, :string, default: nil
   attr :input_error, :string, default: nil
   attr :on_submit, :any, default: nil, doc: "Form submit / Send button callback"
   attr :on_change, :any, default: nil, doc: "Input change callback"
   attr :on_keydown, :any, default: nil, doc: "Keydown callback (for autocomplete, history, etc.)"
-  attr :on_action_toggle, :any, default: nil, doc: "Toggle action-message mode"
   attr :on_notice_cancel, :any, default: nil, doc: "Cancel notice composer mode"
 
   attr :target, :any,
@@ -122,22 +119,6 @@ defmodule RetroHexChatWeb.Components.UI.ChatInput do
         >
           {render_slot(@toolbar_buttons)}
         </div>
-        <.button
-          :if={@action_enabled}
-          type="button"
-          size="icon"
-          variant="outline"
-          phx-click={@on_action_toggle}
-          phx-target={@target}
-          disabled={@disabled}
-          aria-pressed={to_string(@action_active)}
-          title={dgettext("chat", "Send action message (/me)")}
-          data-testid="chat-action-toggle"
-          class={["h-8 w-8", @action_active && "shadow-retro-sunken bg-accent"]}
-        >
-          <:icon><span class="font-bold leading-none">*</span></:icon>
-          <span class="sr-only">{dgettext("chat", "Send action message (/me)")}</span>
-        </.button>
         <div class="relative flex flex-1 min-w-0">
           <textarea
             id={@input_id}
@@ -185,9 +166,6 @@ defmodule RetroHexChatWeb.Components.UI.ChatInput do
   end
 
   defp effective_placeholder(_assigns, true), do: dgettext("chat", "Notice message")
-
-  defp effective_placeholder(%{action_active: true}, false),
-    do: dgettext("chat", "What are you doing? (/me mode)")
 
   defp effective_placeholder(%{placeholder: placeholder}, false), do: placeholder
 

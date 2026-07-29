@@ -171,7 +171,7 @@ test.describe.serial("UI feature shell journeys", () => {
     }
   });
 
-  test("Action toggle and Send Notice composer send through the real input (Feature 07)", async ({
+  test("/me command and Send Notice composer send through the real input (Feature 07)", async ({
     browser,
   }) => {
     const sender = await newSignedInUser(browser, "uifs");
@@ -188,12 +188,7 @@ test.describe.serial("UI feature shell journeys", () => {
       await sender.chat.switchToTab(channel);
       await target.chat.switchToTab(channel);
 
-      await sender.page.getByTestId("chat-action-toggle").click();
-      await expect(sender.chat.chatInput).toHaveAttribute(
-        "placeholder",
-        "What are you doing? (/me mode)",
-      );
-      await sender.chat.sendMessage(action);
+      await sender.chat.sendMessage(`/me ${action}`);
       await sender.chat.expectMessageVisible(`* ${action}`);
       await expect(
         sender.chat.messageNickByText(action, sender.nick),

@@ -50,8 +50,8 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
 
   @page_size 50
 
-  # The composer input form (input_changed / send_input / toggle_action_mode /
-  # cancel_notice_mode) is owned by the Composer LiveComponent (phx-target).
+  # The composer input form (input_changed / send_input / cancel_notice_mode) is
+  # owned by the Composer LiveComponent (phx-target).
   # On submit it bubbles a semantic command back here via the public
   # dispatch_composer_input/3, submit_composer_edit/2, empty_composer_edit/1
   # below, which run the privileged Parser/CommandDispatch/Service work.

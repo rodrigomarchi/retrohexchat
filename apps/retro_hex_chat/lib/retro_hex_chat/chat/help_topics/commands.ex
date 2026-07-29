@@ -222,7 +222,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         id: "cmd-me",
         title: "/me",
         category: dgettext("help", "Chat & Messaging"),
-        keywords: ["me", "action", "action toggle", "emote", "roleplay"],
+        keywords: ["me", "action", "emote", "roleplay"],
         icon: :icon_chat,
         description: dgettext("help", "Send an action message that describes what you are doing.")
       },

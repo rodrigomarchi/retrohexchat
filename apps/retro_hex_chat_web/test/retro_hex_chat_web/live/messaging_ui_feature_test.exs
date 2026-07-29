@@ -6,40 +6,16 @@ defmodule RetroHexChatWeb.MessagingUIFeatureTest do
   alias RetroHexChat.Chat.HelpTopics
   alias RetroHexChatWeb.Components.UI.{ChatContextMenu, ChatInput, NicklistContextMenu}
 
-  describe "action message input mode" do
-    test "chat input renders active /me toggle state" do
+  describe "chat input action command" do
+    test "chat input renders the provided message placeholder" do
       html =
         render_component(&ChatInput.chat_input/1,
           value: "",
           name: "input",
-          placeholder: "Message #lobby",
-          action_enabled: true,
-          action_active: true,
-          on_action_toggle: "toggle_action_mode"
+          placeholder: "Message #lobby"
         )
 
-      assert html =~ ~s(data-testid="chat-action-toggle")
-      assert html =~ ~s(aria-pressed="true")
-      assert html =~ ~s|title="Send action message (/me)"|
-      assert html =~ "What are you doing? (/me mode)"
-    end
-
-    test "empty action message shows inline error and keeps action mode", %{conn: conn} do
-      channel = "#msg-empty-action-#{uid()}"
-      view = connect_user(conn, "MsgEmpty#{uid()}")
-      join_channel(view, channel)
-
-      view
-      |> element(~s([data-testid="chat-action-toggle"]))
-      |> render_click()
-
-      html =
-        view
-        |> element(~s([data-testid="chat-input-form"]))
-        |> render_submit(%{"input" => ""})
-
-      assert html =~ "Action message cannot be empty"
-      assert html =~ "What are you doing? (/me mode)"
+      assert html =~ "Message #lobby"
     end
   end
 
@@ -138,13 +114,13 @@ defmodule RetroHexChatWeb.MessagingUIFeatureTest do
   end
 
   describe "Feature 07 help documentation" do
-    test "help topics mention action toggle and notice context menu" do
+    test "help topics mention /me command and notice context menu" do
       me = HelpTopics.get_topic("cmd-me")
       notice = HelpTopics.get_topic("cmd-notice")
       private_messages = HelpTopics.get_topic("private-messages")
       shortcuts = HelpTopics.get_topic("keyboard-shortcuts")
 
-      assert "action toggle" in me.keywords
+      assert "action" in me.keywords
       assert "send notice" in notice.keywords
       assert "context menu" in notice.keywords
       assert "notice" in private_messages.keywords

@@ -21,7 +21,7 @@ Single source of truth for the browser-level Playwright suite.
 | UI1  | Account dialog covers drop/re-register, profile bio, presence away state, wallops user mode, and Whois bio output                       | `tests/chat-ui-features-shell.spec.ts`   | 01, 10   | done   |
 | UI2  | Notify List opens from View; Bot Management is hidden from regular users and opens for admin users                                      | `tests/chat-ui-features-shell.spec.ts`   | 02, 03   | done   |
 | UI3  | Edit menu preserves Clear/Copy/Find behavior through menu entry points                                                                  | `tests/chat-ui-features-shell.spec.ts`   | 04       | done   |
-| UI4  | Action toggle and Send Notice composer send through the real chat input                                                                 | `tests/chat-ui-features-shell.spec.ts`   | 07       | done   |
+| UI4  | /me command and Send Notice composer send through the real chat input                                                                   | `tests/chat-ui-features-shell.spec.ts`   | 07       | done   |
 | UI5  | Timers dialog opens from Tools and bare `/timer`, validates repeat intervals, saves once timers, and stops timers                       | `tests/chat-ui-features-shell.spec.ts`   | 08       | done   |
 | UI6  | User Lookup dialog and result cards cover Whois, Query, and Whowas flows                                                                | `tests/chat-ui-features-shell.spec.ts`   | 10       | done   |
 | UI7  | Channel nick context menu performs voice/devoice/op/deop/mute/unmute and blocks/restores target sends                                   | `tests/chat-ui-features-channel.spec.ts` | 05       | done   |

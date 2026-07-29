@@ -4,16 +4,16 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
   autocomplete dropdown, syntax tooltip and reply bar.
 
   Owns the full composition state lifted out of the parent `assign_defaults`:
-  the input text and modes (`input`, `input_error`, `action_mode`,
-  `notice_target`), command history (`command_history`, `history_index`,
-  `recent_commands`), reply state (`reply_to`), the edit-input mirror
+  the input text and modes (`input`, `input_error`, `notice_target`), command
+  history (`command_history`, `history_index`, `recent_commands`), reply state
+  (`reply_to`), the edit-input mirror
   (`edit_original_input`), and the transient autocomplete/syntax state
   (`autocomplete_*`, `syntax_tooltip`, `command_help_level`). Keystrokes
   (`input_changed`) now re-render only this component instead of the whole
   ChatLive parent — the dominant change-tracking win on the hottest path.
 
-  The form's own DOM events (`input_changed`/`send_input`/`toggle_action_mode`/
-  `cancel_notice_mode`) target this component via `phx-target={@myself}`. The
+  The form's own DOM events (`input_changed`/`send_input`/`cancel_notice_mode`)
+  target this component via `phx-target={@myself}`. The
   `AutocompleteHook` keeps pushing its keyboard-driven events to the parent,
   which forwards them here via `send_update` (the adapter pattern) — so no JS
   changes and every event-name contract is preserved. On send, the component
@@ -26,7 +26,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
   `--editing` row class) and arrives here as passthrough context. The composer
   renders from a context-agnostic read-model: `nickname`, `channel_users`,
   `channels`, `strip_formatting`, `placeholder`, `show_emoji_picker`,
-  `pm_typing_from`, and a `capabilities` map (`action_mode`, `nick_autocomplete`,
+  `pm_typing_from`, and a `capabilities` map (`nick_autocomplete`,
   `channel_autocomplete`, `command_autocomplete`, `formatting_toolbar`, `emoji`,
   `typing_indicator`, `paste`) that toggles which features light up. The main chat
   passes a stable `%Session{}` + `show_status_tab` and the composer derives the
@@ -54,7 +54,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
   def id, do: @id
 
   @default_capabilities %{
-    action_mode: false,
     nick_autocomplete: false,
     channel_autocomplete: true,
     command_autocomplete: true,
@@ -75,8 +74,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
   @spec capabilities_from_session(struct(), boolean()) :: map()
   def capabilities_from_session(session, show_status_tab) do
     %{
-      action_mode:
-        not show_status_tab and session.active_pm == nil and session.active_channel != nil,
       nick_autocomplete: not is_nil(session.active_channel) and not show_status_tab,
       channel_autocomplete: true,
       command_autocomplete: true,
@@ -90,7 +87,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
   @owned_defaults %{
     input: "",
     input_error: nil,
-    action_mode: false,
     notice_target: nil,
     command_history: [],
     history_index: -1,
@@ -169,12 +165,12 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
   def update(%{start_notice: nick}, socket) do
     {:ok,
      socket
-     |> assign(notice_target: nick, action_mode: false, input: "", input_error: nil)
+     |> assign(notice_target: nick, input: "", input_error: nil)
      |> push_event("clear_input", %{})}
   end
 
   def update(%{reset_modes: true}, socket) do
-    {:ok, assign(socket, action_mode: false, notice_target: nil, input_error: nil)}
+    {:ok, assign(socket, notice_target: nil, input_error: nil)}
   end
 
   def update(%{cancel_notice: true}, socket) do
@@ -259,21 +255,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
     {:noreply, assign(socket, input: input, input_error: nil)}
   end
 
-  def handle_event("toggle_action_mode", _params, socket) do
-    if socket.assigns.capabilities.action_mode do
-      if socket.assigns.notice_target, do: send(self(), {:composer_notice_active, false})
-
-      {:noreply,
-       assign(socket,
-         action_mode: !socket.assigns.action_mode,
-         notice_target: nil,
-         input_error: nil
-       )}
-    else
-      {:noreply, socket}
-    end
-  end
-
   def handle_event("cancel_notice_mode", _params, socket) do
     send(self(), {:composer_notice_active, false})
 
@@ -333,13 +314,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
           value={@input}
           name="input"
           placeholder={@placeholder}
-          action_enabled={@capabilities.action_mode}
-          action_active={@action_mode}
           notice_target={@notice_target}
           input_error={@input_error}
           on_submit="send_input"
           on_change="input_changed"
-          on_action_toggle="toggle_action_mode"
           on_notice_cancel="cancel_notice_mode"
           target={@myself}
           hook="AutocompleteHook"
@@ -378,7 +356,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
     socket
     |> assign(
       input: "",
-      action_mode: false,
       notice_target: nil,
       input_error: nil,
       reply_to: nil,
@@ -401,9 +378,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
       notice_mode?(socket) ->
         assign(socket, input_error: dgettext("chat", "Notice message cannot be empty"))
 
-      socket.assigns.action_mode ->
-        assign(socket, input_error: dgettext("chat", "Action message cannot be empty"))
-
       true ->
         socket
     end
@@ -412,7 +386,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
   defp input_for_mode(socket, input) do
     cond do
       notice_mode?(socket) -> "/notice #{socket.assigns.notice_target} #{input}"
-      socket.assigns.action_mode -> "/me #{input}"
       true -> input
     end
   end
