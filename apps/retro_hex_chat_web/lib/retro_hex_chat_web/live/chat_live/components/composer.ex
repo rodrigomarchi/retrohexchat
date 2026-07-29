@@ -384,10 +384,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
   end
 
   defp input_for_mode(socket, input) do
-    cond do
-      notice_mode?(socket) -> "/notice #{socket.assigns.notice_target} #{input}"
-      true -> input
-    end
+    if notice_mode?(socket), do: "/notice #{socket.assigns.notice_target} #{input}", else: input
   end
 
   defp notice_mode?(socket) do
