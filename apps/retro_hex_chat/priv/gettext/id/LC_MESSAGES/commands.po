@@ -2544,14 +2544,10 @@ msgstr ""
 "Subcommand admin tidak diketahui: %{subcmd}. Coba: server, pengguna, "
 "saluran, ns, cs, debug, log, putar, nuke"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:506
+#: lib/retro_hex_chat/commands/handlers/bot.ex:512
 #, elixir-autogen, elixir-format
-msgid ""
-"Unknown setting '%{key}'. Valid: prefix, cooldown, description, greeting, "
-"farewell, "
-msgstr ""
-"Pengaturan '%{key}' tidak diketahui. Valid: awalan, pendinginan, deskripsi, "
-"ucapan, perpisahan,"
+msgid "Unknown setting '%{key}'. Valid: %{settings}"
+msgstr "Pengaturan tidak dikenal '%{key}'. Yang valid: %{settings}"
 
 #: lib/retro_hex_chat/commands/handlers/umode.ex:59
 #, elixir-autogen, elixir-format
@@ -3245,13 +3241,6 @@ msgid ""
 msgstr ""
 "[NickServ] %{nickname}: terdaftar %{registered_at}, teridentifikasi: "
 "%{identified}"
-
-#: lib/retro_hex_chat/commands/handlers/bot.ex:511
-#, elixir-autogen, elixir-format
-msgid "mention_response, dice_*, mod_*, trivia_*, sched_*, rss_*, arcade_*"
-msgstr ""
-"eslate _ response, dice _ *, mod _ *, trivia _ *, sched _ *, rss _ *, arcade"
-" _ *"
 
 #: lib/retro_hex_chat/commands/handlers/admin.ex:100
 #, elixir-autogen, elixir-format

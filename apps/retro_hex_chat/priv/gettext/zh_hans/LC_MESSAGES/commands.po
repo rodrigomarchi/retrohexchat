@@ -2480,12 +2480,10 @@ msgid ""
 "debug, log, turn, nuke"
 msgstr "未知的管理员子命令: %{subcmd}. 尝试:服务器、用户、频道、ns、cs、调试、日志、转弯、核子"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:506
+#: lib/retro_hex_chat/commands/handlers/bot.ex:512
 #, elixir-autogen, elixir-format
-msgid ""
-"Unknown setting '%{key}'. Valid: prefix, cooldown, description, greeting, "
-"farewell, "
-msgstr "未知设置“ %{key} ” 。 有效:前缀,冷却,描述,问候,告别,"
+msgid "Unknown setting '%{key}'. Valid: %{settings}"
+msgstr "未知设置 '%{key}'。有效: %{settings}"
 
 #: lib/retro_hex_chat/commands/handlers/umode.ex:59
 #, elixir-autogen, elixir-format
@@ -3162,11 +3160,6 @@ msgid ""
 "[NickServ] %{nickname}: registered %{registered_at}, identified: "
 "%{identified}"
 msgstr "[NickServ] %{nickname}：注册于 %{registered_at}，已验证：%{identified}"
-
-#: lib/retro_hex_chat/commands/handlers/bot.ex:511
-#, elixir-autogen, elixir-format
-msgid "mention_response, dice_*, mod_*, trivia_*, sched_*, rss_*, arcade_*"
-msgstr "提及  response, dice , mod *, trivia *, sched *, rss, arcade *"
 
 #: lib/retro_hex_chat/commands/handlers/admin.ex:100
 #, elixir-autogen, elixir-format

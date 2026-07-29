@@ -3,6 +3,7 @@ defmodule RetroHexChat.Commands.Handlers.BotTest do
 
   @moduletag :integration
 
+  alias RetroHexChat.Bots.Queries
   alias RetroHexChat.Commands.Handlers.Bot
 
   @admin_ctx %{
@@ -111,6 +112,56 @@ defmodule RetroHexChat.Commands.Handlers.BotTest do
                Bot.execute(["delcmd", "BotCmdTest", "rules"], @admin_ctx)
 
       assert c3 =~ "removed"
+    end
+  end
+
+  describe "execute set — capabilities absent at creation" do
+    # A bot is born with greeter, custom_commands and help. Every other
+    # capability is created by the first `/bot set` that names one of its keys,
+    # and that first write is the one that used to be dropped.
+    setup do
+      Bot.execute(["create", "BotCmdTest"], @admin_ctx)
+      :ok
+    end
+
+    defp capabilities do
+      Queries.get_bot_by_name("BotCmdTest").capabilities
+    end
+
+    test "the first mention_response is stored, not swallowed" do
+      assert {:ok, :system, _} =
+               Bot.execute(["set", "BotCmdTest", "mention_response", "You", "rang?"], @admin_ctx)
+
+      assert %{"mention" => %{"response" => "You rang?"}} = capabilities()
+    end
+
+    test "the first trivia setting keeps its value" do
+      assert {:ok, :system, _} =
+               Bot.execute(["set", "BotCmdTest", "trivia_category", "science"], @admin_ctx)
+
+      assert %{"trivia" => %{"category" => "science"}} = capabilities()
+    end
+
+    test "the first numeric setting keeps its value" do
+      assert {:ok, :system, _} =
+               Bot.execute(["set", "BotCmdTest", "dice_max_dice", "50"], @admin_ctx)
+
+      assert %{"dice" => %{"max_dice" => 50}} = capabilities()
+    end
+
+    test "a later setting on the same capability does not erase the earlier one" do
+      Bot.execute(["set", "BotCmdTest", "trivia_category", "science"], @admin_ctx)
+      Bot.execute(["set", "BotCmdTest", "trivia_points", "25"], @admin_ctx)
+
+      assert %{"trivia" => %{"category" => "science", "points_per_answer" => 25}} =
+               capabilities()
+    end
+
+    test "greeting reaches a bot that already owns the greeter capability" do
+      assert {:ok, :system, _} =
+               Bot.execute(["set", "BotCmdTest", "greeting", "Welcome", "aboard"], @admin_ctx)
+
+      assert %{"greeter" => %{"greeting" => "Welcome aboard"}} = capabilities()
     end
   end
 

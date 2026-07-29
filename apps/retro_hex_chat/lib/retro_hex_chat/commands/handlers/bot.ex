@@ -7,6 +7,29 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
   alias RetroHexChat.Bots.{Lifecycle, Policy, Queries, Server, Supervisor}
   alias RetroHexChat.Commands.Handler
 
+  # Setting names are identifiers a user types verbatim, so they are interpolated
+  # rather than translated. Handed to a catalog they came back as prose — the
+  # Portuguese entry offered "data *" for `dice_*`, the French "dés *".
+  @setting_keys ~w(
+    prefix cooldown description greeting farewell mention_response
+    dice_max_dice dice_max_sides dice_default
+    mod_words mod_action mod_spam mod_flood mod_warn
+    trivia_category trivia_time trivia_questions trivia_points
+    sched_max sched_min_interval
+    rss_interval rss_max_feeds rss_max_items
+  )
+
+  @doc """
+  Every key `/bot set` accepts.
+
+  Public because it is the only honest answer to "is this provisioning script
+  valid?" — `scripts/server-provision.md` is linted against this list, which is
+  how `arcade_enabled`, a setting the error message once advertised and no clause
+  ever handled, got into a shipped script.
+  """
+  @spec settings() :: [String.t()]
+  def settings, do: @setting_keys
+
   @impl true
   @spec validate(String.t()) :: :ok | {:error, String.t()}
   def validate(_), do: :ok
@@ -381,7 +404,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
 
   defp apply_setting(bot, "greeting", value) do
     greeting = if value == "none", do: nil, else: value
-    caps = Map.update(bot.capabilities, "greeter", %{}, &Map.put(&1, "greeting", greeting))
+    caps = put_capability_field(bot.capabilities, "greeter", "greeting", greeting)
     Queries.update_bot(bot, %{capabilities: caps})
     reload_bot_capabilities(bot)
 
@@ -397,7 +420,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
 
   defp apply_setting(bot, "farewell", value) do
     farewell = if value == "none", do: nil, else: value
-    caps = Map.update(bot.capabilities, "greeter", %{}, &Map.put(&1, "farewell", farewell))
+    caps = put_capability_field(bot.capabilities, "greeter", "farewell", farewell)
     Queries.update_bot(bot, %{capabilities: caps})
     reload_bot_capabilities(bot)
 
@@ -412,7 +435,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
   end
 
   defp apply_setting(bot, "mention_response", value) do
-    caps = Map.update(bot.capabilities, "mention", %{}, &Map.put(&1, "response", value))
+    caps = put_capability_field(bot.capabilities, "mention", "response", value)
     Queries.update_bot(bot, %{capabilities: caps})
     reload_bot_capabilities(bot)
     {:ok, dgettext("commands", "Mention response updated.")}
@@ -503,18 +526,25 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
 
   defp apply_setting(_bot, key, _value) do
     {:error,
-     dgettext(
-       "commands",
-       "Unknown setting '%{key}'. Valid: prefix, cooldown, description, greeting, farewell, ",
-       key: key
-     ) <>
-       dgettext("commands", "mention_response, dice_*, mod_*, trivia_*, sched_*, rss_*, arcade_*")}
+     dgettext("commands", "Unknown setting '%{key}'. Valid: %{settings}",
+       key: key,
+       settings: Enum.join(@setting_keys, ", ")
+     )}
+  end
+
+  # A bot owns only greeter, custom_commands, help and mention at creation; the
+  # rest come into being on their first setting. `Map.update/4` would ignore the
+  # updater for an absent key and store the bare default, so that first setting —
+  # the one that turns the capability on — arrived with its value already gone.
+  @spec put_capability_field(map(), String.t(), String.t(), term()) :: map()
+  defp put_capability_field(capabilities, cap_name, field, value) do
+    Map.update(capabilities, cap_name, %{field => value}, &Map.put(&1, field, value))
   end
 
   @spec update_capability_field(map(), String.t(), String.t(), term()) ::
           {:ok, String.t()} | {:error, String.t()}
   defp update_capability_field(bot, cap_name, field, value) do
-    caps = Map.update(bot.capabilities, cap_name, %{}, &Map.put(&1, field, value))
+    caps = put_capability_field(bot.capabilities, cap_name, field, value)
     Queries.update_bot(bot, %{capabilities: caps})
     reload_bot_capabilities(bot)
     display = if is_list(value), do: Enum.join(value, ", "), else: inspect(value)

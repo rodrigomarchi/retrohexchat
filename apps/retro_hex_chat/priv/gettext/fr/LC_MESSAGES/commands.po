@@ -2551,14 +2551,10 @@ msgstr ""
 "Sous-commande administrative inconnue : %{subcmd}. Essayez: serveur, "
 "utilisateur, canal, ns, cs, debug, log, tour, nuke"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:506
+#: lib/retro_hex_chat/commands/handlers/bot.ex:512
 #, elixir-autogen, elixir-format
-msgid ""
-"Unknown setting '%{key}'. Valid: prefix, cooldown, description, greeting, "
-"farewell, "
-msgstr ""
-"Réglage inconnu '%{key}'. Valable: préfixe, cooldown, description, "
-"salutation, adieu,"
+msgid "Unknown setting '%{key}'. Valid: %{settings}"
+msgstr "Paramètre inconnu '%{key}'. Valides : %{settings}"
 
 #: lib/retro_hex_chat/commands/handlers/umode.ex:59
 #, elixir-autogen, elixir-format
@@ -3251,11 +3247,6 @@ msgid ""
 "%{identified}"
 msgstr ""
 "[NickServ] %{nickname} : inscrit %{registered_at}, identifié : %{identified}"
-
-#: lib/retro_hex_chat/commands/handlers/bot.ex:511
-#, elixir-autogen, elixir-format
-msgid "mention_response, dice_*, mod_*, trivia_*, sched_*, rss_*, arcade_*"
-msgstr "mention réponse, dés *, mod *, trivia *, sched *, rss *, arcade *"
 
 #: lib/retro_hex_chat/commands/handlers/admin.ex:100
 #, elixir-autogen, elixir-format
