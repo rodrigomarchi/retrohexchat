@@ -76,7 +76,7 @@ included, is joined explicitly.
 # the rest of IRC still runs this on eggdrop from 1997.
 /join #trivia
 /cs register
-/topic Trivia — !Wanda trivia start to begin, !answer to play, !Wanda trivia score for the board. Six categories.
+/topic Trivia — !Wanda trivia start to begin, !Wanda answer <guess> to play, !Wanda trivia score for the board. Six categories.
 /mode +tn
 
 # #arcade — DOOM, Quake, Wolfenstein and ScummVM in the browser.
@@ -124,8 +124,11 @@ included, is joined explicitly.
 /bot set Brutus mod_spam 5
 /bot set Brutus mod_flood 8
 /bot set Brutus mod_warn Easy there. Keep it civil or Brutus gets grumpy. And trust me, you don't want that.
-/bot set Brutus greeting Brutus here — I keep the peace. Play nice and we'll get along.
-/bot set Brutus farewell *nods silently* Stay out of trouble, {nickname}.
+# Silent on arrival and departure. Brutus stands in all seven rooms, so a
+# greeting from him would double every welcome the host bot gives — and a
+# bouncer who says hello twice reads as a glitch, not a personality.
+/bot set Brutus greeting none
+/bot set Brutus farewell none
 /bot set Brutus mention_response I'm watching. Always watching. Play nice and we'll get along just fine.
 
 /bot addcmd Brutus rules Short version: don't be a jerk. Long version: there is no long version.
@@ -144,11 +147,14 @@ included, is joined explicitly.
 # ══════════════════════════════════════════════════════════
 
 # ── Patches — #lobby doorman ─────────────────────────────
+# Cooldowns are per channel, not per user: while one is running the bot
+# ignores everyone. A second of quiet is enough to stop a flood; three made
+# the room look broken to the next person who typed.
 /bot create Patches Lobby Attendant and Channel Tour Guide
 /bot set Patches prefix !
-/bot set Patches cooldown 3000
+/bot set Patches cooldown 1000
 /bot set Patches dice_default 1d20
-/bot set Patches greeting Yo {nickname}! I'm Patches — lobby attendant. Try !tour, !rooms, or !roll. Make yourself at home.
+/bot set Patches greeting Yo {nickname}! I'm Patches — lobby attendant. Try !tour, !rooms, or !Patches roll. Make yourself at home.
 /bot set Patches farewell {nickname} heading out? The lobby keeps your seat warm. We're always open.
 /bot set Patches mention_response Patches here. Need directions? !tour for the grand tour, or just ask.
 
@@ -168,11 +174,11 @@ included, is joined explicitly.
 /bot set Wanda trivia_questions 10
 /bot set Wanda trivia_points 10
 /bot set Wanda dice_default 1d6
-/bot set Wanda greeting {nickname}! Wanda here. !Wanda trivia start and we're off — !answer to play, !Wanda trivia score for the board.
+/bot set Wanda greeting {nickname}! Wanda here. !Wanda trivia start and we're off — !Wanda answer <guess> to play, !Wanda trivia score for the board.
 /bot set Wanda farewell {nickname} leaves mid-round! The scoreboard remembers, you know.
 /bot set Wanda mention_response Ready when you are: !Wanda trivia start. Categories: general, science, history, geography, technology, entertainment.
 
-/bot addcmd Wanda howto Type !Wanda trivia start. Answer with !answer <your guess>. Ten questions, thirty seconds each, ten points a correct answer. !Wanda trivia score shows the board.
+/bot addcmd Wanda howto Type !Wanda trivia start. Answer with !Wanda answer <your guess>. Ten questions, thirty seconds each, ten points a correct answer. !Wanda trivia score shows the board.
 /bot addcmd Wanda categories general · science · history · geography · technology · entertainment. Ask an op to switch with /bot set Wanda trivia_category <name>.
 /bot addcmd Wanda cheat There is no cheat, {nickname}. There is only confidence and regret.
 
@@ -181,7 +187,7 @@ included, is joined explicitly.
 # ── Pixel — #arcade and #retro ───────────────────────────
 /bot create Pixel Arcade Operator and Retro Gaming Enthusiast
 /bot set Pixel prefix !
-/bot set Pixel cooldown 2000
+/bot set Pixel cooldown 1000
 /bot set Pixel greeting Welcome to the arcade, {nickname}! I'm Pixel. !games for the catalogue, !controls if the keys fight back.
 /bot set Pixel farewell GG {nickname}! The arcade never closes. Insert coin to continue.
 /bot set Pixel mention_response Player {nickname} has entered the chat. !games for the catalogue — open the Games menu to start a session.
@@ -197,7 +203,7 @@ included, is joined explicitly.
 # ── Murphy — #tech, the pessimistic sysadmin ─────────────
 /bot create Murphy Senior Incident Survivor and Professional Pessimist
 /bot set Murphy prefix !
-/bot set Murphy cooldown 3000
+/bot set Murphy cooldown 1000
 /bot set Murphy greeting Welcome to #tech, {nickname}. Everything is on fire but that's normal. Try !deploy, !fix, !tabs, or !wisdom. *eye twitch*
 /bot set Murphy farewell {nickname} left. Smart move. Someone has to watch the servers though.
 /bot set Murphy mention_response You called Murphy? Is it an outage? It's always an outage. ...just a question? Oh. Ask away.
@@ -213,8 +219,8 @@ included, is joined explicitly.
 # ── Tiao — #brasil (ASCII name: bot nicknames are [a-zA-Z][a-zA-Z0-9_-]*) ──
 /bot create Tiao Anfitriao do canal brasileiro
 /bot set Tiao prefix !
-/bot set Tiao cooldown 3000
-/bot set Tiao greeting Opa, {nickname}! Eu sou o Tiao. Manda um !bomdia, um !causo ou um !dado. Fica à vontade.
+/bot set Tiao cooldown 1000
+/bot set Tiao greeting Opa, {nickname}! Eu sou o Tiao. Manda um !bomdia, um !causo ou um !regras. Fica à vontade.
 /bot set Tiao farewell Falou, {nickname}! Aparece mais.
 /bot set Tiao mention_response Chamou? Tô aqui. Tenta !causo ou !bomdia.
 
@@ -227,7 +233,7 @@ included, is joined explicitly.
 # ── Harold — #help ───────────────────────────────────────
 /bot create Harold Senior Assistant to the Help Department
 /bot set Harold prefix !
-/bot set Harold cooldown 2000
+/bot set Harold cooldown 1000
 /bot set Harold greeting It looks like you need help, {nickname}! I'm Harold — try !faq, !commands, or !stuck. I live to assist.
 /bot set Harold farewell It looks like {nickname} is leaving! Would you like me to— oh. They're gone.
 /bot set Harold mention_response It looks like you're trying to get my attention! Try !commands, !faq, or just ask.

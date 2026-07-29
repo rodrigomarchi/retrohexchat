@@ -30,6 +30,23 @@ defmodule RetroHexChat.Bots.Capabilities.MentionTest do
       assert {:reply, _} = Mention.handle_message("hey TESTBOT", "Alice", @ctx)
     end
 
+    test "stays out of the way of a command addressed to the bot" do
+      # `!TestBot trivia start` names the bot, but it is an instruction, not a
+      # greeting. Answering it as a mention swallows the command: dispatch stops
+      # at the first capability that replies, so trivia and dice never run.
+      assert :ignore == Mention.handle_message("!TestBot trivia start", "Alice", @ctx)
+      assert :ignore == Mention.handle_message("!TestBot roll 1d20", "Alice", @ctx)
+    end
+
+    test "stays out of the way of a short-form command too" do
+      assert :ignore == Mention.handle_message("!tour", "Alice", @ctx)
+    end
+
+    test "still answers when the bot is named in conversation" do
+      assert {:reply, _} = Mention.handle_message("does TestBot know?", "Alice", @ctx)
+      assert {:reply, _} = Mention.handle_message("TestBot!", "Alice", @ctx)
+    end
+
     test "ignores messages without mention" do
       assert :ignore == Mention.handle_message("hello world", "Alice", @ctx)
     end

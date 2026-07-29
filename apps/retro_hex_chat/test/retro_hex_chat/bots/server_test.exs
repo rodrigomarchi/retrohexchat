@@ -470,4 +470,126 @@ defmodule RetroHexChat.Bots.ServerTest do
       assert Process.alive?(pid)
     end
   end
+
+  describe "greeting and the newcomer's first command" do
+    @greeter_bot %{
+      id: 993,
+      name: "GreetCooldownBot",
+      nickname: "GreetCooldownBot",
+      command_prefix: "!",
+      created_by: "admin",
+      enabled: true,
+      # The provisioned bots use seconds-long cooldowns, which is where this bites.
+      cooldown_ms: 3000,
+      capabilities: %{
+        "greeter" => %{"greeting" => "Welcome {nickname}!", "enabled" => true},
+        "custom_commands" => %{"enabled" => true}
+      },
+      channel_configs: [%{channel_name: "#greettest", enabled: true, capability_overrides: %{}}],
+      custom_commands: [%{trigger: "tour", response: "Seven rooms, no filler.", enabled: true}]
+    }
+
+    setup do
+      {:ok, pid} = RetroHexChat.Channels.Supervisor.start_child("#greettest")
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#greettest")
+
+      on_exit(fn ->
+        Supervisor.stop_bot("GreetCooldownBot")
+        if Process.alive?(pid), do: RetroHexChat.Channels.Supervisor.stop_child(pid)
+      end)
+
+      :ok
+    end
+
+    defp await_bot_line(text) do
+      assert_receive %{event: "new_message", payload: %{author: "GreetCooldownBot", content: c}},
+                     2000
+
+      if String.contains?(c, text), do: :ok, else: await_bot_line(text)
+    end
+
+    test "answers the command that follows its own greeting" do
+      {:ok, _pid} = Supervisor.start_bot(@greeter_bot)
+
+      # The newcomer arrives and is greeted.
+      {:ok, _} = RetroHexChat.Channels.Server.join("#greettest", "newcomer")
+      await_bot_line("Welcome newcomer!")
+
+      # ...and immediately asks the bot something, as people do. A greeting is
+      # not a reply to anything, so it must not have started the cooldown.
+      {:ok, _} = RetroHexChat.Channels.Server.send_message("#greettest", "newcomer", "!tour")
+      await_bot_line("Seven rooms, no filler.")
+    end
+  end
+
+  describe "a command addressed to the bot beats its mention response" do
+    @command_bot %{
+      id: 992,
+      name: "OrderBot",
+      nickname: "OrderBot",
+      command_prefix: "!",
+      created_by: "admin",
+      enabled: true,
+      cooldown_ms: 0,
+      capabilities: %{
+        "mention" => %{"response" => "Try !help for my commands.", "enabled" => true},
+        "trivia" => %{"category" => "general", "enabled" => true},
+        "dice" => %{"default_notation" => "1d20", "enabled" => true},
+        "custom_commands" => %{"enabled" => true}
+      },
+      channel_configs: [%{channel_name: "#ordertest", enabled: true, capability_overrides: %{}}],
+      custom_commands: []
+    }
+
+    setup do
+      {:ok, pid} = RetroHexChat.Channels.Supervisor.start_child("#ordertest")
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#ordertest")
+
+      on_exit(fn ->
+        Supervisor.stop_bot("OrderBot")
+        if Process.alive?(pid), do: RetroHexChat.Channels.Supervisor.stop_child(pid)
+      end)
+
+      :ok
+    end
+
+    defp await_order_bot_line(match) do
+      assert_receive %{event: "new_message", payload: %{author: "OrderBot", content: c}}, 2000
+      if String.contains?(c, match), do: :ok, else: await_order_bot_line(match)
+    end
+
+    test "dice answers !OrderBot roll, not the mention fallback" do
+      {:ok, _} = Supervisor.start_bot(@command_bot)
+      {:ok, _} = RetroHexChat.Channels.Server.join("#ordertest", "player")
+
+      {:ok, _} =
+        RetroHexChat.Channels.Server.send_message("#ordertest", "player", "!OrderBot roll 1d20")
+
+      await_order_bot_line("Rolling 1d20")
+    end
+
+    test "trivia answers !OrderBot trivia start, not the mention fallback" do
+      {:ok, _} = Supervisor.start_bot(@command_bot)
+      {:ok, _} = RetroHexChat.Channels.Server.join("#ordertest", "player")
+
+      {:ok, _} =
+        RetroHexChat.Channels.Server.send_message(
+          "#ordertest",
+          "player",
+          "!OrderBot trivia start"
+        )
+
+      await_order_bot_line("Trivia started!")
+    end
+
+    test "the mention response still answers plain talk about the bot" do
+      {:ok, _} = Supervisor.start_bot(@command_bot)
+      {:ok, _} = RetroHexChat.Channels.Server.join("#ordertest", "player")
+
+      {:ok, _} =
+        RetroHexChat.Channels.Server.send_message("#ordertest", "player", "does OrderBot work?")
+
+      await_order_bot_line("Try !help for my commands.")
+    end
+  end
 end

@@ -132,6 +132,56 @@ defmodule RetroHexChat.Commands.Handlers.ServerProvisionTest do
     end
   end
 
+  test "every trigger the script advertises is one a bot will answer", %{lines: lines} do
+    # Custom commands answer to both `!trigger` and `!Bot trigger`. dice and
+    # trivia only ever answer to the long form, so a topic promising `!answer`
+    # or `!roll` promises silence — which is exactly what shipped the first time.
+    parsed = Enum.map(lines, &args/1)
+    bots = for ["bot", "create", name | _] <- parsed, into: MapSet.new(), do: name
+    triggers = for ["bot", "addcmd", _bot, t | _] <- parsed, into: MapSet.new(), do: t
+
+    advertised =
+      lines
+      |> Enum.flat_map(&Regex.scan(~r/(?<![\w!])!(\w+)/, &1, capture: :all_but_first))
+      |> List.flatten()
+      |> Enum.uniq()
+
+    dangling =
+      Enum.reject(advertised, fn token ->
+        MapSet.member?(triggers, token) or MapSet.member?(bots, token)
+      end)
+
+    assert dangling == [],
+           "script advertises triggers nothing answers: #{inspect(dangling)}"
+  end
+
+  test "the bot that stands in every room does not greet", %{lines: lines} do
+    # One welcome per newcomer. A bot present in all channels would otherwise
+    # double the greeting the room's own host already gives.
+    parsed = Enum.map(lines, &args/1)
+    joins = for ["bot", "join", bot, _chan | _] <- parsed, do: bot
+    channels = for ["join", chan | _] <- parsed, uniq: true, do: chan
+
+    omnipresent =
+      joins
+      |> Enum.frequencies()
+      |> Enum.filter(fn {_bot, n} -> n == length(channels) end)
+      |> Enum.map(&elem(&1, 0))
+
+    refute omnipresent == [], "expected one bot to be in every channel"
+
+    for bot <- omnipresent do
+      greeting =
+        Enum.find_value(parsed, fn
+          ["bot", "set", ^bot, "greeting" | rest] -> Enum.join(rest, " ")
+          _ -> nil
+        end)
+
+      assert greeting == "none",
+             "#{bot} stands in every channel and must be set to 'greeting none'"
+    end
+  end
+
   test "no channel is topic'd or moded before it is joined", %{lines: lines} do
     parsed = Enum.map(lines, &args/1)
 

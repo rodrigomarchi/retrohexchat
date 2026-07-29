@@ -38,6 +38,16 @@ defmodule RetroHexChat.Bots.Capabilities.GreeterTest do
                Greeter.handle_event(:user_joined, %{nickname: "Bob"}, ctx)
     end
 
+    test "stays silent when the greeting is cleared" do
+      # `/bot set <name> greeting none` stores nil. A bot that stands in every
+      # room — the moderator — is set this way so it does not double the welcome
+      # each room's host already gives.
+      ctx = put_in(@ctx.config["greeting"], nil)
+
+      assert :ignore ==
+               Greeter.handle_event(:user_joined, %{nickname: "Alice"}, ctx)
+    end
+
     test "ignores user_left when farewell is nil" do
       assert :ignore == Greeter.handle_event(:user_left, %{nickname: "Alice"}, @ctx)
     end

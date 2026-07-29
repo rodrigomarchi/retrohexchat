@@ -20,7 +20,7 @@ defmodule RetroHexChat.Bots.Capabilities.Mention do
   @spec handle_message(String.t(), String.t(), RetroHexChat.Bots.Capability.bot_context()) ::
           RetroHexChat.Bots.Capability.capability_result()
   def handle_message(content, author, ctx) do
-    if mentions_bot?(content, ctx.bot_nickname) do
+    if not command?(content, ctx) and mentions_bot?(content, ctx.bot_nickname) do
       response = Map.get(ctx.config, "response", default_response())
 
       vars = %{
@@ -58,6 +58,16 @@ defmodule RetroHexChat.Bots.Capabilities.Mention do
 
   @spec default_response() :: String.t()
   defp default_response, do: dgettext("bots", "Hi {nickname}! Try {prefix}help for my commands.")
+
+  # `!Wanda trivia start` names the bot, but it is an instruction, not small
+  # talk. Since dispatch halts at the first capability that answers, treating it
+  # as a mention swallows the command — the bot replies "try !help" to the very
+  # command it was given, and trivia, dice and the rest become unreachable.
+  @spec command?(String.t(), map()) :: boolean()
+  defp command?(content, ctx) do
+    prefix = Map.get(ctx, :command_prefix) || "!"
+    content |> String.trim_leading() |> String.starts_with?(prefix)
+  end
 
   @spec mentions_bot?(String.t(), String.t()) :: boolean()
   defp mentions_bot?(content, bot_nickname) do

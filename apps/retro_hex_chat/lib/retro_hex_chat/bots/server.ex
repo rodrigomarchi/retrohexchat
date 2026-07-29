@@ -32,6 +32,29 @@ defmodule RetroHexChat.Bots.Server do
     dice: RetroHexChat.Bots.Capabilities.Dice
   }
 
+  # Dispatch halts at the first capability that answers, so the order decides who
+  # wins — and a map has no order worth relying on. Two bots with the same
+  # capabilities but different key sets iterated differently, which is why a bot
+  # could answer `!Bot roll` correctly while an identically configured sibling
+  # answered `!Bot trivia start` with its mention response.
+  #
+  # Operator-defined commands come first: naming one is an explicit choice.
+  # `mention` comes last — it is the fallback for being talked about, not to.
+  @capability_priority [
+    :custom_commands,
+    :trivia,
+    :dice,
+    :rss,
+    :scheduler,
+    :game,
+    :llm,
+    :script,
+    :help,
+    :greeter,
+    :moderation,
+    :mention
+  ]
+
   @type state :: %{
           bot_id: integer(),
           name: String.t(),
@@ -308,7 +331,7 @@ defmodule RetroHexChat.Bots.Server do
         dispatch_active_capabilities(:event, event, payload, context, state)
 
       log_event_async(state.bot_id, "channel_#{event}", channel, %{nickname: nickname})
-      maybe_respond(state, channel, result)
+      respond_without_cooldown(state, channel, result)
     else
       state
     end
@@ -411,7 +434,7 @@ defmodule RetroHexChat.Bots.Server do
           {result, new_cap_state} = cap_mod.handle_timer(payload, cap_state, ctx)
           state = update_capability_state(state, cap_name, new_cap_state)
           state = maybe_reschedule_timer(state, cap_name, cap_mod, payload, new_cap_state)
-          maybe_respond_timer(state, channel, result)
+          respond_without_cooldown(state, channel, result)
         else
           state
         end
@@ -495,26 +518,35 @@ defmodule RetroHexChat.Bots.Server do
 
   defp maybe_respond(state, _channel, {:side_effect, _action}), do: state
 
-  @spec maybe_respond_timer(
+  # Speech the bot was not asked for — a greeting, a farewell, a scheduled post.
+  # It is never gated by the cooldown, so it must not start it either: a bot that
+  # welcomes someone and then ignores their first question reads as broken, and
+  # the warmer the welcome the longer the silence that follows it.
+  @spec respond_without_cooldown(
           state(),
           String.t() | nil,
           RetroHexChat.Bots.Capability.capability_result()
         ) ::
           state()
-  defp maybe_respond_timer(state, nil, _result), do: state
-  defp maybe_respond_timer(state, _channel, :ignore), do: state
+  defp respond_without_cooldown(state, nil, _result), do: state
+  defp respond_without_cooldown(state, _channel, :ignore), do: state
 
-  defp maybe_respond_timer(state, channel, {:reply, text}) do
+  defp respond_without_cooldown(state, channel, {:reply, text}) do
     send_bot_message(channel, state.nickname, text)
     state
   end
 
-  defp maybe_respond_timer(state, channel, {:multi_reply, lines}) do
+  defp respond_without_cooldown(state, channel, {:reply_action, text}) do
+    send_bot_message(channel, state.nickname, text)
+    state
+  end
+
+  defp respond_without_cooldown(state, channel, {:multi_reply, lines}) do
     Enum.each(lines, &send_bot_message(channel, state.nickname, &1))
     state
   end
 
-  defp maybe_respond_timer(state, _channel, _other), do: state
+  defp respond_without_cooldown(state, _channel, _other), do: state
 
   @spec send_bot_message(String.t(), String.t(), String.t()) :: :ok | {:error, term()}
   defp send_bot_message(channel, nickname, content) do
@@ -666,6 +698,9 @@ defmodule RetroHexChat.Bots.Server do
       end
     end)
     |> Enum.reject(&is_nil/1)
+    |> Enum.sort_by(fn {name, _mod, _config} ->
+      Enum.find_index(@capability_priority, &(&1 == name)) || length(@capability_priority)
+    end)
   end
 
   @spec build_channels([map()]) :: %{String.t() => map()}
