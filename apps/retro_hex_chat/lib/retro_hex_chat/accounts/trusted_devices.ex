@@ -192,31 +192,9 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
          %TrustedDevice{} = device <- Repo.get(TrustedDevice, device_id),
          :ok <- ensure_device_usable(device),
          %TrustedDeviceNick{} = grant <- active_grant(device.id, nick.id) do
-      Repo.transaction(fn ->
-        if enabled do
-          from(g in TrustedDeviceNick,
-            where: g.trusted_device_id == ^device.id,
-            where: g.id != ^grant.id,
-            where: is_nil(g.revoked_at)
-          )
-          |> Repo.update_all(set: [auto_login: false])
-        end
-
-        grant
-        |> TrustedDeviceNick.changeset(%{auto_login: enabled})
-        |> Repo.update!()
-
-        action =
-          if enabled,
-            do: "device.nick.auto_login_enabled",
-            else: "device.nick.auto_login_disabled"
-
-        log_event(action, device, nick, actor || nickname, %{enabled: enabled})
-      end)
-      |> case do
-        {:ok, _} -> :ok
-        {:error, _reason} -> {:error, dgettext("accounts", "Could not update auto-login.")}
-      end
+      device
+      |> update_auto_login_grant(grant, nick, enabled, actor || nickname)
+      |> normalize_auto_login_result()
     else
       nil ->
         {:error, dgettext("accounts", "Trusted terminal not found for this nick.")}
@@ -225,6 +203,37 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
         {:error, dgettext("accounts", "Trusted terminal not found for this nick.")}
     end
   end
+
+  defp update_auto_login_grant(device, grant, nick, enabled, actor) do
+    Repo.transaction(fn ->
+      clear_other_auto_login_grants(device.id, grant.id, enabled)
+
+      grant
+      |> TrustedDeviceNick.changeset(%{auto_login: enabled})
+      |> Repo.update!()
+
+      log_event(auto_login_action(enabled), device, nick, actor, %{enabled: enabled})
+    end)
+  end
+
+  defp clear_other_auto_login_grants(_device_id, _grant_id, false), do: :ok
+
+  defp clear_other_auto_login_grants(device_id, grant_id, true) do
+    from(g in TrustedDeviceNick,
+      where: g.trusted_device_id == ^device_id,
+      where: g.id != ^grant_id,
+      where: is_nil(g.revoked_at)
+    )
+    |> Repo.update_all(set: [auto_login: false])
+  end
+
+  defp auto_login_action(true), do: "device.nick.auto_login_enabled"
+  defp auto_login_action(false), do: "device.nick.auto_login_disabled"
+
+  defp normalize_auto_login_result({:ok, _}), do: :ok
+
+  defp normalize_auto_login_result({:error, _reason}),
+    do: {:error, dgettext("accounts", "Could not update auto-login.")}
 
   @spec record_session_start(String.t(), integer() | nil, map()) ::
           {:ok, ChatDeviceSession.t()} | {:error, Ecto.Changeset.t()}
