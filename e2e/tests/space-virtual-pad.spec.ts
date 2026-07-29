@@ -46,7 +46,7 @@ test.describe("Space virtual pad", () => {
       });
 
       const spaceTab = page.locator(
-        '[data-testid="topic-bar"] [data-testid="channel-view-tabs"] button[phx-value-view="space"]',
+        '[data-testid="conversation-toolbar"] [data-testid="channel-view-switcher"] button[phx-value-view="space"]',
       );
       await expect(spaceTab).toBeVisible();
       await spaceTab.click();

@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.Components.UI.ChannelViewSwitcher do
   @moduledoc """
-  Topic-bar controls for switching between channel chat, space and conference.
+  Conversation-toolbar controls for switching between chat, space and conference.
 
   The host LiveView derives the active call read model. This component only
   renders the controls and emits the existing events.
@@ -22,7 +22,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelViewSwitcher do
   @spec channel_view_switcher(map()) :: Phoenix.LiveView.Rendered.t()
   def channel_view_switcher(assigns) do
     ~H"""
-    <div class="flex items-center gap-px" data-testid="channel-view-tabs">
+    <div class="flex shrink-0 items-center gap-px" data-testid="channel-view-switcher">
       <.view_button
         view={:chat}
         active={@channel_view == :chat}
@@ -64,7 +64,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelViewSwitcher do
       phx-click="switch_channel_view"
       phx-value-view={Atom.to_string(@view)}
       class={[
-        "flex h-6 items-center justify-center gap-1 px-2 py-0 shadow-retro-raised bg-surface text-xs whitespace-nowrap",
+        "conversation-toolbar-button flex h-6 w-6 shrink-0 items-center justify-center p-0 shadow-retro-raised bg-surface text-xs",
         "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground",
         @active && "bg-canvas font-bold shadow-retro-sunken"
       ]}
@@ -73,7 +73,6 @@ defmodule RetroHexChatWeb.Components.UI.ChannelViewSwitcher do
       aria-pressed={@active}
     >
       {render_slot(@inner_block)}
-      <span>{@label}</span>
     </button>
     """
   end

@@ -126,14 +126,14 @@ test.describe("chat desktop on a phone (stacked single-window)", () => {
     await expect(timersWindow).toBeHidden();
   });
 
-  test("exposes mobile chat controls for sidebars and keeps composer touch-sized", async ({
+  test("exposes chat toolbar controls for sidebars and keeps composer touch-sized", async ({
     page,
   }) => {
     await signedInUser(page, "mctrl");
 
-    const conversationsButton = page.getByTestId("chat-mobile-conversations");
-    const nicklistButton = page.getByTestId("chat-mobile-nicklist");
-    const searchButton = page.getByTestId("chat-mobile-search");
+    const conversationsButton = page.getByTestId("conversation-toolbar-conversations");
+    const nicklistButton = page.getByTestId("conversation-toolbar-nicklist");
+    const searchButton = page.getByTestId("conversation-toolbar-search");
     const conversations = page.getByTestId("conversations");
     const nicklist = page.getByTestId("nicklist");
     const searchBar = page.getByTestId("search-bar");

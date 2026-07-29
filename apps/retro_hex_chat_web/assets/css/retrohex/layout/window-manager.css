@@ -212,6 +212,17 @@
 }
 .desktop--stacked {
   --rhc-chat-mobile-header-height: 40px;
+  --rhc-chat-window-chrome-height: 27px;
+  --rhc-chat-tabbar-height: 38px;
+  --rhc-chat-toolbar-height: 40px;
+  --rhc-chat-topicbar-height: 28px;
+  --rhc-chat-sidebar-top: calc(
+    var(--rhc-chat-mobile-header-height) +
+    var(--rhc-chat-window-chrome-height) +
+    var(--rhc-chat-tabbar-height) +
+    var(--rhc-chat-toolbar-height) +
+    var(--rhc-chat-topicbar-height)
+  );
   overflow: clip;
 }
 .desktop--stacked .desktop-window {
@@ -238,17 +249,30 @@
   padding-inline: 4px;
 }
 
-/* Sidebars overlay the chat content but stop below the window chrome —
-   app header (40px) + window border (3px) + title bar (24px) + tab row with
-   the mobile chat controls (39px) — so conversations/nicklist/search stay one
-   tap away while a sidebar is open. */
+/* Sidebars overlay the chat content but stop below the fixed chat chrome:
+   app header, window title chrome, tab row, conversation toolbar and topic row. */
 .desktop--stacked .chat-sidebar-overlay {
-  --rhc-chat-mobile-sidebar-top: calc(var(--rhc-chat-mobile-header-height) + 66px);
-  top: var(--rhc-chat-mobile-sidebar-top);
-  height: calc(var(--rhc-visual-viewport-height, 100dvh) - var(--rhc-chat-mobile-sidebar-top));
+  top: var(--rhc-chat-sidebar-top);
+  height: calc(var(--rhc-visual-viewport-height, 100dvh) - var(--rhc-chat-sidebar-top));
 }
 
-.desktop--stacked .chat-mobile-action {
+.desktop--stacked [data-testid="tab-bar"],
+.desktop--stacked [data-testid="conversation-toolbar"],
+.desktop--stacked [data-testid="topic-bar"] {
+  position: relative;
+  z-index: 50;
+}
+
+.desktop--stacked [data-testid="conversation-toolbar"] {
+  min-height: var(--rhc-chat-toolbar-height);
+  scrollbar-width: thin;
+}
+
+.desktop--stacked [data-testid="topic-bar"] {
+  min-height: var(--rhc-chat-topicbar-height);
+}
+
+.desktop--stacked .conversation-toolbar-button {
   min-width: 36px;
   min-height: 36px;
 }
@@ -259,7 +283,7 @@
 }
 
 .desktop--stacked [role="tablist"] {
-  min-height: 38px;
+  min-height: var(--rhc-chat-tabbar-height);
   scrollbar-width: thin;
 }
 

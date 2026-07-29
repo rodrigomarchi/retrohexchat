@@ -19,10 +19,16 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadgeTest do
     assert html =~ ~s(data-p2p-status="idle")
     assert html =~ ~s(phx-click="p2p_start_pm_session")
     assert html =~ ~s(phx-value-peer="alice")
-    assert html =~ "P2P"
+
+    [entry] =
+      html
+      |> Floki.parse_document!()
+      |> Floki.find(~s([data-testid="p2p-peer-entry"]))
+
+    assert entry |> Floki.text() |> String.trim() == ""
   end
 
-  test "renders a received pending request with header join and decline actions" do
+  test "renders a received pending request with icon-only join and decline actions" do
     html =
       render_component(&p2p_peer_entry/1,
         peer: "alice",
@@ -38,9 +44,15 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadgeTest do
     assert html =~ ~s(phx-value-token="tok123")
     assert html =~ ~s(data-testid="p2p-peer-decline")
     assert html =~ ~s(phx-click="p2p_decline_invite")
+
+    doc = Floki.parse_document!(html)
+
+    assert [join] = Floki.find(doc, ~s([data-testid="p2p-peer-join"]))
+    assert Floki.attribute(join, "aria-label") == ["Accept P2P request"]
+    assert join |> Floki.text() |> String.trim() == ""
   end
 
-  test "renders the rich PM entry with live facets and actions" do
+  test "renders the icon-only PM entry with rich facets and actions in the popover" do
     html =
       render_component(&p2p_peer_entry/1,
         peer: "Troll",
@@ -57,7 +69,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadgeTest do
       )
 
     assert html =~ ~s(data-testid="p2p-peer-entry")
-    assert html =~ ~s(data-testid="p2p-peer-badge")
+    refute html =~ ~s(data-testid="p2p-peer-badge")
     assert html =~ ~s(data-p2p-state="connected")
     assert html =~ ~s(data-p2p-status="live")
     assert html =~ ~s(data-p2p-facets="call,file,game,relay")

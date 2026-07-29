@@ -302,7 +302,7 @@ async function runSpace(
   try {
     await page
       .locator(
-        '[data-testid="topic-bar"] [data-testid="channel-view-tabs"] button[phx-value-view="space"]',
+        '[data-testid="conversation-toolbar"] [data-testid="channel-view-switcher"] button[phx-value-view="space"]',
       )
       .click();
     const picker = page.getByTestId("space-character-select");

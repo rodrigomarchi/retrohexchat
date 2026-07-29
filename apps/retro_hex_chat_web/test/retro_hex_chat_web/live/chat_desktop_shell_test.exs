@@ -66,7 +66,31 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
     test "the chat layout (tabs, composer, nicklist) lives inside the window body", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/chat")
 
-      assert has_element?(view, ~s([data-window-id="chat"] [role="tablist"]))
+      assert has_element?(
+               view,
+               ~s([data-window-id="chat"] [data-testid="tab-bar"][role="tablist"])
+             )
+
+      refute has_element?(
+               view,
+               ~s([data-testid="tab-bar"] [data-testid="conversation-toolbar-actions"])
+             )
+
+      assert has_element?(
+               view,
+               ~s([data-testid="conversation-toolbar"] [data-testid="conversation-toolbar-actions"])
+             )
+
+      assert has_element?(
+               view,
+               ~s([data-testid="conversation-toolbar"] [data-testid="channel-view-switcher"])
+             )
+
+      refute has_element?(
+               view,
+               ~s([data-testid="topic-bar"] [data-testid="channel-view-switcher"])
+             )
+
       assert has_element?(view, ~s([data-window-id="chat"] #conversations-mount.h-full))
       assert has_element?(view, ~s([data-window-id="chat"] #conversations.h-full))
       assert has_element?(view, ~s([data-testid="channel-main-column"] #chat-input-area))
@@ -118,15 +142,17 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
       {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/chat")
 
       chat_button =
-        ~s([data-testid="topic-bar"] [data-testid="channel-view-tabs"] button[phx-value-view="chat"])
+        ~s([data-testid="conversation-toolbar"] [data-testid="channel-view-switcher"] button[phx-value-view="chat"])
 
       space_button =
-        ~s([data-testid="topic-bar"] [data-testid="channel-view-tabs"] button[phx-value-view="space"])
+        ~s([data-testid="conversation-toolbar"] [data-testid="channel-view-switcher"] button[phx-value-view="space"])
 
       assert has_element?(view, "#{chat_button} svg")
-      assert has_element?(view, chat_button, "Chat")
+      assert has_element?(view, ~s(#{chat_button}[aria-label="Chat"][title="Chat"]))
+      refute has_element?(view, chat_button, "Chat")
       assert has_element?(view, "#{space_button} svg")
-      assert has_element?(view, space_button, "Space")
+      assert has_element?(view, ~s(#{space_button}[aria-label="Space"][title="Space"]))
+      refute has_element?(view, space_button, "Space")
 
       view
       |> element(space_button)
@@ -172,7 +198,7 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
 
       view
       |> element(
-        ~s([data-testid="topic-bar"] [data-testid="channel-view-tabs"] button[phx-value-view="space"])
+        ~s([data-testid="conversation-toolbar"] [data-testid="channel-view-switcher"] button[phx-value-view="space"])
       )
       |> render_click()
 

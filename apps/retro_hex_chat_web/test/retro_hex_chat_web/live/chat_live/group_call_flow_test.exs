@@ -430,8 +430,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
 
       assert has_element?(
                ctx_b.view,
-               ~s([data-testid="group-call-channel-badge"][data-channel="#{channel}"][data-state="active"]),
-               "Live"
+               ~s([data-testid="group-call-open"][data-channel="#{channel}"][data-state="active"])
              )
 
       assert has_element?(
@@ -460,7 +459,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
 
       refute MapSet.member?(group_call_channels(ctx_b.view), channel)
       refute Map.has_key?(group_call_channel_summaries(ctx_b.view), channel)
-      refute has_element?(ctx_b.view, ~s([data-testid="group-call-channel-badge"]))
+      refute has_element?(ctx_b.view, ~s([data-testid="group-call-open"][data-state]))
       refute has_element?(ctx_b.view, ~s([data-testid="tab-group-call-glyph"]))
     end
 

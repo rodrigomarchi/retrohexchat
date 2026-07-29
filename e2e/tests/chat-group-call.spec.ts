@@ -129,8 +129,8 @@ function groupCallStatusAnnouncer(page: Page) {
   return page.getByTestId("group-call-status-announcer");
 }
 
-function groupCallChannelBadge(page: Page) {
-  return page.getByTestId("group-call-channel-badge");
+function groupCallChannelIndicator(page: Page) {
+  return page.getByTestId("group-call-open");
 }
 
 function groupCallChannelPopover(page: Page) {
@@ -963,9 +963,19 @@ test.describe("Channel group calls", () => {
       await expect(groupCallStatusBar(alice.page)).toContainText("Call:");
       await expect(alice.page.getByTestId("group-call-webrtc")).toBeVisible();
 
-      await expect(groupCallChannelBadge(bob.page)).toBeVisible();
-      await expect(groupCallChannelBadge(bob.page)).toContainText("Live");
-      await expect(groupCallChannelBadge(bob.page)).toContainText("1/100");
+      await expect(groupCallChannelIndicator(bob.page)).toBeVisible();
+      await expect(groupCallChannelIndicator(bob.page)).toHaveAttribute(
+        "data-state",
+        "active",
+      );
+      await expect(groupCallChannelIndicator(bob.page)).toHaveAttribute(
+        "data-participant-count",
+        "1",
+      );
+      await expect(groupCallChannelIndicator(bob.page)).toHaveAttribute(
+        "data-max-participants",
+        "100",
+      );
       await groupCallChannelPopoverToggle(bob.page).click();
       await expect(groupCallChannelPopover(bob.page)).toBeVisible();
       await expect(groupCallChannelPopover(bob.page)).toContainText(alice.nick);
@@ -979,7 +989,10 @@ test.describe("Channel group calls", () => {
       await expect(groupCallTaskbarButton(bob.page)).toContainText(channel);
       await expect(groupCallStatusBar(bob.page)).toContainText("Call:");
       await expect(bob.page.getByTestId("group-call-webrtc")).toBeVisible();
-      await expect(groupCallChannelBadge(alice.page)).toContainText("2/100");
+      await expect(groupCallChannelIndicator(alice.page)).toHaveAttribute(
+        "data-participant-count",
+        "2",
+      );
 
       await expect
         .poll(() => remoteVideoLive(alice.page), { timeout: 30_000 })
@@ -1598,9 +1611,11 @@ test.describe("Channel group calls", () => {
         "true",
       );
 
-      await expect(groupCallChannelBadge(bob.page)).toContainText("Locked", {
-        timeout: 10_000,
-      });
+      await expect(groupCallChannelIndicator(bob.page)).toHaveAttribute(
+        "data-state",
+        "locked",
+        { timeout: 10_000 },
+      );
 
       await groupCallButton(bob.page).click();
       await expect(groupCallPrejoinDialog(bob.page)).toBeVisible();

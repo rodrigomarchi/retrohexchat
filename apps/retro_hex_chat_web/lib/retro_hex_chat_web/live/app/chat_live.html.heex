@@ -95,34 +95,79 @@
 
         <%!-- Chat area --%>
         <div class="flex flex-col flex-1 min-w-0 min-h-0 overflow-hidden">
-          <%!-- Tab bar row (shrink, no grow): mobile chat controls + tab strip --%>
-          <div class="flex items-stretch shrink-0 min-w-0">
-            <.chat_mobile_actions />
-            <.chat_tabs
-              class="flex-1 min-w-0"
-              channels={@session.channels}
-              pm_tabs={@open_pm_tabs}
-              unread_counts={@unread_counts}
-              status_unread={@status_unread}
-              show_status_tab={@show_status_tab}
-              active_channel={@session.active_channel}
-              active_pm={@session.active_pm}
-              nick_color_fn={@nick_color_fn}
-              p2p_peer={if @p2p_session, do: @p2p_session.peer_nick}
-              p2p_state={if @p2p_session, do: @p2p_session.state}
-              p2p_session={@p2p_session}
-              p2p_pm_sessions={@p2p_pm_sessions}
-              group_call_channels={@group_call_channels}
-              group_call_summaries={@group_call_channel_summaries}
-            />
-          </div>
-
           <% conversation_space = conversation_space(@session, @show_status_tab) %>
           <% space_view? = conversation_space && @channel_view == :space %>
           <% p2p_pm_session =
             p2p_session_for_active_pm(@p2p_session, @session.active_pm) ||
               p2p_pm_session_for_active_pm(@p2p_pm_sessions, @session.active_pm) ||
               p2p_idle_session_for_active_pm(@session) %>
+
+          <%!-- Tab bar: only conversation tabs belong here. --%>
+          <.chat_tabs
+            class="shrink-0 min-w-0"
+            channels={@session.channels}
+            pm_tabs={@open_pm_tabs}
+            unread_counts={@unread_counts}
+            status_unread={@status_unread}
+            show_status_tab={@show_status_tab}
+            active_channel={@session.active_channel}
+            active_pm={@session.active_pm}
+            nick_color_fn={@nick_color_fn}
+            p2p_peer={if @p2p_session, do: @p2p_session.peer_nick}
+            p2p_state={if @p2p_session, do: @p2p_session.state}
+            p2p_session={@p2p_session}
+            p2p_pm_sessions={@p2p_pm_sessions}
+            group_call_channels={@group_call_channels}
+            group_call_summaries={@group_call_channel_summaries}
+          />
+
+          <%!-- Conversation toolbar: sidebar/search actions + chat/space/call/P2P controls. --%>
+          <div
+            class="conversation-toolbar flex shrink-0 items-center gap-px overflow-x-auto border-b border-border bg-surface px-1 py-[2px]"
+            role="toolbar"
+            aria-label={dgettext("chat", "Conversation toolbar")}
+            data-testid="conversation-toolbar"
+          >
+            <.conversation_toolbar_actions
+              conversations_open={@show_conversations}
+              nicklist_open={@show_nicklist && !@session.active_pm && !@show_status_tab}
+              search_open={@search_visible}
+            />
+
+            <div
+              :if={conversation_space}
+              class="mx-[2px] h-6 w-[1px] shrink-0 bg-gray-500"
+              aria-hidden="true"
+              data-testid="conversation-toolbar-separator"
+            />
+
+            <.channel_view_switcher
+              :if={conversation_space}
+              channel_view={@channel_view}
+              active_channel={@session.active_channel}
+              show_status_tab={@show_status_tab}
+              call_active={
+                channel_group_call_active?(@group_call_channels, @session.active_channel)
+              }
+              call_current={
+                (@group_call && @group_call.channel_name == @session.active_channel) == true
+              }
+              call_summary={
+                channel_group_call_summary(
+                  @group_call_channel_summaries,
+                  @group_call,
+                  @session.active_channel
+                )
+              }
+              identified={@session.identified}
+            />
+            <.p2p_peer_entry
+              :if={p2p_pm_session}
+              peer={@session.active_pm}
+              session={p2p_pm_session}
+              current={true}
+            />
+          </div>
 
           <%!-- Topic bar --%>
           <.topic_bar
@@ -136,35 +181,7 @@
               end
             }
             modes={@current_modes}
-          >
-            <:leading_controls :if={conversation_space}>
-              <.channel_view_switcher
-                channel_view={@channel_view}
-                active_channel={@session.active_channel}
-                show_status_tab={@show_status_tab}
-                call_active={
-                  channel_group_call_active?(@group_call_channels, @session.active_channel)
-                }
-                call_current={
-                  (@group_call && @group_call.channel_name == @session.active_channel) == true
-                }
-                call_summary={
-                  channel_group_call_summary(
-                    @group_call_channel_summaries,
-                    @group_call,
-                    @session.active_channel
-                  )
-                }
-                identified={@session.identified}
-              />
-              <.p2p_peer_entry
-                :if={p2p_pm_session}
-                peer={@session.active_pm}
-                session={p2p_pm_session}
-                current={true}
-              />
-            </:leading_controls>
-          </.topic_bar>
+          />
 
           <%!-- Connection status banner + JS-driven reconnect overlay --%>
           <.connection_status_panel />

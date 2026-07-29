@@ -2,9 +2,9 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
   @moduledoc """
   Channel-level conference indicators.
 
-  The topic bar uses the rich entry with a popover. Tabs and the conversations
-  sidebar use the compact glyph so all channel surfaces share the same summary
-  derivation.
+  The conversation toolbar uses the icon entry with a popover. Tabs and the
+  conversations sidebar use the compact glyph so all channel surfaces share the
+  same summary derivation.
   """
   use RetroHexChatWeb.Component
 
@@ -28,10 +28,10 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
         type="button"
         phx-click={@on_open}
         class={[
-          "flex h-6 items-center justify-center gap-1 px-2 py-0 shadow-retro-raised bg-surface text-xs whitespace-nowrap",
+          "conversation-toolbar-button flex h-6 w-6 shrink-0 items-center justify-center p-0 shadow-retro-raised bg-surface text-xs",
           "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground",
           @current && "bg-canvas font-bold shadow-retro-sunken",
-          @active && "border border-success text-success",
+          active_state_class(@active, @state),
           !@identified && "opacity-60"
         ]}
         aria-label={dgettext("group_call", "Group Call")}
@@ -39,38 +39,28 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
         aria-pressed={to_string(@current)}
         disabled={!@identified}
         data-testid="group-call-open"
+        data-channel={@channel}
+        data-state={active_value(@active, Atom.to_string(@state))}
+        data-participant-count={active_value(@active, @participant_count)}
+        data-max-participants={active_value(@active, @max_participants)}
+        data-started-at={active_value(@active, started_at_value(@started_at))}
       >
         <Icons.icon_protocol_conference_compact class="h-3.5 w-3.5 shrink-0" />
-        <span>{dgettext("group_call", "Call")}</span>
         <span
           :if={@active}
           class={[
-            "ml-0.5 inline-flex h-4 shrink-0 items-center gap-[3px] border bg-white px-1 text-[9px] font-bold leading-none shadow-retro-sunken",
-            state_class(@state)
-          ]}
-          title={@title}
-          data-testid="group-call-channel-badge"
-          data-channel={@channel}
-          data-state={Atom.to_string(@state)}
-          data-participant-count={@participant_count}
-          data-max-participants={@max_participants}
-          data-started-at={started_at_value(@started_at)}
-        >
-          <span class={[
-            "h-1.5 w-1.5",
+            "absolute bottom-0.5 right-0.5 h-1.5 w-1.5 border border-border",
             @state in [:active, :full] && "animate-pulse",
-            dot_class(@state)
-          ]} />
-          <span>{state_label(@state)}</span>
-          <span class="text-muted-foreground">{@participant_count}/{@max_participants || "?"}</span>
-          <span class="hidden sm:inline text-muted-foreground">{@duration}</span>
-        </span>
+            state_dot_class(@state)
+          ]}
+          aria-hidden="true"
+        />
       </button>
 
       <details :if={@active} class="relative h-6">
         <summary
           class={[
-            "flex h-6 w-6 cursor-pointer list-none items-center justify-center shadow-retro-raised bg-surface text-primary",
+            "conversation-toolbar-button flex h-6 w-6 cursor-pointer list-none items-center justify-center shadow-retro-raised bg-surface text-primary",
             "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
           ]}
           aria-label={dgettext("group_call", "Conference summary")}
@@ -378,11 +368,17 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
   defp state_class(:degraded), do: "border-destructive text-destructive"
   defp state_class(:ending), do: "border-muted text-muted-foreground"
 
-  defp dot_class(:active), do: "bg-success"
-  defp dot_class(:full), do: "bg-warning"
-  defp dot_class(:locked), do: "bg-warning"
-  defp dot_class(:degraded), do: "bg-destructive"
-  defp dot_class(:ending), do: "bg-muted-foreground"
+  defp active_state_class(false, _state), do: nil
+  defp active_state_class(true, state), do: ["relative border", state_class(state)]
+
+  defp active_value(false, _value), do: nil
+  defp active_value(true, value), do: value
+
+  defp state_dot_class(:active), do: "bg-success"
+  defp state_dot_class(:full), do: "bg-warning"
+  defp state_dot_class(:locked), do: "bg-warning"
+  defp state_dot_class(:degraded), do: "bg-destructive"
+  defp state_dot_class(:ending), do: "bg-muted-foreground"
 
   defp value(nil, _key), do: nil
 

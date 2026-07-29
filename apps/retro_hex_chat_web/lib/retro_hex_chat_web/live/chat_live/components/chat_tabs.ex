@@ -58,7 +58,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
     assigns = assign(assigns, :tabs, build_tabs(assigns))
 
     ~H"""
-    <.irc_tab_bar class={@class}>
+    <.irc_tab_bar class={@class} data-testid="tab-bar">
       <.irc_tab_item
         :for={tab <- @tabs}
         type={tab.type}
