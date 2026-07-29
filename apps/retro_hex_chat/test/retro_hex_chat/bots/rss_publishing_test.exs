@@ -14,6 +14,7 @@ defmodule RetroHexChat.Bots.RSSPublishingTest do
   @moduletag :integration
 
   alias RetroHexChat.Bots.{Queries, Supervisor}
+  alias RetroHexChat.Channels
 
   @channel "#wire"
   @url "https://93.184.216.34/feed.xml"
@@ -112,13 +113,13 @@ defmodule RetroHexChat.Bots.RSSPublishingTest do
 
   setup do
     Application.put_env(:retro_hex_chat, :rss_fetcher, ScriptedFetcher)
-    {:ok, chan} = RetroHexChat.Channels.Supervisor.start_child(@channel)
+    {:ok, chan} = Channels.Supervisor.start_child(@channel)
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#{@channel}")
 
     on_exit(fn ->
       Application.delete_env(:retro_hex_chat, :rss_fetcher)
       Supervisor.stop_bot("WireBot")
-      if Process.alive?(chan), do: RetroHexChat.Channels.Supervisor.stop_child(chan)
+      if Process.alive?(chan), do: Channels.Supervisor.stop_child(chan)
     end)
 
     :ok
@@ -126,14 +127,18 @@ defmodule RetroHexChat.Bots.RSSPublishingTest do
 
   @unseen [%{"id" => "f1", "url" => @url, "channel" => @channel, "seen" => []}]
 
-  test "the first poll learns the page and says nothing" do
-    ScriptedFetcher.script([feed_page([{1, "Older story"}, {2, "Newer story"}])])
+  test "the first poll posts one headline and learns the rest of the page" do
+    # Listed newest first, so item 3 is the newest.
+    ScriptedFetcher.script([feed_page([{3, "Newest story"}, {2, "Middle"}, {1, "Oldest"}])])
     {_bot, pid} = start_bot(@unseen)
 
     poll(pid)
+    lines = headlines()
 
-    assert headlines() == [],
-           "an operator adding a feed asked for what happens next, not an archive dump"
+    assert length(lines) == 1,
+           "one headline proves the feed works without dumping its archive"
+
+    assert hd(lines) =~ "Newest story"
   end
 
   test "the next poll announces only what arrived since" do
@@ -144,7 +149,8 @@ defmodule RetroHexChat.Bots.RSSPublishingTest do
     {_bot, pid} = start_bot(@unseen)
 
     poll(pid)
-    assert headlines() == []
+    assert [first] = headlines()
+    assert first =~ "Newer story", "the first poll introduces the feed"
 
     poll(pid)
     lines = headlines()
@@ -161,10 +167,12 @@ defmodule RetroHexChat.Bots.RSSPublishingTest do
     {_bot, pid} = start_bot(@unseen)
 
     poll(pid)
+    assert [_introduction] = headlines()
+
     poll(pid)
     poll(pid)
 
-    assert headlines() == []
+    assert headlines() == [], "nothing changed, so there is nothing to say"
   end
 
   test "what it has published outlives the process" do
@@ -175,7 +183,7 @@ defmodule RetroHexChat.Bots.RSSPublishingTest do
     {bot, pid} = start_bot(@unseen)
 
     poll(pid)
-    assert headlines() == []
+    assert [_introduction] = headlines()
     poll(pid)
     assert [line] = headlines()
     assert line =~ "Newer story"
@@ -218,5 +226,81 @@ defmodule RetroHexChat.Bots.RSSPublishingTest do
     %{feeds: [feed]} = :sys.get_state(pid).capability_states[:rss]
     assert feed["last_error"] =~ "503"
     assert feed["last_polled_at"], "an operator needs to see that it tried"
+  end
+
+  describe "a forced check" do
+    defp check(pid, author \\ "operator") do
+      send(pid, %{
+        event: "new_message",
+        payload: %{
+          id: 99,
+          channel: @channel,
+          author: author,
+          content: "!WireBot rss check f1",
+          type: :message,
+          timestamp: DateTime.utc_now(),
+          reply_to_id: nil,
+          reply_to_author: nil,
+          reply_to_preview: nil
+        }
+      })
+    end
+
+    setup do
+      # The command needs operator standing, and the first human in owns the room.
+      {:ok, _} = Channels.Server.join(@channel, "operator")
+      :ok
+    end
+
+    test "publishes what it finds instead of eating it" do
+      page1 = feed_page([{1, "Older story"}])
+      page2 = feed_page([{2, "Breaking news"}, {1, "Older story"}])
+
+      ScriptedFetcher.script([page1, page2])
+      {_bot, pid} = start_bot(@unseen)
+
+      poll(pid)
+      assert [_introduction] = headlines()
+
+      check(pid)
+      lines = headlines()
+
+      assert Enum.any?(lines, &(&1 =~ "Breaking news")),
+             "a forced check that reports new items and prints none has consumed them: " <>
+               "they are marked seen and can never arrive"
+    end
+
+    test "what a check published is not published again by the next poll" do
+      page1 = feed_page([{1, "Older story"}])
+      page2 = feed_page([{2, "Breaking news"}, {1, "Older story"}])
+
+      ScriptedFetcher.script([page1, page2])
+      {_bot, pid} = start_bot(@unseen)
+
+      poll(pid)
+      assert [_introduction] = headlines()
+      check(pid)
+      assert Enum.any?(headlines(), &(&1 =~ "Breaking news"))
+
+      poll(pid)
+      assert headlines() == []
+    end
+
+    test "a check with nothing new keeps the record of having run" do
+      page = feed_page([{1, "Older story"}])
+      ScriptedFetcher.script([page, page])
+      {_bot, pid} = start_bot(@unseen)
+
+      poll(pid)
+      assert [_introduction] = headlines()
+
+      check(pid)
+      Process.sleep(120)
+
+      %{feeds: [feed]} = :sys.get_state(pid).capability_states[:rss]
+
+      assert feed["last_polled_at"],
+             "the check ran; dropping its state loses when it ran and why it failed"
+    end
   end
 end

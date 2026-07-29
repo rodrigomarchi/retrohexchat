@@ -77,9 +77,9 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
   @impl true
   @spec init_timers(map(), atom(), map(), map()) :: map()
   # Waiting half an hour to find out whether a feed works is how a feature gets
-  # called broken. A feed that has never been polled is polled almost at once —
-  # which also primes its seen-set, so the first real poll announces only what
-  # arrived after the operator added it. Feeds already running keep their cadence.
+  # called broken. A feed that has never been polled is polled almost at once,
+  # posts its newest item as proof of life, and remembers the rest of the page.
+  # Feeds already running keep their cadence.
   @first_poll_delay_ms 3_000
 
   def init_timers(server_state, cap_name, config, cap_state) do
@@ -113,7 +113,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
         if_privileged(ctx, fn -> handle_remove(String.trim(id), state) end)
 
       {:rss, "check " <> id} ->
-        if_privileged(ctx, fn -> handle_check(String.trim(id), state, config) end)
+        if_privileged(ctx, fn -> handle_check(String.trim(id), state, config, ctx.channel) end)
 
       :ignore ->
         :ignore
@@ -305,21 +305,34 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
     end
   end
 
-  @spec handle_check(String.t(), map(), map()) ::
+  @spec handle_check(String.t(), map(), map(), String.t()) ::
           RetroHexChat.Bots.Capability.capability_result()
-  defp handle_check(id, state, config) do
+  # A forced check is a poll that happens now, so it must publish what it finds.
+  # Reporting "new items found" and dropping the headlines marked them as seen
+  # without anyone having seen them — the news was consumed and could never
+  # arrive, not even on the next scheduled poll.
+  defp handle_check(id, state, config, channel) do
     case find_feed(state.feeds, id) do
       nil ->
         {:reply, dgettext("bots", "Feed '%{id}' not found.", id: id)}
 
+      %{"channel" => target} when target != channel ->
+        # Publishing here would put the feed's items in the wrong room. Leave
+        # them for the scheduled poll rather than consume them out of sight.
+        {:reply,
+         dgettext("bots", "Feed '%{id}' posts to %{channel}. Ask there to check it.",
+           id: id,
+           channel: target
+         )}
+
       feed ->
         case do_poll_feed(feed, state, config) do
-          {{:multi_reply, _lines}, new_state} ->
-            {:reply, dgettext("bots", "Checked feed '%{id}'. New items found.", id: id),
-             new_state}
+          {{:multi_reply, lines}, new_state} ->
+            {:multi_reply, lines, new_state}
 
-          {:ignore, _state} ->
-            {:reply, dgettext("bots", "Feed '%{id}' checked. No new items.", id: id)}
+          {:ignore, new_state} ->
+            # Keep the state: it carries when the poll ran and why it failed.
+            {:reply, dgettext("bots", "Feed '%{id}' checked. Nothing new.", id: id), new_state}
         end
     end
   end
@@ -388,8 +401,11 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
   Pure on purpose: this is the whole "only new items, never twice" rule, and it
   is worth testing without a network in the way.
 
-    * The first sight of a feed is not news — remember the page, say nothing.
-      An operator adding a feed wants what happens next, not an archive dump.
+    * The first sight of a feed announces its newest item and remembers the
+      rest. Saying nothing at all was the tidier rule and the wrong one: an
+      operator who has just added a feed has no way to tell a working one from a
+      typo until the next poll, twenty minutes to an hour later. One headline
+      answers that in seconds, and is not an archive dump.
     * An item is recognised by identity, not by position, so a feed that pins a
       post to the top or reorders on update cannot make old news look new.
     * Only what is actually posted is marked seen, so anything above the
@@ -399,7 +415,11 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
   """
   @spec plan_publication([String.t()], [FeedParser.feed_item()], pos_integer()) ::
           {[FeedParser.feed_item()], [String.t()]}
-  def plan_publication([], items, _max_items), do: {[], Enum.map(items, &identity/1)}
+  def plan_publication([], [], _max_items), do: {[], []}
+
+  def plan_publication([], [newest | _] = items, _max_items) do
+    {[newest], Enum.map(items, &identity/1)}
+  end
 
   def plan_publication(seen, items, max_items) do
     batch =

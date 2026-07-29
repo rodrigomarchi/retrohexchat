@@ -428,6 +428,10 @@ defmodule RetroHexChat.Bots.Server do
         acc = acc |> update_capability_state(name, new_cap_state) |> reconcile_timers(name)
         {:halt, {{:reply, text}, acc}}
 
+      {:multi_reply, lines, new_cap_state} ->
+        acc = acc |> update_capability_state(name, new_cap_state) |> reconcile_timers(name)
+        {:halt, {{:multi_reply, lines}, acc}}
+
       result ->
         {:halt, {result, acc}}
     end

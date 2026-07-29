@@ -42,18 +42,29 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.UrlGuard do
   @spec check_host(String.t()) :: verdict()
   defp check_host(host) do
     case resolve(host) do
-      {:ok, addresses} ->
-        case Enum.find(addresses, &private?/1) do
-          nil ->
-            :ok
-
-          addr ->
-            {:error, "#{host} resolves to #{:inet.ntoa(addr)}, which is not a public address"}
-        end
-
-      {:error, reason} ->
-        {:error, "#{host} does not resolve (#{reason})"}
+      {:ok, addresses} -> judge(host, Enum.find(addresses, &private?/1))
+      {:error, reason} -> {:error, "#{host} does not resolve (#{reason})"}
     end
+  end
+
+  @spec judge(String.t(), :inet.ip_address() | nil) :: verdict()
+  defp judge(_host, nil), do: :ok
+
+  defp judge(host, addr) do
+    if allow_private?() do
+      :ok
+    else
+      {:error, "#{host} resolves to #{:inet.ntoa(addr)}, which is not a public address"}
+    end
+  end
+
+  # Off everywhere but a test that needs to serve a feed to itself. The refusal
+  # is the reason the real fetch path had no test at all: there is nowhere to put
+  # a fixture that the guard will agree to read. Opening it under an explicit
+  # flag is better than leaving the one path that talks to the network unproven.
+  @spec allow_private?() :: boolean()
+  defp allow_private? do
+    Application.get_env(:retro_hex_chat, :rss_allow_private_addresses, false) == true
   end
 
   @spec resolve(String.t()) :: {:ok, [:inet.ip_address()]} | {:error, atom()}

@@ -319,6 +319,7 @@ included, is joined explicitly.
 /bot set Gazeta mention_response I post what the feeds send. !Gazeta rss list for the sources, !sources for how this works.
 
 /bot addcmd Gazeta sources Headlines here come from RSS and Atom feeds, checked every twenty minutes. Only what is new since the last check gets posted — never the same item twice, even after a restart.
+/bot addcmd Gazeta first A feed posts one headline the moment it is added, so you can see it works, then goes quiet until something new is published.
 /bot addcmd Gazeta quiet No headlines for a while? Either nothing was published or a feed is failing. An operator can check with !Gazeta rss list.
 
 /bot join Gazeta #news
@@ -328,11 +329,12 @@ included, is joined explicitly.
 # ══════════════════════════════════════════════════════════
 #  5. Wire-room bots
 # ══════════════════════════════════════════════════════════
-# A feed's first poll is silent by design: it records the page as it stands and
-# announces only what appears afterwards. Both the feed list and the record of
-# what has been published are stored on the bot, so a deploy does not replay the
-# day. Intervals are set per bot — arXiv publishes hundreds a day, Hackaday a
-# handful a week.
+# A feed's first poll happens within seconds and posts one headline — enough to
+# show it works — then remembers the rest of the page and reports only what
+# arrives afterwards. Both the feed list and the record of what has been
+# published are stored on the bot, so a deploy does not replay the day.
+# Intervals are set per bot: arXiv publishes hundreds a day, Hackaday a handful
+# a week.
 
 # ── Freeman — #foss ──────────────────────────────────────
 /bot create Freeman Keeper of the release notes
@@ -504,7 +506,9 @@ or in the channel by an operator:
 ```
 
 All three routes write to the same place and survive a restart, along with the record of
-what has already been posted.
+what has already been posted. A newly added feed posts one headline within seconds — the
+answer to "did that work?" should not take twenty minutes — and then only reports what
+arrives after it.
 
 **No schedules.** `!Bot schedule add` persists now too, but nothing here needs one; a
 room that speaks on a timer with nothing to say is worse than a quiet one.

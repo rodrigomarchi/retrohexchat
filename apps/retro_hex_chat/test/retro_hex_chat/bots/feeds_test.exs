@@ -96,4 +96,71 @@ defmodule RetroHexChat.Bots.FeedsTest do
       assert reason =~ "no feed"
     end
   end
+
+  describe "the running bot picks the feed up" do
+    # The provisioning script and the admin dialog both come through here, not
+    # through the in-channel command. If this path does not schedule a poll, no
+    # feed added by an operator is ever fetched — which looks exactly like a
+    # server where nothing publishes.
+    test "adding a feed schedules its first poll on the live process" do
+      bot = bot()
+
+      {:ok, pid} =
+        RetroHexChat.Bots.Supervisor.start_bot(%{
+          id: bot.id,
+          name: bot.name,
+          nickname: bot.nickname,
+          command_prefix: "!",
+          created_by: "admin",
+          enabled: true,
+          cooldown_ms: 0,
+          capabilities: bot.capabilities,
+          channel_configs: [%{channel_name: "#news", enabled: true, capability_overrides: %{}}],
+          custom_commands: []
+        })
+
+      on_exit(fn -> RetroHexChat.Bots.Supervisor.stop_bot(bot.nickname) end)
+
+      assert :sys.get_state(pid).capability_timers == %{}
+
+      {:ok, _} = Feeds.add(bot, @public, "#news")
+      Process.sleep(80)
+
+      timers = :sys.get_state(pid).capability_timers
+
+      assert map_size(timers) == 1,
+             "a feed saved from the console or the dialog must start polling"
+
+      assert [{:rss, %{type: :poll, channel: "#news"}}] = Map.values(timers)
+    end
+
+    test "removing it stops the poll" do
+      bot = bot()
+      {:ok, with_feed} = Feeds.add(bot, @public, "#news")
+      [%{"id" => id}] = Feeds.list(with_feed)
+
+      {:ok, pid} =
+        RetroHexChat.Bots.Supervisor.start_bot(%{
+          id: with_feed.id,
+          name: with_feed.name,
+          nickname: with_feed.nickname,
+          command_prefix: "!",
+          created_by: "admin",
+          enabled: true,
+          cooldown_ms: 0,
+          capabilities: with_feed.capabilities,
+          channel_configs: [%{channel_name: "#news", enabled: true, capability_overrides: %{}}],
+          custom_commands: []
+        })
+
+      on_exit(fn -> RetroHexChat.Bots.Supervisor.stop_bot(with_feed.nickname) end)
+
+      assert map_size(:sys.get_state(pid).capability_timers) == 1
+
+      {:ok, _} = Feeds.remove(with_feed, id)
+      Process.sleep(80)
+
+      assert :sys.get_state(pid).capability_timers == %{}
+    end
+  end
 end
