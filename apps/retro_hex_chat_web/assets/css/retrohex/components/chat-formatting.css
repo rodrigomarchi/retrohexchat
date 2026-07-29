@@ -121,6 +121,70 @@
   background-color: #ffffd0;
 }
 
+/* ── Compact formatting toolbar ─────────────────────────── */
+.formatting-toolbar {
+  position: relative;
+  display: inline-flex;
+}
+
+.formatting-toolbar__trigger-row,
+.formatting-toolbar__actions {
+  gap: 1px;
+}
+
+.formatting-toolbar__toggle[aria-expanded="true"] {
+  background: #e8e4dc;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #0a0a0a,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #808080;
+}
+
+.formatting-toolbar__panel {
+  position: absolute;
+  bottom: calc(100% + 3px);
+  left: 0;
+  z-index: 70;
+  max-width: min(232px, calc(var(--rhc-visual-viewport-width, 100vw) - 8px));
+  padding: 3px;
+  background: #c0c0c0;
+  box-shadow:
+    inset -1px -1px #0a0a0a,
+    inset 1px 1px #ffffff,
+    inset -2px -2px #808080,
+    inset 2px 2px #dfdfdf;
+}
+
+.formatting-toolbar__panel.u-hidden {
+  display: none;
+}
+
+.formatting-toolbar__actions {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 198px;
+  background: transparent;
+}
+
+.format-color-dropdown {
+  display: none;
+  grid-template-columns: repeat(8, 16px);
+  gap: 2px;
+  margin-top: 3px;
+  padding: 4px;
+  background: #c0c0c0;
+  box-shadow:
+    inset -1px -1px #0a0a0a,
+    inset 1px 1px #ffffff,
+    inset -2px -2px #808080,
+    inset 2px 2px #dfdfdf;
+}
+
+.format-color-dropdown--open {
+  display: grid;
+}
+
 /* ── Automatic nick colors: 12 high-contrast hues ────────── */
 .nick-color-0 {
   color: #c0392b;
@@ -163,4 +227,3 @@
 .input-masked {
   -webkit-text-security: disc;
 }
-

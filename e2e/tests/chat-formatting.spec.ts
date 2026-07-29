@@ -20,6 +20,7 @@ test.describe("Formatting toolbar", () => {
 
     await chat.chatInput.fill("hello");
     await chat.chatInput.press("End");
+    await chat.openFormattingToolbar();
     await chat.formatBoldButton.click();
 
     await expect(chat.chatInput).toHaveValue("hello\x02");

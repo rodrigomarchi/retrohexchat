@@ -40,9 +40,10 @@ if (process.argv.includes("--watch")) {
     pending = setTimeout(() => {
       try {
         bundle();
-        console.log("[bundle_retrohex_css] rebuilt css/.generated/retrohex.css");
+        process.stdout.write("[bundle_retrohex_css] rebuilt css/.generated/retrohex.css\n");
       } catch (error) {
-        console.error(`[bundle_retrohex_css] ${error.message}`);
+        const message = error instanceof Error ? error.message : String(error);
+        process.stderr.write(`[bundle_retrohex_css] ${message}\n`);
       }
     }, 50);
   };

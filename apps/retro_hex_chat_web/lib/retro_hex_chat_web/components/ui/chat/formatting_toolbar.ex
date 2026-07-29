@@ -2,7 +2,7 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
   @moduledoc """
   Formatting toolbar component for the showcase design system.
 
-  Composed from toolbar primitives. Hook-compatible with FormatToolbarHook:
+  Renders a single compact trigger plus a popover toolbar. Hook-compatible with FormatToolbarHook:
   uses `.format-btn` class and string `data-format-code` names.
   Color dropdown uses `.format-color-dropdown` and `data-format-color-swatch` elements.
 
@@ -53,126 +53,152 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
 
   @spec formatting_toolbar(map()) :: Phoenix.LiveView.Rendered.t()
   def formatting_toolbar(assigns) do
-    assigns = assign(assigns, :color_names, Enum.map(@color_keys, &color_name/1))
+    assigns =
+      assigns
+      |> assign(:color_names, Enum.map(@color_keys, &color_name/1))
+      |> assign(:panel_id, "#{assigns.id}-panel")
+      |> assign(:color_panel_id, "#{assigns.id}-color-panel")
 
     ~H"""
     <div
-      class={classes(["block", @class])}
+      class={classes(["formatting-toolbar block", @class])}
       phx-hook="FormatToolbarHook"
       id={@id}
       {@rest}
     >
-      <.toolbar variant="compact">
-        <%!-- Text formatting buttons --%>
+      <.toolbar variant="compact" class="formatting-toolbar__trigger-row">
         <.toolbar_button
           variant="compact"
-          label={dgettext("chat", "Bold (Ctrl+Shift+B)")}
-          active={@bold_active}
-          class="format-btn hidden md:inline-flex"
-          data-format-code="bold"
-          data-testid="format-btn-bold"
+          label={dgettext("chat", "Formatting Toolbar")}
+          class="formatting-toolbar__toggle"
+          data-format-toolbar-toggle
+          data-testid="formatting-toolbar-toggle"
+          aria-controls={@panel_id}
+          aria-expanded="false"
+          aria-haspopup="true"
         >
-          <Icons.icon_fmt_bold class="w-3.5 h-3.5" />
+          <Icons.icon_fmt_toolbar class="w-3.5 h-3.5" />
         </.toolbar_button>
-        <.toolbar_button
-          variant="compact"
-          label={dgettext("chat", "Italic (Ctrl+Shift+Y)")}
-          active={@italic_active}
-          class="format-btn hidden md:inline-flex"
-          data-format-code="italic"
-          data-testid="format-btn-italic"
-        >
-          <Icons.icon_fmt_italic class="w-3.5 h-3.5" />
-        </.toolbar_button>
-        <.toolbar_button
-          variant="compact"
-          label={dgettext("chat", "Underline (Ctrl+Shift+U)")}
-          active={@underline_active}
-          class="format-btn hidden md:inline-flex"
-          data-format-code="underline"
-          data-testid="format-btn-underline"
-        >
-          <Icons.icon_fmt_underline class="w-3.5 h-3.5" />
-        </.toolbar_button>
+      </.toolbar>
 
-        <.toolbar_separator variant="compact" class="hidden md:block" />
+      <div
+        id={@panel_id}
+        class="formatting-toolbar__panel u-hidden"
+        data-format-toolbar-panel
+        data-testid="formatting-toolbar-panel"
+        aria-hidden="true"
+      >
+        <.toolbar
+          variant="compact"
+          class="formatting-toolbar__actions"
+          aria-label={dgettext("chat", "Text formatting")}
+        >
+          <.toolbar_button
+            variant="compact"
+            label={dgettext("chat", "Bold (Ctrl+Shift+B)")}
+            active={@bold_active}
+            class="format-btn"
+            data-format-code="bold"
+            data-testid="format-btn-bold"
+          >
+            <Icons.icon_fmt_bold class="w-3.5 h-3.5" />
+          </.toolbar_button>
+          <.toolbar_button
+            variant="compact"
+            label={dgettext("chat", "Italic (Ctrl+Shift+Y)")}
+            active={@italic_active}
+            class="format-btn"
+            data-format-code="italic"
+            data-testid="format-btn-italic"
+          >
+            <Icons.icon_fmt_italic class="w-3.5 h-3.5" />
+          </.toolbar_button>
+          <.toolbar_button
+            variant="compact"
+            label={dgettext("chat", "Underline (Ctrl+Shift+U)")}
+            active={@underline_active}
+            class="format-btn"
+            data-format-code="underline"
+            data-testid="format-btn-underline"
+          >
+            <Icons.icon_fmt_underline class="w-3.5 h-3.5" />
+          </.toolbar_button>
 
-        <%!-- Color picker toggle + dropdown --%>
-        <div class="relative hidden items-center md:inline-flex">
           <.toolbar_button
             variant="compact"
             label={dgettext("chat", "Color (Ctrl+Shift+D)")}
             class="format-btn"
             data-format-code="color"
             data-testid="format-btn-color"
+            aria-controls={@color_panel_id}
+            aria-expanded="false"
+            aria-haspopup="true"
           >
             <Icons.icon_fmt_color class="w-3.5 h-3.5" />
           </.toolbar_button>
-          <div class="format-color-dropdown">
-            <button
-              :for={{name, i} <- Enum.with_index(@color_names)}
-              type="button"
-              class={"w-4 h-4 border border-gray-900 shadow-retro-field cursor-pointer irc-bg-#{i}"}
-              data-color-code={to_string(i)}
-              data-format-color-swatch
-              data-testid={"format-color-swatch-#{i}"}
-              title={name}
-            >
-            </button>
-          </div>
+
+          <.toolbar_button
+            variant="compact"
+            label={dgettext("chat", "Reverse (Ctrl+Shift+V)")}
+            class="format-btn"
+            data-format-code="reverse"
+            data-testid="format-btn-reverse"
+          >
+            <Icons.icon_fmt_reverse class="w-3.5 h-3.5" />
+          </.toolbar_button>
+          <.toolbar_button
+            variant="compact"
+            label={dgettext("chat", "Reset (Ctrl+Shift+X)")}
+            class="format-btn"
+            data-format-code="reset"
+            data-testid="format-btn-reset"
+          >
+            <Icons.icon_fmt_reset class="w-3.5 h-3.5" />
+          </.toolbar_button>
+
+          <.toolbar_button
+            variant="compact"
+            label={dgettext("chat", "Strip Colors")}
+            active={@strip_active}
+            phx-click={@on_format}
+            phx-value-format="strip"
+            data-testid="strip-formatting-toggle"
+          >
+            <Icons.icon_fmt_strip class="w-3.5 h-3.5" />
+          </.toolbar_button>
+
+          <.toolbar_button
+            :if={@show_emoji}
+            variant="compact"
+            label={dgettext("chat", "Emoji Picker")}
+            phx-click={@on_toggle_emoji}
+            data-emoji-toggle="true"
+            data-format-toolbar-close
+            data-testid="emoji-picker-toggle"
+          >
+            <Icons.icon_fmt_emoji class="w-3.5 h-3.5" />
+          </.toolbar_button>
+        </.toolbar>
+
+        <div
+          id={@color_panel_id}
+          class="format-color-dropdown"
+          data-format-color-dropdown
+          aria-label={dgettext("chat", "IRC colors")}
+        >
+          <button
+            :for={{name, i} <- Enum.with_index(@color_names)}
+            type="button"
+            class={"w-4 h-4 border border-gray-900 shadow-retro-field cursor-pointer irc-bg-#{i}"}
+            data-color-code={to_string(i)}
+            data-format-color-swatch
+            data-testid={"format-color-swatch-#{i}"}
+            title={name}
+            aria-label={name}
+          >
+          </button>
         </div>
-
-        <.toolbar_separator variant="compact" class="hidden md:block" />
-
-        <%!-- Control buttons --%>
-        <.toolbar_button
-          variant="compact"
-          label={dgettext("chat", "Reverse (Ctrl+Shift+V)")}
-          class="format-btn hidden md:inline-flex"
-          data-format-code="reverse"
-          data-testid="format-btn-reverse"
-        >
-          <Icons.icon_fmt_reverse class="w-3.5 h-3.5" />
-        </.toolbar_button>
-        <.toolbar_button
-          variant="compact"
-          label={dgettext("chat", "Reset (Ctrl+Shift+X)")}
-          class="format-btn hidden md:inline-flex"
-          data-format-code="reset"
-          data-testid="format-btn-reset"
-        >
-          <Icons.icon_fmt_reset class="w-3.5 h-3.5" />
-        </.toolbar_button>
-
-        <.toolbar_separator variant="compact" class="hidden md:block" />
-
-        <%!-- Strip formatting --%>
-        <.toolbar_button
-          variant="compact"
-          label={dgettext("chat", "Strip Colors")}
-          active={@strip_active}
-          class="hidden md:inline-flex"
-          phx-click={@on_format}
-          phx-value-format="strip"
-          data-testid="strip-formatting-toggle"
-        >
-          <Icons.icon_fmt_strip class="w-3.5 h-3.5" />
-        </.toolbar_button>
-
-        <.toolbar_separator :if={@show_emoji} variant="compact" class="hidden md:block" />
-
-        <%!-- Emoji toggle --%>
-        <.toolbar_button
-          :if={@show_emoji}
-          variant="compact"
-          label={dgettext("chat", "Emoji Picker")}
-          phx-click={@on_toggle_emoji}
-          data-emoji-toggle="true"
-          data-testid="emoji-picker-toggle"
-        >
-          <Icons.icon_fmt_emoji class="w-3.5 h-3.5" />
-        </.toolbar_button>
-      </.toolbar>
+      </div>
     </div>
     """
   end

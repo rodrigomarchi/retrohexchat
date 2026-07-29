@@ -54,6 +54,7 @@ async function expectButtonInserts(
   code: string,
 ) {
   await chat.chatInput.fill("");
+  await chat.openFormattingToolbar();
   await button.click();
   await expect(chat.chatInput).toHaveValue(code);
   await expect(chat.chatInput).toBeFocused();
@@ -89,6 +90,7 @@ test.describe("Advanced formatting toolbar", () => {
     await expectButtonInserts(chat, chat.formatResetButton, "\x0F");
 
     await chat.chatInput.fill("");
+    await chat.openFormattingToolbar();
     await chat.formatColorButton.click();
     await chat.formatColorSwatch(4).click();
     await expect(chat.chatInput).toHaveValue("\x034");
@@ -108,10 +110,12 @@ test.describe("Advanced formatting toolbar", () => {
       await expectRenderedFormatting(alice.chat, marker);
       await expectRenderedFormatting(bob.chat, marker);
 
+      await bob.chat.openFormattingToolbar();
       await bob.chat.stripFormattingToggle.click();
       await expectStrippedFormatting(bob.chat, marker);
       await expectRenderedFormatting(alice.chat, marker);
 
+      await alice.chat.openFormattingToolbar();
       await alice.chat.stripFormattingToggle.click();
       await expectStrippedFormatting(alice.chat, marker);
     } finally {

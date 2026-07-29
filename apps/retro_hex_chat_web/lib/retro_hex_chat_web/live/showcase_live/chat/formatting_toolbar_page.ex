@@ -28,7 +28,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.FormattingToolbarPage do
 
       <.showcase_card
         title={dgettext("showcase", "Default")}
-        description="Formatting toolbar with B/I/U, color, control, strip, and emoji buttons. Click the color button to toggle the dropdown."
+        description="Single compact trigger that opens B/I/U, color, control, strip, and emoji actions. Click the color button inside the panel to toggle the swatches."
       >
         <.formatting_toolbar id="demo-default" />
         <.code_example>

@@ -123,8 +123,8 @@ test.describe("mobile chat message flow", () => {
   }) => {
     const { chat } = await signedInUser(page, "memoji");
 
-    await expect(chat.emojiPickerToggle).toBeVisible();
-    await expectTouchSized(chat.emojiPickerToggle);
+    await expect(chat.formattingToolbarToggle).toBeVisible();
+    await expectTouchSized(chat.formattingToolbarToggle);
 
     await chat.openEmojiPicker();
     await expect(chat.emojiPicker).toBeVisible();

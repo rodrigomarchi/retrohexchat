@@ -376,6 +376,7 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_hex_stone(assigns), to: RetroHexChatWeb.Icons.Symbols
 
   # ── Formatting ─────────────────────────────────────────
+  defdelegate icon_fmt_toolbar(assigns), to: RetroHexChatWeb.Icons.Formatting
   defdelegate icon_fmt_bold(assigns), to: RetroHexChatWeb.Icons.Formatting
   defdelegate icon_fmt_italic(assigns), to: RetroHexChatWeb.Icons.Formatting
   defdelegate icon_fmt_underline(assigns), to: RetroHexChatWeb.Icons.Formatting

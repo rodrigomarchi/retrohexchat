@@ -1,12 +1,7 @@
 import { Page, Locator, expect } from "@playwright/test";
 
 export type AddressBookControlType =
-  | "all"
-  | "messages"
-  | "pms"
-  | "actions"
-  | "notices"
-  | "invites";
+  "all" | "messages" | "pms" | "actions" | "notices" | "invites";
 
 type ChannelCentralTab = "general" | "modes" | "access_lists" | "registration";
 
@@ -14,9 +9,7 @@ type ChannelCentralTab = "general" | "modes" | "access_lists" | "registration";
 type ChannelCentralAccessList = "bans" | "ban_exceptions" | "invite_exceptions";
 
 type ChannelCentralModeLabel =
-  | "Moderated (+m)"
-  | "Invite Only (+i)"
-  | "Topic Lock (+t)";
+  "Moderated (+m)" | "Invite Only (+i)" | "Topic Lock (+t)";
 
 function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -103,6 +96,8 @@ export class ChatPage {
   readonly nicklist: Locator;
   readonly topicBar: Locator;
   readonly tabBar: Locator;
+  readonly formattingToolbarToggle: Locator;
+  readonly formattingToolbarPanel: Locator;
   readonly formatBoldButton: Locator;
   readonly formatItalicButton: Locator;
   readonly formatUnderlineButton: Locator;
@@ -284,6 +279,10 @@ export class ChatPage {
     this.nicklist = page.getByTestId("nicklist");
     this.topicBar = page.getByTestId("topic-bar");
     this.tabBar = page.getByTestId("tab-bar");
+    this.formattingToolbarToggle = page.getByTestId(
+      "formatting-toolbar-toggle",
+    );
+    this.formattingToolbarPanel = page.getByTestId("formatting-toolbar-panel");
     this.formatBoldButton = page.getByTestId("format-btn-bold");
     this.formatItalicButton = page.getByTestId("format-btn-italic");
     this.formatUnderlineButton = page.getByTestId("format-btn-underline");
@@ -1050,8 +1049,15 @@ export class ChatPage {
     return this.emojiPicker.getByRole("button", { name: char });
   }
 
+  async openFormattingToolbar() {
+    if (await this.formatBoldButton.isVisible()) return;
+
+    await this.formattingToolbarToggle.click();
+    await expect(this.formatBoldButton).toBeVisible();
+  }
+
   /**
-   * Opens the emoji picker via the formatting-toolbar toggle.
+   * Opens the emoji picker from inside the compact formatting toolbar.
    *
    * `waitUntilConnected()` only waits for the WebSocket handshake
    * (`liveSocket.isConnected()`), which resolves before the initial join-render
@@ -1059,10 +1065,12 @@ export class ChatPage {
    * connect render burst, so we retry once if the picker doesn't appear.
    */
   async openEmojiPicker() {
+    await this.openFormattingToolbar();
     await this.emojiPickerToggle.click();
     try {
       await expect(this.emojiPicker).toBeVisible({ timeout: 2_000 });
     } catch {
+      await this.openFormattingToolbar();
       await this.emojiPickerToggle.click();
       await expect(this.emojiPicker).toBeVisible({ timeout: 5_000 });
     }

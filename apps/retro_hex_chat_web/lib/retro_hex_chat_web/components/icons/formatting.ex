@@ -8,6 +8,30 @@ defmodule RetroHexChatWeb.Icons.Formatting do
 
   attr :class, :string, default: nil
 
+  @spec icon_fmt_toolbar(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_fmt_toolbar(assigns) do
+    ~H"""
+    <svg
+      class={@class}
+      viewBox="0 0 14 14"
+      shape-rendering="crispEdges"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <rect x="2" y="1" width="10" height="2" />
+      <rect x="1" y="4" width="2" height="8" />
+      <rect x="5" y="4" width="2" height="8" />
+      <rect x="11" y="4" width="2" height="8" />
+      <rect x="3" y="7" width="2" height="2" />
+      <rect x="7" y="5" width="4" height="1" />
+      <rect x="7" y="8" width="4" height="1" />
+      <rect x="7" y="11" width="4" height="1" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
   @spec icon_fmt_bold(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_fmt_bold(assigns) do
     ~H"""

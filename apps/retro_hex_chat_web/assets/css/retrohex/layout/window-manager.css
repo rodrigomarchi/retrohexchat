@@ -325,13 +325,35 @@
 }
 
 .desktop--stacked [data-testid="chat-action-toggle"],
-.desktop--stacked [data-testid="emoji-picker-toggle"],
+.desktop--stacked [data-testid="formatting-toolbar-toggle"],
 .desktop--stacked [data-testid="chat-input-send"] {
   min-height: 40px;
 }
 
-.desktop--stacked [data-testid="emoji-picker-toggle"] {
+.desktop--stacked [data-testid="formatting-toolbar-toggle"] {
   min-width: 40px;
+}
+
+.desktop--stacked .formatting-toolbar__panel {
+  max-width: min(312px, calc(var(--rhc-visual-viewport-width, 100vw) - 8px));
+}
+
+.desktop--stacked .formatting-toolbar__actions {
+  max-width: 295px;
+}
+
+.desktop--stacked .formatting-toolbar__actions button {
+  min-width: 36px;
+  min-height: 36px;
+}
+
+.desktop--stacked .format-color-dropdown {
+  grid-template-columns: repeat(8, 28px);
+}
+
+.desktop--stacked .format-color-dropdown [data-format-color-swatch] {
+  min-width: 28px;
+  min-height: 28px;
 }
 
 .desktop--stacked [data-testid="chat-input-send"] {
@@ -482,4 +504,3 @@
 .desktop--stacked .desktop-start-menu__item {
   min-height: 38px;
 }
-
