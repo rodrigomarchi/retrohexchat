@@ -22,6 +22,7 @@ defmodule RetroHexChatWeb.App.ConnectLive do
   @spec mount(map(), map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def mount(_params, session, socket) do
     trusted_device_id = session["trusted_device_id"]
+    remembered_nicks = TrustedDevices.remembered_nicks(trusted_device_id)
 
     {:ok,
      assign(socket,
@@ -33,7 +34,8 @@ defmodule RetroHexChatWeb.App.ConnectLive do
        step: :nickname,
        auth_token: nil,
        trusted_device_id: trusted_device_id,
-       remembered_nicks: TrustedDevices.remembered_nicks(trusted_device_id),
+       remembered_nicks: remembered_nicks,
+       manual_login: false,
        trusted_device_login: false,
        remember_device: false,
        device_label: "",
@@ -49,7 +51,7 @@ defmodule RetroHexChatWeb.App.ConnectLive do
   end
 
   def handle_params(_params, _uri, socket) do
-    {:noreply, socket}
+    {:noreply, maybe_auto_login(socket)}
   end
 
   @spec reason_to_message(String.t()) :: String.t()
@@ -87,6 +89,50 @@ defmodule RetroHexChatWeb.App.ConnectLive do
     end
   end
 
+  def handle_event(
+        "trusted_auto_login_toggle",
+        %{"nickname" => nickname, "enabled" => enabled},
+        socket
+      ) do
+    case TrustedDevices.set_auto_login(
+           socket.assigns.trusted_device_id,
+           nickname,
+           truthy?(enabled),
+           nickname
+         ) do
+      :ok ->
+        {:noreply,
+         assign(socket,
+           remembered_nicks: TrustedDevices.remembered_nicks(socket.assigns.trusted_device_id)
+         )}
+
+      {:error, message} ->
+        {:noreply, assign(socket, nickname_error: message)}
+    end
+  end
+
+  def handle_event("manual_login", _params, socket) do
+    {:noreply,
+     assign(socket,
+       manual_login: true,
+       nickname: "",
+       nickname_error: nil,
+       trusted_device_login: false,
+       auth_token: nil
+     )}
+  end
+
+  def handle_event("trusted_choices", _params, socket) do
+    {:noreply,
+     assign(socket,
+       manual_login: false,
+       nickname: "",
+       nickname_error: nil,
+       trusted_device_login: false,
+       auth_token: nil
+     )}
+  end
+
   def handle_event("authenticate", %{"password" => password} = params, socket) do
     nickname = socket.assigns.nickname
 
@@ -102,7 +148,9 @@ defmodule RetroHexChatWeb.App.ConnectLive do
 
       {:error, _msg} ->
         {:noreply,
-         assign(socket, password_error: dgettext("connect", "Incorrect password"), password: "")}
+         socket
+         |> assign(password_error: dgettext("connect", "Incorrect password"), password: "")
+         |> assign_remember_device_fields(params)}
     end
   end
 
@@ -114,19 +162,23 @@ defmodule RetroHexChatWeb.App.ConnectLive do
     cond do
       String.length(password) < 5 ->
         {:noreply,
-         assign(socket,
+         socket
+         |> assign(
            password: password,
            password_confirm: password_confirm,
            password_error: dgettext("connect", "Password must be at least 5 characters")
-         )}
+         )
+         |> assign_remember_device_fields(params)}
 
       password != password_confirm ->
         {:noreply,
-         assign(socket,
+         socket
+         |> assign(
            password: password,
            password_confirm: password_confirm,
            password_error: dgettext("connect", "Passwords do not match")
-         )}
+         )
+         |> assign_remember_device_fields(params)}
 
       true ->
         case NickServ.register(nickname, password) do
@@ -141,11 +193,13 @@ defmodule RetroHexChatWeb.App.ConnectLive do
 
           {:error, msg} ->
             {:noreply,
-             assign(socket,
+             socket
+             |> assign(
                password: password,
                password_confirm: password_confirm,
                password_error: msg
-             )}
+             )
+             |> assign_remember_device_fields(params)}
         end
     end
   end
@@ -235,6 +289,29 @@ defmodule RetroHexChatWeb.App.ConnectLive do
     end
   end
 
+  defp maybe_auto_login(%{assigns: %{manual_login: true}} = socket), do: socket
+
+  defp maybe_auto_login(socket) do
+    case TrustedDevices.auto_login_nick(socket.assigns.trusted_device_id) do
+      %{nickname: nickname} when is_binary(nickname) ->
+        socket =
+          assign(socket,
+            nickname: nickname,
+            nickname_error: nil,
+            auth_token: nil,
+            trusted_device_login: true,
+            remember_device: false,
+            device_label: "",
+            submit_connect: true
+          )
+
+        if connected?(socket), do: push_event(socket, "submit_connect", %{}), else: socket
+
+      _ ->
+        socket
+    end
+  end
+
   defp assign_auth_success(socket, token, params) do
     assign(socket,
       auth_token: token,
@@ -242,6 +319,13 @@ defmodule RetroHexChatWeb.App.ConnectLive do
       remember_device: truthy?(params["remember_device"]),
       device_label: params["device_label"] || "",
       submit_connect: true
+    )
+  end
+
+  defp assign_remember_device_fields(socket, params) do
+    assign(socket,
+      remember_device: truthy?(params["remember_device"]),
+      device_label: params["device_label"] || ""
     )
   end
 

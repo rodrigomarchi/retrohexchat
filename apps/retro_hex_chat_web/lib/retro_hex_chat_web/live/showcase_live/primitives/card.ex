@@ -70,6 +70,34 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.Card do
           &lt;/.card&gt;
         </.code_example>
       </.showcase_card>
+
+      <.showcase_card
+        title={dgettext("showcase", "Selectable Card")}
+        description="Use card_button when the whole card is a single action."
+      >
+        <div class="max-w-sm">
+          <.card_button class="p-3">
+            <span class="flex items-start gap-3">
+              <span class="inline-flex h-10 w-10 shrink-0 items-center justify-center bg-canvas shadow-retro-sunken">
+                <Icons.icon_laptop class="h-6 w-6" />
+              </span>
+              <span class="min-w-0">
+                <span class="block truncate text-sm font-bold">
+                  {dgettext("showcase", "Selectable Device")}
+                </span>
+                <span class="mt-1 block truncate text-xs text-muted-foreground">
+                  {dgettext("showcase", "One click selects this card.")}
+                </span>
+              </span>
+            </span>
+          </.card_button>
+        </div>
+        <.code_example>
+          &lt;.card_button type="button" phx-click="select"&gt;
+          Selectable content
+          &lt;/.card_button&gt;
+        </.code_example>
+      </.showcase_card>
     </.showcase_layout>
     """
   end

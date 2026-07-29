@@ -21,6 +21,10 @@ defmodule RetroHexChatWeb.Components.UI.Card do
             <.button>Button</.button>
           </.card_footer>
         </.card>
+
+        <.card_button type="button" phx-click="select">
+          Selectable card
+        </.card_button>
   """
 
   attr :class, :string, default: nil
@@ -35,6 +39,30 @@ defmodule RetroHexChatWeb.Components.UI.Card do
     >
       {render_slot(@inner_block)}
     </div>
+    """
+  end
+
+  attr :class, :string, default: nil
+  attr :type, :string, default: "button"
+  attr :rest, :global, include: ~w(disabled name value form)
+  slot :inner_block, required: true
+
+  def card_button(assigns) do
+    ~H"""
+    <button
+      type={@type}
+      class={
+        classes([
+          "block w-full border-none bg-card text-left text-card-foreground shadow-retro-window",
+          "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground",
+          "disabled:cursor-not-allowed disabled:opacity-60",
+          @class
+        ])
+      }
+      {@rest}
+    >
+      {render_slot(@inner_block)}
+    </button>
     """
   end
 

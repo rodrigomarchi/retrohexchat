@@ -62,12 +62,12 @@ msgstr "Acena silenciosamente Não te metas em sarilhos, Troll."
 msgid "*tips hat* Do return soon, Troll."
 msgstr "Chapéu de ponta Volte em breve, Troll."
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:76
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:105
 #, elixir-autogen, elixir-format
 msgid "+nt"
 msgstr "+nt"
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:77
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:106
 #, elixir-autogen, elixir-format
 msgid "+s"
 msgstr "+s"
@@ -162,7 +162,7 @@ msgstr "13:24 UTC-3"
 msgid "1px dotted outline, -4px offset"
 msgstr "1px contorno pontilhado, -4px deslocamento"
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:79
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:108
 #, elixir-autogen, elixir-format
 msgid "2.4 MB"
 msgstr "2.4 MB"
@@ -585,8 +585,8 @@ msgid "Background Color"
 msgstr "Cor de Fundo"
 
 #: lib/retro_hex_chat_web/components/showcase_helpers.ex:31
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:16
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:23
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:17
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:24
 #, elixir-autogen, elixir-format
 msgid "Badge"
 msgstr "Nome"
@@ -1187,7 +1187,7 @@ msgid "Connect"
 msgstr "Conectar"
 
 #: lib/retro_hex_chat_web/live/showcase_live/chat/connection_status_page.ex:30
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:50
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:79
 #, elixir-autogen, elixir-format
 msgid "Connected"
 msgstr "Conectado"
@@ -1421,7 +1421,7 @@ msgstr "Modo escuro"
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/sound_settings_dialog_page.ex:28
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/sound_settings_dialog_page.ex:33
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/alert_dialog_page.ex:29
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:30
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:31
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/button.ex:33
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/button.ex:72
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/radio_group.ex:35
@@ -1511,7 +1511,7 @@ msgid "Design System"
 msgstr "Sistema de Desenho"
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/alert_dialog_page.ex:81
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:32
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:33
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/button.ex:41
 #, elixir-autogen, elixir-format
 msgid "Destructive"
@@ -1807,7 +1807,7 @@ msgid "Expert Mode — /msg"
 msgstr "Modo Perito – /msg"
 
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/file_transfer_page.ex:83
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:52
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:81
 #, elixir-autogen, elixir-format
 msgid "Failed"
 msgstr "Falhou"
@@ -2049,7 +2049,7 @@ msgid "Group Labels"
 msgstr "Rótulos de Grupo"
 
 #: lib/retro_hex_chat_web/live/showcase_live/index.html.heex:185
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:65
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:94
 #, elixir-autogen, elixir-format
 msgid "Half-Op"
 msgstr "Meio- operação"
@@ -2220,7 +2220,7 @@ msgstr "Catálogo de ícones, diagramas SVG e referência de tokens de design."
 msgid "Identified user (P2P actions)"
 msgstr "Usuário identificado (ações P2P)"
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:53
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:82
 #, elixir-autogen, elixir-format
 msgid "Idle"
 msgstr "Inativo"
@@ -2255,7 +2255,7 @@ msgstr "Usuário ignorado"
 msgid "Images"
 msgstr "Imagens"
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:54
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:83
 #, elixir-autogen, elixir-format
 msgid "In Call"
 msgstr "Em chamada"
@@ -2590,7 +2590,7 @@ msgstr "Tipos de Mensagens"
 msgid "Message to #lobby — / for commands"
 msgstr "Mensagem para #lobby — / para comandos"
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:72
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:101
 #, elixir-autogen, elixir-format
 msgid "Metadata Tags"
 msgstr "Marcas de metadados"
@@ -3035,7 +3035,7 @@ msgstr "Operação concluída com sucesso."
 #: lib/retro_hex_chat_web/live/showcase_live/chat/hover_card_page.ex:47
 #: lib/retro_hex_chat_web/live/showcase_live/index.html.heex:181
 #: lib/retro_hex_chat_web/live/showcase_live/layout/context_menu_page.html.heex:126
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:64
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:93
 #, elixir-autogen, elixir-format
 msgid "Operator"
 msgstr "Operador"
@@ -3055,7 +3055,7 @@ msgstr "Vista do Operador"
 msgid "Other user's message"
 msgstr "Mensagem de outro usuário"
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:33
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:34
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/button.ex:45
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/toggle.ex:31
 #, elixir-autogen, elixir-format
@@ -3069,7 +3069,7 @@ msgstr "Mensagem própria"
 
 #: lib/retro_hex_chat_web/live/showcase_live/chat/hover_card_page.ex:46
 #: lib/retro_hex_chat_web/live/showcase_live/index.html.heex:177
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:63
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:92
 #, elixir-autogen, elixir-format
 msgid "Owner"
 msgstr "Dono"
@@ -3114,7 +3114,7 @@ msgstr "Tópico PM"
 msgid "PM Unread"
 msgstr "PM Não- Lido"
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:78
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:107
 #, elixir-autogen, elixir-format
 msgid "PNG"
 msgstr "PNG"
@@ -3375,7 +3375,7 @@ msgid "Registered Nick"
 msgstr "Apelido registrado"
 
 #: lib/retro_hex_chat_web/live/showcase_live/index.html.heex:193
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:67
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:96
 #, elixir-autogen, elixir-format
 msgid "Regular"
 msgstr "Regular"
@@ -3433,7 +3433,7 @@ msgstr "Folha Direita"
 msgid "Role Badge (via role attr)"
 msgstr "Distintivo de Papel (via role attr)"
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:59
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:88
 #, elixir-autogen, elixir-format
 msgid "Role Labels"
 msgstr "Rótulos de Papel"
@@ -3500,7 +3500,7 @@ msgid "Scroll Area & Scrollbar"
 msgstr "& Barra de Rolos"
 
 #: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.ex:43
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:80
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:109
 #, elixir-autogen, elixir-format
 msgid "ScummVM"
 msgstr "ScummVM"
@@ -3517,7 +3517,7 @@ msgstr "Pesquisar"
 msgid "Search Bar"
 msgstr "Barra de Pesquisa"
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:31
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:32
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/button.ex:37
 #, elixir-autogen, elixir-format
 msgid "Secondary"
@@ -3916,7 +3916,7 @@ msgstr "Barra de Estado"
 msgid "Status Bar App"
 msgstr "Aplicativo de Barra de Estado"
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:46
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:75
 #, elixir-autogen, elixir-format
 msgid "Status Indicators"
 msgstr "Indicadores de status"
@@ -3960,7 +3960,7 @@ msgstr "Enviar"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:17
 #: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:224
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:34
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:35
 #, elixir-autogen, elixir-format
 msgid "Success"
 msgstr "Sucesso"
@@ -4486,7 +4486,7 @@ msgstr "Valores"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:5
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/alert.ex:28
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:26
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:27
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/button.ex:27
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/toggle.ex:26
 #, elixir-autogen, elixir-format
@@ -4519,7 +4519,7 @@ msgid "Voice/video call mockups"
 msgstr "Mockups de chamadas de voz/vídeo"
 
 #: lib/retro_hex_chat_web/live/showcase_live/index.html.heex:189
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:66
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:95
 #, elixir-autogen, elixir-format
 msgid "Voiced"
 msgstr "Com voz"
@@ -4534,12 +4534,13 @@ msgstr "Vol"
 msgid "WASD"
 msgstr "ESCALA"
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:51
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:80
 #, elixir-autogen, elixir-format
 msgid "Waiting"
 msgstr "Esperando"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:31
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:36
 #, elixir-autogen, elixir-format
 msgid "Warning"
 msgstr "Aviso"
@@ -5348,3 +5349,38 @@ msgstr "Estados de lista paginada"
 #, elixir-autogen, elixir-format
 msgid "Try a different filter."
 msgstr "Tente outro filtro."
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:63
+#, elixir-autogen, elixir-format
+msgid "Device"
+msgstr "Dispositivo"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:59
+#, elixir-autogen, elixir-format
+msgid "Expiring"
+msgstr "Expirando"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:49
+#, elixir-autogen, elixir-format
+msgid "Icon Badges"
+msgstr "Badges com ícones"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/card.ex:89
+#, elixir-autogen, elixir-format
+msgid "One click selects this card."
+msgstr "Um clique seleciona este card."
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/card.ex:75
+#, elixir-autogen, elixir-format
+msgid "Selectable Card"
+msgstr "Card selecionável"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/card.ex:86
+#, elixir-autogen, elixir-format
+msgid "Selectable Device"
+msgstr "Dispositivo selecionável"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:55
+#, elixir-autogen, elixir-format
+msgid "Trusted"
+msgstr "Confiável"

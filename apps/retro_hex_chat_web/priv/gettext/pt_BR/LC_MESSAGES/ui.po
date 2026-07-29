@@ -11,7 +11,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:536
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:691
 #: lib/retro_hex_chat_web/components/ui/shell/app_header.ex:74
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:760
 #: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:292
@@ -135,7 +135,7 @@ msgstr "Proteção contra flood"
 msgid "Help"
 msgstr "Ajuda"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:528
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:683
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:741
 #: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:287
 #: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:279
@@ -484,7 +484,7 @@ msgstr "Set Away"
 msgid "Set Away..."
 msgstr "Afastar..."
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:519
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:674
 #: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:31
 #, elixir-autogen, elixir-format
 msgid "Start"
@@ -710,3 +710,105 @@ msgstr "Terminais confiáveis..."
 #, elixir-autogen, elixir-format
 msgid "Try again"
 msgstr "Tentar novamente"
+
+#: lib/retro_hex_chat_web/components/ui/trusted_devices/trusted_terminal_card.ex:378
+#, elixir-autogen, elixir-format
+msgid "%{bits}-bit"
+msgstr "%{bits} bits"
+
+#: lib/retro_hex_chat_web/components/ui/trusted_devices/trusted_terminal_card.ex:384
+#, elixir-autogen, elixir-format
+msgid "%{count} cores"
+msgstr "%{count} núcleos"
+
+#: lib/retro_hex_chat_web/components/ui/trusted_devices/trusted_terminal_card.ex:278
+#, elixir-autogen, elixir-format
+msgid "Active"
+msgstr "Ativas"
+
+#: lib/retro_hex_chat_web/components/ui/trusted_devices/trusted_terminal_card.ex:74
+#: lib/retro_hex_chat_web/components/ui/trusted_devices/trusted_terminal_card.ex:116
+#, elixir-autogen, elixir-format
+msgid "Auto-login"
+msgstr "Auto-login"
+
+#: lib/retro_hex_chat_web/components/ui/trusted_devices/trusted_terminal_card.ex:371
+#, elixir-autogen, elixir-format
+msgid "Desktop"
+msgstr "Desktop"
+
+#: lib/retro_hex_chat_web/components/ui/trusted_devices/trusted_terminal_card.ex:258
+#, elixir-autogen, elixir-format
+msgid "Expires"
+msgstr "Expira"
+
+#: lib/retro_hex_chat_web/components/ui/trusted_devices/trusted_terminal_card.ex:268
+#, elixir-autogen, elixir-format
+msgid "First"
+msgstr "Primeiro"
+
+#: lib/retro_hex_chat_web/components/ui/trusted_devices/trusted_terminal_card.ex:293
+#, elixir-autogen, elixir-format
+msgid "IP"
+msgstr "IP"
+
+#: lib/retro_hex_chat_web/components/ui/trusted_devices/trusted_terminal_card.ex:273
+#, elixir-autogen, elixir-format
+msgid "Last"
+msgstr "Último"
+
+#: lib/retro_hex_chat_web/components/ui/trusted_devices/trusted_terminal_card.ex:408
+#, elixir-autogen, elixir-format
+msgid "Never"
+msgstr "Nunca"
+
+#: lib/retro_hex_chat_web/components/ui/trusted_devices/trusted_terminal_card.ex:390
+#, elixir-autogen, elixir-format
+msgid "No touch"
+msgstr "Sem toque"
+
+#: lib/retro_hex_chat_web/components/ui/trusted_devices/trusted_terminal_card.ex:253
+#, elixir-autogen, elixir-format
+msgid "Remembered"
+msgstr "Lembrado"
+
+#: lib/retro_hex_chat_web/components/ui/trusted_devices/trusted_terminal_card.ex:283
+#, elixir-autogen, elixir-format
+msgid "Terminal ID"
+msgstr "ID do terminal"
+
+#: lib/retro_hex_chat_web/components/ui/trusted_devices/trusted_terminal_card.ex:66
+#, elixir-autogen, elixir-format
+msgid "This device"
+msgstr "Este dispositivo"
+
+#: lib/retro_hex_chat_web/components/ui/trusted_devices/trusted_terminal_card.ex:372
+#: lib/retro_hex_chat_web/components/ui/trusted_devices/trusted_terminal_card.ex:389
+#, elixir-autogen, elixir-format
+msgid "Touch"
+msgstr "Toque"
+
+#: lib/retro_hex_chat_web/components/ui/trusted_devices/trusted_terminal_card.ex:70
+#, elixir-autogen, elixir-format
+msgid "Trusted"
+msgstr "Confiável"
+
+#: lib/retro_hex_chat_web/components/ui/trusted_devices/trusted_terminal_card.ex:303
+#, elixir-autogen, elixir-format
+msgid "Trusted terminal"
+msgstr "Terminal confiável"
+
+#: lib/retro_hex_chat_web/components/ui/trusted_devices/trusted_terminal_card.ex:288
+#, elixir-autogen, elixir-format
+msgid "UA"
+msgstr "UA"
+
+#: lib/retro_hex_chat_web/components/ui/trusted_devices/trusted_terminal_card.ex:416
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "Desconhecido"
+
+#: lib/retro_hex_chat_web/components/ui/trusted_devices/trusted_terminal_card.ex:248
+#, elixir-autogen, elixir-format
+msgid "Used"
+msgstr "Usado"

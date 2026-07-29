@@ -96,11 +96,34 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
         registered_nick_id: n.id,
         device_id: d.id,
         label: d.label,
-        last_used_at: g.last_used_at
+        browser: d.browser,
+        os: d.os,
+        device_type: d.device_type,
+        language: d.language,
+        timezone: d.timezone,
+        screen: d.screen,
+        color_depth: d.color_depth,
+        touch: d.touch,
+        cores: d.cores,
+        first_seen_at: d.first_seen_at,
+        last_seen_at: d.last_seen_at,
+        expires_at: d.expires_at,
+        granted_at: g.granted_at,
+        last_used_at: g.last_used_at,
+        auto_login: g.auto_login
       },
       limit: @max_devices
     )
     |> Repo.all()
+  end
+
+  @spec auto_login_nick(integer() | nil) :: map() | nil
+  def auto_login_nick(nil), do: nil
+
+  def auto_login_nick(device_id) do
+    device_id
+    |> remembered_nicks()
+    |> Enum.find(& &1.auto_login)
   end
 
   @spec nick_remembered?(integer() | nil, String.t()) :: boolean()
@@ -154,6 +177,52 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
 
       nil ->
         {:error, :nick_not_registered}
+    end
+  end
+
+  @spec set_auto_login(integer() | nil, String.t(), boolean(), String.t() | nil) ::
+          :ok | {:error, String.t()}
+  def set_auto_login(device_id, nickname, enabled, actor \\ nil)
+
+  def set_auto_login(nil, _nickname, _enabled, _actor),
+    do: {:error, dgettext("accounts", "This terminal is not remembered.")}
+
+  def set_auto_login(device_id, nickname, enabled, actor) when is_boolean(enabled) do
+    with %RegisteredNick{} = nick <- Repo.get_by(RegisteredNick, nickname: nickname),
+         %TrustedDevice{} = device <- Repo.get(TrustedDevice, device_id),
+         :ok <- ensure_device_usable(device),
+         %TrustedDeviceNick{} = grant <- active_grant(device.id, nick.id) do
+      Repo.transaction(fn ->
+        if enabled do
+          from(g in TrustedDeviceNick,
+            where: g.trusted_device_id == ^device.id,
+            where: g.id != ^grant.id,
+            where: is_nil(g.revoked_at)
+          )
+          |> Repo.update_all(set: [auto_login: false])
+        end
+
+        grant
+        |> TrustedDeviceNick.changeset(%{auto_login: enabled})
+        |> Repo.update!()
+
+        action =
+          if enabled,
+            do: "device.nick.auto_login_enabled",
+            else: "device.nick.auto_login_disabled"
+
+        log_event(action, device, nick, actor || nickname, %{enabled: enabled})
+      end)
+      |> case do
+        {:ok, _} -> :ok
+        {:error, _reason} -> {:error, dgettext("accounts", "Could not update auto-login.")}
+      end
+    else
+      nil ->
+        {:error, dgettext("accounts", "Trusted terminal not found for this nick.")}
+
+      {:error, _reason} ->
+        {:error, dgettext("accounts", "Trusted terminal not found for this nick.")}
     end
   end
 
@@ -297,11 +366,17 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
         language: device.language,
         timezone: device.timezone,
         screen: device.screen,
+        color_depth: device.color_depth,
+        touch: device.touch,
+        cores: device.cores,
+        user_agent_hash: device.user_agent_hash,
+        last_ip_hash: device.last_ip_hash,
         first_seen_at: device.first_seen_at,
         last_seen_at: device.last_seen_at,
         expires_at: device.expires_at,
         granted_at: grant.granted_at,
         last_used_at: grant.last_used_at,
+        auto_login: grant.auto_login,
         current?: device.id == current_device_id,
         revoked?: false,
         active_sessions: Map.get(session_counts, device.id, 0)
@@ -345,9 +420,13 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
       label: session_device_label(device),
       browser: session_client_value(client_info, "browser", device, :browser),
       os: session_client_value(client_info, "os", device, :os),
+      device_type: session_client_value(client_info, "device_type", device, :device_type),
       language: session_client_value(client_info, "language", device, :language),
       timezone: session_client_value(client_info, "timezone", device, :timezone),
       screen: session_client_value(client_info, "screen", device, :screen),
+      color_depth: session_client_value(client_info, "color_depth", device, :color_depth),
+      touch: session_client_value(client_info, "touch", device, :touch),
+      cores: session_client_value(client_info, "cores", device, :cores),
       connected_at: session.connected_at,
       last_seen_at: session.last_seen_at,
       current?: session.session_ref == current_session_ref
@@ -360,7 +439,10 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
   defp session_client_value(client_info, key, nil, _field), do: Map.get(client_info, key)
 
   defp session_client_value(client_info, key, device, field) do
-    Map.get(client_info, key) || Map.get(device, field)
+    case Map.get(client_info, key) do
+      nil -> Map.get(device, field)
+      value -> value
+    end
   end
 
   @doc """
@@ -695,7 +777,8 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
           trusted_device_id: device.id,
           registered_nick_id: nick.id,
           granted_at: now,
-          last_used_at: now
+          last_used_at: now,
+          auto_login: false
         })
         |> Repo.insert!()
 
@@ -703,6 +786,7 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
         grant
         |> TrustedDeviceNick.changeset(%{
           last_used_at: now,
+          auto_login: false,
           revoked_at: nil,
           revoked_by_nickname: nil
         })

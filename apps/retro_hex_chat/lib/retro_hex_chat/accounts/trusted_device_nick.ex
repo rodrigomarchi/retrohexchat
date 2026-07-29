@@ -13,6 +13,7 @@ defmodule RetroHexChat.Accounts.TrustedDeviceNick do
     belongs_to :registered_nick, RegisteredNick
     field :granted_at, :utc_datetime_usec
     field :last_used_at, :utc_datetime_usec
+    field :auto_login, :boolean, default: false
     field :revoked_at, :utc_datetime_usec
     field :revoked_by_nickname, :string
 
@@ -27,6 +28,7 @@ defmodule RetroHexChat.Accounts.TrustedDeviceNick do
       :registered_nick_id,
       :granted_at,
       :last_used_at,
+      :auto_login,
       :revoked_at,
       :revoked_by_nickname
     ])

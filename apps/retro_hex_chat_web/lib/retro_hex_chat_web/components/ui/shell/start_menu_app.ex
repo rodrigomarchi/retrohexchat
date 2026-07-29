@@ -205,7 +205,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
             action="open_trusted_terminals_dialog"
             on_action={@on_action}
             label={dgettext("ui", "Trusted Terminals")}
-            icon_fn={:icon_devices}
+            icon_fn={:icon_lock}
           />
         </.start_menu_submenu>
 

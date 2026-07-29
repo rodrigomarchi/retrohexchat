@@ -208,7 +208,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
       window_open?(assigns.open_windows, "trusted-terminals"),
       "trusted-terminals",
       dgettext("chat", "Trusted Terminals"),
-      :icon_devices
+      :icon_lock
     )
     |> add_window(
       window_open?(assigns.open_windows, "profile"),

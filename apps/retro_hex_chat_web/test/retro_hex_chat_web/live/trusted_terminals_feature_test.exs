@@ -35,9 +35,26 @@ defmodule RetroHexChatWeb.TrustedTerminalsFeatureTest do
   test "toolbar action opens managed window with devices and sessions", %{conn: conn} do
     nick = "Term#{uid()}"
     NickServ.register(nick, "pass123")
+    ua_hash = TrustedDevices.hash_fingerprint("feature-test-user-agent")
+    ip_hash = TrustedDevices.hash_fingerprint("203.0.113.10")
 
     {:ok, %{device: device, cookie_value: cookie}} =
-      TrustedDevices.remember_nick(nil, nick, label: "Desktop terminal", actor_nickname: nick)
+      TrustedDevices.remember_nick(nil, nick,
+        label: "Desktop terminal",
+        actor_nickname: nick,
+        user_agent_hash: ua_hash,
+        ip_hash: ip_hash,
+        client_info: %{
+          browser: "Firefox 152.0",
+          os: "macOS 10.15",
+          screen: "1512x982",
+          timezone: "America/Sao_Paulo",
+          language: "pt-BR",
+          color_depth: 24,
+          cores: 10,
+          touch: false
+        }
+      )
 
     {:ok, view, _html} =
       conn
@@ -56,7 +73,58 @@ defmodule RetroHexChatWeb.TrustedTerminalsFeatureTest do
 
     assert_push_event(view, "window_command", %{action: "open", id: "trusted-terminals"})
     assert has_element?(view, ~s([data-testid="trusted-device-#{device.id}"]))
-    assert render(view) =~ "Desktop terminal"
+
+    assert has_element?(
+             view,
+             ~s([data-testid="trusted-device-#{device.id}"][data-trusted-terminal-card])
+           )
+
+    html = render(view)
+
+    assert html =~ "Desktop terminal"
+    assert html =~ "Firefox 152.0"
+    assert html =~ "macOS 10.15"
+    assert html =~ "1512x982"
+    assert html =~ "pt-BR"
+    assert html =~ "24-bit"
+    assert html =~ "10 cores"
+    assert html =~ "No touch"
+    assert html =~ String.slice(ua_hash, 0, 12)
+    assert html =~ String.slice(ip_hash, 0, 12)
+    assert has_element?(view, ~s([data-testid="trusted-terminals-tab-devices"]))
+    assert has_element?(view, ~s([data-testid="trusted-terminals-tab-sessions"]))
+    assert has_element?(view, ~s([data-testid="trusted-terminals-tab-events"]))
+    assert html =~ ~s(data-active-tab="devices")
+
+    assert has_element?(
+             view,
+             ~s([data-testid="trusted-device-auto-login-#{device.id}"][data-state="unchecked"])
+           )
+
+    view
+    |> element(~s([data-testid="trusted-device-auto-login-#{device.id}"]))
+    |> render_click()
+
+    assert %{nickname: ^nick, auto_login: true} = TrustedDevices.auto_login_nick(device.id)
+
+    assert has_element?(
+             view,
+             ~s([data-testid="trusted-device-auto-login-#{device.id}"][data-state="checked"])
+           )
+
+    html =
+      view
+      |> element(~s([data-testid="trusted-terminals-tab-sessions"]))
+      |> render_click()
+
+    assert html =~ ~s(data-active-tab="sessions")
+
+    html =
+      view
+      |> element(~s([data-testid="trusted-terminals-refresh"]))
+      |> render_click()
+
+    assert html =~ ~s(data-active-tab="sessions")
 
     view
     |> element(~s([data-testid="trusted-device-rename-form-#{device.id}"]))

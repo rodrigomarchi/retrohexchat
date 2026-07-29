@@ -10,6 +10,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.Badge do
 
   import RetroHexChatWeb.Components.UI.Badge
   import RetroHexChatWeb.ShowcaseHelpers
+  alias RetroHexChatWeb.Icons
 
   @impl true
   def mount(_params, _session, socket) do
@@ -32,6 +33,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.Badge do
           <.badge variant="destructive">{dgettext("showcase", "Destructive")}</.badge>
           <.badge variant="outline">{dgettext("showcase", "Outline")}</.badge>
           <.badge variant="success">{dgettext("showcase", "Success")}</.badge>
+          <.badge variant="warning">{dgettext("showcase", "Warning")}</.badge>
         </div>
         <.code_example>
           &lt;.badge&gt;Default&lt;/.badge&gt;
@@ -39,6 +41,33 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.Badge do
           &lt;.badge variant="destructive"&gt;Destructive&lt;/.badge&gt;
           &lt;.badge variant="outline"&gt;Outline&lt;/.badge&gt;
           &lt;.badge variant="success"&gt;Success&lt;/.badge&gt;
+          &lt;.badge variant="warning"&gt;Warning&lt;/.badge&gt;
+        </.code_example>
+      </.showcase_card>
+
+      <.showcase_card
+        title={dgettext("showcase", "Icon Badges")}
+        description="Badges can include a leading platform SVG icon."
+      >
+        <div class="flex flex-wrap items-center gap-2">
+          <.badge variant="success">
+            <:icon><Icons.icon_checkmark class="h-3 w-3" /></:icon>
+            {dgettext("showcase", "Trusted")}
+          </.badge>
+          <.badge variant="warning">
+            <:icon><Icons.icon_warning class="h-3 w-3" /></:icon>
+            {dgettext("showcase", "Expiring")}
+          </.badge>
+          <.badge variant="secondary">
+            <:icon><Icons.icon_laptop class="h-3 w-3" /></:icon>
+            {dgettext("showcase", "Device")}
+          </.badge>
+        </div>
+        <.code_example>
+          &lt;.badge variant="success"&gt;
+          &lt;:icon&gt;&lt;Icons.icon_checkmark class="h-3 w-3" /&gt;&lt;/:icon&gt;
+          Trusted
+          &lt;/.badge&gt;
         </.code_example>
       </.showcase_card>
 

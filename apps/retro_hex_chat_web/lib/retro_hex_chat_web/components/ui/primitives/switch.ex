@@ -18,6 +18,10 @@ defmodule RetroHexChatWeb.Components.UI.Switch do
   attr :"default-value", :any, values: [true, false, "true", "false"], default: false
   attr :class, :string, default: nil
   attr :disabled, :boolean, default: false
+  attr :on_toggle, :any, default: nil
+  attr :target, :any, default: nil
+  attr :event_value, :map, default: %{}
+  attr :testid, :string, default: nil
   attr :rest, :global
 
   def switch(assigns) do
@@ -32,13 +36,15 @@ defmodule RetroHexChatWeb.Components.UI.Switch do
       type="button"
       role="switch"
       data-state={(@checked && "checked") || "unchecked"}
-      phx-click={toggle(@id)}
+      aria-checked={to_string(@checked)}
+      phx-click={toggle(@id, @on_toggle, @event_value, @target)}
       class={
         classes([
           "group/switch inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full shadow-retro-field focus-visible:outline focus-visible:outline-2 focus-visible:outline-black disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=unchecked]:bg-white"
         ])
       }
       id={@id}
+      data-testid={@testid}
       {%{disabled: @disabled}}
     >
       <span class="pointer-events-none block h-5 w-5 rounded-full bg-surface shadow-retro-raised ring-0 group-data-[state=checked]/switch:translate-x-5 group-data-[state=unchecked]/switch:translate-x-0">
@@ -49,9 +55,18 @@ defmodule RetroHexChatWeb.Components.UI.Switch do
     """
   end
 
-  defp toggle(id) do
+  defp toggle(id, nil, _event_value, _target) do
     %JS{}
     |> JS.toggle_attribute({"data-state", "checked", "unchecked"})
     |> JS.dispatch("click", to: "##{id} input[type=checkbox]", bubbles: false)
   end
+
+  defp toggle(id, event, event_value, target) do
+    id
+    |> toggle(nil, %{}, nil)
+    |> JS.push(event, push_options(event_value, target))
+  end
+
+  defp push_options(event_value, nil), do: [value: event_value]
+  defp push_options(event_value, target), do: [value: event_value, target: target]
 end

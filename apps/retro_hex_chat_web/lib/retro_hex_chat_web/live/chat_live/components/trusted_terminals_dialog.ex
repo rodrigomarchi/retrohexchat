@@ -46,6 +46,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.TrustedTerminalsDialog do
        chat_device_session_ref: nil,
        devices: [],
        loaded?: false,
+       active_tab: "devices",
        status_kind: nil,
        status_message: nil
      )
@@ -77,6 +78,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.TrustedTerminalsDialog do
      socket
      |> put_status(:ok, dgettext("chat", "Trusted terminals refreshed."))
      |> refresh_snapshot()}
+  end
+
+  def handle_event("trusted_terminals_tab", %{"tab" => tab}, socket) do
+    {:noreply, assign(socket, active_tab: trusted_tab(tab))}
   end
 
   def handle_event("load_more_sessions", _params, socket) do
@@ -127,6 +132,33 @@ defmodule RetroHexChatWeb.ChatLive.Components.TrustedTerminalsDialog do
       {:noreply,
        socket
        |> put_status(:ok, dgettext("chat", "Trusted terminal revoked."))
+       |> refresh_snapshot()}
+    else
+      {:error, message} when is_binary(message) ->
+        {:noreply, put_status(socket, :error, message)}
+
+      {:error, _reason} ->
+        {:noreply, put_status(socket, :error, dgettext("chat", "Invalid terminal id."))}
+    end
+  end
+
+  def handle_event(
+        "trusted_terminals_auto_login_toggle",
+        %{"device_id" => id, "enabled" => enabled},
+        socket
+      ) do
+    with {:ok, device_id} <- parse_id(id),
+         {:ok, enabled?} <- parse_bool(enabled),
+         :ok <-
+           TrustedDevices.set_auto_login(device_id, nickname(socket), enabled?, nickname(socket)) do
+      message =
+        if enabled?,
+          do: dgettext("chat", "Auto-login enabled."),
+          else: dgettext("chat", "Auto-login disabled.")
+
+      {:noreply,
+       socket
+       |> put_status(:ok, message)
        |> refresh_snapshot()}
     else
       {:error, message} when is_binary(message) ->
@@ -228,8 +260,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.TrustedTerminalsDialog do
         events={@streams.events}
         events_state={@paginated.events}
         timezone={@timezone}
+        active_tab={@active_tab}
         status_kind={@status_kind}
         status_message={@status_message}
+        on_tab="trusted_terminals_tab"
         on_close="trusted_terminals_close"
       />
     </div>
@@ -272,6 +306,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.TrustedTerminalsDialog do
     assign(socket, status_kind: kind, status_message: message)
   end
 
+  defp trusted_tab(tab) when tab in ["devices", "sessions", "events"], do: tab
+  defp trusted_tab(_tab), do: "devices"
+
   defp nickname(socket), do: socket.assigns.session.nickname
 
   defp parse_id(id) when is_integer(id), do: {:ok, id}
@@ -284,4 +321,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.TrustedTerminalsDialog do
   end
 
   defp parse_id(_id), do: {:error, :invalid_id}
+
+  defp parse_bool(value) when value in [true, "true"], do: {:ok, true}
+  defp parse_bool(value) when value in [false, "false"], do: {:ok, false}
+  defp parse_bool(_value), do: {:error, :invalid_bool}
 end

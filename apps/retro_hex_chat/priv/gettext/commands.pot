@@ -682,38 +682,38 @@ msgstr ""
 msgid "/notify remove Alice"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:83
-#: lib/retro_hex_chat/commands/handlers/ns.ex:171
+#: lib/retro_hex_chat/commands/handlers/ns.ex:104
+#: lib/retro_hex_chat/commands/handlers/ns.ex:332
 #, elixir-autogen, elixir-format
 msgid "/ns <subcommand> [args]"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:94
-#: lib/retro_hex_chat/commands/handlers/ns.ex:199
+#: lib/retro_hex_chat/commands/handlers/ns.ex:115
+#: lib/retro_hex_chat/commands/handlers/ns.ex:364
 #, elixir-autogen, elixir-format
 msgid "/ns drop mypassword"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:92
-#: lib/retro_hex_chat/commands/handlers/ns.ex:197
+#: lib/retro_hex_chat/commands/handlers/ns.ex:113
+#: lib/retro_hex_chat/commands/handlers/ns.ex:362
 #, elixir-autogen, elixir-format
 msgid "/ns ghost othernick mypassword"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:91
-#: lib/retro_hex_chat/commands/handlers/ns.ex:196
+#: lib/retro_hex_chat/commands/handlers/ns.ex:112
+#: lib/retro_hex_chat/commands/handlers/ns.ex:361
 #, elixir-autogen, elixir-format
 msgid "/ns identify mypassword"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:93
-#: lib/retro_hex_chat/commands/handlers/ns.ex:198
+#: lib/retro_hex_chat/commands/handlers/ns.ex:114
+#: lib/retro_hex_chat/commands/handlers/ns.ex:363
 #, elixir-autogen, elixir-format
 msgid "/ns info"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:90
-#: lib/retro_hex_chat/commands/handlers/ns.ex:195
+#: lib/retro_hex_chat/commands/handlers/ns.ex:111
+#: lib/retro_hex_chat/commands/handlers/ns.ex:360
 #, elixir-autogen, elixir-format
 msgid "/ns register mypassword"
 msgstr ""
@@ -1069,7 +1069,7 @@ msgstr ""
 msgid "Announcement sent to all users."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:208
+#: lib/retro_hex_chat/commands/handlers/ns.ex:377
 #, elixir-autogen, elixir-format
 msgid "Authenticate with your registered password"
 msgstr ""
@@ -1257,7 +1257,7 @@ msgstr ""
 msgid "Debug info (connections, processes, memory)"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:218
+#: lib/retro_hex_chat/commands/handlers/ns.ex:387
 #, elixir-autogen, elixir-format
 msgid "Delete your nickname registration"
 msgstr ""
@@ -1272,7 +1272,7 @@ msgstr ""
 msgid "Disabled"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:212
+#: lib/retro_hex_chat/commands/handlers/ns.ex:381
 #, elixir-autogen, elixir-format
 msgid "Disconnect a stale session using its password"
 msgstr ""
@@ -1735,7 +1735,7 @@ msgstr ""
 msgid "Reason for the kick"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/autocomplete.ex:136
+#: lib/retro_hex_chat/commands/autocomplete.ex:138
 #, elixir-autogen, elixir-format
 msgid "Recent"
 msgstr ""
@@ -1750,14 +1750,9 @@ msgstr ""
 msgid "Recipient (nickname or channel)"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:173
+#: lib/retro_hex_chat/commands/handlers/ns.ex:334
 #, elixir-autogen, elixir-format
 msgid "Register and protect your nickname with a password through NickServ, the nickname services bot."
-msgstr ""
-
-#: lib/retro_hex_chat/commands/handlers/ns.ex:85
-#, elixir-autogen, elixir-format
-msgid "Register and protect your nickname with a password through NickServ.\nSubcommands: register <password>, identify <password>, ghost <nick> <password>, info [nick], drop <password>, help.\nRegister: claims current nickname. Identify: authenticates each session.\nGhost: disconnects a stale session using the registered nickname's password."
 msgstr ""
 
 #: lib/retro_hex_chat/commands/handlers/cs.ex:227
@@ -1765,7 +1760,7 @@ msgstr ""
 msgid "Register the current channel"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:204
+#: lib/retro_hex_chat/commands/handlers/ns.ex:373
 #, elixir-autogen, elixir-format
 msgid "Register your nickname with a password"
 msgstr ""
@@ -2016,7 +2011,7 @@ msgstr ""
 msgid "Show ChanServ help"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:219
+#: lib/retro_hex_chat/commands/handlers/ns.ex:392
 #, elixir-autogen, elixir-format
 msgid "Show NickServ help"
 msgstr ""
@@ -2072,7 +2067,7 @@ msgstr ""
 #: lib/retro_hex_chat/commands/handlers/autojoin.ex:132
 #: lib/retro_hex_chat/commands/handlers/cs.ex:215
 #: lib/retro_hex_chat/commands/handlers/notify.ex:122
-#: lib/retro_hex_chat/commands/handlers/ns.ex:191
+#: lib/retro_hex_chat/commands/handlers/ns.ex:356
 #: lib/retro_hex_chat/commands/handlers/perform.ex:155
 #, elixir-autogen, elixir-format
 msgid "Subcommand arguments"
@@ -2102,11 +2097,6 @@ msgstr ""
 #: lib/retro_hex_chat/commands/handlers/cs.ex:208
 #, elixir-autogen, elixir-format
 msgid "Subcommand: register, drop, info, sop, aop, vop"
-msgstr ""
-
-#: lib/retro_hex_chat/commands/handlers/ns.ex:184
-#, elixir-autogen, elixir-format
-msgid "Subcommand: register, identify, ghost, info, drop"
 msgstr ""
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:109
@@ -2368,27 +2358,22 @@ msgstr ""
 msgid "Usage: /notify remove <nickname>"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:16
-#, elixir-autogen, elixir-format
-msgid "Usage: /ns <register|identify|ghost|info|drop|help> [args]"
-msgstr ""
-
-#: lib/retro_hex_chat/commands/handlers/ns.ex:63
+#: lib/retro_hex_chat/commands/handlers/ns.ex:68
 #, elixir-autogen, elixir-format
 msgid "Usage: /ns drop <password>"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:45
+#: lib/retro_hex_chat/commands/handlers/ns.ex:50
 #, elixir-autogen, elixir-format
 msgid "Usage: /ns ghost <nickname> <password>"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:33
+#: lib/retro_hex_chat/commands/handlers/ns.ex:38
 #, elixir-autogen, elixir-format
 msgid "Usage: /ns identify <password>"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:23
+#: lib/retro_hex_chat/commands/handlers/ns.ex:28
 #, elixir-autogen, elixir-format
 msgid "Usage: /ns register <password>"
 msgstr ""
@@ -2597,7 +2582,7 @@ msgstr ""
 msgid "View or change the channel topic displayed in the topic bar at the top of the channel.\nNo args: shows current topic. With text: sets a new topic.\nMust be in a channel. If channel has +t mode, only operators can change the topic."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:216
+#: lib/retro_hex_chat/commands/handlers/ns.ex:385
 #, elixir-autogen, elixir-format
 msgid "View registration info for a nickname"
 msgstr ""
@@ -2840,20 +2825,21 @@ msgstr ""
 msgid "[ChanServ] Access list for %{channel} (%{level})"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:104
-#: lib/retro_hex_chat/commands/handlers/ns.ex:107
-#: lib/retro_hex_chat/commands/handlers/ns.ex:114
-#: lib/retro_hex_chat/commands/handlers/ns.ex:117
-#: lib/retro_hex_chat/commands/handlers/ns.ex:124
-#: lib/retro_hex_chat/commands/handlers/ns.ex:127
-#: lib/retro_hex_chat/commands/handlers/ns.ex:146
-#: lib/retro_hex_chat/commands/handlers/ns.ex:153
-#: lib/retro_hex_chat/commands/handlers/ns.ex:156
+#: lib/retro_hex_chat/commands/handlers/ns.ex:129
+#: lib/retro_hex_chat/commands/handlers/ns.ex:132
+#: lib/retro_hex_chat/commands/handlers/ns.ex:139
+#: lib/retro_hex_chat/commands/handlers/ns.ex:142
+#: lib/retro_hex_chat/commands/handlers/ns.ex:149
+#: lib/retro_hex_chat/commands/handlers/ns.ex:152
+#: lib/retro_hex_chat/commands/handlers/ns.ex:171
+#: lib/retro_hex_chat/commands/handlers/ns.ex:178
+#: lib/retro_hex_chat/commands/handlers/ns.ex:181
+#: lib/retro_hex_chat/commands/handlers/ns.ex:276
 #, elixir-autogen, elixir-format
 msgid "[NickServ] %{message}"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:135
+#: lib/retro_hex_chat/commands/handlers/ns.ex:160
 #, elixir-autogen, elixir-format
 msgid "[NickServ] %{nickname}: registered %{registered_at}, identified: %{identified}"
 msgstr ""
@@ -2891,4 +2877,150 @@ msgstr ""
 #: lib/retro_hex_chat/commands/handlers/lobby.ex:89
 #, elixir-autogen, elixir-format
 msgid "You cannot start a P2P session with yourself."
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:289
+#, elixir-autogen, elixir-format
+msgid "#%{id} %{label} | %{browser} / %{os} | active %{sessions} | last %{last_seen}"
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:302
+#, elixir-autogen, elixir-format
+msgid "#%{id} %{label} | %{browser} / %{os} | last %{last_seen}"
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:245
+#, elixir-autogen, elixir-format
+msgid "%{count} active sessions ended."
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:116
+#: lib/retro_hex_chat/commands/handlers/ns.ex:365
+#, elixir-autogen, elixir-format
+msgid "/ns devices"
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:119
+#: lib/retro_hex_chat/commands/handlers/ns.ex:368
+#, elixir-autogen, elixir-format
+msgid "/ns kill-session 44"
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:118
+#: lib/retro_hex_chat/commands/handlers/ns.ex:367
+#, elixir-autogen, elixir-format
+msgid "/ns revoke-device 12"
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:117
+#: lib/retro_hex_chat/commands/handlers/ns.ex:366
+#, elixir-autogen, elixir-format
+msgid "/ns sessions"
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:211
+#, elixir-autogen, elixir-format
+msgid "Active sessions:\n%{lines}"
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:219
+#, elixir-autogen, elixir-format
+msgid "All trusted terminals revoked. %{count} active sessions ended."
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:391
+#, elixir-autogen, elixir-format
+msgid "End an active session"
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:389
+#, elixir-autogen, elixir-format
+msgid "List active sessions"
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:388
+#, elixir-autogen, elixir-format
+msgid "List trusted terminals"
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:203
+#, elixir-autogen, elixir-format
+msgid "No active sessions for this nickname."
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:188
+#, elixir-autogen, elixir-format
+msgid "No trusted terminals for this nickname."
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:106
+#, elixir-autogen, elixir-format
+msgid "Register and protect your nickname with a password through NickServ.\nSubcommands: register <password>, identify <password>, ghost <nick> <password>, info [nick], drop <password>, devices, sessions, revoke-device <id|all>, kill-session <id|all>, help.\nRegister: claims current nickname. Identify: authenticates each session.\nGhost: disconnects a stale session using the registered nickname's password."
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:390
+#, elixir-autogen, elixir-format
+msgid "Revoke a trusted terminal"
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:251
+#, elixir-autogen, elixir-format
+msgid "Session %{id} ended."
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:346
+#, elixir-autogen, elixir-format
+msgid "Subcommand: register, identify, ghost, info, drop, devices, sessions, revoke-device, kill-session"
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:230
+#, elixir-autogen, elixir-format
+msgid "Trusted terminal %{id} revoked."
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:196
+#, elixir-autogen, elixir-format
+msgid "Trusted terminals:\n%{lines}"
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:295
+#: lib/retro_hex_chat/commands/handlers/ns.ex:308
+#, elixir-autogen, elixir-format
+msgid "Unknown OS"
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:294
+#: lib/retro_hex_chat/commands/handlers/ns.ex:307
+#, elixir-autogen, elixir-format
+msgid "Unknown browser"
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:18
+#, elixir-autogen, elixir-format
+msgid "Usage: /ns <register|identify|ghost|info|drop|devices|sessions|revoke-device|kill-session|help> [args]"
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:264
+#, elixir-autogen, elixir-format
+msgid "Usage: /ns kill-session <id|all>"
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:263
+#, elixir-autogen, elixir-format
+msgid "Usage: /ns revoke-device <id|all>"
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:270
+#, elixir-autogen, elixir-format
+msgid "You must be identified to manage trusted terminals."
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:313
+#, elixir-autogen, elixir-format
+msgid "never"
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:319
+#, elixir-autogen, elixir-format
+msgid "unknown"
 msgstr ""

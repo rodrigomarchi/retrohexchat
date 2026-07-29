@@ -3535,28 +3535,29 @@ msgstr "コンタクト"
 msgid "On Connect"
 msgstr "オンコネクト"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:204
+#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:236
 #, elixir-autogen, elixir-format
 msgid "%{count} sessions ended."
 msgstr "%{count} 件のセッションを終了しました。"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:173
+#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:205
 #, elixir-autogen, elixir-format
 msgid "%{count} trusted sessions ended."
 msgstr "%{count} 件の信頼済みセッションを終了しました。"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:190
+#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:222
 #, elixir-autogen, elixir-format
 msgid "Invalid session id."
 msgstr "セッション ID が正しくありません。"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:119
-#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:136
+#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:124
+#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:141
+#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:168
 #, elixir-autogen, elixir-format
 msgid "Invalid terminal id."
 msgstr "端末 ID が正しくありません。"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:183
+#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:215
 #, elixir-autogen, elixir-format
 msgid "Session ended."
 msgstr "セッションを終了しました。"
@@ -3566,7 +3567,7 @@ msgstr "セッションを終了しました。"
 msgid "This P2P session is still active in another window. Close that window or end this session here."
 msgstr "この P2P セッションは別のウィンドウでまだ有効です。そのウィンドウを閉じるか、ここでセッションを終了してください。"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:155
+#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:187
 #, elixir-autogen, elixir-format
 msgid "This terminal is not remembered."
 msgstr "この端末は記憶されていません。"
@@ -3577,17 +3578,27 @@ msgstr "この端末は記憶されていません。"
 msgid "Trusted Terminals"
 msgstr "信頼済み端末"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:112
+#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:117
 #, elixir-autogen, elixir-format
 msgid "Trusted terminal renamed."
 msgstr "信頼済み端末の名前を変更しました。"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:129
+#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:134
 #, elixir-autogen, elixir-format
 msgid "Trusted terminal revoked."
 msgstr "信頼済み端末を失効しました。"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:78
+#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:79
 #, elixir-autogen, elixir-format
 msgid "Trusted terminals refreshed."
 msgstr "信頼済み端末を更新しました。"
+
+#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:157
+#, elixir-autogen, elixir-format
+msgid "Auto-login disabled."
+msgstr ""
+
+#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:156
+#, elixir-autogen, elixir-format
+msgid "Auto-login enabled."
+msgstr ""

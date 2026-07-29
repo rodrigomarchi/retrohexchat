@@ -3527,28 +3527,29 @@ msgstr "联系人"
 msgid "On Connect"
 msgstr "连接时"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:204
+#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:236
 #, elixir-autogen, elixir-format
 msgid "%{count} sessions ended."
 msgstr "已结束 %{count} 个会话。"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:173
+#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:205
 #, elixir-autogen, elixir-format
 msgid "%{count} trusted sessions ended."
 msgstr "已结束 %{count} 个受信任会话。"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:190
+#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:222
 #, elixir-autogen, elixir-format
 msgid "Invalid session id."
 msgstr "会话 ID 无效。"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:119
-#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:136
+#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:124
+#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:141
+#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:168
 #, elixir-autogen, elixir-format
 msgid "Invalid terminal id."
 msgstr "终端 ID 无效。"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:183
+#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:215
 #, elixir-autogen, elixir-format
 msgid "Session ended."
 msgstr "会话已结束。"
@@ -3558,7 +3559,7 @@ msgstr "会话已结束。"
 msgid "This P2P session is still active in another window. Close that window or end this session here."
 msgstr "此 P2P 会话在另一个窗口中仍然有效。请关闭该窗口，或在此结束会话。"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:155
+#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:187
 #, elixir-autogen, elixir-format
 msgid "This terminal is not remembered."
 msgstr "此终端未被记住。"
@@ -3569,17 +3570,27 @@ msgstr "此终端未被记住。"
 msgid "Trusted Terminals"
 msgstr "受信任的终端"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:112
+#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:117
 #, elixir-autogen, elixir-format
 msgid "Trusted terminal renamed."
 msgstr "已重命名受信任的终端。"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:129
+#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:134
 #, elixir-autogen, elixir-format
 msgid "Trusted terminal revoked."
 msgstr "已撤销受信任的终端。"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:78
+#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:79
 #, elixir-autogen, elixir-format
 msgid "Trusted terminals refreshed."
 msgstr "已刷新受信任的终端。"
+
+#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:157
+#, elixir-autogen, elixir-format
+msgid "Auto-login disabled."
+msgstr ""
+
+#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:156
+#, elixir-autogen, elixir-format
+msgid "Auto-login enabled."
+msgstr ""

@@ -20,6 +20,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
   import RetroHexChatWeb.Components.UI.Input
   import RetroHexChatWeb.Components.UI.Label
   import RetroHexChatWeb.Components.UI.MenuBarApp
+  import RetroHexChatWeb.Components.UI.TrustedDevices.TrustedTerminalCard
 
   alias RetroHexChatWeb.Icons
 
@@ -31,6 +32,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
   attr :password_error, :string, default: nil
   attr :auth_token, :string, default: nil
   attr :remembered_nicks, :list, default: []
+  attr :manual_login, :boolean, default: false
   attr :trusted_device_login, :boolean, default: false
   attr :remember_device, :boolean, default: false
   attr :device_label, :string, default: ""
@@ -65,6 +67,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
           password_confirm={@password_confirm}
           password_error={@password_error}
           remembered_nicks={@remembered_nicks}
+          manual_login={@manual_login}
           remember_device={@remember_device}
           device_label={@device_label}
           flash={@flash}
@@ -96,6 +99,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
   attr :password_confirm, :string, required: true
   attr :password_error, :string, default: nil
   attr :remembered_nicks, :list, default: []
+  attr :manual_login, :boolean, default: false
   attr :remember_device, :boolean, default: false
   attr :device_label, :string, default: ""
   attr :flash, :map, default: %{}
@@ -107,8 +111,8 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
       title={dgettext("connect", "Connect to RetroHexChat")}
       pinned
       default_centered
-      width={448}
-      min_width={320}
+      width={560}
+      min_width={360}
       resizable={false}
       body_class="p-4"
       data-testid="connect-window"
@@ -132,6 +136,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
         password_confirm={@password_confirm}
         password_error={@password_error}
         remembered_nicks={@remembered_nicks}
+        manual_login={@manual_login}
         remember_device={@remember_device}
         device_label={@device_label}
       />
@@ -146,6 +151,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
   attr :password_confirm, :string, required: true
   attr :password_error, :string, default: nil
   attr :remembered_nicks, :list, default: []
+  attr :manual_login, :boolean, default: false
   attr :remember_device, :boolean, default: false
   attr :device_label, :string, default: ""
 
@@ -155,6 +161,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
       nickname={@nickname}
       nickname_error={@nickname_error}
       remembered_nicks={@remembered_nicks}
+      manual_login={@manual_login}
     />
     """
   end
@@ -187,114 +194,179 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
   attr :nickname, :string, required: true
   attr :nickname_error, :string, default: nil
   attr :remembered_nicks, :list, default: []
+  attr :manual_login, :boolean, default: false
 
   defp connect_nickname_step(assigns) do
     ~H"""
     <form phx-submit="connect">
-      <div
-        :if={@remembered_nicks != []}
-        class="mb-3 space-y-retro-4"
-        data-testid="remembered-nicks"
-      >
-        <p class="text-xs font-bold flex items-center gap-retro-4">
-          <Icons.icon_devices class="w-4 h-4" />
-          {dgettext("connect", "Trusted terminal")}
-        </p>
-        <div class="grid gap-retro-4">
-          <button
-            :for={entry <- @remembered_nicks}
-            type="button"
-            class="shadow-retro-raised bg-surface px-2 py-1 text-left text-xs hover:bg-selection-bg hover:text-selection-fg focus-visible:outline focus-visible:outline-2 focus-visible:outline-black"
-            phx-click="connect_remembered"
-            phx-value-nickname={entry.nickname}
-            data-testid={"remembered-nick-#{entry.nickname}"}
-          >
-            <span class="inline-flex items-center gap-retro-4 min-w-0">
-              <Icons.icon_status_user class="w-3.5 h-3.5 shrink-0" />
-              <span class="truncate font-bold">{entry.nickname}</span>
-              <span class="truncate text-muted-foreground">{entry.label}</span>
-            </span>
-          </button>
+      <.remembered_terminal_choices
+        :if={@remembered_nicks != [] and not @manual_login}
+        remembered_nicks={@remembered_nicks}
+      />
+
+      <.nickname_connect_fields
+        :if={@remembered_nicks == [] or @manual_login}
+        nickname={@nickname}
+        nickname_error={@nickname_error}
+        show_trusted_back={@remembered_nicks != []}
+      />
+    </form>
+    """
+  end
+
+  attr :remembered_nicks, :list, default: []
+
+  defp remembered_terminal_choices(assigns) do
+    ~H"""
+    <div class="space-y-retro-4" data-testid="remembered-nicks">
+      <div class="flex items-start justify-between gap-retro-6">
+        <div class="min-w-0">
+          <p class="flex items-center gap-retro-4 text-xs font-bold">
+            <Icons.icon_devices class="w-4 h-4 shrink-0" />
+            {dgettext("connect", "Trusted terminals")}
+          </p>
+          <p class="mt-1 text-xs text-muted-foreground">
+            {dgettext("connect", "Choose a remembered NickServ identity.")}
+          </p>
         </div>
-      </div>
-
-      <.retro_fieldset legend={dgettext("connect", "User Information")}>
-        <.field_row stacked>
-          <.label for="nickname">
-            <Icons.icon_status_user class="w-3.5 h-3.5 inline-block" /> {dgettext(
-              "connect",
-              "Nickname"
-            )}
-          </.label>
-          <.input
-            type="text"
-            id="nickname"
-            name="nickname"
-            value={@nickname}
-            maxlength="16"
-            autocomplete="off"
-            required
-            placeholder={dgettext("connect", "Enter your nickname...")}
-            phx-mounted={JS.focus()}
-          />
-        </.field_row>
-        <ul class="text-xs mt-2 space-y-0.5 text-muted-foreground">
-          <li>
-            <Icons.icon_checkmark class="w-3 h-3 inline-block" /> {dgettext(
-              "connect",
-              "1-16 characters"
-            )}
-          </li>
-          <li>
-            <Icons.icon_checkmark class="w-3 h-3 inline-block" /> {dgettext(
-              "connect",
-              "Must start with a letter"
-            )}
-          </li>
-          <li>
-            <Icons.icon_checkmark class="w-3 h-3 inline-block" /> {dgettext(
-              "connect",
-              "No spaces allowed"
-            )}
-          </li>
-          <li>
-            <Icons.icon_checkmark class="w-3 h-3 inline-block" /> {dgettext(
-              "connect",
-              "Case sensitive"
-            )}
-          </li>
-        </ul>
-        <p :if={@nickname_error} class="text-destructive text-xs mt-2">
-          <Icons.icon_reject class="w-3 h-3 inline-block" /> {@nickname_error}
-        </p>
-      </.retro_fieldset>
-
-      <div class="flex justify-end gap-2 mt-4">
         <.button
-          type="submit"
-          data-testid="connect-btn"
+          type="button"
+          size="sm"
+          variant="outline"
+          phx-click="manual_login"
+          data-testid="manual-login-btn"
+          class="shrink-0"
         >
-          <:icon><Icons.icon_connect /></:icon>
-          {dgettext("connect", "Connect")}
+          <:icon><Icons.icon_status_user class="h-4 w-4" /></:icon>
+          {dgettext("connect", "Use another nick/password")}
         </.button>
       </div>
 
-      <div class="mt-4 space-y-2 text-xs">
-        <.connect_notice icon={:connect} title={dgettext("connect", "One session per nickname")}>
-          {dgettext("connect", "Connecting from another window ends the previous session.")}
-        </.connect_notice>
-        <.connect_notice icon={:clock} title={dgettext("connect", "Session expiry")}>
-          {dgettext("connect", "Sessions expire after 10 failed reconnection attempts.")}
-        </.connect_notice>
-        <.connect_notice
-          icon={:warning}
-          title={dgettext("connect", "Nickname cleanup")}
-          data-testid="nick-expiry-notice"
+      <div class="grid max-h-[430px] gap-retro-6 overflow-y-auto pr-1 retro-scrollbar">
+        <.trusted_terminal_card
+          :for={entry <- @remembered_nicks}
+          entry={entry}
+          nickname={entry.nickname}
+          current
+          testid={"remembered-nick-#{entry.nickname}"}
+          auto_login_testid={"trusted-auto-login-#{entry.nickname}"}
+          on_auto_login_toggle="trusted_auto_login_toggle"
+          data-trusted-terminal-choice
         >
-          {dgettext("connect", "Nicknames unused for 7 days are automatically released.")}
-        </.connect_notice>
+          <:actions :let={terminal}>
+            <.button
+              type="button"
+              size="sm"
+              phx-click="connect_remembered"
+              phx-value-nickname={terminal.nickname}
+              data-testid={"remembered-nick-login-#{terminal.nickname}"}
+            >
+              <:icon><Icons.icon_connect class="h-4 w-4" /></:icon>
+              {dgettext("connect", "Enter as %{nickname}", nickname: terminal.nickname)}
+            </.button>
+          </:actions>
+        </.trusted_terminal_card>
       </div>
-    </form>
+    </div>
+    """
+  end
+
+  attr :nickname, :string, required: true
+  attr :nickname_error, :string, default: nil
+  attr :autofocus, :boolean, default: true
+  attr :show_trusted_back, :boolean, default: false
+
+  defp nickname_connect_fields(assigns) do
+    ~H"""
+    <div :if={@show_trusted_back} class="mb-3 flex justify-end">
+      <.button
+        type="button"
+        size="sm"
+        variant="outline"
+        phx-click="trusted_choices"
+        data-testid="trusted-choices-btn"
+      >
+        <:icon><Icons.icon_devices class="h-4 w-4" /></:icon>
+        {dgettext("connect", "Back to trusted terminals")}
+      </.button>
+    </div>
+
+    <.retro_fieldset legend={dgettext("connect", "User Information")}>
+      <.field_row stacked>
+        <.label for="nickname">
+          <Icons.icon_status_user class="w-3.5 h-3.5 inline-block" /> {dgettext(
+            "connect",
+            "Nickname"
+          )}
+        </.label>
+        <.input
+          type="text"
+          id="nickname"
+          name="nickname"
+          value={@nickname}
+          maxlength="16"
+          autocomplete="off"
+          required
+          placeholder={dgettext("connect", "Enter your nickname...")}
+          phx-mounted={if @autofocus, do: JS.focus()}
+        />
+      </.field_row>
+      <ul class="text-xs mt-2 space-y-0.5 text-muted-foreground">
+        <li>
+          <Icons.icon_checkmark class="w-3 h-3 inline-block" /> {dgettext(
+            "connect",
+            "1-16 characters"
+          )}
+        </li>
+        <li>
+          <Icons.icon_checkmark class="w-3 h-3 inline-block" /> {dgettext(
+            "connect",
+            "Must start with a letter"
+          )}
+        </li>
+        <li>
+          <Icons.icon_checkmark class="w-3 h-3 inline-block" /> {dgettext(
+            "connect",
+            "No spaces allowed"
+          )}
+        </li>
+        <li>
+          <Icons.icon_checkmark class="w-3 h-3 inline-block" /> {dgettext(
+            "connect",
+            "Case sensitive"
+          )}
+        </li>
+      </ul>
+      <p :if={@nickname_error} class="text-destructive text-xs mt-2">
+        <Icons.icon_reject class="w-3 h-3 inline-block" /> {@nickname_error}
+      </p>
+    </.retro_fieldset>
+
+    <div class="flex justify-end gap-2 mt-4">
+      <.button
+        type="submit"
+        data-testid="connect-btn"
+      >
+        <:icon><Icons.icon_connect /></:icon>
+        {dgettext("connect", "Connect")}
+      </.button>
+    </div>
+
+    <div class="mt-4 space-y-2 text-xs">
+      <.connect_notice icon={:connect} title={dgettext("connect", "One session per nickname")}>
+        {dgettext("connect", "Connecting from another window ends the previous session.")}
+      </.connect_notice>
+      <.connect_notice icon={:clock} title={dgettext("connect", "Session expiry")}>
+        {dgettext("connect", "Sessions expire after 10 failed reconnection attempts.")}
+      </.connect_notice>
+      <.connect_notice
+        icon={:warning}
+        title={dgettext("connect", "Nickname cleanup")}
+        data-testid="nick-expiry-notice"
+      >
+        {dgettext("connect", "Nicknames unused for 7 days are automatically released.")}
+      </.connect_notice>
+    </div>
     """
   end
 
@@ -484,6 +556,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
           id="remember-device"
           name="remember_device"
           value={@remember_device}
+          data-device-remember-toggle
           data-testid="remember-device"
         />
         <span class="min-w-0">
@@ -493,23 +566,105 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
           </span>
         </span>
       </label>
-      <div class="space-y-retro-2">
-        <label for="device-label" class="font-bold">
-          {dgettext("connect", "Terminal label:")}
-        </label>
+      <div
+        hidden={not @remember_device}
+        data-device-remember-panel
+        data-testid="remember-device-panel"
+        class="space-y-retro-3"
+      >
+        <div class="flex items-center gap-retro-4 min-w-0">
+          <label for="device-label" class="font-bold shrink-0">
+            {dgettext("connect", "Terminal label:")}
+          </label>
+          <span
+            hidden
+            data-device-label-suggestion
+            data-testid="device-label-suggestion"
+            class="inline-flex items-center min-w-0 gap-retro-2 bg-white px-1 shadow-retro-field text-muted-foreground"
+          >
+            <Icons.icon_tag class="w-3 h-3 shrink-0" />
+            <span class="truncate" data-device-label-suggestion-value></span>
+          </span>
+        </div>
         <.input
           id="device-label"
           name="device_label"
           value={@device_label}
           maxlength="100"
-          placeholder={dgettext("connect", "Home laptop")}
+          placeholder="Mac Firefox"
           class="h-7 text-xs"
+          data-device-label-input
           data-testid="device-label"
         />
+
+        <details
+          open
+          class="bg-white p-2 shadow-retro-field"
+          data-testid="device-metadata-details"
+        >
+          <summary class="flex cursor-pointer list-none items-center gap-retro-3 font-bold [&::-webkit-details-marker]:hidden">
+            <Icons.icon_devices class="w-3.5 h-3.5 shrink-0" />
+            <span class="min-w-0 truncate">{dgettext("connect", "Device metadata")}</span>
+          </summary>
+          <div
+            hidden
+            data-device-label-metadata
+            data-testid="device-label-metadata"
+            class="mt-retro-4 grid grid-cols-2 gap-x-retro-8 gap-y-retro-3 text-muted-foreground"
+          >
+            <.device_meta_item item="device_type" label={dgettext("connect", "Device")} />
+            <.device_meta_item item="browser" label={dgettext("connect", "Browser")} />
+            <.device_meta_item item="os" label={dgettext("connect", "OS")} />
+            <.device_meta_item item="language" label={dgettext("connect", "Language")} />
+            <.device_meta_item item="screen" label={dgettext("connect", "Screen")} />
+            <.device_meta_item item="timezone" label={dgettext("connect", "Timezone")} />
+            <.device_meta_item item="color_depth" label={dgettext("connect", "Color")} />
+            <.device_meta_item item="cores" label={dgettext("connect", "CPU")} />
+            <.device_meta_item item="touch" label={dgettext("connect", "Touch")} />
+          </div>
+        </details>
       </div>
     </div>
     """
   end
+
+  attr :item, :string, required: true
+  attr :label, :string, required: true
+
+  defp device_meta_item(assigns) do
+    ~H"""
+    <span hidden class="inline-flex min-w-0 items-center gap-retro-3" data-device-meta-item={@item}>
+      <.device_meta_icon item={@item} class="w-3.5 h-3.5 shrink-0" />
+      <span class="font-bold text-foreground">{@label}:</span>
+      <span class="min-w-0 truncate" data-device-meta-value={@item}></span>
+    </span>
+    """
+  end
+
+  attr :item, :string, required: true
+  attr :class, :string, default: nil
+
+  defp device_meta_icon(%{item: "browser"} = assigns),
+    do: ~H"<Icons.icon_browser class={@class} />"
+
+  defp device_meta_icon(%{item: "os"} = assigns),
+    do: ~H"<Icons.icon_operating_system class={@class} />"
+
+  defp device_meta_icon(%{item: "language"} = assigns),
+    do: ~H"<Icons.icon_globe class={@class} />"
+
+  defp device_meta_icon(%{item: "screen"} = assigns),
+    do: ~H"<Icons.icon_tab_display class={@class} />"
+
+  defp device_meta_icon(%{item: "timezone"} = assigns),
+    do: ~H"<Icons.icon_clock class={@class} />"
+
+  defp device_meta_icon(%{item: "color_depth"} = assigns),
+    do: ~H"<Icons.icon_palette class={@class} />"
+
+  defp device_meta_icon(%{item: "cores"} = assigns), do: ~H"<Icons.icon_server class={@class} />"
+  defp device_meta_icon(%{item: "touch"} = assigns), do: ~H"<Icons.icon_devices class={@class} />"
+  defp device_meta_icon(assigns), do: ~H"<Icons.icon_laptop class={@class} />"
 
   defp connect_taskbar(assigns) do
     ~H"""
@@ -569,7 +724,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
       <input :if={@auth_token} type="hidden" name="auth_token" value={@auth_token} />
       <input type="hidden" name="trusted_device_login" value={to_string(@trusted_device_login)} />
       <input type="hidden" name="remember_device" value={to_string(@remember_device)} />
-      <input type="hidden" name="device_label" value={@device_label} />
+      <input type="hidden" name="device_label" id="connect-device-label-input" value={@device_label} />
       <input type="hidden" name="timezone" id="connect-timezone-input" value="Etc/UTC" />
       <input type="hidden" name="client_info" id="connect-client-info-input" value="{}" />
     </form>

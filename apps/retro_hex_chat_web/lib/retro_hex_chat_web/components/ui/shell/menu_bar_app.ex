@@ -375,7 +375,7 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
       on_action={@on_action}
     />
     <.menu_item
-      icon_fn={:icon_devices}
+      icon_fn={:icon_lock}
       label={dgettext("ui", "Trusted Terminals...")}
       action="open_trusted_terminals_dialog"
       on_action={@on_action}

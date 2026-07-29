@@ -11,15 +11,20 @@ defmodule RetroHexChatWeb.Components.UI.Badge do
       <.badge>Default</.badge>
       <.badge variant="destructive">Error</.badge>
       <.badge variant="success">Online</.badge>
+      <.badge variant="success">
+        <:icon><Icons.icon_checkmark class="h-3 w-3" /></:icon>
+        Online
+      </.badge>
   """
   attr :class, :string, default: nil
 
   attr :variant, :string,
-    values: ~w(default secondary destructive outline success),
+    values: ~w(default secondary destructive outline success warning),
     default: "default",
     doc: "the badge variant style"
 
   attr :rest, :global
+  slot :icon, doc: "optional leading icon"
   slot :inner_block, required: true
 
   def badge(assigns) do
@@ -36,6 +41,12 @@ defmodule RetroHexChatWeb.Components.UI.Badge do
       }
       {@rest}
     >
+      <span
+        :if={@icon != []}
+        class="mr-1 inline-flex h-3 w-3 shrink-0 items-center justify-center"
+      >
+        {render_slot(@icon)}
+      </span>
       {render_slot(@inner_block)}
     </span>
     """
@@ -47,7 +58,8 @@ defmodule RetroHexChatWeb.Components.UI.Badge do
       "secondary" => "bg-white text-black",
       "destructive" => "bg-white text-destructive",
       "outline" => "bg-transparent text-foreground",
-      "success" => "bg-white text-success-dark"
+      "success" => "bg-white text-success-dark",
+      "warning" => "bg-white text-warning"
     }
   }
 

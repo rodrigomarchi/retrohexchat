@@ -3569,28 +3569,29 @@ msgstr "Kontakty"
 msgid "On Connect"
 msgstr "Połącz"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:204
+#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:236
 #, elixir-autogen, elixir-format
 msgid "%{count} sessions ended."
 msgstr "Zakończono %{count} sesji."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:173
+#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:205
 #, elixir-autogen, elixir-format
 msgid "%{count} trusted sessions ended."
 msgstr "Zakończono %{count} zaufanych sesji."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:190
+#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:222
 #, elixir-autogen, elixir-format
 msgid "Invalid session id."
 msgstr "Nieprawidłowy identyfikator sesji."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:119
-#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:136
+#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:124
+#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:141
+#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:168
 #, elixir-autogen, elixir-format
 msgid "Invalid terminal id."
 msgstr "Nieprawidłowy identyfikator terminala."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:183
+#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:215
 #, elixir-autogen, elixir-format
 msgid "Session ended."
 msgstr "Sesja zakończona."
@@ -3600,7 +3601,7 @@ msgstr "Sesja zakończona."
 msgid "This P2P session is still active in another window. Close that window or end this session here."
 msgstr "Ta sesja P2P jest wciąż aktywna w innym oknie. Zamknij tamto okno albo zakończ sesję tutaj."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:155
+#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:187
 #, elixir-autogen, elixir-format
 msgid "This terminal is not remembered."
 msgstr "Ten terminal nie jest zapamiętany."
@@ -3611,17 +3612,27 @@ msgstr "Ten terminal nie jest zapamiętany."
 msgid "Trusted Terminals"
 msgstr "Zaufane terminale"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:112
+#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:117
 #, elixir-autogen, elixir-format
 msgid "Trusted terminal renamed."
 msgstr "Zmieniono nazwę zaufanego terminala."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:129
+#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:134
 #, elixir-autogen, elixir-format
 msgid "Trusted terminal revoked."
 msgstr "Odwołano zaufany terminal."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:78
+#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:79
 #, elixir-autogen, elixir-format
 msgid "Trusted terminals refreshed."
 msgstr "Odświeżono zaufane terminale."
+
+#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:157
+#, elixir-autogen, elixir-format
+msgid "Auto-login disabled."
+msgstr ""
+
+#: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:156
+#, elixir-autogen, elixir-format
+msgid "Auto-login enabled."
+msgstr ""

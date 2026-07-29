@@ -403,7 +403,7 @@ msgstr "Очистить"
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:631
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:76
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:229
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:369
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:546
 #: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:78
 #, elixir-autogen, elixir-format
 msgid "Close"
@@ -770,6 +770,8 @@ msgid "Kicked from Channel"
 msgstr "Выгнали с канала"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:325
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:854
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:855
 #, elixir-autogen, elixir-format
 msgid "Label"
 msgstr "этикетка"
@@ -872,7 +874,7 @@ msgstr "Имя"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:439
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:440
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:416
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:831
 #, elixir-autogen, elixir-format
 msgid "Never"
 msgstr "Никогда"
@@ -922,7 +924,7 @@ msgstr "Прозвище"
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:200
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:277
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:354
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:61
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:69
 #, elixir-autogen, elixir-format
 msgid "Nickname:"
 msgstr "Прозвище:"
@@ -1213,7 +1215,7 @@ msgstr "Беги."
 #: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:360
 #: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:215
 #: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:235
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:218
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:256
 #, elixir-autogen, elixir-format
 msgid "Save"
 msgstr "Сохранить"
@@ -1356,6 +1358,7 @@ msgstr "Тривиальность"
 #: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:106
 #: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:132
 #: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:187
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:338
 #, elixir-autogen, elixir-format
 msgid "Type"
 msgstr "Тип"
@@ -1377,7 +1380,7 @@ msgstr "URL-адрес"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:717
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1227
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:424
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:839
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "неизвестный"
@@ -1893,7 +1896,7 @@ msgid "I'm away"
 msgstr "Я ухожу."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:246
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:66
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:81
 #, elixir-autogen, elixir-format
 msgid "Identified"
 msgstr "идентифицированный"
@@ -2122,7 +2125,7 @@ msgstr "Получить валлопы (+w)"
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_server_settings_dialog.ex:156
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_turn_dialog.ex:69
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:134
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:83
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:108
 #, elixir-autogen, elixir-format
 msgid "Refresh"
 msgstr "Обновить"
@@ -2491,6 +2494,7 @@ msgid "min 10s for repeating timers"
 msgstr "10 минут для повторных таймеров"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:319
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:869
 #, elixir-autogen, elixir-format
 msgid "no"
 msgstr "нет"
@@ -2540,6 +2544,7 @@ msgstr "рвота"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:317
 #: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:318
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:868
 #, elixir-autogen, elixir-format
 msgid "yes"
 msgstr "да"
@@ -2738,22 +2743,17 @@ msgstr "Списки доступа"
 msgid "%{count} earlier lines were dropped"
 msgstr "Отброшено предыдущих строк: %{count}"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:227
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:183
 #, elixir-autogen, elixir-format
 msgid "Active Sessions"
 msgstr "Активные сеансы"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:198
-#, elixir-autogen, elixir-format
-msgid "Active: %{count}"
-msgstr "Активных: %{count}"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:442
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:889
 #, elixir-autogen, elixir-format
 msgid "All terminals revoked"
 msgstr "Все терминалы отозваны"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:348
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:526
 #, elixir-autogen, elixir-format
 msgid "Could not load more activity."
 msgstr "Не удалось загрузить больше активности."
@@ -2763,53 +2763,42 @@ msgstr "Не удалось загрузить больше активности
 msgid "Could not load more events."
 msgstr "Не удалось загрузить больше событий."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:297
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:427
 #, elixir-autogen, elixir-format
 msgid "Could not load more sessions."
 msgstr "Не удалось загрузить больше сеансов."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:155
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:260
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:302
 #, elixir-autogen, elixir-format
 msgid "Current"
 msgstr "Текущий"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:280
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:410
 #, elixir-autogen, elixir-format
 msgid "End"
 msgstr "Завершить"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:95
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:120
 #, elixir-autogen, elixir-format
 msgid "End Others"
 msgstr "Завершить остальные"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:188
-#, elixir-autogen, elixir-format
-msgid "First: %{time}"
-msgstr "Первый: %{time}"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:181
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:234
 #, elixir-autogen, elixir-format
 msgid "Forget"
 msgstr "Забыть"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:124
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:149
 #, elixir-autogen, elixir-format
 msgid "Identify with NickServ to manage trusted terminals."
 msgstr "Определитесь в NickServ, чтобы управлять доверенными терминалами."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:193
-#, elixir-autogen, elixir-format
-msgid "Last: %{time}"
-msgstr "Последний: %{time}"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:437
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:877
 #, elixir-autogen, elixir-format
 msgid "Nick remembered"
 msgstr "Ник запомнен"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:63
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:78
 #, elixir-autogen, elixir-format
 msgid "NickServ:"
 msgstr "NickServ:"
@@ -2829,7 +2818,7 @@ msgstr "Нет активных каналов"
 msgid "No active server bans"
 msgstr "Нет активных блокировок сервера"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:231
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:272
 #, elixir-autogen, elixir-format
 msgid "No active sessions."
 msgstr "Нет активных сеансов."
@@ -2844,12 +2833,12 @@ msgstr "Записи журнала аудита не найдены"
 msgid "No server settings configured"
 msgstr "Настройки сервера не заданы"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:309
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:442
 #, elixir-autogen, elixir-format
 msgid "No terminal activity yet."
 msgstr "Активности терминала пока нет."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:138
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:202
 #, elixir-autogen, elixir-format
 msgid "No trusted terminals for this nickname."
 msgstr "Для этого ника нет доверенных терминалов."
@@ -2859,47 +2848,47 @@ msgstr "Для этого ника нет доверенных терминал�
 msgid "No users found"
 msgstr "Пользователи не найдены"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:67
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:82
 #, elixir-autogen, elixir-format
 msgid "Not identified"
 msgstr "Не опознан"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:409
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:779
 #, elixir-autogen, elixir-format
 msgid "Not remembered"
 msgstr "Не запомнен"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:306
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:194
 #, elixir-autogen, elixir-format
 msgid "Recent Activity"
 msgstr "Недавняя активность"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:410
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:780
 #, elixir-autogen, elixir-format
 msgid "Remembered"
 msgstr "Запомнен"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:182
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:235
 #, elixir-autogen, elixir-format
 msgid "Revoke"
 msgstr "Отозвать"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:107
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:132
 #, elixir-autogen, elixir-format
 msgid "Revoke All"
 msgstr "Отозвать все"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:444
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:891
 #, elixir-autogen, elixir-format
 msgid "Session ended"
 msgstr "Сеанс завершён"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:443
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:890
 #, elixir-autogen, elixir-format
 msgid "Session started"
 msgstr "Сеанс начат"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:445
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:892
 #, elixir-autogen, elixir-format
 msgid "Sessions ended"
 msgstr "Сеансы завершены"
@@ -2909,69 +2898,261 @@ msgstr "Сеансы завершены"
 msgid "Shared links will appear here."
 msgstr "Здесь появятся ссылки из чата."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:446
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:893
 #, elixir-autogen, elixir-format
 msgid "Terminal activity"
 msgstr "Активность терминала"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:436
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:876
 #, elixir-autogen, elixir-format
 msgid "Terminal created"
 msgstr "Терминал создан"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:214
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:252
 #, elixir-autogen, elixir-format
 msgid "Terminal label"
 msgstr "Название терминала"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:439
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:886
 #, elixir-autogen, elixir-format
 msgid "Terminal renamed"
 msgstr "Терминал переименован"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:440
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:887
 #, elixir-autogen, elixir-format
 msgid "Terminal revoked"
 msgstr "Терминал отозван"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:441
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:888
 #, elixir-autogen, elixir-format
 msgid "Terminal signed out"
 msgstr "Терминал вышел из системы"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:69
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:91
 #, elixir-autogen, elixir-format
 msgid "This terminal:"
 msgstr "Этот терминал:"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:134
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:172
 #, elixir-autogen, elixir-format
 msgid "Trusted Terminals"
 msgstr "Доверенные терминалы"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:438
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:878
 #, elixir-autogen, elixir-format
 msgid "Trusted login"
 msgstr "Доверенный вход"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:160
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:265
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:332
 #, elixir-autogen, elixir-format
 msgid "Unknown OS"
 msgstr "Неизвестная ОС"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:159
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:264
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:327
 #, elixir-autogen, elixir-format
 msgid "Unknown browser"
 msgstr "Неизвестный браузер"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:161
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:352
 #, elixir-autogen, elixir-format
 msgid "Unknown screen"
 msgstr "Неизвестный экран"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:162
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:357
 #, elixir-autogen, elixir-format
 msgid "Unknown timezone"
 msgstr "Неизвестный часовой пояс"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:793
+#, elixir-autogen, elixir-format
+msgid "%{bits}-bit"
+msgstr ""
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:799
+#, elixir-autogen, elixir-format, fuzzy
+msgid "%{count} cores"
+msgstr "%{count} пункт"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:495
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Action"
+msgstr "Меры"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:481
+#, elixir-autogen, elixir-format
+msgid "Actor"
+msgstr ""
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:884
+#, elixir-autogen, elixir-format
+msgid "Auto-login disabled"
+msgstr ""
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:881
+#, elixir-autogen, elixir-format
+msgid "Auto-login enabled"
+msgstr ""
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:326
+#, elixir-autogen, elixir-format
+msgid "Browser"
+msgstr ""
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:372
+#, elixir-autogen, elixir-format
+msgid "CPU"
+msgstr ""
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:384
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Connected: %{time}"
+msgstr "Подключено"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:850
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:851
+#, elixir-autogen, elixir-format
+msgid "Count"
+msgstr ""
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:363
+#, elixir-autogen, elixir-format
+msgid "Depth"
+msgstr ""
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:786
+#, elixir-autogen, elixir-format
+msgid "Desktop"
+msgstr ""
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:469
+#, elixir-autogen, elixir-format
+msgid "Event ID: #%{id}"
+msgstr ""
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:852
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:853
+#, elixir-autogen, elixir-format
+msgid "Grant ID"
+msgstr ""
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:346
+#, elixir-autogen, elixir-format
+msgid "Language"
+msgstr ""
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:482
+#, elixir-autogen, elixir-format
+msgid "No actor"
+msgstr ""
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:318
+#, elixir-autogen, elixir-format
+msgid "No ref"
+msgstr ""
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:491
+#, elixir-autogen, elixir-format, fuzzy
+msgid "No terminal"
+msgstr "Активности терминала пока нет."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:331
+#, elixir-autogen, elixir-format
+msgid "OS"
+msgstr ""
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:314
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Ref"
+msgstr "Обновить"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:351
+#, elixir-autogen, elixir-format
+msgid "Screen"
+msgstr ""
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:392
+#, elixir-autogen, elixir-format
+msgid "Seen: %{time}"
+msgstr ""
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:856
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:857
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Session ID"
+msgstr "Сеанс завершён"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:308
+#, elixir-autogen, elixir-format
+msgid "Session ID: #%{id}"
+msgstr ""
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:356
+#, elixir-autogen, elixir-format
+msgid "TZ"
+msgstr ""
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:490
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Terminal"
+msgstr "Название терминала"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:818
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:821
+#, elixir-autogen, elixir-format
+msgid "Terminal ID: #%{id}"
+msgstr ""
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:817
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Terminal ID: guest"
+msgstr "Терминал вышел из системы"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:820
+#, elixir-autogen, elixir-format
+msgid "Terminal ID: none"
+msgstr ""
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:474
+#, elixir-autogen, elixir-format
+msgid "Time: %{time}"
+msgstr ""
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:787
+#, elixir-autogen, elixir-format
+msgid "Touch"
+msgstr ""
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:379
+#, elixir-autogen, elixir-format
+msgid "Touch unknown"
+msgstr ""
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:805
+#, elixir-autogen, elixir-format
+msgid "Touch: No"
+msgstr ""
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:804
+#, elixir-autogen, elixir-format
+msgid "Touch: Yes"
+msgstr ""
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:374
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Unknown CPU"
+msgstr "неизвестный"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:367
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Unknown depth"
+msgstr "неизвестный"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:347
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Unknown language"
+msgstr "неизвестный"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:342
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Unknown type"
+msgstr "неизвестный"

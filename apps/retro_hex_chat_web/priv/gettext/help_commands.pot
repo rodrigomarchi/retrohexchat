@@ -704,7 +704,7 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_cs.html.heex:78
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:109
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:69
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:92
 #, elixir-autogen, elixir-format
 msgid "/cs"
@@ -1020,7 +1020,7 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_away.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_nick.html.heex:13
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:70
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "/nick"
@@ -1108,11 +1108,6 @@ msgstr ""
 msgid "/ns register"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:47
-#, elixir-autogen, elixir-format
-msgid "/ns register mySecurePassword /ns identify mySecurePassword /ns info Alice /ns ghost MyNick mySecurePassword /ns drop mySecurePassword"
-msgstr ""
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_transfer.html.heex:44
@@ -1161,7 +1156,7 @@ msgid "/part [#channel] [message]"
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:45
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:52
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:71
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:33
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:101
 #, elixir-autogen, elixir-format
@@ -1754,7 +1749,7 @@ msgstr ""
 msgid "Common action types include:"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:82
 #, elixir-autogen, elixir-format
 msgid "Connect Authentication"
 msgstr ""
@@ -1883,7 +1878,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice.html.heex:47
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:24
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notify.html.heex:32
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:46
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:22
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:36
@@ -1918,7 +1913,7 @@ msgstr ""
 msgid "For +i channels, you must be a channel operator"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:43
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "Ghost requires the registered nickname's password"
 msgstr ""
@@ -2279,7 +2274,7 @@ msgstr ""
 msgid "Parameters"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "Password is required for register, identify, and drop"
 msgstr ""
@@ -2498,7 +2493,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_nick.html.heex:18
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notify.html.heex:27
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:40
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:56
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:21
@@ -2571,7 +2566,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice.html.heex:49
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notify.html.heex:34
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:29
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:27
@@ -2994,7 +2989,7 @@ msgstr ""
 msgid "You must be in the channel to invite someone to it"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "You must be using the nickname you want to register"
 msgstr ""
@@ -4196,7 +4191,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_away.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_bio.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_nick.html.heex:43
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:55
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:74
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_umode.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "Account Dialog"
@@ -4285,7 +4280,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_away.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_bio.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_nick.html.heex:47
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:78
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_umode.html.heex:61
 #, elixir-autogen, elixir-format
 msgid "Identity & Presence"
@@ -4516,4 +4511,54 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "— The user to open a P2P Session with."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:66
+#, elixir-autogen, elixir-format
+msgid "/ns register mySecurePassword /ns identify mySecurePassword /ns info Alice /ns devices /ns sessions /ns revoke-device 12 /ns kill-session 44 /ns ghost MyNick mySecurePassword /ns drop mySecurePassword"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:61
+#, elixir-autogen, elixir-format
+msgid "Trusted terminal management requires NickServ identification"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "devices"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:52
+#, elixir-autogen, elixir-format
+msgid "kill-session <id|all>"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:48
+#, elixir-autogen, elixir-format
+msgid "revoke-device <id|all>"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "sessions"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:54
+#, elixir-autogen, elixir-format
+msgid "— End active sessions without changing trusted terminal status."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:46
+#, elixir-autogen, elixir-format
+msgid "— List active sessions using your nickname."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "— List trusted terminals remembered for your nickname."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:50
+#, elixir-autogen, elixir-format
+msgid "— Revoke trusted terminal login and end its active sessions."
 msgstr ""
