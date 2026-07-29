@@ -131,7 +131,9 @@ test.describe("chat desktop on a phone (stacked single-window)", () => {
   }) => {
     await signedInUser(page, "mctrl");
 
-    const conversationsButton = page.getByTestId("conversation-toolbar-conversations");
+    const conversationsButton = page.getByTestId(
+      "conversation-toolbar-conversations",
+    );
     const nicklistButton = page.getByTestId("conversation-toolbar-nicklist");
     const searchButton = page.getByTestId("conversation-toolbar-search");
     const conversations = page.getByTestId("conversations");

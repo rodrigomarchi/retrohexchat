@@ -243,7 +243,9 @@ test.describe("mobile chat message flow", () => {
       await bob.chat.expectTabVisible(channel);
       await alice.chat.switchToTab(channel);
 
-      await alice.chat.page.getByTestId("conversation-toolbar-nicklist").click();
+      await alice.chat.page
+        .getByTestId("conversation-toolbar-nicklist")
+        .click();
       await expect(alice.chat.nicklist).toBeVisible();
       await alice.chat.expectNickInList(bob.nick);
       await openNicklistActionsByLongPress(alice.chat, bob.nick);
@@ -322,7 +324,9 @@ test.describe("mobile chat message flow", () => {
       await alice.chat.expectTabVisible(channelB);
       await alice.chat.switchToTab(channelA);
 
-      await alice.chat.page.getByTestId("conversation-toolbar-nicklist").click();
+      await alice.chat.page
+        .getByTestId("conversation-toolbar-nicklist")
+        .click();
       await expect(alice.chat.nicklist).toBeVisible();
       await alice.chat.expectNickInList(bob.nick);
       await openNicklistActionsByLongPress(alice.chat, bob.nick);
@@ -332,7 +336,9 @@ test.describe("mobile chat message flow", () => {
       await alice.chat.page.keyboard.press("Escape");
       await expect(alice.chat.nicklistContextMenu).toBeHidden();
 
-      await alice.chat.page.getByTestId("conversation-toolbar-conversations").click();
+      await alice.chat.page
+        .getByTestId("conversation-toolbar-conversations")
+        .click();
       await expect(alice.chat.channelConversationItem(channelB)).toBeVisible();
       await openConversationActionsByLongPress(alice.chat, channelB);
       await expect(alice.chat.conversationsMuteMenuItem).toContainText(
