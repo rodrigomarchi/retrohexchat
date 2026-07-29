@@ -63,7 +63,7 @@ defmodule RetroHexChatWeb.Components.UI.ConversationToolbarActions do
 
       <span
         :if={@show_channel_context || @show_pm_context}
-        class="mx-[1px] h-6 w-[1px] shrink-0 bg-gray-500"
+        class="conversation-toolbar-separator"
         aria-hidden="true"
         data-testid="conversation-toolbar-context-separator"
       />
@@ -104,7 +104,7 @@ defmodule RetroHexChatWeb.Components.UI.ConversationToolbarActions do
     <button
       type="button"
       class={[
-        "conversation-toolbar-button bg-surface inline-flex h-6 w-6 shrink-0 items-center justify-center p-0",
+        "conversation-toolbar-button bg-surface inline-flex shrink-0 items-center justify-center p-0",
         "focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-black",
         "active:shadow-retro-sunken",
         if(@active, do: "shadow-retro-sunken bg-hover-bg", else: "shadow-retro-raised")

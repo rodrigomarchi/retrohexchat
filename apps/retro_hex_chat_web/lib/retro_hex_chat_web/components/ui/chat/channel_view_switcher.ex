@@ -64,7 +64,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelViewSwitcher do
       phx-click="switch_channel_view"
       phx-value-view={Atom.to_string(@view)}
       class={[
-        "conversation-toolbar-button flex h-6 w-6 shrink-0 items-center justify-center p-0 shadow-retro-raised bg-surface text-xs",
+        "conversation-toolbar-button flex shrink-0 items-center justify-center p-0 shadow-retro-raised bg-surface text-xs",
         "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground",
         @active && "bg-canvas font-bold shadow-retro-sunken"
       ]}

@@ -45,6 +45,39 @@
 .window-title-meta svg {
   filter: brightness(0) invert(1);
 }
+
+/* Conversation toolbar controls keep one hit target and glyph scale across
+   desktop and stacked layouts. The HEEx components only describe semantics. */
+[data-testid="conversation-toolbar"] {
+  min-height: 40px;
+  scrollbar-width: thin;
+}
+
+.conversation-toolbar-button {
+  width: 36px;
+  min-width: 36px;
+  height: 36px;
+  min-height: 36px;
+  line-height: 1;
+}
+
+.conversation-toolbar-button > svg {
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+}
+
+.conversation-toolbar-entry {
+  height: 36px;
+}
+
+.conversation-toolbar-separator {
+  width: 1px;
+  height: 32px;
+  flex-shrink: 0;
+  margin-inline: 2px;
+  background: #808080;
+}
 /* Win98 diagonal resize grip in the bottom-right corner. */
 .desktop-window__resize--grip {
   background-image: linear-gradient(
@@ -263,18 +296,8 @@
   z-index: 50;
 }
 
-.desktop--stacked [data-testid="conversation-toolbar"] {
-  min-height: var(--rhc-chat-toolbar-height);
-  scrollbar-width: thin;
-}
-
 .desktop--stacked [data-testid="topic-bar"] {
   min-height: var(--rhc-chat-topicbar-height);
-}
-
-.desktop--stacked .conversation-toolbar-button {
-  min-width: 36px;
-  min-height: 36px;
 }
 
 .rhc-keyboard-open .desktop--stacked .desktop-taskbar,

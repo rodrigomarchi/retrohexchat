@@ -23,12 +23,12 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
     assigns = assign_summary(assigns)
 
     ~H"""
-    <div class={classes(["flex h-6 items-center gap-px", @class])}>
+    <div class={classes(["conversation-toolbar-entry flex items-center gap-px", @class])}>
       <button
         type="button"
         phx-click={@on_open}
         class={[
-          "conversation-toolbar-button flex h-6 w-6 shrink-0 items-center justify-center p-0 shadow-retro-raised bg-surface text-xs",
+          "conversation-toolbar-button flex shrink-0 items-center justify-center p-0 shadow-retro-raised bg-surface text-xs",
           "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground",
           @current && "bg-canvas font-bold shadow-retro-sunken",
           active_state_class(@active, @state),
@@ -57,10 +57,10 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
         />
       </button>
 
-      <details :if={@active} class="relative h-6">
+      <details :if={@active} class="conversation-toolbar-entry relative">
         <summary
           class={[
-            "conversation-toolbar-button flex h-6 w-6 cursor-pointer list-none items-center justify-center shadow-retro-raised bg-surface text-primary",
+            "conversation-toolbar-button flex cursor-pointer list-none items-center justify-center shadow-retro-raised bg-surface text-primary",
             "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
           ]}
           aria-label={dgettext("group_call", "Conference summary")}

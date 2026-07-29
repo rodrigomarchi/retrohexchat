@@ -28,7 +28,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
     ~H"""
     <div
       :if={@active}
-      class={classes(["flex h-6 items-center gap-px", @class])}
+      class={classes(["conversation-toolbar-entry flex items-center gap-px", @class])}
       data-testid="p2p-peer-entry-wrap"
     >
       <button
@@ -37,7 +37,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
         phx-value-peer={@primary_peer}
         phx-value-token={@primary_token}
         class={[
-          "conversation-toolbar-button relative flex h-6 w-6 shrink-0 items-center justify-center p-0 shadow-retro-raised bg-surface text-xs",
+          "conversation-toolbar-button relative flex shrink-0 items-center justify-center p-0 shadow-retro-raised bg-surface text-xs",
           "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground",
           @current && "bg-canvas font-bold shadow-retro-sunken",
           status_class(@status)
@@ -68,7 +68,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
         phx-click="p2p_accept_invite"
         phx-value-token={@token}
         disabled={is_nil(@token)}
-        class="conversation-toolbar-button flex h-6 w-6 shrink-0 items-center justify-center p-0 shadow-retro-raised bg-surface text-primary focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground disabled:opacity-50"
+        class="conversation-toolbar-button flex shrink-0 items-center justify-center p-0 shadow-retro-raised bg-surface text-primary focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground disabled:opacity-50"
         title={dgettext("p2p", "Accept P2P request")}
         aria-label={dgettext("p2p", "Accept P2P request")}
         data-testid="p2p-peer-join"
@@ -82,7 +82,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
         phx-click="p2p_decline_invite"
         phx-value-token={@token}
         disabled={is_nil(@token)}
-        class="conversation-toolbar-button flex h-6 w-6 items-center justify-center shadow-retro-raised bg-surface text-destructive focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground disabled:opacity-50"
+        class="conversation-toolbar-button flex items-center justify-center shadow-retro-raised bg-surface text-destructive focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground disabled:opacity-50"
         title={dgettext("p2p", "Decline P2P request")}
         aria-label={dgettext("p2p", "Decline P2P request")}
         data-testid="p2p-peer-decline"
@@ -90,10 +90,10 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
         <Icons.icon_reject class="h-3.5 w-3.5" />
       </button>
 
-      <details class="relative h-6">
+      <details class="conversation-toolbar-entry relative">
         <summary
           class={[
-            "conversation-toolbar-button flex h-6 w-6 cursor-pointer list-none items-center justify-center shadow-retro-raised bg-surface text-primary",
+            "conversation-toolbar-button flex cursor-pointer list-none items-center justify-center shadow-retro-raised bg-surface text-primary",
             "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
           ]}
           aria-label={dgettext("p2p", "P2P session summary")}
