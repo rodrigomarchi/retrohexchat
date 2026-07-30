@@ -10,70 +10,20 @@ defmodule RetroHexChatWeb.Icons.People do
   @spec icon_community(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_community(assigns) do
     ~H"""
-    <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
-      <!-- Shadow -->
-      <path
-        d="M4 18 C4 14 7 12 10 12 C13 12 16 14 16 18 M16 18 C16 14 19 12 22 12 C25 12 28 14 28 18 M10 26 C10 22 13 20 16 20 C19 20 22 22 22 26"
-        fill="none"
-        stroke="#000"
-        stroke-width="4"
-        stroke-linecap="round"
-        transform="translate(1,1)"
-      />
-      
-    <!-- Back figure (Navy) -->
-      <circle cx="10" cy="8" r="4" fill="#000080" stroke="#000" stroke-width="1.5" />
-      <path
-        d="M4 18 C4 14 7 12 10 12 C13 12 16 14 16 18"
-        fill="#000080"
-        stroke="#000"
-        stroke-width="1.5"
-        stroke-linecap="round"
-      />
-      <path
-        d="M5 18 C5 15 7 13 10 13"
-        fill="none"
-        stroke="#fff"
-        stroke-width="1"
-        opacity="0.6"
-        stroke-linecap="round"
-      />
-      
-    <!-- Middle figure (Teal) -->
-      <circle cx="22" cy="8" r="4" fill="#008080" stroke="#000" stroke-width="1.5" />
-      <path
-        d="M16 18 C16 14 19 12 22 12 C25 12 28 14 28 18"
-        fill="#008080"
-        stroke="#000"
-        stroke-width="1.5"
-        stroke-linecap="round"
-      />
-      <path
-        d="M17 18 C17 15 19 13 22 13"
-        fill="none"
-        stroke="#fff"
-        stroke-width="1"
-        opacity="0.6"
-        stroke-linecap="round"
-      />
-      
-    <!-- Front figure (Gray/Silver) -->
-      <circle cx="16" cy="16" r="4" fill="#C0C0C0" stroke="#000" stroke-width="1.5" />
-      <path
-        d="M10 26 C10 22 13 20 16 20 C19 20 22 22 22 26"
-        fill="#C0C0C0"
-        stroke="#000"
-        stroke-width="1.5"
-        stroke-linecap="round"
-      />
-      <path
-        d="M11 26 C11 23 13 21 16 21"
-        fill="none"
-        stroke="#fff"
-        stroke-width="1.5"
-        opacity="0.8"
-        stroke-linecap="round"
-      />
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <path d="M2 3h4v4H2V3z M0 13v-2l2-2h4l2 2v2H0z" fill="#000" />
+      <rect x="3" y="4" width="2" height="2" fill="#000080" />
+      <path d="M1 12v-1l2-1h2l2 1v1H1z" fill="#000080" />
+
+      <path d="M10 3h4v4h-4V3z M8 13v-2l2-2h4l2 2v2H8z" fill="#000" />
+      <rect x="11" y="4" width="2" height="2" fill="#008080" />
+      <path d="M9 12v-1l2-1h2l2 1v1H9z" fill="#008080" />
+
+      <path d="M6 1h4v4H6V1z M3 15v-3l3-2h4l3 2v3H3z" fill="#000" />
+      <rect x="7" y="2" width="2" height="2" fill="#C0C0C0" />
+      <path d="M4 14v-1l3-2h2l3 2v1H4z" fill="#C0C0C0" />
+      <rect x="7" y="2" width="2" height="1" fill="#FFFFFF" />
+      <rect x="5" y="13" width="5" height="1" fill="#FFFFFF" />
     </svg>
     """
   end

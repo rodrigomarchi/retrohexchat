@@ -419,13 +419,15 @@ defmodule RetroHexChatWeb.Icons.Tools do
   def icon_btn_find(assigns) do
     ~H"""
     <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
-      <path
-        d="M4 2h6v1h2v2h1v6h-1v2H9v-1H5v-1H3V5h1V3h2V2z M5 4h4v6H5V4z"
-        fill-rule="evenodd"
-        fill="#000080"
-      />
-      <path d="M10 10h2v2h2v3h-3v-2h-2v-2h1z" fill="#8B4513" />
-      <rect x="6" y="5" width="2" height="2" fill="#000080" />
+      <rect x="3" y="2" width="8" height="8" fill="#000" />
+      <rect x="4" y="3" width="6" height="6" fill="#FFFFFF" />
+      <rect x="5" y="4" width="4" height="4" fill="#87CEEB" />
+      <rect x="5" y="4" width="3" height="1" fill="#FFFFFF" />
+      <rect x="4" y="3" width="1" height="6" fill="#000080" />
+      <rect x="4" y="3" width="6" height="1" fill="#000080" />
+
+      <path d="M9 9h2v1h1v1h1v1h1v3h-3v-1h-1v-1H9V9z" fill="#000" />
+      <path d="M10 10h1v1h1v1h1v2h-1v-1h-1v-1h-1v-1h-1v-1z" fill="#8B4513" />
     </svg>
     """
   end
