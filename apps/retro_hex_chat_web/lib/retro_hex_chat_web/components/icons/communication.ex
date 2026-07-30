@@ -207,25 +207,28 @@ defmodule RetroHexChatWeb.Icons.Communication do
   @spec icon_protocol_p2p_compact(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_protocol_p2p_compact(assigns) do
     ~H"""
-    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
-      <rect x="2" y="4" width="5" height="8" fill="#000" />
-      <rect x="10" y="4" width="5" height="8" fill="#000" />
-      <rect x="1" y="3" width="5" height="8" fill="#C0C0C0" />
-      <rect x="11" y="3" width="5" height="8" fill="#C0C0C0" />
-      <rect x="2" y="4" width="3" height="1" fill="#000080" />
-      <rect x="12" y="4" width="3" height="1" fill="#000080" />
-      <rect x="2" y="6" width="3" height="3" fill="#008080" />
-      <rect x="12" y="6" width="3" height="3" fill="#008080" />
-      <rect x="3" y="12" width="2" height="1" fill="#000" />
-      <rect x="12" y="12" width="2" height="1" fill="#000" />
+    <svg class={@class} viewBox="0 0 48 48" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x=".5" y=".5" width="47" height="47" fill="#dfdfdf" stroke="#000000" stroke-width="1" />
+      <path d="M1.5 1.5 H46.5 M1.5 1.5 V46.5" stroke="#ffffff" stroke-width="1" />
+      <path d="M1.5 46.5 H46.5 M46.5 1.5 V46.5" stroke="#808080" stroke-width="1" />
 
-      <rect x="6" y="6" width="5" height="2" fill="#000" />
-      <rect x="6" y="6" width="4" height="1" fill="#00FF00" />
-      <path d="M9 4h1v1h1v2h-1v1H9V7h1V5H9z" fill="#008000" />
+      <path d="M15 18 H33" stroke="#000000" stroke-width="5" />
+      <path d="M33 31 H15" stroke="#000000" stroke-width="5" />
+      <path d="M15 18 H33" stroke="#008000" stroke-width="3" />
+      <path d="M33 31 H15" stroke="#806000" stroke-width="3" />
+      <path d="M30 13 L39 18 L30 23 Z" fill="#00a000" stroke="#000000" stroke-width="1.5" />
+      <path d="M18 26 L9 31 L18 36 Z" fill="#ffd700" stroke="#000000" stroke-width="1.5" />
 
-      <rect x="6" y="9" width="5" height="2" fill="#000" />
-      <rect x="7" y="10" width="4" height="1" fill="#FFD700" />
-      <path d="M7 8h1v1H7v2h1v1H7v-1H6V9h1z" fill="#806000" />
+      <rect x="20" y="15" width="5" height="5" fill="#ffd700" stroke="#000000" stroke-width="1" />
+      <rect x="23" y="28" width="5" height="5" fill="#ffffff" stroke="#000000" stroke-width="1" />
+      <rect x="3" y="14" width="13" height="21" fill="#000000" transform="translate(1 1)" />
+      <rect x="32" y="14" width="13" height="21" fill="#000000" transform="translate(1 1)" />
+      <rect x="3" y="14" width="13" height="21" fill="#c0c0c0" stroke="#000000" stroke-width="1.5" />
+      <rect x="32" y="14" width="13" height="21" fill="#c0c0c0" stroke="#000000" stroke-width="1.5" />
+      <rect x="5" y="16" width="9" height="3" fill="#000080" />
+      <rect x="34" y="16" width="9" height="3" fill="#000080" />
+      <rect x="5" y="21" width="9" height="10" fill="#008080" stroke="#000000" stroke-width="1" />
+      <rect x="34" y="21" width="9" height="10" fill="#008080" stroke="#000000" stroke-width="1" />
     </svg>
     """
   end
@@ -235,32 +238,51 @@ defmodule RetroHexChatWeb.Icons.Communication do
   @spec icon_protocol_conference_compact(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_protocol_conference_compact(assigns) do
     ~H"""
-    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
-      <rect x="2" y="5" width="5" height="5" fill="#000" />
-      <rect x="11" y="1" width="5" height="5" fill="#000" />
-      <rect x="11" y="10" width="5" height="5" fill="#000" />
-      <rect x="1" y="4" width="5" height="5" fill="#C0C0C0" />
-      <rect x="10" y="0" width="5" height="5" fill="#C0C0C0" />
-      <rect x="10" y="9" width="5" height="5" fill="#C0C0C0" />
-      <rect x="2" y="5" width="3" height="1" fill="#000080" />
-      <rect x="11" y="1" width="3" height="1" fill="#000080" />
-      <rect x="11" y="10" width="3" height="1" fill="#000080" />
-      <rect x="2" y="7" width="3" height="1" fill="#008080" />
-      <rect x="11" y="3" width="3" height="1" fill="#008080" />
-      <rect x="11" y="12" width="3" height="1" fill="#008080" />
+    <svg class={@class} viewBox="0 0 48 48" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x=".5" y=".5" width="47" height="47" fill="#dfdfdf" stroke="#000000" stroke-width="1" />
+      <path d="M1.5 1.5 H46.5 M1.5 1.5 V46.5" stroke="#ffffff" stroke-width="1" />
+      <path d="M1.5 46.5 H46.5 M46.5 1.5 V46.5" stroke="#808080" stroke-width="1" />
 
-      <rect x="7" y="5" width="4" height="6" fill="#000" />
-      <rect x="6" y="4" width="4" height="6" fill="#C0C0C0" />
-      <rect x="7" y="5" width="2" height="1" fill="#008000" />
-      <rect x="7" y="7" width="2" height="1" fill="#FFD700" />
-      <rect x="7" y="9" width="2" height="1" fill="#808080" />
+      <g stroke="#000000" stroke-width="5" stroke-linecap="square">
+        <path d="M15 19 H21" />
+        <path d="M21 31 H15" />
+        <path d="M34 13 L27 20" />
+        <path d="M28 27 L35 20" />
+        <path d="M34 36 L27 29" />
+        <path d="M28 24 L35 31" />
+      </g>
+      <g stroke="#008000" stroke-width="3" stroke-linecap="square">
+        <path d="M15 19 H21" />
+        <path d="M34 13 L27 20" />
+        <path d="M34 36 L27 29" />
+      </g>
+      <g stroke="#806000" stroke-width="3" stroke-linecap="square">
+        <path d="M21 31 H15" />
+        <path d="M28 27 L35 20" />
+        <path d="M28 24 L35 31" />
+      </g>
 
-      <rect x="5" y="6" width="2" height="2" fill="#000" />
-      <rect x="5" y="6" width="1" height="1" fill="#00FF00" />
-      <rect x="9" y="3" width="2" height="2" fill="#000" />
-      <rect x="9" y="4" width="2" height="1" fill="#00FF00" />
-      <rect x="9" y="10" width="2" height="2" fill="#000" />
-      <rect x="9" y="10" width="2" height="1" fill="#FFD700" />
+      <path d="M19 15 L25 19 L19 23 Z" fill="#00a000" stroke="#000000" stroke-width="1" />
+      <path d="M17 27 L11 31 L17 35 Z" fill="#ffd700" stroke="#000000" stroke-width="1" />
+      <rect x="3" y="15" width="13" height="20" fill="#000000" transform="translate(1 1)" />
+      <rect x="3" y="15" width="13" height="20" fill="#c0c0c0" stroke="#000000" stroke-width="1.5" />
+      <rect x="5" y="17" width="9" height="3" fill="#000080" />
+      <rect x="5" y="22" width="9" height="9" fill="#008080" stroke="#000000" stroke-width="1" />
+
+      <rect x="20" y="17" width="9" height="18" fill="#000000" transform="translate(1 1)" />
+      <rect x="20" y="17" width="9" height="18" fill="#c0c0c0" stroke="#000000" stroke-width="1.5" />
+      <path d="M21 18 H28 M21 18 V34" stroke="#ffffff" stroke-width="1" />
+      <rect x="22" y="21" width="5" height="3" fill="#008000" stroke="#000000" stroke-width="1" />
+      <rect x="22" y="28" width="5" height="3" fill="#ffd700" stroke="#000000" stroke-width="1" />
+
+      <rect x="33" y="5" width="12" height="16" fill="#000000" transform="translate(1 1)" />
+      <rect x="33" y="28" width="12" height="16" fill="#000000" transform="translate(1 1)" />
+      <rect x="33" y="5" width="12" height="16" fill="#c0c0c0" stroke="#000000" stroke-width="1.5" />
+      <rect x="33" y="28" width="12" height="16" fill="#c0c0c0" stroke="#000000" stroke-width="1.5" />
+      <rect x="35" y="7" width="8" height="3" fill="#000080" />
+      <rect x="35" y="30" width="8" height="3" fill="#000080" />
+      <rect x="35" y="12" width="8" height="5" fill="#008080" stroke="#000000" stroke-width="1" />
+      <rect x="35" y="35" width="8" height="5" fill="#008080" stroke="#000000" stroke-width="1" />
     </svg>
     """
   end
@@ -270,16 +292,44 @@ defmodule RetroHexChatWeb.Icons.Communication do
   @spec icon_chat(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_chat(assigns) do
     ~H"""
-    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
-      <path d="M2 2h9v7H8v2H7v1H6V9H2V2z" fill="#000" />
-      <path d="M3 3h7v5H7v2H6V8H3V3z" fill="#000080" />
-      <rect x="4" y="4" width="5" height="1" fill="#FFFFFF" />
-      <rect x="4" y="6" width="3" height="1" fill="#FFFFFF" />
-
-      <path d="M5 6h9v7h-4v1H9v1H8v-2H5V6z" fill="#000" />
-      <path d="M6 7h7v5H9v1H8v-1H6V7z" fill="#FFFFFF" />
-      <rect x="8" y="8" width="4" height="1" fill="#000080" />
-      <rect x="8" y="10" width="3" height="1" fill="#000080" />
+    <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
+      <!-- Shadow Back Bubble -->
+      <path
+        d="M4 4 h 18 v 12 h -8 l -6 6 v -6 h -4 z"
+        fill="#000"
+        transform="translate(1,1)"
+        stroke-linejoin="round"
+      />
+      <!-- Back Bubble (Navy) -->
+      <path
+        d="M4 4 h 18 v 12 h -8 l -6 6 v -6 h -4 z"
+        fill="#000080"
+        stroke="#000"
+        stroke-width="1.5"
+        stroke-linejoin="round"
+      />
+      <path d="M5 5 h 16" stroke="#fff" stroke-width="1.5" opacity="0.4" stroke-linecap="round" />
+      <path d="M5 5 v 10" stroke="#fff" stroke-width="1.5" opacity="0.4" stroke-linecap="round" />
+      
+    <!-- Shadow Front Bubble -->
+      <path
+        d="M8 12 h 18 v 12 h -8 l -4 6 c -1 -1 -1 -3 -1 -6 h -5 z"
+        fill="#000"
+        transform="translate(1,1)"
+        stroke-linejoin="round"
+      />
+      <!-- Front Bubble (White) -->
+      <path
+        d="M8 12 h 18 v 12 h -8 l -4 6 c -1 -1 -1 -3 -1 -6 h -5 z"
+        fill="#fff"
+        stroke="#000"
+        stroke-width="1.5"
+        stroke-linejoin="round"
+      />
+      
+    <!-- Text Lines -->
+      <line x1="12" y1="16" x2="22" y2="16" stroke="#000080" stroke-width="2" stroke-linecap="round" />
+      <line x1="12" y1="20" x2="19" y2="20" stroke="#000080" stroke-width="2" stroke-linecap="round" />
     </svg>
     """
   end
@@ -970,18 +1020,15 @@ defmodule RetroHexChatWeb.Icons.Communication do
   def icon_btn_channel_central(assigns) do
     ~H"""
     <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
-      <path d="M2 7h12v7H2V7z" fill="#000" />
-      <rect x="3" y="8" width="10" height="5" fill="#555555" />
-      <rect x="4" y="9" width="2" height="2" fill="#87CEEB" />
-      <rect x="10" y="9" width="2" height="2" fill="#87CEEB" />
-      <rect x="7" y="10" width="2" height="3" fill="#8B4513" />
-      <rect x="3" y="8" width="10" height="1" fill="#C0C0C0" />
-
-      <path d="M0 6h2V5h2V4h2V3h4v1h2v1h2v1h2v2H0V6z" fill="#000" />
-      <path d="M1 6h2V5h2V4h2V3h2v1h2v1h2v1h2v1H1V6z" fill="#FF5555" />
-      <rect x="11" y="2" width="3" height="4" fill="#000" />
-      <rect x="12" y="2" width="2" height="3" fill="#FF5555" />
-      <rect x="2" y="6" width="12" height="1" fill="#FF8080" />
+      <!-- House Base -->
+      <path d="M3 6h10v8H3V6z" fill="#555" />
+      <rect x="5" y="8" width="2" height="2" fill="#87CEEB" />
+      <rect x="9" y="8" width="2" height="2" fill="#87CEEB" />
+      <rect x="7" y="11" width="2" height="3" fill="#8B4513" />
+      <!-- Roof -->
+      <path d="M7 2h2v1h2v1h2v1h2v1H1v-1h2V5h2V4h2V3h2V2z" fill="#FF5555" />
+      <!-- Chimney -->
+      <rect x="11" y="2" width="2" height="3" fill="#FF5555" />
     </svg>
     """
   end
