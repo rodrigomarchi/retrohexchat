@@ -35,6 +35,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.NicklistTest do
     assert html =~ ~s(data-testid="nicklist")
     assert html =~ ~s(id="nicklist-users")
     assert html =~ ~s(data-testid="nicklist-header")
+    assert html =~ "md:w-[260px]"
+    assert html =~ "w-[300px]"
     # The mobile backdrop bubbles toggle_nicklist to the parent.
     assert html =~ "toggle_nicklist"
   end

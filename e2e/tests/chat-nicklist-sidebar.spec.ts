@@ -107,6 +107,17 @@ test.describe("Nicklist sidebar", () => {
       await expect(
         owner.chat.page.getByTestId("nicklist-muted-count"),
       ).toHaveText("1");
+      await expect(async () => {
+        const conversationsBox =
+          await owner.chat.conversationsSidebar.boundingBox();
+        const nicklistBox = await owner.chat.nicklist.boundingBox();
+
+        expect(conversationsBox?.width).toBeDefined();
+        expect(nicklistBox?.width).toBeDefined();
+        expect(
+          Math.abs(conversationsBox!.width - nicklistBox!.width),
+        ).toBeLessThanOrEqual(1);
+      }).toPass();
 
       await shot(owner.chat.page, "nicklist-platform");
       await shot(owner.chat.nicklist, "nicklist-sidebar");

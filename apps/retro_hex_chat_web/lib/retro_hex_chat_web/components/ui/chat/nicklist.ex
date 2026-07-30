@@ -22,11 +22,11 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
     ~H"""
     <div class={[
       "chat-sidebar-overlay fixed inset-x-0 bottom-0 top-0 z-40 md:relative md:inset-auto md:z-auto",
-      "flex justify-end md:h-full md:justify-stretch md:w-[184px] md:shrink-0",
+      "flex justify-end md:h-full md:justify-stretch md:w-[260px] md:min-w-[220px] md:shrink-0",
       !@visible && "hidden"
     ]}>
       <div class="absolute inset-0 bg-black/30 md:hidden" phx-click={@on_backdrop} />
-      <div class="relative z-10 w-[224px] md:w-full h-full bg-surface shadow-retro-window md:shadow-none">
+      <div class="relative z-10 w-[300px] max-w-[calc(100vw-48px)] md:w-full md:max-w-none h-full bg-surface shadow-retro-window md:shadow-none">
         <.nicklist class="h-full" {@rest}>
           {render_slot(@inner_block)}
         </.nicklist>
