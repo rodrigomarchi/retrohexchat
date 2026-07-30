@@ -1,19 +1,7 @@
 /**
- * Chat display logic.
- *
- * Extracted from: scroll_hook.js
+ * Pure helpers for reading a chat message row: what a right-click landed on,
+ * and the text and URLs a row carries.
  */
-
-/**
- * Check if a scrollable element is at (or near) the bottom.
- *
- * @param {HTMLElement} el
- * @param {number} [threshold=50]
- * @returns {boolean}
- */
-export function isAtBottom(el, threshold = 50) {
-  return el.scrollHeight - el.scrollTop - el.clientHeight < threshold;
-}
 
 /**
  * Detect the context menu target from a right-click event within a message.

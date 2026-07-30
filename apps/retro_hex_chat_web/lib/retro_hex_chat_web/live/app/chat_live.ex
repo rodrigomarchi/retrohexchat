@@ -778,7 +778,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
       notice_active: false,
       chat_clear_token: 0,
       cleared_channel_cutoffs: %{},
-      loading_more: false,
       messages: %{},
       notify_debounce_timers: %{},
       oldest_message_id: nil,

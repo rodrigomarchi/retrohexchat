@@ -51,7 +51,6 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
       chat_clear_token: System.unique_integer([:positive]),
       oldest_message_id: nil,
       has_more: false,
-      loading_more: false,
       loaded_message_count: 0
     )
     |> MessageViewport.reset([])

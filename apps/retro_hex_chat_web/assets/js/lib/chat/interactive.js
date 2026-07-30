@@ -4,8 +4,6 @@ import { t, jt } from "../i18n.js";
  *
  * Shared helpers for hover tooltips, click-vs-drag detection,
  * context menu coordination, and viewport boundary repositioning.
- *
- * Extracted from: scroll_hook.js (hook = wiring, lib = logic)
  */
 
 /**

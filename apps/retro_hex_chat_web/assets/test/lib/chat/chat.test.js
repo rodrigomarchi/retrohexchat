@@ -1,40 +1,10 @@
-import {
-  isAtBottom,
-  detectContextTarget,
-  buildMessageText,
-  collectUrls,
-} from "../../../js/lib/chat/chat.js";
+import { detectContextTarget, buildMessageText, collectUrls } from "../../../js/lib/chat/chat.js";
 import "../../helpers/hook_helper.js"; // scrollIntoView stub
 import { cleanupDOM } from "../../helpers/hook_helper.js";
 
 describe("lib/chat", () => {
   afterEach(() => {
     cleanupDOM();
-  });
-
-  // ── isAtBottom ─────────────────────────────────────────
-
-  describe("isAtBottom", () => {
-    function mockEl(scrollHeight, scrollTop, clientHeight) {
-      return { scrollHeight, scrollTop, clientHeight };
-    }
-
-    it("returns true when exactly at bottom", () => {
-      expect(isAtBottom(mockEl(1000, 800, 200))).toBe(true);
-    });
-
-    it("returns true within threshold", () => {
-      expect(isAtBottom(mockEl(1000, 770, 200))).toBe(true);
-    });
-
-    it("returns false when scrolled up", () => {
-      expect(isAtBottom(mockEl(1000, 100, 200))).toBe(false);
-    });
-
-    it("uses custom threshold", () => {
-      expect(isAtBottom(mockEl(1000, 780, 200), 10)).toBe(false);
-      expect(isAtBottom(mockEl(1000, 795, 200), 10)).toBe(true);
-    });
   });
 
   // ── detectContextTarget ────────────────────────────────

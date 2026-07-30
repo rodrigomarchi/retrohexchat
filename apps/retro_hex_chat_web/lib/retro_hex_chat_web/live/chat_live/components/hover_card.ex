@@ -13,7 +13,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.HoverCard do
     * `{:update_away, nick, away, message}` — an away change of the hovered nick
       updates the card in place
 
-  `channel_tooltip` / `dismiss_hover_card` are handled globally by `ScrollHook`
+  `channel_tooltip` / `dismiss_hover_card` are handled globally by `ChatViewportHook`
   (`handleEvent`), so the `dismiss_hover_card` push this component emits on dismiss
   reaches the client regardless of where it originates.
   """

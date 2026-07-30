@@ -233,10 +233,9 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   # -- load_more --
 
   def handle_event("load_more", _params, socket) do
-    %{loading_more: loading_more, has_more: has_more, oldest_message_id: oldest_id} =
-      socket.assigns
+    %{has_more: has_more, oldest_message_id: oldest_id} = socket.assigns
 
-    if loading_more or not has_more or is_nil(oldest_id) do
+    if not has_more or is_nil(oldest_id) do
       {:halt, socket}
     else
       {:halt, do_load_more(socket, oldest_id)}
@@ -586,11 +585,11 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
             cursor: oldest_id
           )
 
-        PM.prepend_older_pm_messages(assign(socket, loading_more: true), page)
+        PM.prepend_older_pm_messages(socket, page)
 
       session.active_channel ->
         page = Queries.list_messages(session.active_channel, limit: @page_size, cursor: oldest_id)
-        prepend_older_messages(assign(socket, loading_more: true), page)
+        prepend_older_messages(socket, page)
 
       true ->
         socket
@@ -598,7 +597,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   end
 
   defp prepend_older_messages(socket, %Page{items: []} = page) do
-    assign(socket, loading_more: false, has_more: page.has_more)
+    assign(socket, has_more: page.has_more)
   end
 
   defp prepend_older_messages(socket, %Page{} = page) do
@@ -611,7 +610,6 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
 
     socket
     |> assign(
-      loading_more: false,
       oldest_message_id: page.next_cursor,
       has_more: page.has_more,
       loaded_message_count: (socket.assigns[:loaded_message_count] || 50) + length(page.items)

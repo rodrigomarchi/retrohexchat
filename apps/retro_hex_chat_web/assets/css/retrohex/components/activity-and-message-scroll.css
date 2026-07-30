@@ -10,19 +10,30 @@
   animation: activity-dot-blink 1s steps(2, end) infinite;
 }
 
-/* Autoscroll is driven imperatively by ScrollHook writing scrollTop; disable
-   the browser's native scroll anchoring so it never fights that pin (which
-   showed up as the message list jumping up then snapping back to the bottom). */
-#chat-messages {
+/* Staying on the newest message is the browser's job, not a scroll loop's.
+   Every row opts out of scroll anchoring so the sentinel at the end of the list
+   is the only candidate: while it is on screen the viewport follows lines
+   arriving above it, and once the reader scrolls away from it nothing tugs at
+   them. ChatViewportHook repeats the same offset for Safari, which has no
+   scroll anchoring — it lands on the same value, so the two never disagree. */
+#chat-message-stream > * {
   overflow-anchor: none;
+}
+
+#chat-bottom-anchor {
+  overflow-anchor: auto;
+  height: 1px;
+}
+
+/* The pagination sentinel must never become an anchor: it sits above the oldest
+   row, exactly where a prepended page lands. */
+#chat-load-older {
+  overflow-anchor: none;
+  height: 1px;
 }
 
 .message-viewport__channel-loader {
   @apply mx-auto my-retro-12 flex w-fit;
-}
-
-.message-viewport__scroll-loader {
-  @apply mx-auto flex w-fit py-retro-8;
 }
 
 .message-viewport__skeleton {

@@ -281,8 +281,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
     |> assign(
       oldest_message_id: page.next_cursor,
       has_more: page.has_more,
-      loaded_message_count: length(page.items),
-      loading_more: false
+      loaded_message_count: length(page.items)
     )
     |> MessageViewport.reset(stream_items)
   end

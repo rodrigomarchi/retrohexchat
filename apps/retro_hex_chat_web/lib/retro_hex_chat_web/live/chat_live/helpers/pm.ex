@@ -29,13 +29,13 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
     session = socket.assigns.session
     page = Queries.list_private_messages(session.nickname, target, limit: limit)
 
-    stream_pm_page(socket, page, loading_more: false)
+    stream_pm_page(socket, page)
   end
 
   @spec prepend_older_pm_messages(Phoenix.LiveView.Socket.t(), Page.t()) ::
           Phoenix.LiveView.Socket.t()
   def prepend_older_pm_messages(socket, %Page{items: []} = page) do
-    assign(socket, loading_more: false, has_more: page.has_more)
+    assign(socket, has_more: page.has_more)
   end
 
   def prepend_older_pm_messages(socket, %Page{} = page) do
@@ -48,7 +48,6 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
 
     socket
     |> assign(
-      loading_more: false,
       oldest_message_id: page.next_cursor,
       has_more: page.has_more,
       loaded_message_count: (socket.assigns[:loaded_message_count] || 50) + length(page.items)
@@ -263,7 +262,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
 
   # Private helpers
 
-  defp stream_pm_page(socket, %Page{} = page, opts) do
+  defp stream_pm_page(socket, %Page{} = page) do
     stream_items =
       page
       |> Messages.visible_private_page(socket.assigns.session.ignore_list)
@@ -272,10 +271,11 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
       |> Enum.map(&pm_to_stream_item/1)
 
     assigns =
-      opts
-      |> Keyword.put(:oldest_message_id, page.next_cursor)
-      |> Keyword.put(:has_more, page.has_more)
-      |> Keyword.put(:loaded_message_count, length(page.items))
+      [
+        oldest_message_id: page.next_cursor,
+        has_more: page.has_more,
+        loaded_message_count: length(page.items)
+      ]
       |> maybe_put_clear_token(stream_items)
 
     socket

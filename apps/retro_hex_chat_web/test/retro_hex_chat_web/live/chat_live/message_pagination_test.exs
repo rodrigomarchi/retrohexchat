@@ -76,7 +76,7 @@ defmodule RetroHexChatWeb.ChatLive.MessagePaginationTest do
     |> :sys.get_state()
     |> Map.fetch!(:socket)
     |> Map.fetch!(:assigns)
-    |> Map.take([:has_more, :oldest_message_id, :loading_more, :loaded_message_count])
+    |> Map.take([:has_more, :oldest_message_id, :loaded_message_count])
   end
 
   describe "first page" do

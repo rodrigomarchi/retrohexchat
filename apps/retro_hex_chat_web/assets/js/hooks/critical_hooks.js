@@ -10,7 +10,8 @@ import KeyboardHook from "./input/keyboard_hook";
 import LagHook from "./connection/lag_hook";
 import NotifyListHook from "./notifications/notify_list_hook";
 import PasteHook from "./chat/paste_hook";
-import ScrollHook from "./chat/scroll_hook";
+import ChatViewportHook from "./chat/chat_viewport_hook";
+import ChatPaginationHook from "./chat/chat_pagination_hook";
 import SearchHighlightHook from "./chat/search_highlight_hook";
 import ShortcutDispatcherHook from "./input/shortcut_dispatcher_hook";
 import SoundHook from "./input/sound_hook";
@@ -23,7 +24,6 @@ import ToolbarGroupHook from "./ui/toolbar_group_hook";
 import ConversationsHook from "./ui/conversations_hook";
 import NicklistHook from "./ui/nicklist_hook";
 import ContextualTipsHook from "./ui/contextual_tips_hook";
-import MessageInteractionsHook from "./chat/message_interactions_hook";
 import NickChangeFormHook from "./chat/nick_change_form_hook";
 import URLCatcherHook from "./ui/url_catcher_hook";
 import ArcadeSessionHook from "./games/arcade_session_hook";
@@ -64,11 +64,11 @@ export const criticalHooks = {
   FormatToolbarHook: FormatToolbarHook,
   KeyboardHook: KeyboardHook,
   LagHook: LagHook,
-  MessageInteractionsHook: MessageInteractionsHook,
   NickChangeFormHook: NickChangeFormHook,
   NotifyListHook: NotifyListHook,
   PasteHook: PasteHook,
-  ScrollHook: ScrollHook,
+  ChatViewportHook: ChatViewportHook,
+  ChatPaginationHook: ChatPaginationHook,
   SearchHighlightHook: SearchHighlightHook,
   ShortcutDispatcherHook: ShortcutDispatcherHook,
   SoundHook: SoundHook,

@@ -27,13 +27,23 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewportTest do
     assert MessageViewport.id() == "message-viewport"
   end
 
+  # Three elements, three jobs. The scroller carries no `phx-hook` and no
+  # binding on purpose: an element that pushes to the server is locked for the
+  # round trip and patched through a detached clone, which costs a scroll
+  # container the reader's position.
   test "renders the stream container even when empty" do
     html = render_component(MessageViewport, id: MessageViewport.id())
 
     assert html =~ ~s(id="chat-messages")
+    assert html =~ ~s(id="chat-message-stream")
     assert html =~ ~s(phx-update="stream")
-    assert html =~ ~s(phx-hook="ScrollHook")
-    assert html =~ ~s(data-interactions-hook="MessageInteractionsHook")
+    assert html =~ ~s(id="chat-bottom-anchor")
+    assert html =~ ~s(phx-hook="ChatPaginationHook")
+    assert html =~ ~s(phx-hook="ChatViewportHook")
+
+    [_, after_id] = String.split(html, ~s(id="chat-messages"), parts: 2)
+    [scroller_tag, _] = String.split(after_id, ">", parts: 2)
+    refute scroller_tag =~ "phx-hook"
   end
 
   test "a reset action streams one row per message, keyed by id" do
@@ -74,13 +84,5 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewportTest do
       render_component(MessageViewport, id: MessageViewport.id(), loading_channel: "#general")
 
     assert loading =~ "Loading #general"
-  end
-
-  test "shows the load-older indicator only when loading_more is true" do
-    idle = render_component(MessageViewport, id: MessageViewport.id())
-    refute idle =~ ~s(data-testid="scroll-loader")
-
-    loading = render_component(MessageViewport, id: MessageViewport.id(), loading_more: true)
-    assert loading =~ ~s(data-testid="scroll-loader")
   end
 end

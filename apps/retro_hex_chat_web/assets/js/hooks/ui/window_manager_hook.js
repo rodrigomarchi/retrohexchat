@@ -70,6 +70,7 @@ const WindowManagerHook = {
     this.persistKey = this.el.dataset.persistKey || null;
     this.persistEnabled = this.el.dataset.persist !== "false";
     this.zCounter = Z_BASE;
+    this._wsSize = null;
     this.focusedId = null;
     this.stacked = false;
     this.drag = null;
@@ -1129,9 +1130,9 @@ const WindowManagerHook = {
     // between them; there is always a focused window (the pinned base window).
     const visible = st.open && !st.minimized && (!this.stacked || this.focusedId === id);
 
-    el.classList.toggle("u-hidden", !visible);
-    el.classList.toggle("desktop-window--blurred", this.focusedId !== id);
-    el.classList.toggle("desktop-window--maximized", st.maximized);
+    this.setClass(el, "u-hidden", !visible);
+    this.setClass(el, "desktop-window--blurred", this.focusedId !== id);
+    this.setClass(el, "desktop-window--maximized", st.maximized);
 
     // Geometry is driven through CSS custom properties (consumed by .desktop-window
     // in retrohex.css) so the hook never sets width/height/z-index inline directly.
@@ -1163,8 +1164,8 @@ const WindowManagerHook = {
 
     const maxBtn = el.querySelector('[data-window-control="maximize"]');
     const resBtn = el.querySelector('[data-window-control="restore"]');
-    if (maxBtn) maxBtn.classList.toggle("u-hidden", st.maximized);
-    if (resBtn) resBtn.classList.toggle("u-hidden", !st.maximized);
+    if (maxBtn) this.setClass(maxBtn, "u-hidden", st.maximized);
+    if (resBtn) this.setClass(resBtn, "u-hidden", !st.maximized);
 
     this.updateTaskbar(id);
   },
@@ -1174,11 +1175,10 @@ const WindowManagerHook = {
     if (buttons.length === 0) return;
     const st = this.windows[id].state;
     for (const btn of buttons) {
-      btn.classList.toggle("u-hidden", !st.open);
-      btn.classList.toggle("is-active", st.open && !st.minimized && this.focusedId === id);
-      if (st.open && !st.minimized && this.focusedId === id) {
-        btn.classList.remove("is-flashing");
-      }
+      const active = st.open && !st.minimized && this.focusedId === id;
+      this.setClass(btn, "u-hidden", !st.open);
+      this.setClass(btn, "is-active", active);
+      if (active) this.setClass(btn, "is-flashing", false);
     }
   },
 
@@ -1345,8 +1345,10 @@ const WindowManagerHook = {
   // ── Responsive stacking ────────────────────────────────────
 
   onViewportResize() {
+    this.invalidateWorkspaceSize();
     if (this._rafResize) cancelAnimationFrame(this._rafResize);
     this._rafResize = requestAnimationFrame(() => {
+      this.invalidateWorkspaceSize();
       this.updateStacking();
       this.applyAll();
     });
@@ -1399,23 +1401,60 @@ const WindowManagerHook = {
 
   // ── Helpers ────────────────────────────────────────────────
 
+  // Measured once per workspace size, never once per patch. `updated()` calls
+  // `applyWindow` for every window after every server patch, and morphdom has
+  // just stripped the client-owned geometry off the window roots at that point —
+  // reading `clientHeight` there forces the browser to lay the desktop out while
+  // the windows have no size. Panels inside them briefly stop overflowing, and a
+  // scroll container that briefly does not overflow has its offset clamped to
+  // zero: the reader of a chat scrollback is thrown back to the top by a message
+  // arriving. The cache is dropped whenever the workspace actually resizes.
   workspaceSize() {
+    if (this._wsSize) return this._wsSize;
+
     const node = this.workspace || this.el;
-    return { w: node.clientWidth, h: node.clientHeight };
+    this._wsSize = { w: node.clientWidth, h: node.clientHeight };
+    return this._wsSize;
+  },
+
+  invalidateWorkspaceSize() {
+    this._wsSize = null;
+  },
+
+  // Every write below is compared before it is made, because `updated()`
+  // re-asserts all of this after every server patch and almost none of it has
+  // changed. Rewriting a class list or a geometry custom property with the value
+  // it already holds still dirties style and relayouts the window — and a
+  // relayout of a window is a relayout of the scrollable panels inside it, which
+  // is enough to clamp a reader's scroll position in the chat log back to the
+  // top. Idempotent writes keep a patch that changed nothing costing nothing.
+  setClass(el, name, on) {
+    if (el.classList.contains(name) === on) return;
+    el.classList.toggle(name, on);
+  },
+
+  setStyleProp(el, prop, value) {
+    if (el.style.getPropertyValue(prop) === value) return;
+    el.style.setProperty(prop, value);
+  },
+
+  clearStyleProp(el, prop) {
+    if (el.style.getPropertyValue(prop) === "") return;
+    el.style.removeProperty(prop);
   },
 
   setGeom(el, x, y, w, h, z) {
-    el.style.setProperty("--win-x", `${x}px`);
-    el.style.setProperty("--win-y", `${y}px`);
-    el.style.setProperty("--win-w", `${w}px`);
-    if (h) el.style.setProperty("--win-h", `${h}px`);
-    else el.style.removeProperty("--win-h");
-    el.style.setProperty("--win-z", String(z || Z_BASE));
+    this.setStyleProp(el, "--win-x", `${x}px`);
+    this.setStyleProp(el, "--win-y", `${y}px`);
+    this.setStyleProp(el, "--win-w", `${w}px`);
+    if (h) this.setStyleProp(el, "--win-h", `${h}px`);
+    else this.clearStyleProp(el, "--win-h");
+    this.setStyleProp(el, "--win-z", String(z || Z_BASE));
   },
 
   clearGeom(el) {
     for (const prop of ["--win-x", "--win-y", "--win-w", "--win-h", "--win-z"]) {
-      el.style.removeProperty(prop);
+      this.clearStyleProp(el, prop);
     }
   },
 

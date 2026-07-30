@@ -1,11 +1,10 @@
 /**
  * Edge detection for paginated lists.
  *
- * Pure functions plus a small intent tracker, shared by two consumers that
- * cannot be the same hook: `InfiniteScrollHook` (every ordinary paginated list)
- * and `ScrollHook` (the chat viewport, which also owns auto-scroll pinning,
- * tooltips, hover cards, long-press and the context menu). LiveView mounts only
- * one hook per element, so the chat composes this instead of stacking a hook.
+ * Pure functions plus a small intent tracker behind `InfiniteScrollHook`, which
+ * pages every ordinary list in the app. The chat scrollback does not use these:
+ * its trigger is an IntersectionObserver on a sentinel, because the element that
+ * asks for a page must not be the element that scrolls.
  */
 
 export const DEFAULT_THRESHOLD_PX = 400;

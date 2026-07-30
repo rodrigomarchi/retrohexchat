@@ -6,7 +6,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   churn). The per-row markup lives in the pure `MessageRow` function component.
 
   The parent stays the canonical owner of all pagination/scroll state
-  (`oldest_message_id`, `has_more`, `loaded_message_count`, `loading_more`,
+  (`oldest_message_id`, `has_more`, `loaded_message_count`,
   `chat_clear_token`, `cleared_channel_cutoffs`) and of the message-production
   logic (commands, PubSub
   inserts, edits/deletes, load-more pagination, pending reconciliation, cleared-
@@ -19,15 +19,15 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
 
   Context (`chat_clear_token`, `nick_color_fn`, `timestamp_format`, `timezone`,
   `strip_formatting`, `edit_mode_message_id`, `show_status_tab`) is supplied by the
-  parent each render. The `ScrollHook` and `MessageInteractionsHook` live on the
-  list container and push to the parent LiveView, which holds the scroll/pagination
-  state they drive.
+  parent each render. `ChatViewportHook` (auto-scroll, tooltips, context menu) and
+  `ChatPaginationHook` (asks for older pages) push to the parent LiveView, which
+  holds the scroll/pagination state they drive. Neither sits on the scrolling
+  element — see the note in `render/1` for why that matters.
 
-  The channel-load spinner (`loading_channel`) and the load-older indicator
-  (`loading_more`) render here too, co-located with the messages they describe. Both
-  flags stay parent-owned (the load-more handler reads `loading_more` to debounce
-  pagination; the channel switch sets/clears `loading_channel`) and are passed
-  through each render — only their visuals live in this component.
+  The channel-load spinner (`loading_channel`) renders here too, co-located with
+  the messages it describes. The flag stays parent-owned (the channel switch
+  sets and clears it) and is passed through each render — only its visuals live
+  in this component.
   """
   use RetroHexChatWeb, :live_component
 
@@ -117,8 +117,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
        strip_formatting: false,
        edit_mode_message_id: nil,
        show_status_tab: false,
-       loading_more: false,
        loading_channel: nil,
+       has_more: false,
        viewer: nil,
        rendered: [],
        scrollback?: false
@@ -160,12 +160,18 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
 
   # A reset is a new context — the scrollback the reader had loaded belongs to
   # the channel they left, so the cap comes back with it.
+  #
+  # The client is told, rather than left to infer it from the shape of the DOM
+  # patch. A rebuilt list and a prepended page reach a MutationObserver as the
+  # same thing (rows removed, rows added), and guessing between them is what
+  # used to throw a reader paging through history down to the newest message.
   def update(%{action: {:reset, items}}, socket) do
     {:ok,
      socket
      |> assign(:scrollback?, false)
      |> track(fn _rendered -> items end)
-     |> stream(:chat_messages, items, reset: true, limit: -@dom_limit)}
+     |> stream(:chat_messages, items, reset: true, limit: -@dom_limit)
+     |> push_event("chat_scroll_reset", %{})}
   end
 
   # Re-streaming what is already held is what makes a presentation change cost
@@ -175,10 +181,12 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
     rendered = socket.assigns.rendered
 
     {:ok,
-     stream(socket, :chat_messages, rendered,
+     socket
+     |> stream(:chat_messages, rendered,
        reset: true,
        limit: -max(@dom_limit, length(rendered))
-     )}
+     )
+     |> push_event("chat_scroll_reset", %{})}
   end
 
   def update(assigns, socket) do
@@ -190,8 +198,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
       :strip_formatting,
       :edit_mode_message_id,
       :show_status_tab,
-      :loading_more,
       :loading_channel,
+      :has_more,
       :viewer
     ]
 
@@ -230,39 +238,59 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
         class="message-viewport__skeleton"
       />
 
-      <.activity_indicator
-        :if={@loading_more}
-        icon={:clock}
-        text={dgettext("chat", "Loading older messages...")}
-        class="message-viewport__scroll-loader"
-        data-testid="scroll-loader"
-      />
+      <%!-- Three elements, three jobs, deliberately not the same element.
+
+            Any event pushed to the server — from a hook or from a `JS.push`
+            binding — stamps `data-phx-ref-lock` on the element it was pushed
+            from, and every patch arriving while that ref is in flight is
+            applied to a *detached clone* of it, then swapped back on the ack.
+            A scroll container treated that way loses its scroll position, and
+            the swap-back reaches the DOM as a wholesale add-and-remove. When
+            the scroller was also the hook element, asking for older messages
+            destroyed the reader's place in the very list it was fetching for.
+
+            So: the scroller pushes nothing, the pagination sentinel is the only
+            thing inside it that talks to the server, and everything that pushes
+            on the reader's behalf (tooltips, hover cards, context menu) lives on
+            `chat-viewport-driver`, outside the scroller entirely. --%>
+      <div id="chat-viewport-driver" phx-hook="ChatViewportHook" hidden></div>
 
       <.chat_message_list
         id="chat-messages"
         fill
         hidden={@show_status_tab}
-        phx-update="stream"
-        phx-hook="ScrollHook"
+        data-chat-scroller
         data-clear-token={@chat_clear_token}
-        data-interactions-hook="MessageInteractionsHook"
       >
-        <%!-- Nothing but rows lives in here. An end-of-history marker would have
-              to sit above the oldest row, inside the scrolling element, and that
-              changes the container's height in the same patch that prepends a
-              page — which is what the scroll compensation measures. See
-              `message_pagination_test.exs`, "the top of the scrollback". --%>
-        <MessageRow.message_row
-          :for={{dom_id, msg} <- @streams.chat_messages}
-          dom_id={dom_id}
-          msg={msg}
-          nick_color_fn={@nick_color_fn}
-          timestamp_format={@timestamp_format}
-          timezone={@timezone}
-          strip_formatting={@strip_formatting}
-          edit_mode_message_id={@edit_mode_message_id}
-          viewer={@viewer}
-        />
+        <%!-- Fires a screenful before the top so paging back reads as
+              continuous. It is the only element in here that pushes. --%>
+        <div
+          id="chat-load-older"
+          phx-hook="ChatPaginationHook"
+          data-has-more={to_string(@has_more)}
+          aria-hidden="true"
+        >
+        </div>
+
+        <div id="chat-message-stream" phx-update="stream">
+          <MessageRow.message_row
+            :for={{dom_id, msg} <- @streams.chat_messages}
+            dom_id={dom_id}
+            msg={msg}
+            nick_color_fn={@nick_color_fn}
+            timestamp_format={@timestamp_format}
+            timezone={@timezone}
+            strip_formatting={@strip_formatting}
+            edit_mode_message_id={@edit_mode_message_id}
+            viewer={@viewer}
+          />
+        </div>
+
+        <%!-- The browser's own scroll anchoring keeps the newest line in view:
+              this is the only anchor candidate in the list, so while it is on
+              screen the viewport follows content appended above it, and once
+              the reader scrolls away from it nothing tugs at them. --%>
+        <div id="chat-bottom-anchor" aria-hidden="true"></div>
       </.chat_message_list>
     </div>
     """

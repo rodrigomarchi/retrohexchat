@@ -402,7 +402,9 @@ defmodule Mix.Tasks.Lint.CssConsistency do
   @spec extract_refs_from_js(String.t()) :: [String.t()]
   def extract_refs_from_js(file) do
     content = File.read!(file)
-    classlist_refs(content) ++ queryselector_refs(content) ++ classname_refs(content)
+
+    classlist_refs(content) ++
+      setclass_refs(content) ++ queryselector_refs(content) ++ classname_refs(content)
   end
 
   defp classlist_refs(content) do
@@ -411,6 +413,15 @@ defmodule Mix.Tasks.Lint.CssConsistency do
       Regex.scan(~r/["']([^"']+)["']/, args)
       |> Enum.flat_map(fn [_, classes] -> String.split(classes, ~r/[,\s]+/) end)
     end)
+    |> Enum.filter(&valid_class_name?/1)
+  end
+
+  # `setClass(el, "name", on)` — the compare-before-write wrapper the window
+  # manager uses instead of `classList.toggle`, so a patch that changes nothing
+  # writes nothing. The class name is still a literal at the call site.
+  defp setclass_refs(content) do
+    Regex.scan(~r/setClass\([^,]+,\s*["']([^"']+)["']/s, content)
+    |> Enum.flat_map(fn [_, classes] -> String.split(classes, ~r/[,\s]+/) end)
     |> Enum.filter(&valid_class_name?/1)
   end
 
