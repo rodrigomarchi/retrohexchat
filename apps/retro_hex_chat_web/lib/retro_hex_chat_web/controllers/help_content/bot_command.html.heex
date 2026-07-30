@@ -59,9 +59,18 @@
 
 <p>
   <strong>set</strong>
-  {dgettext("help_bots", "— Change a bot setting. Valid keys:")} <code>greeting</code>, <code>farewell</code>, <code>mention_response</code>, <code>prefix</code>, <code>cooldown</code>, <code>description</code>, <code>nickname</code>.
+  {dgettext("help_bots", "— Change a bot setting. Valid keys include:")} <code>greeting</code>, <code>farewell</code>, <code>greeting_delivery</code>, <code>farewell_delivery</code>, <code>greeter_repeat_window</code>, <code>mention_response</code>, <code>prefix</code>, <code>cooldown</code>, <code>description</code>.
 </p>
-<pre>{dgettext("help_bots", "/bot set GreeterBot greeting Welcome,")} {"{nickname}"}{dgettext("help_bots", "! /bot set GreeterBot cooldown 3000 /bot set GreeterBot prefix ?")}</pre>
+<pre>{dgettext("help_bots", "/bot set GreeterBot greeting Welcome,")} {"{nickname}"}{dgettext("help_bots", "! /bot set GreeterBot greeting_delivery private_notice /bot set GreeterBot greeter_repeat_window 3600 /bot set GreeterBot prefix ?")}</pre>
+<p>
+  {dgettext("help_bots", "Bot chat text accepts IRC formatting escapes:")} <code>\c04</code>
+  {dgettext("help_bots", "sets a colour,")} <code>\b</code>
+  {dgettext("help_bots", "toggles bold,")} <code>\i</code>
+  {dgettext("help_bots", "italic,")} <code>\u</code>
+  {dgettext("help_bots", "underline, and")} <code>\o</code>
+  {dgettext("help_bots", "resets formatting.")}
+</p>
+<pre>{dgettext("help_bots", "/bot set GreeterBot greeting \\c03\\bWelcome\\o")} {"{nickname}"}{dgettext("help_bots", "!")}</pre>
 
 <p>
   <strong>commands</strong> {dgettext(

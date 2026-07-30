@@ -12,6 +12,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
   alias RetroHexChat.Bots.Capabilities.{CustomCommands, Dice, Greeter, Help, Mention, Moderation}
   alias RetroHexChat.Bots.Capabilities.{RSS, Scheduler, Trivia}
   alias RetroHexChat.Bots.{Feeds, Lifecycle, Queries, Server, Supervisor}
+  alias RetroHexChat.Chat.IrcEscapes
   alias RetroHexChatWeb.ChatLive.Components.BotManagementDialog
   alias RetroHexChatWeb.ChatLive.Windows
 
@@ -189,7 +190,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
   def handle_event("bot_add_command", params, socket) do
     bot_name = Map.get(params, "bot_name", "")
     trigger = Map.get(params, "trigger", "") |> String.trim()
-    response = Map.get(params, "response", "") |> String.trim()
+    response = params |> Map.get("response", "") |> String.trim() |> IrcEscapes.decode()
     description = Map.get(params, "description", "") |> String.trim()
     bot = Queries.get_bot_by_name(bot_name)
 

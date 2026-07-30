@@ -177,16 +177,16 @@ included, is joined explicitly.
 /bot set Brutus mod_action warn
 /bot set Brutus mod_spam 5
 /bot set Brutus mod_flood 8
-/bot set Brutus mod_warn Easy there. Keep it civil or Brutus gets grumpy. And trust me, you don't want that.
-# Silent on arrival and departure. Brutus stands in all seven rooms, so a
+/bot set Brutus mod_warn \c04\b[Brutus]\o Easy there, {nickname}. \c05Keep it civil\o or Brutus gets grumpy. And trust me, you don't want that.
+# Silent on arrival and departure. Brutus stands in all thirteen rooms, so a
 # greeting from him would double every welcome the host bot gives — and a
 # bouncer who says hello twice reads as a glitch, not a personality.
 /bot set Brutus greeting none
 /bot set Brutus farewell none
-/bot set Brutus mention_response I'm watching. Always watching. Play nice and we'll get along just fine.
+/bot set Brutus mention_response \c04\b[Brutus]\o I'm watching. Always watching. \c05Play nice\o and we'll get along just fine.
 
-/bot addcmd Brutus rules Short version: don't be a jerk. Long version: there is no long version.
-/bot addcmd Brutus report See something sketchy? Tell an admin. Brutus handles the automated stuff, humans handle the rest.
+/bot addcmd Brutus rules \c04\b[Brutus]\o Short version: \c05don't be a jerk\o. Long version: there is no long version.
+/bot addcmd Brutus report \c04\b[Brutus]\o See something sketchy? \c05Tell an admin\o. Brutus handles the automated stuff, humans handle the rest.
 
 /bot join Brutus #lobby
 /bot join Brutus #trivia
@@ -207,21 +207,24 @@ included, is joined explicitly.
 # ══════════════════════════════════════════════════════════
 
 # ── Patches — #lobby doorman ─────────────────────────────
-# Cooldowns are per channel, not per user: while one is running the bot
-# ignores everyone. A second of quiet is enough to stop a flood; three made
-# the room look broken to the next person who typed.
+# Greetings are private notices scoped to the room: the newcomer gets useful
+# orientation in the channel viewport without turning everyone else's scrollback
+# into bot chatter. The repeat window keeps reconnects from replaying the same
+# line to the same nick over and over.
 /bot create Patches Lobby Attendant and Channel Tour Guide
 /bot set Patches prefix !
 /bot set Patches cooldown 1000
 /bot set Patches dice_default 1d20
-/bot set Patches greeting Yo {nickname}! I'm Patches — lobby attendant. Try !tour, !rooms, or !Patches roll. Make yourself at home.
-/bot set Patches farewell {nickname} heading out? The lobby keeps your seat warm. We're always open.
-/bot set Patches mention_response Patches here. Need directions? !tour for the grand tour, or just ask.
+/bot set Patches greeting \c03\b[Patches]\o \c10Yo {nickname}!\o I'm Patches — lobby attendant. Try !tour, !rooms, or !Patches roll. Make yourself at home.
+/bot set Patches greeting_delivery private_notice
+/bot set Patches greeter_repeat_window 43200
+/bot set Patches farewell none
+/bot set Patches mention_response \c03\b[Patches]\o Patches here. \c10Need directions?\o !tour for the grand tour, or just ask.
 
-/bot addcmd Patches tour Talk to people in #lobby, #brasil and #tech. Play in #trivia and #arcade. Read the wire in #news, #foss, #security, #ai, #science and #anime. #retro is for anything that booted from a floppy, #help for when you are stuck.
-/bot addcmd Patches rooms #lobby #trivia #arcade #retro #tech #brasil #news #foss #security #ai #science #anime #help — thirteen, and every one of them has something in it.
-/bot addcmd Patches why The median live IRC channel holds fourteen people, {nickname}, so we keep one place to talk rather than four. The wire rooms are different: a feed gives a room something to show before it has a crowd.
-/bot addcmd Patches about RetroHexChat: a retro-styled chat built with Elixir and Phoenix LiveView. Windows 98 met a chat room and they fell in love.
+/bot addcmd Patches tour \c03\b[Patches]\o Talk to people in #lobby, #brasil and #tech. \c10Play\o in #trivia and #arcade. \c02Read the wire\o in #news, #foss, #security, #ai, #science and #anime. #retro is for anything that booted from a floppy, #help for when you are stuck.
+/bot addcmd Patches rooms \c03\b[Patches]\o #lobby #trivia #arcade #retro #tech #brasil #news #foss #security #ai #science #anime #help — \c10thirteen rooms\o, and every one of them has something in it.
+/bot addcmd Patches why \c03\b[Patches]\o The median live IRC channel holds fourteen people, {nickname}, so we keep one place to talk rather than four. \c10Wire rooms\o are different: a feed gives a room something to show before it has a crowd.
+/bot addcmd Patches about \c03\b[Patches]\o RetroHexChat: a retro-styled chat built with \c10Elixir and Phoenix LiveView\o. Windows 98 met a chat room and they fell in love.
 
 /bot join Patches #lobby
 
@@ -234,13 +237,15 @@ included, is joined explicitly.
 /bot set Wanda trivia_questions 10
 /bot set Wanda trivia_points 10
 /bot set Wanda dice_default 1d6
-/bot set Wanda greeting {nickname}! Wanda here. !Wanda trivia start and we're off — !Wanda answer <guess> to play, !Wanda trivia score for the board.
-/bot set Wanda farewell {nickname} leaves mid-round! The scoreboard remembers, you know.
-/bot set Wanda mention_response Ready when you are: !Wanda trivia start. Categories: general, science, history, geography, technology, entertainment.
+/bot set Wanda greeting \c06\b[Wanda]\o \c13{nickname}!\o Wanda here. !Wanda trivia start and we're off — !Wanda answer <guess> to play, !Wanda trivia score for the board.
+/bot set Wanda greeting_delivery private_notice
+/bot set Wanda greeter_repeat_window 43200
+/bot set Wanda farewell none
+/bot set Wanda mention_response \c06\b[Wanda]\o Ready when you are: !Wanda trivia start. \c13Categories\o: general, science, history, geography, technology, entertainment.
 
-/bot addcmd Wanda howto Type !Wanda trivia start. Answer with !Wanda answer <your guess>. Ten questions, thirty seconds each, ten points a correct answer. !Wanda trivia score shows the board.
-/bot addcmd Wanda categories general · science · history · geography · technology · entertainment. Ask an op to switch with /bot set Wanda trivia_category <name>.
-/bot addcmd Wanda cheat There is no cheat, {nickname}. There is only confidence and regret.
+/bot addcmd Wanda howto \c06\b[Wanda]\o Type !Wanda trivia start. Answer with !Wanda answer <your guess>. \c13Ten questions\o, thirty seconds each, ten points a correct answer. !Wanda trivia score shows the board.
+/bot addcmd Wanda categories \c06\b[Wanda]\o general · science · history · geography · technology · entertainment. \c13Ask an op\o to switch with /bot set Wanda trivia_category <name>.
+/bot addcmd Wanda cheat \c06\b[Wanda]\o There is no cheat, {nickname}. There is only \c13confidence and regret\o.
 
 /bot join Wanda #trivia
 
@@ -248,14 +253,16 @@ included, is joined explicitly.
 /bot create Pixel Arcade Operator and Retro Gaming Enthusiast
 /bot set Pixel prefix !
 /bot set Pixel cooldown 1000
-/bot set Pixel greeting Welcome to the arcade, {nickname}! I'm Pixel. !games for the catalogue, !controls if the keys fight back.
-/bot set Pixel farewell GG {nickname}! The arcade never closes. Insert coin to continue.
-/bot set Pixel mention_response Player {nickname} has entered the chat. !games for the catalogue — open the Games menu to start a session.
+/bot set Pixel greeting \c12\b[Pixel]\o Welcome to the arcade, {nickname}! I'm Pixel. \c10!games\o for the catalogue, !controls if the keys fight back.
+/bot set Pixel greeting_delivery private_notice
+/bot set Pixel greeter_repeat_window 43200
+/bot set Pixel farewell none
+/bot set Pixel mention_response \c12\b[Pixel]\o Player {nickname} has entered the chat. \c10!games\o for the catalogue — open the Games menu to start a session.
 
-/bot addcmd Pixel games 18 classics: DOOM shareware, Freedoom 1 & 2, FreeDM, LibreQuake, Chex Quest, HacX, REKKR, Quake and Quake II shareware, Wolfenstein 3D, Half-Life Uplink, and six ScummVM adventures. All WebAssembly, all in your browser.
-/bot addcmd Pixel controls Keyboard and mouse for the shooters, keyboard for the adventures. Gamepads work. Each game's help screen has the bindings.
-/bot addcmd Pixel scummvm Beneath a Steel Sky, Drascula, Dreamweb, Flight of the Amazon Queen, Lure of the Temptress, Soltys — six full adventures, no install.
-/bot addcmd Pixel amiga The Amiga channels of IRC hold sixty-four people between them, {nickname}. The whole retro scene's biggest room has eighty-three. We can do better than that here.
+/bot addcmd Pixel games \c12\b[Pixel]\o \c1018 classics\o: DOOM shareware, Freedoom 1 & 2, FreeDM, LibreQuake, Chex Quest, HacX, REKKR, Quake and Quake II shareware, Wolfenstein 3D, Half-Life Uplink, and six ScummVM adventures. All WebAssembly, all in your browser.
+/bot addcmd Pixel controls \c12\b[Pixel]\o \c10Keyboard and mouse\o for the shooters, keyboard for the adventures. Gamepads work. Each game's help screen has the bindings.
+/bot addcmd Pixel scummvm \c12\b[Pixel]\o Beneath a Steel Sky, Drascula, Dreamweb, Flight of the Amazon Queen, Lure of the Temptress, Soltys — \c10six full adventures\o, no install.
+/bot addcmd Pixel amiga \c12\b[Pixel]\o The Amiga channels of IRC hold sixty-four people between them, {nickname}. The whole retro scene's biggest room has eighty-three. \c10We can do better\o than that here.
 
 /bot join Pixel #arcade
 /bot join Pixel #retro
@@ -269,15 +276,17 @@ included, is joined explicitly.
 /bot create Murphy Senior Incident Survivor and Professional Pessimist
 /bot set Murphy prefix !
 /bot set Murphy cooldown 1000
-/bot set Murphy greeting Welcome to #tech, {nickname}. Everything is on fire but that's normal. Try !deploy, !fix, !tabs, or !wisdom. *eye twitch*
-/bot set Murphy farewell {nickname} left. Smart move. Someone has to watch the servers though.
-/bot set Murphy mention_response You called Murphy? Is it an outage? It's always an outage. ...just a question? Oh. Ask away.
+/bot set Murphy greeting \c14\b[Murphy]\o Welcome to #tech, {nickname}. \c04Everything is on fire\o but that's normal. Try !deploy, !fix, !tabs, or !wisdom. *eye twitch*
+/bot set Murphy greeting_delivery private_notice
+/bot set Murphy greeter_repeat_window 43200
+/bot set Murphy farewell none
+/bot set Murphy mention_response \c14\b[Murphy]\o You called Murphy? \c04Is it an outage?\o It's always an outage. ...just a question? Oh. Ask away.
 
-/bot addcmd Murphy deploy Never deploy on Friday, {nickname}. Actually never deploy at all. Every deploy is a gamble and the house always wins.
-/bot addcmd Murphy fix Have you tried turning it off and on again? Seriously. Ninety percent of my career is that with extra steps and a fancier title.
-/bot addcmd Murphy tabs Tabs versus spaces? The real enemy is the file that uses both. At 3 AM. During an outage.
-/bot addcmd Murphy wisdom Murphy's Law of Programming: if it compiles first try, something is deeply wrong and you should be scared.
-/bot addcmd Murphy upstream Project support belongs upstream, {nickname} — their maintainers are what make those rooms worth sitting in. This is the pub, not the help desk.
+/bot addcmd Murphy deploy \c14\b[Murphy]\o \c04Never deploy on Friday\o, {nickname}. Actually never deploy at all. Every deploy is a gamble and the house always wins.
+/bot addcmd Murphy fix \c14\b[Murphy]\o Have you tried \c04turning it off and on again?\o Seriously. Ninety percent of my career is that with extra steps and a fancier title.
+/bot addcmd Murphy tabs \c14\b[Murphy]\o Tabs versus spaces? The real enemy is the file that uses \c04both\o. At 3 AM. During an outage.
+/bot addcmd Murphy wisdom \c14\b[Murphy]\o Murphy's Law of Programming: if it compiles first try, \c04something is deeply wrong\o and you should be scared.
+/bot addcmd Murphy upstream \c14\b[Murphy]\o Project support belongs upstream, {nickname} — their maintainers are what make those rooms worth sitting in. \c04This is the pub\o, not the help desk.
 
 /bot join Murphy #tech
 /bot set Murphy rss_interval 30
@@ -289,13 +298,15 @@ included, is joined explicitly.
 /bot create Tiao Anfitriao do canal brasileiro
 /bot set Tiao prefix !
 /bot set Tiao cooldown 1000
-/bot set Tiao greeting Opa, {nickname}! Eu sou o Tiao. Manda um !bomdia, um !causo ou um !regras. Fica à vontade.
-/bot set Tiao farewell Falou, {nickname}! Aparece mais.
-/bot set Tiao mention_response Chamou? Tô aqui. Tenta !causo ou !bomdia.
+/bot set Tiao greeting \c03\b[Tiao]\o Opa, {nickname}! Eu sou o Tiao. \c02Manda um !bomdia\o, um !causo ou um !regras. Fica à vontade.
+/bot set Tiao greeting_delivery private_notice
+/bot set Tiao greeter_repeat_window 43200
+/bot set Tiao farewell none
+/bot set Tiao mention_response \c03\b[Tiao]\o Chamou? Tô aqui. \c02Tenta !causo\o ou !bomdia.
 
-/bot addcmd Tiao bomdia Bom dia, {nickname}! Café passado, teclado limpo, dia começando.
-/bot addcmd Tiao causo Tem 13 canais #brasil espalhados pelo IRC hoje, {nickname}. Somados dão 273 pessoas. O maior tem 57. Dá pra fazer melhor aqui.
-/bot addcmd Tiao regras Regra única: não seja babaca. O resto a gente resolve conversando.
+/bot addcmd Tiao bomdia \c03\b[Tiao]\o \c02Bom dia\o, {nickname}! Café passado, teclado limpo, dia começando.
+/bot addcmd Tiao causo \c03\b[Tiao]\o Tem 13 canais #brasil espalhados pelo IRC hoje, {nickname}. Somados dão 273 pessoas. O maior tem 57. \c02Dá pra fazer melhor\o aqui.
+/bot addcmd Tiao regras \c03\b[Tiao]\o Regra única: \c02não seja babaca\o. O resto a gente resolve conversando.
 
 /bot join Tiao #brasil
 /bot set Tiao rss_interval 30
@@ -314,13 +325,15 @@ included, is joined explicitly.
 /bot set Gazeta rss_interval 20
 /bot set Gazeta rss_max_feeds 5
 /bot set Gazeta rss_max_items 3
-/bot set Gazeta greeting Welcome to #news, {nickname}. Headlines arrive on their own — !Gazeta rss list for the sources.
-/bot set Gazeta farewell Off to make your own news, {nickname}?
-/bot set Gazeta mention_response I post what the feeds send. !Gazeta rss list for the sources, !sources for how this works.
+/bot set Gazeta greeting \c02\b[Gazeta]\o Welcome to #news, {nickname}. \c14Headlines arrive on their own\o — !Gazeta rss list for the sources.
+/bot set Gazeta greeting_delivery private_notice
+/bot set Gazeta greeter_repeat_window 43200
+/bot set Gazeta farewell none
+/bot set Gazeta mention_response \c02\b[Gazeta]\o I post what the feeds send. !Gazeta rss list for the sources, \c14!sources\o for how this works.
 
-/bot addcmd Gazeta sources Headlines here come from RSS and Atom feeds, checked every twenty minutes. Only what is new since the last check gets posted — never the same item twice, even after a restart.
-/bot addcmd Gazeta first A feed posts one headline the moment it is added, so you can see it works, then goes quiet until something new is published.
-/bot addcmd Gazeta quiet No headlines for a while? Either nothing was published or a feed is failing. An operator can check with !Gazeta rss list.
+/bot addcmd Gazeta sources \c02\b[Gazeta]\o Headlines here come from \c14RSS and Atom feeds\o, checked every twenty minutes. Only what is new since the last check gets posted — never the same item twice, even after a restart.
+/bot addcmd Gazeta first \c02\b[Gazeta]\o A feed posts one headline the moment it is added, so you can see it works, then \c14goes quiet\o until something new is published.
+/bot addcmd Gazeta quiet \c02\b[Gazeta]\o No headlines for a while? Either nothing was published or a feed is failing. An operator can check with \c14!Gazeta rss list\o.
 
 /bot join Gazeta #news
 /bot rss add Gazeta https://feeds.bbci.co.uk/news/world/rss.xml #news
@@ -348,10 +361,12 @@ included, is joined explicitly.
 /bot set Freeman cooldown 1000
 /bot set Freeman rss_interval 30
 /bot set Freeman rss_max_items 3
-/bot set Freeman greeting Welcome to #foss, {nickname}. Releases arrive on their own — !sources for where from.
-/bot set Freeman mention_response I carry the release notes. !sources for the list, !why for what this room is.
-/bot addcmd Freeman sources LWN, Phoronix and It's FOSS, checked every half hour. Only what is new since the last check gets posted.
-/bot addcmd Freeman why Support for a project belongs with that project — #linux on Libera holds 2,494 people because its regulars answer questions. This room is the news, which nobody was carrying.
+/bot set Freeman greeting \c03\b[Freeman]\o Welcome to #foss, {nickname}. \c02Releases arrive on their own\o — !sources for where from.
+/bot set Freeman greeting_delivery private_notice
+/bot set Freeman greeter_repeat_window 43200
+/bot set Freeman mention_response \c03\b[Freeman]\o I carry the release notes. !sources for the list, \c02!why\o for what this room is.
+/bot addcmd Freeman sources \c03\b[Freeman]\o LWN, Phoronix and It's FOSS, checked every half hour. \c02Only what is new\o since the last check gets posted.
+/bot addcmd Freeman why \c03\b[Freeman]\o Support for a project belongs with that project — #linux on Libera holds 2,494 people because its regulars answer questions. \c02This room is the news\o, which nobody was carrying.
 /bot join Freeman #foss
 /bot rss add Freeman https://lwn.net/headlines/newrss #foss
 /bot rss add Freeman https://www.phoronix.com/rss.php #foss
@@ -363,10 +378,12 @@ included, is joined explicitly.
 /bot set Cassandra cooldown 1000
 /bot set Cassandra rss_interval 30
 /bot set Cassandra rss_max_items 3
-/bot set Cassandra greeting {nickname}, welcome. I post advisories. You will read them later and wish you had read them now.
-/bot set Cassandra mention_response I warn; that is the whole job. !sources for where the warnings come from.
-/bot addcmd Cassandra sources CISA advisories, Krebs on Security and The Hacker News, checked every half hour.
-/bot addcmd Cassandra patch The advisory is not the fix. Read it, find your version, then patch. In that order, {nickname}.
+/bot set Cassandra greeting \c04\b[Cassandra]\o {nickname}, welcome. I post advisories. \c05You will read them later\o and wish you had read them now.
+/bot set Cassandra greeting_delivery private_notice
+/bot set Cassandra greeter_repeat_window 43200
+/bot set Cassandra mention_response \c04\b[Cassandra]\o I warn; that is the whole job. \c05!sources\o for where the warnings come from.
+/bot addcmd Cassandra sources \c04\b[Cassandra]\o CISA advisories, Krebs on Security and The Hacker News, \c05checked every half hour\o.
+/bot addcmd Cassandra patch \c04\b[Cassandra]\o The advisory is not the fix. \c05Read it, find your version, then patch\o. In that order, {nickname}.
 /bot join Cassandra #security
 /bot rss add Cassandra https://www.cisa.gov/cybersecurity-advisories/all.xml #security
 /bot rss add Cassandra https://krebsonsecurity.com/feed/ #security
@@ -378,10 +395,12 @@ included, is joined explicitly.
 /bot set Ada cooldown 1000
 /bot set Ada rss_interval 60
 /bot set Ada rss_max_items 3
-/bot set Ada greeting {nickname}! Preprints and model releases land here on their own. !sources for where from.
-/bot set Ada mention_response arXiv and Hugging Face, hourly. !sources for the list.
-/bot addcmd Ada sources arXiv cs.LG, arXiv cs.AI and the Hugging Face blog, checked hourly — three items at a time, because arXiv publishes hundreds a day.
-/bot addcmd Ada why The whole of IRC has seven live rooms on this subject, across three networks. It is the emptiest subject we measured and the busiest one outside.
+/bot set Ada greeting \c10\b[Ada]\o {nickname}! \c06Preprints and model releases\o land here on their own. !sources for where from.
+/bot set Ada greeting_delivery private_notice
+/bot set Ada greeter_repeat_window 43200
+/bot set Ada mention_response \c10\b[Ada]\o arXiv and Hugging Face, \c06hourly\o. !sources for the list.
+/bot addcmd Ada sources \c10\b[Ada]\o arXiv cs.LG, arXiv cs.AI and the Hugging Face blog, checked hourly — \c06three items at a time\o, because arXiv publishes hundreds a day.
+/bot addcmd Ada why \c10\b[Ada]\o The whole of IRC has seven live rooms on this subject, across three networks. \c06It is the emptiest subject we measured\o and the busiest one outside.
 /bot join Ada #ai
 /bot rss add Ada http://export.arxiv.org/rss/cs.LG #ai
 /bot rss add Ada http://export.arxiv.org/rss/cs.AI #ai
@@ -393,9 +412,11 @@ included, is joined explicitly.
 /bot set Curie cooldown 1000
 /bot set Curie rss_interval 60
 /bot set Curie rss_max_items 3
-/bot set Curie greeting Welcome, {nickname}. Astrophysics preprints, NASA and Phys.org arrive here hourly.
-/bot set Curie mention_response !sources for where the science comes from.
-/bot addcmd Curie sources arXiv astro-ph, NASA news releases and Phys.org, checked hourly.
+/bot set Curie greeting \c12\b[Curie]\o Welcome, {nickname}. \c02Astrophysics preprints, NASA and Phys.org\o arrive here hourly.
+/bot set Curie greeting_delivery private_notice
+/bot set Curie greeter_repeat_window 43200
+/bot set Curie mention_response \c12\b[Curie]\o !sources for where the \c02science\o comes from.
+/bot addcmd Curie sources \c12\b[Curie]\o arXiv astro-ph, NASA news releases and Phys.org, \c02checked hourly\o.
 /bot join Curie #science
 /bot rss add Curie http://export.arxiv.org/rss/astro-ph #science
 /bot rss add Curie https://www.nasa.gov/news-release/feed/ #science
@@ -407,9 +428,11 @@ included, is joined explicitly.
 /bot set Yuki cooldown 1000
 /bot set Yuki rss_interval 30
 /bot set Yuki rss_max_items 3
-/bot set Yuki greeting {nickname}! News and episode drops land here. !sources for where from.
-/bot set Yuki mention_response Anime News Network and LiveChart, every half hour. !sources for the list.
-/bot addcmd Yuki sources Anime News Network for news, LiveChart for episode releases. Checked every half hour.
+/bot set Yuki greeting \c13\b[Yuki]\o {nickname}! \c06News and episode drops\o land here. !sources for where from.
+/bot set Yuki greeting_delivery private_notice
+/bot set Yuki greeter_repeat_window 43200
+/bot set Yuki mention_response \c13\b[Yuki]\o Anime News Network and LiveChart, \c06every half hour\o. !sources for the list.
+/bot addcmd Yuki sources \c13\b[Yuki]\o Anime News Network for news, LiveChart for episode releases. \c06Checked every half hour\o.
 /bot join Yuki #anime
 /bot rss add Yuki https://www.animenewsnetwork.com/all/rss.xml #anime
 /bot rss add Yuki https://www.livechart.me/feeds/episodes #anime
@@ -418,14 +441,16 @@ included, is joined explicitly.
 /bot create Harold Senior Assistant to the Help Department
 /bot set Harold prefix !
 /bot set Harold cooldown 1000
-/bot set Harold greeting It looks like you need help, {nickname}! I'm Harold — try !faq, !commands, or !stuck. I live to assist.
-/bot set Harold farewell It looks like {nickname} is leaving! Would you like me to— oh. They're gone.
-/bot set Harold mention_response It looks like you're trying to get my attention! Try !commands, !faq, or just ask.
+/bot set Harold greeting \c02\b[Harold]\o It looks like you need help, {nickname}! I'm Harold — try !faq, !commands, or !stuck. \c03I live to assist\o.
+/bot set Harold greeting_delivery private_notice
+/bot set Harold greeter_repeat_window 43200
+/bot set Harold farewell none
+/bot set Harold mention_response \c02\b[Harold]\o It looks like you're trying to get my attention! \c03Try !commands\o, !faq, or just ask.
 
-/bot addcmd Harold faq How do I register? /identify. Join a room? /join #name. Private message? /msg nick. Look cool? Not in my manual, {nickname}.
-/bot addcmd Harold commands /help for topics · /nick to rename · /join to enter · /msg to whisper · /identify to register. F1 opens the manual.
-/bot addcmd Harold stuck Step 1: don't panic. Step 2: /help. Step 3: ask here. Step 4: profit.
-/bot addcmd Harold rooms #lobby #trivia #arcade #retro #tech #brasil #news #foss #security #ai #science #anime #help.
+/bot addcmd Harold faq \c02\b[Harold]\o How do I register? \c03/identify\o. Join a room? /join #name. Private message? /msg nick. Look cool? Not in my manual, {nickname}.
+/bot addcmd Harold commands \c02\b[Harold]\o /help for topics · /nick to rename · /join to enter · /msg to whisper · /identify to register. \c03F1 opens the manual\o.
+/bot addcmd Harold stuck \c02\b[Harold]\o Step 1: don't panic. Step 2: /help. Step 3: ask here. \c03Step 4: profit\o.
+/bot addcmd Harold rooms \c02\b[Harold]\o #lobby #trivia #arcade #retro #tech #brasil #news #foss #security #ai #science #anime #help.
 
 /bot join Harold #help
 ```

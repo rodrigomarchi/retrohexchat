@@ -5,6 +5,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
 
   alias RetroHexChat.Bots.Capabilities.{CustomCommands, Greeter, Help, Mention}
   alias RetroHexChat.Bots.{Feeds, Lifecycle, Policy, Queries, Server, Supervisor}
+  alias RetroHexChat.Chat.IrcEscapes
   alias RetroHexChat.Commands.Handler
 
   # Setting names are identifiers a user types verbatim, so they are interpolated
@@ -12,12 +13,15 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
   # Portuguese entry offered "data *" for `dice_*`, the French "dés *".
   @setting_keys ~w(
     prefix cooldown description greeting farewell mention_response
+    greeting_delivery farewell_delivery greeter_repeat_window
     dice_max_dice dice_max_sides dice_default
     mod_words mod_action mod_spam mod_flood mod_warn
     trivia_category trivia_time trivia_questions trivia_points
     sched_max sched_min_interval
     rss_interval rss_max_feeds rss_max_items
   )
+
+  @delivery_modes ~w(public channel_notice private_notice silent)
 
   @doc """
   Every key `/bot set` accepts.
@@ -138,7 +142,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
 
   def execute(["addcmd", bot_name, trigger | response_parts], context) do
     with :ok <- Policy.authorize(context) do
-      response = Enum.join(response_parts, " ")
+      response = response_parts |> Enum.join(" ") |> IrcEscapes.decode()
       do_add_command(bot_name, trigger, response, context.nickname)
     end
   end
@@ -476,7 +480,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
   end
 
   defp apply_setting(bot, "greeting", value) do
-    greeting = if value == "none", do: nil, else: value
+    greeting = if value == "none", do: nil, else: IrcEscapes.decode(value)
     caps = put_capability_field(bot.capabilities, "greeter", "greeting", greeting)
     Queries.update_bot(bot, %{capabilities: caps})
     reload_bot_capabilities(bot)
@@ -492,7 +496,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
   end
 
   defp apply_setting(bot, "farewell", value) do
-    farewell = if value == "none", do: nil, else: value
+    farewell = if value == "none", do: nil, else: IrcEscapes.decode(value)
     caps = put_capability_field(bot.capabilities, "greeter", "farewell", farewell)
     Queries.update_bot(bot, %{capabilities: caps})
     reload_bot_capabilities(bot)
@@ -507,8 +511,20 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
     {:ok, message}
   end
 
+  defp apply_setting(bot, "greeting_delivery", value) do
+    update_delivery_setting(bot, "greeting_delivery", value)
+  end
+
+  defp apply_setting(bot, "farewell_delivery", value) do
+    update_delivery_setting(bot, "farewell_delivery", value)
+  end
+
+  defp apply_setting(bot, "greeter_repeat_window", value) do
+    update_capability_int(bot, "greeter", "repeat_window_sec", value, 0, 86_400)
+  end
+
   defp apply_setting(bot, "mention_response", value) do
-    caps = put_capability_field(bot.capabilities, "mention", "response", value)
+    caps = put_capability_field(bot.capabilities, "mention", "response", IrcEscapes.decode(value))
     Queries.update_bot(bot, %{capabilities: caps})
     reload_bot_capabilities(bot)
     {:ok, dgettext("commands", "Mention response updated.")}
@@ -552,7 +568,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
   end
 
   defp apply_setting(bot, "mod_warn", value) do
-    update_capability_field(bot, "moderation", "warn_message", value)
+    update_capability_field(bot, "moderation", "warn_message", IrcEscapes.decode(value))
   end
 
   # ── Trivia settings ──
@@ -603,6 +619,20 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
        key: key,
        settings: Enum.join(@setting_keys, ", ")
      )}
+  end
+
+  @spec update_delivery_setting(map(), String.t(), String.t()) ::
+          {:ok, String.t()} | {:error, String.t()}
+  defp update_delivery_setting(bot, field, value) do
+    if value in @delivery_modes do
+      update_capability_field(bot, "greeter", field, value)
+    else
+      {:error,
+       dgettext("commands", "%{field} must be one of: %{modes}.",
+         field: field,
+         modes: Enum.join(@delivery_modes, ", ")
+       )}
+    end
   end
 
   # A bot owns only greeter, custom_commands, help and mention at creation; the
@@ -846,11 +876,14 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
       /bot addcmd <bot> <trigger> <response> — Add custom command
       /bot delcmd <bot> <trigger> — Remove custom command
     Settings: prefix, cooldown, description, greeting, farewell, mention_response,
+      greeting_delivery, farewell_delivery, greeter_repeat_window,
       dice_max_dice, dice_max_sides, dice_default,
       mod_words, mod_action, mod_spam, mod_flood, mod_warn,
       trivia_category, trivia_time, trivia_questions, trivia_points,
       sched_max, sched_min_interval,
-      rss_interval, rss_max_feeds, rss_max_items\
+      rss_interval, rss_max_feeds, rss_max_items
+    Bot text accepts IRC formatting escapes: \\c04 red, \\b bold, \\i italic,
+      \\u underline, \\s strike, \\v reverse, \\o reset.
     """
   end
 end

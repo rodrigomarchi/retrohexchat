@@ -16,6 +16,7 @@ defmodule RetroHexChat.Commands.Handlers.ServerProvisionTest do
   @moduletag :unit
 
   alias RetroHexChat.Bots.Capabilities.Trivia.QuestionBank
+  alias RetroHexChat.Chat.{Formatter, IrcEscapes}
   alias RetroHexChat.Commands.Handlers.Bot
   alias RetroHexChat.Commands.Registry
 
@@ -39,6 +40,7 @@ defmodule RetroHexChat.Commands.Handlers.ServerProvisionTest do
   end
 
   defp args(line), do: line |> String.trim_leading("/") |> String.split(" ", trim: true)
+  defp visible_line(line), do: line |> IrcEscapes.decode() |> Formatter.strip()
 
   test "the script exists and carries commands" do
     assert File.exists?(@script_path)
@@ -142,6 +144,7 @@ defmodule RetroHexChat.Commands.Handlers.ServerProvisionTest do
 
     advertised =
       lines
+      |> Enum.map(&visible_line/1)
       |> Enum.flat_map(&Regex.scan(~r/(?<![\w!])!(\w+)/, &1, capture: :all_but_first))
       |> List.flatten()
       |> Enum.uniq()
@@ -180,6 +183,74 @@ defmodule RetroHexChat.Commands.Handlers.ServerProvisionTest do
       assert greeting == "none",
              "#{bot} stands in every channel and must be set to 'greeting none'"
     end
+  end
+
+  test "room greeters are private and deduplicated", %{lines: lines} do
+    parsed = Enum.map(lines, &args/1)
+
+    greetings =
+      for ["bot", "set", bot, "greeting" | rest] <- parsed,
+          Enum.join(rest, " ") != "none",
+          uniq: true,
+          do: bot
+
+    refute greetings == [], "expected the script to configure room greeters"
+
+    for bot <- greetings do
+      delivery =
+        Enum.find_value(parsed, fn
+          ["bot", "set", ^bot, "greeting_delivery", value | _] -> value
+          _ -> nil
+        end)
+
+      repeat_window =
+        Enum.find_value(parsed, fn
+          ["bot", "set", ^bot, "greeter_repeat_window", value | _] -> value
+          _ -> nil
+        end)
+
+      assert delivery == "private_notice",
+             "#{bot} greets users but does not set greeting_delivery private_notice"
+
+      assert is_binary(repeat_window) and String.to_integer(repeat_window) > 0,
+             "#{bot} greets users but does not set a positive greeter_repeat_window"
+    end
+  end
+
+  test "seeded bot speech carries IRC colour escapes", %{lines: lines} do
+    parsed = Enum.map(lines, &args/1)
+
+    speech =
+      for ["bot", "set", bot, key | rest] <- parsed,
+          key in ~w(greeting mention_response mod_warn),
+          Enum.join(rest, " ") != "none" do
+        {bot, key, Enum.join(rest, " ")}
+      end ++
+        for ["bot", "addcmd", bot, trigger | rest] <- parsed do
+          {bot, "addcmd #{trigger}", Enum.join(rest, " ")}
+        end
+
+    refute speech == [], "expected seeded bot speech"
+
+    missing_colour =
+      speech
+      |> Enum.reject(fn {_bot, _key, value} -> String.contains?(value, "\\c") end)
+      |> Enum.map(fn {bot, key, _value} -> "#{bot} #{key}" end)
+
+    assert missing_colour == [],
+           "seeded bot speech without colour escape: #{inspect(missing_colour)}"
+  end
+
+  test "automatic farewells stay disabled in the seed script", %{lines: lines} do
+    parsed = Enum.map(lines, &args/1)
+
+    offenders =
+      for ["bot", "set", bot, "farewell" | rest] <- parsed,
+          Enum.join(rest, " ") != "none",
+          do: bot
+
+    assert offenders == [],
+           "farewell messages become noisy on reconnect/part churn: #{inspect(offenders)}"
   end
 
   test "every feed it seeds is one the bot can actually deliver", %{lines: lines} do

@@ -428,6 +428,10 @@ defmodule RetroHexChat.Bots.Server do
         acc = acc |> update_capability_state(name, new_cap_state) |> reconcile_timers(name)
         {:halt, {{:reply, text}, acc}}
 
+      {:bot_output, output, new_cap_state} ->
+        acc = acc |> update_capability_state(name, new_cap_state) |> reconcile_timers(name)
+        {:halt, {{:bot_output, output}, acc}}
+
       {:multi_reply, lines, new_cap_state} ->
         acc = acc |> update_capability_state(name, new_cap_state) |> reconcile_timers(name)
         {:halt, {{:multi_reply, lines}, acc}}
@@ -461,8 +465,20 @@ defmodule RetroHexChat.Bots.Server do
     ctx = %{context | config: merged_config, capability_state: cap_state}
 
     case cap_mod.handle_event(event, payload, ctx) do
-      :ignore -> {:cont, {:ignore, acc}}
-      result -> {:halt, {result, acc}}
+      :ignore ->
+        {:cont, {:ignore, acc}}
+
+      {:reply, text, new_cap_state} ->
+        {:halt, {{:reply, text}, update_capability_state(acc, name, new_cap_state)}}
+
+      {:bot_output, output, new_cap_state} ->
+        {:halt, {{:bot_output, output}, update_capability_state(acc, name, new_cap_state)}}
+
+      {:multi_reply, lines, new_cap_state} ->
+        {:halt, {{:multi_reply, lines}, update_capability_state(acc, name, new_cap_state)}}
+
+      result ->
+        {:halt, {result, acc}}
     end
   end
 
@@ -604,6 +620,11 @@ defmodule RetroHexChat.Bots.Server do
     update_cooldown(state, channel)
   end
 
+  defp maybe_respond(state, channel, {:bot_output, output}) do
+    send_bot_output(channel, state.nickname, output)
+    update_cooldown(state, channel)
+  end
+
   defp maybe_respond(state, channel, {:reply_action, text}) do
     send_bot_message(channel, state.nickname, text)
     update_cooldown(state, channel)
@@ -637,6 +658,11 @@ defmodule RetroHexChat.Bots.Server do
     state
   end
 
+  defp respond_without_cooldown(state, channel, {:bot_output, output}) do
+    send_bot_output(channel, state.nickname, output)
+    state
+  end
+
   defp respond_without_cooldown(state, channel, {:reply_action, text}) do
     send_bot_message(channel, state.nickname, text)
     state
@@ -649,15 +675,69 @@ defmodule RetroHexChat.Bots.Server do
 
   defp respond_without_cooldown(state, _channel, _other), do: state
 
-  @spec send_bot_message(String.t(), String.t(), String.t()) :: :ok | {:error, term()}
-  defp send_bot_message(channel, nickname, content) do
-    case Channels.Server.send_message(channel, nickname, content) do
+  @spec send_bot_output(String.t(), String.t(), map()) :: :ok | {:error, term()}
+  defp send_bot_output(channel, nickname, %{delivery: delivery, content: content} = output) do
+    case normalize_delivery(delivery) do
+      :public ->
+        send_bot_message(channel, nickname, content)
+
+      :channel_notice ->
+        send_bot_message(channel, nickname, content, :notice)
+
+      :private_notice ->
+        send_bot_private_notice(channel, nickname, Map.get(output, :target), content)
+
+      :silent ->
+        :ok
+    end
+  end
+
+  defp send_bot_output(_channel, _nickname, _output), do: :ok
+
+  @spec normalize_delivery(atom() | String.t()) ::
+          :public | :channel_notice | :private_notice | :silent
+  defp normalize_delivery(:channel_notice), do: :channel_notice
+  defp normalize_delivery(:private_notice), do: :private_notice
+  defp normalize_delivery(:silent), do: :silent
+  defp normalize_delivery(delivery) when is_atom(delivery), do: :public
+
+  defp normalize_delivery(delivery) when is_binary(delivery) do
+    case delivery do
+      "channel_notice" -> :channel_notice
+      "private_notice" -> :private_notice
+      "silent" -> :silent
+      _ -> :public
+    end
+  end
+
+  defp normalize_delivery(_delivery), do: :public
+
+  @spec send_bot_message(String.t(), String.t(), String.t(), atom()) :: :ok | {:error, term()}
+  defp send_bot_message(channel, nickname, content, type \\ :message) do
+    case Channels.Server.send_message(channel, nickname, content, type) do
       {:ok, _id} -> :ok
       {:error, reason} -> Logger.warning("Bot #{nickname} failed to send: #{inspect(reason)}")
     end
   catch
     :exit, reason ->
       Logger.warning("Bot #{nickname} failed to send (channel unavailable): #{inspect(reason)}")
+  end
+
+  @spec send_bot_private_notice(String.t(), String.t(), String.t() | nil, String.t()) ::
+          :ok | {:error, term()}
+  defp send_bot_private_notice(_channel, _nickname, nil, _content), do: :ok
+
+  defp send_bot_private_notice(channel, nickname, target, content) do
+    case Phoenix.PubSub.broadcast(@pubsub, "user:#{target}", %{
+           event: "new_notice",
+           payload: %{author: nickname, content: content, channel: channel}
+         }) do
+      :ok ->
+        :ok
+
+      {:error, reason} ->
+        Logger.warning("Bot #{nickname} failed to send private notice: #{inspect(reason)}")
+    end
   end
 
   @spec update_cooldown(state(), String.t()) :: state()

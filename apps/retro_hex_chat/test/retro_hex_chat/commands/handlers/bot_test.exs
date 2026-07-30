@@ -6,6 +6,10 @@ defmodule RetroHexChat.Commands.Handlers.BotTest do
   alias RetroHexChat.Bots.Queries
   alias RetroHexChat.Commands.Handlers.Bot
 
+  @bold <<0x02>>
+  @colour <<0x03>>
+  @reset <<0x0F>>
+
   @admin_ctx %{
     nickname: "admin",
     active_channel: "#general",
@@ -113,6 +117,24 @@ defmodule RetroHexChat.Commands.Handlers.BotTest do
 
       assert c3 =~ "removed"
     end
+
+    test "decodes IRC formatting escapes in custom command responses" do
+      Bot.execute(["create", "BotCmdTest"], @admin_ctx)
+
+      assert {:ok, :system, _} =
+               Bot.execute(
+                 ["addcmd", "BotCmdTest", "alert", "\\c04\\bAlert\\o", "{nickname}"],
+                 @admin_ctx
+               )
+
+      cmd =
+        "BotCmdTest"
+        |> Queries.get_bot_by_name()
+        |> then(&Queries.list_custom_commands(&1.id))
+        |> Enum.find(&(&1.trigger == "alert"))
+
+      assert cmd.response == @colour <> "04" <> @bold <> "Alert" <> @reset <> " {nickname}"
+    end
   end
 
   describe "execute set — capabilities absent at creation" do
@@ -162,6 +184,68 @@ defmodule RetroHexChat.Commands.Handlers.BotTest do
                Bot.execute(["set", "BotCmdTest", "greeting", "Welcome", "aboard"], @admin_ctx)
 
       assert %{"greeter" => %{"greeting" => "Welcome aboard"}} = capabilities()
+    end
+
+    test "bot speech settings decode IRC formatting escapes before storage" do
+      assert {:ok, :system, _} =
+               Bot.execute(
+                 ["set", "BotCmdTest", "greeting", "\\c03\\bWelcome\\o", "{nickname}"],
+                 @admin_ctx
+               )
+
+      assert {:ok, :system, _} =
+               Bot.execute(
+                 ["set", "BotCmdTest", "mention_response", "\\c06\\bYou", "rang?\\o"],
+                 @admin_ctx
+               )
+
+      assert {:ok, :system, _} =
+               Bot.execute(
+                 ["set", "BotCmdTest", "mod_warn", "\\c04\\bCareful\\o", "{nickname}"],
+                 @admin_ctx
+               )
+
+      assert %{
+               "greeter" => %{
+                 "greeting" => @colour <> "03" <> @bold <> "Welcome" <> @reset <> " {nickname}"
+               },
+               "mention" => %{
+                 "response" => @colour <> "06" <> @bold <> "You rang?" <> @reset
+               },
+               "moderation" => %{
+                 "warn_message" =>
+                   @colour <> "04" <> @bold <> "Careful" <> @reset <> " {nickname}"
+               }
+             } = capabilities()
+    end
+
+    test "greeter delivery and repeat window settings are stored" do
+      assert {:ok, :system, _} =
+               Bot.execute(
+                 ["set", "BotCmdTest", "greeting_delivery", "private_notice"],
+                 @admin_ctx
+               )
+
+      assert {:ok, :system, _} =
+               Bot.execute(["set", "BotCmdTest", "farewell_delivery", "silent"], @admin_ctx)
+
+      assert {:ok, :system, _} =
+               Bot.execute(["set", "BotCmdTest", "greeter_repeat_window", "43200"], @admin_ctx)
+
+      assert %{
+               "greeter" => %{
+                 "greeting_delivery" => "private_notice",
+                 "farewell_delivery" => "silent",
+                 "repeat_window_sec" => 43_200
+               }
+             } = capabilities()
+    end
+
+    test "greeter delivery rejects unknown modes" do
+      assert {:error, msg} =
+               Bot.execute(["set", "BotCmdTest", "greeting_delivery", "global"], @admin_ctx)
+
+      assert msg =~ "greeting_delivery must be one of"
     end
   end
 

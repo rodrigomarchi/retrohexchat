@@ -46,6 +46,14 @@
 </ul>
 <pre>{dgettext("help_bots", "/bot addcmd FAQ welcome Hello")} {"{nickname}"}{dgettext("help_bots", ", welcome to")} {"{channel}"}!</pre>
 
+<p>
+  {dgettext("help_bots", "Responses can also use IRC formatting escapes such as")}
+  <code>\c04</code> {dgettext("help_bots", "for colour,")} <code>\b</code>
+  {dgettext("help_bots", "for bold, and")} <code>\o</code>
+  {dgettext("help_bots", "to reset formatting.")}
+</p>
+<pre>{dgettext("help_bots", "/bot addcmd FAQ rules \\c04\\bRead this:\\o Please read #rules")}</pre>
+
 <.help_h4 icon={:icon_lightbulb}>{dgettext("help_bots", "Built-in Help Command")}</.help_h4>
 <p>
   {dgettext("help_bots", "If the Help capability is enabled, typing")}

@@ -10,7 +10,8 @@ defmodule RetroHexChat.Bots.Capabilities.GreeterTest do
     bot_name: "GreetBot",
     channel: "#general",
     command_prefix: "!",
-    config: %{"greeting" => "Welcome, {nickname}!", "farewell" => nil}
+    config: %{"greeting" => "Welcome, {nickname}!", "farewell" => nil},
+    capability_state: %{recent_deliveries: %{}}
   }
 
   describe "name/0" do
@@ -27,14 +28,55 @@ defmodule RetroHexChat.Bots.Capabilities.GreeterTest do
 
   describe "handle_event/3" do
     test "greets on user_joined" do
-      assert {:reply, "Welcome, Alice!"} =
+      assert {:bot_output, output, %{recent_deliveries: _}} =
                Greeter.handle_event(:user_joined, %{nickname: "Alice"}, @ctx)
+
+      assert output == %{content: "Welcome, Alice!", delivery: "public", target: "Alice"}
     end
 
     test "uses custom greeting" do
       ctx = put_in(@ctx.config["greeting"], "Hey {nickname}, welcome to {channel}!")
 
-      assert {:reply, "Hey Bob, welcome to #general!"} =
+      assert {:bot_output, %{content: "Hey Bob, welcome to #general!"}, _state} =
+               Greeter.handle_event(:user_joined, %{nickname: "Bob"}, ctx)
+    end
+
+    test "uses configured delivery for greeting" do
+      ctx = put_in(@ctx.config["greeting_delivery"], "private_notice")
+
+      assert {:bot_output, output, _state} =
+               Greeter.handle_event(:user_joined, %{nickname: "Alice"}, ctx)
+
+      assert output.delivery == "private_notice"
+      assert output.target == "Alice"
+    end
+
+    test "suppresses repeated identical delivery to the same nick in the same channel" do
+      ctx =
+        @ctx
+        |> put_in([:config, "greeting_delivery"], "private_notice")
+        |> put_in([:config, "repeat_window_sec"], 3600)
+
+      assert {:bot_output, _output, state} =
+               Greeter.handle_event(:user_joined, %{nickname: "Alice"}, ctx)
+
+      ctx = %{ctx | capability_state: state}
+
+      assert :ignore == Greeter.handle_event(:user_joined, %{nickname: "Alice"}, ctx)
+    end
+
+    test "allows the same greeting for a different nick" do
+      ctx =
+        @ctx
+        |> put_in([:config, "greeting_delivery"], "private_notice")
+        |> put_in([:config, "repeat_window_sec"], 3600)
+
+      assert {:bot_output, _output, state} =
+               Greeter.handle_event(:user_joined, %{nickname: "Alice"}, ctx)
+
+      ctx = %{ctx | capability_state: state}
+
+      assert {:bot_output, %{target: "Bob"}, _state} =
                Greeter.handle_event(:user_joined, %{nickname: "Bob"}, ctx)
     end
 
@@ -55,7 +97,7 @@ defmodule RetroHexChat.Bots.Capabilities.GreeterTest do
     test "responds to user_left when farewell is set" do
       ctx = put_in(@ctx.config["farewell"], "Bye {nickname}!")
 
-      assert {:reply, "Bye Alice!"} =
+      assert {:bot_output, %{content: "Bye Alice!", delivery: "public", target: "Alice"}, _state} =
                Greeter.handle_event(:user_left, %{nickname: "Alice"}, ctx)
     end
 
@@ -69,6 +111,9 @@ defmodule RetroHexChat.Bots.Capabilities.GreeterTest do
       config = Greeter.default_config()
       assert is_binary(config["greeting"])
       assert is_nil(config["farewell"])
+      assert config["greeting_delivery"] == "private_notice"
+      assert config["farewell_delivery"] == "silent"
+      assert config["repeat_window_sec"] == 3600
     end
   end
 end

@@ -522,6 +522,82 @@ defmodule RetroHexChat.Bots.ServerTest do
     end
   end
 
+  describe "greeter delivery policy" do
+    @private_greeter_bot %{
+      id: 991,
+      name: "PrivateGreetBot",
+      nickname: "PrivateGreetBot",
+      command_prefix: "!",
+      created_by: "admin",
+      enabled: true,
+      cooldown_ms: 3000,
+      capabilities: %{
+        "greeter" => %{
+          "greeting" => "Welcome {nickname}!",
+          "greeting_delivery" => "private_notice",
+          "repeat_window_sec" => 3600,
+          "enabled" => true
+        }
+      },
+      channel_configs: [
+        %{channel_name: "#privategreet", enabled: true, capability_overrides: %{}}
+      ],
+      custom_commands: []
+    }
+
+    setup do
+      {:ok, pid} = RetroHexChat.Channels.Supervisor.start_child("#privategreet")
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#privategreet")
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:newcomer")
+
+      on_exit(fn ->
+        Supervisor.stop_bot("PrivateGreetBot")
+        if Process.alive?(pid), do: RetroHexChat.Channels.Supervisor.stop_child(pid)
+      end)
+
+      :ok
+    end
+
+    test "can deliver a greeting as a private notice scoped to the channel" do
+      {:ok, _pid} = Supervisor.start_bot(@private_greeter_bot)
+
+      {:ok, _} = RetroHexChat.Channels.Server.join("#privategreet", "newcomer")
+
+      assert_receive %{
+                       event: "new_notice",
+                       payload: %{
+                         author: "PrivateGreetBot",
+                         channel: "#privategreet",
+                         content: "Welcome newcomer!"
+                       }
+                     },
+                     2000
+
+      refute_receive %{event: "new_message", payload: %{author: "PrivateGreetBot"}}, 100
+    end
+
+    test "suppresses the same greeter output to the same nick inside the repeat window" do
+      {:ok, _pid} = Supervisor.start_bot(@private_greeter_bot)
+
+      {:ok, _} = RetroHexChat.Channels.Server.join("#privategreet", "newcomer")
+
+      assert_receive %{
+                       event: "new_notice",
+                       payload: %{author: "PrivateGreetBot", content: "Welcome newcomer!"}
+                     },
+                     2000
+
+      :ok = RetroHexChat.Channels.Server.part("#privategreet", "newcomer")
+      {:ok, _} = RetroHexChat.Channels.Server.join("#privategreet", "newcomer")
+
+      refute_receive %{
+                       event: "new_notice",
+                       payload: %{author: "PrivateGreetBot", content: "Welcome newcomer!"}
+                     },
+                     200
+    end
+  end
+
   describe "a command addressed to the bot beats its mention response" do
     @command_bot %{
       id: 992,
