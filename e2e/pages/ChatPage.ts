@@ -1620,6 +1620,12 @@ export class ChatPage {
     return this.page.locator(`[data-window-taskbar="${windowId}"]`).first();
   }
 
+  // The pinned chat window. Its title bar is named after the active
+  // conversation, like the taskbar button and the browser tab.
+  get chatWindow(): Locator {
+    return this.page.getByTestId("chat-window");
+  }
+
   async openNickColorsFromMenu() {
     await this.openToolsMenuItem(this.nickColorsMenuItem);
     await this.nickColorsMenuItem.click();

@@ -604,7 +604,7 @@ msgstr "Sezioni"
 #: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:60
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:56
 #: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:65
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:73
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:79
 #: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:46
@@ -827,7 +827,7 @@ msgstr "Contesto utente"
 msgid "User Interactions"
 msgstr "Interazioni utente"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:76
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:212
 #, elixir-autogen, elixir-format
 msgid "User Interface Overview"
@@ -1341,7 +1341,7 @@ msgstr ""
 "Ogni utente connesso può visualizzare il MOTD. Gli amministratori del server"
 " possono impostarlo o cancellarlo dalla scheda Admin Console MOTD."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "Every open window gets a taskbar button. Clicking a button focuses or restores its window; clicking the focused window's button minimizes it."
 msgstr ""
@@ -1376,7 +1376,7 @@ msgstr "Aiuto Messaggio del Giorno"
 msgid "Identity & Presence"
 msgstr "Identità e Presenza"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:65
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:71
 #, elixir-autogen, elixir-format
 msgid "Layout Persistence"
 msgstr "Layout Persistenza"
@@ -1432,12 +1432,12 @@ msgstr "NickServ Panoramica"
 msgid "Notify List"
 msgstr "Notifica Lista"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:57
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "On a Phone"
 msgstr "Su un telefono"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:65
 #, elixir-autogen, elixir-format
 msgid "On a narrow screen the desktop shows one window at a time: the current window fills the screen like a phone app. The menu bar, Start button and taskbar stay put — tap a taskbar button to switch between your open windows. Windows can't be dragged, resized, minimized or maximized here; you just open, switch and close them. Dialogs and forms fill the screen too, so they always fit."
 msgstr ""
@@ -1499,7 +1499,7 @@ msgstr ""
 "Fare clic con il pulsante destro del mouse sull'elenco degli utenti o "
 "sull'area di chat per aprire il menu contestuale."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "Right-click a taskbar button for window commands (Restore, Minimize, Maximize, Close), or right-click an empty spot on the taskbar to arrange every open window at once: Cascade, Tile Horizontally or Vertically, and Minimize All."
 msgstr ""
@@ -1514,7 +1514,7 @@ msgstr ""
 msgid "Special Messages"
 msgstr "Messaggi speciali"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "Start Menu"
 msgstr "Start Menu"
@@ -1524,7 +1524,7 @@ msgstr "Start Menu"
 msgid "Status-Bar Account Widget"
 msgstr "Stato-Bar Account Widget"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "Taskbar"
 msgstr "Barra delle applicazioni"
@@ -1582,7 +1582,7 @@ msgstr ""
 "amministratori possono utilizzare il pulsante Attiva o disattiva per "
 "attivare il bot a livello globale."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "The Start button opens a menu mirroring the menu bar, grouped into Tools, View, Admin (administrators only) and Help. Both paths do the same thing — use whichever is closer."
 msgstr ""
@@ -1630,14 +1630,14 @@ msgstr ""
 "ripetizione, la prossima stima del fuoco e il comando. Selezionare una riga "
 "per modificare o interrompere il timer."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "The tray at the right end of the taskbar shows a clock."
 msgstr ""
 "Il vassoio all'estremità destra della barra delle applicazioni mostra un "
 "orologio."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:67
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:73
 #, elixir-autogen, elixir-format
 msgid "The window layout — position, size, maximized state — is saved in your browser and restored on the next visit."
 msgstr ""
@@ -1681,7 +1681,7 @@ msgid "Timers are lost on disconnect or page reload"
 msgstr "I timer sono persi su disconnessione o ricarica pagina"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:68
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:79
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:85
 #: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:53
 #, elixir-autogen, elixir-format
@@ -1843,7 +1843,7 @@ msgstr ""
 "view Ctrl+Shift+. — Toggle screen share Ctrl+Shift+Q — End call media"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:74
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:82
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:88
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
 msgstr "Sessione P2P"
@@ -2166,3 +2166,18 @@ msgstr "Mostra canali pubblici attivi a cui non ti sei ancora unito quando il se
 #, elixir-autogen, elixir-format
 msgid "The Conversations sidebar is the left IRC navigation pane: activity, joined channels, recent PMs, auto-join channels, and popular channel suggestions."
 msgstr "La barra laterale Conversazioni è la navigazione IRC a sinistra: attività, canali aperti, PM recenti, canali auto-join e suggerimenti di canali popolari."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "Named after your conversation"
+msgstr "Prende il nome dalla tua conversazione"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "— The title bar reads #channel[yournick] for a channel and theirnick:yournick for a private message, followed by your identity state and the member count. The taskbar button and the browser tab carry the same name, so you can tell your chat tabs apart at a glance."
+msgstr ""
+"— La barra del titolo mostra #channel[yournick] per un canale e "
+"theirnick:yournick per un messaggio privato, seguito dal tuo stato di "
+"identità e dal numero di membri. Il pulsante nella barra delle applicazioni "
+"e la scheda del browser portano lo stesso nome, così distingui le tue schede "
+"di chat a colpo d'occhio."

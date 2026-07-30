@@ -364,7 +364,9 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
       <span class="inline-flex h-4 w-4 shrink-0 items-center justify-center">
         {render_slot(@icon)}
       </span>
-      <span class="max-w-[12ch] truncate">{@label}</span>
+      <%!-- 16ch: a window titled after its conversation ("#lobby[Troll]") must
+            fit without an ellipsis. --%>
+      <span class="max-w-[16ch] truncate">{@label}</span>
       <span :if={@badge} class="text-primary shrink-0 font-bold tabular-nums">{@badge}</span>
     </button>
     """

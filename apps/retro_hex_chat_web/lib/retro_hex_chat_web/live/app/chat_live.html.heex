@@ -1,5 +1,13 @@
 <%!-- Hidden hooks --%>
-<div id="title-flash" phx-hook="TitleFlashHook" class="hidden"></div>
+<%!-- Owns document.title: `data-title` is the live base, the activity flash
+      layers on top of it (see ChatTitle). --%>
+<div
+  id="document-title"
+  phx-hook="DocumentTitleHook"
+  data-title={ChatTitle.document_title(@session, @show_status_tab)}
+  class="hidden"
+>
+</div>
 <div id="nick-change-hook" phx-hook="NickChangeFormHook" class="hidden"></div>
 <form id="nick-change-session-form" action={~p"/chat/session"} method="post" class="hidden">
   <input type="hidden" name="_csrf_token" value={Plug.CSRFProtection.get_csrf_token()} />
@@ -51,7 +59,7 @@
           restorable/draggable/resizable, never closable. --%>
     <.desktop_window
       id="chat"
-      title={dgettext("chat", "RetroHexChat")}
+      title={ChatTitle.window_title(@session, @show_status_tab)}
       pinned
       default_maximized
       default_x={48}
@@ -64,6 +72,7 @@
       data-testid="chat-window"
     >
       <:icon><Icons.icon_chat class="h-4 w-4" /></:icon>
+      <:meta>{ChatTitle.window_meta(@session, length(@channel_users))}</:meta>
 
       <%!-- MDI layout: conversations | chat | nicklist --%>
       <div class="flex flex-1 min-h-0">
@@ -1228,6 +1237,7 @@
 
     <:taskbar>
       <.chat_taskbar
+        chat_label={ChatTitle.window_title(@session, @show_status_tab)}
         open_windows={@open_windows}
         is_admin={admin?(@session)}
         p2p_session={@p2p_session}

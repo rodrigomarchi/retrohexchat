@@ -26,7 +26,8 @@ test.describe("Returning user (registered nick)", () => {
     await connect.authenticateWithPassword(pw);
 
     await expect(page).toHaveURL(/\/chat(\?.*)?$/);
-    await expect(page).toHaveTitle("RetroHexChat");
+    // The tab is named after the conversation on screen and this user's nick.
+    await expect(page).toHaveTitle(new RegExp(`\\[${nick}\\]$`));
   });
 
   test("wrong password shows error, retry with correct password works (D)", async ({

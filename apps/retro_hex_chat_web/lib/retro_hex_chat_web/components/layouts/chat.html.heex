@@ -8,8 +8,21 @@
       name="plausible-env"
       content={Application.get_env(:retro_hex_chat_web, :plausible_env, "prod")}
     />
-    <.live_title default="RetroHexChat">
-      {assigns[:page_title]}
+    <%!-- Two ways to title a page live here, and the difference matters.
+
+          `page_title` is the framework's: LiveView re-sends it on every change
+          and its client writes `document.title`. Connect and the dev dashboard
+          use it.
+
+          The chat cannot: its tab title also carries the activity flash, so a
+          single client-side owner (DocumentTitleHook) composes the two. It
+          renders its first-paint title as `initial_title` instead, which
+          LiveView does not track — and with no `default` here, LiveView's
+          mount-time `putTitle` returns without writing, leaving the hook alone
+          with `document.title`. Adding a default would hand the mount write
+          back to the framework and clobber the hook. --%>
+    <.live_title>
+      {assigns[:page_title] || assigns[:initial_title]}
     </.live_title>
     <meta name="robots" content={RetroHexChatWeb.SEO.noindex_content()} />
     <link rel="icon" type="image/svg+xml" href={~p"/images/favicon.svg"} />

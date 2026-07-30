@@ -26,79 +26,134 @@ defmodule RetroHexChatWeb.ChatLive.ConversationsReadModelTest do
     pid
   end
 
-  test "loads unjoined visible channels by popularity from the channel directory" do
-    popular = unique("sidebarpopular")
-    quieter = unique("sidebarquiet")
-    joined = unique("sidebarjoined")
-
-    start_channel(popular)
-    start_channel(quieter)
-    start_channel(joined)
-
-    Enum.each(["Alice", "Bob", "Carol"], fn nick ->
-      assert {:ok, _state} = Server.join(popular, nick)
+  defp listing(entries) do
+    Enum.map(entries, fn {name, user_count, extra} ->
+      Map.merge(
+        %{name: name, topic: nil, user_count: user_count, joined?: false, modes: ""},
+        Map.new(extra)
+      )
     end)
-
-    assert {:ok, _state} = Server.join(quieter, "Dave")
-    assert {:ok, _state} = Server.join(joined, "Viewer")
-
-    session =
-      "Viewer"
-      |> Session.new()
-      |> Session.add_channel(joined)
-
-    socket = session |> socket_with_session() |> ConversationsReadModel.load_popular_channels()
-
-    names = Enum.map(socket.assigns.popular_channels, & &1.name)
-
-    assert popular in names
-    assert quieter in names
-    refute joined in names
-
-    assert Enum.find_index(names, &(&1 == popular)) <
-             Enum.find_index(names, &(&1 == quieter))
   end
 
-  test "does not offer private placeholders as joinable popular channels" do
-    private = unique("sidebarprivate")
+  # The selection is tested on a known listing: the channel directory is global
+  # to the suite, so "is this channel among the top ten?" cannot be asserted
+  # against whatever channels the other tests left running.
+  describe "popular_channels/2" do
+    test "orders unjoined public channels by popularity" do
+      channels = listing([{"#quiet", 1, []}, {"#busy", 9, []}, {"#middling", 4, []}])
 
-    start_channel(private)
-    assert {:ok, _state} = Server.join(private, "Owner")
-    assert :ok = Server.set_mode(private, "Owner", "+p", [])
+      assert Enum.map(ConversationsReadModel.popular_channels(channels, []), & &1.name) ==
+               ["#busy", "#middling", "#quiet"]
+    end
 
-    socket =
-      "Viewer"
-      |> Session.new()
-      |> socket_with_session()
-      |> ConversationsReadModel.load_popular_channels()
+    test "drops the channels this session already joined" do
+      channels = listing([{"#joined", 9, []}, {"#open", 1, []}])
 
-    refute Enum.any?(socket.assigns.popular_channels, fn channel ->
-             not String.starts_with?(channel.name, "#")
-           end)
+      assert Enum.map(ConversationsReadModel.popular_channels(channels, ["#joined"]), & &1.name) ==
+               ["#open"]
+    end
+
+    test "drops private placeholders — they are not a name anyone can join" do
+      channels = listing([{"Prv", 9, []}, {"#open", 1, []}])
+
+      assert Enum.map(ConversationsReadModel.popular_channels(channels, []), & &1.name) ==
+               ["#open"]
+    end
+
+    test "drops invite-only and keyed channels — one click cannot get you in" do
+      channels =
+        listing([
+          {"#invite", 9, [invite_only?: true]},
+          {"#keyed", 8, [modes: "+k"]},
+          {"#open", 1, []}
+        ])
+
+      assert Enum.map(ConversationsReadModel.popular_channels(channels, []), & &1.name) ==
+               ["#open"]
+    end
+
+    test "shows at most ten suggestions" do
+      channels = listing(for n <- 1..15, do: {"#c#{n}", n, []})
+
+      assert length(ConversationsReadModel.popular_channels(channels, [])) == 10
+    end
   end
 
-  test "does not offer restricted channels as one-click popular suggestions" do
-    invite_only = unique("sidebarinvite")
-    keyed = unique("sidebarkey")
+  describe "load_popular_channels/1" do
+    test "reads the live channel directory and leaves out the joined ones" do
+      popular = unique("sidebarpopular")
+      joined = unique("sidebarjoined")
 
-    start_channel(invite_only)
-    start_channel(keyed)
+      start_channel(popular)
+      start_channel(joined)
 
-    assert {:ok, _state} = Server.join(invite_only, "Owner")
-    assert :ok = Server.set_mode(invite_only, "Owner", "+i", [])
-    assert {:ok, _state} = Server.join(keyed, "Owner")
-    assert :ok = Server.set_mode(keyed, "Owner", "+k", ["secret"])
+      Enum.each(["Alice", "Bob", "Carol"], fn nick ->
+        assert {:ok, _state} = Server.join(popular, nick)
+      end)
 
-    socket =
-      "Viewer"
-      |> Session.new()
-      |> socket_with_session()
-      |> ConversationsReadModel.load_popular_channels()
+      assert {:ok, _state} = Server.join(joined, "Viewer")
 
-    names = Enum.map(socket.assigns.popular_channels, & &1.name)
+      session =
+        "Viewer"
+        |> Session.new()
+        |> Session.add_channel(joined)
 
-    refute invite_only in names
-    refute keyed in names
+      socket = session |> socket_with_session() |> ConversationsReadModel.load_popular_channels()
+
+      names = Enum.map(socket.assigns.popular_channels, & &1.name)
+      counts = Enum.map(socket.assigns.popular_channels, & &1.user_count)
+
+      # Which channels make the top ten depends on every channel the suite has
+      # running, so assert the contract rather than a membership: the directory
+      # was read, the joined channel is out, and the rest is ordered and capped.
+      refute names == []
+      refute joined in names
+      assert Enum.all?(names, &String.starts_with?(&1, "#"))
+      assert counts == Enum.sort(counts, :desc)
+      assert length(names) <= 10
+    end
+
+    test "does not offer private placeholders as joinable popular channels" do
+      private = unique("sidebarprivate")
+
+      start_channel(private)
+      assert {:ok, _state} = Server.join(private, "Owner")
+      assert :ok = Server.set_mode(private, "Owner", "+p", [])
+
+      socket =
+        "Viewer"
+        |> Session.new()
+        |> socket_with_session()
+        |> ConversationsReadModel.load_popular_channels()
+
+      refute Enum.any?(socket.assigns.popular_channels, fn channel ->
+               not String.starts_with?(channel.name, "#")
+             end)
+    end
+
+    test "does not offer restricted channels as one-click popular suggestions" do
+      invite_only = unique("sidebarinvite")
+      keyed = unique("sidebarkey")
+
+      start_channel(invite_only)
+      start_channel(keyed)
+
+      assert {:ok, _state} = Server.join(invite_only, "Owner")
+      assert :ok = Server.set_mode(invite_only, "Owner", "+i", [])
+      assert {:ok, _state} = Server.join(keyed, "Owner")
+      assert :ok = Server.set_mode(keyed, "Owner", "+k", ["secret"])
+
+      socket =
+        "Viewer"
+        |> Session.new()
+        |> socket_with_session()
+        |> ConversationsReadModel.load_popular_channels()
+
+      names = Enum.map(socket.assigns.popular_channels, & &1.name)
+
+      refute invite_only in names
+      refute keyed in names
+    end
   end
 
   defp socket_with_session(session) do

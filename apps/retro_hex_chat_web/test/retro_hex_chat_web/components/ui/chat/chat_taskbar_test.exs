@@ -11,7 +11,11 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbarTest do
     render_component(
       &ChatTaskbar.chat_taskbar/1,
       Keyword.merge(
-        [open_windows: MapSet.new(open_ids), is_admin: Keyword.get(opts, :is_admin, false)],
+        [
+          chat_label: "#lobby[alice]",
+          open_windows: MapSet.new(open_ids),
+          is_admin: Keyword.get(opts, :is_admin, false)
+        ],
         Keyword.delete(opts, :is_admin)
       )
     )
@@ -85,6 +89,12 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbarTest do
       html = taskbar(["account", "away"])
 
       assert html =~ "data-mobile-task-switcher"
+    end
+
+    test "the chat button is named after the conversation, like the window" do
+      html = taskbar([], chat_label: "#retro[alice]")
+
+      assert html =~ "#retro[alice]"
     end
   end
 end

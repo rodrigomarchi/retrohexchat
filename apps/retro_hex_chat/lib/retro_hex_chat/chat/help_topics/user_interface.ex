@@ -32,6 +32,9 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
           "restore",
           "tray",
           "clock",
+          "title",
+          "title bar",
+          "browser tab",
           "cascade",
           "tile",
           "help viewer",
@@ -45,7 +48,9 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
             "help",
             "The chat runs on a Windows-style desktop: the chat itself is one pinned window " <>
               "(maximized by default) that you can restore, drag and resize, over a taskbar " <>
-              "with a Start menu and a tray clock. Window layout persists across visits. "
+              "with a Start menu and a tray clock. Window layout persists across visits. " <>
+              "The window, its taskbar button and the browser tab are all named after the " <>
+              "conversation you are in. "
           ) <>
             dgettext(
               "help",

@@ -6,8 +6,8 @@ Single source of truth for the browser-level Playwright suite.
 
 ## Current Coverage
 
-- **197 spec files** under `e2e/tests/`.
-- **371 Playwright `test()` cases**.
+- **203 spec files** under `e2e/tests/`.
+- **391 Playwright `test()` cases**.
 - **Auth/lifecycle:** 17 mapped flows, all done.
 - **Chat foundation:** 25 mapped flows, all done.
 - **Chat extended coverage:** 344 mapped flows, 343 done, 1 intentionally blocked.
@@ -392,6 +392,9 @@ make ci
 | T11 | Dialog title close, cancel buttons, and backdrop paths close major dialogs consistently                                                         | `tests/chat-dialog-close.spec.ts`        | P2       | done   |
 | T12 | Reconnect state disables destructive shell menus while keeping Help accessible and preserving draft input                                       | `tests/chat-reconnect-shell.spec.ts`     | P1       | done   |
 | T13 | Taskbar collapses a window family into one grouped entry, expands it, and drops back to a plain button                                          | `tests/chat-taskbar-groups.spec.ts`      | P2       | done   |
+| T14 | Window title bar, taskbar button, and browser tab all name the active conversation `#channel[nick]` and follow tab switches                     | `tests/chat-window-title.spec.ts`        | P1       | done   |
+| T15 | Activity flash alternates over the conversation's name and restores it                                                                          | `tests/chat-window-title.spec.ts`        | P1       | done   |
+| T16 | A private message titles the window `remote:mine`                                                                                               | `tests/chat-window-title.spec.ts`        | P2       | done   |
 
 ## Backlog U - Dialog CRUD And Settings Depth
 

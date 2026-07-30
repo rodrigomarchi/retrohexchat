@@ -67,6 +67,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
   alias RetroHexChatWeb.App.SessionHelpers
   alias RetroHexChatWeb.ChatLive
   alias RetroHexChatWeb.ChatLive.ChatContext
+  alias RetroHexChatWeb.ChatLive.ChatTitle
   alias RetroHexChatWeb.ChatLive.Components.{ConversationsContextMenu, UserContextMenus}
   alias RetroHexChatWeb.ChatLive.Helpers.PathHelpers
   alias RetroHexChatWeb.Icons
@@ -781,7 +782,10 @@ defmodule RetroHexChatWeb.App.ChatLive do
       messages: %{},
       notify_debounce_timers: %{},
       oldest_message_id: nil,
-      page_title: dgettext("chat", "RetroHexChat"),
+      # The first-paint title, and deliberately not `page_title`: LiveView would
+      # then own document.title and overwrite the hook that composes the title
+      # with the activity flash (see ChatTitle and the chat root layout).
+      initial_title: ChatTitle.document_title(session, false),
       # Search content state (query/results/filters/index/error) is owned by
       # ChatLive.Components.SearchBar. The parent keeps only `search_visible`
       # for Escape-dismissal/overlay coordination (see SearchEvents).

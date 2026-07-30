@@ -576,7 +576,7 @@ msgstr "節"
 #: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:60
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:56
 #: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:65
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:73
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:79
 #: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:46
@@ -781,7 +781,7 @@ msgstr "用戶數"
 msgid "User Interactions"
 msgstr "用戶互動"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:76
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:212
 #, elixir-autogen, elixir-format
 msgid "User Interface Overview"
@@ -1250,7 +1250,7 @@ msgstr "事件標籤"
 msgid "Every connected user can view the MOTD. Server administrators can set or clear it from the Admin Console MOTD tab."
 msgstr "每個連接的用戶都可以查看MOTD. 服務器管理員可以從Admin Console MOTD標籤中設置或清除它."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "Every open window gets a taskbar button. Clicking a button focuses or restores its window; clicking the focused window's button minimizes it."
 msgstr "每個打開的窗口都有一個任務欄按鈕. 點擊按鈕聚焦或恢復其窗口;點擊焦點窗口的按鈕可以最小化."
@@ -1282,7 +1282,7 @@ msgstr "幫助 > 當天的訊息"
 msgid "Identity & Presence"
 msgstr "身份和存在"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:65
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:71
 #, elixir-autogen, elixir-format
 msgid "Layout Persistence"
 msgstr "佈局持久性"
@@ -1334,12 +1334,12 @@ msgstr "NickServ 概覽"
 msgid "Notify List"
 msgstr "通知名單"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:57
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "On a Phone"
 msgstr "在電話上"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:65
 #, elixir-autogen, elixir-format
 msgid "On a narrow screen the desktop shows one window at a time: the current window fills the screen like a phone app. The menu bar, Start button and taskbar stay put — tap a taskbar button to switch between your open windows. Windows can't be dragged, resized, minimized or maximized here; you just open, switch and close them. Dialogs and forms fill the screen too, so they always fit."
 msgstr ""
@@ -1392,7 +1392,7 @@ msgstr "重複計時器:10至86 400秒"
 msgid "Right-click a nickname in the user list or chat area to open the context menu."
 msgstr "在用戶列表或聊天區右鍵單擊暱稱打開上下文菜單."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "Right-click a taskbar button for window commands (Restore, Minimize, Maximize, Close), or right-click an empty spot on the taskbar to arrange every open window at once: Cascade, Tile Horizontally or Vertically, and Minimize All."
 msgstr ""
@@ -1404,7 +1404,7 @@ msgstr ""
 msgid "Special Messages"
 msgstr "特殊信件"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "Start Menu"
 msgstr "啓動菜單"
@@ -1414,7 +1414,7 @@ msgstr "啓動菜單"
 msgid "Status-Bar Account Widget"
 msgstr "狀態欄賬戶部件"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "Taskbar"
 msgstr "任務欄"
@@ -1456,7 +1456,7 @@ msgstr ""
 "General tab 顯示選中的bot的名稱,暱稱,命令前綴,啓用狀態,配置的能力,以及當bot進程運行時的運行時間統計. 管理員可以使用“ 啓用” "
 "或“ 禁用” 按鈕來從全球切換機器人 。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "The Start button opens a menu mirroring the menu bar, grouped into Tools, View, Admin (administrators only) and Help. Both paths do the same thing — use whichever is closer."
 msgstr ""
@@ -1491,12 +1491,12 @@ msgstr "菜單項運行"
 msgid "The table shows each active timer name, interval, repeat mode, next fire estimate, and command. Select a row to edit or stop that timer."
 msgstr "該表顯示每個活動計時器名稱,間隔,重複模式,下一場火災估計,以及命令. 選擇編輯或停止計時器的行 。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "The tray at the right end of the taskbar shows a clock."
 msgstr "任務欄右端的托盤顯示一個時鐘."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:67
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:73
 #, elixir-autogen, elixir-format
 msgid "The window layout — position, size, maximized state — is saved in your browser and restored on the next visit."
 msgstr "窗口布局——位置,大小,最大化狀態——保存在您的瀏覽器中,並在下次訪問時恢復."
@@ -1534,7 +1534,7 @@ msgid "Timers are lost on disconnect or page reload"
 msgstr "斷開或重新裝入頁面時丟失計時器"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:68
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:79
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:85
 #: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:53
 #, elixir-autogen, elixir-format
@@ -1670,7 +1670,7 @@ msgstr ""
 "Ctrl+Shift   結束調用媒體"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:74
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:82
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:88
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
 msgstr "P2P會議"
@@ -1926,3 +1926,15 @@ msgstr "當伺服器有可建議的房間時，顯示尚未加入的活躍公開
 #, elixir-autogen, elixir-format
 msgid "The Conversations sidebar is the left IRC navigation pane: activity, joined channels, recent PMs, auto-join channels, and popular channel suggestions."
 msgstr "Conversations 側邊欄是左側 IRC 導覽：活動、已加入頻道、最近私訊、auto-join 頻道和熱門頻道建議。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "Named after your conversation"
+msgstr "以目前對話命名"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "— The title bar reads #channel[yournick] for a channel and theirnick:yournick for a private message, followed by your identity state and the member count. The taskbar button and the browser tab carry the same name, so you can tell your chat tabs apart at a glance."
+msgstr ""
+"— 標題列顯示頻道的 #channel[yournick] 或私訊的 "
+"theirnick:yournick，後面接著你的身分狀態和成員數。工作列按鈕和瀏覽器分頁使用相同的名稱，一眼就能分辨各個聊天分頁。"

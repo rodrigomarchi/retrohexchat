@@ -15,7 +15,7 @@ import ChatPaginationHook from "./chat/chat_pagination_hook";
 import SearchHighlightHook from "./chat/search_highlight_hook";
 import ShortcutDispatcherHook from "./input/shortcut_dispatcher_hook";
 import SoundHook from "./input/sound_hook";
-import TitleFlashHook from "./notifications/title_flash_hook";
+import DocumentTitleHook from "./notifications/document_title_hook";
 import MenuBarHook from "./ui/menu_bar_hook";
 import MenuRepositionHook from "./ui/menu_reposition_hook";
 import InfiniteScrollHook from "./ui/infinite_scroll_hook";
@@ -72,7 +72,7 @@ export const criticalHooks = {
   SearchHighlightHook: SearchHighlightHook,
   ShortcutDispatcherHook: ShortcutDispatcherHook,
   SoundHook: SoundHook,
-  TitleFlashHook: TitleFlashHook,
+  DocumentTitleHook: DocumentTitleHook,
   MenuBarHook: MenuBarHook,
   MenuRepositionHook: MenuRepositionHook,
   InfiniteScrollHook: InfiniteScrollHook,

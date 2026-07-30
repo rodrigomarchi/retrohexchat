@@ -50,13 +50,19 @@ defmodule RetroHexChatWeb.Components.UI.AccountStatus do
     """
   end
 
+  @doc """
+  The label for an identity state.
+
+  Public so surfaces that show the state without the whole widget — the chat
+  window's title bar meta zone — name it exactly like the status bar does.
+  """
+  @spec account_state_label(atom()) :: String.t()
+  def account_state_label(:away), do: dgettext("ui", "Away")
+  def account_state_label(:identified), do: dgettext("ui", "Identified")
+  def account_state_label(_), do: dgettext("ui", "Guest")
+
   @spec account_label(String.t(), atom()) :: String.t()
   defp account_label(nickname, state), do: "#{nickname} · #{account_state_label(state)}"
-
-  @spec account_state_label(atom()) :: String.t()
-  defp account_state_label(:away), do: dgettext("ui", "Away")
-  defp account_state_label(:identified), do: dgettext("ui", "Identified")
-  defp account_state_label(_), do: dgettext("ui", "Guest")
 
   @spec away_toggle_label(boolean()) :: String.t()
   defp away_toggle_label(true), do: dgettext("ui", "Back")

@@ -13,6 +13,10 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
 
   alias RetroHexChatWeb.Icons
 
+  attr :chat_label, :string,
+    required: true,
+    doc: "Title of the pinned chat window — the button mirrors it, as Win98 does"
+
   attr :open_windows, :any, default: MapSet.new()
   attr :is_admin, :boolean, default: false
   attr :p2p_session, :map, default: nil
@@ -182,7 +186,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
 
   defp taskbar_windows(assigns) do
     [
-      %{id: "chat", label: dgettext("chat", "RetroHexChat"), icon_fn: :icon_chat},
+      %{id: "chat", label: assigns.chat_label, icon_fn: :icon_chat},
       %{id: "url-catcher", label: dgettext("chat", "URL Catcher"), icon_fn: :icon_link},
       %{id: "channel-list", label: dgettext("chat", "Channel List"), icon_fn: :icon_channels}
     ]
