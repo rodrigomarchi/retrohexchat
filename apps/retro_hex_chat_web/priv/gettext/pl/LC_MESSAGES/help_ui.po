@@ -1511,11 +1511,6 @@ msgstr "Wiadomości specjalne"
 msgid "Start Menu"
 msgstr "Uruchom menu"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:8
-#, elixir-autogen, elixir-format
-msgid "Status-Bar Account Widget"
-msgstr "Widget konta status- Bar"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "Taskbar"
@@ -1685,13 +1680,6 @@ msgstr "Poszukiwanie użytkowników"
 msgid "User Modes"
 msgstr "Tryby użytkownika"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:41
-#, elixir-autogen, elixir-format
-msgid "Your account state, current channel, user count, online buddy badge, lag, and mute state."
-msgstr ""
-"Twój stan konta, bieżący kanał, liczba użytkowników, znacznik online kumpel,"
-" opóźnienie i stan nieme."
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "and"
@@ -1834,14 +1822,6 @@ msgstr "Sesja P2P"
 msgid "Account"
 msgstr "Konto"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "Account settings live in four windows — Account, Profile, Away and User Modes — all reachable from the File > Account menu, the Start menu's Account group, or the toolbar. The status-bar account widget opens Account directly."
-msgstr ""
-"Ustawienia konta na żywo w czterech oknach - Konto, Profil, Mody Away i User"
-" - wszystkie dostępne z pliku > Menu konta, grupa konta startowego lub pasek"
-" narzędzi. Widget konta status- bar otwiera konto bezpośrednio."
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "Away"
@@ -1856,14 +1836,6 @@ msgstr ""
 "niezarejestrowane nickname show Register, zarejestrowane nickname show "
 "Identify and Drop registration, a błędy hasła NickServ pozostają w linii. "
 "Sesja Ghost rozłącza nieświeżą sesję po wpisaniu tej ksywki i jej hasła."
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:10
-#, elixir-autogen, elixir-format
-msgid "The widget shows your current nickname and state: Guest, Identified, or Away. Click it to open the Account window. The adjacent away button quickly toggles between away and back without opening anything."
-msgstr ""
-"widget pokazuje aktualny pseudonim i stan: Gość, zidentyfikowany, lub "
-"daleko. Kliknij, aby otworzyć okno konta. Przyległy przycisk odjazdu szybko "
-"przełącza się między powrotem i z powrotem bez otwierania niczego."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:34
 #, elixir-autogen, elixir-format
@@ -2152,3 +2124,31 @@ msgstr ""
 "dla wiadomości prywatnej, a dalej Twój stan tożsamości i liczbę osób. "
 "Przycisk na pasku zadań i karta przeglądarki noszą tę samą nazwę, więc "
 "rozróżnisz karty czatu na pierwszy rzut oka."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:2
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Account settings live in four windows — Account, Profile, Away and User Modes — all reachable from the File > Account menu, the Start menu's Account group, or the toolbar."
+msgstr ""
+"Ustawienia konta mieszkają w czterech oknach — Konto, Profil, Nieobecny i "
+"Tryby użytkownika — wszystkie dostępne z menu Plik > Konto, grupy Konto w "
+"menu Start lub paska narzędzi."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "Active call or P2P session, online buddy badge, lag, and mute state. Your account state and current conversation are named in the window title bar."
+msgstr ""
+"Aktywne połączenie lub sesja P2P, odznaka kontaktów online, opóźnienie i "
+"stan wyciszenia. Stan Twojego konta i bieżąca rozmowa widnieją na pasku "
+"tytułu okna."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "The chat window's title bar shows your nickname next to the conversation you are reading, followed by your state: Guest, Identified, or Away."
+msgstr ""
+"Pasek tytułu okna czatu pokazuje Twój pseudonim obok czytanej rozmowy, a po "
+"nim Twój stan: Gość, Zidentyfikowany lub Nieobecny."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "Where Your State Is Shown"
+msgstr "Gdzie Widać Twój Stan"

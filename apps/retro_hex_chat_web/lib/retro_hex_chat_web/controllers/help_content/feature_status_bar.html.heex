@@ -1,19 +1,21 @@
 <p>
   {dgettext(
     "help_features",
-    "The status bar at the bottom of the screen provides real-time information about your account, connection, and current channel."
+    "The status bar at the right of the menu bar reports your live session: an active call, who is online from your notify list, how fast the server is answering, and whether sounds are muted."
   )}
 </p>
-<.help_h4 icon={:icon_tab_status}>{dgettext("help_features", "Three Sections")}</.help_h4>
 <p>
-  <strong>{dgettext("help_features", "Left:")}</strong>
-  {dgettext("help_features", "Account widget with nickname and identity or away state.")}<br />
-  <strong>
-    {dgettext("help_features", "Center:")}
-  </strong>
   {dgettext(
     "help_features",
-    "Current channel or private message name, user count, and online buddy badge."
+    "Your nickname, your identity state and the conversation you are reading are not repeated here — the chat window's title bar names them."
+  )}
+</p>
+<.help_h4 icon={:icon_tab_status}>{dgettext("help_features", "Two Sections")}</.help_h4>
+<p>
+  <strong>{dgettext("help_features", "Left:")}</strong>
+  {dgettext(
+    "help_features",
+    "Active group call or P2P session, and the online buddy badge."
   )}<br />
   <strong>
     {dgettext("help_features", "Right:")}
@@ -25,6 +27,10 @@
 </p>
 <.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
+  <.help_link topic="ui-desktop">
+    {dgettext("help_features", "Desktop & Windows")}
+  </.help_link>
+  ·
   <.help_link topic="feature-lag-indicator">
     {dgettext("help_features", "Lag Indicator")}
   </.help_link>

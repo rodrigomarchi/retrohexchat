@@ -1409,11 +1409,6 @@ msgstr "特殊信件"
 msgid "Start Menu"
 msgstr "啓動菜單"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:8
-#, elixir-autogen, elixir-format
-msgid "Status-Bar Account Widget"
-msgstr "狀態欄賬戶部件"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "Taskbar"
@@ -1551,11 +1546,6 @@ msgstr "用戶查詢"
 msgid "User Modes"
 msgstr "用戶模式"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:41
-#, elixir-autogen, elixir-format
-msgid "Your account state, current channel, user count, online buddy badge, lag, and mute state."
-msgstr "您的賬戶狀態, 當前頻道, 用戶數, 在線好友徽章, 滯後, 和啞聲狀態 。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "and"
@@ -1680,12 +1670,6 @@ msgstr "P2P會議"
 msgid "Account"
 msgstr "賬戶"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "Account settings live in four windows — Account, Profile, Away and User Modes — all reachable from the File > Account menu, the Start menu's Account group, or the toolbar. The status-bar account widget opens Account directly."
-msgstr ""
-"賬戶設置在四個窗口——賬戶、配置文件、離開和用戶模式——都可從文件獲取 > 賬戶菜單、“啓動”菜單賬戶組或工具欄。 狀態欄賬戶部件直接打開賬戶 。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "Away"
@@ -1698,11 +1682,6 @@ msgstr ""
 "註冊員用NickServ 來申請你的暱稱 將此會話記錄爲已註冊的暱稱 。 "
 "窗口適應暱稱狀態:未註冊的暱稱顯示註冊,註冊的暱稱顯示識別和丟棄註冊,NickServ密碼錯誤保留在內. Ghost 會話在輸入暱稱及其密碼後斷開一個 "
 "stale 會話 。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:10
-#, elixir-autogen, elixir-format
-msgid "The widget shows your current nickname and state: Guest, Identified, or Away. Click it to open the Account window. The adjacent away button quickly toggles between away and back without opening anything."
-msgstr "部件顯示您的當前暱稱和狀態: 來賓、 身份識別或退出 。 單擊它打開賬戶窗口。 相鄰的離家按鈕迅速在離家和退家之間切換,沒有打開任何東西."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:34
 #, elixir-autogen, elixir-format
@@ -1938,3 +1917,23 @@ msgid "— The title bar reads #channel[yournick] for a channel and theirnick:yo
 msgstr ""
 "— 標題列顯示頻道的 #channel[yournick] 或私訊的 "
 "theirnick:yournick，後面接著你的身分狀態和成員數。工作列按鈕和瀏覽器分頁使用相同的名稱，一眼就能分辨各個聊天分頁。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:2
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Account settings live in four windows — Account, Profile, Away and User Modes — all reachable from the File > Account menu, the Start menu's Account group, or the toolbar."
+msgstr "帳戶設定分布在四個視窗中——帳戶、個人資料、離開和使用者模式——都可以從 檔案 > 帳戶 選單、開始選單的帳戶群組或工具列開啟。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "Active call or P2P session, online buddy badge, lag, and mute state. Your account state and current conversation are named in the window title bar."
+msgstr "進行中的通話或 P2P 工作階段、線上好友徽章、延遲和靜音狀態。你的帳戶狀態和目前對話顯示在視窗標題列。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "The chat window's title bar shows your nickname next to the conversation you are reading, followed by your state: Guest, Identified, or Away."
+msgstr "聊天視窗的標題列會在你正在閱讀的對話旁顯示你的暱稱，後面接著你的狀態：訪客、已驗證或離開。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "Where Your State Is Shown"
+msgstr "你的狀態顯示在哪裡"

@@ -39,7 +39,6 @@ defmodule RetroHexChatWeb.ChatLive.ChatTitle do
   use Gettext, backend: RetroHexChatWeb.Gettext
 
   alias RetroHexChat.Accounts.Session
-  alias RetroHexChatWeb.Components.UI.AccountStatus
 
   @app_name "RetroHexChat"
 
@@ -93,12 +92,12 @@ defmodule RetroHexChatWeb.ChatLive.ChatTitle do
   The live status shown after the window title: the identity state, plus the
   member count when the active conversation is a channel that has one.
 
-  Named exactly like the status bar names it — both read
-  `AccountStatus.account_state_label/1`.
+  This is where the chat says who you are — the header's status bar dropped its
+  account widget once the title carried the same facts.
   """
   @spec window_meta(Session.t(), non_neg_integer()) :: String.t()
   def window_meta(%Session{} = session, user_count) when is_integer(user_count) do
-    state = AccountStatus.account_state_label(Session.identity_state(session))
+    state = state_label(Session.identity_state(session))
 
     if session.active_pm == nil and user_count > 0 do
       "#{state} · #{user_count}"
@@ -109,4 +108,11 @@ defmodule RetroHexChatWeb.ChatLive.ChatTitle do
 
   @spec status_label() :: String.t()
   defp status_label, do: dgettext("chat", "Status")
+
+  # Same msgids the status bar's account widget used before the title took the
+  # job, so every locale keeps its translation.
+  @spec state_label(atom()) :: String.t()
+  defp state_label(:away), do: dgettext("ui", "Away")
+  defp state_label(:identified), do: dgettext("ui", "Identified")
+  defp state_label(_state), do: dgettext("ui", "Guest")
 end

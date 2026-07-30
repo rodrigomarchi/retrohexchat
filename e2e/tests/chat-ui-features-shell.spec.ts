@@ -16,10 +16,11 @@ test.describe.serial("UI feature shell journeys", () => {
     const bio = `account-bio-${Date.now()}`;
 
     try {
-      await expect(user.chat.statusBarAccountWidget).toContainText(user.nick);
-      await expect(user.chat.statusBarAccountWidget).toContainText(
-        "Identified",
+      // Identity lives in the chat window's title bar, not in the status bar.
+      await expect(user.chat.chatWindowTitleBar).toContainText(
+        `[${user.nick}]`,
       );
+      await expect(user.chat.chatWindowTitleBar).toContainText("Identified");
 
       await user.chat.openAccountRegisterFromMenu();
       await expect(user.chat.accountDialog).toContainText(
@@ -63,11 +64,7 @@ test.describe.serial("UI feature shell journeys", () => {
       await user.chat.awayDialog
         .getByRole("button", { name: "Set Away" })
         .click();
-      await expect(user.chat.statusBarAccountWidget).toContainText("Away");
-      await expect(user.chat.statusBarAwayToggle).toHaveAttribute(
-        "aria-label",
-        "Back",
-      );
+      await expect(user.chat.chatWindowTitleBar).toContainText("Away");
 
       await user.chat.openUserModesFromMenu();
       await user.chat.userModesDialog
@@ -124,8 +121,10 @@ test.describe.serial("UI feature shell journeys", () => {
       await user.chat.sendMessage(marker);
       await user.chat.expectMessageVisible(marker);
 
+      // Desktop triggers only, read from their label span: the mobile "Menu"
+      // trigger and the open dropdowns share this container.
       const triggers = await user.chat.menuBar
-        .locator("button[data-menubar-trigger]")
+        .locator(".app-menu-bar__desktop-menu [data-menubar-label]")
         .allTextContents();
       expect(triggers.map((label) => label.trim())).toEqual([
         "File",
@@ -134,6 +133,7 @@ test.describe.serial("UI feature shell journeys", () => {
         "Tools",
         "P2P",
         "Games",
+        "Language",
         "Help",
       ]);
 

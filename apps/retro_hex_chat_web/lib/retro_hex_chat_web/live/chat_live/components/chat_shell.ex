@@ -2,10 +2,13 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShell do
   @moduledoc """
   Chat-layer glue for the shell header.
 
-  Derives the three view values the header needs — identity state, online-buddy
-  count, and admin? — from the `Session` struct and delegates the markup to the
-  design-system `chat_app_header/1`, so the main template no longer carries those
-  computations or the shell imports.
+  Derives the view values the header needs — online-buddy count, admin?, arcade
+  availability and the call/session read models — from the `Session` struct and
+  delegates the markup to the design-system `chat_app_header/1`, so the main
+  template no longer carries those computations or the shell imports.
+
+  Identity and the active conversation are not among them: the chat window's
+  title bar names both (see `ChatLive.ChatTitle`).
 
   Pure function component (the header owns no draft/selection state). It holds the
   domain derivation only (no raw layout markup — that lives in `components/ui/`),
@@ -21,7 +24,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShell do
   alias RetroHexChatWeb.ChatLive.ChatContext
 
   attr :session, Session, required: true, doc: "Chat session struct (header is a function of it)"
-  attr :channel_user_count, :integer, default: 0, doc: "Member count of the active channel/PM"
   attr :lag_ms, :any, default: nil, doc: "Lag in milliseconds, or nil when unknown/timed out"
 
   attr :lag_status, :atom,
@@ -45,12 +47,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShell do
 
     assigns =
       assign(assigns,
-        account_state: Session.identity_state(session),
         is_admin: ChatContext.admin?(session),
         arcade_available: session.identified == true,
         online_buddy_count: online_buddy_count(session.notify_list),
-        channel: session.active_pm || session.active_channel,
-        tab_type: if(session.active_pm, do: :pm, else: :channel),
         group_call_display: group_call_display(assigns.group_call),
         p2p: p2p_display(assigns.p2p_session),
         p2p_turn_available: (assigns.p2p_session || %{})[:turn_configured] == true
@@ -58,12 +57,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShell do
 
     ~H"""
     <.chat_app_header
-      nickname={@session.nickname}
-      account_state={@account_state}
-      away={@session.away}
-      channel={@channel}
-      user_count={@channel_user_count}
-      tab_type={@tab_type}
       lag_ms={@lag_ms}
       lag_status={@lag_status}
       online_buddy_count={@online_buddy_count}

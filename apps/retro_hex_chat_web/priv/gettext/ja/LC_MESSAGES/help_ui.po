@@ -1428,11 +1428,6 @@ msgstr "特別メッセージ"
 msgid "Start Menu"
 msgstr "スタートメニュー"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:8
-#, elixir-autogen, elixir-format
-msgid "Status-Bar Account Widget"
-msgstr "Status-Bar アカウントウィジェット"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "Taskbar"
@@ -1581,11 +1576,6 @@ msgstr "ユーザー検索"
 msgid "User Modes"
 msgstr "ユーザーモード"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:41
-#, elixir-autogen, elixir-format
-msgid "Your account state, current channel, user count, online buddy badge, lag, and mute state."
-msgstr "アカウントの状態、現在のチャネル、ユーザー数、オンラインバディバッジ、ラグ、およびミュート状態。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "and"
@@ -1712,13 +1702,6 @@ msgstr "P2Pセッション"
 msgid "Account"
 msgstr "パスワード"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "Account settings live in four windows — Account, Profile, Away and User Modes — all reachable from the File > Account menu, the Start menu's Account group, or the toolbar. The status-bar account widget opens Account directly."
-msgstr ""
-"口座設定は4つのウィンドウで動作します。アカウント、プロフィール、アウェイ、およびユーザーモードは、ファイルからすべて到達可能です。 > "
-"アカウントメニュー、スタートメニューのアカウントグループ、またはツールバー。 ステータスバーアカウントウィジェットは、直接アカウントを開きます。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "Away"
@@ -1731,13 +1714,6 @@ msgstr ""
 "現在のニックネームをNickServに登録してください。 このセッションを既に登録されたニックネームに記録します。 "
 "ウィンドウはニックネームの状態に適応します:未登録のニックネームはレジスタを表示し、登録されたニックネームは識別し、ドロップ登録を表示し、NickServパスワードのエラーはインラインにとどまります。"
 " ホストセッションは、そのニックネームとパスワードを入力すると、ストールセッションを切断します。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:10
-#, elixir-autogen, elixir-format
-msgid "The widget shows your current nickname and state: Guest, Identified, or Away. Click it to open the Account window. The adjacent away button quickly toggles between away and back without opening anything."
-msgstr ""
-"ウィジェットは、現在のニックネームと状態を示します。 ゲスト、識別、または Away。 アカウントウィンドウを開きます。 "
-"隣接するボタンは、何も開かずに前後に素早く切り替えます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:34
 #, elixir-autogen, elixir-format
@@ -1993,3 +1969,26 @@ msgid "— The title bar reads #channel[yournick] for a channel and theirnick:yo
 msgstr ""
 "— タイトルバーには、チャンネルなら #channel[yournick]、プライベートメッセージなら theirnick:yournick "
 "が表示され、続けて本人確認の状態とメンバー数が並びます。タスクバーのボタンとブラウザーのタブも同じ名前なので、チャットのタブをひと目で見分けられます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:2
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Account settings live in four windows — Account, Profile, Away and User Modes — all reachable from the File > Account menu, the Start menu's Account group, or the toolbar."
+msgstr ""
+"アカウント設定は 4 つのウィンドウ（アカウント、プロフィール、離席、ユーザーモード）に分かれており、いずれも ファイル > アカウント "
+"メニュー、スタートメニューのアカウントグループ、ツールバーから開けます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "Active call or P2P session, online buddy badge, lag, and mute state. Your account state and current conversation are named in the window title bar."
+msgstr ""
+"進行中の通話や P2P セッション、オンラインの連絡先バッジ、ラグ、ミュート状態。アカウントの状態と現在の会話はウィンドウのタイトルバーに表示されます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "The chat window's title bar shows your nickname next to the conversation you are reading, followed by your state: Guest, Identified, or Away."
+msgstr "チャットウィンドウのタイトルバーには、読んでいる会話の隣にニックネームが並び、続けて状態（ゲスト、本人確認済み、離席中）が表示されます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "Where Your State Is Shown"
+msgstr "状態が表示される場所"

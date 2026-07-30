@@ -15,12 +15,13 @@ defmodule RetroHexChatWeb.StatusBarFeatureTest do
       assert html =~ "data-testid=\"status-bar-app\""
     end
 
-    test "shows connected state by default", %{conn: conn} do
+    test "the bar carries session state, not identity", %{conn: conn} do
       nick = "SB2#{uid()}"
       {:ok, _view, html} = live(chat_conn(conn, nick), "/chat")
 
-      # App status bar shows the nickname and channel
-      assert html =~ nick
+      # The nickname and the active conversation moved to the window title bar.
+      refute html =~ ~s(data-testid="status-bar-account-widget")
+      assert html =~ ~s(data-testid="status-bar-mute-toggle")
     end
 
     test "lag display shows initial dash", %{conn: conn} do
@@ -53,7 +54,7 @@ defmodule RetroHexChatWeb.StatusBarFeatureTest do
 
       # Sending a ping event should not crash
       html = render_click(view, "ping", %{"client_time" => 1_000_000})
-      assert html =~ nick
+      assert html =~ ~s(id="lag-display")
     end
 
     test "lag_update event updates lag display", %{conn: conn} do

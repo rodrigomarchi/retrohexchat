@@ -3,15 +3,16 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
   Application status bar component for the showcase design system.
 
   Composed from Window (window_status_bar, window_status_bar_field) primitives.
-  Displays nick, channel/PM info with user count, lag, clock, and mute toggle.
+  Shows live session state — active call or P2P session, online buddies, lag,
+  clock and the mute toggle.
+
+  Who you are and what you are reading are *not* here: the window title bar
+  names them (`#lobby[Troll]` plus the identity state), and repeating that a few
+  pixels above it only cost the eye a second stop.
 
   ## Usage
 
       <.status_bar_app
-        nickname="alice"
-        channel="#lobby"
-        user_count={42}
-        tab_type={:channel}
         lag_ms={120}
         lag_status={:normal}
         online_buddy_count={2}
@@ -21,20 +22,11 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Button
-  import RetroHexChatWeb.Components.UI.AccountStatus
   import RetroHexChatWeb.Components.UI.Window
 
   alias RetroHexChatWeb.Icons
 
   @doc "Renders the application status bar."
-  attr :nickname, :string, required: true
-  attr :account_state, :atom, default: :guest, values: [:guest, :identified, :away]
-  attr :away, :boolean, default: false
-  attr :on_account_click, :any, default: nil
-  attr :on_away_toggle, :any, default: nil
-  attr :channel, :string, default: nil
-  attr :user_count, :integer, default: 0
-  attr :tab_type, :atom, default: :channel, values: [:channel, :pm]
   attr :lag_ms, :any, default: nil, doc: "Lag in milliseconds, or nil when unknown/timed out"
   attr :lag_status, :atom, default: :normal, values: [:normal, :warning, :critical, :timeout]
   attr :online_buddy_count, :integer, default: 0
@@ -73,30 +65,6 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
       data-testid="status-bar-app"
       {@rest}
     >
-      <%!-- Zone 1: Account / presence --%>
-      <.window_status_bar_field class="flex items-center gap-retro-2 min-w-0 md:min-w-[128px]">
-        <.account_status
-          nickname={@nickname}
-          account_state={@account_state}
-          away={@away}
-          on_click={@on_account_click}
-          on_away_toggle={@on_away_toggle}
-        />
-      </.window_status_bar_field>
-
-      <%!-- Zone 2: Channel / PM info with user count --%>
-      <.window_status_bar_field grow class="flex items-center gap-retro-2">
-        <Icons.icon_tab_channel :if={@tab_type == :channel} class="w-3 h-3 shrink-0" />
-        <Icons.icon_tab_pm :if={@tab_type == :pm} class="w-3 h-3 shrink-0" />
-        <span class="truncate text-xs">{@channel || "—"}</span>
-        <span
-          :if={@user_count > 0 and @tab_type == :channel}
-          class="text-xs text-muted-foreground shrink-0"
-        >
-          ({@user_count})
-        </span>
-      </.window_status_bar_field>
-
       <%!-- Zone group call: active channel conference — click focuses the
             conference windows, the trailing button leaves the session.
             Never hidden on mobile: an active session must stay visible. --%>

@@ -886,7 +886,6 @@ msgid "Channel Menu"
 msgstr "Меню канала"
 
 #: lib/retro_hex_chat_web/live/showcase_live/chat/autocomplete_page.html.heex:71
-#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:30
 #, elixir-autogen, elixir-format
 msgid "Channel Mode"
 msgstr "Режим Channel"
@@ -1290,7 +1289,7 @@ msgstr "Обсуждение Ctx Menu"
 msgid "Copy"
 msgstr "Копировать"
 
-#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:81
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:59
 #, elixir-autogen, elixir-format
 msgid "Critical Lag"
 msgstr "Критический лаг"
@@ -2659,7 +2658,7 @@ msgstr "многократный"
 msgid "Multiple Invites (Stacked)"
 msgstr "Многократные приглашения (Stacked)"
 
-#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:109
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:73
 #, elixir-autogen, elixir-format
 msgid "Muted"
 msgstr "приглушенный"
@@ -3102,11 +3101,6 @@ msgstr "Иконки P2P-игр (32x32)"
 #, elixir-autogen, elixir-format
 msgid "P2P multiplayer and solo arcade flow"
 msgstr "P2P мультиплеер и сольный аркадный поток"
-
-#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:54
-#, elixir-autogen, elixir-format
-msgid "PM Mode"
-msgstr "Режим PM"
 
 #: lib/retro_hex_chat_web/live/showcase_live/chat/irc_tabs_page.ex:70
 #, elixir-autogen, elixir-format
@@ -4189,7 +4183,7 @@ msgstr "Это окно сфокусировано."
 msgid "This window is not focused."
 msgstr "Это окно не сфокусировано."
 
-#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:95
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:66
 #, elixir-autogen, elixir-format
 msgid "Timeout"
 msgstr "тайм-аут"
@@ -4550,7 +4544,7 @@ msgstr "Ждать"
 msgid "Warning"
 msgstr "Предупреждение"
 
-#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:67
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:52
 #, elixir-autogen, elixir-format
 msgid "Warning Lag"
 msgstr "Предупреждающий лаг"
@@ -5392,3 +5386,13 @@ msgstr "Выбираемое устройство"
 #, elixir-autogen, elixir-format
 msgid "Trusted"
 msgstr "доверенный"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:30
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Normal Lag"
+msgstr "Обычная задержка"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:40
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Online Buddies"
+msgstr "Контакты в сети"

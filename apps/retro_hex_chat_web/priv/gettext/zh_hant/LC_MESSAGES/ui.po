@@ -273,7 +273,7 @@ msgstr "檢視"
 msgid "Language"
 msgstr "語言"
 
-#: lib/retro_hex_chat_web/components/ui/shell/status_bar_app.ex:276
+#: lib/retro_hex_chat_web/components/ui/shell/status_bar_app.ex:244
 #, elixir-autogen, elixir-format
 msgid "%{count} buddy online"
 msgid_plural "%{count} buddies online"
@@ -297,17 +297,12 @@ msgstr "賬戶信息"
 msgid "Arcade..."
 msgstr "拱門..."
 
-#: lib/retro_hex_chat_web/components/ui/shell/account_status.ex:57
 #: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:195
 #: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:198
+#: lib/retro_hex_chat_web/live/chat_live/chat_title.ex:115
 #, elixir-autogen, elixir-format
 msgid "Away"
 msgstr "離開"
-
-#: lib/retro_hex_chat_web/components/ui/shell/account_status.ex:62
-#, elixir-autogen, elixir-format
-msgid "Back"
-msgstr "返回"
 
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:562
 #: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:279
@@ -362,12 +357,12 @@ msgstr "結束會話"
 msgid "Games"
 msgstr "遊戲"
 
-#: lib/retro_hex_chat_web/components/ui/shell/account_status.ex:59
+#: lib/retro_hex_chat_web/live/chat_live/chat_title.ex:117
 #, elixir-autogen, elixir-format
 msgid "Guest"
 msgstr "來賓"
 
-#: lib/retro_hex_chat_web/components/ui/shell/account_status.ex:58
+#: lib/retro_hex_chat_web/live/chat_live/chat_title.ex:116
 #, elixir-autogen, elixir-format
 msgid "Identified"
 msgstr "已確認"
@@ -399,12 +394,6 @@ msgstr "最小化所有窗口"
 msgid "Notify List"
 msgstr "通知名單"
 
-#: lib/retro_hex_chat_web/components/ui/shell/account_status.ex:26
-#: lib/retro_hex_chat_web/components/ui/shell/account_status.ex:27
-#, elixir-autogen, elixir-format
-msgid "Open Account"
-msgstr "打開賬戶"
-
 #: lib/retro_hex_chat_web/components/ui/layout/desktop.ex:68
 #, elixir-autogen, elixir-format
 msgid "Opening..."
@@ -416,32 +405,32 @@ msgstr "打開..."
 msgid "P2P"
 msgstr "P2P"
 
-#: lib/retro_hex_chat_web/components/ui/shell/status_bar_app.ex:269
+#: lib/retro_hex_chat_web/components/ui/shell/status_bar_app.ex:237
 #, elixir-autogen, elixir-format
 msgid "P2P call active"
 msgstr "P2P 調用活動"
 
-#: lib/retro_hex_chat_web/components/ui/shell/status_bar_app.ex:241
+#: lib/retro_hex_chat_web/components/ui/shell/status_bar_app.ex:209
 #, elixir-autogen, elixir-format
 msgid "P2P call quality"
 msgstr "P2P 調用質量"
 
-#: lib/retro_hex_chat_web/components/ui/shell/status_bar_app.ex:272
+#: lib/retro_hex_chat_web/components/ui/shell/status_bar_app.ex:240
 #, elixir-autogen, elixir-format
 msgid "P2P feature active"
 msgstr "P2P 特性活動"
 
-#: lib/retro_hex_chat_web/components/ui/shell/status_bar_app.ex:270
+#: lib/retro_hex_chat_web/components/ui/shell/status_bar_app.ex:238
 #, elixir-autogen, elixir-format
 msgid "P2P file transfer active"
 msgstr "P2P 文件傳輸活動"
 
-#: lib/retro_hex_chat_web/components/ui/shell/status_bar_app.ex:271
+#: lib/retro_hex_chat_web/components/ui/shell/status_bar_app.ex:239
 #, elixir-autogen, elixir-format
 msgid "P2P game active"
 msgstr "P2P 遊戲已激活"
 
-#: lib/retro_hex_chat_web/components/ui/shell/status_bar_app.ex:250
+#: lib/retro_hex_chat_web/components/ui/shell/status_bar_app.ex:218
 #, elixir-autogen, elixir-format
 msgid "P2P privacy relay active"
 msgstr "P2P 隱私中繼活動"
@@ -472,11 +461,6 @@ msgstr "調整大小"
 #, elixir-autogen, elixir-format
 msgid "Send a File..."
 msgstr "發送文件..."
-
-#: lib/retro_hex_chat_web/components/ui/shell/account_status.ex:63
-#, elixir-autogen, elixir-format
-msgid "Set Away"
-msgstr "設置離開"
 
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:361
 #, elixir-autogen, elixir-format
@@ -550,9 +534,9 @@ msgstr "P2P 數據"
 msgid "Menu"
 msgstr "選單"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:92
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:97
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:105
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:96
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:101
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:109
 #, elixir-autogen, elixir-format
 msgid "Windows"
 msgstr "視窗"

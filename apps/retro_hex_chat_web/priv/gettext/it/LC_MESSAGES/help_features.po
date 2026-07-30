@@ -1302,11 +1302,6 @@ msgstr "Caso:"
 msgid "Categories"
 msgstr "Categorie"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:12
-#, elixir-autogen, elixir-format
-msgid "Center:"
-msgstr "Centro:"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_timestamp_format.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Changing the Format"
@@ -3910,11 +3905,6 @@ msgstr ""
 "Non c'è alcun avvertimento prima della scadenza — connettersi regolarmente "
 "per mantenere il vostro nick"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:7
-#, elixir-autogen, elixir-format
-msgid "Three Sections"
-msgstr "Tre sezioni"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ignore_list.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "Timed Ignores:"
@@ -5194,11 +5184,6 @@ msgstr "Una vera finestra:"
 msgid "Account Dialog"
 msgstr "Dialogo account"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:10
-#, elixir-autogen, elixir-format
-msgid "Account widget with nickname and identity or away state."
-msgstr "widget account con soprannome e identità o stato lontano."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:51
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:51
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:35
@@ -5249,14 +5234,6 @@ msgstr "Cambiare Nicknames"
 #, elixir-autogen, elixir-format
 msgid "Context Menu UI"
 msgstr "Menu contestuale UI"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:14
-#, elixir-autogen, elixir-format
-msgid ""
-"Current channel or private message name, user count, and online buddy badge."
-msgstr ""
-"Il canale corrente o il nome del messaggio privato, il conteggio degli "
-"utenti e il distintivo del compagno online."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:59
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:59
@@ -5472,16 +5449,6 @@ msgstr ""
 "Server Broadcasts copre wallop operatore e annunci di amministratore inviati"
 " dalla scheda Admin Console Broadcast o comandi slash."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:34
-#, elixir-autogen, elixir-format
-msgid ""
-"Set away when you are unavailable. The status-bar quick action can mark you "
-"away or back, and the Presence tab lets you set a custom message."
-msgstr ""
-"Mettiti via quando non sei disponibile. L'azione rapida barra di stato può "
-"contrassegnare via o indietro, e la scheda Presence consente di impostare un"
-" messaggio personalizzato."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:18
 #, elixir-autogen, elixir-format
 msgid ""
@@ -5563,15 +5530,6 @@ msgstr ""
 " — sulla prima riga, con un timestamp più piccolo e muto sotto di esso. Il "
 "soprannome rimane cliccabile per la carta hover, messaggi privati e il menu "
 "contestuale."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"The status bar at the bottom of the screen provides real-time information "
-"about your account, connection, and current channel."
-msgstr ""
-"La barra di stato nella parte inferiore dello schermo fornisce informazioni "
-"in tempo reale sul tuo account, connessione e canale corrente."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:34
 #, elixir-autogen, elixir-format
@@ -6696,3 +6654,46 @@ msgid ""
 msgstr ""
 "— indica attività non letta, evidenziazioni, riga attiva e stato auto-join "
 "salvato"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"The status bar at the right of the menu bar reports your live session: an "
+"active call, who is online from your notify list, how fast the server is "
+"answering, and whether sounds are muted."
+msgstr ""
+"La barra di stato a destra della barra dei menu mostra la tua sessione: una "
+"chiamata attiva, chi è online nella tua lista contatti, quanto è veloce la "
+"risposta del server e se i suoni sono disattivati."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:8
+#, elixir-autogen, elixir-format
+msgid ""
+"Your nickname, your identity state and the conversation you are reading are "
+"not repeated here — the chat window's title bar names them."
+msgstr ""
+"Il tuo nickname, il tuo stato di identità e la conversazione che stai "
+"leggendo non si ripetono qui: li indica già la barra del titolo della "
+"finestra di chat."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "Two Sections"
+msgstr "Due Sezioni"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Active group call or P2P session, and the online buddy badge."
+msgstr ""
+"Chiamata di gruppo o sessione P2P attiva e il badge dei contatti online."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:34
+#, elixir-autogen, elixir-format
+msgid ""
+"Set away when you are unavailable from File > Account > Set Away, where the "
+"Presence tab also lets you set a custom message. The window title bar then "
+"shows you as Away."
+msgstr ""
+"Segnalati assente da File > Account > Imposta Assente, dove la scheda "
+"Presenza permette anche un messaggio personalizzato. La barra del titolo "
+"della finestra ti mostra allora come Assente."

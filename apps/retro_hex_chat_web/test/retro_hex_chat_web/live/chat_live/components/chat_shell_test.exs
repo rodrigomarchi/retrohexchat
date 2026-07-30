@@ -13,7 +13,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShellTest do
       Map.merge(
         %{
           session: session,
-          channel_user_count: 0,
           lag_ms: nil,
           lag_status: :normal,
           muted: false,
@@ -38,7 +37,16 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShellTest do
     assert html =~ ~s(data-testid="app-mobile-menu-section-tools")
     assert html =~ ~s(app-menu-bar__desktop-menu)
     assert html =~ ~s(data-testid="status-bar-app")
-    assert html =~ "alice"
+  end
+
+  test "the header names neither the user nor the conversation — the title bar does" do
+    session = %{Session.new("alice") | active_channel: "#lobby", active_pm: "bob"}
+    html = header(session)
+
+    refute html =~ "alice"
+    refute html =~ "bob"
+    refute html =~ "#lobby"
+    refute html =~ ~s(data-testid="status-bar-account-widget")
   end
 
   test "derives the online buddy count from the session notify list" do
@@ -54,13 +62,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShellTest do
     html = header(%{Session.new("alice") | notify_list: notify})
 
     refute html =~ ~s(data-testid="status-bar-notify-badge")
-  end
-
-  test "uses the active PM as the status-bar target when present" do
-    session = %{Session.new("alice") | active_channel: "#lobby", active_pm: "bob"}
-    html = header(session)
-
-    assert html =~ "bob"
   end
 
   test "renders active group call status bar controls" do

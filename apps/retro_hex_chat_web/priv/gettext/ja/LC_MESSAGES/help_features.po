@@ -1204,11 +1204,6 @@ msgstr "ケース:"
 msgid "Categories"
 msgstr "カテゴリー"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:12
-#, elixir-autogen, elixir-format
-msgid "Center:"
-msgstr "センター:"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_timestamp_format.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Changing the Format"
@@ -3620,11 +3615,6 @@ msgid ""
 "There is no warning before expiration — connect regularly to keep your nick"
 msgstr "満了前に警告はありません - 定期的に接続して、ニックネームを維持します"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:7
-#, elixir-autogen, elixir-format
-msgid "Three Sections"
-msgstr "3つのセクション"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ignore_list.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "Timed Ignores:"
@@ -4818,11 +4808,6 @@ msgstr "実質の窓:"
 msgid "Account Dialog"
 msgstr "アカウントダイアログ"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:10
-#, elixir-autogen, elixir-format
-msgid "Account widget with nickname and identity or away state."
-msgstr "ニックネームとアイデンティティを持つアカウントウィジェット、または状態を離れます。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:51
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:51
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:35
@@ -4871,12 +4856,6 @@ msgstr "ニックネームの変更"
 #, elixir-autogen, elixir-format
 msgid "Context Menu UI"
 msgstr "コンテキストメニュー UI"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:14
-#, elixir-autogen, elixir-format
-msgid ""
-"Current channel or private message name, user count, and online buddy badge."
-msgstr "現在のチャンネルまたはプライベートメッセージ名、ユーザー数、およびオンラインのバディバッジ。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:59
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:59
@@ -5072,15 +5051,6 @@ msgid ""
 msgstr ""
 "サーバーブロードキャストは、管理者コンソールブロードキャストタブまたはスラッシュコマンドから送信されたオペレータのwallopと管理者の通知をカバーします。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:34
-#, elixir-autogen, elixir-format
-msgid ""
-"Set away when you are unavailable. The status-bar quick action can mark you "
-"away or back, and the Presence tab lets you set a custom message."
-msgstr ""
-"ご利用いただけない場合もございます。 ステータスバーのクイックアクションは、あなたや背中をマークすることができます。 "
-"プレゼンスタブでは、カスタムメッセージを設定できます。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:18
 #, elixir-autogen, elixir-format
 msgid ""
@@ -5149,13 +5119,6 @@ msgid ""
 msgstr ""
 "左の狭い列は、システムライン、システム、エラー、サービス、またはMOTDなどの原点ラベルを、最初の行で、より小さく、ミュートされたタイムスタンプが下にあります。"
 " ニックネームは、ホバーカード、プライベートメッセージ、コンテクストメニューにクリック可能にとどまります。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"The status bar at the bottom of the screen provides real-time information "
-"about your account, connection, and current channel."
-msgstr "画面の下部にあるステータスバーは、アカウント、接続、現在のチャネルに関するリアルタイム情報を提供します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:34
 #, elixir-autogen, elixir-format
@@ -6148,3 +6111,39 @@ msgid ""
 "— marks unread activity, highlights, the active row, and saved auto-join "
 "state"
 msgstr "— 未読アクティビティ、ハイライト、アクティブ行、保存済みauto-join状態を示します"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"The status bar at the right of the menu bar reports your live session: an "
+"active call, who is online from your notify list, how fast the server is "
+"answering, and whether sounds are muted."
+msgstr ""
+"メニューバー右側のステータスバーには、進行中の通話、通知リストでオンラインの相手、サーバーの応答速度、ミュートかどうかといった現在のセッションの状態が並びます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:8
+#, elixir-autogen, elixir-format
+msgid ""
+"Your nickname, your identity state and the conversation you are reading are "
+"not repeated here — the chat window's title bar names them."
+msgstr "ニックネーム、本人確認の状態、読んでいる会話はここには重ねて表示されません。チャットウィンドウのタイトルバーがすでに示しています。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "Two Sections"
+msgstr "2 つのセクション"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Active group call or P2P session, and the online buddy badge."
+msgstr "進行中のグループ通話や P2P セッションと、オンラインの連絡先バッジ。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:34
+#, elixir-autogen, elixir-format
+msgid ""
+"Set away when you are unavailable from File > Account > Set Away, where the "
+"Presence tab also lets you set a custom message. The window title bar then "
+"shows you as Away."
+msgstr ""
+"離席にするには、ファイル > アカウント > 離席にする "
+"を使います。プレゼンスタブでは独自のメッセージも設定できます。ウィンドウのタイトルバーには「離席中」と表示されます。"

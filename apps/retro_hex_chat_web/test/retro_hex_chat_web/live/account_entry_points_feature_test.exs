@@ -77,21 +77,14 @@ defmodule RetroHexChatWeb.AccountEntryPointsFeatureTest do
       end
     end
 
-    test "status bar component renders account state and quick away action" do
-      html =
-        render_component(&StatusBarApp.status_bar_app/1,
-          nickname: "Alice",
-          account_state: :guest,
-          away: false,
-          channel: "#lobby",
-          on_account_click: "open_account_dialog",
-          on_away_toggle: "toggle_account_away"
-        )
+    # The status bar used to carry an account widget and a one-click away
+    # toggle. Both left when the window title bar took over naming who you are;
+    # the three navigation surfaces above are the account entry points now.
+    test "the status bar no longer duplicates the account state" do
+      html = render_component(&StatusBarApp.status_bar_app/1, lag_ms: 42)
 
-      assert html =~ ~s(data-testid="status-bar-account-widget")
-      assert html =~ ~s(data-testid="status-bar-away-toggle")
-      assert html =~ "Alice · Guest"
-      assert html =~ ~s(title="Set Away")
+      refute html =~ ~s(data-testid="status-bar-account-widget")
+      refute html =~ ~s(data-testid="status-bar-away-toggle")
     end
 
     test "every account window mounts managed and unmounts when closed", %{conn: conn} do

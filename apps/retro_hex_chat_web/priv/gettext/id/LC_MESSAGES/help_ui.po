@@ -1488,11 +1488,6 @@ msgstr "Pesan Khusus"
 msgid "Start Menu"
 msgstr "Mulai Menu"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:8
-#, elixir-autogen, elixir-format
-msgid "Status-Bar Account Widget"
-msgstr "Widget Akun Baris"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "Taskbar"
@@ -1661,13 +1656,6 @@ msgstr "Pencarian Pengguna"
 msgid "User Modes"
 msgstr "Mode Pengguna"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:41
-#, elixir-autogen, elixir-format
-msgid "Your account state, current channel, user count, online buddy badge, lag, and mute state."
-msgstr ""
-"Kondisi akun, saluran kini, jumlah pengguna, lencana teman online, lag, dan "
-"keadaan bisu."
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "and"
@@ -1811,14 +1799,6 @@ msgstr "Sesi P2P"
 msgid "Account"
 msgstr "Akun"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "Account settings live in four windows — Account, Profile, Away and User Modes — all reachable from the File > Account menu, the Start menu's Account group, or the toolbar. The status-bar account widget opens Account directly."
-msgstr ""
-"Pengaturan akun hidup di empat jendela - Akun, Profil, Jauh dan Mode "
-"Pengguna - semua dapat dicapai dari Berkas > Menu akun, grup Akun Awal menu,"
-" atau bilah alat. Widget akun status-bar membuka Akun secara langsung."
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "Away"
@@ -1834,15 +1814,6 @@ msgstr ""
 "Register, nama panggilan terdaftar menunjukkan identifikasi dan Jatuhkan "
 "registrasi, dan kesalahan sandi NickServ tetap inline. Sesi hantu memutuskan"
 " pertemuan lama setelah kau memasukkan nama panggilan dan kata sandinya."
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:10
-#, elixir-autogen, elixir-format
-msgid "The widget shows your current nickname and state: Guest, Identified, or Away. Click it to open the Account window. The adjacent away button quickly toggles between away and back without opening anything."
-msgstr ""
-"Widget menunjukkan nama panggilan dan status Anda saat ini: Tamu, "
-"teridentifikasi, atau Away. Klik untuk membuka jendela Akun. Tombol yang "
-"berdekatan dengan cepat menjungkit antara jauh dan belakang tanpa membuka "
-"apapun."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:34
 #, elixir-autogen, elixir-format
@@ -2131,3 +2102,32 @@ msgstr ""
 "theirnick:yournick untuk pesan pribadi, diikuti status identitas Anda dan "
 "jumlah anggota. Tombol taskbar dan tab peramban memakai nama yang sama, "
 "sehingga tab obrolan Anda mudah dibedakan sekilas."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:2
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Account settings live in four windows — Account, Profile, Away and User Modes — all reachable from the File > Account menu, the Start menu's Account group, or the toolbar."
+msgstr ""
+"Pengaturan akun tinggal di empat jendela — Akun, Profil, Pergi, dan Mode "
+"Pengguna — semuanya dapat dibuka dari menu Berkas > Akun, grup Akun di menu "
+"Mulai, atau bilah alat."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "Active call or P2P session, online buddy badge, lag, and mute state. Your account state and current conversation are named in the window title bar."
+msgstr ""
+"Panggilan atau sesi P2P yang aktif, lencana teman online, lag, dan status "
+"suara. Status akun dan percakapan Anda saat ini tertulis di bilah judul "
+"jendela."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "The chat window's title bar shows your nickname next to the conversation you are reading, followed by your state: Guest, Identified, or Away."
+msgstr ""
+"Bilah judul jendela obrolan menampilkan nama panggilan Anda di samping "
+"percakapan yang sedang Anda baca, diikuti status Anda: Tamu, "
+"Teridentifikasi, atau Pergi."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "Where Your State Is Shown"
+msgstr "Di Mana Status Anda Ditampilkan"

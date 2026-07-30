@@ -89,8 +89,6 @@ export class ChatPage {
   readonly charCounter: Locator;
   readonly appLogo: Locator;
   readonly statusBarApp: Locator;
-  readonly statusBarAccountWidget: Locator;
-  readonly statusBarAwayToggle: Locator;
   readonly statusBarMuteToggle: Locator;
   readonly statusBarNotifyBadge: Locator;
   readonly connectionStatusHook: Locator;
@@ -267,8 +265,6 @@ export class ChatPage {
     this.charCounter = page.getByTestId("char-counter");
     this.appLogo = page.getByTestId("app-logo");
     this.statusBarApp = page.getByTestId("status-bar-app");
-    this.statusBarAccountWidget = page.getByTestId("status-bar-account-widget");
-    this.statusBarAwayToggle = page.getByTestId("status-bar-away-toggle");
     this.statusBarMuteToggle = page.getByTestId("status-bar-mute-toggle");
     this.statusBarNotifyBadge = page.getByTestId("status-bar-notify-badge");
     this.connectionStatusHook = page.getByTestId("connection-status-hook");
@@ -1624,6 +1620,12 @@ export class ChatPage {
   // conversation, like the taskbar button and the browser tab.
   get chatWindow(): Locator {
     return this.page.getByTestId("chat-window");
+  }
+
+  // The chat window's title bar: it names the conversation and the viewer, and
+  // its meta zone carries the identity state the status bar used to show.
+  get chatWindowTitleBar(): Locator {
+    return this.chatWindow.locator("[data-window-titlebar]");
   }
 
   async openNickColorsFromMenu() {

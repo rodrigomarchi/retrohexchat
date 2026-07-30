@@ -1272,11 +1272,6 @@ msgstr "Case:"
 msgid "Categories"
 msgstr "Kategori"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:12
-#, elixir-autogen, elixir-format
-msgid "Center:"
-msgstr "Pusat:"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_timestamp_format.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Changing the Format"
@@ -3844,11 +3839,6 @@ msgstr ""
 "Tidak ada peringatan sebelum kadaluarsa - menghubungkan secara teratur untuk"
 " menjaga nick Anda"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:7
-#, elixir-autogen, elixir-format
-msgid "Three Sections"
-msgstr "Tiga Bagian"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ignore_list.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "Timed Ignores:"
@@ -5116,11 +5106,6 @@ msgstr "Jendela Nyata:"
 msgid "Account Dialog"
 msgstr "Dialog Akun"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:10
-#, elixir-autogen, elixir-format
-msgid "Account widget with nickname and identity or away state."
-msgstr "Widget akun dengan nama panggilan dan identitas atau keadaan jauh."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:51
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:51
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:35
@@ -5171,13 +5156,6 @@ msgstr "Mengubah Nama Panggilan"
 #, elixir-autogen, elixir-format
 msgid "Context Menu UI"
 msgstr "UI Menu Konteks"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:14
-#, elixir-autogen, elixir-format
-msgid ""
-"Current channel or private message name, user count, and online buddy badge."
-msgstr ""
-"Kanal atau nama pesan pribadi, jumlah pengguna, dan lencana teman online."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:59
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:59
@@ -5392,16 +5370,6 @@ msgstr ""
 "Penyiaran Server mencakup operator wallops dan pengumuman administrator yang"
 " dikirim dari tab Admin Console Broadcast atau perintah slash."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:34
-#, elixir-autogen, elixir-format
-msgid ""
-"Set away when you are unavailable. The status-bar quick action can mark you "
-"away or back, and the Presence tab lets you set a custom message."
-msgstr ""
-"Diatur ketika Anda tidak tersedia. Status-bar aksi cepat dapat menandai Anda"
-" pergi atau kembali, dan tab Kehadiran memungkinkan Anda mengatur pesan "
-"gubahan."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:18
 #, elixir-autogen, elixir-format
 msgid ""
@@ -5481,15 +5449,6 @@ msgstr ""
 "baris pertama, dengan penanda waktu yang lebih kecil di bawahnya. Nama "
 "panggilan tetap dapat diklik untuk kartu hover, pesan pribadi dan menu "
 "konteks."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"The status bar at the bottom of the screen provides real-time information "
-"about your account, connection, and current channel."
-msgstr ""
-"Batang status di bawah layar menyediakan informasi real-time tentang akun, "
-"koneksi, dan saluran kini."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:34
 #, elixir-autogen, elixir-format
@@ -6595,4 +6554,49 @@ msgstr "— kanal atau PM dibisukan"
 msgid ""
 "— marks unread activity, highlights, the active row, and saved auto-join "
 "state"
-msgstr "— menandai aktivitas belum dibaca, sorotan, baris aktif, dan status auto-join tersimpan"
+msgstr ""
+"— menandai aktivitas belum dibaca, sorotan, baris aktif, dan status auto-"
+"join tersimpan"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"The status bar at the right of the menu bar reports your live session: an "
+"active call, who is online from your notify list, how fast the server is "
+"answering, and whether sounds are muted."
+msgstr ""
+"Bilah status di sebelah kanan bilah menu menampilkan sesi Anda: panggilan "
+"yang aktif, siapa dari daftar notifikasi yang online, seberapa cepat server "
+"menjawab, dan apakah suara dibisukan."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:8
+#, elixir-autogen, elixir-format
+msgid ""
+"Your nickname, your identity state and the conversation you are reading are "
+"not repeated here — the chat window's title bar names them."
+msgstr ""
+"Nama panggilan Anda, status identitas Anda, dan percakapan yang sedang Anda "
+"baca tidak diulang di sini — bilah judul jendela obrolan sudah "
+"menyebutkannya."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "Two Sections"
+msgstr "Dua Bagian"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Active group call or P2P session, and the online buddy badge."
+msgstr ""
+"Panggilan grup atau sesi P2P yang aktif, dan lencana teman yang online."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:34
+#, elixir-autogen, elixir-format
+msgid ""
+"Set away when you are unavailable from File > Account > Set Away, where the "
+"Presence tab also lets you set a custom message. The window title bar then "
+"shows you as Away."
+msgstr ""
+"Tandai diri Anda sedang pergi lewat Berkas > Akun > Setel Pergi; tab "
+"Kehadiran juga memungkinkan pesan khusus. Bilah judul jendela lalu "
+"menampilkan Pergi."

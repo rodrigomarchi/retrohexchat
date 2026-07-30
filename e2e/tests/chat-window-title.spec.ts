@@ -44,7 +44,7 @@ test.describe("Window, taskbar and tab titles", () => {
     const { chat, nick } = await signedInUser(page);
     const channel = uniqueChannel();
 
-    const titleBar = chat.chatWindow.locator("[data-window-titlebar]");
+    const titleBar = chat.chatWindowTitleBar;
     const taskbarButton = chat.taskbarButton("chat");
 
     // Connecting auto-joins #lobby, and that is what the three surfaces show.
@@ -109,9 +109,7 @@ test.describe("Window, taskbar and tab titles", () => {
       await alice.chat.switchToTab(bob.nick);
 
       const pmTitle = `${bob.nick}:${alice.nick}`;
-      await expect(
-        alice.chat.chatWindow.locator("[data-window-titlebar]"),
-      ).toContainText(pmTitle);
+      await expect(alice.chat.chatWindowTitleBar).toContainText(pmTitle);
       await expect(alice.chat.page).toHaveTitle(pmTitle);
       await shot(alice.chat.page, "pm-title");
     } finally {

@@ -1194,11 +1194,6 @@ msgstr "案例 :"
 msgid "Categories"
 msgstr "类别"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:12
-#, elixir-autogen, elixir-format
-msgid "Center:"
-msgstr "中点 :"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_timestamp_format.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Changing the Format"
@@ -3561,11 +3556,6 @@ msgid ""
 "There is no warning before expiration — connect regularly to keep your nick"
 msgstr "到期前没有警告——定期连接以保持您的昵称"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:7
-#, elixir-autogen, elixir-format
-msgid "Three Sections"
-msgstr "三节"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ignore_list.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "Timed Ignores:"
@@ -4743,11 +4733,6 @@ msgstr "真实窗口 :"
 msgid "Account Dialog"
 msgstr "账户对话框"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:10
-#, elixir-autogen, elixir-format
-msgid "Account widget with nickname and identity or away state."
-msgstr "带有昵称和身份或远离状态的账户部件 。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:51
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:51
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:35
@@ -4796,12 +4781,6 @@ msgstr "更改昵称"
 #, elixir-autogen, elixir-format
 msgid "Context Menu UI"
 msgstr "背景菜单UI"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:14
-#, elixir-autogen, elixir-format
-msgid ""
-"Current channel or private message name, user count, and online buddy badge."
-msgstr "目前频道或私人消息名称,用户数,以及在线好友徽章."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:59
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:59
@@ -4990,13 +4969,6 @@ msgid ""
 "sent from the Admin Console Broadcast tab or slash commands."
 msgstr "服务器广播覆盖操作员Wallop和管理员从行政控制台广播分页或斜线命令发送的公告."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:34
-#, elixir-autogen, elixir-format
-msgid ""
-"Set away when you are unavailable. The status-bar quick action can mark you "
-"away or back, and the Presence tab lets you set a custom message."
-msgstr "空闲时设置 。 状态栏快速动作可以标记您离开或返回, 存在标签允许您设置自定义消息 。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:18
 #, elixir-autogen, elixir-format
 msgid ""
@@ -5061,13 +5033,6 @@ msgid ""
 msgstr ""
 "狭义的左栏显示作者的昵称——或者说,对于系统行来说,在第一行显示System,Error,Service或MOTD等起源标签,下面有一个较小的,变音的时间戳."
 " 昵称保留可点击的悬浮卡,私人信件和上下文菜单."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"The status bar at the bottom of the screen provides real-time information "
-"about your account, connection, and current channel."
-msgstr "屏幕底部的状态栏提供您账户,连接,和当前频道的实时信息."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:34
 #, elixir-autogen, elixir-format
@@ -6012,3 +5977,36 @@ msgid ""
 "— marks unread activity, highlights, the active row, and saved auto-join "
 "state"
 msgstr "— 标记未读活动、高亮、当前行和已保存的 auto-join 状态"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"The status bar at the right of the menu bar reports your live session: an "
+"active call, who is online from your notify list, how fast the server is "
+"answering, and whether sounds are muted."
+msgstr "菜单栏右侧的状态栏显示你当前的会话状态：进行中的通话、通知列表里在线的好友、服务器的响应速度，以及声音是否静音。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:8
+#, elixir-autogen, elixir-format
+msgid ""
+"Your nickname, your identity state and the conversation you are reading are "
+"not repeated here — the chat window's title bar names them."
+msgstr "你的昵称、身份状态和正在阅读的对话不会在这里重复——聊天窗口的标题栏已经写明了。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "Two Sections"
+msgstr "两个区域"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Active group call or P2P session, and the online buddy badge."
+msgstr "进行中的群组通话或 P2P 会话，以及在线好友徽章。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:34
+#, elixir-autogen, elixir-format
+msgid ""
+"Set away when you are unavailable from File > Account > Set Away, where the "
+"Presence tab also lets you set a custom message. The window title bar then "
+"shows you as Away."
+msgstr "通过 文件 > 账户 > 设为离开 把自己标为离开，“在线状态”标签页还可以设置自定义消息。窗口标题栏随即显示“离开”。"

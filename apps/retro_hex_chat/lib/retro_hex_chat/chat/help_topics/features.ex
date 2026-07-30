@@ -871,7 +871,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "Bottom bar showing channel information, online buddies, lag indicator, clock, and mute state."
+            "Bar showing your live session: active call or P2P session, online buddies, lag indicator, clock, and mute state. Who you are and what you are reading are named in the chat window's title bar."
           )
       },
       %{

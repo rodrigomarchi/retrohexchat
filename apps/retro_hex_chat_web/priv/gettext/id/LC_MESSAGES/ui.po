@@ -273,7 +273,7 @@ msgstr "Tampilan"
 msgid "Language"
 msgstr "Bahasa"
 
-#: lib/retro_hex_chat_web/components/ui/shell/status_bar_app.ex:276
+#: lib/retro_hex_chat_web/components/ui/shell/status_bar_app.ex:244
 #, elixir-autogen, elixir-format
 msgid "%{count} buddy online"
 msgid_plural "%{count} buddies online"
@@ -297,17 +297,12 @@ msgstr "Info Akun"
 msgid "Arcade..."
 msgstr "Arcade..."
 
-#: lib/retro_hex_chat_web/components/ui/shell/account_status.ex:57
 #: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:195
 #: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:198
+#: lib/retro_hex_chat_web/live/chat_live/chat_title.ex:115
 #, elixir-autogen, elixir-format
 msgid "Away"
 msgstr "Tidak di tempat"
-
-#: lib/retro_hex_chat_web/components/ui/shell/account_status.ex:62
-#, elixir-autogen, elixir-format
-msgid "Back"
-msgstr "Kembali"
 
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:562
 #: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:279
@@ -362,12 +357,12 @@ msgstr "Akhiri Sesi"
 msgid "Games"
 msgstr "Permainan"
 
-#: lib/retro_hex_chat_web/components/ui/shell/account_status.ex:59
+#: lib/retro_hex_chat_web/live/chat_live/chat_title.ex:117
 #, elixir-autogen, elixir-format
 msgid "Guest"
 msgstr "Tamu"
 
-#: lib/retro_hex_chat_web/components/ui/shell/account_status.ex:58
+#: lib/retro_hex_chat_web/live/chat_live/chat_title.ex:116
 #, elixir-autogen, elixir-format
 msgid "Identified"
 msgstr "Tak dikenal"
@@ -399,12 +394,6 @@ msgstr "Minimalkan Semua Jendela"
 msgid "Notify List"
 msgstr "Daftar Pemberitahuan"
 
-#: lib/retro_hex_chat_web/components/ui/shell/account_status.ex:26
-#: lib/retro_hex_chat_web/components/ui/shell/account_status.ex:27
-#, elixir-autogen, elixir-format
-msgid "Open Account"
-msgstr "Buka Akun"
-
 #: lib/retro_hex_chat_web/components/ui/layout/desktop.ex:68
 #, elixir-autogen, elixir-format
 msgid "Opening..."
@@ -416,32 +405,32 @@ msgstr "Membuka..."
 msgid "P2P"
 msgstr "P2P"
 
-#: lib/retro_hex_chat_web/components/ui/shell/status_bar_app.ex:269
+#: lib/retro_hex_chat_web/components/ui/shell/status_bar_app.ex:237
 #, elixir-autogen, elixir-format
 msgid "P2P call active"
 msgstr "Panggilan P2P aktif"
 
-#: lib/retro_hex_chat_web/components/ui/shell/status_bar_app.ex:241
+#: lib/retro_hex_chat_web/components/ui/shell/status_bar_app.ex:209
 #, elixir-autogen, elixir-format
 msgid "P2P call quality"
 msgstr "Kualitas panggilan P2P"
 
-#: lib/retro_hex_chat_web/components/ui/shell/status_bar_app.ex:272
+#: lib/retro_hex_chat_web/components/ui/shell/status_bar_app.ex:240
 #, elixir-autogen, elixir-format
 msgid "P2P feature active"
 msgstr "Fitur P2P aktif"
 
-#: lib/retro_hex_chat_web/components/ui/shell/status_bar_app.ex:270
+#: lib/retro_hex_chat_web/components/ui/shell/status_bar_app.ex:238
 #, elixir-autogen, elixir-format
 msgid "P2P file transfer active"
 msgstr "Transfer berkas P2P aktif"
 
-#: lib/retro_hex_chat_web/components/ui/shell/status_bar_app.ex:271
+#: lib/retro_hex_chat_web/components/ui/shell/status_bar_app.ex:239
 #, elixir-autogen, elixir-format
 msgid "P2P game active"
 msgstr "Permainan P2P aktif"
 
-#: lib/retro_hex_chat_web/components/ui/shell/status_bar_app.ex:250
+#: lib/retro_hex_chat_web/components/ui/shell/status_bar_app.ex:218
 #, elixir-autogen, elixir-format
 msgid "P2P privacy relay active"
 msgstr "Relay privasi P2P aktif"
@@ -472,11 +461,6 @@ msgstr "Ubah Ukuran"
 #, elixir-autogen, elixir-format
 msgid "Send a File..."
 msgstr "Kirim File..."
-
-#: lib/retro_hex_chat_web/components/ui/shell/account_status.ex:63
-#, elixir-autogen, elixir-format
-msgid "Set Away"
-msgstr "Set Away"
 
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:361
 #, elixir-autogen, elixir-format
@@ -550,9 +534,9 @@ msgstr "Stat P2P"
 msgid "Menu"
 msgstr "Menu"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:92
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:97
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:105
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:96
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:101
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:109
 #, elixir-autogen, elixir-format
 msgid "Windows"
 msgstr "Jendela"
