@@ -100,7 +100,7 @@
 }
 
 .chat-conversations-row--active {
-  @apply border-black bg-primary font-bold text-white;
+  @apply border-primary bg-hover-bg font-bold text-foreground shadow-retro-sunken;
 }
 
 .chat-conversations-row--activity:not(.chat-conversations-row--active) {
@@ -120,7 +120,7 @@
 }
 
 .chat-conversations-row__signal--active {
-  @apply bg-white;
+  @apply bg-primary;
 }
 
 .chat-conversations-row__signal--highlight {
@@ -160,7 +160,7 @@
 }
 
 .chat-conversations-row--active .chat-conversations-row__count {
-  @apply text-gray-200;
+  @apply text-primary;
 }
 
 .chat-conversations-chip {

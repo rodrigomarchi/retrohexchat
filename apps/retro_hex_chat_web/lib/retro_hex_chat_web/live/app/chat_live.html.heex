@@ -314,6 +314,9 @@
               module={RetroHexChatWeb.ChatLive.Components.Nicklist}
               id={RetroHexChatWeb.ChatLive.Components.Nicklist.id()}
               visible={@show_nicklist && !@session.active_pm && !@show_status_tab}
+              active_channel={@session.active_channel}
+              current_modes={@current_modes}
+              current_nick={@session.nickname}
               nick_color_fn={@nick_color_fn}
             />
           </div>

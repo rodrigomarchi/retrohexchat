@@ -1,8 +1,8 @@
 defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
   @moduledoc """
-  The channel nicklist sidebar. Owns the `:users` stream and renders one row per
-  member, so the list updates per-row and re-renders only on membership/role/away/
-  mute deltas — not on every chat re-render of the parent LiveView.
+  The channel nicklist sidebar. Owns the role-grouped member streams, so the
+  roster updates on membership/role/away/mute deltas, not on every chat re-render
+  of the parent LiveView.
 
   The parent stays the canonical owner of `channel_users`: the tab-complete
   (`MenuToolbarEvents`), the nicklist context menu and several PubSub handlers read
@@ -30,6 +30,15 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
   # one of them would be a DOM row. Rendering is bounded and the total is shown,
   # so a capped list never presents itself as the whole membership.
   @max_rendered 500
+
+  @role_sections [
+    %{key: :owner, stream: :owners},
+    %{key: :operator, stream: :operators},
+    %{key: :half_operator, stream: :half_operators},
+    %{key: :voiced, stream: :voiced},
+    %{key: :regular, stream: :regulars},
+    %{key: :bot, stream: :bots}
+  ]
 
   @doc "Stable component id used by the parent for `send_update/2`."
   @spec id() :: String.t()
@@ -67,36 +76,63 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
   @impl true
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def mount(socket) do
-    {:ok,
-     socket
-     |> assign(id: @id, visible: false, total: 0, nick_color_fn: fn _nick -> nil end)
-     |> stream(:users, [], dom_id: &row_dom_id/1)}
+    socket =
+      socket
+      |> assign(
+        id: @id,
+        visible: false,
+        active_channel: nil,
+        current_modes: nil,
+        current_nick: nil,
+        users: [],
+        sections: [],
+        total: 0,
+        online_count: 0,
+        away_count: 0,
+        muted_count: 0,
+        nick_color_fn: fn _nick -> nil end
+      )
+
+    {:ok, Enum.reduce(@role_sections, socket, &stream_role_section(&2, &1, []))}
   end
 
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def update(%{action: {:reset, users}}, socket) do
+  def update(%{action: {:reset, users}} = assigns, socket) do
+    users = sort_users(users)
+
     {:ok,
      socket
-     |> assign(total: length(users))
-     |> stream(:users, Enum.take(users, @max_rendered), reset: true, dom_id: &row_dom_id/1)}
+     |> assign_context(assigns)
+     |> assign_roster(users)
+     |> reset_role_streams(users)}
   end
 
-  def update(%{action: {:upsert, user}}, socket) do
-    {:ok, stream_insert(socket, :users, user)}
+  def update(%{action: {:upsert, user}} = assigns, socket) do
+    users =
+      socket.assigns.users
+      |> upsert_user(user)
+      |> sort_users()
+
+    {:ok,
+     socket
+     |> assign_context(assigns)
+     |> assign_roster(users)
+     |> reset_role_streams(users)}
   end
 
-  def update(%{action: {:remove, nick}}, socket) do
-    {:ok, stream_delete_by_dom_id(socket, :users, dom_id(nick))}
+  def update(%{action: {:remove, nick}} = assigns, socket) do
+    users = Enum.reject(socket.assigns.users, &same_nick?(&1.nickname, nick))
+
+    {:ok,
+     socket
+     |> assign_context(assigns)
+     |> assign_roster(users)
+     |> reset_role_streams(users)}
   end
 
   def update(assigns, socket) do
-    {:ok,
-     assign(socket,
-       id: Map.get(assigns, :id, socket.assigns.id),
-       visible: Map.get(assigns, :visible, socket.assigns.visible),
-       nick_color_fn: Map.get(assigns, :nick_color_fn, socket.assigns.nick_color_fn)
-     )}
+    {:ok, assign_context(socket, assigns)}
   end
 
   @impl true
@@ -111,18 +147,44 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
         on_backdrop="toggle_nicklist"
         id="nicklist-users"
         phx-hook="NicklistHook"
-        phx-update="stream"
       >
-        <.nicklist_item
-          :for={{dom_id, user} <- @streams.users}
-          id={dom_id}
-          nick={user.nickname}
-          role={Map.get(user, :role, :normal)}
-          status={if Map.get(user, :away), do: "away", else: "online"}
-          nick_color={@nick_color_fn.(user.nickname)}
-          data-nick={user.nickname}
+        <.nicklist_header
+          channel_name={@active_channel}
+          total={@total}
+          modes={@current_modes}
         />
-        <.list_count_strip shown={min(@total, @max_rendered)} total={@total} />
+        <.nicklist_status_strip
+          online_count={@online_count}
+          away_count={@away_count}
+          muted_count={@muted_count}
+        />
+        <.nicklist_body>
+          <.nicklist_section
+            :for={section <- @sections}
+            role={section.key}
+            label={section.label}
+            count={section.count}
+          >
+            <div
+              id={"nicklist-users-#{role_id(section.key)}"}
+              class="contents"
+              phx-update="stream"
+            >
+              <.nicklist_item
+                :for={{dom_id, user} <- stream_rows(@streams, section.stream)}
+                id={dom_id}
+                nick={user.nickname}
+                role={Map.get(user, :role, :normal)}
+                status={if Map.get(user, :away), do: "away", else: "online"}
+                muted={Map.get(user, :muted, false)}
+                current={same_nick?(user.nickname, @current_nick)}
+                nick_color={@nick_color_fn.(user.nickname)}
+                data-nick={user.nickname}
+              />
+            </div>
+          </.nicklist_section>
+          <.list_count_strip shown={min(@total, @max_rendered)} total={@total} />
+        </.nicklist_body>
       </.nicklist_sidebar>
     </div>
     """
@@ -130,4 +192,114 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
 
   @spec row_dom_id(map()) :: String.t()
   defp row_dom_id(user), do: dom_id(user.nickname)
+
+  defp assign_context(socket, assigns) do
+    assign(socket,
+      id: Map.get(assigns, :id, socket.assigns.id),
+      visible: Map.get(assigns, :visible, socket.assigns.visible),
+      active_channel: Map.get(assigns, :active_channel, socket.assigns.active_channel),
+      current_modes: Map.get(assigns, :current_modes, socket.assigns.current_modes),
+      current_nick: Map.get(assigns, :current_nick, socket.assigns.current_nick),
+      nick_color_fn: Map.get(assigns, :nick_color_fn, socket.assigns.nick_color_fn)
+    )
+  end
+
+  defp assign_roster(socket, users) do
+    section_counts = section_counts(users)
+
+    sections =
+      @role_sections
+      |> Enum.map(fn section ->
+        section
+        |> Map.put(:label, section_label(section.key))
+        |> Map.put(:count, Map.get(section_counts, section.key, 0))
+      end)
+      |> Enum.filter(&(&1.count > 0))
+
+    assign(socket,
+      users: users,
+      sections: sections,
+      total: length(users),
+      online_count: Enum.count(users, &(not Map.get(&1, :away, false))),
+      away_count: Enum.count(users, &Map.get(&1, :away, false)),
+      muted_count: Enum.count(users, &Map.get(&1, :muted, false))
+    )
+  end
+
+  defp reset_role_streams(socket, users) do
+    visible_groups =
+      users
+      |> Enum.take(@max_rendered)
+      |> Enum.group_by(&role_key(Map.get(&1, :role, :regular)))
+
+    Enum.reduce(@role_sections, socket, fn section, acc ->
+      stream_role_section(acc, section, Map.get(visible_groups, section.key, []), reset: true)
+    end)
+  end
+
+  defp stream_role_section(socket, section, users, opts \\ []) do
+    stream(socket, section.stream, users, Keyword.merge([dom_id: &row_dom_id/1], opts))
+  end
+
+  defp section_counts(users) do
+    Enum.reduce(users, %{}, fn user, acc ->
+      Map.update(acc, role_key(Map.get(user, :role, :regular)), 1, &(&1 + 1))
+    end)
+  end
+
+  defp stream_rows(streams, stream_name), do: Map.get(streams, stream_name, [])
+
+  defp upsert_user(users, user) do
+    users
+    |> Enum.reject(&same_nick?(&1.nickname, user.nickname))
+    |> then(&[user | &1])
+  end
+
+  defp sort_users(users) do
+    Enum.sort_by(users, fn user ->
+      {role_rank(Map.get(user, :role, :regular)), String.downcase(user.nickname)}
+    end)
+  end
+
+  defp role_rank(:owner), do: 0
+  defp role_rank(:operator), do: 1
+  defp role_rank(:half_operator), do: 2
+  defp role_rank(:voiced), do: 3
+  defp role_rank(:regular), do: 4
+  defp role_rank(:bot), do: 5
+  defp role_rank(role), do: role |> role_key() |> role_rank()
+
+  defp role_key(:normal), do: :regular
+  defp role_key(:owner), do: :owner
+  defp role_key(:operator), do: :operator
+  defp role_key(:half_operator), do: :half_operator
+  defp role_key(:voiced), do: :voiced
+  defp role_key(:bot), do: :bot
+  defp role_key(:regular), do: :regular
+  defp role_key("owner"), do: :owner
+  defp role_key("op"), do: :operator
+  defp role_key("operator"), do: :operator
+  defp role_key("half_operator"), do: :half_operator
+  defp role_key("half-op"), do: :half_operator
+  defp role_key("voice"), do: :voiced
+  defp role_key("voiced"), do: :voiced
+  defp role_key("bot"), do: :bot
+  defp role_key(_), do: :regular
+
+  defp role_id(:half_operator), do: "half-operator"
+  defp role_id(role), do: role |> role_key() |> Atom.to_string() |> String.replace("_", "-")
+
+  defp section_label(:owner), do: dgettext("chat", "Owner")
+  defp section_label(:operator), do: dgettext("chat", "Operator")
+  defp section_label(:half_operator), do: dgettext("chat", "Half-Op")
+  defp section_label(:voiced), do: dgettext("chat", "Voiced")
+  defp section_label(:bot), do: dgettext("chat", "Bot")
+  defp section_label(:regular), do: dgettext("chat", "Users")
+
+  defp same_nick?(_nick, nil), do: false
+  defp same_nick?(nil, _nick), do: false
+
+  defp same_nick?(left, right) do
+    String.downcase(left) == String.downcase(right)
+  end
 end

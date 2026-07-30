@@ -1,0 +1,182 @@
+/* Nicklist sidebar: IRC channel roster with role groups and compact status. */
+
+.chat-nicklist {
+  @apply flex min-h-0 flex-col overflow-hidden p-0;
+}
+
+.chat-nicklist-header {
+  @apply shrink-0 bg-surface px-retro-4 py-retro-4 shadow-retro-raised;
+}
+
+.chat-nicklist-header__main {
+  @apply flex min-w-0 items-center gap-retro-4;
+}
+
+.chat-nicklist-header__icon {
+  @apply inline-flex h-5 w-5 shrink-0 items-center justify-center bg-white shadow-retro-status;
+}
+
+.chat-nicklist-header__channel {
+  @apply min-w-0 flex-1 truncate text-sm font-bold leading-5 text-foreground;
+}
+
+.chat-nicklist-header__count {
+  @apply min-w-6 shrink-0 border border-primary bg-primary px-1 text-center text-[11px] font-bold leading-5 text-white shadow-retro-status;
+}
+
+.chat-nicklist-header__modes {
+  @apply mt-retro-4 flex min-w-0 flex-wrap gap-retro-2;
+}
+
+.chat-nicklist-mode {
+  @apply inline-flex min-w-0 max-w-full items-center border border-border bg-white px-1 text-[10px] font-bold leading-4 text-primary shadow-retro-status;
+}
+
+.chat-nicklist-status-strip {
+  @apply grid shrink-0 grid-cols-3 gap-px bg-muted px-retro-4 py-[3px] shadow-retro-status;
+}
+
+.chat-nicklist-stat {
+  @apply flex h-7 min-w-0 flex-col justify-center overflow-hidden border-b-2 border-border bg-white px-1 shadow-retro-status;
+}
+
+.chat-nicklist-stat__value {
+  @apply text-[12px] font-bold leading-none text-foreground;
+}
+
+.chat-nicklist-stat__label {
+  @apply truncate text-[8px] font-bold uppercase leading-none text-muted-foreground;
+}
+
+.chat-nicklist-stat--online {
+  @apply border-success;
+}
+
+.chat-nicklist-stat--away {
+  @apply border-warning;
+}
+
+.chat-nicklist-stat--muted {
+  @apply border-error;
+}
+
+.chat-nicklist-body {
+  @apply min-h-0 flex-1 overflow-y-auto bg-white p-[6px];
+}
+
+.chat-nicklist-section {
+  @apply mb-retro-4;
+}
+
+.chat-nicklist-section:last-child {
+  @apply mb-0;
+}
+
+.chat-nicklist-section__header {
+  @apply flex h-6 min-w-0 items-center gap-1 overflow-hidden border border-border bg-surface px-1 text-[10px] font-bold uppercase text-muted-foreground shadow-retro-status;
+}
+
+.chat-nicklist-section__icon {
+  @apply inline-flex h-4 w-4 shrink-0 items-center justify-center bg-white shadow-retro-status;
+}
+
+.chat-nicklist-section__label {
+  @apply min-w-0 flex-1 truncate;
+}
+
+.chat-nicklist-section__count {
+  @apply shrink-0 bg-white px-1 text-[10px] font-bold leading-4 text-muted-foreground shadow-retro-status;
+}
+
+.chat-nicklist-section--owner .chat-nicklist-section__header {
+  @apply border-l-2 border-warning bg-warning-bg text-foreground;
+}
+
+.chat-nicklist-section--operator .chat-nicklist-section__header {
+  @apply border-l-2 border-primary text-primary;
+}
+
+.chat-nicklist-section--half-operator .chat-nicklist-section__header {
+  @apply border-l-2 border-success text-success-dark;
+}
+
+.chat-nicklist-section--voiced .chat-nicklist-section__header {
+  @apply border-l-2 border-teal text-teal;
+}
+
+.chat-nicklist-section--bot .chat-nicklist-section__header {
+  @apply border-l-2 border-warning-alt text-foreground;
+}
+
+.chat-nicklist-section__rows {
+  @apply mt-px space-y-px;
+}
+
+.chat-nicklist-row {
+  @apply flex min-h-[28px] w-full cursor-pointer select-none items-center gap-1 overflow-hidden border border-transparent bg-white px-1 py-[2px] text-[13px] leading-5;
+  @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-black;
+}
+
+.chat-nicklist-section__rows [phx-update="stream"] > .chat-nicklist-row:nth-child(even):not([data-current="true"]) {
+  @apply bg-gray-100;
+}
+
+.chat-nicklist-row:hover:not([data-current="true"]) {
+  @apply border-border bg-hover-bg;
+}
+
+.chat-nicklist-row[data-current="true"] {
+  @apply border-primary bg-hover-bg font-bold text-foreground shadow-retro-sunken;
+}
+
+.chat-nicklist-row[data-status="away"]:not([data-current="true"]) .chat-nicklist-row__nick {
+  @apply text-muted-foreground;
+}
+
+.chat-nicklist-row__signal {
+  @apply h-5 w-1 shrink-0;
+}
+
+.chat-nicklist-row__signal--online {
+  @apply bg-success;
+}
+
+.chat-nicklist-row__signal--away {
+  @apply bg-warning;
+}
+
+.chat-nicklist-row__signal--offline {
+  @apply bg-muted-foreground;
+}
+
+.chat-nicklist-row[data-current="true"] .chat-nicklist-row__signal {
+  @apply bg-primary;
+}
+
+.chat-nicklist-row__role {
+  @apply inline-flex h-5 w-5 shrink-0 items-center justify-center bg-white shadow-retro-status;
+}
+
+.chat-nicklist-row[data-current="true"] .chat-nicklist-row__role {
+  @apply shadow-retro-sunken;
+}
+
+.chat-nicklist-row__nick {
+  @apply min-w-0 flex-1 truncate font-mono font-bold;
+}
+
+.chat-nicklist-row[data-current="true"] .chat-nicklist-row__nick {
+  @apply text-foreground;
+}
+
+.chat-nicklist-row__badge {
+  @apply inline-flex h-4 w-4 shrink-0 items-center justify-center border border-border bg-white shadow-retro-status;
+}
+
+.chat-nicklist-row__badge--away {
+  @apply bg-warning-bg text-warning;
+}
+
+.chat-nicklist-row__badge--muted {
+  @apply bg-error-bg text-error;
+}
