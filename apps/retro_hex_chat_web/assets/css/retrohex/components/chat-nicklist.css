@@ -37,15 +37,19 @@
 }
 
 .chat-nicklist-stat {
-  @apply flex h-7 min-w-0 flex-col justify-center overflow-hidden border-b-2 border-border bg-white px-1 shadow-retro-status;
+  @apply flex h-6 min-w-0 items-center justify-start gap-1 overflow-hidden border-b-2 border-border bg-white px-1 text-[10px] font-bold leading-none shadow-retro-status;
+}
+
+.chat-nicklist-stat svg {
+  @apply shrink-0;
 }
 
 .chat-nicklist-stat__value {
-  @apply text-[12px] font-bold leading-none text-foreground;
+  @apply shrink-0 text-[11px] leading-none text-foreground;
 }
 
 .chat-nicklist-stat__label {
-  @apply truncate text-[8px] font-bold uppercase leading-none text-muted-foreground;
+  @apply min-w-0 truncate text-[9px] uppercase leading-none text-muted-foreground;
 }
 
 .chat-nicklist-stat--online {

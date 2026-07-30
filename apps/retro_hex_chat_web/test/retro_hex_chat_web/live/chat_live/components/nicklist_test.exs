@@ -87,6 +87,13 @@ defmodule RetroHexChatWeb.ChatLive.Components.NicklistTest do
     assert html =~ ~s(data-testid="nicklist-away-count")
     assert html =~ ~s(data-testid="nicklist-muted-count")
 
+    document = Floki.parse_document!(html)
+
+    for status <- ~w(online away muted) do
+      assert [stat] = Floki.find(document, ".chat-nicklist-stat--#{status}")
+      assert [_svg] = Floki.find(stat, "svg")
+    end
+
     assert html =~ ~s(data-testid="nicklist-section-owner")
     assert html =~ ~s(data-testid="nicklist-section-operator")
     assert html =~ ~s(data-testid="nicklist-section-voiced")

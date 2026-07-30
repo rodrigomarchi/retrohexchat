@@ -94,25 +94,64 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
   def nicklist_status_strip(assigns) do
     ~H"""
     <div class={classes(["chat-nicklist-status-strip", @class])} {@rest}>
-      <div class="chat-nicklist-stat chat-nicklist-stat--online">
-        <span class="chat-nicklist-stat__value" data-testid="nicklist-online-count">
-          {@online_count}
-        </span>
-        <span class="chat-nicklist-stat__label">{dgettext("chat", "Online")}</span>
-      </div>
-      <div class="chat-nicklist-stat chat-nicklist-stat--away">
-        <span class="chat-nicklist-stat__value" data-testid="nicklist-away-count">
-          {@away_count}
-        </span>
-        <span class="chat-nicklist-stat__label">{dgettext("chat", "Away")}</span>
-      </div>
-      <div class="chat-nicklist-stat chat-nicklist-stat--muted">
-        <span class="chat-nicklist-stat__value" data-testid="nicklist-muted-count">
-          {@muted_count}
-        </span>
-        <span class="chat-nicklist-stat__label">{dgettext("chat", "Muted")}</span>
-      </div>
+      <.nicklist_stat
+        label={dgettext("chat", "Online")}
+        count={@online_count}
+        icon={:online}
+        variant={:online}
+        testid="nicklist-online-count"
+      />
+      <.nicklist_stat
+        label={dgettext("chat", "Away")}
+        count={@away_count}
+        icon={:away}
+        variant={:away}
+        testid="nicklist-away-count"
+      />
+      <.nicklist_stat
+        label={dgettext("chat", "Muted")}
+        count={@muted_count}
+        icon={:muted}
+        variant={:muted}
+        testid="nicklist-muted-count"
+      />
     </div>
+    """
+  end
+
+  attr :label, :string, required: true
+  attr :count, :integer, required: true
+  attr :icon, :atom, required: true
+  attr :variant, :atom, required: true
+  attr :testid, :string, required: true
+
+  defp nicklist_stat(assigns) do
+    ~H"""
+    <div class={["chat-nicklist-stat", "chat-nicklist-stat--#{@variant}"]} title={@label}>
+      <.nicklist_stat_icon icon={@icon} />
+      <span class="chat-nicklist-stat__value" data-testid={@testid}>{@count}</span>
+      <span class="chat-nicklist-stat__label">{@label}</span>
+    </div>
+    """
+  end
+
+  attr :icon, :atom, required: true
+
+  defp nicklist_stat_icon(%{icon: :online} = assigns) do
+    ~H"""
+    <Icons.icon_status_user class="h-3 w-3" />
+    """
+  end
+
+  defp nicklist_stat_icon(%{icon: :away} = assigns) do
+    ~H"""
+    <Icons.icon_btn_away class="h-3 w-3" />
+    """
+  end
+
+  defp nicklist_stat_icon(%{icon: :muted} = assigns) do
+    ~H"""
+    <Icons.icon_mute class="h-3 w-3" />
     """
   end
 
