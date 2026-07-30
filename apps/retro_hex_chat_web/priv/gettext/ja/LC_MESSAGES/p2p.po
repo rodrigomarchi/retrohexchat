@@ -14,7 +14,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:199
 #, elixir-autogen, elixir-format
 msgid "%{count} cores"
-msgstr "%{count}コア"
+msgstr "%{count} コア"
 
 #: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:334
 #, elixir-autogen, elixir-format
@@ -55,7 +55,7 @@ msgstr "キャンセル"
 #: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:158
 #, elixir-autogen, elixir-format
 msgid "Cancelled"
-msgstr "Cancelled"
+msgstr "キャンセル"
 
 #: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:161
 #, elixir-autogen, elixir-format
@@ -205,7 +205,7 @@ msgstr "%{n} フレーム"
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:706
 #, elixir-autogen, elixir-format
 msgid "%{n} kbps"
-msgstr "%{n} kbps"
+msgstr "%{n}のkbps"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:173
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:180
@@ -213,7 +213,7 @@ msgstr "%{n} kbps"
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:436
 #, elixir-autogen, elixir-format
 msgid "%{n} ms"
-msgstr "%{n} ms"
+msgstr "%{n}のms"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:187
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:233
@@ -380,7 +380,7 @@ msgstr "1秒あたりのキロビットで、ピアに送信できる推定帯�
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:630
 #, elixir-autogen, elixir-format
 msgid "Excellent"
-msgstr "Excellent"
+msgstr "よくある質問"
 
 #: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:446
 #: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:89
@@ -496,7 +496,7 @@ msgstr "限定販売"
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:428
 #, elixir-autogen, elixir-format
 msgid "MOS %{score}"
-msgstr "MOS %{score}"
+msgstr "MOS %{score}の特長"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:720
 #, elixir-autogen, elixir-format
@@ -959,7 +959,7 @@ msgstr "P2Pセッションの概要"
 #: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:471
 #, elixir-autogen, elixir-format
 msgid "P2P session with %{peer} - %{facets}"
-msgstr "P2Pセッション %{peer} - %{facets}"
+msgstr "%{peer} との P2P セッション - %{facets}"
 
 #: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:487
 #, elixir-autogen, elixir-format
@@ -975,7 +975,7 @@ msgstr "P2Pウィンドウコントロール"
 #: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:161
 #, elixir-autogen, elixir-format
 msgid "Quality"
-msgstr "Quality"
+msgstr "よくある質問"
 
 #: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:643
 #: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:644
@@ -1041,7 +1041,7 @@ msgstr "%{state} / %{sent} 送信 / %{received} プレゼント"
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:696
 #, elixir-autogen, elixir-format
 msgid "%{state} / %{source}"
-msgstr "%{state} / %{source}"
+msgstr "%{state}/%{source}"
 
 #: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:119
 #, elixir-autogen, elixir-format
@@ -1183,7 +1183,7 @@ msgstr "Retry P2P接続"
 #: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:384
 #, elixir-autogen, elixir-format
 msgid "Retrying the peer connection, attempt %{attempt} of 3."
-msgstr "相手の接続を再試行する %{attempt} 3。"
+msgstr "ピア接続を再試行中、3 回中 %{attempt} 回目です。"
 
 #: lib/retro_hex_chat_web/components/ui/p2p/setup_dialog.ex:150
 #, elixir-autogen, elixir-format
@@ -1198,7 +1198,7 @@ msgstr "P2Pメディア接続が失敗しました。 セッションを再試�
 #: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:150
 #, elixir-autogen, elixir-format
 msgid "Transfer cancelled"
-msgstr "Transfer cancelled"
+msgstr "キャンセル"
 
 #: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:149
 #, elixir-autogen, elixir-format
@@ -1254,7 +1254,9 @@ msgstr "Decline P2Pリクエスト"
 #: lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex:281
 #, elixir-autogen, elixir-format
 msgid "Invite pending"
-msgstr "Invite pending"
+msgstr ""
+"の特長\n"
+"招待状"
 
 #: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:100
 #: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:208

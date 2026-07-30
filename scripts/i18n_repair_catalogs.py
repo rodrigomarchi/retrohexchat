@@ -81,6 +81,7 @@ def main() -> int:
 
 def repair_locale(locale, args: argparse.Namespace) -> None:
     files = {path: catalogs.load_po(path) for path in catalogs.po_files(locale.code)}
+    original_pairs = {path: catalogs.entry_pairs(po) for path, po in files.items()}
     stripped = strip_injected_headings(files, args.collapse_threshold)
 
     # Collapse is judged after stripping: an injected heading makes distinct
@@ -92,9 +93,18 @@ def repair_locale(locale, args: argparse.Namespace) -> None:
     if broken and not args.no_retranslate:
         retranslate(locale, broken)
 
+    saved = 0
+
     if args.write:
         for path, po in files.items():
+            if catalogs.entry_pairs(po) == original_pairs[path]:
+                continue
+
             po.save(str(path))
+            saved += 1
+
+    if args.write:
+        print(f"  saved_files={saved}")
 
 
 def strip_injected_headings(files: dict, threshold: int) -> int:

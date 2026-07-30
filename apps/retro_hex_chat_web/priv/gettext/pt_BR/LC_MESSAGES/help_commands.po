@@ -444,7 +444,7 @@ msgstr ". Os usuários com voz podem falar em canais moderados (+m)."
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:60
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_ns.html.heex:47
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:47
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:52
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:123
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:85
@@ -458,7 +458,7 @@ msgid "/admin <category> <subcommand> [arguments]"
 msgstr "/admin <category> <subcommand> [arguments]"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin.html.heex:23
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:53
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "/admin channel"
 msgstr "/admin channel"
@@ -529,7 +529,7 @@ msgid "/admin debug connections /admin debug processes /admin debug memory"
 msgstr "/admin debug connections /admin debug processes /admin debug memory"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin.html.heex:40
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:59
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:128
 #, elixir-autogen, elixir-format
 msgid "/admin log"
@@ -583,7 +583,7 @@ msgstr "/admin nuke --confirm"
 msgid "/admin nuke /admin nuke --confirm"
 msgstr "/admin nuke /admin nuke --confirm"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:43
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:48
 #, elixir-autogen, elixir-format
 msgid ""
 "/admin nuke — See what would be deleted /admin nuke --confirm — Execute the "
@@ -852,7 +852,7 @@ msgstr "/clearwelcome"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_cs.html.heex:78
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:109
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:69
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:92
 #, elixir-autogen, elixir-format
 msgid "/cs"
@@ -1184,7 +1184,7 @@ msgstr "/mute <apelido> [duration]"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_away.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_nick.html.heex:13
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:70
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "/nick"
@@ -1284,15 +1284,6 @@ msgstr "/ns identify"
 msgid "/ns register"
 msgstr "/ns register"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:47
-#, elixir-autogen, elixir-format
-msgid ""
-"/ns register mySecurePassword /ns identify mySecurePassword /ns info Alice "
-"/ns ghost MyNick mySecurePassword /ns drop mySecurePassword"
-msgstr ""
-"/ns register mySecurePassword /ns identify mySecurePassword /ns info Alice "
-"/ns ghost MyNick mySecurePassword /ns drop mySecurePassword"
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_transfer.html.heex:44
@@ -1341,7 +1332,7 @@ msgid "/part [#channel] [message]"
 msgstr "/part [#channel] [message]"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:45
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:52
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:71
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:33
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:101
 #, elixir-autogen, elixir-format
@@ -2020,7 +2011,7 @@ msgstr "Referência de Comandos"
 msgid "Common action types include:"
 msgstr "Os tipos de ação comuns incluem:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:82
 #, elixir-autogen, elixir-format
 msgid "Connect Authentication"
 msgstr "Autenticação de Conexão"
@@ -2144,7 +2135,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:55
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_ns.html.heex:42
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:47
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:118
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:29
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:80
@@ -2177,7 +2168,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice.html.heex:47
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:24
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notify.html.heex:32
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:46
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:22
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:36
@@ -2212,7 +2203,7 @@ msgstr "Transferência de arquivo"
 msgid "For +i channels, you must be a channel operator"
 msgstr "Para canais +i, você deve ser um operador de canal"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:43
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "Ghost requires the registered nickname's password"
 msgstr "Ghost requer a senha do nick registrado"
@@ -2423,11 +2414,6 @@ msgstr "Máximo de 5 timers simultâneos por sessão"
 #, elixir-autogen, elixir-format
 msgid "Maximum 50 aliases per user"
 msgstr "Máximo de 50 apelidos por usuário"
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:37
-#, elixir-autogen, elixir-format
-msgid "Maximum number of channels matches the channel limit (10)"
-msgstr "Número máximo de canais corresponde ao limite do canal (10)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:27
@@ -2657,7 +2643,7 @@ msgstr "Opções"
 msgid "Parameters"
 msgstr "Parâmetros"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "Password is required for register, identify, and drop"
 msgstr "A senha é necessária para registrar, identificar e soltar"
@@ -2950,7 +2936,7 @@ msgstr "Os administradores raiz não podem ser rebaixados através de comandos"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_nick.html.heex:18
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notify.html.heex:27
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:40
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:56
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:21
@@ -2995,7 +2981,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:58
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_ns.html.heex:45
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:121
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:83
@@ -3028,7 +3014,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice.html.heex:49
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notify.html.heex:34
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:29
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:27
@@ -3639,7 +3625,7 @@ msgstr "Você deve ser um usuário registrado para usar ChanServ"
 msgid "You must be in the channel to invite someone to it"
 msgstr "Você deve estar no canal para convidar alguém para ele"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "You must be using the nickname you want to register"
 msgstr "Você deve estar usando o apelido que deseja registrar"
@@ -4402,11 +4388,6 @@ msgstr "— Número da regra indicada no"
 msgid "— Server ban (user cannot connect). Supports"
 msgstr "— Banimento do servidor (o usuário não pode se conectar). Suportes"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:39
-#, elixir-autogen, elixir-format
-msgid "— Server configuration"
-msgstr "— Configuração do servidor"
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "— Server description text (shown in server info)"
@@ -4991,7 +4972,7 @@ msgstr "/mute Spammer /mute Spammer 30m"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_away.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_bio.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_nick.html.heex:43
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:55
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:74
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_umode.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "Account Dialog"
@@ -5000,7 +4981,7 @@ msgstr "Janela de Conta"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_channel.html.heex:78
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_cs.html.heex:76
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:63
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:55
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:126
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:88
@@ -5108,22 +5089,11 @@ msgstr "O Menu Editar"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_away.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_bio.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_nick.html.heex:47
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:78
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_umode.html.heex:61
 #, elixir-autogen, elixir-format
 msgid "Identity & Presence"
 msgstr "Identidade & Presença"
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_me.html.heex:29
-#, elixir-autogen, elixir-format
-msgid ""
-"In a channel window, use the * action toggle beside the chat input to send "
-"the next message as /me without typing the command. The toggle resets after "
-"that message is sent."
-msgstr ""
-"Em uma janela de canal, use a ação * alternar ao lado da entrada de chat "
-"para enviar a próxima mensagem como /me sem digitar o comando. A comutação "
-"reinicia- se após a mensagem ser enviada."
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_channel.html.heex:2
 #, elixir-autogen, elixir-format
@@ -5448,21 +5418,6 @@ msgstr ""
 "partir de Ferramentas > Temporizadores ou barra de ferramentas Opções > "
 "Temporizadores."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"— Factory reset the entire system. Destroys all data (users, channels, "
-"messages, preferences, bots, P2P sessions) except admin roles, audit logs, "
-"server bans, and server settings. Requires server administrator role. The "
-"Admin Console Danger Zone tab requires typing the server name before "
-"execution."
-msgstr ""
-"— Fábrica redefinir todo o sistema. Destrui todos os dados (usuários, "
-"canais, mensagens, preferências, bots, sessões P2P) exceto funções de "
-"administrador, registros de auditoria, bans de servidor e configurações de "
-"servidor. Requer função de administrador do servidor. A guia Admin Console "
-"Danger Zone requer digitar o nome do servidor antes da execução."
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mute.html.heex:18
 #, elixir-autogen, elixir-format
 msgid ""
@@ -5529,3 +5484,95 @@ msgstr "— Abra a Sessão P2P (chamada, arquivos e jogos)"
 #, elixir-autogen, elixir-format
 msgid "— The user to open a P2P Session with."
 msgstr "— O utilizador com quem abrir uma sessão P2P."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:66
+#, elixir-autogen, elixir-format
+msgid ""
+"/ns register mySecurePassword /ns identify mySecurePassword /ns info Alice "
+"/ns devices /ns sessions /ns revoke-device 12 /ns kill-session 44 /ns ghost "
+"MyNick mySecurePassword /ns drop mySecurePassword"
+msgstr ""
+"/ns register minhaSenhaSegura /ns identify minhaSenhaSegura /ns info Alice "
+"/ns devices /ns sessions /ns revoke-device 12 /ns kill-session 44 /ns ghost "
+"MeuNick minhaSenhaSegura /ns drop minhaSenhaSegura"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:61
+#, elixir-autogen, elixir-format
+msgid "Trusted terminal management requires NickServ identification"
+msgstr ""
+"O gerenciamento de terminais confiáveis requer identificação no NickServ"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "devices"
+msgstr "dispositivos"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:52
+#, elixir-autogen, elixir-format
+msgid "kill-session <id|all>"
+msgstr "kill-session <id|all>"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:48
+#, elixir-autogen, elixir-format
+msgid "revoke-device <id|all>"
+msgstr "revogar-dispositivo <id|all>"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "sessions"
+msgstr "sessões"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:54
+#, elixir-autogen, elixir-format
+msgid "— End active sessions without changing trusted terminal status."
+msgstr "— Encerra sessões ativas sem alterar o status de terminal confiável."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:46
+#, elixir-autogen, elixir-format
+msgid "— List active sessions using your nickname."
+msgstr "— Lista sessões ativas usando o seu nick."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "— List trusted terminals remembered for your nickname."
+msgstr "— Lista terminais confiáveis lembrados para o seu nick."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:50
+#, elixir-autogen, elixir-format
+msgid "— Revoke trusted terminal login and end its active sessions."
+msgstr "— Revoga o login de terminal confiável e encerra suas sessões ativas."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "Maximum auto-join list size is 20 channels"
+msgstr "Tamanho máximo da lista de auto-join: 20 canais"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_me.html.heex:29
+#, elixir-autogen, elixir-format
+msgid ""
+"Type /me at the start of the chat input whenever you want to send an action "
+"message."
+msgstr ""
+"Digite /me no começo do input de chat sempre que quiser enviar uma mensagem "
+"de ação."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"— Factory reset the entire system. Destroys all data (users, channels, "
+"messages, preferences, bots, P2P sessions) except admin roles, audit logs, "
+"server bans, and server settings. The registration setting is reopened so an"
+" admin nick can be recreated. Requires server administrator role. The Admin "
+"Console Danger Zone tab requires typing the server name before execution."
+msgstr ""
+"— Redefine o sistema inteiro para o estado inicial. Destrói todos os dados "
+"(usuários, canais, mensagens, preferências, bots, sessões P2P), exceto "
+"funções de admin, logs de auditoria, bans do servidor e configurações do "
+"servidor. A configuração de registro é reaberta para que um nick admin possa"
+" ser recriado. Requer função de administrador do servidor. A aba Danger Zone"
+" do Admin Console exige digitar o nome do servidor antes da execução."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "— Server configuration; registration is reset to open"
+msgstr "— Configuração do servidor; o registro é redefinido para aberto"

@@ -11,15 +11,18 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
   `highlight_channels`, `flash_channels`, `muted_channels`, `conversations_sections`,
   `channel_user_counts`, `popular_channels`) because many subsystems read and write
   them; they are passed in as raw values and this component derives the displayed
-  lists (`unread_channels`, `unread_pms`, `collapsed_sections`) itself instead of the
-  parent template computing them on every render. `show_conversations` stays on the
-  parent (toggled from the menu/toolbar) and arrives as `visible`. The row events
-  (`switch_channel`, `switch_pm`, `conversations_toggle_section`, …) bubble to the
-  parent unchanged.
+  lists (`unread_channels`, `unread_pms`, `collapsed_sections`,
+  `autojoin_entries`) itself instead of the parent template computing them on
+  every render. `show_conversations` stays on the parent (toggled from the
+  menu/toolbar) and arrives as `visible`. The row events (`switch_channel`,
+  `switch_pm`, `conversations_toggle_section`, ...) bubble to the parent
+  unchanged.
   """
   use RetroHexChatWeb, :live_component
 
   import RetroHexChatWeb.Components.UI.Conversations
+
+  alias RetroHexChat.Chat.AutoJoinList
 
   @id "conversations"
 
@@ -37,8 +40,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
        channels: [],
        active_channel: nil,
        active_pm: nil,
+       open_pm_tabs: [],
        pm_conversations: [],
        pm_conversations_truncated: false,
+       autojoin_list: AutoJoinList.new(),
        unread_counts: %{},
        highlight_channels: MapSet.new(),
        flash_channels: MapSet.new(),
@@ -64,8 +69,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
       :channels,
       :active_channel,
       :active_pm,
+      :open_pm_tabs,
       :pm_conversations,
       :pm_conversations_truncated,
+      :autojoin_list,
       :unread_counts,
       :highlight_channels,
       :flash_channels,
@@ -101,11 +108,15 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
     collapsed_sections =
       for {k, expanded?} <- assigns.conversations_sections, !expanded?, do: to_string(k)
 
+    autojoin_list = assigns.autojoin_list || AutoJoinList.new()
+    autojoin_entries = AutoJoinList.entries(autojoin_list)
+
     assigns =
       assign(assigns,
         unread_channels: unread_channels,
         unread_pms: unread_pms,
-        collapsed_sections: collapsed_sections
+        collapsed_sections: collapsed_sections,
+        autojoin_entries: autojoin_entries
       )
 
     ~H"""
@@ -126,8 +137,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
           p2p_peer={@p2p_peer}
           p2p_session={@p2p_session}
           p2p_pm_sessions={@p2p_pm_sessions}
+          open_pm_tabs={@open_pm_tabs}
           pm_conversations={@pm_conversations}
           pm_conversations_truncated={@pm_conversations_truncated}
+          autojoin_entries={@autojoin_entries}
           active_pm={@active_pm}
           nick_color_fn={@nick_color_fn}
           channel_user_counts={@channel_user_counts}
@@ -140,6 +153,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
           on_close="toggle_conversations"
           on_browse_channels="conversations_browse_all"
           on_join_popular="conversations_join_popular"
+          on_autojoin_open="open_autojoin_dialog"
         />
       </.conversations_sidebar>
     </div>

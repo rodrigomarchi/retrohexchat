@@ -11,9 +11,7 @@ defmodule RetroHexChatWeb.TypingIndicatorTest do
   end
 
   defp switch_to_channel(view, channel) do
-    view
-    |> element(~s(div[phx-click="switch_channel"][phx-value-channel="#{channel}"]))
-    |> render_click()
+    render_click(view, "switch_channel", %{"channel" => channel})
   end
 
   defp send_typing(view, nickname) do

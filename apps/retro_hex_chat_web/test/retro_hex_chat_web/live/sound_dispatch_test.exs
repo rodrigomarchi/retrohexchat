@@ -130,9 +130,7 @@ defmodule RetroHexChatWeb.SoundDispatchTest do
       |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/join #{ch}"})
 
-      view
-      |> element(~s(div[phx-click="switch_channel"][phx-value-channel="#lobby"]))
-      |> render_click()
+      render_click(view, "switch_channel", %{"channel" => "#lobby"})
 
       # Send message to background channel (not highlighted)
       send_new_message(view, "Other", "background message", ch)

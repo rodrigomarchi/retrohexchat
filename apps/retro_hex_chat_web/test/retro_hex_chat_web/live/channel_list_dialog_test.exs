@@ -39,7 +39,7 @@ defmodule RetroHexChatWeb.ChannelListDialogTest do
 
       # Filter lives in the LiveComponent — send_update is async; flush with render.
       render_click(view, "channel_list_filter", %{"search" => "cld_filter_yes"})
-      html = render(view)
+      html = view |> element(~s([data-testid="channel-list-panel"])) |> render()
 
       assert html =~ "#cld_filter_yes"
       refute html =~ "#cld_test"

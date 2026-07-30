@@ -891,7 +891,7 @@ msgstr "Меню канала"
 msgid "Channel Mode"
 msgstr "Режим Channel"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/conversations_page.html.heex:69
+#: lib/retro_hex_chat_web/live/showcase_live/chat/conversations_page.html.heex:75
 #, elixir-autogen, elixir-format
 msgid "Channel States"
 msgstr "Каналы США"
@@ -928,7 +928,7 @@ msgstr "Название канала начинается с # или &"
 msgid "Channels"
 msgstr "каналы"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/conversations_page.html.heex:55
+#: lib/retro_hex_chat_web/live/showcase_live/chat/conversations_page.html.heex:61
 #, elixir-autogen, elixir-format
 msgid "Channels Only"
 msgstr "Только каналы"
@@ -1735,7 +1735,7 @@ msgstr "Пустые настройки"
 
 #: lib/retro_hex_chat_web/components/showcase_helpers.ex:103
 #: lib/retro_hex_chat_web/live/showcase_live/chat/autocomplete_page.html.heex:103
-#: lib/retro_hex_chat_web/live/showcase_live/chat/conversations_page.html.heex:46
+#: lib/retro_hex_chat_web/live/showcase_live/chat/conversations_page.html.heex:52
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/auto_respond_dialog_page.ex:100
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:118
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/notify_list_page.ex:91
@@ -2357,7 +2357,7 @@ msgstr "Клавишные ярлыки"
 #: lib/retro_hex_chat_web/live/showcase_live/layout/context_menu_page.html.heex:129
 #, elixir-autogen, elixir-format
 msgid "Kick"
-msgstr "пинать"
+msgstr "Kick"
 
 #: lib/retro_hex_chat_web/components/showcase_helpers.ex:156
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/kick_dialog_page.ex:20
@@ -2751,7 +2751,7 @@ msgstr "Ник Режим"
 #: lib/retro_hex_chat_web/live/showcase_live/chat/nicklist_page.ex:23
 #, elixir-autogen, elixir-format
 msgid "Nicklist"
-msgstr "Никлист"
+msgstr "Список ников"
 
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:65
 #, elixir-autogen, elixir-format
@@ -4033,7 +4033,7 @@ msgstr "вкладка"
 #: lib/retro_hex_chat_web/live/showcase_live/chat/tab_bar_page.ex:23
 #, elixir-autogen, elixir-format
 msgid "Tab Bar"
-msgstr "Таб-бар"
+msgstr "Панель вкладок"
 
 #: lib/retro_hex_chat_web/components/showcase_helpers.ex:63
 #: lib/retro_hex_chat_web/live/showcase_live/layout/table.ex:16
@@ -4350,7 +4350,7 @@ msgstr "Типография"
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:213
 #, elixir-autogen, elixir-format
 msgid "URL Catcher"
-msgstr "URL-адрес"
+msgstr "Перехватчик URL"
 
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/url_catcher_page.ex:137
 #, elixir-autogen, elixir-format
@@ -4370,7 +4370,7 @@ msgstr "URL Catcher (сортированный)"
 #: lib/retro_hex_chat_web/live/showcase_live/chat/chat_context_menu_page.html.heex:135
 #, elixir-autogen, elixir-format
 msgid "URL Menu"
-msgstr "URL меню"
+msgstr "Меню URL"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/window.html.heex:119
 #: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar.html.heex:37
@@ -5302,7 +5302,10 @@ msgstr "Загружено 20 элементов"
 #: lib/retro_hex_chat_web/live/showcase_live/layout/list_states_page.ex:27
 #, elixir-autogen, elixir-format
 msgid "A list is not only its rows. Every paginated list in the app draws its empty, exhausted, truncated, failed and first-load states from these components."
-msgstr "Список — это не только его строки. Каждый постраничный список в приложении берёт из этих компонентов состояния: пустой, исчерпанный, усечённый, с ошибкой и первая загрузка."
+msgstr ""
+"Список — это не только его строки. Каждый постраничный список в приложении "
+"берёт из этих компонентов состояния: пустой, исчерпанный, усечённый, с "
+"ошибкой и первая загрузка."
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/list_states_page.ex:109
 #, elixir-autogen, elixir-format
@@ -5358,34 +5361,34 @@ msgstr "Попробуйте другой фильтр."
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:63
 #, elixir-autogen, elixir-format
 msgid "Device"
-msgstr ""
+msgstr "Устройство"
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:59
 #, elixir-autogen, elixir-format
 msgid "Expiring"
-msgstr ""
+msgstr "истекающий"
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:49
 #, elixir-autogen, elixir-format
 msgid "Icon Badges"
-msgstr ""
+msgstr "значки иконы"
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/card.ex:89
 #, elixir-autogen, elixir-format
 msgid "One click selects this card."
-msgstr ""
+msgstr "Один клик выбирает эту карту."
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/card.ex:75
 #, elixir-autogen, elixir-format
 msgid "Selectable Card"
-msgstr ""
+msgstr "Избранная карта"
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/card.ex:86
 #, elixir-autogen, elixir-format
 msgid "Selectable Device"
-msgstr ""
+msgstr "Выбираемое устройство"
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:55
 #, elixir-autogen, elixir-format
 msgid "Trusted"
-msgstr ""
+msgstr "доверенный"

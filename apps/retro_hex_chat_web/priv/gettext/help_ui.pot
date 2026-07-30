@@ -16,12 +16,7 @@ msgstr ""
 msgid "#lobby (12)"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:42
-#, elixir-autogen, elixir-format
-msgid ". Channels with highlights"
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:57
 #, elixir-autogen, elixir-format
 msgid ". User counts appear next to all channels."
 msgstr ""
@@ -44,11 +39,6 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "0 White 8 Yellow 1 Black 9 Light Green 2 Navy 10 Teal 3 Green 11 Cyan 4 Red 12 Blue 5 Maroon 13 Magenta 6 Purple 14 Grey 7 Orange 15 Light Grey"
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:47
-#, elixir-autogen, elixir-format
-msgid "Active Channel"
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:16
@@ -142,11 +132,6 @@ msgstr ""
 msgid "Chat Area:"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:39
-#, elixir-autogen, elixir-format
-msgid "Click a channel or PM to switch to it. Channels with unread messages appear"
-msgstr ""
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "Click a nickname to access Query, Whois, Kick, Ban, Mode, Add to Contacts, and Set Nick Color options. Double-click to open a private message."
@@ -155,11 +140,6 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Click a tab to switch. The active tab is highlighted. Tabs show close buttons (×) for channels and PMs. Unread tabs appear bold, and highlighted tabs flash."
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:63
-#, elixir-autogen, elixir-format
-msgid "Click a username to open the context menu. Double-click to open a private message. Right-click a channel for options (Mark as Read, Mute, Copy Name, Leave, Settings)."
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:19
@@ -305,7 +285,7 @@ msgstr ""
 msgid "Every"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:49
 #: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Features"
@@ -413,11 +393,6 @@ msgstr ""
 msgid "Look up user information."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:18
-#, elixir-autogen, elixir-format
-msgid "MY CHANNELS"
-msgstr ""
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "Message display with formatting and clickable URLs."
@@ -503,24 +478,9 @@ msgstr ""
 msgid "P2P Session:"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:30
-#, elixir-autogen, elixir-format
-msgid "POPULAR CHANNELS"
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:24
-#, elixir-autogen, elixir-format
-msgid "PRIVATE MESSAGES"
-msgstr ""
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:132
 #, elixir-autogen, elixir-format
 msgid "Perform"
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:54
-#, elixir-autogen, elixir-format
-msgid "Popular Channels"
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:9
@@ -652,11 +612,6 @@ msgstr ""
 msgid "Shows the current channel name, modes, and topic."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:56
-#, elixir-autogen, elixir-format
-msgid "Shows the top 10 channels by user count that you haven't joined yet. Click [+] to join a channel, or click \"Browse All Channels...\" to open the full channel list dialog."
-msgstr ""
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:138
 #, elixir-autogen, elixir-format
 msgid "Sounds"
@@ -723,29 +678,14 @@ msgstr ""
 msgid "Text Formatting"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "The Conversations sidebar is the left navigation pane showing your channels, inline user list, PMs, and popular channels in three collapsible sections."
-msgstr ""
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_status_tab.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "The Status tab is the central observability point for your session."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:49
-#, elixir-autogen, elixir-format
-msgid "The active channel is pinned to the top of the My Channels section. Below it, the user list shows all users sorted by role (owner, operator, half-op, voiced, regular), with role icons and colors."
-msgstr ""
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "The active channel shows a user count in parentheses next to the channel name, e.g."
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "The header shows the title \"Conversations\" and a close button to hide the panel. You can also toggle it via the toolbar."
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:2
@@ -771,11 +711,6 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "These items are disabled if the target is not registered or is yourself."
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:15
-#, elixir-autogen, elixir-format
-msgid "Three collapsible sections with clickable headers (▾/▸ arrows):"
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:74
@@ -825,7 +760,7 @@ msgstr ""
 msgid "User Count"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:61
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "User Interactions"
 msgstr ""
@@ -1021,11 +956,6 @@ msgstr ""
 msgid "— Toggle Do Not Disturb mode. When active, notifications are suppressed."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:31
-#, elixir-autogen, elixir-format
-msgid "— Top 10 most active channels you haven't joined (collapsed by default, lazy-loaded on first expand)"
-msgstr ""
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:114
 #, elixir-autogen, elixir-format
 msgid "— View URLs shared across channels."
@@ -1034,16 +964,6 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:120
 #, elixir-autogen, elixir-format
 msgid "— View and manage channel settings, bans, and modes."
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:24
-#, elixir-autogen, elixir-format
-msgid "— Your active PM conversations"
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:18
-#, elixir-autogen, elixir-format
-msgid "— Your joined channels with user counts and unread badges"
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:68
@@ -1550,11 +1470,6 @@ msgstr ""
 msgid "There is no dedicated keyboard shortcut for User Lookup. Open it from Tools > User Lookup, a nickname context menu, /whois, or /whowas."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "There is no dedicated keyboard shortcut for the /me action toggle. Type /me directly, or click the * button in a channel input."
-msgstr ""
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "These items change labels based on the target's current role, for example Give Op (+o) or Remove Op (-o)."
@@ -1849,4 +1764,119 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/ui_lists.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "— Some lists are capped rather than paginated, and say so. A count like this means the list on screen is not the whole list."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "- Channels and PMs with unread messages, highlights, or recent flash activity"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "- Channels you are currently joined to, with user counts and unread badges"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "- PM conversations restored from the current session or account history"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "- Saved channels that will be joined automatically on connect"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:54
+#, elixir-autogen, elixir-format
+msgid ". Rows with highlights"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "ACTIVITY"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "AUTO-JOIN"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:66
+#, elixir-autogen, elixir-format
+msgid "Auto-Join"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:68
+#, elixir-autogen, elixir-format
+msgid "Auto-Join shows saved channels from your account auto-join list. Channels with saved keys show only a +key marker; the key itself is not displayed in the sidebar."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Collapsible sections with clickable headers:"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "OPEN CHANNELS"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:59
+#, elixir-autogen, elixir-format
+msgid "Open Channels"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "RECENT PRIVATE MESSAGES"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:82
+#, elixir-autogen, elixir-format
+msgid "Right-click a channel or PM row for context actions. Double-click a PM row to open or focus that private message tab."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:61
+#, elixir-autogen, elixir-format
+msgid "The active channel is highlighted in the Open Channels section. Closing a channel tab leaves the channel, so joined channels and channel tabs stay aligned."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "There is no dedicated keyboard shortcut for /me actions. Type /me directly in a channel input."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "Click a channel or PM to switch to it. Activity rows use an alert surface, unread rows appear"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "The header shows the title, a close button, and compact counters for open channels, recent PMs, and auto-join entries. You can also toggle the panel via the toolbar."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:43
+#, elixir-autogen, elixir-format
+msgid "- Active public channels you have not joined yet, plus a button that opens the full channel list"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "POPULAR CHANNELS"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:73
+#, elixir-autogen, elixir-format
+msgid "Popular Channels"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:75
+#, elixir-autogen, elixir-format
+msgid "Shows active public channels you have not joined yet when the server has rooms to suggest. Click [+] to join a suggestion, or click \"Browse All Channels...\" to open the full channel list dialog."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "The Conversations sidebar is the left IRC navigation pane: activity, joined channels, recent PMs, auto-join channels, and popular channel suggestions."
 msgstr ""

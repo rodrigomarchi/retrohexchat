@@ -16,12 +16,7 @@ msgstr ""
 msgid "#lobby (12)"
 msgstr "#lobby (12)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:42
-#, elixir-autogen, elixir-format
-msgid ". Channels with highlights"
-msgstr ". ハイライトが付いているチャネル"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:57
 #, elixir-autogen, elixir-format
 msgid ". User counts appear next to all channels."
 msgstr ". ユーザーのカウントは、すべてのチャネルの横に表示されます。"
@@ -49,11 +44,6 @@ msgid "0 White 8 Yellow 1 Black 9 Light Green 2 Navy 10 Teal 3 Green 11 Cyan 4 R
 msgstr ""
 "0 白い 8 の黄色 1 の黒 9 ライト緑 2 の海軍 10 の Teal 3 の緑 11 のシアン 4 赤い 12 の青 5 のマゼンタ 13 "
 "のマゼンタ 6 紫色 14 灰色 7 オレンジ 15 ライト 灰色"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:47
-#, elixir-autogen, elixir-format
-msgid "Active Channel"
-msgstr "活動的なチャネル"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:16
 #, elixir-autogen, elixir-format
@@ -147,11 +137,6 @@ msgstr "チャンネルメッセージ"
 msgid "Chat Area:"
 msgstr "チャットエリア:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:39
-#, elixir-autogen, elixir-format
-msgid "Click a channel or PM to switch to it. Channels with unread messages appear"
-msgstr "チャンネルまたは PM をクリックして切り替えます。 未読メッセージのチャンネルが表示される"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "Click a nickname to access Query, Whois, Kick, Ban, Mode, Add to Contacts, and Set Nick Color options. Double-click to open a private message."
@@ -165,13 +150,6 @@ msgid "Click a tab to switch. The active tab is highlighted. Tabs show close but
 msgstr ""
 "タブをクリックして切り替えます。 アクティブなタブが強調表示されます。 タブは、チャンネルとPM用のボタン(×)を閉じます。 "
 "未読タブは太字で、ハイライトされたタブがフラッシュ表示されます。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:63
-#, elixir-autogen, elixir-format
-msgid "Click a username to open the context menu. Double-click to open a private message. Right-click a channel for options (Mark as Read, Mute, Copy Name, Leave, Settings)."
-msgstr ""
-"ユーザー名をクリックしてコンテキストメニューを開きます。 ダブルクリックしてプライベートメッセージを開きます。 "
-"オプションのチャンネルを右クリックします。 (読み取り、ミュート、コピー名、退去、設定)。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:19
 #: lib/retro_hex_chat_web/controllers/help_content/ui_status_tab.html.heex:37
@@ -327,9 +305,9 @@ msgstr "エラー:"
 #: lib/retro_hex_chat_web/controllers/help_content/ui_status_tab.html.heex:3
 #, elixir-autogen, elixir-format
 msgid "Every"
-msgstr "Every"
+msgstr "毎"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:49
 #: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Features"
@@ -438,11 +416,6 @@ msgstr "ログビューア"
 msgid "Look up user information."
 msgstr "ユーザー情報を見る"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:18
-#, elixir-autogen, elixir-format
-msgid "MY CHANNELS"
-msgstr "マイチャネル"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "Message display with formatting and clickable URLs."
@@ -471,17 +444,17 @@ msgstr "NickServ、ChanServの応答。"
 #: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "Nicklist"
-msgstr "Nicklist"
+msgstr "ニックリスト"
 
 #: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Notes"
-msgstr "Notes"
+msgstr "インフォメーション"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:181
 #, elixir-autogen, elixir-format
 msgid "Notifications"
-msgstr "Notifications"
+msgstr "お知らせ"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_status_tab.html.heex:32
 #, elixir-autogen, elixir-format
@@ -528,30 +501,15 @@ msgstr "P2Pアクション(登録者のみ)"
 msgid "P2P Session:"
 msgstr "P2Pセッション:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:30
-#, elixir-autogen, elixir-format
-msgid "POPULAR CHANNELS"
-msgstr "ポピラーシャネル"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:24
-#, elixir-autogen, elixir-format
-msgid "PRIVATE MESSAGES"
-msgstr "プロモーションメッセージ"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:132
 #, elixir-autogen, elixir-format
 msgid "Perform"
 msgstr "パフォーマンス"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:54
-#, elixir-autogen, elixir-format
-msgid "Popular Channels"
-msgstr "人気チャンネル"
-
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Press"
-msgstr "Press"
+msgstr "ニュース"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:13
 #, elixir-autogen, elixir-format
@@ -635,7 +593,7 @@ msgstr "セクション"
 #: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "See Also"
-msgstr "See Also"
+msgstr "関連項目"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:41
 #, elixir-autogen, elixir-format
@@ -676,13 +634,6 @@ msgstr "唯一のユーザー(またはチャネルが本当に空)の場合、 
 #, elixir-autogen, elixir-format
 msgid "Shows the current channel name, modes, and topic."
 msgstr "現在のチャンネル名、モード、トピックを表示します。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:56
-#, elixir-autogen, elixir-format
-msgid "Shows the top 10 channels by user count that you haven't joined yet. Click [+] to join a channel, or click \"Browse All Channels...\" to open the full channel list dialog."
-msgstr ""
-"まだ参加していないユーザー数で上位10チャンネルを表示します。 [+] "
-"をクリックしてチャンネルに参加したり、「すべてのチャンネルをブラウズ...」をクリックして、全チャンネルリストダイアログを開きます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:138
 #, elixir-autogen, elixir-format
@@ -750,33 +701,15 @@ msgstr "タブバー:"
 msgid "Text Formatting"
 msgstr "テキストフォーマット"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "The Conversations sidebar is the left navigation pane showing your channels, inline user list, PMs, and popular channels in three collapsible sections."
-msgstr ""
-"会話サイドバーは、チャネル、インラインユーザーリスト、PM、および3つの折りたたみセクションで人気のあるチャネルを示す左のナビゲーションペインです。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_status_tab.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "The Status tab is the central observability point for your session."
 msgstr "Statusタブは、セッションの中央の保守性ポイントです。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:49
-#, elixir-autogen, elixir-format
-msgid "The active channel is pinned to the top of the My Channels section. Below it, the user list shows all users sorted by role (owner, operator, half-op, voiced, regular), with role icons and colors."
-msgstr ""
-"マイチャネルセクションの上部にアクティブなチャンネルがピン留めされます。 "
-"以下では、ロールアイコンと色でロール(所有者、オペレータ、ハーフアップ、ボイス、レギュラー)によってソートされたすべてのユーザーリストが表示されます。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "The active channel shows a user count in parentheses next to the channel name, e.g."
 msgstr "アクティブなチャンネルは、チャンネル名の横にある括弧でユーザー数を表示します。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "The header shows the title \"Conversations\" and a close button to hide the panel. You can also toggle it via the toolbar."
-msgstr "ヘッダは、パネルを非表示にするために「会話」と閉じるボタンのタイトルを表示します。 ツールバーから切り替えることもできます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:2
 #, elixir-autogen, elixir-format
@@ -803,11 +736,6 @@ msgstr "ユーザリストは、アクティブチャンネルの会話サイド
 #, elixir-autogen, elixir-format
 msgid "These items are disabled if the target is not registered or is yourself."
 msgstr "ターゲットが登録されていないか、または自分自身でない場合、これらの項目は無効です。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:15
-#, elixir-autogen, elixir-format
-msgid "Three collapsible sections with clickable headers (▾/▸ arrows):"
-msgstr "クリック可能なヘッダーを持つ3つの折りたたみセクション( / ▸ 矢印):"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:74
 #, elixir-autogen, elixir-format
@@ -856,7 +784,7 @@ msgstr "チャットエリア(B、I、U、カラー、ストリップボタン)�
 msgid "User Count"
 msgstr "ユーザー数"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:61
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "User Interactions"
 msgstr "ユーザーインタラクション"
@@ -1052,11 +980,6 @@ msgstr "— 右側のユーザーリストを表示または非表示にしま�
 msgid "— Toggle Do Not Disturb mode. When active, notifications are suppressed."
 msgstr "— Toggle モードを捨てない。 アクティブにすると、通知は抑制されます。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:31
-#, elixir-autogen, elixir-format
-msgid "— Top 10 most active channels you haven't joined (collapsed by default, lazy-loaded on first expand)"
-msgstr "— 参加していないトップ10の最もアクティブなチャンネル(デフォルトでは、最初の展開で遅延ロード)"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:114
 #, elixir-autogen, elixir-format
 msgid "— View URLs shared across channels."
@@ -1066,16 +989,6 @@ msgstr "— チャネル間で共有されるURLを表示します。"
 #, elixir-autogen, elixir-format
 msgid "— View and manage channel settings, bans, and modes."
 msgstr "— チャンネルの設定、禁止、モードの表示と管理"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:24
-#, elixir-autogen, elixir-format
-msgid "— Your active PM conversations"
-msgstr "— アクティブなPMの会話"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:18
-#, elixir-autogen, elixir-format
-msgid "— Your joined channels with user counts and unread badges"
-msgstr "— ユーザーのカウントと未読のバッジで参加したチャンネル"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:68
 #, elixir-autogen, elixir-format
@@ -1247,12 +1160,12 @@ msgstr "チャネル会議"
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Channels Tab"
-msgstr "チャネルタブ"
+msgstr "チャンネルタブ"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Choose"
-msgstr "Choose"
+msgstr "選択"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:46
@@ -1623,12 +1536,6 @@ msgstr ""
 "ユーザールックアップ専用のキーボードショートカットはありません。 ツール > "
 "ユーザルックアップ、ニックネームのコンテキストメニュー、/whois、または /whowas から開きます。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "There is no dedicated keyboard shortcut for the /me action toggle. Type /me directly, or click the * button in a channel input."
-msgstr ""
-"/me アクション トグルには専用のキーボードショートカットはありません。 /me を直接入力するか、チャンネル入力の * ボタンをクリックします。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "These items change labels based on the target's current role, for example Give Op (+o) or Remove Op (-o)."
@@ -1803,7 +1710,7 @@ msgstr "P2Pセッション"
 #: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Account"
-msgstr "Account"
+msgstr "パスワード"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:2
 #, elixir-autogen, elixir-format
@@ -1855,7 +1762,10 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/ui_lists.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "A few lists show a high fixed number of entries instead of paging: the user list, remembered nicknames, your conversations, and the trusted terminals themselves. These are ordered by something that changes while you look at them — who spoke last, when a terminal was last used — so paging through them could skip an entry that moved. Where that risk exists the whole list is shown up to a generous limit, and any truncation is stated rather than hidden."
-msgstr "いくつかのリストは、ページ分割ではなく大きめの固定件数を表示します。ユーザー一覧、記憶されたニックネーム、あなたの会話、そして信頼済み端末そのものです。これらは見ている間にも変わるもの — 誰が最後に発言したか、端末が最後に使われたのはいつか — で並んでいるため、ページ送りでは移動した項目を飛ばすおそれがあります。その危険があるところでは、十分に大きな上限までリスト全体を表示し、省略があれば隠さずに明示します。"
+msgstr ""
+"いくつかのリストは、ページ分割ではなく大きめの固定件数を表示します。ユーザー一覧、記憶されたニックネーム、あなたの会話、そして信頼済み端末そのものです。これらは見ている間にも変わるもの"
+" — 誰が最後に発言したか、端末が最後に使われたのはいつか — "
+"で並んでいるため、ページ送りでは移動した項目を飛ばすおそれがあります。その危険があるところでは、十分に大きな上限までリスト全体を表示し、省略があれば隠さずに明示します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_lists.html.heex:23
 #, elixir-autogen, elixir-format
@@ -1875,7 +1785,8 @@ msgstr "リストの終わり"
 #: lib/retro_hex_chat_web/controllers/help_content/ui_lists.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "Every paginated list also has a Load More button beneath it. It does exactly what reaching the edge does, and it is the way to page through a list with the keyboard or a screen reader, without a scroll gesture. It disappears when there is nothing left to load."
-msgstr "ページ分割されたリストの下には「さらに読み込む」ボタンもあります。端に到達したときとまったく同じ働きをし、スクロール操作なしにキーボードやスクリーンリーダーでリストをたどる手段になります。読み込むものがなくなると消えます。"
+msgstr ""
+"ページ分割されたリストの下には「さらに読み込む」ボタンもあります。端に到達したときとまったく同じ働きをし、スクロール操作なしにキーボードやスクリーンリーダーでリストをたどる手段になります。読み込むものがなくなると消えます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_lists.html.heex:17
 #, elixir-autogen, elixir-format
@@ -1890,7 +1801,9 @@ msgstr "リストの終わりを知る"
 #: lib/retro_hex_chat_web/controllers/help_content/ui_lists.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Lists that can grow without limit — the message history, the security log of a terminal, a bot's event log — do not load all at once. They load one page at a time, and fetch the next page as you approach the edge of what is already there."
-msgstr "際限なく増えうるリスト — メッセージ履歴、端末のセキュリティログ、ボットのイベントログ — は一度には読み込みません。1 ページずつ読み込み、すでにある範囲の端に近づくと次のページを取得します。"
+msgstr ""
+"際限なく増えうるリスト — メッセージ履歴、端末のセキュリティログ、ボットのイベントログ — は一度には読み込みません。1 "
+"ページずつ読み込み、すでにある範囲の端に近づくと次のページを取得します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_lists.html.heex:30
 #, elixir-autogen, elixir-format
@@ -1905,7 +1818,8 @@ msgstr "長いリスト"
 #: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "Long lists load the next page as you scroll toward the edge. There is no shortcut for that gesture, so every paginated list also carries a Load More button beneath it — that button is the keyboard path through a long list."
-msgstr "長いリストは端に向かってスクロールすると次のページを読み込みます。この操作にショートカットはないため、ページ分割されたリストの下には必ず「さらに読み込む」ボタンがあります。このボタンが長いリストをキーボードでたどる道です。"
+msgstr ""
+"長いリストは端に向かってスクロールすると次のページを読み込みます。この操作にショートカットはないため、ページ分割されたリストの下には必ず「さらに読み込む」ボタンがあります。このボタンが長いリストをキーボードでたどる道です。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_lists.html.heex:11
 #, elixir-autogen, elixir-format
@@ -1940,4 +1854,130 @@ msgstr "— すべて読み込まれると、マーカーがリストを締め�
 #: lib/retro_hex_chat_web/controllers/help_content/ui_lists.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "— Some lists are capped rather than paginated, and say so. A count like this means the list on screen is not the whole list."
-msgstr "— 一部のリストはページ分割ではなく上限が設けられており、そのことを明示します。このような件数表示は、画面のリストが全体ではないことを意味します。"
+msgstr ""
+"— 一部のリストはページ分割ではなく上限が設けられており、そのことを明示します。このような件数表示は、画面のリストが全体ではないことを意味します。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "- Channels and PMs with unread messages, highlights, or recent flash activity"
+msgstr "- 未読メッセージ、ハイライト、または最近のフラッシュアクティビティでチャンネルとPM"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "- Channels you are currently joined to, with user counts and unread badges"
+msgstr "- 現在、ユーザー数と未読バッジで参加しているチャンネル"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "- PM conversations restored from the current session or account history"
+msgstr "- 現在のセッションまたはアカウント履歴から復元されたPMの会話"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "- Saved channels that will be joined automatically on connect"
+msgstr "- 接続時に自動的に結合される保存されたチャネル"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:54
+#, elixir-autogen, elixir-format
+msgid ". Rows with highlights"
+msgstr ". ハイライト付きの列"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "ACTIVITY"
+msgstr "アクティビティ"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "AUTO-JOIN"
+msgstr "自動ジョイント"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:66
+#, elixir-autogen, elixir-format
+msgid "Auto-Join"
+msgstr ""
+"の特長\n"
+"自動ジョイント"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:68
+#, elixir-autogen, elixir-format
+msgid "Auto-Join shows saved channels from your account auto-join list. Channels with saved keys show only a +key marker; the key itself is not displayed in the sidebar."
+msgstr ""
+"Auto-Join は、アカウントの auto-join リストから保存されたチャンネルを表示します。 "
+"保存されたキーを持つチャネルは、+keyマーカーのみを表示します。キー自体はサイドバーに表示されません。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Collapsible sections with clickable headers:"
+msgstr "クリック可能なヘッダーを持つ折りたたみセクション:"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "OPEN CHANNELS"
+msgstr "オープンチャンネル"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:59
+#, elixir-autogen, elixir-format
+msgid "Open Channels"
+msgstr "オープンチャンネル"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "RECENT PRIVATE MESSAGES"
+msgstr "最近の投稿"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:82
+#, elixir-autogen, elixir-format
+msgid "Right-click a channel or PM row for context actions. Double-click a PM row to open or focus that private message tab."
+msgstr ""
+"コンテキストアクションのチャンネルまたは PM 行を右クリックします。 "
+"PM行をダブルクリックして、プライベートメッセージタブを開くか、またはフォーカスします。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:61
+#, elixir-autogen, elixir-format
+msgid "The active channel is highlighted in the Open Channels section. Closing a channel tab leaves the channel, so joined channels and channel tabs stay aligned."
+msgstr ""
+"アクティブなチャネルは Open Channels セクションでハイライトされます。 "
+"チャンネルタブを閉じると、チャンネルとチャンネルタブが整列されます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "There is no dedicated keyboard shortcut for /me actions. Type /me directly in a channel input."
+msgstr "/meアクションには専用のキーボードショートカットはありません。 チャンネル入力で直接/meを入力します。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "Click a channel or PM to switch to it. Activity rows use an alert surface, unread rows appear"
+msgstr "チャンネルまたはPMをクリックして切り替えます。アクティビティ行は警告サーフェスを使い、未読行は"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "The header shows the title, a close button, and compact counters for open channels, recent PMs, and auto-join entries. You can also toggle the panel via the toolbar."
+msgstr ""
+"ヘッダーにはタイトル、閉じるボタン、開いているチャンネル、最近のPM、auto-"
+"join項目の小さなカウンターが表示されます。ツールバーからもパネルを切り替えられます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:43
+#, elixir-autogen, elixir-format
+msgid "- Active public channels you have not joined yet, plus a button that opens the full channel list"
+msgstr "- まだ参加していないアクティブな公開チャンネルと、完全なチャンネルリストを開くボタン"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "POPULAR CHANNELS"
+msgstr "人気チャンネル"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:73
+#, elixir-autogen, elixir-format
+msgid "Popular Channels"
+msgstr "人気チャンネル"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:75
+#, elixir-autogen, elixir-format
+msgid "Shows active public channels you have not joined yet when the server has rooms to suggest. Click [+] to join a suggestion, or click \"Browse All Channels...\" to open the full channel list dialog."
+msgstr "サーバーに提案できる部屋がある場合、まだ参加していないアクティブな公開チャンネルを表示します。[+]で候補に参加するか、「すべてのチャネルをブラウズ...」で完全なチャンネルリストを開きます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "The Conversations sidebar is the left IRC navigation pane: activity, joined channels, recent PMs, auto-join channels, and popular channel suggestions."
+msgstr "Conversationsサイドバーは左側のIRCナビゲーションです: アクティビティ、参加中チャンネル、最近のPM、auto-joinチャンネル、人気チャンネル候補。"

@@ -68,7 +68,10 @@ msgstr "一个有用的机器人"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/about_dialog.ex:59
 #, elixir-autogen, elixir-format
-msgid "A retro-styled IRC chat platform inspired by the classic desktop chat clients of the late '90s. Real-time messaging, channels, peer-to-peer sessions, and arcade games — all in the browser."
+msgid ""
+"A retro-styled IRC chat platform inspired by the classic desktop chat "
+"clients of the late '90s. Real-time messaging, channels, peer-to-peer "
+"sessions, and arcade games — all in the browser."
 msgstr "一个由90年代后期经典桌面聊天客户端启发的复古风格的IRC聊天平台. 实时消息,频道,对等会话,以及街机游戏——都在浏览器中."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/about_dialog.ex:30
@@ -331,7 +334,7 @@ msgstr "能力"
 #: lib/retro_hex_chat_web/components/ui/dialogs/nick_change_dialog.ex:46
 #, elixir-autogen, elixir-format
 msgid "Change Nickname"
-msgstr "Change Nickname"
+msgstr "更改昵称"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:136
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:322
@@ -429,7 +432,9 @@ msgstr "图标"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:96
 #, elixir-autogen, elixir-format
-msgid "Configure limits to prevent message flooding in channels and private messages."
+msgid ""
+"Configure limits to prevent message flooding in channels and private "
+"messages."
 msgstr "配置限制以防止频道和私人消息中的信息淹没."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/confirm_dialog.ex:46
@@ -630,7 +635,7 @@ msgstr "输入密码"
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:162
 #, elixir-autogen, elixir-format
 msgid "Events"
-msgstr "活动"
+msgstr "Events"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:149
 #: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:228
@@ -1304,7 +1309,8 @@ msgstr "触发此响应的命令( 如 ! hello)"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/nick_change_dialog.ex:63
 #, elixir-autogen, elixir-format
-msgid "This nickname is registered. Please enter the NickServ password to identify."
+msgid ""
+"This nickname is registered. Please enter the NickServ password to identify."
 msgstr "此昵称已注册 。 请输入 NickServ 密码以识别 。"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:202
@@ -1416,7 +1422,8 @@ msgstr "版本 %{version}"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/paste_confirm_dialog.ex:74
 #, elixir-autogen, elixir-format
-msgid "Warning: This exceeds the flood protection limit. Messages may be throttled."
+msgid ""
+"Warning: This exceeds the flood protection limit. Messages may be throttled."
 msgstr "警告: 这超过了防洪限度. 信件可能会被节制."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/about_dialog.ex:81
@@ -1674,7 +1681,10 @@ msgstr "关闭 P2P 会话 ?"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:102
 #, elixir-autogen, elixir-format
-msgid "Closing this window disconnects the whole P2P session with %{peer} — any call, game or file transfer in progress will stop. To keep the session and just tidy up, minimize the window instead."
+msgid ""
+"Closing this window disconnects the whole P2P session with %{peer} — any "
+"call, game or file transfer in progress will stop. To keep the session and "
+"just tidy up, minimize the window instead."
 msgstr ""
 "关闭此窗口将整个 P2P 会话连接到 %{peer} —— 任何正在发送的呼叫、 游戏或文件传输都会停止 。 为了保持会话和清理, 将窗口最小化。"
 
@@ -1750,7 +1760,8 @@ msgstr "删除频道"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:154
 #, elixir-autogen, elixir-format
-msgid "Deletes this nickname registration after you confirm with its password."
+msgid ""
+"Deletes this nickname registration after you confirm with its password."
 msgstr "在用密码确认后删除此昵称注册 。"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:181
@@ -1811,12 +1822,16 @@ msgstr "结束会话"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:94
 #, elixir-autogen, elixir-format
-msgid "End the P2P session with %{peer}? Any call, game or file transfer in progress will stop."
+msgid ""
+"End the P2P session with %{peer}? Any call, game or file transfer in "
+"progress will stop."
 msgstr "P2P会话用%{peer}结束? 任何正在通话、游戏或文件传输都将停止。"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:112
 #, elixir-autogen, elixir-format
-msgid "End the current P2P session with %{peer} and start one with %{new_peer}? Any call, game or file transfer in progress will stop."
+msgid ""
+"End the current P2P session with %{peer} and start one with %{new_peer}? Any"
+" call, game or file transfer in progress will stop."
 msgstr "以 %{peer}结束当前 P2P会话, 以 %{new_peer}开始一个会话? 任何正在通话、游戏或文件传输都将停止。"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/user_lookup_dialog.ex:53
@@ -2468,12 +2483,12 @@ msgstr "重复计时器的分钟 10"
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:869
 #, elixir-autogen, elixir-format
 msgid "no"
-msgstr "no"
+msgstr "无"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_server_settings_dialog.ex:124
 #, elixir-autogen, elixir-format
 msgid "open"
-msgstr "open"
+msgstr "打开"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:56
 #, elixir-autogen, elixir-format
@@ -2634,7 +2649,7 @@ msgstr "离线"
 #: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:159
 #, elixir-autogen, elixir-format
 msgid "On"
-msgstr "On"
+msgstr "打开"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:142
 #, elixir-autogen, elixir-format
@@ -2691,7 +2706,7 @@ msgstr "您的当前聊天会结束 。"
 #: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:139
 #, elixir-autogen, elixir-format
 msgid "none"
-msgstr "none"
+msgstr "无"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/kick_dialog.ex:100
 #, elixir-autogen, elixir-format
@@ -2931,176 +2946,176 @@ msgstr "未知时区"
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:793
 #, elixir-autogen, elixir-format
 msgid "%{bits}-bit"
-msgstr ""
+msgstr "%{bits} 位数"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:799
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "%{count} cores"
-msgstr "%{count} 项"
+msgstr "%{count} 个核心"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:495
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Action"
 msgstr "行动"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:481
 #, elixir-autogen, elixir-format
 msgid "Actor"
-msgstr ""
+msgstr "演员"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:884
 #, elixir-autogen, elixir-format
 msgid "Auto-login disabled"
-msgstr ""
+msgstr "已禁用自动登录"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:881
 #, elixir-autogen, elixir-format
 msgid "Auto-login enabled"
-msgstr ""
+msgstr "启用自动登录"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:326
 #, elixir-autogen, elixir-format
 msgid "Browser"
-msgstr ""
+msgstr "浏览器"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:372
 #, elixir-autogen, elixir-format
 msgid "CPU"
-msgstr ""
+msgstr "CPU 软件"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:384
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Connected: %{time}"
-msgstr "已连接"
+msgstr "已连接: %{time}"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:850
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:851
 #, elixir-autogen, elixir-format
 msgid "Count"
-msgstr ""
+msgstr "计数"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:363
 #, elixir-autogen, elixir-format
 msgid "Depth"
-msgstr ""
+msgstr "深度"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:786
 #, elixir-autogen, elixir-format
 msgid "Desktop"
-msgstr ""
+msgstr "桌面"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:469
 #, elixir-autogen, elixir-format
 msgid "Event ID: #%{id}"
-msgstr ""
+msgstr "事件 ID：#%{id}"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:852
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:853
 #, elixir-autogen, elixir-format
 msgid "Grant ID"
-msgstr ""
+msgstr "格兰特身份证"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:346
 #, elixir-autogen, elixir-format
 msgid "Language"
-msgstr ""
+msgstr "语言"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:482
 #, elixir-autogen, elixir-format
 msgid "No actor"
-msgstr ""
+msgstr "没有演员"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:318
 #, elixir-autogen, elixir-format
 msgid "No ref"
-msgstr ""
+msgstr "无参考文献"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:491
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "No terminal"
-msgstr "尚无终端活动。"
+msgstr "无终端"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:331
 #, elixir-autogen, elixir-format
 msgid "OS"
-msgstr ""
+msgstr "业务办"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:314
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Ref"
-msgstr "刷新"
+msgstr "参考文献"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:351
 #, elixir-autogen, elixir-format
 msgid "Screen"
-msgstr ""
+msgstr "屏幕"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:392
 #, elixir-autogen, elixir-format
 msgid "Seen: %{time}"
-msgstr ""
+msgstr "见:%{time}"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:856
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:857
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Session ID"
-msgstr "会话已结束"
+msgstr "会话编号"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:308
 #, elixir-autogen, elixir-format
 msgid "Session ID: #%{id}"
-msgstr ""
+msgstr "会话 ID：#%{id}"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:356
 #, elixir-autogen, elixir-format
 msgid "TZ"
-msgstr ""
+msgstr "特兹"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:490
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Terminal"
-msgstr "终端名称"
+msgstr "终端"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:818
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:821
 #, elixir-autogen, elixir-format
 msgid "Terminal ID: #%{id}"
-msgstr ""
+msgstr "终端 ID：#%{id}"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:817
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Terminal ID: guest"
-msgstr "终端已登出"
+msgstr "终端编号: 客人"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:820
 #, elixir-autogen, elixir-format
 msgid "Terminal ID: none"
-msgstr ""
+msgstr "终端 ID: 无"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:474
 #, elixir-autogen, elixir-format
 msgid "Time: %{time}"
-msgstr ""
+msgstr "时间: %{time}"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:787
 #, elixir-autogen, elixir-format
 msgid "Touch"
-msgstr ""
+msgstr "触摸"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:379
 #, elixir-autogen, elixir-format
 msgid "Touch unknown"
-msgstr ""
+msgstr "接触未知"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:805
 #, elixir-autogen, elixir-format
 msgid "Touch: No"
-msgstr ""
+msgstr "触摸:无"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:804
 #, elixir-autogen, elixir-format
 msgid "Touch: Yes"
-msgstr ""
+msgstr "触摸:是"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:374
 #, elixir-autogen, elixir-format

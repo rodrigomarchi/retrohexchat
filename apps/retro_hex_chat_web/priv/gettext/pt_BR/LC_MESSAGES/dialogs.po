@@ -16,14 +16,14 @@ msgstr ""
 msgid "!hello"
 msgstr "Olá!"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:555
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:670
 #, elixir-autogen, elixir-format
 msgid "%{count} entry"
 msgid_plural "%{count} entries"
 msgstr[0] "%{count} entrada"
 msgstr[1] "%{count} entradas"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:552
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:667
 #, elixir-autogen, elixir-format
 msgid "%{count} item"
 msgid_plural "%{count} items"
@@ -72,7 +72,10 @@ msgstr "Um bot útil"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/about_dialog.ex:59
 #, elixir-autogen, elixir-format
-msgid "A retro-styled IRC chat platform inspired by the classic desktop chat clients of the late '90s. Real-time messaging, channels, peer-to-peer sessions, and arcade games — all in the browser."
+msgid ""
+"A retro-styled IRC chat platform inspired by the classic desktop chat "
+"clients of the late '90s. Real-time messaging, channels, peer-to-peer "
+"sessions, and arcade games — all in the browser."
 msgstr ""
 "Uma plataforma de chat IRC em estilo retrô inspirada nos clientes clássicos "
 "de chat desktop do fim dos anos 90. Mensagens em tempo real, canais, sessões"
@@ -95,6 +98,7 @@ msgstr "Ações"
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:186
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:307
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:362
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:555
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:509
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1131
 #: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:284
@@ -436,7 +440,9 @@ msgstr "Comandos"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:96
 #, elixir-autogen, elixir-format
-msgid "Configure limits to prevent message flooding in channels and private messages."
+msgid ""
+"Configure limits to prevent message flooding in channels and private "
+"messages."
 msgstr ""
 "Configure limites para evitar flood de mensagens em canais e mensagens "
 "privadas."
@@ -502,19 +508,19 @@ msgid "Description"
 msgstr "Descrição"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:92
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:489
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:604
 #, elixir-autogen, elixir-format
 msgid "Dice"
 msgstr "Dados"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:482
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:516
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:584
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:631
 #, elixir-autogen, elixir-format
 msgid "Disable"
 msgstr "Desativar"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:471
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:510
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:573
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:625
 #, elixir-autogen, elixir-format
 msgid "Disabled"
 msgstr "Desativado"
@@ -609,8 +615,8 @@ msgstr "Editar regra"
 msgid "Elixir"
 msgstr "Elixir"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:482
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:517
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:584
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:632
 #, elixir-autogen, elixir-format
 msgid "Enable"
 msgstr "Ativar"
@@ -620,8 +626,8 @@ msgstr "Ativar"
 msgid "Enable perform on connect"
 msgstr "Ativar perform ao conectar"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:471
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:509
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:573
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:624
 #, elixir-autogen, elixir-format
 msgid "Enabled"
 msgstr "Ativado"
@@ -680,7 +686,7 @@ msgid "General"
 msgstr "Geral"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:84
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:494
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:609
 #, elixir-autogen, elixir-format
 msgid "Greeter"
 msgstr "Saudação"
@@ -805,7 +811,7 @@ msgstr "Máscara"
 msgid "Members"
 msgstr "Membros"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:495
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:610
 #, elixir-autogen, elixir-format
 msgid "Mention"
 msgstr "Menção"
@@ -839,7 +845,7 @@ msgstr "Moderado (+m)"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:177
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:96
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:490
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:605
 #, elixir-autogen, elixir-format
 msgid "Moderation"
 msgstr "Moderação"
@@ -1156,7 +1162,7 @@ msgid "Public Chat Platform"
 msgstr "Plataforma pública de chat"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:108
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:493
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:608
 #, elixir-autogen, elixir-format
 msgid "RSS"
 msgstr "RSS"
@@ -1167,6 +1173,7 @@ msgstr "RSS"
 #: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:169
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:288
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:350
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:523
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:524
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1142
 #: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:304
@@ -1221,7 +1228,7 @@ msgid "Save Topic"
 msgstr "Salvar tópico"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:106
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:492
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:607
 #, elixir-autogen, elixir-format
 msgid "Scheduler"
 msgstr "Agendador"
@@ -1301,7 +1308,7 @@ msgstr "Estatísticas"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:190
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:274
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:469
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:571
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:295
 #, elixir-autogen, elixir-format
 msgid "Status"
@@ -1314,7 +1321,8 @@ msgstr "O comando que aciona esta resposta (ex.:!ola)"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/nick_change_dialog.ex:63
 #, elixir-autogen, elixir-format
-msgid "This nickname is registered. Please enter the NickServ password to identify."
+msgid ""
+"This nickname is registered. Please enter the NickServ password to identify."
 msgstr ""
 "Este apelido é registrado. Digite a senha do NickServ para se identificar."
 
@@ -1344,7 +1352,7 @@ msgid "Trigger"
 msgstr "Gatilho"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:101
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:491
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:606
 #, elixir-autogen, elixir-format
 msgid "Trivia"
 msgstr "Quiz"
@@ -1429,7 +1437,8 @@ msgstr "Versão %{version}"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/paste_confirm_dialog.ex:74
 #, elixir-autogen, elixir-format
-msgid "Warning: This exceeds the flood protection limit. Messages may be throttled."
+msgid ""
+"Warning: This exceeds the flood protection limit. Messages may be throttled."
 msgstr ""
 "Aviso: isso excede o limite de proteção contra flood. As mensagens podem ser"
 " limitadas."
@@ -1494,7 +1503,7 @@ msgstr "ex.: oi"
 msgid "identical msgs"
 msgstr "msgs idênticas"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:568
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:683
 #, elixir-autogen, elixir-format
 msgid "joined"
 msgstr "entrou"
@@ -1510,7 +1519,7 @@ msgstr "mensagens"
 msgid "on %{date}"
 msgstr "em %{date}"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:569
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:684
 #, elixir-autogen, elixir-format
 msgid "parted"
 msgstr "saiu"
@@ -1690,7 +1699,10 @@ msgstr "Fechar a Sessão P2P?"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:102
 #, elixir-autogen, elixir-format
-msgid "Closing this window disconnects the whole P2P session with %{peer} — any call, game or file transfer in progress will stop. To keep the session and just tidy up, minimize the window instead."
+msgid ""
+"Closing this window disconnects the whole P2P session with %{peer} — any "
+"call, game or file transfer in progress will stop. To keep the session and "
+"just tidy up, minimize the window instead."
 msgstr ""
 "Fechar esta janela desconecta toda a sessão P2P com %{peer} — qualquer "
 "chamada, jogo ou transferência de arquivos em andamento irá parar. Para "
@@ -1768,7 +1780,8 @@ msgstr "Apagar canal"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:154
 #, elixir-autogen, elixir-format
-msgid "Deletes this nickname registration after you confirm with its password."
+msgid ""
+"Deletes this nickname registration after you confirm with its password."
 msgstr "Apaga este registo de alcunhas depois de confirmar com a sua senha."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:181
@@ -1829,14 +1842,18 @@ msgstr "Fim da sessão"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:94
 #, elixir-autogen, elixir-format
-msgid "End the P2P session with %{peer}? Any call, game or file transfer in progress will stop."
+msgid ""
+"End the P2P session with %{peer}? Any call, game or file transfer in "
+"progress will stop."
 msgstr ""
 "Terminar a sessão P2P com %{peer}? Qualquer chamada, jogo ou transferência "
 "de arquivos em andamento irá parar."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:112
 #, elixir-autogen, elixir-format
-msgid "End the current P2P session with %{peer} and start one with %{new_peer}? Any call, game or file transfer in progress will stop."
+msgid ""
+"End the current P2P session with %{peer} and start one with %{new_peer}? Any"
+" call, game or file transfer in progress will stop."
 msgstr ""
 "Terminar a sessão P2P atual com %{peer} e iniciar uma com %{new_peer}? "
 "Qualquer chamada, jogo ou transferência de arquivos em andamento irá parar."
@@ -3017,7 +3034,7 @@ msgstr "Profundidade"
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:786
 #, elixir-autogen, elixir-format
 msgid "Desktop"
-msgstr "Desktop"
+msgstr "Área de trabalho"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:469
 #, elixir-autogen, elixir-format
@@ -3151,3 +3168,33 @@ msgstr "Idioma desconhecido"
 #, elixir-autogen, elixir-format
 msgid "Unknown type"
 msgstr "Tipo desconhecido"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:494
+#, elixir-autogen, elixir-format
+msgid "Feed"
+msgstr "Alimentação"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:504
+#, elixir-autogen, elixir-format
+msgid "Last checked"
+msgstr "Última verificação"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:482
+#, elixir-autogen, elixir-format
+msgid "No feeds yet. Add one and it will start polling."
+msgstr "Ainda não há notícias. Adicione um e ele vai começar a votação."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:500
+#, elixir-autogen, elixir-format
+msgid "Posts to"
+msgstr "Mensagens para"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:510
+#, elixir-autogen, elixir-format
+msgid "Problem"
+msgstr "Problema"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:506
+#, elixir-autogen, elixir-format
+msgid "never"
+msgstr "nunca"

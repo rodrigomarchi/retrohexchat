@@ -485,14 +485,14 @@ msgstr "%{n} フレーム"
 #: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:505
 #, elixir-autogen, elixir-format
 msgid "%{n} kbps"
-msgstr "%{n} kbps"
+msgstr "%{n}のkbps"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:68
 #: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:227
 #: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:232
 #, elixir-autogen, elixir-format
 msgid "%{n} ms"
-msgstr "%{n} ms"
+msgstr "%{n}のms"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:435
 #, elixir-autogen, elixir-format
@@ -845,7 +845,7 @@ msgstr "エンドウイング"
 #: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:772
 #, elixir-autogen, elixir-format
 msgid "Excellent"
-msgstr "Excellent"
+msgstr "よくある質問"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:405
 #, elixir-autogen, elixir-format
@@ -904,7 +904,7 @@ msgstr "フリーズ"
 #: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:370
 #, elixir-autogen, elixir-format
 msgid "Full"
-msgstr "Full"
+msgstr "スタッフ"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:80
 #: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:773
@@ -1065,7 +1065,7 @@ msgstr "低い手"
 #: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:220
 #, elixir-autogen, elixir-format
 msgid "MOS %{score}"
-msgstr "MOS %{score}"
+msgstr "MOS %{score}の特長"
 
 #: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:1861
 #, elixir-autogen, elixir-format
@@ -1685,7 +1685,7 @@ msgstr "参加人数"
 #: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:487
 #, elixir-autogen, elixir-format
 msgid "%{count} peers"
-msgstr "%{count} ピアーズ"
+msgstr "%{count} ピア"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:491
 #, elixir-autogen, elixir-format
@@ -1700,7 +1700,7 @@ msgstr "%{jitter} msのジッター/ %{loss}% 損失"
 #: lib/retro_hex_chat_web/components/ui/group_call/pre_join_dialog.ex:328
 #, elixir-autogen, elixir-format
 msgid "%{layout} / %{self}"
-msgstr "%{layout} / %{self}"
+msgstr "%{layout}/%{self}"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:82
 #, elixir-autogen, elixir-format
@@ -1730,7 +1730,9 @@ msgstr "%{state} / %{down} ダウン / %{up} アップアップ"
 #: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:518
 #, elixir-autogen, elixir-format
 msgid "%{state} / %{resolution}"
-msgstr "%{state} / %{resolution}"
+msgstr ""
+"の特長\n"
+"%{state}/%{resolution}"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:760
 #, elixir-autogen, elixir-format
@@ -1818,7 +1820,7 @@ msgstr "ピア接続 %{peers} / %{tracks}"
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:595
 #, elixir-autogen, elixir-format
 msgid "People"
-msgstr "People"
+msgstr "スタッフ"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:188
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:547

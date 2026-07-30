@@ -51,7 +51,7 @@ defmodule RetroHexChatWeb.VisualNotificationsTest do
     end
   end
 
-  # ── Treebar flash for channels ──────────────────────────────
+  # ── Conversations flash for channels ────────────────────────
 
   describe "conversations flash for channels" do
     test "title_flash_start pushed for PM with flash enabled", %{conn: conn} do
@@ -81,7 +81,7 @@ defmodule RetroHexChatWeb.VisualNotificationsTest do
 
       # Switch to background channel
       view
-      |> element(~s(div[phx-click="switch_channel"][phx-value-channel="#lobby"]))
+      |> element(~s([data-testid="channel-#lobby"]))
       |> render_click()
 
       # Send a highlight to background channel (highlight flash is enabled by default)
@@ -92,7 +92,7 @@ defmodule RetroHexChatWeb.VisualNotificationsTest do
 
       # Switch to that channel — flash should clear
       view
-      |> element(~s(div[phx-click="switch_channel"][phx-value-channel="#{ch}"]))
+      |> element(~s([data-testid="channel-#{ch}"]))
       |> render_click()
 
       html = render(view)

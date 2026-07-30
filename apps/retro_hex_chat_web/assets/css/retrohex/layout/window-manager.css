@@ -326,17 +326,16 @@
   -webkit-overflow-scrolling: touch;
 }
 
-.desktop--stacked [data-testid="conversations"] summary,
-.desktop--stacked [data-testid="conversations"] [data-channel],
-.desktop--stacked [data-testid="conversations"] [data-nick],
-.desktop--stacked [data-testid^="popular-"],
+.desktop--stacked [data-testid="conversations"] .chat-conversations-section__trigger,
+.desktop--stacked [data-testid="conversations"] .chat-conversations-row,
 .desktop--stacked [data-testid^="nicklist-item-"] {
   min-height: 36px;
   touch-action: manipulation;
 }
 
 .desktop--stacked [data-testid="conversations-close"],
-.desktop--stacked [data-testid^="join-"] {
+.desktop--stacked [data-testid^="join-"],
+.desktop--stacked [data-testid^="autojoin-open-"] {
   min-width: 32px;
   min-height: 32px;
 }

@@ -1138,11 +1138,6 @@ msgstr "行为"
 msgid "Being connected — your last-seen time is updated when you disconnect"
 msgstr "正在连接中 : 当您断开时, 您最后看到的时间会更新 。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:10
-#, elixir-autogen, elixir-format
-msgid "Bold text"
-msgstr "粗体文本"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_copy_feedback.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Brief toast notifications confirm copy and settings save operations."
@@ -1809,7 +1804,7 @@ msgstr "增强历史"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "Enter"
-msgstr "输入"
+msgstr "回车"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:17
 #, elixir-autogen, elixir-format
@@ -2282,7 +2277,7 @@ msgstr "键盘快捷键"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sounds.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Kick"
-msgstr "脚踢"
+msgstr "踢出"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:56
 #, elixir-autogen, elixir-format
@@ -2562,7 +2557,7 @@ msgstr "没有收到任何答复——可能失去联系。"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_timestamp_format.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "None"
-msgstr "None"
+msgstr "无"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_lag_indicator.html.heex:9
 #, elixir-autogen, elixir-format
@@ -2905,11 +2900,6 @@ msgstr "追溯检测"
 msgid "Red"
 msgstr "红色"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:22
-#, elixir-autogen, elixir-format
-msgid "Red dot badge"
-msgstr "红点徽章"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "Regex:"
@@ -3175,7 +3165,7 @@ msgstr "在当前频道或PM中以实时突出显示搜索消息."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "See Also"
-msgstr "另见"
+msgstr "另请参阅"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_copy.html.heex:2
 #, elixir-autogen, elixir-format
@@ -3723,7 +3713,7 @@ msgstr "在搜索框中键入按名称或关键字过滤emojis(最少2个字符)
 #: lib/retro_hex_chat_web/controllers/help_content/feature_interactive_elements.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "URL Catcher"
-msgstr "URL 抓取器"
+msgstr "URL 捕捉器"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:24
 #, elixir-autogen, elixir-format
@@ -4196,7 +4186,7 @@ msgstr "或进入"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_custom_menus.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "or open"
-msgstr "or open"
+msgstr "打开"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_aliases.html.heex:11
 #, elixir-autogen, elixir-format
@@ -4577,20 +4567,10 @@ msgstr "- 你的绰号提到"
 msgid "— Your nickname."
 msgstr "-你的绰号"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:10
-#, elixir-autogen, elixir-format
-msgid "— channel has unread user messages"
-msgstr "— 频道有未读用户信息"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "— channel is disconnected"
 msgstr "— 频道已断开"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:34
-#, elixir-autogen, elixir-format
-msgid "— channel is muted (no badges shown)"
-msgstr "– 频道是哑音( 没有显示徽章)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:28
 #, elixir-autogen, elixir-format
@@ -4642,11 +4622,6 @@ msgstr "- 黄色破碎的破折片,并带有图案柜台"
 msgid "— yellow dashes scroll bidirectionally"
 msgstr "——黄片双向滚动"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:22
-#, elixir-autogen, elixir-format
-msgid "— your nickname was mentioned"
-msgstr "- 你的绰号被提到"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "↑ key:"
@@ -4671,11 +4646,6 @@ msgstr "* 已连接:"
 #, elixir-autogen, elixir-format
 msgid "● Disconnected:"
 msgstr "* 断开连接:"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:40
-#, elixir-autogen, elixir-format
-msgid "⚡ icon + gray"
-msgstr "++ 图标 + 灰色"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:25
 #, elixir-autogen, elixir-format
@@ -4788,7 +4758,7 @@ msgstr "管理控制台"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Announcements"
-msgstr "Announcements"
+msgstr "通知"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:26
 #, elixir-autogen, elixir-format
@@ -4820,7 +4790,7 @@ msgstr "ChanServ 注册标签"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Changing Nicknames"
-msgstr "Changing Nicknames"
+msgstr "更改昵称"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:80
 #, elixir-autogen, elixir-format
@@ -5707,15 +5677,6 @@ msgid ""
 "submitting an empty editor is the same as clearing."
 msgstr "顶部的窗格显示的是当前设置的信息,这样你就可以看到将要替换什么. 设置 MOTD 编辑器的内容; 提交空编辑器与清除相同 。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_danger_zone.html.heex:9
-#, elixir-autogen, elixir-format
-msgid ""
-"The preview lists what /admin nuke would delete. Admin roles, audit logs, "
-"server bans and server settings survive it; everything else does not. This "
-"cannot be undone."
-msgstr ""
-"预览中列出了 /admin 核武器将删除的内容 。 管理角色,审计日志,服务器禁令和服务器设置都幸存下来;其他一切则不然. 这一点是无法消除的。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_server_settings.html.heex:16
 #, elixir-autogen, elixir-format
 msgid ""
@@ -6008,3 +5969,46 @@ msgstr "每类忽略消息、首相、行动、通知和邀请的条目。"
 #, elixir-autogen, elixir-format
 msgid "track when specific nicknames come online."
 msgstr "跟踪特定昵称上线时。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_danger_zone.html.heex:9
+#, elixir-autogen, elixir-format
+msgid ""
+"The preview lists what /admin nuke would delete. Admin roles, audit logs, "
+"server bans and server settings survive it, with registration reopened so an"
+" admin nick can be recreated; everything else does not. This cannot be "
+"undone."
+msgstr ""
+"预览中列出了 /admin 核武器将删除的内容 。 "
+"管理角色,审计日志,服务器禁用和服务器设置在它生存下来,注册重新开启,所以可以重新创建一个管理昵称;其他一切则不然. 这一点是无法消除的。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Bold row"
+msgstr "粗体行"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Left signal rail"
+msgstr "左侧信号栏"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "Warning icon"
+msgstr "警告图标"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "— channel or PM has unread user messages"
+msgstr "— 频道或私信有未读用户消息"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "— channel or PM is muted"
+msgstr "— 频道或私信已静音"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:22
+#, elixir-autogen, elixir-format
+msgid ""
+"— marks unread activity, highlights, the active row, and saved auto-join "
+"state"
+msgstr "— 标记未读活动、高亮、当前行和已保存的 auto-join 状态"

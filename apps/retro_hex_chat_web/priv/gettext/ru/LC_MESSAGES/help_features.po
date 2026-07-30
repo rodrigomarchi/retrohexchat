@@ -1221,11 +1221,6 @@ msgstr "поведение"
 msgid "Being connected — your last-seen time is updated when you disconnect"
 msgstr "Подключение — ваше последнее время обновляется, когда вы отключаетесь"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:10
-#, elixir-autogen, elixir-format
-msgid "Bold text"
-msgstr "Смелый текст"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_copy_feedback.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Brief toast notifications confirm copy and settings save operations."
@@ -1636,7 +1631,7 @@ msgstr "Копия подтверждения"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "Copy Feedback"
-msgstr "Обратная связь"
+msgstr "Подтверждение копирования"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_aliases.html.heex:7
 #, elixir-autogen, elixir-format
@@ -1945,7 +1940,7 @@ msgstr "Расширенная история"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "Enter"
-msgstr "Входить"
+msgstr "Enter"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:17
 #, elixir-autogen, elixir-format
@@ -2119,7 +2114,7 @@ msgstr "Глобальные объявления"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "Go to"
-msgstr "Пойти"
+msgstr "Перейти к"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:34
 #, elixir-autogen, elixir-format
@@ -2461,7 +2456,7 @@ msgstr "Клавишные ярлыки"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sounds.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Kick"
-msgstr "пинать"
+msgstr "Kick"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:56
 #, elixir-autogen, elixir-format
@@ -2487,7 +2482,7 @@ msgstr "Слева:"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Limit"
-msgstr "предел"
+msgstr "Лимит"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_delete.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:38
@@ -2719,7 +2714,7 @@ msgstr "Обзор NickServ"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_custom_menus.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Nicklist"
-msgstr "Никлист"
+msgstr "Список ников"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_interactive_elements.html.heex:21
 #, elixir-autogen, elixir-format
@@ -3119,11 +3114,6 @@ msgstr "Обнаружение рецидивов"
 msgid "Red"
 msgstr "красный"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:22
-#, elixir-autogen, elixir-format
-msgid "Red dot badge"
-msgstr "значок красной точки"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "Regex:"
@@ -3423,7 +3413,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "See Also"
-msgstr "Смотрите также"
+msgstr "См. также"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_copy.html.heex:2
 #, elixir-autogen, elixir-format
@@ -4047,7 +4037,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_interactive_elements.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "URL Catcher"
-msgstr "URL-адрес"
+msgstr "Перехватчик URL"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:24
 #, elixir-autogen, elixir-format
@@ -4057,7 +4047,7 @@ msgstr "URL окно Catcher:"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "URL Menu"
-msgstr "URL меню"
+msgstr "Меню URL"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_interactive_elements.html.heex:7
 #, elixir-autogen, elixir-format
@@ -4983,20 +4973,10 @@ msgstr "Ваше прозвище упомянуто"
 msgid "— Your nickname."
 msgstr "- Твое прозвище."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:10
-#, elixir-autogen, elixir-format
-msgid "— channel has unread user messages"
-msgstr "Канал непрочитанных сообщений пользователей"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "— channel is disconnected"
 msgstr "Канал отключен"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:34
-#, elixir-autogen, elixir-format
-msgid "— channel is muted (no badges shown)"
-msgstr "Канал приглушен (знаки не показаны)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:28
 #, elixir-autogen, elixir-format
@@ -5048,11 +5028,6 @@ msgstr "- желтые сломанные тире с попыткой счет�
 msgid "— yellow dashes scroll bidirectionally"
 msgstr "- желтые тире прокручиваются двунаправленно"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:22
-#, elixir-autogen, elixir-format
-msgid "— your nickname was mentioned"
-msgstr "Ваше прозвище было упомянуто"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "↑ key:"
@@ -5077,11 +5052,6 @@ msgstr "• Подключены:"
 #, elixir-autogen, elixir-format
 msgid "● Disconnected:"
 msgstr "• отключены:"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:40
-#, elixir-autogen, elixir-format
-msgid "⚡ icon + gray"
-msgstr "Иконка + серый"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:25
 #, elixir-autogen, elixir-format
@@ -6278,17 +6248,6 @@ msgstr ""
 " вы могли видеть, что вы собираетесь заменить. Набор MOTD пишет содержимое "
 "редактора; отправка пустого редактора - это то же самое, что очистка."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_danger_zone.html.heex:9
-#, elixir-autogen, elixir-format
-msgid ""
-"The preview lists what /admin nuke would delete. Admin roles, audit logs, "
-"server bans and server settings survive it; everything else does not. This "
-"cannot be undone."
-msgstr ""
-"В предварительном просмотре указано, что ядерная бомба /admin будет удалена."
-" Роли администратора, журналы аудита, запреты сервера и настройки сервера "
-"выживают, а все остальное — нет. Это нельзя отменить."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_server_settings.html.heex:16
 #, elixir-autogen, elixir-format
 msgid ""
@@ -6636,3 +6595,50 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "track when specific nicknames come online."
 msgstr "Отслеживайте, когда конкретные прозвища появляются в Интернете."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_danger_zone.html.heex:9
+#, elixir-autogen, elixir-format
+msgid ""
+"The preview lists what /admin nuke would delete. Admin roles, audit logs, "
+"server bans and server settings survive it, with registration reopened so an"
+" admin nick can be recreated; everything else does not. This cannot be "
+"undone."
+msgstr ""
+"В предварительном просмотре указано, что ядерная бомба /admin будет удалена."
+" Роли администратора, журналы аудита, запреты сервера и настройки сервера "
+"выживают, а регистрация вновь открывается, поэтому можно воссоздать ник "
+"администратора; все остальное не происходит. Это нельзя отменить."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Bold row"
+msgstr "Строка жирным"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Left signal rail"
+msgstr "Левая сигнальная полоса"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "Warning icon"
+msgstr "Значок предупреждения"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "— channel or PM has unread user messages"
+msgstr "— в канале или PM есть непрочитанные сообщения пользователей"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "— channel or PM is muted"
+msgstr "— канал или PM отключен"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:22
+#, elixir-autogen, elixir-format
+msgid ""
+"— marks unread activity, highlights, the active row, and saved auto-join "
+"state"
+msgstr ""
+"— отмечает непрочитанную активность, выделения, активную строку и "
+"сохраненный статус auto-join"

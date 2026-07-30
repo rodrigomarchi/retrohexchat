@@ -1,36 +1,48 @@
 <p>
   {dgettext(
     "help_ui",
-    "The Conversations sidebar is the left navigation pane showing your channels, inline user list, PMs, and popular channels in three collapsible sections."
+    "The Conversations sidebar is the left IRC navigation pane: activity, joined channels, recent PMs, auto-join channels, and popular channel suggestions."
   )}
 </p>
 <.help_h4 icon={:icon_group_tools}>{dgettext("help_ui", "Header")}</.help_h4>
 <p>
   {dgettext(
     "help_ui",
-    "The header shows the title \"Conversations\" and a close button to hide the panel. You can also toggle it via the toolbar."
+    "The header shows the title, a close button, and compact counters for open channels, recent PMs, and auto-join entries. You can also toggle the panel via the toolbar."
   )}
 </p>
 <.help_h4 icon={:icon_group_view}>{dgettext("help_ui", "Sections")}</.help_h4>
-<p>{dgettext("help_ui", "Three collapsible sections with clickable headers (▾/▸ arrows):")}</p>
+<p>{dgettext("help_ui", "Collapsible sections with clickable headers:")}</p>
 <ul>
   <li>
-    <strong>{dgettext("help_ui", "MY CHANNELS")}</strong> {dgettext(
+    <strong>{dgettext("help_ui", "ACTIVITY")}</strong> {dgettext(
       "help_ui",
-      "— Your joined channels with user counts and unread badges"
+      "- Channels and PMs with unread messages, highlights, or recent flash activity"
     )}
   </li>
   <li>
-    <strong>{dgettext("help_ui", "PRIVATE MESSAGES")}</strong> {dgettext(
+    <strong>{dgettext("help_ui", "OPEN CHANNELS")}</strong> {dgettext(
       "help_ui",
-      "— Your active PM conversations"
+      "- Channels you are currently joined to, with user counts and unread badges"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_ui", "RECENT PRIVATE MESSAGES")}</strong> {dgettext(
+      "help_ui",
+      "- PM conversations restored from the current session or account history"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_ui", "AUTO-JOIN")}</strong> {dgettext(
+      "help_ui",
+      "- Saved channels that will be joined automatically on connect"
     )}
   </li>
   <li>
     <strong>{dgettext("help_ui", "POPULAR CHANNELS")}</strong>
     {dgettext(
       "help_ui",
-      "— Top 10 most active channels you haven't joined (collapsed by default, lazy-loaded on first expand)"
+      "- Active public channels you have not joined yet, plus a button that opens the full channel list"
     )}
   </li>
 </ul>
@@ -38,30 +50,37 @@
 <p>
   {dgettext(
     "help_ui",
-    "Click a channel or PM to switch to it. Channels with unread messages appear"
+    "Click a channel or PM to switch to it. Activity rows use an alert surface, unread rows appear"
   )} <strong>bold</strong>{dgettext(
     "help_ui",
-    ". Channels with highlights"
+    ". Rows with highlights"
   )} <strong>flash</strong>{dgettext("help_ui", ". User counts appear next to all channels.")}
 </p>
-<.help_h4 icon={:icon_tab_channel}>{dgettext("help_ui", "Active Channel")}</.help_h4>
+<.help_h4 icon={:icon_tab_channel}>{dgettext("help_ui", "Open Channels")}</.help_h4>
 <p>
   {dgettext(
     "help_ui",
-    "The active channel is pinned to the top of the My Channels section. Below it, the user list shows all users sorted by role (owner, operator, half-op, voiced, regular), with role icons and colors."
+    "The active channel is highlighted in the Open Channels section. Closing a channel tab leaves the channel, so joined channels and channel tabs stay aligned."
+  )}
+</p>
+<.help_h4 icon={:icon_dialog_autojoin}>{dgettext("help_ui", "Auto-Join")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "Auto-Join shows saved channels from your account auto-join list. Channels with saved keys show only a +key marker; the key itself is not displayed in the sidebar."
   )}
 </p>
 <.help_h4 icon={:icon_star}>{dgettext("help_ui", "Popular Channels")}</.help_h4>
 <p>
   {dgettext(
     "help_ui",
-    "Shows the top 10 channels by user count that you haven't joined yet. Click [+] to join a channel, or click \"Browse All Channels...\" to open the full channel list dialog."
+    "Shows active public channels you have not joined yet when the server has rooms to suggest. Click [+] to join a suggestion, or click \"Browse All Channels...\" to open the full channel list dialog."
   )}
 </p>
 <.help_h4 icon={:icon_community}>{dgettext("help_ui", "User Interactions")}</.help_h4>
 <p>
   {dgettext(
     "help_ui",
-    "Click a username to open the context menu. Double-click to open a private message. Right-click a channel for options (Mark as Read, Mute, Copy Name, Leave, Settings)."
+    "Right-click a channel or PM row for context actions. Double-click a PM row to open or focus that private message tab."
   )}
 </p>

@@ -49,7 +49,7 @@ msgstr "$chan"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_custom_menus.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "$nick"
-msgstr "$nick"
+msgstr "#"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_char_counter.html.heex:4
 #, elixir-autogen, elixir-format
@@ -1241,11 +1241,6 @@ msgstr ""
 "Essere connessi — il vostro ultimo momento è aggiornato quando si "
 "disconnette"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:10
-#, elixir-autogen, elixir-format
-msgid "Bold text"
-msgstr "Testo audace"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_copy_feedback.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Brief toast notifications confirm copy and settings save operations."
@@ -1660,7 +1655,7 @@ msgstr "Copia conferma"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "Copy Feedback"
-msgstr "Copia Feedback"
+msgstr "Feedback di copia"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_aliases.html.heex:7
 #, elixir-autogen, elixir-format
@@ -1972,7 +1967,7 @@ msgstr "Storia migliorata"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "Enter"
-msgstr "Inserisci"
+msgstr "Invio"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:17
 #, elixir-autogen, elixir-format
@@ -2487,7 +2482,7 @@ msgstr "Tastiera Scorciatoie"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sounds.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Kick"
-msgstr "Calcio"
+msgstr "Espelli"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:56
 #, elixir-autogen, elixir-format
@@ -2746,7 +2741,7 @@ msgstr "NickServ Panoramica"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_custom_menus.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Nicklist"
-msgstr "Nicklist"
+msgstr "Lista nick"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_interactive_elements.html.heex:21
 #, elixir-autogen, elixir-format
@@ -3146,11 +3141,6 @@ msgstr "Rilevamento di ricorsi"
 #, elixir-autogen, elixir-format
 msgid "Red"
 msgstr "Rosso"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:22
-#, elixir-autogen, elixir-format
-msgid "Red dot badge"
-msgstr "Tassetto rosso"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:37
 #, elixir-autogen, elixir-format
@@ -4084,7 +4074,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_interactive_elements.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "URL Catcher"
-msgstr "URL Catcher"
+msgstr "Cattura URL"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:24
 #, elixir-autogen, elixir-format
@@ -4094,7 +4084,7 @@ msgstr "URL Catcher Finestra:"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "URL Menu"
-msgstr "Menu"
+msgstr "Menu URL"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_interactive_elements.html.heex:7
 #, elixir-autogen, elixir-format
@@ -5027,20 +5017,10 @@ msgstr "— Il tuo soprannome menzionato"
 msgid "— Your nickname."
 msgstr "- Il tuo soprannome."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:10
-#, elixir-autogen, elixir-format
-msgid "— channel has unread user messages"
-msgstr "— il canale ha messaggi utente non letti"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "— channel is disconnected"
 msgstr "— il canale è scollegato"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:34
-#, elixir-autogen, elixir-format
-msgid "— channel is muted (no badges shown)"
-msgstr "— il canale è disattivato (non è indicato alcun badge)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:28
 #, elixir-autogen, elixir-format
@@ -5093,11 +5073,6 @@ msgstr "— trattini gialli con contatore di tentativo"
 msgid "— yellow dashes scroll bidirectionally"
 msgstr "— pergamene gialle bidirezionali"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:22
-#, elixir-autogen, elixir-format
-msgid "— your nickname was mentioned"
-msgstr "— il tuo soprannome è stato menzionato"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "↑ key:"
@@ -5122,11 +5097,6 @@ msgstr "● Collegato:"
 #, elixir-autogen, elixir-format
 msgid "● Disconnected:"
 msgstr "● Scollegato:"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:40
-#, elixir-autogen, elixir-format
-msgid "⚡ icon + gray"
-msgstr "⚡ icona + grigio"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:25
 #, elixir-autogen, elixir-format
@@ -6333,18 +6303,6 @@ msgstr ""
 "contenuto dell'editor; la presentazione di un editor vuoto è la stessa di "
 "compensazione."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_danger_zone.html.heex:9
-#, elixir-autogen, elixir-format
-msgid ""
-"The preview lists what /admin nuke would delete. Admin roles, audit logs, "
-"server bans and server settings survive it; everything else does not. This "
-"cannot be undone."
-msgstr ""
-"L'anteprima elenca ciò che /admin nuke cancellerebbe. I ruoli di "
-"amministratore, i registri di audit, i divieti di server e le impostazioni "
-"del server sopravvivono; tutto il resto non lo fa. Questo non può essere "
-"annullato."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_server_settings.html.heex:16
 #, elixir-autogen, elixir-format
 msgid ""
@@ -6690,3 +6648,51 @@ msgstr "per-tipo ignorare le voci per messaggi, PM, azioni, avvisi e inviti."
 #, elixir-autogen, elixir-format
 msgid "track when specific nicknames come online."
 msgstr "traccia quando i soprannomi specifici vengono online."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_danger_zone.html.heex:9
+#, elixir-autogen, elixir-format
+msgid ""
+"The preview lists what /admin nuke would delete. Admin roles, audit logs, "
+"server bans and server settings survive it, with registration reopened so an"
+" admin nick can be recreated; everything else does not. This cannot be "
+"undone."
+msgstr ""
+"L'anteprima elenca ciò che /admin nuke cancellerebbe. I ruoli di "
+"amministratore, i registri di audit, i divieti di server e le impostazioni "
+"del server sopravvivono, con la registrazione riaperto in modo che un nick "
+"di amministratore possa essere ricreato; tutto il resto non lo fa. Questo "
+"non può essere annullato."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Bold row"
+msgstr "Riga in grassetto"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Left signal rail"
+msgstr "Barra segnale sinistra"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "Warning icon"
+msgstr "Icona di avviso"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "— channel or PM has unread user messages"
+msgstr "— canale o PM con messaggi utente non letti"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "— channel or PM is muted"
+msgstr "— canale o PM silenziato"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:22
+#, elixir-autogen, elixir-format
+msgid ""
+"— marks unread activity, highlights, the active row, and saved auto-join "
+"state"
+msgstr ""
+"— indica attività non letta, evidenziazioni, riga attiva e stato auto-join "
+"salvato"

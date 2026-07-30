@@ -798,8 +798,13 @@ defmodule RetroHexChatWeb.App.ChatLive do
       show_conversations: true,
       channel_user_counts: %{},
       popular_channels: [],
-      popular_channels_loaded: false,
-      conversations_sections: %{channels: true, pms: true, popular: false},
+      conversations_sections: %{
+        alerts: true,
+        channels: true,
+        pms: true,
+        autojoin: true,
+        popular: true
+      },
       lookup_result: nil,
       cc_window_channel: nil,
       unread_counts: %{},

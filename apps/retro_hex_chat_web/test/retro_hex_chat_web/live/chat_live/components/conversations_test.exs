@@ -3,6 +3,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ConversationsTest do
 
   import Phoenix.LiveViewTest
 
+  alias RetroHexChat.Chat.AutoJoinList
   alias RetroHexChatWeb.ChatLive.Components.Conversations
 
   @moduletag :unit
@@ -22,6 +23,18 @@ defmodule RetroHexChatWeb.ChatLive.Components.ConversationsTest do
     )
   end
 
+  defp autojoin(entries) do
+    Enum.reduce(entries, AutoJoinList.new(), fn
+      {channel, key}, list ->
+        {:ok, updated} = AutoJoinList.add_entry(list, channel, key)
+        updated
+
+      channel, list ->
+        {:ok, updated} = AutoJoinList.add_entry(list, channel)
+        updated
+    end)
+  end
+
   test "id/0 is stable" do
     assert Conversations.id() == "conversations"
   end
@@ -30,13 +43,103 @@ defmodule RetroHexChatWeb.ChatLive.Components.ConversationsTest do
     html = render_conv([])
     assert html =~ "#lobby"
     assert html =~ "#elixir"
+    assert html =~ "OPEN CHANNELS"
+    refute html =~ "MY CHANNELS"
     # Row events bubble to the parent unchanged.
     assert html =~ "switch_channel"
   end
 
+  test "renders IRC-native sections without treeview labels" do
+    html =
+      render_conv(
+        open_pm_tabs: ["alice"],
+        pm_conversations: ["alice"],
+        unread_counts: %{"#elixir" => 3, "pm:alice" => 2},
+        highlight_channels: MapSet.new(["#elixir"]),
+        flash_channels: MapSet.new(["#elixir"]),
+        autojoin_list: autojoin(["#elixir", {"#secret", "hunter2"}]),
+        popular_channels: [%{name: "#retro", user_count: 7}]
+      )
+
+    assert html =~ ~s(data-testid="conversations-section-alerts")
+    assert html =~ ~s(data-testid="conversations-section-channels")
+    assert html =~ ~s(data-testid="conversations-section-pms")
+    assert html =~ ~s(data-testid="conversations-section-autojoin")
+    assert html =~ ~s(data-testid="conversations-section-popular")
+
+    assert html =~ "ACTIVITY"
+    assert html =~ "OPEN CHANNELS"
+    assert html =~ "RECENT PRIVATE MESSAGES"
+    assert html =~ "AUTO-JOIN"
+    assert html =~ "POPULAR CHANNELS"
+
+    refute html =~ "MY CHANNELS"
+  end
+
+  test "renders compact conversation summary labels" do
+    html =
+      render_conv(
+        pm_conversations: ["alice"],
+        autojoin_list: autojoin(["#elixir"])
+      )
+
+    assert html =~ ~s(data-testid="conversations-stat-channels")
+    assert html =~ ~s(data-testid="conversations-stat-pms")
+    assert html =~ ~s(data-testid="conversations-stat-autojoin")
+    assert html =~ "Channels"
+    assert html =~ "PM"
+    assert html =~ "Auto"
+  end
+
+  test "renders popular channels as a semantic section even when only browse is available" do
+    html =
+      render_conv(
+        on_browse_channels: "browse_channels",
+        popular_channels: []
+      )
+
+    assert html =~ ~s(data-testid="conversations-section-popular")
+    assert html =~ ~s(data-testid="conversations-browse-all")
+    assert html =~ "Browse All Channels..."
+  end
+
+  test "renders popular channels with join affordances and a browse-all action" do
+    html =
+      render_conv(
+        on_browse_channels: "browse_channels",
+        popular_channels: [%{name: "#retro", user_count: 7}]
+      )
+
+    assert html =~ ~s(data-testid="conversations-section-popular")
+    assert html =~ "POPULAR CHANNELS"
+    assert html =~ ~s(data-testid="popular-#retro")
+    assert html =~ ~s(data-testid="join-#retro")
+    assert html =~ ~s(data-testid="conversations-browse-all")
+  end
+
+  test "renders autojoin entries from the session without leaking keys" do
+    html = render_conv(autojoin_list: autojoin([{"#secret", "hunter2"}]))
+
+    assert html =~ ~s(data-testid="autojoin-#secret")
+    assert html =~ "#secret"
+    assert html =~ "+key"
+    refute html =~ "hunter2"
+  end
+
+  test "marks PMs that already have an open tab" do
+    html =
+      render_conv(
+        open_pm_tabs: ["alice"],
+        pm_conversations: ["alice", "bob"]
+      )
+
+    assert html =~ ~s(data-testid="pm-open-state-alice")
+    refute html =~ ~s(data-testid="pm-open-state-bob")
+  end
+
   test "is hidden when not visible and shown when visible" do
-    assert render_conv(visible: false) =~ "md:min-w-[180px] hidden"
-    refute render_conv(visible: true) =~ "md:min-w-[180px] hidden"
+    assert render_conv(visible: false) =~ "md:min-w-[220px] hidden"
+    refute render_conv(visible: true) =~ "md:min-w-[220px] hidden"
   end
 
   test "derives unread channels and PMs from unread_counts" do

@@ -411,7 +411,7 @@ msgstr ". 語音用戶可以使用主持人(+m)頻道發言."
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:60
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_ns.html.heex:47
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:47
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:52
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:123
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:85
@@ -425,7 +425,7 @@ msgid "/admin <category> <subcommand> [arguments]"
 msgstr "/admin <category> <subcommand> [arguments]"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin.html.heex:23
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:53
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "/admin channel"
 msgstr "/admin channel"
@@ -496,7 +496,7 @@ msgid "/admin debug connections /admin debug processes /admin debug memory"
 msgstr "/admin debug connections /admin debug processes /admin debug memory"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin.html.heex:40
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:59
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:128
 #, elixir-autogen, elixir-format
 msgid "/admin log"
@@ -550,7 +550,7 @@ msgstr "/admin nuke --confirm"
 msgid "/admin nuke /admin nuke --confirm"
 msgstr "/admin nuke /admin nuke --confirm"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:43
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:48
 #, elixir-autogen, elixir-format
 msgid ""
 "/admin nuke — See what would be deleted /admin nuke --confirm — Execute the "
@@ -819,7 +819,7 @@ msgstr "/clearwelcome"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_cs.html.heex:78
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:109
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:69
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:92
 #, elixir-autogen, elixir-format
 msgid "/cs"
@@ -1151,7 +1151,7 @@ msgstr "/mute <nickname> [duration]"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_away.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_nick.html.heex:13
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:70
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "/nick"
@@ -1251,15 +1251,6 @@ msgstr "/ns identify"
 msgid "/ns register"
 msgstr "/ns register"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:47
-#, elixir-autogen, elixir-format
-msgid ""
-"/ns register mySecurePassword /ns identify mySecurePassword /ns info Alice "
-"/ns ghost MyNick mySecurePassword /ns drop mySecurePassword"
-msgstr ""
-"/ns register mySecurePassword /ns identify mySecurePassword /ns info Alice "
-"/ns ghost MyNick mySecurePassword /ns drop mySecurePassword"
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_transfer.html.heex:44
@@ -1308,7 +1299,7 @@ msgid "/part [#channel] [message]"
 msgstr "/part [#channel] [message]"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:45
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:52
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:71
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:33
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:101
 #, elixir-autogen, elixir-format
@@ -1956,7 +1947,7 @@ msgstr "引用"
 msgid "Common action types include:"
 msgstr "共同行動類型包括:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:82
 #, elixir-autogen, elixir-format
 msgid "Connect Authentication"
 msgstr "連接認證"
@@ -2068,7 +2059,7 @@ msgstr "輸入要讀取和發送消息的聊天頻道 。 如果這個頻道還�
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:55
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_ns.html.heex:42
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:47
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:118
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:29
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:80
@@ -2101,7 +2092,7 @@ msgstr "輸入要讀取和發送消息的聊天頻道 。 如果這個頻道還�
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice.html.heex:47
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:24
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notify.html.heex:32
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:46
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:22
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:36
@@ -2136,7 +2127,7 @@ msgstr "文件傳輸"
 msgid "For +i channels, you must be a channel operator"
 msgstr "對於 +i 頻道, 您必須是頻道操作員"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:43
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "Ghost requires the registered nickname's password"
 msgstr "鬼需要註冊暱稱的密碼"
@@ -2328,11 +2319,6 @@ msgstr "每屆最多5次同時計時"
 #, elixir-autogen, elixir-format
 msgid "Maximum 50 aliases per user"
 msgstr "每個用戶最多50個別名"
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:37
-#, elixir-autogen, elixir-format
-msgid "Maximum number of channels matches the channel limit (10)"
-msgstr "最大頻道數符合頻道限制(10)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:27
@@ -2538,7 +2524,7 @@ msgstr "選項"
 msgid "Parameters"
 msgstr "參數"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "Password is required for register, identify, and drop"
 msgstr "登記、識別和刪除需要密碼"
@@ -2792,7 +2778,7 @@ msgstr "根管理員不能通過命令降級"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_nick.html.heex:18
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notify.html.heex:27
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:40
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:56
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:21
@@ -2834,7 +2820,7 @@ msgstr "將命令排在延遲之後運行, 可在正常間隔中選擇重複 。
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:58
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_ns.html.heex:45
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:121
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:83
@@ -2867,7 +2853,7 @@ msgstr "將命令排在延遲之後運行, 可在正常間隔中選擇重複 。
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice.html.heex:49
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notify.html.heex:34
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:29
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:27
@@ -3387,7 +3373,7 @@ msgstr "您必須是註冊用戶才能使用 ChanServ"
 msgid "You must be in the channel to invite someone to it"
 msgstr "你一定在頻道里請人來"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "You must be using the nickname you want to register"
 msgstr "您一定是在使用您想要註冊的暱稱"
@@ -4089,11 +4075,6 @@ msgstr "- 規則編號顯示於"
 msgid "— Server ban (user cannot connect). Supports"
 msgstr "——服務器禁用(用戶無法連接). 支助"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:39
-#, elixir-autogen, elixir-format
-msgid "— Server configuration"
-msgstr "— 服務器配置"
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "— Server description text (shown in server info)"
@@ -4485,7 +4466,7 @@ msgstr "——ChanServ命令."
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "— Change nickname"
-msgstr "— Change nickname"
+msgstr "更改暱稱"
 
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:129
 #, elixir-autogen, elixir-format
@@ -4658,7 +4639,7 @@ msgstr "/mute Spammer /mute Spammer 30m"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_away.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_bio.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_nick.html.heex:43
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:55
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:74
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_umode.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "Account Dialog"
@@ -4667,7 +4648,7 @@ msgstr "賬戶對話框"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_channel.html.heex:78
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_cs.html.heex:76
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:63
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:55
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:126
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:88
@@ -4767,19 +4748,11 @@ msgstr "編輯菜單"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_away.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_bio.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_nick.html.heex:47
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:78
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_umode.html.heex:61
 #, elixir-autogen, elixir-format
 msgid "Identity & Presence"
 msgstr "身份和存在"
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_me.html.heex:29
-#, elixir-autogen, elixir-format
-msgid ""
-"In a channel window, use the * action toggle beside the chat input to send "
-"the next message as /me without typing the command. The toggle resets after "
-"that message is sent."
-msgstr "在頻道窗口中,使用切換到聊天輸入旁的 * 動作發送下一個消息爲 /me 不輸入命令。 信件發送後切換重排 。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_channel.html.heex:2
 #, elixir-autogen, elixir-format
@@ -5050,18 +5023,6 @@ msgid ""
 " > Timers or toolbar Options > Timers."
 msgstr "沒有參數打開計時器對話框。 您也可以從工具打開 > 計時器或工具欄選項 > 計時器。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"— Factory reset the entire system. Destroys all data (users, channels, "
-"messages, preferences, bots, P2P sessions) except admin roles, audit logs, "
-"server bans, and server settings. Requires server administrator role. The "
-"Admin Console Danger Zone tab requires typing the server name before "
-"execution."
-msgstr ""
-"——工廠重置整個系統. 銷燬所有數據(用戶、頻道、消息、首選項、bots、P2P會話),但管理者角色、審計日誌、服務器禁令和服務器設置除外。 "
-"需要服務器管理員角色 。 管理控制檯危險區標籤需要在執行前輸入服務器名稱 。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mute.html.heex:18
 #, elixir-autogen, elixir-format
 msgid ""
@@ -5115,3 +5076,88 @@ msgstr "——打開P2P會話(呼叫,文件和遊戲)."
 #, elixir-autogen, elixir-format
 msgid "— The user to open a P2P Session with."
 msgstr "—— 打開 P2P 會話的用戶。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:66
+#, elixir-autogen, elixir-format
+msgid ""
+"/ns register mySecurePassword /ns identify mySecurePassword /ns info Alice "
+"/ns devices /ns sessions /ns revoke-device 12 /ns kill-session 44 /ns ghost "
+"MyNick mySecurePassword /ns drop mySecurePassword"
+msgstr ""
+"/ns register mySecurePassword /ns identify mySecurePassword /ns info Alice "
+"/ns devices /ns sessions /ns revoke-device 12 /ns kill-session 44 /ns ghost "
+"MyNick mySecurePassword /ns drop mySecurePassword"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:61
+#, elixir-autogen, elixir-format
+msgid "Trusted terminal management requires NickServ identification"
+msgstr "信任的終端管理需要NickServ識別"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "devices"
+msgstr "設備"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:52
+#, elixir-autogen, elixir-format
+msgid "kill-session <id|all>"
+msgstr "任務段 <id|all>"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:48
+#, elixir-autogen, elixir-format
+msgid "revoke-device <id|all>"
+msgstr "撤銷設備 <id|all>"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "sessions"
+msgstr "屆會"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:54
+#, elixir-autogen, elixir-format
+msgid "— End active sessions without changing trusted terminal status."
+msgstr "——不改變信任的終端狀態而結束活動會話."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:46
+#, elixir-autogen, elixir-format
+msgid "— List active sessions using your nickname."
+msgstr "使用您的暱稱列出活動會話 。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "— List trusted terminals remembered for your nickname."
+msgstr "——列表信任的終端被記住你的暱稱."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:50
+#, elixir-autogen, elixir-format
+msgid "— Revoke trusted terminal login and end its active sessions."
+msgstr "——撤銷信任的終端登錄並結束其活動會話."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "Maximum auto-join list size is 20 channels"
+msgstr "最大自動連接列表大小爲 20 個頻道"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_me.html.heex:29
+#, elixir-autogen, elixir-format
+msgid ""
+"Type /me at the start of the chat input whenever you want to send an action "
+"message."
+msgstr "在聊天輸入開始時鍵入 /me,只要您想要發送一個動作消息."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"— Factory reset the entire system. Destroys all data (users, channels, "
+"messages, preferences, bots, P2P sessions) except admin roles, audit logs, "
+"server bans, and server settings. The registration setting is reopened so an"
+" admin nick can be recreated. Requires server administrator role. The Admin "
+"Console Danger Zone tab requires typing the server name before execution."
+msgstr ""
+"——工廠重置整個系統. 銷燬所有數據(用戶、頻道、消息、首選項、bots、P2P會話),但管理者角色、審計日誌、服務器禁令和服務器設置除外。 "
+"註冊設置重新打開, 以便重新創建管理員暱稱 。 需要服務器管理員角色 。 管理控制檯危險區標籤需要在執行前輸入服務器名稱 。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "— Server configuration; registration is reset to open"
+msgstr "— 服務器配置; 重新設置註冊以打開"

@@ -1076,11 +1076,6 @@ msgstr ""
 msgid "Being connected — your last-seen time is updated when you disconnect"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:10
-#, elixir-autogen, elixir-format
-msgid "Bold text"
-msgstr ""
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_copy_feedback.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Brief toast notifications confirm copy and settings save operations."
@@ -2720,11 +2715,6 @@ msgstr ""
 msgid "Red"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:22
-#, elixir-autogen, elixir-format
-msgid "Red dot badge"
-msgstr ""
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "Regex:"
@@ -4213,19 +4203,9 @@ msgstr ""
 msgid "— Your nickname."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:10
-#, elixir-autogen, elixir-format
-msgid "— channel has unread user messages"
-msgstr ""
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "— channel is disconnected"
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:34
-#, elixir-autogen, elixir-format
-msgid "— channel is muted (no badges shown)"
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:28
@@ -4278,11 +4258,6 @@ msgstr ""
 msgid "— yellow dashes scroll bidirectionally"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:22
-#, elixir-autogen, elixir-format
-msgid "— your nickname was mentioned"
-msgstr ""
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "↑ key:"
@@ -4306,11 +4281,6 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_connection_states.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "● Disconnected:"
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:40
-#, elixir-autogen, elixir-format
-msgid "⚡ icon + gray"
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:25
@@ -5080,11 +5050,6 @@ msgstr ""
 msgid "The pane at the top shows the message that is set right now, so you can see what you are about to replace. Set MOTD writes the editor's contents; submitting an empty editor is the same as clearing."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_danger_zone.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "The preview lists what /admin nuke would delete. Admin roles, audit logs, server bans and server settings survive it; everything else does not. This cannot be undone."
-msgstr ""
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_server_settings.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "The two panes below the form show what the server reports right now, from /admin server info and /admin server settings. Refresh re-reads both without leaving the window."
@@ -5316,4 +5281,39 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "track when specific nicknames come online."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_danger_zone.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "The preview lists what /admin nuke would delete. Admin roles, audit logs, server bans and server settings survive it, with registration reopened so an admin nick can be recreated; everything else does not. This cannot be undone."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Bold row"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Left signal rail"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "Warning icon"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "— channel or PM has unread user messages"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "— channel or PM is muted"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "— marks unread activity, highlights, the active row, and saved auto-join state"
 msgstr ""

@@ -11,12 +11,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:169
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:229
 #, elixir-autogen, elixir-format
 msgid "  %{id} | %{title} | %{channel} | %{url}"
 msgstr "%{id} | %{title} | %{channel} | %{url}"
 
-#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:186
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:205
 #, elixir-autogen, elixir-format
 msgid "  %{id} | %{type} | %{channel} | %{message}"
 msgstr "%{id} | %{type} | %{channel} | %{message}"
@@ -60,24 +60,19 @@ msgstr ""
 "%{prefix}\n"
 "Закругляйтесь! %{scores}"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:375
-#, elixir-autogen, elixir-format
-msgid "%{prefix} %{title} — %{link}"
-msgstr "%{prefix} %{title} — %{link}"
-
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:349
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:371
 #, elixir-autogen, elixir-format
 msgid "%{rank}. %{name}: %{points}pts"
 msgstr "%{rank}. %{name}: %{points}pts"
 
-#: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:87
-#: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:105
+#: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:95
+#: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:114
 #, elixir-autogen, elixir-format
 msgid "(no title)"
 msgstr "(без названия)"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:167
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:227
 #, elixir-autogen, elixir-format
 msgid "(untitled)"
 msgstr "(без названия)"
@@ -119,17 +114,17 @@ msgstr ""
 msgid "AI for P2P games — chess, tic-tac-toe, trivia (Coming soon)"
 msgstr "AI для P2P-игр — шахматы, тик-так-то, мелочи (скоро)"
 
-#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:194
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:213
 #, elixir-autogen, elixir-format
 msgid "Active schedules:"
 msgstr "Активные графики:"
 
-#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:148
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:155
 #, elixir-autogen, elixir-format
 msgid "Add a scheduled message"
 msgstr "Добавить запланированное сообщение"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:130
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:190
 #, elixir-autogen, elixir-format
 msgid "Add an RSS feed"
 msgstr "Добавить RSS-канал"
@@ -159,7 +154,7 @@ msgstr "Алжир"
 msgid "Alias for roll"
 msgstr "Алиас для ролла"
 
-#: lib/retro_hex_chat/bots/server.ex:143
+#: lib/retro_hex_chat/bots/server.ex:166
 #, elixir-autogen, elixir-format
 msgid "Already in channel"
 msgstr "Уже в канале"
@@ -251,7 +246,7 @@ msgstr "Голубые пришельцы"
 msgid "Bot destroyed"
 msgstr "Бот уничтожен"
 
-#: lib/retro_hex_chat/bots/server.ex:745
+#: lib/retro_hex_chat/bots/server.ex:906
 #, elixir-autogen, elixir-format
 msgid "Bot leaving"
 msgstr "Бот уходит"
@@ -290,11 +285,6 @@ msgstr "Нельзя держать %{keep} Кости, когда только 
 #, elixir-autogen, elixir-format
 msgid "Central Processing Unit"
 msgstr "Центральный процессор"
-
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:250
-#, elixir-autogen, elixir-format
-msgid "Checked feed '%{id}'. New items found."
-msgstr "Проверенный корм%{id}Найдены новые вещи."
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:21
 #, elixir-autogen, elixir-format
@@ -376,23 +366,18 @@ msgstr "Ошибка: максимальная %{max} стороны допус�
 msgid "Famous for rings"
 msgstr "Знаменитые кольца"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:220
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:291
 #, elixir-autogen, elixir-format
 msgid "Feed '%{id}' added: %{url} → %{channel}"
 msgstr "Кормить%{id}Добавил: %{url} → %{channel}"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:254
-#, elixir-autogen, elixir-format
-msgid "Feed '%{id}' checked. No new items."
-msgstr "Кормить%{id}Проверено. Никаких новых предметов."
-
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:236
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:245
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:304
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:317
 #, elixir-autogen, elixir-format
 msgid "Feed '%{id}' not found."
 msgstr "Кормить%{id}Не найдено."
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:234
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:302
 #, elixir-autogen, elixir-format
 msgid "Feed '%{id}' removed."
 msgstr "Кормить%{id}Убрали."
@@ -407,7 +392,7 @@ msgstr "Итоговые баллы: %{ranked}"
 msgid "Finnish"
 msgstr "финский"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:133
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:193
 #, elixir-autogen, elixir-format
 msgid "Force check a feed now"
 msgstr "Проверить кормление сейчас"
@@ -462,7 +447,7 @@ msgstr "Гутенберг"
 msgid "HBO"
 msgstr "HBO"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:321
+#: lib/retro_hex_chat/bots/capabilities/rss/fetcher.ex:65
 #, elixir-autogen, elixir-format
 msgid "HTTP %{status}"
 msgstr "HTTP %{status}"
@@ -579,11 +564,6 @@ msgstr "интеграция"
 msgid "Interactive quiz and trivia with scoring"
 msgstr "Интерактивная викторина и мелочи с забиванием"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:226
-#, elixir-autogen, elixir-format
-msgid "Invalid URL. Must start with http:// or https://"
-msgstr "Недействительный URL. Должен начинаться с http:// или https://"
-
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:179
 #, elixir-autogen, elixir-format
 msgid "Invalid dice notation '%{notation}'. Use format: NdS, NdS+M, NdSkh/klN"
@@ -591,7 +571,7 @@ msgstr ""
 "Недействительная запись кости%{notation}Формат использования: NdS, NdS+M, "
 "NdSkh/klN"
 
-#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:275
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:294
 #, elixir-autogen, elixir-format
 msgid "Invalid time format. Use HH:MM (24h UTC)."
 msgstr "Недействительный формат времени. HH:MM (24h UTC)."
@@ -661,12 +641,12 @@ msgstr "Маяк"
 msgid "Linus Torvalds"
 msgstr "Линус Торвальдс"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:131
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:191
 #, elixir-autogen, elixir-format
 msgid "List RSS feeds"
 msgstr "Список RSS кормов"
 
-#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:149
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:156
 #, elixir-autogen, elixir-format
 msgid "List active schedules"
 msgstr "Список активных графиков"
@@ -691,12 +671,12 @@ msgstr "Марианская впадина"
 msgid "Mars"
 msgstr "Марс"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:186
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:246
 #, elixir-autogen, elixir-format
 msgid "Maximum %{max} feeds reached."
 msgstr "максимум %{max} Дошли корма."
 
-#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:204
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:223
 #, elixir-autogen, elixir-format
 msgid "Maximum %{max} schedules reached."
 msgstr "максимум %{max} Графики достигнуты."
@@ -726,12 +706,12 @@ msgstr "Средняя земля"
 msgid "Minecraft"
 msgstr "Minecraft"
 
-#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:227
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:246
 #, elixir-autogen, elixir-format
 msgid "Minimum interval is %{minutes} minutes."
 msgstr "Минимальный интервал – это %{minutes} минуты."
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:193
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:253
 #, elixir-autogen, elixir-format
 msgid "Missing channel. Usage: rss add <url> <#channel>"
 msgstr "Пропавший канал. Использование: rss add <url> <#channel>"
@@ -791,12 +771,12 @@ msgstr "Нил"
 msgid "Nintendo"
 msgstr "Nintendo"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:163
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:223
 #, elixir-autogen, elixir-format
 msgid "No RSS feeds configured."
 msgstr "RSS-каналы не настроены."
 
-#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:180
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:199
 #, elixir-autogen, elixir-format
 msgid "No active schedules."
 msgstr "Никаких активных графиков."
@@ -832,7 +812,7 @@ msgstr "Не Сидней"
 msgid "Not Toronto"
 msgstr "Не Торонто"
 
-#: lib/retro_hex_chat/bots/server.ex:162
+#: lib/retro_hex_chat/bots/server.ex:185
 #, elixir-autogen, elixir-format
 msgid "Not in channel"
 msgstr "Не в канале"
@@ -928,12 +908,12 @@ msgstr "RDJ"
 msgid "ROY G BIV"
 msgstr "Рой Джи Бив"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:177
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:237
 #, elixir-autogen, elixir-format
 msgid "RSS Feeds:"
 msgstr "RSS корма:"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:26
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:28
 #, elixir-autogen, elixir-format
 msgid "RSS feed reader that posts updates to channels"
 msgstr "RSS-ридер, который публикует обновления для каналов"
@@ -948,12 +928,12 @@ msgstr "Случайный доступ к памяти"
 msgid "Red pill"
 msgstr "Красная таблетка"
 
-#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:150
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:157
 #, elixir-autogen, elixir-format
 msgid "Remove a schedule"
 msgstr "Удалить расписание"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:132
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:192
 #, elixir-autogen, elixir-format
 msgid "Remove an RSS feed"
 msgstr "Удалить RSS-канал"
@@ -972,11 +952,6 @@ msgstr "Отвечайте, когда упоминается имя"
 #, elixir-autogen, elixir-format
 msgid "Response must be a non-empty string"
 msgstr "Ответ должен быть непустой строкой"
-
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:334
-#, elixir-autogen, elixir-format
-msgid "RetroHexChat-RSS/1.0"
-msgstr "RetroHexChat-RSS/1.0"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:410
 #, elixir-autogen, elixir-format
@@ -1018,22 +993,22 @@ msgstr "Сахара"
 msgid "Saturn"
 msgstr "Сатурн"
 
-#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:269
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:288
 #, elixir-autogen, elixir-format
 msgid "Schedule '%{id}' added: daily at %{time} UTC in %{channel}."
 msgstr "Расписание%{id}Добавлено: ежедневно в %{time} в UTC %{channel}."
 
-#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:243
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:262
 #, elixir-autogen, elixir-format
 msgid "Schedule '%{id}' added: every %{minutes}min in %{channel}."
 msgstr "Расписание%{id}И добавил: Каждый %{minutes}мин. %{channel}."
 
-#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:286
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:305
 #, elixir-autogen, elixir-format
 msgid "Schedule '%{id}' not found."
 msgstr "Расписание%{id}Не найдено."
 
-#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:284
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:303
 #, elixir-autogen, elixir-format
 msgid "Schedule '%{id}' removed."
 msgstr "Расписание%{id}Убрали."
@@ -1203,17 +1178,17 @@ msgstr "Универсальный серийный автобус"
 msgid "Unknown category '%{category}'. Available: %{categories}"
 msgstr "Неизвестная категория%{category}Доступно: %{categories}"
 
-#: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:29
+#: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:32
 #, elixir-autogen, elixir-format
 msgid "Unknown feed format (expected RSS 2.0 or Atom)"
 msgstr "Неизвестный формат подачи (ожидаемый RSS 2.0 или Atom)"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:196
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:256
 #, elixir-autogen, elixir-format
 msgid "Usage: rss add <url> <#channel>"
 msgstr "Использование: rss add <url> <#channel>"
 
-#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:215
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:234
 #, elixir-autogen, elixir-format
 msgid ""
 "Usage: schedule add interval <min> <#channel> <message> OR schedule add "
@@ -1677,15 +1652,10 @@ msgstr "Кто написал Гарри Поттера?"
 msgid "Who wrote the Communist Manifesto?"
 msgstr "Кто написал коммунистический манифест?"
 
-#: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:33
+#: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:36
 #, elixir-autogen, elixir-format
 msgid "XML parse error: %{reason}"
 msgstr "XML ошибка разбора: %{reason}"
-
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:372
-#, elixir-autogen, elixir-format
-msgid "[%{title}]"
-msgstr "[%{title}]"
 
 #: lib/retro_hex_chat/bots/capabilities/moderation.ex:98
 #, elixir-autogen, elixir-format
@@ -1702,7 +1672,7 @@ msgstr "голубой кит"
 msgid "carbon dioxide"
 msgstr "двуокись углерода"
 
-#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:380
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:399
 #, elixir-autogen, elixir-format
 msgid "daily@%{time}"
 msgstr "Daily@%{time}"
@@ -1738,7 +1708,7 @@ msgstr "Начинать надо с письма"
 msgid "only letters, numbers, _ and -"
 msgstr "только буквы, цифры,   и -"
 
-#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:377
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:396
 #, elixir-autogen, elixir-format
 msgid "q/%{minutes}min"
 msgstr "q/%{minutes}мин."
@@ -1762,3 +1732,33 @@ msgstr "{никнейм}"
 #, elixir-autogen, elixir-format
 msgid "~3 x 10^5 km/s"
 msgstr "~3 x 105 км/s"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:335
+#, elixir-autogen, elixir-format
+msgid "Feed '%{id}' checked. Nothing new."
+msgstr "Корм \"%{id}\" проверен. Ничего нового."
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:323
+#, elixir-autogen, elixir-format
+msgid "Feed '%{id}' posts to %{channel}. Ask there to check it."
+msgstr "Кормите сообщения «%{id}» на %{channel}. Попросите там проверить."
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:132
+#, elixir-autogen, elixir-format
+msgid "Only channel operators can change the feed list."
+msgstr "Изменить список каналов могут только операторы каналов."
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:169
+#, elixir-autogen, elixir-format
+msgid "Only channel operators can change the schedule."
+msgstr "Изменить расписание могут только операторы каналов."
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:515
+#, elixir-autogen, elixir-format
+msgid "RSS"
+msgstr "RSS"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:269
+#, elixir-autogen, elixir-format
+msgid "Refusing %{url}: %{reason}"
+msgstr "Отказано для %{url}: %{reason}"

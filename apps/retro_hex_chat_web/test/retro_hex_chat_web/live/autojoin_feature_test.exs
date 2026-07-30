@@ -55,6 +55,24 @@ defmodule RetroHexChatWeb.AutojoinFeatureTest do
       assert has_element?(view, ~s([data-window-id="autojoin"][data-window-managed="true"]))
       assert_push_event(view, "window_command", %{action: "open", id: "autojoin"})
     end
+
+    test "the conversations sidebar auto-join row opens the managed window", %{conn: conn} do
+      view = connect_user(conn, "E2EAjSide#{uid()}")
+
+      open_autojoin(view)
+      click(view, "autojoin_add")
+      submit_form(view, "autojoin-add-dialog", %{"channel" => "#ajside", "key" => ""})
+      render_hook(view, "window_closed", %{"id" => "autojoin"})
+
+      assert has_element?(view, ~s([data-testid="autojoin-#ajside"]))
+
+      view
+      |> element(~s([data-testid="autojoin-open-#ajside"]))
+      |> render_click()
+
+      assert has_element?(view, ~s([data-window-id="autojoin"][data-window-managed="true"]))
+      assert_push_event(view, "window_command", %{action: "open", id: "autojoin"})
+    end
   end
 
   describe "channel list" do

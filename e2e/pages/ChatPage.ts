@@ -163,6 +163,7 @@ export class ChatPage {
   readonly conversationsCopyNameMenuItem: Locator;
   readonly conversationsSettingsMenuItem: Locator;
   readonly conversationsLeaveMenuItem: Locator;
+  readonly conversationsSidebar: Locator;
   readonly replyBar: Locator;
   readonly replyBarDismissButton: Locator;
   readonly replyBlock: Locator;
@@ -544,6 +545,7 @@ export class ChatPage {
         '[data-testid="ctx-leave"], [data-testid="context-menu-item-ctx_conversations_leave"]',
       )
       .first();
+    this.conversationsSidebar = page.getByTestId("conversations");
     this.replyBar = page.getByTestId("reply-bar");
     this.replyBarDismissButton = page.getByTestId("reply-bar-dismiss");
     this.replyBlock = page.getByTestId("reply-block");
@@ -1142,6 +1144,10 @@ export class ChatPage {
     return this.page.getByTestId(`conversations-section-${section}`);
   }
 
+  conversationSectionTrigger(section: "channels" | "pms" | "popular"): Locator {
+    return this.conversationSection(section).locator("button").first();
+  }
+
   pmConversationItem(nick: string): Locator {
     return this.page.getByTestId(`pm-${nick}`);
   }
@@ -1169,20 +1175,30 @@ export class ChatPage {
   }
 
   async toggleConversationSection(section: "channels" | "pms" | "popular") {
-    await this.conversationSection(section).locator("summary").click();
+    await this.conversationSectionTrigger(section).click();
+  }
+
+  async expandConversationSection(section: "channels" | "pms" | "popular") {
+    const expanded =
+      (await this.conversationSectionTrigger(section).getAttribute(
+        "aria-expanded",
+      )) === "true";
+
+    if (!expanded) {
+      await this.toggleConversationSection(section);
+    }
+
+    await this.expectConversationSectionExpanded(section, true);
   }
 
   async expectConversationSectionExpanded(
     section: "channels" | "pms" | "popular",
     expanded: boolean,
   ) {
-    await expect
-      .poll(async () =>
-        this.conversationSection(section).evaluate(
-          (el) => (el as HTMLDetailsElement).open,
-        ),
-      )
-      .toBe(expanded);
+    await expect(this.conversationSectionTrigger(section)).toHaveAttribute(
+      "aria-expanded",
+      String(expanded),
+    );
   }
 
   async expectChannelConversationUnread(channel: string, unread: boolean) {
@@ -1214,9 +1230,7 @@ export class ChatPage {
   }
 
   async joinPopularChannel(channel: string) {
-    await this.expectConversationSectionExpanded("popular", false);
-    await this.toggleConversationSection("popular");
-    await this.expectConversationSectionExpanded("popular", true);
+    await this.expandConversationSection("popular");
     await expect(this.popularChannelItem(channel)).toBeVisible();
     await this.popularJoinButton(channel).click();
     await this.expectTabVisible(channel);
@@ -1224,9 +1238,7 @@ export class ChatPage {
   }
 
   async browseAllChannelsFromConversations() {
-    await this.expectConversationSectionExpanded("popular", false);
-    await this.toggleConversationSection("popular");
-    await this.expectConversationSectionExpanded("popular", true);
+    await this.expandConversationSection("popular");
     await this.page.getByTestId("conversations-browse-all").click();
     await expect(this.channelListDialog).toBeVisible();
   }

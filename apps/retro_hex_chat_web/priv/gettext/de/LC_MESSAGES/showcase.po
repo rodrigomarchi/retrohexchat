@@ -422,9 +422,9 @@ msgstr "Auch verbieten Sie den Benutzer nach dem Kick"
 #, elixir-autogen, elixir-format
 msgid "Another long line: ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 msgstr ""
-"Another long line: ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ "
+"Eine weitere lange Linie: ABCDEFGHIJKLMNOPQRSTUVWXYZ "
 "ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ "
-"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+"ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 #: lib/retro_hex_chat_web/live/showcase_live/chat/chat_layout_page.ex:45
 #, elixir-autogen, elixir-format
@@ -888,7 +888,7 @@ msgstr "Kanal Menu"
 msgid "Channel Mode"
 msgstr "Kanalmodus"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/conversations_page.html.heex:69
+#: lib/retro_hex_chat_web/live/showcase_live/chat/conversations_page.html.heex:75
 #, elixir-autogen, elixir-format
 msgid "Channel States"
 msgstr "Kanalstaaten"
@@ -925,7 +925,7 @@ msgstr "Channel-Namen beginnen mit # oder &"
 msgid "Channels"
 msgstr "Kanäle"
 
-#: lib/retro_hex_chat_web/live/showcase_live/chat/conversations_page.html.heex:55
+#: lib/retro_hex_chat_web/live/showcase_live/chat/conversations_page.html.heex:61
 #, elixir-autogen, elixir-format
 msgid "Channels Only"
 msgstr "Nur"
@@ -1732,7 +1732,7 @@ msgstr "Leere Einstellungen"
 
 #: lib/retro_hex_chat_web/components/showcase_helpers.ex:103
 #: lib/retro_hex_chat_web/live/showcase_live/chat/autocomplete_page.html.heex:103
-#: lib/retro_hex_chat_web/live/showcase_live/chat/conversations_page.html.heex:46
+#: lib/retro_hex_chat_web/live/showcase_live/chat/conversations_page.html.heex:52
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/auto_respond_dialog_page.ex:100
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:118
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/notify_list_page.ex:91
@@ -2749,7 +2749,7 @@ msgstr "Nick Mode"
 #: lib/retro_hex_chat_web/live/showcase_live/chat/nicklist_page.ex:23
 #, elixir-autogen, elixir-format
 msgid "Nicklist"
-msgstr "Wie geht's?"
+msgstr "Nickliste"
 
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:65
 #, elixir-autogen, elixir-format
@@ -3136,7 +3136,7 @@ msgstr "Passwort"
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/nick_change_dialog_page.ex:72
 #, elixir-autogen, elixir-format
 msgid "Password Error State"
-msgstr "Password Error State"
+msgstr "Passwort vergessen?"
 
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:44
 #, elixir-autogen, elixir-format
@@ -4031,7 +4031,7 @@ msgstr "Register"
 #: lib/retro_hex_chat_web/live/showcase_live/chat/tab_bar_page.ex:23
 #, elixir-autogen, elixir-format
 msgid "Tab Bar"
-msgstr "Tab Bar"
+msgstr "Tab-Leiste"
 
 #: lib/retro_hex_chat_web/components/showcase_helpers.ex:63
 #: lib/retro_hex_chat_web/live/showcase_live/layout/table.ex:16
@@ -4350,7 +4350,7 @@ msgstr "Typologie"
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:213
 #, elixir-autogen, elixir-format
 msgid "URL Catcher"
-msgstr "URL Catcher"
+msgstr "URL-Fänger"
 
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/url_catcher_page.ex:137
 #, elixir-autogen, elixir-format
@@ -4370,7 +4370,7 @@ msgstr "URL Catcher (gesucht)"
 #: lib/retro_hex_chat_web/live/showcase_live/chat/chat_context_menu_page.html.heex:135
 #, elixir-autogen, elixir-format
 msgid "URL Menu"
-msgstr "URL Menu"
+msgstr "URL-Menü"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/window.html.heex:119
 #: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar.html.heex:37
@@ -5301,7 +5301,10 @@ msgstr "20 Einträge geladen"
 #: lib/retro_hex_chat_web/live/showcase_live/layout/list_states_page.ex:27
 #, elixir-autogen, elixir-format
 msgid "A list is not only its rows. Every paginated list in the app draws its empty, exhausted, truncated, failed and first-load states from these components."
-msgstr "Eine Liste besteht nicht nur aus ihren Zeilen. Jede paginierte Liste der App bezieht ihre Zustände leer, vollständig geladen, gekürzt, fehlgeschlagen und erstes Laden aus diesen Komponenten."
+msgstr ""
+"Eine Liste besteht nicht nur aus ihren Zeilen. Jede paginierte Liste der App"
+" bezieht ihre Zustände leer, vollständig geladen, gekürzt, fehlgeschlagen "
+"und erstes Laden aus diesen Komponenten."
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/list_states_page.ex:109
 #, elixir-autogen, elixir-format
@@ -5357,34 +5360,34 @@ msgstr "Versuche einen anderen Filter."
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:63
 #, elixir-autogen, elixir-format
 msgid "Device"
-msgstr ""
+msgstr "Gerät"
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:59
 #, elixir-autogen, elixir-format
 msgid "Expiring"
-msgstr ""
+msgstr "Entfällt"
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:49
 #, elixir-autogen, elixir-format
 msgid "Icon Badges"
-msgstr ""
+msgstr "Icon Badges"
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/card.ex:89
 #, elixir-autogen, elixir-format
 msgid "One click selects this card."
-msgstr ""
+msgstr "Ein Klick wählt diese Karte aus."
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/card.ex:75
 #, elixir-autogen, elixir-format
 msgid "Selectable Card"
-msgstr ""
+msgstr "Auswählbare Karte"
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/card.ex:86
 #, elixir-autogen, elixir-format
 msgid "Selectable Device"
-msgstr ""
+msgstr "Auswählbares Gerät"
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:55
 #, elixir-autogen, elixir-format
 msgid "Trusted"
-msgstr ""
+msgstr "Vertraut"

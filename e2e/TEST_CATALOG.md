@@ -546,7 +546,7 @@ make ci
 - `/clear` now also resets pagination state so scroll history loading cannot immediately repopulate a locally cleared window.
 - Nick color changes now refresh the active chat stream so existing rows and future rows use the updated Address Book/context-menu color.
 - Address Book Control and ignore-list persistence now include the `notices` ignore type, and `/ignore` help text documents it consistently.
-- Conversations sidebar now renders the Popular Channels section before lazy-loading so users can expand it and join channels through the UI.
+- Conversations sidebar now renders Popular Channels from the channel-directory read-model and keeps Browse All Channels in that same section.
 - Channel List close preserves the current filter search, and Browse All Channels from the conversations sidebar reapplies it to the refreshed channel list.
 - Conversations sidebar context menus now support PM mute/copy actions, and PM mute suppresses sound/title flash while preserving unread indicators.
 - Closing channel or PM tabs now clears unread/flash state so reopening the same conversation does not resurrect stale unread indicators.

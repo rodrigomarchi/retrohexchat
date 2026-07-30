@@ -1,0 +1,193 @@
+/* Conversations sidebar: IRC navigation with a denser retro switchboard feel. */
+
+.chat-conversations-titlebar {
+  @apply flex shrink-0 items-center gap-retro-4 bg-surface px-retro-4 py-retro-2 shadow-retro-raised;
+}
+
+.chat-conversations-status-strip {
+  @apply grid shrink-0 grid-cols-3 gap-px bg-muted px-retro-4 py-[3px] shadow-retro-status;
+}
+
+.chat-conversations-stat {
+  @apply flex h-6 min-w-0 items-center justify-start gap-1 overflow-hidden border-b-2 border-border bg-white px-1 text-[10px] font-bold leading-none shadow-retro-status;
+}
+
+.chat-conversations-stat svg {
+  @apply shrink-0;
+}
+
+.chat-conversations-stat__value {
+  @apply shrink-0 text-[11px] leading-none;
+}
+
+.chat-conversations-stat__label {
+  @apply min-w-0 truncate text-[9px] uppercase leading-none text-muted-foreground;
+}
+
+.chat-conversations-body {
+  @apply bg-white p-[6px];
+}
+
+.chat-conversations-section {
+  @apply mb-retro-6;
+}
+
+.chat-conversations-section:last-child {
+  @apply mb-0;
+}
+
+.chat-conversations-section__trigger {
+  @apply flex h-7 w-full items-center gap-1 overflow-hidden border border-border bg-surface px-1 text-left text-[11px] font-bold uppercase text-muted-foreground shadow-retro-status;
+  @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-black;
+}
+
+.chat-conversations-section__trigger:hover {
+  @apply bg-hover-bg text-foreground;
+}
+
+.chat-conversations-section__toggle {
+  @apply inline-flex h-[11px] w-[11px] shrink-0 items-center justify-center border border-muted-foreground bg-white text-[9px] leading-none text-foreground;
+}
+
+.chat-conversations-section__label {
+  @apply min-w-0 flex-1 truncate;
+}
+
+.chat-conversations-section__count {
+  @apply shrink-0 bg-white px-1 text-[10px] font-bold leading-4 text-muted-foreground shadow-retro-status;
+}
+
+.chat-conversations-section--alerts .chat-conversations-section__trigger {
+  @apply border-l-2 border-warning bg-warning-bg text-foreground;
+}
+
+.chat-conversations-section--alerts .chat-conversations-section__count {
+  @apply bg-warning text-white;
+}
+
+.chat-conversations-section--autojoin .chat-conversations-section__trigger {
+  @apply border-l-2 border-success bg-surface text-success-dark;
+}
+
+.chat-conversations-section--popular .chat-conversations-section__trigger {
+  @apply border-l-2 border-primary bg-surface text-primary;
+}
+
+.chat-conversations-section__list {
+  @apply mt-px space-y-px;
+}
+
+.chat-conversations-row {
+  @apply flex min-h-[28px] w-full items-center gap-1.5 overflow-hidden border border-transparent px-1 py-[2px] text-[13px] leading-5 select-none;
+  @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-black;
+  @apply bg-white;
+}
+
+.chat-conversations-section__list > .chat-conversations-row:nth-child(even):not(.chat-conversations-row--active) {
+  @apply bg-gray-100;
+}
+
+.chat-conversations-row--interactive {
+  @apply cursor-pointer;
+}
+
+.chat-conversations-row--interactive:hover:not(.chat-conversations-row--active) {
+  @apply border-border bg-hover-bg;
+}
+
+.chat-conversations-row--static {
+  @apply cursor-default;
+}
+
+.chat-conversations-row--active {
+  @apply border-black bg-primary font-bold text-white;
+}
+
+.chat-conversations-row--activity:not(.chat-conversations-row--active) {
+  @apply bg-highlight-bg;
+}
+
+.chat-conversations-section--autojoin .chat-conversations-row:not(.chat-conversations-row--active) {
+  @apply bg-white;
+}
+
+.chat-conversations-row__signal {
+  @apply h-5 w-1 shrink-0;
+}
+
+.chat-conversations-row__signal--idle {
+  background: transparent;
+}
+
+.chat-conversations-row__signal--active {
+  @apply bg-white;
+}
+
+.chat-conversations-row__signal--highlight {
+  @apply bg-error;
+}
+
+.chat-conversations-row__signal--unread {
+  @apply bg-link;
+}
+
+.chat-conversations-row__signal--autojoin-open {
+  @apply bg-success;
+}
+
+.chat-conversations-row__signal--autojoin-key {
+  @apply bg-warning-alt;
+}
+
+.chat-conversations-row__signal--autojoin-saved {
+  @apply bg-teal;
+}
+
+.chat-conversations-row__icon {
+  @apply inline-flex h-5 w-5 shrink-0 items-center justify-center bg-white shadow-retro-status;
+}
+
+.chat-conversations-row--active .chat-conversations-row__icon {
+  @apply shadow-retro-sunken;
+}
+
+.chat-conversations-row__label {
+  @apply min-w-0 flex-1 truncate;
+}
+
+.chat-conversations-row__count {
+  @apply shrink-0 text-[10px] text-muted-foreground;
+}
+
+.chat-conversations-row--active .chat-conversations-row__count {
+  @apply text-gray-200;
+}
+
+.chat-conversations-chip {
+  @apply shrink-0 border px-1 text-[9px] font-bold leading-4 shadow-retro-status;
+}
+
+.chat-conversations-chip--tab,
+.chat-conversations-chip--key {
+  @apply border-muted-foreground bg-white text-muted-foreground;
+}
+
+.chat-conversations-chip--open {
+  @apply border-primary bg-primary text-white;
+}
+
+.chat-conversations-unread-badge {
+  @apply min-w-[18px] shrink-0 border border-primary bg-link px-1 text-center text-[10px] font-bold text-white;
+}
+
+.chat-conversations-unread-badge--highlight {
+  @apply border-error-dark bg-error;
+}
+
+.chat-conversations-browse-row {
+  @apply mt-retro-2 border-t border-border pt-retro-2;
+}
+
+.chat-conversations-browse-button {
+  @apply h-7 w-full justify-start gap-retro-4 border-l-2 border-border bg-surface px-retro-4 text-xs shadow-retro-raised;
+}

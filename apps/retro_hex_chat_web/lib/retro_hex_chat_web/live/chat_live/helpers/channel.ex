@@ -21,6 +21,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
   alias RetroHexChatWeb.ChatLive.Components.Composer
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
   alias RetroHexChatWeb.ChatLive.Components.Nicklist
+  alias RetroHexChatWeb.ChatLive.ConversationsReadModel
   alias RetroHexChatWeb.ChatLive.GroupCallEvents
   alias RetroHexChatWeb.ChatLive.Helpers.Presence, as: PresenceHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.Session, as: SessionHelpers
@@ -91,6 +92,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
     |> push_event("tip_trigger", %{tip: "first_join"})
     |> push_event("channel_joined_flash", %{channel: channel_name})
     |> SessionHelpers.push_reconnect_state()
+    |> ConversationsReadModel.load_popular_channels()
   end
 
   defp setup_joined_channel(socket, channel_name, session, :background) do
@@ -107,6 +109,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
     |> load_channel_user_count(channel_name)
     |> push_event("channel_joined_flash", %{channel: channel_name})
     |> SessionHelpers.push_reconnect_state()
+    |> ConversationsReadModel.load_popular_channels()
   end
 
   @spec part_channel(Phoenix.LiveView.Socket.t(), String.t(), String.t() | nil) ::
@@ -157,7 +160,9 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
         |> Nicklist.reset([])
       end
 
-    SessionHelpers.push_reconnect_state(socket)
+    socket
+    |> SessionHelpers.push_reconnect_state()
+    |> ConversationsReadModel.load_popular_channels()
   end
 
   @spec part_channel_after_kick(Phoenix.LiveView.Socket.t(), String.t()) ::
@@ -176,10 +181,12 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
       socket
       |> load_channel_users(new_session.active_channel)
       |> load_channel_messages_with_pagination(new_session.active_channel)
+      |> ConversationsReadModel.load_popular_channels()
     else
       socket
       |> assign(oldest_message_id: nil, has_more: false, current_topic: nil, current_modes: nil)
       |> MessageViewport.reset([])
+      |> ConversationsReadModel.load_popular_channels()
     end
   end
 

@@ -1,6 +1,7 @@
 import { Browser, BrowserContext, Page, test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";
+import { shot } from "../helpers/screenshots";
 
 type TestUser = {
   chat: ChatPage;
@@ -17,7 +18,7 @@ async function signedInUser(page: Page, prefix = "conv") {
   const chat = new ChatPage(page);
   const nick = uniqueNickname(prefix);
 
-  await connect.open();
+  await connect.open(process.env.E2E_LOCALE);
   await connect.enterNickname(nick);
   await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
@@ -91,12 +92,18 @@ test.describe("Conversations sidebar", () => {
     browser,
   }) => {
     const popularChannel = uniqueChannel("popular");
-    const alice = await newSignedInUser(browser, "cpa");
     const bob = await newSignedInUser(browser, "cpb");
+    let alice: TestUser | undefined;
 
     try {
       await bob.chat.sendMessage(`/join ${popularChannel}`);
       await bob.chat.expectTabVisible(popularChannel);
+
+      alice = await newSignedInUser(browser, "cpa");
+      await alice.chat.expandConversationSection("popular");
+      await expect(alice.chat.popularChannelItem(popularChannel)).toBeVisible();
+      await shot(alice.chat.page, "popular-channels-platform");
+      await shot(alice.chat.conversationsSidebar, "popular-channels-sidebar");
 
       await alice.chat.joinPopularChannel(popularChannel);
       await expect(
@@ -106,7 +113,7 @@ test.describe("Conversations sidebar", () => {
         0,
       );
     } finally {
-      await closeUsers([alice, bob]);
+      await closeUsers([bob, ...(alice ? [alice] : [])]);
     }
   });
 
@@ -140,6 +147,7 @@ test.describe("Conversations sidebar", () => {
       await alice.chat.expectTabSelected(homeChannel);
 
       await alice.chat.browseAllChannelsFromConversations();
+      await shot(alice.chat.channelListDialog, "browse-all-channels-dialog");
       await expect(alice.chat.channelListSearch).toHaveValue(searchTerm);
       await expect(alice.chat.channelListRow(targetChannel)).toBeVisible();
       await expect(alice.chat.channelListJoinButton).toBeDisabled();

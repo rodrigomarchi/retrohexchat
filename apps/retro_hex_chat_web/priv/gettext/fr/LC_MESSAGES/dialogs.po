@@ -72,7 +72,10 @@ msgstr "Un robot utile"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/about_dialog.ex:59
 #, elixir-autogen, elixir-format
-msgid "A retro-styled IRC chat platform inspired by the classic desktop chat clients of the late '90s. Real-time messaging, channels, peer-to-peer sessions, and arcade games — all in the browser."
+msgid ""
+"A retro-styled IRC chat platform inspired by the classic desktop chat "
+"clients of the late '90s. Real-time messaging, channels, peer-to-peer "
+"sessions, and arcade games — all in the browser."
 msgstr ""
 "Une plateforme de chat IRC rétro inspirée par les clients classiques du chat"
 " de bureau de la fin des années 90. Messagerie en temps réel, canaux, "
@@ -436,7 +439,9 @@ msgstr "Commandes"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:96
 #, elixir-autogen, elixir-format
-msgid "Configure limits to prevent message flooding in channels and private messages."
+msgid ""
+"Configure limits to prevent message flooding in channels and private "
+"messages."
 msgstr ""
 "Configurer les limites pour éviter l'inondation des messages dans les canaux"
 " et les messages privés."
@@ -895,7 +900,7 @@ msgstr "Nouveau"
 #: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:252
 #, elixir-autogen, elixir-format
 msgid "Nick"
-msgstr "Nick"
+msgstr "- Oui."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:140
 #, elixir-autogen, elixir-format
@@ -1316,7 +1321,8 @@ msgstr "La commande qui déclenche cette réponse (par exemple !hello)"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/nick_change_dialog.ex:63
 #, elixir-autogen, elixir-format
-msgid "This nickname is registered. Please enter the NickServ password to identify."
+msgid ""
+"This nickname is registered. Please enter the NickServ password to identify."
 msgstr ""
 "Ce surnom est enregistré. Veuillez saisir le mot de passe NickServ pour vous"
 " identifier."
@@ -1432,7 +1438,8 @@ msgstr "Version %{version}"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/paste_confirm_dialog.ex:74
 #, elixir-autogen, elixir-format
-msgid "Warning: This exceeds the flood protection limit. Messages may be throttled."
+msgid ""
+"Warning: This exceeds the flood protection limit. Messages may be throttled."
 msgstr ""
 "Avertissement : Cela dépasse la limite de protection contre les inondations."
 " Les messages peuvent être étranglés."
@@ -1694,7 +1701,10 @@ msgstr "Fermer la séance P2P?"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:102
 #, elixir-autogen, elixir-format
-msgid "Closing this window disconnects the whole P2P session with %{peer} — any call, game or file transfer in progress will stop. To keep the session and just tidy up, minimize the window instead."
+msgid ""
+"Closing this window disconnects the whole P2P session with %{peer} — any "
+"call, game or file transfer in progress will stop. To keep the session and "
+"just tidy up, minimize the window instead."
 msgstr ""
 "La fermeture de cette fenêtre déconnecte toute la session P2P avec %{peer} —"
 " tout appel, jeu ou transfert de fichier en cours s'arrêtera. Pour garder la"
@@ -1772,7 +1782,8 @@ msgstr "Supprimer le canal"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:154
 #, elixir-autogen, elixir-format
-msgid "Deletes this nickname registration after you confirm with its password."
+msgid ""
+"Deletes this nickname registration after you confirm with its password."
 msgstr ""
 "Supprime l'enregistrement de ce pseudo après avoir confirmé avec son mot de "
 "passe."
@@ -1835,14 +1846,18 @@ msgstr "Fin de la session"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:94
 #, elixir-autogen, elixir-format
-msgid "End the P2P session with %{peer}? Any call, game or file transfer in progress will stop."
+msgid ""
+"End the P2P session with %{peer}? Any call, game or file transfer in "
+"progress will stop."
 msgstr ""
 "Fin de la session P2P avec %{peer}? Tout appel, jeu ou transfert de fichier "
 "en cours s'arrêtera."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:112
 #, elixir-autogen, elixir-format
-msgid "End the current P2P session with %{peer} and start one with %{new_peer}? Any call, game or file transfer in progress will stop."
+msgid ""
+"End the current P2P session with %{peer} and start one with %{new_peer}? Any"
+" call, game or file transfer in progress will stop."
 msgstr ""
 "Terminer la session P2P actuelle avec %{peer} et en commencer une avec "
 "%{new_peer}? Tout appel, jeu ou transfert de fichier en cours s'arrêtera."
@@ -2794,7 +2809,8 @@ msgstr "Oublier"
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:149
 #, elixir-autogen, elixir-format
 msgid "Identify with NickServ to manage trusted terminals."
-msgstr "Identifiez-vous auprès de NickServ pour gérer les terminaux de confiance."
+msgstr ""
+"Identifiez-vous auprès de NickServ pour gérer les terminaux de confiance."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:877
 #, elixir-autogen, elixir-format
@@ -2969,176 +2985,176 @@ msgstr "Fuseau horaire inconnu"
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:793
 #, elixir-autogen, elixir-format
 msgid "%{bits}-bit"
-msgstr ""
+msgstr "%{bits}-bit"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:799
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "%{count} cores"
-msgstr "%{count} élément"
+msgstr "%{count} cœurs"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:495
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Action"
-msgstr "Actions"
+msgstr "Décision"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:481
 #, elixir-autogen, elixir-format
 msgid "Actor"
-msgstr ""
+msgstr "Acteur"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:884
 #, elixir-autogen, elixir-format
 msgid "Auto-login disabled"
-msgstr ""
+msgstr "Désactivation de l'enregistrement automatique"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:881
 #, elixir-autogen, elixir-format
 msgid "Auto-login enabled"
-msgstr ""
+msgstr "Auto-login activé"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:326
 #, elixir-autogen, elixir-format
 msgid "Browser"
-msgstr ""
+msgstr "Navigateur"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:372
 #, elixir-autogen, elixir-format
 msgid "CPU"
-msgstr ""
+msgstr "CPU"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:384
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Connected: %{time}"
-msgstr "Connecté"
+msgstr "Connecté : %{time}"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:850
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:851
 #, elixir-autogen, elixir-format
 msgid "Count"
-msgstr ""
+msgstr "Nombre"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:363
 #, elixir-autogen, elixir-format
 msgid "Depth"
-msgstr ""
+msgstr "Profondeur"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:786
 #, elixir-autogen, elixir-format
 msgid "Desktop"
-msgstr ""
+msgstr "Bureau"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:469
 #, elixir-autogen, elixir-format
 msgid "Event ID: #%{id}"
-msgstr ""
+msgstr "ID de l'événement : #%{id}"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:852
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:853
 #, elixir-autogen, elixir-format
 msgid "Grant ID"
-msgstr ""
+msgstr "Numéro d'identification"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:346
 #, elixir-autogen, elixir-format
 msgid "Language"
-msgstr ""
+msgstr "Langue"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:482
 #, elixir-autogen, elixir-format
 msgid "No actor"
-msgstr ""
+msgstr "Aucun acteur"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:318
 #, elixir-autogen, elixir-format
 msgid "No ref"
-msgstr ""
+msgstr "Pas de réf"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:491
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "No terminal"
-msgstr "Aucune activité du terminal pour l'instant."
+msgstr "Pas de terminal"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:331
 #, elixir-autogen, elixir-format
 msgid "OS"
-msgstr ""
+msgstr "OS"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:314
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Ref"
-msgstr "Actualiser"
+msgstr "Réf."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:351
 #, elixir-autogen, elixir-format
 msgid "Screen"
-msgstr ""
+msgstr "Écran"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:392
 #, elixir-autogen, elixir-format
 msgid "Seen: %{time}"
-msgstr ""
+msgstr "Vu : %{time}"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:856
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:857
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Session ID"
-msgstr "Session terminée"
+msgstr "ID de la session"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:308
 #, elixir-autogen, elixir-format
 msgid "Session ID: #%{id}"
-msgstr ""
+msgstr "ID de session : #%{id}"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:356
 #, elixir-autogen, elixir-format
 msgid "TZ"
-msgstr ""
+msgstr "TZ"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:490
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Terminal"
-msgstr "Nom du terminal"
+msgstr "Terminal"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:818
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:821
 #, elixir-autogen, elixir-format
 msgid "Terminal ID: #%{id}"
-msgstr ""
+msgstr "ID du terminal : #%{id}"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:817
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Terminal ID: guest"
-msgstr "Terminal déconnecté"
+msgstr "Numéro de terminal: invité"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:820
 #, elixir-autogen, elixir-format
 msgid "Terminal ID: none"
-msgstr ""
+msgstr "Identification du terminal: aucun"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:474
 #, elixir-autogen, elixir-format
 msgid "Time: %{time}"
-msgstr ""
+msgstr "Heure : %{time}"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:787
 #, elixir-autogen, elixir-format
 msgid "Touch"
-msgstr ""
+msgstr "Toucher"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:379
 #, elixir-autogen, elixir-format
 msgid "Touch unknown"
-msgstr ""
+msgstr "Touche inconnue"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:805
 #, elixir-autogen, elixir-format
 msgid "Touch: No"
-msgstr ""
+msgstr "Touche: Non"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:804
 #, elixir-autogen, elixir-format
 msgid "Touch: Yes"
-msgstr ""
+msgstr "Touche : Oui"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:374
 #, elixir-autogen, elixir-format

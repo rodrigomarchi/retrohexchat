@@ -2,12 +2,11 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   @moduledoc """
   Conversations sidebar component for the showcase design system.
 
-  Composed from tree_view + badge + empty_state primitives.
-  Displays channels, private messages, and popular channels in
-  collapsible sections with 6 visual states.
-
-  Hook-compatible with ConversationsHook: uses `phx-hook="ConversationsHook"`
-  and `data-channel` / `data-nick` attributes on items.
+  The sidebar is IRC-native: it presents joined channels, recent private
+  messages, the account auto-join list, and popular channel suggestions without
+  modeling a second workspace/navigation system. It remains hook-compatible with
+  ConversationsHook through `phx-hook="ConversationsHook"` plus
+  `data-channel` / `data-nick` attributes on actionable rows.
 
   ## Usage
 
@@ -27,7 +26,6 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   import RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge
   import RetroHexChatWeb.Components.UI.ListStates
   import RetroHexChatWeb.Components.UI.P2P.SessionBadge
-  import RetroHexChatWeb.Components.UI.TreeView
 
   alias RetroHexChatWeb.Icons
 
@@ -45,20 +43,18 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
     ~H"""
     <div class={[
       "chat-sidebar-overlay fixed inset-x-0 bottom-0 top-0 z-40 md:relative md:inset-auto md:z-auto",
-      "flex md:h-full md:shrink-0 md:w-[220px] md:min-w-[180px]",
+      "flex md:h-full md:shrink-0 md:w-[260px] md:min-w-[220px]",
       !@visible && "hidden"
     ]}>
       <div class="absolute inset-0 bg-black/30 md:hidden" phx-click={@on_backdrop} />
-      <div class="relative z-10 w-[280px] md:w-full h-full bg-surface shadow-retro-window md:shadow-none">
+      <div class="relative z-10 w-[300px] max-w-[calc(100vw-48px)] md:w-full md:max-w-none h-full bg-surface shadow-retro-window md:shadow-none">
         {render_slot(@inner_block)}
       </div>
     </div>
     """
   end
 
-  # ── Main Component ─────────────────────────────────────
-
-  @doc "Renders the conversations sidebar with channel/PM/popular sections."
+  @doc "Renders the conversations sidebar with IRC-native semantic sections."
   attr :id, :string, default: "conversations"
   attr :channels, :list, default: []
   attr :active_channel, :string, default: nil
@@ -77,12 +73,14 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
     default: %{},
     doc: "Pending P2P session read models keyed by downcased PM nick"
 
+  attr :open_pm_tabs, :list, default: [], doc: "PM tabs currently open in the MDI tab bar"
   attr :pm_conversations, :list, default: []
 
   attr :pm_conversations_truncated, :boolean,
     default: false,
     doc: "The account has more conversations than the sidebar restored"
 
+  attr :autojoin_entries, :list, default: [], doc: "Auto-join entries from the session"
   attr :active_pm, :string, default: nil
   attr :unread_pms, :list, default: []
 
@@ -97,11 +95,24 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   attr :on_close, :any, default: nil, doc: "Close/hide sidebar callback"
   attr :on_browse_channels, :any, default: nil, doc: "Browse channels callback"
   attr :on_join_popular, :any, default: nil, doc: "Join popular channel callback"
+  attr :on_autojoin_open, :any, default: nil, doc: "Open auto-join window callback"
   attr :class, :string, default: nil
   attr :rest, :global
 
   @spec conversations(map()) :: Phoenix.LiveView.Rendered.t()
   def conversations(assigns) do
+    assigns =
+      assign(assigns,
+        activity_channels: activity_channels(assigns),
+        activity_pms: activity_pms(assigns),
+        has_conversations_content: has_conversations_content?(assigns),
+        channel_count: length(assigns.channels),
+        pm_count: length(assigns.pm_conversations),
+        autojoin_count: length(assigns.autojoin_entries),
+        popular_section_visible: popular_section_visible?(assigns),
+        popular_section_count: popular_section_count(assigns.popular_channels)
+      )
+
     ~H"""
     <div
       class={classes(["flex h-full min-h-0 flex-col", @class])}
@@ -110,10 +121,11 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
       data-testid="conversations"
       {@rest}
     >
-      <%!-- Header tab --%>
-      <div class="flex items-center bg-surface shadow-retro-raised px-retro-4 py-retro-2">
-        <Icons.icon_tab_conversations class="w-4 h-4 mr-retro-4" />
-        <span class="text-xs font-bold flex-1">{dgettext("chat", "Conversations")}</span>
+      <div class="chat-conversations-titlebar">
+        <Icons.icon_tab_conversations class="w-4 h-4 shrink-0" />
+        <span class="min-w-0 flex-1 truncate text-xs font-bold">
+          {dgettext("chat", "Conversations")}
+        </span>
         <.button
           :if={@on_close}
           type="button"
@@ -129,9 +141,32 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
         </.button>
       </div>
 
-      <%!-- Tree content --%>
-      <.tree_view class="flex-1 min-h-0 retro-scrollbar">
-        <%= if @channels == [] and @pm_conversations == [] do %>
+      <div class="chat-conversations-status-strip">
+        <.conversation_stat
+          label={dgettext("chat", "OPEN CHANNELS")}
+          short_label={dgettext("chat", "Channels")}
+          count={@channel_count}
+          icon={:channels}
+          testid="conversations-stat-channels"
+        />
+        <.conversation_stat
+          label={dgettext("chat", "RECENT PRIVATE MESSAGES")}
+          short_label={dgettext("chat", "PM")}
+          count={@pm_count}
+          icon={:pms}
+          testid="conversations-stat-pms"
+        />
+        <.conversation_stat
+          label={dgettext("chat", "AUTO-JOIN")}
+          short_label={dgettext("chat", "Auto")}
+          count={@autojoin_count}
+          icon={:autojoin}
+          testid="conversations-stat-autojoin"
+        />
+      </div>
+
+      <div class="chat-conversations-body flex-1 min-h-0 overflow-y-auto retro-scrollbar shadow-retro-field">
+        <%= if !@has_conversations_content do %>
           <.empty_state>
             <:icon><Icons.icon_channels class="w-6 h-6" /></:icon>
             <:title>{dgettext("chat", "No channels")}</:title>
@@ -150,95 +185,209 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
             </:action>
           </.empty_state>
         <% else %>
-          <%!-- My Channels --%>
-          <.tree_view_group
-            label={dgettext("chat", "MY CHANNELS")}
-            open={"channels" not in @collapsed_sections}
-            phx-click={@on_toggle_section}
-            phx-value-section="channels"
-            data-testid="conversations-section-channels"
+          <.conversation_section
+            :if={@activity_channels != [] or @activity_pms != []}
+            label={dgettext("chat", "ACTIVITY")}
+            section="alerts"
+            count={length(@activity_channels) + length(@activity_pms)}
+            open={section_open?(@collapsed_sections, "alerts")}
+            on_toggle={@on_toggle_section}
+            testid="conversations-section-alerts"
+          >
+            <.channel_item
+              :for={ch <- @activity_channels}
+              name={ch}
+              active={ch == @active_channel}
+              unread={member?(@unread_channels, ch)}
+              unread_count={unread_count(@unread_counts, ch)}
+              highlight={member?(@highlight_channels, ch) or member?(@flash_channels, ch)}
+              flash={member?(@flash_channels, ch)}
+              muted={member?(@muted_channels, ch)}
+              disconnected={member?(@disconnected_channels, ch)}
+              group_call_active={member?(@group_call_channels, ch)}
+              group_call_summary={Map.get(@group_call_summaries || %{}, ch)}
+              user_count={Map.get(@channel_user_counts || %{}, ch)}
+              on_click={@on_channel_click}
+              on_dblclick={@on_channel_dblclick}
+              testid={"activity-channel-#{ch}"}
+              unread_badge_testid={"activity-channel-unread-badge-#{ch}"}
+              unread_dot_testid={"activity-channel-unread-dot-#{ch}"}
+              activity
+            />
+
+            <.pm_item
+              :for={pm <- @activity_pms}
+              nick={pm}
+              active={pm == @active_pm}
+              open_tab={member?(@open_pm_tabs, pm)}
+              unread={member?(@unread_pms, pm)}
+              unread_count={unread_count(@unread_counts, "pm:#{pm}")}
+              flash={member?(@flash_channels, "pm:#{pm}")}
+              muted={member?(@muted_channels, "pm:#{pm}")}
+              nick_color={nick_color(assigns, pm)}
+              p2p_session={p2p_session_for_pm(assigns, pm)}
+              on_click={@on_pm_click}
+              testid={"activity-pm-#{pm}"}
+              unread_badge_testid={"activity-pm-unread-badge-#{pm}"}
+              unread_dot_testid={"activity-pm-unread-dot-#{pm}"}
+              activity
+            />
+          </.conversation_section>
+
+          <.conversation_section
+            :if={@channels != []}
+            label={dgettext("chat", "OPEN CHANNELS")}
+            section="channels"
+            count={length(@channels)}
+            open={section_open?(@collapsed_sections, "channels")}
+            on_toggle={@on_toggle_section}
+            testid="conversations-section-channels"
           >
             <.channel_item
               :for={ch <- @channels}
               name={ch}
               active={ch == @active_channel}
-              unread={ch in @unread_channels}
-              unread_count={Map.get(@unread_counts, ch, 0)}
-              highlight={ch in @highlight_channels or ch in @flash_channels}
-              flash={ch in @flash_channels}
-              muted={ch in @muted_channels}
-              disconnected={ch in @disconnected_channels}
-              group_call_active={ch in @group_call_channels}
+              unread={member?(@unread_channels, ch)}
+              unread_count={unread_count(@unread_counts, ch)}
+              highlight={member?(@highlight_channels, ch) or member?(@flash_channels, ch)}
+              flash={member?(@flash_channels, ch)}
+              muted={member?(@muted_channels, ch)}
+              disconnected={member?(@disconnected_channels, ch)}
+              group_call_active={member?(@group_call_channels, ch)}
               group_call_summary={Map.get(@group_call_summaries || %{}, ch)}
-              user_count={Map.get(@channel_user_counts, ch)}
+              user_count={Map.get(@channel_user_counts || %{}, ch)}
               on_click={@on_channel_click}
               on_dblclick={@on_channel_dblclick}
             />
-          </.tree_view_group>
+          </.conversation_section>
 
-          <%!-- Private Messages --%>
-          <.tree_view_group
+          <.conversation_section
             :if={@pm_conversations != []}
-            label={dgettext("chat", "PRIVATE MESSAGES")}
-            open={"pms" not in @collapsed_sections}
-            phx-click={@on_toggle_section}
-            phx-value-section="pms"
-            data-testid="conversations-section-pms"
+            label={dgettext("chat", "RECENT PRIVATE MESSAGES")}
+            section="pms"
+            count={length(@pm_conversations)}
+            open={section_open?(@collapsed_sections, "pms")}
+            on_toggle={@on_toggle_section}
+            testid="conversations-section-pms"
           >
             <.pm_item
               :for={pm <- @pm_conversations}
               nick={pm}
               active={pm == @active_pm}
-              unread={pm in @unread_pms}
-              unread_count={Map.get(@unread_counts, "pm:#{pm}", 0)}
-              flash={"pm:#{pm}" in @flash_channels}
-              muted={"pm:#{pm}" in @muted_channels}
-              nick_color={@nick_color_fn && @nick_color_fn.(pm)}
+              open_tab={member?(@open_pm_tabs, pm)}
+              unread={member?(@unread_pms, pm)}
+              unread_count={unread_count(@unread_counts, "pm:#{pm}")}
+              flash={member?(@flash_channels, "pm:#{pm}")}
+              muted={member?(@muted_channels, "pm:#{pm}")}
+              nick_color={nick_color(assigns, pm)}
               p2p_session={p2p_session_for_pm(assigns, pm)}
               on_click={@on_pm_click}
             />
 
-            <.list_end_marker
-              :if={@pm_conversations_truncated}
-              variant={:more}
-              testid="conversations-pms-truncated"
-            />
-          </.tree_view_group>
+            <li :if={@pm_conversations_truncated}>
+              <.list_end_marker
+                variant={:more}
+                testid="conversations-pms-truncated"
+              />
+            </li>
+          </.conversation_section>
 
-          <%!-- Popular Channels --%>
-          <.tree_view_group
+          <.conversation_section
+            :if={@autojoin_entries != []}
+            label={dgettext("chat", "AUTO-JOIN")}
+            section="autojoin"
+            count={length(@autojoin_entries)}
+            open={section_open?(@collapsed_sections, "autojoin")}
+            on_toggle={@on_toggle_section}
+            testid="conversations-section-autojoin"
+          >
+            <.autojoin_item
+              :for={entry <- @autojoin_entries}
+              entry={entry}
+              joined={member?(@channels, entry_channel_name(entry))}
+              on_open={@on_autojoin_open}
+            />
+          </.conversation_section>
+
+          <.conversation_section
+            :if={@popular_section_visible}
             label={dgettext("chat", "POPULAR CHANNELS")}
-            open={"popular" not in @collapsed_sections}
-            phx-click={@on_toggle_section}
-            phx-value-section="popular"
-            data-testid="conversations-section-popular"
+            section="popular"
+            count={@popular_section_count}
+            open={section_open?(@collapsed_sections, "popular")}
+            on_toggle={@on_toggle_section}
+            testid="conversations-section-popular"
           >
             <.popular_item
               :for={ch <- @popular_channels}
               channel={ch}
               on_join={@on_join_popular}
             />
-            <div class="px-retro-4 py-retro-2">
+
+            <li :if={@on_browse_channels} class="chat-conversations-browse-row">
               <.button
-                :if={@on_browse_channels}
-                variant="link"
+                type="button"
+                variant="ghost"
                 size="sm"
-                class="gap-retro-4 p-0 h-auto"
+                class="chat-conversations-browse-button"
                 phx-click={@on_browse_channels}
                 data-testid="conversations-browse-all"
               >
-                <:icon><Icons.icon_dialog_channel_list class="w-3 h-3" /></:icon>
+                <:icon><Icons.icon_dialog_channel_list class="w-3.5 h-3.5" /></:icon>
                 {dgettext("chat", "Browse All Channels...")}
               </.button>
-            </div>
-          </.tree_view_group>
+            </li>
+          </.conversation_section>
         <% end %>
-      </.tree_view>
+      </div>
     </div>
     """
   end
 
-  # ── Channel Item ───────────────────────────────────────
+  attr :label, :string, required: true
+  attr :section, :string, required: true
+  attr :count, :integer, default: nil
+  attr :open, :boolean, default: true
+  attr :on_toggle, :any, default: nil
+  attr :testid, :string, required: true
+  slot :inner_block, required: true
+
+  defp conversation_section(assigns) do
+    ~H"""
+    <section
+      class={[
+        "chat-conversations-section",
+        @section == "alerts" && "chat-conversations-section--alerts",
+        @section == "autojoin" && "chat-conversations-section--autojoin",
+        @section == "popular" && "chat-conversations-section--popular"
+      ]}
+      data-testid={@testid}
+    >
+      <button
+        type="button"
+        class="chat-conversations-section__trigger"
+        phx-click={@on_toggle}
+        phx-value-section={@section}
+        aria-expanded={to_string(@open)}
+      >
+        <span class="chat-conversations-section__toggle">
+          {if @open, do: "-", else: "+"}
+        </span>
+        <span class="chat-conversations-section__label">{@label}</span>
+        <span
+          :if={!is_nil(@count)}
+          class="chat-conversations-section__count"
+        >
+          {@count}
+        </span>
+      </button>
+
+      <ul :if={@open} class="chat-conversations-section__list" role="list">
+        {render_slot(@inner_block)}
+      </ul>
+    </section>
+    """
+  end
 
   attr :name, :string, required: true
   attr :active, :boolean, default: false
@@ -253,12 +402,25 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   attr :user_count, :integer, default: nil
   attr :on_click, :any, default: nil
   attr :on_dblclick, :any, default: nil
+  attr :testid, :string, default: nil
+  attr :unread_badge_testid, :string, default: nil
+  attr :unread_dot_testid, :string, default: nil
+  attr :activity, :boolean, default: false
 
   defp channel_item(assigns) do
+    assigns =
+      assign(assigns,
+        testid: assigns.testid || "channel-#{assigns.name}",
+        unread_badge_testid:
+          assigns.unread_badge_testid || "channel-unread-badge-#{assigns.name}",
+        unread_dot_testid: assigns.unread_dot_testid || "channel-unread-dot-#{assigns.name}"
+      )
+
     ~H"""
-    <.tree_view_item
-      active={@active}
+    <li
       class={[
+        row_classes(@active),
+        @activity && "chat-conversations-row--activity",
         @unread && !@active && "font-bold",
         @highlight && !@active && "text-error",
         @flash && "animate-pulse",
@@ -271,19 +433,21 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
       data-muted={to_string(@muted)}
       data-unread={to_string(@unread)}
       data-group-call-active={to_string(@group_call_active)}
-      data-testid={"channel-#{@name}"}
+      data-testid={@testid}
+      tabindex="0"
+      aria-current={if @active, do: "page"}
     >
-      <:icon>
-        <span
-          :if={@disconnected}
-          class="text-warning-alt text-[10px]"
-          title={dgettext("chat", "Disconnected")}
-        >
-          ⚡
+      <span class={status_bar_classes(@active, @highlight, @unread)} aria-hidden="true"></span>
+      <span class="chat-conversations-row__icon">
+        <span :if={@disconnected} title={dgettext("chat", "Disconnected")}>
+          <Icons.icon_warning class="w-3 h-3 text-warning-alt" />
         </span>
         <Icons.icon_tab_channel :if={!@disconnected} class="w-3 h-3" />
-      </:icon>
-      <span class="flex-1 truncate">{@name}</span>
+      </span>
+      <span class="chat-conversations-row__label">{@name}</span>
+      <span :if={@muted} class="shrink-0" title={dgettext("chat", "Muted")}>
+        <Icons.icon_mute class="w-3 h-3" />
+      </span>
       <span
         :if={@group_call_active}
         class="shrink-0"
@@ -296,33 +460,29 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
       </span>
       <span
         :if={@user_count}
-        class="text-[10px] text-muted-foreground shrink-0"
+        class="chat-conversations-row__count"
       >
         ({@user_count})
       </span>
       <span
         :if={@unread && !@active && @unread_count > 0}
-        class={[
-          "text-[10px] font-bold rounded-full px-1 min-w-[16px] text-center shrink-0",
-          if(@highlight, do: "bg-error text-white", else: "bg-link text-white")
-        ]}
-        data-testid={"channel-unread-badge-#{@name}"}
+        class={unread_badge_classes(@highlight)}
+        data-testid={@unread_badge_testid}
       >
-        {if @unread_count > 99, do: "99+", else: @unread_count}
+        {format_unread_count(@unread_count)}
       </span>
       <span
         :if={@unread && !@active && @unread_count == 0}
-        class="w-2 h-2 rounded-full bg-link shrink-0"
-        data-testid={"channel-unread-dot-#{@name}"}
+        class="w-2 h-2 bg-link shrink-0"
+        data-testid={@unread_dot_testid}
       />
-    </.tree_view_item>
+    </li>
     """
   end
 
-  # ── PM Item ────────────────────────────────────────────
-
   attr :nick, :string, required: true
   attr :active, :boolean, default: false
+  attr :open_tab, :boolean, default: false
   attr :unread, :boolean, default: false
   attr :unread_count, :integer, default: 0
   attr :flash, :boolean, default: false
@@ -330,12 +490,24 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   attr :nick_color, :string, default: nil
   attr :p2p_session, :map, default: nil
   attr :on_click, :any, default: nil
+  attr :testid, :string, default: nil
+  attr :unread_badge_testid, :string, default: nil
+  attr :unread_dot_testid, :string, default: nil
+  attr :activity, :boolean, default: false
 
   defp pm_item(assigns) do
+    assigns =
+      assign(assigns,
+        testid: assigns.testid || "pm-#{assigns.nick}",
+        unread_badge_testid: assigns.unread_badge_testid || "pm-unread-badge-#{assigns.nick}",
+        unread_dot_testid: assigns.unread_dot_testid || "pm-unread-dot-#{assigns.nick}"
+      )
+
     ~H"""
-    <.tree_view_item
-      active={@active}
+    <li
       class={[
+        row_classes(@active),
+        @activity && "chat-conversations-row--activity",
         @unread && !@active && "font-bold italic",
         @flash && "animate-pulse",
         @muted && "opacity-50"
@@ -345,10 +517,25 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
       data-nick={@nick}
       data-muted={to_string(@muted)}
       data-unread={to_string(@unread)}
-      data-testid={"pm-#{@nick}"}
+      data-testid={@testid}
+      tabindex="0"
+      aria-current={if @active, do: "page"}
     >
-      <:icon><Icons.icon_tab_pm class="w-3 h-3" /></:icon>
-      <span class={["flex-1 truncate", !@active && @nick_color]}>{@nick}</span>
+      <span class={status_bar_classes(@active, false, @unread)} aria-hidden="true"></span>
+      <span class="chat-conversations-row__icon">
+        <Icons.icon_tab_pm class="w-3 h-3" />
+      </span>
+      <span class={["chat-conversations-row__label", !@active && @nick_color]}>{@nick}</span>
+      <span
+        :if={@open_tab}
+        class="chat-conversations-chip chat-conversations-chip--tab"
+        data-testid={"pm-open-state-#{@nick}"}
+      >
+        {dgettext("chat", "tab")}
+      </span>
+      <span :if={@muted} class="shrink-0" title={dgettext("chat", "Muted")}>
+        <Icons.icon_mute class="w-3 h-3" />
+      </span>
       <span :if={@p2p_session} class="shrink-0">
         <.p2p_peer_glyph
           peer={@nick}
@@ -358,31 +545,88 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
       </span>
       <span
         :if={@unread && !@active && @unread_count > 0}
-        class="text-[10px] font-bold bg-link text-white rounded-full px-1 min-w-[16px] text-center shrink-0"
-        data-testid={"pm-unread-badge-#{@nick}"}
+        class="chat-conversations-unread-badge"
+        data-testid={@unread_badge_testid}
       >
-        {if @unread_count > 99, do: "99+", else: @unread_count}
+        {format_unread_count(@unread_count)}
       </span>
       <span
         :if={@unread && !@active && @unread_count == 0}
-        class="w-2 h-2 rounded-full bg-link shrink-0"
-        data-testid={"pm-unread-dot-#{@nick}"}
+        class="w-2 h-2 bg-link shrink-0"
+        data-testid={@unread_dot_testid}
       />
-    </.tree_view_item>
+    </li>
     """
   end
 
-  # ── Popular Item ───────────────────────────────────────
+  attr :entry, :map, required: true
+  attr :joined, :boolean, default: false
+  attr :on_open, :any, default: nil
+
+  defp autojoin_item(assigns) do
+    assigns =
+      assign(assigns,
+        channel_name: entry_channel_name(assigns.entry),
+        has_key: present?(value(assigns.entry, :channel_key))
+      )
+
+    ~H"""
+    <li
+      class={row_classes(false, false)}
+      data-autojoin-channel={@channel_name}
+      data-testid={"autojoin-#{@channel_name}"}
+    >
+      <span class={autojoin_signal_classes(@joined, @has_key)} aria-hidden="true"></span>
+      <span class="chat-conversations-row__icon">
+        <Icons.icon_dialog_autojoin class="w-3 h-3" />
+      </span>
+      <span class="chat-conversations-row__label">{@channel_name}</span>
+      <span
+        :if={@joined}
+        class="chat-conversations-chip chat-conversations-chip--open"
+      >
+        {dgettext("chat", "open")}
+      </span>
+      <span
+        :if={@has_key}
+        class="chat-conversations-chip chat-conversations-chip--key"
+      >
+        +key
+      </span>
+      <.button
+        :if={@on_open}
+        type="button"
+        variant="ghost"
+        size="icon"
+        class="ml-1 shrink-0 w-4 h-4 min-h-0"
+        phx-click={@on_open}
+        title={dgettext("chat", "Edit auto-join channels")}
+        data-testid={"autojoin-open-#{@channel_name}"}
+      >
+        <:icon><Icons.icon_btn_autojoin class="w-3 h-3" /></:icon>
+      </.button>
+    </li>
+    """
+  end
 
   attr :channel, :map, required: true, doc: "Map with :name and :user_count"
   attr :on_join, :any, default: nil
 
   defp popular_item(assigns) do
+    assigns =
+      assign(assigns,
+        channel_name: value(assigns.channel, :name),
+        user_count: value(assigns.channel, :user_count)
+      )
+
     ~H"""
-    <.tree_view_item data-testid={"popular-#{@channel.name}"}>
-      <:icon><Icons.icon_tab_channel class="w-3 h-3" /></:icon>
-      <span class="flex-1 truncate">{@channel.name}</span>
-      <span class="text-[10px] text-muted-foreground">({@channel.user_count})</span>
+    <li class={row_classes(false, false)} data-testid={"popular-#{@channel_name}"}>
+      <span class={status_bar_classes(false, false, false)} aria-hidden="true"></span>
+      <span class="chat-conversations-row__icon">
+        <Icons.icon_tab_channel class="w-3 h-3" />
+      </span>
+      <span class="chat-conversations-row__label">{@channel_name}</span>
+      <span class="chat-conversations-row__count">({@user_count})</span>
       <.button
         :if={@on_join}
         type="button"
@@ -390,15 +634,149 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
         size="icon"
         class="ml-1 shrink-0 w-4 h-4 min-h-0"
         phx-click={@on_join}
-        phx-value-channel={@channel.name}
-        title={dgettext("chat", "Join %{channel}", channel: @channel.name)}
-        data-testid={"join-#{@channel.name}"}
+        phx-value-channel={@channel_name}
+        title={dgettext("chat", "Join %{channel}", channel: @channel_name)}
+        data-testid={"join-#{@channel_name}"}
       >
         <:icon><Icons.icon_btn_add class="w-3 h-3" /></:icon>
       </.button>
-    </.tree_view_item>
+    </li>
     """
   end
+
+  defp row_classes(active, interactive \\ true) do
+    [
+      "chat-conversations-row",
+      if(interactive,
+        do: "chat-conversations-row--interactive",
+        else: "chat-conversations-row--static"
+      ),
+      active && "chat-conversations-row--active"
+    ]
+  end
+
+  defp status_bar_classes(active, highlight, unread) do
+    [
+      "chat-conversations-row__signal",
+      cond do
+        active -> "chat-conversations-row__signal--active"
+        highlight -> "chat-conversations-row__signal--highlight"
+        unread -> "chat-conversations-row__signal--unread"
+        true -> "chat-conversations-row__signal--idle"
+      end
+    ]
+  end
+
+  defp autojoin_signal_classes(joined, has_key) do
+    [
+      "chat-conversations-row__signal",
+      cond do
+        joined -> "chat-conversations-row__signal--autojoin-open"
+        has_key -> "chat-conversations-row__signal--autojoin-key"
+        true -> "chat-conversations-row__signal--autojoin-saved"
+      end
+    ]
+  end
+
+  defp unread_badge_classes(highlight) do
+    [
+      "chat-conversations-unread-badge",
+      highlight && "chat-conversations-unread-badge--highlight"
+    ]
+  end
+
+  attr :label, :string, required: true
+  attr :short_label, :string, required: true
+  attr :count, :integer, required: true
+  attr :icon, :atom, required: true
+  attr :testid, :string, required: true
+
+  defp conversation_stat(assigns) do
+    ~H"""
+    <span class="chat-conversations-stat" title={@label} data-testid={@testid}>
+      <.stat_icon icon={@icon} />
+      <span class="chat-conversations-stat__value">{@count}</span>
+      <span class="chat-conversations-stat__label">{@short_label}</span>
+    </span>
+    """
+  end
+
+  attr :icon, :atom, required: true
+
+  defp stat_icon(%{icon: :channels} = assigns) do
+    ~H"""
+    <Icons.icon_tab_channel class="h-3 w-3" />
+    """
+  end
+
+  defp stat_icon(%{icon: :pms} = assigns) do
+    ~H"""
+    <Icons.icon_tab_pm class="h-3 w-3" />
+    """
+  end
+
+  defp stat_icon(%{icon: :autojoin} = assigns) do
+    ~H"""
+    <Icons.icon_dialog_autojoin class="h-3 w-3" />
+    """
+  end
+
+  defp activity_channels(assigns) do
+    Enum.filter(assigns.channels, fn channel ->
+      unread_count(assigns.unread_counts, channel) > 0 or
+        member?(assigns.unread_channels, channel) or
+        member?(assigns.highlight_channels, channel) or
+        member?(assigns.flash_channels, channel)
+    end)
+  end
+
+  defp activity_pms(assigns) do
+    Enum.filter(assigns.pm_conversations, fn nick ->
+      key = "pm:#{nick}"
+
+      unread_count(assigns.unread_counts, key) > 0 or
+        member?(assigns.unread_pms, nick) or
+        member?(assigns.flash_channels, key)
+    end)
+  end
+
+  defp has_conversations_content?(assigns) do
+    assigns.channels != [] or assigns.pm_conversations != [] or assigns.autojoin_entries != [] or
+      assigns.popular_channels != [] or present?(assigns.on_browse_channels)
+  end
+
+  defp popular_section_visible?(assigns) do
+    assigns.popular_channels != [] or present?(assigns.on_browse_channels)
+  end
+
+  defp popular_section_count([]), do: nil
+  defp popular_section_count(channels), do: length(channels)
+
+  defp section_open?(collapsed_sections, section) do
+    not member?(collapsed_sections, section)
+  end
+
+  defp member?(%MapSet{} = values, value), do: MapSet.member?(values, value)
+  defp member?(values, value) when is_list(values), do: value in values
+  defp member?(_values, _value), do: false
+
+  defp unread_count(unread_counts, key) when is_map(unread_counts) do
+    Map.get(unread_counts, key, 0)
+  end
+
+  defp unread_count(_unread_counts, _key), do: 0
+
+  defp format_unread_count(count) when is_integer(count) and count > 99, do: "99+"
+  defp format_unread_count(count), do: count
+
+  defp nick_color(assigns, nick) do
+    if is_function(assigns.nick_color_fn, 1), do: assigns.nick_color_fn.(nick)
+  end
+
+  defp entry_channel_name(entry), do: value(entry, :channel_name)
+
+  defp present?(value) when is_binary(value), do: String.trim(value) != ""
+  defp present?(_value), do: false
 
   defp p2p_peer_key(assigns) do
     peer = assigns.p2p_peer || value(assigns.p2p_session, :peer_nick)

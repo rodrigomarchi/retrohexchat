@@ -3,15 +3,15 @@
 
   <.showcase_card
     title={dgettext("showcase", "Full Sidebar")}
-    description="Conversations sidebar with channels (multiple states), private messages, users, and popular channels. Includes user counts, disconnected indicator, role sorting, and SVG role badges."
+    description="IRC-native conversations sidebar with activity, joined channels, recent PMs, auto-join entries, and popular channel suggestions."
   >
-    <div class="max-w-[220px] shadow-retro-field bg-white">
+    <div class="max-w-[260px] shadow-retro-field bg-white">
       <.conversations
         id="demo-full"
         channels={["#lobby", "#help", "#random", "#dev", "#music"]}
         active_channel="#lobby"
         unread_channels={["#help", "#random"]}
-        unread_counts={%{"#help" => 3, "#random" => 15, "alice" => 2}}
+        unread_counts={%{"#help" => 3, "#random" => 15, "pm:alice" => 2}}
         highlight_channels={["#random"]}
         flash_channels={["#random"]}
         muted_channels={["#music"]}
@@ -20,8 +20,13 @@
           %{"#lobby" => 12, "#help" => 5, "#random" => 28, "#dev" => 3, "#music" => 8}
         }
         pm_conversations={["alice", "bob", "carol"]}
+        open_pm_tabs={["bob"]}
         active_pm="bob"
         unread_pms={["alice"]}
+        autojoin_entries={[
+          %{channel_name: "#lobby", channel_key: nil, position: 0},
+          %{channel_name: "#secret", channel_key: "demo-key", position: 1}
+        ]}
         popular_channels={[
           %{name: "#gaming", user_count: 45},
           %{name: "#sports", user_count: 22},
@@ -35,6 +40,7 @@
       active_channel="#lobby"
       unread_counts=&#123;%&#123;"#help" =&gt; 3&#125;&#125;
       channel_user_counts=&#123;%&#123;"#lobby" =&gt; 12&#125;&#125;
+      autojoin_entries=&#123;[%&#123;channel_name: "#lobby"&#125;]&#125;
       disconnected_channels=&#123;["#dev"]&#125;
       on_channel_click="switch_channel"
       on_close="toggle_conversations"
@@ -44,18 +50,18 @@
 
   <.showcase_card
     title={dgettext("showcase", "Empty State")}
-    description="When no channels or PMs are available. Shows 'Browse channels' button when on_browse_channels is set."
+    description="When no channels, PMs, auto-join entries, or discovery rows are available. Shows 'Browse channels' when on_browse_channels is set."
   >
-    <div class="max-w-[220px] shadow-retro-field bg-white">
+    <div class="max-w-[260px] shadow-retro-field bg-white">
       <.conversations id="demo-empty" on_browse_channels="open_channel_list" />
     </div>
   </.showcase_card>
 
   <.showcase_card
     title={dgettext("showcase", "Channels Only")}
-    description="Sidebar with channels but no private messages or popular channels."
+    description="Sidebar with joined channels but no PMs, auto-join entries, or discovery rows."
   >
-    <div class="max-w-[220px] shadow-retro-field bg-white">
+    <div class="max-w-[260px] shadow-retro-field bg-white">
       <.conversations
         id="demo-channels"
         channels={["#general", "#announcements"]}
@@ -67,9 +73,9 @@
 
   <.showcase_card
     title={dgettext("showcase", "Channel States")}
-    description="Visual states: normal, active (selected bg), unread (bold + badge), highlight (red + bold), muted (50% opacity), disconnected (⚡), flash (pulse animation)."
+    description="Visual states: normal, active, unread, highlight, muted, disconnected, and flash."
   >
-    <div class="max-w-[220px] shadow-retro-field bg-white">
+    <div class="max-w-[260px] shadow-retro-field bg-white">
       <.conversations
         id="demo-states"
         channels={["#normal", "#active", "#unread", "#highlight", "#muted", "#disconnected"]}
