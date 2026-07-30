@@ -42,7 +42,7 @@ defmodule RetroHexChatWeb.Components.UI.ConversationToolbarActions do
         label={dgettext("chat", "Show conversations")}
         testid="conversation-toolbar-conversations"
       >
-        <Icons.icon_btn_toggle_conversations class="h-4 w-4" />
+        <Icons.icon_toolbar_toggle_conversations class="h-4 w-4" />
       </.action_button>
       <.action_button
         event="toggle_nicklist"
@@ -50,7 +50,7 @@ defmodule RetroHexChatWeb.Components.UI.ConversationToolbarActions do
         label={dgettext("chat", "Show nicklist")}
         testid="conversation-toolbar-nicklist"
       >
-        <Icons.icon_btn_toggle_nicklist class="h-4 w-4" />
+        <Icons.icon_toolbar_toggle_nicklist class="h-4 w-4" />
       </.action_button>
       <.action_button
         event="toggle_search"
@@ -58,7 +58,7 @@ defmodule RetroHexChatWeb.Components.UI.ConversationToolbarActions do
         label={dgettext("chat", "Find in chat")}
         testid="conversation-toolbar-search"
       >
-        <Icons.icon_btn_find class="h-4 w-4" />
+        <Icons.icon_toolbar_find class="h-4 w-4" />
       </.action_button>
 
       <span
@@ -75,7 +75,7 @@ defmodule RetroHexChatWeb.Components.UI.ConversationToolbarActions do
         label={dgettext("chat", "Channel settings")}
         testid="conversation-toolbar-channel-central"
       >
-        <Icons.icon_btn_channel_central class="h-4 w-4" />
+        <Icons.icon_toolbar_channel_central class="h-4 w-4" />
       </.action_button>
 
       <.action_button

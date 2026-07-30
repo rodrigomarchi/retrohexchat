@@ -29,7 +29,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelViewSwitcher do
         label={dgettext("chat", "Chat")}
         title={dgettext("chat", "Chat")}
       >
-        <Icons.icon_chat class="h-3.5 w-3.5 shrink-0" />
+        <Icons.icon_toolbar_chat class="h-3.5 w-3.5 shrink-0" />
       </.view_button>
       <.view_button
         view={:space}
@@ -37,7 +37,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelViewSwitcher do
         label={dgettext("chat", "Space")}
         title={dgettext("chat", "Space")}
       >
-        <Icons.icon_community class="h-3.5 w-3.5 shrink-0" />
+        <Icons.icon_toolbar_community class="h-3.5 w-3.5 shrink-0" />
       </.view_button>
       <.group_call_channel_entry
         :if={@active_channel && !@show_status_tab}

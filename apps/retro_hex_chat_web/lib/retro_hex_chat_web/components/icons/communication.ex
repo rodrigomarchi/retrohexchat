@@ -289,6 +289,87 @@ defmodule RetroHexChatWeb.Icons.Communication do
 
   attr :class, :string, default: nil
 
+  @spec icon_toolbar_p2p(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_toolbar_p2p(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
+      <path d="M5 9h10v15H5z M18 9h10v15H18z" fill="#000000" transform="translate(1 1)" />
+
+      <g stroke="#000000" stroke-linejoin="round">
+        <rect x="4" y="8" width="10" height="15" rx="1" fill="#c0c0c0" stroke-width="1.5" />
+        <rect x="18" y="8" width="10" height="15" rx="1" fill="#c0c0c0" stroke-width="1.5" />
+      </g>
+
+      <path d="M5 9h8 M19 9h8" stroke="#ffffff" stroke-width="1.5" opacity="0.85" />
+      <rect x="6" y="10" width="6" height="2" fill="#000080" />
+      <rect x="20" y="10" width="6" height="2" fill="#000080" />
+      <rect x="6" y="14" width="6" height="5" fill="#008080" stroke="#000000" stroke-width="1" />
+      <rect x="20" y="14" width="6" height="5" fill="#008080" stroke="#000000" stroke-width="1" />
+      <rect x="7" y="15" width="4" height="1" fill="#87ceeb" />
+      <rect x="21" y="15" width="4" height="1" fill="#87ceeb" />
+      <rect x="7" y="24" width="5" height="1" fill="#000000" />
+      <rect x="20" y="24" width="5" height="1" fill="#000000" />
+
+      <path d="M12 12h8v-2l5 4-5 4v-2h-8z" fill="#000000" transform="translate(1 1)" />
+      <path d="M12 11h8V9l5 4-5 4v-2h-8z" fill="#008000" stroke="#000000" stroke-width="1" />
+      <path d="M20 21h-8v2l-5-4 5-4v2h8z" fill="#000000" transform="translate(1 1)" />
+      <path d="M20 20h-8v2l-5-4 5-4v2h8z" fill="#ffd700" stroke="#000000" stroke-width="1" />
+      <rect x="14" y="12" width="4" height="1" fill="#00ff00" />
+      <rect x="14" y="19" width="4" height="1" fill="#ffffff" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_toolbar_conference(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_toolbar_conference(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
+      <path
+        d="M7 9h8 M17 9h8 M16 11v9 M11 20h10"
+        fill="none"
+        stroke="#000000"
+        stroke-width="4"
+        stroke-linecap="square"
+      />
+      <path
+        d="M7 8h8 M17 8h8 M16 10v9 M11 19h10"
+        fill="none"
+        stroke="#008000"
+        stroke-width="2"
+        stroke-linecap="square"
+      />
+
+      <rect x="12" y="10" width="9" height="14" fill="#000000" transform="translate(1 1)" />
+      <rect x="11" y="9" width="9" height="14" fill="#c0c0c0" stroke="#000000" stroke-width="1.5" />
+      <path d="M12 10h7 M12 10v12" stroke="#ffffff" stroke-width="1" opacity="0.85" />
+      <rect x="13" y="13" width="5" height="2" fill="#008000" stroke="#000000" stroke-width="1" />
+      <rect x="13" y="17" width="5" height="2" fill="#ffd700" stroke="#000000" stroke-width="1" />
+      <rect x="13" y="21" width="5" height="1" fill="#808080" />
+
+      <g>
+        <rect x="2" y="5" width="10" height="9" fill="#000000" transform="translate(1 1)" />
+        <rect x="1" y="4" width="10" height="9" fill="#c0c0c0" stroke="#000000" stroke-width="1.5" />
+        <rect x="3" y="6" width="6" height="2" fill="#000080" />
+        <rect x="3" y="9" width="6" height="2" fill="#008080" />
+
+        <rect x="21" y="5" width="10" height="9" fill="#000000" transform="translate(1 1)" />
+        <rect x="20" y="4" width="10" height="9" fill="#c0c0c0" stroke="#000000" stroke-width="1.5" />
+        <rect x="22" y="6" width="6" height="2" fill="#000080" />
+        <rect x="22" y="9" width="6" height="2" fill="#008080" />
+
+        <rect x="21" y="20" width="10" height="9" fill="#000000" transform="translate(1 1)" />
+        <rect x="20" y="19" width="10" height="9" fill="#c0c0c0" stroke="#000000" stroke-width="1.5" />
+        <rect x="22" y="21" width="6" height="2" fill="#000080" />
+        <rect x="22" y="24" width="6" height="2" fill="#008080" />
+      </g>
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
   @spec icon_chat(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_chat(assigns) do
     ~H"""
@@ -330,6 +411,49 @@ defmodule RetroHexChatWeb.Icons.Communication do
     <!-- Text Lines -->
       <line x1="12" y1="16" x2="22" y2="16" stroke="#000080" stroke-width="2" stroke-linecap="round" />
       <line x1="12" y1="20" x2="19" y2="20" stroke="#000080" stroke-width="2" stroke-linecap="round" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_toolbar_chat(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_toolbar_chat(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
+      <path
+        d="M4 4h18v12h-8l-6 6v-6H4z"
+        fill="#000000"
+        transform="translate(1 1)"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M4 4h18v12h-8l-6 6v-6H4z"
+        fill="#000080"
+        stroke="#000000"
+        stroke-width="1.5"
+        stroke-linejoin="round"
+      />
+      <path d="M5 5h16 M5 5v10" stroke="#ffffff" stroke-width="1.5" opacity="0.55" />
+      <rect x="8" y="8" width="10" height="2" fill="#ffffff" />
+      <rect x="8" y="12" width="7" height="2" fill="#ffffff" />
+
+      <path
+        d="M8 12h18v12h-8l-4 6c-1-1-1-3-1-6H8z"
+        fill="#000000"
+        transform="translate(1 1)"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M8 12h18v12h-8l-4 6c-1-1-1-3-1-6H8z"
+        fill="#ffffff"
+        stroke="#000000"
+        stroke-width="1.5"
+        stroke-linejoin="round"
+      />
+      <path d="M9 13h16 M9 13v10" stroke="#dfdfdf" stroke-width="1.5" />
+      <rect x="12" y="16" width="10" height="2" fill="#000080" />
+      <rect x="12" y="20" width="7" height="2" fill="#000080" />
     </svg>
     """
   end
@@ -959,6 +1083,27 @@ defmodule RetroHexChatWeb.Icons.Communication do
 
   attr :class, :string, default: nil
 
+  @spec icon_toolbar_toggle_conversations(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_toolbar_toggle_conversations(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
+      <rect x="5" y="4" width="23" height="24" fill="#000000" transform="translate(1 1)" />
+      <rect x="4" y="3" width="23" height="24" fill="#ffffff" stroke="#000000" stroke-width="1.5" />
+      <path d="M5 4h21 M5 4v22" stroke="#dfdfdf" stroke-width="1.5" />
+      <rect x="7" y="7" width="8" height="17" fill="#000080" stroke="#000000" stroke-width="1" />
+      <rect x="9" y="10" width="4" height="2" fill="#ffffff" />
+      <rect x="9" y="15" width="4" height="2" fill="#ffffff" />
+      <rect x="9" y="20" width="4" height="2" fill="#ffffff" />
+      <rect x="18" y="8" width="6" height="2" fill="#c0c0c0" />
+      <rect x="18" y="13" width="5" height="2" fill="#c0c0c0" />
+      <rect x="18" y="18" width="6" height="2" fill="#c0c0c0" />
+      <rect x="18" y="23" width="4" height="1.5" fill="#808080" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
   @spec icon_btn_toggle_nicklist(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_btn_toggle_nicklist(assigns) do
     ~H"""
@@ -973,6 +1118,27 @@ defmodule RetroHexChatWeb.Icons.Communication do
   end
 
   # -- Auto Respond --
+
+  attr :class, :string, default: nil
+
+  @spec icon_toolbar_toggle_nicklist(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_toolbar_toggle_nicklist(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
+      <rect x="5" y="4" width="23" height="24" fill="#000000" transform="translate(1 1)" />
+      <rect x="4" y="3" width="23" height="24" fill="#ffffff" stroke="#000000" stroke-width="1.5" />
+      <path d="M5 4h21 M5 4v22" stroke="#dfdfdf" stroke-width="1.5" />
+      <rect x="17" y="7" width="8" height="17" fill="#008000" stroke="#000000" stroke-width="1" />
+      <rect x="19" y="10" width="4" height="3" fill="#ffffff" />
+      <rect x="19" y="17" width="4" height="3" fill="#ffffff" />
+      <rect x="8" y="9" width="5" height="2" fill="#c0c0c0" />
+      <rect x="8" y="14" width="6" height="2" fill="#c0c0c0" />
+      <rect x="8" y="19" width="5" height="2" fill="#c0c0c0" />
+      <rect x="19" y="11" width="3" height="1" fill="#008000" opacity="0.35" />
+      <rect x="19" y="18" width="3" height="1" fill="#008000" opacity="0.35" />
+    </svg>
+    """
+  end
 
   attr :class, :string, default: nil
 
@@ -1029,6 +1195,40 @@ defmodule RetroHexChatWeb.Icons.Communication do
       <path d="M7 2h2v1h2v1h2v1h2v1H1v-1h2V5h2V4h2V3h2V2z" fill="#FF5555" />
       <!-- Chimney -->
       <rect x="11" y="2" width="2" height="3" fill="#FF5555" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_toolbar_channel_central(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_toolbar_channel_central(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
+      <rect x="6" y="13" width="20" height="15" fill="#000000" transform="translate(1 1)" />
+      <rect x="5" y="12" width="20" height="15" fill="#555555" stroke="#000000" stroke-width="1.5" />
+      <path d="M6 13h18 M6 13v13" stroke="#c0c0c0" stroke-width="1.5" />
+      <rect x="8" y="16" width="5" height="5" fill="#87ceeb" stroke="#000000" stroke-width="1" />
+      <rect x="17" y="16" width="5" height="5" fill="#87ceeb" stroke="#000000" stroke-width="1" />
+      <path d="M9 17h3 M18 17h3" stroke="#ffffff" stroke-width="1" />
+      <rect x="13" y="22" width="5" height="5" fill="#8b4513" stroke="#000000" stroke-width="1" />
+      <rect x="15" y="24" width="1" height="1" fill="#ffd700" />
+
+      <path
+        d="M2 13h3v-2h3V9h3V7h8v2h3v2h3v2h3v3H2z"
+        fill="#000000"
+        transform="translate(1 1)"
+      />
+      <path
+        d="M2 13h3v-2h3V9h3V7h8v2h3v2h3v2h3v2H2z"
+        fill="#ff5555"
+        stroke="#000000"
+        stroke-width="1.5"
+        stroke-linejoin="round"
+      />
+      <path d="M5 12h22" stroke="#ffaaaa" stroke-width="1.5" />
+      <rect x="22" y="5" width="4" height="8" fill="#000000" />
+      <rect x="23" y="4" width="4" height="8" fill="#ff5555" stroke="#000000" stroke-width="1" />
     </svg>
     """
   end

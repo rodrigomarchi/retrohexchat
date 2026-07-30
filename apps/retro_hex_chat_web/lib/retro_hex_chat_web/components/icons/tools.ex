@@ -430,6 +430,48 @@ defmodule RetroHexChatWeb.Icons.Tools do
     """
   end
 
+  attr :class, :string, default: nil
+
+  @spec icon_toolbar_find(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_toolbar_find(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
+      <rect x="5" y="4" width="15" height="19" rx="1" fill="#000000" transform="translate(1 1)" />
+      <rect
+        x="4"
+        y="3"
+        width="15"
+        height="19"
+        rx="1"
+        fill="#ffffff"
+        stroke="#000000"
+        stroke-width="1.5"
+      />
+      <path d="M5 4h13 M5 4v17" stroke="#dfdfdf" stroke-width="1.5" />
+      <rect x="7" y="7" width="8" height="2" fill="#000080" />
+      <rect x="7" y="11" width="6" height="2" fill="#808080" />
+      <rect x="7" y="15" width="8" height="2" fill="#808080" />
+
+      <line x1="20" y1="21" x2="29" y2="30" stroke="#000000" stroke-width="6" stroke-linecap="square" />
+      <line x1="19" y1="20" x2="28" y2="29" stroke="#8b4513" stroke-width="4" stroke-linecap="square" />
+      <line
+        x1="18"
+        y1="19"
+        x2="27"
+        y2="28"
+        stroke="#c68642"
+        stroke-width="1.5"
+        stroke-linecap="square"
+      />
+
+      <circle cx="16" cy="15" r="8" fill="#000000" transform="translate(1 1)" />
+      <circle cx="15" cy="14" r="8" fill="#87ceeb" stroke="#000000" stroke-width="2" />
+      <circle cx="15" cy="14" r="5" fill="#c0e8ff" stroke="#ffffff" stroke-width="1.5" opacity="0.85" />
+      <path d="M10 11c2-3 5-4 8-2" fill="none" stroke="#ffffff" stroke-width="1.5" opacity="0.9" />
+    </svg>
+    """
+  end
+
   # -- Toolbar: Settings --
 
   attr :class, :string, default: nil

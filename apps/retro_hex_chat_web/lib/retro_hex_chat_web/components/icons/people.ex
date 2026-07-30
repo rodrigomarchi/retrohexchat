@@ -80,6 +80,62 @@ defmodule RetroHexChatWeb.Icons.People do
 
   attr :class, :string, default: nil
 
+  @spec icon_toolbar_community(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_toolbar_community(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
+      <g>
+        <circle cx="10" cy="9" r="5" fill="#000000" transform="translate(1 1)" />
+        <path
+          d="M3 22c0-5 3-8 7-8s7 3 7 8v3H3z"
+          fill="#000000"
+          transform="translate(1 1)"
+        />
+        <circle cx="10" cy="9" r="5" fill="#000080" stroke="#000000" stroke-width="1.5" />
+        <path
+          d="M3 22c0-5 3-8 7-8s7 3 7 8v3H3z"
+          fill="#000080"
+          stroke="#000000"
+          stroke-width="1.5"
+        />
+        <path d="M6 20c1-3 2-4 5-5" fill="none" stroke="#ffffff" stroke-width="1.5" opacity="0.55" />
+      </g>
+
+      <g>
+        <circle cx="22" cy="9" r="5" fill="#000000" transform="translate(1 1)" />
+        <path
+          d="M15 22c0-5 3-8 7-8s7 3 7 8v3H15z"
+          fill="#000000"
+          transform="translate(1 1)"
+        />
+        <circle cx="22" cy="9" r="5" fill="#008080" stroke="#000000" stroke-width="1.5" />
+        <path
+          d="M15 22c0-5 3-8 7-8s7 3 7 8v3H15z"
+          fill="#008080"
+          stroke="#000000"
+          stroke-width="1.5"
+        />
+        <path d="M18 20c1-3 2-4 5-5" fill="none" stroke="#ffffff" stroke-width="1.5" opacity="0.55" />
+      </g>
+
+      <g>
+        <circle cx="16" cy="16" r="5" fill="#000000" transform="translate(1 1)" />
+        <path
+          d="M8 29c0-6 4-9 8-9s8 3 8 9z"
+          fill="#000000"
+          transform="translate(1 1)"
+        />
+        <circle cx="16" cy="16" r="5" fill="#c0c0c0" stroke="#000000" stroke-width="1.5" />
+        <path d="M8 29c0-6 4-9 8-9s8 3 8 9z" fill="#c0c0c0" stroke="#000000" stroke-width="1.5" />
+        <path d="M12 26c1-3 3-5 6-5" fill="none" stroke="#ffffff" stroke-width="1.5" opacity="0.85" />
+        <rect x="14" y="14" width="4" height="2" fill="#ffffff" opacity="0.65" />
+      </g>
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
   @spec icon_connect(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_connect(assigns) do
     ~H"""

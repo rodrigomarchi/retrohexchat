@@ -45,7 +45,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
         data-max-participants={active_value(@active, @max_participants)}
         data-started-at={active_value(@active, started_at_value(@started_at))}
       >
-        <Icons.icon_protocol_conference_compact class="h-3.5 w-3.5 shrink-0" />
+        <Icons.icon_toolbar_conference class="h-3.5 w-3.5 shrink-0" />
         <span
           :if={@active}
           class={[

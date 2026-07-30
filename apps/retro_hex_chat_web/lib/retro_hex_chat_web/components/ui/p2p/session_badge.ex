@@ -51,7 +51,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
         data-p2p-status={Atom.to_string(@status)}
         data-p2p-facets={facets_value(@facets)}
       >
-        <Icons.icon_protocol_p2p_compact class="h-3.5 w-3.5 shrink-0" />
+        <Icons.icon_toolbar_p2p class="h-3.5 w-3.5 shrink-0" />
         <span
           class={[
             "absolute bottom-0.5 right-0.5 h-1.5 w-1.5 border border-border",

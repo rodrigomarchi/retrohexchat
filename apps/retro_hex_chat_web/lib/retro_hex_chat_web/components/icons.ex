@@ -104,6 +104,7 @@ defmodule RetroHexChatWeb.Icons do
 
   # ── People ──────────────────────────────────────────────
   defdelegate icon_community(assigns), to: RetroHexChatWeb.Icons.People
+  defdelegate icon_toolbar_community(assigns), to: RetroHexChatWeb.Icons.People
   defdelegate icon_connect(assigns), to: RetroHexChatWeb.Icons.People
   defdelegate icon_robot(assigns), to: RetroHexChatWeb.Icons.People
   defdelegate icon_dialog_address_book(assigns), to: RetroHexChatWeb.Icons.People
@@ -128,7 +129,10 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_protocol_conference(assigns), to: RetroHexChatWeb.Icons.Communication
   defdelegate icon_protocol_p2p_compact(assigns), to: RetroHexChatWeb.Icons.Communication
   defdelegate icon_protocol_conference_compact(assigns), to: RetroHexChatWeb.Icons.Communication
+  defdelegate icon_toolbar_p2p(assigns), to: RetroHexChatWeb.Icons.Communication
+  defdelegate icon_toolbar_conference(assigns), to: RetroHexChatWeb.Icons.Communication
   defdelegate icon_chat(assigns), to: RetroHexChatWeb.Icons.Communication
+  defdelegate icon_toolbar_chat(assigns), to: RetroHexChatWeb.Icons.Communication
   defdelegate icon_channels(assigns), to: RetroHexChatWeb.Icons.Communication
   defdelegate icon_globe(assigns), to: RetroHexChatWeb.Icons.Communication
   defdelegate icon_websocket(assigns), to: RetroHexChatWeb.Icons.Communication
@@ -149,9 +153,12 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_btn_channel_list(assigns), to: RetroHexChatWeb.Icons.Communication
   defdelegate icon_btn_toggle_conversations(assigns), to: RetroHexChatWeb.Icons.Communication
   defdelegate icon_btn_toggle_nicklist(assigns), to: RetroHexChatWeb.Icons.Communication
+  defdelegate icon_toolbar_toggle_conversations(assigns), to: RetroHexChatWeb.Icons.Communication
+  defdelegate icon_toolbar_toggle_nicklist(assigns), to: RetroHexChatWeb.Icons.Communication
   defdelegate icon_btn_auto_respond(assigns), to: RetroHexChatWeb.Icons.Communication
   defdelegate icon_btn_url_catcher(assigns), to: RetroHexChatWeb.Icons.Communication
   defdelegate icon_btn_channel_central(assigns), to: RetroHexChatWeb.Icons.Communication
+  defdelegate icon_toolbar_channel_central(assigns), to: RetroHexChatWeb.Icons.Communication
 
   # ── Media ───────────────────────────────────────────────
   defdelegate icon_conference(assigns), to: RetroHexChatWeb.Icons.Media
@@ -327,6 +334,7 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_group_view(assigns), to: RetroHexChatWeb.Icons.Tools
   defdelegate icon_group_tools(assigns), to: RetroHexChatWeb.Icons.Tools
   defdelegate icon_btn_find(assigns), to: RetroHexChatWeb.Icons.Tools
+  defdelegate icon_toolbar_find(assigns), to: RetroHexChatWeb.Icons.Tools
   defdelegate icon_btn_settings(assigns), to: RetroHexChatWeb.Icons.Tools
   defdelegate icon_btn_address_book(assigns), to: RetroHexChatWeb.Icons.Tools
   defdelegate icon_btn_alias_editor(assigns), to: RetroHexChatWeb.Icons.Tools
