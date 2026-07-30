@@ -35,7 +35,7 @@ defmodule RetroHexChatWeb.Components.UI.MediaSession.IconButton do
   @spec media_session_icon_button_class(boolean(), String.t(), any()) :: String.t()
   def media_session_icon_button_class(active?, tone, extra \\ nil) do
     classes([
-      "inline-flex h-8 w-8 min-w-8 cursor-pointer items-center justify-center border border-transparent bg-surface p-0 shadow-retro-raised",
+      "media-session-icon-button inline-flex cursor-pointer items-center justify-center border border-transparent bg-surface p-0 shadow-retro-raised",
       "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground",
       active? && "bg-muted shadow-retro-sunken",
       tone == "danger" && "bg-destructive text-destructive-foreground",
