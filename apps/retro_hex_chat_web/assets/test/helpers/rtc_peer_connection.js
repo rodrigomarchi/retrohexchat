@@ -169,6 +169,7 @@ export class FakeRTCPeerConnection {
 
   async setLocalDescription(desc) {
     const description = desc || (await this.#implicitLocalDescription());
+    await this.#enqueue();
 
     if (description.type === "offer") {
       this.#assertState("stable", description.type, "setLocalDescription");
@@ -183,6 +184,8 @@ export class FakeRTCPeerConnection {
   }
 
   async setRemoteDescription(description) {
+    await this.#enqueue();
+
     if (description.type === "offer") {
       if (this.signalingState !== "stable" && this.signalingState !== "have-remote-offer") {
         throw wrongState("offer", this.signalingState);
@@ -203,6 +206,15 @@ export class FakeRTCPeerConnection {
   }
 
   // --- Rule enforcement ---
+
+  // Descriptions go through the connection's operation queue: a call only
+  // validates state when its turn comes, not when it is made. Two descriptions
+  // handed over in the same tick therefore both see the pre-transition state,
+  // which is how a caller that checks signalingState first still gets to apply
+  // the second one and take the throw.
+  async #enqueue() {
+    await Promise.resolve();
+  }
 
   async #implicitLocalDescription() {
     return this.remoteDescription?.type === "offer"

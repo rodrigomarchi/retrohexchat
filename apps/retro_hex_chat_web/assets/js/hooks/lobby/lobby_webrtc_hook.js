@@ -80,6 +80,7 @@ const LobbyWebRTCHook = {
     this.signalReplayTimer = null;
     this.signalReplayAttempts = 0;
     this.signalBackoffTimer = null;
+    this.signalQueue = Promise.resolve();
     this.renegotiationRetryTimer = null;
     this.renegotiationRetryAttempts = 0;
     this.renegotiationRetryPayload = null;
@@ -186,7 +187,7 @@ const LobbyWebRTCHook = {
       if (this._pendingDescription) {
         const pending = this._pendingDescription;
         this._pendingDescription = null;
-        await this._handleRemoteDescription(pending);
+        await this._handleSignal(pending);
       }
     } catch (error) {
       this._failConnection("answer", error);
@@ -229,6 +230,17 @@ const LobbyWebRTCHook = {
   },
 
   async _handleSignal(data) {
+    this.signalQueue = this.signalQueue.catch(() => {}).then(() => this._applySignal(data));
+
+    return this.signalQueue;
+  },
+
+  // The connection validates a description when its turn in the operation queue
+  // comes, not when it is handed over. Two signals arriving in the same tick
+  // therefore both pass a state check made at call time, and the second one
+  // throws — so serialise here and let each be judged against the state its
+  // predecessor actually left behind.
+  async _applySignal(data) {
     if (data.type === "ice-candidate") {
       await this._handleRemoteCandidate(data);
     } else {
@@ -303,10 +315,7 @@ const LobbyWebRTCHook = {
     // replay aimed at the peer; applying it desyncs the state machine and every
     // later description for this round becomes unapplicable.
     if (!this._isOwnDescription(data.type)) {
-      log.warn("[Lobby] Ignoring remote description meant for the peer", {
-        type: data.type,
-        role: this.role,
-      });
+      log.warn(`[Lobby] Ignoring ${data.type} meant for the peer (role=${this.role})`);
       return;
     }
 
@@ -888,10 +897,7 @@ const LobbyWebRTCHook = {
         : state === "have-local-offer";
 
     if (!applicable) {
-      log.warn("[Lobby] Ignoring remote description for the current state", {
-        type,
-        signalingState: state,
-      });
+      log.warn(`[Lobby] Ignoring ${type} in signalingState=${state}`);
     }
 
     return applicable;

@@ -109,6 +109,33 @@ describe("LobbyWebRTCHook negotiation state", () => {
     expect(recoveryAttempts(hook)).toHaveLength(0);
   });
 
+  it("drops a duplicate answer that arrives in the same tick as the first", async () => {
+    const hook = mountHook(LobbyWebRTCHook);
+    simulateEvent(hook, "lobby_start_offer", { ice_servers: [], turn_only: false });
+    await flush();
+
+    hook.pc.addTrack({ kind: "audio" });
+    await hook._maybeOffer(["audio"]);
+    await flush();
+
+    const offer = signalsSent(hook).at(-1);
+    const answer = {
+      type: "answer",
+      sdp: sdpFor(["audio"]),
+      epoch: offer.epoch,
+      offer_id: offer.offer_id,
+    };
+
+    // Both are handed over before either reaches the front of the connection's
+    // operation queue, so a state check made at call time passes twice — and
+    // the identity dedup has not recorded the first one yet either.
+    await Promise.all([hook._handleSignal(answer), hook._handleSignal({ ...answer })]);
+    await flush();
+
+    expect(hook.pc.signalingState).toBe("stable");
+    expect(recoveryAttempts(hook)).toHaveLength(0);
+  });
+
   it("drops an answer aimed at the peer that owns the offer", async () => {
     const { hook } = await settledAnswerer();
 
