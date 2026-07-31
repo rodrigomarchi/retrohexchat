@@ -13,7 +13,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Channels.Server
-  alias RetroHexChat.Chat.{Queries, Service}
+  alias RetroHexChat.Chat.{Queries, Service, UnreadTracker}
   alias RetroHexChat.Page
   alias RetroHexChat.Presence.NotifyList
   alias RetroHexChatWeb.ChatLive.Components.Composer
@@ -67,9 +67,20 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
       |> Session.add_pm_conversation(target)
       |> Session.set_active_pm(target)
 
+    # Bringing the conversation on screen reads it, exactly as switching to its
+    # tab does — every entry point here (/query, nick double-click, hover card,
+    # context menus, user lookup) would otherwise leave a stale unread badge on
+    # the conversation being read.
+    key = "pm:#{target}"
+
     socket
     |> open_pm_tab(target)
-    |> assign(session: new_session, show_status_tab: false)
+    |> assign(
+      session: new_session,
+      show_status_tab: false,
+      unread_counts: UnreadTracker.reset(socket.assigns.unread_counts, key),
+      flash_channels: MapSet.delete(socket.assigns.flash_channels, key)
+    )
     |> tap(fn _ -> send_update(Composer, id: Composer.id(), reset_input: true) end)
     |> load_pm_messages_with_pagination(target)
     |> SessionHelpers.push_reconnect_state()

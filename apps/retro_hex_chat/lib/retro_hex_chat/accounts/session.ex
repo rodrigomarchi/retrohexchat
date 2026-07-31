@@ -156,16 +156,6 @@ defmodule RetroHexChat.Accounts.Session do
     end
   end
 
-  @spec remove_pm_conversation(t(), String.t()) :: t()
-  def remove_pm_conversation(
-        %__MODULE__{pm_conversations: pms, active_pm: active} = session,
-        nickname
-      ) do
-    new_pms = List.delete(pms, nickname)
-    new_active = if active == nickname, do: nil, else: active
-    %{session | pm_conversations: new_pms, active_pm: new_active}
-  end
-
   @spec rename_pm_conversation(t(), String.t(), String.t()) :: t()
   def rename_pm_conversation(
         %__MODULE__{pm_conversations: pms, active_pm: active} = session,

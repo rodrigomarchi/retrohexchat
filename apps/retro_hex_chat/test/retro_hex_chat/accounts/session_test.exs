@@ -239,39 +239,6 @@ defmodule RetroHexChat.Accounts.SessionTest do
     end
   end
 
-  describe "remove_pm_conversation/2" do
-    test "removes a PM conversation" do
-      session =
-        Session.new("Alice")
-        |> Session.add_pm_conversation("Alice")
-        |> Session.add_pm_conversation("Bob")
-        |> Session.remove_pm_conversation("Alice")
-
-      assert session.pm_conversations == ["Bob"]
-    end
-
-    test "resets active_pm when removing the active PM conversation" do
-      session =
-        Session.new("Alice")
-        |> Session.add_pm_conversation("Alice")
-        |> Session.set_active_pm("Alice")
-        |> Session.remove_pm_conversation("Alice")
-
-      assert session.active_pm == nil
-    end
-
-    test "keeps active_pm when removing a different PM conversation" do
-      session =
-        Session.new("Alice")
-        |> Session.add_pm_conversation("Alice")
-        |> Session.add_pm_conversation("Bob")
-        |> Session.set_active_pm("Alice")
-        |> Session.remove_pm_conversation("Bob")
-
-      assert session.active_pm == "Alice"
-    end
-  end
-
   describe "set_active_pm/2" do
     test "sets the active PM and clears active_channel" do
       session =
