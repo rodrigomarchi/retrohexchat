@@ -729,7 +729,8 @@ Accessible via F1, Help menu → Help Topics, and `/help`. Stale/inaccurate help
   `make test.web.stale`, `make test.failed`, `make test.js.changed SINCE=origin/main`,
   `make test.js.related FILES="js/app.js"`, `make lint.js.changed SINCE=origin/main`,
   `make e2e.changed`, `make e2e.smoke SURFACE=connect|chat|dialogs|i18n|calls|mobile`,
-  `make e2e.shard SHARD=1/2`, and `make ci.partition-profile` are local feedback tools.
+  `make e2e.shard SHARD=1/2`, `make ci.partition-profile`, and
+  `make umbrella.boundary-audit` are local feedback tools.
   They never replace the final `make ci` gate.
 - **Coverage remains explicit.** The fast `make ci` guard does not run coverage while
   partitioning the ExUnit suites; use `make test.cover` or `make test.cover.all` when
@@ -738,6 +739,10 @@ Accessible via F1, Help menu → Help Topics, and `/help`. Stale/inaccurate help
   manually triggered while credits are constrained, but it now runs `Impact Plan`
   first and exposes `CI Report` as the stable final status. Conditional jobs may be
   skipped by design; branch protection should require the final report check.
+- **Do not extract a new umbrella app from vibes.** Run `make umbrella.boundary-audit`
+  first, inspect co-change frequency and `mix xref` cycles, then write a short
+  decision/RFC. Current data shows `chat` is frequent but tightly coupled to web/E2E,
+  so extraction is not approved yet.
 - **Critical UI diffs get browser smokes by surface.** `make ci.changed` selects focused
   Playwright smokes for known critical JS/CSS/web surfaces: connect flow, chat shell,
   dialogs/window manager, i18n, P2P/group call, and mobile layout. E2E helper/page/global

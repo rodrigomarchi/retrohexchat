@@ -28,6 +28,13 @@ defmodule CIImpactTest do
     assert plan.checks == CIImpact.full_checks()
   end
 
+  test "umbrella boundary audit script changes fall back to the full guard" do
+    plan = CIImpact.plan(["scripts/umbrella_boundary_audit.exs"])
+
+    assert plan.fallback.level == :full
+    assert plan.checks == CIImpact.full_checks()
+  end
+
   test "domain source protects domain and web consumers" do
     plan = CIImpact.plan(["apps/retro_hex_chat/lib/retro_hex_chat/chat/message.ex"])
 

@@ -474,3 +474,96 @@ Aprendizados:
   matriz em YAML criaria deriva entre local e hospedado.
 - Mesmo com CI automatico desabilitado por creditos, manter a workflow pronta
   reduz o risco da reativacao futura.
+
+### 2026-07-31 - Auditoria de fronteiras do umbrella
+
+Status: `CONCLUIDO`
+
+Objetivo:
+
+- Fechar F7 usando dados antes de qualquer reestrutura do umbrella.
+- Criar um comando reproduzivel para acompanhar candidatos a novos apps.
+- Registrar uma decisao explicita sobre extracao agora.
+
+Mudancas implementadas:
+
+- Criado `scripts/umbrella_boundary_audit.exs`.
+- Criado `make umbrella.boundary-audit`.
+- O auditor mede:
+  - frequencia de candidatos (`chat`, `bots`, `calls`, `commands`, etc.);
+  - pares de co-mudanca por commit;
+  - quantidade de commits cross-app;
+  - estatisticas de `mix xref graph --format stats`.
+- README e guia de agentes passaram a apontar o comando antes de qualquer RFC de
+  extracao.
+
+Resultado local:
+
+- `make umbrella.boundary-audit CI_BOUNDARY_COMMITS=80`
+  - Resultado: passou, 79 commits analisados.
+  - Report: `tmp/umbrella-boundary-audit/20260731T143831Z/report.md`.
+- `mix xref graph --format stats`
+  - Resultado incorporado no report.
+  - 867 arquivos rastreados, 415 dependencias de compile, 1134 de exports,
+    2656 de runtime e 6 ciclos.
+- `elixir scripts/ci_impact_test.exs`
+  - Resultado: 14 testes, 0 falhas.
+- `make ci.changed EXPLAIN=1 CI_BASE=HEAD`
+  - Resultado: passou; mudancas de tooling cairam para full por fallback
+    conservador.
+
+Sinais relevantes:
+
+- `domain + web`: 24 commits.
+- `candidate:chat + web`: 33 commits.
+- `e2e + web`: 27 commits.
+- `candidate:chat + domain`: 16 commits.
+- Candidatos mais frequentes: `chat` 33, `bots` 10, `calls` 10,
+  `commands` 10.
+
+Decisao:
+
+- Nao criar novo app no umbrella agora.
+- `chat` e caro/frequente, mas aparece altamente acoplado a web, E2E, CSS,
+  i18n e dominio. Extrair isso agora aumentaria risco e provavelmente nao
+  simplificaria o seletor.
+- Melhor proximo passo estrutural futuro: reduzir ciclos xref e separar APIs
+  publicas pequenas antes de qualquer extracao de app.
+
+Aprendizados:
+
+- A auditoria confirma que reestrutura de umbrella deve ser consequencia de
+  fronteiras estaveis, nao mecanismo primario de acelerar CI.
+- O seletor por impacto e o particionamento entregaram ganho sem obrigar uma
+  extracao prematura.
+
+### 2026-07-31 - Documentacao duravel do protocolo de agentes
+
+Status: `CONCLUIDO`
+
+Objetivo:
+
+- Fechar F8 tornando o protocolo de guardas duravel para agentes e humanos.
+
+Mudancas implementadas:
+
+- README ganhou tabela "Which Guard To Run".
+- `docs/AGENT-GUIDE.md` documenta:
+  - `make ci` como unico gate final;
+  - defaults de particionamento;
+  - cobertura explicita;
+  - CI hospedado com `CI Report`;
+  - auditoria de fronteiras antes de qualquer extracao.
+- Plano-base foi atualizado para refletir F0-F8 concluidas.
+
+Aceite:
+
+- Um agente novo consegue escolher loop local, guardiao seletivo e full guard.
+- Um humano sabe que branch protection deve depender do check final `CI Report`
+  quando GitHub Actions for reativado.
+- Reestruturacao do umbrella ficou protegida por dados e RFC curta.
+
+Validacao final:
+
+- `make ci`
+  - Resultado: 13 checks, 0 falhas, `2m20s`.

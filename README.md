@@ -276,6 +276,7 @@ make ci.quick       # CI without dialyzer (faster iteration)
 make ci.changed     # checks selected from git diff; use EXPLAIN=1 to inspect
 make ci.serial      # same full guard with one ExUnit partition per suite
 make ci.partition-profile # measure ExUnit partition counts
+make umbrella.boundary-audit # measure umbrella extraction candidates
 make test.stale     # local stale ExUnit loop
 make test.js.changed # local Vitest changed loop
 make lint.js.changed # local ESLint/Prettier changed loop
@@ -325,14 +326,24 @@ Playwright remains a deliberate local E2E suite, not part of the default `make c
 guard. The selective guard can choose focused browser smokes for critical UI
 changes: `make e2e.smoke SURFACE=connect|chat|dialogs|i18n|calls|mobile`.
 
-Latest measured local runs: `make ci` completed 13/13 checks three times in
-`2m22s`-`2m25s` with 3-way normal tests, 4-way feature tests, DB pool 6 per
-partition, and a warm Dialyzer PLT. `make ci.serial` completed 13/13 in `5m28s`.
+Latest measured local runs: `make ci` completed 13/13 checks in `2m20s`-`2m25s`
+with 3-way normal tests, 4-way feature tests, DB pool 6 per partition, and a
+warm Dialyzer PLT. `make ci.serial` completed 13/13 in `5m28s`.
 
 GitHub Actions is still `workflow_dispatch` while credits are constrained. The
 workflow is prepared for selective CI: the `Impact Plan` job always runs, selected
 jobs run from the same impact matrix as `make ci.changed`, and `CI Report` is the
 single stable final check for branch protection.
+
+### Which Guard To Run
+
+| Change type | Iteration command | Final gate |
+|---|---|---|
+| Local Elixir fix | `make test.stale` or `make ci.changed EXPLAIN=1` | `make ci` |
+| Frontend JS/CSS fix | `make lint.js.changed`, `make test.js.changed`, selected smoke | `make ci` |
+| CI/config/test support | `make ci.changed EXPLAIN=1` should fall back to full | `make ci` |
+| Coverage question | `make test.cover` or `make test.cover.all` | `make ci` plus coverage result |
+| Umbrella extraction idea | `make umbrella.boundary-audit` | RFC/decision plus `make ci` |
 
 ---
 

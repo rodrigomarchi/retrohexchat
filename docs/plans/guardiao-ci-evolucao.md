@@ -1,6 +1,6 @@
 # Guardiao CI - evolucao continua
 
-**Status:** evolucao ativa, F1-F6 concluidas, F8 em andamento
+**Status:** evolucao ativa, F1-F8 concluidas
 **Criado:** 2026-07-31
 **Escopo:** reduzir tempo de feedback sem enfraquecer o guardiao principal.
 **Progresso futuro:** `docs/plans/guardiao-ci-evolucao-PROGRESS.md`
@@ -141,7 +141,7 @@ Estados:
 
 ### F0 - Baseline de tempos e inventario de checks
 
-Status: `EM ANDAMENTO`
+Status: `CONCLUIDO`
 
 Objetivo:
 
@@ -171,7 +171,9 @@ Validacao:
 
 - `make ci.quick` continua funcionando.
 - `elixir scripts/ci.exs --only compile,format` continua funcionando.
-- O novo modo de perfil gera saida mesmo quando um check falha.
+- `make ci.partition-profile` gera relatorio em
+  `tmp/ci-partition-profile/<timestamp>/report.md`.
+- `make ci` imprime tempo por check e por estagio em todas as execucoes.
 
 ### F1 - Modelo testavel de impacto
 
@@ -411,7 +413,7 @@ Validacao:
 
 ### F7 - Evolucao do umbrella por dados
 
-Status: `PENDENTE`
+Status: `CONCLUIDO`
 
 Objetivo:
 
@@ -420,6 +422,8 @@ Objetivo:
 Tarefas:
 
 - Registrar por algumas iteracoes quais diretorios mudam juntos.
+- Adicionar auditoria reproduzivel para historico recente:
+  `make umbrella.boundary-audit`.
 - Identificar areas com alta mudanca, alto custo e baixa dependencia cruzada.
 - Auditar possiveis fronteiras: `accounts`, `commands`, `bots`, `calls`,
   `arcade`, `services`, `presence`, `rate_limit`.
@@ -439,13 +443,15 @@ Aceite:
 
 Validacao:
 
-- `mix cmd --app <app> mix test` ou equivalente funciona para app extraida.
-- `mix test` na raiz continua verde.
-- `mix xref graph` ou ferramenta equivalente nao mostra ciclo proibido.
+- `make umbrella.boundary-audit CI_BOUNDARY_COMMITS=80` gera report em
+  `tmp/umbrella-boundary-audit/<timestamp>/report.md`.
+- `mix xref graph --format stats` e incorporado no report.
+- Decisao atual: nao criar app novo agora; os dados mostram co-mudanca alta e
+  6 ciclos de `xref`, entao qualquer extracao exige RFC futura.
 
 ### F8 - Documentacao duravel e protocolo de agentes
 
-Status: `EM ANDAMENTO`
+Status: `CONCLUIDO`
 
 Objetivo:
 

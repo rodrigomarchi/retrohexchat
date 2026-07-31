@@ -601,7 +601,8 @@ defmodule CIImpact do
       "scripts/ci_impact.exs",
       "scripts/ci_impact_test.exs",
       "scripts/ci_github_plan.exs",
-      "scripts/ci_partition_profile.exs"
+      "scripts/ci_partition_profile.exs",
+      "scripts/umbrella_boundary_audit.exs"
     ] or
       String.starts_with?(file, ".github/workflows/") or
       String.starts_with?(file, "config/") or
