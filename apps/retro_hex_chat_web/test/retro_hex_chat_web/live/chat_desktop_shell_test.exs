@@ -93,7 +93,15 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
 
       assert has_element?(view, ~s([data-window-id="chat"] #conversations-mount.h-full))
       assert has_element?(view, ~s([data-window-id="chat"] #conversations.h-full))
-      assert has_element?(view, ~s([data-testid="channel-main-column"] #chat-input-area))
+      # The composer spans the whole conversation: it follows the messages /
+      # nicklist row instead of sharing a column with it, so the nicklist ends
+      # above the input rather than beside it.
+      assert has_element?(
+               view,
+               ~s([data-testid="channel-content-row"] ~ #composer-region #chat-input-area)
+             )
+
+      refute has_element?(view, ~s([data-testid="channel-main-column"] #chat-input-area))
       assert has_element?(view, ~s([data-testid="channel-content-row"] [data-testid="nicklist"]))
 
       assert has_element?(
@@ -102,6 +110,27 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
              )
 
       assert has_element?(view, ~s([data-testid="chat-input-form"] [data-testid="char-counter"]))
+    end
+
+    test "the tab bar closes the chat area from below, after the content row", %{conn: conn} do
+      {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/chat")
+
+      # Sibling combinators pin the order, not just the presence: the tab strip
+      # follows the messages/nicklist row instead of leading the top chrome.
+      assert has_element?(
+               view,
+               ~s([data-testid="channel-content-row"] ~ [data-testid="tab-bar"])
+             )
+
+      refute has_element?(
+               view,
+               ~s([data-testid="tab-bar"] ~ [data-testid="conversation-toolbar"])
+             )
+
+      refute has_element?(
+               view,
+               ~s([data-testid="tab-bar"] ~ [data-testid="channel-content-row"])
+             )
     end
 
     test "viewport events collapse mobile panels and restore the prior desktop state", %{
@@ -185,7 +214,11 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
              )
 
       assert has_element?(view, ~s([data-testid="channel-content-row"] [data-testid="nicklist"]))
-      assert has_element?(view, ~s([data-testid="channel-main-column"] #chat-input-area))
+
+      assert has_element?(
+               view,
+               ~s([data-testid="channel-content-row"] ~ #composer-region #chat-input-area)
+             )
     end
 
     test "a private conversation can switch from Chat to Space with its loading panel", %{

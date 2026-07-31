@@ -249,10 +249,11 @@
   --rhc-chat-tabbar-height: 38px;
   --rhc-chat-toolbar-height: 40px;
   --rhc-chat-topicbar-height: 28px;
+  /* The tab row is bottom-anchored, so it is not part of the top chrome the
+     sidebar overlays hang below. */
   --rhc-chat-sidebar-top: calc(
     var(--rhc-chat-mobile-header-height) +
     var(--rhc-chat-window-chrome-height) +
-    var(--rhc-chat-tabbar-height) +
     var(--rhc-chat-toolbar-height) +
     var(--rhc-chat-topicbar-height)
   );
@@ -282,8 +283,10 @@
   padding-inline: 4px;
 }
 
-/* Sidebars overlay the chat content but stop below the fixed chat chrome:
-   app header, window title chrome, tab row, conversation toolbar and topic row. */
+/* Sidebars overlay the chat content but stop below the fixed top chrome:
+   app header, window title chrome, conversation toolbar and topic row. The
+   bottom-anchored tab row is not subtracted here — it is painted over the
+   overlay by the z-index rule below, which is what keeps it clickable. */
 .desktop--stacked .chat-sidebar-overlay {
   top: var(--rhc-chat-sidebar-top);
   height: calc(var(--rhc-visual-viewport-height, 100dvh) - var(--rhc-chat-sidebar-top));

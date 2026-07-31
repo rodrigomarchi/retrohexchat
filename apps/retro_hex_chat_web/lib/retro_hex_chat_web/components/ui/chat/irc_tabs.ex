@@ -8,7 +8,13 @@ defmodule RetroHexChatWeb.Components.UI.IrcTabs do
 
   alias RetroHexChatWeb.Icons
 
-  @doc "Renders an IRC-style tab bar container."
+  @doc """
+  Renders an IRC-style tab bar container.
+
+  Bottom-anchored, like HexChat's "tabs location: bottom": the strip sits under
+  the content it switches, so its border and the active tab's open edge both
+  face up.
+  """
   attr :class, :any, default: nil
   attr :rest, :global
   slot :inner_block, required: true
@@ -19,7 +25,7 @@ defmodule RetroHexChatWeb.Components.UI.IrcTabs do
     <div
       class={
         classes([
-          "flex gap-0 px-1 pt-[2px] bg-surface border-b border-border items-end overflow-x-auto",
+          "flex gap-0 px-1 pb-[2px] bg-surface border-t border-border items-start overflow-x-auto",
           @class
         ])
       }
@@ -68,9 +74,9 @@ defmodule RetroHexChatWeb.Components.UI.IrcTabs do
       class={
         classes([
           "inline-flex items-center gap-1 px-2 py-[2px] text-sm cursor-pointer select-none",
-          "border border-border mr-[1px] relative top-[1px]",
+          "border border-border mr-[1px] relative top-[-1px]",
           if(@active,
-            do: "bg-surface border-b-surface font-bold",
+            do: "bg-surface border-t-surface font-bold",
             else: "bg-gray-300"
           ),
           @unread && !@active && "font-bold",

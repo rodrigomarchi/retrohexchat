@@ -1,6 +1,7 @@
 import { Browser, BrowserContext, Page, expect, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";
+import { shot } from "../helpers/screenshots";
 
 type TestUser = {
   chat: ChatPage;
@@ -63,6 +64,8 @@ test.describe("Tab unread close/reopen edges", () => {
       await bob.chat.expectTabUnread(channel, true);
       await bob.chat.expectChannelConversationUnread(channel, true);
       await expect(bob.chat.channelUnreadBadge(channel)).toHaveText("1");
+      await shot(bob.chat.page, "unread-channel-tab");
+      await shot(bob.chat.tabBar, "unread-channel-tab-strip");
 
       await bob.chat.closeTab(channel);
       await bob.chat.expectTabHidden(channel);
@@ -82,6 +85,7 @@ test.describe("Tab unread close/reopen edges", () => {
       await bob.chat.expectTabUnread(alice.nick, true);
       await bob.chat.expectPmConversationUnread(alice.nick, true);
       await expect(bob.chat.pmUnreadBadge(alice.nick)).toHaveText("1");
+      await shot(bob.chat.tabBar, "unread-pm-tab-strip");
 
       await bob.chat.closeTab(alice.nick);
       await bob.chat.expectTabHidden(alice.nick);

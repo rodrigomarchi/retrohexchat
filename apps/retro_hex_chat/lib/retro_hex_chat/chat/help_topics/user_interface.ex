@@ -88,7 +88,7 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
         description:
           dgettext(
             "help",
-            "Switch between channels and conversations using the tab bar at the top of the chat area."
+            "Switch between channels and conversations using the tab bar at the bottom of the chat area."
           )
       },
       %{

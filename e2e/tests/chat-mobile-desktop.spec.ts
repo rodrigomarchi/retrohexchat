@@ -1,6 +1,7 @@
 import { Page, test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";
+import { shot } from "../helpers/screenshots";
 
 // A phone-sized viewport (below the 768px stacking breakpoint).
 const PHONE = { width: 375, height: 720 };
@@ -149,6 +150,26 @@ test.describe("chat desktop on a phone (stacked single-window)", () => {
 
     await conversationsButton.click();
     await expect(conversations).toBeVisible();
+
+    // The tab strip is bottom-anchored chrome the sidebar overlay reaches over,
+    // so what matters is stacking, not geometry: the topmost element at the
+    // strip's centre must still be the tab strip, or tabs are untappable.
+    const tabBar = page.getByTestId("tab-bar");
+    await expect(tabBar).toBeVisible();
+    const tabBarBox = await tabBar.boundingBox();
+    expect(tabBarBox).not.toBeNull();
+    const hitsTabBar = await page.evaluate(
+      ({ x, y }) =>
+        document.elementFromPoint(x, y)?.closest('[data-testid="tab-bar"]') !==
+        null,
+      {
+        x: tabBarBox!.x + tabBarBox!.width / 2,
+        y: tabBarBox!.y + tabBarBox!.height / 2,
+      },
+    );
+    expect(hitsTabBar).toBe(true);
+    await shot(page, "mobile-sidebar-over-tab-strip");
+
     await page.getByTestId("conversations-close").click();
     await expect(conversations).toBeHidden();
 
