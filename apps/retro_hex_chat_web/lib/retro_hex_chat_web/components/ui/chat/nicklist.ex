@@ -265,15 +265,16 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
         <.button
           :if={@on_close}
           type="button"
-          variant="ghost"
+          variant="outline"
           size="icon"
-          class="w-5 h-5 min-h-0 text-xs"
+          class="chat-sidebar-collapse-button"
           phx-click={@on_close}
           title={dgettext("chat", "Collapse user list")}
           aria-label={dgettext("chat", "Collapse user list")}
           data-testid="nicklist-collapse-toggle"
         >
-          <:icon><Icons.icon_chevron_right class="w-4 h-4" /></:icon>
+          <:icon><Icons.icon_chevron_right class="h-4 w-4" /></:icon>
+          <span class="sr-only">{dgettext("chat", "Collapse user list")}</span>
         </.button>
       </div>
       <div :if={@mode_badges != []} class="chat-nicklist-header__modes">

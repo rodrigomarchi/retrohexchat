@@ -33,6 +33,15 @@
   margin-right: auto;
 }
 
+.chat-sidebar-collapse-button {
+  @apply h-6 w-6 min-w-6 shrink-0 gap-0 border-l-2 border-primary bg-white p-0 text-primary shadow-retro-raised ring-1 ring-black;
+  @apply hover:bg-hover-bg active:shadow-retro-sunken;
+}
+
+.chat-sidebar-collapse-button > span:first-child {
+  @apply h-4 w-4;
+}
+
 .chat-sidebar-rail {
   @apply flex h-full w-[36px] shrink-0 flex-col items-center gap-[3px] bg-surface px-[3px] py-[4px] shadow-retro-raised;
 }

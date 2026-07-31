@@ -298,23 +298,24 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
       {@rest}
     >
       <div class="chat-conversations-titlebar">
-        <Icons.icon_tab_conversations class="w-4 h-4 shrink-0" />
-        <span class="min-w-0 flex-1 truncate text-xs font-bold">
-          {dgettext("chat", "Conversations")}
-        </span>
         <.button
           :if={@on_close}
           type="button"
-          variant="ghost"
+          variant="outline"
           size="icon"
-          class="w-5 h-5 min-h-0 text-xs"
+          class="chat-sidebar-collapse-button"
           phx-click={@on_close}
           title={dgettext("chat", "Collapse conversations")}
           aria-label={dgettext("chat", "Collapse conversations")}
           data-testid="conversations-collapse-toggle"
         >
-          <:icon><Icons.icon_chevron_left class="w-4 h-4" /></:icon>
+          <:icon><Icons.icon_chevron_left class="h-4 w-4" /></:icon>
+          <span class="sr-only">{dgettext("chat", "Collapse conversations")}</span>
         </.button>
+        <Icons.icon_tab_conversations class="w-4 h-4 shrink-0" />
+        <span class="min-w-0 flex-1 truncate text-xs font-bold">
+          {dgettext("chat", "Conversations")}
+        </span>
       </div>
 
       <div class="chat-conversations-status-strip">

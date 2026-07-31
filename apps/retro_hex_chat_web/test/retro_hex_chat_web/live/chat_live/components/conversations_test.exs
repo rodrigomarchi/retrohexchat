@@ -151,6 +151,20 @@ defmodule RetroHexChatWeb.ChatLive.Components.ConversationsTest do
     refute expanded =~ ~s(data-testid="conversations-rail")
   end
 
+  test "places the expanded collapse control at the left edge of the titlebar" do
+    html = render_conv(on_close: "toggle_conversations")
+    document = Floki.parse_document!(html)
+    [titlebar] = Floki.find(document, ".chat-conversations-titlebar")
+
+    [first_element | _] =
+      titlebar
+      |> Floki.children()
+      |> Enum.filter(&match?({_, _, _}, &1))
+
+    assert {"button", attrs, _children} = first_element
+    assert {"data-testid", "conversations-collapse-toggle"} in attrs
+  end
+
   test "derives unread channels and PMs from unread_counts" do
     html =
       render_conv(
