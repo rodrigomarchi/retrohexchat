@@ -12,25 +12,26 @@ defmodule RetroHexChat.P2P.SignalingRateLimit.ETS do
   @default_window_ms 60_000
 
   @impl true
-  @spec check_signal_rate(String.t(), integer()) :: :ok | {:error, :rate_limited}
+  @spec check_signal_rate(String.t(), integer()) ::
+          :ok | {:error, {:rate_limited, non_neg_integer()}}
   def check_signal_rate(_session_token, user_id) do
     do_check(user_id, RateLimitTable.table_name(), @default_window_ms)
   end
 
   @spec check_signal_rate(String.t(), integer(), :ets.tid() | atom()) ::
-          :ok | {:error, :rate_limited}
+          :ok | {:error, {:rate_limited, non_neg_integer()}}
   def check_signal_rate(_session_token, user_id, table) do
     do_check(user_id, table, @default_window_ms)
   end
 
   @spec check_signal_rate(String.t(), integer(), :ets.tid() | atom(), pos_integer()) ::
-          :ok | {:error, :rate_limited}
+          :ok | {:error, {:rate_limited, non_neg_integer()}}
   def check_signal_rate(_session_token, user_id, table, window_ms) do
     do_check(user_id, table, window_ms)
   end
 
   @spec do_check(integer(), :ets.tid() | atom(), pos_integer()) ::
-          :ok | {:error, :rate_limited}
+          :ok | {:error, {:rate_limited, non_neg_integer()}}
   defp do_check(user_id, table, window_ms) do
     key = {:signal, user_id}
     now = System.monotonic_time(:millisecond)
@@ -53,7 +54,9 @@ defmodule RetroHexChat.P2P.SignalingRateLimit.ETS do
             :ok
 
           true ->
-            {:error, :rate_limited}
+            # How long the window still blocks. A caller that cannot say when to
+            # try again leaves the client retrying into a closed door.
+            {:error, {:rate_limited, window_ms - elapsed}}
         end
     end
   end

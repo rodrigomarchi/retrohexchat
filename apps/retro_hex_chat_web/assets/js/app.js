@@ -18,7 +18,14 @@ import { loadCurrentLocaleCatalog } from "./lib/i18n";
 const Hooks = buildHooks();
 
 const liveSocket = new LiveSocket("/live", Socket, {
-  longPollFallbackMs: 2500,
+  // The fallback exists for networks that block WebSocket outright, and those
+  // fail fast: the socket errors and LiveView falls back without waiting out
+  // this timer. The timer only decides how long a *working but slow* handshake
+  // gets, so it has to clear intercontinental latency — a client a couple
+  // hundred milliseconds from the server needs several round trips to open,
+  // and cutting it short strands the session on long-polling for its whole
+  // lifetime. WebRTC signalling rides this socket, so that is expensive.
+  longPollFallbackMs: 10_000,
   params: () => ({
     _csrf_token: document.querySelector("meta[name='csrf-token']").getAttribute("content"),
     timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || "Etc/UTC",

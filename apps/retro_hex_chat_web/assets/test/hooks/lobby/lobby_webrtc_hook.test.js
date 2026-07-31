@@ -1,90 +1,9 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import LobbyWebRTCHook from "../../../js/hooks/lobby/lobby_webrtc_hook.js";
-
-class MockDataChannel {
-  constructor(label, options) {
-    this.label = label;
-    this.ordered = options?.ordered ?? true;
-    this.readyState = "connecting";
-    this.binaryType = "arraybuffer";
-    this.onopen = null;
-    this.onclose = null;
-    this.onmessage = null;
-  }
-}
-
-class MockRTCPeerConnection {
-  constructor(config = {}) {
-    this.config = config;
-    this.localDescription = null;
-    this.remoteDescription = null;
-    this.connectionState = "new";
-    this.iceConnectionState = "new";
-    this.signalingState = "stable";
-    this.onconnectionstatechange = null;
-    this.oniceconnectionstatechange = null;
-    this.onicecandidate = null;
-    this.onnegotiationneeded = null;
-    this.onicecandidateerror = null;
-    this.ondatachannel = null;
-    this.addedCandidates = [];
-    this.transceivers = [];
-    this.restartIce = vi.fn();
-    this.statsQueue = [];
-  }
-
-  createDataChannel(label, options) {
-    return new MockDataChannel(label, options);
-  }
-
-  async createOffer() {
-    return { type: "offer", sdp: "mock-sdp" };
-  }
-
-  async createAnswer() {
-    return { type: "answer", sdp: "mock-answer-sdp" };
-  }
-
-  async setLocalDescription(desc) {
-    if (desc) {
-      this.localDescription = desc;
-    } else if (this.remoteDescription?.type === "offer") {
-      this.localDescription = await this.createAnswer();
-    } else {
-      this.localDescription = await this.createOffer();
-    }
-  }
-
-  async setRemoteDescription(desc) {
-    this.remoteDescription = desc;
-  }
-
-  async addIceCandidate(candidate) {
-    this.addedCandidates.push(candidate);
-  }
-
-  getTransceivers() {
-    return this.transceivers;
-  }
-
-  addTransceiver(kind, init) {
-    const transceiver = {
-      receiver: { track: { kind } },
-      sender: { track: null },
-      direction: init?.direction || "sendrecv",
-    };
-    this.transceivers.push(transceiver);
-    return transceiver;
-  }
-
-  async getStats() {
-    return this.statsQueue.shift() || new Map();
-  }
-
-  close() {
-    this.connectionState = "closed";
-  }
-}
+import {
+  FakeDataChannel as MockDataChannel,
+  FakeRTCPeerConnection as MockRTCPeerConnection,
+} from "../../helpers/rtc_peer_connection.js";
 
 function buildHook() {
   const ctx = {
@@ -237,7 +156,7 @@ describe("LobbyWebRTCHook", () => {
       "lobby_signal",
       expect.objectContaining({
         type: "offer",
-        sdp: "mock-sdp",
+        sdp: expect.any(String),
         epoch: 1,
         offer_id: "p2p-1-1",
         connection_reset: true,
@@ -368,6 +287,34 @@ describe("LobbyWebRTCHook", () => {
 
     expect(setRemoteDescription).toHaveBeenCalledTimes(1);
     expect(addIceCandidate).toHaveBeenCalledTimes(1);
+
+    vi.useRealTimers();
+  });
+
+  it("stands down and resyncs after the server rejects a signal as rate limited", async () => {
+    vi.useFakeTimers();
+    const hook = buildHook();
+
+    hook.role = "initiator";
+    hook.iceServers = [];
+    await hook._createConnection();
+    await hook._maybeOffer();
+
+    hook.pushEvent.mockClear();
+    hook._handleSignalRejected({ code: "rate_limited", retry_after_ms: 5000 });
+
+    // Retrying inside the window the server named only spends the window.
+    vi.advanceTimersByTime(4000);
+    expect(hook.pushEvent).not.toHaveBeenCalledWith(
+      "lobby_signal_replay_request",
+      expect.anything(),
+    );
+
+    vi.advanceTimersByTime(1500);
+    expect(hook.pushEvent).toHaveBeenCalledWith(
+      "lobby_signal_replay_request",
+      expect.objectContaining({ reason: "signal_rate_limited" }),
+    );
 
     vi.useRealTimers();
   });
@@ -617,7 +564,7 @@ describe("LobbyWebRTCHook", () => {
       "lobby_signal",
       expect.objectContaining({
         type: "answer",
-        sdp: "mock-answer-sdp",
+        sdp: expect.any(String),
         epoch: 2,
         offer_id: "p2p-2-1",
       }),

@@ -70,15 +70,16 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
     p2p = socket.assigns.p2p_session
     rate_limiter = SignalingRateLimit.configured_module()
 
-    with :ok <- rate_limiter.check_signal_rate(p2p.token, p2p.user_id),
-         {:ok, validated} <- P2P.validate_signal(params) do
-      payload = Map.put(validated, :from, p2p.user_id)
-      _ = Lobby.record_signaling_event(p2p.token, p2p.user_id, "lobby_signal", payload)
-      broadcast(p2p.token, "lobby_signal", payload)
-    else
-      {:error, reason} ->
-        emit_p2p_client_error(signal_error_code(reason), "signal")
-    end
+    socket =
+      with :ok <- rate_limiter.check_signal_rate(p2p.token, p2p.user_id),
+           {:ok, validated} <- P2P.validate_signal(params) do
+        payload = Map.put(validated, :from, p2p.user_id)
+        _ = Lobby.record_signaling_event(p2p.token, p2p.user_id, "lobby_signal", payload)
+        broadcast(p2p.token, "lobby_signal", payload)
+        socket
+      else
+        {:error, reason} -> reject_signal(socket, reason, "signal")
+      end
 
     {:halt, socket}
   end
@@ -103,22 +104,26 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
     p2p = socket.assigns.p2p_session
     rate_limiter = SignalingRateLimit.configured_module()
 
-    if :ok == rate_limiter.check_signal_rate(p2p.token, p2p.user_id) do
-      payload = %{
-        from: p2p.user_id,
-        kinds: safe_track_kinds(Map.get(params, "kinds", [])),
-        recover: boolean_param(params, "recover"),
-        epoch: integer_param(params, "epoch"),
-        reason: short_string_param(params, "reason", 80),
-        attempt: integer_param(params, "attempt"),
-        connection_reset: boolean_param(params, "connection_reset")
-      }
+    socket =
+      case rate_limiter.check_signal_rate(p2p.token, p2p.user_id) do
+        :ok ->
+          payload = %{
+            from: p2p.user_id,
+            kinds: safe_track_kinds(Map.get(params, "kinds", [])),
+            recover: boolean_param(params, "recover"),
+            epoch: integer_param(params, "epoch"),
+            reason: short_string_param(params, "reason", 80),
+            attempt: integer_param(params, "attempt"),
+            connection_reset: boolean_param(params, "connection_reset")
+          }
 
-      _ = Lobby.record_signaling_event(p2p.token, p2p.user_id, "lobby_renegotiate", payload)
-      broadcast(p2p.token, "lobby_renegotiate", payload)
-    else
-      emit_p2p_client_error("rate_limited", "renegotiate")
-    end
+          _ = Lobby.record_signaling_event(p2p.token, p2p.user_id, "lobby_renegotiate", payload)
+          broadcast(p2p.token, "lobby_renegotiate", payload)
+          socket
+
+        {:error, reason} ->
+          reject_signal(socket, reason, "renegotiate")
+      end
 
     {:halt, socket}
   end
@@ -2045,6 +2050,26 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   defp emit_p2p_client_error(code, phase) do
     CallEvents.emit_client_error(:p2p, code, %{phase: phase})
   end
+
+  # A dropped signal the sender never hears about is the worst kind of drop: the
+  # peer keeps retrying into a window its own retries are holding shut, and the
+  # negotiation it was carrying never completes. Tell the sender, and say for
+  # how long, so it can wait the window out instead of spending it.
+  defp reject_signal(socket, reason, phase) do
+    code = signal_error_code(reason)
+    emit_p2p_client_error(code, phase)
+
+    push_event(socket, "lobby_signal_rejected", %{
+      code: code,
+      phase: phase,
+      retry_after_ms: signal_retry_after_ms(reason)
+    })
+  end
+
+  defp signal_retry_after_ms({:rate_limited, retry_after}) when is_integer(retry_after),
+    do: max(retry_after, 0)
+
+  defp signal_retry_after_ms(_reason), do: 0
 
   defp signal_error_code(:invalid_signal), do: "invalid_signal"
   defp signal_error_code(:rate_limited), do: "rate_limited"

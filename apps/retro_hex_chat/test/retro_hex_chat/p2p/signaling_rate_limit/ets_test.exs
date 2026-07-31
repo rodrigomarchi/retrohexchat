@@ -22,7 +22,7 @@ defmodule RetroHexChat.P2P.SignalingRateLimit.ETSTest do
         :ok = SignalLimiter.check_signal_rate("token-1", 42, table)
       end
 
-      assert {:error, :rate_limited} = SignalLimiter.check_signal_rate("token-1", 42, table)
+      assert {:error, {:rate_limited, _}} = SignalLimiter.check_signal_rate("token-1", 42, table)
     end
 
     test "different users have independent limits", %{table: table} do
@@ -30,10 +30,20 @@ defmodule RetroHexChat.P2P.SignalingRateLimit.ETSTest do
         :ok = SignalLimiter.check_signal_rate("token-1", 1, table)
       end
 
-      assert {:error, :rate_limited} = SignalLimiter.check_signal_rate("token-1", 1, table)
+      assert {:error, {:rate_limited, _}} = SignalLimiter.check_signal_rate("token-1", 1, table)
 
       # User 2 should still be fine
       assert :ok = SignalLimiter.check_signal_rate("token-1", 2, table)
+    end
+
+    test "rejection reports how long the window still blocks", %{table: table} do
+      for _ <- 1..100, do: :ok = SignalLimiter.check_signal_rate("token-1", 42, table, 1_000)
+
+      assert {:error, {:rate_limited, retry_after_ms}} =
+               SignalLimiter.check_signal_rate("token-1", 42, table, 1_000)
+
+      assert retry_after_ms > 0
+      assert retry_after_ms <= 1_000
     end
 
     test "resets after window expires", %{table: table} do
@@ -42,7 +52,8 @@ defmodule RetroHexChat.P2P.SignalingRateLimit.ETSTest do
         :ok = SignalLimiter.check_signal_rate("token-1", 42, table, 50)
       end
 
-      assert {:error, :rate_limited} = SignalLimiter.check_signal_rate("token-1", 42, table, 50)
+      assert {:error, {:rate_limited, _}} =
+               SignalLimiter.check_signal_rate("token-1", 42, table, 50)
 
       Process.sleep(60)
 

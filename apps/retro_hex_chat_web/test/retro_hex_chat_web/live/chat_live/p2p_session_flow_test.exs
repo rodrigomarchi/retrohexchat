@@ -16,6 +16,23 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
 
   @event_timeout 500
 
+  defmodule AlwaysLimited do
+    @moduledoc false
+    @behaviour RetroHexChat.P2P.SignalingRateLimit
+
+    @retry_after_ms 4_200
+
+    @impl true
+    @spec check_signal_rate(String.t(), integer()) :: {:error, {:rate_limited, pos_integer()}}
+    def check_signal_rate(_token, _user_id), do: {:error, {:rate_limited, @retry_after_ms}}
+  end
+
+  defp limit_all_signals do
+    previous = Application.get_env(:retro_hex_chat, :signaling_rate_limiter)
+    Application.put_env(:retro_hex_chat, :signaling_rate_limiter, AlwaysLimited)
+    on_exit(fn -> Application.put_env(:retro_hex_chat, :signaling_rate_limiter, previous) end)
+  end
+
   defp register(nickname) do
     {:ok, nick} =
       %RegisteredNick{}
@@ -1258,6 +1275,48 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
 
       assert %{state: :invite_sent, role: :creator, token: new_token} = p2p_assigns(ctx.view_a)
       assert new_token != session_ab.token
+    end
+  end
+
+  describe "signaling backpressure" do
+    test "a rate-limited signal is reported back to the sender", %{conn: conn} do
+      ctx = mount_pair(conn, "p2prla#{uid()}", "p2prlb#{uid()}")
+      session = invite(ctx)
+      accept_invite(ctx, session.token)
+      flush(ctx.view_a)
+      limit_all_signals()
+      attach_call_telemetry()
+
+      render_click(ctx.view_a, "lobby_signal", %{"type" => "offer", "sdp" => "offer-sdp"})
+
+      assert_push_event(
+        ctx.view_a,
+        "lobby_signal_rejected",
+        %{code: "rate_limited", phase: "signal", retry_after_ms: 4_200},
+        @event_timeout
+      )
+
+      assert_receive {:call_telemetry, event, %{count: 1},
+                      %{surface: "p2p", code: "rate_limited", phase: "signal"}}
+
+      assert event == CallEvents.client_error_event()
+    end
+
+    test "a rate-limited renegotiation request is reported back to the sender", %{conn: conn} do
+      ctx = mount_pair(conn, "p2prlc#{uid()}", "p2prld#{uid()}")
+      session = invite(ctx)
+      accept_invite(ctx, session.token)
+      flush(ctx.view_b)
+      limit_all_signals()
+
+      render_click(ctx.view_b, "lobby_renegotiate", %{"kinds" => ["audio"]})
+
+      assert_push_event(
+        ctx.view_b,
+        "lobby_signal_rejected",
+        %{code: "rate_limited", phase: "renegotiate", retry_after_ms: 4_200},
+        @event_timeout
+      )
     end
   end
 end

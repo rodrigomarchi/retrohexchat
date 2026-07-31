@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import GroupCallWebRTCHook from "../../../js/hooks/group_call/group_call_webrtc_hook.js";
+import { FakeRTCPeerConnection } from "../../helpers/rtc_peer_connection.js";
 
 let hooks = [];
 
@@ -139,26 +140,26 @@ function setupLayoutHook() {
   return hook;
 }
 
-class MockPeerConnection {
+// Spied over the faithful double so call counts stay assertable while the
+// signaling state machine and m-line rules still apply.
+class MockPeerConnection extends FakeRTCPeerConnection {
   constructor() {
-    this.localDescription = null;
-    this.remoteDescription = null;
-    this.setRemoteDescription = vi.fn(async (description) => {
-      this.remoteDescription = description;
-      this.signalingState = "have-remote-offer";
-    });
-    this.createAnswer = vi.fn(async () => ({ type: "answer", sdp: "answer-sdp" }));
-    this.setLocalDescription = vi.fn(async (description) => {
-      this.localDescription = description;
-      this.signalingState = "stable";
-    });
+    super();
+
+    for (const method of [
+      "setRemoteDescription",
+      "setLocalDescription",
+      "createAnswer",
+      "addTrack",
+      "close",
+    ]) {
+      this[method] = vi.fn(FakeRTCPeerConnection.prototype[method].bind(this));
+    }
+
     this.addEventListener = vi.fn();
-    this.addTrack = vi.fn();
+    this.getStats = vi.fn(async () => new Map());
     this.connectionState = "connected";
     this.iceConnectionState = "connected";
-    this.oniceconnectionstatechange = null;
-    this.getStats = vi.fn(async () => new Map());
-    this.close = vi.fn();
   }
 }
 
@@ -517,7 +518,7 @@ describe("GroupCallWebRTCHook media fallback", () => {
     expect(pc.createAnswer).toHaveBeenCalledTimes(1);
     expect(hook.channel.push).toHaveBeenCalledTimes(1);
     expect(hook.channel.push).toHaveBeenCalledWith("group_call_answer", {
-      sdp: "answer-sdp",
+      sdp: expect.any(String),
       offer_id: null,
     });
   });
@@ -535,7 +536,7 @@ describe("GroupCallWebRTCHook media fallback", () => {
     expect(pc.setRemoteDescription).toHaveBeenCalledTimes(1);
     expect(hook.channel.push).toHaveBeenCalledTimes(1);
     expect(hook.channel.push).toHaveBeenCalledWith("group_call_answer", {
-      sdp: "answer-sdp",
+      sdp: expect.any(String),
       offer_id: "gc-12-1",
     });
   });
@@ -578,7 +579,7 @@ describe("GroupCallWebRTCHook media fallback", () => {
 
     expect(pc.createAnswer).toHaveBeenCalled();
     expect(hook.channel.push).toHaveBeenCalledWith("group_call_answer", {
-      sdp: "answer-sdp",
+      sdp: expect.any(String),
       offer_id: null,
     });
     expect(hook.pushEvent).not.toHaveBeenCalledWith(

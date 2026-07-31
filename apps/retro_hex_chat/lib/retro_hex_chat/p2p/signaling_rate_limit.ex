@@ -6,7 +6,7 @@ defmodule RetroHexChat.P2P.SignalingRateLimit do
   """
 
   @callback check_signal_rate(session_token :: String.t(), user_id :: integer()) ::
-              :ok | {:error, :rate_limited}
+              :ok | {:error, {:rate_limited, retry_after_ms :: non_neg_integer()}}
 
   @spec configured_module() :: module()
   def configured_module do

@@ -79,6 +79,7 @@ const LobbyWebRTCHook = {
     this._statsPrev = null;
     this.signalReplayTimer = null;
     this.signalReplayAttempts = 0;
+    this.signalBackoffTimer = null;
     this.renegotiationRetryTimer = null;
     this.renegotiationRetryAttempts = 0;
     this.renegotiationRetryPayload = null;
@@ -104,6 +105,7 @@ const LobbyWebRTCHook = {
     this.handleEvent("lobby_restart", (data = {}) => this._handleRestart(data));
     this.handleEvent("lobby_signal", (data) => this._handleSignal(data));
     this.handleEvent("lobby_signal_replay", (data) => this._handleSignalReplay(data));
+    this.handleEvent("lobby_signal_rejected", (data = {}) => this._handleSignalRejected(data));
     // Answerer → initiator request to (re)offer after the answerer added tracks.
     this.handleEvent("lobby_renegotiate", (data = {}) => this._handleRenegotiate(data));
 
@@ -234,6 +236,41 @@ const LobbyWebRTCHook = {
     }
   },
 
+  // The server dropped a signal instead of relaying it. Every retry sent inside
+  // the window it names is another signal against the same budget, so the
+  // retries are what hold the window shut. Stand down for as long as the server
+  // asked, then resync from the peer's stored signalling rather than guessing
+  // which descriptions and candidates went missing.
+  _handleSignalRejected({ code, retry_after_ms: retryAfterMs } = {}) {
+    log.warn("[Lobby] Server rejected a signal", { code, retryAfterMs });
+
+    if (code !== "rate_limited") return;
+
+    this._clearSignalReplayTimer();
+    this._clearRenegotiationRetry();
+    this._clearSignalBackoff();
+
+    this.signalBackoffTimer = setTimeout(
+      () => {
+        this.signalBackoffTimer = null;
+        if (this.recoveryFailed || !this.pc) return;
+
+        this.signalReplayAttempts = 0;
+        this.renegotiationRetryAttempts = 0;
+        this._requestSignalReplay("signal_rate_limited");
+        this._scheduleSignalReplay("signal_rate_limited");
+      },
+      Math.max(Number(retryAfterMs) || 0, 0),
+    );
+  },
+
+  _clearSignalBackoff() {
+    if (this.signalBackoffTimer) {
+      clearTimeout(this.signalBackoffTimer);
+      this.signalBackoffTimer = null;
+    }
+  },
+
   async _handleSignalReplay({ events = [] } = {}) {
     for (const entry of events || []) {
       const event = entry?.event;
@@ -261,6 +298,18 @@ const LobbyWebRTCHook = {
       return;
     }
 
+    // Single-offerer: the initiator only ever applies answers, the answerer only
+    // ever applies offers. A description of the other kind is a misroute or a
+    // replay aimed at the peer; applying it desyncs the state machine and every
+    // later description for this round becomes unapplicable.
+    if (!this._isOwnDescription(data.type)) {
+      log.warn("[Lobby] Ignoring remote description meant for the peer", {
+        type: data.type,
+        role: this.role,
+      });
+      return;
+    }
+
     // The offer can arrive before the answerer's "lobby_start_answer" event has
     // built the PC. Buffer it (we only ever keep the latest) so _handleStartAnswer
     // can apply it once the connection — and its ICE servers — exist.
@@ -273,13 +322,17 @@ const LobbyWebRTCHook = {
       if (data.type === "offer") {
         if (data.offer_id && this.activeRemoteOfferId === data.offer_id) return;
 
-        if (epoch && epoch > this.signalingEpoch) {
-          if (data.connection_reset) {
-            await this._createConnection({ epoch });
-          } else {
-            this.signalingEpoch = epoch;
-          }
+        // A peer that rebuilt its connection re-offers from a fresh m-line
+        // layout, which no longer extends the one this side settled on. Only a
+        // matching rebuild can accept it, and the epoch does not have to advance
+        // for the peer's connection to be new — the reset flag alone decides.
+        if (data.connection_reset) {
+          await this._createConnection({ epoch: epoch || undefined });
+        } else if (epoch && epoch > this.signalingEpoch) {
+          this.signalingEpoch = epoch;
         }
+
+        if (!this._canApplyDescription("offer")) return;
 
         // Answerer path: apply the initiator's offer and answer it.
         await this.pc.setRemoteDescription({ type: "offer", sdp: data.sdp });
@@ -316,6 +369,8 @@ const LobbyWebRTCHook = {
           });
           return;
         }
+
+        if (!this._canApplyDescription("answer")) return;
 
         // Initiator path: apply the answerer's answer, then drain any queued
         // renegotiation that arrived while this one was in flight.
@@ -813,6 +868,35 @@ const LobbyWebRTCHook = {
     this._handleFailure(phase);
   },
 
+  // Which description kind this side is responsible for applying. Unknown until
+  // the LiveView assigns a role, and until then nothing is filtered out: the
+  // initiator's offer routinely beats "lobby_start_answer" to the client.
+  _isOwnDescription(type) {
+    if (!this.role) return true;
+    return this.role === "initiator" ? type === "answer" : type === "offer";
+  },
+
+  // setRemoteDescription throws when the connection cannot accept the kind of
+  // description on offer, and the catch turns that throw into a full rebuild —
+  // which re-sends the signals that caused it. Screen the state first so a
+  // stray description is dropped rather than escalated into a reconnect.
+  _canApplyDescription(type) {
+    const state = this.pc.signalingState;
+    const applicable =
+      type === "offer"
+        ? state === "stable" || state === "have-remote-offer"
+        : state === "have-local-offer";
+
+    if (!applicable) {
+      log.warn("[Lobby] Ignoring remote description for the current state", {
+        type,
+        signalingState: state,
+      });
+    }
+
+    return applicable;
+  },
+
   _normalizeEpoch(value) {
     const number = Number(value);
     return Number.isInteger(number) && number > 0 ? number : null;
@@ -1005,6 +1089,7 @@ const LobbyWebRTCHook = {
     this._clearRecoveryTimer();
     this._clearSignalReplayTimer();
     this._clearRenegotiationRetry();
+    this._clearSignalBackoff();
     this._stopStatsPolling();
     this.el._peerConnection = null;
     this.el._fileTransferChannel = null;

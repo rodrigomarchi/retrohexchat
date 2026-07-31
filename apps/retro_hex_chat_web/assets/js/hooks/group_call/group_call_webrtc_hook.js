@@ -380,8 +380,25 @@ const GroupCallWebRTCHook = {
       this._clearOfferWatchdog();
     } catch (error) {
       log.warn("[group-call] failed to handle offer", error);
+
+      // A description this connection cannot accept means the two sides no
+      // longer agree on the session — the SFU rebuilt its peer, or a
+      // description arrived out of turn. No later offer can land here either,
+      // so replace the connection instead of leaving the call wedged behind an
+      // error nobody can clear.
+      if (this._isUnusableDescriptionError(error)) {
+        this._rejoinConnection("offer_rejected");
+        return;
+      }
+
       this._notifyError(t("Group call media negotiation failed"), "media_negotiation_failed");
     }
+  },
+
+  // The two failures that outlive the offer that caused them: a layout the
+  // connection can no longer extend, and a description applied out of turn.
+  _isUnusableDescriptionError(error) {
+    return error?.name === "InvalidAccessError" || error?.name === "InvalidStateError";
   },
 
   async _ensurePeerConnection(iceServers) {
