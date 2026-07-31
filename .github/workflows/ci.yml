@@ -3,6 +3,23 @@ name: CI
 on:
   # TEMPORARILY DISABLED — out of GitHub Actions credits (re-enable later)
   workflow_dispatch:
+    inputs:
+      mode:
+        description: "full runs every local guard check; changed uses the impact plan"
+        required: true
+        type: choice
+        default: full
+        options:
+          - full
+          - changed
+      base:
+        description: "Base ref for changed mode"
+        required: false
+        default: origin/main
+      head:
+        description: "Head ref for changed mode"
+        required: false
+        default: HEAD
 
 concurrency:
   group: ci-${{ github.event.pull_request.number || github.ref }}
@@ -16,11 +33,88 @@ env:
   MIX_ENV: test
   OTP_VERSION: '27.3.4.6'
   ELIXIR_VERSION: '1.18.4'
+  TEST_DB_PORT: '5432'
+  CI_TEST_PARTITIONS: '3'
+  CI_FEATURE_PARTITIONS: '4'
+  CI_TEST_DB_POOL_SIZE: '6'
 
 jobs:
+  impact:
+    name: Impact Plan
+    runs-on: ubuntu-latest
+    outputs:
+      mode: ${{ steps.plan.outputs.mode }}
+      base: ${{ steps.plan.outputs.base }}
+      head: ${{ steps.plan.outputs.head }}
+      fallback: ${{ steps.plan.outputs.fallback }}
+      fallback_reason: ${{ steps.plan.outputs.fallback_reason }}
+      changed_files: ${{ steps.plan.outputs.changed_files }}
+      surfaces: ${{ steps.plan.outputs.surfaces }}
+      selected_checks: ${{ steps.plan.outputs.selected_checks }}
+      skipped_checks: ${{ steps.plan.outputs.skipped_checks }}
+      static_checks: ${{ steps.plan.outputs.static_checks }}
+      tooling_checks: ${{ steps.plan.outputs.tooling_checks }}
+      test_checks: ${{ steps.plan.outputs.test_checks }}
+      browser_checks: ${{ steps.plan.outputs.browser_checks }}
+      run_static: ${{ steps.plan.outputs.run_static }}
+      run_tooling: ${{ steps.plan.outputs.run_tooling }}
+      run_tests: ${{ steps.plan.outputs.run_tests }}
+      run_browser: ${{ steps.plan.outputs.run_browser }}
+      run_dialyzer: ${{ steps.plan.outputs.run_dialyzer }}
+      has_checks: ${{ steps.plan.outputs.has_checks }}
+      compile: ${{ steps.plan.outputs.compile }}
+      lint_js: ${{ steps.plan.outputs.lint_js }}
+      js_tests: ${{ steps.plan.outputs.js_tests }}
+      ci_impact_tests: ${{ steps.plan.outputs.ci_impact_tests }}
+      ci_partition_profile_plan: ${{ steps.plan.outputs.ci_partition_profile_plan }}
+      py_tests: ${{ steps.plan.outputs.py_tests }}
+      i18n_quality: ${{ steps.plan.outputs.i18n_quality }}
+      format: ${{ steps.plan.outputs.format }}
+      credo: ${{ steps.plan.outputs.credo }}
+      lint_css: ${{ steps.plan.outputs.lint_css }}
+      lint_bundle: ${{ steps.plan.outputs.lint_bundle }}
+      test: ${{ steps.plan.outputs.test }}
+      test_feature: ${{ steps.plan.outputs.test_feature }}
+      test_domain: ${{ steps.plan.outputs.test_domain }}
+      test_web: ${{ steps.plan.outputs.test_web }}
+      e2e_changed: ${{ steps.plan.outputs.e2e_changed }}
+      e2e_smoke_connect: ${{ steps.plan.outputs.e2e_smoke_connect }}
+      e2e_smoke_chat: ${{ steps.plan.outputs.e2e_smoke_chat }}
+      e2e_smoke_dialogs: ${{ steps.plan.outputs.e2e_smoke_dialogs }}
+      e2e_smoke_i18n: ${{ steps.plan.outputs.e2e_smoke_i18n }}
+      e2e_smoke_calls: ${{ steps.plan.outputs.e2e_smoke_calls }}
+      e2e_smoke_mobile: ${{ steps.plan.outputs.e2e_smoke_mobile }}
+      e2e: ${{ steps.plan.outputs.e2e }}
+      dialyzer: ${{ steps.plan.outputs.dialyzer }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Elixir/OTP
+        uses: erlef/setup-beam@v1
+        with:
+          otp-version: ${{ env.OTP_VERSION }}
+          elixir-version: ${{ env.ELIXIR_VERSION }}
+
+      - name: Fetch base refs
+        run: git fetch origin '+refs/heads/*:refs/remotes/origin/*' --prune
+
+      - name: Build impact plan
+        id: plan
+        env:
+          CI_PLAN_MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.mode || 'changed' }}
+          CI_BASE: ${{ github.event_name == 'pull_request' && format('origin/{0}', github.base_ref) || github.event_name == 'push' && github.event.before || inputs.base }}
+          CI_HEAD: ${{ github.event_name == 'pull_request' && 'HEAD' || github.event_name == 'push' && github.sha || inputs.head }}
+        run: elixir scripts/ci_github_plan.exs
+
   compile:
     name: Compile
+    needs: [impact]
+    if: needs.impact.outputs.compile == 'true'
     runs-on: ubuntu-latest
+    outputs:
+      compile: ${{ steps.compile.outcome }}
     steps:
       - uses: actions/checkout@v4
 
@@ -48,29 +142,94 @@ jobs:
             build-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-${{ hashFiles('**/mix.lock') }}-
             build-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-
 
-      - name: Cache node_modules
-        uses: actions/cache@v4
-        with:
-          path: apps/retro_hex_chat_web/assets/node_modules
-          key: node-${{ runner.os }}-${{ hashFiles('apps/retro_hex_chat_web/assets/package-lock.json') }}
-          restore-keys: |
-            node-${{ runner.os }}-
-
       - run: mix deps.get
-      - run: npm install --prefix apps/retro_hex_chat_web/assets
 
       - name: Compile
-        run: mix compile --warnings-as-errors
+        id: compile
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          mix compile --warnings-as-errors 2>&1 | tee /tmp/compile_output.txt
 
-  lint:
-    name: Lint
-    needs: [compile]
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: compile-outputs
+          path: /tmp/compile_output.txt
+          if-no-files-found: ignore
+          retention-days: 1
+
+  tooling:
+    name: CI Tooling
+    needs: [impact]
+    if: needs.impact.outputs.run_tooling == 'true'
+    runs-on: ubuntu-latest
+    outputs:
+      ci_impact_tests: ${{ steps.ci_impact_tests.outcome }}
+      ci_partition_profile_plan: ${{ steps.ci_partition_profile_plan.outcome }}
+      py_tests: ${{ steps.py_tests.outcome }}
+      i18n_quality: ${{ steps.i18n_quality.outcome }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Elixir/OTP
+        uses: erlef/setup-beam@v1
+        with:
+          otp-version: ${{ env.OTP_VERSION }}
+          elixir-version: ${{ env.ELIXIR_VERSION }}
+
+      - name: CI Impact Tests
+        id: ci_impact_tests
+        if: needs.impact.outputs.ci_impact_tests == 'true'
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          elixir scripts/ci_impact_test.exs 2>&1 | tee /tmp/ci_impact_tests_output.txt
+
+      - name: CI Partition Profile Plan
+        id: ci_partition_profile_plan
+        if: needs.impact.outputs.ci_partition_profile_plan == 'true'
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          elixir scripts/ci_partition_profile.exs --counts 2 --suites test --dry-run 2>&1 | tee /tmp/ci_partition_profile_plan_output.txt
+
+      - name: i18n Tooling Tests
+        id: py_tests
+        if: needs.impact.outputs.py_tests == 'true'
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          python3 -m unittest discover -s scripts -t scripts -p 'test_*.py' 2>&1 | tee /tmp/py_tests_output.txt
+
+      - name: i18n Quality
+        id: i18n_quality
+        if: needs.impact.outputs.i18n_quality == 'true'
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          python3 scripts/i18n_quality_check.py --fail-on-findings 2>&1 | tee /tmp/i18n_quality_output.txt
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tooling-outputs
+          path: /tmp/*_output.txt
+          if-no-files-found: ignore
+          retention-days: 1
+
+  static:
+    name: Static Checks
+    needs: [impact]
+    if: needs.impact.outputs.run_static == 'true'
     runs-on: ubuntu-latest
     outputs:
       format: ${{ steps.format.outcome }}
       credo: ${{ steps.credo.outcome }}
-      js_lint: ${{ steps.js_lint.outcome }}
-      css_lint: ${{ steps.css_lint.outcome }}
+      lint_js: ${{ steps.lint_js.outcome }}
+      js_tests: ${{ steps.js_tests.outcome }}
+      lint_css: ${{ steps.lint_css.outcome }}
+      lint_bundle: ${{ steps.lint_bundle.outcome }}
     steps:
       - uses: actions/checkout@v4
 
@@ -106,8 +265,12 @@ jobs:
           restore-keys: |
             node-${{ runner.os }}-
 
+      - run: mix deps.get
+      - run: npm install --prefix apps/retro_hex_chat_web/assets
+
       - name: Format
         id: format
+        if: needs.impact.outputs.format == 'true'
         continue-on-error: true
         run: |
           set -o pipefail
@@ -115,40 +278,62 @@ jobs:
 
       - name: Credo
         id: credo
+        if: needs.impact.outputs.credo == 'true'
         continue-on-error: true
         run: |
           set -o pipefail
           mix credo --strict 2>&1 | tee /tmp/credo_output.txt
 
       - name: JS Lint
-        id: js_lint
+        id: lint_js
+        if: needs.impact.outputs.lint_js == 'true'
         continue-on-error: true
         run: |
           set -o pipefail
-          (npm run lint --prefix apps/retro_hex_chat_web/assets && npm run format:check --prefix apps/retro_hex_chat_web/assets) 2>&1 | tee /tmp/js_lint_output.txt
+          make lint.js 2>&1 | tee /tmp/lint_js_output.txt
+
+      - name: JS Tests
+        id: js_tests
+        if: needs.impact.outputs.js_tests == 'true'
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          npm test --prefix apps/retro_hex_chat_web/assets 2>&1 | tee /tmp/js_tests_output.txt
 
       - name: CSS Lint
-        id: css_lint
+        id: lint_css
+        if: needs.impact.outputs.lint_css == 'true'
         continue-on-error: true
         run: |
           set -o pipefail
-          make lint.css 2>&1 | tee /tmp/css_lint_output.txt
+          make lint.css 2>&1 | tee /tmp/lint_css_output.txt
+
+      - name: Bundle Budget
+        id: lint_bundle
+        if: needs.impact.outputs.lint_bundle == 'true'
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          make lint.bundle 2>&1 | tee /tmp/lint_bundle_output.txt
 
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: lint-outputs
+          name: static-outputs
           path: /tmp/*_output.txt
           if-no-files-found: ignore
           retention-days: 1
 
   test:
-    name: Test
-    needs: [compile]
+    name: Elixir Tests
+    needs: [impact]
+    if: needs.impact.outputs.run_tests == 'true'
     runs-on: ubuntu-latest
     outputs:
-      tests: ${{ steps.tests.outcome }}
-      js_tests: ${{ steps.js_tests.outcome }}
+      test: ${{ steps.test.outcome }}
+      test_feature: ${{ steps.test_feature.outcome }}
+      test_domain: ${{ steps.test_domain.outcome }}
+      test_web: ${{ steps.test_web.outcome }}
     services:
       postgres:
         image: postgres:16-alpine
@@ -165,9 +350,11 @@ jobs:
           --health-retries 5
     env:
       PGHOST: localhost
-      PGPORT: "5432"
+      PGPORT: '5432'
       PGUSER: postgres
       PGPASSWORD: postgres
+      TEST_DB_PORT: '5432'
+      TEST_DB_POOL_SIZE: '6'
     steps:
       - uses: actions/checkout@v4
 
@@ -195,29 +382,44 @@ jobs:
             build-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-${{ hashFiles('**/mix.lock') }}-
             build-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-
 
-      - name: Restore node_modules cache
-        uses: actions/cache/restore@v4
-        with:
-          path: apps/retro_hex_chat_web/assets/node_modules
-          key: node-${{ runner.os }}-${{ hashFiles('apps/retro_hex_chat_web/assets/package-lock.json') }}
-          restore-keys: |
-            node-${{ runner.os }}-
+      - run: mix deps.get
 
-      - run: mix ecto.create --quiet && mix ecto.migrate --quiet
+      - name: Prepare test database
+        run: |
+          mix ecto.create --quiet
+          mix ecto.migrate --quiet
 
-      - name: JS Tests
-        id: js_tests
+      - name: Domain Tests
+        id: test_domain
+        if: needs.impact.outputs.test_domain == 'true'
         continue-on-error: true
         run: |
           set -o pipefail
-          npm test --prefix apps/retro_hex_chat_web/assets 2>&1 | tee /tmp/js_tests_output.txt
+          make test.domain 2>&1 | tee /tmp/test_domain_output.txt
+
+      - name: Web Tests
+        id: test_web
+        if: needs.impact.outputs.test_web == 'true'
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          make test.web 2>&1 | tee /tmp/test_web_output.txt
 
       - name: Tests
-        id: tests
+        id: test
+        if: needs.impact.outputs.test == 'true'
         continue-on-error: true
         run: |
           set -o pipefail
-          mix test --cover 2>&1 | tee /tmp/tests_output.txt
+          mix test --cover 2>&1 | tee /tmp/test_output.txt
+
+      - name: Feature Tests
+        id: test_feature
+        if: needs.impact.outputs.test_feature == 'true'
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          mix test --only liveview_feature 2>&1 | tee /tmp/test_feature_output.txt
 
       - uses: actions/upload-artifact@v4
         if: always()
@@ -227,11 +429,19 @@ jobs:
           if-no-files-found: ignore
           retention-days: 1
 
-  test-e2e:
-    name: Test (E2E)
-    needs: [compile]
+  browser:
+    name: Browser Smokes
+    needs: [impact]
+    if: needs.impact.outputs.run_browser == 'true'
     runs-on: ubuntu-latest
     outputs:
+      e2e_changed: ${{ steps.e2e_changed.outcome }}
+      e2e_smoke_connect: ${{ steps.e2e_smoke_connect.outcome }}
+      e2e_smoke_chat: ${{ steps.e2e_smoke_chat.outcome }}
+      e2e_smoke_dialogs: ${{ steps.e2e_smoke_dialogs.outcome }}
+      e2e_smoke_i18n: ${{ steps.e2e_smoke_i18n.outcome }}
+      e2e_smoke_calls: ${{ steps.e2e_smoke_calls.outcome }}
+      e2e_smoke_mobile: ${{ steps.e2e_smoke_mobile.outcome }}
       e2e: ${{ steps.e2e.outcome }}
     services:
       postgres:
@@ -249,11 +459,14 @@ jobs:
           --health-retries 5
     env:
       PGHOST: localhost
-      PGPORT: "5432"
+      PGPORT: '5432'
       PGUSER: postgres
       PGPASSWORD: postgres
+      TEST_DB_PORT: '5432'
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Elixir/OTP
         id: beam
@@ -279,26 +492,107 @@ jobs:
             build-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-${{ hashFiles('**/mix.lock') }}-
             build-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-
 
-      - run: mix ecto.create --quiet && mix ecto.migrate --quiet
+      - name: Restore frontend node_modules cache
+        uses: actions/cache/restore@v4
+        with:
+          path: apps/retro_hex_chat_web/assets/node_modules
+          key: node-${{ runner.os }}-${{ hashFiles('apps/retro_hex_chat_web/assets/package-lock.json') }}
+          restore-keys: |
+            node-${{ runner.os }}-
 
-      - name: E2E Tests
-        id: e2e
+      - name: Restore E2E node_modules cache
+        uses: actions/cache/restore@v4
+        with:
+          path: e2e/node_modules
+          key: e2e-node-${{ runner.os }}-${{ hashFiles('e2e/package-lock.json') }}
+          restore-keys: |
+            e2e-node-${{ runner.os }}-
+
+      - run: mix deps.get
+      - run: npm install --prefix apps/retro_hex_chat_web/assets
+      - run: npm install --prefix e2e
+      - run: cd e2e && npx playwright install --with-deps chromium
+      - run: make e2e.db.setup
+
+      - name: Changed E2E Tests
+        id: e2e_changed
+        if: needs.impact.outputs.e2e_changed == 'true'
         continue-on-error: true
         run: |
           set -o pipefail
-          mix test --only e2e 2>&1 | tee /tmp/e2e_output.txt
+          make e2e.changed SINCE=${{ needs.impact.outputs.base }} 2>&1 | tee /tmp/e2e_changed_output.txt
+
+      - name: E2E Smoke Connect
+        id: e2e_smoke_connect
+        if: needs.impact.outputs.e2e_smoke_connect == 'true'
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          make e2e.smoke.connect 2>&1 | tee /tmp/e2e_smoke_connect_output.txt
+
+      - name: E2E Smoke Chat
+        id: e2e_smoke_chat
+        if: needs.impact.outputs.e2e_smoke_chat == 'true'
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          make e2e.smoke.chat 2>&1 | tee /tmp/e2e_smoke_chat_output.txt
+
+      - name: E2E Smoke Dialogs
+        id: e2e_smoke_dialogs
+        if: needs.impact.outputs.e2e_smoke_dialogs == 'true'
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          make e2e.smoke.dialogs 2>&1 | tee /tmp/e2e_smoke_dialogs_output.txt
+
+      - name: E2E Smoke i18n
+        id: e2e_smoke_i18n
+        if: needs.impact.outputs.e2e_smoke_i18n == 'true'
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          make e2e.smoke.i18n 2>&1 | tee /tmp/e2e_smoke_i18n_output.txt
+
+      - name: E2E Smoke Calls
+        id: e2e_smoke_calls
+        if: needs.impact.outputs.e2e_smoke_calls == 'true'
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          make e2e.smoke.calls 2>&1 | tee /tmp/e2e_smoke_calls_output.txt
+
+      - name: E2E Smoke Mobile
+        id: e2e_smoke_mobile
+        if: needs.impact.outputs.e2e_smoke_mobile == 'true'
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          make e2e.smoke.mobile 2>&1 | tee /tmp/e2e_smoke_mobile_output.txt
+
+      - name: Full E2E Tests
+        id: e2e
+        if: needs.impact.outputs.e2e == 'true'
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          make e2e.headless 2>&1 | tee /tmp/e2e_output.txt
 
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: e2e-outputs
-          path: /tmp/e2e_output.txt
+          name: browser-outputs
+          path: |
+            /tmp/*_output.txt
+            e2e/test-results
+            e2e/playwright-report
           if-no-files-found: ignore
           retention-days: 1
 
   dialyzer:
     name: Dialyzer
-    needs: [compile]
+    needs: [impact]
+    if: needs.impact.outputs.dialyzer == 'true'
     runs-on: ubuntu-latest
     outputs:
       dialyzer: ${{ steps.dialyzer.outcome }}
@@ -338,6 +632,8 @@ jobs:
           restore-keys: |
             plt-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-
 
+      - run: mix deps.get
+
       - name: Create PLTs
         if: steps.plt_cache.outputs.cache-hit != 'true'
         run: mix dialyzer --plt
@@ -366,11 +662,12 @@ jobs:
 
   report:
     name: CI Report
-    needs: [compile, lint, test, test-e2e, dialyzer]
+    needs: [impact, compile, tooling, static, test, browser, dialyzer]
     if: always()
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v4
+        continue-on-error: true
         with:
           path: /tmp/ci-outputs
           pattern: '*-outputs'
@@ -378,14 +675,68 @@ jobs:
 
       - name: Build CI report
         env:
-          STATUS_COMPILE: ${{ needs.compile.result }}
-          STATUS_FORMAT: ${{ needs.lint.outputs.format }}
-          STATUS_CREDO: ${{ needs.lint.outputs.credo }}
-          STATUS_JS_LINT: ${{ needs.lint.outputs.js_lint }}
-          STATUS_CSS_LINT: ${{ needs.lint.outputs.css_lint }}
-          STATUS_TESTS: ${{ needs.test.outputs.tests }}
-          STATUS_JS_TESTS: ${{ needs.test.outputs.js_tests }}
-          STATUS_E2E: ${{ needs.test-e2e.outputs.e2e }}
+          PLAN_MODE: ${{ needs.impact.outputs.mode }}
+          PLAN_BASE: ${{ needs.impact.outputs.base }}
+          PLAN_HEAD: ${{ needs.impact.outputs.head }}
+          PLAN_FALLBACK: ${{ needs.impact.outputs.fallback }}
+          PLAN_FALLBACK_REASON: ${{ needs.impact.outputs.fallback_reason }}
+          PLAN_CHANGED_FILES: ${{ needs.impact.outputs.changed_files }}
+          PLAN_SURFACES: ${{ needs.impact.outputs.surfaces }}
+          PLAN_SELECTED_CHECKS: ${{ needs.impact.outputs.selected_checks }}
+          PLAN_SKIPPED_CHECKS: ${{ needs.impact.outputs.skipped_checks }}
+          JOB_COMPILE: ${{ needs.compile.result }}
+          JOB_TOOLING: ${{ needs.tooling.result }}
+          JOB_STATIC: ${{ needs.static.result }}
+          JOB_TEST: ${{ needs.test.result }}
+          JOB_BROWSER: ${{ needs.browser.result }}
+          JOB_DIALYZER: ${{ needs.dialyzer.result }}
+          SELECT_COMPILE: ${{ needs.impact.outputs.compile }}
+          SELECT_CI_IMPACT_TESTS: ${{ needs.impact.outputs.ci_impact_tests }}
+          SELECT_CI_PARTITION_PROFILE_PLAN: ${{ needs.impact.outputs.ci_partition_profile_plan }}
+          SELECT_PY_TESTS: ${{ needs.impact.outputs.py_tests }}
+          SELECT_I18N_QUALITY: ${{ needs.impact.outputs.i18n_quality }}
+          SELECT_FORMAT: ${{ needs.impact.outputs.format }}
+          SELECT_CREDO: ${{ needs.impact.outputs.credo }}
+          SELECT_LINT_JS: ${{ needs.impact.outputs.lint_js }}
+          SELECT_JS_TESTS: ${{ needs.impact.outputs.js_tests }}
+          SELECT_LINT_CSS: ${{ needs.impact.outputs.lint_css }}
+          SELECT_LINT_BUNDLE: ${{ needs.impact.outputs.lint_bundle }}
+          SELECT_TEST_DOMAIN: ${{ needs.impact.outputs.test_domain }}
+          SELECT_TEST_WEB: ${{ needs.impact.outputs.test_web }}
+          SELECT_TEST: ${{ needs.impact.outputs.test }}
+          SELECT_TEST_FEATURE: ${{ needs.impact.outputs.test_feature }}
+          SELECT_E2E_CHANGED: ${{ needs.impact.outputs.e2e_changed }}
+          SELECT_E2E_SMOKE_CONNECT: ${{ needs.impact.outputs.e2e_smoke_connect }}
+          SELECT_E2E_SMOKE_CHAT: ${{ needs.impact.outputs.e2e_smoke_chat }}
+          SELECT_E2E_SMOKE_DIALOGS: ${{ needs.impact.outputs.e2e_smoke_dialogs }}
+          SELECT_E2E_SMOKE_I18N: ${{ needs.impact.outputs.e2e_smoke_i18n }}
+          SELECT_E2E_SMOKE_CALLS: ${{ needs.impact.outputs.e2e_smoke_calls }}
+          SELECT_E2E_SMOKE_MOBILE: ${{ needs.impact.outputs.e2e_smoke_mobile }}
+          SELECT_E2E: ${{ needs.impact.outputs.e2e }}
+          SELECT_DIALYZER: ${{ needs.impact.outputs.dialyzer }}
+          STATUS_COMPILE: ${{ needs.compile.outputs.compile }}
+          STATUS_CI_IMPACT_TESTS: ${{ needs.tooling.outputs.ci_impact_tests }}
+          STATUS_CI_PARTITION_PROFILE_PLAN: ${{ needs.tooling.outputs.ci_partition_profile_plan }}
+          STATUS_PY_TESTS: ${{ needs.tooling.outputs.py_tests }}
+          STATUS_I18N_QUALITY: ${{ needs.tooling.outputs.i18n_quality }}
+          STATUS_FORMAT: ${{ needs.static.outputs.format }}
+          STATUS_CREDO: ${{ needs.static.outputs.credo }}
+          STATUS_LINT_JS: ${{ needs.static.outputs.lint_js }}
+          STATUS_JS_TESTS: ${{ needs.static.outputs.js_tests }}
+          STATUS_LINT_CSS: ${{ needs.static.outputs.lint_css }}
+          STATUS_LINT_BUNDLE: ${{ needs.static.outputs.lint_bundle }}
+          STATUS_TEST_DOMAIN: ${{ needs.test.outputs.test_domain }}
+          STATUS_TEST_WEB: ${{ needs.test.outputs.test_web }}
+          STATUS_TEST: ${{ needs.test.outputs.test }}
+          STATUS_TEST_FEATURE: ${{ needs.test.outputs.test_feature }}
+          STATUS_E2E_CHANGED: ${{ needs.browser.outputs.e2e_changed }}
+          STATUS_E2E_SMOKE_CONNECT: ${{ needs.browser.outputs.e2e_smoke_connect }}
+          STATUS_E2E_SMOKE_CHAT: ${{ needs.browser.outputs.e2e_smoke_chat }}
+          STATUS_E2E_SMOKE_DIALOGS: ${{ needs.browser.outputs.e2e_smoke_dialogs }}
+          STATUS_E2E_SMOKE_I18N: ${{ needs.browser.outputs.e2e_smoke_i18n }}
+          STATUS_E2E_SMOKE_CALLS: ${{ needs.browser.outputs.e2e_smoke_calls }}
+          STATUS_E2E_SMOKE_MOBILE: ${{ needs.browser.outputs.e2e_smoke_mobile }}
+          STATUS_E2E: ${{ needs.browser.outputs.e2e }}
           STATUS_DIALYZER: ${{ needs.dialyzer.outputs.dialyzer }}
           RUN_NUMBER: ${{ github.run_number }}
           RUN_ID: ${{ github.run_id }}
@@ -394,100 +745,50 @@ jobs:
         run: |
           icon() {
             case "$1" in
-              success) echo "✅" ;;
-              failure) echo "❌" ;;
-              *) echo "⏭️" ;;
+              success) echo "PASS" ;;
+              failure) echo "FAIL" ;;
+              skipped) echo "SKIP" ;;
+              *) echo "PENDING" ;;
             esac
           }
 
-          # Extract compile summary
-          COMPILE_SUMMARY=""
-          if [ "$STATUS_COMPILE" = "success" ]; then
-            COMPILE_SUMMARY="no warnings"
-          else
-            COMPILE_SUMMARY="compilation failed"
-          fi
+          status_for() {
+            selected="$1"
+            status="$2"
+            job="$3"
 
-          # Extract format summary
-          FORMAT_SUMMARY=""
-          if [ "$STATUS_FORMAT" = "success" ]; then
-            FORMAT_SUMMARY="all files formatted"
-          else
-            FORMAT_SUMMARY="formatting issues found"
-          fi
-
-          # Extract credo summary
-          CREDO_SUMMARY=""
-          if [ -f /tmp/ci-outputs/credo_output.txt ]; then
-            if [ "$STATUS_CREDO" = "success" ]; then
-              CREDO_SUMMARY="no issues"
+            if [ "$selected" != "true" ]; then
+              echo "skipped"
+            elif [ -n "$status" ]; then
+              echo "$status"
             else
-              CREDO_ISSUES=$(grep -cE '┃' /tmp/ci-outputs/credo_output.txt 2>/dev/null || echo "0")
-              CREDO_SUMMARY="${CREDO_ISSUES} issue(s)"
+              echo "$job"
             fi
-          fi
+          }
 
-          # Extract JS lint summary
-          JS_LINT_SUMMARY=""
-          if [ "$STATUS_JS_LINT" = "success" ]; then
-            JS_LINT_SUMMARY="no issues"
-          else
-            JS_LINT_SUMMARY="linting issues found"
-          fi
+          row() {
+            title="$1"
+            selected="$2"
+            status="$3"
+            job="$4"
+            final_status="$(status_for "$selected" "$status" "$job")"
+            echo "| **${title}** | $(icon "$final_status") | ${final_status} |"
+          }
 
-          # Extract CSS lint summary
-          CSS_LINT_SUMMARY=""
-          if [ "$STATUS_CSS_LINT" = "success" ]; then
-            CSS_LINT_SUMMARY="no violations"
-          else
-            CSS_LINT_SUMMARY="inline style violations found"
-          fi
-
-          # Extract JS tests summary
-          JS_TESTS_SUMMARY=""
-          if [ -f /tmp/ci-outputs/js_tests_output.txt ]; then
-            JS_TESTS_SUMMARY=$(grep -oE '[0-9]+ tests? passed' /tmp/ci-outputs/js_tests_output.txt | tail -1)
-            if [ -z "$JS_TESTS_SUMMARY" ] && [ "$STATUS_JS_TESTS" = "success" ]; then
-              JS_TESTS_SUMMARY="all passed"
-            elif [ "$STATUS_JS_TESTS" = "failure" ]; then
-              JS_TESTS_SUMMARY=$(grep -oE '[0-9]+ tests? failed' /tmp/ci-outputs/js_tests_output.txt | tail -1)
-              [ -z "$JS_TESTS_SUMMARY" ] && JS_TESTS_SUMMARY="failures detected"
-            fi
-          elif [ "$STATUS_JS_TESTS" = "success" ]; then
-            JS_TESTS_SUMMARY="all passed"
-          fi
-
-          # Extract test summary (e.g. "822 tests, 0 failures")
-          TEST_SUMMARY=""
-          if [ -f /tmp/ci-outputs/tests_output.txt ]; then
-            TEST_SUMMARY=$(grep -oE '[0-9]+ tests?, [0-9]+ failures?(, [0-9]+ excluded)?' /tmp/ci-outputs/tests_output.txt | tail -1)
-          fi
-
-          # Extract E2E summary
-          E2E_SUMMARY=""
-          if [ -f /tmp/ci-outputs/e2e_output.txt ]; then
-            E2E_SUMMARY=$(grep -oE '[0-9]+ tests?, [0-9]+ failures?(, [0-9]+ excluded)?' /tmp/ci-outputs/e2e_output.txt | tail -1)
-            [ -z "$E2E_SUMMARY" ] && [ "$STATUS_E2E" = "success" ] && E2E_SUMMARY="all passed"
-          elif [ "$STATUS_E2E" = "success" ]; then
-            E2E_SUMMARY="all passed"
-          fi
-
-          # Extract dialyzer summary
-          DIALYZER_SUMMARY=""
-          if [ -f /tmp/ci-outputs/dialyzer_output.txt ]; then
-            if [ "$STATUS_DIALYZER" = "success" ]; then
-              DIALYZER_SUMMARY="no warnings"
+          csv_list() {
+            value="$1"
+            empty="$2"
+            if [ -z "$value" ]; then
+              echo "$empty"
             else
-              DIALYZER_WARNINGS=$(grep -cE '^.+:\d+:' /tmp/ci-outputs/dialyzer_output.txt 2>/dev/null || echo "0")
-              DIALYZER_SUMMARY="${DIALYZER_WARNINGS} warning(s)"
+              echo "$value" | tr ',' '\n' | sed 's/^/- `/' | sed 's/$/`/'
             fi
-          fi
+          }
 
-          # Extract coverage totals (domain app first, web app second)
           COVERAGE_DOMAIN=""
           COVERAGE_WEB=""
-          if [ -f /tmp/ci-outputs/tests_output.txt ]; then
-            COVERAGE_LINES=$(grep -E '^\s+[0-9]+\.[0-9]+% \| Total' /tmp/ci-outputs/tests_output.txt || true)
+          if [ -f /tmp/ci-outputs/test_output.txt ]; then
+            COVERAGE_LINES=$(grep -E '^\s+[0-9]+\.[0-9]+% \| Total' /tmp/ci-outputs/test_output.txt || true)
             COVERAGE_DOMAIN=$(echo "$COVERAGE_LINES" | head -1 | grep -oE '[0-9]+\.[0-9]+%' || true)
             COVERAGE_WEB=$(echo "$COVERAGE_LINES" | sed -n '2p' | grep -oE '[0-9]+\.[0-9]+%' || true)
           fi
@@ -497,96 +798,123 @@ jobs:
           {
             echo "## CI Results"
             echo ""
-            echo "| Check | Result |"
-            echo "|-------|--------|"
-            echo "| **Compile** | $(icon "$STATUS_COMPILE") ${COMPILE_SUMMARY} |"
-            echo "| **Format** | $(icon "$STATUS_FORMAT") ${FORMAT_SUMMARY} |"
-            echo "| **Credo** | $(icon "$STATUS_CREDO") ${CREDO_SUMMARY} |"
-            echo "| **JS Lint** | $(icon "$STATUS_JS_LINT") ${JS_LINT_SUMMARY} |"
-            echo "| **CSS Lint** | $(icon "$STATUS_CSS_LINT") ${CSS_LINT_SUMMARY} |"
-            echo "| **JS Tests** | $(icon "$STATUS_JS_TESTS") ${JS_TESTS_SUMMARY} |"
-            echo "| **Tests** | $(icon "$STATUS_TESTS") ${TEST_SUMMARY} |"
-            echo "| **E2E** | $(icon "$STATUS_E2E") ${E2E_SUMMARY} |"
-            echo "| **Dialyzer** | $(icon "$STATUS_DIALYZER") ${DIALYZER_SUMMARY} |"
-            if [ -n "$COVERAGE_DOMAIN" ]; then
-              echo "| **Coverage** | domain: ${COVERAGE_DOMAIN} · web: ${COVERAGE_WEB} |"
+            echo "Mode: \`${PLAN_MODE:-unknown}\`"
+            echo "Base: \`${PLAN_BASE:-unknown}\`"
+            echo "Head: \`${PLAN_HEAD:-unknown}\`"
+            echo "Fallback: \`${PLAN_FALLBACK:-unknown}\`"
+            if [ -n "$PLAN_FALLBACK_REASON" ]; then
+              echo "Fallback reason: ${PLAN_FALLBACK_REASON}"
             fi
             echo ""
-
-            # Coverage report (collapsible)
-            if [ -f /tmp/ci-outputs/tests_output.txt ]; then
-              COVER_OUTPUT=$(sed -n '/Generating cover results/,/Coverage threshold/p' /tmp/ci-outputs/tests_output.txt)
-              if [ -n "$COVER_OUTPUT" ]; then
-                echo "<details>"
-                echo "<summary>📊 <strong>Coverage Report</strong> — click to expand</summary>"
-                echo ""
-                echo '```'
-                echo "$COVER_OUTPUT"
-                echo '```'
-                echo ""
-                echo "</details>"
-                echo ""
-              fi
+            echo "### Selected Checks"
+            csv_list "$PLAN_SELECTED_CHECKS" "_No technical checks selected._"
+            echo ""
+            echo "### Changed Files"
+            csv_list "$PLAN_CHANGED_FILES" "_No changed files._"
+            echo ""
+            echo "### Surfaces"
+            csv_list "$PLAN_SURFACES" "_None._"
+            echo ""
+            echo "### Results"
+            echo ""
+            echo "| Check | Result | Status |"
+            echo "|-------|--------|--------|"
+            row "Compile" "$SELECT_COMPILE" "$STATUS_COMPILE" "$JOB_COMPILE"
+            row "CI Impact Tests" "$SELECT_CI_IMPACT_TESTS" "$STATUS_CI_IMPACT_TESTS" "$JOB_TOOLING"
+            row "CI Partition Profile Plan" "$SELECT_CI_PARTITION_PROFILE_PLAN" "$STATUS_CI_PARTITION_PROFILE_PLAN" "$JOB_TOOLING"
+            row "i18n Tooling Tests" "$SELECT_PY_TESTS" "$STATUS_PY_TESTS" "$JOB_TOOLING"
+            row "i18n Quality" "$SELECT_I18N_QUALITY" "$STATUS_I18N_QUALITY" "$JOB_TOOLING"
+            row "Format" "$SELECT_FORMAT" "$STATUS_FORMAT" "$JOB_STATIC"
+            row "Credo" "$SELECT_CREDO" "$STATUS_CREDO" "$JOB_STATIC"
+            row "JS Lint" "$SELECT_LINT_JS" "$STATUS_LINT_JS" "$JOB_STATIC"
+            row "JS Tests" "$SELECT_JS_TESTS" "$STATUS_JS_TESTS" "$JOB_STATIC"
+            row "CSS Lint" "$SELECT_LINT_CSS" "$STATUS_LINT_CSS" "$JOB_STATIC"
+            row "Bundle Budget" "$SELECT_LINT_BUNDLE" "$STATUS_LINT_BUNDLE" "$JOB_STATIC"
+            row "Domain Tests" "$SELECT_TEST_DOMAIN" "$STATUS_TEST_DOMAIN" "$JOB_TEST"
+            row "Web Tests" "$SELECT_TEST_WEB" "$STATUS_TEST_WEB" "$JOB_TEST"
+            row "Tests" "$SELECT_TEST" "$STATUS_TEST" "$JOB_TEST"
+            row "Feature Tests" "$SELECT_TEST_FEATURE" "$STATUS_TEST_FEATURE" "$JOB_TEST"
+            row "Changed E2E Tests" "$SELECT_E2E_CHANGED" "$STATUS_E2E_CHANGED" "$JOB_BROWSER"
+            row "E2E Smoke Connect" "$SELECT_E2E_SMOKE_CONNECT" "$STATUS_E2E_SMOKE_CONNECT" "$JOB_BROWSER"
+            row "E2E Smoke Chat" "$SELECT_E2E_SMOKE_CHAT" "$STATUS_E2E_SMOKE_CHAT" "$JOB_BROWSER"
+            row "E2E Smoke Dialogs" "$SELECT_E2E_SMOKE_DIALOGS" "$STATUS_E2E_SMOKE_DIALOGS" "$JOB_BROWSER"
+            row "E2E Smoke i18n" "$SELECT_E2E_SMOKE_I18N" "$STATUS_E2E_SMOKE_I18N" "$JOB_BROWSER"
+            row "E2E Smoke Calls" "$SELECT_E2E_SMOKE_CALLS" "$STATUS_E2E_SMOKE_CALLS" "$JOB_BROWSER"
+            row "E2E Smoke Mobile" "$SELECT_E2E_SMOKE_MOBILE" "$STATUS_E2E_SMOKE_MOBILE" "$JOB_BROWSER"
+            row "Full E2E Tests" "$SELECT_E2E" "$STATUS_E2E" "$JOB_BROWSER"
+            row "Dialyzer" "$SELECT_DIALYZER" "$STATUS_DIALYZER" "$JOB_DIALYZER"
+            if [ -n "$COVERAGE_DOMAIN" ]; then
+              echo "| **Coverage** | INFO | domain: ${COVERAGE_DOMAIN} / web: ${COVERAGE_WEB:-n/a} |"
             fi
-
-            # Detailed output for each failed check
-            for check in compile format credo js_lint css_lint js_tests tests e2e dialyzer; do
-              status_var="STATUS_$(echo "$check" | tr '[:lower:]' '[:upper:]')"
-              status="${!status_var}"
-
-              if [ "$status" = "failure" ] && [ -f "/tmp/ci-outputs/${check}_output.txt" ]; then
-                check_title="$(echo "$check" | sed 's/^./\U&/')"
-                echo "<details>"
-                echo "<summary>❌ <strong>${check_title}</strong> — click to expand</summary>"
-                echo ""
-                echo '```'
-                tail -60 "/tmp/ci-outputs/${check}_output.txt"
-                echo '```'
-                echo ""
-                echo "</details>"
-                echo ""
-              fi
-            done
-
+            echo ""
             echo "---"
-            echo "📋 [Run #${RUN_NUMBER}](${SERVER_URL}/${REPO}/actions/runs/${RUN_ID}) · \`${SHORT_SHA}\` · $(date -u +'%Y-%m-%d %H:%M UTC')"
+            echo "[Run #${RUN_NUMBER}](${SERVER_URL}/${REPO}/actions/runs/${RUN_ID}) · \`${SHORT_SHA}\` · $(date -u +'%Y-%m-%d %H:%M UTC')"
           } > /tmp/ci_report.md
 
           cp /tmp/ci_report.md "$GITHUB_STEP_SUMMARY"
 
+          failures=0
+
+          check_selected() {
+            title="$1"
+            selected="$2"
+            status="$3"
+            job="$4"
+
+            if [ "$selected" != "true" ]; then
+              return 0
+            fi
+
+            if [ "$job" != "success" ]; then
+              echo "::error::${title} job did not succeed: ${job}"
+              failures=1
+              return 0
+            fi
+
+            if [ -z "$status" ]; then
+              echo "::error::${title} was selected but did not report a status"
+              failures=1
+              return 0
+            fi
+
+            if [ "$status" != "success" ]; then
+              echo "::error::${title} failed: ${status}"
+              failures=1
+            fi
+          }
+
+          check_selected "Compile" "$SELECT_COMPILE" "$STATUS_COMPILE" "$JOB_COMPILE"
+          check_selected "CI Impact Tests" "$SELECT_CI_IMPACT_TESTS" "$STATUS_CI_IMPACT_TESTS" "$JOB_TOOLING"
+          check_selected "CI Partition Profile Plan" "$SELECT_CI_PARTITION_PROFILE_PLAN" "$STATUS_CI_PARTITION_PROFILE_PLAN" "$JOB_TOOLING"
+          check_selected "i18n Tooling Tests" "$SELECT_PY_TESTS" "$STATUS_PY_TESTS" "$JOB_TOOLING"
+          check_selected "i18n Quality" "$SELECT_I18N_QUALITY" "$STATUS_I18N_QUALITY" "$JOB_TOOLING"
+          check_selected "Format" "$SELECT_FORMAT" "$STATUS_FORMAT" "$JOB_STATIC"
+          check_selected "Credo" "$SELECT_CREDO" "$STATUS_CREDO" "$JOB_STATIC"
+          check_selected "JS Lint" "$SELECT_LINT_JS" "$STATUS_LINT_JS" "$JOB_STATIC"
+          check_selected "JS Tests" "$SELECT_JS_TESTS" "$STATUS_JS_TESTS" "$JOB_STATIC"
+          check_selected "CSS Lint" "$SELECT_LINT_CSS" "$STATUS_LINT_CSS" "$JOB_STATIC"
+          check_selected "Bundle Budget" "$SELECT_LINT_BUNDLE" "$STATUS_LINT_BUNDLE" "$JOB_STATIC"
+          check_selected "Domain Tests" "$SELECT_TEST_DOMAIN" "$STATUS_TEST_DOMAIN" "$JOB_TEST"
+          check_selected "Web Tests" "$SELECT_TEST_WEB" "$STATUS_TEST_WEB" "$JOB_TEST"
+          check_selected "Tests" "$SELECT_TEST" "$STATUS_TEST" "$JOB_TEST"
+          check_selected "Feature Tests" "$SELECT_TEST_FEATURE" "$STATUS_TEST_FEATURE" "$JOB_TEST"
+          check_selected "Changed E2E Tests" "$SELECT_E2E_CHANGED" "$STATUS_E2E_CHANGED" "$JOB_BROWSER"
+          check_selected "E2E Smoke Connect" "$SELECT_E2E_SMOKE_CONNECT" "$STATUS_E2E_SMOKE_CONNECT" "$JOB_BROWSER"
+          check_selected "E2E Smoke Chat" "$SELECT_E2E_SMOKE_CHAT" "$STATUS_E2E_SMOKE_CHAT" "$JOB_BROWSER"
+          check_selected "E2E Smoke Dialogs" "$SELECT_E2E_SMOKE_DIALOGS" "$STATUS_E2E_SMOKE_DIALOGS" "$JOB_BROWSER"
+          check_selected "E2E Smoke i18n" "$SELECT_E2E_SMOKE_I18N" "$STATUS_E2E_SMOKE_I18N" "$JOB_BROWSER"
+          check_selected "E2E Smoke Calls" "$SELECT_E2E_SMOKE_CALLS" "$STATUS_E2E_SMOKE_CALLS" "$JOB_BROWSER"
+          check_selected "E2E Smoke Mobile" "$SELECT_E2E_SMOKE_MOBILE" "$STATUS_E2E_SMOKE_MOBILE" "$JOB_BROWSER"
+          check_selected "Full E2E Tests" "$SELECT_E2E" "$STATUS_E2E" "$JOB_BROWSER"
+          check_selected "Dialyzer" "$SELECT_DIALYZER" "$STATUS_DIALYZER" "$JOB_DIALYZER"
+
+          if [ "$failures" -ne 0 ]; then
+            exit 1
+          fi
+
       - name: PR Comment
-        if: github.event_name == 'pull_request'
+        if: always() && github.event_name == 'pull_request'
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           header: ci-results
           path: /tmp/ci_report.md
-
-      - name: Fail if any check failed
-        run: |
-          # Check compile (job-level result)
-          if [[ "${{ needs.compile.result }}" != "success" ]]; then
-            echo "::error::Compilation failed"
-            exit 1
-          fi
-
-          # Check for infrastructure failures (job didn't complete)
-          if [[ "${{ needs.lint.result }}" != "success" || \
-                "${{ needs.test.result }}" != "success" || \
-                "${{ needs.test-e2e.result }}" != "success" || \
-                "${{ needs.dialyzer.result }}" != "success" ]]; then
-            echo "::error::One or more jobs had infrastructure failures"
-            exit 1
-          fi
-
-          # Check individual step outcomes
-          if [[ "${{ needs.lint.outputs.format }}" == "failure" || \
-                "${{ needs.lint.outputs.credo }}" == "failure" || \
-                "${{ needs.lint.outputs.js_lint }}" == "failure" || \
-                "${{ needs.lint.outputs.css_lint }}" == "failure" || \
-                "${{ needs.test.outputs.tests }}" == "failure" || \
-                "${{ needs.test.outputs.js_tests }}" == "failure" || \
-                "${{ needs.test-e2e.outputs.e2e }}" == "failure" || \
-                "${{ needs.dialyzer.outputs.dialyzer }}" == "failure" ]]; then
-            echo "::error::One or more checks failed"
-            exit 1
-          fi

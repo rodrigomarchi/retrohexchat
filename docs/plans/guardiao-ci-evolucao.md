@@ -1,6 +1,6 @@
 # Guardiao CI - evolucao continua
 
-**Status:** evolucao ativa, F1-F5 concluidas, F8 em andamento
+**Status:** evolucao ativa, F1-F6 concluidas, F8 em andamento
 **Criado:** 2026-07-31
 **Escopo:** reduzir tempo de feedback sem enfraquecer o guardiao principal.
 **Progresso futuro:** `docs/plans/guardiao-ci-evolucao-PROGRESS.md`
@@ -372,7 +372,7 @@ Validacao:
 
 ### F6 - CI hospedado com jobs condicionais e check final unico
 
-Status: `PENDENTE`
+Status: `CONCLUIDO`
 
 Objetivo:
 
@@ -381,7 +381,9 @@ Objetivo:
 
 Tarefas:
 
-- Trocar `workflow_dispatch` por eventos adequados quando creditos permitirem.
+- Manter `workflow_dispatch` enquanto creditos estiverem limitados; trocar por
+  eventos automaticos quando creditos permitirem, sem mudar a arquitetura de
+  jobs.
 - Adicionar job inicial de impacto que sempre roda.
 - Condicionar jobs por outputs do classificador, nao por workflow-level path
   filters.
@@ -400,9 +402,12 @@ Aceite:
 
 Validacao:
 
-- `workflow_dispatch` manual continua possivel.
-- Simular pelo menos tres diffs: docs-only, web-only, config/global.
-- Confirmar que o job final falha se qualquer check selecionado falhar.
+- `workflow_dispatch` manual continua possivel e permite modo `full` ou
+  `changed`.
+- `scripts/ci_github_plan.exs` gera outputs para full e changed.
+- Parser YAML local valida `.github/workflows/ci.yml`.
+- `CI Report` usa os outputs do plano e falha se qualquer check selecionado
+  falhar ou deixar de reportar status.
 
 ### F7 - Evolucao do umbrella por dados
 

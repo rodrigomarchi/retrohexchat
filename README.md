@@ -329,6 +329,11 @@ Latest measured local runs: `make ci` completed 13/13 checks three times in
 `2m22s`-`2m25s` with 3-way normal tests, 4-way feature tests, DB pool 6 per
 partition, and a warm Dialyzer PLT. `make ci.serial` completed 13/13 in `5m28s`.
 
+GitHub Actions is still `workflow_dispatch` while credits are constrained. The
+workflow is prepared for selective CI: the `Impact Plan` job always runs, selected
+jobs run from the same impact matrix as `make ci.changed`, and `CI Report` is the
+single stable final check for branch protection.
+
 ---
 
 ## Production Deployment

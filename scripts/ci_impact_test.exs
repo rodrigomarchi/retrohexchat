@@ -21,6 +21,13 @@ defmodule CIImpactTest do
     assert "full" in plan.surfaces
   end
 
+  test "GitHub CI plan script changes fall back to the full guard" do
+    plan = CIImpact.plan(["scripts/ci_github_plan.exs"])
+
+    assert plan.fallback.level == :full
+    assert plan.checks == CIImpact.full_checks()
+  end
+
   test "domain source protects domain and web consumers" do
     plan = CIImpact.plan(["apps/retro_hex_chat/lib/retro_hex_chat/chat/message.ex"])
 

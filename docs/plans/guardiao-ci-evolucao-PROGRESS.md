@@ -405,3 +405,72 @@ Aprendizados:
   worker, pool por worker e artefatos compartilhados de build.
 - A rota serial e essencial como ferramenta de diagnostico, mas nao deve voltar
   a ser o default.
+
+### 2026-07-31 - CI hospedado seletivo com report final unico
+
+Status: `CONCLUIDO`
+
+Objetivo:
+
+- Concluir F6 preparando GitHub Actions para rodar jobs condicionais pelo mesmo
+  classificador usado localmente.
+- Manter um check final unico para branch protection.
+- Nao reativar consumo automatico de creditos enquanto o projeto ainda esta em
+  `workflow_dispatch`.
+
+Mudancas implementadas:
+
+- Criado `scripts/ci_github_plan.exs`.
+  - Modo `full`: seleciona os 13 checks do guardiao completo.
+  - Modo `changed`: calcula `git diff base...head` e chama `CIImpact.plan/1`.
+  - Falha de diff cai para full por fallback conservador.
+  - Emite outputs booleanos por check e grupos para GitHub Actions.
+  - Escreve resumo Markdown no `GITHUB_STEP_SUMMARY`.
+- `.github/workflows/ci.yml` foi reestruturado:
+  - job `Impact Plan` sempre roda;
+  - jobs `Compile`, `CI Tooling`, `Static Checks`, `Elixir Tests`,
+    `Browser Smokes` e `Dialyzer` rodam apenas quando selecionados;
+  - job `CI Report` sempre roda e e o unico status final estavel;
+  - jobs pulados sao tratados como decisao do plano, nao como check pendente;
+  - `workflow_dispatch` continua manual, com input `mode=full|changed`.
+- O workflow preserva cobertura hospedada para `test` selecionado usando
+  `mix test --cover`.
+- Browser smokes ficam disponiveis no CI hospedado quando o seletor escolher
+  checks E2E, mas so sao acionados por `workflow_dispatch` enquanto creditos
+  estiverem restritos.
+- `scripts/ci_impact.exs` trata mudancas no planejador GitHub como globais.
+
+Aceite desta iteracao:
+
+- Docs-only em modo `changed` pode chegar a zero checks tecnicos e ainda publicar
+  `CI Report`.
+- Mudanca global continua selecionando full guard.
+- Job final falha quando um check selecionado falha, quando o job selecionado
+  falha por infraestrutura, ou quando um check selecionado nao reporta status.
+- Nao ha workflow-level path filter que possa deixar required check pendente.
+- Reativar `pull_request`/`push` depois exige apenas habilitar eventos; a
+  arquitetura de impacto e report final ja esta pronta.
+
+Validacao executada:
+
+- `elixir scripts/ci_github_plan.exs --mode full --base origin/main --head HEAD`
+  - Resultado: passou; selecionou os 13 checks do full guard.
+- `elixir scripts/ci_github_plan.exs --mode changed --base HEAD --head HEAD`
+  - Resultado: passou; sem diff, selecionou zero checks tecnicos.
+- Parser YAML local em `.github/workflows/ci.yml`
+  - Resultado: passou.
+- `elixir scripts/ci_impact_test.exs`
+  - Resultado: 13 testes, 0 falhas.
+- `elixir scripts/ci.exs --only ci_impact_tests,ci_partition_profile_plan`
+  - Resultado: 2 checks, 0 falhas.
+- `git diff --check`
+  - Resultado: passou.
+
+Aprendizados:
+
+- O job final precisa avaliar checks selecionados, nao apenas resultado bruto de
+  jobs, porque jobs condicionais podem ser `skipped` corretamente.
+- O planejador GitHub deve ser um adaptador fino sobre `CIImpact`; duplicar a
+  matriz em YAML criaria deriva entre local e hospedado.
+- Mesmo com CI automatico desabilitado por creditos, manter a workflow pronta
+  reduz o risco da reativacao futura.

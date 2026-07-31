@@ -734,6 +734,10 @@ Accessible via F1, Help menu → Help Topics, and `/help`. Stale/inaccurate help
 - **Coverage remains explicit.** The fast `make ci` guard does not run coverage while
   partitioning the ExUnit suites; use `make test.cover` or `make test.cover.all` when
   coverage is the requested signal.
+- **Hosted CI reports through one final check.** The GitHub Actions workflow remains
+  manually triggered while credits are constrained, but it now runs `Impact Plan`
+  first and exposes `CI Report` as the stable final status. Conditional jobs may be
+  skipped by design; branch protection should require the final report check.
 - **Critical UI diffs get browser smokes by surface.** `make ci.changed` selects focused
   Playwright smokes for known critical JS/CSS/web surfaces: connect flow, chat shell,
   dialogs/window manager, i18n, P2P/group call, and mobile layout. E2E helper/page/global
