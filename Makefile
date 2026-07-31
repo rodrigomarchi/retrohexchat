@@ -4,7 +4,7 @@
        e2e e2e.headless e2e.changed e2e.shard e2e.smoke e2e.smoke.connect e2e.smoke.chat e2e.smoke.dialogs e2e.smoke.i18n e2e.smoke.calls e2e.smoke.mobile e2e.ui e2e.shots e2e.install e2e.db.setup load.test \
        test.cover.all test.domain test.domain.stale test.web test.web.stale test.failed test.seed test.file test.line \
        test.js test.js.changed test.js.related test.js.watch \
-       ci ci.quick ci.changed ci.serial ci.quick.serial \
+       ci ci.quick ci.changed ci.serial ci.quick.serial ci.partition-profile ci.partition-profile.plan \
        i18n.audit i18n.audit.check i18n.status i18n.catalog.check i18n.catalog.size.check i18n.placeholder.check i18n.source-fallback.check i18n.quality.check i18n.glossary i18n.repair i18n.tooling.test i18n.locales.add i18n.wave1.add i18n.gettext.extract i18n.gettext.merge i18n.gettext.rebuild i18n.gettext.check \
        lint format format.check credo dialyzer lint.js lint.js.changed lint.js.fix lint.css lint.bundle precommit compile \
        assets.setup assets.build assets.deploy \
@@ -37,8 +37,12 @@ endif
 PORT ?= 4000
 TEST_PORT ?= 4002
 E2E_PORT ?= 4003
-CI_TEST_PARTITIONS ?= 2
-CI_FEATURE_PARTITIONS ?= 2
+CI_TEST_PARTITIONS ?= 3
+CI_FEATURE_PARTITIONS ?= 4
+CI_TEST_DB_POOL_SIZE ?= 6
+CI_PARTITION_COUNTS ?= 1,2,3,4
+CI_PARTITION_RUNS ?= 1
+CI_PARTITION_SUITES ?= test,test_feature
 CI_BASE ?= origin/main
 CI_HEAD ?= HEAD
 DEV_DB_PORT ?= 5432
@@ -350,19 +354,25 @@ lint.bundle: ## Enforce frontend bundle budgets
 	npm run bundle:budget --prefix $(WEB_APP)/assets
 
 ci: ## Run all CI checks locally with maximum parallelism
-	$(TEST_ENV) CI_TEST_PARTITIONS=$(CI_TEST_PARTITIONS) CI_FEATURE_PARTITIONS=$(CI_FEATURE_PARTITIONS) elixir scripts/ci.exs
+	$(TEST_ENV) CI_TEST_PARTITIONS=$(CI_TEST_PARTITIONS) CI_FEATURE_PARTITIONS=$(CI_FEATURE_PARTITIONS) CI_TEST_DB_POOL_SIZE=$(CI_TEST_DB_POOL_SIZE) elixir scripts/ci.exs
 
 ci.quick: ## Run CI checks without dialyzer (faster iteration)
-	$(TEST_ENV) CI_TEST_PARTITIONS=$(CI_TEST_PARTITIONS) CI_FEATURE_PARTITIONS=$(CI_FEATURE_PARTITIONS) elixir scripts/ci.exs --quick
+	$(TEST_ENV) CI_TEST_PARTITIONS=$(CI_TEST_PARTITIONS) CI_FEATURE_PARTITIONS=$(CI_FEATURE_PARTITIONS) CI_TEST_DB_POOL_SIZE=$(CI_TEST_DB_POOL_SIZE) elixir scripts/ci.exs --quick
 
 ci.changed: ## Run checks selected from git diff (usage: make ci.changed CI_BASE=origin/main EXPLAIN=1)
-	$(TEST_ENV) CI_TEST_PARTITIONS=$(CI_TEST_PARTITIONS) CI_FEATURE_PARTITIONS=$(CI_FEATURE_PARTITIONS) elixir scripts/ci.exs $(CI_CHANGED_FLAGS)
+	$(TEST_ENV) CI_TEST_PARTITIONS=$(CI_TEST_PARTITIONS) CI_FEATURE_PARTITIONS=$(CI_FEATURE_PARTITIONS) CI_TEST_DB_POOL_SIZE=$(CI_TEST_DB_POOL_SIZE) elixir scripts/ci.exs $(CI_CHANGED_FLAGS)
 
 ci.serial: ## Run all CI checks with one Elixir test partition per suite
-	$(TEST_ENV) CI_TEST_PARTITIONS=1 CI_FEATURE_PARTITIONS=1 elixir scripts/ci.exs
+	$(TEST_ENV) CI_TEST_PARTITIONS=1 CI_FEATURE_PARTITIONS=1 CI_TEST_DB_POOL_SIZE=$(CI_TEST_DB_POOL_SIZE) elixir scripts/ci.exs
 
 ci.quick.serial: ## Run quick CI with one Elixir test partition per suite
-	$(TEST_ENV) CI_TEST_PARTITIONS=1 CI_FEATURE_PARTITIONS=1 elixir scripts/ci.exs --quick
+	$(TEST_ENV) CI_TEST_PARTITIONS=1 CI_FEATURE_PARTITIONS=1 CI_TEST_DB_POOL_SIZE=$(CI_TEST_DB_POOL_SIZE) elixir scripts/ci.exs --quick
+
+ci.partition-profile: ## Measure ExUnit suite time by partition count (usage: make ci.partition-profile CI_PARTITION_COUNTS=2,3,4)
+	$(TEST_ENV) CI_TEST_DB_POOL_SIZE=$(CI_TEST_DB_POOL_SIZE) elixir scripts/ci_partition_profile.exs --counts $(CI_PARTITION_COUNTS) --suites $(CI_PARTITION_SUITES) --runs $(CI_PARTITION_RUNS)
+
+ci.partition-profile.plan: ## Print partition profile plan without running tests
+	$(TEST_ENV) CI_TEST_DB_POOL_SIZE=$(CI_TEST_DB_POOL_SIZE) elixir scripts/ci_partition_profile.exs --counts $(CI_PARTITION_COUNTS) --suites $(CI_PARTITION_SUITES) --runs $(CI_PARTITION_RUNS) --dry-run
 
 i18n.audit: ## Find hardcoded user-visible strings that still need i18n
 	elixir scripts/i18n_audit.exs

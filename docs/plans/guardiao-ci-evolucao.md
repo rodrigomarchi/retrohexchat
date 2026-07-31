@@ -1,6 +1,6 @@
 # Guardiao CI - evolucao continua
 
-**Status:** evolucao ativa, F1-F4 concluidas, F5/F8 em andamento
+**Status:** evolucao ativa, F1-F5 concluidas, F8 em andamento
 **Criado:** 2026-07-31
 **Escopo:** reduzir tempo de feedback sem enfraquecer o guardiao principal.
 **Progresso futuro:** `docs/plans/guardiao-ci-evolucao-PROGRESS.md`
@@ -332,7 +332,7 @@ Validacao:
 
 ### F5 - Full guard mais rapido por partitions e sharding
 
-Status: `EM ANDAMENTO`
+Status: `CONCLUIDO`
 
 Objetivo:
 
@@ -345,7 +345,9 @@ Tarefas:
 - Definir estrategia de cobertura quando particionado: exportar cobertura por
   particao e consolidar, ou manter cobertura em run separado.
 - Medir `test_feature` separado versus particionado.
-- Medir Playwright sharding quando E2E hospedado voltar.
+- Medir Playwright sharding quando E2E hospedado voltar. Localmente, E2E
+  continua fora do `make ci`; essa medicao passa para F6 quando o CI hospedado
+  voltar.
 - Ajustar runner para evitar corrida de compilacao/protocol consolidation.
 
 Aceite:
@@ -360,11 +362,13 @@ Aceite:
 
 Validacao:
 
-- Rodar full suite particionada pelo menos 3 vezes sem flakiness nova antes de
-  trocar o default.
-- Confirmar que cada particao usa database distinto.
-- Confirmar que `make ci` continua passando em modo nao particionado enquanto a
-  fase estiver experimental.
+- `make ci` passou 3 vezes seguidas com defaults `test=3`, `feature=4` e pool
+  `6`, em `2m23s`, `2m25s` e `2m22s`.
+- `make ci.serial` passou com uma particao por suite em `5m28s`.
+- O runner imprime os sufixos de banco usados por suite:
+  `test=1..3 | feature=4..7`.
+- O profiler preserva logs completos por particao em
+  `tmp/ci-partition-profile/<timestamp>/logs/`.
 
 ### F6 - CI hospedado com jobs condicionais e check final unico
 
@@ -534,6 +538,8 @@ Reason: config/test.exs changed; test environment affects every suite
 
 - Mix `test --stale`, paths em umbrella, `--failed`, `--partitions`:
   `https://mix.hexdocs.pm/Mix.Tasks.Test.html`
+- Elixir protocol consolidation:
+  `https://elixir.hexdocs.pm/Protocol.html#module-consolidation`
 - Mix `cmd --app` em umbrella:
   `https://mix.hexdocs.pm/1.12/Mix.Tasks.Cmd.html`
 - Umbrella projects e dependencia entre apps:

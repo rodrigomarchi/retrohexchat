@@ -10,6 +10,7 @@ defmodule RetroHexChat.Umbrella.MixProject do
       aliases: aliases(),
       listeners: [Phoenix.CodeReloader],
       releases: releases(),
+      consolidate_protocols: Mix.env() != :test,
       dialyzer: [
         plt_local_path: "priv/plts",
         plt_core_path: "priv/plts",

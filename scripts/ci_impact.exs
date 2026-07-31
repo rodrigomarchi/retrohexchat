@@ -6,6 +6,7 @@ defmodule CIImpact do
     "lint_js",
     "js_tests",
     "ci_impact_tests",
+    "ci_partition_profile_plan",
     "py_tests",
     "i18n_quality",
     "format",
@@ -598,7 +599,8 @@ defmodule CIImpact do
       ".credo.exs",
       "scripts/ci.exs",
       "scripts/ci_impact.exs",
-      "scripts/ci_impact_test.exs"
+      "scripts/ci_impact_test.exs",
+      "scripts/ci_partition_profile.exs"
     ] or
       String.starts_with?(file, ".github/workflows/") or
       String.starts_with?(file, "config/") or

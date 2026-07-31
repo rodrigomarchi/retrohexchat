@@ -15,6 +15,7 @@ defmodule RetroHexChatWeb.MixProject do
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
+      consolidate_protocols: Mix.env() != :test,
       test_coverage: [
         summary: [threshold: 60],
         ignore_modules: [

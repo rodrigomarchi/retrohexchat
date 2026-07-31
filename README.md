@@ -26,7 +26,7 @@ Full channel modes, persistent bans, role hierarchy (Owner / Op / Half-op / Voic
 You can open a game window inside the chat and play DOOM: Knee-Deep in the Dead, Quake, Quake II, Wolfenstein 3D, Half-Life: Uplink, or ScummVM adventures via WebAssembly engines without leaving the app. Two users can also invite each other to one of 34 multiplayer game sessions via P2P WebRTC.
 
 **The architecture is production-grade.**
-Each IRC channel runs as an isolated OTP GenServer. If one crashes, others are unaffected. Message history uses cursor-based pagination with GIN trigram indexes for full-text search. 706 JavaScript tests. 12-check partitioned local CI guard. Zero ignored Credo warnings. All public functions spec'd with Dialyzer.
+Each IRC channel runs as an isolated OTP GenServer. If one crashes, others are unaffected. Message history uses cursor-based pagination with GIN trigram indexes for full-text search. 706 JavaScript tests. 13-check partitioned local CI guard. Zero ignored Credo warnings. All public functions spec'd with Dialyzer.
 
 ---
 
@@ -275,6 +275,7 @@ make ci             # complete local guard, partitioned ExUnit suites
 make ci.quick       # CI without dialyzer (faster iteration)
 make ci.changed     # checks selected from git diff; use EXPLAIN=1 to inspect
 make ci.serial      # same full guard with one ExUnit partition per suite
+make ci.partition-profile # measure ExUnit partition counts
 make test.stale     # local stale ExUnit loop
 make test.js.changed # local Vitest changed loop
 make lint.js.changed # local ESLint/Prettier changed loop
@@ -286,9 +287,10 @@ make precommit      # compile + format + test
 
 ### CI Pipeline
 
-The complete local guard runs 12 checks across staged parallel groups. ExUnit suites are
-partitioned by default; set `CI_TEST_PARTITIONS=1 CI_FEATURE_PARTITIONS=1` or use
-`make ci.serial` to diagnose partition-specific issues.
+The complete local guard runs 13 checks across staged parallel groups. ExUnit suites are
+partitioned by default with `CI_TEST_PARTITIONS=3`, `CI_FEATURE_PARTITIONS=4`, and
+`CI_TEST_DB_POOL_SIZE=6`; set both partition counts to `1` or use `make ci.serial`
+to diagnose partition-specific issues.
 
 ```
 Stage 1 (parallel):
@@ -296,6 +298,7 @@ Stage 1 (parallel):
   ├── JS lint
   ├── JS tests
   ├── CI impact tests
+  ├── CI partition profile plan
   ├── i18n tooling tests
   └── i18n quality
 
@@ -322,8 +325,9 @@ Playwright remains a deliberate local E2E suite, not part of the default `make c
 guard. The selective guard can choose focused browser smokes for critical UI
 changes: `make e2e.smoke SURFACE=connect|chat|dialogs|i18n|calls|mobile`.
 
-Latest measured local run: `make ci` completed 12/12 checks in `2m53s` with
-2-way ExUnit partitioning and a warm Dialyzer PLT.
+Latest measured local runs: `make ci` completed 13/13 checks three times in
+`2m22s`-`2m25s` with 3-way normal tests, 4-way feature tests, DB pool 6 per
+partition, and a warm Dialyzer PLT. `make ci.serial` completed 13/13 in `5m28s`.
 
 ---
 

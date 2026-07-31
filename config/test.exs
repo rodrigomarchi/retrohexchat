@@ -3,6 +3,12 @@ import Config
 test_http_port = String.to_integer(System.get_env("TEST_PORT", "4002"))
 test_database_suffix = System.get_env("TEST_DB_SUFFIX") || System.get_env("MIX_TEST_PARTITION")
 
+test_database_pool_size =
+  case Integer.parse(System.get_env("TEST_DB_POOL_SIZE", "")) do
+    {pool_size, ""} when pool_size > 0 -> pool_size
+    _ -> System.schedulers_online() * 2
+  end
+
 # Configure your database
 #
 # The MIX_TEST_PARTITION environment variable can be used
@@ -17,7 +23,7 @@ config :retro_hex_chat, RetroHexChat.Repo,
   port: String.to_integer(System.get_env("PGPORT", "5433")),
   database: "retro_hex_chat_test#{test_database_suffix}",
   pool: Ecto.Adapters.SQL.Sandbox,
-  pool_size: System.schedulers_online() * 2
+  pool_size: test_database_pool_size
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.

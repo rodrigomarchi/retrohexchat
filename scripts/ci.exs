@@ -15,7 +15,7 @@
 # remains reserved for ExUnit's own partition selection.
 #
 # Usage:
-#   elixir scripts/ci.exs              # run all 12 checks
+#   elixir scripts/ci.exs              # run all 13 checks
 #   elixir scripts/ci.exs --quick      # skip dialyzer
 #   elixir scripts/ci.exs --only compile,credo
 #   CI_TEST_PARTITIONS=1 CI_FEATURE_PARTITIONS=1 elixir scripts/ci.exs
@@ -28,6 +28,7 @@ defmodule CI do
     "lint_js",
     "js_tests",
     "ci_impact_tests",
+    "ci_partition_profile_plan",
     "py_tests",
     "i18n_quality",
     "lint_hooks",
@@ -74,6 +75,11 @@ defmodule CI do
       label: "CI Impact Tests",
       cmd: "elixir",
       args: ["scripts/ci_impact_test.exs"]
+    },
+    "ci_partition_profile_plan" => %{
+      label: "CI Partition Profile Plan",
+      cmd: "elixir",
+      args: ["scripts/ci_partition_profile.exs", "--counts", "2", "--suites", "test", "--dry-run"]
     },
     "py_tests" => %{
       label: "i18n Tooling Tests",
@@ -137,7 +143,10 @@ defmodule CI do
     {opts, _rest} = parse_args(args)
     project_root = find_project_root()
     {checks, changed_plan} = resolve_checks(opts, project_root)
-    runner_config = runner_config(opts)
+
+    runner_config =
+      opts |> runner_config() |> Map.put(:precompiled_tests?, @compile_check in checks)
+
     start_time = System.monotonic_time(:millisecond)
 
     header()
@@ -358,7 +367,9 @@ defmodule CI do
       )
 
       Enum.each(failed, fn {partition, {output, _code}} ->
+        log_path = write_partition_failure_log(project_root, check, partition, partitions, output)
         print_failure_output("#{label} partition #{partition}/#{partitions}", output)
+        IO.puts("    #{c(:dim)}Full partition log: #{log_path}#{c(:reset)}")
       end)
 
       :fail
@@ -371,7 +382,11 @@ defmodule CI do
 
   defp run_partition(check, cmd, args, partition, partitions, project_root, runner_config) do
     env = partition_env(check, partition, runner_config)
-    args = partition_args(args, partition, partitions)
+
+    args =
+      args
+      |> partition_args(partition, partitions)
+      |> maybe_add_no_compile(check, runner_config)
 
     port =
       Port.open(
@@ -382,6 +397,15 @@ defmodule CI do
     collect_port_output(port, [])
   end
 
+  defp write_partition_failure_log(project_root, check, partition, partitions, output) do
+    log_dir = Path.join(project_root, "tmp/ci-logs")
+    File.mkdir_p!(log_dir)
+
+    path = Path.join(log_dir, "#{check}-partition-#{partition}-of-#{partitions}.log")
+    File.write!(path, output)
+    Path.relative_to(path, project_root)
+  end
+
   defp partition_count(:test, runner_config), do: runner_config.test_partitions
   defp partition_count(:feature, runner_config), do: runner_config.feature_partitions
 
@@ -390,23 +414,36 @@ defmodule CI do
   defp partition_args(args, _partition, partitions),
     do: args ++ ["--partitions", Integer.to_string(partitions)]
 
-  defp partition_env("test", partition, _runner_config) do
-    partition_env(partition, partition)
+  defp maybe_add_no_compile(args, check, %{precompiled_tests?: true})
+       when check in ["test", "test_feature"] do
+    if "--no-compile" in args do
+      args
+    else
+      args ++ ["--no-compile"]
+    end
+  end
+
+  defp maybe_add_no_compile(args, _check, _runner_config), do: args
+
+  defp partition_env("test", partition, runner_config) do
+    partition_worker_env(partition, partition, runner_config)
   end
 
   defp partition_env("test_feature", partition, runner_config) do
-    partition_env(partition, runner_config.test_partitions + partition)
+    partition_worker_env(partition, runner_config.test_partitions + partition, runner_config)
   end
 
-  defp partition_env(_check, partition, _runner_config) do
-    partition_env(partition, partition)
+  defp partition_env(_check, partition, runner_config) do
+    partition_worker_env(partition, partition, runner_config)
   end
 
-  defp partition_env(partition, db_suffix) do
+  defp partition_worker_env(partition, db_suffix, runner_config) do
     [
       {~c"MIX_ENV", ~c"test"},
       {~c"MIX_TEST_PARTITION", partition |> Integer.to_string() |> String.to_charlist()},
-      {~c"TEST_DB_SUFFIX", db_suffix |> Integer.to_string() |> String.to_charlist()}
+      {~c"TEST_DB_SUFFIX", db_suffix |> Integer.to_string() |> String.to_charlist()},
+      {~c"TEST_DB_POOL_SIZE",
+       runner_config.test_db_pool_size |> Integer.to_string() |> String.to_charlist()}
     ]
   end
 
@@ -462,8 +499,9 @@ defmodule CI do
 
   defp runner_config(opts) do
     %{
-      test_partitions: positive_int(opts[:test_partitions], "CI_TEST_PARTITIONS", 2),
-      feature_partitions: positive_int(opts[:feature_partitions], "CI_FEATURE_PARTITIONS", 2)
+      test_partitions: positive_int(opts[:test_partitions], "CI_TEST_PARTITIONS", 3),
+      feature_partitions: positive_int(opts[:feature_partitions], "CI_FEATURE_PARTITIONS", 4),
+      test_db_pool_size: positive_int(nil, "CI_TEST_DB_POOL_SIZE", 6)
     }
   end
 
@@ -503,8 +541,19 @@ defmodule CI do
       end
 
     checks = if opts[:quick], do: Enum.reject(checks, &(&1 == "dialyzer")), else: checks
+    checks = maybe_add_compile_for_partitioned_checks(checks)
 
     {checks, changed_plan}
+  end
+
+  defp maybe_add_compile_for_partitioned_checks(checks) do
+    if Enum.any?(checks, &(&1 in ["test", "test_feature"])) and @compile_check not in checks do
+      [@compile_check | checks]
+      |> Enum.uniq()
+      |> Enum.sort_by(&(Enum.find_index(@all_checks, fn check -> check == &1 end) || 999))
+    else
+      checks
+    end
   end
 
   defp only_checks(only) do
@@ -581,7 +630,18 @@ defmodule CI do
     IO.puts(
       "  #{c(:dim)}Test partitions: #{runner_config.test_partitions} | Feature partitions: #{runner_config.feature_partitions}#{c(:reset)}"
     )
+
+    IO.puts(
+      "  #{c(:dim)}Test DB suffixes: test=#{suffix_range(1, runner_config.test_partitions)} | feature=#{suffix_range(runner_config.test_partitions + 1, runner_config.test_partitions + runner_config.feature_partitions)}#{c(:reset)}"
+    )
+
+    IO.puts(
+      "  #{c(:dim)}Test DB pool per partition: #{runner_config.test_db_pool_size}#{c(:reset)}"
+    )
   end
+
+  defp suffix_range(first, first), do: Integer.to_string(first)
+  defp suffix_range(first, last), do: "#{first}..#{last}"
 
   defp maybe_print_changed_plan(nil), do: :ok
 

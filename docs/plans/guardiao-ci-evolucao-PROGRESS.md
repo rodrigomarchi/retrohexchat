@@ -300,3 +300,108 @@ Aprendizados:
   bundle: dialogs, shell, calls e mobile tem contratos diferentes.
 - `make help` precisava usar `grep -h`; com prefixo de arquivo, a listagem
   escondia o nome real dos targets.
+
+### 2026-07-31 - Full guard particionado por perfil real
+
+Status: `CONCLUIDO`
+
+Objetivo:
+
+- Concluir F5 acelerando o `make ci` completo por particionamento real, sem
+  remover nenhum gate.
+- Escolher os defaults por medicao local, nao por intuicao.
+- Manter uma rota serial para diagnostico quando uma falha depender de
+  particionamento.
+
+Mudancas implementadas:
+
+- Criado `scripts/ci_partition_profile.exs` para medir `test` e
+  `test_feature` com listas configuraveis de contagem de particoes.
+- Adicionados `make ci.partition-profile` e `make ci.partition-profile.plan`.
+- `make ci` passou a rodar 13 checks, incluindo `CI Partition Profile Plan`.
+- Defaults atualizados:
+  - `CI_TEST_PARTITIONS=3`;
+  - `CI_FEATURE_PARTITIONS=4`;
+  - `CI_TEST_DB_POOL_SIZE=6`.
+- O runner imprime os sufixos de banco por suite e o pool por particao:
+  `test=1..3 | feature=4..7`.
+- Falhas de particao gravam log completo em `tmp/ci-logs/`.
+- Quando `compile` roda no Stage 1, particoes ExUnit recebem `--no-compile`
+  para evitar recompilacao concorrente.
+- Projetos Mix desabilitam protocol consolidation no ambiente de teste com
+  `consolidate_protocols: Mix.env() != :test`.
+- `config/test.exs` passou a aceitar `TEST_DB_POOL_SIZE` para limitar o pool
+  por worker.
+- `scripts/ci_impact.exs` trata mudancas no profiler como globais, caindo para
+  full guard.
+
+Perfil executado:
+
+`make ci.partition-profile CI_PARTITION_COUNTS=1,2,3,4 CI_PARTITION_SUITES=test,test_feature CI_PARTITION_RUNS=1`
+
+Relatorio: `tmp/ci-partition-profile/20260731T131544Z/report.md`
+
+| Suite | Particoes | Resultado | Wall-clock |
+|---|---:|---|---:|
+| `test` | 1 | passou | `3m18s` |
+| `test` | 2 | passou | `2m16s` |
+| `test` | 3 | passou | `1m08s` |
+| `test` | 4 | passou | `1m40s` |
+| `test_feature` | 1 | passou | `4m58s` |
+| `test_feature` | 2 | passou | `2m27s` |
+| `test_feature` | 3 | passou | `2m18s` |
+| `test_feature` | 4 | passou | `1m55s` |
+
+Decisao:
+
+- `test=3` foi escolhido porque foi o melhor resultado medido e reduziu a suite
+  normal para perto de um minuto.
+- `test_feature=4` foi escolhido porque reduziu a suite de feature para menos
+  de dois minutos no perfil e ficou estavel no full guard.
+- Pool `6` por worker preserva paralelismo interno suficiente sem estourar o
+  limite local de conexoes do Postgres.
+- Cobertura continua explicita: o guardiao rapido nao consolida cobertura em
+  particoes concorrentes. Quando cobertura for o sinal desejado, usar
+  `make test.cover` ou `make test.cover.all`.
+- Sharding Playwright hospedado fica para F6, porque E2E segue fora do
+  `make ci` local e o CI hospedado ainda esta desabilitado por creditos.
+
+Incidentes encontrados e resolvidos:
+
+- Com 7 workers ExUnit, multiplos processos tentaram consolidar protocolos em
+  `_build/test/consolidated`, causando erro de escrita intermitente. Resolvido
+  com compile previo, `--no-compile` nas particoes e protocol consolidation
+  desabilitado no ambiente de teste.
+- A primeira rodada com `3/4` workers estourou conexoes do Postgres. Resolvido
+  adicionando `TEST_DB_POOL_SIZE` e default local `6`.
+
+Validacao executada:
+
+- `make ci.partition-profile.plan CI_PARTITION_COUNTS=2,3 CI_PARTITION_SUITES=test,test_feature CI_PARTITION_RUNS=1`
+  - Resultado: passou.
+- `elixir scripts/ci.exs --only ci_partition_profile_plan`
+  - Resultado: 1 check, 0 falhas.
+- `elixir scripts/ci_impact_test.exs`
+  - Resultado: 12 testes, 0 falhas.
+- `elixir scripts/ci.exs --only test --test-partitions 1 --feature-partitions 1`
+  - Resultado: 2 checks, 0 falhas; validou `--only test` com compile automatico
+    e `--no-compile` na particao.
+- `make ci`
+  - Resultado: 13 checks, 0 falhas, `2m23s`.
+- `make ci`
+  - Resultado: 13 checks, 0 falhas, `2m25s`.
+- `make ci`
+  - Resultado: 13 checks, 0 falhas, `2m22s`.
+- `make ci.serial`
+  - Resultado: 13 checks, 0 falhas, `5m28s`.
+
+Aprendizados:
+
+- O maior ganho sustentavel veio de acelerar o proprio guardiao completo antes
+  de sofisticar ainda mais a inteligencia seletiva.
+- `MIX_TEST_PARTITION` deve ficar como contrato do ExUnit; `TEST_DB_SUFFIX`
+  continua sendo o contrato do runner para separar suites independentes.
+- Concurrency de teste precisa controlar tres recursos juntos: banco por
+  worker, pool por worker e artefatos compartilhados de build.
+- A rota serial e essencial como ferramenta de diagnostico, mas nao deve voltar
+  a ser o default.
