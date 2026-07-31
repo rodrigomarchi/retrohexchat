@@ -3,6 +3,7 @@ import {
   BrowserContext,
   BrowserContextOptions,
   Page,
+  expect,
 } from "@playwright/test";
 import { ChatPage } from "../pages/ChatPage";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
@@ -391,4 +392,125 @@ export async function newP2PUser(
 
 export async function closeP2PUsers(users: P2PTestUser[]) {
   await Promise.all(users.map((user) => user.ctx.close().catch(() => {})));
+}
+
+// --- Session entry ---
+
+export function statusBarP2P(page: Page) {
+  return page.getByTestId("status-bar-p2p");
+}
+
+export async function sendP2PInvite(user: P2PTestUser, targetNick: string) {
+  await user.chat.sendMessage(`/p2p ${targetNick}`);
+  await expect(user.page.getByTestId("p2p-setup-accept")).toBeVisible();
+  await expect(user.page.getByTestId("p2p-setup-form")).toContainText(
+    "Send invite",
+  );
+  await user.page.getByTestId("p2p-setup-accept").click();
+  await expect(user.page.getByTestId("p2p-call-window")).toBeVisible();
+  await expect(user.page.getByTestId("p2p-session-console")).toBeVisible();
+  await expect(user.page.getByTestId("p2p-call-disconnected")).toContainText(
+    "Waiting for peer",
+  );
+  await expect(user.page.getByTestId("p2p-webrtc")).toBeHidden();
+}
+
+export async function acceptP2PInvite(
+  page: Page,
+  options: { audio?: boolean; video?: boolean; turnOnly?: boolean } = {},
+) {
+  await expect(page.getByTestId("p2p-peer-entry")).toHaveAttribute(
+    "data-p2p-state",
+    "pending",
+  );
+  await expect(page.getByTestId("session-card-accept")).toHaveCount(0);
+  await expect(page.getByTestId("session-card-decline")).toHaveCount(0);
+  await page.getByTestId("p2p-peer-join").click();
+  await expect(page.getByTestId("p2p-setup-accept")).toBeVisible();
+  await expect(page.getByTestId("p2p-setup-preview")).toBeVisible();
+
+  if (options.audio !== undefined) {
+    const audioToggle = page.getByTestId("p2p-setup-audio");
+    await audioToggle.setChecked(options.audio);
+    if (options.audio) {
+      await expect(audioToggle).toBeChecked();
+    } else {
+      await expect(audioToggle).not.toBeChecked();
+    }
+  }
+
+  if (options.video !== undefined) {
+    const videoToggle = page.getByTestId("p2p-setup-video");
+    await videoToggle.setChecked(options.video);
+    if (options.video) {
+      await expect(videoToggle).toBeChecked();
+    } else {
+      await expect(videoToggle).not.toBeChecked();
+    }
+  }
+
+  if (options.turnOnly !== undefined) {
+    await page.getByTestId("p2p-setup-advanced").locator("summary").click();
+    await expect(page.getByTestId("p2p-setup-turn-only")).toBeEnabled();
+    await page.getByTestId("p2p-setup-turn-only").setChecked(options.turnOnly);
+  }
+
+  await page.getByTestId("p2p-setup-accept").click();
+}
+
+// --- Remote media observation ---
+
+/** A remote track only leaves `muted` once RTP actually arrives. */
+export async function remoteVideoLive(page: Page) {
+  return page.evaluate(() => {
+    const v = document.getElementById(
+      "lobby-remote-video",
+    ) as HTMLVideoElement | null;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const stream = v?.srcObject as any;
+    const track = stream?.getVideoTracks?.()[0];
+    return !!track && track.readyState === "live" && track.muted === false;
+  });
+}
+
+/** Samples the decoded picture: a live track can still render black. */
+export async function remoteVideoHasVisibleFrame(page: Page) {
+  return page.evaluate(() => {
+    const video = document.getElementById(
+      "lobby-remote-video",
+    ) as HTMLVideoElement | null;
+
+    if (
+      !video ||
+      video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA ||
+      video.videoWidth === 0 ||
+      video.videoHeight === 0
+    ) {
+      return false;
+    }
+
+    const canvas = document.createElement("canvas");
+    canvas.width = 32;
+    canvas.height = 18;
+    const context = canvas.getContext("2d", { willReadFrequently: true });
+    if (!context) return false;
+
+    try {
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+      const { data } = context.getImageData(0, 0, canvas.width, canvas.height);
+      let visiblePixels = 0;
+
+      for (let index = 0; index < data.length; index += 4) {
+        const red = data[index] ?? 0;
+        const green = data[index + 1] ?? 0;
+        const blue = data[index + 2] ?? 0;
+
+        if (red + green + blue > 45) visiblePixels += 1;
+      }
+
+      return visiblePixels > 8;
+    } catch {
+      return false;
+    }
+  });
 }
