@@ -1,0 +1,131 @@
+/* Shared collapsible sidebar chrome for conversations and nicklist rails. */
+
+.chat-sidebar-shell {
+  --rhc-chat-sidebar-rail-width: 36px;
+  --rhc-chat-sidebar-expanded-width: 260px;
+
+  pointer-events: none;
+}
+
+.chat-sidebar-frame,
+.chat-sidebar-backdrop {
+  pointer-events: auto;
+}
+
+.chat-sidebar-frame {
+  width: var(--rhc-chat-sidebar-expanded-width);
+  max-width: min(var(--rhc-chat-sidebar-expanded-width), var(--rhc-visual-viewport-width, 100vw));
+}
+
+.chat-sidebar-shell--collapsed .chat-sidebar-frame {
+  width: var(--rhc-chat-sidebar-rail-width);
+}
+
+.chat-sidebar-panel {
+  @apply h-full min-h-0 overflow-hidden;
+}
+
+.chat-sidebar-shell--collapsed .chat-sidebar-panel {
+  display: none;
+}
+
+.chat-sidebar-shell--left .chat-sidebar-frame {
+  margin-right: auto;
+}
+
+.chat-sidebar-rail {
+  @apply flex h-full w-[36px] shrink-0 flex-col items-center gap-[3px] bg-surface px-[3px] py-[4px] shadow-retro-raised;
+}
+
+.chat-sidebar-rail--left {
+  @apply border-r border-border;
+}
+
+.chat-sidebar-rail--right {
+  @apply border-l border-border;
+}
+
+.chat-sidebar-rail__button {
+  @apply relative inline-flex h-[30px] w-[30px] shrink-0 items-center justify-center bg-surface p-0 text-foreground shadow-retro-raised;
+  @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-black active:shadow-retro-sunken;
+}
+
+.chat-sidebar-rail__button:hover {
+  @apply bg-hover-bg;
+}
+
+.chat-sidebar-rail__button--active,
+.chat-sidebar-rail__button--toggle[aria-expanded="true"] {
+  @apply bg-white shadow-retro-sunken;
+}
+
+.chat-sidebar-rail__count {
+  @apply absolute bottom-[-2px] right-[-2px] min-w-[13px] border border-border bg-white px-[1px] text-center text-[8px] font-bold leading-[11px] text-foreground shadow-retro-status;
+}
+
+.chat-sidebar-rail__badge {
+  @apply absolute right-[-3px] top-[-3px] min-w-[14px] border border-error-dark bg-error px-[1px] text-center text-[8px] font-bold leading-[12px] text-white;
+}
+
+.chat-sidebar-rail__role-icon {
+  @apply inline-flex h-4 w-4 items-center justify-center;
+}
+
+.chat-sidebar-rail__button--role-owner {
+  @apply border-l-2 border-warning;
+}
+
+.chat-sidebar-rail__button--role-operator {
+  @apply border-l-2 border-primary;
+}
+
+.chat-sidebar-rail__button--role-half-operator {
+  @apply border-l-2 border-success;
+}
+
+.chat-sidebar-rail__button--role-voiced {
+  @apply border-l-2 border-teal;
+}
+
+.chat-sidebar-rail__button--role-bot {
+  @apply border-l-2 border-warning-alt;
+}
+
+@media (min-width: 768px) {
+  .chat-sidebar-shell {
+    width: var(--rhc-chat-sidebar-expanded-width);
+    min-width: var(--rhc-chat-sidebar-expanded-width);
+    pointer-events: auto;
+  }
+
+  .chat-sidebar-shell--collapsed {
+    width: var(--rhc-chat-sidebar-rail-width);
+    min-width: var(--rhc-chat-sidebar-rail-width);
+  }
+
+  .chat-sidebar-frame {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.desktop--stacked .chat-sidebar-shell {
+  pointer-events: none;
+}
+
+.desktop--stacked .chat-sidebar-frame {
+  pointer-events: auto;
+}
+
+.desktop--stacked .chat-sidebar-shell--expanded .chat-sidebar-frame {
+  width: min(300px, var(--rhc-visual-viewport-width, 100vw));
+  max-width: min(300px, var(--rhc-visual-viewport-width, 100vw));
+}
+
+.desktop--stacked .chat-sidebar-shell--collapsed .chat-sidebar-frame {
+  width: var(--rhc-chat-sidebar-rail-width);
+}
+
+.desktop--stacked .chat-sidebar-shell--right .chat-sidebar-frame {
+  margin-left: auto;
+}

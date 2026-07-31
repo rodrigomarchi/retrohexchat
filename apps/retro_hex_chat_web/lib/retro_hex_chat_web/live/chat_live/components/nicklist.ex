@@ -80,6 +80,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
       socket
       |> assign(
         id: @id,
+        available: true,
         visible: false,
         active_channel: nil,
         current_modes: nil,
@@ -143,15 +144,30 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
     ~H"""
     <div id={"#{@id}-mount"} class="flex h-full shrink-0">
       <.nicklist_sidebar
+        available={@available}
         visible={@visible}
         on_backdrop="toggle_nicklist"
+        on_toggle="toggle_nicklist"
         id="nicklist-users"
         phx-hook="NicklistHook"
       >
+        <:rail>
+          <.nicklist_rail
+            expanded={@visible}
+            channel_name={@active_channel}
+            total={@total}
+            online_count={@online_count}
+            away_count={@away_count}
+            muted_count={@muted_count}
+            sections={@sections}
+            on_toggle="toggle_nicklist"
+          />
+        </:rail>
         <.nicklist_header
           channel_name={@active_channel}
           total={@total}
           modes={@current_modes}
+          on_close="toggle_nicklist"
         />
         <.nicklist_status_strip
           online_count={@online_count}
@@ -196,6 +212,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
   defp assign_context(socket, assigns) do
     assign(socket,
       id: Map.get(assigns, :id, socket.assigns.id),
+      available: Map.get(assigns, :available, socket.assigns.available),
       visible: Map.get(assigns, :visible, socket.assigns.visible),
       active_channel: Map.get(assigns, :active_channel, socket.assigns.active_channel),
       current_modes: Map.get(assigns, :current_modes, socket.assigns.current_modes),

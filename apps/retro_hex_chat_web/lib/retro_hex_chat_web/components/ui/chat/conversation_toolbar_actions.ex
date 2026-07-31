@@ -15,6 +15,7 @@ defmodule RetroHexChatWeb.Components.UI.ConversationToolbarActions do
   attr :conversations_open, :boolean, default: false
   attr :nicklist_open, :boolean, default: false
   attr :search_open, :boolean, default: false
+  attr :show_sidebar_toggles, :boolean, default: true
   attr :active_channel, :string, default: nil
   attr :active_pm, :string, default: nil
   attr :show_status_tab, :boolean, default: false
@@ -37,6 +38,7 @@ defmodule RetroHexChatWeb.Components.UI.ConversationToolbarActions do
       data-testid="conversation-toolbar-actions"
     >
       <.action_button
+        :if={@show_sidebar_toggles}
         event="toggle_conversations"
         active={@conversations_open}
         label={dgettext("chat", "Show conversations")}
@@ -45,6 +47,7 @@ defmodule RetroHexChatWeb.Components.UI.ConversationToolbarActions do
         <Icons.icon_toolbar_toggle_conversations class="h-4 w-4" />
       </.action_button>
       <.action_button
+        :if={@show_sidebar_toggles}
         event="toggle_nicklist"
         active={@nicklist_open}
         label={dgettext("chat", "Show nicklist")}

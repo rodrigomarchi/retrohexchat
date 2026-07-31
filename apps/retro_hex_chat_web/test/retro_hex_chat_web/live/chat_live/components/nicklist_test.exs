@@ -32,21 +32,28 @@ defmodule RetroHexChatWeb.ChatLive.Components.NicklistTest do
   test "renders the shell and the backdrop toggle even when empty" do
     html = render_component(Nicklist, id: Nicklist.id())
 
+    assert html =~ ~s(data-testid="nicklist-sidebar-shell")
+    assert html =~ ~s(data-testid="nicklist-rail")
     assert html =~ ~s(data-testid="nicklist")
     assert html =~ ~s(id="nicklist-users")
     assert html =~ ~s(data-testid="nicklist-header")
-    assert html =~ "md:w-[260px]"
-    assert html =~ "w-[300px]"
-    # The mobile backdrop bubbles toggle_nicklist to the parent.
+    assert html =~ ~s(data-state="collapsed")
+    # Rail/backdrop controls bubble toggle_nicklist to the parent.
     assert html =~ "toggle_nicklist"
   end
 
-  test "is hidden when not visible and shown when visible" do
-    hidden = render_component(Nicklist, id: Nicklist.id(), visible: false)
-    assert hidden =~ "md:shrink-0 hidden"
+  test "collapses when not visible and hides when unavailable" do
+    collapsed = render_component(Nicklist, id: Nicklist.id(), visible: false)
+    assert collapsed =~ "chat-sidebar-shell--collapsed"
+    assert collapsed =~ ~s(data-testid="nicklist-rail")
 
     shown = render_component(Nicklist, id: Nicklist.id(), visible: true)
-    refute shown =~ "md:shrink-0 hidden"
+    assert shown =~ "chat-sidebar-shell--expanded"
+    assert shown =~ ~s(title="Collapse user list")
+    refute shown =~ ~s(data-testid="nicklist-rail")
+
+    unavailable = render_component(Nicklist, id: Nicklist.id(), available: false, visible: true)
+    assert unavailable =~ "hidden"
   end
 
   test "a reset action streams one row per user, keyed by nick" do

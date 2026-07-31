@@ -127,29 +127,47 @@ test.describe("chat desktop on a phone (stacked single-window)", () => {
     await expect(timersWindow).toBeHidden();
   });
 
-  test("exposes chat toolbar controls for sidebars and keeps composer touch-sized", async ({
+  test("exposes sidebar rails and keeps composer touch-sized", async ({
     page,
   }) => {
     await signedInUser(page, "mctrl");
 
-    const conversationsButton = page.getByTestId(
-      "conversation-toolbar-conversations",
+    const conversationsRailButton = page.getByTestId(
+      "conversations-rail-toggle",
     );
-    const nicklistButton = page.getByTestId("conversation-toolbar-nicklist");
+    const conversationsCollapseButton = page.getByTestId(
+      "conversations-collapse-toggle",
+    );
+    const nicklistRailButton = page.getByTestId("nicklist-rail-toggle");
+    const nicklistCollapseButton = page.getByTestId("nicklist-collapse-toggle");
     const searchButton = page.getByTestId("conversation-toolbar-search");
+    const conversationsRail = page.getByTestId("conversations-rail");
+    const nicklistRail = page.getByTestId("nicklist-rail");
     const conversations = page.getByTestId("conversations");
     const nicklist = page.getByTestId("nicklist");
     const searchBar = page.getByTestId("search-bar");
     const input = page.getByTestId("chat-input-field");
 
-    await expect(conversationsButton).toBeVisible();
-    await expect(nicklistButton).toBeVisible();
+    await expect(conversationsRailButton).toBeVisible();
+    await expect(nicklistRailButton).toBeVisible();
+    await expect(conversationsCollapseButton).toBeHidden();
+    await expect(nicklistCollapseButton).toBeHidden();
+    await expect(conversationsRail).toBeVisible();
+    await expect(nicklistRail).toBeVisible();
     await expect(searchButton).toBeVisible();
+    await expect(
+      page.getByTestId("conversation-toolbar-conversations"),
+    ).toHaveCount(0);
+    await expect(page.getByTestId("conversation-toolbar-nicklist")).toHaveCount(
+      0,
+    );
     await expect(conversations).toBeHidden();
     await expect(nicklist).toBeHidden();
 
-    await conversationsButton.click();
+    await conversationsRailButton.click();
     await expect(conversations).toBeVisible();
+    await expect(conversationsCollapseButton).toBeVisible();
+    await expect(conversationsRail).toHaveCount(0);
 
     // The tab strip is bottom-anchored chrome the sidebar overlay reaches over,
     // so what matters is stacking, not geometry: the topmost element at the
@@ -170,11 +188,15 @@ test.describe("chat desktop on a phone (stacked single-window)", () => {
     expect(hitsTabBar).toBe(true);
     await shot(page, "mobile-sidebar-over-tab-strip");
 
-    await page.getByTestId("conversations-close").click();
+    await conversationsCollapseButton.click();
     await expect(conversations).toBeHidden();
+    await expect(conversationsCollapseButton).toBeHidden();
+    await expect(conversationsRail).toBeVisible();
 
-    await nicklistButton.click();
+    await nicklistRailButton.click();
     await expect(nicklist).toBeVisible();
+    await expect(nicklistCollapseButton).toBeVisible();
+    await expect(nicklistRail).toHaveCount(0);
 
     await searchButton.click();
     await expect(searchBar).toBeVisible();

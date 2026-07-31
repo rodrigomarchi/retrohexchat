@@ -30,27 +30,203 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   alias RetroHexChatWeb.Icons
 
   @doc """
-  Renders the conversations sidebar chrome (responsive layout + mobile backdrop)
-  and yields its inner block for the sidebar content. `visible` toggles the
-  `hidden` class without unmounting.
+  Renders the conversations sidebar chrome. `visible` means expanded; when
+  false, the mounted sidebar is replaced by the 36px rail.
   """
   attr :visible, :boolean, default: true
   attr :on_backdrop, :string, required: true
+  attr :on_toggle, :string, required: true
+  slot :rail, required: true
   slot :inner_block, required: true
 
   @spec conversations_sidebar(map()) :: Phoenix.LiveView.Rendered.t()
   def conversations_sidebar(assigns) do
+    assigns = assign(assigns, :state, if(assigns.visible, do: "expanded", else: "collapsed"))
+
     ~H"""
-    <div class={[
-      "chat-sidebar-overlay fixed inset-x-0 bottom-0 top-0 z-40 md:relative md:inset-auto md:z-auto",
-      "flex md:h-full md:shrink-0 md:w-[260px] md:min-w-[220px]",
-      !@visible && "hidden"
-    ]}>
-      <div class="absolute inset-0 bg-black/30 md:hidden" phx-click={@on_backdrop} />
-      <div class="relative z-10 w-[300px] max-w-[calc(100vw-48px)] md:w-full md:max-w-none h-full bg-surface shadow-retro-window md:shadow-none">
-        {render_slot(@inner_block)}
+    <div
+      class={[
+        "chat-sidebar-overlay chat-sidebar-shell chat-sidebar-shell--left fixed inset-y-0 left-0 right-0 z-40",
+        "flex shrink-0 md:relative md:inset-auto md:z-auto md:h-full",
+        @visible && "chat-sidebar-shell--expanded",
+        !@visible && "chat-sidebar-shell--collapsed"
+      ]}
+      data-state={@state}
+      data-side="left"
+      data-testid="conversations-sidebar-shell"
+    >
+      <div
+        :if={@visible}
+        class="chat-sidebar-backdrop absolute inset-0 bg-black/30 md:hidden"
+        phx-click={@on_backdrop}
+      />
+      <div class="chat-sidebar-frame relative z-10 flex h-full min-h-0 bg-surface shadow-retro-window md:shadow-none">
+        <%= if !@visible do %>
+          {render_slot(@rail)}
+        <% end %>
+        <div class="chat-sidebar-panel min-w-0 flex-1">
+          {render_slot(@inner_block)}
+        </div>
       </div>
     </div>
+    """
+  end
+
+  @doc "Renders the compact conversations rail used by the collapsed state."
+  attr :expanded, :boolean, default: true
+  attr :active_channel, :string, default: nil
+  attr :active_pm, :string, default: nil
+  attr :channel_count, :integer, default: 0
+  attr :pm_count, :integer, default: 0
+  attr :autojoin_count, :integer, default: 0
+  attr :popular_count, :integer, default: 0
+  attr :unread_count, :integer, default: 0
+  attr :on_toggle, :any, required: true
+
+  @spec conversations_rail(map()) :: Phoenix.LiveView.Rendered.t()
+  def conversations_rail(assigns) do
+    assigns =
+      assigns
+      |> assign(
+        :active_label,
+        assigns.active_pm || assigns.active_channel || dgettext("chat", "Status")
+      )
+      |> assign(:active_icon, if(assigns.active_pm, do: :pm, else: :channel))
+
+    ~H"""
+    <nav
+      class="chat-sidebar-rail chat-sidebar-rail--left"
+      aria-label={dgettext("chat", "Conversations rail")}
+      data-testid="conversations-rail"
+    >
+      <button
+        type="button"
+        class="chat-sidebar-rail__button chat-sidebar-rail__button--toggle"
+        phx-click={@on_toggle}
+        title={
+          if @expanded,
+            do: dgettext("chat", "Collapse conversations"),
+            else: dgettext("chat", "Expand conversations")
+        }
+        aria-label={
+          if @expanded,
+            do: dgettext("chat", "Collapse conversations"),
+            else: dgettext("chat", "Expand conversations")
+        }
+        aria-expanded={to_string(@expanded)}
+        data-testid="conversations-rail-toggle"
+      >
+        <Icons.icon_chevron_left :if={@expanded} class="h-4 w-4" />
+        <Icons.icon_chevron_right :if={!@expanded} class="h-4 w-4" />
+      </button>
+
+      <.conversations_rail_item
+        icon={@active_icon}
+        label={@active_label}
+        active
+        expanded={@expanded}
+        on_toggle={@on_toggle}
+      />
+      <.conversations_rail_item
+        icon={:channels}
+        label={dgettext("chat", "Open channels")}
+        count={@channel_count}
+        expanded={@expanded}
+        on_toggle={@on_toggle}
+      />
+      <.conversations_rail_item
+        icon={:pms}
+        label={dgettext("chat", "Private messages")}
+        count={@pm_count}
+        badge={@unread_count}
+        expanded={@expanded}
+        on_toggle={@on_toggle}
+      />
+      <.conversations_rail_item
+        icon={:autojoin}
+        label={dgettext("chat", "Auto-join")}
+        count={@autojoin_count}
+        expanded={@expanded}
+        on_toggle={@on_toggle}
+      />
+      <.conversations_rail_item
+        icon={:popular}
+        label={dgettext("chat", "Popular channels")}
+        count={@popular_count}
+        expanded={@expanded}
+        on_toggle={@on_toggle}
+      />
+    </nav>
+    """
+  end
+
+  attr :icon, :atom, required: true
+  attr :label, :string, required: true
+  attr :count, :integer, default: nil
+  attr :badge, :integer, default: 0
+  attr :active, :boolean, default: false
+  attr :expanded, :boolean, default: true
+  attr :on_toggle, :any, required: true
+
+  defp conversations_rail_item(assigns) do
+    assigns =
+      assign(assigns, :title, rail_item_title(assigns.label, assigns.count))
+
+    ~H"""
+    <button
+      type="button"
+      class={[
+        "chat-sidebar-rail__button",
+        @active && "chat-sidebar-rail__button--active"
+      ]}
+      phx-click={if @expanded, do: nil, else: @on_toggle}
+      title={@title}
+      aria-label={@title}
+    >
+      <.conversations_rail_icon icon={@icon} />
+      <span :if={is_integer(@count)} class="chat-sidebar-rail__count">{@count}</span>
+      <span :if={@badge > 0} class="chat-sidebar-rail__badge">
+        {format_unread_count(@badge)}
+      </span>
+    </button>
+    """
+  end
+
+  attr :icon, :atom, required: true
+
+  defp conversations_rail_icon(%{icon: :channel} = assigns) do
+    ~H"""
+    <Icons.icon_tab_channel class="h-4 w-4" />
+    """
+  end
+
+  defp conversations_rail_icon(%{icon: :pm} = assigns) do
+    ~H"""
+    <Icons.icon_tab_pm class="h-4 w-4" />
+    """
+  end
+
+  defp conversations_rail_icon(%{icon: :channels} = assigns) do
+    ~H"""
+    <Icons.icon_btn_channel_list class="h-4 w-4" />
+    """
+  end
+
+  defp conversations_rail_icon(%{icon: :pms} = assigns) do
+    ~H"""
+    <Icons.icon_tab_pm class="h-4 w-4" />
+    """
+  end
+
+  defp conversations_rail_icon(%{icon: :autojoin} = assigns) do
+    ~H"""
+    <Icons.icon_dialog_autojoin class="h-4 w-4" />
+    """
+  end
+
+  defp conversations_rail_icon(%{icon: :popular} = assigns) do
+    ~H"""
+    <Icons.icon_star class="h-4 w-4" />
     """
   end
 
@@ -133,11 +309,11 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
           size="icon"
           class="w-5 h-5 min-h-0 text-xs"
           phx-click={@on_close}
-          title={dgettext("chat", "Hide channel list")}
-          aria-label={dgettext("chat", "Hide channel list")}
-          data-testid="conversations-close"
+          title={dgettext("chat", "Collapse conversations")}
+          aria-label={dgettext("chat", "Collapse conversations")}
+          data-testid="conversations-collapse-toggle"
         >
-          <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
+          <:icon><Icons.icon_chevron_left class="w-4 h-4" /></:icon>
         </.button>
       </div>
 
@@ -768,6 +944,9 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
 
   defp format_unread_count(count) when is_integer(count) and count > 99, do: "99+"
   defp format_unread_count(count), do: count
+
+  defp rail_item_title(label, count) when is_integer(count), do: "#{label}: #{count}"
+  defp rail_item_title(label, _count), do: label
 
   defp nick_color(assigns, nick) do
     if is_function(assigns.nick_color_fn, 1), do: assigns.nick_color_fn.(nick)

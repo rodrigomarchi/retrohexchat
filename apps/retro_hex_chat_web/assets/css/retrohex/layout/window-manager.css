@@ -294,7 +294,8 @@
 
 .desktop--stacked [data-testid="tab-bar"],
 .desktop--stacked [data-testid="conversation-toolbar"],
-.desktop--stacked [data-testid="topic-bar"] {
+.desktop--stacked [data-testid="topic-bar"],
+.desktop--stacked [data-testid="search-bar"] {
   position: relative;
   z-index: 50;
 }
@@ -336,11 +337,20 @@
   touch-action: manipulation;
 }
 
-.desktop--stacked [data-testid="conversations-close"],
+.desktop--stacked [data-testid="conversations-collapse-toggle"],
+.desktop--stacked [data-testid="conversations-rail-toggle"],
+.desktop--stacked [data-testid="nicklist-collapse-toggle"],
+.desktop--stacked [data-testid="nicklist-rail-toggle"],
 .desktop--stacked [data-testid^="join-"],
 .desktop--stacked [data-testid^="autojoin-open-"] {
   min-width: 32px;
   min-height: 32px;
+}
+
+.desktop--stacked .chat-sidebar-rail [data-testid="conversations-rail-toggle"],
+.desktop--stacked .chat-sidebar-rail [data-testid="nicklist-rail-toggle"] {
+  min-width: 30px;
+  min-height: 30px;
 }
 
 .desktop--stacked [data-testid="chat-message-list"] {

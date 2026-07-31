@@ -137,9 +137,18 @@ defmodule RetroHexChatWeb.ChatLive.Components.ConversationsTest do
     refute html =~ ~s(data-testid="pm-open-state-bob")
   end
 
-  test "is hidden when not visible and shown when visible" do
-    assert render_conv(visible: false) =~ "md:min-w-[220px] hidden"
-    refute render_conv(visible: true) =~ "md:min-w-[220px] hidden"
+  test "collapses to the rail when not visible and expands when visible" do
+    collapsed = render_conv(visible: false)
+    assert collapsed =~ ~s(data-testid="conversations-sidebar-shell")
+    assert collapsed =~ ~s(data-state="collapsed")
+    assert collapsed =~ "chat-sidebar-shell--collapsed"
+    assert collapsed =~ ~s(data-testid="conversations-rail")
+
+    expanded = render_conv(visible: true)
+    assert expanded =~ ~s(data-state="expanded")
+    assert expanded =~ "chat-sidebar-shell--expanded"
+    assert expanded =~ ~s(title="Collapse conversations")
+    refute expanded =~ ~s(data-testid="conversations-rail")
   end
 
   test "derives unread channels and PMs from unread_counts" do

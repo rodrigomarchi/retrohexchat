@@ -32,6 +32,15 @@ defmodule RetroHexChatWeb.Components.UI.Chat.ConversationToolbarActionsTest do
     refute cluster |> Floki.attribute("class") |> hd() =~ "md:hidden"
   end
 
+  test "can omit sidebar toggles when the composed shell owns sidebar rails" do
+    html = render_component(&conversation_toolbar_actions/1, %{show_sidebar_toggles: false})
+    doc = Floki.parse_document!(html)
+
+    assert Floki.find(doc, ~s([data-testid="conversation-toolbar-conversations"])) == []
+    assert Floki.find(doc, ~s([data-testid="conversation-toolbar-nicklist"])) == []
+    assert [_search] = Floki.find(doc, ~s([data-testid="conversation-toolbar-search"]))
+  end
+
   test "visible state is reflected as pressed controls" do
     html =
       render_component(&conversation_toolbar_actions/1, %{

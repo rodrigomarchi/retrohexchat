@@ -104,6 +104,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
       for {k, v} <- assigns.unread_counts, v > 0, !String.starts_with?(k, "pm:"), do: k
 
     unread_pms = for {"pm:" <> nick, v} <- assigns.unread_counts, v > 0, do: nick
+    unread_total = assigns.unread_counts |> Map.values() |> Enum.sum()
 
     collapsed_sections =
       for {k, expanded?} <- assigns.conversations_sections, !expanded?, do: to_string(k)
@@ -115,13 +116,31 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
       assign(assigns,
         unread_channels: unread_channels,
         unread_pms: unread_pms,
+        unread_total: unread_total,
         collapsed_sections: collapsed_sections,
         autojoin_entries: autojoin_entries
       )
 
     ~H"""
     <div id={"#{@id}-mount"} class="flex h-full shrink-0">
-      <.conversations_sidebar visible={@visible} on_backdrop="toggle_conversations">
+      <.conversations_sidebar
+        visible={@visible}
+        on_backdrop="toggle_conversations"
+        on_toggle="toggle_conversations"
+      >
+        <:rail>
+          <.conversations_rail
+            expanded={@visible}
+            active_channel={@active_channel}
+            active_pm={@active_pm}
+            channel_count={length(@channels)}
+            pm_count={length(@pm_conversations)}
+            autojoin_count={length(@autojoin_entries)}
+            popular_count={length(@popular_channels)}
+            unread_count={@unread_total}
+            on_toggle="toggle_conversations"
+          />
+        </:rail>
         <.conversations
           channels={@channels}
           active_channel={@active_channel}
@@ -150,10 +169,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
           on_channel_dblclick="channel_dblclick"
           on_pm_click="switch_pm"
           on_toggle_section="conversations_toggle_section"
-          on_close="toggle_conversations"
           on_browse_channels="conversations_browse_all"
           on_join_popular="conversations_join_popular"
           on_autojoin_open="open_autojoin_dialog"
+          on_close="toggle_conversations"
         />
       </.conversations_sidebar>
     </div>

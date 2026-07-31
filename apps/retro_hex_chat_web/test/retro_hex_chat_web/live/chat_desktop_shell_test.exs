@@ -81,6 +81,16 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
                ~s([data-testid="conversation-toolbar"] [data-testid="conversation-toolbar-actions"])
              )
 
+      refute has_element?(
+               view,
+               ~s([data-testid="conversation-toolbar"] [data-testid="conversation-toolbar-conversations"])
+             )
+
+      refute has_element?(
+               view,
+               ~s([data-testid="conversation-toolbar"] [data-testid="conversation-toolbar-nicklist"])
+             )
+
       assert has_element?(
                view,
                ~s([data-testid="conversation-toolbar"] [data-testid="channel-view-switcher"])
@@ -93,6 +103,20 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
 
       assert has_element?(view, ~s([data-window-id="chat"] #conversations-mount.h-full))
       assert has_element?(view, ~s([data-window-id="chat"] #conversations.h-full))
+
+      assert has_element?(
+               view,
+               ~s([data-window-id="chat"] [data-testid="conversations-collapse-toggle"])
+             )
+
+      refute has_element?(view, ~s([data-window-id="chat"] [data-testid="conversations-rail"]))
+
+      assert has_element?(
+               view,
+               ~s([data-window-id="chat"] [data-testid="nicklist-collapse-toggle"])
+             )
+
+      refute has_element?(view, ~s([data-window-id="chat"] [data-testid="nicklist-rail"]))
       # The composer spans the whole conversation: it follows the messages /
       # nicklist row instead of sharing a column with it, so the nicklist ends
       # above the input rather than beside it.

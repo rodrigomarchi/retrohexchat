@@ -146,12 +146,14 @@ defmodule RetroHexChatWeb.Components.UI.ChatInput do
         <.button
           type="submit"
           disabled={@disabled || @char_count == 0}
+          aria-label={@send_label}
+          title={@send_label}
           data-testid="chat-input-send"
-          size="sm"
-          class="min-w-[60px]"
+          size="icon"
+          class="h-8 w-9 min-w-9 px-0"
         >
           <:icon><Icons.icon_btn_send class="w-4 h-4" /></:icon>
-          <span class="chat-input-send-label">{@send_label}</span>
+          <span class="chat-input-send-label sr-only">{@send_label}</span>
         </.button>
       </form>
       <p

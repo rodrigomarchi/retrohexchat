@@ -2,36 +2,222 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
   @moduledoc false
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Button
+
   alias RetroHexChat.Channels.Modes
   alias RetroHexChatWeb.Icons
 
   @doc """
-  Renders the nicklist sidebar: responsive layout + mobile backdrop wrapping a
-  full-height user-list container. `visible` toggles the `hidden` class without
-  unmounting, so a streamed list inside is never torn down. Globals (e.g. `id`,
-  `phx-hook`, `phx-update`) are forwarded to the list container, and the inner
-  block holds the user rows.
+  Renders the nicklist sidebar chrome. `visible` means expanded; when false, the
+  mounted sidebar is replaced by the 36px rail. `available`
+  hides the entire sidebar in contexts that do not have a channel roster.
   """
+  attr :available, :boolean, default: true
   attr :visible, :boolean, default: true
   attr :on_backdrop, :string, required: true
+  attr :on_toggle, :string, required: true
   attr :rest, :global
+  slot :rail, required: true
   slot :inner_block, required: true
 
   @spec nicklist_sidebar(map()) :: Phoenix.LiveView.Rendered.t()
   def nicklist_sidebar(assigns) do
+    assigns = assign(assigns, :state, if(assigns.visible, do: "expanded", else: "collapsed"))
+
     ~H"""
-    <div class={[
-      "chat-sidebar-overlay fixed inset-x-0 bottom-0 top-0 z-40 md:relative md:inset-auto md:z-auto",
-      "flex justify-end md:h-full md:justify-stretch md:w-[260px] md:min-w-[220px] md:shrink-0",
-      !@visible && "hidden"
-    ]}>
-      <div class="absolute inset-0 bg-black/30 md:hidden" phx-click={@on_backdrop} />
-      <div class="relative z-10 w-[300px] max-w-[calc(100vw-48px)] md:w-full md:max-w-none h-full bg-surface shadow-retro-window md:shadow-none">
-        <.nicklist class="h-full" {@rest}>
-          {render_slot(@inner_block)}
-        </.nicklist>
+    <div
+      class={[
+        "chat-sidebar-overlay chat-sidebar-shell chat-sidebar-shell--right fixed inset-y-0 left-0 right-0 z-40",
+        "flex justify-end shrink-0 md:relative md:inset-auto md:z-auto md:h-full",
+        @visible && "chat-sidebar-shell--expanded",
+        !@visible && "chat-sidebar-shell--collapsed",
+        !@available && "hidden"
+      ]}
+      data-state={@state}
+      data-side="right"
+      data-testid="nicklist-sidebar-shell"
+    >
+      <div
+        :if={@visible}
+        class="chat-sidebar-backdrop absolute inset-0 bg-black/30 md:hidden"
+        phx-click={@on_backdrop}
+      />
+      <div class="chat-sidebar-frame relative z-10 flex h-full min-h-0 bg-surface shadow-retro-window md:shadow-none">
+        <div class="chat-sidebar-panel min-w-0 flex-1">
+          <.nicklist class="h-full" {@rest}>
+            {render_slot(@inner_block)}
+          </.nicklist>
+        </div>
+        <%= if !@visible do %>
+          {render_slot(@rail)}
+        <% end %>
       </div>
     </div>
+    """
+  end
+
+  @doc "Renders the compact channel roster rail used by the collapsed state."
+  attr :expanded, :boolean, default: true
+  attr :channel_name, :string, default: nil
+  attr :total, :integer, default: 0
+  attr :online_count, :integer, default: 0
+  attr :away_count, :integer, default: 0
+  attr :muted_count, :integer, default: 0
+  attr :sections, :list, default: []
+  attr :on_toggle, :any, required: true
+
+  @spec nicklist_rail(map()) :: Phoenix.LiveView.Rendered.t()
+  def nicklist_rail(assigns) do
+    assigns =
+      assigns
+      |> assign(:display_channel, assigns.channel_name || dgettext("chat", "Users"))
+      |> assign(:visible_sections, Enum.take(assigns.sections || [], 4))
+
+    ~H"""
+    <nav
+      class="chat-sidebar-rail chat-sidebar-rail--right"
+      aria-label={dgettext("chat", "User list rail")}
+      data-testid="nicklist-rail"
+    >
+      <button
+        type="button"
+        class="chat-sidebar-rail__button chat-sidebar-rail__button--toggle"
+        phx-click={@on_toggle}
+        title={
+          if @expanded,
+            do: dgettext("chat", "Collapse user list"),
+            else: dgettext("chat", "Expand user list")
+        }
+        aria-label={
+          if @expanded,
+            do: dgettext("chat", "Collapse user list"),
+            else: dgettext("chat", "Expand user list")
+        }
+        aria-expanded={to_string(@expanded)}
+        data-testid="nicklist-rail-toggle"
+      >
+        <Icons.icon_chevron_right :if={@expanded} class="h-4 w-4" />
+        <Icons.icon_chevron_left :if={!@expanded} class="h-4 w-4" />
+      </button>
+
+      <.nicklist_rail_item
+        icon={:channel}
+        label={@display_channel}
+        count={@total}
+        active
+        expanded={@expanded}
+        on_toggle={@on_toggle}
+      />
+      <.nicklist_rail_item
+        icon={:online}
+        label={dgettext("chat", "Online")}
+        count={@online_count}
+        expanded={@expanded}
+        on_toggle={@on_toggle}
+      />
+      <.nicklist_rail_item
+        :if={@away_count > 0}
+        icon={:away}
+        label={dgettext("chat", "Away")}
+        count={@away_count}
+        expanded={@expanded}
+        on_toggle={@on_toggle}
+      />
+      <.nicklist_rail_item
+        :if={@muted_count > 0}
+        icon={:muted}
+        label={dgettext("chat", "Muted")}
+        count={@muted_count}
+        expanded={@expanded}
+        on_toggle={@on_toggle}
+      />
+      <.nicklist_rail_role
+        :for={section <- @visible_sections}
+        section={section}
+        expanded={@expanded}
+        on_toggle={@on_toggle}
+      />
+    </nav>
+    """
+  end
+
+  attr :icon, :atom, required: true
+  attr :label, :string, required: true
+  attr :count, :integer, default: nil
+  attr :active, :boolean, default: false
+  attr :expanded, :boolean, default: true
+  attr :on_toggle, :any, required: true
+
+  defp nicklist_rail_item(assigns) do
+    assigns = assign(assigns, :title, rail_item_title(assigns.label, assigns.count))
+
+    ~H"""
+    <button
+      type="button"
+      class={[
+        "chat-sidebar-rail__button",
+        @active && "chat-sidebar-rail__button--active"
+      ]}
+      phx-click={if @expanded, do: nil, else: @on_toggle}
+      title={@title}
+      aria-label={@title}
+    >
+      <.nicklist_rail_icon icon={@icon} />
+      <span :if={is_integer(@count)} class="chat-sidebar-rail__count">{@count}</span>
+    </button>
+    """
+  end
+
+  attr :section, :map, required: true
+  attr :expanded, :boolean, default: true
+  attr :on_toggle, :any, required: true
+
+  defp nicklist_rail_role(assigns) do
+    assigns =
+      assign(assigns, :title, rail_item_title(assigns.section.label, assigns.section.count))
+
+    ~H"""
+    <button
+      type="button"
+      class={[
+        "chat-sidebar-rail__button",
+        "chat-sidebar-rail__button--role-#{role_class(@section.key)}"
+      ]}
+      phx-click={if @expanded, do: nil, else: @on_toggle}
+      title={@title}
+      aria-label={@title}
+    >
+      <span class="chat-sidebar-rail__role-icon">
+        {role_icon(%{role: @section.key})}
+      </span>
+      <span class="chat-sidebar-rail__count">{@section.count}</span>
+    </button>
+    """
+  end
+
+  attr :icon, :atom, required: true
+
+  defp nicklist_rail_icon(%{icon: :channel} = assigns) do
+    ~H"""
+    <Icons.icon_tab_nicklist class="h-4 w-4" />
+    """
+  end
+
+  defp nicklist_rail_icon(%{icon: :online} = assigns) do
+    ~H"""
+    <Icons.icon_status_user class="h-4 w-4" />
+    """
+  end
+
+  defp nicklist_rail_icon(%{icon: :away} = assigns) do
+    ~H"""
+    <Icons.icon_btn_away class="h-4 w-4" />
+    """
+  end
+
+  defp nicklist_rail_icon(%{icon: :muted} = assigns) do
+    ~H"""
+    <Icons.icon_mute class="h-4 w-4" />
     """
   end
 
@@ -57,6 +243,7 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
   attr :channel_name, :string, default: nil
   attr :total, :integer, default: 0
   attr :modes, :any, default: nil
+  attr :on_close, :any, default: nil
   attr :class, :any, default: nil
   attr :rest, :global
 
@@ -75,6 +262,19 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
         </span>
         <span class="chat-nicklist-header__channel">{@display_channel}</span>
         <span class="chat-nicklist-header__count">{@total}</span>
+        <.button
+          :if={@on_close}
+          type="button"
+          variant="ghost"
+          size="icon"
+          class="w-5 h-5 min-h-0 text-xs"
+          phx-click={@on_close}
+          title={dgettext("chat", "Collapse user list")}
+          aria-label={dgettext("chat", "Collapse user list")}
+          data-testid="nicklist-collapse-toggle"
+        >
+          <:icon><Icons.icon_chevron_right class="w-4 h-4" /></:icon>
+        </.button>
       </div>
       <div :if={@mode_badges != []} class="chat-nicklist-header__modes">
         <span :for={mode <- @mode_badges} class="chat-nicklist-mode">{mode}</span>
@@ -331,4 +531,7 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
   defp role_icon(assigns) do
     ~H'<Icons.icon_role_regular class="w-[16px] h-[16px]" />'
   end
+
+  defp rail_item_title(label, count) when is_integer(count), do: "#{label}: #{count}"
+  defp rail_item_title(label, _count), do: label
 end
