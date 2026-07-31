@@ -1,10 +1,10 @@
 .PHONY: help setup deps db.setup db.create db.migrate db.rollback db.reset db.seed \
        db.gen.migration server iex routes \
-       test test.unit test.integration test.liveview test.feature test.all test.cover \
-       e2e e2e.headless e2e.ui e2e.shots e2e.install e2e.db.setup load.test \
-       test.cover.all test.domain test.web test.failed test.seed test.file test.line \
-       test.js test.js.watch \
-       ci ci.quick \
+       test test.stale test.unit test.integration test.liveview test.feature test.all test.cover \
+       e2e e2e.headless e2e.changed e2e.shard e2e.ui e2e.shots e2e.install e2e.db.setup load.test \
+       test.cover.all test.domain test.domain.stale test.web test.web.stale test.failed test.seed test.file test.line \
+       test.js test.js.changed test.js.related test.js.watch \
+       ci ci.quick ci.changed ci.serial ci.quick.serial \
        i18n.audit i18n.audit.check i18n.status i18n.catalog.check i18n.catalog.size.check i18n.placeholder.check i18n.source-fallback.check i18n.quality.check i18n.glossary i18n.repair i18n.tooling.test i18n.locales.add i18n.wave1.add i18n.gettext.extract i18n.gettext.merge i18n.gettext.rebuild i18n.gettext.check \
        lint format format.check credo dialyzer lint.js lint.js.fix lint.css lint.bundle precommit compile \
        assets.setup assets.build assets.deploy \
@@ -31,6 +31,10 @@ endif
 PORT ?= 4000
 TEST_PORT ?= 4002
 E2E_PORT ?= 4003
+CI_TEST_PARTITIONS ?= 2
+CI_FEATURE_PARTITIONS ?= 2
+CI_BASE ?= origin/main
+CI_HEAD ?= HEAD
 DEV_DB_PORT ?= 5432
 TEST_DB_PORT ?= 5433
 BASE_URL ?= http://localhost:$(PORT)
@@ -46,6 +50,11 @@ E2E_ENV = MIX_ENV=e2e PGPORT=$(TEST_DB_PORT) E2E_PORT=$(E2E_PORT) E2E_BASE_URL=$
 DEV_MIX = $(DEV_ENV) mix
 TEST_MIX = $(TEST_ENV) mix
 E2E_MIX = $(E2E_ENV) mix
+CI_CHANGED_FLAGS = --changed --base $(CI_BASE) --head $(CI_HEAD)
+
+ifeq ($(EXPLAIN),1)
+CI_CHANGED_FLAGS += --explain-only
+endif
 
 # ---------------------------------------------------------------------
 # RetroHexChat -- Development Makefile
@@ -135,6 +144,9 @@ routes: ## List all application routes
 test: ## Run full test suite -- excludes LiveView feature tests
 	$(TEST_MIX) test
 
+test.stale: ## Run stale Elixir tests from the umbrella root
+	$(TEST_MIX) test --stale
+
 test.unit: ## Run unit tests only
 	cd $(DOMAIN_APP) && $(TEST_MIX) test --only unit
 
@@ -159,8 +171,14 @@ test.cover.all: ## Run ALL tests with coverage (including LiveView feature tests
 test.domain: ## Run domain app tests only
 	cd $(DOMAIN_APP) && $(TEST_MIX) test
 
+test.domain.stale: ## Run stale domain app tests only
+	cd $(DOMAIN_APP) && $(TEST_MIX) test --stale
+
 test.web: ## Run web app tests only (excludes LiveView feature tests)
 	cd $(WEB_APP) && $(TEST_MIX) test
+
+test.web.stale: ## Run stale web app tests only
+	cd $(WEB_APP) && $(TEST_MIX) test --stale
 
 test.failed: ## Re-run only previously failed tests
 	$(TEST_MIX) test --failed
@@ -177,6 +195,13 @@ test.line: ## Run a specific test by file:line (usage: make test.line TARGET=pat
 test.js: ## Run JavaScript tests (Vitest)
 	npm test --prefix $(WEB_APP)/assets
 
+test.js.changed: ## Run Vitest tests affected by changed JS files (usage: make test.js.changed SINCE=origin/main)
+	npm run test:changed --prefix $(WEB_APP)/assets -- $(SINCE)
+
+test.js.related: ## Run Vitest tests related to asset files (usage: make test.js.related FILES="js/app.js")
+	@test -n "$(FILES)" || { echo "usage: make test.js.related FILES=\"js/app.js test/lib/foo.test.js\""; exit 2; }
+	npm run test:related --prefix $(WEB_APP)/assets -- $(FILES)
+
 test.js.watch: ## Run JavaScript tests in watch mode
 	npm run test:watch --prefix $(WEB_APP)/assets
 
@@ -191,6 +216,15 @@ e2e: ## Run Playwright with VISIBLE browser + slow-mo (default; watch the flow)
 e2e.headless: ## Run Playwright headless (faster, no browser window)
 	$(E2E_MIX) assets.build
 	cd e2e && $(E2E_ENV) npm test
+
+e2e.changed: ## Run Playwright specs changed since SINCE (default: uncommitted changes)
+	$(E2E_MIX) assets.build
+	cd e2e && $(E2E_ENV) npx playwright test --only-changed $(SINCE)
+
+e2e.shard: ## Run a Playwright shard (usage: make e2e.shard SHARD=1/2)
+	@test -n "$(SHARD)" || { echo "usage: make e2e.shard SHARD=1/2"; exit 2; }
+	$(E2E_MIX) assets.build
+	cd e2e && $(E2E_ENV) npx playwright test --shard=$(SHARD)
 
 e2e.ui: ## Run Playwright in interactive UI mode (play/pause/inspect)
 	cd e2e && $(E2E_ENV) npm run test:ui
@@ -273,10 +307,19 @@ lint.bundle: ## Enforce frontend bundle budgets
 	npm run bundle:budget --prefix $(WEB_APP)/assets
 
 ci: ## Run all CI checks locally with maximum parallelism
-	$(TEST_ENV) elixir scripts/ci.exs
+	$(TEST_ENV) CI_TEST_PARTITIONS=$(CI_TEST_PARTITIONS) CI_FEATURE_PARTITIONS=$(CI_FEATURE_PARTITIONS) elixir scripts/ci.exs
 
 ci.quick: ## Run CI checks without dialyzer (faster iteration)
-	$(TEST_ENV) elixir scripts/ci.exs --quick
+	$(TEST_ENV) CI_TEST_PARTITIONS=$(CI_TEST_PARTITIONS) CI_FEATURE_PARTITIONS=$(CI_FEATURE_PARTITIONS) elixir scripts/ci.exs --quick
+
+ci.changed: ## Run checks selected from git diff (usage: make ci.changed CI_BASE=origin/main EXPLAIN=1)
+	$(TEST_ENV) CI_TEST_PARTITIONS=$(CI_TEST_PARTITIONS) CI_FEATURE_PARTITIONS=$(CI_FEATURE_PARTITIONS) elixir scripts/ci.exs $(CI_CHANGED_FLAGS)
+
+ci.serial: ## Run all CI checks with one Elixir test partition per suite
+	$(TEST_ENV) CI_TEST_PARTITIONS=1 CI_FEATURE_PARTITIONS=1 elixir scripts/ci.exs
+
+ci.quick.serial: ## Run quick CI with one Elixir test partition per suite
+	$(TEST_ENV) CI_TEST_PARTITIONS=1 CI_FEATURE_PARTITIONS=1 elixir scripts/ci.exs --quick
 
 i18n.audit: ## Find hardcoded user-visible strings that still need i18n
 	elixir scripts/i18n_audit.exs

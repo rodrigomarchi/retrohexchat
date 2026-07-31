@@ -23,6 +23,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
   import RetroHexChatWeb.Components.UI.TrustedDevices.TrustedTerminalCard
 
   alias RetroHexChatWeb.Icons
+  alias RetroHexChatWeb.Timezone
 
   attr :step, :atom, required: true, values: [:nickname, :password, :register]
   attr :nickname, :string, required: true
@@ -32,6 +33,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
   attr :password_error, :string, default: nil
   attr :auth_token, :string, default: nil
   attr :remembered_nicks, :list, default: []
+  attr :takeover_session, :map, default: nil
   attr :manual_login, :boolean, default: false
   attr :trusted_device_login, :boolean, default: false
   attr :remember_device, :boolean, default: false
@@ -67,6 +69,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
           password_confirm={@password_confirm}
           password_error={@password_error}
           remembered_nicks={@remembered_nicks}
+          takeover_session={@takeover_session}
           manual_login={@manual_login}
           remember_device={@remember_device}
           device_label={@device_label}
@@ -99,6 +102,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
   attr :password_confirm, :string, required: true
   attr :password_error, :string, default: nil
   attr :remembered_nicks, :list, default: []
+  attr :takeover_session, :map, default: nil
   attr :manual_login, :boolean, default: false
   attr :remember_device, :boolean, default: false
   attr :device_label, :string, default: ""
@@ -136,6 +140,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
         password_confirm={@password_confirm}
         password_error={@password_error}
         remembered_nicks={@remembered_nicks}
+        takeover_session={@takeover_session}
         manual_login={@manual_login}
         remember_device={@remember_device}
         device_label={@device_label}
@@ -151,6 +156,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
   attr :password_confirm, :string, required: true
   attr :password_error, :string, default: nil
   attr :remembered_nicks, :list, default: []
+  attr :takeover_session, :map, default: nil
   attr :manual_login, :boolean, default: false
   attr :remember_device, :boolean, default: false
   attr :device_label, :string, default: ""
@@ -161,6 +167,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
       nickname={@nickname}
       nickname_error={@nickname_error}
       remembered_nicks={@remembered_nicks}
+      takeover_session={@takeover_session}
       manual_login={@manual_login}
     />
     """
@@ -194,11 +201,14 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
   attr :nickname, :string, required: true
   attr :nickname_error, :string, default: nil
   attr :remembered_nicks, :list, default: []
+  attr :takeover_session, :map, default: nil
   attr :manual_login, :boolean, default: false
 
   defp connect_nickname_step(assigns) do
     ~H"""
     <form phx-submit="connect">
+      <.takeover_session_card :if={@takeover_session} session={@takeover_session} />
+
       <.remembered_terminal_choices
         :if={@remembered_nicks != [] and not @manual_login}
         remembered_nicks={@remembered_nicks}
@@ -211,6 +221,60 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
         show_trusted_back={@remembered_nicks != []}
       />
     </form>
+    """
+  end
+
+  attr :session, :map, required: true
+
+  defp takeover_session_card(assigns) do
+    assigns =
+      assigns
+      |> assign(:terminal_label, takeover_terminal_label(assigns.session))
+      |> assign(:nickname, session_field(assigns.session, :nickname) || "")
+      |> assign(:specs, takeover_specs(assigns.session))
+
+    ~H"""
+    <div
+      class="mb-3 bg-white p-2 text-xs shadow-retro-field"
+      data-testid="takeover-session-card"
+    >
+      <div class="flex min-w-0 items-start gap-retro-4">
+        <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center bg-canvas shadow-retro-sunken">
+          <Icons.icon_laptop class="h-6 w-6" />
+        </span>
+        <div class="min-w-0 flex-1">
+          <div class="flex min-w-0 flex-wrap items-center gap-retro-3">
+            <span class="font-bold">{dgettext("connect", "Machine that disconnected you")}</span>
+            <span class="inline-flex items-center gap-retro-2 bg-selection-bg px-1 text-selection-fg shadow-retro-status">
+              <Icons.icon_status_signal class="h-3 w-3 shrink-0" />
+              {dgettext("ui", "Active")}
+            </span>
+          </div>
+
+          <div class="mt-1 flex min-w-0 flex-wrap items-center gap-retro-3">
+            <span class="truncate text-sm font-bold">{@terminal_label}</span>
+            <span :if={@nickname != ""} class="inline-flex min-w-0 items-center gap-retro-2">
+              <Icons.icon_status_user class="h-3.5 w-3.5 shrink-0" />
+              <span class="truncate font-bold">{@nickname}</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div
+        :if={@specs != []}
+        class="mt-2 flex flex-wrap gap-retro-3 border-t border-border pt-2 text-muted-foreground"
+      >
+        <span
+          :for={spec <- @specs}
+          class="inline-flex max-w-full min-w-0 items-center gap-retro-2 bg-white px-1 py-px shadow-retro-status"
+        >
+          <.device_meta_icon item={spec.item} class="h-3.5 w-3.5 shrink-0" />
+          <span class="shrink-0 font-bold text-foreground">{spec.label}:</span>
+          <span class="min-w-0 truncate">{spec.value}</span>
+        </span>
+      </div>
+    </div>
     """
   end
 
@@ -664,7 +728,99 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
 
   defp device_meta_icon(%{item: "cores"} = assigns), do: ~H"<Icons.icon_server class={@class} />"
   defp device_meta_icon(%{item: "touch"} = assigns), do: ~H"<Icons.icon_devices class={@class} />"
+
+  defp device_meta_icon(%{item: "connected_at"} = assigns),
+    do: ~H"<Icons.icon_connect class={@class} />"
+
+  defp device_meta_icon(%{item: "last_seen_at"} = assigns),
+    do: ~H"<Icons.icon_btn_refresh class={@class} />"
+
   defp device_meta_icon(assigns), do: ~H"<Icons.icon_laptop class={@class} />"
+
+  defp takeover_specs(session) do
+    timezone = session_field(session, :timezone) || "Etc/UTC"
+
+    [
+      %{
+        item: "browser",
+        label: dgettext("connect", "Browser"),
+        value: session_field(session, :browser)
+      },
+      %{item: "os", label: dgettext("connect", "OS"), value: session_field(session, :os)},
+      %{
+        item: "screen",
+        label: dgettext("connect", "Screen"),
+        value: session_field(session, :screen)
+      },
+      %{
+        item: "timezone",
+        label: dgettext("connect", "Timezone"),
+        value: session_field(session, :timezone)
+      },
+      %{
+        item: "cores",
+        label: dgettext("connect", "CPU"),
+        value: takeover_cores_label(session_field(session, :cores))
+      },
+      %{
+        item: "color_depth",
+        label: dgettext("connect", "Color"),
+        value: takeover_color_depth_label(session_field(session, :color_depth))
+      },
+      %{
+        item: "connected_at",
+        label: dgettext("dialogs", "Connected"),
+        value: format_takeover_dt(session_field(session, :connected_at), timezone)
+      },
+      %{
+        item: "last_seen_at",
+        label: dgettext("ui", "Last"),
+        value: format_takeover_dt(session_field(session, :last_seen_at), timezone)
+      }
+    ]
+    |> Enum.reject(&blank?(&1.value))
+  end
+
+  defp takeover_terminal_label(session) do
+    case session_field(session, :label) do
+      "Unremembered session" -> dgettext("connect", "Unremembered session")
+      label when is_binary(label) and label != "" -> label
+      _ -> dgettext("connect", "Unknown device")
+    end
+  end
+
+  defp session_field(session, field) do
+    case Map.fetch(session, field) do
+      {:ok, value} -> value
+      :error -> Map.get(session, Atom.to_string(field))
+    end
+  end
+
+  defp blank?(nil), do: true
+  defp blank?(""), do: true
+  defp blank?(_value), do: false
+
+  defp takeover_color_depth_label(bits) when is_integer(bits) and bits > 0 do
+    dgettext("ui", "%{bits}-bit", bits: bits)
+  end
+
+  defp takeover_color_depth_label(_bits), do: nil
+
+  defp takeover_cores_label(count) when is_integer(count) and count > 0 do
+    dgettext("ui", "%{count} cores", count: count)
+  end
+
+  defp takeover_cores_label(_count), do: nil
+
+  defp format_takeover_dt(nil, _timezone), do: nil
+
+  defp format_takeover_dt(%DateTime{} = dt, timezone) do
+    dt
+    |> Timezone.shift(timezone)
+    |> Calendar.strftime("%d/%m %H:%M")
+  end
+
+  defp format_takeover_dt(_dt, _timezone), do: nil
 
   defp connect_taskbar(assigns) do
     ~H"""

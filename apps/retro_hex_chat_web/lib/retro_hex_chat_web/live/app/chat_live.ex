@@ -120,6 +120,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
       {:force_disconnect,
        %{
          reason: dgettext("chat", "Session ended — logged in from another window"),
+         disconnected_by_session_ref: chat_device_session_ref,
          takeover_ack: {self(), takeover_ref}
        }}
     )

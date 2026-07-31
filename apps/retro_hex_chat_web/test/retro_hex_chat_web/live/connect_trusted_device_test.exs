@@ -143,6 +143,50 @@ defmodule RetroHexChatWeb.ConnectTrustedDeviceTest do
     assert has_element?(view, ~s([data-testid="remembered-nick-login-#{nick}"]))
   end
 
+  test "connect reason renders the machine that took over the nick", %{conn: conn} do
+    nick = "Takeover#{uid()}"
+    NickServ.register(nick, "pass123")
+
+    {:ok, %{cookie_value: cookie}} =
+      TrustedDevices.remember_nick(nil, nick,
+        label: "Current Mac",
+        actor_nickname: nick,
+        client_info: %{"browser" => "Safari 18", "os" => "macOS 15"}
+      )
+
+    {:ok, takeover} =
+      TrustedDevices.record_session_start(nick, nil, %{
+        "browser" => "Chrome 150",
+        "os" => "Windows 10+",
+        "timezone" => "America/Sao_Paulo",
+        "screen" => "1920x1080",
+        "color_depth" => 24,
+        "cores" => 8
+      })
+
+    disconnect_context = %{
+      "session_ref" => takeover.session_ref,
+      "nickname" => nick,
+      "recorded_at" => DateTime.utc_now() |> DateTime.to_iso8601()
+    }
+
+    {:ok, view, html} =
+      conn
+      |> init_test_session(%{last_disconnect_context: disconnect_context})
+      |> put_req_cookie(TrustedDeviceCookie.name(), cookie)
+      |> live(~p"/connect?reason=disconnected")
+
+    assert has_element?(view, ~s([data-testid="takeover-session-card"]))
+    assert html =~ "Machine that disconnected you"
+    assert html =~ "Active"
+    assert html =~ "Chrome 150"
+    assert html =~ "Windows 10+"
+    assert html =~ "1920x1080"
+    assert html =~ "8 cores"
+    assert html =~ "24-bit"
+    assert html =~ "Current Mac"
+  end
+
   test "remembered terminal screen can switch to manual nickname login", %{conn: conn} do
     nick = "ManTrust#{uid()}"
     NickServ.register(nick, "pass123")

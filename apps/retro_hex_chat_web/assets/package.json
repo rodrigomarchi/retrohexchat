@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "vitest run",
+    "test:changed": "vitest run --changed",
+    "test:related": "vitest related",
     "test:watch": "vitest",
     "lint": "eslint js/ test/ scripts/",
     "lint:hooks": "node scripts/enforce_hooks_contract.cjs",

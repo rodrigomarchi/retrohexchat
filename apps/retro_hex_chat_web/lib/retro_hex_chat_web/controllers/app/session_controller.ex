@@ -42,10 +42,12 @@ defmodule RetroHexChatWeb.App.SessionController do
   def delete(conn, params) do
     reason = params["reason"] || "disconnected"
     locale = get_session(conn, :locale)
+    disconnect_context = disconnect_context(params, get_session(conn, :chat_nickname))
 
     conn
     |> clear_session()
     |> maybe_restore_locale(locale)
+    |> maybe_put_disconnect_context(disconnect_context)
     |> maybe_delete_trusted_cookie(params)
     |> redirect(to: ~p"/connect?reason=#{reason}")
   end
@@ -129,6 +131,24 @@ defmodule RetroHexChatWeb.App.SessionController do
   end
 
   defp maybe_restore_locale(conn, _locale), do: conn
+
+  defp disconnect_context(%{"disconnected_by_session_ref" => session_ref}, nickname)
+       when is_binary(session_ref) and session_ref != "" and byte_size(session_ref) <= 64 and
+              is_binary(nickname) and nickname != "" do
+    %{
+      "session_ref" => session_ref,
+      "nickname" => nickname,
+      "recorded_at" => DateTime.utc_now() |> DateTime.to_iso8601()
+    }
+  end
+
+  defp disconnect_context(_params, _nickname), do: nil
+
+  defp maybe_put_disconnect_context(conn, nil), do: conn
+
+  defp maybe_put_disconnect_context(conn, context) do
+    put_session(conn, :last_disconnect_context, context)
+  end
 
   defp maybe_delete_trusted_cookie(conn, params) do
     if truthy?(params["forget_device"]) do

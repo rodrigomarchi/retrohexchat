@@ -129,6 +129,35 @@ defmodule RetroHexChat.Accounts.TrustedDevicesTest do
       refute Repo.get!(ChatDeviceSession, two.id).disconnected_at
     end
 
+    test "takeover_session_for_disconnect returns recent takeover metadata" do
+      nick = nick("Takeover")
+      {:ok, _} = Queries.insert_registered_nick(nick, "secret123")
+
+      {:ok, session} =
+        TrustedDevices.record_session_start(nick, nil, %{
+          "browser" => "Chrome 150",
+          "os" => "Windows 10+",
+          "timezone" => "America/Sao_Paulo",
+          "screen" => "1920x1080",
+          "color_depth" => 24,
+          "cores" => 8
+        })
+
+      assert takeover =
+               TrustedDevices.takeover_session_for_disconnect(session.session_ref, nick)
+
+      assert takeover.id == session.id
+      assert takeover.nickname == nick
+      assert takeover.browser == "Chrome 150"
+      assert takeover.os == "Windows 10+"
+      assert takeover.screen == "1920x1080"
+      assert takeover.color_depth == 24
+      assert takeover.cores == 8
+      assert takeover.trusted? == false
+
+      refute TrustedDevices.takeover_session_for_disconnect(session.session_ref, "OtherNick")
+    end
+
     test "list read models include persisted terminal and session metadata" do
       nick = nick("Meta")
       {:ok, _} = Queries.insert_registered_nick(nick, "secret123")

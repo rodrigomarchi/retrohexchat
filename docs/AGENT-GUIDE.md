@@ -715,12 +715,20 @@ Accessible via F1, Help menu → Help Topics, and `/help`. Stale/inaccurate help
 
 ## 13. Testing conventions & gotchas
 
-- **`make ci` (9 parallel checks) is the ONLY acceptable validation and the completeness gate,
-  not E2E.** A task isn't done until it's fully green. Never run checks individually. All
+- **`make ci` (complete local guard, 12 checks) is the ONLY final validation and the
+  completeness gate, not E2E and not `ci.changed`.** A task isn't done until it's fully
+  green. The guard partitions the normal ExUnit suite and the LiveView feature suite by
+  default; use `make ci.serial` only to diagnose partition-specific issues. All
   warnings/failures are yours — never "pre-existing" without proof. `make ci.quick` (skips
-  dialyzer) is for iteration only. Per-feature Playwright alone does NOT catch
-  LiveViewTest/component regressions; when an E2E spec and a `make ci` LiveViewTest disagree,
-  `make ci` is authoritative — the spec is stale.
+  dialyzer) and `make ci.changed` (diff-selected checks) are for iteration only.
+  Per-feature Playwright alone does NOT catch LiveViewTest/component regressions; when an
+  E2E spec and a `make ci` LiveViewTest disagree, `make ci` is authoritative — the spec is
+  stale.
+- **Use the fast loops deliberately.** `make test.stale`, `make test.domain.stale`,
+  `make test.web.stale`, `make test.failed`, `make test.js.changed SINCE=origin/main`,
+  `make test.js.related FILES="js/app.js"`, `make e2e.changed`, and
+  `make e2e.shard SHARD=1/2` are local feedback tools. They never replace the final
+  `make ci` gate.
 - **Never assert on async `send_update` / stream messages.** Assert on synchronous state
   (`:sys.get_state`), domain/component unit tests, or persisted data. No `sleep` / render-retry.
   (See §6.3 for the flush rule when a synchronous read is genuinely needed.)
@@ -777,7 +785,7 @@ Accessible via F1, Help menu → Help Topics, and `/help`. Stale/inaccurate help
   `git stash push -- <file>`. Recover a lost stash via
   `git fsck --no-reflog | grep "dangling commit"`.
 - **⚠️ Don't let a pipe mask `make ci`'s exit:** `make ci 2>&1 | tail -20` returns `tail`'s exit
-  (0). Run `make ci > log 2>&1; echo $?` or check the `Results: N/9` line.
+  (0). Run `make ci > log 2>&1; echo $?` or check the `Results: N/12` line.
 - **Run `mix format` before `make ci`.** Long `send_update`/pipe lines break format and
   cascade-skip later parallel CI stages, wasting a round-trip.
 - **"No silent catch" (JS and Elixir).** Every `try/catch` in connection/media/game JS must log

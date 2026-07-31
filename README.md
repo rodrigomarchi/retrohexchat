@@ -26,7 +26,7 @@ Full channel modes, persistent bans, role hierarchy (Owner / Op / Half-op / Voic
 You can open a game window inside the chat and play DOOM: Knee-Deep in the Dead, Quake, Quake II, Wolfenstein 3D, Half-Life: Uplink, or ScummVM adventures via WebAssembly engines without leaving the app. Two users can also invite each other to one of 34 multiplayer game sessions via P2P WebRTC.
 
 **The architecture is production-grade.**
-Each IRC channel runs as an isolated OTP GenServer. If one crashes, others are unaffected. Message history uses cursor-based pagination with GIN trigram indexes for full-text search. 706 JavaScript tests. 9-check parallel CI pipeline at ~64s. Zero ignored Credo warnings. All public functions spec'd with Dialyzer.
+Each IRC channel runs as an isolated OTP GenServer. If one crashes, others are unaffected. Message history uses cursor-based pagination with GIN trigram indexes for full-text search. 706 JavaScript tests. 12-check partitioned local CI guard. Zero ignored Credo warnings. All public functions spec'd with Dialyzer.
 
 ---
 
@@ -270,9 +270,13 @@ make help           # all available targets
 make setup          # first-time setup
 make server         # dev server at localhost:4000
 make test           # full test suite (excludes E2E)
-make test.all       # full suite including E2E
-make ci             # all 9 CI checks in parallel (~64s)
+make test.all       # ExUnit suite including LiveView feature tests
+make ci             # complete local guard, partitioned ExUnit suites
 make ci.quick       # CI without dialyzer (faster iteration)
+make ci.changed     # checks selected from git diff; use EXPLAIN=1 to inspect
+make ci.serial      # same full guard with one ExUnit partition per suite
+make test.stale     # local stale ExUnit loop
+make test.js.changed # local Vitest changed loop
 make lint           # format + credo + dialyzer + JS lint
 make lint.js.fix    # auto-fix ESLint + Prettier issues
 make precommit      # compile + format + test
@@ -280,19 +284,35 @@ make precommit      # compile + format + test
 
 ### CI Pipeline
 
-9 checks run in parallel across 2 stages:
+The complete local guard runs 12 checks across 3 stages. ExUnit suites are
+partitioned by default; set `CI_TEST_PARTITIONS=1 CI_FEATURE_PARTITIONS=1` or use
+`make ci.serial` to diagnose partition-specific issues.
 
 ```
-Stage 1 (parallel):       Stage 2 (parallel, after compile):
-  ├── compile               ├── format check
-  ├── JS lint               ├── credo --strict
-  └── JS tests              ├── CSS lint + strict style audit
-                            ├── mix test (unit + integration + liveview)
-                            ├── mix test --only e2e
-                            └── dialyzer
+Stage 1 (parallel):
+  ├── compile
+  ├── JS lint
+  ├── JS tests
+  ├── CI impact tests
+  ├── i18n tooling tests
+  └── i18n quality
+
+Stage 2 (parallel, after compile):
+  ├── format check
+  ├── credo --strict
+  ├── CSS lint + strict style audit
+  ├── mix test (partitioned)
+  └── mix test --only liveview_feature (partitioned)
+
+Stage 3 (isolated):
+  └── dialyzer
 ```
 
-~64s parallel vs ~104s serial — 38% faster.
+Playwright remains a deliberate local E2E suite (`make e2e*`), not part of the
+default `make ci` guard.
+
+Latest measured local run: `make ci` completed 12/12 checks in `2m53s` with
+2-way ExUnit partitioning and a warm Dialyzer PLT.
 
 ---
 

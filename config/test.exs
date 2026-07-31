@@ -1,18 +1,21 @@
 import Config
 
 test_http_port = String.to_integer(System.get_env("TEST_PORT", "4002"))
+test_database_suffix = System.get_env("TEST_DB_SUFFIX") || System.get_env("MIX_TEST_PARTITION")
 
 # Configure your database
 #
 # The MIX_TEST_PARTITION environment variable can be used
 # to provide built-in test partitioning in CI environment.
+# TEST_DB_SUFFIX lets the local CI runner use distinct databases for separate
+# test groups that are partitioned independently.
 # Run `mix help test` for more information.
 config :retro_hex_chat, RetroHexChat.Repo,
   username: System.get_env("PGUSER", "postgres"),
   password: System.get_env("PGPASSWORD", "postgres"),
   hostname: System.get_env("PGHOST", "localhost"),
   port: String.to_integer(System.get_env("PGPORT", "5433")),
-  database: "retro_hex_chat_test#{System.get_env("MIX_TEST_PARTITION")}",
+  database: "retro_hex_chat_test#{test_database_suffix}",
   pool: Ecto.Adapters.SQL.Sandbox,
   pool_size: System.schedulers_online() * 2
 

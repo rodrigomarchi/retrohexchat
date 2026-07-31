@@ -18,15 +18,26 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PathHelpers do
 
   @spec session_clear_path(Phoenix.LiveView.Socket.t(), String.t(), keyword()) :: String.t()
   def session_clear_path(_socket, reason, opts) do
-    if Keyword.get(opts, :forget_device, false) do
-      ~p"/chat/session/clear?reason=#{reason}&forget_device=true"
-    else
-      ~p"/chat/session/clear?reason=#{reason}"
-    end
+    query =
+      [reason: reason]
+      |> maybe_put_query(:forget_device, "true", Keyword.get(opts, :forget_device, false))
+      |> maybe_put_query(
+        :disconnected_by_session_ref,
+        Keyword.get(opts, :disconnected_by_session_ref),
+        true
+      )
+
+    ~p"/chat/session/clear?#{query}"
   end
 
   @spec activity_path(Phoenix.LiveView.Socket.t(), String.t()) :: String.t()
   def activity_path(_socket, path) do
     path
   end
+
+  defp maybe_put_query(query, key, value, true) when is_binary(value) and value != "" do
+    Keyword.put(query, key, value)
+  end
+
+  defp maybe_put_query(query, _key, _value, _condition), do: query
 end

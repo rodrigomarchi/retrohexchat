@@ -18,6 +18,8 @@ defmodule RetroHexChatWeb.App.ConnectLive do
   alias RetroHexChat.Accounts.TrustedDevices
   alias RetroHexChat.Services.NickServ
 
+  @disconnect_context_ttl_seconds 600
+
   @impl true
   @spec mount(map(), map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def mount(_params, session, socket) do
@@ -35,6 +37,8 @@ defmodule RetroHexChatWeb.App.ConnectLive do
        auth_token: nil,
        trusted_device_id: trusted_device_id,
        remembered_nicks: remembered_nicks,
+       last_disconnect_context: last_disconnect_context(session),
+       takeover_session: nil,
        manual_login: false,
        trusted_device_login: false,
        remember_device: false,
@@ -47,11 +51,15 @@ defmodule RetroHexChatWeb.App.ConnectLive do
   @impl true
   def handle_params(%{"reason" => reason}, _uri, socket) do
     message = reason_to_message(reason)
-    {:noreply, put_flash(socket, :error, message)}
+
+    {:noreply,
+     socket
+     |> assign(takeover_session: takeover_session(socket.assigns.last_disconnect_context))
+     |> put_flash(:error, message)}
   end
 
   def handle_params(_params, _uri, socket) do
-    {:noreply, maybe_auto_login(socket)}
+    {:noreply, socket |> assign(takeover_session: nil) |> maybe_auto_login()}
   end
 
   @spec reason_to_message(String.t()) :: String.t()
@@ -330,4 +338,41 @@ defmodule RetroHexChatWeb.App.ConnectLive do
   end
 
   defp truthy?(value), do: value in [true, "true", "on", "1", 1]
+
+  defp last_disconnect_context(%{"last_disconnect_context" => context}) when is_map(context) do
+    context
+  end
+
+  defp last_disconnect_context(_session), do: nil
+
+  defp takeover_session(nil), do: nil
+
+  defp takeover_session(context) when is_map(context) do
+    session_ref = context_value(context, :session_ref)
+    nickname = context_value(context, :nickname)
+    recorded_at = context_value(context, :recorded_at)
+
+    if recent_disconnect_context?(recorded_at) do
+      TrustedDevices.takeover_session_for_disconnect(session_ref, nickname)
+    end
+  end
+
+  defp context_value(context, key) do
+    Map.get(context, Atom.to_string(key)) || Map.get(context, key)
+  end
+
+  defp recent_disconnect_context?(recorded_at) when is_binary(recorded_at) do
+    with {:ok, recorded_at, _offset} <- DateTime.from_iso8601(recorded_at),
+         :gt <-
+           DateTime.compare(
+             DateTime.add(recorded_at, @disconnect_context_ttl_seconds, :second),
+             DateTime.utc_now()
+           ) do
+      true
+    else
+      _ -> false
+    end
+  end
+
+  defp recent_disconnect_context?(_recorded_at), do: false
 end

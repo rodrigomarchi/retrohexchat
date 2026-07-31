@@ -194,6 +194,24 @@ defmodule RetroHexChatWeb.SessionControllerTest do
       refute get_session(conn, :chat_nickname)
     end
 
+    test "preserves disconnecting session context while clearing chat session", %{conn: conn} do
+      conn =
+        conn
+        |> init_test_session(%{chat_nickname: "OldNick"})
+        |> get(~p"/chat/session/clear?reason=disconnected&disconnected_by_session_ref=winner-ref")
+
+      assert redirected_to(conn) == "/connect?reason=disconnected"
+
+      assert %{
+               "session_ref" => "winner-ref",
+               "nickname" => "OldNick",
+               "recorded_at" => recorded_at
+             } = get_session(conn, :last_disconnect_context)
+
+      assert {:ok, _recorded_at, _offset} = DateTime.from_iso8601(recorded_at)
+      refute get_session(conn, :chat_nickname)
+    end
+
     test "forget_device clears the trusted device cookie", %{conn: conn} do
       conn =
         conn
