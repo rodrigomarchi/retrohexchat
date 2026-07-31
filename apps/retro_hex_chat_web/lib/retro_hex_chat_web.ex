@@ -19,6 +19,18 @@ defmodule RetroHexChatWeb do
 
   def static_paths, do: ~w(assets fonts images favicon.ico robots.txt)
 
+  @doc """
+  First-segment prefixes served in addition to `static_paths/0`.
+
+  Digesting rewrites a top-level file to `name-<digest>.ext`, which is a
+  different first segment than the one `static_paths/0` names — so a file
+  referenced with `~p` from the project root needs its prefix here or it is
+  never served. Files under a directory prefix (`assets/`, `images/`) are
+  unaffected: their first segment is the directory.
+  """
+  @spec static_only_matching() :: [String.t()]
+  def static_only_matching, do: ~w(favicon robots)
+
   def router do
     quote do
       use Phoenix.Router, helpers: false

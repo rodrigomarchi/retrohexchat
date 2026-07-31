@@ -30,6 +30,7 @@ defmodule RetroHexChatWeb.Endpoint do
     from: :retro_hex_chat_web,
     gzip: not code_reloading?,
     only: RetroHexChatWeb.static_paths(),
+    only_matching: RetroHexChatWeb.static_only_matching(),
     raise_on_missing_only: code_reloading?
 
   # Code reloading can be explicitly enabled under the
