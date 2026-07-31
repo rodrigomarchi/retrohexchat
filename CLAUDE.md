@@ -36,16 +36,24 @@ apps/
 make help                     # Show all available Makefile targets
 make setup                    # First-time setup (docker + deps + db)
 make server                   # Dev server (localhost:4000)
-make test                     # Full suite (excludes E2E)
-make test.all                 # Full suite including E2E
+make test                     # Full ExUnit suite (excludes LiveView feature tests + Playwright)
+make test.all                 # ExUnit suite including LiveView feature tests
+make test.stale               # Stale ExUnit loop for local iteration
+make test.js.changed          # Vitest tests affected by changed JS files
+make lint.js.changed          # ESLint + Prettier on changed JS assets
 make lint                     # All static analysis (format + credo + dialyzer + JS lint)
 make lint.js                  # ESLint + Prettier check on JS
 make lint.js.fix              # Auto-fix ESLint + Prettier issues
 make precommit                # compile + format + test
-make ci                       # ALL CI checks with parallel pipeline (THE standard)
+make ci                       # Complete local guard, 13 checks, partitioned (THE standard)
 make ci.quick                 # CI without dialyzer (faster iteration)
+make ci.changed               # Checks selected from git diff; use EXPLAIN=1 to inspect
+make ci.serial                # Full guard with one ExUnit partition per suite
+make ci.partition-profile     # Measure ExUnit partition counts
+make umbrella.boundary-audit  # Measure umbrella extraction candidates
+make e2e.smoke SURFACE=chat   # Focused Playwright smoke by surface
 make deploy                   # CI + deploy Sun (production) (THE standard)
-make deploy.skip-ci           # Deploy Sun without CI (already validated)
+make deploy.skip-ci           # Deploy Sun only after CI passed on the same revision
 ```
 
 ## Git Safety
@@ -63,12 +71,13 @@ Only push after confirming local `main` is current.
 
 ## Deploy (MANDATORY — always use the pipeline)
 
-**ALWAYS use `make deploy`** (or `elixir scripts/deploy_all.exs`) to deploy.
-This runs the full CI pipeline first, then deploys to production (Sun).
+**ALWAYS use `make deploy`** (or `elixir scripts/deploy_all.exs`) to deploy unless
+`make ci` just passed on the exact revision being deployed. The standard target
+runs the full CI pipeline first, then deploys to production (Sun).
 NEVER use `make deploy-sun` directly — it skips CI validation.
 
 ```
-Phase 1: CI Validation (make ci — 11 parallel checks, ~64s)
+Phase 1: CI Validation (make ci — 13 checks, partitioned, latest ~2m20s-2m25s)
     ↓ (only if all checks pass)
 Phase 2: Deploy
     └─ Sun (production) — scp + ssh deploy.sh
@@ -76,34 +85,67 @@ Phase 2: Deploy
 
 **Options:**
 - `make deploy` — CI + deploy Sun (standard)
-- `make deploy.skip-ci` — deploy Sun without CI (use only if CI was just run)
+- `make deploy.skip-ci` — deploy Sun without CI (use only if CI was just run on this revision)
 - `make deploy REF=some-tag` — deploy a specific git ref (default: main)
 
 ## CI-Equivalent Validation (MANDATORY before declaring any task complete)
 
 **ALWAYS use `make ci`** (or `elixir scripts/ci.exs`) to validate code.
-This is a standalone Elixir script that runs all 11 CI checks with maximum parallelism.
-No other validation method is acceptable.
+This is a standalone Elixir script that runs the complete 13-check local guard.
+No other validation method is acceptable as the final gate.
 
-**Pipeline (2-stage parallel execution, 11 checks):**
+`make ci.quick`, `make ci.changed`, stale tests, JS changed tests, and Playwright
+smokes are iteration tools only. They are useful for short loops, but they never
+replace the final `make ci` pass.
+
+**Pipeline (staged parallel execution, 13 checks):**
 
 ```
-Stage 1 (parallel):          Stage 2 (parallel, after compile):
-  ├─ compile                   ├─ format
-  ├─ JS lint                   ├─ credo
-  ├─ JS tests                  ├─ CSS lint
-  ├─ i18n tooling tests        ├─ tests (unit + integration + liveview)
-  └─ i18n quality              ├─ feature tests (separate worker)
-                               └─ dialyzer
+Stage 1 (parallel):
+  ├─ compile
+  ├─ JS lint
+  ├─ JS tests
+  ├─ CI impact tests
+  ├─ CI partition profile plan
+  ├─ i18n tooling tests
+  └─ i18n quality
+
+Stage 2 (parallel, after compile):
+  ├─ format
+  ├─ credo
+  ├─ CSS lint
+  ├─ tests (mix test, partitioned)
+  └─ feature tests (mix test --only liveview_feature, partitioned)
+
+Stage 3 (isolated):
+  └─ dialyzer
 ```
 
-**Performance:** ~64s parallel vs ~104s serial (**38% faster**).
-Tests are split into two parallel workers for maximum throughput.
+**Performance:** latest measured local runs are `2m20s`-`2m25s` for `make ci`
+with a warm Dialyzer PLT. `make ci.serial` completed the same 13 checks in
+`5m28s`.
+
+The normal ExUnit suite and LiveView feature suite are partitioned by default:
+`CI_TEST_PARTITIONS=3`, `CI_FEATURE_PARTITIONS=4`, and
+`CI_TEST_DB_POOL_SIZE=6`. Use `make ci.serial` only to diagnose
+partition-specific issues. Partition/profile tooling writes reports under
+`tmp/ci-partition-profile/`.
 The two i18n checks need no third-party Python packages, so they run anywhere.
 
 **Browser E2E (Playwright) is NOT part of `make ci`** — it is local only, by
 design. The "feature tests" worker is `mix test --only liveview_feature`, not
-Playwright. After touching anything under `e2e/`, run that spec yourself:
+Playwright. `make ci.changed` can select focused browser smokes for critical UI
+surfaces, but those smokes are still local feedback, not the completion gate.
+
+For critical UI diffs, prefer named smokes:
+
+```bash
+make e2e.smoke SURFACE=connect  # surfaces: connect, chat, dialogs, i18n, calls, mobile
+make e2e.changed
+make e2e.shard SHARD=1/2
+```
+
+After touching anything under `e2e/`, run that spec yourself:
 
 ```bash
 MIX_ENV=e2e PGPORT=5433 mix assets.build   # skipping this serves stale CSS/JS
@@ -126,11 +168,28 @@ the moments worth seeing. A disposable spec deleted after the picture is a tool
 thrown away; the same call left in the suite is evidence anyone can regenerate.
 
 **Options:**
-- `make ci` — all 11 checks (standard)
-- `make ci.quick` — skip dialyzer (faster iteration)
-- `elixir scripts/ci.exs --only compile,credo` — specific checks only
+- `make ci` — all 13 checks (standard final gate)
+- `make ci.quick` — skip dialyzer (iteration only)
+- `make ci.changed CI_BASE=origin/main EXPLAIN=1` — print the diff-selected plan
+- `make ci.changed CI_BASE=origin/main` — run diff-selected checks (iteration only)
+- `make ci.serial` — diagnose partition-specific failures
+- `make ci.partition-profile` — measure partition-count tradeoffs
+- `elixir scripts/ci.exs --only compile,credo` — run specific checks only
 
-**NEVER** skip dialyzer, JS tests, JS lint, or CSS lint.
+**Coverage remains explicit:** `make ci` does not run coverage. Use
+`make test.cover` or `make test.cover.all` when coverage is the requested signal,
+then still finish with `make ci`.
+
+**Hosted CI:** GitHub Actions is still `workflow_dispatch` while credits are
+constrained. The workflow runs `Impact Plan` first, executes conditional jobs from
+the same impact matrix as `make ci.changed`, and reports through the single stable
+`CI Report` job for branch protection.
+
+**Umbrella boundaries:** do not extract a new umbrella app from intuition alone.
+Run `make umbrella.boundary-audit`, inspect co-change frequency plus `mix xref`
+cycles, and record a short decision/RFC before any extraction.
+
+**NEVER** skip dialyzer, JS tests, JS lint, or CSS lint in final validation.
 **NEVER** run checks individually or via manual parallel Bash calls — use the script.
 If any check fails, the task is NOT complete.
 
