@@ -1,6 +1,6 @@
 # Guardiao CI - evolucao continua
 
-**Status:** plano aprovado, nao iniciado
+**Status:** evolucao ativa, F1-F4 concluidas, F5/F8 em andamento
 **Criado:** 2026-07-31
 **Escopo:** reduzir tempo de feedback sem enfraquecer o guardiao principal.
 **Progresso futuro:** `docs/plans/guardiao-ci-evolucao-PROGRESS.md`
@@ -103,8 +103,8 @@ apenas neste documento.
 | `apps/retro_hex_chat/test/**` | `format`, testes alterados ou `test.domain` | `test.domain` se suporte/factory/case mudar |
 | `apps/retro_hex_chat_web/lib/**` | `compile`, `format`, `credo`, `test.web` | `test.feature` se tocar LiveView de jornada, window manager, auth, chat shell, P2P/calls ou dialogs complexos |
 | `apps/retro_hex_chat_web/test/**` | `format`, testes alterados ou `test.web` | `test.web` se suporte/case mudar |
-| `apps/retro_hex_chat_web/assets/js/**` | `lint_js`, `js_tests` ou related | Playwright focado se hook, window manager, i18n client, media, games ou UX critica mudar |
-| `apps/retro_hex_chat_web/assets/css/**` | `lint_css`, `lint.bundle` | Smoke visual/E2E focado se tocar layout critico, dialogs, chat, connect ou mobile |
+| `apps/retro_hex_chat_web/assets/js/**` | `lint_js`, `js_tests` ou related | Smokes Playwright focados para connect, chat, dialogs, i18n, calls e mobile quando a superficie for conhecida; E2E amplo apenas para superficies sem smoke confiavel |
+| `apps/retro_hex_chat_web/assets/css/**` | `lint_css`, `lint.bundle` | Smokes Playwright focados se tocar layout critico, dialogs, chat, calls, connect ou mobile |
 | `apps/retro_hex_chat_web/assets/test/**` | `js_tests` focado/changed | `js_tests` completo se suporte/config mudar |
 | `e2e/**` | format E2E, Playwright spec alterada | Playwright shard/full se helper/page/global setup mudar |
 | `scripts/i18n*`, `scripts/i18n/**`, `priv/gettext/**`, catalogos JS i18n | `py_tests`, `i18n_quality`, checks i18n especificos | Full i18n se catalogs, placeholders ou locale roster mudarem |
@@ -296,7 +296,7 @@ Validacao:
 
 ### F4 - Seletores especificos para JS, CSS e E2E
 
-Status: `EM ANDAMENTO`
+Status: `CONCLUIDO`
 
 Objetivo:
 

@@ -15,7 +15,7 @@
 # remains reserved for ExUnit's own partition selection.
 #
 # Usage:
-#   elixir scripts/ci.exs              # run all 11 checks
+#   elixir scripts/ci.exs              # run all 12 checks
 #   elixir scripts/ci.exs --quick      # skip dialyzer
 #   elixir scripts/ci.exs --only compile,credo
 #   CI_TEST_PARTITIONS=1 CI_FEATURE_PARTITIONS=1 elixir scripts/ci.exs
@@ -40,15 +40,25 @@ defmodule CI do
     "test",
     "test_feature",
     "test_domain",
-    "test_web",
+    "test_web"
+  ]
+  @stage3_browser [
     "e2e_changed",
+    "e2e_smoke_connect",
+    "e2e_smoke_chat",
+    "e2e_smoke_dialogs",
+    "e2e_smoke_i18n",
+    "e2e_smoke_calls",
+    "e2e_smoke_mobile",
     "e2e"
   ]
-  @stage3_isolated ["dialyzer"]
+  @stage4_isolated ["dialyzer"]
 
   @full_checks CIImpact.full_checks()
   @all_checks Enum.uniq(
-                @full_checks ++ @stage1_independent ++ @stage2_after_compile ++ @stage3_isolated
+                @full_checks ++
+                  @stage1_independent ++
+                  @stage2_after_compile ++ @stage3_browser ++ @stage4_isolated
               )
 
   @check_config %{
@@ -89,7 +99,37 @@ defmodule CI do
     "test_domain" => %{label: "Domain Tests", cmd: "make", args: ["test.domain"]},
     "test_web" => %{label: "Web Tests", cmd: "make", args: ["test.web"]},
     "e2e_changed" => %{label: "Changed E2E Tests", cmd: "make", args: ["e2e.changed"]},
-    "e2e" => %{label: "E2E Tests", cmd: "make", args: ["e2e.headless"]},
+    "e2e_smoke_connect" => %{
+      label: "E2E Smoke: Connect",
+      cmd: "make",
+      args: ["e2e.smoke.connect"]
+    },
+    "e2e_smoke_chat" => %{
+      label: "E2E Smoke: Chat Shell",
+      cmd: "make",
+      args: ["e2e.smoke.chat"]
+    },
+    "e2e_smoke_dialogs" => %{
+      label: "E2E Smoke: Dialogs",
+      cmd: "make",
+      args: ["e2e.smoke.dialogs"]
+    },
+    "e2e_smoke_i18n" => %{
+      label: "E2E Smoke: i18n",
+      cmd: "make",
+      args: ["e2e.smoke.i18n"]
+    },
+    "e2e_smoke_calls" => %{
+      label: "E2E Smoke: Calls",
+      cmd: "make",
+      args: ["e2e.smoke.calls"]
+    },
+    "e2e_smoke_mobile" => %{
+      label: "E2E Smoke: Mobile",
+      cmd: "make",
+      args: ["e2e.smoke.mobile"]
+    },
+    "e2e" => %{label: "Full E2E Tests", cmd: "make", args: ["e2e.headless"]},
     "dialyzer" => %{label: "Dialyzer", cmd: "mix", args: ["dialyzer"]}
   }
 
@@ -110,11 +150,24 @@ defmodule CI do
 
     stage1_results = run_stage1(checks, project_root, runner_config)
     stage2_results = run_stage2(checks, stage1_results, project_root, runner_config)
+    stage3_results = run_stage3_browser(checks, stage1_results, stage2_results, project_root)
 
-    stage3_results =
-      run_stage3(checks, stage1_results, stage2_results, project_root, runner_config)
+    stage4_results =
+      run_stage4_isolated(
+        checks,
+        stage1_results,
+        stage2_results,
+        stage3_results,
+        project_root,
+        runner_config
+      )
 
-    all_results = stage1_results |> Map.merge(stage2_results) |> Map.merge(stage3_results)
+    all_results =
+      stage1_results
+      |> Map.merge(stage2_results)
+      |> Map.merge(stage3_results)
+      |> Map.merge(stage4_results)
+
     elapsed = System.monotonic_time(:millisecond) - start_time
 
     summary(all_results, elapsed)
@@ -157,8 +210,8 @@ defmodule CI do
     end
   end
 
-  defp run_stage3(checks, stage1_results, stage2_results, project_root, runner_config) do
-    stage3_checks = Enum.filter(@stage3_isolated, &(&1 in checks))
+  defp run_stage3_browser(checks, stage1_results, stage2_results, project_root) do
+    stage3_checks = Enum.filter(@stage3_browser, &(&1 in checks))
     compile_passed? = stage1_results[@compile_check] == :ok or @compile_check not in checks
     any_prior_fail? = Enum.any?(Map.values(stage2_results), &(&1 == :fail))
 
@@ -167,11 +220,44 @@ defmodule CI do
         Map.new(stage3_checks, fn check -> {check, :skipped} end)
 
       any_prior_fail? and stage3_checks != [] ->
-        IO.puts("\n  #{c(:yellow)}Skipping Stage 3 — earlier checks failed#{c(:reset)}\n")
+        IO.puts("\n  #{c(:yellow)}Skipping browser smokes — earlier checks failed#{c(:reset)}\n")
+
         Map.new(stage3_checks, fn check -> {check, :skipped} end)
 
       stage3_checks != [] ->
-        run_stage("Stage 3 (isolated)", stage3_checks, project_root, runner_config)
+        run_serial_stage("Browser smokes", stage3_checks, project_root)
+
+      true ->
+        %{}
+    end
+  end
+
+  defp run_stage4_isolated(
+         checks,
+         stage1_results,
+         stage2_results,
+         stage3_results,
+         project_root,
+         runner_config
+       ) do
+    stage4_checks = Enum.filter(@stage4_isolated, &(&1 in checks))
+    compile_passed? = stage1_results[@compile_check] == :ok or @compile_check not in checks
+
+    any_prior_fail? =
+      [stage2_results, stage3_results]
+      |> Enum.flat_map(&Map.values/1)
+      |> Enum.any?(&(&1 == :fail))
+
+    cond do
+      not compile_passed? ->
+        Map.new(stage4_checks, fn check -> {check, :skipped} end)
+
+      any_prior_fail? and stage4_checks != [] ->
+        IO.puts("\n  #{c(:yellow)}Skipping isolated checks — earlier checks failed#{c(:reset)}\n")
+        Map.new(stage4_checks, fn check -> {check, :skipped} end)
+
+      stage4_checks != [] ->
+        run_stage("Stage 3 (isolated)", stage4_checks, project_root, runner_config)
 
       true ->
         %{}
@@ -188,6 +274,17 @@ defmodule CI do
       {check, task}
     end)
     |> Enum.map(fn {check, task} -> {check, Task.await(task, :infinity)} end)
+    |> Map.new()
+  end
+
+  defp run_serial_stage(label, checks, project_root) do
+    IO.puts("\n  #{c(:cyan)}#{label}#{c(:reset)} (#{length(checks)} checks in sequence)\n")
+
+    checks
+    |> Enum.map(fn check ->
+      config = @check_config[check]
+      {check, run_single_check(check, config, project_root)}
+    end)
     |> Map.new()
   end
 

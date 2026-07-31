@@ -277,6 +277,8 @@ make ci.changed     # checks selected from git diff; use EXPLAIN=1 to inspect
 make ci.serial      # same full guard with one ExUnit partition per suite
 make test.stale     # local stale ExUnit loop
 make test.js.changed # local Vitest changed loop
+make lint.js.changed # local ESLint/Prettier changed loop
+make e2e.smoke SURFACE=connect # focused Playwright smoke
 make lint           # format + credo + dialyzer + JS lint
 make lint.js.fix    # auto-fix ESLint + Prettier issues
 make precommit      # compile + format + test
@@ -284,7 +286,7 @@ make precommit      # compile + format + test
 
 ### CI Pipeline
 
-The complete local guard runs 12 checks across 3 stages. ExUnit suites are
+The complete local guard runs 12 checks across staged parallel groups. ExUnit suites are
 partitioned by default; set `CI_TEST_PARTITIONS=1 CI_FEATURE_PARTITIONS=1` or use
 `make ci.serial` to diagnose partition-specific issues.
 
@@ -304,12 +306,21 @@ Stage 2 (parallel, after compile):
   ├── mix test (partitioned)
   └── mix test --only liveview_feature (partitioned)
 
+Browser smokes (ci.changed only when selected):
+  ├── connect
+  ├── chat shell
+  ├── dialogs
+  ├── i18n
+  ├── P2P/group call
+  └── mobile
+
 Stage 3 (isolated):
   └── dialyzer
 ```
 
-Playwright remains a deliberate local E2E suite (`make e2e*`), not part of the
-default `make ci` guard.
+Playwright remains a deliberate local E2E suite, not part of the default `make ci`
+guard. The selective guard can choose focused browser smokes for critical UI
+changes: `make e2e.smoke SURFACE=connect|chat|dialogs|i18n|calls|mobile`.
 
 Latest measured local run: `make ci` completed 12/12 checks in `2m53s` with
 2-way ExUnit partitioning and a warm Dialyzer PLT.

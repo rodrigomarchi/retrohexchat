@@ -23,6 +23,12 @@ defmodule CIImpact do
                    "test_domain",
                    "test_web",
                    "e2e_changed",
+                   "e2e_smoke_connect",
+                   "e2e_smoke_chat",
+                   "e2e_smoke_dialogs",
+                   "e2e_smoke_i18n",
+                   "e2e_smoke_calls",
+                   "e2e_smoke_mobile",
                    "e2e"
                  ]
 
@@ -112,13 +118,15 @@ defmodule CIImpact do
         |> surface("assets_js", "#{file} changed frontend JavaScript")
         |> add("lint_js", "#{file} changed frontend JavaScript")
         |> add("js_tests", "#{file} changed frontend JavaScript")
-        |> maybe_critical_frontend(file)
+        |> maybe_i18n_asset(file)
+        |> maybe_frontend_smokes(file)
 
       assets_css?(file) ->
         plan
         |> surface("assets_css", "#{file} changed frontend CSS")
         |> add("lint_css", "#{file} changed frontend CSS")
         |> add("lint_bundle", "#{file} can affect bundle budget")
+        |> maybe_css_smokes(file)
 
       assets_config?(file) ->
         plan
@@ -132,6 +140,7 @@ defmodule CIImpact do
         |> surface("i18n", "#{file} changed i18n source or catalogs")
         |> add("py_tests", "#{file} changed i18n source or catalogs")
         |> add("i18n_quality", "#{file} changed i18n source or catalogs")
+        |> add_e2e_smoke("i18n", "#{file} can affect localized browser journeys")
         |> maybe_format_for_i18n(file)
 
       e2e_spec?(file) ->
@@ -222,31 +231,334 @@ defmodule CIImpact do
   end
 
   defp maybe_web_feature(plan, file) do
-    if path_contains_any?(file, [
-         "/live/",
-         "/components/ui/",
-         "/controllers/app/",
-         "/channels/"
-       ]) do
-      add(plan, "test_feature", "#{file} changed a web interaction surface")
+    plan =
+      if path_contains_any?(file, [
+           "/live/",
+           "/components/ui/",
+           "/controllers/app/",
+           "/channels/"
+         ]) do
+        add(plan, "test_feature", "#{file} changed a web interaction surface")
+      else
+        plan
+      end
+
+    maybe_web_smokes(plan, file)
+  end
+
+  defp maybe_web_smokes(plan, file) do
+    file
+    |> web_smoke_surfaces()
+    |> add_e2e_smokes(plan, file)
+  end
+
+  defp maybe_i18n_asset(plan, file) do
+    if String.starts_with?(file, "apps/retro_hex_chat_web/assets/js/lib/i18n") do
+      plan
+      |> surface("i18n", "#{file} changed frontend i18n")
+      |> add("py_tests", "#{file} changed frontend i18n")
+      |> add("i18n_quality", "#{file} changed frontend i18n")
+      |> add_e2e_smoke("i18n", "#{file} can affect localized browser journeys")
     else
       plan
     end
   end
 
-  defp maybe_critical_frontend(plan, file) do
-    if path_contains_any?(file, [
-         "/hooks/",
-         "/lib/p2p/",
-         "/lib/space/",
-         "/lib/games/",
-         "/lib/connection/",
-         "/lib/i18n"
-       ]) do
-      add(plan, "e2e", "#{file} changed browser behavior used by journeys")
+  defp maybe_frontend_smokes(plan, file) do
+    smoke_surfaces = frontend_smoke_surfaces(file)
+    plan = add_e2e_smokes(smoke_surfaces, plan, file)
+
+    if smoke_surfaces == [] and legacy_full_e2e_frontend?(file) do
+      add(plan, "e2e", "#{file} changed browser behavior without a focused smoke yet")
     else
       plan
     end
+  end
+
+  defp maybe_css_smokes(plan, file) do
+    file
+    |> css_smoke_surfaces()
+    |> add_e2e_smokes(plan, file)
+  end
+
+  defp add_e2e_smokes(surfaces, plan, file) do
+    Enum.reduce(surfaces, plan, fn surface, acc ->
+      add_e2e_smoke(acc, surface, "#{file} affects the #{surface} browser smoke")
+    end)
+  end
+
+  defp add_e2e_smoke(plan, surface, reason) do
+    check = "e2e_smoke_#{surface}"
+
+    plan
+    |> surface("e2e_#{surface}", reason)
+    |> add(check, reason)
+  end
+
+  defp web_smoke_surfaces(file) do
+    surfaces = []
+
+    surfaces =
+      if path_contains_any?(file, [
+           "/live/app/connect_live",
+           "/live/app/session_helpers",
+           "/components/ui/connect/",
+           "/components/ui/shell/connect_status_bar",
+           "/controllers/app/session_controller",
+           "/controllers/app/lobby_redirect_controller",
+           "/app/trusted_device_cookie",
+           "/plugs/put_trusted_device"
+         ]) do
+        ["connect" | surfaces]
+      else
+        surfaces
+      end
+
+    surfaces =
+      if path_contains_any?(file, [
+           "/live/app/chat_live",
+           "/live/app/chat_helpers",
+           "/live/chat_live/",
+           "/components/layouts/chat",
+           "/components/ui/shell/chat_app_header",
+           "/components/ui/shell/menu_bar",
+           "/components/ui/shell/menu_bar_app",
+           "/components/ui/shell/status_bar_app"
+         ]) do
+        ["chat" | surfaces]
+      else
+        surfaces
+      end
+
+    surfaces =
+      if path_contains_any?(file, [
+           "/live/chat_live/ui_actions/",
+           "/live/chat_live/settings_dialogs_events",
+           "/live/chat_live/address_book_events",
+           "/live/chat_live/alias_events",
+           "/live/chat_live/autojoin_events",
+           "/live/chat_live/bot_events",
+           "/live/chat_live/notify_events",
+           "/live/chat_live/profile_events",
+           "/live/chat_live/timer_events",
+           "/components/ui/primitives/alert_dialog",
+           "/components/ui/primitives/dialog",
+           "/components/ui/primitives/dropdown_menu",
+           "/components/ui/primitives/sheet"
+         ]) do
+        ["dialogs" | surfaces]
+      else
+        surfaces
+      end
+
+    surfaces =
+      if path_contains_any?(file, [
+           "/i18n",
+           "/gettext",
+           "/live/put_locale",
+           "/controllers/locale_controller",
+           "/components/ui/shell/language_menu"
+         ]) do
+        ["i18n" | surfaces]
+      else
+        surfaces
+      end
+
+    surfaces =
+      if path_contains_any?(file, [
+           "/channels/group_call_channel",
+           "/controllers/calls_health_controller",
+           "/live/app/group_call_stats",
+           "/live/app/p2p_stats",
+           "/components/icons/call_controls",
+           "/components/icons/media",
+           "/components/diagrams/p2p",
+           "/components/diagrams/conference"
+         ]) do
+        ["calls" | surfaces]
+      else
+        surfaces
+      end
+
+    surfaces =
+      if path_contains_any?(file, [
+           "/live/app/chat_live",
+           "/components/layouts/chat",
+           "/components/ui/shell/chat_app_header",
+           "/components/ui/shell/menu_bar"
+         ]) do
+        ["mobile" | surfaces]
+      else
+        surfaces
+      end
+
+    surfaces |> Enum.uniq() |> Enum.sort()
+  end
+
+  defp frontend_smoke_surfaces(file) do
+    surfaces =
+      if file in [
+           "apps/retro_hex_chat_web/assets/js/app.js",
+           "apps/retro_hex_chat_web/assets/js/hooks/critical_hooks.js",
+           "apps/retro_hex_chat_web/assets/js/hooks/registry.js"
+         ] do
+        ["calls", "chat", "connect", "dialogs", "i18n", "mobile"]
+      else
+        []
+      end
+
+    surfaces =
+      if path_contains_any?(file, [
+           "/hooks/connection/connect_form_hook",
+           "/lib/connection/client_info",
+           "/lib/connection/device_label_suggestion"
+         ]) do
+        ["connect" | surfaces]
+      else
+        surfaces
+      end
+
+    surfaces =
+      if path_contains_any?(file, [
+           "/hooks/connection/",
+           "/hooks/chat/",
+           "/hooks/input/",
+           "/hooks/notifications/",
+           "/hooks/ui/window_manager_hook",
+           "/hooks/ui/conversations_hook",
+           "/hooks/ui/nicklist_hook",
+           "/lib/chat/",
+           "/lib/input/",
+           "/lib/notifications/",
+           "/lib/ui/document_title",
+           "/lib/ui/unread"
+         ]) do
+        ["chat" | surfaces]
+      else
+        surfaces
+      end
+
+    surfaces =
+      if path_contains_any?(file, [
+           "/hooks/ui/window_manager_hook",
+           "/hooks/ui/menu_bar_hook",
+           "/hooks/ui/context_menu_hook",
+           "/hooks/ui/menu_reposition_hook",
+           "/hooks/ui/toolbar_group_hook",
+           "/hooks/ui/url_catcher_hook"
+         ]) do
+        ["dialogs" | surfaces]
+      else
+        surfaces
+      end
+
+    surfaces =
+      if path_contains_any?(file, [
+           "/lib/i18n",
+           "/lib/i18n_catalog"
+         ]) do
+        ["i18n" | surfaces]
+      else
+        surfaces
+      end
+
+    surfaces =
+      if path_contains_any?(file, [
+           "/hooks/group_call/",
+           "/hooks/p2p/",
+           "/hooks/lobby/lobby_media_hook",
+           "/hooks/lobby/lobby_webrtc_hook",
+           "/lib/p2p/"
+         ]) do
+        ["calls" | surfaces]
+      else
+        surfaces
+      end
+
+    surfaces =
+      if path_contains_any?(file, [
+           "/hooks/ui/viewport_detect_hook",
+           "/hooks/ui/window_manager_hook",
+           "/hooks/ui/menu_bar_hook",
+           "/hooks/input/",
+           "/lib/input/"
+         ]) do
+        ["mobile" | surfaces]
+      else
+        surfaces
+      end
+
+    surfaces |> Enum.uniq() |> Enum.sort()
+  end
+
+  defp css_smoke_surfaces(file) do
+    surfaces =
+      if file == "apps/retro_hex_chat_web/assets/css/retrohex.css" do
+        ["calls", "chat", "connect", "dialogs", "mobile"]
+      else
+        []
+      end
+
+    surfaces =
+      if path_contains_any?(file, [
+           "/base/",
+           "/layout/window-manager.css",
+           "/components/app-menu.css",
+           "/components/chat-",
+           "/components/activity-and-message-scroll.css",
+           "/components/connection-status.css",
+           "/components/list-states.css"
+         ]) do
+        ["chat" | surfaces]
+      else
+        surfaces
+      end
+
+    surfaces =
+      if path_contains_any?(file, [
+           "/dialogs/",
+           "/layout/window-manager.css",
+           "/components/app-menu.css"
+         ]) do
+        ["dialogs" | surfaces]
+      else
+        surfaces
+      end
+
+    surfaces =
+      if path_contains_any?(file, [
+           "/features/p2p",
+           "/features/group-call",
+           "/features/file-transfer",
+           "/components/media-session"
+         ]) do
+        ["calls" | surfaces]
+      else
+        surfaces
+      end
+
+    surfaces =
+      if path_contains_any?(file, [
+           "/layout/window-manager.css",
+           "/components/app-menu.css",
+           "/dialogs/channel-central.css"
+         ]) do
+        ["mobile" | surfaces]
+      else
+        surfaces
+      end
+
+    surfaces |> Enum.uniq() |> Enum.sort()
+  end
+
+  defp legacy_full_e2e_frontend?(file) do
+    path_contains_any?(file, [
+      "/lib/space/",
+      "/hooks/space/",
+      "/lib/games/",
+      "/hooks/games/",
+      "/hooks/lobby/lobby_game_canvas_hook"
+    ])
   end
 
   defp maybe_format_for_i18n(plan, file) do

@@ -8,9 +8,10 @@
     "test:changed": "vitest run --changed",
     "test:related": "vitest related",
     "test:watch": "vitest",
-    "lint": "eslint js/ test/ scripts/",
+    "lint": "eslint --cache --cache-location node_modules/.cache/eslint js/ test/ scripts/",
+    "lint:changed": "eslint --cache --cache-location node_modules/.cache/eslint",
     "lint:hooks": "node scripts/enforce_hooks_contract.cjs",
-    "lint:fix": "eslint js/ test/ scripts/ --fix",
+    "lint:fix": "eslint --cache --cache-location node_modules/.cache/eslint --fix js/ test/ scripts/",
     "format": "prettier --write js/ test/ scripts/ eslint.config.mjs vitest.config.js",
     "format:check": "prettier --check js/ test/ scripts/ eslint.config.mjs vitest.config.js",
     "bundle:budget": "node scripts/bundle_budget.cjs"

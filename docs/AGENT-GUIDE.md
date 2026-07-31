@@ -726,9 +726,14 @@ Accessible via F1, Help menu → Help Topics, and `/help`. Stale/inaccurate help
   stale.
 - **Use the fast loops deliberately.** `make test.stale`, `make test.domain.stale`,
   `make test.web.stale`, `make test.failed`, `make test.js.changed SINCE=origin/main`,
-  `make test.js.related FILES="js/app.js"`, `make e2e.changed`, and
-  `make e2e.shard SHARD=1/2` are local feedback tools. They never replace the final
-  `make ci` gate.
+  `make test.js.related FILES="js/app.js"`, `make lint.js.changed SINCE=origin/main`,
+  `make e2e.changed`, `make e2e.smoke SURFACE=connect|chat|dialogs|i18n|calls|mobile`,
+  and `make e2e.shard SHARD=1/2` are local feedback tools. They never replace the
+  final `make ci` gate.
+- **Critical UI diffs get browser smokes by surface.** `make ci.changed` selects focused
+  Playwright smokes for known critical JS/CSS/web surfaces: connect flow, chat shell,
+  dialogs/window manager, i18n, P2P/group call, and mobile layout. E2E helper/page/global
+  setup changes still widen to broader E2E because the selector cannot trust one surface.
 - **Never assert on async `send_update` / stream messages.** Assert on synchronous state
   (`:sys.get_state`), domain/component unit tests, or persisted data. No `sleep` / render-retry.
   (See §6.3 for the flush rule when a synchronous read is genuinely needed.)

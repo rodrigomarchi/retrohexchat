@@ -58,7 +58,7 @@ defmodule CIImpactTest do
     assert plan.checks == ["format", "test_feature"]
   end
 
-  test "frontend hook changes run JS checks and E2E" do
+  test "frontend hook changes run JS checks and focused E2E smokes" do
     plan =
       CIImpact.plan([
         "apps/retro_hex_chat_web/assets/js/hooks/ui/window_manager_hook.js"
@@ -66,16 +66,43 @@ defmodule CIImpactTest do
 
     assert "lint_js" in plan.checks
     assert "js_tests" in plan.checks
-    assert "e2e" in plan.checks
+    assert "e2e_smoke_chat" in plan.checks
+    assert "e2e_smoke_dialogs" in plan.checks
+    assert "e2e_smoke_mobile" in plan.checks
+    refute "e2e" in plan.checks
   end
 
-  test "CSS changes run CSS and bundle checks" do
+  test "critical chat CSS changes run CSS, bundle, and chat smoke checks" do
     plan =
       CIImpact.plan([
         "apps/retro_hex_chat_web/assets/css/retrohex/components/chat-formatting.css"
       ])
 
-    assert plan.checks == ["lint_css", "lint_bundle"]
+    assert plan.checks == ["lint_css", "lint_bundle", "e2e_smoke_chat"]
+  end
+
+  test "dialog CSS changes run dialog smoke checks" do
+    plan =
+      CIImpact.plan([
+        "apps/retro_hex_chat_web/assets/css/retrohex/dialogs/address-book.css"
+      ])
+
+    assert "lint_css" in plan.checks
+    assert "lint_bundle" in plan.checks
+    assert "e2e_smoke_dialogs" in plan.checks
+  end
+
+  test "frontend i18n changes run tooling and browser i18n smoke checks" do
+    plan =
+      CIImpact.plan([
+        "apps/retro_hex_chat_web/assets/js/lib/i18n_catalogs/pt_BR.js"
+      ])
+
+    assert "lint_js" in plan.checks
+    assert "js_tests" in plan.checks
+    assert "py_tests" in plan.checks
+    assert "i18n_quality" in plan.checks
+    assert "e2e_smoke_i18n" in plan.checks
   end
 
   test "i18n catalog changes run i18n checks" do

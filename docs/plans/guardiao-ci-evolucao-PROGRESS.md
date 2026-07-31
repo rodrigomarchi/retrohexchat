@@ -214,3 +214,89 @@ Conclusao:
 - O guardiao completo ficou mais rapido e mais abrangente ao mesmo tempo.
 - Baseline inicial: `make ci.quick` com 10 checks em `5m42s`.
 - Resultado final: `make ci` com 12 checks em `2m53s`.
+
+### 2026-07-31 - Seletores JS/CSS/E2E por superficie critica
+
+Status: `CONCLUIDO`
+
+Objetivo:
+
+- Fechar F4 criando uma camada browser focada para mudancas de frontend.
+- Evitar que uma mudanca CSS/JS critica dependa apenas de lint/test unitario.
+- Evitar Playwright full quando ja existe smoke confiavel para a superficie.
+
+Mudancas implementadas:
+
+- `Makefile` ganhou smokes Playwright oficiais:
+  - `e2e.smoke.connect`;
+  - `e2e.smoke.chat`;
+  - `e2e.smoke.dialogs`;
+  - `e2e.smoke.i18n`;
+  - `e2e.smoke.calls`;
+  - `e2e.smoke.mobile`;
+  - agregador `make e2e.smoke SURFACE=<surface>`.
+- `Makefile` ganhou `lint.js.changed SINCE=<ref>` para ESLint/Prettier focado
+  em assets JS/test/scripts alterados.
+- `assets/package.json` passou a usar cache do ESLint em `lint`, `lint:fix` e
+  no novo `lint:changed`.
+- `scripts/ci_impact.exs` agora seleciona smokes Playwright por superficie para
+  JS, CSS e web source criticos:
+  - connect flow;
+  - chat shell;
+  - dialogs/window manager;
+  - i18n;
+  - P2P/group call;
+  - mobile layout.
+- `scripts/ci.exs` ganhou checks `e2e_smoke_*` e executa browser smokes em
+  sequencia quando selecionados, evitando conflito de porta, servidor e build de
+  assets.
+- Mudancas em helpers/pages/global setup E2E continuam ampliando para E2E amplo.
+- `README.md`, `docs/AGENT-GUIDE.md`, `e2e/README.md` e o plano-base foram
+  atualizados com o contrato dos smokes.
+
+Aceite desta iteracao:
+
+- Mudanca em hook critico seleciona JS checks e smokes Playwright focados.
+- Mudanca CSS em area critica seleciona `lint_css`, `lint_bundle` e smoke de
+  superficie.
+- Mudanca de i18n frontend seleciona JS checks, tooling i18n, quality i18n e
+  smoke i18n.
+- Playwright full permanece fallback para suporte E2E amplo e superficies sem
+  smoke confiavel.
+- Os smokes sao comandos oficiais visiveis em `make help`.
+
+Validacao executada:
+
+- `elixir scripts/ci_impact_test.exs`
+  - Resultado: 12 testes, 0 falhas.
+- `elixir scripts/ci.exs --only ci_impact_tests`
+  - Resultado: 1 check, 0 falhas.
+- Planos simulados do classificador:
+  - `assets/js/hooks/ui/window_manager_hook.js` seleciona `lint_js`,
+    `js_tests`, `e2e_smoke_chat`, `e2e_smoke_dialogs`, `e2e_smoke_mobile`.
+  - `assets/css/retrohex/dialogs/address-book.css` seleciona `lint_css`,
+    `lint_bundle`, `e2e_smoke_dialogs`.
+  - `e2e/helpers/chatUsers.ts` amplia para `e2e`.
+- `make -n e2e.smoke.connect e2e.smoke.chat e2e.smoke.dialogs
+  e2e.smoke.i18n e2e.smoke.calls e2e.smoke.mobile`
+  - Resultado: todos os comandos renderizados corretamente.
+- `npm test --prefix apps/retro_hex_chat_web/assets`
+  - Resultado: 144 arquivos, 3995 testes, 0 falhas.
+- `make lint.js.changed SINCE=HEAD`
+  - Resultado: passou; nenhum asset JS alterado no diff simulado.
+- `make test.js.changed SINCE=HEAD`
+  - Resultado: passou.
+- `make e2e.smoke.connect`
+  - Resultado: 1 teste Playwright, 0 falhas.
+- `make ci`
+  - Resultado: 12 checks, 0 falhas, `3m14s`.
+
+Aprendizados:
+
+- Playwright precisa ser tratado como estagio serial quando o seletor escolhe
+  mais de um smoke; paralelizar smokes no mesmo servidor/porta aumentaria risco
+  sem entregar valor claro.
+- Para CSS, o ganho vem de mapear arquivos por familia visual, nao por todo o
+  bundle: dialogs, shell, calls e mobile tem contratos diferentes.
+- `make help` precisava usar `grep -h`; com prefixo de arquivo, a listagem
+  escondia o nome real dos targets.

@@ -1,12 +1,12 @@
 .PHONY: help setup deps db.setup db.create db.migrate db.rollback db.reset db.seed \
        db.gen.migration server iex routes \
        test test.stale test.unit test.integration test.liveview test.feature test.all test.cover \
-       e2e e2e.headless e2e.changed e2e.shard e2e.ui e2e.shots e2e.install e2e.db.setup load.test \
+       e2e e2e.headless e2e.changed e2e.shard e2e.smoke e2e.smoke.connect e2e.smoke.chat e2e.smoke.dialogs e2e.smoke.i18n e2e.smoke.calls e2e.smoke.mobile e2e.ui e2e.shots e2e.install e2e.db.setup load.test \
        test.cover.all test.domain test.domain.stale test.web test.web.stale test.failed test.seed test.file test.line \
        test.js test.js.changed test.js.related test.js.watch \
        ci ci.quick ci.changed ci.serial ci.quick.serial \
        i18n.audit i18n.audit.check i18n.status i18n.catalog.check i18n.catalog.size.check i18n.placeholder.check i18n.source-fallback.check i18n.quality.check i18n.glossary i18n.repair i18n.tooling.test i18n.locales.add i18n.wave1.add i18n.gettext.extract i18n.gettext.merge i18n.gettext.rebuild i18n.gettext.check \
-       lint format format.check credo dialyzer lint.js lint.js.fix lint.css lint.bundle precommit compile \
+       lint format format.check credo dialyzer lint.js lint.js.changed lint.js.fix lint.css lint.bundle precommit compile \
        assets.setup assets.build assets.deploy \
        clean clean.deps clean.build clean.all \
        deps.tree deps.update deps.unlock app.tree \
@@ -22,6 +22,12 @@ CSS_BUILD_CHECK_OUT = $(shell mktemp -t retrohex-css-check)
 E2E_DIR    = e2e
 PRETTIER   = $(WEB_APP)/assets/node_modules/.bin/prettier
 E2E_FORMAT_SOURCES = $(E2E_DIR)/*.json $(E2E_DIR)/*.ts $(E2E_DIR)/helpers $(E2E_DIR)/pages $(E2E_DIR)/tests $(E2E_DIR)/load
+E2E_SMOKE_CONNECT_ARGS = tests/connect-flow.spec.ts
+E2E_SMOKE_CHAT_ARGS = tests/chat-welcome.spec.ts
+E2E_SMOKE_DIALOGS_ARGS = tests/chat-dialog-close.spec.ts
+E2E_SMOKE_I18N_ARGS = tests/i18n.spec.ts --grep "switches the connect UI"
+E2E_SMOKE_CALLS_ARGS = tests/chat-p2p.spec.ts tests/chat-group-call.spec.ts --grep "accepting from the PM header|pre-join dialog keeps preview"
+E2E_SMOKE_MOBILE_ARGS = tests/chat-mobile-desktop.spec.ts --grep "shows one fullscreen window"
 I18N_REQUIRED_LOCALES = pt_BR,es,fr,de,ja,zh_hans,id,ru,zh_hant,pt_PT,it,pl,nl
 
 ifneq (,$(wildcard .env))
@@ -61,7 +67,7 @@ endif
 # ---------------------------------------------------------------------
 
 help: ## Show this help
-	@grep -E '^[a-zA-Z_\.-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
+	@grep -hE '^[a-zA-Z_\.-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
 		awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-24s\033[0m %s\n", $$1, $$2}'
 
 # ---------------------------------------------------------------------
@@ -226,6 +232,34 @@ e2e.shard: ## Run a Playwright shard (usage: make e2e.shard SHARD=1/2)
 	$(E2E_MIX) assets.build
 	cd e2e && $(E2E_ENV) npx playwright test --shard=$(SHARD)
 
+e2e.smoke: ## Run a named Playwright smoke surface (usage: make e2e.smoke SURFACE=connect)
+	@test -n "$(SURFACE)" || { echo "usage: make e2e.smoke SURFACE=connect|chat|dialogs|i18n|calls|mobile"; exit 2; }
+	$(MAKE) e2e.smoke.$(SURFACE)
+
+e2e.smoke.connect: ## Run connect-flow browser smoke
+	$(E2E_MIX) assets.build
+	cd e2e && $(E2E_ENV) npx playwright test $(E2E_SMOKE_CONNECT_ARGS)
+
+e2e.smoke.chat: ## Run chat-shell browser smoke
+	$(E2E_MIX) assets.build
+	cd e2e && $(E2E_ENV) npx playwright test $(E2E_SMOKE_CHAT_ARGS)
+
+e2e.smoke.dialogs: ## Run dialog/window-manager browser smoke
+	$(E2E_MIX) assets.build
+	cd e2e && $(E2E_ENV) npx playwright test $(E2E_SMOKE_DIALOGS_ARGS)
+
+e2e.smoke.i18n: ## Run i18n browser smoke
+	$(E2E_MIX) assets.build
+	cd e2e && $(E2E_ENV) npx playwright test $(E2E_SMOKE_I18N_ARGS)
+
+e2e.smoke.calls: ## Run P2P/group-call browser smoke
+	$(E2E_MIX) assets.build
+	cd e2e && $(E2E_ENV) npx playwright test $(E2E_SMOKE_CALLS_ARGS)
+
+e2e.smoke.mobile: ## Run mobile-layout browser smoke
+	$(E2E_MIX) assets.build
+	cd e2e && $(E2E_ENV) npx playwright test $(E2E_SMOKE_MOBILE_ARGS)
+
 e2e.ui: ## Run Playwright in interactive UI mode (play/pause/inspect)
 	cd e2e && $(E2E_ENV) npm run test:ui
 
@@ -274,6 +308,15 @@ credo: ## Run Credo linter (strict mode)
 lint.js: ## Run ESLint + Prettier check on JS
 	npm run lint --prefix $(WEB_APP)/assets
 	npm run format:check --prefix $(WEB_APP)/assets
+
+lint.js.changed: ## Run ESLint + Prettier on changed JS assets (usage: make lint.js.changed SINCE=origin/main)
+	@cd $(WEB_APP)/assets && \
+		files="$$(git -C ../../.. diff --name-only --diff-filter=ACMRTUXB $${SINCE:-origin/main} -- apps/retro_hex_chat_web/assets/js apps/retro_hex_chat_web/assets/test apps/retro_hex_chat_web/assets/scripts | sed 's#^apps/retro_hex_chat_web/assets/##')" ; \
+		if [ -z "$$files" ]; then \
+			echo "No changed JS assets."; \
+		else \
+			npm run lint:changed -- $$files && npx prettier --check $$files; \
+		fi
 
 lint.js.fix: ## Auto-fix ESLint + Prettier issues
 	npm run lint:fix --prefix $(WEB_APP)/assets

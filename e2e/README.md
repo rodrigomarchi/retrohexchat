@@ -20,6 +20,23 @@ make e2e.headless    # run all specs headless
 make e2e.ui          # interactive Playwright UI mode for debugging
 ```
 
+## Focused smokes
+
+The selective CI guard uses focused smoke targets when a JS, CSS, or web change
+touches a known critical browser surface:
+
+```bash
+make e2e.smoke SURFACE=connect  # connect/register/session handoff
+make e2e.smoke SURFACE=chat     # chat shell enters and renders server status
+make e2e.smoke SURFACE=dialogs  # desktop windows, dialogs, Escape/close paths
+make e2e.smoke SURFACE=i18n     # locale switching in the browser
+make e2e.smoke SURFACE=calls    # P2P and group-call entry surfaces
+make e2e.smoke SURFACE=mobile   # stacked mobile shell and task switching
+```
+
+These are local feedback gates. They are intentionally narrower than
+`make e2e.headless`, and they do not replace the final `make ci` guard.
+
 ## Architecture
 
 - Lives at the **top level** of the repo with its own `package.json`,
