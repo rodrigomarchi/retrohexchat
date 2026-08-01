@@ -666,6 +666,14 @@ const LobbyWebRTCHook = {
     } else {
       onDataChannel(this.pc, (channel) => this._adoptChannel(channel));
     }
+
+    // Hand the connection over now, not once it reports "connected". The media
+    // hook wires `ontrack` here, so remote tracks are caught as their offer is
+    // applied instead of being back-filled from the receivers afterwards, and
+    // the local camera and microphone ride this first offer rather than forcing
+    // a second negotiation round the moment the call comes up.
+    this.el._peerConnection = this.pc;
+    this._dispatch("lobby_media_pc_ready", { pc: this.pc });
   },
 
   _createOutgoingChannels() {
@@ -728,9 +736,7 @@ const LobbyWebRTCHook = {
         this._markRecovering();
         this.disconnectedActivityDeferrals = 0;
         this.retryCount = 0;
-        this.el._peerConnection = this.pc;
         this.pushEvent("lobby_connected", {});
-        this._dispatch("lobby_media_pc_ready", { pc: this.pc });
         this._startStatsPolling();
         break;
 

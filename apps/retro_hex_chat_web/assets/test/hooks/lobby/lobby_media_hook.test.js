@@ -409,6 +409,33 @@ describe("LobbyMediaHook auto-join", () => {
     vi.useRealTimers();
   });
 
+  it("holds off the stalled-video watchdog while a negotiation is in flight", () => {
+    vi.useFakeTimers();
+    const ctx = setup();
+    hook = ctx.hook;
+    // Media published after the connection settled arrives on a second round;
+    // until that round lands the remote track is live but carries no RTP, and
+    // judging it stalled asks for a recovery the negotiation was already doing.
+    hook.pc = {
+      getReceivers: vi.fn(() => []),
+      getStats: vi.fn(async () => new Map()),
+      signalingState: "have-local-offer",
+    };
+
+    ctx.handlers["lobby_media_peer_media"]({ audio: true, video: true });
+    ctx.handlers["lobby_media_join"]({ expected_video: true });
+
+    vi.advanceTimersByTime(11000);
+
+    const recover = ctx.webrtcEl.dispatchEvent.mock.calls
+      .map(([event]) => event)
+      .find((event) => event.type === "lobby_media_recover");
+
+    expect(recover).toBeUndefined();
+
+    vi.useRealTimers();
+  });
+
   it("escalates missing remote video recovery to a coordinated restart", () => {
     vi.useFakeTimers();
     const ctx = setup();

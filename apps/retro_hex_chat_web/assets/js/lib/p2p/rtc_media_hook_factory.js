@@ -680,6 +680,15 @@ export function createRtcMediaHook(configInput) {
       this._remoteVideoIssueKind = null;
       this.watchdogInterval = setInterval(() => {
         this._adoptExistingRemoteTracks();
+
+        // A track being negotiated is live before it carries RTP. Calling that
+        // stalled asks for a recovery the negotiation in flight was already
+        // performing, and the restart it escalates to only delays the picture.
+        if (this._negotiationInFlight()) {
+          this._resetRemoteVideoIssue();
+          return;
+        }
+
         const track = this._remoteVideoTrack();
         const issue = this._remoteVideoIssue(track);
 
@@ -737,6 +746,13 @@ export function createRtcMediaHook(configInput) {
       this._stalledRecoveryEscalated = false;
       this._remoteVideoIssueKind = null;
       this._clearMediaElements();
+    },
+
+    // `stable` means no offer/answer is outstanding. A connection double that
+    // does not model the state machine reports nothing, and is treated as settled.
+    _negotiationInFlight() {
+      const state = this.pc?.signalingState;
+      return !!state && state !== "stable";
     },
 
     _remoteVideoTrack() {

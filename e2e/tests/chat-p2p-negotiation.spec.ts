@@ -6,6 +6,8 @@ import {
   acceptP2PInvite,
   statusBarP2P,
   remoteVideoHasVisibleFrame,
+  recordLocalOffers,
+  localOffers,
   type P2PTestUser,
 } from "../helpers/p2pFlows";
 
@@ -117,6 +119,37 @@ test.describe("P2P negotiation health", () => {
     }
   });
 
+  test("the picture arrives without renegotiating repeatedly", async ({
+    browser,
+  }) => {
+    test.setTimeout(90_000);
+
+    const alice = await newP2PUser(browser, "pnq", {
+      media: true,
+      instrument: recordLocalOffers,
+    });
+    const bob = await newP2PUser(browser, "pnr", { media: true });
+
+    try {
+      await connectPair(alice, bob);
+
+      await expect
+        .poll(() => remoteVideoHasVisibleFrame(alice.page), { timeout: 30_000 })
+        .toBe(true);
+
+      // Local media is acquired after the data channels have already triggered
+      // the first offer, so one follow-up round is expected. More than that
+      // means the stalled-media watchdog is asking for restarts while that
+      // round is still in flight — which is what makes the picture take
+      // seconds to appear instead of arriving with the connection.
+      const offers = await localOffers(alice.page);
+      expect(offers.length).toBeGreaterThan(0);
+      expect(offers.length).toBeLessThanOrEqual(3);
+    } finally {
+      await closeP2PUsers([alice, bob]);
+    }
+  });
+
   test("publishing a camera mid-call renegotiates without desync", async ({
     browser,
   }) => {
@@ -198,6 +231,12 @@ test.describe("P2P negotiation health", () => {
   test("a relay-only call carries the picture end to end", async ({
     browser,
   }) => {
+    // `config/e2e.exs` sets turn_listener_count: 0, so the local server has no
+    // relay to offer and a relay-only call cannot gather a candidate at all.
+    test.skip(
+      !process.env.E2E_BASE_URL,
+      "relay-only needs a deployment with TURN; point E2E_BASE_URL at one",
+    );
     test.setTimeout(150_000);
 
     const alice = await newP2PUser(browser, "pno", { media: true });

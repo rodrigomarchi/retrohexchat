@@ -28,6 +28,8 @@ type NewP2PUserOptions = {
     | "mic-missing"
     | "mic-busy";
   permissions?: BrowserContextOptions["permissions"];
+  /** Runs against the fresh context, before the first navigation. */
+  instrument?: (ctx: BrowserContext) => Promise<void>;
 };
 
 export async function installSyntheticMedia(ctx: BrowserContext) {
@@ -376,6 +378,8 @@ export async function newP2PUser(
     await installSyntheticMedia(ctx);
   }
 
+  if (options.instrument) await options.instrument(ctx);
+
   const page = await ctx.newPage();
   const connect = new ConnectPage(page);
   const chat = new ChatPage(page);
@@ -513,4 +517,35 @@ export async function remoteVideoHasVisibleFrame(page: Page) {
       return false;
     }
   });
+}
+
+/**
+ * Records the SDP of every local offer, so a test can assert what the *first*
+ * one carried. Media added only after the connection settles rides a second
+ * negotiation round, which the picture waits out.
+ */
+export async function recordLocalOffers(ctx: BrowserContext) {
+  await ctx.addInitScript(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const recorder = window as any;
+    recorder.__localOffers = [];
+
+    const original = RTCPeerConnection.prototype.setLocalDescription;
+    RTCPeerConnection.prototype.setLocalDescription = async function patched(
+      ...args: unknown[]
+    ) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const result = await (original as any).apply(this, args);
+      const description = this.localDescription;
+      if (description?.type === "offer") {
+        recorder.__localOffers.push(description.sdp);
+      }
+      return result;
+    };
+  });
+}
+
+export async function localOffers(page: Page): Promise<string[]> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return page.evaluate(() => (window as any).__localOffers || []);
 }

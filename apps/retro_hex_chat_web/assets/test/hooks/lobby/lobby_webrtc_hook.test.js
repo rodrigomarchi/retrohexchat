@@ -74,6 +74,22 @@ describe("LobbyWebRTCHook", () => {
     expect(hook.gameChannel.label).toBe("gamedata");
   });
 
+  it("hands the connection to the media hook as soon as it exists", async () => {
+    const hook = buildHook();
+    hook.role = "initiator";
+    hook.iceServers = [];
+
+    const ready = [];
+    hook.el.addEventListener("lobby_media_pc_ready", (event) => ready.push(event.detail.pc));
+
+    await hook._createConnection();
+
+    // Waiting for "connected" means the first offer carries no media and the
+    // media hook misses every ontrack fired while the offer was applied.
+    expect(hook.el._peerConnection).toBe(hook.pc);
+    expect(ready).toEqual([hook.pc]);
+  });
+
   it("routes an inbound gamedata channel to game_channel_ready", () => {
     const hook = buildHook();
     const channel = new MockDataChannel("gamedata", {});
