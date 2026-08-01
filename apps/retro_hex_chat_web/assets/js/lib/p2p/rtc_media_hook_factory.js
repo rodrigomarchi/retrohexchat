@@ -857,8 +857,7 @@ export function createRtcMediaHook(configInput) {
     // --- Remote track handling ---
 
     _handleRemoteTrack(event) {
-      const [stream] = event.streams;
-      this._addRemoteTrack(event.track, stream || null);
+      this._addRemoteTrack(event.track);
       this._attachMediaElements();
     },
 
@@ -871,20 +870,21 @@ export function createRtcMediaHook(configInput) {
         if (!track || track.readyState === "ended") continue;
         if (track.kind !== "audio" && track.kind !== "video") continue;
 
-        adopted = this._addRemoteTrack(track, null) || adopted;
+        adopted = this._addRemoteTrack(track) || adopted;
       }
 
       if (adopted) this._attachMediaElements();
     },
 
-    _addRemoteTrack(track, stream) {
+    // The remote stream is ours, never the one the event carries. A peer that
+    // captures its microphone and camera at different moments publishes them
+    // under different MediaStreams, so adopting the event's stream would drop
+    // every track taken from the previous one — and swapping the object the
+    // elements hold counts as a load, which cancels their pending play().
+    _addRemoteTrack(track) {
       if (!track || (track.kind !== "audio" && track.kind !== "video")) return false;
 
-      if (stream) {
-        this.remoteStream = stream;
-      } else if (!this.remoteStream) {
-        this.remoteStream = new MediaStream();
-      }
+      if (!this.remoteStream) this.remoteStream = new MediaStream();
 
       const exists = this.remoteStream.getTracks().some((candidate) => candidate.id === track.id);
       if (!exists) this.remoteStream.addTrack(track);

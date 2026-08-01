@@ -37,6 +37,53 @@ function setup({ querySelector = () => null, closest = () => null } = {}) {
   return { hook, pushed, handlers, webrtcEl };
 }
 
+// jsdom has no MediaStream, and the remote stream's identity is what decides
+// whether attaching reloads the media element — so it has to be modelled.
+let streamSeq = 0;
+
+class FakeMediaStream {
+  constructor(tracks = []) {
+    streamSeq += 1;
+    this.id = `stream-${streamSeq}`;
+    this._tracks = [...tracks];
+  }
+
+  getTracks() {
+    return this._tracks;
+  }
+
+  getVideoTracks() {
+    return this._tracks.filter((track) => track.kind === "video");
+  }
+
+  getAudioTracks() {
+    return this._tracks.filter((track) => track.kind === "audio");
+  }
+
+  addTrack(track) {
+    if (!this._tracks.includes(track)) this._tracks.push(track);
+  }
+}
+
+function fakeMediaElement() {
+  return {
+    srcObject: null,
+    muted: false,
+    autoplay: false,
+    playsInline: false,
+    paused: true,
+    loads: 0,
+    play: vi.fn(function play() {
+      this.paused = false;
+      return Promise.resolve();
+    }),
+  };
+}
+
+function remoteTrack(kind, id) {
+  return { kind, id, readyState: "live", muted: false, enabled: true };
+}
+
 function shortcut(key, target = document.body) {
   const event = new KeyboardEvent("keydown", {
     key,
@@ -677,5 +724,56 @@ describe("LobbyMediaHook auto-join", () => {
     shortcut("ArrowRight");
 
     expect(ctx.pushed.some((item) => item.event === "cycle_call_layout")).toBe(false);
+  });
+});
+
+describe("remote track adoption", () => {
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it("keeps every remote track when they arrive in separate streams", () => {
+    vi.stubGlobal("MediaStream", FakeMediaStream);
+    const { hook } = setup();
+
+    const video = remoteTrack("video", "v1");
+    const audio = remoteTrack("audio", "a1");
+
+    // A peer that captures its camera and microphone at different moments
+    // publishes them under different MediaStreams, so ontrack reports one each.
+    hook._handleRemoteTrack({ track: video, streams: [new FakeMediaStream([video])] });
+    const adopted = hook.remoteStream;
+    hook._handleRemoteTrack({ track: audio, streams: [new FakeMediaStream([audio])] });
+
+    expect(hook.remoteStream.getVideoTracks()).toHaveLength(1);
+    expect(hook.remoteStream.getAudioTracks()).toHaveLength(1);
+    // A new object here reloads the element and cancels its pending play().
+    expect(hook.remoteStream).toBe(adopted);
+  });
+
+  it("does not reload the video element when a later track arrives", () => {
+    vi.stubGlobal("MediaStream", FakeMediaStream);
+
+    const remoteVideo = fakeMediaElement();
+    const remoteAudio = fakeMediaElement();
+    const { hook } = setup({
+      querySelector: (selector) => {
+        if (selector === "#lobby-remote-video") return remoteVideo;
+        if (selector === "#lobby-remote-audio") return remoteAudio;
+        return null;
+      },
+    });
+
+    const video = remoteTrack("video", "v1");
+    const audio = remoteTrack("audio", "a1");
+
+    hook._handleRemoteTrack({ track: video, streams: [new FakeMediaStream([video])] });
+    const attached = remoteVideo.srcObject;
+    expect(attached).toBeTruthy();
+
+    hook._handleRemoteTrack({ track: audio, streams: [new FakeMediaStream([audio])] });
+
+    expect(remoteVideo.srcObject).toBe(attached);
+    expect(remoteVideo.srcObject.getVideoTracks()).toHaveLength(1);
   });
 });
