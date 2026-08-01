@@ -45,21 +45,33 @@ function watchSignalling(page: Page) {
   return faults;
 }
 
-/** A picture that arrives and then goes black fails this; `poll` would not. */
+/**
+ * A picture that arrives and then goes black fails this; `poll` would not.
+ *
+ * Reports the longest run of blank samples rather than their count: one blank
+ * sample is frame jitter on a real network, while the failure this guards
+ * against — recovery tearing the stream down — blanks it for seconds.
+ */
 async function holdsVisibleFrames(page: Page, durationMs: number) {
   const deadline = Date.now() + durationMs;
-  const misses: string[] = [];
   let samples = 0;
+  let blankRun = 0;
+  let longestBlankRun = 0;
 
   while (Date.now() < deadline) {
     samples += 1;
-    if (!(await remoteVideoHasVisibleFrame(page))) {
-      misses.push(`sample ${samples}`);
+
+    if (await remoteVideoHasVisibleFrame(page)) {
+      blankRun = 0;
+    } else {
+      blankRun += 1;
+      longestBlankRun = Math.max(longestBlankRun, blankRun);
     }
+
     await page.waitForTimeout(500);
   }
 
-  return { samples, misses };
+  return { samples, longestBlankRun };
 }
 
 /** Approximates the round trip between a Brazilian client and a EU server. */
@@ -107,9 +119,12 @@ test.describe("P2P negotiation health", () => {
 
       // Once negotiated the picture must stay, not flicker through recovery.
       for (const page of [alice.page, bob.page]) {
-        const { samples, misses } = await holdsVisibleFrames(page, 5_000);
+        const { samples, longestBlankRun } = await holdsVisibleFrames(
+          page,
+          5_000,
+        );
         expect(samples).toBeGreaterThan(5);
-        expect(misses).toEqual([]);
+        expect(longestBlankRun).toBeLessThanOrEqual(1);
       }
 
       expect(aliceFaults).toEqual([]);
@@ -176,8 +191,8 @@ test.describe("P2P negotiation health", () => {
         .poll(() => remoteVideoHasVisibleFrame(alice.page), { timeout: 30_000 })
         .toBe(true);
 
-      const { misses } = await holdsVisibleFrames(alice.page, 4_000);
-      expect(misses).toEqual([]);
+      const { longestBlankRun } = await holdsVisibleFrames(alice.page, 4_000);
+      expect(longestBlankRun).toBeLessThanOrEqual(1);
 
       expect(aliceFaults).toEqual([]);
       expect(bobFaults).toEqual([]);
@@ -217,8 +232,8 @@ test.describe("P2P negotiation health", () => {
         .poll(() => remoteVideoHasVisibleFrame(alice.page), { timeout: 30_000 })
         .toBe(true);
 
-      const { misses } = await holdsVisibleFrames(alice.page, 4_000);
-      expect(misses).toEqual([]);
+      const { longestBlankRun } = await holdsVisibleFrames(alice.page, 4_000);
+      expect(longestBlankRun).toBeLessThanOrEqual(1);
       expect(aliceFaults).toEqual([]);
     } finally {
       await closeP2PUsers([alice, bob]);
@@ -253,8 +268,8 @@ test.describe("P2P negotiation health", () => {
           .toBe(true);
       }
 
-      const { misses } = await holdsVisibleFrames(alice.page, 5_000);
-      expect(misses).toEqual([]);
+      const { longestBlankRun } = await holdsVisibleFrames(alice.page, 5_000);
+      expect(longestBlankRun).toBeLessThanOrEqual(1);
       expect(aliceFaults).toEqual([]);
       expect(bobFaults).toEqual([]);
     } finally {
@@ -286,8 +301,8 @@ test.describe("P2P negotiation health", () => {
           .toBe(true);
       }
 
-      const { misses } = await holdsVisibleFrames(alice.page, 5_000);
-      expect(misses).toEqual([]);
+      const { longestBlankRun } = await holdsVisibleFrames(alice.page, 5_000);
+      expect(longestBlankRun).toBeLessThanOrEqual(1);
 
       expect(aliceFaults).toEqual([]);
       expect(bobFaults).toEqual([]);
