@@ -82,6 +82,7 @@ const WindowManagerCore = {
     this._wsSize = null;
     this.focusedId = null;
     this.stacked = false;
+    this.startMenuRootScroll = 0;
     this.drag = null;
     this.resize = null;
     this.windows = {};
@@ -1337,7 +1338,13 @@ const WindowManagerCore = {
 
   // Groups inside the Start menu open on hover and on click. Hovering any
   // ungrouped row closes them, so at most one flyout shows at a time.
+  //
+  // Hover is a pointer affordance: the stacked menu is a drill-down where
+  // opening a group replaces the whole list, and a finger dragging across the
+  // rows would swap levels under itself. There, only a deliberate tap opens.
   onStartMenuHover(e) {
+    if (this.stacked) return;
+
     const menu = this.startMenu();
     if (!menu || menu.classList.contains("u-hidden")) return;
     if (!e.target.closest || !menu.contains(e.target)) return;
@@ -1420,8 +1427,31 @@ const WindowManagerCore = {
 
   setStartSubmenu(submenu, open) {
     submenu.dataset.submenuOpen = open ? "true" : "false";
+    const trigger = submenu.querySelector("[data-start-submenu-trigger]");
+    if (trigger) trigger.setAttribute("aria-expanded", open ? "true" : "false");
     const panel = submenu.querySelector("[data-start-submenu-panel]");
     if (panel) panel.classList.toggle("u-hidden", !open);
+    this.syncStartMenuLevel();
+  },
+
+  // Which level the Start menu is showing. Desktop flies the group panel out
+  // beside the list and both levels stay on screen; the stacked shell has no
+  // room for that, so the open group takes the menu over and its own row
+  // becomes the way back (the level swap itself is CSS). The two levels are
+  // one scroll container, so the root's offset is carried across the drill and
+  // handed back on the way out — otherwise returning from a group near the
+  // bottom of a long menu lands at the top, nowhere near where the user was.
+  syncStartMenuLevel() {
+    const menu = this.startMenu();
+    if (!menu) return;
+
+    const open = Boolean(menu.querySelector('[data-start-submenu][data-submenu-open="true"]'));
+    const level = open ? "submenu" : "root";
+    if (menu.dataset.startLevel === level) return;
+
+    if (open) this.startMenuRootScroll = menu.scrollTop;
+    menu.dataset.startLevel = level;
+    menu.scrollTop = open ? 0 : this.startMenuRootScroll || 0;
   },
 
   onDocPointerDown(e) {

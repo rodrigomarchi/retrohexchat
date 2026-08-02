@@ -267,6 +267,12 @@
   inset: 0 !important;
   width: auto !important;
   height: auto !important;
+  /* The desktop cap keeps a window from growing past the bottom of the desk it
+     was placed on — it is measured from that window's own top. A stacked window
+     has no placement: it is the desk. Left in, the last y it was dragged to
+     would shorten it by exactly that much and leave a dead strip above the
+     taskbar. */
+  max-height: none;
   margin: 0;
 }
 /* Resize and geometry controls are meaningless when every window is fullscreen:
@@ -286,11 +292,13 @@
   padding-inline: 4px;
 }
 
-/* Sidebars overlay the chat content but stop below the fixed top chrome:
-   app header, window title chrome, conversation toolbar and topic row. The
-   bottom-anchored tab row is not subtracted here — it is painted over the
-   overlay by the z-index rule below, which is what keeps it clickable. */
-.desktop--stacked .chat-sidebar-overlay {
+/* An expanded sidebar overlays the chat content but stops below the fixed top
+   chrome: app header, window title chrome, conversation toolbar and topic row.
+   The bottom-anchored tab row is not subtracted here — it is painted over the
+   overlay by the z-index rule below, which is what keeps it clickable.
+   Collapsed, the shell is a rail in normal flow (`chat-sidebars.css`), so only
+   the drawer is positioned here. */
+.desktop--stacked .chat-sidebar-shell--expanded.chat-sidebar-overlay {
   top: var(--rhc-chat-sidebar-top);
   height: calc(var(--rhc-visual-viewport-height, 100dvh) - var(--rhc-chat-sidebar-top));
 }
@@ -546,20 +554,50 @@
    swallow the flyouts, which escape to the right. Length is handled by grouping
    instead — the same answer the menu bar dropdowns use. */
 
-/* Stacked shells expand groups inline, so there is no flyout to clip and the
-   menu can safely cap and scroll. */
+/* Stacked shells drill down instead of flying out, so there is no flyout to
+   clip and the menu can safely cap and scroll. */
 .desktop--stacked .desktop-start-menu {
   max-height: min(72vh, 560px);
   overflow-y: auto;
   scrollbar-width: thin;
 }
 
+/* A phone has no room beside the list for a flyout, and an inline expansion
+   leaves the group's items buried in a menu already taller than the screen.
+   One level shows at a time: opening a group replaces the list with that
+   group's items, and the group's own row — now a header — is the way back. */
 .desktop--stacked .desktop-start-submenu__panel {
   position: static;
   width: auto;
-  margin-left: 0;
-  padding-left: 16px;
+  margin: 0;
+  padding: 0;
   box-shadow: none;
+}
+
+.desktop--stacked .desktop-start-menu[data-start-level="submenu"]
+  > *:not([data-submenu-open="true"]) {
+  display: none;
+}
+
+/* The header stays put while the group's items scroll under it: back is the
+   one control that must never be scrolled away. It is already inverted by the
+   open state, which is what lets it sit opaquely over the list. */
+.desktop--stacked
+  .desktop-start-submenu[data-submenu-open="true"]
+  > [data-start-submenu-trigger] {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+/* Same chevron, read the other way: leading the label and pointing back at the
+   level it returns to. */
+.desktop--stacked
+  .desktop-start-submenu[data-submenu-open="true"]
+  > [data-start-submenu-trigger]
+  > svg {
+  order: -1;
+  transform: rotate(180deg);
 }
 
 .desktop--stacked .desktop-start-menu__item {

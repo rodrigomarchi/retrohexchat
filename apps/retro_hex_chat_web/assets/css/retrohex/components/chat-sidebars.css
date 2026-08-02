@@ -126,6 +126,20 @@
   pointer-events: auto;
 }
 
+/* Only the expanded panel is a drawer. A collapsed rail is permanent chrome —
+   the sole way back into the sidebar — so it takes its 36px out of the row like
+   it does on the desktop, instead of floating over the conversation and clipping
+   the first characters of every message under it. */
+.desktop--stacked .chat-sidebar-shell--collapsed {
+  position: relative;
+  inset: auto;
+  z-index: auto;
+  width: var(--rhc-chat-sidebar-rail-width);
+  min-width: var(--rhc-chat-sidebar-rail-width);
+  height: auto;
+  pointer-events: auto;
+}
+
 .desktop--stacked .chat-sidebar-shell--expanded .chat-sidebar-frame {
   width: min(300px, var(--rhc-visual-viewport-width, 100vw));
   max-width: min(300px, var(--rhc-visual-viewport-width, 100vw));

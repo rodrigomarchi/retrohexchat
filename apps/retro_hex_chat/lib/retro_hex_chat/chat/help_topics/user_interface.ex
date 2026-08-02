@@ -40,7 +40,9 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
           "help viewer",
           "search topics",
           "logon",
-          "connect screen"
+          "connect screen",
+          "phone",
+          "mobile"
         ],
         icon: :icon_win_maximize,
         description:
@@ -64,6 +66,16 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
               "help",
               "The Connect screen is a logon-style desktop too: the connect dialog is a pinned " <>
                 "window centered over the taskbar, with Help available from its Start menu."
+            ) <>
+            " " <>
+            dgettext(
+              "help",
+              "On a phone the desktop stacks: one window fills the screen at a time and the " <>
+                "taskbar's Windows button switches between them. The conversations and user " <>
+                "list collapse to narrow rails beside the conversation — tap one to slide the " <>
+                "full panel open. The Start menu opens one level at a time: tapping a group " <>
+                "replaces the list with its entries, and the group's own row at the top takes " <>
+                "you back."
             )
       },
       %{

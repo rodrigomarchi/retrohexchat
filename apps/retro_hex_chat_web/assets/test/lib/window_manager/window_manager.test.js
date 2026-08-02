@@ -686,6 +686,31 @@ describe("WindowManager", () => {
       expect(panelHidden()).toBe(true);
       expect(submenu().dataset.submenuOpen).toBe("false");
     });
+
+    it("reports which level is showing so the stacked menu can drill down", () => {
+      const menu = el.querySelector("[data-window-start-menu]");
+      const trigger = el.querySelector("[data-start-submenu-trigger]");
+      openStartMenu();
+
+      trigger.click();
+      expect(menu.dataset.startLevel).toBe("submenu");
+      expect(trigger.getAttribute("aria-expanded")).toBe("true");
+
+      trigger.click();
+      expect(menu.dataset.startLevel).toBe("root");
+      expect(trigger.getAttribute("aria-expanded")).toBe("false");
+    });
+
+    it("opens groups by tap only in the stacked shell", () => {
+      hook.stacked = true;
+      openStartMenu();
+
+      submenu().dispatchEvent(new MouseEvent("pointerover", { bubbles: true }));
+      expect(panelHidden()).toBe(true);
+
+      el.querySelector("[data-start-submenu-trigger]").click();
+      expect(panelHidden()).toBe(false);
+    });
   });
 
   it("persists window state to localStorage", () => {

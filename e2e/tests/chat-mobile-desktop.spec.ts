@@ -164,6 +164,24 @@ test.describe("chat desktop on a phone (stacked single-window)", () => {
     await expect(conversations).toBeHidden();
     await expect(nicklist).toBeHidden();
 
+    // A collapsed rail is chrome in the row, not an overlay: the conversation
+    // starts where the left rail ends and stops where the right one begins, so
+    // no message is written underneath either of them.
+    const messageList = page.getByTestId("chat-message-list");
+    const leftRailBox = await conversationsRail.boundingBox();
+    const rightRailBox = await nicklistRail.boundingBox();
+    const listBox = await messageList.boundingBox();
+    expect(leftRailBox).not.toBeNull();
+    expect(rightRailBox).not.toBeNull();
+    expect(listBox).not.toBeNull();
+    expect(listBox!.x).toBeGreaterThanOrEqual(
+      leftRailBox!.x + leftRailBox!.width - 1,
+    );
+    expect(listBox!.x + listBox!.width).toBeLessThanOrEqual(
+      rightRailBox!.x + 1,
+    );
+    await shot(page, "mobile-collapsed-rails-beside-conversation");
+
     await conversationsRailButton.click();
     await expect(conversations).toBeVisible();
     await expect(conversationsCollapseButton).toBeVisible();
@@ -216,6 +234,36 @@ test.describe("chat desktop on a phone (stacked single-window)", () => {
     const inputBox = await input.boundingBox();
     expect(inputBox).not.toBeNull();
     expect(inputBox!.height).toBeGreaterThanOrEqual(40);
+  });
+
+  test("drills the Start menu one level at a time", async ({ page }) => {
+    await signedInUser(page, "mmenu");
+
+    const startButton = page.locator("[data-window-start]");
+    const menu = page.locator("[data-window-start-menu]");
+    const accountGroup = page.getByTestId("start-menu-account-submenu");
+    const accountItem = page.getByTestId("start-menu-item-open_account_dialog");
+    const rootItem = page.getByTestId("start-menu-item-timers");
+
+    await startButton.click();
+    await expect(menu).toBeVisible();
+    await expect(rootItem).toBeVisible();
+    await expect(accountItem).toBeHidden();
+
+    // Opening the group replaces the list instead of expanding inside it.
+    await accountGroup.click();
+    await expect(menu).toHaveAttribute("data-start-level", "submenu");
+    await expect(accountItem).toBeVisible();
+    await expect(rootItem).toBeHidden();
+    await expect(accountGroup).toHaveAttribute("aria-expanded", "true");
+    await shot(page, "mobile-start-menu-submenu-level");
+
+    // The group's own row is the way back to the level above.
+    await accountGroup.click();
+    await expect(menu).toHaveAttribute("data-start-level", "root");
+    await expect(rootItem).toBeVisible();
+    await expect(accountItem).toBeHidden();
+    await shot(page, "mobile-start-menu-root-level");
   });
 
   test("collapses mobile taskbar while the virtual keyboard is open", async ({
