@@ -1,6 +1,14 @@
 import { expect, Page, test } from "@playwright/test";
 import { shot } from "../helpers/screenshots";
 
+// The server renders windows hidden so they never flash before the manager
+// places them, which means a visible window is the signal that the manager is
+// live. Acting before that is a race — one that only ever loses over a real
+// network, so it has to be waited on explicitly rather than assumed.
+async function waitForDesktop(page: Page) {
+  await expect(page.getByTestId("showcase-component-window")).toBeVisible();
+}
+
 function watchBrowserFailures(page: Page) {
   const failures: string[] = [];
 
@@ -51,6 +59,7 @@ test.describe("Showcase desktop", () => {
     await shot(page, "showcase-window-dragged");
 
     await page.reload();
+    await waitForDesktop(page);
     const restored = await page
       .getByTestId("showcase-component-window")
       .boundingBox();
@@ -66,6 +75,7 @@ test.describe("Showcase desktop", () => {
     const failures = watchBrowserFailures(page);
 
     await page.goto("/showcase/button");
+    await waitForDesktop(page);
 
     await page.locator("[data-window-start]").click();
     const startMenu = page.locator("#showcase-start-menu");
@@ -85,6 +95,7 @@ test.describe("Showcase desktop", () => {
     await target.click();
 
     await expect(page).toHaveURL(/\/showcase\/table$/);
+    await waitForDesktop(page);
     await expect(page.getByTestId("showcase-component-window")).toContainText(
       "Table",
     );

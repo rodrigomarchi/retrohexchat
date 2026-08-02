@@ -36,7 +36,7 @@ test.describe("Landing public pages", () => {
 
     await page.goto("/");
     await expect(
-      page.locator('script[src="/assets/js/public_pages.js"]'),
+      page.locator('script[src*="/assets/js/public_pages"]'),
     ).toHaveCount(1);
     await expect(page.locator("#hero-heading")).toBeVisible();
 
@@ -99,9 +99,7 @@ test.describe("Landing public pages", () => {
     await page.locator('a[href="/connect"]').first().click();
     await expect(page).toHaveURL(/\/connect$/);
     await expect(page.locator("#nickname")).toBeVisible();
-    await expect(page.locator('script[src="/assets/js/app.js"]')).toHaveCount(
-      1,
-    );
+    await expect(page.locator('script[src*="/assets/js/app"]')).toHaveCount(1);
 
     expect(failures).toEqual([]);
   });

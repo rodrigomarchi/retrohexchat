@@ -18,6 +18,9 @@ test.describe("Welcome message", () => {
     // appear in channel tabs). The user lands on #lobby by default, so we
     // explicitly switch to Status to view what the server announced.
     await chat.switchToStatusTab();
-    await expect(page.getByText(/Welcome to/)).toBeVisible();
+    // Match the banner itself, not merely a line that opens the same way: the
+    // MOTD is server data and has begun with "Welcome to" too, which made the
+    // looser pattern ambiguous.
+    await expect(page.getByText(/Welcome to \S+!/)).toBeVisible();
   });
 });
