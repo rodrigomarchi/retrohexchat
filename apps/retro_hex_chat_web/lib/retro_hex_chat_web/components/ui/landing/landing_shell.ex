@@ -8,6 +8,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.AppHeader
+  import RetroHexChatWeb.Components.UI.Desktop
   import RetroHexChatWeb.Components.UI.Window
   import RetroHexChatWeb.Components.UI.MenuBar
   import RetroHexChatWeb.Components.UI.LanguageMenu
@@ -15,121 +16,139 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
 
   alias RetroHexChatWeb.Icons
 
+  @doc """
+  The landing desktop: a workspace of real windows, one page per desktop.
+
+  Each section of a page is a `desktop_window/1` the reader can move, resize,
+  maximize or minimize, laid out in a cascade on a first visit. The workspace is
+  the viewport — nothing scrolls outside a window — so the taskbar carries the
+  page's windows and navigation between pages lives in the Start menu and the
+  menu bar, both real links.
+
+  With scripting off the whole thing degrades to the document it is built from:
+  windows leave the absolute layer and stack in flow (see `window-manager.css`).
+  """
   attr :active_page, :atom, required: true
-  slot :inner_block, required: true
+
+  attr :windows, :list,
+    required: true,
+    doc: "%{id, label, icon} for each window on this page, in the order they cascade"
+
+  slot :inner_block, required: true, doc: "desktop_window/1 children"
 
   @spec landing_layout(map()) :: Phoenix.LiveView.Rendered.t()
   def landing_layout(assigns) do
     ~H"""
-    <div class="landing-desktop min-h-screen flex flex-col bg-background pb-10">
-      <.landing_header active_page={@active_page} />
-      <main class="flex-1">
+    <div class="landing-desktop bg-background text-text font-system flex h-screen flex-col">
+      <.desktop
+        id="landing-desktop"
+        persist_key={"landing:#{@active_page}"}
+        cascade_on_mount
+        class="flex-1"
+      >
+        <:header>
+          <.landing_header active_page={@active_page} />
+        </:header>
+
         {render_slot(@inner_block)}
-      </main>
-      <.landing_footer active_page={@active_page} />
-      <.landing_taskbar active_page={@active_page} />
+        <.landing_about_window active_page={@active_page} />
+
+        <:taskbar>
+          <.landing_taskbar active_page={@active_page} windows={@windows} />
+        </:taskbar>
+      </.desktop>
     </div>
     """
   end
 
-  # Static Win98 taskbar for the landing desktop. It mirrors the window manager's
-  # look (`desktop-taskbar*` classes) but is fully static — no LiveSocket, no
-  # WindowManagerHook. The Start menu opens via the existing `data-toggle-target`
-  # vanilla toggle (public_pages.js); page buttons and menu items are real
-  # `<a href>` links, so navigation and SEO stay intact. Each landing page is a
-  # "window": its taskbar button shows pressed (`is-active`) for the current page.
+  # The landing taskbar is the same taskbar the app runs, not a lookalike: the
+  # `Desktop` components render it and the window manager drives it. Every page
+  # button and Start-menu entry is a real `<a href>`, so a page that never runs
+  # JavaScript still navigates — and still indexes. The manager recognises that
+  # these point at other documents and leaves the clicks to the browser.
   attr :active_page, :atom, required: true
+  attr :windows, :list, required: true
 
   defp landing_taskbar(assigns) do
     assigns = assign(assigns, :pages, nav_pages())
 
     ~H"""
-    <div class="desktop-taskbar shadow-retro-window bg-surface fixed inset-x-0 bottom-0 z-floating flex items-center gap-[3px] p-[2px]">
-      <%!-- Start button + menu (toggled by the existing data-toggle-target JS) --%>
-      <div class="relative shrink-0">
-        <button
-          type="button"
-          data-toggle-target="#landing-start-menu"
-          aria-controls="landing-start-menu"
-          aria-expanded="false"
-          class="desktop-start-button shadow-retro-raised bg-surface active:shadow-retro-sunken inline-flex items-center gap-1 px-2 py-[2px] text-xs font-bold"
-        >
-          <span class="inline-flex h-4 w-4 shrink-0 items-center justify-center">
-            <Icons.icon_hex_stone class="h-4 w-4" />
-          </span>
-          {dgettext("landing", "Start")}
-        </button>
-        <div
-          id="landing-start-menu"
-          hidden
-          class="desktop-start-menu shadow-retro-window bg-surface absolute bottom-full left-0 z-floating mb-[2px] w-56 p-[3px]"
-        >
-          <.start_link :for={p <- @pages} href={p.path} label={p.label}>
-            <:icon>{apply(Icons, p.icon, [%{class: "h-4 w-4"}])}</:icon>
-          </.start_link>
-          <div class="shadow-retro-status my-[2px] h-[2px]"></div>
-          <.start_link href="/chat/help" label={dgettext("landing", "Documentation")}>
-            <:icon><Icons.icon_notepad class="h-4 w-4" /></:icon>
-          </.start_link>
-          <.start_link href="/connect" label={dgettext("landing", "Open the app")} emphasis>
-            <:icon><Icons.icon_connect class="h-4 w-4" /></:icon>
-          </.start_link>
-        </div>
-      </div>
-
-      <%!-- Page "windows" (hidden on mobile — navigation lives in the Start menu) --%>
-      <div class="hidden md:flex flex-1 items-center gap-[3px] overflow-x-auto">
-        <a
-          :for={p <- @pages}
-          href={p.path}
-          aria-current={(p.page == @active_page && "page") || nil}
-          class={[
-            "desktop-taskbar__button shadow-retro-raised bg-surface no-underline text-text",
-            "inline-flex shrink-0 items-center gap-1 px-2 py-[2px] text-xs",
-            p.page == @active_page && "is-active"
-          ]}
-        >
-          <span class="inline-flex h-4 w-4 shrink-0 items-center justify-center">
-            {apply(Icons, p.icon, [%{class: "w-3 h-3"}])}
-          </span>
-          <span class="max-w-[12ch] truncate">{p.label}</span>
-        </a>
-      </div>
-
-      <%!-- Tray: persistent Connect CTA + clock (bottom-right, like the real desktop) --%>
-      <a
-        href="/connect"
-        class="shadow-retro-raised bg-surface active:shadow-retro-sunken ml-auto md:ml-0 inline-flex shrink-0 items-center gap-1 px-2 py-[2px] text-xs font-bold no-underline text-text"
-      >
-        <Icons.icon_connect class="w-4 h-4" /> {dgettext("landing", "Connect")}
-      </a>
-      <div class="shadow-retro-status ml-[2px] flex shrink-0 items-center gap-1 px-2 py-[2px] text-xs">
-        <Icons.icon_clock class="h-3 w-3 shrink-0" />
-        <span data-clock class="font-mono tabular-nums">--:--</span>
-      </div>
-    </div>
-    """
-  end
-
-  attr :href, :string, required: true
-  attr :label, :string, required: true
-  attr :emphasis, :boolean, default: false
-  slot :icon, required: true
-
-  defp start_link(assigns) do
-    ~H"""
-    <a
-      href={@href}
-      class={[
-        "flex items-center gap-2 px-2 py-1 text-xs no-underline hover:bg-primary hover:text-white",
-        if(@emphasis, do: "font-bold text-primary", else: "text-text")
-      ]}
+    <.taskbar
+      id="landing-taskbar"
+      class="fixed inset-x-0 bottom-0 !z-floating"
+      data-testid="landing-taskbar"
     >
-      <span class="inline-flex h-4 w-4 shrink-0 items-center justify-center">
-        {render_slot(@icon)}
-      </span>
-      {@label}
-    </a>
+      <:start>
+        <div class="relative shrink-0">
+          <.start_button label={dgettext("landing", "Start")}>
+            <:icon><Icons.icon_hex_stone class="h-4 w-4" /></:icon>
+          </.start_button>
+          <.start_menu id="landing-start-menu" class="w-56">
+            <%!-- Closing a window takes its taskbar button with it, the way
+                  Win98 does. This submenu is how it comes back — without it a
+                  closed section would be unreachable. --%>
+            <.start_menu_submenu label={dgettext("landing", "Windows")}>
+              <:icon><Icons.icon_group_view class="h-4 w-4" /></:icon>
+              <.start_menu_item :for={w <- @windows} data-window-open={w.id} label={w.label}>
+                <:icon>{apply(Icons, w.icon, [%{class: "h-4 w-4"}])}</:icon>
+              </.start_menu_item>
+              <.start_menu_item data-window-open="about" label={dgettext("landing", "About")}>
+                <:icon><Icons.icon_lightbulb class="h-4 w-4" /></:icon>
+              </.start_menu_item>
+            </.start_menu_submenu>
+            <.start_menu_separator />
+            <.start_menu_item :for={p <- @pages} href={p.path} label={p.label}>
+              <:icon>{apply(Icons, p.icon, [%{class: "h-4 w-4"}])}</:icon>
+            </.start_menu_item>
+            <.start_menu_separator />
+            <.start_menu_item href="/chat/help" label={dgettext("landing", "Documentation")}>
+              <:icon><Icons.icon_notepad class="h-4 w-4" /></:icon>
+            </.start_menu_item>
+            <.start_menu_item
+              href="/connect"
+              label={dgettext("landing", "Open the app")}
+              class="font-bold"
+            >
+              <:icon><Icons.icon_connect class="h-4 w-4" /></:icon>
+            </.start_menu_item>
+          </.start_menu>
+        </div>
+      </:start>
+
+      <%!-- One button per window on this page, exactly as the app's taskbar
+            behaves. Reaching another page is the Start menu's job. --%>
+      <%!-- `desktop-taskbar__window-button` is what the stacked (mobile) shell
+            hides: a phone has no room for a strip of window buttons, and
+            Start ▸ Windows switches between them there. --%>
+      <.taskbar_button
+        :for={w <- @windows}
+        window={w.id}
+        label={w.label}
+        class="desktop-taskbar__window-button"
+      >
+        <:icon>{apply(Icons, w.icon, [%{class: "w-3 h-3"}])}</:icon>
+      </.taskbar_button>
+      <.taskbar_button
+        window="about"
+        label={dgettext("landing", "About")}
+        class="desktop-taskbar__window-button"
+      >
+        <:icon><Icons.icon_lightbulb class="w-3 h-3" /></:icon>
+      </.taskbar_button>
+
+      <:tray>
+        <a
+          href="/connect"
+          class="shadow-retro-raised bg-surface active:shadow-retro-sunken text-text ml-auto inline-flex shrink-0 items-center gap-1 px-2 py-[2px] text-xs font-bold no-underline md:ml-0"
+        >
+          <Icons.icon_connect class="w-4 h-4" /> {dgettext("landing", "Connect")}
+        </a>
+        <div class="shadow-retro-status ml-[2px] flex shrink-0 items-center gap-1 px-2 py-[2px] text-xs">
+          <Icons.icon_clock class="h-3 w-3 shrink-0" />
+          <span data-clock class="font-mono tabular-nums">--:--</span>
+        </div>
+      </:tray>
+    </.taskbar>
     """
   end
 
@@ -241,20 +260,21 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
   @spec landing_page_intro(map()) :: Phoenix.LiveView.Rendered.t()
   def landing_page_intro(assigns) do
     ~H"""
-    <.window class="mb-4">
-      <.window_title_bar title={@title} controls={[:close]}>
-        <:icon>{render_slot(@icon)}</:icon>
-      </.window_title_bar>
-      <.window_body>
-        <h1 id={@heading_id} class="text-lg font-bold mb-2 text-text">{@title}</h1>
-        <p class="text-sm max-w-3xl">
-          {@description}
-        </p>
-      </.window_body>
-      <.window_status_bar :if={@status}>
+    <.desktop_window
+      id="intro"
+      title={@title}
+      width={620}
+      data-testid="landing-intro-window"
+    >
+      <:icon>{render_slot(@icon)}</:icon>
+      <h1 id={@heading_id} class="text-lg font-bold mb-2 text-text">{@title}</h1>
+      <p class="text-sm max-w-3xl">
+        {@description}
+      </p>
+      <:status :if={@status}>
         <.window_status_bar_field grow>{@status}</.window_status_bar_field>
-      </.window_status_bar>
-    </.window>
+      </:status>
+    </.desktop_window>
     """
   end
 
@@ -369,143 +389,145 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
 
   attr :active_page, :atom, required: true
 
-  defp landing_footer(assigns) do
+  defp landing_about_window(assigns) do
     assigns =
       assigns
       |> assign(:current_path, active_page_path(assigns.active_page))
       |> assign(:supported_locales, RetroHexChatWeb.I18n.supported_locales())
 
     ~H"""
-    <footer class="m-4 mt-8">
-      <.window>
-        <.window_title_bar title={dgettext("landing", "About")} inactive controls={[:close]}>
-          <:icon><Icons.icon_lightbulb class="w-4 h-4" /></:icon>
-        </.window_title_bar>
-        <.window_body>
-          <p class="text-sm mb-3">
-            {dgettext("landing", "Retro Hex Chat is free software, licensed under MIT.")}<br />
-            {dgettext("landing", "Built with Elixir, Phoenix, and LiveView.")}<br />
-            {dgettext("landing", "Inspired by the IRC of the 2000s and the freedom it represented.")}
-          </p>
+    <.desktop_window
+      id="about"
+      title={dgettext("landing", "About")}
+      width={640}
+      data-testid="landing-about-window"
+    >
+      <:icon><Icons.icon_lightbulb class="w-4 h-4" /></:icon>
+      <footer>
+        <p class="text-sm mb-3">
+          {dgettext("landing", "Retro Hex Chat is free software, licensed under MIT.")}<br />
+          {dgettext("landing", "Built with Elixir, Phoenix, and LiveView.")}<br />
+          {dgettext("landing", "Inspired by the IRC of the 2000s and the freedom it represented.")}
+        </p>
 
-          <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 text-xs mb-3">
-            <div>
-              <h3 class="font-bold mb-1">
-                <Icons.icon_code class="w-3 h-3 inline" /> {dgettext("landing", "Project")}
-              </h3>
-              <ul class="space-y-1">
-                <li>
-                  <a
-                    href="https://github.com/rodrigomarchi/retro_hex_chat"
-                    target="_blank"
-                    rel="noopener"
-                  >
-                    {dgettext("landing", "GitHub")}
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://github.com/rodrigomarchi/retro_hex_chat/blob/main/CONTRIBUTING.md"
-                    target="_blank"
-                    rel="noopener"
-                  >
-                    {dgettext("landing", "Contribute")}
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://github.com/rodrigomarchi/retro_hex_chat/blob/main/LICENSE"
-                    target="_blank"
-                    rel="noopener"
-                  >
-                    {dgettext("landing", "License (MIT)")}
-                  </a>
-                </li>
-                <li><a href="/chat/help">{dgettext("landing", "Documentation")}</a></li>
-              </ul>
-            </div>
-            <div>
-              <h3 class="font-bold mb-1">
-                <Icons.icon_community class="w-3 h-3 inline" /> {dgettext("landing", "Community")}
-              </h3>
-              <ul class="space-y-1">
-                <li><a href="/connect">#general</a></li>
-                <li><a href="/connect">#dev</a></li>
-                <li><a href="/connect">#help</a></li>
-              </ul>
-            </div>
-            <div>
-              <h3 class="font-bold mb-1">
-                <Icons.icon_legal class="w-3 h-3 inline" /> {dgettext("landing", "Legal")}
-              </h3>
-              <ul class="space-y-1">
-                <li>
-                  <a
-                    href="https://github.com/rodrigomarchi/retro_hex_chat/blob/main/LICENSE"
-                    target="_blank"
-                    rel="noopener"
-                  >
-                    {dgettext("landing", "MIT License")}
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://github.com/rodrigomarchi/retro_hex_chat/blob/main/SECURITY.md"
-                    target="_blank"
-                    rel="noopener"
-                  >
-                    {dgettext("landing", "Security")}
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h3 class="font-bold mb-1">
-                <Icons.icon_heart class="w-3 h-3 inline" /> {dgettext("landing", "Support")}
-              </h3>
-              <ul class="space-y-1">
-                <li>
-                  <a href="https://github.com/sponsors/rodrigomarchi" target="_blank" rel="noopener">
-                    {dgettext("landing", "GitHub Sponsors")}
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="border-t border-gray-400 pt-3 mb-3">
-            <h3 class="font-bold text-xs mb-2">
-              <Icons.icon_link class="w-3 h-3 inline" /> {dgettext("landing", "Languages")}
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 text-xs mb-3">
+          <div>
+            <h3 class="font-bold mb-1">
+              <Icons.icon_code class="w-3 h-3 inline" /> {dgettext("landing", "Project")}
             </h3>
-            <div class="flex flex-wrap gap-x-3 gap-y-1 text-xs">
-              <a
-                :for={{code, label} <- @supported_locales}
-                href={RetroHexChatWeb.SEO.localized_path(@current_path, code)}
-                hreflang={RetroHexChatWeb.I18n.Locales.bcp47(code)}
-              >
-                {label}
-              </a>
-            </div>
+            <ul class="space-y-1">
+              <li>
+                <a
+                  href="https://github.com/rodrigomarchi/retro_hex_chat"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  {dgettext("landing", "GitHub")}
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://github.com/rodrigomarchi/retro_hex_chat/blob/main/CONTRIBUTING.md"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  {dgettext("landing", "Contribute")}
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://github.com/rodrigomarchi/retro_hex_chat/blob/main/LICENSE"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  {dgettext("landing", "License (MIT)")}
+                </a>
+              </li>
+              <li><a href="/chat/help">{dgettext("landing", "Documentation")}</a></li>
+            </ul>
           </div>
-
-          <p class="text-sm text-center italic mb-2">
-            {dgettext("landing", "“Your data. Your rules. Nobody in between.”")}
-          </p>
-
-          <div class="flex justify-center gap-4 text-xs text-gray-600">
-            <span>{dgettext("landing", "v0.1.0")}</span>
-            <span>{dgettext("landing", "Made by humans")}</span>
-            <span>{dgettext("landing", "2025–2026")}</span>
+          <div>
+            <h3 class="font-bold mb-1">
+              <Icons.icon_community class="w-3 h-3 inline" /> {dgettext("landing", "Community")}
+            </h3>
+            <ul class="space-y-1">
+              <li><a href="/connect">#general</a></li>
+              <li><a href="/connect">#dev</a></li>
+              <li><a href="/connect">#help</a></li>
+            </ul>
           </div>
-        </.window_body>
-        <.window_status_bar>
-          <.window_status_bar_field grow>
-            {dgettext("landing", "MIT License")}
-          </.window_status_bar_field>
-          <.window_status_bar_field>{dgettext("landing", "v0.1.0")}</.window_status_bar_field>
-        </.window_status_bar>
-      </.window>
-    </footer>
+          <div>
+            <h3 class="font-bold mb-1">
+              <Icons.icon_legal class="w-3 h-3 inline" /> {dgettext("landing", "Legal")}
+            </h3>
+            <ul class="space-y-1">
+              <li>
+                <a
+                  href="https://github.com/rodrigomarchi/retro_hex_chat/blob/main/LICENSE"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  {dgettext("landing", "MIT License")}
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://github.com/rodrigomarchi/retro_hex_chat/blob/main/SECURITY.md"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  {dgettext("landing", "Security")}
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="font-bold mb-1">
+              <Icons.icon_heart class="w-3 h-3 inline" /> {dgettext("landing", "Support")}
+            </h3>
+            <ul class="space-y-1">
+              <li>
+                <a href="https://github.com/sponsors/rodrigomarchi" target="_blank" rel="noopener">
+                  {dgettext("landing", "GitHub Sponsors")}
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="border-t border-gray-400 pt-3 mb-3">
+          <h3 class="font-bold text-xs mb-2">
+            <Icons.icon_link class="w-3 h-3 inline" /> {dgettext("landing", "Languages")}
+          </h3>
+          <div class="flex flex-wrap gap-x-3 gap-y-1 text-xs">
+            <a
+              :for={{code, label} <- @supported_locales}
+              href={RetroHexChatWeb.SEO.localized_path(@current_path, code)}
+              hreflang={RetroHexChatWeb.I18n.Locales.bcp47(code)}
+            >
+              {label}
+            </a>
+          </div>
+        </div>
+
+        <p class="text-sm text-center italic mb-2">
+          {dgettext("landing", "“Your data. Your rules. Nobody in between.”")}
+        </p>
+
+        <div class="flex justify-center gap-4 text-xs text-gray-600">
+          <span>{dgettext("landing", "v0.1.0")}</span>
+          <span>{dgettext("landing", "Made by humans")}</span>
+          <span>{dgettext("landing", "2025–2026")}</span>
+        </div>
+      </footer>
+
+      <:status>
+        <.window_status_bar_field grow>
+          {dgettext("landing", "MIT License")}
+        </.window_status_bar_field>
+        <.window_status_bar_field>{dgettext("landing", "v0.1.0")}</.window_status_bar_field>
+      </:status>
+    </.desktop_window>
     """
   end
 

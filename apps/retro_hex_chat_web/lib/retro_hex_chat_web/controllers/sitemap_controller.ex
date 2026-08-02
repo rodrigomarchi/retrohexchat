@@ -6,9 +6,12 @@ defmodule RetroHexChatWeb.SitemapController do
 
   alias RetroHexChat.Chat.HelpTopics
   alias RetroHexChatWeb.SEO
+  alias RetroHexChatWeb.ShowcaseCatalog
 
   @cache_key {__MODULE__, :sitemaps}
   @chunk_size 5
+  # A showcase entry is one URL, not one per locale, so far more fit per file.
+  @showcase_chunk_size 50
 
   @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def index(conn, _params) do
@@ -77,14 +80,13 @@ defmodule RetroHexChatWeb.SitemapController do
   @spec build_sitemaps([map()]) :: %{index: map(), chunks: %{String.t() => map()}}
   defp build_sitemaps(topics) do
     chunk_entries =
-      topics
-      |> sitemap_paths()
-      |> Enum.chunk_every(@chunk_size)
-      |> Enum.with_index(1)
-      |> Enum.map(fn {paths, index} ->
-        name = "public-#{index}.xml"
-        {name, paths |> build_urlset() |> xml_resource()}
-      end)
+      chunks(sitemap_paths(topics), "public", @chunk_size, &build_urlset/1) ++
+        chunks(
+          ShowcaseCatalog.paths(),
+          "showcase",
+          @showcase_chunk_size,
+          &build_canonical_urlset/1
+        )
 
     %{
       index: chunk_entries |> Enum.map(&elem(&1, 0)) |> build_sitemap_index() |> xml_resource(),
@@ -100,6 +102,15 @@ defmodule RetroHexChatWeb.SitemapController do
 
     (SEO.landing_paths() ++ ["/chat/help"] ++ help_topic_paths)
     |> Enum.uniq()
+  end
+
+  defp chunks(paths, prefix, size, builder) do
+    paths
+    |> Enum.chunk_every(size)
+    |> Enum.with_index(1)
+    |> Enum.map(fn {chunk, index} ->
+      {"#{prefix}-#{index}.xml", chunk |> builder.() |> xml_resource()}
+    end)
   end
 
   defp build_sitemap_index(chunk_names) do
@@ -127,6 +138,17 @@ defmodule RetroHexChatWeb.SitemapController do
       ~s(<?xml version="1.0" encoding="UTF-8"?>\n),
       ~s(<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n),
       Enum.map(paths, &localized_url_entries/1),
+      "</urlset>\n"
+    ]
+    |> IO.iodata_to_binary()
+  end
+
+  # One canonical URL per path, no hreflang: the showcase ships in English only.
+  defp build_canonical_urlset(paths) do
+    [
+      ~s(<?xml version="1.0" encoding="UTF-8"?>\n),
+      ~s(<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n),
+      Enum.map(paths, &url_entry(SEO.site_url(&1), [])),
       "</urlset>\n"
     ]
     |> IO.iodata_to_binary()

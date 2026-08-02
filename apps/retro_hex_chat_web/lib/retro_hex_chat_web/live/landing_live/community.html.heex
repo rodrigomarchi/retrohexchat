@@ -1,4 +1,4 @@
-<.landing_layout active_page={@active_page}>
+<.landing_layout active_page={@active_page} windows={@windows}>
   <section class="m-4" aria-labelledby="community-heading">
     <.landing_page_intro
       heading_id="community-heading"
@@ -16,159 +16,151 @@
 
     <div class="grid md:grid-cols-2 gap-4 mb-4">
       <%!-- ══════════════ OPEN SOURCE ══════════════ --%>
-      <.window>
-        <.window_title_bar title={dgettext("landing", "Open Source")} controls={[:close]}>
-          <:icon><Icons.icon_code class="w-4 h-4" /></:icon>
-        </.window_title_bar>
-        <.window_body>
-          <h2 class="text-lg font-bold mb-2">
-            {dgettext("landing", "Open code. Open community.")}
-          </h2>
+      <.desktop_window id="open-source" width={560} title={dgettext("landing", "Open Source")}>
+        <:icon><Icons.icon_code class="w-4 h-4" /></:icon>
+        <h2 class="text-lg font-bold mb-2">
+          {dgettext("landing", "Open code. Open community.")}
+        </h2>
 
-          <div class="shadow-retro-field bg-white p-3 mb-3 text-sm">
-            <p class="mb-1">
-              <strong>{dgettext("landing", "Repository:")}</strong>
-              <a
-                href="https://github.com/rodrigomarchi/retro_hex_chat"
-                target="_blank"
-                rel="noopener"
-              >
-                {dgettext("landing", "github.com/rodrigomarchi/retro_hex_chat")}
-              </a>
-            </p>
-            <p><strong>{dgettext("landing", "License:")}</strong> {dgettext("landing", "MIT")}</p>
-          </div>
-
-          <p class="text-sm">
-            {dgettext("landing", "Contributions are welcome! See the")} <a
-              href="https://github.com/rodrigomarchi/retro_hex_chat/blob/main/CONTRIBUTING.md"
+        <div class="shadow-retro-field bg-white p-3 mb-3 text-sm">
+          <p class="mb-1">
+            <strong>{dgettext("landing", "Repository:")}</strong>
+            <a
+              href="https://github.com/rodrigomarchi/retro_hex_chat"
               target="_blank"
               rel="noopener"
-            >{dgettext("landing", "contributing guide")}</a>.
+            >
+              {dgettext("landing", "github.com/rodrigomarchi/retro_hex_chat")}
+            </a>
           </p>
-        </.window_body>
-        <.window_status_bar>
+          <p><strong>{dgettext("landing", "License:")}</strong> {dgettext("landing", "MIT")}</p>
+        </div>
+
+        <p class="text-sm">
+          {dgettext("landing", "Contributions are welcome! See the")} <a
+            href="https://github.com/rodrigomarchi/retro_hex_chat/blob/main/CONTRIBUTING.md"
+            target="_blank"
+            rel="noopener"
+          >{dgettext("landing", "contributing guide")}</a>.
+        </p>
+        <:status>
           <.window_status_bar_field grow>
             {dgettext("landing", "MIT License")}
           </.window_status_bar_field>
           <.window_status_bar_field>
             {dgettext("landing", "Contribute!")}
           </.window_status_bar_field>
-        </.window_status_bar>
-      </.window>
+        </:status>
+      </.desktop_window>
 
       <%!-- ══════════════ SUPPORT ══════════════ --%>
-      <.window>
-        <.window_title_bar title={dgettext("landing", "Support the Project")} controls={[:close]}>
-          <:icon><Icons.icon_heart class="w-4 h-4" /></:icon>
-        </.window_title_bar>
-        <.window_body>
-          <h2 class="text-lg font-bold mb-2">
-            {dgettext("landing", "Help keep Retro Hex Chat alive.")}
-          </h2>
+      <.desktop_window
+        id="support-the-project"
+        width={680}
+        title={dgettext("landing", "Support the Project")}
+      >
+        <:icon><Icons.icon_heart class="w-4 h-4" /></:icon>
+        <h2 class="text-lg font-bold mb-2">
+          {dgettext("landing", "Help keep Retro Hex Chat alive.")}
+        </h2>
 
-          <p class="text-sm mb-3">
-            {dgettext(
-              "landing",
-              "Retro Hex Chat is 100% volunteer-driven. No investors, no ads, no data collection. If you believe in this project, consider supporting it:"
-            )}
-          </p>
+        <p class="text-sm mb-3">
+          {dgettext(
+            "landing",
+            "Retro Hex Chat is 100% volunteer-driven. No investors, no ads, no data collection. If you believe in this project, consider supporting it:"
+          )}
+        </p>
 
-          <div class="space-y-3">
-            <div class="shadow-retro-field bg-white p-3">
-              <p class="text-sm font-bold mb-2">{dgettext("landing", "GitHub Sponsors")}</p>
-              <p class="text-sm mb-2">
-                {dgettext(
-                  "landing",
-                  "Support directly on GitHub with monthly or one-time sponsorship."
-                )}
-              </p>
-              <a
-                href="https://github.com/sponsors/rodrigomarchi"
-                target="_blank"
-                rel="noopener"
-                class="no-underline"
+        <div class="space-y-3">
+          <div class="shadow-retro-field bg-white p-3">
+            <p class="text-sm font-bold mb-2">{dgettext("landing", "GitHub Sponsors")}</p>
+            <p class="text-sm mb-2">
+              {dgettext(
+                "landing",
+                "Support directly on GitHub with monthly or one-time sponsorship."
+              )}
+            </p>
+            <a
+              href="https://github.com/sponsors/rodrigomarchi"
+              target="_blank"
+              rel="noopener"
+              class="no-underline"
+            >
+              <button
+                type="button"
+                class="inline-flex items-center gap-1 h-8 px-3 text-xs shadow-retro-raised bg-surface active:shadow-retro-sunken"
               >
-                <button
-                  type="button"
-                  class="inline-flex items-center gap-1 h-8 px-3 text-xs shadow-retro-raised bg-surface active:shadow-retro-sunken"
-                >
-                  {dgettext("landing", "♥ Sponsor on GitHub")}
-                </button>
-              </a>
-            </div>
-
-            <div class="shadow-retro-field bg-white p-3">
-              <p class="text-sm font-bold mb-1">{dgettext("landing", "Other ways to help")}</p>
-              <ul class="text-sm space-y-1">
-                <li>{dgettext("landing", "⭐ Star the repository")}</li>
-                <li>{dgettext("landing", "📢 Share with friends")}</li>
-                <li>{dgettext("landing", "🐛 Report bugs and suggest features")}</li>
-                <li>{dgettext("landing", "💻 Contribute code")}</li>
-              </ul>
-            </div>
+                {dgettext("landing", "♥ Sponsor on GitHub")}
+              </button>
+            </a>
           </div>
-        </.window_body>
-        <.window_status_bar>
+
+          <div class="shadow-retro-field bg-white p-3">
+            <p class="text-sm font-bold mb-1">{dgettext("landing", "Other ways to help")}</p>
+            <ul class="text-sm space-y-1">
+              <li>{dgettext("landing", "⭐ Star the repository")}</li>
+              <li>{dgettext("landing", "📢 Share with friends")}</li>
+              <li>{dgettext("landing", "🐛 Report bugs and suggest features")}</li>
+              <li>{dgettext("landing", "💻 Contribute code")}</li>
+            </ul>
+          </div>
+        </div>
+        <:status>
           <.window_status_bar_field grow>
             {dgettext("landing", "Thank you!")}
           </.window_status_bar_field>
-        </.window_status_bar>
-      </.window>
+        </:status>
+      </.desktop_window>
     </div>
 
     <%!-- ══════════════ TECH STACK ══════════════ --%>
-    <.window>
-      <.window_title_bar title={dgettext("landing", "Tech Stack")} controls={[:close]}>
-        <:icon><Icons.icon_server class="w-4 h-4" /></:icon>
-      </.window_title_bar>
-      <.window_body>
-        <div class="grid sm:grid-cols-2 lg:grid-cols-7 gap-2">
-          <div class="shadow-retro-field bg-white p-2 text-xs text-center">
-            <Icons.icon_elixir class="w-6 h-6 mx-auto mb-1" />
-            <strong>{dgettext("landing", "Backend")}</strong>
-            <br /> {dgettext("landing", "Elixir, Phoenix, LiveView")}
-          </div>
-          <div class="shadow-retro-field bg-white p-2 text-xs text-center">
-            <Icons.icon_postgres class="w-6 h-6 mx-auto mb-1" />
-            <strong>{dgettext("landing", "Database")}</strong>
-            <br /> {dgettext("landing", "PostgreSQL")}
-          </div>
-          <div class="shadow-retro-field bg-white p-2 text-xs text-center">
-            <Icons.icon_palette class="w-6 h-6 mx-auto mb-1" />
-            <strong>{dgettext("landing", "Frontend")}</strong>
-            <br /> {dgettext("landing", "Retro CSS, Vanilla JS, Canvas")}
-          </div>
-          <div class="shadow-retro-field bg-white p-2 text-xs text-center">
-            <Icons.icon_websocket class="w-6 h-6 mx-auto mb-1" />
-            <strong>{dgettext("landing", "Real-time")}</strong>
-            <br /> {dgettext("landing", "Phoenix Channels, PubSub")}
-          </div>
-          <div class="shadow-retro-field bg-white p-2 text-xs text-center">
-            <Icons.icon_group_view class="w-6 h-6 mx-auto mb-1" />
-            <strong>{dgettext("landing", "Spaces")}</strong>
-            <br /> {dgettext("landing", "Canvas map runtime")}
-          </div>
-          <div class="shadow-retro-field bg-white p-2 text-xs text-center">
-            <Icons.icon_webrtc class="w-6 h-6 mx-auto mb-1" />
-            <strong>{dgettext("landing", "Private P2P")}</strong>
-            <br /> {dgettext("landing", "WebRTC sessions")}
-          </div>
-          <div class="shadow-retro-field bg-white p-2 text-xs text-center">
-            <Icons.icon_conference class="w-6 h-6 mx-auto mb-1" />
-            <strong>{dgettext("landing", "Conferences")}</strong>
-            <br /> {dgettext("landing", "Self-hosted WebRTC SFU")}
-          </div>
+    <.desktop_window id="tech-stack" width={560} title={dgettext("landing", "Tech Stack")}>
+      <:icon><Icons.icon_server class="w-4 h-4" /></:icon>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-7 gap-2">
+        <div class="shadow-retro-field bg-white p-2 text-xs text-center">
+          <Icons.icon_elixir class="w-6 h-6 mx-auto mb-1" />
+          <strong>{dgettext("landing", "Backend")}</strong>
+          <br /> {dgettext("landing", "Elixir, Phoenix, LiveView")}
         </div>
-      </.window_body>
-      <.window_status_bar>
+        <div class="shadow-retro-field bg-white p-2 text-xs text-center">
+          <Icons.icon_postgres class="w-6 h-6 mx-auto mb-1" />
+          <strong>{dgettext("landing", "Database")}</strong>
+          <br /> {dgettext("landing", "PostgreSQL")}
+        </div>
+        <div class="shadow-retro-field bg-white p-2 text-xs text-center">
+          <Icons.icon_palette class="w-6 h-6 mx-auto mb-1" />
+          <strong>{dgettext("landing", "Frontend")}</strong>
+          <br /> {dgettext("landing", "Retro CSS, Vanilla JS, Canvas")}
+        </div>
+        <div class="shadow-retro-field bg-white p-2 text-xs text-center">
+          <Icons.icon_websocket class="w-6 h-6 mx-auto mb-1" />
+          <strong>{dgettext("landing", "Real-time")}</strong>
+          <br /> {dgettext("landing", "Phoenix Channels, PubSub")}
+        </div>
+        <div class="shadow-retro-field bg-white p-2 text-xs text-center">
+          <Icons.icon_group_view class="w-6 h-6 mx-auto mb-1" />
+          <strong>{dgettext("landing", "Spaces")}</strong>
+          <br /> {dgettext("landing", "Canvas map runtime")}
+        </div>
+        <div class="shadow-retro-field bg-white p-2 text-xs text-center">
+          <Icons.icon_webrtc class="w-6 h-6 mx-auto mb-1" />
+          <strong>{dgettext("landing", "Private P2P")}</strong>
+          <br /> {dgettext("landing", "WebRTC sessions")}
+        </div>
+        <div class="shadow-retro-field bg-white p-2 text-xs text-center">
+          <Icons.icon_conference class="w-6 h-6 mx-auto mb-1" />
+          <strong>{dgettext("landing", "Conferences")}</strong>
+          <br /> {dgettext("landing", "Self-hosted WebRTC SFU")}
+        </div>
+      </div>
+      <:status>
         <.window_status_bar_field grow>
           <Icons.icon_checkmark class="w-3 h-3 inline" /> {dgettext(
             "landing",
             "Open source stack"
           )}
         </.window_status_bar_field>
-      </.window_status_bar>
-    </.window>
+      </:status>
+    </.desktop_window>
   </section>
 </.landing_layout>

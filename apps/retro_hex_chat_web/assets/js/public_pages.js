@@ -3,6 +3,7 @@
 
 import { createPlausibleTracker } from "./lib/analytics/plausible";
 import { formatTime, CLOCK_INTERVAL } from "./lib/connection/clock.js";
+import { createWindowManager } from "./lib/window_manager/window_manager";
 
 function targetElement(selector) {
   if (!selector) return null;
@@ -151,8 +152,23 @@ function setupMenuBar() {
   });
 }
 
+// The same window manager the app runs, minus LiveView. Landing pages hold no
+// windows of their own — each page *is* the window — so what it contributes
+// here is the Start menu and the taskbar's right-click behaviour. Every button
+// in that chrome is a real link, and the manager leaves those clicks alone
+// because the windows they name live at other URLs.
+function setupWindowManager() {
+  const el = document.querySelector("[data-window-manager]");
+  if (!el) return null;
+
+  const wm = createWindowManager(el);
+  wm.mount();
+  return wm;
+}
+
 setupClock();
 setupMenuBar();
+setupWindowManager();
 
 const plausibleEnv = document.querySelector('meta[name="plausible-env"]')?.content || "prod";
 const plausible = createPlausibleTracker({

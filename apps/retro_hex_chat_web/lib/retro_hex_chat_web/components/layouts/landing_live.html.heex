@@ -1,5 +1,9 @@
 <!DOCTYPE html>
-<html lang={RetroHexChatWeb.I18n.html_lang()} dir={RetroHexChatWeb.I18n.html_dir()}>
+<html
+  lang={RetroHexChatWeb.I18n.html_lang()}
+  dir={RetroHexChatWeb.I18n.html_dir()}
+  class="no-js"
+>
   <head>
     <% canonical_path = assigns[:canonical_path] || "/" %>
     <% canonical_url = RetroHexChatWeb.SEO.canonical_url(canonical_path) %>
@@ -9,6 +13,11 @@
         "Run your own chat server. Your data stays with you. Voice and video calls go directly between users via P2P. Open source, self-hosted, and free as in freedom." %>
 
     <meta charset="utf-8" />
+    <%!-- Inline and synchronous: the deferred bundles run after parse, which
+          would let the scriptless layout paint for a frame. --%>
+    <script>
+      document.documentElement.classList.remove("no-js");
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content={get_csrf_token()} />
     <meta

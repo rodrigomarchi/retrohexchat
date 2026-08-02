@@ -103,7 +103,7 @@ defmodule RetroHexChatWeb.LandingLiveTest do
     end
   end
 
-  describe "static win98 taskbar" do
+  describe "win98 taskbar" do
     for {path, _heading_id} <- @landing_pages do
       test "GET #{path} renders the taskbar, start menu and page links", %{conn: conn} do
         conn = get(conn, unquote(path))
@@ -111,9 +111,13 @@ defmodule RetroHexChatWeb.LandingLiveTest do
 
         assert Floki.find(document, ".desktop-taskbar") != []
 
-        # Start menu is toggled by the existing vanilla data-toggle-target JS.
-        assert Floki.find(document, ~s([data-toggle-target="#landing-start-menu"])) != []
+        # The taskbar is the app's own, driven by the window manager rather than
+        # a bespoke toggle — and the manager mounts on the shell root.
+        assert Floki.find(document, "[data-window-manager]") != []
+        assert Floki.find(document, "[data-window-start]") != []
 
+        # Now that the page's sections are real windows, the taskbar stands for
+        # them and reaching another page is the Start menu's job.
         start_menu = Floki.find(document, "#landing-start-menu")
         assert start_menu != []
         hrefs = start_menu |> Floki.find("a") |> Floki.attribute("href")
@@ -121,9 +125,36 @@ defmodule RetroHexChatWeb.LandingLiveTest do
         assert "/faq" in hrefs
         assert "/chat/help" in hrefs
 
-        # The current page's taskbar button is pressed (is-active).
-        active = Floki.find(document, "a.desktop-taskbar__button.is-active")
-        assert Floki.attribute(active, "href") == [unquote(path)]
+        for page <- ["/", "/features", "/privacy", "/community"] do
+          assert page in hrefs, "the Start menu lost the link to #{page}"
+        end
+      end
+
+      test "GET #{path} gives every window a taskbar button", %{conn: conn} do
+        conn = get(conn, unquote(path))
+        document = html_response(conn, 200) |> Floki.parse_document!()
+
+        windows =
+          document
+          |> Floki.find("[data-window-id]")
+          |> Floki.attribute("data-window-id")
+          |> MapSet.new()
+
+        buttons =
+          document
+          |> Floki.find("[data-window-taskbar]")
+          |> Floki.attribute("data-window-taskbar")
+          |> MapSet.new()
+
+        assert windows != MapSet.new()
+
+        assert MapSet.equal?(windows, buttons),
+               """
+               A window with no taskbar button cannot be reopened once closed.
+
+               windows without a button: #{inspect(MapSet.difference(windows, buttons))}
+               buttons without a window: #{inspect(MapSet.difference(buttons, windows))}
+               """
       end
     end
   end

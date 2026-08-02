@@ -1,120 +1,65 @@
 defmodule RetroHexChatWeb.ShowcaseSmokeTest do
   use RetroHexChatWeb.ConnCase, async: true
 
-  @showcase_routes [
-    "/showcase",
-    "/showcase/button",
-    "/showcase/input",
-    "/showcase/label",
-    "/showcase/textarea",
-    "/showcase/select",
-    "/showcase/checkbox",
-    "/showcase/radio-group",
-    "/showcase/switch",
-    "/showcase/slider",
-    "/showcase/toggle",
-    "/showcase/toggle-group",
-    "/showcase/alert",
-    "/showcase/badge",
-    "/showcase/progress",
-    "/showcase/skeleton",
-    "/showcase/tooltip",
-    "/showcase/card",
-    "/showcase/separator",
-    "/showcase/tabs",
-    "/showcase/accordion",
-    "/showcase/avatar",
-    "/showcase/table",
-    "/showcase/icons",
-    "/showcase/admin-console-dialog",
-    "/showcase/admin-users-dialog",
-    "/showcase/admin-channels-dialog",
-    "/showcase/admin-server-settings-dialog",
-    "/showcase/admin-audit-log-dialog",
-    "/showcase/admin-motd-dialog",
-    "/showcase/admin-turn-dialog",
-    "/showcase/admin-broadcast-dialog",
-    "/showcase/admin-danger-zone-dialog",
-    "/showcase/diagrams",
-    "/showcase/window",
-    "/showcase/desktop",
-    "/showcase/menu",
-    "/showcase/toolbar",
-    "/showcase/status-bar",
-    "/showcase/irc-tabs",
-    "/showcase/chat-message",
-    "/showcase/chat-input",
-    "/showcase/tree-view",
-    "/showcase/nicklist",
-    "/showcase/game-cards",
-    "/showcase/fieldset",
-    "/showcase/dialog",
-    "/showcase/dropdown-menu",
-    "/showcase/breadcrumb",
-    "/showcase/toast",
-    "/showcase/context-menu",
-    "/showcase/loading-spinner",
-    "/showcase/empty-state",
-    "/showcase/color-picker",
-    "/showcase/scroll-area",
-    "/showcase/list-states",
-    "/showcase/conversations",
-    "/showcase/hover-card",
-    "/showcase/search-bar",
-    "/showcase/topic-bar",
-    "/showcase/formatting-toolbar",
-    "/showcase/emoji-picker",
-    "/showcase/autocomplete",
-    "/showcase/tab-bar",
-    "/showcase/reply-bar",
-    "/showcase/connection-status",
-    "/showcase/confirm-dialog",
-    "/showcase/address-book",
-    "/showcase/nick-colors",
-    "/showcase/ignore-list",
-    "/showcase/about-dialog",
-    "/showcase/channel-list",
-    "/showcase/highlight-dialog",
-    "/showcase/config-form",
-    "/showcase/p2p-connection-diagram",
-    "/showcase/file-transfer",
-    "/showcase/chat-layout",
-    # New simple components
-    "/showcase/history-search",
-    "/showcase/kick-dialog",
-    "/showcase/delete-confirm-dialog",
-    "/showcase/disconnect-confirm-dialog",
-    "/showcase/invite-dialog",
-    "/showcase/paste-confirm-dialog",
-    "/showcase/app-header",
-    # New medium components
-    "/showcase/status-bar-app",
-    "/showcase/conversations-context-menu",
-    "/showcase/cheatsheet-dialog",
-    "/showcase/nick-change-dialog",
-    "/showcase/syntax-tooltip",
-    # New complex components
-    "/showcase/alias-dialog",
-    "/showcase/flood-protection-dialog",
-    "/showcase/auto-respond-dialog",
-    "/showcase/custom-menus-dialog",
-    "/showcase/sound-settings-dialog",
-    "/showcase/notify-list",
-    "/showcase/url-catcher",
-    # New large components
-    "/showcase/toolbar-app",
-    "/showcase/solo-lobby",
-    "/showcase/chat-context-menu",
-    "/showcase/perform-dialog",
-    "/showcase/autojoin-dialog",
-    "/showcase/channel-central-dialog"
-  ]
+  alias RetroHexChatWeb.ShowcaseCatalog
+
+  @showcase_routes ShowcaseCatalog.paths()
 
   for route <- @showcase_routes do
     @tag :showcase
     test "GET #{route} returns 200", %{conn: conn} do
       conn = get(conn, unquote(route))
       assert conn.status == 200, "#{unquote(route)} returned #{conn.status}"
+    end
+  end
+
+  describe "catalog" do
+    @tag :showcase
+    test "every entry is a reachable route" do
+      routes =
+        RetroHexChatWeb.Router
+        |> Phoenix.Router.routes()
+        |> Enum.filter(&(&1.verb == :get and String.starts_with?(&1.path, "/showcase")))
+        |> MapSet.new(& &1.path)
+
+      catalog = MapSet.new(ShowcaseCatalog.paths())
+
+      assert MapSet.equal?(catalog, routes),
+             """
+             The catalog and the router disagree.
+
+             only in the catalog: #{inspect(MapSet.difference(catalog, routes))}
+             only in the router:  #{inspect(MapSet.difference(routes, catalog))}
+             """
+    end
+
+    @tag :showcase
+    test "ids are unique" do
+      ids = Enum.map(ShowcaseCatalog.entries(), & &1.id)
+      assert ids == Enum.uniq(ids)
+    end
+
+    @tag :showcase
+    test "every entry belongs to a declared group" do
+      groups = MapSet.new(ShowcaseCatalog.groups(), & &1.key)
+
+      for entry <- ShowcaseCatalog.entries() do
+        assert entry.group in groups, "#{entry.id} has unknown group #{inspect(entry.group)}"
+      end
+    end
+
+    @tag :showcase
+    test "group counts add up to the catalog" do
+      counted = ShowcaseCatalog.groups() |> Enum.map(& &1.count) |> Enum.sum()
+      assert counted == length(ShowcaseCatalog.entries())
+    end
+
+    @tag :showcase
+    test "every entry renders an icon that exists" do
+      for entry <- ShowcaseCatalog.entries() do
+        assert function_exported?(RetroHexChatWeb.Icons, entry.icon, 1),
+               "#{entry.id} points at missing icon #{inspect(entry.icon)}"
+      end
     end
   end
 end

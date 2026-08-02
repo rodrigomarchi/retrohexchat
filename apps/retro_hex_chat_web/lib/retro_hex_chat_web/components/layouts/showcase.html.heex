@@ -1,17 +1,65 @@
 <!DOCTYPE html>
-<html lang={RetroHexChatWeb.I18n.html_lang()} dir={RetroHexChatWeb.I18n.html_dir()}>
+<html
+  lang={RetroHexChatWeb.I18n.html_lang()}
+  dir={RetroHexChatWeb.I18n.html_dir()}
+  class="no-js"
+>
   <head>
+    <%!-- Metadata is derived from ShowcaseCatalog through the page's active_page
+          assign, so a new component page needs none of its own. The showcase is
+          English-only by design — a component demo's value is the component, not
+          prose — hence a canonical URL and no hreflang alternates. --%>
+    <% active_page = assigns[:active_page] || "index" %>
+    <% canonical_path = RetroHexChatWeb.ShowcaseCatalog.canonical_path(active_page) %>
+    <% canonical_url = RetroHexChatWeb.SEO.site_url(canonical_path) %>
+    <% page_description = RetroHexChatWeb.ShowcaseCatalog.description(active_page) %>
+    <% page_title = assigns[:page_title] || "RetroHexChat — Component Showcase" %>
+
     <meta charset="utf-8" />
+    <%!-- Inline and synchronous: the deferred bundles run after parse, which
+          would let the scriptless layout paint for a frame. --%>
+    <script>
+      document.documentElement.classList.remove("no-js");
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content={get_csrf_token()} />
     <meta
       name="plausible-env"
       content={Application.get_env(:retro_hex_chat_web, :plausible_env, "prod")}
     />
+
     <.live_title default="RetroHexChat — Component Showcase">
       {assigns[:page_title]}
     </.live_title>
-    <meta name="robots" content={RetroHexChatWeb.SEO.noindex_content()} />
+    <meta name="description" content={page_description} />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={canonical_url} />
+
+    <%!-- Open Graph --%>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={page_title} />
+    <meta property="og:description" content={page_description} />
+    <meta property="og:url" content={canonical_url} />
+    <meta property="og:site_name" content="Retro Hex Chat" />
+    <meta property="og:image" content={RetroHexChatWeb.SEO.social_image_url()} />
+    <meta property="og:image:width" content={RetroHexChatWeb.SEO.social_image_width()} />
+    <meta property="og:image:height" content={RetroHexChatWeb.SEO.social_image_height()} />
+    <meta property="og:image:type" content={RetroHexChatWeb.SEO.social_image_type()} />
+    <meta property="og:image:alt" content="Retro Hex Chat component showcase" />
+
+    <%!-- Twitter Card --%>
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={page_title} />
+    <meta name="twitter:description" content={page_description} />
+    <meta name="twitter:image" content={RetroHexChatWeb.SEO.social_image_url()} />
+    <meta name="twitter:image:alt" content="Retro Hex Chat component showcase" />
+
+    <script type="application/ld+json">
+      <%= Phoenix.HTML.raw(
+        RetroHexChatWeb.SEO.showcase_json_ld(active_page, page_title, page_description)
+      ) %>
+    </script>
+
     <link rel="icon" type="image/svg+xml" href={~p"/images/favicon.svg"} />
     <link phx-track-static rel="stylesheet" href={~p"/assets/css/retrohex.css"} />
     <script defer phx-track-static type="text/javascript" src={~p"/assets/js/retrohex_content.js"}>

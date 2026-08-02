@@ -38,6 +38,12 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
       "when false, the hook starts from the default layout every time and clears any " <>
         "previously saved state for persist_key — a clean slate each open, no cross-visit memory"
 
+  attr :cascade_on_mount, :boolean,
+    default: false,
+    doc:
+      "lay the windows out in a cascade on a first visit, first window in front. " <>
+        "For desktops that open with everything on screen; a saved layout always wins"
+
   attr :escape_closes_windows, :boolean,
     default: false,
     doc:
@@ -62,8 +68,10 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
     <div
       id={@id}
       phx-hook="WindowManagerHook"
+      data-window-manager
       data-persist-key={@persist_key}
       data-persist={to_string(@persist)}
+      data-cascade-on-mount={to_string(@cascade_on_mount)}
       data-escape-closes-windows={to_string(@escape_closes_windows)}
       data-window-loading-text={dgettext("ui", "Opening...")}
       class={classes(["flex flex-1 flex-col overflow-hidden", @class])}
@@ -89,9 +97,14 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
   workspace. Double-click opens (and focuses) the target window; a single click
   just selects it (classic desktop behaviour). Wired to the `WindowManagerHook`
   via `data-window-shortcut`.
+
+  Pass `href` or `navigate` when the target lives at its own URL — the shortcut
+  becomes a real link and a single click follows it.
   """
   attr :window, :string, required: true, doc: "target window id to open on double-click"
   attr :label, :string, required: true
+  attr :href, :string, default: nil, doc: "render as a link to this URL instead of a button"
+  attr :navigate, :string, default: nil, doc: "same, via LiveView navigation"
   attr :class, :any, default: nil
   attr :rest, :global
 
@@ -100,17 +113,46 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
   @spec desktop_shortcut(map()) :: Phoenix.LiveView.Rendered.t()
   def desktop_shortcut(assigns) do
     ~H"""
-    <button
-      type="button"
-      data-window-shortcut={@window}
+    <.chrome_control
+      href={@href}
+      navigate={@navigate}
       class={classes(["desktop-shortcut", @class])}
+      data-window-shortcut={@window}
       {@rest}
     >
       <span class="desktop-shortcut__icon inline-flex h-8 w-8 items-center justify-center">
         {render_slot(@icon)}
       </span>
       <span class="desktop-shortcut__label">{@label}</span>
-    </button>
+    </.chrome_control>
+    """
+  end
+
+  # Desktop chrome that can also be a link.
+  #
+  # The window manager reads the `data-window-*` attribute either way. What an
+  # `href` buys is a desktop that works — and can be crawled — before any
+  # JavaScript runs: the Start menu and taskbar become ordinary navigation, and
+  # the manager upgrades them in place once it mounts. Classes and data
+  # attributes are identical in both shapes, so the two are indistinguishable
+  # on screen.
+  attr :href, :string, default: nil
+  attr :navigate, :string, default: nil
+  attr :class, :any, default: nil
+  attr :rest, :global
+  slot :inner_block, required: true
+
+  defp chrome_control(%{href: nil, navigate: nil} = assigns) do
+    ~H"""
+    <button type="button" class={@class} {@rest}>{render_slot(@inner_block)}</button>
+    """
+  end
+
+  defp chrome_control(assigns) do
+    ~H"""
+    <.link href={@href} navigate={@navigate} class={@class} {@rest}>
+      {render_slot(@inner_block)}
+    </.link>
     """
   end
 
@@ -177,6 +219,7 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
     doc: "Live status shown after the title — see window_title_bar/1. Hidden on narrow windows."
 
   slot :inner_block, required: true, doc: "window body content"
+  slot :status, doc: "window_status_bar_field/1 elements, pinned under the body"
 
   @spec desktop_window(map()) :: Phoenix.LiveView.Rendered.t()
   def desktop_window(assigns) do
@@ -211,9 +254,13 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
           <:meta :if={@meta != []}>{render_slot(@meta)}</:meta>
         </.window_title_bar>
 
-        <.window_body class={classes(["overflow-auto", @body_class])}>
+        <.window_body data-window-body class={classes(["overflow-auto", @body_class])}>
           {render_slot(@inner_block)}
         </.window_body>
+
+        <.window_status_bar :if={@status != []}>
+          {render_slot(@status)}
+        </.window_status_bar>
 
         <button
           :if={@resizable}
@@ -269,7 +316,10 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
       {@rest}
     >
       {render_slot(@start)}
-      <div class="desktop-taskbar__buttons flex flex-1 items-center gap-[3px] overflow-x-auto">
+      <%!-- min-w-0: without it a flex item refuses to shrink below its content,
+            so a full button strip pushes the tray off the bar instead of
+            scrolling. --%>
+      <div class="desktop-taskbar__buttons flex min-w-0 flex-1 items-center gap-[3px] overflow-x-auto">
         {render_slot(@inner_block)}
       </div>
       {render_slot(@tray)}
@@ -341,6 +391,8 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
   attr :window, :string, required: true, doc: "target window id"
   attr :label, :string, required: true
   attr :badge, :string, default: nil, doc: "live indicator (call duration, transfer %, ...)"
+  attr :href, :string, default: nil, doc: "render as a link when the window is another page"
+  attr :navigate, :string, default: nil, doc: "same, via LiveView navigation"
   attr :class, :any, default: nil
   attr :rest, :global
 
@@ -349,13 +401,15 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
   @spec taskbar_button(map()) :: Phoenix.LiveView.Rendered.t()
   def taskbar_button(assigns) do
     ~H"""
-    <button
-      type="button"
+    <.chrome_control
+      href={@href}
+      navigate={@navigate}
       data-window-taskbar={@window}
       class={
         classes([
           "desktop-taskbar__button shadow-retro-raised bg-surface",
           "inline-flex shrink-0 items-center gap-1 px-2 py-[2px] text-xs",
+          (@href || @navigate) && "text-text no-underline",
           @class
         ])
       }
@@ -368,7 +422,7 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
             fit without an ellipsis. --%>
       <span class="max-w-[16ch] truncate">{@label}</span>
       <span :if={@badge} class="text-primary shrink-0 font-bold tabular-nums">{@badge}</span>
-    </button>
+    </.chrome_control>
     """
   end
 
@@ -504,9 +558,13 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
   Renders a Start menu item.
 
   Pass `phx-click` for a server action or `data-window-open="<id>"` (read by the
-  `WindowManagerHook`) to open/focus a window — both flow through `@rest`.
+  `WindowManagerHook`) to open/focus a window — both flow through `@rest`. Pass
+  `href` or `navigate` when the entry leads to its own URL: the item becomes a
+  real link, so the menu is navigable and crawlable without JavaScript.
   """
   attr :label, :string, required: true
+  attr :href, :string, default: nil, doc: "render as a link to this URL instead of a button"
+  attr :navigate, :string, default: nil, doc: "same, via LiveView navigation"
   attr :class, :any, default: nil
   attr :rest, :global, include: ~w(disabled)
 
@@ -515,12 +573,14 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
   @spec start_menu_item(map()) :: Phoenix.LiveView.Rendered.t()
   def start_menu_item(assigns) do
     ~H"""
-    <button
-      type="button"
+    <.chrome_control
+      href={@href}
+      navigate={@navigate}
       class={
         classes([
           "desktop-start-menu__item flex w-full items-center gap-2 px-2 py-1 text-left text-xs",
           "hover:bg-primary hover:text-white disabled:opacity-50",
+          (@href || @navigate) && "text-text no-underline",
           @class
         ])
       }
@@ -530,7 +590,7 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
         {render_slot(@icon)}
       </span>
       <span class="truncate">{@label}</span>
-    </button>
+    </.chrome_control>
     """
   end
 

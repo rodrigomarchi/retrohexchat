@@ -12,46 +12,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Index do
   import RetroHexChatWeb.ShowcaseHelpers
 
   alias RetroHexChatWeb.Icons
-
-  @groups [
-    {dgettext("showcase", "Primitives"), :icon_btn_ok, 23,
-     dgettext(
-       "showcase",
-       "SaladUI base widgets — buttons, inputs, badges, toggles, selects, and other atomic form controls."
-     )},
-    {dgettext("showcase", "Layout"), :icon_group_view, 11,
-     dgettext(
-       "showcase",
-       "Structural containers — dialogs, tabs, tables, menus, tree views, windows, and scroll areas."
-     )},
-    {dgettext("showcase", "Chat"), :icon_chat, 21,
-     dgettext(
-       "showcase",
-       "Chat-specific components — messages, nicklist, emoji picker, formatting toolbar, context menus, and more."
-     )},
-    {dgettext("showcase", "Shell"), :icon_laptop, 7,
-     dgettext(
-       "showcase",
-       "Win98 app shell composites — toolbar app, status bar app, app header, config form, and empty states."
-     )},
-    {dgettext("showcase", "Dialogs"), :icon_dialog_options, 25,
-     dgettext(
-       "showcase",
-       "Complex dialog composites — channel settings, perform, address book, sound settings, and 20+ more."
-     )},
-    {"P2P", :icon_p2p, 2,
-     dgettext(
-       "showcase",
-       "Peer-to-peer session components — connection diagram and file transfer."
-     )},
-    {dgettext("showcase", "Games"), :icon_joystick, 3,
-     dgettext(
-       "showcase",
-       "Arcade and solo game components — game cards, solo lobby, and arcade frame."
-     )},
-    {dgettext("showcase", "Assets"), :icon_folder, 3,
-     dgettext("showcase", "Icons catalog, SVG diagrams, and design tokens reference.")}
-  ]
+  alias RetroHexChatWeb.ShowcaseCatalog
 
   @impl true
   def mount(_params, _session, socket) do
@@ -59,7 +20,8 @@ defmodule RetroHexChatWeb.ShowcaseLive.Index do
      assign(socket,
        page_title: dgettext("showcase", "Component Showcase"),
        active_page: "index",
-       groups: @groups
+       groups: ShowcaseCatalog.groups(),
+       component_count: length(ShowcaseCatalog.entries())
      )}
   end
 end

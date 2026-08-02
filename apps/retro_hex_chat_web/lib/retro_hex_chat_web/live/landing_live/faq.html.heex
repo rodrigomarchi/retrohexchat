@@ -1,4 +1,4 @@
-<.landing_layout active_page={@active_page}>
+<.landing_layout active_page={@active_page} windows={@windows}>
   <section class="m-4" aria-labelledby="faq-heading">
     <.landing_page_intro
       heading_id="faq-heading"
@@ -16,248 +16,245 @@
 
     <div class="grid md:grid-cols-2 gap-4">
       <%!-- ══════════════ GETTING STARTED ══════════════ --%>
-      <.window>
-        <.window_title_bar title={dgettext("landing", "Getting Started")} controls={[:close]}>
-          <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
-        </.window_title_bar>
-        <.window_body>
-          <.accordion>
-            <.accordion_item>
-              <.accordion_trigger group="faq-start">
-                <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
-                {dgettext("landing", "What is P2P?")}
-              </.accordion_trigger>
-              <.accordion_content>
-                <p class="text-sm">
-                  {dgettext(
-                    "landing",
-                    "P2P (peer-to-peer) means data goes directly between users without passing through the chat server. Retro Hex Chat uses WebRTC P2P for private calls, file transfers, and multiplayer game sessions. The server helps users find each other (signaling), then the private session runs browser-to-browser when the network allows it."
-                  )}
-                </p>
-              </.accordion_content>
-            </.accordion_item>
+      <.desktop_window
+        id="getting-started"
+        width={520}
+        title={dgettext("landing", "Getting Started")}
+      >
+        <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
+        <.accordion>
+          <.accordion_item>
+            <.accordion_trigger group="faq-start">
+              <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
+              {dgettext("landing", "What is P2P?")}
+            </.accordion_trigger>
+            <.accordion_content>
+              <p class="text-sm">
+                {dgettext(
+                  "landing",
+                  "P2P (peer-to-peer) means data goes directly between users without passing through the chat server. Retro Hex Chat uses WebRTC P2P for private calls, file transfers, and multiplayer game sessions. The server helps users find each other (signaling), then the private session runs browser-to-browser when the network allows it."
+                )}
+              </p>
+            </.accordion_content>
+          </.accordion_item>
 
-            <.accordion_item>
-              <.accordion_trigger group="faq-start">
-                <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
-                {dgettext("landing", "What are Spaces?")}
-              </.accordion_trigger>
-              <.accordion_content>
-                <p class="text-sm">
-                  {dgettext(
-                    "landing",
-                    "Spaces are shared 8-bit map views attached to channels and direct messages. You choose an avatar, move around the same conversation, and see chat messages as in-map bubbles. They do not create a separate chat room; they visualize the conversation you are already in."
-                  )}
-                </p>
-              </.accordion_content>
-            </.accordion_item>
+          <.accordion_item>
+            <.accordion_trigger group="faq-start">
+              <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
+              {dgettext("landing", "What are Spaces?")}
+            </.accordion_trigger>
+            <.accordion_content>
+              <p class="text-sm">
+                {dgettext(
+                  "landing",
+                  "Spaces are shared 8-bit map views attached to channels and direct messages. You choose an avatar, move around the same conversation, and see chat messages as in-map bubbles. They do not create a separate chat room; they visualize the conversation you are already in."
+                )}
+              </p>
+            </.accordion_content>
+          </.accordion_item>
 
-            <.accordion_item>
-              <.accordion_trigger group="faq-start">
-                <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
-                {dgettext("landing", "Are channel conferences P2P?")}
-              </.accordion_trigger>
-              <.accordion_content>
-                <p class="text-sm">
-                  {dgettext(
-                    "landing",
-                    "No. Private 1:1 calls are P2P, but channel conferences use a self-hosted SFU/room server. Each browser sends media to your server, and your server routes streams to the other participants. That makes group calls practical while keeping infrastructure under your control."
-                  )}
-                </p>
-              </.accordion_content>
-            </.accordion_item>
+          <.accordion_item>
+            <.accordion_trigger group="faq-start">
+              <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
+              {dgettext("landing", "Are channel conferences P2P?")}
+            </.accordion_trigger>
+            <.accordion_content>
+              <p class="text-sm">
+                {dgettext(
+                  "landing",
+                  "No. Private 1:1 calls are P2P, but channel conferences use a self-hosted SFU/room server. Each browser sends media to your server, and your server routes streams to the other participants. That makes group calls practical while keeping infrastructure under your control."
+                )}
+              </p>
+            </.accordion_content>
+          </.accordion_item>
 
-            <.accordion_item>
-              <.accordion_trigger group="faq-start">
-                <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
-                {dgettext("landing", "Do I need to run my own server?")}
-              </.accordion_trigger>
-              <.accordion_content>
-                <p class="text-sm">
-                  {dgettext(
-                    "landing",
-                    "Not necessarily! You can create an account on any public server. Running your own server is for those who want total control."
-                  )}
-                </p>
-              </.accordion_content>
-            </.accordion_item>
+          <.accordion_item>
+            <.accordion_trigger group="faq-start">
+              <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
+              {dgettext("landing", "Do I need to run my own server?")}
+            </.accordion_trigger>
+            <.accordion_content>
+              <p class="text-sm">
+                {dgettext(
+                  "landing",
+                  "Not necessarily! You can create an account on any public server. Running your own server is for those who want total control."
+                )}
+              </p>
+            </.accordion_content>
+          </.accordion_item>
 
-            <.accordion_item>
-              <.accordion_trigger group="faq-start">
-                <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
-                {dgettext("landing", "Is it free?")}
-              </.accordion_trigger>
-              <.accordion_content>
-                <p class="text-sm">
-                  {dgettext(
-                    "landing",
-                    "Yes, the software is 100% free and open source (MIT). If you run your own server, you only pay for hosting (a $5/month VPS is enough)."
-                  )}
-                </p>
-              </.accordion_content>
-            </.accordion_item>
+          <.accordion_item>
+            <.accordion_trigger group="faq-start">
+              <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
+              {dgettext("landing", "Is it free?")}
+            </.accordion_trigger>
+            <.accordion_content>
+              <p class="text-sm">
+                {dgettext(
+                  "landing",
+                  "Yes, the software is 100% free and open source (MIT). If you run your own server, you only pay for hosting (a $5/month VPS is enough)."
+                )}
+              </p>
+            </.accordion_content>
+          </.accordion_item>
 
-            <.accordion_item>
-              <.accordion_trigger group="faq-start">
-                <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
-                {dgettext("landing", "How is it different from Discord?")}
-              </.accordion_trigger>
-              <.accordion_content>
-                <p class="text-sm">
-                  {dgettext(
-                    "landing",
-                    "On Discord, your data lives on their servers and your communities can be removed at any time. On Retro Hex Chat, you control your server and database, private sessions can run directly between users via P2P, channel conferences run on your own infrastructure, and the code is open source — you can audit every line."
-                  )}
-                </p>
-              </.accordion_content>
-            </.accordion_item>
+          <.accordion_item>
+            <.accordion_trigger group="faq-start">
+              <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
+              {dgettext("landing", "How is it different from Discord?")}
+            </.accordion_trigger>
+            <.accordion_content>
+              <p class="text-sm">
+                {dgettext(
+                  "landing",
+                  "On Discord, your data lives on their servers and your communities can be removed at any time. On Retro Hex Chat, you control your server and database, private sessions can run directly between users via P2P, channel conferences run on your own infrastructure, and the code is open source — you can audit every line."
+                )}
+              </p>
+            </.accordion_content>
+          </.accordion_item>
 
-            <.accordion_item>
-              <.accordion_trigger group="faq-start">
-                <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
-                {dgettext("landing", "What if my server goes down?")}
-              </.accordion_trigger>
-              <.accordion_content>
-                <p class="text-sm">
-                  {dgettext(
-                    "landing",
-                    "Your data lives in your PostgreSQL database. Regular backups mean you can restore on any new machine. Active private P2P sessions may keep working through brief server interruptions because they connect directly between users; chat, Spaces, and channel conferences depend on the server and reconnect when it returns."
-                  )}
-                </p>
-              </.accordion_content>
-            </.accordion_item>
+          <.accordion_item>
+            <.accordion_trigger group="faq-start">
+              <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
+              {dgettext("landing", "What if my server goes down?")}
+            </.accordion_trigger>
+            <.accordion_content>
+              <p class="text-sm">
+                {dgettext(
+                  "landing",
+                  "Your data lives in your PostgreSQL database. Regular backups mean you can restore on any new machine. Active private P2P sessions may keep working through brief server interruptions because they connect directly between users; chat, Spaces, and channel conferences depend on the server and reconnect when it returns."
+                )}
+              </p>
+            </.accordion_content>
+          </.accordion_item>
 
-            <.accordion_item>
-              <.accordion_trigger group="faq-start">
-                <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
-                {dgettext("landing", "Is it secure?")}
-              </.accordion_trigger>
-              <.accordion_content>
-                <p class="text-sm">
-                  {dgettext(
-                    "landing",
-                    "Yes. Server connections use HTTPS/WSS with TLS encryption. Private P2P calls use WebRTC transport encryption, channel conferences use WebRTC media through your self-hosted room server, and passwords are hashed with bcrypt. The code is open source, so anyone can audit it."
-                  )}
-                </p>
-              </.accordion_content>
-            </.accordion_item>
-          </.accordion>
-        </.window_body>
-        <.window_status_bar>
+          <.accordion_item>
+            <.accordion_trigger group="faq-start">
+              <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
+              {dgettext("landing", "Is it secure?")}
+            </.accordion_trigger>
+            <.accordion_content>
+              <p class="text-sm">
+                {dgettext(
+                  "landing",
+                  "Yes. Server connections use HTTPS/WSS with TLS encryption. Private P2P calls use WebRTC transport encryption, channel conferences use WebRTC media through your self-hosted room server, and passwords are hashed with bcrypt. The code is open source, so anyone can audit it."
+                )}
+              </p>
+            </.accordion_content>
+          </.accordion_item>
+        </.accordion>
+        <:status>
           <.window_status_bar_field grow>
             {dgettext("landing", "8 questions")}
           </.window_status_bar_field>
-        </.window_status_bar>
-      </.window>
+        </:status>
+      </.desktop_window>
 
       <%!-- ══════════════ TECHNICAL & COMMUNITY ══════════════ --%>
-      <.window>
-        <.window_title_bar
-          title={dgettext("landing", "Technical & Community")}
-          controls={[:close]}
-        >
-          <:icon><Icons.icon_code class="w-4 h-4" /></:icon>
-        </.window_title_bar>
-        <.window_body>
-          <.accordion>
-            <.accordion_item>
-              <.accordion_trigger group="faq-tech">
-                <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
-                {dgettext("landing", "What technologies are used?")}
-              </.accordion_trigger>
-              <.accordion_content>
-                <p class="text-sm">
-                  {dgettext(
-                    "landing",
-                    "Elixir and Phoenix on the backend, PostgreSQL for data, Phoenix Channels for real-time messaging, Vanilla JS and Canvas for Spaces, WebRTC for private P2P sessions, and a self-hosted SFU for channel conferences. Everything is open source."
-                  )}
-                </p>
-              </.accordion_content>
-            </.accordion_item>
+      <.desktop_window
+        id="technical-community"
+        width={480}
+        title={dgettext("landing", "Technical & Community")}
+      >
+        <:icon><Icons.icon_code class="w-4 h-4" /></:icon>
+        <.accordion>
+          <.accordion_item>
+            <.accordion_trigger group="faq-tech">
+              <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
+              {dgettext("landing", "What technologies are used?")}
+            </.accordion_trigger>
+            <.accordion_content>
+              <p class="text-sm">
+                {dgettext(
+                  "landing",
+                  "Elixir and Phoenix on the backend, PostgreSQL for data, Phoenix Channels for real-time messaging, Vanilla JS and Canvas for Spaces, WebRTC for private P2P sessions, and a self-hosted SFU for channel conferences. Everything is open source."
+                )}
+              </p>
+            </.accordion_content>
+          </.accordion_item>
 
-            <.accordion_item>
-              <.accordion_trigger group="faq-tech">
-                <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
-                {dgettext("landing", "How can I contribute?")}
-              </.accordion_trigger>
-              <.accordion_content>
-                <p class="text-sm">
-                  {dgettext(
-                    "landing",
-                    "Check out our contributing guide on GitHub! We accept code, documentation, translation, design, testing, and bug reports. Issues marked “good first issue” are a great place to start."
-                  )}
-                </p>
-              </.accordion_content>
-            </.accordion_item>
+          <.accordion_item>
+            <.accordion_trigger group="faq-tech">
+              <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
+              {dgettext("landing", "How can I contribute?")}
+            </.accordion_trigger>
+            <.accordion_content>
+              <p class="text-sm">
+                {dgettext(
+                  "landing",
+                  "Check out our contributing guide on GitHub! We accept code, documentation, translation, design, testing, and bug reports. Issues marked “good first issue” are a great place to start."
+                )}
+              </p>
+            </.accordion_content>
+          </.accordion_item>
 
-            <.accordion_item>
-              <.accordion_trigger group="faq-tech">
-                <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
-                {dgettext("landing", "How can I support financially?")}
-              </.accordion_trigger>
-              <.accordion_content>
-                <p class="text-sm">
-                  {dgettext(
-                    "landing",
-                    "Through GitHub Sponsors. Every contribution, no matter how small, helps keep the project alive and in active development."
-                  )}
-                </p>
-              </.accordion_content>
-            </.accordion_item>
+          <.accordion_item>
+            <.accordion_trigger group="faq-tech">
+              <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
+              {dgettext("landing", "How can I support financially?")}
+            </.accordion_trigger>
+            <.accordion_content>
+              <p class="text-sm">
+                {dgettext(
+                  "landing",
+                  "Through GitHub Sponsors. Every contribution, no matter how small, helps keep the project alive and in active development."
+                )}
+              </p>
+            </.accordion_content>
+          </.accordion_item>
 
-            <.accordion_item>
-              <.accordion_trigger group="faq-tech">
-                <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
-                {dgettext("landing", "Does it work on mobile?")}
-              </.accordion_trigger>
-              <.accordion_content>
-                <p class="text-sm">
-                  {dgettext(
-                    "landing",
-                    "Yes! The interface is responsive and works on any modern browser. Native apps are planned for the future."
-                  )}
-                </p>
-              </.accordion_content>
-            </.accordion_item>
+          <.accordion_item>
+            <.accordion_trigger group="faq-tech">
+              <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
+              {dgettext("landing", "Does it work on mobile?")}
+            </.accordion_trigger>
+            <.accordion_content>
+              <p class="text-sm">
+                {dgettext(
+                  "landing",
+                  "Yes! The interface is responsive and works on any modern browser. Native apps are planned for the future."
+                )}
+              </p>
+            </.accordion_content>
+          </.accordion_item>
 
-            <.accordion_item>
-              <.accordion_trigger group="faq-tech">
-                <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
-                {dgettext("landing", "Can I use it for my company or team?")}
-              </.accordion_trigger>
-              <.accordion_content>
-                <p class="text-sm">
-                  {dgettext(
-                    "landing",
-                    "Absolutely. Run a private server, create invite-only channels, and keep all your team’s communication on your own infrastructure. No per-seat pricing, no message limits."
-                  )}
-                </p>
-              </.accordion_content>
-            </.accordion_item>
+          <.accordion_item>
+            <.accordion_trigger group="faq-tech">
+              <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
+              {dgettext("landing", "Can I use it for my company or team?")}
+            </.accordion_trigger>
+            <.accordion_content>
+              <p class="text-sm">
+                {dgettext(
+                  "landing",
+                  "Absolutely. Run a private server, create invite-only channels, and keep all your team’s communication on your own infrastructure. No per-seat pricing, no message limits."
+                )}
+              </p>
+            </.accordion_content>
+          </.accordion_item>
 
-            <.accordion_item>
-              <.accordion_trigger group="faq-tech">
-                <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
-                {dgettext("landing", "How do sessions work?")}
-              </.accordion_trigger>
-              <.accordion_content>
-                <p class="text-sm">
-                  {dgettext("landing", "Each nickname can only have")}
-                  <strong>{dgettext("landing", "one active session")}</strong> {dgettext(
-                    "landing",
-                    "at a time. If you connect from another browser or tab, the previous session is automatically disconnected. If your connection drops, the client attempts to reconnect up to 10 times with exponential backoff. After all attempts fail, the session expires and you’re redirected to the login screen. Registered nicknames are protected by password — only the owner can connect with that nick."
-                  )}
-                </p>
-              </.accordion_content>
-            </.accordion_item>
-          </.accordion>
-        </.window_body>
-        <.window_status_bar>
+          <.accordion_item>
+            <.accordion_trigger group="faq-tech">
+              <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
+              {dgettext("landing", "How do sessions work?")}
+            </.accordion_trigger>
+            <.accordion_content>
+              <p class="text-sm">
+                {dgettext("landing", "Each nickname can only have")}
+                <strong>{dgettext("landing", "one active session")}</strong> {dgettext(
+                  "landing",
+                  "at a time. If you connect from another browser or tab, the previous session is automatically disconnected. If your connection drops, the client attempts to reconnect up to 10 times with exponential backoff. After all attempts fail, the session expires and you’re redirected to the login screen. Registered nicknames are protected by password — only the owner can connect with that nick."
+                )}
+              </p>
+            </.accordion_content>
+          </.accordion_item>
+        </.accordion>
+        <:status>
           <.window_status_bar_field grow>
             {dgettext("landing", "6 questions")}
           </.window_status_bar_field>
-        </.window_status_bar>
-      </.window>
+        </:status>
+      </.desktop_window>
     </div>
   </section>
 </.landing_layout>

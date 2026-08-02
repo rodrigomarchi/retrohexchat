@@ -5,6 +5,7 @@ defmodule RetroHexChatWeb.SEO do
 
   alias RetroHexChatWeb.I18n
   alias RetroHexChatWeb.I18n.Locales
+  alias RetroHexChatWeb.ShowcaseCatalog
 
   @default_origin "https://retrohexchat.app"
   @social_image_path "/images/social/retrohexchat_og.png"
@@ -145,6 +146,43 @@ defmodule RetroHexChatWeb.SEO do
         "@type" => "Offer",
         "price" => "0",
         "priceCurrency" => "USD"
+      }
+    }
+    |> Jason.encode!()
+  end
+
+  @doc """
+  Structured data for a showcase page.
+
+  The index is a collection; a component page is the source code it documents.
+  """
+  @spec showcase_json_ld(String.t(), String.t(), String.t()) :: String.t()
+  def showcase_json_ld("index", title, description) do
+    %{
+      "@context" => "https://schema.org",
+      "@type" => "CollectionPage",
+      "name" => title,
+      "description" => description,
+      "url" => site_url(ShowcaseCatalog.root()),
+      "isPartOf" => %{"@type" => "WebSite", "name" => "Retro Hex Chat", "url" => site_url("/")}
+    }
+    |> Jason.encode!()
+  end
+
+  def showcase_json_ld(id, title, description) do
+    %{
+      "@context" => "https://schema.org",
+      "@type" => "SoftwareSourceCode",
+      "name" => title,
+      "description" => description,
+      "url" => site_url(ShowcaseCatalog.canonical_path(id)),
+      "programmingLanguage" => "Elixir",
+      "runtimePlatform" => "Phoenix LiveView",
+      "license" => "https://opensource.org/licenses/MIT",
+      "isPartOf" => %{
+        "@type" => "CollectionPage",
+        "name" => "RetroHexChat Component Showcase",
+        "url" => site_url(ShowcaseCatalog.root())
       }
     }
     |> Jason.encode!()

@@ -19,7 +19,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AutojoinDialogPage do
     {:ok,
      assign(socket,
        page_title: dgettext("showcase", "Auto-Join Dialog"),
-       active_page: :autojoin_dialog,
+       active_page: "autojoin-dialog",
        selected: nil,
        sample_entries: sample_entries()
      )}

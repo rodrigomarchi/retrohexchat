@@ -4,265 +4,173 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
   use Gettext, backend: RetroHexChatWeb.Gettext
 
   import RetroHexChatWeb.Components.UI.TreeView
+  import RetroHexChatWeb.Components.UI.Desktop
   import RetroHexChatWeb.Components.UI.AppHeader
   import RetroHexChatWeb.Components.UI.MenuBarApp
   import RetroHexChatWeb.Components.UI.Dialog, only: [show_modal: 1]
   import RetroHexChatWeb.Components.UI.AboutDialog
 
   alias RetroHexChatWeb.Icons
+  alias RetroHexChatWeb.ShowcaseCatalog
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
     router: RetroHexChatWeb.Router,
     statics: RetroHexChatWeb.static_paths()
 
-  @doc "Full-page showcase wrapper with sidebar navigation and content area."
+  @doc """
+  Full-page showcase shell: a Win98 desktop whose focused window is the page.
+
+  One component per URL. The page renders its window body inline, so the
+  document stands complete before any JavaScript runs — the window manager only
+  decorates it afterwards. Every way to reach another component (Start menu,
+  taskbar, navigator) is a real link for the same reason.
+  """
   attr :active_page, :string, required: true
   slot :inner_block, required: true
 
-  # Nav tree: {group_label, group_icon_fn, [{label, id, path}]}
-  @nav_items [
-    {dgettext_noop("showcase", "Primitives"), :icon_btn_ok,
-     [
-       {dgettext_noop("showcase", "Accordion"), "accordion", "/showcase/accordion"},
-       {dgettext_noop("showcase", "Alert"), "alert", "/showcase/alert"},
-       {dgettext_noop("showcase", "Alert Dialog"), "alert-dialog", "/showcase/alert-dialog"},
-       {dgettext_noop("showcase", "Avatar"), "avatar", "/showcase/avatar"},
-       {dgettext_noop("showcase", "Badge"), "badge", "/showcase/badge"},
-       {dgettext_noop("showcase", "Breadcrumb"), "breadcrumb", "/showcase/breadcrumb"},
-       {dgettext_noop("showcase", "Button"), "button", "/showcase/button"},
-       {dgettext_noop("showcase", "Card"), "card", "/showcase/card"},
-       {dgettext_noop("showcase", "Checkbox"), "checkbox", "/showcase/checkbox"},
-       {dgettext_noop("showcase", "Dropdown Menu"), "dropdown-menu", "/showcase/dropdown-menu"},
-       {dgettext_noop("showcase", "Form"), "form", "/showcase/form"},
-       {dgettext_noop("showcase", "Input"), "input", "/showcase/input"},
-       {dgettext_noop("showcase", "Label"), "label", "/showcase/label"},
-       {dgettext_noop("showcase", "Popover"), "popover", "/showcase/popover"},
-       {dgettext_noop("showcase", "Progress"), "progress", "/showcase/progress"},
-       {dgettext_noop("showcase", "Radio Group"), "radio-group", "/showcase/radio-group"},
-       {dgettext_noop("showcase", "Select"), "select", "/showcase/select"},
-       {dgettext_noop("showcase", "Separator"), "separator", "/showcase/separator"},
-       {dgettext_noop("showcase", "Sheet"), "sheet", "/showcase/sheet"},
-       {dgettext_noop("showcase", "Skeleton"), "skeleton", "/showcase/skeleton"},
-       {dgettext_noop("showcase", "Slider"), "slider", "/showcase/slider"},
-       {dgettext_noop("showcase", "Switch"), "switch", "/showcase/switch"},
-       {dgettext_noop("showcase", "Textarea"), "textarea", "/showcase/textarea"},
-       {dgettext_noop("showcase", "Toggle"), "toggle", "/showcase/toggle"},
-       {dgettext_noop("showcase", "Toggle Group"), "toggle-group", "/showcase/toggle-group"},
-       {dgettext_noop("showcase", "Tooltip"), "tooltip", "/showcase/tooltip"}
-     ]},
-    {dgettext_noop("showcase", "Layout"), :icon_group_view,
-     [
-       {dgettext_noop("showcase", "Context Menu"), "context-menu", "/showcase/context-menu"},
-       {dgettext_noop("showcase", "Desktop"), "desktop", "/showcase/desktop"},
-       {dgettext_noop("showcase", "Dialog"), "dialog", "/showcase/dialog"},
-       {dgettext_noop("showcase", "Fieldset"), "fieldset", "/showcase/fieldset"},
-       {dgettext_noop("showcase", "List States"), "list-states", "/showcase/list-states"},
-       {dgettext_noop("showcase", "Menu"), "menu", "/showcase/menu"},
-       {dgettext_noop("showcase", "Scroll Area"), "scroll-area", "/showcase/scroll-area"},
-       {dgettext_noop("showcase", "Table"), "table", "/showcase/table"},
-       {dgettext_noop("showcase", "Tabs"), "tabs", "/showcase/tabs"},
-       {dgettext_noop("showcase", "Toast"), "toast", "/showcase/toast"},
-       {dgettext_noop("showcase", "Toolbar"), "toolbar", "/showcase/toolbar"},
-       {dgettext_noop("showcase", "Tree View"), "tree-view", "/showcase/tree-view"},
-       {dgettext_noop("showcase", "Window"), "window", "/showcase/window"}
-     ]},
-    {dgettext_noop("showcase", "Chat"), :icon_chat,
-     [
-       {dgettext_noop("showcase", "Autocomplete"), "autocomplete", "/showcase/autocomplete"},
-       {dgettext_noop("showcase", "Chat Context Menu"), "chat-context-menu",
-        "/showcase/chat-context-menu"},
-       {dgettext_noop("showcase", "Chat Input"), "chat-input", "/showcase/chat-input"},
-       {dgettext_noop("showcase", "Chat Layout"), "chat-layout", "/showcase/chat-layout"},
-       {dgettext_noop("showcase", "Chat Message"), "chat-message", "/showcase/chat-message"},
-       {dgettext_noop("showcase", "Color Picker"), "color-picker", "/showcase/color-picker"},
-       {dgettext_noop("showcase", "Connection Status"), "connection-status",
-        "/showcase/connection-status"},
-       {dgettext_noop("showcase", "Conversations"), "conversations", "/showcase/conversations"},
-       {dgettext_noop("showcase", "Conversations Ctx Menu"), "conversations-context-menu",
-        "/showcase/conversations-context-menu"},
-       {dgettext_noop("showcase", "Emoji Picker"), "emoji-picker", "/showcase/emoji-picker"},
-       {dgettext_noop("showcase", "Formatting Toolbar"), "formatting-toolbar",
-        "/showcase/formatting-toolbar"},
-       {dgettext_noop("showcase", "History Search"), "history-search",
-        "/showcase/history-search"},
-       {dgettext_noop("showcase", "Hover Card"), "hover-card", "/showcase/hover-card"},
-       {dgettext_noop("showcase", "IRC Tabs"), "irc-tabs", "/showcase/irc-tabs"},
-       {dgettext_noop("showcase", "Nicklist"), "nicklist", "/showcase/nicklist"},
-       {dgettext_noop("showcase", "Reply Bar"), "reply-bar", "/showcase/reply-bar"},
-       {dgettext_noop("showcase", "Search Bar"), "search-bar", "/showcase/search-bar"},
-       {dgettext_noop("showcase", "Syntax Tooltip"), "syntax-tooltip",
-        "/showcase/syntax-tooltip"},
-       {dgettext_noop("showcase", "Tab Bar"), "tab-bar", "/showcase/tab-bar"},
-       {dgettext_noop("showcase", "Topic Bar"), "topic-bar", "/showcase/topic-bar"}
-     ]},
-    {dgettext_noop("showcase", "Shell"), :icon_laptop,
-     [
-       {dgettext_noop("showcase", "App Header"), "app-header", "/showcase/app-header"},
-       {dgettext_noop("showcase", "Config Form"), "config-form", "/showcase/config-form"},
-       {dgettext_noop("showcase", "Empty State"), "empty-state", "/showcase/empty-state"},
-       {dgettext_noop("showcase", "Loading Spinner"), "loading-spinner",
-        "/showcase/loading-spinner"},
-       {dgettext_noop("showcase", "Status Bar"), "status-bar", "/showcase/status-bar"},
-       {dgettext_noop("showcase", "Status Bar App"), "status-bar-app",
-        "/showcase/status-bar-app"},
-       {dgettext_noop("showcase", "Toolbar App"), "toolbar-app", "/showcase/toolbar-app"}
-     ]},
-    {dgettext_noop("showcase", "Dialogs"), :icon_dialog_options,
-     [
-       {dgettext_noop("showcase", "About Dialog"), "about-dialog", "/showcase/about-dialog"},
-       {dgettext_noop("showcase", "Address Book"), "address-book", "/showcase/address-book"},
-       {dgettext_noop("showcase", "Nick Colors"), "nick-colors", "/showcase/nick-colors"},
-       {dgettext_noop("showcase", "Ignore List"), "ignore-list", "/showcase/ignore-list"},
-       {dgettext_noop("showcase", "Admin Console"), "admin-console-dialog",
-        "/showcase/admin-console-dialog"},
-       {dgettext_noop("showcase", "Admin Users"), "admin-users-dialog",
-        "/showcase/admin-users-dialog"},
-       {dgettext_noop("showcase", "Admin Channels"), "admin-channels-dialog",
-        "/showcase/admin-channels-dialog"},
-       {dgettext_noop("showcase", "Server Settings"), "admin-server-settings-dialog",
-        "/showcase/admin-server-settings-dialog"},
-       {dgettext_noop("showcase", "Audit Log"), "admin-audit-log-dialog",
-        "/showcase/admin-audit-log-dialog"},
-       {dgettext_noop("showcase", "MOTD"), "admin-motd-dialog", "/showcase/admin-motd-dialog"},
-       {dgettext_noop("showcase", "TURN"), "admin-turn-dialog", "/showcase/admin-turn-dialog"},
-       {dgettext_noop("showcase", "Broadcast"), "admin-broadcast-dialog",
-        "/showcase/admin-broadcast-dialog"},
-       {dgettext_noop("showcase", "Danger Zone"), "admin-danger-zone-dialog",
-        "/showcase/admin-danger-zone-dialog"},
-       {dgettext_noop("showcase", "Alias Dialog"), "alias-dialog", "/showcase/alias-dialog"},
-       {dgettext_noop("showcase", "Auto Respond"), "auto-respond-dialog",
-        "/showcase/auto-respond-dialog"},
-       {dgettext_noop("showcase", "Bot Management"), "bot-management-dialog",
-        "/showcase/bot-management-dialog"},
-       {dgettext_noop("showcase", "Channel Central"), "channel-central-dialog",
-        "/showcase/channel-central-dialog"},
-       {dgettext_noop("showcase", "Channel List"), "channel-list", "/showcase/channel-list"},
-       {dgettext_noop("showcase", "Cheatsheet"), "cheatsheet-dialog",
-        "/showcase/cheatsheet-dialog"},
-       {dgettext_noop("showcase", "Confirm Dialog"), "confirm-dialog",
-        "/showcase/confirm-dialog"},
-       {dgettext_noop("showcase", "Custom Menus"), "custom-menus-dialog",
-        "/showcase/custom-menus-dialog"},
-       {dgettext_noop("showcase", "Delete Confirm"), "delete-confirm-dialog",
-        "/showcase/delete-confirm-dialog"},
-       {dgettext_noop("showcase", "Disconnect Confirm"), "disconnect-confirm-dialog",
-        "/showcase/disconnect-confirm-dialog"},
-       {dgettext_noop("showcase", "Flood Protection"), "flood-protection-dialog",
-        "/showcase/flood-protection-dialog"},
-       {dgettext_noop("showcase", "Highlight Dialog"), "highlight-dialog",
-        "/showcase/highlight-dialog"},
-       {dgettext_noop("showcase", "Invite Dialog"), "invite-dialog", "/showcase/invite-dialog"},
-       {dgettext_noop("showcase", "Kick Dialog"), "kick-dialog", "/showcase/kick-dialog"},
-       {dgettext_noop("showcase", "Nick Change"), "nick-change-dialog",
-        "/showcase/nick-change-dialog"},
-       {dgettext_noop("showcase", "Notify List"), "notify-list", "/showcase/notify-list"},
-       {dgettext_noop("showcase", "Paste Confirm"), "paste-confirm-dialog",
-        "/showcase/paste-confirm-dialog"},
-       {dgettext_noop("showcase", "Perform Dialog"), "perform-dialog",
-        "/showcase/perform-dialog"},
-       {dgettext_noop("showcase", "Auto-Join Dialog"), "autojoin-dialog",
-        "/showcase/autojoin-dialog"},
-       {dgettext_noop("showcase", "Sound Settings"), "sound-settings-dialog",
-        "/showcase/sound-settings-dialog"},
-       {dgettext_noop("showcase", "URL Catcher"), "url-catcher", "/showcase/url-catcher"}
-     ]},
-    {dgettext_noop("showcase", "P2P"), :icon_p2p,
-     [
-       {dgettext_noop("showcase", "Connection Diagram"), "p2p-connection-diagram",
-        "/showcase/p2p-connection-diagram"},
-       {dgettext_noop("showcase", "File Transfer"), "file-transfer", "/showcase/file-transfer"}
-     ]},
-    {dgettext_noop("showcase", "Games"), :icon_joystick,
-     [
-       {dgettext_noop("showcase", "Game Cards"), "game-cards", "/showcase/game-cards"},
-       {dgettext_noop("showcase", "Solo Lobby"), "solo-lobby", "/showcase/solo-lobby"}
-     ]},
-    {dgettext_noop("showcase", "Assets"), :icon_folder,
-     [
-       {dgettext_noop("showcase", "Diagrams"), "diagrams", "/showcase/diagrams"},
-       {dgettext_noop("showcase", "Icons"), "icons", "/showcase/icons"}
-     ]}
-  ]
-
   @spec showcase_layout(map()) :: Phoenix.LiveView.Rendered.t()
   def showcase_layout(assigns) do
-    nav_items =
-      Enum.map(@nav_items, fn {label, icon_fn, items} ->
-        group_active = Enum.any?(items, fn {_, id, _} -> id == assigns.active_page end)
-
-        translated_items =
-          Enum.map(items, fn {item_label, id, path} ->
-            {t(item_label), id, path}
-          end)
-
-        {t(label), icon_fn, translated_items, group_active}
-      end)
-
-    assigns = assign(assigns, :nav_items, nav_items)
+    assigns =
+      assigns
+      |> assign(:nav_tree, ShowcaseCatalog.nav_tree())
+      |> assign(:page, page_meta(assigns.active_page))
 
     ~H"""
-    <div class="min-h-screen bg-desktop font-system text-text flex flex-col">
-      <.app_header on_logo_click={show_modal("about-dialog")}>
-        <:panels>
-          <.menu_bar_app id="menubar" phx-hook="MenuBarHook" connected={false} />
-        </:panels>
-      </.app_header>
+    <div class="bg-desktop font-system text-text flex h-screen flex-col">
+      <.desktop id="showcase-desktop" persist_key="showcase" class="flex-1">
+        <:header>
+          <.app_header on_logo_click={show_modal("about-dialog")}>
+            <:panels>
+              <.menu_bar_app id="menubar" phx-hook="MenuBarHook" connected={false} />
+            </:panels>
+          </.app_header>
+        </:header>
 
-      <div class="flex-1 m-2 md:m-4 md:mt-2">
-        <div class="shadow-retro-window bg-surface p-1">
-          <div class="bg-gradient-to-r from-primary to-highlight-light text-white px-2 py-1 font-bold text-xs flex items-center justify-between">
-            <span>{dgettext("showcase", "Component Showcase")}</span>
-            <button
-              type="button"
-              class="md:hidden text-white text-xs px-1"
-              onclick="document.getElementById('showcase-nav').classList.toggle('hidden')"
-            >
-              {dgettext("showcase", "Menu")}
-            </button>
-          </div>
+        <%!-- The page itself. Pinned: closing the document you navigated to
+              would leave nothing behind. One stable id across every component
+              page, so a layout the reader adjusts survives navigation. --%>
+        <.desktop_window
+          id="component"
+          title={@page.title}
+          pinned
+          default_x={272}
+          default_y={16}
+          width={880}
+          height={620}
+          body_class="bg-gray-100"
+          data-testid="showcase-component-window"
+        >
+          <:icon>{apply(Icons, @page.icon, [%{class: "w-4 h-4"}])}</:icon>
+          {render_slot(@inner_block)}
+        </.desktop_window>
 
-          <div class="flex flex-col md:flex-row p-1">
-            <nav
-              id="showcase-nav"
-              class="hidden md:block shadow-retro-sunken bg-white w-full md:w-48 md:mr-2 md:shrink-0 overflow-y-auto p-1 max-h-[50vh] md:max-h-[calc(100vh-120px)]"
-            >
-              <.tree_view class="!shadow-none !p-0 !bg-transparent">
-                <.link navigate="/showcase" class="block no-underline">
-                  <.tree_view_item active={@active_page == "index"}>
-                    <:icon><Icons.icon_palette class="w-3 h-3" /></:icon>
-                    {dgettext("showcase", "Design System")}
-                  </.tree_view_item>
-                </.link>
-                <.tree_view_group
-                  :for={{group_label, group_icon_fn, items, group_active} <- @nav_items}
-                  label={group_label}
-                  open={group_active}
-                >
-                  <:icon>{apply(Icons, group_icon_fn, [%{class: "w-4 h-4"}])}</:icon>
-                  <.link
-                    :for={{label, id, path} <- items}
-                    navigate={path}
-                    class="block no-underline"
+        <.desktop_window
+          id="navigator"
+          title={dgettext("showcase", "Components")}
+          default_x={16}
+          default_y={16}
+          width={240}
+          height={620}
+          data-testid="showcase-navigator-window"
+        >
+          <:icon><Icons.icon_folder class="w-4 h-4" /></:icon>
+          <.showcase_navigator active_page={@active_page} nav_tree={@nav_tree} />
+        </.desktop_window>
+
+        <:taskbar>
+          <.taskbar id="showcase-taskbar">
+            <:start>
+              <div class="relative">
+                <.start_button label={dgettext("showcase", "Start")}>
+                  <:icon><Icons.icon_hex_stone class="w-4 h-4" /></:icon>
+                </.start_button>
+                <.start_menu id="showcase-start-menu">
+                  <.start_menu_item
+                    label={dgettext("showcase", "Design System")}
+                    navigate={ShowcaseCatalog.root()}
                   >
-                    <.tree_view_item active={@active_page == id}>
-                      <:icon><.nav_item_icon id={id} /></:icon>
-                      {label}
-                    </.tree_view_item>
-                  </.link>
-                </.tree_view_group>
-              </.tree_view>
-            </nav>
+                    <:icon><Icons.icon_palette class="w-4 h-4" /></:icon>
+                  </.start_menu_item>
+                  <.start_menu_separator />
+                  <.start_menu_submenu :for={{group, entries} <- @nav_tree} label={group.label}>
+                    <:icon>{apply(Icons, group.icon, [%{class: "w-4 h-4"}])}</:icon>
+                    <.start_menu_item
+                      :for={entry <- entries}
+                      label={entry.label}
+                      navigate={ShowcaseCatalog.path(entry)}
+                    >
+                      <:icon>{apply(Icons, entry.icon, [%{class: "w-4 h-4"}])}</:icon>
+                    </.start_menu_item>
+                  </.start_menu_submenu>
+                  <.start_menu_separator />
+                  <.start_menu_item label={dgettext("showcase", "Open the app")} href="/connect">
+                    <:icon><Icons.icon_connect class="w-4 h-4" /></:icon>
+                  </.start_menu_item>
+                </.start_menu>
+              </div>
+            </:start>
 
-            <div class="shadow-retro-sunken bg-gray-100 flex-1 p-2 md:p-3 overflow-y-auto max-h-[calc(100vh-120px)]">
-              {render_slot(@inner_block)}
-            </div>
-          </div>
-        </div>
-      </div>
+            <.taskbar_button window="component" label={@page.title}>
+              <:icon>{apply(Icons, @page.icon, [%{class: "w-3 h-3"}])}</:icon>
+            </.taskbar_button>
+            <.taskbar_button window="navigator" label={dgettext("showcase", "Components")}>
+              <:icon><Icons.icon_folder class="w-3 h-3" /></:icon>
+            </.taskbar_button>
+          </.taskbar>
+        </:taskbar>
+      </.desktop>
+
       <.about_dialog id="about-dialog" />
     </div>
     """
+  end
+
+  attr :active_page, :string, required: true
+  attr :nav_tree, :list, required: true
+
+  defp showcase_navigator(assigns) do
+    ~H"""
+    <.tree_view class="!shadow-none !bg-transparent !p-0">
+      <.link navigate={ShowcaseCatalog.root()} class="block no-underline">
+        <.tree_view_item active={@active_page == "index"}>
+          <:icon><Icons.icon_palette class="w-3 h-3" /></:icon>
+          {dgettext("showcase", "Design System")}
+        </.tree_view_item>
+      </.link>
+      <.tree_view_group
+        :for={{group, entries} <- @nav_tree}
+        label={group.label}
+        open={Enum.any?(entries, &(&1.id == @active_page))}
+      >
+        <:icon>{apply(Icons, group.icon, [%{class: "w-4 h-4"}])}</:icon>
+        <.link
+          :for={entry <- entries}
+          navigate={ShowcaseCatalog.path(entry)}
+          class="block no-underline"
+        >
+          <.tree_view_item active={@active_page == entry.id}>
+            <:icon>{apply(Icons, entry.icon, [%{class: "w-3 h-3"}])}</:icon>
+            {entry.label}
+          </.tree_view_item>
+        </.link>
+      </.tree_view_group>
+    </.tree_view>
+    """
+  end
+
+  # The index is not a catalog entry — it is the desk the components sit on.
+  defp page_meta("index"),
+    do: %{
+      title: Gettext.dgettext(RetroHexChatWeb.Gettext, "showcase", "Design System"),
+      icon: :icon_palette
+    }
+
+  defp page_meta(id) do
+    case ShowcaseCatalog.fetch(id) do
+      {:ok, entry} -> %{title: ShowcaseCatalog.label(entry), icon: entry.icon}
+      :error -> %{title: id, icon: :icon_group_view}
+    end
   end
 
   @doc "Retro-styled showcase card with title bar, description, and rendered content."
@@ -303,128 +211,4 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
     </div>
     """
   end
-
-  # ── Nav item icons ───────────────────────────────────────
-
-  attr :id, :string, required: true
-
-  @nav_icon_map %{
-    "index" => :icon_palette,
-    "button" => :icon_btn_ok,
-    "input" => :icon_btn_edit,
-    "label" => :icon_tag,
-    "textarea" => :icon_notepad,
-    "select" => :icon_btn_down,
-    "checkbox" => :icon_checkmark,
-    "radio-group" => :icon_btn_ok,
-    "switch" => :icon_tab_control,
-    "slider" => :icon_tab_control,
-    "toggle" => :icon_tab_control,
-    "toggle-group" => :icon_tab_control,
-    "alert" => :icon_warning,
-    "badge" => :icon_tag,
-    "progress" => :icon_status_signal,
-    "skeleton" => :icon_clock,
-    "tooltip" => :icon_lightbulb,
-    "card" => :icon_group_view,
-    "separator" => :icon_tab_control,
-    "sheet" => :icon_group_view,
-    "tabs" => :icon_tab_general,
-    "accordion" => :icon_btn_down,
-    "avatar" => :icon_status_user,
-    "dialog" => :icon_dialog_options,
-    "dropdown-menu" => :icon_btn_down,
-    "bot-management-dialog" => :icon_dialog_bot_management,
-    "breadcrumb" => :icon_btn_next,
-    "popover" => :icon_lightbulb,
-    "fieldset" => :icon_group_view,
-    "form" => :icon_btn_edit,
-    "table" => :icon_database,
-    "window" => :icon_laptop,
-    "menu" => :icon_dialog_custom_menus,
-    "toolbar" => :icon_group_tools,
-    "status-bar" => :icon_status_signal,
-    "irc-tabs" => :icon_tab_channel,
-    "chat-message" => :icon_chat,
-    "chat-input" => :icon_send,
-    "tree-view" => :icon_folder,
-    "nicklist" => :icon_tab_nicklist,
-    "game-cards" => :icon_joystick,
-    "icons" => :icon_star,
-    "diagrams" => :icon_code,
-    "toast" => :icon_btn_bell,
-    "context-menu" => :icon_dialog_custom_menus,
-    "desktop" => :icon_group_view,
-    "loading-spinner" => :icon_clock,
-    "empty-state" => :icon_group_view,
-    "color-picker" => :icon_tab_colors,
-    "scroll-area" => :icon_btn_down,
-    "list-states" => :icon_btn_channel_list,
-    "conversations" => :icon_tab_conversations,
-    "hover-card" => :icon_status_user,
-    "search-bar" => :icon_btn_find,
-    "topic-bar" => :icon_tab_channel,
-    "formatting-toolbar" => :icon_fmt_bold,
-    "emoji-picker" => :icon_fmt_emoji,
-    "autocomplete" => :icon_btn_down,
-    "tab-bar" => :icon_tab_channel,
-    "reply-bar" => :icon_retry,
-    "connection-status" => :icon_status_signal,
-    "confirm-dialog" => :icon_warning,
-    "address-book" => :icon_dialog_address_book,
-    "nick-colors" => :icon_dialog_nick_colors,
-    "ignore-list" => :icon_dialog_ignore_list,
-    "about-dialog" => :icon_lightbulb,
-    "admin-console-dialog" => :icon_dialog_admin_console,
-    "admin-users-dialog" => :icon_community,
-    "admin-channels-dialog" => :icon_channels,
-    "admin-server-settings-dialog" => :icon_server,
-    "admin-audit-log-dialog" => :icon_notepad,
-    "admin-motd-dialog" => :icon_notepad,
-    "admin-turn-dialog" => :icon_websocket,
-    "admin-broadcast-dialog" => :icon_megaphone,
-    "admin-danger-zone-dialog" => :icon_warning,
-    "alert-dialog" => :icon_warning,
-    "channel-list" => :icon_channels,
-    "highlight-dialog" => :icon_star,
-    "config-form" => :icon_btn_settings,
-    "file-transfer" => :icon_file_send,
-    "chat-layout" => :icon_chat,
-    "history-search" => :icon_btn_find,
-    "kick-dialog" => :icon_dialog_kick,
-    "delete-confirm-dialog" => :icon_dialog_delete,
-    "disconnect-confirm-dialog" => :icon_btn_disconnect,
-    "status-bar-app" => :icon_status_signal,
-    "conversations-context-menu" => :icon_tab_conversations,
-    "alias-dialog" => :icon_dialog_alias,
-    "flood-protection-dialog" => :icon_dialog_flood,
-    "notify-list" => :icon_btn_bell,
-    "url-catcher" => :icon_link,
-    "auto-respond-dialog" => :icon_dialog_auto_respond,
-    "custom-menus-dialog" => :icon_dialog_custom_menus,
-    "sound-settings-dialog" => :icon_dialog_sound,
-    "invite-dialog" => :icon_btn_join,
-    "paste-confirm-dialog" => :icon_warning,
-    "app-header" => :icon_laptop,
-    "cheatsheet-dialog" => :icon_btn_keyboard,
-    "nick-change-dialog" => :icon_status_user,
-    "syntax-tooltip" => :icon_lightbulb,
-    "toolbar-app" => :icon_group_tools,
-    "solo-lobby" => :icon_joystick,
-    "chat-context-menu" => :icon_dialog_custom_menus,
-    "perform-dialog" => :icon_dialog_perform,
-    "autojoin-dialog" => :icon_dialog_autojoin,
-    "channel-central-dialog" => :icon_dialog_channel_central
-  }
-
-  defp nav_item_icon(assigns) do
-    icon_fn = Map.get(@nav_icon_map, assigns.id)
-    assigns = assign(assigns, :icon_fn, icon_fn)
-
-    ~H"""
-    {if @icon_fn, do: apply(Icons, @icon_fn, [%{class: "w-3 h-3"}])}
-    """
-  end
-
-  defp t(msgid), do: Gettext.dgettext(RetroHexChatWeb.Gettext, "showcase", msgid)
 end

@@ -6,6 +6,9 @@
   width: var(--win-w, 360px);
   height: var(--win-h, auto);
   z-index: var(--win-z, 10);
+  /* An auto-height window is as tall as what it holds — but never taller than
+     the desk it sits on. Past that the body (overflow-auto) scrolls instead. */
+  max-height: calc(100% - var(--win-y, 24px));
 }
 .desktop-window--pending {
   position: absolute;
@@ -561,4 +564,39 @@
 
 .desktop--stacked .desktop-start-menu__item {
   min-height: 38px;
+}
+
+/* No JavaScript: the desktop degrades to a document.
+
+   The window manager decorates markup the server already sent — it never
+   produces content. On a public, indexable desktop that promise has to hold all
+   the way down: with scripting off, windows leave the absolute layer, drop the
+   pre-paint `u-hidden` that only exists to avoid a positioning flash, and stack
+   in normal flow. What is left is a readable page whose links still work.
+
+   The `no-js` class is set by the server and removed by an inline head script,
+   so these rules never apply once scripting is on — not even for a frame. */
+.no-js .desktop__workspace {
+  overflow: visible;
+}
+
+.no-js .desktop-window {
+  position: static;
+  max-height: none;
+  margin-bottom: 8px;
+}
+
+/* `u-hidden` is the manager's own pre-paint guard and carries !important;
+   overriding it is the point of this block, not an accident. */
+.no-js .desktop-window.u-hidden {
+  display: block !important;
+}
+
+/* Popups are behaviour, not content: without a manager to open and place them
+   they would render as loose blocks in the middle of the page. Navigation is
+   still reachable through the windows themselves. */
+.no-js .desktop-start-menu,
+.no-js [data-taskbar-menu],
+.no-js .desktop-start-submenu__panel {
+  display: none;
 }

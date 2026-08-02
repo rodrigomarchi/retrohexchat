@@ -2,6 +2,7 @@ defmodule RetroHexChatWeb.Router do
   use RetroHexChatWeb, :router
 
   @localized_locale_segments RetroHexChatWeb.SEO.localized_locale_segments()
+  @showcase_entries RetroHexChatWeb.ShowcaseCatalog.entries()
 
   pipeline :api do
     plug :accepts, ["json"]
@@ -149,135 +150,18 @@ defmodule RetroHexChatWeb.Router do
     plug :put_secure_browser_headers
   end
 
-  scope "/showcase", RetroHexChatWeb.ShowcaseLive do
+  # Every showcase page comes from ShowcaseCatalog — the router does not keep a
+  # list of its own. The scope carries no alias because the catalog stores fully
+  # qualified page modules.
+  scope "/showcase" do
     pipe_through :showcase
 
     live_session :showcase_locale, on_mount: [{RetroHexChatWeb.Live.PutLocale, :default}] do
-      live "/", Index
+      live "/", RetroHexChatWeb.ShowcaseLive.Index
 
-      # Primitives
-      live "/button", Primitives.Button
-      live "/input", Primitives.Input
-      live "/label", Primitives.Label
-      live "/textarea", Primitives.Textarea
-      live "/select", Primitives.Select
-      live "/checkbox", Primitives.Checkbox
-      live "/radio-group", Primitives.RadioGroup
-      live "/switch", Primitives.Switch
-      live "/slider", Primitives.Slider
-      live "/toggle", Primitives.Toggle
-      live "/toggle-group", Primitives.ToggleGroup
-      live "/alert", Primitives.Alert
-      live "/badge", Primitives.Badge
-      live "/progress", Primitives.Progress
-      live "/skeleton", Primitives.Skeleton
-      live "/tooltip", Primitives.Tooltip
-      live "/card", Primitives.Card
-      live "/separator", Primitives.Separator
-      live "/accordion", Primitives.Accordion
-      live "/avatar", Primitives.Avatar
-      live "/breadcrumb", Primitives.BreadcrumbPage
-      live "/dropdown-menu", Primitives.DropdownMenuPage
-      live "/alert-dialog", Primitives.AlertDialogPage
-      live "/popover", Primitives.PopoverPage
-      live "/sheet", Primitives.SheetPage
-      live "/form", Primitives.FormPage
-
-      # Layout
-      live "/tabs", Layout.Tabs
-      live "/table", Layout.Table
-      live "/window", Layout.Window
-      live "/desktop", Layout.Desktop
-      live "/dialog", Layout.DialogPage
-      live "/menu", Layout.MenuPage
-      live "/toolbar", Layout.ToolbarPage
-      live "/fieldset", Layout.FieldsetPage
-      live "/context-menu", Layout.ContextMenuPage
-      live "/scroll-area", Layout.ScrollAreaPage
-      live "/list-states", Layout.ListStatesPage
-      live "/toast", Layout.ToastPage
-      live "/tree-view", Layout.TreeViewPage
-
-      # Chat
-      live "/irc-tabs", Chat.IrcTabsPage
-      live "/chat-message", Chat.ChatMessagePage
-      live "/chat-input", Chat.ChatInputPage
-      live "/nicklist", Chat.NicklistPage
-      live "/conversations", Chat.ConversationsPage
-      live "/hover-card", Chat.HoverCardPage
-      live "/search-bar", Chat.SearchBarPage
-      live "/topic-bar", Chat.TopicBarPage
-      live "/formatting-toolbar", Chat.FormattingToolbarPage
-      live "/emoji-picker", Chat.EmojiPickerPage
-      live "/autocomplete", Chat.AutocompletePage
-      live "/tab-bar", Chat.TabBarPage
-      live "/reply-bar", Chat.ReplyBarPage
-      live "/connection-status", Chat.ConnectionStatusPage
-      live "/color-picker", Chat.ColorPickerPage
-      live "/history-search", Chat.HistorySearchPage
-      live "/chat-layout", Chat.ChatLayoutPage
-      live "/conversations-context-menu", Chat.ConversationsContextMenuPage
-      live "/chat-context-menu", Chat.ChatContextMenuPage
-      live "/syntax-tooltip", Chat.SyntaxTooltipPage
-
-      # Shell
-      live "/status-bar", Shell.StatusBar
-      live "/toolbar-app", Shell.ToolbarAppPage
-      live "/status-bar-app", Shell.StatusBarAppPage
-      live "/app-header", Shell.AppHeaderPage
-      live "/loading-spinner", Shell.LoadingSpinnerPage
-      live "/empty-state", Shell.EmptyStatePage
-      live "/config-form", Shell.ConfigFormPage
-
-      # Dialogs
-      live "/confirm-dialog", Dialogs.ConfirmDialogPage
-
-      live "/address-book", Dialogs.AddressBookPage
-      live "/nick-colors", Dialogs.NickColorsPage
-      live "/ignore-list", Dialogs.IgnoreListPage
-      live "/about-dialog", Dialogs.AboutDialogPage
-      live "/channel-list", Dialogs.ChannelListPage
-      live "/highlight-dialog", Dialogs.HighlightDialogPage
-      live "/kick-dialog", Dialogs.KickDialogPage
-      live "/delete-confirm-dialog", Dialogs.DeleteConfirmDialogPage
-      live "/disconnect-confirm-dialog", Dialogs.DisconnectConfirmDialogPage
-      live "/alias-dialog", Dialogs.AliasDialogPage
-      live "/flood-protection-dialog", Dialogs.FloodProtectionDialogPage
-
-      live "/notify-list", Dialogs.NotifyListPage
-      live "/url-catcher", Dialogs.UrlCatcherPage
-      live "/auto-respond-dialog", Dialogs.AutoRespondDialogPage
-      live "/custom-menus-dialog", Dialogs.CustomMenusDialogPage
-      live "/sound-settings-dialog", Dialogs.SoundSettingsDialogPage
-      live "/invite-dialog", Dialogs.InviteDialogPage
-      live "/paste-confirm-dialog", Dialogs.PasteConfirmDialogPage
-      live "/cheatsheet-dialog", Dialogs.CheatsheetDialogPage
-      live "/nick-change-dialog", Dialogs.NickChangeDialogPage
-      live "/perform-dialog", Dialogs.PerformDialogPage
-      live "/autojoin-dialog", Dialogs.AutojoinDialogPage
-      live "/channel-central-dialog", Dialogs.ChannelCentralDialogPage
-      live "/admin-console-dialog", Dialogs.AdminConsoleDialogPage
-      live "/admin-users-dialog", Dialogs.AdminUsersDialogPage
-      live "/admin-channels-dialog", Dialogs.AdminChannelsDialogPage
-      live "/admin-server-settings-dialog", Dialogs.AdminServerSettingsDialogPage
-      live "/admin-audit-log-dialog", Dialogs.AdminAuditLogDialogPage
-      live "/admin-motd-dialog", Dialogs.AdminMotdDialogPage
-      live "/admin-turn-dialog", Dialogs.AdminTurnDialogPage
-      live "/admin-broadcast-dialog", Dialogs.AdminBroadcastDialogPage
-      live "/admin-danger-zone-dialog", Dialogs.AdminDangerZoneDialogPage
-      live "/bot-management-dialog", Dialogs.BotManagementDialogPage
-
-      # P2P
-      live "/p2p-connection-diagram", P2P.P2PConnectionDiagramPage
-      live "/file-transfer", P2P.FileTransferPage
-
-      # Games
-      live "/game-cards", Games.GameCardsPage
-      live "/solo-lobby", Games.SoloLobbyPage
-
-      # Assets
-      live "/icons", Assets.Icons
-      live "/diagrams", Assets.Diagrams
+      for entry <- @showcase_entries do
+        live "/#{entry.id}", entry.module
+      end
     end
   end
 

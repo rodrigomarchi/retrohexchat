@@ -1,4 +1,4 @@
-<.landing_layout active_page={@active_page}>
+<.landing_layout active_page={@active_page} windows={@windows}>
   <section class="m-4" aria-labelledby="privacy-heading">
     <.landing_page_intro
       heading_id="privacy-heading"
@@ -16,218 +16,215 @@
 
     <div class="grid md:grid-cols-2 gap-4 mb-4">
       <%!-- ══════════════ BIG TECH ══════════════ --%>
-      <.window>
-        <.window_title_bar title={dgettext("landing", "Big Tech Platforms")} controls={[:close]}>
-          <:icon><Icons.icon_warning class="w-4 h-4" /></:icon>
-        </.window_title_bar>
-        <.window_body>
-          <h2 class="text-sm font-bold mb-2">
-            {dgettext("landing", "What they do with your data.")}
-          </h2>
-          <ul class="space-y-2 text-sm">
-            <li class="flex items-start gap-2">
-              <Icons.icon_ban class="w-4 h-4 shrink-0 mt-0.5" />
-              <span>
-                {dgettext("landing", "Messages stored on")}
-                <strong>their</strong> {dgettext("landing", "servers, mined for ads")}
-              </span>
-            </li>
-            <li class="flex items-start gap-2">
-              <Icons.icon_ban class="w-4 h-4 shrink-0 mt-0.5" />
-              <span>{dgettext("landing", "Calls routed through corporate infrastructure")}</span>
-            </li>
-            <li class="flex items-start gap-2">
-              <Icons.icon_ban class="w-4 h-4 shrink-0 mt-0.5" />
-              <span>{dgettext("landing", "Your data trains their AI, sold to advertisers")}</span>
-            </li>
-            <li class="flex items-start gap-2">
-              <Icons.icon_ban class="w-4 h-4 shrink-0 mt-0.5" />
-              <span>{dgettext("landing", "Closed source — “trust us”")}</span>
-            </li>
-            <li class="flex items-start gap-2">
-              <Icons.icon_ban class="w-4 h-4 shrink-0 mt-0.5" />
-              <span>{dgettext("landing", "They can ban your community at any time")}</span>
-            </li>
-            <li class="flex items-start gap-2">
-              <Icons.icon_ban class="w-4 h-4 shrink-0 mt-0.5" />
-              <span>{dgettext("landing", "They read your messages — and they do")}</span>
-            </li>
-          </ul>
-        </.window_body>
-        <.window_status_bar>
+      <.desktop_window
+        id="big-tech-platforms"
+        width={460}
+        title={dgettext("landing", "Big Tech Platforms")}
+      >
+        <:icon><Icons.icon_warning class="w-4 h-4" /></:icon>
+        <h2 class="text-sm font-bold mb-2">
+          {dgettext("landing", "What they do with your data.")}
+        </h2>
+        <ul class="space-y-2 text-sm">
+          <li class="flex items-start gap-2">
+            <Icons.icon_ban class="w-4 h-4 shrink-0 mt-0.5" />
+            <span>
+              {dgettext("landing", "Messages stored on")}
+              <strong>their</strong> {dgettext("landing", "servers, mined for ads")}
+            </span>
+          </li>
+          <li class="flex items-start gap-2">
+            <Icons.icon_ban class="w-4 h-4 shrink-0 mt-0.5" />
+            <span>{dgettext("landing", "Calls routed through corporate infrastructure")}</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <Icons.icon_ban class="w-4 h-4 shrink-0 mt-0.5" />
+            <span>{dgettext("landing", "Your data trains their AI, sold to advertisers")}</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <Icons.icon_ban class="w-4 h-4 shrink-0 mt-0.5" />
+            <span>{dgettext("landing", "Closed source — “trust us”")}</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <Icons.icon_ban class="w-4 h-4 shrink-0 mt-0.5" />
+            <span>{dgettext("landing", "They can ban your community at any time")}</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <Icons.icon_ban class="w-4 h-4 shrink-0 mt-0.5" />
+            <span>{dgettext("landing", "They read your messages — and they do")}</span>
+          </li>
+        </ul>
+        <:status>
           <.window_status_bar_field grow>
             {dgettext("landing", "Their rules")}
           </.window_status_bar_field>
-        </.window_status_bar>
-      </.window>
+        </:status>
+      </.desktop_window>
 
       <%!-- ══════════════ RETRO HEX CHAT ══════════════ --%>
-      <.window>
-        <.window_title_bar title={dgettext("landing", "Retro Hex Chat")} controls={[:close]}>
-          <:icon><Icons.icon_shield class="w-4 h-4" /></:icon>
-        </.window_title_bar>
-        <.window_body>
-          <h2 class="text-sm font-bold mb-2">
-            {dgettext("landing", "Your data stays with you. Period.")}
-          </h2>
-          <ul class="space-y-2 text-sm">
-            <li class="flex items-start gap-2">
-              <Icons.icon_checkmark class="w-4 h-4 shrink-0 mt-0.5" />
-              <span>
-                {dgettext("landing", "Messages stored on")}
-                <strong>your</strong> {dgettext("landing", "server, never leave")}
-              </span>
-            </li>
-            <li class="flex items-start gap-2">
-              <Icons.icon_checkmark class="w-4 h-4 shrink-0 mt-0.5" />
-              <span>
-                {dgettext(
-                  "landing",
-                  "Private calls go direct P2P; channel conferences stay on your infrastructure"
-                )}
-              </span>
-            </li>
-            <li class="flex items-start gap-2">
-              <Icons.icon_checkmark class="w-4 h-4 shrink-0 mt-0.5" />
-              <span>{dgettext("landing", "Your data stays in your database, period")}</span>
-            </li>
-            <li class="flex items-start gap-2">
-              <Icons.icon_checkmark class="w-4 h-4 shrink-0 mt-0.5" />
-              <span>{dgettext("landing", "Open source — verify yourself")}</span>
-            </li>
-            <li class="flex items-start gap-2">
-              <Icons.icon_checkmark class="w-4 h-4 shrink-0 mt-0.5" />
-              <span>
-                {dgettext("landing", "You own the server — nobody can shut you down")}
-              </span>
-            </li>
-            <li class="flex items-start gap-2">
-              <Icons.icon_checkmark class="w-4 h-4 shrink-0 mt-0.5" />
-              <span>
-                {dgettext("landing", "Your server operator controls message access and retention")}
-              </span>
-            </li>
-          </ul>
-        </.window_body>
-        <.window_status_bar>
+      <.desktop_window
+        id="retro-hex-chat"
+        width={560}
+        title={dgettext("landing", "Retro Hex Chat")}
+      >
+        <:icon><Icons.icon_shield class="w-4 h-4" /></:icon>
+        <h2 class="text-sm font-bold mb-2">
+          {dgettext("landing", "Your data stays with you. Period.")}
+        </h2>
+        <ul class="space-y-2 text-sm">
+          <li class="flex items-start gap-2">
+            <Icons.icon_checkmark class="w-4 h-4 shrink-0 mt-0.5" />
+            <span>
+              {dgettext("landing", "Messages stored on")}
+              <strong>your</strong> {dgettext("landing", "server, never leave")}
+            </span>
+          </li>
+          <li class="flex items-start gap-2">
+            <Icons.icon_checkmark class="w-4 h-4 shrink-0 mt-0.5" />
+            <span>
+              {dgettext(
+                "landing",
+                "Private calls go direct P2P; channel conferences stay on your infrastructure"
+              )}
+            </span>
+          </li>
+          <li class="flex items-start gap-2">
+            <Icons.icon_checkmark class="w-4 h-4 shrink-0 mt-0.5" />
+            <span>{dgettext("landing", "Your data stays in your database, period")}</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <Icons.icon_checkmark class="w-4 h-4 shrink-0 mt-0.5" />
+            <span>{dgettext("landing", "Open source — verify yourself")}</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <Icons.icon_checkmark class="w-4 h-4 shrink-0 mt-0.5" />
+            <span>
+              {dgettext("landing", "You own the server — nobody can shut you down")}
+            </span>
+          </li>
+          <li class="flex items-start gap-2">
+            <Icons.icon_checkmark class="w-4 h-4 shrink-0 mt-0.5" />
+            <span>
+              {dgettext("landing", "Your server operator controls message access and retention")}
+            </span>
+          </li>
+        </ul>
+        <:status>
           <.window_status_bar_field grow>
             {dgettext("landing", "Your rules")}
           </.window_status_bar_field>
-        </.window_status_bar>
-      </.window>
+        </:status>
+      </.desktop_window>
     </div>
 
     <%!-- ══════════════ COMPARISON TABLE ══════════════ --%>
-    <.window>
-      <.window_title_bar
-        title={dgettext("landing", "Side-by-side comparison")}
-        controls={[:close]}
-      >
-        <:icon><Icons.icon_lock class="w-4 h-4" /></:icon>
-      </.window_title_bar>
-      <.window_body>
-        <div class="shadow-retro-field bg-white p-2 mb-3 overflow-x-auto">
-          <table class="w-full text-xs border-collapse">
-            <thead>
-              <tr>
-                <th class="text-left p-1 border-b border-gray-400"></th>
-                <th class="text-left p-1 border-b border-gray-400">
-                  {dgettext("landing", "Discord / Slack / Telegram")}
-                </th>
-                <th class="text-left p-1 border-b border-gray-400">
-                  {dgettext("landing", "Retro Hex Chat")}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="p-1 border-b border-gray-200">
-                  <strong>{dgettext("landing", "Who owns the server?")}</strong>
-                </td>
-                <td class="p-1 border-b border-gray-200">
-                  {dgettext("landing", "A corporation")}
-                </td>
-                <td class="p-1 border-b border-gray-200">{dgettext("landing", "You")}</td>
-              </tr>
-              <tr>
-                <td class="p-1 border-b border-gray-200">
-                  <strong>{dgettext("landing", "Where are messages stored?")}</strong>
-                </td>
-                <td class="p-1 border-b border-gray-200">
-                  {dgettext("landing", "Their cloud, their terms")}
-                </td>
-                <td class="p-1 border-b border-gray-200">
-                  {dgettext("landing", "Your server, your database")}
-                </td>
-              </tr>
-              <tr>
-                <td class="p-1 border-b border-gray-200">
-                  <strong>{dgettext("landing", "Voice and video calls")}</strong>
-                </td>
-                <td class="p-1 border-b border-gray-200">
-                  {dgettext("landing", "Routed through their servers")}
-                </td>
-                <td class="p-1 border-b border-gray-200">
-                  {dgettext(
-                    "landing",
-                    "Private P2P via WebRTC; channel conferences via your self-hosted SFU"
-                  )}
-                </td>
-              </tr>
-              <tr>
-                <td class="p-1 border-b border-gray-200">
-                  <strong>{dgettext("landing", "Can they read your messages?")}</strong>
-                </td>
-                <td class="p-1 border-b border-gray-200">
-                  {dgettext("landing", "Yes — and they do")}
-                </td>
-                <td class="p-1 border-b border-gray-200">
-                  {dgettext("landing", "Access is controlled by your own server and policies")}
-                </td>
-              </tr>
-              <tr>
-                <td class="p-1 border-b border-gray-200">
-                  <strong>{dgettext("landing", "Data used for AI training?")}</strong>
-                </td>
-                <td class="p-1 border-b border-gray-200">
-                  {dgettext("landing", "Often, and without consent")}
-                </td>
-                <td class="p-1 border-b border-gray-200">
-                  {dgettext("landing", "Never. Your data is yours.")}
-                </td>
-              </tr>
-              <tr>
-                <td class="p-1 border-b border-gray-200">
-                  <strong>{dgettext("landing", "Can they ban your community?")}</strong>
-                </td>
-                <td class="p-1 border-b border-gray-200">
-                  {dgettext("landing", "Yes, at any time")}
-                </td>
-                <td class="p-1 border-b border-gray-200">
-                  {dgettext("landing", "No — you own the server")}
-                </td>
-              </tr>
-              <tr>
-                <td class="p-1"><strong>{dgettext("landing", "Source code")}</strong></td>
-                <td class="p-1">{dgettext("landing", "Closed. Trust them blindly.")}</td>
-                <td class="p-1">{dgettext("landing", "Open source. Audit it yourself.")}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+    <.desktop_window
+      id="side-by-side-comparison"
+      width={900}
+      title={dgettext("landing", "Side-by-side comparison")}
+    >
+      <:icon><Icons.icon_lock class="w-4 h-4" /></:icon>
+      <div class="shadow-retro-field bg-white p-2 mb-3 overflow-x-auto">
+        <table class="w-full text-xs border-collapse">
+          <thead>
+            <tr>
+              <th class="text-left p-1 border-b border-gray-400"></th>
+              <th class="text-left p-1 border-b border-gray-400">
+                {dgettext("landing", "Discord / Slack / Telegram")}
+              </th>
+              <th class="text-left p-1 border-b border-gray-400">
+                {dgettext("landing", "Retro Hex Chat")}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="p-1 border-b border-gray-200">
+                <strong>{dgettext("landing", "Who owns the server?")}</strong>
+              </td>
+              <td class="p-1 border-b border-gray-200">
+                {dgettext("landing", "A corporation")}
+              </td>
+              <td class="p-1 border-b border-gray-200">{dgettext("landing", "You")}</td>
+            </tr>
+            <tr>
+              <td class="p-1 border-b border-gray-200">
+                <strong>{dgettext("landing", "Where are messages stored?")}</strong>
+              </td>
+              <td class="p-1 border-b border-gray-200">
+                {dgettext("landing", "Their cloud, their terms")}
+              </td>
+              <td class="p-1 border-b border-gray-200">
+                {dgettext("landing", "Your server, your database")}
+              </td>
+            </tr>
+            <tr>
+              <td class="p-1 border-b border-gray-200">
+                <strong>{dgettext("landing", "Voice and video calls")}</strong>
+              </td>
+              <td class="p-1 border-b border-gray-200">
+                {dgettext("landing", "Routed through their servers")}
+              </td>
+              <td class="p-1 border-b border-gray-200">
+                {dgettext(
+                  "landing",
+                  "Private P2P via WebRTC; channel conferences via your self-hosted SFU"
+                )}
+              </td>
+            </tr>
+            <tr>
+              <td class="p-1 border-b border-gray-200">
+                <strong>{dgettext("landing", "Can they read your messages?")}</strong>
+              </td>
+              <td class="p-1 border-b border-gray-200">
+                {dgettext("landing", "Yes — and they do")}
+              </td>
+              <td class="p-1 border-b border-gray-200">
+                {dgettext("landing", "Access is controlled by your own server and policies")}
+              </td>
+            </tr>
+            <tr>
+              <td class="p-1 border-b border-gray-200">
+                <strong>{dgettext("landing", "Data used for AI training?")}</strong>
+              </td>
+              <td class="p-1 border-b border-gray-200">
+                {dgettext("landing", "Often, and without consent")}
+              </td>
+              <td class="p-1 border-b border-gray-200">
+                {dgettext("landing", "Never. Your data is yours.")}
+              </td>
+            </tr>
+            <tr>
+              <td class="p-1 border-b border-gray-200">
+                <strong>{dgettext("landing", "Can they ban your community?")}</strong>
+              </td>
+              <td class="p-1 border-b border-gray-200">
+                {dgettext("landing", "Yes, at any time")}
+              </td>
+              <td class="p-1 border-b border-gray-200">
+                {dgettext("landing", "No — you own the server")}
+              </td>
+            </tr>
+            <tr>
+              <td class="p-1"><strong>{dgettext("landing", "Source code")}</strong></td>
+              <td class="p-1">{dgettext("landing", "Closed. Trust them blindly.")}</td>
+              <td class="p-1">{dgettext("landing", "Open source. Audit it yourself.")}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-        <p class="text-sm">
-          {dgettext(
-            "landing",
-            "No tracking. No profiling. No data harvesting. Just a chat server that"
-          )} <strong>{dgettext("landing", "respects your privacy")}</strong>.
-        </p>
-      </.window_body>
-      <.window_status_bar>
+      <p class="text-sm">
+        {dgettext(
+          "landing",
+          "No tracking. No profiling. No data harvesting. Just a chat server that"
+        )} <strong>{dgettext("landing", "respects your privacy")}</strong>.
+      </p>
+      <:status>
         <.window_status_bar_field grow>
           {dgettext("landing", "Your data. Your rules.")}
         </.window_status_bar_field>
-      </.window_status_bar>
-    </.window>
+      </:status>
+    </.desktop_window>
   </section>
 </.landing_layout>

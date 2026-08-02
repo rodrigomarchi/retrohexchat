@@ -29,23 +29,11 @@ import URLCatcherHook from "./ui/url_catcher_hook";
 import ArcadeSessionHook from "./games/arcade_session_hook";
 import ViewportDetectHook from "./ui/viewport_detect_hook";
 import WindowManagerHook from "./ui/window_manager_hook";
+import FocusChatInputOnClickHook from "./ui/focus_chat_input_on_click_hook";
 
 const AutoFocusHook = {
   mounted() {
     requestAnimationFrame(() => this.el.focus());
-  },
-};
-
-const FocusChatInputOnClickHook = {
-  mounted() {
-    this._onClick = () => {
-      setTimeout(() => document.getElementById("chat-input")?.focus(), 150);
-    };
-    this.el.addEventListener("click", this._onClick);
-  },
-
-  destroyed() {
-    this.el.removeEventListener("click", this._onClick);
   },
 };
 
