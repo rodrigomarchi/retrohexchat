@@ -26,6 +26,13 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabsTest do
     render_component(&ChatTabs.chat_tabs/1, assigns)
   end
 
+  defp tab_labels(html) do
+    html
+    |> Floki.parse_document!()
+    |> Floki.find(~s([data-testid="tab-bar"] [role="tab"]))
+    |> Floki.attribute("phx-value-label")
+  end
+
   test "always renders the status tab first and it is not closeable" do
     html = tabs(%{show_status_tab: true})
 
@@ -47,6 +54,17 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabsTest do
     # the active channel tab is selected (status tab is off)
     assert html =~ ~s(phx-value-label="#lobby")
     assert html =~ ~s(phx-value-label="bob")
+  end
+
+  test "uses tab_order to render clicked conversations before untouched tabs" do
+    html =
+      tabs(%{
+        channels: ["#lobby", "#security"],
+        pm_tabs: ["bob", "alice"],
+        tab_order: [{:pm, "alice"}, {:channel, "#security"}]
+      })
+
+    assert tab_labels(html) == ["Status", "alice", "#security", "#lobby", "bob"]
   end
 
   test "marks a channel unread when its count is positive" do

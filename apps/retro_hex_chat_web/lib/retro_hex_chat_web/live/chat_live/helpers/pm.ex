@@ -92,6 +92,17 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
     assign(socket, open_pm_tabs: [target | List.delete(open_tabs, target)])
   end
 
+  @spec ensure_pm_tab(Phoenix.LiveView.Socket.t(), String.t()) :: Phoenix.LiveView.Socket.t()
+  def ensure_pm_tab(socket, target) when is_binary(target) do
+    open_tabs = socket.assigns[:open_pm_tabs] || []
+
+    if target in open_tabs do
+      socket
+    else
+      assign(socket, open_pm_tabs: open_tabs ++ [target])
+    end
+  end
+
   @spec close_pm_tab(Phoenix.LiveView.Socket.t(), String.t()) :: Phoenix.LiveView.Socket.t()
   def close_pm_tab(socket, target) when is_binary(target) do
     open_tabs = socket.assigns[:open_pm_tabs] || []

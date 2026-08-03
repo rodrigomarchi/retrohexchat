@@ -38,6 +38,7 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
   alias RetroHexChat.Commands.Parser
   alias RetroHexChatWeb.ChatLive.CommandDispatch
   alias RetroHexChatWeb.ChatLive.Helpers.PM
+  alias RetroHexChatWeb.ChatLive.TabOrder
 
   # ── Typing indicator timer ────────────────────────────────
 
@@ -405,13 +406,18 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
   end
 
   defp maybe_restore_active_tab(%{assigns: %{show_status_tab: true}} = socket) do
-    assign(socket, reconnect_active_channel: nil, reconnect_active_pm: nil)
+    assign(socket,
+      reconnect_active_channel: nil,
+      reconnect_active_pm: nil,
+      reconnect_tab_order: []
+    )
   end
 
   defp maybe_restore_active_tab(socket) do
     target_channel = socket.assigns[:reconnect_active_channel]
     target_pm = socket.assigns[:reconnect_active_pm]
     open_pm_tabs = socket.assigns[:reconnect_open_pm_tabs] || []
+    tab_order = socket.assigns[:reconnect_tab_order] || []
     session = socket.assigns.session
 
     session =
@@ -427,7 +433,9 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
         open_pm_tabs: open_pm_tabs,
         reconnect_active_channel: nil,
         reconnect_active_pm: nil,
-        reconnect_open_pm_tabs: []
+        reconnect_open_pm_tabs: [],
+        reconnect_tab_order: [],
+        tab_order: TabOrder.visible_order(session.channels, open_pm_tabs, tab_order)
       )
 
     cond do

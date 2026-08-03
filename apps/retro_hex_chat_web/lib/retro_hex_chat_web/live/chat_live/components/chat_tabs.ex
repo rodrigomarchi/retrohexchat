@@ -17,9 +17,12 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
 
   import RetroHexChatWeb.Components.UI.IrcTabs
 
+  alias RetroHexChatWeb.ChatLive.TabOrder
+
   attr :class, :any, default: nil, doc: "Extra classes for the tab bar container"
   attr :channels, :list, default: [], doc: "Joined channel names, in order"
   attr :pm_tabs, :list, default: [], doc: "Open PM nicks, in order"
+  attr :tab_order, :list, default: [], doc: "User-controlled conversation tab order"
   attr :unread_counts, :map, default: %{}, doc: "Unread counts keyed by channel / \"pm:nick\""
   attr :status_unread, :boolean, default: false
   attr :show_status_tab, :boolean, default: false
@@ -97,44 +100,47 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
       group_call_summary: nil
     }
 
-    channel_tabs =
-      for channel <- assigns.channels do
-        %{
-          type: "channel",
-          label: channel,
-          active: assigns.active_channel == channel && !assigns.show_status_tab,
-          unread: Map.get(assigns.unread_counts, channel, 0) > 0,
-          closeable: true,
-          nick_color: nil,
-          p2p: false,
-          p2p_state: nil,
-          p2p_session: nil,
-          group_call: channel_group_call?(assigns.group_call_channels, channel),
-          group_call_summary: Map.get(assigns.group_call_summaries || %{}, channel)
-        }
-      end
+    conversation_tabs =
+      assigns.channels
+      |> TabOrder.visible_order(assigns.pm_tabs, assigns.tab_order)
+      |> Enum.map(&conversation_tab(&1, assigns))
 
-    pm_tabs =
-      for pm <- assigns.pm_tabs do
-        pm_p2p_session = p2p_session_for_pm(assigns, pm)
-        pm_p2p_state = p2p_tab_state(value(pm_p2p_session, :state) || assigns.p2p_state)
+    [status_tab | conversation_tabs]
+  end
 
-        %{
-          type: "pm",
-          label: pm,
-          active: assigns.active_pm == pm && !assigns.show_status_tab,
-          unread: Map.get(assigns.unread_counts, "pm:#{pm}", 0) > 0,
-          closeable: true,
-          nick_color: assigns.nick_color_fn.(pm),
-          p2p: pm_p2p_session != nil,
-          p2p_state: pm_p2p_state,
-          p2p_session: pm_p2p_session,
-          group_call: false,
-          group_call_summary: nil
-        }
-      end
+  defp conversation_tab({:channel, channel}, assigns) do
+    %{
+      type: "channel",
+      label: channel,
+      active: assigns.active_channel == channel && !assigns.show_status_tab,
+      unread: Map.get(assigns.unread_counts, channel, 0) > 0,
+      closeable: true,
+      nick_color: nil,
+      p2p: false,
+      p2p_state: nil,
+      p2p_session: nil,
+      group_call: channel_group_call?(assigns.group_call_channels, channel),
+      group_call_summary: Map.get(assigns.group_call_summaries || %{}, channel)
+    }
+  end
 
-    [status_tab | channel_tabs ++ pm_tabs]
+  defp conversation_tab({:pm, pm}, assigns) do
+    pm_p2p_session = p2p_session_for_pm(assigns, pm)
+    pm_p2p_state = p2p_tab_state(value(pm_p2p_session, :state) || assigns.p2p_state)
+
+    %{
+      type: "pm",
+      label: pm,
+      active: assigns.active_pm == pm && !assigns.show_status_tab,
+      unread: Map.get(assigns.unread_counts, "pm:#{pm}", 0) > 0,
+      closeable: true,
+      nick_color: assigns.nick_color_fn.(pm),
+      p2p: pm_p2p_session != nil,
+      p2p_state: pm_p2p_state,
+      p2p_session: pm_p2p_session,
+      group_call: false,
+      group_call_summary: nil
+    }
   end
 
   defp channel_group_call?(channels, channel) when is_binary(channel) do

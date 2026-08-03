@@ -34,6 +34,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
   alias RetroHexChatWeb.ChatLive.Components.{ChannelCentralDialog, HoverCard, Nicklist}
   alias RetroHexChatWeb.ChatLive.Helpers.PathHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.PM
+  alias RetroHexChatWeb.ChatLive.TabOrder
 
   # ── User joined/left/nick_changed ─────────────────────────
 
@@ -356,7 +357,8 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
       flash_channels: rename_set_key(socket.assigns.flash_channels, old_pm_key, new_pm_key),
       muted_channels: rename_set_key(socket.assigns.muted_channels, old_pm_key, new_pm_key),
       away_replied_to: rename_set_key(socket.assigns.away_replied_to, old_nick, new_nick),
-      pm_typing_from: rename_optional_value(socket.assigns.pm_typing_from, old_nick, new_nick)
+      pm_typing_from: rename_optional_value(socket.assigns.pm_typing_from, old_nick, new_nick),
+      tab_order: TabOrder.rename_pm(socket.assigns[:tab_order] || [], old_nick, new_nick)
     )
   end
 

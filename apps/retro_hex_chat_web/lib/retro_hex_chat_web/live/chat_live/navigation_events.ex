@@ -14,6 +14,7 @@ defmodule RetroHexChatWeb.ChatLive.NavigationEvents do
   alias RetroHexChat.Chat.UnreadTracker
   alias RetroHexChatWeb.ChatLive.Helpers
   alias RetroHexChatWeb.ChatLive.Helpers.PM
+  alias RetroHexChatWeb.ChatLive.TabOrder
 
   def handle_event("window_next", _params, socket) do
     {:halt, navigate(socket, :next)}
@@ -48,7 +49,13 @@ defmodule RetroHexChatWeb.ChatLive.NavigationEvents do
   # ---------------------------------------------------------------------------
 
   defp navigate(socket, direction) do
-    windows = build_window_list(socket.assigns.session, socket.assigns[:open_pm_tabs] || [])
+    windows =
+      build_window_list(
+        socket.assigns.session,
+        socket.assigns[:open_pm_tabs] || [],
+        socket.assigns[:tab_order] || []
+      )
+
     current = current_window(socket.assigns)
 
     case find_window_index(windows, current) do
@@ -58,7 +65,13 @@ defmodule RetroHexChatWeb.ChatLive.NavigationEvents do
   end
 
   defp navigate_to_index(socket, index) when is_integer(index) do
-    windows = build_window_list(socket.assigns.session, socket.assigns[:open_pm_tabs] || [])
+    windows =
+      build_window_list(
+        socket.assigns.session,
+        socket.assigns[:open_pm_tabs] || [],
+        socket.assigns[:tab_order] || []
+      )
+
     # 1-based index, skip Status tab
     target_idx = index - 1
 
@@ -73,10 +86,14 @@ defmodule RetroHexChatWeb.ChatLive.NavigationEvents do
           {:channel, String.t()} | {:pm, String.t()}
         ]
   def build_window_list(session, open_pm_tabs) do
-    channels = Enum.sort(session.channels) |> Enum.map(&{:channel, &1})
-    pms = Enum.map(open_pm_tabs || [], &{:pm, &1})
+    build_window_list(session, open_pm_tabs, [])
+  end
 
-    channels ++ pms
+  @spec build_window_list(Session.t(), [String.t()], [TabOrder.key()]) :: [
+          {:channel, String.t()} | {:pm, String.t()}
+        ]
+  def build_window_list(session, open_pm_tabs, tab_order) do
+    TabOrder.visible_order(session.channels, open_pm_tabs, tab_order)
   end
 
   defp current_window(assigns) do

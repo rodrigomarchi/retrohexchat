@@ -400,7 +400,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
   end
 
   defp maybe_open_pm_activity_tab(socket, peer, _direction, _type),
-    do: PM.open_pm_tab(socket, peer)
+    do: PM.ensure_pm_tab(socket, peer)
 
   defp maybe_mark_pm_activity_unread(socket, sender, :incoming) do
     session = socket.assigns.session
