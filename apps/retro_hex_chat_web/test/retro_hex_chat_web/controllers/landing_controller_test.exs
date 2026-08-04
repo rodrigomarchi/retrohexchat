@@ -288,7 +288,10 @@ defmodule RetroHexChatWeb.LandingLiveTest do
       conn = get(conn, "/")
       body = html_response(conn, 200)
 
-      assert body =~ ~s(data-toggle-target="#mobile-nav")
+      # Navigation on a phone is the shared icon rail, the same contract the
+      # chat's menu bar carries — not a hamburger of the landing's own.
+      assert body =~ ~s(data-mobile-menu-open="navigate")
+      assert body =~ ~s(data-mobile-menu-root)
       assert body =~ ~s(data-show-target="#readme-popup")
       assert body =~ ~s(data-hide-target="#readme-popup")
       assert body =~ ~s(data-modal)

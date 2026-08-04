@@ -21,25 +21,31 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpStatusBar do
   @spec help_status_bar(map()) :: Phoenix.LiveView.Rendered.t()
   def help_status_bar(assigns) do
     ~H"""
+    <%!-- Icons on a phone, labels from md up — the same reading `StatusBarApp`
+          gives the chat. The breadcrumb goes too: the topic pane repeats it
+          under the heading, and spelled out beside the rail it left the header
+          with no room for anything else. No clock either; the desktop tray owns
+          that, as it does on every other shell. --%>
     <.window_status_bar class={@class} data-testid="help-status-bar" {@rest}>
       <%!-- Current topic breadcrumb --%>
-      <.window_status_bar_field grow class="flex items-center gap-retro-2 min-w-0">
+      <.window_status_bar_field
+        grow
+        class="flex items-center gap-retro-2 min-w-0"
+        title={breadcrumb(@selected_topic)}
+      >
         <Icons.icon_notepad class="h-3 w-3 shrink-0" />
-        <span class="truncate text-xs">{breadcrumb(@selected_topic)}</span>
+        <span class="hidden truncate text-xs md:inline">{breadcrumb(@selected_topic)}</span>
       </.window_status_bar_field>
 
       <%!-- Topic count --%>
-      <.window_status_bar_field class="hidden md:flex items-center gap-retro-2 min-w-0">
+      <.window_status_bar_field
+        class="flex items-center gap-retro-2 min-w-0"
+        title={dgettext("help", "%{count} topics", count: @topic_count)}
+      >
         <Icons.icon_btn_channel_list class="h-3 w-3 shrink-0" />
-        <span class="truncate text-xs tabular-nums">
+        <span class="hidden truncate text-xs tabular-nums md:inline">
           {dgettext("help", "%{count} topics", count: @topic_count)}
         </span>
-      </.window_status_bar_field>
-
-      <%!-- Clock --%>
-      <.window_status_bar_field class="flex items-center gap-retro-2 min-w-[64px]">
-        <Icons.icon_clock class="h-3 w-3 shrink-0" />
-        <span id="help-status-clock" phx-hook="ClockHook" class="text-xs font-mono">--:--</span>
       </.window_status_bar_field>
     </.window_status_bar>
     """

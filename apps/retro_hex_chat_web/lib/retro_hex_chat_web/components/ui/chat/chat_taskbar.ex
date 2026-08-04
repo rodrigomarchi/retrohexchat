@@ -67,7 +67,8 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
 
       <:tray>
         <.desktop_tray>
-          <span id="chat-tray-clock" phx-hook="ClockHook" class="font-mono tabular-nums"></span>
+          <span id="chat-tray-clock" data-clock phx-hook="ClockHook" class="font-mono tabular-nums">
+          </span>
         </.desktop_tray>
       </:tray>
     </.taskbar>

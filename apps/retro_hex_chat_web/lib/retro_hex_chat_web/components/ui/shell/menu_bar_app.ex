@@ -54,7 +54,7 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
         on_action={@on_action}
       />
 
-      <.mobile_menu_rail connected={@connected} />
+      <.mobile_menu_rail sections={mobile_sections(@connected)} />
 
       <.menu class="app-menu-bar__desktop-menu" label={dgettext("ui", "File")} disabled={!@connected}>
         <:icon><Icons.icon_folder class="h-4 w-4" /></:icon>
@@ -127,188 +127,40 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
       |> assign(:sections, mobile_sections(assigns.connected))
 
     ~H"""
-    <.menu
-      class="app-menu-bar__mobile-menu"
-      label={dgettext("ui", "Menu")}
-      testid="app-mobile-menu-trigger"
-      trigger_class="app-menu-bar__mobile-trigger shadow-retro-raised bg-surface h-8 w-10 justify-center border-0 px-0 py-0"
-      label_class="sr-only"
+    <.mobile_menu_drawer
+      menu_id={@menu_id}
+      sections={@sections}
+      active_section={@active_section}
     >
-      <:icon><Icons.icon_btn_menu class="h-4 w-4" /></:icon>
-
-      <li class="app-mobile-menu__shell" data-mobile-menu-root role="none">
-        <div class="app-mobile-menu__categories" role="tablist" aria-label={dgettext("ui", "Menu")}>
-          <.mobile_menu_category
-            :for={section <- @sections}
-            menu_id={@menu_id}
-            section={section.id}
-            label={section.label}
-            icon_fn={section.icon_fn}
-            active={@active_section == section.id}
-          />
-        </div>
-
-        <div class="app-mobile-menu__content">
-          <.mobile_menu_panel
-            :if={@connected}
-            menu_id={@menu_id}
-            section="file"
-            active={@active_section == "file"}
-          >
-            <.file_menu_items is_admin={@is_admin} on_action={@on_action} />
-          </.mobile_menu_panel>
-
-          <.mobile_menu_panel
-            :if={@connected}
-            menu_id={@menu_id}
-            section="edit"
-            active={@active_section == "edit"}
-          >
-            <.edit_menu_items on_action={@on_action} />
-          </.mobile_menu_panel>
-
-          <.mobile_menu_panel
-            :if={@connected}
-            menu_id={@menu_id}
-            section="view"
-            active={@active_section == "view"}
-          >
-            <.view_menu_items on_action={@on_action} />
-          </.mobile_menu_panel>
-
-          <.mobile_menu_panel
-            :if={@connected}
-            menu_id={@menu_id}
-            section="tools"
-            active={@active_section == "tools"}
-          >
-            <.tools_menu_items is_admin={@is_admin} on_action={@on_action} />
-          </.mobile_menu_panel>
-
-          <.mobile_menu_panel
-            :if={@connected}
-            menu_id={@menu_id}
-            section="p2p"
-            active={@active_section == "p2p"}
-          >
-            <.p2p_menu_items
-              p2p_active={@p2p_active}
-              p2p_turn_available={@p2p_turn_available}
-              on_action={@on_action}
-            />
-          </.mobile_menu_panel>
-
-          <.mobile_menu_panel
-            :if={@connected}
-            menu_id={@menu_id}
-            section="games"
-            active={@active_section == "games"}
-          >
-            <.games_menu_items arcade_available={@arcade_available} on_action={@on_action} />
-          </.mobile_menu_panel>
-
-          <.mobile_menu_panel
-            menu_id={@menu_id}
-            section="language"
-            active={@active_section == "language"}
-          >
-            <.language_menu_items mode={:app} return_to={@language_return_to} />
-          </.mobile_menu_panel>
-
-          <.mobile_menu_panel menu_id={@menu_id} section="help" active={@active_section == "help"}>
-            <.help_menu_items connected={@connected} on_action={@on_action} />
-          </.mobile_menu_panel>
-        </div>
-      </li>
-    </.menu>
-    """
-  end
-
-  attr :menu_id, :string, required: true
-  attr :section, :string, required: true
-  attr :label, :string, required: true
-  attr :icon_fn, :atom, required: true
-  attr :active, :boolean, default: false
-
-  defp mobile_menu_category(assigns) do
-    ~H"""
-    <button
-      id={mobile_menu_category_id(@menu_id, @section)}
-      type="button"
-      class="app-mobile-menu__category"
-      data-mobile-menu-category={@section}
-      data-active={@active && "true"}
-      data-testid={"app-mobile-menu-category-#{@section}"}
-      aria-selected={to_string(@active)}
-      aria-controls={mobile_menu_panel_id(@menu_id, @section)}
-      role="tab"
-    >
-      <span class="app-mobile-menu__category-icon">
-        {apply(Icons, @icon_fn, [%{class: "h-[14px] w-[14px]"}])}
-      </span>
-      <span class="app-mobile-menu__category-label">{@label}</span>
-    </button>
-    """
-  end
-
-  attr :menu_id, :string, required: true
-  attr :section, :string, required: true
-  attr :active, :boolean, default: false
-  slot :inner_block, required: true
-
-  defp mobile_menu_panel(assigns) do
-    ~H"""
-    <section
-      id={mobile_menu_panel_id(@menu_id, @section)}
-      class={classes(["app-mobile-menu__panel", !@active && "u-hidden"])}
-      data-mobile-menu-section={@section}
-      data-testid={"app-mobile-menu-section-#{@section}"}
-      aria-labelledby={mobile_menu_category_id(@menu_id, @section)}
-      role="tabpanel"
-    >
-      <ul class="list-none m-0 p-0">
-        {render_slot(@inner_block)}
-      </ul>
-    </section>
-    """
-  end
-
-  defp mobile_menu_category_id(menu_id, section), do: "#{menu_id}-mobile-menu-category-#{section}"
-  defp mobile_menu_panel_id(menu_id, section), do: "#{menu_id}-mobile-menu-section-#{section}"
-
-  # The stacked shell's icon rail — one button per menu, spanning the header.
-  # It is what a phone taps instead of the desktop's textual strip: every menu
-  # keeps a place of its own, and the space a lone hamburger left empty becomes
-  # the touch target. `MenuBarHook` reads `data-mobile-menu-open` to open the
-  # shared mobile dropdown already on that section, so the rail carries no
-  # dropdown of its own.
-  attr :connected, :boolean, default: false
-
-  defp mobile_menu_rail(assigns) do
-    assigns = assign(assigns, :sections, mobile_sections(assigns.connected))
-
-    ~H"""
-    <div
-      class="app-menu-bar__mobile-rail"
-      role="group"
-      aria-label={dgettext("ui", "Menu")}
-      data-testid="app-mobile-menu-rail"
-    >
-      <button
-        :for={section <- @sections}
-        type="button"
-        class="app-menu-bar__mobile-rail-button"
-        data-mobile-menu-open={section.id}
-        data-active="false"
-        data-testid={"app-mobile-menu-rail-#{section.id}"}
-        aria-haspopup="true"
-        aria-expanded="false"
-        aria-label={section.label}
-        title={section.label}
-      >
-        {apply(Icons, section.icon_fn, [%{class: "h-4 w-4"}])}
-      </button>
-    </div>
+      <:section :if={@connected} id="file">
+        <.file_menu_items is_admin={@is_admin} on_action={@on_action} />
+      </:section>
+      <:section :if={@connected} id="edit">
+        <.edit_menu_items on_action={@on_action} />
+      </:section>
+      <:section :if={@connected} id="view">
+        <.view_menu_items on_action={@on_action} />
+      </:section>
+      <:section :if={@connected} id="tools">
+        <.tools_menu_items is_admin={@is_admin} on_action={@on_action} />
+      </:section>
+      <:section :if={@connected} id="p2p">
+        <.p2p_menu_items
+          p2p_active={@p2p_active}
+          p2p_turn_available={@p2p_turn_available}
+          on_action={@on_action}
+        />
+      </:section>
+      <:section :if={@connected} id="games">
+        <.games_menu_items arcade_available={@arcade_available} on_action={@on_action} />
+      </:section>
+      <:section id="language">
+        <.language_menu_items mode={:app} return_to={@language_return_to} />
+      </:section>
+      <:section id="help">
+        <.help_menu_items connected={@connected} on_action={@on_action} />
+      </:section>
+    </.mobile_menu_drawer>
     """
   end
 

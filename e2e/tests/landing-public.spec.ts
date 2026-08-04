@@ -73,6 +73,10 @@ test.describe("Landing public pages", () => {
     expect(failures).toEqual([]);
   });
 
+  // Navigation on a phone runs through the same icon rail the chat uses — the
+  // bespoke hamburger and its #mobile-nav drawer are gone, and with them the
+  // last piece of chrome that was the landing's alone. Chrome parity across the
+  // shells is shell-chrome-parity.spec.ts; this covers landing navigation.
   test("mobile navigation opens and links to app connect flow", async ({
     page,
   }) => {
@@ -81,22 +85,25 @@ test.describe("Landing public pages", () => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/");
 
-    const menuButton = page.locator('button[aria-controls="mobile-nav"]');
-    const mobileNav = page.locator("#mobile-nav");
+    const navigate = page.getByTestId("app-mobile-menu-rail-navigate");
+    const drawer = page.getByTestId("app-mobile-menu-section-navigate");
 
     await shot(page, "landing-mobile");
 
-    await expect(mobileNav).toBeHidden();
-    await menuButton.click();
-    await expect(menuButton).toHaveAttribute("aria-expanded", "true");
-    await expect(mobileNav).toBeVisible();
+    await expect(drawer).toBeHidden();
+    await navigate.click();
+    await expect(navigate).toHaveAttribute("aria-expanded", "true");
+    await expect(drawer).toBeVisible();
 
-    await mobileNav.locator('a[href="/features"]').click();
+    await drawer.locator('a[href="/features"]').click();
     await expect(page).toHaveURL(/\/features$/);
     await expect(page.locator("#features-heading")).toBeVisible();
 
+    // The way into the app is the Start menu, the same entry every other shell
+    // names — not a CTA the landing alone used to carry in its header.
     await page.goto("/");
-    await page.locator('a[href="/connect"]').first().click();
+    await page.locator("[data-window-start]").click();
+    await page.locator('#landing-start-menu a[href="/connect"]').click();
     await expect(page).toHaveURL(/\/connect$/);
     await expect(page.locator("#nickname")).toBeVisible();
     await expect(page.locator('script[src*="/assets/js/app"]')).toHaveCount(1);

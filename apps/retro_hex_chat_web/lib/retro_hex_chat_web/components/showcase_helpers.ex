@@ -117,6 +117,18 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
             <.taskbar_button window="navigator" label={dgettext("showcase", "Components")}>
               <:icon><Icons.icon_folder class="w-3 h-3" /></:icon>
             </.taskbar_button>
+
+            <:tray>
+              <.desktop_tray>
+                <span
+                  id="showcase-tray-clock"
+                  data-clock
+                  phx-hook="ClockHook"
+                  class="font-mono tabular-nums"
+                >
+                </span>
+              </.desktop_tray>
+            </:tray>
           </.taskbar>
         </:taskbar>
       </.desktop>

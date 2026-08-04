@@ -45,6 +45,7 @@ defmodule RetroHexChatWeb.Components.UI.MenuBar do
       id={@id}
       class={classes(["flex items-center shrink-0 select-none", @class])}
       role="menubar"
+      data-menubar-root
       data-testid={@testid}
       {@rest}
     >
@@ -157,7 +158,123 @@ defmodule RetroHexChatWeb.Components.UI.MenuBar do
     """
   end
 
+  @doc """
+  Renders the stacked shell's icon rail — one button per menu, spanning the
+  header.
+
+  This is what a phone taps instead of the desktop's textual strip: every menu
+  keeps a place of its own, and the space a lone hamburger left empty becomes
+  the touch target. The engine reads `data-mobile-menu-open` to open the shared
+  drawer already on that section, so the rail carries no dropdown of its own —
+  pair it with `mobile_menu_drawer/1` over the same `sections`.
+  """
+  attr :sections, :list,
+    required: true,
+    doc: "%{id, label, icon_fn} maps, in the order the rail shows them"
+
+  attr :class, :any, default: nil
+
+  @spec mobile_menu_rail(map()) :: Phoenix.LiveView.Rendered.t()
+  def mobile_menu_rail(assigns) do
+    ~H"""
+    <div
+      class={classes(["app-menu-bar__mobile-rail", @class])}
+      role="group"
+      aria-label={dgettext("ui", "Menu")}
+      data-testid="app-mobile-menu-rail"
+    >
+      <button
+        :for={section <- @sections}
+        type="button"
+        class="app-menu-bar__mobile-rail-button"
+        data-mobile-menu-open={section.id}
+        data-active="false"
+        data-testid={"app-mobile-menu-rail-#{section.id}"}
+        aria-haspopup="true"
+        aria-expanded="false"
+        aria-label={section.label}
+        title={section.label}
+      >
+        {apply(Icons, section.icon_fn, [%{class: "h-4 w-4"}])}
+      </button>
+    </div>
+    """
+  end
+
+  @doc """
+  Renders the one drawer every rail button opens, showing a section at a time.
+
+  A drill-down rather than a stack of menus: a column of section tabs beside the
+  items of whichever section is current. The rail, the tab column and this panel
+  all name sections by the same id, which is how tapping any of the three lands
+  on the same place.
+
+  Pass one `:section` slot per entry in `sections`, matched by `id`.
+  """
+  attr :menu_id, :string, required: true
+  attr :sections, :list, required: true, doc: "same list the paired rail renders"
+  attr :active_section, :string, required: true
+  attr :class, :any, default: nil
+
+  slot :section, doc: "items for one section" do
+    attr :id, :string, required: true
+  end
+
+  @spec mobile_menu_drawer(map()) :: Phoenix.LiveView.Rendered.t()
+  def mobile_menu_drawer(assigns) do
+    ~H"""
+    <.menu
+      class={classes(["app-menu-bar__mobile-menu", @class])}
+      label={dgettext("ui", "Menu")}
+      testid="app-mobile-menu-trigger"
+      trigger_class="app-menu-bar__mobile-trigger shadow-retro-raised bg-surface h-8 w-10 justify-center border-0 px-0 py-0"
+      label_class="sr-only"
+    >
+      <:icon><Icons.icon_btn_menu class="h-4 w-4" /></:icon>
+
+      <li class="app-mobile-menu__shell" data-mobile-menu-root role="none">
+        <div class="app-mobile-menu__categories" role="tablist" aria-label={dgettext("ui", "Menu")}>
+          <button
+            :for={section <- @sections}
+            id={mobile_menu_category_id(@menu_id, section.id)}
+            type="button"
+            class="app-mobile-menu__category"
+            data-mobile-menu-category={section.id}
+            data-active={@active_section == section.id && "true"}
+            data-testid={"app-mobile-menu-category-#{section.id}"}
+            aria-selected={to_string(@active_section == section.id)}
+            aria-controls={mobile_menu_panel_id(@menu_id, section.id)}
+            role="tab"
+          >
+            <span class="app-mobile-menu__category-icon">
+              {apply(Icons, section.icon_fn, [%{class: "h-[14px] w-[14px]"}])}
+            </span>
+            <span class="app-mobile-menu__category-label">{section.label}</span>
+          </button>
+        </div>
+
+        <div class="app-mobile-menu__content">
+          <section
+            :for={panel <- @section}
+            id={mobile_menu_panel_id(@menu_id, panel.id)}
+            class={classes(["app-mobile-menu__panel", @active_section != panel.id && "u-hidden"])}
+            data-mobile-menu-section={panel.id}
+            data-testid={"app-mobile-menu-section-#{panel.id}"}
+            aria-labelledby={mobile_menu_category_id(@menu_id, panel.id)}
+            role="tabpanel"
+          >
+            <ul class="list-none m-0 p-0">{render_slot(panel)}</ul>
+          </section>
+        </div>
+      </li>
+    </.menu>
+    """
+  end
+
   # ── Private helpers ─────────────────────────────────
+
+  defp mobile_menu_category_id(menu_id, section), do: "#{menu_id}-mobile-menu-category-#{section}"
+  defp mobile_menu_panel_id(menu_id, section), do: "#{menu_id}-mobile-menu-section-#{section}"
 
   attr :label, :string, required: true
   attr :disabled, :boolean, default: false

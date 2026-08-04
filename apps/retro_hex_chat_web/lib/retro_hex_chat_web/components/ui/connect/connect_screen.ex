@@ -857,7 +857,8 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
       </.taskbar_button>
       <:tray>
         <.desktop_tray>
-          <span id="connect-tray-clock" phx-hook="ClockHook" class="font-mono tabular-nums"></span>
+          <span id="connect-tray-clock" data-clock phx-hook="ClockHook" class="font-mono tabular-nums">
+          </span>
         </.desktop_tray>
       </:tray>
     </.taskbar>

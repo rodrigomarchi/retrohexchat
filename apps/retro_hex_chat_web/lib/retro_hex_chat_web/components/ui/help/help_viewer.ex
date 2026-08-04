@@ -375,6 +375,13 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
       <.taskbar_button window="help" label={dgettext("help", "Help")}>
         <:icon><Icons.icon_notepad class="h-4 w-4" /></:icon>
       </.taskbar_button>
+
+      <:tray>
+        <.desktop_tray>
+          <span id="help-tray-clock" data-clock phx-hook="ClockHook" class="font-mono tabular-nums">
+          </span>
+        </.desktop_tray>
+      </:tray>
     </.taskbar>
     """
   end
