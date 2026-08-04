@@ -28,7 +28,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Channels.Server
-  alias RetroHexChat.Chat.{Policy, Queries, Service, UnreadTracker}
+  alias RetroHexChat.Chat.{Attachments, Policy, Queries, Service, UnreadTracker}
   alias RetroHexChat.Commands.Parser
   alias RetroHexChat.Observability
   alias RetroHexChat.Page
@@ -426,34 +426,70 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   # applied the action/notice prefix, updated its own history and reset itself;
   # here we run the privileged Parser/CommandDispatch work. `reply_to` is carried
   # in the message because it is now composer-owned.
-  @spec dispatch_composer_input(Phoenix.LiveView.Socket.t(), String.t(), map() | nil, String.t()) ::
+  @spec dispatch_composer_input(
+          Phoenix.LiveView.Socket.t(),
+          String.t(),
+          map() | nil,
+          String.t(),
+          [integer()]
+        ) ::
           Phoenix.LiveView.Socket.t()
-  def dispatch_composer_input(socket, text, reply_to, content_format \\ "irc") do
+  def dispatch_composer_input(
+        socket,
+        text,
+        reply_to,
+        content_format \\ "irc",
+        attachment_ids \\ []
+      ) do
     session = socket.assigns.session
     parsed = Parser.parse(text)
 
     Observability.span(
       [:retro_hex_chat, :chat, :composer, :dispatch],
-      composer_metadata(parsed, text, reply_to),
+      composer_metadata(parsed, text, reply_to, attachment_ids),
       fn ->
         socket
-        |> dispatch_parsed_input(session, parsed, reply_to, content_format)
+        |> dispatch_parsed_input(session, parsed, reply_to, content_format, attachment_ids)
         |> reset_activity()
       end
     )
   end
 
-  defp dispatch_parsed_input(socket, session, {:message, text}, reply_to, content_format) do
+  defp dispatch_parsed_input(
+         socket,
+         session,
+         {:message, text},
+         reply_to,
+         content_format,
+         attachment_ids
+       ) do
     new_session = Session.set_last_message_at(session, DateTime.utc_now())
 
     socket
     |> assign(session: new_session)
-    |> ChatLive.CommandDispatch.send_plain_message(new_session, text, reply_to, content_format)
+    |> ChatLive.CommandDispatch.send_plain_message(
+      new_session,
+      text,
+      reply_to,
+      content_format,
+      attachment_ids
+    )
     |> push_event("tip_trigger", %{tip: "first_message"})
   end
 
-  defp dispatch_parsed_input(socket, session, {:command, name, args}, _reply_to, _content_format) do
+  defp dispatch_parsed_input(
+         socket,
+         session,
+         {:command, name, args},
+         _reply_to,
+         _content_format,
+         []
+       ) do
     ChatLive.CommandDispatch.dispatch_command(socket, session, name, args)
+  end
+
+  defp dispatch_parsed_input(socket, _session, {:command, _name, _args}, _reply_to, _format, _ids) do
+    error_event(socket, dgettext("chat", "Attachments can only be sent with messages"))
   end
 
   @spec submit_composer_edit(Phoenix.LiveView.Socket.t(), String.t(), String.t() | nil) ::
@@ -512,11 +548,12 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   defp parse_pending_message_id("pending_" <> _ = id), do: {:ok, id}
   defp parse_pending_message_id(_id), do: :error
 
-  defp composer_metadata(parsed, text, reply_to) do
+  defp composer_metadata(parsed, text, reply_to, attachment_ids) do
     %{
       input_kind: parsed_kind(parsed),
       message_size_bytes: byte_size(text),
-      has_reply: not is_nil(reply_to)
+      has_reply: not is_nil(reply_to),
+      has_attachments: attachment_ids != []
     }
   end
 
@@ -640,7 +677,8 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
       content: msg.content,
       content_format: content_format(msg),
       type: MessageHelpers.stream_type(msg.type),
-      timestamp: msg.inserted_at
+      timestamp: msg.inserted_at,
+      attachments: attachment_payloads(msg)
     }
     |> maybe_add_field(msg, :reply_to_id)
     |> maybe_add_field(msg, :reply_to_author)
@@ -656,6 +694,24 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
       value -> Map.put(map, key, value)
     end
   end
+
+  defp attachment_payloads(%{attachments: %Ecto.Association.NotLoaded{}}), do: []
+
+  defp attachment_payloads(%{attachments: attachments}) when is_list(attachments) do
+    attachments
+    |> Enum.map(&attachment_payload/1)
+    |> Enum.reject(&is_nil/1)
+  end
+
+  defp attachment_payloads(_message), do: []
+
+  defp attachment_payload(%{file: %Ecto.Association.NotLoaded{}}), do: nil
+
+  defp attachment_payload(%{file: file} = attachment) do
+    Attachments.payload(%{attachment | file: file})
+  end
+
+  defp attachment_payload(%{id: _id} = attachment), do: attachment
 
   defp content_format(source) do
     Map.get(source, :content_format) || "irc"

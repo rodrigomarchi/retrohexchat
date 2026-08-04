@@ -31,6 +31,53 @@ services:
       timeout: 3s
       retries: 5
 
+  garage:
+    image: dxflrs/garage:v2.3.0
+    command: /garage server --single-node --default-bucket
+    environment:
+      GARAGE_DEFAULT_ACCESS_KEY: "${CHAT_UPLOAD_S3_ACCESS_KEY_ID:-GKLOCALRETROHEXCHAT000000000000}"
+      GARAGE_DEFAULT_SECRET_KEY: "${CHAT_UPLOAD_S3_SECRET_ACCESS_KEY:-local-retrohexchat-garage-secret-key-0000000000000000000000000000}"
+      GARAGE_DEFAULT_BUCKET: "${CHAT_UPLOAD_S3_BUCKET:-retrohexchat-uploads}"
+    ports:
+      - "${GARAGE_S3_PORT:-3900}:3900"
+      - "${GARAGE_RPC_PORT:-3901}:3901"
+      - "${GARAGE_WEB_PORT:-3902}:3902"
+      - "${GARAGE_ADMIN_PORT:-3903}:3903"
+    volumes:
+      - ./config/garage.dev.toml:/etc/garage.toml:ro
+      - garage_meta:/var/lib/garage/meta
+      - garage_data:/var/lib/garage/data
+    healthcheck:
+      test: ["CMD", "/garage", "status"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  garage_init:
+    image: amazon/aws-cli:2.28.12
+    depends_on:
+      garage:
+        condition: service_healthy
+    entrypoint: ["aws"]
+    environment:
+      AWS_ACCESS_KEY_ID: "${CHAT_UPLOAD_S3_ACCESS_KEY_ID:-GKLOCALRETROHEXCHAT000000000000}"
+      AWS_SECRET_ACCESS_KEY: "${CHAT_UPLOAD_S3_SECRET_ACCESS_KEY:-local-retrohexchat-garage-secret-key-0000000000000000000000000000}"
+      AWS_DEFAULT_REGION: "${CHAT_UPLOAD_S3_REGION:-garage}"
+      CHAT_UPLOAD_S3_BUCKET: "${CHAT_UPLOAD_S3_BUCKET:-retrohexchat-uploads}"
+    volumes:
+      - ./config/garage-cors.dev.json:/garage-cors.json:ro
+    command:
+      - --endpoint-url
+      - http://garage:3900
+      - s3api
+      - put-bucket-cors
+      - --bucket
+      - "${CHAT_UPLOAD_S3_BUCKET:-retrohexchat-uploads}"
+      - --cors-configuration
+      - file:///garage-cors.json
+
 volumes:
   pgdata_dev:
   pgdata_test:
+  garage_meta:
+  garage_data:

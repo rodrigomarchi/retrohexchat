@@ -132,10 +132,18 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
           Session.t(),
           String.t(),
           map() | nil,
-          String.t()
+          String.t(),
+          [integer()]
         ) ::
           Phoenix.LiveView.Socket.t()
-  def send_plain_message(socket, session, text, reply_to \\ nil, content_format \\ "irc") do
+  def send_plain_message(
+        socket,
+        session,
+        text,
+        reply_to \\ nil,
+        content_format \\ "irc",
+        attachment_ids \\ []
+      ) do
     cond do
       socket.assigns.show_status_tab ->
         push_status_message(
@@ -145,10 +153,10 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
         )
 
       session.active_pm ->
-        send_pm_message(socket, session, text, reply_to, content_format)
+        send_pm_message(socket, session, text, reply_to, content_format, attachment_ids)
 
       session.active_channel ->
-        send_channel_message(socket, session, text, reply_to, content_format)
+        send_channel_message(socket, session, text, reply_to, content_format, attachment_ids)
 
       true ->
         socket
@@ -182,18 +190,19 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
 
   # ── Private: message sending ─────────────────────────────
 
-  defp send_pm_message(socket, session, text, reply_to, content_format) do
+  defp send_pm_message(socket, session, text, reply_to, content_format, attachment_ids) do
     if GlobalMutes.muted?(session.nickname) do
       error_event(socket, dgettext("chat", "You are muted by an administrator"))
     else
-      do_send_pm_message(socket, session, text, reply_to, content_format)
+      do_send_pm_message(socket, session, text, reply_to, content_format, attachment_ids)
     end
   end
 
-  defp do_send_pm_message(socket, session, text, reply_to, content_format) do
+  defp do_send_pm_message(socket, session, text, reply_to, content_format, attachment_ids) do
     opts =
       [content_format: content_format]
       |> maybe_put_reply_to(reply_to)
+      |> Keyword.put(:attachment_ids, attachment_ids)
 
     target = session.active_pm
 
@@ -206,11 +215,11 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
     end
   end
 
-  defp send_channel_message(socket, session, text, reply_to, content_format) do
+  defp send_channel_message(socket, session, text, reply_to, content_format, attachment_ids) do
     if GlobalMutes.muted?(session.nickname) do
       error_event(socket, dgettext("chat", "You are muted by an administrator"))
     else
-      do_send_channel_message(socket, session, text, reply_to, content_format)
+      do_send_channel_message(socket, session, text, reply_to, content_format, attachment_ids)
     end
   end
 
@@ -220,10 +229,11 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
   # the row to the tail, so rapid sends (paste) keep their order. `pending`
   # status is stripped client-side by `message_confirmed`; the echo also clears
   # it when it re-renders the row with the decorated payload.
-  defp do_send_channel_message(socket, session, text, reply_to, content_format) do
+  defp do_send_channel_message(socket, session, text, reply_to, content_format, attachment_ids) do
     opts =
       [content_format: content_format]
       |> maybe_put_reply_to(reply_to)
+      |> Keyword.put(:attachment_ids, attachment_ids)
 
     case Server.send_message(session.active_channel, session.nickname, text, opts) do
       {:ok, id} ->

@@ -41,6 +41,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatInput do
   attr :max_length, :integer, default: 1000
   attr :name, :string, default: "message", doc: "Textarea field name"
   attr :disabled, :boolean, default: false
+  attr :can_send_empty, :boolean, default: false
   attr :autofocus, :boolean, default: false
   attr :show_toolbar, :boolean, default: true
   attr :notice_target, :string, default: nil
@@ -111,6 +112,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatInput do
       </div>
       <form
         phx-submit={@on_submit}
+        phx-change={@on_change}
         phx-target={@target}
         class="flex items-center gap-1 p-[2px] bg-surface"
         data-testid="chat-input-form"
@@ -151,7 +153,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatInput do
         </div>
         <.button
           type="submit"
-          disabled={@disabled || @char_count == 0}
+          disabled={@disabled || (@char_count == 0 && not @can_send_empty)}
           aria-label={@send_label}
           title={@send_label}
           data-testid="chat-input-send"

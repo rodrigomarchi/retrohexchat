@@ -46,10 +46,12 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
   import RetroHexChatWeb.Components.UI.TypingIndicator
   import Phoenix.HTML, only: [raw: 1]
 
+  alias RetroHexChat.Chat.Attachments
   alias RetroHexChat.Chat.InputHistory
   alias RetroHexChat.Commands.{Autocomplete, CommandSyntax, Registry}
   alias RetroHexChatWeb.App.ChatHelpers
   alias RetroHexChatWeb.ChatLive.Components.EmojiPickerDialog
+  alias RetroHexChatWeb.Icons
 
   @id "composer"
 
@@ -114,6 +116,13 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
      socket
      |> assign(:id, @id)
      |> assign(@owned_defaults)
+     |> allow_upload(:attachments,
+       accept: :any,
+       auto_upload: true,
+       external: &presign_attachment_upload/2,
+       max_entries: 5,
+       max_file_size: Attachments.max_size_bytes()
+     )
      |> assign(
        nickname: "",
        channel_users: [],
@@ -200,7 +209,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
     original_format = socket.assigns.edit_original_content_format || socket.assigns.content_format
 
     {:ok,
-     assign(socket,
+     socket
+     |> cancel_all_attachment_uploads()
+     |> assign(
        edit_original_input: original_input,
        edit_original_content_format: original_format,
        input: content,
@@ -293,6 +304,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
     {:noreply, assign(socket, input: input, input_error: nil)}
   end
 
+  def handle_event("input_changed", _params, socket) do
+    {:noreply, assign(socket, input_error: nil)}
+  end
+
   def handle_event("set_content_format", %{"format" => format}, socket) do
     {:noreply,
      assign(socket, content_format: normalize_content_format(format), composer_view: :write)}
@@ -311,8 +326,18 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
      |> push_event("clear_input", %{})}
   end
 
-  def handle_event("send_input", %{"input" => ""}, socket) do
-    {:noreply, handle_empty_submit(socket)}
+  def handle_event("cancel_attachment_upload", %{"ref" => ref}, socket) do
+    {:noreply, cancel_upload(socket, :attachments, ref)}
+  end
+
+  def handle_event("send_input", %{"input" => ""} = params, socket) do
+    content_format = submitted_content_format(socket, params)
+
+    if attachment_selected?(socket) and is_nil(socket.assigns.edit_mode_message_id) do
+      {:noreply, dispatch_and_reset(socket, "", content_format)}
+    else
+      {:noreply, handle_empty_submit(socket)}
+    end
   end
 
   def handle_event("send_input", %{"input" => input} = params, socket) do
@@ -391,8 +416,21 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
             wrapper_hook="CharCounterHook"
             input_history={@command_history}
             recent_commands={@recent_commands}
+            can_send_empty={attachment_selected?(@uploads.attachments)}
             autofocus
           >
+            <:toolbar_buttons :if={is_nil(@edit_mode_message_id)}>
+              <label
+                for={@uploads.attachments.ref}
+                class="inline-flex h-8 w-8 cursor-pointer items-center justify-center border border-border bg-surface text-foreground shadow-retro-button hover:bg-muted"
+                title={dgettext("chat", "Attach file")}
+                aria-label={dgettext("chat", "Attach file")}
+                data-testid="chat-attachment-button"
+              >
+                <Icons.icon_choose_file class="w-4 h-4" />
+              </label>
+              <.live_file_input upload={@uploads.attachments} class="sr-only" />
+            </:toolbar_buttons>
             <:toolbar_buttons :if={@capabilities.formatting_toolbar}>
               <.formatting_toolbar
                 content_format={@content_format}
@@ -407,6 +445,57 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
               />
             </:toolbar_buttons>
           </.chat_input>
+
+          <div
+            :if={attachment_selected?(@uploads.attachments)}
+            class="border-x border-b border-border bg-surface px-1 py-1 text-xs"
+            data-testid="chat-attachment-pending"
+          >
+            <div
+              :for={entry <- @uploads.attachments.entries}
+              class="flex min-h-7 items-center gap-1"
+              data-testid="chat-attachment-entry"
+            >
+              <Icons.icon_file_send class="h-4 w-4 shrink-0" />
+              <span class="min-w-0 flex-1 truncate font-mono" title={entry.client_name}>
+                {entry.client_name}
+              </span>
+              <span class="shrink-0 text-muted-foreground">
+                {format_bytes(entry.client_size)}
+              </span>
+              <span class="w-10 shrink-0 text-right text-muted-foreground">
+                {entry.progress}%
+              </span>
+              <button
+                type="button"
+                class="inline-flex h-6 w-6 shrink-0 items-center justify-center border border-border bg-surface shadow-retro-button hover:bg-muted"
+                title={dgettext("chat", "Remove attachment")}
+                aria-label={dgettext("chat", "Remove attachment")}
+                phx-click="cancel_attachment_upload"
+                phx-value-ref={entry.ref}
+                phx-target={@myself}
+              >
+                <Icons.icon_close class="h-4 w-4" />
+              </button>
+            </div>
+            <p
+              :for={err <- upload_errors(@uploads.attachments)}
+              class="px-1 text-destructive"
+              data-testid="chat-attachment-error"
+            >
+              {upload_error_to_string(err)}
+            </p>
+            <p
+              :for={entry <- @uploads.attachments.entries}
+              :if={upload_errors(@uploads.attachments, entry) != []}
+              class="px-1 text-destructive"
+              data-testid="chat-attachment-entry-error"
+            >
+              {entry.client_name}: {entry
+              |> then(&upload_errors(@uploads.attachments, &1))
+              |> Enum.map_join(", ", &upload_error_to_string/1)}
+            </p>
+          </div>
         </div>
         <%!-- Composer-owned hook: intercepts multi-line paste on #chat-input and
               pushes `paste_lines` to the root LiveView (handled by core_events,
@@ -424,36 +513,52 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
     submitted = input_for_mode(socket, input)
     reply_to = socket.assigns.reply_to
 
-    current_history =
-      InputHistory.from_lists(socket.assigns.command_history, socket.assigns.recent_commands)
+    with {:ok, attachment_ids} <- consume_attachment_ids(socket) do
+      current_history =
+        InputHistory.from_lists(socket.assigns.command_history, socket.assigns.recent_commands)
 
-    input_history = InputHistory.record_submission(current_history, submitted)
-    history = InputHistory.entries(input_history)
-    recent_commands = InputHistory.recent_commands(input_history)
+      input_history = InputHistory.record_submission(current_history, submitted)
+      history = InputHistory.entries(input_history)
+      recent_commands = InputHistory.recent_commands(input_history)
 
-    if socket.assigns.notice_target, do: send(self(), {:composer_notice_active, false})
+      if socket.assigns.notice_target, do: send(self(), {:composer_notice_active, false})
 
-    if input_history != current_history,
-      do: send(self(), {:composer_input_history, input_history})
+      if input_history != current_history,
+        do: send(self(), {:composer_input_history, input_history})
 
-    send(self(), {:composer_dispatch, submitted, reply_to, content_format})
+      send(self(), {:composer_dispatch, submitted, reply_to, content_format, attachment_ids})
 
-    socket
-    |> assign(
-      input: "",
-      notice_target: nil,
-      input_error: nil,
-      reply_to: nil,
-      command_history: history,
-      recent_commands: recent_commands,
-      history_index: -1,
-      autocomplete_visible: false,
-      autocomplete_results: [],
-      autocomplete_selected: 0,
-      syntax_tooltip: nil,
-      composer_view: :write
-    )
-    |> push_event("clear_input", %{})
+      socket
+      |> assign(
+        input: "",
+        notice_target: nil,
+        input_error: nil,
+        reply_to: nil,
+        command_history: history,
+        recent_commands: recent_commands,
+        history_index: -1,
+        autocomplete_visible: false,
+        autocomplete_results: [],
+        autocomplete_selected: 0,
+        syntax_tooltip: nil,
+        composer_view: :write
+      )
+      |> push_event("clear_input", %{})
+    else
+      {:error, reason} -> assign(socket, input_error: reason)
+    end
+  end
+
+  defp consume_attachment_ids(socket) do
+    attachment_ids =
+      consume_uploaded_entries(socket, :attachments, fn meta, _entry ->
+        {:ok, Map.get(meta, :file_id)}
+      end)
+
+    case Attachments.confirm_uploaded_files(attachment_ids, socket.assigns.nickname) do
+      {:ok, _uploaded_files} -> {:ok, attachment_ids}
+      {:error, _reason} -> {:error, dgettext("chat", "Attachment upload could not be confirmed")}
+    end
   end
 
   defp maybe_seed_input_history(socket, input_history) do
@@ -478,6 +583,76 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
 
       true ->
         socket
+    end
+  end
+
+  defp cancel_all_attachment_uploads(socket) do
+    Enum.reduce(socket.assigns.uploads.attachments.entries, socket, fn entry, acc ->
+      cancel_upload(acc, :attachments, entry.ref)
+    end)
+  end
+
+  defp attachment_selected?(socket) when is_map(socket) and is_map_key(socket, :assigns) do
+    attachment_selected?(socket.assigns.uploads.attachments)
+  end
+
+  defp attachment_selected?(upload) do
+    upload.entries != []
+  end
+
+  defp upload_directory_path(socket) do
+    owner = socket.assigns.nickname
+
+    case socket.assigns.session do
+      %{active_channel: channel} when is_binary(channel) and channel != "" ->
+        Attachments.directory_path_for(:channel, channel, owner)
+
+      %{active_pm: peer} when is_binary(peer) and peer != "" ->
+        Attachments.directory_path_for(:private, peer, owner)
+
+      _ ->
+        Attachments.directory_path_for(:uploads, "composer", owner)
+    end
+  end
+
+  defp upload_store_error(reason) when is_binary(reason), do: reason
+
+  defp upload_store_error(reason) do
+    dgettext("chat", "Could not store attachment: %{reason}", reason: inspect(reason))
+  end
+
+  defp upload_error_to_string(:too_large) do
+    dgettext("chat", "Attachment exceeds the %{mb} MB limit",
+      mb: Integer.to_string(div(Attachments.max_size_bytes(), 1_024 * 1_024))
+    )
+  end
+
+  defp upload_error_to_string(:too_many_files), do: dgettext("chat", "Too many attachments")
+  defp upload_error_to_string(:not_accepted), do: dgettext("chat", "Attachment type not accepted")
+  defp upload_error_to_string(_error), do: dgettext("chat", "Attachment upload failed")
+
+  defp format_bytes(bytes) when is_integer(bytes) and bytes >= 1_048_576 do
+    "#{Float.round(bytes / 1_048_576, 1)} MB"
+  end
+
+  defp format_bytes(bytes) when is_integer(bytes) and bytes >= 1024 do
+    "#{Float.round(bytes / 1024, 1)} KB"
+  end
+
+  defp format_bytes(bytes) when is_integer(bytes), do: "#{bytes} B"
+  defp format_bytes(_bytes), do: "0 B"
+
+  defp presign_attachment_upload(entry, socket) do
+    metadata = %{
+      filename: entry.client_name,
+      content_type: entry.client_type,
+      byte_size: entry.client_size,
+      directory_path: upload_directory_path(socket)
+    }
+
+    case Attachments.prepare_direct_upload(socket.assigns.nickname, metadata) do
+      {:ok, _uploaded_file, meta} -> {:ok, meta, socket}
+      {:error, reason} -> {:error, %{reason: upload_store_error(reason)}, socket}
     end
   end
 

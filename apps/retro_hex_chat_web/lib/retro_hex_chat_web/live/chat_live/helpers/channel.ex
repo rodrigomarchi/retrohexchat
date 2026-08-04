@@ -12,8 +12,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Channels.Server
-  alias RetroHexChat.Chat.Queries
-  alias RetroHexChat.Chat.UnreadTracker
+  alias RetroHexChat.Chat.{Attachments, Queries, UnreadTracker}
   alias RetroHexChat.Page
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
@@ -433,7 +432,8 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
       content: msg.content,
       content_format: content_format(msg),
       type: Messages.stream_type(msg.type),
-      timestamp: msg.inserted_at
+      timestamp: msg.inserted_at,
+      attachments: attachment_payloads(msg)
     }
 
     base
@@ -451,6 +451,24 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
       value -> Map.put(map, key, value)
     end
   end
+
+  defp attachment_payloads(%{attachments: %Ecto.Association.NotLoaded{}}), do: []
+
+  defp attachment_payloads(%{attachments: attachments}) when is_list(attachments) do
+    attachments
+    |> Enum.map(&attachment_payload/1)
+    |> Enum.reject(&is_nil/1)
+  end
+
+  defp attachment_payloads(_message), do: []
+
+  defp attachment_payload(%{file: %Ecto.Association.NotLoaded{}}), do: nil
+
+  defp attachment_payload(%{file: file} = attachment) do
+    Attachments.payload(%{attachment | file: file})
+  end
+
+  defp attachment_payload(%{id: _id} = attachment), do: attachment
 
   defp content_format(source) do
     Map.get(source, :content_format) || "irc"

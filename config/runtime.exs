@@ -129,6 +129,48 @@ config :retro_hex_chat,
   file_transfer_chunk_size_kb:
     String.to_integer(System.get_env("FILE_TRANSFER_CHUNK_SIZE_KB") || "64")
 
+chat_upload_s3_endpoint =
+  System.get_env("CHAT_UPLOAD_S3_ENDPOINT", "http://localhost:3900")
+  |> URI.parse()
+
+chat_upload_s3_scheme = (chat_upload_s3_endpoint.scheme || "http") <> "://"
+chat_upload_s3_host = chat_upload_s3_endpoint.host || "localhost"
+
+chat_upload_s3_port =
+  chat_upload_s3_endpoint.port ||
+    if(chat_upload_s3_endpoint.scheme == "https", do: 443, else: 80)
+
+chat_upload_s3_region = System.get_env("CHAT_UPLOAD_S3_REGION", "garage")
+
+chat_upload_s3_access_key =
+  System.get_env("CHAT_UPLOAD_S3_ACCESS_KEY_ID", "GKLOCALRETROHEXCHAT000000000000")
+
+chat_upload_s3_secret_key =
+  System.get_env(
+    "CHAT_UPLOAD_S3_SECRET_ACCESS_KEY",
+    "local-retrohexchat-garage-secret-key-0000000000000000000000000000"
+  )
+
+config :retro_hex_chat, :chat_uploads,
+  storage:
+    if(config_env() == :test,
+      do: RetroHexChat.Chat.Attachments.TestStorage,
+      else: RetroHexChat.Chat.Attachments.S3Storage
+    ),
+  max_size_mb: String.to_integer(System.get_env("CHAT_UPLOAD_MAX_SIZE_MB") || "25"),
+  bucket: System.get_env("CHAT_UPLOAD_S3_BUCKET", "retrohexchat-uploads")
+
+config :ex_aws,
+  access_key_id: chat_upload_s3_access_key,
+  secret_access_key: chat_upload_s3_secret_key,
+  json_codec: Jason
+
+config :ex_aws, :s3,
+  scheme: chat_upload_s3_scheme,
+  host: chat_upload_s3_host,
+  port: chat_upload_s3_port,
+  region: chat_upload_s3_region
+
 otel_traces_exporter =
   System.get_env("OTEL_TRACES_EXPORTER", if(config_env() == :prod, do: "otlp", else: "none"))
 

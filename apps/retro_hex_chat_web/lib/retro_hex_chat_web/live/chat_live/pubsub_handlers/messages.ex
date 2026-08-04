@@ -23,6 +23,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
   alias RetroHexChat.Accounts.Session
 
   alias RetroHexChat.Chat.{
+    Attachments,
     DuplicateTracker,
     FloodProtection,
     IgnoreList,
@@ -491,7 +492,8 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
         content: pm.content,
         content_format: content_format(pm),
         type: pm_resolve_type(pm),
-        timestamp: pm_field(pm, [:timestamp, :inserted_at])
+        timestamp: pm_field(pm, [:timestamp, :inserted_at]),
+        attachments: attachment_payloads(pm)
       }
       |> maybe_add_pm_field(pm, :edited_at)
       |> maybe_add_pm_field(pm, :deleted_at)
@@ -512,6 +514,24 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
   defp pm_field(map, keys) do
     Enum.find_value(keys, fn key -> Map.get(map, key) end)
   end
+
+  defp attachment_payloads(%{attachments: %Ecto.Association.NotLoaded{}}), do: []
+
+  defp attachment_payloads(%{attachments: attachments}) when is_list(attachments) do
+    attachments
+    |> Enum.map(&attachment_payload/1)
+    |> Enum.reject(&is_nil/1)
+  end
+
+  defp attachment_payloads(source), do: Map.get(source, :attachments, [])
+
+  defp attachment_payload(%{file: %Ecto.Association.NotLoaded{}}), do: nil
+
+  defp attachment_payload(%{file: file} = attachment) do
+    Attachments.payload(%{attachment | file: file})
+  end
+
+  defp attachment_payload(%{id: _id} = attachment), do: attachment
 
   defp maybe_add_pm_field(map, source, key) do
     case Map.get(source, key) do

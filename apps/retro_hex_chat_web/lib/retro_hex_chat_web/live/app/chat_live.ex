@@ -384,6 +384,17 @@ defmodule RetroHexChatWeb.App.ChatLive do
      ChatLive.CoreEvents.dispatch_composer_input(socket, text, reply_to, content_format)}
   end
 
+  def handle_info({:composer_dispatch, text, reply_to, content_format, attachment_ids}, socket) do
+    {:noreply,
+     ChatLive.CoreEvents.dispatch_composer_input(
+       socket,
+       text,
+       reply_to,
+       content_format,
+       attachment_ids
+     )}
+  end
+
   def handle_info({:composer_submit_edit, content}, socket) do
     {:noreply, ChatLive.CoreEvents.submit_composer_edit(socket, content)}
   end

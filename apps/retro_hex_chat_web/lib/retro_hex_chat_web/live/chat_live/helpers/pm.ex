@@ -13,7 +13,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Channels.Server
-  alias RetroHexChat.Chat.{Queries, Service, UnreadTracker}
+  alias RetroHexChat.Chat.{Attachments, Queries, Service, UnreadTracker}
   alias RetroHexChat.Page
   alias RetroHexChat.Presence.NotifyList
   alias RetroHexChatWeb.ChatLive.Components.Composer
@@ -343,7 +343,8 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
       content: pm.content,
       content_format: content_format(pm),
       type: pm_resolve_type(pm),
-      timestamp: pm_field(pm, [:timestamp, :inserted_at])
+      timestamp: pm_field(pm, [:timestamp, :inserted_at]),
+      attachments: attachment_payloads(pm)
     }
 
     base
@@ -365,6 +366,26 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
       value -> Map.put(map, key, value)
     end
   end
+
+  defp attachment_payloads(%{attachments: %Ecto.Association.NotLoaded{}}), do: []
+
+  defp attachment_payloads(%{attachments: attachments}) when is_list(attachments) do
+    attachments
+    |> Enum.map(&attachment_payload/1)
+    |> Enum.reject(&is_nil/1)
+  end
+
+  defp attachment_payloads(source) do
+    Map.get(source, :attachments, [])
+  end
+
+  defp attachment_payload(%{file: %Ecto.Association.NotLoaded{}}), do: nil
+
+  defp attachment_payload(%{file: file} = attachment) do
+    Attachments.payload(%{attachment | file: file})
+  end
+
+  defp attachment_payload(%{id: _id} = attachment), do: attachment
 
   defp pm_resolve_type(%{type: type}), do: Messages.stream_type(type)
   defp pm_resolve_type(_), do: :message

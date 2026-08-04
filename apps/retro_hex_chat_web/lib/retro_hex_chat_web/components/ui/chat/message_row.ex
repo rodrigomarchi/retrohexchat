@@ -16,6 +16,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
 
   import Phoenix.HTML, only: [raw: 1]
   import RetroHexChatWeb.Components.UI.ChatMessage
+  import RetroHexChatWeb.Components.UI.ChatAttachment
   import RetroHexChatWeb.Components.UI.InlineHelpCard
   import RetroHexChatWeb.Components.UI.MessageIndicators
   import RetroHexChatWeb.Components.UI.MessageReplyBlock
@@ -151,6 +152,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
             nick_color={@nick_color_fn.(@msg.author)}
           >
             {raw(formatted_content(@msg, @strip_formatting))}
+            <.attachment_gallery attachments={Map.get(@msg, :attachments, [])} />
             <.edited_tag
               :if={Map.get(@msg, :edited_at)}
               timestamp={ChatHelpers.format_edit_timestamp(@msg.edited_at, @timezone)}

@@ -6,8 +6,9 @@ defmodule RetroHexChat.Chat.Service do
 
   require Logger
 
-  alias RetroHexChat.Chat.{Content, Policy, Queries}
+  alias RetroHexChat.Chat.{Attachments, Content, Policy, Queries}
   alias RetroHexChat.Observability
+  alias RetroHexChat.Repo
 
   @max_preview_length 100
 
@@ -24,11 +25,20 @@ defmodule RetroHexChat.Chat.Service do
   defp do_send_message(channel_name, nickname, content, type, opts) do
     reply_to_id = Keyword.get(opts, :reply_to_id)
     content_format = content_format_from_opts(opts)
+    attachment_ids = attachment_ids_from_opts(opts)
 
-    with :ok <- validate_content(content, content_format),
+    with :ok <- validate_content(content, content_format, attachment_ids),
          {:ok, reply_attrs} <- resolve_reply_attrs(reply_to_id, :message),
          {:ok, message} <-
-           do_insert_message(channel_name, nickname, content, content_format, type, reply_attrs) do
+           do_insert_message(
+             channel_name,
+             nickname,
+             content,
+             content_format,
+             type,
+             reply_attrs,
+             attachment_ids
+           ) do
       Observability.set_current_span_attributes(%{"chat.message.id" => message.id})
       broadcast_message(channel_name, message)
       {:ok, message}
@@ -191,10 +201,20 @@ defmodule RetroHexChat.Chat.Service do
   defp do_send_private_message(sender, recipient, content, type, opts) do
     reply_to_id = Keyword.get(opts, :reply_to_id)
     content_format = content_format_from_opts(opts)
+    attachment_ids = attachment_ids_from_opts(opts)
 
-    with :ok <- validate_content(content, content_format),
+    with :ok <- validate_content(content, content_format, attachment_ids),
          {:ok, reply_attrs} <- resolve_reply_attrs(reply_to_id, :pm),
-         {:ok, pm} <- do_insert_pm(sender, recipient, content, content_format, type, reply_attrs) do
+         {:ok, pm} <-
+           do_insert_pm(
+             sender,
+             recipient,
+             content,
+             content_format,
+             type,
+             reply_attrs,
+             attachment_ids
+           ) do
       Observability.set_current_span_attributes(%{"chat.message.id" => pm.id})
       broadcast_private_message(sender, recipient, pm)
       broadcast_private_activity(sender, recipient, pm)
@@ -260,7 +280,15 @@ defmodule RetroHexChat.Chat.Service do
 
   # ── Insert helpers ──
 
-  defp do_insert_message(channel_name, nickname, content, content_format, type, reply_attrs) do
+  defp do_insert_message(
+         channel_name,
+         nickname,
+         content,
+         content_format,
+         type,
+         reply_attrs,
+         attachment_ids
+       ) do
     attrs =
       Map.merge(
         %{
@@ -268,19 +296,21 @@ defmodule RetroHexChat.Chat.Service do
           author_nickname: nickname,
           content: content,
           content_format: content_format,
-          type: type
+          type: type,
+          allow_blank_content: attachment_ids != []
         },
         reply_attrs
       )
 
-    if map_size(reply_attrs) > 0 do
-      Queries.insert_reply_message(attrs)
-    else
-      Queries.insert_message(attrs)
-    end
+    Repo.transaction(fn ->
+      attrs
+      |> insert_channel_message(reply_attrs)
+      |> attach_channel_attachments(nickname, attachment_ids)
+    end)
+    |> normalize_insert_result()
   end
 
-  defp do_insert_pm(sender, recipient, content, content_format, type, reply_attrs) do
+  defp do_insert_pm(sender, recipient, content, content_format, type, reply_attrs, attachment_ids) do
     attrs =
       Map.merge(
         %{
@@ -288,17 +318,65 @@ defmodule RetroHexChat.Chat.Service do
           recipient_nickname: recipient,
           content: content,
           content_format: content_format,
-          type: type
+          type: type,
+          allow_blank_content: attachment_ids != []
         },
         reply_attrs
       )
 
+    Repo.transaction(fn ->
+      attrs
+      |> insert_private_message(reply_attrs)
+      |> attach_private_attachments(sender, attachment_ids)
+    end)
+    |> normalize_insert_result()
+  end
+
+  defp insert_channel_message(attrs, reply_attrs) do
+    if map_size(reply_attrs) > 0 do
+      Queries.insert_reply_message(attrs)
+    else
+      Queries.insert_message(attrs)
+    end
+  end
+
+  defp insert_private_message(attrs, reply_attrs) do
     if map_size(reply_attrs) > 0 do
       Queries.insert_reply_pm(attrs)
     else
       Queries.insert_private_message(attrs)
     end
   end
+
+  defp attach_channel_attachments({:ok, message}, nickname, attachment_ids) do
+    case Queries.attach_to_message(attachment_ids, nickname, message.id) do
+      {:ok, attachments} -> %{message | attachments: attachments}
+      {:error, reason} -> Repo.rollback(reason)
+    end
+  end
+
+  defp attach_channel_attachments({:error, reason}, _nickname, _attachment_ids) do
+    Repo.rollback(reason)
+  end
+
+  defp attach_private_attachments({:ok, pm}, sender, attachment_ids) do
+    case Queries.attach_to_private_message(attachment_ids, sender, pm.id) do
+      {:ok, attachments} -> %{pm | attachments: attachments}
+      {:error, reason} -> Repo.rollback(reason)
+    end
+  end
+
+  defp attach_private_attachments({:error, reason}, _sender, _attachment_ids) do
+    Repo.rollback(reason)
+  end
+
+  defp normalize_insert_result({:ok, message}), do: {:ok, message}
+
+  defp normalize_insert_result({:error, :attachment_not_found}) do
+    {:error, dgettext("chat", "Attachment could not be attached to the message")}
+  end
+
+  defp normalize_insert_result({:error, reason}), do: {:error, reason}
 
   # ── Reply preview updates ──
 
@@ -389,7 +467,8 @@ defmodule RetroHexChat.Chat.Service do
       id: pm.id,
       reply_to_id: pm.reply_to_id,
       reply_to_author: pm.reply_to_author,
-      reply_to_preview: pm.reply_to_preview
+      reply_to_preview: pm.reply_to_preview,
+      attachments: attachment_payloads(pm)
     }
 
     Observability.span(
@@ -470,7 +549,8 @@ defmodule RetroHexChat.Chat.Service do
       id: message.id,
       reply_to_id: message.reply_to_id,
       reply_to_author: message.reply_to_author,
-      reply_to_preview: message.reply_to_preview
+      reply_to_preview: message.reply_to_preview,
+      attachments: attachment_payloads(message)
     }
 
     Observability.span(
@@ -576,6 +656,13 @@ defmodule RetroHexChat.Chat.Service do
     |> normalize_content_format()
   end
 
+  defp attachment_ids_from_opts(opts) do
+    opts
+    |> Keyword.get(:attachment_ids, [])
+    |> List.wrap()
+    |> Enum.reject(&is_nil/1)
+  end
+
   defp normalize_content_format(format) do
     case Content.normalize_format(format) do
       {:ok, normalized} -> Atom.to_string(normalized)
@@ -594,14 +681,25 @@ defmodule RetroHexChat.Chat.Service do
     |> normalize_content_format()
   end
 
-  defp validate_content(content, content_format) do
+  defp validate_content(content, content_format, attachment_ids \\ []) do
     case Content.validate(content, content_format) do
       :ok -> :ok
+      {:error, :blank} when attachment_ids != [] -> :ok
       {:error, :blank} -> {:error, dgettext("chat", "Message cannot be empty")}
       {:error, :too_long} -> {:error, "Message exceeds maximum length of 1000 characters"}
       {:error, :unsupported_format} -> {:error, dgettext("chat", "Unsupported message format")}
     end
   end
+
+  defp attachment_payloads(%{attachments: %Ecto.Association.NotLoaded{}}), do: []
+
+  defp attachment_payloads(%{attachments: attachments}) when is_list(attachments) do
+    attachments
+    |> Enum.map(&Attachments.payload/1)
+    |> Enum.reject(&is_nil/1)
+  end
+
+  defp attachment_payloads(_message), do: []
 
   defp message_metadata(conversation_type, type, content, opts, extra) do
     Map.merge(
@@ -610,7 +708,8 @@ defmodule RetroHexChat.Chat.Service do
         message_type: normalize_message_type(type),
         message_size_bytes: byte_size(content),
         content_format: content_format_from_opts(opts),
-        has_reply: Keyword.has_key?(opts, :reply_to_id)
+        has_reply: Keyword.has_key?(opts, :reply_to_id),
+        has_attachments: attachment_ids_from_opts(opts) != []
       },
       extra
     )

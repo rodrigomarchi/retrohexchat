@@ -3,7 +3,7 @@ defmodule RetroHexChat.Chat.ServiceTest do
 
   @moduletag :unit
 
-  alias RetroHexChat.Chat.{Queries, Service}
+  alias RetroHexChat.Chat.{Attachments, Queries, Service, UploadedFile}
 
   defp unique_channel do
     "#svc-#{System.unique_integer([:positive])}"
@@ -15,6 +15,22 @@ defmodule RetroHexChat.Chat.ServiceTest do
 
   defp pm_topic(nick_a, nick_b) do
     [nick_a, nick_b] |> Enum.sort() |> Enum.join(":")
+  end
+
+  defp prepare_uploaded_file(owner, attrs \\ %{}) do
+    attrs =
+      Map.merge(
+        %{
+          filename: "report.pdf",
+          content_type: "application/pdf",
+          byte_size: 42
+        },
+        attrs
+      )
+
+    {:ok, file, _meta} = Attachments.prepare_direct_upload(owner, attrs)
+    {:ok, [file]} = Attachments.confirm_uploaded_files([file.id], owner)
+    file
   end
 
   describe "send_message/4" do
@@ -69,6 +85,43 @@ defmodule RetroHexChat.Chat.ServiceTest do
       }
 
       assert id == msg.id
+    end
+
+    test "persists a file-only message and broadcasts attachment metadata" do
+      channel = unique_channel()
+      owner = unique_nick("A")
+      file = prepare_uploaded_file(owner)
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#{channel}")
+
+      assert {:ok, msg} =
+               Service.send_message(channel, owner, "", "message", attachment_ids: [file.id])
+
+      assert msg.content == ""
+      assert [%{file: attached_file} = attachment] = msg.attachments
+      assert attached_file.id == file.id
+      assert attachment.display_filename == "report.pdf"
+
+      assert %UploadedFile{status: "attached"} = Repo.get!(UploadedFile, file.id)
+
+      assert_receive %{
+        event: "new_message",
+        payload: %{
+          id: id,
+          attachments: [
+            %{
+              file_id: file_id,
+              filename: "report.pdf",
+              content_type: "application/pdf",
+              byte_size: 42,
+              logical_path: logical_path
+            }
+          ]
+        }
+      }
+
+      assert id == msg.id
+      assert file_id == file.id
+      assert logical_path =~ "report.pdf"
     end
   end
 
@@ -174,6 +227,33 @@ defmodule RetroHexChat.Chat.ServiceTest do
       }
 
       assert id == pm.id
+    end
+
+    test "persists a private message with an attachment" do
+      sender = unique_nick("A")
+      recipient = unique_nick("B")
+      file = prepare_uploaded_file(sender, %{filename: "private.txt", content_type: "text/plain"})
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "pm:#{pm_topic(sender, recipient)}")
+
+      assert {:ok, pm} =
+               Service.send_private_message(sender, recipient, "see file", "message",
+                 attachment_ids: [file.id]
+               )
+
+      assert [%{file: attached_file} = attachment] = pm.attachments
+      assert attached_file.id == file.id
+      assert attachment.display_filename == "private.txt"
+
+      assert_receive %{
+        event: "new_pm",
+        payload: %{
+          id: id,
+          attachments: [%{file_id: file_id, filename: "private.txt"}]
+        }
+      }
+
+      assert id == pm.id
+      assert file_id == file.id
     end
   end
 
