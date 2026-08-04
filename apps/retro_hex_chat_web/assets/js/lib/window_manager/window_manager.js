@@ -140,7 +140,7 @@ const WindowManagerCore = {
   reconcileWindows() {
     const present = new Set();
     const added = [];
-    for (const el of this.el.querySelectorAll("[data-window-id]")) {
+    for (const el of this.ownedElements("[data-window-id]")) {
       const id = el.dataset.windowId;
       present.add(id);
       this.clearPendingWindow(id);
@@ -191,8 +191,25 @@ const WindowManagerCore = {
 
   // ── Setup ──────────────────────────────────────────────────
 
+  // Nested desktops mean a plain `this.el.querySelectorAll` reaches into another
+  // manager's subtree. Every scan below goes through here so a window, taskbar
+  // button or menu belongs to exactly one manager: the nearest one above it.
+  ownsNode(node) {
+    if (!node || typeof node.closest !== "function") return false;
+    if (!this.el.contains(node)) return false;
+    // The nearest manager root at or above the node has to be this one. A host
+    // that renders no marker at all cannot be nesting anything, so containment
+    // is the whole answer there — which keeps bare embeds working.
+    const nearest = node.closest("[data-window-manager]");
+    return !nearest || !this.el.contains(nearest) || nearest === this.el;
+  },
+
+  ownedElements(selector) {
+    return Array.from(this.el.querySelectorAll(selector)).filter((el) => this.ownsNode(el));
+  },
+
   collectWindows() {
-    for (const el of this.el.querySelectorAll("[data-window-id]")) this.registerWindow(el);
+    for (const el of this.ownedElements("[data-window-id]")) this.registerWindow(el);
   },
 
   registerWindow(el) {
@@ -260,11 +277,18 @@ const WindowManagerCore = {
   },
 
   bindEvents() {
-    this._onPointerDown = (e) => this.onPointerDown(e);
-    this._onClick = (e) => this.onClick(e);
-    this._onStartMenuPointerOver = (e) => this.onStartMenuPointerOver(e);
-    this._onDblClick = (e) => this.onDblClick(e);
-    this._onContextMenu = (e) => this.onContextMenu(e);
+    // A desktop can contain another desktop — the showcase demos one inside the
+    // shell's own. These five listeners sit on the root, so without this guard
+    // the outer manager also answers for the inner manager's chrome.
+    const scoped = (handler) => (e) => {
+      if (this.ownsNode(e.target)) handler(e);
+    };
+
+    this._onPointerDown = scoped((e) => this.onPointerDown(e));
+    this._onClick = scoped((e) => this.onClick(e));
+    this._onStartMenuPointerOver = scoped((e) => this.onStartMenuPointerOver(e));
+    this._onDblClick = scoped((e) => this.onDblClick(e));
+    this._onContextMenu = scoped((e) => this.onContextMenu(e));
     this._onKeyDown = (e) => this.onKeyDown(e);
     this._onPointerMove = (e) => this.onPointerMove(e);
     this._onPointerUp = (e) => this.onPointerUp(e);
@@ -570,7 +594,7 @@ const WindowManagerCore = {
   },
 
   closeTaskbarMenus() {
-    for (const menu of this.el.querySelectorAll("[data-taskbar-menu]")) {
+    for (const menu of this.ownedElements("[data-taskbar-menu]")) {
       menu.classList.add("u-hidden");
     }
     this.menuWindowId = null;
@@ -657,7 +681,7 @@ const WindowManagerCore = {
     for (const group of this.taskbarGroups()) {
       if (group.dataset.groupOpen === "true") return true;
     }
-    for (const menu of this.el.querySelectorAll("[data-taskbar-menu]")) {
+    for (const menu of this.ownedElements("[data-taskbar-menu]")) {
       if (!menu.classList.contains("u-hidden")) return true;
     }
     return false;
@@ -685,7 +709,7 @@ const WindowManagerCore = {
   },
 
   clearShortcutSelection() {
-    const selected = this.el.querySelectorAll("[data-window-shortcut].is-selected");
+    const selected = this.ownedElements("[data-window-shortcut].is-selected");
     for (const node of selected) node.classList.remove("is-selected");
   },
 
@@ -1340,7 +1364,7 @@ const WindowManagerCore = {
   },
 
   taskbarGroups() {
-    return Array.from(this.el.querySelectorAll("[data-taskbar-group]"));
+    return this.ownedElements("[data-taskbar-group]");
   },
 
   toggleTaskbarGroup(group) {
@@ -1543,7 +1567,7 @@ const WindowManagerCore = {
   },
 
   taskbarButtons(id) {
-    return Array.from(this.el.querySelectorAll(`[data-window-taskbar="${cssEscape(id)}"]`));
+    return this.ownedElements(`[data-window-taskbar="${cssEscape(id)}"]`);
   },
 
   readRememberedLayout() {

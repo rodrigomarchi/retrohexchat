@@ -103,7 +103,7 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
         testid="app-menu-help-trigger"
       >
         <:icon><Icons.icon_btn_help_topics class="h-4 w-4" /></:icon>
-        <.help_menu_items on_action={@on_action} />
+        <.help_menu_items connected={@connected} on_action={@on_action} />
       </.menu>
     </.menu_bar>
     """
@@ -216,7 +216,7 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
           </.mobile_menu_panel>
 
           <.mobile_menu_panel menu_id={@menu_id} section="help" active={@active_section == "help"}>
-            <.help_menu_items on_action={@on_action} />
+            <.help_menu_items connected={@connected} on_action={@on_action} />
           </.mobile_menu_panel>
         </div>
       </li>
@@ -771,26 +771,32 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
     """
   end
 
+  # The Help menu is the one menu every shell shows, connected or not, so its
+  # items carry the disabled state instead of disappearing: the menu reads the
+  # same everywhere and only says what is unavailable here. MOTD and the
+  # cheatsheet need a live session; Help Topics is plain navigation, so it is a
+  # real link and works even on the shells that wire no `on_action` at all.
+  attr :connected, :boolean, default: false
   attr :on_action, :any, default: nil
 
   defp help_menu_items(assigns) do
     ~H"""
-    <.menu_item
-      icon_fn={:icon_btn_help_topics}
-      label={dgettext("ui", "Help Topics")}
-      action="help_topics"
-      on_action={@on_action}
-    />
+    <.context_menu_item action="help_topics">
+      <:icon>{apply(Icons, :icon_btn_help_topics, [%{class: "w-[14px] h-[14px]"}])}</:icon>
+      <a href="/chat/help" class="block flex-1">{dgettext("ui", "Help Topics")}</a>
+    </.context_menu_item>
     <.menu_item
       icon_fn={:icon_notepad}
       label={dgettext("ui", "Message of the Day")}
       action="show_motd"
+      disabled={!@connected}
       on_action={@on_action}
     />
     <.menu_item
       icon_fn={:icon_dialog_cheatsheet}
       label={dgettext("ui", "Shortcut Cheatsheet")}
       action="toggle_cheatsheet"
+      disabled={!@connected}
       on_action={@on_action}
     />
     <.context_menu_separator />

@@ -23,7 +23,7 @@ function watchBrowserFailures(page: Page) {
 }
 
 test.describe("Showcase desktop", () => {
-  test("drives the page as a window and remembers where it was put", async ({
+  test("drives the page as a window and carries the layout across pages", async ({
     page,
   }) => {
     const failures = watchBrowserFailures(page);
@@ -44,10 +44,12 @@ test.describe("Showcase desktop", () => {
     const grip = await titlebar.boundingBox();
     if (!before || !grip) throw new Error("component window has no box");
 
+    // Rightwards: the navigator sits to the left of the component window, and a
+    // window dragged over it would swallow the link the navigation below needs.
     await page.mouse.move(grip.x + grip.width / 2, grip.y + grip.height / 2);
     await page.mouse.down();
     await page.mouse.move(
-      grip.x + grip.width / 2 - 140,
+      grip.x + grip.width / 2 + 140,
       grip.y + grip.height / 2 + 60,
       { steps: 12 },
     );
@@ -58,13 +60,19 @@ test.describe("Showcase desktop", () => {
     expect(Math.abs(moved.x - before.x)).toBeGreaterThan(80);
     await shot(page, "showcase-window-dragged");
 
-    await page.reload();
+    // Every component page reuses the window id `component`, so the layout the
+    // reader arranged follows them from page to page. The navigator links are
+    // LiveView navigation — one document throughout, which is the whole span
+    // the manager remembers: a full reload is a fresh tab and starts over.
+    await navigator.locator('a[href="/showcase/input"]').click();
+    await expect(page).toHaveURL(/\/showcase\/input$/);
     await waitForDesktop(page);
-    const restored = await page
-      .getByTestId("showcase-component-window")
-      .boundingBox();
-    if (!restored) throw new Error("component window missing after reload");
-    expect(Math.abs(restored.x - moved.x)).toBeLessThan(8);
+    await expect(component).toContainText("Input");
+
+    const carried = await component.boundingBox();
+    if (!carried) throw new Error("component window missing after navigation");
+    expect(Math.abs(carried.x - moved.x)).toBeLessThan(8);
+    expect(Math.abs(carried.y - moved.y)).toBeLessThan(8);
 
     expect(failures).toEqual([]);
   });
@@ -99,6 +107,42 @@ test.describe("Showcase desktop", () => {
     await expect(page.getByTestId("showcase-component-window")).toContainText(
       "Table",
     );
+
+    expect(failures).toEqual([]);
+  });
+
+  // The demo on /showcase/desktop is a desktop nested inside the shell's own
+  // desktop — the one page in the app running two window managers at once. Ids
+  // shared between the two would leave the document with pairs of elements
+  // answering to one id, and the demo's tray needs a clock hook the showcase
+  // bundle actually registers. Neither shows up on any other showcase page,
+  // which is why this test names the route explicitly.
+  test("the nested demo desktop runs beside the shell's own", async ({
+    page,
+  }) => {
+    const failures = watchBrowserFailures(page);
+
+    await page.goto("/showcase/desktop");
+    await waitForDesktop(page);
+
+    for (const id of [
+      "#showcase-desktop",
+      "#showcase-desktop-demo",
+      "#showcase-start-menu",
+      "#showcase-desktop-demo-start-menu",
+    ]) {
+      await expect(page.locator(id)).toHaveCount(1);
+    }
+
+    // A ticking tray clock is the proof that ClockHook resolved: an unregistered
+    // hook leaves the span empty and logs, which `failures` would catch anyway.
+    await expect(page.locator("#showcase-desktop-demo-clock")).toHaveText(
+      /^\d{2}:\d{2}$/,
+    );
+
+    // Both managers are live: the demo's own windows placed, the shell's too.
+    await expect(page.getByTestId("showcase-navigator-window")).toBeVisible();
+    await expect(page.locator("#showcase-desktop-demo #readme")).toBeVisible();
 
     expect(failures).toEqual([]);
   });

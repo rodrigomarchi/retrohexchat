@@ -283,7 +283,11 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
   defp landing_header(assigns) do
     ~H"""
     <div class="sticky top-0 z-modal">
-      <.app_header logo_href="/">
+      <%!-- The logo opens About, as it does on every other shell. Here About is
+            a desktop window rather than a modal, so the window manager opens it
+            — these pages run no LiveSocket for a phx-click to reach. Home stays
+            reachable from Navigate ▸ Home and the Start menu. --%>
+      <.app_header logo_window="about">
         <:panels>
           <div class="flex items-center flex-1">
             <%!-- Real dropdown menu bar (behaviour wired by public_pages.js, no LiveSocket) --%>

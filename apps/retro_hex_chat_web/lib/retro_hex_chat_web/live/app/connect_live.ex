@@ -230,8 +230,9 @@ defmodule RetroHexChatWeb.App.ConnectLive do
     {:noreply, push_navigate(socket, to: ~p"/chat/help")}
   end
 
-  # The disconnected menu bar still emits actions this screen has no feature
-  # for (MOTD, cheatsheet); ignore them instead of crashing the LiveView.
+  # MOTD and the cheatsheet render disabled while disconnected, so nothing here
+  # should emit them; a stray action still gets ignored rather than crashing the
+  # LiveView.
   def handle_event("menu_action", _params, socket), do: {:noreply, socket}
 
   defp validate_nickname(nickname) do

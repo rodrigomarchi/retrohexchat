@@ -18,8 +18,16 @@ defmodule RetroHexChatWeb.Components.UI.AppHeader do
 
   alias RetroHexChatWeb.Icons
 
-  @doc "Renders the application header bar."
+  @doc """
+  Renders the application header bar.
+
+  The logo opens About on every shell — pass `on_logo_click` where a LiveSocket
+  runs, or `logo_window` where About is a desktop window and the window manager
+  has to open it (the landing pages ship no LiveSocket, so a `phx-click` there
+  would never fire). `logo_href` remains for a logo that is plain navigation.
+  """
   attr :logo_href, :string, default: nil
+  attr :logo_window, :string, default: nil, doc: "window id the logo opens (data-window-open)"
   attr :on_logo_click, :any, default: nil
   attr :class, :string, default: nil
   attr :rest, :global
@@ -41,7 +49,7 @@ defmodule RetroHexChatWeb.Components.UI.AppHeader do
       {@rest}
     >
       <%!-- Logo --%>
-      <.logo_element href={@logo_href} on_click={@on_logo_click} />
+      <.logo_element href={@logo_href} window={@logo_window} on_click={@on_logo_click} />
 
       <%!-- Mobile action buttons --%>
       <div :if={@mobile_actions != []} class="flex items-center gap-1 ml-1 md:hidden">
@@ -62,7 +70,23 @@ defmodule RetroHexChatWeb.Components.UI.AppHeader do
   # ── Private helpers ───────────────────────────────────
 
   attr :href, :string, default: nil
+  attr :window, :string, default: nil
   attr :on_click, :any, default: nil
+
+  defp logo_element(%{window: window} = assigns) when not is_nil(window) do
+    ~H"""
+    <button
+      type="button"
+      class="flex items-center px-[2px] cursor-pointer border-none bg-transparent hover:opacity-80"
+      data-window-open={@window}
+      onmousedown="event.preventDefault()"
+      aria-label={dgettext("ui", "About RetroHexChat")}
+      data-testid="app-logo"
+    >
+      <Icons.icon_hex_stone class="w-4 h-4 shrink-0" />
+    </button>
+    """
+  end
 
   defp logo_element(%{on_click: on_click} = assigns) when not is_nil(on_click) do
     ~H"""

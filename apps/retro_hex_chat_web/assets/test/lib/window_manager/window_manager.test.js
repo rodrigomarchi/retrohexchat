@@ -1437,4 +1437,79 @@ describe("WindowManager — navigable chrome", () => {
       expect(wm.pushEvent).toHaveBeenCalledWith("window_open", { id: "away" });
     });
   });
+
+  // The showcase documents the desktop by running one inside its own shell, so
+  // two managers share a document with one nested in the other. Each has to
+  // claim only its own subtree: an outer manager that adopts the inner windows
+  // fights the inner one over their geometry, focus and visibility, and the
+  // winner comes down to which patch ran last.
+  describe("nested inside another desktop", () => {
+    let outer;
+    let inner;
+    let outerEl;
+    let innerEl;
+
+    beforeEach(() => {
+      clearWindowManagerMemory();
+
+      outerEl = document.createElement("div");
+      outerEl.id = "outer-desktop";
+      outerEl.dataset.windowManager = "";
+      outerEl.innerHTML = `
+        <div class="desktop__workspace">
+          ${windowMarkup("shell", { open: true })}
+          <div id="inner-desktop" data-window-manager>
+            <div class="desktop__workspace">
+              ${windowMarkup("demo", { open: true })}
+            </div>
+            <div class="desktop-taskbar">
+              <button data-window-taskbar="demo"></button>
+              ${taskbarMenusMarkup()}
+            </div>
+          </div>
+        </div>
+        <div class="desktop-taskbar">
+          <button data-window-taskbar="shell"></button>
+          ${taskbarMenusMarkup()}
+        </div>`;
+      document.body.appendChild(outerEl);
+      innerEl = outerEl.querySelector("#inner-desktop");
+
+      outer = createWindowManager(outerEl);
+      inner = createWindowManager(innerEl);
+      outer.workspaceSize = () => ({ w: 1024, h: 768 });
+      inner.workspaceSize = () => ({ w: 400, h: 300 });
+      outer.mount();
+      inner.mount();
+    });
+
+    afterEach(() => {
+      outer.destroy();
+      inner.destroy();
+      outerEl.remove();
+      clearWindowManagerMemory();
+    });
+
+    it("claims only the windows in its own subtree", () => {
+      expect(Object.keys(outer.windows)).toEqual(["shell"]);
+      expect(Object.keys(inner.windows)).toEqual(["demo"]);
+    });
+
+    it("keeps a taskbar button for the other manager's window out of reach", () => {
+      expect(outer.taskbarButtons("demo")).toEqual([]);
+      expect(inner.taskbarButtons("demo")).toHaveLength(1);
+    });
+
+    it("leaves the nested manager's windows alone when it reconciles", () => {
+      inner.command("minimize", "demo");
+      expect(inner.windows.demo.state.minimized).toBe(true);
+
+      // A patch anywhere re-runs the outer manager's reconcile. It must not
+      // re-register `demo` and undo the state the inner manager just set.
+      outer.reconcile();
+
+      expect(Object.keys(outer.windows)).toEqual(["shell"]);
+      expect(inner.windows.demo.state.minimized).toBe(true);
+    });
+  });
 });

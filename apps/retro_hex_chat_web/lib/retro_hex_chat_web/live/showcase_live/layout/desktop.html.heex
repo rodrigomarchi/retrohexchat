@@ -5,8 +5,15 @@
     title={dgettext("showcase", "Window manager")}
     description="A live desktop: drag the title bars, resize from the corner, use the title-bar controls, and launch windows from the Start menu. Layout is remembered in browser memory while the page is open (WindowManagerHook)."
   >
-    <div class="h-[440px] shadow-retro-field overflow-hidden">
-      <.desktop id="showcase-desktop" persist_key="showcase" class="bg-desktop">
+    <%!-- flex column, not just a fixed height: `desktop/1` is `flex-1` and would
+          collapse to its taskbar inside a plain block parent. The real shells
+          get this from their `h-screen flex flex-col` root. --%>
+    <div class="flex h-[440px] flex-col shadow-retro-field overflow-hidden">
+      <%!-- Its own id and persist_key: this demo desktop is nested inside the
+            showcase shell's own desktop, and sharing either would give the page
+            two elements with one id and two window managers writing the same
+            remembered layout. --%>
+      <.desktop id="showcase-desktop-demo" persist_key="showcase:demo" class="bg-desktop">
         <.desktop_window
           id="readme"
           title={dgettext("showcase", "Readme")}
@@ -45,13 +52,13 @@
         </.desktop_window>
 
         <:taskbar>
-          <.taskbar>
+          <.taskbar id="showcase-desktop-demo-taskbar">
             <:start>
               <div class="relative">
                 <.start_button label={dgettext("showcase", "Start")}>
                   <:icon><Icons.icon_group_view class="w-4 h-4" /></:icon>
                 </.start_button>
-                <.start_menu id="showcase-start-menu">
+                <.start_menu id="showcase-desktop-demo-start-menu">
                   <.start_menu_item
                     data-window-open="readme"
                     label={dgettext("showcase", "Readme")}
@@ -81,7 +88,8 @@
 
             <:tray>
               <.desktop_tray>
-                <span id="showcase-clock" phx-hook="ClockHook" class="tabular-nums"></span>
+                <span id="showcase-desktop-demo-clock" phx-hook="ClockHook" class="tabular-nums">
+                </span>
               </.desktop_tray>
             </:tray>
           </.taskbar>

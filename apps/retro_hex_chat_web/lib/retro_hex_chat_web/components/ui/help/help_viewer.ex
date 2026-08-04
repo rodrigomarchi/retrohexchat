@@ -10,6 +10,7 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
   import RetroHexChatWeb.Components.UI.AboutDialog
   import RetroHexChatWeb.Components.UI.AppHeader
   import RetroHexChatWeb.Components.UI.Desktop
+  import RetroHexChatWeb.Components.UI.Dialog, only: [show_modal: 1]
   import RetroHexChatWeb.Components.UI.Help.HelpMenuBar
   import RetroHexChatWeb.Components.UI.Help.HelpStatusBar
   import RetroHexChatWeb.Components.UI.TreeView
@@ -33,7 +34,7 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
     <div class="flex flex-col h-screen bg-background font-system text-text">
       <.desktop id="help-desktop" persist_key="help" data-testid="help-desktop">
         <:header>
-          <.app_header logo_href="/">
+          <.app_header on_logo_click={show_modal("about-dialog")}>
             <:panels>
               <.help_menu_bar
                 id="help-menubar"
@@ -345,7 +346,7 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
     <.taskbar>
       <:start>
         <div class="relative">
-          <.start_button label={dgettext("help", "Help")}>
+          <.start_button label={dgettext("ui", "Start")}>
             <:icon><Icons.icon_hex_stone class="h-4 w-4" /></:icon>
           </.start_button>
           <.start_menu id="help-start-menu">
