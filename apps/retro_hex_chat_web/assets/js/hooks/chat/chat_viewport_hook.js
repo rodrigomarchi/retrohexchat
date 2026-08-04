@@ -187,20 +187,29 @@ const ChatViewportHook = {
     });
 
     this.handleEvent("link_preview", ({ url, title }) => {
+      const previewTitle = typeof title === "string" ? title.trim() : "";
       const links = this.scroller.querySelectorAll(`a.chat-link[href="${CSS.escape(url)}"]`);
 
       links.forEach((link) => {
-        if (title) link.title = title;
+        if (previewTitle) link.title = previewTitle;
 
-        if (
-          !link.nextElementSibling ||
-          !link.nextElementSibling.classList.contains("chat-link-preview")
-        ) {
-          const preview = document.createElement("span");
+        let preview =
+          link.nextElementSibling && link.nextElementSibling.classList.contains("chat-link-preview")
+            ? link.nextElementSibling
+            : null;
+
+        if (!previewTitle) {
+          preview?.remove();
+          return;
+        }
+
+        if (!preview) {
+          preview = document.createElement("span");
           preview.className = "chat-link-preview";
-          preview.textContent = title;
           link.after(preview);
         }
+
+        preview.textContent = previewTitle;
       });
     });
 

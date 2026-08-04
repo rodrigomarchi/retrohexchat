@@ -77,6 +77,21 @@ defmodule RetroHexChatWeb.App.ChatHelpersTest do
       refute html =~ ~s(data-channel="/#nope")
     end
 
+    test "does not linkify channel-like text inside code, pre, or links" do
+      html =
+        ChatHelpers.linkify_channels(
+          ~s(<code>#code</code><pre>#pre</pre><a href="/room">#anchor</a> #real)
+        )
+
+      assert html =~ ~s(<code>#code</code>)
+      assert html =~ ~s(<pre>#pre</pre>)
+      assert html =~ ~s(<a href="/room">#anchor</a>)
+      assert html =~ ~s(data-channel="#real")
+      refute html =~ ~s(data-channel="#code")
+      refute html =~ ~s(data-channel="#pre")
+      refute html =~ ~s(data-channel="#anchor")
+    end
+
     test "leaves plain text without channels unchanged" do
       assert ChatHelpers.linkify_channels("no channels here") == "no channels here"
     end
@@ -95,6 +110,43 @@ defmodule RetroHexChatWeb.App.ChatHelpersTest do
 
     test "escapes HTML in content (no raw injection)" do
       refute ChatHelpers.format_content("<script>alert(1)</script>", false) =~ "<script>"
+    end
+  end
+
+  describe "format_content/3" do
+    test "renders markdown formatting" do
+      html = ChatHelpers.format_content("**bold** [doc](https://example.com)", "markdown", false)
+
+      assert html =~ "<strong>bold</strong>"
+      assert html =~ ~s(href="https://example.com")
+      assert html =~ ~s(class="chat-link")
+    end
+
+    test "strips markdown formatting when strip is true" do
+      html = ChatHelpers.format_content("**bold** [doc](https://example.com)", "markdown", true)
+
+      assert html =~ "bold doc"
+      refute html =~ "<strong>"
+      refute html =~ "<a "
+    end
+
+    test "sanitizes markdown HTML and unsafe links" do
+      html =
+        ChatHelpers.format_content(
+          ~S|<script>x</script> [x](javascript:alert(1))|,
+          "markdown",
+          false
+        )
+
+      refute html =~ "<script>"
+      refute html =~ "javascript:"
+    end
+
+    test "plain format escapes HTML and linkifies URLs" do
+      html = ChatHelpers.format_content("<b>x</b> https://example.com", "plain", false)
+
+      assert html =~ "&lt;b&gt;x&lt;/b&gt;"
+      assert html =~ ~s(href="https://example.com")
     end
   end
 

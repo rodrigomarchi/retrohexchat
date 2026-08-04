@@ -7,7 +7,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
   - `:nick` — PM, Whois, Copy Nick, Ignore, Address Book, P2P actions, Op/Voice/Mute actions
   - `:url` — Open Link, Copy URL, Save to URL List
   - `:channel` — Join Channel, Copy Channel Name, Channel Info
-  - `:message` — Copy Message, Reply, Delete, Ignore Sender
+  - `:message` — Copy Message, Copy Source, Reply, Delete, Ignore Sender
 
   All actions are dispatched through a single `on_action` callback with
   `phx-value-action` identifying the specific action.
@@ -264,6 +264,11 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
       assigns
       |> assign(:is_own, is_own)
       |> assign(:msg_text, Map.get(msg, :text))
+      |> assign(:msg_source, Map.get(msg, :source))
+      |> assign(
+        :has_msg_source,
+        source_copy_available?(Map.get(msg, :source), Map.get(msg, :text))
+      )
       |> assign(:msg_id, Map.get(msg, :id))
       |> assign(:msg_nick, Map.get(msg, :nick))
 
@@ -275,6 +280,15 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
     >
       <:icon><Icons.icon_copy class="w-[14px] h-[14px]" /></:icon>
       {dgettext("chat", "Copy Message")}
+    </.context_menu_item>
+    <.context_menu_item
+      :if={@has_msg_source}
+      on_click={@on_action}
+      action="ctx_chat_copy_message_source"
+      phx-value-source={@msg_source}
+    >
+      <:icon><Icons.icon_code class="w-[14px] h-[14px]" /></:icon>
+      {dgettext("chat", "Copy Source")}
     </.context_menu_item>
     <.context_menu_item on_click={@on_action} action="reply_to_message" phx-value-message_id={@msg_id}>
       <:icon><Icons.icon_chat class="w-[14px] h-[14px]" /></:icon>
@@ -314,4 +328,10 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
   defp custom_item_action(item), do: Map.get(item, :action) || "custom_menu_execute"
   defp custom_item_command(item), do: Map.get(item, :command) || ""
   defp custom_item_label(item), do: Map.get(item, :label) || ""
+
+  defp source_copy_available?(source, text) when is_binary(source) do
+    source != "" and source != text
+  end
+
+  defp source_copy_available?(_source, _text), do: false
 end

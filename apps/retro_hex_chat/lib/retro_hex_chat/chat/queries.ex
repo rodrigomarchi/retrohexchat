@@ -51,11 +51,15 @@ defmodule RetroHexChat.Chat.Queries do
   @spec get_message(integer()) :: Message.t() | nil
   def get_message(id), do: Repo.get(Message, id)
 
-  @spec update_message_content(Message.t(), String.t(), DateTime.t()) ::
+  @spec update_message_content(Message.t(), String.t(), DateTime.t(), keyword()) ::
           {:ok, Message.t()} | {:error, Ecto.Changeset.t()}
-  def update_message_content(message, new_content, edited_at) do
+  def update_message_content(message, new_content, edited_at, opts \\ []) do
+    attrs =
+      %{content: new_content, edited_at: edited_at}
+      |> maybe_put_content_format(opts)
+
     message
-    |> Message.edit_changeset(%{content: new_content, edited_at: edited_at})
+    |> Message.edit_changeset(attrs)
     |> Repo.update()
   end
 
@@ -198,11 +202,15 @@ defmodule RetroHexChat.Chat.Queries do
   @spec get_private_message(integer()) :: PrivateMessage.t() | nil
   def get_private_message(id), do: Repo.get(PrivateMessage, id)
 
-  @spec update_pm_content(PrivateMessage.t(), String.t(), DateTime.t()) ::
+  @spec update_pm_content(PrivateMessage.t(), String.t(), DateTime.t(), keyword()) ::
           {:ok, PrivateMessage.t()} | {:error, Ecto.Changeset.t()}
-  def update_pm_content(pm, new_content, edited_at) do
+  def update_pm_content(pm, new_content, edited_at, opts \\ []) do
+    attrs =
+      %{content: new_content, edited_at: edited_at}
+      |> maybe_put_content_format(opts)
+
     pm
-    |> PrivateMessage.edit_changeset(%{content: new_content, edited_at: edited_at})
+    |> PrivateMessage.edit_changeset(attrs)
     |> Repo.update()
   end
 
@@ -280,5 +288,12 @@ defmodule RetroHexChat.Chat.Queries do
 
   defp maybe_before(query, before_id) do
     where(query, [m], m.id < ^before_id)
+  end
+
+  defp maybe_put_content_format(attrs, opts) do
+    case Keyword.fetch(opts, :content_format) do
+      {:ok, content_format} -> Map.put(attrs, :content_format, content_format)
+      :error -> attrs
+    end
   end
 end

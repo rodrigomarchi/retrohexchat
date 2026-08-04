@@ -5,14 +5,19 @@ defmodule RetroHexChat.Chat.Message do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias RetroHexChat.Chat.Content
+
   @type t :: %__MODULE__{}
 
   @type_values ~w(message action system service error notice)
+  @content_formats ~w(irc markdown plain)
 
   schema "messages" do
     field :channel_name, :string
     field :author_nickname, :string
     field :content, :string
+    field :content_format, :string, default: "irc"
+    field :plain_content, :string
     field :type, :string, default: "message"
 
     field :reply_to_id, :integer
@@ -27,11 +32,14 @@ defmodule RetroHexChat.Chat.Message do
   @spec changeset(t() | Ecto.Changeset.t(), map()) :: Ecto.Changeset.t()
   def changeset(message, attrs) do
     message
-    |> cast(attrs, [:channel_name, :author_nickname, :content, :type])
-    |> validate_required([:channel_name, :author_nickname, :content])
+    |> cast(attrs, [:channel_name, :author_nickname, :content, :content_format, :type])
+    |> validate_required([:channel_name, :author_nickname, :content, :content_format])
     |> validate_length(:channel_name, max: 50)
     |> validate_length(:author_nickname, max: 16)
+    |> validate_inclusion(:content_format, @content_formats)
     |> validate_inclusion(:type, @type_values)
+    |> put_plain_content()
+    |> check_constraint(:content_format, name: :messages_content_format_check)
   end
 
   @spec reply_changeset(t() | Ecto.Changeset.t(), map()) :: Ecto.Changeset.t()
@@ -41,23 +49,30 @@ defmodule RetroHexChat.Chat.Message do
       :channel_name,
       :author_nickname,
       :content,
+      :content_format,
       :type,
       :reply_to_id,
       :reply_to_author,
       :reply_to_preview
     ])
-    |> validate_required([:channel_name, :author_nickname, :content])
+    |> validate_required([:channel_name, :author_nickname, :content, :content_format])
     |> validate_length(:channel_name, max: 50)
     |> validate_length(:author_nickname, max: 16)
+    |> validate_inclusion(:content_format, @content_formats)
     |> validate_inclusion(:type, @type_values)
+    |> put_plain_content()
+    |> check_constraint(:content_format, name: :messages_content_format_check)
     |> validate_reply_fields()
   end
 
   @spec edit_changeset(t() | Ecto.Changeset.t(), map()) :: Ecto.Changeset.t()
   def edit_changeset(message, attrs) do
     message
-    |> cast(attrs, [:content, :edited_at])
-    |> validate_required([:content, :edited_at])
+    |> cast(attrs, [:content, :content_format, :edited_at])
+    |> validate_required([:content, :content_format, :edited_at])
+    |> validate_inclusion(:content_format, @content_formats)
+    |> put_plain_content()
+    |> check_constraint(:content_format, name: :messages_content_format_check)
   end
 
   @spec delete_changeset(t() | Ecto.Changeset.t(), map()) :: Ecto.Changeset.t()
@@ -77,6 +92,19 @@ defmodule RetroHexChat.Chat.Message do
       |> validate_length(:reply_to_preview, max: 100)
     else
       changeset
+    end
+  end
+
+  defp put_plain_content(changeset) do
+    content = get_field(changeset, :content)
+    content_format = get_field(changeset, :content_format)
+
+    case {content, Content.normalize_format(content_format)} do
+      {content, {:ok, _format}} when is_binary(content) ->
+        put_change(changeset, :plain_content, Content.plain_text(content, content_format))
+
+      _ ->
+        changeset
     end
   end
 end

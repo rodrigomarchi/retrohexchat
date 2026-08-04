@@ -6,6 +6,7 @@ describe("ChatViewportHook", () => {
   let scroller;
   let stream;
   let pinnedObserver;
+  let originalCSS;
 
   function setGeometry({ scrollHeight, clientHeight = 500, scrollTop = 0 }) {
     Object.defineProperty(scroller, "scrollHeight", {
@@ -34,6 +35,13 @@ describe("ChatViewportHook", () => {
   }
 
   beforeEach(() => {
+    originalCSS = globalThis.CSS;
+    globalThis.CSS = {
+      ...(originalCSS || {}),
+      escape: (value) => String(value).replace(/["\\]/g, "\\$&"),
+    };
+    window.CSS = globalThis.CSS;
+
     window.IntersectionObserver = class {
       constructor(callback) {
         this.callback = callback;
@@ -72,6 +80,13 @@ describe("ChatViewportHook", () => {
   afterEach(() => {
     hook?.destroyed?.();
     cleanupDOM();
+    if (originalCSS) {
+      globalThis.CSS = originalCSS;
+      window.CSS = originalCSS;
+    } else {
+      delete globalThis.CSS;
+      delete window.CSS;
+    }
     delete window.IntersectionObserver;
   });
 
@@ -177,5 +192,40 @@ describe("ChatViewportHook", () => {
     );
     expect(hook.el.id).toBe("chat-viewport-driver");
     expect(scroller.contains(hook.el)).toBe(false);
+  });
+
+  // ── link previews ─────────────────────────────────────
+
+  it("renders a single link preview title next to matching chat links", () => {
+    stream.innerHTML = `
+      <a class="chat-link" href="https://example.test/doc">doc</a>
+    `;
+
+    simulateEvent(hook, "link_preview", {
+      url: "https://example.test/doc",
+      title: "Example Doc",
+    });
+    simulateEvent(hook, "link_preview", {
+      url: "https://example.test/doc",
+      title: "Example Doc Updated",
+    });
+
+    const previews = stream.querySelectorAll(".chat-link-preview");
+    expect(previews).toHaveLength(1);
+    expect(previews[0].textContent).toBe("Example Doc Updated");
+    expect(stream.querySelector(".chat-link").title).toBe("Example Doc Updated");
+  });
+
+  it("does not render blank link preview spans", () => {
+    stream.innerHTML = `
+      <a class="chat-link" href="https://example.test/doc">doc</a>
+    `;
+
+    simulateEvent(hook, "link_preview", {
+      url: "https://example.test/doc",
+      title: "   ",
+    });
+
+    expect(stream.querySelector(".chat-link-preview")).toBeNull();
   });
 });

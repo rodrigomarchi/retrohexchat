@@ -90,6 +90,28 @@ describe("SearchHighlightHook", () => {
       expect(marks[0].closest("[data-message-id]").textContent).toContain("Alice");
     });
 
+    it("leaves Markdown code blocks and link labels unmarked", () => {
+      setupChatMessages(`
+        <div data-message-id="1">
+          <div class="chat-content">
+            visible target
+            <pre><code>target</code></pre>
+            <a class="chat-link" href="https://example.com">target</a>
+          </div>
+        </div>
+      `);
+
+      simulateEvent(hook, "search_highlight", {
+        query: "target",
+        case_sensitive: false,
+        regex: false,
+      });
+
+      expect(document.querySelectorAll("mark.search-highlight")).toHaveLength(1);
+      expect(document.querySelector("pre mark")).toBeNull();
+      expect(document.querySelector("a mark")).toBeNull();
+    });
+
     it("handles empty query gracefully", () => {
       setupChatMessages('<div class="chat-content">hello</div>');
       simulateEvent(hook, "search_highlight", { query: "", case_sensitive: false, regex: false });

@@ -396,6 +396,11 @@
   max-width: min(312px, calc(var(--rhc-visual-viewport-width, 100vw) - 8px));
 }
 
+.desktop--stacked .formatting-toolbar__mode-button,
+.desktop--stacked .formatting-toolbar__preview-button {
+  min-height: 34px;
+}
+
 .desktop--stacked .formatting-toolbar__actions {
   max-width: 295px;
 }
@@ -412,6 +417,11 @@
 .desktop--stacked .format-color-dropdown [data-format-color-swatch] {
   min-width: 28px;
   min-height: 28px;
+}
+
+.desktop--stacked .composer-markdown-preview {
+  width: 100%;
+  max-height: 180px;
 }
 
 .desktop--stacked [data-testid="chat-input-send"] {

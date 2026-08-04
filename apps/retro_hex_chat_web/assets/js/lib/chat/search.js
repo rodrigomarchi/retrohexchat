@@ -41,12 +41,14 @@ export function compilePattern(query, caseSensitive, isRegex) {
  * @returns {number} Total match count
  */
 export function highlightInElement(element, pattern) {
+  const skipSelector =
+    'mark.search-highlight, code, pre, a, button, input, textarea, select, [contenteditable="true"], script, style';
   const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, null);
   const textNodes = [];
 
   let node;
   while ((node = walker.nextNode())) {
-    if (node.parentElement && node.parentElement.closest("mark.search-highlight")) continue;
+    if (node.parentElement && node.parentElement.closest(skipSelector)) continue;
     textNodes.push(node);
   }
 

@@ -1,7 +1,14 @@
 <p>
   {dgettext(
     "help_ui",
-    "RetroHexChat supports IRC-compatible text formatting with bold, italic, underline, colors, and more."
+    "RetroHexChat supports IRC-compatible formatting, Markdown, and plain text messages."
+  )}
+</p>
+<.help_h4 icon={:icon_terminal}>{dgettext("help_ui", "Message Format")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "Use the IRC, MD, and TXT selector beside the composer to choose how the next message is saved and rendered."
   )}
 </p>
 <.help_h4 icon={:icon_code}>{dgettext("help_ui", "Methods")}</.help_h4>
@@ -9,7 +16,7 @@
   <strong>{dgettext("help_ui", "Toolbar:")}</strong>
   {dgettext(
     "help_ui",
-    "Use the formatting toolbar below the chat area (B, I, U, Color, Strip buttons)."
+    "The formatting toolbar changes with the selected message format."
   )}
 </p>
 <p><strong>{dgettext("help_ui", "Keyboard Shortcuts:")}</strong></p>
@@ -23,4 +30,9 @@
   )}
 </p>
 <.help_h4 icon={:icon_link}>{dgettext("help_ui", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="formatting-message-formats">
+    {dgettext("help_ui", "Message Formats")}
+  </.help_link>
+</p>
 <p><.help_link topic="formatting-colors">{dgettext("help_ui", "Colors")}</.help_link></p>

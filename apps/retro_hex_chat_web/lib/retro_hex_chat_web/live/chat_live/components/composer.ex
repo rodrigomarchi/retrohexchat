@@ -36,6 +36,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
   """
   use RetroHexChatWeb, :live_component
 
+  import RetroHexChatWeb.Components.UI.ChatMessage
   import RetroHexChatWeb.Components.UI.ChatInput
   import RetroHexChatWeb.Components.UI.FormattingToolbar
   import RetroHexChatWeb.Components.UI.Autocomplete
@@ -43,6 +44,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
   import RetroHexChatWeb.Components.UI.SyntaxTooltip
   import RetroHexChatWeb.Components.UI.HistorySearch
   import RetroHexChatWeb.Components.UI.TypingIndicator
+  import Phoenix.HTML, only: [raw: 1]
 
   alias RetroHexChat.Chat.InputHistory
   alias RetroHexChat.Commands.{Autocomplete, CommandSyntax, Registry}
@@ -94,6 +96,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
     recent_commands: [],
     reply_to: nil,
     edit_original_input: nil,
+    edit_original_content_format: nil,
+    content_format: "irc",
+    composer_view: :write,
     autocomplete_visible: false,
     autocomplete_mode: nil,
     autocomplete_command: nil,
@@ -120,7 +125,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
        show_status_tab: false,
        show_emoji_picker: false,
        pm_typing_from: nil,
-       edit_mode_message_id: nil
+       edit_mode_message_id: nil,
+       timestamp_format: :dd_mm_hh_mm,
+       timezone: "Etc/UTC"
      )}
   end
 
@@ -184,27 +191,56 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
   def update(%{reset_input: true}, socket) do
     {:ok,
      socket
-     |> assign(input: "", input_error: nil)
+     |> assign(input: "", input_error: nil, composer_view: :write)
      |> push_event("clear_input", %{})}
   end
 
+  def update(%{enter_edit: %{content: content, content_format: content_format}}, socket) do
+    original_input = socket.assigns.edit_original_input || socket.assigns.input
+    original_format = socket.assigns.edit_original_content_format || socket.assigns.content_format
+
+    {:ok,
+     assign(socket,
+       edit_original_input: original_input,
+       edit_original_content_format: original_format,
+       input: content,
+       content_format: normalize_content_format(content_format),
+       composer_view: :write
+     )}
+  end
+
   def update(%{enter_edit: content}, socket) do
-    {:ok, assign(socket, edit_original_input: socket.assigns.input, input: content)}
+    update(%{enter_edit: %{content: content, content_format: "irc"}}, socket)
   end
 
   def update(%{exit_edit: :restore}, socket) do
     original = socket.assigns.edit_original_input || ""
+    original_format = socket.assigns.edit_original_content_format || socket.assigns.content_format
 
     {:ok,
      socket
-     |> assign(edit_original_input: nil, input: original)
+     |> assign(
+       edit_original_input: nil,
+       edit_original_content_format: nil,
+       input: original,
+       content_format: original_format,
+       composer_view: :write
+     )
      |> push_event("set_input", %{value: original})}
   end
 
   def update(%{exit_edit: :clear}, socket) do
+    original_format = socket.assigns.edit_original_content_format || socket.assigns.content_format
+
     {:ok,
      socket
-     |> assign(edit_original_input: nil, input: "")
+     |> assign(
+       edit_original_input: nil,
+       edit_original_content_format: nil,
+       input: "",
+       content_format: original_format,
+       composer_view: :write
+     )
      |> push_event("set_input", %{value: ""})}
   end
 
@@ -257,6 +293,15 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
     {:noreply, assign(socket, input: input, input_error: nil)}
   end
 
+  def handle_event("set_content_format", %{"format" => format}, socket) do
+    {:noreply,
+     assign(socket, content_format: normalize_content_format(format), composer_view: :write)}
+  end
+
+  def handle_event("set_composer_view", %{"view" => view}, socket) do
+    {:noreply, assign(socket, composer_view: normalize_composer_view(view))}
+  end
+
   def handle_event("cancel_notice_mode", _params, socket) do
     send(self(), {:composer_notice_active, false})
 
@@ -270,12 +315,14 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
     {:noreply, handle_empty_submit(socket)}
   end
 
-  def handle_event("send_input", %{"input" => input}, socket) do
+  def handle_event("send_input", %{"input" => input} = params, socket) do
+    content_format = submitted_content_format(socket, params)
+
     if socket.assigns.edit_mode_message_id do
-      send(self(), {:composer_submit_edit, input})
+      send(self(), {:composer_submit_edit, input, content_format})
       {:noreply, socket}
     else
-      {:noreply, dispatch_and_reset(socket, input)}
+      {:noreply, dispatch_and_reset(socket, input, content_format)}
     end
   end
 
@@ -310,33 +357,57 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
 
         <.typing_indicator :if={@capabilities.typing_indicator} nick={@pm_typing_from} />
 
-        <.chat_input
-          id="chat-input-area"
-          input_id="chat-input"
-          value={@input}
-          name="input"
-          placeholder={@placeholder}
-          notice_target={@notice_target}
-          input_error={@input_error}
-          on_submit="send_input"
-          on_change="input_changed"
-          on_notice_cancel="cancel_notice_mode"
-          target={@myself}
-          hook="AutocompleteHook"
-          wrapper_hook="CharCounterHook"
-          input_history={@command_history}
-          recent_commands={@recent_commands}
-          autofocus
-        >
-          <:toolbar_buttons :if={@capabilities.formatting_toolbar}>
-            <.formatting_toolbar
-              strip_active={@strip_formatting}
-              show_emoji={@capabilities.emoji}
-              on_format="toggle_strip_formatting"
-              on_toggle_emoji="toggle_emoji_picker"
-            />
-          </:toolbar_buttons>
-        </.chat_input>
+        <div class="relative">
+          <div
+            :if={show_markdown_preview?(@content_format, @composer_view, @input)}
+            class="composer-markdown-preview"
+            data-testid="composer-markdown-preview"
+          >
+            <.chat_message
+              timestamp={preview_timestamp(@timestamp_format, @timezone)}
+              meta_title={preview_datetime(@timezone)}
+              nick={preview_nick(@nickname)}
+              nick_color="text-text"
+              class="composer-markdown-preview__message"
+            >
+              {raw(markdown_preview_html(@input, @strip_formatting))}
+            </.chat_message>
+          </div>
+
+          <.chat_input
+            id="chat-input-area"
+            input_id="chat-input"
+            value={@input}
+            name="input"
+            content_format={@content_format}
+            placeholder={@placeholder}
+            notice_target={@notice_target}
+            input_error={@input_error}
+            on_submit="send_input"
+            on_change="input_changed"
+            on_notice_cancel="cancel_notice_mode"
+            target={@myself}
+            hook="AutocompleteHook"
+            wrapper_hook="CharCounterHook"
+            input_history={@command_history}
+            recent_commands={@recent_commands}
+            autofocus
+          >
+            <:toolbar_buttons :if={@capabilities.formatting_toolbar}>
+              <.formatting_toolbar
+                content_format={@content_format}
+                composer_view={@composer_view}
+                strip_active={@strip_formatting}
+                show_emoji={@capabilities.emoji}
+                on_format="toggle_strip_formatting"
+                on_content_format="set_content_format"
+                on_composer_view="set_composer_view"
+                on_toggle_emoji="toggle_emoji_picker"
+                target={@myself}
+              />
+            </:toolbar_buttons>
+          </.chat_input>
+        </div>
         <%!-- Composer-owned hook: intercepts multi-line paste on #chat-input and
               pushes `paste_lines` to the root LiveView (handled by core_events,
               which forwards to the PasteConfirmDialog island). --%>
@@ -349,7 +420,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
 
   # ── Send / submit ────────────────────────────────────────────────
 
-  defp dispatch_and_reset(socket, input) do
+  defp dispatch_and_reset(socket, input, content_format) do
     submitted = input_for_mode(socket, input)
     reply_to = socket.assigns.reply_to
 
@@ -365,7 +436,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
     if input_history != current_history,
       do: send(self(), {:composer_input_history, input_history})
 
-    send(self(), {:composer_dispatch, submitted, reply_to})
+    send(self(), {:composer_dispatch, submitted, reply_to, content_format})
 
     socket
     |> assign(
@@ -379,7 +450,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
       autocomplete_visible: false,
       autocomplete_results: [],
       autocomplete_selected: 0,
-      syntax_tooltip: nil
+      syntax_tooltip: nil,
+      composer_view: :write
     )
     |> push_event("clear_input", %{})
   end
@@ -416,6 +488,40 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
   defp notice_mode?(socket) do
     is_binary(socket.assigns.notice_target) and socket.assigns.notice_target != ""
   end
+
+  defp submitted_content_format(socket, params) do
+    params
+    |> Map.get("content_format", socket.assigns.content_format)
+    |> normalize_content_format()
+  end
+
+  defp normalize_content_format(format) when format in ~w(irc markdown plain), do: format
+  defp normalize_content_format(_format), do: "irc"
+
+  defp normalize_composer_view("preview"), do: :preview
+  defp normalize_composer_view(_view), do: :write
+
+  defp markdown_preview_html(input, strip_formatting) when is_binary(input) do
+    ChatHelpers.format_content(input, "markdown", strip_formatting)
+  end
+
+  defp markdown_preview_html(_input, _strip_formatting), do: ""
+
+  defp show_markdown_preview?("markdown", :preview, input) when is_binary(input),
+    do: String.trim(input) != ""
+
+  defp show_markdown_preview?(_format, _view, _input), do: false
+
+  defp preview_timestamp(format, timezone) do
+    ChatHelpers.format_time(DateTime.utc_now(), format, timezone)
+  end
+
+  defp preview_datetime(timezone) do
+    ChatHelpers.format_datetime(DateTime.utc_now(), timezone)
+  end
+
+  defp preview_nick(nick) when is_binary(nick) and nick != "", do: nick
+  defp preview_nick(_nick), do: dgettext("chat", "You")
 
   # ── Autocomplete ─────────────────────────────────────────────────
 

@@ -127,9 +127,15 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
 
   defp safe_command_name(_name), do: "unknown"
 
-  @spec send_plain_message(Phoenix.LiveView.Socket.t(), Session.t(), String.t(), map() | nil) ::
+  @spec send_plain_message(
+          Phoenix.LiveView.Socket.t(),
+          Session.t(),
+          String.t(),
+          map() | nil,
+          String.t()
+        ) ::
           Phoenix.LiveView.Socket.t()
-  def send_plain_message(socket, session, text, reply_to \\ nil) do
+  def send_plain_message(socket, session, text, reply_to \\ nil, content_format \\ "irc") do
     cond do
       socket.assigns.show_status_tab ->
         push_status_message(
@@ -139,10 +145,10 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
         )
 
       session.active_pm ->
-        send_pm_message(socket, session, text, reply_to)
+        send_pm_message(socket, session, text, reply_to, content_format)
 
       session.active_channel ->
-        send_channel_message(socket, session, text, reply_to)
+        send_channel_message(socket, session, text, reply_to, content_format)
 
       true ->
         socket
@@ -176,16 +182,19 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
 
   # ── Private: message sending ─────────────────────────────
 
-  defp send_pm_message(socket, session, text, reply_to) do
+  defp send_pm_message(socket, session, text, reply_to, content_format) do
     if GlobalMutes.muted?(session.nickname) do
       error_event(socket, dgettext("chat", "You are muted by an administrator"))
     else
-      do_send_pm_message(socket, session, text, reply_to)
+      do_send_pm_message(socket, session, text, reply_to, content_format)
     end
   end
 
-  defp do_send_pm_message(socket, session, text, reply_to) do
-    opts = if reply_to, do: [reply_to_id: reply_to.id], else: []
+  defp do_send_pm_message(socket, session, text, reply_to, content_format) do
+    opts =
+      [content_format: content_format]
+      |> maybe_put_reply_to(reply_to)
+
     target = session.active_pm
 
     case Service.send_private_message(session.nickname, target, text, "message", opts) do
@@ -197,11 +206,11 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
     end
   end
 
-  defp send_channel_message(socket, session, text, reply_to) do
+  defp send_channel_message(socket, session, text, reply_to, content_format) do
     if GlobalMutes.muted?(session.nickname) do
       error_event(socket, dgettext("chat", "You are muted by an administrator"))
     else
-      do_send_channel_message(socket, session, text, reply_to)
+      do_send_channel_message(socket, session, text, reply_to, content_format)
     end
   end
 
@@ -211,13 +220,22 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
   # the row to the tail, so rapid sends (paste) keep their order. `pending`
   # status is stripped client-side by `message_confirmed`; the echo also clears
   # it when it re-renders the row with the decorated payload.
-  defp do_send_channel_message(socket, session, text, reply_to) do
-    opts = if reply_to, do: [reply_to_id: reply_to.id], else: []
+  defp do_send_channel_message(socket, session, text, reply_to, content_format) do
+    opts =
+      [content_format: content_format]
+      |> maybe_put_reply_to(reply_to)
 
     case Server.send_message(session.active_channel, session.nickname, text, opts) do
       {:ok, id} ->
         pending_msg =
-          build_pending_msg(id, session.nickname, text, session.active_channel, reply_to)
+          build_pending_msg(
+            id,
+            session.nickname,
+            text,
+            session.active_channel,
+            reply_to,
+            content_format
+          )
 
         socket
         |> MessageViewport.insert(pending_msg)
@@ -227,7 +245,14 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
         temp_id = "pending_#{System.unique_integer([:positive])}"
 
         failed_msg =
-          build_pending_msg(temp_id, session.nickname, text, session.active_channel, reply_to)
+          build_pending_msg(
+            temp_id,
+            session.nickname,
+            text,
+            session.active_channel,
+            reply_to,
+            content_format
+          )
           |> Map.put(:status, :failed)
 
         socket
@@ -237,11 +262,12 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
     end
   end
 
-  defp build_pending_msg(temp_id, nickname, text, channel, nil) do
+  defp build_pending_msg(temp_id, nickname, text, channel, nil, content_format) do
     %{
       id: temp_id,
       author: nickname,
       content: text,
+      content_format: content_format,
       type: :message,
       timestamp: DateTime.utc_now(),
       status: :pending,
@@ -249,11 +275,12 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
     }
   end
 
-  defp build_pending_msg(temp_id, nickname, text, channel, reply_to) do
+  defp build_pending_msg(temp_id, nickname, text, channel, reply_to, content_format) do
     %{
       id: temp_id,
       author: nickname,
       content: text,
+      content_format: content_format,
       type: :message,
       timestamp: DateTime.utc_now(),
       status: :pending,
@@ -263,6 +290,9 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
       reply_to_preview: reply_to.preview
     }
   end
+
+  defp maybe_put_reply_to(opts, nil), do: opts
+  defp maybe_put_reply_to(opts, reply_to), do: Keyword.put(opts, :reply_to_id, reply_to.id)
 
   # ── Private: alias expansion ──────────────────────────────
 

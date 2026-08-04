@@ -144,4 +144,89 @@ describe("FormatToolbarHook", () => {
     expect(panel.classList.contains("u-hidden")).toBe(false);
     expect(panel.getAttribute("aria-hidden")).toBe("false");
   });
+
+  it("prevents LiveView toolbar actions from stealing input focus on mousedown", () => {
+    const btn = document.createElement("button");
+    btn.dataset.formatToolbarLive = "";
+    hook.el.appendChild(btn);
+    chatInput.focus();
+
+    const event = new MouseEvent("mousedown", { bubbles: true, cancelable: true });
+    btn.dispatchEvent(event);
+
+    expect(event.defaultPrevented).toBe(true);
+    expect(document.activeElement).toBe(chatInput);
+  });
+
+  it("wraps the selected text with markdown bold syntax", () => {
+    const btn = document.createElement("button");
+    btn.className = "format-btn";
+    btn.dataset.formatCode = "md-bold";
+    hook.el.appendChild(btn);
+
+    chatInput.value = "hello";
+    chatInput.selectionStart = 0;
+    chatInput.selectionEnd = 5;
+
+    btn.dispatchEvent(new MouseEvent("mousedown", { bubbles: true }));
+
+    expect(chatInput.value).toBe("**hello**");
+    expect(document.activeElement).toBe(chatInput);
+  });
+
+  it("inserts a fenced markdown code block", () => {
+    const btn = document.createElement("button");
+    btn.className = "format-btn";
+    btn.dataset.formatCode = "md-code-block";
+    hook.el.appendChild(btn);
+
+    btn.dispatchEvent(new MouseEvent("mousedown", { bubbles: true }));
+
+    expect(chatInput.value).toBe("```\ncode\n```");
+  });
+
+  it("wraps the selected text with markdown strikethrough syntax", () => {
+    const btn = document.createElement("button");
+    btn.className = "format-btn";
+    btn.dataset.formatCode = "md-strike";
+    hook.el.appendChild(btn);
+
+    chatInput.value = "done";
+    chatInput.selectionStart = 0;
+    chatInput.selectionEnd = 4;
+
+    btn.dispatchEvent(new MouseEvent("mousedown", { bubbles: true }));
+
+    expect(chatInput.value).toBe("~~done~~");
+  });
+
+  it("prefixes selected lines as a markdown heading", () => {
+    const btn = document.createElement("button");
+    btn.className = "format-btn";
+    btn.dataset.formatCode = "md-heading";
+    hook.el.appendChild(btn);
+
+    chatInput.value = "Title";
+    chatInput.selectionStart = 0;
+    chatInput.selectionEnd = 5;
+
+    btn.dispatchEvent(new MouseEvent("mousedown", { bubbles: true }));
+
+    expect(chatInput.value).toBe("# Title");
+  });
+
+  it("numbers selected lines as a markdown ordered list", () => {
+    const btn = document.createElement("button");
+    btn.className = "format-btn";
+    btn.dataset.formatCode = "md-ordered-list";
+    hook.el.appendChild(btn);
+
+    chatInput.value = "one\ntwo";
+    chatInput.selectionStart = 0;
+    chatInput.selectionEnd = 7;
+
+    btn.dispatchEvent(new MouseEvent("mousedown", { bubbles: true }));
+
+    expect(chatInput.value).toBe("1. one\n2. two");
+  });
 });

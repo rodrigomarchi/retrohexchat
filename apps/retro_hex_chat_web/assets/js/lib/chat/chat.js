@@ -22,6 +22,8 @@ export function detectContextTarget(event, msgEl) {
     is_system: msgEl.dataset.systemMessage === "true",
     has_selection: window.getSelection().toString().length > 0,
     message_text: buildMessageText(msgEl),
+    message_source: buildMessageSource(msgEl),
+    message_format: msgEl.dataset.messageFormat || "irc",
     message_urls: collectUrls(msgEl),
   };
 
@@ -64,18 +66,35 @@ export function detectContextTarget(event, msgEl) {
  * @returns {string}
  */
 export function buildMessageText(msgEl) {
-  const timestampEl = msgEl.querySelector(".chat-timestamp");
+  const timestampEl = msgEl.querySelector(".chat-message__time, .chat-timestamp");
   const nickEl = msgEl.querySelector(".chat-nick");
   const contentEl = msgEl.querySelector(".chat-content");
+  const canonicalText = normalizeText(msgEl.dataset.messageText || "");
 
-  if (timestampEl && nickEl && contentEl) {
+  if (timestampEl && nickEl && (canonicalText || contentEl)) {
     const time = timestampEl.textContent.trim();
     const nick = (msgEl.dataset.author || "").trim();
-    const content = contentEl.textContent.trim();
+    const content = canonicalText || normalizeText(contentEl.textContent);
     return `[${time}] <${nick}> ${content}`;
   }
 
-  return msgEl.textContent.trim().replace(/\s+/g, " ");
+  return canonicalText || normalizeText(msgEl.textContent);
+}
+
+/**
+ * Original user-authored message source, if carried by the row.
+ *
+ * @param {HTMLElement} msgEl
+ * @returns {string}
+ */
+export function buildMessageSource(msgEl) {
+  const encodedSource = msgEl.dataset.messageSourceB64 || "";
+  const decodedSource = encodedSource ? decodeBase64Utf8(encodedSource) : null;
+
+  if (decodedSource !== null) return decodedSource;
+  if (msgEl.dataset.messageSource) return msgEl.dataset.messageSource;
+
+  return normalizeText(msgEl.dataset.messageText || msgEl.textContent);
 }
 
 /**
@@ -86,4 +105,28 @@ export function buildMessageText(msgEl) {
  */
 export function collectUrls(msgEl) {
   return Array.from(msgEl.querySelectorAll(".chat-link[data-url]")).map((el) => el.dataset.url);
+}
+
+function normalizeText(text) {
+  return (text || "").trim().replace(/\s+/g, " ");
+}
+
+function decodeBase64Utf8(value) {
+  try {
+    const binary = window.atob(value);
+
+    if (typeof window.TextDecoder === "function") {
+      const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
+      return new window.TextDecoder().decode(bytes);
+    }
+
+    return decodeURIComponent(
+      binary
+        .split("")
+        .map((char) => `%${char.charCodeAt(0).toString(16).padStart(2, "0")}`)
+        .join(""),
+    );
+  } catch {
+    return null;
+  }
 }

@@ -15,12 +15,12 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
 
   alias RetroHexChat.Chat.{
     CapturedURL,
+    Content,
     Highlight,
     LinkPreview,
     PerformList,
     ReconnectState,
-    SoundSettings,
-    URLDetector
+    SoundSettings
   }
 
   alias RetroHexChat.Services.NickServ
@@ -77,10 +77,17 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
   # to. Unbounded it grew for the whole session inside the LiveView process.
   @max_captured_urls 200
 
-  @spec capture_urls(Phoenix.LiveView.Socket.t(), String.t(), String.t(), atom(), String.t()) ::
+  @spec capture_urls(
+          Phoenix.LiveView.Socket.t(),
+          String.t(),
+          String.t(),
+          atom(),
+          String.t(),
+          Content.format_input()
+        ) ::
           Phoenix.LiveView.Socket.t()
-  def capture_urls(socket, content, source, source_type, author) do
-    urls = URLDetector.extract_urls(content)
+  def capture_urls(socket, content, source, source_type, author, content_format \\ "irc") do
+    urls = extract_content_urls(content, content_format)
 
     if urls == [] do
       socket
@@ -275,6 +282,14 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
     end
   end
 
+  @spec extract_content_urls(String.t(), Content.format_input()) :: [String.t()]
+  defp extract_content_urls(content, content_format) do
+    case Content.normalize_format(content_format) do
+      {:ok, normalized_format} -> Content.extract_urls(content, normalized_format)
+      :error -> Content.extract_urls(content, :irc)
+    end
+  end
+
   # ── Session / Reconnect ────────────────────────────────────
 
   @spec push_reconnect_state(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
@@ -402,6 +417,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
 
     case Highlight.check(
            payload.content,
+           Map.get(payload, :content_format, "irc"),
            session.nickname,
            words,
            payload.author

@@ -341,6 +341,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
       id: pm_field(pm, [:id]),
       author: pm_field(pm, [:sender, :sender_nickname]),
       content: pm.content,
+      content_format: content_format(pm),
       type: pm_resolve_type(pm),
       timestamp: pm_field(pm, [:timestamp, :inserted_at])
     }
@@ -349,6 +350,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
     |> maybe_add_field(pm, :reply_to_id)
     |> maybe_add_field(pm, :reply_to_author)
     |> maybe_add_field(pm, :reply_to_preview)
+    |> maybe_add_field(pm, :plain_content)
     |> maybe_add_field(pm, :edited_at)
     |> maybe_add_field(pm, :deleted_at)
   end
@@ -366,4 +368,8 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
 
   defp pm_resolve_type(%{type: type}), do: Messages.stream_type(type)
   defp pm_resolve_type(_), do: :message
+
+  defp content_format(source) do
+    Map.get(source, :content_format) || "irc"
+  end
 end

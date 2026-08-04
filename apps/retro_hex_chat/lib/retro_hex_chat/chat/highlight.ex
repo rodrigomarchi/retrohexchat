@@ -10,7 +10,7 @@ defmodule RetroHexChat.Chat.Highlight do
   - Text inside URLs (masked before matching)
   """
 
-  alias RetroHexChat.Chat.Formatter
+  alias RetroHexChat.Chat.Content
   alias RetroHexChat.Chat.HighlightWord
 
   @url_pattern ~r{https?://\S+}i
@@ -38,11 +38,28 @@ defmodule RetroHexChat.Chat.Highlight do
   def check("", _own_nick, _highlight_words, _sender_nick), do: :no_highlight
 
   def check(content, own_nick, highlight_words, sender_nick) do
+    check(content, :irc, own_nick, highlight_words, sender_nick)
+  end
+
+  @spec check(String.t(), Content.format_input(), String.t(), [HighlightWord.t()], String.t()) ::
+          {:highlight, non_neg_integer() | nil} | :no_highlight
+  def check("", _content_format, _own_nick, _highlight_words, _sender_nick),
+    do: :no_highlight
+
+  def check(content, content_format, own_nick, highlight_words, sender_nick) do
     if String.downcase(sender_nick) == String.downcase(own_nick) do
       :no_highlight
     else
-      plain = content |> Formatter.strip() |> mask_urls()
+      plain = content |> visible_text(content_format) |> mask_urls()
       check_words(plain, own_nick, highlight_words)
+    end
+  end
+
+  @spec visible_text(String.t(), Content.format_input()) :: String.t()
+  defp visible_text(content, content_format) do
+    case Content.normalize_format(content_format) do
+      {:ok, normalized_format} -> Content.plain_text(content, normalized_format)
+      :error -> Content.plain_text(content, :irc)
     end
   end
 

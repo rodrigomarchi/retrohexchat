@@ -393,6 +393,17 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_fmt_reset(assigns), to: RetroHexChatWeb.Icons.Formatting
   defdelegate icon_fmt_strip(assigns), to: RetroHexChatWeb.Icons.Formatting
   defdelegate icon_fmt_emoji(assigns), to: RetroHexChatWeb.Icons.Formatting
+  defdelegate icon_fmt_mode_irc(assigns), to: RetroHexChatWeb.Icons.Formatting
+  defdelegate icon_fmt_mode_markdown(assigns), to: RetroHexChatWeb.Icons.Formatting
+  defdelegate icon_fmt_mode_plain(assigns), to: RetroHexChatWeb.Icons.Formatting
+  defdelegate icon_fmt_preview(assigns), to: RetroHexChatWeb.Icons.Formatting
+  defdelegate icon_fmt_heading(assigns), to: RetroHexChatWeb.Icons.Formatting
+  defdelegate icon_fmt_strike(assigns), to: RetroHexChatWeb.Icons.Formatting
+  defdelegate icon_fmt_inline_code(assigns), to: RetroHexChatWeb.Icons.Formatting
+  defdelegate icon_fmt_code_block(assigns), to: RetroHexChatWeb.Icons.Formatting
+  defdelegate icon_fmt_quote(assigns), to: RetroHexChatWeb.Icons.Formatting
+  defdelegate icon_fmt_bulleted_list(assigns), to: RetroHexChatWeb.Icons.Formatting
+  defdelegate icon_fmt_ordered_list(assigns), to: RetroHexChatWeb.Icons.Formatting
 
   # ── Games ──────────────────────────────────────────────
   defdelegate game_icon(assigns), to: RetroHexChatWeb.Icons.Games

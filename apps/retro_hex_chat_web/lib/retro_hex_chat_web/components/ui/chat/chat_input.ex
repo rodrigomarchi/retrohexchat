@@ -45,6 +45,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatInput do
   attr :show_toolbar, :boolean, default: true
   attr :notice_target, :string, default: nil
   attr :input_error, :string, default: nil
+  attr :content_format, :string, default: "irc"
   attr :on_submit, :any, default: nil, doc: "Form submit / Send button callback"
   attr :on_change, :any, default: nil, doc: "Input change callback"
   attr :on_keydown, :any, default: nil, doc: "Keydown callback (for autocomplete, history, etc.)"
@@ -114,6 +115,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatInput do
         class="flex items-center gap-1 p-[2px] bg-surface"
         data-testid="chat-input-form"
       >
+        <input type="hidden" name="content_format" value={@content_format} />
         <div
           :if={@show_toolbar && @toolbar_buttons != []}
           class="flex shrink-0 items-center gap-0"

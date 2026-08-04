@@ -431,6 +431,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
       id: msg.id,
       author: msg.author_nickname,
       content: msg.content,
+      content_format: content_format(msg),
       type: Messages.stream_type(msg.type),
       timestamp: msg.inserted_at
     }
@@ -439,6 +440,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
     |> maybe_add(msg, :reply_to_id)
     |> maybe_add(msg, :reply_to_author)
     |> maybe_add(msg, :reply_to_preview)
+    |> maybe_add(msg, :plain_content)
     |> maybe_add(msg, :edited_at)
     |> maybe_add(msg, :deleted_at)
   end
@@ -448,5 +450,9 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
       nil -> map
       value -> Map.put(map, key, value)
     end
+  end
+
+  defp content_format(source) do
+    Map.get(source, :content_format) || "irc"
   end
 end

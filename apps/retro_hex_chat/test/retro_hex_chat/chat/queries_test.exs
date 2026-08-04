@@ -17,6 +17,22 @@ defmodule RetroHexChat.Chat.QueriesTest do
       assert {:ok, %Message{} = msg} = Queries.insert_message(attrs)
       assert msg.channel_name == "#lobby"
       assert msg.content == "Hello!"
+      assert msg.content_format == "irc"
+      assert msg.plain_content == "Hello!"
+    end
+
+    test "persists explicit content_format and plain_content" do
+      attrs = %{
+        channel_name: "#lobby",
+        author_nickname: "Alice",
+        content: "**Hello**",
+        content_format: "markdown",
+        type: "message"
+      }
+
+      assert {:ok, %Message{} = msg} = Queries.insert_message(attrs)
+      assert msg.content_format == "markdown"
+      assert msg.plain_content == "Hello"
     end
 
     test "returns error for invalid attrs" do
@@ -124,6 +140,25 @@ defmodule RetroHexChat.Chat.QueriesTest do
       assert {:ok, updated} = Queries.update_message_content(msg, "Updated content", now)
       assert updated.content == "Updated content"
       assert updated.edited_at == now
+      assert updated.content_format == "irc"
+      assert updated.plain_content == "Updated content"
+    end
+
+    test "updates plain_content with the persisted content_format" do
+      {:ok, msg} =
+        Queries.insert_message(%{
+          channel_name: "#lobby",
+          author_nickname: "Alice",
+          content: "**Original**",
+          content_format: "markdown",
+          type: "message"
+        })
+
+      now = DateTime.utc_now()
+      assert {:ok, updated} = Queries.update_message_content(msg, "**Updated**", now)
+      assert updated.content == "**Updated**"
+      assert updated.content_format == "markdown"
+      assert updated.plain_content == "Updated"
     end
   end
 

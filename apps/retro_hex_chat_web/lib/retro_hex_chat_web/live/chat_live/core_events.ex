@@ -61,12 +61,13 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
 
   def handle_event(
         "retry_message",
-        %{"temp_id" => temp_id, "content" => content, "target" => target},
+        %{"temp_id" => temp_id, "content" => content, "target" => target} = params,
         socket
       ) do
     session = socket.assigns.session
+    content_format = Map.get(params, "content_format", "irc")
 
-    case Server.send_message(target, session.nickname, content) do
+    case Server.send_message(target, session.nickname, content, content_format: content_format) do
       {:ok, _id} ->
         {:halt,
          socket
@@ -425,9 +426,9 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   # applied the action/notice prefix, updated its own history and reset itself;
   # here we run the privileged Parser/CommandDispatch work. `reply_to` is carried
   # in the message because it is now composer-owned.
-  @spec dispatch_composer_input(Phoenix.LiveView.Socket.t(), String.t(), map() | nil) ::
+  @spec dispatch_composer_input(Phoenix.LiveView.Socket.t(), String.t(), map() | nil, String.t()) ::
           Phoenix.LiveView.Socket.t()
-  def dispatch_composer_input(socket, text, reply_to) do
+  def dispatch_composer_input(socket, text, reply_to, content_format \\ "irc") do
     session = socket.assigns.session
     parsed = Parser.parse(text)
 
@@ -436,36 +437,37 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
       composer_metadata(parsed, text, reply_to),
       fn ->
         socket
-        |> dispatch_parsed_input(session, parsed, reply_to)
+        |> dispatch_parsed_input(session, parsed, reply_to, content_format)
         |> reset_activity()
       end
     )
   end
 
-  defp dispatch_parsed_input(socket, session, {:message, text}, reply_to) do
+  defp dispatch_parsed_input(socket, session, {:message, text}, reply_to, content_format) do
     new_session = Session.set_last_message_at(session, DateTime.utc_now())
 
     socket
     |> assign(session: new_session)
-    |> ChatLive.CommandDispatch.send_plain_message(new_session, text, reply_to)
+    |> ChatLive.CommandDispatch.send_plain_message(new_session, text, reply_to, content_format)
     |> push_event("tip_trigger", %{tip: "first_message"})
   end
 
-  defp dispatch_parsed_input(socket, session, {:command, name, args}, _reply_to) do
+  defp dispatch_parsed_input(socket, session, {:command, name, args}, _reply_to, _content_format) do
     ChatLive.CommandDispatch.dispatch_command(socket, session, name, args)
   end
 
-  @spec submit_composer_edit(Phoenix.LiveView.Socket.t(), String.t()) ::
+  @spec submit_composer_edit(Phoenix.LiveView.Socket.t(), String.t(), String.t() | nil) ::
           Phoenix.LiveView.Socket.t()
-  def submit_composer_edit(socket, new_content) do
+  def submit_composer_edit(socket, new_content, content_format \\ nil) do
     msg_id = socket.assigns.edit_mode_message_id
     session = socket.assigns.session
+    opts = edit_content_format_opts(content_format)
 
     result =
       if session.active_pm do
-        Service.edit_private_message(msg_id, session.nickname, new_content)
+        Service.edit_private_message(msg_id, session.nickname, new_content, opts)
       else
-        Service.edit_message(msg_id, session.nickname, new_content)
+        Service.edit_message(msg_id, session.nickname, new_content, opts)
       end
 
     case result do
@@ -487,6 +489,9 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
     send_update(Composer, [id: Composer.id()] ++ attrs)
     socket
   end
+
+  defp edit_content_format_opts(nil), do: []
+  defp edit_content_format_opts(content_format), do: [content_format: content_format]
 
   defp reset_composer_modes(socket), do: put_composer(socket, reset_modes: true)
 
@@ -545,11 +550,19 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
 
   defp enter_edit_mode(socket, message) do
     msg_id = message.id
-    socket = put_composer(socket, enter_edit: message.content)
+
+    socket =
+      put_composer(socket,
+        enter_edit: %{content: message.content, content_format: content_format(message)}
+      )
 
     socket
     |> assign(edit_mode_message_id: msg_id)
-    |> push_event("enter_edit_mode", %{message_id: msg_id, content: message.content})
+    |> push_event("enter_edit_mode", %{
+      message_id: msg_id,
+      content: message.content,
+      content_format: content_format(message)
+    })
   end
 
   defp editable_message?(message, %{active_pm: active_pm}, nickname) when not is_nil(active_pm) do
@@ -625,12 +638,14 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
       id: msg.id,
       author: msg.author_nickname,
       content: msg.content,
+      content_format: content_format(msg),
       type: MessageHelpers.stream_type(msg.type),
       timestamp: msg.inserted_at
     }
     |> maybe_add_field(msg, :reply_to_id)
     |> maybe_add_field(msg, :reply_to_author)
     |> maybe_add_field(msg, :reply_to_preview)
+    |> maybe_add_field(msg, :plain_content)
     |> maybe_add_field(msg, :edited_at)
     |> maybe_add_field(msg, :deleted_at)
   end
@@ -640,6 +655,10 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
       nil -> map
       value -> Map.put(map, key, value)
     end
+  end
+
+  defp content_format(source) do
+    Map.get(source, :content_format) || "irc"
   end
 
   defp handle_nick_change_confirm(socket, params) do

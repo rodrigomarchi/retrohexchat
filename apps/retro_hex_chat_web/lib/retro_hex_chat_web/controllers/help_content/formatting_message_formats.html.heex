@@ -1,0 +1,59 @@
+<p>
+  {dgettext(
+    "help_ui",
+    "The composer can send messages in three content formats: IRC, MD, and TXT."
+  )}
+</p>
+
+<.help_h4 icon={:icon_terminal}>{dgettext("help_ui", "Format Selector")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "Choose IRC for classic control-code formatting, MD for Markdown, or TXT for escaped plain text."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_ui",
+    "The selected format stays active for new messages. When you edit a message, the composer opens in that message's original format."
+  )}
+</p>
+
+<.help_h4 icon={:icon_code}>{dgettext("help_ui", "Markdown")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "Markdown mode supports bold, italic, inline code, code blocks, block quotes, lists, and links. Use Preview to check the rendered message before sending."
+  )}
+</p>
+<pre>{dgettext("help_ui", "**bold** _italic_ `code` [label](https://example.com)")}</pre>
+
+<.help_h4 icon={:icon_notepad}>{dgettext("help_ui", "IRC and Plain Text")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "IRC remains the default and keeps the classic bold, italic, underline, color, reverse, and reset controls."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_ui",
+    "TXT stores the message as literal text with HTML escaped and no presentation syntax interpreted."
+  )}
+</p>
+
+<.help_h4 icon={:icon_code}>{dgettext("help_ui", "Commands")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "Slash commands are still parsed as commands before message formatting is applied, so /join, /me, /notice, and other commands keep their normal behavior."
+  )}
+</p>
+
+<.help_h4 icon={:icon_link}>{dgettext("help_ui", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="formatting-overview">
+    {dgettext("help_ui", "Text Formatting Overview")}
+  </.help_link>
+</p>
+<p><.help_link topic="formatting-colors">{dgettext("help_ui", "Colors")}</.help_link></p>

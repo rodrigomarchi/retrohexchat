@@ -90,6 +90,21 @@ describe("lib/search", () => {
       expect(count).toBe(0);
     });
 
+    it("does not mark text inside code, pre, or links", () => {
+      const el = document.createElement("div");
+      el.innerHTML =
+        'hello <code>hello</code><pre>hello</pre><a href="https://example.com">hello</a>';
+      document.body.appendChild(el);
+
+      const count = highlightInElement(el, /hello/gi);
+
+      expect(count).toBe(1);
+      expect(el.querySelectorAll("mark.search-highlight")).toHaveLength(1);
+      expect(el.querySelector("code mark")).toBeNull();
+      expect(el.querySelector("pre mark")).toBeNull();
+      expect(el.querySelector("a mark")).toBeNull();
+    });
+
     it("preserves surrounding text", () => {
       const el = makeEl("abc foo def");
       highlightInElement(el, /foo/g);

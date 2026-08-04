@@ -3,7 +3,8 @@ defmodule RetroHexChat.Chat.SearchTest do
 
   @moduletag :integration
 
-  alias RetroHexChat.Chat.{Queries, Search}
+  alias RetroHexChat.Chat.{Message, Queries, Search}
+  alias RetroHexChat.Repo
 
   defp seed_messages do
     messages = [
@@ -80,6 +81,53 @@ defmodule RetroHexChat.Chat.SearchTest do
       assert Search.count_matches("#lobby", "a", nick_filter: "Alice") == 1
       assert Search.count_matches("#lobby", "Hi", mention_nick: "Alice") == 1
       assert Search.count_matches("#lobby", "GREAT", case_sensitive: true) == 1
+    end
+
+    test "searches Markdown messages by visible text, not source markup" do
+      {:ok, _msg} =
+        Queries.insert_message(%{
+          channel_name: "#lobby",
+          author_nickname: "Ada",
+          content: "**release** [doc](https://example.com/runbook)",
+          content_format: "markdown",
+          type: "message"
+        })
+
+      assert Search.count_matches("#lobby", "release") == 1
+      assert Search.count_matches("#lobby", "release doc", regex: false) == 1
+      assert Search.count_matches("#lobby", "release\\s+doc", regex: true) == 1
+      assert Search.count_matches("#lobby", "**release**") == 0
+      assert Search.count_matches("#lobby", "runbook") == 0
+    end
+
+    test "mention filter uses visible text instead of hidden Markdown URL text" do
+      {:ok, _msg} =
+        Queries.insert_message(%{
+          channel_name: "#lobby",
+          author_nickname: "Ada",
+          content: "please read [notes](https://example.com/Alice)",
+          content_format: "markdown",
+          type: "message"
+        })
+
+      assert Search.count_matches("#lobby", "please", mention_nick: "notes") == 1
+      assert Search.count_matches("#lobby", "please", mention_nick: "Alice") == 0
+    end
+
+    test "falls back to raw content for legacy rows without plain_content" do
+      {:ok, msg} =
+        Queries.insert_message(%{
+          channel_name: "#lobby",
+          author_nickname: "Legacy",
+          content: "**legacy**",
+          content_format: "markdown",
+          type: "message"
+        })
+
+      Repo.update_all(Message, set: [plain_content: nil])
+
+      assert msg.plain_content == "legacy"
+      assert Search.count_matches("#lobby", "**legacy**") == 1
     end
   end
 end

@@ -7,7 +7,7 @@ defmodule RetroHexChatWeb.App.ChatHelpers do
   use Gettext, backend: RetroHexChatWeb.Gettext
 
   alias RetroHexChat.Accounts.{NickColors, Session}
-  alias RetroHexChat.Chat.{Formatter, URLDetector}
+  alias RetroHexChat.Chat.{Content, URLDetector}
   alias RetroHexChatWeb.Timezone
 
   @nick_color_count 12
@@ -32,32 +32,98 @@ defmodule RetroHexChatWeb.App.ChatHelpers do
 
   @spec format_content(String.t(), boolean()) :: String.t()
   def format_content(content, strip_formatting) do
+    format_content(content, "irc", strip_formatting)
+  end
+
+  @spec format_content(String.t(), Content.format_input(), boolean()) :: String.t()
+  def format_content(content, content_format, strip_formatting) do
+    normalized_format = normalize_content_format(content_format)
+
     html =
       if strip_formatting do
-        content |> Formatter.strip() |> URLDetector.linkify()
+        content |> Content.strip_formatting(normalized_format) |> URLDetector.linkify()
       else
-        {:safe, raw} = Formatter.to_safe_html(content)
-        URLDetector.linkify_html(raw)
+        {:safe, raw} = Content.render_html(content, normalized_format)
+        maybe_linkify_rendered_html(raw, normalized_format)
       end
 
     linkify_channels(html)
   end
 
+  defp normalize_content_format(content_format) do
+    case Content.normalize_format(content_format) do
+      {:ok, normalized_format} -> normalized_format
+      :error -> :irc
+    end
+  end
+
+  defp maybe_linkify_rendered_html(html, :markdown), do: html
+  defp maybe_linkify_rendered_html(html, _content_format), do: URLDetector.linkify_html(html)
+
   @spec linkify_channels(String.t()) :: String.t()
   def linkify_channels(html) do
-    ~r/(<[^>]+>)/
-    |> Regex.split(html, include_captures: true)
-    |> Enum.map_join(&linkify_channel_part/1)
+    {parts, _protected_stack} =
+      ~r/(<[^>]+>)/
+      |> Regex.split(html, include_captures: true)
+      |> Enum.reduce({[], []}, &linkify_channel_segment/2)
+
+    parts
+    |> Enum.reverse()
+    |> Enum.join()
   end
 
   @channel_name_regex ~r/#[a-zA-Z][a-zA-Z0-9_-]{0,49}/
-  defp linkify_channel_part("<" <> _ = tag), do: tag
+  @channel_protected_tags ~w(a code pre)
+
+  defp linkify_channel_segment("<" <> _ = tag, {acc, protected_stack}) do
+    protected_stack = update_channel_protected_stack(tag, protected_stack)
+    {[tag | acc], protected_stack}
+  end
+
+  defp linkify_channel_segment(text, {acc, []}), do: {[linkify_channel_part(text) | acc], []}
+
+  defp linkify_channel_segment(text, {acc, protected_stack}), do: {[text | acc], protected_stack}
 
   defp linkify_channel_part(text) do
     Regex.replace(@channel_name_regex, text, fn match ->
       ~s(<span class="chat-channel-link" data-channel="#{match}">#{match}</span>)
     end)
   end
+
+  defp update_channel_protected_stack(tag, protected_stack) do
+    cond do
+      closing_channel_protected_tag?(tag) ->
+        remove_first(protected_stack, tag_name(tag))
+
+      opening_channel_protected_tag?(tag) ->
+        [tag_name(tag) | protected_stack]
+
+      true ->
+        protected_stack
+    end
+  end
+
+  defp opening_channel_protected_tag?(tag) do
+    name = tag_name(tag)
+
+    name in @channel_protected_tags and
+      !String.starts_with?(tag, "</") and
+      !String.ends_with?(String.trim(tag), "/>")
+  end
+
+  defp closing_channel_protected_tag?(tag),
+    do: String.starts_with?(tag, "</") and tag_name(tag) in @channel_protected_tags
+
+  defp tag_name(tag) do
+    case Regex.run(~r/^<\/?\s*([a-zA-Z0-9:-]+)/, tag) do
+      [_match, name] -> String.downcase(name)
+      nil -> ""
+    end
+  end
+
+  defp remove_first([], _tag_name), do: []
+  defp remove_first([tag_name | rest], tag_name), do: rest
+  defp remove_first([other | rest], tag_name), do: [other | remove_first(rest, tag_name)]
 
   @doc """
   Formats a message timestamp for the metadata column. Bare (no brackets): the

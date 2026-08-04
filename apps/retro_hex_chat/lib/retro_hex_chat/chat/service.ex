@@ -6,7 +6,7 @@ defmodule RetroHexChat.Chat.Service do
 
   require Logger
 
-  alias RetroHexChat.Chat.{Policy, Queries}
+  alias RetroHexChat.Chat.{Content, Policy, Queries}
   alias RetroHexChat.Observability
 
   @max_preview_length 100
@@ -23,69 +23,83 @@ defmodule RetroHexChat.Chat.Service do
 
   defp do_send_message(channel_name, nickname, content, type, opts) do
     reply_to_id = Keyword.get(opts, :reply_to_id)
+    content_format = content_format_from_opts(opts)
 
-    with :ok <- Policy.validate_content(content),
+    with :ok <- validate_content(content, content_format),
          {:ok, reply_attrs} <- resolve_reply_attrs(reply_to_id, :message),
-         {:ok, message} <- do_insert_message(channel_name, nickname, content, type, reply_attrs) do
+         {:ok, message} <-
+           do_insert_message(channel_name, nickname, content, content_format, type, reply_attrs) do
       Observability.set_current_span_attributes(%{"chat.message.id" => message.id})
       broadcast_message(channel_name, message)
       {:ok, message}
     end
   end
 
-  @spec edit_message(integer(), String.t(), String.t()) ::
+  @spec edit_message(integer(), String.t(), String.t(), keyword()) ::
           {:ok, RetroHexChat.Chat.Message.t()} | {:error, String.t()}
-  def edit_message(message_id, nickname, new_content) do
+  def edit_message(message_id, nickname, new_content, opts \\ []) do
+    requested_format = Keyword.get(opts, :content_format)
+
     Observability.span(
       [:retro_hex_chat, :chat, :message, :edit],
       %{
         "chat.message.id" => message_id,
         conversation_type: "channel",
-        message_size_bytes: byte_size(new_content)
+        message_size_bytes: byte_size(new_content),
+        content_format: requested_format || "persisted"
       },
-      fn -> do_edit_message(message_id, nickname, new_content) end
+      fn -> do_edit_message(message_id, nickname, new_content, opts) end
     )
   end
 
-  defp do_edit_message(message_id, nickname, new_content) do
-    with :ok <- Policy.validate_content(new_content),
-         %{} = message <-
+  defp do_edit_message(message_id, nickname, new_content, opts) do
+    with %{} = message <-
            Queries.get_message(message_id) || {:error, dgettext("chat", "Message not found.")},
+         content_format <- edit_content_format(message, opts),
+         :ok <- validate_content(new_content, content_format),
          :ok <- Policy.can_edit?(message, nickname),
          now <- DateTime.utc_now(),
-         {:ok, updated} <- Queries.update_message_content(message, new_content, now) do
+         {:ok, updated} <-
+           Queries.update_message_content(message, new_content, now,
+             content_format: content_format
+           ) do
       broadcast_edit(message.channel_name, updated)
-      update_reply_previews_if_needed(message.id, new_content, message.channel_name)
+      update_reply_previews_if_needed(message.id, preview_for(updated), message.channel_name)
       {:ok, updated}
     end
   end
 
-  @spec edit_private_message(integer(), String.t(), String.t()) ::
+  @spec edit_private_message(integer(), String.t(), String.t(), keyword()) ::
           {:ok, RetroHexChat.Chat.PrivateMessage.t()} | {:error, String.t()}
-  def edit_private_message(pm_id, nickname, new_content) do
+  def edit_private_message(pm_id, nickname, new_content, opts \\ []) do
+    requested_format = Keyword.get(opts, :content_format)
+
     Observability.span(
       [:retro_hex_chat, :chat, :message, :edit],
       %{
         "chat.message.id" => pm_id,
         conversation_type: "private",
-        message_size_bytes: byte_size(new_content)
+        message_size_bytes: byte_size(new_content),
+        content_format: requested_format || "persisted"
       },
-      fn -> do_edit_private_message(pm_id, nickname, new_content) end
+      fn -> do_edit_private_message(pm_id, nickname, new_content, opts) end
     )
   end
 
-  defp do_edit_private_message(pm_id, nickname, new_content) do
-    with :ok <- Policy.validate_content(new_content),
-         %{} = pm <-
+  defp do_edit_private_message(pm_id, nickname, new_content, opts) do
+    with %{} = pm <-
            Queries.get_private_message(pm_id) || {:error, dgettext("chat", "Message not found.")},
+         content_format <- edit_content_format(pm, opts),
+         :ok <- validate_content(new_content, content_format),
          :ok <- Policy.can_edit?(Map.put(pm, :author_nickname, pm.sender_nickname), nickname),
          now <- DateTime.utc_now(),
-         {:ok, updated} <- Queries.update_pm_content(pm, new_content, now) do
+         {:ok, updated} <-
+           Queries.update_pm_content(pm, new_content, now, content_format: content_format) do
       broadcast_pm_edit(pm.sender_nickname, pm.recipient_nickname, updated)
 
       update_pm_reply_previews_if_needed(
         pm.id,
-        new_content,
+        preview_for(updated),
         pm.sender_nickname,
         pm.recipient_nickname
       )
@@ -176,10 +190,11 @@ defmodule RetroHexChat.Chat.Service do
 
   defp do_send_private_message(sender, recipient, content, type, opts) do
     reply_to_id = Keyword.get(opts, :reply_to_id)
+    content_format = content_format_from_opts(opts)
 
-    with :ok <- Policy.validate_content(content),
+    with :ok <- validate_content(content, content_format),
          {:ok, reply_attrs} <- resolve_reply_attrs(reply_to_id, :pm),
-         {:ok, pm} <- do_insert_pm(sender, recipient, content, type, reply_attrs) do
+         {:ok, pm} <- do_insert_pm(sender, recipient, content, content_format, type, reply_attrs) do
       Observability.set_current_span_attributes(%{"chat.message.id" => pm.id})
       broadcast_private_message(sender, recipient, pm)
       broadcast_private_activity(sender, recipient, pm)
@@ -197,7 +212,7 @@ defmodule RetroHexChat.Chat.Service do
         {:error, dgettext("chat", "Original message not found.")}
 
       parent ->
-        preview = truncate_preview(parent.content)
+        preview = preview_for(parent)
 
         {:ok,
          %{
@@ -214,7 +229,7 @@ defmodule RetroHexChat.Chat.Service do
         {:error, dgettext("chat", "Original message not found.")}
 
       parent ->
-        preview = truncate_preview(parent.content)
+        preview = preview_for(parent)
 
         {:ok,
          %{
@@ -235,12 +250,26 @@ defmodule RetroHexChat.Chat.Service do
     end
   end
 
+  defp preview_for(%{plain_content: plain_content}) when is_binary(plain_content) do
+    truncate_preview(plain_content)
+  end
+
+  defp preview_for(%{content: content, content_format: content_format}) do
+    Content.preview(content, content_format, max_length: @max_preview_length - 3)
+  end
+
   # ── Insert helpers ──
 
-  defp do_insert_message(channel_name, nickname, content, type, reply_attrs) do
+  defp do_insert_message(channel_name, nickname, content, content_format, type, reply_attrs) do
     attrs =
       Map.merge(
-        %{channel_name: channel_name, author_nickname: nickname, content: content, type: type},
+        %{
+          channel_name: channel_name,
+          author_nickname: nickname,
+          content: content,
+          content_format: content_format,
+          type: type
+        },
         reply_attrs
       )
 
@@ -251,10 +280,16 @@ defmodule RetroHexChat.Chat.Service do
     end
   end
 
-  defp do_insert_pm(sender, recipient, content, type, reply_attrs) do
+  defp do_insert_pm(sender, recipient, content, content_format, type, reply_attrs) do
     attrs =
       Map.merge(
-        %{sender_nickname: sender, recipient_nickname: recipient, content: content, type: type},
+        %{
+          sender_nickname: sender,
+          recipient_nickname: recipient,
+          content: content,
+          content_format: content_format,
+          type: type
+        },
         reply_attrs
       )
 
@@ -267,11 +302,10 @@ defmodule RetroHexChat.Chat.Service do
 
   # ── Reply preview updates ──
 
-  defp update_reply_previews_if_needed(parent_id, new_content, channel_name) do
+  defp update_reply_previews_if_needed(parent_id, preview, channel_name) do
     reply_ids = Queries.get_reply_ids(parent_id)
 
     if reply_ids != [] do
-      preview = truncate_preview(new_content)
       Queries.update_reply_previews(parent_id, preview)
 
       Phoenix.PubSub.broadcast(
@@ -302,11 +336,10 @@ defmodule RetroHexChat.Chat.Service do
     end
   end
 
-  defp update_pm_reply_previews_if_needed(parent_id, new_content, sender, recipient) do
+  defp update_pm_reply_previews_if_needed(parent_id, preview, sender, recipient) do
     reply_ids = Queries.get_pm_reply_ids(parent_id)
 
     if reply_ids != [] do
-      preview = truncate_preview(new_content)
       Queries.update_pm_reply_previews(parent_id, preview)
 
       topic = "pm:#{pm_topic(sender, recipient)}"
@@ -350,6 +383,7 @@ defmodule RetroHexChat.Chat.Service do
       sender: pm.sender_nickname,
       recipient: pm.recipient_nickname,
       content: pm.content,
+      content_format: content_format(pm),
       type: safe_type_atom(pm.type),
       timestamp: pm.inserted_at,
       id: pm.id,
@@ -430,6 +464,7 @@ defmodule RetroHexChat.Chat.Service do
       channel: channel_name,
       author: message.author_nickname,
       content: message.content,
+      content_format: content_format(message),
       type: safe_type_atom(message.type),
       timestamp: message.inserted_at,
       id: message.id,
@@ -471,6 +506,7 @@ defmodule RetroHexChat.Chat.Service do
         payload: %{
           id: message.id,
           content: message.content,
+          content_format: content_format(message),
           edited_at: message.edited_at,
           channel: channel_name
         }
@@ -489,6 +525,7 @@ defmodule RetroHexChat.Chat.Service do
         payload: %{
           id: pm.id,
           content: pm.content,
+          content_format: content_format(pm),
           edited_at: pm.edited_at,
           sender: sender
         }
@@ -533,12 +570,46 @@ defmodule RetroHexChat.Chat.Service do
     [nick_a, nick_b] |> Enum.sort() |> Enum.join(":")
   end
 
+  defp content_format_from_opts(opts) do
+    opts
+    |> Keyword.get(:content_format, "irc")
+    |> normalize_content_format()
+  end
+
+  defp normalize_content_format(format) do
+    case Content.normalize_format(format) do
+      {:ok, normalized} -> Atom.to_string(normalized)
+      :error -> format
+    end
+  end
+
+  defp content_format(%{content_format: content_format}) when is_binary(content_format),
+    do: content_format
+
+  defp content_format(_message), do: "irc"
+
+  defp edit_content_format(message, opts) do
+    opts
+    |> Keyword.get(:content_format, content_format(message))
+    |> normalize_content_format()
+  end
+
+  defp validate_content(content, content_format) do
+    case Content.validate(content, content_format) do
+      :ok -> :ok
+      {:error, :blank} -> {:error, dgettext("chat", "Message cannot be empty")}
+      {:error, :too_long} -> {:error, "Message exceeds maximum length of 1000 characters"}
+      {:error, :unsupported_format} -> {:error, dgettext("chat", "Unsupported message format")}
+    end
+  end
+
   defp message_metadata(conversation_type, type, content, opts, extra) do
     Map.merge(
       %{
         conversation_type: Atom.to_string(conversation_type),
         message_type: normalize_message_type(type),
         message_size_bytes: byte_size(content),
+        content_format: content_format_from_opts(opts),
         has_reply: Keyword.has_key?(opts, :reply_to_id)
       },
       extra
