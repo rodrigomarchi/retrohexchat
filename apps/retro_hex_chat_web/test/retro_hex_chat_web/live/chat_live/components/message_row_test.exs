@@ -55,13 +55,25 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRowTest do
     refute html =~ "* bob"
   end
 
-  # Layout tokens the two-column meta layout depends on. Pinned on the component
-  # so the coverage is deterministic (a full LiveView render was flaky).
-  test "normal messages use the two-column grid with a data-nick handle, no angle brackets" do
+  # Layout tokens the message shape depends on. Pinned on the component so the
+  # coverage is deterministic (a full LiveView render was flaky).
+  test "speech stacks its text under the head, with a data-nick handle and no angle brackets" do
     html = row(%{id: "g1", author: "alice", content: "hi", type: :normal, timestamp: @ts})
-    assert html =~ "grid-cols-[5rem_1fr]"
+    assert html =~ ~s(data-message-layout="stacked")
+    assert html =~ "chat-message__body"
     assert html =~ ~s(data-nick="alice")
     refute html =~ "&lt;alice&gt;"
+  end
+
+  # Narration has no author to bind the eye to and is short: a second line for
+  # it would be ceremony, so it rides the head line and wraps to the margin.
+  test "narration rides the head line instead of stacking" do
+    action = row(%{id: "g2", author: "alice", content: "waves", type: :action, timestamp: @ts})
+    system = row(%{id: "g3", content: "joined", type: :system, timestamp: @ts})
+
+    assert action =~ ~s(data-message-layout="inline")
+    assert system =~ ~s(data-message-layout="inline")
+    refute system =~ "chat-message__body"
   end
 
   test "action messages carry the text-action class" do

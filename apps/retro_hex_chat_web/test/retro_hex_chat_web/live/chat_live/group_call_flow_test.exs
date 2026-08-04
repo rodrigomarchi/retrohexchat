@@ -85,10 +85,20 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
   defp cleanup_room(token) do
     on_exit(fn ->
       case Registry.lookup_room({:room, token}) do
-        {:ok, pid} -> GenServer.stop(pid, :normal)
+        {:ok, pid} -> stop_room(pid)
         {:error, :not_found} -> :ok
       end
     end)
+  end
+
+  # The room writes its participants out as it terminates, on a sandbox
+  # connection borrowed from a process that is itself on its way out — so this
+  # stop can exit on a dead process or on a checkout the pool has already torn
+  # down. Either way the room is gone, which is all the cleanup wanted.
+  defp stop_room(pid) do
+    GenServer.stop(pid, :normal)
+  catch
+    :exit, _reason -> :ok
   end
 
   defp wait_until(fun, retries \\ 30)

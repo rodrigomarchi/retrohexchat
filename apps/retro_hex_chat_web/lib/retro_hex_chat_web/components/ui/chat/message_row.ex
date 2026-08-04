@@ -98,6 +98,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
           source={dgettext("chat", "Help")}
           type="system"
           kind="help"
+          layout="stacked"
         >
           <.inline_help_card
             topic_id={@msg.topic_id}

@@ -49,21 +49,27 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
   @doc """
   Renders a single chat message row.
 
-  Layout is a two-column grid: a compact right-aligned metadata column (a small
-  kind icon + the interactive nick *or* non-interactive origin on the first line,
-  a smaller timestamp on the second) and the message body, which gets the wider
-  column and a slightly larger font. This reads well on phones while keeping the
-  retro monospace identity.
+  Every row opens with the same head — kind icon, author or origin, timestamp —
+  and then goes one of two ways:
+
+    * **stacked** (speech): the head is a line of its own and the text takes the
+      full width below it, behind a 2px spine in the author's colour. This is
+      the ICQ/MSN shape, and it is what makes a phone readable: metadata costs
+      height, never width.
+    * **inline** (actions, system, service, error, announcement): the text
+      continues on the head's own line and wraps back to the left margin, the
+      way mIRC printed them. These lines are short and have no author to bind
+      the eye to, so a second line would be ceremony.
 
   `nick` renders the interactive `.chat-nick[data-nick]` handle (click, hover
   card, PM, context menu). `source` renders a non-interactive origin label
-  (e.g. "System", "Error", "MOTD") — never both. `meta_title`
-  carries the full datetime for the timestamp's hover/accessibility label.
+  (e.g. "System", "Error", "MOTD") — never both. `meta_title` carries the full
+  datetime for the timestamp's hover/accessibility label.
 
-  A pixel-art kind icon is prepended to that first line to signal the sender at a
-  glance (a user glyph for any nick-authored line; a wrench/shield/warning/etc.
-  for origin lines). The icon is derived from `type`/`nick`/`source`; pass `kind`
-  to override it explicitly (e.g. `"help"`, `"arcade"`, `"deleted"`).
+  The kind icon signals the sender at a glance (a user glyph for any
+  nick-authored line; a wrench/shield/warning/etc. for origin lines). It is
+  derived from `type`/`nick`/`source`; pass `kind` to override it explicitly
+  (e.g. `"help"`, `"arcade"`, `"deleted"`).
   """
   attr :id, :string, default: nil, doc: "Message ID for stream compatibility"
   attr :timestamp, :string, default: nil
@@ -85,65 +91,75 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
     default: nil,
     doc: "Kind-icon override; when nil, derived from type/nick/source"
 
+  attr :layout, :string,
+    values: ~w(auto stacked inline),
+    default: "auto",
+    doc: "Overrides the type-derived shape — e.g. a card body always needs stacked"
+
   attr :class, :any, default: nil
   attr :rest, :global
   slot :inner_block, required: true
 
   @spec chat_message(map()) :: Phoenix.LiveView.Rendered.t()
   def chat_message(assigns) do
+    assigns = assign(assigns, :stacked?, stacked?(assigns.layout, assigns.nick, assigns.type))
+
     ~H"""
     <div
       id={@id}
-      class={
-        classes([
-          "grid min-w-0 grid-cols-[5rem_1fr] sm:grid-cols-[7rem_1fr] gap-x-2 items-start py-0.5",
-          type_class(@type),
-          @class
-        ])
-      }
+      class={classes(["chat-message__row min-w-0", type_class(@type), @class])}
       data-message-id={@id}
+      data-message-layout={if(@stacked?, do: "stacked", else: "inline")}
       {@rest}
     >
-      <span class="min-w-0 flex flex-col items-end leading-tight text-right">
-        <span class="flex min-w-0 max-w-full items-center gap-1">
-          <.message_kind_icon kind={resolve_kind(@kind, @nick, @source, @type)} />
-          <span
-            :if={@nick}
-            class={[
-              "chat-nick min-w-0 truncate font-mono text-[13px] font-bold leading-tight",
-              @nick_color || "text-text"
-            ]}
-            data-nick={@nick}
-            title={@nick}
-          >
-            {@nick}
-          </span>
-          <span
-            :if={!@nick && @source}
-            class="min-w-0 truncate font-mono text-[13px] font-bold leading-tight"
-            title={@source}
-          >
-            {@source}
-          </span>
+      <div class="chat-message__head">
+        <.message_kind_icon kind={resolve_kind(@kind, @nick, @source, @type)} />
+        <span
+          :if={@nick}
+          class={["chat-nick chat-message__author", @nick_color || "text-text"]}
+          data-nick={@nick}
+          title={@nick}
+        >
+          {@nick}
+        </span>
+        <span
+          :if={!@nick && @source}
+          class="chat-message__author"
+          title={@source}
+        >
+          {@source}
         </span>
         <time
           :if={@timestamp && @timestamp != ""}
-          class="block font-mono text-[9px] text-gray-500 whitespace-nowrap leading-tight"
+          class="chat-message__time"
           data-testid="chat-message-timestamp"
           title={@meta_title}
         >
           {@timestamp}
         </time>
-      </span>
-      <span class={[
-        "font-mono min-w-0 break-words text-[15px] leading-snug",
-        message_body_class(@type)
-      ]}>
-        {render_slot(@inner_block)}
-      </span>
+        <span :if={!@stacked?} class={["chat-message__text", message_body_class(@type)]}>
+          {render_slot(@inner_block)}
+        </span>
+      </div>
+
+      <div :if={@stacked?} class="chat-message__body">
+        <span class={["chat-message__spine", @nick_color]} aria-hidden="true"></span>
+        <span class={["chat-message__text", message_body_class(@type)]}>
+          {render_slot(@inner_block)}
+        </span>
+      </div>
     </div>
     """
   end
+
+  # Speech gets its own line of text; everything else rides the head line.
+  # An action is nick-authored but reads as one sentence ("* alice waves"), so
+  # it stays inline with the rest of the narration.
+  @spec stacked?(String.t(), String.t() | nil, String.t()) :: boolean()
+  defp stacked?("stacked", _nick, _type), do: true
+  defp stacked?("inline", _nick, _type), do: false
+  defp stacked?(_auto, _nick, "action"), do: false
+  defp stacked?(_auto, nick, _type), do: is_binary(nick) and nick != ""
 
   @doc """
   Renders the small pixel-art kind icon shown before a message's nick/source.

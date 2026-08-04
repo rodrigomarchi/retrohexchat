@@ -83,6 +83,59 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessageTest do
     end
   end
 
+  describe "chat_message/1 shape" do
+    test "speech stacks its text under the head, behind a spine in the nick colour" do
+      html =
+        render_component(&chat_message/1,
+          type: "normal",
+          nick: "alice",
+          nick_color: "nick-color-3",
+          inner_block: %{inner_block: fn _, _ -> "hi" end}
+        )
+
+      assert html =~ ~s(data-message-layout="stacked")
+      assert html =~ "chat-message__body"
+      assert html =~ ~s(class="chat-message__spine nick-color-3")
+    end
+
+    test "narration rides the head line and has no body" do
+      action =
+        render_component(&chat_message/1,
+          type: "action",
+          nick: "alice",
+          inner_block: %{inner_block: fn _, _ -> "* waves" end}
+        )
+
+      system =
+        render_component(&chat_message/1,
+          type: "system",
+          source: "System",
+          inner_block: %{inner_block: fn _, _ -> "joined" end}
+        )
+
+      assert action =~ ~s(data-message-layout="inline")
+      assert system =~ ~s(data-message-layout="inline")
+      refute action =~ "chat-message__body"
+      refute system =~ "chat-message__body"
+    end
+
+    # An inline help card is a block: riding the head line would put a card
+    # where a sentence belongs.
+    test "an explicit layout overrides the type-derived shape" do
+      html =
+        render_component(&chat_message/1,
+          type: "system",
+          source: "Help",
+          kind: "help",
+          layout: "stacked",
+          inner_block: %{inner_block: fn _, _ -> "card" end}
+        )
+
+      assert html =~ ~s(data-message-layout="stacked")
+      assert html =~ "chat-message__body"
+    end
+  end
+
   describe "chat_message/1 kind icon" do
     test "a nick-authored line shows the user glyph" do
       html =

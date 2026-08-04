@@ -1,0 +1,93 @@
+/* ── Chat message row ──────────────────────────────────────── */
+/* Every row opens with the same head — kind icon, author, timestamp. Speech
+   then drops to a full-width line of text behind a spine in the author's
+   colour (the ICQ/MSN shape); narration keeps flowing on the head's own line
+   and wraps back to the left margin (the way mIRC printed it).
+
+   The point of the shape is that metadata costs height and never width: the
+   two-column grid this replaced reserved 88px of a 314px phone line — 28% of
+   every line gone before the first letter. */
+
+.chat-message__row {
+  padding-block: 2px;
+}
+
+/* Inline flow, not flex: an inline row's text must wrap back to the left
+   margin instead of hanging under the head.
+   `font-size: 0` is how that is paid for. The head's children are separated by
+   the markup's own newlines, which inline flow renders as spaces — including
+   the ones the HEEx formatter puts *inside* a multi-attribute tag, which would
+   otherwise print as "[ 04/08 08:16 ]". Zeroing the container collapses every
+   one of them; each child then declares its own size, and the gaps are margins
+   under our control rather than whatever the formatter felt like emitting. */
+.chat-message__head {
+  font-size: 0;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.chat-message__head [data-message-kind] {
+  display: inline-flex;
+  vertical-align: -2px;
+}
+
+/* `inline-flex` on both: the container's `font-size: 0` collapses the newlines
+   *between* these elements, but the formatter also leaves one *inside* each
+   opening tag, and that one takes the element's own size — printing
+   "[ 04/08 08:45 ]". A flex box trims the whitespace at the edges of its text,
+   so the brackets close on the clock. */
+.chat-message__author {
+  display: inline-flex;
+  margin-left: 5px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.chat-message__time {
+  @apply text-muted-foreground;
+  display: inline-flex;
+  margin-left: 6px;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+/* mIRC punctuated its clock; keeping the brackets in CSS leaves the <time>
+   element's own text as just the time, for copy and for a screen reader. */
+.chat-message__time::before {
+  content: "[";
+}
+
+.chat-message__time::after {
+  content: "]";
+}
+
+.chat-message__body {
+  display: flex;
+  gap: 6px;
+}
+
+/* `currentColor` is the author's nick colour when the row carries one, and the
+   row's own type colour otherwise (grey for system, muted for a help card) —
+   so the spine is never a hardcoded second palette. */
+.chat-message__spine {
+  width: 2px;
+  flex: 0 0 2px;
+  background: currentColor;
+}
+
+.chat-message__text {
+  min-width: 0;
+  font-size: 15px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+/* Narration rides the head line, one step down from the 15px body: secondary
+   to what people actually said. */
+.chat-message__head > .chat-message__text {
+  /* The container's `font-size: 0` swallowed the space before this text too —
+     collapsing keeps the first whitespace of a run, and that one is zero-wide. */
+  margin-left: 6px;
+  font-size: 13px;
+  line-height: inherit;
+}
