@@ -76,6 +76,14 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
                 "full panel open. The Start menu opens one level at a time: tapping a group " <>
                 "replaces the list with its entries, and the group's own row at the top takes " <>
                 "you back."
+            ) <>
+            " " <>
+            dgettext(
+              "help",
+              "The menu bar becomes a rail of icons across the top of the screen — one per " <>
+                "menu, in the same order as on the desktop. Tapping one opens the menu already " <>
+                "on that section; tapping another switches to it, and tapping the one already " <>
+                "open closes the menu."
             )
       },
       %{

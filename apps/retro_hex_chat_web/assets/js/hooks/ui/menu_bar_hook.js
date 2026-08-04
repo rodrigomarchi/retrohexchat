@@ -3,6 +3,8 @@
  *
  * Behaviour:
  * - Click a trigger to open its dropdown (toggles if already open)
+ * - Click a mobile rail button to open the shared mobile dropdown on its
+ *   section; another button switches sections, the same one closes
  * - Hover over another trigger while a menu is open to switch ("hot tracking")
  * - Click a dropdown item to fire its action and close all menus
  * - Click outside or press Escape to close all menus
@@ -13,8 +15,18 @@
 const MenuBarHook = {
   mounted() {
     this._activeMenu = null;
+    this._mobileSection = null;
 
     this.el.addEventListener("mousedown", (e) => {
+      // The rail opens on mousedown like every other trigger, so the same
+      // preventDefault keeps the focus (and the phone keyboard) on the composer.
+      const railButton = e.target.closest("[data-mobile-menu-open]");
+      if (railButton) {
+        e.preventDefault();
+        this._openMobileSection(railButton.dataset.mobileMenuOpen);
+        return;
+      }
+
       const trigger = e.target.closest("[data-menubar-trigger]");
       if (!trigger) return;
       e.preventDefault();
@@ -141,7 +153,41 @@ const MenuBarHook = {
     this._activeMenu = menu;
   },
 
+  // Opens the shared mobile dropdown already showing `section`. The rail has no
+  // dropdown of its own: every button drives the one panel the mobile menu
+  // renders, which is why the same button closes it and a different one only
+  // swaps the section under an already-open drawer.
+  _openMobileSection(section) {
+    const root = this.el.querySelector("[data-mobile-menu-root]");
+    if (!root) return;
+
+    const menu = root.closest("[data-menubar-dropdown]")?.parentElement;
+    if (!menu) return;
+
+    if (this._activeMenu === menu && this._mobileSection === section) {
+      this._closeAll();
+      return;
+    }
+
+    if (this._activeMenu !== menu) this._openMenu(menu);
+
+    const category = root.querySelector(`[data-mobile-menu-category="${section}"]`);
+    if (category) this._activateMobileMenuCategory(category);
+  },
+
+  // Mirrors the open section onto the rail, so the button reads as pressed the
+  // way an open menu's trigger does on the desktop. `null` clears every button.
+  _syncMobileRail(section) {
+    this.el.querySelectorAll("[data-mobile-menu-open]").forEach((button) => {
+      const active = button.dataset.mobileMenuOpen === section;
+      button.dataset.active = active ? "true" : "false";
+      button.setAttribute("aria-expanded", active ? "true" : "false");
+    });
+  },
+
   _closeAll() {
+    this._mobileSection = null;
+    this._syncMobileRail(null);
     this.el.querySelectorAll("[data-menubar-dropdown]").forEach((d) => d.classList.add("u-hidden"));
     this.el
       .querySelectorAll("[data-menubar-submenu]")
@@ -216,6 +262,11 @@ const MenuBarHook = {
     root.querySelectorAll("[data-mobile-menu-section]").forEach((panel) => {
       panel.classList.toggle("u-hidden", panel.dataset.mobileMenuSection !== section);
     });
+
+    // The category column inside the drawer switches sections too, so the rail
+    // learns the section from here rather than from the tap that opened it.
+    this._mobileSection = section;
+    this._syncMobileRail(section);
   },
 
   _refreshCopySelectionItems(menu) {

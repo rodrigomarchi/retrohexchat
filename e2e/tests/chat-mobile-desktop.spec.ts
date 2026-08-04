@@ -37,6 +37,9 @@ test.describe("chat desktop on a phone (stacked single-window)", () => {
       .locator(".app-menu-bar__desktop-menu button[data-menubar-trigger]")
       .filter({ hasText: "Tools" });
     const mobileMenuTrigger = page.getByTestId("app-mobile-menu-trigger");
+    const mobileRail = page.getByTestId("app-mobile-menu-rail");
+    const railToolsButton = page.getByTestId("app-mobile-menu-rail-tools");
+    const railFileButton = page.getByTestId("app-mobile-menu-rail-file");
     const desktopChatTaskbarBtn = page.locator(
       '.desktop-taskbar__window-button[data-window-taskbar="chat"]',
     );
@@ -53,9 +56,21 @@ test.describe("chat desktop on a phone (stacked single-window)", () => {
     await expect(menuBar).toBeVisible();
     await expect(startButton).toBeVisible();
     await expect(desktopToolsMenu).toBeHidden();
-    await expect(mobileMenuTrigger).toBeVisible();
+    await expect(mobileMenuTrigger).toBeHidden();
+    await expect(mobileRail).toBeVisible();
+    await expect(railToolsButton).toBeVisible();
     await expect(desktopChatTaskbarBtn).toBeHidden();
     await expect(mobileTaskSwitcherTrigger).toBeVisible();
+
+    // The rail is the header, not a button in it: it spans what the logo and
+    // the status zone leave, so the strip beside them is a touch target rather
+    // than dead space.
+    const headerBox = await page.getByTestId("app-header").boundingBox();
+    const railBox = await mobileRail.boundingBox();
+    expect(headerBox).not.toBeNull();
+    expect(railBox).not.toBeNull();
+    expect(railBox!.width).toBeGreaterThan(headerBox!.width * 0.6);
+    await shot(page, "mobile-header-menu-rail");
 
     // The chat window fills the workspace (fullscreen app layout).
     await expect(chatWindow).toBeVisible();
@@ -67,7 +82,9 @@ test.describe("chat desktop on a phone (stacked single-window)", () => {
     expect(chatBox!.height).toBeGreaterThanOrEqual(wsBox!.height - 2);
 
     // Opening Timers makes it the sole visible window; the chat window hides.
-    await mobileMenuTrigger.click();
+    // The rail opens the drawer already on the tapped menu — no second tap on a
+    // category to get there.
+    await railToolsButton.click();
     const mobileMenuDropdown = menuBar.locator(
       "[data-menubar-dropdown]:not(.u-hidden)",
     );
@@ -89,15 +106,25 @@ test.describe("chat desktop on a phone (stacked single-window)", () => {
     await expect(mobileMenuDropdown).toBeVisible();
     await expect(fileCategory).toBeVisible();
     await expect(toolsCategory).toBeVisible();
-    await expect(fileCategory).toHaveAttribute("aria-selected", "true");
+    await expect(toolsCategory).toHaveAttribute("aria-selected", "true");
+    await expect(fileCategory).toHaveAttribute("aria-selected", "false");
+    await expect(toolsSection).toBeVisible();
+    await expect(fileSection).toBeHidden();
+    await expect(timersMenuItem).toBeVisible();
+    await expect(railToolsButton).toHaveAttribute("aria-expanded", "true");
+    await shot(page, "mobile-menu-rail-opened-on-tools");
+
+    // Another rail button swaps the section under the open drawer; the same one
+    // puts it away.
+    await railFileButton.click();
+    await expect(mobileMenuDropdown).toBeVisible();
     await expect(fileSection).toBeVisible();
     await expect(toolsSection).toBeHidden();
-    await expect(timersMenuItem).toBeHidden();
+    await expect(railToolsButton).toHaveAttribute("aria-expanded", "false");
+    await railFileButton.click();
+    await expect(mobileMenuDropdown).toBeHidden();
 
-    await toolsCategory.click();
-    await expect(fileCategory).toHaveAttribute("aria-selected", "false");
-    await expect(toolsCategory).toHaveAttribute("aria-selected", "true");
-    await expect(fileSection).toBeHidden();
+    await railToolsButton.click();
     await expect(toolsSection).toBeVisible();
     await expect(timersMenuItem).toBeVisible();
     await timersMenuItem.click();
