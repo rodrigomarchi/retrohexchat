@@ -163,7 +163,8 @@ config :retro_hex_chat, :chat_uploads,
 config :ex_aws,
   access_key_id: chat_upload_s3_access_key,
   secret_access_key: chat_upload_s3_secret_key,
-  json_codec: Jason
+  json_codec: Jason,
+  http_client: ExAws.Request.Req
 
 config :ex_aws, :s3,
   scheme: chat_upload_s3_scheme,

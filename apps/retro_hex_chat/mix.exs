@@ -69,7 +69,6 @@ defmodule RetroHexChat.MixProject do
       {:req, "~> 0.5"},
       {:ex_aws, "~> 2.7"},
       {:ex_aws_s3, "~> 2.5"},
-      {:hackney, "~> 4.5.2"},
       {:sweet_xml, "~> 0.7.5"},
       {:ex_stun, "~> 0.2.0"},
       {:ex_webrtc, "~> 0.17.0"},
