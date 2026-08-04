@@ -51,13 +51,6 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
       {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/chat")
 
       assert has_element?(view, ~s(#chat-desktop [data-window-taskbar="chat"]))
-      assert has_element?(view, ~s(#chat-desktop [data-testid="mobile-task-switcher-trigger"]))
-
-      assert has_element?(
-               view,
-               ~s(#chat-desktop [data-mobile-task-switcher] [data-mobile-task-switcher-item][data-window-taskbar="chat"])
-             )
-
       assert has_element?(view, ~s(#chat-tray-clock[phx-hook="ClockHook"]))
       # The tray owns the clock — the header status bar no longer shows one.
       refute has_element?(view, "#clock-display")

@@ -46,21 +46,16 @@ test.describe("chat desktop on a phone (stacked single-window)", () => {
     const desktopTimersTaskbarBtn = page.locator(
       '.desktop-taskbar__window-button[data-window-taskbar="timers"]',
     );
-    const mobileTaskSwitcherTrigger = page.getByTestId(
-      "mobile-task-switcher-trigger",
-    );
-    const mobileTaskSwitcherPanel = page.locator("[data-mobile-task-switcher]");
 
-    // The shell remains complete on mobile, but dense horizontal controls
-    // collapse behind semantic launchers.
+    // The shell remains complete on mobile: the menu bar collapses to a rail of
+    // icons, while the taskbar keeps the desktop's own window buttons.
     await expect(menuBar).toBeVisible();
     await expect(startButton).toBeVisible();
     await expect(desktopToolsMenu).toBeHidden();
     await expect(mobileMenuTrigger).toBeHidden();
     await expect(mobileRail).toBeVisible();
     await expect(railToolsButton).toBeVisible();
-    await expect(desktopChatTaskbarBtn).toBeHidden();
-    await expect(mobileTaskSwitcherTrigger).toBeVisible();
+    await expect(desktopChatTaskbarBtn).toBeVisible();
 
     // The rail is the header, not a button in it: it spans what the logo and
     // the status zone leave, so the strip beside them is a touch target rather
@@ -130,7 +125,7 @@ test.describe("chat desktop on a phone (stacked single-window)", () => {
     await timersMenuItem.click();
     await expect(timersWindow).toBeVisible();
     await expect(chatWindow).toBeHidden();
-    await expect(desktopTimersTaskbarBtn).toBeHidden();
+    await expect(desktopTimersTaskbarBtn).toBeVisible();
 
     // Geometry controls are dropped on mobile — only the close button remains.
     await expect(
@@ -143,13 +138,17 @@ test.describe("chat desktop on a phone (stacked single-window)", () => {
       timersWindow.locator('[data-window-control="close"]'),
     ).toBeVisible();
 
-    // Tapping the mobile task switcher exposes a vertical list; choosing Chat
-    // switches back without horizontal taskbar scrolling.
-    await mobileTaskSwitcherTrigger.click();
-    await expect(mobileTaskSwitcherPanel).toBeVisible();
-    await mobileTaskSwitcherPanel
-      .locator('[data-mobile-task-switcher-item][data-window-taskbar="chat"]')
-      .click();
+    // Two open windows, two buttons: the strip squeezes them side by side
+    // rather than hiding both behind a launcher, and tapping one switches to it
+    // exactly as on the desktop.
+    const chatBtnBox = await desktopChatTaskbarBtn.boundingBox();
+    const timersBtnBox = await desktopTimersTaskbarBtn.boundingBox();
+    expect(chatBtnBox).not.toBeNull();
+    expect(timersBtnBox).not.toBeNull();
+    expect(chatBtnBox!.y).toBeCloseTo(timersBtnBox!.y, 0);
+    await shot(page, "mobile-taskbar-squeezed-window-buttons");
+
+    await desktopChatTaskbarBtn.click();
     await expect(chatWindow).toBeVisible();
     await expect(timersWindow).toBeHidden();
   });

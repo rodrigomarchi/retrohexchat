@@ -659,7 +659,6 @@ defmodule Mix.Tasks.Lint.CssConsistency do
     "kr-",
     "media-call",
     "media-session",
-    "mobile-task-switcher",
     "mud-",
     "nc-",
     "nl-",

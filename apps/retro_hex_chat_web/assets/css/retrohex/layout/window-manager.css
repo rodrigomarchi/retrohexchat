@@ -208,15 +208,6 @@
   max-width: none;
 }
 
-.mobile-task-switcher {
-  display: none;
-}
-.mobile-task-switcher__panel {
-  z-index: 60;
-}
-.mobile-task-switcher__item.is-active {
-  @apply shadow-retro-sunken;
-}
 /* Win98 desktop shortcuts: icon over a label, click to select, double-click opens. */
 .desktop__shortcuts {
   max-height: 100%;
@@ -255,10 +246,8 @@
   /* The tab row is bottom-anchored, so it is not part of the top chrome the
      sidebar overlays hang below. */
   --rhc-chat-sidebar-top: calc(
-    var(--rhc-chat-mobile-header-height) +
-    var(--rhc-chat-window-chrome-height) +
-    var(--rhc-chat-toolbar-height) +
-    var(--rhc-chat-topicbar-height)
+    var(--rhc-chat-mobile-header-height) + var(--rhc-chat-window-chrome-height) +
+      var(--rhc-chat-toolbar-height) + var(--rhc-chat-topicbar-height)
   );
   overflow: clip;
 }
@@ -503,29 +492,20 @@
 
 .desktop--stacked .desktop-taskbar__buttons {
   min-width: 0;
-  overflow: visible;
 }
 
+/* The phone runs the desktop's taskbar, not a launcher standing in for it:
+   the buttons squeeze to share the strip the way Win98 squeezed them, down to
+   a floor wide enough to read an icon and a few characters — past that the
+   strip scrolls, exactly as it does on a crowded desktop. */
 .desktop--stacked .desktop-taskbar__window-button,
 .desktop--stacked .desktop-taskbar__group {
-  display: none;
+  min-width: 72px;
+  flex: 1 1 0;
 }
 
-.desktop--stacked .mobile-task-switcher {
-  display: flex;
-}
-
-.desktop--stacked .mobile-task-switcher__panel {
-  position: fixed;
-  right: 4px;
-  bottom: 44px;
-  left: 4px;
-  max-height: min(62vh, 420px);
-  overflow-y: auto;
-}
-
-.desktop--stacked .mobile-task-switcher__item {
-  min-height: 38px;
+.desktop--stacked .desktop-taskbar__group [data-taskbar-group-trigger] {
+  width: 100%;
 }
 
 .desktop--stacked .desktop-start-button,
@@ -574,7 +554,8 @@
   box-shadow: none;
 }
 
-.desktop--stacked .desktop-start-menu[data-start-level="submenu"]
+.desktop--stacked
+  .desktop-start-menu[data-start-level="submenu"]
   > *:not([data-submenu-open="true"]) {
   display: none;
 }
@@ -582,9 +563,7 @@
 /* The header stays put while the group's items scroll under it: back is the
    one control that must never be scrolled away. It is already inverted by the
    open state, which is what lets it sit opaquely over the list. */
-.desktop--stacked
-  .desktop-start-submenu[data-submenu-open="true"]
-  > [data-start-submenu-trigger] {
+.desktop--stacked .desktop-start-submenu[data-submenu-open="true"] > [data-start-submenu-trigger] {
   position: sticky;
   top: 0;
   z-index: 1;

@@ -430,12 +430,6 @@ const WindowManagerCore = {
       return;
     }
 
-    const mobileTaskSwitcherTrigger = e.target.closest("[data-mobile-task-switcher-trigger]");
-    if (mobileTaskSwitcherTrigger) {
-      this.toggleMobileTaskSwitcher();
-      return;
-    }
-
     // A single click selects a desktop shortcut (it opens on double-click); any
     // other click clears the selection, mirroring a real desktop.
     const shortcut = e.target.closest("[data-window-shortcut]");
@@ -470,7 +464,6 @@ const WindowManagerCore = {
     if (taskBtn) {
       if (!this.actsLocally(taskBtn.dataset.windowTaskbar)) return;
       e.preventDefault();
-      if (e.target.closest("[data-mobile-task-switcher-item]")) this.closeMobileTaskSwitcher();
       // Picking a window out of a group closes the panel — the click already
       // did what the panel was open for.
       if (e.target.closest("[data-taskbar-group-panel]")) this.closeTaskbarGroups();
@@ -479,7 +472,6 @@ const WindowManagerCore = {
     }
 
     if (e.target.closest("[data-window-start]")) {
-      this.closeMobileTaskSwitcher();
       this.toggleStartMenu();
       return;
     }
@@ -497,7 +489,6 @@ const WindowManagerCore = {
       if (!this.actsLocally(opener.dataset.windowOpen)) return;
       e.preventDefault();
       this.command("open", opener.dataset.windowOpen, opener);
-      this.closeMobileTaskSwitcher();
       this.closeStartMenu();
       return;
     }
@@ -640,7 +631,6 @@ const WindowManagerCore = {
       e.stopPropagation();
       this.closeTaskbarMenus();
       this.closeStartMenu();
-      this.closeMobileTaskSwitcher();
       this.closeTaskbarGroups();
       return;
     }
@@ -669,8 +659,6 @@ const WindowManagerCore = {
   anyMenuOpen() {
     const start = this.startMenu();
     if (start && !start.classList.contains("u-hidden")) return true;
-    const mobileTaskSwitcher = this.mobileTaskSwitcher();
-    if (mobileTaskSwitcher && !mobileTaskSwitcher.classList.contains("u-hidden")) return true;
     for (const group of this.taskbarGroups()) {
       if (group.dataset.groupOpen === "true") return true;
     }
@@ -1283,39 +1271,6 @@ const WindowManagerCore = {
     }
   },
 
-  // ── Mobile task switcher ───────────────────────────────────
-
-  mobileTaskSwitcher() {
-    return this.el.querySelector("[data-mobile-task-switcher]");
-  },
-
-  mobileTaskSwitcherTrigger() {
-    return this.el.querySelector("[data-mobile-task-switcher-trigger]");
-  },
-
-  toggleMobileTaskSwitcher() {
-    this.closeTaskbarMenus();
-    this.closeStartMenu();
-
-    const menu = this.mobileTaskSwitcher();
-    if (!menu) return;
-
-    const opening = menu.classList.contains("u-hidden");
-    menu.classList.toggle("u-hidden", !opening);
-    this.setMobileTaskSwitcherExpanded(opening);
-  },
-
-  closeMobileTaskSwitcher() {
-    const menu = this.mobileTaskSwitcher();
-    if (menu) menu.classList.add("u-hidden");
-    this.setMobileTaskSwitcherExpanded(false);
-  },
-
-  setMobileTaskSwitcherExpanded(expanded) {
-    const trigger = this.mobileTaskSwitcherTrigger();
-    if (trigger) trigger.setAttribute("aria-expanded", expanded ? "true" : "false");
-  },
-
   // ── Start menu ─────────────────────────────────────────────
 
   startMenu() {
@@ -1457,12 +1412,6 @@ const WindowManagerCore = {
   onDocPointerDown(e) {
     if (!e.target.closest("[data-taskbar-menu]")) this.closeTaskbarMenus();
     if (!e.target.closest("[data-taskbar-group]")) this.closeTaskbarGroups();
-    if (
-      !e.target.closest("[data-mobile-task-switcher]") &&
-      !e.target.closest("[data-mobile-task-switcher-trigger]")
-    ) {
-      this.closeMobileTaskSwitcher();
-    }
 
     const menu = this.startMenu();
     if (!menu || menu.classList.contains("u-hidden")) return;

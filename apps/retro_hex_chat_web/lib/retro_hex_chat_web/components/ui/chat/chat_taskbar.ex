@@ -2,9 +2,10 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
   @moduledoc """
   Visual taskbar composition for the main chat desktop.
 
-  The LiveView owns window state and session state. This component renders one
-  taskbar read model twice: classic horizontal buttons on desktop, and a single
-  mobile task switcher button that opens the same windows in a vertical list.
+  The LiveView owns window state and session state. This component turns that
+  read model into the classic horizontal strip of window buttons — the same one
+  on every screen size. A phone squeezes the buttons and scrolls the strip, as
+  Win98 did; it does not swap in a launcher of its own.
   """
   use RetroHexChatWeb.Component
 
@@ -26,13 +27,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
 
   @spec chat_taskbar(map()) :: Phoenix.LiveView.Rendered.t()
   def chat_taskbar(assigns) do
-    windows = taskbar_windows(assigns)
-
-    assigns =
-      assign(assigns,
-        taskbar_windows: windows,
-        taskbar_slots: group_windows(windows)
-      )
+    assigns = assign(assigns, :taskbar_slots, assigns |> taskbar_windows() |> group_windows())
 
     ~H"""
     <.taskbar id="chat-taskbar">
@@ -70,63 +65,12 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
         </.taskbar_button>
       <% end %>
 
-      <.mobile_task_switcher windows={@taskbar_windows} />
-
       <:tray>
         <.desktop_tray>
           <span id="chat-tray-clock" phx-hook="ClockHook" class="font-mono tabular-nums"></span>
         </.desktop_tray>
       </:tray>
     </.taskbar>
-    """
-  end
-
-  attr :windows, :list, default: []
-
-  defp mobile_task_switcher(assigns) do
-    ~H"""
-    <div class="mobile-task-switcher relative hidden min-w-0 flex-1">
-      <button
-        type="button"
-        class="desktop-taskbar__button shadow-retro-raised bg-surface inline-flex min-w-0 w-full items-center gap-1 px-2 py-[2px] text-xs"
-        data-mobile-task-switcher-trigger
-        data-testid="mobile-task-switcher-trigger"
-        aria-haspopup="menu"
-        aria-expanded="false"
-        aria-label={dgettext("ui", "Windows")}
-      >
-        <span class="inline-flex h-4 w-4 shrink-0 items-center justify-center">
-          <Icons.icon_win_cascade class="h-4 w-4" />
-        </span>
-        <span class="truncate font-bold">{dgettext("ui", "Windows")}</span>
-      </button>
-
-      <div
-        class="mobile-task-switcher__panel u-hidden shadow-retro-window bg-surface p-[3px]"
-        data-mobile-task-switcher
-        data-escape-guard
-        role="menu"
-        aria-label={dgettext("ui", "Windows")}
-      >
-        <ul class="list-none m-0 p-retro-2">
-          <li :for={window <- @windows}>
-            <button
-              type="button"
-              class="mobile-task-switcher__item flex w-full items-center gap-2 px-2 py-2 text-left text-xs hover:bg-selection-bg hover:text-selection-fg"
-              data-window-taskbar={window.id}
-              data-mobile-task-switcher-item
-              data-testid={mobile_window_testid(window)}
-              role="menuitem"
-            >
-              <span class="inline-flex h-4 w-4 shrink-0 items-center justify-center">
-                {apply(Icons, window.icon_fn, [%{class: "h-4 w-4"}])}
-              </span>
-              <span class="min-w-0 flex-1 truncate">{window.label}</span>
-            </button>
-          </li>
-        </ul>
-      </div>
-    </div>
     """
   end
 
@@ -375,9 +319,6 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
   end
 
   defp add_window(windows, _condition, _id, _label, _icon_fn, _opts), do: windows
-
-  defp mobile_window_testid(%{testid: testid}) when is_binary(testid), do: "#{testid}-mobile"
-  defp mobile_window_testid(_window), do: nil
 
   defp window_open?(open_windows, id) when is_binary(id) do
     MapSet.member?(open_windows || MapSet.new(), id)
