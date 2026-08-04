@@ -2,7 +2,7 @@
  * Win98-style desktop window manager — the engine, free of any framework.
  *
  * Owns all window chrome state on the client — position, size, z-order,
- * minimize/maximize, open/closed — and persists it to localStorage keyed by
+ * minimize/maximize, open/closed — and remembers it in tab memory keyed by
  * `data-persist-key`. It reads the DOM the server already rendered and decorates
  * it; it never produces content of its own. That is what lets the same desktop
  * run on a public, crawlable page: the markup stands on its own and the manager
@@ -17,11 +17,11 @@
  * data attributes, so the manager is generic and reusable:
  *   - `[data-window-id]`            a window (with `data-window-default-*` geometry;
  *                                   `data-window-default-maximized` starts it maximized
- *                                   when no saved layout exists;
+ *                                   when no remembered layout exists;
  *                                   `data-window-default-centered` centers it in the
  *                                   workspace until the user touches it — pointerdown
  *                                   freezes the current position so the window never
- *                                   moves mid-click — or a saved layout applies)
+ *                                   moves mid-click — or a remembered layout applies)
  *   - `[data-window-titlebar]`      drag handle inside a window
  *   - `[data-window-resize=<dir>]`  resize handle (n|s|e|w|ne|nw|se|sw; bare = se)
  *   - `[data-window-control=...]`   minimize | maximize | restore | close button
@@ -49,7 +49,7 @@
  *
  * Windows may enter and leave the DOM after mount (server-conditional islands):
  * every patch reconciles the registry — new `[data-window-id]` elements are
- * registered (honouring any saved layout), replaced nodes are re-bound keeping
+ * registered (honouring any remembered layout), replaced nodes are re-bound keeping
  * their client state, and removed windows are pruned. A window marked
  * `data-window-managed` has a server-owned lifecycle (presence in the DOM means
  * open): opening one that is not in the DOM pushes `"window_open"` and closing
@@ -57,7 +57,7 @@
  * island. Hosts with managed windows must handle both events.
  */
 
-const STORAGE_PREFIX = "rhc:desktop:";
+const rememberedLayouts = new Map();
 const Z_BASE = 10;
 const STACK_BREAKPOINT = 768;
 const EDGE_MARGIN = 40;
@@ -93,23 +93,18 @@ const WindowManagerCore = {
       typeof window.matchMedia === "function" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    // Persistence disabled: wipe any stale saved layout so we always open from the
-    // default layout (and a layout saved by an older version can't corrupt the
-    // current desktop). In-session window state still lives in memory.
+    // Persistence disabled: wipe any remembered layout so we always open from the
+    // default layout. In-session window state still lives on this manager instance.
     if (this.persistKey && !this.persistEnabled) {
-      try {
-        localStorage.removeItem(STORAGE_PREFIX + this.persistKey);
-      } catch {
-        // best-effort
-      }
+      rememberedLayouts.delete(this.persistKey);
     }
 
     this.collectWindows();
     this.restore();
     // A desktop that opens with every window on screen needs a layout, not a
-    // pile at one default position. Only on a first visit: once there is a
-    // saved layout it is the reader's, and it wins.
-    if (this.el.dataset.cascadeOnMount === "true" && !this.readStorage()) {
+    // pile at one default position. Only on a first mount: once there is a
+    // remembered layout it is the reader's, and it wins until the page reloads.
+    if (this.el.dataset.cascadeOnMount === "true" && !this.readRememberedLayout()) {
       this.layoutOnMount();
     }
     this.bindEvents();
@@ -151,8 +146,8 @@ const WindowManagerCore = {
       this.clearPendingWindow(id);
       if (!this.windows[id]) {
         this.registerWindow(el);
-        const saved = this.readStorage();
-        if (saved && saved[id]) this.applySavedState(id, saved[id]);
+        const remembered = this.readRememberedLayout();
+        if (remembered && remembered[id]) this.applyRememberedState(id, remembered[id]);
         added.push(id);
       } else if (this.windows[id].el !== el) {
         this.windows[id].el = el;
@@ -169,7 +164,7 @@ const WindowManagerCore = {
         this.focusedId = id;
         st.z = this.zCounter += 1;
       } else if (this.focusedId === id) {
-        // registerWindow claimed focus before the saved layout marked the
+        // registerWindow claimed focus before the remembered layout marked the
         // window minimized — hand focus back to a visible window.
         this.focusTopmost();
       }
@@ -216,13 +211,13 @@ const WindowManagerCore = {
       state: {
         open,
         minimized: false,
-        // Default only — a saved layout overrides it in applySavedState. The
+        // Default only — a remembered layout overrides it in applyRememberedState. The
         // default_* geometry stays populated either way, so restoring from a
         // default-maximized window lands on sane coordinates.
         maximized: d.windowDefaultMaximized === "true",
         // Centered geometry is computed lazily in applyWindow (the workspace may
         // have no laid-out size at mount); cleared once anything else takes
-        // ownership of the position (drag, resize, cascade/tile, saved layout).
+        // ownership of the position (drag, resize, cascade/tile, remembered layout).
         centered: d.windowDefaultCentered === "true",
         x: int(d.windowDefaultX, 24),
         y: int(d.windowDefaultY, 24),
@@ -235,11 +230,11 @@ const WindowManagerCore = {
   },
 
   restore() {
-    const saved = this.readStorage();
-    if (!saved) return;
+    const remembered = this.readRememberedLayout();
+    if (!remembered) return;
     for (const id in this.windows) {
-      if (!saved[id]) continue;
-      this.applySavedState(id, saved[id]);
+      if (!remembered[id]) continue;
+      this.applyRememberedState(id, remembered[id]);
       const st = this.windows[id].state;
       if (st.open && !st.minimized) {
         st.z = this.zCounter += 1;
@@ -248,7 +243,7 @@ const WindowManagerCore = {
     }
   },
 
-  applySavedState(id, s) {
+  applyRememberedState(id, s) {
     const win = this.windows[id];
     if (win.ephemeral) return;
     const st = win.state;
@@ -260,7 +255,7 @@ const WindowManagerCore = {
     st.maximized = !!s.maximized;
     st.minimized = !!s.minimized;
     // Pinned windows are always open; a managed window's presence in the DOM
-    // already means open (the server owns that flag); otherwise honour storage.
+    // already means open (the server owns that flag); otherwise honour memory.
     if (!win.pinned && !win.managed && typeof s.open === "boolean") st.open = s.open;
   },
 
@@ -1602,14 +1597,9 @@ const WindowManagerCore = {
     return Array.from(this.el.querySelectorAll(`[data-window-taskbar="${cssEscape(id)}"]`));
   },
 
-  readStorage() {
+  readRememberedLayout() {
     if (!this.persistKey || !this.persistEnabled) return null;
-    try {
-      const raw = localStorage.getItem(STORAGE_PREFIX + this.persistKey);
-      return raw ? JSON.parse(raw) : null;
-    } catch {
-      return null;
-    }
+    return rememberedLayouts.get(this.persistKey) || null;
   },
 
   persist() {
@@ -1628,11 +1618,7 @@ const WindowManagerCore = {
         h: s.h,
       };
     }
-    try {
-      localStorage.setItem(STORAGE_PREFIX + this.persistKey, JSON.stringify(data));
-    } catch {
-      // Ignore quota / privacy-mode failures — layout persistence is best-effort.
-    }
+    rememberedLayouts.set(this.persistKey, data);
   },
 };
 
@@ -1661,6 +1647,10 @@ export function createWindowManager(el, { pushEvent = null } = {}) {
   wm.el = el;
   if (typeof pushEvent === "function") wm.pushEvent = pushEvent;
   return wm;
+}
+
+export function clearWindowManagerMemory() {
+  rememberedLayouts.clear();
 }
 
 export default WindowManagerCore;

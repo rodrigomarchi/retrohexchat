@@ -3,7 +3,7 @@
  *
  * All behaviour lives in `lib/window_manager/window_manager.js`, which knows
  * nothing about LiveView — see that module for the `data-window-*` contract and
- * the storage model. This file supplies the two things only LiveView can: the
+ * the state model. This file supplies the two things only LiveView can: the
  * `pushEvent` channel that server-managed windows round-trip through, and the
  * `window_command` listener the server drives windows with
  * (`push_event("window_command", %{action: ..., id: ...})`, where action is one

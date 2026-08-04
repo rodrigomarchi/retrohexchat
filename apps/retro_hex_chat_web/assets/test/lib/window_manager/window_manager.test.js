@@ -1,5 +1,8 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { createWindowManager } from "../../../js/lib/window_manager/window_manager";
+import {
+  clearWindowManagerMemory,
+  createWindowManager,
+} from "../../../js/lib/window_manager/window_manager";
 
 function windowMarkup(
   id,
@@ -86,14 +89,7 @@ describe("WindowManager", () => {
   let command;
 
   beforeEach(() => {
-    const store = new Map();
-    vi.stubGlobal("localStorage", {
-      getItem: (k) => (store.has(k) ? store.get(k) : null),
-      setItem: (k, v) => store.set(k, String(v)),
-      removeItem: (k) => store.delete(k),
-      clear: () => store.clear(),
-    });
-
+    clearWindowManagerMemory();
     el = buildDesktop();
     command = null;
     hook = createWindowManager(el);
@@ -107,7 +103,7 @@ describe("WindowManager", () => {
   afterEach(() => {
     hook.destroy();
     el.remove();
-    vi.unstubAllGlobals();
+    clearWindowManagerMemory();
   });
 
   const win = (id) => document.getElementById(id);
@@ -713,11 +709,28 @@ describe("WindowManager", () => {
     });
   });
 
-  it("persists window state to localStorage", () => {
+  it("remembers window state in browser memory for a fresh mount", () => {
     command({ action: "open", id: "call" });
-    const saved = JSON.parse(localStorage.getItem("rhc:desktop:test"));
-    expect(saved.call.open).toBe(true);
-    expect(saved.conn.open).toBe(true);
+
+    hook.destroy();
+    hook = createWindowManager(el);
+    hook.workspaceSize = () => ({ w: 1024, h: 768 });
+    hook.mount();
+
+    expect(hook.windows.call.state.open).toBe(true);
+    expect(hook.windows.conn.state.open).toBe(true);
+  });
+
+  it("forgets remembered window state after the in-memory cache is cleared", () => {
+    command({ action: "open", id: "call" });
+    hook.destroy();
+    clearWindowManagerMemory();
+
+    const fresh = createWindowManager(el);
+    fresh.workspaceSize = () => ({ w: 1024, h: 768 });
+    fresh.mount();
+    expect(fresh.windows.call.state.open).toBe(false);
+    fresh.destroy();
   });
 
   it("keeps other windows visible when a server patch lands mid-drag", () => {
@@ -753,13 +766,12 @@ describe("WindowManager", () => {
     expect(win("chat").classList.contains("u-hidden")).toBe(false);
   });
 
-  it("restores saved open state on a fresh mount", () => {
-    localStorage.setItem(
-      "rhc:desktop:test",
-      JSON.stringify({ call: { open: true, minimized: false, maximized: false } }),
-    );
+  it("restores remembered open state on a fresh mount", () => {
+    command({ action: "open", id: "call" });
+    hook.destroy();
 
     const fresh = createWindowManager(el);
+    fresh.workspaceSize = () => ({ w: 1024, h: 768 });
     fresh.mount();
     expect(fresh.windows.call.state.open).toBe(true);
     fresh.destroy();
@@ -771,13 +783,7 @@ describe("WindowManager — dynamic windows (reconciliation)", () => {
   let hook;
 
   beforeEach(() => {
-    vi.stubGlobal("localStorage", {
-      getItem: () => null,
-      setItem: () => {},
-      removeItem: () => {},
-      clear: () => {},
-    });
-
+    clearWindowManagerMemory();
     el = buildDesktop();
     el.dataset.persist = "false";
     hook = createWindowManager(el, { pushEvent: vi.fn() });
@@ -788,7 +794,7 @@ describe("WindowManager — dynamic windows (reconciliation)", () => {
   afterEach(() => {
     hook.destroy();
     el.remove();
-    vi.unstubAllGlobals();
+    clearWindowManagerMemory();
   });
 
   const workspace = () => el.querySelector(".desktop__workspace");
@@ -837,11 +843,11 @@ describe("WindowManager — dynamic windows (reconciliation)", () => {
   });
 
   it("hands focus to a visible window when the arrival is restored as minimized", () => {
-    // Saved layouts can mark a late-arriving window minimized; registerWindow
-    // claims focus before the saved state applies, so reconcile must hand it back.
+    // Remembered layouts can mark a late-arriving window minimized; registerWindow
+    // claims focus before the remembered state applies, so reconcile must hand it back.
     hook.focusWindow("chat");
     workspace().insertAdjacentHTML("beforeend", windowMarkup("game", { open: true }));
-    hook.readStorage = () => ({ game: { minimized: true } });
+    hook.readRememberedLayout = () => ({ game: { minimized: true } });
     hook.reconcile();
 
     expect(hook.windows.game.state.minimized).toBe(true);
@@ -915,42 +921,43 @@ describe("WindowManager — dynamic windows (reconciliation)", () => {
   });
 });
 
-describe("WindowManager — persistence opt-out", () => {
-  let store;
-
+describe("WindowManager — memory opt-out", () => {
   beforeEach(() => {
-    store = new Map();
-    vi.stubGlobal("localStorage", {
-      getItem: (k) => (store.has(k) ? store.get(k) : null),
-      setItem: (k, v) => store.set(k, String(v)),
-      removeItem: (k) => store.delete(k),
-      clear: () => store.clear(),
-    });
+    clearWindowManagerMemory();
   });
 
   afterEach(() => {
-    vi.unstubAllGlobals();
+    clearWindowManagerMemory();
   });
 
-  it("clears stale saved state on mount and never writes when persistence is off", () => {
-    store.set("rhc:desktop:test", JSON.stringify({ call: { open: true } }));
+  it("clears remembered state on mount and never writes when persistence is off", () => {
+    const rememberedEl = buildDesktop();
+    const remembered = createWindowManager(rememberedEl);
+    remembered.mount();
+    remembered.openWindow("call");
+    remembered.destroy();
+    rememberedEl.remove();
 
     const el = buildDesktop();
     el.dataset.persist = "false";
     const hook = createWindowManager(el);
     hook.mount();
 
-    // The old layout was wiped on open...
-    expect(store.has("rhc:desktop:test")).toBe(false);
-    // ...the saved "call open" was ignored (default layout: call starts closed)...
+    // The old layout was wiped on open, so the remembered "call open" is ignored.
     expect(hook.windows.call.state.open).toBe(false);
 
-    // ...and opening a window does not write anything back.
+    // Opening a window does not write anything back.
     hook.openWindow("call");
-    expect(store.has("rhc:desktop:test")).toBe(false);
 
     hook.destroy();
     el.remove();
+
+    const laterEl = buildDesktop();
+    const later = createWindowManager(laterEl);
+    later.mount();
+    expect(later.windows.call.state.open).toBe(false);
+    later.destroy();
+    laterEl.remove();
   });
 });
 
@@ -971,12 +978,7 @@ describe("WindowManager — Escape closes the focused window", () => {
   }
 
   beforeEach(() => {
-    vi.stubGlobal("localStorage", {
-      getItem: () => null,
-      setItem: () => {},
-      removeItem: () => {},
-      clear: () => {},
-    });
+    clearWindowManagerMemory();
     windowSpy = vi.fn();
     window.addEventListener("keydown", windowSpy);
   });
@@ -986,7 +988,7 @@ describe("WindowManager — Escape closes the focused window", () => {
     hook.destroy();
     el.remove();
     document.querySelectorAll("[data-escape-test]").forEach((n) => n.remove());
-    vi.unstubAllGlobals();
+    clearWindowManagerMemory();
   });
 
   it("closes the topmost unpinned window and stops the event", () => {
@@ -1080,7 +1082,6 @@ describe("WindowManager — Escape closes the focused window", () => {
 });
 
 describe("WindowManager — default maximized", () => {
-  let store;
   let el;
   let hook;
 
@@ -1103,22 +1104,16 @@ describe("WindowManager — default maximized", () => {
   }
 
   beforeEach(() => {
-    store = new Map();
-    vi.stubGlobal("localStorage", {
-      getItem: (k) => (store.has(k) ? store.get(k) : null),
-      setItem: (k, v) => store.set(k, String(v)),
-      removeItem: (k) => store.delete(k),
-      clear: () => store.clear(),
-    });
+    clearWindowManagerMemory();
   });
 
   afterEach(() => {
     hook.destroy();
     el.remove();
-    vi.unstubAllGlobals();
+    clearWindowManagerMemory();
   });
 
-  it("mounts maximized when there is no saved layout", () => {
+  it("mounts maximized when there is no remembered layout", () => {
     mountDesktop();
 
     expect(hook.windows.chat.state.maximized).toBe(true);
@@ -1128,11 +1123,12 @@ describe("WindowManager — default maximized", () => {
     expect(hook.windows.tools.state.maximized).toBe(false);
   });
 
-  it("lets a saved layout win over the default", () => {
-    store.set(
-      "rhc:desktop:test",
-      JSON.stringify({ chat: { open: true, maximized: false, x: 60, y: 70, w: 400, h: 300 } }),
-    );
+  it("lets a remembered layout win over the default", () => {
+    mountDesktop();
+    hook.command("set_geometry", "chat", null, { x: 60, y: 70, width: 400, height: 300 });
+    hook.destroy();
+    el.remove();
+
     mountDesktop();
 
     const st = hook.windows.chat.state;
@@ -1155,7 +1151,7 @@ describe("WindowManager — default maximized", () => {
     expect(st.w).toBe(300);
   });
 
-  it("applies the default to a window patched in after mount, unless saved state exists", () => {
+  it("applies the default to a window patched in after mount, unless remembered state exists", () => {
     mountDesktop();
     const workspace = el.querySelector(".desktop__workspace");
     workspace.insertAdjacentHTML(
@@ -1165,8 +1161,8 @@ describe("WindowManager — default maximized", () => {
     hook.reconcile();
     expect(hook.windows.late.state.maximized).toBe(true);
 
-    // A saved layout for a late arrival still wins over the default.
-    store.set("rhc:desktop:test", JSON.stringify({ later: { open: true, maximized: false } }));
+    // A remembered layout for a late arrival still wins over the default.
+    hook.readRememberedLayout = () => ({ later: { open: true, maximized: false } });
     workspace.insertAdjacentHTML(
       "beforeend",
       windowMarkup("later", { open: true, defaultMaximized: true }),
@@ -1177,7 +1173,6 @@ describe("WindowManager — default maximized", () => {
 });
 
 describe("WindowManager — default centered", () => {
-  let store;
   let el;
   let hook;
 
@@ -1198,19 +1193,13 @@ describe("WindowManager — default centered", () => {
   }
 
   beforeEach(() => {
-    store = new Map();
-    vi.stubGlobal("localStorage", {
-      getItem: (k) => (store.has(k) ? store.get(k) : null),
-      setItem: (k, v) => store.set(k, String(v)),
-      removeItem: (k) => store.delete(k),
-      clear: () => store.clear(),
-    });
+    clearWindowManagerMemory();
   });
 
   afterEach(() => {
     hook.destroy();
     el.remove();
-    vi.unstubAllGlobals();
+    clearWindowManagerMemory();
   });
 
   it("centers the window in the workspace on mount", () => {
@@ -1271,11 +1260,12 @@ describe("WindowManager — default centered", () => {
     expect(st.y).toBe(300);
   });
 
-  it("a saved layout wins over centering", () => {
-    store.set(
-      "rhc:desktop:test",
-      JSON.stringify({ logon: { open: true, x: 60, y: 70, w: 300, h: 200 } }),
-    );
+  it("a remembered layout wins over centering", () => {
+    mountDesktop();
+    hook.command("set_geometry", "logon", null, { x: 60, y: 70, width: 300, height: 200 });
+    hook.destroy();
+    el.remove();
+
     mountDesktop();
 
     const st = hook.windows.logon.state;
@@ -1290,13 +1280,7 @@ describe("WindowManager — desktop shortcuts", () => {
   let hook;
 
   beforeEach(() => {
-    vi.stubGlobal("localStorage", {
-      getItem: () => null,
-      setItem: () => {},
-      removeItem: () => {},
-      clear: () => {},
-    });
-
+    clearWindowManagerMemory();
     el = buildDesktop();
     el.dataset.persist = "false";
     const workspace = el.querySelector(".desktop__workspace");
@@ -1315,7 +1299,7 @@ describe("WindowManager — desktop shortcuts", () => {
   afterEach(() => {
     hook.destroy();
     el.remove();
-    vi.unstubAllGlobals();
+    clearWindowManagerMemory();
   });
 
   const shortcut = (id) => el.querySelector(`[data-window-shortcut="${id}"]`);
@@ -1380,7 +1364,7 @@ describe("WindowManager — navigable chrome", () => {
 
   afterEach(() => {
     el.remove();
-    vi.unstubAllGlobals();
+    clearWindowManagerMemory();
   });
 
   describe("without a server", () => {

@@ -5,7 +5,7 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
 
   Generic and reusable — pairs with the `WindowManagerHook`, which owns every bit
   of window chrome state on the client (position, size, z-order, minimize/maximize,
-  open/closed) and persists it to localStorage. Nothing here is lobby-specific:
+  open/closed) and remembers it in browser memory. Nothing here is lobby-specific:
   compose `desktop_window/1` children and a `taskbar/1` inside `desktop/1`; the
   window bodies are arbitrary feature components.
 
@@ -30,19 +30,19 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
   `taskbar` slot holds a `taskbar/1`.
   """
   attr :id, :string, required: true
-  attr :persist_key, :string, default: nil, doc: "localStorage suffix for layout persistence"
+  attr :persist_key, :string, default: nil, doc: "browser-memory key for layout persistence"
 
   attr :persist, :boolean,
     default: true,
     doc:
       "when false, the hook starts from the default layout every time and clears any " <>
-        "previously saved state for persist_key — a clean slate each open, no cross-visit memory"
+        "remembered state for persist_key — a clean slate each open"
 
   attr :cascade_on_mount, :boolean,
     default: false,
     doc:
       "lay the windows out in a cascade on a first visit, first window in front. " <>
-        "For desktops that open with everything on screen; a saved layout always wins"
+        "For desktops that open with everything on screen; a remembered layout always wins"
 
   attr :escape_closes_windows, :boolean,
     default: false,
@@ -160,14 +160,14 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
   Renders a single draggable, resizable window.
 
   Composes `window/1` + `window_title_bar/1` + `window_body/1`. The initial
-  geometry and open state are hints — the `WindowManagerHook` restores any saved
-  layout from localStorage on mount and takes over thereafter. A `pinned` window
+  geometry and open state are hints — the `WindowManagerHook` restores any remembered
+  layout from browser memory on mount and takes over thereafter. A `pinned` window
   drops its close control and cannot be closed (only minimized/maximized).
   """
   attr :id, :string, required: true
   attr :title, :string, required: true
   attr :pinned, :boolean, default: false, doc: "no close control; window cannot be closed"
-  attr :open, :boolean, default: true, doc: "initial open state (storage may override)"
+  attr :open, :boolean, default: true, doc: "initial open state (memory may override)"
 
   attr :managed, :boolean,
     default: false,
@@ -179,13 +179,13 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
   attr :default_maximized, :boolean,
     default: false,
     doc:
-      "start maximized when no saved layout exists for this window; restoring falls back " <>
+      "start maximized when no remembered layout exists for this window; restoring falls back " <>
         "to the default_x/default_y/width/height geometry"
 
   attr :default_centered, :boolean,
     default: false,
     doc:
-      "center in the workspace when no saved layout exists (recomputed on workspace resize); " <>
+      "center in the workspace when no remembered layout exists (recomputed on workspace resize); " <>
         "touching the window, cascade/tile or a saved position takes over"
 
   attr :default_x, :integer, default: 24
