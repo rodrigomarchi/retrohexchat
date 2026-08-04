@@ -14,12 +14,12 @@ defmodule RetroHexChat.Chat.Content.Markdown do
   def render_html(content, _opts) do
     html =
       content
-      |> prepare_markdown()
       |> MDEx.to_html!(
         extension: @markdown_extension_options,
         sanitize: markdown_sanitize_options()
       )
       |> harden_links()
+      |> harden_images()
 
     {:safe, html}
   end
@@ -27,7 +27,6 @@ defmodule RetroHexChat.Chat.Content.Markdown do
   @spec plain_text(String.t()) :: String.t()
   def plain_text(content) do
     content
-    |> prepare_markdown()
     |> MDEx.to_delta!(extension: @markdown_extension_options)
     |> Enum.flat_map(&delta_insert/1)
     |> Enum.join()
@@ -43,13 +42,6 @@ defmodule RetroHexChat.Chat.Content.Markdown do
     |> List.flatten()
     |> Enum.map(&decode_html_attr/1)
     |> Enum.filter(&String.match?(&1, ~r/^https?:\/\//i))
-  end
-
-  @spec prepare_markdown(String.t()) :: String.t()
-  defp prepare_markdown(content) do
-    Regex.replace(~r/!\[([^\]]*)\]\(([^)\s]+)(?:\s+"[^"]*")?\)/, content, fn
-      _match, alt, url -> "[#{alt}](#{url})"
-    end)
   end
 
   @spec markdown_sanitize_options() :: keyword()
@@ -76,10 +68,47 @@ defmodule RetroHexChat.Chat.Content.Markdown do
     end)
   end
 
+  @spec harden_images(String.t()) :: String.t()
+  defp harden_images(html) do
+    Regex.replace(~r/<img\b([^>]*)>/i, html, fn _match, attrs ->
+      if safe_image_src?(attrs) do
+        attrs =
+          attrs
+          |> ensure_attr("loading", "lazy")
+          |> ensure_attr("decoding", "async")
+          |> ensure_attr("referrerpolicy", "no-referrer")
+          |> ensure_class("chat-markdown-image")
+
+        "<img#{attrs}>"
+      else
+        attrs
+        |> attr_value("alt")
+        |> decode_html_attr()
+        |> html_escape()
+      end
+    end)
+  end
+
+  @spec safe_image_src?(String.t()) :: boolean()
+  defp safe_image_src?(attrs) do
+    case attr_value(attrs, "src") do
+      src when is_binary(src) -> String.match?(decode_html_attr(src), ~r/^https?:\/\//i)
+      nil -> false
+    end
+  end
+
+  @spec attr_value(String.t(), String.t()) :: String.t() | nil
+  defp attr_value(attrs, name) do
+    case Regex.run(~r/\s#{Regex.escape(name)}="([^"]*)"/i, attrs) do
+      [_full_match, value] -> value
+      nil -> nil
+    end
+  end
+
   @spec ensure_data_url(String.t()) :: String.t()
   defp ensure_data_url(attrs) do
-    case Regex.run(~r/\shref="([^"]*)"/i, attrs) do
-      [_full_match, href] -> ensure_attr(attrs, "data-url", href)
+    case attr_value(attrs, "href") do
+      href when is_binary(href) -> ensure_attr(attrs, "data-url", href)
       nil -> attrs
     end
   end
@@ -129,7 +158,9 @@ defmodule RetroHexChat.Chat.Content.Markdown do
     end
   end
 
-  @spec decode_html_attr(String.t()) :: String.t()
+  @spec decode_html_attr(String.t() | nil) :: String.t()
+  defp decode_html_attr(nil), do: ""
+
   defp decode_html_attr(value) do
     value
     |> String.replace("&amp;", "&")
@@ -137,5 +168,15 @@ defmodule RetroHexChat.Chat.Content.Markdown do
     |> String.replace("&#39;", "'")
     |> String.replace("&lt;", "<")
     |> String.replace("&gt;", ">")
+  end
+
+  @spec html_escape(String.t()) :: String.t()
+  defp html_escape(value) do
+    value
+    |> String.replace("&", "&amp;")
+    |> String.replace("<", "&lt;")
+    |> String.replace(">", "&gt;")
+    |> String.replace("\"", "&quot;")
+    |> String.replace("'", "&#39;")
   end
 end

@@ -145,6 +145,27 @@
   @apply bg-transparent p-0 shadow-none;
 }
 
+.chat-message__text .chat-markdown-image,
+.composer-markdown-preview .chat-markdown-image {
+  @apply my-1 max-w-full bg-hover-bg shadow-retro-field;
+  display: block;
+  width: min(100%, 640px);
+  height: clamp(160px, 48vw, 360px);
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.composer-markdown-preview .chat-markdown-image {
+  width: min(100%, 240px);
+  height: 120px;
+}
+
+@media (max-width: 640px) {
+  .chat-message__text .chat-markdown-image {
+    height: clamp(140px, 48vw, 220px);
+  }
+}
+
 .chat-link-preview {
   @apply text-muted-foreground;
   display: inline;

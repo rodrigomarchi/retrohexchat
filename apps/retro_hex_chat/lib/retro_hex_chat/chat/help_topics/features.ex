@@ -144,7 +144,36 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         keywords: ["url", "link", "catcher", "preview", "web"],
         icon: :icon_dialog_url,
         description:
-          dgettext("help", "View and manage URLs shared across all channels with link previews.")
+          dgettext(
+            "help",
+            "View and manage URLs shared across all channels with standards-based link previews."
+          ),
+        see_also: ["feature-link-previews"]
+      },
+      %{
+        id: "feature-link-previews",
+        title: dgettext("help", "Link Previews"),
+        category: dgettext("help", "Chat Display"),
+        keywords: [
+          "url",
+          "link",
+          "preview",
+          "card",
+          "markdown",
+          "image",
+          "description",
+          "open graph",
+          "schema.org",
+          "oembed",
+          "rss"
+        ],
+        icon: :icon_dialog_url,
+        description:
+          dgettext(
+            "help",
+            "Generate rich Markdown previews from page metadata, including titles, descriptions, canonical URLs, site names, and preview images."
+          ),
+        see_also: ["feature-url-catcher", "bot-rss"]
       },
       %{
         id: "feature-message-attachments",

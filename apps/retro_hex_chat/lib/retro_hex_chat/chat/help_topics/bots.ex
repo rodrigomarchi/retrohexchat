@@ -145,13 +145,21 @@ defmodule RetroHexChat.Chat.HelpTopics.Bots do
           "atom",
           "news",
           dgettext("help", "bot rss"),
+          dgettext("help", "link preview"),
+          "markdown",
+          "open graph",
+          "oembed",
           "poll",
           "syndication",
           "updates"
         ],
         icon: :icon_rss,
         description:
-          dgettext("help", "Monitor RSS/Atom feeds and post new items to channels automatically.")
+          dgettext(
+            "help",
+            "Monitor RSS/Atom feeds and post new items to channels as rich Markdown link previews."
+          ),
+        see_also: ["feature-link-previews", "feature-url-catcher"]
       },
       %{
         id: "bot-moderation",

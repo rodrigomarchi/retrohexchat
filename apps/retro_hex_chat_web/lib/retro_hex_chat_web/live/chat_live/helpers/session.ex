@@ -132,7 +132,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
       LinkPreview.Cache.mark_pending(url)
 
       Task.Supervisor.async_nolink(RetroHexChat.LinkPreviewTasks, fn ->
-        result = LinkPreview.HTTP.fetch_title(url)
+        result = LinkPreview.impl().fetch_title(url)
         send(lv_pid, {:link_preview_result, url, result})
       end)
     end

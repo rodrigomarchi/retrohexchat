@@ -80,14 +80,27 @@ defmodule RetroHexChat.Bots.RSSHTTPTest do
     end
   end
 
+  defmodule NoopPreview do
+    @moduledoc false
+    @behaviour RetroHexChat.Chat.LinkPreview
+
+    @impl true
+    def fetch_title(_url), do: {:error, :fetch_failed}
+
+    @impl true
+    def fetch_metadata(_url), do: {:error, :fetch_failed}
+  end
+
   setup do
     Application.put_env(:retro_hex_chat, :rss_allow_private_addresses, true)
+    Application.put_env(:retro_hex_chat, :link_preview_fetcher, NoopPreview)
     {server, port, socket} = FeedServer.start(@feed)
     {:ok, chan} = Channels.Supervisor.start_child(@channel)
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#{@channel}")
 
     on_exit(fn ->
       Application.delete_env(:retro_hex_chat, :rss_allow_private_addresses)
+      Application.delete_env(:retro_hex_chat, :link_preview_fetcher)
       Supervisor.stop_bot("HttpWireBot")
       if Process.alive?(server), do: Process.exit(server, :kill)
       :gen_tcp.close(socket)
@@ -166,10 +179,10 @@ defmodule RetroHexChat.Bots.RSSHTTPTest do
       assert length(lines) == 1
       line = hd(lines)
 
-      assert line =~ "[Notícias]",
+      assert line =~ "**Notícias**",
              "the label is the publisher's name, not its whole tagline"
 
-      assert line =~ "It’s here — the “long-awaited” one…",
+      assert line =~ "It’s here — the “long\\-awaited” one…",
              "the characters that broke the parser against every real feed"
 
       assert line =~ "http://example.com/2"

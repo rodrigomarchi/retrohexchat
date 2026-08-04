@@ -59,13 +59,25 @@ defmodule RetroHexChat.Chat.ContentTest do
       assert rendered =~ ~s(rel="noopener noreferrer")
     end
 
-    test "does not render Markdown images inline" do
+    test "renders Markdown images inline with browser hardening" do
       rendered =
         html(Content.render_html("![diagram](https://example.com/diagram.png)", :markdown))
 
+      assert rendered =~ "<img"
+      assert rendered =~ ~s(src="https://example.com/diagram.png")
+      assert rendered =~ ~s(alt="diagram")
+      assert rendered =~ ~s(loading="lazy")
+      assert rendered =~ ~s(decoding="async")
+      assert rendered =~ ~s(referrerpolicy="no-referrer")
+      assert rendered =~ ~s(class="chat-markdown-image")
+    end
+
+    test "omits dangerous Markdown image URLs" do
+      rendered = html(Content.render_html("![bad](javascript:alert(1))", :markdown))
+
+      refute rendered =~ "javascript:"
       refute rendered =~ "<img"
-      assert rendered =~ "diagram"
-      assert rendered =~ "https://example.com/diagram.png"
+      assert rendered =~ "bad"
     end
 
     test "sanitizes dangerous Markdown and raw HTML payloads" do

@@ -44,6 +44,39 @@ defmodule RetroHexChat.Bots.RSSPublishingTest do
     end
   end
 
+  defmodule NoopPreview do
+    @moduledoc false
+    @behaviour RetroHexChat.Chat.LinkPreview
+
+    @impl true
+    def fetch_title(_url), do: {:error, :fetch_failed}
+
+    @impl true
+    def fetch_metadata(_url), do: {:error, :fetch_failed}
+  end
+
+  defmodule RichPreview do
+    @moduledoc false
+    @behaviour RetroHexChat.Chat.LinkPreview
+
+    @impl true
+    def fetch_title(_url), do: {:ok, "Parsed story"}
+
+    @impl true
+    def fetch_metadata("https://example.com/2") do
+      {:ok,
+       %{
+         title: "Parsed story",
+         description: "A summary from Open Graph.",
+         image: "https://example.com/card.png",
+         url: "https://example.com/2",
+         site_name: "Example News"
+       }}
+    end
+
+    def fetch_metadata(_url), do: {:error, :fetch_failed}
+  end
+
   defp feed_page(titles) do
     items =
       Enum.map(titles, fn {id, title} ->
@@ -102,22 +135,26 @@ defmodule RetroHexChat.Bots.RSSPublishingTest do
   defp poll(pid),
     do: send(pid, {:capability_timer, :rss, %{type: :poll, feed_id: "f1", channel: @channel}})
 
-  defp headlines do
+  defp bot_messages do
     receive do
-      %{event: "new_message", payload: %{author: "WireBot", content: content}} ->
-        [content | headlines()]
+      %{event: "new_message", payload: %{author: "WireBot"} = payload} ->
+        [payload | bot_messages()]
     after
       300 -> []
     end
   end
 
+  defp headlines, do: Enum.map(bot_messages(), & &1.content)
+
   setup do
     Application.put_env(:retro_hex_chat, :rss_fetcher, ScriptedFetcher)
+    Application.put_env(:retro_hex_chat, :link_preview_fetcher, NoopPreview)
     {:ok, chan} = Channels.Supervisor.start_child(@channel)
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#{@channel}")
 
     on_exit(fn ->
       Application.delete_env(:retro_hex_chat, :rss_fetcher)
+      Application.delete_env(:retro_hex_chat, :link_preview_fetcher)
       Supervisor.stop_bot("WireBot")
       if Process.alive?(chan), do: Channels.Supervisor.stop_child(chan)
     end)
@@ -159,6 +196,25 @@ defmodule RetroHexChat.Bots.RSSPublishingTest do
     assert hd(lines) =~ "Breaking news"
     assert hd(lines) =~ "The Wire"
     assert hd(lines) =~ "https://example.com/3"
+  end
+
+  test "a parsed page preview becomes a rich Markdown message" do
+    Application.put_env(:retro_hex_chat, :link_preview_fetcher, RichPreview)
+    ScriptedFetcher.script([feed_page([{2, "Feed fallback"}, {1, "Older story"}])])
+
+    {_bot, pid} =
+      start_bot([%{"id" => "f1", "url" => @url, "channel" => @channel, "seen" => ["urn:wire:1"]}])
+
+    poll(pid)
+    assert [payload] = bot_messages()
+
+    assert payload.content_format == "markdown"
+    assert payload.content =~ "**Example News**"
+    assert payload.content =~ "**Example News** | Parsed story"
+    refute payload.content =~ "[Parsed story](<https://example.com/2>)"
+    assert payload.content =~ "![Example News preview image](<https://example.com/card.png>)"
+    assert payload.content =~ "> A summary from Open Graph\\."
+    assert payload.content =~ "[Read full story](<https://example.com/2>)"
   end
 
   test "the same page twice is not news twice" do

@@ -432,6 +432,10 @@ defmodule RetroHexChat.Bots.Server do
         acc = acc |> update_capability_state(name, new_cap_state) |> reconcile_timers(name)
         {:halt, {{:bot_output, output}, acc}}
 
+      {:multi_output, outputs, new_cap_state} ->
+        acc = acc |> update_capability_state(name, new_cap_state) |> reconcile_timers(name)
+        {:halt, {{:multi_output, outputs}, acc}}
+
       {:multi_reply, lines, new_cap_state} ->
         acc = acc |> update_capability_state(name, new_cap_state) |> reconcile_timers(name)
         {:halt, {{:multi_reply, lines}, acc}}
@@ -473,6 +477,9 @@ defmodule RetroHexChat.Bots.Server do
 
       {:bot_output, output, new_cap_state} ->
         {:halt, {{:bot_output, output}, update_capability_state(acc, name, new_cap_state)}}
+
+      {:multi_output, outputs, new_cap_state} ->
+        {:halt, {{:multi_output, outputs}, update_capability_state(acc, name, new_cap_state)}}
 
       {:multi_reply, lines, new_cap_state} ->
         {:halt, {{:multi_reply, lines}, update_capability_state(acc, name, new_cap_state)}}
@@ -625,6 +632,11 @@ defmodule RetroHexChat.Bots.Server do
     update_cooldown(state, channel)
   end
 
+  defp maybe_respond(state, channel, {:multi_output, outputs}) do
+    Enum.each(outputs, &send_bot_output(channel, state.nickname, &1))
+    update_cooldown(state, channel)
+  end
+
   defp maybe_respond(state, channel, {:reply_action, text}) do
     send_bot_message(channel, state.nickname, text)
     update_cooldown(state, channel)
@@ -663,6 +675,11 @@ defmodule RetroHexChat.Bots.Server do
     state
   end
 
+  defp respond_without_cooldown(state, channel, {:multi_output, outputs}) do
+    Enum.each(outputs, &send_bot_output(channel, state.nickname, &1))
+    state
+  end
+
   defp respond_without_cooldown(state, channel, {:reply_action, text}) do
     send_bot_message(channel, state.nickname, text)
     state
@@ -677,12 +694,14 @@ defmodule RetroHexChat.Bots.Server do
 
   @spec send_bot_output(String.t(), String.t(), map()) :: :ok | {:error, term()}
   defp send_bot_output(channel, nickname, %{delivery: delivery, content: content} = output) do
+    opts = output_message_opts(output)
+
     case normalize_delivery(delivery) do
       :public ->
-        send_bot_message(channel, nickname, content)
+        send_bot_message(channel, nickname, content, output_message_type(output, :message), opts)
 
       :channel_notice ->
-        send_bot_message(channel, nickname, content, :notice)
+        send_bot_message(channel, nickname, content, output_message_type(output, :notice), opts)
 
       :private_notice ->
         send_bot_private_notice(channel, nickname, Map.get(output, :target), content)
@@ -712,9 +731,29 @@ defmodule RetroHexChat.Bots.Server do
 
   defp normalize_delivery(_delivery), do: :public
 
-  @spec send_bot_message(String.t(), String.t(), String.t(), atom()) :: :ok | {:error, term()}
-  defp send_bot_message(channel, nickname, content, type \\ :message) do
-    case Channels.Server.send_message(channel, nickname, content, type) do
+  @spec output_message_opts(map()) :: keyword()
+  defp output_message_opts(output) do
+    case Map.get(output, :content_format) || Map.get(output, "content_format") do
+      format when format in ~w(irc markdown plain) -> [content_format: format]
+      _ -> []
+    end
+  end
+
+  @spec output_message_type(map(), atom()) :: atom()
+  defp output_message_type(output, default) do
+    case Map.get(output, :type) || Map.get(output, "type") do
+      type when is_atom(type) -> type
+      type when is_binary(type) -> String.to_existing_atom(type)
+      _ -> default
+    end
+  rescue
+    ArgumentError -> default
+  end
+
+  @spec send_bot_message(String.t(), String.t(), String.t(), atom(), keyword()) ::
+          :ok | {:error, term()}
+  defp send_bot_message(channel, nickname, content, type \\ :message, opts \\ []) do
+    case Channels.Server.send_message(channel, nickname, content, type, opts) do
       {:ok, _id} -> :ok
       {:error, reason} -> Logger.warning("Bot #{nickname} failed to send: #{inspect(reason)}")
     end

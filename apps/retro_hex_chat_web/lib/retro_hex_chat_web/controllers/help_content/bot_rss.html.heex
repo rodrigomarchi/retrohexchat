@@ -53,8 +53,10 @@
   </li>
   <li>{dgettext("help_bots", "Feed titles are auto-detected from the feed metadata")}</li>
   <li>
-    {dgettext("help_bots", "Items are posted in the format:")}
-    <code>{dgettext("help_bots", "[Feed Title] Item Title — Link")}</code>
+    {dgettext(
+      "help_bots",
+      "Items are posted as rich Markdown link previews with a source label, linked title, optional image, and optional description"
+    )}
   </li>
 </ul>
 
@@ -95,6 +97,12 @@
     )}
   </li>
   <li>{dgettext("help_bots", "Polling timers automatically reschedule after each poll")}</li>
+  <li>
+    {dgettext(
+      "help_bots",
+      "Preview metadata comes from page standards such as Open Graph, Schema.org JSON-LD, and oEmbed discovery"
+    )}
+  </li>
   <li>{dgettext("help_bots", "Fetch errors are logged but do not stop future polls")}</li>
 </ul>
 
@@ -103,4 +111,8 @@
   <.help_link topic="botservice">{dgettext("help_bots", "BotService Overview")}</.help_link>
   · <.help_link topic="bot-command">{dgettext("help_bots", "/bot Command Reference")}</.help_link>
   · <.help_link topic="bot-scheduler">{dgettext("help_bots", "Bot Scheduler")}</.help_link>
+  ·
+  <.help_link topic="feature-link-previews">
+    {dgettext("help_bots", "Link Previews")}
+  </.help_link>
 </p>

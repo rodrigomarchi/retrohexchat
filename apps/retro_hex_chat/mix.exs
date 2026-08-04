@@ -64,6 +64,7 @@ defmodule RetroHexChat.MixProject do
       {:jason, "~> 1.2"},
       {:bcrypt_elixir, "~> 3.0"},
       {:phoenix_html, "~> 4.0"},
+      {:floki, "~> 0.38"},
       {:mdex, "~> 0.13.5"},
       {:gettext, "~> 1.0"},
       {:req, "~> 0.5"},

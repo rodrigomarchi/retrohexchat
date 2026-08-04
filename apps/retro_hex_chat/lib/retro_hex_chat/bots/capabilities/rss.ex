@@ -17,6 +17,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
   alias RetroHexChat.Bots.Capabilities.RSS.UrlGuard
   alias RetroHexChat.Bots.Policy
   alias RetroHexChat.Bots.Server
+  alias RetroHexChat.Chat.LinkPreview
 
   require Logger
 
@@ -330,8 +331,8 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
 
       feed ->
         case do_poll_feed(feed, state, config) do
-          {{:multi_reply, lines}, new_state} ->
-            {:multi_reply, lines, new_state}
+          {{:multi_output, outputs}, new_state} ->
+            {:multi_output, outputs, new_state}
 
           {:ignore, new_state} ->
             # Keep the state: it carries when the poll ran and why it failed.
@@ -394,7 +395,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
     if to_post == [] do
       {:ignore, new_state}
     else
-      {{:multi_reply, format_items(to_post, updated["title"])}, new_state}
+      {{:multi_output, format_items(to_post, updated["title"])}, new_state}
     end
   end
 
@@ -467,44 +468,59 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
     Fetcher.impl().fetch(url, etag, last_modified)
   end
 
-  @spec format_items([FeedParser.feed_item()], String.t() | nil) :: [String.t()]
+  @spec format_items([FeedParser.feed_item()], String.t() | nil) :: [map()]
   defp format_items(items, feed_title) do
-    Enum.map(items, &format_item(&1, feed_title))
+    Enum.map(items, fn item ->
+      %{
+        delivery: "public",
+        content: format_item(item, feed_title, preview_metadata(item.link)),
+        content_format: "markdown"
+      }
+    end)
   end
 
-  # One line, three jobs, in the order the eye needs them: which wire it came
-  # from, what happened, and where to read it. Undifferentiated text made all
-  # three compete — a source name as loud as the headline, and a URL as loud as
-  # both, wrapping across lines.
-  @ctrl_bold <<0x02>>
-  @ctrl_colour <<0x03>>
-  @ctrl_reset <<0x0F>>
+  @spec preview_metadata(String.t() | nil) :: LinkPreview.metadata()
+  defp preview_metadata(link) when is_binary(link) and link != "" do
+    case LinkPreview.impl().fetch_metadata(link) do
+      {:ok, metadata} -> metadata
+      {:error, _reason} -> %{}
+    end
+  end
 
-  # Fixed hex against the window's white, so these are picked to stay legible on
-  # it: navy carries the source, grey retires the link out of the way. The
-  # headline keeps the default colour — it is the thing being read.
-  @colour_source "02"
-  @colour_link "14"
+  defp preview_metadata(_link), do: %{}
 
-  # A source label is a name, not a sentence; a headline that runs past this is
-  # a paper title, and the link carries the whole of it.
-  @source_limit 24
-  @headline_limit 140
+  @source_limit 48
+  @headline_limit 180
+  @description_limit 360
+  @message_url_limit 400
+  @message_limit 1_000
 
   @doc """
-  A feed item as one readable line.
+  A feed item as one Markdown card.
 
   Public so the shape can be asserted on directly: this is the house style for
   every RSS bot, not a per-bot decision, and it is the part a reader actually
   meets.
   """
-  @spec format_item(FeedParser.feed_item(), String.t() | nil) :: String.t()
-  def format_item(item, feed_title) do
-    source = feed_title |> source_label() |> truncate(@source_limit)
-    headline = item.title |> to_string() |> collapse_space() |> truncate(@headline_limit)
+  @spec format_item(FeedParser.feed_item(), String.t() | nil, LinkPreview.metadata() | nil) ::
+          String.t()
+  def format_item(item, feed_title, metadata \\ nil) do
+    metadata = metadata || %{}
+    source = card_source(metadata, feed_title)
+    title = card_title(item, metadata)
+    url = card_url(item, metadata)
+    image = card_image(metadata)
+    description = card_description(metadata)
 
-    colour(@colour_source, @ctrl_bold <> "[" <> source <> "]") <>
-      " " <> headline <> link_suffix(item.link)
+    [
+      card_header(source, title),
+      card_image_markdown(image, source),
+      card_quote(description),
+      card_story_link(url)
+    ]
+    |> Enum.reject(&is_nil/1)
+    |> Enum.join("\n\n")
+    |> fit_message()
   end
 
   # Publishers put their whole positioning statement in the feed title —
@@ -528,15 +544,111 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
     end)
   end
 
-  @spec link_suffix(String.t() | nil) :: String.t()
-  defp link_suffix(link) when is_binary(link) and link != "" do
-    " " <> colour(@colour_link, link)
+  @spec card_source(LinkPreview.metadata(), String.t() | nil) :: String.t()
+  defp card_source(metadata, feed_title) do
+    (metadata[:site_name] || source_label(feed_title))
+    |> collapse_space()
+    |> truncate(@source_limit)
   end
 
-  defp link_suffix(_link), do: ""
+  @spec card_title(FeedParser.feed_item(), LinkPreview.metadata()) :: String.t()
+  defp card_title(item, metadata) do
+    (metadata[:title] || item.title || dgettext("bots", "(no title)"))
+    |> collapse_space()
+    |> truncate(@headline_limit)
+  end
 
-  @spec colour(String.t(), String.t()) :: String.t()
-  defp colour(code, text), do: @ctrl_colour <> code <> text <> @ctrl_reset
+  @spec card_url(FeedParser.feed_item(), LinkPreview.metadata()) :: String.t() | nil
+  defp card_url(item, metadata) do
+    Enum.find([metadata[:url], item.link], &linkable_url?/1)
+  end
+
+  @spec card_image(LinkPreview.metadata()) :: String.t() | nil
+  defp card_image(%{image: image}) when is_binary(image) and byte_size(image) > 0 do
+    if String.length(image) <= @message_url_limit and linkable_url?(image), do: image
+  end
+
+  defp card_image(_metadata), do: nil
+
+  @spec card_description(LinkPreview.metadata()) :: String.t() | nil
+  defp card_description(%{description: description})
+       when is_binary(description) and byte_size(description) > 0 do
+    description
+    |> collapse_space()
+    |> truncate(@description_limit)
+  end
+
+  defp card_description(_metadata), do: nil
+
+  @spec card_header(String.t(), String.t()) :: String.t()
+  defp card_header(source, title) do
+    source = markdown_escape(source)
+    title = markdown_escape(title)
+
+    "**#{source}** | #{title}"
+  end
+
+  @spec card_image_markdown(String.t() | nil, String.t()) :: String.t() | nil
+  defp card_image_markdown(nil, _source), do: nil
+
+  defp card_image_markdown(image, source) do
+    "![#{image_alt(source)}](<#{markdown_url(image)}>)"
+  end
+
+  @spec card_quote(String.t() | nil) :: String.t() | nil
+  defp card_quote(nil), do: nil
+  defp card_quote(description), do: "> " <> markdown_escape(description)
+
+  @spec card_story_link(String.t() | nil) :: String.t() | nil
+  defp card_story_link(url) when is_binary(url) do
+    if linkable_url?(url) and String.length(url) <= @message_url_limit do
+      "[Read full story](<#{markdown_url(url)}>)"
+    end
+  end
+
+  defp card_story_link(_url), do: nil
+
+  @spec linkable_url?(String.t() | nil) :: boolean()
+  defp linkable_url?(url) when is_binary(url) do
+    case URI.parse(url) do
+      %URI{scheme: scheme, host: host} when scheme in ~w(http https) and is_binary(host) -> true
+      _ -> false
+    end
+  end
+
+  defp linkable_url?(_url), do: false
+
+  @spec markdown_escape(String.t()) :: String.t()
+  defp markdown_escape(text) do
+    Regex.replace(~r/([\\`*_{}\[\]()#+\-.!|>])/, text, "\\\\\\1")
+  end
+
+  @spec markdown_alt(String.t()) :: String.t()
+  defp markdown_alt(text) do
+    text
+    |> collapse_space()
+    |> String.replace(~r/[\[\]\(\)]/, "")
+    |> truncate(@headline_limit)
+  end
+
+  @spec image_alt(String.t()) :: String.t()
+  defp image_alt(source), do: markdown_alt("#{source} preview image")
+
+  @spec markdown_url(String.t()) :: String.t()
+  defp markdown_url(url), do: String.replace(url, ">", "%3E")
+
+  @spec fit_message(String.t()) :: String.t()
+  defp fit_message(message) do
+    if String.length(message) <= @message_limit do
+      message
+    else
+      message
+      |> String.graphemes()
+      |> Enum.take(@message_limit - 3)
+      |> Enum.join()
+      |> Kernel.<>("...")
+    end
+  end
 
   # Feed titles arrive with newlines and runs of spaces from the source's own
   # markup; a headline that carries them breaks the line before it is truncated.

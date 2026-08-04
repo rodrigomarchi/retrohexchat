@@ -14,6 +14,9 @@ irc-bg-*
 # highlight.js injects these token classes into rendered code blocks at runtime.
 hljs*
 
+# Markdown renderer adds this to sanitized inline images at runtime.
+chat-markdown-image
+
 # P2P diagram state/browser modifiers are composed from connection state data.
 p2p-diagram-strip--*
 p2p-diagram__badge--*

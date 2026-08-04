@@ -25,6 +25,8 @@ defmodule RetroHexChatWeb.Router do
     get "/calls/healthz", CallsHealthController, :show
 
     if Application.compile_env(:retro_hex_chat, :e2e_fault_injection?, false) do
+      post "/e2e/channel-messages", E2EController, :create_channel_message
+
       post "/e2e/group-call-peer/terminate",
            E2EFaultController,
            :terminate_group_call_peer

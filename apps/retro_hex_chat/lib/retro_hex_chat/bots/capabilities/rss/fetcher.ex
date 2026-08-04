@@ -36,7 +36,11 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.Fetcher.HTTP do
 
   @behaviour RetroHexChat.Bots.Capabilities.RSS.Fetcher
 
-  alias RetroHexChat.Bots.Capabilities.RSS.UrlGuard
+  alias RetroHexChat.Net.URLGuard
+
+  @max_redirects 3
+  @timeout_ms 15_000
+  @redirect_statuses [301, 302, 303, 307, 308]
 
   @impl true
   @spec fetch(String.t(), String.t() | nil, String.t() | nil) ::
@@ -45,30 +49,85 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.Fetcher.HTTP do
     # Checked again at fetch time, not only when the feed was added: a name that
     # resolved to a public address last month can be re-pointed at loopback
     # today, and the poll would follow it.
-    case UrlGuard.check(url) do
-      :ok -> request(url, etag, last_modified)
-      {:error, reason} -> {:error, {:blocked, reason}}
+    request(url, etag, last_modified, @max_redirects)
+  rescue
+    e -> {:error, Exception.message(e)}
+  end
+
+  @spec request(String.t(), String.t() | nil, String.t() | nil, integer()) ::
+          RetroHexChat.Bots.Capabilities.RSS.Fetcher.result()
+  defp request(_url, _etag, _last_modified, redirects_left) when redirects_left < 0,
+    do: {:error, dgettext("bots", "too many redirects")}
+
+  defp request(url, etag, last_modified, redirects_left) do
+    with {:ok, target} <- URLGuard.fetch_target(url),
+         {:ok, response} <- Req.get(request_options(target, etag, last_modified)) do
+      handle_response(response, url, etag, last_modified, redirects_left)
+    else
+      {:error, reason} when is_binary(reason) -> {:error, {:blocked, reason}}
+      {:error, reason} -> {:error, reason}
     end
   end
 
-  @spec request(String.t(), String.t() | nil, String.t() | nil) ::
+  @spec handle_response(
+          Req.Response.t(),
+          String.t(),
+          String.t() | nil,
+          String.t() | nil,
+          integer()
+        ) ::
           RetroHexChat.Bots.Capabilities.RSS.Fetcher.result()
-  defp request(url, etag, last_modified) do
-    case Req.get(url, headers: conditional_headers(etag, last_modified), receive_timeout: 15_000) do
-      {:ok, %{status: 200, body: body, headers: resp_headers}} ->
+  defp handle_response(response, url, etag, last_modified, redirects_left) do
+    case response do
+      %{status: 200, body: body, headers: resp_headers} ->
         {:ok, to_string(body), cache_headers(resp_headers)}
 
-      {:ok, %{status: 304}} ->
+      %{status: 304} ->
         {:not_modified}
 
-      {:ok, %{status: status}} ->
-        {:error, dgettext("bots", "HTTP %{status}", status: status)}
+      %{status: status, headers: headers} when status in @redirect_statuses ->
+        follow_redirect(url, headers, etag, last_modified, redirects_left)
 
-      {:error, reason} ->
-        {:error, reason}
+      %{status: status} ->
+        {:error, dgettext("bots", "HTTP %{status}", status: status)}
     end
+  end
+
+  @spec request_options(URLGuard.fetch_target(), String.t() | nil, String.t() | nil) :: keyword()
+  defp request_options(target, etag, last_modified) do
+    options = [
+      url: target.url,
+      headers: conditional_headers(etag, last_modified),
+      redirect: false,
+      connect_options: Keyword.put(target.connect_options, :timeout, @timeout_ms),
+      receive_timeout: @timeout_ms
+    ]
+
+    if Map.get(target, :inet6?) do
+      Keyword.put(options, :inet6, true)
+    else
+      options
+    end
+  end
+
+  @spec follow_redirect(String.t(), map(), String.t() | nil, String.t() | nil, integer()) ::
+          RetroHexChat.Bots.Capabilities.RSS.Fetcher.result()
+  defp follow_redirect(url, headers, etag, last_modified, redirects_left) do
+    case redirect_url(url, first_header(headers, "location")) do
+      nil -> {:error, dgettext("bots", "redirect without location")}
+      next_url -> request(next_url, etag, last_modified, redirects_left - 1)
+    end
+  end
+
+  @spec redirect_url(String.t(), String.t() | nil) :: String.t() | nil
+  defp redirect_url(_url, nil), do: nil
+
+  defp redirect_url(url, location) do
+    url
+    |> URI.merge(String.trim(location))
+    |> URI.to_string()
   rescue
-    e -> {:error, Exception.message(e)}
+    _ -> nil
   end
 
   @spec conditional_headers(String.t() | nil, String.t() | nil) :: [{String.t(), String.t()}]

@@ -62,6 +62,18 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
     end
   end
 
+  describe "feature-link-previews topic" do
+    test "documents the shared rich preview feature" do
+      topic = HelpTopics.get_topic("feature-link-previews")
+
+      assert topic.title == "Link Previews"
+      assert topic.category == "Chat Display"
+      assert "open graph" in topic.keywords
+      assert "oembed" in topic.keywords
+      assert "bot-rss" in topic.see_also
+    end
+  end
+
   describe "topics_by_category/0" do
     test "returns categories in display order with icons" do
       categories = HelpTopics.topics_by_category()

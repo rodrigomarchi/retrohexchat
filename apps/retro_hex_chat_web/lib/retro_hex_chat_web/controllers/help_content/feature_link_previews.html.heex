@@ -1,0 +1,72 @@
+<p>
+  {dgettext(
+    "help_features",
+    "Link Previews turn shared web addresses into rich Markdown cards using metadata the page already publishes."
+  )}
+</p>
+
+<.help_h4 icon={:icon_star}>{dgettext("help_features", "Metadata")}</.help_h4>
+<ul>
+  <li>{dgettext("help_features", "Open Graph title, description, image, URL, and site name")}</li>
+  <li>
+    {dgettext("help_features", "Twitter/X Card title, description, image, and URL fallbacks")}
+  </li>
+  <li>
+    {dgettext(
+      "help_features",
+      "Schema.org JSON-LD headline, description, image, publisher, and provider fallbacks"
+    )}
+  </li>
+  <li>{dgettext("help_features", "HTML title, description, and canonical URL fallbacks")}</li>
+  <li>
+    {dgettext("help_features", "oEmbed JSON discovered from page links or HTTP Link headers")}
+  </li>
+</ul>
+
+<.help_h4 icon={:icon_rss}>{dgettext("help_features", "Used By")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "RSS bots use Link Previews to post new feed items with a source label, linked title, optional preview image, and optional description."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_features",
+    "The same shared extractor also powers URL title previews and can be reused by future chat link card features."
+  )}
+</p>
+
+<.help_h4 icon={:icon_shield}>{dgettext("help_features", "Safety")}</.help_h4>
+<ul>
+  <li>{dgettext("help_features", "Only HTTP and HTTPS URLs are fetched")}</li>
+  <li>{dgettext("help_features", "URLs with embedded credentials are refused")}</li>
+  <li>
+    {dgettext(
+      "help_features",
+      "Private, local, documentation, benchmark, multicast, and reserved address ranges are blocked"
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_features",
+      "Redirects and discovered oEmbed/image URLs are checked before use"
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_features",
+      "Markdown images are sanitized, lazy-loaded, and rendered without referrer leakage"
+    )}
+  </li>
+</ul>
+
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="feature-url-catcher">{dgettext("help_features", "URL Catcher")}</.help_link>
+  · <.help_link topic="bot-rss">{dgettext("help_features", "Bot RSS Capability")}</.help_link>
+  ·
+  <.help_link topic="formatting-overview">
+    {dgettext("help_features", "Text Formatting")}
+  </.help_link>
+</p>

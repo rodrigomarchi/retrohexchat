@@ -323,10 +323,6 @@ defmodule RetroHexChat.Bots.Capabilities.RSSTest do
   end
 
   describe "format_item/2 — the house style for every RSS bot" do
-    @bold <<0x02>>
-    @colour <<0x03>>
-    @reset <<0x0F>>
-
     defp an_item(opts \\ []) do
       %{
         title: Keyword.get(opts, :title, "A headline"),
@@ -336,66 +332,101 @@ defmodule RetroHexChat.Bots.Capabilities.RSSTest do
       }
     end
 
-    test "the source is bold and coloured, the headline plain, the link retired" do
+    test "formats a compact Markdown card with source, headline, and final link" do
       line = RSS.format_item(an_item(), "The GitHub Blog")
 
       assert line ==
-               @colour <>
-                 "02" <>
-                 @bold <>
-                 "[The GitHub Blog]" <>
-                 @reset <> " A headline " <> @colour <> "14" <> "https://example.com/a" <> @reset
+               "**The GitHub Blog** | A headline\n\n[Read full story](<https://example.com/a>)"
     end
 
     test "a publisher's tagline does not become the label" do
-      assert RSS.format_item(an_item(), "cs.LG updates on arXiv.org") =~ "[cs.LG]"
+      assert RSS.format_item(an_item(), "cs.LG updates on arXiv.org") =~ "**cs\\.LG**"
 
       assert RSS.format_item(an_item(), "Phys.org - latest science and technology news") =~
-               "[Phys.org]"
+               "**Phys\\.org**"
 
       assert RSS.format_item(an_item(), "Al Jazeera – Breaking News, World News") =~
-               "[Al Jazeera]"
+               "**Al Jazeera**"
     end
 
     test "a name with no tagline is left alone" do
-      assert RSS.format_item(an_item(), "Anime News Network") =~ "[Anime News Network]"
-      assert RSS.format_item(an_item(), "Krebs on Security") =~ "[Krebs on Security]"
+      assert RSS.format_item(an_item(), "Anime News Network") =~ "**Anime News Network**"
+      assert RSS.format_item(an_item(), "Krebs on Security") =~ "**Krebs on Security**"
     end
 
-    test "a paper-length headline is cut, and the link still carries the rest" do
+    test "a paper-length headline is cut, and the link remains clickable" do
       long = String.duplicate("word ", 60)
       line = RSS.format_item(an_item(title: long), "Src")
 
-      assert String.contains?(line, "...")
+      assert String.contains?(line, "\\.\\.\\.")
       assert String.contains?(line, "https://example.com/a")
-      assert String.length(line) < 220, "a headline that wraps three times is what we replaced"
+      assert String.length(line) < 330, "a headline that wraps several times is what we replaced"
     end
 
-    test "newlines from the publisher's markup do not break the line" do
+    test "newlines from the publisher's markup do not break the headline" do
       line = RSS.format_item(an_item(title: "Two\n\n  lines   here"), "Src")
 
-      refute line =~ "\n"
+      refute line =~ "Two\n"
       assert line =~ "Two lines here"
+      assert line =~ "[Read full story](<https://example.com/a>)"
     end
 
     test "an item with no link is still a readable line" do
       line = RSS.format_item(an_item(link: ""), "Src")
 
-      assert line =~ "[Src]"
+      assert line =~ "**Src**"
       assert line =~ "A headline"
       refute String.ends_with?(line, " ")
     end
 
     test "a feed that never gave its title still gets a label" do
-      assert RSS.format_item(an_item(), nil) =~ "[RSS]"
+      assert RSS.format_item(an_item(), nil) =~ "**RSS**"
     end
 
-    test "every colour used is legible on the window's white" do
-      # 0 is white, 8/9/11 wash out, 15 is near-white: none may be used here.
-      line = RSS.format_item(an_item(), "Src")
-      codes = ~r/#{@colour}(\d{2})/ |> Regex.scan(line) |> Enum.map(&List.last/1)
+    test "uses parsed page preview metadata when available" do
+      line =
+        RSS.format_item(an_item(), "Src", %{
+          title: "Parsed title",
+          description: "A clean professional summary.",
+          image: "https://example.com/cover.jpg",
+          url: "https://example.com/canonical",
+          site_name: "Example"
+        })
 
-      assert codes == ["02", "14"]
+      assert line =~ "**Example**"
+      assert line =~ "**Example** | Parsed title"
+      refute line =~ "[Parsed title](<https://example.com/canonical>)"
+      assert line =~ "![Example preview image](<https://example.com/cover.jpg>)"
+      refute line =~ "![Parsed title]"
+      assert line =~ "> A clean professional summary\\."
+      assert line =~ "[Read full story](<https://example.com/canonical>)"
+    end
+
+    test "escapes Markdown punctuation from publishers" do
+      line =
+        RSS.format_item(
+          an_item(title: "A [headline] *with* _syntax_"),
+          "Src",
+          %{site_name: "Src | Source", description: "Use > carefully."}
+        )
+
+      assert line =~ "A \\[headline\\] \\*with\\* \\_syntax\\_"
+      assert line =~ "**Src \\| Source**"
+      assert line =~ "> Use \\> carefully\\."
+    end
+
+    test "keeps the final Markdown within the chat message limit" do
+      line =
+        RSS.format_item(
+          an_item(title: String.duplicate("headline ", 80)),
+          String.duplicate("source ", 30),
+          %{
+            description: String.duplicate("description ", 120),
+            image: "https://example.com/#{String.duplicate("x", 360)}.jpg"
+          }
+        )
+
+      assert String.length(line) <= 1_000
     end
   end
 end
