@@ -3,8 +3,10 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
   App menu bar for the chat interface.
 
   Desktop renders the classic Win98-style textual menu strip. Stacked/mobile
-  shells render one compact menu button that opens the same commands grouped in
-  a vertical menu, so narrow screens do not need horizontal scrolling.
+  shells render the same menus as a rail of icon-only buttons spanning the
+  header, each opening the shared vertical menu already on its own section, so
+  narrow screens do not need horizontal scrolling and the header is not a strip
+  of dead space beside a lone hamburger.
   """
   use RetroHexChatWeb.Component
 
@@ -51,6 +53,8 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
         language_return_to={@language_return_to}
         on_action={@on_action}
       />
+
+      <.mobile_menu_rail connected={@connected} />
 
       <.menu class="app-menu-bar__desktop-menu" label={dgettext("ui", "File")} disabled={!@connected}>
         <:icon><Icons.icon_folder class="h-4 w-4" /></:icon>
@@ -118,7 +122,9 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
 
   defp mobile_main_menu(assigns) do
     assigns =
-      assign(assigns, :active_section, if(assigns.connected, do: "file", else: "language"))
+      assigns
+      |> assign(:active_section, default_mobile_section(assigns.connected))
+      |> assign(:sections, mobile_sections(assigns.connected))
 
     ~H"""
     <.menu
@@ -133,66 +139,12 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
       <li class="app-mobile-menu__shell" data-mobile-menu-root role="none">
         <div class="app-mobile-menu__categories" role="tablist" aria-label={dgettext("ui", "Menu")}>
           <.mobile_menu_category
-            :if={@connected}
+            :for={section <- @sections}
             menu_id={@menu_id}
-            section="file"
-            label={dgettext("ui", "File")}
-            icon_fn={:icon_folder}
-            active={@active_section == "file"}
-          />
-          <.mobile_menu_category
-            :if={@connected}
-            menu_id={@menu_id}
-            section="edit"
-            label={dgettext("ui", "Edit")}
-            icon_fn={:icon_copy}
-            active={@active_section == "edit"}
-          />
-          <.mobile_menu_category
-            :if={@connected}
-            menu_id={@menu_id}
-            section="view"
-            label={dgettext("ui", "View")}
-            icon_fn={:icon_channels}
-            active={@active_section == "view"}
-          />
-          <.mobile_menu_category
-            :if={@connected}
-            menu_id={@menu_id}
-            section="tools"
-            label={dgettext("ui", "Tools")}
-            icon_fn={:icon_dialog_options}
-            active={@active_section == "tools"}
-          />
-          <.mobile_menu_category
-            :if={@connected}
-            menu_id={@menu_id}
-            section="p2p"
-            label={dgettext("ui", "P2P")}
-            icon_fn={:icon_protocol_p2p_compact}
-            active={@active_section == "p2p"}
-          />
-          <.mobile_menu_category
-            :if={@connected}
-            menu_id={@menu_id}
-            section="games"
-            label={dgettext("ui", "Games")}
-            icon_fn={:icon_game_arcade}
-            active={@active_section == "games"}
-          />
-          <.mobile_menu_category
-            menu_id={@menu_id}
-            section="language"
-            label={dgettext("ui", "Language")}
-            icon_fn={:icon_globe}
-            active={@active_section == "language"}
-          />
-          <.mobile_menu_category
-            menu_id={@menu_id}
-            section="help"
-            label={dgettext("ui", "Help")}
-            icon_fn={:icon_btn_help_topics}
-            active={@active_section == "help"}
+            section={section.id}
+            label={section.label}
+            icon_fn={section.icon_fn}
+            active={@active_section == section.id}
           />
         </div>
 
@@ -323,6 +275,93 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
 
   defp mobile_menu_category_id(menu_id, section), do: "#{menu_id}-mobile-menu-category-#{section}"
   defp mobile_menu_panel_id(menu_id, section), do: "#{menu_id}-mobile-menu-section-#{section}"
+
+  # The stacked shell's icon rail — one button per menu, spanning the header.
+  # It is what a phone taps instead of the desktop's textual strip: every menu
+  # keeps a place of its own, and the space a lone hamburger left empty becomes
+  # the touch target. `MenuBarHook` reads `data-mobile-menu-open` to open the
+  # shared mobile dropdown already on that section, so the rail carries no
+  # dropdown of its own.
+  attr :connected, :boolean, default: false
+
+  defp mobile_menu_rail(assigns) do
+    assigns = assign(assigns, :sections, mobile_sections(assigns.connected))
+
+    ~H"""
+    <div
+      class="app-menu-bar__mobile-rail"
+      role="group"
+      aria-label={dgettext("ui", "Menu")}
+      data-testid="app-mobile-menu-rail"
+    >
+      <button
+        :for={section <- @sections}
+        type="button"
+        class="app-menu-bar__mobile-rail-button"
+        data-mobile-menu-open={section.id}
+        data-active="false"
+        data-testid={"app-mobile-menu-rail-#{section.id}"}
+        aria-haspopup="true"
+        aria-expanded="false"
+        aria-label={section.label}
+        title={section.label}
+      >
+        {apply(Icons, section.icon_fn, [%{class: "h-4 w-4"}])}
+      </button>
+    </div>
+    """
+  end
+
+  # The one list behind both mobile faces of the menu bar: the rail's buttons
+  # and the dropdown's category column. Menus that act on a live connection are
+  # dropped while there is none — the connect screen offers only Language and
+  # Help.
+  defp mobile_sections(connected) do
+    [
+      %{id: "file", label: dgettext("ui", "File"), icon_fn: :icon_folder, needs_connection: true},
+      %{id: "edit", label: dgettext("ui", "Edit"), icon_fn: :icon_copy, needs_connection: true},
+      %{
+        id: "view",
+        label: dgettext("ui", "View"),
+        icon_fn: :icon_channels,
+        needs_connection: true
+      },
+      %{
+        id: "tools",
+        label: dgettext("ui", "Tools"),
+        icon_fn: :icon_dialog_options,
+        needs_connection: true
+      },
+      %{
+        id: "p2p",
+        label: dgettext("ui", "P2P"),
+        icon_fn: :icon_protocol_p2p_compact,
+        needs_connection: true
+      },
+      %{
+        id: "games",
+        label: dgettext("ui", "Games"),
+        icon_fn: :icon_game_arcade,
+        needs_connection: true
+      },
+      %{
+        id: "language",
+        label: dgettext("ui", "Language"),
+        icon_fn: :icon_globe,
+        needs_connection: false
+      },
+      %{
+        id: "help",
+        label: dgettext("ui", "Help"),
+        icon_fn: :icon_btn_help_topics,
+        needs_connection: false
+      }
+    ]
+    |> Enum.filter(&(connected or not &1.needs_connection))
+  end
+
+  defp default_mobile_section(true), do: "file"
+  defp default_mobile_section(false), do: "language"
 
   # ── Shared menu item groups ───────────────────────────
 

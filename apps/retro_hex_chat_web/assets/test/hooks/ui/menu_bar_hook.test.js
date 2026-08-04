@@ -354,6 +354,131 @@ describe("MenuBarHook", () => {
     });
   });
 
+  // ── mobile rail ─────────────────────────────────────
+
+  // The stacked shell has no textual strip: a rail of icon buttons spans the
+  // header and every one of them opens the single mobile dropdown already
+  // showing its own section.
+  describe("mobile rail", () => {
+    function createMobileMenuBar() {
+      return mountHook(MenuBarHook, {
+        tag: "nav",
+        attrs: { role: "menubar" },
+        html: `
+          <div class="app-menu-bar__mobile-menu relative inline-flex">
+            <button data-menubar-trigger class="app-menu-bar__mobile-trigger">Menu</button>
+            <div data-menubar-dropdown class="u-hidden">
+              <ul>
+                <li data-mobile-menu-root>
+                  <div>
+                    <button data-mobile-menu-category="file" data-active="true" aria-selected="true">File</button>
+                    <button data-mobile-menu-category="tools" data-active="false" aria-selected="false">Tools</button>
+                    <button data-mobile-menu-category="help" data-active="false" aria-selected="false">Help</button>
+                  </div>
+                  <div>
+                    <section data-mobile-menu-section="file">Account</section>
+                    <section data-mobile-menu-section="tools" class="u-hidden">Address Book</section>
+                    <section data-mobile-menu-section="help" class="u-hidden">Help Topics</section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="app-menu-bar__mobile-rail">
+            <button data-mobile-menu-open="file" data-active="false" aria-expanded="false"></button>
+            <button data-mobile-menu-open="tools" data-active="false" aria-expanded="false"></button>
+            <button data-mobile-menu-open="help" data-active="false" aria-expanded="false"></button>
+          </div>
+        `,
+      });
+    }
+
+    function railButton(section) {
+      return hook.el.querySelector(`[data-mobile-menu-open="${section}"]`);
+    }
+
+    function tapRail(section) {
+      railButton(section).dispatchEvent(new MouseEvent("mousedown", { bubbles: true }));
+    }
+
+    function panel(section) {
+      return hook.el.querySelector(`[data-mobile-menu-section="${section}"]`);
+    }
+
+    function dropdown() {
+      return hook.el.querySelector("[data-menubar-dropdown]");
+    }
+
+    beforeEach(() => {
+      hook.destroyed();
+      cleanupDOM();
+      hook = createMobileMenuBar();
+    });
+
+    it("opens the drawer already showing the tapped section", () => {
+      tapRail("tools");
+
+      expect(dropdown().classList.contains("u-hidden")).toBe(false);
+      expect(panel("tools").classList.contains("u-hidden")).toBe(false);
+      expect(panel("file").classList.contains("u-hidden")).toBe(true);
+      expect(railButton("tools").dataset.active).toBe("true");
+      expect(railButton("tools").getAttribute("aria-expanded")).toBe("true");
+    });
+
+    it("swaps sections under an open drawer instead of closing it", () => {
+      tapRail("tools");
+      tapRail("help");
+
+      expect(dropdown().classList.contains("u-hidden")).toBe(false);
+      expect(panel("help").classList.contains("u-hidden")).toBe(false);
+      expect(panel("tools").classList.contains("u-hidden")).toBe(true);
+      expect(railButton("tools").dataset.active).toBe("false");
+      expect(railButton("help").dataset.active).toBe("true");
+    });
+
+    it("closes the drawer when the open section is tapped again", () => {
+      tapRail("tools");
+      tapRail("tools");
+
+      expect(dropdown().classList.contains("u-hidden")).toBe(true);
+      expect(railButton("tools").dataset.active).toBe("false");
+      expect(railButton("tools").getAttribute("aria-expanded")).toBe("false");
+    });
+
+    it("reopens after closing (the rail state is cleared, not left stale)", () => {
+      tapRail("tools");
+      tapRail("tools");
+      tapRail("tools");
+
+      expect(dropdown().classList.contains("u-hidden")).toBe(false);
+      expect(panel("tools").classList.contains("u-hidden")).toBe(false);
+    });
+
+    // The category column stays usable inside the drawer, so the rail must
+    // learn the section from it — otherwise tapping the rail button of what is
+    // showing would reopen rather than close.
+    it("follows the category column when it switches sections", () => {
+      tapRail("tools");
+      hook.el
+        .querySelector('[data-mobile-menu-category="help"]')
+        .dispatchEvent(new MouseEvent("click", { bubbles: true }));
+
+      expect(railButton("help").dataset.active).toBe("true");
+      expect(railButton("tools").dataset.active).toBe("false");
+
+      tapRail("help");
+      expect(dropdown().classList.contains("u-hidden")).toBe(true);
+    });
+
+    it("clears the rail on Escape", () => {
+      tapRail("tools");
+      document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+
+      expect(dropdown().classList.contains("u-hidden")).toBe(true);
+      expect(railButton("tools").dataset.active).toBe("false");
+    });
+  });
+
   // ── active styling ──────────────────────────────────
 
   describe("active styling", () => {

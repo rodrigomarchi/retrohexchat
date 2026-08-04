@@ -58,7 +58,8 @@
   box-shadow: none;
 }
 
-.app-menu-bar__mobile-menu {
+.app-menu-bar__mobile-menu,
+.app-menu-bar__mobile-rail {
   display: none;
 }
 
@@ -78,8 +79,11 @@
   min-width: 0;
 }
 
+/* The bar stops hugging its content on a phone: the icon rail spans whatever
+   the logo and the status zone leave, so no dead strip is left in the middle. */
 .desktop--stacked .app-menu-bar {
   min-width: 0;
+  flex: 1;
 }
 
 .desktop--stacked .app-menu-bar__desktop-menu {
@@ -90,6 +94,50 @@
   display: inline-flex;
 }
 
+/* The rail replaces the hamburger — but the menu wrapper stays, since it is
+   what holds the dropdown every rail button opens (fixed-positioned, so it does
+   not care which button it is anchored to). */
+.desktop--stacked .app-menu-bar__mobile-trigger {
+  display: none;
+}
+
+.desktop--stacked .app-menu-bar__mobile-rail {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  align-items: center;
+  gap: 2px;
+}
+
+.desktop--stacked .app-menu-bar__mobile-rail-button {
+  display: inline-flex;
+  min-width: 28px;
+  max-width: 44px;
+  height: 32px;
+  flex: 1 1 0;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  background: #c0c0c0;
+  color: #000000;
+  box-shadow:
+    inset -1px -1px #808080,
+    inset 1px 1px #ffffff;
+}
+
+.desktop--stacked .app-menu-bar__mobile-rail-button[data-active="true"] {
+  background: #a0a0a0;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080;
+}
+
+.desktop--stacked .app-menu-bar__mobile-rail-button:focus-visible {
+  outline: 2px solid #000000;
+  outline-offset: 1px;
+}
+
 .desktop--stacked .app-menu-bar__mobile-menu [data-menubar-dropdown] {
   position: fixed;
   top: var(--rhc-chat-mobile-header-height, 40px);
@@ -98,7 +146,9 @@
   width: auto;
   min-width: 0;
   max-height: min(
-    calc(var(--rhc-visual-viewport-height, 100dvh) - var(--rhc-chat-mobile-header-height, 40px) - 48px),
+    calc(
+      var(--rhc-visual-viewport-height, 100dvh) - var(--rhc-chat-mobile-header-height, 40px) - 48px
+    ),
     560px
   );
   overflow: hidden;
@@ -117,7 +167,9 @@
   gap: 4px;
   width: 100%;
   height: min(
-    calc(var(--rhc-visual-viewport-height, 100dvh) - var(--rhc-chat-mobile-header-height, 40px) - 56px),
+    calc(
+      var(--rhc-visual-viewport-height, 100dvh) - var(--rhc-chat-mobile-header-height, 40px) - 56px
+    ),
     520px
   );
   padding: 4px;
@@ -207,9 +259,6 @@
   padding-left: 8px;
 }
 
-.desktop--stacked .app-menu-bar__mobile-trigger {
-  min-height: 34px;
-}
 .menubar-copy-disabled:hover {
   color: var(--color-muted);
   background: transparent;

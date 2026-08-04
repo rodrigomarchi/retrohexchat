@@ -63,9 +63,20 @@ defmodule RetroHexChat.Lobby.SessionServerTest do
 
   defp stop_server(token) do
     case Registry.lookup(token) do
-      {:ok, pid} -> GenServer.stop(pid, :normal)
+      {:ok, pid} -> stop_pid(pid)
       {:error, :not_found} -> :ok
     end
+  end
+
+  # A test that stops its own server still runs the `on_exit` that stops it
+  # again, and the registry entry outlives the process it points at — so by the
+  # time this call lands, the pid may already be gone. Looking it up says
+  # nothing about it still being alive, which is why the exit is caught rather
+  # than guarded against.
+  defp stop_pid(pid) do
+    GenServer.stop(pid, :normal)
+  catch
+    :exit, _reason -> :ok
   end
 
   describe "lifecycle" do

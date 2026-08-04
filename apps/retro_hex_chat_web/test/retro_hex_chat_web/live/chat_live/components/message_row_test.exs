@@ -55,13 +55,25 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRowTest do
     refute html =~ "* bob"
   end
 
-  # Layout tokens the two-column meta layout depends on. Pinned on the component
-  # so the coverage is deterministic (a full LiveView render was flaky).
-  test "normal messages use the two-column grid with a data-nick handle, no angle brackets" do
+  # Layout tokens the message shape depends on. Pinned on the component so the
+  # coverage is deterministic (a full LiveView render was flaky).
+  test "speech stacks its text under the head, with a data-nick handle and no angle brackets" do
     html = row(%{id: "g1", author: "alice", content: "hi", type: :normal, timestamp: @ts})
-    assert html =~ "grid-cols-[5rem_1fr]"
+    assert html =~ ~s(data-message-layout="stacked")
+    assert html =~ "chat-message__body"
     assert html =~ ~s(data-nick="alice")
     refute html =~ "&lt;alice&gt;"
+  end
+
+  # Narration has no author to bind the eye to and is short: a second line for
+  # it would be ceremony, so it rides the head line and wraps to the margin.
+  test "narration rides the head line instead of stacking" do
+    action = row(%{id: "g2", author: "alice", content: "waves", type: :action, timestamp: @ts})
+    system = row(%{id: "g3", content: "joined", type: :system, timestamp: @ts})
+
+    assert action =~ ~s(data-message-layout="inline")
+    assert system =~ ~s(data-message-layout="inline")
+    refute system =~ "chat-message__body"
   end
 
   test "action messages carry the text-action class" do
@@ -83,6 +95,45 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRowTest do
       row(%{id: "n1", author: "srv", content: "notice text", type: :notice, timestamp: @ts})
 
     assert notice =~ "notice text"
+  end
+
+  # A bot greeting delivered as a notice carried mIRC colour codes, and the
+  # notice branch interpolated its content directly instead of formatting it.
+  # The browser swallows the 0x03 byte and shows what follows it, so the colour
+  # printed as text: "06 [Wanda] 13guest!". Every type formats its content now.
+  @coloured "\x0306\x02[Wanda]\x0F guest!"
+
+  test "every message type renders mIRC codes as markup, never as stray digits" do
+    types = [
+      %{id: "c1", author: "wanda", content: @coloured, type: :notice, timestamp: @ts},
+      %{id: "c2", content: @coloured, type: :system, timestamp: @ts},
+      %{id: "c3", content: @coloured, type: :p2p_system, timestamp: @ts},
+      %{id: "c4", content: @coloured, type: :service, timestamp: @ts},
+      %{id: "c5", content: @coloured, type: :error, timestamp: @ts},
+      %{id: "c6", author: "wanda", content: @coloured, type: :action, timestamp: @ts},
+      %{id: "c7", author: "wanda", content: @coloured, type: :normal, timestamp: @ts}
+    ]
+
+    for msg <- types do
+      html = row(msg)
+
+      assert html =~ ~s(class="irc-fg-6"), "#{msg.type} lost its colour span"
+      assert html =~ "irc-bold"
+      assert html =~ "[Wanda]"
+      refute html =~ "06", "#{msg.type} leaked the colour code's digits"
+      refute html =~ "\x03", "#{msg.type} passed the control byte through"
+    end
+  end
+
+  test "stripping formatting drops the codes without leaving their digits" do
+    html =
+      row(%{id: "c8", author: "wanda", content: @coloured, type: :notice, timestamp: @ts}, %{
+        strip_formatting: true
+      })
+
+    assert html =~ "[Wanda]"
+    refute html =~ "irc-fg-6"
+    refute html =~ "06"
   end
 
   test "renders P2P invite messages as a plain request line without card actions" do

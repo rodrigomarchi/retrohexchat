@@ -18,6 +18,15 @@ defmodule RetroHexChatWeb.ConnectDesktopShellTest do
       assert html =~ ~s(data-testid="connect-status-bar")
     end
 
+    test "the mobile rail offers only what works signed out", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/connect")
+
+      assert has_element?(view, ~s(#menubar [data-testid="app-mobile-menu-rail-language"]))
+      assert has_element?(view, ~s(#menubar [data-testid="app-mobile-menu-rail-help"]))
+      refute has_element?(view, ~s(#menubar [data-testid="app-mobile-menu-rail-file"]))
+      refute has_element?(view, ~s(#menubar [data-testid="app-mobile-menu-rail-tools"]))
+    end
+
     test "the connect window is a pinned, centered, fixed-size logon dialog", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/connect")
 

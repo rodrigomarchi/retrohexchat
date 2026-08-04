@@ -71,11 +71,20 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
             dgettext(
               "help",
               "On a phone the desktop stacks: one window fills the screen at a time and the " <>
-                "taskbar's Windows button switches between them. The conversations and user " <>
+                "taskbar switches between them — the same strip of window buttons as on a " <>
+                "desktop, squeezed to fit and scrolled when crowded. The conversations and user " <>
                 "list collapse to narrow rails beside the conversation — tap one to slide the " <>
                 "full panel open. The Start menu opens one level at a time: tapping a group " <>
                 "replaces the list with its entries, and the group's own row at the top takes " <>
                 "you back."
+            ) <>
+            " " <>
+            dgettext(
+              "help",
+              "The menu bar becomes a rail of icons across the top of the screen — one per " <>
+                "menu, in the same order as on the desktop. Tapping one opens the menu already " <>
+                "on that section; tapping another switches to it, and tapping the one already " <>
+                "open closes the menu."
             )
       },
       %{

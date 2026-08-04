@@ -39,6 +39,17 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShellTest do
     assert html =~ ~s(data-testid="status-bar-app")
   end
 
+  test "the mobile rail carries every menu, each opening its own section" do
+    html = header(Session.new("alice"))
+
+    for section <- ~w(file edit view tools p2p games language help) do
+      assert html =~ ~s(data-testid="app-mobile-menu-rail-#{section}")
+      assert html =~ ~s(data-mobile-menu-open="#{section}")
+      assert html =~ ~s(data-testid="app-mobile-menu-category-#{section}")
+      assert html =~ ~s(data-testid="app-mobile-menu-section-#{section}")
+    end
+  end
+
   test "the header names neither the user nor the conversation — the title bar does" do
     session = %{Session.new("alice") | active_channel: "#lobby", active_pm: "bob"}
     html = header(session)
