@@ -146,7 +146,9 @@
   bottom: calc(100% + 3px);
   left: 0;
   z-index: 70;
-  max-width: min(232px, calc(var(--rhc-visual-viewport-width, 100vw) - 8px));
+  width: max-content;
+  min-width: 158px;
+  max-width: min(420px, calc(var(--rhc-visual-viewport-width, 100vw) - 8px));
   padding: 3px;
   background: #c0c0c0;
   box-shadow:
@@ -160,11 +162,65 @@
   display: none;
 }
 
+.formatting-toolbar__section {
+  background: transparent;
+}
+
+.formatting-toolbar__section + .formatting-toolbar__section {
+  margin-top: 3px;
+  padding-top: 3px;
+  border-top: 1px solid #808080;
+}
+
+.formatting-toolbar__mode-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(36px, 1fr));
+  gap: 2px;
+}
+
+.formatting-toolbar__mode-row--with-preview {
+  grid-template-columns: repeat(4, minmax(32px, 1fr));
+}
+
+.formatting-toolbar__mode-button,
+.formatting-toolbar__preview-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 24px;
+  padding-inline: 6px;
+  background: #c0c0c0;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  box-shadow:
+    inset -1px -1px #0a0a0a,
+    inset 1px 1px #ffffff,
+    inset -2px -2px #808080,
+    inset 2px 2px #dfdfdf;
+}
+
+.formatting-toolbar__mode-button--active,
+.formatting-toolbar__preview-button--active {
+  background: #e8e4dc;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #0a0a0a,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #808080;
+}
+
+.formatting-toolbar__preview-button {
+  width: auto;
+}
+
 .formatting-toolbar__actions {
   display: flex;
-  flex-wrap: wrap;
-  max-width: 198px;
+  flex-wrap: nowrap;
+  max-width: none;
+  overflow-x: auto;
   background: transparent;
+  scrollbar-width: thin;
 }
 
 .format-color-dropdown {
@@ -183,6 +239,27 @@
 
 .format-color-dropdown--open {
   display: grid;
+}
+
+.composer-markdown-preview {
+  position: absolute;
+  bottom: calc(100% + 4px);
+  left: 0;
+  z-index: 65;
+  width: min(560px, 100%);
+  max-height: 168px;
+  overflow-y: auto;
+  padding: 5px 6px;
+  background: #ffffff;
+  box-shadow:
+    inset -1px -1px #0a0a0a,
+    inset 1px 1px #ffffff,
+    inset -2px -2px #808080,
+    inset 2px 2px #dfdfdf;
+}
+
+.composer-markdown-preview__message {
+  padding-block: 0;
 }
 
 /* ── Automatic nick colors: 12 high-contrast hues ────────── */

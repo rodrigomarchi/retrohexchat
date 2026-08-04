@@ -83,6 +83,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.UserContextMenusTest do
             id: 123,
             nick: "alice",
             text: "hello",
+            source: "**hello**",
             is_own: true
           },
           has_selection: false,
@@ -91,9 +92,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.UserContextMenusTest do
       })
 
     assert html =~ "context-menu-item-reply_to_message"
+    assert html =~ "context-menu-item-ctx_chat_copy_message_source"
     assert html =~ "context-menu-item-edit_message"
     assert html =~ "context-menu-item-ctx_chat_delete"
     assert html =~ ~s(phx-value-message_id="123")
+    assert html =~ ~s(phx-value-source="**hello**")
   end
 
   test "derives is_target_self (own nick disables Query) from session" do

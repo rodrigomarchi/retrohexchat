@@ -16,6 +16,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRow do
 
   import RetroHexChatWeb.Components.UI.MessageRow
 
+  alias RetroHexChat.Chat.Content
   alias RetroHexChatWeb.App.ChatHelpers
 
   attr :dom_id, :string, required: true
@@ -39,6 +40,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRow do
       data-message-id={@dom_id}
       data-temp-id={if(Map.get(@msg, :status) in [:pending, :failed], do: @msg.id, else: nil)}
       data-msg-status={if(Map.get(@msg, :status), do: Atom.to_string(@msg.status), else: nil)}
+      data-message-format={message_format(@msg)}
+      data-message-text={message_text(@msg)}
+      data-message-source-b64={message_source_b64(@msg)}
       data-system-message={
         if(
           Map.get(@msg, :type, :normal) in [:system, :service, :inline_help],
@@ -74,5 +78,58 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRow do
       if Map.get(msg, :id) == edit_mode_message_id, do: " chat-message--editing", else: ""
 
     base <> highlighted <> highlight_bg <> pending <> failed <> deleted <> editing
+  end
+
+  defp message_format(msg), do: Map.get(msg, :content_format) || "irc"
+
+  defp message_text(msg) do
+    if copy_metadata_enabled?(msg) do
+      message_copy_text(msg)
+    end
+  end
+
+  defp message_source_b64(msg) do
+    if copy_metadata_enabled?(msg) do
+      msg
+      |> message_source()
+      |> encode_source()
+    end
+  end
+
+  defp copy_metadata_enabled?(%{deleted_at: deleted_at}) when not is_nil(deleted_at), do: false
+  defp copy_metadata_enabled?(%{type: type}) when type in [:inline_help, :p2p_invite], do: false
+  defp copy_metadata_enabled?(_msg), do: true
+
+  defp message_copy_text(msg) do
+    case Map.get(msg, :plain_content) do
+      text when is_binary(text) ->
+        text
+
+      _ ->
+        msg
+        |> message_source()
+        |> source_to_text(message_format(msg))
+    end
+  end
+
+  defp message_source(%{deleted_at: deleted_at}) when not is_nil(deleted_at), do: nil
+
+  defp message_source(msg) do
+    case Map.get(msg, :content) do
+      content when is_binary(content) -> content
+      _ -> nil
+    end
+  end
+
+  defp encode_source(nil), do: nil
+  defp encode_source(content), do: Base.encode64(content)
+
+  defp source_to_text(nil, _content_format), do: nil
+
+  defp source_to_text(content, content_format) do
+    case Content.normalize_format(content_format) do
+      {:ok, normalized_format} -> Content.plain_text(content, normalized_format)
+      :error -> Content.plain_text(content, :irc)
+    end
   end
 end

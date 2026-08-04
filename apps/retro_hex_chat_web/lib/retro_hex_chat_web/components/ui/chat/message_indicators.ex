@@ -54,6 +54,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageIndicators do
   @doc "Renders a retry button for failed messages."
   attr :temp_id, :string, required: true, doc: "Temporary message ID"
   attr :content, :string, required: true, doc: "Original message content"
+  attr :content_format, :string, default: "irc", doc: "Original message content format"
   attr :target, :string, default: "", doc: "Target channel or PM nick"
   attr :on_retry, :any, default: nil, doc: "Event name for retry click"
   attr :class, :any, default: nil
@@ -67,6 +68,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageIndicators do
       phx-click={@on_retry}
       phx-value-temp_id={@temp_id}
       phx-value-content={@content}
+      phx-value-content_format={@content_format}
       phx-value-target={@target}
       title={dgettext("chat", "Failed to send. Click to retry")}
       data-testid="retry-message"

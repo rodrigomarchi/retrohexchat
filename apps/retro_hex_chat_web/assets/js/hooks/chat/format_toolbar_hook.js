@@ -8,6 +8,19 @@
 import { insertAtCursor } from "../../lib/chat/input.js";
 import { IRC_FORMAT_CODES } from "../../lib/chat/irc_format.js";
 
+const MARKDOWN_FORMATS = {
+  "md-heading": { kind: "prefix", prefix: "# ", placeholder: "heading" },
+  "md-bold": { kind: "wrap", before: "**", after: "**", placeholder: "text" },
+  "md-italic": { kind: "wrap", before: "_", after: "_", placeholder: "text" },
+  "md-strike": { kind: "wrap", before: "~~", after: "~~", placeholder: "text" },
+  "md-code": { kind: "wrap", before: "`", after: "`", placeholder: "code" },
+  "md-code-block": { kind: "wrap", before: "```\n", after: "\n```", placeholder: "code" },
+  "md-link": { kind: "wrap", before: "[", after: "](https://)", placeholder: "text" },
+  "md-quote": { kind: "prefix", prefix: "> ", placeholder: "quote" },
+  "md-list": { kind: "prefix", prefix: "- ", placeholder: "item" },
+  "md-ordered-list": { kind: "ordered-list", placeholder: "item" },
+};
+
 const FormatToolbarHook = {
   mounted() {
     this.open = false;
@@ -56,6 +69,11 @@ const FormatToolbarHook = {
       return;
     }
 
+    if (action.type === "live-action") {
+      e.preventDefault();
+      return;
+    }
+
     e.preventDefault();
     this.runAction(action);
   },
@@ -74,6 +92,7 @@ const FormatToolbarHook = {
 
     const action = this.resolveAction(e.target);
     if (!action) return;
+    if (action.type === "live-action") return;
     if (action.type === "close-panel") return;
 
     e.preventDefault();
@@ -104,6 +123,9 @@ const FormatToolbarHook = {
 
     const closePanel = target.closest("[data-format-toolbar-close]");
     if (closePanel && this.el.contains(closePanel)) return { type: "close-panel" };
+
+    const liveAction = target.closest("[data-format-toolbar-live]");
+    if (liveAction && this.el.contains(liveAction)) return { type: "live-action" };
 
     const btn = target.closest(".format-btn");
     if (btn && this.el.contains(btn)) return { type: "format", el: btn };
@@ -170,6 +192,12 @@ const FormatToolbarHook = {
   },
 
   insertFormatCode(formatCode) {
+    const markdownFormat = MARKDOWN_FORMATS[formatCode];
+    if (markdownFormat) {
+      this.insertMarkdownFormat(markdownFormat);
+      return;
+    }
+
     const code = IRC_FORMAT_CODES[formatCode];
     if (!code) return;
 
@@ -178,6 +206,70 @@ const FormatToolbarHook = {
       insertAtCursor(input, code);
       input.focus();
     }
+  },
+
+  insertMarkdownFormat(format) {
+    const input = this.chatInput();
+    if (!input) return;
+
+    if (format.kind === "prefix") {
+      this.prefixMarkdownLines(input, format);
+    } else if (format.kind === "ordered-list") {
+      this.numberMarkdownLines(input, format);
+    } else {
+      this.wrapMarkdownSelection(input, format);
+    }
+
+    input.focus();
+  },
+
+  wrapMarkdownSelection(input, format) {
+    const start = input.selectionStart ?? input.value.length;
+    const end = input.selectionEnd ?? input.value.length;
+    const selected = input.value.slice(start, end);
+    const body = selected || format.placeholder;
+    const replacement = format.before + body + format.after;
+
+    input.value = input.value.slice(0, start) + replacement + input.value.slice(end);
+
+    if (selected) {
+      input.selectionStart = input.selectionEnd = start + replacement.length;
+    } else {
+      input.selectionStart = start + format.before.length;
+      input.selectionEnd = input.selectionStart + format.placeholder.length;
+    }
+
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+  },
+
+  prefixMarkdownLines(input, format) {
+    const start = input.selectionStart ?? input.value.length;
+    const end = input.selectionEnd ?? input.value.length;
+    const selected = input.value.slice(start, end) || format.placeholder;
+    const replacement = selected
+      .split("\n")
+      .map((line) => format.prefix + line)
+      .join("\n");
+
+    input.value = input.value.slice(0, start) + replacement + input.value.slice(end);
+    input.selectionStart = start;
+    input.selectionEnd = start + replacement.length;
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+  },
+
+  numberMarkdownLines(input, format) {
+    const start = input.selectionStart ?? input.value.length;
+    const end = input.selectionEnd ?? input.value.length;
+    const selected = input.value.slice(start, end) || format.placeholder;
+    const replacement = selected
+      .split("\n")
+      .map((line, index) => `${index + 1}. ${line}`)
+      .join("\n");
+
+    input.value = input.value.slice(0, start) + replacement + input.value.slice(end);
+    input.selectionStart = start;
+    input.selectionEnd = start + replacement.length;
+    input.dispatchEvent(new Event("input", { bubbles: true }));
   },
 
   insertColor(swatch) {

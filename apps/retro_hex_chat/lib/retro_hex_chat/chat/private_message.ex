@@ -5,15 +5,22 @@ defmodule RetroHexChat.Chat.PrivateMessage do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias RetroHexChat.Chat.Attachment
+  alias RetroHexChat.Chat.Content
+
   @type t :: %__MODULE__{}
 
   @type_values ~w(message action system p2p_invite p2p_system)
+  @content_formats ~w(irc markdown plain)
 
   schema "private_messages" do
     field :sender_nickname, :string
     field :recipient_nickname, :string
     field :content, :string
+    field :content_format, :string, default: "irc"
+    field :plain_content, :string
     field :type, :string, default: "message"
+    field :allow_blank_content, :boolean, virtual: true, default: false
 
     field :reply_to_id, :integer
     field :reply_to_author, :string
@@ -21,43 +28,73 @@ defmodule RetroHexChat.Chat.PrivateMessage do
     field :edited_at, :utc_datetime_usec
     field :deleted_at, :utc_datetime_usec
 
+    has_many :attachments, Attachment
+
     timestamps(type: :utc_datetime_usec, updated_at: false)
   end
 
   @spec changeset(t() | Ecto.Changeset.t(), map()) :: Ecto.Changeset.t()
   def changeset(pm, attrs) do
     pm
-    |> cast(attrs, [:sender_nickname, :recipient_nickname, :content, :type])
-    |> validate_required([:sender_nickname, :recipient_nickname, :content])
+    |> cast(
+      attrs,
+      [
+        :sender_nickname,
+        :recipient_nickname,
+        :content,
+        :content_format,
+        :type,
+        :allow_blank_content
+      ],
+      empty_values: []
+    )
+    |> validate_required([:sender_nickname, :recipient_nickname, :content_format])
+    |> validate_content_required()
     |> validate_length(:sender_nickname, max: 16)
     |> validate_length(:recipient_nickname, max: 16)
+    |> validate_inclusion(:content_format, @content_formats)
     |> validate_inclusion(:type, @type_values)
+    |> put_plain_content()
+    |> check_constraint(:content_format, name: :private_messages_content_format_check)
   end
 
   @spec reply_changeset(t() | Ecto.Changeset.t(), map()) :: Ecto.Changeset.t()
   def reply_changeset(pm, attrs) do
     pm
-    |> cast(attrs, [
-      :sender_nickname,
-      :recipient_nickname,
-      :content,
-      :type,
-      :reply_to_id,
-      :reply_to_author,
-      :reply_to_preview
-    ])
-    |> validate_required([:sender_nickname, :recipient_nickname, :content])
+    |> cast(
+      attrs,
+      [
+        :sender_nickname,
+        :recipient_nickname,
+        :content,
+        :content_format,
+        :type,
+        :allow_blank_content,
+        :reply_to_id,
+        :reply_to_author,
+        :reply_to_preview
+      ],
+      empty_values: []
+    )
+    |> validate_required([:sender_nickname, :recipient_nickname, :content_format])
+    |> validate_content_required()
     |> validate_length(:sender_nickname, max: 16)
     |> validate_length(:recipient_nickname, max: 16)
+    |> validate_inclusion(:content_format, @content_formats)
     |> validate_inclusion(:type, @type_values)
+    |> put_plain_content()
+    |> check_constraint(:content_format, name: :private_messages_content_format_check)
     |> validate_reply_fields()
   end
 
   @spec edit_changeset(t() | Ecto.Changeset.t(), map()) :: Ecto.Changeset.t()
   def edit_changeset(pm, attrs) do
     pm
-    |> cast(attrs, [:content, :edited_at])
-    |> validate_required([:content, :edited_at])
+    |> cast(attrs, [:content, :content_format, :edited_at])
+    |> validate_required([:content, :content_format, :edited_at])
+    |> validate_inclusion(:content_format, @content_formats)
+    |> put_plain_content()
+    |> check_constraint(:content_format, name: :private_messages_content_format_check)
   end
 
   @spec delete_changeset(t() | Ecto.Changeset.t(), map()) :: Ecto.Changeset.t()
@@ -77,6 +114,30 @@ defmodule RetroHexChat.Chat.PrivateMessage do
       |> validate_length(:reply_to_preview, max: 100)
     else
       changeset
+    end
+  end
+
+  defp validate_content_required(changeset) do
+    if get_field(changeset, :allow_blank_content) do
+      case get_field(changeset, :content) do
+        content when is_binary(content) -> changeset
+        _ -> add_error(changeset, :content, "can't be blank")
+      end
+    else
+      validate_required(changeset, [:content])
+    end
+  end
+
+  defp put_plain_content(changeset) do
+    content = get_field(changeset, :content)
+    content_format = get_field(changeset, :content_format)
+
+    case {content, Content.normalize_format(content_format)} do
+      {content, {:ok, _format}} when is_binary(content) ->
+        put_change(changeset, :plain_content, Content.plain_text(content, content_format))
+
+      _ ->
+        changeset
     end
   end
 end

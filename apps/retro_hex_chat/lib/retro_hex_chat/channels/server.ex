@@ -24,8 +24,9 @@ defmodule RetroHexChat.Channels.Server do
   }
 
   alias RetroHexChat.Chat
-  alias RetroHexChat.Chat.Formatter
+  alias RetroHexChat.Chat.{Attachments, Content}
   alias RetroHexChat.Observability
+  alias RetroHexChat.Repo
   alias RetroHexChat.Services.ChanServ
   alias RetroHexChat.Services.Queries, as: ServiceQueries
 
@@ -46,6 +47,7 @@ defmodule RetroHexChat.Channels.Server do
         }
 
   @pubsub RetroHexChat.PubSub
+  @max_preview_length 100
 
   # ──────────────────────────────────────────────────────────────
   # Public API
@@ -102,16 +104,22 @@ defmodule RetroHexChat.Channels.Server do
   render an optimistic row keyed by the same id the PubSub echo will carry — the
   echo then updates that row in place instead of appending a duplicate.
   """
-  @spec send_message(String.t(), String.t(), String.t(), atom() | keyword()) ::
+  @spec send_message(
+          String.t(),
+          String.t(),
+          String.t(),
+          atom() | String.t() | keyword(),
+          keyword()
+        ) ::
           {:ok, term()} | {:error, String.t()}
-  def send_message(channel_name, nickname, content, type_or_opts \\ :message) do
-    {type, opts} =
-      if is_list(type_or_opts) do
-        {:message, type_or_opts}
-      else
-        {type_or_opts, []}
-      end
+  def send_message(channel_name, nickname, content, type_or_opts \\ :message, opts \\ [])
 
+  def send_message(channel_name, nickname, content, type_or_opts, opts)
+      when is_list(type_or_opts) and opts == [] do
+    send_message(channel_name, nickname, content, :message, type_or_opts)
+  end
+
+  def send_message(channel_name, nickname, content, type, opts) do
     Observability.span(
       [:retro_hex_chat, :chat, :message, :send],
       message_metadata(type, content, opts, %{"chat.channel" => channel_name}),
@@ -807,20 +815,25 @@ defmodule RetroHexChat.Channels.Server do
   # ──────────────────────────────────────────────────────────────
 
   defp do_handle_send_message(nickname, content, type, opts, state) do
-    with :ok <- RetroHexChat.Chat.Policy.validate_content(content),
+    requested_format = content_format_from_opts(opts)
+    attachment_ids = attachment_ids_from_opts(opts)
+
+    with :ok <- validate_message_content(content, requested_format, attachment_ids),
          :ok <- Policy.can_speak?(state.modes, state.membership, nickname),
-         :ok <- check_channel_mute(state, nickname) do
-      final_content =
-        if Modes.strip_colors?(state.modes) do
-          Formatter.strip(content)
-        else
-          content
-        end
-
-      reply_to_id = Keyword.get(opts, :reply_to_id)
-
-      {msg, id, timestamp} =
-        persist_and_get_id(state.name, nickname, final_content, type, reply_to_id)
+         :ok <- check_channel_mute(state, nickname),
+         {:ok, msg, id, timestamp} <-
+           persist_and_get_id(
+             state.name,
+             nickname,
+             content,
+             requested_format,
+             type,
+             Keyword.get(opts, :reply_to_id),
+             attachment_ids,
+             state
+           ) do
+      {final_content, content_format} =
+        apply_content_mode_policy(content, requested_format, state)
 
       Observability.set_current_span_attributes(%{
         "chat.message.id" => id,
@@ -832,11 +845,13 @@ defmodule RetroHexChat.Channels.Server do
         channel: state.name,
         author: nickname,
         content: final_content,
+        content_format: persisted_content_format(msg, content_format),
         type: type,
         timestamp: timestamp,
         reply_to_id: msg && msg.reply_to_id,
         reply_to_author: msg && msg.reply_to_author,
-        reply_to_preview: msg && msg.reply_to_preview
+        reply_to_preview: msg && msg.reply_to_preview,
+        attachments: attachment_payloads(msg)
       }
 
       broadcast(state.name, %{event: "new_message", payload: payload})
@@ -1087,6 +1102,7 @@ defmodule RetroHexChat.Channels.Server do
         conversation_type: "channel",
         message_type: normalize_message_type(type),
         message_size_bytes: byte_size(content),
+        content_format: content_format_from_opts(opts),
         has_reply: Keyword.has_key?(opts, :reply_to_id)
       },
       extra
@@ -1199,39 +1215,76 @@ defmodule RetroHexChat.Channels.Server do
       else: :ok
   end
 
-  defp persist_and_get_id(channel_name, nickname, content, type, reply_to_id) do
+  defp persist_and_get_id(
+         channel_name,
+         nickname,
+         content,
+         content_format,
+         type,
+         reply_to_id,
+         attachment_ids,
+         state
+       ) do
+    {final_content, persisted_content_format} =
+      apply_content_mode_policy(content, content_format, state)
+
     base_attrs = %{
       channel_name: channel_name,
       author_nickname: nickname,
-      content: content,
-      type: to_string(type)
+      content: final_content,
+      content_format: persisted_content_format,
+      type: to_string(type),
+      allow_blank_content: attachment_ids != []
     }
 
-    result =
-      if reply_to_id do
-        case resolve_reply_attrs(reply_to_id) do
-          {:ok, reply_attrs} ->
-            Chat.Queries.insert_reply_message(Map.merge(base_attrs, reply_attrs))
+    persist_message_transaction(base_attrs, reply_to_id, nickname, attachment_ids)
+    |> case do
+      {:ok, {message, id, timestamp}} ->
+        {:ok, message, id, timestamp}
 
-          {:error, _} ->
-            Chat.Queries.insert_message(base_attrs)
-        end
-      else
-        Chat.Queries.insert_message(base_attrs)
-      end
-
-    case result do
-      {:ok, message} ->
-        {message, message.id, message.inserted_at}
+      {:error, :attachment_not_found} ->
+        {:error, dgettext("chat", "Attachment could not be attached to the message")}
 
       {:error, changeset} ->
         Logger.warning("Failed to persist message in #{channel_name}: #{inspect(changeset)}")
-        {nil, "msg-#{System.unique_integer([:positive])}", DateTime.utc_now()}
+        {:ok, nil, "msg-#{System.unique_integer([:positive])}", DateTime.utc_now()}
     end
   rescue
     e ->
       Logger.warning("Failed to persist message in #{channel_name}: #{inspect(e)}")
-      {nil, "msg-#{System.unique_integer([:positive])}", DateTime.utc_now()}
+      {:ok, nil, "msg-#{System.unique_integer([:positive])}", DateTime.utc_now()}
+  end
+
+  defp persist_message_transaction(base_attrs, reply_to_id, nickname, attachment_ids) do
+    Repo.transaction(fn ->
+      base_attrs
+      |> insert_persisted_message(reply_to_id)
+      |> attach_persisted_attachments(nickname, attachment_ids)
+    end)
+  end
+
+  defp insert_persisted_message(base_attrs, nil), do: Chat.Queries.insert_message(base_attrs)
+
+  defp insert_persisted_message(base_attrs, reply_to_id) do
+    case resolve_reply_attrs(reply_to_id) do
+      {:ok, reply_attrs} -> Chat.Queries.insert_reply_message(Map.merge(base_attrs, reply_attrs))
+      {:error, _} -> Chat.Queries.insert_message(base_attrs)
+    end
+  end
+
+  defp attach_persisted_attachments({:ok, message}, nickname, attachment_ids) do
+    case Chat.Queries.attach_to_message(attachment_ids, nickname, message.id) do
+      {:ok, attachments} ->
+        message = %{message | attachments: attachments}
+        {message, message.id, message.inserted_at}
+
+      {:error, reason} ->
+        Repo.rollback(reason)
+    end
+  end
+
+  defp attach_persisted_attachments({:error, reason}, _nickname, _attachment_ids) do
+    Repo.rollback(reason)
   end
 
   defp resolve_reply_attrs(reply_to_id) do
@@ -1240,10 +1293,7 @@ defmodule RetroHexChat.Channels.Server do
         {:error, :not_found}
 
       parent ->
-        preview =
-          if String.length(parent.content) > 100,
-            do: String.slice(parent.content, 0, 97) <> "...",
-            else: parent.content
+        preview = preview_for(parent)
 
         {:ok,
          %{
@@ -1252,6 +1302,78 @@ defmodule RetroHexChat.Channels.Server do
            reply_to_preview: preview
          }}
     end
+  end
+
+  defp apply_content_mode_policy(content, content_format, state) do
+    if Modes.strip_colors?(state.modes) do
+      {Content.strip_formatting(content, content_format), "plain"}
+    else
+      {content, content_format}
+    end
+  end
+
+  defp content_format_from_opts(opts) do
+    opts
+    |> Keyword.get(:content_format, "irc")
+    |> normalize_content_format()
+  end
+
+  defp normalize_content_format(format) do
+    case Content.normalize_format(format) do
+      {:ok, normalized} -> Atom.to_string(normalized)
+      :error -> format
+    end
+  end
+
+  defp persisted_content_format(%{content_format: content_format}, _fallback)
+       when is_binary(content_format),
+       do: content_format
+
+  defp persisted_content_format(_message, fallback), do: fallback
+
+  defp attachment_ids_from_opts(opts) do
+    opts
+    |> Keyword.get(:attachment_ids, [])
+    |> List.wrap()
+    |> Enum.reject(&is_nil/1)
+  end
+
+  defp validate_message_content(content, content_format, attachment_ids) do
+    case Content.validate(content, content_format) do
+      :ok -> :ok
+      {:error, :blank} when attachment_ids != [] -> :ok
+      {:error, :blank} -> {:error, dgettext("chat", "Message cannot be empty")}
+      {:error, :too_long} -> {:error, "Message exceeds maximum length of 1000 characters"}
+      {:error, :unsupported_format} -> {:error, dgettext("chat", "Unsupported message format")}
+    end
+  end
+
+  defp attachment_payloads(%{attachments: %Ecto.Association.NotLoaded{}}), do: []
+
+  defp attachment_payloads(%{attachments: attachments}) when is_list(attachments) do
+    attachments
+    |> Enum.map(&Attachments.payload/1)
+    |> Enum.reject(&is_nil/1)
+  end
+
+  defp attachment_payloads(_message), do: []
+
+  defp truncate_preview(content) when byte_size(content) == 0, do: ""
+
+  defp truncate_preview(content) do
+    if String.length(content) > @max_preview_length do
+      String.slice(content, 0, @max_preview_length - 3) <> "..."
+    else
+      content
+    end
+  end
+
+  defp preview_for(%{plain_content: plain_content}) when is_binary(plain_content) do
+    truncate_preview(plain_content)
+  end
+
+  defp preview_for(%{content: content, content_format: content_format}) do
+    Content.preview(content, content_format, max_length: @max_preview_length - 3)
   end
 
   defp maybe_persist_exception(type, action, channel_name, nickname, added_by, state) do

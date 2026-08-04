@@ -19,6 +19,22 @@ defmodule RetroHexChat.Chat.QueriesPmTest do
       assert pm.recipient_nickname == "Bob"
       assert pm.content == "Hello Bob!"
       assert pm.type == "message"
+      assert pm.content_format == "irc"
+      assert pm.plain_content == "Hello Bob!"
+    end
+
+    test "persists explicit content_format and plain_content" do
+      attrs = %{
+        sender_nickname: "Alice",
+        recipient_nickname: "Bob",
+        content: "**Hello**",
+        content_format: "markdown",
+        type: "message"
+      }
+
+      assert {:ok, %PrivateMessage{} = pm} = Queries.insert_private_message(attrs)
+      assert pm.content_format == "markdown"
+      assert pm.plain_content == "Hello"
     end
 
     test "returns error for invalid attrs" do
@@ -124,6 +140,24 @@ defmodule RetroHexChat.Chat.QueriesPmTest do
       cursor_pm = Enum.at(pms, 4)
       older = Queries.list_private_messages("Alice", "Bob", cursor: cursor_pm.id).items
       assert length(older) == 4
+    end
+  end
+
+  describe "update_pm_content/3" do
+    test "updates plain_content with the persisted content_format" do
+      {:ok, pm} =
+        Queries.insert_private_message(%{
+          sender_nickname: "Alice",
+          recipient_nickname: "Bob",
+          content: "**Original**",
+          content_format: "markdown"
+        })
+
+      now = DateTime.utc_now()
+      assert {:ok, updated} = Queries.update_pm_content(pm, "**Updated**", now)
+      assert updated.content == "**Updated**"
+      assert updated.content_format == "markdown"
+      assert updated.plain_content == "Updated"
     end
   end
 end

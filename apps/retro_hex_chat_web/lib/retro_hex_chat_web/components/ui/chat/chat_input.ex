@@ -41,10 +41,12 @@ defmodule RetroHexChatWeb.Components.UI.ChatInput do
   attr :max_length, :integer, default: 1000
   attr :name, :string, default: "message", doc: "Textarea field name"
   attr :disabled, :boolean, default: false
+  attr :can_send_empty, :boolean, default: false
   attr :autofocus, :boolean, default: false
   attr :show_toolbar, :boolean, default: true
   attr :notice_target, :string, default: nil
   attr :input_error, :string, default: nil
+  attr :content_format, :string, default: "irc"
   attr :on_submit, :any, default: nil, doc: "Form submit / Send button callback"
   attr :on_change, :any, default: nil, doc: "Input change callback"
   attr :on_keydown, :any, default: nil, doc: "Keydown callback (for autocomplete, history, etc.)"
@@ -110,10 +112,12 @@ defmodule RetroHexChatWeb.Components.UI.ChatInput do
       </div>
       <form
         phx-submit={@on_submit}
+        phx-change={@on_change}
         phx-target={@target}
         class="flex items-center gap-1 p-[2px] bg-surface"
         data-testid="chat-input-form"
       >
+        <input type="hidden" name="content_format" value={@content_format} />
         <div
           :if={@show_toolbar && @toolbar_buttons != []}
           class="flex shrink-0 items-center gap-0"
@@ -149,7 +153,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatInput do
         </div>
         <.button
           type="submit"
-          disabled={@disabled || @char_count == 0}
+          disabled={@disabled || (@char_count == 0 && not @can_send_empty)}
           aria-label={@send_label}
           title={@send_label}
           data-testid="chat-input-send"

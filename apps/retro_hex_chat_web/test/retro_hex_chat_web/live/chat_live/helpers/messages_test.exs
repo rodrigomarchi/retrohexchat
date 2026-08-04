@@ -29,6 +29,34 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.MessagesTest do
       inserted_at: ~U[2026-07-08 12:00:00Z]
     }
 
-    assert %{type: :message, content: "Legacy invite"} = Channel.message_to_stream_item(msg)
+    assert %{type: :message, content: "Legacy invite", content_format: "irc"} =
+             Channel.message_to_stream_item(msg)
+  end
+
+  test "channel stream items keep persisted content format" do
+    msg = %{
+      id: 2,
+      author_nickname: "Ada",
+      content: "**Markdown**",
+      content_format: "markdown",
+      type: "message",
+      inserted_at: ~U[2026-07-08 12:00:00Z]
+    }
+
+    assert %{content_format: "markdown"} = Channel.message_to_stream_item(msg)
+  end
+
+  test "channel stream items keep persisted visible text when present" do
+    msg = %{
+      id: 3,
+      author_nickname: "Ada",
+      content: "**Markdown**",
+      content_format: "markdown",
+      plain_content: "Markdown",
+      type: "message",
+      inserted_at: ~U[2026-07-08 12:00:00Z]
+    }
+
+    assert %{plain_content: "Markdown"} = Channel.message_to_stream_item(msg)
   end
 end

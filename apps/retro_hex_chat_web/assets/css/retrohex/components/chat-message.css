@@ -91,3 +91,71 @@
   font-size: 13px;
   line-height: inherit;
 }
+
+/* Markdown is rendered as real block HTML, but chat rows must keep the compact
+   IRC log rhythm. Reset browser defaults and reintroduce only the spacing that
+   reads well inside the existing message body. */
+.chat-message__text p,
+.composer-markdown-preview p {
+  margin: 0;
+}
+
+.chat-message__text p + p,
+.composer-markdown-preview p + p {
+  margin-top: 4px;
+}
+
+.chat-message__text ul,
+.chat-message__text ol,
+.composer-markdown-preview ul,
+.composer-markdown-preview ol {
+  margin: 4px 0;
+  padding-left: 18px;
+}
+
+.chat-message__text ul,
+.composer-markdown-preview ul {
+  list-style: disc;
+}
+
+.chat-message__text ol,
+.composer-markdown-preview ol {
+  list-style: decimal;
+}
+
+.chat-message__text blockquote,
+.composer-markdown-preview blockquote {
+  @apply border-l-2 border-border pl-2 text-muted-foreground;
+  margin: 4px 0;
+}
+
+.chat-message__text code,
+.composer-markdown-preview code {
+  @apply bg-hover-bg px-1 shadow-retro-status;
+}
+
+.chat-message__text pre,
+.composer-markdown-preview pre {
+  @apply my-1 overflow-x-auto bg-hover-bg p-1 shadow-retro-field;
+  white-space: pre-wrap;
+}
+
+.chat-message__text pre code,
+.composer-markdown-preview pre code {
+  @apply bg-transparent p-0 shadow-none;
+}
+
+.chat-link-preview {
+  @apply text-muted-foreground;
+  display: inline;
+  margin-left: 4px;
+  font-size: 12px;
+}
+
+.chat-link-preview::before {
+  content: "(";
+}
+
+.chat-link-preview::after {
+  content: ")";
+}

@@ -34,11 +34,68 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRowTest do
     assert html =~ "chat-message--normal"
     assert html =~ ~s(data-author="alice")
     assert html =~ ~s(data-real-id="m1")
+    assert html =~ ~s(data-message-format="irc")
+    assert html =~ ~s(data-message-text="hi")
+    assert html =~ ~s(data-message-source-b64="aGk=")
+  end
+
+  test "stores Markdown visible text and original source for context menu copy" do
+    html =
+      row(%{
+        id: "m-copy",
+        author: "bob",
+        content: "**hello** [doc](https://example.com)",
+        content_format: "markdown",
+        plain_content: "hello doc",
+        type: :normal,
+        timestamp: @ts
+      })
+
+    assert html =~ ~s(data-message-format="markdown")
+    assert html =~ ~s(data-message-text="hello doc")
+
+    assert html =~
+             ~s(data-message-source-b64="#{Base.encode64("**hello** [doc](https://example.com)")}")
   end
 
   test "renders normal message content" do
     html = row(%{id: "m1", author: "bob", content: "hello world", type: :normal, timestamp: @ts})
     assert html =~ "hello world"
+  end
+
+  test "renders markdown message content when content_format is markdown" do
+    html =
+      row(%{
+        id: "m-md",
+        author: "bob",
+        content: "**hello** [doc](https://example.com)",
+        content_format: "markdown",
+        type: :normal,
+        timestamp: @ts
+      })
+
+    assert html =~ "<strong>hello</strong>"
+    assert html =~ ~s(href="https://example.com")
+    assert html =~ ~s(class="chat-link")
+  end
+
+  test "strips markdown message content when strip_formatting is true" do
+    html =
+      row(
+        %{
+          id: "m-md-strip",
+          author: "bob",
+          content: "**hello** [doc](https://example.com)",
+          content_format: "markdown",
+          type: :normal,
+          timestamp: @ts
+        },
+        %{strip_formatting: true}
+      )
+
+    assert html =~ "hello doc"
+    refute html =~ "<strong>"
+    refute html =~ "<a "
   end
 
   test "renders the bracket-free DD/MM HH:MM timestamp for the row" do

@@ -4,6 +4,7 @@ defmodule RetroHexChat.Channels.ServerTest do
   @moduletag :integration
 
   alias RetroHexChat.Channels.{Registry, Server, Supervisor}
+  alias RetroHexChat.Chat.Queries, as: ChatQueries
 
   defp unique_channel do
     "#test-#{System.unique_integer([:positive])}"
@@ -579,11 +580,84 @@ defmodule RetroHexChat.Channels.ServerTest do
       {:ok, _} = Server.join(channel, "user1")
       assert_receive {:user_joined, _}
 
-      assert {:ok, _} = Server.send_message(channel, "user1", "Hello!")
+      assert {:ok, id} = Server.send_message(channel, "user1", "Hello!")
 
       assert_receive %{
         event: "new_message",
-        payload: %{author: "user1", content: "Hello!", type: :message, channel: ^channel}
+        payload:
+          %{
+            id: ^id,
+            author: "user1",
+            content: "Hello!",
+            content_format: "irc",
+            type: :message,
+            channel: ^channel
+          } = payload
+      }
+
+      persisted = ChatQueries.get_message(payload.id)
+      assert persisted.content_format == "irc"
+      assert persisted.plain_content == "Hello!"
+    end
+
+    test "member can send a markdown message" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#{channel}")
+
+      {:ok, _} = Server.join(channel, "user1")
+      assert_receive {:user_joined, _}
+
+      content = "**Hello** [doc](https://example.com)"
+
+      assert {:ok, id} =
+               Server.send_message(channel, "user1", content, content_format: "markdown")
+
+      assert_receive %{
+        event: "new_message",
+        payload: %{
+          id: ^id,
+          author: "user1",
+          content: ^content,
+          content_format: "markdown",
+          type: :message,
+          channel: ^channel
+        }
+      }
+
+      persisted = ChatQueries.get_message(id)
+      assert persisted.content_format == "markdown"
+      assert persisted.plain_content == "Hello doc"
+    end
+
+    test "reply preview uses visible text for markdown parent" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#{channel}")
+
+      {:ok, _} = Server.join(channel, "user1")
+      {:ok, _} = Server.join(channel, "user2")
+      assert_receive {:user_joined, _}
+      assert_receive {:user_joined, _}
+
+      assert {:ok, parent_id} =
+               Server.send_message(
+                 channel,
+                 "user1",
+                 "**Original** [doc](https://example.com)",
+                 content_format: "markdown"
+               )
+
+      assert_receive %{event: "new_message"}
+
+      assert {:ok, _reply_id} =
+               Server.send_message(channel, "user2", "Reply", reply_to_id: parent_id)
+
+      assert_receive %{
+        event: "new_message",
+        payload: %{reply_to_id: ^parent_id, reply_to_preview: "Original doc"}
       }
     end
 
@@ -1203,6 +1277,34 @@ defmodule RetroHexChat.Channels.ServerTest do
       assert_receive %{event: "new_message", payload: payload}
       refute payload.content =~ "\x03"
       refute payload.content =~ "\x02"
+    end
+
+    test "markdown message arrives as plain text when +c is enabled" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "owner")
+      :ok = Server.set_mode(channel, "owner", "+c", [])
+
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#{channel}")
+
+      {:ok, id} =
+        Server.send_message(
+          channel,
+          "owner",
+          "**Hello** [doc](https://example.com)",
+          content_format: "markdown"
+        )
+
+      assert_receive %{event: "new_message", payload: payload}
+      assert payload.id == id
+      assert payload.content == "Hello doc"
+      assert payload.content_format == "plain"
+
+      persisted = ChatQueries.get_message(id)
+      assert persisted.content == "Hello doc"
+      assert persisted.content_format == "plain"
+      assert persisted.plain_content == "Hello doc"
     end
 
     test "message without +c is not stripped" do

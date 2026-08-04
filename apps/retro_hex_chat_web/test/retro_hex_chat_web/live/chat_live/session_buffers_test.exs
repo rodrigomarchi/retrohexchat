@@ -66,5 +66,32 @@ defmodule RetroHexChatWeb.ChatLive.SessionBuffersTest do
       assert Enum.any?(entries, &String.ends_with?(&1.url, "/250")),
              "the cap must drop the oldest, not refuse the newest"
     end
+
+    test "captures Markdown links by rendered URL policy", %{conn: conn} do
+      channel = "#urlmd#{uid()}"
+      ensure_channel(channel)
+
+      view = connect_user(conn, "UrlMd#{uid()}")
+      render_click(view, "switch_channel", %{"channel" => channel})
+
+      send(view.pid, %{
+        event: "new_message",
+        payload: %{
+          id: 1,
+          channel: channel,
+          author: "Poster",
+          content: "`https://code.example` [guide](https://docs.example/guide)",
+          content_format: "markdown",
+          type: "message",
+          timestamp: DateTime.utc_now()
+        }
+      })
+
+      render(view)
+      urls = assigns(view).url_catcher_entries |> Enum.map(& &1.url)
+
+      assert "https://docs.example/guide" in urls
+      refute "https://code.example" in urls
+    end
   end
 end

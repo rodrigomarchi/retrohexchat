@@ -53,6 +53,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Messages do
       id: "system-#{System.unique_integer([:positive])}",
       author: dgettext("chat", "System"),
       content: content,
+      content_format: "irc",
       type: :system,
       timestamp: DateTime.utc_now()
     }
@@ -64,6 +65,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Messages do
       id: "error-#{System.unique_integer([:positive])}",
       author: dgettext("chat", "System"),
       content: content,
+      content_format: "irc",
       type: :error,
       timestamp: DateTime.utc_now()
     }
@@ -75,6 +77,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Messages do
       id: "service-#{System.unique_integer([:positive])}",
       author: author,
       content: content,
+      content_format: "irc",
       type: :service,
       timestamp: DateTime.utc_now()
     }
@@ -86,6 +89,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Messages do
       id: "notice-#{System.unique_integer([:positive])}",
       author: author,
       content: content,
+      content_format: "irc",
       type: :notice,
       timestamp: DateTime.utc_now()
     }

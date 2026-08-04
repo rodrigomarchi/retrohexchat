@@ -641,6 +641,13 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
      |> push_event("clipboard_copy", %{text: text})}
   end
 
+  def handle_event("ctx_chat_copy_message_source", %{"source" => source}, socket) do
+    {:halt,
+     socket
+     |> close_chat_context_menu()
+     |> push_event("clipboard_copy", %{text: source})}
+  end
+
   def handle_event("ctx_chat_copy_selection", _params, socket) do
     {:halt,
      socket
@@ -703,6 +710,8 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
       author: params["author"],
       nick: params["author"],
       text: params["message_text"],
+      source: params["message_source"] || params["message_text"],
+      content_format: params["message_format"] || "irc",
       id: params["message_id"],
       is_system: params["is_system"] == true,
       urls: urls,

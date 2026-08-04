@@ -147,6 +147,24 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           dgettext("help", "View and manage URLs shared across all channels with link previews.")
       },
       %{
+        id: "feature-message-attachments",
+        title: dgettext("help", "Message Attachments"),
+        category: dgettext("help", "Chat & Messaging"),
+        keywords: [
+          dgettext("help", "attachments"),
+          dgettext("help", "files"),
+          dgettext("help", "upload"),
+          dgettext("help", "download"),
+          dgettext("help", "signed URL")
+        ],
+        icon: :icon_file_send,
+        description:
+          dgettext(
+            "help",
+            "Attach uploaded files to channel and private messages, then download them through authorized links."
+          )
+      },
+      %{
         id: "feature-ignore-list",
         title: dgettext("help", "Ignore List"),
         category: dgettext("help", "Contacts & Notify"),

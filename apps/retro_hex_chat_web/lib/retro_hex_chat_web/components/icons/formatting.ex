@@ -202,4 +202,254 @@ defmodule RetroHexChatWeb.Icons.Formatting do
     </svg>
     """
   end
+
+  attr :class, :string, default: nil
+
+  @spec icon_fmt_mode_irc(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_fmt_mode_irc(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 14 14" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="1" y="2" width="12" height="10" fill="none" stroke="currentColor" stroke-width="1" />
+      <rect x="3" y="4" width="2" height="2" fill="#FF5555" />
+      <rect x="6" y="4" width="2" height="2" fill="#55FF55" />
+      <rect x="9" y="4" width="2" height="2" fill="#5555FF" />
+      <rect x="3" y="8" width="8" height="1" fill="currentColor" />
+      <rect x="3" y="10" width="5" height="1" fill="currentColor" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_fmt_mode_markdown(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_fmt_mode_markdown(assigns) do
+    ~H"""
+    <svg
+      class={@class}
+      viewBox="0 0 14 14"
+      shape-rendering="crispEdges"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <rect x="2" y="1" width="9" height="1" />
+      <rect x="2" y="1" width="1" height="12" />
+      <rect x="11" y="1" width="1" height="12" />
+      <rect x="2" y="12" width="10" height="1" />
+      <rect x="5" y="4" width="1" height="6" />
+      <rect x="8" y="4" width="1" height="6" />
+      <rect x="4" y="6" width="6" height="1" />
+      <rect x="4" y="8" width="6" height="1" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_fmt_mode_plain(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_fmt_mode_plain(assigns) do
+    ~H"""
+    <svg
+      class={@class}
+      viewBox="0 0 14 14"
+      shape-rendering="crispEdges"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <rect x="2" y="1" width="8" height="1" />
+      <rect x="2" y="1" width="1" height="12" />
+      <rect x="10" y="2" width="1" height="1" />
+      <rect x="11" y="3" width="1" height="10" />
+      <rect x="2" y="12" width="10" height="1" />
+      <rect x="4" y="4" width="6" height="1" />
+      <rect x="4" y="6" width="6" height="1" />
+      <rect x="4" y="8" width="6" height="1" />
+      <rect x="4" y="10" width="4" height="1" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_fmt_preview(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_fmt_preview(assigns) do
+    ~H"""
+    <svg
+      class={@class}
+      viewBox="0 0 14 14"
+      shape-rendering="crispEdges"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <rect x="1" y="2" width="12" height="9" fill="none" stroke="currentColor" stroke-width="1" />
+      <rect x="3" y="4" width="8" height="1" />
+      <rect x="3" y="6" width="5" height="1" />
+      <rect x="3" y="8" width="7" height="1" />
+      <rect x="5" y="12" width="4" height="1" />
+      <rect x="6" y="11" width="2" height="1" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_fmt_heading(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_fmt_heading(assigns) do
+    ~H"""
+    <svg
+      class={@class}
+      viewBox="0 0 14 14"
+      shape-rendering="crispEdges"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <rect x="2" y="2" width="2" height="10" />
+      <rect x="10" y="2" width="2" height="10" />
+      <rect x="4" y="6" width="6" height="2" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_fmt_strike(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_fmt_strike(assigns) do
+    ~H"""
+    <svg
+      class={@class}
+      viewBox="0 0 14 14"
+      shape-rendering="crispEdges"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <rect x="4" y="2" width="6" height="1" />
+      <rect x="3" y="3" width="1" height="3" />
+      <rect x="4" y="5" width="5" height="1" />
+      <rect x="1" y="7" width="12" height="1" />
+      <rect x="9" y="8" width="1" height="3" />
+      <rect x="4" y="11" width="5" height="1" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_fmt_inline_code(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_fmt_inline_code(assigns) do
+    ~H"""
+    <svg
+      class={@class}
+      viewBox="0 0 14 14"
+      shape-rendering="crispEdges"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <rect x="3" y="3" width="1" height="2" />
+      <rect x="2" y="5" width="1" height="1" />
+      <rect x="1" y="6" width="1" height="2" />
+      <rect x="2" y="8" width="1" height="1" />
+      <rect x="3" y="9" width="1" height="2" />
+      <rect x="10" y="3" width="1" height="2" />
+      <rect x="11" y="5" width="1" height="1" />
+      <rect x="12" y="6" width="1" height="2" />
+      <rect x="11" y="8" width="1" height="1" />
+      <rect x="10" y="9" width="1" height="2" />
+      <rect x="6" y="10" width="1" height="1" />
+      <rect x="7" y="8" width="1" height="2" />
+      <rect x="8" y="6" width="1" height="2" />
+      <rect x="9" y="4" width="1" height="2" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_fmt_code_block(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_fmt_code_block(assigns) do
+    ~H"""
+    <svg
+      class={@class}
+      viewBox="0 0 14 14"
+      shape-rendering="crispEdges"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <rect x="1" y="2" width="12" height="10" fill="none" stroke="currentColor" stroke-width="1" />
+      <rect x="3" y="4" width="2" height="1" />
+      <rect x="5" y="5" width="1" height="1" />
+      <rect x="3" y="6" width="2" height="1" />
+      <rect x="8" y="4" width="3" height="1" />
+      <rect x="7" y="7" width="4" height="1" />
+      <rect x="4" y="9" width="7" height="1" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_fmt_quote(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_fmt_quote(assigns) do
+    ~H"""
+    <svg
+      class={@class}
+      viewBox="0 0 14 14"
+      shape-rendering="crispEdges"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <rect x="2" y="3" width="4" height="4" />
+      <rect x="5" y="7" width="1" height="2" />
+      <rect x="4" y="9" width="1" height="1" />
+      <rect x="8" y="3" width="4" height="4" />
+      <rect x="11" y="7" width="1" height="2" />
+      <rect x="10" y="9" width="1" height="1" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_fmt_bulleted_list(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_fmt_bulleted_list(assigns) do
+    ~H"""
+    <svg
+      class={@class}
+      viewBox="0 0 14 14"
+      shape-rendering="crispEdges"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <rect x="2" y="3" width="2" height="2" />
+      <rect x="5" y="3" width="7" height="1" />
+      <rect x="2" y="6" width="2" height="2" />
+      <rect x="5" y="6" width="7" height="1" />
+      <rect x="2" y="9" width="2" height="2" />
+      <rect x="5" y="9" width="7" height="1" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_fmt_ordered_list(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_fmt_ordered_list(assigns) do
+    ~H"""
+    <svg
+      class={@class}
+      viewBox="0 0 14 14"
+      shape-rendering="crispEdges"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <rect x="2" y="2" width="1" height="3" />
+      <rect x="1" y="5" width="3" height="1" />
+      <rect x="1" y="7" width="3" height="1" />
+      <rect x="3" y="8" width="1" height="1" />
+      <rect x="2" y="9" width="1" height="1" />
+      <rect x="1" y="10" width="3" height="1" />
+      <rect x="5" y="3" width="7" height="1" />
+      <rect x="5" y="7" width="7" height="1" />
+      <rect x="5" y="10" width="7" height="1" />
+    </svg>
+    """
+  end
 end

@@ -5,10 +5,10 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
   The Live layer owns the stream wrapper and data attributes used by JS hooks.
   This component owns the type-specific message presentation.
 
-  Every type renders its text through `ChatHelpers.format_content/2`. That is
-  the only thing that turns mIRC control bytes into markup, and a type that
-  interpolates its content directly does not print them plain — the browser
-  swallows the control byte and leaves the colour's digits behind as text
+  Every type renders its text through `ChatHelpers.format_content/3`. That is
+  the only thing that turns persisted chat formats into markup, and a type that
+  interpolates its content directly does not print IRC control bytes plain — the
+  browser swallows the control byte and leaves the colour's digits behind as text
   ("06 [Wanda]"). It is also what escapes the text and links its URLs, so
   routing everything through it is one rule, not five.
   """
@@ -16,6 +16,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
 
   import Phoenix.HTML, only: [raw: 1]
   import RetroHexChatWeb.Components.UI.ChatMessage
+  import RetroHexChatWeb.Components.UI.ChatAttachment
   import RetroHexChatWeb.Components.UI.InlineHelpCard
   import RetroHexChatWeb.Components.UI.MessageIndicators
   import RetroHexChatWeb.Components.UI.MessageReplyBlock
@@ -41,7 +42,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
           nick={@msg.author}
           nick_color={@nick_color_fn.(@msg.author)}
         >
-          * {raw(ChatHelpers.format_content(@msg.content, @strip_formatting))}
+          * {raw(formatted_content(@msg, @strip_formatting))}
         </.chat_message>
       <% :system -> %>
         <.chat_message
@@ -50,7 +51,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
           source={dgettext("chat", "System")}
           type="system"
         >
-          * {raw(ChatHelpers.format_content(@msg.content, @strip_formatting))}
+          * {raw(formatted_content(@msg, @strip_formatting))}
         </.chat_message>
       <% :p2p_system -> %>
         <.chat_message
@@ -59,7 +60,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
           source={dgettext("chat", "P2P")}
           type="system"
         >
-          * {raw(ChatHelpers.format_content(@msg.content, @strip_formatting))}
+          * {raw(formatted_content(@msg, @strip_formatting))}
         </.chat_message>
       <% :service -> %>
         <.chat_message
@@ -68,7 +69,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
           source={dgettext("chat", "Service")}
           type="service"
         >
-          {raw(ChatHelpers.format_content(@msg.content, @strip_formatting))}
+          {raw(formatted_content(@msg, @strip_formatting))}
         </.chat_message>
       <% :error -> %>
         <.chat_message
@@ -77,7 +78,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
           source={dgettext("chat", "Error")}
           type="error"
         >
-          {raw(ChatHelpers.format_content(@msg.content, @strip_formatting))}
+          {raw(formatted_content(@msg, @strip_formatting))}
         </.chat_message>
       <% :notice -> %>
         <.chat_message
@@ -87,7 +88,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
           nick={@msg.author}
           nick_color={@nick_color_fn.(@msg.author)}
         >
-          {raw(ChatHelpers.format_content(@msg.content, @strip_formatting))}
+          {raw(formatted_content(@msg, @strip_formatting))}
         </.chat_message>
       <% :announcement -> %>
         <.chat_message
@@ -96,7 +97,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
           source={dgettext("chat", "Server")}
           type="announcement"
         >
-          {raw(ChatHelpers.format_content(@msg.content, @strip_formatting))}
+          {raw(formatted_content(@msg, @strip_formatting))}
         </.chat_message>
       <% :inline_help -> %>
         <.chat_message
@@ -150,7 +151,8 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
             nick={@msg.author}
             nick_color={@nick_color_fn.(@msg.author)}
           >
-            {raw(ChatHelpers.format_content(@msg.content, @strip_formatting))}
+            {raw(formatted_content(@msg, @strip_formatting))}
+            <.attachment_gallery attachments={Map.get(@msg, :attachments, [])} />
             <.edited_tag
               :if={Map.get(@msg, :edited_at)}
               timestamp={ChatHelpers.format_edit_timestamp(@msg.edited_at, @timezone)}
@@ -159,6 +161,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
               :if={Map.get(@msg, :status) == :failed}
               temp_id={@msg.id}
               content={@msg.content}
+              content_format={Map.get(@msg, :content_format, "irc")}
               target={Map.get(@msg, :target, "")}
               on_retry="retry_message"
             />
@@ -169,4 +172,11 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
   end
 
   defp help_url(topic_id), do: "/chat/help/#{topic_id}"
+
+  defp formatted_content(msg, strip_formatting) do
+    content = Map.get(msg, :content, "")
+    content_format = Map.get(msg, :content_format, "irc")
+
+    ChatHelpers.format_content(content, content_format, strip_formatting)
+  end
 end

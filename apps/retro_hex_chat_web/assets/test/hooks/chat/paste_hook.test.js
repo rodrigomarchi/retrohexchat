@@ -34,6 +34,7 @@ describe("PasteHook", () => {
     const event = createPasteEvent("line1\nline2");
     input.dispatchEvent(event);
     expect(hook.pushEvent).toHaveBeenCalledWith("paste_lines", expect.any(Object));
+    expect(event.defaultPrevented).toBe(true);
   });
 
   it("allows single-line paste (no pushEvent)", () => {
@@ -49,5 +50,23 @@ describe("PasteHook", () => {
     expect(hook.pushEvent).toHaveBeenCalledWith("paste_lines", {
       lines: ["line1", "line2"],
     });
+  });
+
+  it("allows multi-line paste in markdown mode", () => {
+    const form = document.createElement("form");
+    const format = document.createElement("input");
+    format.name = "content_format";
+    format.value = "markdown";
+
+    document.body.appendChild(form);
+    form.appendChild(format);
+    form.appendChild(input);
+
+    hook.pushEvent.mockClear();
+    const event = createPasteEvent("```js\nconsole.log(1)\n```");
+    input.dispatchEvent(event);
+
+    expect(hook.pushEvent).not.toHaveBeenCalled();
+    expect(event.defaultPrevented).toBe(false);
   });
 });

@@ -1055,10 +1055,10 @@ export class ChatPage {
   }
 
   async openFormattingToolbar() {
-    if (await this.formatBoldButton.isVisible()) return;
+    if (await this.formattingToolbarPanel.isVisible()) return;
 
     await this.formattingToolbarToggle.click();
-    await expect(this.formatBoldButton).toBeVisible();
+    await expect(this.formattingToolbarPanel).toBeVisible();
   }
 
   /**

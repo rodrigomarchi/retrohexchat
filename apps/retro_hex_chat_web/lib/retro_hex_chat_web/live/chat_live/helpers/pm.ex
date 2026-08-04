@@ -13,7 +13,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Channels.Server
-  alias RetroHexChat.Chat.{Queries, Service, UnreadTracker}
+  alias RetroHexChat.Chat.{Attachments, Queries, Service, UnreadTracker}
   alias RetroHexChat.Page
   alias RetroHexChat.Presence.NotifyList
   alias RetroHexChatWeb.ChatLive.Components.Composer
@@ -341,14 +341,17 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
       id: pm_field(pm, [:id]),
       author: pm_field(pm, [:sender, :sender_nickname]),
       content: pm.content,
+      content_format: content_format(pm),
       type: pm_resolve_type(pm),
-      timestamp: pm_field(pm, [:timestamp, :inserted_at])
+      timestamp: pm_field(pm, [:timestamp, :inserted_at]),
+      attachments: attachment_payloads(pm)
     }
 
     base
     |> maybe_add_field(pm, :reply_to_id)
     |> maybe_add_field(pm, :reply_to_author)
     |> maybe_add_field(pm, :reply_to_preview)
+    |> maybe_add_field(pm, :plain_content)
     |> maybe_add_field(pm, :edited_at)
     |> maybe_add_field(pm, :deleted_at)
   end
@@ -364,6 +367,30 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
     end
   end
 
+  defp attachment_payloads(%{attachments: %Ecto.Association.NotLoaded{}}), do: []
+
+  defp attachment_payloads(%{attachments: attachments}) when is_list(attachments) do
+    attachments
+    |> Enum.map(&attachment_payload/1)
+    |> Enum.reject(&is_nil/1)
+  end
+
+  defp attachment_payloads(source) do
+    Map.get(source, :attachments, [])
+  end
+
+  defp attachment_payload(%{file: %Ecto.Association.NotLoaded{}}), do: nil
+
+  defp attachment_payload(%{file: file} = attachment) do
+    Attachments.payload(%{attachment | file: file})
+  end
+
+  defp attachment_payload(%{id: _id} = attachment), do: attachment
+
   defp pm_resolve_type(%{type: type}), do: Messages.stream_type(type)
   defp pm_resolve_type(_), do: :message
+
+  defp content_format(source) do
+    Map.get(source, :content_format) || "irc"
+  end
 end

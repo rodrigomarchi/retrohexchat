@@ -14,6 +14,7 @@ import {
 import { createPlausibleTracker } from "./lib/analytics/plausible";
 import { getClientInfo } from "./lib/connection/client_info";
 import { loadCurrentLocaleCatalog } from "./lib/i18n";
+import { S3DirectUploader } from "./lib/uploads/s3_direct";
 
 const Hooks = buildHooks();
 
@@ -32,6 +33,9 @@ const liveSocket = new LiveSocket("/live", Socket, {
     client_info: JSON.stringify(getClientInfo()),
   }),
   hooks: Hooks,
+  uploaders: {
+    S3Direct: S3DirectUploader,
+  },
   dom: {
     onPatchStart: preserveScrollPatchStart,
     onBeforeElUpdated: preserveScrollBeforeElUpdated,

@@ -203,4 +203,24 @@ defmodule RetroHexChat.Chat.HighlightTest do
                Highlight.check("I love C++!", "Bob", words, "Alice")
     end
   end
+
+  describe "check/5 content formats" do
+    @tag :unit
+    test "matches visible Markdown text" do
+      assert {:highlight, nil} =
+               Highlight.check("**Bob** please review", "markdown", "Bob", [], "Alice")
+    end
+
+    @tag :unit
+    test "does not match Markdown source URLs hidden behind link labels" do
+      assert :no_highlight =
+               Highlight.check(
+                 "[profile](https://example.com/Bob)",
+                 "markdown",
+                 "Bob",
+                 [],
+                 "Alice"
+               )
+    end
+  end
 end

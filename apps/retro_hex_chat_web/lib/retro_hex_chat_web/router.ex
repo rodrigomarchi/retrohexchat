@@ -122,6 +122,9 @@ defmodule RetroHexChatWeb.Router do
   scope "/", RetroHexChatWeb.App do
     pipe_through :app
 
+    get "/chat/attachments/:id/preview", AttachmentController, :preview
+    get "/chat/attachments/:id", AttachmentController, :show
+
     live_session :app_locale, on_mount: [{RetroHexChatWeb.Live.PutLocale, :default}] do
       live "/connect", ConnectLive
       live "/chat", ChatLive

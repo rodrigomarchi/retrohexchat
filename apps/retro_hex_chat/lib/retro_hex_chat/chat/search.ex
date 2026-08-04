@@ -35,18 +35,28 @@ defmodule RetroHexChat.Chat.Search do
   defp apply_content_filter(queryable, query, opts) do
     case {Keyword.get(opts, :regex, false), Keyword.get(opts, :case_sensitive, false)} do
       {true, true} ->
-        where(queryable, [m], fragment("? ~ ?", m.content, ^query))
+        where(queryable, [m], fragment("coalesce(?, ?) ~ ?", m.plain_content, m.content, ^query))
 
       {true, false} ->
-        where(queryable, [m], fragment("? ~* ?", m.content, ^query))
+        where(queryable, [m], fragment("coalesce(?, ?) ~* ?", m.plain_content, m.content, ^query))
 
       {false, true} ->
         pattern = "%#{sanitize(query)}%"
-        where(queryable, [m], like(m.content, ^pattern))
+
+        where(
+          queryable,
+          [m],
+          like(fragment("coalesce(?, ?)", m.plain_content, m.content), ^pattern)
+        )
 
       {false, false} ->
         pattern = "%#{sanitize(query)}%"
-        where(queryable, [m], ilike(m.content, ^pattern))
+
+        where(
+          queryable,
+          [m],
+          ilike(fragment("coalesce(?, ?)", m.plain_content, m.content), ^pattern)
+        )
     end
   end
 
@@ -64,7 +74,12 @@ defmodule RetroHexChat.Chat.Search do
 
       nick ->
         pattern = "%#{sanitize(nick)}%"
-        where(queryable, [m], ilike(m.content, ^pattern))
+
+        where(
+          queryable,
+          [m],
+          ilike(fragment("coalesce(?, ?)", m.plain_content, m.content), ^pattern)
+        )
     end
   end
 

@@ -260,6 +260,20 @@ defmodule RetroHexChat.Chat.URLDetectorTest do
       assert result =~ "..."
     end
 
+    test "does not linkify URL text inside code, pre, or existing links" do
+      html =
+        ~s(<code>https://code.example</code><pre>https://pre.example</pre><a href="https://linked.example">https://linked.example</a> https://real.example)
+
+      result = URLDetector.linkify_html(html)
+
+      assert result =~ ~s(<code>https://code.example</code>)
+      assert result =~ ~s(<pre>https://pre.example</pre>)
+      assert result =~ ~s(<a href="https://linked.example">https://linked.example</a>)
+      assert result =~ ~s(href="https://real.example")
+      refute result =~ ~s(href="https://code.example")
+      refute result =~ ~s(href="https://pre.example")
+    end
+
     test "returns unchanged HTML when no URLs" do
       html = ~s(<span class="irc-bold">hello world</span>)
       assert URLDetector.linkify_html(html) == html

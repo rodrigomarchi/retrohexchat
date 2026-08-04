@@ -5,7 +5,7 @@ defmodule RetroHexChat.Chat.Queries do
 
   import Ecto.Query
 
-  alias RetroHexChat.Chat.{Message, PrivateMessage}
+  alias RetroHexChat.Chat.{Attachment, Message, PrivateMessage, UploadedFile}
   alias RetroHexChat.Page
   alias RetroHexChat.Repo
 
@@ -43,19 +43,24 @@ defmodule RetroHexChat.Chat.Queries do
     |> where([m], m.channel_name == ^channel_name)
     |> maybe_before(Keyword.get(opts, :cursor))
     |> order_by([m], desc: m.id)
+    |> preload([m], attachments: :file)
     |> limit(^Page.limit_with_lookahead(limit))
     |> Repo.all()
     |> Page.new(limit, & &1.id)
   end
 
   @spec get_message(integer()) :: Message.t() | nil
-  def get_message(id), do: Repo.get(Message, id)
+  def get_message(id), do: Message |> Repo.get(id) |> preload_attachments()
 
-  @spec update_message_content(Message.t(), String.t(), DateTime.t()) ::
+  @spec update_message_content(Message.t(), String.t(), DateTime.t(), keyword()) ::
           {:ok, Message.t()} | {:error, Ecto.Changeset.t()}
-  def update_message_content(message, new_content, edited_at) do
+  def update_message_content(message, new_content, edited_at, opts \\ []) do
+    attrs =
+      %{content: new_content, edited_at: edited_at}
+      |> maybe_put_content_format(opts)
+
     message
-    |> Message.edit_changeset(%{content: new_content, edited_at: edited_at})
+    |> Message.edit_changeset(attrs)
     |> Repo.update()
   end
 
@@ -190,19 +195,24 @@ defmodule RetroHexChat.Chat.Queries do
     )
     |> maybe_before(Keyword.get(opts, :cursor))
     |> order_by([pm], desc: pm.id)
+    |> preload([pm], attachments: :file)
     |> limit(^Page.limit_with_lookahead(limit))
     |> Repo.all()
     |> Page.new(limit, & &1.id)
   end
 
   @spec get_private_message(integer()) :: PrivateMessage.t() | nil
-  def get_private_message(id), do: Repo.get(PrivateMessage, id)
+  def get_private_message(id), do: PrivateMessage |> Repo.get(id) |> preload_attachments()
 
-  @spec update_pm_content(PrivateMessage.t(), String.t(), DateTime.t()) ::
+  @spec update_pm_content(PrivateMessage.t(), String.t(), DateTime.t(), keyword()) ::
           {:ok, PrivateMessage.t()} | {:error, Ecto.Changeset.t()}
-  def update_pm_content(pm, new_content, edited_at) do
+  def update_pm_content(pm, new_content, edited_at, opts \\ []) do
+    attrs =
+      %{content: new_content, edited_at: edited_at}
+      |> maybe_put_content_format(opts)
+
     pm
-    |> PrivateMessage.edit_changeset(%{content: new_content, edited_at: edited_at})
+    |> PrivateMessage.edit_changeset(attrs)
     |> Repo.update()
   end
 
@@ -256,6 +266,159 @@ defmodule RetroHexChat.Chat.Queries do
     |> Repo.one()
   end
 
+  # ── Attachments ──
+
+  @spec insert_uploaded_file(map()) :: {:ok, UploadedFile.t()} | {:error, Ecto.Changeset.t()}
+  def insert_uploaded_file(attrs) do
+    %UploadedFile{}
+    |> UploadedFile.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @spec mark_uploaded_files([integer() | String.t()], String.t()) ::
+          {:ok, [UploadedFile.t()]} | {:error, :attachment_not_found}
+  def mark_uploaded_files(ids, owner_nickname) do
+    ids = ids |> Enum.map(&normalize_id/1) |> Enum.reject(&is_nil/1) |> Enum.uniq()
+
+    if ids == [] do
+      {:ok, []}
+    else
+      now = DateTime.utc_now()
+
+      {updated_count, _} =
+        UploadedFile
+        |> where([file], file.id in ^ids)
+        |> where([file], file.owner_nickname == ^owner_nickname)
+        |> where([file], file.status in ["reserved", "uploaded"])
+        |> Repo.update_all(set: [status: "uploaded", updated_at: now])
+
+      if updated_count == length(ids) do
+        {:ok, uploaded_files_by_id(ids)}
+      else
+        {:error, :attachment_not_found}
+      end
+    end
+  end
+
+  @spec insert_attachment(map()) :: {:ok, Attachment.t()} | {:error, Ecto.Changeset.t()}
+  def insert_attachment(attrs) do
+    %Attachment{}
+    |> Attachment.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @spec get_attachment(integer() | String.t()) :: Attachment.t() | nil
+  def get_attachment(id) do
+    id
+    |> normalize_id()
+    |> case do
+      nil ->
+        nil
+
+      id ->
+        Attachment
+        |> Repo.get(id)
+        |> preload_attachment()
+    end
+  end
+
+  @spec attach_to_message([integer()], String.t(), integer()) ::
+          {:ok, [Attachment.t()]} | {:error, :attachment_not_found}
+  def attach_to_message(ids, owner_nickname, message_id) do
+    claim_attachments(ids, owner_nickname, :message_id, message_id)
+  end
+
+  @spec attach_to_private_message([integer()], String.t(), integer()) ::
+          {:ok, [Attachment.t()]} | {:error, :attachment_not_found}
+  def attach_to_private_message(ids, owner_nickname, private_message_id) do
+    claim_attachments(ids, owner_nickname, :private_message_id, private_message_id)
+  end
+
+  @spec preload_attachments(Message.t() | PrivateMessage.t() | nil) ::
+          Message.t() | PrivateMessage.t() | nil
+  def preload_attachments(nil), do: nil
+  def preload_attachments(message), do: Repo.preload(message, attachments: :file)
+
+  defp claim_attachments([], _owner_nickname, _field, _id), do: {:ok, []}
+
+  defp claim_attachments(ids, owner_nickname, field, id) do
+    ids = ids |> Enum.map(&normalize_id/1) |> Enum.reject(&is_nil/1) |> Enum.uniq()
+
+    if ids == [] do
+      {:error, :attachment_not_found}
+    else
+      now = DateTime.utc_now()
+
+      {updated_count, _} =
+        UploadedFile
+        |> where([file], file.id in ^ids)
+        |> where([file], file.owner_nickname == ^owner_nickname)
+        |> where([file], file.status == "uploaded")
+        |> Repo.update_all(set: [status: "attached", updated_at: now])
+
+      if updated_count == length(ids) do
+        ids
+        |> uploaded_files_by_id()
+        |> insert_attachment_links(field, id)
+      else
+        {:error, :attachment_not_found}
+      end
+    end
+  end
+
+  defp uploaded_files_by_id(ids) do
+    files =
+      UploadedFile
+      |> where([file], file.id in ^ids)
+      |> Repo.all()
+      |> Map.new(&{&1.id, &1})
+
+    Enum.map(ids, &Map.fetch!(files, &1))
+  end
+
+  defp insert_attachment_links(files, field, id) do
+    files
+    |> Enum.with_index()
+    |> Enum.reduce_while({:ok, []}, fn {file, position}, {:ok, attachments} ->
+      attrs =
+        %{
+          file_id: file.id,
+          display_filename: file.original_filename,
+          position: position
+        }
+        |> Map.put(field, id)
+
+      case insert_attachment(attrs) do
+        {:ok, attachment} ->
+          {:cont, {:ok, [Repo.preload(attachment, :file) | attachments]}}
+
+        {:error, _changeset} ->
+          {:halt, {:error, :attachment_not_found}}
+      end
+    end)
+    |> case do
+      {:ok, attachments} -> {:ok, Enum.reverse(attachments)}
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
+  defp preload_attachment(nil), do: nil
+
+  defp preload_attachment(attachment) do
+    Repo.preload(attachment, [:file, :message, :private_message])
+  end
+
+  defp normalize_id(id) when is_integer(id), do: id
+
+  defp normalize_id(id) when is_binary(id) do
+    case Integer.parse(id) do
+      {int, ""} -> int
+      _ -> nil
+    end
+  end
+
+  defp normalize_id(_id), do: nil
+
   @spec bulk_delete_messages(String.t()) :: non_neg_integer()
   def bulk_delete_messages(channel_name) do
     {count, _} =
@@ -280,5 +443,12 @@ defmodule RetroHexChat.Chat.Queries do
 
   defp maybe_before(query, before_id) do
     where(query, [m], m.id < ^before_id)
+  end
+
+  defp maybe_put_content_format(attrs, opts) do
+    case Keyword.fetch(opts, :content_format) do
+      {:ok, content_format} -> Map.put(attrs, :content_format, content_format)
+      :error -> attrs
+    end
   end
 end

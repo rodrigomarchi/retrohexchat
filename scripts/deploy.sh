@@ -92,6 +92,9 @@ echo "==> Installing Elixir deps..."
 mix local.hex --force --if-missing
 mix local.rebar --force --if-missing
 mix deps.get --only prod
+echo "==> Cleaning unused deps and refreshing ExAws build metadata..."
+mix deps.clean --unused
+mix deps.clean ex_aws --build
 
 echo "==> Installing Node.js deps..."
 npm install --prefix apps/retro_hex_chat_web/assets
