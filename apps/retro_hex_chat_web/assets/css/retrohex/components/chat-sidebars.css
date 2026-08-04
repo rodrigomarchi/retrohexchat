@@ -126,27 +126,20 @@
   pointer-events: auto;
 }
 
-/* Only the expanded panel is a drawer. A collapsed rail is permanent chrome —
-   the sole way back into the sidebar — so it takes its 36px out of the row like
-   it does on the desktop, instead of floating over the conversation and clipping
-   the first characters of every message under it. */
-.desktop--stacked .chat-sidebar-shell--collapsed {
-  position: relative;
-  inset: auto;
-  z-index: auto;
-  width: var(--rhc-chat-sidebar-rail-width);
-  min-width: var(--rhc-chat-sidebar-rail-width);
-  height: auto;
-  pointer-events: auto;
+/* A phone has no column to spare for a rail. Left in the row it narrowed the
+   messages, the composer and the tab strip by 36px a side; floated over them it
+   clipped the first characters of every line. So below the stacking breakpoint a
+   collapsed sidebar takes no space at all — the conversation toolbar carries the
+   toggles that lead back into the drawers. */
+@media (max-width: 767px) {
+  .chat-sidebar-shell--collapsed {
+    display: none;
+  }
 }
 
 .desktop--stacked .chat-sidebar-shell--expanded .chat-sidebar-frame {
   width: min(300px, var(--rhc-visual-viewport-width, 100vw));
   max-width: min(300px, var(--rhc-visual-viewport-width, 100vw));
-}
-
-.desktop--stacked .chat-sidebar-shell--collapsed .chat-sidebar-frame {
-  width: var(--rhc-chat-sidebar-rail-width);
 }
 
 .desktop--stacked .chat-sidebar-shell--right .chat-sidebar-frame {

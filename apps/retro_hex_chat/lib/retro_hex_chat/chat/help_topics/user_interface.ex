@@ -73,10 +73,11 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
               "On a phone the desktop stacks: one window fills the screen at a time and the " <>
                 "taskbar switches between them — the same strip of window buttons as on a " <>
                 "desktop, squeezed to fit and scrolled when crowded. The conversations and user " <>
-                "list collapse to narrow rails beside the conversation — tap one to slide the " <>
-                "full panel open. The Start menu opens one level at a time: tapping a group " <>
-                "replaces the list with its entries, and the group's own row at the top takes " <>
-                "you back."
+                "list keep no column of their own there: the first two buttons of the " <>
+                "conversation toolbar slide each one open over the chat, so every message and " <>
+                "the message box run the full width of the screen. The Start menu opens one " <>
+                "level at a time: tapping a group replaces the list with its entries, and the " <>
+                "group's own row at the top takes you back."
             ) <>
             " " <>
             dgettext(

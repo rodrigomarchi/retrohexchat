@@ -120,8 +120,11 @@
             aria-label={dgettext("chat", "Conversation toolbar")}
             data-testid="conversation-toolbar"
           >
+            <%!-- The sidebar toggles are the stacked layout's rails: below md the
+                 collapsed shells give their 36px back to the conversation and the
+                 composer, so this is the only way back into them. --%>
             <.conversation_toolbar_actions
-              show_sidebar_toggles={false}
+              sidebar_toggles_class="md:hidden"
               conversations_open={@show_conversations}
               nicklist_open={@show_nicklist && !@session.active_pm && !@show_status_tab}
               search_open={@search_visible}

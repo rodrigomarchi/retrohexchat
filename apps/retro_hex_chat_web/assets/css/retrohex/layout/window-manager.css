@@ -285,8 +285,8 @@
    chrome: app header, window title chrome, conversation toolbar and topic row.
    The bottom-anchored tab row is not subtracted here — it is painted over the
    overlay by the z-index rule below, which is what keeps it clickable.
-   Collapsed, the shell is a rail in normal flow (`chat-sidebars.css`), so only
-   the drawer is positioned here. */
+   Collapsed, the shell is gone entirely (`chat-sidebars.css`), so only the
+   drawer is positioned here. */
 .desktop--stacked .chat-sidebar-shell--expanded.chat-sidebar-overlay {
   top: var(--rhc-chat-sidebar-top);
   height: calc(var(--rhc-visual-viewport-height, 100dvh) - var(--rhc-chat-sidebar-top));
@@ -338,19 +338,11 @@
 }
 
 .desktop--stacked [data-testid="conversations-collapse-toggle"],
-.desktop--stacked [data-testid="conversations-rail-toggle"],
 .desktop--stacked [data-testid="nicklist-collapse-toggle"],
-.desktop--stacked [data-testid="nicklist-rail-toggle"],
 .desktop--stacked [data-testid^="join-"],
 .desktop--stacked [data-testid^="autojoin-open-"] {
   min-width: 32px;
   min-height: 32px;
-}
-
-.desktop--stacked .chat-sidebar-rail [data-testid="conversations-rail-toggle"],
-.desktop--stacked .chat-sidebar-rail [data-testid="nicklist-rail-toggle"] {
-  min-width: 30px;
-  min-height: 30px;
 }
 
 .desktop--stacked [data-testid="chat-message-list"] {

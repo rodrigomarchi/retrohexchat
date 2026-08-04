@@ -7,6 +7,11 @@ defmodule RetroHexChatWeb.Components.UI.ConversationToolbarActions do
   search panel, then expose one context action for the active conversation. The
   parent owns the visible state and passes it in so the buttons can expose a
   pressed state consistently on desktop and mobile.
+
+  The two sidebar toggles sit in their own cluster so a layout can scope them to
+  the widths where they are the way into a sidebar: the desktop keeps a 36px
+  rail for that, a phone cannot spare the column and reaches the drawers from
+  here instead.
   """
   use RetroHexChatWeb.Component
 
@@ -16,6 +21,7 @@ defmodule RetroHexChatWeb.Components.UI.ConversationToolbarActions do
   attr :nicklist_open, :boolean, default: false
   attr :search_open, :boolean, default: false
   attr :show_sidebar_toggles, :boolean, default: true
+  attr :sidebar_toggles_class, :any, default: nil
   attr :active_channel, :string, default: nil
   attr :active_pm, :string, default: nil
   attr :show_status_tab, :boolean, default: false
@@ -37,24 +43,28 @@ defmodule RetroHexChatWeb.Components.UI.ConversationToolbarActions do
       class={classes(["flex shrink-0 items-center gap-1", @class])}
       data-testid="conversation-toolbar-actions"
     >
-      <.action_button
+      <div
         :if={@show_sidebar_toggles}
-        event="toggle_conversations"
-        active={@conversations_open}
-        label={dgettext("chat", "Show conversations")}
-        testid="conversation-toolbar-conversations"
+        class={classes(["flex shrink-0 items-center gap-1", @sidebar_toggles_class])}
+        data-testid="conversation-toolbar-sidebar-toggles"
       >
-        <Icons.icon_toolbar_toggle_conversations class="h-4 w-4" />
-      </.action_button>
-      <.action_button
-        :if={@show_sidebar_toggles}
-        event="toggle_nicklist"
-        active={@nicklist_open}
-        label={dgettext("chat", "Show nicklist")}
-        testid="conversation-toolbar-nicklist"
-      >
-        <Icons.icon_toolbar_toggle_nicklist class="h-4 w-4" />
-      </.action_button>
+        <.action_button
+          event="toggle_conversations"
+          active={@conversations_open}
+          label={dgettext("chat", "Show conversations")}
+          testid="conversation-toolbar-conversations"
+        >
+          <Icons.icon_toolbar_toggle_conversations class="h-4 w-4" />
+        </.action_button>
+        <.action_button
+          event="toggle_nicklist"
+          active={@nicklist_open}
+          label={dgettext("chat", "Show nicklist")}
+          testid="conversation-toolbar-nicklist"
+        >
+          <Icons.icon_toolbar_toggle_nicklist class="h-4 w-4" />
+        </.action_button>
+      </div>
       <.action_button
         event="toggle_search"
         active={@search_open}

@@ -32,6 +32,26 @@ defmodule RetroHexChatWeb.Components.UI.Chat.ConversationToolbarActionsTest do
     refute cluster |> Floki.attribute("class") |> hd() =~ "md:hidden"
   end
 
+  test "the sidebar toggles are one cluster a layout can scope to its widths" do
+    html =
+      render_component(&conversation_toolbar_actions/1, %{sidebar_toggles_class: "md:hidden"})
+
+    doc = Floki.parse_document!(html)
+
+    assert [cluster] =
+             Floki.find(doc, ~s([data-testid="conversation-toolbar-sidebar-toggles"]))
+
+    assert cluster |> Floki.attribute("class") |> hd() =~ "md:hidden"
+
+    for testid <- ["conversation-toolbar-conversations", "conversation-toolbar-nicklist"] do
+      assert [_button] = Floki.find(cluster, ~s([data-testid="#{testid}"]))
+    end
+
+    # Search stays outside the cluster — it is not a sidebar.
+    assert Floki.find(cluster, ~s([data-testid="conversation-toolbar-search"])) == []
+    assert [_search] = Floki.find(doc, ~s([data-testid="conversation-toolbar-search"]))
+  end
+
   test "can omit sidebar toggles when the composed shell owns sidebar rails" do
     html = render_component(&conversation_toolbar_actions/1, %{show_sidebar_toggles: false})
     doc = Floki.parse_document!(html)

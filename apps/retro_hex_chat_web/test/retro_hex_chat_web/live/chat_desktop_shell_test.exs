@@ -74,14 +74,17 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
                ~s([data-testid="conversation-toolbar"] [data-testid="conversation-toolbar-actions"])
              )
 
-      refute has_element?(
+      # The sidebar toggles ship in the toolbar but belong to the stacked layout:
+      # a desk reaches its sidebars through the rails, so the cluster is hidden
+      # from md up.
+      assert has_element?(
                view,
-               ~s([data-testid="conversation-toolbar"] [data-testid="conversation-toolbar-conversations"])
+               ~s([data-testid="conversation-toolbar-sidebar-toggles"][class*="md:hidden"] [data-testid="conversation-toolbar-conversations"])
              )
 
-      refute has_element?(
+      assert has_element?(
                view,
-               ~s([data-testid="conversation-toolbar"] [data-testid="conversation-toolbar-nicklist"])
+               ~s([data-testid="conversation-toolbar-sidebar-toggles"][class*="md:hidden"] [data-testid="conversation-toolbar-nicklist"])
              )
 
       assert has_element?(
