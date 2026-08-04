@@ -97,6 +97,45 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRowTest do
     assert notice =~ "notice text"
   end
 
+  # A bot greeting delivered as a notice carried mIRC colour codes, and the
+  # notice branch interpolated its content directly instead of formatting it.
+  # The browser swallows the 0x03 byte and shows what follows it, so the colour
+  # printed as text: "06 [Wanda] 13guest!". Every type formats its content now.
+  @coloured "\x0306\x02[Wanda]\x0F guest!"
+
+  test "every message type renders mIRC codes as markup, never as stray digits" do
+    types = [
+      %{id: "c1", author: "wanda", content: @coloured, type: :notice, timestamp: @ts},
+      %{id: "c2", content: @coloured, type: :system, timestamp: @ts},
+      %{id: "c3", content: @coloured, type: :p2p_system, timestamp: @ts},
+      %{id: "c4", content: @coloured, type: :service, timestamp: @ts},
+      %{id: "c5", content: @coloured, type: :error, timestamp: @ts},
+      %{id: "c6", author: "wanda", content: @coloured, type: :action, timestamp: @ts},
+      %{id: "c7", author: "wanda", content: @coloured, type: :normal, timestamp: @ts}
+    ]
+
+    for msg <- types do
+      html = row(msg)
+
+      assert html =~ ~s(class="irc-fg-6"), "#{msg.type} lost its colour span"
+      assert html =~ "irc-bold"
+      assert html =~ "[Wanda]"
+      refute html =~ "06", "#{msg.type} leaked the colour code's digits"
+      refute html =~ "\x03", "#{msg.type} passed the control byte through"
+    end
+  end
+
+  test "stripping formatting drops the codes without leaving their digits" do
+    html =
+      row(%{id: "c8", author: "wanda", content: @coloured, type: :notice, timestamp: @ts}, %{
+        strip_formatting: true
+      })
+
+    assert html =~ "[Wanda]"
+    refute html =~ "irc-fg-6"
+    refute html =~ "06"
+  end
+
   test "renders P2P invite messages as a plain request line without card actions" do
     html =
       row(
