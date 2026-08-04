@@ -55,7 +55,12 @@ config :phoenix,
 # Server roles — admin and operator nicknames for tests
 config :retro_hex_chat,
   admins: ["TestAdmin"],
-  server_operators: ["TestOper"]
+  server_operators: ["TestOper"],
+  # Bot authorization asks whether a nickname is identified. Answering it for
+  # real means a NickServ registration and a bcrypt hash per case, which is not
+  # what those tests are about — the stub says yes and the `admins` list above
+  # stays the thing under test.
+  bot_identity: RetroHexChat.Bots.IdentityStub
 
 # TURN server test overrides — disable listener, use random port, fixed secrets
 config :retro_hex_chat,

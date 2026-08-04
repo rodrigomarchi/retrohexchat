@@ -2,7 +2,7 @@
   {dgettext("help_bots", "The")} <code>{dgettext("help_bots", "/bot")}</code>
   {dgettext(
     "help_bots",
-    "command lets admins and server operators create, configure, and manage bots. Running /bot with no arguments opens Bot Management for admins, while regular users see the bot list."
+    "command lets admins and server operators create, configure, and manage bots. Every subcommand is administrative, including the ones that only read: running /bot with no arguments opens Bot Management, and anyone else is refused."
   )}
 </p>
 
@@ -99,14 +99,14 @@
   </li>
   <li>{dgettext("help_bots", "Cooldown minimum is 500ms (default: 2000ms)")}</li>
   <li>
-    {dgettext("help_bots", "Only admins and server operators can create, modify, or delete bots")}
+    {dgettext(
+      "help_bots",
+      "Only admins and server operators can use /bot at all — listing bots, reading a bot's info or its feeds included"
+    )}
   </li>
   <li>
     {dgettext("help_bots", "Running")} <code>{dgettext("help_bots", "/bot")}</code>
-    {dgettext(
-      "help_bots",
-      "with no arguments opens the Bot Management dialog (admin only) or shows the bot list (regular users)"
-    )}
+    {dgettext("help_bots", "with no arguments opens the Bot Management dialog")}
   </li>
 </ul>
 

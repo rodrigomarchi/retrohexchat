@@ -13,7 +13,8 @@ defmodule RetroHexChat.Bots.Capabilities.SchedulerTest do
     channel: "#general",
     command_prefix: "!",
     # Adding a schedule makes the bot speak on a timer; that needs standing.
-    author_privileged?: true,
+    # `TestAdmin` is an administrator by config, with the identity source stubbed.
+    author: "TestAdmin",
     config: @default_config,
     capability_state: Scheduler.init_state(@default_config)
   }

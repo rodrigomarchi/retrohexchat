@@ -38,64 +38,66 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
   @spec validate(String.t()) :: :ok | {:error, String.t()}
   def validate(_), do: :ok
 
+  @doc """
+  Runs a `/bot` subcommand, for an administrator only.
+
+  Every branch is authorized, reads included. A bot's roster, its prefix and
+  cooldown, the custom commands someone wrote for it and the feed URLs it has
+  been pointed at are all server configuration — knowing them is the first half
+  of changing them, and the feed list in particular is a map of what the server
+  reaches out to fetch.
+  """
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
-  def execute([], context) do
-    if Policy.can_manage?(context) do
-      {:ok, :ui_action, :open_bot_dialog, %{}}
-    else
-      {:ok, :system, %{content: format_bot_list()}}
-    end
+  def execute(args, context) do
+    with :ok <- Policy.authorize(context), do: run(args, context)
   end
 
-  def execute(["create", name | rest], context) do
-    with :ok <- Policy.authorize(context) do
-      description = if rest == [], do: nil, else: Enum.join(rest, " ")
-      do_create(name, description, context.nickname)
-    end
+  @spec run([String.t()], Handler.context()) :: Handler.result()
+  defp run([], _context) do
+    {:ok, :ui_action, :open_bot_dialog, %{}}
   end
 
-  def execute(["destroy", name], context) do
-    with :ok <- Policy.authorize(context) do
-      do_destroy(name)
-    end
+  defp run(["create", name | rest], context) do
+    description = if rest == [], do: nil, else: Enum.join(rest, " ")
+    do_create(name, description, context.nickname)
   end
 
-  def execute(["list"], _context) do
+  defp run(["destroy", name], _context) do
+    do_destroy(name)
+  end
+
+  defp run(["list"], _context) do
     {:ok, :system, %{content: format_bot_list()}}
   end
 
-  def execute(["info", name], _context) do
+  defp run(["info", name], _context) do
     do_info(name)
   end
 
   # Feeds are the one part of a bot's configuration that a provisioning script
   # could not reach: they live inside the rss capability's config, and `/bot set`
   # only ever handled scalars.
-  def execute(["rss", "add", bot_name, url, channel], context) do
-    with :ok <- Policy.authorize(context) do
-      do_rss(bot_name, &Feeds.add(&1, url, channel), fn _bot ->
-        dgettext("commands", "[BotService] Feed added to %{name}: %{url} → %{channel}",
-          name: bot_name,
-          url: url,
-          channel: channel
-        )
-      end)
-    end
+  defp run(["rss", "add", bot_name, url, channel], _context) do
+    do_rss(bot_name, &Feeds.add(&1, url, channel), fn _bot ->
+      dgettext("commands", "[BotService] Feed added to %{name}: %{url} → %{channel}",
+        name: bot_name,
+        url: url,
+        channel: channel
+      )
+    end)
   end
 
-  def execute(["rss", "remove", bot_name, feed_id], context) do
-    with :ok <- Policy.authorize(context) do
-      do_rss(bot_name, &Feeds.remove(&1, feed_id), fn _bot ->
-        dgettext("commands", "[BotService] Feed '%{id}' removed from %{name}.",
-          id: feed_id,
-          name: bot_name
-        )
-      end)
-    end
+  defp run(["rss", "remove", bot_name, feed_id], _context) do
+    do_rss(bot_name, &Feeds.remove(&1, feed_id), fn _bot ->
+      dgettext("commands", "[BotService] Feed '%{id}' removed from %{name}.",
+        id: feed_id,
+        name: bot_name
+      )
+    end)
   end
 
-  def execute(["rss", "list", bot_name], _context) do
+  defp run(["rss", "list", bot_name], _context) do
     case Queries.get_bot_by_name(bot_name) do
       nil ->
         {:error, dgettext("commands", "[BotService] Bot '%{name}' not found.", name: bot_name)}
@@ -105,59 +107,45 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
     end
   end
 
-  def execute(["join", bot_name, channel], context) do
-    with :ok <- Policy.authorize(context) do
-      do_join(bot_name, channel)
-    end
+  defp run(["join", bot_name, channel], _context) do
+    do_join(bot_name, channel)
   end
 
-  def execute(["part", bot_name, channel], context) do
-    with :ok <- Policy.authorize(context) do
-      do_part(bot_name, channel)
-    end
+  defp run(["part", bot_name, channel], _context) do
+    do_part(bot_name, channel)
   end
 
-  def execute(["enable", bot_name], context) do
-    with :ok <- Policy.authorize(context) do
-      do_set_enabled(bot_name, true)
-    end
+  defp run(["enable", bot_name], _context) do
+    do_set_enabled(bot_name, true)
   end
 
-  def execute(["disable", bot_name], context) do
-    with :ok <- Policy.authorize(context) do
-      do_set_enabled(bot_name, false)
-    end
+  defp run(["disable", bot_name], _context) do
+    do_set_enabled(bot_name, false)
   end
 
-  def execute(["set", bot_name, key | value_parts], context) do
-    with :ok <- Policy.authorize(context) do
-      value = Enum.join(value_parts, " ")
-      do_set(bot_name, key, value)
-    end
+  defp run(["set", bot_name, key | value_parts], _context) do
+    value = Enum.join(value_parts, " ")
+    do_set(bot_name, key, value)
   end
 
-  def execute(["commands", bot_name], _context) do
+  defp run(["commands", bot_name], _context) do
     do_list_commands(bot_name)
   end
 
-  def execute(["addcmd", bot_name, trigger | response_parts], context) do
-    with :ok <- Policy.authorize(context) do
-      response = response_parts |> Enum.join(" ") |> IrcEscapes.decode()
-      do_add_command(bot_name, trigger, response, context.nickname)
-    end
+  defp run(["addcmd", bot_name, trigger | response_parts], context) do
+    response = response_parts |> Enum.join(" ") |> IrcEscapes.decode()
+    do_add_command(bot_name, trigger, response, context.nickname)
   end
 
-  def execute(["delcmd", bot_name, trigger], context) do
-    with :ok <- Policy.authorize(context) do
-      do_delete_command(bot_name, trigger)
-    end
+  defp run(["delcmd", bot_name, trigger], _context) do
+    do_delete_command(bot_name, trigger)
   end
 
-  def execute(["help"], _context) do
+  defp run(["help"], _context) do
     {:ok, :system, %{content: help_text()}}
   end
 
-  def execute([subcmd | _], _context) do
+  defp run([subcmd | _], _context) do
     {:error, "Unknown /bot subcommand: #{subcmd}. Try /bot help"}
   end
 

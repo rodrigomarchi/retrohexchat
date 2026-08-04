@@ -787,33 +787,22 @@ defmodule RetroHexChat.Bots.Server do
       config: %{},
       capability_state: %{},
       channel_overrides: Map.get(channel_data, :capability_overrides, %{}),
-      # Who is asking, and with what standing. Without this a capability cannot
-      # tell an operator from a passer-by, which is how `rss add` became a way
-      # for anyone to aim the server at a URL of their choosing.
-      author: nil,
-      author_privileged?: false
+      # Who is asking. Without it a capability cannot tell an administrator from
+      # a passer-by, which is how `rss add` became a way for anyone to aim the
+      # server at a URL of their choosing.
+      #
+      # The name, not a verdict on it: resolving standing costs a call into
+      # NickServ, and the overwhelming majority of messages a bot sees never ask
+      # — they are people talking. The capability that needs to know asks
+      # `Bots.Policy`; everyone else pays nothing.
+      author: nil
     }
   end
 
-  # Resolved per message rather than carried in state: roles change while the
-  # bot is sitting in the channel.
+  # Carried per message rather than in state: the author changes with every line,
+  # and their roles can change while the bot is sitting in the channel.
   @spec with_author(map(), String.t()) :: map()
-  defp with_author(context, author) do
-    %{context | author: author, author_privileged?: privileged?(context.channel, author)}
-  end
-
-  @spec privileged?(String.t(), String.t()) :: boolean()
-  defp privileged?(channel, nickname) do
-    case Channels.Server.get_state(channel) do
-      {:ok, %{owners: owners, operators: operators}} ->
-        nickname in owners or nickname in operators
-
-      _ ->
-        false
-    end
-  catch
-    :exit, _ -> false
-  end
+  defp with_author(context, author), do: %{context | author: author}
 
   @spec build_initial_state(map()) :: state()
   defp build_initial_state(bot_data) do

@@ -11,12 +11,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:229
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:232
 #, elixir-autogen, elixir-format
 msgid "  %{id} | %{title} | %{channel} | %{url}"
 msgstr "  %{id} | %{title} | %{channel} | %{url}"
 
-#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:205
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:207
 #, elixir-autogen, elixir-format
 msgid "  %{id} | %{type} | %{channel} | %{message}"
 msgstr "  %{id} | %{type} | %{channel} | %{message}"
@@ -53,9 +53,7 @@ msgstr "%{message} (%{reason})"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:280
 #, elixir-autogen, elixir-format
-msgid ""
-"%{prefix}\n"
-"Round over! %{scores}"
+msgid "%{prefix}\nRound over! %{scores}"
 msgstr ""
 "%{prefix} (英語).\n"
 "回合! %{scores}"
@@ -72,7 +70,7 @@ msgstr "%{rank}. %{name}: %{points}點"
 msgid "(no title)"
 msgstr "(無標題)"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:227
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:230
 #, elixir-autogen, elixir-format
 msgid "(untitled)"
 msgstr "(無標題)"
@@ -112,17 +110,17 @@ msgstr "三角回合已經開始了! 用\"特里維亞停止\"來結束它。"
 msgid "AI for P2P games — chess, tic-tac-toe, trivia (Coming soon)"
 msgstr "P2P遊戲的AI——圍棋,tic-tac-toe,trivia(即將上線)"
 
-#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:213
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:215
 #, elixir-autogen, elixir-format
 msgid "Active schedules:"
 msgstr "活動時間表 :"
 
-#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:155
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:156
 #, elixir-autogen, elixir-format
 msgid "Add a scheduled message"
 msgstr "添加預定的消息"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:190
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:193
 #, elixir-autogen, elixir-format
 msgid "Add an RSS feed"
 msgstr "添加 RSS 種子"
@@ -240,9 +238,9 @@ msgstr "藍色外星人"
 #: lib/retro_hex_chat/bots/lifecycle.ex:47
 #, elixir-autogen, elixir-format
 msgid "Bot destroyed"
-msgstr "銷燬的瓶子"
+msgstr "機器人已銷毀"
 
-#: lib/retro_hex_chat/bots/server.ex:906
+#: lib/retro_hex_chat/bots/server.ex:975
 #, elixir-autogen, elixir-format
 msgid "Bot leaving"
 msgstr "炸彈離開"
@@ -362,18 +360,18 @@ msgstr "錯誤:最大值 %{max} 各方允許。"
 msgid "Famous for rings"
 msgstr "爲戒指而聞名"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:291
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:294
 #, elixir-autogen, elixir-format
 msgid "Feed '%{id}' added: %{url} → %{channel}"
 msgstr "feed '%{id} 添加:%{url} →%{channel}"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:304
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:317
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:307
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:320
 #, elixir-autogen, elixir-format
 msgid "Feed '%{id}' not found."
 msgstr "種子%{id}'未見."
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:302
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:305
 #, elixir-autogen, elixir-format
 msgid "Feed '%{id}' removed."
 msgstr "種子%{id}已刪除。"
@@ -388,7 +386,7 @@ msgstr "最後得分: %{ranked}"
 msgid "Finnish"
 msgstr "芬蘭語"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:193
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:196
 #, elixir-autogen, elixir-format
 msgid "Force check a feed now"
 msgstr "強制檢查一個消息"
@@ -428,7 +426,7 @@ msgstr "德國哲學家"
 msgid "Greenland"
 msgstr "格陵蘭"
 
-#: lib/retro_hex_chat/bots/capabilities/greeter.ex:17
+#: lib/retro_hex_chat/bots/capabilities/greeter.ex:20
 #, elixir-autogen, elixir-format
 msgid "Greet users on join, say goodbye on part"
 msgstr "歡呼用戶加入, 說再見"
@@ -565,7 +563,7 @@ msgstr "交互式問答和帶評分的三角"
 msgid "Invalid dice notation '%{notation}'. Use format: NdS, NdS+M, NdSkh/klN"
 msgstr "無效的骰子標記“ %{notation} ” 。 使用格式:NDS、NDS+M、NDSkh/klN"
 
-#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:294
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:296
 #, elixir-autogen, elixir-format
 msgid "Invalid time format. Use HH:MM (24h UTC)."
 msgstr "無效的時間格式 。 使用HH:MM(協調世界時24日)."
@@ -635,12 +633,12 @@ msgstr "燈塔"
 msgid "Linus Torvalds"
 msgstr "萊納斯·託瓦爾茲"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:191
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:194
 #, elixir-autogen, elixir-format
 msgid "List RSS feeds"
 msgstr "列出 RSS 種子"
 
-#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:156
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:157
 #, elixir-autogen, elixir-format
 msgid "List active schedules"
 msgstr "列出活動時間表"
@@ -665,12 +663,12 @@ msgstr "馬裏亞納海溝"
 msgid "Mars"
 msgstr "火星"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:246
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:249
 #, elixir-autogen, elixir-format
 msgid "Maximum %{max} feeds reached."
 msgstr "最大值 %{max} 已到達種子 。"
 
-#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:223
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:225
 #, elixir-autogen, elixir-format
 msgid "Maximum %{max} schedules reached."
 msgstr "達到最大 %{max} 調度 。"
@@ -700,12 +698,12 @@ msgstr "中土地區"
 msgid "Minecraft"
 msgstr "礦產品"
 
-#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:246
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:248
 #, elixir-autogen, elixir-format
 msgid "Minimum interval is %{minutes} minutes."
 msgstr "最小間隔爲 %{minutes}分鐘."
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:253
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:256
 #, elixir-autogen, elixir-format
 msgid "Missing channel. Usage: rss add <url> <#channel>"
 msgstr "頻道不見了 用法:rs 添加 <url> <#channel>"
@@ -765,12 +763,12 @@ msgstr "尼羅河"
 msgid "Nintendo"
 msgstr "任天堂"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:223
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:226
 #, elixir-autogen, elixir-format
 msgid "No RSS feeds configured."
 msgstr "沒有配置 RSS 種子 。"
 
-#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:199
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:201
 #, elixir-autogen, elixir-format
 msgid "No active schedules."
 msgstr "沒有活動的時間表 。"
@@ -821,7 +819,7 @@ msgstr "現在甲骨文"
 msgid "On the Nile"
 msgstr "在尼羅河畔"
 
-#: lib/retro_hex_chat/bots/policy.ex:25
+#: lib/retro_hex_chat/bots/policy.ex:59
 #, elixir-autogen, elixir-format
 msgid "Only admins and server operators can manage bots"
 msgstr "只有管理員和服務器操作員才能管理 bots"
@@ -902,12 +900,12 @@ msgstr "區域司"
 msgid "ROY G BIV"
 msgstr "Roy G BIV (英語)."
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:237
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:240
 #, elixir-autogen, elixir-format
 msgid "RSS Feeds:"
 msgstr "RSS 種子 :"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:28
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:29
 #, elixir-autogen, elixir-format
 msgid "RSS feed reader that posts updates to channels"
 msgstr "RSS 向頻道發送更新的讀取器"
@@ -922,12 +920,12 @@ msgstr "隨機訪問內存"
 msgid "Red pill"
 msgstr "紅藥丸"
 
-#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:157
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:158
 #, elixir-autogen, elixir-format
 msgid "Remove a schedule"
 msgstr "刪除時間表"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:192
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:195
 #, elixir-autogen, elixir-format
 msgid "Remove an RSS feed"
 msgstr "刪除 RSS 種子"
@@ -987,27 +985,27 @@ msgstr "津巴布韋"
 msgid "Saturn"
 msgstr "土星號"
 
-#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:288
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:290
 #, elixir-autogen, elixir-format
 msgid "Schedule '%{id}' added: daily at %{time} UTC in %{channel}."
 msgstr "附表\"%{id}增加:每日在%{time} UTC在%{channel}."
 
-#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:262
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:264
 #, elixir-autogen, elixir-format
 msgid "Schedule '%{id}' added: every %{minutes}min in %{channel}."
 msgstr "附表\"%{id}\"增加:在%{channel}中,每%{minutes}min."
 
-#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:305
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:307
 #, elixir-autogen, elixir-format
 msgid "Schedule '%{id}' not found."
 msgstr "時間表 '%{id}'未見."
 
-#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:303
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:305
 #, elixir-autogen, elixir-format
 msgid "Schedule '%{id}' removed."
 msgstr "時間表 '%{id}已刪除。"
 
-#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:27
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:28
 #, elixir-autogen, elixir-format
 msgid "Scheduled and periodic messages"
 msgstr "排定和定期發送的信息"
@@ -1145,9 +1143,7 @@ msgstr "東京"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:212
 #, elixir-autogen, elixir-format
-msgid ""
-"Trivia started! (%{category}, %{count} questions)\n"
-"%{question}"
+msgid "Trivia started! (%{category}, %{count} questions)\n%{question}"
 msgstr ""
 "特里維亞開始! (%{category},%{count}問題)\n"
 "%{question}"
@@ -1177,16 +1173,14 @@ msgstr "未知類別 '%{category}'. 現有: %{categories}"
 msgid "Unknown feed format (expected RSS 2.0 or Atom)"
 msgstr "未知的種子格式( 預期 RSS 2. 0 或 Atom)"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:256
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:259
 #, elixir-autogen, elixir-format
 msgid "Usage: rss add <url> <#channel>"
 msgstr "用法:rs 添加 <url> <#channel>"
 
-#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:234
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:236
 #, elixir-autogen, elixir-format
-msgid ""
-"Usage: schedule add interval <min> <#channel> <message> OR schedule add "
-"daily <HH:MM> <#channel> <message>"
+msgid "Usage: schedule add interval <min> <#channel> <message> OR schedule add daily <HH:MM> <#channel> <message>"
 msgstr ""
 "用法:計劃增加間隔<min> <#channel> <message> OR計劃增加每日<HH:MM> <#channel> <message>"
 
@@ -1220,7 +1214,7 @@ msgstr "網頁"
 msgid "Web pages"
 msgstr "網頁"
 
-#: lib/retro_hex_chat/bots/capabilities/greeter.ex:50
+#: lib/retro_hex_chat/bots/capabilities/greeter.ex:90
 #, elixir-autogen, elixir-format
 msgid "Welcome, {nickname}!"
 msgstr "歡迎,{暱稱}!"
@@ -1665,7 +1659,7 @@ msgstr "藍鯨"
 msgid "carbon dioxide"
 msgstr "二氧化碳"
 
-#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:399
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:401
 #, elixir-autogen, elixir-format
 msgid "daily@%{time}"
 msgstr "日報@%{time}"
@@ -1701,7 +1695,7 @@ msgstr "必須以字母開頭"
 msgid "only letters, numbers, _ and -"
 msgstr "只有字母,數字,  和 -"
 
-#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:396
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:398
 #, elixir-autogen, elixir-format
 msgid "q/%{minutes}min"
 msgstr "q/%{minutes} 分鐘"
@@ -1726,32 +1720,47 @@ msgstr "[暱稱]"
 msgid "~3 x 10^5 km/s"
 msgstr "~3 x 10^5 km /s"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:335
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:338
 #, elixir-autogen, elixir-format
 msgid "Feed '%{id}' checked. Nothing new."
 msgstr "輸入 '%{id}' 已檢查 。 沒什麼新鮮事"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:323
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:326
 #, elixir-autogen, elixir-format
 msgid "Feed '%{id}' posts to %{channel}. Ask there to check it."
 msgstr "將 '%{id}' 文章輸入 %{channel}. 問那裏看."
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:132
-#, elixir-autogen, elixir-format
-msgid "Only channel operators can change the feed list."
-msgstr "只有頻道運營商可以更改種子列表."
-
-#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:169
-#, elixir-autogen, elixir-format
-msgid "Only channel operators can change the schedule."
-msgstr "只有頻道運營商可以更改時間表."
-
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:515
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:518
 #, elixir-autogen, elixir-format
 msgid "RSS"
 msgstr "簡易新聞聚合"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:269
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:272
 #, elixir-autogen, elixir-format
 msgid "Refusing %{url}: %{reason}"
 msgstr "拒絕 %{url}：%{reason}"
+
+#: lib/retro_hex_chat/bots/capabilities/greeter.ex:72
+#, elixir-autogen, elixir-format
+msgid "Farewell delivery must be public, channel_notice, private_notice, or silent"
+msgstr "告別訊息的投遞方式必須是 public、channel_notice、private_notice 或 silent"
+
+#: lib/retro_hex_chat/bots/capabilities/greeter.ex:65
+#, elixir-autogen, elixir-format
+msgid "Greeting delivery must be public, channel_notice, private_notice, or silent"
+msgstr "歡迎訊息的投遞方式必須是 public、channel_notice、private_notice 或 silent"
+
+#: lib/retro_hex_chat/bots/capabilities/greeter.ex:78
+#, elixir-autogen, elixir-format
+msgid "Repeat window must be a non-negative number of seconds"
+msgstr "重複視窗必須是非負的秒數"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:135
+#, elixir-autogen, elixir-format
+msgid "Only server administrators can manage feeds."
+msgstr "只有伺服器管理員可以管理訂閱源。"
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:171
+#, elixir-autogen, elixir-format
+msgid "Only server administrators can manage schedules."
+msgstr "只有伺服器管理員可以管理定時任務。"

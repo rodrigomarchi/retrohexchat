@@ -63,12 +63,12 @@ defmodule RetroHexChat.Commands.Handlers.BotTest do
   describe "execute list" do
     test "lists bots" do
       Bot.execute(["create", "BotCmdTest"], @admin_ctx)
-      assert {:ok, :system, %{content: content}} = Bot.execute(["list"], @user_ctx)
+      assert {:ok, :system, %{content: content}} = Bot.execute(["list"], @admin_ctx)
       assert content =~ "BotCmdTest"
     end
 
     test "shows no bots message when empty" do
-      assert {:ok, :system, %{content: content}} = Bot.execute(["list"], @user_ctx)
+      assert {:ok, :system, %{content: content}} = Bot.execute(["list"], @admin_ctx)
       assert content =~ "No bots"
     end
   end
@@ -76,13 +76,13 @@ defmodule RetroHexChat.Commands.Handlers.BotTest do
   describe "execute info" do
     test "shows bot info" do
       Bot.execute(["create", "BotCmdTest", "A", "test", "bot"], @admin_ctx)
-      assert {:ok, :system, %{content: content}} = Bot.execute(["info", "BotCmdTest"], @user_ctx)
+      assert {:ok, :system, %{content: content}} = Bot.execute(["info", "BotCmdTest"], @admin_ctx)
       assert content =~ "BotCmdTest"
       assert content =~ "admin"
     end
 
     test "returns error for unknown bot" do
-      assert {:error, msg} = Bot.execute(["info", "Unknown"], @user_ctx)
+      assert {:error, msg} = Bot.execute(["info", "Unknown"], @admin_ctx)
       assert msg =~ "not found"
     end
   end
@@ -108,7 +108,7 @@ defmodule RetroHexChat.Commands.Handlers.BotTest do
       assert c =~ "set for"
 
       assert {:ok, :system, %{content: c2}} =
-               Bot.execute(["commands", "BotCmdTest"], @user_ctx)
+               Bot.execute(["commands", "BotCmdTest"], @admin_ctx)
 
       assert c2 =~ "rules"
 
@@ -297,14 +297,14 @@ defmodule RetroHexChat.Commands.Handlers.BotTest do
 
     test "lists what a bot carries, and says so when it carries nothing" do
       assert {:ok, :system, %{content: empty}} =
-               Bot.execute(["rss", "list", "BotCmdTest"], @user_ctx)
+               Bot.execute(["rss", "list", "BotCmdTest"], @admin_ctx)
 
       assert empty =~ "no feeds"
 
       Bot.execute(["rss", "add", "BotCmdTest", @public, "#wire"], @admin_ctx)
 
       assert {:ok, :system, %{content: listed}} =
-               Bot.execute(["rss", "list", "BotCmdTest"], @user_ctx)
+               Bot.execute(["rss", "list", "BotCmdTest"], @admin_ctx)
 
       assert listed =~ @public
       assert listed =~ "#wire"
@@ -336,7 +336,7 @@ defmodule RetroHexChat.Commands.Handlers.BotTest do
 
   describe "execute help" do
     test "shows help text" do
-      assert {:ok, :system, %{content: content}} = Bot.execute(["help"], @user_ctx)
+      assert {:ok, :system, %{content: content}} = Bot.execute(["help"], @admin_ctx)
       assert content =~ "/bot create"
     end
   end
@@ -345,9 +345,41 @@ defmodule RetroHexChat.Commands.Handlers.BotTest do
     test "admin gets ui_action" do
       assert {:ok, :ui_action, :open_bot_dialog, %{}} = Bot.execute([], @admin_ctx)
     end
+  end
 
-    test "regular user gets bot list" do
-      assert {:ok, :system, _} = Bot.execute([], @user_ctx)
+  # A bot's roster, its settings, the commands written for it and the addresses
+  # it fetches are all server configuration. Reading them is the first half of
+  # changing them, and the feed list is a map of what the server reaches out to.
+  describe "the whole command is administrative" do
+    test "every read is refused to a regular user" do
+      Bot.execute(["create", "BotCmdTest"], @admin_ctx)
+
+      reads = [
+        [],
+        ["list"],
+        ["info", "BotCmdTest"],
+        ["commands", "BotCmdTest"],
+        ["rss", "list", "BotCmdTest"],
+        ["help"]
+      ]
+
+      for args <- reads do
+        assert {:error, msg} = Bot.execute(args, @user_ctx),
+               "#{inspect(args)} answered a user who may not manage bots"
+
+        assert msg =~ "Only admins",
+               "#{inspect(args)} refused for the wrong reason"
+      end
+    end
+
+    test "a refusal says nothing about which bots exist" do
+      # Same answer for a real bot and an invented one: the refusal must not
+      # become a way to probe the roster.
+      Bot.execute(["create", "BotCmdTest"], @admin_ctx)
+
+      assert {:error, real} = Bot.execute(["info", "BotCmdTest"], @user_ctx)
+      assert {:error, invented} = Bot.execute(["info", "NoSuchBot"], @user_ctx)
+      assert real == invented
     end
   end
 

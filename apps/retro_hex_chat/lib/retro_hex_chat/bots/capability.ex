@@ -26,7 +26,8 @@ defmodule RetroHexChat.Bots.Capability do
           channel: String.t(),
           command_prefix: String.t(),
           config: map(),
-          capability_state: map()
+          capability_state: map(),
+          author: String.t() | nil
         }
 
   @type capability_result ::

@@ -733,8 +733,9 @@ defmodule RetroHexChat.Bots.ServerTest do
 
     setup do
       {:ok, chan} = RetroHexChat.Channels.Supervisor.start_child("#feedtest")
-      # First human in owns the room, which is the standing the command requires.
-      {:ok, _} = RetroHexChat.Channels.Server.join("#feedtest", "operator")
+      # Adding a feed is bot administration, so the asker must be a server
+      # administrator — ops in the room are not enough.
+      {:ok, _} = RetroHexChat.Channels.Server.join("#feedtest", "TestAdmin")
 
       on_exit(fn ->
         Supervisor.stop_bot("FeedTimerBot")
@@ -755,7 +756,7 @@ defmodule RetroHexChat.Bots.ServerTest do
         payload: %{
           id: 1,
           channel: "#feedtest",
-          author: "operator",
+          author: "TestAdmin",
           content: "!FeedTimerBot rss add https://93.184.216.34/feed.xml #feedtest",
           type: :message,
           timestamp: DateTime.utc_now(),

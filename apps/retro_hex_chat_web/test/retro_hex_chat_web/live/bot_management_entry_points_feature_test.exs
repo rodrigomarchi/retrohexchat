@@ -80,6 +80,82 @@ defmodule RetroHexChatWeb.BotManagementEntryPointsFeatureTest do
     end
   end
 
+  # The window is hidden from non-admins, but a LiveView event does not come from
+  # the window — it comes from the socket, and this hook is attached for every
+  # session. These assert on the database, which is the only place the damage
+  # would be real.
+  describe "bot management events are refused to non-admins" do
+    test "a non-admin cannot destroy a bot", %{conn: conn} do
+      bot_name = "Keep#{uid()}"
+      {:ok, _bot} = Queries.create_bot(%{name: bot_name, nickname: bot_name, created_by: "admin"})
+
+      view = connect_user(conn, "Rando#{uid()}")
+      render_click(view, "bot_delete", %{"name" => bot_name})
+
+      assert Queries.get_bot_by_name(bot_name)
+      assert render(view) =~ "restricted to server administrators"
+    end
+
+    test "a non-admin cannot create a bot", %{conn: conn} do
+      bot_name = "Forged#{uid()}"
+
+      view = connect_user(conn, "Rando#{uid()}")
+
+      render_click(view, "create_bot", %{
+        "name" => bot_name,
+        "nickname" => bot_name,
+        "description" => "",
+        "prefix" => "!",
+        "cooldown" => "3"
+      })
+
+      refute Queries.get_bot_by_name(bot_name)
+      assert render(view) =~ "restricted to server administrators"
+    end
+
+    test "a non-admin cannot change an existing bot", %{conn: conn} do
+      bot_name = "Intact#{uid()}"
+
+      {:ok, bot} =
+        Queries.create_bot(%{
+          name: bot_name,
+          nickname: bot_name,
+          created_by: "admin",
+          capabilities: %{"mention" => %{"enabled" => true}}
+        })
+
+      view = connect_user(conn, "Rando#{uid()}")
+
+      render_click(view, "bot_toggle_enabled", %{"name" => bot_name})
+      render_click(view, "bot_add_channel", %{"channel" => "#lobby", "bot_name" => bot_name})
+
+      render_click(view, "bot_add_command", %{
+        "bot_name" => bot_name,
+        "trigger" => "pwned",
+        "response" => "hello",
+        "description" => ""
+      })
+
+      render_click(view, "bot_toggle_capability", %{
+        "capability" => "mention",
+        "bot_name" => bot_name
+      })
+
+      render_click(view, "bot_rss_add_feed", %{
+        "bot_name" => bot_name,
+        "url" => "https://example.com/feed.xml",
+        "channel" => "#lobby"
+      })
+
+      unchanged = Queries.get_bot_by_name(bot_name)
+
+      assert unchanged.enabled
+      assert unchanged.capabilities == bot.capabilities
+      assert Queries.list_channel_configs(bot.id) == []
+      assert Queries.list_custom_commands(bot.id) == []
+    end
+  end
+
   describe "general tab enablement controls" do
     test "selected bot renders an admin-only enable/disable button" do
       bot = bot_struct(name: "ToggleBot", enabled: true)

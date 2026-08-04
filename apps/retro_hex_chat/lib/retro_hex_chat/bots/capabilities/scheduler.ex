@@ -16,6 +16,7 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler do
   use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Bots.Capability
 
+  alias RetroHexChat.Bots.Policy
   alias RetroHexChat.Bots.Server
 
   @impl true
@@ -75,13 +76,13 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler do
 
     case parse_command(content, prefix, bot_name) do
       {:schedule, "list"} ->
-        handle_list(state)
+        if_admin(ctx, fn -> handle_list(state) end)
 
       {:schedule, "add " <> rest} ->
-        if_privileged(ctx, fn -> handle_add(rest, state, config) end)
+        if_admin(ctx, fn -> handle_add(rest, state, config) end)
 
       {:schedule, "remove " <> id} ->
-        if_privileged(ctx, fn -> handle_remove(String.trim(id), state) end)
+        if_admin(ctx, fn -> handle_remove(String.trim(id), state) end)
 
       :ignore ->
         :ignore
@@ -158,15 +159,16 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler do
     ]
   end
 
-  # Reading the schedule is harmless; adding one makes the bot speak on a timer
-  # in a room, which belongs to whoever runs it.
-  @spec if_privileged(map(), (-> RetroHexChat.Bots.Capability.capability_result())) ::
+  # A schedule makes the bot speak on a timer, unattended, in a room the author
+  # need not be in. That is bot configuration, so it answers to whoever runs the
+  # server rather than to whoever holds ops where the bot happens to be sitting.
+  @spec if_admin(map(), (-> RetroHexChat.Bots.Capability.capability_result())) ::
           RetroHexChat.Bots.Capability.capability_result()
-  defp if_privileged(ctx, fun) do
-    if Map.get(ctx, :author_privileged?, false) do
+  defp if_admin(ctx, fun) do
+    if Policy.admin?(Map.get(ctx, :author)) do
       fun.()
     else
-      {:reply, dgettext("bots", "Only channel operators can change the schedule.")}
+      {:reply, dgettext("bots", "Only server administrators can manage schedules.")}
     end
   end
 

@@ -229,7 +229,7 @@ defmodule RetroHexChat.Bots.RSSPublishingTest do
   end
 
   describe "a forced check" do
-    defp check(pid, author \\ "operator") do
+    defp check(pid, author \\ "TestAdmin") do
       send(pid, %{
         event: "new_message",
         payload: %{
@@ -247,8 +247,9 @@ defmodule RetroHexChat.Bots.RSSPublishingTest do
     end
 
     setup do
-      # The command needs operator standing, and the first human in owns the room.
-      {:ok, _} = Channels.Server.join(@channel, "operator")
+      # A forced check is bot administration, so the asker has to be a server
+      # administrator — being in the room is not standing.
+      {:ok, _} = Channels.Server.join(@channel, "TestAdmin")
       :ok
     end
 

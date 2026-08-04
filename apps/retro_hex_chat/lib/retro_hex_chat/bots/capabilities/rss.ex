@@ -15,6 +15,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
   alias RetroHexChat.Bots.Capabilities.RSS.FeedParser
   alias RetroHexChat.Bots.Capabilities.RSS.Fetcher
   alias RetroHexChat.Bots.Capabilities.RSS.UrlGuard
+  alias RetroHexChat.Bots.Policy
   alias RetroHexChat.Bots.Server
 
   require Logger
@@ -104,32 +105,34 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
 
     case parse_command(content, prefix, bot_name) do
       {:rss, "list"} ->
-        handle_list(state)
+        if_admin(ctx, fn -> handle_list(state) end)
 
       {:rss, "add " <> rest} ->
-        if_privileged(ctx, fn -> handle_add(rest, state, config) end)
+        if_admin(ctx, fn -> handle_add(rest, state, config) end)
 
       {:rss, "remove " <> id} ->
-        if_privileged(ctx, fn -> handle_remove(String.trim(id), state) end)
+        if_admin(ctx, fn -> handle_remove(String.trim(id), state) end)
 
       {:rss, "check " <> id} ->
-        if_privileged(ctx, fn -> handle_check(String.trim(id), state, config, ctx.channel) end)
+        if_admin(ctx, fn -> handle_check(String.trim(id), state, config, ctx.channel) end)
 
       :ignore ->
         :ignore
     end
   end
 
-  # Reading the feed list is harmless. Changing it points the server's own HTTP
-  # client at a URL somebody chose, and aims the output at a channel they may not
-  # even be in — that belongs to whoever runs the room.
-  @spec if_privileged(map(), (-> RetroHexChat.Bots.Capability.capability_result())) ::
+  # A bot's feed list is server configuration, not channel furniture. Changing it
+  # points the server's own HTTP client at a URL somebody chose and aims the
+  # output at a channel they may not even be in; reading it hands back every
+  # address the server has been told to fetch. Both belong to whoever runs the
+  # server — not to whoever happens to hold ops in the room the bot is sitting in.
+  @spec if_admin(map(), (-> RetroHexChat.Bots.Capability.capability_result())) ::
           RetroHexChat.Bots.Capability.capability_result()
-  defp if_privileged(ctx, fun) do
-    if Map.get(ctx, :author_privileged?, false) do
+  defp if_admin(ctx, fun) do
+    if Policy.admin?(Map.get(ctx, :author)) do
       fun.()
     else
-      {:reply, dgettext("bots", "Only channel operators can change the feed list.")}
+      {:reply, dgettext("bots", "Only server administrators can manage feeds.")}
     end
   end
 

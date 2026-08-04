@@ -14,8 +14,10 @@ defmodule RetroHexChat.Bots.Capabilities.RSSTest do
     command_prefix: "!",
     config: @default_config,
     capability_state: RSS.init_state(@default_config),
-    # Most of these exercise the feed list, which only an operator may change.
-    author_privileged?: true
+    # Most of these exercise the feed list, which only an administrator may
+    # touch. `TestAdmin` is one by config; the identity source is stubbed, so no
+    # NickServ registration is involved.
+    author: "TestAdmin"
   }
 
   # Literal addresses need no resolver, so these stay hermetic.
@@ -79,11 +81,21 @@ defmodule RetroHexChat.Bots.Capabilities.RSSTest do
     end
 
     test "a passer-by cannot aim the server at a URL" do
-      ctx = %{@ctx | author_privileged?: false}
+      ctx = %{@ctx | author: "nobody"}
       result = RSS.handle_message("!FeedBot rss add https://93.184.216.34/f #news", "nobody", ctx)
 
       assert {:reply, text} = result
-      assert text =~ "operators"
+      assert text =~ "administrators"
+    end
+
+    test "a channel operator is not standing enough" do
+      # The room's ops used to be the gate. A bot is server configuration, so
+      # holding ops where it happens to sit buys nothing — not even to read the
+      # list of addresses the server has been told to fetch.
+      ctx = %{@ctx | author: "roomop"}
+
+      assert {:reply, text} = RSS.handle_message("!FeedBot rss list", "roomop", ctx)
+      assert text =~ "administrators"
     end
 
     test "refuses an address inside the host's own network" do
