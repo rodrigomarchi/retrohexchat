@@ -77,7 +77,8 @@ defmodule RetroHexChat.Chat.SoundSettings do
   def new do
     %{
       sound_mappings: @default_sound_mappings,
-      flash_settings: @default_flash_settings
+      flash_settings: @default_flash_settings,
+      muted: false
     }
   end
 
@@ -109,6 +110,16 @@ defmodule RetroHexChat.Chat.SoundSettings do
   @spec get_flash_settings(map()) :: map()
   def get_flash_settings(%{flash_settings: flash}), do: flash
 
+  @spec muted?(map()) :: boolean()
+  def muted?(%{muted: true}), do: true
+  def muted?(_settings), do: false
+
+  @spec set_muted(map(), term()) :: map()
+  def set_muted(settings, muted) when is_map(settings) and is_boolean(muted),
+    do: Map.put(settings, :muted, muted)
+
+  def set_muted(settings, _muted), do: settings
+
   @spec available_sounds() :: [{String.t(), String.t()}]
   def available_sounds, do: @sound_catalog
 
@@ -127,7 +138,8 @@ defmodule RetroHexChat.Chat.SoundSettings do
     attrs = %{
       owner_nickname: owner,
       sound_mappings: stringify_keys(settings.sound_mappings),
-      flash_settings: stringify_keys(settings.flash_settings)
+      flash_settings: stringify_keys(settings.flash_settings),
+      muted: muted?(settings)
     }
 
     case Repo.get(SoundSetting, owner) do
@@ -157,7 +169,8 @@ defmodule RetroHexChat.Chat.SoundSettings do
         {:ok,
          %{
            sound_mappings: atomize_keys(db_entry.sound_mappings),
-           flash_settings: atomize_flash(db_entry.flash_settings)
+           flash_settings: atomize_flash(db_entry.flash_settings),
+           muted: db_entry.muted == true
          }}
     end
   end

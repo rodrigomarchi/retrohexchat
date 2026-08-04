@@ -1,32 +1,50 @@
-import {
-  mountHook,
-  simulateEvent,
-  cleanupDOM,
-  mockLocalStorage,
-  getPushEvents,
-} from "../../helpers/hook_helper.js";
+import { mountHook, simulateEvent, cleanupDOM, getPushEvents } from "../../helpers/hook_helper.js";
 import AutocompleteHook from "../../../js/hooks/chat/autocomplete_hook.js";
 
 describe("AutocompleteHook", () => {
   let hook;
-  let storage;
+  let localStorageMock;
   const originalInnerWidth = window.innerWidth;
 
   beforeEach(() => {
-    storage = mockLocalStorage();
-    hook = mountHook(AutocompleteHook, { tag: "textarea", attrs: { id: "chat-input" } });
+    localStorageMock = {
+      getItem: vi.fn(() => {
+        throw new Error("AutocompleteHook must not read localStorage");
+      }),
+      setItem: vi.fn(() => {
+        throw new Error("AutocompleteHook must not write localStorage");
+      }),
+      removeItem: vi.fn(() => {
+        throw new Error("AutocompleteHook must not remove localStorage");
+      }),
+    };
+
+    vi.stubGlobal("localStorage", localStorageMock);
+    hook = mountAutocompleteHook();
   });
 
   afterEach(() => {
     hook?.destroyed?.();
     cleanupDOM();
-    storage.restore();
+    vi.unstubAllGlobals();
     Object.defineProperty(window, "innerWidth", {
       configurable: true,
       writable: true,
       value: originalInnerWidth,
     });
   });
+
+  function mountAutocompleteHook(attrs = {}) {
+    return mountHook(AutocompleteHook, {
+      tag: "textarea",
+      attrs: {
+        id: "chat-input",
+        "data-input-history": "[]",
+        "data-recent-commands": "[]",
+        ...attrs,
+      },
+    });
+  }
 
   function setViewportWidth(width) {
     Object.defineProperty(window, "innerWidth", {
@@ -120,10 +138,20 @@ describe("AutocompleteHook", () => {
 
   describe("history navigation", () => {
     beforeEach(() => {
-      // Pre-populate persisted history via the history manager
-      storage.store["retro_hex_chat_history"] = JSON.stringify(["third", "second", "first"]);
-      hook.historyManager.load();
+      hook.historyManager.load({ history: ["third", "second", "first"] });
       hook.persistedHistory = hook.historyManager.getHistory();
+    });
+
+    it("loads initial history from server data attributes", () => {
+      hook.destroyed();
+      cleanupDOM();
+      hook = mountAutocompleteHook({
+        "data-input-history": JSON.stringify(["from-server"]),
+        "data-recent-commands": JSON.stringify(["join"]),
+      });
+
+      expect(hook.persistedHistory).toEqual(["from-server"]);
+      expect(hook.loadRecentCommands()).toEqual(["join"]);
     });
 
     it("Ctrl+Up navigates to most recent history entry", () => {
@@ -147,8 +175,7 @@ describe("AutocompleteHook", () => {
     });
 
     it("does nothing when history is empty", () => {
-      storage.store["retro_hex_chat_history"] = JSON.stringify([]);
-      hook.historyManager.load();
+      hook.historyManager.load({ history: [] });
       hook.el.value = "keep me";
       hook.historyUp();
       expect(hook.el.value).toBe("keep me");
@@ -279,6 +306,21 @@ describe("AutocompleteHook", () => {
       expect(getPushEvents(hook, "recent_commands_loaded")).toContainEqual({
         commands: ["away"],
       });
+    });
+
+    it("does not touch localStorage while recording input history", () => {
+      const form = document.createElement("form");
+      form.appendChild(hook.el);
+      document.body.appendChild(form);
+
+      hook.el.value = "/join #lobby";
+      hook.el.dispatchEvent(
+        new KeyboardEvent("keydown", { key: "Enter", bubbles: true, cancelable: true }),
+      );
+
+      expect(localStorageMock.getItem).not.toHaveBeenCalled();
+      expect(localStorageMock.setItem).not.toHaveBeenCalled();
+      expect(localStorageMock.removeItem).not.toHaveBeenCalled();
     });
   });
 

@@ -3,9 +3,9 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
 
   @moduletag :liveview_feature
 
+  alias RetroHexChat.Accounts.TrustedDevices
   alias RetroHexChat.Calls.Events, as: CallEvents
   alias RetroHexChat.Channels.Server
-  alias RetroHexChat.Chat.Schemas.UserPreference
   alias RetroHexChat.GroupCall
   alias RetroHexChat.GroupCall.Queries
   alias RetroHexChat.GroupCall.Registry
@@ -27,6 +27,24 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
     nick = register(unique_nick(prefix))
     {:ok, view, _html} = live(chat_conn(conn, nick.nickname, pre_identified: true), "/chat")
     %{nick: nick, view: view}
+  end
+
+  defp mount_trusted_identified(conn, prefix) do
+    nick = register(unique_nick(prefix))
+
+    {:ok, %{device: device, cookie_value: cookie}} =
+      TrustedDevices.remember_nick(nil, nick.nickname)
+
+    {:ok, view, _html} =
+      live(
+        chat_conn(conn, nick.nickname,
+          pre_identified: true,
+          trusted_device_cookie: cookie
+        ),
+        "/chat"
+      )
+
+    %{nick: nick, device: device, view: view}
   end
 
   defp group_call_assign(view), do: :sys.get_state(view.pid).socket.assigns.group_call
@@ -357,25 +375,27 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
              )
     end
 
-    test "pre-join loads persisted scalar conference preferences", %{conn: conn} do
-      nick = register(unique_nick("gcpp"))
+    test "pre-join loads trusted-device conference preferences", %{conn: conn} do
+      %{nick: nick, device: device, view: view} = mount_trusted_identified(conn, "gcpp")
 
-      %UserPreference{}
-      |> UserPreference.changeset(%{
-        owner_nickname: nick.nickname,
-        display_settings: %{
-          "group_call_settings" => %{
-            "media" => %{"audio" => false, "video" => false},
-            "layout" => %{
-              "mode" => "focus",
-              "self_view" => "hidden"
-            }
-          }
-        }
-      })
-      |> RetroHexChat.Repo.insert!()
-
-      {:ok, view, _html} = live(chat_conn(conn, nick.nickname, pre_identified: true), "/chat")
+      assert :ok =
+               TrustedDevices.put_device_preference(
+                 device.id,
+                 nick.nickname,
+                 "group_call_prejoin",
+                 %{
+                   "media" => %{"audio" => false, "video" => false},
+                   "layout" => %{
+                     "mode" => "focus",
+                     "self_view" => "hidden"
+                   },
+                   "device_preferences" => %{
+                     "audio_input_id" => "mic-trusted",
+                     "video_input_id" => "cam-trusted",
+                     "audio_output_id" => "out-trusted"
+                   }
+                 }
+               )
 
       prejoin = open_prejoin(view)
 
@@ -384,8 +404,42 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       assert prejoin.layout.mode == :focus
       assert prejoin.layout.self_view == :hidden
 
+      assert prejoin.device_preferences == %{
+               audio_input_id: "mic-trusted",
+               video_input_id: "cam-trusted",
+               audio_output_id: "out-trusted"
+             }
+
       refute has_element?(view, ~s([data-testid="group-call-prejoin-audio"][checked]))
       refute has_element?(view, ~s([data-testid="group-call-prejoin-video-toggle"][checked]))
+    end
+
+    test "pre-join saves media and device preferences on a trusted terminal", %{conn: conn} do
+      %{nick: nick, device: device, view: view} = mount_trusted_identified(conn, "gcps")
+
+      open_group_call(view, %{
+        "audio" => "false",
+        "video" => "true",
+        "layout_mode" => "speaker",
+        "self_view" => "pip",
+        "audio_input_id" => "mic-save",
+        "video_input_id" => "cam-save",
+        "audio_output_id" => "out-save"
+      })
+
+      assert TrustedDevices.get_device_preference(
+               device.id,
+               nick.nickname,
+               "group_call_prejoin"
+             ) == %{
+               "media" => %{"audio" => false, "video" => true},
+               "layout" => %{"mode" => "speaker", "self_view" => "pip"},
+               "device_preferences" => %{
+                 "audio_input_id" => "mic-save",
+                 "video_input_id" => "cam-save",
+                 "audio_output_id" => "out-save"
+               }
+             }
     end
 
     test "a second identified user joins the active channel call instead of creating another",

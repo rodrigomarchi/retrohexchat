@@ -19,7 +19,6 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.MediaPreview do
       phx-hook="GroupCallPreJoinHook"
       data-audio={to_string(media_enabled?(@media, :audio))}
       data-video={to_string(media_enabled?(@media, :video))}
-      data-preference-scope={preference_scope(@prejoin)}
       data-audio-input-id={device_preference(@device_preferences, :audio_input_id)}
       data-video-input-id={device_preference(@device_preferences, :video_input_id)}
       data-audio-output-id={device_preference(@device_preferences, :audio_output_id)}
@@ -70,9 +69,6 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.MediaPreview do
   end
 
   defp media_enabled?(media, key), do: Map.get(media, key, true) == true
-
-  defp preference_scope(%{user_id: user_id}) when not is_nil(user_id), do: user_id
-  defp preference_scope(_prejoin), do: nil
 
   defp device_preference(preferences, key), do: Map.get(preferences, key) || ""
 end

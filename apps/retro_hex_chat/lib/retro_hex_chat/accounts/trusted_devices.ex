@@ -14,6 +14,7 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
   alias RetroHexChat.Accounts.TrustedDevice
   alias RetroHexChat.Accounts.TrustedDeviceEvent
   alias RetroHexChat.Accounts.TrustedDeviceNick
+  alias RetroHexChat.Accounts.TrustedDevicePreference
   alias RetroHexChat.Page
   alias RetroHexChat.Repo
   alias RetroHexChat.Services.RegisteredNick
@@ -25,6 +26,8 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
   @max_events 20
   @default_page_size 50
   @disconnect_context_ttl_seconds 600
+  @preference_namespace_format ~r/^[a-z0-9][a-z0-9_.:-]{0,63}$/
+  @max_preference_settings_bytes 16_384
 
   # A bound, not a page size — see `list_devices_for_nick/2`.
   @max_devices 200
@@ -235,6 +238,44 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
 
   defp normalize_auto_login_result({:error, _reason}),
     do: {:error, dgettext("accounts", "Could not update auto-login.")}
+
+  @spec get_device_preference(integer() | String.t() | nil, String.t() | nil, String.t() | atom()) ::
+          map() | nil
+  def get_device_preference(device_id, nickname, namespace) do
+    with {:ok, namespace} <- normalize_preference_namespace(namespace),
+         {:ok, nick, device} <- active_device_nick(device_id, nickname),
+         %TrustedDevicePreference{settings: settings} <-
+           Repo.get_by(TrustedDevicePreference,
+             trusted_device_id: device.id,
+             registered_nick_id: nick.id,
+             namespace: namespace
+           ) do
+      settings || %{}
+    else
+      _missing -> nil
+    end
+  end
+
+  @spec put_device_preference(
+          integer() | String.t() | nil,
+          String.t() | nil,
+          String.t() | atom(),
+          map()
+        ) ::
+          :ok
+          | {:error,
+             :invalid_namespace
+             | :invalid_settings
+             | :settings_too_large
+             | :not_found
+             | :untrusted_device}
+  def put_device_preference(device_id, nickname, namespace, settings) do
+    with {:ok, namespace} <- normalize_preference_namespace(namespace),
+         {:ok, settings} <- normalize_preference_settings(settings),
+         {:ok, nick, device} <- active_device_nick(device_id, nickname) do
+      upsert_device_preference(device, nick, namespace, settings)
+    end
+  end
 
   @spec record_session_start(String.t(), integer() | nil, map()) ::
           {:ok, ChatDeviceSession.t()} | {:error, Ecto.Changeset.t()}
@@ -735,6 +776,92 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
       )
     )
   end
+
+  defp active_device_nick(nil, _nickname), do: {:error, :untrusted_device}
+  defp active_device_nick("", _nickname), do: {:error, :untrusted_device}
+
+  defp active_device_nick(device_id, nickname) when is_binary(device_id) do
+    case Integer.parse(device_id) do
+      {id, ""} -> active_device_nick(id, nickname)
+      _invalid -> {:error, :untrusted_device}
+    end
+  end
+
+  defp active_device_nick(device_id, nickname)
+       when is_integer(device_id) and is_binary(nickname) and nickname != "" do
+    now = DateTime.utc_now()
+
+    from(g in TrustedDeviceNick,
+      join: n in RegisteredNick,
+      on: n.id == g.registered_nick_id,
+      join: d in TrustedDevice,
+      on: d.id == g.trusted_device_id,
+      where: d.id == ^device_id,
+      where: n.nickname == ^nickname,
+      where: is_nil(g.revoked_at),
+      where: is_nil(d.revoked_at),
+      where: d.expires_at > ^now,
+      select: {n, d}
+    )
+    |> Repo.one()
+    |> case do
+      {nick, device} -> {:ok, nick, device}
+      nil -> {:error, :not_found}
+    end
+  end
+
+  defp active_device_nick(_device_id, _nickname), do: {:error, :untrusted_device}
+
+  defp upsert_device_preference(device, nick, namespace, settings) do
+    now = DateTime.utc_now()
+
+    %TrustedDevicePreference{}
+    |> TrustedDevicePreference.changeset(%{
+      trusted_device_id: device.id,
+      registered_nick_id: nick.id,
+      namespace: namespace,
+      settings: settings
+    })
+    |> Repo.insert(
+      on_conflict: [set: [settings: settings, updated_at: now]],
+      conflict_target: [:trusted_device_id, :registered_nick_id, :namespace]
+    )
+    |> case do
+      {:ok, _preference} -> :ok
+      {:error, _changeset} -> {:error, :invalid_settings}
+    end
+  end
+
+  defp normalize_preference_namespace(namespace) when is_atom(namespace) do
+    namespace
+    |> Atom.to_string()
+    |> normalize_preference_namespace()
+  end
+
+  defp normalize_preference_namespace(namespace) when is_binary(namespace) do
+    namespace = String.trim(namespace)
+
+    if Regex.match?(@preference_namespace_format, namespace) do
+      {:ok, namespace}
+    else
+      {:error, :invalid_namespace}
+    end
+  end
+
+  defp normalize_preference_namespace(_namespace), do: {:error, :invalid_namespace}
+
+  defp normalize_preference_settings(settings) when is_map(settings) do
+    with {:ok, encoded} <- Jason.encode(settings),
+         true <- byte_size(encoded) <= @max_preference_settings_bytes,
+         {:ok, normalized} <- Jason.decode(encoded) do
+      {:ok, normalized}
+    else
+      false -> {:error, :settings_too_large}
+      {:error, _reason} -> {:error, :invalid_settings}
+    end
+  end
+
+  defp normalize_preference_settings(_settings), do: {:error, :invalid_settings}
 
   defp resolve_or_create_device(cookie_value, opts) do
     case verify_cookie(cookie_value) do

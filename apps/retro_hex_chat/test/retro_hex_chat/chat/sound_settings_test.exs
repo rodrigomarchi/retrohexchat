@@ -51,6 +51,13 @@ defmodule RetroHexChat.Chat.SoundSettingsTest do
       assert settings.flash_settings.disconnect == false
       assert settings.flash_settings.buddy_offline == false
     end
+
+    @tag :unit
+    test "default mute setting is off" do
+      settings = SoundSettings.new()
+
+      refute SoundSettings.muted?(settings)
+    end
   end
 
   describe "get_sound/2 and set_sound/3" do
@@ -107,6 +114,35 @@ defmodule RetroHexChat.Chat.SoundSettingsTest do
       settings = SoundSettings.new()
       assert SoundSettings.get_sound_mappings(settings) == settings.sound_mappings
       assert SoundSettings.get_flash_settings(settings) == settings.flash_settings
+    end
+  end
+
+  describe "muted?/1 and set_muted/2" do
+    @tag :unit
+    test "missing mute flag is treated as unmuted for old in-memory settings" do
+      settings = SoundSettings.new() |> Map.delete(:muted)
+
+      refute SoundSettings.muted?(settings)
+    end
+
+    @tag :unit
+    test "sets boolean mute state without changing sound or flash mappings" do
+      settings = SoundSettings.new()
+
+      muted = SoundSettings.set_muted(settings, true)
+      assert SoundSettings.muted?(muted)
+      assert muted.sound_mappings == settings.sound_mappings
+      assert muted.flash_settings == settings.flash_settings
+
+      unmuted = SoundSettings.set_muted(muted, false)
+      refute SoundSettings.muted?(unmuted)
+    end
+
+    @tag :unit
+    test "ignores non-boolean mute updates" do
+      settings = SoundSettings.new() |> SoundSettings.set_muted(true)
+
+      assert SoundSettings.set_muted(settings, "false") == settings
     end
   end
 
@@ -174,6 +210,7 @@ defmodule RetroHexChat.Chat.SoundSettingsTest do
         SoundSettings.new()
         |> SoundSettings.set_sound(:pm, "buzz")
         |> SoundSettings.set_flash(:join, true)
+        |> SoundSettings.set_muted(true)
 
       assert :ok = SoundSettings.save(nick, settings)
 
@@ -181,6 +218,7 @@ defmodule RetroHexChat.Chat.SoundSettingsTest do
       assert loaded.sound_mappings.pm == "buzz"
       assert loaded.flash_settings.join == true
       assert loaded.flash_settings.highlight == true
+      assert SoundSettings.muted?(loaded)
     end
 
     @tag :integration
@@ -191,11 +229,28 @@ defmodule RetroHexChat.Chat.SoundSettingsTest do
       settings1 = SoundSettings.set_sound(SoundSettings.new(), :highlight, "ring")
       assert :ok = SoundSettings.save(nick, settings1)
 
-      settings2 = SoundSettings.set_sound(SoundSettings.new(), :highlight, "whoosh")
+      settings2 =
+        SoundSettings.new()
+        |> SoundSettings.set_sound(:highlight, "whoosh")
+        |> SoundSettings.set_muted(true)
+
       assert :ok = SoundSettings.save(nick, settings2)
 
       assert {:ok, loaded} = SoundSettings.load(nick)
       assert loaded.sound_mappings.highlight == "whoosh"
+      assert SoundSettings.muted?(loaded)
+    end
+
+    @tag :integration
+    test "save treats missing mute flag as false for older settings maps" do
+      nick = "SoundTestUser3"
+      insert_registered_nick(nick)
+
+      settings = SoundSettings.new() |> Map.delete(:muted)
+      assert :ok = SoundSettings.save(nick, settings)
+
+      assert {:ok, loaded} = SoundSettings.load(nick)
+      refute SoundSettings.muted?(loaded)
     end
 
     @tag :integration

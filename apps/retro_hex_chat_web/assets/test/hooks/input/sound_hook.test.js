@@ -1,19 +1,25 @@
-import {
-  mountHook,
-  simulateEvent,
-  cleanupDOM,
-  mockLocalStorage,
-} from "../../helpers/hook_helper.js";
+import { mountHook, simulateEvent, cleanupDOM } from "../../helpers/hook_helper.js";
 import SoundHook from "../../../js/hooks/input/sound_hook.js";
 
 describe("SoundHook", () => {
   let hook;
-  let storage;
-
+  let localStorageMock;
   let mockAudioCtx;
 
   beforeEach(() => {
-    storage = mockLocalStorage();
+    localStorageMock = {
+      getItem: vi.fn(() => {
+        throw new Error("SoundHook must not read localStorage");
+      }),
+      setItem: vi.fn(() => {
+        throw new Error("SoundHook must not write localStorage");
+      }),
+      removeItem: vi.fn(() => {
+        throw new Error("SoundHook must not remove localStorage");
+      }),
+    };
+
+    vi.stubGlobal("localStorage", localStorageMock);
 
     mockAudioCtx = {
       createOscillator: vi.fn(() => ({
@@ -34,31 +40,40 @@ describe("SoundHook", () => {
     vi.stubGlobal("AudioContext", function () {
       return mockAudioCtx;
     });
-    hook = mountHook(SoundHook);
   });
 
   afterEach(() => {
     cleanupDOM();
-    storage.restore();
     vi.unstubAllGlobals();
   });
+
+  function mountSoundHook(attrs = { "data-muted": "false" }) {
+    hook = mountHook(SoundHook, { attrs });
+    return hook;
+  }
 
   // ── play_sound ─────────────────────────────────────────
 
   describe("play_sound", () => {
     it("creates oscillator for known sound", () => {
+      mountSoundHook();
+
       simulateEvent(hook, "play_sound", { type: "beep" });
       expect(mockAudioCtx.createOscillator).toHaveBeenCalled();
     });
 
     it("does not play unknown sound", () => {
+      mountSoundHook();
       mockAudioCtx.createOscillator.mockClear();
+
       simulateEvent(hook, "play_sound", { type: "nonexistent" });
       expect(mockAudioCtx.createOscillator).not.toHaveBeenCalled();
     });
 
     it("does not play 'none' sound", () => {
+      mountSoundHook();
       mockAudioCtx.createOscillator.mockClear();
+
       simulateEvent(hook, "play_sound", { type: "none" });
       expect(mockAudioCtx.createOscillator).not.toHaveBeenCalled();
     });
@@ -67,18 +82,47 @@ describe("SoundHook", () => {
   // ── mute ───────────────────────────────────────────────
 
   describe("mute", () => {
-    it("does not play sound when muted", () => {
-      simulateEvent(hook, "toggle_mute", {});
+    it("reads initial mute state from server-rendered data", () => {
+      mountSoundHook({ "data-muted": "true" });
+
       expect(hook.muted).toBe(true);
+      expect(hook.__pushEvents).toEqual([]);
+      expect(localStorageMock.getItem).not.toHaveBeenCalled();
+    });
+
+    it("syncs mute state when the server patches the hook element", () => {
+      mountSoundHook();
+
+      hook.el.dataset.muted = "true";
+      hook.updated();
+
+      expect(hook.muted).toBe(true);
+    });
+
+    it("applies server mute changes without using localStorage", () => {
+      mountSoundHook();
+
+      simulateEvent(hook, "mute_state_changed", { muted: true });
+
+      expect(hook.muted).toBe(true);
+      expect(localStorageMock.setItem).not.toHaveBeenCalled();
+    });
+
+    it("ignores malformed server mute payloads", () => {
+      mountSoundHook();
+
+      simulateEvent(hook, "mute_state_changed", { muted: "true" });
+
+      expect(hook.muted).toBe(false);
+    });
+
+    it("does not play sound when muted", () => {
+      mountSoundHook();
+      simulateEvent(hook, "mute_state_changed", { muted: true });
 
       mockAudioCtx.createOscillator.mockClear();
       simulateEvent(hook, "play_sound", { type: "beep" });
       expect(mockAudioCtx.createOscillator).not.toHaveBeenCalled();
-    });
-
-    it("persists mute state to localStorage", () => {
-      simulateEvent(hook, "toggle_mute", {});
-      expect(storage.store["retro_hex_chat_mute"]).toBe("true");
     });
   });
 });

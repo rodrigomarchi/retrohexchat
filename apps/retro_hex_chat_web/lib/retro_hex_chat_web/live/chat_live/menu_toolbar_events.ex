@@ -19,6 +19,7 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
   import RetroHexChatWeb.ChatLive.Helpers,
     only: [
       cleanup_channels: 2,
+      clear_reconnect_state: 1,
       restore_session: 2,
       load_channel_messages_with_pagination: 2
     ]
@@ -40,6 +41,7 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
 
     {:halt,
      socket
+     |> clear_reconnect_state()
      |> push_event("intentional_disconnect", %{})
      |> push_navigate(to: PathHelpers.connect_path(socket))}
   end
@@ -92,6 +94,7 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
 
     {:halt,
      socket
+     |> clear_reconnect_state()
      |> push_event("intentional_disconnect", %{})
      |> push_navigate(to: PathHelpers.connect_path(socket))}
   end

@@ -30,6 +30,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
       handle_pm_send: 3,
       handle_notice_send: 4,
       safe_untrack_user: 2,
+      clear_reconnect_state: 1,
       maybe_persist_autojoin_list: 2
     ]
 
@@ -396,6 +397,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
 
     socket
     |> assign(quit_reason: quit_reason)
+    |> clear_reconnect_state()
     |> Phoenix.LiveView.push_event("intentional_disconnect", %{})
     |> push_navigate(to: PathHelpers.connect_path(socket))
   end

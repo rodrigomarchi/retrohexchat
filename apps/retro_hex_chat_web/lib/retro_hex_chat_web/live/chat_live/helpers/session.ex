@@ -18,6 +18,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
     Highlight,
     LinkPreview,
     PerformList,
+    ReconnectState,
     SoundSettings,
     URLDetector
   }
@@ -245,7 +246,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
   def play_event_sound(socket, event_type, session) do
     sound = SoundSettings.get_sound(session.sound_settings, event_type)
 
-    if sound == "none" do
+    if socket.assigns[:muted] == true or sound == "none" do
       socket
     else
       push_event(socket, "play_sound", %{type: sound})
@@ -280,8 +281,47 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
   def push_reconnect_state(socket) do
     session = socket.assigns.session
 
-    push_event(socket, "save_reconnect_state", %{
-      nickname: session.nickname,
+    snapshot = reconnect_snapshot(socket)
+
+    if session.identified do
+      case ReconnectState.save(session.nickname, snapshot) do
+        :ok ->
+          :ok
+
+        {:error, reason} ->
+          Logger.warning(
+            "Failed to persist reconnect state for #{session.nickname}: #{inspect(reason)}"
+          )
+      end
+    end
+
+    push_event(socket, "save_reconnect_state", snapshot)
+  end
+
+  @spec clear_reconnect_state(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
+  def clear_reconnect_state(socket) do
+    session = socket.assigns.session
+
+    if session.identified do
+      case ReconnectState.delete(session.nickname) do
+        :ok ->
+          :ok
+
+        {:error, reason} ->
+          Logger.warning(
+            "Failed to clear reconnect state for #{session.nickname}: #{inspect(reason)}"
+          )
+      end
+    end
+
+    socket
+  end
+
+  @spec reconnect_snapshot(Phoenix.LiveView.Socket.t()) :: map()
+  def reconnect_snapshot(socket) do
+    session = socket.assigns.session
+
+    ReconnectState.to_client_state(session.nickname, %{
       channels: session.channels,
       active_channel: session.active_channel,
       active_pm: session.active_pm,
@@ -293,7 +333,8 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
 
   @spec restore_session(Phoenix.LiveView.Socket.t(), map()) :: Phoenix.LiveView.Socket.t()
   def restore_session(socket, params) do
-    restored_nick = Map.get(params, "nickname")
+    params = ReconnectState.normalize(params)
+    restored_nick = params.nickname
     current_nick = socket.assigns.session.nickname
 
     if restored_nick != nil and restored_nick != current_nick do
@@ -308,20 +349,20 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
   end
 
   defp do_restore_session(socket, params) do
-    channels = Map.get(params, "channels", [])
-    active_channel = Map.get(params, "active_channel")
-    active_pm = Map.get(params, "active_pm")
+    channels = params.channels
+    active_channel = params.active_channel
+    active_pm = params.active_pm
 
     open_pm_tabs =
-      sanitize_open_pm_tabs(Map.get(params, "open_pm_tabs", []), socket.assigns.session.nickname)
+      sanitize_open_pm_tabs(params.open_pm_tabs, socket.assigns.session.nickname)
 
-    tab_order = TabOrder.deserialize(Map.get(params, "tab_order", []))
+    tab_order = TabOrder.deserialize(params.tab_order)
 
     # Restore silently — this path only runs on a reconnect, and surfacing a
     # "Restoring session..." line on every deploy is noise the user never asked for.
     socket =
       socket
-      |> restore_welcomed_channels(Map.get(params, "welcomed_channels", []))
+      |> restore_welcomed_channels(params.welcomed_channels)
       |> assign(
         reconnect_active_channel: active_channel,
         reconnect_active_pm: active_pm,
@@ -336,29 +377,21 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
     socket
   end
 
-  defp sanitize_open_pm_tabs(tabs, own_nick) when is_list(tabs) do
+  defp sanitize_open_pm_tabs(tabs, own_nick) do
     tabs
-    |> Enum.filter(&(is_binary(&1) and String.trim(&1) != "" and &1 != own_nick))
+    |> Enum.filter(&(String.trim(&1) != "" and &1 != own_nick))
     |> Enum.uniq()
     |> Enum.take(20)
   end
 
-  defp sanitize_open_pm_tabs(_tabs, _own_nick), do: []
-
-  defp restore_welcomed_channels(socket, channels) when is_list(channels) do
+  defp restore_welcomed_channels(socket, channels) do
     session =
-      Enum.reduce(channels, socket.assigns.session, fn
-        channel, session when is_binary(channel) ->
-          Session.add_welcomed_channel(session, channel)
-
-        _other, session ->
-          session
+      Enum.reduce(channels, socket.assigns.session, fn channel, session ->
+        Session.add_welcomed_channel(session, channel)
       end)
 
     assign(socket, session: session)
   end
-
-  defp restore_welcomed_channels(socket, _channels), do: socket
 
   # ── Highlight ──────────────────────────────────────────────
 
@@ -451,6 +484,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
 
     socket
     |> assign(quit_reason: quit_reason)
+    |> clear_reconnect_state()
     |> push_event("intentional_disconnect", %{})
     |> push_navigate(to: PathHelpers.connect_path(socket))
   end
@@ -495,7 +529,10 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
           |> Session.set_identified(true)
           |> Persistence.load_persisted_data(nickname)
 
-        socket = socket |> assign(session: session) |> rebuild_nick_color_fn(session)
+        socket =
+          socket
+          |> assign(session: session, muted: SoundSettings.muted?(session.sound_settings))
+          |> rebuild_nick_color_fn(session)
 
         # On a reconnect the identity work still runs, but the greeting is
         # suppressed — the user never left, so re-announcing it is just noise.

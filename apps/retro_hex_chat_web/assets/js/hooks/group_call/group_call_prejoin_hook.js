@@ -9,8 +9,6 @@ import {
 import { t } from "../../lib/i18n.js";
 import { log } from "../../lib/logger.js";
 
-const STORAGE_KEY = "rhc:group-call:prejoin";
-
 const GroupCallPreJoinHook = {
   mounted() {
     this.config = this._config();
@@ -20,16 +18,13 @@ const GroupCallPreJoinHook = {
     this.previewKey = null;
     this.previewPendingKey = null;
     this.previewRun = 0;
-    this.storageKey = this._storageKey();
 
     this._onChange = () => {
-      this._savePreferences();
       this._pushPreferences();
       this._startPreview();
     };
 
     this._onSubmit = () => {
-      this._savePreferences();
       this._cancelPreview();
     };
 
@@ -40,7 +35,6 @@ const GroupCallPreJoinHook = {
     this.form?.addEventListener("submit", this._onSubmit);
     this.retry?.addEventListener("click", this._onRetry);
 
-    this._loadPreferences();
     this._pushPreferences();
     this._listDevices();
     this._startPreview();
@@ -50,8 +44,6 @@ const GroupCallPreJoinHook = {
     this.config = this._config();
     this.form = this.el.closest("form");
     this._refreshElements();
-    this.storageKey = this._storageKey();
-    this._loadPreferences();
     this._startPreview();
   },
 
@@ -202,38 +194,8 @@ const GroupCallPreJoinHook = {
     return { ...base, deviceId: { exact: deviceId } };
   },
 
-  _loadPreferences() {
-    const preferences = this._readStoredPreferences();
-    if (!preferences) return;
-
-    this._setCheckbox("audio", preferences.audio);
-    this._setCheckbox("video", preferences.video);
-    this._setSelect("layout_mode", preferences.layout_mode);
-    this._setSelect("self_view", preferences.self_view);
-    this._setSelect("audio_input_id", preferences.audio_input_id);
-    this._setSelect("video_input_id", preferences.video_input_id);
-    this._setSelect("audio_output_id", preferences.audio_output_id);
-  },
-
-  _savePreferences() {
-    try {
-      window.localStorage?.setItem(this.storageKey, JSON.stringify(this._preferencesFromForm()));
-    } catch {
-      // localStorage may be unavailable in private or restricted contexts.
-    }
-  },
-
   _pushPreferences() {
     this.pushEvent(this.config.preferencesEvent, this._preferencesFromForm());
-  },
-
-  _readStoredPreferences() {
-    try {
-      const raw = window.localStorage?.getItem(this.storageKey);
-      return raw ? JSON.parse(raw) : null;
-    } catch {
-      return null;
-    }
   },
 
   _preferencesFromForm() {
@@ -260,32 +222,11 @@ const GroupCallPreJoinHook = {
     return checkbox ? checkbox.checked : defaultValue;
   },
 
-  _setCheckbox(name, value) {
-    const checkbox = this.form?.querySelector(
-      `[name="${this.config.formName}[${name}]"][type="checkbox"]`,
-    );
-
-    if (checkbox && typeof value === "boolean") {
-      checkbox.checked = value;
-    }
-  },
-
-  _setSelect(name, value) {
-    if (typeof value !== "string") return;
-    const select = this.form?.querySelector(`[name="${this.config.formName}[${name}]"]`);
-    if (select) select.value = value;
-  },
-
   _devicePayload(devices, fallbackPrefix) {
     return (devices || []).map((device, index) => ({
       id: device.deviceId || "",
       label: device.label || `${fallbackPrefix} ${index + 1}`,
     }));
-  },
-
-  _storageKey() {
-    const scope = this.el.dataset.preferenceScope || "anonymous";
-    return `${this.config.storageKey}:${scope}`;
   },
 
   _config() {
@@ -294,7 +235,6 @@ const GroupCallPreJoinHook = {
       formName: this.el.dataset.formName || "group_call_prejoin",
       devicesEvent: this.el.dataset.devicesEvent || "group_call_prejoin_devices_listed",
       preferencesEvent: this.el.dataset.preferencesEvent || "group_call_prejoin_preferences_loaded",
-      storageKey: this.el.dataset.storageKey || STORAGE_KEY,
     };
   },
 

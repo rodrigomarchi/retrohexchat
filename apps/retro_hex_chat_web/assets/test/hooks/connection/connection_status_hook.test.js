@@ -1,11 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import {
-  mountHook,
-  simulateEvent,
-  cleanupDOM,
-  mockLocalStorage,
-  getPushEvents,
-} from "../../helpers/hook_helper.js";
+import { mountHook, simulateEvent, cleanupDOM, getPushEvents } from "../../helpers/hook_helper.js";
 import ConnectionStatusHook from "../../../js/hooks/connection/connection_status_hook.js";
 import { DEFAULTS } from "../../../js/lib/connection/connection_state_machine.js";
 
@@ -34,11 +28,11 @@ function buildConnectionStatusHTML() {
 
 describe("ConnectionStatusHook", () => {
   let hook;
-  let storage;
+  let restoreLocalStorage;
 
   beforeEach(() => {
     vi.useFakeTimers();
-    storage = mockLocalStorage();
+    restoreLocalStorage = forbidLocalStorage();
 
     // Create status bar element for status bar updates
     const statusEl = document.createElement("span");
@@ -56,7 +50,7 @@ describe("ConnectionStatusHook", () => {
   afterEach(() => {
     if (hook.destroyed) hook.destroyed();
     cleanupDOM();
-    storage.restore();
+    restoreLocalStorage();
     vi.useRealTimers();
   });
 
@@ -69,30 +63,7 @@ describe("ConnectionStatusHook", () => {
       expect(statusEl.textContent).toBe("● On");
     });
 
-    it("pushes restore_session if reconnect state exists in localStorage", () => {
-      // Clean up previous mount
-      hook.destroyed();
-      cleanupDOM();
-
-      const stateData = { nickname: "rod", channels: ["#test"] };
-      storage.store["rhc_reconnect_state"] = JSON.stringify(stateData);
-
-      const statusEl = document.createElement("span");
-      statusEl.setAttribute("data-testid", "status-connection");
-      document.body.appendChild(statusEl);
-
-      hook = mountHook(ConnectionStatusHook, {
-        html: buildConnectionStatusHTML(),
-        attrs: { id: "connection-status" },
-      });
-
-      const events = getPushEvents(hook, "restore_session");
-      expect(events).toHaveLength(1);
-      expect(events[0]).toEqual(stateData);
-      expect(storage.store["rhc_reconnect_state"]).toBeUndefined();
-    });
-
-    it("does not push restore_session if no state in localStorage", () => {
+    it("does not push restore_session on mount without an in-memory snapshot", () => {
       const events = getPushEvents(hook, "restore_session");
       expect(events).toHaveLength(0);
     });
@@ -122,14 +93,13 @@ describe("ConnectionStatusHook", () => {
       expect(statusEl.textContent).toBe("● Off");
     });
 
-    it("skips disconnect when intentional_disconnect flag is set", () => {
-      storage.store["rhc_intentional_disconnect"] = "true";
+    it("skips one disconnect after intentional_disconnect event", () => {
+      simulateEvent(hook, "intentional_disconnect", {});
       hook.disconnected();
       vi.advanceTimersByTime(DEFAULTS.bannerDebounceMs + DEFAULTS.bannerToOverlayMs + 5000);
 
       const banner = hook.el.querySelector('[data-role="banner"]');
       expect(banner.classList.contains("connection-banner--visible")).toBe(false);
-      expect(storage.store["rhc_intentional_disconnect"]).toBeUndefined();
     });
   });
 
@@ -227,54 +197,90 @@ describe("ConnectionStatusHook", () => {
       expect(statusEl.textContent).toBe("● On");
     });
 
-    it("pushes restore_session if reconnect state exists", () => {
+    it("pushes restore_session once if an in-memory reconnect state exists", () => {
       hook.disconnected();
       vi.advanceTimersByTime(DEFAULTS.bannerDebounceMs);
 
-      storage.store["rhc_reconnect_state"] = JSON.stringify({ nickname: "rod", channels: ["#a"] });
+      simulateEvent(hook, "save_reconnect_state", { nickname: "rod", channels: ["#a"] });
       hook.reconnected();
 
       const events = getPushEvents(hook, "restore_session");
       expect(events).toHaveLength(1);
       expect(events[0].nickname).toBe("rod");
+
+      hook.reconnected();
+      expect(getPushEvents(hook, "restore_session")).toHaveLength(1);
     });
   });
 
   // ── server events ──────────────────────────────────────
 
   describe("server events", () => {
-    it("intentional_disconnect sets localStorage flag and removes state", () => {
-      storage.store["rhc_reconnect_state"] = JSON.stringify({ channels: ["#a"] });
+    it("intentional_disconnect clears the in-memory reconnect state", () => {
+      simulateEvent(hook, "save_reconnect_state", { channels: ["#a"] });
       simulateEvent(hook, "intentional_disconnect", {});
-      expect(storage.store["rhc_intentional_disconnect"]).toBe("true");
-      expect(storage.store["rhc_reconnect_state"]).toBeUndefined();
+
+      hook.reconnected();
+      expect(getPushEvents(hook, "restore_session")).toHaveLength(0);
     });
 
-    it("save_reconnect_state persists to localStorage", () => {
+    it("save_reconnect_state remembers a valid object in memory", () => {
       const data = { nickname: "rod", channels: ["#a", "#b"] };
       simulateEvent(hook, "save_reconnect_state", data);
-      expect(JSON.parse(storage.store["rhc_reconnect_state"])).toEqual(data);
+
+      hook.reconnected();
+      expect(getPushEvents(hook, "restore_session")).toEqual([data]);
     });
 
-    it("clear_client_state removes all rhc_ keys", () => {
-      storage.store["rhc_foo"] = "bar";
-      storage.store["rhc_baz"] = "qux";
-      storage.store["other_key"] = "keep";
+    it("save_reconnect_state ignores malformed payloads", () => {
+      simulateEvent(hook, "save_reconnect_state", "bad");
+      hook.reconnected();
+      expect(getPushEvents(hook, "restore_session")).toHaveLength(0);
+    });
 
-      // Mock Object.keys to read from store
-      const origKeys = Object.keys;
-      vi.spyOn(Object, "keys").mockImplementation((obj) => {
-        if (obj === localStorage) return origKeys.call(Object, storage.store);
-        return origKeys.call(Object, obj);
-      });
-
+    it("clear_client_state clears in-memory state only", () => {
+      simulateEvent(hook, "save_reconnect_state", { channels: ["#a"] });
       simulateEvent(hook, "clear_client_state", {});
 
-      expect(storage.store["rhc_foo"]).toBeUndefined();
-      expect(storage.store["rhc_baz"]).toBeUndefined();
-      expect(storage.store["other_key"]).toBe("keep");
-
-      vi.restoreAllMocks();
+      hook.reconnected();
+      expect(getPushEvents(hook, "restore_session")).toHaveLength(0);
     });
   });
 });
+
+function forbidLocalStorage() {
+  const original = globalThis.localStorage;
+
+  const forbidden = {
+    getItem: vi.fn(() => {
+      throw new Error("localStorage must not be used by ConnectionStatusHook");
+    }),
+    setItem: vi.fn(() => {
+      throw new Error("localStorage must not be used by ConnectionStatusHook");
+    }),
+    removeItem: vi.fn(() => {
+      throw new Error("localStorage must not be used by ConnectionStatusHook");
+    }),
+    clear: vi.fn(() => {
+      throw new Error("localStorage must not be used by ConnectionStatusHook");
+    }),
+    key: vi.fn(() => null),
+    get length() {
+      throw new Error("localStorage must not be used by ConnectionStatusHook");
+    },
+  };
+
+  Object.defineProperty(globalThis, "localStorage", {
+    value: forbidden,
+    writable: true,
+    configurable: true,
+  });
+
+  return () => {
+    Object.defineProperty(globalThis, "localStorage", {
+      value: original,
+      writable: true,
+      configurable: true,
+    });
+  };
+}

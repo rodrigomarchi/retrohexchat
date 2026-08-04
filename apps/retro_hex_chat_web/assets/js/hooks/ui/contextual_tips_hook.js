@@ -2,12 +2,13 @@
  * LiveView hook for contextual tips and progressive disclosure.
  *
  * Manages a queue of tips, shows retro-styled toast notifications,
- * persists seen state in localStorage, and handles idle detection.
+ * sends seen/suppressed state changes to the server, and handles idle detection.
  * All tip logic lives in lib/tips.js; DOM creation in lib/toast.js.
  */
 import {
   isSuppressed,
   setSuppressed,
+  loadTipsState,
   shouldShowTip,
   markTipSeen,
   markPreempted,
@@ -28,16 +29,19 @@ const ContextualTipsHook = {
     this.idleTimer = null;
     this.idleFired = false;
     this.dialogPollTimer = null;
+    this.tipsDatasetKey = null;
+    this.syncTipsFromDataset();
 
     this.handleEvent("tip_trigger", ({ tip }) => {
       if (tip === "help_used") {
-        markPreempted(tip);
+        const seenTips = markPreempted(tip);
+        if (seenTips.length > 0) {
+          this.pushEvent("tips_seen", { tips: seenTips });
+        }
         return;
       }
       this.enqueueTip(tip);
     });
-
-    this.pushEvent("tips_state_sync", { suppressed: isSuppressed() });
 
     this.startIdleTimer();
   },
@@ -46,6 +50,30 @@ const ContextualTipsHook = {
     this.clearAllTimers();
     this.removeIdleListeners();
     this.removeCurrentToast();
+  },
+
+  updated() {
+    this.syncTipsFromDataset();
+  },
+
+  syncTipsFromDataset() {
+    const raw = this.el.dataset.tipsState || "";
+
+    if (raw === this.tipsDatasetKey) return;
+
+    this.tipsDatasetKey = raw;
+    loadTipsState(this.readTipsState(raw));
+  },
+
+  readTipsState(raw) {
+    if (!raw) return {};
+
+    try {
+      const decoded = JSON.parse(raw);
+      return decoded && typeof decoded === "object" ? decoded : {};
+    } catch {
+      return {};
+    }
   },
 
   enqueueTip(tipId) {
@@ -85,7 +113,7 @@ const ContextualTipsHook = {
     const onDismiss = (checked) => {
       if (checked) {
         setSuppressed(true);
-        this.pushEvent("tips_state_sync", { suppressed: true });
+        this.pushEvent("tips_suppressed_changed", { suppressed: true });
         this.clearQueue();
       }
       this.dismissToast(tip.id);
@@ -114,7 +142,9 @@ const ContextualTipsHook = {
       this.autoDismissTimer = null;
     }
 
-    markTipSeen(tipId);
+    if (markTipSeen(tipId)) {
+      this.pushEvent("tips_seen", { tips: [tipId] });
+    }
 
     if (this.currentToast) {
       await animateOut(this.currentToast);

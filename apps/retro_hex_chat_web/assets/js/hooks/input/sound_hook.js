@@ -3,16 +3,14 @@
  *
  * Uses the Web Audio API to generate short synthesized tones.
  * Supports a catalog of 14 named sounds plus "none".
- * Respects a mute setting stored in localStorage.
+ * Respects the server-rendered mute setting.
  */
 import { SOUND_CATALOG, synthesizeSound } from "../../lib/input/sound.js";
 
 const SoundHook = {
   mounted() {
     this.audioCtx = null;
-    this.muted = localStorage.getItem("retro_hex_chat_mute") === "true";
-
-    this.pushEvent("mute_state_sync", { muted: this.muted });
+    this.syncMutedFromDataset();
 
     this.handleEvent("play_sound", ({ type }) => {
       if (!this.muted) {
@@ -20,10 +18,19 @@ const SoundHook = {
       }
     });
 
-    this.handleEvent("toggle_mute", () => {
-      this.muted = !this.muted;
-      localStorage.setItem("retro_hex_chat_mute", this.muted.toString());
+    this.handleEvent("mute_state_changed", ({ muted }) => {
+      if (typeof muted === "boolean") {
+        this.muted = muted;
+      }
     });
+  },
+
+  updated() {
+    this.syncMutedFromDataset();
+  },
+
+  syncMutedFromDataset() {
+    this.muted = this.el.dataset.muted === "true";
   },
 
   getAudioContext() {

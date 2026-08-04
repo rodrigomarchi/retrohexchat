@@ -49,6 +49,8 @@ defmodule RetroHexChatWeb.Components.UI.ChatInput do
   attr :on_change, :any, default: nil, doc: "Input change callback"
   attr :on_keydown, :any, default: nil, doc: "Keydown callback (for autocomplete, history, etc.)"
   attr :on_notice_cancel, :any, default: nil, doc: "Cancel notice composer mode"
+  attr :input_history, :list, default: []
+  attr :recent_commands, :list, default: []
 
   attr :target, :any,
     default: nil,
@@ -133,6 +135,8 @@ defmodule RetroHexChatWeb.Components.UI.ChatInput do
             phx-target={@target}
             phx-keydown={@on_keydown}
             phx-hook={@hook}
+            data-input-history={Jason.encode!(@input_history)}
+            data-recent-commands={Jason.encode!(@recent_commands)}
             data-testid="chat-input-field"
             class="h-8 w-full py-[5px] pl-1 pr-12 font-mono text-sm leading-5 bg-white border border-border shadow-retro-field resize-none outline-none"
           >{@value}</textarea>

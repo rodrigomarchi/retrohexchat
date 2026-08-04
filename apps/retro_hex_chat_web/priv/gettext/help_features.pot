@@ -68,11 +68,6 @@ msgstr ""
 msgid ") are clickable. Hover to see a tooltip with the channel name, user count, and action hint. Click to join the channel (or switch to it if already joined)."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_enhanced_history.html.heex:49
-#, elixir-autogen, elixir-format
-msgid ") are never saved to localStorage."
-msgstr ""
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:9
 #, elixir-autogen, elixir-format
 msgid ") that run sequentially on connect. Use"
@@ -3220,11 +3215,6 @@ msgstr ""
 msgid "The lag indicator in the status bar shows the round-trip latency between your browser and the server, measured every 30 seconds."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_enhanced_history.html.heex:42
-#, elixir-autogen, elixir-format
-msgid "The last 100 entries are stored in your browser's localStorage. History survives page reloads and browser restarts."
-msgstr ""
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_delete.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "The message is replaced with \"[mensagem removida]\" in italic text for all viewers. The original content is preserved in the database (soft-delete) for audit purposes."
@@ -5312,4 +5302,14 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:8
 #, elixir-autogen, elixir-format
 msgid "Your nickname, your identity state and the conversation you are reading are not repeated here — the chat window's title bar names them."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_enhanced_history.html.heex:49
+#, elixir-autogen, elixir-format
+msgid ") are filtered before history is persisted."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_enhanced_history.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "For identified registered users, the last 100 entries are stored with the account. Guests keep history only in browser memory for the current page."
 msgstr ""

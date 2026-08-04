@@ -17,6 +17,8 @@ defmodule RetroHexChatWeb.ConnCase do
 
   use ExUnit.CaseTemplate
 
+  alias RetroHexChatWeb.App.TrustedDeviceCookie
+
   using do
     quote do
       # The default endpoint for testing
@@ -49,6 +51,19 @@ defmodule RetroHexChatWeb.ConnCase do
   """
   @spec chat_conn(Plug.Conn.t(), String.t(), keyword()) :: Plug.Conn.t()
   def chat_conn(conn, nickname, opts \\ []) do
+    conn =
+      case Keyword.fetch(opts, :trusted_device_cookie) do
+        {:ok, cookie} ->
+          Plug.Conn.put_req_header(
+            conn,
+            "cookie",
+            "#{TrustedDeviceCookie.name()}=#{cookie}"
+          )
+
+        :error ->
+          conn
+      end
+
     session = %{"chat_nickname" => nickname}
 
     session =
@@ -56,6 +71,12 @@ defmodule RetroHexChatWeb.ConnCase do
         Map.put(session, "chat_pre_identified", true)
       else
         session
+      end
+
+    session =
+      case Keyword.fetch(opts, :trusted_device_id) do
+        {:ok, device_id} -> Map.put(session, "trusted_device_id", device_id)
+        :error -> session
       end
 
     Phoenix.ConnTest.init_test_session(conn, session)

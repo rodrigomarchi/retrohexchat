@@ -1,23 +1,18 @@
-import {
-  mountHook,
-  simulateEvent,
-  cleanupDOM,
-  mockLocalStorage,
-} from "../../helpers/hook_helper.js";
+import { mountHook, simulateEvent, cleanupDOM } from "../../helpers/hook_helper.js";
 import NickChangeFormHook from "../../../js/hooks/chat/nick_change_form_hook.js";
 
 describe("NickChangeFormHook", () => {
   let hook;
-  let storage;
+  let restoreLocalStorage;
 
   beforeEach(() => {
-    storage = mockLocalStorage();
+    restoreLocalStorage = forbidLocalStorage();
     hook = mountHook(NickChangeFormHook);
   });
 
   afterEach(() => {
     cleanupDOM();
-    storage.restore();
+    restoreLocalStorage();
   });
 
   it("registers a handler for submit_nick_change event", () => {
@@ -41,9 +36,47 @@ describe("NickChangeFormHook", () => {
     }).not.toThrow();
   });
 
-  it("removes rhc_reconnect_state on submit_nick_change event", () => {
-    storage.store["rhc_reconnect_state"] = JSON.stringify({ channels: ["#test"] });
-    simulateEvent(hook, "submit_nick_change", {});
-    expect(storage.store["rhc_reconnect_state"]).toBeUndefined();
+  it("does not touch browser storage on submit_nick_change event", () => {
+    const form = document.createElement("form");
+    form.id = "nick-change-session-form";
+    form.requestSubmit = vi.fn();
+    document.body.appendChild(form);
+
+    simulateEvent(hook, "submit_nick_change", {
+      previous_nickname: "old",
+      nickname: "new",
+    });
+
+    expect(form.requestSubmit).toHaveBeenCalledTimes(1);
   });
 });
+
+function forbidLocalStorage() {
+  const original = globalThis.localStorage;
+
+  const forbidden = {
+    getItem: vi.fn(() => {
+      throw new Error("localStorage must not be used by NickChangeFormHook");
+    }),
+    setItem: vi.fn(() => {
+      throw new Error("localStorage must not be used by NickChangeFormHook");
+    }),
+    removeItem: vi.fn(() => {
+      throw new Error("localStorage must not be used by NickChangeFormHook");
+    }),
+  };
+
+  Object.defineProperty(globalThis, "localStorage", {
+    value: forbidden,
+    writable: true,
+    configurable: true,
+  });
+
+  return () => {
+    Object.defineProperty(globalThis, "localStorage", {
+      value: original,
+      writable: true,
+      configurable: true,
+    });
+  };
+}

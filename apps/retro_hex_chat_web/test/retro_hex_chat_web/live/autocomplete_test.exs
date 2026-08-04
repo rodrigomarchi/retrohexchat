@@ -4,6 +4,8 @@ defmodule RetroHexChatWeb.AutocompleteTest do
   @moduletag :liveview
 
   alias RetroHexChat.Channels.{Registry, Supervisor}
+  alias RetroHexChat.Chat.InputHistory
+  alias RetroHexChat.Services.Queries
 
   setup do
     ensure_channel("#lobby")
@@ -117,6 +119,55 @@ defmodule RetroHexChatWeb.AutocompleteTest do
 
       # join should appear (marked as recent internally)
       assert html =~ "join"
+    end
+
+    test "registered identified user loads input history from backend", %{conn: conn} do
+      nick = "AutoHist#{uid()}"
+      insert_registered_nick(nick)
+
+      history =
+        InputHistory.new()
+        |> InputHistory.record_submission("from backend")
+        |> InputHistory.record_submission("/away lunch")
+
+      assert :ok = InputHistory.save(nick, history)
+
+      {:ok, view, html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
+
+      assert html =~ "data-input-history="
+      assert assigns(view).session.input_history.entries == ["/away lunch", "from backend"]
+    end
+
+    test "registered identified user submissions persist input history", %{conn: conn} do
+      nick = "AutoSave#{uid()}"
+      insert_registered_nick(nick)
+
+      {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
+
+      view
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/away lunch"})
+
+      render(view)
+
+      assert {:ok, loaded} = InputHistory.load(nick)
+      assert InputHistory.entries(loaded) == ["/away lunch"]
+      assert InputHistory.recent_commands(loaded) == ["away"]
+    end
+
+    test "sensitive submissions do not persist input history", %{conn: conn} do
+      nick = "AutoSafe#{uid()}"
+      insert_registered_nick(nick)
+
+      {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
+
+      view
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/ns identify secret"})
+
+      render(view)
+
+      assert {:error, :not_found} = InputHistory.load(nick)
     end
   end
 
@@ -291,5 +342,11 @@ defmodule RetroHexChatWeb.AutocompleteTest do
       {:ok, _pid} -> :ok
       {:error, :not_found} -> Supervisor.start_child(name)
     end
+  end
+
+  defp assigns(view), do: :sys.get_state(view.pid).socket.assigns
+
+  defp insert_registered_nick(nickname) do
+    {:ok, _} = Queries.insert_registered_nick(nickname, "password123")
   end
 end

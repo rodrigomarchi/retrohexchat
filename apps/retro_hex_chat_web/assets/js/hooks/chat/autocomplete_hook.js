@@ -29,12 +29,11 @@ const AutocompleteHook = {
     this.tabCycleState = null;
     this.editMode = false;
 
-    // Enhanced history via lib
+    // Enhanced history via lib. Durable state comes from the server; this hook
+    // keeps only an in-memory copy for fast Ctrl+Up/Ctrl+R interactions.
+    this.historyDatasetKey = null;
     this.historyManager = createHistoryManager({});
-    this.persistedHistory = this.historyManager.getHistory();
-
-    // Push recent commands to server
-    this.pushEvent("recent_commands_loaded", { commands: this.historyManager.getRecentCommands() });
+    this.syncHistoryFromDataset();
 
     // Auto-resize: mobile keeps the composer compact so autocomplete, reply and
     // syntax panels still have room above the keyboard.
@@ -325,6 +324,8 @@ const AutocompleteHook = {
   },
 
   updated() {
+    this.syncHistoryFromDataset();
+
     // LiveView's focused-input handling can re-apply a stale placeholder from
     // its cached tree on later patches; while focused, the pushed value wins.
     // Unfocused patches apply normally and become the new source of truth
@@ -417,6 +418,32 @@ const AutocompleteHook = {
   },
 
   // ── History (delegated) ────────────────────────────────
+
+  syncHistoryFromDataset() {
+    const inputHistory = this.el.dataset.inputHistory || "";
+    const recentCommands = this.el.dataset.recentCommands || "";
+    const datasetKey = `${inputHistory}\n${recentCommands}`;
+
+    if (datasetKey === this.historyDatasetKey) return;
+
+    this.historyDatasetKey = datasetKey;
+    this.historyManager.load({
+      history: this.readJsonList(inputHistory),
+      recentCommands: this.readJsonList(recentCommands),
+    });
+    this.persistedHistory = this.historyManager.getHistory();
+  },
+
+  readJsonList(raw) {
+    if (!raw) return [];
+
+    try {
+      const decoded = JSON.parse(raw);
+      return Array.isArray(decoded) ? decoded : [];
+    } catch {
+      return [];
+    }
+  },
 
   rememberSubmittedInput() {
     const value = this.inputEl.value.trimEnd();
@@ -565,7 +592,7 @@ const AutocompleteHook = {
   // ── Compat aliases (used by tests) ─────────────────────
 
   loadPersistedHistory() {
-    this.historyManager.load();
+    this.syncHistoryFromDataset();
     this.persistedHistory = this.historyManager.getHistory();
     return this.persistedHistory;
   },

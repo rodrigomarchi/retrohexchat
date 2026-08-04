@@ -5,7 +5,7 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
 
   @moduletag :liveview
 
-  alias RetroHexChat.Chat.Queries
+  alias RetroHexChat.Chat.{Queries, ReconnectState}
   alias RetroHexChat.Services.NickServ
 
   defp register_and_identify(nick) do
@@ -317,6 +317,69 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
   end
 
   describe "PM reconnect state" do
+    test "identified users persist reconnect state in the backend", %{conn: conn} do
+      nick = "RP#{uid()}"
+      register_and_identify(nick)
+
+      {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
+
+      view
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/query Bob"})
+
+      assert_push_event(view, "save_reconnect_state", %{
+        nickname: ^nick,
+        active_pm: "Bob",
+        open_pm_tabs: ["Bob"]
+      })
+
+      assert {:ok, snapshot} = ReconnectState.load(nick)
+      assert snapshot.open_pm_tabs == ["Bob"]
+      assert snapshot.active_pm == "Bob"
+      assert "#lobby" in snapshot.channels
+    end
+
+    test "mount restores persisted reconnect state without a client storage hook", %{conn: conn} do
+      nick = "RM#{uid()}"
+      register_and_identify(nick)
+
+      assert :ok =
+               ReconnectState.save(nick, %{
+                 channels: ["#lobby", "#restore"],
+                 active_channel: "#restore",
+                 welcomed_channels: ["#restore"]
+               })
+
+      {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
+
+      assert assigns(view).reconnect_active_channel == "#restore"
+
+      send(view.pid, {:execute_rejoin, 1, ["#lobby", "#restore"]})
+      render(view)
+
+      assert "#restore" in assigns(view).session.channels
+
+      send(view.pid, {:execute_rejoin, 2, ["#lobby", "#restore"]})
+      render(view)
+
+      assert assigns(view).session.active_channel == "#restore"
+    end
+
+    test "intentional quit deletes the persisted reconnect state", %{conn: conn} do
+      nick = "RQ#{uid()}"
+      register_and_identify(nick)
+      assert :ok = ReconnectState.save(nick, %{channels: ["#lobby"], active_channel: "#lobby"})
+
+      {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
+
+      view
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/quit"})
+
+      assert_push_event(view, "intentional_disconnect", %{})
+      assert {:error, :not_found} = ReconnectState.load(nick)
+    end
+
     test "opening a PM tab saves open_pm_tabs in reconnect state", %{conn: conn} do
       nick = "RS#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")

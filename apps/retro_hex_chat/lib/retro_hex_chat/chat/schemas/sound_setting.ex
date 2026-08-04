@@ -12,6 +12,7 @@ defmodule RetroHexChat.Chat.Schemas.SoundSetting do
   schema "sound_settings" do
     field :sound_mappings, :map, default: %{}
     field :flash_settings, :map, default: %{}
+    field :muted, :boolean, default: false
 
     timestamps(type: :utc_datetime_usec)
   end
@@ -19,7 +20,7 @@ defmodule RetroHexChat.Chat.Schemas.SoundSetting do
   @spec changeset(t() | Ecto.Changeset.t(), map()) :: Ecto.Changeset.t()
   def changeset(settings, attrs) do
     settings
-    |> cast(attrs, [:owner_nickname, :sound_mappings, :flash_settings])
+    |> cast(attrs, [:owner_nickname, :sound_mappings, :flash_settings, :muted])
     |> validate_required([:owner_nickname])
     |> validate_length(:owner_nickname, max: 16)
   end

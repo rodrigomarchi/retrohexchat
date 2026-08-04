@@ -28,6 +28,8 @@ const ConnectionStatusHook = {
     this._overlayCountdown = this.el.querySelector('[data-role="overlay-countdown"]');
     this._overlayAction = this.el.querySelector('[data-role="overlay-action"]');
     this._draftValue = "";
+    this._intentionalDisconnect = false;
+    this._reconnectState = null;
 
     this._overlayAction.addEventListener("click", () => this._handleActionClick());
 
@@ -44,18 +46,18 @@ const ConnectionStatusHook = {
     window.addEventListener("online", this._onBrowserOnline);
 
     this.handleEvent("intentional_disconnect", () => {
-      localStorage.setItem("rhc_intentional_disconnect", "true");
-      localStorage.removeItem("rhc_reconnect_state");
+      this._intentionalDisconnect = true;
+      this._reconnectState = null;
     });
 
     this.handleEvent("save_reconnect_state", (data) => {
-      localStorage.setItem("rhc_reconnect_state", JSON.stringify(data));
+      this._reconnectState = data && typeof data === "object" ? data : null;
     });
 
     this.handleEvent("clear_client_state", () => {
-      Object.keys(localStorage)
-        .filter((k) => k.startsWith("rhc_"))
-        .forEach((k) => localStorage.removeItem(k));
+      this._intentionalDisconnect = true;
+      this._reconnectState = null;
+      this._draftValue = "";
     });
 
     this._maybePushRestoreSession();
@@ -63,8 +65,8 @@ const ConnectionStatusHook = {
   },
 
   disconnected() {
-    if (localStorage.getItem("rhc_intentional_disconnect") === "true") {
-      localStorage.removeItem("rhc_intentional_disconnect");
+    if (this._intentionalDisconnect) {
+      this._intentionalDisconnect = false;
       return;
     }
     this._handleConnectionLost();
@@ -215,16 +217,11 @@ const ConnectionStatusHook = {
   },
 
   _maybePushRestoreSession() {
-    const raw = localStorage.getItem("rhc_reconnect_state");
-    if (!raw) return;
+    if (!this._reconnectState) return;
 
-    try {
-      const state = JSON.parse(raw);
-      localStorage.removeItem("rhc_reconnect_state");
-      this.pushEvent("restore_session", state);
-    } catch {
-      localStorage.removeItem("rhc_reconnect_state");
-    }
+    const state = this._reconnectState;
+    this._reconnectState = null;
+    this.pushEvent("restore_session", state);
   },
 };
 

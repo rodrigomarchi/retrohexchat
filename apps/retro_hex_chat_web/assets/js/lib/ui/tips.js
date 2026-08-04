@@ -1,9 +1,9 @@
 import { t } from "../i18n.js";
 /**
- * Contextual tip state management via localStorage.
+ * Contextual tip state management.
  *
- * Pure functions for tracking which tips have been seen, global
- * suppression state, and tip definitions. No DOM access.
+ * Pure functions for tracking which tips have been seen, global suppression
+ * state, and tip definitions. No DOM or browser storage access.
  */
 
 export const TIP_IDS = {
@@ -29,70 +29,56 @@ export const TIPS = [
   },
 ];
 
-export const STORAGE_KEYS = {
-  SEEN: "retro_hex_chat_tips_seen",
-  SUPPRESSED: "retro_hex_chat_tips_suppressed",
-  SUPPRESSED_BACKUP: "retro_hex_chat_tips_suppressed_backup",
-};
-
 export const AUTO_DISMISS_MS = 8000;
 export const QUEUE_GAP_MS = 2000;
 export const IDLE_TIMEOUT_MS = 30000;
 
+let seenTips = {};
+let suppressed = false;
+
 /**
- * Read the seen-tips map from localStorage.
- * @returns {Object} Map of tipId → true
+ * Load a server-provided state snapshot into memory.
+ * @param {{seen_tips?: string[], suppressed?: boolean}} state
  */
-function getSeenMap() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEYS.SEEN);
-    return raw ? JSON.parse(raw) : {};
-  } catch {
-    return {};
+export function loadTipsState(state = {}) {
+  seenTips = {};
+
+  if (Array.isArray(state.seen_tips)) {
+    for (const tipId of state.seen_tips) {
+      if (isKnownTip(tipId)) {
+        seenTips[tipId] = true;
+      }
+    }
   }
+
+  suppressed = state.suppressed === true;
 }
 
 /**
- * Write the seen-tips map to localStorage.
- * Gracefully handles storage-full errors.
- * @param {Object} map
+ * Return the in-memory state in the backend wire format.
+ * @returns {{seen_tips: string[], suppressed: boolean}}
  */
-function setSeenMap(map) {
-  try {
-    localStorage.setItem(STORAGE_KEYS.SEEN, JSON.stringify(map));
-  } catch {
-    // Storage full — silently skip
-  }
+export function tipsStateSnapshot() {
+  return {
+    seen_tips: Object.keys(seenTips),
+    suppressed,
+  };
 }
 
 /**
  * Check if tips are globally suppressed.
- * Checks both primary and backup keys for resilience.
  * @returns {boolean}
  */
 export function isSuppressed() {
-  return (
-    localStorage.getItem(STORAGE_KEYS.SUPPRESSED) === "true" ||
-    localStorage.getItem(STORAGE_KEYS.SUPPRESSED_BACKUP) === "true"
-  );
+  return suppressed;
 }
 
 /**
- * Set or clear global suppression in both primary and backup keys.
+ * Set or clear global suppression in memory.
  * @param {boolean} value
  */
 export function setSuppressed(value) {
-  try {
-    if (value) {
-      localStorage.setItem(STORAGE_KEYS.SUPPRESSED, "true");
-      localStorage.setItem(STORAGE_KEYS.SUPPRESSED_BACKUP, "true");
-    } else {
-      localStorage.removeItem(STORAGE_KEYS.SUPPRESSED);
-      localStorage.removeItem(STORAGE_KEYS.SUPPRESSED_BACKUP);
-    }
-  } catch {
-    // Storage full — silently skip
-  }
+  suppressed = value === true;
 }
 
 /**
@@ -101,18 +87,19 @@ export function setSuppressed(value) {
  * @returns {boolean}
  */
 export function isTipSeen(tipId) {
-  const map = getSeenMap();
-  return map[tipId] === true;
+  return seenTips[tipId] === true;
 }
 
 /**
- * Mark a tip as seen in localStorage.
+ * Mark a tip as seen in memory.
  * @param {string} tipId
+ * @returns {boolean} true when state changed
  */
 export function markTipSeen(tipId) {
-  const map = getSeenMap();
-  map[tipId] = true;
-  setSeenMap(map);
+  if (!isKnownTip(tipId)) return false;
+  if (seenTips[tipId] === true) return false;
+  seenTips[tipId] = true;
+  return true;
 }
 
 /**
@@ -130,13 +117,20 @@ export function shouldShowTip(tipId) {
  * Mark tips preempted by the given action as seen.
  * E.g., "help_used" preempts "idle_help".
  * @param {string} actionId
+ * @returns {string[]} Tip IDs that became seen
  */
 export function markPreempted(actionId) {
+  const marked = [];
+
   for (const tip of TIPS) {
     if (tip.preemptedBy === actionId) {
-      markTipSeen(tip.id);
+      if (markTipSeen(tip.id)) {
+        marked.push(tip.id);
+      }
     }
   }
+
+  return marked;
 }
 
 /**
@@ -152,7 +146,10 @@ export function getTipById(tipId) {
  * Clear all seen state (for testing/debugging).
  */
 export function resetAllTips() {
-  localStorage.removeItem(STORAGE_KEYS.SEEN);
-  localStorage.removeItem(STORAGE_KEYS.SUPPRESSED);
-  localStorage.removeItem(STORAGE_KEYS.SUPPRESSED_BACKUP);
+  seenTips = {};
+  suppressed = false;
+}
+
+function isKnownTip(tipId) {
+  return TIPS.some((tip) => tip.id === tipId);
 }

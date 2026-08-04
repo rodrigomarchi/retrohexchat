@@ -44,6 +44,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
   import RetroHexChatWeb.Components.UI.HistorySearch
   import RetroHexChatWeb.Components.UI.TypingIndicator
 
+  alias RetroHexChat.Chat.InputHistory
   alias RetroHexChat.Commands.{Autocomplete, CommandSyntax, Registry}
   alias RetroHexChatWeb.App.ChatHelpers
   alias RetroHexChatWeb.ChatLive.Components.EmojiPickerDialog
@@ -227,6 +228,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
 
     socket
     |> push_placeholder_change(placeholder)
+    |> maybe_seed_input_history(session.input_history)
     |> assign(
       nickname: session.nickname,
       channels: session.channels,
@@ -322,6 +324,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
           target={@myself}
           hook="AutocompleteHook"
           wrapper_hook="CharCounterHook"
+          input_history={@command_history}
+          recent_commands={@recent_commands}
           autofocus
         >
           <:toolbar_buttons :if={@capabilities.formatting_toolbar}>
@@ -348,9 +352,19 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
   defp dispatch_and_reset(socket, input) do
     submitted = input_for_mode(socket, input)
     reply_to = socket.assigns.reply_to
-    history = [submitted | socket.assigns.command_history] |> Enum.take(50)
+
+    current_history =
+      InputHistory.from_lists(socket.assigns.command_history, socket.assigns.recent_commands)
+
+    input_history = InputHistory.record_submission(current_history, submitted)
+    history = InputHistory.entries(input_history)
+    recent_commands = InputHistory.recent_commands(input_history)
 
     if socket.assigns.notice_target, do: send(self(), {:composer_notice_active, false})
+
+    if input_history != current_history,
+      do: send(self(), {:composer_input_history, input_history})
+
     send(self(), {:composer_dispatch, submitted, reply_to})
 
     socket
@@ -360,6 +374,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
       input_error: nil,
       reply_to: nil,
       command_history: history,
+      recent_commands: recent_commands,
       history_index: -1,
       autocomplete_visible: false,
       autocomplete_results: [],
@@ -367,6 +382,17 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
       syntax_tooltip: nil
     )
     |> push_event("clear_input", %{})
+  end
+
+  defp maybe_seed_input_history(socket, input_history) do
+    if socket.assigns.command_history == [] and socket.assigns.recent_commands == [] do
+      assign(socket,
+        command_history: InputHistory.entries(input_history),
+        recent_commands: InputHistory.recent_commands(input_history)
+      )
+    else
+      socket
+    end
   end
 
   defp handle_empty_submit(socket) do

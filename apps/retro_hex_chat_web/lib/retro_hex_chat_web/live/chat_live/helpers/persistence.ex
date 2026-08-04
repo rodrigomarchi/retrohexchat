@@ -10,10 +10,12 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Persistence do
     AliasList,
     AutoJoinList,
     AutoRespondRules,
+    ContextualTips,
     CustomMenus,
     FloodProtection,
     HighlightWords,
     IgnoreList,
+    InputHistory,
     PerformList,
     Queries,
     SoundSettings,
@@ -92,6 +94,16 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Persistence do
     socket
   end
 
+  @spec maybe_persist_input_history(Phoenix.LiveView.Socket.t(), Session.t()) ::
+          Phoenix.LiveView.Socket.t()
+  def maybe_persist_input_history(socket, session) do
+    if session.identified do
+      Task.start(fn -> InputHistory.save(session.nickname, session.input_history) end)
+    end
+
+    socket
+  end
+
   @spec maybe_persist_aliases(Phoenix.LiveView.Socket.t(), Session.t()) ::
           Phoenix.LiveView.Socket.t()
   def maybe_persist_aliases(socket, session) do
@@ -135,6 +147,8 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Persistence do
     |> load_if_found(IgnoreList.load(nick), &Session.set_ignore_list/2)
     |> load_if_found(PerformList.load(nick), &Session.set_perform_list/2)
     |> load_if_found(AutoJoinList.load(nick), &Session.set_autojoin_list/2)
+    |> load_if_found(ContextualTips.load(nick), &Session.set_contextual_tips/2)
+    |> load_if_found(InputHistory.load(nick), &Session.set_input_history/2)
     |> load_if_found(FloodProtection.load(nick), &Session.set_flood_protection/2)
     |> load_if_found(SoundSettings.load(nick), &Session.set_sound_settings/2)
     |> load_if_found(UserBio.load(nick), &Session.set_bio/2)

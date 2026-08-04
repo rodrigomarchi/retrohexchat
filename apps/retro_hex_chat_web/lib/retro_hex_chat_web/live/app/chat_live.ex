@@ -58,7 +58,9 @@ defmodule RetroHexChatWeb.App.ChatLive do
   alias RetroHexChat.Chat.{
     DuplicateTracker,
     FloodTracker,
-    KeyBindings
+    KeyBindings,
+    ReconnectState,
+    SoundSettings
   }
 
   alias RetroHexChat.Presence.{Tracker, WhowasCache}
@@ -141,9 +143,10 @@ defmodule RetroHexChatWeb.App.ChatLive do
       {:user_connected, %{nickname: nickname}}
     )
 
-    reconnecting? = connect_params["reconnect"] == true
     previous_nickname = Map.get(socket.assigns.flash, "nick_changed_from")
     pre_identified = http_session["chat_pre_identified"] == true
+    backend_reconnect_state = load_reconnect_state(nickname, pre_identified)
+    reconnecting? = backend_reconnect_state != nil
     join_channel = params["join"]
 
     ChatLive.Helpers.safe_track_user("presence:global", nickname)
@@ -163,6 +166,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
       |> ChatLive.Helpers.maybe_join_channel(join_channel)
       |> maybe_broadcast_nick_changed(previous_nickname, nickname)
       |> ChatLive.Helpers.maybe_start_nickserv_timer(nickname, pre_identified, reconnecting?)
+      |> maybe_restore_reconnect_state(backend_reconnect_state)
       |> ChatLive.Helpers.maybe_trigger_perform()
       |> ChatLive.P2PSessionEvents.rehydrate()
       |> ChatLive.GroupCallEvents.rehydrate()
@@ -174,7 +178,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
       push_initial_preferences(socket)
     else
       socket
-      |> ChatLive.Helpers.play_event_sound(:connect, session)
+      |> ChatLive.Helpers.play_event_sound(:connect, socket.assigns.session)
       |> maybe_show_motd()
       |> show_welcome_message()
       |> show_chanserv_announcement()
@@ -362,6 +366,15 @@ defmodule RetroHexChatWeb.App.ChatLive do
   # on this LiveView.
 
   @impl true
+  def handle_info({:composer_input_history, input_history}, socket) do
+    session = Session.set_input_history(socket.assigns.session, input_history)
+
+    {:noreply,
+     socket
+     |> assign(session: session)
+     |> ChatLive.Helpers.maybe_persist_input_history(session)}
+  end
+
   def handle_info({:composer_dispatch, text, reply_to}, socket) do
     {:noreply, ChatLive.CoreEvents.dispatch_composer_input(socket, text, reply_to)}
   end
@@ -549,6 +562,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
     {:noreply,
      socket
+     |> ChatLive.Helpers.clear_reconnect_state()
      |> Phoenix.LiveView.push_event("intentional_disconnect", %{})
      |> Phoenix.LiveView.redirect(to: path)}
   end
@@ -631,6 +645,21 @@ defmodule RetroHexChatWeb.App.ChatLive do
   end
 
   defp normalize_trusted_device_id(_id), do: nil
+
+  defp load_reconnect_state(nickname, true) do
+    case ReconnectState.load(nickname) do
+      {:ok, snapshot} -> snapshot
+      {:error, :not_found} -> nil
+    end
+  end
+
+  defp load_reconnect_state(_nickname, _pre_identified), do: nil
+
+  defp maybe_restore_reconnect_state(socket, nil), do: socket
+
+  defp maybe_restore_reconnect_state(socket, snapshot) do
+    ChatLive.Helpers.restore_session(socket, snapshot)
+  end
 
   # ── Hook dispatch ─────────────────────────────────────────────
   # Ordered list of event hook functions. Used by both attach_all_hooks/1
@@ -831,7 +860,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
       flood_tracker: FloodTracker.new(),
       auto_ignore_state: %{active: %{}, cooldowns: %{}},
       show_nicklist: true,
-      muted: false,
+      muted: SoundSettings.muted?(session.sound_settings),
       muted_channels: MapSet.new(),
       flash_channels: MapSet.new(),
       disconnected_channels: MapSet.new(),

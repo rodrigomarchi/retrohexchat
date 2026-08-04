@@ -16,6 +16,7 @@ defmodule RetroHexChatWeb.ChatLive.AccountEvents do
   use Gettext, backend: RetroHexChatWeb.Gettext
 
   alias RetroHexChat.Accounts.Session
+  alias RetroHexChat.Chat.SoundSettings
   alias RetroHexChat.Services.NickServ
   alias RetroHexChatWeb.ChatLive.CommandDispatch
   alias RetroHexChatWeb.ChatLive.Components.AccountDialog
@@ -135,7 +136,11 @@ defmodule RetroHexChatWeb.ChatLive.AccountEvents do
       |> maybe_load_persisted_data(session.nickname, identified, was_identified)
 
     socket
-    |> assign(session: session, account_registered: registered)
+    |> assign(
+      session: session,
+      account_registered: registered,
+      muted: SoundSettings.muted?(session.sound_settings)
+    )
     |> maybe_rebuild_nick_color_fn(session, identified, was_identified)
   end
 

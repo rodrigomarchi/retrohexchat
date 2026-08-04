@@ -9,6 +9,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
 
   @moduletag :liveview_feature
 
+  alias RetroHexChat.Accounts.TrustedDevices
   alias RetroHexChat.Calls.Events, as: CallEvents
   alias RetroHexChat.Chat.Queries, as: ChatQueries
   alias RetroHexChat.Lobby
@@ -42,15 +43,43 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
     nick
   end
 
-  defp mount_pair(conn, nick_a, nick_b) do
+  defp mount_pair(conn, nick_a, nick_b, opts \\ []) do
     a = register(nick_a)
     b = register(nick_b)
+    trusted_a = maybe_remember_device(a, Keyword.get(opts, :trusted_a, false))
+    trusted_b = maybe_remember_device(b, Keyword.get(opts, :trusted_b, false))
 
-    {:ok, view_a, _} = live(chat_conn(conn, nick_a, pre_identified: true), "/chat")
-    {:ok, view_b, _} = live(chat_conn(conn, nick_b, pre_identified: true), "/chat")
+    {:ok, view_a, _} =
+      live(chat_conn(conn, nick_a, chat_conn_opts(trusted_a)), "/chat")
 
-    %{a: a, b: b, view_a: view_a, view_b: view_b}
+    {:ok, view_b, _} =
+      live(chat_conn(conn, nick_b, chat_conn_opts(trusted_b)), "/chat")
+
+    %{
+      a: a,
+      b: b,
+      device_a: trusted_device(trusted_a),
+      device_b: trusted_device(trusted_b),
+      view_a: view_a,
+      view_b: view_b
+    }
   end
+
+  defp maybe_remember_device(nick, true) do
+    {:ok, result} = TrustedDevices.remember_nick(nil, nick.nickname)
+    result
+  end
+
+  defp maybe_remember_device(_nick, false), do: nil
+
+  defp chat_conn_opts(nil), do: [pre_identified: true]
+
+  defp chat_conn_opts(%{cookie_value: cookie}) do
+    [pre_identified: true, trusted_device_cookie: cookie]
+  end
+
+  defp trusted_device(%{device: device}), do: device
+  defp trusted_device(nil), do: nil
 
   defp p2p_assigns(view), do: :sys.get_state(view.pid).socket.assigns.p2p_session
 
@@ -381,6 +410,70 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
                video_input_id: "cam-1",
                audio_output_id: "out-1"
              }
+    end
+
+    test "trusted terminal setup loads and saves P2P media preferences", %{conn: conn} do
+      previous_turn_listener_count = Application.get_env(:retro_hex_chat, :turn_listener_count)
+      Application.put_env(:retro_hex_chat, :turn_listener_count, 1)
+
+      on_exit(fn ->
+        Application.put_env(:retro_hex_chat, :turn_listener_count, previous_turn_listener_count)
+      end)
+
+      ctx = mount_pair(conn, "p2ptd#{uid()}", "p2pte#{uid()}", trusted_b: true)
+
+      assert :ok =
+               TrustedDevices.put_device_preference(
+                 ctx.device_b.id,
+                 ctx.b.nickname,
+                 "p2p_setup",
+                 %{
+                   "media" => %{"audio" => false, "video" => true},
+                   "turn_only" => true,
+                   "device_preferences" => %{
+                     "audio_input_id" => "stored-mic",
+                     "video_input_id" => "stored-cam",
+                     "audio_output_id" => "stored-out"
+                   }
+                 }
+               )
+
+      session = invite(ctx)
+
+      render_click(ctx.view_b, "p2p_accept_invite", %{"token" => session.token})
+      setup = :sys.get_state(ctx.view_b.pid).socket.assigns.p2p_setup
+
+      refute setup.media.audio
+      assert setup.media.video
+      assert setup.turn_only
+
+      assert setup.device_preferences == %{
+               audio_input_id: "stored-mic",
+               video_input_id: "stored-cam",
+               audio_output_id: "stored-out"
+             }
+
+      render_submit(ctx.view_b, "p2p_setup_accept", %{
+        "p2p_setup" => %{
+          "audio" => "true",
+          "video" => "false",
+          "audio_input_id" => "fresh-mic",
+          "video_input_id" => "fresh-cam",
+          "audio_output_id" => "fresh-out",
+          "turn_only" => "false"
+        }
+      })
+
+      assert TrustedDevices.get_device_preference(ctx.device_b.id, ctx.b.nickname, "p2p_setup") ==
+               %{
+                 "media" => %{"audio" => true, "video" => false},
+                 "turn_only" => false,
+                 "device_preferences" => %{
+                   "audio_input_id" => "fresh-mic",
+                   "video_input_id" => "fresh-cam",
+                   "audio_output_id" => "fresh-out"
+                 }
+               }
     end
   end
 

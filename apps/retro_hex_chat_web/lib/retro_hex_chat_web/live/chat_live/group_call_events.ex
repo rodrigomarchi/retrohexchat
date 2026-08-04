@@ -13,14 +13,13 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   use Gettext, backend: RetroHexChatWeb.Gettext
 
   alias Phoenix.LiveView.Socket
+  alias RetroHexChat.Accounts.TrustedDevices
   alias RetroHexChat.Calls.Events, as: CallEvents
   alias RetroHexChat.Channels.Membership
   alias RetroHexChat.Channels.Policy, as: ChannelPolicy
   alias RetroHexChat.Channels.Server
-  alias RetroHexChat.Chat.Schemas.UserPreference
   alias RetroHexChat.GroupCall
   alias RetroHexChat.GroupCall.JoinToken
-  alias RetroHexChat.Repo
   alias RetroHexChatWeb.App.GroupCallStats
   alias RetroHexChatWeb.App.SessionHelpers
   alias RetroHexChatWeb.ChatLive.Components.GroupCallConfirmDialog
@@ -28,6 +27,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   alias RetroHexChatWeb.ChatLive.Windows
 
   @window_id "group-call"
+  @prejoin_preference_namespace "group_call_prejoin"
   @layout_modes ~w(auto grid focus sidebar speaker)
   @self_view_cycle [:tile, :pip, :hidden]
 
@@ -795,7 +795,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   defp open_prejoin(socket, channel_name, user_id) do
     preferences =
       socket.assigns[:group_call_prejoin_preferences] ||
-        load_prejoin_preferences(socket.assigns.session.nickname) ||
+        load_prejoin_preferences(socket) ||
         default_prejoin_preferences()
 
     assign(socket,
@@ -902,7 +902,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
     if is_binary(token) and is_integer(user_id) do
       preferences =
         socket.assigns[:group_call_prejoin_preferences] ||
-          load_prejoin_preferences(nickname) ||
+          load_prejoin_preferences(socket) ||
           default_prejoin_preferences()
 
       join_token = JoinToken.sign(token, channel_name, user_id, nickname)
@@ -2277,47 +2277,39 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   defp preference_value(nil, fallback), do: fallback
   defp preference_value(value, _fallback), do: value
 
-  defp load_prejoin_preferences(nickname) when is_binary(nickname) do
-    with %UserPreference{display_settings: settings} <- Repo.get(UserPreference, nickname),
-         persisted when is_map(persisted) <- Map.get(settings || %{}, "group_call_settings") do
+  defp load_prejoin_preferences(%{assigns: %{session: %{nickname: nickname}}} = socket) do
+    with persisted when is_map(persisted) <-
+           TrustedDevices.get_device_preference(
+             socket.assigns[:trusted_device_id],
+             nickname,
+             @prejoin_preference_namespace
+           ) do
       normalize_prejoin_preferences(persisted)
     else
       _missing -> nil
     end
   end
 
-  defp load_prejoin_preferences(_nickname), do: nil
+  defp load_prejoin_preferences(_socket), do: nil
 
-  defp maybe_save_prejoin_preferences(socket, preferences) do
-    nickname = socket.assigns.session.nickname
+  defp maybe_save_prejoin_preferences(
+         %{assigns: %{session: %{nickname: nickname}}} = socket,
+         preferences
+       ) do
     safe_preferences = persistable_prejoin_preferences(preferences)
 
-    if is_binary(nickname) do
-      Task.start(fn -> save_prejoin_preferences(nickname, safe_preferences) end)
-    end
+    _ =
+      TrustedDevices.put_device_preference(
+        socket.assigns[:trusted_device_id],
+        nickname,
+        @prejoin_preference_namespace,
+        safe_preferences
+      )
 
     socket
   end
 
-  defp save_prejoin_preferences(nickname, safe_preferences) do
-    case Repo.get(UserPreference, nickname) do
-      nil ->
-        %UserPreference{}
-        |> UserPreference.changeset(%{
-          owner_nickname: nickname,
-          display_settings: %{"group_call_settings" => safe_preferences}
-        })
-        |> Repo.insert()
-
-      pref ->
-        current = pref.display_settings || %{}
-        updated = Map.put(current, "group_call_settings", safe_preferences)
-
-        pref
-        |> UserPreference.changeset(%{display_settings: updated})
-        |> Repo.update()
-    end
-  end
+  defp maybe_save_prejoin_preferences(socket, _preferences), do: socket
 
   defp persistable_prejoin_preferences(preferences) do
     preferences = normalize_prejoin_preferences(preferences)
@@ -2330,6 +2322,11 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
       "layout" => %{
         "mode" => Atom.to_string(preferences.layout.mode),
         "self_view" => Atom.to_string(preferences.layout.self_view)
+      },
+      "device_preferences" => %{
+        "audio_input_id" => preferences.device_preferences.audio_input_id,
+        "video_input_id" => preferences.device_preferences.video_input_id,
+        "audio_output_id" => preferences.device_preferences.audio_output_id
       }
     }
   end

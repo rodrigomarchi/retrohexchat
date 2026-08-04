@@ -39,6 +39,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers do
   defdelegate maybe_persist_ignore_list(socket, session), to: __MODULE__.Persistence
   defdelegate maybe_persist_perform_list(socket, session), to: __MODULE__.Persistence
   defdelegate maybe_persist_autojoin_list(socket, session), to: __MODULE__.Persistence
+  defdelegate maybe_persist_input_history(socket, session), to: __MODULE__.Persistence
   defdelegate maybe_persist_aliases(socket, session), to: __MODULE__.Persistence
   defdelegate maybe_persist_custom_menus(socket, session), to: __MODULE__.Persistence
   defdelegate maybe_persist_autorespond_rules(socket, session), to: __MODULE__.Persistence
@@ -137,6 +138,8 @@ defmodule RetroHexChatWeb.ChatLive.Helpers do
     to: __MODULE__.Session
 
   defdelegate push_reconnect_state(socket), to: __MODULE__.Session
+  defdelegate clear_reconnect_state(socket), to: __MODULE__.Session
+  defdelegate reconnect_snapshot(socket), to: __MODULE__.Session
   defdelegate restore_session(socket, params), to: __MODULE__.Session
   defdelegate maybe_highlight(payload, session), to: __MODULE__.Session
   defdelegate handle_nick_change(socket, new_nick), to: __MODULE__.Session

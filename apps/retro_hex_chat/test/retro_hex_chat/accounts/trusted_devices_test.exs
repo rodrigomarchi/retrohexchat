@@ -2,6 +2,7 @@ defmodule RetroHexChat.Accounts.TrustedDevicesTest do
   use RetroHexChat.DataCase, async: false
 
   alias RetroHexChat.Accounts.ChatDeviceSession
+  alias RetroHexChat.Accounts.TrustedDevice
   alias RetroHexChat.Accounts.TrustedDevices
   alias RetroHexChat.Repo
   alias RetroHexChat.Services.Queries
@@ -214,6 +215,141 @@ defmodule RetroHexChat.Accounts.TrustedDevicesTest do
       assert session_row.color_depth == 30
       assert session_row.cores == 12
       assert session_row.touch == false
+    end
+  end
+
+  describe "device-scoped preferences" do
+    test "stores and reloads settings for a remembered nick on the current terminal" do
+      nick = nick("Pref")
+      {:ok, _} = Queries.insert_registered_nick(nick, "secret123")
+      {:ok, %{device: device}} = TrustedDevices.remember_nick(nil, nick, actor_nickname: nick)
+
+      settings = %{
+        media: %{audio: false, video: true},
+        device_preferences: %{
+          audio_input_id: "mic-1",
+          video_input_id: "cam-1",
+          audio_output_id: "out-1"
+        }
+      }
+
+      assert :ok =
+               TrustedDevices.put_device_preference(
+                 device.id,
+                 nick,
+                 "group_call_prejoin",
+                 settings
+               )
+
+      assert TrustedDevices.get_device_preference(device.id, nick, "group_call_prejoin") == %{
+               "media" => %{"audio" => false, "video" => true},
+               "device_preferences" => %{
+                 "audio_input_id" => "mic-1",
+                 "video_input_id" => "cam-1",
+                 "audio_output_id" => "out-1"
+               }
+             }
+    end
+
+    test "updates the same namespace without leaking across nicks or namespaces" do
+      first = nick("PrefA")
+      second = nick("PrefB")
+      {:ok, _} = Queries.insert_registered_nick(first, "secret123")
+      {:ok, _} = Queries.insert_registered_nick(second, "secret123")
+
+      {:ok, %{device: device, cookie_value: cookie}} =
+        TrustedDevices.remember_nick(nil, first, actor_nickname: first)
+
+      {:ok, %{device: same_device}} =
+        TrustedDevices.remember_nick(cookie, second, actor_nickname: second)
+
+      assert same_device.id == device.id
+
+      assert :ok =
+               TrustedDevices.put_device_preference(device.id, first, "p2p_setup", %{
+                 media: %{audio: true, video: false}
+               })
+
+      assert :ok =
+               TrustedDevices.put_device_preference(device.id, second, "p2p_setup", %{
+                 media: %{audio: false, video: true}
+               })
+
+      assert :ok =
+               TrustedDevices.put_device_preference(device.id, first, "group_call_prejoin", %{
+                 layout: %{mode: "focus"}
+               })
+
+      assert :ok =
+               TrustedDevices.put_device_preference(device.id, first, "p2p_setup", %{
+                 media: %{audio: false, video: false}
+               })
+
+      assert TrustedDevices.get_device_preference(device.id, first, "p2p_setup") ==
+               %{"media" => %{"audio" => false, "video" => false}}
+
+      assert TrustedDevices.get_device_preference(device.id, second, "p2p_setup") ==
+               %{"media" => %{"audio" => false, "video" => true}}
+
+      assert TrustedDevices.get_device_preference(device.id, first, "group_call_prejoin") ==
+               %{"layout" => %{"mode" => "focus"}}
+    end
+
+    test "does not persist preferences for missing, revoked, expired, or ungranted terminals" do
+      nick = nick("PrefStop")
+      other = nick("PrefOther")
+      {:ok, _} = Queries.insert_registered_nick(nick, "secret123")
+      {:ok, _} = Queries.insert_registered_nick(other, "secret123")
+      {:ok, %{device: device}} = TrustedDevices.remember_nick(nil, nick, actor_nickname: nick)
+
+      assert {:error, :untrusted_device} =
+               TrustedDevices.put_device_preference(nil, nick, "p2p_setup", %{})
+
+      assert TrustedDevices.get_device_preference(nil, nick, "p2p_setup") == nil
+
+      assert {:error, :not_found} =
+               TrustedDevices.put_device_preference(device.id, other, "p2p_setup", %{})
+
+      assert TrustedDevices.get_device_preference(device.id, other, "p2p_setup") == nil
+
+      assert :ok = TrustedDevices.revoke_device_for_nick(nick, device.id, nick)
+
+      assert {:error, :not_found} =
+               TrustedDevices.put_device_preference(device.id, nick, "p2p_setup", %{})
+
+      assert TrustedDevices.get_device_preference(device.id, nick, "p2p_setup") == nil
+
+      fresh = nick("PrefExp")
+      {:ok, _} = Queries.insert_registered_nick(fresh, "secret123")
+
+      {:ok, %{device: expired_device}} =
+        TrustedDevices.remember_nick(nil, fresh, actor_nickname: fresh)
+
+      expired_device
+      |> TrustedDevice.changeset(%{
+        expires_at: DateTime.add(DateTime.utc_now(), -1, :second)
+      })
+      |> Repo.update!()
+
+      assert {:error, :not_found} =
+               TrustedDevices.put_device_preference(expired_device.id, fresh, "p2p_setup", %{})
+
+      assert TrustedDevices.get_device_preference(expired_device.id, fresh, "p2p_setup") == nil
+    end
+
+    test "rejects invalid namespaces and non-json settings" do
+      nick = nick("PrefBad")
+      {:ok, _} = Queries.insert_registered_nick(nick, "secret123")
+      {:ok, %{device: device}} = TrustedDevices.remember_nick(nil, nick, actor_nickname: nick)
+
+      assert {:error, :invalid_namespace} =
+               TrustedDevices.put_device_preference(device.id, nick, "", %{})
+
+      assert {:error, :invalid_namespace} =
+               TrustedDevices.put_device_preference(device.id, nick, "UPPERCASE", %{})
+
+      assert {:error, :invalid_settings} =
+               TrustedDevices.put_device_preference(device.id, nick, "p2p_setup", %{pid: self()})
     end
   end
 

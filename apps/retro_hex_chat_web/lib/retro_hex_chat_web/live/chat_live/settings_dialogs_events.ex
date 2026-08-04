@@ -12,6 +12,8 @@ defmodule RetroHexChatWeb.ChatLive.SettingsDialogsEvents do
   Returns `{:halt, socket}` when the event is handled, `{:cont, socket}` otherwise.
   """
 
+  require Logger
+
   import Phoenix.Component, only: [assign: 2]
   import Phoenix.LiveView, only: [push_event: 3, send_update: 2]
 
@@ -104,12 +106,17 @@ defmodule RetroHexChatWeb.ChatLive.SettingsDialogsEvents do
   # ── Mute Toggle ─────────────────────────────────────────────
 
   def handle_event("toggle_mute", _params, socket) do
-    new_muted = not socket.assigns.muted
+    new_muted = socket.assigns[:muted] != true
+    session = socket.assigns.session
+    settings = SoundSettings.set_muted(session.sound_settings, new_muted)
+    new_session = Session.set_sound_settings(session, settings)
+
+    persist_sound_settings(new_session, settings)
 
     {:halt,
      socket
-     |> assign(muted: new_muted)
-     |> push_event("toggle_mute", %{})}
+     |> assign(session: new_session, muted: new_muted)
+     |> push_event("mute_state_changed", %{muted: new_muted})}
   end
 
   # ── Catch-all: pass unhandled events to next hook ───────────
@@ -126,15 +133,14 @@ defmodule RetroHexChatWeb.ChatLive.SettingsDialogsEvents do
           {:halt | :cont, Phoenix.LiveView.Socket.t()}
   def handle_info({:commit_sound_settings, draft, mode}, socket) do
     session = socket.assigns.session
+    draft = SoundSettings.set_muted(draft, socket.assigns[:muted] == true)
     new_session = Session.set_sound_settings(session, draft)
 
-    if new_session.identified do
-      Task.start(fn -> SoundSettings.save(new_session.nickname, draft) end)
-    end
+    persist_sound_settings(new_session, draft)
 
     socket =
       socket
-      |> assign(session: new_session)
+      |> assign(session: new_session, muted: SoundSettings.muted?(draft))
       |> MessageViewport.insert(system_message(commit_message(mode)))
 
     {:halt, maybe_close_sound_dialog(socket, mode)}
@@ -152,6 +158,27 @@ defmodule RetroHexChatWeb.ChatLive.SettingsDialogsEvents do
           Phoenix.LiveView.Socket.t()
   defp maybe_close_sound_dialog(socket, :apply), do: socket
   defp maybe_close_sound_dialog(socket, :ok), do: Windows.close_window(socket, "sound-settings")
+
+  @spec persist_sound_settings(Session.t(), map()) :: :ok
+  defp persist_sound_settings(%Session{identified: true, nickname: nickname}, settings) do
+    case SoundSettings.save(nickname, settings) do
+      :ok ->
+        :ok
+
+      {:error, reason} ->
+        Logger.warning("Failed to persist sound settings for #{nickname}: #{inspect(reason)}")
+        :ok
+    end
+  rescue
+    error ->
+      Logger.warning(
+        "Failed to persist sound settings for #{nickname}: #{Exception.message(error)}"
+      )
+
+      :ok
+  end
+
+  defp persist_sound_settings(_session, _settings), do: :ok
 
   @spec try_set(map(), (map(), integer() -> map() | {:error, atom()}), String.t() | nil) ::
           map()

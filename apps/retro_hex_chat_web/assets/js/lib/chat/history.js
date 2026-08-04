@@ -30,41 +30,29 @@ export function isSensitiveCommand(text) {
  * Create a history manager instance.
  *
  * @param {Object} config
- * @param {string} config.storageKey - localStorage key for history
- * @param {string} config.recentCommandsKey - localStorage key for recent commands
+ * @param {string[]} [config.initialHistory=[]] - Initial history entries
+ * @param {string[]} [config.initialRecentCommands=[]] - Initial recent commands
  * @param {number} [config.maxEntries=100] - Max history entries
  * @param {number} [config.maxRecentCommands=5] - Max recent commands
  * @returns {Object} History manager with methods
  */
 export function createHistoryManager(config) {
   const {
-    storageKey = "retro_hex_chat_history",
-    recentCommandsKey = "retro_hex_chat_recent_commands",
+    initialHistory = [],
+    initialRecentCommands = [],
     maxEntries = 100,
     maxRecentCommands = 5,
   } = config || {};
 
-  let history = loadFromStorage(storageKey, []);
-  let recentCommands = loadFromStorage(recentCommandsKey, []);
+  let history = normalizeList(initialHistory, maxEntries);
+  let recentCommands = normalizeList(initialRecentCommands, maxRecentCommands);
   let historyIndex = -1;
   let historyDraft = null;
   let historyBrowsing = false;
 
-  function loadFromStorage(key, fallback) {
-    try {
-      const stored = localStorage.getItem(key);
-      return stored ? JSON.parse(stored) : fallback;
-    } catch {
-      return fallback;
-    }
-  }
-
-  function saveToStorage(key, data) {
-    try {
-      localStorage.setItem(key, JSON.stringify(data));
-    } catch {
-      // localStorage might be full
-    }
+  function normalizeList(value, limit) {
+    if (!Array.isArray(value)) return [];
+    return value.filter((entry) => typeof entry === "string" && entry.trim()).slice(0, limit);
   }
 
   return {
@@ -83,11 +71,16 @@ export function createHistoryManager(config) {
     },
 
     /**
-     * Reload history from localStorage.
+     * Replace history from a server-provided snapshot.
      */
-    load() {
-      history = loadFromStorage(storageKey, []);
-      recentCommands = loadFromStorage(recentCommandsKey, []);
+    load(snapshot = {}) {
+      if (Object.prototype.hasOwnProperty.call(snapshot, "history")) {
+        history = normalizeList(snapshot.history, maxEntries);
+      }
+      if (Object.prototype.hasOwnProperty.call(snapshot, "recentCommands")) {
+        recentCommands = normalizeList(snapshot.recentCommands, maxRecentCommands);
+      }
+      this.resetBrowsing();
     },
 
     /**
@@ -151,17 +144,6 @@ export function createHistoryManager(config) {
       history = history.filter((h) => h !== text);
       history.unshift(text);
       history = history.slice(0, maxEntries);
-
-      try {
-        localStorage.setItem(storageKey, JSON.stringify(history));
-      } catch {
-        history = history.slice(0, Math.floor(maxEntries / 2));
-        try {
-          localStorage.setItem(storageKey, JSON.stringify(history));
-        } catch {
-          // Still full, give up
-        }
-      }
     },
 
     /**
@@ -185,7 +167,6 @@ export function createHistoryManager(config) {
       recentCommands = recentCommands.filter((c) => c !== cmdName);
       recentCommands.unshift(cmdName);
       recentCommands = recentCommands.slice(0, maxRecentCommands);
-      saveToStorage(recentCommandsKey, recentCommands);
     },
 
     /**

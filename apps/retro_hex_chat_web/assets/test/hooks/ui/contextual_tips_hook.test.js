@@ -1,29 +1,38 @@
 import ContextualTipsHook from "../../../js/hooks/ui/contextual_tips_hook.js";
-import {
-  mountHook,
-  cleanupDOM,
-  simulateEvent,
-  getPushEvents,
-  mockLocalStorage,
-} from "../../helpers/hook_helper.js";
-import { STORAGE_KEYS, TIP_IDS } from "../../../js/lib/ui/tips.js";
+import { mountHook, cleanupDOM, simulateEvent, getPushEvents } from "../../helpers/hook_helper.js";
+import { resetAllTips, TIP_IDS } from "../../../js/lib/ui/tips.js";
 
 describe("ContextualTipsHook", () => {
-  let storage;
+  let localStorageMock;
 
   beforeEach(() => {
-    storage = mockLocalStorage();
+    localStorageMock = {
+      getItem: vi.fn(() => {
+        throw new Error("ContextualTipsHook must not read localStorage");
+      }),
+      setItem: vi.fn(() => {
+        throw new Error("ContextualTipsHook must not write localStorage");
+      }),
+      removeItem: vi.fn(() => {
+        throw new Error("ContextualTipsHook must not remove localStorage");
+      }),
+    };
+
+    vi.stubGlobal("localStorage", localStorageMock);
+    resetAllTips();
     vi.useFakeTimers();
   });
 
   afterEach(() => {
     vi.useRealTimers();
     cleanupDOM();
-    storage.restore();
+    vi.unstubAllGlobals();
   });
 
-  function mountTipsHook() {
-    return mountHook(ContextualTipsHook);
+  function mountTipsHook(tipsState = { seen_tips: [], suppressed: false }) {
+    return mountHook(ContextualTipsHook, {
+      attrs: { "data-tips-state": JSON.stringify(tipsState) },
+    });
   }
 
   // ── mounted ───────────────────────────────────────────────
@@ -34,19 +43,17 @@ describe("ContextualTipsHook", () => {
       expect(hook.handleEvent).toHaveBeenCalledWith("tip_trigger", expect.any(Function));
     });
 
-    it("pushes tips_state_sync with suppressed: false on mount", () => {
+    it("does not push legacy tips_state_sync on mount", () => {
       const hook = mountTipsHook();
       const events = getPushEvents(hook, "tips_state_sync");
-      expect(events).toHaveLength(1);
-      expect(events[0]).toEqual({ suppressed: false });
+      expect(events).toHaveLength(0);
     });
 
-    it("pushes tips_state_sync with suppressed: true when suppressed", () => {
-      storage.store[STORAGE_KEYS.SUPPRESSED] = "true";
-      const hook = mountTipsHook();
-      const events = getPushEvents(hook, "tips_state_sync");
-      expect(events).toHaveLength(1);
-      expect(events[0]).toEqual({ suppressed: true });
+    it("loads suppressed state from server data attributes", () => {
+      const hook = mountTipsHook({ seen_tips: [], suppressed: true });
+      simulateEvent(hook, "tip_trigger", { tip: "first_message" });
+
+      expect(hook.el.querySelector(".toast-notification")).toBeNull();
     });
   });
 
@@ -65,8 +72,7 @@ describe("ContextualTipsHook", () => {
     });
 
     it("skips already-seen tip", () => {
-      storage.store[STORAGE_KEYS.SEEN] = JSON.stringify({ first_message: true });
-      const hook = mountTipsHook();
+      const hook = mountTipsHook({ seen_tips: ["first_message"], suppressed: false });
       simulateEvent(hook, "tip_trigger", { tip: "first_message" });
 
       const toast = hook.el.querySelector(".toast-notification");
@@ -74,8 +80,7 @@ describe("ContextualTipsHook", () => {
     });
 
     it("skips tip when globally suppressed", () => {
-      storage.store[STORAGE_KEYS.SUPPRESSED] = "true";
-      const hook = mountTipsHook();
+      const hook = mountTipsHook({ seen_tips: [], suppressed: true });
       simulateEvent(hook, "tip_trigger", { tip: "first_message" });
 
       const toast = hook.el.querySelector(".toast-notification");
@@ -86,9 +91,7 @@ describe("ContextualTipsHook", () => {
       const hook = mountTipsHook();
       simulateEvent(hook, "tip_trigger", { tip: "help_used" });
 
-      // idle_help should now be marked as seen
-      const seen = JSON.parse(storage.store[STORAGE_KEYS.SEEN]);
-      expect(seen[TIP_IDS.IDLE_HELP]).toBe(true);
+      expect(getPushEvents(hook, "tips_seen")).toContainEqual({ tips: [TIP_IDS.IDLE_HELP] });
 
       // No toast should appear for help_used
       const toast = hook.el.querySelector(".toast-notification");
@@ -109,8 +112,7 @@ describe("ContextualTipsHook", () => {
       // After animateOut fallback timeout
       vi.advanceTimersByTime(200);
 
-      const seen = JSON.parse(storage.store[STORAGE_KEYS.SEEN]);
-      expect(seen.first_message).toBe(true);
+      expect(getPushEvents(hook, "tips_seen")).toContainEqual({ tips: ["first_message"] });
     });
 
     it("marks tip as seen after auto-dismiss", () => {
@@ -119,8 +121,7 @@ describe("ContextualTipsHook", () => {
 
       vi.advanceTimersByTime(8200);
 
-      const seen = JSON.parse(storage.store[STORAGE_KEYS.SEEN]);
-      expect(seen.first_message).toBe(true);
+      expect(getPushEvents(hook, "tips_seen")).toContainEqual({ tips: ["first_message"] });
     });
   });
 
@@ -137,8 +138,7 @@ describe("ContextualTipsHook", () => {
       // Wait for animateOut
       vi.advanceTimersByTime(200);
 
-      const seen = JSON.parse(storage.store[STORAGE_KEYS.SEEN]);
-      expect(seen.first_message).toBe(true);
+      expect(getPushEvents(hook, "tips_seen")).toContainEqual({ tips: ["first_message"] });
     });
 
     it("sets global suppression when checkbox is checked and dismissed", () => {
@@ -151,7 +151,9 @@ describe("ContextualTipsHook", () => {
       const button = hook.el.querySelector("button");
       button.click();
 
-      expect(storage.store[STORAGE_KEYS.SUPPRESSED]).toBe("true");
+      expect(getPushEvents(hook, "tips_suppressed_changed")).toContainEqual({
+        suppressed: true,
+      });
     });
   });
 
@@ -317,6 +319,18 @@ describe("ContextualTipsHook", () => {
       simulateEvent(hook, "tip_trigger", { tip: "first_message" });
 
       expect(() => hook.destroyed()).not.toThrow();
+    });
+  });
+
+  describe("storage", () => {
+    it("never touches localStorage", () => {
+      const hook = mountTipsHook();
+      simulateEvent(hook, "tip_trigger", { tip: "first_message" });
+      hook.el.querySelector("button").click();
+
+      expect(localStorageMock.getItem).not.toHaveBeenCalled();
+      expect(localStorageMock.setItem).not.toHaveBeenCalled();
+      expect(localStorageMock.removeItem).not.toHaveBeenCalled();
     });
   });
 });

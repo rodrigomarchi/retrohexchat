@@ -228,8 +228,6 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SetupDialog do
       data-form-name="p2p_setup"
       data-devices-event="p2p_setup_devices_listed"
       data-preferences-event="p2p_setup_preferences_loaded"
-      data-storage-key="rhc:p2p:setup"
-      data-preference-scope={preference_scope(@setup)}
       data-audio={to_string(@media.audio)}
       data-video={to_string(@media.video)}
       data-audio-input-id={device_preference(@device_preferences, :audio_input_id)}
@@ -400,10 +398,6 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SetupDialog do
   @spec turn_configured?(map() | nil) :: boolean()
   defp turn_configured?(%{turn_configured: true}), do: true
   defp turn_configured?(_setup), do: false
-
-  @spec preference_scope(map() | nil) :: String.t() | nil
-  defp preference_scope(%{user_id: user_id}) when not is_nil(user_id), do: to_string(user_id)
-  defp preference_scope(_setup), do: nil
 
   @spec device_preference(map(), atom()) :: String.t()
   defp device_preference(preferences, key), do: Map.get(preferences, key) || ""

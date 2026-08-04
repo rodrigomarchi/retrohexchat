@@ -1,16 +1,28 @@
 import { isSensitiveCommand, createHistoryManager } from "../../../js/lib/chat/history.js";
-import { mockLocalStorage, cleanupDOM } from "../../helpers/hook_helper.js";
+import { cleanupDOM } from "../../helpers/hook_helper.js";
 
 describe("lib/history", () => {
-  let storage;
+  let localStorageMock;
 
   beforeEach(() => {
-    storage = mockLocalStorage();
+    localStorageMock = {
+      getItem: vi.fn(() => {
+        throw new Error("history manager must not read localStorage");
+      }),
+      setItem: vi.fn(() => {
+        throw new Error("history manager must not write localStorage");
+      }),
+      removeItem: vi.fn(() => {
+        throw new Error("history manager must not remove localStorage");
+      }),
+    };
+
+    vi.stubGlobal("localStorage", localStorageMock);
   });
 
   afterEach(() => {
     cleanupDOM();
-    storage.restore();
+    vi.unstubAllGlobals();
   });
 
   // ── isSensitiveCommand ─────────────────────────────────
@@ -189,10 +201,21 @@ describe("lib/history", () => {
     });
 
     describe("load", () => {
-      it("reloads from localStorage", () => {
-        storage.store["retro_hex_chat_history"] = JSON.stringify(["loaded"]);
-        hm.load();
+      it("loads a backend snapshot into memory", () => {
+        hm.load({ history: ["loaded"], recentCommands: ["join"] });
+
         expect(hm.getHistory()).toEqual(["loaded"]);
+        expect(hm.getRecentCommands()).toEqual(["join"]);
+      });
+
+      it("does not use localStorage", () => {
+        hm.save("hello");
+        hm.saveRecentCommand("join");
+        hm.load({ history: ["loaded"] });
+
+        expect(localStorageMock.getItem).not.toHaveBeenCalled();
+        expect(localStorageMock.setItem).not.toHaveBeenCalled();
+        expect(localStorageMock.removeItem).not.toHaveBeenCalled();
       });
     });
   });

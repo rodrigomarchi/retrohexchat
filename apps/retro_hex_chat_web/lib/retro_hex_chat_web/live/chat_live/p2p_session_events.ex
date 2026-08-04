@@ -26,8 +26,8 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
 
   alias Phoenix.LiveView.Socket
   alias RetroHexChat.Accounts.ServerRoles
+  alias RetroHexChat.Accounts.TrustedDevices
   alias RetroHexChat.Calls.Events, as: CallEvents
-  alias RetroHexChat.Chat.Schemas.UserPreference
   alias RetroHexChat.Chat.Service, as: ChatService
   alias RetroHexChat.Commands.Handlers.Lobby, as: LobbyCommand
   alias RetroHexChat.Lobby
@@ -50,6 +50,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   @p2p_console_height 430
   @p2p_console_x 448
   @p2p_console_y 72
+  @p2p_setup_preference_namespace "p2p_setup"
   @reattach_retry_delays [250, 500, 1_000, 2_000, 4_000]
 
   # ── Client events (WebRTC hooks + P2P UI) ─────────────────────
@@ -237,12 +238,19 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   def handle_event("p2p_console_select", _params, socket), do: {:halt, socket}
 
   # Privacy mode: force every P2P connection through the TURN relay (hides
-  # the direct peer IP). Persisted per user; if WebRTC is already active, the
-  # connection is restarted immediately so the transport policy is real now.
+  # the direct peer IP). Persisted per trusted terminal; if WebRTC is already
+  # active, the connection is restarted immediately so the transport policy is
+  # real now.
   def handle_event("p2p_toggle_privacy", _params, %{assigns: %{p2p_session: %{}}} = socket) do
     p2p = socket.assigns.p2p_session
     new_value = not p2p.turn_only
-    save_turn_only(socket.assigns.session.nickname, new_value)
+
+    save_p2p_setup_preferences(socket, %{
+      media: media_from_media_mode(p2p.media_mode),
+      device_preferences: Map.get(p2p, :device_preferences, default_device_preferences()),
+      turn_only: new_value
+    })
+
     p2p = %{p2p | turn_only: new_value}
 
     label =
@@ -1113,6 +1121,8 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   end
 
   defp new_session(socket, token, user_id, role, state) do
+    setup_preferences = load_p2p_setup_preferences(socket)
+
     %{
       token: token,
       user_id: user_id,
@@ -1132,16 +1142,17 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
       auto_call_started: false,
       recovery: empty_p2p_recovery(),
       console_section: "call",
-      media_mode: "video",
+      media_mode: media_mode_from_preferences(setup_preferences),
       call_mini: false,
-      device_preferences: default_device_preferences(),
-      turn_only: load_turn_only(socket.assigns.session.nickname),
+      device_preferences: setup_preferences.device_preferences,
+      turn_only: setup_preferences.turn_only,
       turn_configured: P2P.turn_configured?()
     }
   end
 
   defp pm_read_model(socket, %LobbySession{} = db_session, user_id) do
     role = if db_session.creator_id == user_id, do: :creator, else: :peer
+    setup_preferences = load_p2p_setup_preferences(socket)
 
     %{
       token: db_session.token,
@@ -1160,9 +1171,10 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
       game_summary: nil,
       recovery: empty_p2p_recovery(),
       console_section: "call",
-      media_mode: "video",
+      media_mode: media_mode_from_preferences(setup_preferences),
       call_mini: false,
-      turn_only: load_turn_only(socket.assigns.session.nickname),
+      device_preferences: setup_preferences.device_preferences,
+      turn_only: setup_preferences.turn_only,
       turn_configured: P2P.turn_configured?()
     }
   end
@@ -1396,14 +1408,16 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   end
 
   defp setup_base(socket, peer_nick) do
+    preferences = load_p2p_setup_preferences(socket)
+
     %{
       peer_nick: peer_nick,
-      media_mode: "video",
-      media: %{audio: true, video: true},
+      media_mode: media_mode_from_preferences(preferences),
+      media: preferences.media,
       user_id: resolve_user_id(socket.assigns.session.nickname),
       devices: default_devices(),
-      device_preferences: default_device_preferences(),
-      turn_only: load_turn_only(socket.assigns.session.nickname),
+      device_preferences: preferences.device_preferences,
+      turn_only: preferences.turn_only,
       turn_configured: P2P.turn_configured?()
     }
   end
@@ -1416,15 +1430,15 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
 
     turn_only = turn_configured? and truthy?(params["turn_only"])
 
-    if turn_configured? do
-      save_turn_only(socket.assigns.session.nickname, turn_only)
-    end
-
-    %{
+    setup_opts = %{
       media_mode: media_mode,
+      media: preferences.media,
       turn_only: turn_only,
       device_preferences: preferences.device_preferences
     }
+
+    save_p2p_setup_preferences(socket, setup_opts)
+    setup_opts
   end
 
   defp deliver_outgoing_setup(socket, payload, setup_opts) do
@@ -1972,23 +1986,42 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   defp normalize_media_mode(mode) when mode in ~w(video audio receive), do: mode
   defp normalize_media_mode(_mode), do: "video"
 
+  defp default_p2p_setup_preferences do
+    %{
+      media: %{audio: true, video: true},
+      device_preferences: default_device_preferences(),
+      turn_only: false
+    }
+  end
+
   defp normalize_p2p_setup_preferences(preferences) when is_map(preferences) do
-    audio = truthy?(value(preferences, :audio))
-    video = truthy?(value(preferences, :video))
+    defaults = default_p2p_setup_preferences()
+    media = value(preferences, :media)
+    devices = value(preferences, :device_preferences)
+
+    audio =
+      boolean_preference(preference_value(value(preferences, :audio), value(media, :audio)), true)
+
+    video =
+      boolean_preference(preference_value(value(preferences, :video), value(media, :video)), true)
 
     %{
       media: %{audio: audio, video: video},
       device_preferences: %{
-        audio_input_id: clean_device_id(value(preferences, :audio_input_id)),
-        video_input_id: clean_device_id(value(preferences, :video_input_id)),
-        audio_output_id: clean_device_id(value(preferences, :audio_output_id))
-      }
+        audio_input_id:
+          clean_device_id(value(preferences, :audio_input_id) || value(devices, :audio_input_id)),
+        video_input_id:
+          clean_device_id(value(preferences, :video_input_id) || value(devices, :video_input_id)),
+        audio_output_id:
+          clean_device_id(
+            value(preferences, :audio_output_id) || value(devices, :audio_output_id)
+          )
+      },
+      turn_only: boolean_preference(value(preferences, :turn_only), defaults.turn_only)
     }
   end
 
-  defp normalize_p2p_setup_preferences(_preferences) do
-    %{media: %{audio: true, video: true}, device_preferences: default_device_preferences()}
-  end
+  defp normalize_p2p_setup_preferences(_preferences), do: default_p2p_setup_preferences()
 
   defp media_mode_from_preferences(%{media: %{audio: true, video: true}}), do: "video"
   defp media_mode_from_preferences(%{media: %{audio: true, video: false}}), do: "audio"
@@ -1996,6 +2029,48 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
 
   defp default_device_preferences do
     %{audio_input_id: nil, video_input_id: nil, audio_output_id: nil}
+  end
+
+  defp load_p2p_setup_preferences(%{assigns: %{session: %{nickname: nickname}}} = socket) do
+    socket.assigns[:trusted_device_id]
+    |> TrustedDevices.get_device_preference(nickname, @p2p_setup_preference_namespace)
+    |> normalize_p2p_setup_preferences()
+  end
+
+  defp load_p2p_setup_preferences(_socket), do: default_p2p_setup_preferences()
+
+  defp save_p2p_setup_preferences(
+         %{assigns: %{session: %{nickname: nickname}}} = socket,
+         preferences
+       ) do
+    _ =
+      TrustedDevices.put_device_preference(
+        socket.assigns[:trusted_device_id],
+        nickname,
+        @p2p_setup_preference_namespace,
+        persistable_p2p_setup_preferences(preferences)
+      )
+
+    :ok
+  end
+
+  defp save_p2p_setup_preferences(_socket, _preferences), do: :ok
+
+  defp persistable_p2p_setup_preferences(preferences) do
+    preferences = normalize_p2p_setup_preferences(preferences)
+
+    %{
+      "media" => %{
+        "audio" => preferences.media.audio,
+        "video" => preferences.media.video
+      },
+      "turn_only" => preferences.turn_only == true,
+      "device_preferences" => %{
+        "audio_input_id" => preferences.device_preferences.audio_input_id,
+        "video_input_id" => preferences.device_preferences.video_input_id,
+        "audio_output_id" => preferences.device_preferences.audio_output_id
+      }
+    }
   end
 
   defp default_devices do
@@ -2087,8 +2162,26 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   defp clean_device_id(device_id) when is_binary(device_id), do: device_id
   defp clean_device_id(device_id), do: to_string(device_id)
 
+  defp preference_value(nil, fallback), do: fallback
+  defp preference_value(value, _fallback), do: value
+
+  defp boolean_preference(value, _default) when value in [true, "true", "on", "1", 1], do: true
+
+  defp boolean_preference(value, _default) when value in [false, "false", "off", "0", 0],
+    do: false
+
+  defp boolean_preference(_value, default), do: default
+
+  defp media_from_media_mode("audio"), do: %{audio: true, video: false}
+  defp media_from_media_mode("receive"), do: %{audio: false, video: false}
+  defp media_from_media_mode(_mode), do: %{audio: true, video: true}
+
   defp value(map, key) when is_map(map) do
-    Map.get(map, key) || Map.get(map, to_string(key))
+    cond do
+      Map.has_key?(map, key) -> Map.get(map, key)
+      Map.has_key?(map, to_string(key)) -> Map.get(map, to_string(key))
+      true -> nil
+    end
   end
 
   defp value(_map, _key), do: nil
@@ -2126,34 +2219,6 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   end
 
   defp truthy?(value), do: value in [true, "true", "1", 1, "on"]
-
-  defp load_turn_only(nickname) do
-    case RetroHexChat.Repo.get(UserPreference, nickname) do
-      nil -> false
-      pref -> get_in(pref.display_settings, ["p2p_settings", "turn_only"]) == true
-    end
-  end
-
-  defp save_turn_only(nickname, turn_only) do
-    case RetroHexChat.Repo.get(UserPreference, nickname) do
-      nil ->
-        %UserPreference{}
-        |> UserPreference.changeset(%{
-          owner_nickname: nickname,
-          display_settings: %{"p2p_settings" => %{"turn_only" => turn_only}}
-        })
-        |> RetroHexChat.Repo.insert()
-
-      pref ->
-        current = pref.display_settings || %{}
-        p2p = Map.get(current, "p2p_settings", %{})
-        updated = Map.put(current, "p2p_settings", Map.put(p2p, "turn_only", turn_only))
-
-        pref
-        |> UserPreference.changeset(%{display_settings: updated})
-        |> RetroHexChat.Repo.update()
-    end
-  end
 
   defp close_dialog do
     Phoenix.LiveView.send_update(P2PConfirmDialog,

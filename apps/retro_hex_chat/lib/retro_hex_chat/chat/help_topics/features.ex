@@ -773,7 +773,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           dgettext("help", "reverse search"),
           "draft",
           "persistence",
-          "localStorage"
+          dgettext("help", "account history")
         ],
         icon: :icon_backup,
         description:

@@ -1,13 +1,12 @@
 defmodule RetroHexChatWeb.ChatLive.PmTypingEvents do
   @moduledoc """
-  Handle events for PM typing indicators, tab focus, and mute state sync.
+  Handle events for PM typing indicators, tab focus, and legacy mute sync.
 
   Covers: pm_typing, pm_stop_typing, tab_focused, mute_state_sync.
 
   Attached as `attach_hook(:pm_typing_events, :handle_event, ...)` in ChatLive.mount/3.
   """
 
-  import Phoenix.Component, only: [assign: 2]
   import Phoenix.LiveView, only: [push_event: 3]
   import RetroHexChatWeb.ChatLive.Helpers, only: [pm_topic: 2]
 
@@ -47,9 +46,7 @@ defmodule RetroHexChatWeb.ChatLive.PmTypingEvents do
     {:halt, push_event(socket, "title_flash_stop", %{})}
   end
 
-  def handle_event("mute_state_sync", %{"muted" => muted}, socket) do
-    {:halt, assign(socket, muted: muted)}
-  end
+  def handle_event("mute_state_sync", _params, socket), do: {:halt, socket}
 
   # ── Catch-all ──────────────────────────────────────────────
 

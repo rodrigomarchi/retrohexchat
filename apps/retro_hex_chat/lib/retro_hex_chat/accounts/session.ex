@@ -7,9 +7,11 @@ defmodule RetroHexChat.Accounts.Session do
   alias RetroHexChat.Accounts.ContactList
   alias RetroHexChat.Accounts.NickColors
   alias RetroHexChat.Chat.AutoJoinList
+  alias RetroHexChat.Chat.ContextualTips
   alias RetroHexChat.Chat.FloodProtection
   alias RetroHexChat.Chat.HighlightWords
   alias RetroHexChat.Chat.IgnoreList
+  alias RetroHexChat.Chat.InputHistory
   alias RetroHexChat.Chat.PerformList
   alias RetroHexChat.Chat.SoundSettings
 
@@ -36,6 +38,8 @@ defmodule RetroHexChat.Accounts.Session do
           autojoin_list: map(),
           auto_join_on_invite: boolean(),
           notice_routing: :active | :status | :sender,
+          contextual_tips: map(),
+          input_history: map(),
           flood_protection: map(),
           sound_settings: map(),
           aliases: map(),
@@ -69,6 +73,8 @@ defmodule RetroHexChat.Accounts.Session do
     autojoin_list: nil,
     auto_join_on_invite: false,
     notice_routing: :active,
+    contextual_tips: nil,
+    input_history: nil,
     flood_protection: nil,
     sound_settings: nil,
     aliases: nil,
@@ -92,6 +98,8 @@ defmodule RetroHexChat.Accounts.Session do
       ignore_list: IgnoreList.new(),
       perform_list: PerformList.new(),
       autojoin_list: AutoJoinList.new(),
+      contextual_tips: ContextualTips.new(),
+      input_history: InputHistory.new(),
       flood_protection: FloodProtection.new(),
       sound_settings: SoundSettings.new(),
       aliases: %{entries: []},
@@ -292,6 +300,22 @@ defmodule RetroHexChat.Accounts.Session do
   @spec set_flood_protection(t(), map()) :: t()
   def set_flood_protection(%__MODULE__{} = session, settings) do
     %{session | flood_protection: settings}
+  end
+
+  @spec get_input_history(t()) :: map()
+  def get_input_history(%__MODULE__{input_history: history}), do: history
+
+  @spec set_input_history(t(), map()) :: t()
+  def set_input_history(%__MODULE__{} = session, history) do
+    %{session | input_history: history}
+  end
+
+  @spec get_contextual_tips(t()) :: map()
+  def get_contextual_tips(%__MODULE__{contextual_tips: tips}), do: tips
+
+  @spec set_contextual_tips(t(), map()) :: t()
+  def set_contextual_tips(%__MODULE__{} = session, tips) do
+    %{session | contextual_tips: tips}
   end
 
   @spec get_sound_settings(t()) :: map()

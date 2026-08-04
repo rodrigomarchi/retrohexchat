@@ -7,24 +7,37 @@ import {
   markPreempted,
   getTipById,
   resetAllTips,
-  STORAGE_KEYS,
+  loadTipsState,
+  tipsStateSnapshot,
   TIP_IDS,
   TIPS,
   AUTO_DISMISS_MS,
   QUEUE_GAP_MS,
   IDLE_TIMEOUT_MS,
 } from "../../../js/lib/ui/tips.js";
-import { mockLocalStorage } from "../../helpers/hook_helper.js";
 
 describe("tips", () => {
-  let storage;
+  let localStorageMock;
 
   beforeEach(() => {
-    storage = mockLocalStorage();
+    localStorageMock = {
+      getItem: vi.fn(() => {
+        throw new Error("tips must not read localStorage");
+      }),
+      setItem: vi.fn(() => {
+        throw new Error("tips must not write localStorage");
+      }),
+      removeItem: vi.fn(() => {
+        throw new Error("tips must not remove localStorage");
+      }),
+    };
+
+    vi.stubGlobal("localStorage", localStorageMock);
+    resetAllTips();
   });
 
   afterEach(() => {
-    storage.restore();
+    vi.unstubAllGlobals();
   });
 
   // ── Constants ─────────────────────────────────────────────
@@ -65,43 +78,35 @@ describe("tips", () => {
       expect(isSuppressed()).toBe(false);
     });
 
-    it("returns true when primary key is set", () => {
-      storage.store[STORAGE_KEYS.SUPPRESSED] = "true";
+    it("returns true when server snapshot is suppressed", () => {
+      loadTipsState({ suppressed: true });
       expect(isSuppressed()).toBe(true);
     });
 
-    it("returns true when backup key is set", () => {
-      storage.store[STORAGE_KEYS.SUPPRESSED_BACKUP] = "true";
-      expect(isSuppressed()).toBe(true);
-    });
-
-    it("returns true when both keys are set", () => {
-      storage.store[STORAGE_KEYS.SUPPRESSED] = "true";
-      storage.store[STORAGE_KEYS.SUPPRESSED_BACKUP] = "true";
-      expect(isSuppressed()).toBe(true);
+    it("ignores malformed suppressed snapshots", () => {
+      loadTipsState({ suppressed: "true" });
+      expect(isSuppressed()).toBe(false);
     });
   });
 
   describe("setSuppressed", () => {
-    it("sets both primary and backup keys when suppressing", () => {
+    it("sets suppression in memory", () => {
       setSuppressed(true);
-      expect(storage.store[STORAGE_KEYS.SUPPRESSED]).toBe("true");
-      expect(storage.store[STORAGE_KEYS.SUPPRESSED_BACKUP]).toBe("true");
+      expect(isSuppressed()).toBe(true);
+      expect(tipsStateSnapshot()).toEqual({ seen_tips: [], suppressed: true });
     });
 
-    it("removes both keys when unsuppressing", () => {
-      storage.store[STORAGE_KEYS.SUPPRESSED] = "true";
-      storage.store[STORAGE_KEYS.SUPPRESSED_BACKUP] = "true";
+    it("clears suppression in memory", () => {
+      setSuppressed(true);
       setSuppressed(false);
-      expect(storage.store[STORAGE_KEYS.SUPPRESSED]).toBeUndefined();
-      expect(storage.store[STORAGE_KEYS.SUPPRESSED_BACKUP]).toBeUndefined();
+      expect(isSuppressed()).toBe(false);
     });
 
-    it("handles localStorage full gracefully", () => {
-      localStorage.setItem = vi.fn(() => {
-        throw new DOMException("QuotaExceededError");
-      });
-      expect(() => setSuppressed(true)).not.toThrow();
+    it("does not use localStorage", () => {
+      setSuppressed(true);
+      expect(localStorageMock.getItem).not.toHaveBeenCalled();
+      expect(localStorageMock.setItem).not.toHaveBeenCalled();
+      expect(localStorageMock.removeItem).not.toHaveBeenCalled();
     });
   });
 
@@ -113,17 +118,17 @@ describe("tips", () => {
     });
 
     it("returns true when tip is marked as seen", () => {
-      storage.store[STORAGE_KEYS.SEEN] = JSON.stringify({ first_message: true });
+      loadTipsState({ seen_tips: ["first_message"] });
       expect(isTipSeen("first_message")).toBe(true);
     });
 
     it("returns false for unseen tip when others are seen", () => {
-      storage.store[STORAGE_KEYS.SEEN] = JSON.stringify({ first_message: true });
+      loadTipsState({ seen_tips: ["first_message"] });
       expect(isTipSeen("first_join")).toBe(false);
     });
 
-    it("handles corrupted JSON gracefully", () => {
-      storage.store[STORAGE_KEYS.SEEN] = "not-json";
+    it("handles malformed snapshots gracefully", () => {
+      loadTipsState({ seen_tips: "not-a-list" });
       expect(isTipSeen("first_message")).toBe(false);
     });
   });
@@ -131,23 +136,18 @@ describe("tips", () => {
   describe("markTipSeen", () => {
     it("marks a tip as seen", () => {
       markTipSeen("first_message");
-      const seen = JSON.parse(storage.store[STORAGE_KEYS.SEEN]);
-      expect(seen.first_message).toBe(true);
+      expect(isTipSeen("first_message")).toBe(true);
     });
 
     it("preserves previously seen tips", () => {
       markTipSeen("first_message");
       markTipSeen("first_join");
-      const seen = JSON.parse(storage.store[STORAGE_KEYS.SEEN]);
-      expect(seen.first_message).toBe(true);
-      expect(seen.first_join).toBe(true);
+      expect(tipsStateSnapshot().seen_tips).toEqual(["first_message", "first_join"]);
     });
 
-    it("handles localStorage full gracefully", () => {
-      localStorage.setItem = vi.fn(() => {
-        throw new DOMException("QuotaExceededError");
-      });
-      expect(() => markTipSeen("first_message")).not.toThrow();
+    it("ignores unknown tip IDs", () => {
+      expect(markTipSeen("unknown")).toBe(false);
+      expect(tipsStateSnapshot().seen_tips).toEqual([]);
     });
   });
 

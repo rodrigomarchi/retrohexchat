@@ -1,9 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import GroupCallPreJoinHook from "../../../js/hooks/group_call/group_call_prejoin_hook.js";
-import { mockLocalStorage } from "../../helpers/hook_helper.js";
 
-let storage;
+let storageGetItem;
+let storageSetItem;
+let storageRemoveItem;
 
 function formFixture() {
   document.body.innerHTML = `
@@ -48,7 +49,6 @@ function formFixture() {
 
   const hook = Object.create(GroupCallPreJoinHook);
   hook.el = document.getElementById("group-call-prejoin-preview");
-  hook.el.dataset.preferenceScope = "user-42";
   hook.pushEvent = vi.fn();
 
   return hook;
@@ -61,9 +61,7 @@ function p2pSetupFixture() {
         data-prejoin-prefix="p2p-setup"
         data-form-name="p2p_setup"
         data-devices-event="p2p_setup_devices_listed"
-        data-preferences-event="p2p_setup_preferences_loaded"
-        data-storage-key="rhc:p2p:setup"
-        data-preference-scope="user-99">
+        data-preferences-event="p2p_setup_preferences_loaded">
         <span data-p2p-setup-device-state>
           <span data-p2p-setup-device-state-text>Checking devices</span>
         </span>
@@ -117,31 +115,33 @@ async function flushPromises() {
 
 describe("GroupCallPreJoinHook", () => {
   beforeEach(() => {
-    storage = mockLocalStorage();
+    storageGetItem = vi.fn(() => {
+      throw new Error("prejoin hook must not read localStorage");
+    });
+    storageSetItem = vi.fn(() => {
+      throw new Error("prejoin hook must not write localStorage");
+    });
+    storageRemoveItem = vi.fn(() => {
+      throw new Error("prejoin hook must not remove localStorage");
+    });
+
+    vi.stubGlobal("localStorage", {
+      getItem: storageGetItem,
+      setItem: storageSetItem,
+      removeItem: storageRemoveItem,
+      clear: vi.fn(),
+    });
+
     vi.spyOn(HTMLMediaElement.prototype, "play").mockResolvedValue(undefined);
   });
 
   afterEach(() => {
     vi.restoreAllMocks();
     vi.unstubAllGlobals();
-    storage.restore();
     document.body.innerHTML = "";
   });
 
-  it("loads stored preferences without opening media when audio and video are off", async () => {
-    window.localStorage.setItem(
-      "rhc:group-call:prejoin:user-42",
-      JSON.stringify({
-        audio: false,
-        video: false,
-        layout_mode: "focus",
-        self_view: "hidden",
-        audio_input_id: "mic-1",
-        video_input_id: "cam-1",
-        audio_output_id: "spk-1",
-      }),
-    );
-
+  it("uses server-rendered preferences without touching localStorage", async () => {
     const getUserMedia = vi.fn();
     Object.defineProperty(navigator, "mediaDevices", {
       configurable: true,
@@ -152,6 +152,14 @@ describe("GroupCallPreJoinHook", () => {
     });
 
     const hook = formFixture();
+    document.querySelector('[name="group_call_prejoin[audio]"]').checked = false;
+    document.querySelector('[name="group_call_prejoin[video]"]').checked = false;
+    document.querySelector('[name="group_call_prejoin[layout_mode]"]').value = "focus";
+    document.querySelector('[name="group_call_prejoin[self_view]"]').value = "hidden";
+    document.querySelector('[name="group_call_prejoin[audio_input_id]"]').value = "mic-1";
+    document.querySelector('[name="group_call_prejoin[video_input_id]"]').value = "cam-1";
+    document.querySelector('[name="group_call_prejoin[audio_output_id]"]').value = "spk-1";
+
     hook.mounted();
     await flushPromises();
 
@@ -168,6 +176,9 @@ describe("GroupCallPreJoinHook", () => {
     expect(document.querySelector("[data-group-call-prejoin-empty-text]").textContent).toBe(
       "Joining receive-only",
     );
+    expect(storageGetItem).not.toHaveBeenCalled();
+    expect(storageSetItem).not.toHaveBeenCalled();
+    expect(storageRemoveItem).not.toHaveBeenCalled();
   });
 
   it("lists devices and previews with selected device constraints", async () => {
@@ -376,6 +387,17 @@ describe("GroupCallPreJoinHook", () => {
       .dispatchEvent(new Event("change", { bubbles: true }));
     await flushPromises();
 
-    expect(window.localStorage.getItem("rhc:p2p:setup:user-99")).toContain("mic-p2p");
+    expect(hook.pushEvent).toHaveBeenLastCalledWith("p2p_setup_preferences_loaded", {
+      audio: true,
+      video: false,
+      layout_mode: "auto",
+      self_view: "tile",
+      audio_input_id: "mic-p2p",
+      video_input_id: "",
+      audio_output_id: "",
+    });
+    expect(storageGetItem).not.toHaveBeenCalled();
+    expect(storageSetItem).not.toHaveBeenCalled();
+    expect(storageRemoveItem).not.toHaveBeenCalled();
   });
 });

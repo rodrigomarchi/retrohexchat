@@ -22,12 +22,13 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
       maybe_fire_autorespond: 5,
       maybe_persist_notify_list: 2,
       rebuild_nick_color_fn: 2,
+      clear_reconnect_state: 1,
       load_persisted_data: 2
     ]
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Channels.Server
-  alias RetroHexChat.Chat.IgnoreList
+  alias RetroHexChat.Chat.{IgnoreList, SoundSettings}
   alias RetroHexChat.Presence.{NotifyList, Tracker}
   alias RetroHexChat.Services.NickServ
   alias RetroHexChatWeb.ChatLive.CommandDispatch
@@ -215,6 +216,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
      socket
      |> assign(skip_channel_cleanup: true)
      |> assign(skip_whowas_record: Map.get(payload, :skip_whowas, false))
+     |> clear_reconnect_state()
      |> push_event("intentional_disconnect", %{})
      |> push_event("clear_client_state", %{})
      |> Phoenix.LiveView.redirect(
@@ -262,7 +264,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
 
       {:halt,
        socket
-       |> assign(session: new_session)
+       |> assign(session: new_session, muted: SoundSettings.muted?(new_session.sound_settings))
        |> rebuild_nick_color_fn(new_session)
        |> push_status_message(
          dgettext("chat", "You are now identified as %{nickname}", nickname: nick),
