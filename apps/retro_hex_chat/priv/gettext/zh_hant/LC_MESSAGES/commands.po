@@ -3016,32 +3016,32 @@ msgstr "[BotService]%{name}沒有自定義命令."
 #: lib/retro_hex_chat/commands/handlers/bot.ex:418
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' %{action}."
-msgstr "[BotService] Bot '%{name}>%{action}."
+msgstr "[BotService] 機器人「%{name}」%{action}。"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:232
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' created successfully."
-msgstr "[BotService] Bot'%{name} 創建成功."
+msgstr "[BotService] 機器人「%{name}」建立成功。"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:290
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' destroyed."
-msgstr "[BotService] 瓶子'%{name}'銷燬."
+msgstr "[BotService] 機器人「%{name}」已銷毀。"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:373
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' is already in %{channel}."
-msgstr "[BotService] Bot '%{name} 已經寫在%{channel}中."
+msgstr "[BotService] 機器人「%{name}」已經在 %{channel} 中。"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:365
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' joined %{channel}."
-msgstr "[BotService] bot '%{name} 加入%{channel}."
+msgstr "[BotService] 機器人「%{name}」加入了 %{channel}。"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:395
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' left %{channel}."
-msgstr "[BotService] 瓶子 '%{name} 左%{channel}."
+msgstr "[BotService] 機器人「%{name}」離開了 %{channel}。"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:97
 #: lib/retro_hex_chat/commands/handlers/bot.ex:249
@@ -3056,12 +3056,12 @@ msgstr "[BotService] 瓶子 '%{name} 左%{channel}."
 #: lib/retro_hex_chat/commands/handlers/bot.ex:728
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' not found."
-msgstr "[BotService] 瓶\"%{name}\"未找到."
+msgstr "[BotService] 未找到機器人「%{name}」。"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:322
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot Info: %{name}"
-msgstr "[BotService] 瓶裝信息: %{name}"
+msgstr "[BotService] 機器人資訊：%{name}"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:792
 #, elixir-autogen, elixir-format
@@ -3184,7 +3184,8 @@ msgstr "您無法啓動 P2P 會話 。"
 msgid ""
 "#%{id} %{label} | %{browser} / %{os} | active %{sessions} | last "
 "%{last_seen}"
-msgstr "#%{id} %{label} | %{browser} / %{os} | 作用中工作階段 %{sessions} | 上次 %{last_seen}"
+msgstr ""
+"#%{id} %{label} | %{browser} / %{os} | 作用中工作階段 %{sessions} | 上次 %{last_seen}"
 
 #: lib/retro_hex_chat/commands/handlers/ns.ex:302
 #, elixir-autogen, elixir-format
@@ -3225,7 +3226,9 @@ msgstr "/ns sessions"
 msgid ""
 "Active sessions:\n"
 "%{lines}"
-msgstr "作用中工作階段：\n%{lines}"
+msgstr ""
+"作用中工作階段：\n"
+"%{lines}"
 
 #: lib/retro_hex_chat/commands/handlers/ns.ex:219
 #, elixir-autogen, elixir-format
@@ -3297,7 +3300,9 @@ msgstr "信任的終端%{id}被撤銷."
 msgid ""
 "Trusted terminals:\n"
 "%{lines}"
-msgstr "受信任的終端：\n%{lines}"
+msgstr ""
+"受信任的終端：\n"
+"%{lines}"
 
 #: lib/retro_hex_chat/commands/handlers/ns.ex:295
 #: lib/retro_hex_chat/commands/handlers/ns.ex:308

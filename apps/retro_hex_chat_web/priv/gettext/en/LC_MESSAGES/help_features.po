@@ -905,6 +905,7 @@ msgstr "A real-time character counter appears near the input box showing"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_motd.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_server_settings.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:41
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Access"
 msgstr "Access"
@@ -3116,6 +3117,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:18
 #: lib/retro_hex_chat_web/controllers/help_content/feature_kick_notifications.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/feature_lag_indicator.html.heex:31
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_delete.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:37
@@ -3353,6 +3355,7 @@ msgstr "Tab"
 msgid "Tabs"
 msgstr "Tabs"
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "Text Formatting"
@@ -3672,6 +3675,7 @@ msgstr ""
 "characters)."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_interactive_elements.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "URL Catcher"
 msgstr "URL Catcher"
@@ -5911,9 +5915,54 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_enhanced_history.html.heex:49
 #, elixir-autogen, elixir-format
 msgid ") are filtered before history is persisted."
-msgstr ""
+msgstr ") are filtered before history is persisted."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_enhanced_history.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "For identified registered users, the last 100 entries are stored with the account. Guests keep history only in browser memory for the current page."
-msgstr ""
+msgstr "For identified registered users, the last 100 entries are stored with the account. Guests keep history only in browser memory for the current page."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "Downloads are authorized by the chat server first. If access is allowed, the server redirects to a short-lived signed storage URL."
+msgstr "Downloads are authorized by the chat server first. If access is allowed, the server redirects to a short-lived signed storage URL."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "File Paths"
+msgstr "File Paths"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Image attachments render as inline thumbnails. Audio and video attachments use native players, PDF files expose a preview action, and other files render as safe file cards with type, size and path metadata."
+msgstr "Image attachments render as inline thumbnails. Audio and video attachments use native players, PDF files expose a preview action, and other files render as safe file cards with type, size and path metadata."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Message attachments let you send files in channel messages and private messages. A message can contain text, one or more files, or both."
+msgstr "Message attachments let you send files in channel messages and private messages. A message can contain text, one or more files, or both."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Previews"
+msgstr "Previews"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Sending"
+msgstr "Sending"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Unsafe browser-rendered formats, including SVG and HTML, are kept as downloadable files instead of inline previews."
+msgstr "Unsafe browser-rendered formats, including SVG and HTML, are kept as downloadable files instead of inline previews."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "Uploaded files are stored with a logical directory path so administrators can browse them later without depending on the storage bucket's internal object keys."
+msgstr "Uploaded files are stored with a logical directory path so administrators can browse them later without depending on the storage bucket's internal object keys."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Use the attachment button in the chat input, choose a file, wait for the upload to finish, then send the message."
+msgstr "Use the attachment button in the chat input, choose a file, wait for the upload to finish, then send the message."

@@ -51,7 +51,7 @@ msgstr ""
 msgid "📢 Share with friends"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:514
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:476
 #, elixir-autogen, elixir-format
 msgid "“Your data. Your rules. Nobody in between.”"
 msgstr ""
@@ -102,7 +102,7 @@ msgstr ""
 msgid "18 games"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:520
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:482
 #, elixir-autogen, elixir-format
 msgid "2025–2026"
 msgstr ""
@@ -124,7 +124,7 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:95
 #: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:133
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:401
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:363
 #, elixir-autogen, elixir-format
 msgid "About"
 msgstr ""
@@ -192,7 +192,7 @@ msgstr ""
 msgid "Boxing"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:409
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:371
 #, elixir-autogen, elixir-format
 msgid "Built with Elixir, Phoenix, and LiveView."
 msgstr ""
@@ -300,22 +300,19 @@ msgstr ""
 msgid "Code"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:186
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:350
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:451
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:183
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:413
 #: lib/retro_hex_chat_web/live/landing_live/community.ex:19
 #, elixir-autogen, elixir-format
 msgid "Community"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:144
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:296
 #: lib/retro_hex_chat_web/live/landing_live/index.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "Connect"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:434
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:396
 #, elixir-autogen, elixir-format
 msgid "Contribute"
 msgstr ""
@@ -380,14 +377,9 @@ msgstr ""
 msgid "Do I need to run my own server?"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:362
-#, elixir-autogen, elixir-format
-msgid "Docs"
-msgstr ""
-
 #: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:104
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:222
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:446
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:275
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:408
 #, elixir-autogen, elixir-format
 msgid "Documentation"
 msgstr ""
@@ -438,8 +430,7 @@ msgstr ""
 msgid "Extensible"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:189
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:357
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:186
 #: lib/retro_hex_chat_web/live/landing_live/faq.ex:20
 #, elixir-autogen, elixir-format
 msgid "FAQ"
@@ -455,8 +446,7 @@ msgstr ""
 msgid "FOTAQ"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:168
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:329
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:165
 #: lib/retro_hex_chat_web/live/landing_live/features.ex:20
 #, elixir-autogen, elixir-format
 msgid "Features"
@@ -503,12 +493,12 @@ msgstr ""
 msgid "Getting Started"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:425
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:387
 #, elixir-autogen, elixir-format
 msgid "GitHub"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:491
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:453
 #: lib/retro_hex_chat_web/live/landing_live/community.html.heex:76
 #, elixir-autogen, elixir-format
 msgid "GitHub Sponsors"
@@ -539,8 +529,7 @@ msgstr ""
 msgid "Hockey"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:162
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:322
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:159
 #: lib/retro_hex_chat_web/live/landing_live/how_it_works.ex:20
 #, elixir-autogen, elixir-format
 msgid "How It Works"
@@ -577,13 +566,12 @@ msgstr ""
 msgid "If a direct connection isn’t possible (strict firewalls), a"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:410
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:372
 #, elixir-autogen, elixir-format
 msgid "Inspired by the IRC of the 2000s and the freedom it represented."
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:180
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:343
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:177
 #: lib/retro_hex_chat_web/live/landing_live/install.ex:19
 #, elixir-autogen, elixir-format
 msgid "Install"
@@ -624,13 +612,13 @@ msgstr ""
 msgid "Just clean code. ✨"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:461
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:423
 #, elixir-autogen, elixir-format
 msgid "Legal"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:244
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:443
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:297
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:405
 #, elixir-autogen, elixir-format
 msgid "License (MIT)"
 msgstr ""
@@ -660,21 +648,16 @@ msgstr ""
 msgid "MIT"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:470
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:526
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:432
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:488
 #: lib/retro_hex_chat_web/live/landing_live/community.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "MIT License"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:519
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:481
 #, elixir-autogen, elixir-format
 msgid "Made by humans"
-msgstr ""
-
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:306
-#, elixir-autogen, elixir-format
-msgid "Menu"
 msgstr ""
 
 #: lib/retro_hex_chat_web/live/landing_live/how_it_works.html.heex:258
@@ -889,8 +872,7 @@ msgstr ""
 msgid "Powerful IRC-style commands."
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:174
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:336
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:171
 #: lib/retro_hex_chat_web/live/landing_live/index.html.heex:79
 #: lib/retro_hex_chat_web/live/landing_live/privacy.ex:19
 #, elixir-autogen, elixir-format
@@ -920,7 +902,7 @@ msgstr ""
 msgid "Programmable bots with pluggable capabilities."
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:416
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:378
 #, elixir-autogen, elixir-format
 msgid "Project"
 msgstr ""
@@ -1032,7 +1014,7 @@ msgstr ""
 msgid "Retro Hex Chat is MIT-licensed open source software. Contribute, star, share, or sponsor the project on GitHub."
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:408
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:370
 #, elixir-autogen, elixir-format
 msgid "Retro Hex Chat is free software, licensed under MIT."
 msgstr ""
@@ -1072,7 +1054,7 @@ msgstr ""
 msgid "Searchable topics with keyword matching"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:479
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:441
 #, elixir-autogen, elixir-format
 msgid "Security"
 msgstr ""
@@ -1177,7 +1159,7 @@ msgstr ""
 msgid "Stored on their servers, mined for ads"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:486
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:448
 #, elixir-autogen, elixir-format
 msgid "Support"
 msgstr ""
@@ -1616,8 +1598,8 @@ msgstr ""
 msgid "to challenge anyone. Games run on HTML5 Canvas with state synced via WebRTC DataChannel —"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:518
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:528
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:480
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:490
 #: lib/retro_hex_chat_web/live/landing_live/index.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "v0.1.0"
@@ -1678,7 +1660,7 @@ msgstr ""
 msgid "Installation guide"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:500
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:462
 #, elixir-autogen, elixir-format
 msgid "Languages"
 msgstr ""
@@ -1747,17 +1729,19 @@ msgstr ""
 msgid "Games"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:218
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:233
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:252
 #, elixir-autogen, elixir-format
 msgid "Help"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:158
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:155
 #, elixir-autogen, elixir-format
 msgid "Home"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:208
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:228
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:250
 #, elixir-autogen, elixir-format
 msgid "Navigate"
 msgstr ""

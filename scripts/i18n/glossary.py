@@ -146,6 +146,45 @@ _ROWS = {
     "Status":       ("Status", "Estado", "Estado", "Statut", "Status", "Stato", "Status", "Status", "Статус", "Status", "ステータス", "状态", "狀態"),
     "Server":       ("Servidor", "Servidor", "Servidor", "Serveur", "Server", "Server", "Server", "Serwer", "Сервер", "Server", "サーバー", "服务器", "伺服器"),
     "Channel":      ("Canal", "Canal", "Canal", "Canal", "Kanal", "Canale", "Kanaal", "Kanał", "Канал", "Kanal", "チャンネル", "频道", "頻道"),
+
+    # ── Text formatting ───────────────────────────────────────
+    # The composer's toolbar. Every one of these came back from the engine as
+    # the wrong sense: "Bold" as "Bolzen" (a metal bolt) in de, "Bulleted list"
+    # as "Lista de balas" (bullets as ammunition) in pt_BR, "Write" as "ログイン"
+    # in ja. A toolbar button has no sentence around it to disambiguate.
+    "Bold":         ("Negrito", "Negrito", "Negrita", "Gras", "Fett", "Grassetto", "Vet", "Pogrubienie", "Полужирный", "Tebal", "太字", "粗体", "粗體"),
+    "Italic":       ("Itálico", "Itálico", "Cursiva", "Italique", "Kursiv", "Corsivo", "Cursief", "Kursywa", "Курсив", "Miring", "斜体", "斜体", "斜體"),
+    "Strikethrough": ("Tachado", "Tachado", "Tachado", "Barré", "Durchgestrichen", "Barrato", "Doorhalen", "Przekreślenie", "Зачёркнутый", "Coret", "取り消し線", "删除线", "刪除線"),
+    "Code":         ("Código", "Código", "Código", "Code", "Code", "Codice", "Code", "Kod", "Код", "Kode", "コード", "代码", "程式碼"),
+    "Quote":        ("Citação", "Citação", "Cita", "Citation", "Zitat", "Citazione", "Citaat", "Cytat", "Цитата", "Kutipan", "引用", "引用", "引用"),
+    "Heading":      ("Título", "Título", "Encabezado", "Titre", "Überschrift", "Titolo", "Kop", "Nagłówek", "Заголовок", "Judul", "見出し", "标题", "標題"),
+    "Link":         ("Link", "Ligação", "Enlace", "Lien", "Link", "Collegamento", "Link", "Odnośnik", "Ссылка", "Tautan", "リンク", "链接", "連結"),
+    "Preview":      ("Visualizar", "Pré-visualizar", "Vista previa", "Aperçu", "Vorschau", "Anteprima", "Voorbeeld", "Podgląd", "Предпросмотр", "Pratinjau", "プレビュー", "预览", "預覽"),
+    "Write":        ("Escrever", "Escrever", "Escribir", "Écrire", "Schreiben", "Scrivi", "Schrijven", "Pisz", "Написать", "Tulis", "作成", "编写", "編寫"),
+    # A name, not a word: translating it produced "Marcação" in pt_BR and
+    # "Markiert" in de, and collapsed onto "Notation" in both Chinese locales.
+    "Markdown":     ("Markdown", "Markdown", "Markdown", "Markdown", "Markdown", "Markdown", "Markdown", "Markdown", "Markdown", "Markdown", "Markdown", "Markdown", "Markdown"),
+
+    # ── Attachment kinds ──────────────────────────────────────
+    # File-type labels on an attachment card. "Office" is the product family
+    # and stays literal; "Archive" is the compressed-file kind, kept distinct
+    # from File so the two cards do not read the same.
+    "Text":         ("Texto", "Texto", "Texto", "Texte", "Text", "Testo", "Tekst", "Tekst", "Текст", "Teks", "テキスト", "文本", "文字"),
+    "Image":        ("Imagem", "Imagem", "Imagen", "Image", "Bild", "Immagine", "Afbeelding", "Obraz", "Изображение", "Gambar", "画像", "图片", "圖片"),
+    "Audio":        ("Áudio", "Áudio", "Audio", "Audio", "Audio", "Audio", "Audio", "Dźwięk", "Аудио", "Audio", "音声", "音频", "音訊"),
+    "Video":        ("Vídeo", "Vídeo", "Vídeo", "Vidéo", "Video", "Video", "Video", "Wideo", "Видео", "Video", "動画", "视频", "影片"),
+    "PDF":          ("PDF", "PDF", "PDF", "PDF", "PDF", "PDF", "PDF", "PDF", "PDF", "PDF", "PDF", "PDF", "PDF"),
+    "Archive":      ("Compactado", "Compactado", "Comprimido", "Archive", "Archiv", "Archivio", "Archief", "Archiwum", "Архив", "Arsip", "アーカイブ", "压缩包", "壓縮檔"),
+    "Office":       ("Office", "Office", "Office", "Office", "Office", "Office", "Office", "Office", "Office", "Office", "Office", "Office", "Office"),
+
+    # ── Section and state labels ──────────────────────────────
+    "Commands":     ("Comandos", "Comandos", "Comandos", "Commandes", "Befehle", "Comandi", "Opdrachten", "Polecenia", "Команды", "Perintah", "コマンド", "命令", "指令"),
+    "Welcome":      ("Bem-vindo", "Bem-vindo", "Bienvenido", "Bienvenue", "Willkommen", "Benvenuto", "Welkom", "Witamy", "Добро пожаловать", "Selamat datang", "ようこそ", "欢迎", "歡迎"),
+    "Setup":        ("Configuração", "Configuração", "Configuración", "Installation", "Einrichtung", "Configurazione", "Installatie", "Konfiguracja", "Установка", "Penyiapan", "セットアップ", "安装", "安裝"),
+    "Requirements": ("Requisitos", "Requisitos", "Requisitos", "Prérequis", "Voraussetzungen", "Requisiti", "Vereisten", "Wymagania", "Требования", "Persyaratan", "要件", "要求", "需求"),
+    "Sending":      ("Enviando", "A enviar", "Enviando", "Envoi", "Senden", "Invio", "Verzenden", "Wysyłanie", "Отправка", "Mengirim", "送信", "发送", "傳送"),
+    # The pronoun on your own messages, not a form of address.
+    "You":          ("Você", "Você", "Tú", "Vous", "Du", "Tu", "Jij", "Ty", "Вы", "Anda", "あなた", "你", "你"),
 }
 # fmt: on
 

@@ -142,7 +142,7 @@ msgstr ""
 msgid "Click a tab to switch. The active tab is highlighted. Tabs show close buttons (×) for channels and PMs. Unread tabs appear bold, and highlighted tabs flash."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:19
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/ui_status_tab.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "Click the"
@@ -163,7 +163,8 @@ msgstr ""
 msgid "Color Palette"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_message_formats.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Colors"
 msgstr ""
@@ -220,7 +221,7 @@ msgstr ""
 msgid "Ctrl+Shift+A — Address Book Ctrl+Shift+H — Highlight Words Ctrl+Shift+G — Ignore List Ctrl+Shift+L — Log Viewer Ctrl+Shift+O — Options Ctrl+Shift+E — Perform Dialog Ctrl+Shift+S — URL Catcher Ctrl+Shift+W — Help"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Ctrl+Shift+B — Bold Ctrl+Shift+Y — Italic Ctrl+Shift+U — Underline Ctrl+Shift+D — Color (opens color picker) Ctrl+Shift+V — Reverse Ctrl+Shift+X — Reset all formatting"
 msgstr ""
@@ -368,7 +369,7 @@ msgstr ""
 msgid "Keyboard Shortcuts"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:15
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "Keyboard Shortcuts:"
 msgstr ""
@@ -398,7 +399,7 @@ msgstr ""
 msgid "Message display with formatting and clickable URLs."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "Methods"
 msgstr ""
@@ -513,11 +514,6 @@ msgstr ""
 msgid "Regular:"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "RetroHexChat supports IRC-compatible text formatting with bold, italic, underline, colors, and more."
-msgstr ""
-
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "RetroHexChat supports the standard 16-color IRC palette for both foreground and background text."
@@ -555,7 +551,8 @@ msgid "Sections"
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:33
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:25
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_message_formats.html.heex:53
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:40
 #: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:60
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:56
@@ -648,7 +645,7 @@ msgstr ""
 msgid "Status Bar:"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:17
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Strip Formatting"
 msgstr ""
@@ -723,7 +720,7 @@ msgstr ""
 msgid "Toggle Nicklist"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:9
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "Toolbar:"
@@ -748,11 +745,6 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:114
 #, elixir-autogen, elixir-format
 msgid "URL Catcher"
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:10
-#, elixir-autogen, elixir-format
-msgid "Use the formatting toolbar below the chat area (B, I, U, Color, Strip buttons)."
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:31
@@ -836,7 +828,7 @@ msgstr ""
 msgid "and an \"Browse channels\" button."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "button in the formatting toolbar to strip all formatting from incoming messages."
 msgstr ""
@@ -1889,4 +1881,94 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:8
 #, elixir-autogen, elixir-format
 msgid "Where Your State Is Shown"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_message_formats.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "**bold** _italic_ `code` [label](https://example.com)"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_message_formats.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Choose IRC for classic control-code formatting, MD for Markdown, or TXT for escaped plain text."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_message_formats.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "Commands"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_message_formats.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "Format Selector"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_message_formats.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "IRC and Plain Text"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_message_formats.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "IRC remains the default and keeps the classic bold, italic, underline, color, reverse, and reset controls."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_message_formats.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Markdown"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_message_formats.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Markdown mode supports bold, italic, inline code, code blocks, block quotes, lists, and links. Use Preview to check the rendered message before sending."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Message Format"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "Message Formats"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "RetroHexChat supports IRC-compatible formatting, Markdown, and plain text messages."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_message_formats.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "Slash commands are still parsed as commands before message formatting is applied, so /join, /me, /notice, and other commands keep their normal behavior."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_message_formats.html.heex:39
+#, elixir-autogen, elixir-format
+msgid "TXT stores the message as literal text with HTML escaped and no presentation syntax interpreted."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_message_formats.html.heex:56
+#, elixir-autogen, elixir-format
+msgid "Text Formatting Overview"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_message_formats.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "The composer can send messages in three content formats: IRC, MD, and TXT."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "The formatting toolbar changes with the selected message format."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_message_formats.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "The selected format stays active for new messages. When you edit a message, the composer opens in that message's original format."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Use the IRC, MD, and TXT selector beside the composer to choose how the next message is saved and rendered."
 msgstr ""

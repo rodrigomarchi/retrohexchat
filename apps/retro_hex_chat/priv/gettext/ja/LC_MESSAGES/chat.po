@@ -130,7 +130,9 @@ msgid ""
 "%{max_name_length} chars)."
 msgstr "無効なタイマー名。 文字、数字、ハイフン、アンダースコア(最大%{max_name_length}文字)のみを使用してください。"
 
+#: lib/retro_hex_chat/channels/server.ex:1345
 #: lib/retro_hex_chat/chat/policy.ex:18 lib/retro_hex_chat/chat/policy.ex:24
+#: lib/retro_hex_chat/chat/service.ex:688
 #, elixir-autogen, elixir-format
 msgid "Message cannot be empty"
 msgstr "メッセージは空にすることはできません"
@@ -141,9 +143,10 @@ msgstr "メッセージは空にすることはできません"
 msgid "Message has already been deleted."
 msgstr "メッセージは既に削除されました。"
 
-#: lib/retro_hex_chat/chat/service.ex:53 lib/retro_hex_chat/chat/service.ex:80
-#: lib/retro_hex_chat/chat/service.ex:109
-#: lib/retro_hex_chat/chat/service.ex:131
+#: lib/retro_hex_chat/chat/service.ex:67
+#: lib/retro_hex_chat/chat/service.ex:101
+#: lib/retro_hex_chat/chat/service.ex:133
+#: lib/retro_hex_chat/chat/service.ex:155
 #, elixir-autogen, elixir-format
 msgid "Message not found."
 msgstr "メッセージが見つかりません。"
@@ -243,8 +246,8 @@ msgstr "Open/close 無視リスト"
 msgid "Open/close the keyboard shortcut cheatsheet"
 msgstr "Open/close キーボードショートカットチートシート"
 
-#: lib/retro_hex_chat/chat/service.ex:197
-#: lib/retro_hex_chat/chat/service.ex:214
+#: lib/retro_hex_chat/chat/service.ex:232
+#: lib/retro_hex_chat/chat/service.ex:249
 #, elixir-autogen, elixir-format
 msgid "Original message not found."
 msgstr "元のメッセージが見つかりませんでした。"
@@ -335,7 +338,7 @@ msgid "Switch to window 9"
 msgstr "ウィンドウに切り替える 9"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:281
-#: lib/retro_hex_chat/chat/service.ex:154
+#: lib/retro_hex_chat/chat/service.ex:178
 #, elixir-autogen, elixir-format
 msgid "System"
 msgstr "システム"
@@ -497,3 +500,32 @@ msgstr "トグル会議カメラ"
 #, elixir-autogen, elixir-format
 msgid "Toggle Conference Microphone"
 msgstr "トグル会議マイク"
+
+#: lib/retro_hex_chat/channels/server.ex:1246
+#: lib/retro_hex_chat/chat/service.ex:376
+#, elixir-autogen, elixir-format
+msgid "Attachment could not be attached to the message"
+msgstr "添付ファイルがメッセージに添付できません"
+
+#: lib/retro_hex_chat/chat/attachments.ex:199
+#, elixir-autogen, elixir-format
+msgid "Attachment exceeds the %{mb} MB limit"
+msgstr "付属品は%{mb} MBの限界を超過します"
+
+#: lib/retro_hex_chat/chat/attachments.ex:194
+#, elixir-autogen, elixir-format
+msgid "Attachment is empty"
+msgstr "付属品は空です"
+
+#: lib/retro_hex_chat/channels/server.ex:1347
+#: lib/retro_hex_chat/chat/service.ex:690
+#, elixir-autogen, elixir-format
+msgid "Unsupported message format"
+msgstr "サポートされていないメッセージ形式"
+
+#: lib/retro_hex_chat/chat/attachments.ex:206
+#: lib/retro_hex_chat/chat/attachments.ex:302
+#: lib/retro_hex_chat/chat/attachments.ex:307
+#, elixir-autogen, elixir-format
+msgid "file"
+msgstr "ファイル"

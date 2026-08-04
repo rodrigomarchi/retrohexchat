@@ -135,7 +135,9 @@ msgstr ""
 "Nome del timer non valido. Utilizzare solo lettere, numeri, trattini, "
 "sottolineature (max %{max_name_length} chars)."
 
+#: lib/retro_hex_chat/channels/server.ex:1345
 #: lib/retro_hex_chat/chat/policy.ex:18 lib/retro_hex_chat/chat/policy.ex:24
+#: lib/retro_hex_chat/chat/service.ex:688
 #, elixir-autogen, elixir-format
 msgid "Message cannot be empty"
 msgstr "Il messaggio non può essere vuoto"
@@ -146,9 +148,10 @@ msgstr "Il messaggio non può essere vuoto"
 msgid "Message has already been deleted."
 msgstr "Il messaggio è già stato cancellato."
 
-#: lib/retro_hex_chat/chat/service.ex:53 lib/retro_hex_chat/chat/service.ex:80
-#: lib/retro_hex_chat/chat/service.ex:109
-#: lib/retro_hex_chat/chat/service.ex:131
+#: lib/retro_hex_chat/chat/service.ex:67
+#: lib/retro_hex_chat/chat/service.ex:101
+#: lib/retro_hex_chat/chat/service.ex:133
+#: lib/retro_hex_chat/chat/service.ex:155
 #, elixir-autogen, elixir-format
 msgid "Message not found."
 msgstr "Messaggio non trovato."
@@ -248,8 +251,8 @@ msgstr "Aprire la lista di ignorare"
 msgid "Open/close the keyboard shortcut cheatsheet"
 msgstr "Open/close il cheatsheet della tastiera"
 
-#: lib/retro_hex_chat/chat/service.ex:197
-#: lib/retro_hex_chat/chat/service.ex:214
+#: lib/retro_hex_chat/chat/service.ex:232
+#: lib/retro_hex_chat/chat/service.ex:249
 #, elixir-autogen, elixir-format
 msgid "Original message not found."
 msgstr "Messaggio originale non trovato."
@@ -341,7 +344,7 @@ msgid "Switch to window 9"
 msgstr "Passare alla finestra 9"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:281
-#: lib/retro_hex_chat/chat/service.ex:154
+#: lib/retro_hex_chat/chat/service.ex:178
 #, elixir-autogen, elixir-format
 msgid "System"
 msgstr "Sistema"
@@ -503,3 +506,32 @@ msgstr "Toggle Camera di conferenza"
 #, elixir-autogen, elixir-format
 msgid "Toggle Conference Microphone"
 msgstr "Microfono di conferenza di Toggle"
+
+#: lib/retro_hex_chat/channels/server.ex:1246
+#: lib/retro_hex_chat/chat/service.ex:376
+#, elixir-autogen, elixir-format
+msgid "Attachment could not be attached to the message"
+msgstr "L'allegato non può essere allegato al messaggio"
+
+#: lib/retro_hex_chat/chat/attachments.ex:199
+#, elixir-autogen, elixir-format
+msgid "Attachment exceeds the %{mb} MB limit"
+msgstr "L'attacco supera il limite %{mb} MB"
+
+#: lib/retro_hex_chat/chat/attachments.ex:194
+#, elixir-autogen, elixir-format
+msgid "Attachment is empty"
+msgstr "L'attaccamento è vuoto"
+
+#: lib/retro_hex_chat/channels/server.ex:1347
+#: lib/retro_hex_chat/chat/service.ex:690
+#, elixir-autogen, elixir-format
+msgid "Unsupported message format"
+msgstr "Formato messaggio non supportato"
+
+#: lib/retro_hex_chat/chat/attachments.ex:206
+#: lib/retro_hex_chat/chat/attachments.ex:302
+#: lib/retro_hex_chat/chat/attachments.ex:307
+#, elixir-autogen, elixir-format
+msgid "file"
+msgstr "file"
