@@ -85,7 +85,63 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
                 "menu, in the same order as on the desktop. Tapping one opens the menu already " <>
                 "on that section; tapping another switches to it, and tapping the one already " <>
                 "open closes the menu."
-            )
+            ),
+        see_also: ["ui-start-menu", "ui-overview", "keyboard-shortcuts"]
+      },
+      %{
+        id: "ui-start-menu",
+        title: dgettext("help", "The Start Menu"),
+        category: dgettext("help", "User Interface"),
+        keywords: [
+          "start menu",
+          "start button",
+          "grayed out",
+          "disabled",
+          "groups",
+          "tools",
+          "automation",
+          "settings",
+          "navigate",
+          "windows",
+          "admin",
+          "disconnect"
+        ],
+        icon: :icon_hex_stone,
+        description:
+          dgettext(
+            "help",
+            "The Start button opens the same menu on every screen RetroHexChat has — the " <>
+              "landing pages, the Connect screen, the chat, this Help viewer and the design " <>
+              "system. What changes between them is which entries are live."
+          ) <>
+            " " <>
+            dgettext(
+              "help",
+              "Entries you cannot use right now are grayed out rather than hidden. Opening " <>
+                "Start ▸ Tools from the landing page shows Address Book, Notify List and the " <>
+                "rest in gray: they are real parts of the app, waiting for you to connect. " <>
+                "The menu is the same map wherever you are standing on it."
+            ) <>
+            " " <>
+            dgettext(
+              "help",
+              "The entries are grouped one level deep. Tools holds the address book, lists " <>
+                "and channel windows; Automation holds Perform, Auto-Join, aliases, custom " <>
+                "menus and timers; Settings holds nick colors, sounds and flood protection; " <>
+                "P2P appears once you have a peer session; Account and Admin hold their own; " <>
+                "Windows reopens a window of the screen you are on; Navigate reaches the " <>
+                "public pages, the documentation and the app; Help holds the topics, the " <>
+                "shortcut cheatsheet and About. Disconnect sits alone at the bottom."
+            ) <>
+            " " <>
+            dgettext(
+              "help",
+              "On a desktop a group flies out beside the menu and hovering another group " <>
+                "switches to it. On a phone the menu drills down instead: tapping a group " <>
+                "replaces the list with its entries and the group's own row at the top takes " <>
+                "you back."
+            ),
+        see_also: ["ui-desktop", "ui-overview", "keyboard-shortcuts"]
       },
       %{
         id: "ui-conversations",

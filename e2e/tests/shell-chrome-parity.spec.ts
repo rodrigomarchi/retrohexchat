@@ -91,16 +91,23 @@ test.describe("Shell chrome parity", () => {
     // A CTA in the header and a second one in the tray were chrome no other
     // shell had. The way in is the Start menu, named as everywhere else — and
     // the page's own content is still free to invite you in.
+    // Exact matches: the Start menu in the taskbar carries a Disconnect entry,
+    // and a substring match would read that as the CTA coming back.
     await expect(
-      page.getByTestId("app-header").getByText("Connect"),
+      page.getByTestId("app-header").getByText("Connect", { exact: true }),
     ).toHaveCount(0);
     await expect(
-      page.getByTestId("landing-taskbar").getByText("Connect"),
+      page.getByTestId("landing-taskbar").getByText("Connect", { exact: true }),
     ).toHaveCount(0);
 
+    // This whole describe runs at a phone viewport, where the menu drills down
+    // on a tap — hover is deliberately inert in the stacked shell.
+    const startMenu = page.locator("#landing-start-menu");
     await page.locator("[data-window-start]").click();
-    await expect(
-      page.locator("#landing-start-menu").getByText("Open the app"),
-    ).toBeVisible();
+    await startMenu
+      .locator("[data-start-submenu-trigger]")
+      .filter({ hasText: "Navigate" })
+      .click();
+    await expect(startMenu.getByText("Open the app")).toBeVisible();
   });
 });

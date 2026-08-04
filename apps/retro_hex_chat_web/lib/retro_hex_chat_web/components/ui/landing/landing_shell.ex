@@ -13,6 +13,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
   import RetroHexChatWeb.Components.UI.MenuBar
   import RetroHexChatWeb.Components.UI.LanguageMenu
   import RetroHexChatWeb.Components.UI.ContextMenu
+  import RetroHexChatWeb.Components.UI.StartMenuApp
 
   alias RetroHexChatWeb.Icons
 
@@ -70,7 +71,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
   attr :windows, :list, required: true
 
   defp landing_taskbar(assigns) do
-    assigns = assign(assigns, :pages, nav_pages())
+    assigns = assign(assigns, :start_windows, start_windows(assigns.windows))
 
     ~H"""
     <.taskbar
@@ -79,40 +80,10 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
       data-testid="landing-taskbar"
     >
       <:start>
-        <div class="relative shrink-0">
-          <.start_button label={dgettext("landing", "Start")}>
-            <:icon><Icons.icon_hex_stone class="h-4 w-4" /></:icon>
-          </.start_button>
-          <.start_menu id="landing-start-menu" class="w-56">
-            <%!-- Closing a window takes its taskbar button with it, the way
-                  Win98 does. This submenu is how it comes back — without it a
-                  closed section would be unreachable. --%>
-            <.start_menu_submenu label={dgettext("landing", "Windows")}>
-              <:icon><Icons.icon_group_view class="h-4 w-4" /></:icon>
-              <.start_menu_item :for={w <- @windows} data-window-open={w.id} label={w.label}>
-                <:icon>{apply(Icons, w.icon, [%{class: "h-4 w-4"}])}</:icon>
-              </.start_menu_item>
-              <.start_menu_item data-window-open="about" label={dgettext("landing", "About")}>
-                <:icon><Icons.icon_lightbulb class="h-4 w-4" /></:icon>
-              </.start_menu_item>
-            </.start_menu_submenu>
-            <.start_menu_separator />
-            <.start_menu_item :for={p <- @pages} href={p.path} label={p.label}>
-              <:icon>{apply(Icons, p.icon, [%{class: "h-4 w-4"}])}</:icon>
-            </.start_menu_item>
-            <.start_menu_separator />
-            <.start_menu_item href="/chat/help" label={dgettext("landing", "Documentation")}>
-              <:icon><Icons.icon_notepad class="h-4 w-4" /></:icon>
-            </.start_menu_item>
-            <.start_menu_item
-              href="/connect"
-              label={dgettext("landing", "Open the app")}
-              class="font-bold"
-            >
-              <:icon><Icons.icon_connect class="h-4 w-4" /></:icon>
-            </.start_menu_item>
-          </.start_menu>
-        </div>
+        <%!-- Closing a window takes its taskbar button with it, the way Win98
+              does. Start ▸ Windows is how it comes back — without it a closed
+              section would be unreachable. About is one of those sections. --%>
+        <.start_menu_app id="landing-start-menu" screen={:landing} windows={@start_windows} />
       </:start>
 
       <%!-- One button per window on this page, exactly as the app's taskbar
@@ -147,6 +118,14 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
       </:tray>
     </.taskbar>
     """
+  end
+
+  # The page's own windows as the Start menu names them (`icon_fn`, the key the
+  # shared taskbar components use), plus About — a section with a window and a
+  # taskbar button, so it belongs in the list that brings closed ones back.
+  defp start_windows(windows) do
+    Enum.map(windows, &%{id: &1.id, label: &1.label, icon_fn: &1.icon}) ++
+      [%{id: "about", label: dgettext("landing", "About"), icon_fn: :icon_lightbulb}]
   end
 
   # The 7 landing pages, shared by the taskbar buttons, Start menu and menu bar.

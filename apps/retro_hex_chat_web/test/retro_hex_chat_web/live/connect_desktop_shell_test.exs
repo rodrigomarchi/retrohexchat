@@ -82,21 +82,48 @@ defmodule RetroHexChatWeb.ConnectDesktopShellTest do
   end
 
   describe "start menu" do
-    test "renders the minimal Connect / Help Topics / About items", %{conn: conn} do
+    test "carries the whole app menu, with what Connect can reach live", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/connect")
 
       assert has_element?(view, ~s(#connect-desktop [data-window-start]))
       assert has_element?(view, ~s(#connect-start-menu[data-window-start-menu]))
+
+      # Live here: the Connect window, help and about.
       assert has_element?(view, ~s(#connect-start-menu [data-window-open="connect"]))
-      assert has_element?(view, ~s(#connect-start-menu [data-testid="connect-start-help-topics"]))
-      assert has_element?(view, ~s(#connect-start-menu [data-testid="connect-start-about"]))
+
+      assert has_element?(
+               view,
+               ~s(#connect-start-menu [data-testid="start-menu-item-help_topics"])
+             )
+
+      assert has_element?(
+               view,
+               ~s|#connect-start-menu [data-testid="start-menu-item-show_about"]:not([disabled])|
+             )
+
+      # Present but out of reach without a session — the menu names the whole app
+      # from every screen rather than becoming a different menu on each one.
+      assert has_element?(
+               view,
+               ~s(#connect-start-menu [data-testid="start-menu-item-address-book"][disabled])
+             )
+
+      assert has_element?(
+               view,
+               ~s(#connect-start-menu [data-testid="start-menu-item-open_admin_users"][disabled])
+             )
+
+      assert has_element?(
+               view,
+               ~s(#connect-start-menu [data-testid="start-menu-item-disconnect"][disabled])
+             )
     end
 
     test "Help Topics navigates to the help viewer", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/connect")
 
       view
-      |> element(~s([data-testid="connect-start-help-topics"]))
+      |> element(~s(#connect-start-menu [data-testid="start-menu-item-help_topics"]))
       |> render_click()
 
       assert_redirect(view, "/chat/help")

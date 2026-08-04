@@ -103,6 +103,13 @@ test.describe("Landing public pages", () => {
     // names — not a CTA the landing alone used to carry in its header.
     await page.goto("/");
     await page.locator("[data-window-start]").click();
+    // Stacked shell: a group drills down on a deliberate tap. Hover is a
+    // pointer affordance and is deliberately inert here, so a finger dragging
+    // across the rows cannot swap levels under itself.
+    await page
+      .locator("#landing-start-menu [data-start-submenu-trigger]")
+      .filter({ hasText: "Navigate" })
+      .click();
     await page.locator('#landing-start-menu a[href="/connect"]').click();
     await expect(page).toHaveURL(/\/connect$/);
     await expect(page.locator("#nickname")).toBeVisible();
@@ -125,6 +132,22 @@ test.describe("Landing public pages", () => {
     await expect(startMenu).toBeHidden();
     await page.locator("[data-window-start]").click();
     await expect(startMenu).toBeVisible();
+    await shot(startMenu, "start-menu-root");
+
+    // The same menu the chat carries, with the app's own entries grayed out —
+    // a visitor can read what RetroHexChat does before connecting to it.
+    await startMenu
+      .locator("[data-start-submenu-trigger]")
+      .filter({ hasText: "Tools" })
+      .hover();
+    const addressBook = startMenu.locator(
+      '[data-testid="start-menu-item-address-book"]',
+    );
+    await expect(addressBook).toBeVisible();
+    await expect(addressBook).toBeDisabled();
+    // Framed on the page, not the menu: the flyout is `left-full` and escapes
+    // the menu's own box, so an element-framed shot would crop it away.
+    await shot(page, "start-menu-tools-disabled");
 
     await page.keyboard.press("Escape");
     await expect(startMenu).toBeHidden();
@@ -156,7 +179,11 @@ test.describe("Landing public pages", () => {
 
     // Reaching another page is the Start menu's job.
     await page.locator("[data-window-start]").click();
-    await page.locator("#landing-start-menu").locator('a[href="/faq"]').click();
+    await startMenu
+      .locator("[data-start-submenu-trigger]")
+      .filter({ hasText: "Navigate" })
+      .hover();
+    await startMenu.locator('a[href="/faq"]').click();
     await expect(page).toHaveURL(/\/faq$/);
     await expect(page.locator("#faq-heading")).toBeVisible();
 

@@ -13,6 +13,7 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
   import RetroHexChatWeb.Components.UI.Dialog, only: [show_modal: 1]
   import RetroHexChatWeb.Components.UI.Help.HelpMenuBar
   import RetroHexChatWeb.Components.UI.Help.HelpStatusBar
+  import RetroHexChatWeb.Components.UI.StartMenuApp
   import RetroHexChatWeb.Components.UI.TreeView
 
   alias RetroHexChat.Chat.HelpTopics
@@ -345,31 +346,11 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
     ~H"""
     <.taskbar>
       <:start>
-        <div class="relative">
-          <.start_button label={dgettext("ui", "Start")}>
-            <:icon><Icons.icon_hex_stone class="h-4 w-4" /></:icon>
-          </.start_button>
-          <.start_menu id="help-start-menu">
-            <.start_menu_item data-window-open="help" label={dgettext("help", "Help Topics")}>
-              <:icon><Icons.icon_notepad class="h-4 w-4" /></:icon>
-            </.start_menu_item>
-            <.start_menu_item
-              phx-click="help_nav_tab"
-              phx-value-tab="search"
-              label={dgettext("help", "Search")}
-            >
-              <:icon><Icons.icon_btn_search class="h-4 w-4" /></:icon>
-            </.start_menu_item>
-            <.start_menu_separator />
-            <.start_menu_item
-              phx-click="help_back_to_chat"
-              label={dgettext("help", "Back to chat")}
-              data-testid="help-start-back-to-chat"
-            >
-              <:icon><Icons.icon_chat class="h-4 w-4" /></:icon>
-            </.start_menu_item>
-          </.start_menu>
-        </div>
+        <.start_menu_app
+          id="help-start-menu"
+          screen={:help}
+          windows={[%{id: "help", label: dgettext("help", "Help"), icon_fn: :icon_notepad}]}
+        />
       </:start>
 
       <.taskbar_button window="help" label={dgettext("help", "Help")}>

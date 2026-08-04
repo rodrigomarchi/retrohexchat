@@ -269,7 +269,10 @@ test.describe("chat desktop on a phone (stacked single-window)", () => {
     const menu = page.locator("[data-window-start-menu]");
     const accountGroup = page.getByTestId("start-menu-account-submenu");
     const accountItem = page.getByTestId("start-menu-item-open_account_dialog");
-    const rootItem = page.getByTestId("start-menu-item-timers");
+    // Disconnect is the one entry that sits at the root itself; everything else
+    // lives a level down, which is what keeps the menu on screen without a
+    // scroll the flyouts could not survive.
+    const rootItem = page.getByTestId("start-menu-item-disconnect");
 
     await startButton.click();
     await expect(menu).toBeVisible();

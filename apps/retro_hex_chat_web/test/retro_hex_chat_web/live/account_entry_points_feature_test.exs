@@ -211,7 +211,10 @@ defmodule RetroHexChatWeb.AccountEntryPointsFeatureTest do
          on_action: "toolbar_action"
        )},
       {"start menu",
-       render_component(&StartMenuApp.start_menu_app/1, on_action: "toolbar_action")},
+       render_component(&StartMenuApp.start_menu_app/1,
+         screen: :chat,
+         on_action: "toolbar_action"
+       )},
       {"toolbar",
        render_component(&ToolbarApp.toolbar_app/1,
          connected: true,

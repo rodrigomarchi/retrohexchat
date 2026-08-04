@@ -77,7 +77,41 @@ test.describe("Showcase desktop", () => {
     expect(failures).toEqual([]);
   });
 
-  test("navigates between components through the Start menu", async ({
+  // The catalog used to hang off the Start menu, a submenu per category. It
+  // moved to the Components window when the Start menu became the same menu on
+  // every screen — the showcase reaches its own pages the way the landing
+  // desktop reaches its sections, through a window rather than through chrome.
+  test("navigates between components through the Components window", async ({
+    page,
+  }) => {
+    const failures = watchBrowserFailures(page);
+
+    await page.goto("/showcase/button");
+    await waitForDesktop(page);
+
+    // The tree keeps only the group holding the current page open, so reaching
+    // another category means expanding it first — a `<details>` summary.
+    const navigator = page.getByTestId("showcase-navigator-window");
+    const target = navigator.locator('a[href="/showcase/table"]');
+    await expect(target).toHaveCount(1);
+
+    await navigator
+      .locator('details:has(a[href="/showcase/table"]) > summary')
+      .click();
+
+    // Each entry is a real link, so the click is ordinary navigation.
+    await target.click();
+
+    await expect(page).toHaveURL(/\/showcase\/table$/);
+    await waitForDesktop(page);
+    await expect(page.getByTestId("showcase-component-window")).toContainText(
+      "Table",
+    );
+
+    expect(failures).toEqual([]);
+  });
+
+  test("the Start menu is the app's own, with the showcase's windows in it", async ({
     page,
   }) => {
     const failures = watchBrowserFailures(page);
@@ -90,23 +124,42 @@ test.describe("Showcase desktop", () => {
     await expect(startMenu).toBeVisible();
     await shot(page, "showcase-start-menu");
 
-    // Components are filed by category. The submenu flies out on hover — a
-    // click would toggle it straight back shut.
+    // Closing the navigator takes its taskbar button with it; Start ▸ Windows
+    // is what brings it back, the same as on every other desktop.
+    const navigator = page.getByTestId("showcase-navigator-window");
+    await navigator.locator('[data-window-control="close"]').click();
+    await expect(navigator).toBeHidden();
+
+    await page.locator("[data-window-start]").click();
     await startMenu
       .locator("[data-start-submenu-trigger]")
-      .filter({ hasText: "Layout" })
+      .filter({ hasText: "Windows" })
       .hover();
+    await startMenu.locator('[data-window-open="navigator"]').click();
+    await expect(navigator).toBeVisible();
 
-    // Each entry is a real link, so the click is ordinary navigation.
-    const target = startMenu.locator('a[href="/showcase/table"]');
-    await expect(target).toHaveCount(1);
-    await target.click();
+    // The app's own entries are named here too, grayed out: the showcase is not
+    // a chat, but the menu still says what a chat would offer.
+    await page.locator("[data-window-start]").click();
+    await startMenu
+      .locator("[data-start-submenu-trigger]")
+      .filter({ hasText: "Tools" })
+      .hover();
+    await expect(
+      startMenu.getByTestId("start-menu-item-address-book"),
+    ).toBeDisabled();
 
-    await expect(page).toHaveURL(/\/showcase\/table$/);
-    await waitForDesktop(page);
-    await expect(page.getByTestId("showcase-component-window")).toContainText(
-      "Table",
-    );
+    // About is live here: the showcase mounts the same `about-dialog` the chat
+    // and connect screens do, so the entry has something to open. The menu is
+    // still open — hovering a group does not close it, and clicking Start again
+    // would toggle the whole menu shut.
+    await startMenu
+      .locator("[data-start-submenu-trigger]")
+      .filter({ hasText: "Help" })
+      .hover();
+    await startMenu.getByTestId("start-menu-item-show_about").click();
+    // The wrapper keeps its `hidden` class; the panel inside it is what shows.
+    await expect(page.locator('#about-dialog [role="dialog"]')).toBeVisible();
 
     expect(failures).toEqual([]);
   });

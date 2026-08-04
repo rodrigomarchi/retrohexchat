@@ -212,15 +212,38 @@ defmodule RetroHexChatWeb.AdminWindowsFeatureTest do
       end
     end
 
-    test "non-admins see none of them, on any surface" do
-      for {surface, html} <- admin_surfaces(false) do
-        for action <- admin_actions() do
-          refute html =~ ~s(data-testid="context-menu-item-#{action}"),
-                 "#{surface} must not offer #{action} to a non-admin"
+    # The menu bar and toolbar drop the admin group for a non-admin. The Start
+    # menu keeps it and grays it out instead: it is the one surface that is the
+    # same on every screen, and an entry that disappears there would make it a
+    # different menu per role. Either way a non-admin cannot act — and the
+    # server refuses regardless, which the forged-window test below proves.
+    test "non-admins can act on none of them, on any surface" do
+      for {surface, html} <- admin_surfaces(false), action <- admin_actions() do
+        refute html =~ ~s(data-testid="context-menu-item-#{action}"),
+               "#{surface} must not offer #{action} to a non-admin"
+      end
+    end
 
-          refute html =~ ~s(data-testid="start-menu-item-#{action}"),
-                 "#{surface} must not offer #{action} to a non-admin"
-        end
+    test "the start menu grays the admin group out for a non-admin" do
+      html =
+        render_component(&StartMenuApp.start_menu_app/1,
+          screen: :chat,
+          is_admin: false,
+          on_action: "toolbar_action"
+        )
+
+      doc = Floki.parse_document!(html)
+
+      for action <- admin_actions() do
+        row = Floki.find(doc, ~s([data-testid="start-menu-item-#{action}"]))
+
+        assert row != [], "#{action} should still be named in the menu"
+
+        assert Floki.attribute(row, "disabled") != [],
+               "#{action} must be inert for a non-admin"
+
+        assert Floki.attribute(row, "phx-click") == [],
+               "#{action} must carry no click for a non-admin"
       end
     end
 
@@ -275,6 +298,7 @@ defmodule RetroHexChatWeb.AdminWindowsFeatureTest do
        )},
       {"start menu",
        render_component(&StartMenuApp.start_menu_app/1,
+         screen: :chat,
          is_admin: is_admin?,
          on_action: "toolbar_action"
        )},

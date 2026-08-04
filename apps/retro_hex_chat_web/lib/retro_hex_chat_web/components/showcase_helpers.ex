@@ -7,6 +7,7 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
   import RetroHexChatWeb.Components.UI.Desktop
   import RetroHexChatWeb.Components.UI.AppHeader
   import RetroHexChatWeb.Components.UI.MenuBarApp
+  import RetroHexChatWeb.Components.UI.StartMenuApp
   import RetroHexChatWeb.Components.UI.Dialog, only: [show_modal: 1]
   import RetroHexChatWeb.Components.UI.AboutDialog
 
@@ -80,35 +81,24 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
 
         <:taskbar>
           <.taskbar id="showcase-taskbar">
+            <%!-- The component catalog left the Start menu when the menu became
+                  the same on every screen. It is not lost: the Components window
+                  IS the catalog, and Start ▸ Windows is what reopens it — the
+                  same route the landing desktop uses to bring a closed section
+                  back. --%>
             <:start>
-              <div class="relative">
-                <.start_button label={dgettext("showcase", "Start")}>
-                  <:icon><Icons.icon_hex_stone class="w-4 h-4" /></:icon>
-                </.start_button>
-                <.start_menu id="showcase-start-menu">
-                  <.start_menu_item
-                    label={dgettext("showcase", "Design System")}
-                    navigate={ShowcaseCatalog.root()}
-                  >
-                    <:icon><Icons.icon_palette class="w-4 h-4" /></:icon>
-                  </.start_menu_item>
-                  <.start_menu_separator />
-                  <.start_menu_submenu :for={{group, entries} <- @nav_tree} label={group.label}>
-                    <:icon>{apply(Icons, group.icon, [%{class: "w-4 h-4"}])}</:icon>
-                    <.start_menu_item
-                      :for={entry <- entries}
-                      label={entry.label}
-                      navigate={ShowcaseCatalog.path(entry)}
-                    >
-                      <:icon>{apply(Icons, entry.icon, [%{class: "w-4 h-4"}])}</:icon>
-                    </.start_menu_item>
-                  </.start_menu_submenu>
-                  <.start_menu_separator />
-                  <.start_menu_item label={dgettext("showcase", "Open the app")} href="/connect">
-                    <:icon><Icons.icon_connect class="w-4 h-4" /></:icon>
-                  </.start_menu_item>
-                </.start_menu>
-              </div>
+              <.start_menu_app
+                id="showcase-start-menu"
+                screen={:showcase}
+                windows={[
+                  %{id: "component", label: @page.title, icon_fn: @page.icon},
+                  %{
+                    id: "navigator",
+                    label: dgettext("showcase", "Components"),
+                    icon_fn: :icon_folder
+                  }
+                ]}
+              />
             </:start>
 
             <.taskbar_button window="component" label={@page.title}>

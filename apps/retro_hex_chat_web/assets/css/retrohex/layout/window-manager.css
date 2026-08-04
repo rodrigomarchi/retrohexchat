@@ -523,6 +523,24 @@
   min-height: 34px;
 }
 
+/* ── Start menu item states ────────────────────────────────── */
+/* The menu carries the same entries on every screen, so most of them are out of
+   reach at any given moment. Grayed and inert is the Win98 answer, and it keeps
+   the app's surface legible from the landing page as much as from the chat. */
+.desktop-start-menu__item--disabled,
+.desktop-start-menu__item--disabled:hover {
+  @apply text-disabled;
+  background: transparent;
+  cursor: default;
+}
+
+/* A group whose entries are all disabled. It still opens — the gray says
+   "nothing here for you yet", not "this does not exist". The open state has to
+   win, or the row loses its selection highlight while its panel is showing. */
+.desktop-start-menu__item--muted:not([aria-expanded="true"]):not(:hover) {
+  @apply text-disabled;
+}
+
 /* ── Start menu groups ─────────────────────────────────────── */
 /* The group row is the flyout's positioning anchor. */
 .desktop-start-submenu {

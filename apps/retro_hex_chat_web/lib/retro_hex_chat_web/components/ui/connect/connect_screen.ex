@@ -20,6 +20,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
   import RetroHexChatWeb.Components.UI.Input
   import RetroHexChatWeb.Components.UI.Label
   import RetroHexChatWeb.Components.UI.MenuBarApp
+  import RetroHexChatWeb.Components.UI.StartMenuApp
   import RetroHexChatWeb.Components.UI.TrustedDevices.TrustedTerminalCard
 
   alias RetroHexChatWeb.Icons
@@ -826,31 +827,13 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
     ~H"""
     <.taskbar>
       <:start>
-        <div class="relative">
-          <.start_button label={dgettext("ui", "Start")}>
-            <:icon><Icons.icon_hex_stone class="h-4 w-4" /></:icon>
-          </.start_button>
-          <.start_menu id="connect-start-menu">
-            <.start_menu_item data-window-open="connect" label={dgettext("connect", "Connect")}>
-              <:icon><Icons.icon_connect class="h-4 w-4" /></:icon>
-            </.start_menu_item>
-            <.start_menu_item
-              phx-click="help_topics"
-              label={dgettext("ui", "Help Topics")}
-              data-testid="connect-start-help-topics"
-            >
-              <:icon><Icons.icon_btn_help_topics class="h-4 w-4" /></:icon>
-            </.start_menu_item>
-            <.start_menu_separator />
-            <.start_menu_item
-              phx-click={show_modal("about-dialog")}
-              label={dgettext("ui", "About RetroHexChat")}
-              data-testid="connect-start-about"
-            >
-              <:icon><Icons.icon_dialog_about class="h-4 w-4" /></:icon>
-            </.start_menu_item>
-          </.start_menu>
-        </div>
+        <.start_menu_app
+          id="connect-start-menu"
+          screen={:connect}
+          windows={[
+            %{id: "connect", label: dgettext("connect", "Connect"), icon_fn: :icon_connect}
+          ]}
+        />
       </:start>
       <.taskbar_button window="connect" label={dgettext("connect", "Connect")}>
         <:icon><Icons.icon_connect class="h-4 w-4" /></:icon>

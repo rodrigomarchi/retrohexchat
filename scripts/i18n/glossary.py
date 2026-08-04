@@ -100,6 +100,13 @@ _ROWS = {
     "File":         ("Arquivo", "Ficheiro", "Archivo", "Fichier", "Datei", "File", "Bestand", "Plik", "Файл", "Berkas", "ファイル", "文件", "檔案"),
     "View":         ("Exibir", "Ver", "Ver", "Affichage", "Ansicht", "Visualizza", "Beeld", "Widok", "Вид", "Tampilan", "表示", "视图", "檢視"),
     "Exit":         ("Sair", "Sair", "Salir", "Quitter", "Beenden", "Esci", "Afsluiten", "Zakończ", "Выход", "Keluar", "終了", "退出", "結束"),
+    # Every catalog had kept "Windows" literal: with no sentence around it the
+    # pipeline read the operating system, not the things on a desktop. As a Start
+    # menu group it is the plural of "window" and has to translate.
+    "Windows":      ("Janelas", "Janelas", "Ventanas", "Fenêtres", "Fenster", "Finestre", "Vensters", "Okna", "Окна", "Jendela", "ウィンドウ", "窗口", "視窗"),
+    "No windows":   ("Nenhuma janela", "Nenhuma janela", "Sin ventanas", "Aucune fenêtre", "Keine Fenster", "Nessuna finestra", "Geen vensters", "Brak okien", "Нет окон", "Tidak ada jendela", "ウィンドウなし", "无窗口", "無視窗"),
+    "Navigate":     ("Navegar", "Navegar", "Navegar", "Naviguer", "Navigieren", "Naviga", "Navigeren", "Nawigacja", "Навигация", "Navigasi", "移動", "导航", "導覽"),
+    "Automation":   ("Automação", "Automação", "Automatización", "Automatisation", "Automatisierung", "Automazione", "Automatisering", "Automatyzacja", "Автоматизация", "Otomatisasi", "自動化", "自动化", "自動化"),
 
     # ── Connection ────────────────────────────────────────────
     "Connect":      ("Conectar", "Ligar", "Conectar", "Se connecter", "Verbinden", "Connetti", "Verbinden", "Połącz", "Подключиться", "Hubungkan", "接続", "连接", "連線"),

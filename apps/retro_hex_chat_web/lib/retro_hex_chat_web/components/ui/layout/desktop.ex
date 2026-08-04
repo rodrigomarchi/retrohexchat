@@ -138,13 +138,18 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
   # on screen.
   attr :href, :string, default: nil
   attr :navigate, :string, default: nil
+  attr :disabled, :boolean, default: false
   attr :class, :any, default: nil
   attr :rest, :global
   slot :inner_block, required: true
 
+  # `disabled` is not one of HEEx's global attributes, so it has to be declared
+  # to survive at all — passed through `:global` it is silently dropped.
   defp chrome_control(%{href: nil, navigate: nil} = assigns) do
     ~H"""
-    <button type="button" class={@class} {@rest}>{render_slot(@inner_block)}</button>
+    <button type="button" class={@class} disabled={@disabled} {@rest}>
+      {render_slot(@inner_block)}
+    </button>
     """
   end
 
@@ -561,32 +566,53 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
   `WindowManagerHook`) to open/focus a window — both flow through `@rest`. Pass
   `href` or `navigate` when the entry leads to its own URL: the item becomes a
   real link, so the menu is navigable and crawlable without JavaScript.
+
+  `disabled` grays the row out and makes it inert. The menu carries the same
+  entries on every screen so the app's surface is legible from anywhere, and an
+  entry that has nothing to act on says so rather than vanishing.
   """
   attr :label, :string, required: true
   attr :href, :string, default: nil, doc: "render as a link to this URL instead of a button"
   attr :navigate, :string, default: nil, doc: "same, via LiveView navigation"
+  attr :disabled, :boolean, default: false, doc: "gray the row and make it inert"
   attr :class, :any, default: nil
-  attr :rest, :global, include: ~w(disabled)
+  attr :rest, :global
 
   slot :icon, required: true
 
   @spec start_menu_item(map()) :: Phoenix.LiveView.Rendered.t()
   def start_menu_item(assigns) do
+    # A disabled row is never a link. `disabled` is inert on `<a>`, so a grayed
+    # entry would still navigate — worse than no entry at all. Dropping the
+    # destination falls the row back to the button shape, which the attribute
+    # does reach.
+    assigns = if assigns.disabled, do: assign(assigns, href: nil, navigate: nil), else: assigns
+
     ~H"""
     <.chrome_control
       href={@href}
       navigate={@navigate}
+      disabled={@disabled}
+      aria-disabled={@disabled && "true"}
       class={
         classes([
           "desktop-start-menu__item flex w-full items-center gap-2 px-2 py-1 text-left text-xs",
-          "hover:bg-primary hover:text-white disabled:opacity-50",
-          (@href || @navigate) && "text-text no-underline",
+          if(@disabled,
+            do: "desktop-start-menu__item--disabled cursor-default",
+            else: "hover:bg-primary hover:text-white"
+          ),
+          !@disabled && (@href || @navigate) && "text-text no-underline",
           @class
         ])
       }
       {@rest}
     >
-      <span class="inline-flex h-4 w-4 shrink-0 items-center justify-center">
+      <span class={
+        classes([
+          "inline-flex h-4 w-4 shrink-0 items-center justify-center",
+          @disabled && "opacity-50"
+        ])
+      }>
         {render_slot(@icon)}
       </span>
       <span class="truncate">{@label}</span>
@@ -605,8 +631,14 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
   Driven by `WindowManagerHook` through `data-start-submenu` /
   `data-start-submenu-panel`. On desktop the panel flies out to the right; in
   the stacked shell it expands inline (CSS only, `window-manager.css`).
+
+  A group whose entries are all unavailable takes `muted`: the row grays, but it
+  still opens. Hiding the group would hide what the app can do; opening it to a
+  list of grayed entries names the feature and says it is out of reach here.
+  Groups never take `disabled` for that reason — only their items do.
   """
   attr :label, :string, required: true
+  attr :muted, :boolean, default: false, doc: "gray the row when every entry is disabled"
   attr :testid, :string, default: nil
   attr :class, :any, default: nil
   slot :icon, required: true
@@ -627,14 +659,20 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
             "desktop-start-menu__item flex w-full items-center gap-2 px-2 py-1 text-left text-xs",
             "hover:bg-primary hover:text-white",
             "group-data-[submenu-open=true]/start:bg-primary",
-            "group-data-[submenu-open=true]/start:text-white"
+            "group-data-[submenu-open=true]/start:text-white",
+            @muted && "desktop-start-menu__item--muted"
           ])
         }
         data-start-submenu-trigger
         data-testid={@testid}
         aria-haspopup="true"
       >
-        <span class="inline-flex h-4 w-4 shrink-0 items-center justify-center">
+        <span class={
+          classes([
+            "inline-flex h-4 w-4 shrink-0 items-center justify-center",
+            @muted && "opacity-50"
+          ])
+        }>
           {render_slot(@icon)}
         </span>
         <span class="flex-1 truncate">{@label}</span>

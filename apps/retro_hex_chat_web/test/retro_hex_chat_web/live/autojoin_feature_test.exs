@@ -28,7 +28,11 @@ defmodule RetroHexChatWeb.AutojoinFeatureTest do
     end
 
     test "the start menu entry targets the managed window" do
-      html = render_component(&StartMenuApp.start_menu_app/1, on_action: "toolbar_action")
+      html =
+        render_component(&StartMenuApp.start_menu_app/1,
+          screen: :chat,
+          on_action: "toolbar_action"
+        )
 
       assert html =~ ~s(data-window-open="autojoin")
     end
@@ -173,8 +177,10 @@ defmodule RetroHexChatWeb.AutojoinFeatureTest do
          on_action: "toolbar_action"
        ), "context-menu-item-open_autojoin_dialog"},
       {"start menu",
-       render_component(&StartMenuApp.start_menu_app/1, on_action: "toolbar_action"),
-       "start-menu-item-autojoin"},
+       render_component(&StartMenuApp.start_menu_app/1,
+         screen: :chat,
+         on_action: "toolbar_action"
+       ), "start-menu-item-autojoin"},
       {"toolbar",
        render_component(&ToolbarApp.toolbar_app/1,
          connected: true,

@@ -32,7 +32,16 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
     ~H"""
     <.taskbar id="chat-taskbar">
       <:start>
-        <.start_menu_app id="chat-start-menu" is_admin={@is_admin} p2p_active={@p2p_session != nil} />
+        <%!-- Only the main chat window goes under Start ▸ Windows: every other
+              window on this desktop already has its own entry in one of the
+              groups above it, and the chat window has none. --%>
+        <.start_menu_app
+          id="chat-start-menu"
+          screen={:chat}
+          is_admin={@is_admin}
+          p2p_active={@p2p_session != nil}
+          windows={[%{id: "chat", label: @chat_label, icon_fn: :icon_chat}]}
+        />
       </:start>
 
       <%= for slot <- @taskbar_slots do %>

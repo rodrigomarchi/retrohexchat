@@ -23,6 +23,7 @@ defmodule RetroHexChatWeb.TrustedTerminalsFeatureTest do
 
     start_html =
       render_component(&StartMenuApp.start_menu_app/1,
+        screen: :chat,
         on_action: "toolbar_action"
       )
 

@@ -106,13 +106,36 @@ defmodule RetroHexChatWeb.ShowcaseSEOTest do
       end
     end
 
-    test "the Start menu is built from links, not buttons alone", %{conn: conn} do
+    # The catalog used to hang off the Start menu. It moved to the Components
+    # window when the Start menu became the same menu on every screen, so what
+    # matters is that a crawler still finds every component from any component
+    # page — not which piece of chrome the links happen to sit in.
+    test "every component page links to every other component", %{conn: conn} do
+      hrefs =
+        conn
+        |> document("/showcase/button")
+        |> Floki.find("a[href]")
+        |> Floki.attribute("href")
+        |> MapSet.new()
+
+      for entry <- ShowcaseCatalog.entries() do
+        assert ShowcaseCatalog.path(entry) in hrefs,
+               "#{entry.id} is unreachable from /showcase/button"
+      end
+    end
+
+    test "the Start menu navigates with real links, not buttons alone", %{conn: conn} do
       links =
         conn
         |> document("/showcase/button")
         |> Floki.find("[data-window-start-menu] a[href]")
+        |> Floki.attribute("href")
 
-      assert length(links) >= length(ShowcaseCatalog.entries())
+      # The public pages plus the docs — the Start menu's own navigation, which
+      # has to work with scripting off like the rest of the desktop.
+      assert "/" in links
+      assert "/faq" in links
+      assert "/chat/help" in links
     end
   end
 end
