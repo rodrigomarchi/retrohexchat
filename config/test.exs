@@ -25,6 +25,13 @@ config :retro_hex_chat, RetroHexChat.Repo,
   pool: Ecto.Adapters.SQL.Sandbox,
   pool_size: test_database_pool_size
 
+config :retro_hex_chat, Oban,
+  engine: Oban.Engines.Basic,
+  repo: RetroHexChat.Repo,
+  testing: :manual,
+  queues: false,
+  plugins: false
+
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
 config :retro_hex_chat_web, RetroHexChatWeb.Endpoint,

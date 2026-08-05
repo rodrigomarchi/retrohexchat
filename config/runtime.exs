@@ -212,6 +212,14 @@ if config_env() == :prod do
     # pool_count: 4,
     socket_options: maybe_ipv6
 
+  rss_queue_concurrency =
+    case Integer.parse(System.get_env("OBAN_RSS_CONCURRENCY", "2")) do
+      {concurrency, ""} when concurrency > 0 -> concurrency
+      _ -> 2
+    end
+
+  config :retro_hex_chat, Oban, queues: [rss: rss_queue_concurrency]
+
   # The secret key base is used to sign/encrypt cookies and other secrets.
   # A default value is used in config/dev.exs and config/test.exs but you
   # want to use a different value for prod and you most likely don't want

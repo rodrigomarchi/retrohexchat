@@ -10,6 +10,7 @@ defmodule RetroHexChat.Application do
     children = [
       RetroHexChat.PromEx,
       RetroHexChat.Repo,
+      {Oban, Application.fetch_env!(:retro_hex_chat, Oban)},
       {DNSCluster, query: Application.get_env(:retro_hex_chat, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: RetroHexChat.PubSub},
       {Registry, keys: :unique, name: RetroHexChat.Channels.ChannelRegistry},

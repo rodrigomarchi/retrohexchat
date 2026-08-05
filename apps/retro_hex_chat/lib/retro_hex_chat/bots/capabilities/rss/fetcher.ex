@@ -39,6 +39,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.Fetcher.HTTP do
   alias RetroHexChat.Net.URLGuard
 
   @max_redirects 3
+  @max_body_size 2_000_000
   @timeout_ms 15_000
   @redirect_statuses [301, 302, 303, 307, 308]
 
@@ -79,6 +80,9 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.Fetcher.HTTP do
           RetroHexChat.Bots.Capabilities.RSS.Fetcher.result()
   defp handle_response(response, url, etag, last_modified, redirects_left) do
     case response do
+      %{status: 200, body: body} when is_binary(body) and byte_size(body) >= @max_body_size ->
+        {:error, dgettext("bots", "feed body too large")}
+
       %{status: 200, body: body, headers: resp_headers} ->
         {:ok, to_string(body), cache_headers(resp_headers)}
 
@@ -99,6 +103,10 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.Fetcher.HTTP do
       url: target.url,
       headers: conditional_headers(etag, last_modified),
       redirect: false,
+      compressed: false,
+      decode_body: false,
+      max_retries: 0,
+      into: &collect_limited_body/2,
       connect_options: Keyword.put(target.connect_options, :timeout, @timeout_ms),
       receive_timeout: @timeout_ms
     ]
@@ -116,6 +124,24 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.Fetcher.HTTP do
     case redirect_url(url, first_header(headers, "location")) do
       nil -> {:error, dgettext("bots", "redirect without location")}
       next_url -> request(next_url, etag, last_modified, redirects_left - 1)
+    end
+  end
+
+  @spec collect_limited_body(
+          {:data, binary()},
+          {Req.Request.t(), Req.Response.t()}
+        ) ::
+          {:cont | :halt, {Req.Request.t(), Req.Response.t()}}
+  defp collect_limited_body({:data, data}, {request, response}) do
+    current = if is_binary(response.body), do: response.body, else: ""
+    remaining = max(@max_body_size - byte_size(current), 0)
+    data = binary_part(data, 0, min(byte_size(data), remaining))
+    response = %{response | body: current <> data}
+
+    if byte_size(response.body) >= @max_body_size do
+      {:halt, {request, response}}
+    else
+      {:cont, {request, response}}
     end
   end
 

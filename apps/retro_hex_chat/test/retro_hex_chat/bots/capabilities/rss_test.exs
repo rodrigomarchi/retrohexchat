@@ -180,31 +180,20 @@ defmodule RetroHexChat.Bots.Capabilities.RSSTest do
   end
 
   describe "reschedule_delay/2" do
-    test "returns poll_interval_ms from state" do
+    test "rss does not reschedule in-memory timers" do
       state = %{
         feeds: [%{"id" => "f1", "url" => "https://example.com/feed", "channel" => "#news"}],
         poll_interval_ms: 1_800_000
       }
 
       payload = %{type: :poll, feed_id: "f1", channel: "#news"}
-      assert {:reschedule, 1_800_000, ^payload} = RSS.reschedule_delay(payload, state)
+      assert :no_reschedule == RSS.reschedule_delay(payload, state)
     end
 
     test "returns :no_reschedule when feeds list is empty" do
       state = %{feeds: [], poll_interval_ms: 1_800_000}
       payload = %{type: :poll, feed_id: "f1", channel: "#news"}
       assert :no_reschedule == RSS.reschedule_delay(payload, state)
-    end
-
-    test "preserves original payload for next poll" do
-      state = %{
-        feeds: [%{"id" => "f1", "url" => "https://example.com/feed", "channel" => "#news"}],
-        poll_interval_ms: 60_000
-      }
-
-      payload = %{type: :poll, feed_id: "f1", channel: "#news"}
-      assert {:reschedule, 60_000, returned_payload} = RSS.reschedule_delay(payload, state)
-      assert returned_payload == payload
     end
 
     test "returns :no_reschedule for non-poll payload" do
@@ -232,13 +221,13 @@ defmodule RetroHexChat.Bots.Capabilities.RSSTest do
     # Feeds list newest first.
     defp page(ids), do: Enum.map(ids, &item/1)
 
-    test "the first sight announces one item and remembers the page" do
+    test "the first sight announces nothing and remembers the whole page" do
       {to_post, seen} = RSS.plan_publication([], page([3, 2, 1]), 3)
 
-      assert Enum.map(to_post, & &1.title) == ["Item 3"],
-             "one headline proves the feed works; silence proves nothing"
+      assert to_post == [],
+             "provisioning establishes a baseline; old headlines are not new channel news"
 
-      assert length(seen) == 3, "the rest of the page is history, not news"
+      assert length(seen) == 3, "the whole current page is history, not news"
     end
 
     test "an empty feed announces nothing" do

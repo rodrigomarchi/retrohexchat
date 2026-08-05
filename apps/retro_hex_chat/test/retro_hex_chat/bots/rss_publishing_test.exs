@@ -1,7 +1,7 @@
 defmodule RetroHexChat.Bots.RSSPublishingTest do
   @moduledoc """
-  The whole chain, once: a poll fires, a feed is read, and a headline appears in
-  the channel — then does not appear again.
+  The whole chain, once: a poll fires, a feed is read, the baseline is learned,
+  and later a new headline appears in the channel — then does not appear again.
 
   Everything else about RSS is tested a layer at a time. This is the only test
   that runs the layers together, which is where the interesting failures were:
@@ -164,18 +164,21 @@ defmodule RetroHexChat.Bots.RSSPublishingTest do
 
   @unseen [%{"id" => "f1", "url" => @url, "channel" => @channel, "seen" => []}]
 
-  test "the first poll posts one headline and learns the rest of the page" do
+  test "the first poll stays quiet and learns the whole page" do
     # Listed newest first, so item 3 is the newest.
     ScriptedFetcher.script([feed_page([{3, "Newest story"}, {2, "Middle"}, {1, "Oldest"}])])
     {_bot, pid} = start_bot(@unseen)
 
     poll(pid)
-    lines = headlines()
 
-    assert length(lines) == 1,
-           "one headline proves the feed works without dumping its archive"
+    assert headlines() == [],
+           "provisioning must not dump the feed's existing archive into the channel"
 
-    assert hd(lines) =~ "Newest story"
+    %{feeds: [feed]} = :sys.get_state(pid).capability_states[:rss]
+    assert Enum.sort(feed["seen"]) == ["urn:wire:1", "urn:wire:2", "urn:wire:3"]
+    assert feed["title"] == "The Wire"
+    assert feed["last_polled_at"]
+    refute feed["last_error"]
   end
 
   test "the next poll announces only what arrived since" do
@@ -186,8 +189,7 @@ defmodule RetroHexChat.Bots.RSSPublishingTest do
     {_bot, pid} = start_bot(@unseen)
 
     poll(pid)
-    assert [first] = headlines()
-    assert first =~ "Newer story", "the first poll introduces the feed"
+    assert headlines() == [], "the first poll only seeds the baseline"
 
     poll(pid)
     lines = headlines()
@@ -223,7 +225,7 @@ defmodule RetroHexChat.Bots.RSSPublishingTest do
     {_bot, pid} = start_bot(@unseen)
 
     poll(pid)
-    assert [_introduction] = headlines()
+    assert headlines() == []
 
     poll(pid)
     poll(pid)
@@ -239,7 +241,7 @@ defmodule RetroHexChat.Bots.RSSPublishingTest do
     {bot, pid} = start_bot(@unseen)
 
     poll(pid)
-    assert [_introduction] = headlines()
+    assert headlines() == []
     poll(pid)
     assert [line] = headlines()
     assert line =~ "Newer story"
@@ -317,7 +319,7 @@ defmodule RetroHexChat.Bots.RSSPublishingTest do
       {_bot, pid} = start_bot(@unseen)
 
       poll(pid)
-      assert [_introduction] = headlines()
+      assert headlines() == []
 
       check(pid)
       lines = headlines()
@@ -335,7 +337,7 @@ defmodule RetroHexChat.Bots.RSSPublishingTest do
       {_bot, pid} = start_bot(@unseen)
 
       poll(pid)
-      assert [_introduction] = headlines()
+      assert headlines() == []
       check(pid)
       assert Enum.any?(headlines(), &(&1 =~ "Breaking news"))
 
@@ -349,7 +351,7 @@ defmodule RetroHexChat.Bots.RSSPublishingTest do
       {_bot, pid} = start_bot(@unseen)
 
       poll(pid)
-      assert [_introduction] = headlines()
+      assert headlines() == []
 
       check(pid)
       Process.sleep(120)

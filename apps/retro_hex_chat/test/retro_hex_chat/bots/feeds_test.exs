@@ -4,6 +4,7 @@ defmodule RetroHexChat.Bots.FeedsTest do
   @moduletag :integration
 
   alias RetroHexChat.Bots.{Feeds, Queries}
+  alias RetroHexChat.Jobs.RSSPollWorker
 
   # A literal address needs no resolver, so these stay hermetic.
   @public "https://93.184.216.34/feed.xml"
@@ -99,10 +100,10 @@ defmodule RetroHexChat.Bots.FeedsTest do
 
   describe "the running bot picks the feed up" do
     # The provisioning script and the admin dialog both come through here, not
-    # through the in-channel command. If this path does not schedule a poll, no
+    # through the in-channel command. If this path does not enqueue a poll, no
     # feed added by an operator is ever fetched — which looks exactly like a
     # server where nothing publishes.
-    test "adding a feed schedules its first poll on the live process" do
+    test "adding a feed enqueues its first durable poll" do
       bot = bot()
 
       {:ok, pid} =
@@ -126,15 +127,18 @@ defmodule RetroHexChat.Bots.FeedsTest do
       {:ok, _} = Feeds.add(bot, @public, "#news")
       Process.sleep(80)
 
-      timers = :sys.get_state(pid).capability_timers
+      [%{"id" => id}] = Feeds.list(Queries.get_bot(bot.id))
 
-      assert map_size(timers) == 1,
-             "a feed saved from the console or the dialog must start polling"
+      assert_enqueued(
+        worker: RSSPollWorker,
+        queue: :rss,
+        args: %{bot_id: bot.id, feed_id: id}
+      )
 
-      assert [{:rss, %{type: :poll, channel: "#news"}}] = Map.values(timers)
+      assert :sys.get_state(pid).capability_timers == %{}
     end
 
-    test "removing it stops the poll" do
+    test "removing it cancels its durable poll" do
       bot = bot()
       {:ok, with_feed} = Feeds.add(bot, @public, "#news")
       [%{"id" => id}] = Feeds.list(with_feed)
@@ -155,10 +159,20 @@ defmodule RetroHexChat.Bots.FeedsTest do
 
       on_exit(fn -> RetroHexChat.Bots.Supervisor.stop_bot(with_feed.nickname) end)
 
-      assert map_size(:sys.get_state(pid).capability_timers) == 1
+      assert_enqueued(
+        worker: RSSPollWorker,
+        queue: :rss,
+        args: %{bot_id: with_feed.id, feed_id: id}
+      )
 
       {:ok, _} = Feeds.remove(with_feed, id)
       Process.sleep(80)
+
+      refute_enqueued(
+        worker: RSSPollWorker,
+        queue: :rss,
+        args: %{bot_id: with_feed.id, feed_id: id}
+      )
 
       assert :sys.get_state(pid).capability_timers == %{}
     end

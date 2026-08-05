@@ -42,6 +42,12 @@ config :retro_hex_chat,
   # Virtual space runtime
   virtual_space_step_ms: 150
 
+config :retro_hex_chat, Oban,
+  engine: Oban.Engines.Basic,
+  repo: RetroHexChat.Repo,
+  plugins: [Oban.Plugins.Pruner],
+  queues: [rss: 2]
+
 config :retro_hex_chat_web,
   ecto_repos: [RetroHexChat.Repo],
   generators: [context_app: :retro_hex_chat]

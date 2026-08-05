@@ -316,7 +316,7 @@ included, is joined explicitly.
 
 # ── Gazeta — #news ───────────────────────────────────────
 # Feeds are stored on the bot and survive a restart, along with the record of
-# what has already been posted — so a deploy does not replay the day's news.
+# what has already been seen — so a deploy does not replay the day's news.
 # The first poll of a new feed is silent by design: it learns the page, then
 # reports only what arrives afterwards.
 /bot create Gazeta Editor of the wire desk
@@ -331,8 +331,8 @@ included, is joined explicitly.
 /bot set Gazeta farewell none
 /bot set Gazeta mention_response \c02\b[Gazeta]\o I post what the feeds send. !Gazeta rss list for the sources, \c14!sources\o for how this works.
 
-/bot addcmd Gazeta sources \c02\b[Gazeta]\o Headlines here come from \c14RSS and Atom feeds\o, checked every twenty minutes. Only what is new since the last check gets posted — never the same item twice, even after a restart.
-/bot addcmd Gazeta first \c02\b[Gazeta]\o A feed posts one headline the moment it is added, so you can see it works, then \c14goes quiet\o until something new is published.
+/bot addcmd Gazeta sources \c02\b[Gazeta]\o Headlines here come from \c14RSS and Atom feeds\o, checked every twenty minutes. The first fetch is silent; after that, only new stories are posted.
+/bot addcmd Gazeta first \c02\b[Gazeta]\o A feed's first fetch records the current page silently. After that, \c14only new stories\o are posted.
 /bot addcmd Gazeta quiet \c02\b[Gazeta]\o No headlines for a while? Either nothing was published or a feed is failing. An operator can check with \c14!Gazeta rss list\o.
 
 /bot join Gazeta #news
@@ -342,16 +342,14 @@ included, is joined explicitly.
 # ══════════════════════════════════════════════════════════
 #  5. Wire-room bots
 # ══════════════════════════════════════════════════════════
-# Every RSS bot writes the same line, so a reader learns to scan it once: the
-# source bold in navy, the headline plain — it is the thing being read — and the
-# link in grey, present but out of the way. Publishers put their whole tagline in
-# the feed title ("cs.LG updates on arXiv.org"); the label keeps the name and
-# drops the rest.
+# Every RSS bot writes the same Markdown card, so a reader learns to scan it
+# once: the source, headline, optional preview image, summary, and final story
+# link. Publishers put their whole tagline in the feed title ("cs.LG updates on
+# arXiv.org"); the label keeps the name and drops the rest.
 #
-# A feed's first poll happens within seconds and posts one headline — enough to
-# show it works — then remembers the rest of the page and reports only what
-# arrives afterwards. Both the feed list and the record of what has been
-# published are stored on the bot, so a deploy does not replay the day.
+# A feed's first poll happens within seconds, records the current page silently,
+# and reports only what arrives afterwards. Both the feed list and the record of
+# what has been seen are stored on the bot, so a deploy does not replay the day.
 # Intervals are set per bot: arXiv publishes hundreds a day, Hackaday a handful
 # a week.
 
@@ -365,7 +363,7 @@ included, is joined explicitly.
 /bot set Freeman greeting_delivery private_notice
 /bot set Freeman greeter_repeat_window 43200
 /bot set Freeman mention_response \c03\b[Freeman]\o I carry the release notes. !sources for the list, \c02!why\o for what this room is.
-/bot addcmd Freeman sources \c03\b[Freeman]\o LWN, Phoronix and It's FOSS, checked every half hour. \c02Only what is new\o since the last check gets posted.
+/bot addcmd Freeman sources \c03\b[Freeman]\o LWN, Phoronix and It's FOSS, checked every half hour. The first fetch is quiet; \c02only new items\o are posted after that.
 /bot addcmd Freeman why \c03\b[Freeman]\o Support for a project belongs with that project — #linux on Libera holds 2,494 people because its regulars answer questions. \c02This room is the news\o, which nobody was carrying.
 /bot join Freeman #foss
 /bot rss add Freeman https://lwn.net/headlines/newrss #foss
@@ -385,7 +383,7 @@ included, is joined explicitly.
 /bot addcmd Cassandra sources \c04\b[Cassandra]\o CISA advisories, Krebs on Security and The Hacker News, \c05checked every half hour\o.
 /bot addcmd Cassandra patch \c04\b[Cassandra]\o The advisory is not the fix. \c05Read it, find your version, then patch\o. In that order, {nickname}.
 /bot join Cassandra #security
-/bot rss add Cassandra https://www.cisa.gov/cybersecurity-advisories/all.xml #security
+/bot rss add Cassandra https://us-cert.cisa.gov/ncas/alerts.xml #security
 /bot rss add Cassandra https://krebsonsecurity.com/feed/ #security
 /bot rss add Cassandra https://feeds.feedburner.com/TheHackersNews #security
 
@@ -503,8 +501,8 @@ than a moderated `#rules` nobody reads.
 
 | bot | channels | capabilities | role |
 |---|---|---|---|
-| **Brutus** | all 7 | `moderation` (passive), `custom_commands` | spam and flood, everywhere |
-| **Patches** | `#lobby` | `greeter`, `dice`, `custom_commands` | doorman, explains the seven rooms |
+| **Brutus** | all 13 | `moderation` (passive), `custom_commands` | spam and flood, everywhere |
+| **Patches** | `#lobby` | `greeter`, `dice`, `custom_commands` | doorman, explains the thirteen rooms |
 | **Wanda** | `#trivia` | **`trivia`**, `dice`, `greeter` | quiz host with a scoreboard |
 | **Pixel** | `#arcade`, `#retro` | **`rss`**, `greeter`, `custom_commands` | arcade catalogue; Hackaday and Vintage Computing |
 | **Murphy** | `#tech` | **`rss`**, `greeter`, `custom_commands` | pub talk; Hacker News and the GitHub blog |
@@ -537,9 +535,8 @@ or in the channel by an operator:
 ```
 
 All three routes write to the same place and survive a restart, along with the record of
-what has already been posted. A newly added feed posts one headline within seconds — the
-answer to "did that work?" should not take twenty minutes — and then only reports what
-arrives after it.
+what has already been seen. A newly added feed is fetched within seconds to record the
+current page silently; after that, only items that arrive later are posted.
 
 **No schedules.** `!Bot schedule add` persists now too, but nothing here needs one; a
 room that speaks on a timer with nothing to say is worse than a quiet one.

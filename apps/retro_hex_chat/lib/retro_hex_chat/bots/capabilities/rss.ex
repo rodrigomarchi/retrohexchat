@@ -14,9 +14,9 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
 
   alias RetroHexChat.Bots.Capabilities.RSS.FeedParser
   alias RetroHexChat.Bots.Capabilities.RSS.Fetcher
+  alias RetroHexChat.Bots.Capabilities.RSS.Scheduler
   alias RetroHexChat.Bots.Capabilities.RSS.UrlGuard
   alias RetroHexChat.Bots.Policy
-  alias RetroHexChat.Bots.Server
   alias RetroHexChat.Chat.LinkPreview
 
   require Logger
@@ -29,17 +29,24 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
   @spec description() :: String.t()
   def description, do: dgettext("bots", "RSS feed reader that posts updates to channels")
 
-  # The feed list and, inside it, the record of what has already been announced.
+  # The feed list and, inside it, the record of what has already been seen.
   # Both have to outlive a deploy: without the first the bot forgets its feeds,
   # without the second it greets the restart by republishing the whole feed.
   @impl true
   @spec durable_keys() :: [atom()]
   def durable_keys, do: [:feeds]
 
-  # How many item identities to remember per feed. Comfortably more than any
-  # feed's window, so an item cannot rotate out of memory while still on the
+  # How many item identities to remember per feed. Comfortably more than the
+  # feeds' windows, so an item cannot rotate out of memory while still on the
   # page and come back as news.
   @seen_limit 200
+  @parse_timeout_ms 20_000
+
+  @type decoded_feed_result ::
+          {:ok, FeedParser.feed_info(), Fetcher.headers()}
+          | {:not_modified}
+          | {:error, String.t()}
+  @type planned_result :: :ignore | {:items, [FeedParser.feed_item()], String.t() | nil}
 
   @impl true
   @spec init_state(map()) :: map()
@@ -78,21 +85,27 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
 
   @impl true
   @spec init_timers(map(), atom(), map(), map()) :: map()
-  # Waiting half an hour to find out whether a feed works is how a feature gets
-  # called broken. A feed that has never been polled is polled almost at once,
-  # posts its newest item as proof of life, and remembers the rest of the page.
-  # Feeds already running keep their cadence.
+  # A feed that has never been polled is fetched almost at once so provisioning
+  # seeds the whole page before the bot starts watching for future items. Feeds
+  # already running keep their cadence.
   @first_poll_delay_ms 3_000
 
-  def init_timers(server_state, cap_name, config, cap_state) do
+  def init_timers(server_state, _cap_name, config, cap_state) do
     interval = Map.get(config, "poll_interval_min", 30) * 60 * 1000
 
-    Enum.reduce(cap_state.feeds, server_state, fn feed, acc ->
-      payload = %{type: :poll, feed_id: feed["id"], channel: feed["channel"]}
+    Enum.each(cap_state.feeds, fn feed ->
       delay = if feed["last_polled_at"], do: interval, else: @first_poll_delay_ms
 
-      Server.schedule_capability_timer(acc, cap_name, payload, delay)
+      case Scheduler.schedule_poll(server_state.bot_id, feed["id"], delay) do
+        :ok ->
+          :ok
+
+        {:error, reason} ->
+          Logger.warning("RSS poll schedule failed for #{feed["id"]}: #{inspect(reason)}")
+      end
     end)
+
+    server_state
   end
 
   @impl true
@@ -112,7 +125,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
         if_admin(ctx, fn -> handle_add(rest, state, config) end)
 
       {:rss, "remove " <> id} ->
-        if_admin(ctx, fn -> handle_remove(String.trim(id), state) end)
+        if_admin(ctx, fn -> handle_remove(String.trim(id), state, ctx) end)
 
       {:rss, "check " <> id} ->
         if_admin(ctx, fn -> handle_check(String.trim(id), state, config, ctx.channel) end)
@@ -146,29 +159,13 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
   @spec handle_timer(term(), map(), RetroHexChat.Bots.Capability.bot_context()) ::
           {RetroHexChat.Bots.Capability.capability_result(), map()}
   def handle_timer(%{type: :poll, feed_id: feed_id}, state, ctx) do
-    config = ctx.config
-
-    case find_feed(state.feeds, feed_id) do
-      nil ->
-        {:ignore, state}
-
-      feed ->
-        do_poll_feed(feed, state, config)
-    end
+    poll_feed(feed_id, state, ctx.config)
   end
 
   def handle_timer(_payload, state, _ctx), do: {:ignore, state}
 
   @impl true
-  @spec reschedule_delay(map(), map()) :: {:reschedule, non_neg_integer(), map()} | :no_reschedule
-  def reschedule_delay(%{type: :poll, feed_id: feed_id} = payload, cap_state) do
-    if find_feed(cap_state.feeds, feed_id) do
-      {:reschedule, cap_state.poll_interval_ms, payload}
-    else
-      :no_reschedule
-    end
-  end
-
+  @spec reschedule_delay(map(), map()) :: :no_reschedule
   def reschedule_delay(_payload, _cap_state), do: :no_reschedule
 
   @impl true
@@ -299,10 +296,12 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
      ), %{state | feeds: state.feeds ++ [feed]}}
   end
 
-  @spec handle_remove(String.t(), map()) :: RetroHexChat.Bots.Capability.capability_result()
-  defp handle_remove(id, state) do
+  @spec handle_remove(String.t(), map(), map()) ::
+          RetroHexChat.Bots.Capability.capability_result()
+  defp handle_remove(id, state, ctx) do
     if find_feed(state.feeds, id) do
       new_feeds = Enum.reject(state.feeds, &(&1["id"] == id))
+      Scheduler.cancel_poll(Map.get(ctx, :bot_id), id)
       {:reply, dgettext("bots", "Feed '%{id}' removed.", id: id), %{state | feeds: new_feeds}}
     else
       {:reply, dgettext("bots", "Feed '%{id}' not found.", id: id)}
@@ -329,8 +328,8 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
            channel: target
          )}
 
-      feed ->
-        case do_poll_feed(feed, state, config) do
+      _feed ->
+        case poll_feed(id, state, config) do
           {{:multi_output, outputs}, new_state} ->
             {:multi_output, outputs, new_state}
 
@@ -343,50 +342,91 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
 
   # ── Polling ──
 
-  @spec do_poll_feed(map(), map(), map()) ::
+  @spec poll_feed(String.t(), map(), map()) ::
           {RetroHexChat.Bots.Capability.capability_result(), map()}
-  defp do_poll_feed(feed, state, config) do
-    max_items = Map.get(config, "max_items_per_poll", 3)
+  def poll_feed(feed_id, state, config) do
+    case find_feed(state.feeds, feed_id) do
+      nil ->
+        {:ignore, state}
 
-    case fetch_feed(feed["url"], feed["etag"], feed["last_modified"]) do
-      {:ok, xml, headers} ->
-        process_feed_response(feed, xml, headers, state, max_items)
-
-      {:not_modified} ->
-        {:ignore, note_poll(state, feed, nil)}
-
-      {:error, reason} ->
-        Logger.warning("RSS fetch error for #{feed["url"]}: #{inspect(reason)}")
-        {:ignore, note_poll(state, feed, describe_error(reason))}
+      feed ->
+        decoded = feed |> fetch_feed() |> decode_fetch_result(feed)
+        {planned, new_state} = apply_decoded_result(feed, decoded, state, config)
+        {format_planned_result(planned), new_state}
     end
   end
 
-  @spec process_feed_response(map(), String.t(), map(), map(), integer()) ::
-          {RetroHexChat.Bots.Capability.capability_result(), map()}
-  defp process_feed_response(feed, xml, headers, state, max_items) do
-    case FeedParser.parse(xml) do
+  @spec fetch_feed(map()) :: Fetcher.result()
+  def fetch_feed(feed) do
+    Fetcher.impl().fetch(feed["url"], feed["etag"], feed["last_modified"])
+  end
+
+  @spec decode_fetch_result(Fetcher.result(), map()) :: decoded_feed_result()
+  def decode_fetch_result({:ok, xml, headers}, _feed) do
+    case parse_feed(xml) do
       {:ok, feed_info} ->
-        publish(feed, feed_info, headers, state, max_items)
+        {:ok, feed_info, headers}
 
       {:error, reason} ->
-        {:ignore, note_poll(state, feed, "unreadable feed: #{inspect(reason)}")}
+        {:error, "unreadable feed: #{inspect(reason)}"}
+    end
+  end
+
+  def decode_fetch_result({:not_modified}, _feed), do: {:not_modified}
+
+  def decode_fetch_result({:error, reason}, feed) do
+    Logger.warning("RSS fetch error for #{feed["url"]}: #{inspect(reason)}")
+    {:error, describe_error(reason)}
+  end
+
+  @spec apply_decoded_result(map(), decoded_feed_result(), map(), map()) ::
+          {planned_result(), map()}
+  def apply_decoded_result(feed, {:ok, feed_info, headers}, state, config) do
+    max_items = Map.get(config, "max_items_per_poll", 3)
+    publish(feed, feed_info, headers, state, max_items)
+  end
+
+  def apply_decoded_result(feed, {:not_modified}, state, _config) do
+    {:ignore, note_poll(state, feed, nil)}
+  end
+
+  def apply_decoded_result(feed, {:error, reason}, state, _config) do
+    {:ignore, note_poll(state, feed, reason)}
+  end
+
+  @spec format_planned_result(planned_result()) ::
+          RetroHexChat.Bots.Capability.capability_result()
+  def format_planned_result(:ignore), do: :ignore
+
+  def format_planned_result({:items, items, feed_title}),
+    do: {:multi_output, format_items(items, feed_title)}
+
+  @spec parse_feed(String.t()) :: {:ok, FeedParser.feed_info()} | {:error, term()}
+  defp parse_feed(xml) do
+    task = Task.async(fn -> FeedParser.parse(xml) end)
+
+    case Task.yield(task, @parse_timeout_ms) || Task.shutdown(task, :brutal_kill) do
+      {:ok, result} -> result
+      {:exit, reason} -> {:error, reason}
+      nil -> {:error, :timeout}
     end
   end
 
   @spec publish(map(), FeedParser.feed_info(), map(), map(), integer()) ::
-          {RetroHexChat.Bots.Capability.capability_result(), map()}
+          {planned_result(), map()}
   defp publish(feed, feed_info, headers, state, max_items) do
     seen = feed["seen"] || []
-    {to_post, newly_seen} = plan_publication(seen, feed_info.items, max_items)
+    {to_post, identities_to_remember} = plan_publication(seen, feed_info.items, max_items)
 
     updated =
       feed
       |> Map.put("title", feed_info.title || feed["title"])
       |> Map.put("etag", headers[:etag])
       |> Map.put("last_modified", headers[:last_modified])
-      # Only what was actually posted is marked seen, so anything over the
-      # per-poll ceiling is picked up next time rather than lost.
-      |> Map.put("seen", Enum.take(newly_seen ++ seen, @seen_limit))
+      # The bootstrap read marks the whole current page as history. Later polls
+      # only mark what was actually posted, so a burst over the per-poll ceiling
+      # is drained across subsequent polls instead of vanishing.
+      |> Map.put("seen", Enum.take(identities_to_remember ++ seen, @seen_limit))
       |> Map.put("last_polled_at", DateTime.utc_now() |> DateTime.to_iso8601())
       |> Map.put("last_error", nil)
 
@@ -395,7 +435,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
     if to_post == [] do
       {:ignore, new_state}
     else
-      {{:multi_output, format_items(to_post, updated["title"])}, new_state}
+      {{:items, to_post, updated["title"]}, new_state}
     end
   end
 
@@ -405,11 +445,9 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
   Pure on purpose: this is the whole "only new items, never twice" rule, and it
   is worth testing without a network in the way.
 
-    * The first sight of a feed announces its newest item and remembers the
-      rest. Saying nothing at all was the tidier rule and the wrong one: an
-      operator who has just added a feed has no way to tell a working one from a
-      typo until the next poll, twenty minutes to an hour later. One headline
-      answers that in seconds, and is not an archive dump.
+    * The first sight of a feed announces nothing and remembers the whole page.
+      Provisioning should not dump old news into a channel; it should establish
+      the baseline from which future items become news.
     * An item is recognised by identity, not by position, so a feed that pins a
       post to the top or reorders on update cannot make old news look new.
     * Only what is actually posted is marked seen, so anything above the
@@ -421,8 +459,8 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
           {[FeedParser.feed_item()], [String.t()]}
   def plan_publication([], [], _max_items), do: {[], []}
 
-  def plan_publication([], [newest | _] = items, _max_items) do
-    {[newest], Enum.map(items, &identity/1)}
+  def plan_publication([], items, _max_items) do
+    {[], Enum.map(items, &identity/1)}
   end
 
   def plan_publication(seen, items, max_items) do
@@ -460,12 +498,6 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
       |> Map.put("last_error", error)
 
     update_feed(state, feed["id"], updated)
-  end
-
-  @spec fetch_feed(String.t(), String.t() | nil, String.t() | nil) ::
-          {:ok, String.t(), map()} | {:not_modified} | {:error, term()}
-  defp fetch_feed(url, etag, last_modified) do
-    Fetcher.impl().fetch(url, etag, last_modified)
   end
 
   @spec format_items([FeedParser.feed_item()], String.t() | nil) :: [map()]

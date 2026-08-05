@@ -645,11 +645,13 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
         {:halt, socket}
 
       {:shared, p2p} ->
-        if Keyword.get(opts, :writer, false), do: persist_p2p_system(socket, p2p.peer_nick, text)
+        if Keyword.get(opts, :writer, false),
+          do: persist_p2p_system(socket, p2p.peer_nick, p2p_notice_text(text))
+
         {:halt, socket}
 
       {:local, _p2p} ->
-        {:halt, Messages.system_event(socket, text)}
+        {:halt, p2p_system_event(socket, text)}
     end
   end
 
@@ -1280,7 +1282,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
             assign(socket, p2p_pending: %{kind: :incoming, token: token})
 
           {:error, message} ->
-            Messages.system_event(socket, message)
+            p2p_system_event(socket, message)
         end
     end
   end
@@ -1335,7 +1337,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
             |> open_setup(token)
 
           {:error, message} ->
-            Messages.system_event(socket, message)
+            p2p_system_event(socket, message)
         end
 
       %{kind: :outgoing, payload: payload} ->
@@ -1382,7 +1384,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
         )
 
       {:error, message} ->
-        Messages.system_event(socket, message)
+        p2p_system_event(socket, message)
     end
   end
 
@@ -1458,7 +1460,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
       |> open_p2p_console("call")
       |> notify_invite_accepted()
     else
-      {:error, message} -> Messages.system_event(socket, message)
+      {:error, message} -> p2p_system_event(socket, message)
       _ -> socket
     end
   end
@@ -1508,7 +1510,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
             |> PMHelper.refresh_p2p_invite_row(creator, token)
 
           {:error, message} ->
-            Messages.system_event(socket, message)
+            p2p_system_event(socket, message)
         end
 
       _ ->
@@ -1630,7 +1632,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
         begin_reattach_wait(socket, token, user_id, role)
 
       {:error, message} ->
-        Messages.system_event(socket, message)
+        p2p_system_event(socket, message)
     end
   end
 
@@ -1713,7 +1715,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   defp fail_reattach(socket, message) do
     socket
     |> mark_p2p_failed("reattach_failed")
-    |> Messages.system_event(message)
+    |> p2p_system_event(message)
   end
 
   defp schedule_reattach_retry(socket, token, user_id, role, attempt) do
@@ -1917,6 +1919,31 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
 
   defp empty_p2p_recovery do
     %{state: :idle, attempt: nil, reason: nil, trigger: nil, manual_retry: false}
+  end
+
+  @spec p2p_system_event(Socket.t(), term()) :: Socket.t()
+  defp p2p_system_event(socket, message) do
+    Messages.system_event(socket, p2p_notice_text(message))
+  end
+
+  @spec p2p_notice_text(term()) :: String.t()
+  defp p2p_notice_text(message) when is_binary(message), do: message
+
+  defp p2p_notice_text(:not_found) do
+    dgettext("chat", "This P2P invite is no longer active.")
+  end
+
+  defp p2p_notice_text(:already_joined) do
+    dgettext("chat", "This P2P session is already active in another window.")
+  end
+
+  defp p2p_notice_text(reason) when is_atom(reason) do
+    reason = reason |> Atom.to_string() |> String.replace("_", " ")
+    dgettext("chat", "P2P action failed: %{reason}", reason: reason)
+  end
+
+  defp p2p_notice_text(reason) do
+    dgettext("chat", "P2P action failed: %{reason}", reason: inspect(reason))
   end
 
   defp joinable_summary(token) do

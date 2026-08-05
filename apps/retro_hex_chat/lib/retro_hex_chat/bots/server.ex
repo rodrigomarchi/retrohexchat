@@ -12,7 +12,7 @@ defmodule RetroHexChat.Bots.Server do
 
   require Logger
 
-  alias RetroHexChat.Bots.{Queries, Registry}
+  alias RetroHexChat.Bots.{Output, Queries, Registry}
   alias RetroHexChat.Channels
 
   @pubsub RetroHexChat.PubSub
@@ -693,62 +693,7 @@ defmodule RetroHexChat.Bots.Server do
   defp respond_without_cooldown(state, _channel, _other), do: state
 
   @spec send_bot_output(String.t(), String.t(), map()) :: :ok | {:error, term()}
-  defp send_bot_output(channel, nickname, %{delivery: delivery, content: content} = output) do
-    opts = output_message_opts(output)
-
-    case normalize_delivery(delivery) do
-      :public ->
-        send_bot_message(channel, nickname, content, output_message_type(output, :message), opts)
-
-      :channel_notice ->
-        send_bot_message(channel, nickname, content, output_message_type(output, :notice), opts)
-
-      :private_notice ->
-        send_bot_private_notice(channel, nickname, Map.get(output, :target), content)
-
-      :silent ->
-        :ok
-    end
-  end
-
-  defp send_bot_output(_channel, _nickname, _output), do: :ok
-
-  @spec normalize_delivery(atom() | String.t()) ::
-          :public | :channel_notice | :private_notice | :silent
-  defp normalize_delivery(:channel_notice), do: :channel_notice
-  defp normalize_delivery(:private_notice), do: :private_notice
-  defp normalize_delivery(:silent), do: :silent
-  defp normalize_delivery(delivery) when is_atom(delivery), do: :public
-
-  defp normalize_delivery(delivery) when is_binary(delivery) do
-    case delivery do
-      "channel_notice" -> :channel_notice
-      "private_notice" -> :private_notice
-      "silent" -> :silent
-      _ -> :public
-    end
-  end
-
-  defp normalize_delivery(_delivery), do: :public
-
-  @spec output_message_opts(map()) :: keyword()
-  defp output_message_opts(output) do
-    case Map.get(output, :content_format) || Map.get(output, "content_format") do
-      format when format in ~w(irc markdown plain) -> [content_format: format]
-      _ -> []
-    end
-  end
-
-  @spec output_message_type(map(), atom()) :: atom()
-  defp output_message_type(output, default) do
-    case Map.get(output, :type) || Map.get(output, "type") do
-      type when is_atom(type) -> type
-      type when is_binary(type) -> String.to_existing_atom(type)
-      _ -> default
-    end
-  rescue
-    ArgumentError -> default
-  end
+  defp send_bot_output(channel, nickname, output), do: Output.send(channel, nickname, output)
 
   @spec send_bot_message(String.t(), String.t(), String.t(), atom(), keyword()) ::
           :ok | {:error, term()}
@@ -760,23 +705,6 @@ defmodule RetroHexChat.Bots.Server do
   catch
     :exit, reason ->
       Logger.warning("Bot #{nickname} failed to send (channel unavailable): #{inspect(reason)}")
-  end
-
-  @spec send_bot_private_notice(String.t(), String.t(), String.t() | nil, String.t()) ::
-          :ok | {:error, term()}
-  defp send_bot_private_notice(_channel, _nickname, nil, _content), do: :ok
-
-  defp send_bot_private_notice(channel, nickname, target, content) do
-    case Phoenix.PubSub.broadcast(@pubsub, "user:#{target}", %{
-           event: "new_notice",
-           payload: %{author: nickname, content: content, channel: channel}
-         }) do
-      :ok ->
-        :ok
-
-      {:error, reason} ->
-        Logger.warning("Bot #{nickname} failed to send private notice: #{inspect(reason)}")
-    end
   end
 
   @spec update_cooldown(state(), String.t()) :: state()
@@ -821,6 +749,7 @@ defmodule RetroHexChat.Bots.Server do
     %{
       bot_nickname: state.nickname,
       bot_name: state.name,
+      bot_id: state.bot_id,
       channel: channel,
       command_prefix: state.command_prefix,
       config: %{},

@@ -9,6 +9,7 @@ defmodule RetroHexChat.Bots.Feeds do
   """
 
   alias RetroHexChat.Bots.Capabilities.RSS
+  alias RetroHexChat.Bots.Capabilities.RSS.Scheduler
   alias RetroHexChat.Bots.Capabilities.RSS.UrlGuard
   alias RetroHexChat.Bots.{Queries, Server}
 
@@ -25,7 +26,7 @@ defmodule RetroHexChat.Bots.Feeds do
   @doc """
   Adds a feed, refusing an address the server should not be fetching.
 
-  A newly added feed carries no memory of what it has published, which is what
+  A newly added feed carries no memory of what it has seen, which is what
   makes its first poll silent: it records the page as it stands and announces
   only what appears afterwards.
   """
@@ -60,7 +61,10 @@ defmodule RetroHexChat.Bots.Feeds do
     feeds = list(bot)
 
     if Enum.any?(feeds, &(&1["id"] == feed_id)) do
-      write(bot, Enum.reject(feeds, &(&1["id"] == feed_id)))
+      with {:ok, updated} <- write(bot, Enum.reject(feeds, &(&1["id"] == feed_id))) do
+        Scheduler.cancel_poll(updated.id, feed_id)
+        {:ok, updated}
+      end
     else
       {:error, "no feed with that id"}
     end

@@ -23,6 +23,7 @@ defmodule RetroHexChat.Bots.Capability do
   @type bot_context :: %{
           bot_nickname: String.t(),
           bot_name: String.t(),
+          bot_id: integer(),
           channel: String.t(),
           command_prefix: String.t(),
           config: map(),

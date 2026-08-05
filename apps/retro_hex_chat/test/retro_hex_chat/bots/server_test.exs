@@ -4,6 +4,7 @@ defmodule RetroHexChat.Bots.ServerTest do
   @moduletag :integration
 
   alias RetroHexChat.Bots.{Registry, Server, Supervisor}
+  alias RetroHexChat.Jobs.RSSPollWorker
 
   @bot_data %{
     id: 999,
@@ -745,7 +746,7 @@ defmodule RetroHexChat.Bots.ServerTest do
       :ok
     end
 
-    test "adding a feed schedules its poll" do
+    test "adding a feed enqueues its poll" do
       {:ok, pid} = Supervisor.start_bot(@rss_bot)
 
       assert :sys.get_state(pid).capability_timers == %{},
@@ -767,12 +768,17 @@ defmodule RetroHexChat.Bots.ServerTest do
       })
 
       Process.sleep(80)
-      timers = :sys.get_state(pid).capability_timers
+      state = :sys.get_state(pid)
+      [%{"id" => id}] = state.capability_states.rss.feeds
 
-      assert map_size(timers) == 1,
+      assert_enqueued(
+        worker: RSSPollWorker,
+        queue: :rss,
+        args: %{bot_id: @rss_bot.id, feed_id: id}
+      )
+
+      assert state.capability_timers == %{},
              "a feed nobody polls is a feed that never publishes"
-
-      assert [{:rss, %{type: :poll}}] = Map.values(timers)
     end
   end
 end

@@ -36,7 +36,7 @@ defmodule RetroHexChat.Commands.Handlers.ServerProvisionTest do
       # The console skips blanks and #-comments; so does this.
       |> Enum.filter(&String.starts_with?(&1, "/"))
 
-    {:ok, lines: lines}
+    {:ok, body: body, lines: lines}
   end
 
   defp args(line), do: line |> String.trim_leading("/") |> String.split(" ", trim: true)
@@ -44,6 +44,24 @@ defmodule RetroHexChat.Commands.Handlers.ServerProvisionTest do
 
   test "the script exists and carries commands" do
     assert File.exists?(@script_path)
+  end
+
+  test "the production shape stays at thirteen rooms and thirteen bots", %{lines: lines} do
+    parsed = Enum.map(lines, &args/1)
+    channels = for ["join", chan | _] <- parsed, uniq: true, do: String.downcase(chan)
+    bots = for ["bot", "create", name | _] <- parsed, uniq: true, do: name
+
+    assert length(channels) == 13
+    assert length(bots) == 13
+  end
+
+  test "the narrative does not drift back to the old room count or RSS bootstrap",
+       %{body: body} do
+    refute body =~ "all 7"
+    refute body =~ "seven rooms"
+    refute body =~ "posts one headline"
+    refute body =~ "A newly added feed posts"
+    refute body =~ "https://www.cisa.gov/cybersecurity-advisories/all.xml"
   end
 
   test "every command names a handler the registry knows", %{lines: lines} do

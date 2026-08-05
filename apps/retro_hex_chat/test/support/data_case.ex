@@ -22,6 +22,8 @@ defmodule RetroHexChat.DataCase do
     quote do
       alias RetroHexChat.Repo
 
+      use Oban.Testing, repo: RetroHexChat.Repo
+
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
