@@ -14,6 +14,7 @@ defmodule RetroHexChat.PromEx.Plugins.Domain do
   @call_recovery_transition [:retro_hex_chat, :calls, :recovery, :transition]
   @call_client_error [:retro_hex_chat, :calls, :client_error]
   @call_signaling_replay [:retro_hex_chat, :calls, :signaling, :replay]
+  @game_session_sample [:retro_hex_chat, :games, :session, :sample]
 
   @impl true
   def event_metrics(opts) do
@@ -116,6 +117,61 @@ defmodule RetroHexChat.PromEx.Plugins.Domain do
           description: "Total number of P2P signaling replay outcomes.",
           tag_values: &call_replay_tags/1,
           tags: [:surface, :action, :reason]
+        ),
+
+        # P2P games. Game state never reaches the server, so these are reported
+        # by the two browsers playing the match. `role` is the tag that matters:
+        # the host simulates and the guest draws, and a match going wrong shows
+        # up as the two roles disagreeing about how the same match went.
+        counter(
+          metric_prefix ++ [:games, :session, :samples, :total],
+          event_name: @game_session_sample,
+          description: "Total number of P2P game telemetry samples, by health verdict.",
+          tag_values: &game_session_tags/1,
+          tags: [:game_id, :role, :health, :channel_state]
+        ),
+        distribution(
+          metric_prefix ++ [:games, :session, :render_fps],
+          event_name: @game_session_sample,
+          measurement: :render_fps,
+          description: "Frames per second drawn during a P2P game.",
+          reporter_options: [buckets: frame_rate_buckets()],
+          tag_values: &game_role_tags/1,
+          tags: [:game_id, :role]
+        ),
+        distribution(
+          metric_prefix ++ [:games, :session, :state_gap, :milliseconds],
+          event_name: @game_session_sample,
+          measurement: :state_gap_p95_ms,
+          description: "95th percentile gap between authoritative game snapshots.",
+          reporter_options: [buckets: duration_buckets()],
+          tag_values: &game_role_tags/1,
+          tags: [:game_id, :role]
+        ),
+        distribution(
+          metric_prefix ++ [:games, :session, :rtt, :milliseconds],
+          event_name: @game_session_sample,
+          measurement: :rtt_ms,
+          description: "Peer connection round-trip time during a P2P game.",
+          reporter_options: [buckets: duration_buckets()],
+          tag_values: &game_role_tags/1,
+          tags: [:game_id, :role]
+        ),
+        sum(
+          metric_prefix ++ [:games, :session, :state_drops, :total],
+          event_name: @game_session_sample,
+          measurement: :send_dropped,
+          description: "Game snapshots skipped because the data channel was backed up.",
+          tag_values: &game_role_tags/1,
+          tags: [:game_id, :role]
+        ),
+        sum(
+          metric_prefix ++ [:games, :session, :stalls, :total],
+          event_name: @game_session_sample,
+          measurement: :stall_count,
+          description: "Frames whose simulation backlog exceeded the catch-up cap.",
+          tag_values: &game_role_tags/1,
+          tags: [:game_id, :role]
         )
       ]
     )
@@ -188,6 +244,20 @@ defmodule RetroHexChat.PromEx.Plugins.Domain do
     }
   end
 
+  defp game_role_tags(metadata) do
+    %{
+      game_id: tag(metadata, :game_id),
+      role: tag(metadata, :role)
+    }
+  end
+
+  defp game_session_tags(metadata) do
+    metadata
+    |> game_role_tags()
+    |> Map.put(:health, tag(metadata, :health))
+    |> Map.put(:channel_state, tag(metadata, :channel_state))
+  end
+
   defp tag(metadata, key, default \\ "unknown") do
     case Map.get(metadata, key, default) do
       nil -> default
@@ -202,5 +272,11 @@ defmodule RetroHexChat.PromEx.Plugins.Domain do
 
   defp duration_buckets do
     [1, 5, 10, 25, 50, 100, 250, 500, 1_000, 2_500, 5_000, 10_000, 30_000]
+  end
+
+  # Bucketed around what a player notices: below 30 is visibly rough, 60 is the
+  # simulation rate, and above that is a high-refresh display keeping up.
+  defp frame_rate_buckets do
+    [10, 20, 30, 45, 55, 60, 75, 90, 120, 144, 240]
   end
 end

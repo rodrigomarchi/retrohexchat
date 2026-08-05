@@ -1,10 +1,12 @@
 defmodule RetroHexChatWeb.PromExTest do
   use RetroHexChatWeb.ConnCase, async: false
 
+  alias RetroHexChat.PromEx.Plugins.Domain
+
   describe "RetroHexChat.PromEx.plugins/0" do
     test "includes domain metrics and Ecto before the Repo starts" do
       assert [
-               RetroHexChat.PromEx.Plugins.Domain,
+               Domain,
                {PromEx.Plugins.Ecto,
                 repos: [RetroHexChat.Repo], metric_prefix: [:retro_hex_chat_web, :prom_ex, :ecto]},
                {RetroHexChat.PromEx.Plugins.Oban,
@@ -12,6 +14,44 @@ defmodule RetroHexChatWeb.PromExTest do
                 poll_rate: 5_000,
                 metric_prefix: [:retro_hex_chat, :prom_ex, :oban]}
              ] = RetroHexChat.PromEx.plugins()
+    end
+  end
+
+  describe "Domain.event_metrics/1" do
+    test "exports P2P game session metrics to Prometheus" do
+      # The LiveDashboard metric list is a separate surface; only what this
+      # plugin declares reaches /metrics and therefore Grafana.
+      names =
+        [metric_prefix: [:retro_hex_chat, :domain]]
+        |> Domain.event_metrics()
+        |> List.wrap()
+        |> Enum.flat_map(& &1.metrics)
+        |> Enum.map(& &1.name)
+
+      assert [:retro_hex_chat, :domain, :games, :session, :samples, :total] in names
+      assert [:retro_hex_chat, :domain, :games, :session, :render_fps] in names
+      assert [:retro_hex_chat, :domain, :games, :session, :state_gap, :milliseconds] in names
+      assert [:retro_hex_chat, :domain, :games, :session, :rtt, :milliseconds] in names
+      assert [:retro_hex_chat, :domain, :games, :session, :state_drops, :total] in names
+      assert [:retro_hex_chat, :domain, :games, :session, :stalls, :total] in names
+    end
+
+    test "tags game metrics by the role that reported them" do
+      metric =
+        [metric_prefix: [:retro_hex_chat, :domain]]
+        |> Domain.event_metrics()
+        |> List.wrap()
+        |> Enum.flat_map(& &1.metrics)
+        |> Enum.find(&(&1.name == [:retro_hex_chat, :domain, :games, :session, :render_fps]))
+
+      # Host versus guest is the comparison the whole thing exists to make.
+      assert :role in metric.tags
+      assert :game_id in metric.tags
+
+      assert metric.tag_values.(%{game_id: "hex_pong", role: "guest"}) == %{
+               game_id: "hex_pong",
+               role: "guest"
+             }
     end
   end
 
