@@ -49,6 +49,22 @@ defmodule RetroHexChat.Bots.Queries do
     Bot |> order_by(:name) |> limit(@max_curated) |> Repo.all()
   end
 
+  @doc """
+  Every bot with its channels and custom commands loaded.
+
+  What a roster has to answer before anything is clicked — where each bot works
+  and how much it carries — is in the associations, so the list that shows it
+  loads them once for everyone rather than per selected bot.
+  """
+  @spec list_bots_with_associations() :: [Bot.t()]
+  def list_bots_with_associations do
+    Bot
+    |> order_by(:name)
+    |> limit(@max_curated)
+    |> preload([:channel_configs, :custom_commands])
+    |> Repo.all()
+  end
+
   @spec list_enabled_bots() :: [Bot.t()]
   def list_enabled_bots do
     Bot

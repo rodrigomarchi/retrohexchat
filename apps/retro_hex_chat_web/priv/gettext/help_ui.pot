@@ -1695,12 +1695,6 @@ msgstr ""
 msgid "Taskbar"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:18
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:18
-#, elixir-autogen, elixir-format
-msgid "The Capabilities tab lists each enabled capability and its configuration values. Admins can turn individual capabilities on or off; changes are reloaded into the bot process."
-msgstr ""
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:26
 #, elixir-autogen, elixir-format
@@ -1723,18 +1717,6 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "The Edit menu groups message-window actions that work on the current chat view."
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:42
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:42
-#, elixir-autogen, elixir-format
-msgid "The Events tab displays the most recent bot event log entries loaded when a bot is selected."
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:10
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:10
-#, elixir-autogen, elixir-format
-msgid "The General tab shows the selected bot's name, nickname, command prefix, enabled state, configured capabilities, and runtime statistics when the bot process is running. Admins can use the Enable or Disable button to toggle the bot globally."
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:2
@@ -2715,4 +2697,34 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/ui_system_windows.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "— sorted by memory. An in-memory table nobody prunes is the usual cause of memory that only ever grows."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex
+#, elixir-autogen, elixir-format
+msgid "The Roster"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex
+#, elixir-autogen, elixir-format
+msgid "The window opens on the roster: every bot on the server, one row each. A row carries the bot's description, the channels it is assigned to, the capabilities it has enabled, how many custom commands it answers, and a coloured dot for its process — green for running, amber for a bot that is enabled but has no process, grey for one that was disabled. Selecting a row replaces the roster with that bot; the Bots button at the top left returns to it."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex
+#, elixir-autogen, elixir-format
+msgid "The General tab reports what the running process has actually done — uptime, messages handled, commands processed — followed by the bot's identity: nickname, command prefix, cooldown, who created it and when. A bot with no process says so instead of reporting zeroes. Admins can use the Enable or Disable button in the header to toggle the bot globally, or Delete to destroy it."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex
+#, elixir-autogen, elixir-format
+msgid "The Capabilities tab gives each capability a panel: what it does, whether it is on, and its configuration. Settings are listed under the exact key /bot set takes, so what is read here is what is typed in the console. Text a bot was configured to say is shown with its colours rendered, not as raw control codes. Admins can turn individual capabilities on or off; changes are reloaded into the bot process."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex
+#, elixir-autogen, elixir-format
+msgid "The Events tab is the bot's own log: what it did, in which channel, and how long ago. It loads when a bot is selected and pages further back as you scroll."
 msgstr ""

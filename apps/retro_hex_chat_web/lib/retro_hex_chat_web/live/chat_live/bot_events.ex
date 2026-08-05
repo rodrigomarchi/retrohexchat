@@ -19,7 +19,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
   alias RetroHexChat.Bots.Capabilities.{CustomCommands, Dice, Greeter, Help, Mention, Moderation}
   alias RetroHexChat.Bots.Capabilities.{RSS, Scheduler, Trivia}
   alias RetroHexChat.Bots.{Feeds, Lifecycle, Queries, Server, Supervisor}
-  alias RetroHexChat.Chat.IrcEscapes
+  alias RetroHexChat.Chat.{IrcEscapes, TimeFormatter}
   alias RetroHexChatWeb.ChatLive.ChatContext
   alias RetroHexChatWeb.ChatLive.Components.BotManagementDialog
   alias RetroHexChatWeb.ChatLive.Windows
@@ -31,6 +31,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
   @bot_events ~w(
     open_bot_dialog
     bot_select
+    bot_back
     bot_toggle_enabled
     bot_delete
     open_new_bot_dialog
@@ -104,6 +105,19 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
     end
   end
 
+  # Leaving a bot's detail is the same state as never having chosen one: the
+  # window shows the roster whenever nothing is selected, so "back" is a
+  # deselection rather than a second kind of view flag that could disagree with it.
+  defp authorized("bot_back", _params, socket) do
+    put_bot(socket,
+      bots: Queries.list_bots_with_associations(),
+      selected: nil,
+      channels: [],
+      commands: [],
+      stats: nil
+    )
+  end
+
   defp authorized("bot_toggle_enabled", %{"name" => name}, socket) do
     case Queries.get_bot_by_name(name) do
       nil -> socket
@@ -116,7 +130,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
 
     if bot do
       Lifecycle.destroy_bot(bot)
-      bots = Queries.list_bots()
+      bots = Queries.list_bots_with_associations()
 
       socket
       |> put_bot(
@@ -177,7 +191,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
         }
 
         Supervisor.start_bot(bot_data)
-        bots = Queries.list_bots()
+        bots = Queries.list_bots_with_associations()
 
         socket
         |> put_bot(show_new_bot: false, bots: bots)
@@ -516,7 +530,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
           if new_enabled, do: dgettext("chat", "enabled"), else: dgettext("chat", "disabled")
 
         socket
-        |> put_bot(bots: Queries.list_bots(), selected: updated_bot)
+        |> put_bot(bots: Queries.list_bots_with_associations(), selected: updated_bot)
         |> system_event(
           dgettext("chat", "[BotService] Bot '%{name}' %{action}.",
             name: bot.name,
@@ -529,12 +543,34 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
     end
   end
 
+  # The running bot counts `messages_handled` and `commands_processed` and
+  # remembers when it started; the window asks for messages, commands and an
+  # uptime. Naming them here, once, is what stops the window from reading keys
+  # that do not exist and reporting a busy bot as idle since forever.
+  @spec fetch_runtime_stats(String.t()) :: map() | nil
   defp fetch_runtime_stats(nickname) do
     case Server.get_state(nickname) do
-      {:ok, state} -> state.stats
-      {:error, :not_found} -> nil
+      {:ok, state} ->
+        %{
+          messages: Map.get(state.stats, :messages_handled, 0),
+          commands: Map.get(state.stats, :commands_processed, 0),
+          uptime: format_uptime(Map.get(state.stats, :started_at))
+        }
+
+      {:error, :not_found} ->
+        nil
     end
   end
+
+  @spec format_uptime(DateTime.t() | nil) :: String.t() | nil
+  defp format_uptime(%DateTime{} = started_at) do
+    DateTime.utc_now()
+    |> DateTime.diff(started_at)
+    |> max(0)
+    |> TimeFormatter.format_duration()
+  end
+
+  defp format_uptime(_started_at), do: nil
 
   defp ensure_hash("#" <> _ = ch), do: ch
   defp ensure_hash(ch), do: "#" <> ch

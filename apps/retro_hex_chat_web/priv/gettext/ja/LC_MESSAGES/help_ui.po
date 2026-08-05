@@ -1853,16 +1853,6 @@ msgstr "スタートメニュー"
 msgid "Taskbar"
 msgstr "タスクバー"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:18
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:18
-#, elixir-autogen, elixir-format
-msgid ""
-"The Capabilities tab lists each enabled capability and its configuration "
-"values. Admins can turn individual capabilities on or off; changes are "
-"reloaded into the bot process."
-msgstr ""
-"機能タブでは、各機能とその構成値がリストされます。 管理者は、個々の能力をオンまたはオフにすることができます。変更は、ボットプロセスにリロードされます。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:26
 #, elixir-autogen, elixir-format
@@ -1896,26 +1886,6 @@ msgid ""
 "The Edit menu groups message-window actions that work on the current chat "
 "view."
 msgstr "編集メニューは、現在のチャットビューで動作するメッセージウィンドウのアクションをグループ化します。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:42
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:42
-#, elixir-autogen, elixir-format
-msgid ""
-"The Events tab displays the most recent bot event log entries loaded when a "
-"bot is selected."
-msgstr "イベントタブでは、ボットを選択したときに読み込まれた最新のボットイベントログエントリが表示されます。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:10
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:10
-#, elixir-autogen, elixir-format
-msgid ""
-"The General tab shows the selected bot's name, nickname, command prefix, "
-"enabled state, configured capabilities, and runtime statistics when the bot "
-"process is running. Admins can use the Enable or Disable button to toggle "
-"the bot globally."
-msgstr ""
-"一般タブは、選択したボットの名前、ニックネーム、コマンドプレフィックス、有効状態、構成された機能、および実行時間統計を、ボットプロセスが実行したときに表示します。"
-" 管理者は、有効または無効ボタンを使用してボットをグローバルに切り替えることができます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:2
 #: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:2
@@ -3204,3 +3174,57 @@ msgid ""
 "— sorted by memory. An in-memory table nobody prunes is the usual cause of "
 "memory that only ever grows."
 msgstr "— メモリによってソートされます。 メモリ内テーブルの誰もプルーンは、これまで以上に成長するメモリの通常の原因です。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex
+#, elixir-autogen, elixir-format
+msgid "The Roster"
+msgstr "ボット一覧"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex
+#, elixir-autogen, elixir-format
+msgid ""
+"The window opens on the roster: every bot on the server, one row each. A row"
+" carries the bot's description, the channels it is assigned to, the "
+"capabilities it has enabled, how many custom commands it answers, and a "
+"coloured dot for its process — green for running, amber for a bot that is "
+"enabled but has no process, grey for one that was disabled. Selecting a row "
+"replaces the roster with that bot; the Bots button at the top left returns "
+"to it."
+msgstr ""
+"ウィンドウは一覧から開きます。サーバー上のボットが 1 "
+"行ずつ並び、各行に説明、担当チャンネル、有効な機能、応答するカスタムコマンド数、そしてプロセスを示す色付きの点が表示されます。緑は実行中、黄はボットが有効でもプロセスがない状態、灰は無効を意味します。行を選ぶと一覧がそのボットに置き換わり、左上の"
+" Bots ボタンで一覧に戻ります。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex
+#, elixir-autogen, elixir-format
+msgid ""
+"The General tab reports what the running process has actually done — uptime,"
+" messages handled, commands processed — followed by the bot's identity: "
+"nickname, command prefix, cooldown, who created it and when. A bot with no "
+"process says so instead of reporting zeroes. Admins can use the Enable or "
+"Disable button in the header to toggle the bot globally, or Delete to "
+"destroy it."
+msgstr ""
+"「一般」タブは、稼働中のプロセスが実際に行ったこと（稼働時間、処理したメッセージ、処理したコマンド）を示し、続いてボットの識別情報（ニックネーム、コマンド接頭辞、クールダウン、作成者と作成日時）を表示します。プロセスがないボットはゼロを並べる代わりにその旨を伝えます。管理者はヘッダーの「有効化」「無効化」ボタンでボット全体を切り替えられ、「削除」で破棄できます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex
+#, elixir-autogen, elixir-format
+msgid ""
+"The Capabilities tab gives each capability a panel: what it does, whether it"
+" is on, and its configuration. Settings are listed under the exact key /bot "
+"set takes, so what is read here is what is typed in the console. Text a bot "
+"was configured to say is shown with its colours rendered, not as raw control"
+" codes. Admins can turn individual capabilities on or off; changes are "
+"reloaded into the bot process."
+msgstr ""
+"「機能」タブは機能ごとにパネルを設け、その役割、有効かどうか、設定を示します。設定は /bot set "
+"が受け取るキーそのままで並ぶため、ここで読む語がコンソールで入力する語になります。ボットが話すよう設定された文字列は、生の制御コードではなく色付きで表示されます。管理者は機能を個別に有効化・無効化でき、変更はボットのプロセスへ再読み込みされます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex
+#, elixir-autogen, elixir-format
+msgid ""
+"The Events tab is the bot's own log: what it did, in which channel, and how "
+"long ago. It loads when a bot is selected and pages further back as you "
+"scroll."
+msgstr ""
+"「イベント」タブはボット自身のログです。何をしたか、どのチャンネルか、どれくらい前かが分かります。ボットを選ぶと読み込まれ、スクロールに応じて過去のページを取得します。"

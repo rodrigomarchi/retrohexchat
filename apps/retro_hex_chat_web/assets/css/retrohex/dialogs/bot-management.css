@@ -1,44 +1,446 @@
-/* Bot Management has a desktop split view plus inner tabs. On mobile the split
-   view becomes a stacked editor, with table-like bot data converted to list
-   rows so command/channel text is not clipped offscreen. */
+/* Bot Management shows one screen at a time: a roster of every bot, and the
+   detail it drills into. Both fill the window rather than sitting in a fixed
+   box, because the window is resizable and a maximised one used to be mostly
+   empty grey. On mobile the same two screens stack, with table-like bot data
+   converted to list rows so command/channel text is not clipped offscreen. */
 .bm-dialog {
   scrollbar-width: thin;
 }
 
-.bm-scroll,
-.bm-bot-list-wrap,
-.bm-events-list {
+.bm-dialog,
+.bm-roster-scroll,
+.bm-events-list,
+.bm-tabs .tabs-content {
   overscroll-behavior: contain;
 }
 
-.bm-tabs-shell {
-  position: relative;
+.bm-text-ok {
+  color: #007000;
 }
 
-.bm-detail-value,
-.bm-capability-chip,
-.bm-capability-value,
-.bm-event-message,
-.bm-bot-list-item {
-  min-width: 0;
-  overflow-wrap: anywhere;
+.bm-text-warn {
+  color: #8a6100;
 }
 
-.bm-action-row,
-.bm-action-form,
-.bm-form-footer {
-  flex-wrap: wrap;
-  justify-content: flex-end;
+.bm-text-danger {
+  color: #a00000;
 }
 
-.bm-action-button,
 .bm-link-danger {
+  color: #a00000;
   white-space: nowrap;
 }
 
+/* ── Shared bits ─────────────────────────────────────────── */
+
+.bm-empty {
+  padding: 24px 8px;
+  color: #606060;
+  font-size: 12px;
+  text-align: center;
+}
+
+.bm-hint {
+  margin-top: 6px;
+  color: #606060;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.bm-dot {
+  width: 10px;
+  height: 10px;
+  flex: 0 0 auto;
+  margin-top: 3px;
+  border: 1px solid #404040;
+  border-radius: 50%;
+}
+
+.bm-dot--running {
+  background: #00a000;
+  box-shadow: inset -1px -1px #007000;
+}
+
+.bm-dot--stopped {
+  background: #e0b000;
+  box-shadow: inset -1px -1px #a08000;
+}
+
+.bm-dot--disabled {
+  background: #a0a0a0;
+  box-shadow: inset -1px -1px #707070;
+}
+
+.bm-chip {
+  display: inline-flex;
+  max-width: 100%;
+  align-items: center;
+  gap: 4px;
+  padding: 1px 6px;
+  border: 1px solid #808080;
+  background: #dfdfdf;
+  font-size: 11px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.bm-chip--channel {
+  border-color: #000080;
+  color: #000080;
+  font-weight: 700;
+}
+
+.bm-chip--capability {
+  border-color: #808080;
+  color: #202020;
+}
+
+.bm-chip--muted {
+  border-style: dotted;
+  color: #606060;
+}
+
+.bm-chip-note {
+  color: #606060;
+  font-style: italic;
+}
+
+/* ── Roster ──────────────────────────────────────────────── */
+
+/* One screen at a time. Both fill the window, so a maximised Bot Management is
+   a longer list rather than a taller expanse of grey. */
+.bm-body,
+.bm-roster,
+.bm-detail {
+  min-height: 0;
+}
+
+.bm-roster-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 8px;
+  border-bottom: 1px solid #808080;
+}
+
+.bm-roster-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.bm-roster-count {
+  padding: 0 5px;
+  border: 1px solid #808080;
+  background: #dfdfdf;
+  font-weight: 400;
+}
+
+.bm-roster-scroll {
+  background: #ffffff;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}
+
+.bm-roster-list {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  gap: 0;
+  list-style: none;
+}
+
+.bm-roster-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: start;
+  padding: 7px 8px;
+  border-bottom: 1px solid #dfdfdf;
+  cursor: pointer;
+}
+
+.bm-roster-row:hover,
+.bm-roster-row:focus-visible {
+  background: #e8e8f8;
+  outline: none;
+}
+
+.bm-roster-row:focus-visible {
+  outline: 1px dotted #000000;
+  outline-offset: -2px;
+}
+
+.bm-roster-main {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+}
+
+.bm-roster-line,
+.bm-detail-line {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.bm-roster-name {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.bm-roster-nick {
+  color: #606060;
+  font-size: 11px;
+}
+
+.bm-roster-nick::before {
+  content: "@";
+}
+
+.bm-roster-state {
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.bm-roster-desc {
+  margin: 0;
+  color: #404040;
+  font-size: 12px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.bm-roster-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.bm-roster-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #606060;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.bm-roster-metric {
+  font-variant-numeric: tabular-nums;
+}
+
+.bm-roster-chevron {
+  flex: 0 0 auto;
+  color: #000080;
+}
+
+/* ── Detail ──────────────────────────────────────────────── */
+
+.bm-detail-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 6px 8px;
+  border-bottom: 1px solid #808080;
+}
+
+.bm-detail-identity {
+  display: grid;
+  min-width: 0;
+  flex: 1 1 auto;
+  gap: 2px;
+}
+
+.bm-detail-name {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.bm-detail-desc {
+  margin: 0;
+  color: #404040;
+  font-size: 12px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.bm-detail-actions {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: flex-end;
+}
+
+/* The panes scroll, not the window: the tab strip stays reachable however long
+   a capability list or an event log grows. */
+.bm-tabs .tabs-content,
+.bm-tab-pane {
+  min-height: 0;
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 0;
+}
+
+.bm-pane {
+  display: grid;
+  gap: 10px;
+  padding: 10px;
+}
+
+.bm-section {
+  display: grid;
+  gap: 6px;
+}
+
+.bm-section-title,
+.bm-subsection-title {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.bm-subsection-title {
+  margin-top: 6px;
+  color: #404040;
+}
+
+.bm-facts {
+  display: grid;
+  margin: 0;
+  gap: 3px 16px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.bm-fact {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: minmax(0, 11rem) minmax(0, 1fr);
+  gap: 8px;
+  font-size: 12px;
+}
+
+.bm-fact dt {
+  color: #404040;
+  font-weight: 700;
+}
+
+.bm-fact dd {
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+/* ── Capability panels ───────────────────────────────────── */
+
+.bm-cap {
+  display: grid;
+  gap: 6px;
+  padding: 8px;
+  border: 1px solid #808080;
+  background: #dfdfdf;
+  box-shadow:
+    inset -1px -1px #808080,
+    inset 1px 1px #ffffff;
+}
+
+.bm-cap-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.bm-cap-name {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.bm-cap-state {
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.bm-cap-state--on {
+  color: #007000;
+}
+
+.bm-cap-state--off {
+  color: #a00000;
+}
+
+.bm-cap-desc {
+  margin: 0;
+  color: #404040;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+/* The key column sizes to its longest key instead of a fixed width. At 100px
+   `greeting_delivery` overflowed and printed on top of its own value. */
+.bm-config {
+  display: grid;
+  margin: 0;
+  gap: 3px;
+  padding: 6px 8px;
+  background: #ffffff;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}
+
+.bm-config-row {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: minmax(0, max-content) minmax(0, 1fr);
+  gap: 4px 10px;
+  align-items: baseline;
+}
+
+.bm-config-key {
+  color: #000080;
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  overflow-wrap: anywhere;
+}
+
+.bm-config-value {
+  min-width: 0;
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+/* A greeting is a paragraph, not a cell: it gets the full row width under its
+   key rather than a column three words wide. */
+.bm-config-row:has(.bm-config-value--block) {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.bm-feeds {
+  display: grid;
+  gap: 4px;
+}
+
+/* ── Object lists (channels, commands, feeds) ────────────── */
+
 .bm-object-list {
   display: grid;
-  max-height: 200px;
+  max-height: 260px;
   gap: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -84,11 +486,12 @@
 }
 
 .bm-object-meta {
-  color: #606060;
+  color: #404040;
 }
 
 .bm-object-label {
   flex: 0 0 auto;
+  color: #606060;
   font-weight: 700;
 }
 
@@ -102,33 +505,99 @@
   padding: 2px 4px;
 }
 
+.bm-action-row,
+.bm-action-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: flex-end;
+}
+
+.bm-action-button {
+  white-space: nowrap;
+}
+
+/* ── Event log ───────────────────────────────────────────── */
+
+.bm-events-list {
+  max-height: 100%;
+}
+
+.bm-event-row {
+  display: grid;
+  grid-template-columns: minmax(0, 11rem) minmax(0, 1fr) auto;
+  gap: 8px;
+  padding: 3px 2px;
+  border-bottom: 1px solid #dfdfdf;
+  font-size: 11px;
+}
+
+.bm-event-row:last-child {
+  border-bottom: 0;
+}
+
+.bm-event-time {
+  color: #606060;
+}
+
+.bm-event-message {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.bm-event-channel {
+  color: #000080;
+  font-weight: 700;
+}
+
+/* ── Stacked (mobile) ────────────────────────────────────── */
+
 .desktop--stacked .bm-dialog {
   padding-bottom: 8px;
   -webkit-overflow-scrolling: touch;
 }
 
-.desktop--stacked .bm-body {
-  gap: 12px;
+.desktop--stacked .bm-roster-row {
+  grid-template-columns: auto minmax(0, 1fr);
+  padding: 10px 8px;
 }
 
-.desktop--stacked .bm-sidebar {
-  gap: 4px;
+.desktop--stacked .bm-roster-meta {
+  grid-column: 2;
+  justify-content: flex-start;
 }
 
-.desktop--stacked .bm-bot-list-wrap {
-  flex: none;
-  max-height: 148px;
+.desktop--stacked .bm-roster-name {
+  font-size: 15px;
 }
 
-.desktop--stacked .bm-bot-list-item {
-  min-height: 38px;
-  display: flex;
-  align-items: center;
-  font-size: 16px;
+.desktop--stacked .bm-roster-desc,
+.desktop--stacked .bm-detail-desc {
+  font-size: 14px;
 }
 
-.desktop--stacked .bm-action-row {
-  gap: 6px;
+.desktop--stacked .bm-detail-head {
+  flex-wrap: wrap;
+}
+
+.desktop--stacked .bm-detail-actions {
+  width: 100%;
+}
+
+.desktop--stacked .bm-fact {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2px;
+}
+
+.desktop--stacked .bm-fact dd,
+.desktop--stacked .bm-config-value,
+.desktop--stacked .bm-object-primary,
+.desktop--stacked .bm-object-meta {
+  font-size: 14px;
+}
+
+.desktop--stacked .bm-config-row {
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .desktop--stacked .bm-tabs {
@@ -213,36 +682,6 @@
   padding-top: 9px;
 }
 
-.desktop--stacked .bm-tabs .tabs-content {
-  padding: 8px;
-}
-
-.desktop--stacked .bm-detail-row {
-  align-items: flex-start;
-  flex-wrap: wrap;
-  gap: 6px 10px;
-}
-
-.desktop--stacked .bm-detail-label {
-  width: 7.5rem;
-  flex: 0 0 auto;
-}
-
-.desktop--stacked .bm-detail-value {
-  flex: 1 1 0;
-  line-height: 1.35;
-}
-
-.desktop--stacked .bm-capability-chip {
-  min-height: 34px;
-  display: inline-flex;
-  align-items: center;
-}
-
-.desktop--stacked .bm-stats-grid {
-  grid-template-columns: minmax(7.5rem, max-content) minmax(0, 1fr);
-}
-
 .desktop--stacked .bm-object-list {
   max-height: none;
   gap: 6px;
@@ -268,11 +707,6 @@
 .desktop--stacked .bm-object-primary,
 .desktop--stacked .bm-object-meta {
   display: block;
-  font-size: 14px;
-}
-
-.desktop--stacked .bm-object-primary {
-  font-size: 15px;
 }
 
 .desktop--stacked .bm-object-label {
@@ -298,35 +732,20 @@
 }
 
 .desktop--stacked .bm-action-button,
-.desktop--stacked .bm-dialog button:not(.tabs-trigger) {
+.desktop--stacked .bm-dialog button:not(.tabs-trigger):not(.bm-roster-row) {
   min-height: 40px;
   padding-inline: 12px;
 }
 
-.desktop--stacked .bm-events-list {
-  max-height: none;
-}
-
 .desktop--stacked .bm-event-row {
-  display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 2px;
   padding: 6px;
+  font-size: 13px;
 }
 
 .desktop--stacked .bm-event-time {
-  margin-right: 0;
   font-weight: 700;
-}
-
-.desktop--stacked .bm-cap-toggle-row,
-.desktop--stacked .bm-capability-config {
-  align-items: flex-start;
-  flex-wrap: wrap;
-}
-
-.desktop--stacked .bm-capability-key {
-  width: 7rem;
-  flex: 0 0 auto;
 }
 
 .desktop--stacked .bm-form-dialog {
@@ -372,15 +791,12 @@
 }
 
 .desktop--stacked .bm-form-footer {
+  flex-wrap: wrap;
   gap: 6px;
+  justify-content: flex-end;
 }
 
 @media (max-width: 430px) {
-  .desktop--stacked .bm-detail-label,
-  .desktop--stacked .bm-capability-key {
-    width: 6.5rem;
-  }
-
   .desktop--stacked .bm-checkbox-grid {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   }

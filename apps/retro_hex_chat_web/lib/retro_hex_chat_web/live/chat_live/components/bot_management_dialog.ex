@@ -24,7 +24,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.BotManagementDialog do
   import RetroHexChatWeb.Components.UI.BotManagementDialog
   import RetroHexChatWeb.Components.UI.BotFormDialog
 
-  alias RetroHexChat.Bots.Queries
+  alias RetroHexChat.Bots.{Queries, Registry}
   alias RetroHexChatWeb.PaginatedList
 
   @id "bot-management-dialog"
@@ -36,6 +36,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.BotManagementDialog do
   @owned_defaults %{
     show_bot: false,
     bots: [],
+    running: [],
     selected: nil,
     channels: [],
     commands: [],
@@ -56,7 +57,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.BotManagementDialog do
      |> assign(:id, @id)
      |> assign(:is_admin, false)
      |> assign(@owned_defaults)
-     |> assign(:bots, Queries.list_bots())
+     |> assign(:bots, Queries.list_bots_with_associations())
+     |> assign(:running, Registry.registered_bots())
      |> PaginatedList.init(:events, page_size: @events_page_size)}
   end
 
@@ -83,10 +85,26 @@ defmodule RetroHexChatWeb.ChatLive.Components.BotManagementDialog do
     {:ok,
      socket
      |> assign(Map.delete(assigns, :events))
+     |> refresh_running(assigns)
      |> PaginatedList.reset(:events, page)}
   end
 
-  def update(assigns, socket), do: {:ok, assign(socket, assigns)}
+  def update(assigns, socket) do
+    {:ok, socket |> assign(assigns) |> refresh_running(assigns)}
+  end
+
+  # Which bots have a live process is read again whenever the roster or the
+  # selection changes. It is a Registry lookup, not a call into each bot, so it
+  # cannot be delayed by a bot that is busy — and a stale dot is the one thing
+  # this window must not show.
+  @spec refresh_running(Phoenix.LiveView.Socket.t(), map()) :: Phoenix.LiveView.Socket.t()
+  defp refresh_running(socket, assigns) do
+    if Map.has_key?(assigns, :bots) or Map.has_key?(assigns, :selected) do
+      assign(socket, :running, Registry.registered_bots())
+    else
+      socket
+    end
+  end
 
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()
   def render(assigns) do
@@ -97,12 +115,13 @@ defmodule RetroHexChatWeb.ChatLive.Components.BotManagementDialog do
         windowed
         show={@show_bot}
         bots={@bots}
+        running={@running}
         selected={@selected}
         channels={@channels}
         commands={@commands}
         events={@streams.events}
         events_state={@paginated.events}
-        events_target={@myself}
+        island_target={@myself}
         stats={@stats}
         is_admin={@is_admin}
       />

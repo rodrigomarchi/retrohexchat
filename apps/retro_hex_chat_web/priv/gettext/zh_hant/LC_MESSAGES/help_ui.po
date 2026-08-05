@@ -1834,15 +1834,6 @@ msgstr "啓動菜單"
 msgid "Taskbar"
 msgstr "任務欄"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:18
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:18
-#, elixir-autogen, elixir-format
-msgid ""
-"The Capabilities tab lists each enabled capability and its configuration "
-"values. Admins can turn individual capabilities on or off; changes are "
-"reloaded into the bot process."
-msgstr "能力標籤列出每個啓用的能力及其配置值。 管理員可以打開或關閉個人能力;更改會被重新裝入bot進程."
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:26
 #, elixir-autogen, elixir-format
@@ -1872,26 +1863,6 @@ msgid ""
 "The Edit menu groups message-window actions that work on the current chat "
 "view."
 msgstr "\" 編輯 \" 菜單將在當前聊天視圖上工作的信息窗口動作分組。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:42
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:42
-#, elixir-autogen, elixir-format
-msgid ""
-"The Events tab displays the most recent bot event log entries loaded when a "
-"bot is selected."
-msgstr "事件選項卡顯示在選中一個機器人時加載的最新的機器人事件日誌條目 。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:10
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:10
-#, elixir-autogen, elixir-format
-msgid ""
-"The General tab shows the selected bot's name, nickname, command prefix, "
-"enabled state, configured capabilities, and runtime statistics when the bot "
-"process is running. Admins can use the Enable or Disable button to toggle "
-"the bot globally."
-msgstr ""
-"General tab 顯示選中的bot的名稱,暱稱,命令前綴,啓用狀態,配置的能力,以及當bot進程運行時的運行時間統計. 管理員可以使用“ 啓用” "
-"或“ 禁用” 按鈕來從全球切換機器人 。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:2
 #: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:2
@@ -3133,3 +3104,55 @@ msgid ""
 "— sorted by memory. An in-memory table nobody prunes is the usual cause of "
 "memory that only ever grows."
 msgstr "——按記憶排序. 記憶中最常出現的是無名小卒"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex
+#, elixir-autogen, elixir-format
+msgid "The Roster"
+msgstr "機器人清單"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex
+#, elixir-autogen, elixir-format
+msgid ""
+"The window opens on the roster: every bot on the server, one row each. A row"
+" carries the bot's description, the channels it is assigned to, the "
+"capabilities it has enabled, how many custom commands it answers, and a "
+"coloured dot for its process — green for running, amber for a bot that is "
+"enabled but has no process, grey for one that was disabled. Selecting a row "
+"replaces the roster with that bot; the Bots button at the top left returns "
+"to it."
+msgstr ""
+"視窗開啟時顯示清單：伺服器上的每個機器人各佔一行。每行顯示機器人的描述、所在頻道、已啟用的功能、可回應的自訂命令數量，以及表示行程狀態的彩色圓點——綠色為執行中，琥珀色為已啟用但沒有行程，灰色為已停用。選擇某一行會以該機器人取代清單；左上角的"
+" Bots 按鈕可返回清單。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex
+#, elixir-autogen, elixir-format
+msgid ""
+"The General tab reports what the running process has actually done — uptime,"
+" messages handled, commands processed — followed by the bot's identity: "
+"nickname, command prefix, cooldown, who created it and when. A bot with no "
+"process says so instead of reporting zeroes. Admins can use the Enable or "
+"Disable button in the header to toggle the bot globally, or Delete to "
+"destroy it."
+msgstr ""
+"「一般」標籤頁報告執行中的行程實際做了什麼——執行時間、已處理訊息、已處理命令——接著是機器人的身分資訊：暱稱、命令前綴、冷卻時間、建立者與建立時間。沒有行程的機器人會直接說明，而不是顯示一堆零。管理員可用標題列的「啟用」或「停用」按鈕全域切換機器人，或用「刪除」銷毀它。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex
+#, elixir-autogen, elixir-format
+msgid ""
+"The Capabilities tab gives each capability a panel: what it does, whether it"
+" is on, and its configuration. Settings are listed under the exact key /bot "
+"set takes, so what is read here is what is typed in the console. Text a bot "
+"was configured to say is shown with its colours rendered, not as raw control"
+" codes. Admins can turn individual capabilities on or off; changes are "
+"reloaded into the bot process."
+msgstr ""
+"「功能」標籤頁為每個功能提供一個面板：它做什麼、是否開啟，以及它的設定。設定以 /bot set "
+"接受的確切鍵名列出，因此這裡讀到的就是主控台裡輸入的。機器人被設定要說的文字會算繪出顏色，而不是顯示原始控制碼。管理員可以逐個開啟或關閉功能；變更會重新載入機器人行程。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex
+#, elixir-autogen, elixir-format
+msgid ""
+"The Events tab is the bot's own log: what it did, in which channel, and how "
+"long ago. It loads when a bot is selected and pages further back as you "
+"scroll."
+msgstr "「事件」標籤頁是機器人自己的日誌：它做了什麼、在哪個頻道、多久以前。選擇機器人時載入，捲動時繼續往前翻頁。"

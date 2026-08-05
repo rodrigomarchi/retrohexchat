@@ -1932,18 +1932,6 @@ msgstr "Uruchom menu"
 msgid "Taskbar"
 msgstr "Pasek zadań"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:18
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:18
-#, elixir-autogen, elixir-format
-msgid ""
-"The Capabilities tab lists each enabled capability and its configuration "
-"values. Admins can turn individual capabilities on or off; changes are "
-"reloaded into the bot process."
-msgstr ""
-"Karta Capability zawiera listę wszystkich włączonych funkcji i ich wartości "
-"konfiguracyjnych. Administratorzy mogą włączać lub wyłączać indywidualne "
-"możliwości; zmiany są przeładowywane do procesu bot."
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:26
 #, elixir-autogen, elixir-format
@@ -1979,30 +1967,6 @@ msgid ""
 msgstr ""
 "Menu Edycja grupowe wiadomości-okno akcji, które działają na bieżącym widoku"
 " czatu."
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:42
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:42
-#, elixir-autogen, elixir-format
-msgid ""
-"The Events tab displays the most recent bot event log entries loaded when a "
-"bot is selected."
-msgstr ""
-"Karta Zdarzenia wyświetla najnowsze wpisy dziennika zdarzeń bot wczytane po "
-"wybraniu bota."
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:10
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:10
-#, elixir-autogen, elixir-format
-msgid ""
-"The General tab shows the selected bot's name, nickname, command prefix, "
-"enabled state, configured capabilities, and runtime statistics when the bot "
-"process is running. Admins can use the Enable or Disable button to toggle "
-"the bot globally."
-msgstr ""
-"Karta Ogólne pokazuje wybraną nazwę bota, pseudonim, przedrostek poleceń, "
-"stan włączony, skonfigurowane możliwości i statystyki runtime podczas "
-"działania bot. Administratorzy mogą używać przycisku Włącz lub Wyłącz, aby "
-"przełączyć bot na całym świecie."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:2
 #: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:2
@@ -3438,3 +3402,71 @@ msgid ""
 msgstr ""
 "- posortowane na pamięć. Tablica pamięci, której nikt nie przycina, jest "
 "typową przyczyną pamięci, która tylko rośnie."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex
+#, elixir-autogen, elixir-format
+msgid "The Roster"
+msgstr "Lista botów"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex
+#, elixir-autogen, elixir-format
+msgid ""
+"The window opens on the roster: every bot on the server, one row each. A row"
+" carries the bot's description, the channels it is assigned to, the "
+"capabilities it has enabled, how many custom commands it answers, and a "
+"coloured dot for its process — green for running, amber for a bot that is "
+"enabled but has no process, grey for one that was disabled. Selecting a row "
+"replaces the roster with that bot; the Bots button at the top left returns "
+"to it."
+msgstr ""
+"Okno otwiera się na liście: każdy bot na serwerze w osobnym wierszu. Wiersz "
+"pokazuje opis bota, kanały, w których działa, włączone funkcje, ile własnych"
+" poleceń obsługuje oraz kolorową kropkę procesu — zielona oznacza działanie,"
+" bursztynowa bota włączonego bez procesu, szara bota wyłączonego. Wybór "
+"wiersza zastępuje listę tym botem; przycisk Bots w lewym górnym rogu wraca "
+"do listy."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex
+#, elixir-autogen, elixir-format
+msgid ""
+"The General tab reports what the running process has actually done — uptime,"
+" messages handled, commands processed — followed by the bot's identity: "
+"nickname, command prefix, cooldown, who created it and when. A bot with no "
+"process says so instead of reporting zeroes. Admins can use the Enable or "
+"Disable button in the header to toggle the bot globally, or Delete to "
+"destroy it."
+msgstr ""
+"Karta Ogólne pokazuje, co działający proces faktycznie zrobił — czas "
+"działania, obsłużone wiadomości, przetworzone polecenia — a następnie "
+"tożsamość bota: pseudonim, prefiks poleceń, odstęp, kto go utworzył i kiedy."
+" Bot bez procesu informuje o tym, zamiast pokazywać zera. Administratorzy "
+"mogą użyć przycisku Włącz lub Wyłącz w nagłówku, aby przełączyć bota "
+"globalnie, albo Usuń, aby go zniszczyć."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex
+#, elixir-autogen, elixir-format
+msgid ""
+"The Capabilities tab gives each capability a panel: what it does, whether it"
+" is on, and its configuration. Settings are listed under the exact key /bot "
+"set takes, so what is read here is what is typed in the console. Text a bot "
+"was configured to say is shown with its colours rendered, not as raw control"
+" codes. Admins can turn individual capabilities on or off; changes are "
+"reloaded into the bot process."
+msgstr ""
+"Karta Funkcje daje każdej funkcji własny panel: co robi, czy jest włączona i"
+" jaka jest jej konfiguracja. Ustawienia są wypisane pod dokładnie tym "
+"kluczem, który przyjmuje /bot set, więc to, co się tu czyta, jest tym, co "
+"wpisuje się w konsoli. Tekst, który bot ma wypowiadać, pokazywany jest z "
+"kolorami, a nie jako surowe kody sterujące. Administratorzy mogą włączać i "
+"wyłączać poszczególne funkcje; zmiany są przeładowywane do procesu bota."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex
+#, elixir-autogen, elixir-format
+msgid ""
+"The Events tab is the bot's own log: what it did, in which channel, and how "
+"long ago. It loads when a bot is selected and pages further back as you "
+"scroll."
+msgstr ""
+"Karta Zdarzenia to własny dziennik bota: co zrobił, na jakim kanale i jak "
+"dawno temu. Ładuje się po wybraniu bota i dobiera starsze strony w miarę "
+"przewijania."

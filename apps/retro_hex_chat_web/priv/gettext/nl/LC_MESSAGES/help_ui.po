@@ -1900,18 +1900,6 @@ msgstr "Menu Starten"
 msgid "Taskbar"
 msgstr "Taakbalk"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:18
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:18
-#, elixir-autogen, elixir-format
-msgid ""
-"The Capabilities tab lists each enabled capability and its configuration "
-"values. Admins can turn individual capabilities on or off; changes are "
-"reloaded into the bot process."
-msgstr ""
-"Het tabblad Capaciteiten bevat elke ingeschakelde mogelijkheid en de "
-"configuratiewaarden. Beheerders kunnen individuele mogelijkheden aan of uit "
-"te schakelen; veranderingen worden herladen in de bot proces."
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:26
 #, elixir-autogen, elixir-format
@@ -1949,31 +1937,6 @@ msgid ""
 msgstr ""
 "Het menu Bewerken groepen berichten-venster acties die werken aan de huidige"
 " chatweergave."
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:42
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:42
-#, elixir-autogen, elixir-format
-msgid ""
-"The Events tab displays the most recent bot event log entries loaded when a "
-"bot is selected."
-msgstr ""
-"Het tabblad Evenementen toont de meest recente bot event log items geladen "
-"wanneer een bot is geselecteerd."
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:10
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:10
-#, elixir-autogen, elixir-format
-msgid ""
-"The General tab shows the selected bot's name, nickname, command prefix, "
-"enabled state, configured capabilities, and runtime statistics when the bot "
-"process is running. Admins can use the Enable or Disable button to toggle "
-"the bot globally."
-msgstr ""
-"Het tabblad Algemeen toont de naam van de geselecteerde bot, bijnaam, "
-"commando prefix, ingeschakelde status, geconfigureerde mogelijkheden en "
-"runtime statistieken wanneer het botproces wordt uitgevoerd. Beheerders "
-"kunnen de knop In- of uitschakelen gebruiken om de bot wereldwijd te "
-"schakelen."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:2
 #: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:2
@@ -3410,3 +3373,72 @@ msgid ""
 msgstr ""
 "Gesorteerd op geheugen. Een in-geheugen tafel niemand snoeit is de "
 "gebruikelijke oorzaak van het geheugen dat alleen maar groeit."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex
+#, elixir-autogen, elixir-format
+msgid "The Roster"
+msgstr "De botlijst"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex
+#, elixir-autogen, elixir-format
+msgid ""
+"The window opens on the roster: every bot on the server, one row each. A row"
+" carries the bot's description, the channels it is assigned to, the "
+"capabilities it has enabled, how many custom commands it answers, and a "
+"coloured dot for its process — green for running, amber for a bot that is "
+"enabled but has no process, grey for one that was disabled. Selecting a row "
+"replaces the roster with that bot; the Bots button at the top left returns "
+"to it."
+msgstr ""
+"Het venster opent op de lijst: elke bot op de server, één regel per bot. De "
+"regel toont de beschrijving van de bot, de kanalen waarin hij werkt, de "
+"ingeschakelde mogelijkheden, hoeveel aangepaste commando's hij beantwoordt, "
+"en een gekleurde stip voor zijn proces — groen voor actief, amber voor een "
+"ingeschakelde bot zonder proces, grijs voor een uitgeschakelde. Een regel "
+"selecteren vervangt de lijst door die bot; de knop Bots linksboven keert "
+"terug."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex
+#, elixir-autogen, elixir-format
+msgid ""
+"The General tab reports what the running process has actually done — uptime,"
+" messages handled, commands processed — followed by the bot's identity: "
+"nickname, command prefix, cooldown, who created it and when. A bot with no "
+"process says so instead of reporting zeroes. Admins can use the Enable or "
+"Disable button in the header to toggle the bot globally, or Delete to "
+"destroy it."
+msgstr ""
+"Het tabblad Algemeen meldt wat het draaiende proces werkelijk heeft gedaan —"
+" looptijd, verwerkte berichten, verwerkte commando's — gevolgd door de "
+"identiteit van de bot: bijnaam, commandoprefix, afkoeltijd, wie hem heeft "
+"gemaakt en wanneer. Een bot zonder proces zegt dat, in plaats van nullen te "
+"melden. Beheerders kunnen met de knop Inschakelen of Uitschakelen in de kop "
+"de bot globaal omschakelen, of hem met Verwijderen vernietigen."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex
+#, elixir-autogen, elixir-format
+msgid ""
+"The Capabilities tab gives each capability a panel: what it does, whether it"
+" is on, and its configuration. Settings are listed under the exact key /bot "
+"set takes, so what is read here is what is typed in the console. Text a bot "
+"was configured to say is shown with its colours rendered, not as raw control"
+" codes. Admins can turn individual capabilities on or off; changes are "
+"reloaded into the bot process."
+msgstr ""
+"Het tabblad Mogelijkheden geeft elke mogelijkheid een eigen paneel: wat ze "
+"doet, of ze aanstaat en haar configuratie. Instellingen staan onder precies "
+"de sleutel die /bot set aanneemt, dus wat je hier leest is wat je in de "
+"console typt. Tekst die een bot moet zeggen wordt met kleuren weergegeven, "
+"niet als ruwe stuurcodes. Beheerders kunnen afzonderlijke mogelijkheden in- "
+"of uitschakelen; wijzigingen worden opnieuw in het botproces geladen."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex
+#, elixir-autogen, elixir-format
+msgid ""
+"The Events tab is the bot's own log: what it did, in which channel, and how "
+"long ago. It loads when a bot is selected and pages further back as you "
+"scroll."
+msgstr ""
+"Het tabblad Gebeurtenissen is het eigen logboek van de bot: wat hij deed, in"
+" welk kanaal en hoe lang geleden. Het laadt bij het selecteren van een bot "
+"en haalt oudere pagina's op tijdens het scrollen."

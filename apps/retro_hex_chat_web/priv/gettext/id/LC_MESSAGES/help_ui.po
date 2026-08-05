@@ -1909,18 +1909,6 @@ msgstr "Mulai Menu"
 msgid "Taskbar"
 msgstr "Taskbar"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:18
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:18
-#, elixir-autogen, elixir-format
-msgid ""
-"The Capabilities tab lists each enabled capability and its configuration "
-"values. Admins can turn individual capabilities on or off; changes are "
-"reloaded into the bot process."
-msgstr ""
-"Tab Capsibility memuat setiap kemampuan dan nilai konfigurasinya. Admin "
-"dapat mengaktifkan atau mematikan kemampuan individu; perubahan dimuat ulang"
-" ke dalam proses robot."
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:26
 #, elixir-autogen, elixir-format
@@ -1956,30 +1944,6 @@ msgid ""
 msgstr ""
 "Aksi menu grup Sunting pesan-jendela yang bekerja pada tampilan obrolan saat"
 " ini."
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:42
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:42
-#, elixir-autogen, elixir-format
-msgid ""
-"The Events tab displays the most recent bot event log entries loaded when a "
-"bot is selected."
-msgstr ""
-"Tab Kegiatan menampilkan entri log video bot terbaru yang dimuat ketika "
-"robot dipilih."
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:10
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:10
-#, elixir-autogen, elixir-format
-msgid ""
-"The General tab shows the selected bot's name, nickname, command prefix, "
-"enabled state, configured capabilities, and runtime statistics when the bot "
-"process is running. Admins can use the Enable or Disable button to toggle "
-"the bot globally."
-msgstr ""
-"Tab umum menunjukkan nama robot yang dipilih, nama panggilan, awalan "
-"perintah, keadaan aktif, kemampuan yang dikonfigurasi, dan statistik waktu-"
-"waktu ketika proses robot berjalan. Admin dapat menggunakan tombol Aktifkan "
-"atau Matikan untuk mengubah robot secara global."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:2
 #: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:2
@@ -3417,3 +3381,71 @@ msgid ""
 msgstr ""
 "- Diurutkan oleh memori. Meja In- memori tidak ada prunes penyebab biasa "
 "memori yang hanya pernah tumbuh."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex
+#, elixir-autogen, elixir-format
+msgid "The Roster"
+msgstr "Daftar bot"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex
+#, elixir-autogen, elixir-format
+msgid ""
+"The window opens on the roster: every bot on the server, one row each. A row"
+" carries the bot's description, the channels it is assigned to, the "
+"capabilities it has enabled, how many custom commands it answers, and a "
+"coloured dot for its process — green for running, amber for a bot that is "
+"enabled but has no process, grey for one that was disabled. Selecting a row "
+"replaces the roster with that bot; the Bots button at the top left returns "
+"to it."
+msgstr ""
+"Jendela terbuka pada daftar: setiap bot di server, satu baris masing-masing."
+" Baris memuat deskripsi bot, kanal tempatnya bertugas, kemampuan yang aktif,"
+" berapa perintah kustom yang dijawabnya, dan titik berwarna untuk prosesnya "
+"— hijau untuk berjalan, kuning untuk bot yang aktif tetapi tanpa proses, "
+"abu-abu untuk yang dinonaktifkan. Memilih baris menggantikan daftar dengan "
+"bot tersebut; tombol Bots di kiri atas kembali ke daftar."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex
+#, elixir-autogen, elixir-format
+msgid ""
+"The General tab reports what the running process has actually done — uptime,"
+" messages handled, commands processed — followed by the bot's identity: "
+"nickname, command prefix, cooldown, who created it and when. A bot with no "
+"process says so instead of reporting zeroes. Admins can use the Enable or "
+"Disable button in the header to toggle the bot globally, or Delete to "
+"destroy it."
+msgstr ""
+"Tab Umum melaporkan apa yang benar-benar dilakukan proses yang berjalan — "
+"waktu aktif, pesan ditangani, perintah diproses — lalu identitas bot: nama "
+"panggilan, awalan perintah, jeda, siapa yang membuatnya dan kapan. Bot tanpa"
+" proses menyatakannya, alih-alih melaporkan angka nol. Admin dapat memakai "
+"tombol Aktifkan atau Nonaktifkan di header untuk mengubahnya secara global, "
+"atau Hapus untuk menghancurkannya."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex
+#, elixir-autogen, elixir-format
+msgid ""
+"The Capabilities tab gives each capability a panel: what it does, whether it"
+" is on, and its configuration. Settings are listed under the exact key /bot "
+"set takes, so what is read here is what is typed in the console. Text a bot "
+"was configured to say is shown with its colours rendered, not as raw control"
+" codes. Admins can turn individual capabilities on or off; changes are "
+"reloaded into the bot process."
+msgstr ""
+"Tab Kemampuan memberi setiap kemampuan satu panel: apa fungsinya, apakah "
+"aktif, dan konfigurasinya. Pengaturan dicantumkan dengan kunci persis yang "
+"diterima /bot set, jadi yang dibaca di sini sama dengan yang diketik di "
+"konsol. Teks yang dikonfigurasi untuk diucapkan bot ditampilkan dengan "
+"warnanya, bukan sebagai kode kontrol mentah. Admin dapat menyalakan atau "
+"mematikan tiap kemampuan; perubahan dimuat ulang ke proses bot."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex
+#, elixir-autogen, elixir-format
+msgid ""
+"The Events tab is the bot's own log: what it did, in which channel, and how "
+"long ago. It loads when a bot is selected and pages further back as you "
+"scroll."
+msgstr ""
+"Tab Peristiwa adalah log milik bot: apa yang dilakukannya, di kanal mana, "
+"dan berapa lama lalu. Log dimuat saat bot dipilih dan mengambil halaman "
+"lebih lama saat digulir."

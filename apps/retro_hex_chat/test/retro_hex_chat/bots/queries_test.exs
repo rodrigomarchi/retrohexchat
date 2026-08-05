@@ -47,6 +47,23 @@ defmodule RetroHexChat.Bots.QueriesTest do
       assert hd(bots).name == "ABot"
     end
 
+    test "list_bots_with_associations/0 carries what a roster shows without a query per bot" do
+      {:ok, bot} = Queries.create_bot(%{name: "Wired", nickname: "Wired", created_by: "admin"})
+      {:ok, _} = Queries.add_channel_config(bot.id, "#news")
+
+      {:ok, _} =
+        Queries.add_custom_command(bot.id, %{
+          trigger: "sources",
+          response: "LWN",
+          added_by: "admin"
+        })
+
+      [loaded] = Queries.list_bots_with_associations()
+
+      assert Enum.map(loaded.channel_configs, & &1.channel_name) == ["#news"]
+      assert Enum.map(loaded.custom_commands, & &1.trigger) == ["sources"]
+    end
+
     test "update_bot/2 updates optional fields" do
       {:ok, bot} = Queries.create_bot(@valid_bot_attrs)
       {:ok, updated} = Queries.update_bot(bot, %{description: "A test bot"})

@@ -12,25 +12,10 @@ defmodule RetroHexChat.Bots.Server do
 
   require Logger
 
-  alias RetroHexChat.Bots.{Output, Queries, Registry}
+  alias RetroHexChat.Bots.{Capabilities, Output, Queries, Registry}
   alias RetroHexChat.Channels
 
   @pubsub RetroHexChat.PubSub
-
-  @capability_modules %{
-    mention: RetroHexChat.Bots.Capabilities.Mention,
-    greeter: RetroHexChat.Bots.Capabilities.Greeter,
-    custom_commands: RetroHexChat.Bots.Capabilities.CustomCommands,
-    help: RetroHexChat.Bots.Capabilities.Help,
-    llm: RetroHexChat.Bots.Capabilities.LLM,
-    script: RetroHexChat.Bots.Capabilities.Script,
-    game: RetroHexChat.Bots.Capabilities.Game,
-    scheduler: RetroHexChat.Bots.Capabilities.Scheduler,
-    moderation: RetroHexChat.Bots.Capabilities.Moderation,
-    rss: RetroHexChat.Bots.Capabilities.RSS,
-    trivia: RetroHexChat.Bots.Capabilities.Trivia,
-    dice: RetroHexChat.Bots.Capabilities.Dice
-  }
 
   # Dispatch halts at the first capability that answers, so the order decides who
   # wins — and a map has no order worth relying on. Two bots with the same
@@ -871,7 +856,7 @@ defmodule RetroHexChat.Bots.Server do
     |> Enum.filter(fn {_name, config} -> Map.get(config, "enabled", true) end)
     |> Enum.map(fn {name, config} ->
       atom_name = if is_binary(name), do: String.to_existing_atom(name), else: name
-      module = Map.get(@capability_modules, atom_name)
+      module = Capabilities.module_for(atom_name)
 
       if module do
         Code.ensure_loaded!(module)

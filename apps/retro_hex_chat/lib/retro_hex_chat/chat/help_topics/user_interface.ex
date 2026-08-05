@@ -390,6 +390,7 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
           "open_bot_dialog",
           "bots",
           "bot dialog",
+          "bot roster",
           "/bot",
           "automation",
           dgettext("help", "Tools menu")

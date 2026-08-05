@@ -5,11 +5,19 @@
   )}
 </p>
 
+<.help_h4 icon={:icon_btn_bot_management}>{dgettext("help_ui", "The Roster")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "The window opens on the roster: every bot on the server, one row each. A row carries the bot's description, the channels it is assigned to, the capabilities it has enabled, how many custom commands it answers, and a coloured dot for its process — green for running, amber for a bot that is enabled but has no process, grey for one that was disabled. Selecting a row replaces the roster with that bot; the Bots button at the top left returns to it."
+  )}
+</p>
+
 <.help_h4 icon={:icon_tab_general}>{dgettext("help_ui", "General Tab")}</.help_h4>
 <p>
   {dgettext(
     "help_ui",
-    "The General tab shows the selected bot's name, nickname, command prefix, enabled state, configured capabilities, and runtime statistics when the bot process is running. Admins can use the Enable or Disable button to toggle the bot globally."
+    "The General tab reports what the running process has actually done — uptime, messages handled, commands processed — followed by the bot's identity: nickname, command prefix, cooldown, who created it and when. A bot with no process says so instead of reporting zeroes. Admins can use the Enable or Disable button in the header to toggle the bot globally, or Delete to destroy it."
   )}
 </p>
 
@@ -17,7 +25,7 @@
 <p>
   {dgettext(
     "help_ui",
-    "The Capabilities tab lists each enabled capability and its configuration values. Admins can turn individual capabilities on or off; changes are reloaded into the bot process."
+    "The Capabilities tab gives each capability a panel: what it does, whether it is on, and its configuration. Settings are listed under the exact key /bot set takes, so what is read here is what is typed in the console. Text a bot was configured to say is shown with its colours rendered, not as raw control codes. Admins can turn individual capabilities on or off; changes are reloaded into the bot process."
   )}
 </p>
 
@@ -41,7 +49,7 @@
 <p>
   {dgettext(
     "help_ui",
-    "The Events tab displays the most recent bot event log entries loaded when a bot is selected."
+    "The Events tab is the bot's own log: what it did, in which channel, and how long ago. It loads when a bot is selected and pages further back as you scroll."
   )}
 </p>
 

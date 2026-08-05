@@ -1938,18 +1938,6 @@ msgstr "Начать меню"
 msgid "Taskbar"
 msgstr "панель задач"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:18
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:18
-#, elixir-autogen, elixir-format
-msgid ""
-"The Capabilities tab lists each enabled capability and its configuration "
-"values. Admins can turn individual capabilities on or off; changes are "
-"reloaded into the bot process."
-msgstr ""
-"В вкладке «Способности» перечислены каждая включенная возможность и ее "
-"значения конфигурации. Администраторы могут включать или выключать отдельные"
-" возможности; изменения перезагружаются в процесс бота."
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:26
 #, elixir-autogen, elixir-format
@@ -1987,30 +1975,6 @@ msgid ""
 msgstr ""
 "Меню Edit группирует действия окна сообщений, которые работают на текущем "
 "виде чата."
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:42
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:42
-#, elixir-autogen, elixir-format
-msgid ""
-"The Events tab displays the most recent bot event log entries loaded when a "
-"bot is selected."
-msgstr ""
-"На вкладке «События» отображаются самые последние записи журнала событий "
-"бота, загруженные при выборе бота."
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:10
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:10
-#, elixir-autogen, elixir-format
-msgid ""
-"The General tab shows the selected bot's name, nickname, command prefix, "
-"enabled state, configured capabilities, and runtime statistics when the bot "
-"process is running. Admins can use the Enable or Disable button to toggle "
-"the bot globally."
-msgstr ""
-"Общая вкладка показывает имя, никнейм, префикс команды выбранного бота, "
-"включенное состояние, настроенные возможности и статистику времени "
-"выполнения при запуске процесса бота. Администраторы могут использовать "
-"кнопку «Включить или отключить» для переключения бота по всему миру."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:2
 #: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:2
@@ -3456,3 +3420,69 @@ msgid ""
 msgstr ""
 "Отсортировано по памяти. Стол в памяти, который никто не обрезает, является "
 "обычной причиной памяти, которая только растет."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex
+#, elixir-autogen, elixir-format
+msgid "The Roster"
+msgstr "Список ботов"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex
+#, elixir-autogen, elixir-format
+msgid ""
+"The window opens on the roster: every bot on the server, one row each. A row"
+" carries the bot's description, the channels it is assigned to, the "
+"capabilities it has enabled, how many custom commands it answers, and a "
+"coloured dot for its process — green for running, amber for a bot that is "
+"enabled but has no process, grey for one that was disabled. Selecting a row "
+"replaces the roster with that bot; the Bots button at the top left returns "
+"to it."
+msgstr ""
+"Окно открывается со списком: каждый бот сервера — отдельная строка. В строке"
+" видны описание бота, его каналы, включённые возможности, сколько своих "
+"команд он обслуживает, и цветная точка процесса: зелёная — работает, "
+"янтарная — включён, но процесса нет, серая — отключён. Выбор строки заменяет"
+" список этим ботом; кнопка Bots слева вверху возвращает к списку."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex
+#, elixir-autogen, elixir-format
+msgid ""
+"The General tab reports what the running process has actually done — uptime,"
+" messages handled, commands processed — followed by the bot's identity: "
+"nickname, command prefix, cooldown, who created it and when. A bot with no "
+"process says so instead of reporting zeroes. Admins can use the Enable or "
+"Disable button in the header to toggle the bot globally, or Delete to "
+"destroy it."
+msgstr ""
+"Вкладка «Общее» показывает, что действительно сделал работающий процесс — "
+"время работы, обработанные сообщения и команды, — а затем данные бота: ник, "
+"префикс команд, задержку, кто и когда его создал. Бот без процесса сообщает "
+"об этом, а не показывает нули. Администраторы могут кнопкой «Включить» или "
+"«Отключить» в заголовке переключить бота глобально либо удалить его."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex
+#, elixir-autogen, elixir-format
+msgid ""
+"The Capabilities tab gives each capability a panel: what it does, whether it"
+" is on, and its configuration. Settings are listed under the exact key /bot "
+"set takes, so what is read here is what is typed in the console. Text a bot "
+"was configured to say is shown with its colours rendered, not as raw control"
+" codes. Admins can turn individual capabilities on or off; changes are "
+"reloaded into the bot process."
+msgstr ""
+"Вкладка «Возможности» отводит каждой возможности отдельную панель: что она "
+"делает, включена ли она и её настройки. Параметры перечислены под тем же "
+"ключом, который принимает /bot set, — что читается здесь, то и вводится в "
+"консоли. Текст, который бот должен произносить, показан с цветами, а не "
+"сырыми управляющими кодами. Администраторы могут включать и выключать "
+"отдельные возможности; изменения перезагружаются в процесс бота."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex
+#, elixir-autogen, elixir-format
+msgid ""
+"The Events tab is the bot's own log: what it did, in which channel, and how "
+"long ago. It loads when a bot is selected and pages further back as you "
+"scroll."
+msgstr ""
+"Вкладка «События» — собственный журнал бота: что он сделал, в каком канале и"
+" как давно. Он загружается при выборе бота и подгружает более старые "
+"страницы по мере прокрутки."

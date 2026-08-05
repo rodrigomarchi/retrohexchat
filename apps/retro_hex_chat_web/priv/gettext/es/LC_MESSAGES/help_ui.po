@@ -1940,18 +1940,6 @@ msgstr "Menú de inicio"
 msgid "Taskbar"
 msgstr "Taskbar"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:18
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:18
-#, elixir-autogen, elixir-format
-msgid ""
-"The Capabilities tab lists each enabled capability and its configuration "
-"values. Admins can turn individual capabilities on or off; changes are "
-"reloaded into the bot process."
-msgstr ""
-"La pestaña Capacidades lista cada capacidad habilitada y sus valores de "
-"configuración. Los administradores pueden activar o apagar las capacidades "
-"individuales; los cambios se cargan en el proceso de bot."
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:26
 #, elixir-autogen, elixir-format
@@ -1989,31 +1977,6 @@ msgid ""
 msgstr ""
 "El menú Editar agrupa las acciones de ventana de mensajes que funcionan en "
 "la vista actual del chat."
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:42
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:42
-#, elixir-autogen, elixir-format
-msgid ""
-"The Events tab displays the most recent bot event log entries loaded when a "
-"bot is selected."
-msgstr ""
-"La pestaña Eventos muestra las entradas más recientes de bot event log "
-"cargadas cuando se selecciona un bot."
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:10
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:10
-#, elixir-autogen, elixir-format
-msgid ""
-"The General tab shows the selected bot's name, nickname, command prefix, "
-"enabled state, configured capabilities, and runtime statistics when the bot "
-"process is running. Admins can use the Enable or Disable button to toggle "
-"the bot globally."
-msgstr ""
-"La pestaña General muestra el nombre de bot seleccionado, apodo, prefijo de "
-"comando, estado habilitado, capacidades configuradas y estadísticas de "
-"tiempo de ejecución cuando el proceso de bot está funcionando. Los "
-"administradores pueden usar el botón Activar o Desactivar para cambiar el "
-"bot globalmente."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:2
 #: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:2
@@ -3476,3 +3439,73 @@ msgid ""
 msgstr ""
 "- ordenados por memoria. Una mesa en memoria nadie podunes es la causa "
 "habitual de la memoria que sólo crece."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex
+#, elixir-autogen, elixir-format
+msgid "The Roster"
+msgstr "La lista de bots"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex
+#, elixir-autogen, elixir-format
+msgid ""
+"The window opens on the roster: every bot on the server, one row each. A row"
+" carries the bot's description, the channels it is assigned to, the "
+"capabilities it has enabled, how many custom commands it answers, and a "
+"coloured dot for its process — green for running, amber for a bot that is "
+"enabled but has no process, grey for one that was disabled. Selecting a row "
+"replaces the roster with that bot; the Bots button at the top left returns "
+"to it."
+msgstr ""
+"La ventana se abre en la lista: todos los bots del servidor, uno por fila. "
+"La fila muestra la descripción del bot, los canales en los que actúa, las "
+"capacidades habilitadas, cuántos comandos personalizados responde y un punto"
+" de color para su proceso: verde si está en ejecución, ámbar si está "
+"habilitado pero sin proceso, gris si está deshabilitado. Seleccionar una "
+"fila sustituye la lista por ese bot; el botón Bots de la esquina superior "
+"izquierda vuelve a ella."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex
+#, elixir-autogen, elixir-format
+msgid ""
+"The General tab reports what the running process has actually done — uptime,"
+" messages handled, commands processed — followed by the bot's identity: "
+"nickname, command prefix, cooldown, who created it and when. A bot with no "
+"process says so instead of reporting zeroes. Admins can use the Enable or "
+"Disable button in the header to toggle the bot globally, or Delete to "
+"destroy it."
+msgstr ""
+"La pestaña General informa de lo que el proceso en ejecución ha hecho "
+"realmente —tiempo activo, mensajes atendidos, comandos procesados— seguido "
+"de la identidad del bot: apodo, prefijo de comando, enfriamiento, quién lo "
+"creó y cuándo. Un bot sin proceso lo dice, en lugar de informar ceros. Los "
+"administradores pueden usar el botón Habilitar o Deshabilitar de la cabecera"
+" para activarlo globalmente, o Eliminar para destruirlo."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex
+#, elixir-autogen, elixir-format
+msgid ""
+"The Capabilities tab gives each capability a panel: what it does, whether it"
+" is on, and its configuration. Settings are listed under the exact key /bot "
+"set takes, so what is read here is what is typed in the console. Text a bot "
+"was configured to say is shown with its colours rendered, not as raw control"
+" codes. Admins can turn individual capabilities on or off; changes are "
+"reloaded into the bot process."
+msgstr ""
+"La pestaña Capacidades da un panel a cada capacidad: qué hace, si está "
+"activa y su configuración. Los ajustes se listan bajo la misma clave que "
+"acepta /bot set, así que lo que se lee aquí es lo que se escribe en la "
+"consola. El texto que el bot fue configurado para decir se muestra con sus "
+"colores aplicados, no como códigos de control en bruto. Los administradores "
+"pueden activar o desactivar capacidades individuales; los cambios se "
+"recargan en el proceso del bot."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex
+#, elixir-autogen, elixir-format
+msgid ""
+"The Events tab is the bot's own log: what it did, in which channel, and how "
+"long ago. It loads when a bot is selected and pages further back as you "
+"scroll."
+msgstr ""
+"La pestaña Eventos es el registro del propio bot: qué hizo, en qué canal y "
+"hace cuánto. Se carga al seleccionar un bot y va trayendo páginas más "
+"antiguas a medida que te desplazas."
