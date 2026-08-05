@@ -6,7 +6,11 @@ defmodule RetroHexChatWeb.PromExTest do
       assert [
                RetroHexChat.PromEx.Plugins.Domain,
                {PromEx.Plugins.Ecto,
-                repos: [RetroHexChat.Repo], metric_prefix: [:retro_hex_chat_web, :prom_ex, :ecto]}
+                repos: [RetroHexChat.Repo], metric_prefix: [:retro_hex_chat_web, :prom_ex, :ecto]},
+               {RetroHexChat.PromEx.Plugins.Oban,
+                oban_supervisors: [Oban],
+                poll_rate: 5_000,
+                metric_prefix: [:retro_hex_chat, :prom_ex, :oban]}
              ] = RetroHexChat.PromEx.plugins()
     end
   end
@@ -32,11 +36,28 @@ defmodule RetroHexChatWeb.PromExTest do
   describe "dashboards/0" do
     test "declares the built-in dashboards provisioned by infra" do
       assert {:prom_ex, "ecto.json"} in RetroHexChat.PromEx.dashboards()
+      assert {:prom_ex, "oban.json"} in RetroHexChat.PromEx.dashboards()
 
       assert {:prom_ex, "application.json"} in RetroHexChatWeb.PromEx.dashboards()
       assert {:prom_ex, "beam.json"} in RetroHexChatWeb.PromEx.dashboards()
       assert {:prom_ex, "phoenix.json"} in RetroHexChatWeb.PromEx.dashboards()
       assert {:prom_ex, "phoenix_live_view.json"} in RetroHexChatWeb.PromEx.dashboards()
+    end
+  end
+
+  describe "RetroHexChatWeb.Telemetry.metrics/0" do
+    test "declares live Oban metrics for the system metrics window" do
+      oban_metrics =
+        RetroHexChatWeb.Telemetry.metrics()
+        |> Enum.filter(&(&1.reporter_options[:nav] == "Oban"))
+
+      assert Enum.any?(oban_metrics, &(&1.event_name == [:oban, :job, :stop]))
+      assert Enum.any?(oban_metrics, &(&1.event_name == [:oban, :job, :exception]))
+
+      assert Enum.any?(
+               oban_metrics,
+               &(&1.event_name == [:prom_ex, :plugin, :oban, :queue, :length, :count])
+             )
     end
   end
 

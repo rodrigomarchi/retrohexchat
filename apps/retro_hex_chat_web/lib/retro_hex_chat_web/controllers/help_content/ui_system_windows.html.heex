@@ -1,7 +1,7 @@
 <p>
   {dgettext(
     "help_ui",
-    "The System group under File ▸ System — and Start ▸ System — opens twelve windows onto the server itself. They are admin-only, and every one of them only reads: nothing in this group can change the server, which is what separates it from the Admin group beside it."
+    "The System group under File ▸ System — and Start ▸ System — opens thirteen windows onto the server itself. They are admin-only, and every one of them only reads: nothing in this group can change the server, which is what separates it from the Admin group beside it."
   )}
 </p>
 
@@ -57,13 +57,27 @@
 <p>
   {dgettext(
     "help_ui",
-    "Live charts, one group at a time: HTTP, LiveView, Database, VM and Domain. Domain is the server's own instrumentation — channels created, people arriving and leaving, calls joined, virtual-space movement."
+    "Live charts, one group at a time: HTTP, LiveView, Database, Oban, VM and Domain. Domain is the server's own instrumentation — channels created, people arriving and leaving, calls joined, virtual-space movement."
   )}
 </p>
 <p>
   {dgettext(
     "help_ui",
     "Charts start empty and fill as events happen. That is not a fault: nothing was measured before you opened the window, and a line drawn back to the left edge would be invented. Only the group you are looking at is subscribed, so the window costs nothing for the groups you are not watching."
+  )}
+</p>
+
+<h3>{dgettext("help_ui", "Oban Health")}</h3>
+<p>
+  {dgettext(
+    "help_ui",
+    "Oban shows the background job system behind durable work such as RSS feed polling. The headline cards separate supervisor health, active jobs, retryable or discarded failures, and whether every configured RSS feed has a successor job waiting in Oban."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_ui",
+    "Read the queue table by state first: Available means work can run now, Scheduled means it is waiting for its time, Executing means a worker has it, Retryable means Oban will try again, and Discarded means attempts were exhausted or the worker gave up. Recent jobs can be filtered to active work, failures, discarded jobs or everything Oban still retains."
   )}
 </p>
 

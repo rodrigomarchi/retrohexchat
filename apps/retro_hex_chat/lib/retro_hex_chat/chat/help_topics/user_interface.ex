@@ -412,6 +412,10 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
           "processes",
           "memory",
           "metrics",
+          "oban",
+          "jobs",
+          "queues",
+          "rss health",
           "ets",
           "ports",
           "sockets",
@@ -429,7 +433,7 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
         description:
           dgettext(
             "help",
-            "Twelve admin-only windows that read the running server: its memory, processes, connections, database and live metrics."
+            "Thirteen admin-only windows that read the running server: its memory, processes, connections, database, Oban jobs and live metrics."
           )
       },
       %{

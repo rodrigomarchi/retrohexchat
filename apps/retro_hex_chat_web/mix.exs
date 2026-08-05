@@ -68,6 +68,7 @@ defmodule RetroHexChatWeb.MixProject do
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 1.0"},
       {:retro_hex_chat, in_umbrella: true},
+      {:oban, "~> 2.23"},
       {:jason, "~> 1.2"},
       {:bandit, "~> 1.5"},
       {:opentelemetry_exporter, "~> 1.10"},

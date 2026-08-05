@@ -108,6 +108,52 @@ defmodule RetroHexChatWeb.Telemetry do
         reporter_options: [nav: dgettext("system", "Database")]
       ),
 
+      # Oban Metrics
+      summary(dgettext("system", "oban.job.stop.duration"),
+        event_name: [:oban, :job, :stop],
+        measurement: :duration,
+        tags: [:name, :queue, :state, :worker],
+        tag_values: &oban_job_tags/1,
+        unit: {:native, :millisecond},
+        description: dgettext("system", "Background job processing duration"),
+        reporter_options: [nav: dgettext("system", "Oban")]
+      ),
+      summary(dgettext("system", "oban.job.stop.queue_time"),
+        event_name: [:oban, :job, :stop],
+        measurement: :queue_time,
+        tags: [:name, :queue, :state, :worker],
+        tag_values: &oban_job_tags/1,
+        unit: {:native, :millisecond},
+        description: dgettext("system", "Time a background job waited before execution"),
+        reporter_options: [nav: dgettext("system", "Oban")]
+      ),
+      summary(dgettext("system", "oban.job.exception.duration"),
+        event_name: [:oban, :job, :exception],
+        measurement: :duration,
+        tags: [:name, :queue, :state, :worker, :kind],
+        tag_values: &oban_exception_tags/1,
+        unit: {:native, :millisecond},
+        description: dgettext("system", "Failed background job processing duration"),
+        reporter_options: [nav: dgettext("system", "Oban")]
+      ),
+      summary(dgettext("system", "oban.job.exception.queue_time"),
+        event_name: [:oban, :job, :exception],
+        measurement: :queue_time,
+        tags: [:name, :queue, :state, :worker, :kind],
+        tag_values: &oban_exception_tags/1,
+        unit: {:native, :millisecond},
+        description: dgettext("system", "Time a failed background job waited before execution"),
+        reporter_options: [nav: dgettext("system", "Oban")]
+      ),
+      last_value(dgettext("system", "retro_hex_chat.prom_ex.oban.queue.length.count"),
+        event_name: [:prom_ex, :plugin, :oban, :queue, :length, :count],
+        measurement: :count,
+        tags: [:name, :queue, :state],
+        tag_values: &oban_queue_tags/1,
+        description: dgettext("system", "Current Oban queue length by state"),
+        reporter_options: [nav: dgettext("system", "Oban")]
+      ),
+
       # VM Metrics
       summary(dgettext("system", "vm.memory.total"),
         unit: {:byte, :kilobyte},
@@ -286,6 +332,44 @@ defmodule RetroHexChatWeb.Telemetry do
       {__MODULE__, :count_active_group_call_peers, []}
     ]
   end
+
+  defp oban_job_tags(%{job: %Oban.Job{} = job} = metadata) do
+    %{
+      name: oban_name(metadata),
+      queue: job.queue,
+      state: to_string(Map.get(metadata, :state, job.state)),
+      worker: short_worker(job.worker)
+    }
+  end
+
+  defp oban_exception_tags(metadata) do
+    metadata
+    |> oban_job_tags()
+    |> Map.put(:kind, metadata |> Map.get(:kind, :unknown) |> to_string())
+  end
+
+  defp oban_queue_tags(metadata) do
+    %{
+      name: metadata |> Map.get(:name, Oban) |> inspect_name(),
+      queue: metadata |> Map.get(:queue, :unknown) |> to_string(),
+      state: metadata |> Map.get(:state, :unknown) |> to_string()
+    }
+  end
+
+  defp oban_name(%{conf: %{name: name}}), do: inspect_name(name)
+  defp oban_name(metadata), do: metadata |> Map.get(:name, Oban) |> inspect_name()
+
+  defp inspect_name(name) when is_atom(name), do: inspect(name)
+  defp inspect_name(name), do: to_string(name)
+
+  defp short_worker(worker) when is_binary(worker) do
+    worker
+    |> String.trim_leading("Elixir.")
+    |> String.split(".")
+    |> List.last()
+  end
+
+  defp short_worker(worker), do: inspect(worker)
 
   @doc false
   def count_active_channels do

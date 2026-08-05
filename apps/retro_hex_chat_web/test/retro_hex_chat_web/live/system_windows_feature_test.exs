@@ -99,6 +99,29 @@ defmodule RetroHexChatWeb.SystemWindowsFeatureTest do
     end
   end
 
+  describe "Oban Health window" do
+    test "opens with queue, job and RSS coverage sections", %{conn: conn} do
+      view = connect_admin(conn)
+      open(view, "system_oban")
+
+      html = render(view)
+
+      assert html =~ "Oban health"
+      assert html =~ "Queues by state"
+      assert html =~ "Recent jobs"
+      assert html =~ "RSS feed coverage"
+      assert has_element?(view, "[data-testid='system-oban-window']")
+    end
+
+    test "refreshing re-reads the Oban snapshot", %{conn: conn} do
+      view = connect_admin(conn)
+      open(view, "system_oban")
+
+      assert view |> element("[data-testid='system-oban-refresh']") |> render_click() =~
+               "Oban health"
+    end
+  end
+
   describe "authorization" do
     test "a non-admin cannot open a runtime window", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "PlainUser", pre_identified: true), "/chat")
