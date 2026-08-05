@@ -81,7 +81,11 @@ defmodule RetroHexChatWeb.MixProject do
       {:salad_ui, "~> 0.14"},
 
       # Test dependencies
-      {:floki, "~> 0.37", only: :test},
+      # Unrestricted, and matching the domain app: that app needs Floki in
+      # every environment, and a sibling asking for the same dependency under a
+      # narrower `:only` makes the umbrella unresolvable from inside a child —
+      # which is where the Gettext tooling runs.
+      {:floki, "~> 0.38"},
       {:lazy_html, ">= 0.1.0", only: :test}
     ]
   end
