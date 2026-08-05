@@ -75,12 +75,21 @@ defmodule RetroHexChat.Bots.Output do
   @spec output_message_type(map(), atom()) :: atom()
   defp output_message_type(output, default) do
     case Map.get(output, :type) || Map.get(output, "type") do
+      type when type in [nil, "", :""] -> default
       type when is_atom(type) -> type
-      type when is_binary(type) -> String.to_existing_atom(type)
+      type when is_binary(type) -> binary_message_type(type, default)
       _ -> default
     end
   rescue
     ArgumentError -> default
+  end
+
+  @spec binary_message_type(String.t(), atom()) :: atom()
+  defp binary_message_type(type, default) do
+    case String.trim(type) do
+      "" -> default
+      normalized -> String.to_existing_atom(normalized)
+    end
   end
 
   @spec send_message(String.t(), String.t(), String.t(), atom(), keyword()) ::

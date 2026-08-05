@@ -6,6 +6,7 @@ defmodule RetroHexChat.Jobs.RSSPollWorkerTest do
   alias RetroHexChat.Bots.Queries, as: BotQueries
   alias RetroHexChat.Bots.Supervisor, as: BotSupervisor
   alias RetroHexChat.Channels
+  alias RetroHexChat.Chat.Queries, as: ChatQueries
   alias RetroHexChat.Jobs.RSSPollWorker
 
   @channel "#rss-worker"
@@ -107,6 +108,7 @@ defmodule RetroHexChat.Jobs.RSSPollWorkerTest do
 
     assert payload.content =~ "> Worker extracted this from standards metadata\\."
     assert payload.content =~ "[Read full story](<https://example.com/3>)"
+    assert %{type: "message", content_format: "markdown"} = ChatQueries.get_message(payload.id)
 
     assert_enqueued(
       worker: RSSPollWorker,

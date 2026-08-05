@@ -120,6 +120,8 @@ defmodule RetroHexChat.Channels.Server do
   end
 
   def send_message(channel_name, nickname, content, type, opts) do
+    type = normalize_send_type(type)
+
     Observability.span(
       [:retro_hex_chat, :chat, :message, :send],
       message_metadata(type, content, opts, %{"chat.channel" => channel_name}),
@@ -1133,6 +1135,14 @@ defmodule RetroHexChat.Channels.Server do
 
   defp channel_event_name(%{event: event}) when is_binary(event), do: event
   defp channel_event_name({event, _payload}) when is_atom(event), do: Atom.to_string(event)
+
+  defp normalize_send_type(type) when type in [nil, :""], do: :message
+
+  defp normalize_send_type(type) when is_binary(type) do
+    if String.trim(type) == "", do: :message, else: type
+  end
+
+  defp normalize_send_type(type), do: type
 
   defp normalize_message_type(type) when is_atom(type), do: Atom.to_string(type)
   defp normalize_message_type(type) when is_binary(type), do: type
