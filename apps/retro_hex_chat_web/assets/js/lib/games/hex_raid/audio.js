@@ -290,4 +290,16 @@ export class HexRaidAudio {
     osc.start(ctx.currentTime);
     osc.stop(ctx.currentTime + duration);
   }
+
+  /**
+   * Release the AudioContext. Each one holds a real-time audio thread for as
+   * long as it lives, and browsers cap how many a page may open.
+   * @returns {void}
+   */
+  dispose() {
+    if (this._ctx) {
+      this._ctx.close().catch(() => {});
+      this._ctx = null;
+    }
+  }
 }

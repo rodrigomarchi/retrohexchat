@@ -13,8 +13,6 @@ import {
   INPUT_KEY,
   encodeGameState,
   decodeGameState,
-  encodePlayerInput,
-  decodePlayerInput,
   encodeGameEnd,
   decodeGameEnd,
   encodeGameReady,
@@ -51,11 +49,13 @@ const MODE_MAP = {
   hex_invaders_blitz: GAME_MODE.BLITZ,
 };
 
-const STATE_SEND_INTERVAL = 2; // broadcast every 2 frames (~30Hz)
+const STATE_SEND_INTERVAL = 1; // broadcast every fixed step (60Hz)
 const WAVE_CLEAR_FRAMES = 120; // 2 sec overlay
 const WAVE_START_FRAMES = 60; // 1 sec overlay
 
 export class HexInvadersEngine extends GameEngine {
+  static INPUT_BITS = { left: 0, right: 1, fire: 2 };
+
   constructor(canvas, channel, gameId, isHost, onGameEnd) {
     super(canvas, channel, gameId, isHost);
     this.onGameEnd = onGameEnd;
@@ -71,7 +71,6 @@ export class HexInvadersEngine extends GameEngine {
     this.audio = new HexInvadersAudio();
     this.colors = null;
     this.peerReady = false;
-    this._boundGameLoop = this._gameLoop.bind(this);
     this._boundBlur = this._handleBlur.bind(this);
     this._boundChannelClose = this._handleChannelClose.bind(this);
   }
@@ -84,10 +83,10 @@ export class HexInvadersEngine extends GameEngine {
     this.channel.addEventListener("close", this._boundChannelClose);
 
     if (this.isHost) {
-      this._renderState();
+      this._invalidate();
     } else {
-      this._safeSend(encodeGameReady());
-      this._renderState();
+      this._advertiseReady(encodeGameReady);
+      this._invalidate();
     }
   }
 
@@ -98,16 +97,9 @@ export class HexInvadersEngine extends GameEngine {
       clearTimeout(this.phaseTimer);
       this.phaseTimer = null;
     }
-    if (this.animFrame) {
-      cancelAnimationFrame(this.animFrame);
-      this.animFrame = null;
-    }
-    this.running = false;
     this._localFirePressed = false;
     this._remoteFirePressed = false;
-    this.channel.removeEventListener("message", this._boundOnMessage);
-    document.removeEventListener("keydown", this._boundOnKeyDown);
-    document.removeEventListener("keyup", this._boundOnKeyUp);
+    super.stop();
   }
 
   // ── Input Handling ──
@@ -134,13 +126,9 @@ export class HexInvadersEngine extends GameEngine {
     if (k === null) return;
     e.preventDefault();
 
-    if (this.isHost) {
-      if (k === INPUT_KEY.LEFT) this.localInputs.left = true;
-      else if (k === INPUT_KEY.RIGHT) this.localInputs.right = true;
-      else if (k === INPUT_KEY.FIRE) this.localInputs.fire = true;
-    } else {
-      this._safeSend(encodePlayerInput(k, true));
-    }
+    if (k === INPUT_KEY.LEFT) this.localInputs.left = true;
+    else if (k === INPUT_KEY.RIGHT) this.localInputs.right = true;
+    else if (k === INPUT_KEY.FIRE) this.localInputs.fire = true;
   }
 
   _handleKeyUp(e) {
@@ -148,22 +136,14 @@ export class HexInvadersEngine extends GameEngine {
     if (k === null) return;
     e.preventDefault();
 
-    if (this.isHost) {
-      if (k === INPUT_KEY.LEFT) this.localInputs.left = false;
-      else if (k === INPUT_KEY.RIGHT) this.localInputs.right = false;
-      else if (k === INPUT_KEY.FIRE) this.localInputs.fire = false;
-    } else {
-      this._safeSend(encodePlayerInput(k, false));
-    }
+    if (k === INPUT_KEY.LEFT) this.localInputs.left = false;
+    else if (k === INPUT_KEY.RIGHT) this.localInputs.right = false;
+    else if (k === INPUT_KEY.FIRE) this.localInputs.fire = false;
   }
 
   _handleBlur() {
     this.localInputs = { left: false, right: false, fire: false };
-    if (!this.isHost) {
-      this._safeSend(encodePlayerInput(INPUT_KEY.LEFT, false));
-      this._safeSend(encodePlayerInput(INPUT_KEY.RIGHT, false));
-      this._safeSend(encodePlayerInput(INPUT_KEY.FIRE, false));
-    }
+    this._sendInputState();
   }
 
   // ── Network Messages ──
@@ -174,21 +154,9 @@ export class HexInvadersEngine extends GameEngine {
     const type = getMessageType(buf);
 
     if (this.isHost) {
-      if (type === MSG_TYPE.PLAYER_INPUT) {
-        const inp = decodePlayerInput(buf);
-        if (!inp) return;
-        if (inp.keyCode === INPUT_KEY.LEFT) {
-          this.remoteInputs.left = inp.pressed;
-        } else if (inp.keyCode === INPUT_KEY.RIGHT) {
-          this.remoteInputs.right = inp.pressed;
-        } else if (inp.keyCode === INPUT_KEY.FIRE) {
-          this.remoteInputs.fire = inp.pressed;
-        }
-      } else if (type === MSG_TYPE.GAME_READY) {
-        if (!this.peerReady) {
-          this.peerReady = true;
-          this._startCountdown();
-        }
+      if (type === MSG_TYPE.GAME_READY && !this.peerReady) {
+        this.peerReady = true;
+        this._startCountdown();
       }
     } else {
       // Peer
@@ -201,7 +169,7 @@ export class HexInvadersEngine extends GameEngine {
             ...this.gameState,
             phase: PHASE.FINISHED,
           };
-          this._renderState();
+          this._invalidate();
           if (this.onGameEnd) {
             try {
               this.onGameEnd({
@@ -232,7 +200,7 @@ export class HexInvadersEngine extends GameEngine {
     Object.assign(this.gameState, decoded);
     this.gameState._shieldPositions = shieldPositions;
 
-    this._renderState();
+    this._invalidate();
   }
 
   // ── Countdown & Phase Transitions ──
@@ -241,7 +209,7 @@ export class HexInvadersEngine extends GameEngine {
     this.gameState.phase = PHASE.COUNTDOWN;
     this.gameState.countdown = 3;
     this._broadcastState();
-    this._renderState();
+    this._invalidate();
 
     let count = 3;
     const tick = () => {
@@ -256,7 +224,7 @@ export class HexInvadersEngine extends GameEngine {
       } else {
         this.gameState.countdown = count;
         this._broadcastState();
-        this._renderState();
+        this._invalidate();
         this.phaseTimer = setTimeout(tick, 1000);
       }
     };
@@ -266,7 +234,7 @@ export class HexInvadersEngine extends GameEngine {
 
   _startGameLoop() {
     this.frameCount = 0;
-    this.animFrame = requestAnimationFrame(this._boundGameLoop);
+    this._startSteps();
   }
 
   // ── Game Loop (Host Only) ──
@@ -346,7 +314,7 @@ export class HexInvadersEngine extends GameEngine {
         this.audio.playWaveClear();
         this.gameState = s;
         this._broadcastState();
-        this._renderState();
+        this._invalidate();
         this._handleWaveClear();
         return;
       }
@@ -357,13 +325,11 @@ export class HexInvadersEngine extends GameEngine {
       this.gameState = s;
     }
 
-    this._renderState();
+    this._invalidate();
     this.frameCount += 1;
     if (this.frameCount % STATE_SEND_INTERVAL === 0) {
       this._broadcastState();
     }
-
-    this.animFrame = requestAnimationFrame(this._boundGameLoop);
   }
 
   _playEventSounds(s) {
@@ -409,13 +375,12 @@ export class HexInvadersEngine extends GameEngine {
         this.gameState = createWave(this.gameState, nextWave);
         this.gameState.phase = PHASE.WAVE_START;
         this._broadcastState();
-        this._renderState();
+        this._invalidate();
 
         this.phaseTimer = setTimeout(
           () => {
             if (!this.running) return;
             this.gameState.phase = PHASE.PLAYING;
-            this.animFrame = requestAnimationFrame(this._boundGameLoop);
           },
           (WAVE_START_FRAMES / 60) * 1000,
         );
@@ -428,14 +393,14 @@ export class HexInvadersEngine extends GameEngine {
 
   _handleGameFinished(result) {
     this._broadcastState();
-    this._renderState();
+    this._invalidate();
 
     const endBuf = encodeGameEnd({
       score1: this.gameState.score1,
       score2: this.gameState.score2,
       winner: result.winner,
     });
-    this._safeSend(endBuf);
+    this._sendCommand(endBuf);
 
     if (result.winner > 0) {
       this.audio.playVictory();
@@ -459,9 +424,10 @@ export class HexInvadersEngine extends GameEngine {
   // ── Connection Resilience ──
 
   _handleChannelClose() {
+    this._stopSteps();
     if (this.gameState.phase === PHASE.FINISHED) return;
     this.gameState.phase = PHASE.FINISHED;
-    this._renderState();
+    this._invalidate();
     if (this.onGameEnd) {
       try {
         this.onGameEnd({
@@ -486,6 +452,6 @@ export class HexInvadersEngine extends GameEngine {
   // ── State Broadcasting ──
 
   _broadcastState() {
-    this._safeSend(encodeGameState(this.gameState));
+    this._sendState(encodeGameState(this.gameState));
   }
 }

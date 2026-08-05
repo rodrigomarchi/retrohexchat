@@ -1,11 +1,11 @@
+import { inputDatagram, inputMask } from "../../../helpers/game_input.js";
+import { decodeInputState } from "../../../../js/lib/games/net_protocol.js";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import {
   PHASE,
   MSG_TYPE,
-  INPUT_KEY,
   BRICKS_PER_CASTLE,
   encodeGameState,
-  encodePlayerInput,
   encodeGameEnd,
   encodeGameReady,
 } from "../../../../js/lib/games/warlords/protocol.js";
@@ -200,6 +200,7 @@ describe("WarlordEngine", () => {
     it("renders initial state", () => {
       engine = new WarlordEngine(canvas, channel, "hex_warlords", true, null);
       engine.start();
+      engine._pump(0);
       expect(render).toHaveBeenCalled();
     });
   });
@@ -237,7 +238,7 @@ describe("WarlordEngine", () => {
       expect(engine.peerReady).toBe(false);
 
       const buf = encodeGameReady();
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       expect(engine.peerReady).toBe(true);
       expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
@@ -248,10 +249,10 @@ describe("WarlordEngine", () => {
       engine.start();
 
       const buf = encodeGameReady();
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
       const countdownCalls1 = engine.audio.playCountdown.mock.calls.length;
 
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
       const countdownCalls2 = engine.audio.playCountdown.mock.calls.length;
 
       expect(countdownCalls2).toBe(countdownCalls1);
@@ -261,8 +262,8 @@ describe("WarlordEngine", () => {
       engine = new WarlordEngine(canvas, channel, "hex_warlords", true, null);
       engine.start();
 
-      const buf = encodePlayerInput(INPUT_KEY.UP, true);
-      engine._handleMessage({ data: buf });
+      const buf = inputDatagram(WarlordEngine, { up: true }, 1);
+      engine._onChannelMessage({ data: buf });
 
       expect(engine.remoteInputs.up).toBe(true);
     });
@@ -272,8 +273,8 @@ describe("WarlordEngine", () => {
       engine.start();
       engine.remoteInputs.down = true;
 
-      const buf = encodePlayerInput(INPUT_KEY.DOWN, false);
-      engine._handleMessage({ data: buf });
+      const buf = inputDatagram(WarlordEngine, { down: false }, 2);
+      engine._onChannelMessage({ data: buf });
 
       expect(engine.remoteInputs.down).toBe(false);
     });
@@ -282,8 +283,8 @@ describe("WarlordEngine", () => {
       engine = new WarlordEngine(canvas, channel, "hex_warlords", true, null);
       engine.start();
 
-      const buf = encodePlayerInput(INPUT_KEY.SPACE, true);
-      engine._handleMessage({ data: buf });
+      const buf = inputDatagram(WarlordEngine, { space: true }, 3);
+      engine._onChannelMessage({ data: buf });
 
       expect(engine.remoteInputs.space).toBe(true);
     });
@@ -310,7 +311,7 @@ describe("WarlordEngine", () => {
         caughtBy: 0,
       };
       const buf = encodeGameState(state);
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       expect(engine.gameState.p1Lives).toBe(2);
       expect(engine.gameState.p2Lives).toBe(3);
@@ -322,7 +323,7 @@ describe("WarlordEngine", () => {
       engine.start();
 
       const buf = encodeGameEnd(0, 2, 2);
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       expect(engine.gameState.phase).toBe(PHASE.FINISHED);
       expect(engine.gameState.winner).toBe(2);
@@ -335,7 +336,7 @@ describe("WarlordEngine", () => {
       engine.start();
 
       const buf = encodeGameEnd(0, 2, 2);
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       expect(engine.audio.playWin).toHaveBeenCalled();
     });
@@ -345,7 +346,7 @@ describe("WarlordEngine", () => {
       engine.start();
 
       const buf = encodeGameEnd(2, 0, 1);
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       expect(engine.audio.playLose).toHaveBeenCalled();
     });
@@ -359,7 +360,7 @@ describe("WarlordEngine", () => {
         ...createInitialState(),
         phase: PHASE.PLAYING,
       };
-      engine._handleMessage({ data: encodeGameState(state1) });
+      engine._onChannelMessage({ data: encodeGameState(state1) });
 
       // Second state: KING_HIT, P1 lost a life
       const state2 = {
@@ -368,7 +369,7 @@ describe("WarlordEngine", () => {
         p2Lives: 3,
         phase: PHASE.KING_HIT,
       };
-      engine._handleMessage({ data: encodeGameState(state2) });
+      engine._onChannelMessage({ data: encodeGameState(state2) });
 
       expect(engine.gameState.kingHitPlayer).toBe(1);
       expect(engine.gameState.p1KingAlive).toBe(false);
@@ -378,8 +379,8 @@ describe("WarlordEngine", () => {
       engine = new WarlordEngine(canvas, channel, "hex_warlords", false, null);
       engine.start();
 
-      const buf = encodePlayerInput(INPUT_KEY.UP, true);
-      engine._handleMessage({ data: buf });
+      const buf = inputDatagram(WarlordEngine, { up: true }, 4);
+      engine._onChannelMessage({ data: buf });
 
       expect(engine.remoteInputs.up).toBe(false);
     });
@@ -390,7 +391,7 @@ describe("WarlordEngine", () => {
       engine = new WarlordEngine(canvas, channel, "hex_warlords", true, null);
       engine.start();
       expect(() => {
-        engine._handleMessage({ data: "not binary" });
+        engine._onChannelMessage({ data: "not binary" });
       }).not.toThrow();
     });
   });
@@ -399,43 +400,43 @@ describe("WarlordEngine", () => {
     it("maps ArrowUp to UP input", () => {
       engine = new WarlordEngine(canvas, channel, "hex_warlords", true, null);
       engine.start();
-      engine._handleKeyDown({ key: "ArrowUp", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "ArrowUp", preventDefault: vi.fn(), repeat: false, target: null });
       expect(engine.localInputs.up).toBe(true);
     });
 
     it("maps ArrowDown to DOWN input", () => {
       engine = new WarlordEngine(canvas, channel, "hex_warlords", true, null);
       engine.start();
-      engine._handleKeyDown({ key: "ArrowDown", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "ArrowDown", preventDefault: vi.fn(), repeat: false, target: null });
       expect(engine.localInputs.down).toBe(true);
     });
 
     it("maps w to UP input", () => {
       engine = new WarlordEngine(canvas, channel, "hex_warlords", true, null);
       engine.start();
-      engine._handleKeyDown({ key: "w", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "w", preventDefault: vi.fn(), repeat: false, target: null });
       expect(engine.localInputs.up).toBe(true);
     });
 
     it("maps s to DOWN input", () => {
       engine = new WarlordEngine(canvas, channel, "hex_warlords", true, null);
       engine.start();
-      engine._handleKeyDown({ key: "s", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "s", preventDefault: vi.fn(), repeat: false, target: null });
       expect(engine.localInputs.down).toBe(true);
     });
 
     it("maps Space to SPACE input", () => {
       engine = new WarlordEngine(canvas, channel, "hex_warlords", true, null);
       engine.start();
-      engine._handleKeyDown({ key: " ", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: " ", preventDefault: vi.fn(), repeat: false, target: null });
       expect(engine.localInputs.space).toBe(true);
     });
 
     it("key release clears local input", () => {
       engine = new WarlordEngine(canvas, channel, "hex_warlords", true, null);
       engine.start();
-      engine._handleKeyDown({ key: "ArrowUp", preventDefault: vi.fn() });
-      engine._handleKeyUp({ key: "ArrowUp" });
+      engine._onKeyDown({ key: "ArrowUp", preventDefault: vi.fn(), repeat: false, target: null });
+      engine._onKeyUp({ key: "ArrowUp", repeat: false, target: null });
       expect(engine.localInputs.up).toBe(false);
     });
 
@@ -452,31 +453,25 @@ describe("WarlordEngine", () => {
       engine.start();
       channel.send.mockClear();
 
-      engine._handleKeyDown({ key: "ArrowUp", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "ArrowUp", preventDefault: vi.fn(), repeat: false, target: null });
 
       const lastCall = channel.send.mock.calls[channel.send.mock.calls.length - 1];
       const buf = lastCall[0];
       expect(buf).toBeInstanceOf(ArrayBuffer);
-      const view = new Uint8Array(buf);
-      expect(view[0]).toBe(MSG_TYPE.PLAYER_INPUT);
-      expect(view[1]).toBe(INPUT_KEY.UP);
-      expect(view[2]).toBe(1); // pressed
+      expect(decodeInputState(buf).mask).toBe(inputMask(WarlordEngine, { up: true }));
     });
 
     it("peer sends binary input on keyup", () => {
       engine = new WarlordEngine(canvas, channel, "hex_warlords", false, null);
       engine.start();
 
-      engine._handleKeyDown({ key: "ArrowDown", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "ArrowDown", preventDefault: vi.fn(), repeat: false, target: null });
       channel.send.mockClear();
-      engine._handleKeyUp({ key: "ArrowDown" });
+      engine._onKeyUp({ key: "ArrowDown", repeat: false, target: null });
 
       const lastCall = channel.send.mock.calls[channel.send.mock.calls.length - 1];
       const buf = lastCall[0];
-      const view = new Uint8Array(buf);
-      expect(view[0]).toBe(MSG_TYPE.PLAYER_INPUT);
-      expect(view[1]).toBe(INPUT_KEY.DOWN);
-      expect(view[2]).toBe(0); // released
+      expect(decodeInputState(buf).mask).toBe(inputMask(WarlordEngine, {}));
     });
 
     it("host does not send input over channel", () => {
@@ -484,7 +479,7 @@ describe("WarlordEngine", () => {
       engine.start();
       channel.send.mockClear();
 
-      engine._handleKeyDown({ key: "ArrowUp", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "ArrowUp", preventDefault: vi.fn(), repeat: false, target: null });
       expect(channel.send).not.toHaveBeenCalled();
     });
   });
@@ -505,11 +500,13 @@ describe("WarlordEngine", () => {
     it("peer sends release for all keys on blur", () => {
       engine = new WarlordEngine(canvas, channel, "hex_warlords", false, null);
       engine.start();
+      engine._onKeyDown({ key: "ArrowUp", preventDefault: vi.fn(), repeat: false, target: null });
       channel.send.mockClear();
 
       engine._handleBlur();
 
-      expect(channel.send).toHaveBeenCalledTimes(3);
+      // One datagram states every key at once.
+      expect(channel.send).toHaveBeenCalledTimes(1);
     });
 
     it("host releases caught fireball on blur", () => {
@@ -519,6 +516,8 @@ describe("WarlordEngine", () => {
       engine.gameState.phase = PHASE.PLAYING;
       engine.gameState.fireballSpeed = 3;
 
+      engine._onKeyDown({ key: "ArrowUp", preventDefault: vi.fn(), repeat: false, target: null });
+      channel.send.mockClear();
       engine._handleBlur();
 
       expect(engine.gameState.caughtBy).toBe(0);
@@ -636,7 +635,7 @@ describe("WarlordEngine", () => {
       engine = new WarlordEngine(canvas, channel, "hex_warlords", true, null);
       engine.start();
 
-      engine._handleMessage({ data: encodeGameReady() });
+      engine._onChannelMessage({ data: encodeGameReady() });
 
       expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
       expect(engine.gameState.countdown).toBe(3);
@@ -646,7 +645,7 @@ describe("WarlordEngine", () => {
     it("counts down from 3 to 1", () => {
       engine = new WarlordEngine(canvas, channel, "hex_warlords", true, null);
       engine.start();
-      engine._handleMessage({ data: encodeGameReady() });
+      engine._onChannelMessage({ data: encodeGameReady() });
 
       vi.advanceTimersByTime(1000);
       expect(engine.gameState.countdown).toBe(2);
@@ -658,7 +657,7 @@ describe("WarlordEngine", () => {
     it("transitions to PLAYING after countdown + serve delay", () => {
       engine = new WarlordEngine(canvas, channel, "hex_warlords", true, null);
       engine.start();
-      engine._handleMessage({ data: encodeGameReady() });
+      engine._onChannelMessage({ data: encodeGameReady() });
 
       // 3 countdown ticks (3×1000ms) + serve delay (800ms)
       vi.advanceTimersByTime(3800);
@@ -719,11 +718,11 @@ describe("WarlordEngine", () => {
       engine.gameState.fireballSpeed = 3;
 
       // Peer presses space first
-      engine._handleMessage({ data: encodePlayerInput(INPUT_KEY.SPACE, true) });
+      engine._onChannelMessage({ data: inputDatagram(WarlordEngine, { space: true }, 5) });
       expect(engine.remoteInputs.space).toBe(true);
 
       // Peer releases space → should release ball
-      engine._handleMessage({ data: encodePlayerInput(INPUT_KEY.SPACE, false) });
+      engine._onChannelMessage({ data: inputDatagram(WarlordEngine, { space: false }, 6) });
       expect(engine.gameState.caughtBy).toBe(0);
     });
 
@@ -735,7 +734,7 @@ describe("WarlordEngine", () => {
       engine.gameState.fireballSpeed = 3;
 
       engine.remoteInputs.space = true;
-      engine._handleMessage({ data: encodePlayerInput(INPUT_KEY.SPACE, false) });
+      engine._onChannelMessage({ data: inputDatagram(WarlordEngine, { space: false }, 7) });
 
       expect(engine.audio.playLaunch).toHaveBeenCalled();
     });
@@ -747,7 +746,7 @@ describe("WarlordEngine", () => {
       engine.gameState.caughtBy = 0;
 
       engine.remoteInputs.space = true;
-      engine._handleMessage({ data: encodePlayerInput(INPUT_KEY.SPACE, false) });
+      engine._onChannelMessage({ data: inputDatagram(WarlordEngine, { space: false }, 8) });
 
       expect(engine.audio.playLaunch).not.toHaveBeenCalled();
     });
@@ -762,9 +761,9 @@ describe("WarlordEngine", () => {
       engine.gameState.fireballSpeed = 3;
 
       // Press space first
-      engine._handleKeyDown({ key: " ", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: " ", preventDefault: vi.fn(), repeat: false, target: null });
       // Release space
-      engine._handleKeyUp({ key: " " });
+      engine._onKeyUp({ key: " ", repeat: false, target: null });
 
       expect(engine.gameState.caughtBy).toBe(0);
       expect(engine.audio.playLaunch).toHaveBeenCalled();
@@ -776,8 +775,8 @@ describe("WarlordEngine", () => {
       engine.gameState.phase = PHASE.PLAYING;
       engine.gameState.caughtBy = 0;
 
-      engine._handleKeyDown({ key: " ", preventDefault: vi.fn() });
-      engine._handleKeyUp({ key: " " });
+      engine._onKeyDown({ key: " ", preventDefault: vi.fn(), repeat: false, target: null });
+      engine._onKeyUp({ key: " ", repeat: false, target: null });
 
       expect(engine.audio.playLaunch).not.toHaveBeenCalled();
     });
@@ -819,14 +818,15 @@ describe("WarlordEngine", () => {
       setupPlayingEngine();
       render.mockClear();
       engine._gameLoop(0);
+      engine._pump(0);
       expect(render).toHaveBeenCalled();
     });
 
-    it("requests next animation frame", () => {
+    it("keeps stepping the simulation", () => {
       setupPlayingEngine();
-      globalThis.requestAnimationFrame.mockClear();
+      engine._startSteps();
       engine._gameLoop(0);
-      expect(globalThis.requestAnimationFrame).toHaveBeenCalled();
+      expect(engine.stepping).toBe(true);
     });
 
     it("plays playWallBounce on wall bounce", () => {
@@ -854,6 +854,7 @@ describe("WarlordEngine", () => {
       engine.running = false;
       render.mockClear();
       engine._gameLoop(0);
+      engine._pump(0);
       expect(render).not.toHaveBeenCalled();
     });
   });
@@ -988,7 +989,7 @@ describe("WarlordEngine", () => {
       };
       // First set a WAITING state so prevPhase differs
       engine.gameState.phase = PHASE.WAITING;
-      engine._handleMessage({ data: encodeGameState(state) });
+      engine._onChannelMessage({ data: encodeGameState(state) });
 
       expect(engine.audio.playCountdown).toHaveBeenCalled();
     });
@@ -1002,7 +1003,7 @@ describe("WarlordEngine", () => {
         ...createInitialState(),
         phase: PHASE.PLAYING,
       };
-      engine._handleMessage({ data: encodeGameState(playingState) });
+      engine._onChannelMessage({ data: encodeGameState(playingState) });
       engine.audio.playKingHit.mockClear();
 
       // Now transition to KING_HIT
@@ -1012,7 +1013,7 @@ describe("WarlordEngine", () => {
         p1Lives: 2,
         p2Lives: 3,
       };
-      engine._handleMessage({ data: encodeGameState(kingHitState) });
+      engine._onChannelMessage({ data: encodeGameState(kingHitState) });
 
       expect(engine.audio.playKingHit).toHaveBeenCalled();
     });

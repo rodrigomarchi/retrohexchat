@@ -97,7 +97,7 @@ describe("HexHockeyAudio", () => {
     audio.playCapture();
     audio.playCountdownTick();
     audio.playGo();
-    audio.destroy();
+    audio.dispose();
   });
 
   it("playShot creates noise + tone", () => {
@@ -229,7 +229,7 @@ describe("HexHockeyAudio", () => {
     audio.playGoal(); // creates timer
     vi.advanceTimersByTime(0); // flush
 
-    audio.destroy();
+    audio.dispose();
     expect(audio._droneOsc).toBeNull();
     expect(audio._timers).toEqual([]);
     expect(audio.ctx.close).toHaveBeenCalled();
@@ -241,7 +241,7 @@ describe("HexHockeyAudio", () => {
     audio._droneOsc.stop = vi.fn(() => {
       throw new Error("already stopped");
     });
-    audio.destroy(); // should not throw
+    audio.dispose(); // should not throw
     expect(audio._droneOsc).toBeNull();
   });
 });

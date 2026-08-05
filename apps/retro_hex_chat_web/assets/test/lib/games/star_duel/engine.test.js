@@ -1,11 +1,11 @@
+import { inputDatagram, inputMask } from "../../../helpers/game_input.js";
+import { decodeInputState } from "../../../../js/lib/games/net_protocol.js";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import {
   PHASE,
   MSG_TYPE,
-  INPUT_KEY,
   GAME_MODE,
   encodeGameState,
-  encodePlayerInput,
   encodeGameEnd,
   encodeGameReady,
   encodeShipFlags,
@@ -275,6 +275,7 @@ describe("StarDuelEngine", () => {
     it("renders initial state", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", true, null);
       engine.start();
+      engine._pump(0);
       expect(render).toHaveBeenCalled();
     });
   });
@@ -331,7 +332,7 @@ describe("StarDuelEngine", () => {
       expect(engine.peerReady).toBe(false);
 
       const buf = encodeGameReady();
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       expect(engine.peerReady).toBe(true);
       expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
@@ -342,10 +343,10 @@ describe("StarDuelEngine", () => {
       engine.start();
 
       const buf = encodeGameReady();
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
       const countdownCalls1 = engine.audio.playCountdown.mock.calls.length;
 
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
       const countdownCalls2 = engine.audio.playCountdown.mock.calls.length;
 
       expect(countdownCalls2).toBe(countdownCalls1);
@@ -355,8 +356,8 @@ describe("StarDuelEngine", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", true, null);
       engine.start();
 
-      const buf = encodePlayerInput(INPUT_KEY.ROTATE_LEFT, true);
-      engine._handleMessage({ data: buf });
+      const buf = inputDatagram(StarDuelEngine, { rotateLeft: true }, 1);
+      engine._onChannelMessage({ data: buf });
       expect(engine.remoteInputs.rotateLeft).toBe(true);
     });
 
@@ -364,8 +365,8 @@ describe("StarDuelEngine", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", true, null);
       engine.start();
 
-      const buf = encodePlayerInput(INPUT_KEY.ROTATE_RIGHT, true);
-      engine._handleMessage({ data: buf });
+      const buf = inputDatagram(StarDuelEngine, { rotateRight: true }, 2);
+      engine._onChannelMessage({ data: buf });
       expect(engine.remoteInputs.rotateRight).toBe(true);
     });
 
@@ -373,8 +374,8 @@ describe("StarDuelEngine", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", true, null);
       engine.start();
 
-      const buf = encodePlayerInput(INPUT_KEY.THRUST, true);
-      engine._handleMessage({ data: buf });
+      const buf = inputDatagram(StarDuelEngine, { thrust: true }, 3);
+      engine._onChannelMessage({ data: buf });
       expect(engine.remoteInputs.thrust).toBe(true);
     });
 
@@ -382,8 +383,8 @@ describe("StarDuelEngine", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", true, null);
       engine.start();
 
-      const buf = encodePlayerInput(INPUT_KEY.FIRE, true);
-      engine._handleMessage({ data: buf });
+      const buf = inputDatagram(StarDuelEngine, { fire: true }, 4);
+      engine._onChannelMessage({ data: buf });
       expect(engine.remoteInputs.fire).toBe(true);
     });
 
@@ -391,8 +392,8 @@ describe("StarDuelEngine", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", true, null);
       engine.start();
 
-      const buf = encodePlayerInput(INPUT_KEY.WARP, true);
-      engine._handleMessage({ data: buf });
+      const buf = inputDatagram(StarDuelEngine, { warp: true }, 5);
+      engine._onChannelMessage({ data: buf });
       expect(engine.remoteInputs.warp).toBe(true);
     });
 
@@ -426,7 +427,7 @@ describe("StarDuelEngine", () => {
         },
       };
       const buf = encodeGameState(fakeState);
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       expect(engine.gameState.score1).toBe(originalScore);
     });
@@ -444,7 +445,7 @@ describe("StarDuelEngine", () => {
         ship1: { x: 100, y: 200 },
         ship2: { x: 300, y: 400 },
       });
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       expect(engine.gameState.score1).toBe(5);
       expect(engine.gameState.score2).toBe(3);
@@ -456,7 +457,7 @@ describe("StarDuelEngine", () => {
       engine.start();
 
       const buf = encodeGameEnd(7, 3, 1);
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       expect(engine.gameState.phase).toBe(PHASE.FINISHED);
       expect(engine.gameState.winner).toBe(1);
@@ -469,7 +470,7 @@ describe("StarDuelEngine", () => {
       engine.start();
 
       const buf = encodeGameEnd(7, 3, 1);
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       expect(engine.audio.playWin).toHaveBeenCalled();
       expect(engine.audio.stopThrust).toHaveBeenCalled();
@@ -482,7 +483,7 @@ describe("StarDuelEngine", () => {
       engine._peerThrustAudioPlaying = true;
 
       const buf = encodeGameEnd(7, 3, 1);
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       expect(engine._peerThrustAudioPlaying).toBe(false);
     });
@@ -493,7 +494,7 @@ describe("StarDuelEngine", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", true, null);
       engine.start();
       expect(() => {
-        engine._handleMessage({ data: "not binary" });
+        engine._onChannelMessage({ data: "not binary" });
       }).not.toThrow();
     });
   });
@@ -502,71 +503,76 @@ describe("StarDuelEngine", () => {
     it("maps ArrowLeft to ROTATE_LEFT", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", true, null);
       engine.start();
-      engine._handleKeyDown({ key: "ArrowLeft", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "ArrowLeft", preventDefault: vi.fn(), repeat: false, target: null });
       expect(engine.localInputs.rotateLeft).toBe(true);
     });
 
     it("maps ArrowRight to ROTATE_RIGHT", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", true, null);
       engine.start();
-      engine._handleKeyDown({ key: "ArrowRight", preventDefault: vi.fn() });
+      engine._onKeyDown({
+        key: "ArrowRight",
+        preventDefault: vi.fn(),
+        repeat: false,
+        target: null,
+      });
       expect(engine.localInputs.rotateRight).toBe(true);
     });
 
     it("maps ArrowUp to THRUST", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", true, null);
       engine.start();
-      engine._handleKeyDown({ key: "ArrowUp", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "ArrowUp", preventDefault: vi.fn(), repeat: false, target: null });
       expect(engine.localInputs.thrust).toBe(true);
     });
 
     it("maps Space to FIRE", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", true, null);
       engine.start();
-      engine._handleKeyDown({ key: " ", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: " ", preventDefault: vi.fn(), repeat: false, target: null });
       expect(engine.localInputs.fire).toBe(true);
     });
 
     it("maps ArrowDown to WARP", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", true, null);
       engine.start();
-      engine._handleKeyDown({ key: "ArrowDown", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "ArrowDown", preventDefault: vi.fn(), repeat: false, target: null });
       expect(engine.localInputs.warp).toBe(true);
     });
 
     it("maps a to ROTATE_LEFT", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", true, null);
       engine.start();
-      engine._handleKeyDown({ key: "a", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "a", preventDefault: vi.fn(), repeat: false, target: null });
       expect(engine.localInputs.rotateLeft).toBe(true);
     });
 
     it("maps d to ROTATE_RIGHT", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", true, null);
       engine.start();
-      engine._handleKeyDown({ key: "d", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "d", preventDefault: vi.fn(), repeat: false, target: null });
       expect(engine.localInputs.rotateRight).toBe(true);
     });
 
     it("maps w to THRUST", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", true, null);
       engine.start();
-      engine._handleKeyDown({ key: "w", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "w", preventDefault: vi.fn(), repeat: false, target: null });
       expect(engine.localInputs.thrust).toBe(true);
     });
 
     it("maps s to WARP", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", true, null);
       engine.start();
-      engine._handleKeyDown({ key: "s", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "s", preventDefault: vi.fn(), repeat: false, target: null });
       expect(engine.localInputs.warp).toBe(true);
     });
 
     it("key release clears local input", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", true, null);
       engine.start();
-      engine._handleKeyDown({ key: "ArrowLeft", preventDefault: vi.fn() });
-      engine._handleKeyUp({ key: "ArrowLeft" });
+      engine._onKeyDown({ key: "ArrowLeft", preventDefault: vi.fn(), repeat: false, target: null });
+      engine._onKeyUp({ key: "ArrowLeft", repeat: false, target: null });
       expect(engine.localInputs.rotateLeft).toBe(false);
     });
 
@@ -583,31 +589,25 @@ describe("StarDuelEngine", () => {
       engine.start();
       channel.send.mockClear();
 
-      engine._handleKeyDown({ key: "ArrowLeft", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "ArrowLeft", preventDefault: vi.fn(), repeat: false, target: null });
 
       const lastCall = channel.send.mock.calls[channel.send.mock.calls.length - 1];
       const buf = lastCall[0];
       expect(buf).toBeInstanceOf(ArrayBuffer);
-      const view = new Uint8Array(buf);
-      expect(view[0]).toBe(MSG_TYPE.PLAYER_INPUT);
-      expect(view[1]).toBe(INPUT_KEY.ROTATE_LEFT);
-      expect(view[2]).toBe(1); // pressed
+      expect(decodeInputState(buf).mask).toBe(inputMask(StarDuelEngine, { rotateLeft: true }));
     });
 
     it("peer sends binary input on keyup", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", false, null);
       engine.start();
 
-      engine._handleKeyDown({ key: "ArrowUp", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "ArrowUp", preventDefault: vi.fn(), repeat: false, target: null });
       channel.send.mockClear();
-      engine._handleKeyUp({ key: "ArrowUp" });
+      engine._onKeyUp({ key: "ArrowUp", repeat: false, target: null });
 
       const lastCall = channel.send.mock.calls[channel.send.mock.calls.length - 1];
       const buf = lastCall[0];
-      const view = new Uint8Array(buf);
-      expect(view[0]).toBe(MSG_TYPE.PLAYER_INPUT);
-      expect(view[1]).toBe(INPUT_KEY.THRUST);
-      expect(view[2]).toBe(0); // released
+      expect(decodeInputState(buf).mask).toBe(inputMask(StarDuelEngine, {}));
     });
 
     it("host does not send input over channel", () => {
@@ -615,7 +615,7 @@ describe("StarDuelEngine", () => {
       engine.start();
       channel.send.mockClear();
 
-      engine._handleKeyDown({ key: "ArrowLeft", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "ArrowLeft", preventDefault: vi.fn(), repeat: false, target: null });
       expect(channel.send).not.toHaveBeenCalled();
     });
   });
@@ -644,12 +644,13 @@ describe("StarDuelEngine", () => {
     it("peer sends release for all 5 keys on blur", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", false, null);
       engine.start();
+      engine._onKeyDown({ key: "ArrowLeft", preventDefault: vi.fn(), repeat: false, target: null });
       channel.send.mockClear();
 
       engine._handleBlur();
 
-      // Should have sent 5 release messages (ROTATE_LEFT + ROTATE_RIGHT + THRUST + FIRE + WARP)
-      expect(channel.send).toHaveBeenCalledTimes(5);
+      // One datagram states every key at once.
+      expect(channel.send).toHaveBeenCalledTimes(1);
     });
 
     it("stops thrust audio", () => {
@@ -700,7 +701,7 @@ describe("StarDuelEngine", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", true, null);
       engine.start();
 
-      engine._handleMessage({ data: encodeGameReady() });
+      engine._onChannelMessage({ data: encodeGameReady() });
 
       expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
       expect(engine.gameState.countdown).toBe(3);
@@ -712,9 +713,10 @@ describe("StarDuelEngine", () => {
       engine.start();
       render.mockClear();
 
-      engine._handleMessage({ data: encodeGameReady() });
+      engine._onChannelMessage({ data: encodeGameReady() });
 
       // _startCountdown calls _broadcastState + _renderState at the start
+      engine._pump(0);
       expect(render).toHaveBeenCalled();
       expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
     });
@@ -722,7 +724,7 @@ describe("StarDuelEngine", () => {
     it("counts down from 3 to 1", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", true, null);
       engine.start();
-      engine._handleMessage({ data: encodeGameReady() });
+      engine._onChannelMessage({ data: encodeGameReady() });
 
       vi.advanceTimersByTime(1000);
       expect(engine.gameState.countdown).toBe(2);
@@ -734,7 +736,7 @@ describe("StarDuelEngine", () => {
     it("transitions to SPAWNING after countdown", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", true, null);
       engine.start();
-      engine._handleMessage({ data: encodeGameReady() });
+      engine._onChannelMessage({ data: encodeGameReady() });
 
       vi.advanceTimersByTime(3000);
 
@@ -744,7 +746,7 @@ describe("StarDuelEngine", () => {
     it("phase timer is nulled after countdown completes", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", true, null);
       engine.start();
-      engine._handleMessage({ data: encodeGameReady() });
+      engine._onChannelMessage({ data: encodeGameReady() });
 
       // After all 3 ticks, the countdown is done and _startSpawning is called
       vi.advanceTimersByTime(2000);
@@ -778,7 +780,7 @@ describe("StarDuelEngine", () => {
     function setupPlayingEngine(gameId = "star_duel") {
       engine = new StarDuelEngine(canvas, channel, gameId, true, null);
       engine.start();
-      engine._handleMessage({ data: encodeGameReady() });
+      engine._onChannelMessage({ data: encodeGameReady() });
 
       // Fast-forward through countdown (3s) + spawning (1.5s)
       vi.advanceTimersByTime(4500);
@@ -1003,7 +1005,7 @@ describe("StarDuelEngine", () => {
           invulnerable: false,
         },
       });
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       expect(engine.gameState.particles.length).toBeGreaterThan(0);
     });
@@ -1025,7 +1027,7 @@ describe("StarDuelEngine", () => {
           invulnerable: false,
         },
       });
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       expect(engine.gameState.particles.length).toBeGreaterThan(0);
     });
@@ -1037,7 +1039,7 @@ describe("StarDuelEngine", () => {
       engine.gameState.score2 = 0;
 
       const buf = buildEncodedState({ score1: 1, score2: 0 });
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       expect(engine.gameState.lastScorer).toBe(1);
     });
@@ -1049,7 +1051,7 @@ describe("StarDuelEngine", () => {
       engine.gameState.score2 = 0;
 
       const buf = buildEncodedState({ score1: 0, score2: 1 });
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       expect(engine.gameState.lastScorer).toBe(2);
     });
@@ -1061,7 +1063,7 @@ describe("StarDuelEngine", () => {
       engine.gameState.score2 = 0;
 
       const buf = buildEncodedState({ score1: 1, score2: 1 });
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       expect(engine.gameState.lastScorer).toBe(0);
     });
@@ -1076,7 +1078,7 @@ describe("StarDuelEngine", () => {
         mode: GAME_MODE.DEBRIS_FIELD,
         asteroidSeed: 12345,
       });
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       // Peer should have generated asteroids from the seed
       expect(engine.gameState.asteroids.length).toBeGreaterThan(0);
@@ -1099,7 +1101,7 @@ describe("StarDuelEngine", () => {
           invulnerable: false,
         },
       });
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       expect(engine.audio.playThrust).toHaveBeenCalled();
       expect(engine._peerThrustAudioPlaying).toBe(true);
@@ -1119,7 +1121,7 @@ describe("StarDuelEngine", () => {
           invulnerable: false,
         },
       });
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       expect(engine.audio.stopThrust).toHaveBeenCalled();
       expect(engine._peerThrustAudioPlaying).toBe(false);
@@ -1133,7 +1135,7 @@ describe("StarDuelEngine", () => {
       engine.gameState.phase = PHASE.WAITING;
 
       const buf = buildEncodedState({ phase: PHASE.COUNTDOWN, countdown: 3 });
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       expect(engine.audio.playCountdown).toHaveBeenCalled();
     });
@@ -1144,7 +1146,7 @@ describe("StarDuelEngine", () => {
       engine.gameState.phase = PHASE.COUNTDOWN;
 
       const buf = buildEncodedState({ phase: PHASE.SPAWNING });
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       expect(engine.audio.playSpawn).toHaveBeenCalled();
     });
@@ -1155,7 +1157,7 @@ describe("StarDuelEngine", () => {
       engine.gameState.phase = PHASE.PLAYING;
 
       const buf = buildEncodedState({ phase: PHASE.FINISHED });
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       expect(engine.audio.playWin).toHaveBeenCalled();
     });
@@ -1167,7 +1169,7 @@ describe("StarDuelEngine", () => {
       engine._peerThrustAudioPlaying = true;
 
       const buf = buildEncodedState({ phase: PHASE.ROUND_OVER });
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       expect(engine.audio.stopThrust).toHaveBeenCalled();
       expect(engine._peerThrustAudioPlaying).toBe(false);
@@ -1180,7 +1182,7 @@ describe("StarDuelEngine", () => {
       engine._peerThrustAudioPlaying = true;
 
       const buf = buildEncodedState({ phase: PHASE.FINISHED });
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       expect(engine.audio.stopThrust).toHaveBeenCalled();
       expect(engine._peerThrustAudioPlaying).toBe(false);
@@ -1192,7 +1194,7 @@ describe("StarDuelEngine", () => {
       engine.gameState.score1 = 0;
 
       const buf = buildEncodedState({ score1: 1 });
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       expect(engine.audio.playDeath).toHaveBeenCalled();
     });
@@ -1210,7 +1212,7 @@ describe("StarDuelEngine", () => {
     it("plays star proximity audio using min distance of both ships", () => {
       engine = new StarDuelEngine(canvas, channel, "gravity_well", true, null);
       engine.start();
-      engine._handleMessage({ data: encodeGameReady() });
+      engine._onChannelMessage({ data: encodeGameReady() });
       vi.advanceTimersByTime(4500); // countdown + spawn
 
       expect(engine.gameState.phase).toBe(PHASE.PLAYING);
@@ -1240,7 +1242,7 @@ describe("StarDuelEngine", () => {
     it("attemptWarp assigns result ship directly from physics", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", true, null);
       engine.start();
-      engine._handleMessage({ data: encodeGameReady() });
+      engine._onChannelMessage({ data: encodeGameReady() });
       vi.advanceTimersByTime(4500);
       expect(engine.gameState.phase).toBe(PHASE.PLAYING);
 
@@ -1328,7 +1330,7 @@ describe("StarDuelEngine", () => {
     it("P2 remote fire edge-trigger: false→true fires missile", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", true, null);
       engine.start();
-      engine._handleMessage({ data: encodeGameReady() });
+      engine._onChannelMessage({ data: encodeGameReady() });
       vi.advanceTimersByTime(4500); // countdown + spawn
       expect(engine.gameState.phase).toBe(PHASE.PLAYING);
 
@@ -1346,7 +1348,7 @@ describe("StarDuelEngine", () => {
     it("P2 remote warp edge-trigger: false→true attempts warp", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", true, null);
       engine.start();
-      engine._handleMessage({ data: encodeGameReady() });
+      engine._onChannelMessage({ data: encodeGameReady() });
       vi.advanceTimersByTime(4500);
       expect(engine.gameState.phase).toBe(PHASE.PLAYING);
 
@@ -1375,7 +1377,7 @@ describe("StarDuelEngine", () => {
     it("debris field mode: asteroid collision kills ship", () => {
       engine = new StarDuelEngine(canvas, channel, "debris_field", true, null);
       engine.start();
-      engine._handleMessage({ data: encodeGameReady() });
+      engine._onChannelMessage({ data: encodeGameReady() });
       vi.advanceTimersByTime(4500);
       expect(engine.gameState.phase).toBe(PHASE.PLAYING);
 
@@ -1403,7 +1405,7 @@ describe("StarDuelEngine", () => {
     it("gravity well mode: star collision kills ship", () => {
       engine = new StarDuelEngine(canvas, channel, "gravity_well", true, null);
       engine.start();
-      engine._handleMessage({ data: encodeGameReady() });
+      engine._onChannelMessage({ data: encodeGameReady() });
       vi.advanceTimersByTime(4500);
       expect(engine.gameState.phase).toBe(PHASE.PLAYING);
 
@@ -1429,7 +1431,7 @@ describe("StarDuelEngine", () => {
     it("onGameEnd null callback safety in _handleGameFinished", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", true, null);
       engine.start();
-      engine._handleMessage({ data: encodeGameReady() });
+      engine._onChannelMessage({ data: encodeGameReady() });
       vi.advanceTimersByTime(4500);
       expect(engine.gameState.phase).toBe(PHASE.PLAYING);
 

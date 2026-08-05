@@ -79,14 +79,14 @@ describe("HexSkiingAudio", () => {
     const firstOsc = audio._droneOsc;
     audio.startSkiDrone();
     expect(audio._droneOsc).toBe(firstOsc);
-    audio.destroy();
+    audio.dispose();
   });
 
   it("updates ski pitch without crashing", () => {
     const audio = new HexSkiingAudio();
     audio.startSkiDrone();
     expect(() => audio.updateSkiPitch(3.0)).not.toThrow();
-    audio.destroy();
+    audio.dispose();
   });
 
   it("plays sound effects without crashing", () => {
@@ -106,13 +106,13 @@ describe("HexSkiingAudio", () => {
     expect(() => audio.playRoundEnd()).not.toThrow();
     expect(() => audio.playVictory()).not.toThrow();
     expect(() => audio.playGameOver()).not.toThrow();
-    audio.destroy();
+    audio.dispose();
   });
 
-  it("destroys cleanly", () => {
+  it("disposes cleanly", () => {
     const audio = new HexSkiingAudio();
     audio.startSkiDrone();
-    audio.destroy();
+    audio.dispose();
     expect(audio._droneOsc).toBeNull();
     expect(audio._ctx).toBeNull();
   });
@@ -122,31 +122,31 @@ describe("HexSkiingAudio", () => {
     const audio = new HexSkiingAudio();
     expect(() => audio.playCountdown()).not.toThrow();
     expect(() => audio.startSkiDrone()).not.toThrow();
-    expect(() => audio.destroy()).not.toThrow();
+    expect(() => audio.dispose()).not.toThrow();
   });
 
   it("skips low-volume avalanche rumble", () => {
     const audio = new HexSkiingAudio();
     // proximity 0 should result in vol < 0.01, so no sound
     expect(() => audio.playAvalancheRumble(0)).not.toThrow();
-    audio.destroy();
+    audio.dispose();
   });
 
-  it("clears pending timers on destroy", () => {
+  it("clears pending timers on dispose", () => {
     const audio = new HexSkiingAudio();
     audio.playCollisionTree(); // Creates a setTimeout
     audio.playGateCleared(); // Creates multiple setTimeouts
     audio.playVictory(); // Creates multiple setTimeouts
     expect(audio._timers.length).toBeGreaterThan(0);
-    audio.destroy();
+    audio.dispose();
     expect(audio._timers).toEqual([]);
   });
 
-  it("destroy is idempotent", () => {
+  it("dispose is idempotent", () => {
     const audio = new HexSkiingAudio();
     audio.startSkiDrone();
-    audio.destroy();
-    expect(() => audio.destroy()).not.toThrow();
+    audio.dispose();
+    expect(() => audio.dispose()).not.toThrow();
     expect(audio._ctx).toBeNull();
     expect(audio._droneOsc).toBeNull();
   });

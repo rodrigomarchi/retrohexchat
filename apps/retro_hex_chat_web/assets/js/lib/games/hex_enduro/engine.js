@@ -14,8 +14,6 @@ import {
   EVENT,
   encodeGameState,
   decodeGameState,
-  encodePlayerInput,
-  decodePlayerInput,
   encodeGameEnd,
   decodeGameEnd,
   encodeGameReady,
@@ -53,9 +51,11 @@ const MODE_MAP = {
   hex_enduro_sprint: GAME_MODE.SPRINT,
 };
 
-const STATE_SEND_INTERVAL = 2; // broadcast every 2 frames (~30Hz)
+const STATE_SEND_INTERVAL = 1; // broadcast every fixed step (60Hz)
 
 export class HexEnduroEngine extends GameEngine {
+  static INPUT_BITS = { left: 0, right: 1, accel: 2, brake: 3, turbo: 4 };
+
   constructor(canvas, channel, gameId, isHost, onGameEnd) {
     super(canvas, channel, gameId, isHost);
     this.onGameEnd = onGameEnd;
@@ -74,7 +74,6 @@ export class HexEnduroEngine extends GameEngine {
     this.audio = new HexEnduroAudio();
     this.colors = null;
     this.peerReady = false;
-    this._boundGameLoop = this._gameLoop.bind(this);
     this._boundBlur = this._handleBlur.bind(this);
     this._boundChannelClose = this._handleChannelClose.bind(this);
   }
@@ -87,10 +86,10 @@ export class HexEnduroEngine extends GameEngine {
     this.channel.addEventListener("close", this._boundChannelClose);
 
     if (this.isHost) {
-      this._renderState();
+      this._invalidate();
     } else {
-      this._safeSend(encodeGameReady());
-      this._renderState();
+      this._advertiseReady(encodeGameReady);
+      this._invalidate();
     }
   }
 
@@ -101,16 +100,8 @@ export class HexEnduroEngine extends GameEngine {
       clearTimeout(this.phaseTimer);
       this.phaseTimer = null;
     }
-    if (this.animFrame) {
-      cancelAnimationFrame(this.animFrame);
-      this.animFrame = null;
-    }
     this.audio.stopEngineDrone();
-    this.audio.destroy();
-    this.running = false;
-    this.channel.removeEventListener("message", this._boundOnMessage);
-    document.removeEventListener("keydown", this._boundOnKeyDown);
-    document.removeEventListener("keyup", this._boundOnKeyUp);
+    super.stop();
   }
 
   // ── Input Handling ──
@@ -146,11 +137,7 @@ export class HexEnduroEngine extends GameEngine {
     if (k === null) return;
     e.preventDefault();
 
-    if (this.isHost) {
-      this._setInput(this.localInputs, k, true);
-    } else {
-      this._safeSend(encodePlayerInput(k, true));
-    }
+    this._setInput(this.localInputs, k, true);
   }
 
   _handleKeyUp(e) {
@@ -158,11 +145,7 @@ export class HexEnduroEngine extends GameEngine {
     if (k === null) return;
     e.preventDefault();
 
-    if (this.isHost) {
-      this._setInput(this.localInputs, k, false);
-    } else {
-      this._safeSend(encodePlayerInput(k, false));
-    }
+    this._setInput(this.localInputs, k, false);
   }
 
   _setInput(inputs, keyCode, pressed) {
@@ -187,17 +170,7 @@ export class HexEnduroEngine extends GameEngine {
 
   _handleBlur() {
     this.localInputs = { left: false, right: false, accel: false, brake: false, turbo: false };
-    if (!this.isHost) {
-      for (const k of [
-        INPUT_KEY.LEFT,
-        INPUT_KEY.RIGHT,
-        INPUT_KEY.ACCEL,
-        INPUT_KEY.BRAKE,
-        INPUT_KEY.TURBO,
-      ]) {
-        this._safeSend(encodePlayerInput(k, false));
-      }
-    }
+    this._sendInputState();
   }
 
   // ── Network Messages ──
@@ -208,14 +181,9 @@ export class HexEnduroEngine extends GameEngine {
     const type = getMessageType(buf);
 
     if (this.isHost) {
-      if (type === MSG_TYPE.PLAYER_INPUT) {
-        const inp = decodePlayerInput(buf);
-        if (inp) this._setInput(this.remoteInputs, inp.keyCode, inp.pressed);
-      } else if (type === MSG_TYPE.GAME_READY) {
-        if (!this.peerReady) {
-          this.peerReady = true;
-          this._startCountdown();
-        }
+      if (type === MSG_TYPE.GAME_READY && !this.peerReady) {
+        this.peerReady = true;
+        this._startCountdown();
       }
     } else {
       if (type === MSG_TYPE.GAME_STATE) {
@@ -224,7 +192,7 @@ export class HexEnduroEngine extends GameEngine {
         const result = decodeGameEnd(buf);
         if (result) {
           this.gameState = { ...this.gameState, phase: PHASE.FINISHED };
-          this._renderState();
+          this._invalidate();
           this.audio.stopEngineDrone();
           if (result.winner === (this.isHost ? 1 : 2)) {
             this.audio.playVictory();
@@ -267,7 +235,7 @@ export class HexEnduroEngine extends GameEngine {
     this._playEventsAudio(decoded.events);
 
     this.gameState = nested;
-    this._renderState();
+    this._invalidate();
   }
 
   // ── Countdown ──
@@ -276,7 +244,7 @@ export class HexEnduroEngine extends GameEngine {
     this.gameState.phase = PHASE.COUNTDOWN;
     this.gameState.countdown = 3;
     this._broadcastState();
-    this._renderState();
+    this._invalidate();
 
     let count = 3;
     const tick = () => {
@@ -291,7 +259,7 @@ export class HexEnduroEngine extends GameEngine {
       } else {
         this.gameState.countdown = count;
         this._broadcastState();
-        this._renderState();
+        this._invalidate();
         this.phaseTimer = setTimeout(tick, 1000);
       }
     };
@@ -300,9 +268,8 @@ export class HexEnduroEngine extends GameEngine {
   }
 
   _startGameLoop() {
-    if (this.animFrame) return; // guard against double-call
     this.frameCount = 0;
-    this.animFrame = requestAnimationFrame(this._boundGameLoop);
+    this._startSteps();
   }
 
   // ── Game Loop (Host Only) ──
@@ -389,15 +356,13 @@ export class HexEnduroEngine extends GameEngine {
     }
 
     // Render
-    this._renderState();
+    this._invalidate();
 
     // Check if game just ended
     if (s.phase === PHASE.FINISHED) {
       this._handleGameEnd();
       return;
     }
-
-    this.animFrame = requestAnimationFrame(this._boundGameLoop);
   }
 
   // ── Broadcast ──
@@ -405,7 +370,7 @@ export class HexEnduroEngine extends GameEngine {
   _broadcastState() {
     try {
       const packed = packState(this.gameState);
-      this._safeSend(encodeGameState(packed));
+      this._sendState(encodeGameState(packed));
     } catch (error) {
       // Don't crash the game loop, but a broadcast failure desyncs the peer —
       // log it instead of hiding the desync.
@@ -450,7 +415,7 @@ export class HexEnduroEngine extends GameEngine {
     };
 
     // Send game end to peer
-    this._safeSend(encodeGameEnd(result));
+    this._sendCommand(encodeGameEnd(result));
 
     // Notify LiveView
     if (this.onGameEnd) {
@@ -467,14 +432,9 @@ export class HexEnduroEngine extends GameEngine {
   }
 
   _handleChannelClose() {
+    this._stopSteps();
     if (this.running && this.gameState.phase !== PHASE.FINISHED) {
       this.gameState.phase = PHASE.FINISHED;
-
-      // Stop game loop
-      if (this.animFrame) {
-        cancelAnimationFrame(this.animFrame);
-        this.animFrame = null;
-      }
 
       // Clear countdown timer
       if (this.phaseTimer) {
@@ -482,7 +442,7 @@ export class HexEnduroEngine extends GameEngine {
         this.phaseTimer = null;
       }
 
-      this._renderState();
+      this._invalidate();
       this.audio.stopEngineDrone();
       this.audio.playGameOver();
 

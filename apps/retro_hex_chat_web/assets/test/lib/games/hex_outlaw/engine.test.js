@@ -1,10 +1,10 @@
+import { inputDatagram } from "../../../helpers/game_input.js";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { OutlawEngine } from "../../../../js/lib/games/hex_outlaw/engine.js";
 import {
   PHASE,
   GAME_MODE,
   encodeGameState,
-  encodePlayerInput,
   encodeGameReady,
   encodeGameEnd,
   INPUT_KEY,
@@ -213,8 +213,10 @@ describe("OutlawEngine", () => {
       right: true,
       fire: true,
     };
+    engine._sendInputState();
+    channel.send.mockClear();
     engine._handleBlur();
-    expect(channel.send).toHaveBeenCalledTimes(5);
+    expect(channel.send).toHaveBeenCalledTimes(1);
   });
 
   it("_handleBlur on host does not send key releases", () => {
@@ -266,6 +268,8 @@ describe("OutlawEngine", () => {
       const engine = new OutlawEngine(canvas, channel, "hex_outlaw", true, null);
       engine._localFirePressed = true;
       engine._remoteFirePressed = true;
+      engine._onKeyDown({ key: "ArrowUp", preventDefault: vi.fn(), repeat: false, target: null });
+      channel.send.mockClear();
       engine._handleBlur();
       expect(engine._localFirePressed).toBe(false);
       expect(engine._remoteFirePressed).toBe(false);
@@ -325,7 +329,7 @@ describe("OutlawEngine", () => {
       const state = createInitialState(GAME_MODE.QUICK_DRAW);
       state.score1 = 5;
       const buf = encodeGameState(state, BULLET_SPEED_X);
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
       expect(engine.gameState.score1).toBe(0); // Not applied
     });
 
@@ -346,22 +350,22 @@ describe("OutlawEngine", () => {
       state.score1 = 7;
       state.phase = PHASE.PLAYING;
       const buf = encodeGameState(state, BULLET_SPEED_X);
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
       expect(engine.gameState.score1).toBe(7);
       expect(engine.gameState.phase).toBe(PHASE.PLAYING);
     });
 
     it("host handles PLAYER_INPUT messages", () => {
       const engine = new OutlawEngine(canvas, channel, "hex_outlaw", true, null);
-      const buf = encodePlayerInput(INPUT_KEY.FIRE, true);
-      engine._handleMessage({ data: buf });
+      const buf = inputDatagram(OutlawEngine, { fire: true }, 1);
+      engine._onChannelMessage({ data: buf });
       expect(engine.remoteInputs.fire).toBe(true);
     });
 
     it("peer ignores PLAYER_INPUT messages", () => {
       const engine = new OutlawEngine(canvas, channel, "hex_outlaw", false, null);
-      const buf = encodePlayerInput(INPUT_KEY.FIRE, true);
-      engine._handleMessage({ data: buf });
+      const buf = inputDatagram(OutlawEngine, { fire: true }, 2);
+      engine._onChannelMessage({ data: buf });
       expect(engine.remoteInputs.fire).toBe(false);
     });
 
@@ -380,7 +384,7 @@ describe("OutlawEngine", () => {
         hit: "#fff",
       };
       const buf = encodeGameReady();
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
       expect(engine.peerReady).toBe(true);
       expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
       engine.stop();
@@ -401,10 +405,10 @@ describe("OutlawEngine", () => {
         hit: "#fff",
       };
       const buf = encodeGameReady();
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
       expect(engine.peerReady).toBe(true);
       // Send again — should not start another countdown
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
       expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
       engine.stop();
     });
@@ -429,19 +433,19 @@ describe("OutlawEngine", () => {
         roundWins1: 2,
         roundWins2: 1,
       });
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
       expect(engine.gameState.phase).toBe(PHASE.MATCH_OVER);
       expect(engine.gameState.roundWins1).toBe(2);
     });
 
     it("ignores non-ArrayBuffer messages", () => {
       const engine = new OutlawEngine(canvas, channel, "hex_outlaw", true, null);
-      expect(() => engine._handleMessage({ data: "not a buffer" })).not.toThrow();
+      expect(() => engine._onChannelMessage({ data: "not a buffer" })).not.toThrow();
     });
 
     it("ignores empty ArrayBuffer", () => {
       const engine = new OutlawEngine(canvas, channel, "hex_outlaw", true, null);
-      expect(() => engine._handleMessage({ data: new ArrayBuffer(0) })).not.toThrow();
+      expect(() => engine._onChannelMessage({ data: new ArrayBuffer(0) })).not.toThrow();
     });
   });
 

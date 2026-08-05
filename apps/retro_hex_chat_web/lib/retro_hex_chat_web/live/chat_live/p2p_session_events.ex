@@ -30,6 +30,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   alias RetroHexChat.Calls.Events, as: CallEvents
   alias RetroHexChat.Chat.Service, as: ChatService
   alias RetroHexChat.Commands.Handlers.Lobby, as: LobbyCommand
+  alias RetroHexChat.Games.Telemetry, as: GameTelemetry
   alias RetroHexChat.Lobby
   alias RetroHexChat.Lobby.Schema.Session, as: LobbySession
   alias RetroHexChat.P2P
@@ -386,6 +387,19 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   def handle_event("lobby_game_result", result, %{assigns: %{p2p_session: %{}}} = socket) do
     p2p = socket.assigns.p2p_session
     _ = Lobby.finish_game(p2p.token, p2p.user_id, result)
+    {:halt, socket}
+  end
+
+  # Both peers report their own view of the match every few seconds. Game state
+  # never reaches the server, so these samples are the only evidence a match was
+  # smooth on one side and stuttering on the other. The RTT is grafted on here
+  # because the connection stats already know it and the game engine does not.
+  def handle_event("lobby_game_telemetry", payload, %{assigns: %{p2p_session: %{}}} = socket) do
+    p2p = socket.assigns.p2p_session
+    rtt_ms = get_in(p2p.stats, [:connection, :rtt_ms]) || 0
+
+    _ = GameTelemetry.report(payload, %{rtt_ms: rtt_ms})
+
     {:halt, socket}
   end
 

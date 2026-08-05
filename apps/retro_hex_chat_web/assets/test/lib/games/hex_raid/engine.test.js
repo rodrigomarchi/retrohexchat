@@ -1,3 +1,4 @@
+import { inputDatagram } from "../../../helpers/game_input.js";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import {
   PHASE,
@@ -6,7 +7,6 @@ import {
   GAME_MODE,
   ENEMY_TYPE,
   encodeGameState,
-  encodePlayerInput,
   encodeGameEnd,
   encodeGameReady,
 } from "../../../../js/lib/games/hex_raid/protocol.js";
@@ -283,7 +283,7 @@ describe("HexRaidEngine", () => {
       engine.start();
       channel.send.mockClear();
 
-      engine._handleKeyDown({ key: "ArrowLeft", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "ArrowLeft", preventDefault: vi.fn(), repeat: false, target: null });
       expect(engine.localInputs.left).toBe(true);
       expect(channel.send).toHaveBeenCalled();
     });
@@ -446,7 +446,7 @@ describe("HexRaidEngine", () => {
       engine = new HexRaidEngine(canvas, channel, "hex_raid", true, null);
       engine.start();
 
-      const inputBuf = encodePlayerInput(INPUT_KEY.LEFT, true);
+      const inputBuf = inputDatagram(HexRaidEngine, { left: true }, 1);
       const handler = channel.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
       handler({ data: inputBuf });
 
@@ -457,11 +457,10 @@ describe("HexRaidEngine", () => {
       engine = new HexRaidEngine(canvas, channel, "hex_raid", true, null);
       engine.start();
 
-      const handler = channel.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
-      handler({ data: encodePlayerInput(INPUT_KEY.MINE, true) });
+      engine._onChannelMessage({ data: inputDatagram(HexRaidEngine, { mine: true }, 2) });
       expect(engine.remoteInputs.mine).toBe(true);
 
-      handler({ data: encodePlayerInput(INPUT_KEY.MINE, false) });
+      engine._onChannelMessage({ data: inputDatagram(HexRaidEngine, { mine: false }, 3) });
       expect(engine.remoteInputs.mine).toBe(false);
     });
   });
@@ -497,7 +496,7 @@ describe("HexRaidEngine", () => {
     }
 
     function getLoopFn() {
-      return globalThis.requestAnimationFrame.mock.calls.at(-1)[0];
+      return () => engine._gameLoop();
     }
 
     it("runs game loop and broadcasts state", () => {
@@ -506,10 +505,9 @@ describe("HexRaidEngine", () => {
 
       expect(engine.gameState.phase).toBe(PHASE.FLYING);
 
-      const loopFn = getLoopFn();
       channel.send.mockClear();
-      loopFn(); // frame 1
-      loopFn(); // frame 2 — should broadcast
+      engine._gameLoop(); // frame 1
+      engine._gameLoop(); // frame 2 — should broadcast
 
       expect(channel.send).toHaveBeenCalled();
       vi.useRealTimers();
@@ -559,7 +557,7 @@ describe("HexRaidEngine", () => {
     }
 
     function getLoopFn() {
-      return globalThis.requestAnimationFrame.mock.calls.at(-1)[0];
+      return () => engine._gameLoop();
     }
 
     it("deploys mine only once per press", () => {
@@ -601,7 +599,7 @@ describe("HexRaidEngine", () => {
     }
 
     function getLoopFn() {
-      return globalThis.requestAnimationFrame.mock.calls.at(-1)[0];
+      return () => engine._gameLoop();
     }
 
     it("edge-triggers remote fire", () => {
@@ -645,7 +643,7 @@ describe("HexRaidEngine", () => {
 
       // Should not throw
       expect(() => {
-        engine._safeSend(encodePlayerInput(INPUT_KEY.LEFT, true));
+        engine._safeSend(inputDatagram(HexRaidEngine, { left: true }, 4));
       }).not.toThrow();
     });
 
@@ -658,7 +656,7 @@ describe("HexRaidEngine", () => {
       });
 
       expect(() => {
-        engine._safeSend(encodePlayerInput(INPUT_KEY.LEFT, true));
+        engine._safeSend(inputDatagram(HexRaidEngine, { left: true }, 5));
       }).not.toThrow();
     });
   });
@@ -726,18 +724,13 @@ describe("HexRaidEngine", () => {
       vi.advanceTimersByTime(3000);
     }
 
-    function getLoopFn() {
-      return globalThis.requestAnimationFrame.mock.calls.at(-1)[0];
-    }
-
     it("plays playEnemyDestroyed on enemyKill event", () => {
       engine = new HexRaidEngine(canvas, channel, "hex_raid", true, null);
       setupFlying(engine, channel);
 
       // Manually set the event flag after a loop tick
-      const loopFn = getLoopFn();
       // Run one tick to get into the loop, then inject events
-      loopFn();
+      engine._gameLoop();
 
       // Now inject enemy kill event into state and run loop
       engine.gameState.events = { ...engine.gameState.events, enemyKill: true };
@@ -753,7 +746,7 @@ describe("HexRaidEngine", () => {
       engine.gameState.enemies = [{ type: 1, x: 320, y: 100, alive: true }];
       engine.gameState.enemyCount = 1;
 
-      loopFn();
+      engine._gameLoop();
 
       // The enemy hit should trigger playEnemyDestroyed
       expect(engine.audio.playEnemyDestroyed).toHaveBeenCalled();
@@ -764,7 +757,6 @@ describe("HexRaidEngine", () => {
       engine = new HexRaidEngine(canvas, channel, "hex_raid", true, null);
       setupFlying(engine, channel);
 
-      const loopFn = getLoopFn();
       engine.audio.playFuelCapture.mockClear();
 
       // Place fuel on jet1 position
@@ -773,7 +765,7 @@ describe("HexRaidEngine", () => {
       ];
       engine.gameState.fuelCount = 1;
 
-      loopFn();
+      engine._gameLoop();
 
       expect(engine.audio.playFuelCapture).toHaveBeenCalled();
       vi.useRealTimers();
@@ -783,7 +775,6 @@ describe("HexRaidEngine", () => {
       engine = new HexRaidEngine(canvas, channel, "hex_raid", true, null);
       setupFlying(engine, channel);
 
-      const loopFn = getLoopFn();
       engine.audio.playDeath.mockClear();
 
       // Drain fuel to 0 — drainFuel will cause death on next tick
@@ -795,7 +786,7 @@ describe("HexRaidEngine", () => {
       engine.gameState.jet1Lives = 2;
 
       // Run loop — drainFuel at fuel=0 should cause death
-      loopFn();
+      engine._gameLoop();
 
       // Either fuel ran out or we need another approach — check if death was called
       // If not, place jet1 outside river (river collision)
@@ -803,7 +794,7 @@ describe("HexRaidEngine", () => {
         // Place jet outside the river bounds to force river collision
         engine.gameState.jet1X = 0; // far left, likely outside river
         engine.gameState.jet1Alive = true;
-        loopFn();
+        engine._gameLoop();
       }
 
       expect(engine.audio.playDeath).toHaveBeenCalled();
@@ -814,7 +805,6 @@ describe("HexRaidEngine", () => {
       engine = new HexRaidEngine(canvas, channel, "hex_raid", true, null);
       setupFlying(engine, channel);
 
-      const loopFn = getLoopFn();
       engine.audio.playRespawn.mockClear();
 
       // Set up respawning state
@@ -823,7 +813,7 @@ describe("HexRaidEngine", () => {
       engine.gameState.jet1RespawnTimer = 1; // about to respawn
       engine.gameState.jet1Lives = 2;
 
-      loopFn();
+      engine._gameLoop();
 
       // If processRespawns returned alive state
       if (engine.gameState.jet1Alive) {
@@ -837,7 +827,6 @@ describe("HexRaidEngine", () => {
       engine = new HexRaidEngine(canvas, channel, "hex_raid", true, null);
       setupFlying(engine, channel);
 
-      const loopFn = getLoopFn();
       engine.audio.playFuelLow.mockClear();
 
       // Set low fuel and align frame count
@@ -846,7 +835,7 @@ describe("HexRaidEngine", () => {
       engine.frameCount = 0; // will be 0 on entry, then incremented
 
       // Frame 0 triggers (0 % 30 === 0)
-      loopFn();
+      engine._gameLoop();
       expect(engine.audio.playFuelLow).toHaveBeenCalled();
 
       vi.useRealTimers();
@@ -864,8 +853,7 @@ describe("HexRaidEngine", () => {
       engine.gameState.score1 = 100;
       engine.gameState.score2 = 200;
 
-      const loopFn = getLoopFn();
-      loopFn();
+      engine._gameLoop();
 
       // If game ended, phase should be FINISHED
       if (engine.gameState.phase === PHASE.FINISHED) {
@@ -942,7 +930,9 @@ describe("HexRaidEngine", () => {
       engine.start();
 
       engine.localInputs.left = true;
-      engine._handleKeyUp({ key: "ArrowLeft", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "ArrowLeft", preventDefault: vi.fn(), repeat: false, target: null });
+      channel.send.mockClear();
+      engine._onKeyUp({ key: "ArrowLeft", preventDefault: vi.fn(), repeat: false, target: null });
       expect(engine.localInputs.left).toBe(false);
     });
 
@@ -951,7 +941,14 @@ describe("HexRaidEngine", () => {
       engine.start();
       channel.send.mockClear();
 
-      engine._handleKeyUp({ key: "ArrowRight", preventDefault: vi.fn() });
+      engine._onKeyDown({
+        key: "ArrowRight",
+        preventDefault: vi.fn(),
+        repeat: false,
+        target: null,
+      });
+      channel.send.mockClear();
+      engine._onKeyUp({ key: "ArrowRight", preventDefault: vi.fn(), repeat: false, target: null });
       expect(channel.send).toHaveBeenCalled();
     });
 
@@ -960,7 +957,9 @@ describe("HexRaidEngine", () => {
       engine.start();
       channel.send.mockClear();
 
-      engine._handleKeyUp({ key: "Enter", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "Enter", preventDefault: vi.fn(), repeat: false, target: null });
+      channel.send.mockClear();
+      engine._onKeyUp({ key: "Enter", preventDefault: vi.fn(), repeat: false, target: null });
       expect(channel.send).not.toHaveBeenCalled();
     });
   });
@@ -988,11 +987,10 @@ describe("HexRaidEngine", () => {
       engine = new HexRaidEngine(canvas, channel, "hex_raid", true, null);
       engine.start();
 
-      const handler = channel.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
-      handler({ data: encodePlayerInput(INPUT_KEY.ACCEL, true) });
+      engine._onChannelMessage({ data: inputDatagram(HexRaidEngine, { accel: true }, 6) });
       expect(engine.remoteInputs.accel).toBe(true);
 
-      handler({ data: encodePlayerInput(INPUT_KEY.ACCEL, false) });
+      engine._onChannelMessage({ data: inputDatagram(HexRaidEngine, { accel: false }, 7) });
       expect(engine.remoteInputs.accel).toBe(false);
     });
 
@@ -1000,8 +998,7 @@ describe("HexRaidEngine", () => {
       engine = new HexRaidEngine(canvas, channel, "hex_raid", true, null);
       engine.start();
 
-      const handler = channel.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
-      handler({ data: encodePlayerInput(INPUT_KEY.DECEL, true) });
+      engine._onChannelMessage({ data: inputDatagram(HexRaidEngine, { decel: true }, 8) });
       expect(engine.remoteInputs.decel).toBe(true);
     });
 
@@ -1009,11 +1006,10 @@ describe("HexRaidEngine", () => {
       engine = new HexRaidEngine(canvas, channel, "hex_raid", true, null);
       engine.start();
 
-      const handler = channel.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
-      handler({ data: encodePlayerInput(INPUT_KEY.FIRE, true) });
+      engine._onChannelMessage({ data: inputDatagram(HexRaidEngine, { fire: true }, 9) });
       expect(engine.remoteInputs.fire).toBe(true);
 
-      handler({ data: encodePlayerInput(INPUT_KEY.FIRE, false) });
+      engine._onChannelMessage({ data: inputDatagram(HexRaidEngine, { fire: false }, 10) });
       expect(engine.remoteInputs.fire).toBe(false);
     });
 
@@ -1021,11 +1017,10 @@ describe("HexRaidEngine", () => {
       engine = new HexRaidEngine(canvas, channel, "hex_raid", true, null);
       engine.start();
 
-      const handler = channel.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
-      handler({ data: encodePlayerInput(INPUT_KEY.RIGHT, true) });
+      engine._onChannelMessage({ data: inputDatagram(HexRaidEngine, { right: true }, 11) });
       expect(engine.remoteInputs.right).toBe(true);
 
-      handler({ data: encodePlayerInput(INPUT_KEY.RIGHT, false) });
+      engine._onChannelMessage({ data: inputDatagram(HexRaidEngine, { right: false }, 12) });
       expect(engine.remoteInputs.right).toBe(false);
     });
   });
@@ -1085,6 +1080,7 @@ describe("HexRaidEngine", () => {
       render.mockClear();
 
       engine._renderState();
+      engine._pump(0);
       expect(render).toHaveBeenCalled();
     });
 
@@ -1094,6 +1090,7 @@ describe("HexRaidEngine", () => {
       render.mockClear();
 
       engine._renderState();
+      engine._pump(0);
       expect(render).not.toHaveBeenCalled();
     });
   });

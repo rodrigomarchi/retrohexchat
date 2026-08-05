@@ -8,6 +8,10 @@ import {
   encodeGameReady,
 } from "../../../../js/lib/games/pong/protocol.js";
 import { createInitialState, CANVAS_W, CANVAS_H } from "../../../../js/lib/games/pong/physics.js";
+import { decodeInputState, encodeInputState } from "../../../../js/lib/games/net_protocol.js";
+
+/** Pong declares `up` as bit 0 of its input mask. */
+const UP_BIT = 1 << 0;
 
 // Must mock pong_audio before importing PongEngine
 vi.mock("../../../../js/lib/games/pong/audio.js", () => ({
@@ -171,9 +175,13 @@ describe("PongEngine", () => {
       expect(engine.colors).toBeDefined();
     });
 
-    it("renders initial state", () => {
+    it("renders initial state on the next frame", () => {
       engine = new PongEngine(canvas, channel, "hex_pong", true, null);
       engine.start();
+
+      // Repaints coalesce into the presentation loop rather than drawing
+      // inline, so nothing is on the canvas until the frame runs.
+      engine._pump(0);
       expect(render).toHaveBeenCalled();
     });
   });
@@ -211,7 +219,7 @@ describe("PongEngine", () => {
       expect(engine.peerReady).toBe(false);
 
       const buf = encodeGameReady();
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       expect(engine.peerReady).toBe(true);
       expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
@@ -222,32 +230,33 @@ describe("PongEngine", () => {
       engine.start();
 
       const buf = encodeGameReady();
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
       const countdownCalls1 = engine.audio.playCountdown.mock.calls.length;
 
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
       const countdownCalls2 = engine.audio.playCountdown.mock.calls.length;
 
       expect(countdownCalls2).toBe(countdownCalls1);
     });
 
-    it("processes PLAYER_INPUT from peer", () => {
+    it("applies the peer's input mask", () => {
       engine = new PongEngine(canvas, channel, "hex_pong", true, null);
       engine.start();
 
-      const buf = encodePlayerInput(0, true); // UP pressed
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: encodeInputState(1, UP_BIT) });
 
       expect(engine.remoteInputs.up).toBe(true);
+      expect(engine.remoteInputs.down).toBe(false);
     });
 
-    it("processes PLAYER_INPUT release", () => {
+    it("releases a key when the mask stops carrying it", () => {
       engine = new PongEngine(canvas, channel, "hex_pong", true, null);
       engine.start();
-      engine.remoteInputs.up = true;
+      engine._onChannelMessage({ data: encodeInputState(1, UP_BIT) });
 
-      const buf = encodePlayerInput(0, false); // UP released
-      engine._handleMessage({ data: buf });
+      // Input is level-triggered: the release is the absence of the bit, so a
+      // lost datagram can never leave a key stuck down.
+      engine._onChannelMessage({ data: encodeInputState(2, 0) });
 
       expect(engine.remoteInputs.up).toBe(false);
     });
@@ -259,7 +268,7 @@ describe("PongEngine", () => {
 
       const fakeState = { ...createInitialState(), score1: 99 };
       const buf = encodeGameState(fakeState);
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       expect(engine.gameState.score1).toBe(originalState.score1);
     });
@@ -279,7 +288,7 @@ describe("PongEngine", () => {
         ballY: 200,
       };
       const buf = encodeGameState(state);
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       expect(engine.gameState.score1).toBe(5);
       expect(engine.gameState.score2).toBe(3);
@@ -292,7 +301,7 @@ describe("PongEngine", () => {
 
       const state = { ...createInitialState(), phase: PHASE.COUNTDOWN };
       const buf = encodeGameState(state);
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       expect(engine.audio.playCountdown).toHaveBeenCalled();
     });
@@ -303,7 +312,7 @@ describe("PongEngine", () => {
 
       const state = { ...createInitialState(), score1: 1, phase: PHASE.SCORED };
       const buf = encodeGameState(state);
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       expect(engine.audio.playScore).toHaveBeenCalled();
     });
@@ -313,7 +322,7 @@ describe("PongEngine", () => {
       engine.start();
 
       const buf = encodeGameEnd(11, 7, 1);
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       expect(engine.gameState.phase).toBe(PHASE.FINISHED);
       expect(engine.gameState.winner).toBe(1);
@@ -326,7 +335,7 @@ describe("PongEngine", () => {
       engine.start();
 
       const buf = encodePlayerInput(0, true);
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       // Peer should not process player input — only host does
       expect(engine.remoteInputs.up).toBe(false);
@@ -338,7 +347,7 @@ describe("PongEngine", () => {
       engine = new PongEngine(canvas, channel, "hex_pong", true, null);
       engine.start();
       expect(() => {
-        engine._handleMessage({ data: "not binary" });
+        engine._onChannelMessage({ data: "not binary" });
       }).not.toThrow();
     });
   });
@@ -347,36 +356,36 @@ describe("PongEngine", () => {
     it("maps ArrowUp to UP input", () => {
       engine = new PongEngine(canvas, channel, "hex_pong", true, null);
       engine.start();
-      engine._handleKeyDown({ key: "ArrowUp", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "ArrowUp", preventDefault: vi.fn(), repeat: false, target: null });
       expect(engine.localInputs.up).toBe(true);
     });
 
     it("maps ArrowDown to DOWN input", () => {
       engine = new PongEngine(canvas, channel, "hex_pong", true, null);
       engine.start();
-      engine._handleKeyDown({ key: "ArrowDown", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "ArrowDown", preventDefault: vi.fn(), repeat: false, target: null });
       expect(engine.localInputs.down).toBe(true);
     });
 
     it("maps w to UP input", () => {
       engine = new PongEngine(canvas, channel, "hex_pong", true, null);
       engine.start();
-      engine._handleKeyDown({ key: "w", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "w", preventDefault: vi.fn(), repeat: false, target: null });
       expect(engine.localInputs.up).toBe(true);
     });
 
     it("maps s to DOWN input", () => {
       engine = new PongEngine(canvas, channel, "hex_pong", true, null);
       engine.start();
-      engine._handleKeyDown({ key: "s", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "s", preventDefault: vi.fn(), repeat: false, target: null });
       expect(engine.localInputs.down).toBe(true);
     });
 
     it("key release clears local input", () => {
       engine = new PongEngine(canvas, channel, "hex_pong", true, null);
       engine.start();
-      engine._handleKeyDown({ key: "ArrowUp", preventDefault: vi.fn() });
-      engine._handleKeyUp({ key: "ArrowUp" });
+      engine._onKeyDown({ key: "ArrowUp", preventDefault: vi.fn(), repeat: false, target: null });
+      engine._onKeyUp({ key: "ArrowUp", repeat: false, target: null });
       expect(engine.localInputs.up).toBe(false);
     });
 
@@ -388,37 +397,29 @@ describe("PongEngine", () => {
       expect(e.preventDefault).not.toHaveBeenCalled();
     });
 
-    it("peer sends binary input on keydown", () => {
+    it("peer sends its input mask on keydown", () => {
       engine = new PongEngine(canvas, channel, "hex_pong", false, null);
       engine.start();
       channel.send.mockClear();
 
-      engine._handleKeyDown({ key: "ArrowUp", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "ArrowUp", repeat: false, target: null, preventDefault: vi.fn() });
 
-      // Should have sent encodePlayerInput
       const lastCall = channel.send.mock.calls[channel.send.mock.calls.length - 1];
       const buf = lastCall[0];
       expect(buf).toBeInstanceOf(ArrayBuffer);
-      const view = new Uint8Array(buf);
-      expect(view[0]).toBe(MSG_TYPE.PLAYER_INPUT);
-      expect(view[1]).toBe(0); // INPUT_KEY.UP
-      expect(view[2]).toBe(1); // pressed
+      expect(decodeInputState(buf).mask).toBe(UP_BIT);
     });
 
-    it("peer sends binary input on keyup", () => {
+    it("peer sends the cleared mask on keyup", () => {
       engine = new PongEngine(canvas, channel, "hex_pong", false, null);
       engine.start();
 
-      engine._handleKeyDown({ key: "ArrowDown", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "ArrowDown", repeat: false, target: null, preventDefault: vi.fn() });
       channel.send.mockClear();
-      engine._handleKeyUp({ key: "ArrowDown" });
+      engine._onKeyUp({ key: "ArrowDown", target: null });
 
       const lastCall = channel.send.mock.calls[channel.send.mock.calls.length - 1];
-      const buf = lastCall[0];
-      const view = new Uint8Array(buf);
-      expect(view[0]).toBe(MSG_TYPE.PLAYER_INPUT);
-      expect(view[1]).toBe(1); // INPUT_KEY.DOWN
-      expect(view[2]).toBe(0); // released
+      expect(decodeInputState(lastCall[0]).mask).toBe(0);
     });
 
     it("host does not send input over channel", () => {
@@ -426,7 +427,7 @@ describe("PongEngine", () => {
       engine.start();
       channel.send.mockClear();
 
-      engine._handleKeyDown({ key: "ArrowUp", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "ArrowUp", preventDefault: vi.fn(), repeat: false, target: null });
       expect(channel.send).not.toHaveBeenCalled();
     });
   });
@@ -443,15 +444,18 @@ describe("PongEngine", () => {
       expect(engine.localInputs.down).toBe(false);
     });
 
-    it("peer sends release for all keys on blur", () => {
+    it("peer flushes an empty mask on blur", () => {
       engine = new PongEngine(canvas, channel, "hex_pong", false, null);
       engine.start();
+      engine._onKeyDown({ key: "ArrowUp", repeat: false, target: null, preventDefault: vi.fn() });
       channel.send.mockClear();
 
       engine._handleBlur();
 
-      // Should have sent 2 release messages (UP + DOWN)
-      expect(channel.send).toHaveBeenCalledTimes(2);
+      // One datagram states every key at once, and it goes out now rather than
+      // on the next frame — the window just lost focus.
+      expect(channel.send).toHaveBeenCalledTimes(1);
+      expect(decodeInputState(channel.send.mock.calls[0][0]).mask).toBe(0);
     });
   });
 
@@ -540,7 +544,7 @@ describe("PongEngine", () => {
       engine = new PongEngine(canvas, channel, "hex_pong", true, null);
       engine.start();
 
-      engine._handleMessage({ data: encodeGameReady() });
+      engine._onChannelMessage({ data: encodeGameReady() });
 
       expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
       expect(engine.gameState.countdown).toBe(3);
@@ -550,7 +554,7 @@ describe("PongEngine", () => {
     it("counts down from 3 to 1", () => {
       engine = new PongEngine(canvas, channel, "hex_pong", true, null);
       engine.start();
-      engine._handleMessage({ data: encodeGameReady() });
+      engine._onChannelMessage({ data: encodeGameReady() });
 
       vi.advanceTimersByTime(1000);
       expect(engine.gameState.countdown).toBe(2);
@@ -562,7 +566,7 @@ describe("PongEngine", () => {
     it("transitions to SERVING after countdown", () => {
       engine = new PongEngine(canvas, channel, "hex_pong", true, null);
       engine.start();
-      engine._handleMessage({ data: encodeGameReady() });
+      engine._onChannelMessage({ data: encodeGameReady() });
 
       vi.advanceTimersByTime(3000);
 

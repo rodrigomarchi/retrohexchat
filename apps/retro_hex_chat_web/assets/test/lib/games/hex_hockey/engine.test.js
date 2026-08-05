@@ -1,3 +1,5 @@
+import { inputDatagram, inputMask } from "../../../helpers/game_input.js";
+import { decodeInputState } from "../../../../js/lib/games/net_protocol.js";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import {
   PHASE,
@@ -6,7 +8,6 @@ import {
   MSG_TYPE,
   EVENT,
   encodeGameState,
-  encodePlayerInput,
   encodeGameReady,
   encodeGameEnd,
 } from "../../../../js/lib/games/hex_hockey/protocol.js";
@@ -184,7 +185,7 @@ describe("hex_hockey_engine", () => {
 
     // Simulate receiving GAME_READY
     const readyBuf = encodeGameReady();
-    engine._handleMessage({ data: readyBuf });
+    engine._onChannelMessage({ data: readyBuf });
 
     expect(engine.peerReady).toBe(true);
     expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
@@ -195,9 +196,9 @@ describe("hex_hockey_engine", () => {
     const { engine } = createEngine("hex_hockey", true);
     engine.start();
 
-    engine._handleMessage({ data: encodeGameReady() });
+    engine._onChannelMessage({ data: encodeGameReady() });
     const phase1 = engine.gameState.phase;
-    engine._handleMessage({ data: encodeGameReady() }); // duplicate
+    engine._onChannelMessage({ data: encodeGameReady() }); // duplicate
     expect(engine.gameState.phase).toBe(phase1);
     engine.stop();
   });
@@ -212,7 +213,7 @@ describe("hex_hockey_engine", () => {
     const packed = packState(state);
     const buf = encodeGameState(packed);
 
-    engine._handleMessage({ data: buf });
+    engine._onChannelMessage({ data: buf });
     expect(engine.gameState.phase).toBe(PHASE.PLAYING);
     expect(engine.gameState.scoreP1).toBe(2);
     engine.stop();
@@ -222,12 +223,12 @@ describe("hex_hockey_engine", () => {
     const { engine } = createEngine("hex_hockey", true);
     engine.start();
 
-    const buf = encodePlayerInput(INPUT_KEY.RIGHT, true);
-    engine._handleMessage({ data: buf });
+    const buf = inputDatagram(HexHockeyEngine, { right: true }, 1);
+    engine._onChannelMessage({ data: buf });
     expect(engine.remoteInputs.right).toBe(true);
 
-    const buf2 = encodePlayerInput(INPUT_KEY.RIGHT, false);
-    engine._handleMessage({ data: buf2 });
+    const buf2 = inputDatagram(HexHockeyEngine, { right: false }, 2);
+    engine._onChannelMessage({ data: buf2 });
     expect(engine.remoteInputs.right).toBe(false);
     engine.stop();
   });
@@ -253,15 +254,15 @@ describe("hex_hockey_engine", () => {
     const { engine } = createEngine("hex_hockey", true);
     engine.start();
     // Should not throw
-    engine._handleMessage({ data: "string data" });
-    engine._handleMessage({ data: 42 });
+    engine._onChannelMessage({ data: "string data" });
+    engine._onChannelMessage({ data: 42 });
     engine.stop();
   });
 
   it("stop clears all state", () => {
     const { engine } = createEngine("hex_hockey", true);
     engine.start();
-    engine._handleMessage({ data: encodeGameReady() });
+    engine._onChannelMessage({ data: encodeGameReady() });
 
     engine.stop();
     expect(engine.peerReady).toBe(false);
@@ -276,7 +277,7 @@ describe("hex_hockey_engine", () => {
 
     const result = { winner: "p1", score_p1: 3, score_p2: 1 };
     const buf = encodeGameEnd(result);
-    engine._handleMessage({ data: buf });
+    engine._onChannelMessage({ data: buf });
 
     expect(onGameEnd).toHaveBeenCalledWith(
       expect.objectContaining({ winner: "p1", score_p1: 3, score_p2: 1 }),
@@ -289,11 +290,11 @@ describe("hex_hockey_engine", () => {
     engine.start();
 
     // Simulate action key press
-    engine._handleKeyDown({ key: " ", preventDefault: vi.fn() });
+    engine._onKeyDown({ key: " ", preventDefault: vi.fn(), repeat: false, target: null });
     expect(engine.localInputs.action).toBe(true);
     expect(engine.actionHandled).toBe(false);
 
-    engine._handleKeyUp({ key: " ", preventDefault: vi.fn() });
+    engine._onKeyUp({ key: " ", preventDefault: vi.fn(), repeat: false, target: null });
     expect(engine.localInputs.action).toBe(false);
     engine.stop();
   });
@@ -382,7 +383,7 @@ describe("hex_hockey_engine", () => {
   it("channel close ends game with disconnect flag", () => {
     const { engine, onGameEnd } = createEngine("hex_hockey", true);
     engine.start();
-    engine._handleMessage({ data: encodeGameReady() });
+    engine._onChannelMessage({ data: encodeGameReady() });
     // Game is in COUNTDOWN — simulate channel close
     engine._handleChannelClose();
     expect(engine.gameState.phase).toBe(PHASE.FINISHED);
@@ -955,7 +956,7 @@ describe("hex_hockey_engine", () => {
       engine.start();
 
       const buf = encodeGameEnd({ winner: "p1", score_p1: 3, score_p2: 2 });
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       expect(engine.audio.stopSuddenDeath).toHaveBeenCalled();
       expect(engine.audio.playVictory).toHaveBeenCalled();
@@ -967,7 +968,7 @@ describe("hex_hockey_engine", () => {
       engine.start();
 
       const buf = encodeGameEnd({ winner: "p2", score_p1: 1, score_p2: 5 });
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       expect(onGameEnd).toHaveBeenCalledWith(
         expect.objectContaining({ winner: "p2", score_p1: 1, score_p2: 5 }),
@@ -1079,21 +1080,32 @@ describe("hex_hockey_engine", () => {
       engine.start();
       channel.send.mockClear();
 
-      engine._handleKeyDown({ key: "ArrowRight", preventDefault: vi.fn() });
+      engine._onKeyDown({
+        key: "ArrowRight",
+        preventDefault: vi.fn(),
+        repeat: false,
+        target: null,
+      });
 
       expect(channel.send).toHaveBeenCalled();
-      const sentBuf = channel.send.mock.calls[0][0];
-      expect(new DataView(sentBuf).getUint8(0)).toBe(MSG_TYPE.PLAYER_INPUT);
+      expect(decodeInputState(channel.send.mock.calls[0][0]).mask).toBe(
+        inputMask(HexHockeyEngine, { right: true }),
+      );
       engine.stop();
     });
 
     it("peer sends input to host on keyup", () => {
       const { engine, channel } = createEngine("hex_hockey", false);
       engine.start();
-      engine.localInputs.right = true;
+      engine._onKeyDown({
+        key: "ArrowRight",
+        preventDefault: vi.fn(),
+        repeat: false,
+        target: null,
+      });
       channel.send.mockClear();
 
-      engine._handleKeyUp({ key: "ArrowRight", preventDefault: vi.fn() });
+      engine._onKeyUp({ key: "ArrowRight", preventDefault: vi.fn(), repeat: false, target: null });
 
       expect(channel.send).toHaveBeenCalled();
       engine.stop();

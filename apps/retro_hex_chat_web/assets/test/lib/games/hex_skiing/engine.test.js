@@ -1,3 +1,5 @@
+import { inputDatagram, inputMask } from "../../../helpers/game_input.js";
+import { decodeInputState } from "../../../../js/lib/games/net_protocol.js";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import {
   PHASE,
@@ -6,7 +8,6 @@ import {
   MSG_TYPE,
   EVENT,
   encodeGameReady,
-  encodePlayerInput,
   encodeGameEnd,
   encodeGameState,
 } from "../../../../js/lib/games/hex_skiing/protocol.js";
@@ -38,7 +39,7 @@ vi.mock("../../../../js/lib/games/hex_skiing/audio.js", () => ({
       playVictory: vi.fn(),
       playGameOver: vi.fn(),
       playAvalancheRumble: vi.fn(),
-      destroy: vi.fn(),
+      dispose: vi.fn(),
     };
   },
 }));
@@ -232,12 +233,14 @@ describe("HexSkiingEngine", () => {
     it("renders initial state on start (host)", () => {
       const { engine: e } = createEngine("hex_skiing", true);
       engine = e;
+      engine._pump(0);
       expect(render).toHaveBeenCalled();
     });
 
     it("renders initial state on start (peer)", () => {
       const { engine: e } = createEngine("hex_skiing", false);
       engine = e;
+      engine._pump(0);
       expect(render).toHaveBeenCalled();
     });
 
@@ -318,12 +321,12 @@ describe("HexSkiingEngine", () => {
       expect(engine.animFrame).toBeNull();
     });
 
-    it("destroys audio", () => {
+    it("releases the AudioContext on stop", () => {
       const { engine: e } = createEngine("hex_skiing", true);
       engine = e;
-      const destroySpy = engine.audio.destroy;
+      const disposeSpy = engine.audio.dispose;
       engine.stop();
-      expect(destroySpy).toHaveBeenCalled();
+      expect(disposeSpy).toHaveBeenCalled();
     });
 
     it("removes blur and channel close listeners", () => {
@@ -385,14 +388,24 @@ describe("HexSkiingEngine", () => {
       it("sets localInputs.left on ArrowLeft", () => {
         const { engine: e } = createEngine("hex_skiing", true);
         engine = e;
-        engine._handleKeyDown({ key: "ArrowLeft", preventDefault: vi.fn() });
+        engine._onKeyDown({
+          key: "ArrowLeft",
+          preventDefault: vi.fn(),
+          repeat: false,
+          target: null,
+        });
         expect(engine.localInputs.left).toBe(true);
       });
 
       it("sets localInputs.right on ArrowRight", () => {
         const { engine: e } = createEngine("hex_skiing", true);
         engine = e;
-        engine._handleKeyDown({ key: "ArrowRight", preventDefault: vi.fn() });
+        engine._onKeyDown({
+          key: "ArrowRight",
+          preventDefault: vi.fn(),
+          repeat: false,
+          target: null,
+        });
         expect(engine.localInputs.right).toBe(true);
       });
 
@@ -407,7 +420,12 @@ describe("HexSkiingEngine", () => {
       it("does not send anything over channel (host handles locally)", () => {
         const { engine: e, channel } = createEngine("hex_skiing", true);
         engine = e;
-        engine._handleKeyDown({ key: "ArrowLeft", preventDefault: vi.fn() });
+        engine._onKeyDown({
+          key: "ArrowLeft",
+          preventDefault: vi.fn(),
+          repeat: false,
+          target: null,
+        });
         expect(channel.send).not.toHaveBeenCalled();
       });
     });
@@ -417,19 +435,26 @@ describe("HexSkiingEngine", () => {
         const { engine: e, channel } = createEngine("hex_skiing", false);
         engine = e;
         channel.send.mockClear(); // clear GAME_READY send
-        engine._handleKeyDown({ key: "ArrowLeft", preventDefault: vi.fn() });
+        engine._onKeyDown({
+          key: "ArrowLeft",
+          preventDefault: vi.fn(),
+          repeat: false,
+          target: null,
+        });
         expect(channel.send).toHaveBeenCalledTimes(1);
         const buf = channel.send.mock.calls[0][0];
-        const view = new DataView(buf);
-        expect(view.getUint8(0)).toBe(MSG_TYPE.PLAYER_INPUT);
-        expect(view.getUint8(1)).toBe(INPUT_KEY.LEFT);
-        expect(view.getUint8(2)).toBe(1); // pressed = true
+        expect(decodeInputState(buf).mask).toBe(inputMask(HexSkiingEngine, { left: true }));
       });
 
       it("also sets localInputs on peer (for local display)", () => {
         const { engine: e } = createEngine("hex_skiing", false);
         engine = e;
-        engine._handleKeyDown({ key: "ArrowLeft", preventDefault: vi.fn() });
+        engine._onKeyDown({
+          key: "ArrowLeft",
+          preventDefault: vi.fn(),
+          repeat: false,
+          target: null,
+        });
         expect(engine.localInputs.left).toBe(true);
       });
     });
@@ -439,7 +464,7 @@ describe("HexSkiingEngine", () => {
         const { engine: e } = createEngine("hex_skiing", true);
         engine = e;
         engine.localInputs.left = true;
-        engine._handleKeyUp({ key: "ArrowLeft", preventDefault: vi.fn() });
+        engine._onKeyUp({ key: "ArrowLeft", preventDefault: vi.fn(), repeat: false, target: null });
         expect(engine.localInputs.left).toBe(false);
       });
 
@@ -447,7 +472,18 @@ describe("HexSkiingEngine", () => {
         const { engine: e } = createEngine("hex_skiing", true);
         engine = e;
         engine.localInputs.right = true;
-        engine._handleKeyUp({ key: "ArrowRight", preventDefault: vi.fn() });
+        engine._onKeyDown({
+          key: "ArrowRight",
+          preventDefault: vi.fn(),
+          repeat: false,
+          target: null,
+        });
+        engine._onKeyUp({
+          key: "ArrowRight",
+          preventDefault: vi.fn(),
+          repeat: false,
+          target: null,
+        });
         expect(engine.localInputs.right).toBe(false);
       });
     });
@@ -457,13 +493,22 @@ describe("HexSkiingEngine", () => {
         const { engine: e, channel } = createEngine("hex_skiing", false);
         engine = e;
         channel.send.mockClear();
-        engine._handleKeyUp({ key: "ArrowRight", preventDefault: vi.fn() });
+        engine._onKeyDown({
+          key: "ArrowRight",
+          preventDefault: vi.fn(),
+          repeat: false,
+          target: null,
+        });
+        channel.send.mockClear();
+        engine._onKeyUp({
+          key: "ArrowRight",
+          preventDefault: vi.fn(),
+          repeat: false,
+          target: null,
+        });
         expect(channel.send).toHaveBeenCalledTimes(1);
         const buf = channel.send.mock.calls[0][0];
-        const view = new DataView(buf);
-        expect(view.getUint8(0)).toBe(MSG_TYPE.PLAYER_INPUT);
-        expect(view.getUint8(1)).toBe(INPUT_KEY.RIGHT);
-        expect(view.getUint8(2)).toBe(0); // pressed = false
+        expect(decodeInputState(buf).mask).toBe(0);
       });
     });
   });
@@ -475,15 +520,15 @@ describe("HexSkiingEngine", () => {
       const canvas = createMockCanvas();
       const channel = createMockChannel();
       engine = new HexSkiingEngine(canvas, channel, "hex_skiing", true, null);
-      expect(() => engine._handleMessage({ data: "hello" })).not.toThrow();
-      expect(() => engine._handleMessage({ data: null })).not.toThrow();
+      expect(() => engine._onChannelMessage({ data: "hello" })).not.toThrow();
+      expect(() => engine._onChannelMessage({ data: null })).not.toThrow();
     });
 
     it("handles PLAYER_INPUT messages on host — left press", () => {
       const canvas = createMockCanvas();
       const channel = createMockChannel();
       engine = new HexSkiingEngine(canvas, channel, "hex_skiing", true, null);
-      engine._handleMessage({ data: encodePlayerInput(INPUT_KEY.LEFT, true) });
+      engine._onChannelMessage({ data: inputDatagram(HexSkiingEngine, { left: true }, 1) });
       expect(engine.remoteInputs.left).toBe(true);
     });
 
@@ -492,7 +537,7 @@ describe("HexSkiingEngine", () => {
       const channel = createMockChannel();
       engine = new HexSkiingEngine(canvas, channel, "hex_skiing", true, null);
       engine.remoteInputs.left = true;
-      engine._handleMessage({ data: encodePlayerInput(INPUT_KEY.LEFT, false) });
+      engine._onChannelMessage({ data: inputDatagram(HexSkiingEngine, { left: false }, 2) });
       expect(engine.remoteInputs.left).toBe(false);
     });
 
@@ -500,7 +545,7 @@ describe("HexSkiingEngine", () => {
       const canvas = createMockCanvas();
       const channel = createMockChannel();
       engine = new HexSkiingEngine(canvas, channel, "hex_skiing", true, null);
-      engine._handleMessage({ data: encodePlayerInput(INPUT_KEY.RIGHT, true) });
+      engine._onChannelMessage({ data: inputDatagram(HexSkiingEngine, { right: true }, 3) });
       expect(engine.remoteInputs.right).toBe(true);
     });
 
@@ -508,7 +553,7 @@ describe("HexSkiingEngine", () => {
       it("sets peerReady and starts countdown on host", () => {
         const { engine: e } = createEngine("hex_skiing", true);
         engine = e;
-        engine._handleMessage({ data: encodeGameReady() });
+        engine._onChannelMessage({ data: encodeGameReady() });
         expect(engine.peerReady).toBe(true);
         expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
         expect(engine.gameState.countdown).toBe(3);
@@ -517,31 +562,31 @@ describe("HexSkiingEngine", () => {
       it("guards against duplicate GAME_READY", () => {
         const { engine: e } = createEngine("hex_skiing", true);
         engine = e;
-        engine._handleMessage({ data: encodeGameReady() });
+        engine._onChannelMessage({ data: encodeGameReady() });
         expect(engine.peerReady).toBe(true);
         // Second should be a no-op
-        engine._handleMessage({ data: encodeGameReady() });
+        engine._onChannelMessage({ data: encodeGameReady() });
         expect(engine.peerReady).toBe(true);
       });
 
       it("plays countdown audio on GAME_READY", () => {
         const { engine: e } = createEngine("hex_skiing", true);
         engine = e;
-        engine._handleMessage({ data: encodeGameReady() });
+        engine._onChannelMessage({ data: encodeGameReady() });
         expect(engine.audio.playCountdown).toHaveBeenCalled();
       });
 
       it("starts ski drone audio on GAME_READY", () => {
         const { engine: e } = createEngine("hex_skiing", true);
         engine = e;
-        engine._handleMessage({ data: encodeGameReady() });
+        engine._onChannelMessage({ data: encodeGameReady() });
         expect(engine.audio.startSkiDrone).toHaveBeenCalled();
       });
 
       it("broadcasts state after starting countdown", () => {
         const { engine: e, channel } = createEngine("hex_skiing", true);
         engine = e;
-        engine._handleMessage({ data: encodeGameReady() });
+        engine._onChannelMessage({ data: encodeGameReady() });
         // Should have sent game state
         expect(channel.send).toHaveBeenCalled();
       });
@@ -558,7 +603,7 @@ describe("HexSkiingEngine", () => {
         const packed = packState(state);
         const buf = encodeGameState(packed);
 
-        engine._handleMessage({ data: buf });
+        engine._onChannelMessage({ data: buf });
 
         expect(engine.gameState).not.toBeNull();
         expect(engine.gameState.phase).toBe(PHASE.RACING);
@@ -573,7 +618,8 @@ describe("HexSkiingEngine", () => {
         const packed = packState(state);
         const buf = encodeGameState(packed);
 
-        engine._handleMessage({ data: buf });
+        engine._onChannelMessage({ data: buf });
+        engine._pump(0);
         expect(render).toHaveBeenCalled();
       });
 
@@ -586,7 +632,7 @@ describe("HexSkiingEngine", () => {
         const packed = packState(state);
         const buf = encodeGameState(packed);
 
-        engine._handleMessage({ data: buf });
+        engine._onChannelMessage({ data: buf });
         expect(spy).toHaveBeenCalled();
         // The events bitmask should have been passed
         const calledEvents = spy.mock.calls[0][0];
@@ -600,21 +646,21 @@ describe("HexSkiingEngine", () => {
         const onGameEnd = vi.fn();
         const { engine: e } = createEngine("hex_skiing", false, onGameEnd);
         engine = e;
-        engine._handleMessage({ data: encodeGameEnd({ score1: 2, score2: 1, winner: 1 }) });
+        engine._onChannelMessage({ data: encodeGameEnd({ score1: 2, score2: 1, winner: 1 }) });
         expect(onGameEnd).toHaveBeenCalledWith({ score1: 2, score2: 1, winner: 1 });
       });
 
       it("stops ski drone audio", () => {
         const { engine: e } = createEngine("hex_skiing", false);
         engine = e;
-        engine._handleMessage({ data: encodeGameEnd({ score1: 0, score2: 0, winner: 0 }) });
+        engine._onChannelMessage({ data: encodeGameEnd({ score1: 0, score2: 0, winner: 0 }) });
         expect(engine.audio.stopSkiDrone).toHaveBeenCalled();
       });
 
       it("plays victory when winner > 0", () => {
         const { engine: e } = createEngine("hex_skiing", false);
         engine = e;
-        engine._handleMessage({ data: encodeGameEnd({ score1: 2, score2: 1, winner: 1 }) });
+        engine._onChannelMessage({ data: encodeGameEnd({ score1: 2, score2: 1, winner: 1 }) });
         expect(engine.audio.playVictory).toHaveBeenCalled();
         expect(engine.audio.playGameOver).not.toHaveBeenCalled();
       });
@@ -622,7 +668,7 @@ describe("HexSkiingEngine", () => {
       it("plays gameOver when winner = 0 (draw)", () => {
         const { engine: e } = createEngine("hex_skiing", false);
         engine = e;
-        engine._handleMessage({ data: encodeGameEnd({ score1: 1, score2: 1, winner: 0 }) });
+        engine._onChannelMessage({ data: encodeGameEnd({ score1: 1, score2: 1, winner: 0 }) });
         expect(engine.audio.playGameOver).toHaveBeenCalled();
         expect(engine.audio.playVictory).not.toHaveBeenCalled();
       });
@@ -712,6 +758,7 @@ describe("HexSkiingEngine", () => {
       render.mockClear();
 
       engine._gameLoop();
+      engine._pump(0);
       expect(render).toHaveBeenCalled();
     });
   });
@@ -743,6 +790,7 @@ describe("HexSkiingEngine", () => {
       engine = e;
       render.mockClear();
       engine._gameLoop();
+      engine._pump(0);
       expect(render).toHaveBeenCalled();
     });
 
@@ -755,13 +803,13 @@ describe("HexSkiingEngine", () => {
       expect(channel.send).toHaveBeenCalled();
     });
 
-    it("does not broadcast on odd frames", () => {
+    it("broadcasts on every step", () => {
       const { engine: e, channel } = setupRacingEngine();
       engine = e;
-      engine.frameCount = 0; // Next will be 1, which is % 2 !== 0
+      engine.frameCount = 0;
       channel.send.mockClear();
       engine._gameLoop();
-      expect(channel.send).not.toHaveBeenCalled();
+      expect(channel.send).toHaveBeenCalled();
     });
 
     it("updates audio ski pitch each frame", () => {
@@ -828,6 +876,7 @@ describe("HexSkiingEngine", () => {
       render.mockClear();
 
       engine._gameLoop();
+      engine._pump(0);
       expect(render).toHaveBeenCalled();
     });
   });
@@ -858,9 +907,11 @@ describe("HexSkiingEngine", () => {
       const { engine: e } = createEngine("hex_skiing", true);
       engine = e;
       engine.gameState.phase = PHASE.FINISHED;
+      engine._pump(0);
       render.mockClear();
 
-      engine._gameLoop();
+      engine._invalidate();
+      engine._pump(0);
       expect(render).toHaveBeenCalled();
     });
   });
@@ -1112,6 +1163,7 @@ describe("HexSkiingEngine", () => {
       engine.gameState.phase = PHASE.RACING;
       render.mockClear();
       engine._handleChannelClose();
+      engine._pump(0);
       expect(render).toHaveBeenCalled();
     });
 
@@ -1154,6 +1206,7 @@ describe("HexSkiingEngine", () => {
       engine.gameState.phase = PHASE.WAITING; // Not handled in main loop branches
       render.mockClear();
       engine._gameLoop();
+      engine._pump(0);
       expect(render).toHaveBeenCalled();
     });
   });

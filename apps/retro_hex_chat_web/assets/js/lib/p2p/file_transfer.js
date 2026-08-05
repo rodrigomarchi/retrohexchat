@@ -7,8 +7,15 @@ import { t, jt } from "../i18n.js";
 // --- Constants ---
 
 export const CHUNK_SIZE = 65536; // 64 KB
-export const HIGH_WATER_MARK = 1048576; // 1 MB
-export const LOW_WATER_MARK = 262144; // 256 KB
+
+// The transfer shares one SCTP association with the game channel, and browsers
+// do not interleave messages across streams (RFC 8260 is not enabled), so
+// whatever is queued here delays everything else on the connection. A megabyte
+// of queued chunks is several hundred milliseconds of head-of-line delay for a
+// game running alongside the transfer; a quarter of that still keeps the link
+// saturated while bounding the damage.
+export const HIGH_WATER_MARK = 262144; // 256 KB
+export const LOW_WATER_MARK = 65536; // 64 KB
 export const PROGRESS_THROTTLE_MS = 250;
 export const SPEED_WINDOW_MS = 3000;
 

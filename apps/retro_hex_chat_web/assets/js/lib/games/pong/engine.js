@@ -12,8 +12,6 @@ import {
   INPUT_KEY,
   encodeGameState,
   decodeGameState,
-  encodePlayerInput,
-  decodePlayerInput,
   encodeGameEnd,
   decodeGameEnd,
   encodeGameReady,
@@ -35,11 +33,15 @@ import {
 import { render as renderFrame, getColors } from "./renderer.js";
 import { PongAudio } from "./audio.js";
 
-const STATE_SEND_INTERVAL = 2; // Send state every N frames (~30Hz at 60fps)
+const STATE_SEND_INTERVAL = 1; // broadcast every fixed step (60Hz)
 const SERVE_DELAY = 800; // ms
 const SCORE_PAUSE = 1500; // ms
 
 export class PongEngine extends GameEngine {
+  static INPUT_BITS = { up: 0, down: 1 };
+
+  static INTERPOLATION = { keys: ["ballX", "ballY", "paddle1Y", "paddle2Y"] };
+
   /**
    * @param {HTMLCanvasElement} canvas
    * @param {RTCDataChannel} channel
@@ -58,8 +60,6 @@ export class PongEngine extends GameEngine {
     this.audio = new PongAudio();
     this.colors = null;
     this.peerReady = false;
-    this.readyTimer = null;
-    this._boundGameLoop = this._gameLoop.bind(this);
     this._boundBlur = this._handleBlur.bind(this);
     this._boundChannelClose = this._handleChannelClose.bind(this);
   }
@@ -73,13 +73,12 @@ export class PongEngine extends GameEngine {
 
     if (this.isHost) {
       // Host waits for peer GAME_READY, then starts countdown
-      this._renderState();
+      this._invalidate();
     } else {
-      // The host engine may still be loading lazily, so keep advertising readiness
-      // until the first authoritative state arrives.
-      this._sendReady();
-      this.readyTimer = setInterval(() => this._sendReady(), 250);
-      this._renderState();
+      // The host engine may still be loading lazily, so the base keeps
+      // advertising readiness until the host answers.
+      this._advertiseReady(encodeGameReady);
+      this._invalidate();
     }
   }
 
@@ -90,7 +89,6 @@ export class PongEngine extends GameEngine {
       clearTimeout(this.phaseTimer);
       this.phaseTimer = null;
     }
-    this._clearReadyTimer();
     super.stop();
   }
 
@@ -105,27 +103,12 @@ export class PongEngine extends GameEngine {
         if (!this.isHost) {
           const decoded = decodeGameState(buf);
           if (decoded) {
-            this._clearReadyTimer();
             const prevPhase = this.gameState.phase;
             const prevScore1 = this.gameState.score1;
             const prevScore2 = this.gameState.score2;
 
-            this.gameState = { ...this.gameState, ...decoded };
+            this._ingestSnapshot(decoded);
             this._playPhaseAudio(prevPhase, decoded.phase, prevScore1, prevScore2);
-            this._renderState();
-          }
-        }
-        break;
-
-      case MSG_TYPE.PLAYER_INPUT:
-        if (this.isHost) {
-          const input = decodePlayerInput(buf);
-          if (input) {
-            if (input.keyCode === INPUT_KEY.UP) {
-              this.remoteInputs.up = input.pressed;
-            } else if (input.keyCode === INPUT_KEY.DOWN) {
-              this.remoteInputs.down = input.pressed;
-            }
           }
         }
         break;
@@ -145,7 +128,7 @@ export class PongEngine extends GameEngine {
           this.gameState.score1 = result.score1;
           this.gameState.score2 = result.score2;
           this.audio.playWin();
-          this._renderState();
+          this._invalidate();
         }
         break;
       }
@@ -159,10 +142,6 @@ export class PongEngine extends GameEngine {
 
     if (keyCode === INPUT_KEY.UP) this.localInputs.up = true;
     if (keyCode === INPUT_KEY.DOWN) this.localInputs.down = true;
-
-    if (!this.isHost) {
-      this._safeSend(encodePlayerInput(keyCode, true));
-    }
   }
 
   _handleKeyUp(e) {
@@ -171,10 +150,6 @@ export class PongEngine extends GameEngine {
 
     if (keyCode === INPUT_KEY.UP) this.localInputs.up = false;
     if (keyCode === INPUT_KEY.DOWN) this.localInputs.down = false;
-
-    if (!this.isHost) {
-      this._safeSend(encodePlayerInput(keyCode, false));
-    }
   }
 
   /** Map keyboard key to INPUT_KEY enum. */
@@ -187,21 +162,7 @@ export class PongEngine extends GameEngine {
   /** Clear all inputs on window blur (prevents stuck keys). */
   _handleBlur() {
     this.localInputs = { up: false, down: false };
-    if (!this.isHost) {
-      this._safeSend(encodePlayerInput(INPUT_KEY.UP, false));
-      this._safeSend(encodePlayerInput(INPUT_KEY.DOWN, false));
-    }
-  }
-
-  _sendReady() {
-    this._safeSend(encodeGameReady());
-  }
-
-  _clearReadyTimer() {
-    if (this.readyTimer) {
-      clearInterval(this.readyTimer);
-      this.readyTimer = null;
-    }
+    this._sendInputState();
   }
 
   /** Host: start countdown phase. */
@@ -217,7 +178,7 @@ export class PongEngine extends GameEngine {
       if (count > 0) {
         this.gameState.countdown = count;
         this._broadcastState();
-        this._renderState();
+        this._invalidate();
         this.audio.playCountdown();
         this.phaseTimer = setTimeout(tick, 1000);
       } else {
@@ -232,7 +193,7 @@ export class PongEngine extends GameEngine {
     this.gameState.phase = PHASE.SERVING;
     this.gameState.countdown = 0;
     this._broadcastState();
-    this._renderState();
+    this._invalidate();
 
     this.phaseTimer = setTimeout(() => {
       this.gameState = serveBall(this.gameState);
@@ -244,11 +205,11 @@ export class PongEngine extends GameEngine {
   /** Host: start the main game loop. */
   _startGameLoop() {
     this.frameCount = 0;
-    this.animFrame = requestAnimationFrame(this._boundGameLoop);
+    this._startSteps();
   }
 
-  /** Host: main game loop (60Hz via requestAnimationFrame). */
-  _gameLoop(_timestamp) {
+  /** Host: one simulation step, driven at a fixed 60Hz by the frame clock. */
+  _gameLoop() {
     if (!this.running) return;
 
     // Update paddles
@@ -288,7 +249,7 @@ export class PongEngine extends GameEngine {
     }
 
     // Render
-    this._renderState();
+    this._invalidate();
 
     // Send state to peer
     this.frameCount++;
@@ -298,28 +259,28 @@ export class PongEngine extends GameEngine {
 
     // Handle phase transitions
     if (this.gameState.phase === PHASE.FINISHED) {
+      this._stopSteps();
       this._handleGameFinished();
       return;
     }
 
     if (this.gameState.phase === PHASE.SCORED) {
       // Pause then serve again
+      this._stopSteps();
       this.phaseTimer = setTimeout(() => {
         this._startServing();
       }, SCORE_PAUSE);
-      return;
     }
-
-    this.animFrame = requestAnimationFrame(this._boundGameLoop);
   }
 
   /** Host: handle game end. */
   _handleGameFinished() {
+    this._stopSteps();
     const { score1, score2, winner } = this.gameState;
     this.audio.playWin();
 
-    // Send game end to peer
-    this._safeSend(encodeGameEnd(score1, score2, winner));
+    // The channel is unreliable, and no later message restates the result.
+    this._sendCommand(encodeGameEnd(score1, score2, winner));
     this._broadcastState();
 
     // Notify LiveView
@@ -334,9 +295,11 @@ export class PongEngine extends GameEngine {
   // ── Connection Resilience ──
 
   _handleChannelClose() {
+    this._stopSteps();
     if (!this.gameState || this.gameState.phase === PHASE.FINISHED) return;
     this.gameState.phase = PHASE.FINISHED;
-    this._renderState();
+    this._stopSteps();
+    this._invalidate();
     if (this.onGameEnd) {
       try {
         this.onGameEnd({
@@ -353,7 +316,7 @@ export class PongEngine extends GameEngine {
 
   /** Send game state over DataChannel. */
   _broadcastState() {
-    this._safeSend(encodeGameState(this.gameState));
+    this._sendState(encodeGameState(this.gameState));
   }
 
   /** Render current state to canvas. */

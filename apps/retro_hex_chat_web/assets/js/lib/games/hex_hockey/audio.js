@@ -235,7 +235,7 @@ export class HexHockeyAudio {
   }
 
   /** Cleanup */
-  destroy() {
+  dispose() {
     this.stopSuddenDeath();
     for (const id of this._timers) clearTimeout(id);
     this._timers = [];

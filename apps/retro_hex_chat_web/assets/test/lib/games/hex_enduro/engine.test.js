@@ -1,3 +1,4 @@
+import { inputDatagram } from "../../../helpers/game_input.js";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import {
   PHASE,
@@ -6,7 +7,6 @@ import {
   GAME_MODE,
   EVENT,
   encodeGameState,
-  encodePlayerInput,
   encodeGameEnd,
   encodeGameReady,
 } from "../../../../js/lib/games/hex_enduro/protocol.js";
@@ -30,7 +30,7 @@ vi.mock("../../../../js/lib/games/hex_enduro/audio.js", () => ({
       startEngineDrone: vi.fn(),
       updateEnginePitch: vi.fn(),
       stopEngineDrone: vi.fn(),
-      destroy: vi.fn(),
+      dispose: vi.fn(),
     };
   },
 }));
@@ -220,6 +220,7 @@ describe("HexEnduroEngine", () => {
     it("renders initial state", () => {
       engine = new HexEnduroEngine(canvas, channel, "hex_enduro", true, null);
       engine.start();
+      engine._pump(0);
       expect(render).toHaveBeenCalled();
     });
 
@@ -333,10 +334,10 @@ describe("HexEnduroEngine", () => {
       engine = new HexEnduroEngine(canvas, channel, "hex_enduro", true, null);
       engine.start();
 
-      engine._handleKeyDown({ key: "ArrowLeft", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "ArrowLeft", preventDefault: vi.fn(), repeat: false, target: null });
       expect(engine.localInputs.left).toBe(true);
 
-      engine._handleKeyUp({ key: "ArrowLeft", preventDefault: vi.fn() });
+      engine._onKeyUp({ key: "ArrowLeft", preventDefault: vi.fn(), repeat: false, target: null });
       expect(engine.localInputs.left).toBe(false);
     });
 
@@ -345,7 +346,7 @@ describe("HexEnduroEngine", () => {
       engine.start();
       channel.send.mockClear();
 
-      engine._handleKeyDown({ key: "ArrowLeft", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "ArrowLeft", preventDefault: vi.fn(), repeat: false, target: null });
       expect(channel.send).toHaveBeenCalled();
     });
 
@@ -495,11 +496,11 @@ describe("HexEnduroEngine", () => {
       expect(engine.audio.stopEngineDrone).toHaveBeenCalled();
     });
 
-    it("destroys audio on stop", () => {
+    it("releases the AudioContext on stop", () => {
       engine = new HexEnduroEngine(canvas, channel, "hex_enduro", true, null);
       engine.start();
       engine.stop();
-      expect(engine.audio.destroy).toHaveBeenCalled();
+      expect(engine.audio.dispose).toHaveBeenCalled();
     });
 
     it("guards phase callbacks after stop", () => {
@@ -523,7 +524,7 @@ describe("HexEnduroEngine", () => {
       engine = new HexEnduroEngine(canvas, channel, "hex_enduro", true, null);
       engine.start();
 
-      const inputBuf = encodePlayerInput(INPUT_KEY.LEFT, true);
+      const inputBuf = inputDatagram(HexEnduroEngine, { left: true }, 1);
       const handler = channel.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
       handler({ data: inputBuf });
 
@@ -534,11 +535,10 @@ describe("HexEnduroEngine", () => {
       engine = new HexEnduroEngine(canvas, channel, "hex_enduro", true, null);
       engine.start();
 
-      const handler = channel.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
-      handler({ data: encodePlayerInput(INPUT_KEY.TURBO, true) });
+      engine._onChannelMessage({ data: inputDatagram(HexEnduroEngine, { turbo: true }, 2) });
       expect(engine.remoteInputs.turbo).toBe(true);
 
-      handler({ data: encodePlayerInput(INPUT_KEY.TURBO, false) });
+      engine._onChannelMessage({ data: inputDatagram(HexEnduroEngine, { turbo: false }, 3) });
       expect(engine.remoteInputs.turbo).toBe(false);
     });
   });
@@ -574,7 +574,7 @@ describe("HexEnduroEngine", () => {
     }
 
     function getLoopFn() {
-      return globalThis.requestAnimationFrame.mock.calls.at(-1)[0];
+      return () => engine._gameLoop();
     }
 
     it("runs game loop and broadcasts state", () => {
@@ -583,10 +583,9 @@ describe("HexEnduroEngine", () => {
 
       expect(engine.gameState.phase).toBe(PHASE.RACING);
 
-      const loopFn = getLoopFn();
       channel.send.mockClear();
-      loopFn(); // frame 1
-      loopFn(); // frame 2 — should broadcast (STATE_SEND_INTERVAL = 2)
+      engine._gameLoop(); // frame 1
+      engine._gameLoop(); // frame 2 — should broadcast (STATE_SEND_INTERVAL = 2)
 
       expect(channel.send).toHaveBeenCalled();
       vi.useRealTimers();
@@ -597,9 +596,9 @@ describe("HexEnduroEngine", () => {
       setupRacing(engine, channel);
 
       render.mockClear();
-      const loopFn = getLoopFn();
-      loopFn();
+      engine._gameLoop();
 
+      engine._pump(0);
       expect(render).toHaveBeenCalled();
       vi.useRealTimers();
     });
@@ -613,15 +612,14 @@ describe("HexEnduroEngine", () => {
       engine.gameState.p1.turboCharges = 3;
 
       engine.localInputs.turbo = true;
-      const loopFn = getLoopFn();
-      loopFn(); // should activate turbo
+      engine._gameLoop(); // should activate turbo
 
       expect(engine.gameState.p1.boost).toBeGreaterThan(0);
 
       // Second frame — still holding, should NOT re-trigger
       const boostAfterFirst = engine.gameState.p1.boost;
       engine.gameState.p1.turboCharges = 3;
-      loopFn();
+      engine._gameLoop();
       // Boost should have decreased (tick), not reset from new activation
       expect(engine.gameState.p1.boost).toBeLessThanOrEqual(boostAfterFirst);
 
@@ -675,7 +673,7 @@ describe("HexEnduroEngine", () => {
       channel.readyState = "closed";
 
       expect(() => {
-        engine._safeSend(encodePlayerInput(INPUT_KEY.LEFT, true));
+        engine._safeSend(inputDatagram(HexEnduroEngine, { left: true }, 4));
       }).not.toThrow();
     });
 
@@ -688,7 +686,7 @@ describe("HexEnduroEngine", () => {
       });
 
       expect(() => {
-        engine._safeSend(encodePlayerInput(INPUT_KEY.LEFT, true));
+        engine._safeSend(inputDatagram(HexEnduroEngine, { left: true }, 5));
       }).not.toThrow();
     });
   });
@@ -721,13 +719,13 @@ describe("HexEnduroEngine", () => {
       engine = new HexEnduroEngine(canvas, channel, "hex_enduro", true, null);
       engine.start();
       engine.gameState.phase = PHASE.RACING;
-      engine.animFrame = 999;
+      engine._startSteps();
       engine.phaseTimer = setTimeout(() => {}, 10000);
 
       const closeHandler = channel.addEventListener.mock.calls.find((c) => c[0] === "close")[1];
       closeHandler();
 
-      expect(engine.animFrame).toBeNull();
+      expect(engine.stepping).toBe(false);
       expect(engine.phaseTimer).toBeNull();
       expect(engine.audio.playGameOver).toHaveBeenCalled();
     });
@@ -757,10 +755,12 @@ describe("HexEnduroEngine", () => {
       channel.send.mockClear();
 
       engine.localInputs = { left: true, right: true, accel: true, brake: true, turbo: true };
+      engine._sendInputState();
+      channel.send.mockClear();
       engine._handleBlur();
 
-      // Should send 5 release messages (one per input key)
-      expect(channel.send).toHaveBeenCalledTimes(5);
+      // One datagram states every key at once.
+      expect(channel.send).toHaveBeenCalledTimes(1);
       // All inputs should be cleared
       expect(engine.localInputs.left).toBe(false);
       expect(engine.localInputs.right).toBe(false);

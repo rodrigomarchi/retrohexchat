@@ -1,10 +1,11 @@
+import { inputDatagram, inputMask } from "../../../helpers/game_input.js";
+import { decodeInputState } from "../../../../js/lib/games/net_protocol.js";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import {
   PHASE,
   MSG_TYPE,
   TOTAL_BLOCKS,
   encodeGameState,
-  encodePlayerInput,
   encodeGameEnd,
   encodeGameReady,
 } from "../../../../js/lib/games/breakout/protocol.js";
@@ -189,6 +190,7 @@ describe("BreakoutEngine", () => {
     it("renders initial state", () => {
       engine = new BreakoutEngine(canvas, channel, "block_breakers", true, null);
       engine.start();
+      engine._pump(0);
       expect(render).toHaveBeenCalled();
     });
   });
@@ -226,7 +228,7 @@ describe("BreakoutEngine", () => {
       expect(engine.peerReady).toBe(false);
 
       const buf = encodeGameReady();
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       expect(engine.peerReady).toBe(true);
       expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
@@ -237,32 +239,31 @@ describe("BreakoutEngine", () => {
       engine.start();
 
       const buf = encodeGameReady();
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
       const countdownCalls1 = engine.audio.playCountdown.mock.calls.length;
 
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
       const countdownCalls2 = engine.audio.playCountdown.mock.calls.length;
 
       expect(countdownCalls2).toBe(countdownCalls1);
     });
 
-    it("processes PLAYER_INPUT LEFT pressed", () => {
+    it("applies the peer's held input", () => {
       engine = new BreakoutEngine(canvas, channel, "block_breakers", true, null);
       engine.start();
 
-      const buf = encodePlayerInput(0, true); // LEFT pressed
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: inputDatagram(BreakoutEngine, { left: true }, 1) });
 
       expect(engine.remoteInputs.left).toBe(true);
     });
 
-    it("processes PLAYER_INPUT RIGHT released", () => {
+    it("releases a key the mask stops carrying", () => {
       engine = new BreakoutEngine(canvas, channel, "block_breakers", true, null);
       engine.start();
-      engine.remoteInputs.right = true;
+      engine._onChannelMessage({ data: inputDatagram(BreakoutEngine, { right: true }, 1) });
 
-      const buf = encodePlayerInput(1, false); // RIGHT released
-      engine._handleMessage({ data: buf });
+      // Input is level-triggered: the release is the absence of the bit.
+      engine._onChannelMessage({ data: inputDatagram(BreakoutEngine, {}, 2) });
 
       expect(engine.remoteInputs.right).toBe(false);
     });
@@ -282,7 +283,7 @@ describe("BreakoutEngine", () => {
         ballY: 200,
       };
       const buf = encodeGameState(state);
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       expect(engine.gameState.score).toBe(150);
       expect(engine.gameState.lives).toBe(2);
@@ -294,7 +295,7 @@ describe("BreakoutEngine", () => {
       engine.start();
 
       const buf = encodeGameEnd(2500, true);
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       expect(engine.gameState.phase).toBe(PHASE.FINISHED);
       expect(engine.gameState.won).toBe(true);
@@ -306,19 +307,18 @@ describe("BreakoutEngine", () => {
       engine.start();
 
       const buf = encodeGameEnd(800, false);
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       expect(engine.gameState.phase).toBe(PHASE.FINISHED);
       expect(engine.gameState.won).toBe(false);
       expect(engine.audio.playLose).toHaveBeenCalled();
     });
 
-    it("ignores PLAYER_INPUT when peer", () => {
+    it("ignores remote input when peer", () => {
       engine = new BreakoutEngine(canvas, channel, "block_breakers", false, null);
       engine.start();
 
-      const buf = encodePlayerInput(0, true);
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: inputDatagram(BreakoutEngine, { left: true }, 1) });
 
       expect(engine.remoteInputs.left).toBe(false);
     });
@@ -329,7 +329,7 @@ describe("BreakoutEngine", () => {
       engine = new BreakoutEngine(canvas, channel, "block_breakers", true, null);
       engine.start();
       expect(() => {
-        engine._handleMessage({ data: "not binary" });
+        engine._onChannelMessage({ data: "not binary" });
       }).not.toThrow();
     });
   });
@@ -338,36 +338,41 @@ describe("BreakoutEngine", () => {
     it("maps ArrowLeft to LEFT input", () => {
       engine = new BreakoutEngine(canvas, channel, "block_breakers", true, null);
       engine.start();
-      engine._handleKeyDown({ key: "ArrowLeft", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "ArrowLeft", preventDefault: vi.fn(), repeat: false, target: null });
       expect(engine.localInputs.left).toBe(true);
     });
 
     it("maps ArrowRight to RIGHT input", () => {
       engine = new BreakoutEngine(canvas, channel, "block_breakers", true, null);
       engine.start();
-      engine._handleKeyDown({ key: "ArrowRight", preventDefault: vi.fn() });
+      engine._onKeyDown({
+        key: "ArrowRight",
+        preventDefault: vi.fn(),
+        repeat: false,
+        target: null,
+      });
       expect(engine.localInputs.right).toBe(true);
     });
 
     it("maps a to LEFT input", () => {
       engine = new BreakoutEngine(canvas, channel, "block_breakers", true, null);
       engine.start();
-      engine._handleKeyDown({ key: "a", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "a", preventDefault: vi.fn(), repeat: false, target: null });
       expect(engine.localInputs.left).toBe(true);
     });
 
     it("maps d to RIGHT input", () => {
       engine = new BreakoutEngine(canvas, channel, "block_breakers", true, null);
       engine.start();
-      engine._handleKeyDown({ key: "d", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "d", preventDefault: vi.fn(), repeat: false, target: null });
       expect(engine.localInputs.right).toBe(true);
     });
 
     it("key release clears local input", () => {
       engine = new BreakoutEngine(canvas, channel, "block_breakers", true, null);
       engine.start();
-      engine._handleKeyDown({ key: "ArrowLeft", preventDefault: vi.fn() });
-      engine._handleKeyUp({ key: "ArrowLeft" });
+      engine._onKeyDown({ key: "ArrowLeft", preventDefault: vi.fn(), repeat: false, target: null });
+      engine._onKeyUp({ key: "ArrowLeft", repeat: false, target: null });
       expect(engine.localInputs.left).toBe(false);
     });
 
@@ -384,31 +389,29 @@ describe("BreakoutEngine", () => {
       engine.start();
       channel.send.mockClear();
 
-      engine._handleKeyDown({ key: "ArrowLeft", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "ArrowLeft", preventDefault: vi.fn(), repeat: false, target: null });
 
       const lastCall = channel.send.mock.calls[channel.send.mock.calls.length - 1];
       const buf = lastCall[0];
       expect(buf).toBeInstanceOf(ArrayBuffer);
-      const view = new Uint8Array(buf);
-      expect(view[0]).toBe(MSG_TYPE.PLAYER_INPUT);
-      expect(view[1]).toBe(0); // INPUT_KEY.LEFT
-      expect(view[2]).toBe(1); // pressed
+      expect(decodeInputState(buf).mask).toBe(inputMask(BreakoutEngine, { left: true }));
     });
 
     it("peer sends binary input on keyup", () => {
       engine = new BreakoutEngine(canvas, channel, "block_breakers", false, null);
       engine.start();
 
-      engine._handleKeyDown({ key: "ArrowRight", preventDefault: vi.fn() });
+      engine._onKeyDown({
+        key: "ArrowRight",
+        preventDefault: vi.fn(),
+        repeat: false,
+        target: null,
+      });
       channel.send.mockClear();
-      engine._handleKeyUp({ key: "ArrowRight" });
+      engine._onKeyUp({ key: "ArrowRight", repeat: false, target: null });
 
       const lastCall = channel.send.mock.calls[channel.send.mock.calls.length - 1];
-      const buf = lastCall[0];
-      const view = new Uint8Array(buf);
-      expect(view[0]).toBe(MSG_TYPE.PLAYER_INPUT);
-      expect(view[1]).toBe(1); // INPUT_KEY.RIGHT
-      expect(view[2]).toBe(0); // released
+      expect(decodeInputState(lastCall[0]).mask).toBe(0);
     });
 
     it("host does not send input over channel", () => {
@@ -416,7 +419,7 @@ describe("BreakoutEngine", () => {
       engine.start();
       channel.send.mockClear();
 
-      engine._handleKeyDown({ key: "ArrowLeft", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "ArrowLeft", preventDefault: vi.fn(), repeat: false, target: null });
       expect(channel.send).not.toHaveBeenCalled();
     });
   });
@@ -436,11 +439,14 @@ describe("BreakoutEngine", () => {
     it("peer sends release for all keys on blur", () => {
       engine = new BreakoutEngine(canvas, channel, "block_breakers", false, null);
       engine.start();
+      engine._onKeyDown({ key: "ArrowLeft", preventDefault: vi.fn(), repeat: false, target: null });
       channel.send.mockClear();
 
       engine._handleBlur();
 
-      expect(channel.send).toHaveBeenCalledTimes(2);
+      // One datagram states every key at once.
+      expect(channel.send).toHaveBeenCalledTimes(1);
+      expect(decodeInputState(channel.send.mock.calls[0][0]).mask).toBe(0);
     });
   });
 
@@ -626,7 +632,7 @@ describe("BreakoutEngine", () => {
       engine = new BreakoutEngine(canvas, channel, "block_breakers", true, null);
       engine.start();
 
-      engine._handleMessage({ data: encodeGameReady() });
+      engine._onChannelMessage({ data: encodeGameReady() });
 
       expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
       expect(engine.gameState.countdown).toBe(3);
@@ -636,7 +642,7 @@ describe("BreakoutEngine", () => {
     it("counts down from 3 to 1", () => {
       engine = new BreakoutEngine(canvas, channel, "block_breakers", true, null);
       engine.start();
-      engine._handleMessage({ data: encodeGameReady() });
+      engine._onChannelMessage({ data: encodeGameReady() });
 
       vi.advanceTimersByTime(1000);
       expect(engine.gameState.countdown).toBe(2);
@@ -648,7 +654,7 @@ describe("BreakoutEngine", () => {
     it("transitions to SERVING after countdown", () => {
       engine = new BreakoutEngine(canvas, channel, "block_breakers", true, null);
       engine.start();
-      engine._handleMessage({ data: encodeGameReady() });
+      engine._onChannelMessage({ data: encodeGameReady() });
 
       vi.advanceTimersByTime(3000);
 

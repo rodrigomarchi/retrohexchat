@@ -88,13 +88,13 @@ describe("Hex Enduro Audio", () => {
   describe("destroy", () => {
     it("cleans up without error", () => {
       audio.startEngineDrone();
-      expect(() => audio.destroy()).not.toThrow();
+      expect(() => audio.dispose()).not.toThrow();
       expect(audio._ctx).toBeNull();
     });
 
     it("is safe to call multiple times", () => {
-      expect(() => audio.destroy()).not.toThrow();
-      expect(() => audio.destroy()).not.toThrow();
+      expect(() => audio.dispose()).not.toThrow();
+      expect(() => audio.dispose()).not.toThrow();
     });
   });
 });

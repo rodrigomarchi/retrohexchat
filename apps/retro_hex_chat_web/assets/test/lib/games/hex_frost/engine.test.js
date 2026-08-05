@@ -1,3 +1,5 @@
+import { inputDatagram, inputMask } from "../../../helpers/game_input.js";
+import { decodeInputState } from "../../../../js/lib/games/net_protocol.js";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import {
   PHASE,
@@ -6,7 +8,6 @@ import {
   GAME_MODE,
   EVENT,
   encodeGameState,
-  encodePlayerInput,
   encodeGameEnd,
   encodeGameReady,
 } from "../../../../js/lib/games/hex_frost/protocol.js";
@@ -39,7 +40,7 @@ vi.mock("../../../../js/lib/games/hex_frost/audio.js", () => ({
       playRoundEnd: vi.fn(),
       playVictory: vi.fn(),
       playGameOver: vi.fn(),
-      destroy: vi.fn(),
+      dispose: vi.fn(),
     };
   },
 }));
@@ -192,7 +193,7 @@ describe("HexFrostEngine", () => {
       const { engine } = createEngine();
       expect(engine.audio).toBeDefined();
       expect(engine.audio.playCountdown).toBeDefined();
-      expect(engine.audio.destroy).toBeDefined();
+      expect(engine.audio.dispose).toBeDefined();
     });
 
     it("stores onGameEnd callback or null", () => {
@@ -239,6 +240,7 @@ describe("HexFrostEngine", () => {
     it("host renders state after initialization", () => {
       const { engine } = createEngine("hex_frost", true);
       engine.start();
+      engine._pump(0);
       expect(render).toHaveBeenCalled();
       engine.stop();
     });
@@ -294,8 +296,7 @@ describe("HexFrostEngine", () => {
       render.mockClear();
       engine.start(); // should return early
       expect(engine.gameState).toBe(firstState);
-      // render should NOT have been called again
-      expect(render).not.toHaveBeenCalled();
+      expect(engine.running).toBe(true);
       engine.stop();
     });
   });
@@ -310,12 +311,12 @@ describe("HexFrostEngine", () => {
       expect(engine.running).toBe(false);
     });
 
-    it("calls audio.destroy()", () => {
+    it("calls audio.dispose()", () => {
       const { engine } = createEngine();
       engine.start();
-      const destroySpy = engine.audio.destroy;
+      const disposeSpy = engine.audio.dispose;
       engine.stop();
-      expect(destroySpy).toHaveBeenCalled();
+      expect(disposeSpy).toHaveBeenCalled();
     });
 
     it("resets localInputs and remoteInputs to all false", () => {
@@ -430,42 +431,69 @@ describe("HexFrostEngine", () => {
     describe("_handleKeyDown", () => {
       it("sets localInputs for host", () => {
         const { engine } = createEngine("hex_frost", true);
-        engine._handleKeyDown({ key: "ArrowLeft", preventDefault: vi.fn() });
+        engine._onKeyDown({
+          key: "ArrowLeft",
+          preventDefault: vi.fn(),
+          repeat: false,
+          target: null,
+        });
         expect(engine.localInputs.left).toBe(true);
 
-        engine._handleKeyDown({ key: "ArrowRight", preventDefault: vi.fn() });
+        engine._onKeyDown({
+          key: "ArrowRight",
+          preventDefault: vi.fn(),
+          repeat: false,
+          target: null,
+        });
         expect(engine.localInputs.right).toBe(true);
 
-        engine._handleKeyDown({ key: "ArrowUp", preventDefault: vi.fn() });
+        engine._onKeyDown({ key: "ArrowUp", preventDefault: vi.fn(), repeat: false, target: null });
         expect(engine.localInputs.up).toBe(true);
 
-        engine._handleKeyDown({ key: "ArrowDown", preventDefault: vi.fn() });
+        engine._onKeyDown({
+          key: "ArrowDown",
+          preventDefault: vi.fn(),
+          repeat: false,
+          target: null,
+        });
         expect(engine.localInputs.down).toBe(true);
       });
 
       it("host does NOT send encodePlayerInput", () => {
         const { engine, channel } = createEngine("hex_frost", true);
-        engine._handleKeyDown({ key: "ArrowLeft", preventDefault: vi.fn() });
+        engine._onKeyDown({
+          key: "ArrowLeft",
+          preventDefault: vi.fn(),
+          repeat: false,
+          target: null,
+        });
         expect(channel.send).not.toHaveBeenCalled();
       });
 
       it("peer sets localInputs AND sends encodePlayerInput", () => {
         const { engine, channel } = createEngine("hex_frost", false);
-        engine._handleKeyDown({ key: "ArrowRight", preventDefault: vi.fn() });
+        engine._onKeyDown({
+          key: "ArrowRight",
+          preventDefault: vi.fn(),
+          repeat: false,
+          target: null,
+        });
         expect(engine.localInputs.right).toBe(true);
         expect(channel.send).toHaveBeenCalled();
         const buf = channel.send.mock.calls[0][0];
         expect(buf instanceof ArrayBuffer).toBe(true);
-        const view = new DataView(buf);
-        expect(view.getUint8(0)).toBe(MSG_TYPE.PLAYER_INPUT);
-        expect(view.getUint8(1)).toBe(INPUT_KEY.RIGHT);
-        expect(view.getUint8(2)).toBe(1); // pressed=true
+        expect(decodeInputState(buf).mask).toBe(inputMask(HexFrostEngine, { right: true }));
       });
 
       it("does nothing for unknown keys", () => {
         const { engine, channel } = createEngine("hex_frost", false);
         const preventSpy = vi.fn();
-        engine._handleKeyDown({ key: "Enter", preventDefault: preventSpy });
+        engine._onKeyDown({
+          key: "Enter",
+          preventDefault: preventSpy,
+          repeat: false,
+          target: null,
+        });
         expect(engine.localInputs.left).toBe(false);
         expect(preventSpy).not.toHaveBeenCalled();
         expect(channel.send).not.toHaveBeenCalled();
@@ -476,25 +504,25 @@ describe("HexFrostEngine", () => {
       it("clears localInputs on host", () => {
         const { engine } = createEngine("hex_frost", true);
         engine.localInputs.left = true;
-        engine._handleKeyUp({ key: "ArrowLeft", preventDefault: vi.fn() });
+        engine._onKeyUp({ key: "ArrowLeft", preventDefault: vi.fn(), repeat: false, target: null });
         expect(engine.localInputs.left).toBe(false);
       });
 
       it("peer clears localInputs AND sends pressed=false", () => {
         const { engine, channel } = createEngine("hex_frost", false);
         engine.localInputs.up = true;
-        engine._handleKeyUp({ key: "ArrowUp", preventDefault: vi.fn() });
+        engine._onKeyDown({ key: "ArrowUp", preventDefault: vi.fn(), repeat: false, target: null });
+        channel.send.mockClear();
+        engine._onKeyUp({ key: "ArrowUp", preventDefault: vi.fn(), repeat: false, target: null });
         expect(engine.localInputs.up).toBe(false);
         expect(channel.send).toHaveBeenCalled();
-        const buf = channel.send.mock.calls[0][0];
-        const view = new DataView(buf);
-        expect(view.getUint8(2)).toBe(0); // pressed=false
+        expect(decodeInputState(channel.send.mock.calls[0][0]).mask).toBe(0);
       });
 
       it("does nothing for unknown keys", () => {
         const { engine } = createEngine("hex_frost", true);
         const preventSpy = vi.fn();
-        engine._handleKeyUp({ key: "z", preventDefault: preventSpy });
+        engine._onKeyUp({ key: "z", preventDefault: preventSpy, repeat: false, target: null });
         expect(preventSpy).not.toHaveBeenCalled();
       });
     });
@@ -505,16 +533,16 @@ describe("HexFrostEngine", () => {
   describe("network messages", () => {
     it("rejects non-ArrayBuffer data", () => {
       const { engine } = createEngine("hex_frost", true);
-      expect(() => engine._handleMessage({ data: "hello" })).not.toThrow();
-      expect(() => engine._handleMessage({ data: null })).not.toThrow();
-      expect(() => engine._handleMessage({ data: 123 })).not.toThrow();
+      expect(() => engine._onChannelMessage({ data: "hello" })).not.toThrow();
+      expect(() => engine._onChannelMessage({ data: null })).not.toThrow();
+      expect(() => engine._onChannelMessage({ data: 123 })).not.toThrow();
     });
 
     it("host handles GAME_READY — sets peerReady and starts countdown", () => {
       const { engine } = createEngine("hex_frost", true);
       engine.start();
       const buf = encodeGameReady();
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
       expect(engine.peerReady).toBe(true);
       expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
       expect(engine.gameState.countdown).toBe(3);
@@ -525,10 +553,10 @@ describe("HexFrostEngine", () => {
     it("host ignores duplicate GAME_READY", () => {
       const { engine } = createEngine("hex_frost", true);
       engine.start();
-      engine._handleMessage({ data: encodeGameReady() });
+      engine._onChannelMessage({ data: encodeGameReady() });
       const phaseAfterFirst = engine.gameState.phase;
       engine.audio.playCountdown.mockClear();
-      engine._handleMessage({ data: encodeGameReady() });
+      engine._onChannelMessage({ data: encodeGameReady() });
       // Should not restart countdown
       expect(engine.audio.playCountdown).not.toHaveBeenCalled();
       expect(engine.gameState.phase).toBe(phaseAfterFirst);
@@ -538,7 +566,7 @@ describe("HexFrostEngine", () => {
     it("peer ignores GAME_READY", () => {
       const { engine } = createEngine("hex_frost", false);
       engine.start();
-      engine._handleMessage({ data: encodeGameReady() });
+      engine._onChannelMessage({ data: encodeGameReady() });
       expect(engine.peerReady).toBe(false); // peer doesn't track this
       engine.stop();
     });
@@ -546,30 +574,30 @@ describe("HexFrostEngine", () => {
     it("host handles PLAYER_INPUT — sets remoteInputs for all directions", () => {
       const { engine } = createEngine("hex_frost", true);
 
-      engine._handleMessage({ data: encodePlayerInput(INPUT_KEY.LEFT, true) });
+      engine._onChannelMessage({ data: inputDatagram(HexFrostEngine, { left: true }, 1) });
       expect(engine.remoteInputs.left).toBe(true);
 
-      engine._handleMessage({
-        data: encodePlayerInput(INPUT_KEY.RIGHT, true),
+      engine._onChannelMessage({
+        data: inputDatagram(HexFrostEngine, { right: true }, 2),
       });
       expect(engine.remoteInputs.right).toBe(true);
 
-      engine._handleMessage({ data: encodePlayerInput(INPUT_KEY.UP, true) });
+      engine._onChannelMessage({ data: inputDatagram(HexFrostEngine, { up: true }, 3) });
       expect(engine.remoteInputs.up).toBe(true);
 
-      engine._handleMessage({ data: encodePlayerInput(INPUT_KEY.DOWN, true) });
+      engine._onChannelMessage({ data: inputDatagram(HexFrostEngine, { down: true }, 4) });
       expect(engine.remoteInputs.down).toBe(true);
 
       // Release
-      engine._handleMessage({
-        data: encodePlayerInput(INPUT_KEY.LEFT, false),
+      engine._onChannelMessage({
+        data: inputDatagram(HexFrostEngine, { left: false }, 5),
       });
       expect(engine.remoteInputs.left).toBe(false);
     });
 
     it("peer ignores PLAYER_INPUT", () => {
       const { engine } = createEngine("hex_frost", false);
-      engine._handleMessage({ data: encodePlayerInput(INPUT_KEY.LEFT, true) });
+      engine._onChannelMessage({ data: inputDatagram(HexFrostEngine, { left: true }, 6) });
       expect(engine.remoteInputs.left).toBe(false);
     });
 
@@ -584,9 +612,10 @@ describe("HexFrostEngine", () => {
       const packed = packState(state);
       const buf = encodeGameState(packed);
 
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
       expect(engine.gameState).not.toBeNull();
       expect(engine.gameState.phase).toBe(PHASE.BUILDING);
+      engine._pump(0);
       expect(render).toHaveBeenCalled();
       engine.stop();
     });
@@ -601,7 +630,7 @@ describe("HexFrostEngine", () => {
       const packed = packState(state);
       const buf = encodeGameState(packed);
 
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
       // Host should not overwrite its state from incoming GAME_STATE
       expect(engine.gameState).toBe(origState);
       engine.stop();
@@ -612,7 +641,7 @@ describe("HexFrostEngine", () => {
       const { engine } = createEngine("hex_frost", false, onGameEnd);
 
       const buf = encodeGameEnd({ score1: 3, score2: 1, winner: 1 });
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       expect(onGameEnd).toHaveBeenCalledWith({
         score1: 3,
@@ -624,7 +653,7 @@ describe("HexFrostEngine", () => {
     it("peer plays victory audio when winner > 0", () => {
       const { engine } = createEngine("hex_frost", false, vi.fn());
       const buf = encodeGameEnd({ score1: 2, score2: 1, winner: 1 });
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
       expect(engine.audio.stopAmbientWind).toHaveBeenCalled();
       expect(engine.audio.playVictory).toHaveBeenCalled();
       expect(engine.audio.playGameOver).not.toHaveBeenCalled();
@@ -633,7 +662,7 @@ describe("HexFrostEngine", () => {
     it("peer plays game over audio when winner = 0", () => {
       const { engine } = createEngine("hex_frost", false, vi.fn());
       const buf = encodeGameEnd({ score1: 1, score2: 1, winner: 0 });
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
       expect(engine.audio.stopAmbientWind).toHaveBeenCalled();
       expect(engine.audio.playGameOver).toHaveBeenCalled();
       expect(engine.audio.playVictory).not.toHaveBeenCalled();
@@ -643,7 +672,7 @@ describe("HexFrostEngine", () => {
       const onGameEnd = vi.fn();
       const { engine } = createEngine("hex_frost", true, onGameEnd);
       const buf = encodeGameEnd({ score1: 2, score2: 0, winner: 1 });
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
       expect(onGameEnd).not.toHaveBeenCalled();
     });
   });
@@ -654,7 +683,7 @@ describe("HexFrostEngine", () => {
     it("sets phase to COUNTDOWN with countdown=3", () => {
       const { engine } = createEngine("hex_frost", true);
       engine.start();
-      engine._handleMessage({ data: encodeGameReady() });
+      engine._onChannelMessage({ data: encodeGameReady() });
       expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
       expect(engine.gameState.countdown).toBe(3);
       engine.stop();
@@ -663,7 +692,7 @@ describe("HexFrostEngine", () => {
     it("plays countdown audio and starts ambient wind", () => {
       const { engine } = createEngine("hex_frost", true);
       engine.start();
-      engine._handleMessage({ data: encodeGameReady() });
+      engine._onChannelMessage({ data: encodeGameReady() });
       expect(engine.audio.playCountdown).toHaveBeenCalled();
       expect(engine.audio.startAmbientWind).toHaveBeenCalled();
       engine.stop();
@@ -673,7 +702,7 @@ describe("HexFrostEngine", () => {
       const { engine, channel } = createEngine("hex_frost", true);
       engine.start();
       channel.send.mockClear();
-      engine._handleMessage({ data: encodeGameReady() });
+      engine._onChannelMessage({ data: encodeGameReady() });
       // _broadcastState sends via channel
       expect(channel.send).toHaveBeenCalled();
       // _startGameLoop calls requestAnimationFrame
@@ -684,7 +713,7 @@ describe("HexFrostEngine", () => {
     it("decrements phaseTimer each game loop tick", () => {
       const { engine } = createEngine("hex_frost", true);
       engine.start();
-      engine._handleMessage({ data: encodeGameReady() });
+      engine._onChannelMessage({ data: encodeGameReady() });
       const initialTimer = engine.phaseTimer; // 60
       engine._gameLoop();
       expect(engine.phaseTimer).toBe(initialTimer - 1);
@@ -694,7 +723,7 @@ describe("HexFrostEngine", () => {
     it("transitions countdown 3 -> 2 -> 1 -> BUILDING", () => {
       const { engine } = createEngine("hex_frost", true);
       engine.start();
-      engine._handleMessage({ data: encodeGameReady() });
+      engine._onChannelMessage({ data: encodeGameReady() });
 
       // Tick 60 frames to expire first countdown tick (3 -> 2)
       for (let i = 0; i < 60; i++) engine._gameLoop();
@@ -719,7 +748,7 @@ describe("HexFrostEngine", () => {
     function startBuildingPhase() {
       const { engine, channel } = createEngine("hex_frost", true);
       engine.start();
-      engine._handleMessage({ data: encodeGameReady() });
+      engine._onChannelMessage({ data: encodeGameReady() });
       // Fast-forward through countdown (3 * 60 = 180 ticks)
       for (let i = 0; i < 180; i++) engine._gameLoop();
       expect(engine.gameState.phase).toBe(PHASE.BUILDING);
@@ -818,7 +847,7 @@ describe("HexFrostEngine", () => {
     it("ROUND_END decrements roundEndTimer", () => {
       const { engine } = createEngine("hex_frost", true);
       engine.start();
-      engine._handleMessage({ data: encodeGameReady() });
+      engine._onChannelMessage({ data: encodeGameReady() });
       // Skip countdown
       for (let i = 0; i < 180; i++) engine._gameLoop();
 
@@ -833,7 +862,7 @@ describe("HexFrostEngine", () => {
     it("FINISHED phase sets running to false", () => {
       const { engine } = createEngine("hex_frost", true);
       engine.start();
-      engine._handleMessage({ data: encodeGameReady() });
+      engine._onChannelMessage({ data: encodeGameReady() });
       for (let i = 0; i < 180; i++) engine._gameLoop();
 
       engine.gameState.phase = PHASE.FINISHED;
@@ -1060,6 +1089,7 @@ describe("HexFrostEngine", () => {
       engine._handleChannelClose();
 
       expect(engine.gameState.phase).toBe(PHASE.FINISHED);
+      engine._pump(0);
       expect(render).toHaveBeenCalled();
       engine.stop();
     });
@@ -1140,7 +1170,7 @@ describe("HexFrostEngine", () => {
     it("ROUND_END → startNextRound returning COUNTDOWN resets phaseTimer and plays countdown audio", () => {
       const { engine } = createEngine("hex_frost", true);
       engine.start();
-      engine._handleMessage({ data: encodeGameReady() });
+      engine._onChannelMessage({ data: encodeGameReady() });
       // Skip countdown to BUILDING
       for (let i = 0; i < 180; i++) engine._gameLoop();
       expect(engine.gameState.phase).toBe(PHASE.BUILDING);
@@ -1175,6 +1205,7 @@ describe("HexFrostEngine", () => {
       engine.gameState = null;
       render.mockClear();
       expect(() => engine._renderState()).not.toThrow();
+      engine._pump(0);
       expect(render).toHaveBeenCalledWith(
         engine.ctx,
         null,
@@ -1188,7 +1219,7 @@ describe("HexFrostEngine", () => {
     it("GAME_END peer does NOT call playGameOver when winner > 0 (inverse assertion)", () => {
       const { engine } = createEngine("hex_frost", false, vi.fn());
       const buf = encodeGameEnd({ score1: 5, score2: 2, winner: 1 });
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
       expect(engine.audio.playVictory).toHaveBeenCalled();
       expect(engine.audio.playGameOver).not.toHaveBeenCalled();
     });

@@ -259,7 +259,7 @@ export class HexFrostAudio {
 
   // ── Cleanup ──────────────────────────────────────────────────
 
-  destroy() {
+  dispose() {
     this.stopAmbientWind();
     this._timers.forEach(clearTimeout);
     this._timers = [];

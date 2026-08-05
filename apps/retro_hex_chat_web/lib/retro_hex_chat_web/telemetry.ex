@@ -320,6 +320,77 @@ defmodule RetroHexChatWeb.Telemetry do
         tags: [:surface, :action, :reason],
         description: dgettext("system", "Number of P2P signaling replay outcomes"),
         reporter_options: [nav: dgettext("system", "Domain")]
+      ),
+
+      # Domain Metrics – P2P Games
+      #
+      # Game state never reaches the server, so these are reported by the two
+      # browsers playing the match. `role` is the tag that matters: the host
+      # simulates and the guest draws, and a match going wrong almost always
+      # shows up as the two roles disagreeing about how the same match went.
+      summary(dgettext("system", "retro_hex_chat.games.session.sample.render_fps"),
+        tags: [:game_id, :role],
+        description: dgettext("system", "Frames per second drawn during a P2P game"),
+        reporter_options: [nav: dgettext("system", "Domain")]
+      ),
+      summary(dgettext("system", "retro_hex_chat.games.session.sample.step_hz"),
+        tags: [:game_id, :role],
+        description: dgettext("system", "Simulation steps per second run by the game host"),
+        reporter_options: [nav: dgettext("system", "Domain")]
+      ),
+      summary(dgettext("system", "retro_hex_chat.games.session.sample.state_in_hz"),
+        tags: [:game_id, :role],
+        description: dgettext("system", "Authoritative game snapshots received per second"),
+        reporter_options: [nav: dgettext("system", "Domain")]
+      ),
+      summary(dgettext("system", "retro_hex_chat.games.session.sample.state_out_hz"),
+        tags: [:game_id, :role],
+        description: dgettext("system", "Authoritative game snapshots sent per second"),
+        reporter_options: [nav: dgettext("system", "Domain")]
+      ),
+      summary(dgettext("system", "retro_hex_chat.games.session.sample.state_gap_p95_ms"),
+        tags: [:game_id, :role],
+        description:
+          dgettext("system", "95th percentile gap between game snapshots, in milliseconds"),
+        reporter_options: [nav: dgettext("system", "Domain")]
+      ),
+      summary(dgettext("system", "retro_hex_chat.games.session.sample.state_gap_max_ms"),
+        tags: [:game_id, :role],
+        description: dgettext("system", "Longest gap between game snapshots, in milliseconds"),
+        reporter_options: [nav: dgettext("system", "Domain")]
+      ),
+      summary(dgettext("system", "retro_hex_chat.games.session.sample.rtt_ms"),
+        tags: [:game_id, :role],
+        description: dgettext("system", "Peer connection round-trip time during a P2P game"),
+        reporter_options: [nav: dgettext("system", "Domain")]
+      ),
+      summary(dgettext("system", "retro_hex_chat.games.session.sample.buffered_peak_bytes"),
+        tags: [:game_id, :role],
+        description: dgettext("system", "Peak queued bytes on the game data channel"),
+        reporter_options: [nav: dgettext("system", "Domain")]
+      ),
+      sum(dgettext("system", "retro_hex_chat.games.session.sample.send_dropped"),
+        tags: [:game_id, :role],
+        description:
+          dgettext("system", "Game snapshots skipped because the data channel was backed up"),
+        reporter_options: [nav: dgettext("system", "Domain")]
+      ),
+      sum(dgettext("system", "retro_hex_chat.games.session.sample.dropped_steps"),
+        tags: [:game_id, :role],
+        description: dgettext("system", "Simulation steps discarded after the loop fell behind"),
+        reporter_options: [nav: dgettext("system", "Domain")]
+      ),
+      sum(dgettext("system", "retro_hex_chat.games.session.sample.stall_count"),
+        tags: [:game_id, :role],
+        description:
+          dgettext("system", "Frames whose simulation backlog exceeded the catch-up cap"),
+        reporter_options: [nav: dgettext("system", "Domain")]
+      ),
+      sum(dgettext("system", "retro_hex_chat.games.session.sample.window_ms"),
+        tags: [:game_id, :role, :health, :channel_state],
+        description:
+          dgettext("system", "Milliseconds of P2P gameplay observed, by health verdict"),
+        reporter_options: [nav: dgettext("system", "Domain")]
       )
     ]
   end

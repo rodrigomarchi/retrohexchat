@@ -1,10 +1,11 @@
+import { inputDatagram } from "../../../helpers/game_input.js";
+import { decodeInputState } from "../../../../js/lib/games/net_protocol.js";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import {
   PHASE,
   MSG_TYPE,
   INPUT_KEY,
   encodeGameState,
-  encodePlayerInput,
   encodeGameEnd,
   encodeGameReady,
 } from "../../../../js/lib/games/hex_boxing/protocol.js";
@@ -201,6 +202,7 @@ describe("BoxingEngine", () => {
       engine.start();
       // Should not send GAME_READY (that's peer only)
       expect(channel.send).not.toHaveBeenCalled();
+      engine._pump(0);
       expect(render).toHaveBeenCalled();
     });
 
@@ -366,6 +368,8 @@ describe("BoxingEngine", () => {
     it("resets all local inputs", () => {
       engine = new BoxingEngine(canvas, channel, "hex_boxing", true, null);
       engine.localInputs = { up: true, down: true, left: true, right: true, punch: true };
+      engine._sendInputState();
+      channel.send.mockClear();
       engine._handleBlur();
       expect(engine.localInputs).toEqual({
         up: false,
@@ -379,9 +383,13 @@ describe("BoxingEngine", () => {
     it("peer sends key releases on blur", () => {
       engine = new BoxingEngine(canvas, channel, "hex_boxing", false, null);
       engine.localInputs = { up: true, down: true, left: true, right: true, punch: true };
+      engine._sendInputState();
+      channel.send.mockClear();
+
       engine._handleBlur();
-      // 5 key releases sent
-      expect(channel.send).toHaveBeenCalledTimes(5);
+
+      // One datagram states every key at once.
+      expect(channel.send).toHaveBeenCalledTimes(1);
     });
 
     it("host does not send key releases on blur", () => {
@@ -403,7 +411,7 @@ describe("BoxingEngine", () => {
     it("GAME_READY sets peerReady and starts countdown", () => {
       vi.useFakeTimers();
       expect(engine.peerReady).toBe(false);
-      engine._handleMessage({ data: encodeGameReady() });
+      engine._onChannelMessage({ data: encodeGameReady() });
       expect(engine.peerReady).toBe(true);
       expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
       expect(engine.gameState.countdown).toBe(3);
@@ -412,21 +420,21 @@ describe("BoxingEngine", () => {
 
     it("duplicate GAME_READY is a no-op", () => {
       vi.useFakeTimers();
-      engine._handleMessage({ data: encodeGameReady() });
+      engine._onChannelMessage({ data: encodeGameReady() });
       engine.audio.playCountdown.mockClear();
-      engine._handleMessage({ data: encodeGameReady() });
+      engine._onChannelMessage({ data: encodeGameReady() });
       // Should not restart countdown
       expect(engine.audio.playCountdown).not.toHaveBeenCalled();
     });
 
     it("PLAYER_INPUT applies remote input", () => {
-      engine._handleMessage({
-        data: encodePlayerInput(INPUT_KEY.UP, true),
+      engine._onChannelMessage({
+        data: inputDatagram(BoxingEngine, { up: true }, 1),
       });
       expect(engine.remoteInputs.up).toBe(true);
 
-      engine._handleMessage({
-        data: encodePlayerInput(INPUT_KEY.PUNCH, true),
+      engine._onChannelMessage({
+        data: inputDatagram(BoxingEngine, { punch: true }, 2),
       });
       expect(engine.remoteInputs.punch).toBe(true);
     });
@@ -434,13 +442,13 @@ describe("BoxingEngine", () => {
     it("ignores GAME_STATE on host", () => {
       const fakeState = createInitialState();
       fakeState.score1 = 99;
-      engine._handleMessage({ data: encodeGameState(fakeState) });
+      engine._onChannelMessage({ data: encodeGameState(fakeState) });
       // Host should NOT apply peer state
       expect(engine.gameState.score1).toBe(0);
     });
 
     it("GAME_END is processed by host too (no role guard)", () => {
-      engine._handleMessage({
+      engine._onChannelMessage({
         data: encodeGameEnd({
           score1: 50,
           score2: 60,
@@ -455,8 +463,8 @@ describe("BoxingEngine", () => {
 
     it("rejects non-ArrayBuffer data", () => {
       // Should not throw
-      engine._handleMessage({ data: "not a buffer" });
-      engine._handleMessage({ data: null });
+      engine._onChannelMessage({ data: "not a buffer" });
+      engine._onChannelMessage({ data: null });
       expect(engine.gameState.phase).toBe(PHASE.WAITING);
     });
   });
@@ -475,15 +483,16 @@ describe("BoxingEngine", () => {
       state.score1 = 42;
       state.phase = PHASE.FIGHTING;
       state.round = 2;
-      engine._handleMessage({ data: encodeGameState(state) });
+      engine._onChannelMessage({ data: encodeGameState(state) });
       expect(engine.gameState.score1).toBe(42);
       expect(engine.gameState.phase).toBe(PHASE.FIGHTING);
       expect(engine.gameState.round).toBe(2);
+      engine._pump(0);
       expect(render).toHaveBeenCalled();
     });
 
     it("GAME_END sets MATCH_OVER, plays win audio for P2 winner", () => {
-      engine._handleMessage({
+      engine._onChannelMessage({
         data: encodeGameEnd({
           score1: 30,
           score2: 50,
@@ -499,7 +508,7 @@ describe("BoxingEngine", () => {
     });
 
     it("GAME_END plays lose audio for P1 winner (peer is P2)", () => {
-      engine._handleMessage({
+      engine._onChannelMessage({
         data: encodeGameEnd({
           score1: 50,
           score2: 30,
@@ -514,15 +523,15 @@ describe("BoxingEngine", () => {
     });
 
     it("ignores PLAYER_INPUT on peer", () => {
-      engine._handleMessage({
-        data: encodePlayerInput(INPUT_KEY.UP, true),
+      engine._onChannelMessage({
+        data: inputDatagram(BoxingEngine, { up: true }, 3),
       });
       // Peer should not apply remote inputs
       expect(engine.remoteInputs.up).toBe(false);
     });
 
     it("ignores GAME_READY on peer", () => {
-      engine._handleMessage({ data: encodeGameReady() });
+      engine._onChannelMessage({ data: encodeGameReady() });
       // Peer should not start countdown
       expect(engine.gameState.phase).toBe(PHASE.WAITING);
     });
@@ -857,29 +866,30 @@ describe("BoxingEngine", () => {
       expect(engine.audio.playTimerTick).not.toHaveBeenCalled();
     });
 
-    it("broadcasts state every 2 frames", () => {
+    it("broadcasts state on every step", () => {
       const { engine: e, channel: ch } = setupFightingEngine();
       engine = e;
       ch.send.mockClear();
       engine.frameCount = 0;
 
-      // Frame 0 → frameCount becomes 1 after increment (1 % 2 !== 0) → no broadcast
-      engine._gameLoop(0);
-      expect(ch.send).not.toHaveBeenCalled();
-
-      // Frame 1 → frameCount becomes 2 (2 % 2 === 0) → broadcast
-      engine._gameLoop(0);
+      // The channel no longer retransmits, and a snapshot is 26 bytes, so the
+      // guest is fed at simulation rate instead of half of it.
+      engine._gameLoop();
       expect(ch.send).toHaveBeenCalledTimes(1);
+
+      engine._gameLoop();
+      expect(ch.send).toHaveBeenCalledTimes(2);
     });
 
-    it("schedules next frame via requestAnimationFrame", () => {
+    it("keeps stepping the simulation", () => {
       const { engine: e } = setupFightingEngine();
       engine = e;
-      globalThis.requestAnimationFrame.mockClear();
+      engine._startSteps();
 
-      engine._gameLoop(0);
+      engine._gameLoop();
 
-      expect(globalThis.requestAnimationFrame).toHaveBeenCalled();
+      // A normal frame never stops the simulation; stopping is the exception.
+      expect(engine.stepping).toBe(true);
     });
 
     it("does nothing when running is false", () => {
@@ -1073,7 +1083,12 @@ describe("BoxingEngine", () => {
     it("host keydown sets local input", () => {
       engine = new BoxingEngine(canvas, channel, "hex_boxing", true, null);
       engine.start();
-      engine._handleKeyDown({ key: "ArrowRight", preventDefault: vi.fn() });
+      engine._onKeyDown({
+        key: "ArrowRight",
+        preventDefault: vi.fn(),
+        repeat: false,
+        target: null,
+      });
       expect(engine.localInputs.right).toBe(true);
       // Host does NOT send input to channel
       expect(channel.send).not.toHaveBeenCalled();
@@ -1083,7 +1098,7 @@ describe("BoxingEngine", () => {
       engine = new BoxingEngine(canvas, channel, "hex_boxing", false, null);
       engine.start();
       channel.send.mockClear();
-      engine._handleKeyDown({ key: "ArrowUp", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "ArrowUp", preventDefault: vi.fn(), repeat: false, target: null });
       expect(engine.localInputs.up).toBe(true);
       expect(channel.send).toHaveBeenCalledTimes(1);
     });
@@ -1091,9 +1106,9 @@ describe("BoxingEngine", () => {
     it("keyup clears local input", () => {
       engine = new BoxingEngine(canvas, channel, "hex_boxing", true, null);
       engine.start();
-      engine._handleKeyDown({ key: "ArrowLeft", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "ArrowLeft", preventDefault: vi.fn(), repeat: false, target: null });
       expect(engine.localInputs.left).toBe(true);
-      engine._handleKeyUp({ key: "ArrowLeft" });
+      engine._onKeyUp({ key: "ArrowLeft", repeat: false, target: null });
       expect(engine.localInputs.left).toBe(false);
     });
 
@@ -1101,7 +1116,7 @@ describe("BoxingEngine", () => {
       engine = new BoxingEngine(canvas, channel, "hex_boxing", true, null);
       engine.start();
       const preventDefault = vi.fn();
-      engine._handleKeyDown({ key: "q", preventDefault });
+      engine._onKeyDown({ key: "q", preventDefault, repeat: false, target: null });
       expect(preventDefault).not.toHaveBeenCalled();
     });
 
@@ -1109,14 +1124,12 @@ describe("BoxingEngine", () => {
       engine = new BoxingEngine(canvas, channel, "hex_boxing", false, null);
       engine.start();
       channel.send.mockClear();
-      engine._handleKeyDown({ key: "d", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "d", preventDefault: vi.fn(), repeat: false, target: null });
       channel.send.mockClear();
-      engine._handleKeyUp({ key: "d" });
+      engine._onKeyUp({ key: "d", repeat: false, target: null });
       expect(channel.send).toHaveBeenCalledTimes(1);
       const sent = channel.send.mock.calls[0][0];
-      expect(new DataView(sent).getUint8(0)).toBe(MSG_TYPE.PLAYER_INPUT);
-      // pressed = false (release)
-      expect(new DataView(sent).getUint8(2)).toBe(0);
+      expect(decodeInputState(sent).mask).toBe(0);
     });
   });
 });

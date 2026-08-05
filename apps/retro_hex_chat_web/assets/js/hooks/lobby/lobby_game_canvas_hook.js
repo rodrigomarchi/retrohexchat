@@ -149,6 +149,11 @@ const LobbyGameCanvasHook = {
       return;
     }
 
+    // The call reports its own health to the server every few seconds; the game
+    // now does the same, so a match that stuttered leaves something behind to
+    // look at instead of only a memory of it.
+    engine.onTelemetry = (sample) => this.pushEvent("lobby_game_telemetry", sample);
+
     this.engine = engine;
     this.engine.start();
 

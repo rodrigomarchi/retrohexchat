@@ -13,8 +13,6 @@ import {
   GAME_MODE,
   encodeGameState,
   decodeGameState,
-  encodePlayerInput,
-  decodePlayerInput,
   encodeGameEnd,
   decodeGameEnd,
   encodeGameReady,
@@ -44,11 +42,17 @@ import {
 import { render as renderFrame, getColors } from "./renderer.js";
 import { PixelTanksAudio } from "./audio.js";
 
-const STATE_SEND_INTERVAL = 2; // Send state every N frames (~30Hz at 60fps)
+const STATE_SEND_INTERVAL = 1; // broadcast every fixed step (60Hz)
 const ROUND_OVER_DELAY = 2500; // ms display round over screen
 const SPAWNING_DELAY = 1000; // ms "ENGAGE!" display
 
 export class PixelTanksEngine extends GameEngine {
+  static INPUT_BITS = { rotateLeft: 0, rotateRight: 1, forward: 2, fire: 3 };
+
+  static INTERPOLATION = {
+    keys: ["tank1X", "tank1Y", "tank2X", "tank2Y", "m1X", "m1Y", "m2X", "m2Y"],
+  };
+
   /**
    * @param {HTMLCanvasElement} canvas
    * @param {RTCDataChannel} channel
@@ -78,7 +82,6 @@ export class PixelTanksEngine extends GameEngine {
     this.audio = new PixelTanksAudio();
     this.colors = null;
     this.peerReady = false;
-    this._boundGameLoop = this._gameLoop.bind(this);
     this._boundBlur = this._handleBlur.bind(this);
     this._boundChannelClose = this._handleChannelClose.bind(this);
 
@@ -101,10 +104,10 @@ export class PixelTanksEngine extends GameEngine {
     this.channel.addEventListener("close", this._boundChannelClose);
 
     if (this.isHost) {
-      this._renderState();
+      this._invalidate();
     } else {
-      this._safeSend(encodeGameReady());
-      this._renderState();
+      this._advertiseReady(encodeGameReady);
+      this._invalidate();
     }
   }
 
@@ -115,16 +118,9 @@ export class PixelTanksEngine extends GameEngine {
       clearTimeout(this.phaseTimer);
       this.phaseTimer = null;
     }
-    if (this.animFrame) {
-      cancelAnimationFrame(this.animFrame);
-      this.animFrame = null;
-    }
-    this.running = false;
     this._localFirePressed = false;
     this._remoteFirePressed = false;
-    this.channel.removeEventListener("message", this._boundOnMessage);
-    document.removeEventListener("keydown", this._boundOnKeyDown);
-    document.removeEventListener("keyup", this._boundOnKeyUp);
+    super.stop();
   }
 
   _handleMessage(event) {
@@ -138,17 +134,8 @@ export class PixelTanksEngine extends GameEngine {
         if (!this.isHost) {
           const decoded = decodeGameState(buf);
           if (decoded) {
-            this._applyPeerState(decoded);
-            this._renderState();
-          }
-        }
-        break;
-
-      case MSG_TYPE.PLAYER_INPUT:
-        if (this.isHost) {
-          const input = decodePlayerInput(buf);
-          if (input) {
-            this._applyRemoteInput(input);
+            this._ingestSnapshot(decoded, () => this._applyPeerState(decoded));
+            this._invalidate();
           }
         }
         break;
@@ -172,7 +159,7 @@ export class PixelTanksEngine extends GameEngine {
           } else {
             this.audio.playLose();
           }
-          this._renderState();
+          this._invalidate();
         }
         break;
       }
@@ -246,10 +233,6 @@ export class PixelTanksEngine extends GameEngine {
     e.preventDefault();
 
     this._setLocalInput(keyCode, true);
-
-    if (!this.isHost) {
-      this._safeSend(encodePlayerInput(keyCode, true));
-    }
   }
 
   _handleKeyUp(e) {
@@ -257,10 +240,6 @@ export class PixelTanksEngine extends GameEngine {
     if (keyCode === null) return;
 
     this._setLocalInput(keyCode, false);
-
-    if (!this.isHost) {
-      this._safeSend(encodePlayerInput(keyCode, false));
-    }
   }
 
   _setLocalInput(keyCode, pressed) {
@@ -285,13 +264,7 @@ export class PixelTanksEngine extends GameEngine {
       forward: false,
       fire: false,
     };
-
-    if (!this.isHost) {
-      this._safeSend(encodePlayerInput(INPUT_KEY.ROTATE_LEFT, false));
-      this._safeSend(encodePlayerInput(INPUT_KEY.ROTATE_RIGHT, false));
-      this._safeSend(encodePlayerInput(INPUT_KEY.FORWARD, false));
-      this._safeSend(encodePlayerInput(INPUT_KEY.FIRE, false));
-    }
+    this._sendInputState();
   }
 
   // --- Phase management (host only) ---
@@ -300,7 +273,7 @@ export class PixelTanksEngine extends GameEngine {
     this.gameState.phase = PHASE.COUNTDOWN;
     this.gameState.countdown = 3;
     this._broadcastState();
-    this._renderState();
+    this._invalidate();
     this.audio.playCountdown();
 
     let count = 3;
@@ -310,7 +283,7 @@ export class PixelTanksEngine extends GameEngine {
       if (count > 0) {
         this.gameState.countdown = count;
         this._broadcastState();
-        this._renderState();
+        this._invalidate();
         this.audio.playCountdown();
         this.phaseTimer = setTimeout(tick, 1000);
       } else {
@@ -323,7 +296,7 @@ export class PixelTanksEngine extends GameEngine {
   _startSpawning() {
     this.gameState.phase = PHASE.SPAWNING;
     this._broadcastState();
-    this._renderState();
+    this._invalidate();
     this.audio.playSpawn();
 
     this.phaseTimer = setTimeout(() => {
@@ -336,23 +309,20 @@ export class PixelTanksEngine extends GameEngine {
   }
 
   _startGameLoop() {
-    if (this.animFrame) cancelAnimationFrame(this.animFrame);
     this.frameCount = 0;
     this._localFirePressed = false;
     this._remoteFirePressed = false;
-    this.animFrame = requestAnimationFrame(this._boundGameLoop);
+    this._startSteps();
   }
 
-  _renderDuringPause() {
-    if (!this.running) return;
+  /** Let the round's particles settle while the simulation is paused. */
+  _idleStep() {
+    if (!this.particles.length) return;
     this.particles = updateParticles(this.particles);
-    this._renderState();
-    if (this.particles.length > 0) {
-      this.animFrame = requestAnimationFrame(() => this._renderDuringPause());
-    }
+    this._invalidate();
   }
 
-  _gameLoop(_timestamp) {
+  _gameLoop() {
     if (!this.running) return;
 
     let s = this.gameState;
@@ -362,12 +332,11 @@ export class PixelTanksEngine extends GameEngine {
       s = tickTimers(s);
       this.gameState = s;
       this.particles = updateParticles(this.particles);
-      this._renderState();
+      this._invalidate();
       this.frameCount++;
       if (this.frameCount % STATE_SEND_INTERVAL === 0) {
         this._broadcastState();
       }
-      this.animFrame = requestAnimationFrame(this._boundGameLoop);
       return;
     }
 
@@ -451,7 +420,7 @@ export class PixelTanksEngine extends GameEngine {
       // Round over — keep rendering particles during pause, then start next round
       this.gameState = s;
       this._broadcastState();
-      this._renderDuringPause();
+      this._stopSteps();
 
       this.phaseTimer = setTimeout(() => {
         if (!this.running) return;
@@ -466,18 +435,17 @@ export class PixelTanksEngine extends GameEngine {
 
     // Save state and render
     this.gameState = s;
-    this._renderState();
+    this._invalidate();
 
     // Broadcast
     this.frameCount++;
     if (this.frameCount % STATE_SEND_INTERVAL === 0) {
       this._broadcastState();
     }
-
-    this.animFrame = requestAnimationFrame(this._boundGameLoop);
   }
 
   _handleMatchOver() {
+    this._stopSteps();
     const winner = getMatchWinner(this.gameState);
 
     if (winner === 1) {
@@ -487,7 +455,7 @@ export class PixelTanksEngine extends GameEngine {
     }
 
     // Send GAME_END to peer
-    this._safeSend(
+    this._sendCommand(
       encodeGameEnd({
         score1: this.gameState.score1,
         score2: this.gameState.score2,
@@ -497,7 +465,7 @@ export class PixelTanksEngine extends GameEngine {
       }),
     );
     this._broadcastState();
-    this._renderState();
+    this._invalidate();
 
     if (this.onGameEnd) {
       this.onGameEnd({
@@ -513,9 +481,10 @@ export class PixelTanksEngine extends GameEngine {
   // ── Connection Resilience ──
 
   _handleChannelClose() {
+    this._stopSteps();
     if (!this.gameState || this.gameState.phase === PHASE.MATCH_OVER) return;
     this.gameState.phase = PHASE.MATCH_OVER;
-    this._renderState();
+    this._invalidate();
     if (this.onGameEnd) {
       try {
         this.onGameEnd({
@@ -534,7 +503,7 @@ export class PixelTanksEngine extends GameEngine {
   }
 
   _broadcastState() {
-    this._safeSend(encodeGameState(this.gameState));
+    this._sendState(encodeGameState(this.gameState));
   }
 
   _renderState() {

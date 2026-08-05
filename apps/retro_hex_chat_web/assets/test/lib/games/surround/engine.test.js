@@ -1,3 +1,4 @@
+import { decodeInputEdge, encodeInputEdge } from "../../../../js/lib/games/net_protocol.js";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import {
   PHASE,
@@ -221,12 +222,12 @@ describe("SurroundEngine", () => {
       expect(globalThis.cancelAnimationFrame).toHaveBeenCalledWith(99);
     });
 
-    it("clears tick interval", () => {
+    it("stops the grid tick", () => {
       engine = new SurroundEngine(canvas, channel, "light_trails", true, null);
       engine.start();
-      engine.tickInterval = setInterval(() => {}, 10000);
+      engine._startTickLoop();
       engine.stop();
-      expect(engine.tickInterval).toBeNull();
+      expect(engine.stepping).toBe(false);
     });
   });
 
@@ -236,7 +237,7 @@ describe("SurroundEngine", () => {
       engine.start();
       expect(engine.peerReady).toBe(false);
 
-      engine._handleMessage({ data: encodeGameReady() });
+      engine._onChannelMessage({ data: encodeGameReady() });
 
       expect(engine.peerReady).toBe(true);
       expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
@@ -246,10 +247,10 @@ describe("SurroundEngine", () => {
       engine = new SurroundEngine(canvas, channel, "light_trails", true, null);
       engine.start();
 
-      engine._handleMessage({ data: encodeGameReady() });
+      engine._onChannelMessage({ data: encodeGameReady() });
       const countdownCalls1 = engine.audio.playCountdown.mock.calls.length;
 
-      engine._handleMessage({ data: encodeGameReady() });
+      engine._onChannelMessage({ data: encodeGameReady() });
       const countdownCalls2 = engine.audio.playCountdown.mock.calls.length;
 
       expect(countdownCalls2).toBe(countdownCalls1);
@@ -259,8 +260,7 @@ describe("SurroundEngine", () => {
       engine = new SurroundEngine(canvas, channel, "light_trails", true, null);
       engine.start();
 
-      const buf = encodePlayerInput(INPUT_KEY.UP, true);
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: encodeInputEdge(1, INPUT_KEY.UP) });
 
       expect(engine.p2PendingDir).toBe(DIR.UP);
     });
@@ -276,7 +276,7 @@ describe("SurroundEngine", () => {
       view.setUint8(0, MSG_TYPE.PLAYER_INPUT);
       view.setUint8(1, 99);
       view.setUint8(2, 1); // pressed=true
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       expect(engine.p2PendingDir).toBe(DIR.LEFT); // unchanged
     });
@@ -287,7 +287,7 @@ describe("SurroundEngine", () => {
       engine.p2PendingDir = DIR.LEFT;
 
       const buf = encodePlayerInput(INPUT_KEY.UP, false);
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       expect(engine.p2PendingDir).toBe(DIR.LEFT);
     });
@@ -306,7 +306,7 @@ describe("SurroundEngine", () => {
       };
       state.p1 = { x: 15, y: 20, dir: DIR.RIGHT };
       const buf = encodeGameState(state);
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       expect(engine.gameState.score1).toBe(2);
       expect(engine.gameState.score2).toBe(1);
@@ -318,7 +318,7 @@ describe("SurroundEngine", () => {
       engine.start();
 
       const buf = encodeGameEnd(1, 3, 2);
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       expect(engine.gameState.phase).toBe(PHASE.MATCH_OVER);
       expect(engine.gameState.score1).toBe(1);
@@ -331,7 +331,7 @@ describe("SurroundEngine", () => {
       engine.start();
 
       const buf = encodeGameEnd(3, 1, 1);
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       expect(engine.gameState.phase).toBe(PHASE.MATCH_OVER);
       expect(engine.audio.playMatchLose).toHaveBeenCalled();
@@ -351,7 +351,7 @@ describe("SurroundEngine", () => {
         countdown: 3,
       };
       const buf = encodeGameState(state);
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
       expect(engine.gameState.round).toBe(1);
@@ -364,7 +364,7 @@ describe("SurroundEngine", () => {
       engine = new SurroundEngine(canvas, channel, "light_trails", true, null);
       engine.start();
       expect(() => {
-        engine._handleMessage({ data: "not binary" });
+        engine._onChannelMessage({ data: "not binary" });
       }).not.toThrow();
     });
   });
@@ -373,35 +373,35 @@ describe("SurroundEngine", () => {
     it("maps ArrowUp to UP direction", () => {
       engine = new SurroundEngine(canvas, channel, "light_trails", true, null);
       engine.start();
-      engine._handleKeyDown({ key: "ArrowUp", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "ArrowUp", preventDefault: vi.fn(), repeat: false, target: null });
       expect(engine.p1PendingDir).toBe(DIR.UP);
     });
 
     it("maps ArrowDown to DOWN direction", () => {
       engine = new SurroundEngine(canvas, channel, "light_trails", true, null);
       engine.start();
-      engine._handleKeyDown({ key: "ArrowDown", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "ArrowDown", preventDefault: vi.fn(), repeat: false, target: null });
       expect(engine.p1PendingDir).toBe(DIR.DOWN);
     });
 
     it("maps ArrowLeft to LEFT direction", () => {
       engine = new SurroundEngine(canvas, channel, "light_trails", true, null);
       engine.start();
-      engine._handleKeyDown({ key: "ArrowLeft", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "ArrowLeft", preventDefault: vi.fn(), repeat: false, target: null });
       expect(engine.p1PendingDir).toBe(DIR.LEFT);
     });
 
     it("maps w to UP direction", () => {
       engine = new SurroundEngine(canvas, channel, "light_trails", true, null);
       engine.start();
-      engine._handleKeyDown({ key: "w", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "w", preventDefault: vi.fn(), repeat: false, target: null });
       expect(engine.p1PendingDir).toBe(DIR.UP);
     });
 
     it("maps d to RIGHT direction", () => {
       engine = new SurroundEngine(canvas, channel, "light_trails", true, null);
       engine.start();
-      engine._handleKeyDown({ key: "d", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "d", preventDefault: vi.fn(), repeat: false, target: null });
       expect(engine.p1PendingDir).toBe(DIR.RIGHT);
     });
 
@@ -419,7 +419,7 @@ describe("SurroundEngine", () => {
       engine = new SurroundEngine(canvas, channel, "light_trails", false, null);
       engine.start();
       const origDir = engine.p1PendingDir;
-      engine._handleKeyDown({ key: "ArrowUp", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "ArrowUp", preventDefault: vi.fn(), repeat: false, target: null });
       expect(engine.p1PendingDir).toBe(origDir);
     });
 
@@ -428,15 +428,14 @@ describe("SurroundEngine", () => {
       engine.start();
       channel.send.mockClear();
 
-      engine._handleKeyDown({ key: "ArrowUp", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "ArrowUp", preventDefault: vi.fn(), repeat: false, target: null });
 
       const lastCall = channel.send.mock.calls[channel.send.mock.calls.length - 1];
       const buf = lastCall[0];
       expect(buf).toBeInstanceOf(ArrayBuffer);
-      const view = new Uint8Array(buf);
-      expect(view[0]).toBe(MSG_TYPE.PLAYER_INPUT);
-      expect(view[1]).toBe(INPUT_KEY.UP);
-      expect(view[2]).toBe(1); // pressed
+      // Direction is a one-shot command, so it rides the redundant edge
+      // transport rather than the held-input mask.
+      expect(decodeInputEdge(buf).code).toBe(INPUT_KEY.UP);
     });
 
     it("host does not send input over channel", () => {
@@ -444,14 +443,14 @@ describe("SurroundEngine", () => {
       engine.start();
       channel.send.mockClear();
 
-      engine._handleKeyDown({ key: "ArrowUp", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "ArrowUp", preventDefault: vi.fn(), repeat: false, target: null });
       expect(channel.send).not.toHaveBeenCalled();
     });
 
     it("plays move audio on direction change", () => {
       engine = new SurroundEngine(canvas, channel, "light_trails", true, null);
       engine.start();
-      engine._handleKeyDown({ key: "ArrowUp", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "ArrowUp", preventDefault: vi.fn(), repeat: false, target: null });
       expect(engine.audio.playMove).toHaveBeenCalled();
     });
   });
@@ -473,19 +472,17 @@ describe("SurroundEngine", () => {
       vi.useRealTimers();
     });
 
-    it("_startTickLoop clears existing interval before creating new one", () => {
+    it("_startTickLoop is idempotent", () => {
       engine = new SurroundEngine(canvas, channel, "light_trails", true, null);
       engine.start();
       engine.gameState.phase = PHASE.PLAYING;
 
       engine._startTickLoop();
-      const firstInterval = engine.tickInterval;
-      expect(firstInterval).not.toBeNull();
+      expect(engine.stepping).toBe(true);
 
+      // Starting twice is a no-op rather than a second loop.
       engine._startTickLoop();
-      const secondInterval = engine.tickInterval;
-      expect(secondInterval).not.toBeNull();
-      expect(secondInterval).not.toBe(firstInterval);
+      expect(engine.stepping).toBe(true);
     });
 
     it("_startCountdown clears existing phaseTimer", () => {
@@ -598,7 +595,7 @@ describe("SurroundEngine", () => {
       engine = new SurroundEngine(canvas, channel, "light_trails", true, null);
       engine.start();
 
-      engine._handleMessage({ data: encodeGameReady() });
+      engine._onChannelMessage({ data: encodeGameReady() });
 
       expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
       expect(engine.gameState.countdown).toBe(3);
@@ -608,7 +605,7 @@ describe("SurroundEngine", () => {
     it("counts down from 3 to 1", () => {
       engine = new SurroundEngine(canvas, channel, "light_trails", true, null);
       engine.start();
-      engine._handleMessage({ data: encodeGameReady() });
+      engine._onChannelMessage({ data: encodeGameReady() });
 
       vi.advanceTimersByTime(1000);
       expect(engine.gameState.countdown).toBe(2);
@@ -620,7 +617,7 @@ describe("SurroundEngine", () => {
     it("transitions to PLAYING after countdown", () => {
       engine = new SurroundEngine(canvas, channel, "light_trails", true, null);
       engine.start();
-      engine._handleMessage({ data: encodeGameReady() });
+      engine._onChannelMessage({ data: encodeGameReady() });
 
       vi.advanceTimersByTime(3000);
 
@@ -630,11 +627,11 @@ describe("SurroundEngine", () => {
     it("starts tick interval after countdown", () => {
       engine = new SurroundEngine(canvas, channel, "light_trails", true, null);
       engine.start();
-      engine._handleMessage({ data: encodeGameReady() });
+      engine._onChannelMessage({ data: encodeGameReady() });
 
       vi.advanceTimersByTime(3000);
 
-      expect(engine.tickInterval).not.toBeNull();
+      expect(engine.stepping).toBe(true);
     });
   });
 
@@ -849,28 +846,23 @@ describe("SurroundEngine", () => {
         phase: PHASE.ROUND_OVER,
       };
       const buf = encodeGameState(state);
-      engine._handleMessage({ data: buf });
+      engine._onChannelMessage({ data: buf });
 
       expect(engine.audio.playCrash).toHaveBeenCalled();
       expect(engine.audio.playRoundWin).toHaveBeenCalled();
     });
   });
 
-  describe("_renderLoop", () => {
+  describe("presentation loop", () => {
     it("stops when this.running is false", () => {
       engine = new SurroundEngine(canvas, channel, "light_trails", true, null);
       engine.start();
-
-      // Clear RAF mock
-      globalThis.requestAnimationFrame.mockClear();
-
-      // Set running to false
       engine.running = false;
 
-      // Call _renderLoop directly
-      engine._renderLoop(performance.now());
+      globalThis.requestAnimationFrame.mockClear();
+      engine._pump(0);
 
-      // Should NOT have called requestAnimationFrame
+      // A stopped engine neither draws nor asks for another frame.
       expect(globalThis.requestAnimationFrame).not.toHaveBeenCalled();
     });
   });

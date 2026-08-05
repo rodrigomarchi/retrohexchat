@@ -19,8 +19,6 @@ import {
   getMessageType,
   encodeGameState,
   decodeGameState,
-  encodePlayerInput,
-  decodePlayerInput,
   encodeGameEnd,
   decodeGameEnd,
   encodeGameReady,
@@ -46,7 +44,7 @@ import {
 import { render, readColors, generateSnowParticles } from "./renderer.js";
 import { HexFrostAudio } from "./audio.js";
 
-const STATE_SEND_INTERVAL = 2; // Broadcast every 2 frames (~30Hz)
+const STATE_SEND_INTERVAL = 1; // broadcast every fixed step (60Hz)
 const COUNTDOWN_INTERVAL = 60; // Frames per countdown tick
 const ROUND_END_DELAY = 180; // Frames to show round-end screen
 
@@ -65,6 +63,8 @@ function resolveMode(gameId) {
 }
 
 export class HexFrostEngine extends GameEngine {
+  static INPUT_BITS = { left: 0, right: 1, up: 2, down: 3 };
+
   /**
    * @param {HTMLCanvasElement} canvas
    * @param {RTCDataChannel} channel
@@ -104,10 +104,10 @@ export class HexFrostEngine extends GameEngine {
     if (this.isHost) {
       const seed = (Math.random() * 0xffffffff) >>> 0;
       this.gameState = createInitialState(this.mode, seed);
-      this._renderState();
+      this._invalidate();
     } else {
-      this._safeSend(encodeGameReady());
-      this._renderState();
+      this._advertiseReady(encodeGameReady);
+      this._invalidate();
     }
   }
 
@@ -115,7 +115,6 @@ export class HexFrostEngine extends GameEngine {
     window.removeEventListener("blur", this._boundBlur);
     this.channel.removeEventListener("close", this._boundChannelClose);
     super.stop();
-    this.audio.destroy();
     this.localInputs = { left: false, right: false, up: false, down: false };
     this.remoteInputs = { left: false, right: false, up: false, down: false };
     this.peerReady = false;
@@ -140,15 +139,7 @@ export class HexFrostEngine extends GameEngine {
       if (decoded) {
         this.gameState = unpackState(decoded);
         this._handlePeerEvents(decoded.events);
-        this._renderState();
-      }
-    } else if (type === MSG_TYPE.PLAYER_INPUT && this.isHost) {
-      const input = decodePlayerInput(buf);
-      if (input) {
-        if (input.keyCode === INPUT_KEY.LEFT) this.remoteInputs.left = input.pressed;
-        if (input.keyCode === INPUT_KEY.RIGHT) this.remoteInputs.right = input.pressed;
-        if (input.keyCode === INPUT_KEY.UP) this.remoteInputs.up = input.pressed;
-        if (input.keyCode === INPUT_KEY.DOWN) this.remoteInputs.down = input.pressed;
+        this._invalidate();
       }
     } else if (type === MSG_TYPE.GAME_END && !this.isHost) {
       const result = decodeGameEnd(buf);
@@ -177,10 +168,6 @@ export class HexFrostEngine extends GameEngine {
     if (key === INPUT_KEY.RIGHT) this.localInputs.right = true;
     if (key === INPUT_KEY.UP) this.localInputs.up = true;
     if (key === INPUT_KEY.DOWN) this.localInputs.down = true;
-
-    if (!this.isHost) {
-      this._safeSend(encodePlayerInput(key, true));
-    }
   }
 
   _handleKeyUp(event) {
@@ -192,10 +179,6 @@ export class HexFrostEngine extends GameEngine {
     if (key === INPUT_KEY.RIGHT) this.localInputs.right = false;
     if (key === INPUT_KEY.UP) this.localInputs.up = false;
     if (key === INPUT_KEY.DOWN) this.localInputs.down = false;
-
-    if (!this.isHost) {
-      this._safeSend(encodePlayerInput(key, false));
-    }
   }
 
   _mapKey(event) {
@@ -234,13 +217,7 @@ export class HexFrostEngine extends GameEngine {
   }
 
   _startGameLoop() {
-    if (this.animFrame) return;
-    const loop = () => {
-      if (!this.running) return;
-      this._gameLoop();
-      this.animFrame = requestAnimationFrame(loop);
-    };
-    this.animFrame = requestAnimationFrame(loop);
+    this._startSteps();
   }
 
   // ── Main game loop (host only) ───────────────────────────────
@@ -268,7 +245,7 @@ export class HexFrostEngine extends GameEngine {
         }
       }
       this.gameState = state;
-      this._renderState();
+      this._invalidate();
       if (this.frameCount % STATE_SEND_INTERVAL === 0) this._broadcastState();
       return;
     }
@@ -284,21 +261,21 @@ export class HexFrostEngine extends GameEngine {
         }
       }
       this.gameState = state;
-      this._renderState();
+      this._invalidate();
       if (this.frameCount % STATE_SEND_INTERVAL === 0) this._broadcastState();
       return;
     }
 
     // ── FINISHED phase ──
     if (state.phase === PHASE.FINISHED) {
-      this._renderState();
+      this._invalidate();
       this._broadcastState();
       this.running = false;
       return;
     }
 
     if (state.phase !== PHASE.BUILDING) {
-      this._renderState();
+      this._invalidate();
       return;
     }
 
@@ -358,7 +335,7 @@ export class HexFrostEngine extends GameEngine {
     this._handleHostEvents(state.events);
 
     this.gameState = state;
-    this._renderState();
+    this._invalidate();
 
     if (this.frameCount % STATE_SEND_INTERVAL === 0) {
       this._broadcastState();
@@ -407,7 +384,7 @@ export class HexFrostEngine extends GameEngine {
       score2: state.p2.roundWins,
       winner,
     };
-    this._safeSend(encodeGameEnd(result));
+    this._sendCommand(encodeGameEnd(result));
 
     if (this.onGameEnd) {
       this.onGameEnd(result);
@@ -418,12 +395,14 @@ export class HexFrostEngine extends GameEngine {
 
   _handleBlur() {
     this.localInputs = { left: false, right: false, up: false, down: false };
+    this._sendInputState();
   }
 
   _handleChannelClose() {
+    this._stopSteps();
     if (!this.gameState || this.gameState.phase === PHASE.FINISHED) return;
     this.gameState.phase = PHASE.FINISHED;
-    this._renderState();
+    this._invalidate();
     if (this.onGameEnd) {
       try {
         this.onGameEnd({
@@ -448,6 +427,6 @@ export class HexFrostEngine extends GameEngine {
   _broadcastState() {
     if (!this.gameState) return;
     const packed = packState(this.gameState);
-    this._safeSend(encodeGameState(packed));
+    this._sendState(encodeGameState(packed));
   }
 }

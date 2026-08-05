@@ -1,3 +1,4 @@
+import { inputDatagram } from "../../../helpers/game_input.js";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import {
   PHASE,
@@ -5,7 +6,6 @@ import {
   INPUT_KEY,
   GAME_MODE,
   encodeGameState,
-  encodePlayerInput,
   encodeGameEnd,
   encodeGameReady,
 } from "../../../../js/lib/games/pixel_tanks/protocol.js";
@@ -257,7 +257,7 @@ describe("PixelTanksEngine", () => {
       channel.send.mockClear();
 
       // Peer handles key input locally and sends over channel
-      engine._handleKeyDown({ key: "ArrowUp", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "ArrowUp", preventDefault: vi.fn(), repeat: false, target: null });
       expect(engine.localInputs.forward).toBe(true);
       expect(channel.send).toHaveBeenCalled();
     });
@@ -386,7 +386,7 @@ describe("PixelTanksEngine", () => {
       engine = new PixelTanksEngine(canvas, channel, "pixel_tanks", true, null);
       engine.start();
 
-      const inputBuf = encodePlayerInput(INPUT_KEY.FORWARD, true);
+      const inputBuf = inputDatagram(PixelTanksEngine, { forward: true }, 1);
       const handler = channel.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
       handler({ data: inputBuf });
 
@@ -397,11 +397,10 @@ describe("PixelTanksEngine", () => {
       engine = new PixelTanksEngine(canvas, channel, "pixel_tanks", true, null);
       engine.start();
 
-      const handler = channel.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
-      handler({ data: encodePlayerInput(INPUT_KEY.FIRE, true) });
+      engine._onChannelMessage({ data: inputDatagram(PixelTanksEngine, { fire: true }, 2) });
       expect(engine.remoteInputs.fire).toBe(true);
 
-      handler({ data: encodePlayerInput(INPUT_KEY.FIRE, false) });
+      engine._onChannelMessage({ data: inputDatagram(PixelTanksEngine, { fire: false }, 3) });
       expect(engine.remoteInputs.fire).toBe(false);
     });
   });
@@ -439,7 +438,7 @@ describe("PixelTanksEngine", () => {
     }
 
     function getLoopFn() {
-      return globalThis.requestAnimationFrame.mock.calls.at(-1)[0];
+      return () => engine._gameLoop();
     }
 
     it("runs game loop and broadcasts state", () => {
@@ -448,10 +447,9 @@ describe("PixelTanksEngine", () => {
 
       expect(engine.gameState.phase).toBe(PHASE.PLAYING);
 
-      const loopFn = getLoopFn();
       channel.send.mockClear();
-      loopFn(0); // frame 1
-      loopFn(0); // frame 2 — should broadcast
+      engine._gameLoop(); // frame 1
+      engine._gameLoop(); // frame 2 — should broadcast
 
       expect(channel.send).toHaveBeenCalled();
       vi.useRealTimers();
@@ -502,7 +500,7 @@ describe("PixelTanksEngine", () => {
     }
 
     function getLoopFn() {
-      return globalThis.requestAnimationFrame.mock.calls.at(-1)[0];
+      return () => engine._gameLoop();
     }
 
     it("transitions to ROUND_OVER when timer expires", () => {
@@ -552,7 +550,7 @@ describe("PixelTanksEngine", () => {
     }
 
     function getLoopFn() {
-      return globalThis.requestAnimationFrame.mock.calls.at(-1)[0];
+      return () => engine._gameLoop();
     }
 
     it("ends match when a player reaches ROUNDS_TO_WIN", () => {
@@ -614,8 +612,7 @@ describe("PixelTanksEngine", () => {
       engine.gameState.m1VY = 0;
 
       const prevScore = engine.gameState.score1;
-      const loopFn = globalThis.requestAnimationFrame.mock.calls.at(-1)[0];
-      loopFn(0);
+      engine._gameLoop();
 
       expect(engine.gameState.score1).toBe(prevScore + 1);
       expect(engine.gameState.tank1Invuln).toBe(true);
@@ -709,10 +706,6 @@ describe("PixelTanksEngine", () => {
       vi.advanceTimersByTime(4000);
     }
 
-    function getLoopFn() {
-      return globalThis.requestAnimationFrame.mock.calls.at(-1)[0];
-    }
-
     it("uses updateMissileRicochet in RICOCHET mode", () => {
       engine = new PixelTanksEngine(canvas, channel, "pixel_tanks", true, null);
       engine.mode = GAME_MODE.RICOCHET;
@@ -724,8 +717,7 @@ describe("PixelTanksEngine", () => {
       engine.gameState.m1VY = 0;
       engine.walls = new Uint8Array(40 * 30); // empty maze
 
-      const loopFn = getLoopFn();
-      loopFn(0);
+      engine._gameLoop();
 
       // Should not throw and continue loop
       expect(globalThis.requestAnimationFrame).toHaveBeenCalled();
@@ -753,8 +745,7 @@ describe("PixelTanksEngine", () => {
       engine.walls = new Uint8Array(40 * 30);
       engine.walls[1 * 40 + 2] = 1; // wall at grid position near missile path
 
-      const loopFn = getLoopFn();
-      loopFn(0);
+      engine._gameLoop();
 
       // Whether ricochet was triggered depends on physics, but the code path is tested
       vi.useRealTimers();
@@ -773,10 +764,6 @@ describe("PixelTanksEngine", () => {
       vi.advanceTimersByTime(4000);
     }
 
-    function getLoopFn() {
-      return globalThis.requestAnimationFrame.mock.calls.at(-1)[0];
-    }
-
     it("continues loop during respawnPause without physics", () => {
       engine = new PixelTanksEngine(canvas, channel, "pixel_tanks", true, null);
       setupPlaying(engine, channel);
@@ -787,8 +774,7 @@ describe("PixelTanksEngine", () => {
 
       engine.localInputs.rotateRight = true;
 
-      const loopFn = getLoopFn();
-      loopFn(0);
+      engine._gameLoop();
 
       // Tank should NOT have rotated (physics skipped)
       expect(engine.gameState.tank1Rot).toBe(initialTank1Rot);
@@ -803,8 +789,7 @@ describe("PixelTanksEngine", () => {
 
       engine.gameState.respawnPause = 5;
 
-      const loopFn = getLoopFn();
-      loopFn(0);
+      engine._gameLoop();
 
       // respawnPause should have been decremented by tickTimers
       expect(engine.gameState.respawnPause).toBeLessThan(5);
@@ -817,11 +802,10 @@ describe("PixelTanksEngine", () => {
       engine = new PixelTanksEngine(canvas, channel, "pixel_tanks", true, null);
       engine.start();
 
-      const handler = channel.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
-      handler({ data: encodePlayerInput(INPUT_KEY.ROTATE_LEFT, true) });
+      engine._onChannelMessage({ data: inputDatagram(PixelTanksEngine, { rotateLeft: true }, 4) });
       expect(engine.remoteInputs.rotateLeft).toBe(true);
 
-      handler({ data: encodePlayerInput(INPUT_KEY.ROTATE_LEFT, false) });
+      engine._onChannelMessage({ data: inputDatagram(PixelTanksEngine, { rotateLeft: false }, 5) });
       expect(engine.remoteInputs.rotateLeft).toBe(false);
     });
 
@@ -829,11 +813,12 @@ describe("PixelTanksEngine", () => {
       engine = new PixelTanksEngine(canvas, channel, "pixel_tanks", true, null);
       engine.start();
 
-      const handler = channel.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
-      handler({ data: encodePlayerInput(INPUT_KEY.ROTATE_RIGHT, true) });
+      engine._onChannelMessage({ data: inputDatagram(PixelTanksEngine, { rotateRight: true }, 6) });
       expect(engine.remoteInputs.rotateRight).toBe(true);
 
-      handler({ data: encodePlayerInput(INPUT_KEY.ROTATE_RIGHT, false) });
+      engine._onChannelMessage({
+        data: inputDatagram(PixelTanksEngine, { rotateRight: false }, 7),
+      });
       expect(engine.remoteInputs.rotateRight).toBe(false);
     });
   });
@@ -850,10 +835,6 @@ describe("PixelTanksEngine", () => {
       vi.advanceTimersByTime(4000);
     }
 
-    function getLoopFn() {
-      return globalThis.requestAnimationFrame.mock.calls.at(-1)[0];
-    }
-
     it("plays playTimerTick when roundTimer <= 900 and divisible by 60", () => {
       engine = new PixelTanksEngine(canvas, channel, "pixel_tanks", true, null);
       setupPlaying(engine, channel);
@@ -865,8 +846,7 @@ describe("PixelTanksEngine", () => {
       // We want s.roundTimer after tick to be 900 and % 60 === 0
       engine.gameState.roundTimer = 901; // after tick: 900
 
-      const loopFn = getLoopFn();
-      loopFn(0);
+      engine._gameLoop();
 
       expect(engine.audio.playTimerTick).toHaveBeenCalled();
       vi.useRealTimers();
@@ -929,7 +909,9 @@ describe("PixelTanksEngine", () => {
       engine.start();
 
       engine.localInputs.forward = true;
-      engine._handleKeyUp({ key: "ArrowUp", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "ArrowUp", preventDefault: vi.fn(), repeat: false, target: null });
+      channel.send.mockClear();
+      engine._onKeyUp({ key: "ArrowUp", preventDefault: vi.fn(), repeat: false, target: null });
       expect(engine.localInputs.forward).toBe(false);
     });
 
@@ -938,7 +920,9 @@ describe("PixelTanksEngine", () => {
       engine.start();
       channel.send.mockClear();
 
-      engine._handleKeyUp({ key: "ArrowUp", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "ArrowUp", preventDefault: vi.fn(), repeat: false, target: null });
+      channel.send.mockClear();
+      engine._onKeyUp({ key: "ArrowUp", preventDefault: vi.fn(), repeat: false, target: null });
       expect(channel.send).toHaveBeenCalled();
     });
 
@@ -947,7 +931,7 @@ describe("PixelTanksEngine", () => {
       engine.start();
 
       const prevState = { ...engine.localInputs };
-      engine._handleKeyDown({ key: "z", preventDefault: vi.fn() });
+      engine._onKeyDown({ key: "z", preventDefault: vi.fn(), repeat: false, target: null });
       expect(engine.localInputs).toEqual(prevState);
     });
   });

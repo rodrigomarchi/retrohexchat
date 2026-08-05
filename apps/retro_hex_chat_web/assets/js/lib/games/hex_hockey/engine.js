@@ -19,8 +19,6 @@ import {
   getMessageType,
   encodeGameState,
   decodeGameState,
-  encodePlayerInput,
-  decodePlayerInput,
   encodeGameEnd,
   decodeGameEnd,
   encodeGameReady,
@@ -48,7 +46,7 @@ import {
 import { render, readColors, generateIceParticles } from "./renderer.js";
 import { HexHockeyAudio } from "./audio.js";
 
-const STATE_SEND_INTERVAL = 2; // Broadcast every 2 frames (~30Hz)
+const STATE_SEND_INTERVAL = 1; // broadcast every fixed step (60Hz)
 const FACEOFF_GO_FRAMES = 30; // How long "GO!" stays visible
 
 /**
@@ -66,6 +64,8 @@ function resolveMode(gameId) {
 }
 
 export class HexHockeyEngine extends GameEngine {
+  static INPUT_BITS = { left: 0, right: 1, up: 2, down: 3, action: 4 };
+
   /**
    * @param {HTMLCanvasElement} canvas
    * @param {RTCDataChannel} channel
@@ -113,10 +113,10 @@ export class HexHockeyEngine extends GameEngine {
 
     if (this.isHost) {
       this.gameState = createInitialState(this.mode);
-      this._renderState();
+      this._invalidate();
     } else {
-      this._safeSend(encodeGameReady());
-      this._renderState();
+      this._advertiseReady(encodeGameReady);
+      this._invalidate();
     }
   }
 
@@ -124,7 +124,6 @@ export class HexHockeyEngine extends GameEngine {
     super.stop();
     window.removeEventListener("blur", this._boundBlur);
     this.channel.removeEventListener("close", this._boundChannelClose);
-    this.audio.destroy();
     this.localInputs = { left: false, right: false, up: false, down: false, action: false };
     this.remoteInputs = { left: false, right: false, up: false, down: false, action: false };
     this.peerReady = false;
@@ -152,12 +151,7 @@ export class HexHockeyEngine extends GameEngine {
         this.gameState = unpackState(decoded);
         this._handlePeerEvents(decoded.eventFlags);
         this._updatePuckTrail();
-        this._renderState();
-      }
-    } else if (type === MSG_TYPE.PLAYER_INPUT && this.isHost) {
-      const input = decodePlayerInput(buf);
-      if (input) {
-        this._applyRemoteInput(input);
+        this._invalidate();
       }
     } else if (type === MSG_TYPE.GAME_END && !this.isHost) {
       const result = decodeGameEnd(buf);
@@ -197,10 +191,6 @@ export class HexHockeyEngine extends GameEngine {
       this.localInputs.action = true;
       this.actionHandled = false;
     }
-
-    if (!this.isHost) {
-      this._safeSend(encodePlayerInput(key, true));
-    }
   }
 
   _handleKeyUp(event) {
@@ -213,10 +203,6 @@ export class HexHockeyEngine extends GameEngine {
     else if (key === INPUT_KEY.UP) this.localInputs.up = false;
     else if (key === INPUT_KEY.DOWN) this.localInputs.down = false;
     else if (key === INPUT_KEY.ACTION) this.localInputs.action = false;
-
-    if (!this.isHost) {
-      this._safeSend(encodePlayerInput(key, false));
-    }
   }
 
   _mapKey(event) {
@@ -258,18 +244,18 @@ export class HexHockeyEngine extends GameEngine {
   }
 
   _startGameLoop() {
-    if (this.animFrame) return;
-    const loop = () => {
-      if (!this.running) return;
-      this._gameLoop();
-      this.animFrame = requestAnimationFrame(loop);
-    };
-    this.animFrame = requestAnimationFrame(loop);
+    this._startSteps();
   }
 
   // ── Main game loop (host only) ───────────────────────────────
 
   _gameLoop() {
+    this._step();
+    if (this.goalFlash > 0) this.goalFlash--;
+  }
+
+  /** One step of the match. May return early on any phase. */
+  _step() {
     if (!this.isHost || !this.gameState) return;
 
     this.frameCount++;
@@ -293,7 +279,7 @@ export class HexHockeyEngine extends GameEngine {
           this.audio.playCountdownTick();
         }
       }
-      this._renderState();
+      this._invalidate();
       if (this.frameCount % STATE_SEND_INTERVAL === 0) this._broadcastState();
       return;
     }
@@ -310,7 +296,7 @@ export class HexHockeyEngine extends GameEngine {
         }
         this.audio.playFaceoffWhistle();
       }
-      this._renderState();
+      this._invalidate();
       if (this.frameCount % STATE_SEND_INTERVAL === 0) this._broadcastState();
       return;
     }
@@ -333,7 +319,7 @@ export class HexHockeyEngine extends GameEngine {
           this.audio.playCountdownTick();
         }
       }
-      this._renderState();
+      this._invalidate();
       if (this.frameCount % STATE_SEND_INTERVAL === 0) this._broadcastState();
       return;
     }
@@ -348,14 +334,14 @@ export class HexHockeyEngine extends GameEngine {
         resetForFaceoff(state, null);
         this.audio.playCountdownTick();
       }
-      this._renderState();
+      this._invalidate();
       if (this.frameCount % STATE_SEND_INTERVAL === 0) this._broadcastState();
       return;
     }
 
     // ── FINISHED phase ──
     if (state.phase === PHASE.FINISHED) {
-      this._renderState();
+      this._invalidate();
       this._broadcastState();
       this.running = false;
       return;
@@ -363,7 +349,7 @@ export class HexHockeyEngine extends GameEngine {
 
     // ── PLAYING / SUDDEN_DEATH phase (main gameplay) ──
     if (state.phase !== PHASE.PLAYING && state.phase !== PHASE.SUDDEN_DEATH) {
-      this._renderState();
+      this._invalidate();
       return;
     }
 
@@ -453,7 +439,7 @@ export class HexHockeyEngine extends GameEngine {
     // Audio events
     this._handleAudioEvents(state.eventFlags);
 
-    this._renderState();
+    this._invalidate();
 
     if (this.frameCount % STATE_SEND_INTERVAL === 0) {
       this._broadcastState();
@@ -526,7 +512,7 @@ export class HexHockeyEngine extends GameEngine {
     this.audio.stopSuddenDeath();
     this.audio.playVictory();
 
-    this._safeSend(encodeGameEnd(result));
+    this._sendCommand(encodeGameEnd(result));
 
     if (this.onGameEnd) {
       this.onGameEnd(result);
@@ -543,13 +529,15 @@ export class HexHockeyEngine extends GameEngine {
       down: false,
       action: false,
     };
+    this._sendInputState();
   }
 
   _handleChannelClose() {
+    this._stopSteps();
     if (!this.gameState || this.gameState.phase === PHASE.FINISHED) return;
     this.gameState.phase = PHASE.FINISHED;
     this.audio.stopSuddenDeath();
-    this._renderState();
+    this._invalidate();
     if (this.onGameEnd) {
       try {
         this.onGameEnd({
@@ -570,9 +558,6 @@ export class HexHockeyEngine extends GameEngine {
   // ── Render / broadcast helpers ───────────────────────────────
 
   _renderState() {
-    // Decay goal flash
-    if (this.goalFlash > 0) this.goalFlash--;
-
     render(this.ctx, this.gameState, this.colors, this.frameCount, {
       iceParticles: this.iceParticles,
       puckTrail: this.puckTrail,
@@ -583,6 +568,6 @@ export class HexHockeyEngine extends GameEngine {
   _broadcastState() {
     if (!this.gameState) return;
     const packed = packState(this.gameState);
-    this._safeSend(encodeGameState(packed));
+    this._sendState(encodeGameState(packed));
   }
 }

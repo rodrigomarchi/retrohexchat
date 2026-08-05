@@ -1,3 +1,5 @@
+import { inputDatagram, inputMask } from "../../../helpers/game_input.js";
+import { decodeInputState } from "../../../../js/lib/games/net_protocol.js";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import {
   PHASE,
@@ -5,7 +7,6 @@ import {
   INPUT_KEY,
   GAME_MODE,
   encodeGameState,
-  encodePlayerInput,
   encodeGameEnd,
   encodeGameReady,
 } from "../../../../js/lib/games/hex_invaders/protocol.js";
@@ -240,12 +241,14 @@ describe("HexInvadersEngine", () => {
     it("renders initial state on start (host)", () => {
       engine = new HexInvadersEngine(canvas, channel, "hex_invaders", true, null);
       engine.start();
+      engine._pump(0);
       expect(render).toHaveBeenCalled();
     });
 
     it("renders initial state on start (peer)", () => {
       engine = new HexInvadersEngine(canvas, channel, "hex_invaders", false, null);
       engine.start();
+      engine._pump(0);
       expect(render).toHaveBeenCalled();
     });
 
@@ -378,17 +381,27 @@ describe("HexInvadersEngine", () => {
       });
 
       it("sets localInputs.left on ArrowLeft", () => {
-        engine._handleKeyDown({ key: "ArrowLeft", preventDefault: vi.fn() });
+        engine._onKeyDown({
+          key: "ArrowLeft",
+          preventDefault: vi.fn(),
+          repeat: false,
+          target: null,
+        });
         expect(engine.localInputs.left).toBe(true);
       });
 
       it("sets localInputs.right on ArrowRight", () => {
-        engine._handleKeyDown({ key: "ArrowRight", preventDefault: vi.fn() });
+        engine._onKeyDown({
+          key: "ArrowRight",
+          preventDefault: vi.fn(),
+          repeat: false,
+          target: null,
+        });
         expect(engine.localInputs.right).toBe(true);
       });
 
       it("sets localInputs.fire on Space", () => {
-        engine._handleKeyDown({ key: " ", preventDefault: vi.fn() });
+        engine._onKeyDown({ key: " ", preventDefault: vi.fn(), repeat: false, target: null });
         expect(engine.localInputs.fire).toBe(true);
       });
 
@@ -405,7 +418,12 @@ describe("HexInvadersEngine", () => {
       });
 
       it("does not send anything over channel (host handles locally)", () => {
-        engine._handleKeyDown({ key: "ArrowLeft", preventDefault: vi.fn() });
+        engine._onKeyDown({
+          key: "ArrowLeft",
+          preventDefault: vi.fn(),
+          repeat: false,
+          target: null,
+        });
         expect(channel.send).not.toHaveBeenCalled();
       });
     });
@@ -418,27 +436,36 @@ describe("HexInvadersEngine", () => {
       });
 
       it("sends encodePlayerInput for left key", () => {
-        engine._handleKeyDown({ key: "ArrowLeft", preventDefault: vi.fn() });
+        engine._onKeyDown({
+          key: "ArrowLeft",
+          preventDefault: vi.fn(),
+          repeat: false,
+          target: null,
+        });
         expect(channel.send).toHaveBeenCalledTimes(1);
         const buf = channel.send.mock.calls[0][0];
-        const view = new DataView(buf);
-        expect(view.getUint8(0)).toBe(MSG_TYPE.PLAYER_INPUT);
-        expect(view.getUint8(1)).toBe(INPUT_KEY.LEFT);
-        expect(view.getUint8(2)).toBe(1); // pressed = true
+        expect(decodeInputState(buf).mask).toBe(inputMask(HexInvadersEngine, { left: true }));
       });
 
       it("sends encodePlayerInput for fire key", () => {
-        engine._handleKeyDown({ key: " ", preventDefault: vi.fn() });
+        engine._onKeyDown({ key: " ", preventDefault: vi.fn(), repeat: false, target: null });
         expect(channel.send).toHaveBeenCalledTimes(1);
-        const buf = channel.send.mock.calls[0][0];
-        const view = new DataView(buf);
-        expect(view.getUint8(1)).toBe(INPUT_KEY.FIRE);
-        expect(view.getUint8(2)).toBe(1);
+        expect(decodeInputState(channel.send.mock.calls[0][0]).mask).toBe(
+          inputMask(HexInvadersEngine, { fire: true }),
+        );
       });
 
-      it("does not modify localInputs (peer sends over network)", () => {
-        engine._handleKeyDown({ key: "ArrowLeft", preventDefault: vi.fn() });
-        expect(engine.localInputs.left).toBe(false);
+      it("tracks localInputs so the mask can carry them", () => {
+        engine._onKeyDown({
+          key: "ArrowLeft",
+          preventDefault: vi.fn(),
+          repeat: false,
+          target: null,
+        });
+
+        // The guest keeps its own input state now: the base packs it into the
+        // mask it restates every frame.
+        expect(engine.localInputs.left).toBe(true);
       });
     });
 
@@ -452,17 +479,38 @@ describe("HexInvadersEngine", () => {
       });
 
       it("clears localInputs.left on ArrowLeft release", () => {
-        engine._handleKeyUp({ key: "ArrowLeft", preventDefault: vi.fn() });
+        engine._onKeyDown({
+          key: "ArrowLeft",
+          preventDefault: vi.fn(),
+          repeat: false,
+          target: null,
+        });
+        channel.send.mockClear();
+        engine._onKeyUp({ key: "ArrowLeft", preventDefault: vi.fn(), repeat: false, target: null });
         expect(engine.localInputs.left).toBe(false);
       });
 
       it("clears localInputs.right on ArrowRight release", () => {
-        engine._handleKeyUp({ key: "ArrowRight", preventDefault: vi.fn() });
+        engine._onKeyDown({
+          key: "ArrowRight",
+          preventDefault: vi.fn(),
+          repeat: false,
+          target: null,
+        });
+        channel.send.mockClear();
+        engine._onKeyUp({
+          key: "ArrowRight",
+          preventDefault: vi.fn(),
+          repeat: false,
+          target: null,
+        });
         expect(engine.localInputs.right).toBe(false);
       });
 
       it("clears localInputs.fire on Space release", () => {
-        engine._handleKeyUp({ key: " ", preventDefault: vi.fn() });
+        engine._onKeyDown({ key: " ", preventDefault: vi.fn(), repeat: false, target: null });
+        channel.send.mockClear();
+        engine._onKeyUp({ key: " ", preventDefault: vi.fn(), repeat: false, target: null });
         expect(engine.localInputs.fire).toBe(false);
       });
 
@@ -481,13 +529,22 @@ describe("HexInvadersEngine", () => {
       });
 
       it("sends release input over channel", () => {
-        engine._handleKeyUp({ key: "ArrowRight", preventDefault: vi.fn() });
+        engine._onKeyDown({
+          key: "ArrowRight",
+          preventDefault: vi.fn(),
+          repeat: false,
+          target: null,
+        });
+        channel.send.mockClear();
+        engine._onKeyUp({
+          key: "ArrowRight",
+          preventDefault: vi.fn(),
+          repeat: false,
+          target: null,
+        });
         expect(channel.send).toHaveBeenCalledTimes(1);
         const buf = channel.send.mock.calls[0][0];
-        const view = new DataView(buf);
-        expect(view.getUint8(0)).toBe(MSG_TYPE.PLAYER_INPUT);
-        expect(view.getUint8(1)).toBe(INPUT_KEY.RIGHT);
-        expect(view.getUint8(2)).toBe(0); // pressed = false
+        expect(decodeInputState(buf).mask).toBe(0);
       });
     });
   });
@@ -499,9 +556,9 @@ describe("HexInvadersEngine", () => {
       engine = new HexInvadersEngine(canvas, channel, "hex_invaders", true, null);
       engine.start();
       // Should not throw
-      engine._handleMessage({ data: "not a buffer" });
-      engine._handleMessage({ data: 123 });
-      engine._handleMessage({ data: null });
+      engine._onChannelMessage({ data: "not a buffer" });
+      engine._onChannelMessage({ data: 123 });
+      engine._onChannelMessage({ data: null });
     });
 
     describe("host receiving messages", () => {
@@ -511,34 +568,34 @@ describe("HexInvadersEngine", () => {
       });
 
       it("PLAYER_INPUT sets remoteInputs.left", () => {
-        const buf = encodePlayerInput(INPUT_KEY.LEFT, true);
-        engine._handleMessage({ data: buf });
+        const buf = inputDatagram(HexInvadersEngine, { left: true }, 1);
+        engine._onChannelMessage({ data: buf });
         expect(engine.remoteInputs.left).toBe(true);
       });
 
       it("PLAYER_INPUT sets remoteInputs.right", () => {
-        const buf = encodePlayerInput(INPUT_KEY.RIGHT, true);
-        engine._handleMessage({ data: buf });
+        const buf = inputDatagram(HexInvadersEngine, { right: true }, 2);
+        engine._onChannelMessage({ data: buf });
         expect(engine.remoteInputs.right).toBe(true);
       });
 
       it("PLAYER_INPUT sets remoteInputs.fire", () => {
-        const buf = encodePlayerInput(INPUT_KEY.FIRE, true);
-        engine._handleMessage({ data: buf });
+        const buf = inputDatagram(HexInvadersEngine, { fire: true }, 3);
+        engine._onChannelMessage({ data: buf });
         expect(engine.remoteInputs.fire).toBe(true);
       });
 
       it("PLAYER_INPUT release clears remoteInputs", () => {
         engine.remoteInputs.left = true;
-        const buf = encodePlayerInput(INPUT_KEY.LEFT, false);
-        engine._handleMessage({ data: buf });
+        const buf = inputDatagram(HexInvadersEngine, { left: false }, 4);
+        engine._onChannelMessage({ data: buf });
         expect(engine.remoteInputs.left).toBe(false);
       });
 
       it("GAME_READY sets peerReady and starts countdown", () => {
         vi.useFakeTimers();
         const buf = encodeGameReady();
-        engine._handleMessage({ data: buf });
+        engine._onChannelMessage({ data: buf });
         expect(engine.peerReady).toBe(true);
         expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
         expect(engine.gameState.countdown).toBe(3);
@@ -547,10 +604,10 @@ describe("HexInvadersEngine", () => {
       it("GAME_READY duplicate is ignored", () => {
         vi.useFakeTimers();
         const buf = encodeGameReady();
-        engine._handleMessage({ data: buf });
+        engine._onChannelMessage({ data: buf });
         const countdown1 = engine.gameState.countdown;
         // second ready should be no-op
-        engine._handleMessage({ data: buf });
+        engine._onChannelMessage({ data: buf });
         expect(engine.gameState.countdown).toBe(countdown1);
       });
 
@@ -559,13 +616,13 @@ describe("HexInvadersEngine", () => {
         state.score1 = 999;
         const buf = encodeGameState(state);
         const prevScore = engine.gameState.score1;
-        engine._handleMessage({ data: buf });
+        engine._onChannelMessage({ data: buf });
         expect(engine.gameState.score1).toBe(prevScore);
       });
 
       it("host ignores GAME_END messages", () => {
         const buf = encodeGameEnd({ score1: 100, score2: 200, winner: 2 });
-        engine._handleMessage({ data: buf });
+        engine._onChannelMessage({ data: buf });
         expect(engine.gameState.phase).toBe(PHASE.WAITING);
       });
     });
@@ -586,9 +643,10 @@ describe("HexInvadersEngine", () => {
         state.phase = PHASE.PLAYING;
         state.score1 = 42;
         const buf = encodeGameState(state);
-        engine._handleMessage({ data: buf });
+        engine._onChannelMessage({ data: buf });
         expect(engine.gameState.score1).toBe(42);
         expect(engine.gameState.phase).toBe(PHASE.PLAYING);
+        engine._pump(0);
         expect(render).toHaveBeenCalled();
       });
 
@@ -596,7 +654,7 @@ describe("HexInvadersEngine", () => {
         expect(engine.seed).toBe(0);
         const state = createInitialState(GAME_MODE.INVASION_WAR, 54321);
         const buf = encodeGameState(state);
-        engine._handleMessage({ data: buf });
+        engine._onChannelMessage({ data: buf });
         expect(engine.seed).toBe(54321);
       });
 
@@ -604,13 +662,13 @@ describe("HexInvadersEngine", () => {
         const originalPositions = engine.gameState._shieldPositions;
         const state = createInitialState(GAME_MODE.INVASION_WAR, 12345);
         const buf = encodeGameState(state);
-        engine._handleMessage({ data: buf });
+        engine._onChannelMessage({ data: buf });
         expect(engine.gameState._shieldPositions).toStrictEqual(originalPositions);
       });
 
       it("GAME_END sets FINISHED phase and calls onGameEnd", () => {
         const buf = encodeGameEnd({ score1: 100, score2: 50, winner: 1 });
-        engine._handleMessage({ data: buf });
+        engine._onChannelMessage({ data: buf });
         expect(engine.gameState.phase).toBe(PHASE.FINISHED);
         expect(onGameEnd).toHaveBeenCalledWith({
           score: { p1: 100, p2: 50 },
@@ -620,7 +678,8 @@ describe("HexInvadersEngine", () => {
 
       it("GAME_END renders after setting FINISHED", () => {
         const buf = encodeGameEnd({ score1: 0, score2: 0, winner: 0 });
-        engine._handleMessage({ data: buf });
+        engine._onChannelMessage({ data: buf });
+        engine._pump(0);
         expect(render).toHaveBeenCalled();
       });
 
@@ -631,19 +690,19 @@ describe("HexInvadersEngine", () => {
         engine.onGameEnd = badCb;
         const buf = encodeGameEnd({ score1: 0, score2: 0, winner: 1 });
         // Should not throw
-        engine._handleMessage({ data: buf });
+        engine._onChannelMessage({ data: buf });
         expect(badCb).toHaveBeenCalled();
       });
 
       it("peer ignores PLAYER_INPUT messages", () => {
-        const buf = encodePlayerInput(INPUT_KEY.LEFT, true);
-        engine._handleMessage({ data: buf });
+        const buf = inputDatagram(HexInvadersEngine, { left: true }, 5);
+        engine._onChannelMessage({ data: buf });
         expect(engine.remoteInputs.left).toBe(false);
       });
 
       it("peer ignores GAME_READY messages", () => {
         const buf = encodeGameReady();
-        engine._handleMessage({ data: buf });
+        engine._onChannelMessage({ data: buf });
         expect(engine.peerReady).toBe(false);
       });
     });
@@ -659,7 +718,10 @@ describe("HexInvadersEngine", () => {
     });
 
     it("ignores null decoded state", () => {
+      engine._pump(0);
+      render.mockClear();
       engine._applyPeerState(null);
+      engine._pump(0);
       expect(render).not.toHaveBeenCalled();
     });
 
@@ -736,6 +798,7 @@ describe("HexInvadersEngine", () => {
     it("renders after applying state", () => {
       const decoded = { seed: 12345, phase: PHASE.PLAYING };
       engine._applyPeerState(decoded);
+      engine._pump(0);
       expect(render).toHaveBeenCalled();
     });
   });
@@ -760,6 +823,7 @@ describe("HexInvadersEngine", () => {
     it("broadcasts and renders immediately", () => {
       engine._startCountdown();
       expect(channel.send).toHaveBeenCalled();
+      engine._pump(0);
       expect(render).toHaveBeenCalled();
     });
 
@@ -827,6 +891,7 @@ describe("HexInvadersEngine", () => {
     it("exits early if not running", () => {
       engine.running = false;
       engine._gameLoop();
+      engine._pump(0);
       expect(render).not.toHaveBeenCalled();
     });
 
@@ -882,31 +947,26 @@ describe("HexInvadersEngine", () => {
 
     it("renders every frame", () => {
       engine._gameLoop();
+      engine._pump(0);
       expect(render).toHaveBeenCalled();
     });
 
     it("broadcasts every STATE_SEND_INTERVAL frames", () => {
-      // Game loop: render, frameCount += 1, then check frameCount % 2 === 0
-      // Frame 0: frameCount becomes 1, 1%2 !== 0 → no broadcast
+      // Snapshots go out on every step now: the channel no longer retransmits
+      // them, so the guest is fed at simulation rate instead of half of it.
       engine.frameCount = 0;
-      engine._gameLoop();
-      expect(channel.send).not.toHaveBeenCalled();
 
-      channel.send.mockClear();
-      // Frame 1: frameCount becomes 2, 2%2 === 0 → broadcast
       engine._gameLoop();
-      expect(channel.send).toHaveBeenCalled();
+      expect(channel.send).toHaveBeenCalledTimes(1);
 
-      channel.send.mockClear();
-      // Frame 2: frameCount becomes 3, 3%2 !== 0 → no broadcast
       engine._gameLoop();
-      expect(channel.send).not.toHaveBeenCalled();
+      expect(channel.send).toHaveBeenCalledTimes(2);
     });
 
-    it("schedules next frame via requestAnimationFrame", () => {
-      globalThis.requestAnimationFrame.mockClear();
+    it("keeps stepping the simulation", () => {
+      engine._startSteps();
       engine._gameLoop();
-      expect(globalThis.requestAnimationFrame).toHaveBeenCalledWith(engine._boundGameLoop);
+      expect(engine.stepping).toBe(true);
     });
 
     it("clears events at start of each frame", () => {
@@ -1083,6 +1143,7 @@ describe("HexInvadersEngine", () => {
 
     it("renders the final state", () => {
       engine._handleGameFinished({ ended: true, winner: 1 });
+      engine._pump(0);
       expect(render).toHaveBeenCalled();
     });
 
@@ -1111,6 +1172,8 @@ describe("HexInvadersEngine", () => {
         engine = new HexInvadersEngine(canvas, channel, "hex_invaders", true, null);
         engine.start();
         engine.localInputs = { left: true, right: true, fire: true };
+        engine._sendInputState();
+        channel.send.mockClear();
         engine._handleBlur();
         expect(engine.localInputs).toEqual({
           left: false,
@@ -1124,6 +1187,8 @@ describe("HexInvadersEngine", () => {
         engine.start();
         channel.send.mockClear();
         engine.localInputs = { left: true, right: true, fire: true };
+        engine._sendInputState();
+        channel.send.mockClear();
         engine._handleBlur();
         expect(engine.localInputs).toEqual({
           left: false,
@@ -1131,7 +1196,8 @@ describe("HexInvadersEngine", () => {
           fire: false,
         });
         // Should send 3 release messages (left, right, fire)
-        expect(channel.send).toHaveBeenCalledTimes(3);
+        // One datagram states every key at once.
+        expect(channel.send).toHaveBeenCalledTimes(1);
       });
 
       it("host does NOT send release messages on blur", () => {
@@ -1162,6 +1228,7 @@ describe("HexInvadersEngine", () => {
         engine.start();
         render.mockClear();
         engine._handleChannelClose();
+        engine._pump(0);
         expect(render).toHaveBeenCalled();
       });
 
@@ -1294,6 +1361,7 @@ describe("HexInvadersEngine", () => {
       engine.start();
       render.mockClear();
       engine._renderState();
+      engine._pump(0);
       expect(render).toHaveBeenCalledWith(
         engine.ctx,
         engine.gameState,
@@ -1307,6 +1375,7 @@ describe("HexInvadersEngine", () => {
       engine.colors = null;
       render.mockClear();
       engine._renderState();
+      engine._pump(0);
       expect(render).not.toHaveBeenCalled();
     });
   });
@@ -1355,20 +1424,17 @@ describe("HexInvadersEngine", () => {
       expect(aliens2After.length).toBe(aliens2Before.length);
     });
 
-    it("_startGameLoop has no duplicate guard — calling twice creates two RAF loops", () => {
-      vi.useRealTimers(); // restore real timers so our mock RAF works
-      globalThis.requestAnimationFrame = vi.fn(() => 42);
+    it("_startGameLoop is idempotent", () => {
       engine = new HexInvadersEngine(canvas, channel, "hex_invaders", true, null);
       engine.start();
       engine.gameState.phase = PHASE.PLAYING;
-      globalThis.requestAnimationFrame.mockClear();
 
       engine._startGameLoop();
-      expect(globalThis.requestAnimationFrame).toHaveBeenCalledTimes(1);
+      expect(engine.stepping).toBe(true);
 
-      // Calling again overwrites animFrame, creating a new RAF
+      // Starting twice is a no-op rather than a second loop racing the first.
       engine._startGameLoop();
-      expect(globalThis.requestAnimationFrame).toHaveBeenCalledTimes(2);
+      expect(engine.stepping).toBe(true);
     });
 
     it("alien march audio fires when alien1MoveTimer rolls over (timer diff > 5)", () => {

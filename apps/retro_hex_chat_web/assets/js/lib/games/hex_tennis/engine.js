@@ -13,8 +13,6 @@ import {
   INPUT_KEY,
   encodeGameState,
   decodeGameState,
-  encodePlayerInput,
-  decodePlayerInput,
   encodeGameEnd,
   decodeGameEnd,
   encodeGameReady,
@@ -43,11 +41,13 @@ const MODE_MAP = {
   hex_tennis_sudden: GAME_MODE.SUDDEN_DEATH,
 };
 
-const STATE_SEND_INTERVAL = 2; // broadcast every 2 frames (~30Hz)
+const STATE_SEND_INTERVAL = 1; // broadcast every fixed step (60Hz)
 const POINT_PAUSE_FRAMES = 120; // 2s at 60fps
 const CHANGEOVER_PAUSE_FRAMES = 120; // 2s
 
 export class TennisEngine extends GameEngine {
+  static INPUT_BITS = { up: 0, down: 1, left: 2, right: 3, serve: 4 };
+
   constructor(canvas, channel, gameId, isHost, onGameEnd) {
     super(canvas, channel, gameId, isHost);
     this.onGameEnd = onGameEnd || null;
@@ -70,7 +70,6 @@ export class TennisEngine extends GameEngine {
       netFault: false,
       outOfBounds: false,
     };
-    this._boundGameLoop = this._gameLoop.bind(this);
     this._boundBlur = this._handleBlur.bind(this);
     this._boundChannelClose = this._handleChannelClose.bind(this);
   }
@@ -83,10 +82,10 @@ export class TennisEngine extends GameEngine {
     this.channel.addEventListener("close", this._boundChannelClose);
 
     if (this.isHost) {
-      this._renderState();
+      this._invalidate();
     } else {
-      this._safeSend(encodeGameReady());
-      this._renderState();
+      this._advertiseReady(encodeGameReady);
+      this._invalidate();
     }
   }
 
@@ -100,7 +99,6 @@ export class TennisEngine extends GameEngine {
     }
     this._localServePressed = false;
     this._remoteServePressed = false;
-    this.audio.dispose();
   }
 
   // ── Input Handling ──
@@ -136,15 +134,11 @@ export class TennisEngine extends GameEngine {
     if (k === null) return;
     e.preventDefault();
 
-    if (this.isHost) {
-      if (k === INPUT_KEY.UP) this.localInputs.up = true;
-      else if (k === INPUT_KEY.DOWN) this.localInputs.down = true;
-      else if (k === INPUT_KEY.LEFT) this.localInputs.left = true;
-      else if (k === INPUT_KEY.RIGHT) this.localInputs.right = true;
-      else if (k === INPUT_KEY.SERVE) this.localInputs.serve = true;
-    } else {
-      this._safeSend(encodePlayerInput(k, true));
-    }
+    if (k === INPUT_KEY.UP) this.localInputs.up = true;
+    else if (k === INPUT_KEY.DOWN) this.localInputs.down = true;
+    else if (k === INPUT_KEY.LEFT) this.localInputs.left = true;
+    else if (k === INPUT_KEY.RIGHT) this.localInputs.right = true;
+    else if (k === INPUT_KEY.SERVE) this.localInputs.serve = true;
   }
 
   _handleKeyUp(e) {
@@ -152,26 +146,16 @@ export class TennisEngine extends GameEngine {
     if (k === null) return;
     e.preventDefault();
 
-    if (this.isHost) {
-      if (k === INPUT_KEY.UP) this.localInputs.up = false;
-      else if (k === INPUT_KEY.DOWN) this.localInputs.down = false;
-      else if (k === INPUT_KEY.LEFT) this.localInputs.left = false;
-      else if (k === INPUT_KEY.RIGHT) this.localInputs.right = false;
-      else if (k === INPUT_KEY.SERVE) this.localInputs.serve = false;
-    } else {
-      this._safeSend(encodePlayerInput(k, false));
-    }
+    if (k === INPUT_KEY.UP) this.localInputs.up = false;
+    else if (k === INPUT_KEY.DOWN) this.localInputs.down = false;
+    else if (k === INPUT_KEY.LEFT) this.localInputs.left = false;
+    else if (k === INPUT_KEY.RIGHT) this.localInputs.right = false;
+    else if (k === INPUT_KEY.SERVE) this.localInputs.serve = false;
   }
 
   _handleBlur() {
     this.localInputs = { up: false, down: false, left: false, right: false, serve: false };
-    if (!this.isHost) {
-      this._safeSend(encodePlayerInput(INPUT_KEY.UP, false));
-      this._safeSend(encodePlayerInput(INPUT_KEY.DOWN, false));
-      this._safeSend(encodePlayerInput(INPUT_KEY.LEFT, false));
-      this._safeSend(encodePlayerInput(INPUT_KEY.RIGHT, false));
-      this._safeSend(encodePlayerInput(INPUT_KEY.SERVE, false));
-    }
+    this._sendInputState();
   }
 
   // ── Network Messages ──
@@ -183,19 +167,9 @@ export class TennisEngine extends GameEngine {
     if (type === null) return;
 
     if (this.isHost) {
-      if (type === MSG_TYPE.PLAYER_INPUT) {
-        const inp = decodePlayerInput(buf);
-        if (!inp) return;
-        if (inp.keyCode === INPUT_KEY.UP) this.remoteInputs.up = inp.pressed;
-        else if (inp.keyCode === INPUT_KEY.DOWN) this.remoteInputs.down = inp.pressed;
-        else if (inp.keyCode === INPUT_KEY.LEFT) this.remoteInputs.left = inp.pressed;
-        else if (inp.keyCode === INPUT_KEY.RIGHT) this.remoteInputs.right = inp.pressed;
-        else if (inp.keyCode === INPUT_KEY.SERVE) this.remoteInputs.serve = inp.pressed;
-      } else if (type === MSG_TYPE.GAME_READY) {
-        if (!this.peerReady) {
-          this.peerReady = true;
-          this._startCountdown();
-        }
+      if (type === MSG_TYPE.GAME_READY && !this.peerReady) {
+        this.peerReady = true;
+        this._startCountdown();
       }
     } else {
       // Peer
@@ -218,7 +192,7 @@ export class TennisEngine extends GameEngine {
             },
           };
           this._playPeerAudio(prevPhase, decoded.phase);
-          this._renderState();
+          this._invalidate();
         }
       } else if (type === MSG_TYPE.GAME_END) {
         const result = decodeGameEnd(buf);
@@ -228,7 +202,7 @@ export class TennisEngine extends GameEngine {
           this.gameState.p1Games = result.p1Games;
           this.gameState.p2Games = result.p2Games;
           this.audio.playMatchWon();
-          this._renderState();
+          this._invalidate();
           if (this.onGameEnd) {
             try {
               this.onGameEnd({
@@ -251,7 +225,7 @@ export class TennisEngine extends GameEngine {
     this.gameState.phase = PHASE.COUNTDOWN;
     this.gameState.countdown = 3;
     this._broadcastState();
-    this._renderState();
+    this._invalidate();
 
     let count = 3;
     const tick = () => {
@@ -262,12 +236,12 @@ export class TennisEngine extends GameEngine {
         this.gameState.phase = PHASE.SERVING;
         this.gameState.countdown = 0;
         this._broadcastState();
-        this._renderState();
+        this._invalidate();
         this._startGameLoop();
       } else {
         this.gameState.countdown = count;
         this._broadcastState();
-        this._renderState();
+        this._invalidate();
         this.phaseTimer = setTimeout(tick, 1000);
       }
     };
@@ -277,7 +251,7 @@ export class TennisEngine extends GameEngine {
 
   _startGameLoop() {
     this.frameCount = 0;
-    this.animFrame = requestAnimationFrame(this._boundGameLoop);
+    this._startSteps();
   }
 
   // ── Game Loop (Host Only) ──
@@ -343,12 +317,11 @@ export class TennisEngine extends GameEngine {
         if (s.phase === PHASE.SERVING) {
           // First serve fault → back to serving
           this.gameState = s;
-          this._renderState();
+          this._invalidate();
           this.frameCount++;
           if (this.frameCount % STATE_SEND_INTERVAL === 0) {
             this._broadcastState();
           }
-          this.animFrame = requestAnimationFrame(this._boundGameLoop);
           return;
         }
       }
@@ -384,9 +357,8 @@ export class TennisEngine extends GameEngine {
         s.phase = PHASE.POINT;
         this.pointPauseCounter = POINT_PAUSE_FRAMES;
         this.gameState = s;
-        this._renderState();
+        this._invalidate();
         this._broadcastState();
-        this.animFrame = requestAnimationFrame(this._boundGameLoop);
         return;
       }
 
@@ -411,7 +383,7 @@ export class TennisEngine extends GameEngine {
     }
 
     // Render
-    this._renderState();
+    this._invalidate();
 
     // Broadcast
     this.frameCount++;
@@ -424,19 +396,18 @@ export class TennisEngine extends GameEngine {
       this._handleGameFinished();
       return;
     }
-
-    this.animFrame = requestAnimationFrame(this._boundGameLoop);
   }
 
   // ── Game End ──
 
   _handleGameFinished() {
+    this._stopSteps();
     const { p1Games, p2Games, winner, gameMode, isTiebreak } = this.gameState;
 
     this._broadcastState();
-    this._renderState();
+    this._invalidate();
 
-    this._safeSend(encodeGameEnd(p1Games, p2Games, winner, gameMode, isTiebreak));
+    this._sendCommand(encodeGameEnd(p1Games, p2Games, winner, gameMode, isTiebreak));
 
     if (winner > 0) {
       this.audio.playMatchWon();
@@ -458,9 +429,10 @@ export class TennisEngine extends GameEngine {
   // ── Connection Resilience ──
 
   _handleChannelClose() {
+    this._stopSteps();
     if (this.gameState.phase === PHASE.GAME_OVER) return;
     this.gameState.phase = PHASE.GAME_OVER;
-    this._renderState();
+    this._invalidate();
     if (this.onGameEnd) {
       try {
         this.onGameEnd({
@@ -498,7 +470,7 @@ export class TennisEngine extends GameEngine {
   }
 
   _broadcastState() {
-    this._safeSend(encodeGameState(this._flattenStateForEncode()));
+    this._sendState(encodeGameState(this._flattenStateForEncode()));
   }
 
   // ── Peer Audio ──

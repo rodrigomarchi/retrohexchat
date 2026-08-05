@@ -208,7 +208,7 @@ export class HexSkiingAudio {
 
   // ── Cleanup ────────────────────────────────────────────────
 
-  destroy() {
+  dispose() {
     // Clear all pending setTimeout callbacks
     for (const t of this._timers) {
       clearTimeout(t);

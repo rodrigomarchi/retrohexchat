@@ -305,4 +305,16 @@ export class HexInvadersAudio {
   playCountdown() {
     this._playTone(600, 0.08, "square", 0.12);
   }
+
+  /**
+   * Release the AudioContext. Each one holds a real-time audio thread for as
+   * long as it lives, and browsers cap how many a page may open.
+   * @returns {void}
+   */
+  dispose() {
+    if (this._ctx) {
+      this._ctx.close().catch(() => {});
+      this._ctx = null;
+    }
+  }
 }

@@ -18,8 +18,6 @@ import {
   GAME_MODE,
   encodeGameState,
   decodeGameState,
-  encodePlayerInput,
-  decodePlayerInput,
   encodeGameEnd,
   decodeGameEnd,
   encodeGameReady,
@@ -57,7 +55,7 @@ import {
 import { render as renderFrame, getColors } from "./renderer.js";
 import { HexRaidAudio } from "./audio.js";
 
-const STATE_SEND_INTERVAL = 2; // Send state every N frames (~30Hz at 60fps)
+const STATE_SEND_INTERVAL = 1; // broadcast every fixed step (60Hz)
 
 /** Map gameId to GAME_MODE */
 const MODE_MAP = {
@@ -67,6 +65,8 @@ const MODE_MAP = {
 };
 
 export class HexRaidEngine extends GameEngine {
+  static INPUT_BITS = { left: 0, right: 1, accel: 2, decel: 3, fire: 4, mine: 5 };
+
   /**
    * @param {HTMLCanvasElement} canvas
    * @param {RTCDataChannel} channel
@@ -105,7 +105,6 @@ export class HexRaidEngine extends GameEngine {
     this.audio = new HexRaidAudio();
     this.colors = null;
     this.peerReady = false;
-    this._boundGameLoop = this._gameLoop.bind(this);
     this._boundBlur = this._handleBlur.bind(this);
     this._boundChannelClose = this._handleChannelClose.bind(this);
 
@@ -124,10 +123,10 @@ export class HexRaidEngine extends GameEngine {
     this.channel.addEventListener("close", this._boundChannelClose);
 
     if (this.isHost) {
-      this._renderState();
+      this._invalidate();
     } else {
-      this._safeSend(encodeGameReady());
-      this._renderState();
+      this._advertiseReady(encodeGameReady);
+      this._invalidate();
     }
   }
 
@@ -138,18 +137,11 @@ export class HexRaidEngine extends GameEngine {
       clearTimeout(this.phaseTimer);
       this.phaseTimer = null;
     }
-    if (this.animFrame) {
-      cancelAnimationFrame(this.animFrame);
-      this.animFrame = null;
-    }
-    this.running = false;
     this._localFirePressed = false;
     this._remoteFirePressed = false;
     this._localMinePressed = false;
     this._remoteMinePressed = false;
-    this.channel.removeEventListener("message", this._boundOnMessage);
-    document.removeEventListener("keydown", this._boundOnKeyDown);
-    document.removeEventListener("keyup", this._boundOnKeyUp);
+    super.stop();
   }
 
   _handleMessage(event) {
@@ -164,16 +156,7 @@ export class HexRaidEngine extends GameEngine {
           const decoded = decodeGameState(buf);
           if (decoded) {
             this._applyPeerState(decoded);
-            this._renderState();
-          }
-        }
-        break;
-
-      case MSG_TYPE.PLAYER_INPUT:
-        if (this.isHost) {
-          const input = decodePlayerInput(buf);
-          if (input) {
-            this._applyRemoteInput(input);
+            this._invalidate();
           }
         }
         break;
@@ -196,7 +179,7 @@ export class HexRaidEngine extends GameEngine {
           } else {
             this.audio.playLose();
           }
-          this._renderState();
+          this._invalidate();
         }
         break;
       }
@@ -278,10 +261,6 @@ export class HexRaidEngine extends GameEngine {
     e.preventDefault();
 
     this._setLocalInput(keyCode, true);
-
-    if (!this.isHost) {
-      this._safeSend(encodePlayerInput(keyCode, true));
-    }
   }
 
   _handleKeyUp(e) {
@@ -289,10 +268,6 @@ export class HexRaidEngine extends GameEngine {
     if (keyCode === null) return;
 
     this._setLocalInput(keyCode, false);
-
-    if (!this.isHost) {
-      this._safeSend(encodePlayerInput(keyCode, false));
-    }
   }
 
   _setLocalInput(keyCode, pressed) {
@@ -323,15 +298,7 @@ export class HexRaidEngine extends GameEngine {
       fire: false,
       mine: false,
     };
-
-    if (!this.isHost) {
-      this._safeSend(encodePlayerInput(INPUT_KEY.LEFT, false));
-      this._safeSend(encodePlayerInput(INPUT_KEY.RIGHT, false));
-      this._safeSend(encodePlayerInput(INPUT_KEY.ACCEL, false));
-      this._safeSend(encodePlayerInput(INPUT_KEY.DECEL, false));
-      this._safeSend(encodePlayerInput(INPUT_KEY.FIRE, false));
-      this._safeSend(encodePlayerInput(INPUT_KEY.MINE, false));
-    }
+    this._sendInputState();
   }
 
   // --- Phase management (host only) ---
@@ -340,7 +307,7 @@ export class HexRaidEngine extends GameEngine {
     this.gameState.phase = PHASE.COUNTDOWN;
     this.gameState.countdown = 3;
     this._broadcastState();
-    this._renderState();
+    this._invalidate();
     this.audio.playCountdown();
 
     let count = 3;
@@ -350,7 +317,7 @@ export class HexRaidEngine extends GameEngine {
       if (count > 0) {
         this.gameState.countdown = count;
         this._broadcastState();
-        this._renderState();
+        this._invalidate();
         this.audio.playCountdown();
         this.phaseTimer = setTimeout(tick, 1000);
       } else {
@@ -367,13 +334,12 @@ export class HexRaidEngine extends GameEngine {
   }
 
   _startGameLoop() {
-    if (this.animFrame) cancelAnimationFrame(this.animFrame);
     this.frameCount = 0;
     this._localFirePressed = false;
     this._remoteFirePressed = false;
     this._localMinePressed = false;
     this._remoteMinePressed = false;
-    this.animFrame = requestAnimationFrame(this._boundGameLoop);
+    this._startSteps();
   }
 
   _gameLoop() {
@@ -519,18 +485,17 @@ export class HexRaidEngine extends GameEngine {
 
     // Save state and render
     this.gameState = s;
-    this._renderState();
+    this._invalidate();
 
     // Broadcast
     this.frameCount++;
     if (this.frameCount % STATE_SEND_INTERVAL === 0) {
       this._broadcastState();
     }
-
-    this.animFrame = requestAnimationFrame(this._boundGameLoop);
   }
 
   _handleGameOver() {
+    this._stopSteps();
     const winner = getWinner(this.gameState);
 
     if (winner === 1) {
@@ -540,7 +505,7 @@ export class HexRaidEngine extends GameEngine {
     }
 
     // Send GAME_END to peer
-    this._safeSend(
+    this._sendCommand(
       encodeGameEnd({
         score1: this.gameState.score1,
         score2: this.gameState.score2,
@@ -548,7 +513,7 @@ export class HexRaidEngine extends GameEngine {
       }),
     );
     this._broadcastState();
-    this._renderState();
+    this._invalidate();
 
     if (this.onGameEnd) {
       this.onGameEnd({
@@ -564,9 +529,10 @@ export class HexRaidEngine extends GameEngine {
   // ── Connection Resilience ──
 
   _handleChannelClose() {
+    this._stopSteps();
     if (!this.gameState || this.gameState.phase === PHASE.FINISHED) return;
     this.gameState.phase = PHASE.FINISHED;
-    this._renderState();
+    this._invalidate();
     if (this.onGameEnd) {
       try {
         this.onGameEnd({
@@ -582,7 +548,7 @@ export class HexRaidEngine extends GameEngine {
   }
 
   _broadcastState() {
-    this._safeSend(encodeGameState(this.gameState));
+    this._sendState(encodeGameState(this.gameState));
   }
 
   _renderState() {

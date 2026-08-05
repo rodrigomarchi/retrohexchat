@@ -12,8 +12,6 @@ import {
   INPUT_KEY,
   encodeGameState,
   decodeGameState,
-  encodePlayerInput,
-  decodePlayerInput,
   encodeGameEnd,
   decodeGameEnd,
   encodeGameReady,
@@ -46,11 +44,17 @@ import {
 import { render as renderFrame, getColors } from "./renderer.js";
 import { WarlordAudio } from "./audio.js";
 
-const STATE_SEND_INTERVAL = 2; // Send state every N frames (~30Hz at 60fps)
+const STATE_SEND_INTERVAL = 1; // broadcast every fixed step (60Hz)
 const SERVE_DELAY = 800; // ms
 const KING_HIT_PAUSE = 2000; // ms
 
 export class WarlordEngine extends GameEngine {
+  static INPUT_BITS = { up: 0, down: 1, space: 2 };
+
+  static INTERPOLATION = {
+    keys: ["fireballX", "fireballY", "shield1Y", "shield2Y"],
+  };
+
   /**
    * @param {HTMLCanvasElement} canvas
    * @param {RTCDataChannel} channel
@@ -68,7 +72,6 @@ export class WarlordEngine extends GameEngine {
     this.audio = new WarlordAudio();
     this.colors = null;
     this.peerReady = false;
-    this._boundGameLoop = this._gameLoop.bind(this);
     this._boundBlur = this._handleBlur.bind(this);
     this._boundChannelClose = this._handleChannelClose.bind(this);
   }
@@ -82,10 +85,10 @@ export class WarlordEngine extends GameEngine {
     this.channel.addEventListener("close", this._boundChannelClose);
 
     if (this.isHost) {
-      this._renderState();
+      this._invalidate();
     } else {
-      this._safeSend(encodeGameReady());
-      this._renderState();
+      this._advertiseReady(encodeGameReady);
+      this._invalidate();
     }
   }
 
@@ -96,14 +99,7 @@ export class WarlordEngine extends GameEngine {
       clearTimeout(this.phaseTimer);
       this.phaseTimer = null;
     }
-    if (this.animFrame) {
-      cancelAnimationFrame(this.animFrame);
-      this.animFrame = null;
-    }
-    this.running = false;
-    this.channel.removeEventListener("message", this._boundOnMessage);
-    document.removeEventListener("keydown", this._boundOnKeyDown);
-    document.removeEventListener("keyup", this._boundOnKeyUp);
+    super.stop();
   }
 
   /** Override base engine message handler to use binary protocol. */
@@ -119,32 +115,9 @@ export class WarlordEngine extends GameEngine {
           const decoded = decodeGameState(buf);
           if (decoded) {
             const prevPhase = this.gameState.phase;
-            this._applyPeerState(decoded);
+            this._ingestSnapshot(decoded, () => this._applyPeerState(decoded));
             this._playPhaseAudio(prevPhase, decoded.phase);
-            this._renderState();
-          }
-        }
-        break;
-
-      case MSG_TYPE.PLAYER_INPUT:
-        if (this.isHost) {
-          const input = decodePlayerInput(buf);
-          if (input) {
-            if (input.keyCode === INPUT_KEY.UP) {
-              this.remoteInputs.up = input.pressed;
-            } else if (input.keyCode === INPUT_KEY.DOWN) {
-              this.remoteInputs.down = input.pressed;
-            } else if (input.keyCode === INPUT_KEY.SPACE) {
-              // Peer released space while holding fireball → release
-              if (!input.pressed && this.gameState.caughtBy === 2) {
-                this.gameState = releaseBall(this.gameState, 2);
-                if (this.gameState.released) {
-                  this.audio.playLaunch();
-                  this.gameState.released = false;
-                }
-              }
-              this.remoteInputs.space = input.pressed;
-            }
+            this._invalidate();
           }
         }
         break;
@@ -170,7 +143,7 @@ export class WarlordEngine extends GameEngine {
           } else {
             this.audio.playLose();
           }
-          this._renderState();
+          this._invalidate();
         }
         break;
       }
@@ -240,10 +213,6 @@ export class WarlordEngine extends GameEngine {
     if (keyCode === INPUT_KEY.UP) this.localInputs.up = true;
     if (keyCode === INPUT_KEY.DOWN) this.localInputs.down = true;
     if (keyCode === INPUT_KEY.SPACE) this.localInputs.space = true;
-
-    if (!this.isHost) {
-      this._safeSend(encodePlayerInput(keyCode, true));
-    }
   }
 
   _handleKeyUp(e) {
@@ -263,10 +232,6 @@ export class WarlordEngine extends GameEngine {
         }
       }
     }
-
-    if (!this.isHost) {
-      this._safeSend(encodePlayerInput(keyCode, false));
-    }
   }
 
   /** Map keyboard key to INPUT_KEY enum. */
@@ -275,6 +240,25 @@ export class WarlordEngine extends GameEngine {
     if (key === "ArrowDown" || key === "s" || key === "S") return INPUT_KEY.DOWN;
     if (key === " ") return INPUT_KEY.SPACE;
     return null;
+  }
+
+  /**
+   * Host: the guest launches a caught fireball by *releasing* space, so this
+   * mechanic lives on the edge rather than on the key being held.
+   * @param {Record<string, boolean>} previous
+   * @param {Record<string, boolean>} current
+   * @returns {void}
+   */
+  _onRemoteInputChange(previous, current) {
+    if (!previous.space || current.space) return;
+    if (this.gameState.caughtBy !== 2) return;
+
+    this.gameState = releaseBall(this.gameState, 2);
+
+    if (this.gameState.released) {
+      this.audio.playLaunch();
+      this.gameState.released = false;
+    }
   }
 
   /** Clear all inputs on window blur. */
@@ -289,12 +273,7 @@ export class WarlordEngine extends GameEngine {
         this.gameState.released = false;
       }
     }
-
-    if (!this.isHost) {
-      this._safeSend(encodePlayerInput(INPUT_KEY.UP, false));
-      this._safeSend(encodePlayerInput(INPUT_KEY.DOWN, false));
-      this._safeSend(encodePlayerInput(INPUT_KEY.SPACE, false));
-    }
+    this._sendInputState();
   }
 
   /** Host: start countdown phase. */
@@ -310,7 +289,7 @@ export class WarlordEngine extends GameEngine {
       if (count > 0) {
         this.gameState.countdown = count;
         this._broadcastState();
-        this._renderState();
+        this._invalidate();
         this.audio.playCountdown();
         this.phaseTimer = setTimeout(tick, 1000);
       } else {
@@ -329,7 +308,7 @@ export class WarlordEngine extends GameEngine {
     this.gameState.fireballVY = 0;
     this.gameState.caughtBy = 0;
     this._broadcastState();
-    this._renderState();
+    this._invalidate();
 
     this.phaseTimer = setTimeout(() => {
       this.gameState = serveFireball(this.gameState);
@@ -341,11 +320,11 @@ export class WarlordEngine extends GameEngine {
   /** Host: start the main game loop. */
   _startGameLoop() {
     this.frameCount = 0;
-    this.animFrame = requestAnimationFrame(this._boundGameLoop);
+    this._startSteps();
   }
 
   /** Host: main game loop (60Hz via requestAnimationFrame). */
-  _gameLoop(_timestamp) {
+  _gameLoop() {
     if (!this.running) return;
 
     // Update shields (host = P1, peer = P2)
@@ -419,33 +398,29 @@ export class WarlordEngine extends GameEngine {
     }
 
     // Render
-    this._renderState();
+    this._invalidate();
 
     // Send state to peer
     this.frameCount++;
     if (this.frameCount % STATE_SEND_INTERVAL === 0) {
       this._broadcastState();
     }
-
-    this.animFrame = requestAnimationFrame(this._boundGameLoop);
   }
 
   /** Host: handle king hit — pause, check game over, rebuild or finish. */
+  /** Let the castle debris settle while the round is paused on a king hit. */
+  _idleStep() {
+    if (this.gameState.phase !== PHASE.KING_HIT) return;
+    if (!this.gameState.particles || !this.gameState.particles.length) return;
+    this.gameState.particles = updateParticles(this.gameState.particles);
+    this._invalidate();
+  }
+
   _handleKingHit() {
     this.gameState.phase = PHASE.KING_HIT;
     this._broadcastState();
-    this._renderState();
-
-    // Keep rendering particles during pause
-    const renderDuringPause = () => {
-      if (!this.running || this.gameState.phase !== PHASE.KING_HIT) return;
-      if (this.gameState.particles && this.gameState.particles.length > 0) {
-        this.gameState.particles = updateParticles(this.gameState.particles);
-      }
-      this._renderState();
-      this.animFrame = requestAnimationFrame(renderDuringPause);
-    };
-    this.animFrame = requestAnimationFrame(renderDuringPause);
+    this._invalidate();
+    this._stopSteps();
 
     this.phaseTimer = setTimeout(() => {
       // Check game over
@@ -464,6 +439,7 @@ export class WarlordEngine extends GameEngine {
 
   /** Host: handle game end. */
   _handleGameFinished() {
+    this._stopSteps();
     const { p1Lives, p2Lives, winner } = this.gameState;
 
     // Host determines if they won
@@ -475,7 +451,7 @@ export class WarlordEngine extends GameEngine {
     }
 
     // Send game end to peer
-    this._safeSend(encodeGameEnd(p1Lives, p2Lives, winner));
+    this._sendCommand(encodeGameEnd(p1Lives, p2Lives, winner));
     this._broadcastState();
 
     // Notify LiveView
@@ -490,9 +466,10 @@ export class WarlordEngine extends GameEngine {
   // ── Connection Resilience ──
 
   _handleChannelClose() {
+    this._stopSteps();
     if (!this.gameState || this.gameState.phase === PHASE.FINISHED) return;
     this.gameState.phase = PHASE.FINISHED;
-    this._renderState();
+    this._invalidate();
     if (this.onGameEnd) {
       try {
         this.onGameEnd({
@@ -509,7 +486,7 @@ export class WarlordEngine extends GameEngine {
 
   /** Send game state over DataChannel. */
   _broadcastState() {
-    this._safeSend(encodeGameState(this.gameState));
+    this._sendState(encodeGameState(this.gameState));
   }
 
   /** Render current state to canvas. */

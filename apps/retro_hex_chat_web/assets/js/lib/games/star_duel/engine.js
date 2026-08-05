@@ -14,8 +14,6 @@ import {
   GAME_MODE,
   encodeGameState,
   decodeGameState,
-  encodePlayerInput,
-  decodePlayerInput,
   encodeGameEnd,
   decodeGameEnd,
   encodeGameReady,
@@ -51,13 +49,15 @@ import {
 import { render as renderFrame, getColors } from "./renderer.js";
 import { StarDuelAudio } from "./audio.js";
 
-const STATE_SEND_INTERVAL = 2; // Send every 2 frames (~30Hz)
+const STATE_SEND_INTERVAL = 1; // broadcast every fixed step (60Hz)
 const SPAWN_DELAY = 1500; // ms pause after round over
 const ROUND_OVER_DELAY = 2000; // ms before respawn
 
 const MODE_MAP = { star_duel: 0, gravity_well: 1, debris_field: 2 };
 
 export class StarDuelEngine extends GameEngine {
+  static INPUT_BITS = { rotateLeft: 0, rotateRight: 1, thrust: 2, fire: 3, warp: 4 };
+
   /**
    * @param {HTMLCanvasElement} canvas
    * @param {RTCDataChannel} channel
@@ -101,7 +101,6 @@ export class StarDuelEngine extends GameEngine {
     this._thrustAudioPlaying = false;
     this._peerThrustAudioPlaying = false;
 
-    this._boundGameLoop = this._gameLoop.bind(this);
     this._boundBlur = this._handleBlur.bind(this);
     this._boundChannelClose = this._handleChannelClose.bind(this);
   }
@@ -115,11 +114,11 @@ export class StarDuelEngine extends GameEngine {
 
     if (this.isHost) {
       // Host waits for peer GAME_READY, then starts countdown
-      this._renderState();
+      this._invalidate();
     } else {
       // Peer sends ready signal
-      this._safeSend(encodeGameReady());
-      this._renderState();
+      this._advertiseReady(encodeGameReady);
+      this._invalidate();
     }
   }
 
@@ -147,16 +146,7 @@ export class StarDuelEngine extends GameEngine {
           const decoded = decodeGameState(buf);
           if (decoded) {
             this._applyPeerState(decoded);
-            this._renderState();
-          }
-        }
-        break;
-
-      case MSG_TYPE.PLAYER_INPUT:
-        if (this.isHost) {
-          const input = decodePlayerInput(buf);
-          if (input) {
-            this._applyRemoteInput(input);
+            this._invalidate();
           }
         }
         break;
@@ -179,7 +169,7 @@ export class StarDuelEngine extends GameEngine {
           this.audio.stopThrust();
           this.audio.stopStarProximity();
           this._peerThrustAudioPlaying = false;
-          this._renderState();
+          this._invalidate();
         }
         break;
       }
@@ -217,30 +207,22 @@ export class StarDuelEngine extends GameEngine {
     if (keyCode === null) return;
     e.preventDefault();
 
-    if (this.isHost) {
-      if (keyCode === INPUT_KEY.ROTATE_LEFT) this.localInputs.rotateLeft = true;
-      if (keyCode === INPUT_KEY.ROTATE_RIGHT) this.localInputs.rotateRight = true;
-      if (keyCode === INPUT_KEY.THRUST) this.localInputs.thrust = true;
-      if (keyCode === INPUT_KEY.FIRE) this.localInputs.fire = true;
-      if (keyCode === INPUT_KEY.WARP) this.localInputs.warp = true;
-    } else {
-      this._safeSend(encodePlayerInput(keyCode, true));
-    }
+    if (keyCode === INPUT_KEY.ROTATE_LEFT) this.localInputs.rotateLeft = true;
+    if (keyCode === INPUT_KEY.ROTATE_RIGHT) this.localInputs.rotateRight = true;
+    if (keyCode === INPUT_KEY.THRUST) this.localInputs.thrust = true;
+    if (keyCode === INPUT_KEY.FIRE) this.localInputs.fire = true;
+    if (keyCode === INPUT_KEY.WARP) this.localInputs.warp = true;
   }
 
   _handleKeyUp(e) {
     const keyCode = this._mapKey(e.key);
     if (keyCode === null) return;
 
-    if (this.isHost) {
-      if (keyCode === INPUT_KEY.ROTATE_LEFT) this.localInputs.rotateLeft = false;
-      if (keyCode === INPUT_KEY.ROTATE_RIGHT) this.localInputs.rotateRight = false;
-      if (keyCode === INPUT_KEY.THRUST) this.localInputs.thrust = false;
-      if (keyCode === INPUT_KEY.FIRE) this.localInputs.fire = false;
-      if (keyCode === INPUT_KEY.WARP) this.localInputs.warp = false;
-    } else {
-      this._safeSend(encodePlayerInput(keyCode, false));
-    }
+    if (keyCode === INPUT_KEY.ROTATE_LEFT) this.localInputs.rotateLeft = false;
+    if (keyCode === INPUT_KEY.ROTATE_RIGHT) this.localInputs.rotateRight = false;
+    if (keyCode === INPUT_KEY.THRUST) this.localInputs.thrust = false;
+    if (keyCode === INPUT_KEY.FIRE) this.localInputs.fire = false;
+    if (keyCode === INPUT_KEY.WARP) this.localInputs.warp = false;
   }
 
   /** Map keyboard key to INPUT_KEY enum. */
@@ -262,13 +244,7 @@ export class StarDuelEngine extends GameEngine {
       fire: false,
       warp: false,
     };
-    if (!this.isHost) {
-      this._safeSend(encodePlayerInput(INPUT_KEY.ROTATE_LEFT, false));
-      this._safeSend(encodePlayerInput(INPUT_KEY.ROTATE_RIGHT, false));
-      this._safeSend(encodePlayerInput(INPUT_KEY.THRUST, false));
-      this._safeSend(encodePlayerInput(INPUT_KEY.FIRE, false));
-      this._safeSend(encodePlayerInput(INPUT_KEY.WARP, false));
-    }
+    this._sendInputState();
     this.audio.stopThrust();
     this._thrustAudioPlaying = false;
   }
@@ -278,7 +254,7 @@ export class StarDuelEngine extends GameEngine {
     this.gameState.phase = PHASE.COUNTDOWN;
     this.gameState.countdown = 3;
     this._broadcastState();
-    this._renderState();
+    this._invalidate();
     this.audio.playCountdown();
 
     let count = 3;
@@ -287,7 +263,7 @@ export class StarDuelEngine extends GameEngine {
       if (count > 0) {
         this.gameState.countdown = count;
         this._broadcastState();
-        this._renderState();
+        this._invalidate();
         this.audio.playCountdown();
         this.phaseTimer = setTimeout(tick, 1000);
       } else {
@@ -302,7 +278,7 @@ export class StarDuelEngine extends GameEngine {
   _startSpawning() {
     this.gameState.phase = PHASE.SPAWNING;
     this._broadcastState();
-    this._renderState();
+    this._invalidate();
     this.audio.playSpawn();
 
     this.phaseTimer = setTimeout(() => {
@@ -324,12 +300,12 @@ export class StarDuelEngine extends GameEngine {
     this._p2WarpPrev = false;
 
     this._broadcastState();
-    this._renderState();
-    this.animFrame = requestAnimationFrame(this._boundGameLoop);
+    this._invalidate();
+    this._startSteps();
   }
 
   /** Host: main game loop (60Hz via requestAnimationFrame). */
-  _gameLoop(_timestamp) {
+  _gameLoop() {
     if (!this.running) return;
 
     const state = this.gameState;
@@ -540,7 +516,7 @@ export class StarDuelEngine extends GameEngine {
     };
 
     // --- Render ---
-    this._renderState();
+    this._invalidate();
 
     // --- Broadcast state ---
     this.frameCount++;
@@ -557,15 +533,13 @@ export class StarDuelEngine extends GameEngine {
       this._handleRoundOver();
       return;
     }
-
-    this.animFrame = requestAnimationFrame(this._boundGameLoop);
   }
 
   /** Host: handle round over (one ship died, but no winner yet). */
   _handleRoundOver() {
     this.gameState.phase = PHASE.ROUND_OVER;
     this._broadcastState();
-    this._renderState();
+    this._invalidate();
 
     this.audio.stopThrust();
     this._thrustAudioPlaying = false;
@@ -581,6 +555,7 @@ export class StarDuelEngine extends GameEngine {
 
   /** Host: handle game end (a player reached WIN_SCORE). */
   _handleGameFinished() {
+    this._stopSteps();
     const { score1, score2 } = this.gameState;
     const winner = score1 >= WIN_SCORE ? 1 : 2;
 
@@ -594,7 +569,7 @@ export class StarDuelEngine extends GameEngine {
     }
 
     // Send game end to peer
-    this._safeSend(encodeGameEnd(score1, score2, winner));
+    this._sendCommand(encodeGameEnd(score1, score2, winner));
     this._broadcastState();
 
     // Notify LiveView
@@ -628,11 +603,12 @@ export class StarDuelEngine extends GameEngine {
   // ── Connection Resilience ──
 
   _handleChannelClose() {
+    this._stopSteps();
     if (!this.gameState || this.gameState.phase === PHASE.FINISHED) return;
     this.gameState.phase = PHASE.FINISHED;
     this.audio.stopThrust();
     this.audio.stopStarProximity();
-    this._renderState();
+    this._invalidate();
     if (this.onGameEnd) {
       try {
         this.onGameEnd({
@@ -658,7 +634,7 @@ export class StarDuelEngine extends GameEngine {
       warpCooldown1: this.gameState.ship1.warpCooldown || 0,
       warpCooldown2: this.gameState.ship2.warpCooldown || 0,
     };
-    this._safeSend(encodeGameState(stateToSend));
+    this._sendState(encodeGameState(stateToSend));
   }
 
   /** Render current state to canvas. */

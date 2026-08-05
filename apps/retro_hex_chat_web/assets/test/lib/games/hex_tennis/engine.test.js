@@ -1,3 +1,5 @@
+import { inputDatagram, inputMask } from "../../../helpers/game_input.js";
+import { decodeInputState } from "../../../../js/lib/games/net_protocol.js";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import {
   PHASE,
@@ -5,7 +7,6 @@ import {
   INPUT_KEY,
   MSG_TYPE,
   encodeGameState,
-  encodePlayerInput,
   encodeGameReady,
   encodeGameEnd,
 } from "../../../../js/lib/games/hex_tennis/protocol.js";
@@ -196,6 +197,7 @@ describe("TennisEngine", () => {
       const channel = createMockChannel();
       const e = new TennisEngine(canvas, channel, "hex_tennis", true, vi.fn());
       e.start();
+      e._pump(0);
       // Should have rendered (fillRect called for background)
       expect(canvas._ctx.fillRect).toHaveBeenCalled();
       // Should NOT have sent game ready (host waits)
@@ -211,6 +213,7 @@ describe("TennisEngine", () => {
       expect(channel.send).toHaveBeenCalledTimes(1);
       const sent = channel.send.mock.calls[0][0];
       expect(new DataView(sent).getUint8(0)).toBe(MSG_TYPE.GAME_READY);
+      e._pump(0);
       expect(canvas._ctx.fillRect).toHaveBeenCalled();
       e.stop();
     });
@@ -247,7 +250,7 @@ describe("TennisEngine", () => {
       );
       e.start();
       const readyBuf = encodeGameReady();
-      e._handleMessage({ data: readyBuf });
+      e._onChannelMessage({ data: readyBuf });
       expect(e.peerReady).toBe(true);
       expect(e.gameState.phase).toBe(PHASE.COUNTDOWN);
       e.stop();
@@ -262,8 +265,8 @@ describe("TennisEngine", () => {
         vi.fn(),
       );
       e.start();
-      const inputBuf = encodePlayerInput(INPUT_KEY.UP, true);
-      e._handleMessage({ data: inputBuf });
+      const inputBuf = inputDatagram(TennisEngine, { up: true }, 1);
+      e._onChannelMessage({ data: inputBuf });
       expect(e.remoteInputs.up).toBe(true);
       e.stop();
     });
@@ -284,10 +287,13 @@ describe("TennisEngine", () => {
         [INPUT_KEY.RIGHT, "right"],
         [INPUT_KEY.SERVE, "serve"],
       ];
-      for (const [keyCode, prop] of keys) {
-        e._handleMessage({ data: encodePlayerInput(keyCode, true) });
+      let seq = 0;
+      for (const [, prop] of keys) {
+        seq += 1;
+        e._onChannelMessage({ data: inputDatagram(TennisEngine, { [prop]: true }, seq) });
         expect(e.remoteInputs[prop]).toBe(true);
-        e._handleMessage({ data: encodePlayerInput(keyCode, false) });
+        seq += 1;
+        e._onChannelMessage({ data: inputDatagram(TennisEngine, {}, seq) });
         expect(e.remoteInputs[prop]).toBe(false);
       }
       e.stop();
@@ -308,7 +314,7 @@ describe("TennisEngine", () => {
         phase: PHASE.RALLY,
         ball: { x: 320, y: 240, vx: 3, vy: -2, speed: 4, height: 0.3, heightVel: 0 },
       });
-      e._handleMessage({ data: stateBuf });
+      e._onChannelMessage({ data: stateBuf });
       expect(e.gameState.phase).toBe(origPhase);
       e.stop();
     });
@@ -322,8 +328,8 @@ describe("TennisEngine", () => {
         vi.fn(),
       );
       e.start();
-      expect(() => e._handleMessage({ data: "hello" })).not.toThrow();
-      expect(() => e._handleMessage({ data: null })).not.toThrow();
+      expect(() => e._onChannelMessage({ data: "hello" })).not.toThrow();
+      expect(() => e._onChannelMessage({ data: null })).not.toThrow();
       e.stop();
     });
 
@@ -336,7 +342,7 @@ describe("TennisEngine", () => {
         vi.fn(),
       );
       e.start();
-      expect(() => e._handleMessage({ data: new ArrayBuffer(0) })).not.toThrow();
+      expect(() => e._onChannelMessage({ data: new ArrayBuffer(0) })).not.toThrow();
       e.stop();
     });
   });
@@ -367,7 +373,8 @@ describe("TennisEngine", () => {
         ballHeight: state.ball.height,
       };
       const stateBuf = encodeGameState(flat);
-      e._handleMessage({ data: stateBuf });
+      e._onChannelMessage({ data: stateBuf });
+      e._pump(0);
       expect(e.gameState.phase).toBe(PHASE.RALLY);
       expect(canvas._ctx.fillRect).toHaveBeenCalled();
       e.stop();
@@ -384,7 +391,7 @@ describe("TennisEngine", () => {
       );
       e.start();
       const endBuf = encodeGameEnd(6, 4, 1, GAME_MODE.CLASSIC, false);
-      e._handleMessage({ data: endBuf });
+      e._onChannelMessage({ data: endBuf });
       expect(e.gameState.phase).toBe(PHASE.GAME_OVER);
       expect(onEnd).toHaveBeenCalledWith(expect.objectContaining({ winner: 1 }));
       e.stop();
@@ -399,8 +406,8 @@ describe("TennisEngine", () => {
         vi.fn(),
       );
       e.start();
-      const inputBuf = encodePlayerInput(INPUT_KEY.UP, true);
-      e._handleMessage({ data: inputBuf });
+      const inputBuf = inputDatagram(TennisEngine, { up: true }, 2);
+      e._onChannelMessage({ data: inputBuf });
       // Peer should not process inputs
       expect(e.remoteInputs.up).toBe(false);
       e.stop();
@@ -417,13 +424,13 @@ describe("TennisEngine", () => {
         vi.fn(),
       );
       e.start();
-      e._handleKeyDown({ key: "ArrowUp", preventDefault: vi.fn() });
+      e._onKeyDown({ key: "ArrowUp", preventDefault: vi.fn(), repeat: false, target: null });
       expect(e.localInputs.up).toBe(true);
-      e._handleKeyDown({ key: "ArrowDown", preventDefault: vi.fn() });
+      e._onKeyDown({ key: "ArrowDown", preventDefault: vi.fn(), repeat: false, target: null });
       expect(e.localInputs.down).toBe(true);
-      e._handleKeyDown({ key: "ArrowLeft", preventDefault: vi.fn() });
+      e._onKeyDown({ key: "ArrowLeft", preventDefault: vi.fn(), repeat: false, target: null });
       expect(e.localInputs.left).toBe(true);
-      e._handleKeyDown({ key: "ArrowRight", preventDefault: vi.fn() });
+      e._onKeyDown({ key: "ArrowRight", preventDefault: vi.fn(), repeat: false, target: null });
       expect(e.localInputs.right).toBe(true);
       e.stop();
     });
@@ -437,13 +444,13 @@ describe("TennisEngine", () => {
         vi.fn(),
       );
       e.start();
-      e._handleKeyDown({ key: "w", preventDefault: vi.fn() });
+      e._onKeyDown({ key: "w", preventDefault: vi.fn(), repeat: false, target: null });
       expect(e.localInputs.up).toBe(true);
-      e._handleKeyDown({ key: "s", preventDefault: vi.fn() });
+      e._onKeyDown({ key: "s", preventDefault: vi.fn(), repeat: false, target: null });
       expect(e.localInputs.down).toBe(true);
-      e._handleKeyDown({ key: "a", preventDefault: vi.fn() });
+      e._onKeyDown({ key: "a", preventDefault: vi.fn(), repeat: false, target: null });
       expect(e.localInputs.left).toBe(true);
-      e._handleKeyDown({ key: "d", preventDefault: vi.fn() });
+      e._onKeyDown({ key: "d", preventDefault: vi.fn(), repeat: false, target: null });
       expect(e.localInputs.right).toBe(true);
       e.stop();
     });
@@ -457,7 +464,7 @@ describe("TennisEngine", () => {
         vi.fn(),
       );
       e.start();
-      e._handleKeyDown({ key: " ", preventDefault: vi.fn() });
+      e._onKeyDown({ key: " ", preventDefault: vi.fn(), repeat: false, target: null });
       expect(e.localInputs.serve).toBe(true);
       e.stop();
     });
@@ -471,7 +478,7 @@ describe("TennisEngine", () => {
         vi.fn(),
       );
       e.start();
-      e._handleKeyDown({ key: "Shift", preventDefault: vi.fn() });
+      e._onKeyDown({ key: "Shift", preventDefault: vi.fn(), repeat: false, target: null });
       expect(e.localInputs.serve).toBe(true);
       e.stop();
     });
@@ -482,12 +489,13 @@ describe("TennisEngine", () => {
       e.start();
       channel.send.mockClear(); // clear GAME_READY
 
-      e._handleKeyDown({ key: "ArrowUp", preventDefault: vi.fn() });
+      e._onKeyDown({ key: "ArrowUp", preventDefault: vi.fn(), repeat: false, target: null });
       expect(channel.send).toHaveBeenCalledTimes(1);
-      const sent = channel.send.mock.calls[0][0];
-      expect(new DataView(sent).getUint8(0)).toBe(MSG_TYPE.PLAYER_INPUT);
+      expect(decodeInputState(channel.send.mock.calls[0][0]).mask).toBe(
+        inputMask(TennisEngine, { up: true }),
+      );
 
-      e._handleKeyUp({ key: "ArrowUp", preventDefault: vi.fn() });
+      e._onKeyUp({ key: "ArrowUp", preventDefault: vi.fn(), repeat: false, target: null });
       expect(channel.send).toHaveBeenCalledTimes(2);
       e.stop();
     });
@@ -531,9 +539,9 @@ describe("TennisEngine", () => {
         vi.fn(),
       );
       e.start();
-      e._handleKeyDown({ key: "ArrowUp", preventDefault: vi.fn() });
+      e._onKeyDown({ key: "ArrowUp", preventDefault: vi.fn(), repeat: false, target: null });
       expect(e.localInputs.up).toBe(true);
-      e._handleKeyUp({ key: "ArrowUp", preventDefault: vi.fn() });
+      e._onKeyUp({ key: "ArrowUp", preventDefault: vi.fn(), repeat: false, target: null });
       expect(e.localInputs.up).toBe(false);
       e.stop();
     });
@@ -566,8 +574,10 @@ describe("TennisEngine", () => {
       const e = new TennisEngine(createMockCanvas(), channel, "hex_tennis", false, vi.fn());
       e.start();
       channel.send.mockClear();
+      e._onKeyDown({ key: "ArrowUp", preventDefault: vi.fn(), repeat: false, target: null });
+      channel.send.mockClear();
       e._handleBlur();
-      expect(channel.send).toHaveBeenCalledTimes(5);
+      expect(channel.send).toHaveBeenCalledTimes(1);
       e.stop();
     });
   });
@@ -612,7 +622,7 @@ describe("TennisEngine", () => {
       e.start();
 
       // Trigger countdown via GAME_READY
-      e._handleMessage({ data: encodeGameReady() });
+      e._onChannelMessage({ data: encodeGameReady() });
       expect(e.gameState.countdown).toBe(3);
       expect(e.gameState.phase).toBe(PHASE.COUNTDOWN);
 
@@ -635,7 +645,7 @@ describe("TennisEngine", () => {
       const e = new TennisEngine(createMockCanvas(), channel, "hex_tennis", true, vi.fn());
       e.start();
 
-      e._handleMessage({ data: encodeGameReady() });
+      e._onChannelMessage({ data: encodeGameReady() });
       const initialSends = channel.send.mock.calls.length;
 
       vi.advanceTimersByTime(1000);
@@ -722,7 +732,7 @@ describe("TennisEngine", () => {
       e.start();
 
       // Start countdown, let it finish
-      e._handleMessage({ data: encodeGameReady() });
+      e._onChannelMessage({ data: encodeGameReady() });
       vi.advanceTimersByTime(3000); // countdown done → SERVING
 
       expect(e.gameState.phase).toBe(PHASE.SERVING);
@@ -746,7 +756,7 @@ describe("TennisEngine", () => {
         vi.fn(),
       );
       e.start();
-      e._handleMessage({ data: encodeGameReady() });
+      e._onChannelMessage({ data: encodeGameReady() });
       vi.advanceTimersByTime(3000); // countdown → SERVING
 
       e.gameState.server = 2;
@@ -770,7 +780,7 @@ describe("TennisEngine", () => {
         vi.fn(),
       );
       e.start();
-      e._handleMessage({ data: encodeGameReady() });
+      e._onChannelMessage({ data: encodeGameReady() });
       vi.advanceTimersByTime(3000);
 
       e.gameState.server = 1;
@@ -807,7 +817,7 @@ describe("TennisEngine", () => {
       const stateBuf = encodeGameState(flat);
       // Spy on audio
       const hitSpy = vi.spyOn(e.audio, "playHit");
-      e._handleMessage({ data: stateBuf });
+      e._onChannelMessage({ data: stateBuf });
       expect(hitSpy).toHaveBeenCalled();
       e.stop();
     });
@@ -833,7 +843,7 @@ describe("TennisEngine", () => {
         ballHeight: 0.3,
       };
       const serveSpy = vi.spyOn(e.audio, "playServe");
-      e._handleMessage({ data: encodeGameState(flat) });
+      e._onChannelMessage({ data: encodeGameState(flat) });
       expect(serveSpy).toHaveBeenCalled();
       e.stop();
     });
@@ -859,7 +869,7 @@ describe("TennisEngine", () => {
         ballHeight: 0,
       };
       const faultSpy = vi.spyOn(e.audio, "playFault");
-      e._handleMessage({ data: encodeGameState(flat) });
+      e._onChannelMessage({ data: encodeGameState(flat) });
       expect(faultSpy).toHaveBeenCalled();
       e.stop();
     });
@@ -885,7 +895,7 @@ describe("TennisEngine", () => {
         ballHeight: 0,
       };
       const netSpy = vi.spyOn(e.audio, "playNetHit");
-      e._handleMessage({ data: encodeGameState(flat) });
+      e._onChannelMessage({ data: encodeGameState(flat) });
       expect(netSpy).toHaveBeenCalled();
       e.stop();
     });
@@ -912,7 +922,7 @@ describe("TennisEngine", () => {
         ballHeight: 0,
       };
       const outSpy = vi.spyOn(e.audio, "playOut");
-      e._handleMessage({ data: encodeGameState(flat) });
+      e._onChannelMessage({ data: encodeGameState(flat) });
       expect(outSpy).toHaveBeenCalled();
       e.stop();
     });
@@ -939,7 +949,7 @@ describe("TennisEngine", () => {
         ballHeight: 0,
       };
       const aceSpy = vi.spyOn(e.audio, "playAce");
-      e._handleMessage({ data: encodeGameState(flat) });
+      e._onChannelMessage({ data: encodeGameState(flat) });
       expect(aceSpy).toHaveBeenCalled();
       e.stop();
     });
@@ -965,7 +975,7 @@ describe("TennisEngine", () => {
         ballHeight: 0,
       };
       const pointSpy = vi.spyOn(e.audio, "playPoint");
-      e._handleMessage({ data: encodeGameState(flat) });
+      e._onChannelMessage({ data: encodeGameState(flat) });
       expect(pointSpy).toHaveBeenCalled();
       e.stop();
     });
@@ -1010,7 +1020,7 @@ describe("TennisEngine", () => {
       const e = new TennisEngine(canvas, channel, "hex_tennis", true, vi.fn());
       e.start();
       // Trigger countdown then let it finish to reach SERVING
-      e._handleMessage({ data: encodeGameReady() });
+      e._onChannelMessage({ data: encodeGameReady() });
       vi.advanceTimersByTime(3000);
       expect(e.gameState.phase).toBe(PHASE.SERVING);
       return { e, canvas, channel };
@@ -1104,18 +1114,18 @@ describe("TennisEngine", () => {
       const { e, canvas, channel } = setupRallyEngine();
       canvas._ctx.fillRect.mockClear();
       channel.send.mockClear();
-      e.frameCount = 1; // next frame will be 2, divisible by STATE_SEND_INTERVAL
       e._gameLoop();
+      e._pump(0);
       expect(canvas._ctx.fillRect).toHaveBeenCalled();
       expect(channel.send).toHaveBeenCalled();
       e.stop();
     });
 
-    it("requests next animation frame during rally", () => {
+    it("keeps stepping through a rally", () => {
       const { e } = setupRallyEngine();
-      globalThis.requestAnimationFrame.mockClear();
+      e._startSteps();
       e._gameLoop();
-      expect(globalThis.requestAnimationFrame).toHaveBeenCalled();
+      expect(e.stepping).toBe(true);
       e.stop();
     });
   });
@@ -1488,7 +1498,7 @@ describe("TennisEngine", () => {
         ballHeight: 0,
       };
       const matchSpy = vi.spyOn(e.audio, "playMatchWon");
-      e._handleMessage({ data: encodeGameState(flat) });
+      e._onChannelMessage({ data: encodeGameState(flat) });
       expect(matchSpy).toHaveBeenCalled();
       e.stop();
     });
@@ -1514,7 +1524,7 @@ describe("TennisEngine", () => {
         ballHeight: 0,
       };
       const countSpy = vi.spyOn(e.audio, "playCountdown");
-      e._handleMessage({ data: encodeGameState(flat) });
+      e._onChannelMessage({ data: encodeGameState(flat) });
       expect(countSpy).toHaveBeenCalled();
       e.stop();
     });

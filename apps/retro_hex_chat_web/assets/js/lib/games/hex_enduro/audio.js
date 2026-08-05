@@ -207,7 +207,7 @@ export class HexEnduroAudio {
   }
 
   /** Clean up all audio resources. */
-  destroy() {
+  dispose() {
     this.stopEngineDrone();
     if (this._ctx) {
       try {

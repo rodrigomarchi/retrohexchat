@@ -14,8 +14,6 @@ import {
   WINS_NEEDED,
   encodeGameState,
   decodeGameState,
-  encodePlayerInput,
-  decodePlayerInput,
   encodeGameEnd,
   decodeGameEnd,
   encodeGameReady,
@@ -32,7 +30,7 @@ import { render as renderFrame, getColors } from "./renderer.js";
 import { SurroundAudio } from "./audio.js";
 import { gameColor } from "../../game_colors.js";
 
-const TICK_INTERVAL = 100; // 10Hz — discrete grid movement
+const TICK_STEPS = 6; // one grid move every 6 fixed steps (10Hz)
 const ROUND_OVER_DELAY = 3000; // ms before next round
 
 export class SurroundEngine extends GameEngine {
@@ -50,13 +48,11 @@ export class SurroundEngine extends GameEngine {
     this.p1PendingDir = this.gameState.p1.dir;
     this.p2PendingDir = this.gameState.p2.dir;
     this.tickInterval = null;
-    this.animFrame = null;
     this.phaseTimer = null;
     this.audio = new SurroundAudio();
     this.colors = null;
     this.peerReady = false;
     this._savedScores = { score1: 0, score2: 0 };
-    this._boundRenderLoop = this._renderLoop.bind(this);
     this._boundBlur = this._handleBlur.bind(this);
     this._boundChannelClose = this._handleChannelClose.bind(this);
   }
@@ -68,12 +64,11 @@ export class SurroundEngine extends GameEngine {
     window.addEventListener("blur", this._boundBlur);
     this.channel.addEventListener("close", this._boundChannelClose);
 
-    // Start render loop immediately (shows waiting screen)
-    this.animFrame = requestAnimationFrame(this._boundRenderLoop);
+    this._invalidate();
 
     if (!this.isHost) {
       // Peer sends ready signal
-      this._safeSend(encodeGameReady());
+      this._advertiseReady(encodeGameReady);
     }
   }
 
@@ -100,15 +95,6 @@ export class SurroundEngine extends GameEngine {
           const decoded = decodeGameState(buf);
           if (decoded) {
             this._applyPeerState(decoded);
-          }
-        }
-        break;
-
-      case MSG_TYPE.PLAYER_INPUT:
-        if (this.isHost) {
-          const input = decodePlayerInput(buf);
-          if (input && input.pressed && input.keyCode >= 0 && input.keyCode <= 3) {
-            this.p2PendingDir = input.keyCode;
           }
         }
         break;
@@ -189,6 +175,16 @@ export class SurroundEngine extends GameEngine {
     this.gameState.round = decoded.round;
   }
 
+  /**
+   * Host: apply a direction the guest sent. The base has already dropped the
+   * redundant copies and anything that arrived out of order.
+   * @param {number} code
+   * @returns {void}
+   */
+  _handleRemoteEdge(code) {
+    if (code >= 0 && code <= 3) this.p2PendingDir = code;
+  }
+
   /** Direction queuing (sticky — no keyUp needed). */
   _handleKeyDown(e) {
     const keyCode = this._mapKey(e.key);
@@ -198,7 +194,7 @@ export class SurroundEngine extends GameEngine {
     if (this.isHost) {
       this.p1PendingDir = keyCode;
     } else {
-      this._safeSend(encodePlayerInput(keyCode, true));
+      this._sendInputEdge(keyCode);
     }
 
     this.audio.playMove();
@@ -273,20 +269,32 @@ export class SurroundEngine extends GameEngine {
     this._startTickLoop();
   }
 
-  /** Host: start the 10Hz physics tick loop. */
+  /** Host: start the 10Hz physics tick, driven off the fixed frame clock. */
   _startTickLoop() {
-    this._stopTickLoop();
-    this.tickInterval = setInterval(() => {
-      this._tickLoop();
-    }, TICK_INTERVAL);
+    this.tickFrames = 0;
+    this._startSteps();
   }
 
   /** Host: stop the tick loop. */
   _stopTickLoop() {
-    if (this.tickInterval) {
-      clearInterval(this.tickInterval);
-      this.tickInterval = null;
-    }
+    this._stopSteps();
+  }
+
+  /**
+   * One fixed step. Surround moves on a grid at 10Hz rather than every step, so
+   * the clock is divided down rather than run at simulation rate.
+   */
+  _gameLoop() {
+    this._invalidate();
+    this.tickFrames += 1;
+    if (this.tickFrames < TICK_STEPS) return;
+    this.tickFrames = 0;
+    this._tickLoop();
+  }
+
+  /** Particles keep settling while the grid is between rounds. */
+  _idleStep() {
+    this._invalidate();
   }
 
   /** Host: one physics tick — move players, check collisions, broadcast. */
@@ -363,6 +371,7 @@ export class SurroundEngine extends GameEngine {
 
   /** Host: handle match end. */
   _handleMatchOver() {
+    this._stopSteps();
     const { score1, score2 } = this.gameState;
     const winner = score1 >= WINS_NEEDED ? 1 : 2;
 
@@ -373,7 +382,7 @@ export class SurroundEngine extends GameEngine {
     }
 
     // Send game end to peer
-    this._safeSend(encodeGameEnd(score1, score2, winner));
+    this._sendCommand(encodeGameEnd(score1, score2, winner));
 
     // Notify LiveView
     if (this.onGameEnd) {
@@ -387,6 +396,7 @@ export class SurroundEngine extends GameEngine {
   // ── Connection Resilience ──
 
   _handleChannelClose() {
+    this._stopSteps();
     if (!this.gameState || this.gameState.phase === PHASE.MATCH_OVER) return;
     this.gameState.phase = PHASE.MATCH_OVER;
     if (this.onGameEnd) {
@@ -405,22 +415,17 @@ export class SurroundEngine extends GameEngine {
 
   /** Send game state over DataChannel. */
   _broadcastState() {
-    this._safeSend(encodeGameState(this.gameState));
+    this._sendState(encodeGameState(this.gameState));
   }
 
-  /** 60fps render loop (runs on both host and peer). */
-  _renderLoop(timestamp) {
-    if (!this.running) return;
-
-    // Update particles
+  /** Draw the current grid. Driven by the base presentation loop. */
+  _renderState() {
     if (this.gameState.particles && this.gameState.particles.length > 0) {
       this.gameState.particles = updateParticles(this.gameState.particles);
     }
 
     if (this.colors) {
-      renderFrame(this.ctx, this.gameState, this.colors, timestamp);
+      renderFrame(this.ctx, this.gameState, this.colors, performance.now());
     }
-
-    this.animFrame = requestAnimationFrame(this._boundRenderLoop);
   }
 }

@@ -37,12 +37,15 @@ describe("constants", () => {
     expect(CHUNK_SIZE).toBe(65536);
   });
 
-  it("exports HIGH_WATER_MARK as 1MB", () => {
-    expect(HIGH_WATER_MARK).toBe(1048576);
+  // The transfer shares one SCTP association with the game channel, and
+  // browsers do not interleave messages across streams — whatever is queued
+  // here delays a game running alongside the transfer.
+  it("exports HIGH_WATER_MARK as 256KB", () => {
+    expect(HIGH_WATER_MARK).toBe(262144);
   });
 
-  it("exports LOW_WATER_MARK as 256KB", () => {
-    expect(LOW_WATER_MARK).toBe(262144);
+  it("exports LOW_WATER_MARK as 64KB", () => {
+    expect(LOW_WATER_MARK).toBe(65536);
   });
 
   it("exports PROGRESS_THROTTLE_MS as 250", () => {

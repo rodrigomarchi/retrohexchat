@@ -19,8 +19,6 @@ import {
   getMessageType,
   encodeGameState,
   decodeGameState,
-  encodePlayerInput,
-  decodePlayerInput,
   encodeGameEnd,
   decodeGameEnd,
   encodeGameReady,
@@ -46,7 +44,7 @@ import {
 import { render, readColors, generateSnowParticles } from "./renderer.js";
 import { HexSkiingAudio } from "./audio.js";
 
-const STATE_SEND_INTERVAL = 2; // Broadcast every 2 frames (~30Hz)
+const STATE_SEND_INTERVAL = 1; // broadcast every fixed step (60Hz)
 const COUNTDOWN_INTERVAL = 60; // Frames per countdown tick
 const ROUND_END_DELAY = 180; // Frames to show round-end screen
 
@@ -65,6 +63,8 @@ function resolveMode(gameId) {
 }
 
 export class HexSkiingEngine extends GameEngine {
+  static INPUT_BITS = { left: 0, right: 1 };
+
   /**
    * @param {HTMLCanvasElement} canvas
    * @param {RTCDataChannel} channel
@@ -104,10 +104,10 @@ export class HexSkiingEngine extends GameEngine {
     if (this.isHost) {
       const seed = (Math.random() * 0xffffffff) >>> 0;
       this.gameState = createInitialState(this.mode, seed);
-      this._renderState();
+      this._invalidate();
     } else {
-      this._safeSend(encodeGameReady());
-      this._renderState();
+      this._advertiseReady(encodeGameReady);
+      this._invalidate();
     }
   }
 
@@ -115,7 +115,6 @@ export class HexSkiingEngine extends GameEngine {
     window.removeEventListener("blur", this._boundBlur);
     this.channel.removeEventListener("close", this._boundChannelClose);
     super.stop();
-    this.audio.destroy();
     this.localInputs = { left: false, right: false };
     this.remoteInputs = { left: false, right: false };
     this.peerReady = false;
@@ -142,17 +141,7 @@ export class HexSkiingEngine extends GameEngine {
         this.gameState = unpackState(decoded);
         // Preserve obstacles/gates/items on peer (they're deterministic or included)
         this._handlePeerEvents(decoded.events, prev);
-        this._renderState();
-      }
-    } else if (type === MSG_TYPE.PLAYER_INPUT && this.isHost) {
-      const input = decodePlayerInput(buf);
-      if (input) {
-        if (input.keyCode === INPUT_KEY.LEFT) {
-          this.remoteInputs.left = input.pressed;
-        }
-        if (input.keyCode === INPUT_KEY.RIGHT) {
-          this.remoteInputs.right = input.pressed;
-        }
+        this._invalidate();
       }
     } else if (type === MSG_TYPE.GAME_END && !this.isHost) {
       const result = decodeGameEnd(buf);
@@ -183,7 +172,6 @@ export class HexSkiingEngine extends GameEngine {
     } else {
       if (key === INPUT_KEY.LEFT) this.localInputs.left = true;
       if (key === INPUT_KEY.RIGHT) this.localInputs.right = true;
-      this._safeSend(encodePlayerInput(key, true));
     }
   }
 
@@ -198,7 +186,6 @@ export class HexSkiingEngine extends GameEngine {
     } else {
       if (key === INPUT_KEY.LEFT) this.localInputs.left = false;
       if (key === INPUT_KEY.RIGHT) this.localInputs.right = false;
-      this._safeSend(encodePlayerInput(key, false));
     }
   }
 
@@ -229,14 +216,8 @@ export class HexSkiingEngine extends GameEngine {
   }
 
   _startGameLoop() {
-    if (this.animFrame) return; // Guard against duplicate game loops
     this.audio.startSkiDrone();
-    const loop = () => {
-      if (!this.running) return;
-      this._gameLoop();
-      this.animFrame = requestAnimationFrame(loop);
-    };
-    this.animFrame = requestAnimationFrame(loop);
+    this._startSteps();
   }
 
   // ── Main game loop (host only) ───────────────────────────────
@@ -262,7 +243,7 @@ export class HexSkiingEngine extends GameEngine {
         }
       }
       this.gameState = state;
-      this._renderState();
+      this._invalidate();
       if (this.frameCount % STATE_SEND_INTERVAL === 0) this._broadcastState();
       return;
     }
@@ -275,21 +256,21 @@ export class HexSkiingEngine extends GameEngine {
         this.audio.playCountdown();
       }
       this.gameState = state;
-      this._renderState();
+      this._invalidate();
       if (this.frameCount % STATE_SEND_INTERVAL === 0) this._broadcastState();
       return;
     }
 
     if (state.phase === PHASE.FINISHED) {
       // Game is over — send final state then stop the loop
-      this._renderState();
+      this._invalidate();
       this._broadcastState();
       this.running = false;
       return;
     }
 
     if (state.phase !== PHASE.RACING) {
-      this._renderState();
+      this._invalidate();
       return;
     }
 
@@ -351,7 +332,7 @@ export class HexSkiingEngine extends GameEngine {
     this.gameState = state;
 
     // Render
-    this._renderState();
+    this._invalidate();
 
     // Broadcast
     if (this.frameCount % STATE_SEND_INTERVAL === 0) {
@@ -401,7 +382,7 @@ export class HexSkiingEngine extends GameEngine {
       score2: state.p2RoundWins,
       winner,
     };
-    this._safeSend(encodeGameEnd(result));
+    this._sendCommand(encodeGameEnd(result));
 
     // Report to LiveView
     if (this.onGameEnd) {
@@ -413,12 +394,14 @@ export class HexSkiingEngine extends GameEngine {
 
   _handleBlur() {
     this.localInputs = { left: false, right: false };
+    this._sendInputState();
   }
 
   _handleChannelClose() {
+    this._stopSteps();
     if (!this.gameState || this.gameState.phase === PHASE.FINISHED) return;
     this.gameState.phase = PHASE.FINISHED;
-    this._renderState();
+    this._invalidate();
     if (this.onGameEnd) {
       try {
         this.onGameEnd({
@@ -443,6 +426,6 @@ export class HexSkiingEngine extends GameEngine {
   _broadcastState() {
     if (!this.gameState) return;
     const packed = packState(this.gameState);
-    this._safeSend(encodeGameState(packed));
+    this._sendState(encodeGameState(packed));
   }
 }

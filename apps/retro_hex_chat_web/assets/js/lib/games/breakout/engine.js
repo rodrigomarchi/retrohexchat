@@ -12,8 +12,6 @@ import {
   INPUT_KEY,
   encodeGameState,
   decodeGameState,
-  encodePlayerInput,
-  decodePlayerInput,
   encodeGameEnd,
   decodeGameEnd,
   encodeGameReady,
@@ -36,11 +34,17 @@ import {
 import { render as renderFrame, getColors } from "./renderer.js";
 import { BreakoutAudio } from "./audio.js";
 
-const STATE_SEND_INTERVAL = 2; // Send state every N frames (~30Hz at 60fps)
+const STATE_SEND_INTERVAL = 1; // broadcast every fixed step (60Hz)
 const SERVE_DELAY = 800; // ms
 const LIFE_LOST_PAUSE = 1500; // ms
 
 export class BreakoutEngine extends GameEngine {
+  static INPUT_BITS = { left: 0, right: 1 };
+
+  static INTERPOLATION = {
+    keys: ["ballX", "ballY", "paddle1X", "paddle2X"],
+  };
+
   /**
    * @param {HTMLCanvasElement} canvas
    * @param {RTCDataChannel} channel
@@ -60,7 +64,6 @@ export class BreakoutEngine extends GameEngine {
     this.audio = new BreakoutAudio();
     this.colors = null;
     this.peerReady = false;
-    this._boundGameLoop = this._gameLoop.bind(this);
     this._boundBlur = this._handleBlur.bind(this);
     this._boundChannelClose = this._handleChannelClose.bind(this);
   }
@@ -74,11 +77,11 @@ export class BreakoutEngine extends GameEngine {
 
     if (this.isHost) {
       // Host waits for peer GAME_READY, then starts countdown
-      this._renderState();
+      this._invalidate();
     } else {
       // Peer sends ready signal
-      this._safeSend(encodeGameReady());
-      this._renderState();
+      this._advertiseReady(encodeGameReady);
+      this._invalidate();
     }
   }
 
@@ -108,22 +111,9 @@ export class BreakoutEngine extends GameEngine {
             const prevLives = this.gameState.lives;
 
             // Apply decoded state, reconstruct blocks from bitmap
-            this._applyPeerState(decoded);
+            this._ingestSnapshot(decoded, () => this._applyPeerState(decoded));
             this._playPhaseAudio(prevPhase, decoded.phase, prevScore, prevLives);
-            this._renderState();
-          }
-        }
-        break;
-
-      case MSG_TYPE.PLAYER_INPUT:
-        if (this.isHost) {
-          const input = decodePlayerInput(buf);
-          if (input) {
-            if (input.keyCode === INPUT_KEY.LEFT) {
-              this.remoteInputs.left = input.pressed;
-            } else if (input.keyCode === INPUT_KEY.RIGHT) {
-              this.remoteInputs.right = input.pressed;
-            }
+            this._invalidate();
           }
         }
         break;
@@ -146,7 +136,7 @@ export class BreakoutEngine extends GameEngine {
           } else {
             this.audio.playLose();
           }
-          this._renderState();
+          this._invalidate();
         }
         break;
       }
@@ -182,10 +172,6 @@ export class BreakoutEngine extends GameEngine {
 
     if (keyCode === INPUT_KEY.LEFT) this.localInputs.left = true;
     if (keyCode === INPUT_KEY.RIGHT) this.localInputs.right = true;
-
-    if (!this.isHost) {
-      this._safeSend(encodePlayerInput(keyCode, true));
-    }
   }
 
   _handleKeyUp(e) {
@@ -194,10 +180,6 @@ export class BreakoutEngine extends GameEngine {
 
     if (keyCode === INPUT_KEY.LEFT) this.localInputs.left = false;
     if (keyCode === INPUT_KEY.RIGHT) this.localInputs.right = false;
-
-    if (!this.isHost) {
-      this._safeSend(encodePlayerInput(keyCode, false));
-    }
   }
 
   /** Map keyboard key to INPUT_KEY enum. */
@@ -210,10 +192,7 @@ export class BreakoutEngine extends GameEngine {
   /** Clear all inputs on window blur (prevents stuck keys). */
   _handleBlur() {
     this.localInputs = { left: false, right: false };
-    if (!this.isHost) {
-      this._safeSend(encodePlayerInput(INPUT_KEY.LEFT, false));
-      this._safeSend(encodePlayerInput(INPUT_KEY.RIGHT, false));
-    }
+    this._sendInputState();
   }
 
   /** Host: start countdown phase. */
@@ -229,7 +208,7 @@ export class BreakoutEngine extends GameEngine {
       if (count > 0) {
         this.gameState.countdown = count;
         this._broadcastState();
-        this._renderState();
+        this._invalidate();
         this.audio.playCountdown();
         this.phaseTimer = setTimeout(tick, 1000);
       } else {
@@ -244,7 +223,7 @@ export class BreakoutEngine extends GameEngine {
     this.gameState.phase = PHASE.SERVING;
     this.gameState.countdown = 0;
     this._broadcastState();
-    this._renderState();
+    this._invalidate();
 
     this.phaseTimer = setTimeout(() => {
       // Serve toward opposite side of last exit, or random for first serve
@@ -265,11 +244,11 @@ export class BreakoutEngine extends GameEngine {
   /** Host: start the main game loop. */
   _startGameLoop() {
     this.frameCount = 0;
-    this.animFrame = requestAnimationFrame(this._boundGameLoop);
+    this._startSteps();
   }
 
   /** Host: main game loop (60Hz via requestAnimationFrame). */
-  _gameLoop(_timestamp) {
+  _gameLoop() {
     if (!this.running) return;
 
     // Update paddles (host = P1 bottom, peer = P2 top)
@@ -326,7 +305,7 @@ export class BreakoutEngine extends GameEngine {
     }
 
     // Render
-    this._renderState();
+    this._invalidate();
 
     // Send state to peer
     this.frameCount++;
@@ -347,15 +326,11 @@ export class BreakoutEngine extends GameEngine {
         this._startServing();
       }, LIFE_LOST_PAUSE);
     }
-
-    // Keep loop running for particles/rendering during LIFE_LOST
-    if (this.gameState.phase !== PHASE.FINISHED) {
-      this.animFrame = requestAnimationFrame(this._boundGameLoop);
-    }
   }
 
   /** Host: handle game end. */
   _handleGameFinished() {
+    this._stopSteps();
     const { score, won } = this.gameState;
 
     if (won) {
@@ -365,7 +340,7 @@ export class BreakoutEngine extends GameEngine {
     }
 
     // Send game end to peer
-    this._safeSend(encodeGameEnd(score, won));
+    this._sendCommand(encodeGameEnd(score, won));
     this._broadcastState();
 
     // Notify LiveView
@@ -380,9 +355,10 @@ export class BreakoutEngine extends GameEngine {
   // ── Connection Resilience ──
 
   _handleChannelClose() {
+    this._stopSteps();
     if (!this.gameState || this.gameState.phase === PHASE.FINISHED) return;
     this.gameState.phase = PHASE.FINISHED;
-    this._renderState();
+    this._invalidate();
     if (this.onGameEnd) {
       try {
         this.onGameEnd({
@@ -399,7 +375,7 @@ export class BreakoutEngine extends GameEngine {
 
   /** Send game state over DataChannel. */
   _broadcastState() {
-    this._safeSend(encodeGameState(this.gameState));
+    this._sendState(encodeGameState(this.gameState));
   }
 
   /** Render current state to canvas. */
