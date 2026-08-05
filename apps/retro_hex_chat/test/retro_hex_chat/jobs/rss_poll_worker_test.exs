@@ -75,7 +75,7 @@ defmodule RetroHexChat.Jobs.RSSPollWorkerTest do
     :ok
   end
 
-  test "polls through Oban, seeds quietly, posts later changes, and schedules the next run" do
+  test "polls through Oban, posts a current batch, posts later changes, and schedules the next run" do
     feed = %{"id" => "f1", "url" => @url, "channel" => @channel, "seen" => []}
     page1 = feed_page([{2, "Second"}, {1, "First"}])
     page2 = feed_page([{3, "Third"}, {2, "Second"}, {1, "First"}])
@@ -88,7 +88,11 @@ defmodule RetroHexChat.Jobs.RSSPollWorkerTest do
     bot = create_and_start_bot(feed)
 
     assert :ok = perform("f1")
-    assert bot_messages() == []
+    initial = bot_messages()
+
+    assert length(initial) == 2
+    assert Enum.at(initial, 0).content =~ "First"
+    assert Enum.at(initial, 1).content =~ "Second"
 
     stored = BotQueries.get_bot(bot.id)
 
@@ -140,10 +144,7 @@ defmodule RetroHexChat.Jobs.RSSPollWorkerTest do
     assert metadata.feed_id == "f1"
 
     assert_receive {:telemetry_event, [:retro_hex_chat, :observability, :operation, :stop],
-                    %{duration: _}, generic_metadata}
-
-    assert generic_metadata.context == "bots"
-    assert generic_metadata.operation == "rss_poll"
+                    %{duration: _}, %{context: "bots", operation: "rss_poll"}}
   end
 
   test "real Oban execution leaves a successor poll after the current job completes" do
@@ -165,7 +166,7 @@ defmodule RetroHexChat.Jobs.RSSPollWorkerTest do
     assert %{success: 1, failure: 0} =
              Oban.drain_queue(queue: :rss, with_scheduled: true, with_limit: 1)
 
-    assert bot_messages() == []
+    assert length(bot_messages()) == 2
 
     assert [
              %Oban.Job{
@@ -252,7 +253,7 @@ defmodule RetroHexChat.Jobs.RSSPollWorkerTest do
             "enabled" => true,
             "feeds" => feeds,
             "poll_interval_min" => 30,
-            "max_items_per_poll" => 3
+            "max_items_per_poll" => 1000
           }
         }
       })

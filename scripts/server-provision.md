@@ -268,7 +268,7 @@ included, is joined explicitly.
 /bot join Pixel #retro
 # Low-volume feeds: a couple of posts a week, so a two-hour cadence is plenty.
 /bot set Pixel rss_interval 120
-/bot set Pixel rss_max_items 2
+/bot set Pixel rss_max_items 1000
 /bot rss add Pixel https://hackaday.com/category/retrocomputing/feed/ #retro
 /bot rss add Pixel https://www.vintagecomputing.com/index.php/feed #retro
 
@@ -290,7 +290,7 @@ included, is joined explicitly.
 
 /bot join Murphy #tech
 /bot set Murphy rss_interval 30
-/bot set Murphy rss_max_items 2
+/bot set Murphy rss_max_items 1000
 /bot rss add Murphy https://news.ycombinator.com/rss #tech
 /bot rss add Murphy https://github.blog/feed/ #tech
 
@@ -310,29 +310,29 @@ included, is joined explicitly.
 
 /bot join Tiao #brasil
 /bot set Tiao rss_interval 30
-/bot set Tiao rss_max_items 2
+/bot set Tiao rss_max_items 1000
 /bot rss add Tiao https://tecnoblog.net/feed/ #brasil
 /bot rss add Tiao https://rss.tecmundo.com.br/feed #brasil
 
 # ── Gazeta — #news ───────────────────────────────────────
 # Feeds are stored on the bot and survive a restart, along with the record of
 # what has already been seen — so a deploy does not replay the day's news.
-# The first poll of a new feed is silent by design: it learns the page, then
+# The first poll of a new feed publishes the page it receives, records it, then
 # reports only what arrives afterwards.
 /bot create Gazeta Editor of the wire desk
 /bot set Gazeta prefix !
 /bot set Gazeta cooldown 1000
 /bot set Gazeta rss_interval 20
 /bot set Gazeta rss_max_feeds 5
-/bot set Gazeta rss_max_items 3
+/bot set Gazeta rss_max_items 1000
 /bot set Gazeta greeting \c02\b[Gazeta]\o Welcome to #news, {nickname}. \c14Headlines arrive on their own\o — !Gazeta rss list for the sources.
 /bot set Gazeta greeting_delivery private_notice
 /bot set Gazeta greeter_repeat_window 43200
 /bot set Gazeta farewell none
 /bot set Gazeta mention_response \c02\b[Gazeta]\o I post what the feeds send. !Gazeta rss list for the sources, \c14!sources\o for how this works.
 
-/bot addcmd Gazeta sources \c02\b[Gazeta]\o Headlines here come from \c14RSS and Atom feeds\o, checked every twenty minutes. The first fetch is silent; after that, only new stories are posted.
-/bot addcmd Gazeta first \c02\b[Gazeta]\o A feed's first fetch records the current page silently. After that, \c14only new stories\o are posted.
+/bot addcmd Gazeta sources \c02\b[Gazeta]\o Headlines here come from \c14RSS and Atom feeds\o, checked every twenty minutes. The first fetch posts the current page; after that, only new stories are posted.
+/bot addcmd Gazeta first \c02\b[Gazeta]\o A feed's first fetch posts the current page and records it. After that, \c14only new stories\o are posted.
 /bot addcmd Gazeta quiet \c02\b[Gazeta]\o No headlines for a while? Either nothing was published or a feed is failing. An operator can check with \c14!Gazeta rss list\o.
 
 /bot join Gazeta #news
@@ -347,23 +347,22 @@ included, is joined explicitly.
 # link. Publishers put their whole tagline in the feed title ("cs.LG updates on
 # arXiv.org"); the label keeps the name and drops the rest.
 #
-# A feed's first poll happens within seconds, records the current page silently,
-# and reports only what arrives afterwards. Both the feed list and the record of
-# what has been seen are stored on the bot, so a deploy does not replay the day.
-# Intervals are set per bot: arXiv publishes hundreds a day, Hackaday a handful
-# a week.
+# A feed's first poll happens within seconds, posts the page it receives, and
+# records it. Both the feed list and the record of what has been seen are stored
+# on the bot, so a deploy does not replay the day. Intervals are set per bot:
+# arXiv publishes hundreds a day, Hackaday a handful a week.
 
 # ── Freeman — #foss ──────────────────────────────────────
 /bot create Freeman Keeper of the release notes
 /bot set Freeman prefix !
 /bot set Freeman cooldown 1000
 /bot set Freeman rss_interval 30
-/bot set Freeman rss_max_items 3
+/bot set Freeman rss_max_items 1000
 /bot set Freeman greeting \c03\b[Freeman]\o Welcome to #foss, {nickname}. \c02Releases arrive on their own\o — !sources for where from.
 /bot set Freeman greeting_delivery private_notice
 /bot set Freeman greeter_repeat_window 43200
 /bot set Freeman mention_response \c03\b[Freeman]\o I carry the release notes. !sources for the list, \c02!why\o for what this room is.
-/bot addcmd Freeman sources \c03\b[Freeman]\o LWN, Phoronix and It's FOSS, checked every half hour. The first fetch is quiet; \c02only new items\o are posted after that.
+/bot addcmd Freeman sources \c03\b[Freeman]\o LWN, Phoronix and It's FOSS, checked every half hour. The first fetch posts the current page; \c02only new items\o are posted after that.
 /bot addcmd Freeman why \c03\b[Freeman]\o Support for a project belongs with that project — #linux on Libera holds 2,494 people because its regulars answer questions. \c02This room is the news\o, which nobody was carrying.
 /bot join Freeman #foss
 /bot rss add Freeman https://lwn.net/headlines/newrss #foss
@@ -375,7 +374,7 @@ included, is joined explicitly.
 /bot set Cassandra prefix !
 /bot set Cassandra cooldown 1000
 /bot set Cassandra rss_interval 30
-/bot set Cassandra rss_max_items 3
+/bot set Cassandra rss_max_items 1000
 /bot set Cassandra greeting \c04\b[Cassandra]\o {nickname}, welcome. I post advisories. \c05You will read them later\o and wish you had read them now.
 /bot set Cassandra greeting_delivery private_notice
 /bot set Cassandra greeter_repeat_window 43200
@@ -392,12 +391,12 @@ included, is joined explicitly.
 /bot set Ada prefix !
 /bot set Ada cooldown 1000
 /bot set Ada rss_interval 60
-/bot set Ada rss_max_items 3
+/bot set Ada rss_max_items 1000
 /bot set Ada greeting \c10\b[Ada]\o {nickname}! \c06Preprints and model releases\o land here on their own. !sources for where from.
 /bot set Ada greeting_delivery private_notice
 /bot set Ada greeter_repeat_window 43200
 /bot set Ada mention_response \c10\b[Ada]\o arXiv and Hugging Face, \c06hourly\o. !sources for the list.
-/bot addcmd Ada sources \c10\b[Ada]\o arXiv cs.LG, arXiv cs.AI and the Hugging Face blog, checked hourly — \c06three items at a time\o, because arXiv publishes hundreds a day.
+/bot addcmd Ada sources \c10\b[Ada]\o arXiv cs.LG, arXiv cs.AI and the Hugging Face blog, checked hourly — \c06the feed page is posted\o, then only new items after that.
 /bot addcmd Ada why \c10\b[Ada]\o The whole of IRC has seven live rooms on this subject, across three networks. \c06It is the emptiest subject we measured\o and the busiest one outside.
 /bot join Ada #ai
 /bot rss add Ada http://export.arxiv.org/rss/cs.LG #ai
@@ -409,7 +408,7 @@ included, is joined explicitly.
 /bot set Curie prefix !
 /bot set Curie cooldown 1000
 /bot set Curie rss_interval 60
-/bot set Curie rss_max_items 3
+/bot set Curie rss_max_items 1000
 /bot set Curie greeting \c12\b[Curie]\o Welcome, {nickname}. \c02Astrophysics preprints, NASA and Phys.org\o arrive here hourly.
 /bot set Curie greeting_delivery private_notice
 /bot set Curie greeter_repeat_window 43200
@@ -425,7 +424,7 @@ included, is joined explicitly.
 /bot set Yuki prefix !
 /bot set Yuki cooldown 1000
 /bot set Yuki rss_interval 30
-/bot set Yuki rss_max_items 3
+/bot set Yuki rss_max_items 1000
 /bot set Yuki greeting \c13\b[Yuki]\o {nickname}! \c06News and episode drops\o land here. !sources for where from.
 /bot set Yuki greeting_delivery private_notice
 /bot set Yuki greeter_repeat_window 43200
@@ -535,8 +534,8 @@ or in the channel by an operator:
 ```
 
 All three routes write to the same place and survive a restart, along with the record of
-what has already been seen. A newly added feed is fetched within seconds to record the
-current page silently; after that, only items that arrive later are posted.
+what has already been seen. A newly added feed is fetched within seconds to post and
+record the current page; after that, only items that arrive later are posted.
 
 **No schedules.** `!Bot schedule add` persists now too, but nothing here needs one; a
 room that speaks on a timer with nothing to say is worse than a quiet one.

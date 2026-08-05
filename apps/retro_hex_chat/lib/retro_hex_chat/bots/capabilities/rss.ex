@@ -31,7 +31,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
 
   # The feed list and, inside it, the record of what has already been seen.
   # Both have to outlive a deploy: without the first the bot forgets its feeds,
-  # without the second it greets the restart by republishing the whole feed.
+  # without the second it greets the restart by republishing the feed page.
   @impl true
   @spec durable_keys() :: [atom()]
   def durable_keys, do: [:feeds]
@@ -39,7 +39,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
   # How many item identities to remember per feed. Comfortably more than the
   # feeds' windows, so an item cannot rotate out of memory while still on the
   # page and come back as news.
-  @seen_limit 200
+  @seen_limit 10_000
   @parse_timeout_ms 20_000
 
   @type decoded_feed_result ::
@@ -86,8 +86,8 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
   @impl true
   @spec init_timers(map(), atom(), map(), map()) :: map()
   # A feed that has never been polled is fetched almost at once so provisioning
-  # seeds the whole page before the bot starts watching for future items. Feeds
-  # already running keep their cadence.
+  # publishes the current page and records it as history. Feeds already running
+  # keep their cadence.
   @first_poll_delay_ms 3_000
 
   def init_timers(server_state, _cap_name, config, cap_state) do
@@ -176,7 +176,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
       "feeds" => [],
       "poll_interval_min" => 30,
       "max_feeds" => 5,
-      "max_items_per_poll" => 3
+      "max_items_per_poll" => @seen_limit
     }
   end
 
@@ -382,7 +382,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
   @spec apply_decoded_result(map(), decoded_feed_result(), map(), map()) ::
           {planned_result(), map()}
   def apply_decoded_result(feed, {:ok, feed_info, headers}, state, config) do
-    max_items = Map.get(config, "max_items_per_poll", 3)
+    max_items = Map.get(config, "max_items_per_poll", @seen_limit)
     publish(feed, feed_info, headers, state, max_items)
   end
 
@@ -423,9 +423,8 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
       |> Map.put("title", feed_info.title || feed["title"])
       |> Map.put("etag", headers[:etag])
       |> Map.put("last_modified", headers[:last_modified])
-      # The bootstrap read marks the whole current page as history. Later polls
-      # only mark what was actually posted, so a burst over the per-poll ceiling
-      # is drained across subsequent polls instead of vanishing.
+      # A bootstrap read publishes the current page, then records the same page
+      # as history so a restart does not replay it.
       |> Map.put("seen", Enum.take(identities_to_remember ++ seen, @seen_limit))
       |> Map.put("last_polled_at", DateTime.utc_now() |> DateTime.to_iso8601())
       |> Map.put("last_error", nil)
@@ -445,13 +444,14 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
   Pure on purpose: this is the whole "only new items, never twice" rule, and it
   is worth testing without a network in the way.
 
-    * The first sight of a feed announces nothing and remembers the whole page.
-      Provisioning should not dump old news into a channel; it should establish
-      the baseline from which future items become news.
+    * The first sight of a feed announces the current page and remembers it.
+      Provisioning should prove the bot is alive while still avoiding replay on
+      restart.
     * An item is recognised by identity, not by position, so a feed that pins a
       post to the top or reorders on update cannot make old news look new.
-    * Only what is actually posted is marked seen, so anything above the
-      per-poll ceiling waits for the next poll instead of being lost.
+    * After the first sight, only what is actually posted is marked seen, so an
+      operator-lowered per-poll ceiling drains across subsequent polls instead
+      of losing items.
 
   Returns `{items_to_post, identities_to_remember}`, oldest first.
   """
@@ -459,8 +459,13 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
           {[FeedParser.feed_item()], [String.t()]}
   def plan_publication([], [], _max_items), do: {[], []}
 
-  def plan_publication([], items, _max_items) do
-    {[], Enum.map(items, &identity/1)}
+  def plan_publication([], items, max_items) do
+    batch =
+      items
+      |> Enum.take(max_items)
+      |> Enum.reverse()
+
+    {batch, Enum.map(items, &identity/1)}
   end
 
   def plan_publication(seen, items, max_items) do
@@ -500,14 +505,34 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
     update_feed(state, feed["id"], updated)
   end
 
+  @preview_max_concurrency 8
+  @preview_fetch_timeout_ms 2_000
+
   @spec format_items([FeedParser.feed_item()], String.t() | nil) :: [map()]
   defp format_items(items, feed_title) do
-    Enum.map(items, fn item ->
+    items
+    |> Enum.zip(fetch_preview_metadata(items))
+    |> Enum.map(fn {item, metadata} ->
       %{
         delivery: "public",
-        content: format_item(item, feed_title, preview_metadata(item.link)),
+        content: format_item(item, feed_title, metadata),
         content_format: "markdown"
       }
+    end)
+  end
+
+  @spec fetch_preview_metadata([FeedParser.feed_item()]) :: [LinkPreview.metadata()]
+  defp fetch_preview_metadata(items) do
+    items
+    |> Task.async_stream(&preview_metadata(&1.link),
+      max_concurrency: @preview_max_concurrency,
+      ordered: true,
+      on_timeout: :kill_task,
+      timeout: @preview_fetch_timeout_ms
+    )
+    |> Enum.map(fn
+      {:ok, metadata} -> metadata
+      {:exit, _reason} -> %{}
     end)
   end
 

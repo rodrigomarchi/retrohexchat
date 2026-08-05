@@ -31,7 +31,7 @@ defmodule RetroHexChat.Bots.FeedsTest do
       assert Feeds.list(Queries.get_bot(updated.id)) == Feeds.list(updated)
     end
 
-    test "a new feed starts with no memory, so its first poll stays quiet" do
+    test "a new feed starts with no memory, so its first poll can publish the current page" do
       {:ok, updated} = Feeds.add(bot(), @public, "#news")
 
       assert [%{"seen" => [], "last_polled_at" => nil}] = Feeds.list(updated)

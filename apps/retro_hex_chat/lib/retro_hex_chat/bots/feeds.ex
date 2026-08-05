@@ -28,9 +28,9 @@ defmodule RetroHexChat.Bots.Feeds do
   @doc """
   Adds a feed, refusing an address the server should not be fetching.
 
-  A newly added feed carries no memory of what it has seen, which is what
-  makes its first poll silent: it records the page as it stands and announces
-  only what appears afterwards.
+  A newly added feed carries no memory of what it has seen, so its first poll
+  publishes the current page, records it, and then announces only what appears
+  afterwards.
   """
   @spec add(map(), String.t(), String.t()) :: {:ok, map()} | {:error, String.t()}
   def add(bot, url, channel) do

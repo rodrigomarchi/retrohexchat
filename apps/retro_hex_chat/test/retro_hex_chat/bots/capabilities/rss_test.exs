@@ -221,13 +221,11 @@ defmodule RetroHexChat.Bots.Capabilities.RSSTest do
     # Feeds list newest first.
     defp page(ids), do: Enum.map(ids, &item/1)
 
-    test "the first sight announces nothing and remembers the whole page" do
+    test "the first sight announces the whole current page and remembers it" do
       {to_post, seen} = RSS.plan_publication([], page([3, 2, 1]), 3)
 
-      assert to_post == [],
-             "provisioning establishes a baseline; old headlines are not new channel news"
-
-      assert length(seen) == 3, "the whole current page is history, not news"
+      assert Enum.map(to_post, & &1.title) == ["Item 1", "Item 2", "Item 3"]
+      assert length(seen) == 3, "the whole current page is remembered after it is posted"
     end
 
     test "an empty feed announces nothing" do

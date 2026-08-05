@@ -22,6 +22,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
   )
 
   @delivery_modes ~w(public channel_notice private_notice silent)
+  @rss_max_items_limit 10_000
 
   @doc """
   Every key `/bot set` accepts.
@@ -598,7 +599,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
   end
 
   defp apply_setting(bot, "rss_max_items", value) do
-    update_capability_int(bot, "rss", "max_items_per_poll", value, 1, 10)
+    update_capability_int(bot, "rss", "max_items_per_poll", value, 1, @rss_max_items_limit)
   end
 
   defp apply_setting(_bot, key, _value) do

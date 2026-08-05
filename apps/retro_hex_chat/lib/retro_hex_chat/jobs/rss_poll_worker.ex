@@ -36,7 +36,7 @@ defmodule RetroHexChat.Jobs.RSSPollWorker do
   require Logger
 
   @rss_capability "rss"
-  @timeout_ms 45_000
+  @timeout_ms 300_000
 
   @impl Oban.Worker
   def timeout(_job), do: @timeout_ms

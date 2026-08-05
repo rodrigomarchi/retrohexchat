@@ -188,13 +188,12 @@ defmodule RetroHexChat.Bots.RSSHTTPTest do
       assert line =~ "http://example.com/2"
     end
 
-    test "a feed added fresh stays quiet and learns the page", %{url: url} do
+    test "a feed added fresh posts and learns the page", %{url: url} do
       pid = start_bot(url, [])
 
       poll(pid)
 
-      assert headlines() == [],
-             "a real first fetch should seed history without posting old headlines"
+      assert length(headlines()) == 2
 
       %{feeds: [feed]} = :sys.get_state(pid).capability_states[:rss]
       assert length(feed["seen"]) == 2, "it should have learned the page it just read"
