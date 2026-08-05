@@ -30,6 +30,7 @@ defmodule RetroHexChat.Jobs.RSSPollWorker do
   alias RetroHexChat.Bots.Output
   alias RetroHexChat.Bots.Queries
   alias RetroHexChat.Bots.Server
+  alias RetroHexChat.Observability
   alias RetroHexChat.Repo
 
   require Logger
@@ -48,18 +49,38 @@ defmodule RetroHexChat.Jobs.RSSPollWorker do
   @impl Oban.Worker
   @spec perform(Oban.Job.t()) :: :ok | {:cancel, String.t()} | {:error, term()}
   def perform(%Oban.Job{args: %{"bot_id" => bot_id, "feed_id" => feed_id}}) do
+    Observability.span(
+      [:retro_hex_chat, :bots, :rss, :poll],
+      %{bot_id: bot_id, feed_id: feed_id},
+      fn -> do_perform(bot_id, feed_id) end,
+      &poll_result_metadata/1
+    )
+  end
+
+  @spec do_perform(integer(), String.t()) :: :ok | {:cancel, String.t()} | {:error, term()}
+  defp do_perform(bot_id, feed_id) do
+    Logger.info("rss_poll_start bot_id=#{bot_id} feed_id=#{feed_id}")
+
     with {:ok, bot, feed} <- load_poll_target(bot_id, feed_id),
          decoded <- feed |> RSS.fetch_feed() |> RSS.decode_fetch_result(feed),
          {:ok, poll} <- persist_decoded_result(bot.id, feed_id, decoded),
          :ok <- deliver_poll(poll),
          :ok <- schedule_next_poll(poll) do
+      Logger.info(log_line("rss_poll_stop", poll))
       :ok
     else
       {:cancel, reason} ->
+        Logger.info(
+          "rss_poll_cancel bot_id=#{bot_id} feed_id=#{feed_id} reason=#{log_value(reason)}"
+        )
+
         {:cancel, reason}
 
       {:error, reason} ->
-        Logger.warning("RSS poll worker failed for #{bot_id}/#{feed_id}: #{inspect(reason)}")
+        Logger.warning(
+          "rss_poll_error bot_id=#{bot_id} feed_id=#{feed_id} reason=#{log_value(reason)}"
+        )
+
         {:error, reason}
     end
   end
@@ -76,6 +97,17 @@ defmodule RetroHexChat.Jobs.RSSPollWorker do
       %Bot{} = bot ->
         with {:ok, rss_config} <- enabled_rss_config(bot),
              {:ok, feed} <- find_feed(rss_config, feed_id) do
+          Observability.set_current_span_attributes(%{
+            bot: bot.nickname,
+            channel: feed["channel"],
+            feed_url: feed["url"]
+          })
+
+          Logger.info(
+            "rss_poll_target bot_id=#{bot.id} bot=#{bot.nickname} feed_id=#{feed_id} " <>
+              "channel=#{feed["channel"]} url=#{feed["url"]}"
+          )
+
           {:ok, bot, feed}
         end
     end
@@ -101,16 +133,21 @@ defmodule RetroHexChat.Jobs.RSSPollWorker do
          {:ok, feed} <- find_feed(rss_config, feed_id) do
       state = RSS.init_state(rss_config)
       {planned, new_state} = RSS.apply_decoded_result(feed, decoded, state, rss_config)
+      summary = poll_summary(feed, decoded, planned, new_state)
 
       case persist_rss_state(bot, rss_config, new_state) do
         {:ok, updated_bot} ->
+          Observability.set_current_span_attributes(summary)
+
           {:ok,
            %{
              bot: updated_bot,
              channel: feed["channel"],
              feed_id: feed_id,
+             feed_url: feed["url"],
              planned: planned,
-             poll_interval_ms: new_state.poll_interval_ms
+             poll_interval_ms: new_state.poll_interval_ms,
+             summary: summary
            }}
 
         {:error, reason} ->
@@ -172,8 +209,17 @@ defmodule RetroHexChat.Jobs.RSSPollWorker do
     sync_running_bot(bot)
 
     case RSS.format_planned_result(planned) do
-      {:multi_output, outputs} -> Output.send_many(channel, bot.nickname, outputs)
-      :ignore -> :ok
+      {:multi_output, outputs} ->
+        result = Output.send_many(channel, bot.nickname, outputs)
+
+        Logger.info(
+          "rss_poll_deliver bot=#{bot.nickname} channel=#{channel} count=#{length(outputs)}"
+        )
+
+        result
+
+      :ignore ->
+        :ok
     end
   end
 
@@ -188,4 +234,83 @@ defmodule RetroHexChat.Jobs.RSSPollWorker do
   defp schedule_next_poll(%{bot: %Bot{id: bot_id}, feed_id: feed_id, poll_interval_ms: delay_ms}) do
     Scheduler.schedule_follow_up_poll(bot_id, feed_id, delay_ms)
   end
+
+  @spec poll_summary(map(), RSS.decoded_feed_result(), RSS.planned_result(), map()) :: map()
+  defp poll_summary(feed, decoded, planned, new_state) do
+    published_count = published_count(planned)
+    source_item_count = decoded_item_count(decoded)
+    status = poll_status(feed, decoded, published_count, source_item_count)
+    updated_feed = Enum.find(new_state.feeds, &(&1["id"] == feed["id"])) || feed
+
+    %{
+      channel: feed["channel"],
+      feed_url: feed["url"],
+      poll_status: status,
+      source_item_count: source_item_count,
+      published_count: published_count,
+      seen_count: length(updated_feed["seen"] || []),
+      next_poll_ms: new_state.poll_interval_ms,
+      last_error: updated_feed["last_error"]
+    }
+  end
+
+  @spec poll_status(map(), RSS.decoded_feed_result(), non_neg_integer(), non_neg_integer()) ::
+          String.t()
+  defp poll_status(_feed, {:error, _reason}, _published_count, _source_item_count),
+    do: "feed_error"
+
+  defp poll_status(_feed, {:not_modified}, _published_count, _source_item_count),
+    do: "not_modified"
+
+  defp poll_status(_feed, _decoded, published_count, _source_item_count) when published_count > 0,
+    do: "published"
+
+  defp poll_status(feed, _decoded, _published_count, source_item_count) do
+    if (feed["seen"] || []) == [] and source_item_count > 0 do
+      "seeded_baseline"
+    else
+      "no_new_items"
+    end
+  end
+
+  @spec decoded_item_count(RSS.decoded_feed_result()) :: non_neg_integer()
+  defp decoded_item_count({:ok, %{items: items}, _headers}) when is_list(items), do: length(items)
+  defp decoded_item_count(_decoded), do: 0
+
+  @spec published_count(RSS.planned_result()) :: non_neg_integer()
+  defp published_count({:items, items, _feed_title}), do: length(items)
+  defp published_count(:ignore), do: 0
+
+  @spec poll_result_metadata(:ok | {:cancel, term()} | {:error, term()}) :: map()
+  defp poll_result_metadata(:ok), do: %{result: "ok"}
+  defp poll_result_metadata({:cancel, reason}), do: %{result: "cancel", reason: log_value(reason)}
+  defp poll_result_metadata({:error, reason}), do: %{result: "error", reason: log_value(reason)}
+
+  @spec log_line(String.t(), map()) :: String.t()
+  defp log_line(event, poll) do
+    summary = Map.get(poll, :summary, %{})
+    bot = poll.bot
+
+    [
+      event,
+      "bot_id=#{bot.id}",
+      "bot=#{bot.nickname}",
+      "feed_id=#{poll.feed_id}",
+      "channel=#{poll.channel}",
+      "url=#{poll.feed_url}",
+      "status=#{Map.get(summary, :poll_status)}",
+      "source_items=#{Map.get(summary, :source_item_count)}",
+      "published=#{Map.get(summary, :published_count)}",
+      "seen=#{Map.get(summary, :seen_count)}",
+      "next_poll_ms=#{Map.get(summary, :next_poll_ms)}",
+      "last_error=#{log_value(Map.get(summary, :last_error))}"
+    ]
+    |> Enum.join(" ")
+  end
+
+  @spec log_value(term()) :: String.t()
+  defp log_value(nil), do: "none"
+  defp log_value(value) when is_binary(value), do: value |> String.replace(~r/\s+/, "_")
+  defp log_value(value) when is_atom(value), do: Atom.to_string(value)
+  defp log_value(value), do: value |> inspect() |> String.replace(~r/\s+/, "_")
 end

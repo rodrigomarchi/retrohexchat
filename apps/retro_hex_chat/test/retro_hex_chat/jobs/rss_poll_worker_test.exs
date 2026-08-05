@@ -117,6 +117,35 @@ defmodule RetroHexChat.Jobs.RSSPollWorkerTest do
     )
   end
 
+  test "emits observable RSS poll telemetry" do
+    feed = %{"id" => "f1", "url" => @url, "channel" => @channel, "seen" => []}
+
+    ScriptedFetcher.script([
+      {:ok, feed_page([{2, "Second"}, {1, "First"}]), %{etag: "\"one\"", last_modified: nil}}
+    ])
+
+    bot = create_and_start_bot(feed)
+    attach_telemetry()
+
+    assert :ok = perform("f1")
+
+    assert_receive {:telemetry_event, [:retro_hex_chat, :bots, :rss, :poll, :stop],
+                    %{duration: duration}, metadata}
+
+    assert is_integer(duration)
+    assert metadata.context == "bots"
+    assert metadata.operation == "rss_poll"
+    assert metadata.result == "ok"
+    assert metadata.bot_id == bot.id
+    assert metadata.feed_id == "f1"
+
+    assert_receive {:telemetry_event, [:retro_hex_chat, :observability, :operation, :stop],
+                    %{duration: _}, generic_metadata}
+
+    assert generic_metadata.context == "bots"
+    assert generic_metadata.operation == "rss_poll"
+  end
+
   test "real Oban execution leaves a successor poll after the current job completes" do
     feed = %{"id" => "f1", "url" => @url, "channel" => @channel, "seen" => []}
     page = feed_page([{2, "Second"}, {1, "First"}])
@@ -151,6 +180,25 @@ defmodule RetroHexChat.Jobs.RSSPollWorkerTest do
              )
 
     assert bot_id == bot.id
+  end
+
+  defp attach_telemetry do
+    test_pid = self()
+    handler_id = {__MODULE__, make_ref()}
+
+    :telemetry.attach_many(
+      handler_id,
+      [
+        [:retro_hex_chat, :bots, :rss, :poll, :stop],
+        [:retro_hex_chat, :observability, :operation, :stop]
+      ],
+      fn event, measurements, metadata, _config ->
+        send(test_pid, {:telemetry_event, event, measurements, metadata})
+      end,
+      nil
+    )
+
+    on_exit(fn -> :telemetry.detach(handler_id) end)
   end
 
   test "poll completion does not push sibling feed jobs into the future" do

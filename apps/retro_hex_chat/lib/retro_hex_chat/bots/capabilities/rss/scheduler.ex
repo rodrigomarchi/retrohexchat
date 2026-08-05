@@ -63,6 +63,8 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.Scheduler.Oban do
   alias RetroHexChat.Jobs
   alias RetroHexChat.Jobs.RSSPollWorker
 
+  require Logger
+
   @behaviour RetroHexChat.Bots.Capabilities.RSS.Scheduler
 
   @follow_up_unique_states [:available, :scheduled, :retryable, :suspended]
@@ -88,8 +90,20 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.Scheduler.Oban do
     |> RSSPollWorker.new(Keyword.put(opts, :schedule_in, delay_s))
     |> Jobs.insert()
     |> case do
-      {:ok, _job} -> :ok
-      {:error, changeset} -> {:error, changeset}
+      {:ok, job} ->
+        Logger.info(
+          "rss_poll_schedule bot_id=#{bot_id} feed_id=#{feed_id} queue=#{job.queue} " <>
+            "state=#{job.state} conflict=#{job.conflict?} delay_s=#{delay_s}"
+        )
+
+        :ok
+
+      {:error, changeset} ->
+        Logger.warning(
+          "rss_poll_schedule_error bot_id=#{bot_id} feed_id=#{feed_id} reason=changeset_error"
+        )
+
+        {:error, changeset}
     end
   end
 
