@@ -34,6 +34,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminChannelsDialog do
     channels_search: "",
     channels_info_channel: "",
     channels_create_name: "",
+    channels_action_channel: "",
     loaded?: false
   }
 
@@ -147,6 +148,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminChannelsDialog do
         search={@channels_search}
         info_channel={@channels_info_channel}
         create_name={@channels_create_name}
+        action_channel={@channels_action_channel}
         can_refresh={@can_refresh}
         on_refresh="admin_channels_refresh"
         on_info="admin_channels_info"
@@ -181,6 +183,13 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminChannelsDialog do
 
       # Deleting the channel invalidates the inspected one; purging does not.
       selected = if action == "delete", do: "", else: channel
+
+      # A refused action keeps what was typed, so correcting the confirmation
+      # does not mean retyping the target as well. A completed one clears it,
+      # because leaving a destructive form primed is its own hazard.
+      typed = if Map.get(result, :status) == :error, do: channel, else: ""
+
+      socket = assign(socket, channels_action_channel: typed)
 
       {:noreply, assign_snapshot(socket, %{"info_channel" => selected}, result)}
     end)

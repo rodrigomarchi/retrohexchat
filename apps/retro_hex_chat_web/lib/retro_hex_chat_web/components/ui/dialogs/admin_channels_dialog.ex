@@ -29,6 +29,11 @@ defmodule RetroHexChatWeb.Components.UI.AdminChannelsDialog do
   attr :info_channel, :string, default: ""
   attr :create_name, :string, default: ""
   attr :can_refresh, :boolean, default: false
+
+  attr :action_channel, :string,
+    default: "",
+    doc: "Channel the destructive forms keep after an action they refused"
+
   attr :on_refresh, :any, default: nil
   attr :on_info, :any, default: nil
   attr :on_create, :any, default: nil
@@ -71,6 +76,11 @@ defmodule RetroHexChatWeb.Components.UI.AdminChannelsDialog do
   attr :info_channel, :string, default: ""
   attr :create_name, :string, default: ""
   attr :can_refresh, :boolean, default: false
+
+  attr :action_channel, :string,
+    default: "",
+    doc: "Channel the destructive forms keep after an action they refused"
+
   attr :on_refresh, :any, default: nil
   attr :on_info, :any, default: nil
   attr :on_create, :any, default: nil
@@ -184,6 +194,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminChannelsDialog do
               <.channel_action_form
                 target={@target}
                 id="admin-channels-delete-form"
+                channel_value={@action_channel}
                 event={@on_delete}
                 title={dgettext("dialogs", "Delete channel")}
                 button_label={dgettext("dialogs", "Confirm delete")}
@@ -195,6 +206,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminChannelsDialog do
               <.channel_action_form
                 target={@target}
                 id="admin-channels-purge-form"
+                channel_value={@action_channel}
                 event={@on_purge}
                 title={dgettext("dialogs", "Purge messages")}
                 button_label={dgettext("dialogs", "Confirm purge")}
@@ -302,6 +314,17 @@ defmodule RetroHexChatWeb.Components.UI.AdminChannelsDialog do
   attr :include_confirm, :boolean, default: false
   attr :destructive, :boolean, default: false
   attr :disabled, :boolean, default: false
+
+  attr :channel_value, :string,
+    default: "",
+    doc: """
+    What the channel field should hold.
+
+    A destructive action refused for a bad confirmation re-renders the window,
+    and an uncontrolled input loses whatever was typed in that patch — leaving
+    the admin to retype the channel name to correct a typo in the confirmation.
+    """
+
   attr :target, :any, default: nil
 
   defp channel_action_form(assigns) do
@@ -321,6 +344,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminChannelsDialog do
         class="w-full shadow-retro-sunken bg-white px-retro-4 py-retro-2 text-sm"
         placeholder={dgettext("dialogs", "Channel")}
         autocomplete="off"
+        value={@channel_value}
         disabled={@disabled}
       />
       <input
