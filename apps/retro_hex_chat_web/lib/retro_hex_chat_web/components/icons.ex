@@ -214,6 +214,7 @@ defmodule RetroHexChatWeb.Icons do
 
   # ── Files ───────────────────────────────────────────────
   defdelegate icon_folder(assigns), to: RetroHexChatWeb.Icons.Files
+  defdelegate icon_app_stack(assigns), to: RetroHexChatWeb.Icons.Files
   defdelegate icon_notepad(assigns), to: RetroHexChatWeb.Icons.Files
   defdelegate icon_trash(assigns), to: RetroHexChatWeb.Icons.Files
   defdelegate icon_backup(assigns), to: RetroHexChatWeb.Icons.Files
@@ -230,6 +231,10 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_browser(assigns), to: RetroHexChatWeb.Icons.Hardware
   defdelegate icon_operating_system(assigns), to: RetroHexChatWeb.Icons.Hardware
   defdelegate icon_server(assigns), to: RetroHexChatWeb.Icons.Hardware
+  defdelegate icon_memory(assigns), to: RetroHexChatWeb.Icons.Hardware
+  defdelegate icon_cpu(assigns), to: RetroHexChatWeb.Icons.Hardware
+  defdelegate icon_plug(assigns), to: RetroHexChatWeb.Icons.Hardware
+  defdelegate icon_table_grid(assigns), to: RetroHexChatWeb.Icons.Hardware
   defdelegate icon_database(assigns), to: RetroHexChatWeb.Icons.Hardware
   defdelegate icon_elixir(assigns), to: RetroHexChatWeb.Icons.Hardware
   defdelegate icon_postgres(assigns), to: RetroHexChatWeb.Icons.Hardware
@@ -282,6 +287,9 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_chevron_down(assigns), to: RetroHexChatWeb.Icons.Arrows
   defdelegate icon_chevron_right(assigns), to: RetroHexChatWeb.Icons.Arrows
   defdelegate icon_chevron_left(assigns), to: RetroHexChatWeb.Icons.Arrows
+  defdelegate icon_sort_ascending(assigns), to: RetroHexChatWeb.Icons.Arrows
+  defdelegate icon_sort_descending(assigns), to: RetroHexChatWeb.Icons.Arrows
+  defdelegate icon_sort_none(assigns), to: RetroHexChatWeb.Icons.Arrows
   defdelegate icon_pad_up(assigns), to: RetroHexChatWeb.Icons.Arrows
   defdelegate icon_pad_down(assigns), to: RetroHexChatWeb.Icons.Arrows
   defdelegate icon_pad_left(assigns), to: RetroHexChatWeb.Icons.Arrows
@@ -364,6 +372,7 @@ defmodule RetroHexChatWeb.Icons do
 
   # ── Symbols ─────────────────────────────────────────────
   defdelegate icon_dollar(assigns), to: RetroHexChatWeb.Icons.Symbols
+  defdelegate icon_chart_bars(assigns), to: RetroHexChatWeb.Icons.Symbols
   defdelegate icon_star(assigns), to: RetroHexChatWeb.Icons.Symbols
   defdelegate icon_bug(assigns), to: RetroHexChatWeb.Icons.Symbols
   defdelegate icon_heart(assigns), to: RetroHexChatWeb.Icons.Symbols

@@ -13,6 +13,8 @@ defmodule RetroHexChatWeb.Components.UI.AdminShared do
   import RetroHexChatWeb.Components.UI.ListStates
 
   alias RetroHexChat.Admin.Table
+  alias RetroHexChatWeb.Components.UI.Format
+  alias RetroHexChatWeb.Icons
 
   @doc """
   Outcome strip for a privileged command — green on success, red on error.
@@ -69,6 +71,24 @@ defmodule RetroHexChatWeb.Components.UI.AdminShared do
 
   attr :loading_more, :boolean, default: false
 
+  attr :on_sort, :string,
+    default: nil,
+    doc: "Event a sortable heading fires, carrying the column key; omit to leave headings inert"
+
+  attr :sort_by, :atom, default: nil, doc: "The column currently ordering the rows"
+  attr :sort_dir, :atom, default: :desc, values: [:asc, :desc]
+
+  attr :truncate, :boolean,
+    default: false,
+    doc: """
+    Bound every cell's width, showing the full value on hover.
+
+    Off by default: the audit log and the user listings hold short values and
+    are read in full. The runtime listings hold module names and MFAs long
+    enough to push the table wider than its window, which pushes the leftmost
+    column — the one naming the row — out of sight entirely.
+    """
+
   @spec admin_table(map()) :: Phoenix.LiveView.Rendered.t()
   def admin_table(%{table: %Table{}} = assigns) do
     ~H"""
@@ -78,13 +98,25 @@ defmodule RetroHexChatWeb.Components.UI.AdminShared do
       <table :if={@table.rows != []} class="admin-table__grid w-full text-xs">
         <thead>
           <tr>
-            <th :for={column <- @table.columns} class="admin-table__head">{column.label}</th>
+            <th :for={column <- @table.columns} class="admin-table__head">
+              <.column_heading
+                column={column}
+                on_sort={@on_sort}
+                target={@target}
+                sort_by={@sort_by}
+                sort_dir={@sort_dir}
+              />
+            </th>
           </tr>
         </thead>
         <tbody>
           <tr :for={row <- @table.rows} class="admin-table__row" data-row-id={row.id}>
-            <td :for={column <- @table.columns} class="admin-table__cell">
-              {cell(row, column.key)}
+            <td
+              :for={column <- @table.columns}
+              class={["admin-table__cell", @truncate && "admin-table__cell--bounded"]}
+              title={@truncate && cell(row, column)}
+            >
+              {cell(row, column)}
             </td>
           </tr>
         </tbody>
@@ -123,15 +155,48 @@ defmodule RetroHexChatWeb.Components.UI.AdminShared do
     """
   end
 
-  # Booleans read as marks rather than as the words "true"/"false", and a blank
-  # cell says "nothing here" better than the string "nil" does.
-  @spec cell(map(), atom()) :: String.t()
-  defp cell(row, key), do: row |> Map.get(key) |> format_cell()
+  # A heading is a button only where the listing can actually be reordered:
+  # every other one stays plain text, so nothing invites a click that does
+  # nothing. The arrow marks the column currently in force and which way.
+  attr :column, :map, required: true
+  attr :on_sort, :string, default: nil
+  attr :target, :any, default: nil
+  attr :sort_by, :atom, default: nil
+  attr :sort_dir, :atom, default: :desc
 
-  defp format_cell(nil), do: ""
-  defp format_cell(true), do: "✓"
-  defp format_cell(false), do: "—"
-  defp format_cell(%DateTime{} = at), do: DateTime.to_string(at)
-  defp format_cell(value) when is_binary(value), do: value
-  defp format_cell(value), do: to_string(value)
+  defp column_heading(%{on_sort: on_sort, column: %{sortable: true}} = assigns)
+       when is_binary(on_sort) do
+    assigns = assign(assigns, :active?, assigns.sort_by == assigns.column.key)
+
+    ~H"""
+    <button
+      type="button"
+      class="admin-table__sort inline-flex w-full items-center gap-1"
+      phx-click={@on_sort}
+      phx-target={@target}
+      phx-value-column={@column.key}
+      aria-label={@column.label}
+      data-active={to_string(@active?)}
+    >
+      <span class="truncate">{@column.label}</span>
+      <Icons.icon_sort_ascending :if={@active? and @sort_dir == :asc} class="h-3 w-3 shrink-0" />
+      <Icons.icon_sort_descending :if={@active? and @sort_dir == :desc} class="h-3 w-3 shrink-0" />
+      <Icons.icon_sort_none :if={not @active?} class="h-3 w-3 shrink-0 opacity-40" />
+    </button>
+    """
+  end
+
+  defp column_heading(assigns) do
+    ~H"""
+    {@column.label}
+    """
+  end
+
+  # Booleans read as marks rather than as the words "true"/"false", and a blank
+  # cell says "nothing here" better than the string "nil" does. What a figure
+  # means is the column's business, so the format travels with it.
+  @spec cell(map(), Table.column()) :: String.t()
+  defp cell(row, column) do
+    Format.cell(Map.get(row, column.key), Map.get(column, :format, :text))
+  end
 end

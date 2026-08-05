@@ -691,4 +691,21 @@ defmodule RetroHexChatWeb.Icons.Symbols do
     </svg>
     """
   end
+
+  attr :class, :string, default: nil
+
+  @doc "A bar chart — a measurement watched over time."
+  @spec icon_chart_bars(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_chart_bars(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
+      <rect x="3" y="4" width="26" height="24" fill="#000" transform="translate(1,1)" />
+      <rect x="3" y="4" width="26" height="24" fill="#fff" stroke="#000" stroke-width="1.5" />
+      <rect x="7" y="17" width="4" height="8" fill="#000080" stroke="#000" stroke-width="1" />
+      <rect x="13" y="12" width="4" height="13" fill="#009393" stroke="#000" stroke-width="1" />
+      <rect x="19" y="8" width="4" height="17" fill="#800000" stroke="#000" stroke-width="1" />
+      <path d="M5 25 h 22" stroke="#000" stroke-width="1.5" />
+    </svg>
+    """
+  end
 end

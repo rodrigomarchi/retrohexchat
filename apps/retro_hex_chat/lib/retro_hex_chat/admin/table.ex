@@ -21,7 +21,14 @@ defmodule RetroHexChat.Admin.Table do
 
   alias RetroHexChat.Page
 
-  @type column :: %{key: atom(), label: String.t()}
+  @type format :: :text | :bytes | :number | :duration_ms | :percent
+
+  @type column :: %{
+          key: atom(),
+          label: String.t(),
+          format: format(),
+          sortable: boolean()
+        }
 
   @type t :: %__MODULE__{
           columns: [column()],
@@ -82,7 +89,22 @@ defmodule RetroHexChat.Admin.Table do
   def next_cursor(%__MODULE__{page: %Page{next_cursor: cursor}}), do: cursor
   def next_cursor(%__MODULE__{}), do: nil
 
-  @doc "Declares a column."
-  @spec column(atom(), String.t()) :: column()
-  def column(key, label), do: %{key: key, label: label}
+  @doc """
+  Declares a column.
+
+  `format` tells the renderer how to read the cell — a byte count and a plain
+  integer are both integers, and only the column knows which one it is. It
+  defaults to `:text`, which is what every listing that predates the option
+  already got. `sortable` is opt-in for the same reason: the audit log is
+  ordered by the query behind it, not by clicking a heading.
+  """
+  @spec column(atom(), String.t(), keyword()) :: column()
+  def column(key, label, opts \\ []) do
+    %{
+      key: key,
+      label: label,
+      format: Keyword.get(opts, :format, :text),
+      sortable: Keyword.get(opts, :sortable, false)
+    }
+  end
 end

@@ -295,4 +295,94 @@ defmodule RetroHexChatWeb.Icons.Hardware do
     </svg>
     """
   end
+
+  attr :class, :string, default: nil
+
+  @doc "A memory module — green board, gold contacts, black packages."
+  @spec icon_memory(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_memory(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
+      <rect x="3" y="9" width="26" height="15" fill="#000" transform="translate(1,1)" />
+      <rect x="3" y="9" width="26" height="15" fill="#0a6b34" stroke="#000" stroke-width="1.5" />
+      <rect x="6" y="12" width="6" height="7" fill="#1a1a1a" stroke="#000" stroke-width="1" />
+      <rect x="13" y="12" width="6" height="7" fill="#1a1a1a" stroke="#000" stroke-width="1" />
+      <rect x="20" y="12" width="6" height="7" fill="#1a1a1a" stroke="#000" stroke-width="1" />
+      <rect x="5" y="21" width="3" height="3" fill="#FFD700" />
+      <rect x="10" y="21" width="3" height="3" fill="#FFD700" />
+      <rect x="15" y="21" width="3" height="3" fill="#FFD700" />
+      <rect x="20" y="21" width="3" height="3" fill="#FFD700" />
+      <rect x="25" y="21" width="3" height="3" fill="#FFD700" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @doc "A processor package with pins on every side."
+  @spec icon_cpu(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_cpu(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
+      <g fill="#808080">
+        <rect x="10" y="2" width="2" height="4" />
+        <rect x="15" y="2" width="2" height="4" />
+        <rect x="20" y="2" width="2" height="4" />
+        <rect x="10" y="26" width="2" height="4" />
+        <rect x="15" y="26" width="2" height="4" />
+        <rect x="20" y="26" width="2" height="4" />
+        <rect x="2" y="10" width="4" height="2" />
+        <rect x="2" y="15" width="4" height="2" />
+        <rect x="2" y="20" width="4" height="2" />
+        <rect x="26" y="10" width="4" height="2" />
+        <rect x="26" y="15" width="4" height="2" />
+        <rect x="26" y="20" width="4" height="2" />
+      </g>
+      <rect x="6" y="6" width="20" height="20" fill="#000" transform="translate(1,1)" />
+      <rect x="6" y="6" width="20" height="20" fill="#000080" stroke="#000" stroke-width="1.5" />
+      <rect x="11" y="11" width="10" height="10" fill="#C0C0C0" stroke="#000" stroke-width="1" />
+      <path d="M7 7 h 18" stroke="#fff" stroke-width="1.5" opacity="0.5" stroke-linecap="round" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @doc "A cable plug meeting its socket — the emulator's handle on the outside."
+  @spec icon_plug(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_plug(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
+      <rect x="2" y="10" width="13" height="12" fill="#000" transform="translate(1,1)" />
+      <rect x="2" y="10" width="13" height="12" fill="#C0C0C0" stroke="#000" stroke-width="1.5" />
+      <rect x="6" y="13" width="3" height="2" fill="#000080" />
+      <rect x="6" y="17" width="3" height="2" fill="#000080" />
+      <rect x="17" y="12" width="12" height="8" fill="#000" transform="translate(1,1)" />
+      <rect x="17" y="12" width="12" height="8" fill="#000080" stroke="#000" stroke-width="1.5" />
+      <rect x="15" y="14" width="2" height="2" fill="#FFD700" />
+      <rect x="15" y="18" width="2" height="2" fill="#FFD700" />
+      <path d="M18 13 h 10" stroke="#fff" stroke-width="1.5" opacity="0.5" stroke-linecap="round" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @doc "A table of rows and columns — an in-memory store, drawn as its shape."
+  @spec icon_table_grid(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_table_grid(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
+      <rect x="3" y="5" width="26" height="22" fill="#000" transform="translate(1,1)" />
+      <rect x="3" y="5" width="26" height="22" fill="#fff" stroke="#000" stroke-width="1.5" />
+      <rect x="3" y="5" width="26" height="6" fill="#000080" stroke="#000" stroke-width="1.5" />
+      <g stroke="#808080" stroke-width="1">
+        <path d="M3 17 h 26" />
+        <path d="M3 22 h 26" />
+        <path d="M12 11 v 16" />
+        <path d="M21 11 v 16" />
+      </g>
+    </svg>
+    """
+  end
 end

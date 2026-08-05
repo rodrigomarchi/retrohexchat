@@ -73,4 +73,11 @@ export const lazyFeatureHooks = {
     serverEvents: [],
     reason: "Virtual-space canvas and engine are only needed inside a space session.",
   }),
+  MetricChartHook: lazyFeatureHook({
+    name: "MetricChartHook",
+    loader: () => import("./system/metric_chart_hook"),
+    serverEvents: ["system_metric_series"],
+    readyEvent: "metric_chart_ready",
+    reason: "The metrics chart renderer is only needed inside the admin-only Metrics window.",
+  }),
 };

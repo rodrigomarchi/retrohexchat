@@ -1,0 +1,110 @@
+<p>
+  {dgettext(
+    "help_ui",
+    "The System group under File ▸ System — and Start ▸ System — opens twelve windows onto the server itself. They are admin-only, and every one of them only reads: nothing in this group can change the server, which is what separates it from the Admin group beside it."
+  )}
+</p>
+
+<h3>{dgettext("help_ui", "Where To Start")}</h3>
+<p>
+  {dgettext(
+    "help_ui",
+    "Overview is the window to open first. It reports which Erlang and Elixir the server is built on, how long it has been running, how much traffic has crossed it, and how close it is to the three ceilings that would end it: atoms, ports and processes. Below those, one bar divides the server's memory across the six things that consume it."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_ui",
+    "App Info answers the other first question — who is actually here. Channels alive, distinct people present, calls in progress, virtual spaces running, and a listing of which channels hold the people."
+  )}
+</p>
+
+<h3>{dgettext("help_ui", "The Listings")}</h3>
+<p>
+  {dgettext(
+    "help_ui",
+    "Processes, Applications, ETS Tables, Ports, Sockets and Memory Allocators are the same window over six different populations. Each one filters as you type and sorts by any column with an arrow on it — click a heading once to order by it, again to reverse."
+  )}
+</p>
+<ul>
+  <li>
+    <strong>{dgettext("help_ui", "Processes")}</strong> {dgettext(
+      "help_ui",
+      "— sort by Mailbox to find a process receiving faster than it can drain. That is what a stuck server looks like from the inside."
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_ui", "ETS Tables")}</strong> {dgettext(
+      "help_ui",
+      "— sorted by memory. An in-memory table nobody prunes is the usual cause of memory that only ever grows."
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_ui", "Sockets")}</strong> {dgettext(
+      "help_ui",
+      "— every connection the server is holding open, with its endpoints and byte counters."
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_ui", "Memory Allocators")}</strong> {dgettext(
+      "help_ui",
+      "— compare Block size against Carrier size. A wide gap is fragmentation: memory the server holds from the operating system but cannot use."
+    )}
+  </li>
+</ul>
+
+<h3>{dgettext("help_ui", "Metrics")}</h3>
+<p>
+  {dgettext(
+    "help_ui",
+    "Live charts, one group at a time: HTTP, LiveView, Database, VM and Domain. Domain is the server's own instrumentation — channels created, people arriving and leaving, calls joined, virtual-space movement."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_ui",
+    "Charts start empty and fill as events happen. That is not a fault: nothing was measured before you opened the window, and a line drawn back to the left edge would be invented. Only the group you are looking at is subscribed, so the window costs nothing for the groups you are not watching."
+  )}
+</p>
+
+<h3>{dgettext("help_ui", "OS Data And Database Stats")}</h3>
+<p>
+  {dgettext(
+    "help_ui",
+    "OS Data is the view from outside the server: the host's processors, load averages, memory and disks. A server can look healthy while the machine it shares is not. Readings the host will not report show as a dash rather than as zero — those are different facts."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_ui",
+    "Database Stats runs one diagnostic report at a time against PostgreSQL: cache hit rates, unused indexes, bloat, long-running queries, what is blocking what. Nothing runs until you pick a report, because these are real queries against the live database."
+  )}
+</p>
+
+<h3>{dgettext("help_ui", "Live Log")}</h3>
+<p>
+  {dgettext(
+    "help_ui",
+    "A tail of what the server is logging right now. It streams only after you press Stream, and stops the moment you press Stop or close the window — a log stream nobody is watching is a cost with no reader."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_ui",
+    "If the level you pick is below what the server itself logs at, the window says so instead of sitting silent. Entries below the server's own level are dropped before any window can see them, no matter how long you wait."
+  )}
+</p>
+
+<h3>{dgettext("help_ui", "Reading Them Honestly")}</h3>
+<p>
+  {dgettext(
+    "help_ui",
+    "The listings show the first rows of a filtered set, and the count above the table always says how many matched. \"50 of 771\" means you are looking at the top fifty — never assume a listing is complete because it filled the window."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_ui",
+    "None of these windows refresh on their own. Each walk costs the server real work, so refreshing is a button you press rather than a timer you forget you started. Metrics is the exception: it is a live subscription by nature, and stops when the window closes."
+  )}
+</p>

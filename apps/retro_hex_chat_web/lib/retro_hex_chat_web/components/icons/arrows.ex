@@ -297,4 +297,46 @@ defmodule RetroHexChatWeb.Icons.Arrows do
     </svg>
     """
   end
+
+  attr :class, :string, default: nil
+
+  @doc "Column heading marker: rows run smallest first."
+  @spec icon_sort_ascending(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_sort_ascending(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <polygon points="8,4 13,11 3,11" fill="currentColor" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @doc "Column heading marker: rows run largest first."
+  @spec icon_sort_descending(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_sort_descending(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <polygon points="8,12 3,5 13,5" fill="currentColor" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @doc """
+  Column heading marker: sortable, but not the column currently in force.
+
+  Both directions are drawn so the heading advertises that it can be clicked;
+  the caller fades it to keep it quieter than the active marker.
+  """
+  @spec icon_sort_none(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_sort_none(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <polygon points="8,2 12,7 4,7" fill="currentColor" />
+      <polygon points="8,14 4,9 12,9" fill="currentColor" />
+    </svg>
+    """
+  end
 end

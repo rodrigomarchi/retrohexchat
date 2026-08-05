@@ -463,4 +463,23 @@ defmodule RetroHexChatWeb.Icons.Files do
     </svg>
     """
   end
+
+  attr :class, :string, default: nil
+
+  @doc "Stacked application windows — the programs loaded into a node."
+  @spec icon_app_stack(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_app_stack(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
+      <rect x="3" y="4" width="19" height="15" fill="#000" transform="translate(1,1)" />
+      <rect x="3" y="4" width="19" height="15" fill="#C0C0C0" stroke="#000" stroke-width="1.5" />
+      <rect x="3" y="4" width="19" height="4" fill="#808080" stroke="#000" stroke-width="1.5" />
+      <rect x="10" y="12" width="19" height="15" fill="#000" transform="translate(1,1)" />
+      <rect x="10" y="12" width="19" height="15" fill="#C0C0C0" stroke="#000" stroke-width="1.5" />
+      <rect x="10" y="12" width="19" height="4" fill="#000080" stroke="#000" stroke-width="1.5" />
+      <rect x="13" y="19" width="13" height="1.5" fill="#808080" />
+      <rect x="13" y="22" width="9" height="1.5" fill="#808080" />
+    </svg>
+    """
+  end
 end

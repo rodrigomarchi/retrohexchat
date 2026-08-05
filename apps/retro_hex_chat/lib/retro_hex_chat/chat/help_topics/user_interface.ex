@@ -402,6 +402,36 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
           )
       },
       %{
+        id: "ui-system-windows",
+        title: dgettext("help", "System Windows"),
+        category: dgettext("help", "User Interface"),
+        keywords: [
+          "system",
+          "runtime",
+          "processes",
+          "memory",
+          "metrics",
+          "ets",
+          "ports",
+          "sockets",
+          "allocators",
+          "os data",
+          "database stats",
+          "app info",
+          "live log",
+          "monitor",
+          "diagnostics",
+          "beam",
+          "vm"
+        ],
+        icon: :icon_server,
+        description:
+          dgettext(
+            "help",
+            "Twelve admin-only windows that read the running server: its memory, processes, connections, database and live metrics."
+          )
+      },
+      %{
         id: "empty-states",
         title: dgettext("help", "Empty States"),
         category: dgettext("help", "User Interface"),
