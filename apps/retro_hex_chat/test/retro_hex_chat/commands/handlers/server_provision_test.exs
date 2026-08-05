@@ -46,13 +46,13 @@ defmodule RetroHexChat.Commands.Handlers.ServerProvisionTest do
     assert File.exists?(@script_path)
   end
 
-  test "the production shape stays at thirteen rooms and thirteen bots", %{lines: lines} do
+  test "the production shape stays at thirteen rooms and twenty-three bots", %{lines: lines} do
     parsed = Enum.map(lines, &args/1)
     channels = for ["join", chan | _] <- parsed, uniq: true, do: String.downcase(chan)
     bots = for ["bot", "create", name | _] <- parsed, uniq: true, do: name
 
     assert length(channels) == 13
-    assert length(bots) == 13
+    assert length(bots) == 23
   end
 
   test "the narrative does not drift back to the old room count or RSS bootstrap",
@@ -62,6 +62,8 @@ defmodule RetroHexChat.Commands.Handlers.ServerProvisionTest do
     refute body =~ "posts one headline"
     refute body =~ "A newly added feed posts"
     refute body =~ "https://www.cisa.gov/cybersecurity-advisories/all.xml"
+    refute body =~ "https://us-cert.cisa.gov/ncas/alerts.xml"
+    refute body =~ "https://rss.tecmundo.com.br/feed"
   end
 
   test "every command names a handler the registry knows", %{lines: lines} do

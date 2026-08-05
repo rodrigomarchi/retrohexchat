@@ -188,11 +188,11 @@ defmodule RetroHexChat.Commands.Handlers.BotTest do
                capabilities()
     end
 
-    test "rss_max_items accepts a high production value" do
+    test "rss_max_items accepts the high production value used by provisioning" do
       assert {:ok, :system, _} =
-               Bot.execute(["set", "BotCmdTest", "rss_max_items", "1000"], @admin_ctx)
+               Bot.execute(["set", "BotCmdTest", "rss_max_items", "10000"], @admin_ctx)
 
-      assert %{"rss" => %{"max_items_per_poll" => 1000}} = capabilities()
+      assert %{"rss" => %{"max_items_per_poll" => 10_000}} = capabilities()
     end
 
     test "greeting reaches a bot that already owns the greeter capability" do

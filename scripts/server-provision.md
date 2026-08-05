@@ -1,8 +1,9 @@
 # RetroHexChat — Production Provisioning
 
-Thirteen channels, thirteen bots. Every choice below traces to `scripts/research/irc_census`
-— a live `/LIST` sweep of 95 public IRC networks, of which 59 answered with 49,973
-channels. Regenerate it with `scripts/research/irc_census/run.sh`.
+Thirteen channels, twenty-three bots. The room choices trace to
+`scripts/research/irc_census` — a live `/LIST` sweep of 95 public IRC networks,
+of which 59 answered with 49,973 channels. Regenerate it with
+`scripts/research/irc_census/run.sh`.
 
 ## Why these thirteen
 
@@ -52,7 +53,7 @@ included, is joined explicitly.
 ```
 # ══════════════════════════════════════════════════════════
 #  RetroHexChat — Production Setup
-#  13 channels · 13 bots · derived from the IRC census
+#  13 channels · 23 bots · derived from the IRC census
 # ══════════════════════════════════════════════════════════
 
 # ── 1. Server ────────────────────────────────────────────
@@ -140,11 +141,11 @@ included, is joined explicitly.
 /mode +tn
 
 # #security — the densest subject measured: only 57 live rooms, but a p90 of
-# 178, the highest of any category. People who arrive stay. Advisories are the
-# archetypal feed content.
+# 178, the highest of any category. People who arrive stay. Advisories and
+# incident writeups are archetypal feed content.
 /join #security
 /cs register
-/topic Security advisories — CISA, Krebs, The Hacker News. Read before you patch.
+/topic Security advisories — Krebs, The Hacker News, BleepingComputer and research feeds. Read before you patch.
 /mode +tn
 
 # #ai — seven live rooms across three networks in the whole census, the
@@ -158,7 +159,7 @@ included, is joined explicitly.
 # Distributed demand, no owner.
 /join #science
 /cs register
-/topic Science — arXiv astrophysics, NASA and Phys.org. Bring questions.
+/topic Science — arXiv astrophysics, NASA, Live Science and discovery feeds. Bring questions.
 /mode +tn
 
 # #anime — alive on 12 networks with 802 people between them, and the largest
@@ -268,7 +269,7 @@ included, is joined explicitly.
 /bot join Pixel #retro
 # Low-volume feeds: a couple of posts a week, so a two-hour cadence is plenty.
 /bot set Pixel rss_interval 120
-/bot set Pixel rss_max_items 1000
+/bot set Pixel rss_max_items 10000
 /bot rss add Pixel https://hackaday.com/category/retrocomputing/feed/ #retro
 /bot rss add Pixel https://www.vintagecomputing.com/index.php/feed #retro
 
@@ -290,7 +291,7 @@ included, is joined explicitly.
 
 /bot join Murphy #tech
 /bot set Murphy rss_interval 30
-/bot set Murphy rss_max_items 1000
+/bot set Murphy rss_max_items 10000
 /bot rss add Murphy https://news.ycombinator.com/rss #tech
 /bot rss add Murphy https://github.blog/feed/ #tech
 
@@ -310,9 +311,9 @@ included, is joined explicitly.
 
 /bot join Tiao #brasil
 /bot set Tiao rss_interval 30
-/bot set Tiao rss_max_items 1000
+/bot set Tiao rss_max_items 10000
 /bot rss add Tiao https://tecnoblog.net/feed/ #brasil
-/bot rss add Tiao https://rss.tecmundo.com.br/feed #brasil
+/bot rss add Tiao https://canaltech.com.br/rss/ #brasil
 
 # ── Gazeta — #news ───────────────────────────────────────
 # Feeds are stored on the bot and survive a restart, along with the record of
@@ -324,7 +325,7 @@ included, is joined explicitly.
 /bot set Gazeta cooldown 1000
 /bot set Gazeta rss_interval 20
 /bot set Gazeta rss_max_feeds 5
-/bot set Gazeta rss_max_items 1000
+/bot set Gazeta rss_max_items 10000
 /bot set Gazeta greeting \c02\b[Gazeta]\o Welcome to #news, {nickname}. \c14Headlines arrive on their own\o — !Gazeta rss list for the sources.
 /bot set Gazeta greeting_delivery private_notice
 /bot set Gazeta greeter_repeat_window 43200
@@ -357,7 +358,7 @@ included, is joined explicitly.
 /bot set Freeman prefix !
 /bot set Freeman cooldown 1000
 /bot set Freeman rss_interval 30
-/bot set Freeman rss_max_items 1000
+/bot set Freeman rss_max_items 10000
 /bot set Freeman greeting \c03\b[Freeman]\o Welcome to #foss, {nickname}. \c02Releases arrive on their own\o — !sources for where from.
 /bot set Freeman greeting_delivery private_notice
 /bot set Freeman greeter_repeat_window 43200
@@ -374,15 +375,15 @@ included, is joined explicitly.
 /bot set Cassandra prefix !
 /bot set Cassandra cooldown 1000
 /bot set Cassandra rss_interval 30
-/bot set Cassandra rss_max_items 1000
+/bot set Cassandra rss_max_items 10000
 /bot set Cassandra greeting \c04\b[Cassandra]\o {nickname}, welcome. I post advisories. \c05You will read them later\o and wish you had read them now.
 /bot set Cassandra greeting_delivery private_notice
 /bot set Cassandra greeter_repeat_window 43200
 /bot set Cassandra mention_response \c04\b[Cassandra]\o I warn; that is the whole job. \c05!sources\o for where the warnings come from.
-/bot addcmd Cassandra sources \c04\b[Cassandra]\o CISA advisories, Krebs on Security and The Hacker News, \c05checked every half hour\o.
+/bot addcmd Cassandra sources \c04\b[Cassandra]\o BleepingComputer, Krebs on Security and The Hacker News, \c05checked every half hour\o.
 /bot addcmd Cassandra patch \c04\b[Cassandra]\o The advisory is not the fix. \c05Read it, find your version, then patch\o. In that order, {nickname}.
 /bot join Cassandra #security
-/bot rss add Cassandra https://us-cert.cisa.gov/ncas/alerts.xml #security
+/bot rss add Cassandra https://www.bleepingcomputer.com/feed/ #security
 /bot rss add Cassandra https://krebsonsecurity.com/feed/ #security
 /bot rss add Cassandra https://feeds.feedburner.com/TheHackersNews #security
 
@@ -391,7 +392,7 @@ included, is joined explicitly.
 /bot set Ada prefix !
 /bot set Ada cooldown 1000
 /bot set Ada rss_interval 60
-/bot set Ada rss_max_items 1000
+/bot set Ada rss_max_items 10000
 /bot set Ada greeting \c10\b[Ada]\o {nickname}! \c06Preprints and model releases\o land here on their own. !sources for where from.
 /bot set Ada greeting_delivery private_notice
 /bot set Ada greeter_repeat_window 43200
@@ -408,23 +409,23 @@ included, is joined explicitly.
 /bot set Curie prefix !
 /bot set Curie cooldown 1000
 /bot set Curie rss_interval 60
-/bot set Curie rss_max_items 1000
-/bot set Curie greeting \c12\b[Curie]\o Welcome, {nickname}. \c02Astrophysics preprints, NASA and Phys.org\o arrive here hourly.
+/bot set Curie rss_max_items 10000
+/bot set Curie greeting \c12\b[Curie]\o Welcome, {nickname}. \c02Astrophysics preprints, NASA and Live Science\o arrive here hourly.
 /bot set Curie greeting_delivery private_notice
 /bot set Curie greeter_repeat_window 43200
 /bot set Curie mention_response \c12\b[Curie]\o !sources for where the \c02science\o comes from.
-/bot addcmd Curie sources \c12\b[Curie]\o arXiv astro-ph, NASA news releases and Phys.org, \c02checked hourly\o.
+/bot addcmd Curie sources \c12\b[Curie]\o arXiv astro-ph, NASA news releases and Live Science, \c02checked hourly\o.
 /bot join Curie #science
 /bot rss add Curie http://export.arxiv.org/rss/astro-ph #science
 /bot rss add Curie https://www.nasa.gov/news-release/feed/ #science
-/bot rss add Curie https://phys.org/rss-feed/ #science
+/bot rss add Curie https://www.livescience.com/feeds/all #science
 
 # ── Yuki — #anime ────────────────────────────────────────
 /bot create Yuki Watcher of the seasonal charts
 /bot set Yuki prefix !
 /bot set Yuki cooldown 1000
 /bot set Yuki rss_interval 30
-/bot set Yuki rss_max_items 1000
+/bot set Yuki rss_max_items 10000
 /bot set Yuki greeting \c13\b[Yuki]\o {nickname}! \c06News and episode drops\o land here. !sources for where from.
 /bot set Yuki greeting_delivery private_notice
 /bot set Yuki greeter_repeat_window 43200
@@ -433,6 +434,182 @@ included, is joined explicitly.
 /bot join Yuki #anime
 /bot rss add Yuki https://www.animenewsnetwork.com/all/rss.xml #anime
 /bot rss add Yuki https://www.livechart.me/feeds/episodes #anime
+
+# ══════════════════════════════════════════════════════════
+#  5b. Extra wire bots — make the rooms feel alive
+# ══════════════════════════════════════════════════════════
+# These bots do not create more rooms; they put more motion into the rooms that
+# already exist. Each source below was fetched with the production RSS fetcher
+# and parsed by the app parser before it was added here.
+
+# ── Joystick — #arcade gaming wire ───────────────────────
+/bot create Joystick Cabinet Newsrunner
+/bot set Joystick prefix !
+/bot set Joystick cooldown 1000
+/bot set Joystick rss_interval 45
+/bot set Joystick rss_max_items 10000
+/bot set Joystick greeting \c12\b[Joystick]\o {nickname}, cabinet wire online. \c10PC games and indie chatter\o land here; !sources shows the feeds.
+/bot set Joystick greeting_delivery private_notice
+/bot set Joystick greeter_repeat_window 43200
+/bot set Joystick farewell none
+/bot set Joystick mention_response \c12\b[Joystick]\o I watch the gaming wire. \c10!sources\o for PC Gamer and Rock Paper Shotgun.
+/bot addcmd Joystick sources \c12\b[Joystick]\o PC Gamer and Rock Paper Shotgun, checked every forty-five minutes.
+/bot join Joystick #arcade
+/bot rss add Joystick https://www.pcgamer.com/rss/ #arcade
+/bot rss add Joystick https://www.rockpapershotgun.com/feed #arcade
+
+# ── Sprite — #retro computing wire ───────────────────────
+/bot create Sprite Retro Wire Courier
+/bot set Sprite prefix !
+/bot set Sprite cooldown 1000
+/bot set Sprite rss_interval 90
+/bot set Sprite rss_max_items 10000
+/bot set Sprite greeting \c11\b[Sprite]\o {nickname}, old machines are talking again. \c10!sources\o for the retro feeds.
+/bot set Sprite greeting_delivery private_notice
+/bot set Sprite greeter_repeat_window 43200
+/bot set Sprite farewell none
+/bot set Sprite mention_response \c11\b[Sprite]\o Retro wire active: OSNews, RetroRGB and Time Extension. \c10!sources\o lists them.
+/bot addcmd Sprite sources \c11\b[Sprite]\o OSNews, RetroRGB and Time Extension, checked every ninety minutes.
+/bot join Sprite #retro
+/bot rss add Sprite https://www.osnews.com/feed/ #retro
+/bot rss add Sprite https://www.retrorgb.com/feed #retro
+/bot rss add Sprite https://www.timeextension.com/feeds/news #retro
+
+# ── Byte — #tech general technology wire ─────────────────
+/bot create Byte Tech Desk Runner
+/bot set Byte prefix !
+/bot set Byte cooldown 1000
+/bot set Byte rss_interval 30
+/bot set Byte rss_max_items 10000
+/bot set Byte greeting \c14\b[Byte]\o {nickname}, the tech desk is humming. \c04!sources\o for the magazines I read.
+/bot set Byte greeting_delivery private_notice
+/bot set Byte greeter_repeat_window 43200
+/bot set Byte farewell none
+/bot set Byte mention_response \c14\b[Byte]\o Ars, ZDNet, WIRED and Engadget. \c04!sources\o for the list.
+/bot addcmd Byte sources \c14\b[Byte]\o Ars Technica, ZDNet, WIRED and Engadget, checked every half hour.
+/bot join Byte #tech
+/bot rss add Byte https://feeds.arstechnica.com/arstechnica/index #tech
+/bot rss add Byte https://www.zdnet.com/news/rss.xml #tech
+/bot rss add Byte https://www.wired.com/feed/rss #tech
+/bot rss add Byte https://www.engadget.com/rss.xml #tech
+
+# ── Nina — #brasil general wire ──────────────────────────
+/bot create Nina Plantonista Brasileira
+/bot set Nina prefix !
+/bot set Nina cooldown 1000
+/bot set Nina rss_interval 30
+/bot set Nina rss_max_items 10000
+/bot set Nina greeting \c03\b[Nina]\o Oi, {nickname}. Plantao ligado no #brasil. \c02!sources\o mostra de onde vem.
+/bot set Nina greeting_delivery private_notice
+/bot set Nina greeter_repeat_window 43200
+/bot set Nina farewell none
+/bot set Nina mention_response \c03\b[Nina]\o Eu leio G1 e Olhar Digital. \c02!sources\o lista os feeds.
+/bot addcmd Nina sources \c03\b[Nina]\o G1 e Olhar Digital, checados a cada meia hora.
+/bot join Nina #brasil
+/bot rss add Nina https://g1.globo.com/rss/g1/ #brasil
+/bot rss add Nina https://olhardigital.com.br/feed/ #brasil
+
+# ── Atlas — #news world wire ─────────────────────────────
+/bot create Atlas World Wire Editor
+/bot set Atlas prefix !
+/bot set Atlas cooldown 1000
+/bot set Atlas rss_interval 20
+/bot set Atlas rss_max_items 10000
+/bot set Atlas greeting \c02\b[Atlas]\o {nickname}, world desk online. \c14!sources\o for the extra wire.
+/bot set Atlas greeting_delivery private_notice
+/bot set Atlas greeter_repeat_window 43200
+/bot set Atlas farewell none
+/bot set Atlas mention_response \c02\b[Atlas]\o Guardian World and NPR News are on my desk. \c14!sources\o for links.
+/bot addcmd Atlas sources \c02\b[Atlas]\o Guardian World and NPR News, checked every twenty minutes.
+/bot join Atlas #news
+/bot rss add Atlas https://www.theguardian.com/world/rss #news
+/bot rss add Atlas https://feeds.npr.org/1001/rss.xml #news
+
+# ── Tux — #foss distro and desktop wire ──────────────────
+/bot create Tux Distro Wire Penguin
+/bot set Tux prefix !
+/bot set Tux cooldown 1000
+/bot set Tux rss_interval 30
+/bot set Tux rss_max_items 10000
+/bot set Tux greeting \c03\b[Tux]\o {nickname}, distro desk online. \c02!sources\o for the Linux wire.
+/bot set Tux greeting_delivery private_notice
+/bot set Tux greeter_repeat_window 43200
+/bot set Tux farewell none
+/bot set Tux mention_response \c03\b[Tux]\o OMG! Ubuntu, Linuxiac and Linux Journal. \c02!sources\o lists them.
+/bot addcmd Tux sources \c03\b[Tux]\o OMG! Ubuntu, Linuxiac and Linux Journal, checked every half hour.
+/bot join Tux #foss
+/bot rss add Tux https://www.omgubuntu.co.uk/feed #foss
+/bot rss add Tux https://linuxiac.com/feed/ #foss
+/bot rss add Tux https://www.linuxjournal.com/node/feed #foss
+
+# ── Sentinel — #security research wire ───────────────────
+/bot create Sentinel Research Watch Officer
+/bot set Sentinel prefix !
+/bot set Sentinel cooldown 1000
+/bot set Sentinel rss_interval 30
+/bot set Sentinel rss_max_items 10000
+/bot set Sentinel greeting \c04\b[Sentinel]\o {nickname}, research watch is active. \c05!sources\o for the feeds.
+/bot set Sentinel greeting_delivery private_notice
+/bot set Sentinel greeter_repeat_window 43200
+/bot set Sentinel farewell none
+/bot set Sentinel mention_response \c04\b[Sentinel]\o SecurityWeek, PortSwigger Research and Rapid7. \c05!sources\o lists the wire.
+/bot addcmd Sentinel sources \c04\b[Sentinel]\o SecurityWeek, PortSwigger Research and Rapid7, checked every half hour.
+/bot join Sentinel #security
+/bot rss add Sentinel https://www.securityweek.com/feed/ #security
+/bot rss add Sentinel https://portswigger.net/research/rss #security
+/bot rss add Sentinel https://www.rapid7.com/blog/rss/ #security
+
+# ── Vega — #ai lab wire ──────────────────────────────────
+/bot create Vega Lab Release Tracker
+/bot set Vega prefix !
+/bot set Vega cooldown 1000
+/bot set Vega rss_interval 60
+/bot set Vega rss_max_items 10000
+/bot set Vega greeting \c10\b[Vega]\o {nickname}, lab release tracker online. \c06!sources\o for model and research feeds.
+/bot set Vega greeting_delivery private_notice
+/bot set Vega greeter_repeat_window 43200
+/bot set Vega farewell none
+/bot set Vega mention_response \c10\b[Vega]\o OpenAI, Google Research, DeepMind and MIT AI. \c06!sources\o lists them.
+/bot addcmd Vega sources \c10\b[Vega]\o OpenAI News, Google Research, Google DeepMind and MIT AI, checked hourly.
+/bot join Vega #ai
+/bot rss add Vega https://openai.com/news/rss.xml #ai
+/bot rss add Vega https://research.google/blog/rss/ #ai
+/bot rss add Vega https://deepmind.google/blog/rss.xml #ai
+/bot rss add Vega https://news.mit.edu/rss/topic/artificial-intelligence2 #ai
+
+# ── Quasar — #science discovery wire ─────────────────────
+/bot create Quasar Discovery Desk
+/bot set Quasar prefix !
+/bot set Quasar cooldown 1000
+/bot set Quasar rss_interval 60
+/bot set Quasar rss_max_items 10000
+/bot set Quasar greeting \c12\b[Quasar]\o {nickname}, discovery desk online. \c02!sources\o for science feeds.
+/bot set Quasar greeting_delivery private_notice
+/bot set Quasar greeter_repeat_window 43200
+/bot set Quasar farewell none
+/bot set Quasar mention_response \c12\b[Quasar]\o ScienceDaily, Space.com, Quanta and Smithsonian. \c02!sources\o lists them.
+/bot addcmd Quasar sources \c12\b[Quasar]\o ScienceDaily, Space.com, Quanta and Smithsonian Science, checked hourly.
+/bot join Quasar #science
+/bot rss add Quasar https://www.sciencedaily.com/rss/top/science.xml #science
+/bot rss add Quasar https://www.space.com/feeds/all #science
+/bot rss add Quasar https://www.quantamagazine.org/feed/ #science
+/bot rss add Quasar https://www.smithsonianmag.com/rss/science-nature/ #science
+
+# ── Sakura — #anime news wire ────────────────────────────
+/bot create Sakura Anime Wire Host
+/bot set Sakura prefix !
+/bot set Sakura cooldown 1000
+/bot set Sakura rss_interval 30
+/bot set Sakura rss_max_items 10000
+/bot set Sakura greeting \c13\b[Sakura]\o {nickname}, anime wire online. \c06!sources\o for the extra feeds.
+/bot set Sakura greeting_delivery private_notice
+/bot set Sakura greeter_repeat_window 43200
+/bot set Sakura farewell none
+/bot set Sakura mention_response \c13\b[Sakura]\o Anime Corner and MyAnimeList. \c06!sources\o lists them.
+/bot addcmd Sakura sources \c13\b[Sakura]\o Anime Corner and MyAnimeList News, checked every half hour.
+/bot join Sakura #anime
+/bot rss add Sakura https://animecorner.me/feed/ #anime
+/bot rss add Sakura https://myanimelist.net/rss/news.xml #anime
 
 # ── Harold — #help ───────────────────────────────────────
 /bot create Harold Senior Assistant to the Help Department
@@ -481,16 +658,16 @@ the capability is created by that first `/bot set`:
 |---|---|---|
 | `#lobby` | Brutus, **Patches** | 91 = top 10% of IRC social rooms |
 | `#trivia` | Brutus, **Wanda** | 100 would make it the 4th largest trivia room on IRC |
-| `#arcade` | Brutus, **Pixel** | 16 = largest `#arcade` on IRC |
-| `#retro` | Brutus, **Pixel** | 26 = largest `#retro` on IRC · 84 = largest retro room of any name |
-| `#tech` | Brutus, **Murphy** | 60 |
-| `#brasil` | Brutus, **Tiao** | 58 = largest `#brasil` on IRC |
-| `#news` | Brutus, **Gazeta** | 77 = top 10% of news rooms |
-| `#foss` | Brutus, **Freeman** | the census found no live `#foss` room anywhere |
-| `#security` | Brutus, **Cassandra** | 178 = p90, the densest subject measured |
-| `#ai` | Brutus, **Ada** | 7 live rooms exist on all of IRC |
-| `#science` | Brutus, **Curie** | 163 = largest `#science` on IRC |
-| `#anime` | Brutus, **Yuki** | 279 = largest `#anime` on IRC |
+| `#arcade` | Brutus, **Pixel**, Joystick | 16 = largest `#arcade` on IRC |
+| `#retro` | Brutus, **Pixel**, Sprite | 26 = largest `#retro` on IRC · 84 = largest retro room of any name |
+| `#tech` | Brutus, **Murphy**, Byte | 60 |
+| `#brasil` | Brutus, **Tiao**, Nina | 58 = largest `#brasil` on IRC |
+| `#news` | Brutus, **Gazeta**, Atlas | 77 = top 10% of news rooms |
+| `#foss` | Brutus, **Freeman**, Tux | the census found no live `#foss` room anywhere |
+| `#security` | Brutus, **Cassandra**, Sentinel | 178 = p90, the densest subject measured |
+| `#ai` | Brutus, **Ada**, Vega | 7 live rooms exist on all of IRC |
+| `#science` | Brutus, **Curie**, Quasar | 163 = largest `#science` on IRC |
+| `#anime` | Brutus, **Yuki**, Sakura | 279 = largest `#anime` on IRC |
 | `#help` | Brutus, **Harold** | 40 |
 
 All channels are `+tn`. Rules live in `!Brutus rules` and the `#lobby` topic rather
@@ -505,13 +682,23 @@ than a moderated `#rules` nobody reads.
 | **Wanda** | `#trivia` | **`trivia`**, `dice`, `greeter` | quiz host with a scoreboard |
 | **Pixel** | `#arcade`, `#retro` | **`rss`**, `greeter`, `custom_commands` | arcade catalogue; Hackaday and Vintage Computing |
 | **Murphy** | `#tech` | **`rss`**, `greeter`, `custom_commands` | pub talk; Hacker News and the GitHub blog |
-| **Tiao** | `#brasil` | **`rss`**, `greeter`, `custom_commands` | anfitrião; Tecnoblog e TecMundo |
+| **Tiao** | `#brasil` | **`rss`**, `greeter`, `custom_commands` | anfitrião; Tecnoblog e Canaltech |
 | **Gazeta** | `#news` | **`rss`**, `greeter`, `custom_commands` | the wire desk; feeds survive a restart |
 | **Freeman** | `#foss` | **`rss`**, `greeter`, `custom_commands` | LWN, Phoronix, It's FOSS |
-| **Cassandra** | `#security` | **`rss`**, `greeter`, `custom_commands` | CISA, Krebs, The Hacker News |
+| **Cassandra** | `#security` | **`rss`**, `greeter`, `custom_commands` | BleepingComputer, Krebs, The Hacker News |
 | **Ada** | `#ai` | **`rss`**, `greeter`, `custom_commands` | arXiv cs.LG / cs.AI, Hugging Face |
-| **Curie** | `#science` | **`rss`**, `greeter`, `custom_commands` | arXiv astro-ph, NASA, Phys.org |
+| **Curie** | `#science` | **`rss`**, `greeter`, `custom_commands` | arXiv astro-ph, NASA, Live Science |
 | **Yuki** | `#anime` | **`rss`**, `greeter`, `custom_commands` | Anime News Network, LiveChart |
+| **Joystick** | `#arcade` | **`rss`**, `greeter`, `custom_commands` | PC Gamer and Rock Paper Shotgun |
+| **Sprite** | `#retro` | **`rss`**, `greeter`, `custom_commands` | OSNews, RetroRGB, Time Extension |
+| **Byte** | `#tech` | **`rss`**, `greeter`, `custom_commands` | Ars Technica, ZDNet, WIRED, Engadget |
+| **Nina** | `#brasil` | **`rss`**, `greeter`, `custom_commands` | G1 and Olhar Digital |
+| **Atlas** | `#news` | **`rss`**, `greeter`, `custom_commands` | Guardian World and NPR News |
+| **Tux** | `#foss` | **`rss`**, `greeter`, `custom_commands` | OMG! Ubuntu, Linuxiac, Linux Journal |
+| **Sentinel** | `#security` | **`rss`**, `greeter`, `custom_commands` | SecurityWeek, PortSwigger, Rapid7 |
+| **Vega** | `#ai` | **`rss`**, `greeter`, `custom_commands` | OpenAI, Google Research, DeepMind, MIT AI |
+| **Quasar** | `#science` | **`rss`**, `greeter`, `custom_commands` | ScienceDaily, Space.com, Quanta, Smithsonian |
+| **Sakura** | `#anime` | **`rss`**, `greeter`, `custom_commands` | Anime Corner and MyAnimeList |
 | **Harold** | `#help` | `help`, `custom_commands` | Clippy, self-aware |
 
 Every bot also carries `greeter`, `custom_commands`, `help` and `mention` — those four
@@ -521,9 +708,9 @@ come with creation.
 
 ## What this script deliberately does not do
 
-**Every feed here was fetched and parsed before it was written down.** Twenty-seven
-candidates were tried; the two that answered 404 and 403, and one that parsed to zero
-items, are not in this script. Re-check them the same way with
+**Every feed here was fetched and parsed before it was written down.** Fifty
+candidates were tried; feeds that returned 404, oversized bodies, RDF-only XML or
+documents the app parser could not decode are not in this script. Re-check them the same way with
 `scripts/research/irc_census`-style throwaway runs, or simply watch `!Bot rss list`.
 
 Feeds can also be managed without the console — from the bot dialog's Capabilities tab,
