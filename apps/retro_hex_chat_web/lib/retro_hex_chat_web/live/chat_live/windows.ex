@@ -16,6 +16,8 @@ defmodule RetroHexChatWeb.ChatLive.Windows do
   import Phoenix.Component, only: [update: 3]
   import Phoenix.LiveView, only: [push_event: 3]
 
+  alias RetroHexChatWeb.ChatLive.WindowRegistry
+
   @doc """
   Open/focus a window and deliver a `send_update` directive to its island.
 
@@ -31,13 +33,15 @@ defmodule RetroHexChatWeb.ChatLive.Windows do
     open(socket, id)
   end
 
-  @managed MapSet.new(
-             ~w(account address-book admin-audit-log admin-broadcast admin-channels admin-console admin-danger-zone admin-motd admin-server-settings admin-turn admin-users alias arcade-games auto-respond autojoin away bot-management-dialog cheatsheet custom-menus flood-protection highlight ignore-list nick-colors notify-list perform profile sound-settings timers trusted-terminals user-lookup user-modes)
-           )
+  @doc """
+  Whether the window's lifecycle is server-owned.
 
-  @doc "Whether the window's lifecycle is server-owned."
+  Read from `WindowRegistry` rather than from a list kept here: a window
+  declared managed in one place and absent from the other would mount without
+  ever being unmounted, or render while closed.
+  """
   @spec managed?(String.t()) :: boolean()
-  def managed?(id), do: MapSet.member?(@managed, id)
+  def managed?(id), do: id in WindowRegistry.managed_ids()
 
   @doc "Open/focus a window: mount it if managed, then focus it client-side."
   @spec open(Phoenix.LiveView.Socket.t(), String.t()) :: Phoenix.LiveView.Socket.t()

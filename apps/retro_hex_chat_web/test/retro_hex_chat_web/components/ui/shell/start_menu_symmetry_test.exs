@@ -38,7 +38,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSymmetryTest do
       [reference | rest] = Enum.map(@screens, &group_ids/1)
 
       for ids <- rest, do: assert(ids == reference)
-      assert length(reference) == 9
+      assert length(reference) == 10
     end
 
     test "the root list stays short enough to fit on screen without scrolling" do

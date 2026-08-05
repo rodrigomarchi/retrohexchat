@@ -12,6 +12,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
   import RetroHexChatWeb.Components.UI.Desktop
   import RetroHexChatWeb.Components.UI.StartMenuApp
 
+  alias RetroHexChatWeb.ChatLive.WindowRegistry
   alias RetroHexChatWeb.Icons
 
   attr :chat_label, :string,
@@ -85,28 +86,44 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
   end
 
   # Window families that collapse into one taskbar entry. The taskbar is a
-  # single `overflow-x-auto` strip of 12ch-truncated buttons, so 36 windows would
-  # be ~4000px of horizontal scroll if every open one claimed its own button.
+  # single `overflow-x-auto` strip of 12ch-truncated buttons, so 49 windows
+  # would be thousands of pixels of horizontal scroll if every open one claimed
+  # its own button.
   #
-  # A family collapses only while TWO OR MORE of its windows are open: grouping a
-  # lone window would add a click and hide nothing. Order is preserved — the
-  # group takes the position of its first member, so buttons never jump around as
-  # sibling windows open.
-  @families [
-    {:admin, dgettext("chat", "Admin"), :icon_shield,
-     ~w(admin-users admin-channels admin-server-settings admin-audit-log admin-motd admin-turn
-        admin-broadcast admin-danger-zone admin-console)},
-    {:account, dgettext("chat", "Account"), :icon_status_user,
-     ~w(account trusted-terminals profile away user-modes)},
-    {:contacts, dgettext("chat", "Contacts"), :icon_dialog_address_book,
-     ~w(address-book nick-colors ignore-list notify-list)},
-    {:connect, dgettext("chat", "On Connect"), :icon_dialog_perform, ~w(perform autojoin)}
-  ]
+  # A family collapses only while TWO OR MORE of its windows are open: grouping
+  # a lone window would add a click and hide nothing. Order is preserved — the
+  # group takes the position of its first member, so buttons never jump around
+  # as sibling windows open.
+  #
+  # Which windows belong to which family is declared in `WindowRegistry`; only
+  # each family's own label and icon live here, because those describe the
+  # button rather than any window. Resolved per call, never in a module
+  # attribute: a `dgettext` frozen at compile time is what left these labels
+  # reading English in all thirteen locales.
+  @spec families() :: [{atom(), String.t(), atom()}]
+  defp families do
+    [
+      {:admin, dgettext("chat", "Admin"), :icon_shield},
+      {:system, dgettext("chat", "System"), :icon_server},
+      {:account, dgettext("chat", "Account"), :icon_status_user},
+      {:contacts, dgettext("chat", "Contacts"), :icon_dialog_address_book},
+      {:connect, dgettext("chat", "On Connect"), :icon_dialog_perform}
+    ]
+  end
 
-  @doc false
+  @doc """
+  Collapses windows of the same family into one slot.
+
+  A window's family is looked up by id rather than read off the map passed in:
+  it is a property of the window, not of this particular listing, and asking
+  every caller to carry it would be one more thing that can silently disagree.
+  """
   @spec group_windows([map()]) :: [map()]
   def group_windows(windows) do
-    family_of = family_index()
+    family_of =
+      Map.new(windows, fn window ->
+        {window.id, WindowRegistry.fetch(window.id) |> family_of_window()}
+      end)
 
     windows
     |> Enum.reduce({[], %{}}, fn window, {slots, seen} ->
@@ -118,6 +135,9 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
     |> then(fn {slots, _seen} -> Enum.map(slots, &expand_slot(&1, windows)) end)
   end
 
+  defp family_of_window(nil), do: nil
+  defp family_of_window(window), do: window.family
+
   defp maybe_placeholder(slots, family, seen) do
     if Map.has_key?(seen, family), do: slots, else: slots ++ [{:family, family}]
   end
@@ -125,8 +145,12 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
   defp expand_slot({:window, window}, _windows), do: %{kind: :window, window: window}
 
   defp expand_slot({:family, family}, windows) do
-    {^family, label, icon_fn, ids} = Enum.find(@families, &(elem(&1, 0) == family))
-    members = Enum.filter(windows, &(&1.id in ids))
+    {^family, label, icon_fn} = Enum.find(families(), &(elem(&1, 0) == family))
+
+    members =
+      Enum.filter(windows, fn window ->
+        WindowRegistry.fetch(window.id) |> family_of_window() == family
+      end)
 
     case members do
       [only] -> %{kind: :window, window: only}
@@ -134,205 +158,45 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
     end
   end
 
-  defp family_index do
-    for {family, _label, _icon, ids} <- @families, id <- ids, into: %{}, do: {id, family}
-  end
-
+  # Every button on the strip, derived from the one place a window is declared.
+  # This used to be a pipeline of twenty-nine hand-written `add_window` calls,
+  # each repeating an id, a label and an icon that were also written in the
+  # markup and in the menus — which is how twelve windows came to render, focus
+  # and cascade correctly while having no button here at all.
   defp taskbar_windows(assigns) do
-    [
-      %{id: "chat", label: assigns.chat_label, icon_fn: :icon_chat},
-      %{id: "url-catcher", label: dgettext("chat", "URL Catcher"), icon_fn: :icon_link},
-      %{id: "channel-list", label: dgettext("chat", "Channel List"), icon_fn: :icon_channels}
-    ]
-    |> add_window(
-      window_open?(assigns.open_windows, "cheatsheet"),
-      "cheatsheet",
-      dgettext("chat", "Keyboard Shortcuts"),
-      :icon_dialog_cheatsheet
-    )
-    |> add_window(
-      assigns.cc_window_channel,
-      "channel-central",
-      dgettext("chat", "Channel Central"),
-      :icon_dialog_channel_central
-    )
-    |> add_window(
-      window_open?(assigns.open_windows, "account"),
-      "account",
-      dgettext("chat", "Account"),
-      :icon_status_user
-    )
-    |> add_window(
-      window_open?(assigns.open_windows, "trusted-terminals"),
-      "trusted-terminals",
-      dgettext("chat", "Trusted Terminals"),
-      :icon_lock
-    )
-    |> add_window(
-      window_open?(assigns.open_windows, "profile"),
-      "profile",
-      dgettext("chat", "Profile"),
-      :icon_dialog_profile
-    )
-    |> add_window(
-      window_open?(assigns.open_windows, "away"),
-      "away",
-      dgettext("chat", "Away"),
-      :icon_dialog_away
-    )
-    |> add_window(
-      window_open?(assigns.open_windows, "user-modes"),
-      "user-modes",
-      dgettext("chat", "User Modes"),
-      :icon_dialog_user_modes
-    )
-    |> add_window(
-      window_open?(assigns.open_windows, "user-lookup"),
-      "user-lookup",
-      dgettext("chat", "User Lookup"),
-      :icon_btn_search
-    )
-    |> add_admin_windows(assigns)
-    |> add_window(
-      assigns.is_admin && window_open?(assigns.open_windows, "bot-management-dialog"),
-      "bot-management-dialog",
-      dgettext("chat", "Bot Management"),
-      :icon_btn_bot_management
-    )
-    |> add_window(
-      window_open?(assigns.open_windows, "timers"),
-      "timers",
-      dgettext("chat", "Timers"),
-      :icon_btn_timers
-    )
-    |> add_window(
-      assigns.p2p_session,
-      "p2p-call",
-      p2p_call_label(assigns.p2p_session),
-      :icon_protocol_p2p_compact,
-      testid: "p2p-call-taskbar"
-    )
-    |> add_window(
-      assigns.group_call,
-      "group-call",
-      group_call_label(assigns.group_call),
-      :icon_protocol_conference_compact,
-      testid: "group-call-taskbar"
-    )
-    |> add_window(
-      assigns.arcade_session && window_open?(assigns.open_windows, "arcade-games"),
-      "arcade-games",
-      dgettext("chat", "Arcade"),
-      :icon_game_arcade
-    )
-    |> add_window(
-      window_open?(assigns.open_windows, "highlight"),
-      "highlight",
-      dgettext("chat", "Highlight Words"),
-      :icon_star
-    )
-    |> add_window(
-      window_open?(assigns.open_windows, "sound-settings"),
-      "sound-settings",
-      dgettext("chat", "Sound Settings"),
-      :icon_dialog_sound
-    )
-    |> add_window(
-      window_open?(assigns.open_windows, "flood-protection"),
-      "flood-protection",
-      dgettext("chat", "Flood Protection"),
-      :icon_dialog_flood
-    )
-    |> add_window(
-      window_open?(assigns.open_windows, "alias"),
-      "alias",
-      dgettext("chat", "Alias Editor"),
-      :icon_dialog_alias
-    )
-    |> add_window(
-      window_open?(assigns.open_windows, "custom-menus"),
-      "custom-menus",
-      dgettext("chat", "Custom Menus"),
-      :icon_dialog_custom_menus
-    )
-    |> add_window(
-      window_open?(assigns.open_windows, "auto-respond"),
-      "auto-respond",
-      dgettext("chat", "Auto Respond"),
-      :icon_dialog_auto_respond
-    )
-    |> add_window(
-      window_open?(assigns.open_windows, "perform"),
-      "perform",
-      dgettext("chat", "Perform"),
-      :icon_dialog_perform
-    )
-    |> add_window(
-      window_open?(assigns.open_windows, "autojoin"),
-      "autojoin",
-      dgettext("chat", "Auto-Join"),
-      :icon_dialog_autojoin
-    )
-    |> add_window(
-      window_open?(assigns.open_windows, "notify-list"),
-      "notify-list",
-      dgettext("chat", "Notify List"),
-      :icon_tab_notify
-    )
-    |> add_window(
-      window_open?(assigns.open_windows, "nick-colors"),
-      "nick-colors",
-      dgettext("chat", "Nick Colors"),
-      :icon_dialog_nick_colors
-    )
-    |> add_window(
-      window_open?(assigns.open_windows, "ignore-list"),
-      "ignore-list",
-      dgettext("chat", "Ignore List"),
-      :icon_dialog_ignore_list
-    )
-    |> add_window(
-      window_open?(assigns.open_windows, "address-book"),
-      "address-book",
-      dgettext("chat", "Address Book"),
-      :icon_dialog_address_book
-    )
+    capabilities = %{
+      admin?: assigns.is_admin,
+      open_windows: assigns.open_windows || MapSet.new(),
+      p2p_session: assigns.p2p_session,
+      group_call: assigns.group_call,
+      arcade_session: assigns.arcade_session,
+      cc_window_channel: assigns.cc_window_channel
+    }
+
+    for window <- WindowRegistry.windows(),
+        WindowRegistry.on_taskbar?(window, capabilities) do
+      %{
+        id: window.id,
+        label: label(window, assigns),
+        icon_fn: window.icon,
+        family: window.family,
+        testid: testid(window.id)
+      }
+    end
   end
 
-  # The nine admin windows share one gate, so they enter the taskbar as a set
-  # rather than as nine branches of the main pipeline.
-  @admin_windows [
-    {"admin-users", dgettext("chat", "Users"), :icon_community},
-    {"admin-channels", dgettext("chat", "Channels"), :icon_channels},
-    {"admin-server-settings", dgettext("chat", "Server Settings"), :icon_server},
-    {"admin-audit-log", dgettext("chat", "Audit Log"), :icon_notepad},
-    {"admin-motd", dgettext("chat", "MOTD"), :icon_notepad},
-    {"admin-turn", dgettext("chat", "TURN"), :icon_websocket},
-    {"admin-broadcast", dgettext("chat", "Broadcast"), :icon_megaphone},
-    {"admin-danger-zone", dgettext("chat", "Danger Zone"), :icon_warning},
-    {"admin-console", dgettext("chat", "Console"), :icon_dialog_admin_console}
-  ]
+  # Three buttons name what they are showing rather than what they are: the
+  # chat button mirrors the active conversation, and a call names its peer or
+  # channel. Everything else is its registered title.
+  defp label(%{id: "chat"}, assigns), do: assigns.chat_label
+  defp label(%{id: "p2p-call"}, assigns), do: p2p_call_label(assigns.p2p_session)
+  defp label(%{id: "group-call"}, assigns), do: group_call_label(assigns.group_call)
+  defp label(window, _assigns), do: window.taskbar_label
 
-  defp add_admin_windows(windows, %{is_admin: true} = assigns) do
-    Enum.reduce(@admin_windows, windows, fn {id, label, icon_fn}, acc ->
-      add_window(acc, window_open?(assigns.open_windows, id), id, label, icon_fn)
-    end)
-  end
-
-  defp add_admin_windows(windows, _assigns), do: windows
-
-  defp add_window(windows, condition, id, label, icon_fn, opts \\ [])
-
-  defp add_window(windows, condition, id, label, icon_fn, opts)
-       when condition not in [nil, false] do
-    windows ++ [Map.merge(%{id: id, label: label, icon_fn: icon_fn}, Map.new(opts))]
-  end
-
-  defp add_window(windows, _condition, _id, _label, _icon_fn, _opts), do: windows
-
-  defp window_open?(open_windows, id) when is_binary(id) do
-    MapSet.member?(open_windows || MapSet.new(), id)
-  end
+  # Two buttons are addressed by the call suites and keep their own hooks.
+  defp testid("p2p-call"), do: "p2p-call-taskbar"
+  defp testid("group-call"), do: "group-call-taskbar"
+  defp testid(_id), do: nil
 
   defp p2p_call_label(%{peer_nick: peer_nick}) when peer_nick not in [nil, ""] do
     dgettext("chat", "P2P: %{peer}", peer: peer_nick)

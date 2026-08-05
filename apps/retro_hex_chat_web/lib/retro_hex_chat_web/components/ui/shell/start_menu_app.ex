@@ -18,9 +18,9 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
 
   The desktop menu cannot scroll — `overflow` would make it a clipping context
   and swallow the flyouts, which escape to the right — so the root list has to
-  fit on screen at any height. Ten rows, one level of groups deep:
+  fit on screen at any height. Eleven rows, one level of groups deep:
 
-      Tools ▸ Automation ▸ Settings ▸ P2P ▸ Account ▸ Admin ▸
+      Tools ▸ Automation ▸ Settings ▸ P2P ▸ Account ▸ Admin ▸ System ▸
       Windows ▸ Navigate ▸
       Help ▸
       Disconnect
@@ -37,6 +37,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
   import RetroHexChatWeb.Components.UI.Desktop
   import RetroHexChatWeb.Components.UI.Dialog, only: [show_modal: 1]
 
+  alias RetroHexChatWeb.ChatLive.WindowRegistry
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.ShowcaseCatalog
 
@@ -324,6 +325,24 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
           />
         </.start_menu_submenu>
 
+        <%!-- Kept apart from Admin: these windows only read the node, while
+              everything under Admin acts on the server. --%>
+        <.start_menu_submenu
+          label={dgettext("ui", "System")}
+          muted={!@admin?}
+          testid="start-menu-system-submenu"
+        >
+          <:icon><Icons.icon_server class="h-4 w-4" /></:icon>
+          <.app_item
+            :for={{action, label, icon_fn} <- system_entries()}
+            action={action}
+            on_action={@on_action}
+            label={label}
+            icon_fn={icon_fn}
+            disabled={!@admin?}
+          />
+        </.start_menu_submenu>
+
         <.start_menu_separator />
 
         <%!-- The one group whose contents are meant to differ: these are the
@@ -453,23 +472,18 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
 
   # ── Private helpers ─────────────────────────────────
 
-  # The ten admin windows share one gate and one shape, so they are a table
-  # rather than ten near-identical blocks of markup. The labels stay literal
-  # `dgettext` calls — a msgid assembled at runtime is invisible to the
-  # extractor and would ship untranslated.
-  defp admin_entries do
-    [
-      {"open_admin_users", dgettext("ui", "Users"), :icon_community},
-      {"open_admin_channels", dgettext("ui", "Channels"), :icon_channels},
-      {"open_admin_server_settings", dgettext("ui", "Server Settings"), :icon_server},
-      {"open_admin_audit_log", dgettext("ui", "Audit Log"), :icon_notepad},
-      {"open_admin_motd", dgettext("ui", "MOTD"), :icon_notepad},
-      {"open_admin_turn", dgettext("ui", "TURN"), :icon_websocket},
-      {"open_admin_broadcast", dgettext("ui", "Broadcast"), :icon_megaphone},
-      {"open_admin_danger_zone", dgettext("ui", "Danger Zone"), :icon_warning},
-      {"open_admin_console", dgettext("ui", "Console"), :icon_dialog_admin_console},
-      {"open_bot_dialog", dgettext("ui", "Bot Management"), :icon_btn_bot_management}
-    ]
+  # Both privileged groups are derived from `WindowRegistry`, so a window
+  # cannot be openable from a menu that no longer knows its title, nor carry a
+  # different icon here than it does on its own title bar.
+  defp admin_entries, do: menu_entries(&(&1.family == :admin or &1.id == "bot-management-dialog"))
+
+  defp system_entries, do: menu_entries(&(&1.family == :system))
+
+  defp menu_entries(filter) do
+    for window <- WindowRegistry.windows(),
+        window.opener,
+        filter.(window),
+        do: {window.opener, window.title, window.icon}
   end
 
   # The seven public pages, named the way the landing shell names them — these

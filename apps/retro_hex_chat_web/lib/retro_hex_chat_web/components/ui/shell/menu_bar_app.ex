@@ -11,6 +11,7 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
   use RetroHexChatWeb.Component
 
   alias RetroHexChat.Arcade
+  alias RetroHexChatWeb.ChatLive.WindowRegistry
   alias RetroHexChatWeb.Icons
 
   import RetroHexChatWeb.Components.UI.ContextMenu
@@ -286,6 +287,14 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
     >
       <:icon><Icons.icon_shield class="h-[14px] w-[14px]" /></:icon>
       <.admin_menu_items on_action={@on_action} />
+    </.submenu>
+    <.submenu
+      :if={@is_admin}
+      label={dgettext("ui", "System")}
+      testid="app-menu-system-submenu"
+    >
+      <:icon><Icons.icon_server class="h-[14px] w-[14px]" /></:icon>
+      <.system_menu_items on_action={@on_action} />
     </.submenu>
     """
   end
@@ -621,6 +630,32 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
       on_action={@on_action}
     />
     """
+  end
+
+  attr :on_action, :any, default: nil
+
+  # Runtime inspection. Sits beside the admin items and behind the same gate,
+  # but stays a separate list: every window here only reads the node, while
+  # everything under Admin acts on the server.
+  defp system_menu_items(assigns) do
+    ~H"""
+    <.menu_item
+      :for={{action, label, icon_fn} <- system_entries()}
+      icon_fn={icon_fn}
+      label={label}
+      action={action}
+      on_action={@on_action}
+    />
+    """
+  end
+
+  # Derived from `WindowRegistry` for the same reason the Start menu is: the
+  # title and icon a window is opened by must be the ones it opens with.
+  defp system_entries do
+    for window <- WindowRegistry.windows(),
+        window.opener,
+        window.family == :system,
+        do: {window.opener, window.title, window.icon}
   end
 
   # The Help menu is the one menu every shell shows, connected or not, so its

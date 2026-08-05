@@ -58,16 +58,8 @@
     <%!-- The whole chat surface is one pinned window: maximized by default,
           restorable/draggable/resizable, never closable. --%>
     <.desktop_window
-      id="chat"
-      title={ChatTitle.window_title(@session, @show_status_tab)}
-      pinned
+      {WindowRegistry.attrs("chat")}
       default_maximized
-      default_x={48}
-      default_y={24}
-      width={920}
-      height={580}
-      min_width={480}
-      min_height={320}
       body_class="flex flex-col min-h-0 p-0 overflow-hidden"
       data-testid="chat-window"
     >
@@ -349,15 +341,7 @@
           parent-owned and flows in as passthrough. --%>
     <.desktop_window
       :if={"highlight" in @open_windows}
-      id="highlight"
-      title={dgettext("chat", "Highlight Words")}
-      managed
-      default_x={160}
-      default_y={70}
-      width={520}
-      height={520}
-      min_width={400}
-      min_height={360}
+      {WindowRegistry.attrs("highlight")}
       body_class="flex min-h-0 flex-col p-2"
       data-testid="highlight-window"
     >
@@ -373,15 +357,7 @@
           unmounts the island, resetting selection and draft. --%>
     <.desktop_window
       :if={"alias" in @open_windows}
-      id="alias"
-      title={dgettext("chat", "Alias Editor")}
-      managed
-      default_x={130}
-      default_y={100}
-      width={640}
-      height={460}
-      min_width={480}
-      min_height={320}
+      {WindowRegistry.attrs("alias")}
       body_class="flex min-h-0 flex-col p-2"
       data-testid="alias-window"
     >
@@ -395,15 +371,7 @@
 
     <.desktop_window
       :if={"custom-menus" in @open_windows}
-      id="custom-menus"
-      title={dgettext("chat", "Custom Menus")}
-      managed
-      default_x={150}
-      default_y={110}
-      width={640}
-      height={480}
-      min_width={480}
-      min_height={340}
+      {WindowRegistry.attrs("custom-menus")}
       body_class="flex min-h-0 flex-col p-2"
       data-testid="custom-menus-window"
     >
@@ -417,15 +385,7 @@
 
     <.desktop_window
       :if={"auto-respond" in @open_windows}
-      id="auto-respond"
-      title={dgettext("chat", "Auto Respond")}
-      managed
-      default_x={170}
-      default_y={120}
-      width={700}
-      height={440}
-      min_width={540}
-      min_height={320}
+      {WindowRegistry.attrs("auto-respond")}
       body_class="flex min-h-0 flex-col p-2"
       data-testid="auto-respond-window"
     >
@@ -441,15 +401,7 @@
           window-scoped add/edit sub-forms. --%>
     <.desktop_window
       :if={"address-book" in @open_windows}
-      id="address-book"
-      title={dgettext("chat", "Address Book")}
-      managed
-      default_x={100}
-      default_y={50}
-      width={640}
-      height={480}
-      min_width={480}
-      min_height={340}
+      {WindowRegistry.attrs("address-book")}
       body_class="flex min-h-0 flex-col p-2"
       data-testid="address-book-window"
     >
@@ -467,15 +419,7 @@
           the palette editor in two window-scoped sub-forms. --%>
     <.desktop_window
       :if={"nick-colors" in @open_windows}
-      id="nick-colors"
-      title={dgettext("chat", "Nick Colors")}
-      managed
-      default_x={140}
-      default_y={90}
-      width={520}
-      height={440}
-      min_width={420}
-      min_height={320}
+      {WindowRegistry.attrs("nick-colors")}
       body_class="flex min-h-0 flex-col p-2"
       data-testid="nick-colors-window"
     >
@@ -491,15 +435,7 @@
           window-scoped add sub-form. The expiry timers live on the host. --%>
     <.desktop_window
       :if={"ignore-list" in @open_windows}
-      id="ignore-list"
-      title={dgettext("chat", "Ignore List")}
-      managed
-      default_x={170}
-      default_y={110}
-      width={560}
-      height={440}
-      min_width={440}
-      min_height={320}
+      {WindowRegistry.attrs("ignore-list")}
       body_class="flex min-h-0 flex-col p-2"
       data-testid="ignore-list-window"
     >
@@ -515,15 +451,7 @@
           the buddy list lives on the session and flows in as passthrough. --%>
     <.desktop_window
       :if={"notify-list" in @open_windows}
-      id="notify-list"
-      title={dgettext("chat", "Notify List")}
-      managed
-      default_x={210}
-      default_y={140}
-      width={560}
-      height={520}
-      min_width={440}
-      min_height={360}
+      {WindowRegistry.attrs("notify-list")}
       body_class="flex min-h-0 flex-col p-2"
       data-testid="notify-list-window"
     >
@@ -540,15 +468,7 @@
           window-scoped add/edit sub-forms. --%>
     <.desktop_window
       :if={"perform" in @open_windows}
-      id="perform"
-      title={dgettext("chat", "Perform")}
-      managed
-      default_x={190}
-      default_y={130}
-      width={620}
-      height={460}
-      min_width={480}
-      min_height={340}
+      {WindowRegistry.attrs("perform")}
       body_class="flex min-h-0 flex-col p-2"
       data-testid="perform-window"
     >
@@ -564,15 +484,7 @@
           window-scoped add/edit sub-forms. --%>
     <.desktop_window
       :if={"autojoin" in @open_windows}
-      id="autojoin"
-      title={dgettext("chat", "Auto-Join")}
-      managed
-      default_x={230}
-      default_y={160}
-      width={520}
-      height={420}
-      min_width={420}
-      min_height={320}
+      {WindowRegistry.attrs("autojoin")}
       body_class="flex min-h-0 flex-col p-2"
       data-testid="autojoin-window"
     >
@@ -588,15 +500,7 @@
           mount; closing discards an uncommitted draft. --%>
     <.desktop_window
       :if={"sound-settings" in @open_windows}
-      id="sound-settings"
-      title={dgettext("chat", "Sound Settings")}
-      managed
-      default_x={140}
-      default_y={80}
-      width={620}
-      height={480}
-      min_width={520}
-      min_height={340}
+      {WindowRegistry.attrs("sound-settings")}
       body_class="flex min-h-0 flex-col p-2"
       data-testid="sound-settings-window"
     >
@@ -612,15 +516,7 @@
           across closes. --%>
     <.desktop_window
       :if={"flood-protection" in @open_windows}
-      id="flood-protection"
-      title={dgettext("chat", "Flood Protection")}
-      managed
-      default_x={180}
-      default_y={60}
-      width={560}
-      height={440}
-      min_width={360}
-      min_height={360}
+      {WindowRegistry.attrs("flood-protection")}
       class="fp-window"
       body_class="fp-window-body flex min-h-0 flex-col p-2"
       data-testid="flood-protection-window"
@@ -638,7 +534,7 @@
           underlying feature islands continue to own their lifecycles. --%>
     <.desktop_window
       :if={@p2p_session}
-      id="p2p-call"
+      {WindowRegistry.attrs("p2p-call")}
       persist_geometry={false}
       default_maximized
       title={
@@ -648,12 +544,6 @@
       }
       open
       on_close="p2p_window_close"
-      default_x={448}
-      default_y={72}
-      width={640}
-      height={430}
-      min_width={500}
-      min_height={320}
       body_class="h-full min-h-0 overflow-hidden p-1"
       data-testid="p2p-call-window"
     >
@@ -681,18 +571,12 @@
           Leave controls ask for confirmation before tearing the call down. --%>
     <.desktop_window
       :if={@group_call}
-      id="group-call"
+      {WindowRegistry.attrs("group-call")}
+      title={@group_call.channel_name || dgettext("group_call", "Group Call")}
       persist_geometry={false}
       default_maximized
-      title={@group_call.channel_name || dgettext("group_call", "Group Call")}
       open
       on_close="group_call_window_close"
-      default_x={448}
-      default_y={72}
-      width={640}
-      height={430}
-      min_width={500}
-      min_height={320}
       body_class="h-full min-h-0 overflow-hidden p-1"
       data-testid="group-call-window"
     >
@@ -711,17 +595,9 @@
           keeps playing); the Leave/Close button inside ends it. --%>
     <.desktop_window
       :if={@arcade_session && "arcade-games" in @open_windows}
-      id="arcade-games"
+      {WindowRegistry.attrs("arcade-games")}
       persist_geometry={false}
-      title={dgettext("chat", "Arcade")}
-      managed
       on_close="arcade_window_close"
-      default_x={200}
-      default_y={80}
-      width={680}
-      height={520}
-      min_width={420}
-      min_height={340}
       body_class="p-2"
       data-testid="arcade-games-window"
     >
@@ -747,15 +623,7 @@
           resets by design); reopening mounts a fresh one. --%>
     <.desktop_window
       :if={"timers" in @open_windows}
-      id="timers"
-      title={dgettext("chat", "Timers")}
-      managed
-      default_x={120}
-      default_y={90}
-      width={720}
-      height={470}
-      min_width={520}
-      min_height={320}
+      {WindowRegistry.attrs("timers")}
       body_class="flex min-h-0 flex-col p-2"
       data-testid="timers-window"
     >
@@ -770,15 +638,8 @@
     <%!-- Channel List — always mounted: the search filter survives closes by
           design; /list reloads the rows into the passthrough on open. --%>
     <.desktop_window
-      id="channel-list"
-      title={dgettext("chat", "Channel List")}
+      {WindowRegistry.attrs("channel-list")}
       open={false}
-      default_x={120}
-      default_y={70}
-      width={620}
-      height={480}
-      min_width={480}
-      min_height={320}
       body_class="flex min-h-0 flex-col p-2"
       data-testid="channel-list-window"
     >
@@ -794,15 +655,7 @@
     <%!-- Cheatsheet — server-managed: static content, recomputed on mount. --%>
     <.desktop_window
       :if={"cheatsheet" in @open_windows}
-      id="cheatsheet"
-      title={dgettext("chat", "Keyboard Shortcuts")}
-      managed
-      default_x={200}
-      default_y={60}
-      width={600}
-      height={500}
-      min_width={360}
-      min_height={320}
+      {WindowRegistry.attrs("cheatsheet")}
       class="cs-window"
       body_class="cs-window-body flex min-h-0 flex-col p-2"
       data-testid="cheatsheet-window"
@@ -818,15 +671,9 @@
           opens on membership, receives blind PubSub refreshes while closed,
           and drives its own window via window_command. --%>
     <.desktop_window
-      id="channel-central"
+      {WindowRegistry.attrs("channel-central")}
       title={dgettext("chat", "Channel Central: %{channel}", channel: @cc_window_channel || "")}
       open={false}
-      default_x={140}
-      default_y={50}
-      width={620}
-      height={560}
-      min_width={480}
-      min_height={380}
       body_class="flex min-h-0 flex-col p-2"
       data-testid="channel-central-window"
     >
@@ -842,15 +689,7 @@
     <%!-- Account — server-managed: opening refreshes the NickServ identity. --%>
     <.desktop_window
       :if={"account" in @open_windows}
-      id="account"
-      title={dgettext("chat", "Account")}
-      managed
-      default_x={180}
-      default_y={70}
-      width={560}
-      height={480}
-      min_width={420}
-      min_height={340}
+      {WindowRegistry.attrs("account")}
       body_class="flex min-h-0 flex-col p-2"
       data-testid="account-window"
     >
@@ -868,15 +707,7 @@
     <%!-- Trusted Terminals — server-managed: revocable device/session management. --%>
     <.desktop_window
       :if={"trusted-terminals" in @open_windows}
-      id="trusted-terminals"
-      title={dgettext("chat", "Trusted Terminals")}
-      managed
-      default_x={150}
-      default_y={60}
-      width={800}
-      height={620}
-      min_width={520}
-      min_height={380}
+      {WindowRegistry.attrs("trusted-terminals")}
       body_class="flex min-h-0 flex-col p-2"
       data-testid="trusted-terminals-window"
     >
@@ -894,15 +725,7 @@
     <%!-- Profile — server-managed: the bio draft seeds from the session on open. --%>
     <.desktop_window
       :if={"profile" in @open_windows}
-      id="profile"
-      title={dgettext("chat", "Profile")}
-      managed
-      default_x={210}
-      default_y={100}
-      width={520}
-      height={380}
-      min_width={400}
-      min_height={300}
+      {WindowRegistry.attrs("profile")}
       body_class="flex min-h-0 flex-col p-2"
       data-testid="profile-window"
     >
@@ -917,15 +740,7 @@
     <%!-- Away — server-managed: a pure view over the session's away state. --%>
     <.desktop_window
       :if={"away" in @open_windows}
-      id="away"
-      title={dgettext("chat", "Away")}
-      managed
-      default_x={240}
-      default_y={130}
-      width={440}
-      height={320}
-      min_width={360}
-      min_height={260}
+      {WindowRegistry.attrs("away")}
       body_class="flex min-h-0 flex-col p-2"
       data-testid="away-window"
     >
@@ -941,15 +756,7 @@
     <%!-- User Modes — server-managed: a pure view over the session's umodes. --%>
     <.desktop_window
       :if={"user-modes" in @open_windows}
-      id="user-modes"
-      title={dgettext("chat", "User Modes")}
-      managed
-      default_x={270}
-      default_y={160}
-      width={400}
-      height={260}
-      min_width={340}
-      min_height={220}
+      {WindowRegistry.attrs("user-modes")}
       body_class="flex min-h-0 flex-col p-2"
       data-testid="user-modes-window"
     >
@@ -964,15 +771,7 @@
     <%!-- User Lookup — server-managed: closing resets the draft and result. --%>
     <.desktop_window
       :if={"user-lookup" in @open_windows}
-      id="user-lookup"
-      title={dgettext("chat", "User Lookup")}
-      managed
-      default_x={240}
-      default_y={100}
-      width={500}
-      height={420}
-      min_width={340}
-      min_height={280}
+      {WindowRegistry.attrs("user-lookup")}
       class="ul-window"
       body_class="ul-window-body flex min-h-0 flex-col p-2"
       data-testid="user-lookup-window"
@@ -988,15 +787,8 @@
     <%!-- URL Catcher — always mounted (URLs keep accumulating while closed);
           the window manager owns open/close client-side. --%>
     <.desktop_window
-      id="url-catcher"
-      title={dgettext("chat", "URL Catcher")}
+      {WindowRegistry.attrs("url-catcher")}
       open={false}
-      default_x={80}
-      default_y={60}
-      width={640}
-      height={440}
-      min_width={420}
-      min_height={280}
       body_class="flex min-h-0 flex-col p-2"
       data-testid="url-catcher-window"
     >
@@ -1015,15 +807,7 @@
           the second line of defense (no admin content for non-admins). --%>
     <.desktop_window
       :if={admin?(@session) and "admin-console" in @open_windows}
-      id="admin-console"
-      title={dgettext("chat", "Console")}
-      managed
-      default_x={140}
-      default_y={50}
-      width={680}
-      height={580}
-      min_width={520}
-      min_height={400}
+      {WindowRegistry.attrs("admin-console")}
       body_class="flex min-h-0 flex-col p-2"
       data-testid="admin-console-window"
     >
@@ -1040,15 +824,7 @@
           line of defense against a forged window_open. --%>
     <.desktop_window
       :if={admin?(@session) and "admin-users" in @open_windows}
-      id="admin-users"
-      title={dgettext("chat", "Users")}
-      managed
-      default_x={150}
-      default_y={60}
-      width={680}
-      height={580}
-      min_width={520}
-      min_height={400}
+      {WindowRegistry.attrs("admin-users")}
       body_class="flex min-h-0 flex-col p-2"
       data-testid="admin-users-window"
     >
@@ -1064,15 +840,7 @@
           admin console. --%>
     <.desktop_window
       :if={admin?(@session) and "admin-channels" in @open_windows}
-      id="admin-channels"
-      title={dgettext("chat", "Channels")}
-      managed
-      default_x={160}
-      default_y={70}
-      width={680}
-      height={580}
-      min_width={520}
-      min_height={400}
+      {WindowRegistry.attrs("admin-channels")}
       body_class="flex min-h-0 flex-col p-2"
       data-testid="admin-channels-window"
     >
@@ -1087,15 +855,7 @@
     <%!-- Admin Server Settings — server-managed, admin-gated. --%>
     <.desktop_window
       :if={admin?(@session) and "admin-server-settings" in @open_windows}
-      id="admin-server-settings"
-      title={dgettext("chat", "Server Settings")}
-      managed
-      default_x={170}
-      default_y={80}
-      width={700}
-      height={600}
-      min_width={480}
-      min_height={360}
+      {WindowRegistry.attrs("admin-server-settings")}
       body_class="flex min-h-0 flex-col p-2"
       data-testid="admin-server-settings-window"
     >
@@ -1110,15 +870,7 @@
     <%!-- Admin Audit Log — server-managed, admin-gated. --%>
     <.desktop_window
       :if={admin?(@session) and "admin-audit-log" in @open_windows}
-      id="admin-audit-log"
-      title={dgettext("chat", "Audit Log")}
-      managed
-      default_x={180}
-      default_y={90}
-      width={620}
-      height={500}
-      min_width={480}
-      min_height={360}
+      {WindowRegistry.attrs("admin-audit-log")}
       body_class="flex min-h-0 flex-col p-2"
       data-testid="admin-audit-log-window"
     >
@@ -1133,15 +885,7 @@
     <%!-- Admin MOTD — server-managed, admin-gated. --%>
     <.desktop_window
       :if={admin?(@session) and "admin-motd" in @open_windows}
-      id="admin-motd"
-      title={dgettext("chat", "MOTD")}
-      managed
-      default_x={190}
-      default_y={100}
-      width={600}
-      height={480}
-      min_width={480}
-      min_height={360}
+      {WindowRegistry.attrs("admin-motd")}
       body_class="flex min-h-0 flex-col p-2"
       data-testid="admin-motd-window"
     >
@@ -1156,15 +900,7 @@
     <%!-- Admin TURN — server-managed, admin-gated. --%>
     <.desktop_window
       :if={admin?(@session) and "admin-turn" in @open_windows}
-      id="admin-turn"
-      title={dgettext("chat", "TURN")}
-      managed
-      default_x={200}
-      default_y={110}
-      width={640}
-      height={460}
-      min_width={480}
-      min_height={360}
+      {WindowRegistry.attrs("admin-turn")}
       body_class="flex min-h-0 flex-col p-2"
       data-testid="admin-turn-window"
     >
@@ -1179,15 +915,7 @@
     <%!-- Admin Broadcast — server-managed, admin-gated. --%>
     <.desktop_window
       :if={admin?(@session) and "admin-broadcast" in @open_windows}
-      id="admin-broadcast"
-      title={dgettext("chat", "Broadcast")}
-      managed
-      default_x={210}
-      default_y={120}
-      width={560}
-      height={460}
-      min_width={480}
-      min_height={360}
+      {WindowRegistry.attrs("admin-broadcast")}
       body_class="flex min-h-0 flex-col p-2"
       data-testid="admin-broadcast-window"
     >
@@ -1202,15 +930,7 @@
     <%!-- Admin Danger Zone — server-managed, admin-gated. --%>
     <.desktop_window
       :if={admin?(@session) and "admin-danger-zone" in @open_windows}
-      id="admin-danger-zone"
-      title={dgettext("chat", "Danger Zone")}
-      managed
-      default_x={220}
-      default_y={130}
-      width={600}
-      height={520}
-      min_width={480}
-      min_height={360}
+      {WindowRegistry.attrs("admin-danger-zone")}
       body_class="flex min-h-0 flex-col p-2"
       data-testid="admin-danger-zone-window"
     >
@@ -1222,19 +942,93 @@
       />
     </.desktop_window>
 
+    <%!-- System Home — the node's vitals; server-managed, admin-gated. --%>
+    <.desktop_window
+      :if={admin?(@session) and "system-home" in @open_windows}
+      {WindowRegistry.attrs("system-home")}
+      body_class="flex min-h-0 flex-col p-2"
+      data-testid="system-home-window"
+    >
+      <:icon><Icons.icon_server class="h-4 w-4" /></:icon>
+      <.live_component
+        module={RetroHexChatWeb.ChatLive.Components.SystemHomeDialog}
+        id={RetroHexChatWeb.ChatLive.Components.SystemHomeDialog.id()}
+        session={@session}
+      />
+    </.desktop_window>
+
+    <%!-- The three single-reading runtime windows: the host beneath the node,
+          the database behind it, and the application's own occupancy. Each has
+          a shape of its own, so each has its own island and panel. --%>
+    <.desktop_window
+      :for={
+        reading <- [
+          %{id: "system-os", module: RetroHexChatWeb.ChatLive.Components.SystemOsDialog},
+          %{
+            id: "system-database",
+            module: RetroHexChatWeb.ChatLive.Components.SystemDatabaseDialog
+          },
+          %{
+            id: "system-app-info",
+            module: RetroHexChatWeb.ChatLive.Components.SystemAppInfoDialog
+          },
+          %{
+            id: "system-metrics",
+            module: RetroHexChatWeb.ChatLive.Components.SystemMetricsDialog
+          },
+          %{
+            id: "system-request-logger",
+            module: RetroHexChatWeb.ChatLive.Components.SystemLogDialog
+          }
+        ]
+      }
+      :if={admin?(@session) and reading.id in @open_windows}
+      {WindowRegistry.attrs(reading.id)}
+      body_class="flex min-h-0 flex-col p-2"
+      data-testid={"#{reading.id}-window"}
+    >
+      <:icon>{apply(Icons, WindowRegistry.fetch(reading.id).icon, [%{class: "h-4 w-4"}])}</:icon>
+      <.live_component
+        module={reading.module}
+        id={reading.module.id()}
+        session={@session}
+      />
+    </.desktop_window>
+
+    <%!-- The five runtime listings — one window each over one island, which is
+          handed the population it lists. Each opens at its own offset so that
+          two of them side by side do not land exactly on top of each other.
+          Server-managed, admin-gated. --%>
+    <.desktop_window
+      :for={
+        listing <- [
+          %{id: "system-processes", source: :processes},
+          %{id: "system-ports", source: :ports},
+          %{id: "system-sockets", source: :sockets},
+          %{id: "system-ets", source: :ets},
+          %{id: "system-applications", source: :applications},
+          %{id: "system-allocators", source: :allocators}
+        ]
+      }
+      :if={admin?(@session) and listing.id in @open_windows}
+      {WindowRegistry.attrs(listing.id)}
+      body_class="flex min-h-0 flex-col p-2"
+      data-testid={"#{listing.id}-window"}
+    >
+      <:icon>{apply(Icons, WindowRegistry.fetch(listing.id).icon, [%{class: "h-4 w-4"}])}</:icon>
+      <.live_component
+        module={RetroHexChatWeb.ChatLive.Components.SystemSourceDialog}
+        id={RetroHexChatWeb.ChatLive.Components.SystemSourceDialog.id(listing.source)}
+        source={listing.source}
+        session={@session}
+      />
+    </.desktop_window>
+
     <%!-- Bot Management — server-managed, admin-gated (same authz model as the
           admin console: the open event gates; the render guard is defense-in-depth). --%>
     <.desktop_window
       :if={admin?(@session) and "bot-management-dialog" in @open_windows}
-      id="bot-management-dialog"
-      title={dgettext("chat", "Bot Management")}
-      managed
-      default_x={200}
-      default_y={80}
-      width={720}
-      height={560}
-      min_width={520}
-      min_height={400}
+      {WindowRegistry.attrs("bot-management-dialog")}
       body_class="flex min-h-0 flex-col p-2"
       data-testid="bot-management-window"
     >

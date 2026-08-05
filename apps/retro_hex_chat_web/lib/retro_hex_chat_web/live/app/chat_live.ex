@@ -70,9 +70,16 @@ defmodule RetroHexChatWeb.App.ChatLive do
   alias RetroHexChatWeb.ChatLive
   alias RetroHexChatWeb.ChatLive.ChatContext
   alias RetroHexChatWeb.ChatLive.ChatTitle
-  alias RetroHexChatWeb.ChatLive.Components.{ConversationsContextMenu, UserContextMenus}
+
+  alias RetroHexChatWeb.ChatLive.Components.{
+    ConversationsContextMenu,
+    SystemLogDialog,
+    UserContextMenus
+  }
+
   alias RetroHexChatWeb.ChatLive.Helpers.PathHelpers
   alias RetroHexChatWeb.ChatLive.TabOrder
+  alias RetroHexChatWeb.ChatLive.WindowRegistry
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.Timezone
 
@@ -573,6 +580,16 @@ defmodule RetroHexChatWeb.App.ChatLive do
   # message hop after the mount so the client can patch the component.
   def handle_info({:window_send_update, module, assigns}, socket) do
     send_update(module, assigns)
+    {:noreply, socket}
+  end
+
+  # The Live Log window subscribes to the node's log topic, but a
+  # LiveComponent owns no process, so the broadcast lands here and is handed
+  # on. Only the island that asked for it is subscribed, so an unopened window
+  # costs nothing.
+  def handle_info({:system_log, entry}, socket) do
+    send_update(SystemLogDialog, id: SystemLogDialog.id(), log_entry: entry)
+
     {:noreply, socket}
   end
 

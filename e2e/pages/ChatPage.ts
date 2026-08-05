@@ -45,6 +45,7 @@ export class ChatPage {
   readonly arcadeWindow: Locator;
   readonly disconnectMenuItem: Locator;
   readonly adminSubmenuTrigger: Locator;
+  readonly systemSubmenuTrigger: Locator;
   readonly adminConsoleMenuItem: Locator;
   readonly adminUsersMenuItem: Locator;
   readonly adminChannelsMenuItem: Locator;
@@ -324,6 +325,9 @@ export class ChatPage {
     this.disconnectMenuItem = visibleContextMenuItem(page, "disconnect");
     this.adminSubmenuTrigger = page
       .getByTestId("app-menu-admin-submenu")
+      .locator("visible=true");
+    this.systemSubmenuTrigger = page
+      .getByTestId("app-menu-system-submenu")
       .locator("visible=true");
     this.adminConsoleMenuItem = visibleContextMenuItem(
       page,
@@ -1294,6 +1298,26 @@ export class ChatPage {
     await item.click();
     await expect(this.page.getByTestId(`${windowId}-window`)).toBeVisible();
     return this.page.getByTestId(`${windowId}-panel`);
+  }
+
+  /**
+   * Open a runtime inspection window by its opener action, e.g.
+   * "open_system_processes". These sit under File > System, beside Admin.
+   *
+   * Returns the window locator, which is what evidence should be framed on —
+   * a full-page shot of a desktop is mostly wallpaper.
+   */
+  async openSystemWindow(action: string) {
+    const windowId = action.replace(/^open_/, "").replaceAll("_", "-");
+    await this.openFileMenu();
+    await expect(this.systemSubmenuTrigger).toBeVisible();
+    await this.systemSubmenuTrigger.click();
+    const item = visibleContextMenuItem(this.page, action);
+    await expect(item).toBeVisible();
+    await item.click();
+    const window = this.page.getByTestId(`${windowId}-window`);
+    await expect(window).toBeVisible();
+    return window;
   }
 
   adminWindowResult(windowId: string) {

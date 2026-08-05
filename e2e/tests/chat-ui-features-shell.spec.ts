@@ -16,8 +16,10 @@ test.describe.serial("UI feature shell journeys", () => {
     const bio = `account-bio-${Date.now()}`;
 
     try {
-      // Identity lives in the chat window's title bar, not in the status bar.
-      await expect(user.chat.chatWindowTitleBar).toContainText(
+      // Identity lives in the chat window's title bar, not in the status bar —
+      // in its meta zone, beside the window's own name. The nickname itself
+      // rides the taskbar button, which is what tracks the conversation.
+      await expect(user.chat.taskbarButton("chat")).toContainText(
         `[${user.nick}]`,
       );
       await expect(user.chat.chatWindowTitleBar).toContainText("Identified");

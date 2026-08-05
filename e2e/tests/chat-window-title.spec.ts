@@ -38,7 +38,7 @@ async function newSignedInUser(
 }
 
 test.describe("Window, taskbar and tab titles", () => {
-  test("the three surfaces name the active conversation identically (T14)", async ({
+  test("the taskbar and the browser tab name the active conversation identically (T14)", async ({
     page,
   }) => {
     const { chat, nick } = await signedInUser(page);
@@ -47,15 +47,19 @@ test.describe("Window, taskbar and tab titles", () => {
     const titleBar = chat.chatWindowTitleBar;
     const taskbarButton = chat.taskbarButton("chat");
 
-    // Connecting auto-joins #lobby, and that is what the three surfaces show.
-    await expect(titleBar).toContainText(`#lobby[${nick}]`);
+    // The window's title bar names the application, not the conversation: it
+    // is one pinned window that every conversation shares, so a title that
+    // followed the active tab would be the only window on the desktop whose
+    // name changed under you. The taskbar button and the browser tab are the
+    // two surfaces that track the conversation.
+    await expect(titleBar).toContainText("Chat");
+    await expect(taskbarButton).toContainText(`#lobby[${nick}]`);
     await expect(page).toHaveTitle(`#lobby[${nick}]`);
 
     await chat.sendMessage(`/join ${channel}`);
     await expect(chat.tab(channel)).toHaveAttribute("aria-selected", "true");
 
     const channelTitle = `${channel}[${nick}]`;
-    await expect(titleBar).toContainText(channelTitle);
     await expect(taskbarButton).toContainText(channelTitle);
     await expect(page).toHaveTitle(channelTitle);
     await shot(page, "channel-title");
@@ -63,9 +67,8 @@ test.describe("Window, taskbar and tab titles", () => {
     // The identity state rides along in the title bar's meta zone.
     await expect(titleBar).toContainText("Identified");
 
-    // Back to Status: all three follow.
+    // Back to Status: both conversation-tracking surfaces follow.
     await chat.switchToStatusTab();
-    await expect(titleBar).toContainText(`Status[${nick}]`);
     await expect(taskbarButton).toContainText(`Status[${nick}]`);
     await expect(page).toHaveTitle(`Status[${nick}]`);
   });
@@ -100,7 +103,9 @@ test.describe("Window, taskbar and tab titles", () => {
     }
   });
 
-  test("a PM titles the window remote:mine (T16)", async ({ browser }) => {
+  test("a PM names the taskbar button and the tab remote:mine (T16)", async ({
+    browser,
+  }) => {
     const alice = await newSignedInUser(browser, "wtitlea");
     const bob = await newSignedInUser(browser, "wtitleb");
 
@@ -109,7 +114,7 @@ test.describe("Window, taskbar and tab titles", () => {
       await alice.chat.switchToTab(bob.nick);
 
       const pmTitle = `${bob.nick}:${alice.nick}`;
-      await expect(alice.chat.chatWindowTitleBar).toContainText(pmTitle);
+      await expect(alice.chat.taskbarButton("chat")).toContainText(pmTitle);
       await expect(alice.chat.page).toHaveTitle(pmTitle);
       await shot(alice.chat.page, "pm-title");
     } finally {
