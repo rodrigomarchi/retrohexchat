@@ -11,7 +11,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:232
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:230
 #, elixir-autogen, elixir-format
 msgid "  %{id} | %{title} | %{channel} | %{url}"
 msgstr "%{id} | %{title} | %{channel} | %{url}"
@@ -66,13 +66,14 @@ msgstr ""
 msgid "%{rank}. %{name}: %{points}pts"
 msgstr "%{rank}. %{name}: %{points}pts"
 
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:613
 #: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:95
 #: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:114
 #, elixir-autogen, elixir-format
 msgid "(no title)"
 msgstr "(без названия)"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:230
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:228
 #, elixir-autogen, elixir-format
 msgid "(untitled)"
 msgstr "(без названия)"
@@ -124,7 +125,7 @@ msgstr "Активные графики:"
 msgid "Add a scheduled message"
 msgstr "Добавить запланированное сообщение"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:193
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:191
 #, elixir-autogen, elixir-format
 msgid "Add an RSS feed"
 msgstr "Добавить RSS-канал"
@@ -154,7 +155,7 @@ msgstr "Алжир"
 msgid "Alias for roll"
 msgstr "Алиас для ролла"
 
-#: lib/retro_hex_chat/bots/server.ex:166
+#: lib/retro_hex_chat/bots/server.ex:171
 #, elixir-autogen, elixir-format
 msgid "Already in channel"
 msgstr "Уже в канале"
@@ -241,12 +242,12 @@ msgstr "Блоки"
 msgid "Blue aliens"
 msgstr "Голубые пришельцы"
 
-#: lib/retro_hex_chat/bots/lifecycle.ex:47
+#: lib/retro_hex_chat/bots/lifecycle.ex:83
 #, elixir-autogen, elixir-format
 msgid "Bot destroyed"
 msgstr "Бот уничтожен"
 
-#: lib/retro_hex_chat/bots/server.ex:975
+#: lib/retro_hex_chat/bots/server.ex:963
 #, elixir-autogen, elixir-format
 msgid "Bot leaving"
 msgstr "Бот уходит"
@@ -366,7 +367,7 @@ msgstr "Ошибка: максимальная %{max} стороны допус�
 msgid "Famous for rings"
 msgstr "Знаменитые кольца"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:294
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:292
 #, elixir-autogen, elixir-format
 msgid "Feed '%{id}' added: %{url} → %{channel}"
 msgstr "Кормить%{id}Добавил: %{url} → %{channel}"
@@ -392,7 +393,7 @@ msgstr "Итоговые баллы: %{ranked}"
 msgid "Finnish"
 msgstr "финский"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:196
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:194
 #, elixir-autogen, elixir-format
 msgid "Force check a feed now"
 msgstr "Проверить кормление сейчас"
@@ -447,7 +448,7 @@ msgstr "Гутенберг"
 msgid "HBO"
 msgstr "HBO"
 
-#: lib/retro_hex_chat/bots/capabilities/rss/fetcher.ex:65
+#: lib/retro_hex_chat/bots/capabilities/rss/fetcher.ex:96
 #, elixir-autogen, elixir-format
 msgid "HTTP %{status}"
 msgstr "HTTP %{status}"
@@ -641,7 +642,7 @@ msgstr "Маяк"
 msgid "Linus Torvalds"
 msgstr "Линус Торвальдс"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:194
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:192
 #, elixir-autogen, elixir-format
 msgid "List RSS feeds"
 msgstr "Список RSS кормов"
@@ -671,7 +672,7 @@ msgstr "Марианская впадина"
 msgid "Mars"
 msgstr "Марс"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:249
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:247
 #, elixir-autogen, elixir-format
 msgid "Maximum %{max} feeds reached."
 msgstr "максимум %{max} Дошли корма."
@@ -711,7 +712,7 @@ msgstr "Minecraft"
 msgid "Minimum interval is %{minutes} minutes."
 msgstr "Минимальный интервал – это %{minutes} минуты."
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:256
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:254
 #, elixir-autogen, elixir-format
 msgid "Missing channel. Usage: rss add <url> <#channel>"
 msgstr "Пропавший канал. Использование: rss add <url> <#channel>"
@@ -771,7 +772,7 @@ msgstr "Нил"
 msgid "Nintendo"
 msgstr "Nintendo"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:226
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:224
 #, elixir-autogen, elixir-format
 msgid "No RSS feeds configured."
 msgstr "RSS-каналы не настроены."
@@ -812,7 +813,7 @@ msgstr "Не Сидней"
 msgid "Not Toronto"
 msgstr "Не Торонто"
 
-#: lib/retro_hex_chat/bots/server.ex:185
+#: lib/retro_hex_chat/bots/server.ex:190
 #, elixir-autogen, elixir-format
 msgid "Not in channel"
 msgstr "Не в канале"
@@ -827,7 +828,7 @@ msgstr "Теперь Oracle"
 msgid "On the Nile"
 msgstr "На Ниле"
 
-#: lib/retro_hex_chat/bots/policy.ex:59
+#: lib/retro_hex_chat/bots/policy.ex:63
 #, elixir-autogen, elixir-format
 msgid "Only admins and server operators can manage bots"
 msgstr "Только администраторы и серверные операторы могут управлять ботами."
@@ -908,12 +909,12 @@ msgstr "RDJ"
 msgid "ROY G BIV"
 msgstr "Рой Джи Бив"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:240
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:238
 #, elixir-autogen, elixir-format
 msgid "RSS Feeds:"
 msgstr "RSS корма:"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:29
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:30
 #, elixir-autogen, elixir-format
 msgid "RSS feed reader that posts updates to channels"
 msgstr "RSS-ридер, который публикует обновления для каналов"
@@ -933,7 +934,7 @@ msgstr "Красная таблетка"
 msgid "Remove a schedule"
 msgstr "Удалить расписание"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:195
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:193
 #, elixir-autogen, elixir-format
 msgid "Remove an RSS feed"
 msgstr "Удалить RSS-канал"
@@ -1183,7 +1184,7 @@ msgstr "Неизвестная категория%{category}Доступно: %{
 msgid "Unknown feed format (expected RSS 2.0 or Atom)"
 msgstr "Неизвестный формат подачи (ожидаемый RSS 2.0 или Atom)"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:259
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:257
 #, elixir-autogen, elixir-format
 msgid "Usage: rss add <url> <#channel>"
 msgstr "Использование: rss add <url> <#channel>"
@@ -1743,12 +1744,12 @@ msgstr "Корм \"%{id}\" проверен. Ничего нового."
 msgid "Feed '%{id}' posts to %{channel}. Ask there to check it."
 msgstr "Кормите сообщения «%{id}» на %{channel}. Попросите там проверить."
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:518
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:591
 #, elixir-autogen, elixir-format
 msgid "RSS"
 msgstr "RSS"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:272
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:270
 #, elixir-autogen, elixir-format
 msgid "Refusing %{url}: %{reason}"
 msgstr "Отказано для %{url}: %{reason}"
@@ -1774,7 +1775,7 @@ msgstr ""
 msgid "Repeat window must be a non-negative number of seconds"
 msgstr "Окно повтора должно быть неотрицательным числом секунд"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:135
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:149
 #, elixir-autogen, elixir-format
 msgid "Only server administrators can manage feeds."
 msgstr "Управлять лентами могут только администраторы сервера."
@@ -1783,3 +1784,18 @@ msgstr "Управлять лентами могут только админис
 #, elixir-autogen, elixir-format
 msgid "Only server administrators can manage schedules."
 msgstr "Управлять расписаниями могут только администраторы сервера."
+
+#: lib/retro_hex_chat/bots/capabilities/rss/fetcher.ex:84
+#, elixir-autogen, elixir-format
+msgid "feed body too large"
+msgstr "Кормите тело слишком большим"
+
+#: lib/retro_hex_chat/bots/capabilities/rss/fetcher.ex:125
+#, elixir-autogen, elixir-format
+msgid "redirect without location"
+msgstr "Перенаправление без местоположения"
+
+#: lib/retro_hex_chat/bots/capabilities/rss/fetcher.ex:61
+#, elixir-autogen, elixir-format
+msgid "too many redirects"
+msgstr "Слишком много перенаправлений"

@@ -256,7 +256,7 @@ msgstr "%{nickname} был приглушен %{duration_text}."
 msgid "%{nickname} has been server-banned%{duration_text}."
 msgstr "%{nickname} Был запрещен сервер%{duration_text}."
 
-#: lib/retro_hex_chat/admin.ex:662
+#: lib/retro_hex_chat/admin.ex:666
 #, elixir-autogen, elixir-format
 msgid "%{nickname} has been set as %{role}."
 msgstr "%{nickname} был установлен как %{role}."
@@ -489,7 +489,7 @@ msgstr "*** [NickServ] %{nick}"
 msgid "Active channels: %{channel_count}\n"
 msgstr "Активные каналы: %{channel_count}\n"
 
-#: lib/retro_hex_chat/admin.ex:681
+#: lib/retro_hex_chat/admin.ex:685
 #, elixir-autogen, elixir-format
 msgid "Admin roles removed from %{nickname}."
 msgstr "Функции администратора удалены из %{nickname}."
@@ -765,7 +765,161 @@ msgid ""
 "(registration reopens)"
 msgstr "*** Сохранено: admin roles, audit logs, server bans, server settings"
 
-#: lib/retro_hex_chat/admin.ex:640
+#: lib/retro_hex_chat/admin.ex:644
 #, elixir-autogen, elixir-format
 msgid "System reset by administrator %{admin}"
 msgstr "Сброс системы администратором %{admin}"
+
+#: lib/retro_hex_chat/system_info/allocators.ex:42
+#, elixir-autogen, elixir-format
+msgid "Allocator"
+msgstr "распределитель"
+
+#: lib/retro_hex_chat/system_info/allocators.ex:43
+#, elixir-autogen, elixir-format
+msgid "Block size"
+msgstr "Размер блока"
+
+#: lib/retro_hex_chat/system_info/allocators.ex:47
+#, elixir-autogen, elixir-format
+msgid "Carrier size"
+msgstr "Размер перевозчика"
+
+#: lib/retro_hex_chat/system_info/sources/ports.ex:27
+#, elixir-autogen, elixir-format
+msgid "Controlled by"
+msgstr "контролируемый"
+
+#: lib/retro_hex_chat/system_info/sources/processes.ex:55
+#, elixir-autogen, elixir-format
+msgid "Current function"
+msgstr "Текущая функция"
+
+#: lib/retro_hex_chat/system_info/sources/applications.ex:26
+#, elixir-autogen, elixir-format
+msgid "Description"
+msgstr "Описание"
+
+#: lib/retro_hex_chat/system_info/sources/sockets.ex:36
+#, elixir-autogen, elixir-format
+msgid "Foreign address"
+msgstr "Иностранный адрес"
+
+#: lib/retro_hex_chat/system_info/allocators.ex:55
+#, elixir-autogen, elixir-format
+msgid "In use"
+msgstr "в использовании"
+
+#: lib/retro_hex_chat/system_info/sources/ports.ex:29
+#, elixir-autogen, elixir-format
+msgid "Input"
+msgstr "Ввод"
+
+#: lib/retro_hex_chat/system_info/sources/sockets.ex:35
+#, elixir-autogen, elixir-format
+msgid "Local address"
+msgstr "Местный адрес"
+
+#: lib/retro_hex_chat/system_info/sources/processes.ex:51
+#, elixir-autogen, elixir-format
+msgid "Mailbox"
+msgstr "почтовый ящик"
+
+#: lib/retro_hex_chat/system_info/sources/ets.ex:28
+#: lib/retro_hex_chat/system_info/sources/processes.ex:46
+#, elixir-autogen, elixir-format
+msgid "Memory"
+msgstr "Память"
+
+#: lib/retro_hex_chat/system_info/sources/applications.ex:25
+#: lib/retro_hex_chat/system_info/sources/ets.ex:26
+#: lib/retro_hex_chat/system_info/sources/ports.ex:25
+#, elixir-autogen, elixir-format
+msgid "Name"
+msgstr "Имя"
+
+#: lib/retro_hex_chat/system_info/sources/processes.ex:44
+#, elixir-autogen, elixir-format
+msgid "Name or initial call"
+msgstr "Имя или первоначальный вызов"
+
+#: lib/retro_hex_chat/system_info/sources/ports.ex:28
+#, elixir-autogen, elixir-format
+msgid "OS PID"
+msgstr "ОС ПИД"
+
+#: lib/retro_hex_chat/system_info/sources/ets.ex:27
+#, elixir-autogen, elixir-format
+msgid "Objects"
+msgstr "Объекты"
+
+#: lib/retro_hex_chat/system_info/sources/ports.ex:30
+#, elixir-autogen, elixir-format
+msgid "Output"
+msgstr "выход"
+
+#: lib/retro_hex_chat/system_info/sources/ets.ex:29
+#: lib/retro_hex_chat/system_info/sources/sockets.ex:39
+#, elixir-autogen, elixir-format
+msgid "Owner"
+msgstr "владелец"
+
+#: lib/retro_hex_chat/system_info/sources/processes.ex:45
+#, elixir-autogen, elixir-format
+msgid "PID"
+msgstr "ПИД"
+
+#: lib/retro_hex_chat/system_info/allocators.ex:51
+#, elixir-autogen, elixir-format
+msgid "Peak carrier size"
+msgstr "Пик размера перевозчика"
+
+#: lib/retro_hex_chat/system_info/sources/ports.ex:26
+#, elixir-autogen, elixir-format
+msgid "Port"
+msgstr "Порт"
+
+#: lib/retro_hex_chat/system_info/sources/ets.ex:31
+#, elixir-autogen, elixir-format
+msgid "Protection"
+msgstr "Защита"
+
+#: lib/retro_hex_chat/system_info/sources/sockets.ex:38
+#, elixir-autogen, elixir-format
+msgid "Protocol"
+msgstr "Протокол"
+
+#: lib/retro_hex_chat/system_info/sources/sockets.ex:40
+#, elixir-autogen, elixir-format
+msgid "Received"
+msgstr "Полученный"
+
+#: lib/retro_hex_chat/system_info/sources/processes.ex:47
+#, elixir-autogen, elixir-format
+msgid "Reductions"
+msgstr "Сокращение"
+
+#: lib/retro_hex_chat/system_info/sources/sockets.ex:41
+#, elixir-autogen, elixir-format
+msgid "Sent"
+msgstr "отправленный"
+
+#: lib/retro_hex_chat/system_info/sources/applications.ex:28
+#, elixir-autogen, elixir-format
+msgid "Started"
+msgstr "Начало"
+
+#: lib/retro_hex_chat/system_info/sources/sockets.ex:37
+#, elixir-autogen, elixir-format
+msgid "State"
+msgstr "государство"
+
+#: lib/retro_hex_chat/system_info/sources/ets.ex:30
+#, elixir-autogen, elixir-format
+msgid "Type"
+msgstr "Тип"
+
+#: lib/retro_hex_chat/system_info/sources/applications.ex:27
+#, elixir-autogen, elixir-format
+msgid "Version"
+msgstr "Версия"

@@ -256,7 +256,7 @@ msgstr "%{nickname} foi silenciado %{duration_text}."
 msgid "%{nickname} has been server-banned%{duration_text}."
 msgstr "%{nickname} foi banido do servidor%{duration_text}."
 
-#: lib/retro_hex_chat/admin.ex:662
+#: lib/retro_hex_chat/admin.ex:666
 #, elixir-autogen, elixir-format
 msgid "%{nickname} has been set as %{role}."
 msgstr "%{nickname} foi definido como %{role}."
@@ -490,7 +490,7 @@ msgstr "*** [NickServ] %{nick}"
 msgid "Active channels: %{channel_count}\n"
 msgstr "Canais ativos: %{channel_count}"
 
-#: lib/retro_hex_chat/admin.ex:681
+#: lib/retro_hex_chat/admin.ex:685
 #, elixir-autogen, elixir-format
 msgid "Admin roles removed from %{nickname}."
 msgstr "Funções administrativas removidas de %{nickname}."
@@ -767,7 +767,161 @@ msgstr ""
 "*** Preservado: admin  roles, audit logs, server bans, server settings "
 "(arquivação reabre)"
 
-#: lib/retro_hex_chat/admin.ex:640
+#: lib/retro_hex_chat/admin.ex:644
 #, elixir-autogen, elixir-format
 msgid "System reset by administrator %{admin}"
 msgstr "Redefinição do sistema pelo administrador %{admin}"
+
+#: lib/retro_hex_chat/system_info/allocators.ex:42
+#, elixir-autogen, elixir-format
+msgid "Allocator"
+msgstr "Alocador"
+
+#: lib/retro_hex_chat/system_info/allocators.ex:43
+#, elixir-autogen, elixir-format
+msgid "Block size"
+msgstr "Tamanho do bloco"
+
+#: lib/retro_hex_chat/system_info/allocators.ex:47
+#, elixir-autogen, elixir-format
+msgid "Carrier size"
+msgstr "Tamanho do transportador"
+
+#: lib/retro_hex_chat/system_info/sources/ports.ex:27
+#, elixir-autogen, elixir-format
+msgid "Controlled by"
+msgstr "Controlado por"
+
+#: lib/retro_hex_chat/system_info/sources/processes.ex:55
+#, elixir-autogen, elixir-format
+msgid "Current function"
+msgstr "Função atual"
+
+#: lib/retro_hex_chat/system_info/sources/applications.ex:26
+#, elixir-autogen, elixir-format
+msgid "Description"
+msgstr "Descrição"
+
+#: lib/retro_hex_chat/system_info/sources/sockets.ex:36
+#, elixir-autogen, elixir-format
+msgid "Foreign address"
+msgstr "Endereço estrangeiro"
+
+#: lib/retro_hex_chat/system_info/allocators.ex:55
+#, elixir-autogen, elixir-format
+msgid "In use"
+msgstr "Em uso"
+
+#: lib/retro_hex_chat/system_info/sources/ports.ex:29
+#, elixir-autogen, elixir-format
+msgid "Input"
+msgstr "Entrada"
+
+#: lib/retro_hex_chat/system_info/sources/sockets.ex:35
+#, elixir-autogen, elixir-format
+msgid "Local address"
+msgstr "Endereço local"
+
+#: lib/retro_hex_chat/system_info/sources/processes.ex:51
+#, elixir-autogen, elixir-format
+msgid "Mailbox"
+msgstr "Caixa de e- mail"
+
+#: lib/retro_hex_chat/system_info/sources/ets.ex:28
+#: lib/retro_hex_chat/system_info/sources/processes.ex:46
+#, elixir-autogen, elixir-format
+msgid "Memory"
+msgstr "Memória"
+
+#: lib/retro_hex_chat/system_info/sources/applications.ex:25
+#: lib/retro_hex_chat/system_info/sources/ets.ex:26
+#: lib/retro_hex_chat/system_info/sources/ports.ex:25
+#, elixir-autogen, elixir-format
+msgid "Name"
+msgstr "Nome"
+
+#: lib/retro_hex_chat/system_info/sources/processes.ex:44
+#, elixir-autogen, elixir-format
+msgid "Name or initial call"
+msgstr "Nome ou chamada inicial"
+
+#: lib/retro_hex_chat/system_info/sources/ports.ex:28
+#, elixir-autogen, elixir-format
+msgid "OS PID"
+msgstr "PID do SO"
+
+#: lib/retro_hex_chat/system_info/sources/ets.ex:27
+#, elixir-autogen, elixir-format
+msgid "Objects"
+msgstr "Objectos"
+
+#: lib/retro_hex_chat/system_info/sources/ports.ex:30
+#, elixir-autogen, elixir-format
+msgid "Output"
+msgstr "Saída"
+
+#: lib/retro_hex_chat/system_info/sources/ets.ex:29
+#: lib/retro_hex_chat/system_info/sources/sockets.ex:39
+#, elixir-autogen, elixir-format
+msgid "Owner"
+msgstr "Dono"
+
+#: lib/retro_hex_chat/system_info/sources/processes.ex:45
+#, elixir-autogen, elixir-format
+msgid "PID"
+msgstr "PID"
+
+#: lib/retro_hex_chat/system_info/allocators.ex:51
+#, elixir-autogen, elixir-format
+msgid "Peak carrier size"
+msgstr "Tamanho máximo do transportador"
+
+#: lib/retro_hex_chat/system_info/sources/ports.ex:26
+#, elixir-autogen, elixir-format
+msgid "Port"
+msgstr "Porto"
+
+#: lib/retro_hex_chat/system_info/sources/ets.ex:31
+#, elixir-autogen, elixir-format
+msgid "Protection"
+msgstr "Protecção"
+
+#: lib/retro_hex_chat/system_info/sources/sockets.ex:38
+#, elixir-autogen, elixir-format
+msgid "Protocol"
+msgstr "Protocolo"
+
+#: lib/retro_hex_chat/system_info/sources/sockets.ex:40
+#, elixir-autogen, elixir-format
+msgid "Received"
+msgstr "Recebido"
+
+#: lib/retro_hex_chat/system_info/sources/processes.ex:47
+#, elixir-autogen, elixir-format
+msgid "Reductions"
+msgstr "Reduções"
+
+#: lib/retro_hex_chat/system_info/sources/sockets.ex:41
+#, elixir-autogen, elixir-format
+msgid "Sent"
+msgstr "Enviado"
+
+#: lib/retro_hex_chat/system_info/sources/applications.ex:28
+#, elixir-autogen, elixir-format
+msgid "Started"
+msgstr "Iniciado"
+
+#: lib/retro_hex_chat/system_info/sources/sockets.ex:37
+#, elixir-autogen, elixir-format
+msgid "State"
+msgstr "Estado"
+
+#: lib/retro_hex_chat/system_info/sources/ets.ex:30
+#, elixir-autogen, elixir-format
+msgid "Type"
+msgstr "Tipo"
+
+#: lib/retro_hex_chat/system_info/sources/applications.ex:27
+#, elixir-autogen, elixir-format
+msgid "Version"
+msgstr "Versão"

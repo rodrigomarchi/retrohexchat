@@ -259,7 +259,7 @@ msgstr "%{nickname}已被变音%{duration_text}."
 msgid "%{nickname} has been server-banned%{duration_text}."
 msgstr "%{nickname}已被服务器屏蔽%{duration_text}."
 
-#: lib/retro_hex_chat/admin.ex:662
+#: lib/retro_hex_chat/admin.ex:666
 #, elixir-autogen, elixir-format
 msgid "%{nickname} has been set as %{role}."
 msgstr "%{nickname}被设定为%{role}."
@@ -491,7 +491,7 @@ msgstr "*** [尼克服务] %{nick}"
 msgid "Active channels: %{channel_count}\n"
 msgstr "活动频道: %{channel_count}"
 
-#: lib/retro_hex_chat/admin.ex:681
+#: lib/retro_hex_chat/admin.ex:685
 #, elixir-autogen, elixir-format
 msgid "Admin roles removed from %{nickname}."
 msgstr "从%{nickname}中取消了管理角色."
@@ -763,9 +763,163 @@ msgid ""
 "(registration reopens)"
 msgstr "*** 保留:admin roles, 审计 logs, 服务器 bans, 服务器  设置( 注册重开)"
 
-#: lib/retro_hex_chat/admin.ex:640
+#: lib/retro_hex_chat/admin.ex:644
 #, elixir-autogen, elixir-format
 msgid "System reset by administrator %{admin}"
 msgstr ""
 "数据\n"
 "由管理员 %{admin} 重置系统"
+
+#: lib/retro_hex_chat/system_info/allocators.ex:42
+#, elixir-autogen, elixir-format
+msgid "Allocator"
+msgstr "分配器"
+
+#: lib/retro_hex_chat/system_info/allocators.ex:43
+#, elixir-autogen, elixir-format
+msgid "Block size"
+msgstr "块大小"
+
+#: lib/retro_hex_chat/system_info/allocators.ex:47
+#, elixir-autogen, elixir-format
+msgid "Carrier size"
+msgstr "载体大小"
+
+#: lib/retro_hex_chat/system_info/sources/ports.ex:27
+#, elixir-autogen, elixir-format
+msgid "Controlled by"
+msgstr "由"
+
+#: lib/retro_hex_chat/system_info/sources/processes.ex:55
+#, elixir-autogen, elixir-format
+msgid "Current function"
+msgstr "当前职能"
+
+#: lib/retro_hex_chat/system_info/sources/applications.ex:26
+#, elixir-autogen, elixir-format
+msgid "Description"
+msgstr "描述"
+
+#: lib/retro_hex_chat/system_info/sources/sockets.ex:36
+#, elixir-autogen, elixir-format
+msgid "Foreign address"
+msgstr "外国地址"
+
+#: lib/retro_hex_chat/system_info/allocators.ex:55
+#, elixir-autogen, elixir-format
+msgid "In use"
+msgstr "使用中"
+
+#: lib/retro_hex_chat/system_info/sources/ports.ex:29
+#, elixir-autogen, elixir-format
+msgid "Input"
+msgstr "投入"
+
+#: lib/retro_hex_chat/system_info/sources/sockets.ex:35
+#, elixir-autogen, elixir-format
+msgid "Local address"
+msgstr "当地地址"
+
+#: lib/retro_hex_chat/system_info/sources/processes.ex:51
+#, elixir-autogen, elixir-format
+msgid "Mailbox"
+msgstr "邮箱"
+
+#: lib/retro_hex_chat/system_info/sources/ets.ex:28
+#: lib/retro_hex_chat/system_info/sources/processes.ex:46
+#, elixir-autogen, elixir-format
+msgid "Memory"
+msgstr "内存"
+
+#: lib/retro_hex_chat/system_info/sources/applications.ex:25
+#: lib/retro_hex_chat/system_info/sources/ets.ex:26
+#: lib/retro_hex_chat/system_info/sources/ports.ex:25
+#, elixir-autogen, elixir-format
+msgid "Name"
+msgstr "名称"
+
+#: lib/retro_hex_chat/system_info/sources/processes.ex:44
+#, elixir-autogen, elixir-format
+msgid "Name or initial call"
+msgstr "名称或初始呼叫"
+
+#: lib/retro_hex_chat/system_info/sources/ports.ex:28
+#, elixir-autogen, elixir-format
+msgid "OS PID"
+msgstr "OS 密码"
+
+#: lib/retro_hex_chat/system_info/sources/ets.ex:27
+#, elixir-autogen, elixir-format
+msgid "Objects"
+msgstr "对象"
+
+#: lib/retro_hex_chat/system_info/sources/ports.ex:30
+#, elixir-autogen, elixir-format
+msgid "Output"
+msgstr "产出"
+
+#: lib/retro_hex_chat/system_info/sources/ets.ex:29
+#: lib/retro_hex_chat/system_info/sources/sockets.ex:39
+#, elixir-autogen, elixir-format
+msgid "Owner"
+msgstr "拥有者"
+
+#: lib/retro_hex_chat/system_info/sources/processes.ex:45
+#, elixir-autogen, elixir-format
+msgid "PID"
+msgstr "密码"
+
+#: lib/retro_hex_chat/system_info/allocators.ex:51
+#, elixir-autogen, elixir-format
+msgid "Peak carrier size"
+msgstr "峰值载体大小"
+
+#: lib/retro_hex_chat/system_info/sources/ports.ex:26
+#, elixir-autogen, elixir-format
+msgid "Port"
+msgstr "端口"
+
+#: lib/retro_hex_chat/system_info/sources/ets.ex:31
+#, elixir-autogen, elixir-format
+msgid "Protection"
+msgstr "保护"
+
+#: lib/retro_hex_chat/system_info/sources/sockets.ex:38
+#, elixir-autogen, elixir-format
+msgid "Protocol"
+msgstr "议定书"
+
+#: lib/retro_hex_chat/system_info/sources/sockets.ex:40
+#, elixir-autogen, elixir-format
+msgid "Received"
+msgstr "实收"
+
+#: lib/retro_hex_chat/system_info/sources/processes.ex:47
+#, elixir-autogen, elixir-format
+msgid "Reductions"
+msgstr "减少额"
+
+#: lib/retro_hex_chat/system_info/sources/sockets.ex:41
+#, elixir-autogen, elixir-format
+msgid "Sent"
+msgstr "发送"
+
+#: lib/retro_hex_chat/system_info/sources/applications.ex:28
+#, elixir-autogen, elixir-format
+msgid "Started"
+msgstr "开始"
+
+#: lib/retro_hex_chat/system_info/sources/sockets.ex:37
+#, elixir-autogen, elixir-format
+msgid "State"
+msgstr "状态"
+
+#: lib/retro_hex_chat/system_info/sources/ets.ex:30
+#, elixir-autogen, elixir-format
+msgid "Type"
+msgstr "类型"
+
+#: lib/retro_hex_chat/system_info/sources/applications.ex:27
+#, elixir-autogen, elixir-format
+msgid "Version"
+msgstr "版本"

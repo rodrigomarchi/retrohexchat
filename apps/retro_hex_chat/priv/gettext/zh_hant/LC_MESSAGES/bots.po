@@ -11,7 +11,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:232
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:230
 #, elixir-autogen, elixir-format
 msgid "  %{id} | %{title} | %{channel} | %{url}"
 msgstr "  %{id} | %{title} | %{channel} | %{url}"
@@ -66,13 +66,14 @@ msgstr ""
 msgid "%{rank}. %{name}: %{points}pts"
 msgstr "%{rank}. %{name}: %{points}點"
 
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:613
 #: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:95
 #: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:114
 #, elixir-autogen, elixir-format
 msgid "(no title)"
 msgstr "(無標題)"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:230
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:228
 #, elixir-autogen, elixir-format
 msgid "(untitled)"
 msgstr "(無標題)"
@@ -122,7 +123,7 @@ msgstr "活動時間表 :"
 msgid "Add a scheduled message"
 msgstr "添加預定的消息"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:193
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:191
 #, elixir-autogen, elixir-format
 msgid "Add an RSS feed"
 msgstr "添加 RSS 種子"
@@ -152,7 +153,7 @@ msgstr "阿爾及利亞"
 msgid "Alias for roll"
 msgstr "滾吧"
 
-#: lib/retro_hex_chat/bots/server.ex:166
+#: lib/retro_hex_chat/bots/server.ex:171
 #, elixir-autogen, elixir-format
 msgid "Already in channel"
 msgstr "已經在頻道中"
@@ -237,12 +238,12 @@ msgstr "塊"
 msgid "Blue aliens"
 msgstr "藍色外星人"
 
-#: lib/retro_hex_chat/bots/lifecycle.ex:47
+#: lib/retro_hex_chat/bots/lifecycle.ex:83
 #, elixir-autogen, elixir-format
 msgid "Bot destroyed"
 msgstr "機器人已銷毀"
 
-#: lib/retro_hex_chat/bots/server.ex:975
+#: lib/retro_hex_chat/bots/server.ex:963
 #, elixir-autogen, elixir-format
 msgid "Bot leaving"
 msgstr "炸彈離開"
@@ -362,7 +363,7 @@ msgstr "錯誤:最大值 %{max} 各方允許。"
 msgid "Famous for rings"
 msgstr "爲戒指而聞名"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:294
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:292
 #, elixir-autogen, elixir-format
 msgid "Feed '%{id}' added: %{url} → %{channel}"
 msgstr "feed '%{id} 添加:%{url} →%{channel}"
@@ -388,7 +389,7 @@ msgstr "最後得分: %{ranked}"
 msgid "Finnish"
 msgstr "芬蘭語"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:196
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:194
 #, elixir-autogen, elixir-format
 msgid "Force check a feed now"
 msgstr "強制檢查一個消息"
@@ -443,7 +444,7 @@ msgstr "古騰堡"
 msgid "HBO"
 msgstr "衛生局"
 
-#: lib/retro_hex_chat/bots/capabilities/rss/fetcher.ex:65
+#: lib/retro_hex_chat/bots/capabilities/rss/fetcher.ex:96
 #, elixir-autogen, elixir-format
 msgid "HTTP %{status}"
 msgstr "HTTP 軟件 %{status}"
@@ -635,7 +636,7 @@ msgstr "燈塔"
 msgid "Linus Torvalds"
 msgstr "萊納斯·託瓦爾茲"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:194
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:192
 #, elixir-autogen, elixir-format
 msgid "List RSS feeds"
 msgstr "列出 RSS 種子"
@@ -665,7 +666,7 @@ msgstr "馬裏亞納海溝"
 msgid "Mars"
 msgstr "火星"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:249
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:247
 #, elixir-autogen, elixir-format
 msgid "Maximum %{max} feeds reached."
 msgstr "最大值 %{max} 已到達種子 。"
@@ -705,7 +706,7 @@ msgstr "礦產品"
 msgid "Minimum interval is %{minutes} minutes."
 msgstr "最小間隔爲 %{minutes}分鐘."
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:256
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:254
 #, elixir-autogen, elixir-format
 msgid "Missing channel. Usage: rss add <url> <#channel>"
 msgstr "頻道不見了 用法:rs 添加 <url> <#channel>"
@@ -765,7 +766,7 @@ msgstr "尼羅河"
 msgid "Nintendo"
 msgstr "任天堂"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:226
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:224
 #, elixir-autogen, elixir-format
 msgid "No RSS feeds configured."
 msgstr "沒有配置 RSS 種子 。"
@@ -806,7 +807,7 @@ msgstr "雪梨沒有"
 msgid "Not Toronto"
 msgstr "不是多倫多"
 
-#: lib/retro_hex_chat/bots/server.ex:185
+#: lib/retro_hex_chat/bots/server.ex:190
 #, elixir-autogen, elixir-format
 msgid "Not in channel"
 msgstr "不在頻道中"
@@ -821,7 +822,7 @@ msgstr "現在甲骨文"
 msgid "On the Nile"
 msgstr "在尼羅河畔"
 
-#: lib/retro_hex_chat/bots/policy.ex:59
+#: lib/retro_hex_chat/bots/policy.ex:63
 #, elixir-autogen, elixir-format
 msgid "Only admins and server operators can manage bots"
 msgstr "只有管理員和服務器操作員才能管理 bots"
@@ -902,12 +903,12 @@ msgstr "區域司"
 msgid "ROY G BIV"
 msgstr "Roy G BIV (英語)."
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:240
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:238
 #, elixir-autogen, elixir-format
 msgid "RSS Feeds:"
 msgstr "RSS 種子 :"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:29
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:30
 #, elixir-autogen, elixir-format
 msgid "RSS feed reader that posts updates to channels"
 msgstr "RSS 向頻道發送更新的讀取器"
@@ -927,7 +928,7 @@ msgstr "紅藥丸"
 msgid "Remove a schedule"
 msgstr "刪除時間表"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:195
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:193
 #, elixir-autogen, elixir-format
 msgid "Remove an RSS feed"
 msgstr "刪除 RSS 種子"
@@ -1177,7 +1178,7 @@ msgstr "未知類別 '%{category}'. 現有: %{categories}"
 msgid "Unknown feed format (expected RSS 2.0 or Atom)"
 msgstr "未知的種子格式( 預期 RSS 2. 0 或 Atom)"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:259
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:257
 #, elixir-autogen, elixir-format
 msgid "Usage: rss add <url> <#channel>"
 msgstr "用法:rs 添加 <url> <#channel>"
@@ -1736,12 +1737,12 @@ msgstr "輸入 '%{id}' 已檢查 。 沒什麼新鮮事"
 msgid "Feed '%{id}' posts to %{channel}. Ask there to check it."
 msgstr "將 '%{id}' 文章輸入 %{channel}. 問那裏看."
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:518
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:591
 #, elixir-autogen, elixir-format
 msgid "RSS"
-msgstr "簡易新聞聚合"
+msgstr "RSS"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:272
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:270
 #, elixir-autogen, elixir-format
 msgid "Refusing %{url}: %{reason}"
 msgstr "拒絕 %{url}：%{reason}"
@@ -1763,7 +1764,7 @@ msgstr "歡迎訊息的投遞方式必須是 public、channel_notice、private_n
 msgid "Repeat window must be a non-negative number of seconds"
 msgstr "重複視窗必須是非負的秒數"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:135
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:149
 #, elixir-autogen, elixir-format
 msgid "Only server administrators can manage feeds."
 msgstr "只有伺服器管理員可以管理訂閱源。"
@@ -1772,3 +1773,18 @@ msgstr "只有伺服器管理員可以管理訂閱源。"
 #, elixir-autogen, elixir-format
 msgid "Only server administrators can manage schedules."
 msgstr "只有伺服器管理員可以管理定時任務。"
+
+#: lib/retro_hex_chat/bots/capabilities/rss/fetcher.ex:84
+#, elixir-autogen, elixir-format
+msgid "feed body too large"
+msgstr "飼料體太大"
+
+#: lib/retro_hex_chat/bots/capabilities/rss/fetcher.ex:125
+#, elixir-autogen, elixir-format
+msgid "redirect without location"
+msgstr "無位置重定向"
+
+#: lib/retro_hex_chat/bots/capabilities/rss/fetcher.ex:61
+#, elixir-autogen, elixir-format
+msgid "too many redirects"
+msgstr "改變方向太多"

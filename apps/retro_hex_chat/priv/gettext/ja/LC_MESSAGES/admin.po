@@ -256,7 +256,7 @@ msgstr "%{nickname}は%{duration_text}をミュートしました。"
 msgid "%{nickname} has been server-banned%{duration_text}."
 msgstr "%{nickname}はサーバー禁止%{duration_text}です。"
 
-#: lib/retro_hex_chat/admin.ex:662
+#: lib/retro_hex_chat/admin.ex:666
 #, elixir-autogen, elixir-format
 msgid "%{nickname} has been set as %{role}."
 msgstr "%{nickname}は%{role}として設定されています。"
@@ -488,7 +488,7 @@ msgstr "*** [NickServ] %{nick}の特長"
 msgid "Active channels: %{channel_count}\n"
 msgstr "アクティブなチャンネル: %{channel_count}"
 
-#: lib/retro_hex_chat/admin.ex:681
+#: lib/retro_hex_chat/admin.ex:685
 #, elixir-autogen, elixir-format
 msgid "Admin roles removed from %{nickname}."
 msgstr "%{nickname}から削除された管理者の役割。"
@@ -762,9 +762,163 @@ msgstr ""
 "*** 保存: admin roles, 監査 logs, server bans, server settings (registration "
 "reopens)"
 
-#: lib/retro_hex_chat/admin.ex:640
+#: lib/retro_hex_chat/admin.ex:644
 #, elixir-autogen, elixir-format
 msgid "System reset by administrator %{admin}"
 msgstr ""
 "シリーズ\n"
 "管理者によるシステムリセット %{admin}"
+
+#: lib/retro_hex_chat/system_info/allocators.ex:42
+#, elixir-autogen, elixir-format
+msgid "Allocator"
+msgstr "アスコット"
+
+#: lib/retro_hex_chat/system_info/allocators.ex:43
+#, elixir-autogen, elixir-format
+msgid "Block size"
+msgstr "ブロックサイズ"
+
+#: lib/retro_hex_chat/system_info/allocators.ex:47
+#, elixir-autogen, elixir-format
+msgid "Carrier size"
+msgstr "キャリアのサイズ"
+
+#: lib/retro_hex_chat/system_info/sources/ports.ex:27
+#, elixir-autogen, elixir-format
+msgid "Controlled by"
+msgstr "によって制御される"
+
+#: lib/retro_hex_chat/system_info/sources/processes.ex:55
+#, elixir-autogen, elixir-format
+msgid "Current function"
+msgstr "現在の機能"
+
+#: lib/retro_hex_chat/system_info/sources/applications.ex:26
+#, elixir-autogen, elixir-format
+msgid "Description"
+msgstr "説明"
+
+#: lib/retro_hex_chat/system_info/sources/sockets.ex:36
+#, elixir-autogen, elixir-format
+msgid "Foreign address"
+msgstr "外国人住所"
+
+#: lib/retro_hex_chat/system_info/allocators.ex:55
+#, elixir-autogen, elixir-format
+msgid "In use"
+msgstr "使用中"
+
+#: lib/retro_hex_chat/system_info/sources/ports.ex:29
+#, elixir-autogen, elixir-format
+msgid "Input"
+msgstr "パスワード"
+
+#: lib/retro_hex_chat/system_info/sources/sockets.ex:35
+#, elixir-autogen, elixir-format
+msgid "Local address"
+msgstr "ローカルアドレス"
+
+#: lib/retro_hex_chat/system_info/sources/processes.ex:51
+#, elixir-autogen, elixir-format
+msgid "Mailbox"
+msgstr "メールボックス"
+
+#: lib/retro_hex_chat/system_info/sources/ets.ex:28
+#: lib/retro_hex_chat/system_info/sources/processes.ex:46
+#, elixir-autogen, elixir-format
+msgid "Memory"
+msgstr "メモリ"
+
+#: lib/retro_hex_chat/system_info/sources/applications.ex:25
+#: lib/retro_hex_chat/system_info/sources/ets.ex:26
+#: lib/retro_hex_chat/system_info/sources/ports.ex:25
+#, elixir-autogen, elixir-format
+msgid "Name"
+msgstr "名前"
+
+#: lib/retro_hex_chat/system_info/sources/processes.ex:44
+#, elixir-autogen, elixir-format
+msgid "Name or initial call"
+msgstr "名前または初期呼び出し"
+
+#: lib/retro_hex_chat/system_info/sources/ports.ex:28
+#, elixir-autogen, elixir-format
+msgid "OS PID"
+msgstr "OSのPID"
+
+#: lib/retro_hex_chat/system_info/sources/ets.ex:27
+#, elixir-autogen, elixir-format
+msgid "Objects"
+msgstr "オブジェクト"
+
+#: lib/retro_hex_chat/system_info/sources/ports.ex:30
+#, elixir-autogen, elixir-format
+msgid "Output"
+msgstr "出力"
+
+#: lib/retro_hex_chat/system_info/sources/ets.ex:29
+#: lib/retro_hex_chat/system_info/sources/sockets.ex:39
+#, elixir-autogen, elixir-format
+msgid "Owner"
+msgstr "オーナー"
+
+#: lib/retro_hex_chat/system_info/sources/processes.ex:45
+#, elixir-autogen, elixir-format
+msgid "PID"
+msgstr "ピッド"
+
+#: lib/retro_hex_chat/system_info/allocators.ex:51
+#, elixir-autogen, elixir-format
+msgid "Peak carrier size"
+msgstr "ピークキャリアのサイズ"
+
+#: lib/retro_hex_chat/system_info/sources/ports.ex:26
+#, elixir-autogen, elixir-format
+msgid "Port"
+msgstr "ポートレート"
+
+#: lib/retro_hex_chat/system_info/sources/ets.ex:31
+#, elixir-autogen, elixir-format
+msgid "Protection"
+msgstr "サポート"
+
+#: lib/retro_hex_chat/system_info/sources/sockets.ex:38
+#, elixir-autogen, elixir-format
+msgid "Protocol"
+msgstr "プロトコル"
+
+#: lib/retro_hex_chat/system_info/sources/sockets.ex:40
+#, elixir-autogen, elixir-format
+msgid "Received"
+msgstr "受付開始"
+
+#: lib/retro_hex_chat/system_info/sources/processes.ex:47
+#, elixir-autogen, elixir-format
+msgid "Reductions"
+msgstr "削減量"
+
+#: lib/retro_hex_chat/system_info/sources/sockets.ex:41
+#, elixir-autogen, elixir-format
+msgid "Sent"
+msgstr "サインイン"
+
+#: lib/retro_hex_chat/system_info/sources/applications.ex:28
+#, elixir-autogen, elixir-format
+msgid "Started"
+msgstr "スタート"
+
+#: lib/retro_hex_chat/system_info/sources/sockets.ex:37
+#, elixir-autogen, elixir-format
+msgid "State"
+msgstr "ステート"
+
+#: lib/retro_hex_chat/system_info/sources/ets.ex:30
+#, elixir-autogen, elixir-format
+msgid "Type"
+msgstr "タイプ:"
+
+#: lib/retro_hex_chat/system_info/sources/applications.ex:27
+#, elixir-autogen, elixir-format
+msgid "Version"
+msgstr "バージョン"

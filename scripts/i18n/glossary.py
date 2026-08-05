@@ -92,6 +92,18 @@ _ROWS = {
     "Revoke":       ("Revogar", "Revogar", "Revocar", "Révoquer", "Widerrufen", "Revoca", "Intrekken", "Odwołaj", "Отозвать", "Cabut", "失効", "撤销", "撤銷"),
     "Forget":       ("Esquecer", "Esquecer", "Olvidar", "Oublier", "Vergessen", "Dimentica", "Vergeten", "Zapomnij", "Забыть", "Lupakan", "削除", "忘记", "忘記"),
 
+    # ── Terms that are names, not words ───────────────────────
+    # Acronyms and protocol nouns. Left to the pipeline they collapse onto
+    # whatever ordinary word looks nearest: "RSS", "IO" and "Wallops" all
+    # became "Autres" in French, which is not a mistranslation so much as a
+    # deletion. They are the same string in every locale because they are
+    # names.
+    "RSS":          ("RSS", "RSS", "RSS", "RSS", "RSS", "RSS", "RSS", "RSS", "RSS", "RSS", "RSS", "RSS", "RSS"),
+    "IO":           ("IO", "IO", "IO", "IO", "IO", "IO", "IO", "IO", "IO", "IO", "IO", "IO", "IO"),
+    "Wallops":      ("Wallops", "Wallops", "Wallops", "Wallops", "Wallops", "Wallops", "Wallops", "Wallops", "Wallops", "Wallops", "Wallops", "Wallops", "Wallops"),
+    "ETS":          ("ETS", "ETS", "ETS", "ETS", "ETS", "ETS", "ETS", "ETS", "ETS", "ETS", "ETS", "ETS", "ETS"),
+    "CPU":          ("CPU", "CPU", "CPU", "CPU", "CPU", "CPU", "CPU", "CPU", "ЦП", "CPU", "CPU", "CPU", "CPU"),
+
     # ── Application chrome ────────────────────────────────────
     "Help":         ("Ajuda", "Ajuda", "Ayuda", "Aide", "Hilfe", "Aiuto", "Help", "Pomoc", "Справка", "Bantuan", "ヘルプ", "帮助", "說明"),
     "Settings":     ("Configurações", "Definições", "Ajustes", "Paramètres", "Einstellungen", "Impostazioni", "Instellingen", "Ustawienia", "Настройки", "Pengaturan", "設定", "设置", "設定"),
