@@ -263,3 +263,32 @@
   color: var(--color-muted);
   background: transparent;
 }
+
+/* ── Row highlight ─────────────────────────────────────────── */
+/* Every "pick one of these" row in the retro chrome shares this: menu-bar
+   items, dropdown items, select options, tree rows and the Start menu.
+
+   It used to be the window-title navy with white text. Every one of those rows
+   carries a full-colour 16×16 icon, and navy behind them turned the icons into
+   confetti while the inverted label fought the black text of the rows above and
+   below. A pale steel wash reads as "this row" without repainting it: the label
+   stays black, the icon keeps the colours it was drawn in, and only the
+   background moves.
+
+   The components decide *when* a row is highlighted — each knows its own idea
+   of disabled — and only borrow the look. */
+.menu-row:hover,
+.menu-row:focus-visible,
+.menu-row--selected,
+[data-submenu-open="true"] > .desktop-start-menu__item {
+  background: #ccd3e6;
+  color: #000000;
+}
+
+/* A row that stays selected while attention is elsewhere — an open submenu, the
+   active node of a tree — keeps an edge, so it is still findable once the
+   pointer has moved on to the panel it opened. */
+.menu-row--selected,
+[data-submenu-open="true"] > .desktop-start-menu__item {
+  box-shadow: inset 2px 0 #000080;
+}

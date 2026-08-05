@@ -193,7 +193,7 @@ defmodule RetroHexChatWeb.Components.UI.Select do
       class={
         classes([
           "group/item",
-          "relative flex w-full cursor-default select-none items-center py-1 pl-6 pr-2 text-sm outline-none hover:bg-primary hover:text-white data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+          "menu-row relative flex w-full cursor-default select-none items-center py-1 pl-6 pr-2 text-sm outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
           @class
         ])
       }

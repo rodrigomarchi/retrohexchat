@@ -516,7 +516,11 @@
 }
 
 /* ── Start menu item states ────────────────────────────────── */
-/* The menu carries the same entries on every screen, so most of them are out of
+/* The row highlight itself lives in `app-menu.css`, shared with every other
+   menu in the chrome. What is local to the Start menu is which rows may take
+   it: a disabled entry must not light up under the pointer.
+
+   The menu carries the same entries on every screen, so most of them are out of
    reach at any given moment. Grayed and inert is the Win98 answer, and it keeps
    the app's surface legible from the landing page as much as from the chat. */
 .desktop-start-menu__item--disabled,

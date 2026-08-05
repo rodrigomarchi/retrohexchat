@@ -62,10 +62,7 @@ defmodule RetroHexChatWeb.Components.UI.TreeView do
       class={
         classes([
           "flex items-center gap-1.5 px-1 py-[1px] text-sm cursor-pointer select-none",
-          if(@active,
-            do: "bg-primary text-white",
-            else: "hover:bg-primary hover:text-white"
-          ),
+          if(@active, do: "menu-row--selected", else: "menu-row"),
           @class
         ])
       }

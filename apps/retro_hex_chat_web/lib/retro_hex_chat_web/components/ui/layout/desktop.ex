@@ -599,7 +599,7 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
           "desktop-start-menu__item flex w-full items-center gap-2 px-2 py-1 text-left text-xs",
           if(@disabled,
             do: "desktop-start-menu__item--disabled cursor-default",
-            else: "hover:bg-primary hover:text-white"
+            else: "menu-row"
           ),
           !@disabled && (@href || @navigate) && "text-text no-underline",
           @class
@@ -656,10 +656,7 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
         type="button"
         class={
           classes([
-            "desktop-start-menu__item flex w-full items-center gap-2 px-2 py-1 text-left text-xs",
-            "hover:bg-primary hover:text-white",
-            "group-data-[submenu-open=true]/start:bg-primary",
-            "group-data-[submenu-open=true]/start:text-white",
+            "desktop-start-menu__item menu-row flex w-full items-center gap-2 px-2 py-1 text-left text-xs",
             @muted && "desktop-start-menu__item--muted"
           ])
         }

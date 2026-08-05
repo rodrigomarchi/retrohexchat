@@ -164,6 +164,28 @@ test.describe("Showcase desktop", () => {
     expect(failures).toEqual([]);
   });
 
+  // Menu bar, dropdown, select and tree all mark "this row" the same way, and
+  // the showcase is where that can be checked in one pass. The colour is
+  // asserted, not just screenshotted: the failure this guards against is one
+  // component quietly going back to the window-title navy, which reads as a
+  // deliberate accent until you see it beside the others.
+  test("every menu row takes the same highlight", async ({ page }) => {
+    const wash = "rgb(204, 211, 230)";
+
+    for (const route of ["menu", "dropdown-menu", "select", "tree-view"]) {
+      await page.goto(`/showcase/${route}`);
+      await waitForDesktop(page);
+
+      // Several of these pages also render a closed menu as a code example, so
+      // the row that can be hovered is the first one actually on screen.
+      const row = page.locator(".menu-row").locator("visible=true").first();
+      await expect(row).toBeVisible();
+      await row.hover();
+      await expect(row).toHaveCSS("background-color", wash);
+      await shot(row, `menu-row-highlight-${route}`);
+    }
+  });
+
   // The demo on /showcase/desktop is a desktop nested inside the shell's own
   // desktop — the one page in the app running two window managers at once. Ids
   // shared between the two would leave the document with pairs of elements

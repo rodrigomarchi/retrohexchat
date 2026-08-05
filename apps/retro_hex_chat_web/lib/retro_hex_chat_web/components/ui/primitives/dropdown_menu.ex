@@ -113,10 +113,7 @@ defmodule RetroHexChatWeb.Components.UI.DropdownMenu do
       class={
         classes([
           "flex items-center gap-1.5 px-3 py-1 text-sm whitespace-nowrap cursor-pointer select-none",
-          if(@disabled,
-            do: "text-disabled cursor-default",
-            else: "hover:bg-primary hover:text-white"
-          ),
+          if(@disabled, do: "text-disabled cursor-default", else: "menu-row"),
           @class
         ])
       }
