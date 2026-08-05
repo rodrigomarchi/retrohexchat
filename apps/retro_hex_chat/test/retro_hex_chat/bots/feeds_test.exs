@@ -3,7 +3,7 @@ defmodule RetroHexChat.Bots.FeedsTest do
 
   @moduletag :integration
 
-  alias RetroHexChat.Bots.{Feeds, Queries}
+  alias RetroHexChat.Bots.{Feeds, Queries, Registry, Supervisor}
   alias RetroHexChat.Jobs.RSSPollWorker
 
   # A literal address needs no resolver, so these stay hermetic.
@@ -138,26 +138,36 @@ defmodule RetroHexChat.Bots.FeedsTest do
       assert :sys.get_state(pid).capability_timers == %{}
     end
 
+    test "adding a feed to a stopped enabled bot starts it and enqueues its poll" do
+      bot = bot()
+
+      assert {:error, :not_found} = Registry.lookup(bot.nickname)
+
+      {:ok, updated} = Feeds.add(bot, @public, "#news")
+      Process.sleep(80)
+
+      assert {:ok, pid} = Registry.lookup(updated.nickname)
+      assert Process.alive?(pid)
+
+      on_exit(fn -> Supervisor.stop_bot(updated.nickname) end)
+
+      [%{"id" => id}] = Feeds.list(updated)
+
+      assert_enqueued(
+        worker: RSSPollWorker,
+        queue: :rss,
+        args: %{bot_id: updated.id, feed_id: id}
+      )
+    end
+
     test "removing it cancels its durable poll" do
       bot = bot()
       {:ok, with_feed} = Feeds.add(bot, @public, "#news")
       [%{"id" => id}] = Feeds.list(with_feed)
 
-      {:ok, pid} =
-        RetroHexChat.Bots.Supervisor.start_bot(%{
-          id: with_feed.id,
-          name: with_feed.name,
-          nickname: with_feed.nickname,
-          command_prefix: "!",
-          created_by: "admin",
-          enabled: true,
-          cooldown_ms: 0,
-          capabilities: with_feed.capabilities,
-          channel_configs: [%{channel_name: "#news", enabled: true, capability_overrides: %{}}],
-          custom_commands: []
-        })
+      assert {:ok, pid} = Registry.lookup(with_feed.nickname)
 
-      on_exit(fn -> RetroHexChat.Bots.Supervisor.stop_bot(with_feed.nickname) end)
+      on_exit(fn -> Supervisor.stop_bot(with_feed.nickname) end)
 
       assert_enqueued(
         worker: RSSPollWorker,

@@ -117,8 +117,83 @@ defmodule RetroHexChat.Jobs.RSSPollWorkerTest do
     )
   end
 
-  @spec create_and_start_bot(map()) :: RetroHexChat.Bots.Bot.t()
-  defp create_and_start_bot(feed) do
+  test "real Oban execution leaves a successor poll after the current job completes" do
+    feed = %{"id" => "f1", "url" => @url, "channel" => @channel, "seen" => []}
+    page = feed_page([{2, "Second"}, {1, "First"}])
+
+    ScriptedFetcher.script([
+      {:ok, page, %{etag: "\"one\"", last_modified: nil}}
+    ])
+
+    bot = create_and_start_bot(feed)
+
+    assert_enqueued(
+      worker: RSSPollWorker,
+      queue: :rss,
+      args: %{bot_id: bot.id, feed_id: "f1"}
+    )
+
+    assert %{success: 1, failure: 0} =
+             Oban.drain_queue(queue: :rss, with_scheduled: true, with_limit: 1)
+
+    assert bot_messages() == []
+
+    assert [
+             %Oban.Job{
+               state: "scheduled",
+               args: %{"bot_id" => bot_id, "feed_id" => "f1"}
+             }
+           ] =
+             all_enqueued(
+               worker: RSSPollWorker,
+               queue: :rss,
+               args: %{bot_id: bot.id, feed_id: "f1"}
+             )
+
+    assert bot_id == bot.id
+  end
+
+  test "poll completion does not push sibling feed jobs into the future" do
+    feed_a = %{"id" => "f1", "url" => @url, "channel" => @channel, "seen" => []}
+
+    feed_b = %{
+      "id" => "f2",
+      "url" => @url,
+      "channel" => @channel,
+      "seen" => ["urn:worker:99"],
+      "last_polled_at" => DateTime.utc_now() |> DateTime.to_iso8601()
+    }
+
+    ScriptedFetcher.script([
+      {:ok, feed_page([{2, "Second"}, {1, "First"}]), %{etag: "\"one\"", last_modified: nil}}
+    ])
+
+    bot = create_and_start_bot([feed_a, feed_b])
+
+    [%Oban.Job{scheduled_at: sibling_before}] =
+      all_enqueued(
+        worker: RSSPollWorker,
+        queue: :rss,
+        args: %{bot_id: bot.id, feed_id: "f2"}
+      )
+
+    assert %{success: 1, failure: 0} =
+             Oban.drain_queue(queue: :rss, with_scheduled: true, with_limit: 1)
+
+    [%Oban.Job{scheduled_at: sibling_after}] =
+      all_enqueued(
+        worker: RSSPollWorker,
+        queue: :rss,
+        args: %{bot_id: bot.id, feed_id: "f2"}
+      )
+
+    assert sibling_after == sibling_before
+  end
+
+  @spec create_and_start_bot(map() | [map()]) :: RetroHexChat.Bots.Bot.t()
+  defp create_and_start_bot(feed_or_feeds) do
+    feeds = List.wrap(feed_or_feeds)
+
     {:ok, bot} =
       BotQueries.create_bot(%{
         name: "RSSWorkerBot",
@@ -127,7 +202,7 @@ defmodule RetroHexChat.Jobs.RSSPollWorkerTest do
         capabilities: %{
           "rss" => %{
             "enabled" => true,
-            "feeds" => [feed],
+            "feeds" => feeds,
             "poll_interval_min" => 30,
             "max_items_per_poll" => 3
           }

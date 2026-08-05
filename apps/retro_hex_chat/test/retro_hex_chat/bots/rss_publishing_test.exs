@@ -146,10 +146,17 @@ defmodule RetroHexChat.Bots.RSSPublishingTest do
 
   defp headlines, do: Enum.map(bot_messages(), & &1.content)
 
+  defp start_channel(channel_name) do
+    case Channels.Supervisor.start_child(channel_name) do
+      {:ok, pid} -> pid
+      {:error, {:already_started, pid}} -> pid
+    end
+  end
+
   setup do
     Application.put_env(:retro_hex_chat, :rss_fetcher, ScriptedFetcher)
     Application.put_env(:retro_hex_chat, :link_preview_fetcher, NoopPreview)
-    {:ok, chan} = Channels.Supervisor.start_child(@channel)
+    chan = start_channel(@channel)
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#{@channel}")
 
     on_exit(fn ->

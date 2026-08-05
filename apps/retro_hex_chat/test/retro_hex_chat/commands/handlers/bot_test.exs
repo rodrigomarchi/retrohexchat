@@ -3,8 +3,9 @@ defmodule RetroHexChat.Commands.Handlers.BotTest do
 
   @moduletag :integration
 
-  alias RetroHexChat.Bots.Queries
+  alias RetroHexChat.Bots.{Queries, Registry, Supervisor}
   alias RetroHexChat.Commands.Handlers.Bot
+  alias RetroHexChat.Jobs.RSSPollWorker
 
   @bold <<0x02>>
   @colour <<0x03>>
@@ -35,9 +36,17 @@ defmodule RetroHexChat.Commands.Handlers.BotTest do
   setup do
     on_exit(fn ->
       RetroHexChat.Bots.Supervisor.stop_bot("BotCmdTest")
+      stop_channel("#wire")
     end)
 
     :ok
+  end
+
+  defp stop_channel(channel_name) do
+    case RetroHexChat.Channels.Registry.lookup(channel_name) do
+      {:ok, pid} -> RetroHexChat.Channels.Supervisor.stop_child(pid)
+      {:error, :not_found} -> :ok
+    end
   end
 
   describe "execute create" do
@@ -269,6 +278,27 @@ defmodule RetroHexChat.Commands.Handlers.BotTest do
 
       assert [%{"url" => @public, "channel" => "#wire"}] =
                Feeds.list(Queries.get_bot_by_name("BotCmdTest"))
+    end
+
+    test "rss add starts a stopped enabled bot and enqueues the first poll" do
+      Supervisor.stop_bot("BotCmdTest")
+      Process.sleep(10)
+      assert {:error, :not_found} = Registry.lookup("BotCmdTest")
+
+      assert {:ok, :system, %{content: content}} =
+               Bot.execute(["rss", "add", "BotCmdTest", @public, "#wire"], @admin_ctx)
+
+      assert content =~ "Feed added"
+      assert {:ok, pid} = Registry.lookup("BotCmdTest")
+      assert Process.alive?(pid)
+
+      [%{"id" => id}] = Feeds.list(Queries.get_bot_by_name("BotCmdTest"))
+
+      assert_enqueued(
+        worker: RSSPollWorker,
+        queue: :rss,
+        args: %{bot_id: Queries.get_bot_by_name("BotCmdTest").id, feed_id: id}
+      )
     end
 
     test "refuses an address the server should not fetch" do

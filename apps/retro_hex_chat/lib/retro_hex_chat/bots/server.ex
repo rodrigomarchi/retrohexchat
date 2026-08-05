@@ -111,6 +111,11 @@ defmodule RetroHexChat.Bots.Server do
     GenServer.call(via(bot_nickname), {:reload_capabilities, capabilities})
   end
 
+  @spec sync_capabilities(String.t(), map()) :: :ok
+  def sync_capabilities(bot_nickname, capabilities) do
+    GenServer.call(via(bot_nickname), {:sync_capabilities, capabilities})
+  end
+
   @spec reload_commands(String.t(), map()) :: :ok
   def reload_commands(bot_nickname, commands) do
     GenServer.cast(via(bot_nickname), {:reload_commands, commands})
@@ -201,22 +206,19 @@ defmodule RetroHexChat.Bots.Server do
   end
 
   def handle_call({:reload_capabilities, capabilities}, _from, state) do
-    new_capabilities = build_capabilities(capabilities)
-    new_states = init_capability_states(new_capabilities)
-
-    # Keep live state — a trivia round in progress, a flood counter — except
-    # where the capability's truth lives in the config it was just handed. A
-    # feed added from the admin dialog arrives that way, and preserving the old
-    # in-memory list would quietly discard it.
-    merged_states =
-      Map.merge(new_states, state.capability_states, fn name, fresh, existing ->
-        if durable?(new_capabilities, name), do: fresh, else: existing
-      end)
+    {new_capabilities, merged_states} = refresh_capability_config(state, capabilities)
 
     state = %{state | capabilities: new_capabilities, capability_states: merged_states}
 
     # A reload can add or remove what there is to poll.
     state = Enum.reduce(Map.keys(merged_states), state, &reconcile_timers(&2, &1))
+
+    {:reply, :ok, state}
+  end
+
+  def handle_call({:sync_capabilities, capabilities}, _from, state) do
+    {new_capabilities, merged_states} = refresh_capability_config(state, capabilities)
+    state = %{state | capabilities: new_capabilities, capability_states: merged_states}
 
     {:reply, :ok, state}
   end
@@ -231,6 +233,24 @@ defmodule RetroHexChat.Bots.Server do
       nil ->
         false
     end
+  end
+
+  @spec refresh_capability_config(state(), map()) ::
+          {[{atom(), module(), map()}], %{atom() => map()}}
+  defp refresh_capability_config(state, capabilities) do
+    new_capabilities = build_capabilities(capabilities)
+    new_states = init_capability_states(new_capabilities)
+
+    # Keep live state — a trivia round in progress, a flood counter — except
+    # where the capability's truth lives in the config it was just handed. A
+    # feed added from the admin dialog arrives that way, and preserving the old
+    # in-memory list would quietly discard it.
+    merged_states =
+      Map.merge(new_states, state.capability_states, fn name, fresh, existing ->
+        if durable?(new_capabilities, name), do: fresh, else: existing
+      end)
+
+    {new_capabilities, merged_states}
   end
 
   @impl true

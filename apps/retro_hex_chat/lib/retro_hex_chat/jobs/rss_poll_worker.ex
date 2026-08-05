@@ -165,11 +165,11 @@ defmodule RetroHexChat.Jobs.RSSPollWorker do
 
   @spec deliver_poll(map()) :: :ok | {:error, term()}
   defp deliver_poll(%{planned: :ignore, bot: bot}) do
-    reload_running_bot(bot)
+    sync_running_bot(bot)
   end
 
   defp deliver_poll(%{planned: planned, bot: bot, channel: channel}) do
-    reload_running_bot(bot)
+    sync_running_bot(bot)
 
     case RSS.format_planned_result(planned) do
       {:multi_output, outputs} -> Output.send_many(channel, bot.nickname, outputs)
@@ -177,15 +177,15 @@ defmodule RetroHexChat.Jobs.RSSPollWorker do
     end
   end
 
-  @spec reload_running_bot(Bot.t()) :: :ok
-  defp reload_running_bot(bot) do
-    Server.reload_capabilities(bot.nickname, bot.capabilities)
+  @spec sync_running_bot(Bot.t()) :: :ok
+  defp sync_running_bot(bot) do
+    Server.sync_capabilities(bot.nickname, bot.capabilities)
   catch
     :exit, _reason -> :ok
   end
 
   @spec schedule_next_poll(map()) :: :ok | {:error, term()}
   defp schedule_next_poll(%{bot: %Bot{id: bot_id}, feed_id: feed_id, poll_interval_ms: delay_ms}) do
-    Scheduler.schedule_poll(bot_id, feed_id, delay_ms)
+    Scheduler.schedule_follow_up_poll(bot_id, feed_id, delay_ms)
   end
 end

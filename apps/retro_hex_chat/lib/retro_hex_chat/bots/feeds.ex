@@ -11,7 +11,9 @@ defmodule RetroHexChat.Bots.Feeds do
   alias RetroHexChat.Bots.Capabilities.RSS
   alias RetroHexChat.Bots.Capabilities.RSS.Scheduler
   alias RetroHexChat.Bots.Capabilities.RSS.UrlGuard
-  alias RetroHexChat.Bots.{Queries, Server}
+  alias RetroHexChat.Bots.{Lifecycle, Queries}
+
+  require Logger
 
   @cap "rss"
 
@@ -125,9 +127,17 @@ defmodule RetroHexChat.Bots.Feeds do
 
   @spec reload(map()) :: :ok
   defp reload(bot) do
-    Server.reload_capabilities(bot.nickname, bot.capabilities)
-  catch
-    :exit, _ -> :ok
+    case Lifecycle.reload_capabilities_or_start(bot) do
+      :ok ->
+        :ok
+
+      {:error, :disabled} ->
+        :ok
+
+      {:error, reason} ->
+        Logger.warning("Bot #{bot.nickname} failed to reload RSS feeds: #{inspect(reason)}")
+        :ok
+    end
   end
 
   @spec ensure_hash(String.t()) :: String.t()

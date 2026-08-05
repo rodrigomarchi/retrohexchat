@@ -8,6 +8,8 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.Scheduler do
   """
 
   @callback schedule_poll(integer(), String.t(), non_neg_integer()) :: :ok | {:error, term()}
+  @callback schedule_follow_up_poll(integer(), String.t(), non_neg_integer()) ::
+              :ok | {:error, term()}
   @callback cancel_poll(integer(), String.t()) :: :ok | {:error, term()}
 
   @doc "Ensure a durable RSS poll job exists after `delay_ms`."
@@ -19,6 +21,22 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.Scheduler do
   end
 
   def schedule_poll(_bot_id, _feed_id, _delay_ms), do: {:error, :invalid_rss_poll}
+
+  @doc """
+  Ensure the next RSS poll exists after the current poll finishes.
+
+  This is distinct from `schedule_poll/3`: the current job is still in
+  `executing` while it asks for its successor, so the durable scheduler must not
+  treat that current job as the duplicate it is trying to avoid.
+  """
+  @spec schedule_follow_up_poll(integer() | nil, String.t() | nil, non_neg_integer()) ::
+          :ok | {:error, term()}
+  def schedule_follow_up_poll(bot_id, feed_id, delay_ms)
+      when is_integer(bot_id) and is_binary(feed_id) and is_integer(delay_ms) and delay_ms >= 0 do
+    impl().schedule_follow_up_poll(bot_id, feed_id, delay_ms)
+  end
+
+  def schedule_follow_up_poll(_bot_id, _feed_id, _delay_ms), do: {:error, :invalid_rss_poll}
 
   @doc "Cancel incomplete durable RSS poll jobs for a feed."
   @spec cancel_poll(integer() | nil, String.t() | nil) :: :ok | {:error, term()}
@@ -47,13 +65,27 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.Scheduler.Oban do
 
   @behaviour RetroHexChat.Bots.Capabilities.RSS.Scheduler
 
+  @follow_up_unique_states [:available, :scheduled, :retryable, :suspended]
+
   @impl true
   @spec schedule_poll(integer(), String.t(), non_neg_integer()) :: :ok | {:error, term()}
   def schedule_poll(bot_id, feed_id, delay_ms) do
+    schedule(bot_id, feed_id, delay_ms, [])
+  end
+
+  @impl true
+  @spec schedule_follow_up_poll(integer(), String.t(), non_neg_integer()) ::
+          :ok | {:error, term()}
+  def schedule_follow_up_poll(bot_id, feed_id, delay_ms) do
+    schedule(bot_id, feed_id, delay_ms, unique: [states: @follow_up_unique_states])
+  end
+
+  @spec schedule(integer(), String.t(), non_neg_integer(), keyword()) :: :ok | {:error, term()}
+  defp schedule(bot_id, feed_id, delay_ms, opts) do
     delay_s = delay_ms |> div(1_000) |> max(1)
 
     %{bot_id: bot_id, feed_id: feed_id}
-    |> RSSPollWorker.new(schedule_in: delay_s)
+    |> RSSPollWorker.new(Keyword.put(opts, :schedule_in, delay_s))
     |> Jobs.insert()
     |> case do
       {:ok, _job} -> :ok

@@ -19,6 +19,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.NukeTest do
   alias RetroHexChat.Chat.PrivateMessage
   alias RetroHexChat.Commands.Handlers.Admin.Nuke
   alias RetroHexChat.GroupCall.Schema.{Participant, Room, Track}
+  alias RetroHexChat.Jobs.RSSPollWorker
   alias RetroHexChat.Lobby.Schema.Session, as: LobbySession
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.Repo
@@ -345,6 +346,18 @@ defmodule RetroHexChat.Commands.Handlers.Admin.NukeTest do
 
       assert {:ok, _summary} = Admin.nuke_system("NukeAdmin")
       assert Queries.get_setting("registration") == "open"
+    end
+
+    test "deletes queued background jobs" do
+      assert {:ok, _job} =
+               %{bot_id: 123, feed_id: "f1"}
+               |> RSSPollWorker.new(schedule_in: 60)
+               |> Oban.insert()
+
+      assert Repo.aggregate(Oban.Job, :count) == 1
+
+      assert {:ok, _summary} = Admin.nuke_system("NukeAdmin")
+      assert Repo.aggregate(Oban.Job, :count) == 0
     end
   end
 

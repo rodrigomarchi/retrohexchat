@@ -6,6 +6,42 @@ defmodule RetroHexChat.Bots.Lifecycle do
 
   alias RetroHexChat.Bots.{Bot, Queries, Registry, Server, Supervisor}
 
+  @spec ensure_started(Bot.t()) :: {:ok, pid()} | {:error, term()}
+  def ensure_started(%Bot{enabled: false}), do: {:error, :disabled}
+
+  def ensure_started(%Bot{} = bot) do
+    case Registry.lookup(bot.nickname) do
+      {:ok, pid} ->
+        {:ok, pid}
+
+      {:error, :not_found} ->
+        bot
+        |> runtime_data()
+        |> Supervisor.start_bot()
+        |> normalize_start()
+    end
+  end
+
+  @spec reload_capabilities_or_start(Bot.t()) :: :ok | {:error, term()}
+  def reload_capabilities_or_start(%Bot{enabled: false}), do: :ok
+
+  def reload_capabilities_or_start(%Bot{} = bot) do
+    case Registry.lookup(bot.nickname) do
+      {:ok, _pid} ->
+        Server.reload_capabilities(bot.nickname, bot.capabilities)
+
+      {:error, :not_found} ->
+        bot
+        |> ensure_started()
+        |> normalize_ok()
+    end
+  catch
+    :exit, _reason ->
+      bot
+      |> ensure_started()
+      |> normalize_ok()
+  end
+
   @spec destroy_bot(Bot.t()) :: {:ok, Bot.t()} | {:error, Ecto.Changeset.t()}
   def destroy_bot(%Bot{} = bot) do
     part_from_configured_channels(bot)
@@ -53,4 +89,32 @@ defmodule RetroHexChat.Bots.Lifecycle do
   catch
     :exit, _reason -> :ok
   end
+
+  @spec runtime_data(Bot.t()) :: map()
+  defp runtime_data(%Bot{} = bot) do
+    bot = Queries.preload_associations(bot)
+
+    %{
+      id: bot.id,
+      name: bot.name,
+      nickname: bot.nickname,
+      command_prefix: bot.command_prefix,
+      created_by: bot.created_by,
+      enabled: bot.enabled,
+      cooldown_ms: bot.cooldown_ms,
+      capabilities: bot.capabilities,
+      channel_configs: bot.channel_configs,
+      custom_commands: bot.custom_commands
+    }
+  end
+
+  @spec normalize_start(DynamicSupervisor.on_start_child()) :: {:ok, pid()} | {:error, term()}
+  defp normalize_start({:ok, pid}), do: {:ok, pid}
+  defp normalize_start({:ok, pid, _info}), do: {:ok, pid}
+  defp normalize_start({:error, {:already_started, pid}}), do: {:ok, pid}
+  defp normalize_start({:error, reason}), do: {:error, reason}
+
+  @spec normalize_ok({:ok, pid()} | {:error, term()}) :: :ok | {:error, term()}
+  defp normalize_ok({:ok, _pid}), do: :ok
+  defp normalize_ok({:error, reason}), do: {:error, reason}
 end

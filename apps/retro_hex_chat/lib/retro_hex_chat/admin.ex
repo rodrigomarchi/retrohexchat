@@ -428,6 +428,7 @@ defmodule RetroHexChat.Admin do
     {"trusted_device_nicks", RetroHexChat.Accounts.TrustedDeviceNick},
     {"chat_device_sessions", RetroHexChat.Accounts.ChatDeviceSession},
     {"trusted_devices", RetroHexChat.Accounts.TrustedDevice},
+    {"oban_jobs", Oban.Job},
     {"bot_event_log", RetroHexChat.Bots.BotEventLog},
     {"bot_custom_commands", RetroHexChat.Bots.BotCustomCommand},
     {"bot_channel_configs", RetroHexChat.Bots.BotChannelConfig},
