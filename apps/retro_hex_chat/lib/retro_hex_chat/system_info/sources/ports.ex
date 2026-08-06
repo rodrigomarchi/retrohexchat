@@ -15,8 +15,8 @@ defmodule RetroHexChat.SystemInfo.Sources.Ports do
 
   @behaviour RetroHexChat.SystemInfo.Source
 
-  alias RetroHexChat.Admin.Table
   alias RetroHexChat.SystemInfo.Query
+  alias RetroHexChat.Table
 
   @impl true
   @spec columns() :: [Table.column()]

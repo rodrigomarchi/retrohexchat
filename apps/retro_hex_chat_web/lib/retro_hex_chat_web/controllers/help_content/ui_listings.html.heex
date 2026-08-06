@@ -1,0 +1,85 @@
+<p>
+  {dgettext(
+    "help_ui",
+    "Wherever the product shows you rows — an admin listing, a runtime window, a database report — it is the same table. Learn it once in the ETS Tables window and you already know the audit log, the user listing and the Oban queues."
+  )}
+</p>
+
+<h3>{dgettext("help_ui", "Ordering")}</h3>
+<p>
+  {dgettext(
+    "help_ui",
+    "A heading with an arrow on it can order the listing. Click it once to order by that column, again to reverse. A heading with no arrow is not sortable — the query behind it already decided the order, and the audit log is the clearest case: it is a record of what happened, so it reads newest first and nothing else."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_ui",
+    "Ordering is done by the server, not in the browser, so it reorders the whole listing rather than only the rows on screen. That matters where the window is showing the top fifty of several hundred: sorting by Memory really does bring you the heaviest table in the server, not the heaviest of the fifty you happened to be looking at."
+  )}
+</p>
+
+<h3>{dgettext("help_ui", "Column Width")}</h3>
+<p>
+  {dgettext(
+    "help_ui",
+    "Drag the right edge of a heading to make its column wider or narrower. Double-click that same edge and the column fits itself to its longest visible value — the fastest way to read a column of module names or MFAs that is clipping."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_ui",
+    "The widths are taken from the first time the window drew and then held. That is deliberate: a listing you refresh every few seconds would otherwise re-measure itself each time, and every column would shift under you whenever one value grew. Widths last as long as the window; closing it and opening it again starts from a fresh measurement."
+  )}
+</p>
+
+<h3>{dgettext("help_ui", "Choosing Columns")}</h3>
+<p>
+  {dgettext(
+    "help_ui",
+    "Right-click the header row for the list of columns, and click one to switch it off. The table closes the gap, so hiding two columns you do not need is often enough to fit the rest without any scrolling. \"Show all columns\" brings everything back."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_ui",
+    "The last visible column cannot be hidden — a table of nothing but blank rows has no way back except the reset. From the keyboard, the Menu key (or Shift+F10) opens the same list."
+  )}
+</p>
+
+<h3>{dgettext("help_ui", "Selecting & Copying")}</h3>
+<p>
+  {dgettext(
+    "help_ui",
+    "Click a row to select it. Shift+click extends the selection to that row, Ctrl+click adds or removes a single one. Once a row has focus the arrow keys move the selection, Home and End jump to the ends, and PageUp and PageDown move a screen at a time."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_ui",
+    "Ctrl+A takes every row on screen and Ctrl+C copies what is selected as tab-separated text, headings included — it pastes into a spreadsheet as columns. Only the columns you can see are copied, so hiding a column before copying is also how you leave it out."
+  )}
+</p>
+
+<h3>{dgettext("help_ui", "Reading A Listing Honestly")}</h3>
+<p>
+  {dgettext(
+    "help_ui",
+    "The count above a table always says how many rows matched, not how many are drawn. \"50 of 331\" means you are looking at the top fifty of three hundred and thirty-one. Where a listing can page, a Load More button sits beneath it, and a marker appears once there is nothing left to fetch."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_ui",
+    "Selection, column width and column visibility are yours alone and never leave the browser. Nothing you do to the shape of a table changes anything on the server or for anyone else looking at the same data."
+  )}
+</p>
+
+<.help_h4 icon={:icon_link}>{dgettext("help_ui", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="ui-system-windows">{dgettext("help_ui", "System Windows")}</.help_link>
+  · <.help_link topic="ui-lists">{dgettext("help_ui", "Long Lists & Loading More")}</.help_link>
+  ·
+  <.help_link topic="keyboard-shortcuts">{dgettext("help_ui", "Keyboard Shortcuts")}</.help_link>
+  · <.help_link topic="empty-states">{dgettext("help_ui", "Empty States")}</.help_link>
+</p>

@@ -15,7 +15,7 @@ defmodule RetroHexChatWeb.Components.UI.System.SourceBrowser do
   """
   use RetroHexChatWeb.Component
 
-  import RetroHexChatWeb.Components.UI.AdminShared
+  import RetroHexChatWeb.Components.UI.RetroTable
   import RetroHexChatWeb.Components.UI.Button
 
   alias RetroHexChatWeb.Components.UI.Format
@@ -24,7 +24,7 @@ defmodule RetroHexChatWeb.Components.UI.System.SourceBrowser do
   attr :id, :string, required: true
   attr :icon, :atom, required: true
   attr :title, :string, required: true
-  attr :table, :any, default: nil, doc: "%Admin.Table{}"
+  attr :table, :any, default: nil, doc: "%Table{}"
   attr :search, :string, default: nil
   attr :sort_by, :atom, default: nil
   attr :sort_dir, :atom, default: :desc, values: [:asc, :desc]
@@ -105,7 +105,8 @@ defmodule RetroHexChatWeb.Components.UI.System.SourceBrowser do
       </form>
 
       <div class="retro-scrollbar min-h-0 flex-1 overflow-auto bg-white shadow-retro-sunken">
-        <.admin_table
+        <.retro_table
+          id={"#{@testid}-table"}
           table={@table}
           testid={"#{@testid}-table"}
           target={@target}

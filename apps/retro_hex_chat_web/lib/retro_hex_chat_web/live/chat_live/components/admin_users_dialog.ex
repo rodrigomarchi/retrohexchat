@@ -21,7 +21,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminUsersDialog do
 
   import RetroHexChatWeb.Components.UI.AdminUsersDialog
 
-  alias RetroHexChat.Admin.Table
+  alias RetroHexChat.Table
   alias RetroHexChatWeb.ChatLive.{AdminOps, ChatContext}
 
   @id "admin-users-dialog"

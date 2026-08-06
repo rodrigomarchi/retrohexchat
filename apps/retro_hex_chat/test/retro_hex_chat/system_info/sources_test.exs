@@ -13,9 +13,9 @@ defmodule RetroHexChat.SystemInfo.SourcesTest do
 
   @moduletag :unit
 
-  alias RetroHexChat.Admin.Table
   alias RetroHexChat.SystemInfo
   alias RetroHexChat.SystemInfo.Source
+  alias RetroHexChat.Table
 
   describe "every source" do
     # Driven off the registry rather than a copy of it, so a source added to

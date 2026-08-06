@@ -23,8 +23,8 @@ defmodule RetroHexChat.SystemInfo.Sources.Processes do
 
   @behaviour RetroHexChat.SystemInfo.Source
 
-  alias RetroHexChat.Admin.Table
   alias RetroHexChat.SystemInfo.Query
+  alias RetroHexChat.Table
 
   # Every key here is a fixed-size read. :messages and :dictionary are not, and
   # must never join this list.

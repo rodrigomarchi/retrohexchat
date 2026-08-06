@@ -1,19 +1,21 @@
-defmodule RetroHexChat.Admin.Table do
+defmodule RetroHexChat.Table do
   @moduledoc """
-  The structured half of an admin command's reply.
+  A listing as columns and rows, independent of how it will be drawn.
 
-  `/admin` answers a listing command with a block of preformatted text, because
-  its first home was the chat log. The admin windows render that same text, so
-  they have no rows, no ids and no way to paginate.
+  Anything that produces rows — an admin command, a runtime source, a database
+  report — describes them once here, and every surface that shows a listing
+  reads the same shape. What a cell *means* travels with its column rather than
+  with the renderer: `format` is why a byte count and a plain integer, both
+  integers, come out differently, and `sortable` is why one heading is a button
+  and its neighbour is not.
 
-  Rather than replace the text — which every `/admin` user in chat still reads —
-  a listing handler now carries this alongside it:
+  A command that also answers in the chat log carries the table beside the
+  preformatted text it already returned:
 
       {:ok, :system, %{content: text, table: %Table{}}}
 
-  The chat path keeps matching on `content` and is untouched; the windows read
-  `table` and render rows. The text cannot regress, because it is still produced
-  by the same code that produced it before.
+  The chat path matches on `content` and the windows read `table`, so the text
+  and the rows cannot drift apart — the same code produces both.
 
   `page` carries the pagination state when the underlying query is paginated,
   and is `nil` for a bounded listing.

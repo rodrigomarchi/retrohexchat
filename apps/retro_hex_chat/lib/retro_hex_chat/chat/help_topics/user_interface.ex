@@ -266,7 +266,13 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
             "How long lists load a page at a time as you scroll, how to load the next page " <>
               "from the keyboard, and how to tell the end of a list from a list still loading."
           ),
-        see_also: ["ui-desktop", "ui-nicklist", "ui-conversations", "keyboard-shortcuts"]
+        see_also: [
+          "ui-desktop",
+          "ui-nicklist",
+          "ui-conversations",
+          "ui-listings",
+          "keyboard-shortcuts"
+        ]
       },
       %{
         id: "ui-message-of-the-day",
@@ -434,6 +440,32 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
           dgettext(
             "help",
             "Thirteen admin-only windows that read the running server: its memory, processes, connections, database, Oban jobs and live metrics."
+          ),
+        see_also: ["ui-listings", "ui-lists", "keyboard-shortcuts"]
+      },
+      %{
+        id: "ui-listings",
+        title: dgettext("help", "Listings & Tables"),
+        category: dgettext("help", "User Interface"),
+        keywords: [
+          "table",
+          "listing",
+          "column",
+          "resize",
+          "sort",
+          "hide column",
+          "select row",
+          "copy rows",
+          dgettext("help", "table"),
+          dgettext("help", "column"),
+          dgettext("help", "resize"),
+          dgettext("help", "sort")
+        ],
+        icon: :icon_table_grid,
+        description:
+          dgettext(
+            "help",
+            "Every window that shows rows shares one table: resize its columns, choose which ones show, order by any of them, and copy what you select."
           )
       },
       %{

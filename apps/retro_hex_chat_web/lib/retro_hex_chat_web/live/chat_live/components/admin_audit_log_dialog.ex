@@ -13,7 +13,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminAuditLogDialog do
 
   import RetroHexChatWeb.Components.UI.AdminAuditLogDialog
 
-  alias RetroHexChat.Admin.Table
+  alias RetroHexChat.Table
   alias RetroHexChatWeb.ChatLive.{AdminOps, ChatContext}
 
   @id "admin-audit-log-dialog"

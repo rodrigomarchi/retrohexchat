@@ -6,7 +6,7 @@ defmodule RetroHexChat.SystemInfo.Database do
   matter when a database is misbehaving: which indexes are never used, what is
   bloated, what is blocking, whether the cache is being hit. This module is the
   boundary that decides which of them a monitoring window may run, and turns
-  their results into the same `Admin.Table` every other listing uses.
+  their results into the same `Table` every other listing uses.
 
   Two exclusions are deliberate:
 
@@ -23,7 +23,7 @@ defmodule RetroHexChat.SystemInfo.Database do
   errors.
   """
 
-  alias RetroHexChat.Admin.Table
+  alias RetroHexChat.Table
 
   @type report :: %{name: atom(), title: String.t()}
 

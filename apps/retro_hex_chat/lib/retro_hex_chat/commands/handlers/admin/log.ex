@@ -3,8 +3,8 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Log do
   use Gettext, backend: RetroHexChat.Gettext
 
   alias RetroHexChat.Admin.AuditLogs
-  alias RetroHexChat.Admin.Table
   alias RetroHexChat.Commands.Handler
+  alias RetroHexChat.Table
 
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute(opts, _context) do

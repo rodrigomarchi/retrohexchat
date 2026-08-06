@@ -5,7 +5,7 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
 
   use RetroHexChatWeb.Component
 
-  import RetroHexChatWeb.Components.UI.AdminShared
+  import RetroHexChatWeb.Components.UI.RetroTable
   import RetroHexChatWeb.Components.UI.MediaSession.SummaryCard
   import RetroHexChatWeb.Components.UI.Tabs
 
@@ -224,11 +224,12 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
               label={dgettext("dialogs", "Queues by state")}
             />
             <.table_shell>
-              <.admin_table
+              <.retro_table
+                id={"#{@testid}-queues-table"}
                 table={@snapshot.queue_table}
                 testid={"#{@testid}-queues-table"}
-                table_class="table-fixed"
                 truncate
+                fit_pane
                 empty_title={dgettext("dialogs", "No Oban queues or jobs were found")}
               />
             </.table_shell>
@@ -283,11 +284,12 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
             </.section_heading>
 
             <.table_shell>
-              <.admin_table
+              <.retro_table
+                id={"#{@testid}-jobs-table"}
                 table={@snapshot.jobs_table}
                 testid={"#{@testid}-jobs-table"}
-                table_class="table-fixed"
                 truncate
+                fit_pane
                 empty_title={dgettext("dialogs", "No jobs matched this filter")}
               />
             </.table_shell>
@@ -307,11 +309,12 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
               label={dgettext("dialogs", "RSS feed coverage")}
             />
             <.table_shell>
-              <.admin_table
+              <.retro_table
+                id={"#{@testid}-rss-table"}
                 table={@snapshot.rss_table}
                 testid={"#{@testid}-rss-table"}
-                table_class="table-fixed"
                 truncate
+                fit_pane
                 empty_title={dgettext("dialogs", "No RSS feeds are configured")}
               />
             </.table_shell>
@@ -323,11 +326,12 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
               label={dgettext("dialogs", "Bot schedule coverage")}
             />
             <.table_shell>
-              <.admin_table
+              <.retro_table
+                id={"#{@testid}-bot-schedules-table"}
                 table={@snapshot.bot_schedule_table}
                 testid={"#{@testid}-bot-schedules-table"}
-                table_class="table-fixed"
                 truncate
+                fit_pane
                 empty_title={dgettext("dialogs", "No bot schedules are configured")}
               />
             </.table_shell>
@@ -336,11 +340,12 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
           <section class="min-h-[220px]">
             <.section_heading icon={:icon_notepad} label={dgettext("dialogs", "Bot event log jobs")} />
             <.table_shell>
-              <.admin_table
+              <.retro_table
+                id={"#{@testid}-bot-event-logs-table"}
                 table={@snapshot.bot_event_log_table}
                 testid={"#{@testid}-bot-event-logs-table"}
-                table_class="table-fixed"
                 truncate
+                fit_pane
                 empty_title={dgettext("dialogs", "No bot event log jobs are pending")}
               />
             </.table_shell>
@@ -357,11 +362,12 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
           <section class="min-h-[220px]">
             <.section_heading icon={:icon_clock} label={dgettext("dialogs", "Maintenance sweeps")} />
             <.table_shell>
-              <.admin_table
+              <.retro_table
+                id={"#{@testid}-maintenance-table"}
                 table={@snapshot.maintenance_table}
                 testid={"#{@testid}-maintenance-table"}
-                table_class="table-fixed"
                 truncate
+                fit_pane
                 empty_title={dgettext("dialogs", "No maintenance sweeps are configured")}
               />
             </.table_shell>
@@ -378,11 +384,12 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
           <section class="min-h-[220px]">
             <.section_heading icon={:icon_link} label={dgettext("dialogs", "Link preview cache")} />
             <.table_shell>
-              <.admin_table
+              <.retro_table
+                id={"#{@testid}-link-preview-table"}
                 table={@snapshot.link_preview_table}
                 testid={"#{@testid}-link-preview-table"}
-                table_class="table-fixed"
                 truncate
+                fit_pane
                 empty_title={dgettext("dialogs", "No link previews were cached")}
               />
             </.table_shell>
@@ -402,11 +409,12 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
               label={dgettext("dialogs", "Preference persistence")}
             />
             <.table_shell>
-              <.admin_table
+              <.retro_table
+                id={"#{@testid}-persistence-table"}
                 table={@snapshot.persistence_table}
                 testid={"#{@testid}-persistence-table"}
-                table_class="table-fixed"
                 truncate
+                fit_pane
                 empty_title={dgettext("dialogs", "No preference saves are pending")}
               />
             </.table_shell>

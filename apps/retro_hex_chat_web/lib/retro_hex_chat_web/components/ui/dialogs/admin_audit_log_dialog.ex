@@ -9,6 +9,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminAuditLogDialog do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.AdminShared
+  import RetroHexChatWeb.Components.UI.RetroTable
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Dialog
 
@@ -18,7 +19,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminAuditLogDialog do
   attr :show, :boolean, default: false
   attr :target, :any, default: nil
   attr :text, :string, default: nil
-  attr :table, :any, default: nil, doc: "%Admin.Table{} for the log"
+  attr :table, :any, default: nil, doc: "%Table{} for the log"
   attr :last, :string, default: "20"
   attr :user, :string, default: ""
   attr :result, :any, default: nil
@@ -45,7 +46,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminAuditLogDialog do
   attr :id, :string, required: true
   attr :target, :any, default: nil
   attr :text, :string, default: nil
-  attr :table, :any, default: nil, doc: "%Admin.Table{} for the log"
+  attr :table, :any, default: nil, doc: "%Table{} for the log"
   attr :last, :string, default: "20"
   attr :user, :string, default: ""
   attr :result, :any, default: nil
@@ -104,7 +105,8 @@ defmodule RetroHexChatWeb.Components.UI.AdminAuditLogDialog do
             id="admin-audit-log-output"
             class="shadow-retro-sunken bg-white min-h-[190px] max-h-[260px] overflow-y-auto retro-scrollbar"
           >
-            <.admin_table
+            <.retro_table
+              id="admin-audit-log-table"
               table={@table}
               text={@text}
               testid="admin-audit-log-table"

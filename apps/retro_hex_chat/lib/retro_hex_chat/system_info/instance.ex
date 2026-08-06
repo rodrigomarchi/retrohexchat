@@ -13,9 +13,9 @@ defmodule RetroHexChat.SystemInfo.Instance do
   needed to count distinct nicknames, so only the keys are taken.
   """
 
-  alias RetroHexChat.Admin.Table
   alias RetroHexChat.Channels
   alias RetroHexChat.Presence.Tracker
+  alias RetroHexChat.Table
 
   @type t :: %__MODULE__{
           channel_count: non_neg_integer(),

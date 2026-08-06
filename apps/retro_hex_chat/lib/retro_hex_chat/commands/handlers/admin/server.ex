@@ -4,10 +4,10 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Server do
 
   alias RetroHexChat.Admin
   alias RetroHexChat.Admin.AuditLogs
-  alias RetroHexChat.Admin.Table
   alias RetroHexChat.Commands.Handler
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.Services.Queries
+  alias RetroHexChat.Table
 
   @valid_settings ~w(server_name server_description welcome_message max_channels registration whowas_retention_seconds)
 

@@ -12,7 +12,7 @@ defmodule RetroHexChatWeb.Components.UI.System.AppInfoPanel do
   """
   use RetroHexChatWeb.Component
 
-  import RetroHexChatWeb.Components.UI.AdminShared
+  import RetroHexChatWeb.Components.UI.RetroTable
   import RetroHexChatWeb.Components.UI.MediaSession.SummaryCard
 
   alias RetroHexChatWeb.Components.UI.Format
@@ -20,7 +20,7 @@ defmodule RetroHexChatWeb.Components.UI.System.AppInfoPanel do
 
   attr :id, :string, required: true
   attr :instance, :any, required: true, doc: "%SystemInfo.Instance{}"
-  attr :table, :any, default: nil, doc: "%Admin.Table{} of per-channel occupancy"
+  attr :table, :any, default: nil, doc: "%Table{} of per-channel occupancy"
   attr :target, :any, default: nil
   attr :on_refresh, :string, required: true
   attr :testid, :string, default: "system-app-info"
@@ -95,7 +95,8 @@ defmodule RetroHexChatWeb.Components.UI.System.AppInfoPanel do
       </h4>
 
       <div class="retro-scrollbar min-h-0 flex-1 overflow-auto bg-white shadow-retro-sunken">
-        <.admin_table
+        <.retro_table
+          id={"#{@testid}-table"}
           table={@table}
           testid={"#{@testid}-table"}
           truncate

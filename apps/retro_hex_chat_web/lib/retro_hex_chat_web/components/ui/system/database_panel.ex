@@ -14,14 +14,14 @@ defmodule RetroHexChatWeb.Components.UI.System.DatabasePanel do
   """
   use RetroHexChatWeb.Component
 
-  import RetroHexChatWeb.Components.UI.AdminShared
+  import RetroHexChatWeb.Components.UI.RetroTable
 
   alias RetroHexChatWeb.Icons
 
   attr :id, :string, required: true
   attr :reports, :list, default: []
   attr :selected, :string, default: nil
-  attr :table, :any, default: nil, doc: "%Admin.Table{} of the last run"
+  attr :table, :any, default: nil, doc: "%Table{} of the last run"
   attr :error, :string, default: nil
   attr :target, :any, default: nil
   attr :on_select, :string, required: true
@@ -80,7 +80,8 @@ defmodule RetroHexChatWeb.Components.UI.System.DatabasePanel do
       </p>
 
       <div class="retro-scrollbar min-h-0 flex-1 overflow-auto bg-white shadow-retro-sunken">
-        <.admin_table
+        <.retro_table
+          id={"#{@testid}-table"}
           table={@table}
           testid={"#{@testid}-table"}
           truncate

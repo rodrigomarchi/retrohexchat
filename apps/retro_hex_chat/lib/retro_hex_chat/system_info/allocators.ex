@@ -24,8 +24,8 @@ defmodule RetroHexChat.SystemInfo.Allocators do
 
   @behaviour RetroHexChat.SystemInfo.Source
 
-  alias RetroHexChat.Admin.Table
   alias RetroHexChat.SystemInfo.Query
+  alias RetroHexChat.Table
 
   @type t :: %{
           name: atom(),

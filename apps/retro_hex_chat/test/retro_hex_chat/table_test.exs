@@ -1,4 +1,4 @@
-defmodule RetroHexChat.Admin.TableTest do
+defmodule RetroHexChat.TableTest do
   @moduledoc """
   The structured half of an admin listing reply.
 
@@ -10,10 +10,10 @@ defmodule RetroHexChat.Admin.TableTest do
 
   @moduletag :integration
 
-  alias RetroHexChat.Admin.Table
   alias RetroHexChat.Commands.Handlers.Admin.User, as: AdminUser
   alias RetroHexChat.Page
   alias RetroHexChat.Services.Queries
+  alias RetroHexChat.Table
 
   defp register_many(prefix, count) do
     for i <- 1..count do

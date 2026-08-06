@@ -1,0 +1,171 @@
+/* ── The listing surface ──────────────────────────────────────
+   Every window that shows rows shows them through .retro-table, so a listing
+   looks the same whether it came from an admin command or from the runtime.
+   The header, the striping and the selection are decided once, here. */
+
+.retro-table__grid {
+  @apply w-full border-collapse text-xs;
+}
+
+/* Until the hook has measured the first paint the browser lays the table out
+   from its content, which is what makes the columns come up sensibly sized. It
+   is also what makes them jump on every refresh, so once the widths are known
+   they are pinned and the layout stops moving. Widths live on the header cells
+   rather than in a <colgroup>: hiding a column removes its cells, and column
+   elements would then line up against the wrong ones. */
+/* A listing asked to fit its pane divides the width between its columns from
+   the first paint. Without it the table is laid out from its content and can
+   reach past the window — and since the widths are measured from that first
+   paint, a table that starts too wide is pinned too wide. */
+.retro-table[data-fit="pane"] .retro-table__grid {
+  table-layout: fixed;
+}
+
+.retro-table[data-layout="fixed"] .retro-table__grid {
+  table-layout: fixed;
+  width: var(--retro-table-width, 100%);
+}
+
+.retro-table[data-layout="fixed"] .retro-table__head {
+  width: var(--retro-table-column-width, auto);
+}
+
+.retro-table[data-layout="fixed"] .retro-table__cell {
+  @apply max-w-none truncate;
+}
+
+/* The whole header sticks, not each cell in it. A sticky cell would be its own
+   stacking context, and the next one along would then paint over the resize
+   grip of the one before it — which is the grip that straddles the border
+   between them, so it would be unreachable by the pointer. */
+.retro-table__grid thead {
+  @apply sticky top-0 z-20;
+}
+
+/* Headings are dragged, double-clicked and right-clicked; none of those should
+   leave a trail of selected label text behind them. */
+.retro-table__head-row {
+  @apply select-none;
+}
+
+.retro-table__head {
+  @apply bg-surface relative px-retro-6 py-retro-2 text-left font-bold;
+  @apply border-b border-r border-border;
+}
+
+/* An inert heading occupies the same box as a sortable one, so a table with
+   both kinds keeps a single baseline across the header row. */
+.retro-table__label {
+  @apply inline-flex w-full items-center gap-1 truncate;
+}
+
+.retro-table__row:nth-child(even) {
+  @apply bg-muted/30;
+}
+
+.retro-table__cell {
+  @apply px-retro-6 py-retro-2 align-top;
+}
+
+/* A figure is read against the figures above and below it, which only works
+   when they share a right edge. */
+.retro-table__head--numeric,
+.retro-table__cell--numeric {
+  @apply text-right;
+}
+
+.retro-table__head--numeric .retro-table__sort {
+  @apply justify-end;
+}
+
+/* Listings carry module names and MFAs long enough to push the table past its
+   window, which scrolls the row's own name out of view. Bounding the cell keeps
+   every column reachable; the full value stays on hover. This governs the first
+   paint and the no-JS case — after that the pinned widths do the bounding. */
+.retro-table__cell--bounded {
+  @apply max-w-[26ch] truncate;
+}
+
+/* Fitting a column to its content means letting the browser lay the table out
+   as if nothing were bounded, clipped or bounded by the pane, reading the
+   heading back, and putting everything as it was. It lasts one reflow. */
+.retro-table[data-measuring="true"] .retro-table__grid {
+  width: max-content;
+}
+
+.retro-table[data-measuring="true"] .retro-table__head,
+.retro-table[data-measuring="true"] .retro-table__cell {
+  @apply max-w-none overflow-visible whitespace-nowrap;
+}
+
+/* ── Ordering ── */
+
+/* A sortable heading is a button, but must not look like one sitting in a
+   toolbar — it stays flush with the header row and only lifts on hover. */
+.retro-table__sort {
+  @apply cursor-pointer text-left font-bold;
+}
+
+.retro-table__sort:hover {
+  @apply bg-hover-bg;
+}
+
+.retro-table__sort:focus-visible {
+  @apply outline-1 outline-offset-[-1px] outline-primary;
+}
+
+.retro-table__sort[data-active="true"] {
+  @apply text-primary;
+}
+
+/* ── Resizing ── */
+
+/* The grip straddles the border it moves, so the pointer finds it a couple of
+   pixels either side of the line rather than exactly on it. */
+.retro-table__resizer {
+  @apply absolute inset-y-0 right-[-3px] z-10 w-[6px];
+  cursor: col-resize;
+  touch-action: none;
+}
+
+/* Except on the last column, where there is no border between anything and the
+   overhang is simply three pixels of table sticking out of its pane — enough to
+   raise a horizontal scrollbar under a listing that was fitting exactly. */
+.retro-table__head:last-child .retro-table__resizer {
+  @apply right-0;
+}
+
+/* While a drag is in flight the cursor belongs to the whole table: the pointer
+   is captured and will leave the 6px grip long before the drag ends. */
+.retro-table[data-resizing="true"] {
+  @apply select-none;
+  cursor: col-resize;
+}
+
+.retro-table[data-resizing="true"] .retro-table__sort {
+  @apply pointer-events-none;
+}
+
+/* ── Choosing columns ── */
+
+.retro-table__head[data-hidden="true"],
+.retro-table__cell[data-hidden="true"] {
+  display: none;
+}
+
+/* An unchecked item keeps the mark's space so the labels stay in one column. */
+.retro-table__menu [aria-checked="false"] .retro-table__menu-check {
+  @apply invisible;
+}
+
+/* ── Selection ── */
+
+/* After the striping, so a selected even row reads as selected rather than as
+   striped. */
+.retro-table__row[aria-selected="true"] {
+  @apply bg-selection-bg text-selection-fg;
+}
+
+.retro-table__row:focus {
+  @apply outline-1 outline-offset-[-1px] outline-primary;
+}

@@ -23,8 +23,8 @@ defmodule RetroHexChat.SystemInfo.Sources.Sockets do
 
   @behaviour RetroHexChat.SystemInfo.Source
 
-  alias RetroHexChat.Admin.Table
   alias RetroHexChat.SystemInfo.Query
+  alias RetroHexChat.Table
 
   @protocols %{"tcp_inet" => "TCP", "udp_inet" => "UDP", "sctp_inet" => "SCTP"}
 

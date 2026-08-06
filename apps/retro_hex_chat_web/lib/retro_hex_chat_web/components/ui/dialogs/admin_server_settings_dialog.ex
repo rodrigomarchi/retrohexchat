@@ -12,6 +12,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminServerSettingsDialog do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.AdminShared
+  import RetroHexChatWeb.Components.UI.RetroTable
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Dialog
 
@@ -22,7 +23,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminServerSettingsDialog do
   attr :target, :any, default: nil
   attr :info, :string, default: nil
   attr :settings_text, :string, default: nil
-  attr :settings_table, :any, default: nil, doc: "%Admin.Table{} for the settings"
+  attr :settings_table, :any, default: nil, doc: "%Table{} for the settings"
   attr :values, :map, default: %{}
   attr :result, :any, default: nil
   attr :can_edit, :boolean, default: false
@@ -49,7 +50,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminServerSettingsDialog do
   attr :target, :any, default: nil
   attr :info, :string, default: nil
   attr :settings_text, :string, default: nil
-  attr :settings_table, :any, default: nil, doc: "%Admin.Table{} for the settings"
+  attr :settings_table, :any, default: nil, doc: "%Table{} for the settings"
   attr :values, :map, default: %{}
   attr :result, :any, default: nil
   attr :can_edit, :boolean, default: false
@@ -176,7 +177,8 @@ defmodule RetroHexChatWeb.Components.UI.AdminServerSettingsDialog do
                 id="admin-server-settings-output"
                 class="shadow-retro-sunken bg-white min-h-[120px] max-h-[180px] overflow-y-auto retro-scrollbar"
               >
-                <.admin_table
+                <.retro_table
+                  id="admin-server-settings-table"
                   table={@settings_table}
                   text={@settings_text}
                   testid="admin-server-settings-table"

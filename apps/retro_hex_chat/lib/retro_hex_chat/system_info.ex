@@ -18,9 +18,9 @@ defmodule RetroHexChat.SystemInfo do
   to change the node, which is what makes it safe to put behind a refresh loop.
   """
 
-  alias RetroHexChat.Admin.Table
   alias RetroHexChat.SystemInfo.{Allocators, Database, Instance, OS, Query, Runtime, Source}
   alias RetroHexChat.SystemInfo.Sources
+  alias RetroHexChat.Table
 
   @sources %{
     processes: Sources.Processes,

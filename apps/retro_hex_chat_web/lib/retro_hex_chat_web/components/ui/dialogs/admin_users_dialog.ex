@@ -14,6 +14,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminUsersDialog do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.AdminShared
+  import RetroHexChatWeb.Components.UI.RetroTable
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Dialog
 
@@ -24,8 +25,8 @@ defmodule RetroHexChatWeb.Components.UI.AdminUsersDialog do
   attr :target, :any, default: nil
   attr :text, :string, default: nil
   attr :banlist_text, :string, default: nil
-  attr :table, :any, default: nil, doc: "%Admin.Table{} for the user list"
-  attr :banlist_table, :any, default: nil, doc: "%Admin.Table{} for the ban list"
+  attr :table, :any, default: nil, doc: "%Table{} for the user list"
+  attr :banlist_table, :any, default: nil, doc: "%Table{} for the ban list"
   attr :result, :any, default: nil
   attr :search, :string, default: ""
   attr :online_only, :boolean, default: false
@@ -71,8 +72,8 @@ defmodule RetroHexChatWeb.Components.UI.AdminUsersDialog do
   attr :target, :any, default: nil
   attr :text, :string, default: nil
   attr :banlist_text, :string, default: nil
-  attr :table, :any, default: nil, doc: "%Admin.Table{} for the user list"
-  attr :banlist_table, :any, default: nil, doc: "%Admin.Table{} for the ban list"
+  attr :table, :any, default: nil, doc: "%Table{} for the user list"
+  attr :banlist_table, :any, default: nil, doc: "%Table{} for the ban list"
   attr :result, :any, default: nil
   attr :search, :string, default: ""
   attr :online_only, :boolean, default: false
@@ -140,7 +141,8 @@ defmodule RetroHexChatWeb.Components.UI.AdminUsersDialog do
             id="admin-users-output"
             class="shadow-retro-sunken bg-white min-h-[140px] max-h-[210px] overflow-y-auto retro-scrollbar"
           >
-            <.admin_table
+            <.retro_table
+              id="admin-users-table"
               table={@table}
               text={@text}
               testid="admin-users-table"
@@ -338,7 +340,8 @@ defmodule RetroHexChatWeb.Components.UI.AdminUsersDialog do
               id="admin-users-banlist"
               class="shadow-retro-sunken bg-white min-h-[84px] max-h-[150px] overflow-y-auto retro-scrollbar"
             >
-              <.admin_table
+              <.retro_table
+                id="admin-users-banlist-table"
                 table={@banlist_table}
                 text={@banlist_text}
                 testid="admin-users-banlist-table"

@@ -116,7 +116,7 @@ defmodule RetroHexChatWeb.AdminWindowsPaginationTest do
     |> Regex.run(html)
     |> case do
       nil -> 0
-      [section] -> section |> String.split("admin-table__row") |> length() |> Kernel.-(1)
+      [section] -> section |> String.split("retro-table__row") |> length() |> Kernel.-(1)
     end
   end
 

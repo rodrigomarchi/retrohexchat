@@ -6,14 +6,14 @@ defmodule RetroHexChat.Jobs.ObanHealth do
   administrator needs two views at once: generic queue health and domain
   contracts such as successor coverage, maintenance sweeps and durable
   persistence/fetch backlogs.
-  This module owns both readings and returns them as `Admin.Table` values so
+  This module owns both readings and returns them as `Table` values so
   the web surface never has to know Oban's schema.
   """
 
   import Ecto.Query
 
   alias RetroHexChat.Accounts.TrustedDevices
-  alias RetroHexChat.Admin.{GlobalMutes, ServerBans, Table}
+  alias RetroHexChat.Admin.{GlobalMutes, ServerBans}
   alias RetroHexChat.Bots.Capabilities.Scheduler
   alias RetroHexChat.Bots.{Feeds, Queries}
   alias RetroHexChat.Channels.Mutes, as: ChannelMutes
@@ -40,6 +40,7 @@ defmodule RetroHexChat.Jobs.ObanHealth do
   alias RetroHexChat.Repo
   alias RetroHexChat.RuntimeStaleCleanup
   alias RetroHexChat.Services.{ChanExpiry, NickExpiry}
+  alias RetroHexChat.Table
 
   @default_filter "active"
   @recent_limit 30

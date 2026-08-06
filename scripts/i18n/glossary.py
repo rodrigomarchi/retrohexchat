@@ -90,6 +90,13 @@ _ROWS = {
     "Try again":    ("Tentar novamente", "Tentar novamente", "Reintentar", "Réessayer", "Erneut versuchen", "Riprova", "Opnieuw proberen", "Spróbuj ponownie", "Повторить попытку", "Coba lagi", "再試行", "重试", "重試"),
     "End of list":  ("Fim da lista", "Fim da lista", "Fin de la lista", "Fin de la liste", "Ende der Liste", "Fine dell'elenco", "Einde van de lijst", "Koniec listy", "Конец списка", "Akhir daftar", "リストの終わり", "列表结束", "清單結束"),
     "Revoke":       ("Revogar", "Revogar", "Revocar", "Révoquer", "Widerrufen", "Revoca", "Intrekken", "Odwołaj", "Отозвать", "Cabut", "失効", "撤销", "撤銷"),
+
+    # ── Listings ──────────────────────────────────────────────
+    # The header menu every table carries. "Columns" alone is the word a model
+    # is most likely to read as the architectural one, and the Chinese pair
+    # genuinely differ: 列 in Simplified against 欄 in Traditional.
+    "Columns":            ("Colunas", "Colunas", "Columnas", "Colonnes", "Spalten", "Colonne", "Kolommen", "Kolumny", "Столбцы", "Kolom", "列", "列", "欄"),
+    "Show all columns":   ("Mostrar todas as colunas", "Mostrar todas as colunas", "Mostrar todas las columnas", "Afficher toutes les colonnes", "Alle Spalten anzeigen", "Mostra tutte le colonne", "Alle kolommen tonen", "Pokaż wszystkie kolumny", "Показать все столбцы", "Tampilkan semua kolom", "すべての列を表示", "显示所有列", "顯示所有欄"),
     "Forget":       ("Esquecer", "Esquecer", "Olvidar", "Oublier", "Vergessen", "Dimentica", "Vergeten", "Zapomnij", "Забыть", "Lupakan", "削除", "忘记", "忘記"),
 
     # ── Terms that are names, not words ───────────────────────

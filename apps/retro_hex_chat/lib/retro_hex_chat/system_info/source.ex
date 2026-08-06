@@ -13,8 +13,8 @@ defmodule RetroHexChat.SystemInfo.Source do
   distinguish "these are all of them" from "these are the first fifty".
   """
 
-  alias RetroHexChat.Admin.Table
   alias RetroHexChat.SystemInfo.Query
+  alias RetroHexChat.Table
 
   @doc "Columns this source projects, in display order."
   @callback columns() :: [Table.column()]
@@ -46,7 +46,7 @@ defmodule RetroHexChat.SystemInfo.Source do
   @optional_callbacks enrich: 1
 
   @doc """
-  Builds a page of rows from `source` as an `Admin.Table`.
+  Builds a page of rows from `source` as an `Table`.
 
   Returning the same struct the admin windows already render means a runtime
   listing and an audit-log listing are the same thing to the presentation layer.

@@ -196,6 +196,39 @@ test.describe("System windows", () => {
       await window.getByLabel("Report").selectOption("cache_hit");
       await expect(window.locator("table")).toBeVisible();
       await shot(window, "database-cache-hit");
+
+      // One window, unrelated listings in turn. Widths measured for the first
+      // report describe columns the second does not have: keeping them pinned
+      // the table to the sum of the surviving keys and left every new column
+      // with no width at all — rows present in the DOM and invisible on screen.
+      const table = window.getByTestId("system-database-table");
+      const first = table.locator(".retro-table__head").first();
+      const box = (await first.boundingBox())!;
+      await admin.page.mouse.move(box.x + box.width, box.y + box.height / 2);
+      await admin.page.mouse.down();
+      await admin.page.mouse.move(
+        box.x + box.width + 80,
+        box.y + box.height / 2,
+        {
+          steps: 6,
+        },
+      );
+      await admin.page.mouse.up();
+
+      await window.getByLabel("Report").selectOption("table_size");
+      await expect(
+        table.locator('.retro-table__head[data-column="schema"]'),
+      ).toBeVisible();
+
+      for (const column of ["schema", "name", "size"]) {
+        const width = (await table
+          .locator(`.retro-table__head[data-column="${column}"]`)
+          .boundingBox())!.width;
+        expect(width, `${column} column has a readable width`).toBeGreaterThan(
+          20,
+        );
+      }
+      await shot(window, "database-report-switched");
     } finally {
       await admin.ctx.close();
     }
@@ -300,6 +333,105 @@ test.describe("System windows", () => {
         await expectNoHorizontalOverflow(window);
         await shot(window, `oban-${tab}`);
       }
+    } finally {
+      await admin.ctx.close();
+    }
+  });
+
+  test("the listing is resized, narrowed and read row by row", async ({
+    browser,
+  }) => {
+    const admin = await signedInAdmin(browser);
+
+    try {
+      const window = await admin.chat.openSystemWindow("open_system_ets");
+      const table = window.getByTestId("system-ets-table");
+      const name = table.locator('.retro-table__head[data-column="name"]');
+
+      // Widths are pinned from the first paint. Until this attribute is on the
+      // root, nothing below is being driven by the hook at all.
+      await expect(table).toHaveAttribute("data-layout", "fixed");
+      await shot(window, "listing-as-opened");
+
+      // Dragging a heading's right edge moves that column and only that one.
+      const before = await name.boundingBox();
+      const others = await table
+        .locator('.retro-table__head[data-column="size"]')
+        .boundingBox();
+      await admin.page.mouse.move(
+        before!.x + before!.width,
+        before!.y + before!.height / 2,
+      );
+      await admin.page.mouse.down();
+      await admin.page.mouse.move(
+        before!.x + before!.width + 90,
+        before!.y + before!.height / 2,
+        { steps: 8 },
+      );
+      await admin.page.mouse.up();
+
+      const widened = await name.boundingBox();
+      expect(widened!.width).toBeGreaterThan(before!.width + 60);
+      expect(
+        (await table
+          .locator('.retro-table__head[data-column="size"]')
+          .boundingBox())!.width,
+      ).toBeCloseTo(others!.width, 0);
+      await shot(window, "listing-column-widened");
+
+      // The drag must not also have sorted: the heading it ended on is a
+      // button, and a click leaking through would reorder the whole listing.
+      await expect(name).toHaveAttribute("aria-sort", "none");
+
+      // Double-clicking the same edge fits the column to its longest value.
+      await admin.page.mouse.dblclick(
+        widened!.x + widened!.width,
+        widened!.y + widened!.height / 2,
+      );
+      await expect
+        .poll(async () => (await name.boundingBox())!.width)
+        .not.toBe(widened!.width);
+
+      // Right-clicking the header offers the columns; switching one off closes
+      // the gap it was holding rather than leaving an empty band.
+      await table
+        .locator("[data-retro-table-head-row]")
+        .click({ button: "right" });
+      const menu = window.getByTestId("context-menu-system-ets-table-columns");
+      await expect(menu).toBeVisible();
+      await shot(window, "listing-column-menu");
+
+      await window.getByTestId("system-ets-table-column-owner").click();
+      await expect(
+        table.locator('.retro-table__head[data-column="owner"]'),
+      ).toBeHidden();
+      await expect(
+        table.locator('.retro-table__cell[data-column="owner"]').first(),
+      ).toBeHidden();
+      await shot(window, "listing-column-hidden");
+
+      // And the reset brings every one of them back.
+      await table
+        .locator("[data-retro-table-head-row]")
+        .click({ button: "right" });
+      await window.getByTestId("system-ets-table-columns-reset").click();
+      await expect(
+        table.locator('.retro-table__head[data-column="owner"]'),
+      ).toBeVisible();
+
+      // A row answers the pointer and then the keyboard, which is what makes a
+      // long listing readable without reaching back for the mouse.
+      const rows = table.locator(".retro-table__row");
+      await rows.nth(1).click();
+      await expect(rows.nth(1)).toHaveAttribute("aria-selected", "true");
+
+      await admin.page.keyboard.press("ArrowDown");
+      await expect(rows.nth(2)).toHaveAttribute("aria-selected", "true");
+      await expect(rows.nth(1)).toHaveAttribute("aria-selected", "false");
+
+      await admin.page.keyboard.press("Home");
+      await expect(rows.first()).toHaveAttribute("aria-selected", "true");
+      await shot(window, "listing-row-selected");
     } finally {
       await admin.ctx.close();
     }

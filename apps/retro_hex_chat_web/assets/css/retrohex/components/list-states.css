@@ -95,25 +95,6 @@
   }
 }
 
-/* ── Admin listings rendered as rows ── */
-
-.admin-table__grid {
-  @apply border-collapse;
-}
-
-.admin-table__head {
-  @apply bg-surface sticky top-0 px-retro-6 py-retro-2 text-left font-bold;
-  @apply border-b border-border;
-}
-
-.admin-table__row:nth-child(even) {
-  @apply bg-muted/30;
-}
-
-.admin-table__cell {
-  @apply px-retro-6 py-retro-2 align-top;
-}
-
 /* ── Runtime inspection windows ── */
 
 /* The segment width is the one thing only the server knows, so it arrives as a
@@ -140,29 +121,4 @@
   --chart-series-4: #808000;
   --chart-series-5: #800080;
   --chart-series-6: #606060;
-}
-
-/* Runtime listings carry module names and MFAs long enough to push the table
-   past its window, which scrolls the row's own name out of view. Bounding the
-   cell keeps every column reachable; the full value stays on hover. */
-.admin-table__cell--bounded {
-  @apply max-w-[26ch] truncate;
-}
-
-/* A sortable heading is a button, but must not look like one sitting in a
-   toolbar — it stays flush with the header row and only lifts on hover. */
-.admin-table__sort {
-  @apply cursor-pointer text-left font-bold;
-}
-
-.admin-table__sort:hover {
-  @apply bg-hover-bg;
-}
-
-.admin-table__sort:focus-visible {
-  @apply outline-1 outline-offset-[-1px] outline-primary;
-}
-
-.admin-table__sort[data-active="true"] {
-  @apply text-primary;
 }

@@ -13,6 +13,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminChannelsDialog do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.AdminShared
+  import RetroHexChatWeb.Components.UI.RetroTable
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Dialog
 
@@ -22,7 +23,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminChannelsDialog do
   attr :show, :boolean, default: false
   attr :target, :any, default: nil
   attr :text, :string, default: nil
-  attr :table, :any, default: nil, doc: "%Admin.Table{} for the channel list"
+  attr :table, :any, default: nil, doc: "%Table{} for the channel list"
   attr :banlist_text, :string, default: nil
   attr :result, :any, default: nil
   attr :search, :string, default: ""
@@ -69,7 +70,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminChannelsDialog do
   attr :id, :string, required: true
   attr :target, :any, default: nil
   attr :text, :string, default: nil
-  attr :table, :any, default: nil, doc: "%Admin.Table{} for the channel list"
+  attr :table, :any, default: nil, doc: "%Table{} for the channel list"
   attr :banlist_text, :string, default: nil
   attr :result, :any, default: nil
   attr :search, :string, default: ""
@@ -130,7 +131,8 @@ defmodule RetroHexChatWeb.Components.UI.AdminChannelsDialog do
             id="admin-channels-output"
             class="shadow-retro-sunken bg-white min-h-[120px] max-h-[190px] overflow-y-auto retro-scrollbar"
           >
-            <.admin_table
+            <.retro_table
+              id="admin-channels-table"
               table={@table}
               text={@text}
               testid="admin-channels-table"

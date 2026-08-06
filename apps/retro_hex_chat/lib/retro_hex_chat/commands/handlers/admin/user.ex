@@ -4,11 +4,12 @@ defmodule RetroHexChat.Commands.Handlers.Admin.User do
 
   alias RetroHexChat.Accounts.ServerRoles
   alias RetroHexChat.Admin
-  alias RetroHexChat.Admin.{AuditLogs, ServerBans, Table}
+  alias RetroHexChat.Admin.{AuditLogs, ServerBans}
   alias RetroHexChat.Commands.{Duration, Handler}
   alias RetroHexChat.Page
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.Services.{NickServ, Queries}
+  alias RetroHexChat.Table
 
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute(["list" | opts], context) do

@@ -80,4 +80,10 @@ export const lazyFeatureHooks = {
     readyEvent: "metric_chart_ready",
     reason: "The metrics chart renderer is only needed inside the admin-only Metrics window.",
   }),
+  RetroTableHook: lazyFeatureHook({
+    name: "RetroTableHook",
+    loader: () => import("./ui/retro_table_hook"),
+    serverEvents: [],
+    reason: "Column resizing and row selection are only needed once a listing window is open.",
+  }),
 };

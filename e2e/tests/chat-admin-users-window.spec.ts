@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { shot } from "../helpers/screenshots";
 import {
   ADMIN_NICK,
   ADMIN_PW,
@@ -14,6 +15,11 @@ import {
  * window: the behaviour asserted here is unchanged, only the surface it runs
  * against. Command-level coverage of the same domain lives in
  * chat-admin-users.spec.ts.
+ *
+ * Carries a `shot()` at the loaded listing, which is the same RetroTable the
+ * runtime windows use but with unbounded cells — regenerate it with:
+ *
+ *     make e2e.shots FILE=tests/chat-admin-users-window.spec.ts
  */
 test.describe.serial("Admin Users window", () => {
   test("admin inspects a nick and applies moderation", async ({ browser }) => {
@@ -27,6 +33,7 @@ test.describe.serial("Admin Users window", () => {
       await expect(
         admin.page.locator('[data-testid="admin-users-table"]'),
       ).toBeVisible();
+      await shot(admin.page.getByTestId("admin-users-window"), "users-listing");
 
       await admin.page.locator("#admin-users-info-nick").fill(target.nick);
       await admin.page

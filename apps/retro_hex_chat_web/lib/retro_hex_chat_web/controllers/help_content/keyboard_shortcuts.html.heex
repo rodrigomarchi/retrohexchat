@@ -37,8 +37,21 @@
     "Long lists load the next page as you scroll toward the edge. There is no shortcut for that gesture, so every paginated list also carries a Load More button beneath it — that button is the keyboard path through a long list."
   )}
 </p>
+<.help_h4 icon={:icon_table_grid}>{dgettext("help_ui", "Listings & Tables")}</.help_h4>
+<pre>{dgettext(
+  "help_ui",
+  "Arrow Up / Arrow Down — Move the selection one row Home / End — First / last row PageUp / PageDown — Move a screen of rows Shift+Arrow — Extend the selection Ctrl+Click — Add or remove one row Ctrl+A — Select every row on screen Ctrl+C — Copy the selection as tab-separated text Shift+F10 or Menu — Choose which columns show"
+)}</pre>
+<p>
+  {dgettext(
+    "help_ui",
+    "Column widths are set with the pointer: drag the right edge of a heading to resize it, double-click that edge to fit the column to its contents."
+  )}
+</p>
 <.help_h4 icon={:icon_link}>{dgettext("help_ui", "See Also")}</.help_h4>
 <p>
+  <.help_link topic="ui-listings">{dgettext("help_ui", "Listings & Tables")}</.help_link>
+  ·
   <.help_link topic="feature-cheatsheet">{dgettext("help_ui", "Shortcut Cheatsheet")}</.help_link>
   · <.help_link topic="feature-autocomplete">{dgettext("help_ui", "Autocomplete")}</.help_link>
   ·
