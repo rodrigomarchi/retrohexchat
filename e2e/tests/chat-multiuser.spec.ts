@@ -1,3 +1,13 @@
+/**
+ * @section Chat Foundation
+ * @flow B1 [done] A sends message; B sees it in real time in same channel
+ * @flow B2 [done] B joins `#lobby`; A sees join system message
+ * @flow B3 [done] B disconnects; A sees left system message
+ * @flow B4 [done] Nicklist updates when another user joins
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { test, expect, Browser } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

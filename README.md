@@ -288,7 +288,7 @@ make precommit      # compile + format + test
 
 ### CI Pipeline
 
-The complete local guard runs 14 checks across staged parallel groups. ExUnit suites are
+The complete local guard runs 16 checks across staged parallel groups. ExUnit suites are
 partitioned by default with `CI_TEST_PARTITIONS=3`, `CI_FEATURE_PARTITIONS=4`, and
 `CI_TEST_DB_POOL_SIZE=6`; set both partition counts to `1` or use `make ci.serial`
 to diagnose partition-specific issues.

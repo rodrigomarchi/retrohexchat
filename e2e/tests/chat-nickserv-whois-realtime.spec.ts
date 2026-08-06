@@ -1,3 +1,10 @@
+/**
+ * @section Backlog W - Presence, Identity, Nick Changes, Whois/Whowas
+ * @flow W4 [done] NickServ register/drop changes are reflected by another user's `/whois Registered:` output without reconnect (features P2)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, BrowserContext, Page, expect, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

@@ -1,3 +1,11 @@
+/**
+ * @section J - User Commands, Privacy, Presence
+ * @flow J17 [done] `/umode +w` opts in to wallops; `-w` opts out (features P1)
+ * @flow J18 [done] `/wallops msg` reaches opted-in users and enforces privileges (features P1)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, BrowserContext, Page, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

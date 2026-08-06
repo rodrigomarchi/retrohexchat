@@ -1,3 +1,10 @@
+/**
+ * @section Backlog U - Dialog CRUD And Settings Depth
+ * @flow U2 [done] Highlight settings persist for registered users and remain session-only for guests after reload (features P2)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Page, test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

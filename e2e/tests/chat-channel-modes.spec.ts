@@ -1,3 +1,16 @@
+/**
+ * @section I - Channel Modes, Privileges, Moderation
+ * @flow I4 [done] Half-op can voice/devoice but cannot set protected modes (features P1)
+ * @flow I5 [done] Moderated channel blocks unvoiced user; voice restores; `-m` restores normal (features P0)
+ * @flow I6 [done] Invite-only channel blocks direct join; `/invite` allows join (features P0)
+ * @flow I8 [done] Keyed channel requires correct key (features P1)
+ * @flow I9 [done] Channel limit is enforced and removing it allows join (features P1)
+ * @flow I10 [done] Protected topic blocks non-op topic changes; `-t` restores (features P1)
+ * @flow I14 [done] `/slow 60` throttles rapid joins; `/slow 0` disables (features P2)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, BrowserContext, Page, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

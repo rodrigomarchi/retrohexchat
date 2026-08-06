@@ -1,3 +1,13 @@
+/**
+ * @section M - Admin, Server Operations, Bots
+ * @flow M14 [done] Non-admin `/bot` shows list; admin `/bot` opens management dialog (features P1)
+ * @flow M15 [done] Admin creates bot, joins unique channel, sees bot in nicklist (features P1)
+ * @flow M16 [done] Bot custom command add/list/invoke/delete works (features P1)
+ * @flow M17 [done] Bot enable/disable/destroy changes response behavior and cleans up (features P2)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, BrowserContext, Page, test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

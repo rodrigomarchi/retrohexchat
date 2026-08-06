@@ -1,3 +1,10 @@
+/**
+ * @section P - Persistence, Reconnect, History, No-Focus-Steal
+ * @flow P10d [done] A 1000-message channel walks back to its first message: every window consecutive, no page fetched and dropped (features P1)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { expect, test } from "@playwright/test";
 import {
   closeUsers,

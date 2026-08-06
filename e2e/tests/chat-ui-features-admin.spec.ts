@@ -1,3 +1,11 @@
+/**
+ * @section UI Features Browser Regression
+ * @flow UI11 [done] Admin journeys across the split windows: server settings, MOTD, broadcast, audit log, TURN, danger preview, console (features 12)
+ * @flow UI11e [done] All nine admin windows open from File > Admin and close from their title bar (features 12)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { test, expect } from "@playwright/test";
 import {
   ADMIN_NICK,

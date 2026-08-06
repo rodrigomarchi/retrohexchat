@@ -1,3 +1,15 @@
+/**
+ * @section UI Features Browser Regression
+ * @flow UI1 [done] Account dialog covers drop/re-register, profile bio, presence away state, wallops user mode, and Whois bio output (features 01, 10)
+ * @flow UI2 [done] Notify List opens from View; Bot Management is hidden from regular users and opens for admin users (features 02, 03)
+ * @flow UI3 [done] Edit menu preserves Clear/Copy/Find behavior through menu entry points (features 04)
+ * @flow UI4 [done] /me command and Send Notice composer send through the real chat input (features 07)
+ * @flow UI5 [done] Timers dialog opens from Tools and bare `/timer`, validates repeat intervals, saves once timers, and stops timers (features 08)
+ * @flow UI6 [done] User Lookup dialog and result cards cover Whois, Query, and Whowas flows (features 10)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { test, expect } from "@playwright/test";
 import {
   ADMIN_NICK,

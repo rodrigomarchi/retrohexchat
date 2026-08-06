@@ -1,3 +1,10 @@
+/**
+ * @section Backlog AA - Reconnect, Multi-Context, Browser State, And Destructive Safety
+ * @flow AA8 [done] Mute state stored in browser localStorage survives reload in the same context, suppresses sound preview, and does not leak to an isolated browser context (features P2)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, BrowserContext, Page, expect, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

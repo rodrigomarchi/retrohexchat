@@ -1,3 +1,10 @@
+/**
+ * @section Backlog U - Dialog CRUD And Settings Depth
+ * @flow U14 [done] Control-list entries from Address Book match `/ignore` filtering behavior by type (features P1)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, BrowserContext, Page, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { AddressBookControlType, ChatPage } from "../pages/ChatPage";

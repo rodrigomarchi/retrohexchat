@@ -1,3 +1,15 @@
+/**
+ * @section L - Config, Scripting, Timers, Custom Menus
+ * @flow L6 [done] `/perform add/list/move/remove/clear` updates output (features P0)
+ * @flow L7 [done] Perform entries execute on reconnect without focus steal (features P0)
+ * @flow L8 [done] Sensitive perform command display is masked and disallowed commands rejected (features P1)
+ *
+ * @section P - Persistence, Reconnect, History, No-Focus-Steal
+ * @flow P5 [done] Perform/autojoin on reconnect create tabs without focus steal (features P0)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Page, test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

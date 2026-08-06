@@ -1,3 +1,14 @@
+/**
+ * @section K - NickServ And ChanServ
+ * @flow K6 [done] `/cs register` registers channel and `/cs info` shows founder (features P0)
+ * @flow K7 [done] `/cs aop add bob` auto-ops bob on rejoin (features P1)
+ * @flow K8 [done] `/cs vop add bob` auto-voices bob on rejoin (features P1)
+ * @flow K9 [done] `/cs sop/aop/vop list` displays access and `del` removes entry (features P1)
+ * @flow K10 [done] Non-founder cannot `/cs drop`; founder can drop (features P1)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, BrowserContext, Page, expect, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

@@ -1,3 +1,13 @@
+/**
+ * @section Backlog Q - Catalog, Help, Parser, And Command Surface
+ * @flow Q5 [done] Slash commands are case-insensitive for channel, PM, and service handlers (features P1)
+ * @flow Q6 [done] Leading/trailing whitespace around commands and args keeps dispatch behavior (features P1)
+ * @flow Q7 [done] Bare slash inputs show helpful errors without changing active tab state (features P2)
+ * @flow Q8 [done] Free-text command args preserve punctuation, repeated spaces, unicode, and IRC formatting (features P2)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, BrowserContext, expect, Page, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

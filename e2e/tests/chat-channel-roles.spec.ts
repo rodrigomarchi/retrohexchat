@@ -1,3 +1,11 @@
+/**
+ * @section I - Channel Modes, Privileges, Moderation
+ * @flow I1 [done] First user in unique channel is owner (features P0)
+ * @flow I2 [done] `/op`, `/deop`, `/voice`, `/devoice` update role in realtime (features P0)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

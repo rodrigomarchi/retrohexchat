@@ -1,3 +1,10 @@
+/**
+ * @section Backlog S - Message Lifecycle Additions
+ * @flow S1 [done] Non-author cannot edit or delete another user's channel message (features P0)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, BrowserContext, Page, test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

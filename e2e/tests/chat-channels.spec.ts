@@ -1,3 +1,14 @@
+/**
+ * @section Chat Foundation
+ * @flow C1 [done] `/join #room` creates tab and switches to it
+ * @flow C2 [done] Switching tabs preserves message history
+ * @flow C3 [done] Close-tab button removes a channel tab
+ * @flow C4 [done] `/part #room` leaves channel and removes tab
+ * @flow C5 [done] `/topic My new topic` updates visible topic bar
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

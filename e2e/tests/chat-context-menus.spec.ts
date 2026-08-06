@@ -1,3 +1,11 @@
+/**
+ * @section O - Chat UI Micro-Journeys
+ * @flow O12 [done] Nicklist context menu query/whois/ignore/op/voice actions (features P1)
+ * @flow O13 [done] Conversation context menu mark-read, mute, copy, leave/settings (features P2)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, BrowserContext, Page, test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

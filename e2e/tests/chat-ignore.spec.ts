@@ -1,3 +1,14 @@
+/**
+ * @section J - User Commands, Privacy, Presence
+ * @flow J5 [done] `/ignore bob all` hides channel messages, actions, PMs, notices, invites (features P0)
+ * @flow J6 [done] Type-specific ignore separates channel messages from PMs (features P1)
+ * @flow J7 [done] `/ignore` lists entries and `/unignore bob` restores visibility (features P0)
+ * @flow J8 [done] `/ignore <ownnick>` shows self-ignore error (features P1)
+ * @flow J9 [done] Timed ignore expiry emits status (features P2)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, BrowserContext, Page, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

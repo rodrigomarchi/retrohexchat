@@ -1,3 +1,13 @@
+/**
+ * @section Backlog Q - Catalog, Help, Parser, And Command Surface
+ * @flow Q1 [done] `/help` output includes every registered command and no stale command names (features P1)
+ * @flow Q2 [done] `/help <command>` renders detailed inline help for every registered command (features P1)
+ * @flow Q3 [done] Inline command help deep links render full Help Topics pages (features P1)
+ * @flow Q4 [done] Command autocomplete exposes every registered command grouped by category (features P2)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { expect, Page, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

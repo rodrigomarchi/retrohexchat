@@ -24,3 +24,8 @@ complete conventions and the gotchas that have burned this suite.
 
 **Browser E2E** is local-only and never the completion gate. Target a single file,
 never a whole suite: [`docs/reference/ci-pipeline.md`](../../docs/reference/ci-pipeline.md).
+
+**A new Playwright spec documents itself.** Add an `@flow` header (under an
+`@section`) describing each flow it covers, then run `make e2e.catalog` to
+regenerate `e2e/TEST_CATALOG.md`. `make ci` fails if the index is stale, and a
+spec with no header is published as a gap in the catalog.

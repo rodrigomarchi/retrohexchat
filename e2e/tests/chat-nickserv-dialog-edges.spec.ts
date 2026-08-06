@@ -1,3 +1,10 @@
+/**
+ * @section Backlog W - Presence, Identity, Nick Changes, Whois/Whowas
+ * @flow W3 [done] Registered nick password dialog Cancel keeps the old nickname, active channel, and usable chat input (features P1)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, BrowserContext, Page, expect, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

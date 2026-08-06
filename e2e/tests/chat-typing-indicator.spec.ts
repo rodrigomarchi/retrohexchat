@@ -1,3 +1,10 @@
+/**
+ * @section P - Persistence, Reconnect, History, No-Focus-Steal
+ * @flow P12 [done] PM typing indicator appears and clears after timeout or send (features P1)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, BrowserContext, expect, Page, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

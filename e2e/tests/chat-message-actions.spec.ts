@@ -1,3 +1,13 @@
+/**
+ * @section O - Chat UI Micro-Journeys
+ * @flow O8 [done] Reply context menu creates reply bar; send includes reply block; dismiss cancels (features P1)
+ * @flow O9 [done] Edit last own message with ArrowUp; submit edit updates message (features P1)
+ * @flow O10 [done] Delete own message marks deleted placeholder for both users (features P1)
+ * @flow O11 [done] Retry failed pending message appears when send rejected by mode/mute (features P2)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, BrowserContext, Page, test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

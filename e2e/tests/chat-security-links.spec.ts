@@ -1,3 +1,10 @@
+/**
+ * @section Backlog R/Y - Security, Safety, And Rendering Additions
+ * @flow R3 [done] Unsafe URL schemes such as `javascript:` and `data:` are not rendered as clickable links (features P0)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, BrowserContext, Page, test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

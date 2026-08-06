@@ -1,3 +1,13 @@
+/**
+ * @section Chat Foundation
+ * @flow A1 [done] Type and send a message via Enter; it appears in the message list
+ * @flow A1b [done] Send button click submits the message and resets input
+ * @flow A2 [done] Send button reflects textarea content: disabled, enabled, disabled
+ * @flow A3 [done] Character counter shows `<count>/1000` while typing
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

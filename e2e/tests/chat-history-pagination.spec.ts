@@ -1,3 +1,10 @@
+/**
+ * @section P - Persistence, Reconnect, History, No-Focus-Steal
+ * @flow P10 [done] Scroll loader loads older channel/PM history without duplicates (features P2)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import {
   Browser,
   BrowserContext,

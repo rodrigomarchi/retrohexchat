@@ -1,3 +1,11 @@
+/**
+ * @section H - Channels, Server Messages, Local Window State
+ * @flow H9 [done] `/setwelcome` shows welcome once for a later joiner (features P1)
+ * @flow H10 [done] `/clearwelcome` stops welcome for later joiners (features P1)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, expect, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

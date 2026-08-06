@@ -1,3 +1,10 @@
+/**
+ * @section Backlog X - Channel Modes, Services, Permissions, Persistence Edges
+ * @flow X7 [done] Admin-transferred founder controls future ChanServ access after empty-channel rejoin (features P1)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, BrowserContext, Page, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

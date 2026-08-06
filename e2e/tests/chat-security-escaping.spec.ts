@@ -1,3 +1,11 @@
+/**
+ * @section Backlog R/Y - Security, Safety, And Rendering Additions
+ * @flow R1 [done] Chat message HTML/script content renders escaped and never executes (features P0)
+ * @flow R2 [done] Topic, welcome, MOTD, away, bio, alias expansion, bot response, and autorespond output escape HTML/script content (features P0)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import {
   Browser,
   BrowserContext,

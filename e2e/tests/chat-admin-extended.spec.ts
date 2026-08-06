@@ -1,3 +1,12 @@
+/**
+ * @section M - Admin, Server Operations, Bots
+ * @flow M1 [done] Non-admin `/admin server info` shows permission error (features P0)
+ * @flow M2 [done] Admin server info/get/settings displays server data (features P1)
+ * @flow M3 [done] Admin server setting validation and restore in `finally` (features P1)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, BrowserContext, Page, test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

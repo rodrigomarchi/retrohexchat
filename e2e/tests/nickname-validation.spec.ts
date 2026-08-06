@@ -1,3 +1,13 @@
+/**
+ * @section Auth And Lifecycle
+ * @flow C1 [done] Empty nickname keeps Connect disabled
+ * @flow C2 [done] Nickname longer than 16 chars shows inline error
+ * @flow C3 [done] Nickname containing a space shows inline error
+ * @flow C4 [done] Nickname starting with a digit shows inline error
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { test, expect } from "@playwright/test";
 import { ConnectPage } from "../pages/ConnectPage";
 

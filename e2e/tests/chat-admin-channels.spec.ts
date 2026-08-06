@@ -1,3 +1,11 @@
+/**
+ * @section M - Admin, Server Operations, Bots
+ * @flow M9 [done] `/admin channel create/info/list/banlist/delete` over unique channels (features P1)
+ * @flow M10 [done] `/admin channel purge #room --from bob` removes bob's visible history only (features P2)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, BrowserContext, Page, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

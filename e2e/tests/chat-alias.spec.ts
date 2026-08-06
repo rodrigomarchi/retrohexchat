@@ -1,3 +1,13 @@
+/**
+ * @section L - Config, Scripting, Timers, Custom Menus
+ * @flow L1 [done] `/alias add`, invoke, list, remove (features P0)
+ * @flow L2 [done] Alias variables `$1`, `$nick`, `$chan`, `$$` expand correctly (features P1)
+ * @flow L3 [done] Alias recursion limit errors instead of freezing UI (features P1)
+ * @flow L4 [done] Alias expansion rejects command chaining characters (features P1)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, BrowserContext, Page, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

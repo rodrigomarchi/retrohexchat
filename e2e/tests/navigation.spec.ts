@@ -1,3 +1,10 @@
+/**
+ * @section Auth And Lifecycle
+ * @flow G [done] Back button returns from register/password to nickname
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 

@@ -1,3 +1,10 @@
+/**
+ * @section Chat Foundation
+ * @flow A4 [done] `/me dance` renders action-style line containing the nick
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

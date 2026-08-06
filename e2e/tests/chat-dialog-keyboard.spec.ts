@@ -1,3 +1,12 @@
+/**
+ * @section Backlog T - Desktop Shell, Menus, Toolbars, Dialogs, And Keyboard
+ * @flow T6 [done] Escape closes only the topmost dialog/menu layer and preserves underlying state (features P1)
+ * @flow T7 [done] Enter submits primary sub-dialog action and Escape/cancel paths discard drafts (features P2)
+ * @flow T8 [done] Tab focus stays inside major modal dialogs (features P2)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Locator, Page, test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

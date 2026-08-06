@@ -1,3 +1,10 @@
+/**
+ * @section Backlog Y - Bot And Automation Edges
+ * @flow Y12 [done] Rapid nick change plus immediate channel message leaves no stale old nick tab, nicklist row, or attribution (features P2)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, BrowserContext, Page, expect, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

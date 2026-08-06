@@ -1,3 +1,12 @@
+/**
+ * @section L - Config, Scripting, Timers, Custom Menus
+ * @flow L12 [done] Autorespond `on_join` fires with variable expansion (features P1)
+ * @flow L13 [done] Autorespond `on_part` and `on_nick_change` fire (features P2)
+ * @flow L14 [done] Autorespond list/remove and invalid chaining behavior (features P1)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, BrowserContext, Page, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

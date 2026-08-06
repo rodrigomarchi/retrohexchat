@@ -1,3 +1,10 @@
+/**
+ * @section Chat Foundation
+ * @flow F2 [done] Bold formatting button inserts IRC bold control code
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

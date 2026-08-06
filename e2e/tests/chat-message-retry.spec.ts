@@ -1,3 +1,11 @@
+/**
+ * @section Backlog S - Message Lifecycle Additions
+ * @flow S10 [done] Failed pending message retry succeeds after removing the blocking channel mode (features P1)
+ * @flow S11 [done] Failed pending message can be deleted without leaving retry/orphan UI behind (features P2)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, BrowserContext, Page, test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

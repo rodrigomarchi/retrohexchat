@@ -1,3 +1,14 @@
+/**
+ * @section Backlog U - Dialog CRUD And Settings Depth
+ * @flow U11 [done] Notify List dialog auto-WHOIS and auto-add-PM settings affect later online/PM behavior (features P1)
+ *
+ * @section Backlog W - Presence, Identity, Nick Changes, Whois/Whowas
+ * @flow W9 [done] Notify auto-WHOIS emits online notification plus WHOIS registration detail when a watched user connects (features P1)
+ * @flow W10 [done] Notify auto-add-PM adds first PM partners and persists the entry across registered-user reconnect (features P1)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, BrowserContext, Page, test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

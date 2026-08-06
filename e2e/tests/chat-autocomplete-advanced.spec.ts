@@ -1,3 +1,12 @@
+/**
+ * @section G - Command Surface, Help, Autocomplete, Validation
+ * @flow G6 [done] Subcommand autocomplete appears for `/ns`, `/cs`, `/perform`, `/autojoin` (features P1)
+ * @flow G7 [done] Selecting `/msg` autocomplete fills input and then nick autocomplete appears (features P1)
+ * @flow G8 [done] Autocomplete navigation never sends a chat message (features P1)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, expect, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

@@ -1,3 +1,12 @@
+/**
+ * @section H - Channels, Server Messages, Local Window State
+ * @flow H3 [done] `/leave #room bye` works as `/part`, removes tab, broadcasts reason (features P1)
+ * @flow H4 [done] `/part #other` from `#lobby` removes only `#other` and does not steal focus (features P1)
+ * @flow H5 [done] `/clear` clears only active window; other windows preserve history (features P1)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

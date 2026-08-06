@@ -1,3 +1,13 @@
+/**
+ * @section UI Features Browser Regression
+ * @flow UI7 [done] Channel nick context menu performs voice/devoice/op/deop/mute/unmute and blocks/restores target sends (features 05)
+ * @flow UI8 [done] Invite picker invites from a joined channel; Channel List knock request sends real knock flow (features 06)
+ * @flow UI9 [done] Channel Central applies welcome message, join throttle, and ownership transfer (features 09)
+ * @flow UI10 [done] Channel Central registration tab performs ChanServ register and AOP add/remove (features 11)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { test, expect } from "@playwright/test";
 import {
   closeUsers,

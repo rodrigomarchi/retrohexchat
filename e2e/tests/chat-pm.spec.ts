@@ -1,3 +1,13 @@
+/**
+ * @section Chat Foundation
+ * @flow D1 [done] `/msg <bob> hi` opens sender PM tab without focus steal
+ * @flow D2 [done] Recipient sees PM in tab labeled with sender nick
+ * @flow D3 [done] PM reply updates other user's PM tab
+ * @flow D4 [done] Closing PM tab removes it from tablist
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { test, expect, Browser } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

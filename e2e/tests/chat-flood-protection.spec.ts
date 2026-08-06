@@ -1,3 +1,13 @@
+/**
+ * @section Backlog R/Y - Security, Safety, And Rendering Additions
+ * @flow R8 [done] Flood Protection settings affect rapid paste behavior and Reset Defaults restores effective defaults (features P1)
+ *
+ * @section Backlog U - Dialog CRUD And Settings Depth
+ * @flow U5 [done] Flood Protection save/reset/cancel paths update effective paste flood behavior only when intended (features P1)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, BrowserContext, Page, test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

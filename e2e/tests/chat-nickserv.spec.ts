@@ -1,3 +1,14 @@
+/**
+ * @section K - NickServ And ChanServ
+ * @flow K1 [done] `/nick`, `/ns register`, `/ns info` registration lifecycle (features P0)
+ * @flow K2 [done] `/ns identify wrong` fails; correct password succeeds (features P0)
+ * @flow K3 [done] `/ns drop wrong` fails; correct password deletes registration (features P1)
+ * @flow K4 [done] `/ns ghost` rejects wrong password and disconnects stale session with correct password (features P1)
+ * @flow K5 [done] `/nick registeredNick` opens password dialog and confirms only with correct password (features P0)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, BrowserContext, Page, test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

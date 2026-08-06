@@ -1,3 +1,11 @@
+/**
+ * @section P - Persistence, Reconnect, History, No-Focus-Steal
+ * @flow P10a [done] Scrolling back loads the older page, keeps the reader's place, and marks the beginning of history (features P1)
+ * @flow P10b [done] Pagination survives an ignored author filling the first page (`has_more` comes from the database) (features P1)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { expect, test } from "@playwright/test";
 import {
   closeUsers,

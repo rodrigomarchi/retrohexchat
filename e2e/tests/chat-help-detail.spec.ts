@@ -1,3 +1,11 @@
+/**
+ * @section G - Command Surface, Help, Autocomplete, Validation
+ * @flow G3 [done] `/help join` renders command-specific help (features P1)
+ * @flow G4 [done] Help Topics menu opens full help system without submitting chat input (features P1)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { expect, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

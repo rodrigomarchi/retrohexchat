@@ -1,3 +1,11 @@
+/**
+ * @section O - Chat UI Micro-Journeys
+ * @flow O2 [done] Formatting buttons insert expected IRC control codes (features P1)
+ * @flow O3 [done] Strip formatting toggle affects rendered formatted text (features P2)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import {
   Browser,
   BrowserContext,

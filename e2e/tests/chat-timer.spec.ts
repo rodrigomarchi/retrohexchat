@@ -1,3 +1,12 @@
+/**
+ * @section L - Config, Scripting, Timers, Custom Menus
+ * @flow L15 [done] `/timer once` fires once then disappears from list (features P1)
+ * @flow L16 [done] `/timer stop` cancels; missing timer errors (features P1)
+ * @flow L17 [done] Repeating timer clamp notice appears and can be stopped (features P2)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { expect, Page, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

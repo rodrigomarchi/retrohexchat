@@ -1,3 +1,11 @@
+/**
+ * @section M - Admin, Server Operations, Bots
+ * @flow M12 [done] `/admin nuke` without confirm shows destructive confirmation/help only (features P2)
+ * @flow M13 [block] `/admin nuke --confirm` in disposable isolated E2E profile (features P2)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, BrowserContext, Page, test } from "@playwright/test";
 import { ConnectPage } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

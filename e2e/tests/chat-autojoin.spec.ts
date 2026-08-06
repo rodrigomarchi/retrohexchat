@@ -1,3 +1,15 @@
+/**
+ * @section L - Config, Scripting, Timers, Custom Menus
+ * @flow L9 [done] `/autojoin add/list/remove/clear` and invalid channel errors (features P0)
+ * @flow L10 [done] Joining channel auto-adds to autojoin; part removes it (features P1)
+ * @flow L11 [done] Autojoin entries execute on reconnect without focus steal (features P0)
+ *
+ * @section P - Persistence, Reconnect, History, No-Focus-Steal
+ * @flow P5 [done] Perform/autojoin on reconnect create tabs without focus steal (features P0)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Page, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

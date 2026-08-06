@@ -1,3 +1,10 @@
+/**
+ * @section Backlog Y - Bot And Automation Edges
+ * @flow Y1 [done] Duplicate bot name/nickname creation attempts show field-specific errors and leave one bot list row (features P1)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, BrowserContext, Page, expect, test } from "@playwright/test";
 import { ConnectPage } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

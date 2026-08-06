@@ -1,3 +1,11 @@
+/**
+ * @section I - Channel Modes, Privileges, Moderation
+ * @flow I15 [done] `/knock` notifies operators and repeated knock throttles (features P2)
+ * @flow I16 [done] `/mode +K` disables knock; `-K` allows it again (features P2)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, BrowserContext, Page, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

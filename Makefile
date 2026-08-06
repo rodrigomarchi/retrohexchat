@@ -233,6 +233,12 @@ e2e.changed: ## Run Playwright specs changed since SINCE (default: uncommitted c
 	$(E2E_MIX) assets.build
 	cd e2e && $(E2E_ENV) npx playwright test --only-changed $(SINCE)
 
+e2e.catalog: ## Regenerate e2e/TEST_CATALOG.md from the @flow headers in the specs
+	cd e2e && node scripts/catalog.mjs
+
+e2e.catalog.check: ## Verify TEST_CATALOG.md matches the spec @flow headers
+	cd e2e && node scripts/catalog.mjs --check
+
 e2e.shard: ## Run a Playwright shard (usage: make e2e.shard SHARD=1/2)
 	@test -n "$(SHARD)" || { echo "usage: make e2e.shard SHARD=1/2"; exit 2; }
 	$(E2E_MIX) assets.build

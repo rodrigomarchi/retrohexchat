@@ -1,3 +1,11 @@
+/**
+ * @section Backlog W - Presence, Identity, Nick Changes, Whois/Whowas
+ * @flow W5 [done] `/whowas` for an online nick points users to `/whois` for current info instead of stale/offline lookup (features P2)
+ * @flow W6 [done] `/whowas` records expire after the configured retention period using the public admin setting (features P3)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, BrowserContext, Page, expect, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

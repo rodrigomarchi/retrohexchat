@@ -1,3 +1,10 @@
+/**
+ * @section Backlog S - Message Lifecycle Additions
+ * @flow S7 [done] Search history mode highlights matches that become available after scroll pagination (features P2)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Page, test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

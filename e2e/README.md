@@ -41,8 +41,12 @@ These are local feedback gates. They are intentionally narrower than
 
 - Lives at the **top level** of the repo with its own `package.json`,
   isolated from `apps/retro_hex_chat_web/assets/` (where Vitest lives).
-- The complete catalog of mapped and implemented journeys lives in
-  `TEST_CATALOG.md`.
+- **Each spec documents its own flows.** A `@flow` header (grouped by
+  `@section`) at the top of every `tests/*.spec.ts` describes what that spec
+  covers; `TEST_CATALOG.md` is an index generated from those headers by
+  `scripts/catalog.mjs`. Edit the spec, then run `make e2e.catalog`. `make ci`
+  fails when the index is stale, and a spec with no header is published in the
+  catalog as a gap.
 - Runs under **MIX_ENV=e2e** on `E2E_PORT` (default `4003`) against a dedicated
   `retro_hex_chat_e2e` Postgres database. See `config/e2e.exs`.
 - Real Chromium via Playwright — exercises JS hooks, the LiveView socket,
@@ -59,7 +63,8 @@ For regression sweeps, this suite is run manually.
 
 ```
 e2e/
-├── TEST_CATALOG.md        Single source of truth for covered journeys
+├── TEST_CATALOG.md        Generated index of covered journeys (+ hand-written rules)
+├── scripts/catalog.mjs    Builds that index from the spec @flow headers
 ├── package.json
 ├── playwright.config.ts
 ├── tsconfig.json

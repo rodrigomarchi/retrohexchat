@@ -1,3 +1,10 @@
+/**
+ * @section Backlog T - Desktop Shell, Menus, Toolbars, Dialogs, And Keyboard
+ * @flow T2 [done] Menus keep chat input focus and intentional dialog inputs own focus (features P1)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Locator, Page, test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

@@ -1,3 +1,10 @@
+/**
+ * @section H - Channels, Server Messages, Local Window State
+ * @flow H8 [done] `/list` opens channel list; search and Join work (features P1)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, expect, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

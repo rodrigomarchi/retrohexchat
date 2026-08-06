@@ -1,3 +1,10 @@
+/**
+ * @section J - User Commands, Privacy, Presence
+ * @flow J14 [done] `/whowas bob` after disconnect shows last-seen data (features P1)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, BrowserContext, Page, test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

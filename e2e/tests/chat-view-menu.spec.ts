@@ -1,3 +1,10 @@
+/**
+ * @section Backlog T - Desktop Shell, Menus, Toolbars, Dialogs, And Keyboard
+ * @flow T4 [done] View menu toggles conversations, nicklist, channel list, and search without losing active tab or unread state (features P1)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import {
   Browser,
   BrowserContext,

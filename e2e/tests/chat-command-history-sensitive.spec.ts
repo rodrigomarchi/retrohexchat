@@ -1,3 +1,11 @@
+/**
+ * @section Backlog Q - Catalog, Help, Parser, And Command Surface
+ * @flow Q9 [done] Sensitive command names/args are omitted from local command history (features P1)
+ * @flow Q10 [done] Recent-command autocomplete ranks safe commands without leaking sensitive commands (features P2)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { expect, Page, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

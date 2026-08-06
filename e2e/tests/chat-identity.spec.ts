@@ -1,3 +1,11 @@
+/**
+ * @section Chat Foundation
+ * @flow E1 [done] `/nick newname` confirms dialog and updates own nicklist entry
+ * @flow E2 [done] `/away At lunch` and `/away` emit set/clear status messages
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

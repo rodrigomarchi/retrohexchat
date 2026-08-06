@@ -1,3 +1,12 @@
+/**
+ * @section Backlog V - Conversations, Tabs, Unread, Mute, And No-Focus-Steal Depth
+ * @flow V1 [done] Conversation sidebar section collapse/expand state survives rerenders and does not affect active tab (features P2)
+ * @flow V2 [done] Popular channel item joins/switches channel through browser UI without command typing (features P2)
+ * @flow V3 [done] Browse all channels from conversations sidebar opens the channel list and preserves the previous filter search (features P2)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, BrowserContext, Page, test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

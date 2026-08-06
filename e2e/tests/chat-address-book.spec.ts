@@ -1,3 +1,11 @@
+/**
+ * @section O - Chat UI Micro-Journeys
+ * @flow O16 [done] Address Book add/edit/remove contact, notify, color, control entries (features P2)
+ * @flow O17 [done] Custom nick color applies to chat nick rendering (features P2)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Locator, Page, test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

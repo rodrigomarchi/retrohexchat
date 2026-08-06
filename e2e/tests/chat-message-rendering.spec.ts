@@ -1,3 +1,10 @@
+/**
+ * @section Backlog R/Y - Security, Safety, And Rendering Additions
+ * @flow R4 [done] Long unbroken words and very long URLs stay inside the desktop chat layout (features P2)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import {
   Browser,
   BrowserContext,

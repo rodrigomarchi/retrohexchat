@@ -1,3 +1,10 @@
+/**
+ * @section Backlog Y - Bot And Automation Edges
+ * @flow Y8 [done] Perform reconnect continues later entries after an earlier command reports an error (features P1)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Page, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

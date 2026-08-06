@@ -360,7 +360,7 @@ Accessible via F1, Help menu → Help Topics, and `/help`. Stale/inaccurate help
   `git stash push -- <file>`. Recover a lost stash via
   `git fsck --no-reflog | grep "dangling commit"`.
 - **⚠️ Don't let a pipe mask `make ci`'s exit:** `make ci 2>&1 | tail -20` returns `tail`'s exit
-  (0). Run `make ci > log 2>&1; echo $?` or check the `Results: N/14` line.
+  (0). Run `make ci > log 2>&1; echo $?` or check the `Results: N/16` line.
 - **Run `mix format` before `make ci`.** Long `send_update`/pipe lines break format and
   cascade-skip later parallel CI stages, wasting a round-trip.
 - **"No silent catch" (JS and Elixir).** Every `try/catch` in connection/media/game JS must log

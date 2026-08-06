@@ -1,3 +1,12 @@
+/**
+ * @section J - User Commands, Privacy, Presence
+ * @flow J15 [done] `/notify add bob` shows online/offline status messages (features P0)
+ * @flow J16 [done] `/notify edit/list/remove` updates output and Address Book state (features P1)
+ * @flow J19 [done] Notify List opens from the View menu and status-bar online buddy badge (features P0)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, BrowserContext, Page, test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

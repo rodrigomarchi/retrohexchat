@@ -1,3 +1,11 @@
+/**
+ * @section G - Command Surface, Help, Autocomplete, Validation
+ * @flow G1 [done] Unknown command shows helpful unknown-command message (features P0)
+ * @flow G2 [done] Missing args show usage for `/msg`, `/join`, `/mode`, `/ns`, `/admin` (features P0)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

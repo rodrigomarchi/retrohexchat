@@ -1,3 +1,10 @@
+/**
+ * @section Backlog Y - Bot And Automation Edges
+ * @flow Y7 [done] A timer whose creation window disappears reports an error, removes itself, and does not deliver to another tab (features P2)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Page, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

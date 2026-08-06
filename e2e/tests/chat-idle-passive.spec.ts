@@ -1,3 +1,10 @@
+/**
+ * @section Backlog W - Presence, Identity, Nick Changes, Whois/Whowas
+ * @flow W11 [done] Passive tab switching, dialog open/close, and nicklist hover do not reset the observed idle timer (features P2)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import {
   Browser,
   BrowserContext,

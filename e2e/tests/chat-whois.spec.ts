@@ -1,3 +1,12 @@
+/**
+ * @section J - User Commands, Privacy, Presence
+ * @flow J10 [done] `/bio text` appears in another user's `/whois`; `/bio clear` removes it (features P1)
+ * @flow J11 [done] `/whois bob` shows online, idle, registered, shared channels, away, bio (features P0)
+ * @flow J12 [done] `/whois missingNick` shows not-online/not-found message (features P1)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, BrowserContext, Page, test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

@@ -1,3 +1,10 @@
+/**
+ * @section M - Admin, Server Operations, Bots
+ * @flow M20 [done] Games menu → Arcade opens the in-chat game picker and previews a game (features P2)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, BrowserContext, Page, test, expect } from "@playwright/test";
 import { ConnectPage } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

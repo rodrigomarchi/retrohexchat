@@ -1,3 +1,11 @@
+/**
+ * @section Backlog V - Conversations, Tabs, Unread, Mute, And No-Focus-Steal Depth
+ * @flow V10 [done] Incoming PM and typing from an ignored user do not create unread indicators, typing UI, or title flash (features P1)
+ * @flow V11 [done] Incoming invite from an ignored user does not open invite UI or steal focus (features P1)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, BrowserContext, Page, expect, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

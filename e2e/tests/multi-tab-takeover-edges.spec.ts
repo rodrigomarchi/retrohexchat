@@ -1,3 +1,10 @@
+/**
+ * @section Backlog AA - Reconnect, Multi-Context, Browser State, And Destructive Safety
+ * @flow AA4 [done] Same-nick multi-context takeover redirects the source with unsaved draft/dialog state and leaves the new chat session usable without inherited local state (features P1)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { expect, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

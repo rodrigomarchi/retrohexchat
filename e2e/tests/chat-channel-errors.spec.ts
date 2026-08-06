@@ -1,3 +1,11 @@
+/**
+ * @section H - Channels, Server Messages, Local Window State
+ * @flow H1 [done] `/join room` without `#` shows validation error (features P0)
+ * @flow H2 [done] Joining over channel limit shows max-channel error without losing tab (features P1)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

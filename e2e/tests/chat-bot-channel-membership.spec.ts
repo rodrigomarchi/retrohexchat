@@ -1,3 +1,10 @@
+/**
+ * @section Backlog Y - Bot And Automation Edges
+ * @flow Y2 [done] Bot join/part across two channels updates each nicklist and `/bot info` channel count (features P1)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, BrowserContext, Page, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

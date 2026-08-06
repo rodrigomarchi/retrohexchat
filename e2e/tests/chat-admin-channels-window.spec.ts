@@ -1,3 +1,11 @@
+/**
+ * @section UI Features Browser Regression
+ * @flow UI11c [done] Admin Channels window: create, inspect, and delete with typed confirmation (features 12)
+ * @flow UI11d [done] Admin Channels window opens from the File > Admin submenu and closes from its title bar (features 12)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { test, expect } from "@playwright/test";
 import {
   ADMIN_NICK,

@@ -1,3 +1,11 @@
+/**
+ * @section Backlog AA - Reconnect, Multi-Context, Browser State, And Destructive Safety
+ * @flow AA6 [done] Closed registration blocks brand-new nick registration while existing registered users can still authenticate (features P1)
+ * @flow AA7 [done] Closed registration keeps same-nick takeover password-gated: wrong password does not displace the source, correct password performs normal takeover (features P2)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, BrowserContext, Page, expect, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

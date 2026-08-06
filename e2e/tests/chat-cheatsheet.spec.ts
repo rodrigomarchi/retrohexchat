@@ -1,3 +1,10 @@
+/**
+ * @section Backlog T - Desktop Shell, Menus, Toolbars, Dialogs, And Keyboard
+ * @flow T10 [done] Shortcut cheatsheet opens from Help menu and shortcut, lists active bindings, and does not submit draft input (features P2)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Locator, Page, test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

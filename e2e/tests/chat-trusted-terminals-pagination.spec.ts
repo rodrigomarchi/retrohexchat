@@ -1,3 +1,10 @@
+/**
+ * @section P - Persistence, Reconnect, History, No-Focus-Steal
+ * @flow P10c [done] Trusted Terminals security log pages past the first page and closes with an end marker (features P2)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { expect, test } from "@playwright/test";
 import { ChatPage } from "../pages/ChatPage";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";

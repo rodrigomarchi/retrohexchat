@@ -1,3 +1,10 @@
+/**
+ * @section Auth And Lifecycle
+ * @flow N [done] Admin closes registration; new user sees registration closed; spec restores open
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

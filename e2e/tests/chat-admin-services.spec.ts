@@ -1,3 +1,11 @@
+/**
+ * @section K - NickServ And ChanServ
+ * @flow K11 [done] `/admin ns info/resetpass/drop` changes NickServ state (features P1)
+ * @flow K12 [done] `/admin cs info/access/transfer/drop` changes ChanServ state (features P1)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, BrowserContext, Page, expect, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

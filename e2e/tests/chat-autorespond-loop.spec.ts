@@ -1,3 +1,10 @@
+/**
+ * @section Backlog R/Y - Security, Safety, And Rendering Additions
+ * @flow Y10 [done] Reciprocal autorespond notice rules fire once and do not loop (features P0)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, BrowserContext, Page, test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

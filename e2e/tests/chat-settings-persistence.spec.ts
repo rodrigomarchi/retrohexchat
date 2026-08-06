@@ -1,3 +1,11 @@
+/**
+ * @section P - Persistence, Reconnect, History, No-Focus-Steal
+ * @flow P6 [done] Registered aliases/perform/autojoin/ignore/notify/colors persist (features P1)
+ * @flow P7 [done] Guest aliases/perform/autojoin/ignore/notify are session-only (features P2)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Locator, Page, test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

@@ -50,6 +50,8 @@ Runbooks live next to what they run, not here:
 - [`scripts/server-provision.md`](../scripts/server-provision.md) — the production provisioning
   script pasted into the Admin Console, plus the IRC census behind the channel choices.
 - [`e2e/README.md`](../e2e/README.md) — the Playwright suite, intentionally outside `make ci`.
+  Each spec documents its own flows in an `@flow` header; `e2e/TEST_CATALOG.md` is the
+  generated index, and `make ci` fails if the two drift apart.
 - [`virtual.space/`](../virtual.space/) — the PixelLab art pipeline (scenes, characters,
   animations, isometric). Surfaced to Claude Code as the `virtual-space-art` skill.
 

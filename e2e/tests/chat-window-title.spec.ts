@@ -1,3 +1,12 @@
+/**
+ * @section Backlog T - Desktop Shell, Menus, Toolbars, Dialogs, And Keyboard
+ * @flow T14 [done] Window title bar, taskbar button, and browser tab all name the active conversation `#channel[nick]` and follow tab switches (features P1)
+ * @flow T15 [done] Activity flash alternates over the conversation's name and restores it (features P1)
+ * @flow T16 [done] A private message titles the window `remote:mine` (features P2)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, BrowserContext, Page, expect, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

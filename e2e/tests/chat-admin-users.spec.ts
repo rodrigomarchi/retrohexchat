@@ -1,3 +1,14 @@
+/**
+ * @section M - Admin, Server Operations, Bots
+ * @flow M4 [done] `/admin user list --search`, info, banlist display rows (features P1)
+ * @flow M5 [done] `/admin user kick` force-disconnects target; target can reconnect (features P0)
+ * @flow M6 [done] `/admin user mute/unmute` blocks and restores target sends (features P0)
+ * @flow M7 [done] `/admin user rename` updates target session and nicklists (features P1)
+ * @flow M8 [done] `/admin user role` validates root restriction and promotion denial (features P2)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, BrowserContext, Page, test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

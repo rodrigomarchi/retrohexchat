@@ -1,3 +1,11 @@
+/**
+ * @section G - Command Surface, Help, Autocomplete, Validation
+ * @flow G9 [done] Command history recalls non-sensitive commands and skips sensitive NickServ commands (features P2)
+ * @flow G10 [done] Escape closes autocomplete, syntax tooltip, and history search in order (features P2)
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { expect, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";
