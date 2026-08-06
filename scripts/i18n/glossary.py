@@ -96,8 +96,28 @@ _ROWS = {
     # is most likely to read as the architectural one, and the Chinese pair
     # genuinely differ: 列 in Simplified against 欄 in Traditional.
     "Columns":            ("Colunas", "Colunas", "Columnas", "Colonnes", "Spalten", "Colonne", "Kolommen", "Kolumny", "Столбцы", "Kolom", "列", "列", "欄"),
+    # Headings of the listing help, and the clearest case in the file for why
+    # this table exists. "Ordering" alone reads as a purchase to a model:
+    # it came back as "Bestellung", "Commande", "Zamówienia", "заказывать" and
+    # "注文する" — an order placed, not rows put in order. "Column" fared no
+    # better: German and Russian both chose the pillar ("Säulen", "колонны").
+    "Ordering":           ("Ordenação", "Ordenação", "Ordenación", "Tri", "Sortierung", "Ordinamento", "Sorteren", "Sortowanie", "Сортировка", "Pengurutan", "並べ替え", "排序", "排序"),
+    "Column Width":       ("Largura da coluna", "Largura da coluna", "Ancho de columna", "Largeur de colonne", "Spaltenbreite", "Larghezza colonna", "Kolombreedte", "Szerokość kolumny", "Ширина столбца", "Lebar kolom", "列の幅", "列宽", "欄寬"),
+    "Choosing Columns":   ("Escolher colunas", "Escolher colunas", "Elegir columnas", "Choisir les colonnes", "Spalten auswählen", "Scegliere le colonne", "Kolommen kiezen", "Wybór kolumn", "Выбор столбцов", "Memilih kolom", "列の選択", "选择列", "選擇欄"),
+    # An ampersand in the source is its own hazard: Spanish came back with the
+    # HTML entity ("Listas &quot; Tablas &quot;") and Chinese with a stray
+    # accelerator ("正在选择复制( C)").
+    "Listings & Tables":  ("Listagens e tabelas", "Listagens e tabelas", "Listados y tablas", "Listes et tableaux", "Listen und Tabellen", "Elenchi e tabelle", "Lijsten en tabellen", "Listy i tabele", "Списки и таблицы", "Daftar dan tabel", "一覧と表", "列表与表格", "列表與表格"),
+    "Selecting & Copying": ("Selecionar e copiar", "Selecionar e copiar", "Seleccionar y copiar", "Sélectionner et copier", "Auswählen und kopieren", "Selezionare e copiare", "Selecteren en kopiëren", "Zaznaczanie i kopiowanie", "Выделение и копирование", "Memilih dan menyalin", "選択とコピー", "选择与复制", "選擇與複製"),
     "Show all columns":   ("Mostrar todas as colunas", "Mostrar todas as colunas", "Mostrar todas las columnas", "Afficher toutes les colonnes", "Alle Spalten anzeigen", "Mostra tutte le colonne", "Alle kolommen tonen", "Pokaż wszystkie kolumny", "Показать все столбцы", "Tampilkan semua kolom", "すべての列を表示", "显示所有列", "顯示所有欄"),
     "Forget":       ("Esquecer", "Esquecer", "Olvidar", "Oublier", "Vergessen", "Dimentica", "Vergeten", "Zapomnij", "Забыть", "Lupakan", "削除", "忘记", "忘記"),
+
+    # ── Background jobs ───────────────────────────────────────
+    # A job state, not a description of one. Left to the pipeline "retryable"
+    # came back as "réutilisable" (reusable), "do regeneracji" (for
+    # regeneration) and "перезаряжаемый" (rechargeable), and four locales gave
+    # up and kept the English.
+    "%{count} retryable":  ("%{count} a repetir", "%{count} a repetir", "%{count} reintentables", "%{count} à réessayer", "%{count} wiederholbar", "%{count} da riprovare", "%{count} opnieuw te proberen", "%{count} do ponowienia", "%{count} к повтору", "%{count} dapat dicoba lagi", "%{count} 件再試行可能", "%{count} 可重试", "%{count} 可重試"),
 
     # ── Terms that are names, not words ───────────────────────
     # Acronyms and protocol nouns. Left to the pipeline they collapse onto
