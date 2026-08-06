@@ -1073,6 +1073,8 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
       {:ok, reconnect_view, _html} =
         live(chat_conn(conn, ctx.a.nickname, pre_identified: true), "/chat")
 
+      wait_until(fn -> match?(%{reattach_pending: true}, p2p_assigns(reconnect_view)) end)
+
       assert %{
                token: token,
                reattach_pending: true,
@@ -1117,6 +1119,9 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
       {:ok, reconnect_view, _html} =
         live(chat_conn(conn, ctx.a.nickname, pre_identified: true), "/chat")
 
+      # The island publishes the reattach state after the mount patch, so the
+      # assertion has to wait for it rather than race it.
+      wait_until(fn -> match?(%{reattach_pending: true}, p2p_assigns(reconnect_view)) end)
       assert %{reattach_pending: true} = p2p_assigns(reconnect_view)
 
       reconnect_view
