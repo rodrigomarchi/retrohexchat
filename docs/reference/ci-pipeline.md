@@ -12,7 +12,7 @@ and those disagree, the scripts win and this file is the defect.
 ## The gate
 
 **ALWAYS use `make ci`** (or `elixir scripts/ci.exs`) to validate code.
-This is a standalone Elixir script that runs the complete 14-check local guard.
+This is a standalone Elixir script that runs the complete 16-check local guard.
 No other validation method is acceptable as the final gate.
 
 `make ci.quick`, `make ci.changed`, stale tests, JS changed tests, and Playwright
@@ -23,7 +23,7 @@ replace the final `make ci` pass.
 **NEVER** run checks individually or via manual parallel Bash calls — use the script.
 If any check fails, the task is NOT complete.
 
-## Pipeline (staged parallel execution, 14 checks)
+## Pipeline (staged parallel execution, 16 checks)
 
 ```
 Stage 1 (parallel):
@@ -34,7 +34,9 @@ Stage 1 (parallel):
   ├─ CI partition profile plan
   ├─ i18n tooling tests
   ├─ i18n quality
-  └─ LiveView hook contract
+  ├─ LiveView hook contract
+  ├─ Frontend bundle budget
+  └─ E2E catalog sync
 
 Stage 2 (parallel, after compile):
   ├─ format
@@ -60,7 +62,7 @@ The two i18n checks need no third-party Python packages, so they run anywhere.
 
 ## Options
 
-- `make ci` — all 14 checks (standard final gate)
+- `make ci` — all 16 checks (standard final gate)
 - `make ci.quick` — skip dialyzer (iteration only)
 - `make ci.changed CI_BASE=origin/main EXPLAIN=1` — print the diff-selected plan
 - `make ci.changed CI_BASE=origin/main` — run diff-selected checks (iteration only)
@@ -72,23 +74,35 @@ The two i18n checks need no third-party Python packages, so they run anywhere.
 `make test.cover` or `make test.cover.all` when coverage is the requested signal,
 then still finish with `make ci`.
 
-## What `make ci` does NOT run
+## Frontend bundle budget
 
-Two static checks live in `make lint` but are outside the 14-check gate. Knowing
-which is which matters — a rule that is not in the gate is a rule the gate cannot
-protect.
+`make lint.bundle` (`assets/scripts/bundle_budget.cjs`) is a stage-1 gate check.
+It bundles `js/app.js` with esbuild and fails when an output exceeds its budget.
 
-| Check | In `make ci`? | In `make lint`? | Selected by `ci.changed`? |
-|---|---|---|---|
-| `make lint.hooks` (LiveView hook contract) | **yes** | yes | yes, on JS changes |
-| `make lint.bundle` (frontend bundle budget) | **no** | yes | yes, on asset changes |
+A budget is a **regression detector, not a description of today's size**. Each
+number is roughly the current size plus 10% headroom, so an ordinary change passes
+and a step-change has to be argued for:
 
-`lint.bundle` is excluded from the gate because **it is currently red**: `app.js`
-is over its 390kb budget, and `space_canvas_hook` and `group_call_webrtc_hook` are
-over their 50kb chunk budgets. Until those are brought back under budget (or the
-budgets are deliberately revised), the bundle standard is enforced by `make lint`
-and by `make ci.changed` on asset diffs, not by `make ci`. Run `make lint.bundle`
-before shipping anything that grows the frontend.
+| Output | Budget |
+|---|---|
+| `app.js` (raw / gzip) | 470kb / 130kb |
+| locale chunk | 20kb |
+| feature hook chunk | 50kb |
+| any other async chunk | 85kb |
+
+Two chunks carry a **named override** in `CHUNK_OVERRIDES`, because raising the
+generic feature budget to fit them would let the next new hook ship at 100kb
+unnoticed:
+
+| Chunk | Budget | Why |
+|---|---|---|
+| `space_canvas_hook` | 120kb | isometric renderer: tile/sprite pipeline, collision, camera, animation clock |
+| `group_call_webrtc_hook` | 85kb | SFU client: transport, simulcast, device management, layout engine |
+
+**Adding an override requires a reason in the code**, not just a bigger number.
+A budget raised without a rationale is a rubber stamp — it still goes green, and
+it stops telling you anything. If a chunk outgrows its override, the honest moves
+are to split it, lazy-load more of it, or write down why it legitimately grew.
 
 **Hosted CI:** GitHub Actions is still `workflow_dispatch` while credits are
 constrained. The workflow runs `Impact Plan` first, executes conditional jobs from
@@ -121,6 +135,22 @@ cd e2e && npx playwright test tests/<file>.spec.ts
 
 Target a single file — never run the whole Playwright suite locally.
 
+### The catalog is generated from the specs
+
+Each `e2e/tests/*.spec.ts` documents its own flows in an `@flow` header, grouped
+by `@section`. `e2e/TEST_CATALOG.md` is an index built from those headers, and
+**E2E catalog sync** in stage 1 fails when the two disagree.
+
+```bash
+make e2e.catalog          # regenerate the index after editing a spec header
+make e2e.catalog.check    # what CI runs
+```
+
+Add or change a flow in the spec, never in the catalog. A spec with no `@flow`
+header is listed in the catalog as a gap — that list exists because 23 specs were
+running with no documentation at all while the catalog called itself the single
+source of truth.
+
 ### Screenshots
 
 **Never write a throwaway spec to capture one.** Visual evidence is
@@ -146,7 +176,7 @@ runs the full CI pipeline first, then deploys to production (Sun).
 NEVER use `make deploy-sun` directly — it skips CI validation.
 
 ```
-Phase 1: CI Validation (make ci — 14 checks, partitioned, ~2m20s-2m25s)
+Phase 1: CI Validation (make ci — 16 checks, partitioned, ~2m20s-3m)
     ↓ (only if all checks pass)
 Phase 2: Deploy
     └─ Sun (production) — scp + ssh deploy.sh

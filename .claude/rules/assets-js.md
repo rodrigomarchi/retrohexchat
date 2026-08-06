@@ -20,9 +20,11 @@ declared **only** in `lazy_feature_hooks.js`.
 readiness protocol for lazy hooks that receive server-pushed startup events, the
 approved dynamic-import sites, and exactly what the CI guard rejects.
 
-**Enforcement:** `make lint.hooks` is part of `make ci`. `make lint.bundle` is
-**not** — it is currently red (`app.js` over budget). Run it yourself before
-shipping anything that grows the frontend. See
+**Enforcement:** `make lint.hooks` and `make lint.bundle` are both part of
+`make ci`. If the bundle budget fails, do not just raise the number: a chunk that
+outgrew its budget should be split or lazy-loaded, and a budget raised without a
+written rationale stops telling you anything. Overrides live in `CHUNK_OVERRIDES`
+in `assets/scripts/bundle_budget.cjs` and each carries a reason. See
 [`docs/reference/ci-pipeline.md`](../../docs/reference/ci-pipeline.md).
 
 **No silent catch.** Every `try/catch` in connection/media/game JS must log or

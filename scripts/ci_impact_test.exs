@@ -92,7 +92,9 @@ defmodule CIImpactTest do
         "apps/retro_hex_chat_web/assets/css/retrohex/components/chat-formatting.css"
       ])
 
-    assert plan.checks == ["lint_css", "lint_bundle", "e2e_smoke_chat"]
+    # Order follows @check_order: lint_bundle is a stage-1 gate check, so it
+    # sorts ahead of the stage-2 CSS lint.
+    assert plan.checks == ["lint_bundle", "lint_css", "e2e_smoke_chat"]
   end
 
   test "dialog CSS changes run dialog smoke checks" do

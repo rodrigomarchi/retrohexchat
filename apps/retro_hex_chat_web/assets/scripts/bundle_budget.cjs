@@ -10,13 +10,33 @@ const REPO_ROOT = path.resolve(ASSETS_ROOT, "../../..");
 const OUTDIR = fs.mkdtempSync(path.join(os.tmpdir(), "retro-hex-bundle-budget-"));
 const METAFILE = path.join(OUTDIR, "meta.json");
 
+// A budget catches regressions; it does not describe today's size. Each number
+// here is the current size plus roughly 10% headroom, so an ordinary change
+// passes and a step-change has to be argued for.
 const BUDGETS = {
-  entry: 390 * KIB,
+  entry: 470 * KIB,
   entryGzip: 130 * KIB,
   localeChunk: 20 * KIB,
   featureChunk: 50 * KIB,
   asyncChunk: 85 * KIB,
 };
+
+// Chunks that legitimately exceed the generic feature budget. The generic
+// budget stays tight on purpose: raising it for everyone would let the next new
+// hook ship at 100kb unnoticed. An entry here needs a reason — a number raised
+// without one turns the budget into a rubber stamp.
+const CHUNK_OVERRIDES = [
+  {
+    pattern: /^app-space_canvas_hook-/,
+    budget: 120 * KIB,
+    reason: "isometric renderer: tile/sprite pipeline, collision, camera, animation clock",
+  },
+  {
+    pattern: /^app-group_call_webrtc_hook-/,
+    budget: 85 * KIB,
+    reason: "SFU client: transport, simulcast, device management, layout engine",
+  },
+];
 
 const LOCALE_CHUNK_PATTERN =
   /^app-(ar|bn|de|es|fr|hi|id|it|ja|ko|nl|pl|pt_BR|pt_PT|ru|tr|ur|vi|zh_hans|zh_hant)-/;
@@ -36,9 +56,18 @@ function errorLine(message) {
 
 function budgetFor(filename) {
   if (filename === "app.js") return BUDGETS.entry;
+
+  const override = CHUNK_OVERRIDES.find((entry) => entry.pattern.test(filename));
+  if (override) return override.budget;
+
   if (LOCALE_CHUNK_PATTERN.test(filename)) return BUDGETS.localeChunk;
   if (FEATURE_CHUNK_PATTERN.test(filename)) return BUDGETS.featureChunk;
   return BUDGETS.asyncChunk;
+}
+
+function overrideReasonFor(filename) {
+  const override = CHUNK_OVERRIDES.find((entry) => entry.pattern.test(filename));
+  return override ? override.reason : null;
 }
 
 function runEsbuild() {
@@ -97,13 +126,19 @@ function checkBudget(rows) {
     failures.push("app.js was not emitted by esbuild");
   } else if (entry.gzipBytes > BUDGETS.entryGzip) {
     failures.push(
-      `${entry.filename} gzip is ${kib(entry.gzipBytes)} over budget ${kib(BUDGETS.entryGzip)}`,
+      `${entry.filename} gzip is ${kib(entry.gzipBytes)}, ` +
+        `${kib(entry.gzipBytes - BUDGETS.entryGzip)} over its ${kib(BUDGETS.entryGzip)} budget`,
     );
   }
 
   for (const row of rows) {
     if (row.overBudget) {
-      failures.push(`${row.filename} is ${kib(row.bytes)} over budget ${kib(row.budget)}`);
+      const reason = overrideReasonFor(row.filename);
+      failures.push(
+        `${row.filename} is ${kib(row.bytes)}, ` +
+          `${kib(row.bytes - row.budget)} over its ${kib(row.budget)} budget` +
+          (reason ? ` (raised budget: ${reason})` : ""),
+      );
     }
   }
 

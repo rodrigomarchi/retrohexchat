@@ -32,7 +32,8 @@ defmodule CI do
     "py_tests",
     "i18n_quality",
     "lint_hooks",
-    "lint_bundle"
+    "lint_bundle",
+    "e2e_catalog"
   ]
   @stage2_after_compile [
     "format",
@@ -92,6 +93,7 @@ defmodule CI do
       args: ["scripts/i18n_quality_check.py", "--fail-on-findings"]
     },
     "lint_hooks" => %{label: "LiveView Hook Contract", cmd: "make", args: ["lint.hooks"]},
+    "e2e_catalog" => %{label: "E2E Catalog Sync", cmd: "make", args: ["e2e.catalog.check"]},
     "lint_bundle" => %{label: "Bundle Budget", cmd: "make", args: ["lint.bundle"]},
     "format" => %{label: "Format", cmd: "make", args: ["format.check"]},
     "credo" => %{label: "Credo", cmd: "mix", args: ["credo", "--strict"]},

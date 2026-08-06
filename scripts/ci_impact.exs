@@ -10,6 +10,8 @@ defmodule CIImpact do
     "py_tests",
     "i18n_quality",
     "lint_hooks",
+    "lint_bundle",
+    "e2e_catalog",
     "format",
     "credo",
     "lint_css",
@@ -20,7 +22,6 @@ defmodule CIImpact do
 
   @check_order @full_checks ++
                  [
-                   "lint_bundle",
                    "test_domain",
                    "test_web",
                    "e2e_changed",
@@ -148,6 +149,7 @@ defmodule CIImpact do
         plan
         |> surface("e2e", "#{file} changed an E2E spec")
         |> add("e2e_changed", "#{file} changed an E2E spec")
+        |> add("e2e_catalog", "#{file} can change the @flow headers the catalog is built from")
 
       e2e_support?(file) ->
         plan
