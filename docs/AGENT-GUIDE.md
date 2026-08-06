@@ -531,6 +531,26 @@ unique per LiveView).
   page objects target the window testid + `[data-window-control="close"]` (the X lives outside the
   panel). And: the Playwright config uses `reuseExistingServer` — after an Elixir change, kill the
   stale server on its port (`lsof -ti:<port> | xargs kill -9`) or you validate old code.
+- **A popup anchored inside a scroller is `fixed`, never `absolute`.** A scroll container clips on
+  *both* axes — `overflow-y: visible` is not honoured when the other axis is `auto` — so an
+  `absolute bottom-full` flyout out of the `overflow-x-auto` taskbar is cut off and its clicks land
+  on whatever is behind it. Playwright reports this as `subtree intercepts pointer events` on an
+  element it also calls "visible, enabled and stable". Follow the taskbar context menus: a `fixed`
+  panel positioned by the hook from the trigger's `getBoundingClientRect()`, clamped to the viewport.
+- **Every popup root owns its own data attribute.** `data-taskbar-group` is not `data-start-submenu`
+  is not the menu bar's submenu attribute. Different roots, different hooks — sharing the attribute
+  makes one panel close the other. This has bitten three times.
+- **Merge instead of extracting when tabs are one surface with a discriminator.** List each assign
+  and assign it to a tab: nothing shared → independent features, extract; shared snapshot but
+  divergent content → leave them as separate tabs; same surface with a discriminator → merge. The
+  merge signature is mechanical — tabs already share a render function, near-identical
+  sub-forms, assigns in parallel triples (`*_selected` ×3), handler families in parallel, derived
+  getters differing only by key. Three or more signals and the merge is safe; one or two, stop —
+  that's coincidence of shape, not of meaning. Merging is **not** a cheap way to cut tab count: if
+  the lists came from different services or had different permission gates, the selector would hide
+  a real difference. Unlike extraction, nothing is created before deleting — collapse in place, from
+  the innermost sub-form outward, and let the discriminator dictate the whole vocabulary (one
+  testid, not N; the dispatch table in the island, the labels in the presentational component).
 
 ---
 
@@ -617,6 +637,50 @@ This separation is Principle IV and is enforced.
   `request_action("file_transfer")` → `respond_action` flow, but nothing about the file touches
   the server. Extension blocklist is env-configurable; MIME checking rejected (browser MIME is
   extension-derived).
+
+### 8.5 Failure & recovery
+
+Calls fail constantly in the field; the recovery protocol is part of the feature, not polish.
+
+- **`disconnected` is not `failed`.** ICE `disconnected` is often transient and returns to
+  `connected` on its own. Never restart on it: start a grace period, show feedback immediately
+  (`lobby_recovery_pending` → recovery state `:reconnecting`), and consult `getStats()` before
+  escalating — if packets are still moving, defer. Only `failed` earns an ICE restart.
+- **The answerer never recovers by itself.** P2P is single-offerer, so an answerer-initiated
+  recovery must become an explicit request to the initiator (`lobby_renegotiate` carrying
+  `connection_reset`), not a local PC recreation that then waits for an offer that never comes.
+  This is what makes two simultaneous manual `Retry` clicks idempotent.
+- **Signaling carries an epoch.** Signals ship `signalingEpoch`, `offer_id` and `connection_reset`;
+  answers and candidates from an old epoch are discarded, and a recovery offer with a new epoch +
+  `connection_reset` is the answerer's licence to recreate its PC. `validate_signal/1` checks SDP /
+  ICE-candidate shape and size and preserves recovery metadata; `lobby_renegotiate` goes through
+  the signaling rate limit like any other signal.
+- **Renegotiation ≠ rejoin.** Conference must distinguish renegotiating inside the same
+  `PeerServer` from a full rejoin against a new WebRTC endpoint. When the participant's SFU peer
+  died, `request_offer` answers `rejoin_required`; the hook then closes the local PC, drops pending
+  candidates/offers and stale remote tiles, stops screen share, and re-runs `group_call_join` with
+  `previous_participant_id` + `rejoin_epoch`. Republish local tracks whenever the PC changes.
+- **`PeerServer` monitors the channel, never links to it.** A link made an SFU endpoint crash take
+  down the very signaling channel needed to retry — recovery became unreachable. Same shape as
+  §6.6: a supervision edge that kills your escape hatch.
+- **A hook `destroyed()` is not a voluntary leave.** `GroupCallWebRTCHook.destroyed()` sending
+  `group_call_leave` turned every reload/deploy into a terminal exit. Unexpected teardown must go
+  through `disconnect_call/4` (status `disconnected`, reconnect window preserved); only the explicit
+  LiveView/confirmation path is terminal. `terminate/2` marks unexpected closes accordingly.
+- **Reconnect needs an application-level rehydrate.** Phoenix rejoins channels automatically, but
+  call state living outside the channel does not come back. `GroupCallEvents.rehydrate/1` rebuilds
+  `@group_call` for a non-terminal participant in an already-rejoined channel; background/restore
+  channel joins must call it *after* updating `session.channels`, so channels restored after mount
+  are covered. Rehydrate requires an identified session.
+- **Fault injection is E2E-only and flag-compiled.** The destructive path (`chat-call-fault-injection.spec.ts`)
+  uses a real in-browser delay injected into `setRemoteDescription` and a
+  `POST /api/e2e/group-call-peer/terminate` route that is only *compiled* under
+  `config :retro_hex_chat, e2e_fault_injection?: true` and 404s at runtime otherwise. Don't mock the
+  Phoenix protocol. Injected failure must wait for the `:DOWN` to be processed by `RoomServer`
+  before the test clicks `Retry`, or the click races the async state update.
+- **Don't chase real packet loss locally.** CDP `Network.emulateNetworkConditions` documents
+  packet loss, but local Chromium will not transition ICE deterministically within a test budget.
+  That scenario belongs in a netem / Network Link Conditioner lab, not the local suite.
 
 ---
 
@@ -810,6 +874,12 @@ Accessible via F1, Help menu → Help Topics, and `/help`. Stale/inaccurate help
   or surface — no silent swallow (best-effort audio is the sole exception). Server-side, a
   catch-all `handle_info`/no-op that eats a message you depend on is the same bug class — prefer
   explicit clauses for anything load-bearing; reserve catch-alls for genuine no-ops.
+- **Use the repo's Prettier, not `npx prettier`** — `npx` fetches a different version that disagrees
+  with what `make format.check` runs:
+  `apps/retro_hex_chat_web/assets/node_modules/.bin/prettier --write <file>`.
+- **Programmatic edits need a unique anchor or an explicit `count=1`.** A bare `str.replace` hits
+  *every* occurrence; one such edit silently rewrote an unrelated pre-existing assertion
+  (`toBe("chat")` → `toBe("call")`) and the breakage read as a production regression.
 - **Comments describe what the code does, never the change that produced it.** No migration/plan
   references in moduledocs or comments.
 - Private helpers added to a `*_events.ex` module go in the helpers section at the end, never
@@ -890,3 +960,144 @@ There is exactly ONE hook registration pattern; do not reintroduce local choice 
   localized pages are self-referencing clean paths.
 - **Public pages avoid the full app bundle.** Prefer server-rendered / CSS-first behavior on
   landing and help pages; only actual app pages load `app.js`.
+
+---
+
+## 17. Background work is Oban, and Oban is observable
+
+Recurring, deferred and fire-and-forget work is durable job work. `Process.send_after/3`,
+`Task.start/1` and bespoke GenServer timers are **not** acceptable substrates for anything that
+must survive a restart or deploy — every one of them was migrated out.
+
+### 17.1 The code contract
+
+- **Every enqueue goes through `RetroHexChat.Jobs`** (or a domain scheduler that uses it). No
+  domain context calls `Oban.insert`, `Oban.cancel_all_jobs`, or queries `Oban.Job` directly;
+  the only other Oban reader is the operational one, `RetroHexChat.Jobs.ObanHealth`.
+- **Jobs are idempotent.** Running twice must not duplicate an external effect or corrupt state.
+  A job acting on a persisted entity **reloads the freshest record inside `perform/1`** — never
+  trusts a snapshot taken at enqueue time. Jobs mutating JSONB or durable lists take a
+  transactional lock (pattern: `jobs/rss_poll_worker.ex`).
+- **Separate the four moments** in any job with a visible side effect: plan → persist state →
+  deliver → schedule the successor. Collapsing them is how a retry double-delivers.
+- **Return type is the retry policy.** Target gone / work no longer meaningful → `{:cancel, reason}`.
+  Transient failure → `{:error, reason}`. A worker that returns `:ok` on a real failure is a
+  silently lost job.
+- **Declare the envelope explicitly** on every worker: `queue`, `max_attempts`, `timeout/1`,
+  `backoff/1`, `tags`, plus a `unique` rule whenever the work has a natural identity.
+- **HTTP inside a job goes through `RetroHexChat.Net.HTTPRetry`**: retry only transient statuses
+  (`408`, `425`, `429`, `5xx`) and transport failures; never retry deterministic `4xx` such as
+  `404`; cap HTTP flows at `max_attempts: 3`.
+- **`args` stays small, auditable and free of sensitive data.** Large or race-prone payloads use an
+  outbox/pending table, with only lookup keys in the job.
+
+### 17.2 Recurrence
+
+- Global maintenance recurrence uses `Oban.Plugins.Cron`. **Cron schedules future ticks; it is not
+  backfill.** A sweep that must catch up after a deploy/restart also enqueues one immediate,
+  unique job at boot (or on the owning supervisor's first run).
+- Per-entity recurrence is **self-scheduling**: the running job enqueues its successor *after*
+  persisting state (the RSS pattern).
+- Every recurring flow owes the admin window a **coverage contract** — "there is a next job for
+  every active target".
+- Disabling or removing an entity must cancel its outstanding jobs via
+  `RetroHexChat.Jobs.cancel_worker_jobs/3`.
+
+### 17.3 Queues & tables
+
+Queues are split by operational nature, not by convenience: `rss`, `maintenance`, `bots`,
+`link_preview`, `persistence`. Concurrency is explicit per queue via env var in `config/config.exs`
++ `config/runtime.exs` (the `OBAN_RSS_CONCURRENCY` style). Any new durable table backing a worker
+ships with indexes and constraints matching the real access paths: read active targets, find
+expired, cancel/idempotency lookup, and the flow's natural uniqueness.
+
+### 17.4 Observability is part of "done"
+
+A migrated flow is not done until it exposes: job counts by queue/worker/state, execution duration,
+queue time, attempts, a **normalized** error, last success, last discard/cancel, its coverage
+contract, and the business numbers behind it. Domain metrics go through `RetroHexChat.Observability`.
+
+- **`set_current_span_attributes/1` is not a metric.** It updates the OpenTelemetry span; PromEx
+  needs `:telemetry` events, so numeric business fields must be emitted as whitelisted events.
+- **Keep PromEx cardinality low.** Never label with nick, channel, full URL, schedule id, or an
+  error message — normalize the error first.
+- The Oban admin window is contract-shaped, not RSS-shaped: tabs `Overview`, `Queues`, `Bots`,
+  `Maintenance`, `Previews`, `Persistence`, with health summary and durable-contract cards always
+  visible above them. **When a new worker lands without final UI, record the debt** in the window's
+  contract table (needed `ObanHealth` snapshot, expected metrics, expected visual state). Visual
+  consolidation may wait; the operational information may not be left undefined.
+
+### 17.5 Learned the hard way
+
+- **A durable expiry needs the DB as its source of truth.** ETS is only a derived cache, and
+  expiry-on-read in the cache does not replace an auditable materialization by a worker (global
+  mute). Materialized expiry must also stay auditable — never an implicit hard delete
+  (trusted devices).
+- **A cleanup worker does not cover a persistence outbox.** When a snapshot can be pending, the
+  domain's `save/2` edge must itself reject expired entries, or the worker resurrects dead state.
+- **A pending outbox snapshot is the effective read.** Domain policy that depends on
+  outbox-persisted preferences must treat a pending snapshot as authoritative until the revision is
+  applied; the materialized table is sufficient only when nothing is pending.
+- **Uniqueness must match the human action.** Per-channel mutes are unique per channel/target while
+  unrevoked — a re-mute replaces the active row *and* the future job instead of creating a second
+  source of truth.
+- **Stale runtime cleanup is not a UX timeout.** For long-lived sessions, the durable cutoff stays
+  conservative and the update re-confirms the row is still stale in the DB.
+- **Orphan cleanup for direct-to-S3 uploads keys on bucket/key/status/age**, never a local
+  checksum — there isn't one.
+- **In tests, never `Process.sleep/1` as a proxy for persistence** after moving `Task.start/1` to
+  Oban. Assert the job was enqueued, then drain the relevant queue.
+
+---
+
+## 18. Mobile & touch
+
+Mobile is not shrunk desktop, and desktop is not a separate interface — it's the same mobile-first
+interface using more room. When layout changes with width, the concepts, components and hierarchy
+must stay the same. Never build two visual systems inside one surface.
+
+### 18.1 The viewport contract
+
+- **One breakpoint, 768px**, agreed between `WindowManagerHook` and the LiveView. Below it the
+  window manager drops MDI and shows one fullscreen window at a time; the LiveView sets/clears
+  `mobile_viewport` and restores sidebars on the way back to desktop.
+- **`ViewportDetectHook` owns visual-viewport truth.** It observes `visualViewport` `resize`/`scroll`
+  plus `focusin`/`focusout`, and publishes height, width, `offsetTop`, `offsetLeft` and
+  `keyboardInset` as `:root` CSS variables. `chat-app-root` follows those variables, which is what
+  keeps the composer off the keyboard and the layout from drifting sideways.
+- **`rhc-keyboard-open` requires both signals**: a mobile viewport *and* an editable element focused
+  *and* a bottom inset over 80px. Inset alone is a browser chrome resize, not a keyboard. With the
+  class on, the stacked taskbar and Start menu hide to give the chat its height back.
+- **Mobile overlays start below the header, they do not out-z-index it.** A `fixed inset-0` backdrop
+  swallowing a header button is not fixed by raising the header — that just moves the interception
+  onto the sidebar's own close button and menu items. Keep the natural layers and offset the overlay.
+- **Long-press opens the same context menu as right-click** — one menu definition, two gestures,
+  for messages, nicklist and conversations.
+- `overflow-hidden` on the root can still accumulate programmatic `scrollLeft` in stacked mode:
+  when a window looks offset, inspect ancestor `scrollLeft` and rects, not just the window's own CSS.
+
+### 18.2 Dialog patterns (established across all 24 dialogs)
+
+- **Tabs:** a horizontal `overflow-x` strip with a fade + chevron affordance on whichever side has
+  more content — never wrap to multiple rows. Don't change `Tabs`' global roles without running the
+  full dialog suite; helpers still rely on `getByRole("button")`.
+- **Lists and tabular data:** one mobile-first representation that also reads well on desktop. Use a
+  table only when the data is genuinely matrix-like and comparative; for list editors, actionable
+  rows beat a table on both. Primary field on the first line, short-labelled metadata below
+  (`Set By`, `Set At`). Preserve existing per-row test ids, and when a row becomes a `button`, set
+  `aria-label` so its accessible name is the entry — not its whole inner text.
+- **Reference content** (help, shortcuts, cheatsheet): the item is the visual unit, not a row in a
+  table. Strong categories, scannable entries, key badges with `max-width: 100%` and safe wrapping.
+- **Forms:** inputs need `min-width: 0`; long operational text goes in a textarea even when the
+  stored value stays a plain string; user/server/timestamp values need `overflow-wrap: anywhere`;
+  numeric inputs in flex/grid need a stable `flex-basis` + `min-width` or they collapse to just the
+  spinner. Treat a label/input/unit setting as a responsive block, not a rigid column table.
+- **Small confirms are not fullscreen.** A one- or two-sentence decision is a compact message box:
+  icon, question, consequence on its own line, actions right-aligned. Use an opt-in local class to
+  compact it rather than changing the global `Dialog`. The titlebar X must map to Cancel's semantics
+  — and when the dialog fronts a server-owned queue, to a real domain action, not a client-side hide.
+- **Subdialogs** inside a desktop window use `scope={:window}`; the inner form is a flex column
+  (`min-h-0`, `flex-1`) so titlebar and footer survive and only the body scrolls.
+- **Shared adjustments only land in global components once the other dialogs' tests are ready for
+  them.** And a functional test never substitutes for a screenshot — validate behavior *and* pixels.
+

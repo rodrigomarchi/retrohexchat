@@ -3,8 +3,8 @@
 Data: 2026-07-28
 
 Este documento registra o que ainda deve continuar depois do hardening atual de
-P2P e conferencia. O estado detalhado da implementacao fica em
-`docs/plans/call-resilience-hardening-PROGRESS.md`; o mapa tecnico fica em
+P2P e conferencia. As regras duraveis do protocolo de recovery ficam em
+`docs/AGENT-GUIDE.md` secao 8.5; o mapa tecnico fica em
 `docs/reference/call-handshake-resilience-map.md`.
 
 ## Fora deste projeto: dashboards e alertas

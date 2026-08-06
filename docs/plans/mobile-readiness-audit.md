@@ -4,7 +4,9 @@ Data: 2026-07-15
 
 Status: auditoria viva. O diagnostico inicial foi feito antes das mudancas; as atualizacoes abaixo refletem os ciclos de implementacao do chat mobile core.
 
-Atualizacao 2026-07-16: a frente de implementacao do chat mobile core foi executada e registrada em `docs/plans/mobile-chat-progress.md`. Ja foram abordados breakpoint, visual viewport, teclado virtual por contrato de `visualViewport` + foco editavel, header mobile, sidebars, long press, busca, autocomplete, composer, emoji mobile, reply, edit, delete confirm, PM, nicklist/conversations por toque e projeto Playwright mobile dedicado. Ainda nao foram resolvidos os dialogos densos, P2P/midia/jogos, Mobile Safari/WebKit e validacao em dispositivo real.
+Atualizacao 2026-07-16: a frente de implementacao do chat mobile core foi executada. Ja foram abordados breakpoint, visual viewport, teclado virtual por contrato de `visualViewport` + foco editavel, header mobile, sidebars, long press, busca, autocomplete, composer, emoji mobile, reply, edit, delete confirm, PM, nicklist/conversations por toque e projeto Playwright mobile dedicado. O contrato duravel disso vive em `docs/AGENT-GUIDE.md` secao 18.
+
+Atualizacao 2026-08-06: os dialogos densos tambem foram fechados — os 24 dialogos passaram pela adaptacao mobile e os padroes resultantes estao em `docs/AGENT-GUIDE.md` secao 18.2. Continuam abertos: P2P/midia/jogos em touch, Mobile Safari/WebKit, landscape e validacao em dispositivo fisico.
 
 ## Resumo executivo
 
