@@ -182,10 +182,22 @@ get fresh timers with the *remaining* duration.
 - **JSONB `message_settings` is the general-purpose per-user preference store.** New scalar
   preferences (e.g. P2P `turn_only`) go under a nested key here — no migration. Reserve new
   columns/tables for structured data only.
-- **Cursor pagination uses `inserted_at` timestamps** (not offsets, not plain UUIDs), with
-  composite indexes like `(channel_name, inserted_at)`:
-  `WHERE channel = ? AND inserted_at < ? ORDER BY inserted_at DESC LIMIT 50`. Offsets
-  rejected (O(n) deep pages); UUIDs rejected (no chronological sort without UUIDv7).
+- **Every paginated `list_*/2` returns `RetroHexChat.Page`, keyed by `id`.** Cursor keyset, never
+  offset (O(n) deep pages) — `WHERE channel_name = ? AND id < ? ORDER BY id DESC`, backed by
+  composite indexes like `(channel_name, id)`. Read `page.ex`'s moduledoc before writing a new
+  paginated query; the rules below are the parts callers keep getting wrong.
+- **`has_more` comes from `limit + 1` in the database, never from `length/1` of a filtered list.**
+  Ask for one row past the page (`Page.limit_with_lookahead/1`), and build the page *before* any
+  presentation filter runs. `Page.filter/2` and `Page.map/2` reshape items and deliberately leave
+  pagination state alone, so an ignore list or a visibility cutoff can never truncate paging.
+  The cursor is the last **raw** row's id, not the last visible one.
+- **Filter and search belong in the `WHERE`**, never `Enum.filter` over a full list; and a
+  displayed count comes from `page.total`, never from a truncated list.
+- **Every long list has five states** — empty, loading, end-of-list, error, truncated — from the
+  shared components in `components/ui/layout/list_states.ex`. Auto-load always ships with a
+  keyboard-reachable fallback. A list with no domain ceiling paginates; one with a ceiling
+  documents the ceiling.
+- **Long-list streams carry a negative `limit:`** (about 3× the page) so the DOM stays bounded.
 - **Text search uses pg_trgm GIN + ILIKE/`similarity()`**, not tsvector full-text (trigram
   wins for the substring matching Ctrl+F expects) and not an external engine.
 - **Fuzzy matching runs server-side** (subsequence + weighted scoring, ~30 LOC Elixir); only
@@ -358,6 +370,10 @@ becomes a thin orchestrator; each island owns its own state, events, and streams
 - **`Phoenix.LiveViewTest` applies no stream limit at all.** Every assertion about *which* rows
   a stream holds is a claim about the server's intent, never about the browser's list — a
   capped list is only observable in a real browser (`e2e/tests/chat-scrollback-audit.spec.ts`).
+- **An infinite-scroll hook must hold a `pending` flag and re-arm on the server's *reply*.**
+  Scroll fires once per frame, so an unguarded handler asks for a page per frame — measured at
+  two pages per gesture in a test, and a real wheel flick emits dozens of events. Re-arm on the
+  reply, never on the next patch: an empty page produces no patch and paging would wedge.
 - **A missed stream callsite is a runtime error, not a compile error** —
   `stream_insert(socket, :chat_messages, …)` still compiles. The completeness gate for a
   stream refactor is `grep -rn ":chat_messages"`, not the compiler; then drop
@@ -754,6 +770,8 @@ Calls fail constantly in the field; the recovery protocol is part of the feature
 - **No hardcoded hex colors or CSS values in Elixir/JS** — Tailwind classes or CSS custom
   properties only. Inline `style=` is allowed only for dynamic `left`/`top` and CSS custom
   properties. `make ci` runs `mix audit.styles --strict` (must show 0 LOW / 0 MEDIUM / 0 HIGH).
+  The auditor reads **any** `#` followed by digits as a hex colour, including a GitHub issue
+  reference in a JS comment — `#3639` broke the build once. Write issue references out in words.
 - **JS that toggles visual state flips a CSS-owned project class** (e.g.
   `menubar-copy-disabled`), never raw Tailwind utilities, because the CSS lint scans
   `classList.*` strings. Emit boolean-ish `data-*` attributes as explicit `"true"`/`"false"`

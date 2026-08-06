@@ -17,8 +17,6 @@ Living catalogs and runbooks kept current with the code:
 
 - [reference/i18n-catalogs.md](reference/i18n-catalogs.md) — Gettext catalog conventions,
   the locale roster, and rollout waves (`config/i18n_locales.exs`).
-- [reference/server-provision.md](reference/server-provision.md) — production provisioning
-  runbook: the Admin Console script that seeds channels, bots, and server settings.
 - [reference/conferencia-canal-permissoes.md](reference/conferencia-canal-permissoes.md) —
   the authority matrix for channel conferences: the call inherits the channel hierarchy,
   there is no separate host/moderator role.
@@ -30,18 +28,24 @@ Living catalogs and runbooks kept current with the code:
 - [operations/group-call-sfu.md](operations/group-call-sfu.md) — runtime env vars and
   operational notes for the embedded group-call SFU.
 
-There is deliberately **no icon inventory** here: `components/icons/` and `/showcase/icons`
-are the catalog, because a hand-written list of 344 icons is stale on arrival.
+Runbooks live next to what they run, not here:
 
-## Plans
+- [`scripts/server-provision.md`](../scripts/server-provision.md) — the production provisioning
+  script pasted into the Admin Console, plus the IRC census behind the channel choices.
 
-`plans/` holds only work that is **still in flight**. A plan there means the work is open;
-if you finish it, the plan leaves with it.
+There is deliberately **no icon inventory**: `components/icons/` and `/showcase/icons` are the
+catalog, because a hand-written list of 344 icons is stale on arrival.
 
 ## Conventions
 
 - Add a durable, cross-cutting engineering learning → `AGENT-GUIDE.md`.
-- Add a living inventory/runbook → `reference/`, and link it here.
-- Finished a plan? Extract any durable learning into `AGENT-GUIDE.md`, then delete the plan —
-  implemented plans with no residual learning are just noise.
+- Add a living inventory that must track the code → `reference/`, and link it here. If the code
+  can answer the question directly (grep a module, open `/showcase/icons`), do not write the
+  inventory at all.
+- Runbooks and scripts document themselves in place, beside the thing they operate.
+- **There is no `plans/`.** A plan is a working note for one change; it belongs in the pull
+  request or the commit message that carries the change, not in a directory that outlives it.
+  Every plan file this repo kept eventually described a codebase that had moved on — two of them
+  claimed a phase was still open for features that had shipped weeks earlier. Extract the durable
+  rule into `AGENT-GUIDE.md` and let the plan die with the work.
 </content>
