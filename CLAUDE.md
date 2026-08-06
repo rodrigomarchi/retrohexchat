@@ -263,7 +263,9 @@ Same pattern: `attr :class` + `@spec` + `~H""" <svg> """`.
 
 ### Catalog
 
-See `docs/reference/svg-catalog.md` for full inventory. Visit `/showcase/icons` (dev only) to browse all icons visually.
+There is no hand-written inventory — a list of 344 icons rots the week it is written.
+The submodules under `components/icons/` **are** the catalog: grep them, or visit
+`/showcase/icons` (dev only) to browse every icon visually.
 
 ## i18n
 

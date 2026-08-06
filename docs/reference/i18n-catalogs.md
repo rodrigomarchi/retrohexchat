@@ -16,18 +16,23 @@ Locales ficam registrados em `config/i18n_locales.exs`, com:
 - `Plural-Forms` Gettext;
 - onda de rollout e status.
 
-Onda 0 esta em producao desde a primeira fase: `en`, `pt_BR`.
+O conjunto habilitado sao 14 locales, todos com `status: :enabled` no registro:
 
-Onda 1 esta habilitada: `es`, `fr`, `de`, `ja`, `zh_hans`, `id`.
+| Onda | Locales |
+| --- | --- |
+| 0 | `en`, `pt_BR` |
+| 1 | `es`, `fr`, `de`, `ja`, `zh_hans`, `id` |
+| 2 | `ru` |
+| 3 | `zh_hant`, `pt_PT`, `it`, `pl`, `nl` |
 
-Onda 2 esta habilitada: `ar`, `ru`, `hi`, `ko`, `tr`, `vi`.
+Nao existe locale planejado fora dessa lista. Adicionar ou remover um idioma e
+uma edicao de um arquivo so, `config/i18n_locales.exs` — o Makefile, os catalogos
+do browser e os checkers Python derivam dali. Nunca escreva uma lista de locales
+em outro lugar.
 
-Ondas planejadas:
-
-- Onda 3: `bn`, `ur`, `zh_hant`, `pt_PT`, `it`, `pl`, `nl`.
-
-Idiomas RTL (`ar`, `ur`) exigem revisao visual dedicada, pois o layout usa
-`dir={RetroHexChatWeb.I18n.html_dir()}` no elemento `html`.
+Todos os locales habilitados sao LTR. O caminho RTL continua no codigo
+(`dir={RetroHexChatWeb.I18n.html_dir()}` no elemento `html`), mas hoje nao e
+exercitado por nenhum locale; um idioma RTL futuro exige revisao visual dedicada.
 
 ## Dominios
 

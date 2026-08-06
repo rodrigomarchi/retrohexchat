@@ -192,6 +192,19 @@ get fresh timers with the *remaining* duration.
   Tab-cycling and recent-commands (localStorage, capped 5) are client-local for latency.
   Levenshtein and external fuzzy libs rejected as overkill for small datasets.
 - Ecto timestamps are `utc_datetime_usec` throughout.
+- **Message content is a pair: source + rendered format, plus a cached `plain_content`.** IRC is a
+  first-class format, not a legacy one — Markdown was added as an *explicit* mode beside it
+  (IRC / MD / TXT), never as a silent replacement. `RetroHexChat.Chat.Content` is the facade;
+  `plain_content` is derived by the changeset (`put_plain_content`) and **protected there** — a
+  cached visible-text column that callers can set becomes a second source of truth.
+- **Anything that reads a message as *text* reads the visible text, not the source.** Search is
+  `coalesce(plain_content, content)`; the same holds for highlight, notifications, previews and
+  accessibility. Only "Copy Source" reads the source, and it travels through the DOM in a
+  representation separate from the visible text so copying can't break rendering or leak
+  special-line privacy.
+- **Parallel send paths need duplicated contract tests.** `Chat.Service` and `Channels.Server` are
+  two ways in; a format that works through one and vanishes through the other passes a suite that
+  only covers the first. Test both for as long as both exist.
 
 ---
 
@@ -734,8 +747,9 @@ Calls fail constantly in the field; the recovery protocol is part of the feature
 
 - **No inline `<svg>` anywhere.** Icons are function components in `Icons.*` submodules (chosen
   by *what the icon depicts*, not where it's used), exposed via the `components/icons.ex` facade;
-  complex illustrations go in `components/diagrams.ex`. Reuse from `docs/reference/svg-catalog.md` /
-  `/showcase/icons` before adding one. A missing icon is a real prerequisite — add it via
+  complex illustrations go in `components/diagrams.ex`. Check the submodules or `/showcase/icons`
+  (they are the only catalog — a hand-maintained list of 344 icons goes stale immediately) and
+  reuse before adding one. A missing icon is a real prerequisite — add it via
   submodule + facade `defdelegate` + `@spec` first.
 - **No hardcoded hex colors or CSS values in Elixir/JS** — Tailwind classes or CSS custom
   properties only. Inline `style=` is allowed only for dynamic `left`/`top` and CSS custom
@@ -757,6 +771,10 @@ Calls fail constantly in the field; the recovery protocol is part of the feature
   keyboard-shortcut hints aligned right; grayed disabled states for unavailable actions.
 - Respect standard visibility gates: op-only, admin-only, identified-only, never-on-self,
   disabled-when-disconnected. Admin-only affordances are fully hidden (`:if`), not grayed.
+- **The composer line belongs to the input.** Mode/format controls compete directly with typing
+  space, so they live in the tools menu and as contextual icons — never as permanent text buttons
+  on the composition line. A Markdown preview renders through the real message component, or it
+  becomes a second visual language for the same content.
 
 ---
 

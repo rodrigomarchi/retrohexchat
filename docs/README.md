@@ -15,8 +15,6 @@ once implemented, and the plans themselves are removed as noise.
 
 Living catalogs and runbooks kept current with the code:
 
-- [reference/svg-catalog.md](reference/svg-catalog.md) — inventory of every icon
-  (`Icons.*` submodules) and diagram. Browse visually at `/showcase/icons` (dev only).
 - [reference/i18n-catalogs.md](reference/i18n-catalogs.md) — Gettext catalog conventions,
   the locale roster, and rollout waves (`config/i18n_locales.exs`).
 - [reference/server-provision.md](reference/server-provision.md) — production provisioning
@@ -26,9 +24,14 @@ Living catalogs and runbooks kept current with the code:
   there is no separate host/moderator role.
 - [reference/media-session-p2p-conference-current.md](reference/media-session-p2p-conference-current.md)
   — the current surfaces and sections of the unified P2P/conference media session.
-  Supersedes the older `p2p-conferencia-*` snapshots kept beside it.
 - [reference/call-handshake-resilience-map.md](reference/call-handshake-resilience-map.md) —
-  the technical map of handshake/recovery paths behind AGENT-GUIDE §8.5.
+  which files take part in each handshake/recovery path, and what the tests already cover.
+  The rules themselves are AGENT-GUIDE §8.5.
+- [operations/group-call-sfu.md](operations/group-call-sfu.md) — runtime env vars and
+  operational notes for the embedded group-call SFU.
+
+There is deliberately **no icon inventory** here: `components/icons/` and `/showcase/icons`
+are the catalog, because a hand-written list of 344 icons is stale on arrival.
 
 ## Plans
 

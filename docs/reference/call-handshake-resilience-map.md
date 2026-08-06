@@ -8,6 +8,11 @@ risco de usuario ficar preso em fluxo quebrado. Ele complementa
 `docs/reference/media-session-p2p-conference-current.md`, que continua sendo a
 fonte curta de produto sobre superficies e janelas.
 
+As regras duraveis que sairam deste mapa — `disconnected` nao e `failed`, epoch
+de sinalizacao, renegociar versus rejoin, `PeerServer` monitorando o channel —
+vivem em `docs/AGENT-GUIDE.md` secao 8.5. Aqui fica o inventario tecnico: quais
+arquivos participam de cada caminho e o que os testes ja cobrem.
+
 ## Sumario executivo
 
 - P2P e uma sessao WebRTC browser-browser. O backend Phoenix/LiveView/PubSub
@@ -670,84 +675,3 @@ Lacunas conferencia de teste:
   perda real de mensagem server-client;
 - candidate invalido repetido agregado por epoch.
 
-## Plano de hardening implementado nesta rodada
-
-### Fase 1 - Estado e protocolo de recovery
-
-Objetivo: nenhum retry deve depender de efeito colateral implicito.
-
-- P2P recebeu `signalingEpoch`/`offer_id` e descarte de SDP/ICE obsoletos.
-- Conferencia recebeu `offer_id` por oferta do `PeerServer`.
-- UI diferencia reconnect/retry/rejoin/failed e mantem Retry/End acionaveis.
-- Erros principais de SDP/ICE agora atualizam recovery ou enviam erro ao
-  cliente.
-
-### Fase 2 - P2P recovery coordenado
-
-Objetivo: qualquer lado consegue iniciar recuperacao mesmo com single-offerer.
-
-- Retry automatico do answerer envia pedido de re-offer ao initiator.
-- Manual retry e watchdog usam o mesmo caminho coordenado.
-- SDP/ICE antigos sao descartados por epoch/offer.
-- Testes unitarios e E2E cobrem retry/falha terminal sem desmontar console.
-
-### Fase 3 - Conferencia rejoin robusto
-
-Objetivo: recovery distingue PeerServer vivo de PeerServer morto.
-
-- `group_call_request_offer` retorna `rejoin_required` quando o peer nao esta
-  pronto.
-- Hook fecha PC, limpa estado antigo e executa join novamente no mesmo channel.
-- Tracks locais sao republicadas apos PC novo.
-- Testes JS/channel/LiveView cobrem retry automatico, manual e leave por erro.
-- E2E destrutivo encerra o `PeerServer` do participante, clica no Retry real e
-  valida que a midia remota volta viva sem trocar o `participant_id`.
-
-### Fase 4 - Midia e device recovery
-
-Objetivo: estado de UI sempre representa track real publicada/recebida.
-
-- Conferencia: aquisicao on-demand de audio/video quando usuario liga midia
-  depois de receive-only ou falha de permissao.
-- P2P: fallback de camera equivalente ao de microfone.
-- P2P: watchdog ampliado para video remoto esperado sem track.
-- Conferencia: tile remoto usa `attachMediaStream` e recovery quando video live
-  nao renderiza.
-- Conferencia: watchdog de offer inicial aciona `group_call_request_offer` se a
-  offer server-client se perder.
-- P2P/conferencia: telemetria agregada de recovery, erro client-side e replay de
-  sinalizacao exposta em LiveDashboard e PromEx.
-- Ainda pendente: helper unico para todos os pontos locais/remotos.
-
-### Fase 5 - Validacao, limites e observabilidade
-
-Objetivo: falhas ficam mensuraveis e payloads ruins nao afetam sessao.
-
-- P2P: snapshot/replay em memoria para `offer`/`answer`/ICE e
-  `lobby_renegotiate`, com aplicacao idempotente no browser.
-
-- Limites de tamanho para SDP/candidates nos dois protocolos.
-- Validacao de shape de candidates e `offer_id`.
-- Rate limit para `lobby_renegotiate`; reacoes mantem rate limit no contexto.
-- Telemetria de producao para recovery/falha/replay e exposicao do ultimo
-  recovery reason/trigger/attempt/epoch/offer no painel de stats.
-
-## Checklist de criterio de aceite futuro
-
-- Refresh do browser durante handshake nao deixa sessao pendurada.
-- Perda temporaria de rede mostra reconnect e volta sem acao do usuario.
-- ICE `failed` tenta recovery automatico e, quando nao der, mostra retry manual
-  que realmente cria caminho novo.
-- Se retry manual tambem falha, UI diz motivo e oferece sair/reentrar sem
-  console travado.
-- Usuario que nega permissao entra receive-only; se depois habilitar permissao,
-  consegue publicar mic/camera sem sair da chamada.
-- Candidate/SDP antigo nunca derruba uma tentativa nova.
-- Peer que saiu/foi kickado nao recebe sinalizacao reaplicada.
-- Chamada de conferencia sobrevive join/leave/rejoin com midia real e sem tiles
-  pretos permanentes.
-- P2P sobrevive falha unilateral de cada papel: initiator e answerer.
-- TURN indisponivel em modo relay-only gera erro claro e nao fica em connecting
-  infinito.
-- E2E confirma que queda curta de rede/LiveView nao remove controles de saida e
-  que `End/Leave` nos estados de erro abrem confirmacao e encerram/saem de fato.
