@@ -1,0 +1,29 @@
+---
+paths:
+  - "apps/retro_hex_chat_web/assets/js/**"
+---
+
+# JS hooks & bundle
+
+JavaScript is ESLint + Prettier enforced (`make lint.js`), auto-fix with
+`make lint.js.fix`. Use the repo's Prettier, never `npx prettier` — `npx` fetches a
+different version that disagrees with `make format.check`:
+`apps/retro_hex_chat_web/assets/node_modules/.bin/prettier --write <file>`.
+
+There is exactly ONE hook registration pattern. A LiveSocket entrypoint imports a
+single `build*Hooks()` function and passes the returned map to `LiveSocket(...)`.
+No entrypoint may import individual hook implementations or define an inline hooks
+object. Critical hooks are eager in `critical_hooks.js`; lazy feature hooks are
+declared **only** in `lazy_feature_hooks.js`.
+
+**Full standard:** [`docs/AGENT-GUIDE.md` §15](../../docs/AGENT-GUIDE.md) — the
+readiness protocol for lazy hooks that receive server-pushed startup events, the
+approved dynamic-import sites, and exactly what the CI guard rejects.
+
+**Enforcement:** `make lint.hooks` is part of `make ci`. `make lint.bundle` is
+**not** — it is currently red (`app.js` over budget). Run it yourself before
+shipping anything that grows the frontend. See
+[`docs/reference/ci-pipeline.md`](../../docs/reference/ci-pipeline.md).
+
+**No silent catch.** Every `try/catch` in connection/media/game JS must log or
+surface — no silent swallow (best-effort audio is the sole exception).

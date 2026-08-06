@@ -1,0 +1,91 @@
+# Intentional removals. Format:  <fragment>  ::  <reason>
+# Every line here is a decision, not an accident.
+
+# --- 1. The inverted indirection, replaced. AGENTS.md is now the canonical file. ---
+Always read `./CLAUDE.md` before doing any project work  ::  AGENTS.md is now canonical; CLAUDE.md imports it via @AGENTS.md
+Treat `CLAUDE.md` as required repository-level agent instructions  ::  same: direction of the pointer reversed
+task. It defines the project's standard workflow, Makefile commands, validation  ::  same
+gates, CSS/SVG rules, deployment rules, and local conventions. Follow those  ::  same
+instructions the same way you would follow this file.  ::  same
+If a future subdirectory adds its own `CLAUDE.md`, read that more-specific file  ::  superseded by .claude/rules/ path globs, which fire automatically
+as well before changing files under that subtree. More-specific local guidance  ::  same
+extends the root `CLAUDE.md`; it does not replace the root file unless it says so  ::  same
+
+# --- 2. Hand-written icon inventory: derivable, and it was already wrong (missing call_controls). ---
+All icons are function components in submodules under  ::  the directory IS the catalog; ls components/icons/
+`Icons.People` | Users, contacts, social  ::  derivable inventory, deleted per the file's own stated rule
+`Icons.Communication` | Chat, channels, networking  ::  same
+`Icons.Media` | Audio, video, devices  ::  same
+`Icons.Files` | Documents, folders, clipboard  ::  same
+`Icons.Hardware` | Servers, databases, platforms  ::  same
+`Icons.Code` | Terminal, scripting, automation  ::  same
+`Icons.Security` | Locks, shields, bans  ::  same
+`Icons.Arrows` | Directional, navigation  ::  same
+`Icons.Marks` | Checkmarks, X marks, status  ::  same
+`Icons.Tools` | Settings, editing, search  ::  same
+`Icons.Alerts` | Notifications, info, warnings  ::  same
+`Icons.Symbols` | Currency, stars, misc  ::  same
+`Icons.Formatting` | Text formatting  ::  same
+`Icons.Games` | P2P game icons  ::  same
+`Icons.Flags` | Language flags for the locale menu  ::  same
+Choose submodule by **what the icon depicts**  ::  reworded in .claude/rules/css-svg.md, "chosen by what the icon depicts"
+The submodules under `components/icons/` **are** the catalog: grep them, or visit  ::  preserved in .claude/rules/css-svg.md and docs/README.md
+
+# --- 3. Superseded counts: make ci is 14 checks now (lint_hooks added to @full_checks). ---
+This is a standalone Elixir script that runs the complete 13-check local guard  ::  now 14-check, in docs/reference/ci-pipeline.md
+Pipeline (staged parallel execution, 13 checks)  ::  now 14, with the hook-contract stage listed
+with a warm Dialyzer PLT. `make ci.serial` completed the same 13 checks in  ::  count dropped, timing preserved
+`make ci` — all 13 checks (standard final gate)  ::  now 14
+Browser E2E (Playwright) is NOT part of `make ci`  ::  preserved verbatim in docs/reference/ci-pipeline.md under its own heading
+**Performance:** latest measured local runs are  ::  preserved in ci-pipeline.md, "latest" dropped as it dates itself
+
+# --- 4. Rotting counts: every one was wrong. Never write counts into prose. ---
+PostgreSQL 16+ (39 migrations, 36 schemas)  ::  counts were wrong (real: 75/53); stack line kept in AGENTS.md without counts
+a hand-maintained list of 344 icons goes stale immediately  ::  count dropped, rule kept
+a hand-written list of 344 icons is stale on arrival  ::  count dropped, rule kept and broadened to all counts
+
+# --- 5. Linter's job, not the model's. ---
+Elixir: Follow standard conventions, `mix format` enforced  ::  format is a CI check; asking the model to remember is wasted context
+JavaScript: ESLint + Prettier enforced  ::  moved to .claude/rules/assets-js.md with the npx-Prettier trap attached
+
+# --- 6. Moved to a path-scoped rule and/or already canonical in AGENT-GUIDE §12. ---
+Every new feature MUST include corresponding help documentation  ::  .claude/rules/help-topics.md + AGENT-GUIDE §12
+Add topics to `RetroHexChat.Chat.HelpTopics`  ::  same, path pointer preserved
+New commands → add a topic in the "Commands" category  ::  same, reworded
+New features → add a topic in the "Features" category  ::  same, reworded
+New UI elements → add a topic in the "User Interface" category  ::  same, reworded
+New keyboard shortcuts → update the "Keyboard Shortcuts" topic  ::  same, reworded
+Update "See Also" cross-references in related existing topics  ::  same, reworded
+The Help system is accessible via F1, Help menu  ::  same, reworded to "Accessible via F1, Help menu -> Help Topics, and /help"
+
+# --- 7. Git rules: moved to AGENTS.md AND enforced by scripts/hooks/guard_bash.py. ---
+Before any direct commit or push to `main`, inspect the remote and pull first  ::  AGENTS.md "Before any commit or push:" + hook blocks when behind origin/main
+Only push after confirming local `main` is current  ::  now enforced: the hook blocks commit/push when local main is behind
+
+# --- 8. docs/README.md rewritten as a routing table with triggers. ---
+Living documentation for retro_hex_chat. `AGENT-GUIDE.md` holds the durable rules  ::  rewritten intro, same meaning plus guide/ and the Read-when column
+principles plus hard-won rules (state tiers, command/dispatch, LiveComponent island  ::  list re-split across the guide and guide/ playbook rows
+decomposition, WebRTC/P2P and call recovery, windowed desktop, background jobs (Oban)  ::  same
+mobile/touch, JS hook loading standard, i18n/public URLs, testing gotchas). Start here.  ::  same
+The rules themselves are AGENT-GUIDE §8.5.  ::  now points at guide/webrtc-p2p.md §8.5
+
+# --- 9. Cross-references updated to name the file after the split. ---
+§6.6: a supervision edge that kills your escape hatch  ::  now liveview-islands.md §6.6
+(See §6.3 for the flush rule when a synchronous read is genuinely needed.)  ::  now liveview-islands.md §6.3
+
+# --- 10. Closing pointer replaced by the routing table in AGENTS.md. ---
+See `docs/AGENT-GUIDE.md` for the 11 governing principles plus the crystallized  ::  AGENTS.md "Where the rest lives" table, with per-file triggers
+hard-won engineering learnings (state tiers, command/dispatch architecture  ::  same
+LiveComponent island decomposition, WebRTC/P2P, testing gotchas)  ::  same
+Key non-negotiables: TDD, umbrella separation, OTP process architecture  ::  the 11 principles remain verbatim in AGENT-GUIDE §1; this was a summary of a summary
+static analysis from day one, retro design fidelity, mandatory help documentation  ::  same
+
+# --- 11. Stack lines: restored in AGENTS.md "Stack", reworded (versions deferred to mix.exs). ---
+Tailwind CSS (`retrohex.css`) + esbuild for asset bundling  ::  AGENTS.md:14 "Tailwind (retrohex.css) + esbuild"
+Req 0.5+ (HTTP client for link previews)  ::  AGENTS.md:25 "Req for the link-preview HTTP client"
+In-memory: GenServer/ETS for runtime, Session structs for guests  ::  AGENTS.md:19, verbatim meaning
+ExSTUN ~> 0.1 (WebRTC signaling)  ::  AGENTS.md:25 "ExSTUN for WebRTC signaling"; version is mix.exs's job
+PromEx exports Prometheus metrics at `/metrics`  ::  AGENTS.md:22, plus the infra-repo provenance kept
+
+# --- 12. Last stale count, caught by the harness after the split. ---
+`make ci` (complete local guard, 13 checks) is the ONLY final validation  ::  docs/guide/testing.md, count dropped; rule kept verbatim

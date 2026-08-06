@@ -55,6 +55,11 @@ Thumbs.db
 .omc/
 **/.omc/
 
+# Claude Code: rules/, skills/ and settings.json are shared; local state is not
+.claude/scheduled_tasks.lock
+.claude/worktrees/
+.claude/settings.local.json
+
 # Stray Playwright artifacts when run from repo root
 /test-results/
 

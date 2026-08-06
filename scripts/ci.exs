@@ -15,7 +15,7 @@
 # remains reserved for ExUnit's own partition selection.
 #
 # Usage:
-#   elixir scripts/ci.exs              # run all 13 checks
+#   elixir scripts/ci.exs              # run all checks
 #   elixir scripts/ci.exs --quick      # skip dialyzer
 #   elixir scripts/ci.exs --only compile,credo
 #   CI_TEST_PARTITIONS=1 CI_FEATURE_PARTITIONS=1 elixir scripts/ci.exs

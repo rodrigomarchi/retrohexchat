@@ -9,6 +9,7 @@ defmodule CIImpact do
     "ci_partition_profile_plan",
     "py_tests",
     "i18n_quality",
+    "lint_hooks",
     "format",
     "credo",
     "lint_css",
@@ -19,7 +20,6 @@ defmodule CIImpact do
 
   @check_order @full_checks ++
                  [
-                   "lint_hooks",
                    "lint_bundle",
                    "test_domain",
                    "test_web",

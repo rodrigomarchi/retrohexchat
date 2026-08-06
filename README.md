@@ -26,7 +26,7 @@ Full channel modes, persistent bans, role hierarchy (Owner / Op / Half-op / Voic
 You can open a game window inside the chat and play DOOM: Knee-Deep in the Dead, Quake, Quake II, Wolfenstein 3D, Half-Life: Uplink, or ScummVM adventures via WebAssembly engines without leaving the app. Two users can also invite each other to one of 34 multiplayer game sessions via P2P WebRTC.
 
 **The architecture is production-grade.**
-Each IRC channel runs as an isolated OTP GenServer. If one crashes, others are unaffected. Message history uses cursor-based pagination with GIN trigram indexes for full-text search. 706 JavaScript tests. 13-check partitioned local CI guard. Zero ignored Credo warnings. All public functions spec'd with Dialyzer.
+Each IRC channel runs as an isolated OTP GenServer. If one crashes, others are unaffected. Message history uses cursor-based pagination with GIN trigram indexes for full-text search. 706 JavaScript tests. A partitioned local CI guard. Zero ignored Credo warnings. All public functions spec'd with Dialyzer.
 
 ---
 
@@ -151,7 +151,7 @@ RetroHexChat is a **Phoenix umbrella application** with strict compile-time sepa
 ┌──────────────────────────────────────────────────────────┐
 │                     Browser (LiveView)                    │
 │  ConnectLive ──→ ChatLive ──→ ChannelListLive            │
-│  57 function components · 31 JS hooks · retro CSS        │
+│  function components · JS hooks · retro CSS              │
 └──────────────────────┬───────────────────────────────────┘
                        │ Phoenix.PubSub
 ┌──────────────────────▼───────────────────────────────────┐
@@ -159,7 +159,7 @@ RetroHexChat is a **Phoenix umbrella application** with strict compile-time sepa
 │                                                          │
 │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌────────────┐  │
 │  │ Accounts │ │   Chat   │ │ Channels │ │  Commands  │  │
-│  │ Sessions │ │ Messages │ │ Server   │ │ 54 handlers│  │
+│  │ Sessions │ │ Messages │ │ Server   │ │ Handlers   │  │
 │  │ NickValid│ │ History  │ │ Modes    │ │ Parser     │  │
 │  └──────────┘ └──────────┘ └──────────┘ └────────────┘  │
 │                                                          │
@@ -172,7 +172,7 @@ RetroHexChat is a **Phoenix umbrella application** with strict compile-time sepa
                        │
          ┌─────────────▼──────────────┐
          │       PostgreSQL 16+       │
-         │  39 migrations · 36 schemas│
+         │  migrations · schemas      │
          │  GIN trigram indexes       │
          └────────────────────────────┘
 ```
@@ -288,7 +288,7 @@ make precommit      # compile + format + test
 
 ### CI Pipeline
 
-The complete local guard runs 13 checks across staged parallel groups. ExUnit suites are
+The complete local guard runs 14 checks across staged parallel groups. ExUnit suites are
 partitioned by default with `CI_TEST_PARTITIONS=3`, `CI_FEATURE_PARTITIONS=4`, and
 `CI_TEST_DB_POOL_SIZE=6`; set both partition counts to `1` or use `make ci.serial`
 to diagnose partition-specific issues.
@@ -326,9 +326,9 @@ Playwright remains a deliberate local E2E suite, not part of the default `make c
 guard. The selective guard can choose focused browser smokes for critical UI
 changes: `make e2e.smoke SURFACE=connect|chat|dialogs|i18n|calls|mobile`.
 
-Latest measured local runs: `make ci` completed 13/13 checks in `2m20s`-`2m25s`
+Measured local runs: `make ci` completed all checks in `2m20s`-`2m25s`
 with 3-way normal tests, 4-way feature tests, DB pool 6 per partition, and a
-warm Dialyzer PLT. `make ci.serial` completed 13/13 in `5m28s`.
+warm Dialyzer PLT. `make ci.serial` completed the same checks in `5m28s`.
 
 GitHub Actions is still `workflow_dispatch` while credits are constrained. The
 workflow is prepared for selective CI: the `Impact Plan` job always runs, selected
@@ -389,13 +389,13 @@ retro_hex_chat/
 │   │   │   ├── accounts/            # Sessions, nickname validation
 │   │   │   ├── channels/            # GenServer per channel, modes, policy
 │   │   │   ├── chat/                # Messages, history, search, highlights
-│   │   │   ├── commands/            # Parser, dispatcher, 54 handlers
+│   │   │   ├── commands/            # Parser, dispatcher, one module per command
 │   │   │   ├── p2p/                 # WebRTC signaling, TURN credentials
 │   │   │   ├── presence/            # Phoenix.Presence tracker
 │   │   │   ├── prom_ex.ex           # Core PromEx collector; Ecto starts before Repo
 │   │   │   ├── rate_limit/          # ETS-backed flood control
 │   │   │   └── services/            # NickServ + ChanServ
-│   │   └── priv/repo/migrations/    # 39 migrations
+│   │   └── priv/repo/migrations/    # Ecto migrations
 │   │
 │   └── retro_hex_chat_web/          # Web (Phoenix + LiveView)
 │       ├── lib/retro_hex_chat_web/
@@ -403,10 +403,10 @@ retro_hex_chat/
 │       │   ├── prom_ex_plug.ex      # Aggregates core + web collectors at /metrics
 │       │   ├── open_telemetry.ex    # Phoenix/Bandit/Ecto tracing setup
 │       │   ├── live/app/             # ConnectLive, ChatLive, P2PSessionLive
-│       │   └── components/          # 57 function components, icons, dialogs
+│       │   └── components/          # Function components, icons, dialogs
 │       └── assets/
 │           ├── css/                 # retrohex.css + component styles
-│           └── js/hooks/            # 31 LiveView hooks
+│           └── js/hooks/            # LiveView hooks
 │
 ├── config/                          # dev / test / prod / runtime configs
 ├── scripts/                         # ci.exs, deploy_all.exs
