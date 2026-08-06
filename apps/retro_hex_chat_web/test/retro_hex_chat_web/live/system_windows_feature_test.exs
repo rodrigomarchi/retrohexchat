@@ -100,13 +100,19 @@ defmodule RetroHexChatWeb.SystemWindowsFeatureTest do
   end
 
   describe "Oban Health window" do
-    test "opens with queue, job and RSS coverage sections", %{conn: conn} do
+    test "opens with grouped tabs for every Oban contract", %{conn: conn} do
       view = connect_admin(conn)
       open(view, "system_oban")
 
       html = render(view)
 
       assert html =~ "Oban health"
+      assert html =~ "Overview"
+      assert html =~ "Queues"
+      assert html =~ "Bots"
+      assert html =~ "Maintenance"
+      assert html =~ "Previews"
+      assert html =~ "Persistence"
       assert html =~ "Queues by state"
       assert html =~ "Recent jobs"
       assert html =~ "RSS feed coverage"
@@ -120,8 +126,74 @@ defmodule RetroHexChatWeb.SystemWindowsFeatureTest do
       assert html =~ "Global mute expiry"
       assert html =~ "Ignore expired cleanup"
       assert html =~ "Link preview cache"
+      assert html =~ "Retrying"
+      assert html =~ "Final failures"
       assert html =~ "Preference persistence"
       assert has_element?(view, "[data-testid='system-oban-window']")
+      assert has_element?(view, "#system-oban-dialog-tabs[data-active-tab='overview']")
+      assert has_element?(view, "[data-testid='system-oban-tab-overview'][aria-selected='true']")
+      refute has_element?(view, "[data-testid='system-oban-tabpanel-overview'].hidden")
+      assert has_element?(view, "[data-testid='system-oban-tabpanel-queues'].hidden")
+    end
+
+    test "switches Oban sections with tabs", %{conn: conn} do
+      view = connect_admin(conn)
+      open(view, "system_oban")
+
+      html =
+        view
+        |> element("[data-testid='system-oban-tab-queues']")
+        |> render_click()
+
+      assert html =~ "Queues by state"
+      assert html =~ "Recent jobs"
+      assert has_element?(view, "#system-oban-dialog-tabs[data-active-tab='queues']")
+      assert has_element?(view, "[data-testid='system-oban-tab-queues'][aria-selected='true']")
+      assert has_element?(view, "[data-testid='system-oban-tabpanel-overview'].hidden")
+      refute has_element?(view, "[data-testid='system-oban-tabpanel-queues'].hidden")
+
+      html =
+        view
+        |> element("[data-testid='system-oban-tab-bots']")
+        |> render_click()
+
+      assert html =~ "RSS feed coverage"
+      assert html =~ "Bot schedule coverage"
+      assert html =~ "Bot event log jobs"
+      assert has_element?(view, "#system-oban-dialog-tabs[data-active-tab='bots']")
+
+      html =
+        view
+        |> element("[data-testid='system-oban-tab-maintenance']")
+        |> render_click()
+
+      assert html =~ "Maintenance sweeps"
+      assert html =~ "Attachment orphan cleanup"
+      assert html =~ "Trusted device expiry"
+      assert html =~ "Chat device session cleanup"
+      assert html =~ "Runtime stale cleanup"
+      assert html =~ "Channel mute expiry"
+      assert html =~ "Global mute expiry"
+      assert html =~ "Ignore expired cleanup"
+      assert has_element?(view, "#system-oban-dialog-tabs[data-active-tab='maintenance']")
+
+      html =
+        view
+        |> element("[data-testid='system-oban-tab-previews']")
+        |> render_click()
+
+      assert html =~ "Link preview cache"
+      assert html =~ "Retrying"
+      assert html =~ "Final failures"
+      assert has_element?(view, "#system-oban-dialog-tabs[data-active-tab='previews']")
+
+      html =
+        view
+        |> element("[data-testid='system-oban-tab-persistence']")
+        |> render_click()
+
+      assert html =~ "Preference persistence"
+      assert has_element?(view, "#system-oban-dialog-tabs[data-active-tab='persistence']")
     end
 
     test "refreshing re-reads the Oban snapshot", %{conn: conn} do
@@ -135,6 +207,10 @@ defmodule RetroHexChatWeb.SystemWindowsFeatureTest do
     test "recent Oban jobs can be filtered by state, queue and worker", %{conn: conn} do
       view = connect_admin(conn)
       open(view, "system_oban")
+
+      view
+      |> element("[data-testid='system-oban-tab-queues']")
+      |> render_click()
 
       html =
         view

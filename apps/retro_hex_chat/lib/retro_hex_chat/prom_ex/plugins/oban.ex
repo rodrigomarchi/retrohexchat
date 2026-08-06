@@ -19,6 +19,17 @@ defmodule RetroHexChat.PromEx.Plugins.Oban do
 
   @duration_buckets [10, 100, 500, 1_000, 5_000, 20_000]
   @attempt_buckets [1, 5, 10]
+  @stable_binary_errors ~w(
+    blocked
+    changeset_error
+    fetch_failed
+    invalid_url
+    no_title
+    server_error
+    stale_revision
+    timeout
+    unknown
+  )
 
   @impl true
   def event_metrics(opts) do
@@ -219,6 +230,16 @@ defmodule RetroHexChat.PromEx.Plugins.Oban do
 
   defp error_name(%module{}), do: normalize_name(module)
   defp error_name(error) when is_atom(error), do: Atom.to_string(error)
-  defp error_name(error) when is_binary(error), do: error
+
+  defp error_name(error) when is_binary(error) do
+    error = String.trim(error)
+
+    cond do
+      error in @stable_binary_errors -> error
+      Regex.match?(~r/^http_(408|425|429|5\d\d)$/, error) -> error
+      true -> "binary_error"
+    end
+  end
+
   defp error_name(_error), do: "unknown"
 end

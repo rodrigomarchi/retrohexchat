@@ -1,4 +1,11 @@
-import { Browser, BrowserContext, Page, expect, test } from "@playwright/test";
+import {
+  Browser,
+  BrowserContext,
+  Locator,
+  Page,
+  expect,
+  test,
+} from "@playwright/test";
 import { ConnectPage } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";
 import { shot } from "../helpers/screenshots";
@@ -25,6 +32,23 @@ type TestUser = {
   ctx: BrowserContext;
   page: Page;
 };
+
+async function expectNoHorizontalOverflow(locator: Page | Locator) {
+  const overflow = await locator.locator("[data-testid]").evaluateAll((nodes) =>
+    nodes
+      .map((node) => {
+        const element = node as HTMLElement;
+        return {
+          testid: element.dataset.testid || element.id || element.tagName,
+          clientWidth: element.clientWidth,
+          scrollWidth: element.scrollWidth,
+        };
+      })
+      .filter((entry) => entry.scrollWidth > entry.clientWidth + 2),
+  );
+
+  expect(overflow).toEqual([]);
+}
 
 async function signedInAdmin(browser: Browser): Promise<TestUser> {
   const ctx = await browser.newContext();
@@ -235,6 +259,47 @@ test.describe("System windows", () => {
       // Raising the selection to what the node actually emits clears it.
       await window.getByLabel("Level").selectOption("warning");
       await expect(window.getByTestId("system-log-unreachable")).toHaveCount(0);
+    } finally {
+      await admin.ctx.close();
+    }
+  });
+
+  test("the Oban health window groups contracts into tabs without horizontal overflow", async ({
+    browser,
+  }) => {
+    const admin = await signedInAdmin(browser);
+
+    try {
+      const window = await admin.chat.openSystemWindow("open_system_oban");
+
+      await expect(window).toContainText("Oban health");
+      await expect(
+        window.getByTestId("system-oban-tab-overview"),
+      ).toHaveAttribute("aria-selected", "true");
+      await expectNoHorizontalOverflow(window);
+      await shot(window, "oban-overview");
+
+      for (const [tab, expectedText] of [
+        ["queues", "Recent jobs"],
+        ["bots", "Bot event log jobs"],
+        ["maintenance", "Ignore expired cleanup"],
+        ["previews", "Final failures"],
+        ["persistence", "Preference persistence"],
+      ] as const) {
+        await window.getByTestId(`system-oban-tab-${tab}`).click();
+        await expect(
+          window.getByTestId(`system-oban-tab-${tab}`),
+        ).toHaveAttribute("aria-selected", "true");
+        await expect(
+          window.locator("#system-oban-dialog-tabs"),
+        ).toHaveAttribute("data-active-tab", tab);
+        await expect(
+          window.getByTestId(`system-oban-tabpanel-${tab}`),
+        ).toBeVisible();
+        await expect(window).toContainText(expectedText);
+        await expectNoHorizontalOverflow(window);
+        await shot(window, `oban-${tab}`);
+      }
     } finally {
       await admin.ctx.close();
     }

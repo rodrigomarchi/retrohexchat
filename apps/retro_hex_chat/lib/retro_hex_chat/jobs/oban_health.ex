@@ -4,7 +4,8 @@ defmodule RetroHexChat.Jobs.ObanHealth do
 
   The application only schedules durable background work through Oban, so an
   administrator needs two views at once: generic queue health and domain
-  contracts such as RSS successor coverage and maintenance sweep status.
+  contracts such as successor coverage, maintenance sweeps and durable
+  persistence/fetch backlogs.
   This module owns both readings and returns them as `Admin.Table` values so
   the web surface never has to know Oban's schema.
   """
@@ -163,6 +164,8 @@ defmodule RetroHexChat.Jobs.ObanHealth do
             maintenance_pending_work: non_neg_integer(),
             link_previews: non_neg_integer(),
             link_preview_pending: non_neg_integer(),
+            link_preview_retrying: non_neg_integer(),
+            link_preview_final_failures: non_neg_integer(),
             link_preview_failed: non_neg_integer(),
             link_preview_expired: non_neg_integer(),
             persistence_requests: non_neg_integer(),
@@ -237,7 +240,7 @@ defmodule RetroHexChat.Jobs.ObanHealth do
   def job_filters, do: @job_filters
 
   @doc """
-  Reads Oban configuration, queue state, recent jobs and RSS successor coverage.
+  Reads Oban configuration, queue state, recent jobs and durable job contracts.
 
   The snapshot is intentionally read-only. It never retries, cancels, resumes or
   starts a job; it only describes the health of the supervisor, queue table and
@@ -400,6 +403,8 @@ defmodule RetroHexChat.Jobs.ObanHealth do
       maintenance_pending_work: maintenance_rows |> Enum.map(& &1.pending_work) |> Enum.sum(),
       link_previews: link_preview_summary.total,
       link_preview_pending: link_preview_summary.pending,
+      link_preview_retrying: link_preview_summary.retrying,
+      link_preview_final_failures: link_preview_summary.final_failures,
       link_preview_failed: link_preview_summary.failed,
       link_preview_expired: link_preview_summary.expired,
       persistence_requests: persistence_summary.total,
@@ -438,6 +443,8 @@ defmodule RetroHexChat.Jobs.ObanHealth do
       maintenance_pending_work: 0,
       link_previews: 0,
       link_preview_pending: 0,
+      link_preview_retrying: 0,
+      link_preview_final_failures: 0,
       link_preview_failed: 0,
       link_preview_expired: 0,
       persistence_requests: 0,
@@ -485,12 +492,13 @@ defmodule RetroHexChat.Jobs.ObanHealth do
       |> maybe_reason(summary.bot_schedule_failures > 0, "bot schedule jobs have failed")
       |> maybe_reason(summary.bot_event_log_failures > 0, "bot event log jobs have failed")
       |> maybe_reason(summary.maintenance_failures > 0, "maintenance sweeps have failed jobs")
+      |> maybe_reason(summary.link_preview_retrying > 0, "link previews are waiting for retry")
       |> maybe_reason(summary.persistence_failed > 0, "preference saves have failed requests")
 
     cond do
       critical != [] -> {:critical, critical}
       warning != [] -> {:warning, warning}
-      true -> {:healthy, ["Oban queues and RSS successor jobs look healthy"]}
+      true -> {:healthy, ["Oban queues and durable job contracts look healthy"]}
     end
   end
 
@@ -908,6 +916,8 @@ defmodule RetroHexChat.Jobs.ObanHealth do
     %{
       total: rows |> Enum.map(& &1.count) |> Enum.sum(),
       pending: rows |> count_link_preview_status("pending"),
+      retrying: rows |> Enum.map(&(&1.retrying || 0)) |> Enum.sum(),
+      final_failures: rows |> Enum.map(&(&1.final_failures || 0)) |> Enum.sum(),
       failed: rows |> count_link_preview_status("failed"),
       expired: rows |> Enum.map(& &1.expired) |> Enum.sum()
     }
@@ -918,6 +928,8 @@ defmodule RetroHexChat.Jobs.ObanHealth do
       columns: [
         Table.column(:status, "Status", sortable: true),
         Table.column(:count, "Rows", format: :number, sortable: true),
+        Table.column(:retrying, "Retrying", format: :number, sortable: true),
+        Table.column(:final_failures, "Final failures", format: :number, sortable: true),
         Table.column(:expired, "Expired", format: :number, sortable: true),
         Table.column(:oldest_attempted_at, "Oldest attempt", sortable: true),
         Table.column(:newest_fetched_at, "Newest fetch", sortable: true)
@@ -1221,6 +1233,8 @@ defmodule RetroHexChat.Jobs.ObanHealth do
       |> Map.get(status, %{
         status: status,
         count: 0,
+        retrying: 0,
+        final_failures: 0,
         expired: 0,
         oldest_attempted_at: nil,
         newest_fetched_at: nil

@@ -329,6 +329,14 @@ defmodule RetroHexChat.Jobs.ObanHealthTest do
     {:ok, _pending} =
       LinkPreviewResults.ensure_pending("https://example.com/pending", now: now)
 
+    {:ok, _retrying} =
+      LinkPreviewResults.record_retryable_failure(
+        "https://example.com/retry",
+        {:http_status, 503},
+        now: DateTime.add(now, -120, :second),
+        attempt: 1
+      )
+
     {:ok, _expired_failed} =
       LinkPreviewResults.record_failure("https://example.com/missing", {:http_status, 404},
         now: DateTime.add(now, -600, :second),
@@ -337,16 +345,21 @@ defmodule RetroHexChat.Jobs.ObanHealthTest do
 
     snapshot = ObanHealth.snapshot(now: now)
 
-    assert snapshot.summary.link_previews == 3
-    assert snapshot.summary.link_preview_pending == 1
+    assert snapshot.summary.link_previews == 4
+    assert snapshot.summary.link_preview_pending == 2
+    assert snapshot.summary.link_preview_retrying == 1
+    assert snapshot.summary.link_preview_final_failures == 1
     assert snapshot.summary.link_preview_failed == 1
     assert snapshot.summary.link_preview_expired == 1
+    assert Enum.any?(snapshot.status_reasons, &(&1 =~ "link previews"))
 
     rows_by_status = Map.new(snapshot.link_preview_table.rows, &{&1.status, &1})
 
     assert rows_by_status["ready"].count == 1
-    assert rows_by_status["pending"].count == 1
+    assert rows_by_status["pending"].count == 2
+    assert rows_by_status["pending"].retrying == 1
     assert rows_by_status["failed"].count == 1
+    assert rows_by_status["failed"].final_failures == 1
     assert rows_by_status["failed"].expired == 1
   end
 

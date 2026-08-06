@@ -1,6 +1,7 @@
 # Oban - padronizacao completa de observabilidade e resiliencia
 
-**Status:** mapeamento tecnico para implementacao completa
+**Status:** implementacao completa com ajustes finais de padrao ouro e janela
+admin tabulada implementados
 **Criado:** 2026-08-05
 **Progresso:** `docs/plans/oban-observability-standardization-PROGRESS.md`
 **Escopo:** migrar trabalho duravel, recorrente, retryable ou fire-and-forget para
@@ -113,6 +114,7 @@ Testes existentes relevantes:
 - `apps/retro_hex_chat/test/retro_hex_chat/net/http_retry_test.exs`
 - `apps/retro_hex_chat_web/test/retro_hex_chat_web/prom_ex_test.exs`
 - `apps/retro_hex_chat_web/test/retro_hex_chat_web/live/system_windows_feature_test.exs`
+- `e2e/tests/chat-system-windows.spec.ts`
 
 ## Padrao ouro
 
@@ -191,7 +193,8 @@ Cada fluxo migrado deve expor:
 
 As metricas de dominio devem usar `RetroHexChat.Observability` quando o fluxo ja
 tiver spans ou quando o worker executar uma operacao relevante. A janela admin de
-Oban deve deixar de ser RSS-centrica e passar a ter secoes por contrato:
+Oban deve deixar de ser RSS-centrica e passar a ter secoes por contrato,
+agrupadas em tabs para reduzir ruido visual e dar foco operacional:
 
 - filas;
 - workers;
@@ -201,6 +204,16 @@ Oban deve deixar de ser RSS-centrica e passar a ter secoes por contrato:
 - maintenance sweeps;
 - storage/link previews;
 - persistence flushes.
+
+Contrato visual implementado:
+
+- topo sempre visivel com status geral e cards de contratos duraveis;
+- tab `Overview` com configuracao do supervisor e motivos de status;
+- tab `Queues` com filas por estado e jobs recentes filtraveis;
+- tab `Bots` com RSS, schedules e backlog/falhas de logs de eventos;
+- tab `Maintenance` com todos os sweeps duraveis;
+- tab `Previews` com cache/fetch de link preview, retry e falha final;
+- tab `Persistence` com outbox de preferencias/listas.
 
 ## Fluxos a migrar
 
@@ -536,11 +549,11 @@ Observabilidade:
 - cache hit/miss;
 - backlog por fila.
 
-Divida restante:
+Fechado em 2026-08-06:
 
-- A tela admin mostra agregados por status, expirados e timestamps, mas a
-  consolidacao final ainda pode adicionar filtros por worker/fila e uma leitura
-  mais explicita de retry transitorio vs falha final sem expor URL completa.
+- A tabela `Link preview cache` mostra agregados por status, expirados,
+  timestamps, retry transitorio em `retrying` e falha final em `final_failures`,
+  sem expor URL completa ou dominio externo como label.
 
 ### Persistencia assincrona de preferencias/listas de usuario
 
@@ -622,7 +635,7 @@ Observabilidade:
 - falhas normalizadas por request;
 - backlog da fila `persistence` no painel generico de filas/jobs.
 
-Divida restante:
+Observacao de UI:
 
 - A consolidacao final da janela pode separar os tipos de preferencia por familia
   visual, mas os dados operacionais necessarios ja estao no snapshot.
@@ -1100,6 +1113,141 @@ processo vivo, socket, protocolo ou UX imediata.
   publica real.
 - Atualizar testes que hoje chamam `run_now/1` para chamar dominio/worker.
 - Atualizar help/admin docs que descrevem Oban como "RSS only".
+
+## Ajustes finais para 100% do padrao ouro
+
+Estes itens foram derivados da auditoria pos-implementacao da padronizacao Oban.
+Eles nao adicionam novos fluxos migraveis; fecham incoerencias, leitura fina de
+observabilidade e regras de boundary que ficaram como ressalvas depois do deploy
+inicial.
+
+### Link preview retry transitorio vs falha final
+
+Status: implementado em 2026-08-06.
+
+Arquivos atuais:
+
+- `apps/retro_hex_chat/lib/retro_hex_chat/chat/link_preview/result.ex`
+- `apps/retro_hex_chat/lib/retro_hex_chat/chat/link_preview/results.ex`
+- `apps/retro_hex_chat/lib/retro_hex_chat/jobs/link_preview_fetch_worker.ex`
+- `apps/retro_hex_chat/lib/retro_hex_chat/jobs/oban_health.ex`
+- `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/ui/system/oban_panel.ex`
+- `apps/retro_hex_chat/test/retro_hex_chat/jobs/oban_health_test.exs`
+- `apps/retro_hex_chat_web/test/retro_hex_chat_web/live/system_windows_feature_test.exs`
+
+Problema confirmado:
+
+- O worker ja diferencia retry HTTP transitorio de falha final, mas a janela admin
+  agregava `link_previews` apenas por `pending`, `ready` e `failed`.
+- Administradores conseguiam ver backlog de jobs recentes pelo filtro generico,
+  mas a tabela especifica de link preview nao deixava explicito se um `pending`
+  estava aguardando primeira tentativa ou retry transitorio.
+- Falhas finais esperadas, como `404` ou pagina sem titulo, nao devem parecer
+  falha operacional da plataforma.
+
+Implementacao necessaria:
+
+- Enriquecer `LinkPreview.Results.stats/1` com contadores de `retrying` e
+  `final_failures` sem expor URL, host ou erro arbitrario como label.
+- Propagar os novos campos para `ObanHealth.Snapshot.summary` e para a tabela
+  `Link preview cache`.
+- Manter falha final deterministica como dado operacional da tabela, sem elevar
+  automaticamente a saude global.
+- Elevar apenas retry transitorio em andamento como motivo de warning na saude
+  da janela.
+
+Observabilidade:
+
+- `pending` total;
+- `retrying` transitorio dentro de `pending`;
+- `final_failures` dentro de `failed`;
+- expirados;
+- tentativa mais antiga;
+- fetch mais recente.
+
+### Boundary Oban no nuke administrativo
+
+Status: implementado em 2026-08-06.
+
+Arquivos atuais:
+
+- `apps/retro_hex_chat/lib/retro_hex_chat/admin.ex`
+- `apps/retro_hex_chat/lib/retro_hex_chat/jobs.ex`
+- `apps/retro_hex_chat/test/retro_hex_chat/commands/handlers/admin/nuke_test.exs`
+
+Problema confirmado:
+
+- `RetroHexChat.Admin` conhecia `Oban.Job` diretamente no reset administrativo
+  para contar e deletar `oban_jobs`.
+- O uso nao era enqueue/cancelamento operacional, mas feria literalmente o
+  contrato de que acesso a Oban deve passar por `RetroHexChat.Jobs` ou pela
+  leitura operacional de `ObanHealth`.
+
+Implementacao necessaria:
+
+- Criar funcoes administrativas explicitas em `RetroHexChat.Jobs` para contar e
+  deletar todos os jobs durante reset total.
+- Trocar o alvo `oban_jobs` do nuke para um identificador interno, sem alias direto
+  para `Oban.Job` em `RetroHexChat.Admin`.
+- Preservar o comportamento existente de preview, transaction summary e testes de
+  delecao de jobs.
+
+Sem codigo morto:
+
+- Nao criar wrapper generico de queries Oban fora de necessidade real.
+- Nao expor API publica para mutacoes arbitrarias de Oban; apenas o contrato de
+  reset administrativo.
+
+### Baixa cardinalidade de erro Oban no PromEx
+
+Status: implementado em 2026-08-06.
+
+Arquivos atuais:
+
+- `apps/retro_hex_chat/lib/retro_hex_chat/prom_ex/plugins/oban.ex`
+- `apps/retro_hex_chat_web/test/retro_hex_chat_web/prom_ex_test.exs`
+
+Problema confirmado:
+
+- `PromEx.Plugins.Oban` normalizava worker/fila/estado, mas aceitava `reason`
+  binario como tag `error` em evento de exception.
+- Em caso de erro binario contendo URL, mensagem de banco, args ou texto externo,
+  isso poderia criar cardinalidade alta no Prometheus.
+
+Implementacao necessaria:
+
+- Manter atomos e modulos de exception como labels estaveis.
+- Permitir apenas strings whitelisted ou padroes HTTP transitorios finitos como
+  `http_408`, `http_425`, `http_429` e `http_5xx`.
+- Bucketizar qualquer outro binario em `binary_error`.
+- Cobrir esse contrato em teste unitario do plugin.
+
+### Linguagem multi-contrato da janela Oban
+
+Status: implementado em 2026-08-06.
+
+Arquivos atuais:
+
+- `apps/retro_hex_chat/lib/retro_hex_chat/jobs/oban_health.ex`
+- `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/ui/system/oban_panel.ex`
+- `docs/plans/oban-observability-standardization.md`
+- `docs/plans/oban-observability-standardization-PROGRESS.md`
+
+Problema confirmado:
+
+- A implementacao funcional ja e multi-contrato, mas alguns textos internos ainda
+  carregavam linguagem RSS-centrica.
+- O arquivo de progresso mantinha linhas antigas de divida que foram resolvidas
+  na consolidacao final da janela admin.
+
+Implementacao necessaria:
+
+- Atualizar moduledocs/mensagens healthy para refletir contratos duraveis, nao
+  apenas RSS.
+- Reconciliar plano e progresso para que dividas antigas nao parecam pendencias
+  reais.
+- Preservar a documentacao historica das iteracoes, mas registrar explicitamente
+  quando uma divida antiga foi fechada por uma iteracao posterior.
 
 ## Validacao de pronto
 

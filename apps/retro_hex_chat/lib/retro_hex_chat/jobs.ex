@@ -11,6 +11,7 @@ defmodule RetroHexChat.Jobs do
   import Ecto.Query
 
   alias Oban.Job
+  alias RetroHexChat.Repo
 
   @cancellable_states ~w(available scheduled executing retryable suspended)
 
@@ -19,6 +20,14 @@ defmodule RetroHexChat.Jobs do
   @doc "Insert a prepared Oban job changeset."
   @spec insert(Ecto.Changeset.t()) :: insert_result()
   def insert(changeset), do: Oban.insert(changeset)
+
+  @doc "Count all Oban jobs. Used by administrative full-reset previews."
+  @spec count_all() :: non_neg_integer()
+  def count_all, do: Repo.aggregate(Job, :count)
+
+  @doc "Delete all Oban jobs. Used only by the administrative full-reset flow."
+  @spec delete_all() :: {non_neg_integer(), nil | [term()]}
+  def delete_all, do: Repo.delete_all(Job)
 
   @doc "Cancel incomplete jobs for a worker, queue, and JSON args subset."
   @spec cancel_worker_jobs(module(), atom() | String.t(), map()) :: {:ok, non_neg_integer()}

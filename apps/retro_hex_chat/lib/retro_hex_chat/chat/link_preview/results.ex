@@ -181,6 +181,22 @@ defmodule RetroHexChat.Chat.LinkPreview.Results do
     |> select([result], %{
       status: result.status,
       count: count(result.id),
+      retrying:
+        fragment(
+          """
+          count(*) filter (
+            where ? = 'pending'
+              and (
+                ? in ('fetch_failed', 'server_error', 'timeout', 'http_408', 'http_425', 'http_429')
+                or ? like 'http_5%'
+              )
+          )
+          """,
+          result.status,
+          result.error_reason,
+          result.error_reason
+        ),
+      final_failures: fragment("count(*) filter (where ? = 'failed')", result.status),
       expired: fragment("count(*) filter (where ? <= ?)", result.expires_at, ^now),
       oldest_attempted_at: min(result.last_attempted_at),
       newest_fetched_at: max(result.fetched_at)

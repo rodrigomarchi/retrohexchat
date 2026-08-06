@@ -57,7 +57,7 @@ Para cada fluxo do plano base:
 
 | Fluxo | Status | Commit | Validacao | Observacao |
 |---|---|---|---|---|
-| Plano mestre auditado | CONCLUIDO | - | path refs + ASCII | `docs/plans/oban-observability-standardization.md` tem 118 refs reais e sem pendencias abertas. |
+| Plano mestre auditado | CONCLUIDO | - | path refs + ASCII | `docs/plans/oban-observability-standardization.md` tem refs reais e foi complementado com ajustes finais pos-auditoria. |
 | Server ban expiry | CONCLUIDO | - | `make ci` 13/13 | Migrado para `RetroHexChat.Jobs.ServerBanExpiryWorker`, fila `maintenance`, cron `@reboot`/`@hourly`. |
 | Registered channel expiry | CONCLUIDO | - | `make ci` 13/13 | `Services.ChanExpiry` virou dominio puro; worker `RegisteredChannelExpiryWorker` roda em `maintenance` por cron. |
 | Registered nick expiry | CONCLUIDO | - | focused tests | `Services.NickExpiry` virou dominio puro; worker `RegisteredNickExpiryWorker` roda em `maintenance` por cron. |
@@ -73,6 +73,8 @@ Para cada fluxo do plano base:
 | Ignore entries expiration | CONCLUIDO | - | focused tests | `IgnoreExpiredCleanupWorker` limpa expirados duraveis; timers LiveView ficam apenas para UX. |
 | PromEx/telemetry multi-dominio | CONCLUIDO | - | focused tests | `Observability` emite counters/values whitelisted e PromEx/Telemetry exportam metricas multi-dominio. |
 | Janela admin Oban completa | CONCLUIDO | - | focused tests | Janela mostra filas, jobs filtraveis, RSS, bot schedules, bot event logs, maintenance, link preview e persistence. |
+| Ajustes finais padrao ouro | CONCLUIDO | - | `make ci` 13/13 | Fechado retry/falha final de link preview, boundary do nuke, cardinalidade PromEx e linguagem multi-contrato. |
+| Tabs da janela admin Oban | CONCLUIDO | - | focused + e2e shots | Janela agrupa overview, filas/jobs, bots, maintenance, previews e persistence sem perder nenhum contrato observavel. |
 
 ## Divida controlada da janela admin Oban
 
@@ -94,6 +96,8 @@ Contrato atual:
 - sweeps de maintenance;
 - cache de link preview;
 - persistencia de preferencias/listas.
+- navegacao por tabs para focar overview, filas/jobs, bots, maintenance,
+  previews e persistence.
 
 Contratos que devem existir ao final:
 
@@ -106,11 +110,13 @@ Contratos que devem existir ao final:
 | Bot schedules successor coverage | CONCLUIDO | Tabela `Bot schedule coverage` e card `Bot schedules`. |
 | Bot event log backlog/failures | CONCLUIDO | Tabela `Bot event log jobs` e card `Bot event logs`. |
 | Link preview cache/fetch health | CONCLUIDO | Tabela `Link preview cache` e card `Link previews`. |
+| Link preview retry vs final failure | CONCLUIDO | Tabela `Link preview cache` separa `retrying` de `final_failures`. |
 | Persistence backlog/oldest pending | CONCLUIDO | Tabela `Preference persistence` e card `Preference saves`. |
 | Storage cleanup summary | CONCLUIDO | `Attachment orphan cleanup` aparece em maintenance com pending work e falhas. |
 | Runtime stale cleanup summary | CONCLUIDO | `Runtime stale cleanup` aparece em maintenance com pending work e falhas. |
 | Durable mute expirations | CONCLUIDO | `Channel mute expiry` e `Global mute expiry` aparecem em maintenance. |
 | Ignore list durable cleanup | CONCLUIDO | `Ignore expired cleanup` aparece em maintenance com pending work e falhas. |
+| Agrupamento visual por tabs | CONCLUIDO | Tabs `Overview`, `Queues`, `Bots`, `Maintenance`, `Previews` e `Persistence`. |
 
 Regra: quando um worker novo entrar sem UI final, adicionar aqui uma linha de
 divida com o snapshot necessario em `ObanHealth`, as metricas esperadas e o
@@ -118,6 +124,118 @@ estado visual esperado. A consolidacao visual pode ser feita depois das
 migracoes, mas a informacao operacional nao pode ficar indefinida.
 
 ## Iteracoes
+
+### 2026-08-06 - Tabs da janela admin Oban
+
+Status: CONCLUIDO
+
+Objetivo:
+
+- Reduzir a lista longa vertical da janela Oban sem remover informacao
+  operacional.
+- Manter resumo de saude e cards de contratos sempre visiveis.
+- Agrupar analises detalhadas em tabs por foco operacional: overview,
+  filas/jobs, bots, maintenance, previews e persistence.
+
+Arquivos esperados:
+
+- `docs/plans/oban-observability-standardization.md`
+- `docs/plans/oban-observability-standardization-PROGRESS.md`
+- `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live/components/system_oban_dialog.ex`
+- `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/ui/dialogs/admin_shared.ex`
+- `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/ui/system/oban_panel.ex`
+- `apps/retro_hex_chat_web/test/retro_hex_chat_web/live/system_windows_feature_test.exs`
+- `e2e/tests/chat-system-windows.spec.ts`
+
+Contrato admin esperado:
+
+- A janela deve abrir em `Overview`.
+- O topo deve continuar expondo saude geral e cards de contratos duraveis.
+- `Queues` deve concentrar filas por estado e jobs recentes filtraveis.
+- `Bots` deve concentrar RSS, schedules e event logs.
+- `Maintenance` deve concentrar todos os sweeps duraveis.
+- `Previews` deve concentrar link preview cache, retry e falha final.
+- `Persistence` deve concentrar outbox de preferencias/listas.
+
+Validacao:
+
+- `mix format apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live/components/system_oban_dialog.ex apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/ui/system/oban_panel.ex apps/retro_hex_chat_web/test/retro_hex_chat_web/live/system_windows_feature_test.exs`
+- `mix compile --warnings-as-errors`
+- `mix test --warnings-as-errors apps/retro_hex_chat_web/test/retro_hex_chat_web/live/system_windows_feature_test.exs --include liveview_feature`
+  passou: 12 testes, 0 falhas.
+- `MIX_ENV=e2e PGPORT=5433 E2E_PORT=4004 E2E_BASE_URL=http://localhost:4004 BASE_URL=http://localhost:4004 PUBLIC_ORIGIN=http://localhost:4004 mix assets.build`
+- `E2E_SHOTS=1 MIX_ENV=e2e PGPORT=5433 E2E_PORT=4004 E2E_BASE_URL=http://localhost:4004 BASE_URL=http://localhost:4004 PUBLIC_ORIGIN=http://localhost:4004 npx playwright test tests/chat-system-windows.spec.ts --grep "Oban health window" --project=chromium --reporter=list`
+  passou: 1 teste, 0 falhas, com screenshots em
+  `e2e/screenshots/chat-system-windows/the-oban-health-window-groups-contracts-into-tabs-without-horizontal-overflow/`.
+- `git diff --check`
+
+Aprendizados:
+
+- A janela estava operacionalmente completa, mas o empilhamento de todas as
+  tabelas diluia foco: o problema era informacional/visual, nao de snapshot.
+- A tab ativa deve morar no LiveComponent para que refresh e filtro continuem
+  deterministas e testaveis no mesmo contrato LiveView.
+- Usar o primitive de tabs existente preserva o padrao visual Win98 da
+  plataforma e evita criar uma segunda implementacao de navegacao.
+- O primeiro Playwright encontrou overflow real na tabela `system-oban-rss-table`
+  (`scrollWidth` maior que `clientWidth`) que os testes LiveView nao
+  capturavam. A correcao foi permitir `table_class` em `admin_table/1` e usar
+  `table-fixed` nas tabelas Oban, preservando truncamento com `title`.
+
+### 2026-08-06 - Ajustes finais de padrao ouro Oban
+
+Status: CONCLUIDO
+
+Objetivo:
+
+- Fechar as ressalvas da auditoria pos-deploy da padronizacao Oban.
+- Separar visualmente retry transitorio e falha final de link preview na janela
+  admin.
+- Remover a referencia direta a `Oban.Job` do reset administrativo.
+- Bucketizar erro binario arbitrario no plugin PromEx de Oban.
+- Reconciliar linguagem/documentacao que ainda parecia RSS-centrica.
+
+Arquivos esperados:
+
+- `docs/plans/oban-observability-standardization.md`
+- `docs/plans/oban-observability-standardization-PROGRESS.md`
+- `apps/retro_hex_chat/lib/retro_hex_chat/jobs.ex`
+- `apps/retro_hex_chat/lib/retro_hex_chat/admin.ex`
+- `apps/retro_hex_chat/lib/retro_hex_chat/chat/link_preview/results.ex`
+- `apps/retro_hex_chat/lib/retro_hex_chat/jobs/oban_health.ex`
+- `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/ui/system/oban_panel.ex`
+- `apps/retro_hex_chat/lib/retro_hex_chat/prom_ex/plugins/oban.ex`
+- `apps/retro_hex_chat/test/retro_hex_chat/jobs/oban_health_test.exs`
+- `apps/retro_hex_chat_web/test/retro_hex_chat_web/prom_ex_test.exs`
+- `apps/retro_hex_chat_web/test/retro_hex_chat_web/live/system_windows_feature_test.exs`
+
+Contrato admin esperado:
+
+- `Link preview cache` deve mostrar `retrying` separado de `final_failures`.
+- A saude geral deve sinalizar retry transitorio em andamento, mas nao tratar
+  falha final deterministica como erro operacional por si so.
+- A mensagem healthy deve falar de contratos duraveis, nao apenas RSS.
+
+Validacao:
+
+- `mix compile --warnings-as-errors`
+- `mix test --warnings-as-errors apps/retro_hex_chat/test/retro_hex_chat/jobs/oban_health_test.exs apps/retro_hex_chat_web/test/retro_hex_chat_web/prom_ex_test.exs apps/retro_hex_chat_web/test/retro_hex_chat_web/live/system_windows_feature_test.exs apps/retro_hex_chat/test/retro_hex_chat/commands/handlers/admin/nuke_test.exs --include liveview_feature`
+  passou: 40 testes, 0 falhas.
+- `make ci` passou: 13/13 checks, incluindo testes particionados, feature tests,
+  i18n, CSS lint e Dialyzer.
+
+Aprendizados:
+
+- Quando a tabela de dominio ja agrega status, o refinamento operacional deve
+  acrescentar dimensoes de baixa cardinalidade (`retrying`, `final_failures`) em
+  vez de vazar URL, host ou erro bruto.
+- Falha final deterministica de link preview e dado operacional, nao motivo de
+  warning global por si so; retry transitorio em andamento e o sinal que merece
+  destaque na saude.
+- Mesmo fluxos administrativos excepcionais, como nuke, devem respeitar o
+  boundary `RetroHexChat.Jobs` para que o codigo de dominio nao conheca `Oban.Job`.
+- Tags de Prometheus precisam assumir que texto binario pode conter dado
+  arbitrario; o padrao seguro e whitelist curta mais bucket generico.
 
 ### 2026-08-05 - Ajuste final P2P/ignore com outbox Oban
 
@@ -244,12 +362,12 @@ Contrato admin registrado:
 - Fila: `link_preview`.
 - Worker: `LinkPreviewFetchWorker`.
 - Tela mostra: card de link previews e tabela por status (`pending`, `ready`,
-  `failed`), expirados, tentativa mais antiga e fetch mais recente.
+  `failed`), `retrying`, `final_failures`, expirados, tentativa mais antiga e
+  fetch mais recente.
 - O painel generico de filas/jobs mostra backlog e jobs recentes da fila
   `link_preview`.
-- Ainda falta, na consolidacao final da janela, separar visualmente retry
-  transitorio de falha final sem expor URL completa ou dominio externo como label
-  de alta cardinalidade.
+- Fechado em 2026-08-06: a janela separa retry transitorio de falha final sem
+  expor URL completa ou dominio externo como label de alta cardinalidade.
 
 Validacao:
 
@@ -970,11 +1088,10 @@ Contrato admin registrado:
 
 - Fila: `bots`.
 - Worker: `BotScheduledMessageWorker`.
-- A tela admin atual ja mostra a fila `bots` e jobs recentes pelo painel generico
-  de Oban.
-- Ainda precisa de secao especifica de bot schedules com cobertura de sucessor:
-  schedules ativos, schedules sem job, proxima execucao, ultimo disparo e ultimo
-  erro por schedule. Essa linha permanece na divida controlada da janela admin.
+- A tela admin mostra a fila `bots`, jobs recentes pelo painel generico de Oban
+  e a secao especifica `Bot schedule coverage`.
+- Fechado na consolidacao final da janela admin: schedules ativos, schedules sem
+  job, proxima execucao, ultimo disparo e ultimo erro por schedule.
 
 Validacao:
 

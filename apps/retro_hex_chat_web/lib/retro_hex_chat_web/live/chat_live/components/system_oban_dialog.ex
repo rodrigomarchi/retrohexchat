@@ -2,9 +2,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.SystemObanDialog do
   @moduledoc """
   Stateful island behind the Oban Health window.
 
-  The island owns only the interaction state: which recent-job filter is active
-  and when to refresh. The underlying reading is handled by `Jobs.ObanHealth`,
-  keeping Oban schema knowledge out of the LiveView.
+  The island owns only the interaction state: which tab is focused, which
+  recent-job filter is active and when to refresh. The underlying reading is
+  handled by `Jobs.ObanHealth`, keeping Oban schema knowledge out of the
+  LiveView.
   """
 
   use RetroHexChatWeb, :live_component
@@ -16,7 +17,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.SystemObanDialog do
   alias RetroHexChatWeb.ChatLive.AdminOps
 
   @id "system-oban-dialog"
+  @default_tab "overview"
   @default_filter "active"
+  @tabs ~w(overview queues bots maintenance previews persistence)
 
   @spec id() :: String.t()
   def id, do: @id
@@ -29,6 +32,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.SystemObanDialog do
      |> assign(
        snapshot: nil,
        filters: ObanHealth.job_filters(),
+       active_tab: @default_tab,
        job_filter: @default_filter,
        job_queue_filter: "",
        job_worker_filter: ""
@@ -69,6 +73,14 @@ defmodule RetroHexChatWeb.ChatLive.Components.SystemObanDialog do
     end
   end
 
+  def handle_event("system_oban_tab", %{"tab" => tab}, socket) do
+    if AdminOps.admin?(socket) do
+      {:noreply, assign(socket, :active_tab, normalize_tab(tab))}
+    else
+      {:noreply, AdminOps.error_event(socket, AdminOps.restricted_message())}
+    end
+  end
+
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()
   def render(assigns) do
     ~H"""
@@ -78,8 +90,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.SystemObanDialog do
         snapshot={@snapshot}
         filters={@filters}
         target={@myself}
+        active_tab={@active_tab}
         on_refresh="system_oban_refresh"
         on_filter="system_oban_filter"
+        on_tab="system_oban_tab"
       />
     </div>
     """
@@ -96,4 +110,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.SystemObanDialog do
       filters: ObanHealth.job_filters()
     )
   end
+
+  defp normalize_tab(tab) when tab in @tabs, do: tab
+  defp normalize_tab(_tab), do: @default_tab
 end

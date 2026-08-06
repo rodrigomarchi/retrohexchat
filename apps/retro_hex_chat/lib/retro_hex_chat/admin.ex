@@ -16,6 +16,7 @@ defmodule RetroHexChat.Admin do
   alias RetroHexChat.Channels
   alias RetroHexChat.Chat.LinkPreview.Cache, as: LinkPreviewCache
   alias RetroHexChat.Commands.Duration
+  alias RetroHexChat.Jobs
   alias RetroHexChat.P2P.RateLimitTable, as: P2PRateLimitTable
   alias RetroHexChat.Presence.{Tracker, WhowasCache}
   alias RetroHexChat.RateLimit.Table, as: ChatRateLimitTable
@@ -443,7 +444,7 @@ defmodule RetroHexChat.Admin do
     {"chat_device_sessions", RetroHexChat.Accounts.ChatDeviceSession},
     {"trusted_devices", RetroHexChat.Accounts.TrustedDevice},
     {"global_mutes", RetroHexChat.Admin.GlobalMute},
-    {"oban_jobs", Oban.Job},
+    {"oban_jobs", :oban_jobs},
     {"bot_event_log", RetroHexChat.Bots.BotEventLog},
     {"bot_custom_commands", RetroHexChat.Bots.BotCustomCommand},
     {"bot_channel_configs", RetroHexChat.Bots.BotChannelConfig},
@@ -455,23 +456,15 @@ defmodule RetroHexChat.Admin do
   @spec nuke_preview(String.t()) ::
           {:ok, [{String.t(), non_neg_integer()}]} | {:error, String.t()}
   def nuke_preview(admin) do
-    import Ecto.Query
-    alias RetroHexChat.Repo
-
     AuditLogs.log(admin, "system.nuke_preview")
 
-    counts =
-      Enum.map(@nuke_targets, fn {name, source} ->
-        count = Repo.aggregate(from(_ in source), :count)
-        {name, count}
-      end)
+    counts = Enum.map(@nuke_targets, fn {name, source} -> {name, nuke_target_count(source)} end)
 
     {:ok, counts}
   end
 
   @spec nuke_system(String.t()) :: {:ok, [{String.t(), non_neg_integer()}]} | {:error, String.t()}
   def nuke_system(admin) do
-    import Ecto.Query
     alias RetroHexChat.Repo
 
     connected_targets = connected_targets(admin)
@@ -483,7 +476,7 @@ defmodule RetroHexChat.Admin do
     multi =
       @nuke_targets
       |> Enum.reduce(Ecto.Multi.new(), fn {name, source}, multi ->
-        Ecto.Multi.delete_all(multi, String.to_atom(name), from(_ in source))
+        nuke_target_delete_all(multi, name, source)
       end)
       |> Ecto.Multi.run(:registration_open, fn _repo, _changes ->
         Queries.upsert_setting("registration", "open", admin)
@@ -507,6 +500,27 @@ defmodule RetroHexChat.Admin do
       {:error, failed_step, _changeset, _completed} ->
         {:error, "Nuke failed at step: #{failed_step}"}
     end
+  end
+
+  defp nuke_target_count(:oban_jobs), do: Jobs.count_all()
+
+  defp nuke_target_count(source) do
+    import Ecto.Query
+    alias RetroHexChat.Repo
+
+    Repo.aggregate(from(_ in source), :count)
+  end
+
+  defp nuke_target_delete_all(multi, name, :oban_jobs) do
+    Ecto.Multi.run(multi, String.to_atom(name), fn _repo, _changes ->
+      {:ok, Jobs.delete_all()}
+    end)
+  end
+
+  defp nuke_target_delete_all(multi, name, source) do
+    import Ecto.Query
+
+    Ecto.Multi.delete_all(multi, String.to_atom(name), from(_ in source))
   end
 
   defp connected_targets(admin) do

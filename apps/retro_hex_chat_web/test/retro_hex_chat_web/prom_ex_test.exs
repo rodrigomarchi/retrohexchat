@@ -3,6 +3,7 @@ defmodule RetroHexChatWeb.PromExTest do
 
   alias PromEx.MetricTypes.Event
   alias RetroHexChat.PromEx.Plugins.Domain
+  alias RetroHexChat.PromEx.Plugins.Oban, as: ObanPlugin
 
   describe "RetroHexChat.PromEx.plugins/0" do
     test "includes domain metrics and Ecto before the Repo starts" do
@@ -106,6 +107,34 @@ defmodule RetroHexChatWeb.PromExTest do
       assert counter.tags == [:context, :operation, :result, :measurement]
       assert value.measurement == :value
       assert value.tags == [:context, :operation, :result, :measurement]
+    end
+  end
+
+  describe "RetroHexChat.PromEx.Plugins.Oban.event_metrics/1" do
+    test "buckets arbitrary binary exception reasons" do
+      %Event{metrics: metrics} = ObanPlugin.event_metrics(oban_supervisors: [Oban])
+
+      exception_metric =
+        Enum.find(
+          metrics,
+          &(&1.event_name == [:oban, :job, :exception] and :error in &1.tags)
+        )
+
+      job = %Oban.Job{queue: "rss", state: "executing", worker: "RetroHexChat.Jobs.RSSPollWorker"}
+
+      assert exception_metric.tag_values.(%{
+               conf: %{name: Oban},
+               job: job,
+               kind: :error,
+               reason: "database timeout for https://example.com/private/path"
+             }).error == "binary_error"
+
+      assert exception_metric.tag_values.(%{
+               conf: %{name: Oban},
+               job: job,
+               kind: :error,
+               reason: "http_503"
+             }).error == "http_503"
     end
   end
 

@@ -60,6 +60,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminShared do
   attr :empty_title, :string, required: true
   attr :testid, :string, required: true
   attr :class, :string, default: nil
+  attr :table_class, :string, default: nil
 
   attr :target, :any,
     default: nil,
@@ -95,7 +96,10 @@ defmodule RetroHexChatWeb.Components.UI.AdminShared do
     <div class={classes(["admin-table", @class])} data-testid={@testid}>
       <.list_empty_state :if={@table.rows == []} title={@empty_title} />
 
-      <table :if={@table.rows != []} class="admin-table__grid w-full text-xs">
+      <table
+        :if={@table.rows != []}
+        class={classes(["admin-table__grid w-full text-xs", @table_class])}
+      >
         <thead>
           <tr>
             <th :for={column <- @table.columns} class="admin-table__head">

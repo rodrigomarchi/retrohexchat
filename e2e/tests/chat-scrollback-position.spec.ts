@@ -28,6 +28,14 @@ import { shot } from "../helpers/screenshots";
 const SEEDED = 120;
 const WHEEL_PX = 200;
 
+type ScrollbackMetrics = {
+  scrollTop: number;
+  scrollHeight: number;
+  clientHeight: number;
+  bottomGap: number;
+  rows: number;
+};
+
 function seedText(marker: number, index: number): string {
   return `place-${marker}-${String(index).padStart(3, "0")}`;
 }
@@ -39,7 +47,7 @@ async function seedHistory(chat: ChatPage, marker: number, count: number) {
   await chat.expectMessageVisible(seedText(marker, count), 30_000);
 }
 
-async function metrics(chat: ChatPage) {
+async function metrics(chat: ChatPage): Promise<ScrollbackMetrics> {
   return chat.messageList.evaluate((el) => ({
     scrollTop: Math.round(el.scrollTop),
     scrollHeight: Math.round(el.scrollHeight),
@@ -107,7 +115,7 @@ test.describe("Chat scrollback position", () => {
         box!.y + box!.height / 2,
       );
 
-      const samples = [];
+      const samples: ScrollbackMetrics[] = [];
       for (let notch = 0; notch < 14; notch += 1) {
         await alice.page.mouse.wheel(0, -WHEEL_PX);
         await alice.page.waitForTimeout(250);
