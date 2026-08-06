@@ -100,6 +100,14 @@ def check_destructive_checkout(cmd):
 def check_behind_main(cmd):
     if not re.search(BOUNDARY + r"git\s+(commit|push)\b", cmd):
         return
+
+    # Hooks run *before* the command, so a command that fetches or pulls on its
+    # way to the commit already satisfies this check — we just cannot see the
+    # result yet. Blocking it would forbid `git fetch && git commit`, which is
+    # exactly the sequence this guard is asking for.
+    if re.search(BOUNDARY + r"git\s+(fetch|pull)\b", cmd):
+        return
+
     branch = git("rev-parse", "--abbrev-ref", "HEAD")
     if branch != "main":
         return

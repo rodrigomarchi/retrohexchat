@@ -1,3 +1,19 @@
+/**
+ * @section N - P2P, File, Call, Game
+ * @flow N18 [done] Accepting from the PM header connects both peers inside the chat
+ * @flow N19 [done] The auto-started call carries real video both ways; file transfer and the game share the same connection
+ * @flow N20 [done] pt-BR privacy relay setup connects both peers when TURN is available
+ * @flow N21 [done] Receive-only setup joins without local tracks and keeps remote media reachable
+ * @flow N22 [done] Audio-only setup publishes the microphone without a local camera and still receives remote video
+ * @flow N23 [done] Screen share marks the peer tile and the P2P stats video source
+ * @flow N24 [done] Failed recovery offers a retry without closing the P2P console
+ * @flow N25 [done] Mini mode, the stats section, and maximize keep the P2P video alive
+ * @flow N26 [done] Declining the invite tells the inviter and clears the pending state
+ * @flow N27 [done] The inviter cancels a pending invite from the status bar
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { test, expect, Page } from "@playwright/test";
 import { mkdirSync } from "node:fs";
 import {

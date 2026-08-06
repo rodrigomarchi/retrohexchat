@@ -1,3 +1,10 @@
+/**
+ * @section SP - Virtual Spaces
+ * @flow SP3 [done] The toggle enters and exits fullscreen on the space shell
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { test, expect, Locator } from "@playwright/test";
 import {
   newSignedInUser,

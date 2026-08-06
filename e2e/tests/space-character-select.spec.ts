@@ -1,3 +1,10 @@
+/**
+ * @section SP - Virtual Spaces
+ * @flow SP1 [done] Choosing a class enters the channel space with that avatar rendered
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { test, expect, Page } from "@playwright/test";
 import {
   newSignedInUser,

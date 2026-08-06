@@ -1,3 +1,10 @@
+/**
+ * @section SP - Virtual Spaces
+ * @flow SP2 [done] A PM space mounts the End of Time scene with the chosen avatar
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { test, expect, Locator } from "@playwright/test";
 import {
   newSignedInUser,

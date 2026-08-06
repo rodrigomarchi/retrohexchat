@@ -1,3 +1,15 @@
+/**
+ * @section N - P2P, File, Call, Game
+ * @flow N28 [done] A settled call keeps its picture and logs no signalling failure
+ * @flow N29 [done] The picture arrives without renegotiating repeatedly
+ * @flow N30 [done] Publishing a camera mid-call renegotiates without desync
+ * @flow N31 [done] The picture comes back after the peer cycles their camera
+ * @flow N32 [done] A relay-only call carries the picture end to end (skipped unless E2E_BASE_URL points at a deployment with TURN: `config/e2e.exs` sets `turn_listener_count: 0`)
+ * @flow N33 [done] A call negotiated across intercontinental latency stays clean
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { test, expect, Page } from "@playwright/test";
 import {
   newP2PUser,

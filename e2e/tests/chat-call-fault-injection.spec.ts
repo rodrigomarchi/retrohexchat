@@ -1,3 +1,17 @@
+/**
+ * @section N - P2P, File, Call, Game
+ * @flow N34 [done] P2P stays actionable across a short LiveView outage and can end after reconnect
+ * @flow N35 [done] The P2P recovery-error End button opens confirm and terminates the session
+ * @flow N36 [done] A P2P answerer reloads while applying the initial offer and reconnects media
+ * @flow N37 [done] Simultaneous manual P2P retries stay coordinated and recover media
+ * @flow N38 [done] A conference stays actionable across a short LiveView outage and can be left after reconnect
+ * @flow N39 [done] A conference participant reloads while applying the SFU offer and rejoins media
+ * @flow N40 [done] Conference retry rejoins media when the participant PeerServer disappears
+ * @flow N41 [done] The conference recovery-error Leave button opens confirm and exits cleanly
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Browser, Page, expect, test } from "@playwright/test";
 import { uniqueChannel } from "../helpers/chatUsers";
 import { e2eURL } from "../helpers/env";

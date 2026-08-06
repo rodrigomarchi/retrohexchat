@@ -1,3 +1,10 @@
+/**
+ * @section P - Persistence, Reconnect, History, No-Focus-Steal
+ * @flow P13 [done] Newest channel messages stay visible until the reader intentionally scrolls up
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { expect, test } from "@playwright/test";
 import {
   closeUsers,

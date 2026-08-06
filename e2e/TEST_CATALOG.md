@@ -136,8 +136,8 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 - **211 spec files** under `e2e/tests/`.
 - **428 Playwright `test()` cases**.
-- **341 documented flows**, 340 done, 1 not done.
-- **23 spec files carry no `@flow` header** (listed at the end — each one is a gap, not a decision).
+- **422 documented flows**, 421 done, 1 not done.
+- **Every spec documents its own flows.**
 
 ## Flow index
 
@@ -359,6 +359,21 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | M18 | `/announce` broadcasts to connected users and bypasses ignore (features P1) | `tests/chat-announce.spec.ts` | done |
 | M19 | Regular user admin-only commands show permission errors (features P1) | `tests/chat-admin-permissions.spec.ts` | done |
 | M20 | Games menu → Arcade opens the in-chat game picker and previews a game (features P2) | `tests/chat-arcade.spec.ts` | done |
+| M21 | The production provisioning script runs end to end with every line accepted by the Admin Console | `tests/chat-admin-server-provision.spec.ts` | done |
+| M22 | A newcomer joining a provisioned channel is greeted, and every advertised bot trigger answers | `tests/chat-admin-server-provision.spec.ts` | done |
+| M23 | The Bot Management roster describes each bot, and selecting one drills into it | `tests/chat-bot-management-window.spec.ts` | done |
+| M24 | System overview reports the node's identity, limits, and memory split | `tests/chat-system-windows.spec.ts` | done |
+| M25 | The process listing filters and reorders against the live node | `tests/chat-system-windows.spec.ts` | done |
+| M26 | Every runtime listing window opens and renders rows | `tests/chat-system-windows.spec.ts` | done |
+| M27 | Host readings render, or say plainly that they cannot be read | `tests/chat-system-windows.spec.ts` | done |
+| M28 | App info counts the channels and people actually present | `tests/chat-system-windows.spec.ts` | done |
+| M29 | A database report runs and returns rows | `tests/chat-system-windows.spec.ts` | done |
+| M30 | Metrics charts subscribe to a group and draw | `tests/chat-system-windows.spec.ts` | done |
+| M31 | The live log streams only once asked | `tests/chat-system-windows.spec.ts` | done |
+| M32 | The Oban health window groups contracts into tabs without horizontal overflow | `tests/chat-system-windows.spec.ts` | done |
+| M33 | A runtime listing is resized, narrowed, and read row by row | `tests/chat-system-windows.spec.ts` | done |
+| M34 | Open system windows are reachable from the taskbar | `tests/chat-system-windows.spec.ts` | done |
+| M35 | The system windows coexist on one desktop | `tests/chat-system-windows.spec.ts` | done |
 
 ### N - P2P, File, Call, Game
 
@@ -381,6 +396,30 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | N15 | Channel group call reactions send through the conference signaling channel, appear on the remote video tile and participant row, then expire from the tile overlay (features P1) | `tests/chat-group-call.spec.ts` | done |
 | N16 | Channel group call pre-join handles denied microphone/camera permission with a visible warning, retry action, and a receive-only join path that mounts without local tracks (features P0) | `tests/chat-group-call.spec.ts` | done |
 | N17 | Channel group call visual polish renders SVG reaction controls, captures desktop/mobile windows, and asserts the conference panel has no horizontal layout overflow (features P1) | `tests/chat-group-call.spec.ts` | done |
+| N18 | Accepting from the PM header connects both peers inside the chat | `tests/chat-p2p.spec.ts` | done |
+| N19 | The auto-started call carries real video both ways; file transfer and the game share the same connection | `tests/chat-p2p.spec.ts` | done |
+| N20 | pt-BR privacy relay setup connects both peers when TURN is available | `tests/chat-p2p.spec.ts` | done |
+| N21 | Receive-only setup joins without local tracks and keeps remote media reachable | `tests/chat-p2p.spec.ts` | done |
+| N22 | Audio-only setup publishes the microphone without a local camera and still receives remote video | `tests/chat-p2p.spec.ts` | done |
+| N23 | Screen share marks the peer tile and the P2P stats video source | `tests/chat-p2p.spec.ts` | done |
+| N24 | Failed recovery offers a retry without closing the P2P console | `tests/chat-p2p.spec.ts` | done |
+| N25 | Mini mode, the stats section, and maximize keep the P2P video alive | `tests/chat-p2p.spec.ts` | done |
+| N26 | Declining the invite tells the inviter and clears the pending state | `tests/chat-p2p.spec.ts` | done |
+| N27 | The inviter cancels a pending invite from the status bar | `tests/chat-p2p.spec.ts` | done |
+| N28 | A settled call keeps its picture and logs no signalling failure | `tests/chat-p2p-negotiation.spec.ts` | done |
+| N29 | The picture arrives without renegotiating repeatedly | `tests/chat-p2p-negotiation.spec.ts` | done |
+| N30 | Publishing a camera mid-call renegotiates without desync | `tests/chat-p2p-negotiation.spec.ts` | done |
+| N31 | The picture comes back after the peer cycles their camera | `tests/chat-p2p-negotiation.spec.ts` | done |
+| N32 | A relay-only call carries the picture end to end (skipped unless E2E_BASE_URL points at a deployment with TURN: `config/e2e.exs` sets `turn_listener_count: 0`) | `tests/chat-p2p-negotiation.spec.ts` | done |
+| N33 | A call negotiated across intercontinental latency stays clean | `tests/chat-p2p-negotiation.spec.ts` | done |
+| N34 | P2P stays actionable across a short LiveView outage and can end after reconnect | `tests/chat-call-fault-injection.spec.ts` | done |
+| N35 | The P2P recovery-error End button opens confirm and terminates the session | `tests/chat-call-fault-injection.spec.ts` | done |
+| N36 | A P2P answerer reloads while applying the initial offer and reconnects media | `tests/chat-call-fault-injection.spec.ts` | done |
+| N37 | Simultaneous manual P2P retries stay coordinated and recover media | `tests/chat-call-fault-injection.spec.ts` | done |
+| N38 | A conference stays actionable across a short LiveView outage and can be left after reconnect | `tests/chat-call-fault-injection.spec.ts` | done |
+| N39 | A conference participant reloads while applying the SFU offer and rejoins media | `tests/chat-call-fault-injection.spec.ts` | done |
+| N40 | Conference retry rejoins media when the participant PeerServer disappears | `tests/chat-call-fault-injection.spec.ts` | done |
+| N41 | The conference recovery-error Leave button opens confirm and exits cleanly | `tests/chat-call-fault-injection.spec.ts` | done |
 
 ### O - Chat UI Micro-Journeys
 
@@ -405,6 +444,11 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | O17 | Custom nick color applies to chat nick rendering (features P2) | `tests/chat-address-book.spec.ts` | done |
 | O18 | Keyboard shortcuts switch windows/open dialogs without accidental submit (features P1) | `tests/chat-keyboard.spec.ts` | done |
 | O19 | Status bar mute toggle affects client state and survives rerender (features P2) | `tests/chat-statusbar.spec.ts` | done |
+| O20 | An uploaded image renders as an inline thumbnail with an authorized download | `tests/chat-attachments.spec.ts` | done |
+| O21 | Non-inline uploads render as safe file cards carrying path metadata | `tests/chat-attachments.spec.ts` | done |
+| O22 | The nicklist renders a role-grouped IRC roster with status badges inside the platform sidebar | `tests/chat-nicklist-sidebar.spec.ts` | done |
+| O23 | A BBC RSS item renders as a rich Markdown message in the desktop timeline | `tests/chat-rss-link-preview-visual.spec.ts` | done |
+| O24 | The BBC RSS Markdown preview stays contained at phone width | `tests/chat-rss-link-preview-visual.spec.ts` | done |
 
 ### P - Persistence, Reconnect, History, No-Focus-Steal
 
@@ -414,8 +458,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | P2 | Guest PM partners do not persist after reconnect (features P1) | `tests/chat-persistence.spec.ts` | done |
 | P3 | Incoming PM marks indicator without switching active tab (features P0) | `tests/chat-no-focus-steal.spec.ts` | done |
 | P4 | Incoming channel message marks unread without switching active tab (features P0) | `tests/chat-no-focus-steal.spec.ts` | done |
-| P5 | Perform/autojoin on reconnect create tabs without focus steal (features P0) | `tests/chat-autojoin.spec.ts` | done |
-| P5 | Perform/autojoin on reconnect create tabs without focus steal (features P0) | `tests/chat-perform.spec.ts` | done |
+| P5 | Perform/autojoin on reconnect create tabs without focus steal (features P0) | `tests/chat-autojoin.spec.ts`, `tests/chat-perform.spec.ts` | done |
 | P6 | Registered aliases/perform/autojoin/ignore/notify/colors persist (features P1) | `tests/chat-settings-persistence.spec.ts` | done |
 | P7 | Guest aliases/perform/autojoin/ignore/notify are session-only (features P2) | `tests/chat-settings-persistence.spec.ts` | done |
 | P8 | Browser reload keeps chat session and reconnects LiveView cleanly (features P1) | `tests/chat-reconnect.spec.ts` | done |
@@ -427,6 +470,64 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | P10d | A 1000-message channel walks back to its first message: every window consecutive, no page fetched and dropped (features P1) | `tests/chat-scrollback-audit.spec.ts` | done |
 | P11 | `/whois` idle increases and resets after command/message (features P2) | `tests/chat-idle.spec.ts` | done |
 | P12 | PM typing indicator appears and clears after timeout or send (features P1) | `tests/chat-typing-indicator.spec.ts` | done |
+| P13 | Newest channel messages stay visible until the reader intentionally scrolls up | `tests/chat-autoscroll.spec.ts` | done |
+| P14 | Paging back through history leaves the reader where they were reading | `tests/chat-scrollback-position.spec.ts` | done |
+| P15 | A message arriving while the reader is in history does not move them | `tests/chat-scrollback-position.spec.ts` | done |
+| P16 | The view stays on the newest message while the reader is at the end | `tests/chat-scrollback-position.spec.ts` | done |
+| P17 | A short outage shows the reconnect banner but not the intrusive modal (BA1) | `tests/chat-deploy-reconnect.spec.ts` | done |
+| P18 | A cold remount does not replay the login sequence (BA2) | `tests/chat-deploy-reconnect.spec.ts` | done |
+
+### MB - Mobile & Touch
+
+| # | Flow | Spec file | Status |
+| --- | --- | --- | --- |
+| MB1 | The phone desktop shows one fullscreen window at a time, switched via the taskbar | `tests/chat-mobile-desktop.spec.ts` | done |
+| MB2 | Sidebars are reachable from the toolbar and the composer stays touch-sized | `tests/chat-mobile-desktop.spec.ts` | done |
+| MB3 | The Start menu drills one level at a time | `tests/chat-mobile-desktop.spec.ts` | done |
+| MB4 | The mobile taskbar collapses while the virtual keyboard is open | `tests/chat-mobile-desktop.spec.ts` | done |
+| MB5 | Emoji opens from the mobile composer and inserts into a message | `tests/chat-mobile-message-flow.spec.ts` | done |
+| MB6 | Long press drives reply and edit without a hardware keyboard | `tests/chat-mobile-message-flow.spec.ts` | done |
+| MB7 | Message deletion confirms and cancels from the long-press menu | `tests/chat-mobile-message-flow.spec.ts` | done |
+| MB8 | PM reply, edit, and delete work from touch message actions | `tests/chat-mobile-message-flow.spec.ts` | done |
+| MB9 | Nicklist and conversation actions open by long press | `tests/chat-mobile-message-flow.spec.ts` | done |
+
+### SP - Virtual Spaces
+
+| # | Flow | Spec file | Status |
+| --- | --- | --- | --- |
+| SP1 | Choosing a class enters the channel space with that avatar rendered | `tests/space-character-select.spec.ts` | done |
+| SP2 | A PM space mounts the End of Time scene with the chosen avatar | `tests/space-end-of-time.spec.ts` | done |
+| SP3 | The toggle enters and exits fullscreen on the space shell | `tests/space-fullscreen.spec.ts` | done |
+| SP4 | Holding the virtual pad walks continuously and the sword button attacks | `tests/space-virtual-pad.spec.ts` | done |
+
+### LC - Localization
+
+| # | Flow | Spec file | Status |
+| --- | --- | --- | --- |
+| LC1 | The connect UI switches between English and pt-BR and persists the selection | `tests/i18n.spec.ts` | done |
+| LC2 | A first visit uses pt-BR from Accept-Language | `tests/i18n.spec.ts` | done |
+| LC3 | Switching to Japanese survives a reload | `tests/i18n.spec.ts` | done |
+| LC4 | pt-BR is kept through registration into the chat shell | `tests/i18n.spec.ts` | done |
+| LC5 | Language switches from the chat menu bar | `tests/i18n.spec.ts` | done |
+
+### PW - Public Pages, Landing, And Showcase
+
+| # | Flow | Spec file | Status |
+| --- | --- | --- | --- |
+| PW1 | The landing loads the public bundle and enables desktop interactions | `tests/landing-public.spec.ts` | done |
+| PW2 | Mobile navigation opens and links into the app connect flow | `tests/landing-public.spec.ts` | done |
+| PW3 | The landing runs the real window manager over a taskbar of links | `tests/landing-public.spec.ts` | done |
+| PW4 | Landing, connect, and help wear the same phone chrome (one case per public shell) | `tests/shell-chrome-parity.spec.ts` | done |
+| PW5 | A rail button opens the shared drawer on its own section | `tests/shell-chrome-parity.spec.ts` | done |
+| PW6 | The landing keeps its Connect out of the chrome | `tests/shell-chrome-parity.spec.ts` | done |
+| PW7 | The showcase drives the page as a window and carries the layout across pages | `tests/showcase-desktop.spec.ts` | done |
+| PW8 | Components are navigated through the Components window | `tests/showcase-desktop.spec.ts` | done |
+| PW9 | The Start menu is the app's own, with the showcase's windows in it | `tests/showcase-desktop.spec.ts` | done |
+| PW10 | Every menu row takes the same highlight | `tests/showcase-desktop.spec.ts` | done |
+| PW11 | The nested demo desktop runs beside the shell's own | `tests/showcase-desktop.spec.ts` | done |
+| PW12 | With JavaScript disabled the page still reads and links like a document, keeping its canonical URL | `tests/showcase-desktop.spec.ts` | done |
+| PW13 | Windows on each landing page are sized by their content (one case per public page) | `tests/desktop-window-sizing.spec.ts` | done |
+| PW14 | The showcase component window is sized by its content | `tests/desktop-window-sizing.spec.ts` | done |
 
 ### Backlog AA - Reconnect, Multi-Context, Browser State, And Destructive Safety
 
@@ -601,30 +702,6 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 
 ## Spec files with no documented flows
 
-These run in the suite but describe nothing. Add an `@flow` header to each, then regenerate:
-
-- `tests/chat-admin-server-provision.spec.ts` (2 `test()` cases)
-- `tests/chat-attachments.spec.ts` (2 `test()` cases)
-- `tests/chat-autoscroll.spec.ts` (1 `test()` case)
-- `tests/chat-bot-management-window.spec.ts` (1 `test()` case)
-- `tests/chat-call-fault-injection.spec.ts` (8 `test()` cases)
-- `tests/chat-deploy-reconnect.spec.ts` (2 `test()` cases)
-- `tests/chat-mobile-desktop.spec.ts` (4 `test()` cases)
-- `tests/chat-mobile-message-flow.spec.ts` (5 `test()` cases)
-- `tests/chat-nicklist-sidebar.spec.ts` (1 `test()` case)
-- `tests/chat-p2p-negotiation.spec.ts` (6 `test()` cases)
-- `tests/chat-p2p.spec.ts` (10 `test()` cases)
-- `tests/chat-rss-link-preview-visual.spec.ts` (2 `test()` cases)
-- `tests/chat-scrollback-position.spec.ts` (3 `test()` cases)
-- `tests/chat-system-windows.spec.ts` (12 `test()` cases)
-- `tests/desktop-window-sizing.spec.ts` (2 `test()` cases)
-- `tests/i18n.spec.ts` (5 `test()` cases)
-- `tests/landing-public.spec.ts` (3 `test()` cases)
-- `tests/shell-chrome-parity.spec.ts` (3 `test()` cases)
-- `tests/showcase-desktop.spec.ts` (6 `test()` cases)
-- `tests/space-character-select.spec.ts` (1 `test()` case)
-- `tests/space-end-of-time.spec.ts` (1 `test()` case)
-- `tests/space-fullscreen.spec.ts` (1 `test()` case)
-- `tests/space-virtual-pad.spec.ts` (1 `test()` case)
+None. Every spec documents its own flows.
 
 <!-- END GENERATED INDEX -->

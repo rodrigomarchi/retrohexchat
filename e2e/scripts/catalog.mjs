@@ -41,6 +41,10 @@ const SECTION_ORDER = [
   "N - P2P, File, Call, Game",
   "O - Chat UI Micro-Journeys",
   "P - Persistence, Reconnect, History, No-Focus-Steal",
+  "MB - Mobile & Touch",
+  "SP - Virtual Spaces",
+  "LC - Localization",
+  "PW - Public Pages, Landing, And Showcase",
 ];
 
 function specFiles() {
@@ -112,6 +116,32 @@ function buildIndex(specs) {
     }
   }
 
+  // One flow can be verified by more than one spec (P5 is proven by both the
+  // perform and the autojoin spec). Same id + same text = one row listing both
+  // files. Same id + *different* text inside one section is a real collision:
+  // two flows answering to one name, which makes any reference ambiguous.
+  const collisions = [];
+  for (const [section, rows] of bySection) {
+    const merged = new Map();
+    for (const row of rows) {
+      const existing = merged.get(row.id);
+      if (!existing) {
+        merged.set(row.id, { ...row, specs: [row.spec] });
+        continue;
+      }
+      if (existing.text !== row.text) {
+        collisions.push(`${section}: ${row.id} names two different flows`);
+        continue;
+      }
+      if (!existing.specs.includes(row.spec)) existing.specs.push(row.spec);
+    }
+    bySection.set(section, [...merged.values()]);
+  }
+  if (collisions.length) {
+    process.stderr.write(`Duplicate flow ids:\n  ${collisions.join("\n  ")}\n`);
+    process.exit(1);
+  }
+
   const known = SECTION_ORDER.filter((s) => bySection.has(s));
   const extra = [...bySection.keys()].filter((s) => !SECTION_ORDER.includes(s)).sort();
   const ordered = [...known, ...extra];
@@ -131,8 +161,10 @@ function buildIndex(specs) {
   out.push(`- **${totalTests} Playwright \`test()\` cases**.`);
   out.push(`- **${totalFlows} documented flows**, ${totalFlows - blocked} done, ${blocked} not done.`);
   out.push(
-    `- **${undocumented.length} spec files carry no \`@flow\` header** ` +
-      "(listed at the end — each one is a gap, not a decision).",
+    undocumented.length === 0
+      ? "- **Every spec documents its own flows.**"
+      : `- **${undocumented.length} spec files carry no \`@flow\` header** ` +
+        "(listed at the end — each one is a gap, not a decision).",
   );
   out.push("");
   out.push("## Flow index");
@@ -147,9 +179,8 @@ function buildIndex(specs) {
     out.push("| # | Flow | Spec file | Status |");
     out.push("| --- | --- | --- | --- |");
     for (const row of rows) {
-      out.push(
-        `| ${row.id} | ${escapeCell(row.text)} | \`tests/${row.spec}\` | ${row.status} |`,
-      );
+      const files = row.specs.map((spec) => `\`tests/${spec}\``).join(", ");
+      out.push(`| ${row.id} | ${escapeCell(row.text)} | ${files} | ${row.status} |`);
     }
     out.push("");
   }

@@ -1,3 +1,11 @@
+/**
+ * @section M - Admin, Server Operations, Bots
+ * @flow M21 [done] The production provisioning script runs end to end with every line accepted by the Admin Console
+ * @flow M22 [done] A newcomer joining a provisioned channel is greeted, and every advertised bot trigger answers
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { test, expect, Page } from "@playwright/test";
 import { readFileSync } from "node:fs";
 import path from "node:path";

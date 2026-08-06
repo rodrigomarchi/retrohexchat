@@ -1,3 +1,12 @@
+/**
+ * @section P - Persistence, Reconnect, History, No-Focus-Steal
+ * @flow P14 [done] Paging back through history leaves the reader where they were reading
+ * @flow P15 [done] A message arriving while the reader is in history does not move them
+ * @flow P16 [done] The view stays on the newest message while the reader is at the end
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { expect, test } from "@playwright/test";
 import {
   closeUsers,

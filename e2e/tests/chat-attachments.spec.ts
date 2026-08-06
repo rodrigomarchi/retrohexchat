@@ -1,3 +1,11 @@
+/**
+ * @section O - Chat UI Micro-Journeys
+ * @flow O20 [done] An uploaded image renders as an inline thumbnail with an authorized download
+ * @flow O21 [done] Non-inline uploads render as safe file cards carrying path metadata
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { test, expect, Page } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

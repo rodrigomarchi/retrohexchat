@@ -1,3 +1,13 @@
+/**
+ * @section MB - Mobile & Touch
+ * @flow MB1 [done] The phone desktop shows one fullscreen window at a time, switched via the taskbar
+ * @flow MB2 [done] Sidebars are reachable from the toolbar and the composer stays touch-sized
+ * @flow MB3 [done] The Start menu drills one level at a time
+ * @flow MB4 [done] The mobile taskbar collapses while the virtual keyboard is open
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { Page, test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";

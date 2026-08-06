@@ -1,3 +1,11 @@
+/**
+ * @section PW - Public Pages, Landing, And Showcase
+ * @flow PW13 [done] Windows on each landing page are sized by their content (one case per public page)
+ * @flow PW14 [done] The showcase component window is sized by its content
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { expect, test, type Page } from "@playwright/test";
 import { shot } from "../helpers/screenshots";
 

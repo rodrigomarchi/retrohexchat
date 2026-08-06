@@ -1,3 +1,15 @@
+/**
+ * @section PW - Public Pages, Landing, And Showcase
+ * @flow PW7 [done] The showcase drives the page as a window and carries the layout across pages
+ * @flow PW8 [done] Components are navigated through the Components window
+ * @flow PW9 [done] The Start menu is the app's own, with the showcase's windows in it
+ * @flow PW10 [done] Every menu row takes the same highlight
+ * @flow PW11 [done] The nested demo desktop runs beside the shell's own
+ * @flow PW12 [done] With JavaScript disabled the page still reads and links like a document, keeping its canonical URL
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { expect, Page, test } from "@playwright/test";
 import { shot } from "../helpers/screenshots";
 

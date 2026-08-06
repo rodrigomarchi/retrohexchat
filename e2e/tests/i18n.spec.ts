@@ -1,3 +1,14 @@
+/**
+ * @section LC - Localization
+ * @flow LC1 [done] The connect UI switches between English and pt-BR and persists the selection
+ * @flow LC2 [done] A first visit uses pt-BR from Accept-Language
+ * @flow LC3 [done] Switching to Japanese survives a reload
+ * @flow LC4 [done] pt-BR is kept through registration into the chat shell
+ * @flow LC5 [done] Language switches from the chat menu bar
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { test, expect, type Page } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 

@@ -1,3 +1,12 @@
+/**
+ * @section PW - Public Pages, Landing, And Showcase
+ * @flow PW4 [done] Landing, connect, and help wear the same phone chrome (one case per public shell)
+ * @flow PW5 [done] A rail button opens the shared drawer on its own section
+ * @flow PW6 [done] The landing keeps its Connect out of the chrome
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { expect, test } from "@playwright/test";
 import { shot } from "../helpers/screenshots";
 

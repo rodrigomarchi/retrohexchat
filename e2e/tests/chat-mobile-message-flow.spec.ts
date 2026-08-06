@@ -1,3 +1,14 @@
+/**
+ * @section MB - Mobile & Touch
+ * @flow MB5 [done] Emoji opens from the mobile composer and inserts into a message
+ * @flow MB6 [done] Long press drives reply and edit without a hardware keyboard
+ * @flow MB7 [done] Message deletion confirms and cancels from the long-press menu
+ * @flow MB8 [done] PM reply, edit, and delete work from touch message actions
+ * @flow MB9 [done] Nicklist and conversation actions open by long press
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import {
   Browser,
   BrowserContext,

@@ -38,6 +38,10 @@ ALLOW = [
     'echo "never use git add -A here"',
     'grep -rn "git checkout" docs/',
     "cat <<'EOF'\nnotes about git add -A and make deploy-sun\nEOF",
+    # The guard runs before the command, so a command that fetches on its way to
+    # the commit must not be blocked for not having fetched.
+    "git fetch origin && git commit -m 'x'",
+    "git pull --ff-only origin main && git push origin main",
 ]
 
 # Commands that may legitimately be blocked for an unrelated, state-dependent

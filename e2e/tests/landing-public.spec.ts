@@ -1,3 +1,12 @@
+/**
+ * @section PW - Public Pages, Landing, And Showcase
+ * @flow PW1 [done] The landing loads the public bundle and enables desktop interactions
+ * @flow PW2 [done] Mobile navigation opens and links into the app connect flow
+ * @flow PW3 [done] The landing runs the real window manager over a taskbar of links
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import { expect, Page, test } from "@playwright/test";
 import { shot } from "../helpers/screenshots";
 

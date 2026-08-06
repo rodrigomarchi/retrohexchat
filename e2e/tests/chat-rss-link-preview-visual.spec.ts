@@ -1,3 +1,11 @@
+/**
+ * @section O - Chat UI Micro-Journeys
+ * @flow O23 [done] A BBC RSS item renders as a rich Markdown message in the desktop timeline
+ * @flow O24 [done] The BBC RSS Markdown preview stays contained at phone width
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import {
   Browser,
   BrowserContext,

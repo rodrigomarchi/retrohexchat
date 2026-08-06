@@ -1,3 +1,21 @@
+/**
+ * @section M - Admin, Server Operations, Bots
+ * @flow M24 [done] System overview reports the node's identity, limits, and memory split
+ * @flow M25 [done] The process listing filters and reorders against the live node
+ * @flow M26 [done] Every runtime listing window opens and renders rows
+ * @flow M27 [done] Host readings render, or say plainly that they cannot be read
+ * @flow M28 [done] App info counts the channels and people actually present
+ * @flow M29 [done] A database report runs and returns rows
+ * @flow M30 [done] Metrics charts subscribe to a group and draw
+ * @flow M31 [done] The live log streams only once asked
+ * @flow M32 [done] The Oban health window groups contracts into tabs without horizontal overflow
+ * @flow M33 [done] A runtime listing is resized, narrowed, and read row by row
+ * @flow M34 [done] Open system windows are reachable from the taskbar
+ * @flow M35 [done] The system windows coexist on one desktop
+ *
+ * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
+ * Edit them here, then run `make e2e.catalog` to regenerate the index.
+ */
 import {
   Browser,
   BrowserContext,
