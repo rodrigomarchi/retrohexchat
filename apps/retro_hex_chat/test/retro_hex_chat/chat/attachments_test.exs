@@ -3,7 +3,7 @@ defmodule RetroHexChat.Chat.AttachmentsTest do
 
   @moduletag :unit
 
-  alias RetroHexChat.Chat.Attachments
+  alias RetroHexChat.Chat.{Attachments, UploadedFile}
   alias RetroHexChat.Chat.Attachments.Preview
 
   test "prepare_direct_upload creates a reserved file with logical path metadata" do
@@ -50,6 +50,56 @@ defmodule RetroHexChat.Chat.AttachmentsTest do
              Attachments.confirm_uploaded_files([file.id], "Mallory")
   end
 
+  test "cleanup_orphan_uploads marks old reserved uploads as deleted" do
+    assert {:ok, file, _meta} =
+             Attachments.prepare_direct_upload("Alice", %{
+               filename: "orphan.txt",
+               content_type: "text/plain",
+               byte_size: 12
+             })
+
+    make_old(file.id)
+
+    assert {:ok, summary} =
+             Attachments.cleanup_orphan_uploads(limit: 10, orphan_age_seconds: 3_600)
+
+    assert summary.candidates == 1
+    assert summary.deleted == 1
+    assert summary.skipped == 0
+    assert summary.bytes_deleted == 12
+
+    assert Repo.get(UploadedFile, file.id).status == "deleted"
+  end
+
+  test "cleanup_orphan_uploads ignores fresh and attached uploads" do
+    assert {:ok, fresh, _meta} =
+             Attachments.prepare_direct_upload("Alice", %{
+               filename: "fresh.txt",
+               content_type: "text/plain",
+               byte_size: 12
+             })
+
+    assert {:ok, attached, _meta} =
+             Attachments.prepare_direct_upload("Alice", %{
+               filename: "attached.txt",
+               content_type: "text/plain",
+               byte_size: 13
+             })
+
+    make_old(attached.id)
+
+    from(file in UploadedFile, where: file.id == ^attached.id)
+    |> Repo.update_all(set: [status: "attached"])
+
+    assert {:ok, summary} =
+             Attachments.cleanup_orphan_uploads(limit: 10, orphan_age_seconds: 3_600)
+
+    assert summary.candidates == 0
+    assert summary.deleted == 0
+    assert Repo.get(UploadedFile, fresh.id).status == "reserved"
+    assert Repo.get(UploadedFile, attached.id).status == "attached"
+  end
+
   test "classifies preview families conservatively" do
     assert Preview.classify("photo.png", "image/png") == "image"
     assert Preview.classify("clip.webm", "video/webm") == "video"
@@ -75,5 +125,12 @@ defmodule RetroHexChat.Chat.AttachmentsTest do
     assert Preview.initial_status("pdf", "application/pdf") == "ready"
     assert Preview.initial_status("text", "text/plain") == "none"
     assert Preview.initial_status("download", "application/octet-stream") == "none"
+  end
+
+  defp make_old(file_id) do
+    old = DateTime.utc_now() |> DateTime.add(-7_200, :second)
+
+    from(file in UploadedFile, where: file.id == ^file_id)
+    |> Repo.update_all(set: [inserted_at: old, updated_at: old])
   end
 end

@@ -71,13 +71,13 @@
 <p>
   {dgettext(
     "help_ui",
-    "Oban shows the background job system behind durable work such as RSS feed polling. The headline cards separate supervisor health, active jobs, retryable or discarded failures, and whether every configured RSS feed has a successor job waiting in Oban."
+    "Oban shows the background job system behind durable work such as RSS feed polling, bot schedules, event logs, maintenance sweeps, link previews and preference persistence. The headline cards separate supervisor health, active jobs, retryable or discarded failures, successor coverage and pending domain work."
   )}
 </p>
 <p>
   {dgettext(
     "help_ui",
-    "Read the queue table by state first: Available means work can run now, Scheduled means it is waiting for its time, Executing means a worker has it, Retryable means Oban will try again, and Discarded means attempts were exhausted or the worker gave up. Recent jobs can be filtered to active work, failures, discarded jobs or everything Oban still retains."
+    "Read the queue table by state first: Available means work can run now, Scheduled means it is waiting for its time, Executing means a worker has it, Retryable means Oban will try again, and Discarded means attempts were exhausted or the worker gave up. The contract tables then show whether RSS feeds and bot schedules have successor jobs, whether event-log jobs are backed up, and whether maintenance or persistence work is falling behind."
   )}
 </p>
 

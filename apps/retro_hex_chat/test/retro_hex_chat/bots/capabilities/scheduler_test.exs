@@ -170,8 +170,10 @@ defmodule RetroHexChat.Bots.Capabilities.SchedulerTest do
     end
   end
 
-  describe "handle_timer/3" do
-    test "fires scheduled message" do
+  describe "mark_schedule_fired/3" do
+    test "updates last_fired for a schedule" do
+      now = ~U[2026-08-05 12:00:00Z]
+
       state = %{
         schedules: [
           %{
@@ -185,19 +187,13 @@ defmodule RetroHexChat.Bots.Capabilities.SchedulerTest do
         ]
       }
 
-      payload = %{schedule_id: "s1", channel: "#general"}
-      {result, new_state} = Scheduler.handle_timer(payload, state, @ctx)
-      assert {:reply, "Reminder!"} = result
-      # Check last_fired was updated
-      sched = hd(new_state.schedules)
-      assert sched["last_fired"] != nil
+      schedules = Scheduler.mark_schedule_fired(state.schedules, "s1", now)
+      assert hd(schedules)["last_fired"] == DateTime.to_iso8601(now)
     end
 
-    test "ignores unknown schedule_id" do
-      state = %{schedules: []}
-      payload = %{schedule_id: "nonexistent", channel: "#general"}
-      {result, _state} = Scheduler.handle_timer(payload, state, @ctx)
-      assert :ignore == result
+    test "keeps schedules unchanged for unknown id" do
+      schedules = [%{"id" => "s1", "last_fired" => nil}]
+      assert Scheduler.mark_schedule_fired(schedules, "missing", DateTime.utc_now()) == schedules
     end
   end
 
@@ -221,56 +217,6 @@ defmodule RetroHexChat.Bots.Capabilities.SchedulerTest do
       assert "schedule add" in triggers
       assert "schedule list" in triggers
       assert "schedule remove" in triggers
-    end
-  end
-
-  describe "reschedule_delay/2" do
-    test "returns interval delay for existing schedule" do
-      state = %{
-        schedules: [
-          %{
-            "id" => "s1",
-            "type" => "interval",
-            "interval_min" => 10,
-            "channel" => "#general",
-            "message" => "hi"
-          }
-        ]
-      }
-
-      payload = %{schedule_id: "s1", channel: "#general"}
-      assert {:reschedule, 600_000, ^payload} = Scheduler.reschedule_delay(payload, state)
-    end
-
-    test "returns :no_reschedule for unknown schedule_id" do
-      state = %{schedules: []}
-      payload = %{schedule_id: "nonexistent", channel: "#general"}
-      assert :no_reschedule == Scheduler.reschedule_delay(payload, state)
-    end
-
-    test "returns correct daily delay (positive, <86400000ms)" do
-      state = %{
-        schedules: [
-          %{
-            "id" => "s1",
-            "type" => "daily",
-            "time" => "00:00",
-            "channel" => "#general",
-            "message" => "Good morning!"
-          }
-        ]
-      }
-
-      payload = %{schedule_id: "s1", channel: "#general"}
-      assert {:reschedule, delay, ^payload} = Scheduler.reschedule_delay(payload, state)
-      assert delay > 0
-      assert delay <= 86_400_000
-    end
-
-    test "returns :no_reschedule when schedules list is empty" do
-      state = %{schedules: []}
-      payload = %{schedule_id: "s1", channel: "#general"}
-      assert :no_reschedule == Scheduler.reschedule_delay(payload, state)
     end
   end
 

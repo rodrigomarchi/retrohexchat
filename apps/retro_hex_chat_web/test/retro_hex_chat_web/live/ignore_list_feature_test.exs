@@ -14,23 +14,6 @@ defmodule RetroHexChatWeb.IgnoreListFeatureTest do
     :ok
   end
 
-  # The Address Book is a stateful island; events target the component, so fire
-  # them element-based (scoped to the dialog — notify_* collide with the
-  # standalone Notify dialog).
-  defp ab_click(view, event) do
-    view |> element("#ignore-list-dialog-mount [phx-click='#{event}']") |> render_click()
-  end
-
-  defp ab_select(view, event, nick) do
-    view
-    |> element("#ignore-list-dialog-mount [phx-click='#{event}'][phx-value-nickname='#{nick}']")
-    |> render_click()
-  end
-
-  defp ab_form(view, testid, params) do
-    view |> element("[data-testid='#{testid}']") |> render_submit(params)
-  end
-
   # ══════════════════════════════════════════════════════════════
   # US1 — Dialog Shell (T042)
   # ══════════════════════════════════════════════════════════════
@@ -92,22 +75,6 @@ defmodule RetroHexChatWeb.IgnoreListFeatureTest do
 
       assert html =~ "ClrTarget"
       assert html =~ "Red"
-    end
-  end
-
-  # ══════════════════════════════════════════════════════════════
-  # Private Helpers
-  # ══════════════════════════════════════════════════════════════
-
-  defp connect_user(conn, nick) do
-    {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
-    view
-  end
-
-  defp ensure_channel(name) do
-    case Registry.lookup(name) do
-      {:ok, _pid} -> :ok
-      {:error, :not_found} -> Supervisor.start_child(name)
     end
   end
 

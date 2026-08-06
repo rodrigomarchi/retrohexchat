@@ -4,6 +4,7 @@ defmodule RetroHexChat.Chat.IgnoreListPersistenceTest do
   @moduletag :integration
 
   alias RetroHexChat.Chat.IgnoreList
+  alias RetroHexChat.Chat.Schemas.IgnoreListEntry
   alias RetroHexChat.Repo
 
   @owner "PersistUser"
@@ -71,6 +72,28 @@ defmodule RetroHexChat.Chat.IgnoreListPersistenceTest do
       assert entry != nil
       assert entry.expires_at != nil
     end
+
+    test "does not persist expired entries from stale snapshots" do
+      now = DateTime.utc_now()
+      past = DateTime.add(now, -60, :second)
+      future = DateTime.add(now, 300, :second)
+
+      list = IgnoreList.new()
+      {:ok, list} = IgnoreList.add_entry(list, "Expired", :all, past)
+      {:ok, list} = IgnoreList.add_entry(list, "Active", :all, future)
+      {:ok, list} = IgnoreList.add_entry(list, "Permanent", :all, nil)
+
+      assert :ok = IgnoreList.save(@owner, list)
+
+      persisted_nicks =
+        IgnoreListEntry
+        |> Repo.all()
+        |> Enum.map(& &1.ignored_nickname)
+
+      refute "Expired" in persisted_nicks
+      assert "Active" in persisted_nicks
+      assert "Permanent" in persisted_nicks
+    end
   end
 
   describe "load/1" do
@@ -129,5 +152,54 @@ defmodule RetroHexChat.Chat.IgnoreListPersistenceTest do
 
       assert {:error, :not_found} = IgnoreList.load(@owner)
     end
+  end
+
+  describe "cleanup_expired_entries/1" do
+    test "deletes expired durable entries in bounded batches" do
+      now = DateTime.utc_now()
+      older = DateTime.add(now, -600, :second)
+      past = DateTime.add(now, -60, :second)
+      future = DateTime.add(now, 300, :second)
+
+      insert_ignore_entry!(@owner, "Older", older)
+      insert_ignore_entry!(@owner, "Expired", past)
+      insert_ignore_entry!(@owner, "Active", future)
+      insert_ignore_entry!(@owner, "Permanent", nil)
+
+      assert IgnoreList.expired_entry_count(now: now) == 2
+
+      assert {:ok, summary} = IgnoreList.cleanup_expired_entries(now: now, limit: 1)
+
+      assert summary.candidates == 1
+      assert summary.deleted == 1
+      assert summary.oldest_expires_at == older
+      assert summary.oldest_expired_age_ms > 0
+      assert IgnoreList.expired_entry_count(now: now) == 1
+
+      assert {:ok, summary} = IgnoreList.cleanup_expired_entries(now: now, limit: 10)
+
+      assert summary.candidates == 1
+      assert summary.deleted == 1
+      assert IgnoreList.expired_entry_count(now: now) == 0
+
+      persisted_nicks =
+        IgnoreListEntry
+        |> Repo.all()
+        |> Enum.map(& &1.ignored_nickname)
+        |> Enum.sort()
+
+      assert persisted_nicks == ["Active", "Permanent"]
+    end
+  end
+
+  defp insert_ignore_entry!(owner, nickname, expires_at) do
+    %IgnoreListEntry{}
+    |> IgnoreListEntry.changeset(%{
+      owner_nickname: owner,
+      ignored_nickname: nickname,
+      ignore_type: "all",
+      expires_at: expires_at
+    })
+    |> Repo.insert!()
   end
 end

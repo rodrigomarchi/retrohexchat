@@ -18,6 +18,7 @@ defmodule RetroHexChat.Channels.Server do
     Masks,
     Membership,
     Modes,
+    Mutes,
     Policy,
     Queries,
     Registry
@@ -40,6 +41,7 @@ defmodule RetroHexChat.Channels.Server do
           bans: MapSet.t(String.t()),
           ban_exceptions: MapSet.t(String.t()),
           invite_exceptions: MapSet.t(String.t()),
+          channel_mutes: MapSet.t(String.t()),
           registered: boolean(),
           created_at: DateTime.t(),
           join_timestamps: [DateTime.t()],
@@ -270,6 +272,17 @@ defmodule RetroHexChat.Channels.Server do
     GenServer.call(via(channel_name), {:channel_unmute, operator_nick, target_nick})
   end
 
+  @doc false
+  @spec apply_channel_mute_expired(String.t(), String.t(), pos_integer()) :: :ok
+  def apply_channel_mute_expired(channel_name, target_nick, mute_id) do
+    case Registry.lookup(channel_name) do
+      {:ok, pid} -> GenServer.call(pid, {:channel_mute_expired, mute_id, target_nick})
+      {:error, :not_found} -> :ok
+    end
+  catch
+    :exit, _reason -> :ok
+  end
+
   @doc "Transfer channel ownership to another member."
   @spec transfer_ownership(String.t(), String.t(), String.t()) :: :ok | {:error, String.t()}
   def transfer_ownership(channel_name, current_owner, new_owner) do
@@ -311,7 +324,12 @@ defmodule RetroHexChat.Channels.Server do
       last_activity_touched_at: nil
     }
 
-    {:ok, state |> load_persisted_state() |> load_welcome_message() |> refresh_directory()}
+    {:ok,
+     state
+     |> load_persisted_state()
+     |> load_channel_mutes()
+     |> load_welcome_message()
+     |> refresh_directory()}
   end
 
   @impl true
@@ -709,15 +727,16 @@ defmodule RetroHexChat.Channels.Server do
          {:ok, _} <- Membership.role(state.membership, target_nick),
          true <-
            Membership.rank(op_role) >
-             Membership.rank(elem(Membership.role(state.membership, target_nick), 1)) do
-      new_mutes = MapSet.put(state.channel_mutes, target_nick)
+             Membership.rank(elem(Membership.role(state.membership, target_nick), 1)),
+         {:ok, mute} <- Mutes.mute(state.name, operator_nick, target_nick, duration) do
+      new_mutes = MapSet.put(state.channel_mutes, mute.target_nickname)
       new_state = %{state | channel_mutes: new_mutes}
 
-      if is_integer(duration) and duration > 0 do
-        Process.send_after(self(), {:unmute_timer, target_nick}, duration * 1_000)
-      end
+      broadcast(
+        state.name,
+        {:user_channel_muted, %{target: mute.target_nickname, channel: state.name}}
+      )
 
-      broadcast(state.name, {:user_channel_muted, %{target: target_nick, channel: state.name}})
       reply(:ok, new_state)
     else
       {:error, :not_member} ->
@@ -725,12 +744,17 @@ defmodule RetroHexChat.Channels.Server do
 
       false ->
         reply({:error, dgettext("channels", "Insufficient privileges")}, state)
+
+      {:error, reason} ->
+        Logger.warning("Failed to persist channel mute for #{state.name}: #{inspect(reason)}")
+        reply({:error, dgettext("channels", "Could not persist channel mute")}, state)
     end
   end
 
   def handle_call({:channel_unmute, operator_nick, target_nick}, _from, state) do
     with {:ok, op_role} <- Membership.role(state.membership, operator_nick),
-         true <- Membership.rank(op_role) >= Membership.rank(:half_operator) do
+         true <- Membership.rank(op_role) >= Membership.rank(:half_operator),
+         {:ok, _summary} <- Mutes.revoke_active(state.name, target_nick, operator_nick) do
       new_mutes = MapSet.delete(state.channel_mutes, target_nick)
       new_state = %{state | channel_mutes: new_mutes}
 
@@ -742,6 +766,10 @@ defmodule RetroHexChat.Channels.Server do
 
       false ->
         reply({:error, dgettext("channels", "Insufficient privileges")}, state)
+
+      {:error, reason} ->
+        Logger.warning("Failed to persist channel unmute for #{state.name}: #{inspect(reason)}")
+        reply({:error, dgettext("channels", "Could not persist channel unmute")}, state)
     end
   end
 
@@ -801,14 +829,13 @@ defmodule RetroHexChat.Channels.Server do
     end
   end
 
-  @impl true
-  def handle_info({:unmute_timer, target_nick}, state) do
+  def handle_call({:channel_mute_expired, _mute_id, target_nick}, _from, state) do
     if MapSet.member?(state.channel_mutes, target_nick) do
       new_state = %{state | channel_mutes: MapSet.delete(state.channel_mutes, target_nick)}
       broadcast(state.name, {:user_channel_unmuted, %{target: target_nick, channel: state.name}})
-      noreply(new_state)
+      reply(:ok, new_state)
     else
-      noreply(state)
+      reply(:ok, state)
     end
   end
 
@@ -1064,8 +1091,6 @@ defmodule RetroHexChat.Channels.Server do
   # ETS read instead of one synchronous call per channel.
 
   defp reply(value, state), do: {:reply, value, refresh_directory(state)}
-
-  defp noreply(state), do: {:noreply, refresh_directory(state)}
 
   defp refresh_directory(state) do
     Directory.publish(state.name, %{
@@ -1450,6 +1475,14 @@ defmodule RetroHexChat.Channels.Server do
         "Failed to load persisted state for #{state.name}: #{kind} #{inspect(reason)}"
       )
 
+      state
+  end
+
+  defp load_channel_mutes(state) do
+    %{state | channel_mutes: Mutes.active_nicknames(state.name) |> MapSet.new()}
+  rescue
+    e ->
+      Logger.warning("Failed to load channel mutes for #{state.name}: #{inspect(e)}")
       state
   end
 

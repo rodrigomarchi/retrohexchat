@@ -26,7 +26,13 @@ defmodule RetroHexChatWeb.ChatLive.Components.SystemObanDialog do
     {:ok,
      socket
      |> assign(:id, @id)
-     |> assign(snapshot: nil, filters: ObanHealth.job_filters(), job_filter: @default_filter)}
+     |> assign(
+       snapshot: nil,
+       filters: ObanHealth.job_filters(),
+       job_filter: @default_filter,
+       job_queue_filter: "",
+       job_worker_filter: ""
+     )}
   end
 
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
@@ -50,9 +56,14 @@ defmodule RetroHexChatWeb.ChatLive.Components.SystemObanDialog do
     end
   end
 
-  def handle_event("system_oban_filter", %{"filter" => filter}, socket) do
+  def handle_event("system_oban_filter", params, socket) do
     if AdminOps.admin?(socket) do
-      {:noreply, socket |> assign(:job_filter, filter) |> refresh()}
+      {:noreply,
+       socket
+       |> assign(:job_filter, Map.get(params, "filter", @default_filter))
+       |> assign(:job_queue_filter, Map.get(params, "queue", ""))
+       |> assign(:job_worker_filter, Map.get(params, "worker", ""))
+       |> refresh()}
     else
       {:noreply, AdminOps.error_event(socket, AdminOps.restricted_message())}
     end
@@ -76,7 +87,12 @@ defmodule RetroHexChatWeb.ChatLive.Components.SystemObanDialog do
 
   defp refresh(socket) do
     assign(socket,
-      snapshot: ObanHealth.snapshot(filter: socket.assigns.job_filter),
+      snapshot:
+        ObanHealth.snapshot(
+          filter: socket.assigns.job_filter,
+          queue: socket.assigns.job_queue_filter,
+          worker: socket.assigns.job_worker_filter
+        ),
       filters: ObanHealth.job_filters()
     )
   end

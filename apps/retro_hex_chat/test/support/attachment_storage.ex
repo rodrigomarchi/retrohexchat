@@ -9,6 +9,9 @@ defmodule RetroHexChat.Chat.Attachments.TestStorage do
   end
 
   @impl true
+  def delete_file(_bucket, _key, _opts), do: :ok
+
+  @impl true
   def presigned_put_url(bucket, key, opts) do
     {:ok,
      %{

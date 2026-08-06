@@ -3,6 +3,8 @@ defmodule RetroHexChat.Accounts.TrustedDevicesTest do
 
   alias RetroHexChat.Accounts.ChatDeviceSession
   alias RetroHexChat.Accounts.TrustedDevice
+  alias RetroHexChat.Accounts.TrustedDeviceEvent
+  alias RetroHexChat.Accounts.TrustedDeviceNick
   alias RetroHexChat.Accounts.TrustedDevices
   alias RetroHexChat.Repo
   alias RetroHexChat.Services.Queries
@@ -215,6 +217,68 @@ defmodule RetroHexChat.Accounts.TrustedDevicesTest do
       assert session_row.color_depth == 30
       assert session_row.cores == 12
       assert session_row.touch == false
+    end
+
+    test "expire_devices revokes expired terminals and active grants auditably" do
+      nick = nick("Expire")
+      {:ok, _} = Queries.insert_registered_nick(nick, "secret123")
+
+      {:ok, %{device: device}} =
+        TrustedDevices.remember_nick(nil, nick, actor_nickname: nick)
+
+      expired_at = DateTime.utc_now() |> DateTime.add(-60, :second)
+
+      device
+      |> TrustedDevice.changeset(%{expires_at: expired_at})
+      |> Repo.update!()
+
+      assert TrustedDevices.expired_device_count(now: DateTime.utc_now()) == 1
+
+      assert {:ok, summary} = TrustedDevices.expire_devices(now: DateTime.utc_now(), limit: 10)
+
+      assert summary.candidates == 1
+      assert summary.expired_devices == 1
+      assert summary.revoked_grants == 1
+      assert summary.skipped == 0
+
+      revoked = Repo.get!(TrustedDevice, device.id)
+      assert revoked.revoked_at
+      assert revoked.revoked_by_nickname == "system"
+
+      grant = Repo.get_by!(TrustedDeviceNick, trusted_device_id: device.id)
+      assert grant.revoked_at
+      assert grant.revoked_by_nickname == "system"
+
+      assert Repo.get_by!(TrustedDeviceEvent,
+               trusted_device_id: device.id,
+               action: "device.expired"
+             )
+    end
+
+    test "close_stale_sessions marks only sessions without recent heartbeat" do
+      nick = nick("Stale")
+      {:ok, _} = Queries.insert_registered_nick(nick, "secret123")
+      {:ok, stale} = TrustedDevices.record_session_start(nick, nil, %{"browser" => "Old"})
+      {:ok, fresh} = TrustedDevices.record_session_start(nick, nil, %{"browser" => "Fresh"})
+
+      old = DateTime.utc_now() |> DateTime.add(-600, :second)
+
+      from(session in ChatDeviceSession, where: session.id == ^stale.id)
+      |> Repo.update_all(set: [last_seen_at: old])
+
+      assert TrustedDevices.stale_session_count(stale_after_seconds: 300) == 1
+
+      assert {:ok, summary} =
+               TrustedDevices.close_stale_sessions(limit: 10, stale_after_seconds: 300)
+
+      assert summary.candidates == 1
+      assert summary.closed_sessions == 1
+
+      closed = Repo.get!(ChatDeviceSession, stale.id)
+      assert closed.disconnected_at
+      assert closed.disconnect_reason == "stale_heartbeat"
+
+      refute Repo.get!(ChatDeviceSession, fresh.id).disconnected_at
     end
   end
 

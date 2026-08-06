@@ -161,6 +161,9 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
   def handle_info({:notify_debounce, _, _} = msg, socket),
     do: Presence.handle_info(msg, socket)
 
+  def handle_info({:link_preview_result, %{}} = msg, socket),
+    do: Presence.handle_info(msg, socket)
+
   def handle_info({:link_preview_result, _, _} = msg, socket),
     do: Presence.handle_info(msg, socket)
 

@@ -7,6 +7,8 @@ defmodule RetroHexChat.PromEx.Plugins.Domain do
 
   @generic_stop [:retro_hex_chat, :observability, :operation, :stop]
   @generic_exception [:retro_hex_chat, :observability, :operation, :exception]
+  @generic_counter [:retro_hex_chat, :observability, :operation, :counter]
+  @generic_value [:retro_hex_chat, :observability, :operation, :value]
   @chat_send_stop [:retro_hex_chat, :chat, :message, :send, :stop]
   @chat_receive_stop [:retro_hex_chat, :chat, :message, :receive, :stop]
   @chat_broadcast_stop [:retro_hex_chat, :chat, :message, :broadcast, :stop]
@@ -39,6 +41,22 @@ defmodule RetroHexChat.PromEx.Plugins.Domain do
           tag_values: &operation_tags/1,
           tags: [:context, :operation, :result],
           unit: {:native, :millisecond}
+        ),
+        counter(
+          metric_prefix ++ [:operation, :counter, :total],
+          event_name: @generic_counter,
+          measurement: :value,
+          description: "Total business counts emitted by instrumented domain operations.",
+          tag_values: &operation_measurement_tags/1,
+          tags: [:context, :operation, :result, :measurement]
+        ),
+        last_value(
+          metric_prefix ++ [:operation, :value],
+          event_name: @generic_value,
+          measurement: :value,
+          description: "Latest business values emitted by instrumented domain operations.",
+          tag_values: &operation_measurement_tags/1,
+          tags: [:context, :operation, :result, :measurement]
         ),
         counter(
           metric_prefix ++ [:operation, :exceptions, :total],
@@ -189,6 +207,12 @@ defmodule RetroHexChat.PromEx.Plugins.Domain do
     metadata
     |> operation_tags()
     |> Map.put(:kind, tag(metadata, :kind, "error"))
+  end
+
+  defp operation_measurement_tags(metadata) do
+    metadata
+    |> operation_tags()
+    |> Map.put(:measurement, tag(metadata, :measurement))
   end
 
   defp message_tags(metadata) do

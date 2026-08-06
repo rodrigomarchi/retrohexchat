@@ -20,6 +20,19 @@ defmodule RetroHexChat.Chat.Attachments.S3Storage do
   end
 
   @impl true
+  def delete_file(bucket, key, _opts) do
+    bucket
+    |> ExAws.S3.delete_object(key)
+    |> ExAws.request()
+    |> case do
+      {:ok, _result} -> :ok
+      {:error, {:http_error, 404, _body}} -> :ok
+      {:error, %{status_code: 404}} -> :ok
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
+  @impl true
   def presigned_put_url(bucket, key, opts) do
     expires_in = Keyword.get(opts, :expires_in, 300)
     content_type = Keyword.get(opts, :content_type, "application/octet-stream")

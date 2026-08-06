@@ -1,6 +1,7 @@
 defmodule RetroHexChat.Lobby.ServiceTest do
   use RetroHexChat.DataCase, async: false
 
+  alias RetroHexChat.Chat.{IgnoreList, PreferencePersistence}
   alias RetroHexChat.Lobby
   alias RetroHexChat.Lobby.{Queries, Service}
   alias RetroHexChat.Services.RegisteredNick
@@ -106,6 +107,28 @@ defmodule RetroHexChat.Lobby.ServiceTest do
       assert Lobby.active_session_for_user(creator.id).id == session.id
       assert Lobby.active_session_for_user(other.id).id == session.id
       assert Lobby.active_session_for_user(peer.id) == nil
+    end
+  end
+
+  describe "can_create_session?/2" do
+    test "blocks P2P from an unapplied pending ignore-list snapshot" do
+      {creator, peer} = pair("b1")
+      {:ok, ignore_list} = IgnoreList.add_entry(IgnoreList.new(), peer.nickname, :invites, nil)
+
+      assert :ok = PreferencePersistence.enqueue(creator.nickname, :ignore_list, ignore_list)
+
+      assert {:error, _message} = Lobby.can_create_session?(peer.id, creator.id)
+    end
+
+    test "pending ignore-list snapshot overrides the materialized table" do
+      {creator, peer} = pair("b2")
+      {:ok, ignore_list} = IgnoreList.add_entry(IgnoreList.new(), peer.nickname, :invites, nil)
+
+      assert :ok = IgnoreList.save(creator.nickname, ignore_list)
+      assert {:error, _message} = Lobby.can_create_session?(peer.id, creator.id)
+
+      assert :ok = PreferencePersistence.enqueue(creator.nickname, :ignore_list, IgnoreList.new())
+      assert :ok = Lobby.can_create_session?(peer.id, creator.id)
     end
   end
 end

@@ -142,9 +142,22 @@ defmodule RetroHexChat.Jobs.RSSPollWorkerTest do
     assert metadata.result == "ok"
     assert metadata.bot_id == bot.id
     assert metadata.feed_id == "f1"
+    assert metadata.published_count == 2
+    assert metadata.source_item_count == 2
 
     assert_receive {:telemetry_event, [:retro_hex_chat, :observability, :operation, :stop],
                     %{duration: _}, %{context: "bots", operation: "rss_poll"}}
+
+    assert_receive {:telemetry_event, [:retro_hex_chat, :observability, :operation, :counter],
+                    %{value: 2},
+                    %{
+                      context: "bots",
+                      operation: "rss_poll",
+                      measurement: "published_count"
+                    }}
+
+    assert_receive {:telemetry_event, [:retro_hex_chat, :observability, :operation, :counter],
+                    %{value: 2}, %{operation: "rss_poll", measurement: "source_item_count"}}
   end
 
   test "real Oban execution leaves a successor poll after the current job completes" do
@@ -183,6 +196,82 @@ defmodule RetroHexChat.Jobs.RSSPollWorkerTest do
     assert bot_id == bot.id
   end
 
+  test "retries transient HTTP feed errors before the third attempt" do
+    feed = %{"id" => "f1", "url" => @url, "channel" => @channel, "seen" => []}
+
+    ScriptedFetcher.script([
+      {:error, {:http_status, 503}}
+    ])
+
+    bot = create_and_start_bot(feed)
+    Repo.delete_all(Oban.Job)
+
+    assert {:error, {:http_status, 503}} = perform("f1", attempt: 1, max_attempts: 3)
+
+    stored = BotQueries.get_bot(bot.id)
+
+    [%{"last_error" => last_error, "last_polled_at" => last_polled_at}] =
+      get_in(stored.capabilities, ["rss", "feeds"])
+
+    assert last_error =~ "503"
+    assert last_polled_at
+    assert all_enqueued(worker: RSSPollWorker, queue: :rss) == []
+  end
+
+  test "records the final transient HTTP feed error on the third attempt" do
+    feed = %{"id" => "f1", "url" => @url, "channel" => @channel, "seen" => []}
+
+    ScriptedFetcher.script([
+      {:error, {:http_status, 503}}
+    ])
+
+    bot = create_and_start_bot(feed)
+    Repo.delete_all(Oban.Job)
+
+    assert :ok = perform("f1", attempt: 3, max_attempts: 3)
+
+    stored = BotQueries.get_bot(bot.id)
+
+    [%{"last_error" => last_error, "last_polled_at" => last_polled_at}] =
+      get_in(stored.capabilities, ["rss", "feeds"])
+
+    assert last_error =~ "503"
+    assert last_polled_at
+
+    assert_enqueued(
+      worker: RSSPollWorker,
+      queue: :rss,
+      args: %{bot_id: bot.id, feed_id: "f1"}
+    )
+  end
+
+  test "does not retry deterministic HTTP feed errors" do
+    feed = %{"id" => "f1", "url" => @url, "channel" => @channel, "seen" => []}
+
+    ScriptedFetcher.script([
+      {:error, {:http_status, 404}}
+    ])
+
+    bot = create_and_start_bot(feed)
+    Repo.delete_all(Oban.Job)
+
+    assert :ok = perform("f1", attempt: 1, max_attempts: 3)
+
+    stored = BotQueries.get_bot(bot.id)
+
+    [%{"last_error" => last_error, "last_polled_at" => last_polled_at}] =
+      get_in(stored.capabilities, ["rss", "feeds"])
+
+    assert last_error =~ "404"
+    assert last_polled_at
+
+    assert_enqueued(
+      worker: RSSPollWorker,
+      queue: :rss,
+      args: %{bot_id: bot.id, feed_id: "f1"}
+    )
+  end
+
   defp attach_telemetry do
     test_pid = self()
     handler_id = {__MODULE__, make_ref()}
@@ -191,7 +280,8 @@ defmodule RetroHexChat.Jobs.RSSPollWorkerTest do
       handler_id,
       [
         [:retro_hex_chat, :bots, :rss, :poll, :stop],
-        [:retro_hex_chat, :observability, :operation, :stop]
+        [:retro_hex_chat, :observability, :operation, :stop],
+        [:retro_hex_chat, :observability, :operation, :counter]
       ],
       fn event, measurements, metadata, _config ->
         send(test_pid, {:telemetry_event, event, measurements, metadata})
@@ -277,10 +367,12 @@ defmodule RetroHexChat.Jobs.RSSPollWorkerTest do
     bot
   end
 
-  @spec perform(String.t()) :: :ok | {:cancel, String.t()} | {:error, term()}
-  defp perform(feed_id) do
+  @spec perform(String.t(), keyword()) :: :ok | {:cancel, String.t()} | {:error, term()}
+  defp perform(feed_id, opts \\ []) do
     %Oban.Job{
-      args: %{"bot_id" => BotQueries.get_bot_by_nickname("RSSWorkerBot").id, "feed_id" => feed_id}
+      args: %{"bot_id" => BotQueries.get_bot_by_nickname("RSSWorkerBot").id, "feed_id" => feed_id},
+      attempt: Keyword.get(opts, :attempt, 1),
+      max_attempts: Keyword.get(opts, :max_attempts, 3)
     }
     |> RSSPollWorker.perform()
   end

@@ -11,12 +11,21 @@ defmodule RetroHexChat.Chat.Attachments do
 
   @default_content_type "application/octet-stream"
   @default_max_size_mb 25
+  @default_cleanup_limit 100
+  @default_orphan_age_seconds :timer.hours(1) |> div(1_000)
 
   @type upload_metadata :: %{
           optional(:filename) => String.t(),
           optional(:content_type) => String.t(),
           optional(:byte_size) => non_neg_integer(),
           optional(:directory_path) => String.t()
+        }
+
+  @type cleanup_summary :: %{
+          candidates: non_neg_integer(),
+          deleted: non_neg_integer(),
+          skipped: non_neg_integer(),
+          bytes_deleted: non_neg_integer()
         }
 
   @spec max_size_bytes() :: pos_integer()
@@ -115,6 +124,39 @@ defmodule RetroHexChat.Chat.Attachments do
     storage().presigned_get_url(file.storage_bucket, file.storage_key, opts)
   end
 
+  @spec cleanup_orphan_uploads(keyword()) :: {:ok, cleanup_summary()} | {:error, term()}
+  def cleanup_orphan_uploads(opts \\ []) do
+    cutoff = Keyword.get_lazy(opts, :cutoff, fn -> orphan_cutoff(opts) end)
+    limit = Keyword.get(opts, :limit, @default_cleanup_limit)
+    candidates = Queries.list_orphan_uploaded_files(cutoff, limit)
+
+    candidates
+    |> Enum.reduce_while(initial_cleanup_summary(length(candidates)), fn file, {:ok, summary} ->
+      case cleanup_orphan_upload(file, cutoff) do
+        {:ok, {:deleted, bytes}} ->
+          {:cont,
+           {:ok,
+            %{
+              summary
+              | deleted: summary.deleted + 1,
+                bytes_deleted: summary.bytes_deleted + bytes
+            }}}
+
+        {:ok, :skipped} ->
+          {:cont, {:ok, %{summary | skipped: summary.skipped + 1}}}
+
+        {:error, reason} ->
+          {:halt, {:error, reason}}
+      end
+    end)
+  end
+
+  @spec orphan_upload_count(keyword()) :: non_neg_integer()
+  def orphan_upload_count(opts \\ []) do
+    cutoff = Keyword.get_lazy(opts, :cutoff, fn -> orphan_cutoff(opts) end)
+    Queries.orphan_uploaded_file_count(cutoff)
+  end
+
   @spec inline_preview?(Attachment.t() | UploadedFile.t() | map()) :: boolean()
   def inline_preview?(%Attachment{file: %UploadedFile{} = file}), do: Preview.inline?(file)
   def inline_preview?(%UploadedFile{} = file), do: Preview.inline?(file)
@@ -172,6 +214,41 @@ defmodule RetroHexChat.Chat.Attachments do
 
   defp config do
     Application.get_env(:retro_hex_chat, :chat_uploads, [])
+  end
+
+  defp cleanup_orphan_upload(%UploadedFile{id: id}, cutoff) do
+    RetroHexChat.Repo.transaction(fn ->
+      cleanup_locked_orphan_upload(id, cutoff)
+    end)
+    |> case do
+      {:ok, result} -> result
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
+  defp cleanup_locked_orphan_upload(id, cutoff) do
+    case Queries.lock_orphan_uploaded_file(id, cutoff) do
+      nil -> {:ok, :skipped}
+      %UploadedFile{} = file -> delete_locked_orphan_upload(file)
+    end
+  end
+
+  defp delete_locked_orphan_upload(%UploadedFile{} = file) do
+    with :ok <- storage().delete_file(file.storage_bucket, file.storage_key, []),
+         {:ok, deleted_file} <- Queries.mark_uploaded_file_deleted(file) do
+      {:ok, {:deleted, deleted_file.byte_size}}
+    else
+      {:error, reason} -> RetroHexChat.Repo.rollback(reason)
+    end
+  end
+
+  defp initial_cleanup_summary(candidate_count) do
+    {:ok, %{candidates: candidate_count, deleted: 0, skipped: 0, bytes_deleted: 0}}
+  end
+
+  defp orphan_cutoff(opts) do
+    seconds = Keyword.get(opts, :orphan_age_seconds, @default_orphan_age_seconds)
+    DateTime.utc_now() |> DateTime.add(-seconds, :second)
   end
 
   defp max_size_mb do

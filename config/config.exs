@@ -45,8 +45,29 @@ config :retro_hex_chat,
 config :retro_hex_chat, Oban,
   engine: Oban.Engines.Basic,
   repo: RetroHexChat.Repo,
-  plugins: [Oban.Plugins.Pruner],
-  queues: [rss: 2]
+  plugins: [
+    {Oban.Plugins.Cron,
+     crontab: [
+       {"@reboot", RetroHexChat.Jobs.ServerBanExpiryWorker},
+       {"@reboot", RetroHexChat.Jobs.RegisteredChannelExpiryWorker},
+       {"@reboot", RetroHexChat.Jobs.RegisteredNickExpiryWorker},
+       {"@reboot", RetroHexChat.Jobs.AttachmentOrphanCleanupWorker},
+       {"@reboot", RetroHexChat.Jobs.TrustedDeviceExpiryWorker},
+       {"@reboot", RetroHexChat.Jobs.ChatDeviceSessionCleanupWorker},
+       {"@reboot", RetroHexChat.Jobs.RuntimeStaleCleanupWorker},
+       {"@reboot", RetroHexChat.Jobs.IgnoreExpiredCleanupWorker},
+       {"@hourly", RetroHexChat.Jobs.ServerBanExpiryWorker},
+       {"0 */6 * * *", RetroHexChat.Jobs.RegisteredChannelExpiryWorker},
+       {"15 */6 * * *", RetroHexChat.Jobs.RegisteredNickExpiryWorker},
+       {"30 * * * *", RetroHexChat.Jobs.AttachmentOrphanCleanupWorker},
+       {"35 * * * *", RetroHexChat.Jobs.TrustedDeviceExpiryWorker},
+       {"*/15 * * * *", RetroHexChat.Jobs.ChatDeviceSessionCleanupWorker},
+       {"45 * * * *", RetroHexChat.Jobs.RuntimeStaleCleanupWorker},
+       {"55 * * * *", RetroHexChat.Jobs.IgnoreExpiredCleanupWorker}
+     ]},
+    Oban.Plugins.Pruner
+  ],
+  queues: [rss: 2, maintenance: 1, bots: 2, link_preview: 2, persistence: 1]
 
 config :retro_hex_chat_web,
   ecto_repos: [RetroHexChat.Repo],

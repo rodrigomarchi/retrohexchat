@@ -53,12 +53,20 @@ defmodule RetroHexChat.GroupCall.Queries do
     |> Repo.one()
   end
 
-  @spec list_stale_rooms(DateTime.t()) :: [Room.t()]
-  def list_stale_rooms(before_datetime) do
+  @spec list_stale_rooms(DateTime.t(), keyword()) :: [Room.t()]
+  def list_stale_rooms(before_datetime, opts \\ []) do
     Room
-    |> where([r], r.status not in ^@room_terminal_statuses)
-    |> where([r], r.updated_at < ^before_datetime)
+    |> stale_rooms_query(before_datetime)
+    |> order_by([r], asc: r.updated_at, asc: r.id)
+    |> maybe_limit(Keyword.get(opts, :limit))
     |> Repo.all()
+  end
+
+  @spec stale_room_count(DateTime.t()) :: non_neg_integer()
+  def stale_room_count(before_datetime) do
+    Room
+    |> stale_rooms_query(before_datetime)
+    |> Repo.aggregate(:count, :id)
   end
 
   @spec expire_room(Room.t()) :: {:ok, Room.t()} | {:error, Ecto.Changeset.t()}
@@ -68,6 +76,43 @@ defmodule RetroHexChat.GroupCall.Queries do
       closed_reason: "stale_cleanup"
     })
   end
+
+  @spec expire_stale_room(Room.t(), DateTime.t()) ::
+          {:ok, :expired | :skipped} | {:error, term()}
+  def expire_stale_room(%Room{id: id}, before_datetime) do
+    now = DateTime.utc_now()
+
+    {count, _records} =
+      Room
+      |> where([r], r.id == ^id)
+      |> stale_rooms_query(before_datetime)
+      |> Repo.update_all(
+        set: [
+          status: "expired",
+          closed_at: now,
+          closed_reason: "stale_cleanup",
+          updated_at: now
+        ]
+      )
+
+    case count do
+      1 -> {:ok, :expired}
+      0 -> {:ok, :skipped}
+    end
+  rescue
+    error -> {:error, error}
+  end
+
+  defp stale_rooms_query(queryable, before_datetime) do
+    queryable
+    |> where([r], r.status not in ^@room_terminal_statuses)
+    |> where([r], r.updated_at < ^before_datetime)
+  end
+
+  defp maybe_limit(query, max_rows) when is_integer(max_rows) and max_rows > 0,
+    do: limit(query, ^max_rows)
+
+  defp maybe_limit(query, _max_rows), do: query
 
   @spec insert_participant(map()) :: {:ok, Participant.t()} | {:error, Ecto.Changeset.t()}
   def insert_participant(attrs) do

@@ -16,8 +16,10 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler do
   use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Bots.Capability
 
+  alias RetroHexChat.Bots.Capabilities.Scheduler.Durable
   alias RetroHexChat.Bots.Policy
-  alias RetroHexChat.Bots.Server
+
+  require Logger
 
   @impl true
   @spec name() :: atom()
@@ -49,20 +51,18 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler do
 
   @impl true
   @spec init_timers(map(), atom(), map(), map()) :: map()
-  def init_timers(server_state, cap_name, _config, cap_state) do
-    schedules = cap_state.schedules
+  def init_timers(server_state, _cap_name, _config, cap_state) do
+    case Durable.reconcile(server_state.bot_id, cap_state.schedules) do
+      :ok ->
+        :ok
 
-    Enum.reduce(schedules, server_state, fn schedule, acc ->
-      delay = calculate_next_delay(schedule)
+      {:error, reason} ->
+        Logger.warning(
+          "Bot schedule durable reconcile failed for #{server_state.bot_id}: #{inspect(reason)}"
+        )
+    end
 
-      if delay > 0 do
-        payload = %{channel: schedule["channel"], schedule_id: schedule["id"]}
-
-        Server.schedule_capability_timer(acc, cap_name, payload, delay)
-      else
-        acc
-      end
-    end)
+    server_state
   end
 
   @impl true
@@ -93,45 +93,6 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler do
   @spec handle_event(atom(), map(), RetroHexChat.Bots.Capability.bot_context()) ::
           RetroHexChat.Bots.Capability.capability_result()
   def handle_event(_event, _payload, _ctx), do: :ignore
-
-  @impl true
-  @spec handle_timer(term(), map(), RetroHexChat.Bots.Capability.bot_context()) ::
-          {RetroHexChat.Bots.Capability.capability_result(), map()}
-  def handle_timer(%{schedule_id: sched_id, channel: _channel}, state, _ctx) do
-    case find_schedule(state.schedules, sched_id) do
-      nil ->
-        {:ignore, state}
-
-      schedule ->
-        message = schedule["message"]
-        # Update last_fired
-        new_schedules = update_schedule_fired(state.schedules, sched_id)
-        new_state = %{state | schedules: new_schedules}
-        # The server will need to reschedule — handled by returning the result
-        # For now, just fire the message
-        {{:reply, message}, new_state}
-    end
-  end
-
-  def handle_timer(_payload, state, _ctx), do: {:ignore, state}
-
-  @impl true
-  @spec reschedule_delay(map(), map()) :: {:reschedule, non_neg_integer(), map()} | :no_reschedule
-  def reschedule_delay(%{schedule_id: sched_id} = payload, cap_state) do
-    case find_schedule(cap_state.schedules, sched_id) do
-      nil ->
-        :no_reschedule
-
-      schedule ->
-        delay = calculate_next_delay(schedule)
-
-        if delay > 0,
-          do: {:reschedule, delay, payload},
-          else: :no_reschedule
-    end
-  end
-
-  def reschedule_delay(_payload, _cap_state), do: :no_reschedule
 
   @impl true
   @spec default_config() :: map()
@@ -331,15 +292,16 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler do
   end
 
   @spec find_schedule([map()], String.t()) :: map() | nil
-  defp find_schedule(schedules, id) do
+  def find_schedule(schedules, id) do
     Enum.find(schedules, &(&1["id"] == id))
   end
 
-  @spec update_schedule_fired([map()], String.t()) :: [map()]
-  defp update_schedule_fired(schedules, id) do
+  @spec mark_schedule_fired([map()], String.t()) :: [map()]
+  @spec mark_schedule_fired([map()], String.t(), DateTime.t()) :: [map()]
+  def mark_schedule_fired(schedules, id, now \\ DateTime.utc_now()) do
     Enum.map(schedules, fn s ->
       if s["id"] == id do
-        Map.put(s, "last_fired", DateTime.to_iso8601(DateTime.utc_now()))
+        Map.put(s, "last_fired", DateTime.to_iso8601(now))
       else
         s
       end
@@ -347,14 +309,16 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler do
   end
 
   @spec calculate_next_delay(map()) :: non_neg_integer()
-  def calculate_next_delay(%{"type" => "interval", "interval_min" => min}) do
+  @spec calculate_next_delay(map(), DateTime.t()) :: non_neg_integer()
+  def calculate_next_delay(schedule, now \\ DateTime.utc_now())
+
+  def calculate_next_delay(%{"type" => "interval", "interval_min" => min}, _now) do
     min * 60 * 1000
   end
 
-  def calculate_next_delay(%{"type" => "daily", "time" => time}) do
+  def calculate_next_delay(%{"type" => "daily", "time" => time}, %DateTime{} = now) do
     case parse_time(time) do
       {:ok, {hour, minute}} ->
-        now = DateTime.utc_now()
         target_today = %{now | hour: hour, minute: minute, second: 0, microsecond: {0, 0}}
 
         diff = DateTime.diff(target_today, now, :millisecond)
@@ -366,7 +330,7 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler do
     end
   end
 
-  def calculate_next_delay(_), do: 0
+  def calculate_next_delay(_schedule, _now), do: 0
 
   @spec parse_time(String.t()) :: {:ok, {non_neg_integer(), non_neg_integer()}} | :error
   defp parse_time(time) do

@@ -93,7 +93,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.Fetcher.HTTP do
         follow_redirect(url, headers, etag, last_modified, redirects_left)
 
       %{status: status} ->
-        {:error, dgettext("bots", "HTTP %{status}", status: status)}
+        {:error, {:http_status, status}}
     end
   end
 

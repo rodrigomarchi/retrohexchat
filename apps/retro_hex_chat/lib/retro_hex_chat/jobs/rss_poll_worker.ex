@@ -9,7 +9,7 @@ defmodule RetroHexChat.Jobs.RSSPollWorker do
 
   use Oban.Worker,
     queue: :rss,
-    max_attempts: 5,
+    max_attempts: 3,
     tags: ["bots", "rss"],
     unique: [
       fields: [:worker, :queue, :args],
@@ -30,6 +30,7 @@ defmodule RetroHexChat.Jobs.RSSPollWorker do
   alias RetroHexChat.Bots.Output
   alias RetroHexChat.Bots.Queries
   alias RetroHexChat.Bots.Server
+  alias RetroHexChat.Net.HTTPRetry
   alias RetroHexChat.Observability
   alias RetroHexChat.Repo
 
@@ -37,6 +38,7 @@ defmodule RetroHexChat.Jobs.RSSPollWorker do
 
   @rss_capability "rss"
   @timeout_ms 300_000
+  @max_http_attempts 3
 
   @impl Oban.Worker
   def timeout(_job), do: @timeout_ms
@@ -48,24 +50,26 @@ defmodule RetroHexChat.Jobs.RSSPollWorker do
 
   @impl Oban.Worker
   @spec perform(Oban.Job.t()) :: :ok | {:cancel, String.t()} | {:error, term()}
-  def perform(%Oban.Job{args: %{"bot_id" => bot_id, "feed_id" => feed_id}}) do
+  def perform(%Oban.Job{args: %{"bot_id" => bot_id, "feed_id" => feed_id}} = job) do
     Observability.span(
       [:retro_hex_chat, :bots, :rss, :poll],
-      %{bot_id: bot_id, feed_id: feed_id},
-      fn -> do_perform(bot_id, feed_id) end,
+      %{bot_id: bot_id, feed_id: feed_id, attempt: job_attempt(job)},
+      fn -> do_perform(bot_id, feed_id, job) end,
       &poll_result_metadata/1
     )
   end
 
-  @spec do_perform(integer(), String.t()) :: :ok | {:cancel, String.t()} | {:error, term()}
-  defp do_perform(bot_id, feed_id) do
+  @spec do_perform(integer(), String.t(), Oban.Job.t()) ::
+          :ok | {:cancel, String.t()} | {:error, term()}
+  defp do_perform(bot_id, feed_id, job) do
     Logger.info("rss_poll_start bot_id=#{bot_id} feed_id=#{feed_id}")
 
     with {:ok, bot, feed} <- load_poll_target(bot_id, feed_id),
-         decoded <- feed |> RSS.fetch_feed() |> RSS.decode_fetch_result(feed),
+         fetch_result <- RSS.fetch_feed(feed),
+         decoded <- RSS.decode_fetch_result(fetch_result, feed),
          {:ok, poll} <- persist_decoded_result(bot.id, feed_id, decoded),
          :ok <- deliver_poll(poll),
-         :ok <- schedule_next_poll(poll) do
+         :ok <- schedule_or_retry_after_fetch(poll, fetch_result, job) do
       Logger.info(log_line("rss_poll_stop", poll))
       :ok
     else
@@ -234,6 +238,52 @@ defmodule RetroHexChat.Jobs.RSSPollWorker do
   defp schedule_next_poll(%{bot: %Bot{id: bot_id}, feed_id: feed_id, poll_interval_ms: delay_ms}) do
     Scheduler.schedule_follow_up_poll(bot_id, feed_id, delay_ms)
   end
+
+  @spec schedule_or_retry_after_fetch(map(), RSS.Fetcher.result(), Oban.Job.t()) ::
+          :ok | {:error, term()}
+  defp schedule_or_retry_after_fetch(poll, fetch_result, job) do
+    case retryable_fetch_error(fetch_result) do
+      nil -> schedule_next_poll(poll)
+      reason -> maybe_retry_fetch_error(poll, reason, job)
+    end
+  end
+
+  @spec maybe_retry_fetch_error(map(), term(), Oban.Job.t()) :: :ok | {:error, term()}
+  defp maybe_retry_fetch_error(poll, reason, job) do
+    attempt = job_attempt(job)
+    max_attempts = job_max_attempts(job)
+
+    if attempt < max_attempts do
+      Logger.warning(
+        "rss_poll_retry bot_id=#{poll.bot.id} feed_id=#{poll.feed_id} reason=#{log_value(reason)} attempt=#{attempt}"
+      )
+
+      {:error, reason}
+    else
+      schedule_next_poll(poll)
+    end
+  end
+
+  @spec retryable_fetch_error(RSS.Fetcher.result()) :: term() | nil
+  defp retryable_fetch_error({:error, reason}) do
+    if HTTPRetry.retryable?(reason), do: reason
+  end
+
+  defp retryable_fetch_error(_fetch_result), do: nil
+
+  @spec job_attempt(Oban.Job.t()) :: pos_integer()
+  defp job_attempt(%Oban.Job{attempt: attempt}) when is_integer(attempt) and attempt > 0,
+    do: attempt
+
+  defp job_attempt(_job), do: 1
+
+  @spec job_max_attempts(Oban.Job.t()) :: pos_integer()
+  defp job_max_attempts(%Oban.Job{max_attempts: max_attempts})
+       when is_integer(max_attempts) and max_attempts > 0 do
+    min(max_attempts, @max_http_attempts)
+  end
+
+  defp job_max_attempts(_job), do: @max_http_attempts
 
   @spec poll_summary(map(), RSS.decoded_feed_result(), RSS.planned_result(), map()) :: map()
   defp poll_summary(feed, decoded, planned, new_state) do

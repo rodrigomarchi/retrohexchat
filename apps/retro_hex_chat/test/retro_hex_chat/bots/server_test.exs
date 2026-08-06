@@ -4,6 +4,8 @@ defmodule RetroHexChat.Bots.ServerTest do
   @moduletag :integration
 
   alias RetroHexChat.Bots.{Registry, Server, Supervisor}
+  alias RetroHexChat.Jobs.BotEventLogWorker
+  alias RetroHexChat.Jobs.BotScheduledMessageWorker
   alias RetroHexChat.Jobs.RSSPollWorker
 
   @bot_data %{
@@ -190,6 +192,58 @@ defmodule RetroHexChat.Bots.ServerTest do
       assert Process.alive?(pid_b)
       state = :sys.get_state(pid_b)
       assert Map.has_key?(state.last_response_at, "#isotest")
+    end
+  end
+
+  describe "event log jobs" do
+    @event_log_bot %{
+      id: 990,
+      name: "EventLogBot",
+      nickname: "EventLogBot",
+      command_prefix: "!",
+      created_by: "admin",
+      enabled: true,
+      cooldown_ms: 0,
+      capabilities: %{
+        "mention" => %{"response" => "Hi!", "enabled" => true}
+      },
+      channel_configs: [
+        %{channel_name: "#eventlog", enabled: true, capability_overrides: %{}}
+      ],
+      custom_commands: []
+    }
+
+    setup do
+      Supervisor.stop_bot("EventLogBot")
+      on_exit(fn -> Supervisor.stop_bot("EventLogBot") end)
+      :ok
+    end
+
+    test "message responses enqueue bot event log jobs" do
+      {:ok, pid} = Supervisor.start_bot(@event_log_bot)
+
+      send(pid, %{
+        event: "new_message",
+        payload: %{
+          id: 1,
+          channel: "#eventlog",
+          author: "HumanUser",
+          content: "EventLogBot hi",
+          type: :message,
+          timestamp: DateTime.utc_now(),
+          reply_to_id: nil,
+          reply_to_author: nil,
+          reply_to_preview: nil
+        }
+      })
+
+      Process.sleep(50)
+
+      assert_enqueued(
+        worker: BotEventLogWorker,
+        queue: :bots,
+        args: %{bot_id: @event_log_bot.id, event_type: "message_response", channel: "#eventlog"}
+      )
     end
   end
 
@@ -380,74 +434,83 @@ defmodule RetroHexChat.Bots.ServerTest do
     }
 
     setup do
+      Supervisor.stop_bot("TimerTestBot")
       on_exit(fn -> Supervisor.stop_bot("TimerTestBot") end)
       :ok
     end
 
-    test "scheduler timer is set up during init" do
+    test "scheduler job is enqueued during init" do
       {:ok, pid} = Supervisor.start_bot(@timer_bot)
       state = :sys.get_state(pid)
-      assert map_size(state.capability_timers) >= 1
 
-      # Verify it's a scheduler timer
-      {_ref, {cap_name, _payload}} = Enum.at(state.capability_timers, 0)
-      assert cap_name == :scheduler
+      assert state.capability_timers == %{}
+
+      assert_enqueued(
+        worker: BotScheduledMessageWorker,
+        queue: :bots,
+        args: %{bot_id: @timer_bot.id, schedule_id: "s1"}
+      )
     end
 
-    test "timer fires and reschedules automatically" do
-      # Use nil channel so maybe_respond_timer skips sending (avoids Channels.Server crash)
-      bot =
-        put_in(@timer_bot.capabilities["scheduler"]["schedules"], [
+    test "reload replaces stale scheduler jobs with current schedules" do
+      {:ok, pid} = Supervisor.start_bot(@timer_bot)
+
+      assert_enqueued(
+        worker: BotScheduledMessageWorker,
+        queue: :bots,
+        args: %{bot_id: @timer_bot.id, schedule_id: "s1"}
+      )
+
+      new_capabilities =
+        put_in(@timer_bot.capabilities, ["scheduler", "schedules"], [
           %{
-            "id" => "s1",
+            "id" => "s2",
             "type" => "interval",
             "interval_min" => 1,
-            "channel" => nil,
-            "message" => "Tick!"
+            "channel" => "#timertest",
+            "message" => "Tock!"
           }
         ])
 
-      bot = %{bot | channel_configs: []}
+      :ok = Server.reload_capabilities("TimerTestBot", new_capabilities)
 
-      {:ok, pid} = Supervisor.start_bot(bot)
-
-      # Cancel existing init timers so we can track new ones
-      :sys.replace_state(pid, fn s -> %{s | capability_timers: %{}} end)
-
-      # Manually send a timer message to simulate firing
-      send(pid, {:capability_timer, :scheduler, %{schedule_id: "s1", channel: nil}})
-
-      # Give it a moment to process
       Process.sleep(50)
 
-      state_after = :sys.get_state(pid)
-      # Should have rescheduled — new timer should exist
-      scheduler_timers =
-        Enum.filter(state_after.capability_timers, fn {_ref, {name, _}} -> name == :scheduler end)
+      refute_enqueued(
+        worker: BotScheduledMessageWorker,
+        queue: :bots,
+        args: %{bot_id: @timer_bot.id, schedule_id: "s1"}
+      )
 
-      assert scheduler_timers != []
+      assert_enqueued(
+        worker: BotScheduledMessageWorker,
+        queue: :bots,
+        args: %{bot_id: @timer_bot.id, schedule_id: "s2"}
+      )
+
+      assert :sys.get_state(pid).capability_timers == %{}
     end
 
-    test "does not reschedule if schedule was removed" do
-      bot = %{@timer_bot | channel_configs: []}
-      {:ok, pid} = Supervisor.start_bot(bot)
+    test "reload cancels scheduler jobs when schedule was removed" do
+      {:ok, pid} = Supervisor.start_bot(@timer_bot)
 
-      # Remove the schedule from capability state and clear existing timers
-      :sys.replace_state(pid, fn s ->
-        new_cap_states = Map.put(s.capability_states, :scheduler, %{schedules: []})
-        %{s | capability_states: new_cap_states, capability_timers: %{}}
-      end)
+      assert_enqueued(
+        worker: BotScheduledMessageWorker,
+        queue: :bots,
+        args: %{bot_id: @timer_bot.id, schedule_id: "s1"}
+      )
 
-      # Fire the timer for a schedule that no longer exists
-      send(pid, {:capability_timer, :scheduler, %{schedule_id: "s1", channel: nil}})
+      new_capabilities = put_in(@timer_bot.capabilities, ["scheduler", "schedules"], [])
+      :ok = Server.reload_capabilities("TimerTestBot", new_capabilities)
       Process.sleep(50)
 
-      state_after = :sys.get_state(pid)
+      refute_enqueued(
+        worker: BotScheduledMessageWorker,
+        queue: :bots,
+        args: %{bot_id: @timer_bot.id, schedule_id: "s1"}
+      )
 
-      scheduler_timers =
-        Enum.filter(state_after.capability_timers, fn {_ref, {name, _}} -> name == :scheduler end)
-
-      assert scheduler_timers == []
+      assert :sys.get_state(pid).capability_timers == %{}
     end
 
     test "capability without reschedule_delay does not crash" do

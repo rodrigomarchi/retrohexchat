@@ -4,6 +4,7 @@ defmodule RetroHexChat.Bots.BotLifecycleTest do
   @moduletag :integration
 
   alias RetroHexChat.Bots.{Queries, Registry, Server, Supervisor}
+  alias RetroHexChat.Jobs.{BotEventLogWorker, BotScheduledMessageWorker}
 
   @base_caps %{
     "mention" => %{"response" => "Hi {nickname}!", "enabled" => true},
@@ -216,7 +217,7 @@ defmodule RetroHexChat.Bots.BotLifecycleTest do
   end
 
   describe "timer lifecycle E2E" do
-    test "scheduler fires and reschedules repeatedly" do
+    test "scheduler enqueues durable job on bot start" do
       {:ok, bot} =
         Queries.create_bot(%{
           name: "TimerE2E",
@@ -240,30 +241,17 @@ defmodule RetroHexChat.Bots.BotLifecycleTest do
 
       {:ok, pid} = start_bot(bot, %{cooldown_ms: 100})
 
-      # Verify initial timer exists (interval_min=1 => 60s delay, so timer is pending)
       state = :sys.get_state(pid)
-      assert map_size(state.capability_timers) >= 1
+      assert state.capability_timers == %{}
 
-      # Clear existing timers and manually fire
-      :sys.replace_state(pid, fn s -> %{s | capability_timers: %{}} end)
-      send(pid, {:capability_timer, :scheduler, %{schedule_id: "se1", channel: nil}})
-      Process.sleep(50)
-
-      # Verify rescheduled
-      state2 = :sys.get_state(pid)
-      assert map_size(state2.capability_timers) >= 1
-
-      # Fire again
-      :sys.replace_state(pid, fn s -> %{s | capability_timers: %{}} end)
-      send(pid, {:capability_timer, :scheduler, %{schedule_id: "se1", channel: nil}})
-      Process.sleep(50)
-
-      # Verify rescheduled again (proves multiple reschedules work)
-      state3 = :sys.get_state(pid)
-      assert map_size(state3.capability_timers) >= 1
+      assert_enqueued(
+        worker: BotScheduledMessageWorker,
+        queue: :bots,
+        args: %{bot_id: bot.id, schedule_id: "se1"}
+      )
     end
 
-    test "removing schedule stops rescheduling" do
+    test "removing schedule cancels durable job" do
       {:ok, bot} =
         Queries.create_bot(%{
           name: "StopE2E",
@@ -287,28 +275,25 @@ defmodule RetroHexChat.Bots.BotLifecycleTest do
 
       {:ok, pid} = start_bot(bot, %{cooldown_ms: 100})
 
-      # First fire — should reschedule
-      :sys.replace_state(pid, fn s -> %{s | capability_timers: %{}} end)
-      send(pid, {:capability_timer, :scheduler, %{schedule_id: "se2", channel: nil}})
+      assert :sys.get_state(pid).capability_timers == %{}
+
+      assert_enqueued(
+        worker: BotScheduledMessageWorker,
+        queue: :bots,
+        args: %{bot_id: bot.id, schedule_id: "se2"}
+      )
+
+      new_capabilities = put_in(bot.capabilities, ["scheduler", "schedules"], [])
+      :ok = Server.reload_capabilities("StopE2E", new_capabilities)
       Process.sleep(50)
-      state = :sys.get_state(pid)
-      assert map_size(state.capability_timers) >= 1
 
-      # Remove schedule from state
-      :sys.replace_state(pid, fn s ->
-        new_cap_states = Map.put(s.capability_states, :scheduler, %{schedules: []})
-        %{s | capability_states: new_cap_states, capability_timers: %{}}
-      end)
+      refute_enqueued(
+        worker: BotScheduledMessageWorker,
+        queue: :bots,
+        args: %{bot_id: bot.id, schedule_id: "se2"}
+      )
 
-      # Fire again — should NOT reschedule
-      send(pid, {:capability_timer, :scheduler, %{schedule_id: "se2", channel: nil}})
-      Process.sleep(50)
-      state2 = :sys.get_state(pid)
-
-      scheduler_timers =
-        Enum.filter(state2.capability_timers, fn {_ref, {name, _}} -> name == :scheduler end)
-
-      assert scheduler_timers == []
+      assert :sys.get_state(pid).capability_timers == %{}
     end
   end
 
@@ -426,8 +411,16 @@ defmodule RetroHexChat.Bots.BotLifecycleTest do
         }
       })
 
-      # Give async Task time to log
-      Process.sleep(300)
+      Process.sleep(50)
+
+      assert_enqueued(
+        worker: BotEventLogWorker,
+        queue: :bots,
+        args: %{bot_id: bot.id, event_type: "message_response", channel: "#logtest"}
+      )
+
+      assert %{success: 1, failure: 0} =
+               Oban.drain_queue(queue: :bots, with_scheduled: true, with_limit: 1)
 
       events = Queries.list_event_logs(bot.id).items
       assert events != []

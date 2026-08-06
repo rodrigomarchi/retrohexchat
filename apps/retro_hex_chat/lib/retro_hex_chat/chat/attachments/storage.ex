@@ -10,6 +10,7 @@ defmodule RetroHexChat.Chat.Attachments.Storage do
         ]
 
   @callback put_file(Path.t(), String.t(), put_opts()) :: {:ok, map()} | {:error, term()}
+  @callback delete_file(String.t(), String.t(), keyword()) :: :ok | {:error, term()}
   @callback presigned_put_url(String.t(), String.t(), keyword()) ::
               {:ok, map()} | {:error, term()}
   @callback presigned_get_url(String.t(), String.t(), keyword()) ::

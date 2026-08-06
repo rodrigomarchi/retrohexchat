@@ -3,7 +3,7 @@ defmodule RetroHexChatWeb.MuteToggleTest do
 
   @moduletag :liveview
 
-  alias RetroHexChat.Chat.SoundSettings
+  alias RetroHexChat.Chat.{PreferencePersistence, SoundSettings}
   alias RetroHexChat.Services.Queries
 
   describe "mute toggle in status bar" do
@@ -73,6 +73,7 @@ defmodule RetroHexChatWeb.MuteToggleTest do
 
       assert_push_event(view, "mute_state_changed", %{muted: true})
       assert assigns(view).muted == true
+      assert {:ok, :applied} = PreferencePersistence.apply_pending(nick, "sound_settings")
       assert {:ok, loaded} = SoundSettings.load(nick)
       assert SoundSettings.muted?(loaded)
 
@@ -82,6 +83,7 @@ defmodule RetroHexChatWeb.MuteToggleTest do
 
       assert_push_event(view, "mute_state_changed", %{muted: false})
       assert assigns(view).muted == false
+      assert {:ok, :applied} = PreferencePersistence.apply_pending(nick, "sound_settings")
       assert {:ok, loaded} = SoundSettings.load(nick)
       refute SoundSettings.muted?(loaded)
     end
@@ -118,6 +120,7 @@ defmodule RetroHexChatWeb.MuteToggleTest do
       |> render_click()
 
       assert assigns(view).muted == true
+      assert {:ok, :applied} = PreferencePersistence.apply_pending(nick, "sound_settings")
       assert {:ok, loaded} = SoundSettings.load(nick)
       assert SoundSettings.muted?(loaded)
     end

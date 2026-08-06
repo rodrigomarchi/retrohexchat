@@ -4,8 +4,6 @@ defmodule RetroHexChatWeb.AddressBookTest do
   @moduletag :liveview
 
   alias RetroHexChat.Channels.Supervisor, as: ChannelSupervisor
-  alias RetroHexChat.Presence.{NotifyEntry, NotifyList}
-  alias RetroHexChat.Services.NickServ
 
   setup do
     case RetroHexChat.Channels.Registry.lookup("#lobby") do

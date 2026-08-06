@@ -21,6 +21,7 @@ defmodule RetroHexChat.Chat.LinkPreview.HTTP do
   alias RetroHexChat.Net.URLGuard
 
   @type metadata :: LinkPreview.metadata()
+  @type fetch_error :: LinkPreview.fetch_error()
 
   @max_body_size 256_000
   @max_oembed_size 64_000
@@ -50,7 +51,19 @@ defmodule RetroHexChat.Chat.LinkPreview.HTTP do
   @impl true
   @spec fetch_title(String.t()) :: {:ok, String.t()} | {:error, atom()}
   def fetch_title(url) do
-    case fetch_metadata(url) do
+    case fetch_title_result(url) do
+      {:ok, title} ->
+        {:ok, title}
+
+      {:error, reason} ->
+        {:error, legacy_error(reason)}
+    end
+  end
+
+  @impl true
+  @spec fetch_title_result(String.t()) :: {:ok, String.t()} | {:error, fetch_error()}
+  def fetch_title_result(url) do
+    case fetch_metadata_result(url) do
       {:ok, %{title: title}} when is_binary(title) and title != "" ->
         {:ok, html_escape(title)}
 
@@ -65,6 +78,17 @@ defmodule RetroHexChat.Chat.LinkPreview.HTTP do
   @impl true
   @spec fetch_metadata(String.t()) :: {:ok, metadata()} | {:error, atom()}
   def fetch_metadata(url) do
+    case fetch_metadata_result(url) do
+      {:ok, metadata} -> {:ok, metadata}
+      {:error, reason} -> {:error, legacy_error(reason)}
+    end
+  end
+
+  @doc """
+  Fetches rich preview metadata while preserving retry-relevant error detail.
+  """
+  @spec fetch_metadata_result(String.t()) :: {:ok, metadata()} | {:error, fetch_error()}
+  def fetch_metadata_result(url) do
     with {:ok, html, final_url, headers} <- fetch_resource(url, :html),
          true <- html_content?(first_header(headers, "content-type")),
          {:ok, metadata, oembed_url} <- parse_page_metadata(html, final_url) do
@@ -109,11 +133,11 @@ defmodule RetroHexChat.Chat.LinkPreview.HTTP do
   end
 
   @spec fetch_resource(String.t(), :html | :json) ::
-          {:ok, String.t(), String.t(), map()} | {:error, atom()}
+          {:ok, String.t(), String.t(), map()} | {:error, fetch_error()}
   defp fetch_resource(url, kind), do: fetch_resource(url, kind, @max_redirects)
 
   @spec fetch_resource(String.t(), :html | :json, non_neg_integer()) ::
-          {:ok, String.t(), String.t(), map()} | {:error, atom()}
+          {:ok, String.t(), String.t(), map()} | {:error, fetch_error()}
   defp fetch_resource(url, kind, redirects_left) do
     case URLGuard.fetch_target(url) do
       {:ok, target} -> fetch_resource_target(target, url, kind, redirects_left)
@@ -127,7 +151,7 @@ defmodule RetroHexChat.Chat.LinkPreview.HTTP do
           :html | :json,
           non_neg_integer()
         ) ::
-          {:ok, String.t(), String.t(), map()} | {:error, atom()}
+          {:ok, String.t(), String.t(), map()} | {:error, fetch_error()}
   defp fetch_resource_target(target, url, kind, redirects_left) do
     case request_once(target, kind) do
       {:ok, response} -> handle_resource_response(response, url, kind, redirects_left)
@@ -136,7 +160,7 @@ defmodule RetroHexChat.Chat.LinkPreview.HTTP do
   end
 
   @spec handle_resource_response(Req.Response.t(), String.t(), :html | :json, non_neg_integer()) ::
-          {:ok, String.t(), String.t(), map()} | {:error, atom()}
+          {:ok, String.t(), String.t(), map()} | {:error, fetch_error()}
   defp handle_resource_response(
          %{status: status, body: body, headers: headers},
          url,
@@ -153,12 +177,8 @@ defmodule RetroHexChat.Chat.LinkPreview.HTTP do
   end
 
   defp handle_resource_response(%{status: status}, _url, _kind, _redirects_left)
-       when status in 400..499 do
-    {:error, :not_found}
-  end
-
-  defp handle_resource_response(_response, _url, _kind, _redirects_left),
-    do: {:error, :server_error}
+       when is_integer(status),
+       do: {:error, {:http_status, status}}
 
   @spec request_once(URLGuard.fetch_target(), :html | :json) ::
           {:ok, Req.Response.t()} | {:error, term()}
@@ -244,7 +264,7 @@ defmodule RetroHexChat.Chat.LinkPreview.HTTP do
   end
 
   @spec follow_redirect(String.t(), map(), :html | :json, non_neg_integer()) ::
-          {:ok, String.t(), String.t(), map()} | {:error, atom()}
+          {:ok, String.t(), String.t(), map()} | {:error, fetch_error()}
   defp follow_redirect(_url, _headers, _kind, 0), do: {:error, :too_many_redirects}
 
   defp follow_redirect(url, headers, kind, redirects_left) do
@@ -915,6 +935,12 @@ defmodule RetroHexChat.Chat.LinkPreview.HTTP do
   rescue
     _ -> ""
   end
+
+  @spec legacy_error(fetch_error()) :: atom()
+  defp legacy_error({:http_status, status}) when status in 400..499, do: :not_found
+  defp legacy_error({:http_status, status}) when status in 500..599, do: :server_error
+  defp legacy_error({:http_status, _status}), do: :server_error
+  defp legacy_error(reason) when is_atom(reason), do: reason
 
   @spec html_escape(String.t()) :: String.t()
   defp html_escape(text) do

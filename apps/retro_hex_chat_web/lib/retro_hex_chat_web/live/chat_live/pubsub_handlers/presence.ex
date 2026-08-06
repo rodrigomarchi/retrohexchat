@@ -22,6 +22,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Presence do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Chat.{CapturedURL, IgnoreList, LinkPreview}
+  alias RetroHexChat.Chat.LinkPreview.Results
   alias RetroHexChat.Presence.NotifyList
 
   # ── Global presence events ────────────────────────────────
@@ -88,20 +89,22 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Presence do
 
   # ── Link preview result ───────────────────────────────────
 
+  def handle_info(
+        {:link_preview_result, %{url: url, url_hash: url_hash, result: {:ok, title}}},
+        socket
+      ) do
+    LinkPreview.Cache.put(url, title)
+    {:halt, update_link_preview(socket, url_hash, title)}
+  end
+
+  def handle_info({:link_preview_result, %{url: url, result: {:error, _reason}}}, socket) do
+    LinkPreview.Cache.put_error(url)
+    {:halt, socket}
+  end
+
   def handle_info({:link_preview_result, url, {:ok, title}}, socket) do
     LinkPreview.Cache.put(url, title)
-
-    updated_entries =
-      Enum.map(socket.assigns.url_catcher_entries, fn entry ->
-        if entry.url == url, do: CapturedURL.set_preview_title(entry, title), else: entry
-      end)
-
-    socket =
-      socket
-      |> assign(url_catcher_entries: updated_entries)
-      |> push_event("link_preview", %{url: url, title: title})
-
-    {:halt, socket}
+    {:halt, update_link_preview(socket, url, title)}
   end
 
   def handle_info({:link_preview_result, url, {:error, _}}, socket) do
@@ -183,6 +186,39 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Presence do
 
       {[], _} ->
         {pending, nil}
+    end
+  end
+
+  defp update_link_preview(socket, url_or_hash, title) do
+    entries = socket.assigns.url_catcher_entries
+
+    matching_urls =
+      entries
+      |> Enum.filter(&entry_matches?(&1, url_or_hash))
+      |> Enum.map(& &1.url)
+      |> Enum.uniq()
+
+    updated_entries =
+      Enum.map(entries, fn entry ->
+        if entry.url in matching_urls,
+          do: CapturedURL.set_preview_title(entry, title),
+          else: entry
+      end)
+
+    matching_urls
+    |> Enum.reduce(assign(socket, url_catcher_entries: updated_entries), fn url, acc ->
+      push_event(acc, "link_preview", %{url: url, title: title})
+    end)
+  end
+
+  defp entry_matches?(entry, url_or_hash) do
+    entry.url == url_or_hash or entry_hash(entry.url) == url_or_hash
+  end
+
+  defp entry_hash(url) do
+    case Results.hash_url(url) do
+      {:ok, url_hash} -> url_hash
+      {:error, :invalid_url} -> nil
     end
   end
 end

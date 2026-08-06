@@ -14,6 +14,8 @@ defmodule RetroHexChat.Bots.Server do
 
   alias RetroHexChat.Bots.{Capabilities, Output, Queries, Registry}
   alias RetroHexChat.Channels
+  alias RetroHexChat.Jobs
+  alias RetroHexChat.Jobs.BotEventLogWorker
 
   @pubsub RetroHexChat.PubSub
 
@@ -961,16 +963,42 @@ defmodule RetroHexChat.Bots.Server do
 
   @spec log_event_async(integer(), String.t(), String.t() | nil, map()) :: :ok
   defp log_event_async(bot_id, event_type, channel, metadata \\ %{}) do
-    Task.start(fn ->
-      try do
-        Queries.log_event(bot_id, event_type, channel, metadata)
-      rescue
-        _ -> :ok
-      end
-    end)
+    args = %{
+      bot_id: bot_id,
+      event_type: event_type,
+      channel: channel,
+      metadata: normalize_event_metadata(metadata)
+    }
+
+    case Jobs.insert(BotEventLogWorker.new(args)) do
+      {:ok, _job} ->
+        :ok
+
+      {:error, changeset} ->
+        Logger.warning("bot_event_log_enqueue_error bot_id=#{bot_id} reason=changeset_error")
+        Logger.debug("bot_event_log_enqueue_changeset=#{inspect(changeset)}")
+    end
 
     :ok
   end
+
+  defp normalize_event_metadata(metadata) when is_map(metadata) do
+    Map.new(metadata, fn {key, value} -> {to_string(key), normalize_event_value(value)} end)
+  end
+
+  defp normalize_event_value(%DateTime{} = value), do: DateTime.to_iso8601(value)
+  defp normalize_event_value(value) when is_map(value), do: normalize_event_metadata(value)
+
+  defp normalize_event_value(value) when is_list(value) do
+    Enum.map(value, &normalize_event_value/1)
+  end
+
+  defp normalize_event_value(value)
+       when is_binary(value) or is_number(value) or is_boolean(value) or is_nil(value),
+       do: value
+
+  defp normalize_event_value(value) when is_atom(value), do: Atom.to_string(value)
+  defp normalize_event_value(value), do: inspect(value)
 
   @spec via(String.t()) :: {:via, Elixir.Registry, {atom(), String.t()}}
   defp via(bot_nickname), do: Registry.via_tuple(bot_nickname)

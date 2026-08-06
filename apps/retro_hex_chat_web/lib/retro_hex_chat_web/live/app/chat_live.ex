@@ -59,6 +59,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
     DuplicateTracker,
     FloodTracker,
     KeyBindings,
+    LinkPreview,
     ReconnectState,
     SoundSettings
   }
@@ -142,6 +143,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "server:announcements")
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "server:wallops")
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "server:settings")
+    LinkPreview.subscribe()
     subscribe_chat_device_session(chat_device_session_ref)
 
     Phoenix.PubSub.broadcast(

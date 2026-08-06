@@ -218,7 +218,38 @@ if config_env() == :prod do
       _ -> 2
     end
 
-  config :retro_hex_chat, Oban, queues: [rss: rss_queue_concurrency]
+  maintenance_queue_concurrency =
+    case Integer.parse(System.get_env("OBAN_MAINTENANCE_CONCURRENCY", "1")) do
+      {concurrency, ""} when concurrency > 0 -> concurrency
+      _ -> 1
+    end
+
+  bots_queue_concurrency =
+    case Integer.parse(System.get_env("OBAN_BOTS_CONCURRENCY", "2")) do
+      {concurrency, ""} when concurrency > 0 -> concurrency
+      _ -> 2
+    end
+
+  link_preview_queue_concurrency =
+    case Integer.parse(System.get_env("OBAN_LINK_PREVIEW_CONCURRENCY", "2")) do
+      {concurrency, ""} when concurrency > 0 -> concurrency
+      _ -> 2
+    end
+
+  persistence_queue_concurrency =
+    case Integer.parse(System.get_env("OBAN_PERSISTENCE_CONCURRENCY", "1")) do
+      {concurrency, ""} when concurrency > 0 -> concurrency
+      _ -> 1
+    end
+
+  config :retro_hex_chat, Oban,
+    queues: [
+      rss: rss_queue_concurrency,
+      maintenance: maintenance_queue_concurrency,
+      bots: bots_queue_concurrency,
+      link_preview: link_preview_queue_concurrency,
+      persistence: persistence_queue_concurrency
+    ]
 
   # The secret key base is used to sign/encrypt cookies and other secrets.
   # A default value is used in config/dev.exs and config/test.exs but you

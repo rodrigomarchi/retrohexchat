@@ -23,9 +23,12 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
   @selector_bytes 18
   @secret_bytes 32
   @default_ttl_days 90
+  @default_cleanup_limit 100
+  @default_session_stale_seconds 300
   @max_events 20
   @default_page_size 50
   @disconnect_context_ttl_seconds 600
+  @system_actor "system"
   @preference_namespace_format ~r/^[a-z0-9][a-z0-9_.:-]{0,63}$/
   @max_preference_settings_bytes 16_384
 
@@ -36,6 +39,18 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
           device: TrustedDevice.t(),
           cookie_value: String.t(),
           max_age: pos_integer()
+        }
+
+  @type device_expiry_summary :: %{
+          candidates: non_neg_integer(),
+          expired_devices: non_neg_integer(),
+          revoked_grants: non_neg_integer(),
+          skipped: non_neg_integer()
+        }
+
+  @type stale_session_summary :: %{
+          candidates: non_neg_integer(),
+          closed_sessions: non_neg_integer()
         }
 
   @spec cookie_max_age() :: pos_integer()
@@ -337,6 +352,87 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
     |> Repo.update_all(set: [last_seen_at: DateTime.utc_now()])
 
     :ok
+  end
+
+  @spec expire_devices(keyword()) :: {:ok, device_expiry_summary()} | {:error, term()}
+  def expire_devices(opts \\ []) do
+    now = Keyword.get_lazy(opts, :now, &DateTime.utc_now/0)
+    limit = positive_opt(opts, :limit, @default_cleanup_limit)
+    devices = list_expired_devices(now, limit)
+
+    devices
+    |> Enum.reduce_while(initial_device_expiry_summary(length(devices)), fn device,
+                                                                            {:ok, summary} ->
+      case expire_device(device.id, now) do
+        {:ok, {:expired, revoked_grants}} ->
+          {:cont,
+           {:ok,
+            %{
+              summary
+              | expired_devices: summary.expired_devices + 1,
+                revoked_grants: summary.revoked_grants + revoked_grants
+            }}}
+
+        {:ok, :skipped} ->
+          {:cont, {:ok, %{summary | skipped: summary.skipped + 1}}}
+
+        {:error, reason} ->
+          {:halt, {:error, reason}}
+      end
+    end)
+  end
+
+  @spec expired_device_count(keyword()) :: non_neg_integer()
+  def expired_device_count(opts \\ []) do
+    now = Keyword.get_lazy(opts, :now, &DateTime.utc_now/0)
+
+    TrustedDevice
+    |> where([device], is_nil(device.revoked_at))
+    |> where([device], device.expires_at <= ^now)
+    |> Repo.aggregate(:count, :id)
+  end
+
+  @spec close_stale_sessions(keyword()) :: {:ok, stale_session_summary()} | {:error, term()}
+  def close_stale_sessions(opts \\ []) do
+    cutoff = Keyword.get_lazy(opts, :cutoff, fn -> stale_session_cutoff(opts) end)
+    limit = positive_opt(opts, :limit, @default_cleanup_limit)
+    sessions = list_stale_sessions(cutoff, limit)
+    ids = Enum.map(sessions, & &1.id)
+
+    closed =
+      if ids == [] do
+        0
+      else
+        now = DateTime.utc_now()
+
+        {count, _} =
+          from(s in ChatDeviceSession,
+            where: s.id in ^ids,
+            where: is_nil(s.disconnected_at),
+            where: s.last_seen_at <= ^cutoff
+          )
+          |> Repo.update_all(
+            set: [
+              disconnected_at: now,
+              disconnect_reason: "stale_heartbeat",
+              updated_at: now
+            ]
+          )
+
+        count
+      end
+
+    {:ok, %{candidates: length(sessions), closed_sessions: closed}}
+  end
+
+  @spec stale_session_count(keyword()) :: non_neg_integer()
+  def stale_session_count(opts \\ []) do
+    cutoff = Keyword.get_lazy(opts, :cutoff, fn -> stale_session_cutoff(opts) end)
+
+    ChatDeviceSession
+    |> where([session], is_nil(session.disconnected_at))
+    |> where([session], session.last_seen_at <= ^cutoff)
+    |> Repo.aggregate(:count, :id)
   end
 
   @doc """
@@ -734,6 +830,91 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
 
   defp ttl_days do
     Application.get_env(:retro_hex_chat, :trusted_device_ttl_days, @default_ttl_days)
+  end
+
+  defp list_expired_devices(now, limit) do
+    TrustedDevice
+    |> where([device], is_nil(device.revoked_at))
+    |> where([device], device.expires_at <= ^now)
+    |> order_by([device], asc: device.expires_at, asc: device.id)
+    |> limit(^limit)
+    |> Repo.all()
+  end
+
+  defp expire_device(device_id, now) do
+    Repo.transaction(fn ->
+      case lock_expired_device(device_id, now) do
+        nil ->
+          {:ok, :skipped}
+
+        %TrustedDevice{} = device ->
+          {revoked_grants, _} =
+            from(grant in TrustedDeviceNick,
+              where: grant.trusted_device_id == ^device.id,
+              where: is_nil(grant.revoked_at)
+            )
+            |> Repo.update_all(
+              set: [
+                revoked_at: now,
+                revoked_by_nickname: @system_actor,
+                updated_at: now
+              ]
+            )
+
+          {:ok, updated} =
+            device
+            |> TrustedDevice.changeset(%{
+              revoked_at: now,
+              revoked_by_nickname: @system_actor
+            })
+            |> Repo.update()
+
+          log_event("device.expired", updated, nil, @system_actor, %{
+            expires_at: DateTime.to_iso8601(device.expires_at),
+            revoked_grants: revoked_grants
+          })
+
+          {:ok, {:expired, revoked_grants}}
+      end
+    end)
+    |> case do
+      {:ok, result} -> result
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
+  defp lock_expired_device(device_id, now) do
+    TrustedDevice
+    |> where([device], device.id == ^device_id)
+    |> where([device], is_nil(device.revoked_at))
+    |> where([device], device.expires_at <= ^now)
+    |> lock("FOR UPDATE")
+    |> Repo.one()
+  end
+
+  defp list_stale_sessions(cutoff, limit) do
+    ChatDeviceSession
+    |> where([session], is_nil(session.disconnected_at))
+    |> where([session], session.last_seen_at <= ^cutoff)
+    |> order_by([session], asc: session.last_seen_at, asc: session.id)
+    |> limit(^limit)
+    |> Repo.all()
+  end
+
+  defp stale_session_cutoff(opts) do
+    seconds = Keyword.get(opts, :stale_after_seconds, @default_session_stale_seconds)
+    DateTime.utc_now() |> DateTime.add(-seconds, :second)
+  end
+
+  defp positive_opt(opts, key, default) do
+    case Keyword.get(opts, key, default) do
+      value when is_integer(value) and value > 0 -> value
+      _value -> default
+    end
+  end
+
+  defp initial_device_expiry_summary(candidate_count) do
+    {:ok, %{candidates: candidate_count, expired_devices: 0, revoked_grants: 0, skipped: 0}}
   end
 
   defp parse_cookie(cookie_value) do

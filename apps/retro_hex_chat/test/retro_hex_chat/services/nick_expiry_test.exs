@@ -10,17 +10,7 @@ defmodule RetroHexChat.Services.NickExpiryTest do
     nickserv_name = :"nickserv_expiry_#{System.unique_integer([:positive])}"
     {:ok, _} = NickServ.start_link(name: nickserv_name)
 
-    expiry_name = :"expiry_#{System.unique_integer([:positive])}"
-
-    {:ok, _} =
-      NickExpiry.start_link(
-        name: expiry_name,
-        nickserv: nickserv_name,
-        purge_interval_ms: :timer.hours(24),
-        expiration_days: 7
-      )
-
-    %{expiry: expiry_name, nickserv: nickserv_name}
+    %{nickserv: nickserv_name}
   end
 
   defp register_nick(nickname, password, last_seen_days_ago) do
@@ -38,11 +28,13 @@ defmodule RetroHexChat.Services.NickExpiryTest do
       register_nick("OldNick1", "pass12345", 8)
       register_nick("OldNick2", "pass12345", 10)
 
-      {count, nicknames} = NickExpiry.run_now(ctx.expiry)
+      result = NickExpiry.purge(nickserv: ctx.nickserv, expiration_days: 7)
 
-      assert count == 2
-      assert "OldNick1" in nicknames
-      assert "OldNick2" in nicknames
+      assert result.expired_count == 2
+      assert result.candidate_count == 2
+      assert result.purged_count == 2
+      assert "OldNick1" in result.purged_names
+      assert "OldNick2" in result.purged_names
       assert Queries.find_by_nickname("OldNick1") == nil
       assert Queries.find_by_nickname("OldNick2") == nil
     end
@@ -50,10 +42,12 @@ defmodule RetroHexChat.Services.NickExpiryTest do
     test "does not delete nicks with recent last_seen_at", ctx do
       register_nick("RecentNick", "pass12345", 3)
 
-      {count, nicknames} = NickExpiry.run_now(ctx.expiry)
+      result = NickExpiry.purge(nickserv: ctx.nickserv, expiration_days: 7)
 
-      assert count == 0
-      assert nicknames == []
+      assert result.expired_count == 0
+      assert result.candidate_count == 0
+      assert result.purged_count == 0
+      assert result.purged_names == []
       assert Queries.find_by_nickname("RecentNick") != nil
     end
 
@@ -68,14 +62,33 @@ defmodule RetroHexChat.Services.NickExpiryTest do
       |> Ecto.Changeset.change(last_seen_at: DateTime.add(DateTime.utc_now(), -10, :day))
       |> Repo.update!()
 
-      {count, nicknames} = NickExpiry.run_now(ctx.expiry)
+      result = NickExpiry.purge(nickserv: ctx.nickserv, expiration_days: 7)
 
       # ConnNick should be purged (old, not identified)
       # ConnNick2 should be protected (old, but identified)
-      assert count == 1
-      assert "ConnNick" in nicknames
-      refute "ConnNick2" in nicknames
+      assert result.expired_count == 2
+      assert result.protected_identified_count == 1
+      assert result.candidate_count == 1
+      assert result.purged_count == 1
+      assert "ConnNick" in result.purged_names
+      refute "ConnNick2" in result.purged_names
       assert Queries.find_by_nickname("ConnNick2") != nil
+    end
+
+    test "does not delete root admin nicks", ctx do
+      previous_root_admins = Application.get_env(:retro_hex_chat, :root_admins, [])
+      Application.put_env(:retro_hex_chat, :root_admins, ["RootKeep"])
+      on_exit(fn -> Application.put_env(:retro_hex_chat, :root_admins, previous_root_admins) end)
+
+      register_nick("RootKeep", "pass12345", 10)
+
+      result = NickExpiry.purge(nickserv: ctx.nickserv, expiration_days: 7)
+
+      assert result.expired_count == 1
+      assert result.protected_admin_count == 1
+      assert result.candidate_count == 0
+      assert result.purged_count == 0
+      assert Queries.find_by_nickname("RootKeep") != nil
     end
 
     test "removes purged nicks from NickServ identified set", ctx do
@@ -91,8 +104,8 @@ defmodule RetroHexChat.Services.NickExpiryTest do
 
       NickServ.remove_identified("PurgeId", ctx.nickserv)
 
-      {count, _} = NickExpiry.run_now(ctx.expiry)
-      assert count == 1
+      result = NickExpiry.purge(nickserv: ctx.nickserv, expiration_days: 7)
+      assert result.purged_count == 1
       refute NickServ.identified?("PurgeId", ctx.nickserv)
     end
   end

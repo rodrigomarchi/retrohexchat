@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.PromExTest do
   use RetroHexChatWeb.ConnCase, async: false
 
+  alias PromEx.MetricTypes.Event
   alias RetroHexChat.PromEx.Plugins.Domain
 
   describe "RetroHexChat.PromEx.plugins/0" do
@@ -85,6 +86,29 @@ defmodule RetroHexChatWeb.PromExTest do
     end
   end
 
+  describe "RetroHexChat.PromEx.Plugins.Domain.event_metrics/1" do
+    test "declares low-cardinality operation measurement metrics" do
+      %Event{metrics: metrics} = Domain.event_metrics([])
+
+      counter =
+        Enum.find(
+          metrics,
+          &(&1.event_name == [:retro_hex_chat, :observability, :operation, :counter])
+        )
+
+      value =
+        Enum.find(
+          metrics,
+          &(&1.event_name == [:retro_hex_chat, :observability, :operation, :value])
+        )
+
+      assert counter.measurement == :value
+      assert counter.tags == [:context, :operation, :result, :measurement]
+      assert value.measurement == :value
+      assert value.tags == [:context, :operation, :result, :measurement]
+    end
+  end
+
   describe "RetroHexChatWeb.Telemetry.metrics/0" do
     test "declares live Oban metrics for the system metrics window" do
       oban_metrics =
@@ -97,6 +121,22 @@ defmodule RetroHexChatWeb.PromExTest do
       assert Enum.any?(
                oban_metrics,
                &(&1.event_name == [:prom_ex, :plugin, :oban, :queue, :length, :count])
+             )
+    end
+
+    test "declares domain operation measurement metrics" do
+      domain_metrics =
+        RetroHexChatWeb.Telemetry.metrics()
+        |> Enum.filter(&(&1.reporter_options[:nav] == "Domain"))
+
+      assert Enum.any?(
+               domain_metrics,
+               &(&1.event_name == [:retro_hex_chat, :observability, :operation, :counter])
+             )
+
+      assert Enum.any?(
+               domain_metrics,
+               &(&1.event_name == [:retro_hex_chat, :observability, :operation, :value])
              )
     end
   end

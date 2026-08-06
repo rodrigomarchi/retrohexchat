@@ -5,6 +5,7 @@ defmodule RetroHexChat.Bots.Lifecycle do
   use Gettext, backend: RetroHexChat.Gettext
 
   alias RetroHexChat.Bots.{Bot, Queries, Registry, Server, Supervisor}
+  alias RetroHexChat.Bots.Capabilities.Scheduler.Durable, as: ScheduleJobs
 
   @spec ensure_started(Bot.t()) :: {:ok, pid()} | {:error, term()}
   def ensure_started(%Bot{enabled: false}), do: {:error, :disabled}
@@ -44,6 +45,7 @@ defmodule RetroHexChat.Bots.Lifecycle do
 
   @spec destroy_bot(Bot.t()) :: {:ok, Bot.t()} | {:error, Ecto.Changeset.t()}
   def destroy_bot(%Bot{} = bot) do
+    ScheduleJobs.cancel_bot(bot.id)
     part_from_configured_channels(bot)
     Supervisor.stop_bot(bot.nickname)
     Queries.delete_bot(bot)

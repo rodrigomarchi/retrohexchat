@@ -94,35 +94,49 @@ defmodule RetroHexChat.Admin do
   end
 
   @spec mute_user(String.t(), String.t(), String.t() | nil, non_neg_integer() | :permanent) ::
-          {:ok, String.t()}
+          {:ok, String.t()} | {:error, String.t()}
   def mute_user(nickname, admin, reason \\ nil, duration \\ :permanent) do
-    GlobalMutes.mute(nickname, reason, duration)
+    case GlobalMutes.mute(nickname, admin, reason, duration) do
+      :ok ->
+        AuditLogs.log(admin, "user.mute", {"user", nickname}, %{
+          reason: reason,
+          duration: duration
+        })
 
-    AuditLogs.log(admin, "user.mute", {"user", nickname}, %{
-      reason: reason,
-      duration: duration
-    })
+        broadcast_user(
+          nickname,
+          {:user_muted, %{nickname: nickname, reason: reason, admin: admin}}
+        )
 
-    broadcast_user(nickname, {:user_muted, %{nickname: nickname, reason: reason, admin: admin}})
+        duration_text =
+          if duration == :permanent,
+            do: "permanently",
+            else: dgettext("admin", "for %{duration}", duration: Duration.format(duration))
 
-    duration_text =
-      if duration == :permanent,
-        do: "permanently",
-        else: dgettext("admin", "for %{duration}", duration: Duration.format(duration))
+        {:ok,
+         dgettext("admin", "%{nickname} has been muted %{duration_text}.",
+           nickname: nickname,
+           duration_text: duration_text
+         )}
 
-    {:ok,
-     dgettext("admin", "%{nickname} has been muted %{duration_text}.",
-       nickname: nickname,
-       duration_text: duration_text
-     )}
+      {:error, reason} ->
+        Logger.warning("Failed to persist global mute for #{nickname}: #{inspect(reason)}")
+        {:error, dgettext("admin", "Failed to mute %{nickname}.", nickname: nickname)}
+    end
   end
 
-  @spec unmute_user(String.t(), String.t()) :: {:ok, String.t()}
+  @spec unmute_user(String.t(), String.t()) :: {:ok, String.t()} | {:error, String.t()}
   def unmute_user(nickname, admin) do
-    GlobalMutes.unmute(nickname)
-    AuditLogs.log(admin, "user.unmute", {"user", nickname})
-    broadcast_user(nickname, {:user_unmuted, %{nickname: nickname}})
-    {:ok, dgettext("admin", "%{nickname} has been unmuted.", nickname: nickname)}
+    case GlobalMutes.unmute(nickname, admin) do
+      :ok ->
+        AuditLogs.log(admin, "user.unmute", {"user", nickname})
+        broadcast_user(nickname, {:user_unmuted, %{nickname: nickname}})
+        {:ok, dgettext("admin", "%{nickname} has been unmuted.", nickname: nickname)}
+
+      {:error, reason} ->
+        Logger.warning("Failed to persist global unmute for #{nickname}: #{inspect(reason)}")
+        {:error, dgettext("admin", "Failed to unmute %{nickname}.", nickname: nickname)}
+    end
   end
 
   @spec rename_user(String.t(), String.t(), String.t()) ::
@@ -428,6 +442,7 @@ defmodule RetroHexChat.Admin do
     {"trusted_device_nicks", RetroHexChat.Accounts.TrustedDeviceNick},
     {"chat_device_sessions", RetroHexChat.Accounts.ChatDeviceSession},
     {"trusted_devices", RetroHexChat.Accounts.TrustedDevice},
+    {"global_mutes", RetroHexChat.Admin.GlobalMute},
     {"oban_jobs", Oban.Job},
     {"bot_event_log", RetroHexChat.Bots.BotEventLog},
     {"bot_custom_commands", RetroHexChat.Bots.BotCustomCommand},

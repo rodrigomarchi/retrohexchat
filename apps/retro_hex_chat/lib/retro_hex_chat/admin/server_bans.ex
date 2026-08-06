@@ -90,17 +90,23 @@ defmodule RetroHexChat.Admin.ServerBans do
     |> Page.new(limit, & &1.id)
   end
 
+  @spec expired_count() :: non_neg_integer()
+  @spec expired_count(DateTime.t()) :: non_neg_integer()
+  def expired_count(now \\ DateTime.utc_now()) do
+    now
+    |> expired_bans_query()
+    |> select([b], count(b.id))
+    |> Repo.one()
+  end
+
   @spec expire_bans() :: non_neg_integer()
-  def expire_bans do
-    now = DateTime.utc_now()
-
-    query =
-      from(b in ServerBan,
-        where: b.active == true and not is_nil(b.expires_at) and b.expires_at <= ^now,
-        select: b.nickname
-      )
-
-    nicknames = Repo.all(query)
+  @spec expire_bans(DateTime.t()) :: non_neg_integer()
+  def expire_bans(now \\ DateTime.utc_now()) do
+    nicknames =
+      now
+      |> expired_bans_query()
+      |> select([b], b.nickname)
+      |> Repo.all()
 
     {count, _} =
       from(b in ServerBan,
@@ -110,5 +116,11 @@ defmodule RetroHexChat.Admin.ServerBans do
 
     Enum.each(nicknames, &BanCache.remove/1)
     count
+  end
+
+  defp expired_bans_query(now) do
+    from(b in ServerBan,
+      where: b.active == true and not is_nil(b.expires_at) and b.expires_at <= ^now
+    )
   end
 end

@@ -275,6 +275,47 @@ defmodule RetroHexChat.Chat.Queries do
     |> Repo.insert()
   end
 
+  @spec list_orphan_uploaded_files(DateTime.t(), pos_integer()) :: [UploadedFile.t()]
+  def list_orphan_uploaded_files(%DateTime{} = cutoff, limit) when limit > 0 do
+    UploadedFile
+    |> orphan_uploaded_files_query(cutoff)
+    |> order_by([file], asc: file.inserted_at, asc: file.id)
+    |> limit(^limit)
+    |> Repo.all()
+  end
+
+  @spec orphan_uploaded_file_count(DateTime.t()) :: non_neg_integer()
+  def orphan_uploaded_file_count(%DateTime{} = cutoff) do
+    UploadedFile
+    |> orphan_uploaded_files_query(cutoff)
+    |> Repo.aggregate(:count, :id)
+  end
+
+  @spec lock_orphan_uploaded_file(integer(), DateTime.t()) :: UploadedFile.t() | nil
+  def lock_orphan_uploaded_file(id, %DateTime{} = cutoff) when is_integer(id) do
+    file =
+      UploadedFile
+      |> where([file], file.status in ["reserved", "uploaded"])
+      |> where([file], file.inserted_at <= ^cutoff)
+      |> where([file], file.id == ^id)
+      |> lock("FOR UPDATE")
+      |> Repo.one()
+
+    cond do
+      is_nil(file) -> nil
+      attachment_exists?(file.id) -> nil
+      true -> file
+    end
+  end
+
+  @spec mark_uploaded_file_deleted(UploadedFile.t()) ::
+          {:ok, UploadedFile.t()} | {:error, Ecto.Changeset.t()}
+  def mark_uploaded_file_deleted(%UploadedFile{} = file) do
+    file
+    |> UploadedFile.changeset(%{status: "deleted"})
+    |> Repo.update()
+  end
+
   @spec mark_uploaded_files([integer() | String.t()], String.t()) ::
           {:ok, [UploadedFile.t()]} | {:error, :attachment_not_found}
   def mark_uploaded_files(ids, owner_nickname) do
@@ -400,6 +441,20 @@ defmodule RetroHexChat.Chat.Queries do
       {:ok, attachments} -> {:ok, Enum.reverse(attachments)}
       {:error, reason} -> {:error, reason}
     end
+  end
+
+  defp orphan_uploaded_files_query(queryable, cutoff) do
+    queryable
+    |> where([file], file.status in ["reserved", "uploaded"])
+    |> where([file], file.inserted_at <= ^cutoff)
+    |> join(:left, [file], attachment in Attachment, on: attachment.file_id == file.id)
+    |> where([_file, attachment], is_nil(attachment.id))
+  end
+
+  defp attachment_exists?(file_id) do
+    Attachment
+    |> where([attachment], attachment.file_id == ^file_id)
+    |> Repo.exists?()
   end
 
   defp preload_attachment(nil), do: nil

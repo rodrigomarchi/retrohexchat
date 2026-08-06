@@ -10,28 +10,7 @@ defmodule RetroHexChat.Services.ChanExpiryTest do
     nickserv_name = :"nickserv_chanexp_#{System.unique_integer([:positive])}"
     {:ok, _} = NickServ.start_link(name: nickserv_name)
 
-    nick_expiry_name = :"nick_expiry_chanexp_#{System.unique_integer([:positive])}"
-
-    {:ok, _} =
-      NickExpiry.start_link(
-        name: nick_expiry_name,
-        nickserv: nickserv_name,
-        purge_interval_ms: :timer.hours(24),
-        expiration_days: 7
-      )
-
-    chan_expiry_name = :"chan_expiry_#{System.unique_integer([:positive])}"
-
-    {:ok, _} =
-      ChanExpiry.start_link(
-        name: chan_expiry_name,
-        purge_interval_ms: :timer.hours(24),
-        expiration_days: 7
-      )
-
     %{
-      chan_expiry: chan_expiry_name,
-      nick_expiry: nick_expiry_name,
       nickserv: nickserv_name
     }
   end
@@ -61,34 +40,36 @@ defmodule RetroHexChat.Services.ChanExpiryTest do
   end
 
   describe "channel purge" do
-    test "purges channels with last_activity_at older than 7 days", ctx do
+    test "purges channels with last_activity_at older than 7 days" do
       register_channel("#old-chan1", "Founder1")
       backdate_channel_activity("#old-chan1", 8)
 
       register_channel("#old-chan2", "Founder2")
       backdate_channel_activity("#old-chan2", 10)
 
-      {count, names} = ChanExpiry.run_now(ctx.chan_expiry)
+      result = ChanExpiry.purge(expiration_days: 7)
 
-      assert count == 2
-      assert "#old-chan1" in names
-      assert "#old-chan2" in names
+      assert result.candidate_count == 2
+      assert result.purged_count == 2
+      assert "#old-chan1" in result.purged_names
+      assert "#old-chan2" in result.purged_names
       assert Queries.find_registered_channel("#old-chan1") == nil
       assert Queries.find_registered_channel("#old-chan2") == nil
     end
 
-    test "does not purge recent channels", ctx do
+    test "does not purge recent channels" do
       register_channel("#recent-chan", "Founder1")
       backdate_channel_activity("#recent-chan", 3)
 
-      {count, names} = ChanExpiry.run_now(ctx.chan_expiry)
+      result = ChanExpiry.purge(expiration_days: 7)
 
-      assert count == 0
-      assert names == []
+      assert result.candidate_count == 0
+      assert result.purged_count == 0
+      assert result.purged_names == []
       assert Queries.find_registered_channel("#recent-chan") != nil
     end
 
-    test "cleans up access, bans, exceptions, and welcome messages on purge", ctx do
+    test "cleans up access, bans, exceptions, and welcome messages on purge" do
       register_channel("#cleanup-chan", "CleanFounder")
       Queries.add_access("#cleanup-chan", "SomeUser", "sop", "CleanFounder")
       Queries.add_ban("#cleanup-chan", "BadUser", "CleanFounder", "reason")
@@ -98,8 +79,14 @@ defmodule RetroHexChat.Services.ChanExpiryTest do
 
       backdate_channel_activity("#cleanup-chan", 8)
 
-      {count, _} = ChanExpiry.run_now(ctx.chan_expiry)
-      assert count == 1
+      result = ChanExpiry.purge(expiration_days: 7)
+
+      assert result.purged_count == 1
+      assert result.access_removed == 2
+      assert result.bans_removed == 1
+      assert result.ban_exceptions_removed == 1
+      assert result.invite_exceptions_removed == 1
+      assert result.welcome_messages_removed == 1
 
       assert Queries.list_access("#cleanup-chan") == []
       assert Queries.all_bans("#cleanup-chan") == []
@@ -128,7 +115,7 @@ defmodule RetroHexChat.Services.ChanExpiryTest do
       register_channel("#succession-chan", "FounderNick")
       Queries.add_access("#succession-chan", "SopUser", "sop", "FounderNick")
 
-      NickExpiry.run_now(ctx.nick_expiry)
+      NickExpiry.purge(nickserv: ctx.nickserv, expiration_days: 7)
 
       channel = Queries.find_registered_channel("#succession-chan")
       assert channel != nil
@@ -148,7 +135,7 @@ defmodule RetroHexChat.Services.ChanExpiryTest do
       Queries.add_access("#rank-chan", "AopUser", "aop", "RankFounder")
       Queries.add_access("#rank-chan", "SopUser", "sop", "RankFounder")
 
-      NickExpiry.run_now(ctx.nick_expiry)
+      NickExpiry.purge(nickserv: ctx.nickserv, expiration_days: 7)
 
       channel = Queries.find_registered_channel("#rank-chan")
       assert channel != nil
@@ -159,7 +146,7 @@ defmodule RetroHexChat.Services.ChanExpiryTest do
       register_nick("LoneFounder", "pass12345", 8)
       register_channel("#lone-chan", "LoneFounder")
 
-      NickExpiry.run_now(ctx.nick_expiry)
+      NickExpiry.purge(nickserv: ctx.nickserv, expiration_days: 7)
 
       assert Queries.find_registered_channel("#lone-chan") == nil
       assert Queries.list_access("#lone-chan") == []
@@ -169,7 +156,7 @@ defmodule RetroHexChat.Services.ChanExpiryTest do
       register_nick("OldFounder", "pass12345", 8)
       register_channel("#reuse-chan", "OldFounder")
 
-      NickExpiry.run_now(ctx.nick_expiry)
+      NickExpiry.purge(nickserv: ctx.nickserv, expiration_days: 7)
       assert Queries.find_registered_channel("#reuse-chan") == nil
 
       {:ok, channel} = Queries.insert_registered_channel("#reuse-chan", "NewFounder")

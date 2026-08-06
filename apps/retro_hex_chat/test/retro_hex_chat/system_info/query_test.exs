@@ -13,11 +13,12 @@ defmodule RetroHexChat.SystemInfo.QueryTest do
     end
 
     test "an unknown column is dropped rather than interned as an atom" do
-      before = :erlang.system_info(:atom_count)
+      unknown_column = "definitely_not_a_column_#{System.unique_integer([:positive])}"
+      refute_existing_atom(unknown_column)
 
-      assert %Query{sort_by: nil} = Query.new(%{"sort_by" => "definitely_not_a_column"}, @columns)
+      assert %Query{sort_by: nil} = Query.new(%{"sort_by" => unknown_column}, @columns)
 
-      assert :erlang.system_info(:atom_count) == before
+      refute_existing_atom(unknown_column)
     end
 
     test "a column belonging to a different source is refused" do
@@ -116,5 +117,12 @@ defmodule RetroHexChat.SystemInfo.QueryTest do
 
       assert ^rows = Query.paginate(%Query{sort_by: nil, limit: 5}, rows)
     end
+  end
+
+  defp refute_existing_atom(value) do
+    atom = String.to_existing_atom(value)
+    flunk("expected #{inspect(value)} not to be an existing atom, got #{inspect(atom)}")
+  rescue
+    ArgumentError -> :ok
   end
 end

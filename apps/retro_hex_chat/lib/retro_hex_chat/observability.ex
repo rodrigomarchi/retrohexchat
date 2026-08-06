@@ -10,7 +10,47 @@ defmodule RetroHexChat.Observability do
   require OpenTelemetry.Tracer, as: Tracer
 
   @generic_event [:retro_hex_chat, :observability, :operation]
+  @counter_event [:retro_hex_chat, :observability, :operation, :counter]
+  @value_event [:retro_hex_chat, :observability, :operation, :value]
   @app_prefix :retro_hex_chat
+  @span_attributes_key {__MODULE__, :span_attributes}
+  @counter_measurement_keys [
+    :access_removed,
+    :arcade_candidates,
+    :arcade_expired,
+    :arcade_skipped,
+    :ban_exceptions_removed,
+    :bans_removed,
+    :bytes_deleted,
+    :candidate_count,
+    :candidates,
+    :closed_sessions,
+    :deleted,
+    :events_written,
+    :expired_count,
+    :expired_devices,
+    :group_call_candidates,
+    :group_call_expired,
+    :group_call_skipped,
+    :invite_exceptions_removed,
+    :lobby_candidates,
+    :lobby_expired,
+    :lobby_skipped,
+    :messages_sent,
+    :orphaned_channels_removed,
+    :published_count,
+    :purged_count,
+    :revoked_grants,
+    :skipped,
+    :source_item_count,
+    :welcome_messages_removed
+  ]
+  @value_measurement_keys [
+    :next_delay_ms,
+    :next_poll_ms,
+    :oldest_expired_age_ms,
+    :seen_count
+  ]
 
   @type event :: [atom()]
   @type metadata :: map()
@@ -29,6 +69,7 @@ defmodule RetroHexChat.Observability do
     metadata = base_metadata(event, metadata)
     start_measurements = %{system_time: System.system_time()}
     started_at = System.monotonic_time()
+    previous_span_attributes = push_span_attributes()
 
     emit_start(event, start_measurements, metadata)
 
@@ -36,10 +77,16 @@ defmodule RetroHexChat.Observability do
       try do
         result = fun.()
         duration = System.monotonic_time() - started_at
-        metadata = Map.merge(metadata, normalize_metadata(classify_result.(result)))
+        span_metadata = current_span_attributes()
+
+        metadata =
+          metadata
+          |> Map.merge(span_metadata)
+          |> Map.merge(normalize_metadata(classify_result.(result)))
 
         set_span_result(metadata)
         emit_stop(event, %{duration: duration}, metadata)
+        emit_numeric_measurements(metadata)
 
         result
       rescue
@@ -60,6 +107,8 @@ defmodule RetroHexChat.Observability do
           emit_exception(event, %{duration: duration}, metadata)
 
           :erlang.raise(kind, reason, __STACKTRACE__)
+      after
+        restore_span_attributes(previous_span_attributes)
       end
     end
   end
@@ -69,6 +118,8 @@ defmodule RetroHexChat.Observability do
     attributes
     |> otel_attributes()
     |> Tracer.set_attributes()
+
+    merge_current_span_attributes(attributes)
 
     :ok
   end
@@ -92,6 +143,68 @@ defmodule RetroHexChat.Observability do
   defp emit_exception(event, measurements, metadata) do
     :telemetry.execute(event ++ [:exception], measurements, metadata)
     :telemetry.execute(@generic_event ++ [:exception], measurements, metadata)
+  end
+
+  defp emit_numeric_measurements(metadata) do
+    Enum.each(@counter_measurement_keys, &emit_numeric_measurement(@counter_event, metadata, &1))
+    Enum.each(@value_measurement_keys, &emit_numeric_measurement(@value_event, metadata, &1))
+  end
+
+  defp emit_numeric_measurement(event, metadata, key) do
+    case Map.get(metadata, key) do
+      value when is_integer(value) and value >= 0 ->
+        :telemetry.execute(event, %{value: value}, measurement_metadata(metadata, key))
+
+      value when is_float(value) and value >= 0 ->
+        :telemetry.execute(event, %{value: value}, measurement_metadata(metadata, key))
+
+      _value ->
+        :ok
+    end
+  end
+
+  defp measurement_metadata(metadata, key) do
+    %{
+      context: metadata |> Map.get(:context) |> normalize_value(),
+      operation: metadata |> Map.get(:operation) |> normalize_value(),
+      result: metadata |> Map.get(:result, "ok") |> normalize_value(),
+      measurement: Atom.to_string(key)
+    }
+  end
+
+  defp push_span_attributes do
+    previous = Process.get(@span_attributes_key, :undefined)
+    Process.put(@span_attributes_key, %{})
+    previous
+  end
+
+  defp restore_span_attributes(:undefined), do: Process.delete(@span_attributes_key)
+
+  defp restore_span_attributes(previous) do
+    Process.put(@span_attributes_key, previous)
+    :ok
+  end
+
+  defp current_span_attributes do
+    case Process.get(@span_attributes_key) do
+      attributes when is_map(attributes) -> attributes
+      _other -> %{}
+    end
+  end
+
+  defp merge_current_span_attributes(attributes) do
+    case Process.get(@span_attributes_key) do
+      current when is_map(current) ->
+        Process.put(
+          @span_attributes_key,
+          Map.merge(current, normalize_metadata(attributes))
+        )
+
+        :ok
+
+      _other ->
+        :ok
+    end
   end
 
   defp base_metadata(event, metadata) do

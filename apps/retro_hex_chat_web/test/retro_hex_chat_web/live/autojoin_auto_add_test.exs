@@ -5,12 +5,24 @@ defmodule RetroHexChatWeb.AutojoinAutoAddTest do
 
   @moduletag :liveview
 
-  alias RetroHexChat.Chat.AutoJoinList
+  alias RetroHexChat.Chat.{AutoJoinList, PreferencePersistence}
   alias RetroHexChat.Services.NickServ
 
   defp register_and_identify(nick) do
     NickServ.register(nick, "pass123")
     {:ok, _} = NickServ.identify(nick, "pass123")
+  end
+
+  defp submit_command_sync(view, command) do
+    view
+    |> element(~s([data-testid="chat-input-form"]))
+    |> render_submit(%{"input" => command})
+
+    render(view)
+  end
+
+  defp apply_autojoin(nick) do
+    assert {:ok, :applied} = PreferencePersistence.apply_pending(nick, "autojoin_list")
   end
 
   # ── US3: Auto-Join on /join ──────────────────────────────
@@ -22,13 +34,8 @@ defmodule RetroHexChatWeb.AutojoinAutoAddTest do
 
       {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
 
-      # Join a channel
-      view
-      |> element(~s([data-testid="chat-input-form"]))
-      |> render_submit(%{"input" => "/join #test-aj-#{uid()}"})
-
-      # Give async persistence time to complete
-      Process.sleep(100)
+      submit_command_sync(view, "/join #test-aj-#{uid()}")
+      apply_autojoin(nick)
 
       # Load the auto-join list from DB and verify the channel was added
       {:ok, autojoin} = AutoJoinList.load(nick)
@@ -46,11 +53,7 @@ defmodule RetroHexChatWeb.AutojoinAutoAddTest do
 
       channel = "#guest-aj-#{uid()}"
 
-      view
-      |> element(~s([data-testid="chat-input-form"]))
-      |> render_submit(%{"input" => "/join #{channel}"})
-
-      Process.sleep(100)
+      submit_command_sync(view, "/join #{channel}")
 
       # Guest has no persisted auto-join list
       assert {:error, :not_found} = AutoJoinList.load(nick)
@@ -63,7 +66,7 @@ defmodule RetroHexChatWeb.AutojoinAutoAddTest do
       {:ok, _view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
 
       # #lobby is auto-joined on connect, but should NOT be in auto-join list
-      Process.sleep(100)
+      refute PreferencePersistence.get_request(nick, "autojoin_list")
 
       case AutoJoinList.load(nick) do
         {:error, :not_found} ->
@@ -85,24 +88,13 @@ defmodule RetroHexChatWeb.AutojoinAutoAddTest do
 
       channel = "#dup-aj-#{uid()}"
 
-      view
-      |> element(~s([data-testid="chat-input-form"]))
-      |> render_submit(%{"input" => "/join #{channel}"})
-
-      Process.sleep(50)
+      submit_command_sync(view, "/join #{channel}")
 
       # Part and rejoin
-      view
-      |> element(~s([data-testid="chat-input-form"]))
-      |> render_submit(%{"input" => "/part #{channel}"})
+      submit_command_sync(view, "/part #{channel}")
 
-      Process.sleep(50)
-
-      view
-      |> element(~s([data-testid="chat-input-form"]))
-      |> render_submit(%{"input" => "/join #{channel}"})
-
-      Process.sleep(100)
+      submit_command_sync(view, "/join #{channel}")
+      apply_autojoin(nick)
 
       {:ok, autojoin} = AutoJoinList.load(nick)
       entries = AutoJoinList.entries(autojoin)
@@ -123,11 +115,8 @@ defmodule RetroHexChatWeb.AutojoinAutoAddTest do
 
       channel = "#part-aj-#{uid()}"
 
-      view
-      |> element(~s([data-testid="chat-input-form"]))
-      |> render_submit(%{"input" => "/join #{channel}"})
-
-      Process.sleep(100)
+      submit_command_sync(view, "/join #{channel}")
+      apply_autojoin(nick)
 
       # Verify it was added
       {:ok, autojoin} = AutoJoinList.load(nick)
@@ -135,11 +124,8 @@ defmodule RetroHexChatWeb.AutojoinAutoAddTest do
       assert Enum.any?(entries, &(&1.channel_name == channel))
 
       # Part the channel
-      view
-      |> element(~s([data-testid="chat-input-form"]))
-      |> render_submit(%{"input" => "/part #{channel}"})
-
-      Process.sleep(100)
+      submit_command_sync(view, "/part #{channel}")
+      apply_autojoin(nick)
 
       # Verify it was removed
       case AutoJoinList.load(nick) do
@@ -160,17 +146,9 @@ defmodule RetroHexChatWeb.AutojoinAutoAddTest do
       # Guest joins and parts — no persistence at all
       channel = "#guest-pt-#{uid()}"
 
-      view
-      |> element(~s([data-testid="chat-input-form"]))
-      |> render_submit(%{"input" => "/join #{channel}"})
+      submit_command_sync(view, "/join #{channel}")
 
-      Process.sleep(50)
-
-      view
-      |> element(~s([data-testid="chat-input-form"]))
-      |> render_submit(%{"input" => "/part #{channel}"})
-
-      Process.sleep(50)
+      submit_command_sync(view, "/part #{channel}")
 
       # No auto-join list should exist for guest
       assert {:error, :not_found} = AutoJoinList.load(nick)

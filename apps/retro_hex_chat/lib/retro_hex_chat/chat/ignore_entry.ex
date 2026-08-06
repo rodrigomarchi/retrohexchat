@@ -30,12 +30,35 @@ defmodule RetroHexChat.Chat.IgnoreEntry do
     struct!(__MODULE__, Map.to_list(attrs))
   end
 
-  @spec expired?(t()) :: boolean()
-  def expired?(%__MODULE__{expires_at: nil}), do: false
+  @spec expired?(t() | map()) :: boolean()
+  def expired?(%__MODULE__{} = entry), do: expired?(entry, DateTime.utc_now())
+  def expired?(%{} = entry), do: expired?(entry, DateTime.utc_now())
 
-  def expired?(%__MODULE__{expires_at: expires_at}) do
-    DateTime.compare(expires_at, DateTime.utc_now()) == :lt
+  @spec expired?(t() | map(), DateTime.t()) :: boolean()
+  def expired?(%__MODULE__{expires_at: nil}, %DateTime{}), do: false
+
+  def expired?(%__MODULE__{expires_at: expires_at}, %DateTime{} = now),
+    do: expired_at?(expires_at, now)
+
+  def expired?(%{expires_at: nil}, %DateTime{}), do: false
+  def expired?(%{"expires_at" => nil}, %DateTime{}), do: false
+
+  def expired?(%{expires_at: expires_at}, %DateTime{} = now), do: expired_at?(expires_at, now)
+
+  def expired?(%{"expires_at" => expires_at}, %DateTime{} = now), do: expired_at?(expires_at, now)
+
+  def expired?(_entry, %DateTime{}), do: false
+
+  defp expired_at?(%DateTime{} = expires_at, now), do: DateTime.compare(expires_at, now) != :gt
+
+  defp expired_at?(expires_at, now) when is_binary(expires_at) do
+    case DateTime.from_iso8601(expires_at) do
+      {:ok, parsed, _offset} -> expired_at?(parsed, now)
+      _ -> false
+    end
   end
+
+  defp expired_at?(_expires_at, _now), do: false
 
   @spec permanent?(t()) :: boolean()
   def permanent?(%__MODULE__{expires_at: nil}), do: true

@@ -110,6 +110,17 @@ defmodule RetroHexChatWeb.SystemWindowsFeatureTest do
       assert html =~ "Queues by state"
       assert html =~ "Recent jobs"
       assert html =~ "RSS feed coverage"
+      assert html =~ "Bot schedule coverage"
+      assert html =~ "Bot event log jobs"
+      assert html =~ "Attachment orphan cleanup"
+      assert html =~ "Trusted device expiry"
+      assert html =~ "Chat device session cleanup"
+      assert html =~ "Runtime stale cleanup"
+      assert html =~ "Channel mute expiry"
+      assert html =~ "Global mute expiry"
+      assert html =~ "Ignore expired cleanup"
+      assert html =~ "Link preview cache"
+      assert html =~ "Preference persistence"
       assert has_element?(view, "[data-testid='system-oban-window']")
     end
 
@@ -119,6 +130,22 @@ defmodule RetroHexChatWeb.SystemWindowsFeatureTest do
 
       assert view |> element("[data-testid='system-oban-refresh']") |> render_click() =~
                "Oban health"
+    end
+
+    test "recent Oban jobs can be filtered by state, queue and worker", %{conn: conn} do
+      view = connect_admin(conn)
+      open(view, "system_oban")
+
+      html =
+        view
+        |> form("#system-oban-dialog-filter", %{
+          "filter" => "all",
+          "queue" => "queue-that-does-not-exist",
+          "worker" => "WorkerThatDoesNotExist"
+        })
+        |> render_change()
+
+      assert html =~ "No jobs matched this filter"
     end
   end
 

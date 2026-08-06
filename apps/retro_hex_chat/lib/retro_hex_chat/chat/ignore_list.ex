@@ -13,6 +13,14 @@ defmodule RetroHexChat.Chat.IgnoreList do
   alias RetroHexChat.Repo
 
   @max_entries 100
+  @default_cleanup_limit 500
+
+  @type cleanup_summary :: %{
+          candidates: non_neg_integer(),
+          deleted: non_neg_integer(),
+          oldest_expires_at: DateTime.t() | nil,
+          oldest_expired_age_ms: non_neg_integer() | nil
+        }
 
   # ---------------------------------------------------------------------------
   # In-Memory CRUD
@@ -117,8 +125,10 @@ defmodule RetroHexChat.Chat.IgnoreList do
 
   @spec remove_expired(map()) :: {map(), [String.t()]}
   def remove_expired(ignore_list) do
+    now = DateTime.utc_now()
+
     {expired, remaining} =
-      Enum.split_with(ignore_list.entries, &IgnoreEntry.expired?/1)
+      Enum.split_with(ignore_list.entries, &IgnoreEntry.expired?(&1, now))
 
     expired_nicks = Enum.map(expired, & &1.nickname)
     {%{ignore_list | entries: remaining}, expired_nicks}
@@ -130,11 +140,14 @@ defmodule RetroHexChat.Chat.IgnoreList do
 
   @spec save(String.t(), map()) :: :ok | {:error, term()}
   def save(owner, ignore_list) do
+    now = DateTime.utc_now()
+    entries = Enum.reject(ignore_list.entries, &IgnoreEntry.expired?(&1, now))
+
     Repo.transaction(fn ->
       from(e in IgnoreListEntry, where: e.owner_nickname == ^owner)
       |> Repo.delete_all()
 
-      Enum.each(ignore_list.entries, fn entry ->
+      Enum.each(entries, fn entry ->
         %IgnoreListEntry{}
         |> IgnoreListEntry.changeset(%{
           owner_nickname: owner,
@@ -161,9 +174,7 @@ defmodule RetroHexChat.Chat.IgnoreList do
         order_by: [asc: e.inserted_at]
       )
       |> Repo.all()
-      |> Enum.reject(fn db_entry ->
-        db_entry.expires_at != nil and DateTime.compare(db_entry.expires_at, now) == :lt
-      end)
+      |> Enum.reject(&expired_db_entry?(&1, now))
 
     if entries == [] do
       {:error, :not_found}
@@ -182,9 +193,86 @@ defmodule RetroHexChat.Chat.IgnoreList do
     end
   end
 
+  @doc "Deletes expired durable ignore entries in bounded batches."
+  @spec cleanup_expired_entries(keyword()) :: {:ok, cleanup_summary()} | {:error, term()}
+  def cleanup_expired_entries(opts \\ []) do
+    now = Keyword.get_lazy(opts, :now, &DateTime.utc_now/0)
+    limit = positive_opt(opts, :limit, @default_cleanup_limit)
+
+    Repo.transaction(fn ->
+      entries = list_expired_entries(now, limit)
+      ids = Enum.map(entries, & &1.id)
+
+      %{
+        candidates: length(entries),
+        deleted: delete_expired_entries(ids, now),
+        oldest_expires_at: oldest_expires_at(entries),
+        oldest_expired_age_ms: oldest_expired_age_ms(entries, now)
+      }
+    end)
+  end
+
+  @doc "Counts expired durable ignore entries waiting for materialized cleanup."
+  @spec expired_entry_count(keyword()) :: non_neg_integer()
+  def expired_entry_count(opts \\ []) do
+    now = Keyword.get_lazy(opts, :now, &DateTime.utc_now/0)
+
+    IgnoreListEntry
+    |> expired_entries_query(now)
+    |> Repo.aggregate(:count, :id)
+  end
+
   # ---------------------------------------------------------------------------
   # Private
   # ---------------------------------------------------------------------------
+
+  defp list_expired_entries(now, limit) do
+    IgnoreListEntry
+    |> expired_entries_query(now)
+    |> order_by([entry], asc: entry.expires_at, asc: entry.id)
+    |> limit(^limit)
+    |> Repo.all()
+  end
+
+  defp delete_expired_entries([], _now), do: 0
+
+  defp delete_expired_entries(ids, now) do
+    {deleted, _records} =
+      IgnoreListEntry
+      |> where([entry], entry.id in ^ids)
+      |> expired_entries_query(now)
+      |> Repo.delete_all()
+
+    deleted
+  end
+
+  defp expired_entries_query(queryable, now) do
+    queryable
+    |> where([entry], not is_nil(entry.expires_at))
+    |> where([entry], entry.expires_at <= ^now)
+  end
+
+  defp expired_db_entry?(%IgnoreListEntry{expires_at: nil}, _now), do: false
+
+  defp expired_db_entry?(%IgnoreListEntry{expires_at: %DateTime{} = expires_at}, now) do
+    DateTime.compare(expires_at, now) != :gt
+  end
+
+  defp oldest_expires_at([]), do: nil
+  defp oldest_expires_at([%IgnoreListEntry{expires_at: expires_at} | _entries]), do: expires_at
+
+  defp oldest_expired_age_ms([], _now), do: nil
+
+  defp oldest_expired_age_ms([%IgnoreListEntry{expires_at: expires_at} | _entries], now) do
+    max(DateTime.diff(now, expires_at, :millisecond), 0)
+  end
+
+  defp positive_opt(opts, key, default) do
+    case Keyword.get(opts, key, default) do
+      value when is_integer(value) and value > 0 -> value
+      _value -> default
+    end
+  end
 
   defp upsert_entry(ignore_list, nickname, ignore_type, expires_at) do
     downcased = String.downcase(nickname)

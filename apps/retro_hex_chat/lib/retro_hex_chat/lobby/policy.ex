@@ -7,6 +7,7 @@ defmodule RetroHexChat.Lobby.Policy do
 
   import Ecto.Query
 
+  alias RetroHexChat.Chat.PreferencePersistence.Request
   alias RetroHexChat.Lobby.Queries
   alias RetroHexChat.Lobby.Schema.Session
   alias RetroHexChat.Repo
@@ -89,20 +90,118 @@ defmodule RetroHexChat.Lobby.Policy do
     peer_nick = get_nickname(peer_id)
 
     blocked =
-      from(e in "ignore_list_entries",
-        where:
-          e.ignore_type in ^@session_blocking_ignore_types and
-            ((e.owner_nickname == ^creator_nick and e.ignored_nickname == ^peer_nick) or
-               (e.owner_nickname == ^peer_nick and e.ignored_nickname == ^creator_nick)),
-        select: true
-      )
-      |> Repo.exists?()
+      ignore_blocks_lobby?(creator_nick, peer_nick) or
+        ignore_blocks_lobby?(peer_nick, creator_nick)
 
     if blocked do
       {:error, dgettext("lobby", "User not available")}
     else
       :ok
     end
+  end
+
+  defp ignore_blocks_lobby?(owner_nick, ignored_nick)
+       when is_binary(owner_nick) and is_binary(ignored_nick) do
+    case pending_ignore_payload(owner_nick) do
+      {:ok, payload} -> payload_blocks_lobby?(payload, ignored_nick)
+      :not_found -> persisted_ignore_blocks_lobby?(owner_nick, ignored_nick)
+    end
+  end
+
+  defp ignore_blocks_lobby?(_owner_nick, _ignored_nick), do: false
+
+  defp pending_ignore_payload(owner_nick) do
+    Request
+    |> where([request], request.owner_nickname == ^owner_nick)
+    |> where([request], request.preference_type == "ignore_list")
+    |> where([request], request.applied_revision < request.revision)
+    |> select([request], request.payload)
+    |> Repo.one()
+    |> case do
+      nil -> :not_found
+      payload -> {:ok, payload}
+    end
+  end
+
+  defp payload_blocks_lobby?(payload, ignored_nick) when is_map(payload) do
+    now = DateTime.utc_now()
+    ignored_downcased = String.downcase(ignored_nick)
+
+    payload
+    |> payload_entries()
+    |> Enum.any?(fn entry ->
+      entry_nickname_matches?(entry, ignored_downcased) and
+        entry_blocks_lobby?(entry) and
+        not entry_expired?(entry, now)
+    end)
+  end
+
+  defp payload_blocks_lobby?(_payload, _ignored_nick), do: false
+
+  defp payload_entries(payload) do
+    case Map.get(payload, "entries") || Map.get(payload, :entries) do
+      entries when is_list(entries) -> entries
+      _ -> []
+    end
+  end
+
+  defp entry_nickname_matches?(entry, ignored_downcased) when is_map(entry) do
+    entry
+    |> entry_value(:nickname)
+    |> case do
+      nickname when is_binary(nickname) -> String.downcase(nickname) == ignored_downcased
+      _ -> false
+    end
+  end
+
+  defp entry_nickname_matches?(_entry, _ignored_downcased), do: false
+
+  defp entry_blocks_lobby?(entry) when is_map(entry) do
+    entry
+    |> entry_value(:ignore_type)
+    |> to_string()
+    |> then(&(&1 in @session_blocking_ignore_types))
+  end
+
+  defp entry_blocks_lobby?(_entry), do: false
+
+  defp entry_expired?(entry, now) when is_map(entry) do
+    entry
+    |> entry_value(:expires_at)
+    |> expired_at?(now)
+  end
+
+  defp entry_expired?(_entry, _now), do: false
+
+  defp entry_value(entry, key), do: Map.get(entry, Atom.to_string(key)) || Map.get(entry, key)
+
+  defp expired_at?(nil, _now), do: false
+  defp expired_at?("", _now), do: false
+
+  defp expired_at?(%DateTime{} = expires_at, now),
+    do: DateTime.compare(expires_at, now) != :gt
+
+  defp expired_at?(expires_at, now) when is_binary(expires_at) do
+    case DateTime.from_iso8601(expires_at) do
+      {:ok, parsed, _offset} -> expired_at?(parsed, now)
+      _ -> false
+    end
+  end
+
+  defp expired_at?(_expires_at, _now), do: false
+
+  defp persisted_ignore_blocks_lobby?(owner_nick, ignored_nick) do
+    now = DateTime.utc_now()
+
+    from(e in "ignore_list_entries",
+      where:
+        e.ignore_type in ^@session_blocking_ignore_types and
+          e.owner_nickname == ^owner_nick and
+          e.ignored_nickname == ^ignored_nick and
+          (is_nil(e.expires_at) or e.expires_at > ^now),
+      select: true
+    )
+    |> Repo.exists?()
   end
 
   defp check_participant(user_id, session) do

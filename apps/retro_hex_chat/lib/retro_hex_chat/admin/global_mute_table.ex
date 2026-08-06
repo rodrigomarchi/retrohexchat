@@ -1,11 +1,15 @@
 defmodule RetroHexChat.Admin.GlobalMuteTable do
   @moduledoc """
-  GenServer owning ETS table for global mute state.
-  Entries are ephemeral — they do not survive restarts.
+  ETS cache for durable global mute state.
   """
+
   use GenServer
 
+  alias RetroHexChat.Admin.GlobalMutes
+
   @table :global_mutes
+
+  @type cached_expiry :: :permanent | DateTime.t()
 
   @spec start_link(keyword()) :: GenServer.on_start()
   def start_link(opts \\ []) do
@@ -15,36 +19,61 @@ defmodule RetroHexChat.Admin.GlobalMuteTable do
 
   @spec muted?(String.t()) :: boolean()
   def muted?(nickname) do
-    case :ets.lookup(@table, nickname) do
-      [{^nickname, :permanent}] -> true
-      [{^nickname, expires_at}] -> System.monotonic_time(:millisecond) < expires_at
-      [] -> false
+    key = normalize(nickname)
+
+    case :ets.lookup(@table, key) do
+      [{^key, _nickname, :permanent}] ->
+        true
+
+      [{^key, _nickname, %DateTime{} = expires_at}] ->
+        if DateTime.compare(DateTime.utc_now(), expires_at) == :lt do
+          true
+        else
+          :ets.delete(@table, key)
+          false
+        end
+
+      [] ->
+        false
     end
   rescue
     ArgumentError -> false
   end
 
-  @spec mute(String.t(), non_neg_integer() | :permanent) :: :ok
-  def mute(nickname, :permanent) do
-    :ets.insert(@table, {nickname, :permanent})
+  @spec mute(String.t(), cached_expiry()) :: :ok
+  def mute(nickname, expiry) do
+    :ets.insert(@table, {normalize(nickname), nickname, expiry})
     :ok
-  end
-
-  def mute(nickname, duration_seconds) do
-    expires_at = System.monotonic_time(:millisecond) + duration_seconds * 1000
-    :ets.insert(@table, {nickname, expires_at})
-    :ok
+  rescue
+    ArgumentError -> :ok
   end
 
   @spec unmute(String.t()) :: :ok
   def unmute(nickname) do
-    :ets.delete(@table, nickname)
+    :ets.delete(@table, normalize(nickname))
     :ok
+  rescue
+    ArgumentError -> :ok
   end
 
-  @spec list_mutes() :: [{String.t(), :permanent | integer()}]
+  @spec replace_all([{String.t(), cached_expiry()}]) :: :ok
+  def replace_all(entries) do
+    :ets.delete_all_objects(@table)
+
+    Enum.each(entries, fn {nickname, expiry} ->
+      :ets.insert(@table, {normalize(nickname), nickname, expiry})
+    end)
+
+    :ok
+  rescue
+    ArgumentError -> :ok
+  end
+
+  @spec list_mutes() :: [{String.t(), cached_expiry()}]
   def list_mutes do
-    :ets.tab2list(@table)
+    @table
+    |> :ets.tab2list()
+    |> Enum.map(fn {_key, nickname, expiry} -> {nickname, expiry} end)
   rescue
     ArgumentError -> []
   end
@@ -52,6 +81,17 @@ defmodule RetroHexChat.Admin.GlobalMuteTable do
   @impl true
   def init(_opts) do
     :ets.new(@table, [:set, :public, :named_table])
+
+    try do
+      GlobalMutes.reload_cache()
+    rescue
+      _error -> :ok
+    catch
+      :exit, _reason -> :ok
+    end
+
     {:ok, %{}}
   end
+
+  defp normalize(nickname) when is_binary(nickname), do: String.downcase(nickname)
 end

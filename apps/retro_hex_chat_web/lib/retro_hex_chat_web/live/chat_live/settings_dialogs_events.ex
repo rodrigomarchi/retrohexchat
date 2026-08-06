@@ -22,7 +22,7 @@ defmodule RetroHexChatWeb.ChatLive.SettingsDialogsEvents do
   import RetroHexChatWeb.ChatLive.Helpers, only: [system_message: 1]
 
   alias RetroHexChat.Accounts.Session
-  alias RetroHexChat.Chat.{FloodProtection, SoundSettings}
+  alias RetroHexChat.Chat.{FloodProtection, PreferencePersistence, SoundSettings}
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
   alias RetroHexChatWeb.ChatLive.Components.SoundSettingsDialog
   alias RetroHexChatWeb.ChatLive.Windows
@@ -54,9 +54,7 @@ defmodule RetroHexChatWeb.ChatLive.SettingsDialogsEvents do
 
     new_session = Session.set_flood_protection(session, settings)
 
-    if new_session.identified do
-      Task.start(fn -> FloodProtection.save(new_session.nickname, settings) end)
-    end
+    persist_preference(new_session, :flood_protection, settings)
 
     {:halt,
      socket
@@ -72,9 +70,7 @@ defmodule RetroHexChatWeb.ChatLive.SettingsDialogsEvents do
     defaults = FloodProtection.new()
     new_session = Session.set_flood_protection(session, defaults)
 
-    if new_session.identified do
-      Task.start(fn -> FloodProtection.save(new_session.nickname, defaults) end)
-    end
+    persist_preference(new_session, :flood_protection, defaults)
 
     {:halt,
      socket
@@ -160,25 +156,33 @@ defmodule RetroHexChatWeb.ChatLive.SettingsDialogsEvents do
   defp maybe_close_sound_dialog(socket, :ok), do: Windows.close_window(socket, "sound-settings")
 
   @spec persist_sound_settings(Session.t(), map()) :: :ok
-  defp persist_sound_settings(%Session{identified: true, nickname: nickname}, settings) do
-    case SoundSettings.save(nickname, settings) do
+  defp persist_sound_settings(session, settings) do
+    persist_preference(session, :sound_settings, settings)
+  end
+
+  @spec persist_preference(Session.t(), PreferencePersistence.preference_type(), map()) :: :ok
+  defp persist_preference(%Session{identified: true, nickname: nickname}, type, snapshot) do
+    case PreferencePersistence.enqueue(nickname, type, snapshot) do
       :ok ->
         :ok
 
       {:error, reason} ->
-        Logger.warning("Failed to persist sound settings for #{nickname}: #{inspect(reason)}")
+        Logger.warning(
+          "Failed to enqueue preference persistence for #{nickname} type=#{type}: #{inspect(reason)}"
+        )
+
         :ok
     end
   rescue
     error ->
       Logger.warning(
-        "Failed to persist sound settings for #{nickname}: #{Exception.message(error)}"
+        "Failed to enqueue preference persistence for #{nickname} type=#{type}: #{Exception.message(error)}"
       )
 
       :ok
   end
 
-  defp persist_sound_settings(_session, _settings), do: :ok
+  defp persist_preference(_session, _type, _snapshot), do: :ok
 
   @spec try_set(map(), (map(), integer() -> map() | {:error, atom()}), String.t() | nil) ::
           map()

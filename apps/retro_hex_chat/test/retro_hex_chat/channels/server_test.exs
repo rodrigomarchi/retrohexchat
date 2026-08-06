@@ -3,8 +3,9 @@ defmodule RetroHexChat.Channels.ServerTest do
 
   @moduletag :integration
 
-  alias RetroHexChat.Channels.{Registry, Server, Supervisor}
+  alias RetroHexChat.Channels.{ChannelMute, Mutes, Registry, Server, Supervisor}
   alias RetroHexChat.Chat.Queries, as: ChatQueries
+  alias RetroHexChat.Jobs.ChannelMuteExpiryWorker
 
   defp unique_channel do
     "#test-#{System.unique_integer([:positive])}"
@@ -159,6 +160,72 @@ defmodule RetroHexChat.Channels.ServerTest do
     test "returns error for nonexistent channel" do
       assert {:error, :not_found} =
                Server.get_state("#nonexistent-#{System.unique_integer([:positive])}")
+    end
+  end
+
+  describe "channel mutes" do
+    test "temporary channel mute is durable and enqueues expiry" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "op")
+      {:ok, _} = Server.join(channel, "target")
+
+      assert :ok = Server.channel_mute(channel, "op", "target", 60)
+
+      {:ok, state} = Server.get_state(channel)
+      assert "target" in state.channel_mutes
+      assert [mute] = Mutes.active_mutes(channel)
+
+      assert mute.target_nickname == "target"
+      assert mute.operator_nickname == "op"
+
+      assert_enqueued(
+        worker: ChannelMuteExpiryWorker,
+        queue: :maintenance,
+        args: %{mute_id: mute.id}
+      )
+    end
+
+    test "channel start loads active durable mutes" do
+      channel = unique_channel()
+
+      assert {:ok, _mute} = Mutes.mute(channel, "op", "target", :permanent)
+
+      {:ok, _pid} = start_channel(channel)
+      {:ok, _} = Server.join(channel, "op")
+      {:ok, _} = Server.join(channel, "target")
+
+      {:ok, state} = Server.get_state(channel)
+      assert "target" in state.channel_mutes
+    end
+
+    test "expiry worker removes mute from a live channel process" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#{channel}")
+
+      {:ok, _} = Server.join(channel, "op")
+      {:ok, _} = Server.join(channel, "target")
+      assert :ok = Server.channel_mute(channel, "op", "target", 60)
+
+      assert_receive {:user_joined, _}
+      assert_receive {:user_joined, _}
+      assert_receive {:user_channel_muted, %{target: "target"}}
+
+      mute = Repo.one!(from(mute in ChannelMute, where: mute.channel_name == ^channel))
+      past = DateTime.add(DateTime.utc_now(), -60, :second)
+
+      from(stored in ChannelMute, where: stored.id == ^mute.id)
+      |> Repo.update_all(set: [expires_at: past])
+
+      assert {:ok, :expired} =
+               ChannelMuteExpiryWorker.perform(%Oban.Job{args: %{"mute_id" => mute.id}})
+
+      {:ok, state} = Server.get_state(channel)
+      refute "target" in state.channel_mutes
+      assert_receive {:user_channel_unmuted, %{target: "target"}}
     end
   end
 

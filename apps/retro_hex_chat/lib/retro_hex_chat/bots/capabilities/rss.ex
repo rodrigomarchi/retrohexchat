@@ -490,6 +490,9 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
   end
 
   @spec describe_error(term()) :: String.t()
+  defp describe_error({:http_status, status}) when is_integer(status),
+    do: dgettext("bots", "HTTP %{status}", status: status)
+
   defp describe_error({:blocked, reason}), do: reason
   defp describe_error(%{reason: reason}), do: inspect(reason)
   defp describe_error(reason) when is_binary(reason), do: reason

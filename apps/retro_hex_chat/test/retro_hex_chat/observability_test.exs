@@ -13,6 +13,8 @@ defmodule RetroHexChat.ObservabilityTest do
       [:retro_hex_chat, :commands, :dispatch, :stop],
       [:retro_hex_chat, :chat, :message, :send, :exception],
       [:retro_hex_chat, :observability, :operation, :stop],
+      [:retro_hex_chat, :observability, :operation, :counter],
+      [:retro_hex_chat, :observability, :operation, :value],
       [:retro_hex_chat, :observability, :operation, :exception]
     ]
 
@@ -73,6 +75,45 @@ defmodule RetroHexChat.ObservabilityTest do
     assert metadata.operation == "dispatch"
     assert metadata.result == "error"
     assert metadata.reason == "command_error"
+  end
+
+  test "span emits whitelisted numeric operation measurements" do
+    assert :ok =
+             Observability.span(
+               [:retro_hex_chat, :attachments, :orphan_cleanup],
+               %{channel: "#not-a-metric-tag"},
+               fn ->
+                 Observability.set_current_span_attributes(%{
+                   bytes_deleted: 128,
+                   next_poll_ms: 60_000,
+                   bot_id: 123
+                 })
+
+                 :ok
+               end,
+               fn :ok -> %{result: "ok", candidates: 2, deleted: 1} end
+             )
+
+    assert_receive {:telemetry_event, [:retro_hex_chat, :observability, :operation, :counter],
+                    %{value: 2},
+                    %{
+                      context: "attachments",
+                      operation: "orphan_cleanup",
+                      result: "ok",
+                      measurement: "candidates"
+                    }}
+
+    assert_receive {:telemetry_event, [:retro_hex_chat, :observability, :operation, :counter],
+                    %{value: 1}, %{measurement: "deleted"}}
+
+    assert_receive {:telemetry_event, [:retro_hex_chat, :observability, :operation, :counter],
+                    %{value: 128}, %{measurement: "bytes_deleted"}}
+
+    assert_receive {:telemetry_event, [:retro_hex_chat, :observability, :operation, :value],
+                    %{value: 60_000}, %{measurement: "next_poll_ms"}}
+
+    refute_receive {:telemetry_event, [:retro_hex_chat, :observability, :operation, :counter],
+                    %{value: 123}, %{measurement: "bot_id"}}
   end
 
   test "span emits exception events and reraises" do

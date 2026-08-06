@@ -262,5 +262,27 @@ defmodule RetroHexChat.Chat.LinkPreview.HTTPTest do
     test "refuses private initial URLs" do
       assert {:error, :blocked} = HTTP.fetch_metadata("http://127.0.0.1/story")
     end
+
+    test "fetch_title_result preserves retryable HTTP status codes for workers" do
+      Req.Test.expect(__MODULE__, 2, fn conn ->
+        Plug.Conn.resp(conn, 503, "service unavailable")
+      end)
+
+      assert {:error, {:http_status, 503}} =
+               HTTP.fetch_title_result("https://example.com/unavailable")
+
+      assert {:error, :server_error} = HTTP.fetch_title("https://example.com/unavailable")
+    end
+
+    test "fetch_title_result preserves non-retryable HTTP status codes for workers" do
+      Req.Test.expect(__MODULE__, 2, fn conn ->
+        Plug.Conn.resp(conn, 404, "not found")
+      end)
+
+      assert {:error, {:http_status, 404}} =
+               HTTP.fetch_title_result("https://example.com/missing")
+
+      assert {:error, :not_found} = HTTP.fetch_title("https://example.com/missing")
+    end
   end
 end

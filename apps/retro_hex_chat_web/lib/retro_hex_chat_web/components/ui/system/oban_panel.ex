@@ -32,7 +32,7 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
           <.refresh_button target={@target} on_refresh={@on_refresh} />
         </.section_heading>
 
-        <div class="grid grid-cols-2 gap-retro-6 lg:grid-cols-4">
+        <div class="grid grid-cols-2 gap-retro-6 lg:grid-cols-3 xl:grid-cols-5">
           <.summary_card
             variant={:prominent}
             icon={:icon_status_signal}
@@ -80,6 +80,71 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
             tone_class={rss_class(@snapshot.summary)}
             testid="system-oban-rss"
           />
+          <.summary_card
+            variant={:prominent}
+            icon={:icon_clock}
+            label={dgettext("dialogs", "Bot schedules")}
+            value={bot_schedule_coverage(@snapshot.summary)}
+            detail={
+              dgettext("dialogs", "%{count} missing jobs",
+                count: Format.number(@snapshot.summary.bot_schedule_missing_jobs)
+              )
+            }
+            tone_class={bot_schedule_class(@snapshot.summary)}
+            testid="system-oban-bot-schedules"
+          />
+          <.summary_card
+            variant={:prominent}
+            icon={:icon_notepad}
+            label={dgettext("dialogs", "Bot event logs")}
+            value={Format.number(@snapshot.summary.bot_event_log_active)}
+            detail={
+              dgettext("dialogs", "%{count} failures",
+                count: Format.number(@snapshot.summary.bot_event_log_failures)
+              )
+            }
+            tone_class={bot_event_log_class(@snapshot.summary)}
+            testid="system-oban-bot-event-logs"
+          />
+          <.summary_card
+            variant={:prominent}
+            icon={:icon_clock}
+            label={dgettext("dialogs", "Maintenance")}
+            value={maintenance_coverage(@snapshot.summary)}
+            detail={
+              dgettext("dialogs", "%{count} pending",
+                count: Format.number(@snapshot.summary.maintenance_pending_work)
+              )
+            }
+            tone_class={maintenance_class(@snapshot.summary)}
+            testid="system-oban-maintenance"
+          />
+          <.summary_card
+            variant={:prominent}
+            icon={:icon_link}
+            label={dgettext("dialogs", "Link previews")}
+            value={link_preview_coverage(@snapshot.summary)}
+            detail={
+              dgettext("dialogs", "%{count} pending",
+                count: Format.number(@snapshot.summary.link_preview_pending)
+              )
+            }
+            tone_class={link_preview_class(@snapshot.summary)}
+            testid="system-oban-link-preview"
+          />
+          <.summary_card
+            variant={:prominent}
+            icon={:icon_notepad}
+            label={dgettext("dialogs", "Preference saves")}
+            value={persistence_coverage(@snapshot.summary)}
+            detail={
+              dgettext("dialogs", "%{count} pending",
+                count: Format.number(@snapshot.summary.persistence_pending)
+              )
+            }
+            tone_class={persistence_class(@snapshot.summary)}
+            testid="system-oban-persistence"
+          />
         </div>
 
         <div class="mt-retro-6 grid gap-retro-4 border border-border bg-surface p-2 text-[11px] shadow-retro-sunken sm:grid-cols-2">
@@ -122,6 +187,7 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
             phx-change={@on_filter}
             phx-submit={@on_filter}
             phx-target={@target}
+            class="flex min-w-0 flex-wrap items-center justify-end gap-retro-2"
           >
             <label for={"#{@id}-job-filter"} class="sr-only">
               {dgettext("dialogs", "Job filter")}
@@ -139,6 +205,26 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
                 {filter_label(filter)}
               </option>
             </select>
+            <label for={"#{@id}-queue-filter"} class="sr-only">
+              {dgettext("dialogs", "Queue filter")}
+            </label>
+            <input
+              id={"#{@id}-queue-filter"}
+              name="queue"
+              value={@snapshot.job_queue_filter}
+              placeholder={dgettext("dialogs", "Queue")}
+              class="w-20 bg-white px-retro-4 py-retro-2 text-xs shadow-retro-sunken"
+            />
+            <label for={"#{@id}-worker-filter"} class="sr-only">
+              {dgettext("dialogs", "Worker filter")}
+            </label>
+            <input
+              id={"#{@id}-worker-filter"}
+              name="worker"
+              value={@snapshot.job_worker_filter}
+              placeholder={dgettext("dialogs", "Worker")}
+              class="w-32 bg-white px-retro-4 py-retro-2 text-xs shadow-retro-sunken"
+            />
           </form>
         </.section_heading>
 
@@ -163,6 +249,69 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
             testid={"#{@testid}-rss-table"}
             truncate
             empty_title={dgettext("dialogs", "No RSS feeds are configured")}
+          />
+        </div>
+      </section>
+
+      <section class="min-h-[220px] shrink-0">
+        <.section_heading icon={:icon_clock} label={dgettext("dialogs", "Bot schedule coverage")} />
+        <div class="retro-scrollbar max-h-[260px] overflow-auto bg-white shadow-retro-sunken">
+          <.admin_table
+            table={@snapshot.bot_schedule_table}
+            testid={"#{@testid}-bot-schedules-table"}
+            truncate
+            empty_title={dgettext("dialogs", "No bot schedules are configured")}
+          />
+        </div>
+      </section>
+
+      <section class="min-h-[220px] shrink-0">
+        <.section_heading icon={:icon_notepad} label={dgettext("dialogs", "Bot event log jobs")} />
+        <div class="retro-scrollbar max-h-[260px] overflow-auto bg-white shadow-retro-sunken">
+          <.admin_table
+            table={@snapshot.bot_event_log_table}
+            testid={"#{@testid}-bot-event-logs-table"}
+            truncate
+            empty_title={dgettext("dialogs", "No bot event log jobs are pending")}
+          />
+        </div>
+      </section>
+
+      <section class="min-h-[220px] shrink-0">
+        <.section_heading icon={:icon_clock} label={dgettext("dialogs", "Maintenance sweeps")} />
+        <div class="retro-scrollbar max-h-[260px] overflow-auto bg-white shadow-retro-sunken">
+          <.admin_table
+            table={@snapshot.maintenance_table}
+            testid={"#{@testid}-maintenance-table"}
+            truncate
+            empty_title={dgettext("dialogs", "No maintenance sweeps are configured")}
+          />
+        </div>
+      </section>
+
+      <section class="min-h-[220px] shrink-0">
+        <.section_heading icon={:icon_link} label={dgettext("dialogs", "Link preview cache")} />
+        <div class="retro-scrollbar max-h-[260px] overflow-auto bg-white shadow-retro-sunken">
+          <.admin_table
+            table={@snapshot.link_preview_table}
+            testid={"#{@testid}-link-preview-table"}
+            truncate
+            empty_title={dgettext("dialogs", "No link previews were cached")}
+          />
+        </div>
+      </section>
+
+      <section class="min-h-[220px] shrink-0">
+        <.section_heading
+          icon={:icon_notepad}
+          label={dgettext("dialogs", "Preference persistence")}
+        />
+        <div class="retro-scrollbar max-h-[260px] overflow-auto bg-white shadow-retro-sunken">
+          <.admin_table
+            table={@snapshot.persistence_table}
+            testid={"#{@testid}-persistence-table"}
+            truncate
+            empty_title={dgettext("dialogs", "No preference saves are pending")}
           />
         </div>
       </section>
@@ -235,11 +384,59 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
   defp rss_class(%{rss_missing_jobs: 0, rss_feed_errors: 0}), do: nil
   defp rss_class(_summary), do: "text-red-700"
 
+  defp bot_schedule_class(%{bot_schedule_missing_jobs: 0, bot_schedule_failures: 0}), do: nil
+  defp bot_schedule_class(_summary), do: "text-red-700"
+
+  defp bot_event_log_class(%{bot_event_log_failures: 0}), do: nil
+  defp bot_event_log_class(_summary), do: "text-red-700"
+
+  defp maintenance_class(%{maintenance_failures: 0}), do: nil
+  defp maintenance_class(_summary), do: "text-red-700"
+
+  defp link_preview_class(%{link_preview_pending: 0}), do: nil
+  defp link_preview_class(_summary), do: "text-yellow-700"
+
+  defp persistence_class(%{persistence_failed: failed}) when failed > 0, do: "text-red-700"
+  defp persistence_class(%{persistence_pending: pending}) when pending > 0, do: "text-yellow-700"
+  defp persistence_class(_summary), do: nil
+
   defp rss_coverage(%{rss_feeds: 0}), do: "0/0"
 
   defp rss_coverage(summary) do
     healthy = summary.rss_feeds - summary.rss_missing_jobs - summary.rss_feed_errors
     "#{Format.number(max(healthy, 0))}/#{Format.number(summary.rss_feeds)}"
+  end
+
+  defp bot_schedule_coverage(%{bot_schedules: 0}), do: "0/0"
+
+  defp bot_schedule_coverage(summary) do
+    healthy =
+      summary.bot_schedules - summary.bot_schedule_missing_jobs - summary.bot_schedule_failures
+
+    "#{Format.number(max(healthy, 0))}/#{Format.number(summary.bot_schedules)}"
+  end
+
+  defp maintenance_coverage(%{maintenance_sweeps: 0}), do: "0/0"
+
+  defp maintenance_coverage(summary) do
+    healthy = summary.maintenance_sweeps - summary.maintenance_failures
+    "#{Format.number(max(healthy, 0))}/#{Format.number(summary.maintenance_sweeps)}"
+  end
+
+  defp link_preview_coverage(%{link_previews: 0}), do: "0/0"
+
+  defp link_preview_coverage(summary) do
+    healthy = summary.link_previews - summary.link_preview_pending
+    "#{Format.number(max(healthy, 0))}/#{Format.number(summary.link_previews)}"
+  end
+
+  defp persistence_coverage(%{persistence_requests: 0}), do: "0/0"
+
+  defp persistence_coverage(summary) do
+    healthy =
+      summary.persistence_requests - summary.persistence_pending - summary.persistence_failed
+
+    "#{Format.number(max(healthy, 0))}/#{Format.number(summary.persistence_requests)}"
   end
 
   defp queue_config(%{queues: []}), do: "—"

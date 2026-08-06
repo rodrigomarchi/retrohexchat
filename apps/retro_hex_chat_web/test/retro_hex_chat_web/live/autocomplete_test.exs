@@ -4,7 +4,7 @@ defmodule RetroHexChatWeb.AutocompleteTest do
   @moduletag :liveview
 
   alias RetroHexChat.Channels.{Registry, Supervisor}
-  alias RetroHexChat.Chat.InputHistory
+  alias RetroHexChat.Chat.{InputHistory, PreferencePersistence}
   alias RetroHexChat.Services.Queries
 
   setup do
@@ -150,6 +150,9 @@ defmodule RetroHexChatWeb.AutocompleteTest do
 
       render(view)
 
+      assert {:ok, :applied} =
+               PreferencePersistence.apply_pending(nick, "input_history", attempt: 1)
+
       assert {:ok, loaded} = InputHistory.load(nick)
       assert InputHistory.entries(loaded) == ["/away lunch"]
       assert InputHistory.recent_commands(loaded) == ["away"]
@@ -167,6 +170,7 @@ defmodule RetroHexChatWeb.AutocompleteTest do
 
       render(view)
 
+      refute PreferencePersistence.get_request(nick, "input_history")
       assert {:error, :not_found} = InputHistory.load(nick)
     end
   end

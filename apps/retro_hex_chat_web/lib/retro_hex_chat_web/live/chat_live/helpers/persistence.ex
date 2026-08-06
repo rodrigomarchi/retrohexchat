@@ -1,8 +1,10 @@
 defmodule RetroHexChatWeb.ChatLive.Helpers.Persistence do
   @moduledoc """
-  Fire-and-forget async persistence for identified users.
+  Durable async persistence for identified users.
   Each function returns the socket unchanged (pipeline-friendly).
   """
+
+  require Logger
 
   alias RetroHexChat.Accounts.{ContactList, NickColors, Session}
 
@@ -17,6 +19,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Persistence do
     IgnoreList,
     InputHistory,
     PerformList,
+    PreferencePersistence,
     Queries,
     SoundSettings,
     UserBio
@@ -27,112 +30,77 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Persistence do
   @spec maybe_persist_notify_list(Phoenix.LiveView.Socket.t(), Session.t()) ::
           Phoenix.LiveView.Socket.t()
   def maybe_persist_notify_list(socket, session) do
-    if session.identified do
-      Task.start(fn -> NotifyList.save(session.nickname, session.notify_list) end)
-    end
-
+    persist(session, :notify_list, session.notify_list)
     socket
   end
 
   @spec maybe_persist_contacts(Phoenix.LiveView.Socket.t(), Session.t()) ::
           Phoenix.LiveView.Socket.t()
   def maybe_persist_contacts(socket, session) do
-    if session.identified do
-      Task.start(fn -> ContactList.save(session.nickname, session.contacts) end)
-    end
-
+    persist(session, :contacts, session.contacts)
     socket
   end
 
   @spec maybe_persist_nick_colors(Phoenix.LiveView.Socket.t(), Session.t()) ::
           Phoenix.LiveView.Socket.t()
   def maybe_persist_nick_colors(socket, session) do
-    if session.identified do
-      Task.start(fn -> NickColors.save(session.nickname, session.nick_colors) end)
-    end
-
+    persist(session, :nick_colors, session.nick_colors)
     socket
   end
 
   @spec maybe_persist_highlight_words(Phoenix.LiveView.Socket.t(), Session.t()) ::
           Phoenix.LiveView.Socket.t()
   def maybe_persist_highlight_words(socket, session) do
-    if session.identified do
-      Task.start(fn -> HighlightWords.save(session.nickname, session.highlight_words) end)
-    end
-
+    persist(session, :highlight_words, session.highlight_words)
     socket
   end
 
   @spec maybe_persist_ignore_list(Phoenix.LiveView.Socket.t(), Session.t()) ::
           Phoenix.LiveView.Socket.t()
   def maybe_persist_ignore_list(socket, session) do
-    if session.identified do
-      Task.start(fn -> IgnoreList.save(session.nickname, session.ignore_list) end)
-    end
-
+    persist(session, :ignore_list, session.ignore_list)
     socket
   end
 
   @spec maybe_persist_perform_list(Phoenix.LiveView.Socket.t(), Session.t()) ::
           Phoenix.LiveView.Socket.t()
   def maybe_persist_perform_list(socket, session) do
-    if session.identified do
-      Task.start(fn -> PerformList.save(session.nickname, session.perform_list) end)
-    end
-
+    persist(session, :perform_list, session.perform_list)
     socket
   end
 
   @spec maybe_persist_autojoin_list(Phoenix.LiveView.Socket.t(), Session.t()) ::
           Phoenix.LiveView.Socket.t()
   def maybe_persist_autojoin_list(socket, session) do
-    if session.identified do
-      Task.start(fn -> AutoJoinList.save(session.nickname, session.autojoin_list) end)
-    end
-
+    persist(session, :autojoin_list, session.autojoin_list)
     socket
   end
 
   @spec maybe_persist_input_history(Phoenix.LiveView.Socket.t(), Session.t()) ::
           Phoenix.LiveView.Socket.t()
   def maybe_persist_input_history(socket, session) do
-    if session.identified do
-      Task.start(fn -> InputHistory.save(session.nickname, session.input_history) end)
-    end
-
+    persist(session, :input_history, session.input_history)
     socket
   end
 
   @spec maybe_persist_aliases(Phoenix.LiveView.Socket.t(), Session.t()) ::
           Phoenix.LiveView.Socket.t()
   def maybe_persist_aliases(socket, session) do
-    if session.identified do
-      Task.start(fn -> AliasList.save(session.nickname, session.aliases) end)
-    end
-
+    persist(session, :aliases, session.aliases)
     socket
   end
 
   @spec maybe_persist_custom_menus(Phoenix.LiveView.Socket.t(), Session.t()) ::
           Phoenix.LiveView.Socket.t()
   def maybe_persist_custom_menus(socket, session) do
-    if session.identified do
-      Task.start(fn -> CustomMenus.save(session.nickname, session.custom_menus) end)
-    end
-
+    persist(session, :custom_menus, session.custom_menus)
     socket
   end
 
   @spec maybe_persist_autorespond_rules(Phoenix.LiveView.Socket.t(), Session.t()) ::
           Phoenix.LiveView.Socket.t()
   def maybe_persist_autorespond_rules(socket, session) do
-    if session.identified do
-      Task.start(fn ->
-        AutoRespondRules.save(session.nickname, session.autorespond_rules)
-      end)
-    end
-
+    persist(session, :autorespond_rules, session.autorespond_rules)
     socket
   end
 
@@ -182,4 +150,20 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Persistence do
 
   defp load_if_found(session, {:ok, data}, setter), do: setter.(session, data)
   defp load_if_found(session, {:error, _}, _setter), do: session
+
+  defp persist(%Session{identified: true, nickname: nickname}, type, snapshot) do
+    case PreferencePersistence.enqueue(nickname, type, snapshot) do
+      :ok ->
+        :ok
+
+      {:error, reason} ->
+        Logger.warning(
+          "preference_persistence_enqueue_error type=#{type} reason=#{inspect(reason)}"
+        )
+
+        :ok
+    end
+  end
+
+  defp persist(_session, _type, _snapshot), do: :ok
 end

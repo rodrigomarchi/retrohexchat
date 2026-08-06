@@ -153,6 +153,24 @@ defmodule RetroHexChatWeb.Telemetry do
         description: dgettext("system", "Current Oban queue length by state"),
         reporter_options: [nav: dgettext("system", "Oban")]
       ),
+      sum(dgettext("system", "retro_hex_chat.observability.operation.counter.value"),
+        event_name: [:retro_hex_chat, :observability, :operation, :counter],
+        measurement: :value,
+        tags: [:context, :operation, :result, :measurement],
+        tag_values: &operation_measurement_tags/1,
+        description:
+          dgettext("system", "Business counts emitted by instrumented domain operations"),
+        reporter_options: [nav: dgettext("system", "Domain")]
+      ),
+      last_value(dgettext("system", "retro_hex_chat.observability.operation.value.value"),
+        event_name: [:retro_hex_chat, :observability, :operation, :value],
+        measurement: :value,
+        tags: [:context, :operation, :result, :measurement],
+        tag_values: &operation_measurement_tags/1,
+        description:
+          dgettext("system", "Latest business values emitted by instrumented domain operations"),
+        reporter_options: [nav: dgettext("system", "Domain")]
+      ),
 
       # VM Metrics
       summary(dgettext("system", "vm.memory.total"),
@@ -424,6 +442,15 @@ defmodule RetroHexChatWeb.Telemetry do
       name: metadata |> Map.get(:name, Oban) |> inspect_name(),
       queue: metadata |> Map.get(:queue, :unknown) |> to_string(),
       state: metadata |> Map.get(:state, :unknown) |> to_string()
+    }
+  end
+
+  defp operation_measurement_tags(metadata) do
+    %{
+      context: metadata |> Map.get(:context, :unknown) |> to_string(),
+      operation: metadata |> Map.get(:operation, :unknown) |> to_string(),
+      result: metadata |> Map.get(:result, :ok) |> to_string(),
+      measurement: metadata |> Map.get(:measurement, :unknown) |> to_string()
     }
   end
 

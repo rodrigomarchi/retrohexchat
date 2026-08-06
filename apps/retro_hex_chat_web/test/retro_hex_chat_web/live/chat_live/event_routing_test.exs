@@ -4,7 +4,6 @@ defmodule RetroHexChatWeb.ChatLive.EventRoutingTest do
   @moduletag :liveview_feature
 
   alias RetroHexChat.Presence.Tracker
-  alias RetroHexChat.PubSub
 
   # Guards the dispatch fall-through contract: an event that no hook in
   # @event_hook_fns claims must NOT crash the user's session — the socket is
@@ -21,28 +20,37 @@ defmodule RetroHexChatWeb.ChatLive.EventRoutingTest do
     end
   end
 
-  describe "system nuke broadcasts" do
-    test "globally force-disconnect connected chat sessions", %{conn: conn} do
+  describe "system nuke events" do
+    test "force-disconnect connected chat sessions", %{conn: conn} do
       nick = "NukeRoute#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       _ = :sys.get_state(view.pid)
       assert Tracker.online?("channel:#lobby", nick)
+      flush_push_events(view)
+      ack_ref = make_ref()
 
-      Phoenix.PubSub.broadcast(
-        PubSub,
-        "server:settings",
-        {:system_nuked,
-         %{
-           force_disconnect: true,
-           reason: "system-reset",
-           system_nuke: true,
-           skip_whowas: true
-         }}
-      )
+      send(view.pid, {
+        :system_nuked,
+        %{
+          force_disconnect: true,
+          reason: "system-reset",
+          system_nuke: true,
+          skip_whowas: true,
+          takeover_ack: {self(), ack_ref}
+        }
+      })
 
-      assert_push_event(view, "intentional_disconnect", %{}, 1_000)
+      assert_receive {:force_disconnect_ack, ^ack_ref}, 1_000
       refute Tracker.online?("channel:#lobby", nick)
-      assert_redirect(view, "/chat/session/clear?reason=system-reset")
+      assert_redirect(view, "/chat/session/clear?reason=system-reset", 1_000)
+    end
+  end
+
+  defp flush_push_events(%{proxy: {ref, _topic, _}} = view) do
+    receive do
+      {^ref, {:push_event, _event, _payload}} -> flush_push_events(view)
+    after
+      0 -> :ok
     end
   end
 end

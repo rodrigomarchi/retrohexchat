@@ -4,8 +4,6 @@ defmodule RetroHexChatWeb.IgnoreListTest do
   @moduletag :liveview
 
   alias RetroHexChat.Channels.Supervisor, as: ChannelSupervisor
-  alias RetroHexChat.Presence.{NotifyEntry, NotifyList}
-  alias RetroHexChat.Services.NickServ
 
   setup do
     case RetroHexChat.Channels.Registry.lookup("#lobby") do
@@ -19,22 +17,6 @@ defmodule RetroHexChatWeb.IgnoreListTest do
   defp connect_user(conn, nick) do
     {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
     view
-  end
-
-  # The Ignore List window is a stateful island; its events target the component,
-  # so fire them element-based (the design-system threads phx-target through).
-  defp ab_click(view, event) do
-    view |> element("#ignore-list-dialog-mount [phx-click='#{event}']") |> render_click()
-  end
-
-  defp ab_select(view, event, nick) do
-    view
-    |> element("#ignore-list-dialog-mount [phx-click='#{event}'][phx-value-nickname='#{nick}']")
-    |> render_click()
-  end
-
-  defp ab_form(view, testid, params) do
-    view |> element("[data-testid='#{testid}']") |> render_submit(params)
   end
 
   # ── Phase 3: US1 — Dialog Shell ──────────────────────────

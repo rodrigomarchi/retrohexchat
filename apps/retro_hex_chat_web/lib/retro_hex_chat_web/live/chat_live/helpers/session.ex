@@ -121,21 +121,24 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
   @spec maybe_fetch_previews(Phoenix.LiveView.Socket.t(), [String.t()]) ::
           Phoenix.LiveView.Socket.t()
   def maybe_fetch_previews(socket, urls) do
-    lv_pid = self()
-    Enum.each(urls, &fetch_preview_for_url(&1, lv_pid))
+    Enum.each(urls, &fetch_preview_for_url/1)
     socket
   end
 
-  @spec spawn_preview_fetch(String.t(), pid()) :: :ok | Task.t()
-  def spawn_preview_fetch(url, lv_pid) do
+  @spec enqueue_preview_fetch(String.t()) :: :ok
+  def enqueue_preview_fetch(url) do
     unless LinkPreview.Cache.pending?(url) do
-      LinkPreview.Cache.mark_pending(url)
+      case LinkPreview.enqueue_fetch(url) do
+        :ok ->
+          :ok
 
-      Task.Supervisor.async_nolink(RetroHexChat.LinkPreviewTasks, fn ->
-        result = LinkPreview.impl().fetch_title(url)
-        send(lv_pid, {:link_preview_result, url, result})
-      end)
+        {:error, reason} ->
+          Logger.warning("link_preview_enqueue_error reason=#{inspect(reason)}")
+          LinkPreview.Cache.put_error(url)
+      end
     end
+
+    :ok
   end
 
   # ── Ignore timers ──────────────────────────────────────────
@@ -602,11 +605,11 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
 
   # Private helpers
 
-  defp fetch_preview_for_url(url, lv_pid) do
+  defp fetch_preview_for_url(url) do
     case LinkPreview.Cache.get(url) do
       {:ok, :error} -> :ok
-      {:ok, title} -> send(lv_pid, {:link_preview_result, url, {:ok, title}})
-      :miss -> spawn_preview_fetch(url, lv_pid)
+      {:ok, title} -> send(self(), {:link_preview_result, url, {:ok, title}})
+      :miss -> enqueue_preview_fetch(url)
     end
   end
 end

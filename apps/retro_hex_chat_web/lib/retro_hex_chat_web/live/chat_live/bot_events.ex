@@ -471,6 +471,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
 
     case Queries.update_bot(bot, %{capabilities: new_caps}) do
       {:ok, updated_bot} ->
+        maybe_cancel_scheduler_jobs(updated_bot, cap_name, currently_enabled)
         restart_bot_if_running(updated_bot)
 
         action =
@@ -517,6 +518,20 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
     end
   end
 
+  defp maybe_cancel_scheduler_jobs(bot, "scheduler", true) do
+    Scheduler.Durable.cancel_bot(bot.id)
+  end
+
+  defp maybe_cancel_scheduler_jobs(_bot, _cap_name, _was_enabled?), do: :ok
+
+  defp reconcile_bot_jobs_for_enabled_state(%{enabled: true} = bot) do
+    Lifecycle.reload_capabilities_or_start(bot)
+  end
+
+  defp reconcile_bot_jobs_for_enabled_state(bot) do
+    Scheduler.Durable.cancel_bot(bot.id)
+  end
+
   @spec toggle_bot_enabled(RetroHexChat.Bots.Bot.t(), Phoenix.LiveView.Socket.t()) ::
           Phoenix.LiveView.Socket.t()
   defp toggle_bot_enabled(bot, socket) do
@@ -525,6 +540,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
     case Queries.update_bot(bot, %{enabled: new_enabled}) do
       {:ok, updated_bot} ->
         notify_bot_if_running(bot.nickname, &Server.set_enabled(&1, new_enabled))
+        reconcile_bot_jobs_for_enabled_state(updated_bot)
 
         action =
           if new_enabled, do: dgettext("chat", "enabled"), else: dgettext("chat", "disabled")

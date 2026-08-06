@@ -66,26 +66,74 @@ defmodule RetroHexChat.Services.Queries do
     :ok
   end
 
+  @spec expired_nick_count(pos_integer()) :: non_neg_integer()
+  def expired_nick_count(days), do: expired_nick_count(days, DateTime.utc_now())
+
+  @spec expired_nick_count(pos_integer(), DateTime.t()) :: non_neg_integer()
+  def expired_nick_count(days, %DateTime{} = now), do: expired_nick_count(days, now, [])
+
+  @spec expired_nick_count(pos_integer(), DateTime.t(), [String.t()]) :: non_neg_integer()
+  def expired_nick_count(days, %DateTime{} = now, protected_nicks) do
+    days
+    |> expired_nick_query(now)
+    |> exclude_protected_nicks(protected_nicks)
+    |> select([n], count(n.id))
+    |> Repo.one()
+  end
+
+  @spec list_expired_nicknames(pos_integer()) :: [String.t()]
+  def list_expired_nicknames(days), do: list_expired_nicknames(days, DateTime.utc_now())
+
+  @spec list_expired_nicknames(pos_integer(), DateTime.t()) :: [String.t()]
+  def list_expired_nicknames(days, %DateTime{} = now), do: list_expired_nicknames(days, now, [])
+
+  @spec list_expired_nicknames(pos_integer(), DateTime.t(), [String.t()]) :: [String.t()]
+  def list_expired_nicknames(days, %DateTime{} = now, protected_nicks) do
+    days
+    |> expired_nick_query(now)
+    |> exclude_protected_nicks(protected_nicks)
+    |> select([n], n.nickname)
+    |> Repo.all()
+  end
+
   @spec purge_expired_nicks(pos_integer(), [String.t()]) :: {non_neg_integer(), [String.t()]}
   def purge_expired_nicks(days, protected_nicks) do
-    cutoff = DateTime.add(DateTime.utc_now(), -days, :day)
+    purge_expired_nicks(days, protected_nicks, DateTime.utc_now())
+  end
 
-    query =
-      from(n in RegisteredNick,
-        where: n.last_seen_at < ^cutoff,
-        where: n.nickname not in ^protected_nicks,
-        select: n.nickname
-      )
+  @spec purge_expired_nicks(pos_integer(), [String.t()], DateTime.t()) ::
+          {non_neg_integer(), [String.t()]}
+  def purge_expired_nicks(days, protected_nicks, %DateTime{} = now) do
+    purge_expired_nicks(days, protected_nicks, now, nil)
+  end
 
-    nicknames = Repo.all(query)
+  @spec purge_expired_nicks(pos_integer(), [String.t()], DateTime.t(), [String.t()] | nil) ::
+          {non_neg_integer(), [String.t()]}
+  def purge_expired_nicks(days, protected_nicks, %DateTime{} = now, nicknames) do
+    nicknames = nicknames || list_expired_nicknames(days, now, protected_nicks)
 
     {count, _} =
-      from(n in RegisteredNick,
-        where: n.nickname in ^nicknames
-      )
+      days
+      |> expired_nick_query(now)
+      |> exclude_protected_nicks(protected_nicks)
+      |> where([n], n.nickname in ^nicknames)
       |> Repo.delete_all()
 
     {count, nicknames}
+  end
+
+  defp expired_nick_query(days, now) do
+    cutoff = DateTime.add(now, -days, :day)
+
+    from(n in RegisteredNick,
+      where: n.last_seen_at < ^cutoff
+    )
+  end
+
+  defp exclude_protected_nicks(query, []), do: query
+
+  defp exclude_protected_nicks(query, protected_nicks) do
+    where(query, [n], n.nickname not in ^protected_nicks)
   end
 
   # ── Channel registration ────────────────────────────────────
@@ -117,26 +165,50 @@ defmodule RetroHexChat.Services.Queries do
     :ok
   end
 
-  @spec list_expired_channel_names(pos_integer()) :: [String.t()]
-  def list_expired_channel_names(days) do
-    cutoff = DateTime.add(DateTime.utc_now(), -days, :day)
+  @spec expired_channel_count(pos_integer()) :: non_neg_integer()
+  @spec expired_channel_count(pos_integer(), DateTime.t()) :: non_neg_integer()
+  def expired_channel_count(days, now \\ DateTime.utc_now()) do
+    days
+    |> expired_channel_query(now)
+    |> select([c], count(c.id))
+    |> Repo.one()
+  end
 
-    from(c in RegisteredChannel,
-      where: c.last_activity_at < ^cutoff,
-      select: c.name
-    )
+  @spec list_expired_channel_names(pos_integer()) :: [String.t()]
+  @spec list_expired_channel_names(pos_integer(), DateTime.t()) :: [String.t()]
+  def list_expired_channel_names(days, now \\ DateTime.utc_now()) do
+    days
+    |> expired_channel_query(now)
+    |> select([c], c.name)
     |> Repo.all()
   end
 
   @spec purge_expired_channels(pos_integer()) :: {non_neg_integer(), [String.t()]}
-  def purge_expired_channels(days) do
-    names = list_expired_channel_names(days)
+  def purge_expired_channels(days), do: purge_expired_channels(days, DateTime.utc_now())
+
+  @spec purge_expired_channels(pos_integer(), DateTime.t()) :: {non_neg_integer(), [String.t()]}
+  def purge_expired_channels(days, %DateTime{} = now), do: purge_expired_channels(days, now, nil)
+
+  @spec purge_expired_channels(pos_integer(), DateTime.t(), [String.t()] | nil) ::
+          {non_neg_integer(), [String.t()]}
+  def purge_expired_channels(days, %DateTime{} = now, names) do
+    names = names || list_expired_channel_names(days, now)
 
     {count, _} =
-      from(c in RegisteredChannel, where: c.name in ^names)
+      days
+      |> expired_channel_query(now)
+      |> where([c], c.name in ^names)
       |> Repo.delete_all()
 
     {count, names}
+  end
+
+  defp expired_channel_query(days, now) do
+    cutoff = DateTime.add(now, -days, :day)
+
+    from(c in RegisteredChannel,
+      where: c.last_activity_at < ^cutoff
+    )
   end
 
   @spec list_channels_for_founder(String.t()) :: [String.t()]

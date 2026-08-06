@@ -1,0 +1,88 @@
+defmodule RetroHexChat.Jobs.RuntimeStaleCleanupWorker do
+  @moduledoc """
+  Reconciles abandoned runtime lifecycle records through Oban.
+  """
+
+  use Oban.Worker,
+    queue: :maintenance,
+    max_attempts: 3,
+    tags: ["maintenance", "runtime_stale"],
+    unique: [
+      fields: [:worker, :queue],
+      states: :incomplete,
+      period: 60
+    ]
+
+  alias RetroHexChat.Observability
+  alias RetroHexChat.RuntimeStaleCleanup
+
+  @timeout_ms 120_000
+  @default_limit 100
+
+  @impl Oban.Worker
+  @spec timeout(Oban.Job.t()) :: pos_integer()
+  def timeout(_job), do: @timeout_ms
+
+  @impl Oban.Worker
+  @spec backoff(Oban.Job.t()) :: non_neg_integer()
+  def backoff(%Oban.Job{attempt: attempt}) do
+    min(15 * 60, attempt * attempt * 60)
+  end
+
+  @impl Oban.Worker
+  @spec perform(Oban.Job.t()) :: {:ok, RuntimeStaleCleanup.summary()} | {:error, term()}
+  def perform(%Oban.Job{args: args}) do
+    limit = positive_arg(args, "limit", @default_limit)
+
+    stale_after_seconds =
+      positive_arg(
+        args,
+        "stale_after_seconds",
+        RuntimeStaleCleanup.default_stale_after_seconds()
+      )
+
+    Observability.span(
+      [:retro_hex_chat, :runtime, :stale_cleanup],
+      %{limit: limit, stale_after_seconds: stale_after_seconds},
+      fn ->
+        RuntimeStaleCleanup.cleanup(
+          limit: limit,
+          stale_after_seconds: stale_after_seconds
+        )
+      end,
+      &cleanup_result_metadata/1
+    )
+  end
+
+  defp positive_arg(args, key, default) do
+    case Map.get(args, key) do
+      value when is_integer(value) and value > 0 -> value
+      _value -> default
+    end
+  end
+
+  defp cleanup_result_metadata({:ok, summary}) do
+    %{
+      result: "ok",
+      lobby_candidates: summary.lobby.candidates,
+      lobby_expired: summary.lobby.expired,
+      lobby_skipped: summary.lobby.skipped,
+      arcade_candidates: summary.arcade.candidates,
+      arcade_expired: summary.arcade.expired,
+      arcade_skipped: summary.arcade.skipped,
+      group_call_candidates: summary.group_call.candidates,
+      group_call_expired: summary.group_call.expired,
+      group_call_skipped: summary.group_call.skipped
+    }
+  end
+
+  defp cleanup_result_metadata({:error, reason}) do
+    %{result: "error", reason: error_reason(reason)}
+  end
+
+  defp error_reason(%Ecto.Changeset{}), do: "changeset_error"
+  defp error_reason(reason) when is_atom(reason), do: Atom.to_string(reason)
+  defp error_reason(reason) when is_binary(reason), do: reason
+  defp error_reason(%module{}), do: module |> Module.split() |> List.last()
+  defp error_reason(_reason), do: "unknown"
+end
