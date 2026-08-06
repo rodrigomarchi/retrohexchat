@@ -1,8 +1,9 @@
 # Documentation Index
 
-Living documentation for retro_hex_chat. Plan/progress files are intentionally
-**not** kept here — their durable learnings are crystallized into `AGENT-GUIDE.md`
-once implemented, and the plans themselves are removed as noise.
+Living documentation for retro_hex_chat. `AGENT-GUIDE.md` holds the durable rules,
+`reference/` holds the inventories that must track the code, and `plans/` holds work
+that is currently in flight — a plan is deleted once its work ships, with any durable
+rule moved into the guide first.
 
 ## Guide
 
@@ -43,9 +44,9 @@ catalog, because a hand-written list of 344 icons is stale on arrival.
   can answer the question directly (grep a module, open `/showcase/icons`), do not write the
   inventory at all.
 - Runbooks and scripts document themselves in place, beside the thing they operate.
-- **There is no `plans/`.** A plan is a working note for one change; it belongs in the pull
-  request or the commit message that carries the change, not in a directory that outlives it.
-  Every plan file this repo kept eventually described a codebase that had moved on — two of them
-  claimed a phase was still open for features that had shipped weeks earlier. Extract the durable
-  rule into `AGENT-GUIDE.md` and let the plan die with the work.
+- Starting a big piece of work? Write the plan in `plans/` and keep it there while the work is
+  open. `plans/` is empty right now only because nothing is in flight.
+- Finished a plan? Extract any durable rule into `AGENT-GUIDE.md`, then delete the plan. A plan
+  that outlives its work stops describing the codebase and starts misdescribing it — two of the
+  ones removed here still claimed a phase was open for features that had shipped weeks earlier.
 </content>
