@@ -35,21 +35,42 @@ ALLOW = [
     "make ci",
     "mix format",
     "ls -la",
-    # prose that merely mentions a blocked command must not trip the guard
-    "git commit -F - <<'EOF'\nDoc: explain why `git add -A` is blocked\nand `make deploy-sun` too.\nEOF",
     'echo "never use git add -A here"',
     'grep -rn "git checkout" docs/',
+    "cat <<'EOF'\nnotes about git add -A and make deploy-sun\nEOF",
+]
+
+# Commands that may legitimately be blocked for an unrelated, state-dependent
+# reason (a `git commit` also triggers the fetch-freshness check), but must never
+# be blocked because prose *inside* them names a forbidden command.
+NOT_BLOCKED_BECAUSE = [
+    # Backtick-quoted mentions are caught by the command-boundary anchor alone.
+    (
+        "git commit -F - <<'EOF'\nExplain why `git add -A` is blocked\nand `make deploy-sun` too.\nEOF",
+        ["git add", "deploy-sun"],
+    ),
+    # A heredoc line that *starts* with a forbidden command sits at a real
+    # boundary, so only heredoc stripping saves it. This is the case that
+    # actually regresses if strip_heredocs is removed.
+    (
+        "git commit -F - <<'EOF'\ngit add -A was blocked by the new hook.\nmake deploy-sun is blocked too.\nEOF",
+        ["git add", "deploy-sun"],
+    ),
 ]
 
 
-def verdict(cmd):
+def run(cmd):
     result = subprocess.run(
         [sys.executable, str(GUARD)],
         input=json.dumps({"tool_input": {"command": cmd}}),
         capture_output=True,
         text=True,
     )
-    return "BLOCK" if result.returncode == 2 else "ALLOW"
+    return ("BLOCK" if result.returncode == 2 else "ALLOW"), result.stderr
+
+
+def verdict(cmd):
+    return run(cmd)[0]
 
 
 def main():
@@ -60,7 +81,15 @@ def main():
             if got != expected:
                 failures.append(f"expected {expected}, got {got}: {cmd.splitlines()[0]}")
 
-    total = len(BLOCK) + len(ALLOW)
+    for cmd, forbidden in NOT_BLOCKED_BECAUSE:
+        _, stderr = run(cmd)
+        for phrase in forbidden:
+            if phrase in stderr:
+                failures.append(
+                    f"blocked for the wrong reason ({phrase!r}): {cmd.splitlines()[0]}"
+                )
+
+    total = len(BLOCK) + len(ALLOW) + sum(len(f) for _, f in NOT_BLOCKED_BECAUSE)
     if failures:
         print(f"guard_bash: {len(failures)}/{total} FAILED")
         for f in failures:
