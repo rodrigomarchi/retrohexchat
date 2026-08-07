@@ -1,5 +1,5 @@
 /**
- * @section Backlog W - Presence, Identity, Nick Changes, Whois/Whowas
+ * @section W - Presence, Identity, Nick Changes, Whois/Whowas
  * @flow W3 [done] Registered nick password dialog Cancel keeps the old nickname, active channel, and usable chat input (features P1)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

@@ -1,5 +1,5 @@
 /**
- * @section Backlog V - Conversations, Tabs, Unread, Mute, And No-Focus-Steal Depth
+ * @section V - Conversations, Tabs, Unread, Mute, And No-Focus-Steal Depth
  * @flow V6 [done] Copy name from the conversations context menu writes channel and PM targets to the clipboard (features P2)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

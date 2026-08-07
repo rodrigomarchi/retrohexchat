@@ -1,5 +1,5 @@
 /**
- * @section Backlog U - Dialog CRUD And Settings Depth
+ * @section U - Dialog CRUD And Settings Depth
  * @flow U6 [done] Perform window edit/move/toggle-enabled paths mirror slash command behavior and reconnect execution (features P1)
  * @flow U7 [done] Auto-Join window add/edit/remove paths mirror slash command behavior and reconnect execution (features P1)
  *

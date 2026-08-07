@@ -1,5 +1,5 @@
 /**
- * @section Backlog Y - Bot And Automation Edges
+ * @section Y - Bot And Automation Edges
  * @flow Y1 [done] Duplicate bot name/nickname creation attempts show field-specific errors and leave one bot list row (features P1)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

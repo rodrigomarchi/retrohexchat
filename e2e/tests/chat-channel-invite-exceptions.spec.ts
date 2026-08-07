@@ -1,5 +1,5 @@
 /**
- * @section Backlog X - Channel Modes, Services, Permissions, Persistence Edges
+ * @section X - Channel Modes, Services, Permissions, Persistence Edges
  * @flow X5 [done] Matching invite exception hostmask allows invite-only join, and removal restores the restriction (features P1)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

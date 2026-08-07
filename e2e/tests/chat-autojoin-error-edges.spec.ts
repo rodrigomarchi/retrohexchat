@@ -1,5 +1,5 @@
 /**
- * @section Backlog Y - Bot And Automation Edges
+ * @section Y - Bot And Automation Edges
  * @flow Y9 [done] Auto-join reconnect continues later channels after an earlier key-protected channel fails (features P1)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

@@ -1,5 +1,5 @@
 /**
- * @section Backlog T - Desktop Shell, Menus, Toolbars, Dialogs, And Keyboard
+ * @section T - Desktop Shell, Menus, Toolbars, Dialogs, And Keyboard
  * @flow T11 [done] Dialog title close, cancel buttons, and backdrop paths close major dialogs consistently (features P2)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

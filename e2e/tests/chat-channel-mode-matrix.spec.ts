@@ -1,5 +1,5 @@
 /**
- * @section Backlog X - Channel Modes, Services, Permissions, Persistence Edges
+ * @section X - Channel Modes, Services, Permissions, Persistence Edges
  * @flow X1 [done] Combined `+imntkl` channel modes survive Channel Central reopen and render in channel mode output (features P1)
  * @flow X2 [done] `/mode -k` and `/mode -l` clear Channel Central state and remove join restrictions (features P1)
  *

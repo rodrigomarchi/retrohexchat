@@ -1,5 +1,5 @@
 /**
- * @section Backlog X - Channel Modes, Services, Permissions, Persistence Edges
+ * @section X - Channel Modes, Services, Permissions, Persistence Edges
  * @flow X11 [done] Admin channel purge removes visible history from already-open clients in realtime (features P2)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

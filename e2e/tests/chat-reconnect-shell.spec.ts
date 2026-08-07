@@ -1,5 +1,5 @@
 /**
- * @section Backlog T - Desktop Shell, Menus, Toolbars, Dialogs, And Keyboard
+ * @section T - Desktop Shell, Menus, Toolbars, Dialogs, And Keyboard
  * @flow T12 [done] Reconnect state disables destructive shell menus while keeping Help accessible and preserving draft input (features P1)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

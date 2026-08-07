@@ -1,5 +1,5 @@
 /**
- * @section Backlog T - Desktop Shell, Menus, Toolbars, Dialogs, And Keyboard
+ * @section T - Desktop Shell, Menus, Toolbars, Dialogs, And Keyboard
  * @flow T13 [done] Taskbar collapses a window family into one grouped entry, expands it, and drops back to a plain button (features P2)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

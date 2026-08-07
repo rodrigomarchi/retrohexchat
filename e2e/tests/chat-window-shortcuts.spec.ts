@@ -1,5 +1,5 @@
 /**
- * @section Backlog T - Desktop Shell, Menus, Toolbars, Dialogs, And Keyboard
+ * @section T - Desktop Shell, Menus, Toolbars, Dialogs, And Keyboard
  * @flow T9 [done] Window switch shortcuts skip Status and cycle channels/PMs in stable order (features P1)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

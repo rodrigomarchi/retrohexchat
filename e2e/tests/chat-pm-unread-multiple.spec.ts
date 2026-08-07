@@ -1,5 +1,5 @@
 /**
- * @section Backlog V - Conversations, Tabs, Unread, Mute, And No-Focus-Steal Depth
+ * @section V - Conversations, Tabs, Unread, Mute, And No-Focus-Steal Depth
  * @flow V12 [done] Multiple simultaneous PM unread counts update independently and reset only when each PM is opened (features P1)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

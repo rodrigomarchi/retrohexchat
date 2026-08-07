@@ -1,5 +1,5 @@
 /**
- * @section Backlog X - Channel Modes, Services, Permissions, Persistence Edges
+ * @section X - Channel Modes, Services, Permissions, Persistence Edges
  * @flow X14 [done] Server operator role appears after reconnect and grants operator-only command/menu access (features P2)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

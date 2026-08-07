@@ -1,5 +1,5 @@
 /**
- * @section Backlog W - Presence, Identity, Nick Changes, Whois/Whowas
+ * @section W - Presence, Identity, Nick Changes, Whois/Whowas
  * @flow W2 [done] Nick collision shows an error without opening takeover flow and both users keep their channel membership (features P1)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

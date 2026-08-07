@@ -1,5 +1,5 @@
 /**
- * @section Backlog S - Message Lifecycle Additions
+ * @section S - Message Lifecycle Additions
  * @flow S10 [done] Failed pending message retry succeeds after removing the blocking channel mode (features P1)
  * @flow S11 [done] Failed pending message can be deleted without leaving retry/orphan UI behind (features P2)
  *

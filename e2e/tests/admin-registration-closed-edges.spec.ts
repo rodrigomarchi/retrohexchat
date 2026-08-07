@@ -1,5 +1,5 @@
 /**
- * @section Backlog AA - Reconnect, Multi-Context, Browser State, And Destructive Safety
+ * @section AA - Reconnect, Multi-Context, Browser State, And Destructive Safety
  * @flow AA6 [done] Closed registration blocks brand-new nick registration while existing registered users can still authenticate (features P1)
  * @flow AA7 [done] Closed registration keeps same-nick takeover password-gated: wrong password does not displace the source, correct password performs normal takeover (features P2)
  *

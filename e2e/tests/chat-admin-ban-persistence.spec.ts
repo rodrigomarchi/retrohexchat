@@ -1,5 +1,5 @@
 /**
- * @section Backlog X - Channel Modes, Services, Permissions, Persistence Edges
+ * @section X - Channel Modes, Services, Permissions, Persistence Edges
  * @flow X12 [done] Server bans block reconnect and stale-session `/chat` access until admin unban restores login (features P1)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

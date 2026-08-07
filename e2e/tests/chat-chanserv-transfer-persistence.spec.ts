@@ -1,5 +1,5 @@
 /**
- * @section Backlog X - Channel Modes, Services, Permissions, Persistence Edges
+ * @section X - Channel Modes, Services, Permissions, Persistence Edges
  * @flow X7 [done] Admin-transferred founder controls future ChanServ access after empty-channel rejoin (features P1)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

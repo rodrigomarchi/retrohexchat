@@ -21,6 +21,7 @@ import { fileURLToPath } from "node:url";
 const E2E_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const TESTS_DIR = join(E2E_ROOT, "tests");
 const CATALOG = join(E2E_ROOT, "TEST_CATALOG.md");
+const BACKLOG = join(E2E_ROOT, "TEST_BACKLOG.md");
 
 const BEGIN = "<!-- BEGIN GENERATED INDEX -->";
 const END = "<!-- END GENERATED INDEX -->";
@@ -41,6 +42,16 @@ const SECTION_ORDER = [
   "N - P2P, File, Call, Game",
   "O - Chat UI Micro-Journeys",
   "P - Persistence, Reconnect, History, No-Focus-Steal",
+  "Q - Catalog, Help, Parser, And Command Surface",
+  "R/Y - Security, Safety, And Rendering Additions",
+  "S - Message Lifecycle Additions",
+  "T - Desktop Shell, Menus, Toolbars, Dialogs, And Keyboard",
+  "U - Dialog CRUD And Settings Depth",
+  "V - Conversations, Tabs, Unread, Mute, And No-Focus-Steal Depth",
+  "W - Presence, Identity, Nick Changes, Whois/Whowas",
+  "X - Channel Modes, Services, Permissions, Persistence Edges",
+  "Y - Bot And Automation Edges",
+  "AA - Reconnect, Multi-Context, Browser State, And Destructive Safety",
   "MB - Mobile & Touch",
   "SP - Virtual Spaces",
   "LC - Localization",
@@ -206,8 +217,30 @@ function buildIndex(specs) {
   return out.join("\n");
 }
 
+/**
+ * The backlog lists what the suite does not cover. Once a spec claims an id,
+ * the backlog row is a lie about pending work — which is how 117 of its 157
+ * entries came to describe journeys that had already shipped.
+ */
+function checkBacklogDisjoint(specs) {
+  const covered = new Set(specs.flatMap((spec) => spec.flows.map((flow) => flow.id)));
+  const listed = [...readFileSync(BACKLOG, "utf8").matchAll(/^\|\s*([A-Z]+\d+[a-z]?)\s*\|/gm)].map(
+    (match) => match[1],
+  );
+  const both = [...new Set(listed.filter((id) => covered.has(id)))];
+  if (both.length) {
+    process.stderr.write(
+      "These ids are in TEST_BACKLOG.md and also covered by a spec @flow:\n" +
+        `  ${both.join(", ")}\n` +
+        "A covered journey is not backlog. Delete the backlog row.\n",
+    );
+    process.exit(1);
+  }
+}
+
 function main() {
   const specs = specFiles().map(parseSpec);
+  checkBacklogDisjoint(specs);
   const generated = buildIndex(specs);
   const current = readFileSync(CATALOG, "utf8");
 

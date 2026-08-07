@@ -477,6 +477,177 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | P17 | A short outage shows the reconnect banner but not the intrusive modal (BA1) | `tests/chat-deploy-reconnect.spec.ts` | done |
 | P18 | A cold remount does not replay the login sequence (BA2) | `tests/chat-deploy-reconnect.spec.ts` | done |
 
+### Q - Catalog, Help, Parser, And Command Surface
+
+| # | Flow | Spec file | Status |
+| --- | --- | --- | --- |
+| Q1 | `/help` output includes every registered command and no stale command names (features P1) | `tests/chat-command-registry.spec.ts` | done |
+| Q2 | `/help <command>` renders detailed inline help for every registered command (features P1) | `tests/chat-command-registry.spec.ts` | done |
+| Q3 | Inline command help deep links render full Help Topics pages (features P1) | `tests/chat-command-registry.spec.ts` | done |
+| Q4 | Command autocomplete exposes every registered command grouped by category (features P2) | `tests/chat-command-registry.spec.ts` | done |
+| Q5 | Slash commands are case-insensitive for channel, PM, and service handlers (features P1) | `tests/chat-command-parser.spec.ts` | done |
+| Q6 | Leading/trailing whitespace around commands and args keeps dispatch behavior (features P1) | `tests/chat-command-parser.spec.ts` | done |
+| Q7 | Bare slash inputs show helpful errors without changing active tab state (features P2) | `tests/chat-command-parser.spec.ts` | done |
+| Q8 | Free-text command args preserve punctuation, repeated spaces, unicode, and IRC formatting (features P2) | `tests/chat-command-parser.spec.ts` | done |
+| Q9 | Sensitive command names/args are omitted from local command history (features P1) | `tests/chat-command-history-sensitive.spec.ts` | done |
+| Q10 | Recent-command autocomplete ranks safe commands without leaking sensitive commands (features P2) | `tests/chat-command-history-sensitive.spec.ts` | done |
+
+### R/Y - Security, Safety, And Rendering Additions
+
+| # | Flow | Spec file | Status |
+| --- | --- | --- | --- |
+| R1 | Chat message HTML/script content renders escaped and never executes (features P0) | `tests/chat-security-escaping.spec.ts` | done |
+| R2 | Topic, welcome, MOTD, away, bio, alias expansion, bot response, and autorespond output escape HTML/script content (features P0) | `tests/chat-security-escaping.spec.ts` | done |
+| R3 | Unsafe URL schemes such as `javascript:` and `data:` are not rendered as clickable links (features P0) | `tests/chat-security-links.spec.ts` | done |
+| R4 | Long unbroken words and very long URLs stay inside the desktop chat layout (features P2) | `tests/chat-message-rendering.spec.ts` | done |
+| R5 | Unicode, emoji, combining marks, and non-Latin text survive send, reload, edit, search, and visible copy flows (features P2) | `tests/chat-unicode.spec.ts` | done |
+| R6 | Message input enforces the 1000-character limit for typing, paste, Send button, and Enter submit (features P1) | `tests/chat-input-limits.spec.ts` | done |
+| R7 | Paste confirmation disables Send above max line count and Cancel restores input focus (features P1) | `tests/chat-paste-limits.spec.ts` | done |
+| R8 | Flood Protection settings affect rapid paste behavior and Reset Defaults restores effective defaults (features P1) | `tests/chat-flood-protection.spec.ts` | done |
+| R9 | P2P command rate-limit and failed send errors leave no stale pending messages or disabled input (features P2) | `tests/chat-rate-limit.spec.ts` | done |
+| R10 | Empty message edit opens delete confirmation and cancel restores normal input state (features P1) | `tests/chat-message-edit-delete-edges.spec.ts` | done |
+| Y10 | Reciprocal autorespond notice rules fire once and do not loop (features P0) | `tests/chat-autorespond-loop.spec.ts` | done |
+
+### S - Message Lifecycle Additions
+
+| # | Flow | Spec file | Status |
+| --- | --- | --- | --- |
+| S1 | Non-author cannot edit or delete another user's channel message (features P0) | `tests/chat-message-permissions.spec.ts` | done |
+| S2 | PM messages support reply, edit, delete, and deleted placeholders (features P1) | `tests/chat-pm-message-actions.spec.ts` | done |
+| S3 | Reply preview updates when the parent message is edited (features P1) | `tests/chat-message-reply-edges.spec.ts` | done |
+| S4 | Reply preview shows deleted state when the parent message is deleted (features P1) | `tests/chat-message-reply-edges.spec.ts` | done |
+| S5 | Reply parent link scrolls to and highlights a loaded parent message (features P2) | `tests/chat-message-reply-edges.spec.ts` | done |
+| S6 | Reply parent link reports clearly when the parent is only in older unloaded history (features P2) | `tests/chat-message-reply-history.spec.ts` | done |
+| S7 | Search history mode highlights matches that become available after scroll pagination (features P2) | `tests/chat-search-history.spec.ts` | done |
+| S8 | Search Next/Prev scrolls the active highlighted result into view and preserves active highlight (features P2) | `tests/chat-search-navigation.spec.ts` | done |
+| S9 | Search closes on channel, PM, and Status switches while preserving the last query for reopening (features P2) | `tests/chat-search-window-state.spec.ts` | done |
+| S10 | Failed pending message retry succeeds after removing the blocking channel mode (features P1) | `tests/chat-message-retry.spec.ts` | done |
+| S11 | Failed pending message can be deleted without leaving retry/orphan UI behind (features P2) | `tests/chat-message-retry.spec.ts` | done |
+| S12 | Message timestamps use detected browser timezone with the current default `dd/mm HH:MM` format (features P2) | `tests/chat-timestamps.spec.ts` | done |
+
+### T - Desktop Shell, Menus, Toolbars, Dialogs, And Keyboard
+
+| # | Flow | Spec file | Status |
+| --- | --- | --- | --- |
+| T1 | File/View/Tools/Help menu items open the same shell surfaces as keyboard equivalents where both exist (features P1) | `tests/chat-menu-toolbar-parity.spec.ts` | done |
+| T2 | Menus keep chat input focus and intentional dialog inputs own focus (features P1) | `tests/chat-menu-focus.spec.ts` | done |
+| T3 | About dialog opens from Help menu and app logo, closes cleanly, and restores chat input focus (features P2) | `tests/chat-about-dialog.spec.ts` | done |
+| T4 | View menu toggles conversations, nicklist, channel list, and search without losing active tab or unread state (features P1) | `tests/chat-view-menu.spec.ts` | done |
+| T5 | Tools menu opens Address Book, Highlights, URL Catcher, Channel Central, Perform, Sound, Flood Protection, Alias, Custom Menus, and Autorespond (features P1) | `tests/chat-tools-menu.spec.ts` | done |
+| T6 | Escape closes only the topmost dialog/menu layer and preserves underlying state (features P1) | `tests/chat-dialog-keyboard.spec.ts` | done |
+| T7 | Enter submits primary sub-dialog action and Escape/cancel paths discard drafts (features P2) | `tests/chat-dialog-keyboard.spec.ts` | done |
+| T8 | Tab focus stays inside major modal dialogs (features P2) | `tests/chat-dialog-keyboard.spec.ts` | done |
+| T9 | Window switch shortcuts skip Status and cycle channels/PMs in stable order (features P1) | `tests/chat-window-shortcuts.spec.ts` | done |
+| T10 | Shortcut cheatsheet opens from Help menu and shortcut, lists active bindings, and does not submit draft input (features P2) | `tests/chat-cheatsheet.spec.ts` | done |
+| T11 | Dialog title close, cancel buttons, and backdrop paths close major dialogs consistently (features P2) | `tests/chat-dialog-close.spec.ts` | done |
+| T12 | Reconnect state disables destructive shell menus while keeping Help accessible and preserving draft input (features P1) | `tests/chat-reconnect-shell.spec.ts` | done |
+| T13 | Taskbar collapses a window family into one grouped entry, expands it, and drops back to a plain button (features P2) | `tests/chat-taskbar-groups.spec.ts` | done |
+| T14 | Window title bar, taskbar button, and browser tab all name the active conversation `#channel[nick]` and follow tab switches (features P1) | `tests/chat-window-title.spec.ts` | done |
+| T15 | Activity flash alternates over the conversation's name and restores it (features P1) | `tests/chat-window-title.spec.ts` | done |
+| T16 | A private message titles the window `remote:mine` (features P2) | `tests/chat-window-title.spec.ts` | done |
+
+### U - Dialog CRUD And Settings Depth
+
+| # | Flow | Spec file | Status |
+| --- | --- | --- | --- |
+| U1 | Highlight dialog adds, edits, removes a word/color and matching inbound messages render highlighted (features P1) | `tests/chat-highlights.spec.ts` | done |
+| U2 | Highlight settings persist for registered users and remain session-only for guests after reload (features P2) | `tests/chat-highlights-persistence.spec.ts` | done |
+| U3 | Sound Settings OK/Apply/Cancel/Preview persists only intended settings (features P2) | `tests/chat-sound-settings.spec.ts` | done |
+| U4 | Sound mute/status-bar setting and Sound Settings preview stay in sync across rerenders/reconnect (features P2) | `tests/chat-sound-settings.spec.ts` | done |
+| U5 | Flood Protection save/reset/cancel paths update effective paste flood behavior only when intended (features P1) | `tests/chat-flood-protection.spec.ts` | done |
+| U6 | Perform window edit/move/toggle-enabled paths mirror slash command behavior and reconnect execution (features P1) | `tests/chat-perform-dialog.spec.ts` | done |
+| U7 | Auto-Join window add/edit/remove paths mirror slash command behavior and reconnect execution (features P1) | `tests/chat-perform-dialog.spec.ts` | done |
+| U8 | Autorespond dialog add/edit/toggle/delete validates fields and mirrors slash list output (features P1) | `tests/chat-autorespond-dialog.spec.ts` | done |
+| U9 | Custom Menus dialog validates duplicate labels, empty command, command chaining, and tab-specific menu types (features P1) | `tests/chat-custom-menus-dialog.spec.ts` | done |
+| U10 | Alias dialog validates duplicate aliases, empty expansion, recursion warning, and cancel/discard behavior (features P1) | `tests/chat-alias-dialog-edges.spec.ts` | done |
+| U11 | Notify List dialog auto-WHOIS and auto-add-PM settings affect later online/PM behavior (features P1) | `tests/chat-notify-settings.spec.ts` | done |
+| U12 | Address Book contact notes surface in hover card and whois output (features P2) | `tests/chat-address-book-contacts.spec.ts` | done |
+| U13 | Address Book nick color edit/delete immediately updates existing chat rows and future rows (features P2) | `tests/chat-address-book-colors.spec.ts` | done |
+| U14 | Control-list entries from Address Book match `/ignore` filtering behavior by type (features P1) | `tests/chat-address-book-control.spec.ts` | done |
+| U15 | Channel Central ban exception and invite exception add/remove flows affect join/ban behavior (features P1) | `tests/chat-channel-central-exceptions.spec.ts` | done |
+| U16 | Channel Central topic/mode edits stay in sync with slash command output after dialog close/reopen (features P2) | `tests/chat-channel-central-sync.spec.ts` | done |
+
+### V - Conversations, Tabs, Unread, Mute, And No-Focus-Steal Depth
+
+| # | Flow | Spec file | Status |
+| --- | --- | --- | --- |
+| V1 | Conversation sidebar section collapse/expand state survives rerenders and does not affect active tab (features P2) | `tests/chat-conversations-sidebar.spec.ts` | done |
+| V2 | Popular channel item joins/switches channel through browser UI without command typing (features P2) | `tests/chat-conversations-sidebar.spec.ts` | done |
+| V3 | Browse all channels from conversations sidebar opens the channel list and preserves the previous filter search (features P2) | `tests/chat-conversations-sidebar.spec.ts` | done |
+| V4 | Conversation context menu Mark Read clears unread indicators in the tab bar and conversations sidebar without switching focus (features P1) | `tests/chat-conversation-unread.spec.ts` | done |
+| V5 | Muted channels and PM conversations suppress sound/title flash while keeping visual unread indicators (features P1) | `tests/chat-conversation-mute.spec.ts` | done |
+| V6 | Copy name from the conversations context menu writes channel and PM targets to the clipboard (features P2) | `tests/chat-conversation-context-clipboard.spec.ts` | done |
+| V7 | Leave from the conversations context menu removes only the targeted inactive or active channel (features P1) | `tests/chat-conversation-context-leave.spec.ts` | done |
+| V8 | Channel Settings from the conversations context menu opens Channel Central for the targeted channel, not the active channel (features P1) | `tests/chat-conversation-context-settings.spec.ts` | done |
+| V9 | Closing unread channel and PM tabs clears stale unread state before the conversation is reopened (features P2) | `tests/chat-tab-unread-edges.spec.ts` | done |
+| V10 | Incoming PM and typing from an ignored user do not create unread indicators, typing UI, or title flash (features P1) | `tests/chat-ignore-notifications.spec.ts` | done |
+| V11 | Incoming invite from an ignored user does not open invite UI or steal focus (features P1) | `tests/chat-ignore-notifications.spec.ts` | done |
+| V12 | Multiple simultaneous PM unread counts update independently and reset only when each PM is opened (features P1) | `tests/chat-pm-unread-multiple.spec.ts` | done |
+
+### W - Presence, Identity, Nick Changes, Whois/Whowas
+
+| # | Flow | Spec file | Status |
+| --- | --- | --- | --- |
+| W1 | Remote nick change updates nicklist, existing PM tab labels, conversations sidebar PM item, future channel attribution, and future PM routing (features P1) | `tests/chat-nick-change-realtime.spec.ts` | done |
+| W2 | Nick collision shows an error without opening takeover flow and both users keep their channel membership (features P1) | `tests/chat-nick-change-edges.spec.ts` | done |
+| W3 | Registered nick password dialog Cancel keeps the old nickname, active channel, and usable chat input (features P1) | `tests/chat-nickserv-dialog-edges.spec.ts` | done |
+| W4 | NickServ register/drop changes are reflected by another user's `/whois Registered:` output without reconnect (features P2) | `tests/chat-nickserv-whois-realtime.spec.ts` | done |
+| W5 | `/whowas` for an online nick points users to `/whois` for current info instead of stale/offline lookup (features P2) | `tests/chat-whowas-edges.spec.ts` | done |
+| W6 | `/whowas` records expire after the configured retention period using the public admin setting (features P3) | `tests/chat-whowas-edges.spec.ts` | done |
+| W7 | Away auto-reply fires once per sender, resets after clearing away, and fires again after a new away message (features P1) | `tests/chat-away-edges.spec.ts` | done |
+| W8 | Away state immediately updates already-open channel nicklists and nicklist hover cards (features P2) | `tests/chat-away-edges.spec.ts` | done |
+| W9 | Notify auto-WHOIS emits online notification plus WHOIS registration detail when a watched user connects (features P1) | `tests/chat-notify-settings.spec.ts` | done |
+| W10 | Notify auto-add-PM adds first PM partners and persists the entry across registered-user reconnect (features P1) | `tests/chat-notify-settings.spec.ts` | done |
+| W11 | Passive tab switching, dialog open/close, and nicklist hover do not reset the observed idle timer (features P2) | `tests/chat-idle-passive.spec.ts` | done |
+
+### X - Channel Modes, Services, Permissions, Persistence Edges
+
+| # | Flow | Spec file | Status |
+| --- | --- | --- | --- |
+| X1 | Combined `+imntkl` channel modes survive Channel Central reopen and render in channel mode output (features P1) | `tests/chat-channel-mode-matrix.spec.ts` | done |
+| X2 | `/mode -k` and `/mode -l` clear Channel Central state and remove join restrictions (features P1) | `tests/chat-channel-mode-matrix.spec.ts` | done |
+| X3 | Wildcard ban masks block matching nicks, spare non-matching nicks, and allow rejoin after unban (features P2) | `tests/chat-channel-ban-masks.spec.ts` | done |
+| X4 | Matching ban exception hostmask overrides a wildcard ban, and removal restores the ban (features P1) | `tests/chat-channel-ban-exceptions.spec.ts` | done |
+| X5 | Matching invite exception hostmask allows invite-only join, and removal restores the restriction (features P1) | `tests/chat-channel-invite-exceptions.spec.ts` | done |
+| X6 | ChanServ registered channel access survives an empty channel and later founder/member rejoins (features P1) | `tests/chat-chanserv-persistence.spec.ts` | done |
+| X7 | Admin-transferred founder controls future ChanServ access after empty-channel rejoin (features P1) | `tests/chat-chanserv-transfer-persistence.spec.ts` | done |
+| X8 | SOP/AOP/VOP hierarchy controls automatic roles and access-management permissions (features P2) | `tests/chat-chanserv-access-hierarchy.spec.ts` | done |
+| X9 | Non-founder access mutations fail clearly and leave AOP/VOP state unchanged (features P1) | `tests/chat-chanserv-permission-edges.spec.ts` | done |
+| X10 | Admin channel delete removes open tabs and sends after deletion target the fallback channel (features P1) | `tests/chat-admin-channel-destructive.spec.ts` | done |
+| X11 | Admin channel purge removes visible history from already-open clients in realtime (features P2) | `tests/chat-admin-channel-purge-realtime.spec.ts` | done |
+| X12 | Server bans block reconnect and stale-session `/chat` access until admin unban restores login (features P1) | `tests/chat-admin-ban-persistence.spec.ts` | done |
+| X13 | Server mutes survive disconnect/reconnect and block sends until admin unmute restores sending (features P1) | `tests/chat-admin-user-mute-persistence.spec.ts` | done |
+| X14 | Server operator role appears after reconnect and grants operator-only command/menu access (features P2) | `tests/chat-admin-role-persistence.spec.ts` | done |
+| X15 | Admin audit log shows actor, target, action, and persisted reason for user ban entries (features P1) | `tests/chat-admin-audit-log.spec.ts` | done |
+
+### Y - Bot And Automation Edges
+
+| # | Flow | Spec file | Status |
+| --- | --- | --- | --- |
+| Y1 | Duplicate bot name/nickname creation attempts show field-specific errors and leave one bot list row (features P1) | `tests/chat-bot-edges.spec.ts` | done |
+| Y2 | Bot join/part across two channels updates each nicklist and `/bot info` channel count (features P1) | `tests/chat-bot-channel-membership.spec.ts` | done |
+| Y3 | Bot custom command variables and HTML-like special characters render as escaped text (features P1) | `tests/chat-bot-custom-command-edges.spec.ts` | done |
+| Y4 | Disabled bot state persists across Bot Management reopen and operator reconnect (features P2) | `tests/chat-bot-persistence.spec.ts` | done |
+| Y5 | Timers execute in the window active at creation even when another tab is active at fire time (features P1) | `tests/chat-timer-window-context.spec.ts` | done |
+| Y6 | Timer-fired `/query` opens a PM tab without switching away from the user's active tab (features P1) | `tests/chat-timer-window-context.spec.ts` | done |
+| Y7 | A timer whose creation window disappears reports an error, removes itself, and does not deliver to another tab (features P2) | `tests/chat-timer-error-edges.spec.ts` | done |
+| Y8 | Perform reconnect continues later entries after an earlier command reports an error (features P1) | `tests/chat-perform-error-edges.spec.ts` | done |
+| Y9 | Auto-join reconnect continues later channels after an earlier key-protected channel fails (features P1) | `tests/chat-autojoin-error-edges.spec.ts` | done |
+| Y11 | Alias commands expand inside timer, perform reconnect, and autorespond trigger flows (features P2) | `tests/chat-automation-composition.spec.ts` | done |
+| Y12 | Rapid nick change plus immediate channel message leaves no stale old nick tab, nicklist row, or attribution (features P2) | `tests/chat-realtime-race-edges.spec.ts` | done |
+
+### AA - Reconnect, Multi-Context, Browser State, And Destructive Safety
+
+| # | Flow | Spec file | Status |
+| --- | --- | --- | --- |
+| AA1 | Browser offline/online during an active PM preserves the PM draft, selected PM tab, existing unread PM badge, and typing indicator state (features P1) | `tests/chat-reconnect-window-state.spec.ts` | done |
+| AA2 | Browser offline/online with an unsaved Alias Editor draft preserves the dialog inputs and can save/run the alias after reconnect (features P2) | `tests/chat-reconnect-dialog-state.spec.ts` | done |
+| AA4 | Same-nick multi-context takeover redirects the source with unsaved draft/dialog state and leaves the new chat session usable without inherited local state (features P1) | `tests/multi-tab-takeover-edges.spec.ts` | done |
+| AA5 | Admin kick while a target browser is offline redirects on reconnect but allows later login, while admin ban blocks reconnect until unban (features P1) | `tests/chat-admin-reconnect-edges.spec.ts` | done |
+| AA6 | Closed registration blocks brand-new nick registration while existing registered users can still authenticate (features P1) | `tests/admin-registration-closed-edges.spec.ts` | done |
+| AA7 | Closed registration keeps same-nick takeover password-gated: wrong password does not displace the source, correct password performs normal takeover (features P2) | `tests/admin-registration-closed-edges.spec.ts` | done |
+| AA8 | Mute state stored in browser localStorage survives reload in the same context, suppresses sound preview, and does not leak to an isolated browser context (features P2) | `tests/chat-local-storage-isolation.spec.ts` | done |
+
 ### MB - Mobile & Touch
 
 | # | Flow | Spec file | Status |
@@ -528,177 +699,6 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | PW12 | With JavaScript disabled the page still reads and links like a document, keeping its canonical URL | `tests/showcase-desktop.spec.ts` | done |
 | PW13 | Windows on each landing page are sized by their content (one case per public page) | `tests/desktop-window-sizing.spec.ts` | done |
 | PW14 | The showcase component window is sized by its content | `tests/desktop-window-sizing.spec.ts` | done |
-
-### Backlog AA - Reconnect, Multi-Context, Browser State, And Destructive Safety
-
-| # | Flow | Spec file | Status |
-| --- | --- | --- | --- |
-| AA1 | Browser offline/online during an active PM preserves the PM draft, selected PM tab, existing unread PM badge, and typing indicator state (features P1) | `tests/chat-reconnect-window-state.spec.ts` | done |
-| AA2 | Browser offline/online with an unsaved Alias Editor draft preserves the dialog inputs and can save/run the alias after reconnect (features P2) | `tests/chat-reconnect-dialog-state.spec.ts` | done |
-| AA4 | Same-nick multi-context takeover redirects the source with unsaved draft/dialog state and leaves the new chat session usable without inherited local state (features P1) | `tests/multi-tab-takeover-edges.spec.ts` | done |
-| AA5 | Admin kick while a target browser is offline redirects on reconnect but allows later login, while admin ban blocks reconnect until unban (features P1) | `tests/chat-admin-reconnect-edges.spec.ts` | done |
-| AA6 | Closed registration blocks brand-new nick registration while existing registered users can still authenticate (features P1) | `tests/admin-registration-closed-edges.spec.ts` | done |
-| AA7 | Closed registration keeps same-nick takeover password-gated: wrong password does not displace the source, correct password performs normal takeover (features P2) | `tests/admin-registration-closed-edges.spec.ts` | done |
-| AA8 | Mute state stored in browser localStorage survives reload in the same context, suppresses sound preview, and does not leak to an isolated browser context (features P2) | `tests/chat-local-storage-isolation.spec.ts` | done |
-
-### Backlog Q - Catalog, Help, Parser, And Command Surface
-
-| # | Flow | Spec file | Status |
-| --- | --- | --- | --- |
-| Q1 | `/help` output includes every registered command and no stale command names (features P1) | `tests/chat-command-registry.spec.ts` | done |
-| Q2 | `/help <command>` renders detailed inline help for every registered command (features P1) | `tests/chat-command-registry.spec.ts` | done |
-| Q3 | Inline command help deep links render full Help Topics pages (features P1) | `tests/chat-command-registry.spec.ts` | done |
-| Q4 | Command autocomplete exposes every registered command grouped by category (features P2) | `tests/chat-command-registry.spec.ts` | done |
-| Q5 | Slash commands are case-insensitive for channel, PM, and service handlers (features P1) | `tests/chat-command-parser.spec.ts` | done |
-| Q6 | Leading/trailing whitespace around commands and args keeps dispatch behavior (features P1) | `tests/chat-command-parser.spec.ts` | done |
-| Q7 | Bare slash inputs show helpful errors without changing active tab state (features P2) | `tests/chat-command-parser.spec.ts` | done |
-| Q8 | Free-text command args preserve punctuation, repeated spaces, unicode, and IRC formatting (features P2) | `tests/chat-command-parser.spec.ts` | done |
-| Q9 | Sensitive command names/args are omitted from local command history (features P1) | `tests/chat-command-history-sensitive.spec.ts` | done |
-| Q10 | Recent-command autocomplete ranks safe commands without leaking sensitive commands (features P2) | `tests/chat-command-history-sensitive.spec.ts` | done |
-
-### Backlog R/Y - Security, Safety, And Rendering Additions
-
-| # | Flow | Spec file | Status |
-| --- | --- | --- | --- |
-| R1 | Chat message HTML/script content renders escaped and never executes (features P0) | `tests/chat-security-escaping.spec.ts` | done |
-| R2 | Topic, welcome, MOTD, away, bio, alias expansion, bot response, and autorespond output escape HTML/script content (features P0) | `tests/chat-security-escaping.spec.ts` | done |
-| R3 | Unsafe URL schemes such as `javascript:` and `data:` are not rendered as clickable links (features P0) | `tests/chat-security-links.spec.ts` | done |
-| R4 | Long unbroken words and very long URLs stay inside the desktop chat layout (features P2) | `tests/chat-message-rendering.spec.ts` | done |
-| R5 | Unicode, emoji, combining marks, and non-Latin text survive send, reload, edit, search, and visible copy flows (features P2) | `tests/chat-unicode.spec.ts` | done |
-| R6 | Message input enforces the 1000-character limit for typing, paste, Send button, and Enter submit (features P1) | `tests/chat-input-limits.spec.ts` | done |
-| R7 | Paste confirmation disables Send above max line count and Cancel restores input focus (features P1) | `tests/chat-paste-limits.spec.ts` | done |
-| R8 | Flood Protection settings affect rapid paste behavior and Reset Defaults restores effective defaults (features P1) | `tests/chat-flood-protection.spec.ts` | done |
-| R9 | P2P command rate-limit and failed send errors leave no stale pending messages or disabled input (features P2) | `tests/chat-rate-limit.spec.ts` | done |
-| R10 | Empty message edit opens delete confirmation and cancel restores normal input state (features P1) | `tests/chat-message-edit-delete-edges.spec.ts` | done |
-| Y10 | Reciprocal autorespond notice rules fire once and do not loop (features P0) | `tests/chat-autorespond-loop.spec.ts` | done |
-
-### Backlog S - Message Lifecycle Additions
-
-| # | Flow | Spec file | Status |
-| --- | --- | --- | --- |
-| S1 | Non-author cannot edit or delete another user's channel message (features P0) | `tests/chat-message-permissions.spec.ts` | done |
-| S2 | PM messages support reply, edit, delete, and deleted placeholders (features P1) | `tests/chat-pm-message-actions.spec.ts` | done |
-| S3 | Reply preview updates when the parent message is edited (features P1) | `tests/chat-message-reply-edges.spec.ts` | done |
-| S4 | Reply preview shows deleted state when the parent message is deleted (features P1) | `tests/chat-message-reply-edges.spec.ts` | done |
-| S5 | Reply parent link scrolls to and highlights a loaded parent message (features P2) | `tests/chat-message-reply-edges.spec.ts` | done |
-| S6 | Reply parent link reports clearly when the parent is only in older unloaded history (features P2) | `tests/chat-message-reply-history.spec.ts` | done |
-| S7 | Search history mode highlights matches that become available after scroll pagination (features P2) | `tests/chat-search-history.spec.ts` | done |
-| S8 | Search Next/Prev scrolls the active highlighted result into view and preserves active highlight (features P2) | `tests/chat-search-navigation.spec.ts` | done |
-| S9 | Search closes on channel, PM, and Status switches while preserving the last query for reopening (features P2) | `tests/chat-search-window-state.spec.ts` | done |
-| S10 | Failed pending message retry succeeds after removing the blocking channel mode (features P1) | `tests/chat-message-retry.spec.ts` | done |
-| S11 | Failed pending message can be deleted without leaving retry/orphan UI behind (features P2) | `tests/chat-message-retry.spec.ts` | done |
-| S12 | Message timestamps use detected browser timezone with the current default `dd/mm HH:MM` format (features P2) | `tests/chat-timestamps.spec.ts` | done |
-
-### Backlog T - Desktop Shell, Menus, Toolbars, Dialogs, And Keyboard
-
-| # | Flow | Spec file | Status |
-| --- | --- | --- | --- |
-| T1 | File/View/Tools/Help menu items open the same shell surfaces as keyboard equivalents where both exist (features P1) | `tests/chat-menu-toolbar-parity.spec.ts` | done |
-| T2 | Menus keep chat input focus and intentional dialog inputs own focus (features P1) | `tests/chat-menu-focus.spec.ts` | done |
-| T3 | About dialog opens from Help menu and app logo, closes cleanly, and restores chat input focus (features P2) | `tests/chat-about-dialog.spec.ts` | done |
-| T4 | View menu toggles conversations, nicklist, channel list, and search without losing active tab or unread state (features P1) | `tests/chat-view-menu.spec.ts` | done |
-| T5 | Tools menu opens Address Book, Highlights, URL Catcher, Channel Central, Perform, Sound, Flood Protection, Alias, Custom Menus, and Autorespond (features P1) | `tests/chat-tools-menu.spec.ts` | done |
-| T6 | Escape closes only the topmost dialog/menu layer and preserves underlying state (features P1) | `tests/chat-dialog-keyboard.spec.ts` | done |
-| T7 | Enter submits primary sub-dialog action and Escape/cancel paths discard drafts (features P2) | `tests/chat-dialog-keyboard.spec.ts` | done |
-| T8 | Tab focus stays inside major modal dialogs (features P2) | `tests/chat-dialog-keyboard.spec.ts` | done |
-| T9 | Window switch shortcuts skip Status and cycle channels/PMs in stable order (features P1) | `tests/chat-window-shortcuts.spec.ts` | done |
-| T10 | Shortcut cheatsheet opens from Help menu and shortcut, lists active bindings, and does not submit draft input (features P2) | `tests/chat-cheatsheet.spec.ts` | done |
-| T11 | Dialog title close, cancel buttons, and backdrop paths close major dialogs consistently (features P2) | `tests/chat-dialog-close.spec.ts` | done |
-| T12 | Reconnect state disables destructive shell menus while keeping Help accessible and preserving draft input (features P1) | `tests/chat-reconnect-shell.spec.ts` | done |
-| T13 | Taskbar collapses a window family into one grouped entry, expands it, and drops back to a plain button (features P2) | `tests/chat-taskbar-groups.spec.ts` | done |
-| T14 | Window title bar, taskbar button, and browser tab all name the active conversation `#channel[nick]` and follow tab switches (features P1) | `tests/chat-window-title.spec.ts` | done |
-| T15 | Activity flash alternates over the conversation's name and restores it (features P1) | `tests/chat-window-title.spec.ts` | done |
-| T16 | A private message titles the window `remote:mine` (features P2) | `tests/chat-window-title.spec.ts` | done |
-
-### Backlog U - Dialog CRUD And Settings Depth
-
-| # | Flow | Spec file | Status |
-| --- | --- | --- | --- |
-| U1 | Highlight dialog adds, edits, removes a word/color and matching inbound messages render highlighted (features P1) | `tests/chat-highlights.spec.ts` | done |
-| U2 | Highlight settings persist for registered users and remain session-only for guests after reload (features P2) | `tests/chat-highlights-persistence.spec.ts` | done |
-| U3 | Sound Settings OK/Apply/Cancel/Preview persists only intended settings (features P2) | `tests/chat-sound-settings.spec.ts` | done |
-| U4 | Sound mute/status-bar setting and Sound Settings preview stay in sync across rerenders/reconnect (features P2) | `tests/chat-sound-settings.spec.ts` | done |
-| U5 | Flood Protection save/reset/cancel paths update effective paste flood behavior only when intended (features P1) | `tests/chat-flood-protection.spec.ts` | done |
-| U6 | Perform window edit/move/toggle-enabled paths mirror slash command behavior and reconnect execution (features P1) | `tests/chat-perform-dialog.spec.ts` | done |
-| U7 | Auto-Join window add/edit/remove paths mirror slash command behavior and reconnect execution (features P1) | `tests/chat-perform-dialog.spec.ts` | done |
-| U8 | Autorespond dialog add/edit/toggle/delete validates fields and mirrors slash list output (features P1) | `tests/chat-autorespond-dialog.spec.ts` | done |
-| U9 | Custom Menus dialog validates duplicate labels, empty command, command chaining, and tab-specific menu types (features P1) | `tests/chat-custom-menus-dialog.spec.ts` | done |
-| U10 | Alias dialog validates duplicate aliases, empty expansion, recursion warning, and cancel/discard behavior (features P1) | `tests/chat-alias-dialog-edges.spec.ts` | done |
-| U11 | Notify List dialog auto-WHOIS and auto-add-PM settings affect later online/PM behavior (features P1) | `tests/chat-notify-settings.spec.ts` | done |
-| U12 | Address Book contact notes surface in hover card and whois output (features P2) | `tests/chat-address-book-contacts.spec.ts` | done |
-| U13 | Address Book nick color edit/delete immediately updates existing chat rows and future rows (features P2) | `tests/chat-address-book-colors.spec.ts` | done |
-| U14 | Control-list entries from Address Book match `/ignore` filtering behavior by type (features P1) | `tests/chat-address-book-control.spec.ts` | done |
-| U15 | Channel Central ban exception and invite exception add/remove flows affect join/ban behavior (features P1) | `tests/chat-channel-central-exceptions.spec.ts` | done |
-| U16 | Channel Central topic/mode edits stay in sync with slash command output after dialog close/reopen (features P2) | `tests/chat-channel-central-sync.spec.ts` | done |
-
-### Backlog V - Conversations, Tabs, Unread, Mute, And No-Focus-Steal Depth
-
-| # | Flow | Spec file | Status |
-| --- | --- | --- | --- |
-| V1 | Conversation sidebar section collapse/expand state survives rerenders and does not affect active tab (features P2) | `tests/chat-conversations-sidebar.spec.ts` | done |
-| V2 | Popular channel item joins/switches channel through browser UI without command typing (features P2) | `tests/chat-conversations-sidebar.spec.ts` | done |
-| V3 | Browse all channels from conversations sidebar opens the channel list and preserves the previous filter search (features P2) | `tests/chat-conversations-sidebar.spec.ts` | done |
-| V4 | Conversation context menu Mark Read clears unread indicators in the tab bar and conversations sidebar without switching focus (features P1) | `tests/chat-conversation-unread.spec.ts` | done |
-| V5 | Muted channels and PM conversations suppress sound/title flash while keeping visual unread indicators (features P1) | `tests/chat-conversation-mute.spec.ts` | done |
-| V6 | Copy name from the conversations context menu writes channel and PM targets to the clipboard (features P2) | `tests/chat-conversation-context-clipboard.spec.ts` | done |
-| V7 | Leave from the conversations context menu removes only the targeted inactive or active channel (features P1) | `tests/chat-conversation-context-leave.spec.ts` | done |
-| V8 | Channel Settings from the conversations context menu opens Channel Central for the targeted channel, not the active channel (features P1) | `tests/chat-conversation-context-settings.spec.ts` | done |
-| V9 | Closing unread channel and PM tabs clears stale unread state before the conversation is reopened (features P2) | `tests/chat-tab-unread-edges.spec.ts` | done |
-| V10 | Incoming PM and typing from an ignored user do not create unread indicators, typing UI, or title flash (features P1) | `tests/chat-ignore-notifications.spec.ts` | done |
-| V11 | Incoming invite from an ignored user does not open invite UI or steal focus (features P1) | `tests/chat-ignore-notifications.spec.ts` | done |
-| V12 | Multiple simultaneous PM unread counts update independently and reset only when each PM is opened (features P1) | `tests/chat-pm-unread-multiple.spec.ts` | done |
-
-### Backlog W - Presence, Identity, Nick Changes, Whois/Whowas
-
-| # | Flow | Spec file | Status |
-| --- | --- | --- | --- |
-| W1 | Remote nick change updates nicklist, existing PM tab labels, conversations sidebar PM item, future channel attribution, and future PM routing (features P1) | `tests/chat-nick-change-realtime.spec.ts` | done |
-| W2 | Nick collision shows an error without opening takeover flow and both users keep their channel membership (features P1) | `tests/chat-nick-change-edges.spec.ts` | done |
-| W3 | Registered nick password dialog Cancel keeps the old nickname, active channel, and usable chat input (features P1) | `tests/chat-nickserv-dialog-edges.spec.ts` | done |
-| W4 | NickServ register/drop changes are reflected by another user's `/whois Registered:` output without reconnect (features P2) | `tests/chat-nickserv-whois-realtime.spec.ts` | done |
-| W5 | `/whowas` for an online nick points users to `/whois` for current info instead of stale/offline lookup (features P2) | `tests/chat-whowas-edges.spec.ts` | done |
-| W6 | `/whowas` records expire after the configured retention period using the public admin setting (features P3) | `tests/chat-whowas-edges.spec.ts` | done |
-| W7 | Away auto-reply fires once per sender, resets after clearing away, and fires again after a new away message (features P1) | `tests/chat-away-edges.spec.ts` | done |
-| W8 | Away state immediately updates already-open channel nicklists and nicklist hover cards (features P2) | `tests/chat-away-edges.spec.ts` | done |
-| W9 | Notify auto-WHOIS emits online notification plus WHOIS registration detail when a watched user connects (features P1) | `tests/chat-notify-settings.spec.ts` | done |
-| W10 | Notify auto-add-PM adds first PM partners and persists the entry across registered-user reconnect (features P1) | `tests/chat-notify-settings.spec.ts` | done |
-| W11 | Passive tab switching, dialog open/close, and nicklist hover do not reset the observed idle timer (features P2) | `tests/chat-idle-passive.spec.ts` | done |
-
-### Backlog X - Channel Modes, Services, Permissions, Persistence Edges
-
-| # | Flow | Spec file | Status |
-| --- | --- | --- | --- |
-| X1 | Combined `+imntkl` channel modes survive Channel Central reopen and render in channel mode output (features P1) | `tests/chat-channel-mode-matrix.spec.ts` | done |
-| X2 | `/mode -k` and `/mode -l` clear Channel Central state and remove join restrictions (features P1) | `tests/chat-channel-mode-matrix.spec.ts` | done |
-| X3 | Wildcard ban masks block matching nicks, spare non-matching nicks, and allow rejoin after unban (features P2) | `tests/chat-channel-ban-masks.spec.ts` | done |
-| X4 | Matching ban exception hostmask overrides a wildcard ban, and removal restores the ban (features P1) | `tests/chat-channel-ban-exceptions.spec.ts` | done |
-| X5 | Matching invite exception hostmask allows invite-only join, and removal restores the restriction (features P1) | `tests/chat-channel-invite-exceptions.spec.ts` | done |
-| X6 | ChanServ registered channel access survives an empty channel and later founder/member rejoins (features P1) | `tests/chat-chanserv-persistence.spec.ts` | done |
-| X7 | Admin-transferred founder controls future ChanServ access after empty-channel rejoin (features P1) | `tests/chat-chanserv-transfer-persistence.spec.ts` | done |
-| X8 | SOP/AOP/VOP hierarchy controls automatic roles and access-management permissions (features P2) | `tests/chat-chanserv-access-hierarchy.spec.ts` | done |
-| X9 | Non-founder access mutations fail clearly and leave AOP/VOP state unchanged (features P1) | `tests/chat-chanserv-permission-edges.spec.ts` | done |
-| X10 | Admin channel delete removes open tabs and sends after deletion target the fallback channel (features P1) | `tests/chat-admin-channel-destructive.spec.ts` | done |
-| X11 | Admin channel purge removes visible history from already-open clients in realtime (features P2) | `tests/chat-admin-channel-purge-realtime.spec.ts` | done |
-| X12 | Server bans block reconnect and stale-session `/chat` access until admin unban restores login (features P1) | `tests/chat-admin-ban-persistence.spec.ts` | done |
-| X13 | Server mutes survive disconnect/reconnect and block sends until admin unmute restores sending (features P1) | `tests/chat-admin-user-mute-persistence.spec.ts` | done |
-| X14 | Server operator role appears after reconnect and grants operator-only command/menu access (features P2) | `tests/chat-admin-role-persistence.spec.ts` | done |
-| X15 | Admin audit log shows actor, target, action, and persisted reason for user ban entries (features P1) | `tests/chat-admin-audit-log.spec.ts` | done |
-
-### Backlog Y - Bot And Automation Edges
-
-| # | Flow | Spec file | Status |
-| --- | --- | --- | --- |
-| Y1 | Duplicate bot name/nickname creation attempts show field-specific errors and leave one bot list row (features P1) | `tests/chat-bot-edges.spec.ts` | done |
-| Y2 | Bot join/part across two channels updates each nicklist and `/bot info` channel count (features P1) | `tests/chat-bot-channel-membership.spec.ts` | done |
-| Y3 | Bot custom command variables and HTML-like special characters render as escaped text (features P1) | `tests/chat-bot-custom-command-edges.spec.ts` | done |
-| Y4 | Disabled bot state persists across Bot Management reopen and operator reconnect (features P2) | `tests/chat-bot-persistence.spec.ts` | done |
-| Y5 | Timers execute in the window active at creation even when another tab is active at fire time (features P1) | `tests/chat-timer-window-context.spec.ts` | done |
-| Y6 | Timer-fired `/query` opens a PM tab without switching away from the user's active tab (features P1) | `tests/chat-timer-window-context.spec.ts` | done |
-| Y7 | A timer whose creation window disappears reports an error, removes itself, and does not deliver to another tab (features P2) | `tests/chat-timer-error-edges.spec.ts` | done |
-| Y8 | Perform reconnect continues later entries after an earlier command reports an error (features P1) | `tests/chat-perform-error-edges.spec.ts` | done |
-| Y9 | Auto-join reconnect continues later channels after an earlier key-protected channel fails (features P1) | `tests/chat-autojoin-error-edges.spec.ts` | done |
-| Y11 | Alias commands expand inside timer, perform reconnect, and autorespond trigger flows (features P2) | `tests/chat-automation-composition.spec.ts` | done |
-| Y12 | Rapid nick change plus immediate channel message leaves no stale old nick tab, nicklist row, or attribution (features P2) | `tests/chat-realtime-race-edges.spec.ts` | done |
 
 ## Spec files with no documented flows
 

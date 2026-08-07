@@ -1,5 +1,5 @@
 /**
- * @section Backlog T - Desktop Shell, Menus, Toolbars, Dialogs, And Keyboard
+ * @section T - Desktop Shell, Menus, Toolbars, Dialogs, And Keyboard
  * @flow T2 [done] Menus keep chat input focus and intentional dialog inputs own focus (features P1)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

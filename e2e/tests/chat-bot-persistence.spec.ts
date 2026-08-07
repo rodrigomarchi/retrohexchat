@@ -1,5 +1,5 @@
 /**
- * @section Backlog Y - Bot And Automation Edges
+ * @section Y - Bot And Automation Edges
  * @flow Y4 [done] Disabled bot state persists across Bot Management reopen and operator reconnect (features P2)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

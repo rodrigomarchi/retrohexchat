@@ -1,5 +1,5 @@
 /**
- * @section Backlog X - Channel Modes, Services, Permissions, Persistence Edges
+ * @section X - Channel Modes, Services, Permissions, Persistence Edges
  * @flow X9 [done] Non-founder access mutations fail clearly and leave AOP/VOP state unchanged (features P1)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

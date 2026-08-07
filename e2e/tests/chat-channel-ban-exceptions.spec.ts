@@ -1,5 +1,5 @@
 /**
- * @section Backlog X - Channel Modes, Services, Permissions, Persistence Edges
+ * @section X - Channel Modes, Services, Permissions, Persistence Edges
  * @flow X4 [done] Matching ban exception hostmask overrides a wildcard ban, and removal restores the ban (features P1)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

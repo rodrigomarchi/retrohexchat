@@ -1,5 +1,5 @@
 /**
- * @section Backlog S - Message Lifecycle Additions
+ * @section S - Message Lifecycle Additions
  * @flow S2 [done] PM messages support reply, edit, delete, and deleted placeholders (features P1)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

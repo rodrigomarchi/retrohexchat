@@ -1,5 +1,5 @@
 /**
- * @section Backlog U - Dialog CRUD And Settings Depth
+ * @section U - Dialog CRUD And Settings Depth
  * @flow U1 [done] Highlight dialog adds, edits, removes a word/color and matching inbound messages render highlighted (features P1)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

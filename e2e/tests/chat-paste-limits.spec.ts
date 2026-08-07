@@ -1,5 +1,5 @@
 /**
- * @section Backlog R/Y - Security, Safety, And Rendering Additions
+ * @section R/Y - Security, Safety, And Rendering Additions
  * @flow R7 [done] Paste confirmation disables Send above max line count and Cancel restores input focus (features P1)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

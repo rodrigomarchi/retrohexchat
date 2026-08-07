@@ -1,5 +1,5 @@
 /**
- * @section Backlog U - Dialog CRUD And Settings Depth
+ * @section U - Dialog CRUD And Settings Depth
  * @flow U10 [done] Alias dialog validates duplicate aliases, empty expansion, recursion warning, and cancel/discard behavior (features P1)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

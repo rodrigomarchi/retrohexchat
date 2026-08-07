@@ -1,5 +1,5 @@
 /**
- * @section Backlog R/Y - Security, Safety, And Rendering Additions
+ * @section R/Y - Security, Safety, And Rendering Additions
  * @flow R5 [done] Unicode, emoji, combining marks, and non-Latin text survive send, reload, edit, search, and visible copy flows (features P2)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

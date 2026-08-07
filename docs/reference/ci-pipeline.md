@@ -12,7 +12,9 @@ and those disagree, the scripts win and this file is the defect.
 ## The gate
 
 **ALWAYS use `make ci`** (or `elixir scripts/ci.exs`) to validate code.
-This is a standalone Elixir script that runs the complete 16-check local guard.
+This is a standalone Elixir script that runs the complete local guard.
+The check list lives in `@full_checks` in `scripts/ci_impact.exs`; the run prints
+its own total, so this file does not carry a number that would rot.
 No other validation method is acceptable as the final gate.
 
 `make ci.quick`, `make ci.changed`, stale tests, JS changed tests, and Playwright
@@ -23,7 +25,7 @@ replace the final `make ci` pass.
 **NEVER** run checks individually or via manual parallel Bash calls — use the script.
 If any check fails, the task is NOT complete.
 
-## Pipeline (staged parallel execution, 16 checks)
+## Pipeline (staged parallel execution)
 
 ```
 Stage 1 (parallel):
@@ -49,9 +51,9 @@ Stage 3 (isolated):
   └─ dialyzer
 ```
 
-**Performance:** measured local runs are `2m20s`-`2m25s` for `make ci`
-with a warm Dialyzer PLT. `make ci.serial` completed the same checks in
-`5m28s`.
+**Performance:** measured local runs are `2m52s`-`2m56s` for `make ci`
+with a warm Dialyzer PLT. `make ci.serial` runs the same checks with one
+partition per suite and takes roughly twice as long.
 
 The normal ExUnit suite and LiveView feature suite are partitioned by default:
 `CI_TEST_PARTITIONS=3`, `CI_FEATURE_PARTITIONS=4`, and
@@ -62,7 +64,7 @@ The two i18n checks need no third-party Python packages, so they run anywhere.
 
 ## Options
 
-- `make ci` — all 16 checks (standard final gate)
+- `make ci` — every check (standard final gate)
 - `make ci.quick` — skip dialyzer (iteration only)
 - `make ci.changed CI_BASE=origin/main EXPLAIN=1` — print the diff-selected plan
 - `make ci.changed CI_BASE=origin/main` — run diff-selected checks (iteration only)
@@ -176,7 +178,7 @@ runs the full CI pipeline first, then deploys to production (Sun).
 NEVER use `make deploy-sun` directly — it skips CI validation.
 
 ```
-Phase 1: CI Validation (make ci — 16 checks, partitioned, ~2m20s-3m)
+Phase 1: CI Validation (make ci — partitioned, ~3m)
     ↓ (only if all checks pass)
 Phase 2: Deploy
     └─ Sun (production) — scp + ssh deploy.sh

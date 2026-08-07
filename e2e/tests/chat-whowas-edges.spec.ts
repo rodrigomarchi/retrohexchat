@@ -1,5 +1,5 @@
 /**
- * @section Backlog W - Presence, Identity, Nick Changes, Whois/Whowas
+ * @section W - Presence, Identity, Nick Changes, Whois/Whowas
  * @flow W5 [done] `/whowas` for an online nick points users to `/whois` for current info instead of stale/offline lookup (features P2)
  * @flow W6 [done] `/whowas` records expire after the configured retention period using the public admin setting (features P3)
  *

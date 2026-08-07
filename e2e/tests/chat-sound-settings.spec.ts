@@ -1,5 +1,5 @@
 /**
- * @section Backlog U - Dialog CRUD And Settings Depth
+ * @section U - Dialog CRUD And Settings Depth
  * @flow U3 [done] Sound Settings OK/Apply/Cancel/Preview persists only intended settings (features P2)
  * @flow U4 [done] Sound mute/status-bar setting and Sound Settings preview stay in sync across rerenders/reconnect (features P2)
  *

@@ -1,5 +1,5 @@
 /**
- * @section Backlog U - Dialog CRUD And Settings Depth
+ * @section U - Dialog CRUD And Settings Depth
  * @flow U16 [done] Channel Central topic/mode edits stay in sync with slash command output after dialog close/reopen (features P2)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

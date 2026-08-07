@@ -1,5 +1,5 @@
 /**
- * @section Backlog T - Desktop Shell, Menus, Toolbars, Dialogs, And Keyboard
+ * @section T - Desktop Shell, Menus, Toolbars, Dialogs, And Keyboard
  * @flow T10 [done] Shortcut cheatsheet opens from Help menu and shortcut, lists active bindings, and does not submit draft input (features P2)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

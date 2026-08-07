@@ -1,5 +1,5 @@
 /**
- * @section Backlog W - Presence, Identity, Nick Changes, Whois/Whowas
+ * @section W - Presence, Identity, Nick Changes, Whois/Whowas
  * @flow W1 [done] Remote nick change updates nicklist, existing PM tab labels, conversations sidebar PM item, future channel attribution, and future PM routing (features P1)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

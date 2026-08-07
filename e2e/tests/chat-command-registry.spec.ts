@@ -1,5 +1,5 @@
 /**
- * @section Backlog Q - Catalog, Help, Parser, And Command Surface
+ * @section Q - Catalog, Help, Parser, And Command Surface
  * @flow Q1 [done] `/help` output includes every registered command and no stale command names (features P1)
  * @flow Q2 [done] `/help <command>` renders detailed inline help for every registered command (features P1)
  * @flow Q3 [done] Inline command help deep links render full Help Topics pages (features P1)

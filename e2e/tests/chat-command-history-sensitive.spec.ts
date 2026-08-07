@@ -1,5 +1,5 @@
 /**
- * @section Backlog Q - Catalog, Help, Parser, And Command Surface
+ * @section Q - Catalog, Help, Parser, And Command Surface
  * @flow Q9 [done] Sensitive command names/args are omitted from local command history (features P1)
  * @flow Q10 [done] Recent-command autocomplete ranks safe commands without leaking sensitive commands (features P2)
  *

@@ -1,5 +1,5 @@
 /**
- * @section Backlog V - Conversations, Tabs, Unread, Mute, And No-Focus-Steal Depth
+ * @section V - Conversations, Tabs, Unread, Mute, And No-Focus-Steal Depth
  * @flow V10 [done] Incoming PM and typing from an ignored user do not create unread indicators, typing UI, or title flash (features P1)
  * @flow V11 [done] Incoming invite from an ignored user does not open invite UI or steal focus (features P1)
  *

@@ -1,5 +1,5 @@
 /**
- * @section Backlog U - Dialog CRUD And Settings Depth
+ * @section U - Dialog CRUD And Settings Depth
  * @flow U12 [done] Address Book contact notes surface in hover card and whois output (features P2)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

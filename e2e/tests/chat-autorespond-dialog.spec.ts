@@ -1,5 +1,5 @@
 /**
- * @section Backlog U - Dialog CRUD And Settings Depth
+ * @section U - Dialog CRUD And Settings Depth
  * @flow U8 [done] Autorespond dialog add/edit/toggle/delete validates fields and mirrors slash list output (features P1)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

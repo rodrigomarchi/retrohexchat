@@ -1,5 +1,5 @@
 /**
- * @section Backlog AA - Reconnect, Multi-Context, Browser State, And Destructive Safety
+ * @section AA - Reconnect, Multi-Context, Browser State, And Destructive Safety
  * @flow AA2 [done] Browser offline/online with an unsaved Alias Editor draft preserves the dialog inputs and can save/run the alias after reconnect (features P2)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

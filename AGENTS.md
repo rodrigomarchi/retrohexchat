@@ -26,8 +26,8 @@ The parts you would not guess:
 
 ## The completion gate
 
-**`make ci` is the only acceptable final gate.** 16 checks, staged and partitioned,
-~2m20s warm. If any check fails, the task is not complete.
+**`make ci` is the only acceptable final gate.** Staged, partitioned, ~3m warm.
+If any check fails, the task is not complete.
 
 `make ci.quick`, `make ci.changed`, stale tests and Playwright smokes are iteration
 tools. They never replace the final `make ci` pass.
@@ -35,7 +35,7 @@ tools. They never replace the final `make ci` pass.
 Two traps worth knowing before you run it:
 
 - **A pipe masks the exit code.** `make ci 2>&1 | tail -20` returns `tail`'s status
-  (0). Use `make ci > log 2>&1; echo $?`, or read the `Results: N/16` line.
+  (0). Use `make ci > log 2>&1; echo $?`, or read the `Results:` line it prints.
 - **Run `mix format` first.** A long `send_update`/pipe line breaks format and
   cascade-skips later parallel stages, wasting a whole round-trip.
 

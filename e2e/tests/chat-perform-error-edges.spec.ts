@@ -1,5 +1,5 @@
 /**
- * @section Backlog Y - Bot And Automation Edges
+ * @section Y - Bot And Automation Edges
  * @flow Y8 [done] Perform reconnect continues later entries after an earlier command reports an error (features P1)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

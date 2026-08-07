@@ -1,5 +1,5 @@
 /**
- * @section Backlog R/Y - Security, Safety, And Rendering Additions
+ * @section R/Y - Security, Safety, And Rendering Additions
  * @flow R10 [done] Empty message edit opens delete confirmation and cancel restores normal input state (features P1)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

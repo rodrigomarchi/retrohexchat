@@ -1,5 +1,5 @@
 /**
- * @section Backlog Y - Bot And Automation Edges
+ * @section Y - Bot And Automation Edges
  * @flow Y12 [done] Rapid nick change plus immediate channel message leaves no stale old nick tab, nicklist row, or attribution (features P2)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

@@ -1,5 +1,5 @@
 /**
- * @section Backlog S - Message Lifecycle Additions
+ * @section S - Message Lifecycle Additions
  * @flow S7 [done] Search history mode highlights matches that become available after scroll pagination (features P2)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

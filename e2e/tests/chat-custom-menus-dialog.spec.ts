@@ -1,5 +1,5 @@
 /**
- * @section Backlog U - Dialog CRUD And Settings Depth
+ * @section U - Dialog CRUD And Settings Depth
  * @flow U9 [done] Custom Menus dialog validates duplicate labels, empty command, command chaining, and tab-specific menu types (features P1)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

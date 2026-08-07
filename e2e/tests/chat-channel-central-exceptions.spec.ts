@@ -1,5 +1,5 @@
 /**
- * @section Backlog U - Dialog CRUD And Settings Depth
+ * @section U - Dialog CRUD And Settings Depth
  * @flow U15 [done] Channel Central ban exception and invite exception add/remove flows affect join/ban behavior (features P1)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

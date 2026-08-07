@@ -1,5 +1,5 @@
 /**
- * @section Backlog S - Message Lifecycle Additions
+ * @section S - Message Lifecycle Additions
  * @flow S6 [done] Reply parent link reports clearly when the parent is only in older unloaded history (features P2)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

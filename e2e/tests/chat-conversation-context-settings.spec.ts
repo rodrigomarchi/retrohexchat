@@ -1,5 +1,5 @@
 /**
- * @section Backlog V - Conversations, Tabs, Unread, Mute, And No-Focus-Steal Depth
+ * @section V - Conversations, Tabs, Unread, Mute, And No-Focus-Steal Depth
  * @flow V8 [done] Channel Settings from the conversations context menu opens Channel Central for the targeted channel, not the active channel (features P1)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

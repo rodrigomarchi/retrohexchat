@@ -1,5 +1,5 @@
 /**
- * @section Backlog Y - Bot And Automation Edges
+ * @section Y - Bot And Automation Edges
  * @flow Y7 [done] A timer whose creation window disappears reports an error, removes itself, and does not deliver to another tab (features P2)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

@@ -1,5 +1,5 @@
 /**
- * @section Backlog V - Conversations, Tabs, Unread, Mute, And No-Focus-Steal Depth
+ * @section V - Conversations, Tabs, Unread, Mute, And No-Focus-Steal Depth
  * @flow V7 [done] Leave from the conversations context menu removes only the targeted inactive or active channel (features P1)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

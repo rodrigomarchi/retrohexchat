@@ -1,5 +1,5 @@
 /**
- * @section Backlog X - Channel Modes, Services, Permissions, Persistence Edges
+ * @section X - Channel Modes, Services, Permissions, Persistence Edges
  * @flow X6 [done] ChanServ registered channel access survives an empty channel and later founder/member rejoins (features P1)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

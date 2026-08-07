@@ -1,5 +1,5 @@
 /**
- * @section Backlog W - Presence, Identity, Nick Changes, Whois/Whowas
+ * @section W - Presence, Identity, Nick Changes, Whois/Whowas
  * @flow W7 [done] Away auto-reply fires once per sender, resets after clearing away, and fires again after a new away message (features P1)
  * @flow W8 [done] Away state immediately updates already-open channel nicklists and nicklist hover cards (features P2)
  *

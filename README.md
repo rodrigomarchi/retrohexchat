@@ -98,7 +98,7 @@ Each IRC channel runs as an isolated OTP GenServer. If one crashes, others are u
 - **Nick completion** — `Tab` autocomplete in message input
 - **Message history** — `↑`/`↓` to navigate previous messages
 - **Context menu** — Right-click users: Query, Whois, Kick, Ban, Op, Voice, Ignore, Nick Color, Contacts
-- **Help system** — CHM-style dialog with Contents / Index / Search tabs, `F1` shortcut, 179 topics
+- **Help system** — CHM-style dialog with Contents / Index / Search tabs, `F1` shortcut
 - **Options dialog** — 6-panel preferences: Display | Chat | Sound | Log | Privacy | Advanced
 - **Favorites** — Bookmark channels/PMs with encrypted passwords
 - **Log viewer** — Search, filter, and export history as TXT or HTML
@@ -288,7 +288,7 @@ make precommit      # compile + format + test
 
 ### CI Pipeline
 
-The complete local guard runs 16 checks across staged parallel groups. ExUnit suites are
+The complete local guard runs every check across staged parallel groups. ExUnit suites are
 partitioned by default with `CI_TEST_PARTITIONS=3`, `CI_FEATURE_PARTITIONS=4`, and
 `CI_TEST_DB_POOL_SIZE=6`; set both partition counts to `1` or use `make ci.serial`
 to diagnose partition-specific issues.

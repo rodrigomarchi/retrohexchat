@@ -1,5 +1,5 @@
 /**
- * @section Backlog S - Message Lifecycle Additions
+ * @section S - Message Lifecycle Additions
  * @flow S8 [done] Search Next/Prev scrolls the active highlighted result into view and preserves active highlight (features P2)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

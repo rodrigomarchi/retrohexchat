@@ -1,5 +1,5 @@
 /**
- * @section Backlog R/Y - Security, Safety, And Rendering Additions
+ * @section R/Y - Security, Safety, And Rendering Additions
  * @flow Y10 [done] Reciprocal autorespond notice rules fire once and do not loop (features P0)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

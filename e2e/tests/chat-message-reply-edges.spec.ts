@@ -1,5 +1,5 @@
 /**
- * @section Backlog S - Message Lifecycle Additions
+ * @section S - Message Lifecycle Additions
  * @flow S3 [done] Reply preview updates when the parent message is edited (features P1)
  * @flow S4 [done] Reply preview shows deleted state when the parent message is deleted (features P1)
  * @flow S5 [done] Reply parent link scrolls to and highlights a loaded parent message (features P2)

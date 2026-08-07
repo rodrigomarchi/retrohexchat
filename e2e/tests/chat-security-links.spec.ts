@@ -1,5 +1,5 @@
 /**
- * @section Backlog R/Y - Security, Safety, And Rendering Additions
+ * @section R/Y - Security, Safety, And Rendering Additions
  * @flow R3 [done] Unsafe URL schemes such as `javascript:` and `data:` are not rendered as clickable links (features P0)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

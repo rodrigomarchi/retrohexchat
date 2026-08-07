@@ -1,5 +1,5 @@
 /**
- * @section Backlog Y - Bot And Automation Edges
+ * @section Y - Bot And Automation Edges
  * @flow Y5 [done] Timers execute in the window active at creation even when another tab is active at fire time (features P1)
  * @flow Y6 [done] Timer-fired `/query` opens a PM tab without switching away from the user's active tab (features P1)
  *

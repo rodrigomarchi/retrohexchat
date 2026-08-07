@@ -1,5 +1,5 @@
 /**
- * @section Backlog AA - Reconnect, Multi-Context, Browser State, And Destructive Safety
+ * @section AA - Reconnect, Multi-Context, Browser State, And Destructive Safety
  * @flow AA1 [done] Browser offline/online during an active PM preserves the PM draft, selected PM tab, existing unread PM badge, and typing indicator state (features P1)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

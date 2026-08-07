@@ -1,5 +1,5 @@
 /**
- * @section Backlog V - Conversations, Tabs, Unread, Mute, And No-Focus-Steal Depth
+ * @section V - Conversations, Tabs, Unread, Mute, And No-Focus-Steal Depth
  * @flow V9 [done] Closing unread channel and PM tabs clears stale unread state before the conversation is reopened (features P2)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

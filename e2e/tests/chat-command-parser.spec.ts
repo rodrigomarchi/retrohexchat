@@ -1,5 +1,5 @@
 /**
- * @section Backlog Q - Catalog, Help, Parser, And Command Surface
+ * @section Q - Catalog, Help, Parser, And Command Surface
  * @flow Q5 [done] Slash commands are case-insensitive for channel, PM, and service handlers (features P1)
  * @flow Q6 [done] Leading/trailing whitespace around commands and args keeps dispatch behavior (features P1)
  * @flow Q7 [done] Bare slash inputs show helpful errors without changing active tab state (features P2)

@@ -1,5 +1,5 @@
 /**
- * @section Backlog T - Desktop Shell, Menus, Toolbars, Dialogs, And Keyboard
+ * @section T - Desktop Shell, Menus, Toolbars, Dialogs, And Keyboard
  * @flow T3 [done] About dialog opens from Help menu and app logo, closes cleanly, and restores chat input focus (features P2)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

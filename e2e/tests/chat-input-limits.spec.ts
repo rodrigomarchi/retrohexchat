@@ -1,5 +1,5 @@
 /**
- * @section Backlog R/Y - Security, Safety, And Rendering Additions
+ * @section R/Y - Security, Safety, And Rendering Additions
  * @flow R6 [done] Message input enforces the 1000-character limit for typing, paste, Send button, and Enter submit (features P1)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

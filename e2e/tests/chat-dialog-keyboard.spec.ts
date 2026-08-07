@@ -1,5 +1,5 @@
 /**
- * @section Backlog T - Desktop Shell, Menus, Toolbars, Dialogs, And Keyboard
+ * @section T - Desktop Shell, Menus, Toolbars, Dialogs, And Keyboard
  * @flow T6 [done] Escape closes only the topmost dialog/menu layer and preserves underlying state (features P1)
  * @flow T7 [done] Enter submits primary sub-dialog action and Escape/cancel paths discard drafts (features P2)
  * @flow T8 [done] Tab focus stays inside major modal dialogs (features P2)

@@ -1,8 +1,8 @@
 /**
- * @section Backlog R/Y - Security, Safety, And Rendering Additions
+ * @section R/Y - Security, Safety, And Rendering Additions
  * @flow R8 [done] Flood Protection settings affect rapid paste behavior and Reset Defaults restores effective defaults (features P1)
  *
- * @section Backlog U - Dialog CRUD And Settings Depth
+ * @section U - Dialog CRUD And Settings Depth
  * @flow U5 [done] Flood Protection save/reset/cancel paths update effective paste flood behavior only when intended (features P1)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

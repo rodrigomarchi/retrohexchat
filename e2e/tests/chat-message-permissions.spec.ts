@@ -1,5 +1,5 @@
 /**
- * @section Backlog S - Message Lifecycle Additions
+ * @section S - Message Lifecycle Additions
  * @flow S1 [done] Non-author cannot edit or delete another user's channel message (features P0)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

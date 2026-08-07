@@ -1,5 +1,5 @@
 /**
- * @section Backlog T - Desktop Shell, Menus, Toolbars, Dialogs, And Keyboard
+ * @section T - Desktop Shell, Menus, Toolbars, Dialogs, And Keyboard
  * @flow T14 [done] Window title bar, taskbar button, and browser tab all name the active conversation `#channel[nick]` and follow tab switches (features P1)
  * @flow T15 [done] Activity flash alternates over the conversation's name and restores it (features P1)
  * @flow T16 [done] A private message titles the window `remote:mine` (features P2)

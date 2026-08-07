@@ -1,5 +1,5 @@
 /**
- * @section Backlog X - Channel Modes, Services, Permissions, Persistence Edges
+ * @section X - Channel Modes, Services, Permissions, Persistence Edges
  * @flow X10 [done] Admin channel delete removes open tabs and sends after deletion target the fallback channel (features P1)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

@@ -1,5 +1,5 @@
 /**
- * @section Backlog AA - Reconnect, Multi-Context, Browser State, And Destructive Safety
+ * @section AA - Reconnect, Multi-Context, Browser State, And Destructive Safety
  * @flow AA5 [done] Admin kick while a target browser is offline redirects on reconnect but allows later login, while admin ban blocks reconnect until unban (features P1)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

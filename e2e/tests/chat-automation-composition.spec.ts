@@ -1,5 +1,5 @@
 /**
- * @section Backlog Y - Bot And Automation Edges
+ * @section Y - Bot And Automation Edges
  * @flow Y11 [done] Alias commands expand inside timer, perform reconnect, and autorespond trigger flows (features P2)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.

@@ -1,5 +1,5 @@
 /**
- * @section Backlog R/Y - Security, Safety, And Rendering Additions
+ * @section R/Y - Security, Safety, And Rendering Additions
  * @flow R9 [done] P2P command rate-limit and failed send errors leave no stale pending messages or disabled input (features P2)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
