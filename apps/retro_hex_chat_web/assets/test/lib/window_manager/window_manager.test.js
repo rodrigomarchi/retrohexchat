@@ -1275,6 +1275,61 @@ describe("WindowManager — default centered", () => {
   });
 });
 
+describe("WindowManager — a centered window opts out of the mount cascade", () => {
+  let el;
+  let hook;
+
+  afterEach(() => {
+    hook?.destroy();
+    el?.remove();
+    clearWindowManagerMemory();
+  });
+
+  // The cascade hands its front slot the deepest offset, which is the worst
+  // place for the tallest window on a page: it starts low, max-height caps it
+  // against the bottom edge, and its last rows end up scrolled out of a window
+  // that still looks like it fits. A window that declared itself centered keeps
+  // the middle of the desk instead, and stays in front of the stack.
+  it("keeps the centered window centered and frontmost", () => {
+    clearWindowManagerMemory();
+    el = document.createElement("div");
+    el.dataset.persistKey = "cascade-centered";
+    el.dataset.cascadeOnMount = "true";
+    el.innerHTML = `
+      <div class="desktop__workspace">
+        ${windowMarkup("connect", { open: true, defaultCentered: true })}
+        ${windowMarkup("intro", { open: true })}
+        ${windowMarkup("details", { open: true })}
+      </div>
+      <div class="desktop-taskbar">
+        <button data-window-taskbar="connect"></button>
+        <button data-window-taskbar="intro"></button>
+        <button data-window-taskbar="details"></button>
+      </div>`;
+    document.body.appendChild(el);
+    hook = createWindowManager(el);
+    hook.workspaceSize = () => ({ w: 1024, h: 768 });
+    hook.mount();
+
+    const connect = hook.windows.connect.state;
+    const intro = hook.windows.intro.state;
+    const details = hook.windows.details.state;
+
+    expect(connect.centered).toBe(true);
+    expect(connect.x).toBe(362);
+    expect(connect.y).toBe(324);
+
+    // The others still cascade, and neither of them outranks the centered one.
+    expect(intro.centered).toBe(false);
+    expect(details.centered).toBe(false);
+    expect(connect.z).toBeGreaterThan(intro.z);
+    expect(connect.z).toBeGreaterThan(details.z);
+
+    // It is also the window a phone would show: focus follows page order.
+    expect(hook.focusedId).toBe("connect");
+  });
+});
+
 describe("WindowManager — desktop shortcuts", () => {
   let el;
   let hook;

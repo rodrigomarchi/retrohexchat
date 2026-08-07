@@ -1047,9 +1047,33 @@ const WindowManagerCore = {
   // what it holds — and only the position is arranged. The first window ends up
   // in front, since on a page it is the one with something to say.
   layoutOnMount() {
-    const ids = this.visibleWindows();
-    if (ids.length === 0) return;
+    const all = this.visibleWindows();
+    if (all.length === 0) return;
 
+    // A window that declared itself centered opts out of the cascade and keeps
+    // the middle of the desk. The cascade hands its front slot the deepest
+    // offset, which is the worst place to put the tallest window on the page:
+    // it starts low, `max-height` caps it against the bottom, and its last rows
+    // end up scrolled out of a window that looks like it fits.
+    const ids = all.filter((id) => !this.windows[id].state.centered);
+    const centered = all.filter((id) => this.windows[id].state.centered);
+
+    if (ids.length > 0) this.cascadeOnMount(ids);
+
+    // Centered windows sit in front of the cascade, and the first window on the
+    // page keeps the focus either way — on a phone it is the only one shown.
+    for (const id of centered) {
+      this.windows[id].state.maximized = false;
+      this.windows[id].state.z = this.zCounter += 1;
+    }
+
+    this.focusedId = all[0];
+    this.applyAll();
+    if (ids.length > 0) this.centerLayout(ids);
+    this.persist();
+  },
+
+  cascadeOnMount(ids) {
     // A fixed 26px step is right for a handful of windows and wrong for a
     // dozen: they bunch into one corner and leave most of the desk empty. Grow
     // the step with the room available and the number of windows sharing it,
@@ -1072,10 +1096,6 @@ const WindowManagerCore = {
       st.z = this.zCounter + (ids.length - i);
     });
     this.zCounter += ids.length;
-    this.focusedId = ids[0];
-    this.applyAll();
-    this.centerLayout(ids);
-    this.persist();
   },
 
   // Anchoring a cascade at the top-left corner leaves the rest of the desk

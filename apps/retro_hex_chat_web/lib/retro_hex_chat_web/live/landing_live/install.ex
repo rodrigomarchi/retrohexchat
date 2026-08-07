@@ -42,6 +42,8 @@ defmodule RetroHexChatWeb.LandingLive.Install do
   def render(assigns) do
     ~H"""
     <.landing_layout active_page={@active_page} windows={@windows}>
+      <.landing_connect_window trusted_device_id={@trusted_device_id} />
+
       <section class="m-4" aria-labelledby="install-heading">
         <.landing_page_intro
           heading_id="install-heading"

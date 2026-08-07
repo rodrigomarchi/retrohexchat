@@ -1,0 +1,61 @@
+<p>
+  {dgettext(
+    "help",
+    "The Connect window is where you sign in. It appears on its own screen at /connect, and on every public page — so you can enter the chat without leaving the page you arrived on."
+  )}
+</p>
+<.help_h4 icon={:icon_status_user}>{dgettext("help", "Signing In")}</.help_h4>
+<p>
+  {dgettext(
+    "help",
+    "Type a nickname and click Connect. A nickname nobody has registered opens a short registration form; a registered one asks for its password. Either way you land in the chat already identified."
+  )}
+</p>
+<p>
+  {dgettext("help", "The nickname rules are the same everywhere — see")}
+  <.help_link topic="connecting">{dgettext("help", "Connecting")}</.help_link>
+  {dgettext("help", "for the full list.")}
+</p>
+<.help_h4 icon={:icon_devices}>{dgettext("help", "Trusted Terminals")}</.help_h4>
+<p>
+  {dgettext(
+    "help",
+    "Tick Remember this terminal while signing in and this browser is remembered for that nickname. On your next visit the window lists it as a card instead of an empty field, and one click signs you back in — no password."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help",
+    "Use another nick/password switches back to the plain nickname field, and Back to trusted terminals returns to the list."
+  )}
+</p>
+<.help_h4 icon={:icon_connect}>{dgettext("help", "Auto-Login")}</.help_h4>
+<p>
+  {dgettext(
+    "help",
+    "A remembered terminal can go one step further: turn on auto-login for it and opening any page signs you straight into the chat, with nothing to click."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help",
+    "This is per terminal and per nickname, so a shared machine can stay manual while your own signs you in. Disconnecting from the chat always returns you here rather than looping straight back in."
+  )}
+</p>
+<.help_h4 icon={:icon_laptop}>{dgettext("help", "The Window Itself")}</.help_h4>
+<p>
+  {dgettext(
+    "help",
+    "It behaves like every other window: move it, minimize it, or bring it back from the taskbar button or Start ▸ Windows. On the public pages it opens with the page; on the connect screen it is pinned in the middle."
+  )}
+</p>
+<.help_h4 icon={:icon_link}>{dgettext("help", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="connecting">{dgettext("help", "Connecting")}</.help_link>
+  ·
+  <.help_link topic="connect-authentication">
+    {dgettext("help", "Connect Authentication")}
+  </.help_link>
+  · <.help_link topic="ui-desktop">{dgettext("help", "Desktop & Windows")}</.help_link>
+  · <.help_link topic="nickserv">{dgettext("help", "NickServ Overview")}</.help_link>
+</p>

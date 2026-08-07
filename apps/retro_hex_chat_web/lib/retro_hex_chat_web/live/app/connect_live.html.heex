@@ -1,18 +1,12 @@
-<.connect_screen
-  step={@step}
-  nickname={@nickname}
-  nickname_error={@nickname_error}
-  password={@password}
-  password_confirm={@password_confirm}
-  password_error={@password_error}
-  auth_token={@auth_token}
-  remembered_nicks={@remembered_nicks}
-  takeover_session={@takeover_session}
-  manual_login={@manual_login}
-  trusted_device_login={@trusted_device_login}
-  remember_device={@remember_device}
-  device_label={@device_label}
-  flash={@flash}
-  csrf_token={Plug.CSRFProtection.get_csrf_token()}
-  chat_session_path={~p"/chat/session"}
-/>
+<.connect_screen step={@step} flash={@flash}>
+  <.live_component
+    module={ConnectForm}
+    id={ConnectForm.id()}
+    trusted_device_id={@trusted_device_id}
+    takeover_session={@takeover_session}
+    auto_login={@auto_login}
+    notify_step={true}
+    csrf_token={Plug.CSRFProtection.get_csrf_token()}
+    chat_session_path={~p"/chat/session"}
+  />
+</.connect_screen>

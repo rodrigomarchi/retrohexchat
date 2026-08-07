@@ -11,6 +11,9 @@ defmodule RetroHexChatWeb.Router do
   pipeline :landing_live do
     plug :accepts, ["html"]
     plug :fetch_session
+    # The landing pages host the connect window, so they need the same
+    # trusted-device context the app pipeline provides.
+    plug RetroHexChatWeb.Plugs.PutTrustedDevice
     plug RetroHexChatWeb.Plugs.PutLocale, :public
     plug :fetch_live_flash
     plug :put_root_layout, html: {RetroHexChatWeb.Layouts, :landing_live}
@@ -36,7 +39,11 @@ defmodule RetroHexChatWeb.Router do
   scope "/", RetroHexChatWeb do
     pipe_through :landing_live
 
-    live_session :landing_locale, on_mount: [{RetroHexChatWeb.Live.PutLocale, :default}] do
+    live_session :landing_locale,
+      on_mount: [
+        {RetroHexChatWeb.Live.PutLocale, :default},
+        {RetroHexChatWeb.Live.PutTrustedDevice, :default}
+      ] do
       live "/", LandingLive.Index
       live "/how-it-works", LandingLive.HowItWorks
       live "/features", LandingLive.Features
@@ -53,7 +60,11 @@ defmodule RetroHexChatWeb.Router do
     scope "/#{locale_segment}", RetroHexChatWeb do
       pipe_through :landing_live
 
-      live_session live_session_name, on_mount: [{RetroHexChatWeb.Live.PutLocale, :default}] do
+      live_session live_session_name,
+        on_mount: [
+          {RetroHexChatWeb.Live.PutLocale, :default},
+          {RetroHexChatWeb.Live.PutTrustedDevice, :default}
+        ] do
         live "/", LandingLive.Index
         live "/how-it-works", LandingLive.HowItWorks
         live "/features", LandingLive.Features

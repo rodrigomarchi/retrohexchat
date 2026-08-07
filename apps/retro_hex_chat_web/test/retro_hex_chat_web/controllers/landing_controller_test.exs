@@ -52,6 +52,45 @@ defmodule RetroHexChatWeb.LandingLiveTest do
     end
   end
 
+  # /connect is no longer somewhere a reader is sent. Every public page carries
+  # the sign-in window, so the screen exists only as the place the app puts a
+  # session that ended — banned, expired, kicked, unauthenticated. A link back
+  # into it from public chrome would put a second front door beside the window.
+  describe "the way into the app" do
+    for {path, _heading_id} <- @landing_pages do
+      test "GET #{path} never navigates a reader to /connect", %{conn: conn} do
+        hrefs =
+          conn
+          |> get(unquote(path))
+          |> html_response(200)
+          |> Floki.parse_document!()
+          |> Floki.find("a")
+          |> Floki.attribute("href")
+
+        assert Enum.filter(hrefs, &String.starts_with?(&1, "/connect")) == []
+      end
+    end
+
+    test "the help viewer keeps a live entry, since it carries no window", %{conn: conn} do
+      item =
+        conn
+        |> get("/chat/help")
+        |> html_response(200)
+        |> Floki.parse_document!()
+        |> Floki.find(~s([data-testid="start-menu-item-open-the-app"]))
+
+      assert item != []
+      assert Floki.attribute(item, "href") == ["/"]
+    end
+
+    test "/connect still receives a session that ended", %{conn: conn} do
+      body = conn |> get("/connect?reason=expired") |> html_response(200)
+
+      assert body =~ ~s(data-testid="session-alert")
+      assert body =~ ~s(id="nickname")
+    end
+  end
+
   describe "public locale negotiation" do
     test "redirects first visits to the browser's localized public URL", %{conn: conn} do
       conn =
@@ -121,7 +160,11 @@ defmodule RetroHexChatWeb.LandingLiveTest do
         start_menu = Floki.find(document, "#landing-start-menu")
         assert start_menu != []
         hrefs = start_menu |> Floki.find("a") |> Floki.attribute("href")
-        assert "/connect" in hrefs
+
+        # Nothing here leads to /connect any more. The sign-in window is on this
+        # page, and /connect is only where the app sends a session that ended.
+        refute "/connect" in hrefs
+
         assert "/faq" in hrefs
         assert "/chat/help" in hrefs
 
@@ -295,8 +338,36 @@ defmodule RetroHexChatWeb.LandingLiveTest do
       assert body =~ ~s(data-show-target="#readme-popup")
       assert body =~ ~s(data-hide-target="#readme-popup")
       assert body =~ ~s(data-modal)
-      refute body =~ "phx-click="
-      refute body =~ "phx-click-away"
+    end
+
+    # The connect window is the one live region on an otherwise static page, and
+    # that boundary is the reason these pages still ship a 16kb bundle. A
+    # phx-binding that escapes the window means some editorial chrome started
+    # depending on a socket the page does not load until a reader reaches for it.
+    test "keeps LiveView bindings inside the connect window", %{conn: conn} do
+      document = conn |> get("/") |> html_response(200) |> Floki.parse_document!()
+
+      assert [_window] = Floki.find(document, ~s([data-testid="landing-connect-window"]))
+
+      assert Floki.find(document, ~s([data-testid="landing-connect-window"] form[phx-submit])) !=
+               []
+
+      outside =
+        document
+        |> Floki.traverse_and_update(fn
+          {_tag, attrs, _children} = node ->
+            if Enum.any?(attrs, &(&1 == {"data-testid", "landing-connect-window"})),
+              do: nil,
+              else: node
+
+          node ->
+            node
+        end)
+        |> Floki.raw_html()
+
+      refute outside =~ "phx-click="
+      refute outside =~ "phx-click-away"
+      refute outside =~ "phx-submit="
     end
   end
 

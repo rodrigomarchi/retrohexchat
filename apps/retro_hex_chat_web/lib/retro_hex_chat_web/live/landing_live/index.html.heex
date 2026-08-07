@@ -1,4 +1,6 @@
 <.landing_layout active_page={@active_page} windows={@windows}>
+  <.landing_connect_window trusted_device_id={@trusted_device_id} />
+
   <%!-- ══════════════ HERO + DESKTOP ══════════════ --%>
   <section class="m-4" aria-labelledby="hero-heading">
     <div class="grid grid-cols-[1fr_auto] gap-4">
@@ -36,17 +38,8 @@
           <strong>{dgettext("landing", "Your data. Your rules. Your community.")}</strong>
         </p>
 
-        <div class="mb-3">
-          <a href="/connect" class="no-underline">
-            <button
-              type="button"
-              class="inline-flex items-center gap-1 h-9 px-4 text-sm shadow-retro-raised bg-surface active:shadow-retro-sunken font-bold"
-            >
-              <Icons.icon_connect class="w-4 h-4" /> {dgettext("landing", "Connect")}
-            </button>
-          </a>
-        </div>
-
+        <%!-- The Connect window itself is the call to action now; a button that
+              only navigated to it would be a longer way round. --%>
         <p class="text-xs text-gray-600">
           {dgettext("landing", "Open source project • Built with Elixir & Phoenix")}
         </p>

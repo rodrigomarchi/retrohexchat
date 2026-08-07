@@ -3,8 +3,9 @@
 
 import { createPlausibleTracker } from "./lib/analytics/plausible";
 import { formatTime, CLOCK_INTERVAL } from "./lib/connection/clock.js";
+import { log } from "./lib/logger";
 import { createMenuBar } from "./lib/ui/menu_bar";
-import { createWindowManager } from "./lib/window_manager/window_manager";
+import { mountPublicWindowManager } from "./lib/window_manager/public_manager";
 
 function targetElement(selector) {
   if (!selector) return null;
@@ -87,12 +88,7 @@ function setupClock() {
 // in that chrome is a real link, and the manager leaves those clicks alone
 // because the windows they name live at other URLs.
 function setupWindowManager() {
-  const el = document.querySelector("[data-window-manager]");
-  if (!el) return null;
-
-  const wm = createWindowManager(el);
-  wm.mount();
-  return wm;
+  return mountPublicWindowManager(document.querySelector("[data-window-manager]"));
 }
 
 // The same menu bar the app runs, minus LiveView — including the mobile rail,
@@ -106,9 +102,125 @@ function setupMenuBar() {
   return bar;
 }
 
+// The connect window is a real LiveView island, but the LiveSocket that drives
+// it is not worth the critical path: most visitors read and leave, and crawlers
+// never interact at all. So the socket arrives on first touch — the window is
+// already dead-rendered, and connecting hydrates what is on screen.
+const CONNECT_WINDOW = '[data-testid="landing-connect-window"]';
+let connectBootState = "idle";
+let pendingSubmit = null;
+
+// The state lives on <html>, not on the window element: once a LiveSocket is up
+// LiveView owns that subtree and strips attributes the server did not render —
+// the same reason the window manager has to reconcile its geometry back.
+function markConnectBoot(state) {
+  connectBootState = state;
+  document.documentElement.setAttribute("data-connect-boot", state);
+}
+
+// Until the socket is up, LiveView is not intercepting these forms, so a submit
+// would be a native one: the browser would reload the page and the reader would
+// lose what they typed. Hold the submit, boot, and replay it once LiveView owns
+// the form — so reaching for the form fast costs a moment, never an entry.
+function holdSubmitUntilReady(win) {
+  win.addEventListener(
+    "submit",
+    (event) => {
+      if (connectBootState === "ready") return;
+
+      event.preventDefault();
+      const form = event.target;
+      // Keep the values, never the node: joining replaces this form, so a
+      // reference would be detached by the time it could be replayed — and the
+      // server has never seen what was typed, so the DOM cannot supply it back.
+      pendingSubmit = {
+        event: form.getAttribute("phx-submit"),
+        values: Object.fromEntries(new FormData(form).entries()),
+      };
+      bootConnect();
+    },
+    true,
+  );
+}
+
+function replayPendingSubmit() {
+  const pending = pendingSubmit;
+  pendingSubmit = null;
+  if (!pending) return;
+
+  const form = document.querySelector(`${CONNECT_WINDOW} form[phx-submit="${pending.event}"]`);
+
+  if (!form) {
+    log.error("[connect] the held form was gone before it could be replayed", pending.event);
+    return;
+  }
+
+  for (const [name, value] of Object.entries(pending.values)) {
+    const field = form.elements.namedItem(name);
+    if (field) field.value = value;
+  }
+
+  form.requestSubmit();
+}
+
+function revealConnectBootError() {
+  document.querySelectorAll("[data-connect-boot-error]").forEach(showElement);
+}
+
+async function bootConnect() {
+  if (connectBootState !== "idle") return;
+  markConnectBoot("loading");
+
+  try {
+    // PublicWindowManagerHook adopts the manager mounted above rather than
+    // replacing it, so nothing is handed over here. It has to be a hook from
+    // now on: a connected LiveView rebuilds the window roots from server markup
+    // that carries no geometry, and only a hook gets the `updated()` that
+    // reconciles the layout back.
+    const { bootConnectLiveSocket, whenLiveViewJoined } = await import("./connect_boot");
+    bootConnectLiveSocket();
+
+    // connect() returns before the socket opens, so "ready" has to mean joined.
+    // Marking it any earlier would replay a held submit against a page LiveView
+    // is not driving yet — a native submit, and the reader loses what they typed.
+    await whenLiveViewJoined();
+    markConnectBoot("ready");
+    replayPendingSubmit();
+  } catch (error) {
+    // A failed chunk leaves the form inert, which looks like a dead page unless
+    // we say so. Never swallow this.
+    markConnectBoot("failed");
+    pendingSubmit = null;
+    revealConnectBootError();
+    log.error("[connect] could not load the sign-in socket", error);
+  }
+}
+
+function setupConnectBoot() {
+  const win = document.querySelector(CONNECT_WINDOW);
+  if (!win) return;
+
+  markConnectBoot("idle");
+  holdSubmitUntilReady(win);
+
+  // A reader the server recognises is one click from signing in, and that click
+  // is lost if it lands before the socket is up. It is also the only thing that
+  // opens a socket for auto-login to push through. So they get it during render;
+  // everyone else waits until they actually reach for the form.
+  if (win.querySelector('[data-connect-eager="true"]')) {
+    bootConnect();
+    return;
+  }
+
+  for (const event of ["pointerover", "pointerdown", "focusin"]) {
+    win.addEventListener(event, bootConnect, { once: true, passive: true });
+  }
+}
+
 setupClock();
 setupMenuBar();
 setupWindowManager();
+setupConnectBoot();
 
 const plausibleEnv = document.querySelector('meta[name="plausible-env"]')?.content || "prod";
 const plausible = createPlausibleTracker({

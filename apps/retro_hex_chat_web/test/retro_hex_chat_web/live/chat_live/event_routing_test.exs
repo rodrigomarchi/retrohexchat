@@ -42,7 +42,12 @@ defmodule RetroHexChatWeb.ChatLive.EventRoutingTest do
 
       assert_receive {:force_disconnect_ack, ^ack_ref}, 1_000
       refute Tracker.online?("channel:#lobby", nick)
-      assert_redirect(view, "/chat/session/clear?reason=system-reset", 1_000)
+
+      # The ack is not a sync point for the redirect: the handler sends it before
+      # it returns the socket that carries the redirect, which then reaches this
+      # process through the LiveViewTest proxy. So the wait has to cover that
+      # gap, and under a full-suite run it does not fit in a second.
+      assert_redirect(view, "/chat/session/clear?reason=system-reset", 5_000)
     end
   end
 

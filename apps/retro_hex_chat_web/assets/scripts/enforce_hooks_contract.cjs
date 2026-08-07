@@ -12,6 +12,9 @@ const ALLOWED_DYNAMIC_IMPORT_FILES = new Set([
   "js/hooks/games/game_canvas_hook.js",
   "js/hooks/lobby/lobby_game_canvas_hook.js",
   "js/lib/i18n.js",
+  // The public pages defer their LiveSocket until a reader touches the connect
+  // window, so the critical bundle stays a fraction of the app's.
+  "js/public_pages.js",
 ]);
 
 const ALLOWED_LAZY_FACADE_FILES = new Set([
@@ -24,6 +27,7 @@ const HOOK_BUILDER_FILES = [
   "js/hooks/lazy_feature_hooks.js",
   "js/hooks/help_hooks.js",
   "js/hooks/showcase_hooks.js",
+  "js/hooks/connect_hooks.js",
 ];
 
 const NON_IMPLEMENTATION_HOOK_FILES = new Set([
@@ -33,6 +37,7 @@ const NON_IMPLEMENTATION_HOOK_FILES = new Set([
   "js/hooks/lazy_feature_hook.js",
   "js/hooks/help_hooks.js",
   "js/hooks/showcase_hooks.js",
+  "js/hooks/connect_hooks.js",
 ]);
 
 const LIVESOCKET_ENTRYPOINTS = {
@@ -47,6 +52,10 @@ const LIVESOCKET_ENTRYPOINTS = {
   "js/retrohex_content.js": {
     registryImport: "./hooks/showcase_hooks",
     hookBuilder: "buildShowcaseHooks",
+  },
+  "js/connect_boot.js": {
+    registryImport: "./hooks/connect_hooks",
+    hookBuilder: "buildConnectHooks",
   },
 };
 
@@ -72,10 +81,15 @@ function main() {
     "showcaseHooks",
     failures,
   );
+  const connectHooks = parseHookObjectKeys(
+    readAsset("js/hooks/connect_hooks.js"),
+    "connectHooks",
+    failures,
+  );
   const lazyHooks = parseLazyFeatureHooks(lazyJs, failures);
   checkHookSets(criticalHooks, lazyHooks, failures);
   checkPhxHookUsage(
-    new Set([...criticalHooks, ...helpHooks, ...showcaseHooks, ...lazyHooks]),
+    new Set([...criticalHooks, ...helpHooks, ...showcaseHooks, ...connectHooks, ...lazyHooks]),
     failures,
   );
 

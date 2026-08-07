@@ -111,7 +111,8 @@ defmodule RetroHexChatWeb.MixProject do
         "esbuild retro_hex_chat_web_public_pages_js",
         "esbuild retro_hex_chat_web_help_live_js",
         "esbuild retro_hex_chat_web_retrohex_content_js",
-        "cmd rm -rf priv/static/assets/js/chunks",
+        # No chunk sweep here: assets.clean above already emptied the directory,
+        # and public_pages now emits chunks of its own that this would delete.
         "esbuild retro_hex_chat_web_app_js",
         "cmd node assets/scripts/bundle_retrohex_css.cjs",
         "cmd env BROWSERSLIST_IGNORE_OLD_DATA=1 assets/node_modules/.bin/tailwindcss -c assets/tailwind.config.js -i assets/css/.generated/retrohex.css -o priv/static/assets/css/retrohex.css"
@@ -121,7 +122,8 @@ defmodule RetroHexChatWeb.MixProject do
         "esbuild retro_hex_chat_web_public_pages_js --minify",
         "esbuild retro_hex_chat_web_help_live_js --minify",
         "esbuild retro_hex_chat_web_retrohex_content_js --minify",
-        "cmd rm -rf priv/static/assets/js/chunks",
+        # No chunk sweep here: assets.clean above already emptied the directory,
+        # and public_pages now emits chunks of its own that this would delete.
         "esbuild retro_hex_chat_web_app_js --minify",
         "cmd node assets/scripts/bundle_retrohex_css.cjs",
         "cmd env BROWSERSLIST_IGNORE_OLD_DATA=1 assets/node_modules/.bin/tailwindcss -c assets/tailwind.config.js -i assets/css/.generated/retrohex.css -o priv/static/assets/css/retrohex.css --minify",

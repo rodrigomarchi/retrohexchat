@@ -50,6 +50,14 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
       "when true, Escape closes the topmost unpinned window (dialog-window desktops). " <>
         "Open WM menus, modal dialogs and visible [data-escape-guard] overlays take priority"
 
+  attr :window_manager_hook, :string,
+    default: "WindowManagerHook",
+    values: ["WindowManagerHook", "PublicWindowManagerHook"],
+    doc:
+      "the public pages take PublicWindowManagerHook — the same manager without a " <>
+        "pushEvent seam. With one, the manager treats every window id as local and " <>
+        "swallows the real <a href> links their chrome navigates between pages by"
+
   attr :class, :any, default: nil
   attr :rest, :global
 
@@ -67,7 +75,7 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
     ~H"""
     <div
       id={@id}
-      phx-hook="WindowManagerHook"
+      phx-hook={@window_manager_hook}
       data-window-manager
       data-persist-key={@persist_key}
       data-persist={to_string(@persist)}

@@ -1,7 +1,7 @@
 /**
  * @section PW - Public Pages, Landing, And Showcase
  * @flow PW1 [done] The landing loads the public bundle and enables desktop interactions
- * @flow PW2 [done] Mobile navigation opens and links into the app connect flow
+ * @flow PW2 [done] Mobile navigation works and the Start menu offers no route to /connect
  * @flow PW3 [done] The landing runs the real window manager over a taskbar of links
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
@@ -106,10 +106,22 @@ test.describe("Landing public pages", () => {
 
     await drawer.locator('a[href="/features"]').click();
     await expect(page).toHaveURL(/\/features$/);
-    await expect(page.locator("#features-heading")).toBeVisible();
 
-    // The way into the app is the Start menu, the same entry every other shell
-    // names — not a CTA the landing alone used to carry in its header.
+    // The stacked shell shows one window at a time, and Connect is the front
+    // one on every public page — so the page's own heading is in the document
+    // (crawlers and the desktop shell see it) while the phone opens on the way
+    // in. Start ▸ Windows is how a reader gets to the page's own sections.
+    await expect(page.locator("#features-heading")).toHaveCount(1);
+    await expect(
+      page.getByTestId("landing-connect-window").locator("#nickname"),
+    ).toBeVisible();
+
+    // The way into the app is the window on the page itself. /connect is no
+    // longer somewhere a reader is sent: it is only where the app puts a
+    // session that ended. So the Start menu offers no route to it, and its
+    // "Open the app" row is present but inert — the menu reads the same on
+    // every screen, and an entry with nothing to do says so instead of
+    // vanishing.
     await page.goto("/");
     await page.locator("[data-window-start]").click();
     // Stacked shell: a group drills down on a deliberate tap. Hover is a
@@ -119,10 +131,13 @@ test.describe("Landing public pages", () => {
       .locator("#landing-start-menu [data-start-submenu-trigger]")
       .filter({ hasText: "Navigate" })
       .click();
-    await page.locator('#landing-start-menu a[href="/connect"]').click();
-    await expect(page).toHaveURL(/\/connect$/);
-    await expect(page.locator("#nickname")).toBeVisible();
-    await expect(page.locator('script[src*="/assets/js/app"]')).toHaveCount(1);
+
+    const openTheApp = page.getByTestId("start-menu-item-open-the-app");
+    await expect(openTheApp).toBeVisible();
+    await expect(openTheApp).toHaveAttribute("aria-disabled", "true");
+    await expect(
+      page.locator('#landing-start-menu a[href="/connect"]'),
+    ).toHaveCount(0);
 
     expect(failures).toEqual([]);
   });

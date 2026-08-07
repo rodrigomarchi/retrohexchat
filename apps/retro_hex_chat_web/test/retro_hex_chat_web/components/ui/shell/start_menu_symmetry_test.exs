@@ -101,7 +101,13 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSymmetryTest do
     test "a screen never links to itself" do
       refute enabled?(:connect, "start-menu-item-open-the-app")
       refute enabled?(:chat, "start-menu-item-open-the-app")
-      assert enabled?(:landing, "start-menu-item-open-the-app")
+
+      # The entry leads to a page carrying the sign-in window, so it is also
+      # redundant on the public pages — they already have one open. Help and the
+      # showcase are the two screens that do not, and it stays live for them.
+      refute enabled?(:landing, "start-menu-item-open-the-app")
+      assert enabled?(:help, "start-menu-item-open-the-app")
+      assert enabled?(:showcase, "start-menu-item-open-the-app")
 
       refute enabled?(:help, "start-menu-item-documentation")
       assert enabled?(:chat, "start-menu-item-documentation")

@@ -115,9 +115,11 @@ config :retro_hex_chat_web, RetroHexChatWeb.PromEx,
 # Configure esbuild (the version is required)
 config :esbuild,
   version: "0.25.4",
+  # Split: the connect window's LiveSocket is a dynamic import, so it must land
+  # in its own chunk instead of the bundle every visitor downloads.
   retro_hex_chat_web_public_pages_js: [
     args:
-      ~w(js/public_pages.js --bundle --target=es2022 --outdir=../priv/static/assets/js --external:/fonts/* --external:/images/*),
+      ~w(js/public_pages.js --bundle --target=es2022 --format=esm --splitting --chunk-names=chunks/public-[name]-[hash] --outdir=../priv/static/assets/js --external:/fonts/* --external:/images/*),
     cd: Path.expand("../apps/retro_hex_chat_web/assets", __DIR__),
     env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
   ],

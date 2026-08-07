@@ -45,6 +45,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
         id="landing-desktop"
         persist_key={"landing:#{@active_page}"}
         cascade_on_mount
+        window_manager_hook="PublicWindowManagerHook"
         class="flex-1"
       >
         <:header>
@@ -91,6 +92,15 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
       <%!-- `desktop-taskbar__window-button` is what the stacked (mobile) shell
             hides: a phone has no room for a strip of window buttons, and
             Start ▸ Windows switches between them there. --%>
+      <%!-- Connect leads, because it is the one window here that does something
+            rather than explains something. --%>
+      <.taskbar_button
+        window="connect"
+        label={dgettext("landing", "Connect")}
+        class="desktop-taskbar__window-button"
+      >
+        <:icon><Icons.icon_connect class="w-3 h-3" /></:icon>
+      </.taskbar_button>
       <.taskbar_button
         :for={w <- @windows}
         window={w.id}
@@ -124,7 +134,8 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
   # shared taskbar components use), plus About — a section with a window and a
   # taskbar button, so it belongs in the list that brings closed ones back.
   defp start_windows(windows) do
-    Enum.map(windows, &%{id: &1.id, label: &1.label, icon_fn: &1.icon}) ++
+    [%{id: "connect", label: dgettext("landing", "Connect"), icon_fn: :icon_connect}] ++
+      Enum.map(windows, &%{id: &1.id, label: &1.label, icon_fn: &1.icon}) ++
       [%{id: "about", label: dgettext("landing", "About"), icon_fn: :icon_lightbulb}]
   end
 
@@ -391,10 +402,13 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
             <h3 class="font-bold mb-1">
               <Icons.icon_community class="w-3 h-3 inline" /> {dgettext("landing", "Community")}
             </h3>
+            <%!-- Channel names, not links. They used to point at /connect, which
+                  is now only where the app sends you when a session ends — and
+                  the window that gets you in is already open on this page. --%>
             <ul class="space-y-1">
-              <li><a href="/connect">#general</a></li>
-              <li><a href="/connect">#dev</a></li>
-              <li><a href="/connect">#help</a></li>
+              <li>#general</li>
+              <li>#dev</li>
+              <li>#help</li>
             </ul>
           </div>
           <div>

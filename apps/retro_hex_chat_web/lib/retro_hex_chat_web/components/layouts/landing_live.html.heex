@@ -86,7 +86,10 @@
 
     <%!-- RetroHex CSS (Tailwind) + static public-page JS --%>
     <link phx-track-static rel="stylesheet" href={~p"/assets/css/retrohex.css"} />
-    <script defer phx-track-static type="text/javascript" src={~p"/assets/js/public_pages.js"}>
+    <%!-- A module, not a classic script: the connect window's LiveSocket is a
+          dynamic import, and only a module can pull its chunk. Modules are
+          deferred by default, so this keeps the old loading behaviour. --%>
+    <script phx-track-static type="module" src={~p"/assets/js/public_pages.js"}>
     </script>
   </head>
   <body class="bg-background font-system text-text">

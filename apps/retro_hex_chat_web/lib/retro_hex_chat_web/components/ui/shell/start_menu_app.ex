@@ -402,11 +402,16 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
             testid="start-menu-item-design-system"
           />
           <.start_menu_separator />
+          <%!-- The public pages carry the sign-in window themselves, so this
+                leads to one rather than to /connect: nobody has to visit a
+                screen whose only job is to hold the form they already have.
+                It stays for help and the showcase, the two public screens
+                without that window, and goes inert wherever it is redundant. --%>
           <.link_item
-            href="/connect"
+            href="/"
             label={dgettext("landing", "Open the app")}
             icon_fn={:icon_connect}
-            disabled={@screen in [:chat, :connect]}
+            disabled={@screen in [:chat, :connect, :landing]}
             class="font-bold"
             testid="start-menu-item-open-the-app"
           />

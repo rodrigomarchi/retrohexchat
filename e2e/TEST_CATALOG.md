@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **211 spec files** under `e2e/tests/`.
-- **428 Playwright `test()` cases**.
-- **422 documented flows**, 421 done, 1 not done.
+- **212 spec files** under `e2e/tests/`.
+- **432 Playwright `test()` cases**.
+- **426 documented flows**, 425 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -686,7 +686,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | # | Flow | Spec file | Status |
 | --- | --- | --- | --- |
 | PW1 | The landing loads the public bundle and enables desktop interactions | `tests/landing-public.spec.ts` | done |
-| PW2 | Mobile navigation opens and links into the app connect flow | `tests/landing-public.spec.ts` | done |
+| PW2 | Mobile navigation works and the Start menu offers no route to /connect | `tests/landing-public.spec.ts` | done |
 | PW3 | The landing runs the real window manager over a taskbar of links | `tests/landing-public.spec.ts` | done |
 | PW4 | Landing, connect, and help wear the same phone chrome (one case per public shell) | `tests/shell-chrome-parity.spec.ts` | done |
 | PW5 | A rail button opens the shared drawer on its own section | `tests/shell-chrome-parity.spec.ts` | done |
@@ -699,6 +699,10 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | PW12 | With JavaScript disabled the page still reads and links like a document, keeping its canonical URL | `tests/showcase-desktop.spec.ts` | done |
 | PW13 | Windows on each landing page are sized by their content (one case per public page) | `tests/desktop-window-sizing.spec.ts` | done |
 | PW14 | The showcase component window is sized by its content | `tests/desktop-window-sizing.spec.ts` | done |
+| PW15 | The landing connect window signs a new nickname into the chat | `tests/landing-connect-window.spec.ts` | done |
+| PW16 | The landing keeps its LiveSocket off until a reader reaches for the form | `tests/landing-connect-window.spec.ts` | done |
+| PW17 | A remembered terminal signs back in with one click from the landing | `tests/landing-connect-window.spec.ts` | done |
+| PW18 | The landing connect window opens fully on screen at every desktop size | `tests/landing-connect-window.spec.ts` | done |
 
 ## Spec files with no documented flows
 

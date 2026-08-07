@@ -98,16 +98,25 @@ test.describe("Shell chrome parity", () => {
     await expect(page.getByTestId("app-header")).toBeVisible();
 
     // A CTA in the header and a second one in the tray were chrome no other
-    // shell had. The way in is the Start menu, named as everywhere else — and
-    // the page's own content is still free to invite you in.
+    // shell had, and the header still carries neither.
     // Exact matches: the Start menu in the taskbar carries a Disconnect entry,
     // and a substring match would read that as the CTA coming back.
     await expect(
       page.getByTestId("app-header").getByText("Connect", { exact: true }),
     ).toHaveCount(0);
-    await expect(
-      page.getByTestId("landing-taskbar").getByText("Connect", { exact: true }),
-    ).toHaveCount(0);
+
+    // The taskbar's Connect is not that CTA coming back: sign-in is a window
+    // that lives on this page now, and every window here has a taskbar button —
+    // that is how a closed one comes back. The distinction that matters is that
+    // it drives a window rather than navigating away, which is exactly what the
+    // old CTA did. (Start ▸ Open the app is still a link, and still the way to
+    // reach the app itself — asserted at the end of this test.)
+    const connectButton = page
+      .getByTestId("landing-taskbar")
+      .locator('[data-window-taskbar="connect"]');
+
+    await expect(connectButton).toHaveCount(1);
+    await expect(connectButton).not.toHaveAttribute("href", /./);
 
     // This whole describe runs at a phone viewport, where the menu drills down
     // on a tap — hover is deliberately inert in the stacked shell.

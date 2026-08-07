@@ -19,6 +19,27 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
           )
       },
       %{
+        id: "ui-connect-window",
+        title: dgettext("help", "Connect Window"),
+        category: dgettext("help", "User Interface"),
+        keywords: [
+          "connect",
+          "sign in",
+          "login",
+          "landing",
+          "home page",
+          "nickname",
+          "trusted terminal",
+          "auto-login"
+        ],
+        icon: :icon_connect,
+        description:
+          dgettext(
+            "help",
+            "Sign in from the Connect window, which appears both on its own screen and on every public page. It carries the whole flow: pick a nickname, register a new one or enter a password for a registered one, and choose whether to remember the terminal. A remembered terminal signs you in with a single click, and one set to auto-login takes you straight to the chat."
+          )
+      },
+      %{
         id: "ui-desktop",
         title: dgettext("help", "Desktop & Windows"),
         category: dgettext("help", "User Interface"),
