@@ -144,6 +144,60 @@ defmodule RetroHexChat.Scraper.StoreTest do
     end
   end
 
+  describe "provenance_stats/1" do
+    test "reports which standard supplied each field" do
+      {:ok, _} =
+        Store.record_success("https://example.com/a", %{
+          title: "A",
+          raw_metadata: %{"sources" => %{"title" => "og", "description" => "og"}}
+        })
+
+      {:ok, _} =
+        Store.record_success("https://example.com/b", %{
+          title: "B",
+          raw_metadata: %{"sources" => %{"title" => "og", "description" => "twitter"}}
+        })
+
+      {:ok, _} =
+        Store.record_success("https://example.com/c", %{
+          title: "C",
+          raw_metadata: %{"sources" => %{"title" => "html"}}
+        })
+
+      by_field = Map.new(Store.provenance_stats(), &{&1.field, &1})
+
+      assert by_field["title"].total == 3
+      assert by_field["title"].top_source == "og"
+      assert by_field["title"].breakdown == "og 2, html 1"
+      assert by_field["description"].total == 2
+    end
+
+    test "says nothing about an archive nobody has filled" do
+      assert Store.provenance_stats() == []
+    end
+  end
+
+  describe "failure_stats/1" do
+    test "separates a site that is down from one that will not answer a robot" do
+      now = DateTime.utc_now()
+
+      {:ok, _} = Store.record_failure("https://example.com/walled", :bot_challenge, now: now)
+      {:ok, _} = Store.record_failure("https://example.com/walled2", :bot_challenge, now: now)
+      {:ok, _} = Store.record_failure("https://example.com/down", :timeout, now: now)
+
+      by_reason = Map.new(Store.failure_stats(), &{&1.reason, &1})
+
+      assert by_reason["bot_challenge"].count == 2
+      assert by_reason["timeout"].count == 1
+
+      # The wall is re-checked weekly, the outage in minutes.
+      assert DateTime.diff(by_reason["bot_challenge"].soonest_retry, now, :second) ==
+               7 * 24 * 60 * 60
+
+      assert DateTime.diff(by_reason["timeout"].soonest_retry, now, :second) == 15 * 60
+    end
+  end
+
   describe "prune/1" do
     test "deletes idle pages and spares expired ones that are still asked for" do
       now = DateTime.utc_now()

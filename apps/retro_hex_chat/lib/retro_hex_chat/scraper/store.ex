@@ -340,6 +340,12 @@ defmodule RetroHexChat.Scraper.Store do
     do: @deterministic_error_ttl_seconds
 
   defp failure_ttl_seconds(:not_found), do: @deterministic_error_ttl_seconds
+
+  # A wall that answers a challenge instead of a page will answer the same
+  # challenge in fifteen minutes. Checked weekly rather than four times an hour,
+  # because these do eventually come down.
+  defp failure_ttl_seconds(:bot_challenge), do: @deterministic_error_ttl_seconds
+
   defp failure_ttl_seconds(_reason), do: @transient_error_ttl_seconds
 
   @spec error_reason(fetch_error()) :: String.t()
@@ -384,6 +390,70 @@ defmodule RetroHexChat.Scraper.Store do
       newest_fetched_at: max(page.fetched_at)
     })
     |> repo.all()
+  end
+
+  @doc """
+  Which standard supplied each stored field, counted across the archive.
+
+  `raw_metadata["sources"]` records this per page at scrape time. Read here so it
+  is not another column written for ever and looked at never — the table this
+  replaced carried exactly such a `metadata` map, always `%{}`.
+
+  It answers the question an operator actually has about extraction: not "did it
+  work" but "where is it getting this from". Titles arriving mostly from `html`
+  rather than `og` means publishers' preview tags are being missed, and a wrong
+  title can be traced to its standard without opening the row.
+  """
+  @spec provenance_stats(keyword()) :: [map()]
+  def provenance_stats(opts \\ []) do
+    repo = Keyword.get(opts, :repo, Repo)
+
+    ScrapedPage
+    |> where([page], page.status == "ready")
+    |> select([page], page.raw_metadata)
+    |> repo.all()
+    |> Enum.flat_map(&Map.get(&1, "sources", %{}))
+    |> Enum.group_by(&elem(&1, 0), &elem(&1, 1))
+    |> Enum.map(fn {field, sources} ->
+      counts = Enum.frequencies(sources)
+
+      %{
+        id: "provenance:#{field}",
+        field: field,
+        total: length(sources),
+        top_source: counts |> Enum.max_by(&elem(&1, 1), fn -> {"—", 0} end) |> elem(0),
+        breakdown:
+          counts
+          |> Enum.sort_by(&(-elem(&1, 1)))
+          |> Enum.map_join(", ", fn {source, count} -> "#{source} #{count}" end)
+      }
+    end)
+    |> Enum.sort_by(& &1.field)
+  end
+
+  @doc """
+  Why pages failed, grouped by the reason recorded on them.
+
+  The status breakdown says how many failed; this says what stopped them, which
+  is the difference between a site that is down and a site that will never answer
+  a robot.
+  """
+  @spec failure_stats(keyword()) :: [map()]
+  def failure_stats(opts \\ []) do
+    repo = Keyword.get(opts, :repo, Repo)
+
+    ScrapedPage
+    |> where([page], not is_nil(page.error_reason))
+    |> group_by([page], page.error_reason)
+    |> select([page], %{
+      reason: page.error_reason,
+      count: count(page.id),
+      newest_attempt: max(page.last_attempted_at),
+      soonest_retry: min(page.expires_at)
+    })
+    |> repo.all()
+    |> Enum.map(&Map.put(&1, :id, "failure:#{&1.reason}"))
+    |> Enum.sort_by(&(-&1.count))
   end
 
   @ready_idle_days 90

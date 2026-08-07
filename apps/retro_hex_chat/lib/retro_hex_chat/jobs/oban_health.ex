@@ -195,6 +195,8 @@ defmodule RetroHexChat.Jobs.ObanHealth do
             bot_event_log_table: Table.t(),
             maintenance_table: Table.t(),
             scraped_page_table: Table.t(),
+            scraper_provenance_table: Table.t(),
+            scraper_failure_table: Table.t(),
             persistence_table: Table.t()
           }
 
@@ -214,6 +216,8 @@ defmodule RetroHexChat.Jobs.ObanHealth do
       :bot_event_log_table,
       :maintenance_table,
       :scraped_page_table,
+      :scraper_provenance_table,
+      :scraper_failure_table,
       :persistence_table
     ]
     defstruct [
@@ -232,6 +236,8 @@ defmodule RetroHexChat.Jobs.ObanHealth do
       :bot_event_log_table,
       :maintenance_table,
       :scraped_page_table,
+      :scraper_provenance_table,
+      :scraper_failure_table,
       :persistence_table
     ]
   end
@@ -308,6 +314,8 @@ defmodule RetroHexChat.Jobs.ObanHealth do
       bot_event_log_table: bot_event_log_table(bot_event_log_rows),
       maintenance_table: maintenance_table(maintenance_rows),
       scraped_page_table: scraped_page_table(scraped_page_rows),
+      scraper_provenance_table: scraper_provenance_table(repo),
+      scraper_failure_table: scraper_failure_table(repo),
       persistence_table: persistence_table(persistence_rows)
     }
   end
@@ -334,6 +342,8 @@ defmodule RetroHexChat.Jobs.ObanHealth do
       bot_event_log_table: bot_event_log_table([]),
       maintenance_table: maintenance_table([]),
       scraped_page_table: scraped_page_table([]),
+      scraper_provenance_table: scraper_provenance_table(nil),
+      scraper_failure_table: scraper_failure_table(nil),
       persistence_table: persistence_table([])
     }
   end
@@ -934,6 +944,48 @@ defmodule RetroHexChat.Jobs.ObanHealth do
         Table.column(:expired, "Expired", format: :number, sortable: true),
         Table.column(:oldest_attempted_at, "Oldest attempt", sortable: true),
         Table.column(:newest_fetched_at, "Newest fetch", sortable: true)
+      ],
+      rows: rows,
+      total: length(rows)
+    }
+  end
+
+  # Where the archive is getting each field from. A wrong title is traceable to
+  # the standard that supplied it without opening the row, and a shift towards
+  # `html` says publishers' preview tags are being missed.
+  defp scraper_provenance_table(nil), do: provenance_table_shell([])
+
+  defp scraper_provenance_table(repo) do
+    provenance_table_shell(ScraperStore.provenance_stats(repo: repo))
+  end
+
+  defp provenance_table_shell(rows) do
+    %Table{
+      columns: [
+        Table.column(:field, "Field", sortable: true),
+        Table.column(:total, "Pages", format: :number, sortable: true),
+        Table.column(:top_source, "Mostly from", sortable: true),
+        Table.column(:breakdown, "Breakdown")
+      ],
+      rows: rows,
+      total: length(rows)
+    }
+  end
+
+  # What stopped the pages that failed. The status counts say how many; this says
+  # whether a site is down or simply will not answer a robot.
+  defp scraper_failure_table(nil), do: failure_table_shell([])
+
+  defp scraper_failure_table(repo),
+    do: failure_table_shell(ScraperStore.failure_stats(repo: repo))
+
+  defp failure_table_shell(rows) do
+    %Table{
+      columns: [
+        Table.column(:reason, "Reason", sortable: true),
+        Table.column(:count, "Pages", format: :number, sortable: true),
+        Table.column(:newest_attempt, "Last tried", sortable: true),
+        Table.column(:soonest_retry, "Next retry", sortable: true)
       ],
       rows: rows,
       total: length(rows)

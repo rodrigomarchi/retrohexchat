@@ -136,6 +136,55 @@ defmodule RetroHexChat.Scraper.HTTPTest do
       assert {:ok, %{author: nil}} = HTTP.scrape("https://example.com/tw")
     end
 
+    test "tells a bot wall apart from a page with nothing on it" do
+      # What arstechnica.com actually serves: HTTP 202, an empty <title>, and the
+      # AWS WAF challenge script. Ten of one hundred and fifty-two real feed links
+      # came back like this.
+      Req.Test.expect(__MODULE__, fn conn ->
+        conn
+        |> Plug.Conn.put_resp_content_type("text/html")
+        |> Plug.Conn.resp(202, """
+        <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title></title>
+        <script type="text/javascript">window.awsWafCookieDomainList = [];</script>
+        </head><body></body></html>
+        """)
+      end)
+
+      assert {:error, :bot_challenge} = HTTP.scrape("https://example.com/walled")
+    end
+
+    test "recognises the header Cloudflare states it outright in" do
+      Req.Test.expect(__MODULE__, fn conn ->
+        conn
+        |> Plug.Conn.put_resp_header("cf-mitigated", "challenge")
+        |> Req.Test.html("<head><title></title></head>")
+      end)
+
+      assert {:error, :bot_challenge} = HTTP.scrape("https://example.com/cf")
+    end
+
+    test "an article that merely writes about challenge scripts still extracts" do
+      # The markers are only consulted for a page that yielded nothing at all, so
+      # a page quoting them keeps working.
+      Req.Test.expect(__MODULE__, fn conn ->
+        Req.Test.html(conn, """
+        <head><meta property="og:title" content="How cf_chl_opt and awsWafCookie work"></head>
+        <body><article><p>Both challenge scripts set a cookie.</p></article></body>
+        """)
+      end)
+
+      assert {:ok, %{metadata: %{title: "How cf_chl_opt and awsWafCookie work"}}} =
+               HTTP.scrape("https://example.com/about-walls")
+    end
+
+    test "a genuinely empty page is still just empty" do
+      Req.Test.expect(__MODULE__, fn conn ->
+        Req.Test.html(conn, "<head><title></title></head><body></body>")
+      end)
+
+      assert {:error, :no_metadata} = HTTP.scrape("https://example.com/blank")
+    end
+
     test "keeps a byline that is a person" do
       Req.Test.expect(__MODULE__, fn conn ->
         Req.Test.html(conn, """

@@ -68,8 +68,11 @@ defmodule RetroHexChat.Scraper.HTTP do
         {:ok, metadata} ->
           {:ok, build_scrape(metadata, sources, document, final_url, headers, status)}
 
-        {:error, reason} ->
-          {:error, reason}
+        # `ensure_useful_metadata/1` has exactly one failure: the page said
+        # nothing about itself. Whether that is a page with nothing on it or a
+        # wall standing in front of one is decided here.
+        {:error, :no_metadata} ->
+          {:error, empty_page_reason(html, headers)}
       end
     else
       false -> {:error, :not_html}
@@ -85,6 +88,37 @@ defmodule RetroHexChat.Scraper.HTTP do
       # was reported as an unreachable site.
       Logger.warning("scrape_raise url=#{url} error=#{Exception.message(exception)}")
       {:error, :fetch_failed}
+  end
+
+  # A bot wall answers every request, forever, with a page that has no metadata
+  # in it. Left as `:no_metadata` that is a transient failure retried every
+  # fifteen minutes for as long as the feed keeps carrying the link — Ars
+  # Technica alone accounted for ten of one hundred and fifty-two links that way.
+  #
+  # Told apart, it becomes a verdict with a long expiry: still re-checked
+  # eventually, because these walls do come down, but not hammered.
+  #
+  # Deliberately a *reclassification* of an already-empty result rather than a
+  # gate before parsing. An article about Cloudflare that quotes `cf_chl_opt`
+  # still extracts normally; only a page that yielded nothing at all is examined
+  # for the markers.
+  @challenge_scan_bytes 8_000
+  @challenge_markers ~w(awswafcookie awswaf.js cf_chl_opt __cf_chl challenge-platform _incapsula_ distil_r_captcha)
+
+  @spec empty_page_reason(String.t(), map()) :: :bot_challenge | :no_metadata
+  defp empty_page_reason(html, headers) do
+    if bot_challenge?(html, headers), do: :bot_challenge, else: :no_metadata
+  end
+
+  @spec bot_challenge?(String.t(), map()) :: boolean()
+  defp bot_challenge?(html, headers) do
+    # Cloudflare states it outright in a header; the rest are recognised by the
+    # script their interstitial loads.
+    first_header(headers, "cf-mitigated") != nil or
+      html
+      |> String.slice(0, @challenge_scan_bytes)
+      |> String.downcase()
+      |> then(fn head -> Enum.any?(@challenge_markers, &String.contains?(head, &1)) end)
   end
 
   @spec build_scrape(

@@ -394,6 +394,37 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
               />
             </.table_shell>
           </section>
+
+          <section>
+            <.section_heading
+              icon={:icon_link}
+              label={dgettext("dialogs", "Where each field came from")}
+            />
+            <.table_shell>
+              <.retro_table
+                id={"#{@testid}-scraper-provenance-table"}
+                table={@snapshot.scraper_provenance_table}
+                testid={"#{@testid}-scraper-provenance-table"}
+                truncate
+                fit_pane
+                empty_title={dgettext("dialogs", "No pages have been read yet")}
+              />
+            </.table_shell>
+          </section>
+
+          <section>
+            <.section_heading icon={:icon_shield} label={dgettext("dialogs", "Why pages failed")} />
+            <.table_shell>
+              <.retro_table
+                id={"#{@testid}-scraper-failure-table"}
+                table={@snapshot.scraper_failure_table}
+                testid={"#{@testid}-scraper-failure-table"}
+                truncate
+                fit_pane
+                empty_title={dgettext("dialogs", "No page has failed to be read")}
+              />
+            </.table_shell>
+          </section>
         </.tabs_content>
 
         <.tabs_content
