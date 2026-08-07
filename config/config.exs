@@ -69,9 +69,7 @@ config :retro_hex_chat, Oban,
      ]},
     Oban.Plugins.Pruner
   ],
-  # `link_preview` is kept only to drain jobs enqueued before the scrape worker
-  # was renamed. Remove it, and `Jobs.LinkPreviewFetchWorker`, after one deploy.
-  queues: [rss: 2, maintenance: 1, bots: 2, scrape: 2, link_preview: 1, persistence: 1]
+  queues: [rss: 2, maintenance: 1, bots: 2, scrape: 2, persistence: 1]
 
 config :retro_hex_chat_web,
   ecto_repos: [RetroHexChat.Repo],

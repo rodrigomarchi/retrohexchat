@@ -55,10 +55,17 @@ expired, cancel/idempotency lookup, and the flow's natural uniqueness.
 **Renaming a queue or a worker takes two deploys.** Oban stores `queue` and `worker` as plain
 strings on the job row, so the moment either name changes, every `available`, `scheduled` and
 `retryable` row enqueued by the previous release points at something that no longer exists —
-nothing runs them, nothing fails them, and `ObanHealth` counts them for ever. Ship the new name
-alongside the old queue and a delegating worker, let one deploy drain it, then delete both. The
-`link_preview` → `scrape` rename is the worked example: `Jobs.LinkPreviewFetchWorker` exists only
-to finish jobs the previous release started, and both it and its queue entry are due for deletion.
+nothing runs them, nothing fails them, and `ObanHealth` counts them for ever.
+
+The procedure, as run for `link_preview` → `scrape`:
+
+1. Ship the new worker and queue **alongside** the old queue and a worker under the old name that
+   delegates to the new one. Nothing new is enqueued under the old name.
+2. Confirm the old queue is empty in every state — `retro_hex_chat_prom_ex_oban_queue_length_count`
+   filtered to that queue — before going further.
+3. Ship a second release deleting the delegating worker and the old queue entry.
+
+Skipping step 2 is what strands jobs. Deploying both steps at once is the same as skipping it.
 
 ### 17.4 Observability is part of "done"
 
