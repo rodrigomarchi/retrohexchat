@@ -3,7 +3,6 @@ defmodule RetroHexChat.Jobs.ObanHealthTest do
 
   alias RetroHexChat.Admin.{BanCache, ServerBans}
   alias RetroHexChat.Bots.Queries, as: BotQueries
-  alias RetroHexChat.Chat.LinkPreview.Results, as: LinkPreviewResults
   alias RetroHexChat.Chat.PreferencePersistence
   alias RetroHexChat.Chat.Schemas.IgnoreListEntry
 
@@ -15,6 +14,7 @@ defmodule RetroHexChat.Jobs.ObanHealthTest do
     ServerBanExpiryWorker
   }
 
+  alias RetroHexChat.Scraper.Store, as: ScraperStore
   alias RetroHexChat.Services.NickServ
 
   @moduletag :integration
@@ -317,43 +317,45 @@ defmodule RetroHexChat.Jobs.ObanHealthTest do
     assert ignore_row.pending_work == 1
   end
 
-  test "reports link preview cache state" do
+  test "reports scraped page archive state" do
     now = DateTime.utc_now()
 
     {:ok, _ready} =
-      LinkPreviewResults.record_success("https://example.com/ready", "Ready",
+      ScraperStore.record_success("https://example.com/ready", %{title: "Ready"},
         now: DateTime.add(now, -60, :second),
         attempt: 1
       )
 
     {:ok, _pending} =
-      LinkPreviewResults.ensure_pending("https://example.com/pending", now: now)
+      ScraperStore.ensure_pending("https://example.com/pending", now: now)
 
     {:ok, _retrying} =
-      LinkPreviewResults.record_retryable_failure(
+      ScraperStore.record_retryable_failure(
         "https://example.com/retry",
         {:http_status, 503},
         now: DateTime.add(now, -120, :second),
         attempt: 1
       )
 
+    # Eight days back, so it is past the week a deterministic failure is
+    # remembered for — the only row here the sixty-day retention has let expire.
     {:ok, _expired_failed} =
-      LinkPreviewResults.record_failure("https://example.com/missing", {:http_status, 404},
-        now: DateTime.add(now, -600, :second),
+      ScraperStore.record_failure("https://example.com/missing", {:http_status, 404},
+        now: DateTime.add(now, -8 * 24 * 60 * 60, :second),
         attempt: 1
       )
 
     snapshot = ObanHealth.snapshot(now: now)
 
-    assert snapshot.summary.link_previews == 4
-    assert snapshot.summary.link_preview_pending == 2
-    assert snapshot.summary.link_preview_retrying == 1
-    assert snapshot.summary.link_preview_final_failures == 1
-    assert snapshot.summary.link_preview_failed == 1
-    assert snapshot.summary.link_preview_expired == 1
+    assert snapshot.summary.scraped_pages == 4
+    assert snapshot.summary.scraped_page_pending == 2
+    assert snapshot.summary.scraped_page_retrying == 1
+    assert snapshot.summary.scraped_page_final_failures == 1
+    assert snapshot.summary.scraped_page_failed == 1
+    assert snapshot.summary.scraped_page_expired == 1
     assert Enum.any?(snapshot.status_reasons, &(&1 =~ "link previews"))
 
-    rows_by_status = Map.new(snapshot.link_preview_table.rows, &{&1.status, &1})
+    rows_by_status = Map.new(snapshot.scraped_page_table.rows, &{&1.status, &1})
 
     assert rows_by_status["ready"].count == 1
     assert rows_by_status["pending"].count == 2

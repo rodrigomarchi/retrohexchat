@@ -131,13 +131,13 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
             variant={:prominent}
             icon={:icon_link}
             label={dgettext("dialogs", "Link previews")}
-            value={link_preview_coverage(@snapshot.summary)}
+            value={scraped_page_coverage(@snapshot.summary)}
             detail={
               dgettext("dialogs", "%{count} retrying",
-                count: Format.number(@snapshot.summary.link_preview_retrying)
+                count: Format.number(@snapshot.summary.scraped_page_retrying)
               )
             }
-            tone_class={link_preview_class(@snapshot.summary)}
+            tone_class={scraped_page_class(@snapshot.summary)}
             testid="system-oban-link-preview"
           />
           <.summary_card
@@ -386,7 +386,7 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
             <.table_shell>
               <.retro_table
                 id={"#{@testid}-link-preview-table"}
-                table={@snapshot.link_preview_table}
+                table={@snapshot.scraped_page_table}
                 testid={"#{@testid}-link-preview-table"}
                 truncate
                 fit_pane
@@ -550,8 +550,8 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
   defp maintenance_class(%{maintenance_failures: 0}), do: nil
   defp maintenance_class(_summary), do: "text-red-700"
 
-  defp link_preview_class(%{link_preview_pending: 0}), do: nil
-  defp link_preview_class(_summary), do: "text-yellow-700"
+  defp scraped_page_class(%{scraped_page_pending: 0}), do: nil
+  defp scraped_page_class(_summary), do: "text-yellow-700"
 
   defp persistence_class(%{persistence_failed: failed}) when failed > 0, do: "text-red-700"
   defp persistence_class(%{persistence_pending: pending}) when pending > 0, do: "text-yellow-700"
@@ -580,11 +580,11 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
     "#{Format.number(max(healthy, 0))}/#{Format.number(summary.maintenance_sweeps)}"
   end
 
-  defp link_preview_coverage(%{link_previews: 0}), do: "0/0"
+  defp scraped_page_coverage(%{scraped_pages: 0}), do: "0/0"
 
-  defp link_preview_coverage(summary) do
-    healthy = summary.link_previews - summary.link_preview_pending
-    "#{Format.number(max(healthy, 0))}/#{Format.number(summary.link_previews)}"
+  defp scraped_page_coverage(summary) do
+    healthy = summary.scraped_pages - summary.scraped_page_pending
+    "#{Format.number(max(healthy, 0))}/#{Format.number(summary.scraped_pages)}"
   end
 
   defp persistence_coverage(%{persistence_requests: 0}), do: "0/0"

@@ -47,10 +47,18 @@ must survive a restart or deploy — every one of them was migrated out.
 ### 17.3 Queues & tables
 
 Queues are split by operational nature, not by convenience: `rss`, `maintenance`, `bots`,
-`link_preview`, `persistence`. Concurrency is explicit per queue via env var in `config/config.exs`
+`scrape`, `persistence`. Concurrency is explicit per queue via env var in `config/config.exs`
 + `config/runtime.exs` (the `OBAN_RSS_CONCURRENCY` style). Any new durable table backing a worker
 ships with indexes and constraints matching the real access paths: read active targets, find
 expired, cancel/idempotency lookup, and the flow's natural uniqueness.
+
+**Renaming a queue or a worker takes two deploys.** Oban stores `queue` and `worker` as plain
+strings on the job row, so the moment either name changes, every `available`, `scheduled` and
+`retryable` row enqueued by the previous release points at something that no longer exists —
+nothing runs them, nothing fails them, and `ObanHealth` counts them for ever. Ship the new name
+alongside the old queue and a delegating worker, let one deploy drain it, then delete both. The
+`link_preview` → `scrape` rename is the worked example: `Jobs.LinkPreviewFetchWorker` exists only
+to finish jobs the previous release started, and both it and its queue entry are due for deletion.
 
 ### 17.4 Observability is part of "done"
 

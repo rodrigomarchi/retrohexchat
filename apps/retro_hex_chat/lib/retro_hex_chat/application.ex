@@ -31,7 +31,7 @@ defmodule RetroHexChat.Application do
       RetroHexChat.Admin.GlobalMuteTable,
       RetroHexChat.Presence.Tracker,
       RetroHexChat.RateLimit.Table,
-      RetroHexChat.Chat.LinkPreview.Cache,
+      RetroHexChat.Scraper.Cache,
       RetroHexChat.Presence.WhowasCache,
       RetroHexChat.Services.NickServ,
       RetroHexChat.Services.ChanServ,

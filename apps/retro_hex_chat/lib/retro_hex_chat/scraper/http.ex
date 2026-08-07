@@ -1,6 +1,6 @@
-defmodule RetroHexChat.Chat.LinkPreview.HTTP do
+defmodule RetroHexChat.Scraper.HTTP do
   @moduledoc """
-  HTTP implementation of the `RetroHexChat.Chat.LinkPreview` behaviour.
+  Fetches a page over HTTP and reads what its publisher says about it.
 
   The extractor is deliberately standards-led rather than scraper-led. It reads
   publisher-provided preview metadata from the document head:
@@ -12,30 +12,263 @@ defmodule RetroHexChat.Chat.LinkPreview.HTTP do
     * oEmbed JSON only when the page explicitly advertises a discovery link
 
   Every server-side URL fetch is checked by `RetroHexChat.Net.URLGuard`, including
-  redirects and discovered oEmbed endpoints.
+  redirects and discovered oEmbed endpoints — at fetch time, not only when the URL
+  was first accepted, because a name that resolved to a public address last month
+  can be re-pointed at loopback today.
+
+  Text is returned exactly as the publisher wrote it. Escaping belongs to whoever
+  renders, and doing it here meant every consumer escaped a second time.
   """
 
-  @behaviour RetroHexChat.Chat.LinkPreview
+  @behaviour RetroHexChat.Scraper.Client
 
-  alias RetroHexChat.Chat.LinkPreview
   alias RetroHexChat.Net.URLGuard
+  alias RetroHexChat.Scraper.Client
 
-  @type metadata :: LinkPreview.metadata()
-  @type fetch_error :: LinkPreview.fetch_error()
+  require Logger
 
-  @max_body_size 256_000
+  @type metadata :: Client.metadata()
+  @type fetch_error :: Client.error()
+
+  # A ceiling, not a budget: high enough that no real page is cut short, low
+  # enough that a hostile or runaway response cannot exhaust the node.
+  @max_body_size 4_000_000
   @max_oembed_size 64_000
   @max_title_length 200
   @max_description_length 500
   @max_site_name_length 120
   @max_url_length 2_000
   @max_redirects 3
-  @timeout_ms 5_000
+
+  # The ceiling the transport allows, not the budget a caller gets. Reading a
+  # whole document rather than stopping at `</head>` made 5s tight enough that
+  # ordinary sites timed out and were recorded as unreachable. Callers that
+  # cannot wait this long impose their own, shorter budget on top.
+  @timeout_ms 15_000
 
   @html_accept "text/html, application/xhtml+xml;q=0.9, */*;q=0.1"
   @json_accept "application/json, application/*+json;q=0.9, */*;q=0.1"
-  @user_agent "RetroHexChat-LinkPreview/1.0"
+  @user_agent "RetroHexChat-Scraper/1.0"
   @redirect_statuses [301, 302, 303, 307, 308]
+
+  @impl true
+  @spec scrape(String.t(), Client.opts()) ::
+          {:ok, Client.scrape()} | {:not_modified} | {:error, fetch_error()}
+  def scrape(url, opts \\ []) do
+    with {:ok, html, final_url, headers, status} <- fetch_resource(url, :html, opts),
+         true <- html_content?(first_header(headers, "content-type")),
+         {:ok, document} <- parse_document(html),
+         {:ok, metadata, sources, oembed_url} <- metadata_from_document(document, final_url) do
+      oembed_url = oembed_url || oembed_header_url(headers, final_url)
+
+      metadata
+      |> maybe_merge_oembed(oembed_url, final_url)
+      |> ensure_useful_metadata()
+      |> case do
+        {:ok, metadata} ->
+          {:ok, build_scrape(metadata, sources, document, final_url, headers, status)}
+
+        {:error, reason} ->
+          {:error, reason}
+      end
+    else
+      false -> {:error, :not_html}
+      {:not_modified} -> {:not_modified}
+      {:error, reason} -> {:error, reason}
+    end
+  rescue
+    exception ->
+      # A page that breaks the extractor and a host that will not answer are two
+      # different problems, and both used to arrive as a bare `:fetch_failed`.
+      # That opacity hid a real bug for a whole afternoon: publishers nest objects
+      # where the schema says string, `to_string/1` raised on them, and the result
+      # was reported as an unreachable site.
+      Logger.warning("scrape_raise url=#{url} error=#{Exception.message(exception)}")
+      {:error, :fetch_failed}
+  end
+
+  @spec build_scrape(
+          metadata(),
+          map(),
+          Floki.html_tree(),
+          String.t(),
+          map(),
+          pos_integer()
+        ) :: Client.scrape()
+  defp build_scrape(metadata, sources, document, final_url, headers, status) do
+    scope = head_scope(document)
+    metas = meta_tags(scope)
+    json_ld = json_ld_candidates(scope)
+    {content_text, truncated?, strategy} = extract_content(document)
+    sources = if content_text, do: Map.put(sources, "content_text", strategy), else: sources
+
+    %{
+      metadata: metadata,
+      final_url: final_url,
+      http_status: status,
+      content_type: first_header(headers, "content-type"),
+      etag: first_header(headers, "etag"),
+      last_modified: first_header(headers, "last-modified"),
+      author: author(metas, json_ld),
+      published_at: published_at(metas, json_ld, document),
+      lang: lang(document, metas, json_ld),
+      content_text: content_text,
+      content_text_truncated: truncated?,
+      raw_metadata: raw_metadata(metas, json_ld, sources)
+    }
+  end
+
+  # Generous, because the row is written once and read for four months. A page
+  # long enough to hit this is a transcript or a book chapter, and the opening
+  # 200k characters of one still answer far more than a truncation flag alone.
+  @max_content_text_length 200_000
+
+  @boilerplate ~w(script style noscript nav header footer aside form template iframe svg)
+
+  @doc """
+  The page's own words, with the furniture removed.
+
+  Prefers whatever the document itself calls its main content — `<article>`, then
+  `<main>` — and falls back to the body, because a page that names nothing still
+  has an article in it somewhere and a partly-noisy answer beats none. Which of
+  the three was used is recorded under `raw_metadata["sources"]["content_text"]`,
+  so a later reader can weigh it.
+  """
+  @spec extract_content(Floki.html_tree()) :: {String.t() | nil, boolean(), String.t()}
+  def extract_content(document) do
+    {scope, strategy} = content_scope(document)
+
+    {text, truncated?} =
+      @boilerplate
+      |> Enum.reduce(scope, &Floki.filter_out(&2, &1))
+      |> Floki.text(sep: " ")
+      |> collapse_whitespace()
+      |> cap_content()
+
+    {text, truncated?, strategy}
+  rescue
+    _ -> {nil, false, "none"}
+  end
+
+  @spec content_scope(Floki.html_tree()) :: {Floki.html_tree(), String.t()}
+  defp content_scope(document) do
+    Enum.find_value(
+      [{"article", "article"}, {"main", "main"}, {"body", "body"}],
+      {document, "document"},
+      fn {selector, strategy} ->
+        case Floki.find(document, selector) do
+          [] -> nil
+          found -> {found, strategy}
+        end
+      end
+    )
+  end
+
+  @spec collapse_whitespace(String.t()) :: String.t()
+  defp collapse_whitespace(text), do: text |> String.split() |> Enum.join(" ")
+
+  @spec cap_content(String.t()) :: {String.t() | nil, boolean()}
+  defp cap_content(""), do: {nil, false}
+
+  defp cap_content(text) do
+    if String.length(text) > @max_content_text_length do
+      {String.slice(text, 0, @max_content_text_length), true}
+    else
+      {text, false}
+    end
+  end
+
+  @spec author([map()], [map()]) :: String.t() | nil
+  defp author(metas, json_ld) do
+    [
+      meta_content(metas, "property", "article:author"),
+      meta_content(metas, "property", "og:article:author"),
+      meta_content(metas, "name", "author"),
+      meta_content(metas, "name", "twitter:creator"),
+      meta_content(metas, "name", "byl"),
+      json_ld_value(json_ld, ["author.name", "creator.name", "author"])
+    ]
+    |> first_present()
+    |> then(&clean_text(&1, max: @max_site_name_length))
+  end
+
+  @spec published_at([map()], [map()], Floki.html_tree()) :: DateTime.t() | nil
+  defp published_at(metas, json_ld, document) do
+    [
+      meta_content(metas, "property", "article:published_time"),
+      meta_content(metas, "property", "og:article:published_time"),
+      meta_content(metas, "name", "date"),
+      meta_content(metas, "name", "pubdate"),
+      json_ld_value(json_ld, ["datePublished", "dateCreated", "uploadDate"]),
+      document |> Floki.find("time[datetime]") |> Floki.attribute("datetime") |> List.first()
+    ]
+    |> first_present()
+    |> parse_datetime()
+  end
+
+  # Publishers write dates in whatever their CMS emits. ISO 8601 covers nearly
+  # all of them; a bare date is the common remainder and is worth the extra
+  # clause. Anything else is left `nil` rather than guessed at.
+  @spec parse_datetime(String.t() | nil) :: DateTime.t() | nil
+  defp parse_datetime(nil), do: nil
+
+  defp parse_datetime(value) do
+    value = String.trim(value)
+
+    case DateTime.from_iso8601(value) do
+      {:ok, datetime, _offset} ->
+        datetime
+
+      {:error, _reason} ->
+        case Date.from_iso8601(value) do
+          {:ok, date} -> DateTime.new!(date, ~T[00:00:00], "Etc/UTC")
+          {:error, _reason} -> nil
+        end
+    end
+  rescue
+    _ -> nil
+  end
+
+  @spec lang(Floki.html_tree(), [map()], [map()]) :: String.t() | nil
+  defp lang(document, metas, json_ld) do
+    [
+      document |> Floki.attribute("html", "lang") |> List.first(),
+      meta_content(metas, "property", "og:locale"),
+      meta_content(metas, "http-equiv", "content-language"),
+      json_ld_value(json_ld, ["inLanguage"])
+    ]
+    |> first_present()
+    |> then(&clean_text(&1, max: 32))
+  end
+
+  # Everything the page said that did not earn a column of its own, plus which
+  # standard each column came from. One place to look when a stored title is
+  # wrong, and no need to re-fetch the page to find out why.
+  @spec raw_metadata([map()], [map()], map()) :: map()
+  defp raw_metadata(metas, json_ld, sources) do
+    %{}
+    |> put_unless_empty("sources", sources)
+    |> put_unless_empty("og", namespaced_metas(metas, "property", "og:"))
+    |> put_unless_empty("article", namespaced_metas(metas, "property", "article:"))
+    |> put_unless_empty("twitter", namespaced_metas(metas, "name", "twitter:"))
+    |> put_unless_empty("json_ld", json_ld)
+  end
+
+  @spec namespaced_metas([map()], String.t(), String.t()) :: map()
+  defp namespaced_metas(metas, key, prefix) do
+    metas
+    |> Enum.filter(fn attrs ->
+      attrs |> Map.get(key) |> normalize_key() |> to_string() |> String.starts_with?(prefix)
+    end)
+    |> Map.new(fn attrs ->
+      {attrs |> Map.get(key) |> normalize_key(), Map.get(attrs, "content")}
+    end)
+    |> Map.reject(fn {_key, value} -> is_nil(value) end)
+  end
+
+  @spec put_unless_empty(map(), String.t(), map() | list()) :: map()
+  defp put_unless_empty(map, _key, value) when value == %{} or value == [], do: map
+  defp put_unless_empty(map, key, value), do: Map.put(map, key, value)
 
   @json_ld_preferred_types MapSet.new(~w(
     Article
@@ -48,77 +281,15 @@ defmodule RetroHexChat.Chat.LinkPreview.HTTP do
     WebSite
   ))
 
-  @impl true
-  @spec fetch_title(String.t()) :: {:ok, String.t()} | {:error, atom()}
-  def fetch_title(url) do
-    case fetch_title_result(url) do
-      {:ok, title} ->
-        {:ok, title}
-
-      {:error, reason} ->
-        {:error, legacy_error(reason)}
-    end
-  end
-
-  @impl true
-  @spec fetch_title_result(String.t()) :: {:ok, String.t()} | {:error, fetch_error()}
-  def fetch_title_result(url) do
-    case fetch_metadata_result(url) do
-      {:ok, %{title: title}} when is_binary(title) and title != "" ->
-        {:ok, html_escape(title)}
-
-      {:ok, _metadata} ->
-        {:error, :no_title}
-
-      {:error, reason} ->
-        {:error, reason}
-    end
-  end
-
-  @impl true
-  @spec fetch_metadata(String.t()) :: {:ok, metadata()} | {:error, atom()}
-  def fetch_metadata(url) do
-    case fetch_metadata_result(url) do
-      {:ok, metadata} -> {:ok, metadata}
-      {:error, reason} -> {:error, legacy_error(reason)}
-    end
-  end
-
   @doc """
   Fetches rich preview metadata while preserving retry-relevant error detail.
   """
   @spec fetch_metadata_result(String.t()) :: {:ok, metadata()} | {:error, fetch_error()}
   def fetch_metadata_result(url) do
-    with {:ok, html, final_url, headers} <- fetch_resource(url, :html),
-         true <- html_content?(first_header(headers, "content-type")),
-         {:ok, metadata, oembed_url} <- parse_page_metadata(html, final_url) do
-      oembed_url = oembed_url || oembed_header_url(headers, final_url)
-
-      metadata
-      |> maybe_merge_oembed(oembed_url, final_url)
-      |> ensure_useful_metadata()
-    else
-      false -> {:error, :not_html}
+    case scrape(url, []) do
+      {:ok, %{metadata: metadata}} -> {:ok, metadata}
+      {:not_modified} -> {:error, :not_modified}
       {:error, reason} -> {:error, reason}
-    end
-  rescue
-    _ -> {:error, :fetch_failed}
-  end
-
-  @doc """
-  Parses a page title from an HTML document.
-
-  Kept for the URL Catcher title cache. New consumers should prefer
-  `parse_metadata/2`.
-  """
-  @spec parse_title(String.t()) :: {:ok, String.t()} | {:error, :no_title}
-  def parse_title(html) do
-    case parse_metadata(html) do
-      {:ok, %{title: title}} when is_binary(title) and title != "" ->
-        {:ok, html_escape(title)}
-
-      _ ->
-        {:error, :no_title}
     end
   end
 
@@ -127,20 +298,25 @@ defmodule RetroHexChat.Chat.LinkPreview.HTTP do
   """
   @spec parse_metadata(String.t(), String.t() | nil) :: {:ok, metadata()} | {:error, atom()}
   def parse_metadata(html, page_url \\ nil) when is_binary(html) do
-    with {:ok, metadata, _oembed_url} <- parse_page_metadata(html, page_url) do
+    with {:ok, document} <- parse_document(html),
+         {:ok, metadata, _sources, _oembed_url} <- metadata_from_document(document, page_url) do
       ensure_useful_metadata(metadata)
     end
   end
 
-  @spec fetch_resource(String.t(), :html | :json) ::
-          {:ok, String.t(), String.t(), map()} | {:error, fetch_error()}
-  defp fetch_resource(url, kind), do: fetch_resource(url, kind, @max_redirects)
+  @typep resource ::
+           {:ok, String.t(), String.t(), map(), pos_integer()}
+           | {:not_modified}
+           | {:error, fetch_error()}
 
-  @spec fetch_resource(String.t(), :html | :json, non_neg_integer()) ::
-          {:ok, String.t(), String.t(), map()} | {:error, fetch_error()}
-  defp fetch_resource(url, kind, redirects_left) do
+  @spec fetch_resource(String.t(), :html | :json, Client.opts()) :: resource()
+  defp fetch_resource(url, kind, opts),
+    do: fetch_resource(url, kind, opts, @max_redirects)
+
+  @spec fetch_resource(String.t(), :html | :json, Client.opts(), non_neg_integer()) :: resource()
+  defp fetch_resource(url, kind, opts, redirects_left) do
     case URLGuard.fetch_target(url) do
-      {:ok, target} -> fetch_resource_target(target, url, kind, redirects_left)
+      {:ok, target} -> fetch_resource_target(target, url, kind, opts, redirects_left)
       {:error, _reason} -> {:error, :blocked}
     end
   end
@@ -149,62 +325,83 @@ defmodule RetroHexChat.Chat.LinkPreview.HTTP do
           URLGuard.fetch_target(),
           String.t(),
           :html | :json,
+          Client.opts(),
           non_neg_integer()
-        ) ::
-          {:ok, String.t(), String.t(), map()} | {:error, fetch_error()}
-  defp fetch_resource_target(target, url, kind, redirects_left) do
-    case request_once(target, kind) do
-      {:ok, response} -> handle_resource_response(response, url, kind, redirects_left)
-      {:error, _reason} -> {:error, :fetch_failed}
+        ) :: resource()
+  defp fetch_resource_target(target, url, kind, opts, redirects_left) do
+    case request_once(target, kind, opts) do
+      {:ok, response} ->
+        handle_resource_response(response, url, kind, opts, redirects_left)
+
+      {:error, reason} ->
+        Logger.warning("scrape_transport_error url=#{url} reason=#{inspect(reason)}")
+        {:error, :fetch_failed}
     end
   end
 
-  @spec handle_resource_response(Req.Response.t(), String.t(), :html | :json, non_neg_integer()) ::
-          {:ok, String.t(), String.t(), map()} | {:error, fetch_error()}
+  @spec handle_resource_response(
+          Req.Response.t(),
+          String.t(),
+          :html | :json,
+          Client.opts(),
+          non_neg_integer()
+        ) :: resource()
   defp handle_resource_response(
          %{status: status, body: body, headers: headers},
          url,
          _kind,
+         _opts,
          _redirects_left
        )
        when status in 200..299 do
-    {:ok, decode_body(body, first_header(headers, "content-type")), url, headers}
+    {:ok, decode_body(body, first_header(headers, "content-type")), url, headers, status}
   end
 
-  defp handle_resource_response(%{status: status, headers: headers}, url, kind, redirects_left)
+  # The publisher says the page is exactly what we already stored. Nothing was
+  # transferred, so there is nothing to parse — only a row to renew.
+  defp handle_resource_response(%{status: 304}, _url, _kind, _opts, _redirects_left),
+    do: {:not_modified}
+
+  defp handle_resource_response(
+         %{status: status, headers: headers},
+         url,
+         kind,
+         opts,
+         redirects_left
+       )
        when status in @redirect_statuses do
-    follow_redirect(url, headers, kind, redirects_left)
+    follow_redirect(url, headers, kind, opts, redirects_left)
   end
 
-  defp handle_resource_response(%{status: status}, _url, _kind, _redirects_left)
+  defp handle_resource_response(%{status: status}, _url, _kind, _opts, _redirects_left)
        when is_integer(status),
        do: {:error, {:http_status, status}}
 
-  @spec request_once(URLGuard.fetch_target(), :html | :json) ::
+  @spec request_once(URLGuard.fetch_target(), :html | :json, Client.opts()) ::
           {:ok, Req.Response.t()} | {:error, term()}
-  defp request_once(target, kind) do
-    Req.get(request_options(target, kind))
+  defp request_once(target, kind, opts) do
+    Req.get(request_options(target, kind, opts))
   end
 
-  @spec request_options(URLGuard.fetch_target(), :html | :json) :: keyword()
-  defp request_options(target, kind) do
+  @spec request_options(URLGuard.fetch_target(), :html | :json, Client.opts()) :: keyword()
+  defp request_options(target, kind, opts) do
     target
-    |> base_request_options(kind)
+    |> base_request_options(kind, opts)
     |> merge_request_overrides()
   end
 
-  @spec base_request_options(URLGuard.fetch_target(), :html | :json) :: keyword()
-  defp base_request_options(target, kind) do
+  @spec base_request_options(URLGuard.fetch_target(), :html | :json, Client.opts()) :: keyword()
+  defp base_request_options(target, kind, opts) do
     options = [
       url: target.url,
-      headers: request_headers(kind),
+      headers: request_headers(kind) ++ conditional_headers(opts),
       redirect: false,
       compressed: false,
       decode_body: false,
       max_retries: 0,
       connect_options: Keyword.put(target.connect_options, :timeout, @timeout_ms),
       receive_timeout: @timeout_ms,
-      into: collector(kind)
+      into: collector(kind, opts)
     ]
 
     if Map.get(target, :inet6?) do
@@ -226,51 +423,56 @@ defmodule RetroHexChat.Chat.LinkPreview.HTTP do
   defp request_headers(:html), do: [{"user-agent", @user_agent}, {"accept", @html_accept}]
   defp request_headers(:json), do: [{"user-agent", @user_agent}, {"accept", @json_accept}]
 
-  @spec request_overrides() :: keyword()
-  defp request_overrides do
-    Application.get_env(:retro_hex_chat, :link_preview_req_options, [])
+  # Offers the publisher the chance to answer "unchanged" instead of resending a
+  # page we already hold. With a 60-day archive this is the difference between
+  # refreshing a row and re-downloading the internet.
+  @spec conditional_headers(Client.opts()) :: [{String.t(), String.t()}]
+  defp conditional_headers(opts) do
+    [{"if-none-match", opts[:if_none_match]}, {"if-modified-since", opts[:if_modified_since]}]
+    |> Enum.filter(fn {_name, value} -> is_binary(value) and value != "" end)
   end
 
-  @spec collector(:html | :json) :: function()
-  defp collector(:html), do: &collect_limited_body(&1, &2, @max_body_size, true)
-  defp collector(:json), do: &collect_limited_body(&1, &2, @max_oembed_size, false)
+  @spec request_overrides() :: keyword()
+  defp request_overrides do
+    Application.get_env(:retro_hex_chat, :scraper_req_options, [])
+  end
+
+  # Read the whole document, not just its head. The head carries the preview
+  # fields, but the body carries the article — and having paid for the connection,
+  # the round trip and the transfer, stopping early only guarantees a second visit
+  # the day anything wants to read what the page actually said.
+  @spec collector(:html | :json, Client.opts()) :: function()
+  defp collector(:json, _opts), do: &collect_limited_body(&1, &2, @max_oembed_size)
+  defp collector(:html, _opts), do: &collect_limited_body(&1, &2, @max_body_size)
 
   @spec collect_limited_body(
           {:data, binary()},
           {Req.Request.t(), Req.Response.t()},
-          pos_integer(),
-          boolean()
+          pos_integer()
         ) ::
           {:cont | :halt, {Req.Request.t(), Req.Response.t()}}
-  defp collect_limited_body({:data, data}, {request, response}, max_size, halt_on_head?) do
+  defp collect_limited_body({:data, data}, {request, response}, max_size) do
     current = if is_binary(response.body), do: response.body, else: ""
     remaining = max(max_size - byte_size(current), 0)
     data = binary_part(data, 0, min(byte_size(data), remaining))
     body = current <> data
     response = %{response | body: body}
 
-    if byte_size(body) >= max_size or (halt_on_head? and head_closed?(body)) do
+    if byte_size(body) >= max_size do
       {:halt, {request, response}}
     else
       {:cont, {request, response}}
     end
   end
 
-  @spec head_closed?(binary()) :: boolean()
-  defp head_closed?(body) do
-    Regex.match?(~r/<\/head\s*>/i, body)
-  rescue
-    _ -> false
-  end
+  @spec follow_redirect(String.t(), map(), :html | :json, Client.opts(), non_neg_integer()) ::
+          resource()
+  defp follow_redirect(_url, _headers, _kind, _opts, 0), do: {:error, :too_many_redirects}
 
-  @spec follow_redirect(String.t(), map(), :html | :json, non_neg_integer()) ::
-          {:ok, String.t(), String.t(), map()} | {:error, fetch_error()}
-  defp follow_redirect(_url, _headers, _kind, 0), do: {:error, :too_many_redirects}
-
-  defp follow_redirect(url, headers, kind, redirects_left) do
+  defp follow_redirect(url, headers, kind, opts, redirects_left) do
     case redirect_url(url, first_header(headers, "location")) do
       nil -> {:error, :server_error}
-      next_url -> fetch_resource(next_url, kind, redirects_left - 1)
+      next_url -> fetch_resource(next_url, kind, opts, redirects_left - 1)
     end
   end
 
@@ -285,29 +487,48 @@ defmodule RetroHexChat.Chat.LinkPreview.HTTP do
     _ -> nil
   end
 
-  @spec parse_page_metadata(String.t(), String.t() | nil) ::
-          {:ok, metadata(), String.t() | nil} | {:error, atom()}
-  defp parse_page_metadata(html, page_url) do
-    case Floki.parse_document(String.slice(html, 0, @max_body_size)) do
-      {:ok, document} ->
-        scope = head_scope(document)
-        metas = meta_tags(scope)
-        links = link_tags(scope)
-        json_ld = json_ld_candidates(scope)
-
-        metadata =
-          %{}
-          |> put_clean(:title, title(metas, json_ld, scope))
-          |> put_clean(:description, description(metas, json_ld))
-          |> put_clean(:site_name, site_name(metas, json_ld))
-          |> put_url(:url, page_url(metas, links, page_url), page_url, :page)
-          |> put_url(:image, image_url(metas, json_ld), page_url, :image)
-
-        {:ok, metadata, oembed_url(links, page_url)}
-
-      {:error, _reason} ->
-        {:error, :parse_failed}
+  @spec parse_document(String.t()) :: {:ok, Floki.html_tree()} | {:error, :parse_failed}
+  defp parse_document(html) do
+    case Floki.parse_document(html) do
+      {:ok, document} -> {:ok, document}
+      {:error, _reason} -> {:error, :parse_failed}
     end
+  end
+
+  @spec metadata_from_document(Floki.html_tree(), String.t() | nil) ::
+          {:ok, metadata(), map(), String.t() | nil}
+  defp metadata_from_document(document, page_url) do
+    scope = head_scope(document)
+    metas = meta_tags(scope)
+    links = link_tags(scope)
+    json_ld = json_ld_candidates(scope)
+
+    {title, title_source} = title(metas, json_ld, scope)
+    {description, description_source} = description(metas, json_ld)
+    {site_name, site_name_source} = site_name(metas, json_ld)
+    {url_value, url_source} = page_url(metas, links, page_url)
+    {image, image_source} = image_url(metas, json_ld)
+
+    metadata =
+      %{}
+      |> put_clean(:title, title)
+      |> put_clean(:description, description)
+      |> put_clean(:site_name, site_name)
+      |> put_url(:url, url_value, page_url, :page)
+      |> put_url(:image, image, page_url, :image)
+
+    sources =
+      %{
+        "title" => title_source,
+        "description" => description_source,
+        "site_name" => site_name_source,
+        "url" => url_source,
+        "image" => image_source
+      }
+      |> Map.take(metadata |> Map.keys() |> Enum.map(&Atom.to_string/1))
+      |> Map.reject(fn {_key, source} -> is_nil(source) end)
+
+    {:ok, metadata, sources, oembed_url(links, page_url)}
   end
 
   @spec head_scope(Floki.html_tree()) :: Floki.html_tree()
@@ -318,55 +539,62 @@ defmodule RetroHexChat.Chat.LinkPreview.HTTP do
     end
   end
 
-  @spec title([map()], [map()], Floki.html_tree()) :: String.t() | nil
+  @spec title([map()], [map()], Floki.html_tree()) :: {String.t() | nil, String.t() | nil}
   defp title(metas, json_ld, scope) do
-    first_present([
-      meta_content(metas, "property", "og:title"),
-      meta_content(metas, "name", "twitter:title"),
-      json_ld_value(json_ld, ["headline", "name"]),
-      scope |> Floki.find("title") |> Floki.text()
+    first_labelled([
+      {"og", meta_content(metas, "property", "og:title")},
+      {"twitter", meta_content(metas, "name", "twitter:title")},
+      {"json_ld", json_ld_value(json_ld, ["headline", "name"])},
+      {"html", scope |> Floki.find("title") |> Floki.text()}
     ])
   end
 
-  @spec description([map()], [map()]) :: String.t() | nil
+  @spec description([map()], [map()]) :: {String.t() | nil, String.t() | nil}
   defp description(metas, json_ld) do
-    first_present([
-      meta_content(metas, "property", "og:description"),
-      meta_content(metas, "name", "twitter:description"),
-      json_ld_value(json_ld, ["description"]),
-      meta_content(metas, "name", "description")
+    first_labelled([
+      {"og", meta_content(metas, "property", "og:description")},
+      {"twitter", meta_content(metas, "name", "twitter:description")},
+      {"json_ld", json_ld_value(json_ld, ["description"])},
+      {"html", meta_content(metas, "name", "description")}
     ])
   end
 
-  @spec site_name([map()], [map()]) :: String.t() | nil
+  @spec site_name([map()], [map()]) :: {String.t() | nil, String.t() | nil}
   defp site_name(metas, json_ld) do
-    first_present([
-      meta_content(metas, "property", "og:site_name"),
-      meta_content(metas, "name", "application-name"),
-      json_ld_value(json_ld, ["publisher.name", "provider.name"])
+    first_labelled([
+      {"og", meta_content(metas, "property", "og:site_name")},
+      {"html", meta_content(metas, "name", "application-name")},
+      {"json_ld", json_ld_value(json_ld, ["publisher.name", "provider.name"])}
     ])
   end
 
-  @spec page_url([map()], [map()], String.t() | nil) :: String.t() | nil
+  @spec page_url([map()], [map()], String.t() | nil) :: {String.t() | nil, String.t() | nil}
   defp page_url(metas, links, fallback) do
-    first_present([
-      meta_content(metas, "property", "og:url"),
-      meta_content(metas, "name", "twitter:url"),
-      canonical_url(links),
-      fallback
+    first_labelled([
+      {"og", meta_content(metas, "property", "og:url")},
+      {"twitter", meta_content(metas, "name", "twitter:url")},
+      {"canonical", canonical_url(links)},
+      {"request", fallback}
     ])
   end
 
-  @spec image_url([map()], [map()]) :: String.t() | nil
+  @spec image_url([map()], [map()]) :: {String.t() | nil, String.t() | nil}
   defp image_url(metas, json_ld) do
-    first_present([
-      meta_content(metas, "property", "og:image:secure_url"),
-      meta_content(metas, "property", "og:image:url"),
-      meta_content(metas, "property", "og:image"),
-      meta_content(metas, "name", "twitter:image"),
-      meta_content(metas, "name", "twitter:image:src"),
-      json_ld_image(json_ld)
+    first_labelled([
+      {"og", meta_content(metas, "property", "og:image:secure_url")},
+      {"og", meta_content(metas, "property", "og:image:url")},
+      {"og", meta_content(metas, "property", "og:image")},
+      {"twitter", meta_content(metas, "name", "twitter:image")},
+      {"twitter", meta_content(metas, "name", "twitter:image:src")},
+      {"json_ld", json_ld_image(json_ld)}
     ])
+  end
+
+  @spec first_labelled([{String.t(), String.t() | nil}]) :: {String.t() | nil, String.t() | nil}
+  defp first_labelled(candidates) do
+    Enum.find_value(candidates, {nil, nil}, fn {source, value} ->
+      if present?(value), do: {value, source}
+    end)
   end
 
   @spec meta_tags(Floki.html_tree()) :: [map()]
@@ -616,8 +844,28 @@ defmodule RetroHexChat.Chat.LinkPreview.HTTP do
         _ -> {:halt, nil}
       end
     end)
+    |> json_ld_scalar()
     |> clean_text(max: @max_description_length)
   end
+
+  # JSON-LD lets any value be a bare string, an object that names itself, or a
+  # list of either — `"author": "Ada"`, `"author": {"@type": "Person", "name":
+  # "Ada"}` and `"author": [{...}, {...}]` are all valid and all appear in the
+  # wild. Reducing them to one string here is what keeps every caller from having
+  # to know that.
+  @spec json_ld_scalar(term()) :: String.t() | nil
+  defp json_ld_scalar(value) when is_binary(value), do: value
+  defp json_ld_scalar(value) when is_number(value), do: to_string(value)
+
+  defp json_ld_scalar(%{} = value) do
+    ["name", "@value", "headline", "@id"]
+    |> Enum.find_value(fn key -> value |> Map.get(key) |> json_ld_scalar() end)
+  end
+
+  defp json_ld_scalar(value) when is_list(value),
+    do: Enum.find_value(value, &json_ld_scalar/1)
+
+  defp json_ld_scalar(_value), do: nil
 
   @spec maybe_merge_oembed(metadata(), String.t() | nil, String.t()) :: metadata()
   defp maybe_merge_oembed(metadata, nil, _page_url), do: metadata
@@ -643,7 +891,7 @@ defmodule RetroHexChat.Chat.LinkPreview.HTTP do
 
   @spec fetch_oembed(String.t(), String.t()) :: {:ok, metadata()} | {:error, atom()}
   defp fetch_oembed(url, page_url) do
-    with {:ok, body, _final_url, headers} <- fetch_resource(url, :json),
+    with {:ok, body, _final_url, headers, _status} <- fetch_resource(url, :json, []),
          true <- json_content?(first_header(headers, "content-type")),
          {:ok, data} <- Jason.decode(body) do
       metadata =
@@ -749,6 +997,12 @@ defmodule RetroHexChat.Chat.LinkPreview.HTTP do
   defp clean_text(value, opts \\ [])
 
   defp clean_text(nil, _opts), do: nil
+
+  # Total on purpose. It is fed whatever a publisher put in a meta tag or a
+  # JSON-LD document, and `to_string/1` on the object one of them nests there
+  # raises — which the caller then reported as a network failure, because the
+  # rescue above cannot tell a malformed page from an unreachable one.
+  defp clean_text(value, _opts) when not is_binary(value) and not is_number(value), do: nil
 
   defp clean_text(value, opts) do
     max = Keyword.get(opts, :max, @max_description_length)
@@ -934,21 +1188,5 @@ defmodule RetroHexChat.Chat.LinkPreview.HTTP do
     |> List.to_string()
   rescue
     _ -> ""
-  end
-
-  @spec legacy_error(fetch_error()) :: atom()
-  defp legacy_error({:http_status, status}) when status in 400..499, do: :not_found
-  defp legacy_error({:http_status, status}) when status in 500..599, do: :server_error
-  defp legacy_error({:http_status, _status}), do: :server_error
-  defp legacy_error(reason) when is_atom(reason), do: reason
-
-  @spec html_escape(String.t()) :: String.t()
-  defp html_escape(text) do
-    text
-    |> String.replace("&", "&amp;")
-    |> String.replace("<", "&lt;")
-    |> String.replace(">", "&gt;")
-    |> String.replace("\"", "&quot;")
-    |> String.replace("'", "&#39;")
   end
 end

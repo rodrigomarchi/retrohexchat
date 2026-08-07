@@ -1,0 +1,118 @@
+defmodule RetroHexChat.Scraper.Client do
+  @moduledoc """
+  How the scraper gets a page from the open internet.
+
+  Injected rather than called directly, for the same reason the RSS feed fetcher
+  is: the interesting behaviour is what happens *after* the bytes arrive — a page
+  stored once and served to every consumer, an expired row revalidated, a failure
+  told apart from a blip — and none of that should need the internet to be tested.
+
+  One callback, on purpose. The behaviour it replaces had three overlapping ones
+  (`fetch_title/1`, `fetch_metadata/1` and an optional `fetch_title_result/1`
+  dispatched through `function_exported?/3`), which meant a stub could satisfy the
+  compiler and still miss the entry point production used.
+  """
+
+  alias RetroHexChat.Scraper.ScrapedPage
+
+  @typedoc """
+  Everything one visit to a page produced.
+
+  `metadata` carries the publisher's own preview fields, **unescaped**; the rest
+  is what the transfer itself revealed, and is what makes the next visit cheap
+  (`etag`, `last_modified`) or unnecessary (`http_status`).
+  """
+  @type scrape :: %{
+          required(:metadata) => metadata(),
+          required(:final_url) => String.t(),
+          optional(:http_status) => pos_integer(),
+          optional(:content_type) => String.t() | nil,
+          optional(:etag) => String.t() | nil,
+          optional(:last_modified) => String.t() | nil,
+          optional(:author) => String.t() | nil,
+          optional(:published_at) => DateTime.t() | nil,
+          optional(:lang) => String.t() | nil,
+          optional(:content_text) => String.t() | nil,
+          optional(:content_text_truncated) => boolean(),
+          optional(:raw_metadata) => map()
+        }
+
+  @type metadata :: %{
+          optional(:title) => String.t() | nil,
+          optional(:description) => String.t() | nil,
+          optional(:image) => String.t() | nil,
+          optional(:url) => String.t() | nil,
+          optional(:site_name) => String.t() | nil
+        }
+
+  @type error :: atom() | {:http_status, pos_integer()} | term()
+
+  @typedoc """
+  Per-visit options.
+
+  `:if_none_match` and `:if_modified_since` come straight off a stored row, so an
+  expired page can be renewed by a `304` instead of a download.
+
+  """
+  @type opts :: [if_none_match: String.t() | nil, if_modified_since: String.t() | nil]
+
+  @doc "Visit `url`, or learn that it has not changed since it was last visited."
+  @callback scrape(url :: String.t(), opts()) ::
+              {:ok, scrape()} | {:not_modified} | {:error, error()}
+
+  @doc "The client in force. Configure `:page_scraper` to substitute one."
+  @spec impl() :: module()
+  def impl do
+    Application.get_env(:retro_hex_chat, :page_scraper, RetroHexChat.Scraper.HTTP)
+  end
+
+  @doc """
+  Flattens a scrape into the columns a `ScrapedPage` stores.
+
+  Lives here rather than in the store because it is the shape of what a *client*
+  returns; a different client with a different upstream still lands in the same
+  columns.
+  """
+  @spec to_page_attrs(scrape()) :: map()
+  def to_page_attrs(scrape) do
+    metadata = Map.get(scrape, :metadata) || %{}
+
+    %{
+      title: metadata[:title],
+      description: metadata[:description],
+      image_url: metadata[:image],
+      canonical_url: metadata[:url],
+      site_name: metadata[:site_name],
+      final_url: Map.get(scrape, :final_url),
+      http_status: Map.get(scrape, :http_status),
+      content_type: Map.get(scrape, :content_type),
+      etag: Map.get(scrape, :etag),
+      last_modified: Map.get(scrape, :last_modified),
+      author: Map.get(scrape, :author),
+      published_at: Map.get(scrape, :published_at),
+      lang: Map.get(scrape, :lang),
+      content_text: Map.get(scrape, :content_text),
+      content_text_truncated: Map.get(scrape, :content_text_truncated, false),
+      raw_metadata: Map.get(scrape, :raw_metadata) || %{}
+    }
+  end
+
+  @doc """
+  Rebuilds the loose metadata map a renderer expects from a stored row.
+
+  The inverse of `to_page_attrs/1`, and the reason consumers did not have to
+  change shape when they stopped fetching for themselves.
+  """
+  @spec to_metadata(ScrapedPage.t()) :: metadata()
+  def to_metadata(%ScrapedPage{} = page) do
+    %{
+      title: page.title,
+      description: page.description,
+      image: page.image_url,
+      url: page.canonical_url,
+      site_name: page.site_name
+    }
+    |> Enum.reject(fn {_key, value} -> is_nil(value) end)
+    |> Map.new()
+  end
+end

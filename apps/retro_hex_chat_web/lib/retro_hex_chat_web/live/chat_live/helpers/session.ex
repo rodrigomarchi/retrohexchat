@@ -17,11 +17,12 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
     CapturedURL,
     Content,
     Highlight,
-    LinkPreview,
     PerformList,
     ReconnectState,
     SoundSettings
   }
+
+  alias RetroHexChat.Scraper
 
   alias RetroHexChat.Services.NickServ
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
@@ -118,27 +119,14 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
     end
   end
 
+  # What is already known arrives on this process as a message rather than a
+  # return value, so a title the archive already holds and a title that has to be
+  # fetched reach the view by the same path.
   @spec maybe_fetch_previews(Phoenix.LiveView.Socket.t(), [String.t()]) ::
           Phoenix.LiveView.Socket.t()
   def maybe_fetch_previews(socket, urls) do
     Enum.each(urls, &fetch_preview_for_url/1)
     socket
-  end
-
-  @spec enqueue_preview_fetch(String.t()) :: :ok
-  def enqueue_preview_fetch(url) do
-    unless LinkPreview.Cache.pending?(url) do
-      case LinkPreview.enqueue_fetch(url) do
-        :ok ->
-          :ok
-
-        {:error, reason} ->
-          Logger.warning("link_preview_enqueue_error reason=#{inspect(reason)}")
-          LinkPreview.Cache.put_error(url)
-      end
-    end
-
-    :ok
   end
 
   # ── Ignore timers ──────────────────────────────────────────
@@ -606,10 +594,15 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
   # Private helpers
 
   defp fetch_preview_for_url(url) do
-    case LinkPreview.Cache.get(url) do
-      {:ok, :error} -> :ok
-      {:ok, title} -> send(self(), {:link_preview_result, url, {:ok, title}})
-      :miss -> enqueue_preview_fetch(url)
+    case Scraper.preview(url) do
+      {:ok, page} -> send(self(), {:scraped_page, page_announcement(page)})
+      :pending -> :ok
+      :unknown -> :ok
     end
+  end
+
+  @spec page_announcement(RetroHexChat.Scraper.ScrapedPage.t()) :: map()
+  defp page_announcement(page) do
+    %{url: page.url, url_hash: page.url_hash, status: page.status, title: page.title}
   end
 end

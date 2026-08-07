@@ -17,7 +17,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
   alias RetroHexChat.Bots.Capabilities.RSS.Scheduler
   alias RetroHexChat.Bots.Capabilities.RSS.UrlGuard
   alias RetroHexChat.Bots.Policy
-  alias RetroHexChat.Chat.LinkPreview
+  alias RetroHexChat.Scraper
 
   require Logger
 
@@ -524,30 +524,23 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
     end)
   end
 
-  @spec fetch_preview_metadata([FeedParser.feed_item()]) :: [LinkPreview.metadata()]
+  # The bot no longer reads these pages itself. A feed that republishes a link, a
+  # second feed carrying the same article, and a link somebody already pasted in a
+  # channel now all resolve from the same archive — going to the publisher only
+  # for the ones nobody has read yet.
+  @spec fetch_preview_metadata([FeedParser.feed_item()]) :: [Scraper.Client.metadata()]
   defp fetch_preview_metadata(items) do
     items
-    |> Task.async_stream(&preview_metadata(&1.link),
+    |> Enum.map(& &1.link)
+    |> Scraper.fetch_many(
       max_concurrency: @preview_max_concurrency,
-      ordered: true,
-      on_timeout: :kill_task,
       timeout: @preview_fetch_timeout_ms
     )
     |> Enum.map(fn
-      {:ok, metadata} -> metadata
-      {:exit, _reason} -> %{}
+      {:ok, page} -> Scraper.Client.to_metadata(page)
+      {:error, _reason} -> %{}
     end)
   end
-
-  @spec preview_metadata(String.t() | nil) :: LinkPreview.metadata()
-  defp preview_metadata(link) when is_binary(link) and link != "" do
-    case LinkPreview.impl().fetch_metadata(link) do
-      {:ok, metadata} -> metadata
-      {:error, _reason} -> %{}
-    end
-  end
-
-  defp preview_metadata(_link), do: %{}
 
   @source_limit 48
   @headline_limit 180
@@ -562,7 +555,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
   every RSS bot, not a per-bot decision, and it is the part a reader actually
   meets.
   """
-  @spec format_item(FeedParser.feed_item(), String.t() | nil, LinkPreview.metadata() | nil) ::
+  @spec format_item(FeedParser.feed_item(), String.t() | nil, Scraper.Client.metadata() | nil) ::
           String.t()
   def format_item(item, feed_title, metadata \\ nil) do
     metadata = metadata || %{}
@@ -604,33 +597,33 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
     end)
   end
 
-  @spec card_source(LinkPreview.metadata(), String.t() | nil) :: String.t()
+  @spec card_source(Scraper.Client.metadata(), String.t() | nil) :: String.t()
   defp card_source(metadata, feed_title) do
     (metadata[:site_name] || source_label(feed_title))
     |> collapse_space()
     |> truncate(@source_limit)
   end
 
-  @spec card_title(FeedParser.feed_item(), LinkPreview.metadata()) :: String.t()
+  @spec card_title(FeedParser.feed_item(), Scraper.Client.metadata()) :: String.t()
   defp card_title(item, metadata) do
     (metadata[:title] || item.title || dgettext("bots", "(no title)"))
     |> collapse_space()
     |> truncate(@headline_limit)
   end
 
-  @spec card_url(FeedParser.feed_item(), LinkPreview.metadata()) :: String.t() | nil
+  @spec card_url(FeedParser.feed_item(), Scraper.Client.metadata()) :: String.t() | nil
   defp card_url(item, metadata) do
     Enum.find([metadata[:url], item.link], &linkable_url?/1)
   end
 
-  @spec card_image(LinkPreview.metadata()) :: String.t() | nil
+  @spec card_image(Scraper.Client.metadata()) :: String.t() | nil
   defp card_image(%{image: image}) when is_binary(image) and byte_size(image) > 0 do
     if String.length(image) <= @message_url_limit and linkable_url?(image), do: image
   end
 
   defp card_image(_metadata), do: nil
 
-  @spec card_description(LinkPreview.metadata()) :: String.t() | nil
+  @spec card_description(Scraper.Client.metadata()) :: String.t() | nil
   defp card_description(%{description: description})
        when is_binary(description) and byte_size(description) > 0 do
     description

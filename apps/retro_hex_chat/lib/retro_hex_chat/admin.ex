@@ -14,12 +14,12 @@ defmodule RetroHexChat.Admin do
   alias RetroHexChat.Admin.{AuditLogs, GlobalMutes, RoleCache, ServerBans}
   alias RetroHexChat.Bots
   alias RetroHexChat.Channels
-  alias RetroHexChat.Chat.LinkPreview.Cache, as: LinkPreviewCache
   alias RetroHexChat.Commands.Duration
   alias RetroHexChat.Jobs
   alias RetroHexChat.P2P.RateLimitTable, as: P2PRateLimitTable
   alias RetroHexChat.Presence.{Tracker, WhowasCache}
   alias RetroHexChat.RateLimit.Table, as: ChatRateLimitTable
+  alias RetroHexChat.Scraper.Cache, as: ScraperCache
   alias RetroHexChat.Services.{ChanServ, NickServ, Queries}
 
   @pubsub RetroHexChat.PubSub
@@ -609,7 +609,11 @@ defmodule RetroHexChat.Admin do
     clear_ets_table(:global_mutes, "global mute")
     clear_ets_table(ChatRateLimitTable.table_name(), "chat rate limit")
     clear_ets_table(P2PRateLimitTable.table_name(), "P2P rate limit")
-    clear_ets_table(LinkPreviewCache, "link preview")
+    # Only the in-memory copy. A scraped page is a public fact about somebody
+    # else's website, not state this server holds about its users, and the stored
+    # rows outlive a nuke on purpose — dropping a 120-day archive would mean
+    # re-fetching the internet to rebuild what nobody asked to erase.
+    clear_ets_table(ScraperCache, "scraped page")
     WhowasCache.clear()
   rescue
     e -> Logger.warning("Ephemeral state cleanup during nuke failed: #{inspect(e)}")

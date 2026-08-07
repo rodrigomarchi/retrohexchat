@@ -46,35 +46,33 @@ defmodule RetroHexChat.Bots.RSSPublishingTest do
 
   defmodule NoopPreview do
     @moduledoc false
-    @behaviour RetroHexChat.Chat.LinkPreview
+    @behaviour RetroHexChat.Scraper.Client
 
     @impl true
-    def fetch_title(_url), do: {:error, :fetch_failed}
-
-    @impl true
-    def fetch_metadata(_url), do: {:error, :fetch_failed}
+    def scrape(_url, _opts), do: {:error, :fetch_failed}
   end
 
   defmodule RichPreview do
     @moduledoc false
-    @behaviour RetroHexChat.Chat.LinkPreview
+    @behaviour RetroHexChat.Scraper.Client
 
     @impl true
-    def fetch_title(_url), do: {:ok, "Parsed story"}
-
-    @impl true
-    def fetch_metadata("https://example.com/2") do
+    def scrape("https://example.com/2" = url, _opts) do
       {:ok,
        %{
-         title: "Parsed story",
-         description: "A summary from Open Graph.",
-         image: "https://example.com/card.png",
-         url: "https://example.com/2",
-         site_name: "Example News"
+         metadata: %{
+           title: "Parsed story",
+           description: "A summary from Open Graph.",
+           image: "https://example.com/card.png",
+           url: "https://example.com/2",
+           site_name: "Example News"
+         },
+         final_url: url,
+         http_status: 200
        }}
     end
 
-    def fetch_metadata(_url), do: {:error, :fetch_failed}
+    def scrape(_url, _opts), do: {:error, :fetch_failed}
   end
 
   defp feed_page(titles) do
@@ -155,13 +153,13 @@ defmodule RetroHexChat.Bots.RSSPublishingTest do
 
   setup do
     Application.put_env(:retro_hex_chat, :rss_fetcher, ScriptedFetcher)
-    Application.put_env(:retro_hex_chat, :link_preview_fetcher, NoopPreview)
+    Application.put_env(:retro_hex_chat, :page_scraper, NoopPreview)
     chan = start_channel(@channel)
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#{@channel}")
 
     on_exit(fn ->
       Application.delete_env(:retro_hex_chat, :rss_fetcher)
-      Application.delete_env(:retro_hex_chat, :link_preview_fetcher)
+      Application.delete_env(:retro_hex_chat, :page_scraper)
       Supervisor.stop_bot("WireBot")
       if Process.alive?(chan), do: Channels.Supervisor.stop_child(chan)
     end)
@@ -211,7 +209,7 @@ defmodule RetroHexChat.Bots.RSSPublishingTest do
   end
 
   test "a parsed page preview becomes a rich Markdown message" do
-    Application.put_env(:retro_hex_chat, :link_preview_fetcher, RichPreview)
+    Application.put_env(:retro_hex_chat, :page_scraper, RichPreview)
     ScriptedFetcher.script([feed_page([{2, "Feed fallback"}, {1, "Older story"}])])
 
     {_bot, pid} =

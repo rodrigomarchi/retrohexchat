@@ -21,9 +21,9 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Presence do
     ]
 
   alias RetroHexChat.Accounts.Session
-  alias RetroHexChat.Chat.{CapturedURL, IgnoreList, LinkPreview}
-  alias RetroHexChat.Chat.LinkPreview.Results
+  alias RetroHexChat.Chat.{CapturedURL, IgnoreList}
   alias RetroHexChat.Presence.NotifyList
+  alias RetroHexChat.Scraper.Store
 
   # ── Global presence events ────────────────────────────────
 
@@ -87,30 +87,18 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Presence do
     {:halt, socket}
   end
 
-  # ── Link preview result ───────────────────────────────────
+  # ── Scraped page ──────────────────────────────────────────
 
-  def handle_info(
-        {:link_preview_result, %{url: url, url_hash: url_hash, result: {:ok, title}}},
-        socket
-      ) do
-    LinkPreview.Cache.put(url, title)
+  # One shape, whether the page came from the archive or from the network a
+  # moment ago. Two shapes and four clauses used to say the same thing, and the
+  # pair that carried a bare URL instead of a hash could only ever match half the
+  # rows they were meant to update.
+  def handle_info({:scraped_page, %{status: "ready", url_hash: url_hash, title: title}}, socket)
+      when is_binary(title) do
     {:halt, update_link_preview(socket, url_hash, title)}
   end
 
-  def handle_info({:link_preview_result, %{url: url, result: {:error, _reason}}}, socket) do
-    LinkPreview.Cache.put_error(url)
-    {:halt, socket}
-  end
-
-  def handle_info({:link_preview_result, url, {:ok, title}}, socket) do
-    LinkPreview.Cache.put(url, title)
-    {:halt, update_link_preview(socket, url, title)}
-  end
-
-  def handle_info({:link_preview_result, url, {:error, _}}, socket) do
-    LinkPreview.Cache.put_error(url)
-    {:halt, socket}
-  end
+  def handle_info({:scraped_page, %{}}, socket), do: {:halt, socket}
 
   # ── Channel invite ────────────────────────────────────────
 
@@ -189,12 +177,15 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Presence do
     end
   end
 
-  defp update_link_preview(socket, url_or_hash, title) do
+  # Matched by hash, not by string: the captured URL still carries the campaign
+  # parameters it was posted with, while the page was stored under the address
+  # they all reduce to.
+  defp update_link_preview(socket, url_hash, title) do
     entries = socket.assigns.url_catcher_entries
 
     matching_urls =
       entries
-      |> Enum.filter(&entry_matches?(&1, url_or_hash))
+      |> Enum.filter(&(entry_hash(&1.url) == url_hash))
       |> Enum.map(& &1.url)
       |> Enum.uniq()
 
@@ -211,12 +202,8 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Presence do
     end)
   end
 
-  defp entry_matches?(entry, url_or_hash) do
-    entry.url == url_or_hash or entry_hash(entry.url) == url_or_hash
-  end
-
   defp entry_hash(url) do
-    case Results.hash_url(url) do
+    case Store.hash_url(url) do
       {:ok, url_hash} -> url_hash
       {:error, :invalid_url} -> nil
     end

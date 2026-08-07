@@ -38,36 +38,37 @@ defmodule RetroHexChat.Jobs.RSSPollWorkerTest do
 
   defmodule RichPreview do
     @moduledoc false
-    @behaviour RetroHexChat.Chat.LinkPreview
+    @behaviour RetroHexChat.Scraper.Client
 
     @impl true
-    def fetch_title(_url), do: {:ok, "Parsed worker story"}
-
-    @impl true
-    def fetch_metadata("https://example.com/3") do
+    def scrape("https://example.com/3" = url, _opts) do
       {:ok,
        %{
-         title: "Parsed worker story",
-         description: "Worker extracted this from standards metadata.",
-         image: "https://example.com/worker-card.png",
-         url: "https://example.com/3",
-         site_name: "Worker News"
+         metadata: %{
+           title: "Parsed worker story",
+           description: "Worker extracted this from standards metadata.",
+           image: "https://example.com/worker-card.png",
+           url: "https://example.com/3",
+           site_name: "Worker News"
+         },
+         final_url: url,
+         http_status: 200
        }}
     end
 
-    def fetch_metadata(_url), do: {:error, :fetch_failed}
+    def scrape(_url, _opts), do: {:error, :fetch_failed}
   end
 
   setup do
     Application.put_env(:retro_hex_chat, :rss_fetcher, ScriptedFetcher)
-    Application.put_env(:retro_hex_chat, :link_preview_fetcher, RichPreview)
+    Application.put_env(:retro_hex_chat, :page_scraper, RichPreview)
 
     {:ok, chan} = Channels.Supervisor.start_child(@channel)
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#{@channel}")
 
     on_exit(fn ->
       Application.delete_env(:retro_hex_chat, :rss_fetcher)
-      Application.delete_env(:retro_hex_chat, :link_preview_fetcher)
+      Application.delete_env(:retro_hex_chat, :page_scraper)
       BotSupervisor.stop_bot("RSSWorkerBot")
       if Process.alive?(chan), do: Channels.Supervisor.stop_child(chan)
     end)

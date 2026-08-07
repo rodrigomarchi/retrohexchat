@@ -59,12 +59,12 @@ defmodule RetroHexChatWeb.App.ChatLive do
     DuplicateTracker,
     FloodTracker,
     KeyBindings,
-    LinkPreview,
     ReconnectState,
     SoundSettings
   }
 
   alias RetroHexChat.Presence.{Tracker, WhowasCache}
+  alias RetroHexChat.Scraper
   alias RetroHexChatWeb.App.ChatHelpers
   alias RetroHexChatWeb.App.ComposerEvents
   alias RetroHexChatWeb.App.SessionHelpers
@@ -143,7 +143,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "server:announcements")
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "server:wallops")
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "server:settings")
-    LinkPreview.subscribe()
+    Scraper.subscribe()
     subscribe_chat_device_session(chat_device_session_ref)
 
     Phoenix.PubSub.broadcast(

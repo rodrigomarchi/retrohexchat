@@ -1,75 +1,82 @@
-defmodule RetroHexChat.Chat.LinkPreview.HTTPTest do
+defmodule RetroHexChat.Scraper.ExtractorTest do
+  @moduledoc """
+  Reading what a publisher says about its own page.
+
+  Standards first — Open Graph, then Twitter Cards, then JSON-LD, then plain HTML —
+  and every fetch checked by the URL guard, including the ones the page itself
+  points at. Moved here with the extractor; the assertions are unchanged, which is
+  the point: nothing about what is read changed when the reader moved.
+  """
   use ExUnit.Case, async: false
 
-  alias RetroHexChat.Chat.LinkPreview.HTTP
+  alias RetroHexChat.Scraper.HTTP
 
   @moduletag :unit
 
   setup {Req.Test, :verify_on_exit!}
 
   setup do
-    Application.delete_env(:retro_hex_chat, :link_preview_req_options)
+    Application.delete_env(:retro_hex_chat, :scraper_req_options)
 
     on_exit(fn ->
-      Application.delete_env(:retro_hex_chat, :link_preview_req_options)
+      Application.delete_env(:retro_hex_chat, :scraper_req_options)
     end)
 
     :ok
   end
 
-  describe "parse_title/1" do
+  describe "the <title> fallback" do
     test "extracts title from simple HTML" do
       html = "<html><head><title>Hello World</title></head></html>"
-      assert HTTP.parse_title(html) == {:ok, "Hello World"}
+      assert {:ok, %{title: "Hello World"}} = HTTP.parse_metadata(html)
     end
 
     test "extracts title with attributes" do
       html = ~s(<title lang="en">My Page</title>)
-      assert HTTP.parse_title(html) == {:ok, "My Page"}
+      assert {:ok, %{title: "My Page"}} = HTTP.parse_metadata(html)
     end
 
     test "strips whitespace from title" do
       html = "<title>  spaced  title  </title>"
-      assert HTTP.parse_title(html) == {:ok, "spaced title"}
+      assert {:ok, %{title: "spaced title"}} = HTTP.parse_metadata(html)
     end
 
     test "handles multiline title" do
       html = "<title>\n  Multi\n  Line\n  Title\n</title>"
-      assert HTTP.parse_title(html) == {:ok, "Multi Line Title"}
+      assert {:ok, %{title: "Multi Line Title"}} = HTTP.parse_metadata(html)
     end
 
-    test "HTML-escapes title text for the legacy title API" do
+    test "hands back the publisher's characters, not entities for them" do
       html = "<title>Tom & Jerry < Preview</title>"
 
-      assert HTTP.parse_title(html) ==
-               {:ok, "Tom &amp; Jerry &lt; Preview"}
+      assert {:ok, %{title: "Tom & Jerry < Preview"}} = HTTP.parse_metadata(html)
     end
 
     test "truncates title over 200 chars" do
       long_title = String.duplicate("a", 250)
-      {:ok, result} = HTTP.parse_title("<title>#{long_title}</title>")
-      assert String.length(result) == 203
-      assert String.ends_with?(result, "...")
+      {:ok, %{title: title}} = HTTP.parse_metadata("<title>#{long_title}</title>")
+      assert String.length(title) == 203
+      assert String.ends_with?(title, "...")
     end
 
     test "returns error for no title tag" do
       html = "<html><head></head></html>"
-      assert HTTP.parse_title(html) == {:error, :no_title}
+      assert HTTP.parse_metadata(html) == {:error, :no_metadata}
     end
 
     test "returns error for empty title" do
       html = "<title></title>"
-      assert HTTP.parse_title(html) == {:error, :no_title}
+      assert HTTP.parse_metadata(html) == {:error, :no_metadata}
     end
 
     test "returns error for whitespace-only title" do
       html = "<title>   </title>"
-      assert HTTP.parse_title(html) == {:error, :no_title}
+      assert HTTP.parse_metadata(html) == {:error, :no_metadata}
     end
 
     test "case insensitive title tag" do
       html = "<TITLE>My Title</TITLE>"
-      assert HTTP.parse_title(html) == {:ok, "My Title"}
+      assert {:ok, %{title: "My Title"}} = HTTP.parse_metadata(html)
     end
   end
 
@@ -165,11 +172,9 @@ defmodule RetroHexChat.Chat.LinkPreview.HTTPTest do
     end
   end
 
-  describe "fetch_metadata/1" do
+  describe "fetch_metadata_result/1" do
     setup do
-      Application.put_env(:retro_hex_chat, :link_preview_req_options,
-        plug: {Req.Test, __MODULE__}
-      )
+      Application.put_env(:retro_hex_chat, :scraper_req_options, plug: {Req.Test, __MODULE__})
 
       :ok
     end
@@ -184,7 +189,7 @@ defmodule RetroHexChat.Chat.LinkPreview.HTTPTest do
         """)
       end)
 
-      assert {:ok, metadata} = HTTP.fetch_metadata("https://example.com/story")
+      assert {:ok, metadata} = HTTP.fetch_metadata_result("https://example.com/story")
       assert metadata.title == "Fetched title"
       assert metadata.description == "Fetched description"
     end
@@ -211,7 +216,7 @@ defmodule RetroHexChat.Chat.LinkPreview.HTTPTest do
         end
       end)
 
-      assert {:ok, metadata} = HTTP.fetch_metadata("https://example.com/story")
+      assert {:ok, metadata} = HTTP.fetch_metadata_result("https://example.com/story")
       assert metadata.title == "oEmbed title"
       assert metadata.site_name == "Video Provider"
       assert metadata.image == "https://example.com/thumb.jpg"
@@ -237,18 +242,20 @@ defmodule RetroHexChat.Chat.LinkPreview.HTTPTest do
         end
       end)
 
-      assert {:ok, metadata} = HTTP.fetch_metadata("https://example.com/story")
+      assert {:ok, metadata} = HTTP.fetch_metadata_result("https://example.com/story")
       assert metadata.title == "Header oEmbed title"
       assert metadata.site_name == "Header Provider"
       assert metadata.image == "https://example.com/header-thumb.jpg"
     end
 
     test "does not read unbounded HTML bodies looking for late metadata" do
+      # The ceiling moved up when the reader stopped stopping at `</head>`, but it
+      # is still a ceiling: a response that never ends must not be read for ever.
       Req.Test.expect(__MODULE__, fn conn ->
-        Req.Test.html(conn, String.duplicate("x", 260_000) <> "<title>Too late</title>")
+        Req.Test.html(conn, String.duplicate("x", 4_100_000) <> "<title>Too late</title>")
       end)
 
-      assert {:error, :no_metadata} = HTTP.fetch_metadata("https://example.com/late")
+      assert {:error, :no_metadata} = HTTP.fetch_metadata_result("https://example.com/late")
     end
 
     test "validates redirect targets before following them" do
@@ -256,33 +263,29 @@ defmodule RetroHexChat.Chat.LinkPreview.HTTPTest do
         Req.Test.redirect(conn, external: "http://127.0.0.1/private")
       end)
 
-      assert {:error, :blocked} = HTTP.fetch_metadata("https://example.com/redirect")
+      assert {:error, :blocked} = HTTP.fetch_metadata_result("https://example.com/redirect")
     end
 
     test "refuses private initial URLs" do
-      assert {:error, :blocked} = HTTP.fetch_metadata("http://127.0.0.1/story")
+      assert {:error, :blocked} = HTTP.fetch_metadata_result("http://127.0.0.1/story")
     end
 
-    test "fetch_title_result preserves retryable HTTP status codes for workers" do
-      Req.Test.expect(__MODULE__, 2, fn conn ->
+    test "preserves a retryable HTTP status so the worker can act on it" do
+      Req.Test.expect(__MODULE__, fn conn ->
         Plug.Conn.resp(conn, 503, "service unavailable")
       end)
 
       assert {:error, {:http_status, 503}} =
-               HTTP.fetch_title_result("https://example.com/unavailable")
-
-      assert {:error, :server_error} = HTTP.fetch_title("https://example.com/unavailable")
+               HTTP.fetch_metadata_result("https://example.com/unavailable")
     end
 
-    test "fetch_title_result preserves non-retryable HTTP status codes for workers" do
-      Req.Test.expect(__MODULE__, 2, fn conn ->
+    test "preserves a non-retryable HTTP status so the worker can stop" do
+      Req.Test.expect(__MODULE__, fn conn ->
         Plug.Conn.resp(conn, 404, "not found")
       end)
 
       assert {:error, {:http_status, 404}} =
-               HTTP.fetch_title_result("https://example.com/missing")
-
-      assert {:error, :not_found} = HTTP.fetch_title("https://example.com/missing")
+               HTTP.fetch_metadata_result("https://example.com/missing")
     end
   end
 end

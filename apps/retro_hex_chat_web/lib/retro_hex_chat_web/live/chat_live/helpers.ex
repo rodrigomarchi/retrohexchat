@@ -127,7 +127,6 @@ defmodule RetroHexChatWeb.ChatLive.Helpers do
     to: __MODULE__.Session
 
   defdelegate maybe_fetch_previews(socket, urls), to: __MODULE__.Session
-  defdelegate enqueue_preview_fetch(url), to: __MODULE__.Session
   defdelegate maybe_start_ignore_timer(socket, nick, duration), to: __MODULE__.Session
   defdelegate cancel_ignore_timer(socket, nick), to: __MODULE__.Session
   defdelegate parse_dialog_duration(str), to: __MODULE__.Session

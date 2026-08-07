@@ -82,25 +82,22 @@ defmodule RetroHexChat.Bots.RSSHTTPTest do
 
   defmodule NoopPreview do
     @moduledoc false
-    @behaviour RetroHexChat.Chat.LinkPreview
+    @behaviour RetroHexChat.Scraper.Client
 
     @impl true
-    def fetch_title(_url), do: {:error, :fetch_failed}
-
-    @impl true
-    def fetch_metadata(_url), do: {:error, :fetch_failed}
+    def scrape(_url, _opts), do: {:error, :fetch_failed}
   end
 
   setup do
     Application.put_env(:retro_hex_chat, :rss_allow_private_addresses, true)
-    Application.put_env(:retro_hex_chat, :link_preview_fetcher, NoopPreview)
+    Application.put_env(:retro_hex_chat, :page_scraper, NoopPreview)
     {server, port, socket} = FeedServer.start(@feed)
     {:ok, chan} = Channels.Supervisor.start_child(@channel)
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#{@channel}")
 
     on_exit(fn ->
       Application.delete_env(:retro_hex_chat, :rss_allow_private_addresses)
-      Application.delete_env(:retro_hex_chat, :link_preview_fetcher)
+      Application.delete_env(:retro_hex_chat, :page_scraper)
       Supervisor.stop_bot("HttpWireBot")
       if Process.alive?(server), do: Process.exit(server, :kill)
       :gen_tcp.close(socket)

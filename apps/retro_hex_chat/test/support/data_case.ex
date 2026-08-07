@@ -17,6 +17,7 @@ defmodule RetroHexChat.DataCase do
   use ExUnit.CaseTemplate
 
   alias Ecto.Adapters.SQL.Sandbox
+  alias RetroHexChat.Scraper.Cache, as: ScraperCache
 
   using do
     quote do
@@ -41,7 +42,17 @@ defmodule RetroHexChat.DataCase do
   """
   def setup_sandbox(tags) do
     pid = Sandbox.start_owner!(RetroHexChat.Repo, shared: not tags[:async])
-    on_exit(fn -> Sandbox.stop_owner(pid) end)
+
+    # ETS caches derived from sandboxed tables do not roll back with them. Left
+    # alone, a scrape one test recorded as failed is still cached when the next
+    # test starts, and that test silently gets the previous test's answer instead
+    # of reaching its own stub.
+    ScraperCache.clear()
+
+    on_exit(fn ->
+      ScraperCache.clear()
+      Sandbox.stop_owner(pid)
+    end)
   end
 
   @doc """

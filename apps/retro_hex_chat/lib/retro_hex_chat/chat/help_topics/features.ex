@@ -171,7 +171,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "Generate rich Markdown previews from page metadata, including titles, descriptions, canonical URLs, site names, and preview images."
+            "Read a page once and reuse it everywhere: titles, descriptions, canonical URLs, site names and preview images are stored when a link is first seen, so the same link posted again — or published by a feed bot — is never fetched twice."
           ),
         see_also: ["feature-url-catcher", "bot-rss"]
       },

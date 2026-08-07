@@ -18,7 +18,6 @@ defmodule RetroHexChat.Jobs.ObanHealth do
   alias RetroHexChat.Bots.{Feeds, Queries}
   alias RetroHexChat.Channels.Mutes, as: ChannelMutes
   alias RetroHexChat.Chat.{Attachments, IgnoreList}
-  alias RetroHexChat.Chat.LinkPreview.Results, as: LinkPreviewResults
   alias RetroHexChat.Chat.PreferencePersistence
 
   alias RetroHexChat.Jobs.{
@@ -39,6 +38,7 @@ defmodule RetroHexChat.Jobs.ObanHealth do
 
   alias RetroHexChat.Repo
   alias RetroHexChat.RuntimeStaleCleanup
+  alias RetroHexChat.Scraper.Store, as: ScraperStore
   alias RetroHexChat.Services.{ChanExpiry, NickExpiry}
   alias RetroHexChat.Table
 
@@ -163,12 +163,12 @@ defmodule RetroHexChat.Jobs.ObanHealth do
             maintenance_sweeps: non_neg_integer(),
             maintenance_failures: non_neg_integer(),
             maintenance_pending_work: non_neg_integer(),
-            link_previews: non_neg_integer(),
-            link_preview_pending: non_neg_integer(),
-            link_preview_retrying: non_neg_integer(),
-            link_preview_final_failures: non_neg_integer(),
-            link_preview_failed: non_neg_integer(),
-            link_preview_expired: non_neg_integer(),
+            scraped_pages: non_neg_integer(),
+            scraped_page_pending: non_neg_integer(),
+            scraped_page_retrying: non_neg_integer(),
+            scraped_page_final_failures: non_neg_integer(),
+            scraped_page_failed: non_neg_integer(),
+            scraped_page_expired: non_neg_integer(),
             persistence_requests: non_neg_integer(),
             persistence_pending: non_neg_integer(),
             persistence_failed: non_neg_integer(),
@@ -194,7 +194,7 @@ defmodule RetroHexChat.Jobs.ObanHealth do
             bot_schedule_table: Table.t(),
             bot_event_log_table: Table.t(),
             maintenance_table: Table.t(),
-            link_preview_table: Table.t(),
+            scraped_page_table: Table.t(),
             persistence_table: Table.t()
           }
 
@@ -213,7 +213,7 @@ defmodule RetroHexChat.Jobs.ObanHealth do
       :bot_schedule_table,
       :bot_event_log_table,
       :maintenance_table,
-      :link_preview_table,
+      :scraped_page_table,
       :persistence_table
     ]
     defstruct [
@@ -231,7 +231,7 @@ defmodule RetroHexChat.Jobs.ObanHealth do
       :bot_schedule_table,
       :bot_event_log_table,
       :maintenance_table,
-      :link_preview_table,
+      :scraped_page_table,
       :persistence_table
     ]
   end
@@ -272,7 +272,7 @@ defmodule RetroHexChat.Jobs.ObanHealth do
     bot_schedule_rows = bot_schedule_rows(repo, now)
     bot_event_log_rows = bot_event_log_rows(repo, now)
     maintenance_rows = maintenance_rows(repo, now)
-    link_preview_rows = link_preview_rows(repo, now)
+    scraped_page_rows = scraped_page_rows(repo, now)
     persistence_rows = persistence_rows(repo)
 
     summary =
@@ -284,7 +284,7 @@ defmodule RetroHexChat.Jobs.ObanHealth do
         bot_schedule_rows: bot_schedule_rows,
         bot_event_log_rows: bot_event_log_rows,
         maintenance_rows: maintenance_rows,
-        link_preview_rows: link_preview_rows,
+        scraped_page_rows: scraped_page_rows,
         persistence_rows: persistence_rows,
         running?: running?,
         now: now
@@ -307,7 +307,7 @@ defmodule RetroHexChat.Jobs.ObanHealth do
       bot_schedule_table: bot_schedule_table(bot_schedule_rows),
       bot_event_log_table: bot_event_log_table(bot_event_log_rows),
       maintenance_table: maintenance_table(maintenance_rows),
-      link_preview_table: link_preview_table(link_preview_rows),
+      scraped_page_table: scraped_page_table(scraped_page_rows),
       persistence_table: persistence_table(persistence_rows)
     }
   end
@@ -333,7 +333,7 @@ defmodule RetroHexChat.Jobs.ObanHealth do
       bot_schedule_table: bot_schedule_table([]),
       bot_event_log_table: bot_event_log_table([]),
       maintenance_table: maintenance_table([]),
-      link_preview_table: link_preview_table([]),
+      scraped_page_table: scraped_page_table([]),
       persistence_table: persistence_table([])
     }
   end
@@ -370,13 +370,13 @@ defmodule RetroHexChat.Jobs.ObanHealth do
          bot_schedule_rows: bot_schedule_rows,
          bot_event_log_rows: bot_event_log_rows,
          maintenance_rows: maintenance_rows,
-         link_preview_rows: link_preview_rows,
+         scraped_page_rows: scraped_page_rows,
          persistence_rows: persistence_rows,
          running?: running?,
          now: now
        }) do
     state_counts = state_counts(queue_stats)
-    link_preview_summary = link_preview_summary(link_preview_rows)
+    scraped_page_summary = scraped_page_summary(scraped_page_rows)
     persistence_summary = persistence_summary(persistence_rows)
     bot_event_log_summary = bot_event_log_summary(bot_event_log_rows)
 
@@ -402,12 +402,12 @@ defmodule RetroHexChat.Jobs.ObanHealth do
       maintenance_sweeps: length(maintenance_rows),
       maintenance_failures: Enum.count(maintenance_rows, &(&1.failure_jobs > 0)),
       maintenance_pending_work: maintenance_rows |> Enum.map(& &1.pending_work) |> Enum.sum(),
-      link_previews: link_preview_summary.total,
-      link_preview_pending: link_preview_summary.pending,
-      link_preview_retrying: link_preview_summary.retrying,
-      link_preview_final_failures: link_preview_summary.final_failures,
-      link_preview_failed: link_preview_summary.failed,
-      link_preview_expired: link_preview_summary.expired,
+      scraped_pages: scraped_page_summary.total,
+      scraped_page_pending: scraped_page_summary.pending,
+      scraped_page_retrying: scraped_page_summary.retrying,
+      scraped_page_final_failures: scraped_page_summary.final_failures,
+      scraped_page_failed: scraped_page_summary.failed,
+      scraped_page_expired: scraped_page_summary.expired,
       persistence_requests: persistence_summary.total,
       persistence_pending: persistence_summary.pending,
       persistence_failed: persistence_summary.failed,
@@ -442,12 +442,12 @@ defmodule RetroHexChat.Jobs.ObanHealth do
       maintenance_sweeps: 0,
       maintenance_failures: 0,
       maintenance_pending_work: 0,
-      link_previews: 0,
-      link_preview_pending: 0,
-      link_preview_retrying: 0,
-      link_preview_final_failures: 0,
-      link_preview_failed: 0,
-      link_preview_expired: 0,
+      scraped_pages: 0,
+      scraped_page_pending: 0,
+      scraped_page_retrying: 0,
+      scraped_page_final_failures: 0,
+      scraped_page_failed: 0,
+      scraped_page_expired: 0,
       persistence_requests: 0,
       persistence_pending: 0,
       persistence_failed: 0,
@@ -493,7 +493,7 @@ defmodule RetroHexChat.Jobs.ObanHealth do
       |> maybe_reason(summary.bot_schedule_failures > 0, "bot schedule jobs have failed")
       |> maybe_reason(summary.bot_event_log_failures > 0, "bot event log jobs have failed")
       |> maybe_reason(summary.maintenance_failures > 0, "maintenance sweeps have failed jobs")
-      |> maybe_reason(summary.link_preview_retrying > 0, "link previews are waiting for retry")
+      |> maybe_reason(summary.scraped_page_retrying > 0, "link previews are waiting for retry")
       |> maybe_reason(summary.persistence_failed > 0, "preference saves have failed requests")
 
     cond do
@@ -908,23 +908,23 @@ defmodule RetroHexChat.Jobs.ObanHealth do
     }
   end
 
-  defp link_preview_rows(repo, now) do
-    LinkPreviewResults.stats(repo: repo, now: now)
-    |> ensure_link_preview_statuses()
+  defp scraped_page_rows(repo, now) do
+    ScraperStore.stats(repo: repo, now: now)
+    |> ensure_scraped_page_statuses()
   end
 
-  defp link_preview_summary(rows) do
+  defp scraped_page_summary(rows) do
     %{
       total: rows |> Enum.map(& &1.count) |> Enum.sum(),
-      pending: rows |> count_link_preview_status("pending"),
+      pending: rows |> count_scraped_page_status("pending"),
       retrying: rows |> Enum.map(&(&1.retrying || 0)) |> Enum.sum(),
       final_failures: rows |> Enum.map(&(&1.final_failures || 0)) |> Enum.sum(),
-      failed: rows |> count_link_preview_status("failed"),
+      failed: rows |> count_scraped_page_status("failed"),
       expired: rows |> Enum.map(& &1.expired) |> Enum.sum()
     }
   end
 
-  defp link_preview_table(rows) do
+  defp scraped_page_table(rows) do
     %Table{
       columns: [
         Table.column(:status, "Status", sortable: true),
@@ -1226,7 +1226,7 @@ defmodule RetroHexChat.Jobs.ObanHealth do
   defp bot_event_log_state_rank("cancelled"), do: 6
   defp bot_event_log_state_rank(_state), do: 7
 
-  defp ensure_link_preview_statuses(rows) do
+  defp ensure_scraped_page_statuses(rows) do
     rows_by_status = Map.new(rows, &{&1.status, &1})
 
     Enum.map(~w(pending ready failed), fn status ->
@@ -1240,11 +1240,11 @@ defmodule RetroHexChat.Jobs.ObanHealth do
         oldest_attempted_at: nil,
         newest_fetched_at: nil
       })
-      |> Map.put(:id, "link_preview:#{status}")
+      |> Map.put(:id, "scraped_page:#{status}")
     end)
   end
 
-  defp count_link_preview_status(rows, status) do
+  defp count_scraped_page_status(rows, status) do
     rows
     |> Enum.find(%{count: 0}, &(&1.status == status))
     |> Map.get(:count)

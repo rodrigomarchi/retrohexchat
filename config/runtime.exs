@@ -230,8 +230,13 @@ if config_env() == :prod do
       _ -> 2
     end
 
-  link_preview_queue_concurrency =
-    case Integer.parse(System.get_env("OBAN_LINK_PREVIEW_CONCURRENCY", "2")) do
+  # Accepts the old variable name for one deploy, so a running host keeps its
+  # tuning through the rename instead of silently reverting to the default.
+  scrape_queue_concurrency =
+    System.get_env("OBAN_SCRAPE_CONCURRENCY")
+    |> Kernel.||(System.get_env("OBAN_LINK_PREVIEW_CONCURRENCY", "2"))
+    |> Integer.parse()
+    |> case do
       {concurrency, ""} when concurrency > 0 -> concurrency
       _ -> 2
     end
@@ -247,7 +252,8 @@ if config_env() == :prod do
       rss: rss_queue_concurrency,
       maintenance: maintenance_queue_concurrency,
       bots: bots_queue_concurrency,
-      link_preview: link_preview_queue_concurrency,
+      scrape: scrape_queue_concurrency,
+      link_preview: 1,
       persistence: persistence_queue_concurrency
     ]
 

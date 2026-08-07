@@ -56,6 +56,7 @@ config :retro_hex_chat, Oban,
        {"@reboot", RetroHexChat.Jobs.ChatDeviceSessionCleanupWorker},
        {"@reboot", RetroHexChat.Jobs.RuntimeStaleCleanupWorker},
        {"@reboot", RetroHexChat.Jobs.IgnoreExpiredCleanupWorker},
+       {"@reboot", RetroHexChat.Jobs.ScrapedPagePruneWorker},
        {"@hourly", RetroHexChat.Jobs.ServerBanExpiryWorker},
        {"0 */6 * * *", RetroHexChat.Jobs.RegisteredChannelExpiryWorker},
        {"15 */6 * * *", RetroHexChat.Jobs.RegisteredNickExpiryWorker},
@@ -63,11 +64,14 @@ config :retro_hex_chat, Oban,
        {"35 * * * *", RetroHexChat.Jobs.TrustedDeviceExpiryWorker},
        {"*/15 * * * *", RetroHexChat.Jobs.ChatDeviceSessionCleanupWorker},
        {"45 * * * *", RetroHexChat.Jobs.RuntimeStaleCleanupWorker},
+       {"50 * * * *", RetroHexChat.Jobs.ScrapedPagePruneWorker},
        {"55 * * * *", RetroHexChat.Jobs.IgnoreExpiredCleanupWorker}
      ]},
     Oban.Plugins.Pruner
   ],
-  queues: [rss: 2, maintenance: 1, bots: 2, link_preview: 2, persistence: 1]
+  # `link_preview` is kept only to drain jobs enqueued before the scrape worker
+  # was renamed. Remove it, and `Jobs.LinkPreviewFetchWorker`, after one deploy.
+  queues: [rss: 2, maintenance: 1, bots: 2, scrape: 2, link_preview: 1, persistence: 1]
 
 config :retro_hex_chat_web,
   ecto_repos: [RetroHexChat.Repo],
