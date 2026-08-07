@@ -196,11 +196,14 @@ msgid "Connect"
 msgstr "Połącz"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:57
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "Connect Authentication"
 msgstr "Połącz uwierzytelnianie"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:54
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Connecting"
@@ -287,6 +290,7 @@ msgstr "Nick Wygasa"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:60
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "NickServ Overview"
 msgstr "Przegląd NickServ"
@@ -381,6 +385,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:54
 #: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:52
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:21
 #, elixir-autogen, elixir-format
 msgid "See Also"
@@ -516,8 +521,8 @@ msgstr "O RetroHexChat"
 msgid "Back"
 msgstr "Wstecz"
 
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:403
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:410
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:425
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:432
 #, elixir-autogen, elixir-format
 msgid "Back to chat"
 msgstr "Powrót do rozmowy"
@@ -573,7 +578,7 @@ msgstr "Polecenie Notice"
 
 #: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:124
 #: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:224
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:425
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:447
 #, elixir-autogen, elixir-format
 msgid "Search"
 msgstr "Szukaj"
@@ -593,3 +598,114 @@ msgstr "Wpisz w polu wyszukiwania, aby znaleźć tematy."
 #, elixir-autogen, elixir-format
 msgid "View"
 msgstr "Widok"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:34
+#, elixir-autogen, elixir-format
+msgid ""
+"A remembered terminal can go one step further: turn on auto-login for it and"
+" opening any page signs you straight into the chat, with nothing to click."
+msgstr ""
+"Zapamiętany terminal może pójść o krok dalej: włączyć autologowanie i "
+"otwarcie każdej strony oznacza bezpośrednio do czatu, bez niczego do "
+"kliknięcia."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "Auto-Login"
+msgstr "Auto- Logowanie"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:59
+#, elixir-autogen, elixir-format
+msgid "Desktop & Windows"
+msgstr "Desktop & Windows"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:47
+#, elixir-autogen, elixir-format
+msgid ""
+"It behaves like every other window: move it, minimize it, or bring it back "
+"from the taskbar button or Start ▸ Windows. On the public pages it opens "
+"with the page; on the connect screen it is pinned in the middle."
+msgstr ""
+"Zachowuje się jak każde inne okno: przesuwać, minimalizować, lub przynieść "
+"go z powrotem z przycisku paska zadań lub Start bajt Windows. Na stronach "
+"publicznych otwiera się ona za pomocą strony; na ekranie połączenia jest "
+"przypięta w środku."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Signing In"
+msgstr "Zapisy"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"The Connect window is where you sign in. It appears on its own screen at "
+"/connect, and on every public page — so you can enter the chat without "
+"leaving the page you arrived on."
+msgstr ""
+"Okno Connect jest miejscem, w którym się piszesz. Pojawia się na swoim "
+"własnym ekranie w /connect, i na każdej stronie publicznej - więc można "
+"wprowadzić czat bez pozostawiania strony, na której przybył."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "The Window Itself"
+msgstr "Okno samo w sobie"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "The nickname rules are the same everywhere — see"
+msgstr "Zasady przezwiska są wszędzie takie same - zobacz"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:40
+#, elixir-autogen, elixir-format
+msgid ""
+"This is per terminal and per nickname, so a shared machine can stay manual "
+"while your own signs you in. Disconnecting from the chat always returns you "
+"here rather than looping straight back in."
+msgstr ""
+"Jest to na terminal i na pseudonim, więc wspólna maszyna może pozostać "
+"ręczny, podczas gdy własne znaki w. Odłączanie się od czatu zawsze sprowadza"
+" cię tutaj, a nie z powrotem."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:21
+#, elixir-autogen, elixir-format
+msgid ""
+"Tick Remember this terminal while signing in and this browser is remembered "
+"for that nickname. On your next visit the window lists it as a card instead "
+"of an empty field, and one click signs you back in — no password."
+msgstr ""
+"Tick Zapamiętaj ten terminal podczas logowania się i ta przeglądarka jest "
+"zapamiętana dla tej ksywki. Podczas następnej wizyty okno wymienia go jako "
+"kartę zamiast pustego pola, a jedno kliknięcie z powrotem wpisuje - bez "
+"hasła."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "Trusted Terminals"
+msgstr "Zaufane terminale"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:9
+#, elixir-autogen, elixir-format
+msgid ""
+"Type a nickname and click Connect. A nickname nobody has registered opens a "
+"short registration form; a registered one asks for its password. Either way "
+"you land in the chat already identified."
+msgstr ""
+"Wpisz pseudonim i kliknij Połącz. Pseudonim, którego nikt nie zarejestrował,"
+" otwiera krótki formularz rejestracyjny; zarejestrowany, prosi o hasło. Tak "
+"czy inaczej wylądujesz na czacie już zidentyfikowanym."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:27
+#, elixir-autogen, elixir-format
+msgid ""
+"Use another nick/password switches back to the plain nickname field, and "
+"Back to trusted terminals returns to the list."
+msgstr ""
+"Użyj innego przełącznika nick/password z powrotem do zwykłego pola nick, a "
+"Powrót do zaufanych terminali wraca do listy."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "for the full list."
+msgstr "dla pełnej listy."

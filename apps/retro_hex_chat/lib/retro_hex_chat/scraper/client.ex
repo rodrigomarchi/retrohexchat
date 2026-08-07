@@ -42,7 +42,10 @@ defmodule RetroHexChat.Scraper.Client do
           optional(:description) => String.t() | nil,
           optional(:image) => String.t() | nil,
           optional(:url) => String.t() | nil,
-          optional(:site_name) => String.t() | nil
+          optional(:site_name) => String.t() | nil,
+          optional(:author) => String.t() | nil,
+          optional(:published_at) => DateTime.t() | nil,
+          optional(:word_count) => non_neg_integer() | nil
         }
 
   @type error :: atom() | {:http_status, pos_integer()} | term()
@@ -110,9 +113,53 @@ defmodule RetroHexChat.Scraper.Client do
       description: page.description,
       image: page.image_url,
       url: page.canonical_url,
-      site_name: page.site_name
+      site_name: page.site_name,
+      author: byline(page.author),
+      published_at: page.published_at,
+      word_count: word_count(page.content_text)
     }
     |> Enum.reject(fn {_key, value} -> is_nil(value) end)
     |> Map.new()
   end
+
+  @max_byline_length 60
+
+  @doc """
+  An author string only if it reads as a person's name.
+
+  Publishers put anything in the author slot: BBC writes a Facebook page URL into
+  `article:author`, WordPress sites emit the JSON-LD `@id` of the author node, and
+  plenty just leave a handle. A URL under a headline reads as a broken card, so
+  anything URL-shaped is dropped rather than shown.
+
+  Applied both when a page is read and when a stored row is rendered, because the
+  archive holds rows for four months and already contains what the old extractor
+  let through.
+  """
+  @spec byline(String.t() | nil) :: String.t() | nil
+  def byline(author) when is_binary(author) do
+    author = String.trim(author)
+
+    cond do
+      author == "" -> nil
+      String.contains?(author, "://") -> nil
+      String.contains?(author, "/") -> nil
+      String.length(author) > @max_byline_length -> nil
+      true -> author
+    end
+  end
+
+  def byline(_author), do: nil
+
+  # Derived on read rather than stored. Counting words costs a `String.split/1`
+  # over a few kilobytes for the one to five items a poll actually renders, while
+  # a column would need a `scraper_version` bump to backfill — and rows renewed by
+  # a `304` never re-extract, so the column would stay empty on exactly the pages
+  # that are still being read.
+  @spec word_count(String.t() | nil) :: non_neg_integer() | nil
+  defp word_count(text) when is_binary(text) and text != "" do
+    text |> String.split() |> length()
+  end
+
+  defp word_count(_text), do: nil
 end

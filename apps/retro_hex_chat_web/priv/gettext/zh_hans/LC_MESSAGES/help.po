@@ -190,11 +190,14 @@ msgid "Connect"
 msgstr "连接"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:57
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "Connect Authentication"
 msgstr "连接认证"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:54
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Connecting"
@@ -278,6 +281,7 @@ msgstr "昵称过期"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:60
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "NickServ Overview"
 msgstr "NickServ 概览"
@@ -368,6 +372,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:54
 #: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:52
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:21
 #, elixir-autogen, elixir-format
 msgid "See Also"
@@ -493,8 +498,8 @@ msgstr "关于反转HexChat"
 msgid "Back"
 msgstr "返回"
 
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:403
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:410
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:425
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:432
 #, elixir-autogen, elixir-format
 msgid "Back to chat"
 msgstr "继续聊天"
@@ -548,7 +553,7 @@ msgstr "通知命令"
 
 #: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:124
 #: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:224
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:425
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:447
 #, elixir-autogen, elixir-format
 msgid "Search"
 msgstr "搜索"
@@ -568,3 +573,94 @@ msgstr "在搜索框中键入查找话题。"
 #, elixir-autogen, elixir-format
 msgid "View"
 msgstr "视图"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:34
+#, elixir-autogen, elixir-format
+msgid ""
+"A remembered terminal can go one step further: turn on auto-login for it and"
+" opening any page signs you straight into the chat, with nothing to click."
+msgstr "一个被记住的终端可以再走一步:打开自动登录,然后直接打开任何页面标志进入聊天,没有东西可以点击."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "Auto-Login"
+msgstr "自动锁定"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:59
+#, elixir-autogen, elixir-format
+msgid "Desktop & Windows"
+msgstr "桌面窗口( W)"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:47
+#, elixir-autogen, elixir-format
+msgid ""
+"It behaves like every other window: move it, minimize it, or bring it back "
+"from the taskbar button or Start ▸ Windows. On the public pages it opens "
+"with the page; on the connect screen it is pinned in the middle."
+msgstr ""
+"它的行为就像其他的窗口:移动,最小化,或者从任务栏按钮或启动QQ Windows中带回. 在公共网页上,它随网页打开;在连接屏幕上,它被固定在中间。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Signing In"
+msgstr "签名"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"The Connect window is where you sign in. It appears on its own screen at "
+"/connect, and on every public page — so you can enter the chat without "
+"leaving the page you arrived on."
+msgstr "连接窗口是您报名的地方 。 它出现在自己的屏幕上,在/connect,以及每个公共页面上——这样你就可以进入聊天而不离开你到达的页面."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "The Window Itself"
+msgstr "窗口本身"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "The nickname rules are the same everywhere — see"
+msgstr "昵称规则随处可见"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:40
+#, elixir-autogen, elixir-format
+msgid ""
+"This is per terminal and per nickname, so a shared machine can stay manual "
+"while your own signs you in. Disconnecting from the chat always returns you "
+"here rather than looping straight back in."
+msgstr "这是每个终端和每个昵称, 所以一个共享的机器可以保持手动 同时你自己的标志你英寸 从聊天中断开连接总是会让您返回这里,而不是直接回转."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:21
+#, elixir-autogen, elixir-format
+msgid ""
+"Tick Remember this terminal while signing in and this browser is remembered "
+"for that nickname. On your next visit the window lists it as a card instead "
+"of an empty field, and one click signs you back in — no password."
+msgstr ""
+"签名时记住这个终端, 这个浏览器会被记住这个昵称 。 在您下次访问时, 窗口将它列为一个卡片而不是一个空字段, 并点击一次将您签回—— 没有密码 。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "Trusted Terminals"
+msgstr "信任的终端"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:9
+#, elixir-autogen, elixir-format
+msgid ""
+"Type a nickname and click Connect. A nickname nobody has registered opens a "
+"short registration form; a registered one asks for its password. Either way "
+"you land in the chat already identified."
+msgstr "输入昵称并单击连接。 没有人注册的昵称会打开一个简短的注册表;注册的人会要求其密码. 无论哪种方式,你降落 在聊天已经确定。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:27
+#, elixir-autogen, elixir-format
+msgid ""
+"Use another nick/password switches back to the plain nickname field, and "
+"Back to trusted terminals returns to the list."
+msgstr "使用另一个昵称/password开关返回普通昵称字段,返回到可信任的终端返回列表."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "for the full list."
+msgstr "完整名单。"

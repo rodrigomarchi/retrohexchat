@@ -242,7 +242,7 @@ msgid ""
 "Standalone v1.2 IWAD."
 msgstr "新しい武器、敵、およびレベルを備えたサイバーパンクDOOM総変換。 スタンドアロン v1.2 IWAD."
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:226
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:247
 #, elixir-autogen, elixir-format
 msgid ""
 "Access user actions and channel operations through right-click context "
@@ -813,7 +813,7 @@ msgstr "接続国"
 msgid "Contacts & Notify"
 msgstr "連絡先と通知"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:209
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:230
 #, elixir-autogen, elixir-format
 msgid "Context Menu"
 msgstr "コンテキストメニュー"
@@ -919,7 +919,7 @@ msgstr "制御:移動する矢印キー/speed、火へのスペース、シフ�
 msgid "Controls: Arrow keys to move/speed, Space to fire."
 msgstr "コントロール: 矢印キーを移動します。/speed, スペースを火に."
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:149
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:170
 #, elixir-autogen, elixir-format
 msgid "Conversations"
 msgstr "コンバージョン"
@@ -1108,7 +1108,7 @@ msgstr "最近送信されたメッセージを編集して、typosや更新内�
 msgid "Emoji Picker"
 msgstr "絵文字ピッカー"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:473
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:494
 #, elixir-autogen, elixir-format
 msgid "Empty States"
 msgstr "空の国"
@@ -1280,7 +1280,7 @@ msgstr "ハーフライフ:アップリンク"
 msgid "Headlights-only visibility — pure reflexes. Most overtakes wins. "
 msgstr "ヘッドライトのみの可視性 — 純粋な反射。 ほとんどのオーバーテイクは勝ちます。"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:486
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:507
 #, elixir-autogen, elixir-format
 msgid ""
 "Helpful placeholders shown when lists are empty, guiding you on what to do "
@@ -1702,7 +1702,7 @@ msgstr "現在のチャネルでユーザをミュートし、メッセージの
 msgid "Mute all sounds globally or per-channel to silence notifications."
 msgstr "すべての音をグローバルまたはチャネルごとにミュートし、通知をサイレンスします。"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:154
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:175
 #, elixir-autogen, elixir-format
 msgid ""
 "Navigate channels and private conversations using the left-side "
@@ -2513,7 +2513,7 @@ msgstr "スター・デュエル"
 msgid "Status Bar"
 msgstr "ステータスバー"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:233
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:254
 #, elixir-autogen, elixir-format
 msgid "Status Tab"
 msgstr "ステータスタブ"
@@ -2531,14 +2531,14 @@ msgid ""
 "grandfather from underground pirates."
 msgstr "LK Avalon(1995)によるサレアルポリッシュパズルアドベンチャー — 地下海賊からあなたの祖父を救出します。"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:167
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:188
 #, elixir-autogen, elixir-format
 msgid ""
 "Switch between channels and conversations using the tab bar at the bottom of"
 " the chat area."
 msgstr "チャットエリアの下部にあるタブバーを使用してチャネルと会話の間で切り替えます。"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:162
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:183
 #, elixir-autogen, elixir-format
 msgid "Tab Bar"
 msgstr "タブバー"
@@ -2631,7 +2631,7 @@ msgstr "タイマー"
 msgid "Timestamp Configuration"
 msgstr "タイムスタンプ構成"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:299
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:320
 #, elixir-autogen, elixir-format
 msgid "Toolbar"
 msgstr "ツールバー"
@@ -2669,7 +2669,7 @@ msgid ""
 " position. "
 msgstr "トップダウンテニスデュル — ショットアングルが接触位置に依存する自動ヒット。"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:193
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:214
 #, elixir-autogen, elixir-format
 msgid "Topic Bar"
 msgstr "トピックバー"
@@ -2735,23 +2735,24 @@ msgstr "カラーパレットを使用して、フォアグラウンドと背景
 #: lib/retro_hex_chat/chat/help_topics/services.ex:106
 #: lib/retro_hex_chat/chat/help_topics/user_interface.ex:12
 #: lib/retro_hex_chat/chat/help_topics/user_interface.ex:24
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:95
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:150
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:163
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:175
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:194
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:210
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:234
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:252
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:280
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:300
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:323
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:45
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:116
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:171
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:184
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:196
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:215
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:231
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:255
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:273
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:301
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:321
 #: lib/retro_hex_chat/chat/help_topics/user_interface.ex:344
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:373
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:393
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:365
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:394
 #: lib/retro_hex_chat/chat/help_topics/user_interface.ex:414
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:449
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:474
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:435
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:470
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:495
 #, elixir-autogen, elixir-format
 msgid "User Interface"
 msgstr "ユーザーインターフェイス"
@@ -2761,7 +2762,7 @@ msgstr "ユーザーインターフェイス"
 msgid "User Interface Overview"
 msgstr "ユーザーインターフェイスの概要"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:174
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:195
 #, elixir-autogen, elixir-format
 msgid "User List"
 msgstr "ユーザーリスト"
@@ -2802,7 +2803,7 @@ msgid ""
 "active allocations."
 msgstr "TURNサーバーのステータス(アクティブ割り当て、使用中のリレーポート)を表示し、アクティブな割り当てをリストします。"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:185
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:206
 #, elixir-autogen, elixir-format
 msgid ""
 "View and interact with users in the current channel through the right-side "
@@ -2837,14 +2838,14 @@ msgid ""
 "registration, limits)."
 msgstr "サーバー情報を表示し、サーバーの設定(名前、説明、登録、制限)を管理します。"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:244
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:265
 #, elixir-autogen, elixir-format
 msgid ""
 "View server messages, connection events, and system notifications in the "
 "Status tab."
 msgstr "ステータスタブのサーバーメッセージ、接続イベント、システム通知を表示します。"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:202
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:223
 #, elixir-autogen, elixir-format
 msgid "View the channel topic and active modes in the bar below the tab bar."
 msgstr "タブバーの下のバーにあるチャンネルのトピックとアクティブモードを表示します。"
@@ -3158,7 +3159,7 @@ msgstr "チャンネル expiry"
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:214
 #: lib/retro_hex_chat/chat/help_topics/features.ex:915
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:197
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:218
 #, elixir-autogen, elixir-format
 msgid "channel info"
 msgstr "チャネル情報"
@@ -3190,7 +3191,7 @@ msgstr "チャンネルモード"
 
 #: lib/retro_hex_chat/chat/help_topics/commands.ex:737
 #: lib/retro_hex_chat/chat/help_topics/features.ex:801
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:220
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:241
 #, elixir-autogen, elixir-format
 msgid "channel mute"
 msgstr "チャンネルミュート"
@@ -3282,7 +3283,7 @@ msgstr "タイムボーナスのための明確なスラロームゲート, 放�
 msgid "clear welcome"
 msgstr "明確な歓迎"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:164
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:185
 #, elixir-autogen, elixir-format
 msgid "close tab"
 msgstr "タブを閉じる"
@@ -3326,7 +3327,7 @@ msgstr "関係 失われた"
 #: lib/retro_hex_chat/chat/help_topics/features.ex:490
 #: lib/retro_hex_chat/chat/help_topics/features.ex:634
 #: lib/retro_hex_chat/chat/help_topics/features.ex:786
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:212
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:233
 #, elixir-autogen, elixir-format
 msgid "context menu"
 msgstr "コンテキストメニュー"
@@ -3336,7 +3337,7 @@ msgstr "コンテキストメニュー"
 msgid "conversations menu"
 msgstr "会話メニュー"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:181
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:202
 #, elixir-autogen, elixir-format
 msgid "conversations users"
 msgstr "会話ユーザー"
@@ -3415,7 +3416,7 @@ msgstr "ノックなし"
 msgid "doom ii"
 msgstr "ドムII"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:477
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:498
 #, elixir-autogen, elixir-format
 msgid "empty state"
 msgstr "空の状態"
@@ -3792,7 +3793,7 @@ msgstr "相手を打つミサイル。 一度に1つのミサイル - 見逃し�
 msgid "moderated voice"
 msgstr "適度な声"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:198
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:219
 #, elixir-autogen, elixir-format
 msgid "modes display"
 msgstr "モードの表示"
@@ -3828,7 +3829,7 @@ msgstr "ニックネームの完了"
 msgid "nick expiry"
 msgstr "ニックネーム expiry"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:179
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:200
 #, elixir-autogen, elixir-format
 msgid "nick list"
 msgstr "ニックネームリスト"
@@ -3854,7 +3855,7 @@ msgstr "ニックネームの保護"
 msgid "no avalanche"
 msgstr "アバランチェなし"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:481
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:502
 #, elixir-autogen, elixir-format
 msgid "no channels"
 msgstr "チャンネルなし"
@@ -3880,7 +3881,7 @@ msgstr "ノックなし"
 msgid "no man's land"
 msgstr "人の土地無し"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:479
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:500
 #, elixir-autogen, elixir-format
 msgid "no messages"
 msgstr "メッセージなし"
@@ -3895,12 +3896,12 @@ msgstr "鉱山なし"
 msgid "no steal"
 msgstr "盗まれない"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:482
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:503
 #, elixir-autogen, elixir-format
 msgid "no urls"
 msgstr "URL なし"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:480
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:501
 #, elixir-autogen, elixir-format
 msgid "no users"
 msgstr "ユーザがいない"
@@ -4096,7 +4097,7 @@ msgid "revolution software"
 msgstr "革命ソフトウェア"
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:788
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:213
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:234
 #, elixir-autogen, elixir-format
 msgid "right click"
 msgstr "右クリック"
@@ -4109,7 +4110,7 @@ msgid "river raid"
 msgstr "川の干し"
 
 #: lib/retro_hex_chat/chat/help_topics/special_messages.ex:73
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:286
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:307
 #, elixir-autogen, elixir-format
 msgid "server message"
 msgstr "サーバメッセージ"
@@ -4184,18 +4185,18 @@ msgstr "スター・デュル"
 #: lib/retro_hex_chat/chat/help_topics/features.ex:91
 #: lib/retro_hex_chat/chat/help_topics/features.ex:512
 #: lib/retro_hex_chat/chat/help_topics/features.ex:908
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:361
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:382
 #, elixir-autogen, elixir-format
 msgid "status bar"
 msgstr "ステータスバー"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:237
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:287
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:258
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:308
 #, elixir-autogen, elixir-format
 msgid "status tab"
 msgstr "ステータスタブ"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:238
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:259
 #, elixir-autogen, elixir-format
 msgid "status window"
 msgstr "ステータスウィンドウ"
@@ -4223,12 +4224,12 @@ msgstr "突然の死"
 msgid "super shotgun"
 msgstr "スーパーショットガン"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:239
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:260
 #, elixir-autogen, elixir-format
 msgid "system messages"
 msgstr "システムメッセージ"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:164
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:185
 #, elixir-autogen, elixir-format
 msgid "tab bar"
 msgstr "タブバー"
@@ -4260,7 +4261,7 @@ msgid ""
 "death. "
 msgstr "盗む (60% チャンス, 失敗 = stun). 3時間2分 ツイート 突然の死。"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:196
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:217
 #, elixir-autogen, elixir-format
 msgid "topic bar"
 msgstr "トピックバー"
@@ -4319,7 +4320,7 @@ msgstr "ユーザー情報"
 msgid "user limit"
 msgstr "ユーザーの制限"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:178
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:199
 #, elixir-autogen, elixir-format
 msgid "user list"
 msgstr "ユーザーリスト"
@@ -4340,18 +4341,18 @@ msgstr "バーチャルシアター"
 msgid "wolf 3d"
 msgstr "オカミ 3d"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:315
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:336
 #, elixir-autogen, elixir-format
 msgid "Access common features through the menu bar and toolbar options."
 msgstr "メニューバーとツールバーのオプションで一般的な機能にアクセスします。"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:385
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:406
 #, elixir-autogen, elixir-format
 msgid ""
 "Add, edit, and stop session-only scheduled commands from Tools > Timers."
 msgstr "[ツール] からセッションのみのスケジュールされたコマンドの追加、編集、および停止 タイマー。"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:392
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:413
 #, elixir-autogen, elixir-format
 msgid "Bot Management Window"
 msgstr "ボット管理ウィンドウ"
@@ -4383,7 +4384,7 @@ msgstr "チャンネルセントラルでチャンサーブ"
 msgid "Channel Welcome Message"
 msgstr "チャネル歓迎メッセージ"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:336
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:357
 #, elixir-autogen, elixir-format
 msgid ""
 "Clear the current chat window, copy selected chat text, and open Find from "
@@ -4397,7 +4398,7 @@ msgid ""
 "automation, including the admin Bot Management dialog."
 msgstr "管理ボット管理ダイアログを含むチャネルの自動化のためのプラグイン可能な機能を備えた拡張可能なボットを作成および管理します。"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:23
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:44
 #, elixir-autogen, elixir-format
 msgid "Desktop & Windows"
 msgstr "デスクトップとWindows"
@@ -4413,7 +4414,7 @@ msgstr ""
 "各メッセージは、より小さなタイムスタンプの上の著者のニックネーム(または、システムやエラーなど)をコンパクトメタデータ列を使用して、より広い列を取得するメッセージテキストの横にある。"
 " これは、レトロなモノスペースの外観を維持しながら、携帯電話でよく読みます."
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:322
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:343
 #, elixir-autogen, elixir-format
 msgid "Edit Menu"
 msgstr "編集メニュー"
@@ -4440,7 +4441,7 @@ msgstr "ダイアログ、ニックネームのコンテクストメニュー、
 msgid "Manage SOP, AOP, and VOP access lists for registered channels."
 msgstr "登録チャンネルのSOP、AOP、VOPアクセスリストの管理"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:406
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:427
 #, elixir-autogen, elixir-format
 msgid ""
 "Manage server bots from Tools > Bot Management, including status, "
@@ -4452,7 +4453,7 @@ msgstr "ツールからサーバーボットを管理する > ステータス、
 msgid "Message Layout"
 msgstr "メッセージレイアウト"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:279
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:300
 #, elixir-autogen, elixir-format
 msgid "Message of the Day"
 msgstr "当日のメッセージ"
@@ -4462,7 +4463,7 @@ msgstr "当日のメッセージ"
 msgid "Network Statistics"
 msgstr "ネットワーク統計"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:291
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:312
 #, elixir-autogen, elixir-format
 msgid ""
 "Open the current server Message of the Day from Help > Message of the Day."
@@ -4528,7 +4529,7 @@ msgid ""
 "active window."
 msgstr "現在の通知ルーティングポリシーを表示します。 常にアクティブなウィンドウにルーティングされます。"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:65
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:86
 #, elixir-autogen, elixir-format
 msgid ""
 "The Connect screen is a logon-style desktop too: the connect dialog is a "
@@ -4548,14 +4549,14 @@ msgstr ""
 "コール中のネットワークパネルは、ライブ接続ヘルス(MOSスコア)、レイテンシー、ジッタ、パケットロス、up/downloadビットレート、ビデオ解像度、フレームレート、および品質がCPUまたは帯域幅によって制限されているかどうかを示しています。"
 " ツールバーボタンで閉じます。 参照:コール品質、接続図。"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:372
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:393
 #, elixir-autogen, elixir-format
 msgid "Timers Dialog"
 msgstr "タイマーダイアログ"
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:47
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:378
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:402
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:399
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:423
 #, elixir-autogen, elixir-format
 msgid "Tools menu"
 msgstr "ツールメニュー"
@@ -4602,7 +4603,7 @@ msgid "Virtual Spaces"
 msgstr "バーチャルスペース"
 
 #: lib/retro_hex_chat/chat/help_topics/commands.ex:104
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:328
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:349
 #, elixir-autogen, elixir-format
 msgid "clear window"
 msgstr "明確な窓"
@@ -4612,7 +4613,7 @@ msgstr "明確な窓"
 msgid "duration"
 msgstr "時間"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:326
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:347
 #, elixir-autogen, elixir-format
 msgid "edit menu"
 msgstr "編集メニュー"
@@ -4644,7 +4645,7 @@ msgid "message format"
 msgstr "メッセージ形式"
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:802
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:222
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:243
 #, elixir-autogen, elixir-format
 msgid "moderation"
 msgstr "モデレーション"
@@ -4680,7 +4681,7 @@ msgid "session card"
 msgstr "セッションカード"
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:474
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:381
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:402
 #, elixir-autogen, elixir-format
 msgid "session-only"
 msgstr "セッションのみ"
@@ -4699,15 +4700,15 @@ msgstr "タイルマップ"
 #: lib/retro_hex_chat/chat/help_topics/commands.ex:413
 #: lib/retro_hex_chat/chat/help_topics/features.ex:450
 #: lib/retro_hex_chat/chat/help_topics/features.ex:470
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:376
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:397
 #, elixir-autogen, elixir-format
 msgid "timers dialog"
 msgstr "タイマーダイアログ"
 
 #: lib/retro_hex_chat/chat/help_topics/commands.ex:416
 #: lib/retro_hex_chat/chat/help_topics/features.ex:473
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:311
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:379
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:332
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:400
 #, elixir-autogen, elixir-format
 msgid "toolbar options"
 msgstr "ツールバーオプション"
@@ -4719,7 +4720,7 @@ msgid "tools menu"
 msgstr "ツールメニュー"
 
 #: lib/retro_hex_chat/chat/help_topics/commands.ex:758
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:221
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:242
 #, elixir-autogen, elixir-format
 msgid "unmute channel"
 msgstr "unmute チャンネル"
@@ -4769,7 +4770,7 @@ msgstr ""
 msgid "P2P Sessions in Chat"
 msgstr "チャットでのP2Pセッション"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:57
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:78
 #, elixir-autogen, elixir-format
 msgid ""
 "The chat, the solo arcade and this Help viewer share the same window "
@@ -5125,12 +5126,12 @@ msgstr "p2p リクエスト"
 msgid "perform window"
 msgstr "ウィンドウを実行する"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:343
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:364
 #, elixir-autogen, elixir-format
 msgid "Account Windows"
 msgstr "Windowsアカウント"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:365
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:386
 #, elixir-autogen, elixir-format
 msgid ""
 "Manage nickname registration, profile bio, away status, and user modes from "
@@ -5157,7 +5158,7 @@ msgstr "ニックカラー"
 msgid "contact notes"
 msgstr "コンタクトノート"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:264
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:285
 #, elixir-autogen, elixir-format
 msgid ""
 "How long lists load a page at a time as you scroll, how to load the next "
@@ -5167,32 +5168,32 @@ msgstr ""
 "長いリストがスクロールに合わせて 1 "
 "ページずつ読み込む仕組み、キーボードで次のページを読み込む方法、そしてリストの終わりと読み込み中のリストを見分ける方法。"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:251
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:272
 #, elixir-autogen, elixir-format
 msgid "Long Lists & Loading More"
 msgstr "長いリストと追加読み込み"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:257
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:278
 #, elixir-autogen, elixir-format
 msgid "end of list"
 msgstr "リストの終わり"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:255
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:276
 #, elixir-autogen, elixir-format
 msgid "infinite scroll"
 msgstr "無限スクロール"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:254
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:275
 #, elixir-autogen, elixir-format
 msgid "load more"
 msgstr "さらに読み込む"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:258
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:279
 #, elixir-autogen, elixir-format
 msgid "older messages"
 msgstr "過去のメッセージ"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:256
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:277
 #, elixir-autogen, elixir-format
 msgid "scroll back"
 msgstr "さかのぼる"
@@ -5204,7 +5205,7 @@ msgid ""
 "registration is reopened for recovery. "
 msgstr "管理者の役割、監査ログ、サーバー禁止、およびサーバーの設定を除きます。登録は回復のために再開されます。"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:49
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:70
 #, elixir-autogen, elixir-format
 msgid ""
 "The chat runs on a Windows-style desktop: the chat itself is one pinned "
@@ -5260,7 +5261,7 @@ msgstr "メッセージの添付ファイル"
 msgid "Message Formats"
 msgstr "メッセージ形式"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:71
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:92
 #, elixir-autogen, elixir-format
 msgid ""
 "On a phone the desktop stacks: one window fills the screen at a time and the"
@@ -5278,7 +5279,7 @@ msgstr ""
 "つのボタンがそれぞれをチャットの上に開くので、すべてのメッセージと入力欄が画面の幅いっぱいに広がります。 "
 "[スタート]メニューは、一度に1つのレベルを開きます。グループをタップすると、リストをエントリに置き換え、トップのグループ独自の行が戻ってきます。"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:83
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:104
 #, elixir-autogen, elixir-format
 msgid ""
 "The menu bar becomes a rail of icons across the top of the screen — one per "
@@ -5314,7 +5315,7 @@ msgstr "署名付き URL"
 msgid "upload"
 msgstr "アップロード"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:119
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:140
 #, elixir-autogen, elixir-format
 msgid ""
 "Entries you cannot use right now are grayed out rather than hidden. Opening "
@@ -5326,26 +5327,12 @@ msgstr ""
 "ランディングページからツールは、アドレス帳、通知リスト、灰色の残りを示しています。彼らはアプリの実際の部分であり、接続を待っています。 "
 "メニューは、どこにいても同じ地図です。"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:172
-#, elixir-autogen, elixir-format
-msgid ""
-"Generate rich Markdown previews from page metadata, including titles, "
-"descriptions, canonical URLs, site names, and preview images."
-msgstr "タイトル、説明、キャニカルURL、サイト名、プレビュー画像を含むページメタデータからリッチマークダウンプレビューを生成します。"
-
 #: lib/retro_hex_chat/chat/help_topics/features.ex:155
 #, elixir-autogen, elixir-format
 msgid "Link Previews"
 msgstr "リンクプレビュー"
 
-#: lib/retro_hex_chat/chat/help_topics/bots.ex:158
-#, elixir-autogen, elixir-format
-msgid ""
-"Monitor RSS/Atom feeds and post new items to channels as rich Markdown link "
-"previews."
-msgstr "RSS/Atom フィードを監視し、新しいアイテムをチャンネルに自動的に投稿します。"
-
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:138
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:159
 #, elixir-autogen, elixir-format
 msgid ""
 "On a desktop a group flies out beside the menu and hovering another group "
@@ -5356,17 +5343,17 @@ msgstr ""
 "デスクトップでは、メニューの横にグループが飛び出し、別のグループがそれに切り替えます。 "
 "代わりにメニューをドリルダウンする電話:グループをタップすると、そのエントリとトップのグループ自身の行が戻ってきます。"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:413
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:434
 #, elixir-autogen, elixir-format
 msgid "System Windows"
 msgstr "システムWindows"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:94
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:115
 #, elixir-autogen, elixir-format
 msgid "The Start Menu"
 msgstr "スタートメニュー"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:112
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:133
 #, elixir-autogen, elixir-format
 msgid ""
 "The Start button opens the same menu on every screen RetroHexChat has — the "
@@ -5376,7 +5363,7 @@ msgstr ""
 "[スタート]ボタンは、すべての画面で同じメニューを開きます RetroHexChat 持っている - "
 "ランディングページ、接続画面、チャット、このヘルプビューアとデザインシステム。 どのエントリが生きているかは、それらの間の変更です。"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:127
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:148
 #, elixir-autogen, elixir-format
 msgid ""
 "The entries are grouped one level deep. Tools holds the address book, lists "
@@ -5400,7 +5387,7 @@ msgid ""
 "previews."
 msgstr "リンクプレビューですべてのチャネル間で共有されたURLを表示および管理します。"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:466
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:487
 #, elixir-autogen, elixir-format
 msgid ""
 "Every window that shows rows shares one table: resize its columns, choose "
@@ -5408,34 +5395,71 @@ msgid ""
 msgstr ""
 "行を表示するすべてのウィンドウは1つのテーブルを共有します。列のサイズを変更し、表示する列を選択し、いずれかのウィンドウで注文し、選択したものをコピーします。"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:448
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:469
 #, elixir-autogen, elixir-format
 msgid "Listings & Tables"
 msgstr "一覧と表"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:440
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:461
 #, elixir-autogen, elixir-format
 msgid ""
 "Thirteen admin-only windows that read the running server: its memory, "
 "processes, connections, database, Oban jobs and live metrics."
 msgstr "実行中のサーバーを読んだ13の管理者専用ウィンドウ:そのメモリ、プロセス、接続、データベース、Obanジョブ、ライブメトリック。"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:460
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:481
 #, elixir-autogen, elixir-format
 msgid "column"
 msgstr "コラム"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:461
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:482
 #, elixir-autogen, elixir-format
 msgid "resize"
 msgstr "リサイズ"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:462
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:483
 #, elixir-autogen, elixir-format
 msgid "sort"
 msgstr "ソート"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:459
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:480
 #, elixir-autogen, elixir-format
 msgid "table"
 msgstr "テーブル"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:23
+#, elixir-autogen, elixir-format
+msgid "Connect Window"
+msgstr "接続ウィンドウ"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:158
+#, elixir-autogen, elixir-format
+msgid ""
+"Monitor RSS/Atom feeds and post new items to channels as rich Markdown link "
+"previews, reusing pages the server has already read."
+msgstr ""
+"RSS/Atom フィードを監視し、新しいアイテムをチャネルに投稿し、Markdown "
+"のリンクのプレビューをリッチにし、サーバーを再利用して既に読み込みました。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:172
+#, elixir-autogen, elixir-format
+msgid ""
+"Read a page once and reuse it everywhere: titles, descriptions, canonical "
+"URLs, site names and preview images are stored when a link is first seen, so"
+" the same link posted again — or published by a feed bot — is never fetched "
+"twice."
+msgstr ""
+"タイトル、説明、キャニカルURL、サイト名、プレビュー画像は、リンクが最初に見られたときに保存されますので、同じリンクが再び投稿されるか、フィードボットによって公開されます。"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:37
+#, elixir-autogen, elixir-format
+msgid ""
+"Sign in from the Connect window, which appears both on its own screen and on"
+" every public page. It carries the whole flow: pick a nickname, register a "
+"new one or enter a password for a registered one, and choose whether to "
+"remember the terminal. A remembered terminal signs you in with a single "
+"click, and one set to auto-login takes you straight to the chat."
+msgstr ""
+"自分の画面とすべての公開ページの両方に表示されるConnectウィンドウからサインインします。 "
+"全体の流れを運ぶ:ニックネームを選び、新しいものを登録するか、登録されたもののパスワードを入力し、ターミナルを覚えているかどうかを選択します。 "
+"ワンクリックで記憶されたターミナルがあなたに署名し、自動ログインに設定すると、チャットにまっすぐになります。"

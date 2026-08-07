@@ -178,18 +178,22 @@ defmodule RetroHexChat.Scraper.HTTP do
     end
   end
 
+  # `twitter:creator` is deliberately absent. It is as often the publication's own
+  # handle as the writer's — Engadget puts `@engadget` there — so using it would
+  # attribute an article to whoever runs the account. A missing byline is better
+  # than a wrong one.
   @spec author([map()], [map()]) :: String.t() | nil
   defp author(metas, json_ld) do
     [
       meta_content(metas, "property", "article:author"),
       meta_content(metas, "property", "og:article:author"),
       meta_content(metas, "name", "author"),
-      meta_content(metas, "name", "twitter:creator"),
       meta_content(metas, "name", "byl"),
       json_ld_value(json_ld, ["author.name", "creator.name", "author"])
     ]
     |> first_present()
     |> then(&clean_text(&1, max: @max_site_name_length))
+    |> Client.byline()
   end
 
   @spec published_at([map()], [map()], Floki.html_tree()) :: DateTime.t() | nil
@@ -857,8 +861,11 @@ defmodule RetroHexChat.Scraper.HTTP do
   defp json_ld_scalar(value) when is_binary(value), do: value
   defp json_ld_scalar(value) when is_number(value), do: to_string(value)
 
+  # `@id` is deliberately absent: it is a URI identifying the node, never a label
+  # for it, and falling back to it put strings like
+  # `https://tecnoblog.net/#/schema/person/188268…` where a byline belongs.
   defp json_ld_scalar(%{} = value) do
-    ["name", "@value", "headline", "@id"]
+    ["name", "@value", "headline"]
     |> Enum.find_value(fn key -> value |> Map.get(key) |> json_ld_scalar() end)
   end
 

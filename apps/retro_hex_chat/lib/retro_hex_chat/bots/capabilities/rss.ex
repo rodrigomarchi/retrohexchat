@@ -560,13 +560,14 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
   def format_item(item, feed_title, metadata \\ nil) do
     metadata = metadata || %{}
     source = card_source(metadata, feed_title)
-    title = card_title(item, metadata)
+    title = card_title(item, metadata, source)
     url = card_url(item, metadata)
     image = card_image(metadata)
     description = card_description(metadata)
 
     [
       card_header(source, title),
+      card_byline(metadata),
       card_image_markdown(image, source),
       card_quote(description),
       card_story_link(url)
@@ -575,6 +576,56 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
     |> Enum.join("\n\n")
     |> fit_message()
   end
+
+  # Who wrote it, when, and how long it takes to read. Omitted entirely when none
+  # of the three is known, so a feed that offers nothing produces exactly the card
+  # it produced before. In practice the reading time is always available — it is
+  # counted from the article's own text — so the line survives even when a
+  # publisher names neither author nor date.
+  @spec card_byline(Scraper.Client.metadata()) :: String.t() | nil
+  defp card_byline(metadata) do
+    [
+      metadata[:author],
+      published_ago(metadata[:published_at]),
+      reading_time(metadata[:word_count])
+    ]
+    |> Enum.reject(&is_nil/1)
+    |> case do
+      [] -> nil
+      parts -> "_" <> (parts |> Enum.map(&markdown_escape/1) |> Enum.join(" · ")) <> "_"
+    end
+  end
+
+  # Relative while it still reads as news, absolute once it does not. A feed that
+  # publishes with a clock ahead of ours would otherwise say "in 3 hours", so
+  # anything in the future is treated as undated.
+  @spec published_ago(DateTime.t() | nil) :: String.t() | nil
+  defp published_ago(%DateTime{} = published_at) do
+    seconds = DateTime.diff(DateTime.utc_now(), published_at, :second)
+
+    cond do
+      seconds < 0 -> nil
+      seconds < 3600 -> dgettext("bots", "%{count}m ago", count: max(div(seconds, 60), 1))
+      seconds < 86_400 -> dgettext("bots", "%{count}h ago", count: div(seconds, 3600))
+      seconds < 30 * 86_400 -> dgettext("bots", "%{count}d ago", count: div(seconds, 86_400))
+      true -> Calendar.strftime(published_at, "%d %b %Y")
+    end
+  end
+
+  defp published_ago(_published_at), do: nil
+
+  # An average adult reads prose at roughly 200 words a minute. Below a short
+  # floor the number says nothing useful — a stub page is not "1 min read", it is
+  # a page with no article on it.
+  @words_per_minute 200
+  @min_words_for_reading_time 60
+
+  @spec reading_time(non_neg_integer() | nil) :: String.t() | nil
+  defp reading_time(words) when is_integer(words) and words >= @min_words_for_reading_time do
+    dgettext("bots", "%{count} min read", count: max(div(words, @words_per_minute), 1))
+  end
+
+  defp reading_time(_words), do: nil
 
   # Publishers put their whole positioning statement in the feed title —
   # "cs.LG updates on arXiv.org", "Phys.org - latest science and technology news
@@ -604,12 +655,52 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
     |> truncate(@source_limit)
   end
 
-  @spec card_title(FeedParser.feed_item(), Scraper.Client.metadata()) :: String.t()
-  defp card_title(item, metadata) do
+  @spec card_title(FeedParser.feed_item(), Scraper.Client.metadata(), String.t()) :: String.t()
+  defp card_title(item, metadata, source) do
     (metadata[:title] || item.title || dgettext("bots", "(no title)"))
     |> collapse_space()
+    |> strip_source(source)
     |> truncate(@headline_limit)
   end
+
+  # Publishers append their own name to the `<title>` — "Corals Spin Tiny
+  # Vortices | Quanta Magazine", "Sony might be rebooting… - Engadget" — and a
+  # few prepend it. The card already carries the source as its label, so leaving
+  # it in prints the publication twice on nearly a third of every batch.
+  @spec strip_source(String.t(), String.t()) :: String.t()
+  defp strip_source(title, source) when source in ["", nil], do: title
+
+  defp strip_source(title, source) do
+    Enum.reduce(@label_separators, title, fn separator, current ->
+      current
+      |> strip_suffix(separator <> source)
+      |> strip_prefix(source <> separator)
+    end)
+  end
+
+  @spec strip_suffix(String.t(), String.t()) :: String.t()
+  defp strip_suffix(text, tail) do
+    if suffix?(text, tail) and String.length(text) > String.length(tail) do
+      text |> String.slice(0, String.length(text) - String.length(tail)) |> String.trim()
+    else
+      text
+    end
+  end
+
+  @spec strip_prefix(String.t(), String.t()) :: String.t()
+  defp strip_prefix(text, head) do
+    if prefix?(text, head) and String.length(text) > String.length(head) do
+      text |> String.slice(String.length(head)..-1//1) |> String.trim()
+    else
+      text
+    end
+  end
+
+  @spec suffix?(String.t(), String.t()) :: boolean()
+  defp suffix?(text, tail), do: String.ends_with?(String.downcase(text), String.downcase(tail))
+
+  @spec prefix?(String.t(), String.t()) :: boolean()
+  defp prefix?(text, head), do: String.starts_with?(String.downcase(text), String.downcase(head))
 
   @spec card_url(FeedParser.feed_item(), Scraper.Client.metadata()) :: String.t() | nil
   defp card_url(item, metadata) do

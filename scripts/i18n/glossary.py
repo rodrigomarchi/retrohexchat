@@ -81,6 +81,17 @@ _ROWS = {
     "Download":     ("Baixar", "Transferir", "Descargar", "Télécharger", "Herunterladen", "Scarica", "Downloaden", "Pobierz", "Скачать", "Unduh", "ダウンロード", "下载", "下載"),
     "Export":       ("Exportar", "Exportar", "Exportar", "Exporter", "Exportieren", "Esporta", "Exporteren", "Eksportuj", "Экспорт", "Ekspor", "エクスポート", "导出", "匯出"),
 
+    # ── Article credit line ───────────────────────────────────
+    # Almost entirely placeholder, so the engine has nothing to work with and
+    # hands the English straight back: "%{count}h ago" came out unchanged in
+    # German and Spanish, "%{count} min read" unchanged in Indonesian. The unit
+    # abbreviation is also a per-language convention rather than a translation —
+    # Dutch shortens hours to "u", French days to "j", German to "T".
+    "%{count}m ago":     ("há %{count}min", "há %{count}min", "hace %{count}min", "il y a %{count}min", "vor %{count}min", "%{count}min fa", "%{count}min geleden", "%{count}min temu", "%{count}мин назад", "%{count}mnt lalu", "%{count}分前", "%{count}分钟前", "%{count}分鐘前"),
+    "%{count}h ago":     ("há %{count}h", "há %{count}h", "hace %{count}h", "il y a %{count}h", "vor %{count}h", "%{count}h fa", "%{count}u geleden", "%{count}godz. temu", "%{count}ч назад", "%{count}j lalu", "%{count}時間前", "%{count}小时前", "%{count}小時前"),
+    "%{count}d ago":     ("há %{count}d", "há %{count}d", "hace %{count}d", "il y a %{count}j", "vor %{count}T", "%{count}g fa", "%{count}d geleden", "%{count}dni temu", "%{count}д назад", "%{count}h lalu", "%{count}日前", "%{count}天前", "%{count}天前"),
+    "%{count} min read": ("%{count} min de leitura", "%{count} min de leitura", "%{count} min de lectura", "%{count} min de lecture", "%{count} Min. Lesezeit", "%{count} min di lettura", "%{count} min lezen", "%{count} min czytania", "%{count} мин чтения", "baca %{count} mnt", "読了 %{count}分", "阅读 %{count} 分钟", "閱讀 %{count} 分鐘"),
+
     # ── Long lists ────────────────────────────────────────────
     # The vocabulary every paginated list draws on. Curated here because these
     # are the labels a reader meets in fourteen different windows: they have to

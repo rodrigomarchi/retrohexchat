@@ -89,6 +89,66 @@ defmodule RetroHexChat.Scraper.HTTPTest do
       assert {:error, :blocked} = HTTP.scrape("http://127.0.0.1/story")
     end
 
+    test "refuses to pass off a URL as a byline" do
+      # What the BBC actually publishes in `article:author`.
+      Req.Test.expect(__MODULE__, fn conn ->
+        Req.Test.html(conn, """
+        <head>
+          <meta property="og:title" content="A story">
+          <meta property="article:author" content="https://www.facebook.com/bbcnews">
+        </head>
+        """)
+      end)
+
+      assert {:ok, %{author: nil}} = HTTP.scrape("https://example.com/bbc")
+    end
+
+    test "does not mistake a JSON-LD node id for a person" do
+      # WordPress emits `author: {"@id": "https://site/#/schema/person/…"}` when
+      # the name lives in a separate node.
+      Req.Test.expect(__MODULE__, fn conn ->
+        Req.Test.html(conn, """
+        <head>
+          <meta property="og:title" content="A story">
+          <script type="application/ld+json">
+            {"@type": "NewsArticle",
+             "author": {"@id": "https://tecnoblog.net/#/schema/person/188268929b"}}
+          </script>
+        </head>
+        """)
+      end)
+
+      assert {:ok, %{author: nil}} = HTTP.scrape("https://example.com/wp")
+    end
+
+    test "does not attribute an article to the publication's own social account" do
+      # `twitter:creator` is as often the outlet as the writer, so it is not a
+      # byline source at all.
+      Req.Test.expect(__MODULE__, fn conn ->
+        Req.Test.html(conn, """
+        <head>
+          <meta property="og:title" content="A story">
+          <meta name="twitter:creator" content="@engadget">
+        </head>
+        """)
+      end)
+
+      assert {:ok, %{author: nil}} = HTTP.scrape("https://example.com/tw")
+    end
+
+    test "keeps a byline that is a person" do
+      Req.Test.expect(__MODULE__, fn conn ->
+        Req.Test.html(conn, """
+        <head>
+          <meta property="og:title" content="A story">
+          <meta name="author" content="Marlowe Starling">
+        </head>
+        """)
+      end)
+
+      assert {:ok, %{author: "Marlowe Starling"}} = HTTP.scrape("https://example.com/ok")
+    end
+
     test "reads the whole document, not only its head" do
       Req.Test.expect(__MODULE__, fn conn ->
         Req.Test.html(conn, """

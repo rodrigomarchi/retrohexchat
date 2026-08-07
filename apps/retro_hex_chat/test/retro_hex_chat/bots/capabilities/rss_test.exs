@@ -341,6 +341,97 @@ defmodule RetroHexChat.Bots.Capabilities.RSSTest do
       assert RSS.format_item(an_item(), "Krebs on Security") =~ "**Krebs on Security**"
     end
 
+    test "the publisher's name is not printed twice" do
+      # Nearly a third of real articles end their <title> with the publication —
+      # "… | Quanta Magazine", "… - Engadget" — and the card already carries it as
+      # the label.
+      suffixed =
+        RSS.format_item(an_item(title: "Corals Spin Tiny Vortices | Quanta Magazine"), nil, %{
+          site_name: "Quanta Magazine"
+        })
+
+      assert suffixed =~ "**Quanta Magazine** | Corals Spin Tiny Vortices\n"
+      refute suffixed =~ "Vortices | Quanta"
+
+      prefixed =
+        RSS.format_item(an_item(title: "GitHub - xoreaxeaxeax/asm-hall-of-shame"), nil, %{
+          site_name: "GitHub"
+        })
+
+      assert prefixed =~ "**GitHub** | xoreaxeaxeax/asm\\-hall\\-of\\-shame"
+    end
+
+    test "a headline that merely mentions the publisher keeps it" do
+      card =
+        RSS.format_item(an_item(title: "Why Engadget still reviews headphones"), nil, %{
+          site_name: "Engadget"
+        })
+
+      assert card =~ "**Engadget** | Why Engadget still reviews headphones"
+    end
+
+    test "a title that is only the publisher's name survives" do
+      card = RSS.format_item(an_item(title: "Engadget"), nil, %{site_name: "Engadget"})
+
+      assert card =~ "**Engadget** | Engadget"
+    end
+
+    test "credits the writer, the moment and the length" do
+      card =
+        RSS.format_item(an_item(), nil, %{
+          site_name: "Quanta Magazine",
+          author: "Marlowe Starling",
+          published_at: DateTime.add(DateTime.utc_now(), -2 * 86_400, :second),
+          word_count: 2231
+        })
+
+      assert card =~ "_Marlowe Starling · 2d ago · 11 min read_"
+    end
+
+    test "says what it knows when a publisher names neither writer nor date" do
+      card = RSS.format_item(an_item(), nil, %{site_name: "arXiv.org", word_count: 579})
+
+      assert card =~ "_2 min read_"
+      refute card =~ "·"
+    end
+
+    test "prints no credit line at all when nothing is known" do
+      card = RSS.format_item(an_item(), "The GitHub Blog")
+
+      assert card ==
+               "**The GitHub Blog** | A headline\n\n[Read full story](<https://example.com/a>)"
+    end
+
+    test "a stub page is not credited with a reading time" do
+      card = RSS.format_item(an_item(), nil, %{site_name: "Example", word_count: 12})
+
+      refute card =~ "min read"
+    end
+
+    test "a publisher whose clock runs ahead is treated as undated" do
+      card =
+        RSS.format_item(an_item(), nil, %{
+          site_name: "Example",
+          published_at: DateTime.add(DateTime.utc_now(), 3 * 3600, :second),
+          word_count: 400
+        })
+
+      assert card =~ "_2 min read_"
+      refute card =~ "ago"
+    end
+
+    test "an old story is dated rather than counted" do
+      card =
+        RSS.format_item(an_item(), nil, %{
+          site_name: "Example",
+          published_at: ~U[2024-03-09 10:00:00Z],
+          word_count: 400
+        })
+
+      assert card =~ "09 Mar 2024"
+      refute card =~ "ago"
+    end
+
     test "a paper-length headline is cut, and the link remains clickable" do
       long = String.duplicate("word ", 60)
       line = RSS.format_item(an_item(title: long), "Src")
