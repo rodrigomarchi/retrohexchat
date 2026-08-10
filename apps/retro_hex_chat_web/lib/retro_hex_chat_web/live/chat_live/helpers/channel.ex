@@ -335,20 +335,6 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
     end
   end
 
-  @spec channels_where_operator(Session.t()) :: [String.t()]
-  def channels_where_operator(session) do
-    Enum.filter(session.channels, fn channel_name ->
-      case Server.get_state(channel_name) do
-        {:ok, state} ->
-          session.nickname in state.operators or
-            session.nickname in Map.get(state, :owners, [])
-
-        {:error, _} ->
-          false
-      end
-    end)
-  end
-
   @spec handle_set_topic(Phoenix.LiveView.Socket.t(), String.t(), String.t()) ::
           Phoenix.LiveView.Socket.t()
   def handle_set_topic(socket, channel, topic) do

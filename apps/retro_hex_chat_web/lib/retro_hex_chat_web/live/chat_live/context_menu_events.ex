@@ -40,6 +40,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
     ]
 
   alias RetroHexChat.Accounts.{ContactList, NickColors, ServerRoles, Session}
+  alias RetroHexChat.Channels.Roles
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Chat.{CapturedURL, IgnoreList}
   alias RetroHexChat.Commands.Duration
@@ -905,14 +906,16 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
         :chat -> close_chat_context_menu(socket)
       end
 
+    roles = Roles.held_by(session.channels, session.nickname)
+
     context = %{
       nickname: session.nickname,
       identified: session.identified,
       active_channel: session.active_channel,
       channels: session.channels,
-      owner_in: channels_where_owner(session),
-      operator_in: channels_where_operator(session),
-      half_operator_in: channels_where_half_operator(session),
+      owner_in: roles.owner,
+      operator_in: roles.operator,
+      half_operator_in: roles.half_operator,
       is_admin: ServerRoles.admin?(session.nickname, session.identified),
       is_server_operator: ServerRoles.server_operator?(session.nickname, session.identified)
     }
@@ -924,37 +927,6 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
       {:error, message} ->
         error_event(socket, message)
     end
-  end
-
-  defp channels_where_owner(session) do
-    Enum.filter(session.channels, fn channel_name ->
-      case Server.get_state(channel_name) do
-        {:ok, state} -> session.nickname in Map.get(state, :owners, [])
-        {:error, _} -> false
-      end
-    end)
-  end
-
-  defp channels_where_operator(session) do
-    Enum.filter(session.channels, fn channel_name ->
-      case Server.get_state(channel_name) do
-        {:ok, state} ->
-          session.nickname in state.operators or
-            session.nickname in Map.get(state, :owners, [])
-
-        {:error, _} ->
-          false
-      end
-    end)
-  end
-
-  defp channels_where_half_operator(session) do
-    Enum.filter(session.channels, fn channel_name ->
-      case Server.get_state(channel_name) do
-        {:ok, state} -> session.nickname in Map.get(state, :half_operators, [])
-        {:error, _} -> false
-      end
-    end)
   end
 
   defp cancel_auto_ignore_with_cooldown(socket, nick) do

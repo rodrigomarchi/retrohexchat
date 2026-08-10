@@ -45,6 +45,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
     Service
   }
 
+  alias RetroHexChat.Channels.Roles
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Commands.{Dispatcher, Parser, Registry}
   alias RetroHexChat.Presence.Tracker
@@ -164,15 +165,17 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
   end
 
   defp build_context(session, show_status_tab) do
+    roles = Roles.held_by(session.channels, session.nickname)
+
     %{
       nickname: session.nickname,
       active_channel: session.active_channel,
       show_status_tab: show_status_tab,
       channels: session.channels,
       identified: session.identified,
-      owner_in: channels_where_owner(session),
-      operator_in: channels_where_operator(session),
-      half_operator_in: channels_where_half_operator(session),
+      owner_in: roles.owner,
+      operator_in: roles.operator,
+      half_operator_in: roles.half_operator,
       is_admin: ServerRoles.admin?(session.nickname, session.identified),
       is_server_operator: ServerRoles.server_operator?(session.nickname, session.identified)
     }
@@ -460,37 +463,6 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
   end
 
   # ── Private: helpers ──────────────────────────────────────
-
-  defp channels_where_owner(session) do
-    Enum.filter(session.channels, fn channel_name ->
-      case Server.get_state(channel_name) do
-        {:ok, state} -> session.nickname in Map.get(state, :owners, [])
-        {:error, _} -> false
-      end
-    end)
-  end
-
-  defp channels_where_operator(session) do
-    Enum.filter(session.channels, fn channel_name ->
-      case Server.get_state(channel_name) do
-        {:ok, state} ->
-          session.nickname in state.operators or
-            session.nickname in Map.get(state, :owners, [])
-
-        {:error, _} ->
-          false
-      end
-    end)
-  end
-
-  defp channels_where_half_operator(session) do
-    Enum.filter(session.channels, fn channel_name ->
-      case Server.get_state(channel_name) do
-        {:ok, state} -> session.nickname in Map.get(state, :half_operators, [])
-        {:error, _} -> false
-      end
-    end)
-  end
 
   defp detect_service_author("[ChanServ]" <> _), do: "ChanServ"
   defp detect_service_author("[NickServ]" <> _), do: "NickServ"

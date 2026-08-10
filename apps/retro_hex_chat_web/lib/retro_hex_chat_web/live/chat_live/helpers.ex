@@ -60,7 +60,6 @@ defmodule RetroHexChatWeb.ChatLive.Helpers do
   defdelegate load_channel_users(socket, channel_name), to: __MODULE__.Channel
   defdelegate load_channel_messages_with_pagination(socket, channel_name), to: __MODULE__.Channel
   defdelegate ensure_channel_exists(channel_name), to: __MODULE__.Channel
-  defdelegate channels_where_operator(session), to: __MODULE__.Channel
   defdelegate handle_set_topic(socket, channel, topic), to: __MODULE__.Channel
   defdelegate cleanup_channels(session, reason \\ nil), to: __MODULE__.Channel
   defdelegate validate_target_online(target), to: __MODULE__.Channel
