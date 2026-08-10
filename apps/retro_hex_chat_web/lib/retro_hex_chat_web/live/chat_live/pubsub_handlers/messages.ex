@@ -23,7 +23,6 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
   alias RetroHexChat.Accounts.Session
 
   alias RetroHexChat.Chat.{
-    Attachments,
     DuplicateTracker,
     FloodProtection,
     IgnoreList,
@@ -34,10 +33,9 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
 
   alias RetroHexChat.Observability
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
-  alias RetroHexChatWeb.ChatLive.Helpers.Channel
-  alias RetroHexChatWeb.ChatLive.Helpers.Messages, as: MessageHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.PM
   alias RetroHexChatWeb.ChatLive.P2PSessionEvents
+  alias RetroHexChatWeb.ChatLive.StreamItem
 
   # ── Channel messages ──────────────────────────────────────
 
@@ -407,8 +405,23 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
         socket
       end
 
+    # The row is built before it is decorated, which is what lets a highlight
+    # word reach a private conversation the way it reaches a channel: the row
+    # that goes on screen is the one that was checked. Sound and tip fire even
+    # when the conversation is not the one on screen, since a highlight the
+    # reader cannot see yet is exactly the one worth announcing.
+    decorated =
+      payload
+      |> StreamItem.from_private_message()
+      |> maybe_highlight(session)
+
+    socket =
+      socket
+      |> maybe_play_highlight_sound(decorated, session)
+      |> maybe_push_highlight_tip(decorated)
+
     if session.active_pm == other_nick do
-      MessageViewport.insert(socket, pm_to_stream_item(payload))
+      MessageViewport.insert(socket, decorated)
     else
       socket
     end
@@ -511,82 +524,19 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
     if payload.sender == my_nick, do: payload.recipient, else: payload.sender
   end
 
-  defp pm_to_stream_item(pm) do
-    base =
-      %{
-        id: pm_field(pm, [:id]),
-        author: pm_field(pm, [:sender, :sender_nickname]),
-        content: pm.content,
-        content_format: content_format(pm),
-        type: pm_resolve_type(pm),
-        timestamp: pm_field(pm, [:timestamp, :inserted_at]),
-        attachments: attachment_payloads(pm)
-      }
-      |> maybe_add_pm_field(pm, :edited_at)
-      |> maybe_add_pm_field(pm, :deleted_at)
-
-    reply_to_id = Map.get(pm, :reply_to_id)
-
-    if reply_to_id do
-      Map.merge(base, %{
-        reply_to_id: reply_to_id,
-        reply_to_author: Map.get(pm, :reply_to_author),
-        reply_to_preview: Map.get(pm, :reply_to_preview)
-      })
-    else
-      base
-    end
-  end
-
-  defp pm_field(map, keys) do
-    Enum.find_value(keys, fn key -> Map.get(map, key) end)
-  end
-
-  defp attachment_payloads(%{attachments: %Ecto.Association.NotLoaded{}}), do: []
-
-  defp attachment_payloads(%{attachments: attachments}) when is_list(attachments) do
-    attachments
-    |> Enum.map(&attachment_payload/1)
-    |> Enum.reject(&is_nil/1)
-  end
-
-  defp attachment_payloads(source), do: Map.get(source, :attachments, [])
-
-  defp attachment_payload(%{file: %Ecto.Association.NotLoaded{}}), do: nil
-
-  defp attachment_payload(%{file: file} = attachment) do
-    Attachments.payload(%{attachment | file: file})
-  end
-
-  defp attachment_payload(%{id: _id} = attachment), do: attachment
-
-  defp maybe_add_pm_field(map, source, key) do
-    case Map.get(source, key) do
-      nil -> map
-      value -> Map.put(map, key, value)
-    end
-  end
-
-  defp pm_resolve_type(%{type: type}), do: MessageHelpers.stream_type(type)
-  defp pm_resolve_type(_), do: :message
-
-  defp content_format(source) do
-    Map.get(source, :content_format) || "irc"
-  end
-
   defp payload_content_format(payload), do: Map.get(payload, :content_format) || "irc"
 
   defp stream_item_for_message_event(%{channel: _channel, id: id}, _session) do
     case Queries.get_message(id) do
       nil -> nil
-      message -> Channel.message_to_stream_item(message)
+      message -> StreamItem.from_message(message)
     end
   end
 
   defp stream_item_for_message_event(%{sender: _sender, id: id}, _session) do
     case Queries.get_private_message(id) do
       nil -> nil
-      pm -> pm_to_stream_item(pm)
+      pm -> StreamItem.from_private_message(pm)
     end
   end
 
@@ -594,7 +544,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
 
   defp stream_item_for_reply_quote(reply_id, %{active_pm: nil, active_channel: channel}) do
     case Queries.get_message(reply_id) do
-      %{channel_name: ^channel} = message -> Channel.message_to_stream_item(message)
+      %{channel_name: ^channel} = message -> StreamItem.from_message(message)
       _ -> nil
     end
   end
@@ -609,7 +559,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
         participants = MapSet.new([pm.sender_nickname, pm.recipient_nickname])
 
         if participants == MapSet.new([nickname, active_pm]) do
-          pm_to_stream_item(pm)
+          StreamItem.from_private_message(pm)
         end
     end
   end

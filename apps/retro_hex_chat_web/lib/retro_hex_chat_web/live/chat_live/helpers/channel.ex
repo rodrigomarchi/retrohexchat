@@ -12,10 +12,11 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Channels.Server
-  alias RetroHexChat.Chat.{Attachments, Queries, UnreadTracker}
+  alias RetroHexChat.Chat.{Queries, UnreadTracker}
   alias RetroHexChat.Page
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
+  alias RetroHexChatWeb.ChatLive.StreamItem
   alias RetroHexChatWeb.ChatLive.TabOrder
 
   alias RetroHexChatWeb.ChatLive.Components.Composer
@@ -286,7 +287,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
     stream_items =
       page.items
       |> Enum.reverse()
-      |> Enum.map(&message_to_stream_item/1)
+      |> Enum.map(&StreamItem.from_message/1)
 
     socket
     |> assign(
@@ -422,55 +423,5 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
       {:error, _} ->
         {:error, dgettext("chat", "* User '%{target}' not found", target: target)}
     end
-  end
-
-  @spec message_to_stream_item(map()) :: map()
-  def message_to_stream_item(msg) do
-    base = %{
-      id: msg.id,
-      author: msg.author_nickname,
-      content: msg.content,
-      content_format: content_format(msg),
-      type: Messages.stream_type(msg.type),
-      timestamp: msg.inserted_at,
-      attachments: attachment_payloads(msg)
-    }
-
-    base
-    |> maybe_add(msg, :reply_to_id)
-    |> maybe_add(msg, :reply_to_author)
-    |> maybe_add(msg, :reply_to_preview)
-    |> maybe_add(msg, :plain_content)
-    |> maybe_add(msg, :edited_at)
-    |> maybe_add(msg, :deleted_at)
-  end
-
-  defp maybe_add(map, source, key) do
-    case Map.get(source, key) do
-      nil -> map
-      value -> Map.put(map, key, value)
-    end
-  end
-
-  defp attachment_payloads(%{attachments: %Ecto.Association.NotLoaded{}}), do: []
-
-  defp attachment_payloads(%{attachments: attachments}) when is_list(attachments) do
-    attachments
-    |> Enum.map(&attachment_payload/1)
-    |> Enum.reject(&is_nil/1)
-  end
-
-  defp attachment_payloads(_message), do: []
-
-  defp attachment_payload(%{file: %Ecto.Association.NotLoaded{}}), do: nil
-
-  defp attachment_payload(%{file: file} = attachment) do
-    Attachments.payload(%{attachment | file: file})
-  end
-
-  defp attachment_payload(%{id: _id} = attachment), do: attachment
-
-  defp content_format(source) do
-    Map.get(source, :content_format) || "irc"
   end
 end

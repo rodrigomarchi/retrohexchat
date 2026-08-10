@@ -13,13 +13,14 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Channels.Server
-  alias RetroHexChat.Chat.{Attachments, Queries, Service, UnreadTracker}
+  alias RetroHexChat.Chat.{Queries, Service, UnreadTracker}
   alias RetroHexChat.Page
   alias RetroHexChat.Presence.NotifyList
   alias RetroHexChatWeb.ChatLive.Components.Composer
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
   alias RetroHexChatWeb.ChatLive.Helpers.Session, as: SessionHelpers
+  alias RetroHexChatWeb.ChatLive.StreamItem
 
   @spec load_pm_messages_with_pagination(Phoenix.LiveView.Socket.t(), String.t()) ::
           Phoenix.LiveView.Socket.t()
@@ -44,7 +45,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
       |> Messages.visible_private_page(socket.assigns.session.ignore_list)
       |> Map.fetch!(:items)
       |> Enum.reverse()
-      |> Enum.map(&pm_to_stream_item/1)
+      |> Enum.map(&StreamItem.from_private_message/1)
 
     socket
     |> assign(
@@ -354,7 +355,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
       |> Messages.visible_private_page(socket.assigns.session.ignore_list)
       |> Map.fetch!(:items)
       |> Enum.reverse()
-      |> Enum.map(&pm_to_stream_item/1)
+      |> Enum.map(&StreamItem.from_private_message/1)
 
     assigns =
       [
@@ -392,69 +393,11 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
          true <- String.downcase(active) == String.downcase(peer_nick),
          %{} = pm <-
            Queries.get_p2p_invite_between(socket.assigns.session.nickname, peer_nick, token) do
-      MessageViewport.insert(socket, pm_to_stream_item(pm))
+      MessageViewport.insert(socket, StreamItem.from_private_message(pm))
     else
       _ -> socket
     end
   end
 
   def refresh_p2p_invite_row(socket, _peer_nick, _token), do: socket
-
-  defp pm_to_stream_item(pm) do
-    base = %{
-      id: pm_field(pm, [:id]),
-      author: pm_field(pm, [:sender, :sender_nickname]),
-      content: pm.content,
-      content_format: content_format(pm),
-      type: pm_resolve_type(pm),
-      timestamp: pm_field(pm, [:timestamp, :inserted_at]),
-      attachments: attachment_payloads(pm)
-    }
-
-    base
-    |> maybe_add_field(pm, :reply_to_id)
-    |> maybe_add_field(pm, :reply_to_author)
-    |> maybe_add_field(pm, :reply_to_preview)
-    |> maybe_add_field(pm, :plain_content)
-    |> maybe_add_field(pm, :edited_at)
-    |> maybe_add_field(pm, :deleted_at)
-  end
-
-  defp pm_field(map, keys) do
-    Enum.find_value(keys, fn key -> Map.get(map, key) end)
-  end
-
-  defp maybe_add_field(map, source, key) do
-    case Map.get(source, key) do
-      nil -> map
-      value -> Map.put(map, key, value)
-    end
-  end
-
-  defp attachment_payloads(%{attachments: %Ecto.Association.NotLoaded{}}), do: []
-
-  defp attachment_payloads(%{attachments: attachments}) when is_list(attachments) do
-    attachments
-    |> Enum.map(&attachment_payload/1)
-    |> Enum.reject(&is_nil/1)
-  end
-
-  defp attachment_payloads(source) do
-    Map.get(source, :attachments, [])
-  end
-
-  defp attachment_payload(%{file: %Ecto.Association.NotLoaded{}}), do: nil
-
-  defp attachment_payload(%{file: file} = attachment) do
-    Attachments.payload(%{attachment | file: file})
-  end
-
-  defp attachment_payload(%{id: _id} = attachment), do: attachment
-
-  defp pm_resolve_type(%{type: type}), do: Messages.stream_type(type)
-  defp pm_resolve_type(_), do: :message
-
-  defp content_format(source) do
-    Map.get(source, :content_format) || "irc"
-  end
 end
