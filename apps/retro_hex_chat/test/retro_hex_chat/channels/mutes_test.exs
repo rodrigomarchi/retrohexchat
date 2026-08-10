@@ -66,6 +66,31 @@ defmodule RetroHexChat.Channels.MutesTest do
     assert all_enqueued(worker: ChannelMuteExpiryWorker, queue: :maintenance) == []
   end
 
+  test "the same target is muted per channel, and revoking one leaves the other" do
+    assert {:ok, first} = Mutes.mute("#scope-a", "Oper", "Target", :permanent)
+    assert {:ok, second} = Mutes.mute("#scope-b", "Oper", "Target", :permanent)
+
+    refute second.id == first.id
+    assert Repo.aggregate(ChannelMute, :count, :id) == 2
+
+    assert {:ok, %{revoked: 1}} = Mutes.revoke_active("#scope-a", "Target", "Oper")
+
+    assert Mutes.active_nicknames("#scope-a") == []
+    assert Mutes.active_nicknames("#scope-b") == ["Target"]
+  end
+
+  test "re-muting a target only extends the mute in its own channel" do
+    now = DateTime.utc_now()
+
+    assert {:ok, first} = Mutes.mute("#scope-c", "Oper", "Target", 30, now: now)
+    assert {:ok, other} = Mutes.mute("#scope-d", "Oper", "Target", 30, now: now)
+    assert {:ok, again} = Mutes.mute("#scope-c", "Oper", "Target", 120, now: now)
+
+    assert again.id == first.id
+    assert DateTime.diff(again.expires_at, now, :second) == 120
+    assert DateTime.diff(Repo.get!(ChannelMute, other.id).expires_at, now, :second) == 30
+  end
+
   test "expire_due materializes a due mute and ignores already revoked mutes" do
     now = DateTime.utc_now()
     past = DateTime.add(now, -60, :second)

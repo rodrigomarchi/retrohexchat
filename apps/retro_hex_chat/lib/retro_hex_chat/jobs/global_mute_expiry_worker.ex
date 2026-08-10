@@ -62,7 +62,7 @@ defmodule RetroHexChat.Jobs.GlobalMuteExpiryWorker do
       {:error, :not_found} ->
         {:cancel, "global mute not found"}
 
-      {:error, :permanent_mute} ->
+      {:error, :permanent_restriction} ->
         {:cancel, "global mute is permanent"}
 
       {:error, reason} ->

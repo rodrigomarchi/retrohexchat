@@ -61,7 +61,7 @@ defmodule RetroHexChat.Jobs.ChannelMuteExpiryWorker do
       {:error, :not_found} ->
         {:cancel, "channel mute not found"}
 
-      {:error, :permanent_mute} ->
+      {:error, :permanent_restriction} ->
         {:cancel, "channel mute is permanent"}
 
       {:error, reason} ->
