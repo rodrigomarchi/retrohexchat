@@ -46,6 +46,12 @@ desktop windows). Do not invent or search for a lobby LiveView/page.
   → LiveView `handle_event` → `PubSub.broadcast("p2p:token")` → peer LiveView → `push_event` →
   peer JS. The server never inspects SDP; the SessionServer only learns of `connecting → active`
   transitions.
+- **Blind is not unchecked, and the checks live in one module.** The server refuses payloads of
+  the wrong shape or size — `RetroHexChat.Calls.SignalValidation` owns every bound (SDP, ICE
+  candidate, media-section id, offer id) and both signaling paths validate through it: the 1:1
+  session via `P2P.validate_signal/1` and the SFU group call via `GroupCallChannel`. Relaxing a
+  bound is a one-file change on purpose; a third copy is how one path silently gets a wider
+  attack surface than the other.
 - **The session creator is always the offer initiator** — server sends `p2p_start_offer` only to
   the creator on `connecting`, preventing simultaneous-offer glare.
 - **TURN-only privacy mode** = pass `{iceTransportPolicy: "relay"}` to the browser

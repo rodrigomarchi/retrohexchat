@@ -12,14 +12,10 @@ defmodule RetroHexChatWeb.GroupCallChannel do
   require Logger
 
   alias RetroHexChat.Calls.Events, as: CallEvents
+  alias RetroHexChat.Calls.SignalValidation
   alias RetroHexChat.GroupCall
   alias RetroHexChat.GroupCall.JoinToken
   alias RetroHexChat.GroupCall.RateLimiter
-
-  @max_sdp_bytes 256_000
-  @max_candidate_bytes 4_096
-  @max_mid_bytes 64
-  @max_offer_id_bytes 80
 
   @impl true
   def join("group_call:" <> room_token, params, socket) do
@@ -90,8 +86,9 @@ defmodule RetroHexChatWeb.GroupCallChannel do
   end
 
   def handle_in("group_call_answer", %{"sdp" => sdp} = payload, socket) do
-    with {:ok, sdp} <- validate_sdp(sdp),
-         {:ok, offer_id} <- validate_offer_id(Map.get(payload, "offer_id")),
+    with {:ok, sdp} <- SignalValidation.validate_sdp(sdp),
+         {:ok, offer_id} <-
+           SignalValidation.validate_offer_id(Map.get(payload, "offer_id")),
          {:ok, participant_id} <- fetch_participant_id(socket),
          :ok <- check_signal_rate(socket),
          :ok <-
@@ -113,7 +110,7 @@ defmodule RetroHexChatWeb.GroupCallChannel do
 
   def handle_in("group_call_ice_candidate", %{"candidate" => candidate}, socket)
       when is_map(candidate) do
-    with {:ok, candidate} <- validate_candidate(candidate),
+    with {:ok, candidate} <- SignalValidation.validate_candidate(candidate),
          {:ok, participant_id} <- fetch_participant_id(socket),
          :ok <- check_signal_rate(socket),
          :ok <- GroupCall.add_ice_candidate(socket.assigns.room_token, participant_id, candidate) do
@@ -274,56 +271,6 @@ defmodule RetroHexChatWeb.GroupCallChannel do
 
   defp truthy?(value) when value in [true, "true", "on", "1", 1], do: true
   defp truthy?(_value), do: false
-
-  defp validate_sdp(sdp)
-       when is_binary(sdp) and sdp != "" and byte_size(sdp) <= @max_sdp_bytes,
-       do: {:ok, sdp}
-
-  defp validate_sdp(_sdp), do: {:error, :invalid_signal}
-
-  defp validate_offer_id(nil), do: {:ok, nil}
-
-  defp validate_offer_id(offer_id)
-       when is_binary(offer_id) and offer_id != "" and byte_size(offer_id) <= @max_offer_id_bytes,
-       do: {:ok, offer_id}
-
-  defp validate_offer_id(_offer_id), do: {:error, :invalid_signal}
-
-  defp validate_candidate(%{} = candidate) do
-    candidate_text = Map.get(candidate, "candidate")
-    sdp_mid = Map.get(candidate, "sdpMid")
-    sdp_m_line_index = Map.get(candidate, "sdpMLineIndex")
-
-    cond do
-      not (is_binary(candidate_text) and candidate_text != "" and
-               byte_size(candidate_text) <= @max_candidate_bytes) ->
-        {:error, :invalid_signal}
-
-      not valid_mid?(sdp_mid) ->
-        {:error, :invalid_signal}
-
-      not valid_m_line_index?(sdp_m_line_index) ->
-        {:error, :invalid_signal}
-
-      is_nil(sdp_mid) and is_nil(sdp_m_line_index) ->
-        {:error, :invalid_signal}
-
-      true ->
-        {:ok,
-         %{"candidate" => candidate_text}
-         |> maybe_put_candidate_value("sdpMid", sdp_mid)
-         |> maybe_put_candidate_value("sdpMLineIndex", sdp_m_line_index)}
-    end
-  end
-
-  defp valid_mid?(nil), do: true
-  defp valid_mid?(mid), do: is_binary(mid) and byte_size(mid) <= @max_mid_bytes
-
-  defp valid_m_line_index?(nil), do: true
-  defp valid_m_line_index?(index), do: is_integer(index) and index >= 0 and index < 128
-
-  defp maybe_put_candidate_value(candidate, _key, nil), do: candidate
-  defp maybe_put_candidate_value(candidate, key, value), do: Map.put(candidate, key, value)
 
   defp room_payload(room) do
     %{
