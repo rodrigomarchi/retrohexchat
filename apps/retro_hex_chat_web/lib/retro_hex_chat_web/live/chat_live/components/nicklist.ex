@@ -24,6 +24,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
   import RetroHexChatWeb.Components.UI.ListStates
   import RetroHexChatWeb.Components.UI.Nicklist
 
+  alias RetroHexChatWeb.Components.UI.Chat.Role
+
   @id "nicklist"
 
   # A busy channel can hold more members than anyone scrolls through, and every
@@ -182,7 +184,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
             count={section.count}
           >
             <div
-              id={"nicklist-users-#{role_id(section.key)}"}
+              id={"nicklist-users-#{Role.slug(section.key)}"}
               class="contents"
               phx-update="stream"
             >
@@ -247,7 +249,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
     visible_groups =
       users
       |> Enum.take(@max_rendered)
-      |> Enum.group_by(&role_key(Map.get(&1, :role, :regular)))
+      |> Enum.group_by(&Role.key(Map.get(&1, :role, :regular)))
 
     Enum.reduce(@role_sections, socket, fn section, acc ->
       stream_role_section(acc, section, Map.get(visible_groups, section.key, []), reset: true)
@@ -260,7 +262,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
 
   defp section_counts(users) do
     Enum.reduce(users, %{}, fn user, acc ->
-      Map.update(acc, role_key(Map.get(user, :role, :regular)), 1, &(&1 + 1))
+      Map.update(acc, Role.key(Map.get(user, :role, :regular)), 1, &(&1 + 1))
     end)
   end
 
@@ -284,27 +286,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
   defp role_rank(:voiced), do: 3
   defp role_rank(:regular), do: 4
   defp role_rank(:bot), do: 5
-  defp role_rank(role), do: role |> role_key() |> role_rank()
-
-  defp role_key(:normal), do: :regular
-  defp role_key(:owner), do: :owner
-  defp role_key(:operator), do: :operator
-  defp role_key(:half_operator), do: :half_operator
-  defp role_key(:voiced), do: :voiced
-  defp role_key(:bot), do: :bot
-  defp role_key(:regular), do: :regular
-  defp role_key("owner"), do: :owner
-  defp role_key("op"), do: :operator
-  defp role_key("operator"), do: :operator
-  defp role_key("half_operator"), do: :half_operator
-  defp role_key("half-op"), do: :half_operator
-  defp role_key("voice"), do: :voiced
-  defp role_key("voiced"), do: :voiced
-  defp role_key("bot"), do: :bot
-  defp role_key(_), do: :regular
-
-  defp role_id(:half_operator), do: "half-operator"
-  defp role_id(role), do: role |> role_key() |> Atom.to_string() |> String.replace("_", "-")
+  defp role_rank(role), do: role |> Role.key() |> role_rank()
 
   defp section_label(:owner), do: dgettext("chat", "Owner")
   defp section_label(:operator), do: dgettext("chat", "Operator")

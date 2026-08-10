@@ -10,8 +10,6 @@ defmodule RetroHexChat.Chat.Service do
   alias RetroHexChat.Observability
   alias RetroHexChat.Repo
 
-  @max_preview_length 100
-
   @spec send_message(String.t(), String.t(), String.t(), String.t(), keyword()) ::
           {:ok, RetroHexChat.Chat.Message.t()} | {:error, String.t()}
   def send_message(channel_name, nickname, content, type \\ "message", opts \\ []) do
@@ -74,7 +72,13 @@ defmodule RetroHexChat.Chat.Service do
              content_format: content_format
            ) do
       broadcast_edit(message.channel_name, updated)
-      update_reply_previews_if_needed(message.id, preview_for(updated), message.channel_name)
+
+      update_reply_previews_if_needed(
+        message.id,
+        Content.reply_preview(updated),
+        message.channel_name
+      )
+
       {:ok, updated}
     end
   end
@@ -109,7 +113,7 @@ defmodule RetroHexChat.Chat.Service do
 
       update_pm_reply_previews_if_needed(
         pm.id,
-        preview_for(updated),
+        Content.reply_preview(updated),
         pm.sender_nickname,
         pm.recipient_nickname
       )
@@ -232,7 +236,7 @@ defmodule RetroHexChat.Chat.Service do
         {:error, dgettext("chat", "Original message not found.")}
 
       parent ->
-        preview = preview_for(parent)
+        preview = Content.reply_preview(parent)
 
         {:ok,
          %{
@@ -249,7 +253,7 @@ defmodule RetroHexChat.Chat.Service do
         {:error, dgettext("chat", "Original message not found.")}
 
       parent ->
-        preview = preview_for(parent)
+        preview = Content.reply_preview(parent)
 
         {:ok,
          %{
@@ -258,24 +262,6 @@ defmodule RetroHexChat.Chat.Service do
            reply_to_preview: preview
          }}
     end
-  end
-
-  defp truncate_preview(content) when byte_size(content) == 0, do: ""
-
-  defp truncate_preview(content) do
-    if String.length(content) > @max_preview_length do
-      String.slice(content, 0, @max_preview_length - 3) <> "..."
-    else
-      content
-    end
-  end
-
-  defp preview_for(%{plain_content: plain_content}) when is_binary(plain_content) do
-    truncate_preview(plain_content)
-  end
-
-  defp preview_for(%{content: content, content_format: content_format}) do
-    Content.preview(content, content_format, max_length: @max_preview_length - 3)
   end
 
   # ── Insert helpers ──

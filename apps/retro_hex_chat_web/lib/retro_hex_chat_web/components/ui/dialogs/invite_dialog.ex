@@ -121,29 +121,4 @@ defmodule RetroHexChatWeb.Components.UI.InviteDialog do
 
   defp invite_inviter(invite),
     do: text_value(invite, [:inviter, :from], dgettext("dialogs", "Someone"))
-
-  defp text_value(invite, keys, default) when is_map(invite) do
-    keys
-    |> Enum.find_value(default, fn key ->
-      case Map.get(invite, key) || Map.get(invite, to_string(key)) do
-        value when is_binary(value) -> non_empty_string(value)
-        value when is_atom(value) -> Atom.to_string(value)
-        value when is_integer(value) -> Integer.to_string(value)
-        _ -> nil
-      end
-    end)
-    |> case do
-      "" -> default
-      value -> value
-    end
-  end
-
-  defp text_value(_invite, _keys, default), do: default
-
-  defp non_empty_string(value) do
-    case String.trim(value) do
-      "" -> nil
-      trimmed -> trimmed
-    end
-  end
 end

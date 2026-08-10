@@ -125,6 +125,44 @@ defmodule RetroHexChat.Chat.ContentTest do
     end
   end
 
+  describe "reply_preview/1" do
+    test "takes already-visible text as it stands" do
+      assert Content.reply_preview(%{plain_content: "just text"}) == "just text"
+    end
+
+    test "renders formatted content down before quoting it" do
+      assert Content.reply_preview(%{content: "**bold**", content_format: :markdown}) == "bold"
+
+      assert Content.reply_preview(%{content: "#{@bold}bold#{@bold}", content_format: :irc}) ==
+               "bold"
+    end
+
+    test "cuts a long quote so the ellipsis fits inside the budget" do
+      preview = Content.reply_preview(%{plain_content: String.duplicate("a", 200)})
+
+      assert String.length(preview) == 100
+      assert String.ends_with?(preview, "...")
+    end
+
+    test "leaves a quote exactly at the budget uncut" do
+      exact = String.duplicate("a", 100)
+
+      assert Content.reply_preview(%{plain_content: exact}) == exact
+    end
+
+    test "cuts a formatted quote to the same width" do
+      preview =
+        Content.reply_preview(%{content: String.duplicate("b", 200), content_format: :plain})
+
+      assert String.length(preview) == 100
+      assert String.ends_with?(preview, "...")
+    end
+
+    test "quotes empty content as nothing" do
+      assert Content.reply_preview(%{plain_content: ""}) == ""
+    end
+  end
+
   describe "validate/3" do
     test "accepts supported visible content" do
       assert Content.validate("hello", :irc) == :ok

@@ -101,29 +101,4 @@ defmodule RetroHexChatWeb.Components.UI.KickDialog do
 
   defp kick_operator(kick_info), do: text_value(kick_info, [:operator, :kicker], "")
   defp kick_reason(kick_info), do: text_value(kick_info, [:reason], "")
-
-  defp text_value(kick_info, keys, default) when is_map(kick_info) do
-    keys
-    |> Enum.find_value(default, fn key ->
-      case Map.get(kick_info, key) || Map.get(kick_info, to_string(key)) do
-        value when is_binary(value) -> non_empty_string(value)
-        value when is_atom(value) -> Atom.to_string(value)
-        value when is_integer(value) -> Integer.to_string(value)
-        _ -> nil
-      end
-    end)
-    |> case do
-      "" -> default
-      value -> value
-    end
-  end
-
-  defp text_value(_kick_info, _keys, default), do: default
-
-  defp non_empty_string(value) do
-    case String.trim(value) do
-      "" -> nil
-      trimmed -> trimmed
-    end
-  end
 end

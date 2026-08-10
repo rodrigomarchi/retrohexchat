@@ -49,7 +49,6 @@ defmodule RetroHexChat.Channels.Server do
         }
 
   @pubsub RetroHexChat.PubSub
-  @max_preview_length 100
 
   # ──────────────────────────────────────────────────────────────
   # Public API
@@ -1328,7 +1327,7 @@ defmodule RetroHexChat.Channels.Server do
         {:error, :not_found}
 
       parent ->
-        preview = preview_for(parent)
+        preview = Content.reply_preview(parent)
 
         {:ok,
          %{
@@ -1392,24 +1391,6 @@ defmodule RetroHexChat.Channels.Server do
   end
 
   defp attachment_payloads(_message), do: []
-
-  defp truncate_preview(content) when byte_size(content) == 0, do: ""
-
-  defp truncate_preview(content) do
-    if String.length(content) > @max_preview_length do
-      String.slice(content, 0, @max_preview_length - 3) <> "..."
-    else
-      content
-    end
-  end
-
-  defp preview_for(%{plain_content: plain_content}) when is_binary(plain_content) do
-    truncate_preview(plain_content)
-  end
-
-  defp preview_for(%{content: content, content_format: content_format}) do
-    Content.preview(content, content_format, max_length: @max_preview_length - 3)
-  end
 
   defp maybe_persist_exception(type, action, channel_name, nickname, added_by, state) do
     if state.registered do

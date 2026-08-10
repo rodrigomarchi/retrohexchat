@@ -15,6 +15,7 @@ defmodule RetroHexChat.Chat.Content do
 
   @default_max_length 1000
   @default_preview_length 160
+  @reply_preview_length 100
 
   @doc """
   Renders content to Phoenix safe HTML according to its format.
@@ -50,6 +51,27 @@ defmodule RetroHexChat.Chat.Content do
     |> String.replace(~r/\s+/, " ")
     |> String.trim()
     |> truncate(max_length)
+  end
+
+  @doc """
+  The snippet of a message shown inside the reply that quotes it.
+
+  A message that has already been reduced to visible text is truncated as it
+  stands; anything else is rendered down through its own format first, so an
+  IRC colour code or a Markdown link never reaches the quote as markup.
+
+  The length is shared by every quote in the product rather than chosen per
+  caller: a reply rendered from a channel and the same reply rendered from a
+  private conversation are the same sentence, and a reader who sees both should
+  not see them cut at different words.
+  """
+  @spec reply_preview(map()) :: String.t()
+  def reply_preview(%{plain_content: plain_content}) when is_binary(plain_content) do
+    truncate_reply(plain_content)
+  end
+
+  def reply_preview(%{content: content, content_format: content_format}) do
+    preview(content, content_format, max_length: @reply_preview_length - 3)
   end
 
   @doc """
@@ -133,6 +155,18 @@ defmodule RetroHexChat.Chat.Content do
   defp renderer(:plain), do: Plain
 
   @spec truncate(String.t(), non_neg_integer()) :: String.t()
+  # A quote is cut so the ellipsis fits inside the budget rather than extending
+  # past it, which is what keeps every quote the same width on screen.
+  defp truncate_reply(content) when byte_size(content) == 0, do: ""
+
+  defp truncate_reply(content) do
+    if String.length(content) > @reply_preview_length do
+      String.slice(content, 0, @reply_preview_length - 3) <> "..."
+    else
+      content
+    end
+  end
+
   defp truncate(_text, max_length) when max_length <= 0, do: ""
 
   defp truncate(text, max_length) do

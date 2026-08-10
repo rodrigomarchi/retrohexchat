@@ -5,6 +5,7 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
   import RetroHexChatWeb.Components.UI.Button
 
   alias RetroHexChat.Channels.Modes
+  alias RetroHexChatWeb.Components.UI.Chat.Role
   alias RetroHexChatWeb.Icons
 
   @doc """
@@ -181,7 +182,7 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
       type="button"
       class={[
         "chat-sidebar-rail__button",
-        "chat-sidebar-rail__button--role-#{role_class(@section.key)}"
+        "chat-sidebar-rail__button--role-#{Role.slug(@section.key)}"
       ]}
       phx-click={if @expanded, do: nil, else: @on_toggle}
       title={@title}
@@ -385,7 +386,7 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
   def nicklist_section(assigns) do
     assigns =
       assigns
-      |> assign(:role_class, role_class(assigns.role))
+      |> assign(:role_class, Role.slug(assigns.role))
       |> assign(:role_name, role_name(assigns.role))
 
     ~H"""
@@ -426,8 +427,8 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
   def nicklist_item(assigns) do
     assigns =
       assigns
-      |> assign(:role, role_key(assigns.role))
-      |> assign(:role_class, role_class(assigns.role))
+      |> assign(:role, Role.key(assigns.role))
+      |> assign(:role_class, Role.slug(assigns.role))
       |> assign(:role_name, role_name(assigns.role))
 
     ~H"""
@@ -487,27 +488,7 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
   defp mode_badges(modes) when is_list(modes), do: modes
   defp mode_badges(_modes), do: []
 
-  defp role_key(:normal), do: :regular
-  defp role_key(:owner), do: :owner
-  defp role_key(:operator), do: :operator
-  defp role_key(:half_operator), do: :half_operator
-  defp role_key(:voiced), do: :voiced
-  defp role_key(:bot), do: :bot
-  defp role_key(:regular), do: :regular
-  defp role_key("owner"), do: :owner
-  defp role_key("op"), do: :operator
-  defp role_key("operator"), do: :operator
-  defp role_key("half_operator"), do: :half_operator
-  defp role_key("half-op"), do: :half_operator
-  defp role_key("voice"), do: :voiced
-  defp role_key("voiced"), do: :voiced
-  defp role_key("bot"), do: :bot
-  defp role_key(_), do: :regular
-
-  defp role_class(:half_operator), do: "half-operator"
-  defp role_class(role), do: role |> role_key() |> Atom.to_string() |> String.replace("_", "-")
-
-  defp role_name(role), do: role |> role_key() |> Atom.to_string()
+  defp role_name(role), do: role |> Role.key() |> Atom.to_string()
 
   defp role_icon(%{role: :owner} = assigns) do
     ~H'<Icons.icon_role_owner class="h-4 w-4" />'

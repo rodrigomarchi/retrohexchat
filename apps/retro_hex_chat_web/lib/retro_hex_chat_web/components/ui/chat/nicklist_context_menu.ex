@@ -16,6 +16,7 @@ defmodule RetroHexChatWeb.Components.UI.NicklistContextMenu do
 
   import RetroHexChatWeb.Components.UI.ContextMenu
 
+  alias RetroHexChatWeb.Components.UI.Chat.CustomMenuItem
   alias RetroHexChatWeb.Icons
 
   attr :visible, :boolean, default: false
@@ -210,19 +211,15 @@ defmodule RetroHexChatWeb.Components.UI.NicklistContextMenu do
       <.context_menu_item
         :for={item <- @custom_items}
         on_click={@on_action}
-        action={custom_item_action(item)}
+        action={CustomMenuItem.action(item)}
         phx-value-target={@target_nick}
-        phx-value-command={custom_item_command(item)}
-        phx-value-label={custom_item_label(item)}
+        phx-value-command={CustomMenuItem.command(item)}
+        phx-value-label={CustomMenuItem.label(item)}
       >
         <:icon><Icons.icon_btn_star class="w-[14px] h-[14px]" /></:icon>
-        {custom_item_label(item)}
+        {CustomMenuItem.label(item)}
       </.context_menu_item>
     </.context_menu>
     """
   end
-
-  defp custom_item_action(item), do: Map.get(item, :action) || "custom_menu_execute"
-  defp custom_item_command(item), do: Map.get(item, :command) || ""
-  defp custom_item_label(item), do: Map.get(item, :label) || ""
 end

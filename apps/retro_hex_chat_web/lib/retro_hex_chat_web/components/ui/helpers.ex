@@ -32,6 +32,41 @@ defmodule RetroHexChatWeb.ComponentHelpers do
     assign(assigns, value: value)
   end
 
+  @doc """
+  Reads the first usable text out of a payload, trying each key in turn.
+
+  A dialog is handed a map assembled elsewhere — sometimes with atom keys,
+  sometimes with the string keys a JSON round trip leaves behind — and a key
+  that is present but blank is as absent as one that is missing. Both spellings
+  are tried, whitespace-only text counts as nothing, and a caller lists the keys
+  it will accept in the order it prefers them.
+  """
+  @spec text_value(term(), [atom()], String.t()) :: String.t()
+  def text_value(payload, keys, default) when is_map(payload) do
+    keys
+    |> Enum.find_value(default, fn key ->
+      case Map.get(payload, key) || Map.get(payload, to_string(key)) do
+        value when is_binary(value) -> non_empty_string(value)
+        value when is_atom(value) -> Atom.to_string(value)
+        value when is_integer(value) -> Integer.to_string(value)
+        _other -> nil
+      end
+    end)
+    |> case do
+      "" -> default
+      value -> value
+    end
+  end
+
+  def text_value(_payload, _keys, default), do: default
+
+  defp non_empty_string(value) do
+    case String.trim(value) do
+      "" -> nil
+      trimmed -> trimmed
+    end
+  end
+
   # normalize_integer
   def normalize_integer(value) when is_integer(value), do: value
 
