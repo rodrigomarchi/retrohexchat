@@ -3,6 +3,8 @@ defmodule RetroHexChat.Commands.Handlers.Mode do
   use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
+  import RetroHexChat.Commands.Handler.Guards
+
   alias RetroHexChat.Commands.Handler
 
   @impl true
@@ -46,11 +48,6 @@ defmodule RetroHexChat.Commands.Handlers.Mode do
       ]
     }
   end
-
-  defp require_channel(%{active_channel: nil}),
-    do: {:error, dgettext("commands", "You are not in any channel")}
-
-  defp require_channel(%{active_channel: channel}), do: {:ok, channel}
 
   defp require_mode_privilege(context, channel, mode_string) do
     is_operator = channel in context.operator_in

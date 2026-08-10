@@ -3,6 +3,8 @@ defmodule RetroHexChat.Commands.Handlers.Unban do
   use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
+  import RetroHexChat.Commands.Handler.Guards
+
   alias RetroHexChat.Commands.Handler
 
   @impl true
@@ -16,8 +18,10 @@ defmodule RetroHexChat.Commands.Handlers.Unban do
   end
 
   def execute([target | _rest], context) do
+    denied = dgettext("commands", "You must be a channel operator to unban users")
+
     with {:ok, channel} <- require_channel(context),
-         :ok <- require_operator(context, channel) do
+         :ok <- require_operator(context, channel, denied) do
       {:ok, :ui_action, :unban_user, %{channel: channel, target: target}}
     end
   end
@@ -40,19 +44,6 @@ defmodule RetroHexChat.Commands.Handlers.Unban do
         ),
       examples: [dgettext("commands", "/unban user123")]
     }
-  end
-
-  defp require_channel(%{active_channel: nil}),
-    do: {:error, dgettext("commands", "You are not in any channel")}
-
-  defp require_channel(%{active_channel: channel}), do: {:ok, channel}
-
-  defp require_operator(%{operator_in: operator_in}, channel) do
-    if channel in operator_in do
-      :ok
-    else
-      {:error, dgettext("commands", "You must be a channel operator to unban users")}
-    end
   end
 
   @impl true

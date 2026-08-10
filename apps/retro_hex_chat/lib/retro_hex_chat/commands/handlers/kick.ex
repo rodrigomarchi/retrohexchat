@@ -3,6 +3,8 @@ defmodule RetroHexChat.Commands.Handlers.Kick do
   use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
+  import RetroHexChat.Commands.Handler.Guards
+
   alias RetroHexChat.Commands.Handler
 
   @impl true
@@ -16,8 +18,10 @@ defmodule RetroHexChat.Commands.Handlers.Kick do
   end
 
   def execute([target | rest], context) do
+    denied = dgettext("commands", "You must be a channel operator to kick users")
+
     with {:ok, channel} <- require_channel(context),
-         :ok <- require_kick_privilege(context, channel) do
+         :ok <- require_half_op_or_above(context, channel, denied) do
       reason = if rest == [], do: nil, else: Enum.join(rest, " ")
 
       {:ok, :ui_action, :kick_user, %{channel: channel, target: target, reason: reason}}
@@ -45,22 +49,6 @@ defmodule RetroHexChat.Commands.Handlers.Kick do
         dgettext("commands", "/kick troll Spamming the channel")
       ]
     }
-  end
-
-  defp require_channel(%{active_channel: nil}),
-    do: {:error, dgettext("commands", "You are not in any channel")}
-
-  defp require_channel(%{active_channel: channel}), do: {:ok, channel}
-
-  defp require_kick_privilege(context, channel) do
-    is_operator = channel in context.operator_in
-    is_half_op = channel in Map.get(context, :half_operator_in, [])
-
-    if is_operator or is_half_op do
-      :ok
-    else
-      {:error, dgettext("commands", "You must be a channel operator to kick users")}
-    end
   end
 
   @impl true

@@ -3,6 +3,8 @@ defmodule RetroHexChat.Commands.Handlers.Op do
   use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
+  import RetroHexChat.Commands.Handler.Guards
+
   alias RetroHexChat.Commands.Handler
 
   @impl true
@@ -59,18 +61,5 @@ defmodule RetroHexChat.Commands.Handlers.Op do
       ],
       examples: [dgettext("commands", "/op alice")]
     }
-  end
-
-  defp require_channel(%{active_channel: nil}),
-    do: {:error, dgettext("commands", "You are not in any channel")}
-
-  defp require_channel(%{active_channel: ch}), do: {:ok, ch}
-
-  defp require_operator(context, channel) do
-    if channel in context.operator_in do
-      :ok
-    else
-      {:error, dgettext("commands", "You must be a channel operator to use this command")}
-    end
   end
 end

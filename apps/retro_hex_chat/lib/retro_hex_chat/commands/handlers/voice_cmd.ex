@@ -3,6 +3,8 @@ defmodule RetroHexChat.Commands.Handlers.VoiceCmd do
   use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
+  import RetroHexChat.Commands.Handler.Guards
+
   alias RetroHexChat.Commands.Handler
 
   @impl true
@@ -59,21 +61,5 @@ defmodule RetroHexChat.Commands.Handlers.VoiceCmd do
       ],
       examples: [dgettext("commands", "/voice alice")]
     }
-  end
-
-  defp require_channel(%{active_channel: nil}),
-    do: {:error, dgettext("commands", "You are not in any channel")}
-
-  defp require_channel(%{active_channel: ch}), do: {:ok, ch}
-
-  defp require_half_op_or_above(context, channel) do
-    is_op = channel in context.operator_in
-    is_half_op = channel in Map.get(context, :half_operator_in, [])
-
-    if is_op or is_half_op do
-      :ok
-    else
-      {:error, dgettext("commands", "You must be at least a half-operator to use this command")}
-    end
   end
 end

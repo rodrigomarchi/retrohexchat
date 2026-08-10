@@ -3,6 +3,8 @@ defmodule RetroHexChat.Commands.Handlers.Invite do
   use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
+  import RetroHexChat.Commands.Handler.Guards
+
   alias RetroHexChat.Commands.Handler
 
   @impl true
@@ -52,12 +54,6 @@ defmodule RetroHexChat.Commands.Handlers.Invite do
       ]
     }
   end
-
-  @spec require_channel(Handler.context()) :: {:ok, String.t()} | {:error, String.t()}
-  defp require_channel(%{active_channel: nil}),
-    do: {:error, dgettext("commands", "You are not in any channel")}
-
-  defp require_channel(%{active_channel: channel}), do: {:ok, channel}
 
   @impl true
   def category, do: :channel

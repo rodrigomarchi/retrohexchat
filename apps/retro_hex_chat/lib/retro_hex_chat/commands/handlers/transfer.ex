@@ -3,6 +3,8 @@ defmodule RetroHexChat.Commands.Handlers.Transfer do
   use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
+  import RetroHexChat.Commands.Handler.Guards
+
   alias RetroHexChat.Commands.Handler
 
   @impl true
@@ -60,11 +62,6 @@ defmodule RetroHexChat.Commands.Handlers.Transfer do
       examples: [dgettext("commands", "/transfer alice")]
     }
   end
-
-  defp require_channel(%{active_channel: nil}),
-    do: {:error, dgettext("commands", "You are not in any channel")}
-
-  defp require_channel(%{active_channel: ch}), do: {:ok, ch}
 
   defp require_owner(context, channel) do
     owner_in = Map.get(context, :owner_in, [])

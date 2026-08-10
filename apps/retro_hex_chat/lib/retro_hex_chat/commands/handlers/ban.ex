@@ -3,6 +3,8 @@ defmodule RetroHexChat.Commands.Handlers.Ban do
   use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
+  import RetroHexChat.Commands.Handler.Guards
+
   alias RetroHexChat.Commands.Handler
 
   @impl true
@@ -16,8 +18,10 @@ defmodule RetroHexChat.Commands.Handlers.Ban do
   end
 
   def execute([target | rest], context) do
+    denied = dgettext("commands", "You must be a channel operator to ban users")
+
     with {:ok, channel} <- require_channel(context),
-         :ok <- require_operator(context, channel) do
+         :ok <- require_operator(context, channel, denied) do
       reason = if rest == [], do: nil, else: Enum.join(rest, " ")
 
       {:ok, :ui_action, :ban_user, %{channel: channel, target: target, reason: reason}}
@@ -45,19 +49,6 @@ defmodule RetroHexChat.Commands.Handlers.Ban do
         dgettext("commands", "/ban troll Repeated violations")
       ]
     }
-  end
-
-  defp require_channel(%{active_channel: nil}),
-    do: {:error, dgettext("commands", "You are not in any channel")}
-
-  defp require_channel(%{active_channel: channel}), do: {:ok, channel}
-
-  defp require_operator(%{operator_in: operator_in}, channel) do
-    if channel in operator_in do
-      :ok
-    else
-      {:error, dgettext("commands", "You must be a channel operator to ban users")}
-    end
   end
 
   @impl true
