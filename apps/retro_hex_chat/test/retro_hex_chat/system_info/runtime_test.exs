@@ -46,10 +46,16 @@ defmodule RetroHexChat.SystemInfo.RuntimeTest do
       end
     end
 
+    # The two run-queue figures are separate samples, so on a busy node the
+    # CPU-only one can be taken after work has queued up and exceed the
+    # all-schedulers one read a moment earlier. The reported difference is
+    # floored rather than allowed to go negative, which is what the struct's
+    # own `non_neg_integer()` promises. Asserting the raw subtraction instead
+    # was a demand the emulator cannot meet, and it failed under load.
     test "the IO run queue is the part of the backlog that is not CPU" do
       usage = SystemInfo.usage()
 
-      assert usage.io_run_queue == usage.total_run_queue - usage.cpu_run_queue
+      assert usage.io_run_queue == max(usage.total_run_queue - usage.cpu_run_queue, 0)
       assert usage.io_run_queue >= 0
     end
 

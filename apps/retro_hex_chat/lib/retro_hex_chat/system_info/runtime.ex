@@ -116,6 +116,12 @@ defmodule RetroHexChat.SystemInfo.Runtime do
     total_run_queue = :erlang.statistics(:total_run_queue_lengths_all)
     cpu_run_queue = :erlang.statistics(:total_run_queue_lengths)
 
+    # The two figures are separate samples, and work queues up between them, so
+    # on a busy node the second can exceed the first and their difference go
+    # negative. The emulator offers no way to read both at one instant, so what
+    # is reported is a floor: never fewer than none waiting.
+    io_run_queue = max(total_run_queue - cpu_run_queue, 0)
+
     %Snapshot{
       atoms: Usage.new(:erlang.system_info(:atom_count), :erlang.system_info(:atom_limit)),
       ports: Usage.new(:erlang.system_info(:port_count), :erlang.system_info(:port_limit)),
@@ -126,7 +132,7 @@ defmodule RetroHexChat.SystemInfo.Runtime do
       output_bytes: output,
       total_run_queue: total_run_queue,
       cpu_run_queue: cpu_run_queue,
-      io_run_queue: total_run_queue - cpu_run_queue,
+      io_run_queue: io_run_queue,
       memory: Memory.current()
     }
   end
