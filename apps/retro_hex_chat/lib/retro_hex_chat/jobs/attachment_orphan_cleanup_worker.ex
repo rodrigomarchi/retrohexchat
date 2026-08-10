@@ -14,6 +14,8 @@ defmodule RetroHexChat.Jobs.AttachmentOrphanCleanupWorker do
     ]
 
   alias RetroHexChat.Chat.Attachments
+  alias RetroHexChat.Jobs.ResultMetadata
+  alias RetroHexChat.Jobs.WorkerArgs
   alias RetroHexChat.Observability
 
   @timeout_ms 120_000
@@ -33,8 +35,10 @@ defmodule RetroHexChat.Jobs.AttachmentOrphanCleanupWorker do
   @impl Oban.Worker
   @spec perform(Oban.Job.t()) :: {:ok, Attachments.cleanup_summary()} | {:error, term()}
   def perform(%Oban.Job{args: args}) do
-    limit = positive_arg(args, "limit", @default_limit)
-    orphan_age_seconds = positive_arg(args, "orphan_age_seconds", @default_orphan_age_seconds)
+    limit = WorkerArgs.positive_integer(args, "limit", @default_limit)
+
+    orphan_age_seconds =
+      WorkerArgs.positive_integer(args, "orphan_age_seconds", @default_orphan_age_seconds)
 
     Observability.span(
       [:retro_hex_chat, :attachments, :orphan_cleanup],
@@ -49,13 +53,6 @@ defmodule RetroHexChat.Jobs.AttachmentOrphanCleanupWorker do
     )
   end
 
-  defp positive_arg(args, key, default) do
-    case Map.get(args, key) do
-      value when is_integer(value) and value > 0 -> value
-      _value -> default
-    end
-  end
-
   defp cleanup_result_metadata({:ok, summary}) do
     %{
       result: "ok",
@@ -66,13 +63,5 @@ defmodule RetroHexChat.Jobs.AttachmentOrphanCleanupWorker do
     }
   end
 
-  defp cleanup_result_metadata({:error, reason}) do
-    %{result: "error", reason: error_reason(reason)}
-  end
-
-  defp error_reason(%Ecto.Changeset{}), do: "changeset_error"
-  defp error_reason(reason) when is_atom(reason), do: Atom.to_string(reason)
-  defp error_reason(reason) when is_binary(reason), do: reason
-  defp error_reason(%module{}), do: module |> Module.split() |> List.last()
-  defp error_reason(_reason), do: "unknown"
+  defp cleanup_result_metadata({:error, reason}), do: ResultMetadata.error(reason)
 end

@@ -15,6 +15,8 @@ defmodule RetroHexChat.Jobs.GlobalMuteExpiryWorker do
     ]
 
   alias RetroHexChat.Admin.GlobalMutes
+  alias RetroHexChat.Jobs.ResultMetadata
+  alias RetroHexChat.Jobs.WorkerArgs
   alias RetroHexChat.Observability
 
   @pubsub RetroHexChat.PubSub
@@ -40,8 +42,8 @@ defmodule RetroHexChat.Jobs.GlobalMuteExpiryWorker do
     Observability.span(
       [:retro_hex_chat, :admin, :global_mutes, :expire],
       %{mute_id: mute_id},
-      fn -> expire(parse_mute_id(mute_id)) end,
-      &expiry_result_metadata/1
+      fn -> expire(WorkerArgs.positive_id(mute_id)) end,
+      &ResultMetadata.expiry/1
     )
   end
 
@@ -73,31 +75,4 @@ defmodule RetroHexChat.Jobs.GlobalMuteExpiryWorker do
   defp broadcast_unmuted(nickname) do
     Phoenix.PubSub.broadcast(@pubsub, "user:#{nickname}", {:user_unmuted, %{nickname: nickname}})
   end
-
-  defp parse_mute_id(mute_id) when is_integer(mute_id) and mute_id > 0, do: {:ok, mute_id}
-
-  defp parse_mute_id(mute_id) when is_binary(mute_id) do
-    case Integer.parse(mute_id) do
-      {id, ""} when id > 0 -> {:ok, id}
-      _result -> :error
-    end
-  end
-
-  defp parse_mute_id(_mute_id), do: :error
-
-  defp expiry_result_metadata({:ok, :expired}), do: %{result: "expired", expired_count: 1}
-  defp expiry_result_metadata({:ok, result}), do: %{result: Atom.to_string(result)}
-  defp expiry_result_metadata({:snooze, seconds}), do: %{result: "snooze", seconds: seconds}
-  defp expiry_result_metadata({:cancel, reason}), do: %{result: "cancel", reason: reason}
-
-  defp expiry_result_metadata({:error, %Ecto.Changeset{}}),
-    do: %{result: "error", reason: "changeset_error"}
-
-  defp expiry_result_metadata({:error, reason}) when is_atom(reason),
-    do: %{result: "error", reason: Atom.to_string(reason)}
-
-  defp expiry_result_metadata({:error, reason}) when is_binary(reason),
-    do: %{result: "error", reason: reason}
-
-  defp expiry_result_metadata({:error, _reason}), do: %{result: "error", reason: "unknown"}
 end

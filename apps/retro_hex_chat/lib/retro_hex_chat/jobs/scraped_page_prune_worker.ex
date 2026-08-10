@@ -21,6 +21,7 @@ defmodule RetroHexChat.Jobs.ScrapedPagePruneWorker do
       period: 60
     ]
 
+  alias RetroHexChat.Jobs.WorkerArgs
   alias RetroHexChat.Observability
   alias RetroHexChat.Scraper.Store
 
@@ -40,7 +41,7 @@ defmodule RetroHexChat.Jobs.ScrapedPagePruneWorker do
   @impl Oban.Worker
   @spec perform(Oban.Job.t()) :: {:ok, map()}
   def perform(%Oban.Job{args: args}) do
-    limit = positive_arg(args, "limit", @default_limit)
+    limit = WorkerArgs.positive_integer(args, "limit", @default_limit)
 
     Observability.span(
       [:retro_hex_chat, :scraper, :prune],
@@ -48,14 +49,6 @@ defmodule RetroHexChat.Jobs.ScrapedPagePruneWorker do
       fn -> {:ok, Store.prune(limit: limit)} end,
       &prune_result_metadata/1
     )
-  end
-
-  @spec positive_arg(map(), String.t(), pos_integer()) :: pos_integer()
-  defp positive_arg(args, key, default) do
-    case Map.get(args, key) do
-      value when is_integer(value) and value > 0 -> value
-      _value -> default
-    end
   end
 
   @spec prune_result_metadata({:ok, map()}) :: map()
