@@ -4,6 +4,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatAttachment do
   """
   use RetroHexChatWeb.Component
 
+  alias RetroHexChatWeb.Components.UI.Format
   alias RetroHexChatWeb.Icons
 
   attr :attachments, :list, default: []
@@ -58,7 +59,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatAttachment do
         <Icons.icon_file_send class="h-4 w-4 shrink-0" />
         <span class="min-w-0 flex-1 truncate font-mono">{filename(@attachment)}</span>
         <span class="shrink-0 text-muted-foreground">
-          {format_bytes(attachment_byte_size(@attachment))}
+          {Format.bytes(attachment_byte_size(@attachment))}
         </span>
       </div>
       <div class="flex h-36 w-full items-center justify-center bg-white p-1">
@@ -151,7 +152,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatAttachment do
         </a>
         <div class="flex flex-wrap gap-x-1 text-muted-foreground">
           <span data-testid="message-attachment-type">{type_label(@preview_kind)}</span>
-          <span>{format_bytes(attachment_byte_size(@attachment))}</span>
+          <span>{Format.bytes(attachment_byte_size(@attachment))}</span>
         </div>
         <div
           class="max-w-[28rem] truncate font-mono text-[10px] text-muted-foreground"
@@ -182,7 +183,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatAttachment do
       <Icons.icon_file_send class="h-4 w-4 shrink-0" />
       <span class="min-w-0 flex-1 truncate font-mono">{filename(@attachment)}</span>
       <span class="shrink-0 text-muted-foreground">
-        {format_bytes(attachment_byte_size(@attachment))}
+        {Format.bytes(attachment_byte_size(@attachment))}
       </span>
     </div>
     """
@@ -282,15 +283,4 @@ defmodule RetroHexChatWeb.Components.UI.ChatAttachment do
   defp type_label("archive"), do: dgettext("chat", "Archive")
   defp type_label("office"), do: dgettext("chat", "Office")
   defp type_label(_kind), do: dgettext("chat", "File")
-
-  defp format_bytes(bytes) when is_integer(bytes) and bytes >= 1_048_576 do
-    "#{Float.round(bytes / 1_048_576, 1)} MB"
-  end
-
-  defp format_bytes(bytes) when is_integer(bytes) and bytes >= 1024 do
-    "#{Float.round(bytes / 1024, 1)} KB"
-  end
-
-  defp format_bytes(bytes) when is_integer(bytes), do: "#{bytes} B"
-  defp format_bytes(_bytes), do: "0 B"
 end

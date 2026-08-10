@@ -1599,15 +1599,15 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       assert html =~ ~s(data-testid="group-call-stats-details-server-peers")
       assert html =~ "Server peers"
       assert html =~ "1/1 connected"
-      assert html =~ "12 pkt / 2.0 KB"
-      assert html =~ "24 pkt / 4.0 KB"
+      assert html =~ "12 pkt / 2 KB"
+      assert html =~ "24 pkt / 4 KB"
       assert html =~ "NACK 1 / PLI 2"
       assert html =~ "connected / ICE completed"
       assert html =~ "2 in / 3 fanout"
-      assert html =~ "2 trk / 15 pkt / 3.0 KB"
-      assert html =~ "6 trk / 30 pkt / 6.0 KB"
+      assert html =~ "2 trk / 15 pkt / 3 KB"
+      assert html =~ "6 trk / 30 pkt / 6 KB"
       assert html =~ "1/4 nominated / 2 valid"
-      assert html =~ "4.0 KB up / 8.0 KB down"
+      assert html =~ "4 KB up / 8 KB down"
       assert html =~ "NACK 3 / PLI 3"
     end
 

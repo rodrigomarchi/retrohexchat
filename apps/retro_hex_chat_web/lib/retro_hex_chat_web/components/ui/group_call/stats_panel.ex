@@ -8,6 +8,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.StatsPanel do
   import RetroHexChatWeb.Components.UI.MediaSession.StatusHeader
   import RetroHexChatWeb.Components.UI.MediaSession.SummaryCard
 
+  alias RetroHexChatWeb.Components.UI.Format
   alias RetroHexChatWeb.Icons
 
   attr :call, :map, required: true
@@ -697,7 +698,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.StatsPanel do
 
     dgettext("group_call", "%{packets} pkt / %{bytes}",
       packets: packets,
-      bytes: format_bytes(bytes)
+      bytes: Format.bytes(bytes)
     )
   end
 
@@ -708,7 +709,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.StatsPanel do
 
     dgettext("group_call", "%{packets} pkt / %{bytes}",
       packets: packets,
-      bytes: format_bytes(bytes)
+      bytes: Format.bytes(bytes)
     )
   end
 
@@ -725,8 +726,8 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.StatsPanel do
     totals = server_totals(call)
 
     dgettext("group_call", "%{sent} up / %{received} down",
-      sent: format_bytes(Map.get(totals, :ice_bytes_sent, 0)),
-      received: format_bytes(Map.get(totals, :ice_bytes_received, 0))
+      sent: Format.bytes(Map.get(totals, :ice_bytes_sent, 0)),
+      received: Format.bytes(Map.get(totals, :ice_bytes_received, 0))
     )
   end
 
@@ -782,7 +783,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.StatsPanel do
     dgettext("group_call", "%{tracks} trk / %{packets} pkt / %{bytes}",
       tracks: field(rtp, :track_count, 0),
       packets: field(rtp, :packets, 0),
-      bytes: format_bytes(field(rtp, :bytes, 0))
+      bytes: Format.bytes(field(rtp, :bytes, 0))
     )
   end
 
@@ -800,8 +801,8 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.StatsPanel do
     pairs = field(peer, :candidate_pairs, %{})
 
     dgettext("group_call", "%{sent} up / %{received} down",
-      sent: format_bytes(field(pairs, :bytes_sent, 0)),
-      received: format_bytes(field(pairs, :bytes_received, 0))
+      sent: Format.bytes(field(pairs, :bytes_sent, 0)),
+      received: Format.bytes(field(pairs, :bytes_received, 0))
     )
   end
 
@@ -884,19 +885,6 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.StatsPanel do
   defp format_mos(value) when is_float(value), do: :erlang.float_to_binary(value, decimals: 1)
   defp format_mos(value) when is_integer(value), do: Integer.to_string(value)
   defp format_mos(_value), do: "0"
-
-  defp format_bytes(bytes) when is_integer(bytes) and bytes >= 1_048_576 do
-    value = bytes / 1_048_576
-    "#{:erlang.float_to_binary(value, decimals: 1)} MB"
-  end
-
-  defp format_bytes(bytes) when is_integer(bytes) and bytes >= 1024 do
-    value = bytes / 1024
-    "#{:erlang.float_to_binary(value, decimals: 1)} KB"
-  end
-
-  defp format_bytes(bytes) when is_integer(bytes), do: "#{bytes} B"
-  defp format_bytes(_bytes), do: "0 B"
 
   defp field(map, key, default) when is_map(map) and is_atom(key) do
     Map.get(map, key, Map.get(map, Atom.to_string(key), default))

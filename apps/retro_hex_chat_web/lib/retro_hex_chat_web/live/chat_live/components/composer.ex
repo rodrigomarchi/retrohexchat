@@ -51,6 +51,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
   alias RetroHexChat.Commands.{Autocomplete, CommandSyntax, Registry}
   alias RetroHexChatWeb.App.ChatHelpers
   alias RetroHexChatWeb.ChatLive.Components.EmojiPickerDialog
+  alias RetroHexChatWeb.Components.UI.Format
   alias RetroHexChatWeb.Icons
 
   @id "composer"
@@ -461,7 +462,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
                 {entry.client_name}
               </span>
               <span class="shrink-0 text-muted-foreground">
-                {format_bytes(entry.client_size)}
+                {Format.bytes(entry.client_size)}
               </span>
               <span class="w-10 shrink-0 text-right text-muted-foreground">
                 {entry.progress}%
@@ -630,17 +631,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
   defp upload_error_to_string(:too_many_files), do: dgettext("chat", "Too many attachments")
   defp upload_error_to_string(:not_accepted), do: dgettext("chat", "Attachment type not accepted")
   defp upload_error_to_string(_error), do: dgettext("chat", "Attachment upload failed")
-
-  defp format_bytes(bytes) when is_integer(bytes) and bytes >= 1_048_576 do
-    "#{Float.round(bytes / 1_048_576, 1)} MB"
-  end
-
-  defp format_bytes(bytes) when is_integer(bytes) and bytes >= 1024 do
-    "#{Float.round(bytes / 1024, 1)} KB"
-  end
-
-  defp format_bytes(bytes) when is_integer(bytes), do: "#{bytes} B"
-  defp format_bytes(_bytes), do: "0 B"
 
   defp presign_attachment_upload(entry, socket) do
     metadata = %{
