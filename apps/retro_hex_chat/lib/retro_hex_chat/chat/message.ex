@@ -1,17 +1,27 @@
 defmodule RetroHexChat.Chat.Message do
   @moduledoc """
   Ecto schema for channel messages.
+
+  A channel message is addressed to a room, so its scope is the channel name
+  plus whoever wrote it. The content rules it shares with every other written
+  message live in `RetroHexChat.Chat.MessageRules`; what is declared here is
+  what makes this kind of message its own — where it is addressed, and the types
+  a room can carry.
   """
   use Ecto.Schema
-  import Ecto.Changeset
 
   alias RetroHexChat.Chat.Attachment
-  alias RetroHexChat.Chat.Content
+  alias RetroHexChat.Chat.MessageRules
 
   @type t :: %__MODULE__{}
 
-  @type_values ~w(message action system service error notice)
-  @content_formats ~w(irc markdown plain)
+  # `service`, `error` and `notice` are addressed to a room and have no meaning
+  # in a conversation between two people.
+  @rules %{
+    scope: [channel_name: 50, author_nickname: 16],
+    types: ~w(message action system service error notice),
+    content_format_constraint: :messages_content_format_check
+  }
 
   schema "messages" do
     field :channel_name, :string
@@ -34,110 +44,14 @@ defmodule RetroHexChat.Chat.Message do
   end
 
   @spec changeset(t() | Ecto.Changeset.t(), map()) :: Ecto.Changeset.t()
-  def changeset(message, attrs) do
-    message
-    |> cast(
-      attrs,
-      [
-        :channel_name,
-        :author_nickname,
-        :content,
-        :content_format,
-        :type,
-        :allow_blank_content
-      ],
-      empty_values: []
-    )
-    |> validate_required([:channel_name, :author_nickname, :content_format])
-    |> validate_content_required()
-    |> validate_length(:channel_name, max: 50)
-    |> validate_length(:author_nickname, max: 16)
-    |> validate_inclusion(:content_format, @content_formats)
-    |> validate_inclusion(:type, @type_values)
-    |> put_plain_content()
-    |> check_constraint(:content_format, name: :messages_content_format_check)
-  end
+  def changeset(message, attrs), do: MessageRules.changeset(message, attrs, @rules)
 
   @spec reply_changeset(t() | Ecto.Changeset.t(), map()) :: Ecto.Changeset.t()
-  def reply_changeset(message, attrs) do
-    message
-    |> cast(
-      attrs,
-      [
-        :channel_name,
-        :author_nickname,
-        :content,
-        :content_format,
-        :type,
-        :allow_blank_content,
-        :reply_to_id,
-        :reply_to_author,
-        :reply_to_preview
-      ],
-      empty_values: []
-    )
-    |> validate_required([:channel_name, :author_nickname, :content_format])
-    |> validate_content_required()
-    |> validate_length(:channel_name, max: 50)
-    |> validate_length(:author_nickname, max: 16)
-    |> validate_inclusion(:content_format, @content_formats)
-    |> validate_inclusion(:type, @type_values)
-    |> put_plain_content()
-    |> check_constraint(:content_format, name: :messages_content_format_check)
-    |> validate_reply_fields()
-  end
+  def reply_changeset(message, attrs), do: MessageRules.reply_changeset(message, attrs, @rules)
 
   @spec edit_changeset(t() | Ecto.Changeset.t(), map()) :: Ecto.Changeset.t()
-  def edit_changeset(message, attrs) do
-    message
-    |> cast(attrs, [:content, :content_format, :edited_at])
-    |> validate_required([:content, :content_format, :edited_at])
-    |> validate_inclusion(:content_format, @content_formats)
-    |> put_plain_content()
-    |> check_constraint(:content_format, name: :messages_content_format_check)
-  end
+  def edit_changeset(message, attrs), do: MessageRules.edit_changeset(message, attrs, @rules)
 
   @spec delete_changeset(t() | Ecto.Changeset.t(), map()) :: Ecto.Changeset.t()
-  def delete_changeset(message, attrs) do
-    message
-    |> cast(attrs, [:deleted_at])
-    |> validate_required([:deleted_at])
-  end
-
-  defp validate_reply_fields(changeset) do
-    reply_to_id = get_change(changeset, :reply_to_id)
-
-    if reply_to_id do
-      changeset
-      |> validate_required([:reply_to_author, :reply_to_preview])
-      |> validate_length(:reply_to_author, max: 16)
-      |> validate_length(:reply_to_preview, max: 100)
-    else
-      changeset
-    end
-  end
-
-  defp validate_content_required(changeset) do
-    if get_field(changeset, :allow_blank_content) do
-      case get_field(changeset, :content) do
-        content when is_binary(content) -> changeset
-        _ -> add_error(changeset, :content, "can't be blank")
-      end
-    else
-      validate_required(changeset, [:content])
-    end
-  end
-
-  defp put_plain_content(changeset) do
-    content = get_field(changeset, :content)
-    content_format = get_field(changeset, :content_format)
-
-    case {content, Content.normalize_format(content_format)} do
-      {content, {:ok, _format}} when is_binary(content) ->
-        put_change(changeset, :plain_content, Content.plain_text(content, content_format))
-
-      _ ->
-        changeset
-    end
-  end
+  def delete_changeset(message, attrs), do: MessageRules.delete_changeset(message, attrs)
 end

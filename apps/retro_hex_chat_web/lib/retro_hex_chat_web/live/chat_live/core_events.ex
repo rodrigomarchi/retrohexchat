@@ -603,13 +603,6 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
     })
   end
 
-  defp editable_message?(message, %{active_pm: active_pm}, nickname) when not is_nil(active_pm) do
-    message
-    |> Map.put(:author_nickname, message.sender_nickname)
-    |> Policy.can_edit?(nickname)
-    |> Kernel.==(:ok)
-  end
-
   defp editable_message?(message, _session, nickname) do
     Policy.can_edit?(message, nickname) == :ok
   end

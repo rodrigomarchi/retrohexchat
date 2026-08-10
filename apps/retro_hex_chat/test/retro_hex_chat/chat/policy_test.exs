@@ -52,6 +52,68 @@ defmodule RetroHexChat.Chat.PolicyTest do
     end
   end
 
+  # The same rules, asked of the other kind of conversation. Before these, every
+  # rule about authorship was exercised only against a channel message, and the
+  # private path reached them through a rename none of them knew about.
+  describe "the same authorship rules, on a private message" do
+    defp private_message(attrs) do
+      struct(
+        %RetroHexChat.Chat.PrivateMessage{
+          inserted_at: DateTime.utc_now(),
+          deleted_at: nil,
+          edited_at: nil
+        },
+        attrs
+      )
+    end
+
+    test "allows the sender to edit what they wrote" do
+      assert :ok = Policy.can_edit?(private_message(sender_nickname: "Alice"), "Alice")
+    end
+
+    test "refuses editing someone else's private message" do
+      assert {:error, "You cannot edit other users' messages."} =
+               Policy.can_edit?(private_message(sender_nickname: "Mario"), "Alice")
+    end
+
+    test "allows the sender to delete what they wrote" do
+      assert :ok = Policy.can_delete?(private_message(sender_nickname: "Alice"), "Alice")
+    end
+
+    test "refuses deleting someone else's private message" do
+      assert {:error, "You cannot delete other users' messages."} =
+               Policy.can_delete?(private_message(sender_nickname: "Mario"), "Alice")
+    end
+
+    test "refuses a private message already deleted" do
+      pm = private_message(sender_nickname: "Alice", deleted_at: DateTime.utc_now())
+
+      assert {:error, "Message has already been deleted."} = Policy.can_edit?(pm, "Alice")
+    end
+
+    test "refuses a private message past the edit window" do
+      pm =
+        private_message(
+          sender_nickname: "Alice",
+          inserted_at: DateTime.add(DateTime.utc_now(), -360, :second)
+        )
+
+      assert {:error, "Edit window has expired."} = Policy.can_edit?(pm, "Alice")
+    end
+
+    test "grants the same grace window it grants a channel message" do
+      started = DateTime.add(DateTime.utc_now(), -320, :second)
+
+      pm =
+        private_message(
+          sender_nickname: "Alice",
+          inserted_at: DateTime.add(DateTime.utc_now(), -320, :second)
+        )
+
+      assert :ok = Policy.can_edit_with_grace?(pm, "Alice", started)
+    end
+  end
+
   describe "can_edit?/2" do
     test "allows editing own message within 5-minute window" do
       message = %RetroHexChat.Chat.Message{

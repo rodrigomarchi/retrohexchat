@@ -105,7 +105,7 @@ defmodule RetroHexChat.Chat.Service do
            Queries.get_private_message(pm_id) || {:error, dgettext("chat", "Message not found.")},
          content_format <- edit_content_format(pm, opts),
          :ok <- validate_content(new_content, content_format),
-         :ok <- Policy.can_edit?(Map.put(pm, :author_nickname, pm.sender_nickname), nickname),
+         :ok <- Policy.can_edit?(pm, nickname),
          now <- DateTime.utc_now(),
          {:ok, updated} <-
            Queries.update_pm_content(pm, new_content, now, content_format: content_format) do
@@ -157,7 +157,7 @@ defmodule RetroHexChat.Chat.Service do
   defp do_delete_private_message(pm_id, nickname) do
     with %{} = pm <-
            Queries.get_private_message(pm_id) || {:error, dgettext("chat", "Message not found.")},
-         :ok <- Policy.can_delete?(Map.put(pm, :author_nickname, pm.sender_nickname), nickname),
+         :ok <- Policy.can_delete?(pm, nickname),
          now <- DateTime.utc_now(),
          {:ok, deleted} <- Queries.soft_delete_pm(pm, now) do
       broadcast_pm_delete(pm.sender_nickname, pm.recipient_nickname, deleted)

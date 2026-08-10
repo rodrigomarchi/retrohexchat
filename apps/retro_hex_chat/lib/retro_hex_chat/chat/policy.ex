@@ -4,6 +4,7 @@ defmodule RetroHexChat.Chat.Policy do
   """
   use Gettext, backend: RetroHexChat.Gettext
 
+  alias RetroHexChat.Chat.Authorship
   alias RetroHexChat.Chat.Formatter
   alias RetroHexChat.RateLimit.Limiter
 
@@ -31,7 +32,7 @@ defmodule RetroHexChat.Chat.Policy do
   @spec can_edit?(map(), String.t()) :: :ok | {:error, String.t()}
   def can_edit?(message, nickname) do
     cond do
-      message.author_nickname != nickname ->
+      not Authorship.written_by?(message, nickname) ->
         {:error, dgettext("chat", "You cannot edit other users' messages.")}
 
       message.deleted_at != nil ->
@@ -53,7 +54,7 @@ defmodule RetroHexChat.Chat.Policy do
     grace_window = @edit_window_seconds + 120
 
     cond do
-      message.author_nickname != nickname ->
+      not Authorship.written_by?(message, nickname) ->
         {:error, dgettext("chat", "You cannot edit other users' messages.")}
 
       message.deleted_at != nil ->
@@ -74,7 +75,7 @@ defmodule RetroHexChat.Chat.Policy do
   @spec can_delete?(map(), String.t()) :: :ok | {:error, String.t()}
   def can_delete?(message, nickname) do
     cond do
-      message.author_nickname != nickname ->
+      not Authorship.written_by?(message, nickname) ->
         {:error, dgettext("chat", "You cannot delete other users' messages.")}
 
       message.deleted_at != nil ->
