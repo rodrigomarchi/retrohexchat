@@ -131,7 +131,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
 
   defp accept_invite(%{view_a: creator_view, view_b: peer_view}, token, params) do
     accept_invite(peer_view, token, params)
-    wait_for_lobby_joined(creator_view, token)
+    sync_lobby_join(creator_view, token)
   end
 
   defp accept_invite(view, token, params) do
@@ -143,13 +143,20 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
     })
   end
 
-  defp wait_for_lobby_joined(view, token, attempts \\ 50)
-
-  defp wait_for_lobby_joined(_view, token, 0) do
-    flunk("expected P2P session #{token} to reach lobby with both participants joined")
-  end
-
-  defp wait_for_lobby_joined(view, token, attempts) do
+  # Both slots are filled by the time this returns, and nothing here waits for
+  # them. The peer's submit calls `Lobby.join_session/2` inside its own
+  # `handle_event`, and the session server broadcasts `lobby_peer_joined`
+  # *before* replying to it — so when `render_submit/3` comes back, that message
+  # is already sitting in the creator's mailbox. The creator joins from inside
+  # the handler for it, synchronously, with no island hop in between; draining
+  # its mailbox is therefore the whole synchronisation.
+  #
+  # Polling with a sleep budget used to stand in for this, and a budget is a
+  # guess about how loaded the machine is: at 500ms it failed under `make ci`
+  # while passing everywhere else. What is asserted here cannot be a matter of
+  # timing, so the failure prints what the session actually says instead of
+  # reporting that it ran out of patience.
+  defp sync_lobby_join(view, token) do
     flush(view)
 
     case Lobby.session_info(token) do
@@ -157,9 +164,14 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
       when status in ["lobby", "connected"] ->
         :ok
 
-      _ ->
-        Process.sleep(10)
-        wait_for_lobby_joined(view, token, attempts - 1)
+      other ->
+        flunk("""
+        expected P2P session #{token} to have both participants in the lobby.
+
+        Lobby.session_info/1 returned:
+
+        #{inspect(other, pretty: true, limit: :infinity)}
+        """)
     end
   end
 
