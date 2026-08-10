@@ -186,33 +186,6 @@ const ChatViewportHook = {
       delete input.dataset.editMessageId;
     });
 
-    this.handleEvent("link_preview", ({ url, title }) => {
-      const previewTitle = typeof title === "string" ? title.trim() : "";
-      const links = this.scroller.querySelectorAll(`a.chat-link[href="${CSS.escape(url)}"]`);
-
-      links.forEach((link) => {
-        if (previewTitle) link.title = previewTitle;
-
-        let preview =
-          link.nextElementSibling && link.nextElementSibling.classList.contains("chat-link-preview")
-            ? link.nextElementSibling
-            : null;
-
-        if (!previewTitle) {
-          preview?.remove();
-          return;
-        }
-
-        if (!preview) {
-          preview = document.createElement("span");
-          preview.className = "chat-link-preview";
-          link.after(preview);
-        }
-
-        preview.textContent = previewTitle;
-      });
-    });
-
     this.handleEvent("channel_tooltip", ({ channel, count, joined }) => {
       const el = this.scroller.querySelector(
         `.chat-channel-link[data-channel="${CSS.escape(channel)}"]`,

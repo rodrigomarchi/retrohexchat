@@ -43,6 +43,10 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
           nick_color={@nick_color_fn.(@msg.author)}
         >
           * {raw(formatted_content(@msg, @strip_formatting))}
+          <.link_preview_card
+            card={Map.get(@msg, :link_preview)}
+            strip_formatting={@strip_formatting}
+          />
         </.chat_message>
       <% :system -> %>
         <.chat_message
@@ -152,6 +156,10 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
             nick_color={@nick_color_fn.(@msg.author)}
           >
             {raw(formatted_content(@msg, @strip_formatting))}
+            <.link_preview_card
+              card={Map.get(@msg, :link_preview)}
+              strip_formatting={@strip_formatting}
+            />
             <.attachment_gallery attachments={Map.get(@msg, :attachments, [])} />
             <.edited_tag
               :if={Map.get(@msg, :edited_at)}
@@ -168,6 +176,25 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
           </.chat_message>
         <% end %>
     <% end %>
+    """
+  end
+
+  attr :card, :string, default: nil
+  attr :strip_formatting, :boolean, required: true
+
+  # The link a message carried, as the card the RSS bot publishes for a feed item.
+  #
+  # Rendered as Markdown through the same helper as every other message body, so
+  # it goes through the sanitiser that hardens the publisher's image. The reader
+  # who asked for plain text gets plain text: `strip_formatting` suppresses the
+  # card rather than flattening it, because a card without its layout is a
+  # paragraph of duplicated link text.
+  @spec link_preview_card(map()) :: Phoenix.LiveView.Rendered.t()
+  defp link_preview_card(assigns) do
+    ~H"""
+    <div :if={@card && not @strip_formatting} class="chat-link-card">
+      {raw(ChatHelpers.format_content(@card, "markdown", false))}
+    </div>
     """
   end
 

@@ -171,7 +171,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "Read a page once and reuse it everywhere: titles, descriptions, canonical URLs, site names and preview images are stored when a link is first seen, so the same link posted again — or published by a feed bot — is never fetched twice."
+            "A link pasted in a conversation gets a card under the message — source, headline, byline, image and summary — the same card an RSS bot publishes. The page is read once and kept, so the same link posted again is never fetched twice."
           ),
         see_also: ["feature-url-catcher", "bot-rss"]
       },
@@ -576,7 +576,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "Clickable nicknames, channels, and URLs with hover cards and link previews."
+            "Clickable nicknames, channels, and URLs, with hover cards and a preview card under any message carrying a link."
           ),
         see_also: ["feature-session-cards", "feature-message-layout"]
       },

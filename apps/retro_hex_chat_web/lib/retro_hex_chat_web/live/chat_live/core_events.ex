@@ -132,7 +132,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   # -- switch_pm --
 
   def handle_event("switch_pm", %{"nickname" => nickname}, socket) do
-    PM.ensure_pm_subscription(socket.assigns.session.nickname, nickname)
+    socket = PM.ensure_pm_subscription(socket, nickname)
 
     session =
       socket.assigns.session

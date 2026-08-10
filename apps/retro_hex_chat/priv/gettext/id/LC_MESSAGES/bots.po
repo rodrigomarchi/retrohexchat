@@ -11,7 +11,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:230
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:231
 #, elixir-autogen, elixir-format
 msgid "  %{id} | %{title} | %{channel} | %{url}"
 msgstr "%{id} 124; %{title} 124; %{channel} 124; %{url}"
@@ -66,14 +66,14 @@ msgstr ""
 msgid "%{rank}. %{name}: %{points}pts"
 msgstr "%{rank}. %{name}: %{points}Kutip"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:660
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:570
 #: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:95
 #: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:114
 #, elixir-autogen, elixir-format
 msgid "(no title)"
 msgstr "(tidak ada judul)"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:228
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:229
 #, elixir-autogen, elixir-format
 msgid "(untitled)"
 msgstr "(tanpa judul)"
@@ -125,7 +125,7 @@ msgstr "Jadwal aktif:"
 msgid "Add a scheduled message"
 msgstr "Tambahkan pesan yang dijadwalkan"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:191
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:192
 #, elixir-autogen, elixir-format
 msgid "Add an RSS feed"
 msgstr "Tambahkan asupan RSS"
@@ -366,18 +366,18 @@ msgstr "Galat: Sisi %{max} maksimum diperbolehkan."
 msgid "Famous for rings"
 msgstr "Terkenal untuk cincin"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:292
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:293
 #, elixir-autogen, elixir-format
 msgid "Feed '%{id}' added: %{url} → %{channel}"
 msgstr "Feed '%{id}' ditambahkan: %{url} %{channel}"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:307
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:320
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:308
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:321
 #, elixir-autogen, elixir-format
 msgid "Feed '%{id}' not found."
 msgstr "Feed '%{id}' tidak ditemukan."
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:305
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:306
 #, elixir-autogen, elixir-format
 msgid "Feed '%{id}' removed."
 msgstr "Feed '%{id}' dihapus."
@@ -392,7 +392,7 @@ msgstr "Skor akhir: %{ranked}"
 msgid "Finnish"
 msgstr "Finlandia"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:194
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:195
 #, elixir-autogen, elixir-format
 msgid "Force check a feed now"
 msgstr "Paksa pemeriksaan sekarang"
@@ -447,7 +447,7 @@ msgstr "Gutenberg"
 msgid "HBO"
 msgstr "HBO"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:494
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:495
 #, elixir-autogen, elixir-format
 msgid "HTTP %{status}"
 msgstr "HTTP %{status}"
@@ -641,7 +641,7 @@ msgstr "Lighthouse"
 msgid "Linus Torvalds"
 msgstr "Torvalds Linus"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:192
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:193
 #, elixir-autogen, elixir-format
 msgid "List RSS feeds"
 msgstr "Daftar feed RSS"
@@ -671,7 +671,7 @@ msgstr "Mariana Trench"
 msgid "Mars"
 msgstr "Mars"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:247
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:248
 #, elixir-autogen, elixir-format
 msgid "Maximum %{max} feeds reached."
 msgstr "Maksimum %{max} feed dicapai."
@@ -711,7 +711,7 @@ msgstr "Minecraft"
 msgid "Minimum interval is %{minutes} minutes."
 msgstr "Interval minimum adalah %{minutes} menit."
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:254
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:255
 #, elixir-autogen, elixir-format
 msgid "Missing channel. Usage: rss add <url> <#channel>"
 msgstr "Saluran hilang. Penggunaan: rss tambahkan <url> <#channel>"
@@ -771,7 +771,7 @@ msgstr "Nil"
 msgid "Nintendo"
 msgstr "Nintendo"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:224
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:225
 #, elixir-autogen, elixir-format
 msgid "No RSS feeds configured."
 msgstr "Tidak ada feed RSS dikonfigurasi."
@@ -908,12 +908,12 @@ msgstr "RDJ"
 msgid "ROY G BIV"
 msgstr "ROY G BIV"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:238
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:239
 #, elixir-autogen, elixir-format
 msgid "RSS Feeds:"
 msgstr "RSS Feds:"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:30
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:31
 #, elixir-autogen, elixir-format
 msgid "RSS feed reader that posts updates to channels"
 msgstr "Pembaca feed RSS yang memposting pemutakhiran ke saluran"
@@ -933,7 +933,7 @@ msgstr "Pil merah"
 msgid "Remove a schedule"
 msgstr "Hapus jadwal"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:193
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:194
 #, elixir-autogen, elixir-format
 msgid "Remove an RSS feed"
 msgstr "Hapus asupan RSS"
@@ -1183,7 +1183,7 @@ msgstr "Kategori '%{category}' tidak diketahui. Tersedia: %{categories}"
 msgid "Unknown feed format (expected RSS 2.0 or Atom)"
 msgstr "Format feed tidak diketahui (diduga RSS 2.0 atau Atom)"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:257
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:258
 #, elixir-autogen, elixir-format
 msgid "Usage: rss add <url> <#channel>"
 msgstr "Penggunaan: rss tambahkan <url> <#channel>"
@@ -1733,22 +1733,22 @@ msgstr "{nama panggilan}"
 msgid "~3 x 10^5 km/s"
 msgstr "~ 3 x 10 ^ 5 km/s"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:338
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:339
 #, elixir-autogen, elixir-format
 msgid "Feed '%{id}' checked. Nothing new."
 msgstr "Feed '%{id}' diperiksa. Tidak ada yang baru."
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:326
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:327
 #, elixir-autogen, elixir-format
 msgid "Feed '%{id}' posts to %{channel}. Ask there to check it."
 msgstr "Feed '%{id}' posting ke %{channel}. Minta di sana untuk memeriksanya."
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:638
+#: lib/retro_hex_chat/scraper/card.ex:84
 #, elixir-autogen, elixir-format
 msgid "RSS"
 msgstr "RSS"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:270
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:271
 #, elixir-autogen, elixir-format
 msgid "Refusing %{url}: %{reason}"
 msgstr "Menolak %{url}: %{reason}"
@@ -1773,7 +1773,7 @@ msgstr ""
 msgid "Repeat window must be a non-negative number of seconds"
 msgstr "Jendela pengulangan harus berupa jumlah detik non-negatif"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:149
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:150
 #, elixir-autogen, elixir-format
 msgid "Only server administrators can manage feeds."
 msgstr "Hanya administrator server yang dapat mengelola feed."
@@ -1798,22 +1798,27 @@ msgstr "alihkan tanpa lokasi"
 msgid "too many redirects"
 msgstr "terlalu banyak pengalihan"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:625
+#: lib/retro_hex_chat/scraper/card.ex:202
 #, elixir-autogen, elixir-format
 msgid "%{count} min read"
 msgstr "baca %{count} mnt"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:610
+#: lib/retro_hex_chat/scraper/card.ex:187
 #, elixir-autogen, elixir-format
 msgid "%{count}d ago"
 msgstr "%{count}h lalu"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:609
+#: lib/retro_hex_chat/scraper/card.ex:186
 #, elixir-autogen, elixir-format
 msgid "%{count}h ago"
 msgstr "%{count}j lalu"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:608
+#: lib/retro_hex_chat/scraper/card.ex:185
 #, elixir-autogen, elixir-format
 msgid "%{count}m ago"
 msgstr "%{count}mnt lalu"
+
+#: lib/retro_hex_chat/scraper/card.ex:251
+#, elixir-autogen, elixir-format
+msgid "Read full story"
+msgstr "Baca selengkapnya"

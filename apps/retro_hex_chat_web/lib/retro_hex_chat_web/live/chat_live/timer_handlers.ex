@@ -358,7 +358,7 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
     session = socket.assigns.session
 
     if PM.pm_tab_open?(socket, target_pm) do
-      PM.ensure_pm_subscription(session.nickname, target_pm)
+      socket = PM.ensure_pm_subscription(socket, target_pm)
 
       {:ok,
        assign(socket, session: Session.set_active_pm(session, target_pm), show_status_tab: false)}
@@ -394,7 +394,7 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
     session = socket.assigns.session
 
     if PM.pm_tab_open?(socket, target_pm) do
-      PM.ensure_pm_subscription(session.nickname, target_pm)
+      socket = PM.ensure_pm_subscription(socket, target_pm)
       new_session = Session.set_active_pm(session, target_pm)
 
       socket
@@ -425,7 +425,7 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
         Session.add_pm_conversation(acc, pm)
       end)
 
-    Enum.each(open_pm_tabs, &PM.ensure_pm_subscription(session.nickname, &1))
+    socket = Enum.reduce(open_pm_tabs, socket, &PM.ensure_pm_subscription(&2, &1))
 
     socket =
       assign(socket,

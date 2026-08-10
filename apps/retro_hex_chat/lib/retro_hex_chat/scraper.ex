@@ -31,7 +31,7 @@ defmodule RetroHexChat.Scraper do
   alias RetroHexChat.Jobs
   alias RetroHexChat.Jobs.PageScrapeWorker
   alias RetroHexChat.Observability
-  alias RetroHexChat.Scraper.{Cache, Client, ScrapedPage, Store}
+  alias RetroHexChat.Scraper.{Cache, Card, Client, ScrapedPage, Store}
 
   require Logger
 
@@ -114,6 +114,56 @@ defmodule RetroHexChat.Scraper do
   @doc "Whether a page should be refreshed before it is trusted again."
   @spec stale?(ScrapedPage.t(), DateTime.t()) :: boolean()
   def stale?(%ScrapedPage{} = page, now \\ DateTime.utc_now()), do: not Store.fresh?(page, now)
+
+  # ── Cards ──────────────────────────────────────────────────
+
+  @doc """
+  The identity the archive files a URL under, or `nil` if it files none.
+
+  A render path holds it alongside the row it decorates, so a page that lands
+  later can be matched to the rows waiting for it without re-parsing their text.
+  Two addresses that differ only by campaign parameters share a fingerprint,
+  which is the same reason they share a row.
+  """
+  @spec fingerprint(String.t()) :: String.t() | nil
+  def fingerprint(url) do
+    case Store.hash_url(url) do
+      {:ok, url_hash} -> url_hash
+      {:error, :invalid_url} -> nil
+    end
+  end
+
+  @doc """
+  The Markdown card for each fingerprint the archive can already answer.
+
+  One query for a whole page of history, and never a request: a render path that
+  could reach the network is a render path that can hang. Fingerprints with no
+  stored page, or whose page has nothing worth showing, are absent from the map
+  rather than present with `nil`.
+  """
+  @spec cards([String.t()]) :: %{String.t() => String.t()}
+  def cards([]), do: %{}
+
+  def cards(url_hashes) when is_list(url_hashes) do
+    url_hashes
+    |> Store.get_by_hashes()
+    |> Enum.flat_map(fn {url_hash, page} -> card_entry(url_hash, page) end)
+    |> Map.new()
+  end
+
+  @spec card_entry(String.t(), ScrapedPage.t()) :: [{String.t(), String.t()}]
+  defp card_entry(url_hash, page) do
+    case card(page) do
+      nil -> []
+      markdown -> [{url_hash, markdown}]
+    end
+  end
+
+  @doc "The Markdown card for one page, or `nil` when it has nothing to show."
+  @spec card(ScrapedPage.t()) :: String.t() | nil
+  def card(%ScrapedPage{} = page) do
+    if Store.servable?(page), do: Card.markdown(page)
+  end
 
   # ── Fetching now ───────────────────────────────────────────
 

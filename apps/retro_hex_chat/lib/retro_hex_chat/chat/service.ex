@@ -494,12 +494,19 @@ defmodule RetroHexChat.Chat.Service do
     timestamp = pm.inserted_at
     type = safe_type_atom(pm.type)
 
+    # The body travels with the activity notice, not only on the conversation's
+    # own topic. A conversation's first message is the one message that topic
+    # cannot deliver — the recipient subscribes *because* of it — so anything
+    # that must see every message, rather than every message after the first,
+    # has to read it from here.
     broadcast_user_pm_activity(sender, %{
       peer: recipient,
       message_id: pm.id,
       type: type,
       timestamp: timestamp,
-      direction: :outgoing
+      direction: :outgoing,
+      content: pm.content,
+      content_format: pm.content_format
     })
 
     broadcast_user_pm_activity(recipient, %{
@@ -507,7 +514,9 @@ defmodule RetroHexChat.Chat.Service do
       message_id: pm.id,
       type: type,
       timestamp: timestamp,
-      direction: :incoming
+      direction: :incoming,
+      content: pm.content,
+      content_format: pm.content_format
     })
   end
 

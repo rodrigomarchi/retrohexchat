@@ -749,13 +749,6 @@ msgstr ""
 "Klik permainan apapun untuk melihat deskripsi terinci, kontrol papan ketik, "
 "dan"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:577
-#, elixir-autogen, elixir-format
-msgid ""
-"Clickable nicknames, channels, and URLs with hover cards and link previews."
-msgstr ""
-"Nama panggilan, saluran, dan URL dengan kartu hover dan pratilik link."
-
 #: lib/retro_hex_chat/chat/help_topics/text_formatting.ex:35
 #, elixir-autogen, elixir-format
 msgid "Colors"
@@ -5920,19 +5913,6 @@ msgstr ""
 "Monitor feed RSS/Atom dan posting item baru ke kanal sebagai preview link "
 "Markdown kaya, menggunakan kembali halaman server telah membaca."
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:172
-#, elixir-autogen, elixir-format
-msgid ""
-"Read a page once and reuse it everywhere: titles, descriptions, canonical "
-"URLs, site names and preview images are stored when a link is first seen, so"
-" the same link posted again — or published by a feed bot — is never fetched "
-"twice."
-msgstr ""
-"Baca satu halaman dan gunakan kembali di mana-mana: judul, deskripsi, URL "
-"kanonikal, nama situs dan gambar pratinjau disimpan ketika link pertama kali"
-" dilihat, sehingga link yang sama diposting lagi - atau diterbitkan oleh "
-"robot feed - tidak pernah diambil dua kali."
-
 #: lib/retro_hex_chat/chat/help_topics/user_interface.ex:37
 #, elixir-autogen, elixir-format
 msgid ""
@@ -5948,3 +5928,25 @@ msgstr ""
 "apakah akan mengingat terminal. Sebuah terminal yang mengingat tanda-tanda "
 "Anda dengan klik tunggal, dan satu set ke auto- login membawa Anda langsung "
 "ke chat."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:172
+#, elixir-autogen, elixir-format
+msgid ""
+"A link pasted in a conversation gets a card under the message — source, "
+"headline, byline, image and summary — the same card an RSS bot publishes. "
+"The page is read once and kept, so the same link posted again is never "
+"fetched twice."
+msgstr ""
+"Sebuah link ditempelkan dalam percakapan mendapat kartu di bawah pesan - "
+"sumber, headline, byline, gambar dan ringkasan - kartu yang sama yang "
+"diterbitkan robot RSS. Halaman ini dibaca sekali dan disimpan, sehingga link"
+" yang sama diposting lagi tidak pernah diambil dua kali."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:577
+#, elixir-autogen, elixir-format
+msgid ""
+"Clickable nicknames, channels, and URLs, with hover cards and a preview card"
+" under any message carrying a link."
+msgstr ""
+"Nama panggilan, saluran, dan URL, dengan kartu hover dan kartu pratilik di "
+"bawah pesan apapun yang membawa link."

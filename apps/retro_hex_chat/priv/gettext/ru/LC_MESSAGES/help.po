@@ -755,14 +755,6 @@ msgstr ""
 "Нажмите на любую игру, чтобы увидеть ее подробное описание, элементы "
 "управления клавиатурой и"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:577
-#, elixir-autogen, elixir-format
-msgid ""
-"Clickable nicknames, channels, and URLs with hover cards and link previews."
-msgstr ""
-"Кликабельные никнеймы, каналы и URL-адреса с картами наведения и "
-"предварительными просмотрами ссылок."
-
 #: lib/retro_hex_chat/chat/help_topics/text_formatting.ex:35
 #, elixir-autogen, elixir-format
 msgid "Colors"
@@ -5942,20 +5934,6 @@ msgstr ""
 "расширенных ссылок Markdown, повторно используя страницы, которые сервер уже"
 " прочитал."
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:172
-#, elixir-autogen, elixir-format
-msgid ""
-"Read a page once and reuse it everywhere: titles, descriptions, canonical "
-"URLs, site names and preview images are stored when a link is first seen, so"
-" the same link posted again — or published by a feed bot — is never fetched "
-"twice."
-msgstr ""
-"Прочитайте страницу один раз и повторно используйте ее везде: заголовки, "
-"описания, канонические URL-адреса, имена сайтов и изображения "
-"предварительного просмотра хранятся при первом просмотре ссылки, поэтому "
-"одна и та же ссылка, размещенная снова или опубликованная фид-ботом, никогда"
-" не получается дважды."
-
 #: lib/retro_hex_chat/chat/help_topics/user_interface.ex:37
 #, elixir-autogen, elixir-format
 msgid ""
@@ -5971,3 +5949,25 @@ msgstr ""
 "выберите, запомнить ли терминал. Запомнившийся терминал подписывает вас "
 "одним щелчком мыши, а один набор для автоматического входа в систему ведет "
 "вас прямо в чат."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:172
+#, elixir-autogen, elixir-format
+msgid ""
+"A link pasted in a conversation gets a card under the message — source, "
+"headline, byline, image and summary — the same card an RSS bot publishes. "
+"The page is read once and kept, so the same link posted again is never "
+"fetched twice."
+msgstr ""
+"Ссылка, вставленная в разговор, получает карту под сообщением - источник, "
+"заголовок, строку, изображение и резюме - ту же карту, которую публикует бот"
+" RSS. Страница читается один раз и сохраняется, поэтому одна и та же ссылка,"
+" размещенная снова, никогда не отображается дважды."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:577
+#, elixir-autogen, elixir-format
+msgid ""
+"Clickable nicknames, channels, and URLs, with hover cards and a preview card"
+" under any message carrying a link."
+msgstr ""
+"Кликабельные никнеймы, каналы и URL-адреса с картами наведения и картой "
+"предварительного просмотра под любым сообщением со ссылкой."

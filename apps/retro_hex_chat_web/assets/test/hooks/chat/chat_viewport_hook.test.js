@@ -195,8 +195,15 @@ describe("ChatViewportHook", () => {
   });
 
   // ── link previews ─────────────────────────────────────
+  //
+  // The hook no longer writes anything beside a link. A page's title used to be
+  // pushed here and inserted as a span, which meant it existed only in the
+  // document the push happened to reach: a reload, a tab switch or a second
+  // reader saw a bare link. The card is now rendered by `MessageRow` from the
+  // scraper's archive, and `e2e/tests/chat-link-card.spec.ts` asserts it is
+  // still there after a reload.
 
-  it("renders a single link preview title next to matching chat links", () => {
+  it("ignores a link preview push, leaving the link untouched", () => {
     stream.innerHTML = `
       <a class="chat-link" href="https://example.test/doc">doc</a>
     `;
@@ -205,27 +212,8 @@ describe("ChatViewportHook", () => {
       url: "https://example.test/doc",
       title: "Example Doc",
     });
-    simulateEvent(hook, "link_preview", {
-      url: "https://example.test/doc",
-      title: "Example Doc Updated",
-    });
-
-    const previews = stream.querySelectorAll(".chat-link-preview");
-    expect(previews).toHaveLength(1);
-    expect(previews[0].textContent).toBe("Example Doc Updated");
-    expect(stream.querySelector(".chat-link").title).toBe("Example Doc Updated");
-  });
-
-  it("does not render blank link preview spans", () => {
-    stream.innerHTML = `
-      <a class="chat-link" href="https://example.test/doc">doc</a>
-    `;
-
-    simulateEvent(hook, "link_preview", {
-      url: "https://example.test/doc",
-      title: "   ",
-    });
 
     expect(stream.querySelector(".chat-link-preview")).toBeNull();
+    expect(stream.querySelector(".chat-link").title).toBe("");
   });
 });

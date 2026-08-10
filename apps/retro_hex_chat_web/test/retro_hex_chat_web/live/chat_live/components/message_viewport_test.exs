@@ -3,6 +3,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewportTest do
 
   import Phoenix.LiveViewTest
 
+  alias RetroHexChat.Scraper.Store
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
 
   @moduletag :unit
@@ -84,5 +85,94 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewportTest do
       render_component(MessageViewport, id: MessageViewport.id(), loading_channel: "#general")
 
     assert loading =~ "Loading #general"
+  end
+
+  # A card that only appeared on arrival was the whole defect: the client used to
+  # write a title beside the link, and nothing recreated it when the history was
+  # read back. These assertions are the reload path — rows built from the archive,
+  # with no push and no client involved.
+  describe "link cards" do
+    @describetag :integration
+
+    @page_url "https://example.com/story"
+
+    defp with_stored_page(attrs \\ %{}) do
+      {:ok, _page} =
+        Store.record_success(
+          @page_url,
+          Map.merge(
+            %{
+              title: "A perfectly ordinary headline",
+              site_name: "Example News",
+              description: "A summary the publisher wrote."
+            },
+            attrs
+          )
+        )
+
+      :ok
+    end
+
+    defp row(attrs) do
+      Map.merge(
+        %{
+          id: "m1",
+          author: "alice",
+          content: "olha isso #{@page_url}",
+          type: :message,
+          content_format: "irc",
+          timestamp: ~U[2024-01-01 12:00:00Z]
+        },
+        attrs
+      )
+    end
+
+    test "a link somebody pasted renders the page's card under the message" do
+      with_stored_page()
+
+      html =
+        render_component(MessageViewport, id: MessageViewport.id(), action: {:reset, [row(%{})]})
+
+      assert html =~ "chat-link-card"
+      assert html =~ "Example News"
+      assert html =~ "A perfectly ordinary headline"
+      assert html =~ "Read full story"
+    end
+
+    test "a link nobody has read yet leaves the message exactly as it was" do
+      html =
+        render_component(MessageViewport, id: MessageViewport.id(), action: {:reset, [row(%{})]})
+
+      refute html =~ "chat-link-card"
+      assert html =~ "olha isso"
+    end
+
+    # An RSS item is already a card carrying a link. Decorating it would print
+    # the same page twice, once inside the bot's card and once beneath it.
+    test "a card the bots published is not given a card of its own" do
+      with_stored_page()
+
+      html =
+        render_component(MessageViewport,
+          id: MessageViewport.id(),
+          action: {:reset, [row(%{content_format: "markdown"})]}
+        )
+
+      refute html =~ "chat-link-card"
+    end
+
+    # Campaign parameters name a referrer, not a page, so the row the archive
+    # holds answers for the address as posted.
+    test "a link posted with campaign parameters still finds its page" do
+      with_stored_page()
+
+      html =
+        render_component(MessageViewport,
+          id: MessageViewport.id(),
+          action: {:reset, [row(%{content: "#{@page_url}?utm_source=newsletter"})]}
+        )
+
+      assert html =~ "chat-link-card"
+    end
   end
 end

@@ -220,6 +220,43 @@ defmodule RetroHexChat.ScraperTest do
     end
   end
 
+  describe "cards/1 and fingerprint/1" do
+    test "a page of history costs one query and no requests" do
+      Application.put_env(:retro_hex_chat, :page_scraper, ExplodingClient)
+
+      {:ok, _} = Store.record_success(@url, %{title: "First", site_name: "Example"})
+      {:ok, _} = Store.record_success("https://example.com/b", %{title: "Second"})
+
+      hashes = Enum.map([@url, "https://example.com/b"], &Scraper.fingerprint/1)
+      cards = Scraper.cards(hashes)
+
+      assert map_size(cards) == 2
+      assert cards[Scraper.fingerprint(@url)] =~ "**Example** | First"
+    end
+
+    test "a fingerprint survives the campaign parameters a link was posted with" do
+      assert Scraper.fingerprint("#{@url}?utm_source=newsletter") == Scraper.fingerprint(@url)
+      assert Scraper.fingerprint("not a url") == nil
+    end
+
+    test "says nothing about a page that is still on its way, or that said nothing" do
+      {:ok, _} = Store.ensure_pending("https://example.com/pending")
+      {:ok, _} = Store.record_success("https://example.com/blank", %{title: nil})
+
+      hashes =
+        Enum.map(
+          [
+            "https://example.com/pending",
+            "https://example.com/blank",
+            "https://example.com/never"
+          ],
+          &Scraper.fingerprint/1
+        )
+
+      assert Scraper.cards(hashes) == %{}
+    end
+  end
+
   defp prepared!(url) do
     assert {:ok, prepared} = Store.prepare_url(url)
     prepared

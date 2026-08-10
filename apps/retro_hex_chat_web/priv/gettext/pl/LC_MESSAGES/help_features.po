@@ -3371,7 +3371,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:18
 #: lib/retro_hex_chat_web/controllers/help_content/feature_kick_notifications.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/feature_lag_indicator.html.heex:31
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:70
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_delete.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:45
@@ -3629,7 +3629,7 @@ msgstr "Tab"
 msgid "Tabs"
 msgstr "Tabs"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:76
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:96
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:39
 #, elixir-autogen, elixir-format
@@ -4008,7 +4008,7 @@ msgstr ""
 "kluczowe (minimum 2 znaki)."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_interactive_elements.html.heex:54
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:72
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:92
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "URL Catcher"
@@ -6689,7 +6689,7 @@ msgstr ""
 "Użyj przycisku załącznika w wejściu do czatu, wybierz plik, poczekaj na "
 "wysłanie, a następnie wyślij wiadomość."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:73
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:93
 #, elixir-autogen, elixir-format
 msgid "Bot RSS Capability"
 msgstr "Zdolność Bot RSS"
@@ -6708,7 +6708,7 @@ msgstr ""
 "Link Podglądy zamienia wspólne adresy internetowe w bogate karty Markdown "
 "używając metadanych, które strona już publikuje."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:83
 #, elixir-autogen, elixir-format
 msgid ""
 "Markdown images are sanitized, lazy-loaded, and rendered without referrer "
@@ -6722,7 +6722,7 @@ msgstr ""
 msgid "Metadata"
 msgstr "Metadane"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "Only HTTP and HTTPS URLs are fetched"
 msgstr "Tylko adresy URL HTTP i HTTPS są pobierane"
@@ -6732,7 +6732,7 @@ msgstr "Tylko adresy URL HTTP i HTTPS są pobierane"
 msgid "Open Graph title, description, image, URL, and site name"
 msgstr "Tytuł, opis, obraz, URL i nazwa strony"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:71
 #, elixir-autogen, elixir-format
 msgid ""
 "Private, local, documentation, benchmark, multicast, and reserved address "
@@ -6741,23 +6741,13 @@ msgstr ""
 "Zablokowane są prywatne, lokalne, dokumentacyjne, benchmarkowe, multicast i "
 "zastrzeżone zakresy adresów"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:28
-#, elixir-autogen, elixir-format
-msgid ""
-"RSS bots use Link Previews to post new feed items with a source label, "
-"linked title, optional preview image, and optional description."
-msgstr ""
-"Boty RSS używają Link Previews do umieszczania nowych elementów paszy z "
-"etykietą źródłową, powiązanym tytułem, opcjonalnym podglądem i opcjonalnym "
-"opisem."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:57
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:77
 #, elixir-autogen, elixir-format
 msgid "Redirects and discovered oEmbed/image URLs are checked before use"
 msgstr ""
 "Przekierowanie i odkryte adresy URL oEmbed/image są sprawdzane przed użyciem"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:46
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:66
 #, elixir-autogen, elixir-format
 msgid "Safety"
 msgstr "Bezpieczeństwo"
@@ -6774,12 +6764,12 @@ msgstr "Schema.org JSON- LD nagłówek, opis, obraz, wydawca i awaria dostawcy"
 msgid "Twitter/X Card title, description, image, and URL fallbacks"
 msgstr "Tytuł karty Twitter/X, opis, obraz i URL"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "URLs with embedded credentials are refused"
 msgstr "Odmawiane są adresy URL z wbudowanymi referencjami"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "Used By"
 msgstr "Stosowanie"
@@ -6789,7 +6779,7 @@ msgstr "Stosowanie"
 msgid "oEmbed JSON discovered from page links or HTTP Link headers"
 msgstr "oEmbed JSON odkryty z linków stron lub nagłówków HTTP Link"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:40
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:60
 #, elixir-autogen, elixir-format
 msgid ""
 "When a stored page ages out it is refreshed with a conditional request, "
@@ -6800,7 +6790,7 @@ msgstr ""
 "żądaniem, które większość stron odpowiada \"bez zmian\" - żadna strona nie "
 "jest pobierana dwukrotnie, chyba że rzeczywiście się zmieniła."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:54
 #, elixir-autogen, elixir-format
 msgid ""
 "Every consumer reads from one shared archive. A page is fetched the first "
@@ -6812,3 +6802,55 @@ msgstr ""
 " raz pierwszy ktoś łączy się z nim i przechowywane przez 120 dni, więc ten "
 "sam link opublikowany w innym kanale, lub opublikowany później przez bota "
 "paszowego, jest odbierany bez kontaktowania się z witryną ponownie."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "In the Conversation"
+msgstr "W rozmowie"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:28
+#, elixir-autogen, elixir-format
+msgid ""
+"Paste a link into a channel or a private message and its card appears under "
+"the message, with the source, the headline, the byline and reading time, the"
+" page's own image, and its summary."
+msgstr ""
+"Wklej link do kanału lub prywatnej wiadomości, a jego karta pojawia się pod "
+"wiadomością, ze źródłem, nagłówkiem, wierszem i czasem odczytu, własnym "
+"obrazem strony i jej podsumowaniem."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:48
+#, elixir-autogen, elixir-format
+msgid ""
+"RSS bots post new feed items as the same card, so a feed item and a link "
+"somebody pasted read identically."
+msgstr ""
+"Boty RSS umieszczają nowe elementy podające jako tę samą kartę, więc element"
+" podający i link, który ktoś wkleił w ten sam sposób."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:34
+#, elixir-autogen, elixir-format
+msgid ""
+"The card is read from the archive when the conversation is drawn, so it "
+"survives a reload and is there again when you scroll back. A page nobody has"
+" read yet leaves the message untouched until the fetch lands, and then fills"
+" in on its own. Turning off text formatting hides cards along with the rest."
+msgstr ""
+"Karta jest odczytywana z archiwum, gdy rozmowa jest rysowana, więc przetrwa "
+"przeładowanie i jest tam ponownie, gdy przewijasz z powrotem. Strona, której"
+" nikt jeszcze nie przeczytał, pozostawia wiadomość nietkniętą aż do momentu,"
+" gdy przybędzie list, a potem sama się wypełnia. Wyłączanie formatowania "
+"tekstu ukrywa karty wraz z resztą."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:40
+#, elixir-autogen, elixir-format
+msgid ""
+"Only plain messages get a card, and only for their first link. A message you"
+" write in Markdown is left exactly as you wrote it — you have already chosen"
+" how the link should look, which is also why a feed bot's own card is never "
+"given a second one."
+msgstr ""
+"Tylko proste wiadomości otrzymują kartę i tylko dla ich pierwszego łącza. "
+"Wiadomość, którą zapisujesz w Markdown, jest dokładnie taka, jak ją "
+"napisałeś - już wybrałeś sposób, w jaki link powinien wyglądać, dlatego też "
+"karta własna bota paszowego nigdy nie jest podana."

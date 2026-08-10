@@ -11,7 +11,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:230
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:231
 #, elixir-autogen, elixir-format
 msgid "  %{id} | %{title} | %{channel} | %{url}"
 msgstr "%{id} | %{title} | %{channel} | %{url}"
@@ -66,14 +66,14 @@ msgstr ""
 msgid "%{rank}. %{name}: %{points}pts"
 msgstr "%{rank}. %{name}: %{points}pts"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:660
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:570
 #: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:95
 #: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:114
 #, elixir-autogen, elixir-format
 msgid "(no title)"
 msgstr "(タイトルなし)"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:228
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:229
 #, elixir-autogen, elixir-format
 msgid "(untitled)"
 msgstr "(必須)"
@@ -123,7 +123,7 @@ msgstr "活動的なスケジュール:"
 msgid "Add a scheduled message"
 msgstr "スケジュールされたメッセージを追加する"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:191
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:192
 #, elixir-autogen, elixir-format
 msgid "Add an RSS feed"
 msgstr "RSSフィードを追加する"
@@ -363,18 +363,18 @@ msgstr "間違い: 許される最高の%{max}側面。"
 msgid "Famous for rings"
 msgstr "リングのために有名"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:292
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:293
 #, elixir-autogen, elixir-format
 msgid "Feed '%{id}' added: %{url} → %{channel}"
 msgstr "フィード '%{id}' 追加: %{url} → %{channel}"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:307
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:320
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:308
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:321
 #, elixir-autogen, elixir-format
 msgid "Feed '%{id}' not found."
 msgstr "'%{id}' が見つかりません。"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:305
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:306
 #, elixir-autogen, elixir-format
 msgid "Feed '%{id}' removed."
 msgstr "'%{id}' を削除しました。"
@@ -389,7 +389,7 @@ msgstr "最終スコア: %{ranked}"
 msgid "Finnish"
 msgstr "フィンランド語"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:194
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:195
 #, elixir-autogen, elixir-format
 msgid "Force check a feed now"
 msgstr "今すぐフィードを強制チェック"
@@ -444,7 +444,7 @@ msgstr "グテンベルク"
 msgid "HBO"
 msgstr "HBOの特長"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:494
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:495
 #, elixir-autogen, elixir-format
 msgid "HTTP %{status}"
 msgstr "HTTP %{status}の"
@@ -636,7 +636,7 @@ msgstr "ライトハウス"
 msgid "Linus Torvalds"
 msgstr "リンス・トルヴァルド"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:192
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:193
 #, elixir-autogen, elixir-format
 msgid "List RSS feeds"
 msgstr "RSSフィードの一覧"
@@ -666,7 +666,7 @@ msgstr "マリアナ・トレンチ"
 msgid "Mars"
 msgstr "マース"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:247
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:248
 #, elixir-autogen, elixir-format
 msgid "Maximum %{max} feeds reached."
 msgstr "最大%{max}フィードに達しました。"
@@ -706,7 +706,7 @@ msgstr "マインクラフト"
 msgid "Minimum interval is %{minutes} minutes."
 msgstr "最小間隔は%{minutes}分です。"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:254
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:255
 #, elixir-autogen, elixir-format
 msgid "Missing channel. Usage: rss add <url> <#channel>"
 msgstr "チャネルを欠く。 使用法:rssは<url> <#channel>を加えます"
@@ -766,7 +766,7 @@ msgstr "ナイル"
 msgid "Nintendo"
 msgstr "ニンテンドー"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:224
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:225
 #, elixir-autogen, elixir-format
 msgid "No RSS feeds configured."
 msgstr "RSSフィードの設定はありません。"
@@ -903,12 +903,12 @@ msgstr "RDJ"
 msgid "ROY G BIV"
 msgstr "ROY G BIV(レイジー)"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:238
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:239
 #, elixir-autogen, elixir-format
 msgid "RSS Feeds:"
 msgstr "RSSフィード:"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:30
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:31
 #, elixir-autogen, elixir-format
 msgid "RSS feed reader that posts updates to channels"
 msgstr "チャンネルの更新を投稿するRSSフィードリーダー"
@@ -928,7 +928,7 @@ msgstr "赤い丸薬"
 msgid "Remove a schedule"
 msgstr "スケジュールを削除"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:193
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:194
 #, elixir-autogen, elixir-format
 msgid "Remove an RSS feed"
 msgstr "RSSフィードを削除します"
@@ -1178,7 +1178,7 @@ msgstr "不明なカテゴリ「%{category}」。 利用できる: %{categories}
 msgid "Unknown feed format (expected RSS 2.0 or Atom)"
 msgstr "既知のフィード形式(RSS 2.0 または Atom を期待)"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:257
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:258
 #, elixir-autogen, elixir-format
 msgid "Usage: rss add <url> <#channel>"
 msgstr "使用法:rssは<url> <#channel>を加えます"
@@ -1728,22 +1728,22 @@ msgstr "{nickname}"
 msgid "~3 x 10^5 km/s"
 msgstr "3 x 10^5 km/s"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:338
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:339
 #, elixir-autogen, elixir-format
 msgid "Feed '%{id}' checked. Nothing new."
 msgstr "'%{id}' をチェックするフィード。 新着情報"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:326
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:327
 #, elixir-autogen, elixir-format
 msgid "Feed '%{id}' posts to %{channel}. Ask there to check it."
 msgstr "'%{id}' 投稿を %{channel} にフィードします。 お問い合わせ"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:638
+#: lib/retro_hex_chat/scraper/card.ex:84
 #, elixir-autogen, elixir-format
 msgid "RSS"
 msgstr "RSS"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:270
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:271
 #, elixir-autogen, elixir-format
 msgid "Refusing %{url}: %{reason}"
 msgstr "%{url}を拒否: %{reason}"
@@ -1766,7 +1766,7 @@ msgstr "挨拶の配信方法は public、channel_notice、private_notice、sile
 msgid "Repeat window must be a non-negative number of seconds"
 msgstr "繰り返し間隔は 0 以上の秒数である必要があります"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:149
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:150
 #, elixir-autogen, elixir-format
 msgid "Only server administrators can manage feeds."
 msgstr "フィードを管理できるのはサーバー管理者のみです。"
@@ -1791,22 +1791,27 @@ msgstr "位置のないリダイレクト"
 msgid "too many redirects"
 msgstr "あまりにも多くのリダイレクト"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:625
+#: lib/retro_hex_chat/scraper/card.ex:202
 #, elixir-autogen, elixir-format
 msgid "%{count} min read"
 msgstr "読了 %{count}分"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:610
+#: lib/retro_hex_chat/scraper/card.ex:187
 #, elixir-autogen, elixir-format
 msgid "%{count}d ago"
 msgstr "%{count}日前"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:609
+#: lib/retro_hex_chat/scraper/card.ex:186
 #, elixir-autogen, elixir-format
 msgid "%{count}h ago"
 msgstr "%{count}時間前"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:608
+#: lib/retro_hex_chat/scraper/card.ex:185
 #, elixir-autogen, elixir-format
 msgid "%{count}m ago"
 msgstr "%{count}分前"
+
+#: lib/retro_hex_chat/scraper/card.ex:251
+#, elixir-autogen, elixir-format
+msgid "Read full story"
+msgstr "全文を読む"

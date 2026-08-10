@@ -23,11 +23,31 @@
   </li>
 </ul>
 
+<.help_h4 icon={:icon_chat}>{dgettext("help_features", "In the Conversation")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "Paste a link into a channel or a private message and its card appears under the message, with the source, the headline, the byline and reading time, the page's own image, and its summary."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_features",
+    "The card is read from the archive when the conversation is drawn, so it survives a reload and is there again when you scroll back. A page nobody has read yet leaves the message untouched until the fetch lands, and then fills in on its own. Turning off text formatting hides cards along with the rest."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_features",
+    "Only plain messages get a card, and only for their first link. A message you write in Markdown is left exactly as you wrote it — you have already chosen how the link should look, which is also why a feed bot's own card is never given a second one."
+  )}
+</p>
+
 <.help_h4 icon={:icon_rss}>{dgettext("help_features", "Used By")}</.help_h4>
 <p>
   {dgettext(
     "help_features",
-    "RSS bots use Link Previews to post new feed items with a source label, linked title, optional preview image, and optional description."
+    "RSS bots post new feed items as the same card, so a feed item and a link somebody pasted read identically."
   )}
 </p>
 <p>

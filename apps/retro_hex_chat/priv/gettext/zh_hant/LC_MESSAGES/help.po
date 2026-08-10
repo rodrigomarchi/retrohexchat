@@ -697,12 +697,6 @@ msgid ""
 "Click any game to see its detailed description, keyboard controls, and "
 msgstr "單擊任意遊戲查看其詳細描述、鍵盤控制,以及"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:577
-#, elixir-autogen, elixir-format
-msgid ""
-"Clickable nicknames, channels, and URLs with hover cards and link previews."
-msgstr "可點擊的暱稱,頻道,以及帶有懸浮牌和鏈接預覽的URL."
-
 #: lib/retro_hex_chat/chat/help_topics/text_formatting.ex:35
 #, elixir-autogen, elixir-format
 msgid "Colors"
@@ -5178,9 +5172,7 @@ msgstr "向上捲動"
 msgid ""
 "except admin roles, audit logs, server bans, and server settings; "
 "registration is reopened for recovery. "
-msgstr ""
-"數據\n"
-"除了管理員角色,審計日誌,服務器禁令,以及服務器設置;註冊重新開啓以恢復."
+msgstr "除了管理員角色,審計日誌,服務器禁令,以及服務器設置;註冊重新開啓以恢復."
 
 #: lib/retro_hex_chat/chat/help_topics/user_interface.ex:70
 #, elixir-autogen, elixir-format
@@ -5406,17 +5398,6 @@ msgid ""
 "previews, reusing pages the server has already read."
 msgstr "監視 RSS/Atom 種子,並將新項目作爲豐富的Markdown 鏈接預覽發佈到頻道,重新使用服務器已經讀過的頁面."
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:172
-#, elixir-autogen, elixir-format
-msgid ""
-"Read a page once and reuse it everywhere: titles, descriptions, canonical "
-"URLs, site names and preview images are stored when a link is first seen, so"
-" the same link posted again — or published by a feed bot — is never fetched "
-"twice."
-msgstr ""
-"讀過一頁後,隨處重複使用:標題,描述,canonic URL,站點名稱和預覽圖像在第一次看到鏈接時被存儲,所以再次張貼的相同鏈接——或由feed "
-"bot發佈——從未兩次獲取."
-
 #: lib/retro_hex_chat/chat/help_topics/user_interface.ex:37
 #, elixir-autogen, elixir-format
 msgid ""
@@ -5428,3 +5409,21 @@ msgid ""
 msgstr ""
 "從 Connect 窗口簽名,它既出現在自己的屏幕上,也出現在每一個公開頁面上. "
 "它攜帶整個流:選擇一個暱稱,註冊一個新的或輸入註冊的密碼,並選擇是否記得終端. 一個記得的終端標誌 用一擊, 一個集自動登錄 帶你直接聊天。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:172
+#, elixir-autogen, elixir-format
+msgid ""
+"A link pasted in a conversation gets a card under the message — source, "
+"headline, byline, image and summary — the same card an RSS bot publishes. "
+"The page is read once and kept, so the same link posted again is never "
+"fetched twice."
+msgstr ""
+"在談話中粘貼的鏈接在消息下獲得一張卡片——來源,頭條,旁線,圖像和摘要——RSS bot出版的同一張卡片. "
+"頁面被讀取一次並保存,因此再次發佈的同一鏈接再也沒有兩次被獲取."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:577
+#, elixir-autogen, elixir-format
+msgid ""
+"Clickable nicknames, channels, and URLs, with hover cards and a preview card"
+" under any message carrying a link."
+msgstr "可點擊的暱稱,頻道,和URL,在任何信件下都有懸浮卡和預覽卡,帶有鏈接."

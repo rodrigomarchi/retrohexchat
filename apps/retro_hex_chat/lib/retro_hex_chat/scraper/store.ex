@@ -108,6 +108,25 @@ defmodule RetroHexChat.Scraper.Store do
     Repo.get_by(ScrapedPage, url_hash: url_hash)
   end
 
+  @doc """
+  Every stored row for the given hashes, keyed by hash.
+
+  A page of chat history carries as many links as it carries messages, and asking
+  for them one at a time made rendering a channel switch a burst of small
+  queries. Missing hashes are simply absent from the map.
+  """
+  @spec get_by_hashes([String.t()]) :: %{String.t() => ScrapedPage.t()}
+  def get_by_hashes([]), do: %{}
+
+  def get_by_hashes(url_hashes) when is_list(url_hashes) do
+    url_hashes = Enum.uniq(url_hashes)
+
+    ScrapedPage
+    |> where([p], p.url_hash in ^url_hashes)
+    |> Repo.all()
+    |> Map.new(&{&1.url_hash, &1})
+  end
+
   @spec get_by_url(String.t()) :: ScrapedPage.t() | nil
   def get_by_url(url) do
     case prepare_url(url) do

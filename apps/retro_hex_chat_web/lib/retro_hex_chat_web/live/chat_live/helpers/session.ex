@@ -273,8 +273,14 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
     end
   end
 
+  @doc """
+  The URLs a message body carries, whatever format it claims to be in.
+
+  Total on purpose: a row that names a format nobody recognises is read as IRC
+  rather than dropped, because a link is a link either way.
+  """
   @spec extract_content_urls(String.t(), Content.format_input()) :: [String.t()]
-  defp extract_content_urls(content, content_format) do
+  def extract_content_urls(content, content_format) do
     case Content.normalize_format(content_format) do
       {:ok, normalized_format} -> Content.extract_urls(content, normalized_format)
       :error -> Content.extract_urls(content, :irc)

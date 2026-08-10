@@ -754,13 +754,6 @@ msgstr ""
 "Klik op een spel om de gedetailleerde beschrijving te zien, toetsenbord "
 "controles, en"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:577
-#, elixir-autogen, elixir-format
-msgid ""
-"Clickable nicknames, channels, and URLs with hover cards and link previews."
-msgstr ""
-"Klikbare bijnamen, kanalen en URL's met hover-kaarten en linkvoorbeelden."
-
 #: lib/retro_hex_chat/chat/help_topics/text_formatting.ex:35
 #, elixir-autogen, elixir-format
 msgid "Colors"
@@ -5907,18 +5900,6 @@ msgstr ""
 "Monitor RSS/Atom feeds en post nieuwe items naar kanalen als rijke Markdown-"
 "linkvoorbeelden, het hergebruik van pagina's die de server al heeft gelezen."
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:172
-#, elixir-autogen, elixir-format
-msgid ""
-"Read a page once and reuse it everywhere: titles, descriptions, canonical "
-"URLs, site names and preview images are stored when a link is first seen, so"
-" the same link posted again — or published by a feed bot — is never fetched "
-"twice."
-msgstr ""
-"Lees eens een pagina en hergebruik het overal: titels, beschrijvingen, "
-"canonieke URL's, sitenamen en preview afbeeldingen worden opgeslagen wanneer"
-" een link voor het eerst wordt gezien, zodat dezelfde link opnieuw gepost"
-
 #: lib/retro_hex_chat/chat/help_topics/user_interface.ex:37
 #, elixir-autogen, elixir-format
 msgid ""
@@ -5934,3 +5915,25 @@ msgstr ""
 "geregistreerde, en kies of u de terminal wilt onthouden. Een onthouden "
 "terminal tekent u in met een enkele klik, en een ingesteld op auto-login "
 "brengt u rechtstreeks naar de chat."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:172
+#, elixir-autogen, elixir-format
+msgid ""
+"A link pasted in a conversation gets a card under the message — source, "
+"headline, byline, image and summary — the same card an RSS bot publishes. "
+"The page is read once and kept, so the same link posted again is never "
+"fetched twice."
+msgstr ""
+"Een link geplakt in een conversatie krijgt een kaart onder de berichtbron, "
+"hoofdletter, byline, afbeelding en samenvatting .. dezelfde kaart die een "
+"RSS bot publiceert. De pagina wordt eenmaal gelezen en bewaard, dus dezelfde"
+" link opnieuw geplaatst wordt nooit twee keer opgehaald."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:577
+#, elixir-autogen, elixir-format
+msgid ""
+"Clickable nicknames, channels, and URLs, with hover cards and a preview card"
+" under any message carrying a link."
+msgstr ""
+"Klikbare nicknames, kanalen en URL's, met zweefkaarten en een previewkaart "
+"onder elk bericht met een link."

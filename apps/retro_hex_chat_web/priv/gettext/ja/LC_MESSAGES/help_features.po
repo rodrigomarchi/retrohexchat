@@ -3170,7 +3170,7 @@ msgstr "現在のチャンネルまたはPMでリアルタイムのハイライ�
 #: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:18
 #: lib/retro_hex_chat_web/controllers/help_content/feature_kick_notifications.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/feature_lag_indicator.html.heex:31
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:70
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_delete.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:45
@@ -3415,7 +3415,7 @@ msgstr "ツイート"
 msgid "Tabs"
 msgstr "タブ"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:76
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:96
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:39
 #, elixir-autogen, elixir-format
@@ -3756,7 +3756,7 @@ msgid ""
 msgstr "名前またはキーワード(最小2文字)で emoji をフィルタリングするために検索ボックスに入力します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_interactive_elements.html.heex:54
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:72
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:92
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "URL Catcher"
@@ -6222,7 +6222,7 @@ msgid ""
 "upload to finish, then send the message."
 msgstr "チャット入力の添付ボタンを使用して、ファイルを選択し、アップロードが終了するのを待ち、メッセージを送信する。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:73
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:93
 #, elixir-autogen, elixir-format
 msgid "Bot RSS Capability"
 msgstr "ボットRSSの機能"
@@ -6239,7 +6239,7 @@ msgid ""
 "metadata the page already publishes."
 msgstr "リンクプレビューは、すでに公開されたページをメタデータを使用して、共有Webアドレスをリッチマークダウンカードに変換します。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:83
 #, elixir-autogen, elixir-format
 msgid ""
 "Markdown images are sanitized, lazy-loaded, and rendered without referrer "
@@ -6251,7 +6251,7 @@ msgstr "マークダウン画像は、リファレンス、レイジーロード
 msgid "Metadata"
 msgstr "メタデータ"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "Only HTTP and HTTPS URLs are fetched"
 msgstr "HTTP と HTTPS の URL のみ取得"
@@ -6261,27 +6261,19 @@ msgstr "HTTP と HTTPS の URL のみ取得"
 msgid "Open Graph title, description, image, URL, and site name"
 msgstr "グラフのタイトル、説明、画像、URL、およびサイト名を開く"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:71
 #, elixir-autogen, elixir-format
 msgid ""
 "Private, local, documentation, benchmark, multicast, and reserved address "
 "ranges are blocked"
 msgstr "プライベート、ローカル、ドキュメント、ベンチマーク、マルチキャスト、および予約されたアドレス範囲はブロックされます。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:28
-#, elixir-autogen, elixir-format
-msgid ""
-"RSS bots use Link Previews to post new feed items with a source label, "
-"linked title, optional preview image, and optional description."
-msgstr ""
-"RSSボットは、リンクプレビューを使用して、ソースラベル、リンクされたタイトル、オプションのプレビュー画像、およびオプションの説明で新しいフィード項目を投稿します。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:57
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:77
 #, elixir-autogen, elixir-format
 msgid "Redirects and discovered oEmbed/image URLs are checked before use"
 msgstr "使用する前に、OEmbed/image URL をリダイレクトして発見しました。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:46
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:66
 #, elixir-autogen, elixir-format
 msgid "Safety"
 msgstr "安全管理"
@@ -6298,12 +6290,12 @@ msgstr "Schema.org JSON-LDの見出し、説明、画像、パブリッシャー
 msgid "Twitter/X Card title, description, image, and URL fallbacks"
 msgstr "Twitter/Xカードタイトル、説明、画像、URLフォールバック"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "URLs with embedded credentials are refused"
 msgstr "埋め込まれた資格を持つURLは拒否されます"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "Used By"
 msgstr "使用条件"
@@ -6313,7 +6305,7 @@ msgstr "使用条件"
 msgid "oEmbed JSON discovered from page links or HTTP Link headers"
 msgstr "oEmbed JSON は、ページリンクや HTTP リンクヘッダーから発見されました。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:40
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:60
 #, elixir-autogen, elixir-format
 msgid ""
 "When a stored page ages out it is refreshed with a conditional request, "
@@ -6322,7 +6314,7 @@ msgid ""
 msgstr ""
 "保存されたページが消去されると、条件付きリクエストで更新され、ほとんどのサイトは「変更されていない」と答えます。実際に変更されない限り、ページは2回ダウンロードされません。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:54
 #, elixir-autogen, elixir-format
 msgid ""
 "Every consumer reads from one shared archive. A page is fetched the first "
@@ -6332,3 +6324,48 @@ msgid ""
 msgstr ""
 "シリーズ\n"
 "1つの共有アーカイブからすべての消費者が読み込まれます。 ページは、誰がリンクして120日間保存したかを初めて取得しています。そのため、別のチャネルに投稿されたリンクも、フィードボットによって公開され、再びサイトに連絡することなく回答されます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "In the Conversation"
+msgstr "会話で"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:28
+#, elixir-autogen, elixir-format
+msgid ""
+"Paste a link into a channel or a private message and its card appears under "
+"the message, with the source, the headline, the byline and reading time, the"
+" page's own image, and its summary."
+msgstr ""
+"リンクをチャンネルまたはプライベートメッセージに貼り付け、そのカードはメッセージの下に表示されます。 "
+"ソース、見出し、インライン、読み込み時間、ページ自身のイメージ、およびその要約。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:48
+#, elixir-autogen, elixir-format
+msgid ""
+"RSS bots post new feed items as the same card, so a feed item and a link "
+"somebody pasted read identically."
+msgstr "RSSボットは、新しいフィードアイテムを同じカードに投稿するので、フィードアイテムとリンクを誰かが同じように貼り付けました。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:34
+#, elixir-autogen, elixir-format
+msgid ""
+"The card is read from the archive when the conversation is drawn, so it "
+"survives a reload and is there again when you scroll back. A page nobody has"
+" read yet leaves the message untouched until the fetch lands, and then fills"
+" in on its own. Turning off text formatting hides cards along with the rest."
+msgstr ""
+"会話が描画されると、カードはアーカイブから読み込まれるので、リロードを存続し、スクロールバックしたときに再びそこにあります。 "
+"誰も読んでいないページは、フェッチの土地まで、メッセージが無接触のままに残っており、それ自体に記入します。 "
+"テキストのフォーマットをオフにすると、カードを残りの部分と一緒に隠します。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:40
+#, elixir-autogen, elixir-format
+msgid ""
+"Only plain messages get a card, and only for their first link. A message you"
+" write in Markdown is left exactly as you wrote it — you have already chosen"
+" how the link should look, which is also why a feed bot's own card is never "
+"given a second one."
+msgstr ""
+"プレーンメッセージのみがカードを受け取り、最初のリンクのみです。 "
+"マークダウンで書いたメッセージは、あなたが書いたように正確に残されます。リンクがどのように見えるかを既に選択しています。これは、フィードボットのカードが2番目のカードを与えない理由です。"

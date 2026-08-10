@@ -181,10 +181,14 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
         {:halt, socket}
 
       true ->
+        # Asked before the tab is opened, because opening it is what subscribes.
+        first_of_conversation? = not PM.subscribed_to_pm?(socket, peer)
+
         socket =
           socket
           |> record_pm_activity(peer)
           |> maybe_open_pm_activity_tab(peer, direction, msg_type)
+          |> maybe_capture_first_pm(payload, peer, direction, first_of_conversation?)
           |> maybe_mark_pm_activity_unread(peer, direction)
           |> maybe_refresh_p2p_pm_read_model(peer, msg_type)
           |> PM.maybe_auto_add_to_notify(peer)
@@ -409,6 +413,29 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
       socket
     end
   end
+
+  # Exactly one message per conversation is captured here: the one that opened
+  # it. Every later message reaches `do_handle_new_pm` on the conversation's own
+  # topic and is captured there, so capturing again would file the same link
+  # twice.
+  defp maybe_capture_first_pm(socket, payload, peer, :incoming, true) do
+    case Map.get(payload, :content) do
+      content when is_binary(content) ->
+        capture_urls(
+          socket,
+          content,
+          peer,
+          :pm,
+          peer,
+          Map.get(payload, :content_format) || "irc"
+        )
+
+      _ ->
+        socket
+    end
+  end
+
+  defp maybe_capture_first_pm(socket, _payload, _peer, _direction, _first?), do: socket
 
   defp record_pm_activity(socket, peer) do
     session = socket.assigns.session

@@ -752,14 +752,6 @@ msgid ""
 msgstr ""
 "Kliknij dowolną grę, aby zobaczyć jej szczegółowy opis, stery klawiatury i"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:577
-#, elixir-autogen, elixir-format
-msgid ""
-"Clickable nicknames, channels, and URLs with hover cards and link previews."
-msgstr ""
-"Kliknięcie pseudonimów, kanałów i adresów URL z kartami widłowymi i "
-"odnośnikami."
-
 #: lib/retro_hex_chat/chat/help_topics/text_formatting.ex:35
 #, elixir-autogen, elixir-format
 msgid "Colors"
@@ -5905,19 +5897,6 @@ msgstr ""
 "podgląd łącza Markdown, ponownie używając stron, które serwer już "
 "przeczytał."
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:172
-#, elixir-autogen, elixir-format
-msgid ""
-"Read a page once and reuse it everywhere: titles, descriptions, canonical "
-"URLs, site names and preview images are stored when a link is first seen, so"
-" the same link posted again — or published by a feed bot — is never fetched "
-"twice."
-msgstr ""
-"Przeczytaj stronę raz i powtórz ją wszędzie: tytuły, opisy, Canonical URL, "
-"nazwy stron i podglądy obrazów są przechowywane, gdy po raz pierwszy widać "
-"link, więc ten sam link opublikowany ponownie - lub opublikowany przez bota "
-"paszowego - nigdy nie jest pobrany dwukrotnie."
-
 #: lib/retro_hex_chat/chat/help_topics/user_interface.ex:37
 #, elixir-autogen, elixir-format
 msgid ""
@@ -5932,3 +5911,25 @@ msgstr ""
 "pseudonim, zarejestrować nowy lub wprowadzić hasło dla zarejestrowanego i "
 "wybrać, czy pamiętać terminal. Zapamiętany terminal zapisuje Cię jednym "
 "kliknięciem, a jeden zestaw do autologowania przenosi Cię prosto na czat."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:172
+#, elixir-autogen, elixir-format
+msgid ""
+"A link pasted in a conversation gets a card under the message — source, "
+"headline, byline, image and summary — the same card an RSS bot publishes. "
+"The page is read once and kept, so the same link posted again is never "
+"fetched twice."
+msgstr ""
+"Link wklejony w rozmowę otrzymuje kartę pod wiadomością - źródło, nagłówek, "
+"linia, obraz i podsumowanie - ta sama karta, którą publikuje robot RSS. "
+"Strona jest czytana raz i przechowywana, więc ten sam link wysłany ponownie "
+"nigdy nie jest pobrany dwa razy."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:577
+#, elixir-autogen, elixir-format
+msgid ""
+"Clickable nicknames, channels, and URLs, with hover cards and a preview card"
+" under any message carrying a link."
+msgstr ""
+"Kliknięcie pseudonimów, kanałów i adresów URL, z kartami podręcznymi i kartą"
+" podglądu pod każdym komunikatem z linkiem."

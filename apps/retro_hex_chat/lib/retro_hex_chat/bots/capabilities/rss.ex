@@ -18,6 +18,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
   alias RetroHexChat.Bots.Capabilities.RSS.UrlGuard
   alias RetroHexChat.Bots.Policy
   alias RetroHexChat.Scraper
+  alias RetroHexChat.Scraper.Card
 
   require Logger
 
@@ -542,262 +543,43 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
     end)
   end
 
-  @source_limit 48
-  @headline_limit 180
-  @description_limit 360
-  @message_url_limit 400
-  @message_limit 1_000
-
   @doc """
   A feed item as one Markdown card.
 
   Public so the shape can be asserted on directly: this is the house style for
   every RSS bot, not a per-bot decision, and it is the part a reader actually
-  meets.
+  meets. The shape itself belongs to `Scraper.Card`, which renders the same card
+  for a link pasted into a conversation.
+
+  A feed item is a message on its own, so it always produces a card: where a
+  pasted link with no title is left as a plain link, an item with no title is
+  published under a placeholder rather than dropped.
   """
   @spec format_item(FeedParser.feed_item(), String.t() | nil, Scraper.Client.metadata() | nil) ::
           String.t()
   def format_item(item, feed_title, metadata \\ nil) do
-    metadata = metadata || %{}
-    source = card_source(metadata, feed_title)
-    title = card_title(item, metadata, source)
-    url = card_url(item, metadata)
-    image = card_image(metadata)
-    description = card_description(metadata)
-
-    [
-      card_header(source, title),
-      card_byline(metadata),
-      card_image_markdown(image, source),
-      card_quote(description),
-      card_story_link(url)
-    ]
-    |> Enum.reject(&is_nil/1)
-    |> Enum.join("\n\n")
-    |> fit_message()
+    Card.markdown(metadata || %{},
+      fallback_title: item_title(item),
+      fallback_source: source_label(feed_title),
+      url: item.link
+    )
   end
 
-  # Who wrote it, when, and how long it takes to read. Omitted entirely when none
-  # of the three is known, so a feed that offers nothing produces exactly the card
-  # it produced before. In practice the reading time is always available — it is
-  # counted from the article's own text — so the line survives even when a
-  # publisher names neither author nor date.
-  @spec card_byline(Scraper.Client.metadata()) :: String.t() | nil
-  defp card_byline(metadata) do
-    [
-      metadata[:author],
-      published_ago(metadata[:published_at]),
-      reading_time(metadata[:word_count])
-    ]
-    |> Enum.reject(&is_nil/1)
-    |> case do
-      [] -> nil
-      parts -> "_" <> (parts |> Enum.map(&markdown_escape/1) |> Enum.join(" · ")) <> "_"
-    end
-  end
+  @spec item_title(FeedParser.feed_item()) :: String.t()
+  defp item_title(%{title: title}) when is_binary(title) and title != "", do: title
+  defp item_title(_item), do: dgettext("bots", "(no title)")
 
-  # Relative while it still reads as news, absolute once it does not. A feed that
-  # publishes with a clock ahead of ours would otherwise say "in 3 hours", so
-  # anything in the future is treated as undated.
-  @spec published_ago(DateTime.t() | nil) :: String.t() | nil
-  defp published_ago(%DateTime{} = published_at) do
-    seconds = DateTime.diff(DateTime.utc_now(), published_at, :second)
+  @doc """
+  The label a feed's items carry.
 
-    cond do
-      seconds < 0 -> nil
-      seconds < 3600 -> dgettext("bots", "%{count}m ago", count: max(div(seconds, 60), 1))
-      seconds < 86_400 -> dgettext("bots", "%{count}h ago", count: div(seconds, 3600))
-      seconds < 30 * 86_400 -> dgettext("bots", "%{count}d ago", count: div(seconds, 86_400))
-      true -> Calendar.strftime(published_at, "%d %b %Y")
-    end
-  end
-
-  defp published_ago(_published_at), do: nil
-
-  # An average adult reads prose at roughly 200 words a minute. Below a short
-  # floor the number says nothing useful — a stub page is not "1 min read", it is
-  # a page with no article on it.
-  @words_per_minute 200
-  @min_words_for_reading_time 60
-
-  @spec reading_time(non_neg_integer() | nil) :: String.t() | nil
-  defp reading_time(words) when is_integer(words) and words >= @min_words_for_reading_time do
-    dgettext("bots", "%{count} min read", count: max(div(words, @words_per_minute), 1))
-  end
-
-  defp reading_time(_words), do: nil
-
-  # Publishers put their whole positioning statement in the feed title —
-  # "cs.LG updates on arXiv.org", "Phys.org - latest science and technology news
-  # stories", "Al Jazeera – Breaking News, World News and Video". As a label
-  # repeated on every line that is noise, and truncating it lands mid-sentence.
-  # The part before the first separator is the name; the rest is the tagline.
-  @label_separators [" updates on ", " - ", " – ", " — ", " | ", ": "]
-
+  A feed that names itself is reduced to the publication behind the tagline; one
+  that names itself nothing at all is still an RSS feed, which is more than a
+  reader could infer from the item's host. A link pasted in a channel has no feed
+  and falls back to the host instead — see `Scraper.Card`.
+  """
   @spec source_label(String.t() | nil) :: String.t()
   def source_label(nil), do: dgettext("bots", "RSS")
-
-  def source_label(title) do
-    title = collapse_space(title)
-
-    Enum.reduce(@label_separators, title, fn separator, current ->
-      case String.split(current, separator, parts: 2) do
-        [head, _tail] when head != "" -> head
-        _ -> current
-      end
-    end)
-  end
-
-  @spec card_source(Scraper.Client.metadata(), String.t() | nil) :: String.t()
-  defp card_source(metadata, feed_title) do
-    (metadata[:site_name] || source_label(feed_title))
-    |> collapse_space()
-    |> truncate(@source_limit)
-  end
-
-  @spec card_title(FeedParser.feed_item(), Scraper.Client.metadata(), String.t()) :: String.t()
-  defp card_title(item, metadata, source) do
-    (metadata[:title] || item.title || dgettext("bots", "(no title)"))
-    |> collapse_space()
-    |> strip_source(source)
-    |> truncate(@headline_limit)
-  end
-
-  # Publishers append their own name to the `<title>` — "Corals Spin Tiny
-  # Vortices | Quanta Magazine", "Sony might be rebooting… - Engadget" — and a
-  # few prepend it. The card already carries the source as its label, so leaving
-  # it in prints the publication twice on nearly a third of every batch.
-  @spec strip_source(String.t(), String.t()) :: String.t()
-  defp strip_source(title, source) when source in ["", nil], do: title
-
-  defp strip_source(title, source) do
-    Enum.reduce(@label_separators, title, fn separator, current ->
-      current
-      |> strip_suffix(separator <> source)
-      |> strip_prefix(source <> separator)
-    end)
-  end
-
-  @spec strip_suffix(String.t(), String.t()) :: String.t()
-  defp strip_suffix(text, tail) do
-    if suffix?(text, tail) and String.length(text) > String.length(tail) do
-      text |> String.slice(0, String.length(text) - String.length(tail)) |> String.trim()
-    else
-      text
-    end
-  end
-
-  @spec strip_prefix(String.t(), String.t()) :: String.t()
-  defp strip_prefix(text, head) do
-    if prefix?(text, head) and String.length(text) > String.length(head) do
-      text |> String.slice(String.length(head)..-1//1) |> String.trim()
-    else
-      text
-    end
-  end
-
-  @spec suffix?(String.t(), String.t()) :: boolean()
-  defp suffix?(text, tail), do: String.ends_with?(String.downcase(text), String.downcase(tail))
-
-  @spec prefix?(String.t(), String.t()) :: boolean()
-  defp prefix?(text, head), do: String.starts_with?(String.downcase(text), String.downcase(head))
-
-  @spec card_url(FeedParser.feed_item(), Scraper.Client.metadata()) :: String.t() | nil
-  defp card_url(item, metadata) do
-    Enum.find([metadata[:url], item.link], &linkable_url?/1)
-  end
-
-  @spec card_image(Scraper.Client.metadata()) :: String.t() | nil
-  defp card_image(%{image: image}) when is_binary(image) and byte_size(image) > 0 do
-    if String.length(image) <= @message_url_limit and linkable_url?(image), do: image
-  end
-
-  defp card_image(_metadata), do: nil
-
-  @spec card_description(Scraper.Client.metadata()) :: String.t() | nil
-  defp card_description(%{description: description})
-       when is_binary(description) and byte_size(description) > 0 do
-    description
-    |> collapse_space()
-    |> truncate(@description_limit)
-  end
-
-  defp card_description(_metadata), do: nil
-
-  @spec card_header(String.t(), String.t()) :: String.t()
-  defp card_header(source, title) do
-    source = markdown_escape(source)
-    title = markdown_escape(title)
-
-    "**#{source}** | #{title}"
-  end
-
-  @spec card_image_markdown(String.t() | nil, String.t()) :: String.t() | nil
-  defp card_image_markdown(nil, _source), do: nil
-
-  defp card_image_markdown(image, source) do
-    "![#{image_alt(source)}](<#{markdown_url(image)}>)"
-  end
-
-  @spec card_quote(String.t() | nil) :: String.t() | nil
-  defp card_quote(nil), do: nil
-  defp card_quote(description), do: "> " <> markdown_escape(description)
-
-  @spec card_story_link(String.t() | nil) :: String.t() | nil
-  defp card_story_link(url) when is_binary(url) do
-    if linkable_url?(url) and String.length(url) <= @message_url_limit do
-      "[Read full story](<#{markdown_url(url)}>)"
-    end
-  end
-
-  defp card_story_link(_url), do: nil
-
-  @spec linkable_url?(String.t() | nil) :: boolean()
-  defp linkable_url?(url) when is_binary(url) do
-    case URI.parse(url) do
-      %URI{scheme: scheme, host: host} when scheme in ~w(http https) and is_binary(host) -> true
-      _ -> false
-    end
-  end
-
-  defp linkable_url?(_url), do: false
-
-  @spec markdown_escape(String.t()) :: String.t()
-  defp markdown_escape(text) do
-    Regex.replace(~r/([\\`*_{}\[\]()#+\-.!|>])/, text, "\\\\\\1")
-  end
-
-  @spec markdown_alt(String.t()) :: String.t()
-  defp markdown_alt(text) do
-    text
-    |> collapse_space()
-    |> String.replace(~r/[\[\]\(\)]/, "")
-    |> truncate(@headline_limit)
-  end
-
-  @spec image_alt(String.t()) :: String.t()
-  defp image_alt(source), do: markdown_alt("#{source} preview image")
-
-  @spec markdown_url(String.t()) :: String.t()
-  defp markdown_url(url), do: String.replace(url, ">", "%3E")
-
-  @spec fit_message(String.t()) :: String.t()
-  defp fit_message(message) do
-    if String.length(message) <= @message_limit do
-      message
-    else
-      message
-      |> String.graphemes()
-      |> Enum.take(@message_limit - 3)
-      |> Enum.join()
-      |> Kernel.<>("...")
-    end
-  end
-
-  # Feed titles arrive with newlines and runs of spaces from the source's own
-  # markup; a headline that carries them breaks the line before it is truncated.
-  @spec collapse_space(String.t()) :: String.t()
-  defp collapse_space(text), do: text |> String.split() |> Enum.join(" ")
+  def source_label(title), do: Card.source_label(title)
 
   @spec find_feed([map()], String.t()) :: map() | nil
   defp find_feed(feeds, id), do: Enum.find(feeds, &(&1["id"] == id))

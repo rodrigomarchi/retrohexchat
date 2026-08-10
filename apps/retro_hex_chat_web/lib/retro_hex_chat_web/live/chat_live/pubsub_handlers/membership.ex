@@ -336,17 +336,19 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
     session = socket.assigns.session
     open_pm_tabs = socket.assigns[:open_pm_tabs] || []
 
-    if old_nick in session.pm_conversations or old_nick in open_pm_tabs or
-         session.active_pm == old_nick do
-      Phoenix.PubSub.unsubscribe(
-        RetroHexChat.PubSub,
-        "pm:#{PM.pm_topic(session.nickname, old_nick)}"
-      )
+    socket =
+      if old_nick in session.pm_conversations or old_nick in open_pm_tabs or
+           session.active_pm == old_nick do
+        socket = PM.drop_pm_subscription(socket, old_nick)
 
-      if old_nick in open_pm_tabs or session.active_pm == old_nick do
-        PM.ensure_pm_subscription(session.nickname, new_nick)
+        if old_nick in open_pm_tabs or session.active_pm == old_nick do
+          PM.ensure_pm_subscription(socket, new_nick)
+        else
+          socket
+        end
+      else
+        socket
       end
-    end
 
     old_pm_key = "pm:#{old_nick}"
     new_pm_key = "pm:#{new_nick}"

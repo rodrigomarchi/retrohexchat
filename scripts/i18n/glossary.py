@@ -91,6 +91,11 @@ _ROWS = {
     "%{count}h ago":     ("há %{count}h", "há %{count}h", "hace %{count}h", "il y a %{count}h", "vor %{count}h", "%{count}h fa", "%{count}u geleden", "%{count}godz. temu", "%{count}ч назад", "%{count}j lalu", "%{count}時間前", "%{count}小时前", "%{count}小時前"),
     "%{count}d ago":     ("há %{count}d", "há %{count}d", "hace %{count}d", "il y a %{count}j", "vor %{count}T", "%{count}g fa", "%{count}d geleden", "%{count}dni temu", "%{count}д назад", "%{count}h lalu", "%{count}日前", "%{count}天前", "%{count}天前"),
     "%{count} min read": ("%{count} min de leitura", "%{count} min de leitura", "%{count} min de lectura", "%{count} min de lecture", "%{count} Min. Lesezeit", "%{count} min di lettura", "%{count} min lezen", "%{count} min czytania", "%{count} мин чтения", "baca %{count} mnt", "読了 %{count}分", "阅读 %{count} 分钟", "閱讀 %{count} 分鐘"),
+    # The card's own call to action, on every link a bot publishes and every
+    # link a person pastes. Left to the engine it came back as the narrative
+    # sense — "Ler a história completa", "Vollständige Geschichte lesen",
+    # "读完整的故事" — a story being told rather than an article to open.
+    "Read full story":   ("Ler artigo completo", "Ler artigo completo", "Leer artículo completo", "Lire l'article complet", "Ganzen Artikel lesen", "Leggi l'articolo completo", "Lees het hele artikel", "Przeczytaj cały artykuł", "Читать полностью", "Baca selengkapnya", "全文を読む", "阅读全文", "閱讀全文"),
 
     # ── Long lists ────────────────────────────────────────────
     # The vocabulary every paginated list draws on. Curated here because these

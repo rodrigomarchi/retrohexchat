@@ -44,6 +44,14 @@ config :phoenix_live_view,
 config :retro_hex_chat,
   e2e_fault_injection?: true
 
+# The only page a browser test can ask the server to read is the server itself,
+# and `Net.URLGuard` refuses loopback everywhere else — correctly, since that is
+# the SSRF it exists to stop. Without this the link-preview specs assert on a
+# scrape the guard had already refused, and they were failing silently against a
+# card that could never appear.
+config :retro_hex_chat,
+  allow_private_fetch_addresses: true
+
 # Server roles — mirror test config so e2e specs can rely on them.
 config :retro_hex_chat,
   admins: ["TestAdmin"],

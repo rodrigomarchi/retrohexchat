@@ -98,6 +98,45 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRowTest do
     refute html =~ "<a "
   end
 
+  # The card is Markdown the archive produced, so it renders through the same
+  # sanitising helper as any other message body — publisher image included.
+  test "renders the link card a decorated row carries" do
+    html =
+      row(%{
+        id: "m-card",
+        author: "bob",
+        content: "olha isso https://example.com/story",
+        type: :normal,
+        timestamp: @ts,
+        link_preview:
+          "**Example News** | A headline\n\n![Example News preview image](<https://example.com/card.png>)"
+      })
+
+    assert html =~ "chat-link-card"
+    assert html =~ "<strong>Example News</strong>"
+    assert html =~ "chat-markdown-image"
+  end
+
+  # Suppressed rather than flattened: a card without its layout is a paragraph
+  # of link text the reader already has in the message above it.
+  test "shows no link card to a reader who asked for plain text" do
+    html =
+      row(
+        %{
+          id: "m-card-strip",
+          author: "bob",
+          content: "olha isso https://example.com/story",
+          type: :normal,
+          timestamp: @ts,
+          link_preview: "**Example News** | A headline"
+        },
+        %{strip_formatting: true}
+      )
+
+    refute html =~ "chat-link-card"
+    refute html =~ "Example News"
+  end
+
   test "renders the bracket-free DD/MM HH:MM timestamp for the row" do
     html = row(%{id: "m1", author: "bob", content: "hi", type: :normal, timestamp: @ts})
     assert html =~ "01/01 12:00"

@@ -148,7 +148,7 @@ defmodule RetroHexChatWeb.ChatLive.NavigationEvents do
   end
 
   defp switch_pm(socket, nickname) do
-    PM.ensure_pm_subscription(socket.assigns.session.nickname, nickname)
+    socket = PM.ensure_pm_subscription(socket, nickname)
 
     session =
       socket.assigns.session

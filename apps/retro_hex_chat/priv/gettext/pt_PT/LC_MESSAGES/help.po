@@ -754,14 +754,6 @@ msgstr ""
 "Clique em qualquer jogo para ver sua descrição detalhada, controles de "
 "teclado e"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:577
-#, elixir-autogen, elixir-format
-msgid ""
-"Clickable nicknames, channels, and URLs with hover cards and link previews."
-msgstr ""
-"Apelidos, canais e URLs clicáveis com cartões hover e pré-visualizações de "
-"links."
-
 #: lib/retro_hex_chat/chat/help_topics/text_formatting.ex:35
 #, elixir-autogen, elixir-format
 msgid "Colors"
@@ -5937,20 +5929,6 @@ msgstr ""
 "Monitore feeds RSS/Atom e publique novos itens em canais como previews de "
 "links de Markdown ricos, reutilizando páginas que o servidor já leu."
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:172
-#, elixir-autogen, elixir-format
-msgid ""
-"Read a page once and reuse it everywhere: titles, descriptions, canonical "
-"URLs, site names and preview images are stored when a link is first seen, so"
-" the same link posted again — or published by a feed bot — is never fetched "
-"twice."
-msgstr ""
-"Leia uma página uma vez e reutilize-a em qualquer lugar: títulos, "
-"descrições, URLs canônicas, nomes de sites e imagens de visualização são "
-"armazenados quando um link é visto pela primeira vez, então o mesmo link "
-"postado novamente — ou publicado por um bot feed — nunca é obtido duas "
-"vezes."
-
 #: lib/retro_hex_chat/chat/help_topics/user_interface.ex:37
 #, elixir-autogen, elixir-format
 msgid ""
@@ -5965,3 +5943,25 @@ msgstr ""
 "apelido, registre um novo ou insira uma senha para um registrado, e escolha "
 "se deve se lembrar do terminal. Um terminal lembrado assina-o com um único "
 "clique, e um conjunto para auto-login leva-o diretamente para o chat."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:172
+#, elixir-autogen, elixir-format
+msgid ""
+"A link pasted in a conversation gets a card under the message — source, "
+"headline, byline, image and summary — the same card an RSS bot publishes. "
+"The page is read once and kept, so the same link posted again is never "
+"fetched twice."
+msgstr ""
+"Um link colado em uma conversa recebe um cartão sob a mensagem — fonte, "
+"título, byline, imagem e resumo — o mesmo cartão que um bot RSS publica. A "
+"página é lida uma vez e mantida, então o mesmo link postado novamente nunca "
+"é obtido duas vezes."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:577
+#, elixir-autogen, elixir-format
+msgid ""
+"Clickable nicknames, channels, and URLs, with hover cards and a preview card"
+" under any message carrying a link."
+msgstr ""
+"Apelidos, canais e URLs clicáveis, com cartões hover e um cartão de pré-"
+"visualização sob qualquer mensagem carregando um link."

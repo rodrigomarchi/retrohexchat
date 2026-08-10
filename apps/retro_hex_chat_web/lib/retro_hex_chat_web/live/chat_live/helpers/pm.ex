@@ -59,8 +59,8 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
   @spec open_pm_conversation(Phoenix.LiveView.Socket.t(), String.t()) ::
           Phoenix.LiveView.Socket.t()
   def open_pm_conversation(socket, target) do
+    socket = ensure_pm_subscription(socket, target)
     session = socket.assigns.session
-    ensure_pm_subscription(session.nickname, target)
 
     new_session =
       session
@@ -92,8 +92,15 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
     assign(socket, open_pm_tabs: [target | List.delete(open_tabs, target)])
   end
 
+  # Subscribing here and not only when the reader opens the tab is what makes the
+  # *first* message of a conversation behave like every later one. The tab is
+  # created by the `pm_activity` broadcast that accompanies that first message,
+  # and until this call the process was not on the conversation's topic at all —
+  # so the message that opened the tab never reached `handle_info`, and its links
+  # were never captured or previewed.
   @spec ensure_pm_tab(Phoenix.LiveView.Socket.t(), String.t()) :: Phoenix.LiveView.Socket.t()
   def ensure_pm_tab(socket, target) when is_binary(target) do
+    socket = ensure_pm_subscription(socket, target)
     open_tabs = socket.assigns[:open_pm_tabs] || []
 
     if target in open_tabs do
@@ -116,7 +123,13 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
 
   @spec handle_pm_send(Phoenix.LiveView.Socket.t(), String.t(), String.t()) ::
           Phoenix.LiveView.Socket.t()
+  # The sender joins the conversation's topic before sending, so its own message
+  # comes back through the same path the recipient's does. Without this the
+  # sender was never on the topic at all: the message appeared because the
+  # composer draws it, while everything the broadcast drives — URL capture, the
+  # link card — only ever happened for the other person.
   def handle_pm_send(socket, target, content) do
+    socket = ensure_pm_subscription(socket, target)
     session = socket.assigns.session
 
     case Service.send_private_message(session.nickname, target, content) do
@@ -151,10 +164,61 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
     end
   end
 
-  @spec ensure_pm_subscription(String.t(), String.t()) :: :ok
-  def ensure_pm_subscription(nick_a, nick_b) do
-    topic = "pm:#{pm_topic(nick_a, nick_b)}"
-    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, topic)
+  @doc """
+  Subscribes this process to a conversation, at most once.
+
+  `Phoenix.PubSub.subscribe/2` is not idempotent: three calls deliver every
+  broadcast three times. This is called from seven places — opening a tab,
+  switching to one, a nick change, three timer paths, a reconnect — so a reader
+  who returned to the same conversation four times was running `capture_urls`,
+  the flood tracker and the duplicate tracker four times per incoming message.
+  Nothing showed it, because the message stream is keyed by id and simply
+  replaced the row it had already drawn.
+
+  The set of topics this connection holds is socket state, so it is an assign
+  rather than something read back out of the registry.
+  """
+  @spec ensure_pm_subscription(Phoenix.LiveView.Socket.t(), String.t()) ::
+          Phoenix.LiveView.Socket.t()
+  def ensure_pm_subscription(socket, peer) when is_binary(peer) do
+    topic = "pm:#{pm_topic(socket.assigns.session.nickname, peer)}"
+    subscribed = socket.assigns[:pm_subscriptions] || MapSet.new()
+
+    if MapSet.member?(subscribed, topic) do
+      socket
+    else
+      :ok = Phoenix.PubSub.subscribe(RetroHexChat.PubSub, topic)
+      assign(socket, pm_subscriptions: MapSet.put(subscribed, topic))
+    end
+  end
+
+  def ensure_pm_subscription(socket, _peer), do: socket
+
+  @doc "Whether this connection is already on a conversation's topic."
+  @spec subscribed_to_pm?(Phoenix.LiveView.Socket.t(), String.t()) :: boolean()
+  def subscribed_to_pm?(socket, peer) when is_binary(peer) do
+    topic = "pm:#{pm_topic(socket.assigns.session.nickname, peer)}"
+    MapSet.member?(socket.assigns[:pm_subscriptions] || MapSet.new(), topic)
+  end
+
+  def subscribed_to_pm?(_socket, _peer), do: false
+
+  @doc """
+  Drops a conversation's subscription, so a later `ensure` really re-subscribes.
+
+  Used when a peer renames: the old topic is gone and the new one has to be
+  joined, which cannot happen if the socket still believes it is subscribed.
+  """
+  @spec drop_pm_subscription(Phoenix.LiveView.Socket.t(), String.t()) ::
+          Phoenix.LiveView.Socket.t()
+  def drop_pm_subscription(socket, peer) when is_binary(peer) do
+    topic = "pm:#{pm_topic(socket.assigns.session.nickname, peer)}"
+    Phoenix.PubSub.unsubscribe(RetroHexChat.PubSub, topic)
+
+    assign(
+      socket,
+      pm_subscriptions: MapSet.delete(socket.assigns[:pm_subscriptions] || MapSet.new(), topic)
+    )
   end
 
   @spec pm_topic(String.t(), String.t()) :: String.t()

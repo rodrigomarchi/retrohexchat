@@ -3132,7 +3132,7 @@ msgstr "在當前頻道或PM中以實時突出顯示搜索消息."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:18
 #: lib/retro_hex_chat_web/controllers/help_content/feature_kick_notifications.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/feature_lag_indicator.html.heex:31
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:70
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_delete.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:45
@@ -3373,7 +3373,7 @@ msgstr "標籤"
 msgid "Tabs"
 msgstr "標籤"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:76
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:96
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:39
 #, elixir-autogen, elixir-format
@@ -3695,7 +3695,7 @@ msgid ""
 msgstr "在搜索框中鍵入按名稱或關鍵字過濾emojis(最少2個字符)."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_interactive_elements.html.heex:54
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:72
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:92
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "URL Catcher"
@@ -6079,7 +6079,7 @@ msgid ""
 "upload to finish, then send the message."
 msgstr "在聊天輸入中使用附件按鈕,選擇文件,等待上傳完成,然後發送消息."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:73
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:93
 #, elixir-autogen, elixir-format
 msgid "Bot RSS Capability"
 msgstr "Bot RSS 能力"
@@ -6096,7 +6096,7 @@ msgid ""
 "metadata the page already publishes."
 msgstr "鏈接預覽將共享的網頁轉換成豐富的Markdown卡,使用頁面已經發布的元數據."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:83
 #, elixir-autogen, elixir-format
 msgid ""
 "Markdown images are sanitized, lazy-loaded, and rendered without referrer "
@@ -6108,7 +6108,7 @@ msgstr "標記下圖像是消毒的、懶散的,並且不泄漏裁判"
 msgid "Metadata"
 msgstr "元數據"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "Only HTTP and HTTPS URLs are fetched"
 msgstr "只獲取 HTTP 和 HTTPS URL"
@@ -6118,26 +6118,19 @@ msgstr "只獲取 HTTP 和 HTTPS URL"
 msgid "Open Graph title, description, image, URL, and site name"
 msgstr "打開圖表標題、描述、圖像、 URL 和站點名稱"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:71
 #, elixir-autogen, elixir-format
 msgid ""
 "Private, local, documentation, benchmark, multicast, and reserved address "
 "ranges are blocked"
 msgstr "私人、當地、文件、基準、多播和保留地址範圍被封鎖"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:28
-#, elixir-autogen, elixir-format
-msgid ""
-"RSS bots use Link Previews to post new feed items with a source label, "
-"linked title, optional preview image, and optional description."
-msgstr "RSS bots 使用 Link Previews 發佈新的種子項目,並帶有源標籤,鏈接標題,可選預覽圖像,以及可選描述."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:57
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:77
 #, elixir-autogen, elixir-format
 msgid "Redirects and discovered oEmbed/image URLs are checked before use"
 msgstr "在使用前檢查重定向和發現的 ombed/image URL"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:46
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:66
 #, elixir-autogen, elixir-format
 msgid "Safety"
 msgstr "警衛"
@@ -6154,12 +6147,12 @@ msgstr "Schema.org JSON-LD頭條、描述、圖像、出版商和供應商倒置
 msgid "Twitter/X Card title, description, image, and URL fallbacks"
 msgstr "Twitter/X 卡片標題、描述、圖像和 URL 回落"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "URLs with embedded credentials are refused"
 msgstr "拒絕使用嵌入式證書的 URL"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "Used By"
 msgstr "使用"
@@ -6169,7 +6162,7 @@ msgstr "使用"
 msgid "oEmbed JSON discovered from page links or HTTP Link headers"
 msgstr "從頁面鏈接或HTTP鏈接頭中發現的 ombed JSON"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:40
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:60
 #, elixir-autogen, elixir-format
 msgid ""
 "When a stored page ages out it is refreshed with a conditional request, "
@@ -6177,7 +6170,7 @@ msgid ""
 "unless it actually changed."
 msgstr "當一個存儲的頁面老化後,它會被一個有條件的請求刷新,大多數網站以\"未更改\"回答這個請求——除非實際更改,否則不會兩次下載頁面."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:54
 #, elixir-autogen, elixir-format
 msgid ""
 "Every consumer reads from one shared archive. A page is fetched the first "
@@ -6185,5 +6178,46 @@ msgid ""
 "another channel, or published later by a feed bot, is answered without "
 "contacting the site again."
 msgstr ""
-"數據\n"
-"每個消費者都從一個共享的檔案中讀取. 一個頁面是任何人第一次鏈接到它並保存了120天,所以在另一個頻道上張貼的,或稍後由一個種子機器人發佈的同一鏈接被解答而不再與網站聯繫."
+"每個消費者都從一個共享的檔案中讀取. "
+"一個頁面是任何人第一次鏈接到它並保存了120天,所以在另一個頻道上張貼的,或稍後由一個種子機器人發佈的同一鏈接被解答而不再與網站聯繫."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "In the Conversation"
+msgstr "在對話中"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:28
+#, elixir-autogen, elixir-format
+msgid ""
+"Paste a link into a channel or a private message and its card appears under "
+"the message, with the source, the headline, the byline and reading time, the"
+" page's own image, and its summary."
+msgstr "將鏈接粘貼到頻道或私人消息中,其卡片出現在消息下方,有源頭,頭條,旁線和閱讀時間,頁面本身的圖像,及其摘要."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:48
+#, elixir-autogen, elixir-format
+msgid ""
+"RSS bots post new feed items as the same card, so a feed item and a link "
+"somebody pasted read identically."
+msgstr "RSSbots將新飼料項目作爲同一卡片發佈,所以一個飼料項目和鏈接被某人粘貼的讀數相同."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:34
+#, elixir-autogen, elixir-format
+msgid ""
+"The card is read from the archive when the conversation is drawn, so it "
+"survives a reload and is there again when you scroll back. A page nobody has"
+" read yet leaves the message untouched until the fetch lands, and then fills"
+" in on its own. Turning off text formatting hides cards along with the rest."
+msgstr ""
+"該卡片從檔案中讀取,當對話被繪製出來時,所以它在重新裝入後倖存下來,然後在捲回時再次出現. 還沒有人讀過一頁, 關閉文本格式化的隱藏卡連同其餘的。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:40
+#, elixir-autogen, elixir-format
+msgid ""
+"Only plain messages get a card, and only for their first link. A message you"
+" write in Markdown is left exactly as you wrote it — you have already chosen"
+" how the link should look, which is also why a feed bot's own card is never "
+"given a second one."
+msgstr ""
+"只有普通信息才能得到卡片,並且只爲他們的第一鏈接. "
+"在Markdown中你所寫的一條信息是和你所寫的完全一樣的——你已經選擇了鏈接應該怎麼看,這也是爲什麼一個feedbot自己的卡從不給第二張卡."

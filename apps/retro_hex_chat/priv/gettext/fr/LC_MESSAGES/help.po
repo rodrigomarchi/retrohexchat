@@ -758,13 +758,6 @@ msgstr ""
 "Cliquez sur n'importe quel jeu pour voir sa description détaillée, les "
 "commandes de clavier, et"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:577
-#, elixir-autogen, elixir-format
-msgid ""
-"Clickable nicknames, channels, and URLs with hover cards and link previews."
-msgstr ""
-"Surnoms, canaux et URLs cliquables avec cartes hover et aperçus de liens."
-
 #: lib/retro_hex_chat/chat/help_topics/text_formatting.ex:35
 #, elixir-autogen, elixir-format
 msgid "Colors"
@@ -6001,19 +5994,6 @@ msgstr ""
 "comme des prévisualisations de liens Markdown riches, en réutilisant les "
 "pages que le serveur a déjà lues."
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:172
-#, elixir-autogen, elixir-format
-msgid ""
-"Read a page once and reuse it everywhere: titles, descriptions, canonical "
-"URLs, site names and preview images are stored when a link is first seen, so"
-" the same link posted again — or published by a feed bot — is never fetched "
-"twice."
-msgstr ""
-"Lire une page une fois et la réutiliser partout : titres, descriptions, URLs"
-" canoniques, noms de site et images de prévisualisation sont stockés "
-"lorsqu'un lien est vu pour la première fois, de sorte que le même lien posté"
-" — ou publié par un robot d'alimentation — n'est jamais récupéré deux fois."
-
 #: lib/retro_hex_chat/chat/help_topics/user_interface.ex:37
 #, elixir-autogen, elixir-format
 msgid ""
@@ -6029,3 +6009,25 @@ msgstr ""
 " et choisissez s'il faut se souvenir du terminal. Un terminal mémorisé vous "
 "signe en un seul clic, et un ensemble à auto-login vous emmène directement à"
 " la discussion."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:172
+#, elixir-autogen, elixir-format
+msgid ""
+"A link pasted in a conversation gets a card under the message — source, "
+"headline, byline, image and summary — the same card an RSS bot publishes. "
+"The page is read once and kept, so the same link posted again is never "
+"fetched twice."
+msgstr ""
+"Un lien collé dans une conversation obtient une carte sous le message — "
+"source, titre, par ligne, image et résumé — la même carte qu'un bot RSS "
+"publie. La page est lue une fois et conservée, donc le même lien posté à "
+"nouveau n'est jamais récupéré deux fois."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:577
+#, elixir-autogen, elixir-format
+msgid ""
+"Clickable nicknames, channels, and URLs, with hover cards and a preview card"
+" under any message carrying a link."
+msgstr ""
+"Surnoms, canaux et URL cliquables, avec des cartes hover et une carte "
+"d'aperçu sous n'importe quel message portant un lien."

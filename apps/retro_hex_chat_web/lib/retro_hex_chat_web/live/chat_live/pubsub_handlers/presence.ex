@@ -5,7 +5,6 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Presence do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [push_event: 3]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
@@ -24,6 +23,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Presence do
   alias RetroHexChat.Chat.{CapturedURL, IgnoreList}
   alias RetroHexChat.Presence.NotifyList
   alias RetroHexChat.Scraper.Store
+  alias RetroHexChatWeb.ChatLive.Components.MessageViewport
 
   # ── Global presence events ────────────────────────────────
 
@@ -90,12 +90,20 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Presence do
   # ── Scraped page ──────────────────────────────────────────
 
   # One shape, whether the page came from the archive or from the network a
-  # moment ago. Two shapes and four clauses used to say the same thing, and the
-  # pair that carried a bare URL instead of a hash could only ever match half the
-  # rows they were meant to update.
-  def handle_info({:scraped_page, %{status: "ready", url_hash: url_hash, title: title}}, socket)
+  # moment ago. The hash matches rows filed under the address the page was stored
+  # at; the URL is what the viewport reads the page back with, since the card it
+  # renders has to be built in this reader's locale rather than the scraper's.
+  def handle_info(
+        {:scraped_page, %{status: "ready", url: url, url_hash: url_hash, title: title}},
+        socket
+      )
       when is_binary(title) do
-    {:halt, update_link_preview(socket, url_hash, title)}
+    socket =
+      socket
+      |> update_link_preview(url_hash, title)
+      |> MessageViewport.attach_preview(url, url_hash)
+
+    {:halt, socket}
   end
 
   def handle_info({:scraped_page, %{}}, socket), do: {:halt, socket}
@@ -181,25 +189,14 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Presence do
   # parameters it was posted with, while the page was stored under the address
   # they all reduce to.
   defp update_link_preview(socket, url_hash, title) do
-    entries = socket.assigns.url_catcher_entries
-
-    matching_urls =
-      entries
-      |> Enum.filter(&(entry_hash(&1.url) == url_hash))
-      |> Enum.map(& &1.url)
-      |> Enum.uniq()
-
-    updated_entries =
-      Enum.map(entries, fn entry ->
-        if entry.url in matching_urls,
+    entries =
+      Enum.map(socket.assigns.url_catcher_entries, fn entry ->
+        if entry_hash(entry.url) == url_hash,
           do: CapturedURL.set_preview_title(entry, title),
           else: entry
       end)
 
-    matching_urls
-    |> Enum.reduce(assign(socket, url_catcher_entries: updated_entries), fn url, acc ->
-      push_event(acc, "link_preview", %{url: url, title: title})
-    end)
+    assign(socket, url_catcher_entries: entries)
   end
 
   defp entry_hash(url) do

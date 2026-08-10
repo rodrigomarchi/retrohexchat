@@ -16,6 +16,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
     * `insert/2` — append or update a single message row
     * `delete/2` — remove a row by message id
     * `reset/2`  — replace the whole list (channel/PM switch, load-more, clear)
+    * `attach_preview/3` — decorate the rows waiting on a page that just landed
+
+  Rows are decorated here, on their way into the stream: a link in a message
+  carries the same Markdown card the RSS bot publishes, read from the scraper's
+  archive and never from the network.
 
   Context (`chat_clear_token`, `nick_color_fn`, `timestamp_format`, `timezone`,
   `strip_formatting`, `edit_mode_message_id`, `show_status_tab`) is supplied by the
@@ -35,7 +40,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   import RetroHexChatWeb.Components.UI.ActivityIndicator
   import RetroHexChatWeb.Components.UI.ListStates
 
+  alias RetroHexChat.Scraper
   alias RetroHexChatWeb.ChatLive.Components.MessageRow
+  alias RetroHexChatWeb.ChatLive.Helpers.Session, as: SessionHelpers
 
   @id "message-viewport"
 
@@ -103,6 +110,21 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
     socket
   end
 
+  @doc """
+  Gives the rows waiting on a page the card it just became. Returns the socket.
+
+  A link pasted a second before the scrape finished would otherwise stay bare
+  until the reader reloaded, because a stream does not re-render a row nobody
+  re-inserts. Only rows already tagged with this fingerprint are touched, so a
+  page nobody in this session linked costs a list scan and nothing else.
+  """
+  @spec attach_preview(Phoenix.LiveView.Socket.t(), String.t(), String.t()) ::
+          Phoenix.LiveView.Socket.t()
+  def attach_preview(socket, url, url_hash) do
+    send_update(__MODULE__, id: @id, action: {:attach_preview, url, url_hash})
+    socket
+  end
+
   @impl true
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def mount(socket) do
@@ -129,6 +151,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def update(%{action: {:insert, msg}}, socket) do
+    msg = decorate(msg)
+
     {:ok,
      socket
      |> track(fn rendered -> upsert(rendered, msg) end)
@@ -140,6 +164,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   # ephemeral system lines are not in the DB and would vanish). No limit: see
   # the note on `@dom_limit` — a limit here deletes the page being inserted.
   def update(%{action: {:prepend, items}}, socket) do
+    items = decorate_all(items)
+
     {:ok,
      items
      |> Enum.reverse()
@@ -166,12 +192,25 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   # same thing (rows removed, rows added), and guessing between them is what
   # used to throw a reader paging through history down to the newest message.
   def update(%{action: {:reset, items}}, socket) do
+    items = decorate_all(items)
+
     {:ok,
      socket
      |> assign(:scrollback?, false)
      |> track(fn _rendered -> items end)
      |> stream(:chat_messages, items, reset: true, limit: -@dom_limit)
      |> push_event("chat_scroll_reset", %{})}
+  end
+
+  # Only the rows that were waiting on this page, re-streamed one at a time. A
+  # reset would throw a reader who is somewhere in the middle of a conversation
+  # down to the newest line, and a capped insert would drop the oldest row on
+  # screen — both to say something about one message that is already there.
+  def update(%{action: {:attach_preview, url, url_hash}}, socket) do
+    case Enum.filter(socket.assigns.rendered, &(Map.get(&1, :link_preview_hash) == url_hash)) do
+      [] -> {:ok, socket}
+      waiting -> {:ok, attach_card(socket, url, waiting)}
+    end
   end
 
   # Re-streaming what is already held is what makes a presentation change cost
@@ -319,6 +358,95 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
     case Enum.find_index(rendered, &(&1.id == msg.id)) do
       nil -> rendered ++ [msg]
       index -> List.replace_at(rendered, index, msg)
+    end
+  end
+
+  # ── Link cards ─────────────────────────────────────────────
+  #
+  # A link somebody pasted gets the same Markdown card an RSS bot publishes, from
+  # the same archive and the same `Scraper.Card`. Decorating here rather than in
+  # the three places that build stream items means it applies to arriving
+  # messages, to a channel switch and to a page of scrollback alike — and it
+  # survives a reload, which the client-side title span it replaces never did.
+  #
+  # Never a request: this runs on a render path, so a page nobody has scraped yet
+  # simply has no card until the scrape lands and `attach_preview/3` says so.
+
+  # Only messages that are plain conversation. A Markdown message is authored
+  # presentation — whoever wrote it already decided how the link should look, and
+  # for the RSS bot the message *is* a card, so adding one underneath would print
+  # the same page twice. The rule reads off the message rather than off its
+  # author on purpose: a bot whose process is not running still published a card,
+  # and a nickname is not evidence of anything once history is being replayed.
+  @card_types [:message, :action]
+  @card_formats ["irc", "plain"]
+
+  @spec decorate(map()) :: map()
+  defp decorate(msg), do: msg |> List.wrap() |> decorate_all() |> hd()
+
+  @spec decorate_all([map()]) :: [map()]
+  defp decorate_all([]), do: []
+
+  defp decorate_all(items) do
+    items = Enum.map(items, &tag_link/1)
+
+    cards =
+      items
+      |> Enum.map(&Map.get(&1, :link_preview_hash))
+      |> Enum.reject(&is_nil/1)
+      |> Scraper.cards()
+
+    Enum.map(items, &put_card(&1, cards))
+  end
+
+  # The fingerprint is recorded even when the archive has nothing yet: it is what
+  # lets a page that lands later find the rows waiting for it.
+  @spec tag_link(map()) :: map()
+  defp tag_link(msg) do
+    with true <- previewable?(msg),
+         [url | _rest] <- SessionHelpers.extract_content_urls(msg.content, card_format(msg)),
+         url_hash when is_binary(url_hash) <- Scraper.fingerprint(url) do
+      Map.put(msg, :link_preview_hash, url_hash)
+    else
+      _ -> msg
+    end
+  end
+
+  @spec put_card(map(), %{String.t() => String.t()}) :: map()
+  defp put_card(%{link_preview_hash: url_hash} = msg, cards) do
+    case Map.fetch(cards, url_hash) do
+      {:ok, markdown} -> Map.put(msg, :link_preview, markdown)
+      :error -> msg
+    end
+  end
+
+  defp put_card(msg, _cards), do: msg
+
+  @spec previewable?(map()) :: boolean()
+  defp previewable?(msg) do
+    Map.get(msg, :type, :message) in @card_types and
+      card_format(msg) in @card_formats and
+      is_binary(Map.get(msg, :content)) and
+      is_nil(Map.get(msg, :deleted_at))
+  end
+
+  @spec card_format(map()) :: String.t()
+  defp card_format(msg), do: Map.get(msg, :content_format) || "irc"
+
+  @spec attach_card(Phoenix.LiveView.Socket.t(), String.t(), [map()]) ::
+          Phoenix.LiveView.Socket.t()
+  defp attach_card(socket, url, waiting) do
+    with {:ok, page} <- Scraper.get(url),
+         markdown when is_binary(markdown) <- Scraper.card(page) do
+      decorated = Enum.map(waiting, &Map.put(&1, :link_preview, markdown))
+
+      socket
+      |> track(fn rendered -> Enum.reduce(decorated, rendered, &upsert(&2, &1)) end)
+      |> then(
+        &Enum.reduce(decorated, &1, fn msg, acc -> stream_insert(acc, :chat_messages, msg) end)
+      )
+    else
+      _ -> socket
     end
   end
 end

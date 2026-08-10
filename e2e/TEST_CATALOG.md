@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **212 spec files** under `e2e/tests/`.
-- **432 Playwright `test()` cases**.
-- **426 documented flows**, 425 done, 1 not done.
+- **214 spec files** under `e2e/tests/`.
+- **436 Playwright `test()` cases**.
+- **429 documented flows**, 428 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -449,6 +449,9 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | O22 | The nicklist renders a role-grouped IRC roster with status badges inside the platform sidebar | `tests/chat-nicklist-sidebar.spec.ts` | done |
 | O23 | A BBC RSS item renders as a rich Markdown message in the desktop timeline | `tests/chat-rss-link-preview-visual.spec.ts` | done |
 | O24 | The BBC RSS Markdown preview stays contained at phone width | `tests/chat-rss-link-preview-visual.spec.ts` | done |
+| O25 | A pasted link grows the RSS card under the message, live and again after a reload | `tests/chat-link-card.spec.ts` | done |
+| O26 | A card landing decorates its message in place, without reordering the conversation | `tests/chat-link-card.spec.ts` | done |
+| O27 | A link in the first private message is captured and carded on both sides, once | `tests/chat-pm-link-card.spec.ts` | done |
 
 ### P - Persistence, Reconnect, History, No-Focus-Steal
 

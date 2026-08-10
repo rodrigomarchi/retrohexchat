@@ -3354,7 +3354,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:18
 #: lib/retro_hex_chat_web/controllers/help_content/feature_kick_notifications.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/feature_lag_indicator.html.heex:31
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:70
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_delete.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:45
@@ -3612,7 +3612,7 @@ msgstr "Tab"
 msgid "Tabs"
 msgstr "Tab"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:76
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:96
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:39
 #, elixir-autogen, elixir-format
@@ -3987,7 +3987,7 @@ msgstr ""
 " kunci (karakter minimum 2)."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_interactive_elements.html.heex:54
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:72
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:92
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "URL Catcher"
@@ -6687,7 +6687,7 @@ msgstr ""
 "Gunakan tombol lampiran dalam masukan obrolan, pilih sebuah berkas, tunggu "
 "upload untuk selesai, kemudian kirim pesan."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:73
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:93
 #, elixir-autogen, elixir-format
 msgid "Bot RSS Capability"
 msgstr "Bot RSS Capbility"
@@ -6706,7 +6706,7 @@ msgstr ""
 "Link Previews mengubah alamat web bersama menjadi kartu Markdown kaya "
 "menggunakan metadata halaman sudah dipublikasikan."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:83
 #, elixir-autogen, elixir-format
 msgid ""
 "Markdown images are sanitized, lazy-loaded, and rendered without referrer "
@@ -6720,7 +6720,7 @@ msgstr ""
 msgid "Metadata"
 msgstr "Metadata"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "Only HTTP and HTTPS URLs are fetched"
 msgstr "Hanya URL HTTP dan HTTP yang diambil"
@@ -6730,7 +6730,7 @@ msgstr "Hanya URL HTTP dan HTTP yang diambil"
 msgid "Open Graph title, description, image, URL, and site name"
 msgstr "Buka judul Graph, deskripsi, gambar, URL, dan nama situs"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:71
 #, elixir-autogen, elixir-format
 msgid ""
 "Private, local, documentation, benchmark, multicast, and reserved address "
@@ -6739,22 +6739,13 @@ msgstr ""
 "Pribadi, lokal, dokumentasi, benchmark, multicast, dan range alamat "
 "dilindungi"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:28
-#, elixir-autogen, elixir-format
-msgid ""
-"RSS bots use Link Previews to post new feed items with a source label, "
-"linked title, optional preview image, and optional description."
-msgstr ""
-"bot RSS memakai Tampilan Link untuk memposting butir feed baru dengan label "
-"sumber, judul terkait, gambar pratinjau opsional, dan deskripsi opsional."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:57
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:77
 #, elixir-autogen, elixir-format
 msgid "Redirects and discovered oEmbed/image URLs are checked before use"
 msgstr ""
 "Mengarahkan dan menemukan URL oEmbed/image diperiksa sebelum digunakan"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:46
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:66
 #, elixir-autogen, elixir-format
 msgid "Safety"
 msgstr "Keselamatan"
@@ -6772,12 +6763,12 @@ msgstr ""
 msgid "Twitter/X Card title, description, image, and URL fallbacks"
 msgstr "Twitter/X Card title, description, image, and URL fallbacks"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "URLs with embedded credentials are refused"
 msgstr "URL dengan kredensial tertanam ditolak"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "Used By"
 msgstr "Gunakan"
@@ -6787,7 +6778,7 @@ msgstr "Gunakan"
 msgid "oEmbed JSON discovered from page links or HTTP Link headers"
 msgstr "oEmbed JSON ditemukan dari taut halaman atau header Link HTTP"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:40
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:60
 #, elixir-autogen, elixir-format
 msgid ""
 "When a stored page ages out it is refreshed with a conditional request, "
@@ -6798,7 +6789,7 @@ msgstr ""
 "kondisional, yang sebagian besar situs menjawab dengan \"tidak berubah\" - "
 "tidak ada halaman yang diunduh dua kali kecuali benar-benar berubah."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:54
 #, elixir-autogen, elixir-format
 msgid ""
 "Every consumer reads from one shared archive. A page is fetched the first "
@@ -6810,3 +6801,55 @@ msgstr ""
 " pertama kali seseorang menghubungkannya dan disimpan selama 120 hari, "
 "sehingga link yang sama diposting di saluran lain, atau diterbitkan kemudian"
 " oleh robot feed, dijawab tanpa menghubungi situs lagi."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "In the Conversation"
+msgstr "Dalam Percakapan"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:28
+#, elixir-autogen, elixir-format
+msgid ""
+"Paste a link into a channel or a private message and its card appears under "
+"the message, with the source, the headline, the byline and reading time, the"
+" page's own image, and its summary."
+msgstr ""
+"Tempelkan suatu tautan ke suatu saluran atau suatu pesan privat dan kartunya"
+" muncul di bawah pesan, dengan sumber, headline, byline dan membaca waktu, "
+"gambar halaman sendiri, dan ringkasan."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:48
+#, elixir-autogen, elixir-format
+msgid ""
+"RSS bots post new feed items as the same card, so a feed item and a link "
+"somebody pasted read identically."
+msgstr ""
+"RSS bot posting item feed baru sebagai kartu yang sama, sehingga item feed "
+"dan link seseorang menempel secara identik."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:34
+#, elixir-autogen, elixir-format
+msgid ""
+"The card is read from the archive when the conversation is drawn, so it "
+"survives a reload and is there again when you scroll back. A page nobody has"
+" read yet leaves the message untouched until the fetch lands, and then fills"
+" in on its own. Turning off text formatting hides cards along with the rest."
+msgstr ""
+"Kartu dibaca dari arsip ketika percakapan digambar, sehingga bertahan pada "
+"reload dan ada lagi ketika Anda menggulung kembali. Sebuah halaman tidak ada"
+" yang telah membaca belum meninggalkan pesan tersentuh sampai tanah "
+"menjemput, dan kemudian mengisi sendiri. Matikan format teks kartu "
+"tersembunyi bersama dengan yang lain."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:40
+#, elixir-autogen, elixir-format
+msgid ""
+"Only plain messages get a card, and only for their first link. A message you"
+" write in Markdown is left exactly as you wrote it — you have already chosen"
+" how the link should look, which is also why a feed bot's own card is never "
+"given a second one."
+msgstr ""
+"Hanya pesan biasa yang mendapatkan kartu, dan hanya untuk link pertama "
+"mereka. Pesan yang Anda tulis di Markdown meninggalkan persis seperti yang "
+"Anda tulis - Anda telah memilih bagaimana link harus terlihat, yang juga "
+"mengapa kartu pakan bot sendiri tidak pernah diberikan yang kedua."

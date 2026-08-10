@@ -699,12 +699,6 @@ msgid ""
 "Click any game to see its detailed description, keyboard controls, and "
 msgstr "任意のゲームをクリックして詳細な説明、キーボード制御、および"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:577
-#, elixir-autogen, elixir-format
-msgid ""
-"Clickable nicknames, channels, and URLs with hover cards and link previews."
-msgstr "クリック可能なニックネーム、チャンネル、およびホバーカードとURLとリンクプレビュー。"
-
 #: lib/retro_hex_chat/chat/help_topics/text_formatting.ex:35
 #, elixir-autogen, elixir-format
 msgid "Colors"
@@ -5441,16 +5435,6 @@ msgstr ""
 "RSS/Atom フィードを監視し、新しいアイテムをチャネルに投稿し、Markdown "
 "のリンクのプレビューをリッチにし、サーバーを再利用して既に読み込みました。"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:172
-#, elixir-autogen, elixir-format
-msgid ""
-"Read a page once and reuse it everywhere: titles, descriptions, canonical "
-"URLs, site names and preview images are stored when a link is first seen, so"
-" the same link posted again — or published by a feed bot — is never fetched "
-"twice."
-msgstr ""
-"タイトル、説明、キャニカルURL、サイト名、プレビュー画像は、リンクが最初に見られたときに保存されますので、同じリンクが再び投稿されるか、フィードボットによって公開されます。"
-
 #: lib/retro_hex_chat/chat/help_topics/user_interface.ex:37
 #, elixir-autogen, elixir-format
 msgid ""
@@ -5463,3 +5447,21 @@ msgstr ""
 "自分の画面とすべての公開ページの両方に表示されるConnectウィンドウからサインインします。 "
 "全体の流れを運ぶ:ニックネームを選び、新しいものを登録するか、登録されたもののパスワードを入力し、ターミナルを覚えているかどうかを選択します。 "
 "ワンクリックで記憶されたターミナルがあなたに署名し、自動ログインに設定すると、チャットにまっすぐになります。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:172
+#, elixir-autogen, elixir-format
+msgid ""
+"A link pasted in a conversation gets a card under the message — source, "
+"headline, byline, image and summary — the same card an RSS bot publishes. "
+"The page is read once and kept, so the same link posted again is never "
+"fetched twice."
+msgstr ""
+"会話に貼り付けられたリンクは、ソース、見出し、インライン、画像、要約 - 同じカードでRSSボットが公開されます。 "
+"このページは一度読み続けて保存されますので、再度投稿したリンクは2回取得しません。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:577
+#, elixir-autogen, elixir-format
+msgid ""
+"Clickable nicknames, channels, and URLs, with hover cards and a preview card"
+" under any message carrying a link."
+msgstr "クリック可能なニックネーム、チャンネル、URL、ホバーカードとリンクを運ぶメッセージの下にあるプレビューカード。"

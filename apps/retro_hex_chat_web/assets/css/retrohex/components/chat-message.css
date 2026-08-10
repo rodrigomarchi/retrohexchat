@@ -166,17 +166,23 @@
   }
 }
 
-.chat-link-preview {
-  @apply text-muted-foreground;
-  display: inline;
-  margin-left: 4px;
-  font-size: 12px;
+/* A link somebody pasted renders the same Markdown card an RSS bot publishes.
+   Boxed and inset so it reads as a quotation of the page rather than as more of
+   the message that carried it — the body above it is still the person talking. */
+/* The colour is reset, not inherited: an action row paints its text with
+   `text-action`, and a card tinted like the sentence above it reads as more of
+   what the person did rather than as what the page says. */
+.chat-link-card {
+  @apply my-1 border-l-2 border-border bg-hover-bg py-1 pl-2 pr-1 text-text;
+  max-width: min(100%, 640px);
 }
 
-.chat-link-preview::before {
-  content: "(";
-}
-
-.chat-link-preview::after {
-  content: ")";
+/* The same card, but a conversation is not a feed. A bot posts one card per
+   item into a channel people read like a page; here the card sits under
+   somebody's sentence and the sentences keep coming, so the publisher's image
+   is given a thumbnail's worth of room instead of a hero's. Same rule the
+   composer preview already follows for the same reason. */
+.chat-link-card .chat-markdown-image {
+  width: min(100%, 320px);
+  height: clamp(120px, 30vw, 180px);
 }
