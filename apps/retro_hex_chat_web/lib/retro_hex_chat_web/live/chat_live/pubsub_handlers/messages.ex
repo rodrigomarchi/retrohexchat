@@ -33,6 +33,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
 
   alias RetroHexChat.Observability
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
+  alias RetroHexChatWeb.ChatLive.Helpers.Messages, as: MessageHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.PM
   alias RetroHexChatWeb.ChatLive.P2PSessionEvents
   alias RetroHexChatWeb.ChatLive.StreamItem
@@ -304,7 +305,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
   end
 
   defp apply_active_channel_message(socket, decorated, channel, session) do
-    if cleared_channel_message?(socket, channel, decorated) do
+    if MessageHelpers.cleared_from_channel?(socket, channel, decorated) do
       socket
     else
       apply_visible_channel_message(socket, decorated, session)
@@ -318,33 +319,6 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
   defp apply_visible_channel_message(socket, decorated, _session) do
     MessageViewport.insert(socket, decorated)
   end
-
-  defp cleared_channel_message?(socket, channel, %{timestamp: timestamp}) do
-    case Map.get(socket.assigns[:cleared_channel_cutoffs] || %{}, channel) do
-      nil -> false
-      cutoff -> compare_message_time(timestamp, cutoff) != :gt
-    end
-  end
-
-  defp cleared_channel_message?(_socket, _channel, _message), do: false
-
-  defp compare_message_time(%DateTime{} = timestamp, %DateTime{} = cutoff) do
-    DateTime.compare(timestamp, cutoff)
-  end
-
-  defp compare_message_time(%NaiveDateTime{} = timestamp, %DateTime{} = cutoff) do
-    NaiveDateTime.compare(timestamp, DateTime.to_naive(cutoff))
-  end
-
-  defp compare_message_time(%DateTime{} = timestamp, %NaiveDateTime{} = cutoff) do
-    NaiveDateTime.compare(DateTime.to_naive(timestamp), cutoff)
-  end
-
-  defp compare_message_time(%NaiveDateTime{} = timestamp, %NaiveDateTime{} = cutoff) do
-    NaiveDateTime.compare(timestamp, cutoff)
-  end
-
-  defp compare_message_time(_timestamp, _cutoff), do: :gt
 
   defp apply_background_message(socket, decorated, channel, session) do
     unread_counts = UnreadTracker.increment(socket.assigns.unread_counts, channel)

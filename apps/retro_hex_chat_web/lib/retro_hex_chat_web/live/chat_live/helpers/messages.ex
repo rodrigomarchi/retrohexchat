@@ -173,6 +173,50 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Messages do
 
   def stream_type(_type), do: :message
 
+  @doc """
+  Whether a channel message was written before the reader cleared that channel.
+
+  Clearing is per reader and per channel, and it hides rather than deletes: the
+  messages stay on the server for everyone else, and the reader's own cutoff is
+  what keeps them off this screen. Both the page loaded from history and the
+  message arriving live have to answer this the same way, or clearing a channel
+  would hold only until the next message redrew it.
+
+  A message states when it was written under one of two names depending on where
+  it came from — `inserted_at` from the database, `timestamp` from a broadcast —
+  and one that states neither is treated as newer than any cutoff, so an
+  unreadable timestamp shows the message rather than swallowing it.
+  """
+  @spec cleared_from_channel?(Phoenix.LiveView.Socket.t(), String.t(), map()) :: boolean()
+  def cleared_from_channel?(socket, channel, message) do
+    case Map.get(socket.assigns[:cleared_channel_cutoffs] || %{}, channel) do
+      nil -> false
+      cutoff -> compare_written_at(written_at(message), cutoff) != :gt
+    end
+  end
+
+  defp written_at(%{timestamp: written_at}), do: written_at
+  defp written_at(%{inserted_at: written_at}), do: written_at
+  defp written_at(_message), do: nil
+
+  defp compare_written_at(%DateTime{} = written_at, %DateTime{} = cutoff) do
+    DateTime.compare(written_at, cutoff)
+  end
+
+  defp compare_written_at(%NaiveDateTime{} = written_at, %DateTime{} = cutoff) do
+    NaiveDateTime.compare(written_at, DateTime.to_naive(cutoff))
+  end
+
+  defp compare_written_at(%DateTime{} = written_at, %NaiveDateTime{} = cutoff) do
+    NaiveDateTime.compare(DateTime.to_naive(written_at), cutoff)
+  end
+
+  defp compare_written_at(%NaiveDateTime{} = written_at, %NaiveDateTime{} = cutoff) do
+    NaiveDateTime.compare(written_at, cutoff)
+  end
+
+  defp compare_written_at(_written_at, _cutoff), do: :gt
+
   defp ignored_author?(_ignore_list, nil, _type), do: false
 
   defp ignored_author?(ignore_list, author, type),

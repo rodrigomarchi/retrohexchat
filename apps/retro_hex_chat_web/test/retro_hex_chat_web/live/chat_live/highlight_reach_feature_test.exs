@@ -4,8 +4,15 @@ defmodule RetroHexChatWeb.ChatLive.HighlightReachFeatureTest do
 
   Both kinds of conversation write into one stream and render through one row,
   which reads `:highlighted` without asking where the row came from. Only the
-  producing side ever differed, so these two tests are deliberately the same
+  producing side ever differed, so these tests are deliberately the same
   assertion driven down two paths.
+
+  They assert on what the handler pushes rather than on the rendered row: the
+  message stream is owned by a LiveComponent island reached through
+  `send_update/2`, so the row's arrival is asynchronous and asserting on it
+  measures scheduling. The tip is pushed from the same decorated map the row is
+  built from, and `MessageRowTest` already covers that such a map renders as
+  highlighted — between them the chain is covered, without a race.
   """
   use RetroHexChatWeb.LiveViewCase, async: false
 
@@ -25,7 +32,7 @@ defmodule RetroHexChatWeb.ChatLive.HighlightReachFeatureTest do
     end
   end
 
-  test "a channel message naming the reader marks its row", %{conn: conn} do
+  test "a channel message naming the reader is decorated as a highlight", %{conn: conn} do
     nick = "HiChan#{uid()}"
     channel = "#hichan#{uid()}"
     ensure_channel(channel)
@@ -48,10 +55,10 @@ defmodule RetroHexChatWeb.ChatLive.HighlightReachFeatureTest do
       }
     })
 
-    assert render(view) =~ ~s(data-testid="highlighted-message")
+    assert_push_event(view, "tip_trigger", %{tip: "first_highlight"})
   end
 
-  test "a private message naming the reader marks its row", %{conn: conn} do
+  test "a private message naming the reader is decorated as a highlight", %{conn: conn} do
     nick = "HiPm#{uid()}"
     peer = "Peer#{uid()}"
 
@@ -65,15 +72,15 @@ defmodule RetroHexChatWeb.ChatLive.HighlightReachFeatureTest do
         sender: peer,
         recipient: nick,
         content: "hey #{nick}, look at this",
-        type: "message",
+        type: :message,
         timestamp: DateTime.utc_now()
       }
     })
 
-    assert render(view) =~ ~s(data-testid="highlighted-message")
+    assert_push_event(view, "tip_trigger", %{tip: "first_highlight"})
   end
 
-  test "a private message not naming the reader leaves its row plain", %{conn: conn} do
+  test "a private message not naming the reader is left plain", %{conn: conn} do
     nick = "HiPmNo#{uid()}"
     peer = "Peer#{uid()}"
 
@@ -87,14 +94,14 @@ defmodule RetroHexChatWeb.ChatLive.HighlightReachFeatureTest do
         sender: peer,
         recipient: nick,
         content: "nothing to see",
-        type: "message",
+        type: :message,
         timestamp: DateTime.utc_now()
       }
     })
 
-    html = render(view)
-
-    assert html =~ "nothing to see"
-    refute html =~ ~s(data-testid="highlighted-message")
+    # The conversation still announces itself, which is what makes this a
+    # refutation of the highlight rather than of the message arriving at all.
+    assert_push_event(view, "tip_trigger", %{tip: "first_pm"})
+    refute_push_event(view, "tip_trigger", %{tip: "first_highlight"})
   end
 end
