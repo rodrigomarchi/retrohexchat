@@ -12,6 +12,7 @@ defmodule RetroHexChat.Arcade.SoloSessionServer do
 
   alias RetroHexChat.Arcade.{Queries, Registry}
   alias RetroHexChat.Arcade.Schema.SoloSession
+  alias RetroHexChat.NamedTimers
 
   @pending_timeout :timer.minutes(5)
   @lobby_warning_timeout :timer.minutes(10)
@@ -94,7 +95,7 @@ defmodule RetroHexChat.Arcade.SoloSessionServer do
             game_started_at: nil
           }
 
-          state = schedule_timeout(state, :pending_expiry, pending_timeout())
+          state = NamedTimers.schedule(state, :pending_expiry, pending_timeout())
 
           Logger.debug("Arcade SoloSessionServer started: session_id=#{session.id}")
           {:ok, state}
@@ -217,14 +218,14 @@ defmodule RetroHexChat.Arcade.SoloSessionServer do
       "Arcade transition: #{state.session.status} → lobby, session_id=#{state.session.id}"
     )
 
-    state = cancel_timer(state, :pending_expiry)
+    state = NamedTimers.cancel(state, :pending_expiry)
     now = DateTime.utc_now()
 
     {:ok, session} = Queries.update_status(state.session, "lobby", %{lobby_at: now})
 
     state = %{state | session: session}
-    state = schedule_timeout(state, :lobby_warning, lobby_warning_timeout())
-    state = schedule_timeout(state, :lobby_expiry, lobby_expiry_timeout())
+    state = NamedTimers.schedule(state, :lobby_warning, lobby_warning_timeout())
+    state = NamedTimers.schedule(state, :lobby_expiry, lobby_expiry_timeout())
 
     broadcast(state.token, "arcade_status_changed", %{status: "lobby"})
     state
@@ -236,8 +237,8 @@ defmodule RetroHexChat.Arcade.SoloSessionServer do
     )
 
     now = DateTime.utc_now()
-    state = cancel_timer(state, :lobby_warning)
-    state = cancel_timer(state, :lobby_expiry)
+    state = NamedTimers.cancel(state, :lobby_warning)
+    state = NamedTimers.cancel(state, :lobby_expiry)
 
     {:ok, session} =
       Queries.update_status(state.session, "playing", %{
@@ -258,7 +259,7 @@ defmodule RetroHexChat.Arcade.SoloSessionServer do
 
   defp do_finish(state) do
     Logger.debug("Arcade finished: session_id=#{state.session.id}")
-    state = cancel_all_timers(state)
+    state = NamedTimers.cancel_all(state)
     now = DateTime.utc_now()
 
     duration_seconds =
@@ -287,7 +288,7 @@ defmodule RetroHexChat.Arcade.SoloSessionServer do
       "Arcade close: session_id=#{state.session.id}, reason=#{reason}, by=#{closed_by}"
     )
 
-    state = cancel_all_timers(state)
+    state = NamedTimers.cancel_all(state)
     now = DateTime.utc_now()
 
     duration =
@@ -308,7 +309,7 @@ defmodule RetroHexChat.Arcade.SoloSessionServer do
 
   defp do_expire(state, reason) do
     Logger.debug("Arcade expired: session_id=#{state.session.id}, reason=#{reason}")
-    state = cancel_all_timers(state)
+    state = NamedTimers.cancel_all(state)
     now = DateTime.utc_now()
 
     {:ok, session} =
@@ -322,32 +323,9 @@ defmodule RetroHexChat.Arcade.SoloSessionServer do
   end
 
   defp reset_lobby_timers(state) do
-    state = cancel_timer(state, :lobby_warning)
-    state = cancel_timer(state, :lobby_expiry)
-    state = schedule_timeout(state, :lobby_warning, lobby_warning_timeout())
-    schedule_timeout(state, :lobby_expiry, lobby_expiry_timeout())
-  end
-
-  defp schedule_timeout(state, name, delay) do
-    ref = Process.send_after(self(), {:timeout, name}, delay)
-    put_in(state, [:timers, name], ref)
-  end
-
-  defp cancel_timer(state, name) do
-    case Map.get(state.timers, name) do
-      nil ->
-        state
-
-      ref ->
-        Process.cancel_timer(ref)
-        put_in(state, [:timers, name], nil)
-    end
-  end
-
-  defp cancel_all_timers(state) do
-    Enum.reduce(Map.keys(state.timers), state, fn name, acc ->
-      cancel_timer(acc, name)
-    end)
+    state
+    |> NamedTimers.schedule(:lobby_warning, lobby_warning_timeout())
+    |> NamedTimers.schedule(:lobby_expiry, lobby_expiry_timeout())
   end
 
   defp broadcast(token, event, payload) do

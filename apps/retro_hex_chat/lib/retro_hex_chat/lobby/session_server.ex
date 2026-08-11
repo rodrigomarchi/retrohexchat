@@ -23,6 +23,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
 
   alias RetroHexChat.Lobby.{Queries, Registry}
   alias RetroHexChat.Lobby.Schema.Session
+  alias RetroHexChat.NamedTimers
   alias RetroHexChat.Repo
   alias RetroHexChat.Services.RegisteredNick
 
@@ -175,7 +176,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
             timers: %{}
           }
 
-          state = schedule_timeout(state, :pending_expiry, pending_timeout())
+          state = NamedTimers.schedule(state, :pending_expiry, pending_timeout())
 
           Logger.debug("Lobby SessionServer started: session_id=#{session.id}")
           {:ok, state}
@@ -400,7 +401,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
 
   def handle_info({:timeout, :game_request_expiry}, state) do
     if state.game_request do
-      state = cancel_timer(state, :game_request_expiry)
+      state = NamedTimers.cancel(state, :game_request_expiry)
       broadcast(state.token, "lobby_game_response", %{accepted: false, reason: "expired"})
       {:noreply, %{state | game_request: nil}}
     else
@@ -503,7 +504,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
           |> reset_signaling_replay()
 
         broadcast(state.token, "lobby_peer_disconnected", %{user_id: user_id, role: role})
-        schedule_timeout(state, {:rejoin_grace, role}, rejoin_grace_timeout())
+        NamedTimers.schedule(state, {:rejoin_grace, role}, rejoin_grace_timeout())
     end
   end
 
@@ -513,7 +514,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
         {:ok, monitor_connection(state, role, pid)}
 
       %{pid: ^pid} ->
-        {:ok, cancel_timer(state, {:rejoin_grace, role})}
+        {:ok, NamedTimers.cancel(state, {:rejoin_grace, role})}
 
       %{pid: old_pid, ref: old_ref} ->
         if Process.alive?(old_pid) do
@@ -530,7 +531,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
 
     state
     |> put_in([:connections, role], %{pid: pid, ref: ref})
-    |> cancel_timer({:rejoin_grace, role})
+    |> NamedTimers.cancel({:rejoin_grace, role})
   end
 
   defp connection_role_by_ref(state, ref) do
@@ -673,15 +674,15 @@ defmodule RetroHexChat.Lobby.SessionServer do
       "Lobby transition: #{state.session.status} → lobby, session_id=#{state.session.id}"
     )
 
-    state = cancel_timer(state, :pending_expiry)
+    state = NamedTimers.cancel(state, :pending_expiry)
 
     {:ok, session} =
       Queries.update_status(state.session, "lobby", %{accepted_at: DateTime.utc_now()})
 
     state = %{state | session: session}
-    state = schedule_timeout(state, :lobby_warning, lobby_warning_timeout())
-    state = schedule_timeout(state, :lobby_expiry, lobby_expiry_timeout())
-    state = schedule_timeout(state, :connecting_timeout, connecting_timeout())
+    state = NamedTimers.schedule(state, :lobby_warning, lobby_warning_timeout())
+    state = NamedTimers.schedule(state, :lobby_expiry, lobby_expiry_timeout())
+    state = NamedTimers.schedule(state, :connecting_timeout, connecting_timeout())
 
     broadcast(state.token, "lobby_status_changed", %{status: "lobby", reason: nil})
     maybe_start_signaling(state)
@@ -692,9 +693,9 @@ defmodule RetroHexChat.Lobby.SessionServer do
       "Lobby transition: #{state.session.status} → connected, session_id=#{state.session.id}"
     )
 
-    state = cancel_timer(state, :lobby_warning)
-    state = cancel_timer(state, :lobby_expiry)
-    state = cancel_timer(state, :connecting_timeout)
+    state = NamedTimers.cancel(state, :lobby_warning)
+    state = NamedTimers.cancel(state, :lobby_expiry)
+    state = NamedTimers.cancel(state, :connecting_timeout)
 
     {:ok, session} =
       Queries.update_status(state.session, "connected", %{connected_at: DateTime.utc_now()})
@@ -706,7 +707,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
 
   defp do_close(state, reason, closed_by) do
     Logger.debug("Lobby close: session_id=#{state.session.id}, reason=#{reason}, by=#{closed_by}")
-    state = cancel_all_timers(state)
+    state = NamedTimers.cancel_all(state)
     now = DateTime.utc_now()
 
     {:ok, session} =
@@ -723,7 +724,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
 
   defp do_expire(state, reason) do
     Logger.debug("Lobby expired: session_id=#{state.session.id}, reason=#{reason}")
-    state = cancel_all_timers(state)
+    state = NamedTimers.cancel_all(state)
     now = DateTime.utc_now()
 
     {:ok, session} =
@@ -740,7 +741,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
 
   defp do_fail(state, reason) do
     Logger.warning("Lobby failed: session_id=#{state.session.id}, reason=#{reason}")
-    state = cancel_all_timers(state)
+    state = NamedTimers.cancel_all(state)
     now = DateTime.utc_now()
 
     {:ok, session} =
@@ -768,14 +769,14 @@ defmodule RetroHexChat.Lobby.SessionServer do
     }
 
     state = %{state | game_request: request}
-    state = schedule_timeout(state, :game_request_expiry, game_request_timeout())
+    state = NamedTimers.schedule(state, :game_request_expiry, game_request_timeout())
     broadcast(state.token, "lobby_game_request", request)
     state
   end
 
   defp handle_respond_game(state, responder_id, responder_nick, true) do
     request = state.game_request
-    state = cancel_timer(state, :game_request_expiry)
+    state = NamedTimers.cancel(state, :game_request_expiry)
 
     game = %{status: "playing", game_id: request.game_id, host_id: request.proposer_id}
 
@@ -797,7 +798,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
 
   defp handle_respond_game(state, responder_id, responder_nick, false) do
     request = state.game_request
-    state = cancel_timer(state, :game_request_expiry)
+    state = NamedTimers.cancel(state, :game_request_expiry)
 
     broadcast(state.token, "lobby_game_response", %{
       accepted: false,
@@ -889,32 +890,9 @@ defmodule RetroHexChat.Lobby.SessionServer do
   end
 
   defp reset_lobby_timers(state) do
-    state = cancel_timer(state, :lobby_warning)
-    state = cancel_timer(state, :lobby_expiry)
-    state = schedule_timeout(state, :lobby_warning, lobby_warning_timeout())
-    schedule_timeout(state, :lobby_expiry, lobby_expiry_timeout())
-  end
-
-  defp schedule_timeout(state, name, delay) do
-    ref = Process.send_after(self(), {:timeout, name}, delay)
-    put_in(state, [:timers, name], ref)
-  end
-
-  defp cancel_timer(state, name) do
-    case Map.get(state.timers, name) do
-      nil ->
-        state
-
-      ref ->
-        Process.cancel_timer(ref)
-        put_in(state, [:timers, name], nil)
-    end
-  end
-
-  defp cancel_all_timers(state) do
-    Enum.reduce(Map.keys(state.timers), state, fn name, acc ->
-      cancel_timer(acc, name)
-    end)
+    state
+    |> NamedTimers.schedule(:lobby_warning, lobby_warning_timeout())
+    |> NamedTimers.schedule(:lobby_expiry, lobby_expiry_timeout())
   end
 
   # The envelope carries the token so a subscriber holding session state can

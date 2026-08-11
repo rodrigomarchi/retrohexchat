@@ -290,6 +290,50 @@ defmodule RetroHexChat.Arcade.SoloSessionServerTest do
     end
   end
 
+  describe "inactivity" do
+    test "playing keeps the session past the deadline that would have expired it",
+         %{creator: creator} do
+      Application.put_env(:retro_hex_chat, :arcade_lobby_expiry_timeout, 60)
+      {:ok, %{token: token}} = Arcade.create_session(creator.id)
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "arcade:#{token}")
+
+      :ok = Arcade.join_session(token, creator.id)
+      :ok = SoloSessionServer.select_game(token, creator.id, "snake")
+
+      refute_receive %{event: "arcade_status_changed", payload: %{status: "expired"}}, 300
+      assert Queries.get_session_by_token(token).status == "playing"
+    end
+
+    test "an idle session in the lobby expires on its own", %{creator: creator} do
+      Application.put_env(:retro_hex_chat, :arcade_lobby_expiry_timeout, 60)
+      {:ok, %{token: token}} = Arcade.create_session(creator.id)
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "arcade:#{token}")
+
+      :ok = Arcade.join_session(token, creator.id)
+
+      assert_receive %{
+                       event: "arcade_status_changed",
+                       payload: %{status: "expired", reason: "lobby_inactivity"}
+                     },
+                     500
+
+      assert Queries.get_session_by_token(token).status == "expired"
+    end
+
+    test "activity pushes the expiry deadline out instead of adding a second one",
+         %{creator: creator} do
+      {:ok, %{token: token}} = Arcade.create_session(creator.id)
+      :ok = Arcade.join_session(token, creator.id)
+
+      {:ok, before_state} = SoloSessionServer.get_state(token)
+      :ok = SoloSessionServer.activity(token)
+      {:ok, after_state} = SoloSessionServer.get_state(token)
+
+      assert after_state.timers.lobby_expiry != before_state.timers.lobby_expiry
+      assert Map.keys(after_state.timers) == Map.keys(before_state.timers)
+    end
+  end
+
   # --- Helpers ---
 
   defp create_registered_nick(nickname) do
