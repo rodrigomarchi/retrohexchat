@@ -31,6 +31,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
   alias RetroHexChat.Chat.{IgnoreList, SoundSettings}
   alias RetroHexChat.Presence.{NotifyList, Tracker}
   alias RetroHexChat.Services.NickServ
+  alias RetroHexChat.Topics
   alias RetroHexChatWeb.ChatLive.CommandDispatch
   alias RetroHexChatWeb.ChatLive.Components.{ChannelCentralDialog, HoverCard, Nicklist}
   alias RetroHexChatWeb.ChatLive.Helpers.PathHelpers
@@ -236,8 +237,8 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
       |> Session.update_nickname(guest_nick)
       |> Session.set_identified(false)
 
-    Phoenix.PubSub.unsubscribe(RetroHexChat.PubSub, "user:#{old_nickname}")
-    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:#{guest_nick}")
+    Phoenix.PubSub.unsubscribe(RetroHexChat.PubSub, Topics.inbox(old_nickname))
+    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.inbox(guest_nick))
 
     msg =
       dgettext("chat", "[NickServ] %{reason}. You are now %{nickname}",
@@ -418,7 +419,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
 
     Enum.each(session.channels, fn channel ->
       try do
-        Tracker.untrack_user("channel:#{channel}", session.nickname)
+        Tracker.untrack_user(Topics.channel(channel), session.nickname)
         Server.part(channel, session.nickname, reason)
       rescue
         e ->

@@ -9,6 +9,7 @@ defmodule RetroHexChat.Chat.Service do
   alias RetroHexChat.Chat.{Attachments, Content, Policy, Queries}
   alias RetroHexChat.Observability
   alias RetroHexChat.Repo
+  alias RetroHexChat.Topics
 
   @spec send_message(String.t(), String.t(), String.t(), String.t(), keyword()) ::
           {:ok, RetroHexChat.Chat.Message.t()} | {:error, String.t()}
@@ -374,7 +375,7 @@ defmodule RetroHexChat.Chat.Service do
 
       Phoenix.PubSub.broadcast(
         RetroHexChat.PubSub,
-        "channel:#{channel_name}",
+        Topics.channel(channel_name),
         %{
           event: "reply_quote_updated",
           payload: %{parent_id: parent_id, new_preview: preview, reply_ids: reply_ids}
@@ -391,7 +392,7 @@ defmodule RetroHexChat.Chat.Service do
 
       Phoenix.PubSub.broadcast(
         RetroHexChat.PubSub,
-        "channel:#{channel_name}",
+        Topics.channel(channel_name),
         %{
           event: "reply_quote_updated",
           payload: %{parent_id: parent_id, new_preview: nil, reply_ids: reply_ids}
@@ -507,7 +508,7 @@ defmodule RetroHexChat.Chat.Service do
   end
 
   defp broadcast_user_pm_activity(nickname, payload) do
-    topic = "user:#{nickname}"
+    topic = Topics.inbox(nickname)
 
     Observability.span(
       [:retro_hex_chat, :chat, :message, :broadcast],
@@ -554,7 +555,7 @@ defmodule RetroHexChat.Chat.Service do
         "chat.channel" => channel_name
       }),
       fn ->
-        case Phoenix.PubSub.broadcast(RetroHexChat.PubSub, "channel:#{channel_name}", %{
+        case Phoenix.PubSub.broadcast(RetroHexChat.PubSub, Topics.channel(channel_name), %{
                event: "new_message",
                payload: payload
              }) do
@@ -575,7 +576,7 @@ defmodule RetroHexChat.Chat.Service do
   defp broadcast_edit(channel_name, message) do
     Phoenix.PubSub.broadcast(
       RetroHexChat.PubSub,
-      "channel:#{channel_name}",
+      Topics.channel(channel_name),
       %{
         event: "message_edited",
         payload: %{
@@ -611,7 +612,7 @@ defmodule RetroHexChat.Chat.Service do
   defp broadcast_delete(channel_name, message) do
     Phoenix.PubSub.broadcast(
       RetroHexChat.PubSub,
-      "channel:#{channel_name}",
+      Topics.channel(channel_name),
       %{
         event: "message_deleted",
         payload: %{id: message.id, deleted_at: message.deleted_at, channel: channel_name}

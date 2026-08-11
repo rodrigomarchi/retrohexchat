@@ -65,6 +65,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
   alias RetroHexChat.Presence.{Tracker, WhowasCache}
   alias RetroHexChat.Scraper
+  alias RetroHexChat.Topics
   alias RetroHexChatWeb.App.ChatHelpers
   alias RetroHexChatWeb.App.ComposerEvents
   alias RetroHexChatWeb.App.SessionHelpers
@@ -127,7 +128,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
     Phoenix.PubSub.broadcast(
       RetroHexChat.PubSub,
-      "user:#{nickname}",
+      Topics.inbox(nickname),
       {:force_disconnect,
        %{
          reason: dgettext("chat", "Session ended — logged in from another window"),
@@ -138,7 +139,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
     if takeover_expected?, do: wait_for_takeover_cleanup(takeover_ref)
 
-    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:#{nickname}")
+    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.inbox(nickname))
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "presence:global")
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "server:announcements")
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "server:wallops")
@@ -1033,7 +1034,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
     Enum.each(socket.assigns.session.channels, fn channel ->
       Phoenix.PubSub.broadcast(
         RetroHexChat.PubSub,
-        "channel:#{channel}",
+        Topics.channel(channel),
         {:nick_changed, %{old_nick: old_nickname, new_nick: new_nickname, channel: channel}}
       )
     end)

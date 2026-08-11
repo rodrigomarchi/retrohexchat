@@ -25,6 +25,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
   alias RetroHexChat.Scraper
 
   alias RetroHexChat.Services.NickServ
+  alias RetroHexChat.Topics
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
   alias RetroHexChatWeb.ChatLive.Components.Nicklist
   alias RetroHexChatWeb.ChatLive.Helpers.Channel, as: ChannelHelpers
@@ -453,7 +454,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
     Enum.each(session.channels, fn channel ->
       case Phoenix.PubSub.broadcast(
              RetroHexChat.PubSub,
-             "channel:#{channel}",
+             Topics.channel(channel),
              {:nick_changed, %{old_nick: old_nick, new_nick: new_nick}}
            ) do
         :ok ->
@@ -469,12 +470,12 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
     client_meta = Map.get(socket.assigns, :client_info, %{})
 
     Enum.each(session.channels, fn channel ->
-      PresenceHelpers.safe_untrack_user("channel:#{channel}", old_nick)
-      PresenceHelpers.safe_track_user("channel:#{channel}", new_nick, client_meta)
+      PresenceHelpers.safe_untrack_user(Topics.channel(channel), old_nick)
+      PresenceHelpers.safe_track_user(Topics.channel(channel), new_nick, client_meta)
     end)
 
-    Phoenix.PubSub.unsubscribe(RetroHexChat.PubSub, "user:#{old_nick}")
-    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:#{new_nick}")
+    Phoenix.PubSub.unsubscribe(RetroHexChat.PubSub, Topics.inbox(old_nick))
+    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.inbox(new_nick))
 
     users =
       Enum.map(socket.assigns.channel_users, fn user ->
@@ -507,7 +508,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
     session = Session.set_away(socket.assigns.session, message)
 
     Enum.each(session.channels, fn channel ->
-      PresenceHelpers.safe_update_away("channel:#{channel}", session.nickname, true, message)
+      PresenceHelpers.safe_update_away(Topics.channel(channel), session.nickname, true, message)
     end)
 
     socket
