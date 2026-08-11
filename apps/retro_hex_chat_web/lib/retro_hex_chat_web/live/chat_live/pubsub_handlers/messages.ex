@@ -221,17 +221,10 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
     if IgnoreList.ignored?(session.ignore_list, payload.author, msg_type) do
       {:halt, socket}
     else
-      socket = check_channel_duplicate(socket, payload)
+      socket =
+        remember_for_duplicates(socket, payload, payload.author, {:channel, payload.channel})
 
-      if payload.type != :system and
-           DuplicateTracker.duplicate?(
-             socket.assigns.duplicate_tracker,
-             payload.author,
-             {:channel, payload.channel},
-             payload.content,
-             FloodProtection.get_spam_threshold(session.flood_protection),
-             FloodProtection.get_spam_window_seconds(session.flood_protection)
-           ) do
+      if spam?(socket, payload, payload.author, {:channel, payload.channel}, session) do
         {:halt, socket}
       else
         socket = check_flood_and_auto_ignore(socket, payload.author, payload.type, session)
@@ -261,16 +254,9 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
     if IgnoreList.ignored?(session.ignore_list, payload.sender, msg_type) do
       {:halt, socket}
     else
-      socket = check_pm_duplicate(socket, payload)
+      socket = remember_for_duplicates(socket, payload, payload.sender, {:pm, payload.sender})
 
-      if DuplicateTracker.duplicate?(
-           socket.assigns.duplicate_tracker,
-           payload.sender,
-           {:pm, payload.sender},
-           payload.content,
-           FloodProtection.get_spam_threshold(session.flood_protection),
-           FloodProtection.get_spam_window_seconds(session.flood_protection)
-         ) do
+      if spam?(socket, payload, payload.sender, {:pm, payload.sender}, session) do
         {:halt, socket}
       else
         {:halt,
@@ -540,30 +526,36 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
 
   defp stream_item_for_reply_quote(_reply_id, _session), do: nil
 
-  defp check_channel_duplicate(socket, %{type: :system}), do: socket
+  # Spam protection is about people, so the system is exempt from both halves:
+  # its lines are neither counted towards a repeat nor dropped as one. The
+  # channel path always said so; the private one did not, which is why three
+  # identical `p2p_system` lines inside the spam window used to lose the third.
+  defp remember_for_duplicates(socket, payload, sender, target_key) do
+    if MessageHelpers.from_system?(payload) do
+      socket
+    else
+      tracker =
+        DuplicateTracker.record_message(
+          socket.assigns.duplicate_tracker,
+          sender,
+          target_key,
+          payload.content
+        )
 
-  defp check_channel_duplicate(socket, payload) do
-    tracker =
-      DuplicateTracker.record_message(
-        socket.assigns.duplicate_tracker,
-        payload.author,
-        {:channel, payload.channel},
-        payload.content
-      )
-
-    assign(socket, duplicate_tracker: tracker)
+      assign(socket, duplicate_tracker: tracker)
+    end
   end
 
-  defp check_pm_duplicate(socket, payload) do
-    tracker =
-      DuplicateTracker.record_message(
+  defp spam?(socket, payload, sender, target_key, session) do
+    not MessageHelpers.from_system?(payload) and
+      DuplicateTracker.duplicate?(
         socket.assigns.duplicate_tracker,
-        payload.sender,
-        {:pm, payload.sender},
-        payload.content
+        sender,
+        target_key,
+        payload.content,
+        FloodProtection.get_spam_threshold(session.flood_protection),
+        FloodProtection.get_spam_window_seconds(session.flood_protection)
       )
-
-    assign(socket, duplicate_tracker: tracker)
   end
 
   defp active_context?(payload, session) do

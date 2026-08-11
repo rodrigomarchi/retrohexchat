@@ -130,6 +130,48 @@ Fechado no passo 1a. A lição para o §9: quando a pergunta é "isso é intenci
 ela quase sempre se responde procurando o ramo que implementaria a intenção — e
 descobrindo que ele não existe.
 
+### 4.4 Mensagem do sistema em PM era filtrada como spam — corrigido
+
+Encontrada **procurando**, não por acidente: comparando chamada a chamada
+`do_handle_new_message` com `do_handle_new_pm`.
+
+O caminho de canal isenta `:system` das duas metades da proteção contra
+repetição — não conta a linha e não a descarta:
+
+```elixir
+defp check_channel_duplicate(socket, %{type: :system}), do: socket
+if payload.type != :system and DuplicateTracker.duplicate?(...)
+```
+
+O caminho de PM não isentava nada. Com o limiar padrão (**3 mensagens idênticas
+em 10 segundos**), três linhas `p2p_system` iguais do mesmo par — "P2P session
+connected", que reaparece a cada reconexão de um link instável — perdiam a
+terceira, em silêncio. Exatamente a que dizia que a conexão voltou.
+
+A isenção agora existe uma vez (`MessageHelpers.from_system?/1`) e os dois
+caminhos perguntam. `p2p_system` é o tipo de sistema de uma conversa privada
+segundo o comentário do próprio schema; uma mensagem de canal não pode
+carregá-lo, então a mesma pergunta serve para os dois.
+
+### 4.5 Highlight em PM não marca a conversa na barra lateral — em aberto
+
+Mesma varredura, segunda assimetria, **ainda não corrigida**:
+
+- `apply_background_message` chama `maybe_add_highlight_channel`, que põe o canal
+  em `highlight_channels`. O caminho de PM não tem equivalente, e nada em lugar
+  nenhum põe uma chave `pm:<nick>` nesse conjunto.
+- `channel_item` recebe `highlight={member?(@highlight_channels, ch) or ...}`;
+  `pm_item` **não tem o atributo `highlight`**.
+- `activity_channels/1` inclui um canal por estar em `highlight_channels`;
+  `activity_pms/1` não considera isso.
+
+Consequência: uma palavra de destaque numa conversa privada em segundo plano
+toca o som e dispara a dica (§4.2 fechou isso), mas **não deixa marca na barra
+lateral**. Quem não estava ouvindo não fica sabendo.
+
+Custo estimado: quatro arquivos — o handler, o `pm_item`, o `activity_pms`, e os
+dois lugares que limpam `highlight_channels` ao abrir uma conversa.
+
 ### 4.3 O custo corrente
 
 Toda feature que toca mensagem custa dois caminhos, dois testes e uma chance de
@@ -216,8 +258,17 @@ e o §6 mostra que a chave de roteamento difere de verdade.
   esquecimento.** O código não tinha nenhum ramo que implementasse a suposta decisão.
 - O passo 3 deve mover typing/edit/delete junto, ou o tópico do par continua existindo
   para esses?
-- Existem outras assimetrias além de 4.1 e 4.2? Ninguém procurou de forma sistemática;
-  as duas conhecidas apareceram por acidente.
+- ~~Existem outras assimetrias além de 4.1 e 4.2?~~ **Respondida: existem, e
+  procurar funciona.** Uma varredura comparando chamada a chamada
+  `do_handle_new_message` com `do_handle_new_pm` — e depois o que cada lado faz
+  com o resultado — achou duas em uma passada: o §4.4 (corrigido) e o §4.5 (em
+  aberto). Nenhuma das duas tinha aparecido em meses de uso.
+
+  O método que funcionou, para repetir nas camadas ainda não varridas
+  (`Service`, `Queries`, `helpers/{channel,pm}.ex`, `core_events.ex`): listar as
+  funções chamadas dentro de cada gêmeo, diferenciar os conjuntos, e para cada
+  chamada que só existe de um lado perguntar se há um ramo que a recuse do
+  outro. Quando não há, é esquecimento — o mesmo raciocínio do §4.2.
 
 ## 9. A regra durável que sai daqui
 

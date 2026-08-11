@@ -19,6 +19,30 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.MessagesTest do
     end
   end
 
+  describe "from_system?/1" do
+    test "a channel's system line is the application talking" do
+      assert Messages.from_system?(%{type: :system})
+      assert Messages.from_system?(%{type: "system"})
+    end
+
+    test "a private conversation's system line is too, under its own name" do
+      assert Messages.from_system?(%{type: :p2p_system})
+      assert Messages.from_system?(%{type: "p2p_system"})
+    end
+
+    test "everything a person can write is not" do
+      for type <- [:message, :action, :notice, :service, :error, :p2p_invite] do
+        refute Messages.from_system?(%{type: type})
+        refute Messages.from_system?(%{type: Atom.to_string(type)})
+      end
+    end
+
+    test "a payload that states no type is not the system" do
+      refute Messages.from_system?(%{})
+      refute Messages.from_system?(%{type: nil})
+    end
+  end
+
   describe "cleared_from_channel?/3" do
     @cutoff ~U[2026-07-08 12:00:00Z]
     @channel "#lobby"

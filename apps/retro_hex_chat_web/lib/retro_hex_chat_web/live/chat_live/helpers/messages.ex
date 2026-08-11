@@ -47,6 +47,28 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Messages do
     not ignored_author?(ignore_list, private_sender(msg), private_message_type(msg))
   end
 
+  @system_types ~w(system p2p_system)
+
+  @doc """
+  Whether this is the application talking rather than a person.
+
+  Flood and duplicate protection are about people. A system line repeats by
+  nature — the same "P2P session connected" arrives every time a flaky link
+  comes back — and counting those as spam means dropping the one the reader
+  most needed to see.
+
+  `p2p_system` is a private conversation's system type; a channel message
+  cannot carry it, so both kinds of conversation can ask the same question.
+  """
+  @spec from_system?(map()) :: boolean()
+  def from_system?(payload) when is_map(payload) do
+    case Map.get(payload, :type) do
+      type when is_atom(type) and not is_nil(type) -> Atom.to_string(type) in @system_types
+      type when is_binary(type) -> type in @system_types
+      _other -> false
+    end
+  end
+
   @spec system_message(String.t()) :: map()
   def system_message(content) do
     %{
