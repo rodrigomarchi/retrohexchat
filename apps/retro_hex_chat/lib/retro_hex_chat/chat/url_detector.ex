@@ -8,6 +8,7 @@ defmodule RetroHexChat.Chat.URLDetector do
   - `linkify_html/1` — post-processes Formatter HTML to wrap URLs in `<a>` tags
   """
 
+  alias RetroHexChat.Chat.Content.Html
   alias RetroHexChat.Chat.Formatter
 
   @max_display_length 100
@@ -52,17 +53,10 @@ defmodule RetroHexChat.Chat.URLDetector do
   """
   @spec linkify_html(String.t()) :: String.t()
   def linkify_html(html) when is_binary(html) do
-    {parts, _protected_stack} =
-      ~r/(<[^>]+>)/
-      |> Regex.split(html, include_captures: true)
-      |> Enum.reduce({[], []}, &linkify_html_segment/2)
-
-    parts
-    |> Enum.reverse()
-    |> Enum.join()
+    # Already-rendered HTML: the text between tags was escaped when it was
+    # rendered, so escaping it again would show the entities.
+    Html.rewrite_text(html, fn text -> linkify_text(text, &Function.identity/1) end)
   end
-
-  @protected_html_tags ~w(a code pre)
 
   # --- URL Extraction ---
 
@@ -166,52 +160,6 @@ defmodule RetroHexChat.Chat.URLDetector do
     end)
     |> Enum.join()
   end
-
-  defp linkify_html_segment("<" <> _ = tag, {acc, protected_stack}) do
-    protected_stack = update_protected_stack(tag, protected_stack)
-    {[tag | acc], protected_stack}
-  end
-
-  defp linkify_html_segment(text, {acc, []}) do
-    {[linkify_text(text, &Function.identity/1) | acc], []}
-  end
-
-  defp linkify_html_segment(text, {acc, protected_stack}), do: {[text | acc], protected_stack}
-
-  defp update_protected_stack(tag, protected_stack) do
-    cond do
-      closing_protected_tag?(tag) ->
-        remove_first(protected_stack, tag_name(tag))
-
-      opening_protected_tag?(tag) ->
-        [tag_name(tag) | protected_stack]
-
-      true ->
-        protected_stack
-    end
-  end
-
-  defp opening_protected_tag?(tag) do
-    name = tag_name(tag)
-
-    name in @protected_html_tags and
-      !String.starts_with?(tag, "</") and
-      !String.ends_with?(String.trim(tag), "/>")
-  end
-
-  defp closing_protected_tag?(tag),
-    do: String.starts_with?(tag, "</") and tag_name(tag) in @protected_html_tags
-
-  defp tag_name(tag) do
-    case Regex.run(~r/^<\/?\s*([a-zA-Z0-9:-]+)/, tag) do
-      [_match, name] -> String.downcase(name)
-      nil -> ""
-    end
-  end
-
-  defp remove_first([], _tag_name), do: []
-  defp remove_first([tag_name | rest], tag_name), do: rest
-  defp remove_first([other | rest], tag_name), do: [other | remove_first(rest, tag_name)]
 
   @spec strip_html_tags(String.t()) :: String.t()
   defp strip_html_tags(html) do
