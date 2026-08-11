@@ -15,6 +15,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
   require Logger
 
   alias RetroHexChat.Channels.Server, as: ChannelServer
+  alias RetroHexChat.Topics
   alias RetroHexChat.VirtualSpace.DirectMessageSpace
   alias RetroHexChat.VirtualSpace.Events
   alias RetroHexChat.VirtualSpace.Map, as: SpaceMap
@@ -295,7 +296,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
            DirectMessageSpace.normalize_participants(participants),
          ^space_id <- DirectMessageSpace.space_id(nick_a, nick_b),
          {:ok, map_definition} <- SpaceMap.get("end_of_time") do
-      Phoenix.PubSub.subscribe(@pubsub, direct_message_pm_topic(nick_a, nick_b))
+      Enum.each(participants, &Phoenix.PubSub.subscribe(@pubsub, Topics.inbox(&1)))
       map_definition = put_direct_message_label(map_definition, participants)
 
       state = %{
@@ -467,8 +468,15 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
     {:noreply, state}
   end
 
+  # A private message is addressed to each participant separately, and this
+  # runtime is watching both inboxes — so it sees every message twice. The copy
+  # delivered to the person who wrote it is the one taken: there is exactly one
+  # per message, and it names its own author.
   def handle_info(
-        %{event: "new_pm", payload: %{sender: sender, content: content, type: type}},
+        %{
+          event: "new_pm",
+          payload: %{direction: :outgoing, sender: sender, content: content, type: type}
+        },
         %{kind: :direct_message} = state
       ) do
     if private_space_message?(type) do
@@ -713,10 +721,6 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
     do: true
 
   defp private_space_message?(_), do: false
-
-  defp direct_message_pm_topic(nick_a, nick_b) do
-    "pm:" <> Enum.join(Enum.sort([nick_a, nick_b]), ":")
-  end
 
   defp broadcast_channel_bubble(state, author, content) do
     key = channel_participant_key(author)

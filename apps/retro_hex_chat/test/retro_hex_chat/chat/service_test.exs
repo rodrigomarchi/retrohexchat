@@ -4,6 +4,7 @@ defmodule RetroHexChat.Chat.ServiceTest do
   @moduletag :unit
 
   alias RetroHexChat.Chat.{Attachments, Queries, Service, UploadedFile}
+  alias RetroHexChat.Topics
 
   defp unique_channel do
     "#svc-#{System.unique_integer([:positive])}"
@@ -11,10 +12,6 @@ defmodule RetroHexChat.Chat.ServiceTest do
 
   defp unique_nick(prefix) do
     "#{prefix}#{System.unique_integer([:positive])}"
-  end
-
-  defp pm_topic(nick_a, nick_b) do
-    [nick_a, nick_b] |> Enum.sort() |> Enum.join(":")
   end
 
   defp prepare_uploaded_file(owner, attrs \\ %{}) do
@@ -143,71 +140,79 @@ defmodule RetroHexChat.Chat.ServiceTest do
       assert {:error, _} = Service.send_private_message("Alice", "Bob", long_content)
     end
 
-    test "broadcasts the full PM to the conversation topic" do
-      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "pm:Alice:Bob")
+    # One delivery each, carrying the whole message. It used to take two
+    # broadcasts in two shapes to say this, and the one that reached everybody
+    # carried half the fields.
+    test "delivers the whole message to both people, once each" do
+      sender = unique_nick("A")
+      recipient = unique_nick("B")
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.inbox(sender))
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.inbox(recipient))
 
-      assert {:ok, pm} = Service.send_private_message("Alice", "Bob", "Hello PM!")
+      assert {:ok, pm} = Service.send_private_message(sender, recipient, "Hello PM!")
 
       assert_receive %{
         event: "new_pm",
         payload: %{
-          id: id,
-          sender: "Alice",
-          recipient: "Bob",
+          id: written_id,
+          sender: ^sender,
+          recipient: ^recipient,
           content: "Hello PM!",
-          type: :message
+          type: :message,
+          peer: ^recipient,
+          direction: :outgoing,
+          attachments: [],
+          reply_to_id: nil
         }
+      }
+
+      assert_receive %{
+        event: "new_pm",
+        payload: %{id: read_id, peer: ^sender, direction: :incoming, content: "Hello PM!"}
+      }
+
+      assert written_id == pm.id
+      assert read_id == pm.id
+      refute_receive %{event: "new_pm"}
+    end
+
+    # A private conversation has no topic of its own any more: it is two
+    # inboxes, and nothing is published anywhere a third party could be waiting.
+    test "publishes nothing on a topic named after the pair" do
+      sender = unique_nick("A")
+      recipient = unique_nick("B")
+
+      Phoenix.PubSub.subscribe(
+        RetroHexChat.PubSub,
+        "pm:" <> Enum.join(Enum.sort([sender, recipient]), ":")
+      )
+
+      assert {:ok, pm} = Service.send_private_message(sender, recipient, "Hello PM!")
+      assert {:ok, _edited} = Service.edit_private_message(pm.id, sender, "Edited")
+      assert {:ok, _deleted} = Service.delete_private_message(pm.id, sender)
+
+      refute_receive _anything
+    end
+
+    test "delivers non-default private message types the same way" do
+      sender = unique_nick("A")
+      recipient = unique_nick("B")
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.inbox(recipient))
+
+      assert {:ok, pm} = Service.send_private_message(sender, recipient, "waves", "action")
+
+      assert_receive %{
+        event: "new_pm",
+        payload: %{id: id, peer: ^sender, type: :action, direction: :incoming}
       }
 
       assert id == pm.id
     end
 
-    test "broadcasts lightweight PM activity to recipient and sender user topics" do
-      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:Alice")
-      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:Bob")
-
-      assert {:ok, pm} = Service.send_private_message("Alice", "Bob", "Hello PM!")
-
-      assert_receive {:pm_activity,
-                      %{
-                        peer: "Bob",
-                        message_id: sender_message_id,
-                        type: :message,
-                        direction: :outgoing
-                      }}
-
-      assert_receive {:pm_activity,
-                      %{
-                        peer: "Alice",
-                        message_id: recipient_message_id,
-                        type: :message,
-                        direction: :incoming
-                      }}
-
-      assert sender_message_id == pm.id
-      assert recipient_message_id == pm.id
-    end
-
-    test "broadcasts PM activity for non-default private message types" do
-      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:Bob")
-
-      assert {:ok, pm} = Service.send_private_message("Alice", "Bob", "waves", "action")
-
-      assert_receive {:pm_activity,
-                      %{
-                        peer: "Alice",
-                        message_id: message_id,
-                        type: :action,
-                        direction: :incoming
-                      }}
-
-      assert message_id == pm.id
-    end
-
     test "persists and broadcasts markdown format for PMs" do
       sender = unique_nick("A")
       recipient = unique_nick("B")
-      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "pm:#{pm_topic(sender, recipient)}")
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.inbox(recipient))
 
       assert {:ok, pm} =
                Service.send_private_message(
@@ -233,7 +238,7 @@ defmodule RetroHexChat.Chat.ServiceTest do
       sender = unique_nick("A")
       recipient = unique_nick("B")
       file = prepare_uploaded_file(sender, %{filename: "private.txt", content_type: "text/plain"})
-      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "pm:#{pm_topic(sender, recipient)}")
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.inbox(recipient))
 
       assert {:ok, pm} =
                Service.send_private_message(sender, recipient, "see file", "message",
@@ -331,7 +336,7 @@ defmodule RetroHexChat.Chat.ServiceTest do
     test "broadcasts the persisted content format on PM edit" do
       sender = unique_nick("A")
       recipient = unique_nick("B")
-      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "pm:#{pm_topic(sender, recipient)}")
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.inbox(recipient))
 
       {:ok, pm} =
         Queries.insert_private_message(%{

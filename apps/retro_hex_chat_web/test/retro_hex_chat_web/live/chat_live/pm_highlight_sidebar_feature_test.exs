@@ -30,7 +30,9 @@ defmodule RetroHexChatWeb.ChatLive.PmHighlightSidebarFeatureTest do
         recipient: "irrelevant",
         content: content,
         type: :message,
-        timestamp: DateTime.utc_now()
+        timestamp: DateTime.utc_now(),
+        peer: peer,
+        direction: :incoming
       }
     })
 

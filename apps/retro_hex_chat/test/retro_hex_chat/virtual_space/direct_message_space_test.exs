@@ -157,6 +157,20 @@ defmodule RetroHexChat.VirtualSpace.DirectMessageSpaceTest do
     assert payload.text == "hello private"
   end
 
+  # The runtime watches both participants' inboxes, and a private message is
+  # addressed to each of them, so it sees every message twice. One bubble.
+  test "a private message becomes one bubble, not one per participant" do
+    [local, peer] = participants = unique_participants()
+    ctx = start_private_space(participants, local)
+
+    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "space:#{ctx.space_id}")
+
+    assert {:ok, _pm} = Service.send_private_message(local, peer, "said once")
+
+    assert_receive %{event: "space_message", payload: %{text: "said once"}}
+    refute_receive %{event: "space_message", payload: %{text: "said once"}}
+  end
+
   defp wait_until(fun, retries \\ 50) do
     cond do
       fun.() ->

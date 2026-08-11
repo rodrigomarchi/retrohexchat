@@ -35,7 +35,6 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
   alias RetroHexChatWeb.ChatLive.CommandDispatch
   alias RetroHexChatWeb.ChatLive.Components.{ChannelCentralDialog, HoverCard, Nicklist}
   alias RetroHexChatWeb.ChatLive.Helpers.PathHelpers
-  alias RetroHexChatWeb.ChatLive.Helpers.PM
   alias RetroHexChatWeb.ChatLive.TabOrder
 
   # ── User joined/left/nick_changed ─────────────────────────
@@ -336,21 +335,6 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
   defp rename_pm_state(socket, old_nick, new_nick) do
     session = socket.assigns.session
     open_pm_tabs = socket.assigns[:open_pm_tabs] || []
-
-    socket =
-      if old_nick in session.pm_conversations or old_nick in open_pm_tabs or
-           session.active_pm == old_nick do
-        socket = PM.drop_pm_subscription(socket, old_nick)
-
-        if old_nick in open_pm_tabs or session.active_pm == old_nick do
-          PM.ensure_pm_subscription(socket, new_nick)
-        else
-          socket
-        end
-      else
-        socket
-      end
-
     old_pm_key = "pm:#{old_nick}"
     new_pm_key = "pm:#{new_nick}"
 

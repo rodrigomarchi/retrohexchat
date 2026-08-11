@@ -74,11 +74,7 @@ defmodule RetroHexChat.Chat.Service do
            ) do
       broadcast_edit(message.channel_name, updated)
 
-      update_reply_previews_if_needed(
-        message.id,
-        Content.reply_preview(updated),
-        message.channel_name
-      )
+      refresh_reply_previews(message.id, Content.reply_preview(updated), message.channel_name)
 
       {:ok, updated}
     end
@@ -112,7 +108,7 @@ defmodule RetroHexChat.Chat.Service do
            Queries.update_pm_content(pm, new_content, now, content_format: content_format) do
       broadcast_pm_edit(pm.sender_nickname, pm.recipient_nickname, updated)
 
-      update_pm_reply_previews_if_needed(
+      refresh_pm_reply_previews(
         pm.id,
         Content.reply_preview(updated),
         pm.sender_nickname,
@@ -140,7 +136,7 @@ defmodule RetroHexChat.Chat.Service do
          now <- DateTime.utc_now(),
          {:ok, deleted} <- Queries.soft_delete_message(message, now) do
       broadcast_delete(message.channel_name, deleted)
-      clear_reply_previews_if_needed(message.id, message.channel_name)
+      refresh_reply_previews(message.id, nil, message.channel_name)
       {:ok, deleted}
     end
   end
@@ -162,7 +158,7 @@ defmodule RetroHexChat.Chat.Service do
          now <- DateTime.utc_now(),
          {:ok, deleted} <- Queries.soft_delete_pm(pm, now) do
       broadcast_pm_delete(pm.sender_nickname, pm.recipient_nickname, deleted)
-      clear_pm_reply_previews_if_needed(pm.id, pm.sender_nickname, pm.recipient_nickname)
+      refresh_pm_reply_previews(pm.id, nil, pm.sender_nickname, pm.recipient_nickname)
       {:ok, deleted}
     end
   end
@@ -222,7 +218,6 @@ defmodule RetroHexChat.Chat.Service do
            ) do
       Observability.set_current_span_attributes(%{"chat.message.id" => pm.id})
       broadcast_private_message(sender, recipient, pm)
-      broadcast_private_activity(sender, recipient, pm)
       {:ok, pm}
     end
   end
@@ -367,48 +362,32 @@ defmodule RetroHexChat.Chat.Service do
 
   # ── Reply preview updates ──
 
-  defp update_reply_previews_if_needed(parent_id, preview, channel_name) do
-    reply_ids = Queries.get_reply_ids(parent_id)
+  # A message that was edited and one that was deleted refresh the quotes of
+  # their replies the same way; deleting is refreshing to no preview at all.
+  defp refresh_reply_previews(parent_id, preview, channel_name) do
+    case Queries.get_reply_ids(parent_id) do
+      [] ->
+        :ok
 
-    if reply_ids != [] do
-      Queries.update_reply_previews(parent_id, preview)
-
-      Phoenix.PubSub.broadcast(
-        RetroHexChat.PubSub,
-        Topics.channel(channel_name),
-        %{
-          event: "reply_quote_updated",
-          payload: %{parent_id: parent_id, new_preview: preview, reply_ids: reply_ids}
-        }
-      )
+      reply_ids ->
+        Queries.update_reply_previews(parent_id, preview)
+        broadcast_reply_quotes(parent_id, preview, reply_ids, [Topics.channel(channel_name)])
     end
   end
 
-  defp clear_reply_previews_if_needed(parent_id, channel_name) do
-    reply_ids = Queries.get_reply_ids(parent_id)
+  defp refresh_pm_reply_previews(parent_id, preview, sender, recipient) do
+    case Queries.get_pm_reply_ids(parent_id) do
+      [] ->
+        :ok
 
-    if reply_ids != [] do
-      Queries.update_reply_previews(parent_id, nil)
-
-      Phoenix.PubSub.broadcast(
-        RetroHexChat.PubSub,
-        Topics.channel(channel_name),
-        %{
-          event: "reply_quote_updated",
-          payload: %{parent_id: parent_id, new_preview: nil, reply_ids: reply_ids}
-        }
-      )
+      reply_ids ->
+        Queries.update_pm_reply_previews(parent_id, preview)
+        broadcast_reply_quotes(parent_id, preview, reply_ids, inboxes(sender, recipient))
     end
   end
 
-  defp update_pm_reply_previews_if_needed(parent_id, preview, sender, recipient) do
-    reply_ids = Queries.get_pm_reply_ids(parent_id)
-
-    if reply_ids != [] do
-      Queries.update_pm_reply_previews(parent_id, preview)
-
-      topic = "pm:#{pm_topic(sender, recipient)}"
-
+  defp broadcast_reply_quotes(parent_id, preview, reply_ids, topics) do
+    Enum.each(topics, fn topic ->
       Phoenix.PubSub.broadcast(
         RetroHexChat.PubSub,
         topic,
@@ -417,33 +396,21 @@ defmodule RetroHexChat.Chat.Service do
           payload: %{parent_id: parent_id, new_preview: preview, reply_ids: reply_ids}
         }
       )
-    end
-  end
-
-  defp clear_pm_reply_previews_if_needed(parent_id, sender, recipient) do
-    reply_ids = Queries.get_pm_reply_ids(parent_id)
-
-    if reply_ids != [] do
-      Queries.update_pm_reply_previews(parent_id, nil)
-
-      topic = "pm:#{pm_topic(sender, recipient)}"
-
-      Phoenix.PubSub.broadcast(
-        RetroHexChat.PubSub,
-        topic,
-        %{
-          event: "reply_quote_updated",
-          payload: %{parent_id: parent_id, new_preview: nil, reply_ids: reply_ids}
-        }
-      )
-    end
+    end)
   end
 
   # ── Broadcasts ──
 
+  # A private conversation has no join, so it has no topic of its own that both
+  # people are reliably on: the conversation is created by its first message,
+  # and the reader would have to be listening before it existed. Each person's
+  # inbox is what a channel's topic is for a channel — always subscribed — so
+  # the message is addressed to the two of them, once each.
+  #
+  # The copies differ only in who the other person is and which way the message
+  # went, which is exactly what a reader needs to file it without asking who it
+  # is again.
   defp broadcast_private_message(sender, recipient, pm) do
-    topic = "pm:#{pm_topic(sender, recipient)}"
-
     payload = %{
       sender: pm.sender_nickname,
       recipient: pm.recipient_nickname,
@@ -462,76 +429,27 @@ defmodule RetroHexChat.Chat.Service do
       [:retro_hex_chat, :chat, :message, :broadcast],
       broadcast_metadata(:private, payload.type, "new_pm", pm.id),
       fn ->
-        case Phoenix.PubSub.broadcast(RetroHexChat.PubSub, topic, %{
-               event: "new_pm",
-               payload: payload
-             }) do
-          :ok ->
-            :ok
-
-          {:error, reason} ->
-            Logger.warning("PubSub broadcast for private message failed: #{inspect(reason)}")
-            {:error, reason}
-        end
+        [{sender, recipient, :outgoing}, {recipient, sender, :incoming}]
+        |> Enum.map(fn {nickname, peer, direction} ->
+          deliver_private(nickname, Map.merge(payload, %{peer: peer, direction: direction}))
+        end)
+        |> Enum.find(:ok, &match?({:error, _reason}, &1))
       end
     )
   end
 
-  defp broadcast_private_activity(sender, recipient, pm) do
-    timestamp = pm.inserted_at
-    type = safe_type_atom(pm.type)
+  defp deliver_private(nickname, payload) do
+    case Phoenix.PubSub.broadcast(RetroHexChat.PubSub, Topics.inbox(nickname), %{
+           event: "new_pm",
+           payload: payload
+         }) do
+      :ok ->
+        :ok
 
-    # The body travels with the activity notice, not only on the conversation's
-    # own topic. A conversation's first message is the one message that topic
-    # cannot deliver — the recipient subscribes *because* of it — so anything
-    # that must see every message, rather than every message after the first,
-    # has to read it from here.
-    broadcast_user_pm_activity(sender, %{
-      peer: recipient,
-      message_id: pm.id,
-      type: type,
-      timestamp: timestamp,
-      direction: :outgoing,
-      content: pm.content,
-      content_format: pm.content_format
-    })
-
-    broadcast_user_pm_activity(recipient, %{
-      peer: sender,
-      message_id: pm.id,
-      type: type,
-      timestamp: timestamp,
-      direction: :incoming,
-      content: pm.content,
-      content_format: pm.content_format
-    })
-  end
-
-  defp broadcast_user_pm_activity(nickname, payload) do
-    topic = Topics.inbox(nickname)
-
-    Observability.span(
-      [:retro_hex_chat, :chat, :message, :broadcast],
-      broadcast_metadata(
-        :private,
-        Map.get(payload, :type),
-        "pm_activity",
-        Map.get(payload, :message_id)
-      ),
-      fn ->
-        case Phoenix.PubSub.broadcast(RetroHexChat.PubSub, topic, {:pm_activity, payload}) do
-          :ok ->
-            :ok
-
-          {:error, reason} ->
-            Logger.warning(
-              "PubSub broadcast for private message activity failed: #{inspect(reason)}"
-            )
-
-            {:error, reason}
-        end
-      end
-    )
+      {:error, reason} ->
+        Logger.warning("PubSub broadcast for private message failed: #{inspect(reason)}")
+        {:error, reason}
+    end
   end
 
   defp broadcast_message(channel_name, message) do
@@ -591,22 +509,16 @@ defmodule RetroHexChat.Chat.Service do
   end
 
   defp broadcast_pm_edit(sender, recipient, pm) do
-    topic = "pm:#{pm_topic(sender, recipient)}"
-
-    Phoenix.PubSub.broadcast(
-      RetroHexChat.PubSub,
-      topic,
-      %{
-        event: "message_edited",
-        payload: %{
-          id: pm.id,
-          content: pm.content,
-          content_format: content_format(pm),
-          edited_at: pm.edited_at,
-          sender: sender
-        }
+    broadcast_to_inboxes(sender, recipient, %{
+      event: "message_edited",
+      payload: %{
+        id: pm.id,
+        content: pm.content,
+        content_format: content_format(pm),
+        edited_at: pm.edited_at,
+        sender: sender
       }
-    )
+    })
   end
 
   defp broadcast_delete(channel_name, message) do
@@ -621,17 +533,19 @@ defmodule RetroHexChat.Chat.Service do
   end
 
   defp broadcast_pm_delete(sender, recipient, pm) do
-    topic = "pm:#{pm_topic(sender, recipient)}"
-
-    Phoenix.PubSub.broadcast(
-      RetroHexChat.PubSub,
-      topic,
-      %{
-        event: "message_deleted",
-        payload: %{id: pm.id, deleted_at: pm.deleted_at, sender: sender}
-      }
-    )
+    broadcast_to_inboxes(sender, recipient, %{
+      event: "message_deleted",
+      payload: %{id: pm.id, deleted_at: pm.deleted_at, sender: sender}
+    })
   end
+
+  defp broadcast_to_inboxes(sender, recipient, message) do
+    Enum.each(inboxes(sender, recipient), fn topic ->
+      Phoenix.PubSub.broadcast(RetroHexChat.PubSub, topic, message)
+    end)
+  end
+
+  defp inboxes(sender, recipient), do: [Topics.inbox(sender), Topics.inbox(recipient)]
 
   @known_types ~w(message action system service error notice p2p_invite p2p_system)a
   @type_string_to_atom Map.new(@known_types, fn a -> {Atom.to_string(a), a} end)
@@ -641,10 +555,6 @@ defmodule RetroHexChat.Chat.Service do
   end
 
   defp safe_type_atom(type), do: type
-
-  defp pm_topic(nick_a, nick_b) do
-    [nick_a, nick_b] |> Enum.sort() |> Enum.join(":")
-  end
 
   defp content_format_from_opts(opts) do
     opts

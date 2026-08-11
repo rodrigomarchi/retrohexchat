@@ -872,7 +872,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
       # The conversation topics this connection is on. Subscribing is not
       # idempotent, so the set is what keeps a second visit to the same
       # conversation from doubling every message it delivers.
-      pm_subscriptions: MapSet.new(),
       tab_order: [],
       status_unread: false,
       highlight_channels: MapSet.new(),

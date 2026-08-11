@@ -36,7 +36,9 @@ defmodule RetroHexChatWeb.ChatLive.SystemMessageSpamFeatureTest do
         recipient: "irrelevant",
         content: @content,
         type: type,
-        timestamp: DateTime.utc_now()
+        timestamp: DateTime.utc_now(),
+        peer: peer,
+        direction: :incoming
       }
     })
 

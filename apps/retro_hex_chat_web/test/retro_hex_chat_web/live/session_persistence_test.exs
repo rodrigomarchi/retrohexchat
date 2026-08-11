@@ -31,14 +31,19 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
   end
 
   defp pm_activity(peer, direction \\ :incoming, type \\ :message) do
-    {:pm_activity,
-     %{
-       peer: peer,
-       message_id: uid(),
-       type: type,
-       timestamp: DateTime.utc_now(),
-       direction: direction
-     }}
+    %{
+      event: "new_pm",
+      payload: %{
+        id: uid(),
+        sender: peer,
+        recipient: "irrelevant",
+        content: "hello",
+        type: type,
+        timestamp: DateTime.utc_now(),
+        peer: peer,
+        direction: direction
+      }
+    }
   end
 
   defp assigns(view), do: :sys.get_state(view.pid).socket.assigns

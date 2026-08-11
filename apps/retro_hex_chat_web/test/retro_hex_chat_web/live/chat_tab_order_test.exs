@@ -4,14 +4,19 @@ defmodule RetroHexChatWeb.ChatTabOrderTest do
   @moduletag :liveview
 
   defp pm_activity(peer) do
-    {:pm_activity,
-     %{
-       peer: peer,
-       message_id: System.unique_integer([:positive]),
-       type: :message,
-       timestamp: DateTime.utc_now(),
-       direction: :incoming
-     }}
+    %{
+      event: "new_pm",
+      payload: %{
+        id: System.unique_integer([:positive]),
+        sender: peer,
+        recipient: "irrelevant",
+        content: "hello",
+        type: :message,
+        timestamp: DateTime.utc_now(),
+        peer: peer,
+        direction: :incoming
+      }
+    }
   end
 
   defp tab_labels(html) do

@@ -68,8 +68,6 @@ defmodule RetroHexChatWeb.ChatLive.Helpers do
 
   defdelegate open_pm_conversation(socket, target), to: __MODULE__.PM
   defdelegate handle_pm_send(socket, target, content), to: __MODULE__.PM
-  defdelegate ensure_pm_subscription(socket, peer), to: __MODULE__.PM
-  defdelegate pm_topic(nick_a, nick_b), to: __MODULE__.PM
   defdelegate send_plain_message(socket, session, text), to: __MODULE__.PM
   defdelegate handle_notice_send(socket, session, target, content), to: __MODULE__.PM
   defdelegate handle_action_message(socket, session, content), to: __MODULE__.PM

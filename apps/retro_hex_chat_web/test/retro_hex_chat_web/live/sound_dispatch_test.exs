@@ -27,17 +27,22 @@ defmodule RetroHexChatWeb.SoundDispatchTest do
     render(view)
   end
 
-  defp send_pm_activity(view, sender, _recipient, _content) do
+  defp send_pm_activity(view, sender, recipient, content) do
     send(
       view.pid,
-      {:pm_activity,
-       %{
-         peer: sender,
-         message_id: "pm-#{uid()}",
-         type: :message,
-         timestamp: DateTime.utc_now(),
-         direction: :incoming
-       }}
+      %{
+        event: "new_pm",
+        payload: %{
+          id: System.unique_integer([:positive]),
+          sender: sender,
+          recipient: recipient,
+          content: content,
+          type: :message,
+          timestamp: DateTime.utc_now(),
+          peer: sender,
+          direction: :incoming
+        }
+      }
     )
 
     :timer.sleep(5)

@@ -133,8 +133,6 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   # -- switch_pm --
 
   def handle_event("switch_pm", %{"nickname" => nickname}, socket) do
-    socket = PM.ensure_pm_subscription(socket, nickname)
-
     session =
       socket.assigns.session
       |> Session.add_pm_conversation(nickname)
@@ -188,9 +186,6 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
 
   def handle_event("close_pm_tab", %{"nickname" => nickname}, socket) do
     old_session = socket.assigns.session
-    topic = "pm:#{PM.pm_topic(old_session.nickname, nickname)}"
-    Phoenix.PubSub.unsubscribe(RetroHexChat.PubSub, topic)
-
     remaining_pm_tabs = List.delete(socket.assigns[:open_pm_tabs] || [], nickname)
 
     {session, show_status_tab} =

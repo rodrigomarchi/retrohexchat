@@ -3,6 +3,8 @@ defmodule RetroHexChatWeb.TypingIndicatorTest do
 
   @moduletag :liveview
 
+  alias RetroHexChat.Topics
+
   defp open_pm_with(view, _nick, other) do
     # Initiate PM via context menu
     render_click(view, "nick_right_click", %{"nick" => other, "x" => 0, "y" => 0})
@@ -124,31 +126,28 @@ defmodule RetroHexChatWeb.TypingIndicatorTest do
   # ── Typing event broadcasting ────────────────────────────
 
   describe "typing event broadcasting" do
-    test "pm_typing broadcasts to PM topic", %{conn: conn} do
+    test "pm_typing reaches the person being typed at", %{conn: conn} do
       nick = "TBc#{uid()}"
       other = "Grace"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       open_pm_with(view, nick, other)
 
-      # Subscribe to the PM topic
-      topic = "pm:#{Enum.sort([nick, other]) |> Enum.join(":")}"
-      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, topic)
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.inbox(other))
 
       render_hook(view, "pm_typing", %{})
 
       assert_receive %{event: "typing", payload: %{nickname: ^nick}}, 1000
     end
 
-    test "pm_stop_typing broadcasts to PM topic", %{conn: conn} do
+    test "pm_stop_typing reaches the person being typed at", %{conn: conn} do
       nick = "TSBc#{uid()}"
       other = "Heidi"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       open_pm_with(view, nick, other)
 
-      topic = "pm:#{Enum.sort([nick, other]) |> Enum.join(":")}"
-      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, topic)
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.inbox(other))
 
       render_hook(view, "pm_stop_typing", %{})
 

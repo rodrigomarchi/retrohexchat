@@ -164,44 +164,6 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
     end
   end
 
-  # ── PM activity (sidebar/unread) ───────────────────────────
-
-  def handle_info({:pm_activity, payload}, socket) do
-    session = socket.assigns.session
-    peer = Map.get(payload, :peer)
-    direction = Map.get(payload, :direction, :incoming)
-    msg_type = private_ignore_type(Map.get(payload, :type, :pm))
-
-    cond do
-      not is_binary(peer) ->
-        {:halt, socket}
-
-      IgnoreList.ignored?(session.ignore_list, peer, msg_type) ->
-        {:halt, socket}
-
-      true ->
-        # Asked before the tab is opened, because opening it is what subscribes.
-        first_of_conversation? = not PM.subscribed_to_pm?(socket, peer)
-
-        socket =
-          socket
-          |> record_pm_activity(peer)
-          |> maybe_open_pm_activity_tab(peer, direction, msg_type)
-          |> maybe_capture_first_pm(payload, peer, direction, first_of_conversation?)
-          |> maybe_mark_pm_activity_unread(peer, direction)
-          |> maybe_refresh_p2p_pm_read_model(peer, msg_type)
-          |> PM.maybe_auto_add_to_notify(peer)
-
-        session = socket.assigns.session
-
-        if direction == :incoming do
-          {:halt, maybe_away_auto_reply(socket, peer, session)}
-        else
-          {:halt, socket}
-        end
-    end
-  end
-
   # ── Catch-all: pass unhandled to next hook ────────────────
 
   def handle_info(_, socket), do: {:cont, socket}
@@ -254,11 +216,17 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
     end
   end
 
+  # A private message is delivered once to each of the two people in it, and
+  # everything that message causes — the row, the tab, the unread badge, the
+  # sound — happens here. It used to arrive twice, on two topics, in two shapes:
+  # one carried the message and could not reach a conversation the reader had
+  # not opened yet, the other reached everybody and carried half the fields. The
+  # seam between them is where the first message of a conversation, its link
+  # previews and its highlight kept falling through.
   defp do_handle_new_pm(payload, socket) do
     session = socket.assigns.session
-    msg_type = private_ignore_type(payload.type)
 
-    if IgnoreList.ignored?(session.ignore_list, payload.sender, msg_type) do
+    if unwanted?(payload, session) do
       {:halt, socket}
     else
       socket = remember_for_duplicates(socket, payload, payload.sender, {:pm, payload.sender})
@@ -266,13 +234,19 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
       if spam?(socket, payload, payload.sender, {:pm, payload.sender}, session) do
         {:halt, socket}
       else
-        {:halt,
-         socket
-         |> push_event("tip_trigger", %{tip: "first_pm"})
-         |> apply_new_pm(payload, session)}
+        {:halt, apply_new_pm(socket, payload, session)}
       end
     end
   end
+
+  # Somebody can be refused; oneself cannot. The two halves of this used to
+  # disagree about that — a message written to an ignored person drew its row
+  # while its tab, its place in the conversation list and its notify-list entry
+  # were all dropped.
+  defp unwanted?(%{direction: :incoming, peer: peer} = payload, session),
+    do: IgnoreList.ignored?(session.ignore_list, peer, private_ignore_type(payload.type))
+
+  defp unwanted?(_payload, _session), do: false
 
   defp route_notice(socket, _session, sender, content) do
     notice = notice_message(sender, content)
@@ -348,29 +322,21 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
       else: socket.assigns.highlight_channels
   end
 
-  defp apply_new_pm(socket, payload, session) do
-    socket = check_flood_and_auto_ignore(socket, payload.sender, :message, session)
-    other_nick = pm_other_nick(payload, session.nickname)
-
+  defp apply_new_pm(socket, %{peer: peer} = payload, session) do
     socket =
-      capture_urls(
-        socket,
+      socket
+      |> assign(session: Session.add_pm_conversation(session, peer))
+      |> PM.ensure_pm_tab(peer)
+      |> check_flood_and_auto_ignore(payload.sender, :message, session)
+      |> capture_urls(
         payload.content,
-        other_nick,
+        peer,
         :pm,
         payload.sender,
         payload_content_format(payload)
       )
-
-    socket =
-      if socket.assigns.pm_typing_from == payload.sender do
-        if socket.assigns.pm_typing_timer,
-          do: Process.cancel_timer(socket.assigns.pm_typing_timer)
-
-        assign(socket, pm_typing_from: nil, pm_typing_timer: nil)
-      else
-        socket
-      end
+      |> clear_typing_indicator(payload.sender)
+      |> push_event("tip_trigger", %{tip: "first_pm"})
 
     # The row is built before it is decorated, which is what lets a highlight
     # word reach a private conversation the way it reaches a channel: the row
@@ -382,83 +348,55 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
       |> StreamItem.from_private_message()
       |> maybe_highlight(session)
 
-    socket =
-      socket
-      |> maybe_play_highlight_sound(decorated, session)
-      |> maybe_push_highlight_tip(decorated)
-
-    cond do
-      session.active_pm != other_nick ->
-        mark_pm_highlight(socket, decorated, other_nick)
-
-      MessageHelpers.cleared_from_conversation?(socket, "pm:#{other_nick}", decorated) ->
-        socket
-
-      true ->
-        MessageViewport.insert(socket, decorated)
-    end
+    socket
+    |> maybe_play_highlight_sound(decorated, session)
+    |> maybe_push_highlight_tip(decorated)
+    |> place_pm_row(decorated, payload)
+    |> maybe_refresh_p2p_pm_read_model(peer, private_ignore_type(payload.type))
+    |> PM.maybe_auto_add_to_notify(peer)
+    |> maybe_away_auto_reply(payload)
   end
 
-  # A highlight in a conversation that is not on screen has to leave a mark, or
-  # the only sign it happened is a sound the reader may not have been there for.
-  # The sidebar reads one set for both kinds of conversation; only the channel
-  # side ever wrote into it.
-  defp mark_pm_highlight(socket, decorated, peer) do
-    if Map.get(decorated, :highlighted) do
-      highlight = MapSet.put(socket.assigns.highlight_channels, "pm:#{peer}")
-      assign(socket, highlight_channels: highlight)
+  defp clear_typing_indicator(socket, sender) do
+    if socket.assigns.pm_typing_from == sender do
+      if socket.assigns.pm_typing_timer, do: Process.cancel_timer(socket.assigns.pm_typing_timer)
+      assign(socket, pm_typing_from: nil, pm_typing_timer: nil)
     else
       socket
     end
   end
 
-  # Exactly one message per conversation is captured here: the one that opened
-  # it. Every later message reaches `do_handle_new_pm` on the conversation's own
-  # topic and is captured there, so capturing again would file the same link
-  # twice.
-  defp maybe_capture_first_pm(socket, payload, peer, :incoming, true) do
-    case Map.get(payload, :content) do
-      content when is_binary(content) ->
-        capture_urls(
-          socket,
-          content,
-          peer,
-          :pm,
-          peer,
-          Map.get(payload, :content_format) || "irc"
-        )
-
-      _ ->
-        socket
-    end
-  end
-
-  defp maybe_capture_first_pm(socket, _payload, _peer, _direction, _first?), do: socket
-
-  defp record_pm_activity(socket, peer) do
-    session = socket.assigns.session
-    assign(socket, session: Session.add_pm_conversation(session, peer))
-  end
-
-  defp maybe_open_pm_activity_tab(socket, peer, _direction, _type),
-    do: PM.ensure_pm_tab(socket, peer)
-
-  defp maybe_mark_pm_activity_unread(socket, sender, :incoming) do
-    session = socket.assigns.session
-
-    if session.active_pm == sender do
-      socket
+  defp place_pm_row(socket, decorated, %{peer: peer} = payload) do
+    if socket.assigns.session.active_pm == peer do
+      if MessageHelpers.cleared_from_conversation?(socket, "pm:#{peer}", decorated),
+        do: socket,
+        else: MessageViewport.insert(socket, decorated)
     else
-      pm_key = "pm:#{sender}"
-      unread_counts = UnreadTracker.increment(socket.assigns.unread_counts, pm_key)
-
-      socket
-      |> maybe_notify_pm_unmuted(pm_key, session)
-      |> assign(unread_counts: unread_counts)
+      mark_pm_background(socket, decorated, payload)
     end
   end
 
-  defp maybe_mark_pm_activity_unread(socket, _sender, _direction), do: socket
+  # A conversation nobody is looking at is marked the way a channel is: the
+  # sidebar reads one set of unread counts, one set of flashes and one set of
+  # highlights for both kinds of conversation. Only what somebody else wrote is
+  # unread — a message of one's own arrives here too, from another window.
+  defp mark_pm_background(socket, decorated, %{peer: peer} = payload) do
+    key = "pm:#{peer}"
+    socket = maybe_count_pm_unread(socket, key, payload)
+
+    assign(socket, highlight_channels: maybe_add_highlight_channel(socket, decorated, key))
+  end
+
+  defp maybe_count_pm_unread(socket, key, %{direction: :incoming}) do
+    session = socket.assigns.session
+    unread_counts = UnreadTracker.increment(socket.assigns.unread_counts, key)
+
+    socket
+    |> maybe_notify_pm_unmuted(key, session)
+    |> assign(unread_counts: unread_counts)
+  end
+
+  defp maybe_count_pm_unread(socket, _key, _decorated), do: socket
 
   defp maybe_refresh_p2p_pm_read_model(socket, peer, :invite),
     do: P2PSessionEvents.refresh_pm_session_read_model(socket, peer)
@@ -475,7 +413,12 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
     end
   end
 
-  defp maybe_away_auto_reply(socket, sender, session) do
+  defp maybe_away_auto_reply(socket, %{direction: :incoming, peer: peer}),
+    do: away_auto_reply(socket, peer, socket.assigns.session)
+
+  defp maybe_away_auto_reply(socket, _payload), do: socket
+
+  defp away_auto_reply(socket, sender, session) do
     replied_to = socket.assigns.away_replied_to
 
     if session.away && sender != session.nickname &&
@@ -503,10 +446,6 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
     else
       socket
     end
-  end
-
-  defp pm_other_nick(payload, my_nick) do
-    if payload.sender == my_nick, do: payload.recipient, else: payload.sender
   end
 
   defp payload_content_format(payload), do: Map.get(payload, :content_format) || "irc"
@@ -606,15 +545,12 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
   end
 
   defp receive_metadata(:private, payload, socket) do
-    session = socket.assigns.session
-    other_nick = pm_other_nick(payload, session.nickname)
-
     %{
       "chat.message.id" => Map.get(payload, :id),
       conversation_type: "private",
       message_type: normalize_message_type(Map.get(payload, :type)),
       message_size_bytes: payload_size(payload),
-      active_context: session.active_pm == other_nick
+      active_context: socket.assigns.session.active_pm == Map.get(payload, :peer)
     }
   end
 

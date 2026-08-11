@@ -73,7 +73,9 @@ defmodule RetroHexChatWeb.ChatLive.HighlightReachFeatureTest do
         recipient: nick,
         content: "hey #{nick}, look at this",
         type: :message,
-        timestamp: DateTime.utc_now()
+        timestamp: DateTime.utc_now(),
+        peer: peer,
+        direction: :incoming
       }
     })
 
@@ -95,7 +97,9 @@ defmodule RetroHexChatWeb.ChatLive.HighlightReachFeatureTest do
         recipient: nick,
         content: "nothing to see",
         type: :message,
-        timestamp: DateTime.utc_now()
+        timestamp: DateTime.utc_now(),
+        peer: peer,
+        direction: :incoming
       }
     })
 
