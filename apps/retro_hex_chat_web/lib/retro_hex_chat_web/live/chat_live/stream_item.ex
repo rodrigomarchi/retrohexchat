@@ -11,9 +11,8 @@ defmodule RetroHexChatWeb.ChatLive.StreamItem do
 
   Only three things genuinely differ, and they are all about where a value is
   read from rather than what it means — who wrote it, when, and under which id.
-  A private message can arrive straight from the database or from a broadcast
-  that spelled the same field differently, so its readers try each spelling in
-  turn; a channel message always comes from the database.
+  Either kind can arrive straight from the database or from a broadcast that
+  spelled the same field differently, so the readers try each spelling in turn.
 
   A field the source does not carry is left out rather than written as `nil`,
   because the row distinguishes absent from empty: a message with no reply is
@@ -37,9 +36,9 @@ defmodule RetroHexChatWeb.ChatLive.StreamItem do
   def from_message(message) do
     message
     |> base(
-      Map.get(message, :id),
-      Map.get(message, :author_nickname),
-      Map.get(message, :inserted_at)
+      first_present(message, [:id]),
+      first_present(message, [:author, :author_nickname]),
+      first_present(message, [:timestamp, :inserted_at])
     )
     |> put_optional(message)
   end

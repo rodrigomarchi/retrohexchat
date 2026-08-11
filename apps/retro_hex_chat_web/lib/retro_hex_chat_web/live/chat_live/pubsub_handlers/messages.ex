@@ -228,7 +228,14 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
         {:halt, socket}
       else
         socket = check_flood_and_auto_ignore(socket, payload.author, payload.type, session)
-        decorated = maybe_highlight(payload, session)
+
+        # Built before it is decorated, and built by the same thing that builds
+        # every other row — a channel message arriving live used to be the one
+        # row assembled by hand, in the shape the broadcast happened to have.
+        decorated =
+          payload
+          |> StreamItem.from_message()
+          |> maybe_highlight(session)
 
         socket =
           socket

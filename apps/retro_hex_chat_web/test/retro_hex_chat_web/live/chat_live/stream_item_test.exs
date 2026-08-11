@@ -33,6 +33,49 @@ defmodule RetroHexChatWeb.ChatLive.StreamItemTest do
     )
   end
 
+  describe "either kind can arrive from the database or from a broadcast" do
+    # A channel message used to be readable only in its database spelling, so a
+    # message arriving live was assembled by hand in the shape the broadcast
+    # happened to have. Reading both spellings is what lets one builder serve
+    # both arrivals, as it already did for private messages.
+    test "a channel message reads the same from either spelling" do
+      from_database = channel_message()
+
+      from_broadcast = %{
+        id: 1,
+        author: "Ada",
+        content: "hello",
+        type: "message",
+        timestamp: @at,
+        channel: "#lobby"
+      }
+
+      assert StreamItem.from_message(from_broadcast) == StreamItem.from_message(from_database)
+    end
+
+    test "the conversation a broadcast names is not part of the row" do
+      row = StreamItem.from_message(%{id: 1, author: "Ada", content: "hi", timestamp: @at})
+
+      refute Map.has_key?(row, :channel)
+    end
+
+    test "a broadcast that says nothing about a reply produces no reply keys" do
+      row =
+        StreamItem.from_message(%{
+          id: 1,
+          author: "Ada",
+          content: "hi",
+          timestamp: @at,
+          reply_to_id: nil,
+          reply_to_author: nil,
+          reply_to_preview: nil
+        })
+
+      refute Map.has_key?(row, :reply_to_id)
+      refute Map.has_key?(row, :reply_to_author)
+    end
+  end
+
   describe "the shape both conversations produce" do
     test "a channel message and a private message become the same row" do
       assert StreamItem.from_message(channel_message()) ==
