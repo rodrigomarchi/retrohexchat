@@ -27,6 +27,18 @@ defmodule RetroHexChat.Presence.NotifyListPersistenceTest do
       assert :ok = NotifyList.save("TestOwner", list)
     end
 
+    # `save/2` inserts with `Repo.insert!`, so a note the column rejects raises
+    # rather than returning an error. Cutting the note where the entry is built
+    # is what keeps that from being reachable from `/notify add`.
+    test "a note longer than the column allows still saves" do
+      list = NotifyList.new()
+      {:ok, list} = NotifyList.add_entry(list, "TestOwner", "Alice", String.duplicate("a", 500))
+
+      assert :ok = NotifyList.save("TestOwner", list)
+      assert {:ok, loaded} = NotifyList.load("TestOwner")
+      assert String.length(hd(loaded.entries).note) == 200
+    end
+
     test "load restores all entries and notes" do
       list = NotifyList.new()
       {:ok, list} = NotifyList.add_entry(list, "TestOwner", "Alice", "Best friend")

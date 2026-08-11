@@ -85,6 +85,32 @@ defmodule RetroHexChat.Presence.NotifyListTest do
 
       assert length(list.entries) == 50
     end
+
+    # A note longer than the column allows used to reach `save/2` untruncated
+    # and raise inside its `Repo.insert!`, because only `update_note/3` cut it.
+    test "cuts a note to what the entry can hold, as updating one does" do
+      long = String.duplicate("a", 500)
+
+      {:ok, added} = NotifyList.add_entry(NotifyList.new(), "Owner", "Alice", long)
+      {:ok, updated} = NotifyList.update_note(added, "Alice", long)
+
+      assert String.length(hd(added.entries).note) == 200
+      assert hd(added.entries).note == hd(updated.entries).note
+    end
+
+    test "a rotated-in entry is cut the same way" do
+      long = String.duplicate("a", 500)
+
+      list =
+        Enum.reduce(1..50, NotifyList.new(), fn i, acc ->
+          {:ok, acc} = NotifyList.add_entry(acc, "Owner", "Nick#{i}", nil)
+          acc
+        end)
+
+      {:ok, rotated} = NotifyList.add_entry_with_rotation(list, "Owner", "Alice", long)
+
+      assert String.length(List.last(rotated.entries).note) == 200
+    end
   end
 
   describe "remove_entry/2" do

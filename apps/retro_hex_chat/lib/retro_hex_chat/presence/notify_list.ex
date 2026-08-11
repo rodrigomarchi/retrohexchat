@@ -9,14 +9,14 @@ defmodule RetroHexChat.Presence.NotifyList do
 
   import Ecto.Query
 
+  alias RetroHexChat.NicknameList
   alias RetroHexChat.Presence.NotifyEntry
   alias RetroHexChat.Presence.NotifyListEntry
   alias RetroHexChat.Presence.NotifyListSettings
   alias RetroHexChat.Repo
   alias RetroHexChat.Services.NickServ
 
-  @max_entries 50
-  @max_note_length 200
+  @list NicknameList.new(field: :tracked_nickname, max_entries: 50, max_note_length: 200)
 
   # ---------------------------------------------------------------------------
   # In-Memory CRUD (T011)
@@ -41,8 +41,7 @@ defmodule RetroHexChat.Presence.NotifyList do
         {:error, :list_full}
 
       true ->
-        entry = NotifyEntry.new(tracked_nickname: tracked_nickname, note: note)
-        {:ok, %{notify_list | entries: notify_list.entries ++ [entry]}}
+        {:ok, %{notify_list | entries: notify_list.entries ++ [entry(tracked_nickname, note)]}}
     end
   end
 
@@ -58,45 +57,35 @@ defmodule RetroHexChat.Presence.NotifyList do
 
       full?(notify_list) ->
         # Rotate: remove oldest (first in list), then append new.
-        # Safe: full?/1 guarantees entries is non-empty (count >= @max_entries).
+        # Safe: full?/1 guarantees entries is non-empty.
         [_oldest | rest] = notify_list.entries
-        entry = NotifyEntry.new(tracked_nickname: tracked_nickname, note: note)
-        {:ok, %{notify_list | entries: rest ++ [entry]}}
+        {:ok, %{notify_list | entries: rest ++ [entry(tracked_nickname, note)]}}
 
       true ->
-        entry = NotifyEntry.new(tracked_nickname: tracked_nickname, note: note)
-        {:ok, %{notify_list | entries: notify_list.entries ++ [entry]}}
+        {:ok, %{notify_list | entries: notify_list.entries ++ [entry(tracked_nickname, note)]}}
     end
   end
 
   @spec remove_entry(map(), String.t()) :: {:ok, map()} | {:error, :not_found}
   def remove_entry(notify_list, tracked_nickname) do
-    downcased = String.downcase(tracked_nickname)
-
-    case Enum.split_with(notify_list.entries, fn e ->
-           String.downcase(e.tracked_nickname) == downcased
-         end) do
-      {[], _rest} ->
-        {:error, :not_found}
-
-      {_found, remaining} ->
-        {:ok, %{notify_list | entries: remaining}}
+    case NicknameList.remove(@list, notify_list.entries, tracked_nickname) do
+      {:ok, remaining} -> {:ok, %{notify_list | entries: remaining}}
+      :not_found -> {:error, :not_found}
     end
   end
 
   @spec update_note(map(), String.t(), String.t() | nil) :: {:ok, map()} | {:error, :not_found}
   def update_note(notify_list, tracked_nickname, note) do
-    downcased = String.downcase(tracked_nickname)
-    truncated_note = truncate_note(note)
+    truncated = NicknameList.truncate_note(@list, note)
 
-    case find_and_update(notify_list.entries, downcased, fn entry ->
-           %{entry | note: truncated_note}
-         end) do
-      {:ok, updated_entries} ->
-        {:ok, %{notify_list | entries: updated_entries}}
-
-      :not_found ->
-        {:error, :not_found}
+    case NicknameList.update(
+           @list,
+           notify_list.entries,
+           tracked_nickname,
+           &%{&1 | note: truncated}
+         ) do
+      {:ok, updated_entries} -> {:ok, %{notify_list | entries: updated_entries}}
+      :not_found -> {:error, :not_found}
     end
   end
 
@@ -167,25 +156,21 @@ defmodule RetroHexChat.Presence.NotifyList do
 
   @spec tracking?(map(), String.t()) :: boolean()
   def tracking?(notify_list, nickname) do
-    downcased = String.downcase(nickname)
-
-    Enum.any?(notify_list.entries, fn entry ->
-      String.downcase(entry.tracked_nickname) == downcased
-    end)
+    NicknameList.member?(@list, notify_list.entries, nickname)
   end
 
   @spec online_buddies(map()) :: [NotifyEntry.t()]
   def online_buddies(notify_list) do
     notify_list.entries
     |> Enum.filter(& &1.online)
-    |> Enum.sort_by(&String.downcase(&1.tracked_nickname))
+    |> then(&NicknameList.sorted(@list, &1))
   end
 
   @spec offline_buddies(map()) :: [NotifyEntry.t()]
   def offline_buddies(notify_list) do
     notify_list.entries
     |> Enum.reject(& &1.online)
-    |> Enum.sort_by(&String.downcase(&1.tracked_nickname))
+    |> then(&NicknameList.sorted(@list, &1))
   end
 
   @spec sorted_entries(map()) :: [NotifyEntry.t()]
@@ -200,7 +185,7 @@ defmodule RetroHexChat.Presence.NotifyList do
 
   @spec full?(map()) :: boolean()
   def full?(notify_list) do
-    count(notify_list) >= @max_entries
+    NicknameList.full?(@list, notify_list.entries)
   end
 
   # ---------------------------------------------------------------------------
@@ -370,30 +355,12 @@ defmodule RetroHexChat.Presence.NotifyList do
   defp apply_online_status(entry, false),
     do: %{entry | online: false, last_seen_at: DateTime.utc_now()}
 
-  @spec truncate_note(String.t() | nil) :: String.t() | nil
-  defp truncate_note(nil), do: nil
-
-  defp truncate_note(note) when is_binary(note) do
-    String.slice(note, 0, @max_note_length)
-  end
-
-  @spec find_and_update([NotifyEntry.t()], String.t(), (NotifyEntry.t() -> NotifyEntry.t())) ::
-          {:ok, [NotifyEntry.t()]} | :not_found
-  defp find_and_update(entries, downcased_nick, update_fn) do
-    {found, updated} =
-      Enum.reduce(entries, {false, []}, fn entry, {found?, acc} ->
-        if String.downcase(entry.tracked_nickname) == downcased_nick do
-          {true, [update_fn.(entry) | acc]}
-        else
-          {found?, [entry | acc]}
-        end
-      end)
-
-    if found do
-      {:ok, Enum.reverse(updated)}
-    else
-      :not_found
-    end
+  @spec entry(String.t(), String.t() | nil) :: NotifyEntry.t()
+  defp entry(tracked_nickname, note) do
+    NotifyEntry.new(
+      tracked_nickname: tracked_nickname,
+      note: NicknameList.truncate_note(@list, note)
+    )
   end
 
   @spec upsert_settings(String.t(), map()) :: {:ok, NotifyListSettings.t()} | {:error, term()}
