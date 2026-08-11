@@ -12,6 +12,21 @@ defmodule RetroHexChat.ProcessRegistryTest do
     {:ok, registry: name}
   end
 
+  # A registry forgets a dead process from its own partition process, so the
+  # `:DOWN` this test received says the agent is gone — not that the registry
+  # has noticed. The partition's own `:DOWN` was sent at the same exit and is
+  # therefore already in its mailbox, and a synchronous call lands behind it.
+  #
+  # `Registry.unregister/2` is not that call: for a unique registry it writes to
+  # ETS without reaching the partition at all, which a measurement caught after
+  # it looked like a fix. Left as it stands, the lookup below is a race that
+  # lost one `make ci` run in several.
+  defp settle(registry) do
+    registry
+    |> Supervisor.which_children()
+    |> Enum.each(fn {_id, partition, _type, _modules} -> :sys.get_state(partition) end)
+  end
+
   defp start_under(registry, key) do
     via = ProcessRegistry.via_tuple(registry, key)
     {:ok, pid} = Agent.start_link(fn -> :registered end, name: via)
@@ -50,6 +65,7 @@ defmodule RetroHexChat.ProcessRegistryTest do
 
       Agent.stop(pid)
       assert_receive {:DOWN, ^ref, :process, ^pid, _reason}
+      settle(ctx.registry)
 
       assert ProcessRegistry.lookup(ctx.registry, "#closing") == {:error, :not_found}
     end
