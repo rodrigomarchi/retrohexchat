@@ -89,7 +89,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Whois do
   defp lookup_whois_data(socket, target) do
     normalized_target = String.trim(target || "")
     session = socket.assigns.session
-    target_meta = find_user_presence(normalized_target, session.channels)
+    target_meta = Tracker.find_user(normalized_target, session.channels)
 
     if target_meta == nil and normalized_target != session.nickname do
       {:error, dgettext("chat", "* %{target} is not online.", target: normalized_target)}
@@ -255,14 +255,4 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Whois do
   defp append_row(rows, label, value), do: rows ++ [%{label: label, value: value}]
   defp maybe_append_row(rows, true, label, value), do: append_row(rows, label, value)
   defp maybe_append_row(rows, _condition, _label, _value), do: rows
-
-  defp find_user_presence(target, channels) do
-    Enum.find_value(channels, fn channel ->
-      users = Tracker.list_users("channel:#{channel}")
-
-      Enum.find(users, fn user ->
-        String.downcase(user.nickname) == String.downcase(target)
-      end)
-    end)
-  end
 end

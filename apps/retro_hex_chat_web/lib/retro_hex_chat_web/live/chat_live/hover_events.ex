@@ -107,7 +107,7 @@ defmodule RetroHexChatWeb.ChatLive.HoverEvents do
   # full hover-card map the component renders (no socket — pure, sent via :set).
   @spec build_hover_card(Session.t(), String.t(), integer(), integer()) :: map()
   defp build_hover_card(session, nick, x, y) do
-    target_meta = find_user_presence(nick, session.channels)
+    target_meta = Tracker.find_user(nick, session.channels)
 
     data =
       %{
@@ -194,17 +194,6 @@ defmodule RetroHexChatWeb.ChatLive.HoverEvents do
         seconds = DateTime.diff(DateTime.utc_now(), last_activity_at, :second)
         TimeFormatter.format_duration(seconds)
     end
-  end
-
-  @spec find_user_presence(String.t(), [String.t()]) :: map() | nil
-  defp find_user_presence(target, channels) do
-    Enum.find_value(channels, fn channel ->
-      users = Tracker.list_users("channel:#{channel}")
-
-      Enum.find(users, fn user ->
-        String.downcase(user.nickname) == String.downcase(target)
-      end)
-    end)
   end
 
   @spec get_role_in_active_channel(String.t(), String.t() | nil) :: atom() | nil

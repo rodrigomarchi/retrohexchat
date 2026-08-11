@@ -29,6 +29,41 @@ defmodule RetroHexChat.Presence.TrackerTest do
     end
   end
 
+  describe "find_user/2" do
+    setup do
+      suffix = System.unique_integer([:positive])
+      channel = "#find#{suffix}"
+      {:ok, _ref} = Tracker.track_user("channel:#{channel}", "Grace", %{away: true})
+      Process.sleep(50)
+
+      %{channel: channel}
+    end
+
+    test "finds somebody in a channel the asker shares", %{channel: channel} do
+      assert %{nickname: "Grace", away: true} = Tracker.find_user("Grace", [channel])
+    end
+
+    # However the nickname was typed: a hover card and `/whois` both take it
+    # from whatever the reader clicked or wrote.
+    test "however the nickname was typed", %{channel: channel} do
+      assert %{nickname: "Grace"} = Tracker.find_user("GRACE", [channel])
+    end
+
+    test "keeps looking past channels they are not in", %{channel: channel} do
+      empty = "#empty#{System.unique_integer([:positive])}"
+
+      assert %{nickname: "Grace"} = Tracker.find_user("Grace", [empty, channel])
+    end
+
+    test "nobody, from no channel at all" do
+      assert Tracker.find_user("Grace", []) == nil
+    end
+
+    test "somebody who is nowhere the asker can see", %{channel: channel} do
+      assert Tracker.find_user("Ada", [channel]) == nil
+    end
+  end
+
   describe "untrack_user" do
     test "untracking removes user from list_users" do
       topic = "test:untrack_#{System.unique_integer([:positive])}"

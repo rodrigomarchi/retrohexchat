@@ -330,13 +330,36 @@ schema declara só o que o faz diferente: as colunas de endereçamento e os tipo
 pode carregar. `Chat.Authorship` resolveu o §2. O maior clone do repositório caiu de
 416 para 193 nós, e o que sobra é o bloco `schema`, que Ecto exige declarado.
 
-**Não feito, e por quê:** os gêmeos de `Service` e `Queries` (`send_*`, `edit_*`,
-`delete_*`, `do_insert_*`, os previews de resposta, os três pares de broadcast).
-Todos precisam da **chave da conversa** — um nome de canal contra um par não
-ordenado — que o §6 lista como diferença genuína e cuja decisão estava amarrada ao
-passo 3. **O passo 3 respondeu:** a chave de entrega de uma conversa privada são os
-dois participantes, um destino cada, e não o par. Unificá-los agora é possível.
-*Risco do que falta:* médio.
+**Feito depois, com a chave decidida pelo passo 3:** os gêmeos de `Service` e
+`Queries`. `Chat.Conversation` responde as duas únicas perguntas que separavam os
+dois lados — em que tópicos a coisa é publicada, e qual campo o payload carrega
+para o leitor saber de qual conversa veio — e as duas se respondem lendo a
+própria linha, porque a linha sabe de que tabela veio.
+
+Com isso viraram **um**: `do_edit`, `do_delete`, a atualização de prévia das
+respostas, e o broadcast de edição e de remoção. Em `Queries`, `page/2` passou a
+ser a única paginação (cursor, ordem, preload e o lookahead que decide
+`has_more`), `between/3` a única forma de perguntar por um par — usada em três
+lugares — e `update_content`, `soft_delete`, `reply_ids`, `update_reply_previews`
+e `attach` despacham pela linha em vez de pelo nome.
+
+`Chat.Replies` recolheu a resolução de resposta, que tinha **três** cópias: as
+duas de `Service` e uma terceira em `Channels.Server`, que o `ex_dna` não pareou
+com nenhuma. Ela devolve `:not_found` em vez de decidir, porque os dois
+chamadores discordam de propósito e agora dá para ver a discordância lado a lado:
+uma mensagem de canal cujo original sumiu **é enviada sem a citação**, e um PM na
+mesma situação **é recusado**.
+
+Duas medições honestas do que sobrou:
+
+- O `ex_dna` marcou **93 clones antes e depois**. Nada disto estava na lista
+  dele: os gêmeos ficavam abaixo do limiar de nós. Foram achados lendo.
+- O `page/2` compartilhado **não tinha teste**. Tirar o lookahead — o que faz
+  uma página dizer que não há nada mais velho quando há — deixava as duas
+  suítes verdes. O padrão de sempre: código compartilhado é o que ninguém testa.
+
+*O que ainda não é um só:* `do_send_message` e `do_send_private_message`, porque
+as colunas de endereçamento que eles montam são a diferença genuína do §6.
 
 **Passo 3 — entregar PM na caixa de entrada que já existe. FEITO.** Tudo o que
 viajava em `pm:<par>` — `new_pm`, typing, stop_typing, edit, delete e a prévia de

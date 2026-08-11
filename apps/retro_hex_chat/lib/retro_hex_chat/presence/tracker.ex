@@ -7,6 +7,8 @@ defmodule RetroHexChat.Presence.Tracker do
     otp_app: :retro_hex_chat,
     pubsub_server: RetroHexChat.PubSub
 
+  alias RetroHexChat.Topics
+
   @spec track_user(String.t(), String.t(), map()) :: {:ok, binary()} | {:error, any()}
   def track_user(topic, nickname, meta \\ %{}) do
     default_meta = %{
@@ -31,6 +33,26 @@ defmodule RetroHexChat.Presence.Tracker do
     |> list()
     |> Enum.map(fn {nickname, %{metas: [meta | _]}} ->
       Map.put(meta, :nickname, nickname)
+    end)
+  end
+
+  @doc """
+  Somebody's presence entry, from the first of `channels` they are found in.
+
+  A person's away state, client and idle time are the same wherever they are
+  standing, so any channel both people are in answers the question. The hover
+  card and `/whois` both ask it, and both were reaching for the channel's topic
+  name to do so.
+  """
+  @spec find_user(String.t(), [String.t()]) :: map() | nil
+  def find_user(nickname, channels) do
+    target = String.downcase(nickname)
+
+    Enum.find_value(channels, fn channel ->
+      channel
+      |> Topics.channel()
+      |> list_users()
+      |> Enum.find(&(String.downcase(&1.nickname) == target))
     end)
   end
 
