@@ -19,22 +19,15 @@ defmodule RetroHexChat.Jobs.PreferenceSaveWorker do
       retryable: [:scheduled_at]
     ]
 
+  use RetroHexChat.Jobs.Retry,
+    timeout: :timer.seconds(30),
+    cap_seconds: 10 * 60,
+    step_seconds: 15
+
   alias RetroHexChat.Chat.PreferencePersistence
   alias RetroHexChat.Observability
 
   require Logger
-
-  @timeout_ms 30_000
-
-  @impl Oban.Worker
-  @spec timeout(Oban.Job.t()) :: pos_integer()
-  def timeout(_job), do: @timeout_ms
-
-  @impl Oban.Worker
-  @spec backoff(Oban.Job.t()) :: non_neg_integer()
-  def backoff(%Oban.Job{attempt: attempt}) do
-    min(10 * 60, attempt * attempt * 15)
-  end
 
   @impl Oban.Worker
   @spec perform(Oban.Job.t()) ::

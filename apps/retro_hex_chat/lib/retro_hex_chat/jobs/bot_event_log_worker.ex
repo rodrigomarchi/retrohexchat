@@ -8,22 +8,15 @@ defmodule RetroHexChat.Jobs.BotEventLogWorker do
     max_attempts: 5,
     tags: ["bots", "event_log"]
 
+  use RetroHexChat.Jobs.Retry,
+    timeout: :timer.seconds(30),
+    cap_seconds: 30 * 60,
+    step_seconds: 30
+
   alias RetroHexChat.Bots.Queries
   alias RetroHexChat.Observability
 
   require Logger
-
-  @timeout_ms 30_000
-
-  @impl Oban.Worker
-  @spec timeout(Oban.Job.t()) :: pos_integer()
-  def timeout(_job), do: @timeout_ms
-
-  @impl Oban.Worker
-  @spec backoff(Oban.Job.t()) :: non_neg_integer()
-  def backoff(%Oban.Job{attempt: attempt}) do
-    min(30 * 60, attempt * attempt * 30)
-  end
 
   @impl Oban.Worker
   @spec perform(Oban.Job.t()) :: :ok | {:cancel, String.t()} | {:error, term()}

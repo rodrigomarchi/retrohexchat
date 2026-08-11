@@ -22,6 +22,11 @@ defmodule RetroHexChat.Jobs.RSSPollWorker do
       scheduled: [:scheduled_at]
     ]
 
+  use RetroHexChat.Jobs.Retry,
+    timeout: :timer.minutes(5),
+    cap_seconds: 30 * 60,
+    step_seconds: 60
+
   import Ecto.Query
 
   alias RetroHexChat.Bots.Bot
@@ -37,16 +42,7 @@ defmodule RetroHexChat.Jobs.RSSPollWorker do
   require Logger
 
   @rss_capability "rss"
-  @timeout_ms 300_000
   @max_http_attempts 3
-
-  @impl Oban.Worker
-  def timeout(_job), do: @timeout_ms
-
-  @impl Oban.Worker
-  def backoff(%Oban.Job{attempt: attempt}) do
-    min(30 * 60, attempt * attempt * 60)
-  end
 
   @impl Oban.Worker
   @spec perform(Oban.Job.t()) :: :ok | {:cancel, String.t()} | {:error, term()}

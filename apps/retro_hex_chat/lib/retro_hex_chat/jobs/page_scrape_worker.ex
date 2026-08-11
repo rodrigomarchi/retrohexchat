@@ -26,23 +26,16 @@ defmodule RetroHexChat.Jobs.PageScrapeWorker do
       scheduled: [:scheduled_at]
     ]
 
+  use RetroHexChat.Jobs.Retry,
+    timeout: :timer.seconds(20),
+    cap_seconds: 5 * 60,
+    step_seconds: 15
+
   alias RetroHexChat.Observability
   alias RetroHexChat.Scraper
   alias RetroHexChat.Scraper.Store
 
   require Logger
-
-  @timeout_ms 20_000
-
-  @impl Oban.Worker
-  @spec timeout(Oban.Job.t()) :: pos_integer()
-  def timeout(_job), do: @timeout_ms
-
-  @impl Oban.Worker
-  @spec backoff(Oban.Job.t()) :: non_neg_integer()
-  def backoff(%Oban.Job{attempt: attempt}) do
-    min(5 * 60, attempt * attempt * 15)
-  end
 
   @impl Oban.Worker
   @spec perform(Oban.Job.t()) :: {:ok, :fetched | :failed} | {:error, term()}

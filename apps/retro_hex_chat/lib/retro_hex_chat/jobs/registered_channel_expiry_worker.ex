@@ -13,22 +13,15 @@ defmodule RetroHexChat.Jobs.RegisteredChannelExpiryWorker do
       period: :infinity
     ]
 
+  use RetroHexChat.Jobs.Retry,
+    timeout: :timer.minutes(2),
+    cap_seconds: 15 * 60,
+    step_seconds: 30
+
   alias RetroHexChat.Observability
   alias RetroHexChat.Services.ChanExpiry
 
   require Logger
-
-  @timeout_ms 120_000
-
-  @impl Oban.Worker
-  @spec timeout(Oban.Job.t()) :: pos_integer()
-  def timeout(_job), do: @timeout_ms
-
-  @impl Oban.Worker
-  @spec backoff(Oban.Job.t()) :: non_neg_integer()
-  def backoff(%Oban.Job{attempt: attempt}) do
-    min(900, attempt * attempt * 30)
-  end
 
   @impl Oban.Worker
   @spec perform(Oban.Job.t()) :: {:ok, ChanExpiry.purge_result()}

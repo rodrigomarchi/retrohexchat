@@ -13,22 +13,15 @@ defmodule RetroHexChat.Jobs.ServerBanExpiryWorker do
       period: :infinity
     ]
 
+  use RetroHexChat.Jobs.Retry,
+    timeout: :timer.minutes(1),
+    cap_seconds: 15 * 60,
+    step_seconds: 30
+
   alias RetroHexChat.Admin.ServerBans
   alias RetroHexChat.Observability
 
   require Logger
-
-  @timeout_ms 60_000
-
-  @impl Oban.Worker
-  @spec timeout(Oban.Job.t()) :: pos_integer()
-  def timeout(_job), do: @timeout_ms
-
-  @impl Oban.Worker
-  @spec backoff(Oban.Job.t()) :: non_neg_integer()
-  def backoff(%Oban.Job{attempt: attempt}) do
-    min(900, attempt * attempt * 30)
-  end
 
   @impl Oban.Worker
   @spec perform(Oban.Job.t()) :: {:ok, non_neg_integer()}
