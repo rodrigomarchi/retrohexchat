@@ -59,6 +59,12 @@ There is deliberately **no icon inventory**: `components/icons/` and `/showcase/
 catalog, because a hand-written list of icons is stale on arrival. The same applies to
 migration, context, schema and hook counts — never write them into prose.
 
+## In flight (`plans/`)
+
+| File | Read when |
+|---|---|
+| [plans/channel-pm-duplication.md](plans/channel-pm-duplication.md) | Touching anything that a channel message and a private message both have — delivery, editing, deletion, the stream row. Diagnoses why the two are separate implementations, what that has already cost, and the proposed order of attack |
+
 ## Conventions
 
 - Add a durable, cross-cutting engineering learning → `AGENT-GUIDE.md`.
@@ -73,7 +79,7 @@ migration, context, schema and hook counts — never write them into prose.
   check beats a paragraph asking the agent to remember.
 - Runbooks and scripts document themselves in place, beside the thing they operate.
 - Starting a big piece of work? Write the plan in `plans/` and keep it there while the work is
-  open. `plans/` is empty right now only because nothing is in flight.
+  open.
 - Finished a plan? Extract any durable rule into `AGENT-GUIDE.md`, then delete the plan. A plan
   that outlives its work stops describing the codebase and starts misdescribing it — two of the
   ones removed here still claimed a phase was open for features that had shipped weeks earlier.
