@@ -8,6 +8,7 @@ defmodule RetroHexChat.Chat.AliasList do
 
   alias RetroHexChat.Chat.AliasEntry
   alias RetroHexChat.Chat.AliasExpander
+  alias RetroHexChat.Chat.Positions
   alias RetroHexChat.Chat.Schemas.AliasEntry, as: AliasEntrySchema
   alias RetroHexChat.Commands.Registry
   alias RetroHexChat.Repo
@@ -51,7 +52,7 @@ defmodule RetroHexChat.Chat.AliasList do
         {:error, :command_chaining}
 
       true ->
-        position = next_position(alias_list)
+        position = Positions.next(alias_list.entries)
 
         entry =
           AliasEntry.new(name: trimmed_name, expansion: trimmed_expansion, position: position)
@@ -69,7 +70,7 @@ defmodule RetroHexChat.Chat.AliasList do
         {:error, :not_found}
 
       {_removed, rest} ->
-        {:ok, %{alias_list | entries: reindex(rest)}}
+        {:ok, %{alias_list | entries: Positions.renumber(rest)}}
     end
   end
 
@@ -106,7 +107,7 @@ defmodule RetroHexChat.Chat.AliasList do
 
   @spec entries(map()) :: [AliasEntry.t()]
   def entries(alias_list) do
-    Enum.sort_by(alias_list.entries, & &1.position)
+    Positions.in_order(alias_list.entries)
   end
 
   @spec shadows_builtin?(String.t()) :: boolean()
@@ -192,19 +193,6 @@ defmodule RetroHexChat.Chat.AliasList do
 
   defp has_entry?(alias_list, name) do
     find_entry(alias_list, name) != nil
-  end
-
-  defp next_position(alias_list) do
-    case alias_list.entries do
-      [] -> 0
-      entries -> (entries |> Enum.map(& &1.position) |> Enum.max()) + 1
-    end
-  end
-
-  defp reindex(entries) do
-    entries
-    |> Enum.with_index()
-    |> Enum.map(fn {entry, idx} -> %{entry | position: idx} end)
   end
 
   defp update_if_match(entry, downcased_name, new_expansion) do

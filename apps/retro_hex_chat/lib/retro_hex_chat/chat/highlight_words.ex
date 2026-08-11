@@ -10,6 +10,7 @@ defmodule RetroHexChat.Chat.HighlightWords do
 
   alias RetroHexChat.Accounts.HighlightWordEntry
   alias RetroHexChat.Chat.HighlightWord
+  alias RetroHexChat.Chat.Positions
   alias RetroHexChat.Repo
 
   @max_entries 50
@@ -38,7 +39,7 @@ defmodule RetroHexChat.Chat.HighlightWords do
         {:error, :list_full}
 
       true ->
-        position = next_position(highlight_words)
+        position = Positions.next(highlight_words.entries)
         entry = HighlightWord.new(word: trimmed, bg_color: bg_color, position: position)
         {:ok, %{highlight_words | entries: highlight_words.entries ++ [entry]}}
     end
@@ -79,7 +80,7 @@ defmodule RetroHexChat.Chat.HighlightWords do
 
   @spec entries(map()) :: [HighlightWord.t()]
   def entries(highlight_words) do
-    Enum.sort_by(highlight_words.entries, & &1.position)
+    Positions.in_order(highlight_words.entries)
   end
 
   # ---------------------------------------------------------------------------
@@ -149,13 +150,6 @@ defmodule RetroHexChat.Chat.HighlightWords do
   end
 
   defp full?(highlight_words), do: length(highlight_words.entries) >= @max_entries
-
-  defp next_position(highlight_words) do
-    case highlight_words.entries do
-      [] -> 0
-      entries -> (entries |> Enum.map(& &1.position) |> Enum.max()) + 1
-    end
-  end
 
   defp find_and_update(entries, downcased_word, bg_color) do
     case Enum.split_while(entries, fn e -> String.downcase(e.word) != downcased_word end) do

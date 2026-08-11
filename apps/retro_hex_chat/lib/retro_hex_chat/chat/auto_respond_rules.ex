@@ -8,6 +8,7 @@ defmodule RetroHexChat.Chat.AutoRespondRules do
 
   alias RetroHexChat.Chat.AliasExpander
   alias RetroHexChat.Chat.AutoRespondRule
+  alias RetroHexChat.Chat.Positions
   alias RetroHexChat.Chat.Schemas.AutoRespondRule, as: AutoRespondRuleSchema
   alias RetroHexChat.Repo
 
@@ -46,7 +47,7 @@ defmodule RetroHexChat.Chat.AutoRespondRules do
   end
 
   defp build_and_add(rules, trigger_event, trimmed_filter, trimmed_cmd) do
-    position = next_position(rules)
+    position = Positions.next(rules.entries)
     id = next_id(rules)
 
     entry =
@@ -68,7 +69,7 @@ defmodule RetroHexChat.Chat.AutoRespondRules do
         {:error, :not_found}
 
       {_removed, rest} ->
-        {:ok, %{rules | entries: reindex(rest)}}
+        {:ok, %{rules | entries: Positions.renumber(rest)}}
     end
   end
 
@@ -136,7 +137,7 @@ defmodule RetroHexChat.Chat.AutoRespondRules do
 
   @spec entries(map()) :: [AutoRespondRule.t()]
   def entries(rules) do
-    Enum.sort_by(rules.entries, & &1.position)
+    Positions.in_order(rules.entries)
   end
 
   # ---------------------------------------------------------------------------
@@ -213,24 +214,11 @@ defmodule RetroHexChat.Chat.AutoRespondRules do
     Enum.find(rules.entries, &(&1.position == position))
   end
 
-  defp next_position(rules) do
-    case rules.entries do
-      [] -> 0
-      entries -> (entries |> Enum.map(& &1.position) |> Enum.max()) + 1
-    end
-  end
-
   defp next_id(rules) do
     case rules.entries do
       [] -> 0
       entries -> (entries |> Enum.map(& &1.id) |> Enum.max()) + 1
     end
-  end
-
-  defp reindex(entries) do
-    entries
-    |> Enum.with_index()
-    |> Enum.map(fn {entry, idx} -> %{entry | position: idx} end)
   end
 
   defp channel_matches?(nil, _channel), do: true

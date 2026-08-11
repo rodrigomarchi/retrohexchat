@@ -7,6 +7,7 @@ defmodule RetroHexChat.Chat.AutoJoinList do
   """
 
   alias RetroHexChat.Chat.AutoJoinEntry
+  alias RetroHexChat.Chat.Positions
   alias RetroHexChat.Chat.Schemas.AutojoinListEntry
   alias RetroHexChat.Repo
 
@@ -35,7 +36,7 @@ defmodule RetroHexChat.Chat.AutoJoinList do
         {:error, :duplicate}
 
       true ->
-        position = next_position(autojoin_list)
+        position = Positions.next(autojoin_list.entries)
         key = if channel_key && String.trim(channel_key) != "", do: String.trim(channel_key)
 
         entry =
@@ -56,7 +57,7 @@ defmodule RetroHexChat.Chat.AutoJoinList do
         {:error, :not_found}
 
       {_removed, rest} ->
-        {:ok, %{autojoin_list | entries: reindex(rest)}}
+        {:ok, %{autojoin_list | entries: Positions.renumber(rest)}}
     end
   end
 
@@ -82,7 +83,7 @@ defmodule RetroHexChat.Chat.AutoJoinList do
 
   @spec entries(map()) :: [AutoJoinEntry.t()]
   def entries(autojoin_list) do
-    Enum.sort_by(autojoin_list.entries, & &1.position)
+    Positions.in_order(autojoin_list.entries)
   end
 
   @spec count(map()) :: non_neg_integer()
@@ -160,19 +161,6 @@ defmodule RetroHexChat.Chat.AutoJoinList do
   defp duplicate?(autojoin_list, channel_name) do
     downcased = String.downcase(channel_name)
     Enum.any?(autojoin_list.entries, fn e -> String.downcase(e.channel_name) == downcased end)
-  end
-
-  defp next_position(autojoin_list) do
-    case autojoin_list.entries do
-      [] -> 0
-      entries -> (entries |> Enum.map(& &1.position) |> Enum.max()) + 1
-    end
-  end
-
-  defp reindex(entries) do
-    entries
-    |> Enum.with_index()
-    |> Enum.map(fn {entry, idx} -> %{entry | position: idx} end)
   end
 
   defp find_and_update(entries, downcased_name, key) do

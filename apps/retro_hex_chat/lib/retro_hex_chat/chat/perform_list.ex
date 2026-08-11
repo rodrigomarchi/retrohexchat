@@ -7,6 +7,7 @@ defmodule RetroHexChat.Chat.PerformList do
   """
 
   alias RetroHexChat.Chat.PerformEntry
+  alias RetroHexChat.Chat.Positions
   alias RetroHexChat.Chat.Schemas.PerformListEntry
   alias RetroHexChat.Chat.Schemas.PerformSettings
   alias RetroHexChat.Repo
@@ -41,7 +42,7 @@ defmodule RetroHexChat.Chat.PerformList do
         {:error, :command_too_long}
 
       true ->
-        position = next_position(perform_list)
+        position = Positions.next(perform_list.entries)
         entry = PerformEntry.new(command: trimmed, position: position)
         {:ok, %{perform_list | entries: perform_list.entries ++ [entry]}}
     end
@@ -64,7 +65,7 @@ defmodule RetroHexChat.Chat.PerformList do
         {:error, :not_found}
 
       {_removed, rest} ->
-        reindexed = reindex(rest)
+        reindexed = Positions.renumber(rest)
         {:ok, %{perform_list | entries: reindexed}}
     end
   end
@@ -86,7 +87,7 @@ defmodule RetroHexChat.Chat.PerformList do
         entry = Enum.at(sorted, from)
         remaining = List.delete_at(sorted, from)
         moved = List.insert_at(remaining, to, entry)
-        {:ok, %{perform_list | entries: reindex(moved)}}
+        {:ok, %{perform_list | entries: Positions.renumber(moved)}}
     end
   end
 
@@ -97,7 +98,7 @@ defmodule RetroHexChat.Chat.PerformList do
 
   @spec entries(map()) :: [PerformEntry.t()]
   def entries(perform_list) do
-    Enum.sort_by(perform_list.entries, & &1.position)
+    Positions.in_order(perform_list.entries)
   end
 
   @spec count(map()) :: non_neg_integer()
@@ -224,19 +225,6 @@ defmodule RetroHexChat.Chat.PerformList do
 
   defp load_settings(owner) do
     Repo.get(PerformSettings, owner)
-  end
-
-  defp next_position(perform_list) do
-    case perform_list.entries do
-      [] -> 0
-      entries -> (entries |> Enum.map(& &1.position) |> Enum.max()) + 1
-    end
-  end
-
-  defp reindex(entries) do
-    entries
-    |> Enum.with_index()
-    |> Enum.map(fn {entry, idx} -> %{entry | position: idx} end)
   end
 
   defp extract_command_name(command) do

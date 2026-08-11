@@ -4,7 +4,7 @@ defmodule RetroHexChat.Chat.CustomMenus do
   Items can be added to nicklist, channel, or chat context menus.
   """
 
-  alias RetroHexChat.Chat.{AliasExpander, CustomMenuItem}
+  alias RetroHexChat.Chat.{AliasExpander, CustomMenuItem, Positions}
   alias RetroHexChat.Chat.Schemas.CustomMenuItem, as: CustomMenuItemSchema
   alias RetroHexChat.Repo
 
@@ -45,7 +45,7 @@ defmodule RetroHexChat.Chat.CustomMenus do
         {:error, :command_chaining}
 
       true ->
-        position = next_position(menus)
+        position = Positions.next(menus.entries)
 
         entry =
           CustomMenuItem.new(
@@ -71,7 +71,7 @@ defmodule RetroHexChat.Chat.CustomMenus do
         {:error, :not_found}
 
       {_removed, rest} ->
-        {:ok, %{menus | entries: reindex(rest)}}
+        {:ok, %{menus | entries: Positions.renumber(rest)}}
     end
   end
 
@@ -97,7 +97,7 @@ defmodule RetroHexChat.Chat.CustomMenus do
   def entries_for(menus, menu_type) do
     menus.entries
     |> Enum.filter(&(&1.menu_type == menu_type))
-    |> Enum.sort_by(& &1.position)
+    |> Positions.in_order()
   end
 
   # ---------------------------------------------------------------------------
@@ -206,18 +206,5 @@ defmodule RetroHexChat.Chat.CustomMenus do
       e.menu_type == menu_type and entry_label == downcased and
         entry_label != except_downcased_label
     end)
-  end
-
-  defp next_position(menus) do
-    case menus.entries do
-      [] -> 0
-      entries -> (entries |> Enum.map(& &1.position) |> Enum.max()) + 1
-    end
-  end
-
-  defp reindex(entries) do
-    entries
-    |> Enum.with_index()
-    |> Enum.map(fn {entry, idx} -> %{entry | position: idx} end)
   end
 end
