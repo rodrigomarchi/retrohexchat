@@ -26,6 +26,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AutojoinDialog do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Chat.AutoJoinList
+  alias RetroHexChatWeb.ChatLive.Components.DialogIsland
 
   @id "autojoin-dialog"
 
@@ -39,18 +40,12 @@ defmodule RetroHexChatWeb.ChatLive.Components.AutojoinDialog do
   }
 
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket) do
-    {:ok,
-     socket
-     |> assign(:id, @id)
-     |> assign(@initial)
-     |> assign(session: nil)}
-  end
+  def mount(socket), do: DialogIsland.mount(socket, @id, @initial)
 
   # Opening is pure window mount — closing unmounts the island, so there is no
   # open directive to reset state that the next mount rebuilds anyway.
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def update(assigns, socket), do: {:ok, assign(socket, assigns)}
+  def update(assigns, socket), do: DialogIsland.update(socket, assigns)
 
   # ── Selection ────────────────────────────────────────────────────
 
