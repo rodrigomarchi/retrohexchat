@@ -12,6 +12,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoinDialog do
 
   alias RetroHexChatWeb.Components.UI.GroupCall.{DeviceSelect, MediaPreview}
   alias RetroHexChatWeb.Icons
+  alias RetroHexChatWeb.MediaDevices
 
   attr :id, :string, required: true
   attr :prejoin, :map, default: nil
@@ -297,23 +298,9 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoinDialog do
 
   defp channel_name(_prejoin), do: dgettext("group_call", "conference")
 
-  defp devices(%{devices: devices}) when is_map(devices) do
-    Map.merge(%{"audioinput" => [], "videoinput" => [], "audiooutput" => []}, devices)
-  end
+  defp devices(source), do: MediaDevices.listing(source)
 
-  defp devices(_prejoin), do: %{"audioinput" => [], "videoinput" => [], "audiooutput" => []}
-
-  defp device_preferences(%{device_preferences: preferences}) when is_map(preferences) do
-    %{
-      audio_input_id: Map.get(preferences, :audio_input_id),
-      video_input_id: Map.get(preferences, :video_input_id),
-      audio_output_id: Map.get(preferences, :audio_output_id)
-    }
-  end
-
-  defp device_preferences(_prejoin) do
-    %{audio_input_id: nil, video_input_id: nil, audio_output_id: nil}
-  end
+  defp device_preferences(source), do: MediaDevices.preferences(source)
 
   @spec conference_layout_summary(map()) :: String.t()
   defp conference_layout_summary(%{mode: mode, self_view: self_view}) do

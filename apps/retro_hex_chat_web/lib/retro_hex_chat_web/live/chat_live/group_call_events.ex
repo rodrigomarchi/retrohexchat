@@ -25,6 +25,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   alias RetroHexChatWeb.ChatLive.Components.GroupCallConfirmDialog
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
   alias RetroHexChatWeb.ChatLive.Windows
+  alias RetroHexChatWeb.MediaDevices
 
   @window_id "group-call"
   @prejoin_preference_namespace "group_call_prejoin"
@@ -2200,11 +2201,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
     %{
       media: %{audio: true, video: true},
       layout: default_layout(),
-      device_preferences: %{
-        audio_input_id: nil,
-        video_input_id: nil,
-        audio_output_id: nil
-      }
+      device_preferences: MediaDevices.no_preference()
     }
   end
 
@@ -2224,7 +2221,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
         |> Map.take([:mode, :focused_participant_id, :self_view, :mini]),
       device_preferences:
         defaults.device_preferences
-        |> Map.merge(normalize_prejoin_device_preferences(preferences))
+        |> Map.merge(MediaDevices.preferences(preferences))
         |> Map.take([:audio_input_id, :video_input_id, :audio_output_id])
     }
   end
@@ -2258,19 +2255,6 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
       focused_participant_id: nil,
       self_view: self_view_mode(self_view),
       mini: false
-    }
-  end
-
-  defp normalize_prejoin_device_preferences(preferences) do
-    devices = value(preferences, :device_preferences)
-
-    %{
-      audio_input_id:
-        clean_device_id(value(preferences, :audio_input_id) || value(devices, :audio_input_id)),
-      video_input_id:
-        clean_device_id(value(preferences, :video_input_id) || value(devices, :video_input_id)),
-      audio_output_id:
-        clean_device_id(value(preferences, :audio_output_id) || value(devices, :audio_output_id))
     }
   end
 
@@ -2345,30 +2329,11 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
     assign(socket, group_call_prejoin: fun.(socket.assigns.group_call_prejoin))
   end
 
-  defp default_devices do
-    %{"audioinput" => [], "videoinput" => [], "audiooutput" => []}
-  end
+  defp default_devices, do: MediaDevices.none()
 
-  defp normalize_devices(devices) when is_map(devices) do
-    %{
-      "audioinput" => normalize_device_list(value(devices, :audioinput)),
-      "videoinput" => normalize_device_list(value(devices, :videoinput)),
-      "audiooutput" => normalize_device_list(value(devices, :audiooutput))
-    }
-  end
+  defp normalize_devices(devices), do: MediaDevices.normalize(devices, unnamed_device())
 
-  defp normalize_devices(_devices), do: default_devices()
-
-  defp normalize_device_list(devices) when is_list(devices) do
-    Enum.map(devices, fn device ->
-      %{
-        "id" => to_string(value(device, :id) || value(device, :deviceId) || ""),
-        "label" => to_string(value(device, :label) || dgettext("group_call", "Default device"))
-      }
-    end)
-  end
-
-  defp normalize_device_list(_devices), do: []
+  defp unnamed_device, do: dgettext("group_call", "Default device")
 
   defp boolean_preference(value, _default) when value in [true, "true", "on", "1", 1], do: true
 
@@ -2390,11 +2355,6 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
     do: String.to_existing_atom(mode)
 
   defp self_view_mode(_mode), do: :tile
-
-  defp clean_device_id(nil), do: nil
-  defp clean_device_id(""), do: nil
-  defp clean_device_id(device_id) when is_binary(device_id), do: device_id
-  defp clean_device_id(device_id), do: to_string(device_id)
 
   defp default_layout do
     %{

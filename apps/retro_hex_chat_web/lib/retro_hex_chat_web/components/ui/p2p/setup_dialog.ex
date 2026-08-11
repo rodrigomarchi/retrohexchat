@@ -12,6 +12,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SetupDialog do
 
   alias RetroHexChatWeb.Components.UI.GroupCall.DeviceSelect
   alias RetroHexChatWeb.Icons
+  alias RetroHexChatWeb.MediaDevices
 
   attr :id, :string, required: true
   attr :setup, :map, default: nil
@@ -372,24 +373,10 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SetupDialog do
   defp media(_setup), do: %{audio: true, video: true}
 
   @spec devices(map() | nil) :: map()
-  defp devices(%{devices: devices}) when is_map(devices) do
-    Map.merge(%{"audioinput" => [], "videoinput" => [], "audiooutput" => []}, devices)
-  end
-
-  defp devices(_setup), do: %{"audioinput" => [], "videoinput" => [], "audiooutput" => []}
+  defp devices(source), do: MediaDevices.listing(source)
 
   @spec device_preferences(map() | nil) :: map()
-  defp device_preferences(%{device_preferences: preferences}) when is_map(preferences) do
-    %{
-      audio_input_id: Map.get(preferences, :audio_input_id),
-      video_input_id: Map.get(preferences, :video_input_id),
-      audio_output_id: Map.get(preferences, :audio_output_id)
-    }
-  end
-
-  defp device_preferences(_setup) do
-    %{audio_input_id: nil, video_input_id: nil, audio_output_id: nil}
-  end
+  defp device_preferences(source), do: MediaDevices.preferences(source)
 
   @spec turn_only?(map() | nil) :: boolean()
   defp turn_only?(%{turn_only: true}), do: true

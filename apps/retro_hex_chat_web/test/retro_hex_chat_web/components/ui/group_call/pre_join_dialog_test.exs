@@ -47,4 +47,28 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoinDialogTest do
     assert html =~ "Layout defaults"
     assert Floki.find(document, ~s([data-testid="group-call-prejoin-advanced"][open])) == []
   end
+
+  # A browser that has granted the microphone but not the camera reports one
+  # kind. The dialog still renders three pickers, so every kind has to reach it
+  # even when the browser did not mention it.
+  test "renders all three pickers when the browser reported only one kind" do
+    html =
+      render_dialog(%{
+        channel_name: "#lobby",
+        user_id: 1,
+        devices: %{"audioinput" => [%{"id" => "mic-1", "label" => "Only microphone"}]}
+      })
+
+    assert html =~ ~s(data-testid="group-call-prejoin-audio-input")
+    assert html =~ ~s(data-testid="group-call-prejoin-video-input")
+    assert html =~ ~s(data-testid="group-call-prejoin-audio-output")
+    assert html =~ "Only microphone"
+  end
+
+  test "renders before the browser has reported anything at all" do
+    html = render_dialog(%{channel_name: "#lobby", user_id: 1})
+
+    assert html =~ ~s(data-testid="group-call-prejoin-devices")
+    assert html =~ "Join #lobby"
+  end
 end
