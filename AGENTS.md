@@ -1,9 +1,12 @@
 # AGENTS.md — retro_hex_chat
 
 A Windows-98 / mIRC-flavoured chat: Elixir umbrella, Phoenix LiveView, PostgreSQL,
-Tailwind, WebRTC. `apps/retro_hex_chat` is the domain and carries **zero Phoenix
-dependencies**; `apps/retro_hex_chat_web` is the only place web concerns live.
-That boundary is the one structural rule you cannot infer from a file listing.
+Tailwind, WebRTC. `apps/retro_hex_chat` is the domain and carries **no web layer** —
+no LiveView, controller, route, component or endpoint lives there. It does reach
+for Phoenix as a library (`Phoenix.PubSub`, `Phoenix.Token`, `Phoenix.Presence`,
+HTML escaping), which is why `{:phoenix, ...}` is in its `mix.exs`.
+`apps/retro_hex_chat_web` is the only place web concerns live. That boundary is
+the one structural rule you cannot infer from a file listing.
 
 Run `make help` for the full target list and `mix help` for Mix tasks. Explore the
 tree rather than trusting a directory map — this file deliberately does not carry one.
@@ -69,7 +72,7 @@ git pull --ff-only origin main      # --autostash if you have uncommitted edits
 
 - **Every public function MUST have `@spec`.**
 - **LiveViews MUST be thin** — delegate to domain contexts. LiveViews contain no
-  business logic; contexts contain no web dependencies.
+  business logic; contexts contain no LiveViews, controllers or components.
 - **Each `/` command is a separate Handler module.**
 - **PubSub topics:** `"channel:#{name}"`, `"pm:#{sorted_ids}"`, `"user:#{nickname}"`,
   `"game:#{token}"`.

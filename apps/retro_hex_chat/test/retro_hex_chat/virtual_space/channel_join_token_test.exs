@@ -1,6 +1,7 @@
 defmodule RetroHexChat.VirtualSpace.ChannelJoinTokenTest do
   use ExUnit.Case, async: true
 
+  alias RetroHexChat.GroupCall.JoinToken
   alias RetroHexChat.VirtualSpace.ChannelJoinToken
 
   @moduletag :unit
@@ -43,5 +44,14 @@ defmodule RetroHexChat.VirtualSpace.ChannelJoinTokenTest do
 
     assert {:ok, _} = ChannelJoinToken.verify(token, max_age: ChannelJoinToken.max_age())
     assert {:error, :expired} = ChannelJoinToken.verify(token, max_age: -1)
+  end
+
+  # `:group_call_join_secret` is configured nowhere, so a group-call token is
+  # signed with this module's secret. The salt is what keeps the two doors
+  # apart, and the check runs in both directions.
+  test "a group-call token does not open a virtual space" do
+    call_token = JoinToken.sign("room-abc", "#lobby", 42, "alice")
+
+    assert {:error, :invalid} = ChannelJoinToken.verify(call_token)
   end
 end

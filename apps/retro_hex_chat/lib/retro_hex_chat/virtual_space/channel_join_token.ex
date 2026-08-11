@@ -9,8 +9,8 @@ defmodule RetroHexChat.VirtualSpace.ChannelJoinToken do
   """
 
   @salt "channel_space_join"
-  @max_age 3_600
 
+  alias RetroHexChat.SignedToken
   alias RetroHexChat.VirtualSpace.DirectMessageSpace
 
   @spec sign(String.t(), integer() | nil, String.t()) :: String.t()
@@ -22,7 +22,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelJoinToken do
       nickname: nickname
     }
 
-    Phoenix.Token.sign(secret_key_base(), @salt, data)
+    SignedToken.sign(secret_key_base(), @salt, data)
   end
 
   @spec sign_direct_message(String.t(), integer() | nil, String.t(), [String.t()]) :: String.t()
@@ -37,24 +37,17 @@ defmodule RetroHexChat.VirtualSpace.ChannelJoinToken do
       participants: participants
     }
 
-    Phoenix.Token.sign(secret_key_base(), @salt, data)
+    SignedToken.sign(secret_key_base(), @salt, data)
   end
 
   @spec verify(String.t(), keyword()) ::
           {:ok, map()}
           | {:error, :expired | :invalid}
-  def verify(token, opts \\ []) do
-    max_age = Keyword.get(opts, :max_age, @max_age)
-
-    case Phoenix.Token.verify(secret_key_base(), @salt, token, max_age: max_age) do
-      {:ok, data} -> {:ok, data}
-      {:error, :expired} -> {:error, :expired}
-      {:error, _reason} -> {:error, :invalid}
-    end
-  end
+  def verify(token, opts \\ []),
+    do: SignedToken.verify(secret_key_base(), @salt, token, opts)
 
   @spec max_age() :: pos_integer()
-  def max_age, do: @max_age
+  def max_age, do: SignedToken.default_max_age()
 
   defp secret_key_base do
     Application.get_env(:retro_hex_chat, :channel_space_join_secret) ||
