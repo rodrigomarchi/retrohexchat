@@ -2,6 +2,8 @@ defmodule RetroHexChatWeb.Components.UI.Toggle do
   @moduledoc false
   use RetroHexChatWeb.Component
 
+  alias RetroHexChatWeb.Components.UI.Variants
+
   @doc """
   Toggle component, A two-state button that can be either on or off.
 
@@ -64,28 +66,18 @@ defmodule RetroHexChatWeb.Components.UI.Toggle do
     """
   end
 
-  @variants %{
-    variant: %{
-      "default" => "bg-transparent",
-      "outline" =>
-        "border border-input bg-transparent hover:bg-accent hover:text-accent-foreground"
-    },
-    size: %{
-      "default" => "h-10 px-3",
-      "sm" => "h-9 px-2.5",
-      "lg" => "h-11 px-5"
-    }
-  }
+  @variants Variants.new(
+              variant: %{
+                "default" => "bg-transparent",
+                "outline" =>
+                  "border border-input bg-transparent hover:bg-accent hover:text-accent-foreground"
+              },
+              size: %{
+                "default" => "h-10 px-3",
+                "sm" => "h-9 px-2.5",
+                "lg" => "h-11 px-5"
+              }
+            )
 
-  @default_variants %{
-    variant: "default",
-    size: "default"
-  }
-
-  defp variant(props) do
-    variants = Map.take(props, ~w(variant size)a)
-    variants = Map.merge(@default_variants, variants)
-
-    Enum.map_join(variants, " ", fn {key, value} -> @variants[key][value] end)
-  end
+  defp variant(props), do: Variants.classes(@variants, props)
 end

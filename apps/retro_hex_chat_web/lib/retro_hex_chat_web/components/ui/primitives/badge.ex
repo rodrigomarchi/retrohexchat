@@ -2,6 +2,8 @@ defmodule RetroHexChatWeb.Components.UI.Badge do
   @moduledoc false
   use RetroHexChatWeb.Component
 
+  alias RetroHexChatWeb.Components.UI.Variants
+
   @doc """
   Renders a badge — a small, non-interactive status label styled as a
   Win98 status-bar panel (sunken inset, compact).
@@ -52,24 +54,16 @@ defmodule RetroHexChatWeb.Components.UI.Badge do
     """
   end
 
-  @variants %{
-    variant: %{
-      "default" => "bg-white text-primary",
-      "secondary" => "bg-white text-black",
-      "destructive" => "bg-white text-destructive",
-      "outline" => "bg-transparent text-foreground",
-      "success" => "bg-white text-success-dark",
-      "warning" => "bg-white text-warning"
-    }
-  }
+  @variants Variants.new(
+              variant: %{
+                "default" => "bg-white text-primary",
+                "secondary" => "bg-white text-black",
+                "destructive" => "bg-white text-destructive",
+                "outline" => "bg-transparent text-foreground",
+                "success" => "bg-white text-success-dark",
+                "warning" => "bg-white text-warning"
+              }
+            )
 
-  @default_variants %{
-    variant: "default"
-  }
-
-  defp variant(props) do
-    variants = Map.merge(@default_variants, props)
-
-    Enum.map_join(variants, " ", fn {key, value} -> @variants[key][value] end)
-  end
+  defp variant(props), do: Variants.classes(@variants, props)
 end
