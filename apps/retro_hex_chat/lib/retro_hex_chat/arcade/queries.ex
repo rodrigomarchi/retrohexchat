@@ -7,8 +7,10 @@ defmodule RetroHexChat.Arcade.Queries do
 
   alias RetroHexChat.Arcade.Schema.SoloSession
   alias RetroHexChat.Repo
+  alias RetroHexChat.StaleRecords
 
   @terminal_statuses ~w(finished closed expired)
+  @stale StaleRecords.new(SoloSession, @terminal_statuses)
 
   @spec insert_session(map()) :: {:ok, SoloSession.t()} | {:error, Ecto.Changeset.t()}
   def insert_session(attrs) do
@@ -56,20 +58,11 @@ defmodule RetroHexChat.Arcade.Queries do
   end
 
   @spec list_stale_sessions(DateTime.t(), keyword()) :: [SoloSession.t()]
-  def list_stale_sessions(before_datetime, opts \\ []) do
-    SoloSession
-    |> stale_sessions_query(before_datetime)
-    |> order_by([s], asc: s.updated_at, asc: s.id)
-    |> maybe_limit(Keyword.get(opts, :limit))
-    |> Repo.all()
-  end
+  def list_stale_sessions(before_datetime, opts \\ []),
+    do: StaleRecords.list(@stale, before_datetime, opts)
 
   @spec stale_session_count(DateTime.t()) :: non_neg_integer()
-  def stale_session_count(before_datetime) do
-    SoloSession
-    |> stale_sessions_query(before_datetime)
-    |> Repo.aggregate(:count, :id)
-  end
+  def stale_session_count(before_datetime), do: StaleRecords.count(@stale, before_datetime)
 
   @spec expire_session(SoloSession.t()) :: {:ok, SoloSession.t()} | {:error, Ecto.Changeset.t()}
   def expire_session(session) do
@@ -81,38 +74,6 @@ defmodule RetroHexChat.Arcade.Queries do
 
   @spec expire_stale_session(SoloSession.t(), DateTime.t()) ::
           {:ok, :expired | :skipped} | {:error, term()}
-  def expire_stale_session(%SoloSession{id: id}, before_datetime) do
-    now = DateTime.utc_now()
-
-    {count, _records} =
-      SoloSession
-      |> where([s], s.id == ^id)
-      |> stale_sessions_query(before_datetime)
-      |> Repo.update_all(
-        set: [
-          status: "expired",
-          closed_at: now,
-          closed_reason: "stale_cleanup",
-          updated_at: now
-        ]
-      )
-
-    case count do
-      1 -> {:ok, :expired}
-      0 -> {:ok, :skipped}
-    end
-  rescue
-    error -> {:error, error}
-  end
-
-  defp stale_sessions_query(queryable, before_datetime) do
-    queryable
-    |> where([s], s.status not in ^@terminal_statuses)
-    |> where([s], s.updated_at < ^before_datetime)
-  end
-
-  defp maybe_limit(query, max_rows) when is_integer(max_rows) and max_rows > 0,
-    do: limit(query, ^max_rows)
-
-  defp maybe_limit(query, _max_rows), do: query
+  def expire_stale_session(%SoloSession{id: id}, before_datetime),
+    do: StaleRecords.expire(@stale, id, before_datetime)
 end

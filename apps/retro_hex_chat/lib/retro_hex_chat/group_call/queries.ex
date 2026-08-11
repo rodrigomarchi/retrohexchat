@@ -7,10 +7,13 @@ defmodule RetroHexChat.GroupCall.Queries do
 
   alias RetroHexChat.GroupCall.Schema.{Participant, Room, Track}
   alias RetroHexChat.Repo
+  alias RetroHexChat.StaleRecords
 
   @room_terminal_statuses Room.terminal_statuses()
   @participant_terminal_statuses Participant.terminal_statuses()
   @track_terminal_statuses Track.terminal_statuses()
+
+  @stale_rooms StaleRecords.new(Room, @room_terminal_statuses)
 
   @spec insert_room(map()) :: {:ok, Room.t()} | {:error, Ecto.Changeset.t()}
   def insert_room(attrs) do
@@ -54,20 +57,11 @@ defmodule RetroHexChat.GroupCall.Queries do
   end
 
   @spec list_stale_rooms(DateTime.t(), keyword()) :: [Room.t()]
-  def list_stale_rooms(before_datetime, opts \\ []) do
-    Room
-    |> stale_rooms_query(before_datetime)
-    |> order_by([r], asc: r.updated_at, asc: r.id)
-    |> maybe_limit(Keyword.get(opts, :limit))
-    |> Repo.all()
-  end
+  def list_stale_rooms(before_datetime, opts \\ []),
+    do: StaleRecords.list(@stale_rooms, before_datetime, opts)
 
   @spec stale_room_count(DateTime.t()) :: non_neg_integer()
-  def stale_room_count(before_datetime) do
-    Room
-    |> stale_rooms_query(before_datetime)
-    |> Repo.aggregate(:count, :id)
-  end
+  def stale_room_count(before_datetime), do: StaleRecords.count(@stale_rooms, before_datetime)
 
   @spec expire_room(Room.t()) :: {:ok, Room.t()} | {:error, Ecto.Changeset.t()}
   def expire_room(room) do
@@ -79,40 +73,8 @@ defmodule RetroHexChat.GroupCall.Queries do
 
   @spec expire_stale_room(Room.t(), DateTime.t()) ::
           {:ok, :expired | :skipped} | {:error, term()}
-  def expire_stale_room(%Room{id: id}, before_datetime) do
-    now = DateTime.utc_now()
-
-    {count, _records} =
-      Room
-      |> where([r], r.id == ^id)
-      |> stale_rooms_query(before_datetime)
-      |> Repo.update_all(
-        set: [
-          status: "expired",
-          closed_at: now,
-          closed_reason: "stale_cleanup",
-          updated_at: now
-        ]
-      )
-
-    case count do
-      1 -> {:ok, :expired}
-      0 -> {:ok, :skipped}
-    end
-  rescue
-    error -> {:error, error}
-  end
-
-  defp stale_rooms_query(queryable, before_datetime) do
-    queryable
-    |> where([r], r.status not in ^@room_terminal_statuses)
-    |> where([r], r.updated_at < ^before_datetime)
-  end
-
-  defp maybe_limit(query, max_rows) when is_integer(max_rows) and max_rows > 0,
-    do: limit(query, ^max_rows)
-
-  defp maybe_limit(query, _max_rows), do: query
+  def expire_stale_room(%Room{id: id}, before_datetime),
+    do: StaleRecords.expire(@stale_rooms, id, before_datetime)
 
   @spec insert_participant(map()) :: {:ok, Participant.t()} | {:error, Ecto.Changeset.t()}
   def insert_participant(attrs) do
