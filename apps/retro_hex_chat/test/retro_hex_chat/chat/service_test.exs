@@ -518,7 +518,7 @@ defmodule RetroHexChat.Chat.ServiceTest do
 
       {:ok, _} = Service.edit_message(parent.id, "Mario", "Edited content")
 
-      updated_reply = Queries.get_reply_ids(parent.id) |> hd()
+      updated_reply = Queries.reply_ids(parent) |> hd()
       updated = Queries.get_message(updated_reply)
       assert updated.reply_to_preview == "Edited content"
     end
@@ -537,7 +537,7 @@ defmodule RetroHexChat.Chat.ServiceTest do
 
       {:ok, _} = Service.edit_message(parent.id, "Mario", "**Edited** [doc](https://example.com)")
 
-      updated_reply = Queries.get_reply_ids(parent.id) |> hd()
+      updated_reply = Queries.reply_ids(parent) |> hd()
       updated = Queries.get_message(updated_reply)
       assert updated.reply_to_preview == "Edited doc"
     end

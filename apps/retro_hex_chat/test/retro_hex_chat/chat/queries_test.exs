@@ -105,6 +105,43 @@ defmodule RetroHexChat.Chat.QueriesTest do
       older = Queries.list_messages("#lobby", cursor: cursor_msg.id).items
       assert length(older) == 4
     end
+
+    # `has_more` is the database's answer: the query asks for one row past the
+    # page and reports whether it came back. Both kinds of conversation page
+    # through the same function, so this is the only place that decides it — and
+    # a page that claims there is nothing older strands whatever is older.
+    test "a page says there is an older one without carrying its rows" do
+      for i <- 1..12 do
+        Queries.insert_message(%{
+          channel_name: "#lobby",
+          author_nickname: "User",
+          content: "Msg #{i}",
+          type: "message"
+        })
+      end
+
+      page = Queries.list_messages("#lobby", limit: 10)
+
+      assert length(page.items) == 10
+      assert page.has_more
+      assert page.next_cursor == List.last(page.items).id
+    end
+
+    test "the last page says there is nothing older" do
+      for i <- 1..3 do
+        Queries.insert_message(%{
+          channel_name: "#lobby",
+          author_nickname: "User",
+          content: "Msg #{i}",
+          type: "message"
+        })
+      end
+
+      page = Queries.list_messages("#lobby", limit: 10)
+
+      assert length(page.items) == 3
+      refute page.has_more
+    end
   end
 
   describe "get_message/1" do
@@ -126,7 +163,7 @@ defmodule RetroHexChat.Chat.QueriesTest do
     end
   end
 
-  describe "update_message_content/3" do
+  describe "update_content/4" do
     test "updates content and sets edited_at" do
       {:ok, msg} =
         Queries.insert_message(%{
@@ -137,7 +174,7 @@ defmodule RetroHexChat.Chat.QueriesTest do
         })
 
       now = DateTime.utc_now()
-      assert {:ok, updated} = Queries.update_message_content(msg, "Updated content", now)
+      assert {:ok, updated} = Queries.update_content(msg, "Updated content", now)
       assert updated.content == "Updated content"
       assert updated.edited_at == now
       assert updated.content_format == "irc"
@@ -155,14 +192,14 @@ defmodule RetroHexChat.Chat.QueriesTest do
         })
 
       now = DateTime.utc_now()
-      assert {:ok, updated} = Queries.update_message_content(msg, "**Updated**", now)
+      assert {:ok, updated} = Queries.update_content(msg, "**Updated**", now)
       assert updated.content == "**Updated**"
       assert updated.content_format == "markdown"
       assert updated.plain_content == "Updated"
     end
   end
 
-  describe "soft_delete_message/2" do
+  describe "soft_delete/2" do
     test "sets deleted_at on the message" do
       {:ok, msg} =
         Queries.insert_message(%{
@@ -173,7 +210,7 @@ defmodule RetroHexChat.Chat.QueriesTest do
         })
 
       now = DateTime.utc_now()
-      assert {:ok, deleted} = Queries.soft_delete_message(msg, now)
+      assert {:ok, deleted} = Queries.soft_delete(msg, now)
       assert deleted.deleted_at == now
     end
   end
@@ -199,7 +236,7 @@ defmodule RetroHexChat.Chat.QueriesTest do
           reply_to_preview: "Original content"
         })
 
-      assert {1, nil} = Queries.update_reply_previews(parent.id, "Edited content")
+      assert {1, nil} = Queries.update_reply_previews(parent, "Edited content")
 
       updated_reply = Queries.get_message(reply.id)
       assert updated_reply.reply_to_preview == "Edited content"
@@ -282,7 +319,7 @@ defmodule RetroHexChat.Chat.QueriesTest do
           content: "Will be deleted"
         })
 
-      {:ok, _} = Queries.soft_delete_pm(pm, DateTime.utc_now())
+      {:ok, _} = Queries.soft_delete(pm, DateTime.utc_now())
 
       partners = Queries.list_pm_partners("Hank").items
       assert [] == partners
@@ -353,7 +390,7 @@ defmodule RetroHexChat.Chat.QueriesTest do
     end
   end
 
-  describe "get_reply_ids/1" do
+  describe "reply_ids/1" do
     test "returns IDs of messages replying to a parent" do
       {:ok, parent} =
         Queries.insert_message(%{
@@ -374,7 +411,7 @@ defmodule RetroHexChat.Chat.QueriesTest do
           reply_to_preview: "Parent msg"
         })
 
-      ids = Queries.get_reply_ids(parent.id)
+      ids = Queries.reply_ids(parent)
       assert reply.id in ids
     end
 
@@ -387,7 +424,7 @@ defmodule RetroHexChat.Chat.QueriesTest do
           type: "message"
         })
 
-      assert [] = Queries.get_reply_ids(msg.id)
+      assert [] = Queries.reply_ids(msg)
     end
   end
 end

@@ -6,7 +6,7 @@ defmodule RetroHexChat.Chat.Service do
 
   require Logger
 
-  alias RetroHexChat.Chat.{Attachments, Content, Policy, Queries}
+  alias RetroHexChat.Chat.{Attachments, Content, Conversation, Policy, Queries, Replies}
   alias RetroHexChat.Observability
   alias RetroHexChat.Repo
   alias RetroHexChat.Topics
@@ -62,22 +62,7 @@ defmodule RetroHexChat.Chat.Service do
   end
 
   defp do_edit_message(message_id, nickname, new_content, opts) do
-    with %{} = message <-
-           Queries.get_message(message_id) || {:error, dgettext("chat", "Message not found.")},
-         content_format <- edit_content_format(message, opts),
-         :ok <- validate_content(new_content, content_format),
-         :ok <- Policy.can_edit?(message, nickname),
-         now <- DateTime.utc_now(),
-         {:ok, updated} <-
-           Queries.update_message_content(message, new_content, now,
-             content_format: content_format
-           ) do
-      broadcast_edit(message.channel_name, updated)
-
-      refresh_reply_previews(message.id, Content.reply_preview(updated), message.channel_name)
-
-      {:ok, updated}
-    end
+    message_id |> Queries.get_message() |> do_edit(nickname, new_content, opts)
   end
 
   @spec edit_private_message(integer(), String.t(), String.t(), keyword()) ::
@@ -98,22 +83,27 @@ defmodule RetroHexChat.Chat.Service do
   end
 
   defp do_edit_private_message(pm_id, nickname, new_content, opts) do
-    with %{} = pm <-
-           Queries.get_private_message(pm_id) || {:error, dgettext("chat", "Message not found.")},
-         content_format <- edit_content_format(pm, opts),
+    pm_id |> Queries.get_private_message() |> do_edit(nickname, new_content, opts)
+  end
+
+  # Only the lookup differs between the two kinds of conversation: which table
+  # the row came from is written on the row, and everything after it — the
+  # format, the policy, the update, who hears about it — reads it from there.
+  defp do_edit(message, nickname, new_content, opts) do
+    with %{} = message <- message || {:error, dgettext("chat", "Message not found.")},
+         content_format <- edit_content_format(message, opts),
          :ok <- validate_content(new_content, content_format),
-         :ok <- Policy.can_edit?(pm, nickname),
+         :ok <- Policy.can_edit?(message, nickname),
          now <- DateTime.utc_now(),
          {:ok, updated} <-
-           Queries.update_pm_content(pm, new_content, now, content_format: content_format) do
-      broadcast_pm_edit(pm.sender_nickname, pm.recipient_nickname, updated)
+           Queries.update_content(message, new_content, now, content_format: content_format) do
+      broadcast_to_conversation(updated, "message_edited", %{
+        content: updated.content,
+        content_format: content_format(updated),
+        edited_at: updated.edited_at
+      })
 
-      refresh_pm_reply_previews(
-        pm.id,
-        Content.reply_preview(updated),
-        pm.sender_nickname,
-        pm.recipient_nickname
-      )
+      refresh_reply_previews(updated, Content.reply_preview(updated))
 
       {:ok, updated}
     end
@@ -130,15 +120,7 @@ defmodule RetroHexChat.Chat.Service do
   end
 
   defp do_delete_message(message_id, nickname) do
-    with %{} = message <-
-           Queries.get_message(message_id) || {:error, dgettext("chat", "Message not found.")},
-         :ok <- Policy.can_delete?(message, nickname),
-         now <- DateTime.utc_now(),
-         {:ok, deleted} <- Queries.soft_delete_message(message, now) do
-      broadcast_delete(message.channel_name, deleted)
-      refresh_reply_previews(message.id, nil, message.channel_name)
-      {:ok, deleted}
-    end
+    message_id |> Queries.get_message() |> do_delete(nickname)
   end
 
   @spec delete_private_message(integer(), String.t()) ::
@@ -152,13 +134,16 @@ defmodule RetroHexChat.Chat.Service do
   end
 
   defp do_delete_private_message(pm_id, nickname) do
-    with %{} = pm <-
-           Queries.get_private_message(pm_id) || {:error, dgettext("chat", "Message not found.")},
-         :ok <- Policy.can_delete?(pm, nickname),
+    pm_id |> Queries.get_private_message() |> do_delete(nickname)
+  end
+
+  defp do_delete(message, nickname) do
+    with %{} = message <- message || {:error, dgettext("chat", "Message not found.")},
+         :ok <- Policy.can_delete?(message, nickname),
          now <- DateTime.utc_now(),
-         {:ok, deleted} <- Queries.soft_delete_pm(pm, now) do
-      broadcast_pm_delete(pm.sender_nickname, pm.recipient_nickname, deleted)
-      refresh_pm_reply_previews(pm.id, nil, pm.sender_nickname, pm.recipient_nickname)
+         {:ok, deleted} <- Queries.soft_delete(message, now) do
+      broadcast_to_conversation(deleted, "message_deleted", %{deleted_at: deleted.deleted_at})
+      refresh_reply_previews(deleted, nil)
       {:ok, deleted}
     end
   end
@@ -226,37 +211,12 @@ defmodule RetroHexChat.Chat.Service do
 
   defp resolve_reply_attrs(nil, _kind), do: {:ok, %{}}
 
-  defp resolve_reply_attrs(reply_to_id, :message) do
-    case Queries.get_message(reply_to_id) do
-      nil ->
-        {:error, dgettext("chat", "Original message not found.")}
-
-      parent ->
-        preview = Content.reply_preview(parent)
-
-        {:ok,
-         %{
-           reply_to_id: parent.id,
-           reply_to_author: parent.author_nickname,
-           reply_to_preview: preview
-         }}
-    end
-  end
-
-  defp resolve_reply_attrs(reply_to_id, :pm) do
-    case Queries.get_private_message(reply_to_id) do
-      nil ->
-        {:error, dgettext("chat", "Original message not found.")}
-
-      parent ->
-        preview = Content.reply_preview(parent)
-
-        {:ok,
-         %{
-           reply_to_id: parent.id,
-           reply_to_author: parent.sender_nickname,
-           reply_to_preview: preview
-         }}
+  # Refuses rather than sending a message whose quote would be missing. The
+  # channel runtime answers `:not_found` the other way — see `Chat.Replies`.
+  defp resolve_reply_attrs(reply_to_id, kind) do
+    case Replies.attrs(kind, reply_to_id) do
+      {:ok, attrs} -> {:ok, attrs}
+      :not_found -> {:error, dgettext("chat", "Original message not found.")}
     end
   end
 
@@ -287,7 +247,7 @@ defmodule RetroHexChat.Chat.Service do
     Repo.transaction(fn ->
       attrs
       |> insert_channel_message(reply_attrs)
-      |> attach_channel_attachments(nickname, attachment_ids)
+      |> attach_attachments(nickname, attachment_ids)
     end)
     |> normalize_insert_result()
   end
@@ -309,7 +269,7 @@ defmodule RetroHexChat.Chat.Service do
     Repo.transaction(fn ->
       attrs
       |> insert_private_message(reply_attrs)
-      |> attach_private_attachments(sender, attachment_ids)
+      |> attach_attachments(sender, attachment_ids)
     end)
     |> normalize_insert_result()
   end
@@ -330,25 +290,14 @@ defmodule RetroHexChat.Chat.Service do
     end
   end
 
-  defp attach_channel_attachments({:ok, message}, nickname, attachment_ids) do
-    case Queries.attach_to_message(attachment_ids, nickname, message.id) do
+  defp attach_attachments({:ok, message}, owner, attachment_ids) do
+    case Queries.attach(message, attachment_ids, owner) do
       {:ok, attachments} -> %{message | attachments: attachments}
       {:error, reason} -> Repo.rollback(reason)
     end
   end
 
-  defp attach_channel_attachments({:error, reason}, _nickname, _attachment_ids) do
-    Repo.rollback(reason)
-  end
-
-  defp attach_private_attachments({:ok, pm}, sender, attachment_ids) do
-    case Queries.attach_to_private_message(attachment_ids, sender, pm.id) do
-      {:ok, attachments} -> %{pm | attachments: attachments}
-      {:error, reason} -> Repo.rollback(reason)
-    end
-  end
-
-  defp attach_private_attachments({:error, reason}, _sender, _attachment_ids) do
+  defp attach_attachments({:error, reason}, _owner, _attachment_ids) do
     Repo.rollback(reason)
   end
 
@@ -364,39 +313,19 @@ defmodule RetroHexChat.Chat.Service do
 
   # A message that was edited and one that was deleted refresh the quotes of
   # their replies the same way; deleting is refreshing to no preview at all.
-  defp refresh_reply_previews(parent_id, preview, channel_name) do
-    case Queries.get_reply_ids(parent_id) do
+  defp refresh_reply_previews(parent, preview) do
+    case Queries.reply_ids(parent) do
       [] ->
         :ok
 
       reply_ids ->
-        Queries.update_reply_previews(parent_id, preview)
-        broadcast_reply_quotes(parent_id, preview, reply_ids, [Topics.channel(channel_name)])
-    end
-  end
+        Queries.update_reply_previews(parent, preview)
 
-  defp refresh_pm_reply_previews(parent_id, preview, sender, recipient) do
-    case Queries.get_pm_reply_ids(parent_id) do
-      [] ->
-        :ok
-
-      reply_ids ->
-        Queries.update_pm_reply_previews(parent_id, preview)
-        broadcast_reply_quotes(parent_id, preview, reply_ids, inboxes(sender, recipient))
-    end
-  end
-
-  defp broadcast_reply_quotes(parent_id, preview, reply_ids, topics) do
-    Enum.each(topics, fn topic ->
-      Phoenix.PubSub.broadcast(
-        RetroHexChat.PubSub,
-        topic,
-        %{
+        broadcast(Conversation.topics(parent), %{
           event: "reply_quote_updated",
-          payload: %{parent_id: parent_id, new_preview: preview, reply_ids: reply_ids}
-        }
-      )
-    end)
+          payload: %{parent_id: parent.id, new_preview: preview, reply_ids: reply_ids}
+        })
+    end
   end
 
   # ── Broadcasts ──
@@ -491,61 +420,22 @@ defmodule RetroHexChat.Chat.Service do
     )
   end
 
-  defp broadcast_edit(channel_name, message) do
-    Phoenix.PubSub.broadcast(
-      RetroHexChat.PubSub,
-      Topics.channel(channel_name),
-      %{
-        event: "message_edited",
-        payload: %{
-          id: message.id,
-          content: message.content,
-          content_format: content_format(message),
-          edited_at: message.edited_at,
-          channel: channel_name
-        }
-      }
-    )
-  end
-
-  defp broadcast_pm_edit(sender, recipient, pm) do
-    broadcast_to_inboxes(sender, recipient, %{
-      event: "message_edited",
-      payload: %{
-        id: pm.id,
-        content: pm.content,
-        content_format: content_format(pm),
-        edited_at: pm.edited_at,
-        sender: sender
-      }
+  # What happened to a message reaches whoever is in the conversation it was
+  # written in, and says which conversation that was — a channel names itself, a
+  # private one names a participant, and a reader tells them apart by that.
+  defp broadcast_to_conversation(message, event, payload) do
+    broadcast(Conversation.topics(message), %{
+      event: event,
+      payload:
+        payload
+        |> Map.put(:id, message.id)
+        |> Map.merge(Conversation.address(message))
     })
   end
 
-  defp broadcast_delete(channel_name, message) do
-    Phoenix.PubSub.broadcast(
-      RetroHexChat.PubSub,
-      Topics.channel(channel_name),
-      %{
-        event: "message_deleted",
-        payload: %{id: message.id, deleted_at: message.deleted_at, channel: channel_name}
-      }
-    )
+  defp broadcast(topics, message) do
+    Enum.each(topics, &Phoenix.PubSub.broadcast(RetroHexChat.PubSub, &1, message))
   end
-
-  defp broadcast_pm_delete(sender, recipient, pm) do
-    broadcast_to_inboxes(sender, recipient, %{
-      event: "message_deleted",
-      payload: %{id: pm.id, deleted_at: pm.deleted_at, sender: sender}
-    })
-  end
-
-  defp broadcast_to_inboxes(sender, recipient, message) do
-    Enum.each(inboxes(sender, recipient), fn topic ->
-      Phoenix.PubSub.broadcast(RetroHexChat.PubSub, topic, message)
-    end)
-  end
-
-  defp inboxes(sender, recipient), do: [Topics.inbox(sender), Topics.inbox(recipient)]
 
   @known_types ~w(message action system service error notice p2p_invite p2p_system)a
   @type_string_to_atom Map.new(@known_types, fn a -> {Atom.to_string(a), a} end)

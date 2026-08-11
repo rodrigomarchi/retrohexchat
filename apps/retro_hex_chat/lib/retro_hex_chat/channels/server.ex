@@ -1299,15 +1299,17 @@ defmodule RetroHexChat.Channels.Server do
 
   defp insert_persisted_message(base_attrs, nil), do: Chat.Queries.insert_message(base_attrs)
 
+  # A quote whose original is gone is dropped and the message still sent, which
+  # is the opposite of what `Chat.Service` does with the same answer.
   defp insert_persisted_message(base_attrs, reply_to_id) do
-    case resolve_reply_attrs(reply_to_id) do
+    case Chat.Replies.attrs(:message, reply_to_id) do
       {:ok, reply_attrs} -> Chat.Queries.insert_reply_message(Map.merge(base_attrs, reply_attrs))
-      {:error, _} -> Chat.Queries.insert_message(base_attrs)
+      :not_found -> Chat.Queries.insert_message(base_attrs)
     end
   end
 
   defp attach_persisted_attachments({:ok, message}, nickname, attachment_ids) do
-    case Chat.Queries.attach_to_message(attachment_ids, nickname, message.id) do
+    case Chat.Queries.attach(message, attachment_ids, nickname) do
       {:ok, attachments} ->
         message = %{message | attachments: attachments}
         {message, message.id, message.inserted_at}
@@ -1319,23 +1321,6 @@ defmodule RetroHexChat.Channels.Server do
 
   defp attach_persisted_attachments({:error, reason}, _nickname, _attachment_ids) do
     Repo.rollback(reason)
-  end
-
-  defp resolve_reply_attrs(reply_to_id) do
-    case Chat.Queries.get_message(reply_to_id) do
-      nil ->
-        {:error, :not_found}
-
-      parent ->
-        preview = Content.reply_preview(parent)
-
-        {:ok,
-         %{
-           reply_to_id: parent.id,
-           reply_to_author: parent.author_nickname,
-           reply_to_preview: preview
-         }}
-    end
   end
 
   defp apply_content_mode_policy(content, content_format, state) do

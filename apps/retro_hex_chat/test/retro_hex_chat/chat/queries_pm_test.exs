@@ -74,6 +74,25 @@ defmodule RetroHexChat.Chat.QueriesPmTest do
       assert hd(messages).content == "Second"
     end
 
+    # The same lookahead that pages a channel, asked of the other table: a
+    # private conversation reaching the end of a page and claiming there is
+    # nothing older would strand its whole history above it.
+    test "a page says there is an older one without carrying its rows" do
+      for i <- 1..12 do
+        Queries.insert_private_message(%{
+          sender_nickname: "Alice",
+          recipient_nickname: "Bob",
+          content: "Msg #{i}"
+        })
+      end
+
+      page = Queries.list_private_messages("Alice", "Bob", limit: 10)
+
+      assert length(page.items) == 10
+      assert page.has_more
+      assert page.next_cursor == List.last(page.items).id
+    end
+
     test "returns messages regardless of sender/recipient order" do
       {:ok, _pm1} =
         Queries.insert_private_message(%{
@@ -143,7 +162,7 @@ defmodule RetroHexChat.Chat.QueriesPmTest do
     end
   end
 
-  describe "update_pm_content/3" do
+  describe "update_content/4 on a private message" do
     test "updates plain_content with the persisted content_format" do
       {:ok, pm} =
         Queries.insert_private_message(%{
@@ -154,7 +173,7 @@ defmodule RetroHexChat.Chat.QueriesPmTest do
         })
 
       now = DateTime.utc_now()
-      assert {:ok, updated} = Queries.update_pm_content(pm, "**Updated**", now)
+      assert {:ok, updated} = Queries.update_content(pm, "**Updated**", now)
       assert updated.content == "**Updated**"
       assert updated.content_format == "markdown"
       assert updated.plain_content == "Updated"

@@ -14,6 +14,52 @@ defmodule RetroHexChat.Chat.Queries do
   # See `list_pm_partners/2` — a bound, not a page size.
   @max_pm_partners 500
 
+  @typedoc "A message somebody wrote, in whichever kind of conversation."
+  @type message :: Message.t() | PrivateMessage.t()
+
+  # ── Any message ──
+  #
+  # Written once because the two tables answer these identically: what changes
+  # is the schema the row belongs to, and the row itself says which that is.
+
+  @doc "Rewrites a message's body, keeping or replacing its format."
+  @spec update_content(message(), String.t(), DateTime.t(), keyword()) ::
+          {:ok, message()} | {:error, Ecto.Changeset.t()}
+  def update_content(message, new_content, edited_at, opts \\ []) do
+    attrs =
+      %{content: new_content, edited_at: edited_at}
+      |> maybe_put_content_format(opts)
+
+    message
+    |> edit_changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc "Marks a message deleted without removing it."
+  @spec soft_delete(message(), DateTime.t()) :: {:ok, message()} | {:error, Ecto.Changeset.t()}
+  def soft_delete(message, deleted_at) do
+    message
+    |> delete_changeset(%{deleted_at: deleted_at})
+    |> Repo.update()
+  end
+
+  @doc "The ids of the messages quoting this one."
+  @spec reply_ids(message()) :: [integer()]
+  def reply_ids(parent) do
+    parent
+    |> replies_to()
+    |> select([r], r.id)
+    |> Repo.all()
+  end
+
+  @doc "Rewrites the quote every reply to this message carries."
+  @spec update_reply_previews(message(), String.t() | nil) :: {non_neg_integer(), nil}
+  def update_reply_previews(parent, new_preview) do
+    parent
+    |> replies_to()
+    |> Repo.update_all(set: [reply_to_preview: new_preview])
+  end
+
   @spec insert_message(map()) :: {:ok, Message.t()} | {:error, Ecto.Changeset.t()}
   def insert_message(attrs) do
     %Message{}
@@ -37,55 +83,13 @@ defmodule RetroHexChat.Chat.Queries do
   """
   @spec list_messages(String.t(), keyword()) :: Page.t()
   def list_messages(channel_name, opts \\ []) do
-    limit = Keyword.get(opts, :limit, @default_limit)
-
     Message
     |> where([m], m.channel_name == ^channel_name)
-    |> maybe_before(Keyword.get(opts, :cursor))
-    |> order_by([m], desc: m.id)
-    |> preload([m], attachments: :file)
-    |> limit(^Page.limit_with_lookahead(limit))
-    |> Repo.all()
-    |> Page.new(limit, & &1.id)
+    |> page(opts)
   end
 
   @spec get_message(integer()) :: Message.t() | nil
   def get_message(id), do: Message |> Repo.get(id) |> preload_attachments()
-
-  @spec update_message_content(Message.t(), String.t(), DateTime.t(), keyword()) ::
-          {:ok, Message.t()} | {:error, Ecto.Changeset.t()}
-  def update_message_content(message, new_content, edited_at, opts \\ []) do
-    attrs =
-      %{content: new_content, edited_at: edited_at}
-      |> maybe_put_content_format(opts)
-
-    message
-    |> Message.edit_changeset(attrs)
-    |> Repo.update()
-  end
-
-  @spec soft_delete_message(Message.t(), DateTime.t()) ::
-          {:ok, Message.t()} | {:error, Ecto.Changeset.t()}
-  def soft_delete_message(message, deleted_at) do
-    message
-    |> Message.delete_changeset(%{deleted_at: deleted_at})
-    |> Repo.update()
-  end
-
-  @spec update_reply_previews(integer(), String.t() | nil) :: {non_neg_integer(), nil}
-  def update_reply_previews(parent_id, new_preview) do
-    Message
-    |> where([m], m.reply_to_id == ^parent_id)
-    |> Repo.update_all(set: [reply_to_preview: new_preview])
-  end
-
-  @spec get_reply_ids(integer()) :: [integer()]
-  def get_reply_ids(parent_id) do
-    Message
-    |> where([m], m.reply_to_id == ^parent_id)
-    |> select([m], m.id)
-    |> Repo.all()
-  end
 
   # ── PM Partners ──
 
@@ -168,11 +172,7 @@ defmodule RetroHexChat.Chat.Queries do
   @spec get_p2p_invite_between(String.t(), String.t(), String.t()) :: PrivateMessage.t() | nil
   def get_p2p_invite_between(nick_a, nick_b, token) do
     PrivateMessage
-    |> where(
-      [pm],
-      (pm.sender_nickname == ^nick_a and pm.recipient_nickname == ^nick_b) or
-        (pm.sender_nickname == ^nick_b and pm.recipient_nickname == ^nick_a)
-    )
+    |> between(nick_a, nick_b)
     |> where([pm], pm.type == "p2p_invite")
     |> where([pm], like(pm.content, ^"%#{token}%"))
     |> order_by([pm], desc: pm.id)
@@ -185,59 +185,13 @@ defmodule RetroHexChat.Chat.Queries do
   """
   @spec list_private_messages(String.t(), String.t(), keyword()) :: Page.t()
   def list_private_messages(nick_a, nick_b, opts \\ []) do
-    limit = Keyword.get(opts, :limit, @default_limit)
-
     PrivateMessage
-    |> where(
-      [pm],
-      (pm.sender_nickname == ^nick_a and pm.recipient_nickname == ^nick_b) or
-        (pm.sender_nickname == ^nick_b and pm.recipient_nickname == ^nick_a)
-    )
-    |> maybe_before(Keyword.get(opts, :cursor))
-    |> order_by([pm], desc: pm.id)
-    |> preload([pm], attachments: :file)
-    |> limit(^Page.limit_with_lookahead(limit))
-    |> Repo.all()
-    |> Page.new(limit, & &1.id)
+    |> between(nick_a, nick_b)
+    |> page(opts)
   end
 
   @spec get_private_message(integer()) :: PrivateMessage.t() | nil
   def get_private_message(id), do: PrivateMessage |> Repo.get(id) |> preload_attachments()
-
-  @spec update_pm_content(PrivateMessage.t(), String.t(), DateTime.t(), keyword()) ::
-          {:ok, PrivateMessage.t()} | {:error, Ecto.Changeset.t()}
-  def update_pm_content(pm, new_content, edited_at, opts \\ []) do
-    attrs =
-      %{content: new_content, edited_at: edited_at}
-      |> maybe_put_content_format(opts)
-
-    pm
-    |> PrivateMessage.edit_changeset(attrs)
-    |> Repo.update()
-  end
-
-  @spec soft_delete_pm(PrivateMessage.t(), DateTime.t()) ::
-          {:ok, PrivateMessage.t()} | {:error, Ecto.Changeset.t()}
-  def soft_delete_pm(pm, deleted_at) do
-    pm
-    |> PrivateMessage.delete_changeset(%{deleted_at: deleted_at})
-    |> Repo.update()
-  end
-
-  @spec update_pm_reply_previews(integer(), String.t() | nil) :: {non_neg_integer(), nil}
-  def update_pm_reply_previews(parent_id, new_preview) do
-    PrivateMessage
-    |> where([pm], pm.reply_to_id == ^parent_id)
-    |> Repo.update_all(set: [reply_to_preview: new_preview])
-  end
-
-  @spec get_pm_reply_ids(integer()) :: [integer()]
-  def get_pm_reply_ids(parent_id) do
-    PrivateMessage
-    |> where([pm], pm.reply_to_id == ^parent_id)
-    |> select([pm], pm.id)
-    |> Repo.all()
-  end
 
   @spec last_own_message(String.t(), String.t()) :: Message.t() | nil
   def last_own_message(nickname, channel_name) do
@@ -253,12 +207,8 @@ defmodule RetroHexChat.Chat.Queries do
   @spec last_own_pm(String.t(), String.t()) :: PrivateMessage.t() | nil
   def last_own_pm(nickname, other_nick) do
     PrivateMessage
+    |> between(nickname, other_nick)
     |> where([pm], pm.sender_nickname == ^nickname)
-    |> where(
-      [pm],
-      (pm.sender_nickname == ^nickname and pm.recipient_nickname == ^other_nick) or
-        (pm.sender_nickname == ^other_nick and pm.recipient_nickname == ^nickname)
-    )
     |> where([pm], is_nil(pm.deleted_at))
     |> where([pm], pm.type == "message")
     |> order_by([pm], desc: pm.id)
@@ -363,16 +313,15 @@ defmodule RetroHexChat.Chat.Queries do
     end
   end
 
-  @spec attach_to_message([integer()], String.t(), integer()) ::
+  @doc "Claims uploaded files for a message, whichever kind of message it is."
+  @spec attach(message(), [integer()], String.t()) ::
           {:ok, [Attachment.t()]} | {:error, :attachment_not_found}
-  def attach_to_message(ids, owner_nickname, message_id) do
-    claim_attachments(ids, owner_nickname, :message_id, message_id)
+  def attach(%Message{id: id}, ids, owner_nickname) do
+    claim_attachments(ids, owner_nickname, :message_id, id)
   end
 
-  @spec attach_to_private_message([integer()], String.t(), integer()) ::
-          {:ok, [Attachment.t()]} | {:error, :attachment_not_found}
-  def attach_to_private_message(ids, owner_nickname, private_message_id) do
-    claim_attachments(ids, owner_nickname, :private_message_id, private_message_id)
+  def attach(%PrivateMessage{id: id}, ids, owner_nickname) do
+    claim_attachments(ids, owner_nickname, :private_message_id, id)
   end
 
   @spec preload_attachments(Message.t() | PrivateMessage.t() | nil) ::
@@ -493,6 +442,44 @@ defmodule RetroHexChat.Chat.Queries do
 
     count
   end
+
+  # One page of a conversation, newest first, whichever kind it is: the scope is
+  # the caller's `where`, and everything after it — the cursor, the order, the
+  # preload, the lookahead that decides `has_more` — is the same question asked
+  # of a different table.
+  defp page(query, opts) do
+    limit = Keyword.get(opts, :limit, @default_limit)
+
+    query
+    |> maybe_before(Keyword.get(opts, :cursor))
+    |> order_by(desc: :id)
+    |> preload(attachments: :file)
+    |> limit(^Page.limit_with_lookahead(limit))
+    |> Repo.all()
+    |> Page.new(limit, & &1.id)
+  end
+
+  # A private conversation is an unordered pair, so every query about one asks
+  # for both directions.
+  defp between(query, nick_a, nick_b) do
+    where(
+      query,
+      [pm],
+      (pm.sender_nickname == ^nick_a and pm.recipient_nickname == ^nick_b) or
+        (pm.sender_nickname == ^nick_b and pm.recipient_nickname == ^nick_a)
+    )
+  end
+
+  defp replies_to(%Message{id: id}), do: where(Message, [m], m.reply_to_id == ^id)
+  defp replies_to(%PrivateMessage{id: id}), do: where(PrivateMessage, [pm], pm.reply_to_id == ^id)
+
+  defp edit_changeset(%Message{} = message, attrs), do: Message.edit_changeset(message, attrs)
+  defp edit_changeset(%PrivateMessage{} = pm, attrs), do: PrivateMessage.edit_changeset(pm, attrs)
+
+  defp delete_changeset(%Message{} = message, attrs), do: Message.delete_changeset(message, attrs)
+
+  defp delete_changeset(%PrivateMessage{} = pm, attrs),
+    do: PrivateMessage.delete_changeset(pm, attrs)
 
   defp maybe_before(query, nil), do: query
 
