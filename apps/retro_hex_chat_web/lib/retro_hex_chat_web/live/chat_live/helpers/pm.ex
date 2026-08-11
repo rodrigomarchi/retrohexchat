@@ -28,7 +28,15 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
           Phoenix.LiveView.Socket.t()
   def load_pm_messages_with_pagination(socket, target, limit \\ 50) do
     session = socket.assigns.session
-    page = Queries.list_private_messages(session.nickname, target, limit: limit)
+    conversation = "pm:#{target}"
+
+    # Through `Page.filter/2` so hiding what was cleared cannot shorten the page
+    # into claiming there is nothing older — the same reason the channel loader
+    # filters this way.
+    page =
+      session.nickname
+      |> Queries.list_private_messages(target, limit: limit)
+      |> Page.filter(&(not Messages.cleared_from_conversation?(socket, conversation, &1)))
 
     stream_pm_page(socket, page)
   end

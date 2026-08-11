@@ -221,22 +221,34 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Messages do
   def stream_type(_type), do: :message
 
   @doc """
-  Whether a channel message was written before the reader cleared that channel.
+  The key a conversation is tracked under, whichever kind is on screen.
 
-  Clearing is per reader and per channel, and it hides rather than deletes: the
-  messages stay on the server for everyone else, and the reader's own cutoff is
-  what keeps them off this screen. Both the page loaded from history and the
-  message arriving live have to answer this the same way, or clearing a channel
-  would hold only until the next message redrew it.
+  A channel is its own name; a private conversation is `pm:<nick>`, which is
+  already how unread counts, flashes and highlights key theirs.
+  """
+  @spec conversation_key(map()) :: String.t() | nil
+  def conversation_key(%{active_channel: channel}) when is_binary(channel), do: channel
+  def conversation_key(%{active_pm: nick}) when is_binary(nick), do: "pm:#{nick}"
+  def conversation_key(_session), do: nil
+
+  @doc """
+  Whether a message was written before the reader cleared that conversation.
+
+  Clearing is per reader and per conversation, and it hides rather than deletes:
+  the messages stay on the server for everyone else, and the reader's own cutoff
+  is what keeps them off this screen. Both the page loaded from history and the
+  message arriving live have to answer this the same way, or clearing would hold
+  only until the next message redrew it — and, for a private conversation, only
+  until the next time it was opened.
 
   A message states when it was written under one of two names depending on where
   it came from — `inserted_at` from the database, `timestamp` from a broadcast —
   and one that states neither is treated as newer than any cutoff, so an
   unreadable timestamp shows the message rather than swallowing it.
   """
-  @spec cleared_from_channel?(Phoenix.LiveView.Socket.t(), String.t(), map()) :: boolean()
-  def cleared_from_channel?(socket, channel, message) do
-    case Map.get(socket.assigns[:cleared_channel_cutoffs] || %{}, channel) do
+  @spec cleared_from_conversation?(Phoenix.LiveView.Socket.t(), String.t(), map()) :: boolean()
+  def cleared_from_conversation?(socket, conversation, message) do
+    case Map.get(socket.assigns[:cleared_conversation_cutoffs] || %{}, conversation) do
       nil -> false
       cutoff -> compare_written_at(written_at(message), cutoff) != :gt
     end

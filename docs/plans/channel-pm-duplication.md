@@ -204,6 +204,34 @@ dois construtores passam por ela. Uma conversa privada é um **par**, e é por i
 que a checagem toma a mensagem e não o payload: o payload nomeia um participante
 só. A duplicação entre os dois construtores sumiu junto.
 
+### 4.7 Limpar uma conversa privada não durava — corrigido
+
+Quarta assimetria, achada varrendo `helpers/{channel,pm}.ex`. O formato do
+código denunciava sozinho:
+
+```elixir
+channel = socket.assigns.session.active_channel
+
+if channel do
+  Map.put(cutoffs, channel, DateTime.utc_now())
+else
+  cutoffs                                   # nada é lembrado
+end
+```
+
+Com uma conversa privada na tela, `active_channel` é `nil` — `set_active_pm/2`
+zera. Então limpar **esvaziava a janela e não registrava nada**: trocar de
+conversa e voltar trazia o histórico inteiro de volta. Um canal continuava limpo.
+
+Eram duas metades. A gravação (o `if` acima) e a leitura: o carregador de canal
+filtra por `Page.filter(&(not cleared_from_channel?(...)))` e o de PM não
+filtrava por nada.
+
+O mapa agora guarda os dois tipos, sob a mesma chave que contagem de não-lidas,
+flash e highlight já usam (`pm:<nick>`), e por isso deixou de se chamar
+`cleared_channel_cutoffs` — o nome teria virado mentira. `cleared_from_channel?`
+virou `cleared_from_conversation?` pelo mesmo motivo.
+
 ### 4.3 O custo corrente
 
 Toda feature que toca mensagem custa dois caminhos, dois testes e uma chance de
@@ -294,23 +322,28 @@ e o §6 mostra que a chave de roteamento difere de verdade.
   procurar funciona.** Uma varredura comparando chamada a chamada
   `do_handle_new_message` com `do_handle_new_pm` — e depois o que cada lado faz
   com o resultado — achou duas: §4.4 e §4.5. A segunda passada, sobre `Service`
-  e os handlers compartilhados, achou o §4.6. **Três defeitos, nenhum deles
+  e os handlers compartilhados, achou o §4.6. A terceira, sobre
+  `helpers/{channel,pm}.ex`, achou o §4.7. **Quatro defeitos, nenhum deles
   reclamado por ninguém em meses de uso.**
 
-  O método, para as camadas ainda não varridas (`Queries`,
-  `helpers/{channel,pm}.ex`, `core_events.ex`): listar as funções chamadas
+  O método, para o que falta (`core_events.ex`): listar as funções chamadas
   dentro de cada gêmeo, diferenciar os conjuntos, e para cada chamada que só
   existe de um lado perguntar se há um ramo que a recuse do outro. Quando não
   há, é esquecimento — o mesmo raciocínio do §4.2.
 
-  Duas variações que renderam:
+  Três variações que renderam:
 
-  - **`Service` estava simétrico.** Resultado negativo também é resultado: os
-    três pares (`send`, `edit`, `delete`) têm os mesmos passos na mesma ordem, e
-    os payloads de broadcast carregam os mesmos campos. Não procure ali de novo.
+  - **`Service` e `Queries` estão simétricos.** Resultado negativo também é
+    resultado: os pares de envio, edição, remoção, paginação e prévia de
+    resposta têm os mesmos passos na mesma ordem, e os payloads de broadcast
+    carregam os mesmos campos. Não procure ali de novo.
   - **Onde os dois tipos compartilham um handler, olhe a função que decide de
     qual conversa a coisa veio.** Foi assim que o §4.6 apareceu: não era um
     caminho faltando, era o mesmo caminho respondendo diferente para cada forma.
+  - **`if active_channel do ... else <nada> end` é o cheiro do §4.7.** Um `else`
+    que não faz nada, num ramo alcançado só quando há um PM na tela, é uma
+    funcionalidade que ninguém escreveu para o segundo caso. Vale grepar por
+    `active_channel` em ramos condicionais.
 
 ## 9. A regra durável que sai daqui
 

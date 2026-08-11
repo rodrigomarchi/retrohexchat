@@ -281,7 +281,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
     page =
       channel_name
       |> Queries.list_messages(limit: limit)
-      |> Page.filter(&(not Messages.cleared_from_channel?(socket, channel_name, &1)))
+      |> Page.filter(&(not Messages.cleared_from_conversation?(socket, channel_name, &1)))
       |> Messages.visible_channel_page(socket.assigns.session.ignore_list)
 
     stream_items =

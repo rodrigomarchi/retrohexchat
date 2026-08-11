@@ -24,6 +24,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
   alias RetroHexChat.Chat.HelpTopics
   alias RetroHexChatWeb.ChatLive.ChannelListEvents
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
+  alias RetroHexChatWeb.ChatLive.Helpers.Messages
 
   @spec handle_ui_action(Phoenix.LiveView.Socket.t(), atom(), map()) ::
           Phoenix.LiveView.Socket.t()
@@ -36,18 +37,21 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
   end
 
   def handle_ui_action(socket, :clear_chat, _) do
-    channel = socket.assigns.session.active_channel
+    # Clearing has to be remembered, or the conversation comes back the next time
+    # it is opened. Only a channel was remembered: with a private conversation on
+    # screen `active_channel` is nil, so this fell to the branch that recorded
+    # nothing and the history returned on the next switch.
+    conversation = Messages.conversation_key(socket.assigns.session)
+    cutoffs = socket.assigns.cleared_conversation_cutoffs || %{}
 
-    cleared_channel_cutoffs =
-      if channel do
-        Map.put(socket.assigns.cleared_channel_cutoffs || %{}, channel, DateTime.utc_now())
-      else
-        socket.assigns.cleared_channel_cutoffs || %{}
-      end
+    cleared_conversation_cutoffs =
+      if conversation,
+        do: Map.put(cutoffs, conversation, DateTime.utc_now()),
+        else: cutoffs
 
     socket
     |> assign(
-      cleared_channel_cutoffs: cleared_channel_cutoffs,
+      cleared_conversation_cutoffs: cleared_conversation_cutoffs,
       chat_clear_token: System.unique_integer([:positive]),
       oldest_message_id: nil,
       has_more: false,

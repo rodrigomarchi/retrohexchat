@@ -88,6 +88,33 @@ defmodule RetroHexChatWeb.WindowDisplayEditMenuFeatureTest do
       assert Map.has_key?(cleared_cutoffs(view), channel)
     end
 
+    # With a private conversation on screen `active_channel` is nil, so clearing
+    # used to fall to the branch that recorded nothing: the window emptied and
+    # the whole history came back the next time the conversation was opened.
+    test "clear_window stamps a cutoff for a private conversation too", %{conn: conn} do
+      view = connect_user(conn, "PmClearW#{uid()}")
+      peer = "Peer#{uid()}"
+
+      render_click(view, "switch_pm", %{"nickname" => peer})
+      refute Map.has_key?(cleared_cutoffs(view), "pm:#{peer}")
+
+      render_click(view, "toolbar_action", %{"action" => "clear_window"})
+
+      assert Map.has_key?(cleared_cutoffs(view), "pm:#{peer}")
+    end
+
+    test "clearing one conversation does not clear another", %{conn: conn, channel: channel} do
+      view = connect_user(conn, "PmClearO#{uid()}")
+      peer = "Peer#{uid()}"
+
+      join_channel(view, channel)
+      render_click(view, "switch_pm", %{"nickname" => peer})
+      render_click(view, "toolbar_action", %{"action" => "clear_window"})
+
+      assert Map.has_key?(cleared_cutoffs(view), "pm:#{peer}")
+      refute Map.has_key?(cleared_cutoffs(view), channel)
+    end
+
     test "toolbar_action toggle_search still opens Find after relocation", %{conn: conn} do
       view = connect_user(conn, "EditFind#{uid()}")
 
@@ -120,7 +147,7 @@ defmodule RetroHexChatWeb.WindowDisplayEditMenuFeatureTest do
   end
 
   defp cleared_cutoffs(view) do
-    :sys.get_state(view.pid).socket.assigns.cleared_channel_cutoffs || %{}
+    :sys.get_state(view.pid).socket.assigns.cleared_conversation_cutoffs || %{}
   end
 
   defp join_channel(view, channel) do

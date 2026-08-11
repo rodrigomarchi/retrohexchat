@@ -291,7 +291,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
   end
 
   defp apply_active_channel_message(socket, decorated, channel, session) do
-    if MessageHelpers.cleared_from_channel?(socket, channel, decorated) do
+    if MessageHelpers.cleared_from_conversation?(socket, channel, decorated) do
       socket
     else
       apply_visible_channel_message(socket, decorated, session)
@@ -380,10 +380,15 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
       |> maybe_play_highlight_sound(decorated, session)
       |> maybe_push_highlight_tip(decorated)
 
-    if session.active_pm == other_nick do
-      MessageViewport.insert(socket, decorated)
-    else
-      mark_pm_highlight(socket, decorated, other_nick)
+    cond do
+      session.active_pm != other_nick ->
+        mark_pm_highlight(socket, decorated, other_nick)
+
+      MessageHelpers.cleared_from_conversation?(socket, "pm:#{other_nick}", decorated) ->
+        socket
+
+      true ->
+        MessageViewport.insert(socket, decorated)
     end
   end
 
