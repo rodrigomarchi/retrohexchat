@@ -62,16 +62,22 @@ defmodule RetroHexChat.Lobby.SessionServerTest do
   # failure reads `(EXIT) no process` and says nothing about the cause, which is
   # how this survived several `make ci` runs unexplained.
   defp start_and_join!(token, user_ids) do
+    supervisor = Process.whereis(Supervisor)
     {:ok, pid} = Supervisor.start_child(token)
     ref = Process.monitor(pid)
 
-    Enum.each(user_ids, &join!(token, &1, pid, ref))
+    Enum.each(user_ids, &join!(token, &1, pid, ref, supervisor))
 
     Process.demonitor(ref, [:flush])
     pid
   end
 
-  defp join!(token, user_id, pid, ref) do
+  # An exit reason of `:shutdown` comes from a supervisor, not from the server's
+  # own `{:stop, :normal, …}` paths — so the question it raises is whether the
+  # DynamicSupervisor itself went down and took every session with it, which is
+  # what `max_restarts` does after three child failures in five seconds. Its
+  # identity before and after answers that.
+  defp join!(token, user_id, pid, ref, supervisor) do
     case SessionServer.join(token, user_id) do
       :ok -> :ok
       other -> flunk("joining #{inspect(user_id)} answered #{inspect(other)}")
@@ -85,6 +91,8 @@ defmodule RetroHexChat.Lobby.SessionServerTest do
 
           it exited with: #{inspect(down)}
           the join exited with: #{inspect(reason)}
+          the supervisor was: #{inspect(supervisor)}
+          the supervisor is now: #{inspect(Process.whereis(Supervisor))}
           """)
       after
         0 ->
