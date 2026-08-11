@@ -147,6 +147,13 @@ _ROWS = {
     "ETS":          ("ETS", "ETS", "ETS", "ETS", "ETS", "ETS", "ETS", "ETS", "ETS", "ETS", "ETS", "ETS", "ETS"),
     "CPU":          ("CPU", "CPU", "CPU", "CPU", "CPU", "CPU", "CPU", "CPU", "ЦП", "CPU", "CPU", "CPU", "CPU"),
 
+    # ── Diagnostics panes ─────────────────────────────────────
+    # Section headings in the link-preview dialog. One word each, with no
+    # sentence around them, which is the shape the pipeline reads worst.
+    "Overview":     ("Visão geral", "Visão geral", "Resumen", "Vue d'ensemble", "Überblick", "Panoramica", "Overzicht", "Przegląd", "Обзор", "Ikhtisar", "概要", "概览", "概覽"),
+    "Persistence":  ("Persistência", "Persistência", "Persistencia", "Persistance", "Persistenz", "Persistenza", "Persistentie", "Trwałość", "Хранение", "Persistensi", "永続化", "持久化", "持久化"),
+    "Previews":     ("Prévias", "Pré-visualizações", "Vistas previas", "Aperçus", "Vorschauen", "Anteprime", "Voorbeelden", "Podglądy", "Предпросмотры", "Pratinjau", "プレビュー", "预览", "預覽"),
+
     # ── Application chrome ────────────────────────────────────
     "Help":         ("Ajuda", "Ajuda", "Ayuda", "Aide", "Hilfe", "Aiuto", "Help", "Pomoc", "Справка", "Bantuan", "ヘルプ", "帮助", "說明"),
     "Settings":     ("Configurações", "Definições", "Ajustes", "Paramètres", "Einstellungen", "Impostazioni", "Instellingen", "Ustawienia", "Настройки", "Pengaturan", "設定", "设置", "設定"),

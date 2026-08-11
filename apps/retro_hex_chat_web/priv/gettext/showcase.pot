@@ -177,11 +177,6 @@ msgstr ""
 msgid "36 levels"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/bot_management_dialog_page.ex:46
-#, elixir-autogen, elixir-format
-msgid "3d 12h"
-msgstr ""
-
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/notify_list_page.ex:28
 #, elixir-autogen, elixir-format
 msgid "3d ago"
@@ -683,7 +678,6 @@ msgstr ""
 msgid "Border Radius"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/bot_management_dialog_page.ex:62
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:84
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:251
 #: lib/retro_hex_chat_web/showcase_catalog.ex:818
@@ -691,8 +685,8 @@ msgstr ""
 msgid "Bot Management"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/bot_management_dialog_page.ex:39
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/bot_management_dialog_page.ex:59
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/bot_management_dialog_page.ex:52
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/bot_management_dialog_page.ex:84
 #, elixir-autogen, elixir-format
 msgid "Bot Management Dialog"
 msgstr ""
@@ -1122,8 +1116,9 @@ msgstr ""
 msgid "Component Showcase"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:70
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:117
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:71
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:97
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:107
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/breadcrumb_page.ex:75
 #, elixir-autogen, elixir-format
 msgid "Components"
@@ -1487,8 +1482,8 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:90
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:150
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:140
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:399
 #, elixir-autogen, elixir-format
 msgid "Design System"
 msgstr ""
@@ -1543,16 +1538,6 @@ msgstr ""
 #: lib/retro_hex_chat_web/showcase_catalog.ex:86
 #, elixir-autogen, elixir-format
 msgid "Dialogs"
-msgstr ""
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/bot_management_dialog_page.ex:50
-#, elixir-autogen, elixir-format
-msgid "DiceBot joined #general"
-msgstr ""
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/bot_management_dialog_page.ex:51
-#, elixir-autogen, elixir-format
-msgid "DiceBot responded to !roll"
 msgstr ""
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:60
@@ -2917,11 +2902,6 @@ msgstr ""
 msgid "Open Auto Respond (Empty)"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/bot_management_dialog_page.ex:67
-#, elixir-autogen, elixir-format
-msgid "Open Bot Management"
-msgstr ""
-
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:100
 #, elixir-autogen, elixir-format
 msgid "Open Custom Menus (Channel)"
@@ -3412,7 +3392,7 @@ msgstr ""
 msgid "Roles"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/bot_management_dialog_page.ex:44
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/bot_management_dialog_page.ex:61
 #, elixir-autogen, elixir-format
 msgid "Rolls a dice (1-20)"
 msgstr ""
@@ -4957,7 +4937,6 @@ msgstr ""
 msgid "Readme"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:85
 #: lib/retro_hex_chat_web/live/showcase_live/layout/desktop.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "Start"
@@ -5346,7 +5325,42 @@ msgstr ""
 msgid "Every UI component behind RetroHexChat: Win98-style windows, dialogs, chat widgets and form controls, each with a live example."
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:107
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/bot_management_dialog_page.ex:66
 #, elixir-autogen, elixir-format
-msgid "Open the app"
+msgid "3 days, 12 hours"
+msgstr ""
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/bot_management_dialog_page.ex:104
+#, elixir-autogen, elixir-format
+msgid "Bot detail"
+msgstr ""
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/bot_management_dialog_page.ex:109
+#, elixir-autogen, elixir-format
+msgid "Open a bot"
+msgstr ""
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/bot_management_dialog_page.ex:92
+#, elixir-autogen, elixir-format
+msgid "Open the roster"
+msgstr ""
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/bot_management_dialog_page.ex:62
+#, elixir-autogen, elixir-format
+msgid "Rolls a dice"
+msgstr ""
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/bot_management_dialog_page.ex:25
+#, elixir-autogen, elixir-format
+msgid "Rolls dice for the table"
+msgstr ""
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/bot_management_dialog_page.ex:87
+#, elixir-autogen, elixir-format
+msgid "Roster"
+msgstr ""
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/bot_management_dialog_page.ex:40
+#, elixir-autogen, elixir-format
+msgid "Watches for spam and flooding"
 msgstr ""
