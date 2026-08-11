@@ -21,6 +21,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminChannelsDialog do
 
   alias RetroHexChatWeb.ChatLive.{AdminOps, ChatContext}
 
+  alias RetroHexChatWeb.ChatLive.Components.DialogIsland
+
   @id "admin-channels-dialog"
 
   @spec id() :: String.t()
@@ -39,20 +41,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminChannelsDialog do
   }
 
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket) do
-    {:ok, socket |> assign(:id, @id) |> assign(@initial) |> assign(session: nil)}
-  end
+  def mount(socket), do: DialogIsland.mount(socket, @id, @initial)
 
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def update(assigns, socket) do
-    socket = assign(socket, assigns)
-
-    if socket.assigns.loaded? do
-      {:ok, socket}
-    else
-      {:ok, socket |> assign(loaded?: true) |> assign_snapshot(%{}, nil)}
-    end
-  end
+  def update(assigns, socket),
+    do: DialogIsland.load_once(socket, assigns, &assign_snapshot(&1, %{}, nil))
 
   # ── Registry ─────────────────────────────────────────────────────
 

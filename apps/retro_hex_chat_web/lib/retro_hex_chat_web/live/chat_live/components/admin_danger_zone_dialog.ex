@@ -19,6 +19,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminDangerZoneDialog do
   alias RetroHexChat.Admin
   alias RetroHexChatWeb.ChatLive.{AdminOps, ChatContext}
 
+  alias RetroHexChatWeb.ChatLive.Components.DialogIsland
+
   @id "admin-danger-zone-dialog"
   @fallback_server_name "RetroHexChat"
 
@@ -34,20 +36,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminDangerZoneDialog do
   }
 
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket) do
-    {:ok, socket |> assign(:id, @id) |> assign(@initial) |> assign(session: nil)}
-  end
+  def mount(socket), do: DialogIsland.mount(socket, @id, @initial)
 
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def update(assigns, socket) do
-    socket = assign(socket, assigns)
-
-    if socket.assigns.loaded? do
-      {:ok, socket}
-    else
-      {:ok, socket |> assign(loaded?: true) |> assign_preview(nil)}
-    end
-  end
+  def update(assigns, socket),
+    do: DialogIsland.load_once(socket, assigns, &assign_preview(&1, nil))
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:noreply, Phoenix.LiveView.Socket.t()}

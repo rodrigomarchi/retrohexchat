@@ -20,6 +20,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.NickColorsDialog do
 
   alias RetroHexChat.Accounts.{NickColors, Session}
 
+  alias RetroHexChatWeb.ChatLive.Components.DialogIsland
+
   @id "nick-colors-dialog"
 
   @spec id() :: String.t()
@@ -33,12 +35,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.NickColorsDialog do
   }
 
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket) do
-    {:ok, socket |> assign(:id, @id) |> assign(@initial) |> assign(session: nil)}
-  end
+  def mount(socket), do: DialogIsland.mount(socket, @id, @initial)
 
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def update(assigns, socket), do: {:ok, assign(socket, assigns)}
+  def update(assigns, socket), do: DialogIsland.update(socket, assigns)
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:noreply, Phoenix.LiveView.Socket.t()}

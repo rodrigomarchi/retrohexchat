@@ -14,6 +14,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminTurnDialog do
 
   alias RetroHexChatWeb.ChatLive.{AdminOps, ChatContext}
 
+  alias RetroHexChatWeb.ChatLive.Components.DialogIsland
+
   @id "admin-turn-dialog"
 
   @spec id() :: String.t()
@@ -22,20 +24,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminTurnDialog do
   @initial %{stats: nil, allocations: nil, result: nil, loaded?: false}
 
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket) do
-    {:ok, socket |> assign(:id, @id) |> assign(@initial) |> assign(session: nil)}
-  end
+  def mount(socket), do: DialogIsland.mount(socket, @id, @initial)
 
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def update(assigns, socket) do
-    socket = assign(socket, assigns)
-
-    if socket.assigns.loaded? do
-      {:ok, socket}
-    else
-      {:ok, socket |> assign(loaded?: true) |> assign_snapshot()}
-    end
-  end
+  def update(assigns, socket), do: DialogIsland.load_once(socket, assigns, &assign_snapshot(&1))
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:noreply, Phoenix.LiveView.Socket.t()}
