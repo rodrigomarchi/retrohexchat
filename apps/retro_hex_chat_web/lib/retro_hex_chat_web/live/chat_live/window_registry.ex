@@ -401,7 +401,7 @@ defmodule RetroHexChatWeb.ChatLive.WindowRegistry do
         family: :system,
         geometry: geometry(130, 50, 820, 580, 480, 320)
       ),
-      window("system-oban", dgettext("chat", "Oban"), :icon_status_signal,
+      window("system-oban", "Oban", :icon_status_signal,
         admin: "open_system_oban",
         family: :system,
         geometry: geometry(150, 68, 860, 600, 520, 360)
