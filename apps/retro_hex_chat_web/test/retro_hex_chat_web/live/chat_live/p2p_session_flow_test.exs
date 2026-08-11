@@ -171,7 +171,22 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
         Lobby.session_info/1 returned:
 
         #{inspect(other, pretty: true, limit: :infinity)}
+
+        The row behind it says:
+
+        #{inspect(session_row(token), pretty: true, limit: :infinity)}
         """)
+    end
+  end
+
+  # `session_info/1` answers from the process, so `{:error, :not_found}` only
+  # says the process is gone — not whether it was never started, expired on a
+  # timeout, or was closed. The row records which, and the row outlives the
+  # process, so it is what turns this failure into a diagnosis.
+  defp session_row(token) do
+    case RetroHexChat.Lobby.Queries.get_session_by_token(token) do
+      nil -> :no_row
+      session -> Map.take(session, [:status, :closed_reason, :closed_at, :updated_at])
     end
   end
 
