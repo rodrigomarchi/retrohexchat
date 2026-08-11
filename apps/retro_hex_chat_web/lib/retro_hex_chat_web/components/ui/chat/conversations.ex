@@ -985,15 +985,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
 
   defp p2p_session_for_pm(_assigns, _nick), do: nil
 
+  # Nil-safe because the session it reads is absent more often than present.
   defp value(nil, _key), do: nil
-
-  defp value(map, key) when is_map(map) and is_atom(key) do
-    string_key = Atom.to_string(key)
-
-    cond do
-      Map.has_key?(map, key) -> Map.get(map, key)
-      Map.has_key?(map, string_key) -> Map.get(map, string_key)
-      true -> nil
-    end
-  end
+  defp value(map, key) when is_map(map) and is_atom(key), do: Map.get(map, key)
 end

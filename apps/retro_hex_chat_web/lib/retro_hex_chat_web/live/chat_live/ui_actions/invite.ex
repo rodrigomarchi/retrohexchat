@@ -12,6 +12,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Invite do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Channels.Server
+  alias RetroHexChatWeb.ChatLive.Helpers.Channel
 
   @spec handle_ui_action(Phoenix.LiveView.Socket.t(), atom(), map()) ::
           Phoenix.LiveView.Socket.t()
@@ -48,7 +49,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Invite do
          :ok <- validate_operator(nickname, state),
          :ok <- validate_invite_only(channel, state),
          :ok <- validate_target_not_in_channel(target, state),
-         :ok <- validate_target_online(target),
+         :ok <- Channel.validate_target_online(target),
          :ok <- Server.add_invite_exception(channel, nickname, target) do
       Phoenix.PubSub.broadcast(
         RetroHexChat.PubSub,
@@ -106,22 +107,6 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Invite do
       {:error, dgettext("chat", "* %{target} is already in the channel", target: target)}
     else
       :ok
-    end
-  end
-
-  defp validate_target_online(target) do
-    case Server.get_state("#lobby") do
-      {:ok, state} ->
-        member_nicks = Enum.map(state.members, fn {nick, _role} -> nick end)
-
-        if target in member_nicks do
-          :ok
-        else
-          {:error, dgettext("chat", "* User '%{target}' not found", target: target)}
-        end
-
-      {:error, _} ->
-        {:error, dgettext("chat", "* User '%{target}' not found", target: target)}
     end
   end
 end
