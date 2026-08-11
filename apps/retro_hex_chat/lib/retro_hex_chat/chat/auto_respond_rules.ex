@@ -10,9 +10,7 @@ defmodule RetroHexChat.Chat.AutoRespondRules do
   alias RetroHexChat.Chat.AutoRespondRule
   alias RetroHexChat.Chat.Positions
   alias RetroHexChat.Chat.Schemas.AutoRespondRule, as: AutoRespondRuleSchema
-  alias RetroHexChat.Repo
-
-  import Ecto.Query
+  alias RetroHexChat.OwnedList
 
   @max_entries 10
   @max_command_length 500
@@ -146,55 +144,37 @@ defmodule RetroHexChat.Chat.AutoRespondRules do
 
   @spec save(String.t(), map()) :: :ok | {:error, term()}
   def save(owner, rules) do
-    Repo.transaction(fn ->
-      from(e in AutoRespondRuleSchema, where: e.owner_nickname == ^owner)
-      |> Repo.delete_all()
-
-      Enum.each(rules.entries, fn entry ->
-        %AutoRespondRuleSchema{}
-        |> AutoRespondRuleSchema.changeset(%{
-          owner_nickname: owner,
-          trigger_event: Atom.to_string(entry.trigger_event),
-          channel_filter: entry.channel_filter,
-          command: entry.command,
-          enabled: entry.enabled,
-          position: entry.position
-        })
-        |> Repo.insert!()
-      end)
+    OwnedList.replace(AutoRespondRuleSchema, owner, rules.entries, fn entry ->
+      %{
+        trigger_event: Atom.to_string(entry.trigger_event),
+        channel_filter: entry.channel_filter,
+        command: entry.command,
+        enabled: entry.enabled,
+        position: entry.position
+      }
     end)
-    |> case do
-      {:ok, _} -> :ok
-      {:error, reason} -> {:error, reason}
-    end
   end
 
   @spec load(String.t()) :: {:ok, map()} | {:error, :not_found}
   def load(owner) do
-    entries =
-      from(e in AutoRespondRuleSchema,
-        where: e.owner_nickname == ^owner,
-        order_by: [asc: e.position]
+    # A rule's id is its place in the loaded list, which is how the dialog
+    # addresses one. It is derived here rather than stored.
+    AutoRespondRuleSchema
+    |> OwnedList.rows(owner, & &1, order_by: :position)
+    |> Enum.with_index()
+    |> Enum.map(fn {row, id} ->
+      AutoRespondRule.new(
+        id: id,
+        trigger_event: String.to_existing_atom(row.trigger_event),
+        channel_filter: row.channel_filter,
+        command: row.command,
+        enabled: row.enabled,
+        position: row.position
       )
-      |> Repo.all()
-
-    if entries == [] do
-      {:error, :not_found}
-    else
-      domain_entries =
-        Enum.with_index(entries)
-        |> Enum.map(fn {db_entry, idx} ->
-          AutoRespondRule.new(
-            id: idx,
-            trigger_event: String.to_existing_atom(db_entry.trigger_event),
-            channel_filter: db_entry.channel_filter,
-            command: db_entry.command,
-            enabled: db_entry.enabled,
-            position: db_entry.position
-          )
-        end)
-
-      {:ok, %{entries: domain_entries}}
+    end)
+    |> case do
+      [] -> {:error, :not_found}
+      entries -> {:ok, %{entries: entries}}
     end
   end
 

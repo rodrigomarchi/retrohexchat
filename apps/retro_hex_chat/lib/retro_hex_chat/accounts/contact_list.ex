@@ -12,6 +12,7 @@ defmodule RetroHexChat.Accounts.ContactList do
   alias RetroHexChat.Accounts.Contact
   alias RetroHexChat.Accounts.ContactEntry
   alias RetroHexChat.NicknameList
+  alias RetroHexChat.OwnedList
   alias RetroHexChat.Repo
 
   @list NicknameList.new(field: :contact_nickname, max_entries: 100, max_note_length: 200)
@@ -83,53 +84,26 @@ defmodule RetroHexChat.Accounts.ContactList do
 
   @spec save(String.t(), map()) :: :ok | {:error, term()}
   def save(owner, contact_list) do
-    Repo.transaction(fn ->
-      # 1. Delete all existing entries for owner
-      from(e in ContactEntry, where: e.owner_nickname == ^owner)
-      |> Repo.delete_all()
-
-      # 2. Insert all current entries
-      now = DateTime.utc_now()
-
-      Enum.each(contact_list.entries, fn entry ->
-        %ContactEntry{}
-        |> ContactEntry.changeset(%{
-          owner_nickname: owner,
-          contact_nickname: entry.contact_nickname,
-          note: entry.note,
-          first_contact_date: entry.first_contact_date
-        })
-        |> Ecto.Changeset.put_change(:inserted_at, now)
-        |> Ecto.Changeset.put_change(:updated_at, now)
-        |> Repo.insert!()
-      end)
+    OwnedList.replace(ContactEntry, owner, contact_list.entries, fn entry ->
+      %{
+        contact_nickname: entry.contact_nickname,
+        note: entry.note,
+        first_contact_date: entry.first_contact_date
+      }
     end)
-    |> case do
-      {:ok, _} -> :ok
-      {:error, reason} -> {:error, reason}
-    end
   end
 
   @spec load(String.t()) :: {:ok, map()} | {:error, :not_found}
   def load(owner) do
-    entries =
-      from(e in ContactEntry, where: e.owner_nickname == ^owner)
-      |> Repo.all()
-
-    if entries == [] do
-      {:error, :not_found}
-    else
-      contacts =
-        Enum.map(entries, fn db_entry ->
-          Contact.new(
-            contact_nickname: db_entry.contact_nickname,
-            note: db_entry.note,
-            first_contact_date: db_entry.first_contact_date
-          )
-        end)
-
-      {:ok, %{entries: contacts}}
-    end
+    OwnedList.load(
+      ContactEntry,
+      owner,
+      &Contact.new(
+        contact_nickname: &1.contact_nickname,
+        note: &1.note,
+        first_contact_date: &1.first_contact_date
+      )
+    )
   end
 
   @spec save_entry(String.t(), Contact.t()) :: :ok | {:error, term()}

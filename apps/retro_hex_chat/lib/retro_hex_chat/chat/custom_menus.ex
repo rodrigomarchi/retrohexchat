@@ -6,9 +6,7 @@ defmodule RetroHexChat.Chat.CustomMenus do
 
   alias RetroHexChat.Chat.{AliasExpander, CustomMenuItem, Positions}
   alias RetroHexChat.Chat.Schemas.CustomMenuItem, as: CustomMenuItemSchema
-  alias RetroHexChat.Repo
-
-  import Ecto.Query
+  alias RetroHexChat.OwnedList
 
   @max_per_type 10
   @max_label_length 50
@@ -106,52 +104,29 @@ defmodule RetroHexChat.Chat.CustomMenus do
 
   @spec save(String.t(), map()) :: :ok | {:error, term()}
   def save(owner, menus) do
-    Repo.transaction(fn ->
-      from(e in CustomMenuItemSchema, where: e.owner_nickname == ^owner)
-      |> Repo.delete_all()
-
-      Enum.each(menus.entries, fn entry ->
-        %CustomMenuItemSchema{}
-        |> CustomMenuItemSchema.changeset(%{
-          owner_nickname: owner,
-          menu_type: Atom.to_string(entry.menu_type),
-          label: entry.label,
-          command: entry.command,
-          position: entry.position
-        })
-        |> Repo.insert!()
-      end)
+    OwnedList.replace(CustomMenuItemSchema, owner, menus.entries, fn entry ->
+      %{
+        menu_type: Atom.to_string(entry.menu_type),
+        label: entry.label,
+        command: entry.command,
+        position: entry.position
+      }
     end)
-    |> case do
-      {:ok, _} -> :ok
-      {:error, reason} -> {:error, reason}
-    end
   end
 
   @spec load(String.t()) :: {:ok, map()} | {:error, :not_found}
   def load(owner) do
-    entries =
-      from(e in CustomMenuItemSchema,
-        where: e.owner_nickname == ^owner,
-        order_by: [asc: e.position]
-      )
-      |> Repo.all()
-
-    if entries == [] do
-      {:error, :not_found}
-    else
-      domain_entries =
-        Enum.map(entries, fn db_entry ->
-          CustomMenuItem.new(
-            menu_type: String.to_existing_atom(db_entry.menu_type),
-            label: db_entry.label,
-            command: db_entry.command,
-            position: db_entry.position
-          )
-        end)
-
-      {:ok, %{entries: domain_entries}}
-    end
+    OwnedList.load(
+      CustomMenuItemSchema,
+      owner,
+      &CustomMenuItem.new(
+        menu_type: String.to_existing_atom(&1.menu_type),
+        label: &1.label,
+        command: &1.command,
+        position: &1.position
+      ),
+      order_by: :position
+    )
   end
 
   # ---------------------------------------------------------------------------

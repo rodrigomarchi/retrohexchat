@@ -6,12 +6,10 @@ defmodule RetroHexChat.Chat.HighlightWords do
   Persistence functions are added in Phase 6 (US5).
   """
 
-  import Ecto.Query
-
   alias RetroHexChat.Accounts.HighlightWordEntry
   alias RetroHexChat.Chat.HighlightWord
   alias RetroHexChat.Chat.Positions
-  alias RetroHexChat.Repo
+  alias RetroHexChat.OwnedList
 
   @max_entries 50
 
@@ -89,52 +87,19 @@ defmodule RetroHexChat.Chat.HighlightWords do
 
   @spec save(String.t(), map()) :: :ok | {:error, term()}
   def save(owner, highlight_words) do
-    Repo.transaction(fn ->
-      from(e in HighlightWordEntry, where: e.owner_nickname == ^owner)
-      |> Repo.delete_all()
-
-      highlight_words.entries
-      |> Enum.with_index()
-      |> Enum.each(fn {entry, idx} ->
-        %HighlightWordEntry{}
-        |> HighlightWordEntry.changeset(%{
-          owner_nickname: owner,
-          word: entry.word,
-          bg_color: entry.bg_color,
-          position: idx
-        })
-        |> Repo.insert!()
-      end)
+    OwnedList.replace(HighlightWordEntry, owner, highlight_words.entries, fn entry ->
+      %{word: entry.word, bg_color: entry.bg_color, position: entry.position}
     end)
-    |> case do
-      {:ok, _} -> :ok
-      {:error, reason} -> {:error, reason}
-    end
   end
 
   @spec load(String.t()) :: {:ok, map()} | {:error, :not_found}
   def load(owner) do
-    entries =
-      from(e in HighlightWordEntry,
-        where: e.owner_nickname == ^owner,
-        order_by: [asc: e.position]
-      )
-      |> Repo.all()
-
-    if entries == [] do
-      {:error, :not_found}
-    else
-      words =
-        Enum.map(entries, fn db_entry ->
-          HighlightWord.new(
-            word: db_entry.word,
-            bg_color: db_entry.bg_color,
-            position: db_entry.position
-          )
-        end)
-
-      {:ok, %{entries: words}}
-    end
+    OwnedList.load(
+      HighlightWordEntry,
+      owner,
+      &HighlightWord.new(word: &1.word, bg_color: &1.bg_color, position: &1.position),
+      order_by: :position
+    )
   end
 
   # Private helpers

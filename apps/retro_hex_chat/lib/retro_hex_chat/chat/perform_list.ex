@@ -10,9 +10,8 @@ defmodule RetroHexChat.Chat.PerformList do
   alias RetroHexChat.Chat.Positions
   alias RetroHexChat.Chat.Schemas.PerformListEntry
   alias RetroHexChat.Chat.Schemas.PerformSettings
+  alias RetroHexChat.OwnedList
   alias RetroHexChat.Repo
-
-  import Ecto.Query
 
   @max_entries 50
   @max_command_length 500
@@ -155,50 +154,35 @@ defmodule RetroHexChat.Chat.PerformList do
 
   @spec save(String.t(), map()) :: :ok | {:error, term()}
   def save(owner, perform_list) do
-    Repo.transaction(fn ->
-      from(e in PerformListEntry, where: e.owner_nickname == ^owner)
-      |> Repo.delete_all()
-
-      Enum.each(perform_list.entries, fn entry ->
-        %PerformListEntry{}
-        |> PerformListEntry.changeset(%{
-          owner_nickname: owner,
-          command: entry.command,
-          position: entry.position
-        })
-        |> Repo.insert!()
-      end)
-
-      save_settings(owner, perform_list.settings)
-    end)
-    |> case do
-      {:ok, _} -> :ok
-      {:error, reason} -> {:error, reason}
-    end
+    OwnedList.replace(
+      PerformListEntry,
+      owner,
+      perform_list.entries,
+      &%{command: &1.command, position: &1.position},
+      then: fn -> save_settings(owner, perform_list.settings) end
+    )
   end
 
   @spec load(String.t()) :: {:ok, map()} | {:error, :not_found}
   def load(owner) do
     entries =
-      from(e in PerformListEntry,
-        where: e.owner_nickname == ^owner,
-        order_by: [asc: e.position]
+      OwnedList.rows(
+        PerformListEntry,
+        owner,
+        &PerformEntry.new(command: &1.command, position: &1.position),
+        order_by: :position
       )
-      |> Repo.all()
 
     settings = load_settings(owner)
 
+    # Settings alone are a saved list: somebody who turned perform off without
+    # writing a command has still saved something.
     if entries == [] and settings == nil do
       {:error, :not_found}
     else
-      domain_entries =
-        Enum.map(entries, fn db_entry ->
-          PerformEntry.new(command: db_entry.command, position: db_entry.position)
-        end)
-
       enable = if settings, do: settings.enable_on_connect, else: true
 
-      {:ok, %{entries: domain_entries, settings: %{enable_on_connect: enable}}}
+      {:ok, %{entries: entries, settings: %{enable_on_connect: enable}}}
     end
   end
 

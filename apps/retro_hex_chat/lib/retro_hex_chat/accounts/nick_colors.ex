@@ -10,6 +10,7 @@ defmodule RetroHexChat.Accounts.NickColors do
   import Ecto.Query
 
   alias RetroHexChat.Accounts.{NickColor, NickColorEntry}
+  alias RetroHexChat.OwnedList
   alias RetroHexChat.Repo
 
   @max_entries 50
@@ -154,45 +155,18 @@ defmodule RetroHexChat.Accounts.NickColors do
 
   @spec save(String.t(), map()) :: :ok | {:error, term()}
   def save(owner, nick_colors) do
-    Repo.transaction(fn ->
-      from(e in NickColorEntry, where: e.owner_nickname == ^owner)
-      |> Repo.delete_all()
-
-      Enum.each(nick_colors.entries, fn entry ->
-        %NickColorEntry{}
-        |> NickColorEntry.changeset(%{
-          owner_nickname: owner,
-          target_nickname: entry.target_nickname,
-          color_index: entry.color_index
-        })
-        |> Repo.insert!()
-      end)
+    OwnedList.replace(NickColorEntry, owner, nick_colors.entries, fn entry ->
+      %{target_nickname: entry.target_nickname, color_index: entry.color_index}
     end)
-    |> case do
-      {:ok, _} -> :ok
-      {:error, reason} -> {:error, reason}
-    end
   end
 
   @spec load(String.t()) :: {:ok, map()} | {:error, :not_found}
   def load(owner) do
-    entries =
-      from(e in NickColorEntry, where: e.owner_nickname == ^owner)
-      |> Repo.all()
-
-    if entries == [] do
-      {:error, :not_found}
-    else
-      nick_colors =
-        Enum.map(entries, fn db_entry ->
-          NickColor.new(
-            target_nickname: db_entry.target_nickname,
-            color_index: db_entry.color_index
-          )
-        end)
-
-      {:ok, %{entries: nick_colors}}
-    end
+    OwnedList.load(
+      NickColorEntry,
+      owner,
+      &NickColor.new(target_nickname: &1.target_nickname, color_index: &1.color_index)
+    )
   end
 
   @spec save_entry(String.t(), NickColor.t()) :: :ok | {:error, term()}

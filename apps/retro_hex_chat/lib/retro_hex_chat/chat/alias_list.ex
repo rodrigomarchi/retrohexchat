@@ -11,9 +11,7 @@ defmodule RetroHexChat.Chat.AliasList do
   alias RetroHexChat.Chat.Positions
   alias RetroHexChat.Chat.Schemas.AliasEntry, as: AliasEntrySchema
   alias RetroHexChat.Commands.Registry
-  alias RetroHexChat.Repo
-
-  import Ecto.Query
+  alias RetroHexChat.OwnedList
 
   @max_entries 50
   @max_expansion_length 500
@@ -131,50 +129,19 @@ defmodule RetroHexChat.Chat.AliasList do
 
   @spec save(String.t(), map()) :: :ok | {:error, term()}
   def save(owner, alias_list) do
-    Repo.transaction(fn ->
-      from(e in AliasEntrySchema, where: e.owner_nickname == ^owner)
-      |> Repo.delete_all()
-
-      Enum.each(alias_list.entries, fn entry ->
-        %AliasEntrySchema{}
-        |> AliasEntrySchema.changeset(%{
-          owner_nickname: owner,
-          name: entry.name,
-          expansion: entry.expansion,
-          position: entry.position
-        })
-        |> Repo.insert!()
-      end)
+    OwnedList.replace(AliasEntrySchema, owner, alias_list.entries, fn entry ->
+      %{name: entry.name, expansion: entry.expansion, position: entry.position}
     end)
-    |> case do
-      {:ok, _} -> :ok
-      {:error, reason} -> {:error, reason}
-    end
   end
 
   @spec load(String.t()) :: {:ok, map()} | {:error, :not_found}
   def load(owner) do
-    entries =
-      from(e in AliasEntrySchema,
-        where: e.owner_nickname == ^owner,
-        order_by: [asc: e.position]
-      )
-      |> Repo.all()
-
-    if entries == [] do
-      {:error, :not_found}
-    else
-      domain_entries =
-        Enum.map(entries, fn db_entry ->
-          AliasEntry.new(
-            name: db_entry.name,
-            expansion: db_entry.expansion,
-            position: db_entry.position
-          )
-        end)
-
-      {:ok, %{entries: domain_entries}}
-    end
+    OwnedList.load(
+      AliasEntrySchema,
+      owner,
+      &AliasEntry.new(name: &1.name, expansion: &1.expansion, position: &1.position),
+      order_by: :position
+    )
   end
 
   # ---------------------------------------------------------------------------

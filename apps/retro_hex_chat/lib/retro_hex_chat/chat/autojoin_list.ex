@@ -9,9 +9,7 @@ defmodule RetroHexChat.Chat.AutoJoinList do
   alias RetroHexChat.Chat.AutoJoinEntry
   alias RetroHexChat.Chat.Positions
   alias RetroHexChat.Chat.Schemas.AutojoinListEntry
-  alias RetroHexChat.Repo
-
-  import Ecto.Query
+  alias RetroHexChat.OwnedList
 
   @max_entries 20
 
@@ -102,50 +100,27 @@ defmodule RetroHexChat.Chat.AutoJoinList do
 
   @spec save(String.t(), map()) :: :ok | {:error, term()}
   def save(owner, autojoin_list) do
-    Repo.transaction(fn ->
-      from(e in AutojoinListEntry, where: e.owner_nickname == ^owner)
-      |> Repo.delete_all()
-
-      Enum.each(autojoin_list.entries, fn entry ->
-        %AutojoinListEntry{}
-        |> AutojoinListEntry.changeset(%{
-          owner_nickname: owner,
-          channel_name: entry.channel_name,
-          channel_key: entry.channel_key,
-          position: entry.position
-        })
-        |> Repo.insert!()
-      end)
+    OwnedList.replace(AutojoinListEntry, owner, autojoin_list.entries, fn entry ->
+      %{
+        channel_name: entry.channel_name,
+        channel_key: entry.channel_key,
+        position: entry.position
+      }
     end)
-    |> case do
-      {:ok, _} -> :ok
-      {:error, reason} -> {:error, reason}
-    end
   end
 
   @spec load(String.t()) :: {:ok, map()} | {:error, :not_found}
   def load(owner) do
-    entries =
-      from(e in AutojoinListEntry,
-        where: e.owner_nickname == ^owner,
-        order_by: [asc: e.position]
-      )
-      |> Repo.all()
-
-    if entries == [] do
-      {:error, :not_found}
-    else
-      domain_entries =
-        Enum.map(entries, fn db_entry ->
-          AutoJoinEntry.new(
-            channel_name: db_entry.channel_name,
-            channel_key: db_entry.channel_key,
-            position: db_entry.position
-          )
-        end)
-
-      {:ok, %{entries: domain_entries}}
-    end
+    OwnedList.load(
+      AutojoinListEntry,
+      owner,
+      &AutoJoinEntry.new(
+        channel_name: &1.channel_name,
+        channel_key: &1.channel_key,
+        position: &1.position
+      ),
+      order_by: :position
+    )
   end
 
   # ---------------------------------------------------------------------------

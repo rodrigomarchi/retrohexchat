@@ -10,6 +10,7 @@ defmodule RetroHexChat.Chat.IgnoreList do
 
   alias RetroHexChat.Chat.IgnoreEntry
   alias RetroHexChat.Chat.Schemas.IgnoreListEntry
+  alias RetroHexChat.OwnedList
   alias RetroHexChat.Repo
 
   @max_entries 100
@@ -143,54 +144,31 @@ defmodule RetroHexChat.Chat.IgnoreList do
     now = DateTime.utc_now()
     entries = Enum.reject(ignore_list.entries, &IgnoreEntry.expired?(&1, now))
 
-    Repo.transaction(fn ->
-      from(e in IgnoreListEntry, where: e.owner_nickname == ^owner)
-      |> Repo.delete_all()
-
-      Enum.each(entries, fn entry ->
-        %IgnoreListEntry{}
-        |> IgnoreListEntry.changeset(%{
-          owner_nickname: owner,
-          ignored_nickname: entry.nickname,
-          ignore_type: Atom.to_string(entry.ignore_type),
-          expires_at: entry.expires_at
-        })
-        |> Repo.insert!()
-      end)
+    OwnedList.replace(IgnoreListEntry, owner, entries, fn entry ->
+      %{
+        ignored_nickname: entry.nickname,
+        ignore_type: Atom.to_string(entry.ignore_type),
+        expires_at: entry.expires_at
+      }
     end)
-    |> case do
-      {:ok, _} -> :ok
-      {:error, reason} -> {:error, reason}
-    end
   end
 
   @spec load(String.t()) :: {:ok, map()} | {:error, :not_found}
   def load(owner) do
     now = DateTime.utc_now()
 
-    entries =
-      from(e in IgnoreListEntry,
-        where: e.owner_nickname == ^owner,
-        order_by: [asc: e.inserted_at]
-      )
-      |> Repo.all()
-      |> Enum.reject(&expired_db_entry?(&1, now))
-
-    if entries == [] do
-      {:error, :not_found}
-    else
-      domain_entries =
-        Enum.map(entries, fn db_entry ->
-          IgnoreEntry.new(
-            nickname: db_entry.ignored_nickname,
-            ignore_type: String.to_existing_atom(db_entry.ignore_type),
-            expires_at: db_entry.expires_at,
-            created_at: db_entry.inserted_at
-          )
-        end)
-
-      {:ok, %{entries: domain_entries}}
-    end
+    OwnedList.load(
+      IgnoreListEntry,
+      owner,
+      &IgnoreEntry.new(
+        nickname: &1.ignored_nickname,
+        ignore_type: String.to_existing_atom(&1.ignore_type),
+        expires_at: &1.expires_at,
+        created_at: &1.inserted_at
+      ),
+      order_by: :inserted_at,
+      keep: &(not expired_db_entry?(&1, now))
+    )
   end
 
   @doc "Deletes expired durable ignore entries in bounded batches."

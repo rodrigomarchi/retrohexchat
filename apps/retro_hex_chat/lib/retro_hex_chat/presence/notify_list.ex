@@ -10,6 +10,7 @@ defmodule RetroHexChat.Presence.NotifyList do
   import Ecto.Query
 
   alias RetroHexChat.NicknameList
+  alias RetroHexChat.OwnedList
   alias RetroHexChat.Presence.NotifyEntry
   alias RetroHexChat.Presence.NotifyListEntry
   alias RetroHexChat.Presence.NotifyListSettings
@@ -208,65 +209,40 @@ defmodule RetroHexChat.Presence.NotifyList do
 
   @spec save(String.t(), map()) :: :ok | {:error, term()}
   def save(owner, notify_list) do
-    Repo.transaction(fn ->
-      # 1. Delete all existing entries for owner
-      from(e in NotifyListEntry, where: e.owner_nickname == ^owner)
-      |> Repo.delete_all()
-
-      # 2. Insert all current entries
-      now = DateTime.utc_now()
-
-      Enum.each(notify_list.entries, fn entry ->
-        %NotifyListEntry{}
-        |> NotifyListEntry.changeset(%{
-          owner_nickname: owner,
-          tracked_nickname: entry.tracked_nickname,
-          note: entry.note,
-          last_seen_at: entry.last_seen_at
-        })
-        |> Ecto.Changeset.put_change(:inserted_at, now)
-        |> Ecto.Changeset.put_change(:updated_at, now)
-        |> Repo.insert!()
-      end)
-
-      # 3. Upsert settings
-      upsert_settings(owner, notify_list.settings)
-    end)
-    |> case do
-      {:ok, _} -> :ok
-      {:error, reason} -> {:error, reason}
-    end
+    OwnedList.replace(
+      NotifyListEntry,
+      owner,
+      notify_list.entries,
+      &%{tracked_nickname: &1.tracked_nickname, note: &1.note, last_seen_at: &1.last_seen_at},
+      then: fn -> upsert_settings(owner, notify_list.settings) end
+    )
   end
 
   @spec load(String.t()) :: {:ok, map()} | {:error, :not_found}
   def load(owner) do
     entries =
-      from(e in NotifyListEntry, where: e.owner_nickname == ^owner)
-      |> Repo.all()
+      OwnedList.rows(
+        NotifyListEntry,
+        owner,
+        &NotifyEntry.new(
+          tracked_nickname: &1.tracked_nickname,
+          note: &1.note,
+          last_seen_at: &1.last_seen_at,
+          online: false
+        )
+      )
 
     settings = Repo.get(NotifyListSettings, owner)
 
+    # Settings alone are a saved list: somebody who turned auto-whois on
+    # without tracking anyone has still saved something.
     if entries == [] and is_nil(settings) do
       {:error, :not_found}
     else
-      notify_entries =
-        Enum.map(entries, fn db_entry ->
-          NotifyEntry.new(
-            tracked_nickname: db_entry.tracked_nickname,
-            note: db_entry.note,
-            last_seen_at: db_entry.last_seen_at,
-            online: false
-          )
-        end)
-
       auto_whois = if settings, do: settings.auto_whois, else: false
       auto_add_pm = if settings, do: Map.get(settings, :auto_add_pm, true), else: true
 
-      {:ok,
-       %{
-         entries: notify_entries,
-         settings: %{auto_whois: auto_whois, auto_add_pm: auto_add_pm}
-       }}
+      {:ok, %{entries: entries, settings: %{auto_whois: auto_whois, auto_add_pm: auto_add_pm}}}
     end
   end
 
