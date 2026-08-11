@@ -177,6 +177,33 @@ A barra lateral já lia um conjunto só para os dois tipos de conversa —
 passava `status_bar_classes(@active, false, @unread)`, com o `false` literal no
 lugar do highlight.
 
+### 4.6 Edição e remoção vazavam entre conversas privadas — corrigido
+
+Terceira assimetria da varredura, e a única que mostrava conteúdo de uma
+conversa dentro de outra.
+
+`message_edited` e `message_deleted` usam **o mesmo nome de evento** para os dois
+tipos de conversa, então um handler só recebe as duas formas. Ele perguntava:
+
+```elixir
+Map.has_key?(payload, :channel) -> payload.channel == session.active_channel
+Map.has_key?(payload, :sender)  -> session.active_pm != nil
+```
+
+O canal comparava com **o canal certo**. A conversa privada só verificava se
+*alguma* estava aberta. E o construtor da linha buscava o PM por id sem checar
+participantes — ao contrário do `stream_item_for_reply_quote`, ali do lado, que
+sempre checou.
+
+Alcançável: `pm_subscriptions` acumula um tópico por aba aberta e só solta ao
+fechar a aba. Com as conversas com Alice e Bob abertas e a de Alice na tela,
+Bob editar uma mensagem punha a linha dele **dentro da conversa da Alice**.
+
+A pergunta virou nomeável — `MessageHelpers.in_active_conversation?/2` — e os
+dois construtores passam por ela. Uma conversa privada é um **par**, e é por isso
+que a checagem toma a mensagem e não o payload: o payload nomeia um participante
+só. A duplicação entre os dois construtores sumiu junto.
+
 ### 4.3 O custo corrente
 
 Toda feature que toca mensagem custa dois caminhos, dois testes e uma chance de
@@ -266,14 +293,24 @@ e o §6 mostra que a chave de roteamento difere de verdade.
 - ~~Existem outras assimetrias além de 4.1 e 4.2?~~ **Respondida: existem, e
   procurar funciona.** Uma varredura comparando chamada a chamada
   `do_handle_new_message` com `do_handle_new_pm` — e depois o que cada lado faz
-  com o resultado — achou duas em uma passada, §4.4 e §4.5, ambas corrigidas.
-  Nenhuma das duas tinha aparecido em meses de uso.
+  com o resultado — achou duas: §4.4 e §4.5. A segunda passada, sobre `Service`
+  e os handlers compartilhados, achou o §4.6. **Três defeitos, nenhum deles
+  reclamado por ninguém em meses de uso.**
 
-  O método que funcionou, para repetir nas camadas ainda não varridas
-  (`Service`, `Queries`, `helpers/{channel,pm}.ex`, `core_events.ex`): listar as
-  funções chamadas dentro de cada gêmeo, diferenciar os conjuntos, e para cada
-  chamada que só existe de um lado perguntar se há um ramo que a recuse do
-  outro. Quando não há, é esquecimento — o mesmo raciocínio do §4.2.
+  O método, para as camadas ainda não varridas (`Queries`,
+  `helpers/{channel,pm}.ex`, `core_events.ex`): listar as funções chamadas
+  dentro de cada gêmeo, diferenciar os conjuntos, e para cada chamada que só
+  existe de um lado perguntar se há um ramo que a recuse do outro. Quando não
+  há, é esquecimento — o mesmo raciocínio do §4.2.
+
+  Duas variações que renderam:
+
+  - **`Service` estava simétrico.** Resultado negativo também é resultado: os
+    três pares (`send`, `edit`, `delete`) têm os mesmos passos na mesma ordem, e
+    os payloads de broadcast carregam os mesmos campos. Não procure ali de novo.
+  - **Onde os dois tipos compartilham um handler, olhe a função que decide de
+    qual conversa a coisa veio.** Foi assim que o §4.6 apareceu: não era um
+    caminho faltando, era o mesmo caminho respondendo diferente para cada forma.
 
 ## 9. A regra durável que sai daqui
 

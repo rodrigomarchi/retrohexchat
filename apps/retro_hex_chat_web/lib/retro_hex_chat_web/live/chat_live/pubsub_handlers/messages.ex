@@ -499,45 +499,41 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
 
   defp payload_content_format(payload), do: Map.get(payload, :content_format) || "irc"
 
-  defp stream_item_for_message_event(%{channel: _channel, id: id}, _session) do
-    case Queries.get_message(id) do
-      nil -> nil
-      message -> StreamItem.from_message(message)
-    end
+  # An edit, a delete or a reply quote is broadcast on its own conversation's
+  # topic, and this connection holds every topic whose tab is open — not only
+  # the one on screen. The row is built only if it belongs to the conversation
+  # being looked at, which is a question about the message rather than about the
+  # broadcast: a private payload names one participant, and a conversation is
+  # the pair.
+  defp stream_item_for_message_event(%{channel: _channel, id: id}, session) do
+    id |> Queries.get_message() |> stream_item_if_active(session, &StreamItem.from_message/1)
   end
 
-  defp stream_item_for_message_event(%{sender: _sender, id: id}, _session) do
-    case Queries.get_private_message(id) do
-      nil -> nil
-      pm -> StreamItem.from_private_message(pm)
-    end
+  defp stream_item_for_message_event(%{sender: _sender, id: id}, session) do
+    id
+    |> Queries.get_private_message()
+    |> stream_item_if_active(session, &StreamItem.from_private_message/1)
   end
 
   defp stream_item_for_message_event(_payload, _session), do: nil
 
-  defp stream_item_for_reply_quote(reply_id, %{active_pm: nil, active_channel: channel}) do
-    case Queries.get_message(reply_id) do
-      %{channel_name: ^channel} = message -> StreamItem.from_message(message)
-      _ -> nil
-    end
+  defp stream_item_for_reply_quote(reply_id, %{active_pm: nil} = session) do
+    reply_id
+    |> Queries.get_message()
+    |> stream_item_if_active(session, &StreamItem.from_message/1)
   end
 
-  defp stream_item_for_reply_quote(reply_id, %{active_pm: active_pm, nickname: nickname})
-       when not is_nil(active_pm) do
-    case Queries.get_private_message(reply_id) do
-      nil ->
-        nil
-
-      pm ->
-        participants = MapSet.new([pm.sender_nickname, pm.recipient_nickname])
-
-        if participants == MapSet.new([nickname, active_pm]) do
-          StreamItem.from_private_message(pm)
-        end
-    end
+  defp stream_item_for_reply_quote(reply_id, session) do
+    reply_id
+    |> Queries.get_private_message()
+    |> stream_item_if_active(session, &StreamItem.from_private_message/1)
   end
 
-  defp stream_item_for_reply_quote(_reply_id, _session), do: nil
+  defp stream_item_if_active(nil, _session, _build), do: nil
+
+  defp stream_item_if_active(message, session, build) do
+    if MessageHelpers.in_active_conversation?(message, session), do: build.(message)
+  end
 
   # Spam protection is about people, so the system is exempt from both halves:
   # its lines are neither counted towards a repeat nor dropped as one. The
@@ -571,6 +567,11 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
       )
   end
 
+  # A cheap filter that avoids a database read for a conversation nobody is
+  # looking at. It is deliberately loose for a private one — the payload names a
+  # single participant, which does not identify the conversation — so the answer
+  # it gives is "possibly", and `stream_item_for_message_event/2` settles it once
+  # it has the row.
   defp active_context?(payload, session) do
     cond do
       Map.has_key?(payload, :channel) -> payload.channel == session.active_channel

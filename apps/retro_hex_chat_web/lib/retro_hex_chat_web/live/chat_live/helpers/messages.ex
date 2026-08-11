@@ -47,6 +47,31 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Messages do
     not ignored_author?(ignore_list, private_sender(msg), private_message_type(msg))
   end
 
+  @doc """
+  Whether a persisted message belongs to the conversation on screen.
+
+  One connection holds every conversation whose tab is open, not only the one
+  being looked at, so anything arriving on a topic has to say which conversation
+  it came from before its row is drawn. A channel says so by name. A private
+  conversation is a **pair**, and neither participant identifies it alone —
+  which is why this takes the message rather than the broadcast payload, since
+  the payload names only one of the two.
+  """
+  @spec in_active_conversation?(map(), map()) :: boolean()
+  def in_active_conversation?(%{channel_name: channel}, %{active_channel: channel})
+      when not is_nil(channel),
+      do: true
+
+  def in_active_conversation?(
+        %{sender_nickname: sender, recipient_nickname: recipient},
+        %{active_pm: active_pm, nickname: nickname}
+      )
+      when not is_nil(active_pm) do
+    MapSet.new([sender, recipient]) == MapSet.new([nickname, active_pm])
+  end
+
+  def in_active_conversation?(_message, _session), do: false
+
   @system_types ~w(system p2p_system)
 
   @doc """

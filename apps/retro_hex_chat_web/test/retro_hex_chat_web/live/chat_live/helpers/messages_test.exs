@@ -3,6 +3,8 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.MessagesTest do
 
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
 
+  import RetroHexChatWeb.ChatLive.Helpers.Messages, only: [in_active_conversation?: 2]
+
   describe "stream_type/1" do
     test "keeps renderable persisted message types" do
       assert Messages.stream_type("message") == :message
@@ -16,6 +18,52 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.MessagesTest do
       assert Messages.stream_type(:space_invite) == :message
       assert Messages.stream_type("future_type") == :message
       assert Messages.stream_type(nil) == :message
+    end
+  end
+
+  describe "in_active_conversation?/2" do
+    defp channel_message(name), do: %{channel_name: name}
+
+    defp private_message(sender, recipient),
+      do: %{sender_nickname: sender, recipient_nickname: recipient}
+
+    defp looking_at_channel(name), do: %{active_channel: name, active_pm: nil, nickname: "Me"}
+    defp looking_at_pm(peer), do: %{active_channel: nil, active_pm: peer, nickname: "Me"}
+
+    test "the channel on screen is the reader's conversation" do
+      assert in_active_conversation?(channel_message("#lobby"), looking_at_channel("#lobby"))
+    end
+
+    test "another channel is not, even though its tab is open" do
+      refute in_active_conversation?(channel_message("#other"), looking_at_channel("#lobby"))
+    end
+
+    test "the private conversation on screen is identified by its pair" do
+      assert in_active_conversation?(private_message("Me", "Alice"), looking_at_pm("Alice"))
+      assert in_active_conversation?(private_message("Alice", "Me"), looking_at_pm("Alice"))
+    end
+
+    # This is the one that was wrong: every open conversation delivers on its own
+    # topic, and a payload naming one participant does not identify a pair.
+    test "another private conversation is not, however open its tab is" do
+      refute in_active_conversation?(private_message("Me", "Bob"), looking_at_pm("Alice"))
+      refute in_active_conversation?(private_message("Bob", "Me"), looking_at_pm("Alice"))
+    end
+
+    test "a conversation between two other people is nobody's active one" do
+      refute in_active_conversation?(private_message("Bob", "Carol"), looking_at_pm("Alice"))
+    end
+
+    test "a channel message is not a private conversation and the reverse" do
+      refute in_active_conversation?(channel_message("#lobby"), looking_at_pm("Alice"))
+      refute in_active_conversation?(private_message("Me", "Alice"), looking_at_channel("#lobby"))
+    end
+
+    test "with nothing on screen nothing belongs" do
+      nowhere = %{active_channel: nil, active_pm: nil, nickname: "Me"}
+
+      refute in_active_conversation?(channel_message("#lobby"), nowhere)
+      refute in_active_conversation?(private_message("Me", "Alice"), nowhere)
     end
   end
 
