@@ -4,20 +4,15 @@ defmodule RetroHexChat.Lobby.Registry do
   Uses Elixir Registry with the via_tuple pattern.
   """
 
+  alias RetroHexChat.ProcessRegistry
+
   @registry RetroHexChat.Lobby.SessionRegistry
 
-  @spec via_tuple(String.t()) :: {:via, Registry, {atom(), String.t()}}
-  def via_tuple(token) do
-    {:via, Registry, {@registry, token}}
-  end
+  @spec via_tuple(String.t()) :: ProcessRegistry.via()
+  def via_tuple(token), do: ProcessRegistry.via_tuple(@registry, token)
 
   @spec lookup(String.t()) :: {:ok, pid()} | {:error, :not_found}
-  def lookup(token) do
-    case Registry.lookup(@registry, token) do
-      [{pid, _}] -> {:ok, pid}
-      [] -> {:error, :not_found}
-    end
-  end
+  def lookup(token), do: ProcessRegistry.lookup(@registry, token)
 
   @spec registry_name() :: atom()
   def registry_name, do: @registry
