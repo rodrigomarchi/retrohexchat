@@ -26,6 +26,9 @@ defmodule RetroHexChat.NicknameList do
           max_note_length: pos_integer()
         }
 
+  @typedoc "Whatever holds the entries. Each list keeps its own extras beside them."
+  @type kept :: %{required(:entries) => [struct()], optional(any()) => any()}
+
   @enforce_keys [:field, :max_entries, :max_note_length]
   defstruct [:field, :max_entries, :max_note_length]
 
@@ -40,18 +43,23 @@ defmodule RetroHexChat.NicknameList do
   end
 
   @doc "Whether `nickname` is already on the list, however it was typed."
-  @spec member?(t(), [struct()], String.t()) :: boolean()
-  def member?(spec, entries, nickname) do
+  @spec member?(t(), kept(), String.t()) :: boolean()
+  def member?(spec, list, nickname) do
     wanted = String.downcase(nickname)
 
-    Enum.any?(entries, &(nickname_of(spec, &1) == wanted))
+    Enum.any?(list.entries, &(nickname_of(spec, &1) == wanted))
   end
 
   @doc "Whether the list has no room left."
-  @spec full?(t(), [struct()]) :: boolean()
-  def full?(%__MODULE__{max_entries: max}, entries), do: length(entries) >= max
+  @spec full?(t(), kept()) :: boolean()
+  def full?(%__MODULE__{max_entries: max}, list), do: length(list.entries) >= max
 
-  @doc "The entries alphabetically, which is how a person reads a list of names."
+  @doc """
+  Entries alphabetically, which is how a person reads a list of names.
+
+  Takes entries rather than the whole list, because a caller often orders only
+  part of one — the buddies who are online, then the buddies who are not.
+  """
   @spec sorted(t(), [struct()]) :: [struct()]
   def sorted(spec, entries), do: Enum.sort_by(entries, &nickname_of(spec, &1))
 
@@ -61,14 +69,28 @@ defmodule RetroHexChat.NicknameList do
   `:not_found` rather than the unchanged list, because removing someone who is
   not there is worth telling the person who asked.
   """
-  @spec remove(t(), [struct()], String.t()) :: {:ok, [struct()]} | :not_found
-  def remove(spec, entries, nickname) do
+  @spec remove(t(), kept(), String.t()) :: {:ok, kept()} | {:error, :not_found}
+  def remove(spec, list, nickname) do
     wanted = String.downcase(nickname)
 
-    case Enum.split_with(entries, &(nickname_of(spec, &1) == wanted)) do
-      {[], _remaining} -> :not_found
-      {_removed, remaining} -> {:ok, remaining}
+    case Enum.split_with(list.entries, &(nickname_of(spec, &1) == wanted)) do
+      {[], _remaining} -> {:error, :not_found}
+      {_removed, remaining} -> {:ok, %{list | entries: remaining}}
     end
+  end
+
+  @doc """
+  The list with `nickname`'s note replaced, cut to what an entry holds.
+
+  Cutting here rather than at each caller is what keeps a note the same length
+  whether it arrived when the entry was added or long afterwards.
+  """
+  @spec put_note(t(), kept(), String.t(), String.t() | nil) ::
+          {:ok, kept()} | {:error, :not_found}
+  def put_note(spec, list, nickname, note) do
+    cut = truncate_note(spec, note)
+
+    update(spec, list, nickname, &%{&1 | note: cut})
   end
 
   @doc """
@@ -76,13 +98,13 @@ defmodule RetroHexChat.NicknameList do
 
   Keeps the order, so an update never reshuffles what the person is looking at.
   """
-  @spec update(t(), [struct()], String.t(), (struct() -> struct())) ::
-          {:ok, [struct()]} | :not_found
-  def update(spec, entries, nickname, fun) when is_function(fun, 1) do
+  @spec update(t(), kept(), String.t(), (struct() -> struct())) ::
+          {:ok, kept()} | {:error, :not_found}
+  def update(spec, list, nickname, fun) when is_function(fun, 1) do
     wanted = String.downcase(nickname)
 
     {found?, reversed} =
-      Enum.reduce(entries, {false, []}, fn entry, {found?, acc} ->
+      Enum.reduce(list.entries, {false, []}, fn entry, {found?, acc} ->
         if nickname_of(spec, entry) == wanted do
           {true, [fun.(entry) | acc]}
         else
@@ -90,7 +112,9 @@ defmodule RetroHexChat.NicknameList do
         end
       end)
 
-    if found?, do: {:ok, Enum.reverse(reversed)}, else: :not_found
+    if found?,
+      do: {:ok, %{list | entries: Enum.reverse(reversed)}},
+      else: {:error, :not_found}
   end
 
   @doc "A note cut to what the list holds, rather than refused for being long."

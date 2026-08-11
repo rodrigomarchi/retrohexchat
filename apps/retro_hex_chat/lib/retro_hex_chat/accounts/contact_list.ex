@@ -36,7 +36,7 @@ defmodule RetroHexChat.Accounts.ContactList do
       String.downcase(owner_nickname) == String.downcase(contact_nickname) ->
         {:error, :self_add}
 
-      NicknameList.member?(@list, contact_list.entries, contact_nickname) ->
+      NicknameList.member?(@list, contact_list, contact_nickname) ->
         {:error, :duplicate}
 
       full?(contact_list) ->
@@ -55,27 +55,12 @@ defmodule RetroHexChat.Accounts.ContactList do
   end
 
   @spec remove_entry(map(), String.t()) :: {:ok, map()} | {:error, :not_found}
-  def remove_entry(contact_list, contact_nickname) do
-    case NicknameList.remove(@list, contact_list.entries, contact_nickname) do
-      {:ok, remaining} -> {:ok, %{contact_list | entries: remaining}}
-      :not_found -> {:error, :not_found}
-    end
-  end
+  def remove_entry(contact_list, contact_nickname),
+    do: NicknameList.remove(@list, contact_list, contact_nickname)
 
   @spec update_note(map(), String.t(), String.t() | nil) :: {:ok, map()} | {:error, :not_found}
-  def update_note(contact_list, contact_nickname, note) do
-    truncated = NicknameList.truncate_note(@list, note)
-
-    case NicknameList.update(
-           @list,
-           contact_list.entries,
-           contact_nickname,
-           &%{&1 | note: truncated}
-         ) do
-      {:ok, updated_entries} -> {:ok, %{contact_list | entries: updated_entries}}
-      :not_found -> {:error, :not_found}
-    end
-  end
+  def update_note(contact_list, contact_nickname, note),
+    do: NicknameList.put_note(@list, contact_list, contact_nickname, note)
 
   @spec sorted_entries(map()) :: [Contact.t()]
   def sorted_entries(contact_list) do
@@ -89,7 +74,7 @@ defmodule RetroHexChat.Accounts.ContactList do
 
   @spec full?(map()) :: boolean()
   def full?(contact_list) do
-    NicknameList.full?(@list, contact_list.entries)
+    NicknameList.full?(@list, contact_list)
   end
 
   # ---------------------------------------------------------------------------

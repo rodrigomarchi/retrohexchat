@@ -67,27 +67,12 @@ defmodule RetroHexChat.Presence.NotifyList do
   end
 
   @spec remove_entry(map(), String.t()) :: {:ok, map()} | {:error, :not_found}
-  def remove_entry(notify_list, tracked_nickname) do
-    case NicknameList.remove(@list, notify_list.entries, tracked_nickname) do
-      {:ok, remaining} -> {:ok, %{notify_list | entries: remaining}}
-      :not_found -> {:error, :not_found}
-    end
-  end
+  def remove_entry(notify_list, tracked_nickname),
+    do: NicknameList.remove(@list, notify_list, tracked_nickname)
 
   @spec update_note(map(), String.t(), String.t() | nil) :: {:ok, map()} | {:error, :not_found}
-  def update_note(notify_list, tracked_nickname, note) do
-    truncated = NicknameList.truncate_note(@list, note)
-
-    case NicknameList.update(
-           @list,
-           notify_list.entries,
-           tracked_nickname,
-           &%{&1 | note: truncated}
-         ) do
-      {:ok, updated_entries} -> {:ok, %{notify_list | entries: updated_entries}}
-      :not_found -> {:error, :not_found}
-    end
-  end
+  def update_note(notify_list, tracked_nickname, note),
+    do: NicknameList.put_note(@list, notify_list, tracked_nickname, note)
 
   @spec update_nickname(map(), String.t(), String.t()) :: map()
   def update_nickname(notify_list, old_nick, new_nick) do
@@ -156,7 +141,7 @@ defmodule RetroHexChat.Presence.NotifyList do
 
   @spec tracking?(map(), String.t()) :: boolean()
   def tracking?(notify_list, nickname) do
-    NicknameList.member?(@list, notify_list.entries, nickname)
+    NicknameList.member?(@list, notify_list, nickname)
   end
 
   @spec online_buddies(map()) :: [NotifyEntry.t()]
@@ -185,7 +170,7 @@ defmodule RetroHexChat.Presence.NotifyList do
 
   @spec full?(map()) :: boolean()
   def full?(notify_list) do
-    NicknameList.full?(@list, notify_list.entries)
+    NicknameList.full?(@list, notify_list)
   end
 
   # ---------------------------------------------------------------------------
