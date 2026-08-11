@@ -9,6 +9,7 @@ defmodule CIImpact do
     "ci_partition_profile_plan",
     "py_tests",
     "i18n_quality",
+    "i18n_coverage",
     "lint_hooks",
     "lint_bundle",
     "e2e_catalog",
@@ -90,6 +91,7 @@ defmodule CIImpact do
         |> add("compile", "#{file} is Elixir source")
         |> add("format", "#{file} is Elixir source")
         |> add("credo", "#{file} is Elixir source")
+        |> add("i18n_coverage", "#{file} can add or drop a translatable string")
         |> add("test_domain", "#{file} changed the domain app")
         |> add("test_web", "web app depends on retro_hex_chat")
         |> maybe_domain_feature(file)
@@ -106,6 +108,7 @@ defmodule CIImpact do
         |> add("compile", "#{file} is Elixir source")
         |> add("format", "#{file} is Elixir source")
         |> add("credo", "#{file} is Elixir source")
+        |> add("i18n_coverage", "#{file} can add or drop a translatable string")
         |> add("test_web", "#{file} changed the web app")
         |> maybe_web_feature(file)
 
@@ -142,6 +145,7 @@ defmodule CIImpact do
         |> surface("i18n", "#{file} changed i18n source or catalogs")
         |> add("py_tests", "#{file} changed i18n source or catalogs")
         |> add("i18n_quality", "#{file} changed i18n source or catalogs")
+        |> add("i18n_coverage", "#{file} changed i18n source or catalogs")
         |> add_e2e_smoke("i18n", "#{file} can affect localized browser journeys")
         |> maybe_format_for_i18n(file)
 

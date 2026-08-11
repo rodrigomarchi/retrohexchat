@@ -44,6 +44,7 @@ Stage 2 (parallel, after compile):
   ├─ format
   ├─ credo
   ├─ CSS lint
+  ├─ i18n catalog coverage
   ├─ tests (mix test, partitioned)
   └─ feature tests (mix test --only liveview_feature, partitioned)
 
@@ -60,7 +61,11 @@ The normal ExUnit suite and LiveView feature suite are partitioned by default:
 `CI_TEST_DB_POOL_SIZE=6`. Use `make ci.serial` only to diagnose
 partition-specific issues. Partition/profile tooling writes reports under
 `tmp/ci-partition-profile/`.
-The two i18n checks need no third-party Python packages, so they run anywhere.
+The two Python i18n checks need no third-party packages, so they run anywhere.
+The third, catalog coverage, is `mix gettext.extract --check-up-to-date` and so
+runs after compile: it fails when a translatable string exists in the code and
+in no template, which is how sixty of them once came to render in English in
+every locale.
 
 ## Options
 

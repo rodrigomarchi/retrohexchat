@@ -39,6 +39,7 @@ defmodule CI do
     "format",
     "credo",
     "lint_css",
+    "i18n_coverage",
     "test",
     "test_feature",
     "test_domain",
@@ -91,6 +92,11 @@ defmodule CI do
       label: "i18n Quality",
       cmd: "python3",
       args: ["scripts/i18n_quality_check.py", "--fail-on-findings"]
+    },
+    "i18n_coverage" => %{
+      label: "i18n Catalog Coverage",
+      cmd: "make",
+      args: ["i18n.gettext.check"]
     },
     "lint_hooks" => %{label: "LiveView Hook Contract", cmd: "make", args: ["lint.hooks"]},
     "e2e_catalog" => %{label: "E2E Catalog Sync", cmd: "make", args: ["e2e.catalog.check"]},
