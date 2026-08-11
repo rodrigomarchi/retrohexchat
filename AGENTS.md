@@ -74,8 +74,10 @@ git pull --ff-only origin main      # --autostash if you have uncommitted edits
 - **LiveViews MUST be thin** — delegate to domain contexts. LiveViews contain no
   business logic; contexts contain no LiveViews, controllers or components.
 - **Each `/` command is a separate Handler module.**
-- **PubSub topics:** `"channel:#{name}"`, `"pm:#{sorted_ids}"`, `"user:#{nickname}"`,
-  `"game:#{token}"`.
+- **PubSub topics:** `"channel:#{name}"`, `"user:#{nickname}"`, `"game:#{token}"`.
+  A private conversation has no topic of its own — it is delivered to each
+  participant's `user:` inbox, because a conversation has no join and its first
+  message would have nobody listening. Build both names with `RetroHexChat.Topics`.
 - **Comments describe what the code does, never the change that produced it.** No
   migration or plan references in moduledocs or comments.
 - **Alias on first write.** Alias a new module call in the same edit — never wait

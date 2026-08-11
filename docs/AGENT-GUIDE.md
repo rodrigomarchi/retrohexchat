@@ -140,15 +140,21 @@ get fresh timers with the *remaining* duration.
 ## 4. PubSub & permissions
 
 - **Topic conventions are load-bearing and fixed:** `"channel:#{name}"`,
-  `"pm:#{sorted_ids}"` (nicknames sorted alphabetically and `:`-joined so both directions
-  share one topic), `"user:#{nickname}"`, `"service:nickserv"`, `"service:chanserv"`,
+  `"user:#{nickname}"`, `"service:nickserv"`, `"service:chanserv"`,
   `"p2p:#{token}"` (per-session, token-based), `"game:#{token}"`, plus server topics
-  `"server:announcements"`, `"server:wallops"`, `"server:settings"`. State transitions and
+  `"server:announcements"`, `"server:wallops"`, `"server:settings"`. The two that name a
+  conversation are built by `RetroHexChat.Topics`, never interpolated. State transitions and
   side effects are enforced server-side and announced via broadcast; observers react in
   `pubsub_handlers/*`.
+- **A private conversation is delivered to inboxes, not to a topic of its own.** A channel
+  has a join that precedes every message; a private conversation is *created by* its first
+  message, so a topic named after the pair cannot carry the one message that matters most.
+  Each message, edit, delete, reply-quote refresh and typing notice is addressed to the
+  participants' `user:` topics, which are subscribed once at mount. Anything else observing
+  a conversation — the virtual-space runtime, for instance — watches those same inboxes.
 - **Nicknames are the only durable identity key in chat** (guests have no persistent user
-  ID). On nick change, the LiveView unsubscribes/resubscribes PM topics; DB records keep
-  the nickname as-sent (immutable), and history queries must union old+new nicknames.
+  ID). On nick change, the LiveView unsubscribes/resubscribes the `user:` inbox; DB records
+  keep the nickname as-sent (immutable), and history queries must union old+new nicknames.
 - **Permission checks belong in the domain** (`Channels.Policy`, `Commands.Policy`,
   `Accounts.ServerRoles`). Server roles require `identified: true` (NickServ) and come from
   config/env/RoleCache, not a users table. Channel roles are a single-valued rank

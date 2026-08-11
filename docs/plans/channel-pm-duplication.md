@@ -1,8 +1,9 @@
 # Canal e PM são a mesma coisa escrita duas vezes
 
-> **STATUS: EM ANDAMENTO.** O passo 1a e metade do passo 2 shiparam; o §7 marca o
-> que foi feito e o que não foi, com o motivo. O resto da ordem de ataque é
-> proposta, não decisão travada. Apagar quando a unificação tiver shipado, movendo
+> **STATUS: EM ANDAMENTO.** Os passos 1 e 3 shiparam inteiros, o 2 pela metade; o
+> §7 marca o que foi feito e o que não foi, com o motivo. O que falta é a segunda
+> metade do passo 2 (os gêmeos de `Service` e `Queries`), que o passo 3 destravou
+> ao decidir a chave da conversa. Apagar quando a unificação tiver shipado, movendo
 > a regra durável (§9) para o `AGENT-GUIDE.md` antes.
 
 Uma mensagem de canal e uma mensagem privada são o mesmo conceito — alguém escreveu
@@ -239,6 +240,36 @@ flash e highlight já usam (`pm:<nick>`), e por isso deixou de se chamar
 `cleared_channel_cutoffs` — o nome teria virado mentira. `cleared_from_channel?`
 virou `cleared_from_conversation?` pelo mesmo motivo.
 
+### 4.8 Reabrir uma conversa privada deixava ela muda — corrigido
+
+O próprio remendo do §4.1 produziu o defeito seguinte, e ele estava em produção.
+
+`close_pm_tab` chamava `Phoenix.PubSub.unsubscribe/2` cru e **não mexia no
+conjunto** que lembrava quais inscrições a conexão tinha. O conjunto continuava
+afirmando que a inscrição existia, então o `ensure_pm_subscription/2` seguinte
+não fazia nada:
+
+> fechar a aba de uma conversa e reabri-la deixava a janela aberta e a conversa
+> muda — nada do que chegava aparecia até recarregar a página.
+
+Medido antes de mexer: o teste de reabertura ficou vermelho contra a `main`, com
+as outras duas formas de entrega verdes ao lado dele. É a assinatura de sempre —
+uma máquina que existe só para contornar uma diferença que não devia existir
+ganha um estado que alguém esquece de atualizar.
+
+Duas discordâncias menores saíram junto, as duas entre as *duas metades* que
+tratavam a mesma mensagem:
+
+- **Quem estava sendo ignorado.** A metade do stream perguntava pelo `sender`, a
+  da barra lateral pelo `peer`. Numa mensagem que você escreve para alguém que
+  você ignora, `sender` é **você** — então a linha era desenhada e a aba, a
+  entrada na lista de conversas e o auto-add do notify eram descartados. Agora a
+  pergunta é uma: ignora-se o que vem de fora, nunca o que se escreveu.
+- **O que o filtro de repetição descartava.** A metade do stream descartava a
+  terceira mensagem idêntica; a da barra lateral nunca via o filtro e contava
+  não-lida assim mesmo. O caminho de canal sempre descartou as duas coisas
+  juntas, e agora o privado também.
+
 ### 4.3 O custo corrente
 
 Toda feature que toca mensagem custa dois caminhos, dois testes e uma chance de
@@ -302,18 +333,37 @@ pode carregar. `Chat.Authorship` resolveu o §2. O maior clone do repositório c
 **Não feito, e por quê:** os gêmeos de `Service` e `Queries` (`send_*`, `edit_*`,
 `delete_*`, `do_insert_*`, os previews de resposta, os três pares de broadcast).
 Todos precisam da **chave da conversa** — um nome de canal contra um par não
-ordenado — que o §6 lista como diferença genuína e cuja decisão está amarrada ao
-passo 3. Unificá-los antes seria escolher a chave por acidente.
-*Risco do que falta:* médio, e depende do passo 3.
+ordenado — que o §6 lista como diferença genuína e cuja decisão estava amarrada ao
+passo 3. **O passo 3 respondeu:** a chave de entrega de uma conversa privada são os
+dois participantes, um destino cada, e não o par. Unificá-los agora é possível.
+*Risco do que falta:* médio.
 
-**Passo 3 — entregar PM na caixa de entrada que já existe.** `new_pm` vai para
-`user:<nick>` em vez de `pm:<par>`. Cada pessoa tem um tópico estável que sempre
-assina, como já acontece com admin, bots, lobby, NickServ e o próprio `pm_activity`.
-*Isso apaga* a máquina de assinatura idempotente e o caso especial da primeira
-mensagem introduzidos em 4.1 — o desenho certo é **menos** código que o remendo atual.
-*Risco:* médio-alto, e o motivo de não ser o passo 1: muda a entrega de todo PM, e
-`pm:<par>` também carrega typing, stop_typing, edit e delete, que precisam ser
-decididos junto.
+**Passo 3 — entregar PM na caixa de entrada que já existe. FEITO.** Tudo o que
+viajava em `pm:<par>` — `new_pm`, typing, stop_typing, edit, delete e a prévia de
+resposta — passou a ser endereçado às duas caixas `user:<nick>`, e o tópico do par
+deixou de existir. `pm_activity` sumiu: ele era esta mesma entrega com metade dos
+campos, e a costura entre os dois é onde o §4.1, o §4.5 e o §4.8 caíram.
+
+O que saiu, medido: a máquina de assinatura inteira (`ensure_pm_subscription`,
+`subscribed_to_pm?`, `drop_pm_subscription`, o assign `pm_subscriptions` e os oito
+pontos de chamada), o caso especial da primeira mensagem, as **três** cópias de
+`pm_topic/2`, dois handlers virando um, e quatro cópias de "atualizar a prévia das
+respostas" virando duas. `RetroHexChat.Topics` passou a ser onde os dois nomes de
+tópico que sobraram são escritos.
+
+A escolha que isso obrigou: `user:<nick>` **é** o `channel:<nome>` de uma conversa
+privada. Um canal tem um `/join` que precede toda mensagem; uma conversa privada é
+criada pela primeira mensagem, então um tópico nomeado pelo par não consegue
+entregar justamente a mensagem que importa. Uma conversa privada tem duas pessoas
+e nada mais, então todo evento dela cabe em duas caixas.
+
+Quem observa uma conversa sem ser participante — o runtime do espaço virtual —
+assina as mesmas duas caixas e reage só à cópia `direction: :outgoing`, que é
+exatamente uma por mensagem e nomeia o próprio autor.
+
+*Observabilidade:* `event` é label Prometheus em `chat_message_broadcast_duration`.
+O valor `pm_activity` desapareceu e `new_pm` passou de 1 para 2 amostras por
+mensagem; os dashboards vivem em outro repositório.
 
 **Passo 4 — tabela única.** Provavelmente **não**. Só se 1–3 mostrarem que a dor
 continua. É migração de duas tabelas grandes com paginação por cursor em cima delas,
@@ -323,8 +373,11 @@ e o §6 mostra que a chave de roteamento difere de verdade.
 
 - ~~Highlight em PM é decisão de produto ou esquecimento?~~ **Respondida no §4.2:
   esquecimento.** O código não tinha nenhum ramo que implementasse a suposta decisão.
-- O passo 3 deve mover typing/edit/delete junto, ou o tópico do par continua existindo
-  para esses?
+- ~~O passo 3 deve mover typing/edit/delete junto, ou o tópico do par continua existindo
+  para esses?~~ **Respondida: move tudo.** Mover só a entrega deixaria a camada web
+  assinando tópicos de par, e com isso a máquina de inscrição inteira — inclusive o
+  defeito do §4.8. O passo 3 só paga o que prometia ("menos código que o remendo") se o
+  tópico do par deixar de existir; meia mudança teria custado o risco sem o ganho.
 - ~~Existem outras assimetrias além de 4.1 e 4.2?~~ **Respondida: existem, e
   procurar funciona.** Uma varredura comparando chamada a chamada
   `do_handle_new_message` com `do_handle_new_pm` — e depois o que cada lado faz
