@@ -13,15 +13,17 @@ as a landmine map — the failure mode is real and has bitten before.
 
 ## 1. Governing Principles (non-negotiable)
 
-These 11 principles are the supreme constraints. Any change that violates one is wrong
+These principles are the supreme constraints. Any change that violates one is wrong
 until the principle itself is amended.
 
 1. **Elixir & Phoenix exclusive stack.** Backend is Elixir/OTP only. All reactive UI is
    Phoenix LiveView — zero JS UI frameworks (no React/Vue/Svelte/Angular). PostgreSQL is
    the sole relational store; no NoSQL as primary store. The retro CSS design system is
    the aesthetic base.
-2. **Umbrella with bounded contexts.** `apps/retro_hex_chat` is pure domain (zero Phoenix
-   deps); `apps/retro_hex_chat_web` is the web layer. The domain contexts are: `Accounts`,
+2. **Umbrella with bounded contexts.** `apps/retro_hex_chat` is the domain and carries no
+   web layer — no LiveView, controller, route, component or endpoint. It does use Phoenix
+   as a library (PubSub, Token, Presence, HTML escaping). `apps/retro_hex_chat_web` is the
+   web layer. The domain contexts are: `Accounts`,
    `Admin`, `Bots`, `Channels`, `Chat`, `Commands`, `Config`, `P2P`, `Presence`,
    `RateLimit`, `Services` (NickServ/ChanServ), plus game sessions. Each context layers
    internally: Schema, Queries, Service/UseCase, Policy, Events.
@@ -57,6 +59,21 @@ until the principle itself is amended.
     architectural corners are equally forbidden.
 11. **User-facing documentation is mandatory.** Every user-facing feature ships help
     topics in `RetroHexChat.Chat.HelpTopics` — undocumented features are incomplete. See §12.
+12. **Never fork a concept per context.** When two surfaces handle the same thing — a
+    message, an attachment, a reaction — the context is a **parameter**, not a second
+    implementation. Two implementations do not diverge with a warning: they diverge when
+    somebody adds a feature to one of them, and the only signal is a user complaining
+    months later. The tell is the adapter: if reusing a rule means renaming a field from
+    A's spelling to B's, then A and B are one type with two names.
+
+    **Finding what has already diverged**, when you inherit a fork you cannot yet merge:
+    list the functions each twin calls, difference the sets, and for every call that
+    exists on one side only, look for the branch that would refuse it on the other. When
+    there is no such branch, it is forgetfulness, not a decision. Where the two share a
+    handler, suspect the function that decides which of them the message came from.
+    `if context do … else <nothing> end` is a feature nobody wrote the second case for.
+    Applied to one such fork this found seven defects, none of which anyone had reported
+    in months of use.
 
 **Quality gates before merge:** `mix format --check-formatted`, `mix credo --strict`,
 `mix dialyzer`, `mix test`, `eslint`, `prettier --check`, `vitest run`. Every public

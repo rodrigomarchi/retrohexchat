@@ -61,9 +61,13 @@ migration, context, schema and hook counts — never write them into prose.
 
 ## In flight (`plans/`)
 
-| File | Read when |
-|---|---|
-| [plans/channel-pm-duplication.md](plans/channel-pm-duplication.md) | Touching anything that a channel message and a private message both have — delivery, editing, deletion, the stream row. Diagnoses why the two are separate implementations, what that has already cost, and the proposed order of attack |
+Nothing is in flight. The channel/PM unification shipped and its plan was deleted; the
+rule it produced is Principle 12 in `AGENT-GUIDE.md`.
+
+`plans/agent-docs-audit.md` and its `agent-docs-removals.txt` are the record of a
+completed audit rather than work in flight. The audit says it may be deleted once
+somebody has reviewed the removals; until then it stays, unlisted, because nothing
+triggers reading it.
 
 ## Conventions
 
