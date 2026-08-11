@@ -47,7 +47,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.NickColorsDialog do
   end
 
   def handle_event("nick_palette_pick", %{"index" => idx_str}, socket) do
-    {:noreply, assign(socket, palette_editing_index: String.to_integer(idx_str))}
+    case color_index(idx_str) do
+      {:ok, index} -> {:noreply, assign(socket, palette_editing_index: index)}
+      :error -> {:noreply, socket}
+    end
   end
 
   def handle_event("nick_color_add_dialog", _params, socket) do
@@ -66,12 +69,15 @@ defmodule RetroHexChatWeb.ChatLive.Components.NickColorsDialog do
     session = socket.assigns.session
     nickname = String.trim(nickname)
 
-    case NickColors.add_entry(session.nick_colors, nickname, String.to_integer(color_str)) do
-      {:ok, updated} ->
-        {:noreply,
-         socket
-         |> assign(show_add_dialog: false)
-         |> put_session(Session.set_nick_colors(session, updated))}
+    with {:ok, color} <- color_index(color_str),
+         {:ok, updated} <- NickColors.add_entry(session.nick_colors, nickname, color) do
+      {:noreply,
+       socket
+       |> assign(show_add_dialog: false)
+       |> put_session(Session.set_nick_colors(session, updated))}
+    else
+      :error ->
+        {:noreply, bubble_status(socket, :error, nick_color_add_error(:invalid_color, nickname))}
 
       {:error, reason} ->
         {:noreply, bubble_status(socket, :error, nick_color_add_error(reason, nickname))}
@@ -93,17 +99,17 @@ defmodule RetroHexChatWeb.ChatLive.Components.NickColorsDialog do
     session = socket.assigns.session
     nickname = params["nickname"] || socket.assigns.selected
 
-    case NickColors.update_color(session.nick_colors, nickname, String.to_integer(color_str)) do
-      {:ok, updated} ->
-        {:noreply,
-         socket
-         |> assign(show_edit_dialog: false)
-         |> put_session(Session.set_nick_colors(session, updated))}
-
+    with {:ok, color} <- color_index(color_str),
+         {:ok, updated} <- NickColors.update_color(session.nick_colors, nickname, color) do
+      {:noreply,
+       socket
+       |> assign(show_edit_dialog: false)
+       |> put_session(Session.set_nick_colors(session, updated))}
+    else
       {:error, :not_found} ->
         {:noreply, bubble_status(socket, :error, dgettext("chat", "Nick color entry not found"))}
 
-      {:error, :invalid_color} ->
+      _invalid_color ->
         {:noreply, bubble_status(socket, :error, dgettext("chat", "Invalid color"))}
     end
   end
@@ -169,6 +175,19 @@ defmodule RetroHexChatWeb.ChatLive.Components.NickColorsDialog do
   defp bubble_status(socket, level, message) do
     send(self(), {:ab_status, level, message})
     socket
+  end
+
+  # The colour arrives from a hidden field that a palette click fills in, and the
+  # form does not require it — so a submission before anything was clicked
+  # carries an empty string. `NickColors` has always had an answer for a colour
+  # it will not accept; what was missing was getting there, because parsing
+  # raised first and a raise inside `handle_event` does not fail the dialog, it
+  # takes the whole chat session down.
+  defp color_index(value) do
+    case Integer.parse(to_string(value)) do
+      {index, ""} -> {:ok, index}
+      _unparsable -> :error
+    end
   end
 
   defp nick_color_add_error(:duplicate, nick),

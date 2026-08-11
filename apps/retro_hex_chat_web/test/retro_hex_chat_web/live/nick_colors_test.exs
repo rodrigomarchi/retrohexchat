@@ -65,6 +65,36 @@ defmodule RetroHexChatWeb.NickColorsTest do
       refute html =~ "Add Nick Color</div>"
     end
 
+    # The colour field is a hidden input a palette click fills in, and the form
+    # does not require it — so submitting before picking a colour sends an empty
+    # string. Parsing it used to raise inside `handle_event`, which does not fail
+    # the dialog: it takes the whole chat session down with it.
+    test "adding without picking a colour is refused, not fatal", %{conn: conn} do
+      view = connect_user(conn, "NoColor")
+      view |> render_click("open_nick_colors_dialog")
+      view |> ab_click("nick_color_add_dialog")
+
+      view |> ab_form("nick-color-add-form", %{"nickname" => "Colorless", "color_index" => ""})
+
+      assert render(view) =~ "Invalid color"
+      assert Process.alive?(view.pid)
+    end
+
+    test "editing to no colour is refused, not fatal", %{conn: conn} do
+      view = connect_user(conn, "NoColorEdit")
+      view |> render_click("open_nick_colors_dialog")
+      view |> ab_click("nick_color_add_dialog")
+      view |> ab_form("nick-color-add-form", %{"nickname" => "EditMe", "color_index" => "4"})
+
+      view |> ab_select("nick_color_select", "EditMe")
+      view |> ab_click("nick_color_edit_dialog")
+
+      view |> ab_form("nick-color-edit-form", %{"nickname" => "EditMe", "color_index" => ""})
+
+      assert render(view) =~ "Invalid color"
+      assert Process.alive?(view.pid)
+    end
+
     test "add duplicate shows error", %{conn: conn} do
       view = connect_user(conn, "DupColor")
       view |> render_click("open_nick_colors_dialog")
