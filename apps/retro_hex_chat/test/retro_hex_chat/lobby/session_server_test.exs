@@ -50,15 +50,47 @@ defmodule RetroHexChat.Lobby.SessionServerTest do
     creator = create_registered_nick("creator_#{suffix}")
     peer = create_registered_nick("peer_#{suffix}")
     session = create_session_record(creator.id, peer.id)
-    {:ok, _pid} = Supervisor.start_child(session.token)
-
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "lobby:#{session.token}")
 
-    :ok = SessionServer.join(session.token, creator.id)
-    :ok = SessionServer.join(session.token, peer.id)
+    start_and_join!(session.token, [creator.id, peer.id])
     :ok = SessionServer.transition(session.token, :connected)
 
     %{token: session.token, creator: creator, peer: peer}
+  end
+
+  # `start_child` hands back a live pid, so a later "no process" means the server
+  # died in between — and only a monitor holds the reason why. Without one the
+  # failure reads `(EXIT) no process` and says nothing about the cause, which is
+  # how this survived several `make ci` runs unexplained.
+  defp start_and_join!(token, user_ids) do
+    {:ok, pid} = Supervisor.start_child(token)
+    ref = Process.monitor(pid)
+
+    Enum.each(user_ids, &join!(token, &1, pid, ref))
+
+    Process.demonitor(ref, [:flush])
+    pid
+  end
+
+  defp join!(token, user_id, pid, ref) do
+    case SessionServer.join(token, user_id) do
+      :ok -> :ok
+      other -> flunk("joining #{inspect(user_id)} answered #{inspect(other)}")
+    end
+  catch
+    :exit, reason ->
+      receive do
+        {:DOWN, ^ref, :process, ^pid, down} ->
+          flunk("""
+          the lobby session server died before it could be joined.
+
+          it exited with: #{inspect(down)}
+          the join exited with: #{inspect(reason)}
+          """)
+      after
+        0 ->
+          flunk("the join exited with #{inspect(reason)} while #{inspect(pid)} is still alive")
+      end
   end
 
   defp stop_server(token) do
@@ -186,10 +218,7 @@ defmodule RetroHexChat.Lobby.SessionServerTest do
       creator = create_registered_nick("act_c#{System.unique_integer([:positive])}")
       peer = create_registered_nick("act_p#{System.unique_integer([:positive])}")
       session = create_session_record(creator.id, peer.id)
-      {:ok, _pid} = Supervisor.start_child(session.token)
-
-      :ok = SessionServer.join(session.token, creator.id)
-      :ok = SessionServer.join(session.token, peer.id)
+      start_and_join!(session.token, [creator.id, peer.id])
 
       {:ok, before_state} = SessionServer.get_state(session.token)
       assert before_state.session.status == "lobby"
@@ -208,11 +237,8 @@ defmodule RetroHexChat.Lobby.SessionServerTest do
       creator = create_registered_nick("rdyc#{System.unique_integer([:positive])}")
       peer = create_registered_nick("rdyp#{System.unique_integer([:positive])}")
       session = create_session_record(creator.id, peer.id)
-      {:ok, _pid} = Supervisor.start_child(session.token)
       Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "lobby:#{session.token}")
-
-      :ok = SessionServer.join(session.token, creator.id)
-      :ok = SessionServer.join(session.token, peer.id)
+      start_and_join!(session.token, [creator.id, peer.id])
       assert_received %{event: "lobby_status_changed", payload: %{status: "lobby"}}
 
       on_exit(fn -> stop_server(session.token) end)
@@ -250,10 +276,7 @@ defmodule RetroHexChat.Lobby.SessionServerTest do
     test "connected session without replay snapshot requests a clean WebRTC restart", ctx do
       :ok = SessionServer.transition(ctx.token, :connected)
       stop_server(ctx.token)
-      {:ok, _pid} = Supervisor.start_child(ctx.token)
-
-      :ok = SessionServer.join(ctx.token, ctx.creator.id)
-      :ok = SessionServer.join(ctx.token, ctx.peer.id)
+      start_and_join!(ctx.token, [ctx.creator.id, ctx.peer.id])
       :ok = SessionServer.mark_webrtc_ready(ctx.token, ctx.creator.id)
       :ok = SessionServer.mark_webrtc_ready(ctx.token, ctx.peer.id)
 
