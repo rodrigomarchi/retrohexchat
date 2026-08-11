@@ -5,6 +5,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
 
   alias RetroHexChat.Bots.Capabilities.{CustomCommands, Greeter, Help, Mention}
   alias RetroHexChat.Bots.{Feeds, Lifecycle, Policy, Queries, Server, Supervisor}
+  alias RetroHexChat.ChangesetErrors
   alias RetroHexChat.Chat.IrcEscapes
   alias RetroHexChat.Commands.Handler
 
@@ -827,11 +828,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
 
   @spec format_changeset_errors(Ecto.Changeset.t()) :: String.t()
   defp format_changeset_errors(changeset) do
-    Ecto.Changeset.traverse_errors(changeset, fn {msg, opts} ->
-      Regex.replace(~r"%{(\w+)}", msg, fn _, key ->
-        opts |> Keyword.get(String.to_existing_atom(key), key) |> to_string()
-      end)
-    end)
+    ChangesetErrors.by_field(changeset)
     |> Enum.map(fn {field, errors} ->
       dgettext("commands", "%{field}: %{errors}", field: field, errors: Enum.join(errors, ", "))
     end)

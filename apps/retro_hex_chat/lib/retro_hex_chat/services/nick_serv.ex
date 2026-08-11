@@ -21,6 +21,7 @@ defmodule RetroHexChat.Services.NickServ do
   require Logger
 
   alias RetroHexChat.Accounts.TrustedDevices
+  alias RetroHexChat.ChangesetErrors
   alias RetroHexChat.Observability
   alias RetroHexChat.Services.Queries
   alias RetroHexChat.Services.RegisteredNick
@@ -435,11 +436,7 @@ defmodule RetroHexChat.Services.NickServ do
   end
 
   defp format_changeset_error(changeset) do
-    Ecto.Changeset.traverse_errors(changeset, fn {msg, opts} ->
-      Regex.replace(~r"%{(\w+)}", msg, fn _, key ->
-        opts |> Keyword.get(String.to_existing_atom(key), key) |> to_string()
-      end)
-    end)
+    ChangesetErrors.by_field(changeset)
     |> Enum.map_join(", ", fn {field, errors} ->
       dgettext("services", "%{field}: %{errors}", field: field, errors: Enum.join(errors, ", "))
     end)

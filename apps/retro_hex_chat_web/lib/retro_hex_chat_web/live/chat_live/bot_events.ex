@@ -19,6 +19,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
   alias RetroHexChat.Bots.Capabilities.{CustomCommands, Dice, Greeter, Help, Mention, Moderation}
   alias RetroHexChat.Bots.Capabilities.{RSS, Scheduler, Trivia}
   alias RetroHexChat.Bots.{Feeds, Lifecycle, Queries, Server, Supervisor}
+  alias RetroHexChat.ChangesetErrors
   alias RetroHexChat.Chat.{IrcEscapes, TimeFormatter}
   alias RetroHexChatWeb.ChatLive.ChatContext
   alias RetroHexChatWeb.ChatLive.Components.BotManagementDialog
@@ -599,11 +600,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
   end
 
   defp format_changeset_errors(changeset) do
-    Ecto.Changeset.traverse_errors(changeset, fn {msg, opts} ->
-      Regex.replace(~r"%{(\w+)}", msg, fn _, key ->
-        opts |> Keyword.get(String.to_existing_atom(key), key) |> to_string()
-      end)
-    end)
+    ChangesetErrors.by_field(changeset)
     |> Enum.map(fn {field, errors} ->
       dgettext("chat", "%{field}: %{errors}",
         field: to_string(field),
