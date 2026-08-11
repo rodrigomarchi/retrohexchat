@@ -7,6 +7,8 @@ defmodule RetroHexChat.Chat.Content do
   `content_format` instead of deciding how IRC, Markdown or plain text works.
   """
 
+  use Gettext, backend: RetroHexChat.Gettext
+
   alias RetroHexChat.Chat.Content.{Irc, Markdown, Plain}
 
   @type format :: :irc | :markdown | :plain
@@ -106,6 +108,40 @@ defmodule RetroHexChat.Chat.Content do
     case normalize_format(format) do
       {:ok, _format} -> {:error, :blank}
       :error -> {:error, :unsupported_format}
+    end
+  end
+
+  @doc """
+  Why a message may not be sent, in words a person can read, or `:ok`.
+
+  `validate/3` answers in atoms because the rules belong to the domain. Every
+  sender then turns that answer into the same four sentences and makes the same
+  one exemption — a message carrying an attachment is allowed to say nothing —
+  so both the sentences and the exemption live here. Two senders were writing
+  them out, and the sentence about length was the one neither of them
+  translated.
+  """
+  @spec validate_message(String.t(), format_input(), [integer()], keyword()) ::
+          :ok | {:error, String.t()}
+  def validate_message(content, format, attachment_ids \\ [], opts \\ []) do
+    case validate(content, format, opts) do
+      :ok ->
+        :ok
+
+      {:error, :blank} when attachment_ids != [] ->
+        :ok
+
+      {:error, :blank} ->
+        {:error, dgettext("chat", "Message cannot be empty")}
+
+      {:error, :too_long} ->
+        {:error,
+         dgettext("chat", "Message exceeds maximum length of %{count} characters",
+           count: Keyword.get(opts, :max_length, @default_max_length)
+         )}
+
+      {:error, :unsupported_format} ->
+        {:error, dgettext("chat", "Unsupported message format")}
     end
   end
 

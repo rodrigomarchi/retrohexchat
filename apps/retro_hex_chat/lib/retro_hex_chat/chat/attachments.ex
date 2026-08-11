@@ -180,6 +180,22 @@ defmodule RetroHexChat.Chat.Attachments do
   @spec storage() :: module()
   def storage, do: Keyword.fetch!(config(), :storage)
 
+  @doc """
+  Every attachment a message carries, as payloads.
+
+  A message whose attachments were never loaded carries none — an association
+  that was not asked for is not the same as an association that is empty, and a
+  broadcast saying otherwise would draw a message as having lost its files.
+  """
+  @spec payloads(map()) :: [map()]
+  def payloads(%{attachments: attachments}) when is_list(attachments) do
+    attachments
+    |> Enum.map(&payload/1)
+    |> Enum.reject(&is_nil/1)
+  end
+
+  def payloads(_message), do: []
+
   @spec payload(Attachment.t() | map()) :: map() | nil
   def payload(%Attachment{file: %Ecto.Association.NotLoaded{}}), do: nil
 

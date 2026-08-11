@@ -26,7 +26,7 @@ defmodule RetroHexChat.Chat.Service do
     content_format = content_format_from_opts(opts)
     attachment_ids = attachment_ids_from_opts(opts)
 
-    with :ok <- validate_content(content, content_format, attachment_ids),
+    with :ok <- Content.validate_message(content, content_format, attachment_ids),
          {:ok, reply_attrs} <- resolve_reply_attrs(reply_to_id, :message),
          {:ok, message} <-
            do_insert_message(
@@ -92,7 +92,7 @@ defmodule RetroHexChat.Chat.Service do
   defp do_edit(message, nickname, new_content, opts) do
     with %{} = message <- message || {:error, dgettext("chat", "Message not found.")},
          content_format <- edit_content_format(message, opts),
-         :ok <- validate_content(new_content, content_format),
+         :ok <- Content.validate_message(new_content, content_format),
          :ok <- Policy.can_edit?(message, nickname),
          now <- DateTime.utc_now(),
          {:ok, updated} <-
@@ -189,7 +189,7 @@ defmodule RetroHexChat.Chat.Service do
     content_format = content_format_from_opts(opts)
     attachment_ids = attachment_ids_from_opts(opts)
 
-    with :ok <- validate_content(content, content_format, attachment_ids),
+    with :ok <- Content.validate_message(content, content_format, attachment_ids),
          {:ok, reply_attrs} <- resolve_reply_attrs(reply_to_id, :pm),
          {:ok, pm} <-
            do_insert_pm(
@@ -351,7 +351,7 @@ defmodule RetroHexChat.Chat.Service do
       reply_to_id: pm.reply_to_id,
       reply_to_author: pm.reply_to_author,
       reply_to_preview: pm.reply_to_preview,
-      attachments: attachment_payloads(pm)
+      attachments: Attachments.payloads(pm)
     }
 
     Observability.span(
@@ -393,7 +393,7 @@ defmodule RetroHexChat.Chat.Service do
       reply_to_id: message.reply_to_id,
       reply_to_author: message.reply_to_author,
       reply_to_preview: message.reply_to_preview,
-      attachments: attachment_payloads(message)
+      attachments: Attachments.payloads(message)
     }
 
     Observability.span(
@@ -476,26 +476,6 @@ defmodule RetroHexChat.Chat.Service do
     |> Keyword.get(:content_format, content_format(message))
     |> normalize_content_format()
   end
-
-  defp validate_content(content, content_format, attachment_ids \\ []) do
-    case Content.validate(content, content_format) do
-      :ok -> :ok
-      {:error, :blank} when attachment_ids != [] -> :ok
-      {:error, :blank} -> {:error, dgettext("chat", "Message cannot be empty")}
-      {:error, :too_long} -> {:error, "Message exceeds maximum length of 1000 characters"}
-      {:error, :unsupported_format} -> {:error, dgettext("chat", "Unsupported message format")}
-    end
-  end
-
-  defp attachment_payloads(%{attachments: %Ecto.Association.NotLoaded{}}), do: []
-
-  defp attachment_payloads(%{attachments: attachments}) when is_list(attachments) do
-    attachments
-    |> Enum.map(&Attachments.payload/1)
-    |> Enum.reject(&is_nil/1)
-  end
-
-  defp attachment_payloads(_message), do: []
 
   defp message_metadata(conversation_type, type, content, opts, extra) do
     Map.merge(

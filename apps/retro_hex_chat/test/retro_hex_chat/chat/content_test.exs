@@ -228,5 +228,52 @@ defmodule RetroHexChat.Chat.ContentTest do
     end
   end
 
+  describe "validate_message/4" do
+    setup do
+      original = Gettext.get_locale(RetroHexChat.Gettext)
+      on_exit(fn -> Gettext.put_locale(RetroHexChat.Gettext, original) end)
+      :ok
+    end
+
+    test "says nothing about a message that is fine" do
+      assert Content.validate_message("hello", :irc) == :ok
+    end
+
+    test "refuses an empty message" do
+      assert {:error, message} = Content.validate_message("   ", :irc)
+      assert message =~ "empty"
+    end
+
+    # The one exemption every sender makes, and the reason this wrapper exists
+    # rather than each of them repeating it.
+    test "allows an empty message that carries an attachment" do
+      assert Content.validate_message("", :irc, [1]) == :ok
+    end
+
+    test "says how long is too long, with the limit in the sentence" do
+      long = String.duplicate("x", 1001)
+
+      assert {:error, message} = Content.validate_message(long, :irc)
+      assert message =~ "1000"
+    end
+
+    # This was the one sentence of the four that nobody translated, in both
+    # copies of this function, so a Portuguese server answered it in English.
+    test "and says it in the reader's language" do
+      long = String.duplicate("x", 1001)
+
+      Gettext.put_locale(RetroHexChat.Gettext, "pt_BR")
+
+      assert {:error, message} = Content.validate_message(long, :irc)
+      refute message =~ "exceeds maximum length"
+      assert message =~ "1000"
+    end
+
+    test "refuses a format it does not know" do
+      assert {:error, message} = Content.validate_message("hello", "brainfuck")
+      assert message =~ "format"
+    end
+  end
+
   defp html({:safe, safe}), do: safe
 end

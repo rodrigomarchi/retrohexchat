@@ -846,7 +846,7 @@ defmodule RetroHexChat.Channels.Server do
     requested_format = content_format_from_opts(opts)
     attachment_ids = attachment_ids_from_opts(opts)
 
-    with :ok <- validate_message_content(content, requested_format, attachment_ids),
+    with :ok <- Content.validate_message(content, requested_format, attachment_ids),
          :ok <- Policy.can_speak?(state.modes, state.membership, nickname),
          :ok <- check_channel_mute(state, nickname),
          {:ok, msg, id, timestamp} <-
@@ -879,7 +879,7 @@ defmodule RetroHexChat.Channels.Server do
         reply_to_id: msg && msg.reply_to_id,
         reply_to_author: msg && msg.reply_to_author,
         reply_to_preview: msg && msg.reply_to_preview,
-        attachments: attachment_payloads(msg)
+        attachments: Attachments.payloads(msg)
       }
 
       broadcast(state.name, %{event: "new_message", payload: payload})
@@ -1356,26 +1356,6 @@ defmodule RetroHexChat.Channels.Server do
     |> List.wrap()
     |> Enum.reject(&is_nil/1)
   end
-
-  defp validate_message_content(content, content_format, attachment_ids) do
-    case Content.validate(content, content_format) do
-      :ok -> :ok
-      {:error, :blank} when attachment_ids != [] -> :ok
-      {:error, :blank} -> {:error, dgettext("chat", "Message cannot be empty")}
-      {:error, :too_long} -> {:error, "Message exceeds maximum length of 1000 characters"}
-      {:error, :unsupported_format} -> {:error, dgettext("chat", "Unsupported message format")}
-    end
-  end
-
-  defp attachment_payloads(%{attachments: %Ecto.Association.NotLoaded{}}), do: []
-
-  defp attachment_payloads(%{attachments: attachments}) when is_list(attachments) do
-    attachments
-    |> Enum.map(&Attachments.payload/1)
-    |> Enum.reject(&is_nil/1)
-  end
-
-  defp attachment_payloads(_message), do: []
 
   defp maybe_persist_exception(type, action, channel_name, nickname, added_by, state) do
     if state.registered do
