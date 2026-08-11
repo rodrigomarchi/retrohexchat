@@ -7,9 +7,14 @@ defmodule RetroHexChatWeb.ChatLive.PmClearFeatureTest do
   had one. A private conversation emptied the window and remembered nothing, so
   the whole history returned the next time it was opened.
 
-  These assert `loaded_message_count`, which the loader sets synchronously from
-  the page it has already filtered, rather than the stream it hands to an island
-  through `send_update/2`.
+  These assert what the window shows. The stream belongs to a LiveComponent
+  reached through `send_update/2`, but that update is a message the view sends
+  to itself, so it is already in its own mailbox when the next `render/1` call
+  arrives behind it — one round trip is enough, and no budget is being guessed.
+
+  `loaded_message_count` looked like the synchronous signal and is not: nothing
+  reads it, and the two loading paths disagree about whether it counts rows
+  fetched or rows shown.
   """
   use RetroHexChatWeb.LiveViewCase, async: false
 
@@ -33,9 +38,7 @@ defmodule RetroHexChatWeb.ChatLive.PmClearFeatureTest do
       })
   end
 
-  defp loaded_count(view) do
-    :sys.get_state(view.pid).socket.assigns.loaded_message_count
-  end
+  defp shown(view), do: render(view)
 
   defp open_pm(view, peer) do
     render_click(view, "switch_pm", %{"nickname" => peer})
@@ -47,13 +50,14 @@ defmodule RetroHexChatWeb.ChatLive.PmClearFeatureTest do
     peer = "Peer#{uid()}"
     elsewhere = "Else#{uid()}"
 
-    write_pm(peer, nick, "first")
-    write_pm(nick, peer, "second")
+    write_pm(peer, nick, "zapzapone")
+    write_pm(nick, peer, "zapzaptwo")
 
     view = connect_user(conn, nick)
 
     open_pm(view, peer)
-    assert loaded_count(view) == 2
+    assert shown(view) =~ "zapzapone"
+    assert shown(view) =~ "zapzaptwo"
 
     render_click(view, "toolbar_action", %{"action" => "clear_window"})
 
@@ -61,7 +65,8 @@ defmodule RetroHexChatWeb.ChatLive.PmClearFeatureTest do
     open_pm(view, elsewhere)
     open_pm(view, peer)
 
-    assert loaded_count(view) == 0
+    refute shown(view) =~ "zapzapone"
+    refute shown(view) =~ "zapzaptwo"
   end
 
   test "a message written after the clear comes back", %{conn: conn} do
@@ -69,18 +74,49 @@ defmodule RetroHexChatWeb.ChatLive.PmClearFeatureTest do
     peer = "Peer#{uid()}"
     elsewhere = "Else#{uid()}"
 
-    write_pm(peer, nick, "before the clear")
+    write_pm(peer, nick, "zapbefore")
 
     view = connect_user(conn, nick)
     open_pm(view, peer)
     render_click(view, "toolbar_action", %{"action" => "clear_window"})
 
-    write_pm(peer, nick, "after the clear")
+    write_pm(peer, nick, "zapafter")
 
     open_pm(view, elsewhere)
     open_pm(view, peer)
 
-    assert loaded_count(view) == 1
+    assert shown(view) =~ "zapafter"
+    refute shown(view) =~ "zapbefore"
+  end
+
+  # Filtering a page deliberately keeps `has_more` and the cursor, so reopening a
+  # cleared conversation leaves a cursor pointing into the cleared region.
+  # Scrolling back reads exactly that.
+  test "scrolling back into a cleared conversation finds nothing there", %{conn: conn} do
+    nick = "PmClrS#{uid()}"
+    peer = "Peer#{uid()}"
+    elsewhere = "Else#{uid()}"
+
+    for i <- 1..55, do: write_pm(peer, nick, "zapold#{String.pad_leading(to_string(i), 3, "0")}")
+
+    view = connect_user(conn, nick)
+    open_pm(view, peer)
+    assert shown(view) =~ "zapold055"
+
+    render_click(view, "toolbar_action", %{"action" => "clear_window"})
+    open_pm(view, elsewhere)
+    open_pm(view, peer)
+
+    refute shown(view) =~ "zapold055"
+    assert :sys.get_state(view.pid).socket.assigns.has_more
+
+    render_click(view, "load_more", %{})
+
+    # The five the second page carries — the oldest, and the only ones this
+    # click can bring back. Naming one of them is what makes this test about
+    # scrolling rather than about the load that preceded it.
+    refute shown(view) =~ "zapold003"
+    refute shown(view) =~ "zapold001"
   end
 
   test "clearing one conversation leaves another's history alone", %{conn: conn} do
@@ -88,8 +124,8 @@ defmodule RetroHexChatWeb.ChatLive.PmClearFeatureTest do
     peer = "Peer#{uid()}"
     other = "Other#{uid()}"
 
-    write_pm(peer, nick, "peer says hello")
-    write_pm(other, nick, "other says hello")
+    write_pm(peer, nick, "zappeerhello")
+    write_pm(other, nick, "zapotherhello")
 
     view = connect_user(conn, nick)
 
@@ -98,6 +134,7 @@ defmodule RetroHexChatWeb.ChatLive.PmClearFeatureTest do
 
     open_pm(view, other)
 
-    assert loaded_count(view) == 1
+    assert shown(view) =~ "zapotherhello"
+    refute shown(view) =~ "zappeerhello"
   end
 end

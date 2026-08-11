@@ -48,8 +48,11 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
   end
 
   def prepend_older_pm_messages(socket, %Page{} = page) do
+    conversation = Messages.conversation_key(socket.assigns.session)
+
     stream_items =
       page
+      |> Page.filter(&(not Messages.cleared_from_conversation?(socket, conversation, &1)))
       |> Messages.visible_private_page(socket.assigns.session.ignore_list)
       |> Map.fetch!(:items)
       |> Enum.reverse()

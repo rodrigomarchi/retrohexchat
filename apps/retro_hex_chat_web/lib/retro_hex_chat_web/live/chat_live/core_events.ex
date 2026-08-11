@@ -648,9 +648,17 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
     assign(socket, has_more: page.has_more)
   end
 
+  # Scrolling back is the third path into a conversation, after the page loaded
+  # on open and the message arriving live, and it has to hide what was cleared
+  # for the same reason they do. `Page.filter/2` deliberately keeps `has_more`
+  # and the cursor, so reopening a cleared conversation leaves a cursor pointing
+  # into the cleared region — which is exactly what this reads.
   defp prepend_older_messages(socket, %Page{} = page) do
+    conversation = MessageHelpers.conversation_key(socket.assigns.session)
+
     stream_items =
       page
+      |> Page.filter(&(not MessageHelpers.cleared_from_conversation?(socket, conversation, &1)))
       |> MessageHelpers.visible_channel_page(socket.assigns.session.ignore_list)
       |> Map.fetch!(:items)
       |> Enum.reverse()

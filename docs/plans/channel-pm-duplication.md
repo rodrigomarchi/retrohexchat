@@ -223,9 +223,16 @@ Com uma conversa privada na tela, `active_channel` é `nil` — `set_active_pm/2
 zera. Então limpar **esvaziava a janela e não registrava nada**: trocar de
 conversa e voltar trazia o histórico inteiro de volta. Um canal continuava limpo.
 
-Eram duas metades. A gravação (o `if` acima) e a leitura: o carregador de canal
-filtra por `Page.filter(&(not cleared_from_channel?(...)))` e o de PM não
-filtrava por nada.
+Eram **três** caminhos para dentro de uma conversa, não dois. A gravação (o `if`
+acima); o carregamento ao abrir, onde o canal filtrava por
+`Page.filter(&(not cleared_from_channel?(...)))` e o PM não filtrava por nada; e
+**rolar para trás, onde nenhum dos dois filtrava**.
+
+O terceiro é o menos óbvio e o mais fácil de alcançar. `Page.filter/2` preserva
+`has_more` e o cursor de propósito — para esconder não encurtar a paginação — de
+modo que reabrir uma conversa limpa deixa um cursor apontando **para dentro da
+região apagada**. Rolar para cima lia exatamente isso e trazia tudo de volta, em
+canal e em PM.
 
 O mapa agora guarda os dois tipos, sob a mesma chave que contagem de não-lidas,
 flash e highlight já usam (`pm:<nick>`), e por isso deixou de se chamar
@@ -326,7 +333,13 @@ e o §6 mostra que a chave de roteamento difere de verdade.
   `helpers/{channel,pm}.ex`, achou o §4.7. **Quatro defeitos, nenhum deles
   reclamado por ninguém em meses de uso.**
 
-  O método, para o que falta (`core_events.ex`): listar as funções chamadas
+  A quarta passada, sobre `core_events.ex`, fechou a varredura e achou a
+  terceira metade do §4.7: rolar para trás não filtrava pelo corte **em nenhum
+  dos dois tipos**. Foi o único achado que não é uma assimetria entre canal e
+  PM — é um caminho que os dois esqueceram igual, e só apareceu porque a
+  comparação obrigou a listar todos os caminhos de entrada de uma conversa.
+
+  O método: listar as funções chamadas
   dentro de cada gêmeo, diferenciar os conjuntos, e para cada chamada que só
   existe de um lado perguntar se há um ramo que a recuse do outro. Quando não
   há, é esquecimento — o mesmo raciocínio do §4.2.
