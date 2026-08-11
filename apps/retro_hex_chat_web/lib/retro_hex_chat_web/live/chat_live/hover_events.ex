@@ -16,6 +16,7 @@ defmodule RetroHexChatWeb.ChatLive.HoverEvents do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Channels.Server
+  alias RetroHexChat.Channels.Visibility
   alias RetroHexChat.Chat.{IgnoreList, TimeFormatter}
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.Services.NickServ
@@ -113,7 +114,7 @@ defmodule RetroHexChatWeb.ChatLive.HoverEvents do
         nickname: nick,
         hostname: target_meta && target_meta[:hostname],
         online_for: format_online_time(target_meta),
-        channels: get_visible_channels(nick, session.channels),
+        channels: Visibility.channels_of(nick, session.channels),
         away: (target_meta && target_meta[:away]) || false,
         away_message: target_meta && target_meta[:away_message],
         registered: NickServ.registered?(nick),
@@ -204,41 +205,6 @@ defmodule RetroHexChatWeb.ChatLive.HoverEvents do
         String.downcase(user.nickname) == String.downcase(target)
       end)
     end)
-  end
-
-  @spec get_visible_channels(String.t(), [String.t()]) :: [String.t()]
-  defp get_visible_channels(target, requester_channels) do
-    target_lower = String.downcase(target)
-
-    Elixir.Registry.select(RetroHexChat.Channels.ChannelRegistry, [
-      {{:"$1", :_, :_}, [], [:"$1"]}
-    ])
-    |> Enum.filter(&channel_has_member?(&1, target_lower))
-    |> Enum.reject(fn channel_name ->
-      channel_name not in requester_channels and channel_is_secret?(channel_name)
-    end)
-    |> Enum.sort()
-  end
-
-  @spec channel_is_secret?(String.t()) :: boolean()
-  defp channel_is_secret?(channel_name) do
-    case Server.get_state(channel_name) do
-      {:ok, state} -> Map.get(state.modes_detail, :secret, false)
-      _ -> false
-    end
-  end
-
-  @spec channel_has_member?(String.t(), String.t()) :: boolean()
-  defp channel_has_member?(channel_name, target_lower) do
-    case Server.get_state(channel_name) do
-      {:ok, state} ->
-        Enum.any?(state.members, fn {nick, _role} ->
-          String.downcase(nick) == target_lower
-        end)
-
-      _ ->
-        false
-    end
   end
 
   @spec get_role_in_active_channel(String.t(), String.t() | nil) :: atom() | nil

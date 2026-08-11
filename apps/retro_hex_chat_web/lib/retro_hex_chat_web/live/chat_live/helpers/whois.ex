@@ -8,7 +8,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Whois do
   use Gettext, backend: RetroHexChatWeb.Gettext
 
   alias RetroHexChat.Accounts.Session
-  alias RetroHexChat.Channels.Server
+  alias RetroHexChat.Channels.Visibility
   alias RetroHexChat.Chat.{TimeFormatter, UserBio}
   alias RetroHexChat.Presence.{Tracker, WhowasCache}
   alias RetroHexChat.Services.NickServ
@@ -101,7 +101,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Whois do
 
   defp gather_whois_data(socket, session, target, target_meta) do
     is_self = target == session.nickname
-    target_channels = get_user_channels(target, session.channels)
+    target_channels = Visibility.channels_of(target, session.channels)
 
     %{
       target_channels: target_channels,
@@ -264,38 +264,5 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Whois do
         String.downcase(user.nickname) == String.downcase(target)
       end)
     end)
-  end
-
-  defp get_user_channels(target, requester_channels) do
-    target_lower = String.downcase(target)
-
-    Elixir.Registry.select(RetroHexChat.Channels.ChannelRegistry, [
-      {{:"$1", :_, :_}, [], [:"$1"]}
-    ])
-    |> Enum.filter(&channel_has_member?(&1, target_lower))
-    |> Enum.reject(fn channel_name ->
-      # Filter out +s (secret) channels unless requester is also a member
-      channel_name not in requester_channels and channel_is_secret?(channel_name)
-    end)
-    |> Enum.sort()
-  end
-
-  defp channel_is_secret?(channel_name) do
-    case Server.get_state(channel_name) do
-      {:ok, state} -> Map.get(state.modes_detail, :secret, false)
-      _ -> false
-    end
-  end
-
-  defp channel_has_member?(channel_name, target_lower) do
-    case Server.get_state(channel_name) do
-      {:ok, state} ->
-        Enum.any?(state.members, fn {nick, _role} ->
-          String.downcase(nick) == target_lower
-        end)
-
-      _ ->
-        false
-    end
   end
 end
