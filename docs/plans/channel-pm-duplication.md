@@ -153,9 +153,9 @@ caminhos perguntam. `p2p_system` é o tipo de sistema de uma conversa privada
 segundo o comentário do próprio schema; uma mensagem de canal não pode
 carregá-lo, então a mesma pergunta serve para os dois.
 
-### 4.5 Highlight em PM não marca a conversa na barra lateral — em aberto
+### 4.5 Highlight em PM não marcava a conversa na barra lateral — corrigido
 
-Mesma varredura, segunda assimetria, **ainda não corrigida**:
+Mesma varredura, segunda assimetria. Eram **quatro** pontas, não uma:
 
 - `apply_background_message` chama `maybe_add_highlight_channel`, que põe o canal
   em `highlight_channels`. O caminho de PM não tem equivalente, e nada em lugar
@@ -163,14 +163,19 @@ Mesma varredura, segunda assimetria, **ainda não corrigida**:
 - `channel_item` recebe `highlight={member?(@highlight_channels, ch) or ...}`;
   `pm_item` **não tem o atributo `highlight`**.
 - `activity_channels/1` inclui um canal por estar em `highlight_channels`;
-  `activity_pms/1` não considera isso.
+  `activity_pms/1` não considerava isso.
+- abrir um canal limpava `highlight_channels`; abrir uma conversa privada
+  limpava `unread_counts` e `flash_channels` e **não** o highlight — de modo que
+  a quarta ponta teria deixado a marca grudada mesmo depois de lida.
 
 Consequência: uma palavra de destaque numa conversa privada em segundo plano
-toca o som e dispara a dica (§4.2 fechou isso), mas **não deixa marca na barra
-lateral**. Quem não estava ouvindo não fica sabendo.
+tocava o som e disparava a dica (§4.2 fechou isso), mas **não deixava marca na
+barra lateral**. Quem não estava ouvindo não ficava sabendo.
 
-Custo estimado: quatro arquivos — o handler, o `pm_item`, o `activity_pms`, e os
-dois lugares que limpam `highlight_channels` ao abrir uma conversa.
+A barra lateral já lia um conjunto só para os dois tipos de conversa —
+`highlight_channels`. Só o lado do canal escrevia nele. O `pm_item` inclusive já
+passava `status_bar_classes(@active, false, @unread)`, com o `false` literal no
+lugar do highlight.
 
 ### 4.3 O custo corrente
 
@@ -261,8 +266,8 @@ e o §6 mostra que a chave de roteamento difere de verdade.
 - ~~Existem outras assimetrias além de 4.1 e 4.2?~~ **Respondida: existem, e
   procurar funciona.** Uma varredura comparando chamada a chamada
   `do_handle_new_message` com `do_handle_new_pm` — e depois o que cada lado faz
-  com o resultado — achou duas em uma passada: o §4.4 (corrigido) e o §4.5 (em
-  aberto). Nenhuma das duas tinha aparecido em meses de uso.
+  com o resultado — achou duas em uma passada, §4.4 e §4.5, ambas corrigidas.
+  Nenhuma das duas tinha aparecido em meses de uso.
 
   O método que funcionou, para repetir nas camadas ainda não varridas
   (`Service`, `Queries`, `helpers/{channel,pm}.ex`, `core_events.ex`): listar as

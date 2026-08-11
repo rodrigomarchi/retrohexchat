@@ -398,6 +398,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
               active={pm == @active_pm}
               open_tab={member?(@open_pm_tabs, pm)}
               unread={member?(@unread_pms, pm)}
+              highlight={member?(@highlight_channels, "pm:#{pm}")}
               unread_count={unread_count(@unread_counts, "pm:#{pm}")}
               flash={member?(@flash_channels, "pm:#{pm}")}
               muted={member?(@muted_channels, "pm:#{pm}")}
@@ -453,6 +454,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
               active={pm == @active_pm}
               open_tab={member?(@open_pm_tabs, pm)}
               unread={member?(@unread_pms, pm)}
+              highlight={member?(@highlight_channels, "pm:#{pm}")}
               unread_count={unread_count(@unread_counts, "pm:#{pm}")}
               flash={member?(@flash_channels, "pm:#{pm}")}
               muted={member?(@muted_channels, "pm:#{pm}")}
@@ -662,6 +664,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   attr :open_tab, :boolean, default: false
   attr :unread, :boolean, default: false
   attr :unread_count, :integer, default: 0
+  attr :highlight, :boolean, default: false
   attr :flash, :boolean, default: false
   attr :muted, :boolean, default: false
   attr :nick_color, :string, default: nil
@@ -686,6 +689,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
         row_classes(@active),
         @activity && "chat-conversations-row--activity",
         @unread && !@active && "font-bold italic",
+        @highlight && !@active && "text-error",
         @flash && "animate-pulse",
         @muted && "opacity-50"
       ]}
@@ -698,7 +702,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
       tabindex="0"
       aria-current={if @active, do: "page"}
     >
-      <span class={status_bar_classes(@active, false, @unread)} aria-hidden="true"></span>
+      <span class={status_bar_classes(@active, @highlight, @unread)} aria-hidden="true"></span>
       <span class="chat-conversations-row__icon">
         <Icons.icon_tab_pm class="w-3 h-3" />
       </span>
@@ -913,6 +917,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
 
       unread_count(assigns.unread_counts, key) > 0 or
         member?(assigns.unread_pms, nick) or
+        member?(assigns.highlight_channels, key) or
         member?(assigns.flash_channels, key)
     end)
   end

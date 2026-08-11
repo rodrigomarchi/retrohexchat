@@ -156,6 +156,7 @@ defmodule RetroHexChatWeb.ChatLive.NavigationEvents do
       |> Session.set_active_pm(nickname)
 
     unread_counts = UnreadTracker.reset(socket.assigns.unread_counts, "pm:#{nickname}")
+    highlight = MapSet.delete(socket.assigns.highlight_channels, "pm:#{nickname}")
     flash = MapSet.delete(socket.assigns.flash_channels, "pm:#{nickname}")
 
     if socket.assigns.pm_typing_timer,
@@ -166,6 +167,7 @@ defmodule RetroHexChatWeb.ChatLive.NavigationEvents do
     |> assign(
       session: session,
       unread_counts: unread_counts,
+      highlight_channels: highlight,
       flash_channels: flash,
       current_topic: nil,
       current_modes: nil,

@@ -383,6 +383,19 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
     if session.active_pm == other_nick do
       MessageViewport.insert(socket, decorated)
     else
+      mark_pm_highlight(socket, decorated, other_nick)
+    end
+  end
+
+  # A highlight in a conversation that is not on screen has to leave a mark, or
+  # the only sign it happened is a sound the reader may not have been there for.
+  # The sidebar reads one set for both kinds of conversation; only the channel
+  # side ever wrote into it.
+  defp mark_pm_highlight(socket, decorated, peer) do
+    if Map.get(decorated, :highlighted) do
+      highlight = MapSet.put(socket.assigns.highlight_channels, "pm:#{peer}")
+      assign(socket, highlight_channels: highlight)
+    else
       socket
     end
   end

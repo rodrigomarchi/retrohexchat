@@ -126,6 +126,43 @@ defmodule RetroHexChatWeb.ChatLive.Components.ConversationsTest do
     refute html =~ "hunter2"
   end
 
+  # A highlight in a conversation nobody is looking at has to survive being
+  # looked away from: the sidebar is where the reader finds it afterwards.
+  test "draws a highlighted PM the way it draws a highlighted channel" do
+    html =
+      render_conv(
+        pm_conversations: ["alice", "bob"],
+        highlight_channels: MapSet.new(["#elixir", "pm:alice"])
+      )
+
+    document = Floki.parse_document!(html)
+
+    alice = Floki.find(document, ~s([data-testid="activity-pm-alice"]))
+    channel = Floki.find(document, ~s([data-testid="activity-channel-#elixir"]))
+
+    assert alice != [], "a highlighted PM belongs in the activity section"
+    assert Floki.attribute(alice, "class") |> to_string() =~ "text-error"
+
+    assert Floki.find(alice, ".chat-conversations-row__signal--highlight") != []
+    assert Floki.find(channel, ".chat-conversations-row__signal--highlight") != []
+  end
+
+  test "a PM nobody highlighted is drawn plainly" do
+    html =
+      render_conv(
+        pm_conversations: ["alice"],
+        open_pm_tabs: ["alice"],
+        highlight_channels: MapSet.new([])
+      )
+
+    document = Floki.parse_document!(html)
+    alice = Floki.find(document, ~s([data-testid="pm-alice"]))
+
+    assert alice != []
+    refute Floki.attribute(alice, "class") |> to_string() =~ "text-error"
+    assert Floki.find(alice, ".chat-conversations-row__signal--highlight") == []
+  end
+
   test "marks PMs that already have an open tab" do
     html =
       render_conv(
