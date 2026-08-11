@@ -6,23 +6,22 @@ defmodule RetroHexChat.Lobby.SessionServerTest do
 
   @moduletag :integration
 
+  # Only the rejoin grace is shortened, because only the leave tests wait for a
+  # timer to fire. The others used to be shortened too — pending and warning to
+  # 100ms, expiry and connecting to 200ms — and no test in this file needed
+  # them: nothing here asserts an inactivity timeout, and the one test about
+  # those timers asserts that rescheduling changes the handle rather than that
+  # anything expires.
+  #
+  # What they did instead was kill the session under the tests. A setup that
+  # joins both peers and then transitions to connected does database work in
+  # between, and under a loaded `make ci` partition that gap can outlast 200ms —
+  # so `lobby_expiry` or `connecting_timeout` fired mid-setup, the server
+  # stopped normally, and the next call found no process. That is the flake.
   setup do
-    Application.put_env(:retro_hex_chat, :lobby_pending_timeout, 100)
-    Application.put_env(:retro_hex_chat, :lobby_warning_timeout, 100)
-    Application.put_env(:retro_hex_chat, :lobby_expiry_timeout, 200)
-    Application.put_env(:retro_hex_chat, :lobby_connecting_timeout, 200)
-    Application.put_env(:retro_hex_chat, :lobby_game_request_timeout, 150)
     Application.put_env(:retro_hex_chat, :lobby_rejoin_grace_timeout, 120)
 
-    on_exit(fn ->
-      for key <- ~w(
-            lobby_pending_timeout lobby_warning_timeout lobby_expiry_timeout
-            lobby_connecting_timeout lobby_game_request_timeout
-            lobby_rejoin_grace_timeout
-          )a do
-        Application.delete_env(:retro_hex_chat, key)
-      end
-    end)
+    on_exit(fn -> Application.delete_env(:retro_hex_chat, :lobby_rejoin_grace_timeout) end)
   end
 
   defp create_registered_nick(nickname) do
