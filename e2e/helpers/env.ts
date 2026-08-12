@@ -44,3 +44,16 @@ export function adminPassword(): string {
 export function isLocalTarget(): boolean {
   return new URL(e2eBaseURL()).hostname === "localhost";
 }
+
+/**
+ * Whether the configured administrator is a *root* administrator.
+ *
+ * The two are different powers: `config :retro_hex_chat, :root_admins` may
+ * promote others to admin, `:admins` may not. Locally the e2e administrator is
+ * an ordinary one, which is what the specs about that restriction assume. A
+ * deployment's administrator is usually root, and a spec that needs somebody
+ * who *cannot* promote has to make one — so it needs to be told which it has.
+ */
+export function adminIsRoot(): boolean {
+  return process.env.E2E_ADMIN_IS_ROOT === "1";
+}

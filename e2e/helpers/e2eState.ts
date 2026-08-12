@@ -1,3 +1,7 @@
+import type { Browser } from "@playwright/test";
+import { ConnectPage } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
+import { adminNick, adminPassword, isLocalTarget } from "./env";
 import { spawnSync } from "node:child_process";
 import { basename, resolve } from "node:path";
 
@@ -72,5 +76,41 @@ export function resetRegistrationOpen() {
         .filter(Boolean)
         .join("\n"),
     );
+  }
+}
+
+/**
+ * Reopens registration on whichever server the run is pointed at.
+ *
+ * `resetRegistrationOpen` edits the local e2e database directly, which is the
+ * fast path and the only one that works before a browser exists. Against a
+ * deployment it reaches the wrong database entirely, and a spec that closed
+ * registration there leaves it closed — which is exactly what happened to
+ * production, for the best part of an hour, until a later spec could not find
+ * the registration form.
+ *
+ * So a run against anything but localhost undoes it the way an operator would:
+ * signed in as the administrator, through the command.
+ */
+export async function reopenRegistration(browser: Browser): Promise<void> {
+  if (isLocalTarget()) {
+    resetRegistrationOpen();
+    return;
+  }
+
+  const ctx = await browser.newContext();
+
+  try {
+    const page = await ctx.newPage();
+    const connect = new ConnectPage(page);
+    const chat = new ChatPage(page);
+
+    await connect.open();
+    await connect.signIn(adminNick(), adminPassword());
+    await chat.waitUntilConnected();
+    await chat.sendMessage("/admin server set registration open");
+    await chat.expectMessageVisible("registration");
+  } finally {
+    await ctx.close();
   }
 }

@@ -12,7 +12,7 @@
 import { Browser, BrowserContext, Page, test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";
-import { adminNick, adminPassword } from "../helpers/env";
+import { adminIsRoot, adminNick, adminPassword } from "../helpers/env";
 
 const ADMIN_NICK = adminNick();
 const ADMIN_PW = adminPassword();
@@ -222,9 +222,25 @@ test.describe.serial("Admin user commands", () => {
     const regular = await newSignedInUser(browser, "admu");
     const target = await newSignedInUser(browser, "admt");
 
+    // The rule under test is that an admin who is not a *root* admin cannot
+    // promote anyone to admin. Locally the configured administrator is an
+    // ordinary one and can attempt it directly; where it is a root admin, the
+    // only way to have a real non-root admin is for it to appoint one.
+    const deputy = adminIsRoot()
+      ? await newSignedInUser(browser, "admd")
+      : null;
+    const promoter = deputy ?? admin;
+
     try {
-      await admin.chat.sendMessage(`/admin user role ${target.nick} admin`);
-      await admin.chat.expectMessageVisible(
+      if (deputy) {
+        await admin.chat.sendMessage(`/admin user role ${deputy.nick} admin`);
+        await admin.chat.expectMessageVisible(
+          `${deputy.nick} has been set as admin.`,
+        );
+      }
+
+      await promoter.chat.sendMessage(`/admin user role ${target.nick} admin`);
+      await promoter.chat.expectMessageVisible(
         "Only root admins can promote users to admin",
       );
 
@@ -235,7 +251,13 @@ test.describe.serial("Admin user commands", () => {
         "You must be a server administrator to use this command",
       );
     } finally {
-      await closeUsers([admin, regular, target]);
+      if (deputy) {
+        await admin.chat.sendMessage(`/admin user role ${deputy.nick} user`);
+      }
+
+      await closeUsers(
+        [admin, regular, target, deputy].filter((u) => u !== null),
+      );
     }
   });
 });

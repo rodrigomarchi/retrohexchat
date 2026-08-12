@@ -8,20 +8,15 @@
 import { test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";
-import { resetRegistrationOpen } from "../helpers/e2eState";
-import { adminNick, adminPassword, isLocalTarget } from "../helpers/env";
+import { reopenRegistration } from "../helpers/e2eState";
+import { adminNick, adminPassword } from "../helpers/env";
 
 const ADMIN_NICK = adminNick();
 const ADMIN_PW = adminPassword();
 
 test.describe("Admin closes registration", () => {
-  test.skip(
-    !isLocalTarget(),
-    "closes registration, and the restore only reaches the local e2e database",
-  );
-
-  test.afterAll(() => {
-    resetRegistrationOpen();
+  test.afterAll(async ({ browser }) => {
+    await reopenRegistration(browser);
   });
 
   test("/admin server set registration closed blocks new registrations (N)", async ({
