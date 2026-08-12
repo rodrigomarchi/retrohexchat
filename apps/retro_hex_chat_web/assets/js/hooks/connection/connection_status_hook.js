@@ -3,21 +3,9 @@
  *
  * Replaces ReconnectHook + ConnectionBannerHook with a single hook.
  * Uses ConnectionStatusHook state machine for logic, renders to pre-built DOM.
- * Updates the status bar connection indicator directly (server can't know about WS drops).
  */
 import { createConnectionStateMachine } from "../../lib/connection/connection_state_machine.js";
 import { t, jt } from "../../lib/i18n.js";
-
-/** @type {Record<string, {indicator: string, text: string, css: string}>} */
-const STATUS_BAR_MAP = {
-  connecting: { indicator: "◌", text: "...", css: "connecting" },
-  connected: { indicator: "●", text: t("On"), css: "connected" },
-  disconnected: { indicator: "●", text: t("Off"), css: "disconnected" },
-  reconnecting: { indicator: "↻", text: "...", css: "reconnecting" },
-  reconnected: { indicator: "●", text: t("On"), css: "connected" },
-  cancelled: { indicator: "●", text: t("Off"), css: "disconnected" },
-  failed: { indicator: "●", text: t("Off"), css: "disconnected" },
-};
 
 const ConnectionStatusHook = {
   mounted() {
@@ -137,8 +125,6 @@ const ConnectionStatusHook = {
       // connected, connecting, failed — nothing visible
     }
 
-    // Update status bar
-    this._updateStatusBar(state);
     this._updateChatInputDisabled(
       state === "disconnected" ||
         state === "reconnecting" ||
@@ -151,15 +137,6 @@ const ConnectionStatusHook = {
         state === "cancelled" ||
         state === "failed",
     );
-  },
-
-  _updateStatusBar(state) {
-    const el = document.querySelector('[data-testid="status-connection"]');
-    if (!el) return;
-
-    const info = STATUS_BAR_MAP[state] || STATUS_BAR_MAP.connected;
-    el.className = `status-bar-connection--${info.css}`;
-    el.textContent = `${info.indicator} ${info.text}`;
   },
 
   _updateChatInputDisabled(disabled) {

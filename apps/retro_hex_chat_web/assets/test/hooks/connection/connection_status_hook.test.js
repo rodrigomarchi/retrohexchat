@@ -34,13 +34,6 @@ describe("ConnectionStatusHook", () => {
     vi.useFakeTimers();
     restoreLocalStorage = forbidLocalStorage();
 
-    // Create status bar element for status bar updates
-    const statusEl = document.createElement("span");
-    statusEl.setAttribute("data-testid", "status-connection");
-    statusEl.className = "status-bar-connection--connected";
-    statusEl.textContent = "● On";
-    document.body.appendChild(statusEl);
-
     hook = mountHook(ConnectionStatusHook, {
       html: buildConnectionStatusHTML(),
       attrs: { id: "connection-status" },
@@ -57,10 +50,12 @@ describe("ConnectionStatusHook", () => {
   // ── mount ─────────────────────────────────────────────
 
   describe("mounted", () => {
-    it("transitions to connected state on mount", () => {
-      // After mount, status bar should show connected
-      const statusEl = document.querySelector('[data-testid="status-connection"]');
-      expect(statusEl.textContent).toBe("● On");
+    it("mounts with nothing on screen", () => {
+      const banner = hook.el.querySelector('[data-role="banner"]');
+      const overlay = hook.el.querySelector('[data-role="overlay"]');
+
+      expect(banner.classList.contains("connection-banner--visible")).toBe(false);
+      expect(overlay.classList.contains("reconnect-overlay--visible")).toBe(false);
     });
 
     it("does not push restore_session on mount without an in-memory snapshot", () => {
@@ -146,15 +141,6 @@ describe("ConnectionStatusHook", () => {
       expect(text.textContent).toContain("Disconnected");
     });
 
-    it("updates status bar to Off", () => {
-      hook.disconnected();
-      vi.advanceTimersByTime(DEFAULTS.bannerDebounceMs);
-
-      const statusEl = document.querySelector('[data-testid="status-connection"]');
-      expect(statusEl.className).toBe("status-bar-connection--disconnected");
-      expect(statusEl.textContent).toBe("● Off");
-    });
-
     it("skips one disconnect after intentional_disconnect event", () => {
       simulateEvent(hook, "intentional_disconnect", {});
       hook.disconnected();
@@ -184,14 +170,6 @@ describe("ConnectionStatusHook", () => {
       // Banner should be hidden when overlay shows
       const banner = hook.el.querySelector('[data-role="banner"]');
       expect(banner.classList.contains("connection-banner--visible")).toBe(false);
-    });
-
-    it("updates status bar to reconnecting", () => {
-      hook.disconnected();
-      vi.advanceTimersByTime(DEFAULTS.bannerDebounceMs + DEFAULTS.bannerToOverlayMs);
-
-      const statusEl = document.querySelector('[data-testid="status-connection"]');
-      expect(statusEl.className).toBe("status-bar-connection--reconnecting");
     });
 
     it("cancel button transitions to cancelled state", () => {
@@ -246,17 +224,6 @@ describe("ConnectionStatusHook", () => {
 
       const banner = hook.el.querySelector('[data-role="banner"]');
       expect(banner.classList.contains("connection-banner--reconnected")).toBe(true);
-    });
-
-    it("restores status bar to connected", () => {
-      hook.disconnected();
-      vi.advanceTimersByTime(DEFAULTS.bannerDebounceMs);
-      hook.reconnected();
-
-      // reconnected maps to connected in status bar
-      const statusEl = document.querySelector('[data-testid="status-connection"]');
-      expect(statusEl.className).toBe("status-bar-connection--connected");
-      expect(statusEl.textContent).toBe("● On");
     });
 
     it("pushes restore_session once if an in-memory reconnect state exists", () => {

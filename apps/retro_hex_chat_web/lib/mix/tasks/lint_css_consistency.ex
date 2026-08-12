@@ -669,7 +669,6 @@ defmodule Mix.Tasks.Lint.CssConsistency do
     "rh-charsel",
     "search-highlight",
     "ss-",
-    "status-bar-connection",
     "tm-",
     "toast-",
     "toolbar-group",
