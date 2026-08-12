@@ -41,6 +41,15 @@ defmodule RetroHexChatWeb.Components.UI.ColorPicker do
     default: nil,
     doc: "Color select callback (receives phx-value-index and phx-value-picker)"
 
+  attr :field, :string,
+    default: nil,
+    doc: """
+    Form field name. When given the swatches are radio inputs and the browser
+    owns the choice, so the form carries it whether or not the server has heard
+    about the click yet. Without it the swatches are buttons that push
+    `on_select`, for the pickers that act immediately rather than feed a form.
+    """
+
   attr :class, :string, default: nil
   attr :rest, :global
   slot :inner_block
@@ -61,8 +70,31 @@ defmodule RetroHexChatWeb.Components.UI.ColorPicker do
       {@rest}
     >
       <div class="grid grid-cols-4 gap-[2px]">
+        <label
+          :for={{{color, _hex}, idx} <- @colors}
+          :if={@field}
+          class="relative inline-block w-[18px] h-[18px]"
+          title={color_name(color)}
+        >
+          <input
+            type="radio"
+            name={@field}
+            value={idx}
+            checked={@selected == idx}
+            class="peer absolute inset-0 m-0 w-full h-full opacity-0 cursor-pointer"
+            aria-label={
+              dgettext("chat", "Color %{index}: %{name}", index: idx, name: color_name(color))
+            }
+          />
+          <span class={[
+            "absolute inset-0 border border-gray-500 pointer-events-none",
+            "irc-bg-#{idx}",
+            "peer-checked:border-black peer-checked:border-2"
+          ]} />
+        </label>
         <button
           :for={{{color, _hex}, idx} <- @colors}
+          :if={!@field}
           type="button"
           class={[
             "w-[18px] h-[18px] border cursor-pointer",

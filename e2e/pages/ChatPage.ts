@@ -1,7 +1,12 @@
 import { Page, Locator, expect } from "@playwright/test";
 
 export type AddressBookControlType =
-  "all" | "messages" | "pms" | "actions" | "notices" | "invites";
+  | "all"
+  | "messages"
+  | "pms"
+  | "actions"
+  | "notices"
+  | "invites";
 
 type ChannelCentralTab = "general" | "modes" | "access_lists" | "registration";
 
@@ -9,7 +14,9 @@ type ChannelCentralTab = "general" | "modes" | "access_lists" | "registration";
 type ChannelCentralAccessList = "bans" | "ban_exceptions" | "invite_exceptions";
 
 type ChannelCentralModeLabel =
-  "Moderated (+m)" | "Invite Only (+i)" | "Topic Lock (+t)";
+  | "Moderated (+m)"
+  | "Invite Only (+i)"
+  | "Topic Lock (+t)";
 
 function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -1668,20 +1675,15 @@ export class ChatPage {
   }
 
   /**
-   * Clicks a swatch and waits for the server to mark it selected.
-   *
-   * The picker keeps its selection on the server and mirrors it into a hidden
-   * field, so submitting before that round trip lands sends the previous value.
-   * Locally the round trip is a millisecond and this is invisible; over a real
-   * network it is not.
+   * Picks a colour. No wait afterwards, on purpose: the swatches are a radio
+   * group, so the choice is the browser's and the form carries it whether or
+   * not the server has heard about the click. A wait here would hide a
+   * regression back to a picker whose value depends on a round trip.
    */
   async pickColor(form: Locator, colorIndex: number) {
-    const swatch = form.getByRole("button", {
-      name: new RegExp(`^Color ${colorIndex}:`),
-    });
-
-    await swatch.click();
-    await expect(swatch).toHaveClass(/border-black/);
+    await form
+      .getByRole("radio", { name: new RegExp(`^Color ${colorIndex}:`) })
+      .check();
   }
 
   async addAddressBookNickColor(nick: string, colorIndex: number) {

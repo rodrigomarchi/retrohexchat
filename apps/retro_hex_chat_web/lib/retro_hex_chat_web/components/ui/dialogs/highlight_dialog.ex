@@ -308,16 +308,14 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
               class="hl-input w-full"
             />
           </div>
-          <input type="hidden" name="bg_color" value={to_string(@selected_color || "")} />
           <div class="flex flex-col gap-1.5 mt-2">
             <label class="text-xs font-bold">
               {dgettext("dialogs", "Background Color (optional):")}
             </label>
             <.color_picker
               id="highlight-add-color"
-              target={@target}
               selected={@selected_color}
-              on_select="highlight_color_pick"
+              field="bg_color"
               class="hl-color-picker"
             />
           </div>
@@ -373,14 +371,12 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
           class="hl-sub-form"
         >
           <input type="hidden" name="word" value={@selected_word || ""} />
-          <input type="hidden" name="bg_color" value={to_string(@selected_color || "")} />
           <div class="flex flex-col gap-1.5">
             <label class="text-xs font-bold">{dgettext("dialogs", "Background Color:")}</label>
             <.color_picker
               id="highlight-edit-color"
-              target={@target}
               selected={@selected_color}
-              on_select="highlight_color_pick"
+              field="bg_color"
               class="hl-color-picker"
             />
           </div>

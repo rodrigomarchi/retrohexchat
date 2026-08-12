@@ -46,13 +46,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.NickColorsDialog do
     {:noreply, assign(socket, selected: nick)}
   end
 
-  def handle_event("nick_palette_pick", %{"index" => idx_str}, socket) do
-    case color_index(idx_str) do
-      {:ok, index} -> {:noreply, assign(socket, palette_editing_index: index)}
-      :error -> {:noreply, socket}
-    end
-  end
-
   def handle_event("nick_color_add_dialog", _params, socket) do
     {:noreply, assign(socket, show_add_dialog: true, palette_editing_index: nil)}
   end
@@ -61,15 +54,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.NickColorsDialog do
     {:noreply, assign(socket, show_add_dialog: false)}
   end
 
-  def handle_event(
-        "nick_color_add",
-        %{"nickname" => nickname, "color_index" => color_str},
-        socket
-      ) do
+  def handle_event("nick_color_add", %{"nickname" => nickname} = params, socket) do
     session = socket.assigns.session
     nickname = String.trim(nickname)
 
-    with {:ok, color} <- color_index(color_str),
+    with {:ok, color} <- color_index(params["color_index"]),
          {:ok, updated} <- NickColors.add_entry(session.nick_colors, nickname, color) do
       {:noreply,
        socket
@@ -95,11 +84,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.NickColorsDialog do
     {:noreply, assign(socket, show_edit_dialog: false)}
   end
 
-  def handle_event("nick_color_edit", %{"color_index" => color_str} = params, socket) do
+  def handle_event("nick_color_edit", params, socket) do
     session = socket.assigns.session
     nickname = params["nickname"] || socket.assigns.selected
 
-    with {:ok, color} <- color_index(color_str),
+    with {:ok, color} <- color_index(params["color_index"]),
          {:ok, updated} <- NickColors.update_color(session.nick_colors, nickname, color) do
       {:noreply,
        socket
@@ -177,12 +166,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.NickColorsDialog do
     socket
   end
 
-  # The colour arrives from a hidden field that a palette click fills in, and the
-  # form does not require it — so a submission before anything was clicked
-  # carries an empty string. `NickColors` has always had an answer for a colour
-  # it will not accept; what was missing was getting there, because parsing
-  # raised first and a raise inside `handle_event` does not fail the dialog, it
-  # takes the whole chat session down.
+  # The swatches are a radio group, so a form submitted before anything was
+  # picked carries no colour at all — not an empty one. `NickColors` has always
+  # had an answer for a colour it will not accept; what was missing was getting
+  # there, because parsing raised first, and a raise inside `handle_event` does
+  # not fail the dialog: it takes the whole chat session down.
   defp color_index(value) do
     case Integer.parse(to_string(value)) do
       {index, ""} -> {:ok, index}

@@ -123,18 +123,12 @@ defmodule RetroHexChatWeb.Components.UI.NickColorsDialog do
               class="w-full"
             />
           </div>
-          <input
-            type="hidden"
-            name="color_index"
-            value={to_string(@nick_palette_editing_index || "")}
-          />
           <div class="flex flex-col gap-1.5 mb-3">
             <label class="text-xs font-bold">{dgettext("dialogs", "Color")}:</label>
             <.color_picker
               id="nick-color-add-picker"
               selected={@nick_palette_editing_index}
-              on_select="nick_palette_pick"
-              target={@target}
+              field="color_index"
             />
           </div>
           <div class="flex justify-end gap-2">
@@ -194,18 +188,12 @@ defmodule RetroHexChatWeb.Components.UI.NickColorsDialog do
               class="w-full input-readonly"
             />
           </div>
-          <input
-            type="hidden"
-            name="color_index"
-            value={to_string(@nick_palette_editing_index || "")}
-          />
           <div class="flex flex-col gap-1.5 mb-3">
             <label class="text-xs font-bold">{dgettext("dialogs", "Color")}:</label>
             <.color_picker
               id="nick-color-edit-picker"
               selected={@nick_palette_editing_index}
-              on_select="nick_palette_pick"
-              target={@target}
+              field="color_index"
             />
           </div>
           <div class="flex justify-end gap-2">
