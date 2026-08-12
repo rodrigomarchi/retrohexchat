@@ -9,6 +9,7 @@
 import { Browser, BrowserContext, Page, expect, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";
+import { adminNick, adminPassword } from "../helpers/env";
 
 type TestUser = {
   chat: ChatPage;
@@ -69,7 +70,11 @@ test.describe("Admin service commands", () => {
   test("/admin ns info/resetpass/drop manages NickServ registrations (K11)", async ({
     browser,
   }) => {
-    const admin = await knownSignedInUser(browser, "TestAdmin", "adminpass1");
+    const admin = await knownSignedInUser(
+      browser,
+      adminNick(),
+      adminPassword(),
+    );
     const target = await newSignedInUser(browser, "ans");
     const resetPassword = `reset-${Date.now().toString(36)}`;
     const reloginUsers: TestUser[] = [];
@@ -114,7 +119,11 @@ test.describe("Admin service commands", () => {
   test("/admin cs info/access/transfer/drop manages ChanServ registrations (K12)", async ({
     browser,
   }) => {
-    const admin = await knownSignedInUser(browser, "TestAdmin", "adminpass1");
+    const admin = await knownSignedInUser(
+      browser,
+      adminNick(),
+      adminPassword(),
+    );
     const founder = await newSignedInUser(browser, "acs");
     const newFounder = await newSignedInUser(browser, "acf");
     const accessUser = await newSignedInUser(browser, "aca");

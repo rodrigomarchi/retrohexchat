@@ -1,6 +1,7 @@
 import { Browser, BrowserContext, Page } from "@playwright/test";
 import { ChatPage } from "../pages/ChatPage";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { adminNick, adminPassword } from "./env";
 
 export type TestUser = {
   chat: ChatPage;
@@ -11,8 +12,8 @@ export type TestUser = {
   password: string;
 };
 
-export const ADMIN_NICK = "TestAdmin";
-export const ADMIN_PW = "adminpass1";
+export const ADMIN_NICK = adminNick();
+export const ADMIN_PW = adminPassword();
 
 export async function newSignedInUser(
   browser: Browser,

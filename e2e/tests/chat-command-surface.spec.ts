@@ -9,6 +9,7 @@
 import { test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";
+import { adminNick, adminPassword } from "../helpers/env";
 
 async function signedInUser(page: import("@playwright/test").Page) {
   const connect = new ConnectPage(page);
@@ -61,7 +62,7 @@ test.describe("Command surface validation", () => {
     const chat = new ChatPage(page);
 
     await connect.open();
-    await connect.signIn("TestAdmin", "adminpass1");
+    await connect.signIn(adminNick(), adminPassword());
     await chat.waitUntilConnected();
 
     await chat.sendMessage("/admin");

@@ -9,6 +9,7 @@
 import { Browser, BrowserContext, Page, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";
+import { adminNick, adminPassword } from "../helpers/env";
 
 type TestUser = {
   chat: ChatPage;
@@ -65,7 +66,11 @@ test.describe("Wallops and user modes", () => {
   test("/umode +w opts in and /umode -w opts out of wallops delivery (J17/J18)", async ({
     browser,
   }) => {
-    const admin = await knownSignedInUser(browser, "TestAdmin", "adminpass1");
+    const admin = await knownSignedInUser(
+      browser,
+      adminNick(),
+      adminPassword(),
+    );
     const optedIn = await newSignedInUser(browser, "wopa");
     const optedOut = await newSignedInUser(browser, "wopb");
     const firstWallops = `wallops-one-${Date.now()}`;

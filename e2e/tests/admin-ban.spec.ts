@@ -8,12 +8,13 @@
 import { test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";
+import { adminNick, adminPassword } from "../helpers/env";
 
 // TestAdmin is hard-coded in config/e2e.exs as a server administrator.
 // Once it registers with NickServ it is automatically identified and
 // gains admin powers (ServerRoles.admin? returns true).
-const ADMIN_NICK = "TestAdmin";
-const ADMIN_PW = "adminpass1";
+const ADMIN_NICK = adminNick();
+const ADMIN_PW = adminPassword();
 
 test.describe("Admin ban", () => {
   test('admin /admin user ban -> victim force-disconnected with "Server banned" banner (M)', async ({

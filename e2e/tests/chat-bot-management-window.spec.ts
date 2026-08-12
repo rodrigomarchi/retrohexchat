@@ -9,9 +9,10 @@ import { Browser, BrowserContext, Page, test, expect } from "@playwright/test";
 import { ConnectPage } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";
 import { shot } from "../helpers/screenshots";
+import { adminNick, adminPassword } from "../helpers/env";
 
-const ADMIN_NICK = "TestAdmin";
-const ADMIN_PW = "adminpass1";
+const ADMIN_NICK = adminNick();
+const ADMIN_PW = adminPassword();
 
 type TestUser = {
   chat: ChatPage;

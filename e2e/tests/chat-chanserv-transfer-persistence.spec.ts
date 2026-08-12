@@ -8,6 +8,7 @@
 import { Browser, BrowserContext, Page, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";
+import { adminNick, adminPassword } from "../helpers/env";
 
 type TestUser = {
   chat: ChatPage;
@@ -68,7 +69,11 @@ test.describe("ChanServ founder transfer persistence", () => {
   test("transferred founder controls future access after empty-channel rejoin (X7)", async ({
     browser,
   }) => {
-    const admin = await knownSignedInUser(browser, "TestAdmin", "adminpass1");
+    const admin = await knownSignedInUser(
+      browser,
+      adminNick(),
+      adminPassword(),
+    );
     const founder = await newSignedInUser(browser, "x7old");
     const newFounder = await newSignedInUser(browser, "x7new");
     const channel = uniqueChannel("x7cs");

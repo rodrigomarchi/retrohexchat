@@ -8,12 +8,13 @@
 import { Browser, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";
+import { adminNick, adminPassword } from "../helpers/env";
 
 async function signInAdmin(page: import("@playwright/test").Page) {
   const connect = new ConnectPage(page);
   const chat = new ChatPage(page);
   await connect.open();
-  await connect.signIn("TestAdmin", "adminpass1");
+  await connect.signIn(adminNick(), adminPassword());
   await chat.waitUntilConnected();
   return chat;
 }

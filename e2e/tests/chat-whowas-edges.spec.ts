@@ -9,6 +9,7 @@
 import { Browser, BrowserContext, Page, expect, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";
+import { adminNick, adminPassword } from "../helpers/env";
 
 type TestUser = {
   chat: ChatPage;
@@ -47,10 +48,10 @@ async function signedInAdmin(browser: Browser): Promise<TestUser> {
   const chat = new ChatPage(page);
 
   await connect.open();
-  await connect.signIn("TestAdmin", "adminpass1");
+  await connect.signIn(adminNick(), adminPassword());
   await chat.waitUntilConnected();
 
-  return { chat, ctx, nick: "TestAdmin" };
+  return { chat, ctx, nick: adminNick() };
 }
 
 async function closeUsers(users: TestUser[]) {
