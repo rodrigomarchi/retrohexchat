@@ -39,6 +39,17 @@ test.describe("Command history", () => {
 
     await chat.chatInput.press("Control+ArrowDown");
     await expect(chat.chatInput).toHaveValue("");
+
+    // Clearing the field after a submit is a round trip, so the field can still
+    // hold the sensitive command when history browsing starts. Typing it
+    // without sending reproduces that state on purpose, instead of leaving it
+    // to how fast the network happens to be: browsing away and back must not
+    // hand the password back.
+    await chat.chatInput.fill(sensitiveCommand);
+    await chat.chatInput.press("Control+ArrowUp");
+    await expect(chat.chatInput).toHaveValue("/help");
+    await chat.chatInput.press("Control+ArrowDown");
+    await expect(chat.chatInput).toHaveValue("");
   });
 
   test("Escape closes autocomplete, syntax tooltip, then history search without submitting (G10)", async ({

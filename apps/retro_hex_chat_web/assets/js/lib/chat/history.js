@@ -94,7 +94,14 @@ export function createHistoryManager(config) {
       if (history.length === 0) return null;
 
       if (!historyBrowsing) {
-        historyDraft = { text: currentValue, cursor: cursorPos };
+        // The draft is whatever was in the field, and the field may still hold
+        // a command that was refused entry to the history a moment ago — the
+        // clearing is a round trip, and pressing up before it lands is enough.
+        // Stashing it here would hand it back on the way down, which is the
+        // one thing `save` exists to prevent.
+        historyDraft = isSensitiveCommand(currentValue)
+          ? null
+          : { text: currentValue, cursor: cursorPos };
         historyBrowsing = true;
         historyIndex = -1;
       }

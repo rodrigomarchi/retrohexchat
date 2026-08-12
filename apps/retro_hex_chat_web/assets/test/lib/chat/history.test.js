@@ -139,6 +139,17 @@ describe("lib/history", () => {
         expect(result).toEqual({ value: "my draft", cursor: 8 });
       });
 
+      // Submitting clears the field over a round trip. Pressing up before that
+      // lands means the "draft" being stashed is the command itself — and a
+      // NickServ password refused entry to the history would come straight
+      // back on the way down.
+      it("down does not hand back a sensitive command left in the field", () => {
+        const result = hm.up("/ns identify hunter2", 20);
+        expect(result).toEqual({ value: "third" });
+
+        expect(hm.down()).toEqual({ value: "" });
+      });
+
       it("down returns null when not browsing", () => {
         expect(hm.down()).toBeNull();
       });
