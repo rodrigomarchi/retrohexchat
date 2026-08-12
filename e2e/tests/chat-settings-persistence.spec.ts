@@ -119,7 +119,7 @@ test.describe("Chat settings persistence", () => {
     await chat.nickColorsDialog.getByTestId("nick-color-add").click();
     const form = page.getByTestId("nick-color-add-form");
     await form.locator("#nick-color-add-nick").fill(nick);
-    await form.getByRole("button", { name: "Color 4: Red" }).click();
+    await chat.pickColor(form, 4);
     await submitDialogForm(form);
     await expect(chat.addressBookNickColorRow(nick)).toHaveAttribute(
       "data-color-index",
@@ -206,7 +206,7 @@ test.describe("Chat settings persistence", () => {
     await chat.nickColorsDialog.getByTestId("nick-color-add").click();
     const form = page.getByTestId("nick-color-add-form");
     await form.locator("#nick-color-add-nick").fill(guestNick);
-    await form.getByRole("button", { name: "Color 4: Red" }).click();
+    await chat.pickColor(form, 4);
     await submitDialogForm(form);
     await expect(chat.addressBookNickColorRow(guestNick)).toHaveAttribute(
       "data-color-index",

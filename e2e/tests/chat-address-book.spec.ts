@@ -89,7 +89,7 @@ test.describe("Address Book", () => {
     await chat.nickColorsDialog.getByTestId("nick-color-add").click();
     form = page.getByTestId("nick-color-add-form");
     await form.locator("#nick-color-add-nick").fill(colorNick);
-    await form.getByRole("button", { name: "Color 4: Red" }).click();
+    await chat.pickColor(form, 4);
     await submitDialogForm(form);
     await expect(chat.addressBookNickColorRow(colorNick)).toHaveAttribute(
       "data-color-index",
@@ -99,7 +99,7 @@ test.describe("Address Book", () => {
     await chat.addressBookNickColorRow(colorNick).click();
     await chat.nickColorsDialog.getByTestId("nick-color-edit").click();
     form = page.getByTestId("nick-color-edit-form");
-    await form.getByRole("button", { name: "Color 5: Maroon" }).click();
+    await chat.pickColor(form, 5);
     await submitDialogForm(form);
     await expect(chat.addressBookNickColorRow(colorNick)).toHaveAttribute(
       "data-color-index",
@@ -139,7 +139,7 @@ test.describe("Address Book", () => {
     await chat.nickColorsDialog.getByTestId("nick-color-add").click();
     const form = page.getByTestId("nick-color-add-form");
     await form.locator("#nick-color-add-nick").fill(nick);
-    await form.getByRole("button", { name: "Color 4: Red" }).click();
+    await chat.pickColor(form, 4);
     await submitDialogForm(form);
     await expect(chat.addressBookNickColorRow(nick)).toHaveAttribute(
       "data-color-index",

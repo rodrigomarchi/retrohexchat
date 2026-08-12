@@ -1,12 +1,7 @@
 import { Page, Locator, expect } from "@playwright/test";
 
 export type AddressBookControlType =
-  | "all"
-  | "messages"
-  | "pms"
-  | "actions"
-  | "notices"
-  | "invites";
+  "all" | "messages" | "pms" | "actions" | "notices" | "invites";
 
 type ChannelCentralTab = "general" | "modes" | "access_lists" | "registration";
 
@@ -14,9 +9,7 @@ type ChannelCentralTab = "general" | "modes" | "access_lists" | "registration";
 type ChannelCentralAccessList = "bans" | "ban_exceptions" | "invite_exceptions";
 
 type ChannelCentralModeLabel =
-  | "Moderated (+m)"
-  | "Invite Only (+i)"
-  | "Topic Lock (+t)";
+  "Moderated (+m)" | "Invite Only (+i)" | "Topic Lock (+t)";
 
 function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -1674,15 +1667,30 @@ export class ChatPage {
     await expect(this.addressBookContactRow(nick)).toContainText(note);
   }
 
+  /**
+   * Clicks a swatch and waits for the server to mark it selected.
+   *
+   * The picker keeps its selection on the server and mirrors it into a hidden
+   * field, so submitting before that round trip lands sends the previous value.
+   * Locally the round trip is a millisecond and this is invisible; over a real
+   * network it is not.
+   */
+  async pickColor(form: Locator, colorIndex: number) {
+    const swatch = form.getByRole("button", {
+      name: new RegExp(`^Color ${colorIndex}:`),
+    });
+
+    await swatch.click();
+    await expect(swatch).toHaveClass(/border-black/);
+  }
+
   async addAddressBookNickColor(nick: string, colorIndex: number) {
     await this.openNickColorsFromMenu();
     await this.nickColorsDialog.getByTestId("nick-color-add").click();
     const form = this.page.getByTestId("nick-color-add-form");
     await expect(form).toBeVisible();
     await form.locator("#nick-color-add-nick").fill(nick);
-    await form
-      .getByRole("button", { name: new RegExp(`^Color ${colorIndex}:`) })
-      .click();
+    await this.pickColor(form, colorIndex);
     await form.getByRole("button", { name: "OK" }).click();
     await expect(this.addressBookNickColorRow(nick)).toHaveAttribute(
       "data-color-index",
@@ -1696,9 +1704,7 @@ export class ChatPage {
     await this.nickColorsDialog.getByTestId("nick-color-edit").click();
     const form = this.page.getByTestId("nick-color-edit-form");
     await expect(form).toBeVisible();
-    await form
-      .getByRole("button", { name: new RegExp(`^Color ${colorIndex}:`) })
-      .click();
+    await this.pickColor(form, colorIndex);
     await form.getByRole("button", { name: "OK" }).click();
     await expect(this.addressBookNickColorRow(nick)).toHaveAttribute(
       "data-color-index",
@@ -1855,9 +1861,7 @@ export class ChatPage {
     await this.highlightDialog.getByRole("button", { name: "Add" }).click();
     await expect(this.highlightAddForm).toBeVisible();
     await this.highlightWordInput.fill(word);
-    await this.highlightAddForm
-      .getByRole("button", { name: new RegExp(`^Color ${colorIndex}:`) })
-      .click();
+    await this.pickColor(this.highlightAddForm, colorIndex);
     await this.highlightAddForm.getByRole("button", { name: "Add" }).click();
     await expect(this.highlightAddForm).toBeHidden();
     await expect(this.highlightWordRow(word)).toBeVisible();
@@ -1867,9 +1871,7 @@ export class ChatPage {
     await this.highlightWordRow(word).click();
     await this.highlightDialog.getByRole("button", { name: "Edit" }).click();
     await expect(this.highlightEditForm).toBeVisible();
-    await this.highlightEditForm
-      .getByRole("button", { name: new RegExp(`^Color ${colorIndex}:`) })
-      .click();
+    await this.pickColor(this.highlightEditForm, colorIndex);
     await this.highlightEditForm.getByRole("button", { name: "OK" }).click();
     await expect(this.highlightEditForm).toBeHidden();
   }
