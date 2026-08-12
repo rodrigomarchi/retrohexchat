@@ -9,55 +9,12 @@
 import { Page, test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";
-
-async function installAudioSpy(page: Page) {
-  await page.addInitScript(() => {
-    class FakeAudioParam {
-      setValueAtTime() {}
-      exponentialRampToValueAtTime() {}
-    }
-
-    class FakeOscillatorNode {
-      frequency = new FakeAudioParam();
-      type = "sine";
-
-      connect() {}
-      start() {
-        (
-          window as unknown as { __soundStartCount: number }
-        ).__soundStartCount += 1;
-      }
-      stop() {}
-    }
-
-    class FakeGainNode {
-      gain = new FakeAudioParam();
-
-      connect() {}
-    }
-
-    class FakeAudioContext {
-      currentTime = 0;
-      destination = {};
-
-      createOscillator() {
-        return new FakeOscillatorNode();
-      }
-
-      createGain() {
-        return new FakeGainNode();
-      }
-    }
-
-    (window as unknown as { __soundStartCount: number }).__soundStartCount = 0;
-    (
-      window as unknown as { AudioContext: typeof FakeAudioContext }
-    ).AudioContext = FakeAudioContext;
-    (
-      window as unknown as { webkitAudioContext: typeof FakeAudioContext }
-    ).webkitAudioContext = FakeAudioContext;
-  });
-}
+import {
+  expectNoSoundStarts,
+  expectSoundStarts,
+  installAudioSpy,
+  resetAudioSpy,
+} from "../helpers/audioSpy";
 
 async function signedInUser(page: Page) {
   const connect = new ConnectPage(page);
@@ -72,37 +29,6 @@ async function signedInUser(page: Page) {
   await chat.waitUntilConnected();
 
   return { chat, nick, password };
-}
-
-async function resetAudioSpy(page: Page) {
-  await page.evaluate(() => {
-    (window as unknown as { __soundStartCount: number }).__soundStartCount = 0;
-  });
-}
-
-async function expectSoundStarts(page: Page, count: number) {
-  await expect
-    .poll(() =>
-      page.evaluate(
-        () =>
-          (window as unknown as { __soundStartCount: number })
-            .__soundStartCount,
-      ),
-    )
-    .toBe(count);
-}
-
-async function expectNoSoundStarts(page: Page) {
-  await page.waitForTimeout(500);
-  await expectSoundStarts(page, 0);
-}
-
-async function expectClientMuteState(page: Page, muted: boolean) {
-  await expect
-    .poll(() =>
-      page.evaluate(() => localStorage.getItem("retro_hex_chat_mute")),
-    )
-    .toBe(muted.toString());
 }
 
 test.describe("Sound settings dialog", () => {
@@ -185,8 +111,6 @@ test.describe("Sound settings dialog", () => {
       "aria-label",
       "Unmute",
     );
-    await expectClientMuteState(page, true);
-
     await chat.openSoundSettingsFromMenu();
     await resetAudioSpy(page);
     await chat.soundPreviewButton("message").click();
@@ -214,8 +138,6 @@ test.describe("Sound settings dialog", () => {
       "aria-label",
       "Unmute",
     );
-    await expectClientMuteState(page, true);
-
     await chat.disconnect();
     await connect.open();
     await connect.enterNickname(nick);
@@ -225,8 +147,6 @@ test.describe("Sound settings dialog", () => {
       "aria-label",
       "Unmute",
     );
-    await expectClientMuteState(page, true);
-
     await chat.openSoundSettingsFromMenu();
     await resetAudioSpy(page);
     await chat.soundPreviewButton("message").click();
@@ -241,8 +161,6 @@ test.describe("Sound settings dialog", () => {
       "aria-label",
       "Mute",
     );
-    await expectClientMuteState(page, false);
-
     await chat.openSoundSettingsFromMenu();
     await resetAudioSpy(page);
     await chat.soundPreviewButton("message").click();

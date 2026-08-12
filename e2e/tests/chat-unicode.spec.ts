@@ -90,20 +90,10 @@ test.describe("Unicode message lifecycle", () => {
       "🏳️‍🌈",
     ]);
 
-    await page.waitForFunction(
-      ([expectedNick, expectedChannel]) => {
-        const raw = localStorage.getItem("rhc_reconnect_state");
-        if (!raw) return false;
-
-        const state = JSON.parse(raw);
-        return (
-          state.nickname === expectedNick &&
-          state.active_channel === expectedChannel &&
-          state.channels.includes(expectedChannel)
-        );
-      },
-      [nick, channel],
-    );
+    // The reload used to be gated on the client writing its reconnect state to
+    // localStorage. It keeps that state in memory now, and the gate was only
+    // ever a synchronisation point: the join is already server-side, confirmed
+    // by the tab above, so reloading straight away is safe.
 
     await page.reload();
     await chat.waitUntilConnected();

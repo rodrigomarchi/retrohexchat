@@ -1,6 +1,6 @@
 /**
  * @section AA - Reconnect, Multi-Context, Browser State, And Destructive Safety
- * @flow AA8 [done] Mute state stored in browser localStorage survives reload in the same context, suppresses sound preview, and does not leak to an isolated browser context (features P2)
+ * @flow AA8 [done] Mute survives reload for the account that set it, silences its sound preview, and does not leak to another session (features P2)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -8,6 +8,12 @@
 import { Browser, BrowserContext, Page, expect, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";
+import {
+  expectNoSoundStarts,
+  expectSoundStarts,
+  installAudioSpy,
+  resetAudioSpy,
+} from "../helpers/audioSpy";
 
 type TestUser = {
   chat: ChatPage;
@@ -15,55 +21,6 @@ type TestUser = {
   page: Page;
   nick: string;
 };
-
-async function installAudioSpy(ctx: BrowserContext) {
-  await ctx.addInitScript(() => {
-    class FakeAudioParam {
-      setValueAtTime() {}
-      exponentialRampToValueAtTime() {}
-    }
-
-    class FakeOscillatorNode {
-      frequency = new FakeAudioParam();
-      type = "sine";
-
-      connect() {}
-      start() {
-        (
-          window as unknown as { __soundStartCount: number }
-        ).__soundStartCount += 1;
-      }
-      stop() {}
-    }
-
-    class FakeGainNode {
-      gain = new FakeAudioParam();
-
-      connect() {}
-    }
-
-    class FakeAudioContext {
-      currentTime = 0;
-      destination = {};
-
-      createOscillator() {
-        return new FakeOscillatorNode();
-      }
-
-      createGain() {
-        return new FakeGainNode();
-      }
-    }
-
-    (window as unknown as { __soundStartCount: number }).__soundStartCount = 0;
-    (
-      window as unknown as { AudioContext: typeof FakeAudioContext }
-    ).AudioContext = FakeAudioContext;
-    (
-      window as unknown as { webkitAudioContext: typeof FakeAudioContext }
-    ).webkitAudioContext = FakeAudioContext;
-  });
-}
 
 async function newSignedInUser(
   browser: Browser,
@@ -88,39 +45,8 @@ async function closeUsers(users: TestUser[]) {
   await Promise.all(users.map((user) => user.ctx.close()));
 }
 
-async function resetAudioSpy(page: Page) {
-  await page.evaluate(() => {
-    (window as unknown as { __soundStartCount: number }).__soundStartCount = 0;
-  });
-}
-
-async function expectSoundStarts(page: Page, count: number) {
-  await expect
-    .poll(() =>
-      page.evaluate(
-        () =>
-          (window as unknown as { __soundStartCount: number })
-            .__soundStartCount,
-      ),
-    )
-    .toBe(count);
-}
-
-async function expectNoSoundStarts(page: Page) {
-  await page.waitForTimeout(500);
-  await expectSoundStarts(page, 0);
-}
-
-async function expectMuteStorage(page: Page, value: string | null) {
-  await expect
-    .poll(() =>
-      page.evaluate(() => localStorage.getItem("retro_hex_chat_mute")),
-    )
-    .toBe(value);
-}
-
-test.describe("Local browser storage isolation", () => {
-  test("mute localStorage survives reload but does not leak across browser contexts (AA8)", async ({
+test.describe("Mute isolation between sessions", () => {
+  test("mute survives reload for its own account and does not leak to another (AA8)", async ({
     browser,
   }) => {
     const mutedUser = await newSignedInUser(browser, "aa8m");
@@ -136,7 +62,6 @@ test.describe("Local browser storage isolation", () => {
         "aria-label",
         "Unmute",
       );
-      await expectMuteStorage(mutedUser.page, "true");
 
       await mutedUser.page.reload();
       await mutedUser.chat.waitUntilConnected();
@@ -144,7 +69,6 @@ test.describe("Local browser storage isolation", () => {
         "aria-label",
         "Unmute",
       );
-      await expectMuteStorage(mutedUser.page, "true");
 
       await mutedUser.chat.openSoundSettingsFromMenu();
       await resetAudioSpy(mutedUser.page);
@@ -158,7 +82,6 @@ test.describe("Local browser storage isolation", () => {
         "aria-label",
         "Mute",
       );
-      await expectMuteStorage(isolatedUser.page, null);
 
       await isolatedUser.chat.openSoundSettingsFromMenu();
       await resetAudioSpy(isolatedUser.page);

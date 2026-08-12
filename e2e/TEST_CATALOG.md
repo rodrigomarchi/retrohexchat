@@ -443,7 +443,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | O16 | Address Book add/edit/remove contact, notify, color, control entries (features P2) | `tests/chat-address-book.spec.ts` | done |
 | O17 | Custom nick color applies to chat nick rendering (features P2) | `tests/chat-address-book.spec.ts` | done |
 | O18 | Keyboard shortcuts switch windows/open dialogs without accidental submit (features P1) | `tests/chat-keyboard.spec.ts` | done |
-| O19 | Status bar mute toggle affects client state and survives rerender (features P2) | `tests/chat-statusbar.spec.ts` | done |
+| O19 | Status bar mute toggle reflects mute state and survives rerender (features P2) | `tests/chat-statusbar.spec.ts` | done |
 | O20 | An uploaded image renders as an inline thumbnail with an authorized download | `tests/chat-attachments.spec.ts` | done |
 | O21 | Non-inline uploads render as safe file cards carrying path metadata | `tests/chat-attachments.spec.ts` | done |
 | O22 | The nicklist renders a role-grouped IRC roster with status badges inside the platform sidebar | `tests/chat-nicklist-sidebar.spec.ts` | done |
@@ -492,7 +492,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | Q6 | Leading/trailing whitespace around commands and args keeps dispatch behavior (features P1) | `tests/chat-command-parser.spec.ts` | done |
 | Q7 | Bare slash inputs show helpful errors without changing active tab state (features P2) | `tests/chat-command-parser.spec.ts` | done |
 | Q8 | Free-text command args preserve punctuation, repeated spaces, unicode, and IRC formatting (features P2) | `tests/chat-command-parser.spec.ts` | done |
-| Q9 | Sensitive command names/args are omitted from local command history (features P1) | `tests/chat-command-history-sensitive.spec.ts` | done |
+| Q9 | Sensitive command names/args cannot be recalled from command history (features P1) | `tests/chat-command-history-sensitive.spec.ts` | done |
 | Q10 | Recent-command autocomplete ranks safe commands without leaking sensitive commands (features P2) | `tests/chat-command-history-sensitive.spec.ts` | done |
 
 ### R/Y - Security, Safety, And Rendering Additions
@@ -649,7 +649,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | AA5 | Admin kick while a target browser is offline redirects on reconnect but allows later login, while admin ban blocks reconnect until unban (features P1) | `tests/chat-admin-reconnect-edges.spec.ts` | done |
 | AA6 | Closed registration blocks brand-new nick registration while existing registered users can still authenticate (features P1) | `tests/admin-registration-closed-edges.spec.ts` | done |
 | AA7 | Closed registration keeps same-nick takeover password-gated: wrong password does not displace the source, correct password performs normal takeover (features P2) | `tests/admin-registration-closed-edges.spec.ts` | done |
-| AA8 | Mute state stored in browser localStorage survives reload in the same context, suppresses sound preview, and does not leak to an isolated browser context (features P2) | `tests/chat-local-storage-isolation.spec.ts` | done |
+| AA8 | Mute survives reload for the account that set it, silences its sound preview, and does not leak to another session (features P2) | `tests/chat-mute-isolation.spec.ts` | done |
 
 ### MB - Mobile & Touch
 
