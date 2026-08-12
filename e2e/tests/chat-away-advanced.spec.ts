@@ -56,8 +56,12 @@ test.describe("Away advanced behavior", () => {
       await bob.chat.sendMessage(`/away ${away}`);
       await bob.chat.expectMessageVisible(`You are now away: ${away}`);
 
+      // The away message shows as a row of the /whois result card; the PM
+      // auto-reply below is the part that still lands in the conversation.
       await alice.chat.sendMessage(`/whois ${bob.nick}`);
-      await alice.chat.expectMessageVisible(`Away: ${away}`);
+      await alice.chat.expectWhoisCard(bob.nick);
+      await alice.chat.expectLookupCardField("Away", away);
+      await alice.chat.closeLookupResult();
 
       await alice.chat.sendMessage(`/msg ${bob.nick} ${ping}`);
       await alice.chat.expectTabVisible(bob.nick);

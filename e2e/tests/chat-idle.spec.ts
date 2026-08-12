@@ -47,12 +47,13 @@ async function waitForIdleMinute(chat: ChatPage) {
   await chat.page.waitForTimeout(65_000);
 }
 
-function latestIdleRow(chat: ChatPage) {
-  return chat.messageRows.filter({ hasText: "Idle for:" }).last();
-}
-
-async function expectLatestIdle(chat: ChatPage, text: string) {
-  await expect(latestIdleRow(chat)).toContainText(`Idle for: ${text}`);
+// /whois renders into the User Lookup window, not the message list. Reading the
+// card and closing it keeps each reading a fresh one rather than a stale card
+// left open from the previous lookup.
+async function expectIdleInWhois(chat: ChatPage, nick: string, text: string) {
+  await chat.expectWhoisCard(nick);
+  await chat.expectLookupCardField("Idle for", text);
+  await chat.closeLookupResult();
 }
 
 test.describe("Idle tracking", () => {
@@ -71,12 +72,12 @@ test.describe("Idle tracking", () => {
       await waitForIdleMinute(bob.chat);
 
       await alice.chat.sendMessage(`/whois ${bob.nick}`);
-      await expectLatestIdle(alice.chat, "1 minute");
+      await expectIdleInWhois(alice.chat, bob.nick, "1 minute");
 
       await bob.chat.sendMessage("/help");
       await bob.chat.expectMessageVisible("Available commands:");
       await alice.chat.sendMessage(`/whois ${bob.nick}`);
-      await expectLatestIdle(alice.chat, "less than a minute");
+      await expectIdleInWhois(alice.chat, bob.nick, "less than a minute");
 
       await waitForIdleMinute(bob.chat);
 
@@ -84,7 +85,7 @@ test.describe("Idle tracking", () => {
       await bob.chat.sendMessage(message);
       await alice.chat.expectMessageVisible(message);
       await alice.chat.sendMessage(`/whois ${bob.nick}`);
-      await expectLatestIdle(alice.chat, "less than a minute");
+      await expectIdleInWhois(alice.chat, bob.nick, "less than a minute");
     } finally {
       await closeUsers([alice, bob]);
     }

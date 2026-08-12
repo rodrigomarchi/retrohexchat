@@ -107,11 +107,15 @@ test.describe("Whowas edge cases", () => {
 
       await target.chat.disconnect();
 
+      // /whowas renders a result card in the User Lookup window titled
+      // "Last Seen: <nick>"; only the not-found notice still reaches the chat.
       await admin.chat.sendMessage(`/whowas ${target.nick}`);
-      await admin.chat.expectMessageVisible(
-        `----- Whowas: ${target.nick} -----`,
+      await expect(admin.chat.lookupResultCard).toBeVisible();
+      await expect(admin.chat.lookupResultCard).toContainText(
+        `Last Seen: ${target.nick}`,
       );
-      await admin.chat.expectMessageVisible("Last seen:");
+      await expect(admin.chat.lookupResultCard).toContainText("Last seen:");
+      await admin.chat.closeLookupResult();
 
       await admin.chat.page.waitForTimeout(6_000);
 
@@ -125,7 +129,7 @@ test.describe("Whowas edge cases", () => {
       expect(expiredText).toContain(
         `* No whowas information available for ${target.nick}.`,
       );
-      expect(expiredText).not.toContain(`----- Whowas: ${target.nick} -----`);
+      await expect(admin.chat.lookupResultCard).toBeHidden();
     } finally {
       await admin.chat
         .sendMessage("/admin server set whowas_retention_seconds 3600")

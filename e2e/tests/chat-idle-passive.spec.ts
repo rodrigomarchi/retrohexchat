@@ -60,12 +60,12 @@ async function waitForIdleMinute(chat: ChatPage) {
   await chat.page.waitForTimeout(65_000);
 }
 
-function latestIdleRow(chat: ChatPage) {
-  return chat.messageRows.filter({ hasText: "Idle for:" }).last();
-}
-
-async function expectLatestIdle(chat: ChatPage, text: string) {
-  await expect(latestIdleRow(chat)).toContainText(`Idle for: ${text}`);
+// /whois renders into the User Lookup window; the card is closed after reading
+// so the second lookup cannot be answered by the first one's card.
+async function expectIdleInWhois(chat: ChatPage, nick: string, text: string) {
+  await chat.expectWhoisCard(nick);
+  await chat.expectLookupCardField("Idle for", text);
+  await chat.closeLookupResult();
 }
 
 test.describe("Idle passive interactions", () => {
@@ -84,7 +84,7 @@ test.describe("Idle passive interactions", () => {
       await waitForIdleMinute(bob.chat);
 
       await alice.chat.sendMessage(`/whois ${bob.nick}`);
-      await expectLatestIdle(alice.chat, "1 minute");
+      await expectIdleInWhois(alice.chat, bob.nick, "1 minute");
 
       await bob.chat.switchToStatusTab();
       await bob.chat.switchToTab("#lobby");
@@ -97,7 +97,7 @@ test.describe("Idle passive interactions", () => {
       await bob.chat.openNickHoverCard(alice.nick);
 
       await alice.chat.sendMessage(`/whois ${bob.nick}`);
-      await expectLatestIdle(alice.chat, "1 minute");
+      await expectIdleInWhois(alice.chat, bob.nick, "1 minute");
     } finally {
       await closeUsers([alice, bob]);
     }

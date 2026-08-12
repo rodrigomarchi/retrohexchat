@@ -117,6 +117,23 @@ async function expectEscapedMessage(user: TestUser, marker: string) {
   await expectNoScriptRan(user.page);
 }
 
+/**
+ * The same proof as `expectEscapedMessage`, against the /whois result card.
+ *
+ * Away and bio reach the reader through the User Lookup window now, not the
+ * message list — a different renderer, so it needs its own coverage rather than
+ * inheriting the message row's.
+ */
+async function expectEscapedLookupCard(user: TestUser, marker: string) {
+  const card = user.chat.lookupResultCard;
+
+  await expect(card).toBeVisible({ timeout: 10_000 });
+  await expect(card).toContainText(marker);
+  await expect(card.locator(`[data-e2e-xss="${marker}"]`)).toHaveCount(0);
+  await expect(card.locator("script")).toHaveCount(0);
+  await expectNoScriptRan(user.page);
+}
+
 async function joinChannel(user: TestUser, channel: string) {
   await user.chat.sendMessage(`/join ${channel}`);
   await user.chat.expectTabVisible(channel);
@@ -215,8 +232,8 @@ test.describe("Security escaping", () => {
       await expectEscapedMessage(bob, bioMarker);
 
       await alice.chat.sendMessage(`/whois ${bob.nick}`);
-      await expectEscapedMessage(alice, awayMarker);
-      await expectEscapedMessage(alice, bioMarker);
+      await expectEscapedLookupCard(alice, awayMarker);
+      await expectEscapedLookupCard(alice, bioMarker);
     } finally {
       await closeUsers([alice, bob]);
     }
