@@ -11,6 +11,7 @@ import {
   newSignedInUser,
   type TestUser,
 } from "../helpers/chatUsers";
+import { isLocalTarget, localOnlyReason } from "../helpers/env";
 import { seedChannelHistory, seedPrivateHistory } from "../helpers/seedHistory";
 import { shot } from "../helpers/screenshots";
 import type { ChatPage } from "../pages/ChatPage";
@@ -109,6 +110,16 @@ async function settle(chat: ChatPage) {
 }
 
 test.describe("Chat scrollback over a long history", () => {
+  // The history is written straight into the database by `mix run`, which reaches
+  // the local one whatever the browser is pointed at. Against a deployment the
+  // rows land somewhere nobody is reading and `msg-1000` never arrives.
+  test.skip(
+    !isLocalTarget(),
+    localOnlyReason(
+      "the 1000-message history is seeded into the local database",
+    ),
+  );
+
   test("walks a thousand messages back to the first one", async ({
     browser,
   }) => {

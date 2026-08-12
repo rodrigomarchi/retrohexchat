@@ -14,7 +14,7 @@
  */
 import { Browser, Page, expect, test } from "@playwright/test";
 import { uniqueChannel } from "../helpers/chatUsers";
-import { e2eURL } from "../helpers/env";
+import { e2eURL, isLocalTarget, localOnlyReason } from "../helpers/env";
 import {
   closeGroupCallUsers,
   newGroupCallUser,
@@ -545,6 +545,13 @@ test.describe("Call fault injection", () => {
   test("conference retry rejoins media when the participant PeerServer disappears", async ({
     browser,
   }) => {
+    // Killing a PeerServer needs `/api/e2e/group-call-peer/terminate`, compiled
+    // in only when `:e2e_fault_injection?` is set. The rest of this file drops
+    // the connection through the browser and runs anywhere.
+    test.skip(
+      !isLocalTarget(),
+      localOnlyReason("terminating a PeerServer needs the e2e-only API"),
+    );
     test.setTimeout(90_000);
     const alice = await newGroupCallUser(browser, "figp");
     const bob = await newGroupCallUser(browser, "figq");

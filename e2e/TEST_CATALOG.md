@@ -352,7 +352,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | M11 | Admin diagnostics render without crashing (features P2) | `tests/chat-admin-diagnostics.spec.ts` | done |
 | M12 | `/admin nuke` without confirm shows destructive confirmation/help only (features P2) | `tests/chat-admin-nuke.spec.ts` | done |
 | M13 | `/admin nuke --confirm` in disposable isolated E2E profile (features P2) | `tests/chat-admin-nuke.spec.ts` | block |
-| M14 | Non-admin `/bot` shows list; admin `/bot` opens management dialog (features P1) | `tests/chat-bots.spec.ts` | done |
+| M14 | Non-admin `/bot` is refused; admin `/bot` opens management dialog (features P1) | `tests/chat-bots.spec.ts` | done |
 | M15 | Admin creates bot, joins unique channel, sees bot in nicklist (features P1) | `tests/chat-bots.spec.ts` | done |
 | M16 | Bot custom command add/list/invoke/delete works (features P1) | `tests/chat-bots.spec.ts` | done |
 | M17 | Bot enable/disable/destroy changes response behavior and cleans up (features P2) | `tests/chat-bots.spec.ts` | done |

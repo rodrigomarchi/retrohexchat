@@ -51,7 +51,7 @@ test.describe("Command surface validation", () => {
 
     await chat.sendMessage("/ns");
     await chat.expectMessageVisible(
-      "Usage: /ns <register|identify|ghost|info|drop|help> [args]",
+      "Usage: /ns <register|identify|ghost|info|drop|devices|sessions|revoke-device|kill-session|help> [args]",
     );
   });
 

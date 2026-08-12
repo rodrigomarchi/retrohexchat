@@ -46,6 +46,21 @@ export function isLocalTarget(): boolean {
 }
 
 /**
+ * The reason a spec that can only work locally gives when it steps aside.
+ *
+ * Some specs reach past the browser: they write rows straight into the local
+ * database, or call an endpoint compiled only into the e2e build, or wait on a
+ * presigned upload to the development storage. Pointed at a deployment they do
+ * not test it — they fail, and a failure that means "wrong target" is worse than
+ * no coverage, because it takes a place in the list of real defects.
+ *
+ * Pass this to `test.skip(!isLocalTarget(), …)` so the run says so out loud.
+ */
+export function localOnlyReason(what: string): string {
+  return `${what} — only meaningful against the local e2e server, and this run targets ${e2eBaseURL()}`;
+}
+
+/**
  * Whether the configured administrator is a *root* administrator.
  *
  * The two are different powers: `config :retro_hex_chat, :root_admins` may

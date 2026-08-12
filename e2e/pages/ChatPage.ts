@@ -658,8 +658,12 @@ export class ChatPage {
     this.botManagementCloseButton = this.botManagementDialog.locator(
       '[data-window-control="close"]',
     );
+    // The roster rows are `role="button"` too, and an accessible name matches by
+    // substring: without `exact` this also picks up every bot whose row text
+    // carries the word, which is why it only broke once bots existed.
     this.newBotButton = this.botManagementDialog.getByRole("button", {
       name: "New",
+      exact: true,
     });
     this.newBotDialog = page.locator('#new-bot-dialog [role="dialog"]');
     this.newBotNameInput = page.locator("#bot-name");

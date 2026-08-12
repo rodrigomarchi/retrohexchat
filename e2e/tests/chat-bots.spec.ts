@@ -1,6 +1,6 @@
 /**
  * @section M - Admin, Server Operations, Bots
- * @flow M14 [done] Non-admin `/bot` shows list; admin `/bot` opens management dialog (features P1)
+ * @flow M14 [done] Non-admin `/bot` is refused; admin `/bot` opens management dialog (features P1)
  * @flow M15 [done] Admin creates bot, joins unique channel, sees bot in nicklist (features P1)
  * @flow M16 [done] Bot custom command add/list/invoke/delete works (features P1)
  * @flow M17 [done] Bot enable/disable/destroy changes response behavior and cleans up (features P2)
@@ -104,19 +104,20 @@ async function createBotInChannel(
 }
 
 test.describe.serial("Bot commands", () => {
-  test("non-admin /bot lists bots, admin /bot opens management dialog (M14)", async ({
+  test("non-admin /bot is refused, admin /bot opens management dialog (M14)", async ({
     browser,
   }) => {
     const user = await newSignedInUser(browser, "botu");
     const admin = await knownSignedInUser(browser, ADMIN_NICK, ADMIN_PW);
 
     try {
+      // Every /bot subcommand is administrative, including the ones that only
+      // read — `bot_command.html.heex` says so, and Policy.authorize/1 enforces
+      // it before any subcommand runs.
       await user.chat.sendMessage("/bot");
-      await expect(
-        user.chat.messageList
-          .getByText("[BotService]", { exact: false })
-          .first(),
-      ).toBeVisible();
+      await user.chat.expectMessageVisible(
+        "Only admins and server operators can manage bots",
+      );
 
       await admin.chat.sendMessage("/bot");
       await expect(admin.chat.botManagementDialog).toBeVisible();

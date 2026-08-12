@@ -64,9 +64,13 @@ async function uploadComposerFile(
   const pending = page.getByTestId("chat-attachment-pending");
 
   await expect(async () => {
+    // The presigned PUT goes wherever the target's object storage lives —
+    // localhost:3900 for the development Garage, another host for a deployment.
+    // Matching the bucket rather than the host lets this spec cover the upload
+    // path in both, which is where the storage config actually differs.
     const uploadResponsePromise = page.waitForResponse(
       (response) =>
-        response.url().includes("localhost:3900/retrohexchat-uploads/") &&
+        response.url().includes("/retrohexchat-uploads/") &&
         response.request().method() === "PUT",
       { timeout: 3_000 },
     );

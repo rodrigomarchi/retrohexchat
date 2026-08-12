@@ -17,6 +17,7 @@ import {
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";
 import { shot } from "../helpers/screenshots";
+import { isLocalTarget, localOnlyReason } from "../helpers/env";
 
 type TestUser = {
   chat: ChatPage;
@@ -119,6 +120,14 @@ async function expectNoElementHorizontalOverflow(locator: Locator) {
 }
 
 test.describe("RSS link preview visual rendering", () => {
+  // The row under test is planted through `/api/e2e/channel-messages`, a route
+  // compiled in only when `:e2e_fault_injection?` is set. A deployment answers
+  // 404 and the spec measures nothing.
+  test.skip(
+    !isLocalTarget(),
+    localOnlyReason("the preview row is planted through the e2e-only API"),
+  );
+
   async function renderPreview(
     browser: Browser,
     viewport: ViewportConfig,

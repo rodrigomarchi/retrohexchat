@@ -61,9 +61,7 @@ function timestampCandidates(
         .formatToParts(new Date(ms))
         .map((part) => [part.type, part.value]),
     );
-    candidates.add(
-      `[${parts.day}/${parts.month} ${parts.hour}:${parts.minute}]`,
-    );
+    candidates.add(`${parts.day}/${parts.month} ${parts.hour}:${parts.minute}`);
   }
 
   return candidates;
@@ -85,7 +83,16 @@ test.describe("Message timestamps", () => {
       const endMs = Date.now();
 
       const timestamp = user.chat.messageTimestampByText(text);
-      await expect(timestamp).toHaveText(/\[\d{2}\/\d{2} \d{2}:\d{2}\]/);
+      await expect(timestamp).toHaveText(/^\s*\d{2}\/\d{2} \d{2}:\d{2}\s*$/);
+
+      // mIRC punctuated its clock and the retro look keeps that, but the
+      // brackets are CSS pseudo-content on purpose: the <time> element's own
+      // text stays just the time, so copying a message copies a readable one.
+      const brackets = await timestamp.evaluate((el) => [
+        getComputedStyle(el, "::before").content,
+        getComputedStyle(el, "::after").content,
+      ]);
+      expect(brackets).toEqual(['"["', '"]"']);
 
       const actual = (await timestamp.textContent())?.trim();
       expect(timestampCandidates(timezoneId, startMs, endMs)).toContain(actual);

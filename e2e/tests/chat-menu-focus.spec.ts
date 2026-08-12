@@ -50,10 +50,18 @@ test.describe("Menu focus behavior", () => {
       chat.disconnectMenuItem,
       chat,
     );
+    // Find lives under Edit, where Windows 98 keeps it; View carries the
+    // panel toggles.
+    await expectMenuKeepsInputFocus(
+      page,
+      chat.editMenuTrigger,
+      chat.findMenuItem,
+      chat,
+    );
     await expectMenuKeepsInputFocus(
       page,
       chat.viewMenuTrigger,
-      chat.findMenuItem,
+      chat.channelListMenuItem,
       chat,
     );
     await expectMenuKeepsInputFocus(
@@ -69,7 +77,7 @@ test.describe("Menu focus behavior", () => {
       chat,
     );
 
-    await chat.viewMenuTrigger.click();
+    await chat.editMenuTrigger.click();
     await chat.findMenuItem.click();
     await expect(chat.searchBarInput).toBeFocused();
     await expect(chat.chatInput).toHaveValue(draft);
