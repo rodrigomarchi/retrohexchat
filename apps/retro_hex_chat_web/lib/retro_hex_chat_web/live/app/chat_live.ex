@@ -869,9 +869,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
       account_last_away_message: nil,
       show_status_tab: false,
       open_pm_tabs: [],
-      # The conversation topics this connection is on. Subscribing is not
-      # idempotent, so the set is what keeps a second visit to the same
-      # conversation from doubling every message it delivers.
       tab_order: [],
       status_unread: false,
       highlight_channels: MapSet.new(),
