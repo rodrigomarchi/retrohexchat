@@ -10,7 +10,7 @@ import { Browser, BrowserContext, Page, expect, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";
 import { resetRegistrationOpen } from "../helpers/e2eState";
-import { adminNick, adminPassword } from "../helpers/env";
+import { adminNick, adminPassword, isLocalTarget } from "../helpers/env";
 
 const ADMIN_NICK = adminNick();
 const ADMIN_PW = adminPassword();
@@ -72,6 +72,11 @@ async function setRegistration(admin: TestUser, value: "open" | "closed") {
 }
 
 test.describe.serial("Registration closed edges", () => {
+  test.skip(
+    !isLocalTarget(),
+    "closes registration, and the restore only reaches the local e2e database",
+  );
+
   test.afterAll(() => {
     resetRegistrationOpen();
   });

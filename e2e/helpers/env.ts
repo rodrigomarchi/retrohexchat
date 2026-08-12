@@ -30,3 +30,17 @@ export function adminNick(): string {
 export function adminPassword(): string {
   return process.env.E2E_ADMIN_PASSWORD || "adminpass1";
 }
+
+/**
+ * Whether the run is pointed at the disposable local e2e server.
+ *
+ * A spec that leaves the server in a state only `mix run` against the local
+ * database can undo — closing registration is the one — must not run anywhere
+ * else. `resetRegistrationOpen` hardcodes `MIX_ENV=e2e`, so against a
+ * deployment it restores nothing, and the spec's own `@flow` line saying it
+ * restores becomes false. It left registration closed on production for the
+ * best part of an hour.
+ */
+export function isLocalTarget(): boolean {
+  return new URL(e2eBaseURL()).hostname === "localhost";
+}
