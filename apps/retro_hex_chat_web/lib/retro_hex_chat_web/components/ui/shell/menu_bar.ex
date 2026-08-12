@@ -70,6 +70,15 @@ defmodule RetroHexChatWeb.Components.UI.MenuBar do
   attr :class, :any, default: nil
   attr :trigger_class, :any, default: nil
   attr :label_class, :any, default: nil
+
+  attr :offline_disabled, :boolean,
+    default: false,
+    doc: """
+    Marks a menu the connection hook grays out while the socket is down. It is
+    an attribute rather than a name the hook recognises because the label is
+    translated: matching "File" only ever worked in English.
+    """
+
   slot :inner_block, required: true, doc: "dropdown items (context_menu_* <li> elements)"
   slot :icon, required: true, doc: "semantic 16×16 icon rendered before the trigger label"
 
@@ -80,6 +89,7 @@ defmodule RetroHexChatWeb.Components.UI.MenuBar do
       <.menu_trigger
         label={@label}
         disabled={@disabled}
+        offline_disabled={@offline_disabled}
         testid={@testid}
         class={@trigger_class}
         label_class={@label_class}
@@ -278,6 +288,7 @@ defmodule RetroHexChatWeb.Components.UI.MenuBar do
 
   attr :label, :string, required: true
   attr :disabled, :boolean, default: false
+  attr :offline_disabled, :boolean, default: false
   attr :testid, :string, default: nil
   attr :class, :any, default: nil
   attr :label_class, :any, default: nil
@@ -298,6 +309,7 @@ defmodule RetroHexChatWeb.Components.UI.MenuBar do
         ])
       }
       data-menubar-trigger
+      data-offline-disabled={if(@offline_disabled, do: "true", else: "false")}
       data-disabled={if(@disabled, do: "true", else: "false")}
       data-testid={@testid}
       aria-haspopup="true"

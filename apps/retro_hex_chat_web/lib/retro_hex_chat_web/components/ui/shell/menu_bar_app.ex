@@ -57,7 +57,12 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
 
       <.mobile_menu_rail sections={mobile_sections(@connected)} />
 
-      <.menu class="app-menu-bar__desktop-menu" label={dgettext("ui", "File")} disabled={!@connected}>
+      <.menu
+        class="app-menu-bar__desktop-menu"
+        label={dgettext("ui", "File")}
+        disabled={!@connected}
+        offline_disabled
+      >
         <:icon><Icons.icon_folder class="h-4 w-4" /></:icon>
         <.file_menu_items is_admin={@is_admin} on_action={@on_action} />
       </.menu>
@@ -67,12 +72,22 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
         <.edit_menu_items on_action={@on_action} />
       </.menu>
 
-      <.menu class="app-menu-bar__desktop-menu" label={dgettext("ui", "View")} disabled={!@connected}>
+      <.menu
+        class="app-menu-bar__desktop-menu"
+        label={dgettext("ui", "View")}
+        disabled={!@connected}
+        offline_disabled
+      >
         <:icon><Icons.icon_channels class="h-4 w-4" /></:icon>
         <.view_menu_items on_action={@on_action} />
       </.menu>
 
-      <.menu class="app-menu-bar__desktop-menu" label={dgettext("ui", "Tools")} disabled={!@connected}>
+      <.menu
+        class="app-menu-bar__desktop-menu"
+        label={dgettext("ui", "Tools")}
+        disabled={!@connected}
+        offline_disabled
+      >
         <:icon><Icons.icon_dialog_options class="h-4 w-4" /></:icon>
         <.tools_menu_items is_admin={@is_admin} on_action={@on_action} />
       </.menu>

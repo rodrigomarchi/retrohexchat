@@ -83,9 +83,13 @@ test.describe("Chat reconnect and reload", () => {
       await expect(chat.chatInput).toBeDisabled();
       await expect(chat.chatInput).toHaveValue(draft);
 
+      // The modal is deliberately slow: the banner holds for `bannerToOverlayMs`
+      // (15s) first, so a routine deploy never traps anyone behind it — which is
+      // exactly what `chat-deploy-reconnect` (BA2) asserts from the other side.
+      // Ten seconds was asking for an escalation the product refuses to make.
       await expect(chat.reconnectOverlay).toHaveClass(
         /reconnect-overlay--visible/,
-        { timeout: 10_000 },
+        { timeout: 25_000 },
       );
       await expect(chat.reconnectOverlayAction).toHaveText("Cancel");
       await expect(chat.chatInput).toHaveValue(draft);

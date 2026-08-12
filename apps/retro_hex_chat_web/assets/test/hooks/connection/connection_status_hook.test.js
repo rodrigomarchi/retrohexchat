@@ -67,6 +67,68 @@ describe("ConnectionStatusHook", () => {
       const events = getPushEvents(hook, "restore_session");
       expect(events).toHaveLength(0);
     });
+
+    // The hook only hears about the network *changing*. A drop that happened
+    // while it was mounting would otherwise never be mentioned again, and the
+    // banner would stay down for the rest of the session.
+    it("shows the banner when it mounts while already offline", () => {
+      const onLine = Object.getOwnPropertyDescriptor(Navigator.prototype, "onLine");
+      Object.defineProperty(navigator, "onLine", {
+        configurable: true,
+        get: () => false,
+      });
+
+      try {
+        const offlineHook = mountHook(ConnectionStatusHook, {
+          html: buildConnectionStatusHTML(),
+          attrs: { id: "connection-status-offline" },
+        });
+        vi.advanceTimersByTime(DEFAULTS.bannerDebounceMs);
+
+        const banner = offlineHook.el.querySelector('[data-role="banner"]');
+        expect(banner.classList.contains("connection-banner--visible")).toBe(true);
+
+        if (offlineHook.destroyed) offlineHook.destroyed();
+      } finally {
+        if (onLine) Object.defineProperty(Navigator.prototype, "onLine", onLine);
+        else delete navigator.onLine;
+      }
+    });
+  });
+
+  // ── offline shell ─────────────────────────────────────
+
+  describe("shell while offline", () => {
+    // The labels are translated. Reading them to decide which menus to gray out
+    // recognised the English ones and silently left every other locale's menu
+    // bar fully usable while the socket was down — so the markup says which
+    // menus these are, and the label here is deliberately not English.
+    it("disables the menus marked in the markup, whatever they are called", () => {
+      const menuBar = document.createElement("nav");
+      menuBar.setAttribute("data-testid", "menu-bar");
+      menuBar.innerHTML = `
+        <button data-menubar-trigger data-offline-disabled="true"
+                data-disabled="false" aria-disabled="false">
+          <span><svg></svg></span><span data-menubar-label>Ferramentas</span>
+        </button>
+        <button data-menubar-trigger data-offline-disabled="false"
+                data-disabled="false" aria-disabled="false">
+          <span><svg></svg></span><span data-menubar-label>Ajuda</span>
+        </button>
+      `;
+      document.body.appendChild(menuBar);
+
+      try {
+        hook.disconnected();
+        vi.advanceTimersByTime(DEFAULTS.bannerDebounceMs);
+
+        const [marked, unmarked] = menuBar.querySelectorAll("[data-menubar-trigger]");
+        expect(marked.getAttribute("aria-disabled")).toBe("true");
+        expect(unmarked.getAttribute("aria-disabled")).toBe("false");
+      } finally {
+        menuBar.remove();
+      }
+    });
   });
 
   // ── disconnect → banner ────────────────────────────────

@@ -709,12 +709,17 @@ export class ChatPage {
     await expect(
       this.page.locator("button[data-menubar-trigger]").first(),
     ).toBeEnabled();
-    // Phoenix LiveView exposes window.liveSocket once initialized.
-    // isConnected() returns true after the WebSocket handshake — at that
-    // point phx-hook mounted() callbacks (including MenuBarHook) have run.
+    // `liveSocket.isConnected()` is about the transport, not the view: the
+    // socket can be up while the view is still joining, and hooks mount with
+    // the join. A spec that acts in that window acts on a page whose hooks do
+    // not exist yet — a dropped network produces no banner, because nothing is
+    // listening for it. LiveView says which it is on the main element:
+    // `phx-loading` until the view has joined, `phx-connected` after.
     await this.page.waitForFunction(
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      () => !!(window as any).liveSocket?.isConnected?.(),
+      () =>
+        !!document
+          .querySelector("[data-phx-main]")
+          ?.classList.contains("phx-connected"),
       { timeout: 10_000 },
     );
   }

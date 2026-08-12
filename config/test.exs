@@ -23,7 +23,15 @@ config :retro_hex_chat, RetroHexChat.Repo,
   port: String.to_integer(System.get_env("PGPORT", "5433")),
   database: "retro_hex_chat_test#{test_database_suffix}",
   pool: Ecto.Adapters.SQL.Sandbox,
-  pool_size: test_database_pool_size
+  pool_size: test_database_pool_size,
+  # `make ci` runs several partitions at once, each with a full pool, so
+  # checkout contention is normal rather than a symptom. The defaults (50ms /
+  # 1s) turn a busy moment into `:queue_timeout`, and the tests that lose the
+  # race are whichever ones happened to start then — a red build that names an
+  # innocent test and disappears on a rerun. Waiting longer costs nothing when
+  # the machine is idle and keeps the gate honest when it is not.
+  queue_target: 500,
+  queue_interval: 5_000
 
 config :retro_hex_chat, Oban,
   engine: Oban.Engines.Basic,

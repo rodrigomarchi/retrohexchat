@@ -62,6 +62,13 @@ const ConnectionStatusHook = {
 
     this._maybePushRestoreSession();
     this._sm.onMounted();
+
+    // The hook only ever hears about the network changing, so a drop that
+    // happened while it was mounting is a drop nobody will mention again — the
+    // banner stays down for the rest of the session. Reconciling with what the
+    // browser already knows closes that window, and covers a re-mount landing
+    // mid-outage too.
+    if (!navigator.onLine) this._handleConnectionLost();
   },
 
   disconnected() {
@@ -170,11 +177,11 @@ const ConnectionStatusHook = {
     const menuBar = document.querySelector('[data-testid="menu-bar"]');
     if (!menuBar) return;
 
-    const offlineDisabledMenus = new Set(["File", "View", "Tools"]);
-
+    // Which menus go away offline is marked in the markup, not matched by
+    // label: the labels are translated, so reading them only ever recognised
+    // the English ones, and the trigger's text carries its icon too.
     menuBar.querySelectorAll("[data-menubar-trigger]").forEach((trigger) => {
-      const label = trigger.textContent.trim();
-      const shouldDisable = disabled && offlineDisabledMenus.has(label);
+      const shouldDisable = disabled && trigger.dataset.offlineDisabled === "true";
 
       trigger.dataset.disabled = shouldDisable ? "true" : "false";
       trigger.setAttribute("aria-disabled", shouldDisable ? "true" : "false");
