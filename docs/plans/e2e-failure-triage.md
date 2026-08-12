@@ -296,93 +296,56 @@ E a documentação do próprio produto diz que isso é intencional, sem margem:
 
 O teste precisa mudar de nome e de premissa: um não-admin deve ver a **recusa**.
 
-## P5 · A boas-vindas de canal não chega ao entrante — **P (provável)**
+## P5 · A boas-vindas não sobrevive a um `/part` seguido de `/join` — **T**
 
-`chat-channel-welcome` (H9) espera exatamente uma linha `[Welcome] …` para quem
-entra no canal. Recebe zero. A string existe no produto e a condição é satisfeita
-pelo cenário do teste (o entrante não é quem definiu, e nunca foi saudado).
+Eu classifiquei este como defeito de produto provável. Medindo, não era.
 
-**O que impede o diagnóstico é um catch-all silencioso:**
+`chat-channel-welcome` (H9) recebia zero onde esperava uma linha. O primeiro
+suspeito era um catch-all silencioso no caminho:
 
 ```elixir
-defp maybe_show_welcome(socket, channel_name, session) do
-  case Server.get_welcome(channel_name) do
-    ...
-  end
 rescue
   _ -> socket
 end
 ```
 
-Se `Server.get_welcome/1` levantar, a boas-vindas some sem deixar rastro — nem
-log, nem erro. O `AGENTS.md` proíbe isso literalmente ("No silent catch, JS ou
-Elixir"), e este é o motivo: o defeito existe e o servidor não tem o que contar.
+Ele saiu — o `AGENTS.md` o proíbe, e `GenServer.call` a um processo ausente sai
+por `exit`, que `rescue` nem pega, então ele nunca fez o que aparentava fazer.
+Mas a falha continuou, e sem erro nenhum no servidor.
 
-**Primeiro passo da correção é remover o `rescue`**, não consertar o sintoma. Só
-depois dá para medir o que realmente acontece.
-
-## P6 · Locator ambíguo no diálogo de bots — **T**
-
-`chat-bot-edges` (Y1) clica em `getByRole('button', { name: 'New' })` dentro da
-janela de Bot Management e recebe **5** elementos: o botão "New" de verdade mais
-quatro linhas do roster, que são `role="button"` e cujo nome acessível contém a
-palavra. `name:` casa por substring; o próprio Playwright imprime a saída:
+O log de dentro do `/join` contou a história:
 
 ```
-aka getByRole('button', { name: 'New', exact: true })
+51.854  join   → a boas-vindas aparece; as duas primeiras asserções passam
+52.106  part   ← do próprio teste
+52.346  join   → o viewport é reconstruído do histórico
 ```
 
-Não é defeito de produto — um roster com linhas clicáveis é legítimo. É o spec que
-precisa ser exato. Só aparece quando existem bots cadastrados, que é o motivo de
-ter sobrevivido tanto tempo.
+A asserção que falhava era a **última**, depois de sair e voltar. A saudação é
+dita a uma pessoa, não escrita no canal: ela não está no histórico que o rejoin
+carrega. Zero não era "nunca apareceu" — era "não foi repetida", que é
+exatamente a regra sob teste.
 
-## P7 · Os colchetes do relógio moraram para o CSS — **T**
+O spec agora afirma isso: aparece uma vez ao entrar, e **não** reaparece ao
+voltar. Para que essa ausência signifique algo, o canal ganha uma mensagem
+guardada antes, e o rejoin tem de mostrá-la — senão a ausência passaria num
+canal vazio.
 
-`chat-timestamps` (S12) espera `/\[\d{2}\/\d{2} \d{2}:\d{2}\]/`. O produto entrega
-o horário certo, sem os colchetes no texto:
-
-```html
-<time title="12/08/2026 05:55" class="chat-message__time">12/08 05:55</time>
-```
-
-Porque eles são do CSS, de propósito, com a razão escrita ao lado:
-
-```css
-/* mIRC punctuated its clock; keeping the brackets in CSS leaves the <time>
-   element's own text as just the time, for copy and for a screen reader. */
-.chat-message__time::before { content: "["; }
-```
-
-`toHaveText` lê texto, e conteúdo de pseudo-elemento não é texto. O spec está
-medindo a decisão de acessibilidade como se fosse defeito. A paridade com o mIRC
-continua de pé — na tela.
-
-## P8 · "Find" mudou de menu — **T**
-
-`chat-menu-focus` (T2) abre o menu **View** e espera lá o item
-`context-menu-item-toggle_search`. Ele está no menu **Edit**:
-
-```
-menu_bar_app.ex:304  defp edit_menu_items   ← "Find" (Ctrl+Shift+F) mora aqui
-menu_bar_app.ex:334  defp view_menu_items
-```
-
-Edit → Find é onde o Windows 98 põe. O produto se corrigiu e o spec não soube.
-Vale a regra do `AGENTS.md`: quando o spec contradiz o código, o código ganha e a
-divergência fica registrada.
+Efeito colateral: **H10 deixou de ser um teste vazio.** Ele nega que a
+boas-vindas apareça depois de `/clearwelcome`, e passava porque ela nunca
+aparecia; agora H9 prova, no mesmo arquivo, que o mecanismo funciona.
 
 ---
 
 # O padrão que essa triagem expôs: testes verdes por vacuidade
 
-Duas asserções negativas estão passando porque o que elas negam nunca existe:
+Uma asserção negativa estava passando porque o que ela nega nunca existia:
 
 | Teste | Afirma | Por que passa |
 |---|---|---|
 | `chat-command-history-sensitive` Q9 | segredos não estão no histórico | o histórico lido é sempre `""` (F1) |
-| `chat-channel-welcome` H10 | `/clearwelcome` some com a boas-vindas | a boas-vindas nunca aparece (P5) |
 
-Em ambos, o par positivo do mesmo arquivo é justamente o que falha. Isso é o pior
+O par positivo do mesmo arquivo era justamente o que falhava. Isso é o pior
 tipo de cobertura: **verde, e apontando para o lado errado**. Uma asserção
 negativa só vale acompanhada da positiva correspondente no mesmo cenário — se a
 positiva morre, a negativa deixa de significar qualquer coisa e ninguém percebe.

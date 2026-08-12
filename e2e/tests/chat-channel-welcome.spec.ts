@@ -62,6 +62,11 @@ test.describe("Channel welcome messages", () => {
         `Welcome message for ${channel} has been set.`,
       );
 
+      // Something stored, so that rejoining below has real history to show and
+      // "the welcome is not there" cannot be satisfied by an empty channel.
+      const stored = `stored history ${Date.now()}`;
+      await ownerChat.sendMessage(stored);
+
       await joinerChat.sendMessage(`/join ${channel}`);
       await joinerChat.expectTabVisible(channel);
       await joinerChat.expectMessageVisible(`[Welcome] ${welcome}`);
@@ -70,11 +75,16 @@ test.describe("Channel welcome messages", () => {
         .filter({ hasText: `[Welcome] ${welcome}` });
       await expect(welcomeMessages).toHaveCount(1);
 
+      // Rejoining must not greet the same person twice. The greeting is said to
+      // a person, not written to the channel, so it is not in the history the
+      // rejoin loads — the stored message is, which is what proves the channel
+      // really came back rather than the assertion passing on an empty view.
       await joinerChat.sendMessage(`/part ${channel}`);
       await joinerChat.expectTabHidden(channel);
       await joinerChat.sendMessage(`/join ${channel}`);
       await joinerChat.expectTabVisible(channel);
-      await expect(welcomeMessages).toHaveCount(1);
+      await joinerChat.expectMessageVisible(stored);
+      await expect(welcomeMessages).toHaveCount(0);
     } finally {
       await ownerContext.close();
       await joinerContext.close();

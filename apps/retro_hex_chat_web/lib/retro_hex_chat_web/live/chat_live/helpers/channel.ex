@@ -314,8 +314,6 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
           socket
         end
     end
-  rescue
-    _ -> socket
   end
 
   @spec ensure_channel_exists(String.t()) :: :ok | {:error, term()}
