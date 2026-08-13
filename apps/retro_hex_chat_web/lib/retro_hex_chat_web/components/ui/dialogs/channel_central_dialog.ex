@@ -913,25 +913,31 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
             <label class="cc-mode-row inline-flex items-center gap-2 text-xs cursor-pointer">
               <input
                 type="checkbox"
+                id="cc-mode-moderated"
                 name="moderated"
                 value="true"
                 checked={@modes[:moderated] || false}
+                phx-update="ignore"
               /> {dgettext("dialogs", "Moderated (+m)")}
             </label>
             <label class="cc-mode-row inline-flex items-center gap-2 text-xs cursor-pointer">
               <input
                 type="checkbox"
+                id="cc-mode-invite_only"
                 name="invite_only"
                 value="true"
                 checked={@modes[:invite_only] || false}
+                phx-update="ignore"
               /> {dgettext("dialogs", "Invite Only (+i)")}
             </label>
             <label class="cc-mode-row inline-flex items-center gap-2 text-xs cursor-pointer">
               <input
                 type="checkbox"
+                id="cc-mode-topic_lock"
                 name="topic_lock"
                 value="true"
                 checked={@modes[:topic_lock] || false}
+                phx-update="ignore"
               /> {dgettext("dialogs", "Topic Lock (+t)")}
             </label>
           </div>
@@ -940,9 +946,11 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
             <label class="cc-mode-row inline-flex items-center gap-2 text-xs cursor-pointer">
               <input
                 type="checkbox"
+                id="cc-mode-has_key"
                 name="has_key"
                 value="true"
                 checked={@modes[:key] != nil}
+                phx-update="ignore"
               /> {dgettext("dialogs", "Key (+k)")}:
             </label>
             <.input
@@ -957,9 +965,11 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
             <label class="cc-mode-row inline-flex items-center gap-2 text-xs cursor-pointer">
               <input
                 type="checkbox"
+                id="cc-mode-has_limit"
                 name="has_limit"
                 value="true"
                 checked={@modes[:limit] != nil}
+                phx-update="ignore"
               /> {dgettext("dialogs", "Limit (+l)")}:
             </label>
             <.input
