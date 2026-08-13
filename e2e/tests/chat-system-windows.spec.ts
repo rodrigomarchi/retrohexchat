@@ -28,6 +28,7 @@ import { ConnectPage } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";
 import { shot } from "../helpers/screenshots";
 import { adminNick, adminPassword } from "../helpers/env";
+import { isLocalTarget } from "../helpers/env";
 
 /**
  * The runtime inspection windows, driven through the real desktop.
@@ -305,12 +306,21 @@ test.describe("System windows", () => {
       // reach a handler — the primary logger drops it first. The window has to
       // say so rather than sit silent and look broken. Asserting the notice is
       // what proves it knows the difference between "quiet" and "impossible".
-      await expect(window.getByTestId("system-log-unreachable")).toBeVisible();
-      await shot(window, "live-log-unreachable-level");
+      //
+      // Which levels are unreachable is a fact about the node, so this half
+      // only means anything where that node is the one being configured here.
+      if (isLocalTarget()) {
+        await expect(
+          window.getByTestId("system-log-unreachable"),
+        ).toBeVisible();
+        await shot(window, "live-log-unreachable-level");
 
-      // Raising the selection to what the node actually emits clears it.
-      await window.getByLabel("Level").selectOption("warning");
-      await expect(window.getByTestId("system-log-unreachable")).toHaveCount(0);
+        // Raising the selection to what the node actually emits clears it.
+        await window.getByLabel("Level").selectOption("warning");
+        await expect(window.getByTestId("system-log-unreachable")).toHaveCount(
+          0,
+        );
+      }
     } finally {
       await admin.ctx.close();
     }

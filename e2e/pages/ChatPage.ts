@@ -1318,11 +1318,19 @@ export class ChatPage {
    */
   async openSystemWindow(action: string) {
     const windowId = action.replace(/^open_/, "").replaceAll("_", "-");
-    await this.openFileMenu();
-    await expect(this.systemSubmenuTrigger).toBeVisible();
-    await this.systemSubmenuTrigger.click();
     const item = visibleContextMenuItem(this.page, action);
-    await expect(item).toBeVisible();
+
+    // A LiveView re-render arriving between the menu opening and the submenu
+    // being reached closes both, and the whole walk has to start again — the
+    // first-menu-open flake. Locally the re-render usually lands first; against
+    // a deployment it lands in the middle.
+    await expect(async () => {
+      await this.openFileMenu();
+      await expect(this.systemSubmenuTrigger).toBeVisible({ timeout: 1_000 });
+      await this.systemSubmenuTrigger.click();
+      await expect(item).toBeVisible({ timeout: 1_000 });
+    }).toPass({ timeout: 15_000 });
+
     await item.click();
     const window = this.page.getByTestId(`${windowId}-window`);
     await expect(window).toBeVisible();

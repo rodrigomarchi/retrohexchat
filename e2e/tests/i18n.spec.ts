@@ -13,11 +13,20 @@ import { test, expect, type Page } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 
 async function chooseLanguage(page: Page, locale: string) {
-  await page.getByTestId("language-menu-trigger").click();
-  await page
+  const item = page
     .getByTestId(`language-menu-item-${locale}`)
-    .getByRole("link")
-    .click();
+    .getByRole("link");
+
+  // A LiveView re-render arriving just after connect can close the dropdown
+  // that was only now opened — the first-menu-open flake this suite works
+  // around elsewhere. Locally the re-render lands before the click; against a
+  // deployment it lands after, and the item never appears.
+  await expect(async () => {
+    await page.getByTestId("language-menu-trigger").click();
+    await expect(item).toBeVisible({ timeout: 1_000 });
+  }).toPass({ timeout: 15_000 });
+
+  await item.click();
 }
 
 test.describe("Internationalization", () => {
