@@ -507,7 +507,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | R6 | Message input enforces the 1000-character limit for typing, paste, Send button, and Enter submit (features P1) | `tests/chat-input-limits.spec.ts` | done |
 | R7 | Paste confirmation disables Send above max line count and Cancel restores input focus (features P1) | `tests/chat-paste-limits.spec.ts` | done |
 | R8 | Flood Protection settings affect rapid paste behavior and Reset Defaults restores effective defaults (features P1) | `tests/chat-flood-protection.spec.ts` | done |
-| R9 | P2P command rate-limit and failed send errors leave no stale pending messages or disabled input (features P2) | `tests/chat-rate-limit.spec.ts` | done |
+| R9 | P2P command errors and failed sends leave no stale pending messages or disabled input (features P2) | `tests/chat-rate-limit.spec.ts` | done |
 | R10 | Empty message edit opens delete confirmation and cancel restores normal input state (features P1) | `tests/chat-message-edit-delete-edges.spec.ts` | done |
 | Y10 | Reciprocal autorespond notice rules fire once and do not loop (features P0) | `tests/chat-autorespond-loop.spec.ts` | done |
 
