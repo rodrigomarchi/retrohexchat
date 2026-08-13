@@ -78,6 +78,11 @@ test.describe("Trusted Terminals pagination", () => {
         ).toContainText(/renamed/i);
       }
 
+      // The window opens on Devices; the activity log lives on its own tab, and
+      // a tab that is not showing renders its rows into a hidden panel — which
+      // is why counting them worked while clicking anything did not.
+      await page.getByTestId("trusted-terminals-tab-events").click();
+
       const eventRows = panel.locator('[data-testid^="trusted-event-"]');
       await expect(eventRows).toHaveCount(EVENTS_PAGE_SIZE);
 

@@ -78,6 +78,11 @@ test.describe.serial("UI feature channel journeys", () => {
     const target = await newSignedInUser(browser, "uifit");
     const guest = await newSignedInUser(browser, "uifik");
     const channel = uniqueChannel("uifinv");
+    // "Invite to Channel..." is an operator action, and the operator it asks
+    // about is the one in the channel being looked at — so the invite is driven
+    // from a channel the owner runs, with the target in it, and the picker
+    // chooses the invite-only one as its destination.
+    const meetingRoom = uniqueChannel("uifmeet");
     const knockMessage = `please-let-me-in-${Date.now()}`;
 
     try {
@@ -85,7 +90,13 @@ test.describe.serial("UI feature channel journeys", () => {
       await owner.chat.sendMessage("/mode +i");
       await owner.chat.expectMessageVisible(`${owner.nick} sets mode +i`);
 
-      await owner.chat.switchToTab("#lobby");
+      await owner.chat.sendMessage(`/join ${meetingRoom}`);
+      await owner.chat.expectTabVisible(meetingRoom);
+      await target.chat.sendMessage(`/join ${meetingRoom}`);
+      await target.chat.expectTabVisible(meetingRoom);
+
+      await owner.chat.switchToTab(meetingRoom);
+      await owner.chat.expectNickInList(target.nick);
       await owner.chat.openNicklistContextMenu(target.nick);
       await owner.page
         .getByTestId("context-menu-item-context_invite_to_channel")
