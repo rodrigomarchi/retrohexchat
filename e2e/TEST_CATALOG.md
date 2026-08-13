@@ -135,7 +135,7 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 ## Coverage
 
 - **214 spec files** under `e2e/tests/`.
-- **436 Playwright `test()` cases**.
+- **437 Playwright `test()` cases**.
 - **429 documented flows**, 428 done, 1 not done.
 - **Every spec documents its own flows.**
 

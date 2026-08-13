@@ -101,19 +101,53 @@ test.describe("Dialog keyboard behavior", () => {
 
     await openToolsItem(chat, chat.addressBookMenuItem);
     await expect(chat.addressBookDialog).toBeVisible();
-    await expectFocusInside(page, '#address-book-dialog [role="dialog"]');
+    // The Address Book is a managed window whose panel is wrapped in a
+    // `focus_wrap`; that wrap is what holds the Tab ring, and focus lands on
+    // its sentinels as well as on the panel.
+    const ring = "#address-book-dialog-focus-wrap";
+    await expectFocusInside(page, ring);
 
     for (let i = 0; i < 8; i++) {
       await page.keyboard.press("Tab");
-      await expectFocusInside(page, '#address-book-dialog [role="dialog"]');
+      await expectFocusInside(page, ring);
     }
 
     await page.keyboard.down("Shift");
     await page.keyboard.press("Tab");
     await page.keyboard.up("Shift");
-    await expectFocusInside(page, '#address-book-dialog [role="dialog"]');
+    await expectFocusInside(page, ring);
 
     await page.keyboard.press("Escape");
     await expect(chat.addressBookDialog).toBeHidden();
   });
+
+  // These three shared one typo: `JS.focus(to: "#{@id}-content")` names a tag,
+  // not an id, so opening them left focus on <body> and a keyboard user had to
+  // tab in from the top of the page. Every other dialog already wrote the "#".
+  const focusOnOpen = [
+    {
+      name: "Address Book",
+      open: (chat: ChatPage) => chat.openAddressBookFromMenu(),
+      ring: "#address-book-dialog-focus-wrap",
+    },
+    {
+      name: "Nick Colors",
+      open: (chat: ChatPage) => chat.openNickColorsFromMenu(),
+      ring: "#nick-colors-dialog-focus-wrap",
+    },
+    {
+      name: "Ignore List",
+      open: (chat: ChatPage) => chat.openIgnoreListFromMenu(),
+      ring: "#ignore-list-dialog-focus-wrap",
+    },
+  ];
+
+  for (const dialog of focusOnOpen) {
+    test(`${dialog.name} takes focus when it opens (T8)`, async ({ page }) => {
+      const chat = await signedInUser(page);
+
+      await dialog.open(chat);
+      await expectFocusInside(page, dialog.ring);
+    });
+  }
 });

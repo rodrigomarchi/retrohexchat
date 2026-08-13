@@ -50,7 +50,7 @@ defmodule RetroHexChatWeb.Components.UI.NickColorsDialog do
           role="dialog"
           aria-modal="false"
           tabindex="0"
-          phx-mounted={JS.focus(to: "#{@id}-content")}
+          phx-mounted={JS.focus(to: "##{@id}-content")}
           class="ab-dialog flex h-full min-h-0 flex-col gap-retro-8"
         >
           <.nick_colors_table

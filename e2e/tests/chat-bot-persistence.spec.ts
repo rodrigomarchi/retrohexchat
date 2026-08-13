@@ -68,9 +68,23 @@ async function openBotDialogAndSelect(user: TestUser, botName: string) {
   await user.chat.botItem(botName).click();
 }
 
-async function expectBotStatus(user: TestUser, status: "Enabled" | "Disabled") {
-  await expect(user.chat.botManagementDialog).toContainText("Status:");
-  await expect(user.chat.botManagementDialog).toContainText(status);
+/**
+ * A bot's state, read off the detail panel that selecting it opens.
+ *
+ * There is no "Status:" field and no "Enabled": a bot reads `Running` when it
+ * is on and its process is up, `Stopped` when it is on and not, and `Disabled`
+ * when it has been turned off — which is the distinction this spec is about.
+ * Selecting a bot replaces the roster with its detail, so the row the click
+ * landed on is gone by the time the state is read.
+ */
+async function expectBotState(
+  user: TestUser,
+  botName: string,
+  state: "on" | "Disabled",
+) {
+  await expect(
+    user.chat.botManagementDialog.locator(".bm-detail-line"),
+  ).toContainText(state === "on" ? /Running|Stopped/ : /Disabled/);
 }
 
 async function cleanupBot(user: TestUser, botName: string) {
@@ -105,7 +119,7 @@ test.describe("Bot persistence", () => {
       );
 
       await openBotDialogAndSelect(operator, botName);
-      await expectBotStatus(operator, "Enabled");
+      await expectBotState(operator, botName, "on");
       await operator.chat.closeBotManagementDialog();
 
       await operator.chat.sendMessage(`/bot disable ${botName}`);
@@ -114,7 +128,7 @@ test.describe("Bot persistence", () => {
       );
 
       await openBotDialogAndSelect(operator, botName);
-      await expectBotStatus(operator, "Disabled");
+      await expectBotState(operator, botName, "Disabled");
       await operator.chat.closeBotManagementDialog();
 
       await operator.chat.disconnect();
@@ -122,7 +136,7 @@ test.describe("Bot persistence", () => {
       await operator.chat.waitUntilConnected();
 
       await openBotDialogAndSelect(operator, botName);
-      await expectBotStatus(operator, "Disabled");
+      await expectBotState(operator, botName, "Disabled");
       await operator.chat.closeBotManagementDialog();
     } finally {
       await cleanupBot(operator, botName);
