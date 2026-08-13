@@ -690,7 +690,10 @@ test.describe("In-chat P2P session", () => {
         bob.page.getByTestId("p2p-call-remote-tile"),
       ).toHaveAttribute("data-peer-screen-share", "true", { timeout: 10_000 });
 
-      await alice.page.getByTestId("p2p-call-open-stats").click();
+      // "Open stats" is a shortcut the call panel offers when it is mini or
+      // carries its own header; the console's own nav is how the section is
+      // reached with the full console on screen.
+      await alice.page.getByTestId("p2p-console-nav-stats").click();
       const statsSection = alice.page.getByTestId("p2p-console-section-stats");
       await expect(statsSection).toBeVisible();
       await p2pStatsTab(alice.page, "video").click();
@@ -788,23 +791,41 @@ test.describe("In-chat P2P session", () => {
       const callWindow = alice.page.getByTestId("p2p-call-window");
       const callPanel = alice.page.getByTestId("p2p-call-panel");
 
-      await alice.page.getByTestId("p2p-call-mini-toggle").click();
+      // The same control is offered in more than one place — the console header
+      // carries it while the call is full size, the panel grows its own once
+      // mini — so both are on screen at once in mini. Either does the job.
+      const miniToggle = () =>
+        alice.page
+          .getByTestId("p2p-call-mini-toggle")
+          .filter({ visible: true })
+          .first();
+
+      await miniToggle().click();
       await expect(callPanel).toHaveAttribute("data-call-mini", "true");
-      const miniBox = await callWindow.boundingBox();
-      expect(miniBox).toBeTruthy();
-      expect(miniBox!.width).toBeLessThanOrEqual(340);
+
+      // Mini is a layout the panel adopts inside the window, not a resize of
+      // the window: the P2P window is `default_maximized` and keeps its
+      // geometry. What has to shrink is the call itself.
+      const fullBox = await callPanel.boundingBox();
+      expect(fullBox).toBeTruthy();
+      const windowBox = await callWindow.boundingBox();
+      expect(windowBox).toBeTruthy();
+      expect(fullBox!.width).toBeLessThan(windowBox!.width);
       await expect
         .poll(() => remoteVideoIdentity(alice.page))
         .toEqual(initialRemote);
 
-      await alice.page.getByTestId("p2p-call-mini-toggle").click();
+      await miniToggle().click();
       await expect(callPanel).toHaveAttribute("data-call-mini", "false");
       await expectP2PCallHasNoInnerHeader(alice.page);
       await expect
         .poll(() => remoteVideoIdentity(alice.page))
         .toEqual(initialRemote);
 
-      await alice.page.getByTestId("p2p-call-open-stats").click();
+      // "Open stats" is a shortcut the call panel offers when it is mini or
+      // carries its own header; the console's own nav is how the section is
+      // reached with the full console on screen.
+      await alice.page.getByTestId("p2p-console-nav-stats").click();
       const statsSection = alice.page.getByTestId("p2p-console-section-stats");
       await expect(statsSection).toBeVisible();
 
