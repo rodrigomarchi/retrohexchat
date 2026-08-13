@@ -83,6 +83,11 @@ test.describe("Notify list commands", () => {
   test("/notify add tracks online and offline buddy status changes (J15)", async ({
     browser,
   }) => {
+    // Two full registrations and two fifteen-second waits for a presence
+    // change do not fit in the default thirty. They do from localhost, where
+    // signing up costs a moment; over a real network they do not.
+    test.setTimeout(120_000);
+
     const users: TestUser[] = [];
     const alice = await newSignedInUser(browser, "ntfa");
     const bobNick = uniqueNickname("ntfb");

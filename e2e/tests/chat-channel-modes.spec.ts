@@ -251,6 +251,10 @@ test.describe("Channel modes", () => {
   test("/slow throttles rapid joins until /slow 0 disables it (I14)", async ({
     browser,
   }) => {
+    // Six registrations before the throttle can even be exercised. That fits in
+    // the default thirty seconds from localhost and nowhere else.
+    test.setTimeout(180_000);
+
     const channel = uniqueChannel("slow");
     const owner = await newSignedInUser(browser, "own");
     const guests: TestUser[] = [];
