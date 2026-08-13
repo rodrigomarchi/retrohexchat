@@ -5,7 +5,7 @@
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
  */
-import { test, expect, Locator, WebSocket } from "@playwright/test";
+import { test, expect, Locator } from "@playwright/test";
 import {
   newSignedInUser,
   closeUsers,
@@ -39,17 +39,21 @@ test.describe("Space virtual pad", () => {
 
       const page = user.page;
       const sentFrames: string[] = [];
-      page.on("websocket", (ws: WebSocket) => {
-        ws.on("framesent", (frame) => {
-          const payload =
-            typeof frame.payload === "string" ? frame.payload : "";
-          if (
-            payload.includes("space_input") ||
-            payload.includes("space_action")
-          ) {
-            sentFrames.push(payload);
-          }
-        });
+
+      // `page.on("websocket")` only reports sockets opened after it is
+      // attached, and the LiveView's socket has been up since sign-in. CDP
+      // reports frames on the socket that is already there, which is the one
+      // the pad talks over.
+      const cdp = await page.context().newCDPSession(page);
+      await cdp.send("Network.enable");
+      cdp.on("Network.webSocketFrameSent", ({ response }) => {
+        const payload = response?.payloadData ?? "";
+        if (
+          payload.includes("space_input") ||
+          payload.includes("space_action")
+        ) {
+          sentFrames.push(payload);
+        }
       });
 
       const spaceTab = page.locator(
@@ -64,7 +68,9 @@ test.describe("Space virtual pad", () => {
       const canvas = page.locator('[data-testid="channel-space-shell"] canvas');
       await expect(canvas).toBeVisible();
       await expect
-        .poll(() => canvasSignature(canvas), { timeout: 10_000 })
+        // The scene's art is a few hundred kilobytes; over a real network it
+        // takes noticeably longer than it does from localhost to draw a frame.
+        .poll(() => canvasSignature(canvas), { timeout: 40_000 })
         .toBeGreaterThan(0);
 
       const pad = page.getByTestId("space-virtual-pad");

@@ -436,6 +436,29 @@ com `dom_id` derivado do apelido: o mesmo apelido aparece em `#lobby` como
 de stream**. Isso não está provado — é o próximo lugar a olhar, não uma
 conclusão.
 
+## `space-virtual-pad` · o pad não envia nada em produção — **P confirmado, causa em aberto**
+
+O que a medição já estabeleceu, contra produção:
+
+- A arte do cenário **é** servida (`/images/space/endoftime.png` responde 200).
+- O canvas **desenha** — mas leva mais de 10 s, contra o instantâneo local. Esse
+  limite foi corrigido no spec; é rede, não defeito.
+- O socket **é observado**: a captura por CDP registra os cliques e os
+  formulários da mesma sessão.
+- E **nenhum** quadro `space_input` é enviado enquanto o pad é pressionado.
+
+Ou seja: cena carregada, pad visível, pressionar acontece, e o cliente não fala.
+Local, o mesmo roteiro envia entre 4 e 12 quadros.
+
+A suspeita a investigar é o carregamento tardio do bundle do espaço: se o hook do
+pad ainda não montou quando o dedo desce, o botão existe e não faz nada. Não está
+provado — o renderizador do canvas depende do mesmo bundle e ele funcionou.
+
+Como efeito colateral, o spec ficou melhor nos dois ambientes: `page.on(
+"websocket")` só enxerga sockets abertos **depois** dele, e o do LiveView já
+estava de pé desde o login, então ele nunca observou nada — passava localmente
+por outro motivo. A captura agora é por CDP, que vê o socket que já existe.
+
 ## Nos dois ambientes — 13
 
 | Spec | Sintoma |
