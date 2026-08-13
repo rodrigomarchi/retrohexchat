@@ -15,7 +15,12 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
   alias RetroHexChat.Lobby
   alias RetroHexChat.Services.RegisteredNick
 
-  @event_timeout 500
+  # How long a pushed event may take to arrive, not how long it should. The
+  # assertion returns the moment the event lands, so a generous bound costs
+  # nothing on an idle machine and stops `make ci` — several partitions at once
+  # — from failing on whichever test happened to be waiting when the box was
+  # busy.
+  @event_timeout 5_000
 
   defmodule AlwaysLimited do
     @moduledoc false
@@ -1121,7 +1126,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
         reconnect_view,
         "lobby_start_offer",
         %{role: "creator"},
-        1_500
+        @event_timeout
       )
 
       assert %{
