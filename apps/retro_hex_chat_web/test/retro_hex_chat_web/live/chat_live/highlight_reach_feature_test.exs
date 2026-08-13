@@ -13,10 +13,17 @@ defmodule RetroHexChatWeb.ChatLive.HighlightReachFeatureTest do
   measures scheduling. The tip is pushed from the same decorated map the row is
   built from, and `MessageRowTest` already covers that such a map renders as
   highlighted — between them the chain is covered, without a race.
+
+  The push itself still has to travel, so every assertion here carries
+  `@push_timeout` rather than the 100ms default: the tips arrive well inside it
+  on an idle machine and missed it under the four-way partition split in
+  `make ci`, which measured the runner's load rather than the code.
   """
   use RetroHexChatWeb.LiveViewCase, async: false
 
   @moduletag :liveview_feature
+
+  @push_timeout 2_000
 
   alias RetroHexChat.Channels.{Registry, Supervisor}
 
@@ -55,7 +62,7 @@ defmodule RetroHexChatWeb.ChatLive.HighlightReachFeatureTest do
       }
     })
 
-    assert_push_event(view, "tip_trigger", %{tip: "first_highlight"})
+    assert_push_event(view, "tip_trigger", %{tip: "first_highlight"}, @push_timeout)
   end
 
   test "a private message naming the reader is decorated as a highlight", %{conn: conn} do
@@ -79,7 +86,7 @@ defmodule RetroHexChatWeb.ChatLive.HighlightReachFeatureTest do
       }
     })
 
-    assert_push_event(view, "tip_trigger", %{tip: "first_highlight"})
+    assert_push_event(view, "tip_trigger", %{tip: "first_highlight"}, @push_timeout)
   end
 
   test "a private message not naming the reader is left plain", %{conn: conn} do
@@ -105,7 +112,7 @@ defmodule RetroHexChatWeb.ChatLive.HighlightReachFeatureTest do
 
     # The conversation still announces itself, which is what makes this a
     # refutation of the highlight rather than of the message arriving at all.
-    assert_push_event(view, "tip_trigger", %{tip: "first_pm"})
+    assert_push_event(view, "tip_trigger", %{tip: "first_pm"}, @push_timeout)
     refute_push_event(view, "tip_trigger", %{tip: "first_highlight"})
   end
 end

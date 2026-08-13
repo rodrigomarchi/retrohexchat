@@ -19,7 +19,7 @@ import {
 import { shot } from "../helpers/screenshots";
 
 /**
- * Runs scripts/server-provision.md the way an operator does — paste the block
+ * Runs docs/provisioning/en.md the way an operator does — paste the block
  * into the Admin Console, press Run — and reads the transcript back.
  *
  * The static lint in server_provision_test.exs proves the script is well formed.
@@ -28,18 +28,16 @@ import { shot } from "../helpers/screenshots";
  * fires — all of those parse perfectly and still leave a dead server.
  */
 
-const PROVISION_DOC = path.resolve(
-  __dirname,
-  "../../scripts/server-provision.md",
-);
+const PROVISION_DOC = path.resolve(__dirname, "../../docs/provisioning/en.md");
 
+// Every bot en.md creates. An incomplete list leaves survivors behind, and the
+// next run fails on `/bot create` for a name that already exists.
 const BOTS = [
   "Brutus",
   "Patches",
   "Wanda",
   "Pixel",
   "Murphy",
-  "Tiao",
   "Gazeta",
   "Freeman",
   "Cassandra",
@@ -47,6 +45,15 @@ const BOTS = [
   "Curie",
   "Yuki",
   "Harold",
+  "Joystick",
+  "Sprite",
+  "Byte",
+  "Atlas",
+  "Tux",
+  "Sentinel",
+  "Vega",
+  "Quasar",
+  "Sakura",
 ];
 const CHANNELS = [
   "#lobby",
@@ -54,7 +61,6 @@ const CHANNELS = [
   "#arcade",
   "#retro",
   "#tech",
-  "#brasil",
   "#news",
   "#foss",
   "#security",

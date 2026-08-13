@@ -1,11 +1,17 @@
-# RetroHexChat — Production Provisioning
+# RetroHexChat — Production Provisioning (English)
 
-Thirteen channels, twenty-three bots. The room choices trace to
+Twelve channels, twenty-one bots. The room choices trace to
 `scripts/research/irc_census` — a live `/LIST` sweep of 95 public IRC networks,
 of which 59 answered with 49,973 channels. Regenerate it with
 `scripts/research/irc_census/run.sh`.
 
-## Why these thirteen
+**This is the base script and it runs first.** It is the only one that sets the
+server's name, description and welcome message; every language script in this
+directory adds rooms on top of it and touches no server-wide setting. The
+lusophone room that used to live here now opens the Portuguese script —
+see [`README.md`](README.md) for the whole set.
+
+## Why these twelve
 
 The census kills the intuition that a new server should offer a room per interest.
 Forty-four percent of listed channels on IRC hold exactly one person, and the median
@@ -20,7 +26,6 @@ already owns it:
 | social/chat | 2,332 | 47 | 113,089 | 2,106 (p90 only **91**) | most demand on IRC, low ceiling |
 | retro/vintage | 35 | 9 | 880 | **83** | the weakest incumbent on IRC |
 | gaming via trivia | 162 | 32 | 6,151 | 1,007 (p90 **68**) | fragmented, and trivia is native here |
-| regional (lusophone) | 13 `#brasil` rooms | 12 | 273 | **57** | distributed demand, no owner |
 
 | we stay out | live rooms | occupancy | biggest incumbent | why |
 |---|---|---|---|---|
@@ -41,6 +46,9 @@ of them are ordinary hangouts whose entire offer is a welcome message and a bot.
 Start the server with `ROOT_ADMINS=Troll mix phx.server`, log in as Troll, `/identify`,
 then open the Admin Console from the toolbar.
 
+Run this script before any of the language scripts: it is the one that names the
+server, and the rooms it opens are the ones the other scripts assume already exist.
+
 The whole block below pastes in one shot. The console executes line by line and carries
 the context forward — `/join` really joins, moves the active channel and grants ops
 there, and `/topic` and `/mode` are applied for real, not merely described. Lines
@@ -53,13 +61,16 @@ included, is joined explicitly.
 ```
 # ══════════════════════════════════════════════════════════
 #  RetroHexChat — Production Setup
-#  13 channels · 23 bots · derived from the IRC census
+#  12 channels · 21 bots · derived from the IRC census
+#  The base script. Language scripts in this directory add rooms on top.
 # ══════════════════════════════════════════════════════════
 
 # ── 1. Server ────────────────────────────────────────────
+# The only script that sets these. A language script that set them again would
+# rename the server for everyone in whichever language was pasted last.
 /admin server set server_name RetroHexChat
 /admin server set server_description The retro chat experience you never knew you missed. Windows 98 called — it wants you back.
-/admin server set welcome_message Welcome to RetroHexChat. Thirteen rooms, none of them empty. Type /help to get started.
+/admin server set welcome_message Welcome to RetroHexChat. Rooms in a dozen languages, none of them empty. Type /help to get started.
 /admin server set registration open
 
 # ── 2. Channels ──────────────────────────────────────────
@@ -99,13 +110,6 @@ included, is joined explicitly.
 /join #tech
 /cs register
 /topic Tech talk — hardware, self-hosting, sysadmin war stories. Project support lives upstream; this is the pub.
-/mode +tn
-
-# #brasil — 13 live #brasil rooms across 12 networks, 273 people between them,
-# largest holds 57. Distributed demand, no owner.
-/join #brasil
-/cs register
-/topic Canal brasileiro — bate-papo em português. Chega aí, senta e fica à vontade.
 /mode +tn
 
 # #news — politics/news is fragmented across 28 networks with no owner: the
@@ -179,9 +183,11 @@ included, is joined explicitly.
 /bot set Brutus mod_spam 5
 /bot set Brutus mod_flood 8
 /bot set Brutus mod_warn \c04\b[Brutus]\o Easy there, {nickname}. \c05Keep it civil\o or Brutus gets grumpy. And trust me, you don't want that.
-# Silent on arrival and departure. Brutus stands in all thirteen rooms, so a
+# Silent on arrival and departure. Brutus stands in all twelve rooms, so a
 # greeting from him would double every welcome the host bot gives — and a
 # bouncer who says hello twice reads as a glitch, not a personality.
+# Brutus warns in English and belongs to the English rooms only; each language
+# script brings its own moderator, because a warning nobody reads is not one.
 /bot set Brutus greeting none
 /bot set Brutus farewell none
 /bot set Brutus mention_response \c04\b[Brutus]\o I'm watching. Always watching. \c05Play nice\o and we'll get along just fine.
@@ -194,7 +200,6 @@ included, is joined explicitly.
 /bot join Brutus #arcade
 /bot join Brutus #retro
 /bot join Brutus #tech
-/bot join Brutus #brasil
 /bot join Brutus #news
 /bot join Brutus #foss
 /bot join Brutus #security
@@ -222,8 +227,9 @@ included, is joined explicitly.
 /bot set Patches farewell none
 /bot set Patches mention_response \c03\b[Patches]\o Patches here. \c10Need directions?\o !tour for the grand tour, or just ask.
 
-/bot addcmd Patches tour \c03\b[Patches]\o Talk to people in #lobby, #brasil and #tech. \c10Play\o in #trivia and #arcade. \c02Read the wire\o in #news, #foss, #security, #ai, #science and #anime. #retro is for anything that booted from a floppy, #help for when you are stuck.
-/bot addcmd Patches rooms \c03\b[Patches]\o #lobby #trivia #arcade #retro #tech #brasil #news #foss #security #ai #science #anime #help — \c10thirteen rooms\o, and every one of them has something in it.
+/bot addcmd Patches tour \c03\b[Patches]\o Talk to people in #lobby and #tech. \c10Play\o in #trivia and #arcade. \c02Read the wire\o in #news, #foss, #security, #ai, #science and #anime. #retro is for anything that booted from a floppy, #help for when you are stuck.
+/bot addcmd Patches rooms \c03\b[Patches]\o #lobby #trivia #arcade #retro #tech #news #foss #security #ai #science #anime #help — \c10twelve rooms in English\o, and more in a dozen other languages. \c02!languages\o for those.
+/bot addcmd Patches languages \c03\b[Patches]\o This server speaks fourteen languages, {nickname}, and \c10each one has its own rooms\o. Change yours from the toolbar and the room list follows.
 /bot addcmd Patches why \c03\b[Patches]\o The median live IRC channel holds fourteen people, {nickname}, so we keep one place to talk rather than four. \c10Wire rooms\o are different: a feed gives a room something to show before it has a crowd.
 /bot addcmd Patches about \c03\b[Patches]\o RetroHexChat: a retro-styled chat built with \c10Elixir and Phoenix LiveView\o. Windows 98 met a chat room and they fell in love.
 
@@ -294,26 +300,6 @@ included, is joined explicitly.
 /bot set Murphy rss_max_items 10000
 /bot rss add Murphy https://news.ycombinator.com/rss #tech
 /bot rss add Murphy https://github.blog/feed/ #tech
-
-# ── Tiao — #brasil (ASCII name: bot nicknames are [a-zA-Z][a-zA-Z0-9_-]*) ──
-/bot create Tiao Anfitriao do canal brasileiro
-/bot set Tiao prefix !
-/bot set Tiao cooldown 1000
-/bot set Tiao greeting \c03\b[Tiao]\o Opa, {nickname}! Eu sou o Tiao. \c02Manda um !bomdia\o, um !causo ou um !regras. Fica à vontade.
-/bot set Tiao greeting_delivery private_notice
-/bot set Tiao greeter_repeat_window 43200
-/bot set Tiao farewell none
-/bot set Tiao mention_response \c03\b[Tiao]\o Chamou? Tô aqui. \c02Tenta !causo\o ou !bomdia.
-
-/bot addcmd Tiao bomdia \c03\b[Tiao]\o \c02Bom dia\o, {nickname}! Café passado, teclado limpo, dia começando.
-/bot addcmd Tiao causo \c03\b[Tiao]\o Tem 13 canais #brasil espalhados pelo IRC hoje, {nickname}. Somados dão 273 pessoas. O maior tem 57. \c02Dá pra fazer melhor\o aqui.
-/bot addcmd Tiao regras \c03\b[Tiao]\o Regra única: \c02não seja babaca\o. O resto a gente resolve conversando.
-
-/bot join Tiao #brasil
-/bot set Tiao rss_interval 30
-/bot set Tiao rss_max_items 10000
-/bot rss add Tiao https://tecnoblog.net/feed/ #brasil
-/bot rss add Tiao https://canaltech.com.br/rss/ #brasil
 
 # ── Gazeta — #news ───────────────────────────────────────
 # Feeds are stored on the bot and survive a restart, along with the record of
@@ -441,6 +427,10 @@ included, is joined explicitly.
 # These bots do not create more rooms; they put more motion into the rooms that
 # already exist. Each source below was fetched with the production RSS fetcher
 # and parsed by the app parser before it was added here.
+#
+# None of them greets. Each stands in a room that already has a host, and two
+# private notices on one arrival read as a stutter — the same reason Brutus is
+# silent. They still answer !sources and a mention.
 
 # ── Joystick — #arcade gaming wire ───────────────────────
 /bot create Joystick Cabinet Newsrunner
@@ -448,9 +438,7 @@ included, is joined explicitly.
 /bot set Joystick cooldown 1000
 /bot set Joystick rss_interval 45
 /bot set Joystick rss_max_items 10000
-/bot set Joystick greeting \c12\b[Joystick]\o {nickname}, cabinet wire online. \c10PC games and indie chatter\o land here; !sources shows the feeds.
-/bot set Joystick greeting_delivery private_notice
-/bot set Joystick greeter_repeat_window 43200
+/bot set Joystick greeting none
 /bot set Joystick farewell none
 /bot set Joystick mention_response \c12\b[Joystick]\o I watch the gaming wire. \c10!sources\o for PC Gamer and Rock Paper Shotgun.
 /bot addcmd Joystick sources \c12\b[Joystick]\o PC Gamer and Rock Paper Shotgun, checked every forty-five minutes.
@@ -464,9 +452,7 @@ included, is joined explicitly.
 /bot set Sprite cooldown 1000
 /bot set Sprite rss_interval 90
 /bot set Sprite rss_max_items 10000
-/bot set Sprite greeting \c11\b[Sprite]\o {nickname}, old machines are talking again. \c10!sources\o for the retro feeds.
-/bot set Sprite greeting_delivery private_notice
-/bot set Sprite greeter_repeat_window 43200
+/bot set Sprite greeting none
 /bot set Sprite farewell none
 /bot set Sprite mention_response \c11\b[Sprite]\o Retro wire active: OSNews, RetroRGB and Time Extension. \c10!sources\o lists them.
 /bot addcmd Sprite sources \c11\b[Sprite]\o OSNews, RetroRGB and Time Extension, checked every ninety minutes.
@@ -481,9 +467,7 @@ included, is joined explicitly.
 /bot set Byte cooldown 1000
 /bot set Byte rss_interval 30
 /bot set Byte rss_max_items 10000
-/bot set Byte greeting \c14\b[Byte]\o {nickname}, the tech desk is humming. \c04!sources\o for the magazines I read.
-/bot set Byte greeting_delivery private_notice
-/bot set Byte greeter_repeat_window 43200
+/bot set Byte greeting none
 /bot set Byte farewell none
 /bot set Byte mention_response \c14\b[Byte]\o Ars, ZDNet, WIRED and Engadget. \c04!sources\o for the list.
 /bot addcmd Byte sources \c14\b[Byte]\o Ars Technica, ZDNet, WIRED and Engadget, checked every half hour.
@@ -493,31 +477,13 @@ included, is joined explicitly.
 /bot rss add Byte https://www.wired.com/feed/rss #tech
 /bot rss add Byte https://www.engadget.com/rss.xml #tech
 
-# ── Nina — #brasil general wire ──────────────────────────
-/bot create Nina Plantonista Brasileira
-/bot set Nina prefix !
-/bot set Nina cooldown 1000
-/bot set Nina rss_interval 30
-/bot set Nina rss_max_items 10000
-/bot set Nina greeting \c03\b[Nina]\o Oi, {nickname}. Plantao ligado no #brasil. \c02!sources\o mostra de onde vem.
-/bot set Nina greeting_delivery private_notice
-/bot set Nina greeter_repeat_window 43200
-/bot set Nina farewell none
-/bot set Nina mention_response \c03\b[Nina]\o Eu leio G1 e Olhar Digital. \c02!sources\o lista os feeds.
-/bot addcmd Nina sources \c03\b[Nina]\o G1 e Olhar Digital, checados a cada meia hora.
-/bot join Nina #brasil
-/bot rss add Nina https://g1.globo.com/rss/g1/ #brasil
-/bot rss add Nina https://olhardigital.com.br/feed/ #brasil
-
 # ── Atlas — #news world wire ─────────────────────────────
 /bot create Atlas World Wire Editor
 /bot set Atlas prefix !
 /bot set Atlas cooldown 1000
 /bot set Atlas rss_interval 20
 /bot set Atlas rss_max_items 10000
-/bot set Atlas greeting \c02\b[Atlas]\o {nickname}, world desk online. \c14!sources\o for the extra wire.
-/bot set Atlas greeting_delivery private_notice
-/bot set Atlas greeter_repeat_window 43200
+/bot set Atlas greeting none
 /bot set Atlas farewell none
 /bot set Atlas mention_response \c02\b[Atlas]\o Guardian World and NPR News are on my desk. \c14!sources\o for links.
 /bot addcmd Atlas sources \c02\b[Atlas]\o Guardian World and NPR News, checked every twenty minutes.
@@ -531,9 +497,7 @@ included, is joined explicitly.
 /bot set Tux cooldown 1000
 /bot set Tux rss_interval 30
 /bot set Tux rss_max_items 10000
-/bot set Tux greeting \c03\b[Tux]\o {nickname}, distro desk online. \c02!sources\o for the Linux wire.
-/bot set Tux greeting_delivery private_notice
-/bot set Tux greeter_repeat_window 43200
+/bot set Tux greeting none
 /bot set Tux farewell none
 /bot set Tux mention_response \c03\b[Tux]\o OMG! Ubuntu, Linuxiac and Linux Journal. \c02!sources\o lists them.
 /bot addcmd Tux sources \c03\b[Tux]\o OMG! Ubuntu, Linuxiac and Linux Journal, checked every half hour.
@@ -548,9 +512,7 @@ included, is joined explicitly.
 /bot set Sentinel cooldown 1000
 /bot set Sentinel rss_interval 30
 /bot set Sentinel rss_max_items 10000
-/bot set Sentinel greeting \c04\b[Sentinel]\o {nickname}, research watch is active. \c05!sources\o for the feeds.
-/bot set Sentinel greeting_delivery private_notice
-/bot set Sentinel greeter_repeat_window 43200
+/bot set Sentinel greeting none
 /bot set Sentinel farewell none
 /bot set Sentinel mention_response \c04\b[Sentinel]\o SecurityWeek, PortSwigger Research and Rapid7. \c05!sources\o lists the wire.
 /bot addcmd Sentinel sources \c04\b[Sentinel]\o SecurityWeek, PortSwigger Research and Rapid7, checked every half hour.
@@ -565,9 +527,7 @@ included, is joined explicitly.
 /bot set Vega cooldown 1000
 /bot set Vega rss_interval 60
 /bot set Vega rss_max_items 10000
-/bot set Vega greeting \c10\b[Vega]\o {nickname}, lab release tracker online. \c06!sources\o for model and research feeds.
-/bot set Vega greeting_delivery private_notice
-/bot set Vega greeter_repeat_window 43200
+/bot set Vega greeting none
 /bot set Vega farewell none
 /bot set Vega mention_response \c10\b[Vega]\o OpenAI, Google Research, DeepMind and MIT AI. \c06!sources\o lists them.
 /bot addcmd Vega sources \c10\b[Vega]\o OpenAI News, Google Research, Google DeepMind and MIT AI, checked hourly.
@@ -583,9 +543,7 @@ included, is joined explicitly.
 /bot set Quasar cooldown 1000
 /bot set Quasar rss_interval 60
 /bot set Quasar rss_max_items 10000
-/bot set Quasar greeting \c12\b[Quasar]\o {nickname}, discovery desk online. \c02!sources\o for science feeds.
-/bot set Quasar greeting_delivery private_notice
-/bot set Quasar greeter_repeat_window 43200
+/bot set Quasar greeting none
 /bot set Quasar farewell none
 /bot set Quasar mention_response \c12\b[Quasar]\o ScienceDaily, Space.com, Quanta and Smithsonian. \c02!sources\o lists them.
 /bot addcmd Quasar sources \c12\b[Quasar]\o ScienceDaily, Space.com, Quanta and Smithsonian Science, checked hourly.
@@ -601,9 +559,7 @@ included, is joined explicitly.
 /bot set Sakura cooldown 1000
 /bot set Sakura rss_interval 30
 /bot set Sakura rss_max_items 10000
-/bot set Sakura greeting \c13\b[Sakura]\o {nickname}, anime wire online. \c06!sources\o for the extra feeds.
-/bot set Sakura greeting_delivery private_notice
-/bot set Sakura greeter_repeat_window 43200
+/bot set Sakura greeting none
 /bot set Sakura farewell none
 /bot set Sakura mention_response \c13\b[Sakura]\o Anime Corner and MyAnimeList. \c06!sources\o lists them.
 /bot addcmd Sakura sources \c13\b[Sakura]\o Anime Corner and MyAnimeList News, checked every half hour.
@@ -624,7 +580,7 @@ included, is joined explicitly.
 /bot addcmd Harold faq \c02\b[Harold]\o How do I register? \c03/identify\o. Join a room? /join #name. Private message? /msg nick. Look cool? Not in my manual, {nickname}.
 /bot addcmd Harold commands \c02\b[Harold]\o /help for topics · /nick to rename · /join to enter · /msg to whisper · /identify to register. \c03F1 opens the manual\o.
 /bot addcmd Harold stuck \c02\b[Harold]\o Step 1: don't panic. Step 2: /help. Step 3: ask here. \c03Step 4: profit\o.
-/bot addcmd Harold rooms \c02\b[Harold]\o #lobby #trivia #arcade #retro #tech #brasil #news #foss #security #ai #science #anime #help.
+/bot addcmd Harold rooms \c02\b[Harold]\o #lobby #trivia #arcade #retro #tech #news #foss #security #ai #science #anime #help — and \c03a set of rooms per language\o besides.
 
 /bot join Harold #help
 ```
@@ -661,7 +617,6 @@ the capability is created by that first `/bot set`:
 | `#arcade` | Brutus, **Pixel**, Joystick | 16 = largest `#arcade` on IRC |
 | `#retro` | Brutus, **Pixel**, Sprite | 26 = largest `#retro` on IRC · 84 = largest retro room of any name |
 | `#tech` | Brutus, **Murphy**, Byte | 60 |
-| `#brasil` | Brutus, **Tiao**, Nina | 58 = largest `#brasil` on IRC |
 | `#news` | Brutus, **Gazeta**, Atlas | 77 = top 10% of news rooms |
 | `#foss` | Brutus, **Freeman**, Tux | the census found no live `#foss` room anywhere |
 | `#security` | Brutus, **Cassandra**, Sentinel | 178 = p90, the densest subject measured |
@@ -673,16 +628,19 @@ the capability is created by that first `/bot set`:
 All channels are `+tn`. Rules live in `!Brutus rules` and the `#lobby` topic rather
 than a moderated `#rules` nobody reads.
 
+`#help` is deliberately English-only in this script: it is where someone goes when
+they are lost, and each language script opens no second help desk — its host bot
+answers orientation questions in its own language instead.
+
 ## Bot reference
 
 | bot | channels | capabilities | role |
 |---|---|---|---|
-| **Brutus** | all 13 | `moderation` (passive), `custom_commands` | spam and flood, everywhere |
-| **Patches** | `#lobby` | `greeter`, `dice`, `custom_commands` | doorman, explains the thirteen rooms |
+| **Brutus** | all 12 | `moderation` (passive), `custom_commands` | spam and flood, everywhere |
+| **Patches** | `#lobby` | `greeter`, `dice`, `custom_commands` | doorman, explains the twelve rooms |
 | **Wanda** | `#trivia` | **`trivia`**, `dice`, `greeter` | quiz host with a scoreboard |
 | **Pixel** | `#arcade`, `#retro` | **`rss`**, `greeter`, `custom_commands` | arcade catalogue; Hackaday and Vintage Computing |
 | **Murphy** | `#tech` | **`rss`**, `greeter`, `custom_commands` | pub talk; Hacker News and the GitHub blog |
-| **Tiao** | `#brasil` | **`rss`**, `greeter`, `custom_commands` | anfitrião; Tecnoblog e Canaltech |
 | **Gazeta** | `#news` | **`rss`**, `greeter`, `custom_commands` | the wire desk; feeds survive a restart |
 | **Freeman** | `#foss` | **`rss`**, `greeter`, `custom_commands` | LWN, Phoronix, It's FOSS |
 | **Cassandra** | `#security` | **`rss`**, `greeter`, `custom_commands` | BleepingComputer, Krebs, The Hacker News |
@@ -692,7 +650,6 @@ than a moderated `#rules` nobody reads.
 | **Joystick** | `#arcade` | **`rss`**, `greeter`, `custom_commands` | PC Gamer and Rock Paper Shotgun |
 | **Sprite** | `#retro` | **`rss`**, `greeter`, `custom_commands` | OSNews, RetroRGB, Time Extension |
 | **Byte** | `#tech` | **`rss`**, `greeter`, `custom_commands` | Ars Technica, ZDNet, WIRED, Engadget |
-| **Nina** | `#brasil` | **`rss`**, `greeter`, `custom_commands` | G1 and Olhar Digital |
 | **Atlas** | `#news` | **`rss`**, `greeter`, `custom_commands` | Guardian World and NPR News |
 | **Tux** | `#foss` | **`rss`**, `greeter`, `custom_commands` | OMG! Ubuntu, Linuxiac, Linux Journal |
 | **Sentinel** | `#security` | **`rss`**, `greeter`, `custom_commands` | SecurityWeek, PortSwigger, Rapid7 |

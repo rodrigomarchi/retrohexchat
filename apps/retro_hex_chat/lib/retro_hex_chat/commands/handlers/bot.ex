@@ -29,7 +29,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
   Every key `/bot set` accepts.
 
   Public because it is the only honest answer to "is this provisioning script
-  valid?" — `scripts/server-provision.md` is linted against this list, which is
+  valid?" — every script in `docs/provisioning/` is linted against this list, which is
   how `arcade_enabled`, a setting the error message once advertised and no clause
   ever handled, got into a shipped script.
   """

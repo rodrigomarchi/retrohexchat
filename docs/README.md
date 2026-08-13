@@ -47,8 +47,9 @@ Living catalogs and runbooks kept current with the code:
 
 Runbooks live next to what they run, not here:
 
-- [`scripts/server-provision.md`](../scripts/server-provision.md) — the production provisioning
-  script pasted into the Admin Console, plus the IRC census behind the channel choices.
+- [`provisioning/`](provisioning/README.md) — the provisioning scripts pasted into the Admin
+  Console, one per language the server speaks. `en.md` runs first and carries the IRC census
+  behind the channel choices; the rest add rooms in their own language.
 - [`e2e/README.md`](../e2e/README.md) — the Playwright suite, intentionally outside `make ci`.
   Each spec documents its own flows in an `@flow` header; `e2e/TEST_CATALOG.md` is the
   generated index, and `make ci` fails if the two drift apart.
