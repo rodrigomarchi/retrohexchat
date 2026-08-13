@@ -38,19 +38,30 @@ async function createRegisteredUser(
   return { context, page, connect, chat, nick, password };
 }
 
-async function expectTabBefore(chat: ChatPage, left: string, right: string) {
-  const leftTab = chat.tab(left);
-  const rightTab = chat.tab(right);
+/**
+ * Asserts `left` is listed above `right` in the conversations sidebar.
+ *
+ * Signing back in restores the conversations, not the windows: the sidebar is
+ * the list of who you have been talking to, and a tab is one you have opened.
+ * So recency is read where the list lives, top to bottom.
+ */
+async function expectPmListedBefore(
+  chat: ChatPage,
+  left: string,
+  right: string,
+) {
+  const leftItem = chat.pmConversationItem(left);
+  const rightItem = chat.pmConversationItem(right);
 
-  await expect(leftTab).toBeVisible();
-  await expect(rightTab).toBeVisible();
+  await expect(leftItem).toBeVisible();
+  await expect(rightItem).toBeVisible();
 
-  const leftBox = await leftTab.boundingBox();
-  const rightBox = await rightTab.boundingBox();
+  const leftBox = await leftItem.boundingBox();
+  const rightBox = await rightItem.boundingBox();
 
   expect(leftBox).not.toBeNull();
   expect(rightBox).not.toBeNull();
-  expect(leftBox!.x).toBeLessThan(rightBox!.x);
+  expect(leftBox!.y).toBeLessThan(rightBox!.y);
 }
 
 test.describe("Chat persistence", () => {
@@ -77,13 +88,18 @@ test.describe("Chat persistence", () => {
       await alice.connect.authenticateWithPassword(alice.password);
       await alice.chat.waitUntilConnected();
 
-      await alice.chat.expectTabVisible(bob.nick);
-      await alice.chat.expectTabVisible(carol.nick);
-      await expectTabBefore(alice.chat, carol.nick, bob.nick);
+      // Both conversations come back, most recent first…
+      await alice.chat.expandConversationSection("pms");
+      await expectPmListedBefore(alice.chat, carol.nick, bob.nick);
 
-      await alice.chat.switchToTab(carol.nick);
+      // …and opening one from the list brings its history with it, which is
+      // what "restored" has to mean for it to be worth anything.
+      await alice.chat.pmConversationItem(carol.nick).click();
+      await alice.chat.expectTabVisible(carol.nick);
       await alice.chat.expectMessageVisible(carolMessage);
-      await alice.chat.switchToTab(bob.nick);
+
+      await alice.chat.pmConversationItem(bob.nick).click();
+      await alice.chat.expectTabVisible(bob.nick);
       await alice.chat.expectMessageVisible(bobMessage);
     } finally {
       await alice.context.close();
@@ -114,7 +130,12 @@ test.describe("Chat persistence", () => {
       await alice.page.reload();
       await alice.chat.waitUntilConnected();
 
+      // No PM tab is reopened for anybody, so a hidden tab says nothing about
+      // guests. What separates them is the conversations list: a registered
+      // nickname gets its partners back there (P1), a guest has nowhere for
+      // them to have been kept.
       await alice.chat.expectTabHidden(bob.nick);
+      await expect(alice.chat.pmConversationItem(bob.nick)).toHaveCount(0);
     } finally {
       await alice.context.close();
       await bob.context.close();

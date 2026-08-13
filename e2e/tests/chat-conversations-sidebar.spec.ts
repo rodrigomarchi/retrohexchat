@@ -97,20 +97,33 @@ test.describe("Conversations sidebar", () => {
     }
   });
 
+  // Which channels are suggested — unjoined, public, busiest first, ten at most
+  // — is decided by `ConversationsReadModel.popular_channels/2` and covered
+  // against a known list in its own test. A channel invented here only ranks on
+  // an empty server, so this drives whatever the sidebar is actually offering:
+  // what the browser has to prove is that clicking one joins and switches.
   test("popular channel item joins and switches channel through the sidebar", async ({
     browser,
   }) => {
-    const popularChannel = uniqueChannel("popular");
+    const busyChannel = uniqueChannel("popular");
     const bob = await newSignedInUser(browser, "cpb");
     let alice: TestUser | undefined;
 
     try {
-      await bob.chat.sendMessage(`/join ${popularChannel}`);
-      await bob.chat.expectTabVisible(popularChannel);
+      await bob.chat.sendMessage(`/join ${busyChannel}`);
+      await bob.chat.expectTabVisible(busyChannel);
 
       alice = await newSignedInUser(browser, "cpa");
       await alice.chat.expandConversationSection("popular");
-      await expect(alice.chat.popularChannelItem(popularChannel)).toBeVisible();
+
+      const firstSuggestion = alice.chat.conversationsSidebar
+        .locator('[data-testid^="popular-"]')
+        .first();
+      await expect(firstSuggestion).toBeVisible();
+
+      const popularChannel = (await firstSuggestion.getAttribute(
+        "data-testid",
+      ))!.replace(/^popular-/, "");
       await shot(alice.chat.page, "popular-channels-platform");
       await shot(alice.chat.conversationsSidebar, "popular-channels-sidebar");
 
