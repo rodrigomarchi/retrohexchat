@@ -126,13 +126,13 @@ defmodule RetroHexChatWeb.UserLookupFeatureTest do
 
       render_click(view, "toolbar_action", %{"action" => "open_user_lookup"})
 
+      # No `render_change` first, on purpose. Both buttons submit the form, so
+      # the nickname that travels is the one in the field — reading it from an
+      # assign meant sending whatever the last change event had time to store,
+      # which is empty for anyone who types and clicks without pausing.
       view
       |> element(~s(form[data-testid="user-lookup-form"]))
-      |> render_change(%{"nickname" => target})
-
-      view
-      |> element(~s([data-testid="user-lookup-whowas"]))
-      |> render_click()
+      |> render_submit(%{"nickname" => target, "lookup" => "whowas"})
 
       html = render(view)
 

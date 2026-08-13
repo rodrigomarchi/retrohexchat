@@ -312,6 +312,12 @@ test.describe.serial("UI feature shell journeys", () => {
       await actor.chat.expectTabVisible(target.nick);
 
       await target.chat.disconnect();
+      // Whowas only knows about someone once their leaving has been recorded,
+      // and the actor's own nicklist losing them is the earliest that is
+      // observable from here — asking before that reports no information.
+      await actor.chat.switchToTab("#lobby");
+      await actor.chat.expectNickNotInList(target.nick);
+
       await expect(actor.chat.lookupResultDialog).toBeHidden();
       await actor.chat.openUserLookupFromToolsMenu();
       await actor.page.getByTestId("user-lookup-nickname").fill(target.nick);

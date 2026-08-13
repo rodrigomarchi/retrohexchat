@@ -16,8 +16,17 @@ defmodule RetroHexChatWeb.Components.UI.UserLookupDialog do
   attr :error_message, :string, default: nil
   attr :result, :map, default: nil
   attr :on_change, :any, default: "user_lookup_change"
-  attr :on_whois, :any, default: "user_lookup_whois"
-  attr :on_whowas, :any, default: "user_lookup_whowas"
+
+  attr :on_submit, :any,
+    default: "user_lookup_submit",
+    doc: """
+    Both buttons submit the form, so the nickname that travels is the one on
+    screen. Reading it from an assign instead would send whatever the last
+    `phx-change` had time to store — empty, if the user typed and clicked
+    quickly enough, which is only ever visible when the round trip is slow.
+    Which button was pressed arrives as `lookup`.
+    """
+
   attr :on_result_close, :any, default: "close_lookup_result"
   attr :on_result_whois, :any, default: "lookup_result_whois"
   attr :on_result_whowas, :any, default: "lookup_result_whowas"
@@ -34,7 +43,7 @@ defmodule RetroHexChatWeb.Components.UI.UserLookupDialog do
       <form
         id={"#{@id}-form"}
         data-testid="user-lookup-form"
-        phx-submit={@on_whois}
+        phx-submit={@on_submit}
         phx-change={@on_change}
         class="ul-form"
       >
@@ -61,16 +70,23 @@ defmodule RetroHexChatWeb.Components.UI.UserLookupDialog do
         </div>
 
         <div class="ul-action-row">
-          <.button type="submit" size="sm" data-testid="user-lookup-whois" class="ul-action-button">
+          <.button
+            type="submit"
+            name="lookup"
+            value="whois"
+            size="sm"
+            data-testid="user-lookup-whois"
+            class="ul-action-button"
+          >
             <:icon><Icons.icon_btn_search class="w-[14px] h-[14px]" /></:icon>
             {dgettext("dialogs", "Whois")}
           </.button>
           <.button
-            type="button"
+            type="submit"
+            name="lookup"
+            value="whowas"
             size="sm"
             variant="outline"
-            phx-click={@on_whowas}
-            phx-value-nickname={@nickname}
             data-testid="user-lookup-whowas"
             class="ul-action-button"
           >

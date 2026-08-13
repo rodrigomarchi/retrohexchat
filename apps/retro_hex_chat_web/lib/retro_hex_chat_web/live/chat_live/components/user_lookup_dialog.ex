@@ -7,8 +7,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.UserLookupDialog do
   (`lookup_result`) passed through as a template attr, so it reaches the island
   in the same diff that mounts the window. The window is managed, so closing it
   unmounts the island and resets the draft. `user_lookup_change` updates the
-  controlled nickname input locally. `user_lookup_whois` (form submit) and
-  `user_lookup_whowas` run the lookup on the parent's `UserLookupEvents`,
+  controlled nickname input locally. `user_lookup_submit` — sent by whichever
+  button was pressed — runs the lookup on the parent's `UserLookupEvents`,
   reading the nickname from the submitted params. The result-card actions
   (`lookup_result_whois`, `lookup_result_whowas`, `lookup_result_query`,
   `close_lookup_result`) are handled by the parent, which re-runs a lookup,
@@ -79,8 +79,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.UserLookupDialog do
         error_message={@error}
         result={@result}
         on_change={JS.push("user_lookup_change", target: @myself)}
-        on_whois="user_lookup_whois"
-        on_whowas="user_lookup_whowas"
+        on_submit="user_lookup_submit"
       />
     </div>
     """

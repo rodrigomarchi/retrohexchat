@@ -2,8 +2,8 @@ defmodule RetroHexChatWeb.ChatLive.UserLookupEvents do
   @moduledoc """
   Handle User Lookup window and result card events.
 
-  Covers: open_user_lookup, close_user_lookup, user_lookup_whois,
-  user_lookup_whowas, close_lookup_result, lookup_result_whois,
+  Covers: open_user_lookup, close_user_lookup, user_lookup_submit,
+  close_lookup_result, lookup_result_whois,
   lookup_result_whowas, lookup_result_query.
   """
 
@@ -54,12 +54,14 @@ defmodule RetroHexChatWeb.ChatLive.UserLookupEvents do
     {:halt, push_event(socket, "window_command", %{action: "close", id: "user-lookup"})}
   end
 
-  def handle_event("user_lookup_whois", params, socket) do
-    {:halt, submit_lookup(socket, "whois", lookup_nick(params))}
+  # Both buttons submit the form, so the nickname comes from the field rather
+  # than from an assign a `phx-change` may not have filled yet.
+  def handle_event("user_lookup_submit", %{"lookup" => "whowas"} = params, socket) do
+    {:halt, submit_lookup(socket, "whowas", lookup_nick(params))}
   end
 
-  def handle_event("user_lookup_whowas", params, socket) do
-    {:halt, submit_lookup(socket, "whowas", lookup_nick(params))}
+  def handle_event("user_lookup_submit", params, socket) do
+    {:halt, submit_lookup(socket, "whois", lookup_nick(params))}
   end
 
   def handle_event("close_lookup_result", _params, socket) do
