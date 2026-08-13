@@ -380,6 +380,40 @@ documento existe para evitar.
 o mesmo assunto que a família F1 deixou de cobrir, e o único desta tabela com
 consequência de segurança.
 
+## X7 · Transferir o fundador deixa a nicklist vazia — **P confirmado, causa em aberto**
+
+Repro mínimo, isolado do spec original e reproduzido 3 de 3:
+
+1. `A` entra num canal e faz `/cs register`
+2. um admin faz `/admin cs transfer <canal> B`
+3. `A` sai — o canal fica vazio
+4. `B`, que nunca esteve lá, entra
+
+`B` vê a aba do canal aberta e selecionada, a barra lateral conta `(1)` usuário,
+e a **nicklist fica vazia** — nem `B` aparece.
+
+Sem o passo 2 o mesmo roteiro funciona: `B` aparece normalmente. Sem os passos
+3–4 também. É a transferência que muda o resultado.
+
+O que já foi descartado por medição: não é a nicklist em geral (usuário sozinho,
+canal recriado após esvaziar e rejoin funcionam todos), não é a conexão
+(`phx-connected`), não é a página errada (`/chat`, com o contêiner da lista
+presente) e o servidor **não registra erro nenhum**.
+
+O silêncio é parte do problema. `load_channel_users/2` responde a um canal que
+não encontra assim:
+
+```elixir
+{:error, _} ->
+  socket
+  |> assign(channel_users: [], current_topic: nil, current_modes: nil)
+  |> Nicklist.reset([])
+```
+
+Uma lista vazia é indistinguível de "não achei o canal", e é por isso que a
+investigação chegou até aqui sem uma pista do servidor. Corrigir esse ramo para
+dizer o que houve é o próximo passo, antes de tentar adivinhar a causa.
+
 ## Nos dois ambientes — 13
 
 | Spec | Sintoma |

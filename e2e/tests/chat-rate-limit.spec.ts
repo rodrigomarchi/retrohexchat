@@ -1,6 +1,6 @@
 /**
  * @section R/Y - Security, Safety, And Rendering Additions
- * @flow R9 [done] P2P command rate-limit and failed send errors leave no stale pending messages or disabled input (features P2)
+ * @flow R9 [done] P2P command errors and failed sends leave no stale pending messages or disabled input (features P2)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -60,34 +60,41 @@ async function expectInputIdle(chat: ChatPage) {
 }
 
 test.describe("Rate-limit and send-error input state", () => {
-  test("P2P command rate-limit errors leave no pending messages and keep input usable (R9)", async ({
+  // How many sessions a person may create in a window is enforced by
+  // `RateLimiter.check_session_rate/3` and covered in its own test. It cannot be
+  // reached from the composer any more — a duplicate request is refused before
+  // it counts, and one person holds one session at a time — so what is driven
+  // here is the refusal a user can actually provoke.
+  test("P2P command errors leave no pending messages and keep input usable (R9)", async ({
     browser,
   }) => {
     const alice = await newSignedInUser(browser, "rcla");
     const bob = await newSignedInUser(browser, "rclb");
-    const afterLimit = `after-p2p-rate-limit-${Date.now()}`;
+    const afterError = `after-p2p-error-${Date.now()}`;
 
     try {
+      // /p2p opens a setup dialog and only sends the request once confirmed.
       await alice.chat.sendMessage(`/p2p ${bob.nick}`);
+      await expect(
+        alice.chat.page.getByTestId("p2p-setup-accept"),
+      ).toBeVisible();
+      await alice.chat.page.getByTestId("p2p-setup-accept").click();
       await alice.chat.expectMessageVisible(
-        `P2P invite sent to ${bob.nick}. Waiting for response...`,
+        `P2P request sent to ${bob.nick}. Waiting for response...`,
       );
 
+      // Asking again is refused, and the refusal is what this spec is about:
+      // an error answering a command must leave the composer clean.
       await alice.chat.sendMessage(`/p2p ${bob.nick}`);
       await alice.chat.expectMessageVisible(
-        `P2P invite sent to ${bob.nick}. Waiting for response...`,
-      );
-
-      await alice.chat.sendMessage(`/p2p ${bob.nick}`);
-      await alice.chat.expectMessageVisible(
-        "Too many sessions created. Try again in",
+        "An active lobby already exists with this user",
       );
 
       await expectNoPendingMessages(alice.chat);
       await expectInputIdle(alice.chat);
 
-      await alice.chat.sendMessage(afterLimit);
-      await alice.chat.expectMessageVisible(afterLimit);
+      await alice.chat.sendMessage(afterError);
+      await alice.chat.expectMessageVisible(afterError);
     } finally {
       await closeUsers([alice, bob]);
     }
