@@ -128,6 +128,10 @@ shot, logged in as an admin who has `/identify`-ed.
 # Cada endereço abaixo foi buscado pelo fetcher de produção e lido pelo parser
 # da aplicação antes de entrar aqui. O primeiro poll publica a página que recebe
 # e regista-a; a partir daí só sai o que chega de novo.
+#
+# A primeira leitura sai em lotes, não de uma vez: a protecção de flood vive na
+# sessão de cada leitor e auto-ignora quem excede o limite. Nada é descartado —
+# um feed com fila volta em menos de um minuto para o resto.
 
 # ── Vasco — #portugal ────────────────────────────────────
 # Sem saudação: quem recebe os recém-chegados nesta sala é o Fernao.
@@ -135,7 +139,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Vasco prefix !
 /bot set Vasco cooldown 1000
 /bot set Vasco rss_interval 20
-/bot set Vasco rss_max_items 10000
 /bot set Vasco greeting none
 /bot set Vasco farewell none
 /bot set Vasco mention_response \c03\b[Vasco]\o Leio o Público e a RTP. \c02!fontes\o lista os feeds.
@@ -149,7 +152,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Duarte prefix !
 /bot set Duarte cooldown 1000
 /bot set Duarte rss_interval 20
-/bot set Duarte rss_max_items 10000
 /bot set Duarte greeting \c02\b[Duarte]\o Bem-vindo à #actualidade, {nickname}. \c14As manchetes chegam sozinhas\o — !fontes mostra de onde.
 /bot set Duarte greeting_delivery private_notice
 /bot set Duarte greeter_repeat_window 43200
@@ -166,7 +168,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Leonor prefix !
 /bot set Leonor cooldown 1000
 /bot set Leonor rss_interval 20
-/bot set Leonor rss_max_items 10000
 /bot set Leonor greeting \c04\b[Leonor]\o {nickname}, isto aqui é o fio rápido. \c07Notícias ao Minuto e TVI\o — !fontes para a lista.
 /bot set Leonor greeting_delivery private_notice
 /bot set Leonor greeter_repeat_window 43200
@@ -182,7 +183,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Gil prefix !
 /bot set Gil cooldown 1000
 /bot set Gil rss_interval 30
-/bot set Gil rss_max_items 10000
 /bot set Gil greeting \c10\b[Gil]\o Olá, {nickname}. \c06SAPO Tek e Pplware\o caem aqui sozinhos. !fontes para a lista, !suporte antes de perguntares.
 /bot set Gil greeting_delivery private_notice
 /bot set Gil greeter_repeat_window 43200
@@ -199,7 +199,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Mafalda prefix !
 /bot set Mafalda cooldown 1000
 /bot set Mafalda rss_interval 45
-/bot set Mafalda rss_max_items 10000
 /bot set Mafalda greeting \c13\b[Mafalda]\o Entra, {nickname}. \c11 4gnews e Leak\o no fio — !fontes para a lista.
 /bot set Mafalda greeting_delivery private_notice
 /bot set Mafalda greeter_repeat_window 43200
@@ -215,7 +214,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Afonso prefix !
 /bot set Afonso cooldown 1000
 /bot set Afonso rss_interval 30
-/bot set Afonso rss_max_items 10000
 /bot set Afonso greeting \c11\b[Afonso]\o Bem-vindo, {nickname}. \c02ECO e Jornal de Negócios\o chegam aqui sozinhos. !fontes para a lista.
 /bot set Afonso greeting_delivery private_notice
 /bot set Afonso greeter_repeat_window 43200
@@ -231,7 +229,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Beatriz prefix !
 /bot set Beatriz cooldown 1000
 /bot set Beatriz rss_interval 30
-/bot set Beatriz rss_max_items 10000
 /bot set Beatriz greeting \c07\b[Beatriz]\o Olá, {nickname}. \c14Dinheiro Vivo\o no fio — !fontes para a lista, !aviso antes de acreditares.
 /bot set Beatriz greeting_delivery private_notice
 /bot set Beatriz greeter_repeat_window 43200
@@ -247,7 +244,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Eusebio prefix !
 /bot set Eusebio cooldown 1000
 /bot set Eusebio rss_interval 20
-/bot set Eusebio rss_max_items 10000
 /bot set Eusebio greeting \c03\b[Eusebio]\o Viva, {nickname}! \c09Record e Mais Futebol\o no fio. !fontes para a lista, !clube se insistires.
 /bot set Eusebio greeting_delivery private_notice
 /bot set Eusebio greeter_repeat_window 43200
@@ -264,7 +260,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Amalia prefix !
 /bot set Amalia cooldown 1000
 /bot set Amalia rss_interval 60
-/bot set Amalia rss_max_items 10000
 /bot set Amalia greeting \c06\b[Amalia]\o Olá, {nickname}. \c13Visão e Sábado\o chegam de hora a hora. !fontes para a lista.
 /bot set Amalia greeting_delivery private_notice
 /bot set Amalia greeter_repeat_window 43200
@@ -280,7 +275,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Ines prefix !
 /bot set Ines cooldown 1000
 /bot set Ines rss_interval 120
-/bot set Ines rss_max_items 10000
 /bot set Ines greeting \c09\b[Ines]\o Bem-vindo, {nickname}. \c03Wilder\o no fio — aves, plantas e o território. !fontes para a lista.
 /bot set Ines greeting_delivery private_notice
 /bot set Ines greeter_repeat_window 43200

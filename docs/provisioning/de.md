@@ -133,6 +133,10 @@ shot, logged in as an admin who has `/identify`-ed.
 # Jede Adresse hier unten wurde vom Produktions-Fetcher geholt und vom Parser
 # der Anwendung gelesen, bevor sie hier stand. Der erste Abruf veröffentlicht
 # die empfangene Seite und merkt sie sich; danach kommt nur noch Neues.
+#
+# Eine erste Lesung kommt in Schüben, nicht am Stück: Der Flood-Schutz sitzt in
+# der Sitzung jedes Lesers und ignoriert automatisch, wer ihn überholt. Nichts
+# geht verloren — ein Feed mit Rückstand kommt in unter einer Minute wieder.
 
 # ── Klaus — #deutschland ─────────────────────────────────
 # Ohne Begrüßung: In diesem Raum empfängt Fritzi.
@@ -140,7 +144,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Klaus prefix !
 /bot set Klaus cooldown 1000
 /bot set Klaus rss_interval 20
-/bot set Klaus rss_max_items 10000
 /bot set Klaus greeting none
 /bot set Klaus farewell none
 /bot set Klaus mention_response \c03\b[Klaus]\o Ich lese Tagesschau und Zeit. \c02!quellen\o zeigt die Feeds.
@@ -154,7 +157,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Greta prefix !
 /bot set Greta cooldown 1000
 /bot set Greta rss_interval 20
-/bot set Greta rss_max_items 10000
 /bot set Greta greeting \c02\b[Greta]\o Willkommen in #nachrichten, {nickname}. \c14Die Schlagzeilen kommen von allein\o — !quellen sagt woher.
 /bot set Greta greeting_delivery private_notice
 /bot set Greta greeter_repeat_window 43200
@@ -173,7 +175,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Heidi prefix !
 /bot set Heidi cooldown 1000
 /bot set Heidi rss_interval 30
-/bot set Heidi rss_max_items 10000
 /bot set Heidi greeting \c10\b[Heidi]\o Grüß dich, {nickname}. \c06Der Standard und die NZZ\o landen hier von allein. !quellen für die Liste.
 /bot set Heidi greeting_delivery private_notice
 /bot set Heidi greeter_repeat_window 43200
@@ -189,7 +190,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Werner prefix !
 /bot set Werner cooldown 1000
 /bot set Werner rss_interval 30
-/bot set Werner rss_max_items 10000
 /bot set Werner greeting \c12\b[Werner]\o Moin {nickname}. \c10heise und Golem\o kommen hier von allein. !quellen für die Liste, !support vor dem Fragen.
 /bot set Werner greeting_delivery private_notice
 /bot set Werner greeter_repeat_window 43200
@@ -206,7 +206,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Lotte prefix !
 /bot set Lotte cooldown 1000
 /bot set Lotte rss_interval 45
-/bot set Lotte rss_max_items 10000
 /bot set Lotte greeting \c13\b[Lotte]\o Hallo {nickname}. \c11netzpolitik.org und t3n\o am Draht — !quellen für die Liste.
 /bot set Lotte greeting_delivery private_notice
 /bot set Lotte greeter_repeat_window 43200
@@ -222,7 +221,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Konrad prefix !
 /bot set Konrad cooldown 1000
 /bot set Konrad rss_interval 60
-/bot set Konrad rss_max_items 10000
 /bot set Konrad greeting \c11\b[Konrad]\o Willkommen, {nickname}. \c14ComputerBase\o am Draht. !quellen für die Liste, !aufruesten bevor du kaufst.
 /bot set Konrad greeting_delivery private_notice
 /bot set Konrad greeter_repeat_window 43200
@@ -238,7 +236,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Ilse prefix !
 /bot set Ilse cooldown 1000
 /bot set Ilse rss_interval 30
-/bot set Ilse rss_max_items 10000
 /bot set Ilse greeting \c07\b[Ilse]\o Hallo {nickname}. \c02Handelsblatt und WirtschaftsWoche\o am Draht — !quellen für die Liste, !hinweis vorm Glauben.
 /bot set Ilse greeting_delivery private_notice
 /bot set Ilse greeter_repeat_window 43200
@@ -255,7 +252,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Otto prefix !
 /bot set Otto cooldown 1000
 /bot set Otto rss_interval 60
-/bot set Otto rss_max_items 10000
 /bot set Otto greeting \c06\b[Otto]\o Willkommen, {nickname}. \c13Spektrum und wissenschaft.de\o kommen stündlich. !quellen für die Liste.
 /bot set Otto greeting_delivery private_notice
 /bot set Otto greeter_repeat_window 43200
@@ -271,7 +267,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Uwe prefix !
 /bot set Uwe cooldown 1000
 /bot set Uwe rss_interval 20
-/bot set Uwe rss_max_items 10000
 /bot set Uwe greeting \c09\b[Uwe]\o Servus {nickname}! \c03kicker und Sportschau\o am Draht. !quellen für die Liste, !verein wenn du drauf bestehst.
 /bot set Uwe greeting_delivery private_notice
 /bot set Uwe greeter_repeat_window 43200
@@ -288,7 +283,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Jonas prefix !
 /bot set Jonas cooldown 1000
 /bot set Jonas rss_interval 45
-/bot set Jonas rss_max_items 10000
 /bot set Jonas greeting \c12\b[Jonas]\o Rein mit dir, {nickname}! \c10Eurogamer.de\o am Draht, und das Menü Games öffnet 18 Klassiker im Browser. !quellen, !spielen.
 /bot set Jonas greeting_delivery private_notice
 /bot set Jonas greeter_repeat_window 43200

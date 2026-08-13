@@ -36,6 +36,9 @@ defmodule RetroHexChat.Application do
       RetroHexChat.Services.NickServ,
       RetroHexChat.Services.ChanServ,
       {Registry, keys: :unique, name: RetroHexChat.Bots.BotRegistry},
+      # Ahead of the bots themselves: a bot that speaks before the pacer exists
+      # would speak unpaced, which is the burst this prevents.
+      RetroHexChat.Bots.Pace,
       RetroHexChat.Bots.Supervisor,
       RetroHexChat.Bots.Loader
     ]

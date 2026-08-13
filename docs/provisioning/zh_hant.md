@@ -129,6 +129,9 @@ shot, logged in as an admin who has `/identify`-ed.
 # ══════════════════════════════════════════════════════════
 # 下面每個網址都先用正式環境的 fetcher 抓過、用應用程式的解析器讀過，才寫
 # 進來。第一次抓取會把收到的那一頁貼出來並記下；之後只貼新的。
+#
+# 第一次讀取分批送出，不是一次倒完：洗版保護在每個讀者自己的工作階段裡，超過
+# 就自動忽略。不會丟東西 —— 還有積壓的來源會在一分鐘內回來拿剩下的。
 
 # ── Ahsiung — #fanti ─────────────────────────────────────
 # 不打招呼：這個頻道裡迎客的是 Meiling。
@@ -136,7 +139,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Ahsiung prefix !
 /bot set Ahsiung cooldown 1000
 /bot set Ahsiung rss_interval 20
-/bot set Ahsiung rss_max_items 10000
 /bot set Ahsiung greeting none
 /bot set Ahsiung farewell none
 /bot set Ahsiung mention_response \c03\b[Ahsiung]\o 我讀自由時報和公視新聞。\c02!sources\o 列出訂閱來源。
@@ -150,7 +152,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Chunhua prefix !
 /bot set Chunhua cooldown 1000
 /bot set Chunhua rss_interval 20
-/bot set Chunhua rss_max_items 10000
 /bot set Chunhua greeting \c02\b[Chunhua]\o 歡迎來到 #tw-news，{nickname}。\c14頭條會自己進來\o —— !sources 說明來源。
 /bot set Chunhua greeting_delivery private_notice
 /bot set Chunhua greeter_repeat_window 43200
@@ -168,7 +169,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Ahfai prefix !
 /bot set Ahfai cooldown 1000
 /bot set Ahfai rss_interval 30
-/bot set Ahfai rss_max_items 10000
 /bot set Ahfai greeting \c07\b[Ahfai]\o {nickname}，歡迎。\c11香港獨立媒體\o在線上。!sources 看清單。
 /bot set Ahfai greeting_delivery private_notice
 /bot set Ahfai greeter_repeat_window 43200
@@ -183,7 +183,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Shijie prefix !
 /bot set Shijie cooldown 1000
 /bot set Shijie rss_interval 30
-/bot set Shijie rss_max_items 10000
 /bot set Shijie greeting \c10\b[Shijie]\o 你好，{nickname}。\c06中央社國際新聞和 BBC 中文網\o在線上。!sources 看清單。
 /bot set Shijie greeting_delivery private_notice
 /bot set Shijie greeter_repeat_window 43200
@@ -199,7 +198,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Keji prefix !
 /bot set Keji cooldown 1000
 /bot set Keji rss_interval 30
-/bot set Keji rss_max_items 10000
 /bot set Keji greeting \c12\b[Keji]\o 歡迎，{nickname}。\c10TechNews、iThome、中央社科技、INSIDE\o 會自己落進來。!sources 看清單，!support 在提問之前看。
 /bot set Keji greeting_delivery private_notice
 /bot set Keji greeter_repeat_window 43200
@@ -218,7 +216,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Dianwan prefix !
 /bot set Dianwan cooldown 1000
 /bot set Dianwan rss_interval 45
-/bot set Dianwan rss_max_items 10000
 /bot set Dianwan greeting \c12\b[Dianwan]\o 進來吧，{nickname}！\c10巴哈姆特 GNN 和 4Gamers\o在線上，Games 選單裡有 18 款經典可以直接玩。!sources、!play。
 /bot set Dianwan greeting_delivery private_notice
 /bot set Dianwan greeter_repeat_window 43200
@@ -235,7 +232,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Yundong prefix !
 /bot set Yundong cooldown 1000
 /bot set Yundong rss_interval 20
-/bot set Yundong rss_max_items 10000
 /bot set Yundong greeting \c09\b[Yundong]\o {nickname}，你好！\c03中央社體育和自由時報體育\o在線上。!sources 看清單，!qiudui 你真要問再說。
 /bot set Yundong greeting_delivery private_notice
 /bot set Yundong greeter_repeat_window 43200
@@ -252,7 +248,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Caijing prefix !
 /bot set Caijing cooldown 1000
 /bot set Caijing rss_interval 30
-/bot set Caijing rss_max_items 10000
 /bot set Caijing greeting \c07\b[Caijing]\o 你好，{nickname}。\c14中央社財經和自由時報財經\o在線上 —— !sources 看清單，!tixing 在相信之前看。
 /bot set Caijing greeting_delivery private_notice
 /bot set Caijing greeter_repeat_window 43200
@@ -269,7 +264,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Kexue prefix !
 /bot set Kexue cooldown 1000
 /bot set Kexue rss_interval 90
-/bot set Kexue rss_max_items 10000
 /bot set Kexue greeting \c11\b[Kexue]\o 歡迎，{nickname}。\c02泛科學\o在線上 —— 更新不快，所以九十分鐘抓一次。!sources。
 /bot set Kexue greeting_delivery private_notice
 /bot set Kexue greeter_repeat_window 43200
@@ -284,7 +278,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Shenghuo prefix !
 /bot set Shenghuo cooldown 1000
 /bot set Shenghuo rss_interval 60
-/bot set Shenghuo rss_max_items 10000
 /bot set Shenghuo greeting \c06\b[Shenghuo]\o 你好，{nickname}。\c13中央社生活和自由時報娛樂\o每小時送來一次。!sources 看清單。
 /bot set Shenghuo greeting_delivery private_notice
 /bot set Shenghuo greeter_repeat_window 43200

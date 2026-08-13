@@ -145,6 +145,10 @@ shot, logged in as an admin who has `/identify`-ed.
 # Cada dirección de aquí abajo se descargó con el fetcher de producción y la
 # leyó el parser de la aplicación antes de escribirse. El primer sondeo publica
 # la página que recibe y la registra; a partir de ahí solo sale lo nuevo.
+#
+# Una primera lectura llega por lotes, no de golpe: la protección de flood vive
+# en la sesión de cada lector y auto-ignora a quien la supera. No se descarta
+# nada — un feed con cola vuelve en menos de un minuto a por el resto.
 
 # ── Paco — #hispano ──────────────────────────────────────
 # Sin saludo: a los recién llegados los recibe Lucia.
@@ -152,7 +156,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Paco prefix !
 /bot set Paco cooldown 1000
 /bot set Paco rss_interval 20
-/bot set Paco rss_max_items 10000
 /bot set Paco greeting none
 /bot set Paco farewell none
 /bot set Paco mention_response \c03\b[Paco]\o Leo El País y RTVE. \c02!fuentes\o lista los feeds.
@@ -166,7 +169,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Elena prefix !
 /bot set Elena cooldown 1000
 /bot set Elena rss_interval 20
-/bot set Elena rss_max_items 10000
 /bot set Elena greeting \c02\b[Elena]\o Bienvenido a #noticias, {nickname}. \c14Los titulares llegan solos\o — !fuentes dice de dónde.
 /bot set Elena greeting_delivery private_notice
 /bot set Elena greeter_repeat_window 43200
@@ -184,7 +186,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Diego prefix !
 /bot set Diego cooldown 1000
 /bot set Diego rss_interval 20
-/bot set Diego rss_max_items 10000
 /bot set Diego greeting \c07\b[Diego]\o Bienvenido, {nickname}. \c11Clarín, La Nación e Infobae\o caen acá solos. !fuentes para la lista.
 /bot set Diego greeting_delivery private_notice
 /bot set Diego greeter_repeat_window 43200
@@ -201,7 +202,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Marisol prefix !
 /bot set Marisol cooldown 1000
 /bot set Marisol rss_interval 30
-/bot set Marisol rss_max_items 10000
 /bot set Marisol greeting \c10\b[Marisol]\o Hola, {nickname}. \c06BBC Mundo, ABC, El Confidencial y La Vanguardia\o en el cable. !fuentes para la lista.
 /bot set Marisol greeting_delivery private_notice
 /bot set Marisol greeter_repeat_window 43200
@@ -221,7 +221,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Nacho cooldown 1000
 /bot set Nacho rss_interval 30
 /bot set Nacho rss_max_feeds 5
-/bot set Nacho rss_max_items 10000
 /bot set Nacho greeting \c12\b[Nacho]\o ¡Hola, {nickname}! \c10Cinco feeds de tecnología\o caen aquí solos. !fuentes para la lista, !soporte antes de preguntar.
 /bot set Nacho greeting_delivery private_notice
 /bot set Nacho greeter_repeat_window 43200
@@ -241,7 +240,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Rocio prefix !
 /bot set Rocio cooldown 1000
 /bot set Rocio rss_interval 45
-/bot set Rocio rss_max_items 10000
 /bot set Rocio greeting \c13\b[Rocio]\o ¡Dentro, {nickname}! \c06Vida Extra\o en el cable, y el menú Games abre 18 clásicos en el navegador. !fuentes, !jugar.
 /bot set Rocio greeting_delivery private_notice
 /bot set Rocio greeter_repeat_window 43200
@@ -257,7 +255,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Ramon prefix !
 /bot set Ramon cooldown 1000
 /bot set Ramon rss_interval 20
-/bot set Ramon rss_max_items 10000
 /bot set Ramon greeting \c09\b[Ramon]\o ¡Buenas, {nickname}! \c03Marca y Mundo Deportivo\o en el cable. !fuentes para la lista, !equipo si insistes.
 /bot set Ramon greeting_delivery private_notice
 /bot set Ramon greeter_repeat_window 43200
@@ -274,7 +271,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Carmen prefix !
 /bot set Carmen cooldown 1000
 /bot set Carmen rss_interval 60
-/bot set Carmen rss_max_items 10000
 /bot set Carmen greeting \c06\b[Carmen]\o Pasa, {nickname}. \c13Espinof\o en el cable — estrenos, series y temporadas. !fuentes para la lista.
 /bot set Carmen greeting_delivery private_notice
 /bot set Carmen greeter_repeat_window 43200
@@ -289,7 +285,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Teresa prefix !
 /bot set Teresa cooldown 1000
 /bot set Teresa rss_interval 60
-/bot set Teresa rss_max_items 10000
 /bot set Teresa greeting \c11\b[Teresa]\o Hola, {nickname}. \c02Muy Interesante\o llega cada hora. !fuentes para la lista.
 /bot set Teresa greeting_delivery private_notice
 /bot set Teresa greeter_repeat_window 43200
@@ -304,7 +299,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Pepa prefix !
 /bot set Pepa cooldown 1000
 /bot set Pepa rss_interval 90
-/bot set Pepa rss_max_items 10000
 /bot set Pepa greeting \c05\b[Pepa]\o Adelante, {nickname}. \c08Directo al Paladar\o en el cable. !fuentes para la lista, !tortilla bajo tu responsabilidad.
 /bot set Pepa greeting_delivery private_notice
 /bot set Pepa greeter_repeat_window 43200
@@ -320,7 +314,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Manolo prefix !
 /bot set Manolo cooldown 1000
 /bot set Manolo rss_interval 90
-/bot set Manolo rss_max_items 10000
 /bot set Manolo greeting \c14\b[Manolo]\o Buenas, {nickname}. \c04Motorpasión\o en el cable. !fuentes para la lista.
 /bot set Manolo greeting_delivery private_notice
 /bot set Manolo greeter_repeat_window 43200
@@ -335,7 +328,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Alonso prefix !
 /bot set Alonso cooldown 1000
 /bot set Alonso rss_interval 30
-/bot set Alonso rss_max_items 10000
 /bot set Alonso greeting \c07\b[Alonso]\o Hola, {nickname}. \c14Expansión\o en el cable — !fuentes para la lista, !aviso antes de creerte nada.
 /bot set Alonso greeting_delivery private_notice
 /bot set Alonso greeter_repeat_window 43200

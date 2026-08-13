@@ -231,9 +231,21 @@ defmodule RetroHexChat.Jobs.RSSPollWorker do
   end
 
   @spec schedule_next_poll(map()) :: :ok | {:error, term()}
-  defp schedule_next_poll(%{bot: %Bot{id: bot_id}, feed_id: feed_id, poll_interval_ms: delay_ms}) do
-    Scheduler.schedule_follow_up_poll(bot_id, feed_id, delay_ms)
+  defp schedule_next_poll(
+         %{bot: %Bot{id: bot_id}, feed_id: feed_id, poll_interval_ms: delay_ms} = poll
+       ) do
+    Scheduler.schedule_follow_up_poll(bot_id, feed_id, drain_or_interval(poll, delay_ms))
   end
+
+  # A poll that left items behind is not finished, so it does not wait out the
+  # feed's interval — the ceiling exists to pace delivery, not to postpone it.
+  # Without this a hundred-item page would trickle out over days.
+  @spec drain_or_interval(map(), non_neg_integer()) :: non_neg_integer()
+  defp drain_or_interval(%{summary: %{pending_count: pending}}, delay_ms) when pending > 0 do
+    min(RSS.drain_interval_ms(), delay_ms)
+  end
+
+  defp drain_or_interval(_poll, delay_ms), do: delay_ms
 
   @spec schedule_or_retry_after_fetch(map(), RSS.Fetcher.result(), Oban.Job.t()) ::
           :ok | {:error, term()}
@@ -295,6 +307,7 @@ defmodule RetroHexChat.Jobs.RSSPollWorker do
       source_item_count: source_item_count,
       published_count: published_count,
       seen_count: length(updated_feed["seen"] || []),
+      pending_count: updated_feed["pending"] || 0,
       next_poll_ms: new_state.poll_interval_ms,
       last_error: updated_feed["last_error"]
     }

@@ -1,0 +1,186 @@
+# ══════════════════════════════════════════════════════════
+#  Cadência — teto de itens por lote
+#  150 bots de feed · aplicar UMA vez, depois do deploy
+# ══════════════════════════════════════════════════════════
+# Os bots provisionados guardam max_items_per_poll=10000, que foi o que
+# entregou uma página inteira de uma vez e fez os leitores auto-ignorarem
+# Vasco e Nina. Nada é descartado ao baixar o teto: o que não couber sai no
+# lote seguinte, e um feed com fila volta em menos de um minuto.
+
+# ── de ──
+/bot set Klaus rss_max_items 10
+/bot set Greta rss_max_items 10
+/bot set Heidi rss_max_items 10
+/bot set Werner rss_max_items 10
+/bot set Lotte rss_max_items 10
+/bot set Konrad rss_max_items 10
+/bot set Ilse rss_max_items 10
+/bot set Otto rss_max_items 10
+/bot set Uwe rss_max_items 10
+/bot set Jonas rss_max_items 10
+
+# ── en ──
+/bot set Pixel rss_max_items 10
+/bot set Murphy rss_max_items 10
+/bot set Gazeta rss_max_items 10
+/bot set Freeman rss_max_items 10
+/bot set Cassandra rss_max_items 10
+/bot set Ada rss_max_items 10
+/bot set Curie rss_max_items 10
+/bot set Yuki rss_max_items 10
+/bot set Joystick rss_max_items 10
+/bot set Sprite rss_max_items 10
+/bot set Byte rss_max_items 10
+/bot set Atlas rss_max_items 10
+/bot set Tux rss_max_items 10
+/bot set Sentinel rss_max_items 10
+/bot set Vega rss_max_items 10
+/bot set Quasar rss_max_items 10
+/bot set Sakura rss_max_items 10
+
+# ── es ──
+/bot set Paco rss_max_items 10
+/bot set Elena rss_max_items 10
+/bot set Diego rss_max_items 10
+/bot set Marisol rss_max_items 10
+/bot set Nacho rss_max_items 10
+/bot set Rocio rss_max_items 10
+/bot set Ramon rss_max_items 10
+/bot set Carmen rss_max_items 10
+/bot set Teresa rss_max_items 10
+/bot set Pepa rss_max_items 10
+/bot set Manolo rss_max_items 10
+/bot set Alonso rss_max_items 10
+
+# ── fr ──
+/bot set Gaspard rss_max_items 10
+/bot set Colette rss_max_items 10
+/bot set Renaud rss_max_items 10
+/bot set Blaise rss_max_items 10
+/bot set Amelie rss_max_items 10
+/bot set Ambroise rss_max_items 10
+/bot set Denis rss_max_items 10
+/bot set Lulu rss_max_items 10
+/bot set Jacques rss_max_items 10
+/bot set Camille rss_max_items 10
+/bot set Odile rss_max_items 10
+
+# ── id ──
+/bot set Bagus rss_max_items 10
+/bot set Rina rss_max_items 10
+/bot set Joko rss_max_items 10
+/bot set Dewi rss_max_items 10
+/bot set Adi rss_max_items 10
+/bot set Yusuf rss_max_items 10
+/bot set Sari rss_max_items 10
+/bot set Wayan rss_max_items 10
+/bot set Intan rss_max_items 10
+/bot set Rizky rss_max_items 10
+
+# ── it ──
+/bot set Enzo rss_max_items 10
+/bot set Vittorio rss_max_items 10
+/bot set Franca rss_max_items 10
+/bot set Gianni rss_max_items 10
+/bot set Nilde rss_max_items 10
+/bot set Bruno rss_max_items 10
+/bot set Ciccio rss_max_items 10
+/bot set Toto rss_max_items 10
+/bot set Galileo rss_max_items 10
+/bot set Piero rss_max_items 10
+
+# ── ja ──
+/bot set Taro rss_max_items 10
+/bot set Ken rss_max_items 10
+/bot set Mio rss_max_items 10
+/bot set Sora rss_max_items 10
+/bot set Hiro rss_max_items 10
+/bot set Kenji rss_max_items 10
+/bot set Daichi rss_max_items 10
+/bot set Nozomi rss_max_items 10
+/bot set Akira rss_max_items 10
+/bot set Yui rss_max_items 10
+
+# ── nl ──
+/bot set Joop rss_max_items 10
+/bot set Sanne rss_max_items 10
+/bot set Wout rss_max_items 10
+/bot set Bram rss_max_items 10
+/bot set Tijs rss_max_items 10
+/bot set Marijke rss_max_items 10
+/bot set Johan rss_max_items 10
+/bot set Lieke rss_max_items 10
+/bot set Daan rss_max_items 10
+/bot set Kees rss_max_items 10
+
+# ── pl ──
+/bot set Marek rss_max_items 10
+/bot set Zofia rss_max_items 10
+/bot set Jacek rss_max_items 10
+/bot set Bogdan rss_max_items 10
+/bot set Iwona rss_max_items 10
+/bot set Rafal rss_max_items 10
+/bot set Lech rss_max_items 10
+/bot set Kopernik rss_max_items 10
+/bot set Halina rss_max_items 10
+/bot set Ewa rss_max_items 10
+
+# ── pt_BR ──
+/bot set Nina rss_max_items 10
+/bot set Zeca rss_max_items 10
+/bot set Bento rss_max_items 10
+/bot set Juca rss_max_items 10
+/bot set Dora rss_max_items 10
+/bot set Iara rss_max_items 10
+/bot set Chico rss_max_items 10
+/bot set Lila rss_max_items 10
+/bot set Tuca rss_max_items 10
+/bot set Vito rss_max_items 10
+
+# ── pt_PT ──
+/bot set Vasco rss_max_items 10
+/bot set Duarte rss_max_items 10
+/bot set Leonor rss_max_items 10
+/bot set Gil rss_max_items 10
+/bot set Mafalda rss_max_items 10
+/bot set Afonso rss_max_items 10
+/bot set Beatriz rss_max_items 10
+/bot set Eusebio rss_max_items 10
+/bot set Amalia rss_max_items 10
+/bot set Ines rss_max_items 10
+
+# ── ru ──
+/bot set Fedya rss_max_items 10
+/bot set Grisha rss_max_items 10
+/bot set Semyon rss_max_items 10
+/bot set Zhora rss_max_items 10
+/bot set Kolya rss_max_items 10
+/bot set Pingvin rss_max_items 10
+/bot set Vitya rss_max_items 10
+/bot set Sofya rss_max_items 10
+/bot set Larisa rss_max_items 10
+/bot set Valera rss_max_items 10
+
+# ── zh_hans ──
+/bot set Ahua rss_max_items 10
+/bot set Lifeng rss_max_items 10
+/bot set Xiaolong rss_max_items 10
+/bot set Meili rss_max_items 10
+/bot set Laowang rss_max_items 10
+/bot set Dabing rss_max_items 10
+/bot set Kaiyuan rss_max_items 10
+/bot set Zhineng rss_max_items 10
+/bot set Youxi rss_max_items 10
+/bot set Qianbao rss_max_items 10
+
+# ── zh_hant ──
+/bot set Ahsiung rss_max_items 10
+/bot set Chunhua rss_max_items 10
+/bot set Ahfai rss_max_items 10
+/bot set Shijie rss_max_items 10
+/bot set Keji rss_max_items 10
+/bot set Dianwan rss_max_items 10
+/bot set Yundong rss_max_items 10
+/bot set Caijing rss_max_items 10
+/bot set Kexue rss_max_items 10
+/bot set Shenghuo rss_max_items 10

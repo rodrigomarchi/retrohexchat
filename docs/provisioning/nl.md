@@ -133,6 +133,10 @@ shot, logged in as an admin who has `/identify`-ed.
 # Elk adres hieronder is opgehaald met de productie-fetcher en gelezen door de
 # parser van de applicatie voordat het hier stond. De eerste ronde publiceert
 # de ontvangen pagina en onthoudt die; daarna komt alleen wat nieuw is.
+#
+# Een eerste ronde komt in porties, niet in één keer: de floodbescherming zit in
+# de sessie van elke lezer en negeert automatisch wie eroverheen gaat. Er gaat
+# niets verloren — een feed met achterstand komt binnen een minuut terug.
 
 # ── Joop — #nederland ────────────────────────────────────
 # Zonder welkom: in dit kanaal ontvangt Fenna.
@@ -140,7 +144,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Joop prefix !
 /bot set Joop cooldown 1000
 /bot set Joop rss_interval 20
-/bot set Joop rss_max_items 10000
 /bot set Joop greeting none
 /bot set Joop farewell none
 /bot set Joop mention_response \c03\b[Joop]\o Ik lees NOS en NU.nl. \c02!bronnen\o toont de feeds.
@@ -154,7 +157,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Sanne prefix !
 /bot set Sanne cooldown 1000
 /bot set Sanne rss_interval 20
-/bot set Sanne rss_max_items 10000
 /bot set Sanne greeting \c02\b[Sanne]\o Welkom in #nieuws, {nickname}. \c14De koppen komen vanzelf\o — !bronnen zegt waarvandaan.
 /bot set Sanne greeting_delivery private_notice
 /bot set Sanne greeter_repeat_window 43200
@@ -172,7 +174,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Wout prefix !
 /bot set Wout cooldown 1000
 /bot set Wout rss_interval 20
-/bot set Wout rss_max_items 10000
 /bot set Wout greeting \c07\b[Wout]\o Welkom, {nickname}. \c11VRT NWS, De Morgen en HLN\o landen hier vanzelf. !bronnen voor de lijst.
 /bot set Wout greeting_delivery private_notice
 /bot set Wout greeter_repeat_window 43200
@@ -189,7 +190,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Bram prefix !
 /bot set Bram cooldown 1000
 /bot set Bram rss_interval 30
-/bot set Bram rss_max_items 10000
 /bot set Bram greeting \c10\b[Bram]\o Hallo {nickname}. \c06NRC, Het Parool en RTL Nieuws\o komen hier binnen. !bronnen voor de lijst.
 /bot set Bram greeting_delivery private_notice
 /bot set Bram greeter_repeat_window 43200
@@ -206,7 +206,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Tijs prefix !
 /bot set Tijs cooldown 1000
 /bot set Tijs rss_interval 30
-/bot set Tijs rss_max_items 10000
 /bot set Tijs greeting \c12\b[Tijs]\o Hoi {nickname}. \c10Tweakers en Bright\o vallen hier binnen. !bronnen voor de lijst, !support voor je iets vraagt.
 /bot set Tijs greeting_delivery private_notice
 /bot set Tijs greeter_repeat_window 43200
@@ -223,7 +222,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Marijke prefix !
 /bot set Marijke cooldown 1000
 /bot set Marijke rss_interval 30
-/bot set Marijke rss_max_items 10000
 /bot set Marijke greeting \c04\b[Marijke]\o {nickname}, welkom. \c05Security.NL\o aan de lijn. Je leest het later alsnog, dus lees het nu. !bronnen, !patch.
 /bot set Marijke greeting_delivery private_notice
 /bot set Marijke greeter_repeat_window 43200
@@ -239,7 +237,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Johan prefix !
 /bot set Johan cooldown 1000
 /bot set Johan rss_interval 20
-/bot set Johan rss_max_items 10000
 /bot set Johan greeting \c09\b[Johan]\o Hoi {nickname}! \c03VI, VoetbalPrimeur en HLN Sport\o aan de lijn. !bronnen voor de lijst, !club als je aandringt.
 /bot set Johan greeting_delivery private_notice
 /bot set Johan greeter_repeat_window 43200
@@ -257,7 +254,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Lieke prefix !
 /bot set Lieke cooldown 1000
 /bot set Lieke rss_interval 60
-/bot set Lieke rss_max_items 10000
 /bot set Lieke greeting \c06\b[Lieke]\o Welkom, {nickname}. \c13Scientias en New Scientist\o komen elk uur langs. !bronnen voor de lijst.
 /bot set Lieke greeting_delivery private_notice
 /bot set Lieke greeter_repeat_window 43200
@@ -273,7 +269,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Daan prefix !
 /bot set Daan cooldown 1000
 /bot set Daan rss_interval 45
-/bot set Daan rss_max_items 10000
 /bot set Daan greeting \c07\b[Daan]\o Hallo {nickname}. \c14Emerce\o aan de lijn — !bronnen voor de lijst, !waarschuwing voor je iets gelooft.
 /bot set Daan greeting_delivery private_notice
 /bot set Daan greeter_repeat_window 43200
@@ -289,7 +284,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Kees prefix !
 /bot set Kees cooldown 1000
 /bot set Kees rss_interval 90
-/bot set Kees rss_max_items 10000
 /bot set Kees greeting \c11\b[Kees]\o Kom erin, {nickname}. \c04Autoblog\o aan de lijn. !bronnen voor de lijst.
 /bot set Kees greeting_delivery private_notice
 /bot set Kees greeter_repeat_window 43200

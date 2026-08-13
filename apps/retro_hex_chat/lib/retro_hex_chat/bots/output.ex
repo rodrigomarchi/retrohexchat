@@ -7,6 +7,7 @@ defmodule RetroHexChat.Bots.Output do
   details that belong to the bot platform.
   """
 
+  alias RetroHexChat.Bots.Pace
   alias RetroHexChat.Channels
 
   require Logger
@@ -35,10 +36,26 @@ defmodule RetroHexChat.Bots.Output do
 
   def send(_channel, _nickname, _output), do: :ok
 
-  @doc "Deliver many output maps to the same channel."
+  @doc """
+  Deliver many output maps to the same channel, at a pace a reader tolerates.
+
+  Sending them in a tight loop is what auto-ignored the wire bots: flood
+  protection runs in each reader's session and silences a nickname that sends
+  more than its threshold inside the window. `Pace` decides the gap, keyed by
+  nickname so a bot's feeds cannot each be polite and still add up to a flood.
+
+  The sleep happens here, in the caller — an Oban worker — which is what makes
+  it backpressure rather than bookkeeping: while a bot is drip-feeding a batch,
+  it holds one slot, and every other bot keeps its own.
+  """
   @spec send_many(String.t(), String.t(), [map()]) :: :ok | {:error, term()}
   def send_many(channel, nickname, outputs) do
     Enum.reduce_while(outputs, :ok, fn output, :ok ->
+      # The first message of a batch waits too. A bot that just published on
+      # another feed has a slot pending, and skipping the reservation here is
+      # exactly the case that trips the reader's counter.
+      Process.sleep(Pace.reserve(nickname))
+
       case send(channel, nickname, output) do
         :ok -> {:cont, :ok}
         {:error, reason} -> {:halt, {:error, reason}}

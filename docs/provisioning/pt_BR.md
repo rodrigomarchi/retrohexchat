@@ -139,6 +139,10 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 # antes de virar linha de script. O primeiro poll publica a página que recebe e
 # a registra; depois disso só sai o que chegou novo. A lista e o histórico ficam
 # no bot, então um deploy não repete o dia.
+#
+# A primeira leitura sai em lotes, não de uma vez: a proteção de flood vive na
+# sessão de cada leitor e auto-ignora quem passa do limite. Nada é descartado —
+# um feed com fila volta em menos de um minuto para o resto.
 
 # ── Nina — #brasil ───────────────────────────────────────
 # Sem saudação: quem recebe o recém-chegado nesta sala é o Tiao.
@@ -146,7 +150,6 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 /bot set Nina prefix !
 /bot set Nina cooldown 1000
 /bot set Nina rss_interval 20
-/bot set Nina rss_max_items 10000
 /bot set Nina greeting none
 /bot set Nina farewell none
 /bot set Nina mention_response \c03\b[Nina]\o Eu leio G1 e Agência Brasil. \c02!fontes\o lista os feeds.
@@ -160,7 +163,6 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 /bot set Zeca prefix !
 /bot set Zeca cooldown 1000
 /bot set Zeca rss_interval 20
-/bot set Zeca rss_max_items 10000
 /bot set Zeca greeting \c02\b[Zeca]\o Bem-vindo ao #jornal, {nickname}. \c14As manchetes chegam sozinhas\o — !fontes mostra de onde.
 /bot set Zeca greeting_delivery private_notice
 /bot set Zeca greeter_repeat_window 43200
@@ -178,7 +180,6 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 /bot set Bento prefix !
 /bot set Bento cooldown 1000
 /bot set Bento rss_interval 30
-/bot set Bento rss_max_items 10000
 /bot set Bento greeting \c10\b[Bento]\o E aí, {nickname}! \c06Tecnoblog, Canaltech, Olhar Digital e Manual do Usuário\o caem aqui sozinhos. !fontes para a lista.
 /bot set Bento greeting_delivery private_notice
 /bot set Bento greeter_repeat_window 43200
@@ -196,7 +197,6 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 /bot set Juca prefix !
 /bot set Juca cooldown 1000
 /bot set Juca rss_interval 60
-/bot set Juca rss_max_items 10000
 /bot set Juca greeting \c12\b[Juca]\o Chegou junto, {nickname}. \c10Hardware.com.br e Mundo Conectado\o caem aqui. !fontes para os feeds.
 /bot set Juca greeting_delivery private_notice
 /bot set Juca greeter_repeat_window 43200
@@ -213,7 +213,6 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 /bot set Dora prefix !
 /bot set Dora cooldown 1000
 /bot set Dora rss_interval 45
-/bot set Dora rss_max_items 10000
 /bot set Dora greeting \c06\b[Dora]\o Oi, {nickname}. \c13TabNews e Meio Bit\o chegam sozinhos aqui. !fontes para a lista, !suporte antes de perguntar.
 /bot set Dora greeting_delivery private_notice
 /bot set Dora greeter_repeat_window 43200
@@ -230,7 +229,6 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 /bot set Iara prefix !
 /bot set Iara cooldown 1000
 /bot set Iara rss_interval 30
-/bot set Iara rss_max_items 10000
 /bot set Iara greeting \c11\b[Iara]\o Bem-vindo, {nickname}. \c02InfoMoney, Exame e Valor\o caem aqui. !fontes para a lista.
 /bot set Iara greeting_delivery private_notice
 /bot set Iara greeter_repeat_window 43200
@@ -248,7 +246,6 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 /bot set Chico prefix !
 /bot set Chico cooldown 1000
 /bot set Chico rss_interval 20
-/bot set Chico rss_max_items 10000
 /bot set Chico greeting \c03\b[Chico]\o Salve, {nickname}! \c09ge e Trivela\o no fio. !fontes para a lista, !time se quiser discussão.
 /bot set Chico greeting_delivery private_notice
 /bot set Chico greeter_repeat_window 43200
@@ -265,7 +262,6 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 /bot set Lila prefix !
 /bot set Lila cooldown 1000
 /bot set Lila rss_interval 60
-/bot set Lila rss_max_items 10000
 /bot set Lila greeting \c13\b[Lila]\o Oi, {nickname}. \c06Superinteressante e Galileu\o chegam de hora em hora. !fontes para a lista.
 /bot set Lila greeting_delivery private_notice
 /bot set Lila greeter_repeat_window 43200
@@ -281,7 +277,6 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 /bot set Tuca prefix !
 /bot set Tuca cooldown 1000
 /bot set Tuca rss_interval 60
-/bot set Tuca rss_max_items 10000
 /bot set Tuca greeting \c13\b[Tuca]\o Chegou, {nickname}! \c05POPline e TMDQA\o caem aqui. !fontes para a lista.
 /bot set Tuca greeting_delivery private_notice
 /bot set Tuca greeter_repeat_window 43200
@@ -297,7 +292,6 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 /bot set Vito prefix !
 /bot set Vito cooldown 1000
 /bot set Vito rss_interval 60
-/bot set Vito rss_max_items 10000
 /bot set Vito greeting \c12\b[Vito]\o Fala, {nickname}! \c10Adrenaline\o no fio, e o menu Games abre 18 clássicos no navegador. !fontes, !jogar.
 /bot set Vito greeting_delivery private_notice
 /bot set Vito greeter_repeat_window 43200

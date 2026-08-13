@@ -132,6 +132,10 @@ shot, logged in as an admin who has `/identify`-ed.
 # Każdy adres poniżej został pobrany produkcyjnym fetcherem i odczytany parserem
 # aplikacji, zanim tu trafił. Pierwsze odpytanie publikuje otrzymaną stronę i
 # zapamiętuje ją; potem wychodzi tylko to, co nowe.
+#
+# Pierwsze pobranie wychodzi partiami, nie naraz: ochrona przed floodem żyje w
+# sesji każdego czytelnika i automatycznie ignoruje tego, kto ją przekroczy. Nic
+# nie ginie — kanał z zaległością wraca po resztę w niecałą minutę.
 
 # ── Marek — #polska ──────────────────────────────────────
 # Bez powitania: w tym kanale wita Kasia.
@@ -139,7 +143,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Marek prefix !
 /bot set Marek cooldown 1000
 /bot set Marek rss_interval 20
-/bot set Marek rss_max_items 10000
 /bot set Marek greeting none
 /bot set Marek farewell none
 /bot set Marek mention_response \c03\b[Marek]\o Czytam RMF24 i Onet. \c02!zrodla\o pokazuje kanały RSS.
@@ -153,7 +156,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Zofia prefix !
 /bot set Zofia cooldown 1000
 /bot set Zofia rss_interval 20
-/bot set Zofia rss_max_items 10000
 /bot set Zofia greeting \c02\b[Zofia]\o Witaj w #wiadomosci, {nickname}. \c14Nagłówki przychodzą same\o — !zrodla mówi skąd.
 /bot set Zofia greeting_delivery private_notice
 /bot set Zofia greeter_repeat_window 43200
@@ -171,7 +173,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Jacek prefix !
 /bot set Jacek cooldown 1000
 /bot set Jacek rss_interval 30
-/bot set Jacek rss_max_items 10000
 /bot set Jacek greeting \c12\b[Jacek]\o Cześć {nickname}. \c10Spider's Web i Antyweb\o wpadają tu same. !zrodla po listę, !wsparcie zanim zapytasz.
 /bot set Jacek greeting_delivery private_notice
 /bot set Jacek greeter_repeat_window 43200
@@ -188,7 +189,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Bogdan prefix !
 /bot set Bogdan cooldown 1000
 /bot set Bogdan rss_interval 45
-/bot set Bogdan rss_max_items 10000
 /bot set Bogdan greeting \c11\b[Bogdan]\o Witaj, {nickname}. \c14Benchmark, PurePC i Komputer Świat\o na łączach. !zrodla po listę, !upgrade przed zakupem.
 /bot set Bogdan greeting_delivery private_notice
 /bot set Bogdan greeter_repeat_window 43200
@@ -206,7 +206,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Iwona prefix !
 /bot set Iwona cooldown 1000
 /bot set Iwona rss_interval 30
-/bot set Iwona rss_max_items 10000
 /bot set Iwona greeting \c04\b[Iwona]\o {nickname}, witaj. \c05Niebezpiecznik i Sekurak\o na łączach. I tak przeczytasz później, więc przeczytaj teraz. !zrodla, !latka.
 /bot set Iwona greeting_delivery private_notice
 /bot set Iwona greeter_repeat_window 43200
@@ -223,7 +222,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Rafal prefix !
 /bot set Rafal cooldown 1000
 /bot set Rafal rss_interval 45
-/bot set Rafal rss_max_items 10000
 /bot set Rafal greeting \c12\b[Rafal]\o Wchodź, {nickname}! \c10CD-Action i Eurogamer Polska\o na łączach, a menu Games otwiera 18 klasyków w przeglądarce. !zrodla, !zagraj.
 /bot set Rafal greeting_delivery private_notice
 /bot set Rafal greeter_repeat_window 43200
@@ -240,7 +238,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Lech prefix !
 /bot set Lech cooldown 1000
 /bot set Lech rss_interval 20
-/bot set Lech rss_max_items 10000
 /bot set Lech greeting \c09\b[Lech]\o Cześć {nickname}! \c03Przegląd Sportowy, Sportowe Fakty i TVP Sport\o na łączach. !zrodla po listę, !klub jeśli nalegasz.
 /bot set Lech greeting_delivery private_notice
 /bot set Lech greeter_repeat_window 43200
@@ -258,7 +255,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Kopernik prefix !
 /bot set Kopernik cooldown 1000
 /bot set Kopernik rss_interval 60
-/bot set Kopernik rss_max_items 10000
 /bot set Kopernik greeting \c06\b[Kopernik]\o Witaj, {nickname}. \c13Crazy Nauka i National Geographic Polska\o przychodzą co godzinę. !zrodla po listę.
 /bot set Kopernik greeting_delivery private_notice
 /bot set Kopernik greeter_repeat_window 43200
@@ -274,7 +270,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Halina prefix !
 /bot set Halina cooldown 1000
 /bot set Halina rss_interval 30
-/bot set Halina rss_max_items 10000
 /bot set Halina greeting \c07\b[Halina]\o Witaj, {nickname}. \c02Bankier, Money.pl i Business Insider Polska\o na łączach — !zrodla po listę, !uwaga zanim uwierzysz.
 /bot set Halina greeting_delivery private_notice
 /bot set Halina greeter_repeat_window 43200
@@ -292,7 +287,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Ewa prefix !
 /bot set Ewa cooldown 1000
 /bot set Ewa rss_interval 60
-/bot set Ewa rss_max_items 10000
 /bot set Ewa greeting \c05\b[Ewa]\o Wchodź, {nickname}. \c13Filmweb\o na łączach — premiery, seriale, sezony. !zrodla po listę.
 /bot set Ewa greeting_delivery private_notice
 /bot set Ewa greeter_repeat_window 43200

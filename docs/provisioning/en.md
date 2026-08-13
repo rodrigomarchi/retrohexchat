@@ -275,7 +275,6 @@ included, is joined explicitly.
 /bot join Pixel #retro
 # Low-volume feeds: a couple of posts a week, so a two-hour cadence is plenty.
 /bot set Pixel rss_interval 120
-/bot set Pixel rss_max_items 10000
 /bot rss add Pixel https://hackaday.com/category/retrocomputing/feed/ #retro
 /bot rss add Pixel https://www.vintagecomputing.com/index.php/feed #retro
 
@@ -297,7 +296,6 @@ included, is joined explicitly.
 
 /bot join Murphy #tech
 /bot set Murphy rss_interval 30
-/bot set Murphy rss_max_items 10000
 /bot rss add Murphy https://news.ycombinator.com/rss #tech
 /bot rss add Murphy https://github.blog/feed/ #tech
 
@@ -311,7 +309,6 @@ included, is joined explicitly.
 /bot set Gazeta cooldown 1000
 /bot set Gazeta rss_interval 20
 /bot set Gazeta rss_max_feeds 5
-/bot set Gazeta rss_max_items 10000
 /bot set Gazeta greeting \c02\b[Gazeta]\o Welcome to #news, {nickname}. \c14Headlines arrive on their own\o — !Gazeta rss list for the sources.
 /bot set Gazeta greeting_delivery private_notice
 /bot set Gazeta greeter_repeat_window 43200
@@ -337,6 +334,10 @@ included, is joined explicitly.
 # A feed's first poll happens within seconds, posts the page it receives, and
 # records it. Both the feed list and the record of what has been seen are stored
 # on the bot, so a deploy does not replay the day. Intervals are set per bot:
+#
+# A first read arrives in batches, not in one drop: flood protection lives in
+# each reader's session and auto-ignores a nickname that outruns it. Nothing is
+# discarded — a feed holding a backlog comes back in under a minute for the rest.
 # arXiv publishes hundreds a day, Hackaday a handful a week.
 
 # ── Freeman — #foss ──────────────────────────────────────
@@ -344,7 +345,6 @@ included, is joined explicitly.
 /bot set Freeman prefix !
 /bot set Freeman cooldown 1000
 /bot set Freeman rss_interval 30
-/bot set Freeman rss_max_items 10000
 /bot set Freeman greeting \c03\b[Freeman]\o Welcome to #foss, {nickname}. \c02Releases arrive on their own\o — !sources for where from.
 /bot set Freeman greeting_delivery private_notice
 /bot set Freeman greeter_repeat_window 43200
@@ -361,7 +361,6 @@ included, is joined explicitly.
 /bot set Cassandra prefix !
 /bot set Cassandra cooldown 1000
 /bot set Cassandra rss_interval 30
-/bot set Cassandra rss_max_items 10000
 /bot set Cassandra greeting \c04\b[Cassandra]\o {nickname}, welcome. I post advisories. \c05You will read them later\o and wish you had read them now.
 /bot set Cassandra greeting_delivery private_notice
 /bot set Cassandra greeter_repeat_window 43200
@@ -378,7 +377,6 @@ included, is joined explicitly.
 /bot set Ada prefix !
 /bot set Ada cooldown 1000
 /bot set Ada rss_interval 60
-/bot set Ada rss_max_items 10000
 /bot set Ada greeting \c10\b[Ada]\o {nickname}! \c06Preprints and model releases\o land here on their own. !sources for where from.
 /bot set Ada greeting_delivery private_notice
 /bot set Ada greeter_repeat_window 43200
@@ -395,7 +393,6 @@ included, is joined explicitly.
 /bot set Curie prefix !
 /bot set Curie cooldown 1000
 /bot set Curie rss_interval 60
-/bot set Curie rss_max_items 10000
 /bot set Curie greeting \c12\b[Curie]\o Welcome, {nickname}. \c02Astrophysics preprints, NASA and Live Science\o arrive here hourly.
 /bot set Curie greeting_delivery private_notice
 /bot set Curie greeter_repeat_window 43200
@@ -411,7 +408,6 @@ included, is joined explicitly.
 /bot set Yuki prefix !
 /bot set Yuki cooldown 1000
 /bot set Yuki rss_interval 30
-/bot set Yuki rss_max_items 10000
 /bot set Yuki greeting \c13\b[Yuki]\o {nickname}! \c06News and episode drops\o land here. !sources for where from.
 /bot set Yuki greeting_delivery private_notice
 /bot set Yuki greeter_repeat_window 43200
@@ -437,7 +433,6 @@ included, is joined explicitly.
 /bot set Joystick prefix !
 /bot set Joystick cooldown 1000
 /bot set Joystick rss_interval 45
-/bot set Joystick rss_max_items 10000
 /bot set Joystick greeting none
 /bot set Joystick farewell none
 /bot set Joystick mention_response \c12\b[Joystick]\o I watch the gaming wire. \c10!sources\o for PC Gamer and Rock Paper Shotgun.
@@ -451,7 +446,6 @@ included, is joined explicitly.
 /bot set Sprite prefix !
 /bot set Sprite cooldown 1000
 /bot set Sprite rss_interval 90
-/bot set Sprite rss_max_items 10000
 /bot set Sprite greeting none
 /bot set Sprite farewell none
 /bot set Sprite mention_response \c11\b[Sprite]\o Retro wire active: OSNews, RetroRGB and Time Extension. \c10!sources\o lists them.
@@ -466,7 +460,6 @@ included, is joined explicitly.
 /bot set Byte prefix !
 /bot set Byte cooldown 1000
 /bot set Byte rss_interval 30
-/bot set Byte rss_max_items 10000
 /bot set Byte greeting none
 /bot set Byte farewell none
 /bot set Byte mention_response \c14\b[Byte]\o Ars, ZDNet, WIRED and Engadget. \c04!sources\o for the list.
@@ -482,7 +475,6 @@ included, is joined explicitly.
 /bot set Atlas prefix !
 /bot set Atlas cooldown 1000
 /bot set Atlas rss_interval 20
-/bot set Atlas rss_max_items 10000
 /bot set Atlas greeting none
 /bot set Atlas farewell none
 /bot set Atlas mention_response \c02\b[Atlas]\o Guardian World and NPR News are on my desk. \c14!sources\o for links.
@@ -496,7 +488,6 @@ included, is joined explicitly.
 /bot set Tux prefix !
 /bot set Tux cooldown 1000
 /bot set Tux rss_interval 30
-/bot set Tux rss_max_items 10000
 /bot set Tux greeting none
 /bot set Tux farewell none
 /bot set Tux mention_response \c03\b[Tux]\o OMG! Ubuntu, Linuxiac and Linux Journal. \c02!sources\o lists them.
@@ -511,7 +502,6 @@ included, is joined explicitly.
 /bot set Sentinel prefix !
 /bot set Sentinel cooldown 1000
 /bot set Sentinel rss_interval 30
-/bot set Sentinel rss_max_items 10000
 /bot set Sentinel greeting none
 /bot set Sentinel farewell none
 /bot set Sentinel mention_response \c04\b[Sentinel]\o SecurityWeek, PortSwigger Research and Rapid7. \c05!sources\o lists the wire.
@@ -526,7 +516,6 @@ included, is joined explicitly.
 /bot set Vega prefix !
 /bot set Vega cooldown 1000
 /bot set Vega rss_interval 60
-/bot set Vega rss_max_items 10000
 /bot set Vega greeting none
 /bot set Vega farewell none
 /bot set Vega mention_response \c10\b[Vega]\o OpenAI, Google Research, DeepMind and MIT AI. \c06!sources\o lists them.
@@ -542,7 +531,6 @@ included, is joined explicitly.
 /bot set Quasar prefix !
 /bot set Quasar cooldown 1000
 /bot set Quasar rss_interval 60
-/bot set Quasar rss_max_items 10000
 /bot set Quasar greeting none
 /bot set Quasar farewell none
 /bot set Quasar mention_response \c12\b[Quasar]\o ScienceDaily, Space.com, Quanta and Smithsonian. \c02!sources\o lists them.
@@ -558,7 +546,6 @@ included, is joined explicitly.
 /bot set Sakura prefix !
 /bot set Sakura cooldown 1000
 /bot set Sakura rss_interval 30
-/bot set Sakura rss_max_items 10000
 /bot set Sakura greeting none
 /bot set Sakura farewell none
 /bot set Sakura mention_response \c13\b[Sakura]\o Anime Corner and MyAnimeList. \c06!sources\o lists them.

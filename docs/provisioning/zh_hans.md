@@ -135,6 +135,9 @@ shot, logged in as an admin who has `/identify`-ed.
 # ══════════════════════════════════════════════════════════
 # 下面每个地址都先用生产环境的 fetcher 抓过、用应用的解析器读过，才写进来。
 # 第一次抓取会把收到的那一页发出来并记下；之后只发新的。
+#
+# 第一次读取分批发出，不是一次倒完：泛滥保护在每个读者自己的会话里，超了就
+# 自动屏蔽。不丢东西 —— 还有积压的订阅源会在一分钟内回来取剩下的。
 
 # ── Ahua — #zhongwen ─────────────────────────────────────
 # 不打招呼：这个频道里迎客的是 Xiaomei。
@@ -142,7 +145,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Ahua prefix !
 /bot set Ahua cooldown 1000
 /bot set Ahua rss_interval 20
-/bot set Ahua rss_max_items 10000
 /bot set Ahua greeting none
 /bot set Ahua farewell none
 /bot set Ahua mention_response \c03\b[Ahua]\o 我读中新社、BBC 中文和纽约时报中文网。\c02!sources\o 列出订阅源。
@@ -157,7 +159,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Lifeng prefix !
 /bot set Lifeng cooldown 1000
 /bot set Lifeng rss_interval 30
-/bot set Lifeng rss_max_items 10000
 /bot set Lifeng greeting \c12\b[Lifeng]\o 欢迎，{nickname}。\c10cnBeta、IT之家、Solidot\o 会自己落进来。!sources 看清单，!support 在提问之前看。
 /bot set Lifeng greeting_delivery private_notice
 /bot set Lifeng greeter_repeat_window 43200
@@ -175,7 +176,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Xiaolong prefix !
 /bot set Xiaolong cooldown 1000
 /bot set Xiaolong rss_interval 45
-/bot set Xiaolong rss_max_items 10000
 /bot set Xiaolong greeting \c13\b[Xiaolong]\o 请进，{nickname}。\c11爱范儿和极客公园\o在线上。!sources 看清单。
 /bot set Xiaolong greeting_delivery private_notice
 /bot set Xiaolong greeter_repeat_window 43200
@@ -191,7 +191,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Meili prefix !
 /bot set Meili cooldown 1000
 /bot set Meili rss_interval 60
-/bot set Meili rss_max_items 10000
 /bot set Meili greeting \c06\b[Meili]\o 你好，{nickname}。\c13少数派和小众软件\o每小时送来一次。!sources 看清单。
 /bot set Meili greeting_delivery private_notice
 /bot set Meili greeter_repeat_window 43200
@@ -207,7 +206,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Laowang prefix !
 /bot set Laowang cooldown 1000
 /bot set Laowang rss_interval 120
-/bot set Laowang rss_max_items 10000
 /bot set Laowang greeting \c11\b[Laowang]\o 欢迎，{nickname}。\c14月光博客、阮一峰、酷壳\o 在线上 —— 更新不快，所以两小时抓一次。!sources。
 /bot set Laowang greeting_delivery private_notice
 /bot set Laowang greeter_repeat_window 43200
@@ -224,7 +222,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Dabing prefix !
 /bot set Dabing cooldown 1000
 /bot set Dabing rss_interval 45
-/bot set Dabing rss_max_items 10000
 /bot set Dabing greeting \c10\b[Dabing]\o 你好，{nickname}。\c02InfoQ 中文站\o在线上。!sources 看清单。
 /bot set Dabing greeting_delivery private_notice
 /bot set Dabing greeter_repeat_window 43200
@@ -239,7 +236,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Kaiyuan prefix !
 /bot set Kaiyuan cooldown 1000
 /bot set Kaiyuan rss_interval 45
-/bot set Kaiyuan rss_max_items 10000
 /bot set Kaiyuan greeting \c03\b[Kaiyuan]\o 欢迎，{nickname}。\c09开源中国\o在线上 —— 发布、内核、发行版。!sources、!weishenme。
 /bot set Kaiyuan greeting_delivery private_notice
 /bot set Kaiyuan greeter_repeat_window 43200
@@ -255,7 +251,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Zhineng prefix !
 /bot set Zhineng cooldown 1000
 /bot set Zhineng rss_interval 60
-/bot set Zhineng rss_max_items 10000
 /bot set Zhineng greeting \c10\b[Zhineng]\o {nickname}，欢迎。\c06雷锋网和量子位\o每小时送来一次。!sources 看清单。
 /bot set Zhineng greeting_delivery private_notice
 /bot set Zhineng greeter_repeat_window 43200
@@ -271,7 +266,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Youxi prefix !
 /bot set Youxi cooldown 1000
 /bot set Youxi rss_interval 60
-/bot set Youxi rss_max_items 10000
 /bot set Youxi greeting \c12\b[Youxi]\o 进来吧，{nickname}！\c10机核和游研社\o在线上，Games 菜单里有 18 款经典可以直接玩。!sources、!play。
 /bot set Youxi greeting_delivery private_notice
 /bot set Youxi greeter_repeat_window 43200
@@ -288,7 +282,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Qianbao prefix !
 /bot set Qianbao cooldown 1000
 /bot set Qianbao rss_interval 45
-/bot set Qianbao rss_max_items 10000
 /bot set Qianbao greeting \c07\b[Qianbao]\o 你好，{nickname}。\c14钛媒体\o在线上 —— !sources 看清单，!tixing 在相信之前看。
 /bot set Qianbao greeting_delivery private_notice
 /bot set Qianbao greeter_repeat_window 43200

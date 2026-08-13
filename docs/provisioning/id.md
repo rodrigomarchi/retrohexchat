@@ -135,6 +135,10 @@ shot, logged in as an admin who has `/identify`-ed.
 # Setiap alamat di bawah diambil dengan fetcher produksi dan dibaca parser
 # aplikasi sebelum ditulis di sini. Pemeriksaan pertama menerbitkan halaman
 # yang diterima lalu mencatatnya; setelah itu hanya yang baru yang keluar.
+#
+# Bacaan pertama keluar bertahap, bukan sekaligus: proteksi flood ada di sesi
+# tiap pembaca dan otomatis mengabaikan yang melewatinya. Tidak ada yang dibuang
+# — feed yang punya antrean kembali dalam waktu kurang dari satu menit.
 
 # ── Bagus — #indonesia ───────────────────────────────────
 # Tanpa sambutan: di kanal ini yang menyambut adalah Ayu.
@@ -142,7 +146,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Bagus prefix !
 /bot set Bagus cooldown 1000
 /bot set Bagus rss_interval 20
-/bot set Bagus rss_max_items 10000
 /bot set Bagus greeting none
 /bot set Bagus farewell none
 /bot set Bagus mention_response \c03\b[Bagus]\o Saya membaca Antara dan Detik. \c02!sumber\o menampilkan feed-nya.
@@ -156,7 +159,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Rina prefix !
 /bot set Rina cooldown 1000
 /bot set Rina rss_interval 20
-/bot set Rina rss_max_items 10000
 /bot set Rina greeting \c02\b[Rina]\o Selamat datang di #berita, {nickname}. \c14Judul datang sendiri\o — !sumber menyebut asalnya.
 /bot set Rina greeting_delivery private_notice
 /bot set Rina greeter_repeat_window 43200
@@ -174,7 +176,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Joko prefix !
 /bot set Joko cooldown 1000
 /bot set Joko rss_interval 20
-/bot set Joko rss_max_items 10000
 /bot set Joko greeting \c07\b[Joko]\o Selamat datang, {nickname}. \c11Antara, Sindonews dan Okezone\o masuk sendiri ke sini. !sumber untuk daftarnya.
 /bot set Joko greeting_delivery private_notice
 /bot set Joko greeter_repeat_window 43200
@@ -191,7 +192,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Dewi prefix !
 /bot set Dewi cooldown 1000
 /bot set Dewi rss_interval 30
-/bot set Dewi rss_max_items 10000
 /bot set Dewi greeting \c10\b[Dewi]\o Halo {nickname}. \c06BBC Indonesia dan CNN Indonesia Internasional\o di saluran. !sumber untuk daftarnya.
 /bot set Dewi greeting_delivery private_notice
 /bot set Dewi greeter_repeat_window 43200
@@ -207,7 +207,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Adi prefix !
 /bot set Adi cooldown 1000
 /bot set Adi rss_interval 30
-/bot set Adi rss_max_items 10000
 /bot set Adi greeting \c12\b[Adi]\o Halo {nickname}. \c10Empat sumber teknologi\o jatuh ke sini sendiri. !sumber untuk daftarnya, !dukungan sebelum bertanya.
 /bot set Adi greeting_delivery private_notice
 /bot set Adi greeter_repeat_window 43200
@@ -226,7 +225,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Yusuf prefix !
 /bot set Yusuf cooldown 1000
 /bot set Yusuf rss_interval 20
-/bot set Yusuf rss_max_items 10000
 /bot set Yusuf greeting \c09\b[Yusuf]\o Halo {nickname}! \c03Empat meja olahraga\o di saluran. !sumber untuk daftarnya, !klub kalau memaksa.
 /bot set Yusuf greeting_delivery private_notice
 /bot set Yusuf greeter_repeat_window 43200
@@ -247,7 +245,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Sari cooldown 1000
 /bot set Sari rss_interval 30
 /bot set Sari rss_max_feeds 5
-/bot set Sari rss_max_items 10000
 /bot set Sari greeting \c07\b[Sari]\o Selamat datang, {nickname}. \c02Lima meja ekonomi\o di saluran — !sumber untuk daftarnya, !ingat sebelum percaya.
 /bot set Sari greeting_delivery private_notice
 /bot set Sari greeter_repeat_window 43200
@@ -267,7 +264,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Wayan prefix !
 /bot set Wayan cooldown 1000
 /bot set Wayan rss_interval 45
-/bot set Wayan rss_max_items 10000
 /bot set Wayan greeting \c13\b[Wayan]\o Masuk, {nickname}. \c05Antara, CNN Indonesia dan Tempo Seleb\o di saluran. !sumber untuk daftarnya.
 /bot set Wayan greeting_delivery private_notice
 /bot set Wayan greeter_repeat_window 43200
@@ -284,7 +280,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Intan prefix !
 /bot set Intan cooldown 1000
 /bot set Intan rss_interval 60
-/bot set Intan rss_max_items 10000
 /bot set Intan greeting \c06\b[Intan]\o Halo {nickname}. \c11CNN Indonesia Gaya Hidup dan Tempo Gaya\o datang tiap jam. !sumber untuk daftarnya.
 /bot set Intan greeting_delivery private_notice
 /bot set Intan greeter_repeat_window 43200
@@ -300,7 +295,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Rizky prefix !
 /bot set Rizky cooldown 1000
 /bot set Rizky rss_interval 60
-/bot set Rizky rss_max_items 10000
 /bot set Rizky greeting \c12\b[Rizky]\o Masuk, {nickname}! \c10Gamebrott\o di saluran, dan menu Games membuka 18 klasik di peramban. !sumber, !main.
 /bot set Rizky greeting_delivery private_notice
 /bot set Rizky greeter_repeat_window 43200

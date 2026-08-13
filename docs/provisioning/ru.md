@@ -136,6 +136,10 @@ shot, logged in as an admin who has `/identify`-ed.
 # Каждый адрес ниже скачан продакшен-фетчером и разобран парсером приложения
 # до того, как попал сюда. Первый опрос публикует полученную страницу и
 # запоминает её; дальше выходит только новое.
+#
+# Первое чтение выходит порциями, а не разом: защита от флуда живёт в сессии
+# каждого читателя и авто-игнорирует того, кто её превысил. Ничего не теряется —
+# лента с очередью возвращается за остатком меньше чем через минуту.
 
 # ── Fedya — #russkiy ─────────────────────────────────────
 # Без приветствия: в этом канале встречает Alyona.
@@ -143,7 +147,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Fedya prefix !
 /bot set Fedya cooldown 1000
 /bot set Fedya rss_interval 20
-/bot set Fedya rss_max_items 10000
 /bot set Fedya greeting none
 /bot set Fedya farewell none
 /bot set Fedya mention_response \c03\b[Fedya]\o Читаю «Ленту» и РИА. \c02!istochniki\o покажет ленты.
@@ -157,7 +160,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Grisha prefix !
 /bot set Grisha cooldown 1000
 /bot set Grisha rss_interval 20
-/bot set Grisha rss_max_items 10000
 /bot set Grisha greeting \c02\b[Grisha]\o Добро пожаловать в #novosti, {nickname}. \c14Заголовки приходят сами\o — !istochniki скажет откуда.
 /bot set Grisha greeting_delivery private_notice
 /bot set Grisha greeter_repeat_window 43200
@@ -176,7 +178,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Semyon prefix !
 /bot set Semyon cooldown 1000
 /bot set Semyon rss_interval 30
-/bot set Semyon rss_max_items 10000
 /bot set Semyon greeting \c12\b[Semyon]\o Привет, {nickname}. \c10 3DNews и CNews\o падают сюда сами. !istochniki — список, !podderzhka — до вопроса.
 /bot set Semyon greeting_delivery private_notice
 /bot set Semyon greeter_repeat_window 43200
@@ -193,7 +194,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Zhora prefix !
 /bot set Zhora cooldown 1000
 /bot set Zhora rss_interval 45
-/bot set Zhora rss_max_items 10000
 /bot set Zhora greeting \c11\b[Zhora]\o Заходи, {nickname}. \c14iXBT и Overclockers\o на проводе. !istochniki — список, !apgreyd — до покупки.
 /bot set Zhora greeting_delivery private_notice
 /bot set Zhora greeter_repeat_window 43200
@@ -210,7 +210,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Kolya prefix !
 /bot set Kolya cooldown 1000
 /bot set Kolya rss_interval 30
-/bot set Kolya rss_max_items 10000
 /bot set Kolya greeting \c06\b[Kolya]\o Привет, {nickname}. \c13«Хабр» и «Код»\o приходят сюда сами. !istochniki — список.
 /bot set Kolya greeting_delivery private_notice
 /bot set Kolya greeter_repeat_window 43200
@@ -226,7 +225,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Pingvin prefix !
 /bot set Pingvin cooldown 1000
 /bot set Pingvin rss_interval 30
-/bot set Pingvin rss_max_items 10000
 /bot set Pingvin greeting \c03\b[Pingvin]\o Добро пожаловать, {nickname}. \c09OpenNET\o на проводе — релизы, ядра, дистрибутивы. !istochniki, !pochemu.
 /bot set Pingvin greeting_delivery private_notice
 /bot set Pingvin greeter_repeat_window 43200
@@ -242,7 +240,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Vitya prefix !
 /bot set Vitya cooldown 1000
 /bot set Vitya rss_interval 45
-/bot set Vitya rss_max_items 10000
 /bot set Vitya greeting \c12\b[Vitya]\o Заходи, {nickname}! \c10DTF и StopGame\o на проводе, а меню Games открывает 18 классических игр в браузере. !istochniki, !igrat.
 /bot set Vitya greeting_delivery private_notice
 /bot set Vitya greeter_repeat_window 43200
@@ -259,7 +256,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Sofya prefix !
 /bot set Sofya cooldown 1000
 /bot set Sofya rss_interval 60
-/bot set Sofya rss_max_items 10000
 /bot set Sofya greeting \c13\b[Sofya]\o Здравствуй, {nickname}. \c06N+1, «Элементы» и Naked Science\o приходят каждый час. !istochniki — список.
 /bot set Sofya greeting_delivery private_notice
 /bot set Sofya greeter_repeat_window 43200
@@ -276,7 +272,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Larisa prefix !
 /bot set Larisa cooldown 1000
 /bot set Larisa rss_interval 30
-/bot set Larisa rss_max_items 10000
 /bot set Larisa greeting \c07\b[Larisa]\o Здравствуй, {nickname}. \c02РБК и vc.ru\o на проводе — !istochniki список, !predosterezhenie до того, как поверишь.
 /bot set Larisa greeting_delivery private_notice
 /bot set Larisa greeter_repeat_window 43200
@@ -293,7 +288,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Valera prefix !
 /bot set Valera cooldown 1000
 /bot set Valera rss_interval 20
-/bot set Valera rss_max_items 10000
 /bot set Valera greeting \c09\b[Valera]\o Привет, {nickname}! \c03«Чемпионат»\o на проводе. !istochniki — список, !klub если настаиваешь.
 /bot set Valera greeting_delivery private_notice
 /bot set Valera greeter_repeat_window 43200

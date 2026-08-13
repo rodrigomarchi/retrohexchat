@@ -221,11 +221,40 @@ defmodule RetroHexChat.Bots.Capabilities.RSSTest do
     # Feeds list newest first.
     defp page(ids), do: Enum.map(ids, &item/1)
 
-    test "the first sight announces the whole current page and remembers it" do
+    test "the first sight announces the current page, oldest first" do
       {to_post, seen} = RSS.plan_publication([], page([3, 2, 1]), 3)
 
       assert Enum.map(to_post, & &1.title) == ["Item 1", "Item 2", "Item 3"]
-      assert length(seen) == 3, "the whole current page is remembered after it is posted"
+      assert length(seen) == 3, "what was posted is remembered"
+    end
+
+    # The case that had no coverage, and the reason a hundred-item first page
+    # auto-ignored the wire bots: the old rule posted the ceiling's worth and
+    # marked the *whole page* seen, so the rest was discarded without a trace.
+    # It only looked harmless while the ceiling was ten thousand.
+    test "a first page larger than the ceiling drains instead of vanishing" do
+      feed = page([5, 4, 3, 2, 1])
+
+      {first, seen} = RSS.plan_publication([], feed, 2)
+      assert Enum.map(first, & &1.title) == ["Item 1", "Item 2"]
+      assert length(seen) == 2, "only the batch is remembered, never the page"
+
+      {second, seen2} = RSS.plan_publication(seen, feed, 2)
+      assert Enum.map(second, & &1.title) == ["Item 3", "Item 4"]
+
+      {third, _} = RSS.plan_publication(seen2 ++ seen, feed, 2)
+      assert Enum.map(third, & &1.title) == ["Item 5"]
+    end
+
+    test "pending_count reports what a poll leaves behind" do
+      feed = page([5, 4, 3, 2, 1])
+
+      assert RSS.pending_count([], feed, 2) == 3
+      assert RSS.pending_count([], feed, 5) == 0
+      assert RSS.pending_count(["https://example.com/1"], feed, 2) == 2
+
+      assert RSS.pending_count([], feed, 99) == 0,
+             "a count larger than the page is not a negative backlog"
     end
 
     test "an empty feed announces nothing" do

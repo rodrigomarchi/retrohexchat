@@ -133,6 +133,10 @@ shot, logged in as an admin who has `/identify`-ed.
 # Ogni indirizzo qui sotto è stato scaricato dal fetcher di produzione e letto
 # dal parser dell'applicazione prima di essere scritto. Il primo controllo
 # pubblica la pagina ricevuta e la registra; poi esce solo ciò che è nuovo.
+#
+# La prima lettura arriva a lotti, non tutta insieme: la protezione anti-flood
+# vive nella sessione di ogni lettore e ignora chi la supera. Non si scarta
+# nulla — un feed con arretrato torna in meno di un minuto per il resto.
 
 # ── Enzo — #italia ───────────────────────────────────────
 # Nessun benvenuto: in questo canale accoglie Rita.
@@ -140,7 +144,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Enzo prefix !
 /bot set Enzo cooldown 1000
 /bot set Enzo rss_interval 20
-/bot set Enzo rss_max_items 10000
 /bot set Enzo greeting none
 /bot set Enzo farewell none
 /bot set Enzo mention_response \c03\b[Enzo]\o Leggo ANSA e Rai News. \c02!fonti\o elenca i feed.
@@ -154,7 +157,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Vittorio prefix !
 /bot set Vittorio cooldown 1000
 /bot set Vittorio rss_interval 20
-/bot set Vittorio rss_max_items 10000
 /bot set Vittorio greeting \c02\b[Vittorio]\o Benvenuto in #cronaca, {nickname}. \c14I titoli arrivano da soli\o — !fonti dice da dove.
 /bot set Vittorio greeting_delivery private_notice
 /bot set Vittorio greeter_repeat_window 43200
@@ -171,7 +173,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Franca prefix !
 /bot set Franca cooldown 1000
 /bot set Franca rss_interval 30
-/bot set Franca rss_max_items 10000
 /bot set Franca greeting \c07\b[Franca]\o Benvenuto, {nickname}. \c11Il Fatto Quotidiano e Open\o arrivano qui da soli. !fonti per l'elenco.
 /bot set Franca greeting_delivery private_notice
 /bot set Franca greeter_repeat_window 43200
@@ -187,7 +188,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Gianni prefix !
 /bot set Gianni cooldown 1000
 /bot set Gianni rss_interval 30
-/bot set Gianni rss_max_items 10000
 /bot set Gianni greeting \c12\b[Gianni]\o Ciao {nickname}. \c10DDay, HDblog e Wired Italia\o cadono qui da soli. !fonti per l'elenco.
 /bot set Gianni greeting_delivery private_notice
 /bot set Gianni greeter_repeat_window 43200
@@ -204,7 +204,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Nilde prefix !
 /bot set Nilde cooldown 1000
 /bot set Nilde rss_interval 45
-/bot set Nilde rss_max_items 10000
 /bot set Nilde greeting \c10\b[Nilde]\o Benvenuto, {nickname}. \c06Punto Informatico, Il Software e Tom's Hardware\o sul filo. !fonti per l'elenco, !supporto prima di chiedere.
 /bot set Nilde greeting_delivery private_notice
 /bot set Nilde greeter_repeat_window 43200
@@ -222,7 +221,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Bruno prefix !
 /bot set Bruno cooldown 1000
 /bot set Bruno rss_interval 45
-/bot set Bruno rss_max_items 10000
 /bot set Bruno greeting \c13\b[Bruno]\o Entra, {nickname}. \c11AndroidWorld e SmartWorld\o sul filo — !fonti per l'elenco.
 /bot set Bruno greeting_delivery private_notice
 /bot set Bruno greeter_repeat_window 43200
@@ -238,7 +236,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Ciccio prefix !
 /bot set Ciccio cooldown 1000
 /bot set Ciccio rss_interval 45
-/bot set Ciccio rss_max_items 10000
 /bot set Ciccio greeting \c12\b[Ciccio]\o Dentro, {nickname}! \c10Everyeye e SpazioGames\o sul filo, e il menu Games apre 18 classici nel browser. !fonti, !giocare.
 /bot set Ciccio greeting_delivery private_notice
 /bot set Ciccio greeter_repeat_window 43200
@@ -255,7 +252,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Toto prefix !
 /bot set Toto cooldown 1000
 /bot set Toto rss_interval 20
-/bot set Toto rss_max_items 10000
 /bot set Toto greeting \c09\b[Toto]\o Ciao {nickname}! \c03La Gazzetta dello Sport\o sul filo. !fonti per l'elenco, !squadra se proprio insisti.
 /bot set Toto greeting_delivery private_notice
 /bot set Toto greeter_repeat_window 43200
@@ -271,7 +267,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Galileo prefix !
 /bot set Galileo cooldown 1000
 /bot set Galileo rss_interval 60
-/bot set Galileo rss_max_items 10000
 /bot set Galileo greeting \c11\b[Galileo]\o Benvenuto, {nickname}. \c02Media INAF\o arriva ogni ora — astrofisica fatta da chi la fa. !fonti per l'elenco.
 /bot set Galileo greeting_delivery private_notice
 /bot set Galileo greeter_repeat_window 43200
@@ -286,7 +281,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Piero prefix !
 /bot set Piero cooldown 1000
 /bot set Piero rss_interval 30
-/bot set Piero rss_max_items 10000
 /bot set Piero greeting \c07\b[Piero]\o Buongiorno, {nickname}. \c14Il Sole 24 Ore\o sul filo — !fonti per l'elenco, !avviso prima di crederci.
 /bot set Piero greeting_delivery private_notice
 /bot set Piero greeter_repeat_window 43200

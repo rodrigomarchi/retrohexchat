@@ -139,6 +139,10 @@ shot, logged in as an admin who has `/identify`-ed.
 # Chaque adresse ci-dessous a été récupérée par le fetcher de production et lue
 # par le parseur de l'application avant d'être écrite ici. Le premier relevé
 # publie la page reçue et l'enregistre ; ensuite, seul le nouveau sort.
+#
+# Une première lecture arrive par lots, pas d'un coup : la protection anti-flood
+# vit dans la session de chaque lecteur et ignore d'office qui la dépasse. Rien
+# n'est jeté — un flux en retard revient en moins d'une minute pour la suite.
 
 # ── Gaspard — #france ────────────────────────────────────
 # Pas d'accueil : dans ce salon, c'est Margot qui reçoit.
@@ -146,7 +150,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Gaspard prefix !
 /bot set Gaspard cooldown 1000
 /bot set Gaspard rss_interval 20
-/bot set Gaspard rss_max_items 10000
 /bot set Gaspard greeting none
 /bot set Gaspard farewell none
 /bot set Gaspard mention_response \c03\b[Gaspard]\o Je lis Le Monde et France Info. \c02!sources\o liste les flux.
@@ -160,7 +163,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Colette prefix !
 /bot set Colette cooldown 1000
 /bot set Colette rss_interval 20
-/bot set Colette rss_max_items 10000
 /bot set Colette greeting \c02\b[Colette]\o Bienvenue dans #actualites, {nickname}. \c14Les titres arrivent seuls\o — !sources dit d'où.
 /bot set Colette greeting_delivery private_notice
 /bot set Colette greeter_repeat_window 43200
@@ -178,7 +180,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Renaud prefix !
 /bot set Renaud cooldown 1000
 /bot set Renaud rss_interval 30
-/bot set Renaud rss_max_items 10000
 /bot set Renaud greeting \c10\b[Renaud]\o Bonjour {nickname}. \c06France 24 et RFI\o arrivent ici tout seuls. !sources pour la liste.
 /bot set Renaud greeting_delivery private_notice
 /bot set Renaud greeter_repeat_window 43200
@@ -194,7 +195,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Blaise prefix !
 /bot set Blaise cooldown 1000
 /bot set Blaise rss_interval 30
-/bot set Blaise rss_max_items 10000
 /bot set Blaise greeting \c12\b[Blaise]\o Salut {nickname}. \c10Next, Numerama, Les Numériques et 01net\o tombent ici. !sources pour la liste, !support avant de demander.
 /bot set Blaise greeting_delivery private_notice
 /bot set Blaise greeter_repeat_window 43200
@@ -213,7 +213,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Amelie prefix !
 /bot set Amelie cooldown 1000
 /bot set Amelie rss_interval 45
-/bot set Amelie rss_max_items 10000
 /bot set Amelie greeting \c13\b[Amelie]\o Entrez, {nickname}. \c11Frandroid et Journal du Geek\o sur le fil — !sources pour la liste.
 /bot set Amelie greeting_delivery private_notice
 /bot set Amelie greeter_repeat_window 43200
@@ -229,7 +228,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Ambroise prefix !
 /bot set Ambroise cooldown 1000
 /bot set Ambroise rss_interval 45
-/bot set Ambroise rss_max_items 10000
 /bot set Ambroise greeting \c03\b[Ambroise]\o Bienvenue dans #libre, {nickname}. \c09LinuxFr et Korben\o arrivent seuls. !sources pour la liste, !pourquoi pour le reste.
 /bot set Ambroise greeting_delivery private_notice
 /bot set Ambroise greeter_repeat_window 43200
@@ -246,7 +244,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Denis prefix !
 /bot set Denis cooldown 1000
 /bot set Denis rss_interval 60
-/bot set Denis rss_max_items 10000
 /bot set Denis greeting \c06\b[Denis]\o Salut {nickname}. \c13Developpez.com\o sur le fil. !sources pour la liste.
 /bot set Denis greeting_delivery private_notice
 /bot set Denis greeter_repeat_window 43200
@@ -261,7 +258,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Lulu prefix !
 /bot set Lulu cooldown 1000
 /bot set Lulu rss_interval 45
-/bot set Lulu rss_max_items 10000
 /bot set Lulu greeting \c12\b[Lulu]\o Entrez, {nickname} ! \c10JeuxVideo.com et Gamekult\o sur le fil, et le menu Games ouvre 18 classiques dans le navigateur. !sources, !jouer.
 /bot set Lulu greeting_delivery private_notice
 /bot set Lulu greeter_repeat_window 43200
@@ -278,7 +274,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Jacques prefix !
 /bot set Jacques cooldown 1000
 /bot set Jacques rss_interval 60
-/bot set Jacques rss_max_items 10000
 /bot set Jacques greeting \c05\b[Jacques]\o Bienvenue, {nickname}. \c13AlloCiné, Télérama et Les Inrocks\o arrivent chaque heure. !sources pour la liste.
 /bot set Jacques greeting_delivery private_notice
 /bot set Jacques greeter_repeat_window 43200
@@ -295,7 +290,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Camille prefix !
 /bot set Camille cooldown 1000
 /bot set Camille rss_interval 60
-/bot set Camille rss_max_items 10000
 /bot set Camille greeting \c11\b[Camille]\o Bonjour {nickname}. \c02Futura et Sciences et Avenir\o arrivent chaque heure. !sources pour la liste.
 /bot set Camille greeting_delivery private_notice
 /bot set Camille greeter_repeat_window 43200
@@ -311,7 +305,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Odile prefix !
 /bot set Odile cooldown 1000
 /bot set Odile rss_interval 30
-/bot set Odile rss_max_items 10000
 /bot set Odile greeting \c07\b[Odile]\o Bonjour {nickname}. \c14La Tribune et L'Usine Digitale\o sur le fil — !sources pour la liste, !avertissement avant d'y croire.
 /bot set Odile greeting_delivery private_notice
 /bot set Odile greeter_repeat_window 43200

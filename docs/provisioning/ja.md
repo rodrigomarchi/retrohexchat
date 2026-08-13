@@ -137,6 +137,10 @@ shot, logged in as an admin who has `/identify`-ed.
 # 以下のアドレスはすべて、本番の fetcher で取得し、アプリのパーサーで
 # 読めることを確認してから書いています。最初の取得では受け取ったページを
 # 投稿して記録し、それ以降は新しいものだけが流れます。
+#
+# 最初の読み込みは一度にではなく分割して届きます。フラッド保護は読み手ごとの
+# セッションにあり、超えた相手を自動で無視するためです。捨てるものはありません
+# — 残りを抱えたフィードは一分以内に戻ってきます。
 
 # ── Taro — #nihon ────────────────────────────────────────
 # 挨拶はしません。この部屋で迎えるのは Hana です。
@@ -144,7 +148,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Taro prefix !
 /bot set Taro cooldown 1000
 /bot set Taro rss_interval 20
-/bot set Taro rss_max_items 10000
 /bot set Taro greeting none
 /bot set Taro farewell none
 /bot set Taro mention_response \c03\b[Taro]\o NHK と Yahoo!ニュースを読んでいます。\c02!sources\o で一覧が出ます。
@@ -158,7 +161,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Ken prefix !
 /bot set Ken cooldown 1000
 /bot set Ken rss_interval 30
-/bot set Ken rss_max_items 10000
 /bot set Ken greeting \c12\b[Ken]\o {nickname}さん、ようこそ。\c10GIGAZINE、ITmedia、ASCII\o が自動で流れます。!sources で一覧、!support は質問の前に。
 /bot set Ken greeting_delivery private_notice
 /bot set Ken greeter_repeat_window 43200
@@ -176,7 +178,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Mio prefix !
 /bot set Mio cooldown 1000
 /bot set Mio rss_interval 45
-/bot set Mio rss_max_items 10000
 /bot set Mio greeting \c13\b[Mio]\o {nickname}さん、どうぞ。\c11ギズモード、ITmedia NEWS、Mogura VR\o が流れています。!sources で一覧。
 /bot set Mio greeting_delivery private_notice
 /bot set Mio greeter_repeat_window 43200
@@ -193,7 +194,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Sora prefix !
 /bot set Sora cooldown 1000
 /bot set Sora rss_interval 30
-/bot set Sora rss_max_items 10000
 /bot set Sora greeting \c06\b[Sora]\o {nickname}さん、こんにちは。\c13Publickey、Zenn、Qiita\o が自動で流れます。!sources で一覧。
 /bot set Sora greeting_delivery private_notice
 /bot set Sora greeter_repeat_window 43200
@@ -210,7 +210,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Hiro prefix !
 /bot set Hiro cooldown 1000
 /bot set Hiro rss_interval 45
-/bot set Hiro rss_max_items 10000
 /bot set Hiro greeting \c12\b[Hiro]\o {nickname}さん、いらっしゃい！ \c10AUTOMATON と電ファミニコゲーマー\o が流れます。Games メニューからは18本の名作が動きます。!sources、!play。
 /bot set Hiro greeting_delivery private_notice
 /bot set Hiro greeter_repeat_window 43200
@@ -227,7 +226,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Kenji prefix !
 /bot set Kenji cooldown 1000
 /bot set Kenji rss_interval 20
-/bot set Kenji rss_max_items 10000
 /bot set Kenji greeting \c09\b[Kenji]\o {nickname}さん、どうも！ \c03サッカーキングとフットボールチャンネル\o が流れます。!sources で一覧、!team は聞かれたら。
 /bot set Kenji greeting_delivery private_notice
 /bot set Kenji greeter_repeat_window 43200
@@ -244,7 +242,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Daichi prefix !
 /bot set Daichi cooldown 1000
 /bot set Daichi rss_interval 30
-/bot set Daichi rss_max_items 10000
 /bot set Daichi greeting \c11\b[Daichi]\o {nickname}さん、どうぞ。\c14ベースボールチャンネル\o が流れます。!sources で一覧。
 /bot set Daichi greeting_delivery private_notice
 /bot set Daichi greeter_repeat_window 43200
@@ -259,7 +256,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Nozomi prefix !
 /bot set Nozomi cooldown 1000
 /bot set Nozomi rss_interval 60
-/bot set Nozomi rss_max_items 10000
 /bot set Nozomi greeting \c10\b[Nozomi]\o {nickname}さん、ようこそ。\c02sorae とナゾロジー\o が一時間ごとに届きます。!sources で一覧。
 /bot set Nozomi greeting_delivery private_notice
 /bot set Nozomi greeter_repeat_window 43200
@@ -275,7 +271,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Akira prefix !
 /bot set Akira cooldown 1000
 /bot set Akira rss_interval 30
-/bot set Akira rss_max_items 10000
 /bot set Akira greeting \c07\b[Akira]\o {nickname}さん、こんにちは。\c14東洋経済、ダイヤモンド、Business Insider Japan\o が流れます。!sources、!chuui。
 /bot set Akira greeting_delivery private_notice
 /bot set Akira greeter_repeat_window 43200
@@ -293,7 +288,6 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Yui prefix !
 /bot set Yui cooldown 1000
 /bot set Yui rss_interval 60
-/bot set Yui rss_max_items 10000
 /bot set Yui greeting \c05\b[Yui]\o {nickname}さん、どうぞ。\c13ライフハッカー・ジャパン\o が一時間ごとに届きます。!sources で一覧。
 /bot set Yui greeting_delivery private_notice
 /bot set Yui greeter_repeat_window 43200

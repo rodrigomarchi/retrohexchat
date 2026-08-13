@@ -80,10 +80,31 @@ It prints `OK` / `EMPTY` / `PARSE` / `DEAD` per line, so a feed that has gone
 quiet or moved shows up before an operator pastes it.
 
 Poll intervals follow the publisher rather than a house default: twenty minutes
-for a newsroom, two hours for a blog that posts twice a week. A feed's first
-poll publishes the page it receives and records it; after that only new items
-are posted, and both the feed list and that record live on the bot, so a deploy
-does not replay the day.
+for a newsroom, two hours for a blog that posts twice a week. Both the feed list
+and the record of what has been seen live on the bot, so a deploy does not
+replay the day.
+
+## Cadence
+
+Flood protection runs in each reader's session: a nickname that sends more than
+`flood_threshold` messages inside `flood_window_seconds` is auto-ignored by that
+reader for five minutes. Nothing on the server stops it and nothing tells the
+bot, so a wire bot that delivered a feed page in one burst simply went quiet for
+whoever was counting — which is what happened to `Vasco` and `Nina`.
+
+So a poll announces a batch, not a page. What does not fit is **not discarded**:
+it stays unseen and a feed holding a backlog is polled again in under a minute
+instead of waiting out its interval. A hundred-item first read still arrives in
+full, spread over minutes, in the order it was published.
+
+The pace itself is derived from the flood settings at half the rate that would
+trigger them, keyed by **nickname** — a bot with five feeds on one interval
+polls them together, and five polite feeds still add up to one impolite bot.
+
+Scripts therefore do not set `rss_max_items`; the default tracks the flood
+budget. [`cadence-migration.txt`](cadence-migration.txt) carries the one-time
+`/bot set` block for bots provisioned before this existed, which still hold the
+old ceiling of 10,000.
 
 ## Adding a language
 
