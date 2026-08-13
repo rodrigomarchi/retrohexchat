@@ -7,10 +7,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.NickChangeDialog do
   Owned state: `target_nick`, `registered`, `password`, `password_error`.
 
   - Password keyup and Cancel are handled component-locally (`@myself`).
-  - Confirm bubbles to the parent (`confirm_nick_change`) carrying `target` and
-    `registered` via `JS.push`, plus `password` via the UI button's
-    `phx-value-password`, because the NickServ identify + token redirect must run
-    on the parent LiveView.
+  - Confirm submits the dialog's form to the parent (`confirm_nick_change`),
+    which carries `target`, `registered` and `password` as fields — what is on
+    screen rather than what an assign caught up to — because the NickServ
+    identify and the token redirect must run on the parent LiveView.
 
   `CommandDispatch`/`CoreEvents` drive it via `send_update/2`:
 
@@ -102,9 +102,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.NickChangeDialog do
         registered={@registered}
         password={@password}
         password_error={@password_error}
-        on_confirm={
-          JS.push("confirm_nick_change", value: %{target: @target_nick, registered: @registered})
-        }
+        on_confirm="confirm_nick_change"
         on_cancel={JS.push("nick_change_cancel", target: @myself)}
         on_password_change={JS.push("update_nick_change_password", target: @myself)}
       />

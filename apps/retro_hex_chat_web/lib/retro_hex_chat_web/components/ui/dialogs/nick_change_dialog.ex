@@ -47,68 +47,76 @@ defmodule RetroHexChatWeb.Components.UI.NickChangeDialog do
         <:icon><Icons.icon_dialog_nick class="w-4 h-4" /></:icon>
       </.dialog_header>
 
-      <.dialog_body class="nc-dialog-body">
-        <div class="nc-dialog-content" data-testid="nick-change-dialog">
-          <div class="nc-target-card">
-            <span class="nc-target-icon" aria-hidden="true">
-              <Icons.icon_dialog_nick class="w-4 h-4" />
-            </span>
-            <div class="nc-target-copy">
-              <p class="nc-field-label">{dgettext("dialogs", "Changing nickname to")}</p>
-              <p class="nc-target-value">{@target_nick}</p>
+      <%!-- Both the password and the target travel with the submit, so what
+      reaches the server is what is on screen. Reading them from assigns meant
+      sending whatever the last keyup had time to store — the previous attempt's
+      password, for anyone who retypes and confirms without pausing. --%>
+      <form id={"#{@id}-form"} phx-submit={@on_confirm}>
+        <input type="hidden" name="target" value={@target_nick} />
+        <input type="hidden" name="registered" value={to_string(@registered)} />
+
+        <.dialog_body class="nc-dialog-body">
+          <div class="nc-dialog-content" data-testid="nick-change-dialog">
+            <div class="nc-target-card">
+              <span class="nc-target-icon" aria-hidden="true">
+                <Icons.icon_dialog_nick class="w-4 h-4" />
+              </span>
+              <div class="nc-target-copy">
+                <p class="nc-field-label">{dgettext("dialogs", "Changing nickname to")}</p>
+                <p class="nc-target-value">{@target_nick}</p>
+              </div>
+            </div>
+
+            <div :if={@registered} class="nc-notice">
+              {dgettext(
+                "dialogs",
+                "This nickname is registered. Please enter the NickServ password to identify."
+              )}
+            </div>
+
+            <div :if={@registered} class="nc-field-group">
+              <label for={"#{@id}-password"} class="nc-field-label">
+                {dgettext("dialogs", "NickServ password")}
+              </label>
+              <.input
+                id={"#{@id}-password"}
+                name="password"
+                type="password"
+                value={@password}
+                placeholder={dgettext("dialogs", "Enter password")}
+                class="nc-password-input"
+                phx-keyup={@on_password_change}
+                data-testid="nick-change-password"
+              />
+
+              <p :if={@password_error} class="nc-error" data-testid="nick-change-error">
+                {@password_error}
+              </p>
             </div>
           </div>
+        </.dialog_body>
 
-          <div :if={@registered} class="nc-notice">
-            {dgettext(
-              "dialogs",
-              "This nickname is registered. Please enter the NickServ password to identify."
-            )}
-          </div>
-
-          <div :if={@registered} class="nc-field-group">
-            <label for={"#{@id}-password"} class="nc-field-label">
-              {dgettext("dialogs", "NickServ password")}
-            </label>
-            <.input
-              id={"#{@id}-password"}
-              name="nickserv_password"
-              type="password"
-              value={@password}
-              placeholder={dgettext("dialogs", "Enter password")}
-              class="nc-password-input"
-              phx-keyup={@on_password_change}
-              data-testid="nick-change-password"
-            />
-
-            <p :if={@password_error} class="nc-error" data-testid="nick-change-error">
-              {@password_error}
-            </p>
-          </div>
-        </div>
-      </.dialog_body>
-
-      <.dialog_footer class="nc-dialog-footer">
-        <.button
-          variant="default"
-          phx-click={@on_confirm}
-          phx-value-password={@password}
-          data-testid="nick-change-confirm"
-          class="nc-action-button"
-        >
-          <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
-          {dgettext("dialogs", "Confirm")}
-        </.button>
-        <.button
-          variant="outline"
-          phx-click={@on_cancel || hide_modal(@id)}
-          data-testid="nick-change-cancel"
-          class="nc-action-button"
-        >
-          <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-          {dgettext("dialogs", "Cancel")}
-        </.button>
-      </.dialog_footer>
+        <.dialog_footer class="nc-dialog-footer">
+          <.button
+            type="submit"
+            variant="default"
+            data-testid="nick-change-confirm"
+            class="nc-action-button"
+          >
+            <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
+            {dgettext("dialogs", "Confirm")}
+          </.button>
+          <.button
+            variant="outline"
+            phx-click={@on_cancel || hide_modal(@id)}
+            data-testid="nick-change-cancel"
+            class="nc-action-button"
+          >
+            <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
+            {dgettext("dialogs", "Cancel")}
+          </.button>
+        </.dialog_footer>
+      </form>
     </.dialog>
     """
   end
