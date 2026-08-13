@@ -400,19 +400,41 @@ canal recriado após esvaziar e rejoin funcionam todos), não é a conexão
 (`phx-connected`), não é a página errada (`/chat`, com o contêiner da lista
 presente) e o servidor **não registra erro nenhum**.
 
-O silêncio é parte do problema. `load_channel_users/2` responde a um canal que
-não encontra assim:
+### O que a medição já respondeu
 
-```elixir
-{:error, _} ->
-  socket
-  |> assign(channel_users: [], current_topic: nil, current_modes: nil)
-  |> Nicklist.reset([])
+O ramo que trata "canal não encontrado" devolvia lista vazia em silêncio —
+indistinguível de "o canal está vazio". Agora ele registra o motivo, e a
+primeira coisa que esse log disse foi que **não é esse o caso**: o canal é
+encontrado.
+
+Instrumentando o outro lado, o servidor está inteiramente correto:
+
+```
+PROBE nicklist #x7cst98phct members=[{"x7new5en82t", :owner}] users=1
 ```
 
-Uma lista vazia é indistinguível de "não achei o canal", e é por isso que a
-investigação chegou até aqui sem uma pista do servidor. Corrigir esse ramo para
-dizer o que houve é o próximo passo, antes de tentar adivinhar a causa.
+Ou seja: a lista certa, com o papel certo, é calculada e enviada ao componente
+via `Nicklist.reset/2`. O navegador não desenha nenhuma linha.
+
+E não é corrida de montagem. Trocando de aba e voltando:
+
+```
+after-join        []
+on-lobby          ["TestAdmin","x7new…","x7old…","Brutus","Patches"]
+back-on-channel   []
+```
+
+O `#lobby` renderiza cinco pessoas na mesma página, no mesmo componente. Só
+aquele canal fica vazio, e continua vazio depois de sair e voltar.
+
+### Onde a investigação parou
+
+Resta explicar por que o componente não desenha uma linha que recebeu. A pista
+mais promissora é que as linhas são streams por papel (`:owners`, `:regulars`, …)
+com `dom_id` derivado do apelido: o mesmo apelido aparece em `#lobby` como
+`regular` e no canal transferido como `owner`, isto é, o **mesmo `dom_id` mudando
+de stream**. Isso não está provado — é o próximo lugar a olhar, não uma
+conclusão.
 
 ## Nos dois ambientes — 13
 

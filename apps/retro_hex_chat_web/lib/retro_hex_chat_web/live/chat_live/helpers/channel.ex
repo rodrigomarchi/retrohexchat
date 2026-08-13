@@ -224,7 +224,12 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
         )
         |> Nicklist.reset(users)
 
-      {:error, _} ->
+      {:error, reason} ->
+        # An empty nicklist and a channel that could not be found look identical
+        # on screen, and only one of them is normal. Say which, or the next
+        # person debugging an empty list has nothing to go on.
+        Logger.warning("Nicklist for #{channel_name} left empty: #{inspect(reason)}")
+
         socket
         |> assign(channel_users: [], current_topic: nil, current_modes: nil)
         |> Nicklist.reset([])
