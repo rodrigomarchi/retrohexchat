@@ -376,15 +376,20 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
   defp restore_active_window(socket, {:channel, target_channel}) when is_binary(target_channel) do
     session = socket.assigns.session
 
-    if target_channel in session.channels do
-      new_session = Session.set_active_channel(session, target_channel)
+    cond do
+      # Already where we started — the timer either fired here or never left,
+      # because its own window was gone. Reloading the channel would rebuild the
+      # message list from stored history and take the line this event just
+      # wrote with it: system messages are said, not stored, so the report that
+      # the timer had nowhere to fire would never be seen by anyone.
+      already_active_channel?(socket, session, target_channel) ->
+        socket
 
-      socket
-      |> assign(session: new_session, show_status_tab: false)
-      |> load_channel_users(target_channel)
-      |> load_channel_messages_with_pagination(target_channel)
-    else
-      socket
+      target_channel in session.channels ->
+        restore_channel_window(socket, session, target_channel)
+
+      true ->
+        socket
     end
   end
 
@@ -400,6 +405,20 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
     else
       socket
     end
+  end
+
+  defp already_active_channel?(socket, session, target_channel) do
+    not socket.assigns.show_status_tab and is_nil(session.active_pm) and
+      session.active_channel == target_channel
+  end
+
+  defp restore_channel_window(socket, session, target_channel) do
+    new_session = Session.set_active_channel(session, target_channel)
+
+    socket
+    |> assign(session: new_session, show_status_tab: false)
+    |> load_channel_users(target_channel)
+    |> load_channel_messages_with_pagination(target_channel)
   end
 
   defp maybe_restore_active_tab(%{assigns: %{show_status_tab: true}} = socket) do
