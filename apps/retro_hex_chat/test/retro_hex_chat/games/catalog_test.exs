@@ -87,6 +87,9 @@ defmodule RetroHexChat.Games.CatalogTest do
                %{id: "hex_outlaw_ricochet", name: "Hex Outlaw: Ricochet"},
                %{id: "hex_outlaw_stagecoach", name: "Hex Outlaw: Stagecoach"},
                %{id: "hex_outlaw_nml", name: "Hex Outlaw: No Man's Land"},
+               %{id: "hex_invaders", name: "Hex Invaders"},
+               %{id: "hex_invaders_coop", name: "Hex Invaders: Co-op"},
+               %{id: "hex_invaders_blitz", name: "Hex Invaders: Blitz"},
                %{id: "hex_tennis", name: "Hex Tennis"},
                %{id: "hex_tennis_quick", name: "Hex Tennis: Quick Match"},
                %{id: "hex_tennis_sudden", name: "Hex Tennis: Sudden Death"}
@@ -134,6 +137,18 @@ defmodule RetroHexChat.Games.CatalogTest do
                    controls: "Setas ou WASD para mover, Espaço ou Shift para disparar"
                  },
                  %{
+                   id: "hex_invaders",
+                   controls: "Setas ou A/D para mover, Espaço para disparar"
+                 },
+                 %{
+                   id: "hex_invaders_coop",
+                   controls: "Setas ou A/D para mover, Espaço para disparar"
+                 },
+                 %{
+                   id: "hex_invaders_blitz",
+                   controls: "Setas ou A/D para mover, Espaço para disparar"
+                 },
+                 %{
                    id: "hex_tennis",
                    controls: "Setas ou WASD para mover, Espaço ou Shift para servir"
                  },
@@ -163,6 +178,9 @@ defmodule RetroHexChat.Games.CatalogTest do
       assert Catalog.solo_game_id?("hex_outlaw_ricochet")
       assert Catalog.solo_game_id?("hex_outlaw_stagecoach")
       assert Catalog.solo_game_id?("hex_outlaw_nml")
+      assert Catalog.solo_game_id?("hex_invaders")
+      assert Catalog.solo_game_id?("hex_invaders_coop")
+      assert Catalog.solo_game_id?("hex_invaders_blitz")
       assert Catalog.solo_game_id?("hex_tennis")
       assert Catalog.solo_game_id?("hex_tennis_quick")
       assert Catalog.solo_game_id?("hex_tennis_sudden")

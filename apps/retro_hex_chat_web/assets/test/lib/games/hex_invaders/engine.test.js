@@ -142,7 +142,8 @@ describe("HexInvadersEngine", () => {
       engine = new HexInvadersEngine(canvas, channel, "hex_invaders", true, null);
       expect(engine.isHost).toBe(true);
       expect(engine.gameState.phase).toBe(PHASE.WAITING);
-      expect(engine.mode).toBe(GAME_MODE.INVASION_WAR);
+      expect(engine.mode).toBe("p2p_host");
+      expect(engine.gameMode).toBe(GAME_MODE.INVASION_WAR);
     });
 
     it("creates with peer role and seed 0", () => {
@@ -158,22 +159,34 @@ describe("HexInvadersEngine", () => {
 
     it("maps hex_invaders to INVASION_WAR mode", () => {
       engine = new HexInvadersEngine(canvas, channel, "hex_invaders", true, null);
-      expect(engine.mode).toBe(GAME_MODE.INVASION_WAR);
+      expect(engine.gameMode).toBe(GAME_MODE.INVASION_WAR);
     });
 
     it("maps hex_invaders_coop to COOP mode", () => {
       engine = new HexInvadersEngine(canvas, channel, "hex_invaders_coop", true, null);
-      expect(engine.mode).toBe(GAME_MODE.COOP);
+      expect(engine.gameMode).toBe(GAME_MODE.COOP);
     });
 
     it("maps hex_invaders_blitz to BLITZ mode", () => {
       engine = new HexInvadersEngine(canvas, channel, "hex_invaders_blitz", true, null);
-      expect(engine.mode).toBe(GAME_MODE.BLITZ);
+      expect(engine.gameMode).toBe(GAME_MODE.BLITZ);
     });
 
     it("falls back to INVASION_WAR for unknown gameId", () => {
       engine = new HexInvadersEngine(canvas, channel, "hex_invaders_unknown", true, null);
-      expect(engine.mode).toBe(GAME_MODE.INVASION_WAR);
+      expect(engine.gameMode).toBe(GAME_MODE.INVASION_WAR);
+    });
+
+    it("creates a solo host runtime with an opponent controller", () => {
+      engine = new HexInvadersEngine(canvas, channel, "hex_invaders", true, null, {
+        mode: "solo",
+        difficulty: "hard",
+      });
+
+      expect(engine.mode).toBe("solo");
+      expect(engine.isHost).toBe(true);
+      expect(engine.difficulty).toBe("hard");
+      expect(engine.opponentController).toBeTruthy();
     });
 
     it("initializes localInputs and remoteInputs", () => {
@@ -231,6 +244,18 @@ describe("HexInvadersEngine", () => {
       expect(view.getUint8(0)).toBe(MSG_TYPE.GAME_READY);
     });
 
+    it("solo start waits ready without sending GAME_READY", () => {
+      engine = new HexInvadersEngine(canvas, channel, "hex_invaders", true, null, {
+        mode: "solo",
+      });
+
+      engine.start();
+
+      expect(engine.peerReady).toBe(true);
+      expect(channel.send).not.toHaveBeenCalled();
+      expect(engine.gameState.phase).toBe(PHASE.WAITING);
+    });
+
     it("reads colors from canvas", () => {
       engine = new HexInvadersEngine(canvas, channel, "hex_invaders", true, null);
       engine.start();
@@ -272,6 +297,68 @@ describe("HexInvadersEngine", () => {
       engine = new HexInvadersEngine(canvas, channel, "hex_invaders", true, null);
       engine.start();
       expect(channel.addEventListener).toHaveBeenCalledWith("close", engine._boundChannelClose);
+    });
+  });
+
+  describe("beginMatch", () => {
+    it("starts countdown and captures keyboard for a running host", () => {
+      vi.useFakeTimers();
+      engine = new HexInvadersEngine(canvas, channel, "hex_invaders", true, null, {
+        mode: "solo",
+      });
+      engine.start();
+
+      expect(engine.beginMatch()).toBe(true);
+
+      expect(engine.peerReady).toBe(true);
+      expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
+      expect(engine._keyboardCaptured).toBe(true);
+      expect(channel.send).toHaveBeenCalled();
+    });
+
+    it("updates solo difficulty and controller before countdown", () => {
+      vi.useFakeTimers();
+      const opponentController = {
+        setDifficulty: vi.fn(),
+        nextInputs: vi.fn(() => ({ left: false, right: false, fire: false })),
+      };
+      engine = new HexInvadersEngine(canvas, channel, "hex_invaders", true, null, {
+        mode: "solo",
+        difficulty: "easy",
+        opponentController,
+      });
+      engine.start();
+
+      expect(engine.beginMatch({ difficulty: "hard" })).toBe(true);
+
+      expect(engine.difficulty).toBe("hard");
+      expect(opponentController.setDifficulty).toHaveBeenCalledWith("hard");
+    });
+
+    it("accepts an explicit opponent controller", () => {
+      vi.useFakeTimers();
+      const opponentController = {
+        nextInputs: vi.fn(() => ({ left: false, right: true, fire: false })),
+      };
+      engine = new HexInvadersEngine(canvas, channel, "hex_invaders", true, null, {
+        mode: "solo",
+      });
+      engine.start();
+
+      expect(engine.beginMatch({ opponentController })).toBe(true);
+
+      expect(engine.opponentController).toBe(opponentController);
+    });
+
+    it("does not start twice", () => {
+      vi.useFakeTimers();
+      engine = new HexInvadersEngine(canvas, channel, "hex_invaders", true, null, {
+        mode: "solo",
+      });
+      engine.start();
+
+      expect(engine.beginMatch()).toBe(true);
+      expect(engine.beginMatch()).toBe(false);
     });
   });
 
@@ -364,6 +451,7 @@ describe("HexInvadersEngine", () => {
       it("maps Space to FIRE", () => {
         engine = new HexInvadersEngine(canvas, channel, "hex_invaders", true, null);
         expect(engine._mapKey(" ")).toBe(INPUT_KEY.FIRE);
+        expect(engine._mapKey("Spacebar")).toBe(INPUT_KEY.FIRE);
       });
 
       it("returns null for unrecognized keys", () => {
@@ -371,6 +459,14 @@ describe("HexInvadersEngine", () => {
         expect(engine._mapKey("x")).toBeNull();
         expect(engine._mapKey("Enter")).toBeNull();
         expect(engine._mapKey("Shift")).toBeNull();
+      });
+
+      it("prevents browser defaults only for captured game keys", () => {
+        engine = new HexInvadersEngine(canvas, channel, "hex_invaders", true, null);
+
+        expect(engine._shouldPreventDefaultForCapturedKey({ key: "ArrowLeft" })).toBe(true);
+        expect(engine._shouldPreventDefaultForCapturedKey({ key: " " })).toBe(true);
+        expect(engine._shouldPreventDefaultForCapturedKey({ key: "Meta" })).toBe(false);
       });
     });
 
@@ -650,6 +746,17 @@ describe("HexInvadersEngine", () => {
         expect(render).toHaveBeenCalled();
       });
 
+      it("GAME_STATE captures keyboard only during active phases", () => {
+        const playing = createInitialState(GAME_MODE.INVASION_WAR, 12345);
+        playing.phase = PHASE.PLAYING;
+        engine._onChannelMessage({ data: encodeGameState(playing) });
+        expect(engine._keyboardCaptured).toBe(true);
+
+        const finished = { ...playing, phase: PHASE.FINISHED };
+        engine._onChannelMessage({ data: encodeGameState(finished) });
+        expect(engine._keyboardCaptured).toBe(false);
+      });
+
       it("GAME_STATE bootstraps seed from first state", () => {
         expect(engine.seed).toBe(0);
         const state = createInitialState(GAME_MODE.INVASION_WAR, 54321);
@@ -667,9 +774,11 @@ describe("HexInvadersEngine", () => {
       });
 
       it("GAME_END sets FINISHED phase and calls onGameEnd", () => {
+        engine.setKeyboardCaptured(true);
         const buf = encodeGameEnd({ score1: 100, score2: 50, winner: 1 });
         engine._onChannelMessage({ data: buf });
         expect(engine.gameState.phase).toBe(PHASE.FINISHED);
+        expect(engine._keyboardCaptured).toBe(false);
         expect(onGameEnd).toHaveBeenCalledWith({
           score: { p1: 100, p2: 50 },
           winner: 1,
@@ -916,6 +1025,30 @@ describe("HexInvadersEngine", () => {
       expect(engine.gameState.cannon2X).toBeLessThan(prevX);
     });
 
+    it("uses solo opponent controller as player 2 input", () => {
+      engine.stop();
+      const opponentController = {
+        nextInputs: vi.fn(() => ({ left: false, right: true, fire: false })),
+      };
+      engine = new HexInvadersEngine(canvas, channel, "hex_invaders", true, null, {
+        mode: "solo",
+        opponentController,
+      });
+      engine.start();
+      engine.gameState = createWave(createInitialState(GAME_MODE.INVASION_WAR, 12345), 1);
+      engine.gameState.phase = PHASE.PLAYING;
+      const prevX = engine.gameState.cannon2X;
+
+      engine._gameLoop();
+
+      expect(opponentController.nextInputs).toHaveBeenCalledWith({
+        state: expect.objectContaining({ phase: PHASE.PLAYING }),
+        difficulty: "normal",
+        player: 2,
+      });
+      expect(engine.gameState.cannon2X).toBeGreaterThan(prevX);
+    });
+
     it("edge-triggers fire: only fires on false→true transition", () => {
       engine._localFirePressed = false;
       engine.localInputs.fire = true;
@@ -933,6 +1066,26 @@ describe("HexInvadersEngine", () => {
       engine._remoteFirePressed = false;
       engine.remoteInputs.fire = true;
       engine._gameLoop();
+      expect(engine.audio.playFire).toHaveBeenCalled();
+      expect(engine._remoteFirePressed).toBe(true);
+    });
+
+    it("lets the solo opponent controller fire player 2 missiles", () => {
+      engine.stop();
+      const opponentController = {
+        nextInputs: vi.fn(() => ({ left: false, right: false, fire: true })),
+      };
+      engine = new HexInvadersEngine(canvas, channel, "hex_invaders", true, null, {
+        mode: "solo",
+        opponentController,
+      });
+      engine.start();
+      engine.gameState = createWave(createInitialState(GAME_MODE.INVASION_WAR, 12345), 1);
+      engine.gameState.phase = PHASE.PLAYING;
+
+      engine._gameLoop();
+
+      expect(engine.gameState.m2Active).toBe(true);
       expect(engine.audio.playFire).toHaveBeenCalled();
       expect(engine._remoteFirePressed).toBe(true);
     });
@@ -1121,6 +1274,16 @@ describe("HexInvadersEngine", () => {
       expect(view.getUint8(0)).toBe(MSG_TYPE.GAME_END);
     });
 
+    it("stops fixed steps and releases keyboard capture", () => {
+      engine._startSteps();
+      engine.setKeyboardCaptured(true);
+
+      engine._handleGameFinished({ ended: true, winner: 1 });
+
+      expect(engine.stepping).toBe(false);
+      expect(engine._keyboardCaptured).toBe(false);
+    });
+
     it("plays victory audio when winner > 0", () => {
       engine._handleGameFinished({ ended: true, winner: 1 });
       expect(engine.audio.playVictory).toHaveBeenCalled();
@@ -1213,10 +1376,14 @@ describe("HexInvadersEngine", () => {
         const onGameEnd = vi.fn();
         engine = new HexInvadersEngine(canvas, channel, "hex_invaders", true, onGameEnd);
         engine.start();
+        engine._startSteps();
+        engine.setKeyboardCaptured(true);
         engine.gameState.score1 = 50;
         engine.gameState.score2 = 30;
         engine._handleChannelClose();
         expect(engine.gameState.phase).toBe(PHASE.FINISHED);
+        expect(engine.stepping).toBe(false);
+        expect(engine._keyboardCaptured).toBe(false);
         expect(onGameEnd).toHaveBeenCalledWith({
           score: { p1: 50, p2: 30 },
           winner: 0,

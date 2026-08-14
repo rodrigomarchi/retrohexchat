@@ -10,7 +10,7 @@ import { PHASE, GAME_MODE, ALIEN_TYPE } from "./protocol.js";
 export const CANVAS_W = 640;
 export const CANVAS_H = 480;
 export const HALF_W = 318; // playable width per side (640/2 - 2 for divider)
-const DIVIDER_X = 320;
+export const DIVIDER_X = 320;
 
 // ── Grid ──
 export const GRID_COLS = 6;
@@ -19,8 +19,8 @@ export const COOP_GRID_COLS = 11;
 export const COOP_GRID_ROWS = 5;
 
 // ── Cannon ──
-const CANNON_W = 20;
-const CANNON_Y_OFFSET = 450;
+export const CANNON_W = 20;
+export const CANNON_Y_OFFSET = 450;
 export const CANNON_SPEED = 3;
 
 // ── Missiles ──
@@ -32,8 +32,8 @@ export const BOMB_SPEED = 3;
 const BOMB_RADIUS = 4;
 
 // ── Aliens ──
-const ALIEN_W = 10;
-const ALIEN_H = 8;
+export const ALIEN_W = 10;
+export const ALIEN_H = 8;
 const ALIEN_SPACING_X = 34;
 const ALIEN_SPACING_Y = 28;
 const ALIEN_MARGIN_TOP = 50;

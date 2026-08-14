@@ -51,6 +51,15 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     controls: "Arrow keys or WASD to move, Space or Shift to serve"
   }
 
+  @invaders %{
+    id: "hex_invaders",
+    name: "Hex Invaders",
+    tagline: "Your kills are their problem",
+    description: "Split-screen Space Invaders.",
+    icon: "game_invaders",
+    controls: "Arrow keys or A/D to move, Space to fire"
+  }
+
   test "renders the ready game with an integrated control panel" do
     html =
       render_component(&retro_games_panel/1,
@@ -173,6 +182,29 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     assert text =~ "Serve"
     assert text =~ "Space"
     assert text =~ "Shift"
+  end
+
+  test "renders the Hex Invaders goal and fire controls in the shared status panel" do
+    html =
+      render_component(&retro_games_panel/1,
+        id: "retro-games-panel",
+        games: [@invaders],
+        status: "ready",
+        selected_game: @invaders,
+        difficulty: "normal",
+        canvas_ready: true,
+        target: "retro-games-island"
+      )
+
+    document = Floki.parse_document!(html)
+    text = Floki.text(document)
+
+    assert text =~ "10 waves"
+    assert text =~ "Move"
+    assert text =~ "Fire"
+    assert text =~ "Space"
+    assert text =~ "A"
+    assert text =~ "D"
   end
 
   test "locks difficulty and promotes the end action while playing" do

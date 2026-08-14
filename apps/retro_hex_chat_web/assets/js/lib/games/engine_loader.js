@@ -57,6 +57,9 @@ const SOLO_GAME_IDS = new Set([
   "hex_tennis",
   "hex_tennis_quick",
   "hex_tennis_sudden",
+  "hex_invaders",
+  "hex_invaders_coop",
+  "hex_invaders_blitz",
 ]);
 
 /**

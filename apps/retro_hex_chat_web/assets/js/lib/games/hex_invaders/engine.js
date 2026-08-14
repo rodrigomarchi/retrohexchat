@@ -6,6 +6,7 @@
 import { log } from "../../logger.js";
 
 import { GameEngine } from "../../game_engine.js";
+import { createHexInvadersAI, normalizeInvadersAIDifficulty } from "./ai.js";
 import {
   MSG_TYPE,
   PHASE,
@@ -52,16 +53,45 @@ const MODE_MAP = {
 const STATE_SEND_INTERVAL = 1; // broadcast every fixed step (60Hz)
 const WAVE_CLEAR_FRAMES = 120; // 2 sec overlay
 const WAVE_START_FRAMES = 60; // 1 sec overlay
+const INVADERS_PREVENT_DEFAULT_KEYS = new Set([
+  "ArrowLeft",
+  "ArrowRight",
+  " ",
+  "Spacebar",
+  "a",
+  "A",
+  "d",
+  "D",
+]);
+
+/**
+ * @param {string} gameId
+ * @returns {number}
+ */
+function gameModeFromId(gameId) {
+  return MODE_MAP[gameId] ?? GAME_MODE.INVASION_WAR;
+}
 
 export class HexInvadersEngine extends GameEngine {
   static INPUT_BITS = { left: 0, right: 1, fire: 2 };
 
-  constructor(canvas, channel, gameId, isHost, onGameEnd) {
-    super(canvas, channel, gameId, isHost);
-    this.onGameEnd = onGameEnd;
-    this.mode = MODE_MAP[gameId] ?? GAME_MODE.INVASION_WAR;
+  /**
+   * @param {HTMLCanvasElement} canvas
+   * @param {RTCDataChannel|object} channel
+   * @param {string} gameId
+   * @param {boolean} isHost
+   * @param {function|null} onGameEnd - callback when game finishes
+   * @param {object} [options]
+   * @param {"p2p_host"|"p2p_guest"|"solo"} [options.mode]
+   * @param {object} [options.opponentController]
+   * @param {"easy"|"normal"|"hard"|string} [options.difficulty]
+   */
+  constructor(canvas, channel, gameId, isHost, onGameEnd, options = {}) {
+    super(canvas, channel, gameId, isHost, options);
+    this.onGameEnd = onGameEnd || null;
+    this.gameMode = gameModeFromId(gameId);
     this.seed = isHost ? (Math.random() * 0xffffffff) >>> 0 : 0;
-    this.gameState = createInitialState(this.mode, this.seed);
+    this.gameState = createInitialState(this.gameMode, this.seed);
     this.localInputs = { left: false, right: false, fire: false };
     this.remoteInputs = { left: false, right: false, fire: false };
     this._localFirePressed = false;
@@ -71,6 +101,10 @@ export class HexInvadersEngine extends GameEngine {
     this.audio = new HexInvadersAudio();
     this.colors = null;
     this.peerReady = false;
+    this.difficulty = normalizeInvadersAIDifficulty(options.difficulty);
+    this.opponentController =
+      options.opponentController ||
+      (this.mode === "solo" ? createHexInvadersAI({ difficulty: this.difficulty }) : null);
     this._boundBlur = this._handleBlur.bind(this);
     this._boundChannelClose = this._handleChannelClose.bind(this);
   }
@@ -82,7 +116,10 @@ export class HexInvadersEngine extends GameEngine {
     window.addEventListener("blur", this._boundBlur);
     this.channel.addEventListener("close", this._boundChannelClose);
 
-    if (this.isHost) {
+    if (this.mode === "solo") {
+      this.peerReady = true;
+      this._invalidate();
+    } else if (this.isHost) {
       this._invalidate();
     } else {
       this._advertiseReady(encodeGameReady);
@@ -102,6 +139,29 @@ export class HexInvadersEngine extends GameEngine {
     super.stop();
   }
 
+  beginMatch(options = {}) {
+    if (!this.running || !this.isHost || this.gameState.phase !== PHASE.WAITING) return false;
+
+    if (options.difficulty) {
+      this.difficulty = normalizeInvadersAIDifficulty(options.difficulty);
+      if (
+        !options.opponentController &&
+        typeof this.opponentController?.setDifficulty === "function"
+      ) {
+        this.opponentController.setDifficulty(this.difficulty);
+      }
+    }
+    if (options.opponentController) this.opponentController = options.opponentController;
+    if (this.mode === "solo" && !this.opponentController) {
+      this.opponentController = createHexInvadersAI({ difficulty: this.difficulty });
+    }
+
+    this.setKeyboardCaptured(true);
+    this.peerReady = true;
+    this._startCountdown();
+    return true;
+  }
+
   // ── Input Handling ──
 
   _mapKey(key) {
@@ -115,6 +175,7 @@ export class HexInvadersEngine extends GameEngine {
       case "D":
         return INPUT_KEY.RIGHT;
       case " ":
+      case "Spacebar":
         return INPUT_KEY.FIRE;
       default:
         return null;
@@ -152,19 +213,33 @@ export class HexInvadersEngine extends GameEngine {
     const buf = event.data;
     if (!(buf instanceof ArrayBuffer)) return;
     const type = getMessageType(buf);
+    if (type === null) return;
 
-    if (this.isHost) {
-      if (type === MSG_TYPE.GAME_READY && !this.peerReady) {
-        this.peerReady = true;
-        this._startCountdown();
-      }
-    } else {
-      // Peer
-      if (type === MSG_TYPE.GAME_STATE) {
-        this._applyPeerState(decodeGameState(buf));
-      } else if (type === MSG_TYPE.GAME_END) {
+    switch (type) {
+      case MSG_TYPE.GAME_STATE:
+        if (!this.isHost) {
+          const decoded = decodeGameState(buf);
+          if (decoded) {
+            this._ingestSnapshot(decoded, () => this._applyPeerState(decoded));
+            this.setKeyboardCaptured(
+              decoded.phase !== PHASE.WAITING && decoded.phase !== PHASE.FINISHED,
+            );
+          }
+        }
+        break;
+
+      case MSG_TYPE.GAME_READY:
+        if (this.isHost && !this.peerReady) {
+          this.beginMatch();
+        }
+        break;
+
+      case MSG_TYPE.GAME_END: {
+        if (this.isHost) break;
+
         const result = decodeGameEnd(buf);
         if (result) {
+          this.setKeyboardCaptured(false);
           this.gameState = {
             ...this.gameState,
             phase: PHASE.FINISHED,
@@ -182,6 +257,7 @@ export class HexInvadersEngine extends GameEngine {
             }
           }
         }
+        break;
       }
     }
   }
@@ -192,7 +268,7 @@ export class HexInvadersEngine extends GameEngine {
     // Bootstrap seed from first state
     if (this.seed === 0 && decoded.seed !== 0) {
       this.seed = decoded.seed;
-      this.gameState = createInitialState(this.mode, this.seed);
+      this.gameState = createInitialState(this.gameMode, this.seed);
     }
 
     // Copy all decoded fields into gameState, preserving _shieldPositions
@@ -242,6 +318,8 @@ export class HexInvadersEngine extends GameEngine {
   _gameLoop() {
     if (!this.running) return;
     let s = this.gameState;
+
+    this._updateOpponentInputs();
 
     if (s.phase === PHASE.PLAYING) {
       s = clearEvents(s);
@@ -392,6 +470,8 @@ export class HexInvadersEngine extends GameEngine {
   // ── Game End ──
 
   _handleGameFinished(result) {
+    this._stopSteps();
+    this.setKeyboardCaptured(false);
     this._broadcastState();
     this._invalidate();
 
@@ -425,6 +505,7 @@ export class HexInvadersEngine extends GameEngine {
 
   _handleChannelClose() {
     this._stopSteps();
+    this.setKeyboardCaptured(false);
     if (this.gameState.phase === PHASE.FINISHED) return;
     this.gameState.phase = PHASE.FINISHED;
     this._invalidate();
@@ -453,5 +534,27 @@ export class HexInvadersEngine extends GameEngine {
 
   _broadcastState() {
     this._sendState(encodeGameState(this.gameState));
+  }
+
+  _updateOpponentInputs() {
+    if (this.mode !== "solo" || typeof this.opponentController?.nextInputs !== "function") return;
+
+    const nextInputs = this.opponentController.nextInputs({
+      state: this.gameState,
+      difficulty: this.difficulty,
+      player: 2,
+    });
+
+    if (!nextInputs) return;
+
+    this.remoteInputs = {
+      left: nextInputs.left === true,
+      right: nextInputs.right === true,
+      fire: nextInputs.fire === true,
+    };
+  }
+
+  _shouldPreventDefaultForCapturedKey(event) {
+    return INVADERS_PREVENT_DEFAULT_KEYS.has(event.key);
   }
 }

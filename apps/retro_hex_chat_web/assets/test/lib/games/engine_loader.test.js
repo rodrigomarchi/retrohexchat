@@ -36,6 +36,9 @@ describe("engine loader", () => {
     expect(supportsSolo("hex_outlaw_ricochet")).toBe(true);
     expect(supportsSolo("hex_outlaw_stagecoach")).toBe(true);
     expect(supportsSolo("hex_outlaw_nml")).toBe(true);
+    expect(supportsSolo("hex_invaders")).toBe(true);
+    expect(supportsSolo("hex_invaders_coop")).toBe(true);
+    expect(supportsSolo("hex_invaders_blitz")).toBe(true);
     expect(supportsSolo("hex_tennis")).toBe(true);
     expect(supportsSolo("hex_tennis_quick")).toBe(true);
     expect(supportsSolo("hex_tennis_sudden")).toBe(true);
@@ -163,6 +166,31 @@ describe("engine loader", () => {
     });
 
     expect(engine.gameId).toBe("hex_tennis_sudden");
+    expect(engine.isHost).toBe(true);
+    expect(engine.mode).toBe("solo");
+    expect(engine.gameMode).toBe(2);
+    expect(engine.transport.kind).toBe("local");
+    expect(engine.difficulty).toBe("hard");
+    expect(engine.opponentController).toBe(opponentController);
+
+    engine.stop();
+  });
+
+  it("creates a Hex Invaders family solo engine through the shared factory", async () => {
+    const opponentController = {
+      nextInputs: () => ({ left: false, right: false, fire: false }),
+    };
+    const engine = await createGameEngine({
+      canvas: createCanvas(),
+      gameId: "hex_invaders_blitz",
+      mode: "solo",
+      transport: createLocalTransport(),
+      difficulty: "hard",
+      opponentController,
+      onGameEnd: null,
+    });
+
+    expect(engine.gameId).toBe("hex_invaders_blitz");
     expect(engine.isHost).toBe(true);
     expect(engine.mode).toBe("solo");
     expect(engine.gameMode).toBe(2);

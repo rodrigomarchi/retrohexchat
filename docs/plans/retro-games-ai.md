@@ -17,7 +17,8 @@ O primeiro jogo suportado foi Hex Pong. O segundo incremento aplicou o mesmo
 playbook ao Light Trails. O terceiro incremento aplica o batch por família ao
 Hex Outlaw e suas variantes. O quarto incremento aplica o mesmo playbook à
 família Star Duel: Star Duel, Gravity Well e Debris Field. O quinto incremento
-leva o playbook para a família Hex Tennis.
+leva o playbook para a família Hex Tennis. O sexto incremento leva o playbook para
+a família Hex Invaders.
 
 ## Decisões de produto
 
@@ -43,8 +44,8 @@ Entrada principal:
 Fluxo inicial:
 
 - A janela mostra o catálogo de jogos nativos.
-- Hex Pong, Light Trails, a família Star Duel, a família Hex Outlaw e a família
-  Hex Tennis aparecem como jogos disponíveis.
+- Hex Pong, Light Trails, a família Star Duel, a família Hex Outlaw, a família
+  Hex Tennis e a família Hex Invaders aparecem como jogos disponíveis.
 - Jogos futuros podem ficar ocultos até terem AI pronta. Se forem exibidos, devem
   aparecer como indisponíveis de forma explícita, sem prometer jogabilidade.
 
@@ -333,8 +334,8 @@ Extrair esse mapa para um loader compartilhado evita duplicação:
 - `createGameEngine({ canvas, gameId, mode, transport, opponent, onGameEnd })`.
 
 `supportsSolo/1` só deve ser verdadeiro para jogos que já têm runtime solo
-validado: Hex Pong, Light Trails, família Star Duel, família Hex Outlaw e família
-Hex Tennis neste momento.
+validado: Hex Pong, Light Trails, família Star Duel, família Hex Outlaw, família
+Hex Tennis e família Hex Invaders neste momento.
 
 ### Foco e teclado
 
@@ -492,6 +493,33 @@ Fluxo técnico esperado:
 - dificuldade altera reação, erro de alvo, deadzone e timing do saque;
 - placar de tênis, saque, rally, faltas, changeover, áudio e regras de set
   continuam compartilhados com o P2P.
+
+### Hex Invaders
+
+A família Hex Invaders usa input pressionado contínuo para movimento horizontal e
+tiro com borda detectada pela engine. As três variantes compartilham a mesma
+engine:
+
+- `hex_invaders`;
+- `hex_invaders_coop`;
+- `hex_invaders_blitz`.
+
+Fluxo técnico esperado:
+
+- engine inicia como host local;
+- `mode` representa o runtime (`p2p_host`, `p2p_guest`, `solo`);
+- `gameMode` representa a variante (`Invasion War`, `Co-op`, `Blitz`);
+- jogador humano controla o player 1;
+- AI controla o player 2 preenchendo `remoteInputs`;
+- AI devolve o mesmo shape de input do peer P2P: `left`, `right`, `fire`;
+- AI mira nos aliens do lado do player 2 em modos split-screen;
+- em `Co-op`, AI mira no grid compartilhado;
+- AI desvia de bombas que ameaçam o canhão 2 e ignora bombas do outro lado nos
+  modos split-screen;
+- dificuldade altera frequência de decisão, erro de mira, janela de esquiva,
+  cooldown e chance de disparo;
+- waves, drops, UFO, shields, combos, áudio e regras de fim continuam
+  compartilhados com o P2P.
 
 ## Modelo da AI
 

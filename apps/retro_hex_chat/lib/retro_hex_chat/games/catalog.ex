@@ -16,6 +16,9 @@ defmodule RetroHexChat.Games.Catalog do
     "hex_outlaw_ricochet",
     "hex_outlaw_stagecoach",
     "hex_outlaw_nml",
+    "hex_invaders",
+    "hex_invaders_coop",
+    "hex_invaders_blitz",
     "hex_tennis",
     "hex_tennis_quick",
     "hex_tennis_sudden"

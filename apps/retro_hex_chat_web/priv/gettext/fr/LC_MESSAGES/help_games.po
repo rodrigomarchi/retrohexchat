@@ -1088,6 +1088,7 @@ msgstr "Hockey Hex"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_blitz.html.heex:73
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_coop.html.heex:76
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "Hex Invaders"
 msgstr "Invaders Hex"
@@ -4104,7 +4105,7 @@ msgstr "/p2p"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:76
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:57
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:59
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:92
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
@@ -4125,7 +4126,7 @@ msgstr "Ouvrez le menu Jeux et choisissez Jeux rétro."
 msgid "Select Easy, Normal, or Hard, then click Play vs AI once the canvas is ready."
 msgstr "Sélectionnez Facile, Normal ou Difficile, puis cliquez sur Jouer contre l'IA une fois le canevas prêt."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:41
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "Solo Arcade"
 msgstr "Arcade solo"
@@ -4137,15 +4138,15 @@ msgstr "Démarrer une partie solo"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:14
 #, elixir-autogen, elixir-format
-msgid "Choose Hex Pong, Light Trails, a Star Duel variant, a Hex Outlaw variant, or a Hex Tennis variant from the Retro Games catalog."
-msgstr "Choisissez Hex Pong, Light Trails, une variante de Star Duel, une variante de Hex Outlaw ou une variante de Hex Tennis dans le catalogue Jeux rétro."
+msgid "Choose Hex Pong, Light Trails, a Star Duel variant, a Hex Outlaw variant, a Hex Tennis variant, or a Hex Invaders variant from the Retro Games catalog."
+msgstr "Choisissez Hex Pong, Light Trails, une variante de Star Duel, une variante de Hex Outlaw, une variante de Hex Tennis ou une variante de Hex Invaders dans le catalogue Jeux rétro."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:29
 #, elixir-autogen, elixir-format
-msgid "In Hex Pong, you control the left paddle with Arrow Up / Arrow Down or W / S while the AI controls the right paddle. In Light Trails, use the arrow keys or WASD to steer and trap the AI before either trail hits a wall or occupied cell. In Star Duel variants, rotate, thrust, and fire with Space while the AI dogfights as player 2. In Hex Outlaw, dodge visible bullets, line up your shot, and fire with Space or Shift. In Hex Tennis, move across your half, serve with Space or Shift, and let the AI cover the far court."
-msgstr "Dans Hex Pong, vous contrôlez la raquette gauche avec Flèche haut / Flèche bas ou W / S, tandis que l'IA contrôle la raquette droite. Dans Light Trails, utilisez les flèches ou WASD pour diriger et piéger l'IA avant qu'une traînée touche un mur ou une cellule occupée. Dans les variantes de Star Duel, pivotez, propulsez et tirez avec Espace pendant que l'IA combat en joueur 2. Dans Hex Outlaw, esquivez les balles visibles, alignez votre tir et tirez avec Espace ou Shift. Dans Hex Tennis, déplacez-vous dans votre moitié, servez avec Espace ou Shift et laissez l'IA couvrir le court opposé."
+msgid "In Hex Pong, you control the left paddle with Arrow Up / Arrow Down or W / S while the AI controls the right paddle. In Light Trails, use the arrow keys or WASD to steer and trap the AI before either trail hits a wall or occupied cell. In Star Duel variants, rotate, thrust, and fire with Space while the AI dogfights as player 2. In Hex Outlaw, dodge visible bullets, line up your shot, and fire with Space or Shift. In Hex Tennis, move across your half, serve with Space or Shift, and let the AI cover the far court. In Hex Invaders, move with Left/Right or A/D, fire with Space, and let the AI clear the other cannon lane."
+msgstr "Dans Hex Pong, vous contrôlez la raquette gauche avec Flèche haut / Flèche bas ou W / S, tandis que l'IA contrôle la raquette droite. Dans Light Trails, utilisez les flèches ou WASD pour diriger et piéger l'IA avant qu'une traînée touche un mur ou une cellule occupée. Dans les variantes de Star Duel, pivotez, propulsez et tirez avec Espace pendant que l'IA combat en joueur 2. Dans Hex Outlaw, esquivez les balles visibles, alignez votre tir et tirez avec Espace ou Shift. Dans Hex Tennis, déplacez-vous dans votre moitié, servez avec Espace ou Shift et laissez l'IA couvrir le court opposé. Dans Hex Invaders, déplacez-vous avec Gauche/Droite ou A/D, tirez avec Espace et laissez l'IA nettoyer l'autre voie de canon."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Retro Games are browser-native RetroHexChat games that can run inside the chat desktop without a peer session. Hex Pong, Light Trails, Star Duel variants, Hex Outlaw variants, and Hex Tennis variants use the same game engine foundation as P2P play with an AI controller on the remote side."
-msgstr "Les Jeux rétro sont des jeux RetroHexChat natifs du navigateur qui s'exécutent dans le bureau de chat sans session pair-à-pair. Hex Pong, Light Trails, les variantes de Star Duel, les variantes de Hex Outlaw et les variantes de Hex Tennis utilisent la même base de moteur que le jeu P2P, avec un contrôleur d'IA côté distant."
+msgid "Retro Games are browser-native RetroHexChat games that can run inside the chat desktop without a peer session. Hex Pong, Light Trails, Star Duel variants, Hex Outlaw variants, Hex Tennis variants, and Hex Invaders variants use the same game engine foundation as P2P play with an AI controller on the remote side."
+msgstr "Les Jeux rétro sont des jeux RetroHexChat natifs du navigateur qui s'exécutent dans le bureau de chat sans session pair-à-pair. Hex Pong, Light Trails, les variantes de Star Duel, les variantes de Hex Outlaw, les variantes de Hex Tennis et les variantes de Hex Invaders utilisent la même base de moteur que le jeu P2P, avec un contrôleur d'IA côté distant."
