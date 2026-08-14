@@ -7,6 +7,7 @@
 import { log } from "../../logger.js";
 
 import { GameEngine } from "../../game_engine.js";
+import { createStarDuelAI, normalizeStarDuelAIDifficulty } from "./ai.js";
 import {
   MSG_TYPE,
   PHASE,
@@ -53,7 +54,36 @@ const STATE_SEND_INTERVAL = 1; // broadcast every fixed step (60Hz)
 const SPAWN_DELAY = 1500; // ms pause after round over
 const ROUND_OVER_DELAY = 2000; // ms before respawn
 
-const MODE_MAP = { star_duel: 0, gravity_well: 1, debris_field: 2 };
+const STAR_DUEL_PREVENT_DEFAULT_KEYS = new Set([
+  "ArrowUp",
+  "ArrowDown",
+  "ArrowLeft",
+  "ArrowRight",
+  " ",
+  "Spacebar",
+  "w",
+  "W",
+  "a",
+  "A",
+  "s",
+  "S",
+  "d",
+  "D",
+]);
+
+const MODE_MAP = {
+  star_duel: GAME_MODE.OPEN_SPACE,
+  gravity_well: GAME_MODE.GRAVITY_WELL,
+  debris_field: GAME_MODE.DEBRIS_FIELD,
+};
+
+/**
+ * @param {string} gameId
+ * @returns {number}
+ */
+function gameModeFromId(gameId) {
+  return MODE_MAP[gameId] ?? GAME_MODE.OPEN_SPACE;
+}
 
 export class StarDuelEngine extends GameEngine {
   static INPUT_BITS = { rotateLeft: 0, rotateRight: 1, thrust: 2, fire: 3, warp: 4 };
@@ -64,12 +94,16 @@ export class StarDuelEngine extends GameEngine {
    * @param {string} gameId
    * @param {boolean} isHost
    * @param {function} onGameEnd - callback when game finishes
+   * @param {object} [options]
+   * @param {"p2p_host"|"p2p_guest"|"solo"} [options.mode]
+   * @param {object} [options.opponentController]
+   * @param {"easy"|"normal"|"hard"|string} [options.difficulty]
    */
-  constructor(canvas, channel, gameId, isHost, onGameEnd) {
-    super(canvas, channel, gameId, isHost);
+  constructor(canvas, channel, gameId, isHost, onGameEnd, options = {}) {
+    super(canvas, channel, gameId, isHost, options);
     this.onGameEnd = onGameEnd || null;
-    this.mode = MODE_MAP[gameId] ?? 0;
-    this.gameState = createInitialState(this.mode);
+    this.gameMode = gameModeFromId(gameId);
+    this.gameState = createInitialState(this.gameMode);
     this.gameState.lastScorer = 0;
     this.remoteInputs = {
       rotateLeft: false,
@@ -90,6 +124,10 @@ export class StarDuelEngine extends GameEngine {
     this.audio = new StarDuelAudio();
     this.colors = null;
     this.peerReady = false;
+    this.difficulty = normalizeStarDuelAIDifficulty(options.difficulty);
+    this.opponentController =
+      options.opponentController ||
+      (this.mode === "solo" ? createStarDuelAI({ difficulty: this.difficulty }) : null);
 
     // Edge-trigger tracking for fire and warp (only activate once per keydown)
     this._p1FirePrev = false;
@@ -112,7 +150,10 @@ export class StarDuelEngine extends GameEngine {
     window.addEventListener("blur", this._boundBlur);
     this.channel.addEventListener("close", this._boundChannelClose);
 
-    if (this.isHost) {
+    if (this.mode === "solo") {
+      this.peerReady = true;
+      this._invalidate();
+    } else if (this.isHost) {
       // Host waits for peer GAME_READY, then starts countdown
       this._invalidate();
     } else {
@@ -134,6 +175,29 @@ export class StarDuelEngine extends GameEngine {
     super.stop();
   }
 
+  beginMatch(options = {}) {
+    if (!this.running || !this.isHost || this.gameState.phase !== PHASE.WAITING) return false;
+
+    if (options.difficulty) {
+      this.difficulty = normalizeStarDuelAIDifficulty(options.difficulty);
+      if (
+        !options.opponentController &&
+        typeof this.opponentController?.setDifficulty === "function"
+      ) {
+        this.opponentController.setDifficulty(this.difficulty);
+      }
+    }
+    if (options.opponentController) this.opponentController = options.opponentController;
+    if (this.mode === "solo" && !this.opponentController) {
+      this.opponentController = createStarDuelAI({ difficulty: this.difficulty });
+    }
+
+    this.setKeyboardCaptured(true);
+    this.peerReady = true;
+    this._startCountdown();
+    return true;
+  }
+
   _handleMessage(event) {
     if (!(event.data instanceof ArrayBuffer)) return;
     const buf = event.data;
@@ -145,22 +209,24 @@ export class StarDuelEngine extends GameEngine {
         if (!this.isHost) {
           const decoded = decodeGameState(buf);
           if (decoded) {
-            this._applyPeerState(decoded);
-            this._invalidate();
+            this._ingestSnapshot(decoded, () => this._applyPeerState(decoded));
+            this.setKeyboardCaptured(
+              decoded.phase !== PHASE.WAITING && decoded.phase !== PHASE.FINISHED,
+            );
           }
         }
         break;
 
       case MSG_TYPE.GAME_READY:
         if (this.isHost && !this.peerReady) {
-          this.peerReady = true;
-          this._startCountdown();
+          this.beginMatch();
         }
         break;
 
       case MSG_TYPE.GAME_END: {
         const result = decodeGameEnd(buf);
         if (result) {
+          this.setKeyboardCaptured(false);
           this.gameState.phase = PHASE.FINISHED;
           this.gameState.winner = result.winner;
           this.gameState.score1 = result.score1;
@@ -309,6 +375,8 @@ export class StarDuelEngine extends GameEngine {
     if (!this.running) return;
 
     const state = this.gameState;
+
+    this._updateOpponentInputs();
 
     // --- Process inputs for P1 (host/local) ---
     let ship1 = state.ship1;
@@ -556,6 +624,7 @@ export class StarDuelEngine extends GameEngine {
   /** Host: handle game end (a player reached WIN_SCORE). */
   _handleGameFinished() {
     this._stopSteps();
+    this.setKeyboardCaptured(false);
     const { score1, score2 } = this.gameState;
     const winner = score1 >= WIN_SCORE ? 1 : 2;
 
@@ -604,6 +673,7 @@ export class StarDuelEngine extends GameEngine {
 
   _handleChannelClose() {
     this._stopSteps();
+    this.setKeyboardCaptured(false);
     if (!this.gameState || this.gameState.phase === PHASE.FINISHED) return;
     this.gameState.phase = PHASE.FINISHED;
     this.audio.stopThrust();
@@ -642,6 +712,30 @@ export class StarDuelEngine extends GameEngine {
     if (this.colors) {
       renderFrame(this.ctx, this.gameState, this.colors, performance.now());
     }
+  }
+
+  _updateOpponentInputs() {
+    if (this.mode !== "solo" || typeof this.opponentController?.nextInputs !== "function") return;
+
+    const nextInputs = this.opponentController.nextInputs({
+      state: this.gameState,
+      difficulty: this.difficulty,
+      player: 2,
+    });
+
+    if (!nextInputs) return;
+
+    this.remoteInputs = {
+      rotateLeft: nextInputs.rotateLeft === true,
+      rotateRight: nextInputs.rotateRight === true,
+      thrust: nextInputs.thrust === true,
+      fire: nextInputs.fire === true,
+      warp: nextInputs.warp === true,
+    };
+  }
+
+  _shouldPreventDefaultForCapturedKey(event) {
+    return STAR_DUEL_PREVENT_DEFAULT_KEYS.has(event.key);
   }
 
   /**

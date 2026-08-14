@@ -345,6 +345,9 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
   defp difficulty_label(_difficulty), do: dgettext("games", "Normal")
 
   defp goal_label(%{id: "light_trails"}), do: dgettext("games", "First to 3 games")
+  defp goal_label(%{id: "star_duel"}), do: dgettext("games", "First to 7")
+  defp goal_label(%{id: "gravity_well"}), do: dgettext("games", "First to 7")
+  defp goal_label(%{id: "debris_field"}), do: dgettext("games", "First to 7")
   defp goal_label(%{id: "hex_outlaw"}), do: dgettext("games", "Best of 3 rounds")
   defp goal_label(%{id: "hex_outlaw_ricochet"}), do: dgettext("games", "Best of 3 rounds")
   defp goal_label(%{id: "hex_outlaw_stagecoach"}), do: dgettext("games", "Best of 3 rounds")
@@ -354,6 +357,19 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
   defp control_rows(%{id: "light_trails"}) do
     [
       %{label: dgettext("games", "Steer"), keys: ["↑", "↓", "←", "→", "W", "A", "S", "D"]}
+    ]
+  end
+
+  defp control_rows(%{id: id})
+       when id in [
+              "star_duel",
+              "gravity_well",
+              "debris_field"
+            ] do
+    [
+      %{label: dgettext("games", "Rotate"), keys: ["←", "→", "A", "D"]},
+      %{label: dgettext("games", "Thrust"), keys: ["↑", "W"]},
+      %{label: dgettext("games", "Fire/Warp"), keys: ["Space", "↓", "S"]}
     ]
   end
 

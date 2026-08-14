@@ -29,6 +29,9 @@ describe("engine loader", () => {
   it("exposes solo support only for engines with a solo runtime", async () => {
     expect(supportsSolo("hex_pong")).toBe(true);
     expect(supportsSolo("light_trails")).toBe(true);
+    expect(supportsSolo("star_duel")).toBe(true);
+    expect(supportsSolo("gravity_well")).toBe(true);
+    expect(supportsSolo("debris_field")).toBe(true);
     expect(supportsSolo("hex_outlaw")).toBe(true);
     expect(supportsSolo("hex_outlaw_ricochet")).toBe(true);
     expect(supportsSolo("hex_outlaw_stagecoach")).toBe(true);
@@ -98,6 +101,37 @@ describe("engine loader", () => {
     expect(engine.gameId).toBe("hex_outlaw_ricochet");
     expect(engine.isHost).toBe(true);
     expect(engine.mode).toBe("solo");
+    expect(engine.transport.kind).toBe("local");
+    expect(engine.difficulty).toBe("hard");
+    expect(engine.opponentController).toBe(opponentController);
+
+    engine.stop();
+  });
+
+  it("creates a Star Duel family solo engine through the shared factory", async () => {
+    const opponentController = {
+      nextInputs: () => ({
+        rotateLeft: false,
+        rotateRight: false,
+        thrust: false,
+        fire: false,
+        warp: false,
+      }),
+    };
+    const engine = await createGameEngine({
+      canvas: createCanvas(),
+      gameId: "gravity_well",
+      mode: "solo",
+      transport: createLocalTransport(),
+      difficulty: "hard",
+      opponentController,
+      onGameEnd: null,
+    });
+
+    expect(engine.gameId).toBe("gravity_well");
+    expect(engine.isHost).toBe(true);
+    expect(engine.mode).toBe("solo");
+    expect(engine.gameMode).toBe(1);
     expect(engine.transport.kind).toBe("local");
     expect(engine.difficulty).toBe("hard");
     expect(engine.opponentController).toBe(opponentController);

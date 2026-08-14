@@ -33,6 +33,15 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     controls: "Arrow keys or WASD to move/aim, Space or Shift to fire"
   }
 
+  @star_duel %{
+    id: "star_duel",
+    name: "Star Duel",
+    tagline: "Dogfight in the void",
+    description: "Newtonian space combat in open vacuum.",
+    icon: "game_space",
+    controls: "Arrow keys or WASD to thrust/rotate, Space to fire, Down/S to warp"
+  }
+
   test "renders the ready game with an integrated control panel" do
     html =
       render_component(&retro_games_panel/1,
@@ -111,6 +120,28 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     assert text =~ "Fire"
     assert text =~ "Space"
     assert text =~ "Shift"
+  end
+
+  test "renders the Star Duel goal and space combat controls in the shared status panel" do
+    html =
+      render_component(&retro_games_panel/1,
+        id: "retro-games-panel",
+        games: [@star_duel],
+        status: "ready",
+        selected_game: @star_duel,
+        difficulty: "normal",
+        canvas_ready: true,
+        target: "retro-games-island"
+      )
+
+    document = Floki.parse_document!(html)
+    text = Floki.text(document)
+
+    assert text =~ "First to 7"
+    assert text =~ "Rotate"
+    assert text =~ "Thrust"
+    assert text =~ "Fire/Warp"
+    assert text =~ "Space"
   end
 
   test "locks difficulty and promotes the end action while playing" do

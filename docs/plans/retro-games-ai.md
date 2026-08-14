@@ -15,7 +15,8 @@ AI.
 
 O primeiro jogo suportado foi Hex Pong. O segundo incremento aplicou o mesmo
 playbook ao Light Trails. O terceiro incremento aplica o batch por família ao
-Hex Outlaw e suas variantes.
+Hex Outlaw e suas variantes. O quarto incremento aplica o mesmo playbook à
+família Star Duel: Star Duel, Gravity Well e Debris Field.
 
 ## Decisões de produto
 
@@ -41,7 +42,8 @@ Entrada principal:
 Fluxo inicial:
 
 - A janela mostra o catálogo de jogos nativos.
-- Hex Pong, Light Trails e a família Hex Outlaw aparecem como jogos disponíveis.
+- Hex Pong, Light Trails, a família Star Duel e a família Hex Outlaw aparecem
+  como jogos disponíveis.
 - Jogos futuros podem ficar ocultos até terem AI pronta. Se forem exibidos, devem
   aparecer como indisponíveis de forma explícita, sem prometer jogabilidade.
 
@@ -329,8 +331,9 @@ Extrair esse mapa para um loader compartilhado evita duplicação:
 - `supportsSolo(gameId)`;
 - `createGameEngine({ canvas, gameId, mode, transport, opponent, onGameEnd })`.
 
-Para o MVP, `supportsSolo("hex_pong")` é verdadeiro e os demais jogos ficam fora
-do catálogo solo.
+`supportsSolo/1` só deve ser verdadeiro para jogos que já têm runtime solo
+validado: Hex Pong, Light Trails, família Star Duel e família Hex Outlaw neste
+momento.
 
 ### Foco e teclado
 
@@ -432,6 +435,36 @@ Fluxo técnico esperado:
 - dificuldade altera janela de esquiva, precisão, cooldown e chance de disparo;
 - placar, round, hit pause, partículas, áudio e regras de match continuam
   compartilhados com o P2P.
+
+### Star Duel
+
+A família Star Duel usa input pressionado contínuo para rotação, propulsão, tiro
+e warp. As três variantes compartilham a mesma engine:
+
+- `star_duel`;
+- `gravity_well`;
+- `debris_field`.
+
+Fluxo técnico esperado:
+
+- engine inicia como host local;
+- `mode` representa o runtime (`p2p_host`, `p2p_guest`, `solo`);
+- `gameMode` representa a variante (`Open Space`, `Gravity Well`,
+  `Debris Field`);
+- jogador humano controla o player 1;
+- AI controla o player 2 preenchendo `remoteInputs`;
+- AI devolve o mesmo shape de input do peer P2P: `rotateLeft`, `rotateRight`,
+  `thrust`, `fire`, `warp`;
+- AI mira no oponente com lead simples, respeita cooldown e limite de mísseis;
+- AI desvia de mísseis recebidos quando a trajetória cruza o player 2;
+- em `Gravity Well`, AI prioriza fuga da estrela central quando entra em zona de
+  risco;
+- em `Debris Field`, AI evita asteroides próximos e não dispara por uma linha de
+  tiro bloqueada por asteroide;
+- dificuldade altera tolerância de mira, reação defensiva, distância preferida,
+  cooldown e chance de disparo;
+- placar, spawn, física orbital, colisões, partículas, áudio e regras de match
+  continuam compartilhados com o P2P.
 
 ## Modelo da AI
 

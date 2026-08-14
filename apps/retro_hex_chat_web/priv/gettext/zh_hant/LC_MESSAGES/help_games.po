@@ -1005,7 +1005,7 @@ msgstr "黑客入侵者:聯合作戰"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_nml.html.heex:72
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_ricochet.html.heex:80
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_stagecoach.html.heex:74
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "Hex Outlaw"
 msgstr "黑幫外圍組織"
@@ -3350,6 +3350,7 @@ msgstr "彈弓伏擊"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_debris_field.html.heex:97
 #: lib/retro_hex_chat_web/controllers/help_content/feature_gravity_well.html.heex:99
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Star Duel"
 msgstr "星際決鬥"
@@ -3634,7 +3635,7 @@ msgstr "/p2p"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:76
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:57
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:59
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:92
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
@@ -3655,7 +3656,7 @@ msgstr "開啟遊戲選單並選擇復古遊戲。"
 msgid "Select Easy, Normal, or Hard, then click Play vs AI once the canvas is ready."
 msgstr "選擇簡單、普通或困難，畫布準備好後點擊對戰 AI。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "Solo Arcade"
 msgstr "單人街機"
@@ -3667,15 +3668,15 @@ msgstr "開始單人遊戲"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:14
 #, elixir-autogen, elixir-format
-msgid "Choose Hex Pong, Light Trails, or a Hex Outlaw variant from the Retro Games catalog."
-msgstr "從復古遊戲目錄中選擇 Hex Pong、Light Trails 或 Hex Outlaw 變體。"
+msgid "Choose Hex Pong, Light Trails, a Star Duel variant, or a Hex Outlaw variant from the Retro Games catalog."
+msgstr "從復古遊戲目錄中選擇 Hex Pong、Light Trails、Star Duel 變體或 Hex Outlaw 變體。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:29
 #, elixir-autogen, elixir-format
-msgid "In Hex Pong, you control the left paddle with Arrow Up / Arrow Down or W / S while the AI controls the right paddle. In Light Trails, use the arrow keys or WASD to steer and trap the AI before either trail hits a wall or occupied cell. In Hex Outlaw, dodge visible bullets, line up your shot, and fire with Space or Shift."
-msgstr "在 Hex Pong 中，你用上/下方向鍵或 W/S 控制左側球拍，AI 控制右側球拍。在 Light Trails 中，使用方向鍵或 WASD 轉向，在任一光跡撞牆或撞到占用格前困住 AI。在 Hex Outlaw 中，躲避可見子彈，對準射擊線，並用 Space 或 Shift 開火。"
+msgid "In Hex Pong, you control the left paddle with Arrow Up / Arrow Down or W / S while the AI controls the right paddle. In Light Trails, use the arrow keys or WASD to steer and trap the AI before either trail hits a wall or occupied cell. In Star Duel variants, rotate, thrust, and fire with Space while the AI dogfights as player 2. In Hex Outlaw, dodge visible bullets, line up your shot, and fire with Space or Shift."
+msgstr "在 Hex Pong 中，你用上/下方向鍵或 W/S 控制左側球拍，AI 控制右側球拍。在 Light Trails 中，使用方向鍵或 WASD 轉向，在任一光跡撞牆或撞到占用格前困住 AI。在 Star Duel 變體中，旋轉、推進，並用 Space 開火，AI 會以玩家 2 身分進行空戰。在 Hex Outlaw 中，躲避可見子彈，對準射擊線，並用 Space 或 Shift 開火。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Retro Games are browser-native RetroHexChat games that can run inside the chat desktop without a peer session. Hex Pong, Light Trails, and Hex Outlaw variants use the same game engine foundation as P2P play with an AI controller on the remote side."
-msgstr "復古遊戲是瀏覽器原生的 RetroHexChat 遊戲，無需對等工作階段即可在聊天桌面中執行。Hex Pong、Light Trails 和 Hex Outlaw 變體使用與 P2P 對戰相同的遊戲引擎基礎，並由 AI 控制遠端一側。"
+msgid "Retro Games are browser-native RetroHexChat games that can run inside the chat desktop without a peer session. Hex Pong, Light Trails, Star Duel variants, and Hex Outlaw variants use the same game engine foundation as P2P play with an AI controller on the remote side."
+msgstr "復古遊戲是瀏覽器原生的 RetroHexChat 遊戲，無需對等工作階段即可在聊天桌面中執行。Hex Pong、Light Trails、Star Duel 變體和 Hex Outlaw 變體使用與 P2P 對戰相同的遊戲引擎基礎，並由 AI 控制遠端一側。"

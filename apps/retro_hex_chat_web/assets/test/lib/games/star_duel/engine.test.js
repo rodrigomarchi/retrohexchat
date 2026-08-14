@@ -181,19 +181,32 @@ describe("StarDuelEngine", () => {
       expect(engine.gameState.phase).toBe(PHASE.WAITING);
     });
 
-    it("sets mode from gameId (star_duel=0)", () => {
+    it("sets runtime mode and game mode from gameId (star_duel=0)", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", true, null);
-      expect(engine.mode).toBe(0);
+      expect(engine.mode).toBe("p2p_host");
+      expect(engine.gameMode).toBe(GAME_MODE.OPEN_SPACE);
+      expect(engine.gameState.mode).toBe(GAME_MODE.OPEN_SPACE);
     });
 
-    it("sets mode from gameId (gravity_well=1)", () => {
+    it("sets game mode from gameId (gravity_well=1)", () => {
       engine = new StarDuelEngine(canvas, channel, "gravity_well", true, null);
-      expect(engine.mode).toBe(1);
+      expect(engine.gameMode).toBe(GAME_MODE.GRAVITY_WELL);
+      expect(engine.gameState.mode).toBe(GAME_MODE.GRAVITY_WELL);
     });
 
-    it("sets mode from gameId (debris_field=2)", () => {
+    it("sets game mode from gameId (debris_field=2)", () => {
       engine = new StarDuelEngine(canvas, channel, "debris_field", true, null);
-      expect(engine.mode).toBe(2);
+      expect(engine.gameMode).toBe(GAME_MODE.DEBRIS_FIELD);
+      expect(engine.gameState.mode).toBe(GAME_MODE.DEBRIS_FIELD);
+    });
+
+    it("keeps solo runtime mode separate from the game mode", () => {
+      engine = new StarDuelEngine(canvas, channel, "gravity_well", true, null, {
+        mode: "solo",
+      });
+
+      expect(engine.mode).toBe("solo");
+      expect(engine.gameMode).toBe(GAME_MODE.GRAVITY_WELL);
     });
 
     it("stores onGameEnd callback", () => {
@@ -265,6 +278,18 @@ describe("StarDuelEngine", () => {
       expect(readyCall).toBeDefined();
     });
 
+    it("solo start prepares the local opponent without starting the match", () => {
+      engine = new StarDuelEngine(canvas, channel, "star_duel", true, null, { mode: "solo" });
+      engine.start();
+
+      expect(engine.mode).toBe("solo");
+      expect(engine.isHost).toBe(true);
+      expect(engine.peerReady).toBe(true);
+      expect(engine.gameState.phase).toBe(PHASE.WAITING);
+      expect(engine._keyboardCaptured).toBe(false);
+      expect(engine.opponentController).toBeTruthy();
+    });
+
     it("reads colors from canvas", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", true, null);
       engine.start();
@@ -322,6 +347,43 @@ describe("StarDuelEngine", () => {
       engine.stop();
       expect(engine.audio.stopThrust).toHaveBeenCalled();
       expect(engine.audio.stopStarProximity).toHaveBeenCalled();
+    });
+  });
+
+  describe("beginMatch", () => {
+    it("starts the countdown and captures keyboard", () => {
+      engine = new StarDuelEngine(canvas, channel, "star_duel", true, null, { mode: "solo" });
+      engine.start();
+
+      expect(engine.beginMatch()).toBe(true);
+
+      expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
+      expect(engine.peerReady).toBe(true);
+      expect(engine._keyboardCaptured).toBe(true);
+      expect(engine.audio.playCountdown).toHaveBeenCalled();
+    });
+
+    it("updates solo difficulty and controller", () => {
+      const opponentController = { setDifficulty: vi.fn(), nextInputs: vi.fn() };
+      engine = new StarDuelEngine(canvas, channel, "star_duel", true, null, {
+        mode: "solo",
+        difficulty: "easy",
+        opponentController,
+      });
+      engine.start();
+
+      expect(engine.beginMatch({ difficulty: "hard" })).toBe(true);
+
+      expect(engine.difficulty).toBe("hard");
+      expect(opponentController.setDifficulty).toHaveBeenCalledWith("hard");
+    });
+
+    it("does not start outside host waiting state", () => {
+      engine = new StarDuelEngine(canvas, channel, "star_duel", false, null);
+      engine.start();
+
+      expect(engine.beginMatch()).toBe(false);
+      expect(engine.gameState.phase).toBe(PHASE.WAITING);
     });
   });
 
@@ -450,11 +512,13 @@ describe("StarDuelEngine", () => {
       expect(engine.gameState.score1).toBe(5);
       expect(engine.gameState.score2).toBe(3);
       expect(engine.gameState.phase).toBe(PHASE.PLAYING);
+      expect(engine._keyboardCaptured).toBe(true);
     });
 
     it("processes GAME_END", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", false, null);
       engine.start();
+      engine.setKeyboardCaptured(true);
 
       const buf = encodeGameEnd(7, 3, 1);
       engine._onChannelMessage({ data: buf });
@@ -463,6 +527,7 @@ describe("StarDuelEngine", () => {
       expect(engine.gameState.winner).toBe(1);
       expect(engine.gameState.score1).toBe(7);
       expect(engine.gameState.score2).toBe(3);
+      expect(engine._keyboardCaptured).toBe(false);
     });
 
     it("GAME_END stops thrust and star proximity audio", () => {
@@ -975,6 +1040,7 @@ describe("StarDuelEngine", () => {
     it("sets phase to FINISHED with correct winner", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", true, null);
       engine.start();
+      engine.setKeyboardCaptured(true);
       engine.gameState.score1 = 3;
       engine.gameState.score2 = WIN_SCORE;
 
@@ -982,6 +1048,7 @@ describe("StarDuelEngine", () => {
 
       expect(engine.gameState.phase).toBe(PHASE.FINISHED);
       expect(engine.gameState.winner).toBe(2);
+      expect(engine._keyboardCaptured).toBe(false);
     });
   });
 
@@ -1267,6 +1334,39 @@ describe("StarDuelEngine", () => {
     });
   });
 
+  describe("solo opponent controller", () => {
+    it("pulls AI inputs into the P2 path before simulation", () => {
+      const opponentController = {
+        nextInputs: vi.fn(() => ({
+          rotateLeft: true,
+          rotateRight: false,
+          thrust: true,
+          fire: false,
+          warp: false,
+        })),
+      };
+      engine = new StarDuelEngine(canvas, channel, "star_duel", true, null, {
+        mode: "solo",
+        difficulty: "hard",
+        opponentController,
+      });
+      engine.start();
+      engine.gameState.phase = PHASE.PLAYING;
+
+      const previousRotation = engine.gameState.ship2.rotation;
+      engine._gameLoop(performance.now());
+
+      expect(opponentController.nextInputs).toHaveBeenCalledWith({
+        state: expect.objectContaining({ phase: PHASE.PLAYING }),
+        difficulty: "hard",
+        player: 2,
+      });
+      expect(engine.remoteInputs).toMatchObject({ rotateLeft: true, thrust: true });
+      expect(engine.gameState.ship2.rotation).toBeLessThan(previousRotation);
+      expect(engine.gameState.ship2.thrustActive).toBe(true);
+    });
+  });
+
   // ── Connection Resilience ──
 
   describe("connection resilience", () => {
@@ -1300,10 +1400,12 @@ describe("StarDuelEngine", () => {
       const onEnd = vi.fn();
       engine = new StarDuelEngine(canvas, channel, "star_duel", true, onEnd);
       engine.start();
+      engine.setKeyboardCaptured(true);
       engine.gameState.phase = PHASE.PLAYING;
       engine._handleChannelClose();
       expect(engine.gameState.phase).toBe(PHASE.FINISHED);
       expect(onEnd).toHaveBeenCalledWith(expect.objectContaining({ disconnected: true }));
+      expect(engine._keyboardCaptured).toBe(false);
     });
 
     it("channel close is no-op when game already finished", () => {
@@ -1441,6 +1543,16 @@ describe("StarDuelEngine", () => {
 
       expect(() => engine._handleGameFinished()).not.toThrow();
       expect(engine.gameState.phase).toBe(PHASE.FINISHED);
+    });
+  });
+
+  describe("keyboard capture", () => {
+    it("prevents default for Star Duel gameplay keys while captured", () => {
+      engine = new StarDuelEngine(canvas, channel, "star_duel", true, null, { mode: "solo" });
+
+      expect(engine._shouldPreventDefaultForCapturedKey({ key: "ArrowUp" })).toBe(true);
+      expect(engine._shouldPreventDefaultForCapturedKey({ key: " " })).toBe(true);
+      expect(engine._shouldPreventDefaultForCapturedKey({ key: "Meta" })).toBe(false);
     });
   });
 });

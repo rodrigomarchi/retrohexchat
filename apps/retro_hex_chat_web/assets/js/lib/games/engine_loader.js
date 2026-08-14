@@ -47,6 +47,9 @@ const P2P_ENGINE_LOADERS = {
 const SOLO_GAME_IDS = new Set([
   "hex_pong",
   "light_trails",
+  "star_duel",
+  "gravity_well",
+  "debris_field",
   "hex_outlaw",
   "hex_outlaw_ricochet",
   "hex_outlaw_stagecoach",

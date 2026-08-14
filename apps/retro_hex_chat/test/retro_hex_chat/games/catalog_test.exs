@@ -80,6 +80,9 @@ defmodule RetroHexChat.Games.CatalogTest do
       assert [
                %{id: "hex_pong", name: "Hex Pong"},
                %{id: "light_trails", name: "Light Trails"},
+               %{id: "star_duel", name: "Star Duel"},
+               %{id: "gravity_well", name: "Gravity Well"},
+               %{id: "debris_field", name: "Debris Field"},
                %{id: "hex_outlaw", name: "Hex Outlaw"},
                %{id: "hex_outlaw_ricochet", name: "Hex Outlaw: Ricochet"},
                %{id: "hex_outlaw_stagecoach", name: "Hex Outlaw: Stagecoach"},
@@ -96,6 +99,21 @@ defmodule RetroHexChat.Games.CatalogTest do
         assert [
                  %{id: "hex_pong", controls: "Setas ou W/S para mover a pá"},
                  %{id: "light_trails", controls: "Setas para mudar de direção"},
+                 %{
+                   id: "star_duel",
+                   controls:
+                     "Setas ou WASD para empurrar/rotar, espaço para disparar, Down/S para warp"
+                 },
+                 %{
+                   id: "gravity_well",
+                   controls:
+                     "Setas ou WASD para empurrar/rotar, espaço para disparar, Down/S para warp"
+                 },
+                 %{
+                   id: "debris_field",
+                   controls:
+                     "Setas ou WASD para empurrar/rotar, espaço para disparar, Down/S para warp"
+                 },
                  %{
                    id: "hex_outlaw",
                    controls: "Setas ou WASD para mover, Espaço ou Shift para disparar"
@@ -123,6 +141,9 @@ defmodule RetroHexChat.Games.CatalogTest do
     test "accepts only games exposed in Retro Games" do
       assert Catalog.solo_game_id?("hex_pong")
       assert Catalog.solo_game_id?("light_trails")
+      assert Catalog.solo_game_id?("star_duel")
+      assert Catalog.solo_game_id?("gravity_well")
+      assert Catalog.solo_game_id?("debris_field")
       assert Catalog.solo_game_id?("hex_outlaw")
       assert Catalog.solo_game_id?("hex_outlaw_ricochet")
       assert Catalog.solo_game_id?("hex_outlaw_stagecoach")
