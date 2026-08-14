@@ -952,15 +952,19 @@ describe("WarlordEngine", () => {
       expect(channel.removeEventListener).toHaveBeenCalledWith("message", expect.any(Function));
     });
 
-    it("removes document keydown/keyup listeners", () => {
+    it("removes window keydown/keyup listeners", () => {
       engine = new WarlordEngine(canvas, channel, "hex_warlords", true, null);
       engine.start();
 
-      const removeSpy = vi.spyOn(document, "removeEventListener");
+      const removeSpy = vi.spyOn(window, "removeEventListener");
       engine.stop();
 
-      const keydownRemoved = removeSpy.mock.calls.some((call) => call[0] === "keydown");
-      const keyupRemoved = removeSpy.mock.calls.some((call) => call[0] === "keyup");
+      const keydownRemoved = removeSpy.mock.calls.some(
+        (call) => call[0] === "keydown" && call[2] === true,
+      );
+      const keyupRemoved = removeSpy.mock.calls.some(
+        (call) => call[0] === "keyup" && call[2] === true,
+      );
       expect(keydownRemoved).toBe(true);
       expect(keyupRemoved).toBe(true);
       removeSpy.mockRestore();

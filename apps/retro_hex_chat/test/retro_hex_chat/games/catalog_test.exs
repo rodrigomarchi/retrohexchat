@@ -75,6 +75,33 @@ defmodule RetroHexChat.Games.CatalogTest do
     end
   end
 
+  describe "list_solo_games/0" do
+    test "returns the games with a browser solo runtime" do
+      assert [%{id: "hex_pong", name: "Hex Pong"}] = Catalog.list_solo_games()
+    end
+
+    test "localizes controls using the current domain locale" do
+      previous_locale = Gettext.get_locale(RetroHexChat.Gettext)
+
+      try do
+        Gettext.put_locale(RetroHexChat.Gettext, "pt_BR")
+
+        assert [%{id: "hex_pong", controls: "Setas ou W/S para mover a pá"}] =
+                 Catalog.list_solo_games()
+      after
+        Gettext.put_locale(RetroHexChat.Gettext, previous_locale)
+      end
+    end
+  end
+
+  describe "solo_game_id?/1" do
+    test "accepts only games exposed in Retro Games" do
+      assert Catalog.solo_game_id?("hex_pong")
+      refute Catalog.solo_game_id?("light_trails")
+      refute Catalog.solo_game_id?("nonexistent")
+    end
+  end
+
   describe "valid_game_id?/1" do
     test "returns true for valid ids" do
       assert Catalog.valid_game_id?("hex_pong")

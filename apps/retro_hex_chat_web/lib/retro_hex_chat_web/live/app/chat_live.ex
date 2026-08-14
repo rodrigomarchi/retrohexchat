@@ -75,6 +75,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
   alias RetroHexChatWeb.ChatLive.Components.{
     ConversationsContextMenu,
+    RetroGamesIsland,
     SystemLogDialog,
     UserContextMenus
   }
@@ -744,6 +745,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
     &ChatLive.ConnectionEvents.handle_event/3,
     &ChatLive.GroupCallEvents.handle_event/3,
     &ChatLive.P2PSessionEvents.handle_event/3,
+    &ChatLive.RetroGamesEvents.handle_event/3,
     &ChatLive.ArcadeSessionEvents.handle_event/3,
     &ChatLive.CoreEvents.handle_event/3
   ]
@@ -815,6 +817,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
       {:connection_events, &ChatLive.ConnectionEvents.handle_event/3},
       {:group_call_events, &ChatLive.GroupCallEvents.handle_event/3},
       {:p2p_session_events, &ChatLive.P2PSessionEvents.handle_event/3},
+      {:retro_games_events, &ChatLive.RetroGamesEvents.handle_event/3},
       {:arcade_session_events, &ChatLive.ArcadeSessionEvents.handle_event/3},
       {:core_events, &ChatLive.CoreEvents.handle_event/3}
     ]
@@ -822,6 +825,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
     info_hooks = [
       {:settings_dialogs_info, &ChatLive.SettingsDialogsEvents.handle_info/2},
       {:timer_handlers, &ChatLive.TimerHandlers.handle_info/2},
+      {:retro_games_info, &ChatLive.RetroGamesEvents.handle_info/2},
       {:pubsub_handlers, &ChatLive.PubsubHandlers.handle_info/2},
       # After PubsubHandlers: it consumes "lobby_invite" (user topic) first;
       # this one owns the session-topic "lobby_*" events.
@@ -937,6 +941,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
       p2p_pm_sessions: %{},
       p2p_pending: nil,
       p2p_setup: nil,
+      retro_games: RetroGamesIsland.initial_summary(),
       arcade_session: nil,
       mobile_viewport: false,
       mobile_panel_restore: nil,

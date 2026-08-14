@@ -46,8 +46,10 @@ export function getColors(canvas) {
  * @param {object} state - game state
  * @param {object} colors - color palette
  * @param {number} time - timestamp for animations
+ * @param {object} [options]
+ * @param {"p2p_host"|"p2p_guest"|"solo"} [options.mode]
  */
-export function render(ctx, state, colors, time) {
+export function render(ctx, state, colors, time, options = {}) {
   drawBackground(ctx, colors);
   drawGrid(ctx, colors);
   drawCenterLine(ctx, colors, time);
@@ -70,7 +72,7 @@ export function render(ctx, state, colors, time) {
   } else if (state.phase === PHASE.SERVING) {
     drawServing(ctx, colors, time);
   } else if (state.phase === PHASE.WAITING) {
-    drawWaiting(ctx, colors, time);
+    drawWaiting(ctx, colors, time, options);
   } else if (state.phase === PHASE.FINISHED) {
     drawWinner(ctx, state.winner, colors, time);
   }
@@ -293,17 +295,19 @@ export function drawServing(ctx, colors, time) {
 /**
  * Draw waiting message.
  */
-export function drawWaiting(ctx, colors, time) {
+export function drawWaiting(ctx, colors, time, options = {}) {
   const dots = ".".repeat(Math.floor((time / 500) % 4));
+  const solo = options.mode === "solo";
+  const text = solo ? t("GET READY") : jt`WAITING FOR OPPONENT${dots}`;
 
   ctx.save();
-  ctx.shadowColor = colors.muted;
-  ctx.shadowBlur = 8;
-  ctx.fillStyle = colors.muted;
-  ctx.font = "18px monospace";
+  ctx.shadowColor = solo ? colors.fg : colors.muted;
+  ctx.shadowBlur = solo ? 12 : 8;
+  ctx.fillStyle = solo ? colors.fg : colors.muted;
+  ctx.font = `${solo ? "bold " : ""}18px monospace`;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillText(jt`WAITING FOR OPPONENT${dots}`, CANVAS_W / 2, CANVAS_H / 2);
+  ctx.fillText(text, CANVAS_W / 2, CANVAS_H / 2);
   ctx.restore();
 }
 

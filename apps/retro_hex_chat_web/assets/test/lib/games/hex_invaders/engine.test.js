@@ -316,10 +316,10 @@ describe("HexInvadersEngine", () => {
     it("removes event listeners", () => {
       engine = new HexInvadersEngine(canvas, channel, "hex_invaders", true, null);
       engine.start();
-      const removeSpy = vi.spyOn(document, "removeEventListener");
+      const removeSpy = vi.spyOn(window, "removeEventListener");
       engine.stop();
-      expect(removeSpy).toHaveBeenCalledWith("keydown", engine._boundOnKeyDown);
-      expect(removeSpy).toHaveBeenCalledWith("keyup", engine._boundOnKeyUp);
+      expect(removeSpy).toHaveBeenCalledWith("keydown", engine._boundOnKeyDown, true);
+      expect(removeSpy).toHaveBeenCalledWith("keyup", engine._boundOnKeyUp, true);
       expect(channel.removeEventListener).toHaveBeenCalledWith("message", engine._boundOnMessage);
       removeSpy.mockRestore();
     });

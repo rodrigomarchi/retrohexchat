@@ -67,6 +67,13 @@ export const lazyFeatureHooks = {
     readyEvent: "lobby_game_canvas_ready",
     reason: "P2P session game canvas and engine loading are heavy features.",
   }),
+  RetroGameCanvasHook: lazyFeatureHook({
+    name: "RetroGameCanvasHook",
+    loader: () => import("./games/retro_game_canvas_hook"),
+    serverEvents: ["retro_game_begin", "retro_game_stop"],
+    readyEvent: "retro_game_canvas_ready",
+    reason: "Solo retro game canvas and engine loading are only needed inside Retro Games.",
+  }),
   SpaceCanvasHook: lazyFeatureHook({
     name: "SpaceCanvasHook",
     loader: () => import("./space/space_canvas_hook"),

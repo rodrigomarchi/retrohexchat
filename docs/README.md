@@ -62,8 +62,11 @@ migration, context, schema and hook counts — never write them into prose.
 
 ## In flight (`plans/`)
 
-Nothing is in flight. The channel/PM unification shipped and its plan was deleted; the
-rule it produced is Principle 12 in `AGENT-GUIDE.md`.
+- [plans/retro-games-ai.md](plans/retro-games-ai.md) — nova superfície `Retro Games`
+  para jogos nativos do chat em modo single player contra AI, começando pelo Hex Pong.
+
+The channel/PM unification shipped and its plan was deleted; the rule it produced
+is Principle 12 in `AGENT-GUIDE.md`.
 
 `plans/agent-docs-audit.md` and its `agent-docs-removals.txt` are the record of a
 completed audit rather than work in flight. The audit says it may be deleted once

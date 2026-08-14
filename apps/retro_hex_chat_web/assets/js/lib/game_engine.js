@@ -4,6 +4,7 @@ import { gameColor } from "./game_colors.js";
 import { FrameClock } from "./games/frame_clock.js";
 import { SnapshotInterpolator } from "./games/interpolator.js";
 import { GameTelemetry } from "./games/telemetry.js";
+import { normalizeGameTransport } from "./games/transport.js";
 import {
   BASE_MSG,
   decodeInputEdge,
@@ -50,6 +51,9 @@ const READY_RETRY_MS = 250;
 /** Elements whose keystrokes belong to the user, never to the game. */
 const TEXT_ENTRY_TAGS = new Set(["INPUT", "TEXTAREA", "SELECT"]);
 
+/** Keyboard listener options shared by add/removeEventListener. */
+const KEYBOARD_CAPTURE_OPTIONS = true;
+
 /**
  * Base game engine.
  *
@@ -74,16 +78,20 @@ export class GameEngine {
 
   /**
    * @param {HTMLCanvasElement} canvas
-   * @param {RTCDataChannel} channel
+   * @param {RTCDataChannel|object} channel
    * @param {string} gameId
    * @param {boolean} isHost
+   * @param {object} [options]
+   * @param {"p2p_host"|"p2p_guest"|"solo"} [options.mode]
    */
-  constructor(canvas, channel, gameId, isHost) {
+  constructor(canvas, channel, gameId, isHost, options = {}) {
     this.canvas = canvas;
     this.ctx = canvas.getContext("2d");
-    this.channel = channel;
+    this.transport = normalizeGameTransport(channel);
+    this.channel = this.transport;
     this.gameId = gameId;
     this.isHost = isHost;
+    this.mode = options.mode || (isHost ? "p2p_host" : "p2p_guest");
     this.running = false;
     this.animFrame = null;
 
@@ -115,6 +123,7 @@ export class GameEngine {
     this._commandTimers = new Set();
     this._readyTimer = null;
     this._readyEncoder = null;
+    this._keyboardCaptured = options.captureKeyboard === true;
 
     this._boundOnMessage = this._onChannelMessage.bind(this);
     this._boundOnKeyDown = this._onKeyDown.bind(this);
@@ -128,8 +137,8 @@ export class GameEngine {
     this.running = true;
 
     this.channel.addEventListener("message", this._boundOnMessage);
-    document.addEventListener("keydown", this._boundOnKeyDown);
-    document.addEventListener("keyup", this._boundOnKeyUp);
+    window.addEventListener("keydown", this._boundOnKeyDown, KEYBOARD_CAPTURE_OPTIONS);
+    window.addEventListener("keyup", this._boundOnKeyUp, KEYBOARD_CAPTURE_OPTIONS);
 
     const now = this._now();
     this._clock.reset(now);
@@ -141,6 +150,7 @@ export class GameEngine {
   stop() {
     this.running = false;
     this._stepping = false;
+    this.setKeyboardCaptured(false);
 
     if (this.animFrame) {
       cancelAnimationFrame(this.animFrame);
@@ -153,8 +163,8 @@ export class GameEngine {
     this._commandTimers.clear();
 
     this.channel.removeEventListener("message", this._boundOnMessage);
-    document.removeEventListener("keydown", this._boundOnKeyDown);
-    document.removeEventListener("keyup", this._boundOnKeyUp);
+    window.removeEventListener("keydown", this._boundOnKeyDown, KEYBOARD_CAPTURE_OPTIONS);
+    window.removeEventListener("keyup", this._boundOnKeyUp, KEYBOARD_CAPTURE_OPTIONS);
 
     this._telemetry.stop();
 
@@ -233,8 +243,8 @@ export class GameEngine {
       this._telemetry.frameRendered();
     }
 
-    this._telemetry.bufferedObserved(this.channel.bufferedAmount || 0);
-    this._telemetry.maybeFlush(now, this.channel.readyState);
+    this._telemetry.bufferedObserved(this.transport.bufferedAmount || 0);
+    this._telemetry.maybeFlush(now, this._transportTelemetryState());
   }
 
   /**
@@ -300,7 +310,7 @@ export class GameEngine {
    * @returns {boolean} whether the snapshot went out
    */
   _sendState(data) {
-    const buffered = this.channel.bufferedAmount || 0;
+    const buffered = this.transport.bufferedAmount || 0;
 
     if (buffered >= SEND_HIGH_WATER_BYTES) {
       // Queuing behind a backlog only adds latency the game never recovers
@@ -341,10 +351,10 @@ export class GameEngine {
    * @returns {boolean} whether the write was accepted
    */
   _safeSend(data) {
-    if (this.channel.readyState !== "open") return false;
+    if (this.transport.readyState !== "open") return false;
 
     try {
-      this.channel.send(data);
+      this.transport.send(data);
       return true;
     } catch (error) {
       // Closed between the readyState check and the send — expected during
@@ -491,12 +501,26 @@ export class GameEngine {
    * @returns {void}
    */
   _onKeyDown(event) {
-    // Auto-repeat restates a key that is already held: the game learns nothing
-    // and the channel carries it anyway.
-    if (event.repeat) return;
     if (this._isTextEntry(event.target)) return;
 
+    const captureKeyboard = this._shouldCaptureKeyboardEvent(event);
+
+    // Auto-repeat restates a key that is already held: the game learns nothing
+    // and the channel carries it anyway.
+    if (event.repeat) {
+      if (captureKeyboard) this._consumeCapturedKeyboardEvent(event);
+      return;
+    }
+
+    const alreadyPrevented = event.defaultPrevented;
     this._handleKeyDown(event);
+
+    if (captureKeyboard) {
+      this._consumeCapturedKeyboardEvent(event);
+    } else {
+      this._stopHandledGameKey(event, alreadyPrevented);
+    }
+
     this._sendInputState(true);
   }
 
@@ -507,8 +531,72 @@ export class GameEngine {
   _onKeyUp(event) {
     if (this._isTextEntry(event.target)) return;
 
+    const captureKeyboard = this._shouldCaptureKeyboardEvent(event);
+    const alreadyPrevented = event.defaultPrevented;
     this._handleKeyUp(event);
+
+    if (captureKeyboard) {
+      this._consumeCapturedKeyboardEvent(event);
+    } else {
+      this._stopHandledGameKey(event, alreadyPrevented);
+    }
+
     this._sendInputState(true);
+  }
+
+  /**
+   * Game key handlers call preventDefault only after they recognize a key as
+   * their own. Once that happens, the same keyboard event must not keep
+   * bubbling to LiveView's global shortcut listener.
+   * @param {KeyboardEvent} event
+   * @param {boolean} alreadyPrevented
+   * @returns {void}
+   */
+  _stopHandledGameKey(event, alreadyPrevented) {
+    if (alreadyPrevented || !event.defaultPrevented) return;
+
+    event.stopImmediatePropagation?.();
+    event.stopPropagation?.();
+  }
+
+  /**
+   * While a match owns the keyboard, the browser event must not reach
+   * LiveView's window-level shortcuts. The game still receives it because this
+   * listener runs in window capture before LiveView's bubble listener.
+   * @param {KeyboardEvent} event
+   * @returns {void}
+   */
+  _consumeCapturedKeyboardEvent(event) {
+    if (event.defaultPrevented || this._shouldPreventDefaultForCapturedKey(event)) {
+      event.preventDefault?.();
+    }
+
+    event.stopImmediatePropagation?.();
+    event.stopPropagation?.();
+  }
+
+  /**
+   * @param {boolean} captured
+   * @returns {void}
+   */
+  setKeyboardCaptured(captured) {
+    this._keyboardCaptured = captured === true;
+  }
+
+  /**
+   * @param {KeyboardEvent} _event
+   * @returns {boolean}
+   */
+  _shouldCaptureKeyboardEvent(_event) {
+    return this._keyboardCaptured;
+  }
+
+  /**
+   * @param {KeyboardEvent} _event
+   * @returns {boolean}
+   */
+  _shouldPreventDefaultForCapturedKey(_event) {
+    return false;
   }
 
   /**
@@ -591,6 +679,13 @@ export class GameEngine {
    */
   _now() {
     return performance.now();
+  }
+
+  /**
+   * @returns {string}
+   */
+  _transportTelemetryState() {
+    return this.transport.telemetryState || this.transport.readyState || "unknown";
   }
 
   _renderStub() {

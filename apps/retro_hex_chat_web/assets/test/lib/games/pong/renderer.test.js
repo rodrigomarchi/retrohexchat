@@ -157,11 +157,16 @@ describe("pong_renderer", () => {
   });
 
   describe("drawWaiting", () => {
-    it("draws waiting message", () => {
+    it("draws P2P waiting message", () => {
       drawWaiting(ctx, colors, 0);
       expect(ctx.fillText).toHaveBeenCalled();
       const text = ctx.fillText.mock.calls[0][0];
       expect(text).toContain("WAITING FOR OPPONENT");
+    });
+
+    it("draws solo ready message", () => {
+      drawWaiting(ctx, colors, 0, { mode: "solo" });
+      expect(ctx.fillText).toHaveBeenCalledWith("GET READY", CANVAS_W / 2, CANVAS_H / 2);
     });
   });
 

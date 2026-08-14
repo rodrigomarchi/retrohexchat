@@ -41,6 +41,7 @@ msgstr "Tentang"
 msgid "Action"
 msgstr "Aksi"
 
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:327
 #: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:168
 #, elixir-autogen, elixir-format
 msgid "Back"
@@ -94,9 +95,7 @@ msgstr "Arcade Retro"
 
 #: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:45
 #, elixir-autogen, elixir-format
-msgid ""
-"Session will be closed due to inactivity soon. Select a game to keep it "
-"active."
+msgid "Session will be closed due to inactivity soon. Select a game to keep it active."
 msgstr ""
 "Sesi akan ditutup karena tidak aktif segera. Pilih permainan untuk tetap "
 "aktif."
@@ -128,9 +127,156 @@ msgstr "Dimulai %{time}"
 
 #: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:275
 #, elixir-autogen, elixir-format
-msgid ""
-"The game runs in a separate window. Keep this window open to track your "
-"session — closing the game window ends it."
+msgid "The game runs in a separate window. Keep this window open to track your session — closing the game window ends it."
 msgstr ""
 "Permainan berjalan di jendela yang terpisah. Biarkan jendela ini terbuka "
 "untuk melacak sesi Anda - menutup jendela permainan mengakhirinya."
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:365
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:367
+#, elixir-autogen, elixir-format
+msgid "AI won"
+msgstr "AI menang"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:316
+#, elixir-autogen, elixir-format
+msgid "Again"
+msgstr "Lagi"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:56
+#, elixir-autogen, elixir-format
+msgid "Browser-native games you can play solo against AI."
+msgstr "Game native browser yang bisa dimainkan solo melawan AI."
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:248
+#, elixir-autogen, elixir-format
+msgid "Controls"
+msgstr "Kontrol"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:151
+#, elixir-autogen, elixir-format
+msgid "Could not start this game"
+msgstr "Game ini tidak dapat dimulai"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:208
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:218
+#, elixir-autogen, elixir-format
+msgid "Difficulty"
+msgstr "Kesulitan"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:343
+#, elixir-autogen, elixir-format
+msgid "Easy"
+msgstr "Mudah"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:305
+#, elixir-autogen, elixir-format
+msgid "End"
+msgstr "Akhiri"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:344
+#, elixir-autogen, elixir-format
+msgid "Hard"
+msgstr "Sulit"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:293
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:362
+#, elixir-autogen, elixir-format
+msgid "Loading"
+msgstr "Memuat"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:125
+#, elixir-autogen, elixir-format
+msgid "Loading game..."
+msgstr "Memuat game..."
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:135
+#, elixir-autogen, elixir-format
+msgid "Match Finished"
+msgstr "Pertandingan selesai"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:368
+#, elixir-autogen, elixir-format
+msgid "No winner reported"
+msgstr "Pemenang tidak dilaporkan"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:345
+#, elixir-autogen, elixir-format
+msgid "Normal"
+msgstr "Normal"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:283
+#, elixir-autogen, elixir-format
+msgid "Play vs AI"
+msgstr "Main vs AI"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:54
+#, elixir-autogen, elixir-format
+msgid "Retro Games"
+msgstr "Game Retro"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:178
+#, elixir-autogen, elixir-format
+msgid "Solo AI"
+msgstr "AI solo"
+
+#: lib/retro_hex_chat_web/live/chat_live/components/retro_games_island.ex:174
+#, elixir-autogen, elixir-format
+msgid "The game engine could not be loaded."
+msgstr "Engine game tidak dapat dimuat."
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:137
+#, elixir-autogen, elixir-format
+msgid "You %{you} x %{ai} AI"
+msgstr "Kamu %{you} x %{ai} AI"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:364
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:366
+#, elixir-autogen, elixir-format
+msgid "You won"
+msgstr "Kamu menang"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:361
+#, elixir-autogen, elixir-format
+msgid "Error"
+msgstr "Kesalahan"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:360
+#, elixir-autogen, elixir-format
+msgid "Finished"
+msgstr "Selesai"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:196
+#, elixir-autogen, elixir-format
+msgid "First to 11"
+msgstr "Pertama ke 11"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:194
+#, elixir-autogen, elixir-format
+msgid "Goal"
+msgstr "Sasaran"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:174
+#, elixir-autogen, elixir-format
+msgid "Mode"
+msgstr "Mode"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:251
+#, elixir-autogen, elixir-format
+msgid "Move"
+msgstr "Gerak"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:359
+#, elixir-autogen, elixir-format
+msgid "Playing"
+msgstr "Bermain"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:358
+#, elixir-autogen, elixir-format
+msgid "Ready"
+msgstr "Siap"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:185
+#, elixir-autogen, elixir-format
+msgid "Status"
+msgstr "Status"

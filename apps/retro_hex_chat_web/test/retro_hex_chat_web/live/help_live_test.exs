@@ -20,6 +20,7 @@ defmodule RetroHexChatWeb.HelpLiveTest do
       assert html =~ "Automation"
       assert html =~ "Text Formatting"
       assert html =~ "User Interface"
+      assert html =~ "Retro Games"
       assert html =~ "P2P Games: Action"
       assert html =~ "Solo Arcade: FPS"
       assert html =~ "Solo Arcade: Adventures"

@@ -9,6 +9,7 @@ import {
 } from "../../../../js/lib/games/pong/protocol.js";
 import { createInitialState, CANVAS_W, CANVAS_H } from "../../../../js/lib/games/pong/physics.js";
 import { decodeInputState, encodeInputState } from "../../../../js/lib/games/net_protocol.js";
+import { createLocalTransport } from "../../../../js/lib/games/transport.js";
 
 /** Pong declares `up` as bit 0 of its input mask. */
 const UP_BIT = 1 << 0;
@@ -184,6 +185,76 @@ describe("PongEngine", () => {
       engine._pump(0);
       expect(render).toHaveBeenCalled();
     });
+
+    it("solo mode loads ready but does not auto-start the match", () => {
+      engine = new PongEngine(canvas, createLocalTransport(), "hex_pong", true, null, {
+        mode: "solo",
+      });
+
+      engine.start();
+
+      expect(engine.mode).toBe("solo");
+      expect(engine.peerReady).toBe(true);
+      expect(engine.opponentController?.nextInputs).toEqual(expect.any(Function));
+      expect(engine.gameState.phase).toBe(PHASE.WAITING);
+    });
+  });
+
+  describe("beginMatch", () => {
+    it("starts countdown explicitly in solo mode", () => {
+      engine = new PongEngine(canvas, createLocalTransport(), "hex_pong", true, null, {
+        mode: "solo",
+      });
+      engine.start();
+
+      expect(engine.beginMatch()).toBe(true);
+
+      expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
+      expect(engine.gameState.countdown).toBe(3);
+      expect(engine.audio.playCountdown).toHaveBeenCalled();
+    });
+
+    it("renders the first solo countdown frame immediately", () => {
+      engine = new PongEngine(canvas, createLocalTransport(), "hex_pong", true, null, {
+        mode: "solo",
+      });
+      engine.start();
+      engine._pump(0);
+      render.mockClear();
+
+      expect(engine.beginMatch()).toBe(true);
+      engine._pump(16);
+
+      expect(render).toHaveBeenCalledWith(
+        engine.ctx,
+        expect.objectContaining({ phase: PHASE.COUNTDOWN, countdown: 3 }),
+        engine.colors,
+        expect.any(Number),
+        { mode: "solo" },
+      );
+    });
+
+    it("does not start twice while a match is already pending", () => {
+      engine = new PongEngine(canvas, createLocalTransport(), "hex_pong", true, null, {
+        mode: "solo",
+      });
+      engine.start();
+      engine.beginMatch();
+
+      expect(engine.beginMatch()).toBe(false);
+    });
+
+    it("updates the solo difficulty before starting the countdown", () => {
+      engine = new PongEngine(canvas, createLocalTransport(), "hex_pong", true, null, {
+        mode: "solo",
+      });
+      engine.start();
+
+      expect(engine.beginMatch({ difficulty: "hard" })).toBe(true);
+
+      expect(engine.difficulty).toBe("hard");
+      expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
+    });
   });
 
   describe("stop", () => {
@@ -274,6 +345,48 @@ describe("PongEngine", () => {
     });
   });
 
+  describe("solo opponent controller", () => {
+    it("feeds player two inputs before the simulation step", () => {
+      const opponentController = {
+        nextInputs: vi.fn(() => ({ up: true, down: false })),
+      };
+      engine = new PongEngine(canvas, createLocalTransport(), "hex_pong", true, null, {
+        mode: "solo",
+        opponentController,
+      });
+      engine.start();
+      engine.gameState.phase = PHASE.PLAYING;
+      const startingY = engine.gameState.paddle2Y;
+
+      engine._gameLoop();
+
+      expect(opponentController.nextInputs).toHaveBeenCalledWith(
+        expect.objectContaining({
+          state: expect.objectContaining({ phase: PHASE.PLAYING }),
+          difficulty: "normal",
+          player: 2,
+        }),
+      );
+      expect(engine.remoteInputs).toEqual({ up: true, down: false });
+      expect(engine.gameState.paddle2Y).toBeLessThan(startingY);
+    });
+
+    it("does not run an opponent controller in P2P mode", () => {
+      const opponentController = {
+        nextInputs: vi.fn(() => ({ up: true, down: false })),
+      };
+      engine = new PongEngine(canvas, channel, "hex_pong", true, null, {
+        opponentController,
+      });
+      engine.start();
+      engine.gameState.phase = PHASE.PLAYING;
+
+      engine._gameLoop();
+
+      expect(opponentController.nextInputs).not.toHaveBeenCalled();
+    });
+  });
+
   describe("_handleMessage (peer)", () => {
     it("applies GAME_STATE from host", () => {
       engine = new PongEngine(canvas, channel, "hex_pong", false, null);
@@ -293,6 +406,7 @@ describe("PongEngine", () => {
       expect(engine.gameState.score1).toBe(5);
       expect(engine.gameState.score2).toBe(3);
       expect(engine.gameState.phase).toBe(PHASE.PLAYING);
+      expect(engine._keyboardCaptured).toBe(true);
     });
 
     it("plays audio on phase transition", () => {
@@ -320,6 +434,7 @@ describe("PongEngine", () => {
     it("processes GAME_END message", () => {
       engine = new PongEngine(canvas, channel, "hex_pong", false, null);
       engine.start();
+      engine.setKeyboardCaptured(true);
 
       const buf = encodeGameEnd(11, 7, 1);
       engine._onChannelMessage({ data: buf });
@@ -328,6 +443,7 @@ describe("PongEngine", () => {
       expect(engine.gameState.winner).toBe(1);
       expect(engine.gameState.score1).toBe(11);
       expect(engine.gameState.score2).toBe(7);
+      expect(engine._keyboardCaptured).toBe(false);
     });
 
     it("ignores PLAYER_INPUT when peer", () => {

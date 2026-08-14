@@ -6,6 +6,7 @@
 import { log } from "../../logger.js";
 
 import { GameEngine } from "../../game_engine.js";
+import { createPongAI, normalizePongAIDifficulty } from "./ai.js";
 import {
   MSG_TYPE,
   PHASE,
@@ -36,6 +37,22 @@ import { PongAudio } from "./audio.js";
 const STATE_SEND_INTERVAL = 1; // broadcast every fixed step (60Hz)
 const SERVE_DELAY = 800; // ms
 const SCORE_PAUSE = 1500; // ms
+const PONG_PREVENT_DEFAULT_KEYS = new Set([
+  "ArrowUp",
+  "ArrowDown",
+  "ArrowLeft",
+  "ArrowRight",
+  " ",
+  "Spacebar",
+  "w",
+  "W",
+  "a",
+  "A",
+  "s",
+  "S",
+  "d",
+  "D",
+]);
 
 export class PongEngine extends GameEngine {
   static INPUT_BITS = { up: 0, down: 1 };
@@ -48,13 +65,21 @@ export class PongEngine extends GameEngine {
    * @param {string} gameId
    * @param {boolean} isHost
    * @param {function} onGameEnd - callback when game finishes
+   * @param {object} [options]
+   * @param {"p2p_host"|"p2p_guest"|"solo"} [options.mode]
+   * @param {object} [options.opponentController]
+   * @param {"easy"|"normal"|"hard"|string} [options.difficulty]
    */
-  constructor(canvas, channel, gameId, isHost, onGameEnd) {
-    super(canvas, channel, gameId, isHost);
+  constructor(canvas, channel, gameId, isHost, onGameEnd, options = {}) {
+    super(canvas, channel, gameId, isHost, options);
     this.onGameEnd = onGameEnd || null;
     this.gameState = createInitialState();
     this.localInputs = { up: false, down: false };
     this.remoteInputs = { up: false, down: false };
+    this.difficulty = normalizePongAIDifficulty(options.difficulty);
+    this.opponentController =
+      options.opponentController ||
+      (this.mode === "solo" ? createPongAI({ difficulty: this.difficulty }) : null);
     this.frameCount = 0;
     this.phaseTimer = null;
     this.audio = new PongAudio();
@@ -71,7 +96,10 @@ export class PongEngine extends GameEngine {
     window.addEventListener("blur", this._boundBlur);
     this.channel.addEventListener("close", this._boundChannelClose);
 
-    if (this.isHost) {
+    if (this.mode === "solo") {
+      this.peerReady = true;
+      this._invalidate();
+    } else if (this.isHost) {
       // Host waits for peer GAME_READY, then starts countdown
       this._invalidate();
     } else {
@@ -92,6 +120,29 @@ export class PongEngine extends GameEngine {
     super.stop();
   }
 
+  beginMatch(options = {}) {
+    if (!this.running || !this.isHost || this.gameState.phase !== PHASE.WAITING) return false;
+
+    if (options.difficulty) {
+      this.difficulty = normalizePongAIDifficulty(options.difficulty);
+      if (
+        !options.opponentController &&
+        typeof this.opponentController?.setDifficulty === "function"
+      ) {
+        this.opponentController.setDifficulty(this.difficulty);
+      }
+    }
+    if (options.opponentController) this.opponentController = options.opponentController;
+    if (this.mode === "solo" && !this.opponentController) {
+      this.opponentController = createPongAI({ difficulty: this.difficulty });
+    }
+
+    this.setKeyboardCaptured(true);
+    this.peerReady = true;
+    this._startCountdown();
+    return true;
+  }
+
   _handleMessage(event) {
     if (!(event.data instanceof ArrayBuffer)) return;
     const buf = event.data;
@@ -108,6 +159,9 @@ export class PongEngine extends GameEngine {
             const prevScore2 = this.gameState.score2;
 
             this._ingestSnapshot(decoded);
+            this.setKeyboardCaptured(
+              decoded.phase !== PHASE.WAITING && decoded.phase !== PHASE.FINISHED,
+            );
             this._playPhaseAudio(prevPhase, decoded.phase, prevScore1, prevScore2);
           }
         }
@@ -115,14 +169,14 @@ export class PongEngine extends GameEngine {
 
       case MSG_TYPE.GAME_READY:
         if (this.isHost && !this.peerReady) {
-          this.peerReady = true;
-          this._startCountdown();
+          this.beginMatch();
         }
         break;
 
       case MSG_TYPE.GAME_END: {
         const result = decodeGameEnd(buf);
         if (result) {
+          this.setKeyboardCaptured(false);
           this.gameState.phase = PHASE.FINISHED;
           this.gameState.winner = result.winner;
           this.gameState.score1 = result.score1;
@@ -170,6 +224,7 @@ export class PongEngine extends GameEngine {
     this.gameState.phase = PHASE.COUNTDOWN;
     this.gameState.countdown = 3;
     this._broadcastState();
+    this._invalidate();
     this.audio.playCountdown();
 
     let count = 3;
@@ -211,6 +266,8 @@ export class PongEngine extends GameEngine {
   /** Host: one simulation step, driven at a fixed 60Hz by the frame clock. */
   _gameLoop() {
     if (!this.running) return;
+
+    this._updateOpponentInputs();
 
     // Update paddles
     this.gameState = updatePaddle(this.gameState, 1, this.localInputs);
@@ -273,9 +330,27 @@ export class PongEngine extends GameEngine {
     }
   }
 
+  _updateOpponentInputs() {
+    if (this.mode !== "solo" || typeof this.opponentController?.nextInputs !== "function") return;
+
+    const nextInputs = this.opponentController.nextInputs({
+      state: this.gameState,
+      difficulty: this.difficulty,
+      player: 2,
+    });
+
+    if (!nextInputs) return;
+
+    this.remoteInputs = {
+      up: nextInputs.up === true,
+      down: nextInputs.down === true,
+    };
+  }
+
   /** Host: handle game end. */
   _handleGameFinished() {
     this._stopSteps();
+    this.setKeyboardCaptured(false);
     const { score1, score2, winner } = this.gameState;
     this.audio.playWin();
 
@@ -296,6 +371,7 @@ export class PongEngine extends GameEngine {
 
   _handleChannelClose() {
     this._stopSteps();
+    this.setKeyboardCaptured(false);
     if (!this.gameState || this.gameState.phase === PHASE.FINISHED) return;
     this.gameState.phase = PHASE.FINISHED;
     this._stopSteps();
@@ -322,8 +398,12 @@ export class PongEngine extends GameEngine {
   /** Render current state to canvas. */
   _renderState() {
     if (this.colors) {
-      renderFrame(this.ctx, this.gameState, this.colors, performance.now());
+      renderFrame(this.ctx, this.gameState, this.colors, performance.now(), { mode: this.mode });
     }
+  }
+
+  _shouldPreventDefaultForCapturedKey(event) {
+    return PONG_PREVENT_DEFAULT_KEYS.has(event.key);
   }
 
   /** Play audio based on phase transitions (peer side). */

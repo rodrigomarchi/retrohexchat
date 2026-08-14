@@ -41,6 +41,7 @@ msgstr "关于"
 msgid "Action"
 msgstr "行动"
 
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:327
 #: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:168
 #, elixir-autogen, elixir-format
 msgid "Back"
@@ -94,9 +95,7 @@ msgstr "复古拱门"
 
 #: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:45
 #, elixir-autogen, elixir-format
-msgid ""
-"Session will be closed due to inactivity soon. Select a game to keep it "
-"active."
+msgid "Session will be closed due to inactivity soon. Select a game to keep it active."
 msgstr "由于会议即将结束。 选择一个游戏以保持其活动 。"
 
 #: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:178
@@ -126,7 +125,154 @@ msgstr "开始 %{time}"
 
 #: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:275
 #, elixir-autogen, elixir-format
-msgid ""
-"The game runs in a separate window. Keep this window open to track your "
-"session — closing the game window ends it."
+msgid "The game runs in a separate window. Keep this window open to track your session — closing the game window ends it."
 msgstr "游戏在单独的窗口中运行. 保持此窗口打开以跟踪您的会话——关闭游戏窗口结束它."
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:365
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:367
+#, elixir-autogen, elixir-format
+msgid "AI won"
+msgstr "AI 获胜"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:316
+#, elixir-autogen, elixir-format
+msgid "Again"
+msgstr "再来一次"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:56
+#, elixir-autogen, elixir-format
+msgid "Browser-native games you can play solo against AI."
+msgstr "可在浏览器中单人对战 AI 的原生游戏。"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:248
+#, elixir-autogen, elixir-format
+msgid "Controls"
+msgstr "控制"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:151
+#, elixir-autogen, elixir-format
+msgid "Could not start this game"
+msgstr "无法启动这个游戏"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:208
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:218
+#, elixir-autogen, elixir-format
+msgid "Difficulty"
+msgstr "难度"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:343
+#, elixir-autogen, elixir-format
+msgid "Easy"
+msgstr "简单"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:305
+#, elixir-autogen, elixir-format
+msgid "End"
+msgstr "结束"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:344
+#, elixir-autogen, elixir-format
+msgid "Hard"
+msgstr "困难"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:293
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:362
+#, elixir-autogen, elixir-format
+msgid "Loading"
+msgstr "加载中"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:125
+#, elixir-autogen, elixir-format
+msgid "Loading game..."
+msgstr "正在加载游戏..."
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:135
+#, elixir-autogen, elixir-format
+msgid "Match Finished"
+msgstr "比赛结束"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:368
+#, elixir-autogen, elixir-format
+msgid "No winner reported"
+msgstr "未报告获胜者"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:345
+#, elixir-autogen, elixir-format
+msgid "Normal"
+msgstr "普通"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:283
+#, elixir-autogen, elixir-format
+msgid "Play vs AI"
+msgstr "对战 AI"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:54
+#, elixir-autogen, elixir-format
+msgid "Retro Games"
+msgstr "复古游戏"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:178
+#, elixir-autogen, elixir-format
+msgid "Solo AI"
+msgstr "单人 AI"
+
+#: lib/retro_hex_chat_web/live/chat_live/components/retro_games_island.ex:174
+#, elixir-autogen, elixir-format
+msgid "The game engine could not be loaded."
+msgstr "无法加载游戏引擎。"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:137
+#, elixir-autogen, elixir-format
+msgid "You %{you} x %{ai} AI"
+msgstr "你 %{you} x %{ai} AI"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:364
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:366
+#, elixir-autogen, elixir-format
+msgid "You won"
+msgstr "你赢了"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:361
+#, elixir-autogen, elixir-format
+msgid "Error"
+msgstr "错误"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:360
+#, elixir-autogen, elixir-format
+msgid "Finished"
+msgstr "已结束"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:196
+#, elixir-autogen, elixir-format
+msgid "First to 11"
+msgstr "先到 11"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:194
+#, elixir-autogen, elixir-format
+msgid "Goal"
+msgstr "目标"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:174
+#, elixir-autogen, elixir-format
+msgid "Mode"
+msgstr "模式"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:251
+#, elixir-autogen, elixir-format
+msgid "Move"
+msgstr "移动"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:359
+#, elixir-autogen, elixir-format
+msgid "Playing"
+msgstr "游戏中"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:358
+#, elixir-autogen, elixir-format
+msgid "Ready"
+msgstr "就绪"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:185
+#, elixir-autogen, elixir-format
+msgid "Status"
+msgstr "状态"

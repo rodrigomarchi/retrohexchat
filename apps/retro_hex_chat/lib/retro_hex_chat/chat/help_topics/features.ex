@@ -1571,6 +1571,26 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ]
       },
       %{
+        id: "feature-retro-games",
+        title: dgettext("help", "Retro Games"),
+        category: dgettext("help", "Retro Games"),
+        keywords: [
+          dgettext("help", "retro games"),
+          "single player",
+          "solo",
+          "ai",
+          "hex pong",
+          "pong"
+        ],
+        icon: :icon_game_pong,
+        description:
+          dgettext(
+            "help",
+            "Play browser-native RetroHexChat games solo against AI inside the chat desktop. Hex Pong is available first."
+          ),
+        see_also: ["feature-hex-pong", "feature-arcade", "feature-universal-lobby"]
+      },
+      %{
         id: "feature-hex-pong",
         title: dgettext("help", "Hex Pong"),
         category: dgettext("help", "P2P Games: Action"),

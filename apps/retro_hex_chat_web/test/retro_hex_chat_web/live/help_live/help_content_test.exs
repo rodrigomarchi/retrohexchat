@@ -1,8 +1,8 @@
 defmodule RetroHexChatWeb.HelpLive.HelpContentTest do
   use RetroHexChatWeb.ConnCase, async: true
 
-  # One topic per content module, so a module that stops resolving its shared
-  # helpers fails here rather than on the reader's screen.
+  # Representative topics per content module, so a module that stops resolving
+  # its shared helpers fails here rather than on the reader's screen.
   @topics_by_module [
     {"feature-arcade", "Arcade"},
     {"bot-command", "Bots"},
@@ -12,6 +12,7 @@ defmodule RetroHexChatWeb.HelpLive.HelpContentTest do
     {"cmd-ban", "CommandsAtoM"},
     {"cmd-admin", "CommandsAdmin"},
     {"cmd-whois", "CommandsNtoZ"},
+    {"feature-retro-games", "Games"},
     {"feature-hex-pong", "Games"},
     {"feature-video-call", "P2P"},
     {"ui-desktop", "UI"}
@@ -19,7 +20,7 @@ defmodule RetroHexChatWeb.HelpLive.HelpContentTest do
 
   describe "help topic pages" do
     for {topic, module} <- @topics_by_module do
-      test "renders a topic from HelpContent.#{module}", %{conn: conn} do
+      test "renders #{topic} from HelpContent.#{module}", %{conn: conn} do
         article =
           conn
           |> get("/chat/help/#{unquote(topic)}")

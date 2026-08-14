@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { GameEngine, SEND_HIGH_WATER_BYTES } from "../../js/lib/game_engine.js";
 import { FIXED_STEP_MS } from "../../js/lib/games/frame_clock.js";
 import { decodeInputState, encodeInputState, packInputs } from "../../js/lib/games/net_protocol.js";
+import { createLocalTransport } from "../../js/lib/games/transport.js";
 
 function createMockChannel() {
   return {
@@ -81,6 +82,20 @@ describe("GameEngine", () => {
   });
 
   describe("_safeSend", () => {
+    it("stores the normalized transport and runtime mode", () => {
+      engine = new GameEngine(canvas, channel, "test", true, { mode: "solo" });
+
+      expect(engine.transport.kind).toBe("p2p");
+      expect(engine.channel).toBe(engine.transport);
+      expect(engine.mode).toBe("solo");
+    });
+
+    it("reports local runtime state separately from DataChannel state", () => {
+      engine = new GameEngine(canvas, createLocalTransport(), "test", true, { mode: "solo" });
+
+      expect(engine._transportTelemetryState()).toBe("local");
+    });
+
     it("sends data when channel is open", () => {
       engine = new GameEngine(canvas, channel, "test", true);
       const data = new ArrayBuffer(4);
@@ -336,6 +351,83 @@ describe("GameEngine", () => {
       engine._onKeyDown({ key: "ArrowUp", repeat: false, target: { isContentEditable: true } });
 
       expect(handled).toEqual([]);
+    });
+
+    it("stops handled game keys before they reach global LiveView shortcuts", () => {
+      engine = new TestEngine(canvas, channel, "test", false);
+      engine._handleKeyDown = (event) => {
+        if (event.key === "ArrowUp") event.preventDefault();
+      };
+
+      const globalShortcut = vi.fn();
+      window.addEventListener("keydown", globalShortcut);
+
+      engine.start();
+      window.dispatchEvent(
+        new KeyboardEvent("keydown", { key: "ArrowUp", bubbles: true, cancelable: true }),
+      );
+
+      expect(globalShortcut).not.toHaveBeenCalled();
+
+      window.removeEventListener("keydown", globalShortcut);
+    });
+
+    it("captures active-game keys before already-registered LiveView window bindings", () => {
+      engine = new TestEngine(canvas, channel, "test", false);
+      engine._handleKeyDown = vi.fn();
+      engine.setKeyboardCaptured(true);
+
+      const liveViewWindowBinding = vi.fn();
+      window.addEventListener("keydown", liveViewWindowBinding);
+
+      engine.start();
+      window.dispatchEvent(
+        new KeyboardEvent("keydown", { key: "ArrowRight", bubbles: true, cancelable: true }),
+      );
+
+      expect(engine._handleKeyDown).toHaveBeenCalledOnce();
+      expect(liveViewWindowBinding).not.toHaveBeenCalled();
+
+      window.removeEventListener("keydown", liveViewWindowBinding);
+    });
+
+    it("lets non-game keys continue to global shortcuts", () => {
+      engine = new TestEngine(canvas, channel, "test", false);
+      engine._handleKeyDown = vi.fn();
+
+      const globalShortcut = vi.fn();
+      window.addEventListener("keydown", globalShortcut);
+
+      engine.start();
+      document.dispatchEvent(
+        new KeyboardEvent("keydown", { key: "Meta", bubbles: true, cancelable: true }),
+      );
+
+      expect(globalShortcut).toHaveBeenCalledOnce();
+
+      window.removeEventListener("keydown", globalShortcut);
+    });
+
+    it("lets text-entry keys continue to global listeners even during keyboard capture", () => {
+      engine = new TestEngine(canvas, channel, "test", false);
+      engine._handleKeyDown = vi.fn();
+      engine.setKeyboardCaptured(true);
+
+      const input = document.createElement("input");
+      document.body.appendChild(input);
+      const globalShortcut = vi.fn();
+      window.addEventListener("keydown", globalShortcut);
+
+      engine.start();
+      input.dispatchEvent(
+        new KeyboardEvent("keydown", { key: "ArrowUp", bubbles: true, cancelable: true }),
+      );
+
+      expect(engine._handleKeyDown).not.toHaveBeenCalled();
+      expect(globalShortcut).toHaveBeenCalledOnce();
+
+      window.removeEventListener("keydown", globalShortcut);
+      input.remove();
     });
   });
 

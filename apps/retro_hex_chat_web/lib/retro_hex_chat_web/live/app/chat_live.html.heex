@@ -589,6 +589,21 @@
       />
     </.desktop_window>
 
+    <%!-- Retro Games — always mounted so the LiveView island and canvas hook
+          keep their local state while the desktop window is hidden. --%>
+    <.desktop_window
+      {WindowRegistry.attrs("retro-games")}
+      open={false}
+      body_class="h-full min-h-0 overflow-hidden p-2"
+      data-testid="retro-games-window"
+    >
+      <:icon><Icons.icon_game_pong class="h-4 w-4" /></:icon>
+      <.live_component
+        module={RetroGamesIsland}
+        id={RetroGamesIsland.id()}
+      />
+    </.desktop_window>
+
     <%!-- Arcade — server-managed solo-game picker, a pure read-model of the
           @arcade_session assign.
           The X keeps the session alive while a game is running (the pop-up

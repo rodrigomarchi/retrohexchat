@@ -1,0 +1,40 @@
+<p>
+  {dgettext(
+    "help_games",
+    "Retro Games are browser-native RetroHexChat games that can run inside the chat desktop without a peer session. The first solo game is Hex Pong, using the same game engine foundation as P2P play with an AI controller on the remote paddle."
+  )}
+</p>
+
+<.help_h4 icon={:icon_game_pong}>{dgettext("help_games", "Starting a Solo Game")}</.help_h4>
+<ul>
+  <li>
+    {dgettext("help_games", "Open the Games menu and choose Retro Games.")}
+  </li>
+  <li>
+    {dgettext("help_games", "Choose Hex Pong from the Retro Games catalog.")}
+  </li>
+  <li>
+    {dgettext(
+      "help_games",
+      "Select Easy, Normal, or Hard, then click Play vs AI once the canvas is ready."
+    )}
+  </li>
+</ul>
+
+<.help_h4 icon={:icon_joystick}>{dgettext("help_games", "How It Plays")}</.help_h4>
+<p>
+  {dgettext(
+    "help_games",
+    "You control the left paddle with Arrow Up / Arrow Down or W / S. The AI controls the right paddle, predicts the ball path, and reacts according to the selected difficulty."
+  )}
+</p>
+
+<.help_h4 icon={:icon_link}>{dgettext("help_games", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="feature-hex-pong">{dgettext("help_games", "Hex Pong")}</.help_link>
+  · <.help_link topic="feature-arcade">{dgettext("help_games", "Solo Arcade")}</.help_link>
+  ·
+  <.help_link topic="feature-universal-lobby">
+    {dgettext("help_games", "P2P Session")}
+  </.help_link>
+</p>

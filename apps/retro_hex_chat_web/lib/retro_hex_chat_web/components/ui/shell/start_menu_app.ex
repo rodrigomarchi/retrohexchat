@@ -18,9 +18,9 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
 
   The desktop menu cannot scroll — `overflow` would make it a clipping context
   and swallow the flyouts, which escape to the right — so the root list has to
-  fit on screen at any height. Eleven rows, one level of groups deep:
+  fit on screen at any height. Root rows stay one level of groups deep:
 
-      Tools ▸ Automation ▸ Settings ▸ P2P ▸ Account ▸ Admin ▸ System ▸
+      Tools ▸ Automation ▸ Settings ▸ P2P ▸ Games ▸ Account ▸ Admin ▸ System ▸
       Windows ▸ Navigate ▸
       Help ▸
       Disconnect
@@ -261,6 +261,22 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
             label={dgettext("ui", "End P2P Session")}
             icon_fn={:icon_btn_disconnect}
             disabled={!@p2p?}
+          />
+        </.start_menu_submenu>
+
+        <.start_menu_submenu
+          label={dgettext("ui", "Games")}
+          muted={!@chat?}
+          testid="start-menu-games-submenu"
+        >
+          <:icon><Icons.icon_game_arcade class="h-4 w-4" /></:icon>
+          <.app_item
+            action="open_retro_games"
+            on_action={@on_action}
+            label={dgettext("ui", "Retro Games")}
+            icon_fn={:icon_game_pong}
+            disabled={!@chat?}
+            testid="start-menu-item-retro-games"
           />
         </.start_menu_submenu>
 

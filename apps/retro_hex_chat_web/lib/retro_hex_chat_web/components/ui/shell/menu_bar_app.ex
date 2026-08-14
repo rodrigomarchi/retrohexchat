@@ -11,6 +11,7 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
   use RetroHexChatWeb.Component
 
   alias RetroHexChat.Arcade
+  alias RetroHexChat.Games.Catalog
   alias RetroHexChatWeb.ChatLive.WindowRegistry
   alias RetroHexChatWeb.Icons
 
@@ -555,9 +556,29 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
 
   defp games_menu_items(assigns) do
     assigns =
-      assign(assigns, :games, if(assigns.arcade_available, do: Arcade.list_games(), else: []))
+      assigns
+      |> assign(:arcade_games, if(assigns.arcade_available, do: Arcade.list_games(), else: []))
+      |> assign(:retro_games, Catalog.list_solo_games())
 
     ~H"""
+    <.menu_item
+      icon_fn={:icon_game_pong}
+      label={dgettext("ui", "Retro Games...")}
+      action="open_retro_games"
+      on_action={@on_action}
+      testid="menu-retro-games"
+    />
+    <.context_menu_item
+      :for={game <- @retro_games}
+      on_click={@on_action}
+      action="open_retro_games"
+      phx-value-game-id={game.id}
+      testid={"menu-retro-game-#{game.id}"}
+    >
+      <:icon><Icons.game_icon game_id={game.id} class="w-[14px] h-[14px]" /></:icon>
+      {game.name}
+    </.context_menu_item>
+    <.context_menu_separator />
     <.menu_item
       icon_fn={:icon_game_arcade}
       label={dgettext("ui", "Arcade...")}
@@ -568,9 +589,9 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
     <.context_menu_label :if={!@arcade_available}>
       {dgettext("ui", "Register & identify to play")}
     </.context_menu_label>
-    <.context_menu_separator :if={@games != []} />
+    <.context_menu_separator :if={@arcade_games != []} />
     <.context_menu_item
-      :for={game <- @games}
+      :for={game <- @arcade_games}
       on_click={@on_action}
       action="open_arcade"
       phx-value-game-id={game.id}
@@ -717,11 +738,18 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
   attr :on_action, :any, default: nil
   attr :shortcut, :string, default: nil
   attr :disabled, :boolean, default: false
+  attr :testid, :string, default: nil
   attr :rest, :global
 
   defp menu_item(assigns) do
     ~H"""
-    <.context_menu_item on_click={@on_action} action={@action} disabled={@disabled} {@rest}>
+    <.context_menu_item
+      on_click={@on_action}
+      action={@action}
+      disabled={@disabled}
+      testid={@testid}
+      {@rest}
+    >
       <:icon>{apply(Icons, @icon_fn, [%{class: "w-[14px] h-[14px]"}])}</:icon>
       <:shortcut :if={@shortcut}>{@shortcut}</:shortcut>
       {@label}

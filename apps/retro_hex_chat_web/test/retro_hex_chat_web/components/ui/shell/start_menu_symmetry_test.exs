@@ -38,7 +38,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSymmetryTest do
       [reference | rest] = Enum.map(@screens, &group_ids/1)
 
       for ids <- rest, do: assert(ids == reference)
-      assert length(reference) == 10
+      assert length(reference) == 11
     end
 
     test "the root list stays short enough to fit on screen without scrolling" do
@@ -89,6 +89,11 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSymmetryTest do
       refute enabled?(:chat, "start-menu-item-p2p_start_audio")
       assert enabled?(:chat, "start-menu-item-p2p_start_audio", p2p_active: true)
       refute enabled?(:connect, "start-menu-item-p2p_start_audio", p2p_active: true)
+    end
+
+    test "Retro Games needs the chat desktop" do
+      assert enabled?(:chat, "start-menu-item-retro-games")
+      refute enabled?(:connect, "start-menu-item-retro-games")
     end
 
     test "the public pages are reachable from everywhere, including the chat" do

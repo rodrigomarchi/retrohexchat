@@ -11,6 +11,9 @@ const ALLOWED_DYNAMIC_IMPORT_FILES = new Set([
   "js/hooks/lazy_feature_hooks.js",
   "js/hooks/games/game_canvas_hook.js",
   "js/hooks/lobby/lobby_game_canvas_hook.js",
+  // Game engines stay lazy-loaded behind the canvas hooks; this loader is the
+  // shared catalog for P2P and solo runtimes.
+  "js/lib/games/engine_loader.js",
   "js/lib/i18n.js",
   // The public pages defer their LiveSocket until a reader touches the connect
   // window, so the critical bundle stays a fraction of the app's.
