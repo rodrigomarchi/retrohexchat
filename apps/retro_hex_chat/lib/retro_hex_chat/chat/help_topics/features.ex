@@ -1588,13 +1588,16 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "space",
           "hex outlaw",
           "outlaw",
-          "western"
+          "western",
+          "hex tennis",
+          "tennis",
+          "serve"
         ],
         icon: :icon_game_pong,
         description:
           dgettext(
             "help",
-            "Play browser-native RetroHexChat games solo against AI inside the chat desktop. Hex Pong, Light Trails, Star Duel variants, and Hex Outlaw variants are available."
+            "Play browser-native RetroHexChat games solo against AI inside the chat desktop. Hex Pong, Light Trails, Star Duel variants, Hex Outlaw variants, and Hex Tennis variants are available."
           ),
         see_also: [
           "feature-hex-pong",
@@ -1603,6 +1606,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "feature-gravity-well",
           "feature-debris-field",
           "feature-hex-outlaw",
+          "feature-hex-tennis",
           "feature-arcade"
         ]
       },

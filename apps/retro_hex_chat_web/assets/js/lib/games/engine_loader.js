@@ -54,6 +54,9 @@ const SOLO_GAME_IDS = new Set([
   "hex_outlaw_ricochet",
   "hex_outlaw_stagecoach",
   "hex_outlaw_nml",
+  "hex_tennis",
+  "hex_tennis_quick",
+  "hex_tennis_sudden",
 ]);
 
 /**

@@ -129,7 +129,8 @@ describe("TennisEngine", () => {
         true,
         vi.fn(),
       );
-      expect(e.mode).toBe(GAME_MODE.CLASSIC);
+      expect(e.gameMode).toBe(GAME_MODE.CLASSIC);
+      expect(e.mode).toBe("p2p_host");
     });
 
     it("sets QUICK for hex_tennis_quick", () => {
@@ -140,7 +141,7 @@ describe("TennisEngine", () => {
         true,
         vi.fn(),
       );
-      expect(e.mode).toBe(GAME_MODE.QUICK);
+      expect(e.gameMode).toBe(GAME_MODE.QUICK);
     });
 
     it("sets SUDDEN_DEATH for hex_tennis_sudden", () => {
@@ -151,7 +152,7 @@ describe("TennisEngine", () => {
         true,
         vi.fn(),
       );
-      expect(e.mode).toBe(GAME_MODE.SUDDEN_DEATH);
+      expect(e.gameMode).toBe(GAME_MODE.SUDDEN_DEATH);
     });
 
     it("creates initial game state", () => {
@@ -189,6 +190,31 @@ describe("TennisEngine", () => {
         serve: false,
       });
     });
+
+    it("accepts the solo runtime and injected opponent controller", () => {
+      const opponentController = {
+        nextInputs: vi.fn(() => ({
+          up: false,
+          down: false,
+          left: false,
+          right: false,
+          serve: false,
+        })),
+      };
+      const e = new TennisEngine(
+        createMockCanvas(),
+        createMockChannel(),
+        "hex_tennis",
+        true,
+        vi.fn(),
+        { mode: "solo", difficulty: "hard", opponentController },
+      );
+
+      expect(e.mode).toBe("solo");
+      expect(e.gameMode).toBe(GAME_MODE.CLASSIC);
+      expect(e.difficulty).toBe("hard");
+      expect(e.opponentController).toBe(opponentController);
+    });
   });
 
   describe("start", () => {
@@ -224,6 +250,94 @@ describe("TennisEngine", () => {
       e.start();
       expect(channel.addEventListener).toHaveBeenCalledWith("close", expect.any(Function));
       e.stop();
+    });
+
+    it("solo host renders ready state without sending GAME_READY", () => {
+      const channel = createMockChannel();
+      const e = new TennisEngine(createMockCanvas(), channel, "hex_tennis", true, vi.fn(), {
+        mode: "solo",
+      });
+
+      e.start();
+
+      expect(e.peerReady).toBe(true);
+      expect(channel.send).not.toHaveBeenCalled();
+      e.stop();
+    });
+  });
+
+  describe("beginMatch", () => {
+    it("starts the countdown and captures keyboard", () => {
+      vi.useFakeTimers();
+      const e = new TennisEngine(
+        createMockCanvas(),
+        createMockChannel(),
+        "hex_tennis",
+        true,
+        vi.fn(),
+        {
+          mode: "solo",
+        },
+      );
+      e.start();
+
+      expect(e.beginMatch()).toBe(true);
+      expect(e.gameState.phase).toBe(PHASE.COUNTDOWN);
+      expect(e._shouldCaptureKeyboardEvent({ key: "ArrowUp" })).toBe(true);
+
+      e.stop();
+      vi.useRealTimers();
+    });
+
+    it("updates solo difficulty and controller", () => {
+      vi.useFakeTimers();
+      const opponentController = {
+        setDifficulty: vi.fn(),
+        nextInputs: vi.fn(() => ({
+          up: false,
+          down: false,
+          left: false,
+          right: false,
+          serve: false,
+        })),
+      };
+      const e = new TennisEngine(
+        createMockCanvas(),
+        createMockChannel(),
+        "hex_tennis",
+        true,
+        vi.fn(),
+        { mode: "solo", difficulty: "easy", opponentController },
+      );
+      e.start();
+
+      expect(e.beginMatch({ difficulty: "hard" })).toBe(true);
+      expect(e.difficulty).toBe("hard");
+      expect(opponentController.setDifficulty).toHaveBeenCalledWith("hard");
+
+      e.stop();
+      vi.useRealTimers();
+    });
+
+    it("does not start twice", () => {
+      vi.useFakeTimers();
+      const e = new TennisEngine(
+        createMockCanvas(),
+        createMockChannel(),
+        "hex_tennis",
+        true,
+        vi.fn(),
+        {
+          mode: "solo",
+        },
+      );
+      e.start();
+
+      expect(e.beginMatch()).toBe(true);
+      expect(e.beginMatch()).toBe(false);
+
+      e.stop();
+      vi.useRealTimers();
     });
   });
 
@@ -391,8 +505,10 @@ describe("TennisEngine", () => {
       );
       e.start();
       const endBuf = encodeGameEnd(6, 4, 1, GAME_MODE.CLASSIC, false);
+      e.setKeyboardCaptured(true);
       e._onChannelMessage({ data: endBuf });
       expect(e.gameState.phase).toBe(PHASE.GAME_OVER);
+      expect(e._shouldCaptureKeyboardEvent({ key: "ArrowUp" })).toBe(false);
       expect(onEnd).toHaveBeenCalledWith(expect.objectContaining({ winner: 1 }));
       e.stop();
     });
@@ -530,6 +646,20 @@ describe("TennisEngine", () => {
       e.stop();
     });
 
+    it("prevents browser defaults for captured tennis keys", () => {
+      const e = new TennisEngine(
+        createMockCanvas(),
+        createMockChannel(),
+        "hex_tennis",
+        true,
+        vi.fn(),
+      );
+
+      expect(e._shouldPreventDefaultForCapturedKey({ key: "ArrowUp" })).toBe(true);
+      expect(e._shouldPreventDefaultForCapturedKey({ key: "Shift" })).toBe(true);
+      expect(e._shouldPreventDefaultForCapturedKey({ key: "Meta" })).toBe(false);
+    });
+
     it("keyUp releases local inputs", () => {
       const e = new TennisEngine(
         createMockCanvas(),
@@ -593,8 +723,10 @@ describe("TennisEngine", () => {
         onEnd,
       );
       e.start();
+      e.setKeyboardCaptured(true);
       e._handleChannelClose();
       expect(e.gameState.phase).toBe(PHASE.GAME_OVER);
+      expect(e._shouldCaptureKeyboardEvent({ key: "ArrowUp" })).toBe(false);
       expect(onEnd).toHaveBeenCalledWith(expect.objectContaining({ winner: 0 }));
       e.stop();
     });
@@ -706,6 +838,7 @@ describe("TennisEngine", () => {
         score: { p1: 6, p2: 4 },
         winner: 1,
       });
+      expect(e._shouldCaptureKeyboardEvent({ key: "ArrowUp" })).toBe(false);
       e.stop();
     });
 
@@ -1055,6 +1188,37 @@ describe("TennisEngine", () => {
       e.stop();
       vi.useRealTimers();
     });
+
+    it("solo controller can serve for player 2", () => {
+      const opponentController = {
+        nextInputs: vi.fn(() => ({
+          up: false,
+          down: false,
+          left: false,
+          right: false,
+          serve: true,
+        })),
+      };
+      const e = new TennisEngine(
+        createMockCanvas(),
+        createMockChannel(),
+        "hex_tennis",
+        true,
+        vi.fn(),
+        { mode: "solo", opponentController },
+      );
+      e.start();
+      e.gameState.phase = PHASE.SERVING;
+      e.gameState.server = 2;
+
+      e._gameLoop();
+
+      expect(opponentController.nextInputs).toHaveBeenCalledWith(
+        expect.objectContaining({ difficulty: "normal", player: 2 }),
+      );
+      expect(e.gameState.phase).toBe(PHASE.RALLY);
+      e.stop();
+    });
   });
 
   // ── RALLY phase tests ──
@@ -1107,6 +1271,37 @@ describe("TennisEngine", () => {
       e._gameLoop();
       // P1 should have moved up (toward net, but clamped to bottom half)
       expect(e.gameState.p1y).toBeLessThanOrEqual(prevP1y);
+      e.stop();
+    });
+
+    it("solo controller moves player 2 through remoteInputs", () => {
+      const opponentController = {
+        nextInputs: vi.fn(() => ({
+          up: false,
+          down: true,
+          left: false,
+          right: true,
+          serve: false,
+        })),
+      };
+      const e = new TennisEngine(
+        createMockCanvas(),
+        createMockChannel(),
+        "hex_tennis",
+        true,
+        vi.fn(),
+        { mode: "solo", opponentController },
+      );
+      e.start();
+      e.gameState.phase = PHASE.RALLY;
+      const prevX = e.gameState.p2x;
+      const prevY = e.gameState.p2y;
+
+      e._gameLoop();
+
+      expect(e.remoteInputs).toMatchObject({ down: true, right: true });
+      expect(e.gameState.p2x).toBeGreaterThan(prevX);
+      expect(e.gameState.p2y).toBeGreaterThan(prevY);
       e.stop();
     });
 

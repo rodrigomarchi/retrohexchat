@@ -352,6 +352,9 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
   defp goal_label(%{id: "hex_outlaw_ricochet"}), do: dgettext("games", "Best of 3 rounds")
   defp goal_label(%{id: "hex_outlaw_stagecoach"}), do: dgettext("games", "Best of 3 rounds")
   defp goal_label(%{id: "hex_outlaw_nml"}), do: dgettext("games", "Best of 3 rounds")
+  defp goal_label(%{id: "hex_tennis_quick"}), do: dgettext("games", "First to 3 games")
+  defp goal_label(%{id: "hex_tennis"}), do: dgettext("games", "First to 6 games")
+  defp goal_label(%{id: "hex_tennis_sudden"}), do: dgettext("games", "First to 6 games")
   defp goal_label(_game), do: dgettext("games", "First to 11")
 
   defp control_rows(%{id: "light_trails"}) do
@@ -383,6 +386,18 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
     [
       %{label: dgettext("games", "Move/Aim"), keys: ["↑", "↓", "←", "→", "W", "A", "S", "D"]},
       %{label: dgettext("games", "Fire"), keys: ["Space", "Shift"]}
+    ]
+  end
+
+  defp control_rows(%{id: id})
+       when id in [
+              "hex_tennis",
+              "hex_tennis_quick",
+              "hex_tennis_sudden"
+            ] do
+    [
+      %{label: dgettext("games", "Move"), keys: ["↑", "↓", "←", "→", "W", "A", "S", "D"]},
+      %{label: dgettext("games", "Serve"), keys: ["Space", "Shift"]}
     ]
   end
 

@@ -36,6 +36,9 @@ describe("engine loader", () => {
     expect(supportsSolo("hex_outlaw_ricochet")).toBe(true);
     expect(supportsSolo("hex_outlaw_stagecoach")).toBe(true);
     expect(supportsSolo("hex_outlaw_nml")).toBe(true);
+    expect(supportsSolo("hex_tennis")).toBe(true);
+    expect(supportsSolo("hex_tennis_quick")).toBe(true);
+    expect(supportsSolo("hex_tennis_sudden")).toBe(true);
     expect(supportsSolo("block_breakers")).toBe(false);
     await expect(loadSoloEngineClass("block_breakers")).rejects.toThrow(/solo/i);
   });
@@ -132,6 +135,37 @@ describe("engine loader", () => {
     expect(engine.isHost).toBe(true);
     expect(engine.mode).toBe("solo");
     expect(engine.gameMode).toBe(1);
+    expect(engine.transport.kind).toBe("local");
+    expect(engine.difficulty).toBe("hard");
+    expect(engine.opponentController).toBe(opponentController);
+
+    engine.stop();
+  });
+
+  it("creates a Hex Tennis family solo engine through the shared factory", async () => {
+    const opponentController = {
+      nextInputs: () => ({
+        up: false,
+        down: false,
+        left: false,
+        right: false,
+        serve: false,
+      }),
+    };
+    const engine = await createGameEngine({
+      canvas: createCanvas(),
+      gameId: "hex_tennis_sudden",
+      mode: "solo",
+      transport: createLocalTransport(),
+      difficulty: "hard",
+      opponentController,
+      onGameEnd: null,
+    });
+
+    expect(engine.gameId).toBe("hex_tennis_sudden");
+    expect(engine.isHost).toBe(true);
+    expect(engine.mode).toBe("solo");
+    expect(engine.gameMode).toBe(2);
     expect(engine.transport.kind).toBe("local");
     expect(engine.difficulty).toBe("hard");
     expect(engine.opponentController).toBe(opponentController);

@@ -6,6 +6,7 @@
 import { log } from "../../logger.js";
 
 import { GameEngine } from "../../game_engine.js";
+import { createTennisAI, normalizeTennisAIDifficulty } from "./ai.js";
 import {
   MSG_TYPE,
   PHASE,
@@ -44,15 +45,51 @@ const MODE_MAP = {
 const STATE_SEND_INTERVAL = 1; // broadcast every fixed step (60Hz)
 const POINT_PAUSE_FRAMES = 120; // 2s at 60fps
 const CHANGEOVER_PAUSE_FRAMES = 120; // 2s
+const TENNIS_PREVENT_DEFAULT_KEYS = new Set([
+  "ArrowUp",
+  "ArrowDown",
+  "ArrowLeft",
+  "ArrowRight",
+  " ",
+  "Spacebar",
+  "Shift",
+  "w",
+  "W",
+  "a",
+  "A",
+  "s",
+  "S",
+  "d",
+  "D",
+]);
+
+/**
+ * @param {string} gameId
+ * @returns {number}
+ */
+function gameModeFromId(gameId) {
+  return MODE_MAP[gameId] ?? GAME_MODE.CLASSIC;
+}
 
 export class TennisEngine extends GameEngine {
   static INPUT_BITS = { up: 0, down: 1, left: 2, right: 3, serve: 4 };
 
-  constructor(canvas, channel, gameId, isHost, onGameEnd) {
-    super(canvas, channel, gameId, isHost);
+  /**
+   * @param {HTMLCanvasElement} canvas
+   * @param {RTCDataChannel} channel
+   * @param {string} gameId
+   * @param {boolean} isHost
+   * @param {function} onGameEnd - callback when game finishes
+   * @param {object} [options]
+   * @param {"p2p_host"|"p2p_guest"|"solo"} [options.mode]
+   * @param {object} [options.opponentController]
+   * @param {"easy"|"normal"|"hard"|string} [options.difficulty]
+   */
+  constructor(canvas, channel, gameId, isHost, onGameEnd, options = {}) {
+    super(canvas, channel, gameId, isHost, options);
     this.onGameEnd = onGameEnd || null;
-    this.mode = MODE_MAP[gameId] ?? GAME_MODE.CLASSIC;
-    this.gameState = createInitialState(this.mode);
+    this.gameMode = gameModeFromId(gameId);
+    this.gameState = createInitialState(this.gameMode);
     this.localInputs = { up: false, down: false, left: false, right: false, serve: false };
     this.remoteInputs = { up: false, down: false, left: false, right: false, serve: false };
     this._localServePressed = false;
@@ -63,6 +100,10 @@ export class TennisEngine extends GameEngine {
     this.audio = new TennisAudio();
     this.colors = null;
     this.peerReady = false;
+    this.difficulty = normalizeTennisAIDifficulty(options.difficulty);
+    this.opponentController =
+      options.opponentController ||
+      (this.mode === "solo" ? createTennisAI({ difficulty: this.difficulty }) : null);
     this._prevPeerFlags = {
       hitEvent: false,
       serveEvent: false,
@@ -81,7 +122,10 @@ export class TennisEngine extends GameEngine {
     window.addEventListener("blur", this._boundBlur);
     this.channel.addEventListener("close", this._boundChannelClose);
 
-    if (this.isHost) {
+    if (this.mode === "solo") {
+      this.peerReady = true;
+      this._invalidate();
+    } else if (this.isHost) {
       this._invalidate();
     } else {
       this._advertiseReady(encodeGameReady);
@@ -99,6 +143,29 @@ export class TennisEngine extends GameEngine {
     }
     this._localServePressed = false;
     this._remoteServePressed = false;
+  }
+
+  beginMatch(options = {}) {
+    if (!this.running || !this.isHost || this.gameState.phase !== PHASE.WAITING) return false;
+
+    if (options.difficulty) {
+      this.difficulty = normalizeTennisAIDifficulty(options.difficulty);
+      if (
+        !options.opponentController &&
+        typeof this.opponentController?.setDifficulty === "function"
+      ) {
+        this.opponentController.setDifficulty(this.difficulty);
+      }
+    }
+    if (options.opponentController) this.opponentController = options.opponentController;
+    if (this.mode === "solo" && !this.opponentController) {
+      this.opponentController = createTennisAI({ difficulty: this.difficulty });
+    }
+
+    this.setKeyboardCaptured(true);
+    this.peerReady = true;
+    this._startCountdown();
+    return true;
   }
 
   // ── Input Handling ──
@@ -166,37 +233,29 @@ export class TennisEngine extends GameEngine {
     const type = getMessageType(buf);
     if (type === null) return;
 
-    if (this.isHost) {
-      if (type === MSG_TYPE.GAME_READY && !this.peerReady) {
-        this.peerReady = true;
-        this._startCountdown();
-      }
-    } else {
-      // Peer
-      if (type === MSG_TYPE.GAME_STATE) {
-        const decoded = decodeGameState(buf);
-        if (decoded) {
-          const prevPhase = this.gameState.phase;
-          // Merge decoded into gameState, reconstruct ball object
-          this.gameState = {
-            ...this.gameState,
-            ...decoded,
-            ball: {
-              x: decoded.ballX,
-              y: decoded.ballY,
-              vx: decoded.ballVX,
-              vy: decoded.ballVY,
-              speed: this.gameState.ball ? this.gameState.ball.speed : 0,
-              height: decoded.ballHeight,
-              heightVel: this.gameState.ball ? this.gameState.ball.heightVel : 0,
-            },
-          };
-          this._playPeerAudio(prevPhase, decoded.phase);
-          this._invalidate();
+    switch (type) {
+      case MSG_TYPE.GAME_STATE:
+        if (!this.isHost) {
+          const decoded = decodeGameState(buf);
+          if (decoded) {
+            this._ingestSnapshot(decoded, () => this._applyPeerState(decoded));
+            this.setKeyboardCaptured(
+              decoded.phase !== PHASE.WAITING && decoded.phase !== PHASE.GAME_OVER,
+            );
+          }
         }
-      } else if (type === MSG_TYPE.GAME_END) {
+        break;
+
+      case MSG_TYPE.GAME_READY:
+        if (this.isHost && !this.peerReady) {
+          this.beginMatch();
+        }
+        break;
+
+      case MSG_TYPE.GAME_END: {
         const result = decodeGameEnd(buf);
         if (result) {
+          this.setKeyboardCaptured(false);
           this.gameState.phase = PHASE.GAME_OVER;
           this.gameState.winner = result.winner;
           this.gameState.p1Games = result.p1Games;
@@ -215,6 +274,7 @@ export class TennisEngine extends GameEngine {
             }
           }
         }
+        break;
       }
     }
   }
@@ -259,6 +319,8 @@ export class TennisEngine extends GameEngine {
   _gameLoop() {
     if (!this.running) return;
     let s = this.gameState;
+
+    this._updateOpponentInputs();
 
     if (s.phase === PHASE.SERVING) {
       // Update players during serve phase
@@ -402,6 +464,7 @@ export class TennisEngine extends GameEngine {
 
   _handleGameFinished() {
     this._stopSteps();
+    this.setKeyboardCaptured(false);
     const { p1Games, p2Games, winner, gameMode, isTiebreak } = this.gameState;
 
     this._broadcastState();
@@ -430,6 +493,7 @@ export class TennisEngine extends GameEngine {
 
   _handleChannelClose() {
     this._stopSteps();
+    this.setKeyboardCaptured(false);
     if (this.gameState.phase === PHASE.GAME_OVER) return;
     this.gameState.phase = PHASE.GAME_OVER;
     this._invalidate();
@@ -473,7 +537,49 @@ export class TennisEngine extends GameEngine {
     this._sendState(encodeGameState(this._flattenStateForEncode()));
   }
 
+  _updateOpponentInputs() {
+    if (this.mode !== "solo" || typeof this.opponentController?.nextInputs !== "function") return;
+
+    const nextInputs = this.opponentController.nextInputs({
+      state: this.gameState,
+      difficulty: this.difficulty,
+      player: 2,
+    });
+
+    if (!nextInputs) return;
+
+    this.remoteInputs = {
+      up: nextInputs.up === true,
+      down: nextInputs.down === true,
+      left: nextInputs.left === true,
+      right: nextInputs.right === true,
+      serve: nextInputs.serve === true,
+    };
+  }
+
+  _shouldPreventDefaultForCapturedKey(event) {
+    return TENNIS_PREVENT_DEFAULT_KEYS.has(event.key);
+  }
+
   // ── Peer Audio ──
+
+  _applyPeerState(decoded) {
+    const prevPhase = this.gameState.phase;
+    this.gameState = {
+      ...this.gameState,
+      ...decoded,
+      ball: {
+        x: decoded.ballX,
+        y: decoded.ballY,
+        vx: decoded.ballVX,
+        vy: decoded.ballVY,
+        speed: this.gameState.ball ? this.gameState.ball.speed : 0,
+        height: decoded.ballHeight,
+        heightVel: this.gameState.ball ? this.gameState.ball.heightVel : 0,
+      },
+    };
+    this._playPeerAudio(prevPhase, decoded.phase);
+  }
 
   _playPeerAudio(prevPhase, newPhase) {
     if (prevPhase !== newPhase) {

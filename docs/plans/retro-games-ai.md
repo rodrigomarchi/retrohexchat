@@ -16,7 +16,8 @@ AI.
 O primeiro jogo suportado foi Hex Pong. O segundo incremento aplicou o mesmo
 playbook ao Light Trails. O terceiro incremento aplica o batch por família ao
 Hex Outlaw e suas variantes. O quarto incremento aplica o mesmo playbook à
-família Star Duel: Star Duel, Gravity Well e Debris Field.
+família Star Duel: Star Duel, Gravity Well e Debris Field. O quinto incremento
+leva o playbook para a família Hex Tennis.
 
 ## Decisões de produto
 
@@ -42,8 +43,8 @@ Entrada principal:
 Fluxo inicial:
 
 - A janela mostra o catálogo de jogos nativos.
-- Hex Pong, Light Trails, a família Star Duel e a família Hex Outlaw aparecem
-  como jogos disponíveis.
+- Hex Pong, Light Trails, a família Star Duel, a família Hex Outlaw e a família
+  Hex Tennis aparecem como jogos disponíveis.
 - Jogos futuros podem ficar ocultos até terem AI pronta. Se forem exibidos, devem
   aparecer como indisponíveis de forma explícita, sem prometer jogabilidade.
 
@@ -332,8 +333,8 @@ Extrair esse mapa para um loader compartilhado evita duplicação:
 - `createGameEngine({ canvas, gameId, mode, transport, opponent, onGameEnd })`.
 
 `supportsSolo/1` só deve ser verdadeiro para jogos que já têm runtime solo
-validado: Hex Pong, Light Trails, família Star Duel e família Hex Outlaw neste
-momento.
+validado: Hex Pong, Light Trails, família Star Duel, família Hex Outlaw e família
+Hex Tennis neste momento.
 
 ### Foco e teclado
 
@@ -464,6 +465,32 @@ Fluxo técnico esperado:
 - dificuldade altera tolerância de mira, reação defensiva, distância preferida,
   cooldown e chance de disparo;
 - placar, spawn, física orbital, colisões, partículas, áudio e regras de match
+  continuam compartilhados com o P2P.
+
+### Hex Tennis
+
+A família Hex Tennis usa input pressionado contínuo para movimento e saque. As
+três variantes compartilham a mesma engine:
+
+- `hex_tennis`;
+- `hex_tennis_quick`;
+- `hex_tennis_sudden`.
+
+Fluxo técnico esperado:
+
+- engine inicia como host local;
+- `mode` representa o runtime (`p2p_host`, `p2p_guest`, `solo`);
+- `gameMode` representa a variante (`Classic`, `Quick`, `Sudden Death`);
+- jogador humano controla o player 1;
+- AI controla o player 2 preenchendo `remoteInputs`;
+- AI devolve o mesmo shape de input do peer P2P: `up`, `down`, `left`, `right`,
+  `serve`;
+- AI prevê o ponto de interceptação da bola no lado superior da quadra;
+- AI volta para uma posição de recuperação quando a bola está indo para o lado do
+  jogador;
+- quando é sacadora, AI emite saque por borda depois de um pequeno delay humano;
+- dificuldade altera reação, erro de alvo, deadzone e timing do saque;
+- placar de tênis, saque, rally, faltas, changeover, áudio e regras de set
   continuam compartilhados com o P2P.
 
 ## Modelo da AI

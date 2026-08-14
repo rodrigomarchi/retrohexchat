@@ -42,6 +42,15 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     controls: "Arrow keys or WASD to thrust/rotate, Space to fire, Down/S to warp"
   }
 
+  @tennis %{
+    id: "hex_tennis",
+    name: "Hex Tennis",
+    tagline: "Serve, rally, win",
+    description: "Top-down tennis duel.",
+    icon: "game_tennis",
+    controls: "Arrow keys or WASD to move, Space or Shift to serve"
+  }
+
   test "renders the ready game with an integrated control panel" do
     html =
       render_component(&retro_games_panel/1,
@@ -142,6 +151,28 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     assert text =~ "Thrust"
     assert text =~ "Fire/Warp"
     assert text =~ "Space"
+  end
+
+  test "renders the Hex Tennis goal and serve controls in the shared status panel" do
+    html =
+      render_component(&retro_games_panel/1,
+        id: "retro-games-panel",
+        games: [@tennis],
+        status: "ready",
+        selected_game: @tennis,
+        difficulty: "normal",
+        canvas_ready: true,
+        target: "retro-games-island"
+      )
+
+    document = Floki.parse_document!(html)
+    text = Floki.text(document)
+
+    assert text =~ "First to 6"
+    assert text =~ "Move"
+    assert text =~ "Serve"
+    assert text =~ "Space"
+    assert text =~ "Shift"
   end
 
   test "locks difficulty and promotes the end action while playing" do

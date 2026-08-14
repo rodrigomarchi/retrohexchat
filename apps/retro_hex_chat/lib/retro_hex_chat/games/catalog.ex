@@ -15,7 +15,10 @@ defmodule RetroHexChat.Games.Catalog do
     "hex_outlaw",
     "hex_outlaw_ricochet",
     "hex_outlaw_stagecoach",
-    "hex_outlaw_nml"
+    "hex_outlaw_nml",
+    "hex_tennis",
+    "hex_tennis_quick",
+    "hex_tennis_sudden"
   ]
 
   @type game :: %{

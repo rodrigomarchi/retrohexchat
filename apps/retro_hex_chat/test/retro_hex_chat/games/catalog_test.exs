@@ -86,7 +86,10 @@ defmodule RetroHexChat.Games.CatalogTest do
                %{id: "hex_outlaw", name: "Hex Outlaw"},
                %{id: "hex_outlaw_ricochet", name: "Hex Outlaw: Ricochet"},
                %{id: "hex_outlaw_stagecoach", name: "Hex Outlaw: Stagecoach"},
-               %{id: "hex_outlaw_nml", name: "Hex Outlaw: No Man's Land"}
+               %{id: "hex_outlaw_nml", name: "Hex Outlaw: No Man's Land"},
+               %{id: "hex_tennis", name: "Hex Tennis"},
+               %{id: "hex_tennis_quick", name: "Hex Tennis: Quick Match"},
+               %{id: "hex_tennis_sudden", name: "Hex Tennis: Sudden Death"}
              ] = Catalog.list_solo_games()
     end
 
@@ -129,6 +132,18 @@ defmodule RetroHexChat.Games.CatalogTest do
                  %{
                    id: "hex_outlaw_nml",
                    controls: "Setas ou WASD para mover, Espaço ou Shift para disparar"
+                 },
+                 %{
+                   id: "hex_tennis",
+                   controls: "Setas ou WASD para mover, Espaço ou Shift para servir"
+                 },
+                 %{
+                   id: "hex_tennis_quick",
+                   controls: "Setas ou WASD para mover, Espaço ou Shift para servir"
+                 },
+                 %{
+                   id: "hex_tennis_sudden",
+                   controls: "Setas ou WASD para mover, Espaço ou Shift para servir"
                  }
                ] = Catalog.list_solo_games()
       after
@@ -148,6 +163,9 @@ defmodule RetroHexChat.Games.CatalogTest do
       assert Catalog.solo_game_id?("hex_outlaw_ricochet")
       assert Catalog.solo_game_id?("hex_outlaw_stagecoach")
       assert Catalog.solo_game_id?("hex_outlaw_nml")
+      assert Catalog.solo_game_id?("hex_tennis")
+      assert Catalog.solo_game_id?("hex_tennis_quick")
+      assert Catalog.solo_game_id?("hex_tennis_sudden")
       refute Catalog.solo_game_id?("nonexistent")
     end
   end
