@@ -9,10 +9,13 @@ defmodule RetroHexChat.Bots.Output do
 
   alias RetroHexChat.Bots.Pace
   alias RetroHexChat.Channels
+  alias RetroHexChat.Observability
 
   require Logger
 
   @pubsub RetroHexChat.PubSub
+  @sent_event [:retro_hex_chat, :bots, :output, :sent]
+  @throttled_event [:retro_hex_chat, :bots, :output, :throttled]
 
   @doc "Deliver one output map to its target channel or private notice target."
   @spec send(String.t(), String.t(), map()) :: :ok | {:error, term()}
@@ -54,7 +57,7 @@ defmodule RetroHexChat.Bots.Output do
       # The first message of a batch waits too. A bot that just published on
       # another feed has a slot pending, and skipping the reservation here is
       # exactly the case that trips the reader's counter.
-      Process.sleep(Pace.reserve(nickname))
+      nickname |> Pace.reserve() |> wait(nickname, channel)
 
       case send(channel, nickname, output) do
         :ok -> {:cont, :ok}
@@ -80,6 +83,33 @@ defmodule RetroHexChat.Bots.Output do
   end
 
   defp normalize_delivery(_delivery), do: :public
+
+  # How much a bot actually says, and how much it wanted to say sooner. Only the
+  # reader's side of a flood was visible before: an auto-ignore is reported when
+  # somebody is there to be bothered by it, so a burst at four in the morning
+  # left no trace on either side. Throttling is the leading indicator — the
+  # pacer knows a bot is pressing against the limit before any reader does.
+  @spec wait(non_neg_integer(), String.t(), String.t()) :: :ok
+  defp wait(0, _nickname, _channel), do: :ok
+
+  defp wait(delay_ms, nickname, channel) do
+    Observability.record_event(
+      @throttled_event,
+      %{count: 1, delay_ms: delay_ms},
+      %{bot: nickname, channel: channel}
+    )
+
+    Process.sleep(delay_ms)
+  end
+
+  @spec record_sent(String.t(), String.t(), atom()) :: :ok
+  defp record_sent(nickname, channel, type) do
+    Observability.record_event(
+      @sent_event,
+      %{count: 1},
+      %{bot: nickname, channel: channel, type: to_string(type)}
+    )
+  end
 
   @spec output_message_opts(map()) :: keyword()
   defp output_message_opts(output) do
@@ -114,6 +144,7 @@ defmodule RetroHexChat.Bots.Output do
   defp send_message(channel, nickname, content, type, opts) do
     case Channels.Server.send_message(channel, nickname, content, type, opts) do
       {:ok, _id} ->
+        record_sent(nickname, channel, type)
         :ok
 
       {:error, reason} ->

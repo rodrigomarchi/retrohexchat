@@ -365,6 +365,7 @@ defmodule RetroHexChat.Jobs.RSSPollWorker do
       "source_items=#{Map.get(summary, :source_item_count)}",
       "published=#{Map.get(summary, :published_count)}",
       "seen=#{Map.get(summary, :seen_count)}",
+      "pending=#{Map.get(summary, :pending_count)}",
       "next_poll_ms=#{Map.get(summary, :next_poll_ms)}",
       "last_error=#{log_value(Map.get(summary, :last_error))}"
     ]

@@ -18,6 +18,8 @@ defmodule RetroHexChat.PromEx.Plugins.Domain do
   @call_signaling_replay [:retro_hex_chat, :calls, :signaling, :replay]
   @game_session_sample [:retro_hex_chat, :games, :session, :sample]
   @chat_auto_ignore [:retro_hex_chat, :chat, :auto_ignore]
+  @bot_output_sent [:retro_hex_chat, :bots, :output, :sent]
+  @bot_output_throttled [:retro_hex_chat, :bots, :output, :throttled]
 
   @impl true
   def event_metrics(opts) do
@@ -116,6 +118,33 @@ defmodule RetroHexChat.PromEx.Plugins.Domain do
           tags: [:command, :result],
           unit: {:native, :millisecond}
         ),
+        # The producing side of a flood. `auto_ignores` below only fires when a
+        # reader is present to be bothered, so a burst with an empty channel
+        # left no trace anywhere; throttling does, and it fires first — the
+        # pacer knows a bot is pressing against the limit before any reader.
+        counter(
+          metric_prefix ++ [:bots, :output, :messages, :total],
+          event_name: @bot_output_sent,
+          description: "Total messages delivered by bots.",
+          tag_values: &bot_output_tags/1,
+          tags: [:bot, :channel, :type]
+        ),
+        counter(
+          metric_prefix ++ [:bots, :output, :throttled, :total],
+          event_name: @bot_output_throttled,
+          description: "Total bot messages held back to keep under the flood threshold.",
+          tag_values: &bot_output_tags/1,
+          tags: [:bot, :channel]
+        ),
+        sum(
+          metric_prefix ++ [:bots, :output, :throttled, :delay, :milliseconds],
+          event_name: @bot_output_throttled,
+          measurement: :delay_ms,
+          description: "Total time bot messages spent waiting on the pacer.",
+          tag_values: &bot_output_tags/1,
+          tags: [:bot, :channel]
+        ),
+
         # Auto-ignore is decided in one reader's session and never reaches the
         # sender, so without this a bot can be silenced across the server with
         # nothing to show for it. `kind` separates our defect from moderation
@@ -269,6 +298,14 @@ defmodule RetroHexChat.PromEx.Plugins.Domain do
       surface: tag(metadata, :surface),
       code: tag(metadata, :code),
       phase: tag(metadata, :phase)
+    }
+  end
+
+  defp bot_output_tags(metadata) do
+    %{
+      bot: tag(metadata, :bot),
+      channel: tag(metadata, :channel),
+      type: tag(metadata, :type)
     }
   end
 
