@@ -7,7 +7,6 @@ import {
   INPUT_KEY,
   WINS_NEEDED,
   encodeGameState,
-  encodePlayerInput,
   encodeGameEnd,
   encodeGameReady,
 } from "../../../../js/lib/games/surround/protocol.js";
@@ -16,6 +15,7 @@ import {
   CANVAS_W,
   CANVAS_H,
 } from "../../../../js/lib/games/surround/physics.js";
+import { createLocalTransport } from "../../../../js/lib/games/transport.js";
 
 // Must mock audio before importing SurroundEngine
 vi.mock("../../../../js/lib/games/surround/audio.js", () => ({
@@ -152,6 +152,17 @@ describe("SurroundEngine", () => {
       expect(engine.tickInterval).toBeNull();
       expect(engine.phaseTimer).toBeNull();
     });
+
+    it("creates a solo controller when running in solo mode", () => {
+      engine = new SurroundEngine(canvas, createLocalTransport(), "light_trails", true, null, {
+        mode: "solo",
+        difficulty: "hard",
+      });
+
+      expect(engine.mode).toBe("solo");
+      expect(engine.difficulty).toBe("hard");
+      expect(engine.opponentController?.nextDirection).toEqual(expect.any(Function));
+    });
   });
 
   describe("start", () => {
@@ -194,6 +205,58 @@ describe("SurroundEngine", () => {
       engine = new SurroundEngine(canvas, channel, "light_trails", true, null);
       engine.start();
       expect(globalThis.requestAnimationFrame).toHaveBeenCalled();
+    });
+
+    it("solo mode loads ready but does not auto-start the match", () => {
+      engine = new SurroundEngine(canvas, createLocalTransport(), "light_trails", true, null, {
+        mode: "solo",
+      });
+
+      engine.start();
+
+      expect(engine.mode).toBe("solo");
+      expect(engine.peerReady).toBe(true);
+      expect(engine.gameState.phase).toBe(PHASE.WAITING);
+    });
+  });
+
+  describe("beginMatch", () => {
+    it("starts countdown explicitly in solo mode", () => {
+      engine = new SurroundEngine(canvas, createLocalTransport(), "light_trails", true, null, {
+        mode: "solo",
+      });
+      engine.start();
+
+      expect(engine.beginMatch()).toBe(true);
+
+      expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
+      expect(engine.gameState.countdown).toBe(3);
+      expect(engine._keyboardCaptured).toBe(true);
+      expect(engine.audio.playCountdown).toHaveBeenCalled();
+    });
+
+    it("does not start twice while a match is already pending", () => {
+      engine = new SurroundEngine(canvas, createLocalTransport(), "light_trails", true, null, {
+        mode: "solo",
+      });
+      engine.start();
+      engine.beginMatch();
+
+      expect(engine.beginMatch()).toBe(false);
+    });
+
+    it("updates the solo difficulty before starting the countdown", () => {
+      const opponentController = { setDifficulty: vi.fn(), nextDirection: vi.fn(() => DIR.LEFT) };
+      engine = new SurroundEngine(canvas, createLocalTransport(), "light_trails", true, null, {
+        mode: "solo",
+        opponentController,
+      });
+      engine.start();
+
+      expect(engine.beginMatch({ difficulty: "hard" })).toBe(true);
+
+      expect(engine.difficulty).toBe("hard");
+      expect(opponentController.setDifficulty).toHaveBeenCalledWith("hard");
     });
   });
 
@@ -241,6 +304,7 @@ describe("SurroundEngine", () => {
 
       expect(engine.peerReady).toBe(true);
       expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
+      expect(engine._keyboardCaptured).toBe(true);
     });
 
     it("ignores duplicate GAME_READY", () => {
@@ -256,7 +320,7 @@ describe("SurroundEngine", () => {
       expect(countdownCalls2).toBe(countdownCalls1);
     });
 
-    it("processes PLAYER_INPUT direction", () => {
+    it("processes input edge direction", () => {
       engine = new SurroundEngine(canvas, channel, "light_trails", true, null);
       engine.start();
 
@@ -265,31 +329,14 @@ describe("SurroundEngine", () => {
       expect(engine.p2PendingDir).toBe(DIR.UP);
     });
 
-    it("ignores PLAYER_INPUT with invalid keyCode", () => {
+    it("ignores input edge with invalid keyCode", () => {
       engine = new SurroundEngine(canvas, channel, "light_trails", true, null);
       engine.start();
       engine.p2PendingDir = DIR.LEFT;
 
-      // Craft a binary input with keyCode=99
-      const buf = new ArrayBuffer(3);
-      const view = new DataView(buf);
-      view.setUint8(0, MSG_TYPE.PLAYER_INPUT);
-      view.setUint8(1, 99);
-      view.setUint8(2, 1); // pressed=true
-      engine._onChannelMessage({ data: buf });
+      engine._onChannelMessage({ data: encodeInputEdge(1, 99) });
 
       expect(engine.p2PendingDir).toBe(DIR.LEFT); // unchanged
-    });
-
-    it("ignores PLAYER_INPUT when pressed=false", () => {
-      engine = new SurroundEngine(canvas, channel, "light_trails", true, null);
-      engine.start();
-      engine.p2PendingDir = DIR.LEFT;
-
-      const buf = encodePlayerInput(INPUT_KEY.UP, false);
-      engine._onChannelMessage({ data: buf });
-
-      expect(engine.p2PendingDir).toBe(DIR.LEFT);
     });
   });
 
@@ -311,11 +358,13 @@ describe("SurroundEngine", () => {
       expect(engine.gameState.score1).toBe(2);
       expect(engine.gameState.score2).toBe(1);
       expect(engine.gameState.phase).toBe(PHASE.PLAYING);
+      expect(engine._keyboardCaptured).toBe(true);
     });
 
     it("processes GAME_END message (P2 wins)", () => {
       engine = new SurroundEngine(canvas, channel, "light_trails", false, null);
       engine.start();
+      engine.setKeyboardCaptured(true);
 
       const buf = encodeGameEnd(1, 3, 2);
       engine._onChannelMessage({ data: buf });
@@ -323,6 +372,7 @@ describe("SurroundEngine", () => {
       expect(engine.gameState.phase).toBe(PHASE.MATCH_OVER);
       expect(engine.gameState.score1).toBe(1);
       expect(engine.gameState.score2).toBe(3);
+      expect(engine._keyboardCaptured).toBe(false);
       expect(engine.audio.playMatchWin).toHaveBeenCalled();
     });
 
@@ -734,6 +784,26 @@ describe("SurroundEngine", () => {
 
       expect(channel.send).not.toHaveBeenCalled();
     });
+
+    it("uses the solo opponent controller as the P2 direction source", () => {
+      const opponentController = { nextDirection: vi.fn(() => DIR.UP) };
+      engine = new SurroundEngine(canvas, createLocalTransport(), "light_trails", true, null, {
+        mode: "solo",
+        difficulty: "normal",
+        opponentController,
+      });
+      engine.start();
+      engine.gameState.phase = PHASE.PLAYING;
+
+      engine._tickLoop();
+
+      expect(opponentController.nextDirection).toHaveBeenCalledWith({
+        state: expect.objectContaining({ phase: PHASE.PLAYING }),
+        difficulty: "normal",
+        player: 2,
+      });
+      expect(engine.gameState.p2.dir).toBe(DIR.UP);
+    });
   });
 
   describe("_handleRoundOver integration", () => {
@@ -883,8 +953,10 @@ describe("SurroundEngine", () => {
       engine = new SurroundEngine(canvas, channel, "light_trails", true, onEnd);
       engine.start();
       engine.gameState.phase = PHASE.PLAYING;
+      engine.setKeyboardCaptured(true);
       engine._handleChannelClose();
       expect(engine.gameState.phase).toBe(PHASE.MATCH_OVER);
+      expect(engine._keyboardCaptured).toBe(false);
       expect(onEnd).toHaveBeenCalledWith(expect.objectContaining({ disconnected: true }));
     });
 

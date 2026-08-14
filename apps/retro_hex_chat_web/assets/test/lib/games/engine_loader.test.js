@@ -28,6 +28,7 @@ describe("engine loader", () => {
 
   it("exposes solo support only for engines with a solo runtime", async () => {
     expect(supportsSolo("hex_pong")).toBe(true);
+    expect(supportsSolo("light_trails")).toBe(true);
     expect(supportsSolo("block_breakers")).toBe(false);
     await expect(loadSoloEngineClass("block_breakers")).rejects.toThrow(/solo/i);
   });
@@ -49,6 +50,28 @@ describe("engine loader", () => {
     expect(engine.mode).toBe("solo");
     expect(engine.transport.kind).toBe("local");
     expect(engine.difficulty).toBe("hard");
+    expect(engine.opponentController).toBe(opponentController);
+
+    engine.stop();
+  });
+
+  it("creates a Light Trails solo engine through the shared factory", async () => {
+    const opponentController = { nextDirection: () => 2 };
+    const engine = await createGameEngine({
+      canvas: createCanvas(),
+      gameId: "light_trails",
+      mode: "solo",
+      transport: createLocalTransport(),
+      difficulty: "easy",
+      opponentController,
+      onGameEnd: null,
+    });
+
+    expect(engine.gameId).toBe("light_trails");
+    expect(engine.isHost).toBe(true);
+    expect(engine.mode).toBe("solo");
+    expect(engine.transport.kind).toBe("local");
+    expect(engine.difficulty).toBe("easy");
     expect(engine.opponentController).toBe(opponentController);
 
     engine.stop();

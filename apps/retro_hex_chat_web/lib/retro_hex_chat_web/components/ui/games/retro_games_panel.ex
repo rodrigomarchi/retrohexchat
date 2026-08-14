@@ -193,7 +193,7 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
                   <Icons.icon_chart_bars class="h-3 w-3 shrink-0" />
                   {dgettext("games", "Goal")}
                 </dt>
-                <dd class="shrink-0 font-bold">{dgettext("games", "First to 11")}</dd>
+                <dd class="shrink-0 font-bold">{goal_label(@game)}</dd>
               </div>
             </dl>
           </section>
@@ -343,6 +343,9 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
   defp difficulty_label("easy"), do: dgettext("games", "Easy")
   defp difficulty_label("hard"), do: dgettext("games", "Hard")
   defp difficulty_label(_difficulty), do: dgettext("games", "Normal")
+
+  defp goal_label(%{id: "light_trails"}), do: dgettext("games", "First to 3 games")
+  defp goal_label(_game), do: dgettext("games", "First to 11")
 
   attr :difficulty, :string, required: true
   attr :class, :string, default: nil

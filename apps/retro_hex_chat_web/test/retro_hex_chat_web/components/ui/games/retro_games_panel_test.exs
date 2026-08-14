@@ -15,6 +15,15 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     controls: "Arrow keys or W/S to move paddle"
   }
 
+  @trails %{
+    id: "light_trails",
+    name: "Light Trails",
+    tagline: "Don't cross the line",
+    description: "Race across a grid arena leaving a glowing trail behind you.",
+    icon: "game_trails",
+    controls: "Arrow keys to change direction"
+  }
+
   test "renders the ready game with an integrated control panel" do
     html =
       render_component(&retro_games_panel/1,
@@ -39,6 +48,8 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     assert Floki.find(document, ~s([data-testid="retro-game-status-label"]))
            |> Floki.text() =~ "Ready"
 
+    assert Floki.text(document) =~ "First to 11"
+
     assert [_] =
              Floki.find(
                document,
@@ -52,6 +63,23 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
 
     assert [_] = Floki.find(document, ~s([data-testid="retro-game-start-ai"]))
     assert [_] = Floki.find(document, ~s([data-testid="retro-game-back"]))
+  end
+
+  test "renders the Light Trails goal in the shared status panel" do
+    html =
+      render_component(&retro_games_panel/1,
+        id: "retro-games-panel",
+        games: [@trails],
+        status: "ready",
+        selected_game: @trails,
+        difficulty: "normal",
+        canvas_ready: true,
+        target: "retro-games-island"
+      )
+
+    document = Floki.parse_document!(html)
+
+    assert Floki.text(document) =~ "First to 3"
   end
 
   test "locks difficulty and promotes the end action while playing" do

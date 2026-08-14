@@ -40,7 +40,7 @@ defmodule RetroHexChatWeb.ChatLive.RetroGamesEventsTest do
 
       render_click(view, "toolbar_action", %{
         "action" => "open_retro_games",
-        "game-id" => "light_trails"
+        "game-id" => "pixel_tanks"
       })
 
       assert_push_event(view, "window_command", %{action: "open", id: "retro-games"})
@@ -79,6 +79,19 @@ defmodule RetroHexChatWeb.ChatLive.RetroGamesEventsTest do
       assert html =~ ~s(phx-hook="RetroGameCanvasHook")
       assert html =~ ~s(data-game-id="hex_pong")
       assert %{status: "ready", selected_game: %{id: "hex_pong"}} = retro_games(view)
+    end
+
+    test "selects Light Trails and starts a ready solo canvas", %{conn: conn} do
+      nick = "retl#{uid()}"
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+
+      render_click(view, "toolbar_action", %{"action" => "open_retro_games"})
+      render_click(element(view, ~s([data-testid="retro-game-light_trails"])))
+
+      html = render(view)
+      assert html =~ ~s(phx-hook="RetroGameCanvasHook")
+      assert html =~ ~s(data-game-id="light_trails")
+      assert %{status: "ready", selected_game: %{id: "light_trails"}} = retro_games(view)
     end
 
     test "does not emit the begin event before the canvas reports ready", %{conn: conn} do

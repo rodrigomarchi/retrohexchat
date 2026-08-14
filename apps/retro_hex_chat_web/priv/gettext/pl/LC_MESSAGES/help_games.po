@@ -3990,11 +3990,6 @@ msgstr "/p2p"
 msgid "P2P Session"
 msgstr "Sesja P2P"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:14
-#, elixir-autogen, elixir-format
-msgid "Choose Hex Pong from the Retro Games catalog."
-msgstr "Wybierz Hex Pong z katalogu Gier retro."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "How It Plays"
@@ -4004,11 +3999,6 @@ msgstr "Jak to działa"
 #, elixir-autogen, elixir-format
 msgid "Open the Games menu and choose Retro Games."
 msgstr "Otwórz menu Gry i wybierz Gry retro."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "Retro Games are browser-native RetroHexChat games that can run inside the chat desktop without a peer session. The first solo game is Hex Pong, using the same game engine foundation as P2P play with an AI controller on the remote paddle."
-msgstr "Gry retro to natywne dla przeglądarki gry RetroHexChat działające na pulpicie czatu bez sesji peer. Pierwszą grą solo jest Hex Pong, oparty na tej samej podstawie silnika co gra P2P, z kontrolerem SI dla zdalnej paletki."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:17
 #, elixir-autogen, elixir-format
@@ -4025,7 +4015,17 @@ msgstr "Salon solo"
 msgid "Starting a Solo Game"
 msgstr "Rozpoczynanie gry solo"
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Choose Hex Pong or Light Trails from the Retro Games catalog."
+msgstr "Wybierz Hex Pong albo Light Trails z katalogu Gier retro."
+
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:26
 #, elixir-autogen, elixir-format
-msgid "You control the left paddle with Arrow Up / Arrow Down or W / S. The AI controls the right paddle, predicts the ball path, and reacts according to the selected difficulty."
-msgstr "Sterujesz lewą paletką klawiszami Strzałka w górę / Strzałka w dół albo W / S. SI steruje prawą paletką, przewiduje tor piłki i reaguje zgodnie z wybranym poziomem trudności."
+msgid "In Hex Pong, you control the left paddle with Arrow Up / Arrow Down or W / S while the AI controls the right paddle. In Light Trails, use the arrow keys or WASD to steer and trap the AI before either trail hits a wall or occupied cell."
+msgstr "W Hex Pong sterujesz lewą paletką klawiszami Strzałka w górę / Strzałka w dół albo W / S, a SI steruje prawą paletką. W Light Trails używaj strzałek lub WASD, aby skręcać i uwięzić SI, zanim któraś smuga uderzy w ścianę lub zajętą komórkę."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Retro Games are browser-native RetroHexChat games that can run inside the chat desktop without a peer session. Hex Pong and Light Trails use the same game engine foundation as P2P play with an AI controller on the remote side."
+msgstr "Gry retro to natywne dla przeglądarki gry RetroHexChat działające na pulpicie czatu bez sesji peer. Hex Pong i Light Trails używają tej samej podstawy silnika co gra P2P, z kontrolerem SI po stronie zdalnej."

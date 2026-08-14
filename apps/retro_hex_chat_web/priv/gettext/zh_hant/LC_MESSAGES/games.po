@@ -128,8 +128,8 @@ msgstr "開始 %{time}"
 msgid "The game runs in a separate window. Keep this window open to track your session — closing the game window ends it."
 msgstr "遊戲在單獨的窗口中運行. 保持此窗口打開以跟蹤您的會話——關閉遊戲窗口結束它."
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:365
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:367
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:368
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:370
 #, elixir-autogen, elixir-format
 msgid "AI won"
 msgstr "AI 獲勝"
@@ -176,7 +176,7 @@ msgid "Hard"
 msgstr "困難"
 
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:293
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:362
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:365
 #, elixir-autogen, elixir-format
 msgid "Loading"
 msgstr "載入中"
@@ -191,7 +191,7 @@ msgstr "正在載入遊戲..."
 msgid "Match Finished"
 msgstr "比賽結束"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:368
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:371
 #, elixir-autogen, elixir-format
 msgid "No winner reported"
 msgstr "未回報獲勝者"
@@ -226,23 +226,23 @@ msgstr "無法載入遊戲引擎。"
 msgid "You %{you} x %{ai} AI"
 msgstr "你 %{you} x %{ai} AI"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:364
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:366
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:367
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:369
 #, elixir-autogen, elixir-format
 msgid "You won"
 msgstr "你贏了"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:361
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:364
 #, elixir-autogen, elixir-format
 msgid "Error"
 msgstr "錯誤"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:360
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:363
 #, elixir-autogen, elixir-format
 msgid "Finished"
 msgstr "已結束"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:196
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:348
 #, elixir-autogen, elixir-format
 msgid "First to 11"
 msgstr "先到 11"
@@ -262,12 +262,12 @@ msgstr "模式"
 msgid "Move"
 msgstr "移動"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:359
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:362
 #, elixir-autogen, elixir-format
 msgid "Playing"
 msgstr "遊戲中"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:358
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:361
 #, elixir-autogen, elixir-format
 msgid "Ready"
 msgstr "就緒"
@@ -276,3 +276,8 @@ msgstr "就緒"
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "狀態"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:347
+#, elixir-autogen, elixir-format
+msgid "First to 3 games"
+msgstr "先贏 3 局"

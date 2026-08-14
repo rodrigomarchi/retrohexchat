@@ -44,7 +44,7 @@ const P2P_ENGINE_LOADERS = {
     import("./hex_hockey/engine.js").then((module) => module.HexHockeyEngine),
 };
 
-const SOLO_GAME_IDS = new Set(["hex_pong"]);
+const SOLO_GAME_IDS = new Set(["hex_pong", "light_trails"]);
 
 /**
  * @param {string} gameId

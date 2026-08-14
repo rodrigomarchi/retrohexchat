@@ -7,6 +7,7 @@
 import { log } from "../../logger.js";
 
 import { GameEngine } from "../../game_engine.js";
+import { createSurroundAI, normalizeSurroundAIDifficulty } from "./ai.js";
 import {
   MSG_TYPE,
   PHASE,
@@ -32,6 +33,22 @@ import { gameColor } from "../../game_colors.js";
 
 const TICK_STEPS = 6; // one grid move every 6 fixed steps (10Hz)
 const ROUND_OVER_DELAY = 3000; // ms before next round
+const SURROUND_PREVENT_DEFAULT_KEYS = new Set([
+  "ArrowUp",
+  "ArrowDown",
+  "ArrowLeft",
+  "ArrowRight",
+  " ",
+  "Spacebar",
+  "w",
+  "W",
+  "a",
+  "A",
+  "s",
+  "S",
+  "d",
+  "D",
+]);
 
 export class SurroundEngine extends GameEngine {
   /**
@@ -40,9 +57,13 @@ export class SurroundEngine extends GameEngine {
    * @param {string} gameId
    * @param {boolean} isHost
    * @param {function} onGameEnd - callback when match finishes
+   * @param {object} [options]
+   * @param {"p2p_host"|"p2p_guest"|"solo"} [options.mode]
+   * @param {object} [options.opponentController]
+   * @param {"easy"|"normal"|"hard"|string} [options.difficulty]
    */
-  constructor(canvas, channel, gameId, isHost, onGameEnd) {
-    super(canvas, channel, gameId, isHost);
+  constructor(canvas, channel, gameId, isHost, onGameEnd, options = {}) {
+    super(canvas, channel, gameId, isHost, options);
     this.onGameEnd = onGameEnd || null;
     this.gameState = createInitialState(0);
     this.p1PendingDir = this.gameState.p1.dir;
@@ -52,6 +73,10 @@ export class SurroundEngine extends GameEngine {
     this.audio = new SurroundAudio();
     this.colors = null;
     this.peerReady = false;
+    this.difficulty = normalizeSurroundAIDifficulty(options.difficulty);
+    this.opponentController =
+      options.opponentController ||
+      (this.mode === "solo" ? createSurroundAI({ difficulty: this.difficulty }) : null);
     this._savedScores = { score1: 0, score2: 0 };
     this._boundBlur = this._handleBlur.bind(this);
     this._boundChannelClose = this._handleChannelClose.bind(this);
@@ -66,8 +91,9 @@ export class SurroundEngine extends GameEngine {
 
     this._invalidate();
 
-    if (!this.isHost) {
-      // Peer sends ready signal
+    if (this.mode === "solo") {
+      this.peerReady = true;
+    } else if (!this.isHost) {
       this._advertiseReady(encodeGameReady);
     }
   }
@@ -83,6 +109,29 @@ export class SurroundEngine extends GameEngine {
     super.stop();
   }
 
+  beginMatch(options = {}) {
+    if (!this.running || !this.isHost || this.gameState.phase !== PHASE.WAITING) return false;
+
+    if (options.difficulty) {
+      this.difficulty = normalizeSurroundAIDifficulty(options.difficulty);
+      if (
+        !options.opponentController &&
+        typeof this.opponentController?.setDifficulty === "function"
+      ) {
+        this.opponentController.setDifficulty(this.difficulty);
+      }
+    }
+    if (options.opponentController) this.opponentController = options.opponentController;
+    if (this.mode === "solo" && !this.opponentController) {
+      this.opponentController = createSurroundAI({ difficulty: this.difficulty });
+    }
+
+    this.setKeyboardCaptured(true);
+    this.peerReady = true;
+    this._startCountdown(0);
+    return true;
+  }
+
   _handleMessage(event) {
     if (!(event.data instanceof ArrayBuffer)) return;
     const buf = event.data;
@@ -94,21 +143,24 @@ export class SurroundEngine extends GameEngine {
         if (!this.isHost) {
           const decoded = decodeGameState(buf);
           if (decoded) {
-            this._applyPeerState(decoded);
+            this._ingestSnapshot(decoded, () => this._applyPeerState(decoded));
+            this.setKeyboardCaptured(
+              decoded.phase !== PHASE.WAITING && decoded.phase !== PHASE.MATCH_OVER,
+            );
           }
         }
         break;
 
       case MSG_TYPE.GAME_READY:
         if (this.isHost && !this.peerReady) {
-          this.peerReady = true;
-          this._startCountdown(0);
+          this.beginMatch();
         }
         break;
 
       case MSG_TYPE.GAME_END: {
         const result = decodeGameEnd(buf);
         if (result) {
+          this.setKeyboardCaptured(false);
           this.gameState.phase = PHASE.MATCH_OVER;
           this.gameState.score1 = result.score1;
           this.gameState.score2 = result.score2;
@@ -301,6 +353,8 @@ export class SurroundEngine extends GameEngine {
   _tickLoop() {
     if (this.gameState.phase !== PHASE.PLAYING) return;
 
+    this._updateOpponentDirection();
+
     const result = moveAndCheck(this.gameState, this.p1PendingDir, this.p2PendingDir);
 
     this.gameState = result;
@@ -311,6 +365,22 @@ export class SurroundEngine extends GameEngine {
     }
 
     this._broadcastState();
+  }
+
+  _updateOpponentDirection() {
+    if (this.mode !== "solo" || typeof this.opponentController?.nextDirection !== "function") {
+      return;
+    }
+
+    const nextDirection = this.opponentController.nextDirection({
+      state: this.gameState,
+      difficulty: this.difficulty,
+      player: 2,
+    });
+
+    if (Number.isInteger(nextDirection) && nextDirection >= 0 && nextDirection <= 3) {
+      this.p2PendingDir = nextDirection;
+    }
   }
 
   /** Host: handle a player death (round over). */
@@ -372,6 +442,7 @@ export class SurroundEngine extends GameEngine {
   /** Host: handle match end. */
   _handleMatchOver() {
     this._stopSteps();
+    this.setKeyboardCaptured(false);
     const { score1, score2 } = this.gameState;
     const winner = score1 >= WINS_NEEDED ? 1 : 2;
 
@@ -397,6 +468,7 @@ export class SurroundEngine extends GameEngine {
 
   _handleChannelClose() {
     this._stopSteps();
+    this.setKeyboardCaptured(false);
     if (!this.gameState || this.gameState.phase === PHASE.MATCH_OVER) return;
     this.gameState.phase = PHASE.MATCH_OVER;
     if (this.onGameEnd) {
@@ -427,5 +499,9 @@ export class SurroundEngine extends GameEngine {
     if (this.colors) {
       renderFrame(this.ctx, this.gameState, this.colors, performance.now());
     }
+  }
+
+  _shouldPreventDefaultForCapturedKey(event) {
+    return SURROUND_PREVENT_DEFAULT_KEYS.has(event.key);
   }
 }

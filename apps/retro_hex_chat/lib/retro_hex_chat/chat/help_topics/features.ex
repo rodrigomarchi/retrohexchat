@@ -1580,13 +1580,14 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "solo",
           "ai",
           "hex pong",
-          "pong"
+          "pong",
+          "light trails"
         ],
         icon: :icon_game_pong,
         description:
           dgettext(
             "help",
-            "Play browser-native RetroHexChat games solo against AI inside the chat desktop. Hex Pong is available first."
+            "Play browser-native RetroHexChat games solo against AI inside the chat desktop. Hex Pong and Light Trails are available."
           ),
         see_also: ["feature-hex-pong", "feature-arcade", "feature-universal-lobby"]
       },

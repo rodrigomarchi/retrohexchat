@@ -1,7 +1,7 @@
 # Retro Games com AI
 
-Plano para disponibilizar os jogos nativos do chat em modo single player, começando
-pelo Hex Pong contra uma AI local.
+Plano para disponibilizar os jogos nativos do chat em modo single player,
+começando pelo Hex Pong contra uma AI local e evoluindo jogo por jogo.
 
 Este documento descreve trabalho em aberto. Quando a feature shippar, apagar este
 plano e mover apenas decisões duráveis para os guias adequados.
@@ -13,7 +13,8 @@ WASM e separada do console P2P. Ela lista os jogos leves integrados ao chat que
 hoje existem apenas no fluxo peer-to-peer e permite iniciar uma sessão solo contra
 AI.
 
-O primeiro jogo suportado será Hex Pong.
+O primeiro jogo suportado foi Hex Pong. O próximo incremento aplica o mesmo
+playbook ao Light Trails.
 
 ## Decisões de produto
 
@@ -26,8 +27,8 @@ O primeiro jogo suportado será Hex Pong.
 - **Retro Games significa jogos nativos do chat.** O usuário escolhe um jogo, vê o
   canvas carregado dentro de uma janela/ilha LiveView e pode iniciar uma partida
   contra AI.
-- **A primeira entrega deve ser simples e jogável.** Hex Pong, jogador na esquerda,
-  AI na direita, regras atuais e dificuldade selecionável.
+- **A entrega evolui jogo por jogo.** Cada jogo só entra no catálogo solo quando
+  tiver controller de AI local, contrato de engine testado e ajuda atualizada.
 
 ## Fluxo do usuário
 
@@ -39,13 +40,13 @@ Entrada principal:
 Fluxo inicial:
 
 - A janela mostra o catálogo de jogos nativos.
-- Hex Pong aparece como jogo disponível.
+- Hex Pong e Light Trails aparecem como jogos disponíveis.
 - Jogos futuros podem ficar ocultos até terem AI pronta. Se forem exibidos, devem
   aparecer como indisponíveis de forma explícita, sem prometer jogabilidade.
 
 Seleção:
 
-- Ao clicar em Hex Pong, o painel troca para a tela do jogo.
+- Ao clicar em um jogo suportado, o painel troca para a tela do jogo.
 - O canvas carrega dentro da janela.
 - O jogo fica em estado pronto, sem iniciar automaticamente.
 - O usuário escolhe dificuldade e clica em `Jogar contra AI`.
@@ -76,11 +77,11 @@ Responsabilidade:
 Conteúdo inicial:
 
 - título `Retro Games`;
-- card ou lista compacta com `Hex Pong`;
+- card ou lista compacta com os jogos suportados;
 - descrição curta;
 - ação primária para abrir o jogo.
 
-### Setup do Hex Pong
+### Setup do jogo
 
 Responsabilidade:
 
@@ -98,9 +99,9 @@ Controles:
 
 Decisões do MVP:
 
-- jogador humano fica na esquerda;
-- AI fica na direita;
-- placar e regras seguem o Hex Pong atual;
+- jogador humano fica no lado/personagem local do jogo;
+- AI fica no lado/personagem remoto;
+- placar e regras seguem o jogo P2P atual;
 - escolha de lado e tamanho da partida ficam fora do MVP.
 
 ### Jogo em andamento
@@ -359,6 +360,20 @@ exemplo:
 
 Isso evita exceções e mantém observabilidade sem fingir que houve rede.
 
+### Playbook por jogo
+
+Cada novo jogo solo deve seguir este checklist antes de entrar em
+`Catalog.list_solo_games/0`:
+
+- identificar como a engine P2P representa input local e input remoto;
+- criar um controller puro em `assets/js/lib/games/<jogo>/ai.js`;
+- fazer o controller emitir o mesmo shape de input remoto usado no P2P;
+- adicionar `mode: "solo"` e `beginMatch(options)` sem duplicar física/renderer;
+- garantir captura de teclado apenas durante a partida;
+- cobrir controller, engine, loader, catálogo e LiveView com testes;
+- atualizar help e rodar o pipeline Gettext;
+- validar com `make ci`.
+
 ### Hex Pong
 
 O motor atual já tem uma vantagem importante: no P2P, o host simula a partida e
@@ -372,6 +387,25 @@ Fluxo técnico esperado:
 - a cada tick, a AI calcula input para a raquete direita;
 - física, colisão, placar, renderer e áudio continuam compartilhados com o Pong
   existente sempre que possível.
+
+### Light Trails
+
+O Light Trails usa input discreto por direção, não input pressionado contínuo. No
+P2P, o host simula os dois jogadores e o peer envia comandos de direção via
+`_sendInputEdge()`. No solo, a AI deve preencher `p2PendingDir` com o mesmo tipo de
+direção que chegaria da rede.
+
+Comportamento esperado:
+
+- engine inicia como host local;
+- jogador humano controla o player 1;
+- AI controla o player 2;
+- AI escolhe uma direção legal, nunca uma reversão de 180 graus;
+- AI avalia colisão imediata com parede/trilha e prefere caminhos com mais espaço
+  livre;
+- dificuldade altera frequência de decisão, profundidade de avaliação e chance de
+  erro controlado;
+- regras de round, partículas, áudio e placar continuam compartilhadas com o P2P.
 
 ## Modelo da AI
 
