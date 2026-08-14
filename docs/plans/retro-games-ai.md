@@ -13,8 +13,9 @@ WASM e separada do console P2P. Ela lista os jogos leves integrados ao chat que
 hoje existem apenas no fluxo peer-to-peer e permite iniciar uma sessão solo contra
 AI.
 
-O primeiro jogo suportado foi Hex Pong. O próximo incremento aplica o mesmo
-playbook ao Light Trails.
+O primeiro jogo suportado foi Hex Pong. O segundo incremento aplicou o mesmo
+playbook ao Light Trails. O terceiro incremento aplica o batch por família ao
+Hex Outlaw e suas variantes.
 
 ## Decisões de produto
 
@@ -40,7 +41,7 @@ Entrada principal:
 Fluxo inicial:
 
 - A janela mostra o catálogo de jogos nativos.
-- Hex Pong e Light Trails aparecem como jogos disponíveis.
+- Hex Pong, Light Trails e a família Hex Outlaw aparecem como jogos disponíveis.
 - Jogos futuros podem ficar ocultos até terem AI pronta. Se forem exibidos, devem
   aparecer como indisponíveis de forma explícita, sem prometer jogabilidade.
 
@@ -406,6 +407,31 @@ Comportamento esperado:
 - dificuldade altera frequência de decisão, profundidade de avaliação e chance de
   erro controlado;
 - regras de round, partículas, áudio e placar continuam compartilhadas com o P2P.
+
+### Hex Outlaw
+
+O Hex Outlaw usa input pressionado contínuo para movimento e tiro com borda
+detectada pela engine. A família inteira compartilha a mesma engine:
+
+- `hex_outlaw`;
+- `hex_outlaw_ricochet`;
+- `hex_outlaw_stagecoach`;
+- `hex_outlaw_nml`.
+
+Fluxo técnico esperado:
+
+- engine inicia como host local;
+- jogador humano controla o player 1;
+- AI controla o player 2 preenchendo `remoteInputs`;
+- AI devolve o mesmo shape de input do peer P2P: `up`, `down`, `left`, `right`,
+  `fire`;
+- AI desvia de tiros visíveis quando a trajetória cruza o hitbox do player 2;
+- AI alinha verticalmente para tiros retos e respeita obstáculos centrais;
+- no Ricochet, AI usa movimento vertical para preparar mira diagonal;
+- no No Man's Land, AI também usa movimento horizontal dentro da zona permitida;
+- dificuldade altera janela de esquiva, precisão, cooldown e chance de disparo;
+- placar, round, hit pause, partículas, áudio e regras de match continuam
+  compartilhados com o P2P.
 
 ## Modelo da AI
 

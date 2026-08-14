@@ -99,7 +99,10 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
   attr :target, :any, required: true
 
   defp game_state(assigns) do
-    assigns = assign(assigns, :difficulties, @difficulties)
+    assigns =
+      assigns
+      |> assign(:difficulties, @difficulties)
+      |> assign(:control_rows, control_rows(assigns.game))
 
     ~H"""
     <div
@@ -247,20 +250,17 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
               <Icons.icon_btn_keyboard class="h-4 w-4 shrink-0" />
               {dgettext("games", "Controls")}
             </h4>
-            <div class="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-retro-6 text-[11px]">
-              <span class="text-muted-foreground">{dgettext("games", "Move")}</span>
+            <div
+              :for={row <- @control_rows}
+              class="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-retro-6 text-[11px]"
+            >
+              <span class="text-muted-foreground">{row.label}</span>
               <span class="flex min-w-0 flex-wrap gap-retro-3">
-                <span class="min-w-5 bg-surface px-retro-4 py-retro-2 text-center font-bold shadow-retro-sunken">
-                  ↑
-                </span>
-                <span class="min-w-5 bg-surface px-retro-4 py-retro-2 text-center font-bold shadow-retro-sunken">
-                  ↓
-                </span>
-                <span class="min-w-5 bg-surface px-retro-4 py-retro-2 text-center font-bold shadow-retro-sunken">
-                  W
-                </span>
-                <span class="min-w-5 bg-surface px-retro-4 py-retro-2 text-center font-bold shadow-retro-sunken">
-                  S
+                <span
+                  :for={key <- row.keys}
+                  class="min-w-5 bg-surface px-retro-4 py-retro-2 text-center font-bold shadow-retro-sunken"
+                >
+                  {key}
                 </span>
               </span>
             </div>
@@ -345,7 +345,36 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
   defp difficulty_label(_difficulty), do: dgettext("games", "Normal")
 
   defp goal_label(%{id: "light_trails"}), do: dgettext("games", "First to 3 games")
+  defp goal_label(%{id: "hex_outlaw"}), do: dgettext("games", "Best of 3 rounds")
+  defp goal_label(%{id: "hex_outlaw_ricochet"}), do: dgettext("games", "Best of 3 rounds")
+  defp goal_label(%{id: "hex_outlaw_stagecoach"}), do: dgettext("games", "Best of 3 rounds")
+  defp goal_label(%{id: "hex_outlaw_nml"}), do: dgettext("games", "Best of 3 rounds")
   defp goal_label(_game), do: dgettext("games", "First to 11")
+
+  defp control_rows(%{id: "light_trails"}) do
+    [
+      %{label: dgettext("games", "Steer"), keys: ["↑", "↓", "←", "→", "W", "A", "S", "D"]}
+    ]
+  end
+
+  defp control_rows(%{id: id})
+       when id in [
+              "hex_outlaw",
+              "hex_outlaw_ricochet",
+              "hex_outlaw_stagecoach",
+              "hex_outlaw_nml"
+            ] do
+    [
+      %{label: dgettext("games", "Move/Aim"), keys: ["↑", "↓", "←", "→", "W", "A", "S", "D"]},
+      %{label: dgettext("games", "Fire"), keys: ["Space", "Shift"]}
+    ]
+  end
+
+  defp control_rows(_game) do
+    [
+      %{label: dgettext("games", "Move"), keys: ["↑", "↓", "W", "S"]}
+    ]
+  end
 
   attr :difficulty, :string, required: true
   attr :class, :string, default: nil

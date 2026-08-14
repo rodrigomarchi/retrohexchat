@@ -24,6 +24,15 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     controls: "Arrow keys to change direction"
   }
 
+  @outlaw %{
+    id: "hex_outlaw_ricochet",
+    name: "Hex Outlaw: Ricochet",
+    tagline: "Bullets bounce back",
+    description: "Western duel with bouncing bullets.",
+    icon: "game_outlaw",
+    controls: "Arrow keys or WASD to move/aim, Space or Shift to fire"
+  }
+
   test "renders the ready game with an integrated control panel" do
     html =
       render_component(&retro_games_panel/1,
@@ -80,6 +89,28 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     document = Floki.parse_document!(html)
 
     assert Floki.text(document) =~ "First to 3"
+  end
+
+  test "renders the Hex Outlaw goal and fire controls in the shared status panel" do
+    html =
+      render_component(&retro_games_panel/1,
+        id: "retro-games-panel",
+        games: [@outlaw],
+        status: "ready",
+        selected_game: @outlaw,
+        difficulty: "normal",
+        canvas_ready: true,
+        target: "retro-games-island"
+      )
+
+    document = Floki.parse_document!(html)
+    text = Floki.text(document)
+
+    assert text =~ "Best of 3"
+    assert text =~ "Move/Aim"
+    assert text =~ "Fire"
+    assert text =~ "Space"
+    assert text =~ "Shift"
   end
 
   test "locks difficulty and promotes the end action while playing" do

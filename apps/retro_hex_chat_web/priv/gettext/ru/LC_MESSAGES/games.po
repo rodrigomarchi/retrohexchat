@@ -132,8 +132,8 @@ msgstr ""
 "Игра проходит в отдельном окне. Держите это окно открытым для отслеживания "
 "сеанса — закрытие окна игры завершает его."
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:368
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:370
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:397
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:399
 #, elixir-autogen, elixir-format
 msgid "AI won"
 msgstr "ИИ победил"
@@ -148,18 +148,18 @@ msgstr "Еще раз"
 msgid "Browser-native games you can play solo against AI."
 msgstr "Браузерные игры для одиночной игры против ИИ."
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:248
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:251
 #, elixir-autogen, elixir-format
 msgid "Controls"
 msgstr "Управление"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:151
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:154
 #, elixir-autogen, elixir-format
 msgid "Could not start this game"
 msgstr "Не удалось запустить эту игру"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:208
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:218
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:211
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:221
 #, elixir-autogen, elixir-format
 msgid "Difficulty"
 msgstr "Сложность"
@@ -180,22 +180,22 @@ msgid "Hard"
 msgstr "Сложно"
 
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:293
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:365
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:394
 #, elixir-autogen, elixir-format
 msgid "Loading"
 msgstr "Загрузка"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:125
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:128
 #, elixir-autogen, elixir-format
 msgid "Loading game..."
 msgstr "Загрузка игры..."
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:135
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:138
 #, elixir-autogen, elixir-format
 msgid "Match Finished"
 msgstr "Матч завершен"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:371
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:400
 #, elixir-autogen, elixir-format
 msgid "No winner reported"
 msgstr "Победитель не указан"
@@ -215,7 +215,7 @@ msgstr "Играть против ИИ"
 msgid "Retro Games"
 msgstr "Ретро-игры"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:178
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:181
 #, elixir-autogen, elixir-format
 msgid "Solo AI"
 msgstr "ИИ соло"
@@ -225,58 +225,58 @@ msgstr "ИИ соло"
 msgid "The game engine could not be loaded."
 msgstr "Не удалось загрузить игровой движок."
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:137
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:140
 #, elixir-autogen, elixir-format
 msgid "You %{you} x %{ai} AI"
 msgstr "Вы %{you} x %{ai} ИИ"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:367
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:369
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:396
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:398
 #, elixir-autogen, elixir-format
 msgid "You won"
 msgstr "Вы победили"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:364
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:393
 #, elixir-autogen, elixir-format
 msgid "Error"
 msgstr "Ошибка"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:363
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:392
 #, elixir-autogen, elixir-format
 msgid "Finished"
 msgstr "Завершено"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:348
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:352
 #, elixir-autogen, elixir-format
 msgid "First to 11"
 msgstr "Первый до 11"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:194
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:197
 #, elixir-autogen, elixir-format
 msgid "Goal"
 msgstr "Цель"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:174
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:177
 #, elixir-autogen, elixir-format
 msgid "Mode"
 msgstr "Режим"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:251
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:375
 #, elixir-autogen, elixir-format
 msgid "Move"
 msgstr "Движение"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:362
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:391
 #, elixir-autogen, elixir-format
 msgid "Playing"
 msgstr "Идет игра"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:361
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:390
 #, elixir-autogen, elixir-format
 msgid "Ready"
 msgstr "Готово"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:185
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:188
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "Статус"
@@ -285,3 +285,26 @@ msgstr "Статус"
 #, elixir-autogen, elixir-format
 msgid "First to 3 games"
 msgstr "Первый до 3 игр"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:348
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:349
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:350
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:351
+#, elixir-autogen, elixir-format
+msgid "Best of 3 rounds"
+msgstr "До двух побед в 3 раундах"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:369
+#, elixir-autogen, elixir-format
+msgid "Fire"
+msgstr "Огонь"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:368
+#, elixir-autogen, elixir-format
+msgid "Move/Aim"
+msgstr "Движение/прицел"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:356
+#, elixir-autogen, elixir-format
+msgid "Steer"
+msgstr "Управлять"

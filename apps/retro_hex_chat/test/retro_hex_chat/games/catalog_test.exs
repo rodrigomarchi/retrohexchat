@@ -79,7 +79,11 @@ defmodule RetroHexChat.Games.CatalogTest do
     test "returns the games with a browser solo runtime" do
       assert [
                %{id: "hex_pong", name: "Hex Pong"},
-               %{id: "light_trails", name: "Light Trails"}
+               %{id: "light_trails", name: "Light Trails"},
+               %{id: "hex_outlaw", name: "Hex Outlaw"},
+               %{id: "hex_outlaw_ricochet", name: "Hex Outlaw: Ricochet"},
+               %{id: "hex_outlaw_stagecoach", name: "Hex Outlaw: Stagecoach"},
+               %{id: "hex_outlaw_nml", name: "Hex Outlaw: No Man's Land"}
              ] = Catalog.list_solo_games()
     end
 
@@ -91,7 +95,23 @@ defmodule RetroHexChat.Games.CatalogTest do
 
         assert [
                  %{id: "hex_pong", controls: "Setas ou W/S para mover a pá"},
-                 %{id: "light_trails", controls: "Setas para mudar de direção"}
+                 %{id: "light_trails", controls: "Setas para mudar de direção"},
+                 %{
+                   id: "hex_outlaw",
+                   controls: "Setas ou WASD para mover, Espaço ou Shift para disparar"
+                 },
+                 %{
+                   id: "hex_outlaw_ricochet",
+                   controls: "Setas ou WASD para mover/alvo, espaço ou Shift para disparar"
+                 },
+                 %{
+                   id: "hex_outlaw_stagecoach",
+                   controls: "Setas ou WASD para mover, Espaço ou Shift para disparar"
+                 },
+                 %{
+                   id: "hex_outlaw_nml",
+                   controls: "Setas ou WASD para mover, Espaço ou Shift para disparar"
+                 }
                ] = Catalog.list_solo_games()
       after
         Gettext.put_locale(RetroHexChat.Gettext, previous_locale)
@@ -103,6 +123,10 @@ defmodule RetroHexChat.Games.CatalogTest do
     test "accepts only games exposed in Retro Games" do
       assert Catalog.solo_game_id?("hex_pong")
       assert Catalog.solo_game_id?("light_trails")
+      assert Catalog.solo_game_id?("hex_outlaw")
+      assert Catalog.solo_game_id?("hex_outlaw_ricochet")
+      assert Catalog.solo_game_id?("hex_outlaw_stagecoach")
+      assert Catalog.solo_game_id?("hex_outlaw_nml")
       refute Catalog.solo_game_id?("nonexistent")
     end
   end

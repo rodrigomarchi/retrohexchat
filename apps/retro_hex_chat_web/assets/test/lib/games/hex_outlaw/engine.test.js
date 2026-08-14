@@ -141,6 +141,47 @@ describe("OutlawEngine", () => {
     engine.stop();
   });
 
+  it("solo start prepares the local opponent without starting the match", () => {
+    const engine = new OutlawEngine(canvas, channel, "hex_outlaw", true, null, { mode: "solo" });
+    engine.start();
+
+    expect(engine.mode).toBe("solo");
+    expect(engine.isHost).toBe(true);
+    expect(engine.peerReady).toBe(true);
+    expect(engine.gameState.phase).toBe(PHASE.WAITING);
+    expect(engine._keyboardCaptured).toBe(false);
+
+    engine.stop();
+  });
+
+  it("beginMatch starts the countdown and captures keyboard", () => {
+    const engine = new OutlawEngine(canvas, channel, "hex_outlaw", true, null, { mode: "solo" });
+    engine.start();
+
+    expect(engine.beginMatch()).toBe(true);
+    expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
+    expect(engine._keyboardCaptured).toBe(true);
+
+    engine.stop();
+  });
+
+  it("beginMatch updates solo difficulty and controller", () => {
+    const opponentController = { setDifficulty: vi.fn(), nextInputs: vi.fn() };
+    const engine = new OutlawEngine(canvas, channel, "hex_outlaw", true, null, {
+      mode: "solo",
+      difficulty: "easy",
+      opponentController,
+    });
+    engine.start();
+
+    expect(engine.beginMatch({ difficulty: "hard" })).toBe(true);
+
+    expect(engine.difficulty).toBe("hard");
+    expect(opponentController.setDifficulty).toHaveBeenCalledWith("hard");
+
+    engine.stop();
+  });
+
   it("stop cleans up", () => {
     const engine = new OutlawEngine(canvas, channel, "hex_outlaw", true, null);
     engine.start();
@@ -415,6 +456,7 @@ describe("OutlawEngine", () => {
 
     it("peer handles GAME_END message", () => {
       const engine = new OutlawEngine(canvas, channel, "hex_outlaw", false, null);
+      engine.setKeyboardCaptured(true);
       engine.colors = {
         bg: "#000",
         fg: "#fff",
@@ -436,6 +478,7 @@ describe("OutlawEngine", () => {
       engine._onChannelMessage({ data: buf });
       expect(engine.gameState.phase).toBe(PHASE.MATCH_OVER);
       expect(engine.gameState.roundWins1).toBe(2);
+      expect(engine._keyboardCaptured).toBe(false);
     });
 
     it("ignores non-ArrayBuffer messages", () => {
@@ -602,6 +645,50 @@ describe("OutlawEngine", () => {
       expect(channel.send).toHaveBeenCalled();
       engine.stop();
     });
+
+    it("solo loop pulls remote inputs from the AI controller", () => {
+      const opponentController = {
+        nextInputs: vi.fn(() => ({
+          up: true,
+          down: false,
+          left: false,
+          right: false,
+          fire: true,
+        })),
+      };
+      const engine = new OutlawEngine(canvas, channel, "hex_outlaw_ricochet", true, null, {
+        mode: "solo",
+        opponentController,
+      });
+      engine.start();
+      engine.colors = {
+        bg: "#000",
+        fg: "#fff",
+        accent: "#0ff",
+        muted: "#333",
+        glow: "rgba(0,0,0,0)",
+        warning: "#f00",
+        rope: "#a80",
+        ring: "#110",
+        hit: "#fff",
+      };
+      engine.gameState.phase = PHASE.PLAYING;
+      engine._remoteAimUp = false;
+
+      engine._gameLoop(0);
+
+      expect(opponentController.nextInputs).toHaveBeenCalledWith(
+        expect.objectContaining({
+          state: expect.objectContaining({ phase: PHASE.PLAYING }),
+          difficulty: "normal",
+          player: 2,
+        }),
+      );
+      expect(engine.remoteInputs.up).toBe(true);
+      expect(engine.remoteInputs.fire).toBe(true);
+      expect(engine._remoteAimUp).toBe(true);
+      engine.stop();
+    });
   });
 
   describe("_startCountdown + _startSpawning", () => {
@@ -725,6 +812,7 @@ describe("OutlawEngine", () => {
       const onEnd = vi.fn();
       const engine = new OutlawEngine(canvas, channel, "hex_outlaw", true, onEnd);
       engine.start();
+      engine.setKeyboardCaptured(true);
       engine.colors = {
         bg: "#000",
         fg: "#fff",
@@ -747,6 +835,7 @@ describe("OutlawEngine", () => {
           score: { p1: 2, p2: 0 },
         }),
       );
+      expect(engine._keyboardCaptured).toBe(false);
       engine.stop();
     });
 
@@ -895,10 +984,12 @@ describe("OutlawEngine", () => {
       const onEnd = vi.fn();
       const engine = new OutlawEngine(canvas, channel, "hex_outlaw", true, onEnd);
       engine.start();
+      engine.setKeyboardCaptured(true);
       engine.gameState.phase = PHASE.PLAYING;
       engine._handleChannelClose();
       expect(engine.gameState.phase).toBe(PHASE.MATCH_OVER);
       expect(onEnd).toHaveBeenCalledWith(expect.objectContaining({ disconnected: true }));
+      expect(engine._keyboardCaptured).toBe(false);
       engine.stop();
     });
 
@@ -910,6 +1001,16 @@ describe("OutlawEngine", () => {
       engine._handleChannelClose();
       expect(onEnd).not.toHaveBeenCalled();
       engine.stop();
+    });
+  });
+
+  describe("keyboard capture", () => {
+    it("prevents default for Outlaw gameplay keys while captured", () => {
+      const engine = new OutlawEngine(canvas, channel, "hex_outlaw", true, null, { mode: "solo" });
+
+      expect(engine._shouldPreventDefaultForCapturedKey({ key: "ArrowUp" })).toBe(true);
+      expect(engine._shouldPreventDefaultForCapturedKey({ key: " " })).toBe(true);
+      expect(engine._shouldPreventDefaultForCapturedKey({ key: "Meta" })).toBe(false);
     });
   });
 });

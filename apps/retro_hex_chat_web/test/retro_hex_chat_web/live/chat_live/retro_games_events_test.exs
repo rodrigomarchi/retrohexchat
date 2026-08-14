@@ -94,6 +94,19 @@ defmodule RetroHexChatWeb.ChatLive.RetroGamesEventsTest do
       assert %{status: "ready", selected_game: %{id: "light_trails"}} = retro_games(view)
     end
 
+    test "selects Hex Outlaw and starts a ready solo canvas", %{conn: conn} do
+      nick = "reto#{uid()}"
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+
+      render_click(view, "toolbar_action", %{"action" => "open_retro_games"})
+      render_click(element(view, ~s([data-testid="retro-game-hex_outlaw_ricochet"])))
+
+      html = render(view)
+      assert html =~ ~s(phx-hook="RetroGameCanvasHook")
+      assert html =~ ~s(data-game-id="hex_outlaw_ricochet")
+      assert %{status: "ready", selected_game: %{id: "hex_outlaw_ricochet"}} = retro_games(view)
+    end
+
     test "does not emit the begin event before the canvas reports ready", %{conn: conn} do
       nick = "retw#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")

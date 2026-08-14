@@ -6,7 +6,14 @@ defmodule RetroHexChat.Games.Catalog do
 
   use Gettext, backend: RetroHexChat.Gettext
 
-  @solo_game_ids ["hex_pong", "light_trails"]
+  @solo_game_ids [
+    "hex_pong",
+    "light_trails",
+    "hex_outlaw",
+    "hex_outlaw_ricochet",
+    "hex_outlaw_stagecoach",
+    "hex_outlaw_nml"
+  ]
 
   @type game :: %{
           id: String.t(),

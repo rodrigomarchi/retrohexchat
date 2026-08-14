@@ -1081,6 +1081,7 @@ msgstr "Обсуждение Hex Invaders: Co-op"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_nml.html.heex:72
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_ricochet.html.heex:80
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_stagecoach.html.heex:74
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Hex Outlaw"
 msgstr "Шесть преступников"
@@ -1828,7 +1829,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:74
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:55
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:57
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:87
 #, elixir-autogen, elixir-format
@@ -3541,7 +3542,7 @@ msgid "Herd your opponent"
 msgstr "Собирай своего противника"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_block_breakers.html.heex:66
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "Hex Pong"
 msgstr "Хекс Понг"
@@ -4032,13 +4033,13 @@ msgstr "/p2p"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:76
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:57
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:59
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:92
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
 msgstr "P2P сессия"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "How It Plays"
 msgstr "Как играть"
@@ -4048,12 +4049,12 @@ msgstr "Как играть"
 msgid "Open the Games menu and choose Retro Games."
 msgstr "Откройте меню игр и выберите ретро-игры."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:17
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "Select Easy, Normal, or Hard, then click Play vs AI once the canvas is ready."
 msgstr "Выберите Легко, Обычно или Сложно, затем нажмите Играть против ИИ, когда canvas будет готов."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "Solo Arcade"
 msgstr "Соло-аркада"
@@ -4065,15 +4066,15 @@ msgstr "Запуск одиночной игры"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:14
 #, elixir-autogen, elixir-format
-msgid "Choose Hex Pong or Light Trails from the Retro Games catalog."
-msgstr "Выберите Hex Pong или Light Trails в каталоге ретро-игр."
+msgid "Choose Hex Pong, Light Trails, or a Hex Outlaw variant from the Retro Games catalog."
+msgstr "Выберите Hex Pong, Light Trails или вариант Hex Outlaw в каталоге ретро-игр."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:29
 #, elixir-autogen, elixir-format
-msgid "In Hex Pong, you control the left paddle with Arrow Up / Arrow Down or W / S while the AI controls the right paddle. In Light Trails, use the arrow keys or WASD to steer and trap the AI before either trail hits a wall or occupied cell."
-msgstr "В Hex Pong вы управляете левой ракеткой клавишами Стрелка вверх / Стрелка вниз или W / S, а ИИ управляет правой ракеткой. В Light Trails используйте стрелки или WASD для поворотов и загоняйте ИИ в ловушку до того, как чей-либо след врежется в стену или занятую клетку."
+msgid "In Hex Pong, you control the left paddle with Arrow Up / Arrow Down or W / S while the AI controls the right paddle. In Light Trails, use the arrow keys or WASD to steer and trap the AI before either trail hits a wall or occupied cell. In Hex Outlaw, dodge visible bullets, line up your shot, and fire with Space or Shift."
+msgstr "В Hex Pong вы управляете левой ракеткой клавишами вверх/вниз или W/S, а ИИ управляет правой. В Light Trails используйте стрелки или WASD, чтобы поворачивать и загнать ИИ до того, как чей-либо след врежется в стену или занятую клетку. В Hex Outlaw уклоняйтесь от видимых пуль, выравнивайте выстрел и стреляйте Space или Shift."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Retro Games are browser-native RetroHexChat games that can run inside the chat desktop without a peer session. Hex Pong and Light Trails use the same game engine foundation as P2P play with an AI controller on the remote side."
-msgstr "Ретро-игры — это браузерные игры RetroHexChat, которые запускаются внутри рабочего стола чата без peer-сессии. Hex Pong и Light Trails используют ту же основу движка, что и P2P-игра, с контроллером ИИ на удаленной стороне."
+msgid "Retro Games are browser-native RetroHexChat games that can run inside the chat desktop without a peer session. Hex Pong, Light Trails, and Hex Outlaw variants use the same game engine foundation as P2P play with an AI controller on the remote side."
+msgstr "Ретро-игры — это браузерные игры RetroHexChat, которые запускаются внутри рабочего стола чата без peer-сессии. Hex Pong, Light Trails и варианты Hex Outlaw используют ту же основу движка, что и P2P-игра, с контроллером ИИ на удаленной стороне."

@@ -6,6 +6,7 @@
 import { log } from "../../logger.js";
 
 import { GameEngine } from "../../game_engine.js";
+import { createOutlawAI, normalizeOutlawAIDifficulty } from "./ai.js";
 import {
   MSG_TYPE,
   PHASE,
@@ -43,6 +44,22 @@ import { OutlawAudio } from "./audio.js";
 const STATE_SEND_INTERVAL = 1; // broadcast every fixed step (60Hz)
 const ROUND_OVER_DELAY = 2500; // ms display round over screen
 const SPAWNING_DELAY = 1000; // ms "DRAW!" display
+const OUTLAW_PREVENT_DEFAULT_KEYS = new Set([
+  "ArrowUp",
+  "ArrowDown",
+  "ArrowLeft",
+  "ArrowRight",
+  " ",
+  "Spacebar",
+  "w",
+  "W",
+  "a",
+  "A",
+  "s",
+  "S",
+  "d",
+  "D",
+]);
 
 /**
  * Map game_id to GAME_MODE enum value.
@@ -76,9 +93,13 @@ export class OutlawEngine extends GameEngine {
    * @param {string} gameId
    * @param {boolean} isHost
    * @param {function} onGameEnd - callback when game finishes
+   * @param {object} [options]
+   * @param {"p2p_host"|"p2p_guest"|"solo"} [options.mode]
+   * @param {object} [options.opponentController]
+   * @param {"easy"|"normal"|"hard"|string} [options.difficulty]
    */
-  constructor(canvas, channel, gameId, isHost, onGameEnd) {
-    super(canvas, channel, gameId, isHost);
+  constructor(canvas, channel, gameId, isHost, onGameEnd, options = {}) {
+    super(canvas, channel, gameId, isHost, options);
     this.onGameEnd = onGameEnd || null;
 
     const mode = gameModeFromId(gameId);
@@ -104,6 +125,10 @@ export class OutlawEngine extends GameEngine {
     this.audio = new OutlawAudio();
     this.colors = null;
     this.peerReady = false;
+    this.difficulty = normalizeOutlawAIDifficulty(options.difficulty);
+    this.opponentController =
+      options.opponentController ||
+      (this.mode === "solo" ? createOutlawAI({ difficulty: this.difficulty }) : null);
     this._boundBlur = this._handleBlur.bind(this);
     this._boundChannelClose = this._handleChannelClose.bind(this);
 
@@ -123,7 +148,10 @@ export class OutlawEngine extends GameEngine {
     window.addEventListener("blur", this._boundBlur);
     this.channel.addEventListener("close", this._boundChannelClose);
 
-    if (this.isHost) {
+    if (this.mode === "solo") {
+      this.peerReady = true;
+      this._invalidate();
+    } else if (this.isHost) {
       this._invalidate();
     } else {
       this._advertiseReady(encodeGameReady);
@@ -143,6 +171,29 @@ export class OutlawEngine extends GameEngine {
     super.stop();
   }
 
+  beginMatch(options = {}) {
+    if (!this.running || !this.isHost || this.gameState.phase !== PHASE.WAITING) return false;
+
+    if (options.difficulty) {
+      this.difficulty = normalizeOutlawAIDifficulty(options.difficulty);
+      if (
+        !options.opponentController &&
+        typeof this.opponentController?.setDifficulty === "function"
+      ) {
+        this.opponentController.setDifficulty(this.difficulty);
+      }
+    }
+    if (options.opponentController) this.opponentController = options.opponentController;
+    if (this.mode === "solo" && !this.opponentController) {
+      this.opponentController = createOutlawAI({ difficulty: this.difficulty });
+    }
+
+    this.setKeyboardCaptured(true);
+    this.peerReady = true;
+    this._startCountdown();
+    return true;
+  }
+
   _handleMessage(event) {
     if (!(event.data instanceof ArrayBuffer)) return;
     const buf = event.data;
@@ -155,6 +206,9 @@ export class OutlawEngine extends GameEngine {
           const decoded = decodeGameState(buf, BULLET_SPEED_X);
           if (decoded) {
             this._ingestSnapshot(decoded, () => this._applyPeerState(decoded));
+            this.setKeyboardCaptured(
+              decoded.phase !== PHASE.WAITING && decoded.phase !== PHASE.MATCH_OVER,
+            );
             this._invalidate();
           }
         }
@@ -162,14 +216,14 @@ export class OutlawEngine extends GameEngine {
 
       case MSG_TYPE.GAME_READY:
         if (this.isHost && !this.peerReady) {
-          this.peerReady = true;
-          this._startCountdown();
+          this.beginMatch();
         }
         break;
 
       case MSG_TYPE.GAME_END: {
         const result = decodeGameEnd(buf);
         if (result) {
+          this.setKeyboardCaptured(false);
           this.gameState.phase = PHASE.MATCH_OVER;
           this.gameState.roundWins1 = result.roundWins1;
           this.gameState.roundWins2 = result.roundWins2;
@@ -361,6 +415,8 @@ export class OutlawEngine extends GameEngine {
       return;
     }
 
+    this._updateOpponentInputs();
+
     // P1 movement (host = P1)
     const p1dy = (this.localInputs.down ? 1 : 0) - (this.localInputs.up ? 1 : 0);
     const p1dx = (this.localInputs.right ? 1 : 0) - (this.localInputs.left ? 1 : 0);
@@ -469,8 +525,32 @@ export class OutlawEngine extends GameEngine {
     }
   }
 
+  _updateOpponentInputs() {
+    if (this.mode !== "solo" || typeof this.opponentController?.nextInputs !== "function") return;
+
+    const nextInputs = this.opponentController.nextInputs({
+      state: this.gameState,
+      difficulty: this.difficulty,
+      player: 2,
+    });
+
+    if (!nextInputs) return;
+
+    this.remoteInputs = {
+      up: nextInputs.up === true,
+      down: nextInputs.down === true,
+      left: nextInputs.left === true,
+      right: nextInputs.right === true,
+      fire: nextInputs.fire === true,
+    };
+
+    if (this.remoteInputs.up) this._remoteAimUp = true;
+    if (this.remoteInputs.down) this._remoteAimUp = false;
+  }
+
   _handleMatchOver() {
     this._stopSteps();
+    this.setKeyboardCaptured(false);
     const winner = this.gameState.roundWins1 >= this.gameState.roundWins2 ? 1 : 2;
 
     if (winner === 1) {
@@ -506,6 +586,7 @@ export class OutlawEngine extends GameEngine {
 
   _handleChannelClose() {
     this._stopSteps();
+    this.setKeyboardCaptured(false);
     if (!this.gameState || this.gameState.phase === PHASE.MATCH_OVER) return;
     this.gameState.phase = PHASE.MATCH_OVER;
     this._invalidate();
@@ -540,5 +621,9 @@ export class OutlawEngine extends GameEngine {
     if (prevPhase === newPhase) return;
     if (newPhase === PHASE.COUNTDOWN) this.audio.playCountdown();
     if (newPhase === PHASE.SPAWNING) this.audio.playBell();
+  }
+
+  _shouldPreventDefaultForCapturedKey(event) {
+    return OUTLAW_PREVENT_DEFAULT_KEYS.has(event.key);
   }
 }

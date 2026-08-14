@@ -1581,15 +1581,23 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "ai",
           "hex pong",
           "pong",
-          "light trails"
+          "light trails",
+          "hex outlaw",
+          "outlaw",
+          "western"
         ],
         icon: :icon_game_pong,
         description:
           dgettext(
             "help",
-            "Play browser-native RetroHexChat games solo against AI inside the chat desktop. Hex Pong and Light Trails are available."
+            "Play browser-native RetroHexChat games solo against AI inside the chat desktop. Hex Pong, Light Trails, and Hex Outlaw variants are available."
           ),
-        see_also: ["feature-hex-pong", "feature-arcade", "feature-universal-lobby"]
+        see_also: [
+          "feature-hex-pong",
+          "feature-light-trails",
+          "feature-hex-outlaw",
+          "feature-arcade"
+        ]
       },
       %{
         id: "feature-hex-pong",
