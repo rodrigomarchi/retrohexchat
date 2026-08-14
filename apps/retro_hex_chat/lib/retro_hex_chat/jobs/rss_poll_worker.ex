@@ -234,28 +234,12 @@ defmodule RetroHexChat.Jobs.RSSPollWorker do
   defp schedule_next_poll(
          %{bot: %Bot{id: bot_id}, feed_id: feed_id, poll_interval_ms: delay_ms} = poll
        ) do
-    Scheduler.schedule_follow_up_poll(bot_id, feed_id, jitter(drain_or_interval(poll, delay_ms)))
+    Scheduler.schedule_follow_up_poll(
+      bot_id,
+      feed_id,
+      RSS.jitter(drain_or_interval(poll, delay_ms))
+    )
   end
-
-  @doc """
-  Spreads a delay by up to a tenth, so feeds sharing an interval drift apart.
-
-  Feeds are configured per bot, so a bot's feeds share a number and come due
-  together; provisioning gave 132 of them the same twenty minutes, and a
-  restart put every one of those on the same clock. They then arrive as a
-  cohort — the burst that exhausted file descriptors was one, and the reader's
-  flood counter sees another when several feeds of one bot land at once.
-
-  A tenth is enough to break the alignment within a poll or two and small
-  enough that no feed's cadence visibly changes.
-  """
-  @spec jitter(non_neg_integer()) :: non_neg_integer()
-  def jitter(delay_ms) when delay_ms > 0 do
-    spread = max(div(delay_ms, 10), 1)
-    delay_ms - div(spread, 2) + :rand.uniform(spread + 1) - 1
-  end
-
-  def jitter(delay_ms), do: delay_ms
 
   # A poll that left items behind is not finished, so it does not wait out the
   # feed's interval — the ceiling exists to pace delivery, not to postpone it.

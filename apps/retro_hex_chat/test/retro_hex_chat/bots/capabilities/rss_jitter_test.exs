@@ -1,4 +1,4 @@
-defmodule RetroHexChat.Jobs.RSSPollWorkerJitterTest do
+defmodule RetroHexChat.Bots.Capabilities.RSSJitterTest do
   @moduledoc """
   Feeds sharing an interval have to drift apart.
 
@@ -6,12 +6,16 @@ defmodule RetroHexChat.Jobs.RSSPollWorkerJitterTest do
   on the same clock, so they arrived as a cohort — which is how the burst that
   exhausted file descriptors happened, and how several feeds of one bot land on
   a reader's flood counter at the same moment.
+
+  Both scheduling paths use this: the follow-up after a poll, and `init_timers`
+  at boot. The boot one matters more, because a deploy reschedules every feed
+  from the same instant and would otherwise rebuild the cohort each time.
   """
   use ExUnit.Case, async: true
 
   @moduletag :unit
 
-  alias RetroHexChat.Jobs.RSSPollWorker
+  alias RetroHexChat.Bots.Capabilities.RSS
 
   @interval :timer.minutes(20)
 
@@ -19,7 +23,7 @@ defmodule RetroHexChat.Jobs.RSSPollWorkerJitterTest do
     spread = div(@interval, 10)
 
     for _ <- 1..500 do
-      delay = RSSPollWorker.jitter(@interval)
+      delay = RSS.jitter(@interval)
 
       assert delay >= @interval - spread,
              "a feed must not drift so early that its cadence changes"
@@ -30,7 +34,7 @@ defmodule RetroHexChat.Jobs.RSSPollWorkerJitterTest do
   end
 
   test "a cohort on one clock spreads out" do
-    delays = for _ <- 1..200, do: RSSPollWorker.jitter(@interval)
+    delays = for _ <- 1..200, do: RSS.jitter(@interval)
     distinct = delays |> Enum.uniq() |> length()
 
     assert distinct > 100,
@@ -40,7 +44,7 @@ defmodule RetroHexChat.Jobs.RSSPollWorkerJitterTest do
   test "the spread is centred, not a systematic delay" do
     # A jitter that only ever added would push every feed's cadence out over
     # time; one that only subtracted would tighten it.
-    delays = for _ <- 1..2000, do: RSSPollWorker.jitter(@interval)
+    delays = for _ <- 1..2000, do: RSS.jitter(@interval)
     mean = Enum.sum(delays) / length(delays)
 
     assert_in_delta mean, @interval, @interval * 0.01
@@ -50,12 +54,12 @@ defmodule RetroHexChat.Jobs.RSSPollWorkerJitterTest do
 
   test "a short drain delay still jitters without going negative" do
     for _ <- 1..200 do
-      delay = RSSPollWorker.jitter(1)
+      delay = RSS.jitter(1)
       assert delay >= 0
     end
   end
 
   test "an immediate poll stays immediate" do
-    assert RSSPollWorker.jitter(0) == 0
+    assert RSS.jitter(0) == 0
   end
 end

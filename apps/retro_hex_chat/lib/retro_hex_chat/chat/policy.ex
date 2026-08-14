@@ -29,8 +29,17 @@ defmodule RetroHexChat.Chat.Policy do
     end
   end
 
-  @spec can_edit?(map(), String.t()) :: :ok | {:error, String.t()}
-  def can_edit?(message, nickname) do
+  @doc """
+  Whether `nickname` may still edit `message`.
+
+  `now` is an argument because the window is inclusive at its far edge, and a
+  test for that edge cannot construct "exactly five minutes ago" against a clock
+  the function reads again a moment later — the second that passes in between is
+  enough to move a message out of the window, which made the boundary test fail
+  only under load.
+  """
+  @spec can_edit?(map(), String.t(), DateTime.t()) :: :ok | {:error, String.t()}
+  def can_edit?(message, nickname, now \\ DateTime.utc_now()) do
     cond do
       not Authorship.written_by?(message, nickname) ->
         {:error, dgettext("chat", "You cannot edit other users' messages.")}
@@ -38,7 +47,7 @@ defmodule RetroHexChat.Chat.Policy do
       message.deleted_at != nil ->
         {:error, dgettext("chat", "Message has already been deleted.")}
 
-      not within_window?(message.inserted_at, @edit_window_seconds) ->
+      not within_window?(message.inserted_at, @edit_window_seconds, now) ->
         {:error, dgettext("chat", "Edit window has expired.")}
 
       debounced?(message.edited_at, @edit_debounce_seconds) ->
@@ -72,8 +81,8 @@ defmodule RetroHexChat.Chat.Policy do
     end
   end
 
-  @spec can_delete?(map(), String.t()) :: :ok | {:error, String.t()}
-  def can_delete?(message, nickname) do
+  @spec can_delete?(map(), String.t(), DateTime.t()) :: :ok | {:error, String.t()}
+  def can_delete?(message, nickname, now \\ DateTime.utc_now()) do
     cond do
       not Authorship.written_by?(message, nickname) ->
         {:error, dgettext("chat", "You cannot delete other users' messages.")}
@@ -81,7 +90,7 @@ defmodule RetroHexChat.Chat.Policy do
       message.deleted_at != nil ->
         {:error, dgettext("chat", "Message has already been deleted.")}
 
-      not within_window?(message.inserted_at, @edit_window_seconds) ->
+      not within_window?(message.inserted_at, @edit_window_seconds, now) ->
         {:error, dgettext("chat", "Delete window has expired.")}
 
       true ->
@@ -94,8 +103,8 @@ defmodule RetroHexChat.Chat.Policy do
     Limiter.check_rate(table, nickname, :message)
   end
 
-  defp within_window?(timestamp, window_seconds) do
-    diff = DateTime.diff(DateTime.utc_now(), timestamp, :second)
+  defp within_window?(timestamp, window_seconds, now \\ DateTime.utc_now()) do
+    diff = DateTime.diff(now, timestamp, :second)
     diff <= window_seconds
   end
 

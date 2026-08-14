@@ -29,9 +29,19 @@ defmodule RetroHexChat.Bots.PaceTest do
   test "each further message waits one interval more", %{pace: pace} do
     interval = Pace.interval_ms()
 
+    # Reservations are points on a timeline, so the delay handed back shrinks by
+    # however long the caller took to ask. Asserting an exact figure measures
+    # the machine — under the four-way partition split it was off by 46ms and
+    # failed. The bound that matters is that each wait is a further interval and
+    # never overshoots it.
     assert reserve(pace, "Nina") == 0
-    assert_in_delta reserve(pace, "Nina"), interval, 5
-    assert_in_delta reserve(pace, "Nina"), interval * 2, 5
+
+    second = reserve(pace, "Nina")
+    third = reserve(pace, "Nina")
+
+    assert second <= interval and second > interval - 500
+    assert third <= interval * 2 and third > interval * 2 - 500
+    assert third - second <= interval
   end
 
   test "one bot's backlog does not delay another", %{pace: pace} do

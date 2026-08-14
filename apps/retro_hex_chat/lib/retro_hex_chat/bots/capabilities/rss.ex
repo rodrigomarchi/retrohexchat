@@ -105,7 +105,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
     interval = Map.get(config, "poll_interval_min", 30) * 60 * 1000
 
     Enum.each(cap_state.feeds, fn feed ->
-      delay = if feed["last_polled_at"], do: interval, else: @first_poll_delay_ms
+      delay = jitter(if feed["last_polled_at"], do: interval, else: @first_poll_delay_ms)
 
       case Scheduler.schedule_poll(server_state.bot_id, feed["id"], delay) do
         :ok ->
@@ -503,6 +503,28 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
   @doc "How soon a feed with a backlog should be polled again."
   @spec drain_interval_ms() :: pos_integer()
   def drain_interval_ms, do: @drain_interval_ms
+
+  @doc """
+  Spreads a delay by up to a tenth, so feeds sharing an interval drift apart.
+
+  The interval is configured per bot, so a bot's feeds share a number and come
+  due together, and provisioning gave 132 feeds the same twenty minutes. Worse,
+  a restart reschedules every feed from the same instant, so each deploy
+  realigns whatever had drifted apart — which is why this belongs on the boot
+  path and not only on the follow-up.
+
+  A cohort is what exhausted the file descriptors, and it is what puts several
+  feeds of one bot on a reader's flood counter at the same moment. A tenth
+  breaks the alignment within a poll or two and is small enough that no feed's
+  cadence visibly changes.
+  """
+  @spec jitter(non_neg_integer()) :: non_neg_integer()
+  def jitter(delay_ms) when delay_ms > 0 do
+    spread = max(div(delay_ms, 10), 1)
+    delay_ms - div(spread, 2) + :rand.uniform(spread + 1) - 1
+  end
+
+  def jitter(delay_ms), do: delay_ms
 
   # An item's identity: its guid when the feed publishes one, its link otherwise.
   # Comparing identities rather than walking down from the newest makes the check

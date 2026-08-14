@@ -163,7 +163,12 @@ defmodule RetroHexChat.Chat.PolicyTest do
     end
 
     test "allows editing at exactly 5 minutes (inclusive)" do
-      exactly_five = DateTime.add(DateTime.utc_now(), -300, :second)
+      # The instant is pinned rather than read twice. Building "exactly five
+      # minutes ago" and then letting the function ask the clock again means a
+      # single second of scheduling delay moves the message out of the window —
+      # which is what failed this under the partition split, while passing alone.
+      now = DateTime.utc_now()
+      exactly_five = DateTime.add(now, -300, :second)
 
       message = %RetroHexChat.Chat.Message{
         author_nickname: "Alice",
@@ -172,7 +177,11 @@ defmodule RetroHexChat.Chat.PolicyTest do
         edited_at: nil
       }
 
-      assert :ok = Policy.can_edit?(message, "Alice")
+      assert :ok = Policy.can_edit?(message, "Alice", now)
+
+      assert {:error, "Edit window has expired."} =
+               Policy.can_edit?(message, "Alice", DateTime.add(now, 1, :second)),
+             "one second past the edge must fall outside, or the boundary is not a boundary"
     end
 
     test "rejects editing within 3-second debounce" do
