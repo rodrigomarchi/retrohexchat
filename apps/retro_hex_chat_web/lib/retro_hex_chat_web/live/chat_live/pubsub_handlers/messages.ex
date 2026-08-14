@@ -11,7 +11,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
   import RetroHexChatWeb.ChatLive.Helpers,
     only: [
       notice_message: 2,
-      check_flood_and_auto_ignore: 4,
+      check_flood_and_auto_ignore: 5,
       maybe_highlight: 2,
       maybe_play_highlight_sound: 3,
       capture_urls: 6,
@@ -189,7 +189,14 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
       if spam?(socket, payload, payload.author, {:channel, payload.channel}, session) do
         {:halt, socket}
       else
-        socket = check_flood_and_auto_ignore(socket, payload.author, payload.type, session)
+        socket =
+          check_flood_and_auto_ignore(
+            socket,
+            payload.author,
+            payload.type,
+            {:channel, payload.channel},
+            session
+          )
 
         # Built before it is decorated, and built by the same thing that builds
         # every other row — a channel message arriving live used to be the one
@@ -327,7 +334,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
       socket
       |> assign(session: Session.add_pm_conversation(session, peer))
       |> PM.ensure_pm_tab(peer)
-      |> check_flood_and_auto_ignore(payload.sender, :message, session)
+      |> check_flood_and_auto_ignore(payload.sender, :message, {:private, peer}, session)
       |> capture_urls(
         payload.content,
         peer,

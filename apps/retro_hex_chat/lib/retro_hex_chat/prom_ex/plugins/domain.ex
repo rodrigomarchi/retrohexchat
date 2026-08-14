@@ -17,6 +17,7 @@ defmodule RetroHexChat.PromEx.Plugins.Domain do
   @call_client_error [:retro_hex_chat, :calls, :client_error]
   @call_signaling_replay [:retro_hex_chat, :calls, :signaling, :replay]
   @game_session_sample [:retro_hex_chat, :games, :session, :sample]
+  @chat_auto_ignore [:retro_hex_chat, :chat, :auto_ignore]
 
   @impl true
   def event_metrics(opts) do
@@ -114,6 +115,17 @@ defmodule RetroHexChat.PromEx.Plugins.Domain do
           tag_values: &command_tags/1,
           tags: [:command, :result],
           unit: {:native, :millisecond}
+        ),
+        # Auto-ignore is decided in one reader's session and never reaches the
+        # sender, so without this a bot can be silenced across the server with
+        # nothing to show for it. `kind` separates our defect from moderation
+        # doing its job; the reader is deliberately not a tag.
+        counter(
+          metric_prefix ++ [:chat, :auto_ignores, :total],
+          event_name: @chat_auto_ignore,
+          description: "Total number of senders auto-ignored for flooding, by reader session.",
+          tag_values: &auto_ignore_tags/1,
+          tags: [:sender, :kind, :surface]
         ),
         counter(
           metric_prefix ++ [:calls, :recovery, :transitions, :total],
@@ -257,6 +269,14 @@ defmodule RetroHexChat.PromEx.Plugins.Domain do
       surface: tag(metadata, :surface),
       code: tag(metadata, :code),
       phase: tag(metadata, :phase)
+    }
+  end
+
+  defp auto_ignore_tags(metadata) do
+    %{
+      sender: tag(metadata, :sender),
+      kind: tag(metadata, :kind),
+      surface: tag(metadata, :surface)
     }
   end
 

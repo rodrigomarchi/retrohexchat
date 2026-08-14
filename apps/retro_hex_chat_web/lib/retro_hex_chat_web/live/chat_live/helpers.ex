@@ -89,8 +89,10 @@ defmodule RetroHexChatWeb.ChatLive.Helpers do
 
   # ── Flood ────────────────────────────────────────────────────
 
-  defdelegate check_flood_and_auto_ignore(socket, sender, msg_type, session), to: __MODULE__.Flood
-  defdelegate maybe_trigger_auto_ignore(socket, sender, session), to: __MODULE__.Flood
+  defdelegate check_flood_and_auto_ignore(socket, sender, msg_type, source, session),
+    to: __MODULE__.Flood
+
+  defdelegate maybe_trigger_auto_ignore(socket, sender, source, session), to: __MODULE__.Flood
 
   defdelegate cancel_auto_ignore_with_cooldown(socket, nick), to: __MODULE__.Flood
   defdelegate format_duration(seconds), to: __MODULE__.Flood
