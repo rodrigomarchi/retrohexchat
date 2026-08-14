@@ -99,11 +99,11 @@ function createMockChannel() {
   };
 }
 
-function createEngine(gameId = "hex_hockey", isHost = true, onGameEndFn) {
+function createEngine(gameId = "hex_hockey", isHost = true, onGameEndFn, options = {}) {
   const canvas = createMockCanvas();
   const channel = createMockChannel();
   const onGameEnd = onGameEndFn || vi.fn();
-  const engine = new HexHockeyEngine(canvas, channel, gameId, isHost, onGameEnd);
+  const engine = new HexHockeyEngine(canvas, channel, gameId, isHost, onGameEnd, options);
   return { engine, canvas, channel, onGameEnd };
 }
 
@@ -146,17 +146,30 @@ describe("hex_hockey_engine", () => {
 
   it("resolves CLASSIC mode for hex_hockey", () => {
     const { engine } = createEngine("hex_hockey");
-    expect(engine.mode).toBe(GAME_MODE.CLASSIC);
+    expect(engine.mode).toBe("p2p_host");
+    expect(engine.gameMode).toBe(GAME_MODE.CLASSIC);
   });
 
   it("resolves BLITZ mode for hex_hockey_blitz", () => {
     const { engine } = createEngine("hex_hockey_blitz");
-    expect(engine.mode).toBe(GAME_MODE.BLITZ);
+    expect(engine.gameMode).toBe(GAME_MODE.BLITZ);
   });
 
   it("resolves SHOWDOWN mode for hex_hockey_showdown", () => {
     const { engine } = createEngine("hex_hockey_showdown");
-    expect(engine.mode).toBe(GAME_MODE.SHOWDOWN);
+    expect(engine.gameMode).toBe(GAME_MODE.SHOWDOWN);
+  });
+
+  it("keeps runtime mode separate from game variant in solo", () => {
+    const { engine } = createEngine("hex_hockey_showdown", true, null, {
+      mode: "solo",
+      difficulty: "hard",
+    });
+
+    expect(engine.mode).toBe("solo");
+    expect(engine.gameMode).toBe(GAME_MODE.SHOWDOWN);
+    expect(engine.difficulty).toBe("hard");
+    expect(engine.opponentController).toBeTruthy();
   });
 
   // ── Lifecycle ───────────────────────────────────────────────
@@ -179,6 +192,18 @@ describe("hex_hockey_engine", () => {
     engine.stop();
   });
 
+  it("solo start creates local state without advertising GAME_READY", () => {
+    const { engine, channel } = createEngine("hex_hockey_blitz", true, null, { mode: "solo" });
+
+    engine.start();
+
+    expect(engine.peerReady).toBe(true);
+    expect(engine.gameState.phase).toBe(PHASE.WAITING);
+    expect(engine.gameState.mode).toBe(GAME_MODE.BLITZ);
+    expect(channel.send).not.toHaveBeenCalled();
+    engine.stop();
+  });
+
   it("host starts countdown when peer ready received", () => {
     const { engine } = createEngine("hex_hockey", true);
     engine.start();
@@ -189,6 +214,40 @@ describe("hex_hockey_engine", () => {
 
     expect(engine.peerReady).toBe(true);
     expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
+    expect(engine._keyboardCaptured).toBe(true);
+    engine.stop();
+  });
+
+  it("beginMatch updates solo difficulty and starts countdown", () => {
+    const { engine } = createEngine("hex_hockey", true, null, { mode: "solo", difficulty: "easy" });
+    engine.start();
+
+    expect(engine.beginMatch({ difficulty: "hard" })).toBe(true);
+
+    expect(engine.difficulty).toBe("hard");
+    expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
+    expect(engine.peerReady).toBe(true);
+    expect(engine._keyboardCaptured).toBe(true);
+    engine.stop();
+  });
+
+  it("beginMatch accepts an explicit opponent controller", () => {
+    const opponentController = { nextInputs: vi.fn(() => ({ left: false, action: false })) };
+    const { engine } = createEngine("hex_hockey", true, null, { mode: "solo" });
+    engine.start();
+
+    expect(engine.beginMatch({ opponentController })).toBe(true);
+
+    expect(engine.opponentController).toBe(opponentController);
+    engine.stop();
+  });
+
+  it("beginMatch does not restart an active countdown", () => {
+    const { engine } = createEngine("hex_hockey", true, null, { mode: "solo" });
+    engine.start();
+    engine.beginMatch();
+
+    expect(engine.beginMatch()).toBe(false);
     engine.stop();
   });
 
@@ -216,6 +275,7 @@ describe("hex_hockey_engine", () => {
     engine._onChannelMessage({ data: buf });
     expect(engine.gameState.phase).toBe(PHASE.PLAYING);
     expect(engine.gameState.scoreP1).toBe(2);
+    expect(engine._keyboardCaptured).toBe(true);
     engine.stop();
   });
 
@@ -245,6 +305,7 @@ describe("hex_hockey_engine", () => {
     expect(engine._mapKey({ key: "ArrowDown" })).toBe(INPUT_KEY.DOWN);
     expect(engine._mapKey({ key: "s" })).toBe(INPUT_KEY.DOWN);
     expect(engine._mapKey({ key: " " })).toBe(INPUT_KEY.ACTION);
+    expect(engine._mapKey({ key: "Spacebar" })).toBe(INPUT_KEY.ACTION);
     expect(engine._mapKey({ key: "Shift" })).toBe(INPUT_KEY.ACTION);
     expect(engine._mapKey({ key: "x" })).toBeNull();
     engine.stop();
@@ -282,6 +343,7 @@ describe("hex_hockey_engine", () => {
     expect(onGameEnd).toHaveBeenCalledWith(
       expect.objectContaining({ winner: "p1", score_p1: 3, score_p2: 1 }),
     );
+    expect(engine._keyboardCaptured).toBe(false);
     engine.stop();
   });
 
@@ -310,6 +372,27 @@ describe("hex_hockey_engine", () => {
     engine._applyRemoteInput({ key: INPUT_KEY.ACTION, pressed: false });
     expect(engine.remoteInputs.action).toBe(false);
     engine.stop();
+  });
+
+  it("remote action state transitions reset remoteActionHandled", () => {
+    const { engine } = createEngine("hex_hockey", true);
+    engine.start();
+    engine.remoteActionHandled = true;
+
+    const buf = inputDatagram(HexHockeyEngine, { action: true }, 1);
+    engine._onChannelMessage({ data: buf });
+
+    expect(engine.remoteInputs.action).toBe(true);
+    expect(engine.remoteActionHandled).toBe(false);
+    engine.stop();
+  });
+
+  it("prevents global shortcuts for Hockey keys while captured", () => {
+    const { engine } = createEngine("hex_hockey", true);
+
+    expect(engine._shouldPreventDefaultForCapturedKey({ key: "ArrowDown" })).toBe(true);
+    expect(engine._shouldPreventDefaultForCapturedKey({ key: "Spacebar" })).toBe(true);
+    expect(engine._shouldPreventDefaultForCapturedKey({ key: "Meta" })).toBe(false);
   });
 
   it("puck trail clears when puck is possessed", () => {
@@ -387,6 +470,7 @@ describe("hex_hockey_engine", () => {
     // Game is in COUNTDOWN — simulate channel close
     engine._handleChannelClose();
     expect(engine.gameState.phase).toBe(PHASE.FINISHED);
+    expect(engine._keyboardCaptured).toBe(false);
     expect(onGameEnd).toHaveBeenCalledWith(expect.objectContaining({ disconnected: true }));
     engine.stop();
   });
@@ -576,6 +660,63 @@ describe("hex_hockey_engine", () => {
       engine.stop();
     });
 
+    it("uses the solo opponent controller as player 2 input", () => {
+      const opponentController = {
+        nextInputs: vi.fn(() => ({
+          left: true,
+          right: false,
+          up: false,
+          down: false,
+          action: false,
+        })),
+      };
+      const { engine } = createEngine("hex_hockey", true, null, {
+        mode: "solo",
+        opponentController,
+      });
+      engine.start();
+      engine.gameState.phase = PHASE.PLAYING;
+      engine.gameState.timerFrames = 9999;
+      const startX = engine.gameState.p2.x;
+
+      engine._gameLoop();
+
+      expect(opponentController.nextInputs).toHaveBeenCalledWith(
+        expect.objectContaining({ state: engine.gameState, difficulty: "normal", player: 2 }),
+      );
+      expect(engine.gameState.p2.x).toBeLessThan(startX);
+      engine.stop();
+    });
+
+    it("routes solo opponent action through the remote shoot path", () => {
+      const opponentController = {
+        nextInputs: vi.fn(() => ({
+          left: false,
+          right: false,
+          up: false,
+          down: false,
+          action: true,
+        })),
+      };
+      const { engine } = createEngine("hex_hockey", true, null, {
+        mode: "solo",
+        opponentController,
+      });
+      engine.start();
+      engine.gameState.phase = PHASE.PLAYING;
+      engine.gameState.timerFrames = 9999;
+      engine.gameState.p2.hasPuck = true;
+      engine.gameState.puck.possessedBy = 2;
+      engine.remoteActionHandled = true;
+
+      engine._gameLoop();
+
+      expect(engine.remoteActionHandled).toBe(true);
+      expect(engine.gameState.p2.hasPuck).toBe(false);
+      expect(engine.gameState.puck.possessedBy).toBe(0);
+      engine.stop();
+    });
+
     it("transitions to GOAL_CELEBRATION on goal scored", () => {
       const { engine } = setupPlayingEngine();
       // Place puck past left goal line in goal opening (P2 scores by default)
@@ -750,6 +891,8 @@ describe("hex_hockey_engine", () => {
       engine._gameLoop();
 
       expect(engine.running).toBe(false);
+      expect(engine.stepping).toBe(false);
+      expect(engine._keyboardCaptured).toBe(false);
       // Should have broadcast at least once
       expect(channel.send).toHaveBeenCalled();
       engine.stop();
@@ -784,6 +927,8 @@ describe("hex_hockey_engine", () => {
 
       expect(engine.audio.stopSuddenDeath).toHaveBeenCalled();
       expect(engine.audio.playVictory).toHaveBeenCalled();
+      expect(engine.stepping).toBe(false);
+      expect(engine._keyboardCaptured).toBe(false);
       expect(channel.send).toHaveBeenCalled();
       // Verify GAME_END was sent
       const sentBuf = channel.send.mock.calls[0][0];

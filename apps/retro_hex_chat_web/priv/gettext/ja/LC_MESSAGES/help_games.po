@@ -19,7 +19,7 @@ msgstr "(このモード) — 中央ブロックの直接ショットのCactus o
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey_blitz.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "1 period"
-msgstr "1 期間"
+msgstr "1ピリオド"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_coop.html.heex:41
 #, elixir-autogen, elixir-format
@@ -55,7 +55,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey.html.heex:93
 #, elixir-autogen, elixir-format
 msgid "3 periods"
-msgstr "3期間"
+msgstr "3ピリオド"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_night.html.heex:2
 #, elixir-autogen, elixir-format
@@ -986,6 +986,7 @@ msgstr "ヘックス・フロスト:平和"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey_blitz.html.heex:84
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey_showdown.html.heex:84
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "Hex Hockey"
 msgstr "六角ホッケー"
@@ -3663,7 +3664,7 @@ msgstr "/p2p"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:76
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:57
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:59
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:92
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
@@ -3684,7 +3685,7 @@ msgstr "ゲームメニューを開き、レトロゲームを選びます。"
 msgid "Select Easy, Normal, or Hard, then click Play vs AI once the canvas is ready."
 msgstr "かんたん、標準、むずかしいのいずれかを選び、キャンバスの準備ができたら AI と対戦をクリックします。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "Solo Arcade"
 msgstr "ソロアーケード"
@@ -3696,15 +3697,15 @@ msgstr "ソロゲームを始める"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:14
 #, elixir-autogen, elixir-format
-msgid "Choose Hex Pong, Light Trails, a Star Duel variant, a Hex Outlaw variant, a Hex Tennis variant, or a Hex Invaders variant from the Retro Games catalog."
-msgstr "レトロゲームのカタログから Hex Pong、Light Trails、Star Duel バリアント、Hex Outlaw バリアント、Hex Tennis バリアント、または Hex Invaders バリアントを選びます。"
+msgid "Choose Hex Pong, Light Trails, a Star Duel variant, a Hex Outlaw variant, a Hex Tennis variant, a Hex Invaders variant, or a Hex Hockey variant from the Retro Games catalog."
+msgstr "レトロゲームのカタログから Hex Pong、Light Trails、Star Duel バリアント、Hex Outlaw バリアント、Hex Tennis バリアント、Hex Invaders バリアント、または Hex Hockey バリアントを選びます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:29
 #, elixir-autogen, elixir-format
-msgid "In Hex Pong, you control the left paddle with Arrow Up / Arrow Down or W / S while the AI controls the right paddle. In Light Trails, use the arrow keys or WASD to steer and trap the AI before either trail hits a wall or occupied cell. In Star Duel variants, rotate, thrust, and fire with Space while the AI dogfights as player 2. In Hex Outlaw, dodge visible bullets, line up your shot, and fire with Space or Shift. In Hex Tennis, move across your half, serve with Space or Shift, and let the AI cover the far court. In Hex Invaders, move with Left/Right or A/D, fire with Space, and let the AI clear the other cannon lane."
-msgstr "Hex Pong では、上/下矢印または W/S で左パドルを操作し、AI が右パドルを操作します。Light Trails では、矢印キーまたは WASD で進路を変え、どちらかの軌跡が壁や占有セルに当たる前に AI を追い込みます。Star Duel バリアントでは、回転、推進、Space での発射を行い、AI がプレイヤー 2 としてドッグファイトします。Hex Outlaw では、見えている弾を避け、狙いを合わせ、Space または Shift で発射します。Hex Tennis では、自分の半面を動き、Space または Shift でサーブし、AI に奥のコートを守らせます。Hex Invaders では、左/右または A/D で移動し、Space で発射し、AI にもう一方の砲台レーンを処理させます。"
+msgid "In Hex Pong, you control the left paddle with Arrow Up / Arrow Down or W / S while the AI controls the right paddle. In Light Trails, use the arrow keys or WASD to steer and trap the AI before either trail hits a wall or occupied cell. In Star Duel variants, rotate, thrust, and fire with Space while the AI dogfights as player 2. In Hex Outlaw, dodge visible bullets, line up your shot, and fire with Space or Shift. In Hex Tennis, move across your half, serve with Space or Shift, and let the AI cover the far court. In Hex Invaders, move with Left/Right or A/D, fire with Space, and let the AI clear the other cannon lane. In Hex Hockey, skate with Arrow keys or WASD, shoot or tackle with Space or Shift, and challenge the AI from the far side."
+msgstr "Hex Pong では、上/下矢印または W/S で左パドルを操作し、AI が右パドルを操作します。Light Trails では、矢印キーまたは WASD で進路を変え、どちらかの軌跡が壁や占有セルに当たる前に AI を追い込みます。Star Duel バリアントでは、回転、推進、Space での発射を行い、AI がプレイヤー 2 としてドッグファイトします。Hex Outlaw では、見えている弾を避け、狙いを合わせ、Space または Shift で発射します。Hex Tennis では、自分の半面を動き、Space または Shift でサーブし、AI に奥のコートを守らせます。Hex Invaders では、左/右または A/D で移動し、Space で発射し、AI にもう一方の砲台レーンを処理させます。Hex Hockey では、矢印キーまたは WASD でスケートし、Space または Shift でシュート/タックルして、反対側の AI に挑みます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Retro Games are browser-native RetroHexChat games that can run inside the chat desktop without a peer session. Hex Pong, Light Trails, Star Duel variants, Hex Outlaw variants, Hex Tennis variants, and Hex Invaders variants use the same game engine foundation as P2P play with an AI controller on the remote side."
-msgstr "レトロゲームは、ピアセッションなしでチャットデスクトップ内に実行できるブラウザー向け RetroHexChat ゲームです。Hex Pong、Light Trails、Star Duel バリアント、Hex Outlaw バリアント、Hex Tennis バリアント、Hex Invaders バリアントは P2P プレイと同じゲームエンジン基盤を使い、リモート側を AI コントローラーが操作します。"
+msgid "Retro Games are browser-native RetroHexChat games that can run inside the chat desktop without a peer session. Hex Pong, Light Trails, Star Duel variants, Hex Outlaw variants, Hex Tennis variants, Hex Invaders variants, and Hex Hockey variants use the same game engine foundation as P2P play with an AI controller on the remote side."
+msgstr "レトロゲームは、ピアセッションなしでチャットデスクトップ内に実行できるブラウザー向け RetroHexChat ゲームです。Hex Pong、Light Trails、Star Duel バリアント、Hex Outlaw バリアント、Hex Tennis バリアント、Hex Invaders バリアント、Hex Hockey バリアントは P2P プレイと同じゲームエンジン基盤を使い、リモート側を AI コントローラーが操作します。"

@@ -92,7 +92,10 @@ defmodule RetroHexChat.Games.CatalogTest do
                %{id: "hex_invaders_blitz", name: "Hex Invaders: Blitz"},
                %{id: "hex_tennis", name: "Hex Tennis"},
                %{id: "hex_tennis_quick", name: "Hex Tennis: Quick Match"},
-               %{id: "hex_tennis_sudden", name: "Hex Tennis: Sudden Death"}
+               %{id: "hex_tennis_sudden", name: "Hex Tennis: Sudden Death"},
+               %{id: "hex_hockey", name: "Hex Hockey"},
+               %{id: "hex_hockey_blitz", name: "Hex Hockey: Blitz"},
+               %{id: "hex_hockey_showdown", name: "Hex Hockey: Showdown"}
              ] = Catalog.list_solo_games()
     end
 
@@ -159,6 +162,18 @@ defmodule RetroHexChat.Games.CatalogTest do
                  %{
                    id: "hex_tennis_sudden",
                    controls: "Setas ou WASD para mover, Espaço ou Shift para servir"
+                 },
+                 %{
+                   id: "hex_hockey",
+                   controls: "Setas ou WASD para mover, Espaço ou Shift para chutar/desarmar"
+                 },
+                 %{
+                   id: "hex_hockey_blitz",
+                   controls: "Setas ou WASD para mover, Espaço ou Shift para chutar/desarmar"
+                 },
+                 %{
+                   id: "hex_hockey_showdown",
+                   controls: "Setas ou WASD para mover, Espaço ou Shift para chutar/desarmar"
                  }
                ] = Catalog.list_solo_games()
       after
@@ -184,6 +199,9 @@ defmodule RetroHexChat.Games.CatalogTest do
       assert Catalog.solo_game_id?("hex_tennis")
       assert Catalog.solo_game_id?("hex_tennis_quick")
       assert Catalog.solo_game_id?("hex_tennis_sudden")
+      assert Catalog.solo_game_id?("hex_hockey")
+      assert Catalog.solo_game_id?("hex_hockey_blitz")
+      assert Catalog.solo_game_id?("hex_hockey_showdown")
       refute Catalog.solo_game_id?("nonexistent")
     end
   end

@@ -337,7 +337,13 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
 
   defp result_score(result, player) do
     score = Map.get(result, "score") || Map.get(result, :score) || %{}
-    Map.get(score, player) || Map.get(score, String.to_atom(player)) || 0
+    flat_key = "score_#{player}"
+
+    Map.get(score, player) ||
+      Map.get(score, String.to_atom(player)) ||
+      Map.get(result, flat_key) ||
+      Map.get(result, String.to_atom(flat_key)) ||
+      0
   end
 
   defp difficulty_label("easy"), do: dgettext("games", "Easy")
@@ -358,6 +364,9 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
   defp goal_label(%{id: "hex_tennis_quick"}), do: dgettext("games", "First to 3 games")
   defp goal_label(%{id: "hex_tennis"}), do: dgettext("games", "First to 6 games")
   defp goal_label(%{id: "hex_tennis_sudden"}), do: dgettext("games", "First to 6 games")
+  defp goal_label(%{id: "hex_hockey"}), do: dgettext("games", "3 periods")
+  defp goal_label(%{id: "hex_hockey_blitz"}), do: dgettext("games", "1 period")
+  defp goal_label(%{id: "hex_hockey_showdown"}), do: dgettext("games", "First to 5 goals")
   defp goal_label(_game), do: dgettext("games", "First to 11")
 
   defp control_rows(%{id: "light_trails"}) do
@@ -416,6 +425,18 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
     ]
   end
 
+  defp control_rows(%{id: id})
+       when id in [
+              "hex_hockey",
+              "hex_hockey_blitz",
+              "hex_hockey_showdown"
+            ] do
+    [
+      %{label: dgettext("games", "Move"), keys: ["↑", "↓", "←", "→", "W", "A", "S", "D"]},
+      %{label: dgettext("games", "Shoot/Tackle"), keys: ["Space", "Shift"]}
+    ]
+  end
+
   defp control_rows(_game) do
     [
       %{label: dgettext("games", "Move"), keys: ["↑", "↓", "W", "S"]}
@@ -441,7 +462,11 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
 
   defp winner_label(%{"winner" => 1}), do: dgettext("games", "You won")
   defp winner_label(%{"winner" => 2}), do: dgettext("games", "AI won")
+  defp winner_label(%{"winner" => "p1"}), do: dgettext("games", "You won")
+  defp winner_label(%{"winner" => "p2"}), do: dgettext("games", "AI won")
   defp winner_label(%{winner: 1}), do: dgettext("games", "You won")
   defp winner_label(%{winner: 2}), do: dgettext("games", "AI won")
+  defp winner_label(%{winner: "p1"}), do: dgettext("games", "You won")
+  defp winner_label(%{winner: "p2"}), do: dgettext("games", "AI won")
   defp winner_label(_result), do: dgettext("games", "No winner reported")
 end

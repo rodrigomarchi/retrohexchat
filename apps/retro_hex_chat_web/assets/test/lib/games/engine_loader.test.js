@@ -42,6 +42,9 @@ describe("engine loader", () => {
     expect(supportsSolo("hex_tennis")).toBe(true);
     expect(supportsSolo("hex_tennis_quick")).toBe(true);
     expect(supportsSolo("hex_tennis_sudden")).toBe(true);
+    expect(supportsSolo("hex_hockey")).toBe(true);
+    expect(supportsSolo("hex_hockey_blitz")).toBe(true);
+    expect(supportsSolo("hex_hockey_showdown")).toBe(true);
     expect(supportsSolo("block_breakers")).toBe(false);
     await expect(loadSoloEngineClass("block_breakers")).rejects.toThrow(/solo/i);
   });
@@ -191,6 +194,37 @@ describe("engine loader", () => {
     });
 
     expect(engine.gameId).toBe("hex_invaders_blitz");
+    expect(engine.isHost).toBe(true);
+    expect(engine.mode).toBe("solo");
+    expect(engine.gameMode).toBe(2);
+    expect(engine.transport.kind).toBe("local");
+    expect(engine.difficulty).toBe("hard");
+    expect(engine.opponentController).toBe(opponentController);
+
+    engine.stop();
+  });
+
+  it("creates a Hex Hockey family solo engine through the shared factory", async () => {
+    const opponentController = {
+      nextInputs: () => ({
+        left: false,
+        right: false,
+        up: false,
+        down: false,
+        action: false,
+      }),
+    };
+    const engine = await createGameEngine({
+      canvas: createCanvas(),
+      gameId: "hex_hockey_showdown",
+      mode: "solo",
+      transport: createLocalTransport(),
+      difficulty: "hard",
+      opponentController,
+      onGameEnd: null,
+    });
+
+    expect(engine.gameId).toBe("hex_hockey_showdown");
     expect(engine.isHost).toBe(true);
     expect(engine.mode).toBe("solo");
     expect(engine.gameMode).toBe(2);

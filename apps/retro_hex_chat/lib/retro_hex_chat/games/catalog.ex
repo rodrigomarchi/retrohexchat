@@ -21,7 +21,10 @@ defmodule RetroHexChat.Games.Catalog do
     "hex_invaders_blitz",
     "hex_tennis",
     "hex_tennis_quick",
-    "hex_tennis_sudden"
+    "hex_tennis_sudden",
+    "hex_hockey",
+    "hex_hockey_blitz",
+    "hex_hockey_showdown"
   ]
 
   @type game :: %{

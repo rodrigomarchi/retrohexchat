@@ -60,6 +60,15 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     controls: "Arrow keys or A/D to move, Space to fire"
   }
 
+  @hockey %{
+    id: "hex_hockey_showdown",
+    name: "Hex Hockey: Showdown",
+    tagline: "First to five",
+    description: "No timer. First to five goals wins.",
+    icon: "game_hockey",
+    controls: "Arrow keys or WASD to move, Space or Shift to shoot/tackle"
+  }
+
   test "renders the ready game with an integrated control panel" do
     html =
       render_component(&retro_games_panel/1,
@@ -207,6 +216,28 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     assert text =~ "D"
   end
 
+  test "renders the Hex Hockey goal and shoot/tackle controls in the shared status panel" do
+    html =
+      render_component(&retro_games_panel/1,
+        id: "retro-games-panel",
+        games: [@hockey],
+        status: "ready",
+        selected_game: @hockey,
+        difficulty: "normal",
+        canvas_ready: true,
+        target: "retro-games-island"
+      )
+
+    document = Floki.parse_document!(html)
+    text = Floki.text(document)
+
+    assert text =~ "First to 5 goals"
+    assert text =~ "Move"
+    assert text =~ "Shoot/Tackle"
+    assert text =~ "Space"
+    assert text =~ "Shift"
+  end
+
   test "locks difficulty and promotes the end action while playing" do
     html =
       render_component(&retro_games_panel/1,
@@ -227,5 +258,25 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
 
     assert Floki.find(document, ~s([data-testid="retro-game-status-label"]))
            |> Floki.text() =~ "Playing"
+  end
+
+  test "renders Hockey-style flat final score payloads" do
+    html =
+      render_component(&retro_games_panel/1,
+        id: "retro-games-panel",
+        games: [@hockey],
+        status: "finished",
+        selected_game: @hockey,
+        difficulty: "normal",
+        canvas_ready: false,
+        result: %{"winner" => "p1", "score_p1" => 5, "score_p2" => 3},
+        target: "retro-games-island"
+      )
+
+    document = Floki.parse_document!(html)
+    text = Floki.text(document)
+
+    assert text =~ "You 5 x 3 AI"
+    assert text =~ "You won"
   end
 end

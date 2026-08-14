@@ -10,6 +10,7 @@
 import { log } from "../../logger.js";
 
 import { GameEngine } from "../../game_engine.js";
+import { createHockeyAI, normalizeHockeyAIDifficulty } from "./ai.js";
 import {
   MSG_TYPE,
   PHASE,
@@ -48,6 +49,23 @@ import { HexHockeyAudio } from "./audio.js";
 
 const STATE_SEND_INTERVAL = 1; // broadcast every fixed step (60Hz)
 const FACEOFF_GO_FRAMES = 30; // How long "GO!" stays visible
+const HOCKEY_PREVENT_DEFAULT_KEYS = new Set([
+  "ArrowUp",
+  "ArrowDown",
+  "ArrowLeft",
+  "ArrowRight",
+  " ",
+  "Spacebar",
+  "Shift",
+  "w",
+  "W",
+  "a",
+  "A",
+  "s",
+  "S",
+  "d",
+  "D",
+]);
 
 /**
  * Map gameId string to GAME_MODE enum.
@@ -72,11 +90,15 @@ export class HexHockeyEngine extends GameEngine {
    * @param {string} gameId
    * @param {boolean} isHost
    * @param {function|null} onGameEnd
+   * @param {object} [options]
+   * @param {"p2p_host"|"p2p_guest"|"solo"} [options.mode]
+   * @param {object} [options.opponentController]
+   * @param {"easy"|"normal"|"hard"|string} [options.difficulty]
    */
-  constructor(canvas, channel, gameId, isHost, onGameEnd) {
-    super(canvas, channel, gameId, isHost);
+  constructor(canvas, channel, gameId, isHost, onGameEnd, options = {}) {
+    super(canvas, channel, gameId, isHost, options);
     this.onGameEnd = onGameEnd || null;
-    this.mode = resolveMode(gameId);
+    this.gameMode = resolveMode(gameId);
 
     this.gameState = null;
     this.localInputs = { left: false, right: false, up: false, down: false, action: false };
@@ -91,6 +113,10 @@ export class HexHockeyEngine extends GameEngine {
     this.audio = new HexHockeyAudio();
     this.colors = null;
     this.iceParticles = null;
+    this.difficulty = normalizeHockeyAIDifficulty(options.difficulty);
+    this.opponentController =
+      options.opponentController ||
+      (this.mode === "solo" ? createHockeyAI({ difficulty: this.difficulty }) : null);
 
     // Puck trail for rendering
     this.puckTrail = [];
@@ -111,8 +137,12 @@ export class HexHockeyEngine extends GameEngine {
     window.addEventListener("blur", this._boundBlur);
     this.channel.addEventListener("close", this._boundChannelClose);
 
-    if (this.isHost) {
-      this.gameState = createInitialState(this.mode);
+    if (this.mode === "solo") {
+      this.peerReady = true;
+      this.gameState = createInitialState(this.gameMode);
+      this._invalidate();
+    } else if (this.isHost) {
+      this.gameState = createInitialState(this.gameMode);
       this._invalidate();
     } else {
       this._advertiseReady(encodeGameReady);
@@ -141,26 +171,46 @@ export class HexHockeyEngine extends GameEngine {
     const buf = event.data;
     const type = getMessageType(buf);
 
-    if (type === MSG_TYPE.GAME_READY && this.isHost) {
-      if (this.peerReady) return;
-      this.peerReady = true;
-      this._startCountdown();
-    } else if (type === MSG_TYPE.GAME_STATE && !this.isHost) {
-      const decoded = decodeGameState(buf);
-      if (decoded) {
-        this.gameState = unpackState(decoded);
-        this._handlePeerEvents(decoded.eventFlags);
-        this._updatePuckTrail();
-        this._invalidate();
-      }
-    } else if (type === MSG_TYPE.GAME_END && !this.isHost) {
-      const result = decodeGameEnd(buf);
-      if (result) {
-        this.audio.stopSuddenDeath();
-        this.audio.playVictory();
-        if (this.onGameEnd) {
-          this.onGameEnd(result);
+    switch (type) {
+      case MSG_TYPE.GAME_READY:
+        if (this.isHost && !this.peerReady) {
+          this.beginMatch();
         }
+        break;
+
+      case MSG_TYPE.GAME_STATE:
+        if (!this.isHost) {
+          const decoded = decodeGameState(buf);
+          if (decoded) {
+            this._ingestSnapshot(decoded, () => {
+              this.gameState = unpackState(decoded);
+              this._handlePeerEvents(decoded.eventFlags);
+              this._updatePuckTrail();
+            });
+            this.setKeyboardCaptured(
+              decoded.phase !== PHASE.WAITING && decoded.phase !== PHASE.FINISHED,
+            );
+          }
+        }
+        break;
+
+      case MSG_TYPE.GAME_END: {
+        if (this.isHost) break;
+        const result = decodeGameEnd(buf);
+        if (result) {
+          this.setKeyboardCaptured(false);
+          this.audio.stopSuddenDeath();
+          this.audio.playVictory();
+          if (this.onGameEnd) {
+            try {
+              this.onGameEnd(result);
+            } catch (error) {
+              // The game-end callback (pushEvent) threw — keep the game stable.
+              log.debug("[GameEngine] game-end callback failed", error);
+            }
+          }
+        }
+        break;
       }
     }
   }
@@ -174,6 +224,10 @@ export class HexHockeyEngine extends GameEngine {
       this.remoteInputs.action = input.pressed;
       if (input.pressed) this.remoteActionHandled = false;
     }
+  }
+
+  _onRemoteInputChange(previous, current) {
+    if (current.action && !previous.action) this.remoteActionHandled = false;
   }
 
   // ── Input handling ───────────────────────────────────────────
@@ -224,6 +278,7 @@ export class HexHockeyEngine extends GameEngine {
       case "S":
         return INPUT_KEY.DOWN;
       case " ":
+      case "Spacebar":
       case "Shift":
         return INPUT_KEY.ACTION;
       default:
@@ -232,6 +287,36 @@ export class HexHockeyEngine extends GameEngine {
   }
 
   // ── Game lifecycle ───────────────────────────────────────────
+
+  beginMatch(options = {}) {
+    if (
+      !this.running ||
+      !this.isHost ||
+      !this.gameState ||
+      this.gameState.phase !== PHASE.WAITING
+    ) {
+      return false;
+    }
+
+    if (options.difficulty) {
+      this.difficulty = normalizeHockeyAIDifficulty(options.difficulty);
+      if (
+        !options.opponentController &&
+        typeof this.opponentController?.setDifficulty === "function"
+      ) {
+        this.opponentController.setDifficulty(this.difficulty);
+      }
+    }
+    if (options.opponentController) this.opponentController = options.opponentController;
+    if (this.mode === "solo" && !this.opponentController) {
+      this.opponentController = createHockeyAI({ difficulty: this.difficulty });
+    }
+
+    this.setKeyboardCaptured(true);
+    this.peerReady = true;
+    this._startCountdown();
+    return true;
+  }
 
   _startCountdown() {
     this.gameState.phase = PHASE.COUNTDOWN;
@@ -343,6 +428,8 @@ export class HexHockeyEngine extends GameEngine {
     if (state.phase === PHASE.FINISHED) {
       this._invalidate();
       this._broadcastState();
+      this._stopSteps();
+      this.setKeyboardCaptured(false);
       this.running = false;
       return;
     }
@@ -355,6 +442,7 @@ export class HexHockeyEngine extends GameEngine {
 
     // Update field players
     // Host = P1 (local), Peer = P2 (remote)
+    this._updateOpponentInputs();
     updatePlayer(state, this.localInputs, true);
     updatePlayer(state, this.remoteInputs, false);
 
@@ -508,6 +596,8 @@ export class HexHockeyEngine extends GameEngine {
   // ── Game end ─────────────────────────────────────────────────
 
   _handleGameFinished(state) {
+    this._stopSteps();
+    this.setKeyboardCaptured(false);
     const result = determineWinner(state);
     this.audio.stopSuddenDeath();
     this.audio.playVictory();
@@ -515,7 +605,12 @@ export class HexHockeyEngine extends GameEngine {
     this._sendCommand(encodeGameEnd(result));
 
     if (this.onGameEnd) {
-      this.onGameEnd(result);
+      try {
+        this.onGameEnd(result);
+      } catch (error) {
+        // The game-end callback (pushEvent) threw — keep teardown deterministic.
+        log.debug("[GameEngine] game-end callback failed", error);
+      }
     }
   }
 
@@ -534,6 +629,7 @@ export class HexHockeyEngine extends GameEngine {
 
   _handleChannelClose() {
     this._stopSteps();
+    this.setKeyboardCaptured(false);
     if (!this.gameState || this.gameState.phase === PHASE.FINISHED) return;
     this.gameState.phase = PHASE.FINISHED;
     this.audio.stopSuddenDeath();
@@ -569,5 +665,32 @@ export class HexHockeyEngine extends GameEngine {
     if (!this.gameState) return;
     const packed = packState(this.gameState);
     this._sendState(encodeGameState(packed));
+  }
+
+  _updateOpponentInputs() {
+    if (this.mode !== "solo" || typeof this.opponentController?.nextInputs !== "function") return;
+
+    const previousAction = this.remoteInputs.action === true;
+    const nextInputs = this.opponentController.nextInputs({
+      state: this.gameState,
+      difficulty: this.difficulty,
+      player: 2,
+    });
+
+    if (!nextInputs) return;
+
+    this.remoteInputs = {
+      left: nextInputs.left === true,
+      right: nextInputs.right === true,
+      up: nextInputs.up === true,
+      down: nextInputs.down === true,
+      action: nextInputs.action === true,
+    };
+
+    if (this.remoteInputs.action && !previousAction) this.remoteActionHandled = false;
+  }
+
+  _shouldPreventDefaultForCapturedKey(event) {
+    return HOCKEY_PREVENT_DEFAULT_KEYS.has(event.key);
   }
 }
