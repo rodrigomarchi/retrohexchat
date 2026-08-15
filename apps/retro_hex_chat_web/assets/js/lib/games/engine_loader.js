@@ -50,6 +50,9 @@ const SOLO_GAME_IDS = new Set([
   "star_duel",
   "gravity_well",
   "debris_field",
+  "hex_raid",
+  "hex_raid_pacifist",
+  "hex_raid_blitz",
   "hex_outlaw",
   "hex_outlaw_ricochet",
   "hex_outlaw_stagecoach",
@@ -64,6 +67,12 @@ const SOLO_GAME_IDS = new Set([
   "hex_hockey_blitz",
   "hex_hockey_showdown",
 ]);
+
+const SOLO_CONTROLLER_LOADERS = {
+  hex_raid: () => import("./hex_raid/ai.js").then((module) => module.createHexRaidAI),
+  hex_raid_pacifist: () => import("./hex_raid/ai.js").then((module) => module.createHexRaidAI),
+  hex_raid_blitz: () => import("./hex_raid/ai.js").then((module) => module.createHexRaidAI),
+};
 
 /**
  * @param {string} gameId
@@ -92,6 +101,14 @@ export async function loadSoloEngineClass(gameId) {
   }
 
   return loadP2PEngineClass(gameId);
+}
+
+async function createSoloOpponentController(gameId, options = {}) {
+  const loadController = SOLO_CONTROLLER_LOADERS[gameId];
+  if (!loadController) return null;
+
+  const createController = await loadController();
+  return createController(options);
 }
 
 /**
@@ -133,8 +150,12 @@ export async function createGameEngine({
     ...engineOptions,
     mode: runtimeMode,
   };
+  const soloOpponentController =
+    solo && !opponentController
+      ? await createSoloOpponentController(gameId, { difficulty })
+      : opponentController;
 
-  if (opponentController) options.opponentController = opponentController;
+  if (soloOpponentController) options.opponentController = soloOpponentController;
   if (difficulty) options.difficulty = difficulty;
 
   return new EngineClass(canvas, engineTransport, gameId, solo ? true : isHost, onGameEnd, options);

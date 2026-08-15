@@ -32,6 +32,9 @@ describe("engine loader", () => {
     expect(supportsSolo("star_duel")).toBe(true);
     expect(supportsSolo("gravity_well")).toBe(true);
     expect(supportsSolo("debris_field")).toBe(true);
+    expect(supportsSolo("hex_raid")).toBe(true);
+    expect(supportsSolo("hex_raid_pacifist")).toBe(true);
+    expect(supportsSolo("hex_raid_blitz")).toBe(true);
     expect(supportsSolo("hex_outlaw")).toBe(true);
     expect(supportsSolo("hex_outlaw_ricochet")).toBe(true);
     expect(supportsSolo("hex_outlaw_stagecoach")).toBe(true);
@@ -144,6 +147,27 @@ describe("engine loader", () => {
     expect(engine.transport.kind).toBe("local");
     expect(engine.difficulty).toBe("hard");
     expect(engine.opponentController).toBe(opponentController);
+
+    engine.stop();
+  });
+
+  it("creates a Hex Raid family solo engine through the shared factory", async () => {
+    const engine = await createGameEngine({
+      canvas: createCanvas(),
+      gameId: "hex_raid_blitz",
+      mode: "solo",
+      transport: createLocalTransport(),
+      difficulty: "hard",
+      onGameEnd: null,
+    });
+
+    expect(engine.gameId).toBe("hex_raid_blitz");
+    expect(engine.isHost).toBe(true);
+    expect(engine.mode).toBe("solo");
+    expect(engine.gameMode).toBe(2);
+    expect(engine.transport.kind).toBe("local");
+    expect(engine.difficulty).toBe("hard");
+    expect(engine.opponentController?.nextInputs).toEqual(expect.any(Function));
 
     engine.stop();
   });

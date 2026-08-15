@@ -19,7 +19,9 @@ Hex Outlaw e suas variantes. O quarto incremento aplica o mesmo playbook à
 família Star Duel: Star Duel, Gravity Well e Debris Field. O quinto incremento
 leva o playbook para a família Hex Tennis. O sexto incremento leva o playbook para
 a família Hex Invaders. O sétimo incremento leva o playbook para a família Hex
-Hockey: Hex Hockey, Hex Hockey: Blitz e Hex Hockey: Showdown.
+Hockey: Hex Hockey, Hex Hockey: Blitz e Hex Hockey: Showdown. O oitavo
+incremento leva o playbook para a família Hex Raid: Hex Raid, Hex Raid:
+Pacifist e Hex Raid: Blitz.
 
 ## Decisões de produto
 
@@ -46,8 +48,8 @@ Fluxo inicial:
 
 - A janela mostra o catálogo de jogos nativos.
 - Hex Pong, Light Trails, a família Star Duel, a família Hex Outlaw, a família
-  Hex Tennis, a família Hex Invaders e a família Hex Hockey aparecem como jogos
-  disponíveis.
+  Hex Raid, a família Hex Tennis, a família Hex Invaders e a família Hex Hockey
+  aparecem como jogos disponíveis.
 - Jogos futuros podem ficar ocultos até terem AI pronta. Se forem exibidos, devem
   aparecer como indisponíveis de forma explícita, sem prometer jogabilidade.
 

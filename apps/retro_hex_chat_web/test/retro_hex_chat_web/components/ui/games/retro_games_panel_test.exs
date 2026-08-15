@@ -42,6 +42,15 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     controls: "Arrow keys or WASD to thrust/rotate, Space to fire, Down/S to warp"
   }
 
+  @raid %{
+    id: "hex_raid_blitz",
+    name: "Hex Raid: Blitz",
+    tagline: "Fast and furious",
+    description: "5 sections of intense River Raid action.",
+    icon: "game_raid",
+    controls: "Arrow keys to move/speed, Space to fire, Shift to drop mine"
+  }
+
   @tennis %{
     id: "hex_tennis",
     name: "Hex Tennis",
@@ -171,6 +180,28 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     assert text =~ "Space"
   end
 
+  test "renders the Hex Raid goal and mine controls in the shared status panel" do
+    html =
+      render_component(&retro_games_panel/1,
+        id: "retro-games-panel",
+        games: [@raid],
+        status: "ready",
+        selected_game: @raid,
+        difficulty: "normal",
+        canvas_ready: true,
+        target: "retro-games-island"
+      )
+
+    document = Floki.parse_document!(html)
+    text = Floki.text(document)
+
+    assert text =~ "5 sections"
+    assert text =~ "Move/Speed"
+    assert text =~ "Fire/Mine"
+    assert text =~ "Space"
+    assert text =~ "Shift"
+  end
+
   test "renders the Hex Tennis goal and serve controls in the shared status panel" do
     html =
       render_component(&retro_games_panel/1,
@@ -278,5 +309,25 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
 
     assert text =~ "You 5 x 3 AI"
     assert text =~ "You won"
+  end
+
+  test "renders Raid-style flat final score payloads" do
+    html =
+      render_component(&retro_games_panel/1,
+        id: "retro-games-panel",
+        games: [@raid],
+        status: "finished",
+        selected_game: @raid,
+        difficulty: "normal",
+        canvas_ready: false,
+        result: %{"winner" => 2, "score1" => 1200, "score2" => 1450},
+        target: "retro-games-island"
+      )
+
+    document = Floki.parse_document!(html)
+    text = Floki.text(document)
+
+    assert text =~ "You 1200 x 1450 AI"
+    assert text =~ "AI won"
   end
 end

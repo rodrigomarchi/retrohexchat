@@ -104,6 +104,21 @@ function createMockCanvas() {
   return canvas;
 }
 
+function createOpponentController(inputs = {}) {
+  return {
+    nextInputs: vi.fn(() => ({
+      left: false,
+      right: false,
+      accel: false,
+      decel: false,
+      fire: false,
+      mine: false,
+      ...inputs,
+    })),
+    setDifficulty: vi.fn(),
+  };
+}
+
 describe("HexRaidEngine", () => {
   let engine;
   let channel;
@@ -137,7 +152,8 @@ describe("HexRaidEngine", () => {
       engine = new HexRaidEngine(canvas, channel, "hex_raid", true, null);
       expect(engine.isHost).toBe(true);
       expect(engine.gameState.phase).toBe(PHASE.WAITING);
-      expect(engine.mode).toBe(GAME_MODE.RIVER_DUEL);
+      expect(engine.mode).toBe("p2p_host");
+      expect(engine.gameMode).toBe(GAME_MODE.RIVER_DUEL);
     });
 
     it("creates with peer role", () => {
@@ -148,11 +164,11 @@ describe("HexRaidEngine", () => {
 
     it("selects correct mode from gameId", () => {
       engine = new HexRaidEngine(canvas, channel, "hex_raid_pacifist", true, null);
-      expect(engine.mode).toBe(GAME_MODE.PACIFIST);
+      expect(engine.gameMode).toBe(GAME_MODE.PACIFIST);
 
       engine.stop();
       engine = new HexRaidEngine(canvas, channel, "hex_raid_blitz", true, null);
-      expect(engine.mode).toBe(GAME_MODE.BLITZ);
+      expect(engine.gameMode).toBe(GAME_MODE.BLITZ);
     });
 
     it("initializes game state", () => {
@@ -169,6 +185,19 @@ describe("HexRaidEngine", () => {
     it("host generates a seed", () => {
       engine = new HexRaidEngine(canvas, channel, "hex_raid", true, null);
       expect(engine.seed).toBeGreaterThan(0);
+    });
+
+    it("accepts an injected solo opponent controller", () => {
+      const opponentController = createOpponentController();
+      engine = new HexRaidEngine(canvas, channel, "hex_raid", true, null, {
+        mode: "solo",
+        difficulty: "hard",
+        opponentController,
+      });
+
+      expect(engine.mode).toBe("solo");
+      expect(engine.difficulty).toBe("hard");
+      expect(engine.opponentController).toBe(opponentController);
     });
   });
 
@@ -194,6 +223,17 @@ describe("HexRaidEngine", () => {
       engine.start();
       expect(getColors).toHaveBeenCalledWith(canvas);
       expect(engine.colors).not.toBeNull();
+    });
+
+    it("solo starts ready without advertising peer ready", () => {
+      engine = new HexRaidEngine(canvas, channel, "hex_raid", true, null, { mode: "solo" });
+
+      engine.start();
+
+      expect(engine.isHost).toBe(true);
+      expect(engine.peerReady).toBe(true);
+      expect(channel.send).not.toHaveBeenCalled();
+      expect(engine.gameState.phase).toBe(PHASE.WAITING);
     });
   });
 
@@ -248,6 +288,47 @@ describe("HexRaidEngine", () => {
 
       vi.advanceTimersByTime(1000);
       expect(engine.gameState.phase).toBe(PHASE.FLYING);
+      vi.useRealTimers();
+    });
+  });
+
+  describe("solo beginMatch", () => {
+    it("starts countdown and captures keyboard for solo play", () => {
+      vi.useFakeTimers();
+      const opponentController = createOpponentController();
+      engine = new HexRaidEngine(canvas, channel, "hex_raid", true, null, {
+        mode: "solo",
+        opponentController,
+      });
+      engine.start();
+
+      const started = engine.beginMatch({ difficulty: "easy" });
+
+      expect(started).toBe(true);
+      expect(engine.difficulty).toBe("easy");
+      expect(opponentController.setDifficulty).toHaveBeenCalledWith("easy");
+      expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
+      expect(engine._keyboardCaptured).toBe(true);
+      vi.useRealTimers();
+    });
+
+    it("returns false when solo play has no opponent controller", () => {
+      engine = new HexRaidEngine(canvas, channel, "hex_raid", true, null, { mode: "solo" });
+      engine.start();
+
+      expect(engine.beginMatch()).toBe(false);
+    });
+
+    it("returns false when a match is already running", () => {
+      vi.useFakeTimers();
+      engine = new HexRaidEngine(canvas, channel, "hex_raid", true, null, {
+        mode: "solo",
+        opponentController: createOpponentController(),
+      });
+      engine.start();
+      engine.beginMatch();
+
+      expect(engine.beginMatch()).toBe(false);
       vi.useRealTimers();
     });
   });
@@ -523,6 +604,27 @@ describe("HexRaidEngine", () => {
       getLoopFn()();
 
       expect(engine.gameState.jet1X).not.toBe(initialX);
+      vi.useRealTimers();
+    });
+
+    it("processes solo opponent controller inputs as player 2", () => {
+      vi.useFakeTimers();
+      const opponentController = createOpponentController({ right: true, accel: true });
+      engine = new HexRaidEngine(canvas, channel, "hex_raid", true, null, {
+        mode: "solo",
+        opponentController,
+      });
+      engine.start();
+      engine.beginMatch();
+      vi.advanceTimersByTime(3000);
+
+      const initialX = engine.gameState.jet2X;
+      engine._gameLoop();
+
+      expect(opponentController.nextInputs).toHaveBeenCalledWith(
+        expect.objectContaining({ state: expect.any(Object), player: 2 }),
+      );
+      expect(engine.gameState.jet2X).toBeGreaterThan(initialX);
       vi.useRealTimers();
     });
 

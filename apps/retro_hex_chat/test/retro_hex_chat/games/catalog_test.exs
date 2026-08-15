@@ -83,6 +83,9 @@ defmodule RetroHexChat.Games.CatalogTest do
                %{id: "star_duel", name: "Star Duel"},
                %{id: "gravity_well", name: "Gravity Well"},
                %{id: "debris_field", name: "Debris Field"},
+               %{id: "hex_raid", name: "Hex Raid"},
+               %{id: "hex_raid_pacifist", name: "Hex Raid: Pacifist"},
+               %{id: "hex_raid_blitz", name: "Hex Raid: Blitz"},
                %{id: "hex_outlaw", name: "Hex Outlaw"},
                %{id: "hex_outlaw_ricochet", name: "Hex Outlaw: Ricochet"},
                %{id: "hex_outlaw_stagecoach", name: "Hex Outlaw: Stagecoach"},
@@ -122,6 +125,20 @@ defmodule RetroHexChat.Games.CatalogTest do
                    id: "debris_field",
                    controls:
                      "Setas ou WASD para empurrar/rotar, espaço para disparar, Down/S para warp"
+                 },
+                 %{
+                   id: "hex_raid",
+                   controls:
+                     "Setas para mover/velocidade, Espaço para disparar, Shift para soltar a mina"
+                 },
+                 %{
+                   id: "hex_raid_pacifist",
+                   controls: "Setas para mover/velocidade, Espaço para disparar"
+                 },
+                 %{
+                   id: "hex_raid_blitz",
+                   controls:
+                     "Setas para mover/velocidade, Espaço para disparar, Shift para soltar a mina"
                  },
                  %{
                    id: "hex_outlaw",
@@ -189,6 +206,9 @@ defmodule RetroHexChat.Games.CatalogTest do
       assert Catalog.solo_game_id?("star_duel")
       assert Catalog.solo_game_id?("gravity_well")
       assert Catalog.solo_game_id?("debris_field")
+      assert Catalog.solo_game_id?("hex_raid")
+      assert Catalog.solo_game_id?("hex_raid_pacifist")
+      assert Catalog.solo_game_id?("hex_raid_blitz")
       assert Catalog.solo_game_id?("hex_outlaw")
       assert Catalog.solo_game_id?("hex_outlaw_ricochet")
       assert Catalog.solo_game_id?("hex_outlaw_stagecoach")

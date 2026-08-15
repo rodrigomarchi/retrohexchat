@@ -1586,6 +1586,10 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "gravity well",
           "debris field",
           "space",
+          "hex raid",
+          "river raid",
+          "fuel",
+          "mine",
           "hex outlaw",
           "outlaw",
           "western",
@@ -1603,7 +1607,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "Play browser-native RetroHexChat games solo against AI inside the chat desktop. Hex Pong, Light Trails, Star Duel variants, Hex Outlaw variants, Hex Tennis variants, Hex Invaders variants, and Hex Hockey variants are available."
+            "Play browser-native RetroHexChat games solo against AI inside the chat desktop. Hex Pong, Light Trails, Star Duel variants, Hex Raid variants, Hex Outlaw variants, Hex Tennis variants, Hex Invaders variants, and Hex Hockey variants are available."
           ),
         see_also: [
           "feature-hex-pong",
@@ -1611,6 +1615,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "feature-star-duel",
           "feature-gravity-well",
           "feature-debris-field",
+          "feature-hex-raid",
           "feature-hex-outlaw",
           "feature-hex-tennis",
           "feature-hex-invaders",

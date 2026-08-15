@@ -11,6 +11,7 @@
 import { log } from "../../logger.js";
 
 import { GameEngine } from "../../game_engine.js";
+import { normalizeRaidAIDifficulty } from "./difficulty.js";
 import {
   MSG_TYPE,
   PHASE,
@@ -64,6 +65,26 @@ const MODE_MAP = {
   hex_raid_blitz: GAME_MODE.BLITZ,
 };
 
+const RAID_PREVENT_DEFAULT_KEYS = new Set([
+  "ArrowUp",
+  "ArrowDown",
+  "ArrowLeft",
+  "ArrowRight",
+  " ",
+  "Spacebar",
+  "Shift",
+  "w",
+  "W",
+  "a",
+  "A",
+  "s",
+  "S",
+  "d",
+  "D",
+  "q",
+  "Q",
+]);
+
 export class HexRaidEngine extends GameEngine {
   static INPUT_BITS = { left: 0, right: 1, accel: 2, decel: 3, fire: 4, mine: 5 };
 
@@ -73,14 +94,18 @@ export class HexRaidEngine extends GameEngine {
    * @param {string} gameId
    * @param {boolean} isHost
    * @param {function} onGameEnd - callback when game finishes
+   * @param {object} [options]
+   * @param {"p2p_host"|"p2p_guest"|"solo"} [options.mode]
+   * @param {object} [options.opponentController]
+   * @param {"easy"|"normal"|"hard"|string} [options.difficulty]
    */
-  constructor(canvas, channel, gameId, isHost, onGameEnd) {
-    super(canvas, channel, gameId, isHost);
+  constructor(canvas, channel, gameId, isHost, onGameEnd, options = {}) {
+    super(canvas, channel, gameId, isHost, options);
     this.onGameEnd = onGameEnd || null;
 
-    this.mode = MODE_MAP[gameId] || GAME_MODE.RIVER_DUEL;
+    this.gameMode = MODE_MAP[gameId] || GAME_MODE.RIVER_DUEL;
     this.seed = isHost ? ((Math.random() * 0xffffffff) | 0) >>> 0 : 0;
-    this.gameState = createInitialState(this.mode, this.seed);
+    this.gameState = createInitialState(this.gameMode, this.seed);
     this.particles = [];
 
     this.remoteInputs = {
@@ -105,6 +130,8 @@ export class HexRaidEngine extends GameEngine {
     this.audio = new HexRaidAudio();
     this.colors = null;
     this.peerReady = false;
+    this.difficulty = normalizeRaidAIDifficulty(options.difficulty);
+    this.opponentController = options.opponentController || null;
     this._boundBlur = this._handleBlur.bind(this);
     this._boundChannelClose = this._handleChannelClose.bind(this);
 
@@ -122,7 +149,12 @@ export class HexRaidEngine extends GameEngine {
     window.addEventListener("blur", this._boundBlur);
     this.channel.addEventListener("close", this._boundChannelClose);
 
-    if (this.isHost) {
+    if (this.mode === "solo") {
+      this.peerReady = true;
+      this.gameState = createInitialState(this.gameMode, this.seed);
+      this._invalidate();
+    } else if (this.isHost) {
+      this.gameState = createInitialState(this.gameMode, this.seed);
       this._invalidate();
     } else {
       this._advertiseReady(encodeGameReady);
@@ -141,6 +173,24 @@ export class HexRaidEngine extends GameEngine {
     this._remoteFirePressed = false;
     this._localMinePressed = false;
     this._remoteMinePressed = false;
+    this.localInputs = {
+      left: false,
+      right: false,
+      accel: false,
+      decel: false,
+      fire: false,
+      mine: false,
+    };
+    this.remoteInputs = {
+      left: false,
+      right: false,
+      accel: false,
+      decel: false,
+      fire: false,
+      mine: false,
+    };
+    this.peerReady = false;
+    this.frameCount = 0;
     super.stop();
   }
 
@@ -155,22 +205,25 @@ export class HexRaidEngine extends GameEngine {
         if (!this.isHost) {
           const decoded = decodeGameState(buf);
           if (decoded) {
-            this._applyPeerState(decoded);
-            this._invalidate();
+            this._ingestSnapshot(decoded, () => this._applyPeerState(decoded));
+            this.setKeyboardCaptured(
+              decoded.phase !== PHASE.WAITING && decoded.phase !== PHASE.FINISHED,
+            );
           }
         }
         break;
 
       case MSG_TYPE.GAME_READY:
         if (this.isHost && !this.peerReady) {
-          this.peerReady = true;
-          this._startCountdown();
+          this.beginMatch();
         }
         break;
 
       case MSG_TYPE.GAME_END: {
+        if (this.isHost) break;
         const result = decodeGameEnd(buf);
         if (result) {
+          this.setKeyboardCaptured(false);
           this.gameState.phase = PHASE.FINISHED;
           this.gameState.score1 = result.score1;
           this.gameState.score2 = result.score2;
@@ -180,6 +233,14 @@ export class HexRaidEngine extends GameEngine {
             this.audio.playLose();
           }
           this._invalidate();
+          if (this.onGameEnd) {
+            try {
+              this.onGameEnd(result);
+            } catch (error) {
+              // The game-end callback (pushEvent) threw -- keep teardown deterministic.
+              log.debug("[GameEngine] game-end callback failed", error);
+            }
+          }
         }
         break;
       }
@@ -187,12 +248,18 @@ export class HexRaidEngine extends GameEngine {
   }
 
   _applyRemoteInput(input) {
-    if (input.keyCode === INPUT_KEY.LEFT) this.remoteInputs.left = input.pressed;
-    else if (input.keyCode === INPUT_KEY.RIGHT) this.remoteInputs.right = input.pressed;
-    else if (input.keyCode === INPUT_KEY.ACCEL) this.remoteInputs.accel = input.pressed;
-    else if (input.keyCode === INPUT_KEY.DECEL) this.remoteInputs.decel = input.pressed;
-    else if (input.keyCode === INPUT_KEY.FIRE) this.remoteInputs.fire = input.pressed;
-    else if (input.keyCode === INPUT_KEY.MINE) this.remoteInputs.mine = input.pressed;
+    const keyCode = input.key ?? input.keyCode;
+    if (keyCode === INPUT_KEY.LEFT) this.remoteInputs.left = input.pressed;
+    else if (keyCode === INPUT_KEY.RIGHT) this.remoteInputs.right = input.pressed;
+    else if (keyCode === INPUT_KEY.ACCEL) this.remoteInputs.accel = input.pressed;
+    else if (keyCode === INPUT_KEY.DECEL) this.remoteInputs.decel = input.pressed;
+    else if (keyCode === INPUT_KEY.FIRE) this.remoteInputs.fire = input.pressed;
+    else if (keyCode === INPUT_KEY.MINE) this.remoteInputs.mine = input.pressed;
+  }
+
+  _onRemoteInputChange(previous, current) {
+    if (current.fire && !previous.fire) this._remoteFirePressed = false;
+    if (current.mine && !previous.mine) this._remoteMinePressed = false;
   }
 
   _applyPeerState(decoded) {
@@ -203,6 +270,7 @@ export class HexRaidEngine extends GameEngine {
         this.gameState = createInitialState(decoded.mode, decoded.seed);
       }
     }
+    this.gameMode = decoded.mode;
 
     const prevPhase = this.gameState.phase;
 
@@ -266,6 +334,7 @@ export class HexRaidEngine extends GameEngine {
   _handleKeyUp(e) {
     const keyCode = this._mapKey(e.key);
     if (keyCode === null) return;
+    e.preventDefault();
 
     this._setLocalInput(keyCode, false);
   }
@@ -302,6 +371,34 @@ export class HexRaidEngine extends GameEngine {
   }
 
   // --- Phase management (host only) ---
+
+  beginMatch(options = {}) {
+    if (
+      !this.running ||
+      !this.isHost ||
+      !this.gameState ||
+      this.gameState.phase !== PHASE.WAITING
+    ) {
+      return false;
+    }
+
+    if (options.difficulty) {
+      this.difficulty = normalizeRaidAIDifficulty(options.difficulty);
+      if (
+        !options.opponentController &&
+        typeof this.opponentController?.setDifficulty === "function"
+      ) {
+        this.opponentController.setDifficulty(this.difficulty);
+      }
+    }
+    if (options.opponentController) this.opponentController = options.opponentController;
+    if (this.mode === "solo" && !this.opponentController) return false;
+
+    this.setKeyboardCaptured(true);
+    this.peerReady = true;
+    this._startCountdown();
+    return true;
+  }
 
   _startCountdown() {
     this.gameState.phase = PHASE.COUNTDOWN;
@@ -351,6 +448,8 @@ export class HexRaidEngine extends GameEngine {
     s = clearEvents(s);
 
     // --- Apply inputs ---
+
+    this._updateOpponentInputs();
 
     // P1 (host = P1)
     if (this.localInputs.left) s = moveJet(s, 1, -1);
@@ -496,6 +595,7 @@ export class HexRaidEngine extends GameEngine {
 
   _handleGameOver() {
     this._stopSteps();
+    this.setKeyboardCaptured(false);
     const winner = getWinner(this.gameState);
 
     if (winner === 1) {
@@ -516,13 +616,18 @@ export class HexRaidEngine extends GameEngine {
     this._invalidate();
 
     if (this.onGameEnd) {
-      this.onGameEnd({
-        score: {
-          p1: this.gameState.score1,
-          p2: this.gameState.score2,
-        },
-        winner,
-      });
+      try {
+        this.onGameEnd({
+          score: {
+            p1: this.gameState.score1,
+            p2: this.gameState.score2,
+          },
+          winner,
+        });
+      } catch (error) {
+        // The game-end callback (pushEvent) threw -- keep teardown deterministic.
+        log.debug("[GameEngine] game-end callback failed", error);
+      }
     }
   }
 
@@ -530,6 +635,7 @@ export class HexRaidEngine extends GameEngine {
 
   _handleChannelClose() {
     this._stopSteps();
+    this.setKeyboardCaptured(false);
     if (!this.gameState || this.gameState.phase === PHASE.FINISHED) return;
     this.gameState.phase = PHASE.FINISHED;
     this._invalidate();
@@ -560,5 +666,35 @@ export class HexRaidEngine extends GameEngine {
   _playPhaseAudio(prevPhase, newPhase) {
     if (prevPhase === newPhase) return;
     if (newPhase === PHASE.COUNTDOWN) this.audio.playCountdown();
+  }
+
+  _updateOpponentInputs() {
+    if (this.mode !== "solo" || typeof this.opponentController?.nextInputs !== "function") return;
+
+    const previousFire = this.remoteInputs.fire === true;
+    const previousMine = this.remoteInputs.mine === true;
+    const nextInputs = this.opponentController.nextInputs({
+      state: this.gameState,
+      difficulty: this.difficulty,
+      player: 2,
+    });
+
+    if (!nextInputs) return;
+
+    this.remoteInputs = {
+      left: nextInputs.left === true,
+      right: nextInputs.right === true,
+      accel: nextInputs.accel === true,
+      decel: nextInputs.decel === true,
+      fire: nextInputs.fire === true,
+      mine: nextInputs.mine === true,
+    };
+
+    if (this.remoteInputs.fire && !previousFire) this._remoteFirePressed = false;
+    if (this.remoteInputs.mine && !previousMine) this._remoteMinePressed = false;
+  }
+
+  _shouldPreventDefaultForCapturedKey(event) {
+    return RAID_PREVENT_DEFAULT_KEYS.has(event.key);
   }
 }

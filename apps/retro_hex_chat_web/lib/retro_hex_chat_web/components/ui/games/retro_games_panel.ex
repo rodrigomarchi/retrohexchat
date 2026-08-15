@@ -337,13 +337,28 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
 
   defp result_score(result, player) do
     score = Map.get(result, "score") || Map.get(result, :score) || %{}
-    flat_key = "score_#{player}"
 
     Map.get(score, player) ||
-      Map.get(score, String.to_atom(player)) ||
-      Map.get(result, flat_key) ||
-      Map.get(result, String.to_atom(flat_key)) ||
+      nested_score(score, player) ||
+      flat_score(result, player) ||
       0
+  end
+
+  defp nested_score(score, "p1"), do: Map.get(score, :p1)
+  defp nested_score(score, "p2"), do: Map.get(score, :p2)
+
+  defp flat_score(result, "p1") do
+    Map.get(result, "score_p1") ||
+      Map.get(result, :score_p1) ||
+      Map.get(result, "score1") ||
+      Map.get(result, :score1)
+  end
+
+  defp flat_score(result, "p2") do
+    Map.get(result, "score_p2") ||
+      Map.get(result, :score_p2) ||
+      Map.get(result, "score2") ||
+      Map.get(result, :score2)
   end
 
   defp difficulty_label("easy"), do: dgettext("games", "Easy")
@@ -354,6 +369,9 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
   defp goal_label(%{id: "star_duel"}), do: dgettext("games", "First to 7")
   defp goal_label(%{id: "gravity_well"}), do: dgettext("games", "First to 7")
   defp goal_label(%{id: "debris_field"}), do: dgettext("games", "First to 7")
+  defp goal_label(%{id: "hex_raid_blitz"}), do: dgettext("games", "5 sections")
+  defp goal_label(%{id: "hex_raid"}), do: dgettext("games", "10 sections")
+  defp goal_label(%{id: "hex_raid_pacifist"}), do: dgettext("games", "10 sections")
   defp goal_label(%{id: "hex_outlaw"}), do: dgettext("games", "Best of 3 rounds")
   defp goal_label(%{id: "hex_outlaw_ricochet"}), do: dgettext("games", "Best of 3 rounds")
   defp goal_label(%{id: "hex_outlaw_stagecoach"}), do: dgettext("games", "Best of 3 rounds")
@@ -385,6 +403,24 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
       %{label: dgettext("games", "Rotate"), keys: ["←", "→", "A", "D"]},
       %{label: dgettext("games", "Thrust"), keys: ["↑", "W"]},
       %{label: dgettext("games", "Fire/Warp"), keys: ["Space", "↓", "S"]}
+    ]
+  end
+
+  defp control_rows(%{id: "hex_raid_pacifist"}) do
+    [
+      %{label: dgettext("games", "Move/Speed"), keys: ["↑", "↓", "←", "→", "W", "A", "S", "D"]},
+      %{label: dgettext("games", "Fire"), keys: ["Space"]}
+    ]
+  end
+
+  defp control_rows(%{id: id})
+       when id in [
+              "hex_raid",
+              "hex_raid_blitz"
+            ] do
+    [
+      %{label: dgettext("games", "Move/Speed"), keys: ["↑", "↓", "←", "→", "W", "A", "S", "D"]},
+      %{label: dgettext("games", "Fire/Mine"), keys: ["Space", "Shift"]}
     ]
   end
 
