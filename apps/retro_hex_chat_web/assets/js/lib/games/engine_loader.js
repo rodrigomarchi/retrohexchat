@@ -63,6 +63,12 @@ const SOLO_GAME_IDS = new Set([
   "hex_invaders",
   "hex_invaders_coop",
   "hex_invaders_blitz",
+  "hex_enduro",
+  "hex_enduro_night",
+  "hex_enduro_sprint",
+  "hex_skiing",
+  "hex_skiing_escape",
+  "hex_skiing_clean",
   "hex_hockey",
   "hex_hockey_blitz",
   "hex_hockey_showdown",
@@ -72,6 +78,12 @@ const SOLO_CONTROLLER_LOADERS = {
   hex_raid: () => import("./hex_raid/ai.js").then((module) => module.createHexRaidAI),
   hex_raid_pacifist: () => import("./hex_raid/ai.js").then((module) => module.createHexRaidAI),
   hex_raid_blitz: () => import("./hex_raid/ai.js").then((module) => module.createHexRaidAI),
+  hex_enduro: () => import("./hex_enduro/ai.js").then((module) => module.createHexEnduroAI),
+  hex_enduro_night: () => import("./hex_enduro/ai.js").then((module) => module.createHexEnduroAI),
+  hex_enduro_sprint: () => import("./hex_enduro/ai.js").then((module) => module.createHexEnduroAI),
+  hex_skiing: () => import("./hex_skiing/ai.js").then((module) => module.createHexSkiingAI),
+  hex_skiing_escape: () => import("./hex_skiing/ai.js").then((module) => module.createHexSkiingAI),
+  hex_skiing_clean: () => import("./hex_skiing/ai.js").then((module) => module.createHexSkiingAI),
 };
 
 /**

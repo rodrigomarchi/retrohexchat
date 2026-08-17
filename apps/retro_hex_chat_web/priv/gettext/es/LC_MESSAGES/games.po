@@ -133,10 +133,10 @@ msgstr ""
 "El juego se ejecuta en una ventana separada. Mantenga esta ventana abierta "
 "para rastrear su sesión — cerrar la ventana del juego lo termina."
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:500
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:502
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:504
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:506
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:530
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:532
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:534
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:536
 #, elixir-autogen, elixir-format
 msgid "AI won"
 msgstr "La IA ganó"
@@ -183,7 +183,7 @@ msgid "Hard"
 msgstr "Difícil"
 
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:293
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:497
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:527
 #, elixir-autogen, elixir-format
 msgid "Loading"
 msgstr "Cargando"
@@ -198,7 +198,7 @@ msgstr "Cargando juego..."
 msgid "Match Finished"
 msgstr "Partida terminada"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:507
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:537
 #, elixir-autogen, elixir-format
 msgid "No winner reported"
 msgstr "No se informó ganador"
@@ -233,25 +233,25 @@ msgstr "No se pudo cargar el motor del juego."
 msgid "You %{you} x %{ai} AI"
 msgstr "Tú %{you} x %{ai} IA"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:499
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:501
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:503
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:505
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:529
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:531
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:533
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:535
 #, elixir-autogen, elixir-format
 msgid "You won"
 msgstr "Has ganado"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:496
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:526
 #, elixir-autogen, elixir-format
 msgid "Error"
 msgstr "Error"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:495
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:525
 #, elixir-autogen, elixir-format
 msgid "Finished"
 msgstr "Finalizado"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:388
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:394
 #, elixir-autogen, elixir-format
 msgid "First to 11"
 msgstr "Primero a 11"
@@ -266,20 +266,20 @@ msgstr "Objetivo"
 msgid "Mode"
 msgstr "Modo"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:447
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:459
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:471
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:478
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:453
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:465
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:501
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:508
 #, elixir-autogen, elixir-format
 msgid "Move"
 msgstr "Mover"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:494
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:524
 #, elixir-autogen, elixir-format
 msgid "Playing"
 msgstr "Jugando"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:493
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:523
 #, elixir-autogen, elixir-format
 msgid "Ready"
 msgstr "Listo"
@@ -290,7 +290,7 @@ msgid "Status"
 msgstr "Estado"
 
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:368
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:382
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:385
 #, elixir-autogen, elixir-format
 msgid "First to 3 games"
 msgstr "Primero a 3 partidas"
@@ -303,24 +303,25 @@ msgstr "Primero a 3 partidas"
 msgid "Best of 3 rounds"
 msgstr "Mejor de 3 rondas"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:412
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:436
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:460
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:418
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:442
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:466
 #, elixir-autogen, elixir-format
 msgid "Fire"
 msgstr "Disparar"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:435
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:441
 #, elixir-autogen, elixir-format
 msgid "Move/Aim"
 msgstr "Mover/Apuntar"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:392
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:398
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:490
 #, elixir-autogen, elixir-format
 msgid "Steer"
 msgstr "Dirigir"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:405
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:411
 #, elixir-autogen, elixir-format
 msgid "Fire/Warp"
 msgstr "Disparar/Warp"
@@ -332,23 +333,23 @@ msgstr "Disparar/Warp"
 msgid "First to 7"
 msgstr "Primero a 7"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:403
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:409
 #, elixir-autogen, elixir-format
 msgid "Rotate"
 msgstr "Rotar"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:404
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:410
 #, elixir-autogen, elixir-format
 msgid "Thrust"
 msgstr "Propulsión"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:383
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:384
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:386
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:387
 #, elixir-autogen, elixir-format
 msgid "First to 6 games"
 msgstr "Primero a 6 juegos"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:448
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:454
 #, elixir-autogen, elixir-format
 msgid "Serve"
 msgstr "Saque"
@@ -364,22 +365,22 @@ msgstr "10 oleadas"
 msgid "5 waves"
 msgstr "5 oleadas"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:386
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:392
 #, elixir-autogen, elixir-format
 msgid "1 period"
 msgstr "1 período"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:385
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:391
 #, elixir-autogen, elixir-format
 msgid "3 periods"
 msgstr "3 períodos"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:387
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:393
 #, elixir-autogen, elixir-format
 msgid "First to 5 goals"
 msgstr "Primero a 5 goles"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:472
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:502
 #, elixir-autogen, elixir-format
 msgid "Shoot/Tackle"
 msgstr "Disparar/Entrar"
@@ -395,13 +396,58 @@ msgstr "10 secciones"
 msgid "5 sections"
 msgstr "5 secciones"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:423
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:429
 #, elixir-autogen, elixir-format
 msgid "Fire/Mine"
 msgstr "Disparar/Mina"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:411
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:422
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:417
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:428
 #, elixir-autogen, elixir-format
 msgid "Move/Speed"
 msgstr "Mover/Velocidad"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:383
+#, elixir-autogen, elixir-format
+msgid "3 minutes"
+msgstr "3 minutos"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:384
+#, elixir-autogen, elixir-format
+msgid "90 seconds"
+msgstr "90 segundos"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:382
+#, elixir-autogen, elixir-format
+msgid "Best of 3 days"
+msgstr "Al mejor de 3 días"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:477
+#, elixir-autogen, elixir-format
+msgid "Lane"
+msgstr "Carril"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:478
+#, elixir-autogen, elixir-format
+msgid "Speed"
+msgstr "Velocidad"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:479
+#, elixir-autogen, elixir-format
+msgid "Turbo"
+msgstr "Turbo"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:388
+#, elixir-autogen, elixir-format
+msgid "Best of 3 runs"
+msgstr "Al mejor de 3 bajadas"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:390
+#, elixir-autogen, elixir-format
+msgid "Fastest time"
+msgstr "Mejor tiempo"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:389
+#, elixir-autogen, elixir-format
+msgid "Last standing"
+msgstr "Último en pie"

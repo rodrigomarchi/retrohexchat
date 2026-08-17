@@ -1599,6 +1599,14 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "hex invaders",
           "invaders",
           "aliens",
+          "hex enduro",
+          "enduro",
+          "racing",
+          "turbo",
+          "hex skiing",
+          "skiing",
+          "slalom",
+          "avalanche",
           "hex hockey",
           "hockey",
           "puck"
@@ -1607,7 +1615,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "Play browser-native RetroHexChat games solo against AI inside the chat desktop. Hex Pong, Light Trails, Star Duel variants, Hex Raid variants, Hex Outlaw variants, Hex Tennis variants, Hex Invaders variants, and Hex Hockey variants are available."
+            "Play browser-native RetroHexChat games solo against AI inside the chat desktop. Hex Pong, Light Trails, Star Duel variants, Hex Raid variants, Hex Outlaw variants, Hex Tennis variants, Hex Invaders variants, Hex Enduro variants, Hex Skiing variants, and Hex Hockey variants are available."
           ),
         see_also: [
           "feature-hex-pong",
@@ -1619,6 +1627,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "feature-hex-outlaw",
           "feature-hex-tennis",
           "feature-hex-invaders",
+          "feature-hex-enduro",
+          "feature-hex-skiing",
           "feature-hex-hockey",
           "feature-arcade"
         ]

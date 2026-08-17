@@ -379,9 +379,15 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
   defp goal_label(%{id: "hex_invaders"}), do: dgettext("games", "10 waves")
   defp goal_label(%{id: "hex_invaders_coop"}), do: dgettext("games", "10 waves")
   defp goal_label(%{id: "hex_invaders_blitz"}), do: dgettext("games", "5 waves")
+  defp goal_label(%{id: "hex_enduro"}), do: dgettext("games", "Best of 3 days")
+  defp goal_label(%{id: "hex_enduro_night"}), do: dgettext("games", "3 minutes")
+  defp goal_label(%{id: "hex_enduro_sprint"}), do: dgettext("games", "90 seconds")
   defp goal_label(%{id: "hex_tennis_quick"}), do: dgettext("games", "First to 3 games")
   defp goal_label(%{id: "hex_tennis"}), do: dgettext("games", "First to 6 games")
   defp goal_label(%{id: "hex_tennis_sudden"}), do: dgettext("games", "First to 6 games")
+  defp goal_label(%{id: "hex_skiing"}), do: dgettext("games", "Best of 3 runs")
+  defp goal_label(%{id: "hex_skiing_escape"}), do: dgettext("games", "Last standing")
+  defp goal_label(%{id: "hex_skiing_clean"}), do: dgettext("games", "Fastest time")
   defp goal_label(%{id: "hex_hockey"}), do: dgettext("games", "3 periods")
   defp goal_label(%{id: "hex_hockey_blitz"}), do: dgettext("games", "1 period")
   defp goal_label(%{id: "hex_hockey_showdown"}), do: dgettext("games", "First to 5 goals")
@@ -458,6 +464,30 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
     [
       %{label: dgettext("games", "Move"), keys: ["←", "→", "A", "D"]},
       %{label: dgettext("games", "Fire"), keys: ["Space"]}
+    ]
+  end
+
+  defp control_rows(%{id: id})
+       when id in [
+              "hex_enduro",
+              "hex_enduro_night",
+              "hex_enduro_sprint"
+            ] do
+    [
+      %{label: dgettext("games", "Lane"), keys: ["←", "→", "A", "D"]},
+      %{label: dgettext("games", "Speed"), keys: ["↑", "↓", "W", "S"]},
+      %{label: dgettext("games", "Turbo"), keys: ["Space", "Shift"]}
+    ]
+  end
+
+  defp control_rows(%{id: id})
+       when id in [
+              "hex_skiing",
+              "hex_skiing_escape",
+              "hex_skiing_clean"
+            ] do
+    [
+      %{label: dgettext("games", "Steer"), keys: ["←", "→", "A", "D"]}
     ]
   end
 

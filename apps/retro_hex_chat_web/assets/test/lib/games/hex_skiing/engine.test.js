@@ -106,13 +106,20 @@ function createMockCanvas() {
   return canvas;
 }
 
+function createOpponentController(inputs = {}) {
+  return {
+    nextInputs: vi.fn(() => ({ left: false, right: false, ...inputs })),
+    setDifficulty: vi.fn(),
+  };
+}
+
 /**
  * Create a started host engine with initial game state.
  */
-function createEngine(gameId = "hex_skiing", isHost = true, onGameEnd = null) {
+function createEngine(gameId = "hex_skiing", isHost = true, onGameEnd = null, options = {}) {
   const canvas = createMockCanvas();
   const channel = createMockChannel();
-  const engine = new HexSkiingEngine(canvas, channel, gameId, isHost, onGameEnd);
+  const engine = new HexSkiingEngine(canvas, channel, gameId, isHost, onGameEnd, options);
   engine.start();
   return { engine, channel, canvas };
 }
@@ -159,21 +166,22 @@ describe("HexSkiingEngine", () => {
       const canvas = createMockCanvas();
       const channel = createMockChannel();
       engine = new HexSkiingEngine(canvas, channel, "hex_skiing", true, null);
-      expect(engine.mode).toBe(GAME_MODE.ALPINE_RACE);
+      expect(engine.mode).toBe("p2p_host");
+      expect(engine.gameMode).toBe(GAME_MODE.ALPINE_RACE);
     });
 
     it("resolves hex_skiing_escape to AVALANCHE_ESCAPE mode", () => {
       const canvas = createMockCanvas();
       const channel = createMockChannel();
       engine = new HexSkiingEngine(canvas, channel, "hex_skiing_escape", true, null);
-      expect(engine.mode).toBe(GAME_MODE.AVALANCHE_ESCAPE);
+      expect(engine.gameMode).toBe(GAME_MODE.AVALANCHE_ESCAPE);
     });
 
     it("resolves hex_skiing_clean to CLEAN_RUN mode", () => {
       const canvas = createMockCanvas();
       const channel = createMockChannel();
       engine = new HexSkiingEngine(canvas, channel, "hex_skiing_clean", true, null);
-      expect(engine.mode).toBe(GAME_MODE.CLEAN_RUN);
+      expect(engine.gameMode).toBe(GAME_MODE.CLEAN_RUN);
     });
 
     it("creates with correct default state", () => {
@@ -189,6 +197,24 @@ describe("HexSkiingEngine", () => {
       expect(engine.peerReady).toBe(false);
       expect(engine.phaseTimer).toBe(0);
       expect(engine.roundEndTimer).toBe(0);
+      expect(engine.difficulty).toBe("normal");
+      expect(engine.opponentController).toBeNull();
+    });
+
+    it("accepts an injected solo opponent controller", () => {
+      const canvas = createMockCanvas();
+      const channel = createMockChannel();
+      const opponentController = createOpponentController();
+
+      engine = new HexSkiingEngine(canvas, channel, "hex_skiing", true, null, {
+        mode: "solo",
+        difficulty: "hard",
+        opponentController,
+      });
+
+      expect(engine.mode).toBe("solo");
+      expect(engine.difficulty).toBe("hard");
+      expect(engine.opponentController).toBe(opponentController);
     });
 
     it("stores onGameEnd callback", () => {
@@ -256,6 +282,20 @@ describe("HexSkiingEngine", () => {
     it("host does NOT send GAME_READY", () => {
       const { engine: e, channel } = createEngine("hex_skiing", true);
       engine = e;
+      expect(channel.send).not.toHaveBeenCalled();
+    });
+
+    it("solo starts ready without advertising GAME_READY", () => {
+      const { engine: e, channel } = createEngine("hex_skiing", true, null, {
+        mode: "solo",
+        opponentController: createOpponentController(),
+      });
+      engine = e;
+
+      expect(engine.mode).toBe("solo");
+      expect(engine.isHost).toBe(true);
+      expect(engine.peerReady).toBe(true);
+      expect(engine.gameState.phase).toBe(PHASE.WAITING);
       expect(channel.send).not.toHaveBeenCalled();
     });
 
@@ -675,6 +715,48 @@ describe("HexSkiingEngine", () => {
     });
   });
 
+  // ── Solo lifecycle ──
+
+  describe("solo beginMatch", () => {
+    it("starts countdown and captures keyboard for a solo match", () => {
+      const opponentController = createOpponentController();
+      const { engine: e } = createEngine("hex_skiing", true, null, {
+        mode: "solo",
+        opponentController,
+      });
+      engine = e;
+      const captureSpy = vi.spyOn(engine, "setKeyboardCaptured");
+
+      const started = engine.beginMatch({ difficulty: "easy" });
+
+      expect(started).toBe(true);
+      expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
+      expect(engine.peerReady).toBe(true);
+      expect(engine.difficulty).toBe("easy");
+      expect(opponentController.setDifficulty).toHaveBeenCalledWith("easy");
+      expect(captureSpy).toHaveBeenCalledWith(true);
+    });
+
+    it("returns false in solo mode without an opponent controller", () => {
+      const { engine: e } = createEngine("hex_skiing", true, null, { mode: "solo" });
+      engine = e;
+
+      expect(engine.beginMatch()).toBe(false);
+      expect(engine.gameState.phase).toBe(PHASE.WAITING);
+    });
+
+    it("returns false when the match is already running", () => {
+      const { engine: e } = createEngine("hex_skiing", true, null, {
+        mode: "solo",
+        opponentController: createOpponentController(),
+      });
+      engine = e;
+      engine.beginMatch();
+
+      expect(engine.beginMatch()).toBe(false);
+    });
+  });
+
   // ── Game Loop — COUNTDOWN Phase ──
 
   describe("game loop — COUNTDOWN phase", () => {
@@ -826,6 +908,30 @@ describe("HexSkiingEngine", () => {
       engine.frameCount = 99;
       engine._gameLoop();
       expect(engine.gameState.frameCount).toBe(100);
+    });
+
+    it("processes solo opponent controller inputs as player 2", () => {
+      const opponentController = createOpponentController({ left: true });
+      const { engine: e } = createEngine("hex_skiing", true, null, {
+        mode: "solo",
+        opponentController,
+      });
+      engine = e;
+      engine.beginMatch();
+      engine.gameState.phase = PHASE.RACING;
+      engine.gameState.countdown = 0;
+      engine.gameState.p2 = { ...engine.gameState.p2, x: CANVAS_W / 2, velX: 0 };
+
+      engine._gameLoop();
+
+      expect(opponentController.nextInputs).toHaveBeenCalledWith({
+        state: expect.objectContaining({ phase: PHASE.RACING }),
+        player: 2,
+        difficulty: "normal",
+      });
+      expect(engine.remoteInputs.left).toBe(true);
+      expect(engine.remoteInputs.right).toBe(false);
+      expect(engine.gameState.p2.x).toBeLessThan(CANVAS_W / 2);
     });
   });
 

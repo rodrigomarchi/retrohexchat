@@ -128,10 +128,10 @@ msgstr "開始 %{time}"
 msgid "The game runs in a separate window. Keep this window open to track your session — closing the game window ends it."
 msgstr "遊戲在單獨的窗口中運行. 保持此窗口打開以跟蹤您的會話——關閉遊戲窗口結束它."
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:500
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:502
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:504
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:506
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:530
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:532
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:534
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:536
 #, elixir-autogen, elixir-format
 msgid "AI won"
 msgstr "AI 獲勝"
@@ -178,7 +178,7 @@ msgid "Hard"
 msgstr "困難"
 
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:293
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:497
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:527
 #, elixir-autogen, elixir-format
 msgid "Loading"
 msgstr "載入中"
@@ -193,7 +193,7 @@ msgstr "正在載入遊戲..."
 msgid "Match Finished"
 msgstr "比賽結束"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:507
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:537
 #, elixir-autogen, elixir-format
 msgid "No winner reported"
 msgstr "未回報獲勝者"
@@ -228,25 +228,25 @@ msgstr "無法載入遊戲引擎。"
 msgid "You %{you} x %{ai} AI"
 msgstr "你 %{you} x %{ai} AI"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:499
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:501
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:503
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:505
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:529
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:531
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:533
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:535
 #, elixir-autogen, elixir-format
 msgid "You won"
 msgstr "你贏了"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:496
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:526
 #, elixir-autogen, elixir-format
 msgid "Error"
 msgstr "錯誤"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:495
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:525
 #, elixir-autogen, elixir-format
 msgid "Finished"
 msgstr "已結束"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:388
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:394
 #, elixir-autogen, elixir-format
 msgid "First to 11"
 msgstr "先到 11"
@@ -261,20 +261,20 @@ msgstr "目標"
 msgid "Mode"
 msgstr "模式"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:447
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:459
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:471
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:478
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:453
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:465
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:501
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:508
 #, elixir-autogen, elixir-format
 msgid "Move"
 msgstr "移動"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:494
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:524
 #, elixir-autogen, elixir-format
 msgid "Playing"
 msgstr "遊戲中"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:493
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:523
 #, elixir-autogen, elixir-format
 msgid "Ready"
 msgstr "就緒"
@@ -285,7 +285,7 @@ msgid "Status"
 msgstr "狀態"
 
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:368
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:382
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:385
 #, elixir-autogen, elixir-format
 msgid "First to 3 games"
 msgstr "先贏 3 局"
@@ -298,24 +298,25 @@ msgstr "先贏 3 局"
 msgid "Best of 3 rounds"
 msgstr "三局兩勝"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:412
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:436
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:460
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:418
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:442
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:466
 #, elixir-autogen, elixir-format
 msgid "Fire"
 msgstr "開火"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:435
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:441
 #, elixir-autogen, elixir-format
 msgid "Move/Aim"
 msgstr "移動/瞄準"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:392
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:398
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:490
 #, elixir-autogen, elixir-format
 msgid "Steer"
 msgstr "轉向"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:405
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:411
 #, elixir-autogen, elixir-format
 msgid "Fire/Warp"
 msgstr "開火/躍遷"
@@ -327,23 +328,23 @@ msgstr "開火/躍遷"
 msgid "First to 7"
 msgstr "先到 7"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:403
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:409
 #, elixir-autogen, elixir-format
 msgid "Rotate"
 msgstr "旋轉"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:404
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:410
 #, elixir-autogen, elixir-format
 msgid "Thrust"
 msgstr "推進"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:383
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:384
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:386
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:387
 #, elixir-autogen, elixir-format
 msgid "First to 6 games"
 msgstr "先贏 6 局"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:448
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:454
 #, elixir-autogen, elixir-format
 msgid "Serve"
 msgstr "發球"
@@ -359,22 +360,22 @@ msgstr "10 波"
 msgid "5 waves"
 msgstr "5 波"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:386
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:392
 #, elixir-autogen, elixir-format
 msgid "1 period"
 msgstr "1 節"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:385
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:391
 #, elixir-autogen, elixir-format
 msgid "3 periods"
 msgstr "3 節"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:387
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:393
 #, elixir-autogen, elixir-format
 msgid "First to 5 goals"
 msgstr "先到 5 球"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:472
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:502
 #, elixir-autogen, elixir-format
 msgid "Shoot/Tackle"
 msgstr "射門/搶斷"
@@ -390,13 +391,58 @@ msgstr "10 段"
 msgid "5 sections"
 msgstr "5 段"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:423
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:429
 #, elixir-autogen, elixir-format
 msgid "Fire/Mine"
 msgstr "開火/布雷"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:411
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:422
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:417
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:428
 #, elixir-autogen, elixir-format
 msgid "Move/Speed"
 msgstr "移動/速度"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:383
+#, elixir-autogen, elixir-format
+msgid "3 minutes"
+msgstr "3 分鐘"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:384
+#, elixir-autogen, elixir-format
+msgid "90 seconds"
+msgstr "90 秒"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:382
+#, elixir-autogen, elixir-format
+msgid "Best of 3 days"
+msgstr "三天制"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:477
+#, elixir-autogen, elixir-format
+msgid "Lane"
+msgstr "車道"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:478
+#, elixir-autogen, elixir-format
+msgid "Speed"
+msgstr "速度"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:479
+#, elixir-autogen, elixir-format
+msgid "Turbo"
+msgstr "渦輪加速"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:388
+#, elixir-autogen, elixir-format
+msgid "Best of 3 runs"
+msgstr "三局滑降制"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:390
+#, elixir-autogen, elixir-format
+msgid "Fastest time"
+msgstr "最快時間"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:389
+#, elixir-autogen, elixir-format
+msgid "Last standing"
+msgstr "堅持到最後"

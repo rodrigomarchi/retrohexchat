@@ -69,6 +69,24 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     controls: "Arrow keys or A/D to move, Space to fire"
   }
 
+  @enduro %{
+    id: "hex_enduro_sprint",
+    name: "Hex Enduro: Sprint",
+    tagline: "90 seconds of fury",
+    description: "Daylight sprint with no fuel drain.",
+    icon: "game_enduro",
+    controls: "Arrow keys lane/speed, Space or Shift for turbo"
+  }
+
+  @skiing %{
+    id: "hex_skiing_clean",
+    name: "Hex Skiing: Clean Run",
+    tagline: "Pure downhill duel",
+    description: "Fastest time down the mountain wins.",
+    icon: "game_skiing",
+    controls: "Arrow keys (left/right) or A/D to steer"
+  }
+
   @hockey %{
     id: "hex_hockey_showdown",
     name: "Hex Hockey: Showdown",
@@ -243,6 +261,50 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     assert text =~ "Move"
     assert text =~ "Fire"
     assert text =~ "Space"
+    assert text =~ "A"
+    assert text =~ "D"
+  end
+
+  test "renders the Hex Enduro goal and racing controls in the shared status panel" do
+    html =
+      render_component(&retro_games_panel/1,
+        id: "retro-games-panel",
+        games: [@enduro],
+        status: "ready",
+        selected_game: @enduro,
+        difficulty: "normal",
+        canvas_ready: true,
+        target: "retro-games-island"
+      )
+
+    document = Floki.parse_document!(html)
+    text = Floki.text(document)
+
+    assert text =~ "90 seconds"
+    assert text =~ "Lane"
+    assert text =~ "Speed"
+    assert text =~ "Turbo"
+    assert text =~ "Space"
+    assert text =~ "Shift"
+  end
+
+  test "renders the Hex Skiing goal and steering controls in the shared status panel" do
+    html =
+      render_component(&retro_games_panel/1,
+        id: "retro-games-panel",
+        games: [@skiing],
+        status: "ready",
+        selected_game: @skiing,
+        difficulty: "normal",
+        canvas_ready: true,
+        target: "retro-games-island"
+      )
+
+    document = Floki.parse_document!(html)
+    text = Floki.text(document)
+
+    assert text =~ "Fastest time"
+    assert text =~ "Steer"
     assert text =~ "A"
     assert text =~ "D"
   end

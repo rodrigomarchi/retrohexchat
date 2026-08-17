@@ -42,6 +42,12 @@ describe("engine loader", () => {
     expect(supportsSolo("hex_invaders")).toBe(true);
     expect(supportsSolo("hex_invaders_coop")).toBe(true);
     expect(supportsSolo("hex_invaders_blitz")).toBe(true);
+    expect(supportsSolo("hex_enduro")).toBe(true);
+    expect(supportsSolo("hex_enduro_night")).toBe(true);
+    expect(supportsSolo("hex_enduro_sprint")).toBe(true);
+    expect(supportsSolo("hex_skiing")).toBe(true);
+    expect(supportsSolo("hex_skiing_escape")).toBe(true);
+    expect(supportsSolo("hex_skiing_clean")).toBe(true);
     expect(supportsSolo("hex_tennis")).toBe(true);
     expect(supportsSolo("hex_tennis_quick")).toBe(true);
     expect(supportsSolo("hex_tennis_sudden")).toBe(true);
@@ -224,6 +230,48 @@ describe("engine loader", () => {
     expect(engine.transport.kind).toBe("local");
     expect(engine.difficulty).toBe("hard");
     expect(engine.opponentController).toBe(opponentController);
+
+    engine.stop();
+  });
+
+  it("creates a Hex Enduro family solo engine through the shared factory", async () => {
+    const engine = await createGameEngine({
+      canvas: createCanvas(),
+      gameId: "hex_enduro_sprint",
+      mode: "solo",
+      transport: createLocalTransport(),
+      difficulty: "hard",
+      onGameEnd: null,
+    });
+
+    expect(engine.gameId).toBe("hex_enduro_sprint");
+    expect(engine.isHost).toBe(true);
+    expect(engine.mode).toBe("solo");
+    expect(engine.gameMode).toBe(2);
+    expect(engine.transport.kind).toBe("local");
+    expect(engine.difficulty).toBe("hard");
+    expect(engine.opponentController?.nextInputs).toEqual(expect.any(Function));
+
+    engine.stop();
+  });
+
+  it("creates a Hex Skiing family solo engine through the shared factory", async () => {
+    const engine = await createGameEngine({
+      canvas: createCanvas(),
+      gameId: "hex_skiing_clean",
+      mode: "solo",
+      transport: createLocalTransport(),
+      difficulty: "hard",
+      onGameEnd: null,
+    });
+
+    expect(engine.gameId).toBe("hex_skiing_clean");
+    expect(engine.isHost).toBe(true);
+    expect(engine.mode).toBe("solo");
+    expect(engine.gameMode).toBe(2);
+    expect(engine.transport.kind).toBe("local");
+    expect(engine.difficulty).toBe("hard");
+    expect(engine.opponentController?.nextInputs).toEqual(expect.any(Function));
 
     engine.stop();
   });

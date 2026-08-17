@@ -93,9 +93,15 @@ defmodule RetroHexChat.Games.CatalogTest do
                %{id: "hex_invaders", name: "Hex Invaders"},
                %{id: "hex_invaders_coop", name: "Hex Invaders: Co-op"},
                %{id: "hex_invaders_blitz", name: "Hex Invaders: Blitz"},
+               %{id: "hex_enduro", name: "Hex Enduro"},
+               %{id: "hex_enduro_night", name: "Hex Enduro: Night Race"},
+               %{id: "hex_enduro_sprint", name: "Hex Enduro: Sprint"},
                %{id: "hex_tennis", name: "Hex Tennis"},
                %{id: "hex_tennis_quick", name: "Hex Tennis: Quick Match"},
                %{id: "hex_tennis_sudden", name: "Hex Tennis: Sudden Death"},
+               %{id: "hex_skiing", name: "Hex Skiing"},
+               %{id: "hex_skiing_escape", name: "Hex Skiing: Escape"},
+               %{id: "hex_skiing_clean", name: "Hex Skiing: Clean Run"},
                %{id: "hex_hockey", name: "Hex Hockey"},
                %{id: "hex_hockey_blitz", name: "Hex Hockey: Blitz"},
                %{id: "hex_hockey_showdown", name: "Hex Hockey: Showdown"}
@@ -169,6 +175,18 @@ defmodule RetroHexChat.Games.CatalogTest do
                    controls: "Setas ou A/D para mover, Espaço para disparar"
                  },
                  %{
+                   id: "hex_enduro",
+                   controls: "Setas (←/→ faixa, ↑ acelerar, ↓ frear), Espaço ou Shift para turbo"
+                 },
+                 %{
+                   id: "hex_enduro_night",
+                   controls: "Setas (←/→ faixa, ↑ acelerar, ↓ frear), Espaço ou Shift para turbo"
+                 },
+                 %{
+                   id: "hex_enduro_sprint",
+                   controls: "Setas (←/→ faixa, ↑ acelerar, ↓ frear), Espaço ou Shift para turbo"
+                 },
+                 %{
                    id: "hex_tennis",
                    controls: "Setas ou WASD para mover, Espaço ou Shift para servir"
                  },
@@ -179,6 +197,18 @@ defmodule RetroHexChat.Games.CatalogTest do
                  %{
                    id: "hex_tennis_sudden",
                    controls: "Setas ou WASD para mover, Espaço ou Shift para servir"
+                 },
+                 %{
+                   id: "hex_skiing",
+                   controls: "Setas (←/→) ou A/D para dirigir"
+                 },
+                 %{
+                   id: "hex_skiing_escape",
+                   controls: "Setas (←/→) ou A/D para dirigir"
+                 },
+                 %{
+                   id: "hex_skiing_clean",
+                   controls: "Setas (←/→) ou A/D para dirigir"
                  },
                  %{
                    id: "hex_hockey",
@@ -216,6 +246,12 @@ defmodule RetroHexChat.Games.CatalogTest do
       assert Catalog.solo_game_id?("hex_invaders")
       assert Catalog.solo_game_id?("hex_invaders_coop")
       assert Catalog.solo_game_id?("hex_invaders_blitz")
+      assert Catalog.solo_game_id?("hex_enduro")
+      assert Catalog.solo_game_id?("hex_enduro_night")
+      assert Catalog.solo_game_id?("hex_enduro_sprint")
+      assert Catalog.solo_game_id?("hex_skiing")
+      assert Catalog.solo_game_id?("hex_skiing_escape")
+      assert Catalog.solo_game_id?("hex_skiing_clean")
       assert Catalog.solo_game_id?("hex_tennis")
       assert Catalog.solo_game_id?("hex_tennis_quick")
       assert Catalog.solo_game_id?("hex_tennis_sudden")

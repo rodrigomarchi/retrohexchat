@@ -21,7 +21,10 @@ leva o playbook para a família Hex Tennis. O sexto incremento leva o playbook p
 a família Hex Invaders. O sétimo incremento leva o playbook para a família Hex
 Hockey: Hex Hockey, Hex Hockey: Blitz e Hex Hockey: Showdown. O oitavo
 incremento leva o playbook para a família Hex Raid: Hex Raid, Hex Raid:
-Pacifist e Hex Raid: Blitz.
+Pacifist e Hex Raid: Blitz. O nono incremento leva o playbook para a família
+Hex Enduro: Hex Enduro, Hex Enduro: Night Race e Hex Enduro: Sprint. O décimo
+incremento leva o playbook para a família Hex Skiing: Hex Skiing, Hex Skiing:
+Escape e Hex Skiing: Clean Run.
 
 ## Decisões de produto
 
@@ -48,8 +51,8 @@ Fluxo inicial:
 
 - A janela mostra o catálogo de jogos nativos.
 - Hex Pong, Light Trails, a família Star Duel, a família Hex Outlaw, a família
-  Hex Raid, a família Hex Tennis, a família Hex Invaders e a família Hex Hockey
-  aparecem como jogos disponíveis.
+  Hex Raid, a família Hex Tennis, a família Hex Invaders, a família Hex Enduro,
+  a família Hex Skiing e a família Hex Hockey aparecem como jogos disponíveis.
 - Jogos futuros podem ficar ocultos até terem AI pronta. Se forem exibidos, devem
   aparecer como indisponíveis de forma explícita, sem prometer jogabilidade.
 
@@ -339,7 +342,8 @@ Extrair esse mapa para um loader compartilhado evita duplicação:
 
 `supportsSolo/1` só deve ser verdadeiro para jogos que já têm runtime solo
 validado: Hex Pong, Light Trails, família Star Duel, família Hex Outlaw, família
-Hex Tennis e família Hex Invaders neste momento.
+Hex Tennis, família Hex Invaders, família Hex Hockey, família Hex Raid, família
+Hex Enduro e família Hex Skiing neste momento.
 
 ### Foco e teclado
 
@@ -523,6 +527,35 @@ Fluxo técnico esperado:
 - dificuldade altera frequência de decisão, erro de mira, janela de esquiva,
   cooldown e chance de disparo;
 - waves, drops, UFO, shields, combos, áudio e regras de fim continuam
+  compartilhados com o P2P.
+
+### Hex Skiing
+
+A família Hex Skiing usa input pressionado contínuo para direção horizontal. As
+três variantes compartilham a mesma engine:
+
+- `hex_skiing`;
+- `hex_skiing_escape`;
+- `hex_skiing_clean`.
+
+Fluxo técnico esperado:
+
+- engine inicia como host local;
+- `mode` representa o runtime (`p2p_host`, `p2p_guest`, `solo`);
+- `gameMode` representa a variante (`Alpine Race`, `Avalanche Escape`,
+  `Clean Run`);
+- jogador humano controla o player 1;
+- AI controla o player 2 preenchendo `remoteInputs`;
+- AI devolve o mesmo shape de input do peer P2P: `left`, `right`;
+- AI mira o próximo gate de slalom ainda não limpo pelo player 2;
+- quando não há gate urgente, AI busca boosts nas variantes que têm itens;
+- em `Avalanche Escape`, AI prioriza boost quando ele compete com gate;
+- em `Clean Run`, AI ignora itens e corre pela linha segura mais rápida;
+- AI avalia risco horizontal contra árvores, pedras, gelo, bordas e proximidade
+  do oponente;
+- dificuldade altera frequência de decisão, janela de lookahead, margem de
+  segurança, deadzone e chance de erro controlado;
+- scroll, gates, avalanche, blizzard, colisões, áudio e regras de fim continuam
   compartilhados com o P2P.
 
 ## Modelo da AI

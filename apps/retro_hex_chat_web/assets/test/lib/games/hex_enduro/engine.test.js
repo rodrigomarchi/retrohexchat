@@ -109,6 +109,20 @@ function createMockCanvas() {
   return canvas;
 }
 
+function createOpponentController(inputs = {}) {
+  return {
+    nextInputs: vi.fn(() => ({
+      left: false,
+      right: false,
+      accel: false,
+      brake: false,
+      turbo: false,
+      ...inputs,
+    })),
+    setDifficulty: vi.fn(),
+  };
+}
+
 describe("HexEnduroEngine", () => {
   let engine;
   let channel;
@@ -142,7 +156,8 @@ describe("HexEnduroEngine", () => {
       engine = new HexEnduroEngine(canvas, channel, "hex_enduro", true, null);
       expect(engine.isHost).toBe(true);
       expect(engine.gameState.phase).toBe(PHASE.WAITING);
-      expect(engine.mode).toBe(GAME_MODE.CLASSIC_DUEL);
+      expect(engine.mode).toBe("p2p_host");
+      expect(engine.gameMode).toBe(GAME_MODE.CLASSIC_DUEL);
     });
 
     it("creates with peer role", () => {
@@ -153,11 +168,11 @@ describe("HexEnduroEngine", () => {
 
     it("selects correct mode from gameId", () => {
       engine = new HexEnduroEngine(canvas, channel, "hex_enduro_night", true, null);
-      expect(engine.mode).toBe(GAME_MODE.NIGHT_RACE);
+      expect(engine.gameMode).toBe(GAME_MODE.NIGHT_RACE);
 
       engine.stop();
       engine = new HexEnduroEngine(canvas, channel, "hex_enduro_sprint", true, null);
-      expect(engine.mode).toBe(GAME_MODE.SPRINT);
+      expect(engine.gameMode).toBe(GAME_MODE.SPRINT);
     });
 
     it("initializes game state", () => {
@@ -190,6 +205,20 @@ describe("HexEnduroEngine", () => {
         brake: false,
         turbo: false,
       });
+    });
+
+    it("accepts an injected solo opponent controller", () => {
+      const opponentController = createOpponentController();
+      engine = new HexEnduroEngine(canvas, channel, "hex_enduro", true, null, {
+        mode: "solo",
+        difficulty: "hard",
+        opponentController,
+      });
+
+      expect(engine.mode).toBe("solo");
+      expect(engine.gameMode).toBe(GAME_MODE.CLASSIC_DUEL);
+      expect(engine.difficulty).toBe("hard");
+      expect(engine.opponentController).toBe(opponentController);
     });
   });
 
@@ -230,6 +259,20 @@ describe("HexEnduroEngine", () => {
       const callCount = render.mock.calls.length;
       engine.start();
       expect(render.mock.calls.length).toBe(callCount);
+    });
+
+    it("solo starts ready without advertising peer ready", () => {
+      engine = new HexEnduroEngine(canvas, channel, "hex_enduro", true, null, {
+        mode: "solo",
+        opponentController: createOpponentController(),
+      });
+
+      engine.start();
+
+      expect(engine.isHost).toBe(true);
+      expect(engine.peerReady).toBe(true);
+      expect(channel.send).not.toHaveBeenCalled();
+      expect(engine.gameState.phase).toBe(PHASE.WAITING);
     });
   });
 
@@ -297,6 +340,47 @@ describe("HexEnduroEngine", () => {
 
       vi.advanceTimersByTime(3000);
       expect(engine.audio.startEngineDrone).toHaveBeenCalled();
+      vi.useRealTimers();
+    });
+  });
+
+  describe("solo beginMatch", () => {
+    it("starts countdown and captures keyboard for solo play", () => {
+      vi.useFakeTimers();
+      const opponentController = createOpponentController();
+      engine = new HexEnduroEngine(canvas, channel, "hex_enduro", true, null, {
+        mode: "solo",
+        opponentController,
+      });
+      engine.start();
+
+      const started = engine.beginMatch({ difficulty: "easy" });
+
+      expect(started).toBe(true);
+      expect(engine.difficulty).toBe("easy");
+      expect(opponentController.setDifficulty).toHaveBeenCalledWith("easy");
+      expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
+      expect(engine._keyboardCaptured).toBe(true);
+      vi.useRealTimers();
+    });
+
+    it("returns false when solo play has no opponent controller", () => {
+      engine = new HexEnduroEngine(canvas, channel, "hex_enduro", true, null, { mode: "solo" });
+      engine.start();
+
+      expect(engine.beginMatch()).toBe(false);
+    });
+
+    it("returns false when a match is already running", () => {
+      vi.useFakeTimers();
+      engine = new HexEnduroEngine(canvas, channel, "hex_enduro", true, null, {
+        mode: "solo",
+        opponentController: createOpponentController(),
+      });
+      engine.start();
+      engine.beginMatch();
+
+      expect(engine.beginMatch()).toBe(false);
       vi.useRealTimers();
     });
   });
@@ -634,6 +718,28 @@ describe("HexEnduroEngine", () => {
       getLoopFn()();
 
       expect(engine.audio.updateEnginePitch).toHaveBeenCalled();
+      vi.useRealTimers();
+    });
+
+    it("processes solo opponent controller inputs as player 2", () => {
+      vi.useFakeTimers();
+      const opponentController = createOpponentController({ right: true, accel: true });
+      engine = new HexEnduroEngine(canvas, channel, "hex_enduro", true, null, {
+        mode: "solo",
+        opponentController,
+      });
+      engine.start();
+      engine.beginMatch();
+      vi.advanceTimersByTime(3000);
+
+      engine._gameLoop();
+
+      expect(opponentController.nextInputs).toHaveBeenCalledWith(
+        expect.objectContaining({ state: expect.any(Object), player: 2 }),
+      );
+      expect(engine.remoteInputs.right).toBe(true);
+      expect(engine.gameState.p2.targetLane).toBe(1);
+      expect(engine.gameState.p2.speed).toBeGreaterThan(0);
       vi.useRealTimers();
     });
   });
