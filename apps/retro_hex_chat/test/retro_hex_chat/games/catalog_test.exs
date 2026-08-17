@@ -80,6 +80,7 @@ defmodule RetroHexChat.Games.CatalogTest do
       assert [
                %{id: "hex_pong", name: "Hex Pong"},
                %{id: "light_trails", name: "Light Trails"},
+               %{id: "pixel_tanks", name: "Pixel Tanks"},
                %{id: "star_duel", name: "Star Duel"},
                %{id: "gravity_well", name: "Gravity Well"},
                %{id: "debris_field", name: "Debris Field"},
@@ -88,6 +89,7 @@ defmodule RetroHexChat.Games.CatalogTest do
                %{id: "hex_raid", name: "Hex Raid"},
                %{id: "hex_raid_pacifist", name: "Hex Raid: Pacifist"},
                %{id: "hex_raid_blitz", name: "Hex Raid: Blitz"},
+               %{id: "hex_boxing", name: "Hex Boxing"},
                %{id: "hex_outlaw", name: "Hex Outlaw"},
                %{id: "hex_outlaw_ricochet", name: "Hex Outlaw: Ricochet"},
                %{id: "hex_outlaw_stagecoach", name: "Hex Outlaw: Stagecoach"},
@@ -122,6 +124,11 @@ defmodule RetroHexChat.Games.CatalogTest do
         assert [
                  %{id: "hex_pong", controls: "Setas ou W/S para mover a pá"},
                  %{id: "light_trails", controls: "Setas para mudar de direção"},
+                 %{
+                   id: "pixel_tanks",
+                   controls:
+                     "Setas (Esquerda/Direita rotacionam, Cima avança), Espaço para disparar"
+                 },
                  %{
                    id: "star_duel",
                    controls:
@@ -159,6 +166,10 @@ defmodule RetroHexChat.Games.CatalogTest do
                    id: "hex_raid_blitz",
                    controls:
                      "Setas para mover/velocidade, Espaço para disparar, Shift para soltar a mina"
+                 },
+                 %{
+                   id: "hex_boxing",
+                   controls: "Setas ou WASD para mover, Espaço ou Shift para socar"
                  },
                  %{
                    id: "hex_outlaw",
@@ -262,6 +273,7 @@ defmodule RetroHexChat.Games.CatalogTest do
     test "accepts only games exposed in Retro Games" do
       assert Catalog.solo_game_id?("hex_pong")
       assert Catalog.solo_game_id?("light_trails")
+      assert Catalog.solo_game_id?("pixel_tanks")
       assert Catalog.solo_game_id?("star_duel")
       assert Catalog.solo_game_id?("gravity_well")
       assert Catalog.solo_game_id?("debris_field")
@@ -270,6 +282,7 @@ defmodule RetroHexChat.Games.CatalogTest do
       assert Catalog.solo_game_id?("hex_raid")
       assert Catalog.solo_game_id?("hex_raid_pacifist")
       assert Catalog.solo_game_id?("hex_raid_blitz")
+      assert Catalog.solo_game_id?("hex_boxing")
       assert Catalog.solo_game_id?("hex_outlaw")
       assert Catalog.solo_game_id?("hex_outlaw_ricochet")
       assert Catalog.solo_game_id?("hex_outlaw_stagecoach")

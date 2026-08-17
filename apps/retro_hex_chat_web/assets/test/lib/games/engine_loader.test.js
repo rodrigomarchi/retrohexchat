@@ -29,6 +29,7 @@ describe("engine loader", () => {
   it("exposes solo support only for engines with a solo runtime", async () => {
     expect(supportsSolo("hex_pong")).toBe(true);
     expect(supportsSolo("light_trails")).toBe(true);
+    expect(supportsSolo("pixel_tanks")).toBe(true);
     expect(supportsSolo("star_duel")).toBe(true);
     expect(supportsSolo("gravity_well")).toBe(true);
     expect(supportsSolo("debris_field")).toBe(true);
@@ -37,6 +38,7 @@ describe("engine loader", () => {
     expect(supportsSolo("hex_raid")).toBe(true);
     expect(supportsSolo("hex_raid_pacifist")).toBe(true);
     expect(supportsSolo("hex_raid_blitz")).toBe(true);
+    expect(supportsSolo("hex_boxing")).toBe(true);
     expect(supportsSolo("hex_outlaw")).toBe(true);
     expect(supportsSolo("hex_outlaw_ricochet")).toBe(true);
     expect(supportsSolo("hex_outlaw_stagecoach")).toBe(true);
@@ -59,8 +61,8 @@ describe("engine loader", () => {
     expect(supportsSolo("hex_hockey")).toBe(true);
     expect(supportsSolo("hex_hockey_blitz")).toBe(true);
     expect(supportsSolo("hex_hockey_showdown")).toBe(true);
-    expect(supportsSolo("pixel_tanks")).toBe(false);
-    await expect(loadSoloEngineClass("pixel_tanks")).rejects.toThrow(/solo/i);
+    expect(supportsSolo("unknown_game")).toBe(false);
+    await expect(loadSoloEngineClass("unknown_game")).rejects.toThrow(/solo/i);
   });
 
   it("creates engines through a mode-aware factory", async () => {
@@ -176,6 +178,47 @@ describe("engine loader", () => {
     expect(engine.isHost).toBe(true);
     expect(engine.mode).toBe("solo");
     expect(engine.gameMode).toBe(2);
+    expect(engine.transport.kind).toBe("local");
+    expect(engine.difficulty).toBe("hard");
+    expect(engine.opponentController?.nextInputs).toEqual(expect.any(Function));
+
+    engine.stop();
+  });
+
+  it("creates a Hex Boxing solo engine through the shared factory", async () => {
+    const engine = await createGameEngine({
+      canvas: createCanvas(),
+      gameId: "hex_boxing",
+      mode: "solo",
+      transport: createLocalTransport(),
+      difficulty: "hard",
+      onGameEnd: null,
+    });
+
+    expect(engine.gameId).toBe("hex_boxing");
+    expect(engine.isHost).toBe(true);
+    expect(engine.mode).toBe("solo");
+    expect(engine.transport.kind).toBe("local");
+    expect(engine.difficulty).toBe("hard");
+    expect(engine.opponentController?.nextInputs).toEqual(expect.any(Function));
+
+    engine.stop();
+  });
+
+  it("creates a Pixel Tanks solo engine through the shared factory", async () => {
+    const engine = await createGameEngine({
+      canvas: createCanvas(),
+      gameId: "pixel_tanks",
+      mode: "solo",
+      transport: createLocalTransport(),
+      difficulty: "hard",
+      onGameEnd: null,
+    });
+
+    expect(engine.gameId).toBe("pixel_tanks");
+    expect(engine.isHost).toBe(true);
+    expect(engine.mode).toBe("solo");
+    expect(engine.gameMode).toBe(1);
     expect(engine.transport.kind).toBe("local");
     expect(engine.difficulty).toBe("hard");
     expect(engine.opponentController?.nextInputs).toEqual(expect.any(Function));
@@ -343,22 +386,12 @@ describe("engine loader", () => {
   });
 
   it("creates a Hex Hockey family solo engine through the shared factory", async () => {
-    const opponentController = {
-      nextInputs: () => ({
-        left: false,
-        right: false,
-        up: false,
-        down: false,
-        action: false,
-      }),
-    };
     const engine = await createGameEngine({
       canvas: createCanvas(),
       gameId: "hex_hockey_showdown",
       mode: "solo",
       transport: createLocalTransport(),
       difficulty: "hard",
-      opponentController,
       onGameEnd: null,
     });
 
@@ -368,7 +401,7 @@ describe("engine loader", () => {
     expect(engine.gameMode).toBe(2);
     expect(engine.transport.kind).toBe("local");
     expect(engine.difficulty).toBe("hard");
-    expect(engine.opponentController).toBe(opponentController);
+    expect(engine.opponentController?.nextInputs).toEqual(expect.any(Function));
 
     engine.stop();
   });

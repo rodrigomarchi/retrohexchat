@@ -1582,6 +1582,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "hex pong",
           "pong",
           "light trails",
+          "pixel tanks",
+          "tank",
+          "maze",
           "star duel",
           "gravity well",
           "debris field",
@@ -1596,6 +1599,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "river raid",
           "fuel",
           "mine",
+          "hex boxing",
+          "boxing",
+          "punch",
           "hex outlaw",
           "outlaw",
           "western",
@@ -1626,16 +1632,21 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           dgettext(
             "help",
             "Play browser-native RetroHexChat games solo against AI inside the chat desktop. Hex Pong, Light Trails, Star Duel variants, Block Breakers, Hex Warlords, Hex Raid variants, Hex Outlaw variants, Hex Tennis variants, Hex Invaders variants, Hex Enduro variants, Hex Skiing variants, Hex Frost variants, and Hex Hockey variants are available."
-          ),
+          ) <>
+            " " <>
+            dgettext("help", "Hex Boxing is also available.") <>
+            " " <> dgettext("help", "Pixel Tanks is also available."),
         see_also: [
           "feature-hex-pong",
           "feature-light-trails",
+          "feature-pixel-tanks",
           "feature-star-duel",
           "feature-gravity-well",
           "feature-debris-field",
           "feature-block-breakers",
           "feature-hex-warlords",
           "feature-hex-raid",
+          "feature-hex-boxing",
           "feature-hex-outlaw",
           "feature-hex-tennis",
           "feature-hex-invaders",
@@ -1701,6 +1712,11 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             dgettext(
               "help",
               "Controls: Arrow keys (Left/Right rotate, Up forward) or A/D/W, Space or Shift to fire."
+            ) <>
+            " " <>
+            dgettext(
+              "help",
+              "It is also available in Retro Games solo mode against an AI tank."
             )
       },
       %{
@@ -1949,7 +1965,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
               "help",
               "medium 2, far 1. First to 100 is KO! Best of 3 rounds, 2 minutes each. "
             ) <>
-            dgettext("help", "Controls: Arrow keys or WASD to move, Space or Shift to punch.")
+            dgettext("help", "Controls: Arrow keys or WASD to move, Space or Shift to punch."),
+        see_also: ["feature-retro-games", "feature-universal-lobby"]
       },
       %{
         id: "feature-hex-outlaw",

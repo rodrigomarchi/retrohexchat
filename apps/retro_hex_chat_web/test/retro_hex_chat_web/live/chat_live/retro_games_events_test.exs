@@ -40,7 +40,7 @@ defmodule RetroHexChatWeb.ChatLive.RetroGamesEventsTest do
 
       render_click(view, "toolbar_action", %{
         "action" => "open_retro_games",
-        "game-id" => "pixel_tanks"
+        "game-id" => "not_a_retro_game"
       })
 
       assert_push_event(view, "window_command", %{action: "open", id: "retro-games"})

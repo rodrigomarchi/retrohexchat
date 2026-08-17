@@ -47,6 +47,7 @@ const P2P_ENGINE_LOADERS = {
 const SOLO_GAME_IDS = new Set([
   "hex_pong",
   "light_trails",
+  "pixel_tanks",
   "star_duel",
   "gravity_well",
   "debris_field",
@@ -55,6 +56,7 @@ const SOLO_GAME_IDS = new Set([
   "hex_raid",
   "hex_raid_pacifist",
   "hex_raid_blitz",
+  "hex_boxing",
   "hex_outlaw",
   "hex_outlaw_ricochet",
   "hex_outlaw_stagecoach",
@@ -85,6 +87,7 @@ const SOLO_CONTROLLER_LOADERS = {
   hex_raid: () => import("./hex_raid/ai.js").then((module) => module.createHexRaidAI),
   hex_raid_pacifist: () => import("./hex_raid/ai.js").then((module) => module.createHexRaidAI),
   hex_raid_blitz: () => import("./hex_raid/ai.js").then((module) => module.createHexRaidAI),
+  hex_boxing: () => import("./hex_boxing/ai.js").then((module) => module.createBoxingAI),
   hex_enduro: () => import("./hex_enduro/ai.js").then((module) => module.createHexEnduroAI),
   hex_enduro_night: () => import("./hex_enduro/ai.js").then((module) => module.createHexEnduroAI),
   hex_enduro_sprint: () => import("./hex_enduro/ai.js").then((module) => module.createHexEnduroAI),
@@ -94,6 +97,10 @@ const SOLO_CONTROLLER_LOADERS = {
   hex_frost: () => import("./hex_frost/ai.js").then((module) => module.createHexFrostAI),
   hex_frost_blizzard: () => import("./hex_frost/ai.js").then((module) => module.createHexFrostAI),
   hex_frost_peaceful: () => import("./hex_frost/ai.js").then((module) => module.createHexFrostAI),
+  hex_hockey: () => import("./hex_hockey/ai.js").then((module) => module.createHockeyAI),
+  hex_hockey_blitz: () => import("./hex_hockey/ai.js").then((module) => module.createHockeyAI),
+  hex_hockey_showdown: () => import("./hex_hockey/ai.js").then((module) => module.createHockeyAI),
+  pixel_tanks: () => import("./pixel_tanks/ai.js").then((module) => module.createPixelTanksAI),
 };
 
 /**

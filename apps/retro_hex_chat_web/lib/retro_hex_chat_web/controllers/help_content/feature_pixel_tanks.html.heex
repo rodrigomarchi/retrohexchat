@@ -4,6 +4,12 @@
     "Top-down tank combat in a destructible maze. Rotate your tank, drive forward, and fire missiles at your opponent. One missile at a time — miss and you're vulnerable until it expires. 2-minute rounds, best of 3. Five maze layouts keep every match fresh."
   )}
 </p>
+<p>
+  {dgettext(
+    "help_games",
+    "In Retro Games solo mode, you control the left tank while the AI controls the right tank. Difficulty changes how quickly the AI tracks corridors, dodges missiles, and takes shots."
+  )}
+</p>
 <.diagram_game_tanks class="w-full max-w-lg mx-auto my-4" />
 <.help_h4 icon={:icon_btn_keyboard}>{dgettext("help_games", "Controls")}</.help_h4>
 <ul>
@@ -56,6 +62,8 @@
 </p>
 <.help_h4 icon={:icon_link}>{dgettext("help_games", "See Also")}</.help_h4>
 <p>
+  <.help_link topic="feature-retro-games">{dgettext("help_games", "Retro Games")}</.help_link>
+  ·
   <.help_link topic="feature-universal-lobby">{dgettext("help_games", "P2P Session")}</.help_link>
   · <.help_link topic="cmd-p2p">{dgettext("help_games", "/p2p")}</.help_link>
 </p>

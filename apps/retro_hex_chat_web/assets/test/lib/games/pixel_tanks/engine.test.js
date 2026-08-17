@@ -145,6 +145,18 @@ describe("PixelTanksEngine", () => {
       expect(engine.gameState.m2Active).toBe(false);
       expect(engine.gameState.round).toBe(1);
     });
+
+    it("creates a solo engine with default AI difficulty", () => {
+      engine = new PixelTanksEngine(canvas, channel, "pixel_tanks", true, null, {
+        mode: "solo",
+        difficulty: "hard",
+      });
+
+      expect(engine.mode).toBe("solo");
+      expect(engine.gameMode).toBe(GAME_MODE.MAZE_BATTLE);
+      expect(engine.difficulty).toBe("hard");
+      expect(engine.opponentController?.nextInputs).toEqual(expect.any(Function));
+    });
   });
 
   describe("start", () => {
@@ -169,6 +181,18 @@ describe("PixelTanksEngine", () => {
       engine.start();
       expect(getColors).toHaveBeenCalledWith(canvas);
       expect(engine.colors).not.toBeNull();
+    });
+
+    it("solo start does not send GAME_READY", () => {
+      engine = new PixelTanksEngine(canvas, channel, "pixel_tanks", true, null, {
+        mode: "solo",
+      });
+
+      engine.start();
+
+      expect(engine.peerReady).toBe(true);
+      expect(channel.send).not.toHaveBeenCalled();
+      expect(engine.gameState.phase).toBe(PHASE.WAITING);
     });
   });
 
@@ -224,6 +248,60 @@ describe("PixelTanksEngine", () => {
 
       vi.advanceTimersByTime(1000);
       expect(engine.gameState.phase).toBe(PHASE.SPAWNING);
+      vi.useRealTimers();
+    });
+  });
+
+  describe("solo beginMatch", () => {
+    it("starts countdown and captures keyboard", () => {
+      vi.useFakeTimers();
+      engine = new PixelTanksEngine(canvas, channel, "pixel_tanks", true, null, {
+        mode: "solo",
+      });
+      engine.start();
+
+      expect(engine.beginMatch()).toBe(true);
+
+      expect(engine.peerReady).toBe(true);
+      expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
+      expect(engine._keyboardCaptured).toBe(true);
+      vi.useRealTimers();
+    });
+
+    it("updates difficulty and existing controller before starting", () => {
+      vi.useFakeTimers();
+      const opponentController = {
+        setDifficulty: vi.fn(),
+        nextInputs: vi.fn(() => ({
+          rotateLeft: false,
+          rotateRight: false,
+          forward: false,
+          fire: false,
+        })),
+      };
+      engine = new PixelTanksEngine(canvas, channel, "pixel_tanks", true, null, {
+        mode: "solo",
+        difficulty: "easy",
+        opponentController,
+      });
+      engine.start();
+
+      expect(engine.beginMatch({ difficulty: "hard" })).toBe(true);
+
+      expect(engine.difficulty).toBe("hard");
+      expect(opponentController.setDifficulty).toHaveBeenCalledWith("hard");
+      vi.useRealTimers();
+    });
+
+    it("does not restart an active countdown", () => {
+      vi.useFakeTimers();
+      engine = new PixelTanksEngine(canvas, channel, "pixel_tanks", true, null, {
+        mode: "solo",
+      });
+      engine.start();
+
+      expect(engine.beginMatch()).toBe(true);
+      expect(engine.beginMatch()).toBe(false);
       vi.useRealTimers();
     });
   });
@@ -323,6 +401,53 @@ describe("PixelTanksEngine", () => {
       expect(engine.gameState.score1).toBe(2);
       expect(engine.gameState.phase).toBe(PHASE.PLAYING);
       expect(engine.mazeIndex).toBe(3);
+    });
+
+    it("captures keyboard for active peer snapshots and releases on waiting", () => {
+      engine = new PixelTanksEngine(canvas, channel, "pixel_tanks", false, null);
+      engine.start();
+
+      const handler = channel.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
+      const activeState = {
+        tank1X: 100,
+        tank1Y: 200,
+        tank1Rot: 1.0,
+        tank1Alive: true,
+        tank1Invuln: false,
+        tank2X: 500,
+        tank2Y: 300,
+        tank2Rot: 2.0,
+        tank2Alive: true,
+        tank2Invuln: true,
+        m1X: 150,
+        m1Y: 250,
+        m1VX: 5,
+        m1VY: 0,
+        m1Active: true,
+        m1Bounced: false,
+        m2X: 0,
+        m2Y: 0,
+        m2VX: 0,
+        m2VY: 0,
+        m2Active: false,
+        m2Bounced: false,
+        score1: 2,
+        score2: 1,
+        phase: PHASE.PLAYING,
+        countdown: 0,
+        mode: GAME_MODE.MAZE_BATTLE,
+        mazeIndex: 0,
+        round: 1,
+        roundWins1: 0,
+        roundWins2: 0,
+        roundTimer: 5000,
+      };
+
+      handler({ data: encodeGameState(activeState) });
+      expect(engine._keyboardCaptured).toBe(true);
+
+      handler({ data: encodeGameState({ ...activeState, phase: PHASE.WAITING }) });
+      expect(engine._keyboardCaptured).toBe(false);
     });
   });
 
@@ -432,8 +557,12 @@ describe("PixelTanksEngine", () => {
       globalThis.cancelAnimationFrame = vi.fn();
 
       eng.start();
-      const handler = chan.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
-      handler({ data: encodeGameReady() });
+      if (eng.mode === "solo") {
+        eng.beginMatch();
+      } else {
+        const handler = chan.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
+        handler({ data: encodeGameReady() });
+      }
       vi.advanceTimersByTime(4000);
     }
 
@@ -483,6 +612,55 @@ describe("PixelTanksEngine", () => {
       getLoopFn()(0); // still holding — should NOT fire
       expect(engine.gameState.m1Active).toBe(false);
 
+      vi.useRealTimers();
+    });
+
+    it("applies solo opponent movement through remote inputs", () => {
+      engine = new PixelTanksEngine(canvas, channel, "pixel_tanks", true, null, {
+        mode: "solo",
+        opponentController: {
+          nextInputs: vi.fn(() => ({
+            rotateLeft: false,
+            rotateRight: true,
+            forward: false,
+            fire: false,
+          })),
+        },
+      });
+      setupPlaying(engine, channel);
+
+      const initialRot = engine.gameState.tank2Rot;
+      getLoopFn()(0);
+
+      expect(engine.gameState.tank2Rot).not.toBe(initialRot);
+      expect(engine.remoteInputs.rotateRight).toBe(true);
+      vi.useRealTimers();
+    });
+
+    it("applies solo opponent fire as an edge-triggered remote input", () => {
+      engine = new PixelTanksEngine(canvas, channel, "pixel_tanks", true, null, {
+        mode: "solo",
+        opponentController: {
+          nextInputs: vi.fn(() => ({
+            rotateLeft: false,
+            rotateRight: false,
+            forward: false,
+            fire: true,
+          })),
+        },
+      });
+      setupPlaying(engine, channel);
+      engine.walls = new Uint8Array(40 * 30);
+      engine.gameState.tank2X = 500;
+      engine.gameState.tank2Y = 240;
+      engine.gameState.tank2Rot = Math.PI;
+
+      getLoopFn()(0);
+      expect(engine.gameState.m2Active).toBe(true);
+
+      engine.gameState.m2Active = false;
+      getLoopFn()(0);
+      expect(engine.gameState.m2Active).toBe(false);
       vi.useRealTimers();
     });
   });
@@ -708,7 +886,7 @@ describe("PixelTanksEngine", () => {
 
     it("uses updateMissileRicochet in RICOCHET mode", () => {
       engine = new PixelTanksEngine(canvas, channel, "pixel_tanks", true, null);
-      engine.mode = GAME_MODE.RICOCHET;
+      engine.gameMode = GAME_MODE.RICOCHET;
       setupPlaying(engine, channel);
 
       // Set missile active so updateMissileRicochet has work to do
@@ -726,7 +904,7 @@ describe("PixelTanksEngine", () => {
 
     it("plays playRicochet on wallBounced event", () => {
       engine = new PixelTanksEngine(canvas, channel, "pixel_tanks", true, null);
-      engine.mode = GAME_MODE.RICOCHET;
+      engine.gameMode = GAME_MODE.RICOCHET;
       setupPlaying(engine, channel);
 
       engine.audio.playRicochet.mockClear();

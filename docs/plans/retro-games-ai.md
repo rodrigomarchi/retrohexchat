@@ -13,20 +13,9 @@ WASM e separada do console P2P. Ela lista os jogos leves integrados ao chat que
 hoje existem apenas no fluxo peer-to-peer e permite iniciar uma sessão solo contra
 AI.
 
-O primeiro jogo suportado foi Hex Pong. O segundo incremento aplicou o mesmo
-playbook ao Light Trails. O terceiro incremento aplica o batch por família ao
-Hex Outlaw e suas variantes. O quarto incremento aplica o mesmo playbook à
-família Star Duel: Star Duel, Gravity Well e Debris Field. O quinto incremento
-leva o playbook para a família Hex Tennis. O sexto incremento leva o playbook para
-a família Hex Invaders. O sétimo incremento leva o playbook para a família Hex
-Hockey: Hex Hockey, Hex Hockey: Blitz e Hex Hockey: Showdown. O oitavo
-incremento leva o playbook para a família Hex Raid: Hex Raid, Hex Raid:
-Pacifist e Hex Raid: Blitz. O nono incremento leva o playbook para a família
-Hex Enduro: Hex Enduro, Hex Enduro: Night Race e Hex Enduro: Sprint. O décimo
-incremento leva o playbook para a família Hex Skiing: Hex Skiing, Hex Skiing:
-Escape e Hex Skiing: Clean Run. O décimo primeiro incremento leva o playbook
-para a família Hex Frost: Hex Frost, Hex Frost: Blizzard e Hex Frost: Peaceful.
-O décimo segundo incremento leva o playbook para Block Breakers e Hex Warlords.
+O playbook já foi aplicado a Hex Pong, Light Trails, Pixel Tanks, Hex Boxing,
+Block Breakers, Hex Warlords e às famílias Star Duel, Hex Outlaw, Hex Raid,
+Hex Tennis, Hex Invaders, Hex Enduro, Hex Skiing, Hex Frost e Hex Hockey.
 
 ## Decisões de produto
 
@@ -52,10 +41,11 @@ Entrada principal:
 Fluxo inicial:
 
 - A janela mostra o catálogo de jogos nativos.
-- Hex Pong, Light Trails, a família Star Duel, a família Hex Outlaw, Block
-  Breakers, Hex Warlords, a família Hex Raid, a família Hex Tennis, a
-  família Hex Invaders, a família Hex Enduro, a família Hex Skiing, a família Hex
-  Frost e a família Hex Hockey aparecem como jogos disponíveis.
+- Hex Pong, Light Trails, Pixel Tanks, Hex Boxing, Block Breakers, Hex
+  Warlords, a família Star Duel, a família Hex Outlaw, a família Hex Raid, a
+  família Hex Tennis, a família Hex Invaders, a família Hex Enduro, a família
+  Hex Skiing, a família Hex Frost e a família Hex Hockey aparecem como jogos
+  disponíveis.
 - Jogos futuros podem ficar ocultos até terem AI pronta. Se forem exibidos, devem
   aparecer como indisponíveis de forma explícita, sem prometer jogabilidade.
 
@@ -344,10 +334,10 @@ Extrair esse mapa para um loader compartilhado evita duplicação:
 - `createGameEngine({ canvas, gameId, mode, transport, opponent, onGameEnd })`.
 
 `supportsSolo/1` só deve ser verdadeiro para jogos que já têm runtime solo
-validado: Hex Pong, Light Trails, família Star Duel, família Hex Outlaw, família
-Hex Tennis, Block Breakers, Hex Warlords, família Hex Invaders, família
-Hex Hockey, família Hex Raid, família Hex Enduro, família Hex Skiing e família
-Hex Frost neste momento.
+validado: Hex Pong, Light Trails, Pixel Tanks, Hex Boxing, Block Breakers,
+Hex Warlords, família Star Duel, família Hex Outlaw, família Hex Tennis,
+família Hex Invaders, família Hex Hockey, família Hex Raid, família Hex Enduro,
+família Hex Skiing e família Hex Frost neste momento.
 
 ### Foco e teclado
 
@@ -424,6 +414,50 @@ Comportamento esperado:
 - dificuldade altera frequência de decisão, profundidade de avaliação e chance de
   erro controlado;
 - regras de round, partículas, áudio e placar continuam compartilhadas com o P2P.
+
+### Pixel Tanks
+
+Pixel Tanks usa input pressionado contínuo para rotação, avanço e tiro com
+detecção de borda. A engine P2P já mantém o host como autoridade da física, então
+o solo substitui apenas a origem de `remoteInputs`.
+
+Fluxo técnico esperado:
+
+- engine inicia como host local;
+- jogador humano controla o tanque esquerdo;
+- AI controla o tanque direito preenchendo `remoteInputs`;
+- AI devolve o mesmo shape de input do peer P2P: `rotateLeft`, `rotateRight`,
+  `forward`, `fire`;
+- AI usa linha de visão para mirar e atirar, pathfinding em grid para navegar
+  quando paredes bloqueiam o tiro direto e evasão quando um míssil cruza a rota
+  do tanque;
+- AI respeita míssil ativo, cooldown do tanque, invulnerabilidade do oponente e a
+  borda do botão de tiro;
+- dificuldade altera frequência de decisão, erro de mira, tolerância de rotação,
+  janela de ameaça, chance de tiro e cooldown interno;
+- labirinto, colisões, ricochete futuro, rounds, partículas, áudio e regras de
+  match continuam compartilhados com o P2P.
+
+### Hex Boxing
+
+Hex Boxing usa input pressionado contínuo para movimento em 8 direções e soco
+com detecção de borda. O P2P já tem o host como autoridade da física, então o
+solo precisa apenas substituir a origem de `remoteInputs`.
+
+Fluxo técnico esperado:
+
+- engine inicia como host local;
+- jogador humano controla o boxer esquerdo;
+- AI controla o boxer direito preenchendo `remoteInputs`;
+- AI devolve o mesmo shape de input do peer P2P: `up`, `down`, `left`, `right`,
+  `punch`;
+- AI mantém distância útil, aproxima para golpes, recua quando está colada ao
+  oponente e esquiva de socos em andamento;
+- AI respeita direção, alcance, estado de cooldown e a borda do botão de soco;
+- dificuldade altera intervalo de decisão, erro de alvo, alinhamento, chance de
+  soco e cooldown;
+- ringue, colisão de corpos, pontos por distância, KO, rounds, partículas,
+  áudio e regras de match continuam compartilhados com o P2P.
 
 ### Hex Outlaw
 

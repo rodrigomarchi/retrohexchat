@@ -3,6 +3,7 @@ import { decodeInputState } from "../../../../js/lib/games/net_protocol.js";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import {
   PHASE,
+  PUNCH_STATE,
   MSG_TYPE,
   INPUT_KEY,
   encodeGameState,
@@ -192,6 +193,18 @@ describe("BoxingEngine", () => {
       engine = new BoxingEngine(canvas, channel, "hex_boxing", true, null);
       expect(engine.peerReady).toBe(false);
     });
+
+    it("keeps runtime mode and solo difficulty on construction", () => {
+      engine = new BoxingEngine(canvas, channel, "hex_boxing", true, null, {
+        mode: "solo",
+        difficulty: "hard",
+      });
+
+      expect(engine.mode).toBe("solo");
+      expect(engine.isHost).toBe(true);
+      expect(engine.difficulty).toBe("hard");
+      expect(engine.opponentController?.nextInputs).toEqual(expect.any(Function));
+    });
   });
 
   // ── Start / Stop ──
@@ -214,6 +227,64 @@ describe("BoxingEngine", () => {
       const sent = channel.send.mock.calls[0][0];
       expect(sent).toBeInstanceOf(ArrayBuffer);
       expect(new DataView(sent).getUint8(0)).toBe(MSG_TYPE.GAME_READY);
+    });
+
+    it("solo start prepares a local opponent without advertising GAME_READY", () => {
+      engine = new BoxingEngine(canvas, channel, "hex_boxing", true, null, { mode: "solo" });
+      engine.start();
+
+      expect(engine.peerReady).toBe(true);
+      expect(engine.gameState.phase).toBe(PHASE.WAITING);
+      expect(engine._keyboardCaptured).toBe(false);
+      expect(channel.send).not.toHaveBeenCalled();
+    });
+
+    it("beginMatch starts the countdown and captures keyboard", () => {
+      vi.useFakeTimers();
+      engine = new BoxingEngine(canvas, channel, "hex_boxing", true, null, { mode: "solo" });
+      engine.start();
+
+      expect(engine.beginMatch()).toBe(true);
+
+      expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
+      expect(engine.peerReady).toBe(true);
+      expect(engine._keyboardCaptured).toBe(true);
+    });
+
+    it("beginMatch updates solo difficulty and existing controller", () => {
+      vi.useFakeTimers();
+      const opponentController = { setDifficulty: vi.fn(), nextInputs: vi.fn() };
+      engine = new BoxingEngine(canvas, channel, "hex_boxing", true, null, {
+        mode: "solo",
+        difficulty: "easy",
+        opponentController,
+      });
+      engine.start();
+
+      expect(engine.beginMatch({ difficulty: "hard" })).toBe(true);
+
+      expect(engine.difficulty).toBe("hard");
+      expect(opponentController.setDifficulty).toHaveBeenCalledWith("hard");
+    });
+
+    it("beginMatch accepts an explicit opponent controller", () => {
+      vi.useFakeTimers();
+      const opponentController = { nextInputs: vi.fn(() => ({ left: false, punch: false })) };
+      engine = new BoxingEngine(canvas, channel, "hex_boxing", true, null, { mode: "solo" });
+      engine.start();
+
+      expect(engine.beginMatch({ opponentController })).toBe(true);
+
+      expect(engine.opponentController).toBe(opponentController);
+    });
+
+    it("beginMatch does not restart an active countdown", () => {
+      vi.useFakeTimers();
+      engine = new BoxingEngine(canvas, channel, "hex_boxing", true, null, { mode: "solo" });
+      engine.start();
+      engine.beginMatch();
+
+      expect(engine.beginMatch()).toBe(false);
     });
 
     it("stop cleans up", () => {
@@ -282,6 +353,14 @@ describe("BoxingEngine", () => {
       expect(engine._mapKey("q")).toBeNull();
       expect(engine._mapKey("z")).toBeNull();
       expect(engine._mapKey("Enter")).toBeNull();
+    });
+
+    it("prevents global shortcuts for Boxing keys while captured", () => {
+      engine = new BoxingEngine(canvas, channel, "hex_boxing", true, null, { mode: "solo" });
+
+      expect(engine._shouldPreventDefaultForCapturedKey({ key: "ArrowDown" })).toBe(true);
+      expect(engine._shouldPreventDefaultForCapturedKey({ key: "Spacebar" })).toBe(true);
+      expect(engine._shouldPreventDefaultForCapturedKey({ key: "Meta" })).toBe(false);
     });
   });
 
@@ -489,6 +568,18 @@ describe("BoxingEngine", () => {
       expect(engine.gameState.round).toBe(2);
       engine._pump(0);
       expect(render).toHaveBeenCalled();
+    });
+
+    it("captures keyboard while peer receives active match snapshots", () => {
+      const active = createInitialState();
+      active.phase = PHASE.FIGHTING;
+      engine._onChannelMessage({ data: encodeGameState(active) });
+      expect(engine._keyboardCaptured).toBe(true);
+
+      const waiting = createInitialState();
+      waiting.phase = PHASE.WAITING;
+      engine._onChannelMessage({ data: encodeGameState(waiting) });
+      expect(engine._keyboardCaptured).toBe(false);
     });
 
     it("GAME_END sets MATCH_OVER, plays win audio for P2 winner", () => {
@@ -901,6 +992,64 @@ describe("BoxingEngine", () => {
       engine._gameLoop(0);
 
       expect(engine.gameState.roundTimer).toBe(timerBefore);
+    });
+
+    it("routes solo opponent movement through remoteInputs", () => {
+      const opponentController = {
+        nextInputs: vi.fn(() => ({
+          up: false,
+          down: false,
+          left: true,
+          right: false,
+          punch: false,
+        })),
+      };
+      engine = new BoxingEngine(canvas, channel, "hex_boxing", true, null, {
+        mode: "solo",
+        opponentController,
+      });
+      engine.start();
+      engine.gameState.phase = PHASE.FIGHTING;
+      engine.gameState.roundTimer = ROUND_DURATION;
+      const stateBefore = engine.gameState;
+      const startX = engine.gameState.b2x;
+
+      engine._gameLoop();
+
+      expect(opponentController.nextInputs).toHaveBeenCalledWith(
+        expect.objectContaining({ state: stateBefore, difficulty: "normal", player: 2 }),
+      );
+      expect(engine.remoteInputs.left).toBe(true);
+      expect(engine.gameState.b2x).toBeLessThan(startX);
+    });
+
+    it("routes solo opponent punch through the remote edge path", () => {
+      const opponentController = {
+        nextInputs: vi.fn(() => ({
+          up: false,
+          down: false,
+          left: false,
+          right: false,
+          punch: true,
+        })),
+      };
+      engine = new BoxingEngine(canvas, channel, "hex_boxing", true, null, {
+        mode: "solo",
+        opponentController,
+      });
+      engine.start();
+      engine.gameState.phase = PHASE.FIGHTING;
+      engine.gameState.roundTimer = ROUND_DURATION;
+      engine.gameState.b1x = 192;
+      engine.gameState.b1y = 240;
+      engine.gameState.b2x = 220;
+      engine.gameState.b2y = 240;
+      engine.gameState.b2dir = 4;
+
+      engine._gameLoop();
+
+      expect(engine._remotePunchPressed).toBe(true);
+      expect(engine.gameState.b2punchState).toBe(PUNCH_STATE.PUNCHING);
     });
   });
 

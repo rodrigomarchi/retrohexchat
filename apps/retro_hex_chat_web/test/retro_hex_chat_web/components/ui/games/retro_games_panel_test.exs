@@ -24,6 +24,15 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     controls: "Arrow keys to change direction"
   }
 
+  @tanks %{
+    id: "pixel_tanks",
+    name: "Pixel Tanks",
+    tagline: "Blast through the maze",
+    description: "Top-down tank combat in a destructible maze.",
+    icon: "game_tanks",
+    controls: "Arrow keys rotate/advance, Space or Shift to fire"
+  }
+
   @outlaw %{
     id: "hex_outlaw_ricochet",
     name: "Hex Outlaw: Ricochet",
@@ -67,6 +76,15 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     description: "5 sections of intense River Raid action.",
     icon: "game_raid",
     controls: "Arrow keys to move/speed, Space to fire, Shift to drop mine"
+  }
+
+  @boxing %{
+    id: "hex_boxing",
+    name: "Hex Boxing",
+    tagline: "Fists of fury",
+    description: "Top-down boxing in a cyberpunk ring.",
+    icon: "game_boxing",
+    controls: "Arrow keys or WASD to move, Space or Shift to punch"
   }
 
   @tennis %{
@@ -181,6 +199,29 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     assert Floki.text(document) =~ "First to 3"
   end
 
+  test "renders the Pixel Tanks goal and tank controls in the shared status panel" do
+    html =
+      render_component(&retro_games_panel/1,
+        id: "retro-games-panel",
+        games: [@tanks],
+        status: "ready",
+        selected_game: @tanks,
+        difficulty: "normal",
+        canvas_ready: true,
+        target: "retro-games-island"
+      )
+
+    document = Floki.parse_document!(html)
+    text = Floki.text(document)
+
+    assert text =~ "Best of 3"
+    assert text =~ "Rotate"
+    assert text =~ "Forward"
+    assert text =~ "Fire"
+    assert text =~ "Space"
+    assert text =~ "Shift"
+  end
+
   test "renders the Hex Outlaw goal and fire controls in the shared status panel" do
     html =
       render_component(&retro_games_panel/1,
@@ -285,6 +326,28 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     assert text =~ "5 sections"
     assert text =~ "Move/Speed"
     assert text =~ "Fire/Mine"
+    assert text =~ "Space"
+    assert text =~ "Shift"
+  end
+
+  test "renders the Hex Boxing goal and punch controls in the shared status panel" do
+    html =
+      render_component(&retro_games_panel/1,
+        id: "retro-games-panel",
+        games: [@boxing],
+        status: "ready",
+        selected_game: @boxing,
+        difficulty: "normal",
+        canvas_ready: true,
+        target: "retro-games-island"
+      )
+
+    document = Floki.parse_document!(html)
+    text = Floki.text(document)
+
+    assert text =~ "Best of 3"
+    assert text =~ "Move"
+    assert text =~ "Punch"
     assert text =~ "Space"
     assert text =~ "Shift"
   end

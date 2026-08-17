@@ -18,6 +18,7 @@ import {
   encodeGameReady,
   getMessageType,
 } from "./protocol.js";
+import { createPixelTanksAI, normalizePixelTanksAIDifficulty } from "./ai.js";
 import {
   createInitialState,
   decodeMaze,
@@ -46,6 +47,24 @@ const STATE_SEND_INTERVAL = 1; // broadcast every fixed step (60Hz)
 const ROUND_OVER_DELAY = 2500; // ms display round over screen
 const SPAWNING_DELAY = 1000; // ms "ENGAGE!" display
 
+const PIXEL_TANKS_PREVENT_DEFAULT_KEYS = new Set([
+  "ArrowUp",
+  "ArrowDown",
+  "ArrowLeft",
+  "ArrowRight",
+  " ",
+  "Spacebar",
+  "Shift",
+  "w",
+  "W",
+  "a",
+  "A",
+  "s",
+  "S",
+  "d",
+  "D",
+]);
+
 export class PixelTanksEngine extends GameEngine {
   static INPUT_BITS = { rotateLeft: 0, rotateRight: 1, forward: 2, fire: 3 };
 
@@ -59,16 +78,20 @@ export class PixelTanksEngine extends GameEngine {
    * @param {string} gameId
    * @param {boolean} isHost
    * @param {function} onGameEnd - callback when game finishes
+   * @param {object} [options]
+   * @param {"p2p_host"|"p2p_guest"|"solo"} [options.mode]
+   * @param {object} [options.opponentController]
+   * @param {"easy"|"normal"|"hard"|string} [options.difficulty]
    */
-  constructor(canvas, channel, gameId, isHost, onGameEnd) {
-    super(canvas, channel, gameId, isHost);
+  constructor(canvas, channel, gameId, isHost, onGameEnd, options = {}) {
+    super(canvas, channel, gameId, isHost, options);
     this.onGameEnd = onGameEnd || null;
 
     // Determine mode from gameId — all use MAZE_BATTLE for now
-    this.mode = GAME_MODE.MAZE_BATTLE;
-    this.mazeIndex = isHost ? selectMazeForMode(this.mode) : 0;
+    this.gameMode = GAME_MODE.MAZE_BATTLE;
+    this.mazeIndex = isHost ? selectMazeForMode(this.gameMode) : 0;
     this.walls = decodeMaze(this.mazeIndex);
-    this.gameState = createInitialState(this.mode, this.mazeIndex);
+    this.gameState = createInitialState(this.gameMode, this.mazeIndex);
     this.particles = [];
 
     this.remoteInputs = {
@@ -82,6 +105,10 @@ export class PixelTanksEngine extends GameEngine {
     this.audio = new PixelTanksAudio();
     this.colors = null;
     this.peerReady = false;
+    this.difficulty = normalizePixelTanksAIDifficulty(options.difficulty);
+    this.opponentController =
+      options.opponentController ||
+      (this.mode === "solo" ? createPixelTanksAI({ difficulty: this.difficulty }) : null);
     this._boundBlur = this._handleBlur.bind(this);
     this._boundChannelClose = this._handleChannelClose.bind(this);
 
@@ -103,7 +130,10 @@ export class PixelTanksEngine extends GameEngine {
     window.addEventListener("blur", this._boundBlur);
     this.channel.addEventListener("close", this._boundChannelClose);
 
-    if (this.isHost) {
+    if (this.mode === "solo") {
+      this.peerReady = true;
+      this._invalidate();
+    } else if (this.isHost) {
       this._invalidate();
     } else {
       this._advertiseReady(encodeGameReady);
@@ -135,6 +165,9 @@ export class PixelTanksEngine extends GameEngine {
           const decoded = decodeGameState(buf);
           if (decoded) {
             this._ingestSnapshot(decoded, () => this._applyPeerState(decoded));
+            this.setKeyboardCaptured(
+              decoded.phase !== PHASE.WAITING && decoded.phase !== PHASE.MATCH_OVER,
+            );
             this._invalidate();
           }
         }
@@ -142,14 +175,14 @@ export class PixelTanksEngine extends GameEngine {
 
       case MSG_TYPE.GAME_READY:
         if (this.isHost && !this.peerReady) {
-          this.peerReady = true;
-          this._startCountdown();
+          this.beginMatch();
         }
         break;
 
       case MSG_TYPE.GAME_END: {
         const result = decodeGameEnd(buf);
         if (result) {
+          this.setKeyboardCaptured(false);
           this.gameState.phase = PHASE.MATCH_OVER;
           this.gameState.roundWins1 = result.roundWins1;
           this.gameState.roundWins2 = result.roundWins2;
@@ -184,8 +217,8 @@ export class PixelTanksEngine extends GameEngine {
       this.mazeIndex = decoded.mazeIndex;
       this.walls = decodeMaze(decoded.mazeIndex);
     }
-    if (decoded.mode !== this.mode) {
-      this.mode = decoded.mode;
+    if (decoded.mode !== this.gameMode) {
+      this.gameMode = decoded.mode;
     }
 
     const prevPhase = this.gameState.phase;
@@ -269,7 +302,38 @@ export class PixelTanksEngine extends GameEngine {
 
   // --- Phase management (host only) ---
 
+  beginMatch(options = {}) {
+    if (
+      !this.running ||
+      !this.isHost ||
+      !this.gameState ||
+      this.gameState.phase !== PHASE.WAITING
+    ) {
+      return false;
+    }
+
+    if (options.difficulty) {
+      this.difficulty = normalizePixelTanksAIDifficulty(options.difficulty);
+      if (
+        !options.opponentController &&
+        typeof this.opponentController?.setDifficulty === "function"
+      ) {
+        this.opponentController.setDifficulty(this.difficulty);
+      }
+    }
+    if (options.opponentController) this.opponentController = options.opponentController;
+    if (this.mode === "solo" && !this.opponentController) {
+      this.opponentController = createPixelTanksAI({ difficulty: this.difficulty });
+    }
+
+    this.setKeyboardCaptured(true);
+    this.peerReady = true;
+    this._startCountdown();
+    return true;
+  }
+
   _startCountdown() {
+    this.setKeyboardCaptured(true);
     this.gameState.phase = PHASE.COUNTDOWN;
     this.gameState.countdown = 3;
     this._broadcastState();
@@ -294,13 +358,14 @@ export class PixelTanksEngine extends GameEngine {
   }
 
   _startSpawning() {
+    this.setKeyboardCaptured(true);
     this.gameState.phase = PHASE.SPAWNING;
     this._broadcastState();
     this._invalidate();
     this.audio.playSpawn();
 
     this.phaseTimer = setTimeout(() => {
-      if (!this.running) return;
+      if (!this.running || !this.gameState) return;
       this.gameState.phase = PHASE.PLAYING;
       this.gameState.roundTimer = ROUND_DURATION;
       this._broadcastState();
@@ -309,6 +374,7 @@ export class PixelTanksEngine extends GameEngine {
   }
 
   _startGameLoop() {
+    this.setKeyboardCaptured(true);
     this.frameCount = 0;
     this._localFirePressed = false;
     this._remoteFirePressed = false;
@@ -323,8 +389,9 @@ export class PixelTanksEngine extends GameEngine {
   }
 
   _gameLoop() {
-    if (!this.running) return;
+    if (!this.running || !this.isHost || !this.gameState) return;
 
+    this._updateOpponentInputs();
     let s = this.gameState;
 
     // Skip physics during respawn pause
@@ -371,7 +438,7 @@ export class PixelTanksEngine extends GameEngine {
     this._remoteFirePressed = this.remoteInputs.fire;
 
     // Update missiles
-    if (this.mode === GAME_MODE.RICOCHET) {
+    if (this.gameMode === GAME_MODE.RICOCHET) {
       s = updateMissileRicochet(s, 1, this.walls);
       s = updateMissileRicochet(s, 2, this.walls);
     } else {
@@ -445,6 +512,7 @@ export class PixelTanksEngine extends GameEngine {
   }
 
   _handleMatchOver() {
+    this.setKeyboardCaptured(false);
     this._stopSteps();
     const winner = getMatchWinner(this.gameState);
 
@@ -481,6 +549,7 @@ export class PixelTanksEngine extends GameEngine {
   // ── Connection Resilience ──
 
   _handleChannelClose() {
+    this.setKeyboardCaptured(false);
     this._stopSteps();
     if (!this.gameState || this.gameState.phase === PHASE.MATCH_OVER) return;
     this.gameState.phase = PHASE.MATCH_OVER;
@@ -524,5 +593,30 @@ export class PixelTanksEngine extends GameEngine {
     if (newPhase === PHASE.COUNTDOWN) this.audio.playCountdown();
     if (newPhase === PHASE.SPAWNING) this.audio.playSpawn();
     if (newPhase === PHASE.ROUND_OVER) this.audio.playRoundEnd();
+  }
+
+  _updateOpponentInputs() {
+    if (this.mode !== "solo" || typeof this.opponentController?.nextInputs !== "function") return;
+
+    const nextInputs = this.opponentController.nextInputs({
+      state: this.gameState,
+      gameMode: this.gameMode,
+      walls: this.walls,
+      difficulty: this.difficulty,
+      player: 2,
+    });
+
+    if (!nextInputs) return;
+
+    this.remoteInputs = {
+      rotateLeft: nextInputs.rotateLeft === true,
+      rotateRight: nextInputs.rotateRight === true,
+      forward: nextInputs.forward === true,
+      fire: nextInputs.fire === true,
+    };
+  }
+
+  _shouldPreventDefaultForCapturedKey(event) {
+    return PIXEL_TANKS_PREVENT_DEFAULT_KEYS.has(event.key);
   }
 }

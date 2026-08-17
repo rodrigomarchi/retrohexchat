@@ -9,6 +9,7 @@ defmodule RetroHexChat.Games.Catalog do
   @solo_game_ids [
     "hex_pong",
     "light_trails",
+    "pixel_tanks",
     "star_duel",
     "gravity_well",
     "debris_field",
@@ -17,6 +18,7 @@ defmodule RetroHexChat.Games.Catalog do
     "hex_raid",
     "hex_raid_pacifist",
     "hex_raid_blitz",
+    "hex_boxing",
     "hex_outlaw",
     "hex_outlaw_ricochet",
     "hex_outlaw_stagecoach",
