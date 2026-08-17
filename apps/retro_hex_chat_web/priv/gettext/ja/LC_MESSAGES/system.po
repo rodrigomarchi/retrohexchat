@@ -124,7 +124,8 @@ msgstr "データベース接続待ち時間"
 
 #: lib/retro_hex_chat_web/telemetry.ex:104
 #, elixir-autogen, elixir-format
-msgid "The time the connection spent waiting before being checked out for the query"
+msgid ""
+"The time the connection spent waiting before being checked out for the query"
 msgstr "クエリのためにチェックアウトされる前に待ち時間"
 
 #: lib/retro_hex_chat_web/telemetry.ex:256
@@ -195,109 +196,109 @@ msgstr "グループコール室数 定休"
 #: lib/retro_hex_chat_web/telemetry.ex:334
 #, elixir-autogen, elixir-format
 msgid "Number of P2P and group-call client media/signaling errors"
-msgstr ""
+msgstr "P2Pおよびグループコールクライアントmedia/signalingエラーの数"
 
 #: lib/retro_hex_chat_web/telemetry.ex:325
 #, elixir-autogen, elixir-format
 msgid "Number of P2P and group-call recovery state transitions by reason"
-msgstr ""
+msgstr "理由によるP2Pおよびグループコール回復状態の推移の数"
 
 #: lib/retro_hex_chat_web/telemetry.ex:339
 #, elixir-autogen, elixir-format
 msgid "Number of P2P signaling replay outcomes"
-msgstr ""
+msgstr "P2P信号再生結果の数"
 
 #: lib/retro_hex_chat_web/telemetry.ex:372
 #, elixir-autogen, elixir-format
 msgid "95th percentile gap between game snapshots, in milliseconds"
-msgstr ""
+msgstr "ゲームのスナップショット間の95分のパーセンシーギャップ、ミリ秒単位"
 
 #: lib/retro_hex_chat_web/telemetry.ex:361
 #, elixir-autogen, elixir-format
 msgid "Authoritative game snapshots received per second"
-msgstr ""
+msgstr "正規ゲームのスナップショットが秒単位で受信"
 
 #: lib/retro_hex_chat_web/telemetry.ex:366
 #, elixir-autogen, elixir-format
 msgid "Authoritative game snapshots sent per second"
-msgstr ""
+msgstr "正規ゲームスナップショットを秒単位で送信"
 
 #: lib/retro_hex_chat_web/telemetry.ex:118
 #, elixir-autogen, elixir-format
 msgid "Background job processing duration"
-msgstr ""
+msgstr "背景ジョブ処理期間"
 
 #: lib/retro_hex_chat_web/telemetry.ex:162
 #, elixir-autogen, elixir-format
 msgid "Business counts emitted by instrumented domain operations"
-msgstr ""
+msgstr "計測されたドメイン操作によるビジネスカウント"
 
 #: lib/retro_hex_chat_web/telemetry.ex:153
 #, elixir-autogen, elixir-format
 msgid "Current Oban queue length by state"
-msgstr ""
+msgstr "状態による現在の Oban キュー長"
 
 #: lib/retro_hex_chat_web/telemetry.ex:136
 #, elixir-autogen, elixir-format
 msgid "Failed background job processing duration"
-msgstr ""
+msgstr "失敗した背景ジョブ処理期間"
 
 #: lib/retro_hex_chat_web/telemetry.ex:351
 #, elixir-autogen, elixir-format
 msgid "Frames per second drawn during a P2P game"
-msgstr ""
+msgstr "P2Pゲーム中に描画される秒あたりのフレーム"
 
 #: lib/retro_hex_chat_web/telemetry.ex:404
 #, elixir-autogen, elixir-format
 msgid "Frames whose simulation backlog exceeded the catch-up cap"
-msgstr ""
+msgstr "シミュレーションバックログがキャッチアップキャップを上回ったフレーム"
 
 #: lib/retro_hex_chat_web/telemetry.ex:393
 #, elixir-autogen, elixir-format
 msgid "Game snapshots skipped because the data channel was backed up"
-msgstr ""
+msgstr "データチャネルがバックアップされたため、ゲームのスナップショットをスキップ"
 
 #: lib/retro_hex_chat_web/telemetry.ex:171
 #, elixir-autogen, elixir-format
 msgid "Latest business values emitted by instrumented domain operations"
-msgstr ""
+msgstr "計測されたドメイン操作で発生する最新の業務値"
 
 #: lib/retro_hex_chat_web/telemetry.ex:377
 #, elixir-autogen, elixir-format
 msgid "Longest gap between game snapshots, in milliseconds"
-msgstr ""
+msgstr "ゲームスナップショット間のギャップが最も長く、ミリ秒単位"
 
 #: lib/retro_hex_chat_web/telemetry.ex:410
 #, elixir-autogen, elixir-format
 msgid "Milliseconds of P2P gameplay observed, by health verdict"
-msgstr ""
+msgstr "P2Pのゲームプレイのミリ秒は、健康による評論"
 
 #: lib/retro_hex_chat_web/telemetry.ex:387
 #, elixir-autogen, elixir-format
 msgid "Peak queued bytes on the game data channel"
-msgstr ""
+msgstr "ゲームデータチャネルでキュートされたバイトをピーク"
 
 #: lib/retro_hex_chat_web/telemetry.ex:382
 #, elixir-autogen, elixir-format
 msgid "Peer connection round-trip time during a P2P game"
-msgstr ""
+msgstr "P2Pゲーム中のピア接続往復時間"
 
 #: lib/retro_hex_chat_web/telemetry.ex:398
 #, elixir-autogen, elixir-format
 msgid "Simulation steps discarded after the loop fell behind"
-msgstr ""
+msgstr "ループが後ろに落ちた後に廃棄されたシミュレーション手順"
 
 #: lib/retro_hex_chat_web/telemetry.ex:356
 #, elixir-autogen, elixir-format
 msgid "Simulation steps per second run by the game host"
-msgstr ""
+msgstr "ゲームホストによる秒単位のシミュレーション手順"
 
 #: lib/retro_hex_chat_web/telemetry.ex:127
 #, elixir-autogen, elixir-format
 msgid "Time a background job waited before execution"
-msgstr ""
+msgstr "実行前に待機した背景ジョブ"
 
 #: lib/retro_hex_chat_web/telemetry.ex:145
 #, elixir-autogen, elixir-format
 msgid "Time a failed background job waited before execution"
-msgstr ""
+msgstr "実行前に待機する失敗した背景ジョブ"

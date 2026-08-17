@@ -369,6 +369,8 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
   defp goal_label(%{id: "star_duel"}), do: dgettext("games", "First to 7")
   defp goal_label(%{id: "gravity_well"}), do: dgettext("games", "First to 7")
   defp goal_label(%{id: "debris_field"}), do: dgettext("games", "First to 7")
+  defp goal_label(%{id: "block_breakers"}), do: dgettext("games", "Clear all blocks")
+  defp goal_label(%{id: "hex_warlords"}), do: dgettext("games", "Last king standing")
   defp goal_label(%{id: "hex_raid_blitz"}), do: dgettext("games", "5 sections")
   defp goal_label(%{id: "hex_raid"}), do: dgettext("games", "10 sections")
   defp goal_label(%{id: "hex_raid_pacifist"}), do: dgettext("games", "10 sections")
@@ -388,6 +390,9 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
   defp goal_label(%{id: "hex_skiing"}), do: dgettext("games", "Best of 3 runs")
   defp goal_label(%{id: "hex_skiing_escape"}), do: dgettext("games", "Last standing")
   defp goal_label(%{id: "hex_skiing_clean"}), do: dgettext("games", "Fastest time")
+  defp goal_label(%{id: "hex_frost"}), do: dgettext("games", "Best of 5 rounds")
+  defp goal_label(%{id: "hex_frost_blizzard"}), do: dgettext("games", "1 round")
+  defp goal_label(%{id: "hex_frost_peaceful"}), do: dgettext("games", "Build first")
   defp goal_label(%{id: "hex_hockey"}), do: dgettext("games", "3 periods")
   defp goal_label(%{id: "hex_hockey_blitz"}), do: dgettext("games", "1 period")
   defp goal_label(%{id: "hex_hockey_showdown"}), do: dgettext("games", "First to 5 goals")
@@ -409,6 +414,19 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
       %{label: dgettext("games", "Rotate"), keys: ["←", "→", "A", "D"]},
       %{label: dgettext("games", "Thrust"), keys: ["↑", "W"]},
       %{label: dgettext("games", "Fire/Warp"), keys: ["Space", "↓", "S"]}
+    ]
+  end
+
+  defp control_rows(%{id: "block_breakers"}) do
+    [
+      %{label: dgettext("games", "Move"), keys: ["←", "→", "A", "D"]}
+    ]
+  end
+
+  defp control_rows(%{id: "hex_warlords"}) do
+    [
+      %{label: dgettext("games", "Shield"), keys: ["↑", "↓", "W", "S"]},
+      %{label: dgettext("games", "Catch/Release"), keys: ["Space"]}
     ]
   end
 
@@ -488,6 +506,18 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
             ] do
     [
       %{label: dgettext("games", "Steer"), keys: ["←", "→", "A", "D"]}
+    ]
+  end
+
+  defp control_rows(%{id: id})
+       when id in [
+              "hex_frost",
+              "hex_frost_blizzard",
+              "hex_frost_peaceful"
+            ] do
+    [
+      %{label: dgettext("games", "Move"), keys: ["↑", "↓", "←", "→", "W", "A", "S", "D"]},
+      %{label: dgettext("games", "Jump rows"), keys: ["↑", "↓", "W", "S"]}
     ]
   end
 

@@ -4,6 +4,12 @@
     "Cooperative Breakout — Player 1 controls the bottom paddle, Player 2 controls the top. Work together to destroy all 50 neon blocks before running out of lives. The ball bounces between your paddles — miss it and both players lose a life."
   )}
 </p>
+<p>
+  {dgettext(
+    "help_games",
+    "In Retro Games solo mode, you control the bottom paddle while the AI controls the top paddle."
+  )}
+</p>
 <.diagram_game_breakout class="w-full max-w-lg mx-auto my-4" />
 <.help_h4 icon={:icon_btn_keyboard}>{dgettext("help_games", "Controls")}</.help_h4>
 <ul>
@@ -63,6 +69,7 @@
 <.help_h4 icon={:icon_link}>{dgettext("help_games", "See Also")}</.help_h4>
 <p>
   <.help_link topic="feature-universal-lobby">{dgettext("help_games", "P2P Session")}</.help_link>
+  · <.help_link topic="feature-retro-games">{dgettext("help_games", "Retro Games")}</.help_link>
   · <.help_link topic="feature-hex-pong">{dgettext("help_games", "Hex Pong")}</.help_link>
   · <.help_link topic="feature-hex-warlords">{dgettext("help_games", "Hex Warlords")}</.help_link>
   · <.help_link topic="cmd-p2p">{dgettext("help_games", "/p2p")}</.help_link>

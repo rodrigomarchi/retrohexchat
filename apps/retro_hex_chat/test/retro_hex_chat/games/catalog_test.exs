@@ -83,6 +83,8 @@ defmodule RetroHexChat.Games.CatalogTest do
                %{id: "star_duel", name: "Star Duel"},
                %{id: "gravity_well", name: "Gravity Well"},
                %{id: "debris_field", name: "Debris Field"},
+               %{id: "block_breakers", name: "Block Breakers"},
+               %{id: "hex_warlords", name: "Hex Warlords"},
                %{id: "hex_raid", name: "Hex Raid"},
                %{id: "hex_raid_pacifist", name: "Hex Raid: Pacifist"},
                %{id: "hex_raid_blitz", name: "Hex Raid: Blitz"},
@@ -102,6 +104,9 @@ defmodule RetroHexChat.Games.CatalogTest do
                %{id: "hex_skiing", name: "Hex Skiing"},
                %{id: "hex_skiing_escape", name: "Hex Skiing: Escape"},
                %{id: "hex_skiing_clean", name: "Hex Skiing: Clean Run"},
+               %{id: "hex_frost", name: "Hex Frost"},
+               %{id: "hex_frost_blizzard", name: "Hex Frost: Blizzard"},
+               %{id: "hex_frost_peaceful", name: "Hex Frost: Peaceful"},
                %{id: "hex_hockey", name: "Hex Hockey"},
                %{id: "hex_hockey_blitz", name: "Hex Hockey: Blitz"},
                %{id: "hex_hockey_showdown", name: "Hex Hockey: Showdown"}
@@ -131,6 +136,15 @@ defmodule RetroHexChat.Games.CatalogTest do
                    id: "debris_field",
                    controls:
                      "Setas ou WASD para empurrar/rotar, espaço para disparar, Down/S para warp"
+                 },
+                 %{
+                   id: "block_breakers",
+                   controls: "Setas (esquerda/direita) para mover a pá"
+                 },
+                 %{
+                   id: "hex_warlords",
+                   controls:
+                     "Setas (Para cima/para baixo) para mover escudo, espaço para pegar / soltar bola de fogo"
                  },
                  %{
                    id: "hex_raid",
@@ -211,6 +225,21 @@ defmodule RetroHexChat.Games.CatalogTest do
                    controls: "Setas (←/→) ou A/D para dirigir"
                  },
                  %{
+                   id: "hex_frost",
+                   controls:
+                     "Setas ou WASD para mover, para cima/para baixo para saltar entre linhas"
+                 },
+                 %{
+                   id: "hex_frost_blizzard",
+                   controls:
+                     "Setas ou WASD para mover, para cima/para baixo para saltar entre linhas"
+                 },
+                 %{
+                   id: "hex_frost_peaceful",
+                   controls:
+                     "Setas ou WASD para mover, para cima/para baixo para saltar entre linhas"
+                 },
+                 %{
                    id: "hex_hockey",
                    controls: "Setas ou WASD para mover, Espaço ou Shift para chutar/desarmar"
                  },
@@ -236,6 +265,8 @@ defmodule RetroHexChat.Games.CatalogTest do
       assert Catalog.solo_game_id?("star_duel")
       assert Catalog.solo_game_id?("gravity_well")
       assert Catalog.solo_game_id?("debris_field")
+      assert Catalog.solo_game_id?("block_breakers")
+      assert Catalog.solo_game_id?("hex_warlords")
       assert Catalog.solo_game_id?("hex_raid")
       assert Catalog.solo_game_id?("hex_raid_pacifist")
       assert Catalog.solo_game_id?("hex_raid_blitz")
@@ -252,6 +283,9 @@ defmodule RetroHexChat.Games.CatalogTest do
       assert Catalog.solo_game_id?("hex_skiing")
       assert Catalog.solo_game_id?("hex_skiing_escape")
       assert Catalog.solo_game_id?("hex_skiing_clean")
+      assert Catalog.solo_game_id?("hex_frost")
+      assert Catalog.solo_game_id?("hex_frost_blizzard")
+      assert Catalog.solo_game_id?("hex_frost_peaceful")
       assert Catalog.solo_game_id?("hex_tennis")
       assert Catalog.solo_game_id?("hex_tennis_quick")
       assert Catalog.solo_game_id?("hex_tennis_sudden")

@@ -1586,6 +1586,12 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "gravity well",
           "debris field",
           "space",
+          "block breakers",
+          "breakout",
+          "hex warlords",
+          "warlords",
+          "castle",
+          "fireball",
           "hex raid",
           "river raid",
           "fuel",
@@ -1607,6 +1613,10 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "skiing",
           "slalom",
           "avalanche",
+          "hex frost",
+          "frostbite",
+          "igloo",
+          "blizzard",
           "hex hockey",
           "hockey",
           "puck"
@@ -1615,7 +1625,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "Play browser-native RetroHexChat games solo against AI inside the chat desktop. Hex Pong, Light Trails, Star Duel variants, Hex Raid variants, Hex Outlaw variants, Hex Tennis variants, Hex Invaders variants, Hex Enduro variants, Hex Skiing variants, and Hex Hockey variants are available."
+            "Play browser-native RetroHexChat games solo against AI inside the chat desktop. Hex Pong, Light Trails, Star Duel variants, Block Breakers, Hex Warlords, Hex Raid variants, Hex Outlaw variants, Hex Tennis variants, Hex Invaders variants, Hex Enduro variants, Hex Skiing variants, Hex Frost variants, and Hex Hockey variants are available."
           ),
         see_also: [
           "feature-hex-pong",
@@ -1623,12 +1633,15 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "feature-star-duel",
           "feature-gravity-well",
           "feature-debris-field",
+          "feature-block-breakers",
+          "feature-hex-warlords",
           "feature-hex-raid",
           "feature-hex-outlaw",
           "feature-hex-tennis",
           "feature-hex-invaders",
           "feature-hex-enduro",
           "feature-hex-skiing",
+          "feature-hex-frost",
           "feature-hex-hockey",
           "feature-arcade"
         ]

@@ -111,10 +111,23 @@ function createMockCanvas() {
   return canvas;
 }
 
-function createEngine(gameId = "hex_frost", isHost = true, onGameEnd = null) {
+function createOpponentController(inputs = {}) {
+  return {
+    setDifficulty: vi.fn(),
+    nextInputs: vi.fn(() => ({
+      left: false,
+      right: false,
+      up: false,
+      down: false,
+      ...inputs,
+    })),
+  };
+}
+
+function createEngine(gameId = "hex_frost", isHost = true, onGameEnd = null, options = {}) {
   const channel = createMockChannel();
   const canvas = createMockCanvas();
-  const engine = new HexFrostEngine(canvas, channel, gameId, isHost, onGameEnd);
+  const engine = new HexFrostEngine(canvas, channel, gameId, isHost, onGameEnd, options);
   return { engine, channel, canvas };
 }
 
@@ -151,22 +164,39 @@ describe("HexFrostEngine", () => {
   describe("constructor", () => {
     it("resolves ARCTIC_RACE mode for default gameId", () => {
       const { engine } = createEngine("hex_frost");
-      expect(engine.mode).toBe(GAME_MODE.ARCTIC_RACE);
+      expect(engine.mode).toBe("p2p_host");
+      expect(engine.gameMode).toBe(GAME_MODE.ARCTIC_RACE);
     });
 
     it("resolves BLIZZARD mode for hex_frost_blizzard", () => {
       const { engine } = createEngine("hex_frost_blizzard");
-      expect(engine.mode).toBe(GAME_MODE.BLIZZARD);
+      expect(engine.mode).toBe("p2p_host");
+      expect(engine.gameMode).toBe(GAME_MODE.BLIZZARD);
     });
 
     it("resolves PEACEFUL mode for hex_frost_peaceful", () => {
       const { engine } = createEngine("hex_frost_peaceful");
-      expect(engine.mode).toBe(GAME_MODE.PEACEFUL);
+      expect(engine.mode).toBe("p2p_host");
+      expect(engine.gameMode).toBe(GAME_MODE.PEACEFUL);
     });
 
     it("defaults unknown gameId to ARCTIC_RACE", () => {
       const { engine } = createEngine("hex_frost_unknown_variant");
-      expect(engine.mode).toBe(GAME_MODE.ARCTIC_RACE);
+      expect(engine.gameMode).toBe(GAME_MODE.ARCTIC_RACE);
+    });
+
+    it("accepts solo runtime options without changing the Frost variant", () => {
+      const opponentController = createOpponentController();
+      const { engine } = createEngine("hex_frost_blizzard", true, null, {
+        mode: "solo",
+        difficulty: "hard",
+        opponentController,
+      });
+
+      expect(engine.mode).toBe("solo");
+      expect(engine.gameMode).toBe(GAME_MODE.BLIZZARD);
+      expect(engine.difficulty).toBe("hard");
+      expect(engine.opponentController).toBe(opponentController);
     });
 
     it("initializes localInputs with all false", () => {
@@ -217,6 +247,13 @@ describe("HexFrostEngine", () => {
       expect(engine.phaseTimer).toBe(0);
       expect(engine.roundEndTimer).toBe(0);
     });
+
+    it("initializes solo fields with normal difficulty by default", () => {
+      const { engine } = createEngine();
+
+      expect(engine.difficulty).toBe("normal");
+      expect(engine.opponentController).toBeNull();
+    });
   });
 
   // ── 2. start() ─────────────────────────────────────────────────
@@ -261,6 +298,22 @@ describe("HexFrostEngine", () => {
       const { engine } = createEngine("hex_frost", false);
       engine.start();
       expect(engine.gameState).toBeNull();
+      engine.stop();
+    });
+
+    it("solo host creates initial state without sending peer-ready traffic", () => {
+      const opponentController = createOpponentController();
+      const { engine, channel } = createEngine("hex_frost_peaceful", true, null, {
+        mode: "solo",
+        opponentController,
+      });
+
+      engine.start();
+
+      expect(engine.gameState).not.toBeNull();
+      expect(engine.gameState.mode).toBe(GAME_MODE.PEACEFUL);
+      expect(engine.peerReady).toBe(true);
+      expect(channel.send).not.toHaveBeenCalled();
       engine.stop();
     });
 
@@ -428,6 +481,14 @@ describe("HexFrostEngine", () => {
       });
     });
 
+    it("prevents browser defaults for captured Frost movement keys", () => {
+      const { engine } = createEngine();
+
+      expect(engine._shouldPreventDefaultForCapturedKey({ key: "ArrowUp" })).toBe(true);
+      expect(engine._shouldPreventDefaultForCapturedKey({ key: "w" })).toBe(true);
+      expect(engine._shouldPreventDefaultForCapturedKey({ key: "Enter" })).toBe(false);
+    });
+
     describe("_handleKeyDown", () => {
       it("sets localInputs for host", () => {
         const { engine } = createEngine("hex_frost", true);
@@ -528,7 +589,56 @@ describe("HexFrostEngine", () => {
     });
   });
 
-  // ── 5. Network messages ────────────────────────────────────────
+  // ── 5. Solo lifecycle ──────────────────────────────────────────
+
+  describe("solo lifecycle", () => {
+    it("beginMatch starts countdown with the injected opponent controller", () => {
+      const opponentController = createOpponentController();
+      const { engine, channel } = createEngine("hex_frost", true, null, {
+        mode: "solo",
+        opponentController,
+      });
+
+      engine.start();
+      channel.send.mockClear();
+
+      expect(engine.beginMatch({ difficulty: "hard" })).toBe(true);
+
+      expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
+      expect(engine.difficulty).toBe("hard");
+      expect(opponentController.setDifficulty).toHaveBeenCalledWith("hard");
+      expect(engine.peerReady).toBe(true);
+      expect(engine._keyboardCaptured).toBe(true);
+      expect(channel.send).toHaveBeenCalled();
+      engine.stop();
+    });
+
+    it("beginMatch rejects solo matches without an opponent controller", () => {
+      const { engine } = createEngine("hex_frost", true, null, { mode: "solo" });
+
+      engine.start();
+
+      expect(engine.beginMatch()).toBe(false);
+      expect(engine.gameState.phase).toBe(PHASE.WAITING);
+      expect(engine._keyboardCaptured).toBe(false);
+      engine.stop();
+    });
+
+    it("beginMatch rejects already-started matches", () => {
+      const opponentController = createOpponentController();
+      const { engine } = createEngine("hex_frost", true, null, {
+        mode: "solo",
+        opponentController,
+      });
+
+      engine.start();
+      expect(engine.beginMatch()).toBe(true);
+      expect(engine.beginMatch()).toBe(false);
+      engine.stop();
+    });
+  });
+
+  // ── 6. Network messages ────────────────────────────────────────
 
   describe("network messages", () => {
     it("rejects non-ArrayBuffer data", () => {
@@ -615,6 +725,8 @@ describe("HexFrostEngine", () => {
       engine._onChannelMessage({ data: buf });
       expect(engine.gameState).not.toBeNull();
       expect(engine.gameState.phase).toBe(PHASE.BUILDING);
+      expect(engine.gameMode).toBe(GAME_MODE.ARCTIC_RACE);
+      expect(engine._keyboardCaptured).toBe(true);
       engine._pump(0);
       expect(render).toHaveBeenCalled();
       engine.stop();
@@ -677,7 +789,7 @@ describe("HexFrostEngine", () => {
     });
   });
 
-  // ── 6. Countdown ───────────────────────────────────────────────
+  // ── 7. Countdown ───────────────────────────────────────────────
 
   describe("countdown", () => {
     it("sets phase to COUNTDOWN with countdown=3", () => {
@@ -742,7 +854,7 @@ describe("HexFrostEngine", () => {
     });
   });
 
-  // ── 7. Game loop ───────────────────────────────────────────────
+  // ── 8. Game loop ───────────────────────────────────────────────
 
   describe("game loop", () => {
     function startBuildingPhase() {
@@ -829,6 +941,33 @@ describe("HexFrostEngine", () => {
       engine.stop();
     });
 
+    it("uses the solo opponent controller to drive player 2", () => {
+      const opponentController = createOpponentController({ left: true });
+      const { engine } = createEngine("hex_frost", true, null, {
+        mode: "solo",
+        difficulty: "hard",
+        opponentController,
+      });
+
+      engine.start();
+      expect(engine.beginMatch()).toBe(true);
+      for (let i = 0; i < 180; i++) engine._gameLoop();
+
+      const beforeX = engine.gameState.p2.x;
+      engine._gameLoop();
+
+      expect(opponentController.nextInputs).toHaveBeenCalledWith(
+        expect.objectContaining({
+          state: expect.objectContaining({ phase: PHASE.BUILDING }),
+          player: 2,
+          difficulty: "hard",
+        }),
+      );
+      expect(engine.gameState.p2.x).toBeLessThan(beforeX);
+      expect(engine.remoteInputs.left).toBe(true);
+      engine.stop();
+    });
+
     it("broadcasts state every STATE_SEND_INTERVAL (2) frames", () => {
       const { engine, channel } = startBuildingPhase();
       channel.send.mockClear();
@@ -886,7 +1025,7 @@ describe("HexFrostEngine", () => {
     });
   });
 
-  // ── 8. Audio events ────────────────────────────────────────────
+  // ── 9. Audio events ────────────────────────────────────────────
 
   describe("audio events", () => {
     it("_handleHostEvents plays correct audio for each event flag", () => {
@@ -972,7 +1111,7 @@ describe("HexFrostEngine", () => {
     });
   });
 
-  // ── 9. Game end ────────────────────────────────────────────────
+  // ── 10. Game end ───────────────────────────────────────────────
 
   describe("game end", () => {
     it("_handleGameFinished sends GAME_END with winner", () => {
@@ -1060,7 +1199,7 @@ describe("HexFrostEngine", () => {
     });
   });
 
-  // ── 10. Connection resilience ──────────────────────────────────
+  // ── 11. Connection resilience ──────────────────────────────────
 
   describe("connection resilience", () => {
     it("_handleBlur clears all 4 local inputs", () => {
@@ -1164,7 +1303,7 @@ describe("HexFrostEngine", () => {
     });
   });
 
-  // ── 11. Additional edge-case coverage ───────────────────────────
+  // ── 12. Additional edge-case coverage ───────────────────────────
 
   describe("additional edge cases", () => {
     it("ROUND_END → startNextRound returning COUNTDOWN resets phaseTimer and plays countdown audio", () => {

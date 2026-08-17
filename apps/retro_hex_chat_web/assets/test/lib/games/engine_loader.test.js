@@ -32,6 +32,8 @@ describe("engine loader", () => {
     expect(supportsSolo("star_duel")).toBe(true);
     expect(supportsSolo("gravity_well")).toBe(true);
     expect(supportsSolo("debris_field")).toBe(true);
+    expect(supportsSolo("block_breakers")).toBe(true);
+    expect(supportsSolo("hex_warlords")).toBe(true);
     expect(supportsSolo("hex_raid")).toBe(true);
     expect(supportsSolo("hex_raid_pacifist")).toBe(true);
     expect(supportsSolo("hex_raid_blitz")).toBe(true);
@@ -48,14 +50,17 @@ describe("engine loader", () => {
     expect(supportsSolo("hex_skiing")).toBe(true);
     expect(supportsSolo("hex_skiing_escape")).toBe(true);
     expect(supportsSolo("hex_skiing_clean")).toBe(true);
+    expect(supportsSolo("hex_frost")).toBe(true);
+    expect(supportsSolo("hex_frost_blizzard")).toBe(true);
+    expect(supportsSolo("hex_frost_peaceful")).toBe(true);
     expect(supportsSolo("hex_tennis")).toBe(true);
     expect(supportsSolo("hex_tennis_quick")).toBe(true);
     expect(supportsSolo("hex_tennis_sudden")).toBe(true);
     expect(supportsSolo("hex_hockey")).toBe(true);
     expect(supportsSolo("hex_hockey_blitz")).toBe(true);
     expect(supportsSolo("hex_hockey_showdown")).toBe(true);
-    expect(supportsSolo("block_breakers")).toBe(false);
-    await expect(loadSoloEngineClass("block_breakers")).rejects.toThrow(/solo/i);
+    expect(supportsSolo("pixel_tanks")).toBe(false);
+    await expect(loadSoloEngineClass("pixel_tanks")).rejects.toThrow(/solo/i);
   });
 
   it("creates engines through a mode-aware factory", async () => {
@@ -178,6 +183,46 @@ describe("engine loader", () => {
     engine.stop();
   });
 
+  it("creates a Block Breakers solo engine through the shared factory", async () => {
+    const engine = await createGameEngine({
+      canvas: createCanvas(),
+      gameId: "block_breakers",
+      mode: "solo",
+      transport: createLocalTransport(),
+      difficulty: "hard",
+      onGameEnd: null,
+    });
+
+    expect(engine.gameId).toBe("block_breakers");
+    expect(engine.isHost).toBe(true);
+    expect(engine.mode).toBe("solo");
+    expect(engine.transport.kind).toBe("local");
+    expect(engine.difficulty).toBe("hard");
+    expect(engine.opponentController?.nextInputs).toEqual(expect.any(Function));
+
+    engine.stop();
+  });
+
+  it("creates a Hex Warlords solo engine through the shared factory", async () => {
+    const engine = await createGameEngine({
+      canvas: createCanvas(),
+      gameId: "hex_warlords",
+      mode: "solo",
+      transport: createLocalTransport(),
+      difficulty: "hard",
+      onGameEnd: null,
+    });
+
+    expect(engine.gameId).toBe("hex_warlords");
+    expect(engine.isHost).toBe(true);
+    expect(engine.mode).toBe("solo");
+    expect(engine.transport.kind).toBe("local");
+    expect(engine.difficulty).toBe("hard");
+    expect(engine.opponentController?.nextInputs).toEqual(expect.any(Function));
+
+    engine.stop();
+  });
+
   it("creates a Hex Tennis family solo engine through the shared factory", async () => {
     const opponentController = {
       nextInputs: () => ({
@@ -266,6 +311,27 @@ describe("engine loader", () => {
     });
 
     expect(engine.gameId).toBe("hex_skiing_clean");
+    expect(engine.isHost).toBe(true);
+    expect(engine.mode).toBe("solo");
+    expect(engine.gameMode).toBe(2);
+    expect(engine.transport.kind).toBe("local");
+    expect(engine.difficulty).toBe("hard");
+    expect(engine.opponentController?.nextInputs).toEqual(expect.any(Function));
+
+    engine.stop();
+  });
+
+  it("creates a Hex Frost family solo engine through the shared factory", async () => {
+    const engine = await createGameEngine({
+      canvas: createCanvas(),
+      gameId: "hex_frost_peaceful",
+      mode: "solo",
+      transport: createLocalTransport(),
+      difficulty: "hard",
+      onGameEnd: null,
+    });
+
+    expect(engine.gameId).toBe("hex_frost_peaceful");
     expect(engine.isHost).toBe(true);
     expect(engine.mode).toBe("solo");
     expect(engine.gameMode).toBe(2);

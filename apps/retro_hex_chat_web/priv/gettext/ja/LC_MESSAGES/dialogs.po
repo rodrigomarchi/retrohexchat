@@ -63,7 +63,10 @@ msgstr "便利なボット"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/about_dialog.ex:59
 #, elixir-autogen, elixir-format
-msgid "A retro-styled IRC chat platform inspired by the classic desktop chat clients of the late '90s. Real-time messaging, channels, peer-to-peer sessions, and arcade games — all in the browser."
+msgid ""
+"A retro-styled IRC chat platform inspired by the classic desktop chat "
+"clients of the late '90s. Real-time messaging, channels, peer-to-peer "
+"sessions, and arcade games — all in the browser."
 msgstr ""
 "90年代後半の古典的なデスクトップチャットクライアントに触発されたレトロなスタイルのIRCチャットプラットフォーム。 "
 "リアルタイムのメッセージング、チャネル、ピアツーピアセッション、アーケードゲーム、すべてのブラウザ。"
@@ -432,7 +435,9 @@ msgstr "コマンド"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:96
 #, elixir-autogen, elixir-format
-msgid "Configure limits to prevent message flooding in channels and private messages."
+msgid ""
+"Configure limits to prevent message flooding in channels and private "
+"messages."
 msgstr "チャンネルやプライベートメッセージでメッセージの洪水を防ぐための制限を設定します。"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/confirm_dialog.ex:46
@@ -1288,7 +1293,8 @@ msgstr "この応答をトリガーするコマンド(!helloなど)"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/nick_change_dialog.ex:63
 #, elixir-autogen, elixir-format
-msgid "This nickname is registered. Please enter the NickServ password to identify."
+msgid ""
+"This nickname is registered. Please enter the NickServ password to identify."
 msgstr "このニックネームが登録されています。 NickServのパスワードを入力してください。"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:202
@@ -1400,7 +1406,8 @@ msgstr "バージョン %{version}"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/paste_confirm_dialog.ex:74
 #, elixir-autogen, elixir-format
-msgid "Warning: This exceeds the flood protection limit. Messages may be throttled."
+msgid ""
+"Warning: This exceeds the flood protection limit. Messages may be throttled."
 msgstr "警告: これは、洪水保護限界を超える。 メッセージが盗まれている可能性があります。"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/about_dialog.ex:81
@@ -1658,7 +1665,10 @@ msgstr "P2Pセッションを閉じる?"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:102
 #, elixir-autogen, elixir-format
-msgid "Closing this window disconnects the whole P2P session with %{peer} — any call, game or file transfer in progress will stop. To keep the session and just tidy up, minimize the window instead."
+msgid ""
+"Closing this window disconnects the whole P2P session with %{peer} — any "
+"call, game or file transfer in progress will stop. To keep the session and "
+"just tidy up, minimize the window instead."
 msgstr ""
 "このウィンドウを閉じると、P2P セッション全体を %{peer} と切断します。 進行中の呼び出し、ゲーム、ファイル転送は停止します。 "
 "セッションを維持し、整頓するだけのために、代わりにウィンドウを最小限に抑えます。"
@@ -1735,7 +1745,8 @@ msgstr "チャネルの削除"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:154
 #, elixir-autogen, elixir-format
-msgid "Deletes this nickname registration after you confirm with its password."
+msgid ""
+"Deletes this nickname registration after you confirm with its password."
 msgstr "パスワードで確認した後にこのニックネーム登録を削除します。"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:193
@@ -1796,12 +1807,16 @@ msgstr "終了セッション"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:94
 #, elixir-autogen, elixir-format
-msgid "End the P2P session with %{peer}? Any call, game or file transfer in progress will stop."
+msgid ""
+"End the P2P session with %{peer}? Any call, game or file transfer in "
+"progress will stop."
 msgstr "%{peer} で P2P セッションを終了しますか? 進行中の呼び出し、ゲーム、ファイル転送は停止します。"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:112
 #, elixir-autogen, elixir-format
-msgid "End the current P2P session with %{peer} and start one with %{new_peer}? Any call, game or file transfer in progress will stop."
+msgid ""
+"End the current P2P session with %{peer} and start one with %{new_peer}? Any"
+" call, game or file transfer in progress will stop."
 msgstr ""
 "%{peer} で現在の P2P セッションを終了し、%{new_peer} で 1 つを起動しますか? "
 "進行中の呼び出し、ゲーム、ファイル転送は停止します。"
@@ -3443,12 +3458,16 @@ msgstr "このサーバではレポートは利用できません。"
 
 #: lib/retro_hex_chat_web/components/ui/system/os_panel.ex:60
 #, elixir-autogen, elixir-format
-msgid "The :os_mon application is not running on this node, so the host cannot be read."
+msgid ""
+"The :os_mon application is not running on this node, so the host cannot be "
+"read."
 msgstr ":os mon アプリケーションがこのノードで実行されていないため、ホストは読みません。"
 
 #: lib/retro_hex_chat_web/live/chat_live/components/system_database_dialog.ex:95
 #, elixir-autogen, elixir-format
-msgid "The report could not be run — the database refused the query or an extension it needs is missing."
+msgid ""
+"The report could not be run — the database refused the query or an extension"
+" it needs is missing."
 msgstr "レポートは実行できませんでした。データベースはクエリやニーズの拡張を拒否しました。"
 
 #: lib/retro_hex_chat_web/components/ui/system/database_panel.ex:90
@@ -3463,7 +3482,9 @@ msgstr "このグループはメトリックを宣言しません。"
 
 #: lib/retro_hex_chat_web/components/ui/system/log_panel.ex:112
 #, elixir-autogen, elixir-format
-msgid "This node logs at %{primary} and drops anything below it before a window can see it, so nothing at %{selected} will ever appear here."
+msgid ""
+"This node logs at %{primary} and drops anything below it before a window can"
+" see it, so nothing at %{selected} will ever appear here."
 msgstr ""
 "このノードは%{primary}でログを記録し、ウィンドウが表示される前にそれ以下に何かをドロップします。そのため、%{selected}でしか表示されないことはありません。"
 
@@ -3901,9 +3922,9 @@ msgid "supervisor unavailable"
 msgstr "管理者は利用できません"
 
 #: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:136
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "%{count} retrying"
-msgstr "%{count}エントリー"
+msgstr "%{count} 件再試行中"
 
 #: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:424
 #, elixir-autogen, elixir-format
@@ -3916,9 +3937,9 @@ msgid "No pages have been read yet"
 msgstr "まだ読み取られたページはありません"
 
 #: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:169
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Oban health sections"
-msgstr "オバン健康"
+msgstr "Oban ヘルスセクション"
 
 #: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:541
 #, elixir-autogen, elixir-format

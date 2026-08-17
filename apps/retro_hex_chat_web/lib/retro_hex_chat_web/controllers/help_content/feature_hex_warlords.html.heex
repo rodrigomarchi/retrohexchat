@@ -4,6 +4,12 @@
     "Versus Breakout battle — each player defends a brick castle with a king inside. Deflect or catch the fireball with your shield to smash your opponent's walls. Clear a path to the king and strike to take a life. Last king standing wins."
   )}
 </p>
+<p>
+  {dgettext(
+    "help_games",
+    "In Retro Games solo mode, you control the left castle shield while the AI controls the right castle shield."
+  )}
+</p>
 <.diagram_game_warlords class="w-full max-w-lg mx-auto my-4" />
 <.help_h4 icon={:icon_btn_keyboard}>{dgettext("help_games", "Controls")}</.help_h4>
 <ul>
@@ -74,6 +80,7 @@
 <.help_h4 icon={:icon_link}>{dgettext("help_games", "See Also")}</.help_h4>
 <p>
   <.help_link topic="feature-universal-lobby">{dgettext("help_games", "P2P Session")}</.help_link>
+  · <.help_link topic="feature-retro-games">{dgettext("help_games", "Retro Games")}</.help_link>
   ·
   <.help_link topic="feature-block-breakers">
     {dgettext("help_games", "Block Breakers")}

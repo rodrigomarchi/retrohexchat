@@ -50,6 +50,8 @@ const SOLO_GAME_IDS = new Set([
   "star_duel",
   "gravity_well",
   "debris_field",
+  "block_breakers",
+  "hex_warlords",
   "hex_raid",
   "hex_raid_pacifist",
   "hex_raid_blitz",
@@ -69,12 +71,17 @@ const SOLO_GAME_IDS = new Set([
   "hex_skiing",
   "hex_skiing_escape",
   "hex_skiing_clean",
+  "hex_frost",
+  "hex_frost_blizzard",
+  "hex_frost_peaceful",
   "hex_hockey",
   "hex_hockey_blitz",
   "hex_hockey_showdown",
 ]);
 
 const SOLO_CONTROLLER_LOADERS = {
+  block_breakers: () => import("./breakout/ai.js").then((module) => module.createBreakoutAI),
+  hex_warlords: () => import("./warlords/ai.js").then((module) => module.createWarlordAI),
   hex_raid: () => import("./hex_raid/ai.js").then((module) => module.createHexRaidAI),
   hex_raid_pacifist: () => import("./hex_raid/ai.js").then((module) => module.createHexRaidAI),
   hex_raid_blitz: () => import("./hex_raid/ai.js").then((module) => module.createHexRaidAI),
@@ -84,6 +91,9 @@ const SOLO_CONTROLLER_LOADERS = {
   hex_skiing: () => import("./hex_skiing/ai.js").then((module) => module.createHexSkiingAI),
   hex_skiing_escape: () => import("./hex_skiing/ai.js").then((module) => module.createHexSkiingAI),
   hex_skiing_clean: () => import("./hex_skiing/ai.js").then((module) => module.createHexSkiingAI),
+  hex_frost: () => import("./hex_frost/ai.js").then((module) => module.createHexFrostAI),
+  hex_frost_blizzard: () => import("./hex_frost/ai.js").then((module) => module.createHexFrostAI),
+  hex_frost_peaceful: () => import("./hex_frost/ai.js").then((module) => module.createHexFrostAI),
 };
 
 /**

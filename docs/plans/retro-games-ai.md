@@ -24,7 +24,9 @@ incremento leva o playbook para a família Hex Raid: Hex Raid, Hex Raid:
 Pacifist e Hex Raid: Blitz. O nono incremento leva o playbook para a família
 Hex Enduro: Hex Enduro, Hex Enduro: Night Race e Hex Enduro: Sprint. O décimo
 incremento leva o playbook para a família Hex Skiing: Hex Skiing, Hex Skiing:
-Escape e Hex Skiing: Clean Run.
+Escape e Hex Skiing: Clean Run. O décimo primeiro incremento leva o playbook
+para a família Hex Frost: Hex Frost, Hex Frost: Blizzard e Hex Frost: Peaceful.
+O décimo segundo incremento leva o playbook para Block Breakers e Hex Warlords.
 
 ## Decisões de produto
 
@@ -50,9 +52,10 @@ Entrada principal:
 Fluxo inicial:
 
 - A janela mostra o catálogo de jogos nativos.
-- Hex Pong, Light Trails, a família Star Duel, a família Hex Outlaw, a família
-  Hex Raid, a família Hex Tennis, a família Hex Invaders, a família Hex Enduro,
-  a família Hex Skiing e a família Hex Hockey aparecem como jogos disponíveis.
+- Hex Pong, Light Trails, a família Star Duel, a família Hex Outlaw, Block
+  Breakers, Hex Warlords, a família Hex Raid, a família Hex Tennis, a
+  família Hex Invaders, a família Hex Enduro, a família Hex Skiing, a família Hex
+  Frost e a família Hex Hockey aparecem como jogos disponíveis.
 - Jogos futuros podem ficar ocultos até terem AI pronta. Se forem exibidos, devem
   aparecer como indisponíveis de forma explícita, sem prometer jogabilidade.
 
@@ -342,8 +345,9 @@ Extrair esse mapa para um loader compartilhado evita duplicação:
 
 `supportsSolo/1` só deve ser verdadeiro para jogos que já têm runtime solo
 validado: Hex Pong, Light Trails, família Star Duel, família Hex Outlaw, família
-Hex Tennis, família Hex Invaders, família Hex Hockey, família Hex Raid, família
-Hex Enduro e família Hex Skiing neste momento.
+Hex Tennis, Block Breakers, Hex Warlords, família Hex Invaders, família
+Hex Hockey, família Hex Raid, família Hex Enduro, família Hex Skiing e família
+Hex Frost neste momento.
 
 ### Foco e teclado
 
@@ -476,6 +480,48 @@ Fluxo técnico esperado:
 - placar, spawn, física orbital, colisões, partículas, áudio e regras de match
   continuam compartilhados com o P2P.
 
+### Block Breakers
+
+Block Breakers usa input pressionado contínuo para mover a pá horizontal. O P2P
+já simula no host e recebe `remoteInputs` do peer, então o solo substitui somente
+a origem do input remoto.
+
+Fluxo técnico esperado:
+
+- engine inicia como host local;
+- jogador humano controla a pá inferior;
+- AI controla a pá superior preenchendo `remoteInputs`;
+- AI devolve o mesmo shape de input do peer P2P: `left`, `right`;
+- AI prevê o ponto em que a bola chegará na pá superior;
+- AI considera ricochetes nas paredes laterais;
+- quando a bola se afasta, AI volta para uma posição de prontidão;
+- dificuldade altera frequência de reação, erro de alvo, deadzone e duty cycle
+  de movimento;
+- blocos, vidas compartilhadas, score, partículas, áudio e regras de vitória
+  continuam compartilhados com o P2P.
+
+### Hex Warlords
+
+Hex Warlords usa input pressionado contínuo para mover o escudo verticalmente e
+um input mantido de `space` para catch/release. O solo precisa preservar o mesmo
+contrato de borda de release usado pelo P2P.
+
+Fluxo técnico esperado:
+
+- engine inicia como host local;
+- jogador humano controla o castelo esquerdo;
+- AI controla o escudo do castelo direito preenchendo `remoteInputs`;
+- AI devolve o mesmo shape de input do peer P2P: `up`, `down`, `space`;
+- AI prevê o ponto em que a bola de fogo chegará ao escudo direito;
+- AI considera ricochetes nas paredes superior e inferior;
+- AI segura `space` quando uma bola alinhada está prestes a tocar o escudo;
+- quando captura a bola, AI mantém `space` por um delay humano e depois solta
+  para acionar `releaseBall`;
+- dificuldade altera frequência de reação, erro de alvo, chance de catch,
+  deadzone e delay de release;
+- castelos, tijolos, reis, rounds, partículas, áudio e regras de vitória
+  continuam compartilhados com o P2P.
+
 ### Hex Tennis
 
 A família Hex Tennis usa input pressionado contínuo para movimento e saque. As
@@ -558,6 +604,35 @@ Fluxo técnico esperado:
 - scroll, gates, avalanche, blizzard, colisões, áudio e regras de fim continuam
   compartilhados com o P2P.
 
+### Hex Frost
+
+A família Hex Frost usa input pressionado contínuo para deslocamento horizontal e
+saltos verticais entre faixas de gelo. As três variantes compartilham a mesma
+engine:
+
+- `hex_frost`;
+- `hex_frost_blizzard`;
+- `hex_frost_peaceful`.
+
+Fluxo técnico esperado:
+
+- engine inicia como host local;
+- `mode` representa o runtime (`p2p_host`, `p2p_guest`, `solo`);
+- `gameMode` representa a variante (`Arctic Race`, `Blizzard`, `Peaceful`);
+- jogador humano controla o player 1;
+- AI controla o player 2 preenchendo `remoteInputs`;
+- AI devolve o mesmo shape de input do peer P2P: `left`, `right`, `up`, `down`;
+- AI escolhe o próximo bloco útil na rota de construção do iglu;
+- em `Peaceful`, AI não considera blocos do oponente como alvo útil;
+- nas outras variantes, AI pode roubar blocos quando isso melhora a rota;
+- AI avalia risco contra bordas, urso, caranguejo, molusco, ganso e proximidade
+  do oponente;
+- ao completar o iglu, AI retorna para a entrada do próprio iglu;
+- dificuldade altera frequência de decisão, deadzone, margem de segurança,
+  peso de inimigos e chance de erro controlado;
+- blocos, iglu, temperatura, inimigos, peixes, áudio e regras de round continuam
+  compartilhados com o P2P.
+
 ## Modelo da AI
 
 A AI do Pong deve ser determinística, barata e baseada em heurística.
@@ -599,7 +674,7 @@ Inclui:
 
 - item `Retro Games` no menu;
 - janela `retro-games`;
-- catálogo com Hex Pong;
+- catálogo com os jogos nativos que já têm controller solo validado;
 - tela de setup;
 - canvas inline;
 - modo `Jogar contra AI`;

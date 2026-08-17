@@ -12,6 +12,8 @@ defmodule RetroHexChat.Games.Catalog do
     "star_duel",
     "gravity_well",
     "debris_field",
+    "block_breakers",
+    "hex_warlords",
     "hex_raid",
     "hex_raid_pacifist",
     "hex_raid_blitz",
@@ -31,6 +33,9 @@ defmodule RetroHexChat.Games.Catalog do
     "hex_skiing",
     "hex_skiing_escape",
     "hex_skiing_clean",
+    "hex_frost",
+    "hex_frost_blizzard",
+    "hex_frost_peaceful",
     "hex_hockey",
     "hex_hockey_blitz",
     "hex_hockey_showdown"

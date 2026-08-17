@@ -89,6 +89,17 @@ function createMockCanvas() {
   return canvas;
 }
 
+function createOpponentController(inputs = {}) {
+  return {
+    setDifficulty: vi.fn(),
+    nextInputs: vi.fn(() => ({
+      left: false,
+      right: false,
+      ...inputs,
+    })),
+  };
+}
+
 describe("BreakoutEngine", () => {
   let engine;
   let channel;
@@ -149,6 +160,28 @@ describe("BreakoutEngine", () => {
       engine = new BreakoutEngine(canvas, channel, "block_breakers", true, null);
       expect(engine.gameState.lives).toBe(3);
     });
+
+    it("accepts solo runtime options", () => {
+      const opponentController = createOpponentController();
+      engine = new BreakoutEngine(canvas, channel, "block_breakers", true, null, {
+        mode: "solo",
+        difficulty: "hard",
+        opponentController,
+      });
+
+      expect(engine.mode).toBe("solo");
+      expect(engine.difficulty).toBe("hard");
+      expect(engine.opponentController).toBe(opponentController);
+    });
+
+    it("initializes a default solo opponent controller when one is not injected", () => {
+      engine = new BreakoutEngine(canvas, channel, "block_breakers", true, null, {
+        mode: "solo",
+      });
+
+      expect(engine.difficulty).toBe("normal");
+      expect(engine.opponentController?.nextInputs).toEqual(expect.any(Function));
+    });
   });
 
   describe("start", () => {
@@ -178,6 +211,16 @@ describe("BreakoutEngine", () => {
       const buf = channel.send.mock.calls[0][0];
       const view = new Uint8Array(buf);
       expect(view[0]).toBe(MSG_TYPE.GAME_READY);
+    });
+
+    it("solo host becomes ready without sending peer-ready traffic", () => {
+      engine = new BreakoutEngine(canvas, channel, "block_breakers", true, null, {
+        mode: "solo",
+      });
+      engine.start();
+
+      expect(engine.peerReady).toBe(true);
+      expect(channel.send).not.toHaveBeenCalled();
     });
 
     it("reads colors from canvas", () => {
@@ -384,6 +427,14 @@ describe("BreakoutEngine", () => {
       expect(e.preventDefault).not.toHaveBeenCalled();
     });
 
+    it("prevents browser defaults for captured Breakout movement keys", () => {
+      engine = new BreakoutEngine(canvas, channel, "block_breakers", true, null);
+
+      expect(engine._shouldPreventDefaultForCapturedKey({ key: "ArrowLeft" })).toBe(true);
+      expect(engine._shouldPreventDefaultForCapturedKey({ key: "d" })).toBe(true);
+      expect(engine._shouldPreventDefaultForCapturedKey({ key: "Enter" })).toBe(false);
+    });
+
     it("peer sends binary input on keydown", () => {
       engine = new BreakoutEngine(canvas, channel, "block_breakers", false, null);
       engine.start();
@@ -447,6 +498,60 @@ describe("BreakoutEngine", () => {
       // One datagram states every key at once.
       expect(channel.send).toHaveBeenCalledTimes(1);
       expect(decodeInputState(channel.send.mock.calls[0][0]).mask).toBe(0);
+    });
+  });
+
+  describe("solo lifecycle", () => {
+    it("beginMatch starts countdown with the injected opponent controller", () => {
+      const opponentController = createOpponentController();
+      engine = new BreakoutEngine(canvas, channel, "block_breakers", true, null, {
+        mode: "solo",
+        opponentController,
+      });
+
+      engine.start();
+      channel.send.mockClear();
+
+      expect(engine.beginMatch({ difficulty: "hard" })).toBe(true);
+      expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
+      expect(engine.difficulty).toBe("hard");
+      expect(opponentController.setDifficulty).toHaveBeenCalledWith("hard");
+      expect(engine.peerReady).toBe(true);
+      expect(engine._keyboardCaptured).toBe(true);
+      expect(channel.send).toHaveBeenCalled();
+    });
+
+    it("beginMatch rejects already-started matches", () => {
+      engine = new BreakoutEngine(canvas, channel, "block_breakers", true, null, {
+        mode: "solo",
+      });
+
+      engine.start();
+      expect(engine.beginMatch()).toBe(true);
+      expect(engine.beginMatch()).toBe(false);
+    });
+
+    it("uses the solo opponent controller to drive the top paddle", () => {
+      const opponentController = createOpponentController({ left: true });
+      engine = new BreakoutEngine(canvas, channel, "block_breakers", true, null, {
+        mode: "solo",
+        opponentController,
+      });
+      engine.start();
+      engine.gameState.phase = PHASE.PLAYING;
+      engine.gameState.paddle2X = 300;
+      engine.running = true;
+
+      engine._gameLoop();
+
+      expect(opponentController.nextInputs).toHaveBeenCalledWith(
+        expect.objectContaining({
+          state: expect.objectContaining({ phase: PHASE.PLAYING }),
+          player: 2,
+          difficulty: "normal",
+        }),
+      );
+      expect(engine.gameState.paddle2X).toBeLessThan(300);
     });
   });
 

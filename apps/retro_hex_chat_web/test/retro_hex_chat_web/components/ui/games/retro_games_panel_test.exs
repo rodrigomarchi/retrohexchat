@@ -42,6 +42,24 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     controls: "Arrow keys or WASD to thrust/rotate, Space to fire, Down/S to warp"
   }
 
+  @breakout %{
+    id: "block_breakers",
+    name: "Block Breakers",
+    tagline: "Break blocks together",
+    description: "Cooperative Breakout with two paddles.",
+    icon: "game_breakout",
+    controls: "Arrow keys (Left/Right) to move paddle"
+  }
+
+  @warlords %{
+    id: "hex_warlords",
+    name: "Hex Warlords",
+    tagline: "Defend your castle",
+    description: "Versus Breakout battle.",
+    icon: "game_warlords",
+    controls: "Arrow keys (Up/Down) to move shield, Space to catch/release fireball"
+  }
+
   @raid %{
     id: "hex_raid_blitz",
     name: "Hex Raid: Blitz",
@@ -85,6 +103,15 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     description: "Fastest time down the mountain wins.",
     icon: "game_skiing",
     controls: "Arrow keys (left/right) or A/D to steer"
+  }
+
+  @frost %{
+    id: "hex_frost_blizzard",
+    name: "Hex Frost: Blizzard",
+    tagline: "One epic round",
+    description: "1 long round with all enemies from the start.",
+    icon: "game_frost",
+    controls: "Arrow keys or WASD to move, Up/Down to jump between rows"
   }
 
   @hockey %{
@@ -198,6 +225,48 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     assert text =~ "Space"
   end
 
+  test "renders the Block Breakers goal and paddle controls in the shared status panel" do
+    html =
+      render_component(&retro_games_panel/1,
+        id: "retro-games-panel",
+        games: [@breakout],
+        status: "ready",
+        selected_game: @breakout,
+        difficulty: "normal",
+        canvas_ready: true,
+        target: "retro-games-island"
+      )
+
+    document = Floki.parse_document!(html)
+    text = Floki.text(document)
+
+    assert text =~ "Clear all blocks"
+    assert text =~ "Move"
+    assert text =~ "A"
+    assert text =~ "D"
+  end
+
+  test "renders the Hex Warlords goal and shield controls in the shared status panel" do
+    html =
+      render_component(&retro_games_panel/1,
+        id: "retro-games-panel",
+        games: [@warlords],
+        status: "ready",
+        selected_game: @warlords,
+        difficulty: "normal",
+        canvas_ready: true,
+        target: "retro-games-island"
+      )
+
+    document = Floki.parse_document!(html)
+    text = Floki.text(document)
+
+    assert text =~ "Last king standing"
+    assert text =~ "Shield"
+    assert text =~ "Catch/Release"
+    assert text =~ "Space"
+  end
+
   test "renders the Hex Raid goal and mine controls in the shared status panel" do
     html =
       render_component(&retro_games_panel/1,
@@ -307,6 +376,28 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     assert text =~ "Steer"
     assert text =~ "A"
     assert text =~ "D"
+  end
+
+  test "renders the Hex Frost goal and row-jump controls in the shared status panel" do
+    html =
+      render_component(&retro_games_panel/1,
+        id: "retro-games-panel",
+        games: [@frost],
+        status: "ready",
+        selected_game: @frost,
+        difficulty: "normal",
+        canvas_ready: true,
+        target: "retro-games-island"
+      )
+
+    document = Floki.parse_document!(html)
+    text = Floki.text(document)
+
+    assert text =~ "1 round"
+    assert text =~ "Move"
+    assert text =~ "Jump rows"
+    assert text =~ "W"
+    assert text =~ "S"
   end
 
   test "renders the Hex Hockey goal and shoot/tackle controls in the shared status panel" do

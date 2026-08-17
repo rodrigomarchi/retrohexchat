@@ -66,7 +66,10 @@ msgstr "Um bot útil"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/about_dialog.ex:59
 #, elixir-autogen, elixir-format
-msgid "A retro-styled IRC chat platform inspired by the classic desktop chat clients of the late '90s. Real-time messaging, channels, peer-to-peer sessions, and arcade games — all in the browser."
+msgid ""
+"A retro-styled IRC chat platform inspired by the classic desktop chat "
+"clients of the late '90s. Real-time messaging, channels, peer-to-peer "
+"sessions, and arcade games — all in the browser."
 msgstr ""
 "Uma plataforma de chat IRC em estilo retrô inspirada nos clientes clássicos "
 "de chat desktop do fim dos anos 90. Mensagens em tempo real, canais, sessões"
@@ -436,7 +439,9 @@ msgstr "Comandos"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:96
 #, elixir-autogen, elixir-format
-msgid "Configure limits to prevent message flooding in channels and private messages."
+msgid ""
+"Configure limits to prevent message flooding in channels and private "
+"messages."
 msgstr ""
 "Configure limites para evitar flood de mensagens em canais e mensagens "
 "privadas."
@@ -1295,7 +1300,8 @@ msgstr "O comando que aciona esta resposta (ex.:!ola)"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/nick_change_dialog.ex:63
 #, elixir-autogen, elixir-format
-msgid "This nickname is registered. Please enter the NickServ password to identify."
+msgid ""
+"This nickname is registered. Please enter the NickServ password to identify."
 msgstr ""
 "Este apelido é registrado. Digite a senha do NickServ para se identificar."
 
@@ -1410,7 +1416,8 @@ msgstr "Versão %{version}"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/paste_confirm_dialog.ex:74
 #, elixir-autogen, elixir-format
-msgid "Warning: This exceeds the flood protection limit. Messages may be throttled."
+msgid ""
+"Warning: This exceeds the flood protection limit. Messages may be throttled."
 msgstr ""
 "Aviso: isso excede o limite de proteção contra flood. As mensagens podem ser"
 " limitadas."
@@ -1671,7 +1678,10 @@ msgstr "Fechar a Sessão P2P?"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:102
 #, elixir-autogen, elixir-format
-msgid "Closing this window disconnects the whole P2P session with %{peer} — any call, game or file transfer in progress will stop. To keep the session and just tidy up, minimize the window instead."
+msgid ""
+"Closing this window disconnects the whole P2P session with %{peer} — any "
+"call, game or file transfer in progress will stop. To keep the session and "
+"just tidy up, minimize the window instead."
 msgstr ""
 "Fechar esta janela desconecta toda a sessão P2P com %{peer} — qualquer "
 "chamada, jogo ou transferência de arquivos em andamento irá parar. Para "
@@ -1749,7 +1759,8 @@ msgstr "Apagar canal"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:154
 #, elixir-autogen, elixir-format
-msgid "Deletes this nickname registration after you confirm with its password."
+msgid ""
+"Deletes this nickname registration after you confirm with its password."
 msgstr "Apaga este registo de alcunhas depois de confirmar com a sua senha."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:193
@@ -1810,14 +1821,18 @@ msgstr "Fim da sessão"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:94
 #, elixir-autogen, elixir-format
-msgid "End the P2P session with %{peer}? Any call, game or file transfer in progress will stop."
+msgid ""
+"End the P2P session with %{peer}? Any call, game or file transfer in "
+"progress will stop."
 msgstr ""
 "Terminar a sessão P2P com %{peer}? Qualquer chamada, jogo ou transferência "
 "de arquivos em andamento irá parar."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:112
 #, elixir-autogen, elixir-format
-msgid "End the current P2P session with %{peer} and start one with %{new_peer}? Any call, game or file transfer in progress will stop."
+msgid ""
+"End the current P2P session with %{peer} and start one with %{new_peer}? Any"
+" call, game or file transfer in progress will stop."
 msgstr ""
 "Terminar a sessão P2P atual com %{peer} e iniciar uma com %{new_peer}? "
 "Qualquer chamada, jogo ou transferência de arquivos em andamento irá parar."
@@ -3467,14 +3482,18 @@ msgstr "Esse relatório não está disponível neste servidor."
 
 #: lib/retro_hex_chat_web/components/ui/system/os_panel.ex:60
 #, elixir-autogen, elixir-format
-msgid "The :os_mon application is not running on this node, so the host cannot be read."
+msgid ""
+"The :os_mon application is not running on this node, so the host cannot be "
+"read."
 msgstr ""
 "A aplicação :os mon não está em execução neste nó, portanto a máquina não "
 "pode ser lida."
 
 #: lib/retro_hex_chat_web/live/chat_live/components/system_database_dialog.ex:95
 #, elixir-autogen, elixir-format
-msgid "The report could not be run — the database refused the query or an extension it needs is missing."
+msgid ""
+"The report could not be run — the database refused the query or an extension"
+" it needs is missing."
 msgstr ""
 "O relatório não pôde ser executado — a base de dados recusou a consulta ou "
 "falta uma extensão necessária."
@@ -3491,7 +3510,9 @@ msgstr "Este grupo declara não haver métricas."
 
 #: lib/retro_hex_chat_web/components/ui/system/log_panel.ex:112
 #, elixir-autogen, elixir-format
-msgid "This node logs at %{primary} and drops anything below it before a window can see it, so nothing at %{selected} will ever appear here."
+msgid ""
+"This node logs at %{primary} and drops anything below it before a window can"
+" see it, so nothing at %{selected} will ever appear here."
 msgstr ""
 "Este nó logs em %{primary} e deixa qualquer coisa abaixo dele antes que uma "
 "janela pode vê-lo, então nada em %{selected} nunca vai aparecer aqui."
@@ -3932,9 +3953,9 @@ msgid "supervisor unavailable"
 msgstr "supervisor não disponível"
 
 #: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:136
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "%{count} retrying"
-msgstr "%{count} entrada"
+msgstr "%{count} em retentativa"
 
 #: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:424
 #, elixir-autogen, elixir-format
@@ -3947,9 +3968,9 @@ msgid "No pages have been read yet"
 msgstr "Nenhuma página foi lida ainda"
 
 #: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:169
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Oban health sections"
-msgstr "Saúde de Oban"
+msgstr "Seções de saúde do Oban"
 
 #: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:541
 #, elixir-autogen, elixir-format

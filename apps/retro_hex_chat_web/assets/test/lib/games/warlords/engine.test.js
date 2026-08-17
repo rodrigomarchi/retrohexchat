@@ -93,6 +93,18 @@ function createMockCanvas() {
   return canvas;
 }
 
+function createOpponentController(inputs = {}) {
+  return {
+    setDifficulty: vi.fn(),
+    nextInputs: vi.fn(() => ({
+      up: false,
+      down: false,
+      space: false,
+      ...inputs,
+    })),
+  };
+}
+
 describe("WarlordEngine", () => {
   let engine;
   let channel;
@@ -159,6 +171,28 @@ describe("WarlordEngine", () => {
       engine = new WarlordEngine(canvas, channel, "hex_warlords", true, null);
       expect(engine.gameState.caughtBy).toBe(0);
     });
+
+    it("accepts solo runtime options", () => {
+      const opponentController = createOpponentController();
+      engine = new WarlordEngine(canvas, channel, "hex_warlords", true, null, {
+        mode: "solo",
+        difficulty: "hard",
+        opponentController,
+      });
+
+      expect(engine.mode).toBe("solo");
+      expect(engine.difficulty).toBe("hard");
+      expect(engine.opponentController).toBe(opponentController);
+    });
+
+    it("initializes a default solo opponent controller when one is not injected", () => {
+      engine = new WarlordEngine(canvas, channel, "hex_warlords", true, null, {
+        mode: "solo",
+      });
+
+      expect(engine.difficulty).toBe("normal");
+      expect(engine.opponentController?.nextInputs).toEqual(expect.any(Function));
+    });
   });
 
   describe("start", () => {
@@ -188,6 +222,16 @@ describe("WarlordEngine", () => {
       const buf = channel.send.mock.calls[0][0];
       const view = new Uint8Array(buf);
       expect(view[0]).toBe(MSG_TYPE.GAME_READY);
+    });
+
+    it("solo host becomes ready without sending peer-ready traffic", () => {
+      engine = new WarlordEngine(canvas, channel, "hex_warlords", true, null, {
+        mode: "solo",
+      });
+      engine.start();
+
+      expect(engine.peerReady).toBe(true);
+      expect(channel.send).not.toHaveBeenCalled();
     });
 
     it("reads colors from canvas", () => {
@@ -448,6 +492,14 @@ describe("WarlordEngine", () => {
       expect(e.preventDefault).not.toHaveBeenCalled();
     });
 
+    it("prevents browser defaults for captured Warlords movement keys", () => {
+      engine = new WarlordEngine(canvas, channel, "hex_warlords", true, null);
+
+      expect(engine._shouldPreventDefaultForCapturedKey({ key: "ArrowUp" })).toBe(true);
+      expect(engine._shouldPreventDefaultForCapturedKey({ key: " " })).toBe(true);
+      expect(engine._shouldPreventDefaultForCapturedKey({ key: "Enter" })).toBe(false);
+    });
+
     it("peer sends binary input on keydown", () => {
       engine = new WarlordEngine(canvas, channel, "hex_warlords", false, null);
       engine.start();
@@ -519,6 +571,81 @@ describe("WarlordEngine", () => {
       engine._onKeyDown({ key: "ArrowUp", preventDefault: vi.fn(), repeat: false, target: null });
       channel.send.mockClear();
       engine._handleBlur();
+
+      expect(engine.gameState.caughtBy).toBe(0);
+      expect(engine.audio.playLaunch).toHaveBeenCalled();
+    });
+  });
+
+  describe("solo lifecycle", () => {
+    it("beginMatch starts countdown with the injected opponent controller", () => {
+      const opponentController = createOpponentController();
+      engine = new WarlordEngine(canvas, channel, "hex_warlords", true, null, {
+        mode: "solo",
+        opponentController,
+      });
+
+      engine.start();
+      channel.send.mockClear();
+
+      expect(engine.beginMatch({ difficulty: "hard" })).toBe(true);
+      expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
+      expect(engine.difficulty).toBe("hard");
+      expect(opponentController.setDifficulty).toHaveBeenCalledWith("hard");
+      expect(engine.peerReady).toBe(true);
+      expect(engine._keyboardCaptured).toBe(true);
+      expect(channel.send).toHaveBeenCalled();
+    });
+
+    it("beginMatch rejects already-started matches", () => {
+      engine = new WarlordEngine(canvas, channel, "hex_warlords", true, null, {
+        mode: "solo",
+      });
+
+      engine.start();
+      expect(engine.beginMatch()).toBe(true);
+      expect(engine.beginMatch()).toBe(false);
+    });
+
+    it("uses the solo opponent controller to drive the right shield", () => {
+      const opponentController = createOpponentController({ up: true });
+      engine = new WarlordEngine(canvas, channel, "hex_warlords", true, null, {
+        mode: "solo",
+        opponentController,
+      });
+      engine.start();
+      engine.gameState.phase = PHASE.PLAYING;
+      engine.gameState.shield2Y = 240;
+      engine.gameState.fireballVX = 0;
+      engine.gameState.fireballVY = 0;
+      engine.running = true;
+
+      engine._gameLoop();
+
+      expect(opponentController.nextInputs).toHaveBeenCalledWith(
+        expect.objectContaining({
+          state: expect.objectContaining({ phase: PHASE.PLAYING }),
+          player: 2,
+          difficulty: "normal",
+        }),
+      );
+      expect(engine.gameState.shield2Y).toBeLessThan(240);
+    });
+
+    it("lets the solo opponent release a caught fireball through the input edge", () => {
+      const opponentController = createOpponentController({ space: false });
+      engine = new WarlordEngine(canvas, channel, "hex_warlords", true, null, {
+        mode: "solo",
+        opponentController,
+      });
+      engine.start();
+      engine.gameState.phase = PHASE.PLAYING;
+      engine.gameState.caughtBy = 2;
+      engine.gameState.fireballSpeed = 3;
+      engine.remoteInputs.space = true;
+      engine.running = true;
+
+      engine._gameLoop();
 
       expect(engine.gameState.caughtBy).toBe(0);
       expect(engine.audio.playLaunch).toHaveBeenCalled();

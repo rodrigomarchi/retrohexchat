@@ -6,6 +6,7 @@
 import { log } from "../../logger.js";
 
 import { GameEngine } from "../../game_engine.js";
+import { createBreakoutAI, normalizeBreakoutAIDifficulty } from "./ai.js";
 import {
   MSG_TYPE,
   PHASE,
@@ -37,6 +38,18 @@ import { BreakoutAudio } from "./audio.js";
 const STATE_SEND_INTERVAL = 1; // broadcast every fixed step (60Hz)
 const SERVE_DELAY = 800; // ms
 const LIFE_LOST_PAUSE = 1500; // ms
+const BREAKOUT_PREVENT_DEFAULT_KEYS = new Set([
+  "ArrowLeft",
+  "ArrowRight",
+  "ArrowUp",
+  "ArrowDown",
+  " ",
+  "Spacebar",
+  "a",
+  "A",
+  "d",
+  "D",
+]);
 
 export class BreakoutEngine extends GameEngine {
   static INPUT_BITS = { left: 0, right: 1 };
@@ -51,13 +64,21 @@ export class BreakoutEngine extends GameEngine {
    * @param {string} gameId
    * @param {boolean} isHost
    * @param {function} onGameEnd - callback when game finishes
+   * @param {object} [options]
+   * @param {"p2p_host"|"p2p_guest"|"solo"} [options.mode]
+   * @param {object} [options.opponentController]
+   * @param {"easy"|"normal"|"hard"|string} [options.difficulty]
    */
-  constructor(canvas, channel, gameId, isHost, onGameEnd) {
-    super(canvas, channel, gameId, isHost);
+  constructor(canvas, channel, gameId, isHost, onGameEnd, options = {}) {
+    super(canvas, channel, gameId, isHost, options);
     this.onGameEnd = onGameEnd || null;
     this.gameState = createInitialState();
     this.localInputs = { left: false, right: false };
     this.remoteInputs = { left: false, right: false };
+    this.difficulty = normalizeBreakoutAIDifficulty(options.difficulty);
+    this.opponentController =
+      options.opponentController ||
+      (this.mode === "solo" ? createBreakoutAI({ difficulty: this.difficulty }) : null);
     this.frameCount = 0;
     this.phaseTimer = null;
     this.lastExitSide = null; // "top" or "bottom" — tracks where ball exited
@@ -75,7 +96,10 @@ export class BreakoutEngine extends GameEngine {
     window.addEventListener("blur", this._boundBlur);
     this.channel.addEventListener("close", this._boundChannelClose);
 
-    if (this.isHost) {
+    if (this.mode === "solo") {
+      this.peerReady = true;
+      this._invalidate();
+    } else if (this.isHost) {
       // Host waits for peer GAME_READY, then starts countdown
       this._invalidate();
     } else {
@@ -92,6 +116,9 @@ export class BreakoutEngine extends GameEngine {
       clearTimeout(this.phaseTimer);
       this.phaseTimer = null;
     }
+    this.localInputs = { left: false, right: false };
+    this.remoteInputs = { left: false, right: false };
+    this.peerReady = false;
     super.stop();
   }
 
@@ -112,6 +139,9 @@ export class BreakoutEngine extends GameEngine {
 
             // Apply decoded state, reconstruct blocks from bitmap
             this._ingestSnapshot(decoded, () => this._applyPeerState(decoded));
+            this.setKeyboardCaptured(
+              decoded.phase !== PHASE.WAITING && decoded.phase !== PHASE.FINISHED,
+            );
             this._playPhaseAudio(prevPhase, decoded.phase, prevScore, prevLives);
             this._invalidate();
           }
@@ -120,14 +150,14 @@ export class BreakoutEngine extends GameEngine {
 
       case MSG_TYPE.GAME_READY:
         if (this.isHost && !this.peerReady) {
-          this.peerReady = true;
-          this._startCountdown();
+          this.beginMatch();
         }
         break;
 
       case MSG_TYPE.GAME_END: {
         const result = decodeGameEnd(buf);
         if (result) {
+          this.setKeyboardCaptured(false);
           this.gameState.phase = PHASE.FINISHED;
           this.gameState.won = result.won;
           this.gameState.score = result.score;
@@ -195,10 +225,34 @@ export class BreakoutEngine extends GameEngine {
     this._sendInputState();
   }
 
+  beginMatch(options = {}) {
+    if (!this.running || !this.isHost || this.gameState.phase !== PHASE.WAITING) return false;
+
+    if (options.difficulty) {
+      this.difficulty = normalizeBreakoutAIDifficulty(options.difficulty);
+      if (
+        !options.opponentController &&
+        typeof this.opponentController?.setDifficulty === "function"
+      ) {
+        this.opponentController.setDifficulty(this.difficulty);
+      }
+    }
+    if (options.opponentController) this.opponentController = options.opponentController;
+    if (this.mode === "solo" && !this.opponentController) {
+      this.opponentController = createBreakoutAI({ difficulty: this.difficulty });
+    }
+
+    this.setKeyboardCaptured(true);
+    this.peerReady = true;
+    this._startCountdown();
+    return true;
+  }
+
   /** Host: start countdown phase. */
   _startCountdown() {
     this.gameState.phase = PHASE.COUNTDOWN;
     this.gameState.countdown = 3;
+    this.setKeyboardCaptured(true);
     this._broadcastState();
     this.audio.playCountdown();
 
@@ -222,10 +276,12 @@ export class BreakoutEngine extends GameEngine {
   _startServing() {
     this.gameState.phase = PHASE.SERVING;
     this.gameState.countdown = 0;
+    this.setKeyboardCaptured(true);
     this._broadcastState();
     this._invalidate();
 
     this.phaseTimer = setTimeout(() => {
+      if (!this.running || !this.gameState) return;
       // Serve toward opposite side of last exit, or random for first serve
       let direction;
       if (this.lastExitSide === "bottom") {
@@ -249,7 +305,9 @@ export class BreakoutEngine extends GameEngine {
 
   /** Host: main game loop (60Hz via requestAnimationFrame). */
   _gameLoop() {
-    if (!this.running) return;
+    if (!this.isHost || !this.running || !this.gameState) return;
+
+    this._updateOpponentInputs();
 
     // Update paddles (host = P1 bottom, peer = P2 top)
     this.gameState = updatePaddle(this.gameState, 1, this.localInputs);
@@ -331,6 +389,7 @@ export class BreakoutEngine extends GameEngine {
   /** Host: handle game end. */
   _handleGameFinished() {
     this._stopSteps();
+    this.setKeyboardCaptured(false);
     const { score, won } = this.gameState;
 
     if (won) {
@@ -356,6 +415,7 @@ export class BreakoutEngine extends GameEngine {
 
   _handleChannelClose() {
     this._stopSteps();
+    this.setKeyboardCaptured(false);
     if (!this.gameState || this.gameState.phase === PHASE.FINISHED) return;
     this.gameState.phase = PHASE.FINISHED;
     this._invalidate();
@@ -383,6 +443,25 @@ export class BreakoutEngine extends GameEngine {
     if (this.colors) {
       renderFrame(this.ctx, this.gameState, this.colors, performance.now());
     }
+  }
+
+  _updateOpponentInputs() {
+    if (this.mode !== "solo" || typeof this.opponentController?.nextInputs !== "function") return;
+
+    const nextInputs = this.opponentController.nextInputs({
+      state: this.gameState,
+      player: 2,
+      difficulty: this.difficulty,
+    });
+
+    this.remoteInputs = {
+      left: nextInputs?.left === true,
+      right: nextInputs?.right === true,
+    };
+  }
+
+  _shouldPreventDefaultForCapturedKey(event) {
+    return BREAKOUT_PREVENT_DEFAULT_KEYS.has(event.key);
   }
 
   /** Play audio based on phase transitions (peer side). */
