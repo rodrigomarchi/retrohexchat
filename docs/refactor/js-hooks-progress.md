@@ -303,4 +303,49 @@ ainda pega rename real de evento (exit 1).
 valores de payload (`direction`), não eventos, capturados por imprecisão do grep
 antigo. Ao mover para `push("...", { direction })` no resolver (direction virou
 variável), sumiram do snapshot; os nomes de evento reais seguem rastreados.
-### W8 — varredura e remoção do andaime · pendente
+### W8 — varredura · CONCLUÍDO (com follow-ups rastreados)
+
+**Feito**
+- **Padrão documentado:** `AGENT-GUIDE.md §15.1` ("What may live inside a hook")
+  — as quatro coisas, as três formas, o par de referência, o teste operacional
+  (Object.create/hook._private = lógica no lugar errado), as quatro catracas.
+  `.claude/rules/assets-js.md` aponta para lá.
+- **R5:** `file_transfer.js` `idCounter` → closure. Os 3 estados de módulo
+  restantes (`public_manager`, `interactive`, `tips`) são singletons deliberados
+  — override com razão escrita, não lógica presa.
+- **Teste do file_transfer reescrito black-box** (protocolo coberto pelo redutor
+  do W6): −17 white-box calls; catraca 201→184.
+- **i18n (fora-de-escopo, commits próprios):** 5 strings de loading do space +
+  badge "Speaking"/"Not speaking" → `t()`.
+
+**Follow-ups rastreados (trabalho separado, com razão):**
+- **Resíduo WebRTC (override de linha permanente):** `group_call_webrtc` (2134),
+  `lobby_webrtc` (1136), `space_canvas` (408) seguem > 200. O que sobra é
+  plumbing de `RTCPeerConnection` ao vivo + sync DOM de tiles. Extrair para
+  controladores Forma B = reescrever sinalização de tempo real; os testes de
+  negociação atuais (`lobby_webrtc_negotiation`, `group_call_negotiation`) dirigem
+  `_handleSignal`/`_maybeOffer` para cobrir glare/épocas/desync — cobertura de
+  integração legítima, não acessor de folha. Precisa de testes de integração
+  dedicados antes; não é seguro dentro de "não muda comportamento".
+- **W7.3** (painel Ctrl+R como hook próprio) e **W7.4** (split do chat_viewport
+  em scroll-controller + reader-interactions): fatias grandes. chat_viewport tem
+  comportamento de scroll delicado (scroll-yank; ver memória) com cobertura
+  limitada — precisa de teste de scroll dedicado antes de mover os observers.
+- **i18n dos labels de qualidade** (`participantQualityLabel/Title` em
+  `lib/group_call/quality.js`): NÃO wrap simples. O label viaja no payload de
+  qualidade broadcast; traduzir certo = re-derivar no ponto de display, na locale
+  de cada viewer, e não transmitir texto traduzido. É decisão de payload/display.
+- **`rtc_media_hook_factory` des-parametrização:** remover os ramos mortos
+  (`upgradeMode:"request"`, `!autoJoin`, `statsUpdate`) de um arquivo de 1466
+  linhas com 1 consumidor — cleanup separado.
+- **`loadRecentCommands`** (último alias do autocomplete) + seus 2 testes:
+  migrar o teste para `lib/chat/history.js` e remover o alias.
+- **Hooks finos sem teste** (menu_reposition, public_window_manager,
+  focus_chat_input, help_nav, highlight, toolbar_group): a lógica que tinham já
+  está testada em `lib/`; teste da casca é de baixo valor.
+
+**Balanço do refactor (W0–W8):** god-hook da conferência 2414→2134; ~20 módulos
+`lib/` novos com ~330 casos de teste cobrindo decisões antes intestáveis;
+snapshot da superfície + 4 catracas em CI segurando a linha; padrão escrito no
+AGENT-GUIDE. Nenhum comportamento observável mudou (commits de refactor); os
+poucos commits comportamentais (i18n) são isolados e marcados.

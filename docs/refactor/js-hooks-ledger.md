@@ -78,3 +78,17 @@ W1 RetroTable · W2 duplicações · W3 os quatro sem seam · W4 negociação We
 W5 fatiar a conferência · W6 file_transfer · W7 composer · W8 varredura.
 Hooks sem pacote atribuído já estão finos (≤ ~150 linhas, delegam a `lib/`) e
 ficam como estão; `n/a` em "usa lib" = pequeno demais para precisar de um.
+
+## Estado ao fim do W8
+
+Catracas em CI (só descem): teto 200 linhas/hook (overrides: os 10 hooks ainda
+grandes, cada um com o pacote ou a razão do resíduo) · `MAX_HOOK_PRIVATE_CALLS=184`
+· primitivas proibidas (5 hooks WebRTC/canvas, override) · estado de módulo em
+`lib/` (3 singletons deliberados). Superfície observável pinada por
+`scripts/surface_snapshot.sh --check`.
+
+Follow-ups rastreados em [`js-hooks-progress.md`](js-hooks-progress.md) (seção W8):
+resíduo WebRTC (>200, controladores Forma B precisam de testes de integração),
+W7.3/W7.4, i18n dos labels de qualidade (design payload/display),
+des-parametrização do `rtc_media_hook_factory`, alias `loadRecentCommands`,
+cobertura de hooks finos.
