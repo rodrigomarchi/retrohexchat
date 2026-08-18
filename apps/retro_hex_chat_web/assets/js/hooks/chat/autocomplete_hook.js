@@ -15,6 +15,7 @@ import {
 } from "../../lib/chat/input.js";
 import { createHistoryManager, isSensitiveCommand } from "../../lib/chat/history.js";
 import { INTENT, resolveComposerKey } from "../../lib/chat/composer.js";
+import { createHistorySearch } from "../../lib/chat/history_search.js";
 
 const MOBILE_BREAKPOINT = 768;
 const DESKTOP_MAX_LINES = 5;
@@ -34,6 +35,16 @@ const AutocompleteHook = {
     // keeps only an in-memory copy for fast Ctrl+Up/Ctrl+R interactions.
     this.historyDatasetKey = null;
     this.historyManager = createHistoryManager({});
+    this.historySearch = createHistorySearch({
+      input: this.inputEl,
+      search: (query) => this.historyManager.search(query),
+      resize: () => autoResize(this.inputEl, this.maxHeight),
+      onClose: (committed) => {
+        if (committed !== undefined) this.pushEvent("input_changed", { input: committed });
+        this.inputEl.focus();
+        autoResize(this.inputEl, this.maxHeight);
+      },
+    });
     this.syncHistoryFromDataset();
 
     // Auto-resize: mobile keeps the composer compact so autocomplete, reply and
@@ -179,7 +190,7 @@ const AutocompleteHook = {
 
   _handleComposerKeydown(e) {
     const intents = resolveComposerKey(e, {
-      historySearchActive: this.historySearchActive,
+      historySearchActive: this.historySearch.active,
       editMode: this.editMode,
       dropdownVisible: this.isDropdownVisible(),
       hasNavigated: this.hasNavigated,
@@ -216,10 +227,10 @@ const AutocompleteHook = {
   _runComposerAction(name, args) {
     switch (name) {
       case "closeHistorySearch":
-        this.closeHistorySearch(...args);
+        this.historySearch.close(...args);
         break;
       case "toggleHistorySearch":
-        this.toggleHistorySearch();
+        this.historySearch.toggle();
         break;
       case "historyUp":
         this.historyUp();
@@ -413,109 +424,6 @@ const AutocompleteHook = {
       }
       this.inputEl.dispatchEvent(new Event("input", { bubbles: true }));
       autoResize(this.inputEl, this.maxHeight);
-    }
-  },
-
-  // ── History search (DOM-coupled) ───────────────────────
-
-  historySearchActive: false,
-
-  toggleHistorySearch() {
-    if (this.historySearchActive) {
-      this.closeHistorySearch(false);
-    } else {
-      this.openHistorySearch();
-    }
-  },
-
-  openHistorySearch() {
-    const bar = document.getElementById("hist-search-panel");
-    if (!bar) return;
-
-    this.historySearchActive = true;
-    this.historySearchOriginal = this.inputEl.value;
-
-    bar.classList.remove("u-hidden");
-    bar.classList.add("hist-search-panel--open");
-
-    const noMatch = bar.querySelector(".history-no-match");
-    if (noMatch) noMatch.classList.add("u-hidden");
-
-    const searchInput = bar.querySelector(".history-search-input");
-    if (searchInput) {
-      searchInput.value = "";
-      searchInput.focus();
-
-      if (this._histSearchInputHandler) {
-        searchInput.removeEventListener("input", this._histSearchInputHandler);
-        searchInput.removeEventListener("keydown", this._histSearchKeydownHandler);
-      }
-
-      this._histSearchInputHandler = (e) => {
-        this.onHistorySearchInput(e.target.value);
-      };
-      this._histSearchKeydownHandler = (e) => {
-        if (e.key === "Enter") {
-          e.preventDefault();
-          e.stopPropagation();
-          this.closeHistorySearch(false);
-        } else if (e.key === "Escape") {
-          e.preventDefault();
-          e.stopPropagation();
-          this.closeHistorySearch(true);
-        }
-      };
-
-      searchInput.addEventListener("input", this._histSearchInputHandler);
-      searchInput.addEventListener("keydown", this._histSearchKeydownHandler);
-    }
-  },
-
-  closeHistorySearch(cancel) {
-    this.historySearchActive = false;
-    const bar = document.getElementById("hist-search-panel");
-    if (bar) {
-      bar.classList.remove("hist-search-panel--open");
-      bar.classList.add("u-hidden");
-    }
-
-    if (cancel && this.historySearchOriginal !== undefined) {
-      this.inputEl.value = this.historySearchOriginal;
-      this.pushEvent("input_changed", { input: this.historySearchOriginal });
-    } else if (!cancel) {
-      this.pushEvent("input_changed", { input: this.inputEl.value });
-    }
-    this.historySearchOriginal = undefined;
-    this.inputEl.focus();
-    autoResize(this.inputEl, this.maxHeight);
-  },
-
-  onHistorySearchInput(query) {
-    const bar = document.getElementById("hist-search-panel");
-    const noMatch = bar ? bar.querySelector(".history-no-match") : null;
-
-    if (!query) {
-      if (noMatch) {
-        noMatch.classList.remove("history-no-match--visible");
-        noMatch.classList.add("u-hidden");
-      }
-      return;
-    }
-
-    const match = this.historyManager.search(query);
-
-    if (match) {
-      this.inputEl.value = match;
-      autoResize(this.inputEl, this.maxHeight);
-      if (noMatch) {
-        noMatch.classList.remove("history-no-match--visible");
-        noMatch.classList.add("u-hidden");
-      }
-    } else {
-      if (noMatch) {
-        noMatch.classList.add("history-no-match--visible");
-        noMatch.classList.remove("u-hidden");
-      }
     }
   },
 

@@ -318,7 +318,17 @@ variável), sumiram do snapshot; os nomes de evento reais seguem rastreados.
 - **i18n (fora-de-escopo, commits próprios):** 5 strings de loading do space +
   badge "Speaking"/"Not speaking" → `t()`.
 
-**Follow-ups rastreados (trabalho separado, com razão):**
+**Follow-ups — TODOS RESOLVIDOS depois (2ª rodada):**
+- ✅ **W7.3** painel Ctrl+R → `lib/chat/history_search.js` (autocomplete 538→440, +7 testes).
+- ✅ **W7.4** split do chat_viewport → `lib/chat/viewport_scroll.js` (437→365; saiu do override de primitivas via `copyText`).
+- ✅ **#4 i18n labels de qualidade** → `t()` + re-derivação local por viewer.
+- ✅ **#5 factory des-parametrizado** (ramos mortos removidos, lobby é único consumidor).
+- ✅ **#6** alias `loadRecentCommands` removido + `toolbar_group` → `lib/ui/toolbar_group.js`.
+- ✅ **#1 resíduo WebRTC:** toda decisão limpa já extraída (quality/layout/tiles/media-state/
+  payload/reactions/negotiation). O que resta (recovery de 2 linhas + timers/pc/DOM) é
+  plumbing irredutível — extrair seria box-checking sem valor. Override permanente com razão.
+
+**Nota histórica — o que era follow-up e virou feito:**
 - **Resíduo WebRTC (override de linha permanente):** `group_call_webrtc` (2134),
   `lobby_webrtc` (1136), `space_canvas` (408) seguem > 200. O que sobra é
   plumbing de `RTCPeerConnection` ao vivo + sync DOM de tiles. Extrair para
