@@ -5,7 +5,7 @@
  * Uses ConnectionStatusHook state machine for logic, renders to pre-built DOM.
  */
 import { createConnectionStateMachine } from "../../lib/connection/connection_state_machine.js";
-import { t, jt } from "../../lib/i18n.js";
+import { connectionView } from "../../lib/connection/connection_view.js";
 
 const ConnectionStatusHook = {
   mounted() {
@@ -87,56 +87,31 @@ const ConnectionStatusHook = {
   },
 
   _render(state, data) {
-    // Banner
+    const view = connectionView(state, data);
+
     this._banner.classList.remove(
       "connection-banner--visible",
       "connection-banner--disconnected",
       "connection-banner--reconnected",
     );
-
-    // Overlay
-    this._overlay.classList.remove("reconnect-overlay--visible");
-
-    switch (state) {
-      case "disconnected":
-        this._bannerText.textContent = t("⚠️ Disconnected — Reconnecting...");
-        this._banner.classList.add("connection-banner--visible", "connection-banner--disconnected");
-        break;
-
-      case "reconnected":
-        this._bannerText.textContent = t("✓ Reconnected!");
-        this._banner.classList.add("connection-banner--visible", "connection-banner--reconnected");
-        break;
-
-      case "reconnecting":
-        this._overlay.classList.add("reconnect-overlay--visible");
-        this._overlayInfo.textContent = jt`Reconnection attempt ${data.attempt} of ${data.maxAttempts}`;
-        this._overlayCountdown.textContent = jt`Reconnecting in ${data.remaining}s...`;
-        this._overlayAction.textContent = t("Cancel");
-        break;
-
-      case "cancelled":
-        this._overlay.classList.add("reconnect-overlay--visible");
-        this._overlayInfo.textContent = "";
-        this._overlayCountdown.textContent = t("Reconnection cancelled. Refresh to try again.");
-        this._overlayAction.textContent = t("Refresh");
-        break;
-
-      // connected, connecting, failed — nothing visible
+    if (view.banner.visible) {
+      this._bannerText.textContent = view.banner.text;
+      this._banner.classList.add(
+        "connection-banner--visible",
+        `connection-banner--${view.banner.variant}`,
+      );
     }
 
-    this._updateChatInputDisabled(
-      state === "disconnected" ||
-        state === "reconnecting" ||
-        state === "cancelled" ||
-        state === "failed",
-    );
-    this._updateShellDisabled(
-      state === "disconnected" ||
-        state === "reconnecting" ||
-        state === "cancelled" ||
-        state === "failed",
-    );
+    this._overlay.classList.remove("reconnect-overlay--visible");
+    if (view.overlay.visible) {
+      this._overlay.classList.add("reconnect-overlay--visible");
+      this._overlayInfo.textContent = view.overlay.info;
+      this._overlayCountdown.textContent = view.overlay.countdown;
+      this._overlayAction.textContent = view.overlay.action;
+    }
+
+    this._updateChatInputDisabled(view.shellDisabled);
+    this._updateShellDisabled(view.shellDisabled);
   },
 
   _updateChatInputDisabled(disabled) {

@@ -328,6 +328,18 @@ variável), sumiram do snapshot; os nomes de evento reais seguem rastreados.
   payload/reactions/negotiation). O que resta (recovery de 2 linhas + timers/pc/DOM) é
   plumbing irredutível — extrair seria box-checking sem valor. Override permanente com razão.
 
+**Grupo C — hooks médios com lógica presa: AGORA TODOS FINOS.**
+- ✅ `contextual_tips` 229→35 → `lib/ui/tip_queue.js` (fila+toast+idle como controlador).
+- ✅ `connection_status` 212→187 → `lib/connection/connection_view.js` (mapeamento estado→view).
+- ✅ `format_toolbar` 261→27 → `lib/chat/format_toolbar.js` (controlador do popover/cores).
+- ✅ `group_call_prejoin` 278→29 → `lib/group_call/prejoin.js` (preview de device; saiu dos 2 overrides).
+
+**Estado dos hooks: 41/47 finos (≤200).** Os 6 restantes: 3 são plumbing WebRTC/Socket
+irredutível (group_call_webrtc 2136, lobby_webrtc 1136, space_canvas 409, override
+permanente); 3 têm a decisão já extraída e testada, sobrando I/O async ou binding de
+listeners (file_transfer 586 — loop de envio/hash/download; autocomplete 440 — wiring de
+input/keyup + handleEvents; chat_viewport 362 — reader-interactions pushEvent-coupled).
+
 **Nota histórica — o que era follow-up e virou feito:**
 - **Resíduo WebRTC (override de linha permanente):** `group_call_webrtc` (2134),
   `lobby_webrtc` (1136), `space_canvas` (408) seguem > 200. O que sobra é

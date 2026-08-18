@@ -87,16 +87,6 @@ const HOOK_LINE_OVERRIDES = new Map([
     "js/hooks/space/space_canvas_hook.js",
     "W8 moves loading/modal rendering behind the controllers",
   ],
-  [
-    "js/hooks/chat/format_toolbar_hook.js",
-    "W2 moves the markdown transforms to lib/chat/markdown_format.js",
-  ],
-  [
-    "js/hooks/group_call/group_call_prejoin_hook.js",
-    "W2 extracts device constraints and error copy",
-  ],
-  ["js/hooks/ui/contextual_tips_hook.js", "W8 extracts the tip queue to lib/ui/tip_queue.js"],
-  ["js/hooks/connection/connection_status_hook.js", "W8 extracts the state-to-view mapping"],
 ]);
 
 // Primitives that are a controller in disguise. setInterval and
@@ -114,7 +104,6 @@ const FORBIDDEN_HOOK_PRIMITIVES = [
 
 const FORBIDDEN_PRIMITIVE_OVERRIDES = new Map([
   ["js/hooks/chat/search_highlight_hook.js", "W8"],
-  ["js/hooks/group_call/group_call_prejoin_hook.js", "W2"],
   ["js/hooks/group_call/group_call_webrtc_hook.js", "W5"],
   ["js/hooks/space/space_canvas_hook.js", "W8"],
 ]);

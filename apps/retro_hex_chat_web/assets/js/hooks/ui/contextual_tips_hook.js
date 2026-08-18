@@ -1,229 +1,35 @@
 /**
- * LiveView hook for contextual tips and progressive disclosure.
+ * LiveView binding for contextual tips.
  *
- * Manages a queue of tips, shows retro-styled toast notifications,
- * sends seen/suppressed state changes to the server, and handles idle detection.
- * All tip logic lives in lib/tips.js; DOM creation in lib/toast.js.
+ * The queue, the toast lifecycle and idle detection live in
+ * `lib/ui/tip_queue.js`, which knows nothing about LiveView. This hook feeds it
+ * the server's tip triggers and dataset state, and forwards seen/suppressed
+ * changes back to the server.
  */
-import {
-  isSuppressed,
-  setSuppressed,
-  loadTipsState,
-  shouldShowTip,
-  markTipSeen,
-  markPreempted,
-  getTipById,
-  QUEUE_GAP_MS,
-  AUTO_DISMISS_MS,
-  IDLE_TIMEOUT_MS,
-  TIP_IDS,
-} from "../../lib/ui/tips.js";
-import { createToastElement, animateIn, animateOut } from "../../lib/notifications/toast.js";
+import { createTipQueue } from "../../lib/ui/tip_queue.js";
 
-const ContextualTipsHook = {
-  mounted() {
-    this.queue = [];
-    this.isShowing = false;
-    this.cooldownTimer = null;
-    this.autoDismissTimer = null;
-    this.idleTimer = null;
-    this.idleFired = false;
-    this.dialogPollTimer = null;
-    this.tipsDatasetKey = null;
-    this.syncTipsFromDataset();
-
-    this.handleEvent("tip_trigger", ({ tip }) => {
-      if (tip === "help_used") {
-        const seenTips = markPreempted(tip);
-        if (seenTips.length > 0) {
-          this.pushEvent("tips_seen", { tips: seenTips });
-        }
-        return;
-      }
-      this.enqueueTip(tip);
-    });
-
-    this.startIdleTimer();
-  },
-
-  destroyed() {
-    this.clearAllTimers();
-    this.removeIdleListeners();
-    this.removeCurrentToast();
-  },
-
-  updated() {
-    this.syncTipsFromDataset();
-  },
-
-  syncTipsFromDataset() {
-    const raw = this.el.dataset.tipsState || "";
-
-    if (raw === this.tipsDatasetKey) return;
-
-    this.tipsDatasetKey = raw;
-    loadTipsState(this.readTipsState(raw));
-  },
-
-  readTipsState(raw) {
-    if (!raw) return {};
-
-    try {
-      const decoded = JSON.parse(raw);
-      return decoded && typeof decoded === "object" ? decoded : {};
-    } catch {
-      return {};
-    }
-  },
-
-  enqueueTip(tipId) {
-    if (isSuppressed()) return;
-    if (!shouldShowTip(tipId)) return;
-
-    const tip = getTipById(tipId);
-    if (!tip) return;
-
-    this.queue.push(tip);
-    this.processQueue();
-  },
-
-  processQueue() {
-    if (this.isShowing) return;
-    if (this.queue.length === 0) return;
-    if (this.cooldownTimer) return;
-
-    if (this.isDialogOpen()) {
-      this.startDialogPolling();
-      return;
-    }
-
-    const tip = this.queue.shift();
-
-    if (!shouldShowTip(tip.id)) {
-      this.processQueue();
-      return;
-    }
-
-    this.showToast(tip);
-  },
-
-  showToast(tip) {
-    this.isShowing = true;
-
-    const onDismiss = (checked) => {
-      if (checked) {
-        setSuppressed(true);
-        this.pushEvent("tips_suppressed_changed", { suppressed: true });
-        this.clearQueue();
-      }
-      this.dismissToast(tip.id);
-    };
-
-    const toastEl = createToastElement(tip, {
-      showCheckbox: true,
-      onDismiss,
-    });
-
-    this.el.appendChild(toastEl);
-    this.currentToast = toastEl;
-
-    requestAnimationFrame(() => {
-      animateIn(toastEl);
-    });
-
-    this.autoDismissTimer = setTimeout(() => {
-      this.dismissToast(tip.id);
-    }, AUTO_DISMISS_MS);
-  },
-
-  async dismissToast(tipId) {
-    if (this.autoDismissTimer) {
-      clearTimeout(this.autoDismissTimer);
-      this.autoDismissTimer = null;
-    }
-
-    if (markTipSeen(tipId)) {
-      this.pushEvent("tips_seen", { tips: [tipId] });
-    }
-
-    if (this.currentToast) {
-      await animateOut(this.currentToast);
-      this.currentToast.remove();
-      this.currentToast = null;
-    }
-
-    this.isShowing = false;
-
-    if (this.queue.length > 0 && !isSuppressed()) {
-      this.cooldownTimer = setTimeout(() => {
-        this.cooldownTimer = null;
-        this.processQueue();
-      }, QUEUE_GAP_MS);
-    }
-  },
-
-  clearQueue() {
-    this.queue = [];
-    if (this.cooldownTimer) {
-      clearTimeout(this.cooldownTimer);
-      this.cooldownTimer = null;
-    }
-  },
-
-  removeCurrentToast() {
-    if (this.currentToast) {
-      this.currentToast.remove();
-      this.currentToast = null;
-    }
-  },
-
-  isDialogOpen() {
-    return !!document.querySelector(".dialog-overlay");
-  },
-
-  startDialogPolling() {
-    if (this.dialogPollTimer) return;
-    this.dialogPollTimer = setInterval(() => {
-      if (!this.isDialogOpen()) {
-        clearInterval(this.dialogPollTimer);
-        this.dialogPollTimer = null;
-        this.processQueue();
-      }
-    }, 500);
-  },
-
-  startIdleTimer() {
-    this.resetIdleTimer = () => {
-      if (this.idleFired) return;
-      if (this.idleTimer) clearTimeout(this.idleTimer);
-      this.idleTimer = setTimeout(() => {
-        this.idleFired = true;
-        this.enqueueTip(TIP_IDS.IDLE_HELP);
-      }, IDLE_TIMEOUT_MS);
-    };
-
-    this.idleEvents = ["keydown", "mousemove", "click"];
-    this.idleEvents.forEach((evt) => {
-      document.addEventListener(evt, this.resetIdleTimer, { passive: true });
-    });
-
-    this.resetIdleTimer();
-  },
-
-  removeIdleListeners() {
-    if (this.idleEvents && this.resetIdleTimer) {
-      this.idleEvents.forEach((evt) => {
-        document.removeEventListener(evt, this.resetIdleTimer);
+export function createContextualTipsHook({ factory = createTipQueue } = {}) {
+  return {
+    mounted() {
+      this.tips = factory({
+        host: this.el,
+        onSeen: (tips) => this.pushEvent("tips_seen", { tips }),
+        onSuppressed: (suppressed) => this.pushEvent("tips_suppressed_changed", { suppressed }),
       });
-    }
-  },
+      this.tips.loadState(this.el.dataset.tipsState || "");
+      this.tips.mount();
 
-  clearAllTimers() {
-    if (this.autoDismissTimer) clearTimeout(this.autoDismissTimer);
-    if (this.cooldownTimer) clearTimeout(this.cooldownTimer);
-    if (this.idleTimer) clearTimeout(this.idleTimer);
-    if (this.dialogPollTimer) clearInterval(this.dialogPollTimer);
-  },
-};
+      this.handleEvent("tip_trigger", ({ tip }) => this.tips.trigger(tip));
+    },
 
-export default ContextualTipsHook;
+    updated() {
+      this.tips.loadState(this.el.dataset.tipsState || "");
+    },
+
+    destroyed() {
+      this.tips.destroy();
+    },
+  };
+}
+
+export default createContextualTipsHook();
