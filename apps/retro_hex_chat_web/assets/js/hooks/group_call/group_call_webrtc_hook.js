@@ -32,6 +32,7 @@ import {
   reactionEmoji,
   reactionIconNode,
 } from "../../lib/group_call/reactions.js";
+import { focusedTileIndex, isTilePinned, tileIsVisible } from "../../lib/group_call/layout.js";
 import {
   acquireDisplayMedia,
   attachMediaStream,
@@ -991,7 +992,20 @@ const GroupCallWebRTCHook = {
     const host = this._videoGrid();
     const tiles = Array.from(this.el.querySelectorAll("[data-group-call-video-tile]"));
     const visibleTiles = tiles.filter((tile) => this._tileVisible(tile));
-    const focusedTile = this._focusedTile(visibleTiles);
+    const focusedIndex = focusedTileIndex(
+      {
+        mode: this.layoutState.mode,
+        activeSpeakerId: this.activeSpeakerParticipantId,
+        focusedParticipantId: this.layoutState.focusedParticipantId,
+        focusedStreamId: this.layoutState.focusedStreamId,
+      },
+      visibleTiles.map((tile) => ({
+        participantId: tile.dataset.participantId,
+        streamId: tile.dataset.streamId,
+        isLocal: tile.dataset.local === "true",
+      })),
+    );
+    const focusedTile = focusedIndex >= 0 ? visibleTiles[focusedIndex] : null;
     const remoteCount = this._remoteTileElements().filter((tile) => this._tileVisible(tile)).length;
 
     this.el.dataset.layoutMode = this.layoutState.mode;
@@ -1009,8 +1023,7 @@ const GroupCallWebRTCHook = {
     for (const tile of tiles) {
       const focused = focusedTile === tile;
       const participantId = stringOrNull(tile.dataset.participantId);
-      const pinned =
-        !!participantId && (this.layoutState.pinnedParticipantIds || []).includes(participantId);
+      const pinned = isTilePinned(participantId, this.layoutState.pinnedParticipantIds || []);
       tile.dataset.focused = String(focused);
       tile.dataset.pinned = String(pinned);
       tile.classList.toggle("group-call-video-tile--focused", focused);
@@ -1021,36 +1034,8 @@ const GroupCallWebRTCHook = {
     placeholder?.classList.toggle("hidden", remoteCount > 0);
   },
 
-  _focusedTile(tiles) {
-    if (!["focus", "sidebar", "speaker"].includes(this.layoutState.mode)) return null;
-
-    if (this.layoutState.mode === "speaker" && this.activeSpeakerParticipantId) {
-      const activeSpeaker = tiles.find(
-        (tile) => tile.dataset.participantId === this.activeSpeakerParticipantId,
-      );
-      if (activeSpeaker) return activeSpeaker;
-    }
-
-    if (this.layoutState.focusedParticipantId) {
-      const byParticipant = tiles.find(
-        (tile) => tile.dataset.participantId === this.layoutState.focusedParticipantId,
-      );
-      if (byParticipant) return byParticipant;
-    }
-
-    if (this.layoutState.focusedStreamId) {
-      const byStream = tiles.find(
-        (tile) => tile.dataset.streamId === this.layoutState.focusedStreamId,
-      );
-      if (byStream) return byStream;
-    }
-
-    return tiles.find((tile) => tile.dataset.local !== "true") || tiles[0] || null;
-  },
-
   _tileVisible(tile) {
-    if (tile.dataset.local !== "true") return true;
-    return this.layoutState.selfView !== "hidden";
+    return tileIsVisible(tile.dataset.local === "true", this.layoutState.selfView);
   },
 
   _mediaStateFromDataset() {

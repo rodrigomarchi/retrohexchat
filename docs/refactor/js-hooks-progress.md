@@ -203,7 +203,32 @@ o exit code).
   não as folhas — então extrair/deletar as folhas não os quebra, e eles ficam
   como a prova de que o comportamento composto foi preservado (reescrita contra a
   lib fica para W8).
-### W5 — fatiar a conferência · pendente
+### W5 — fatiar a conferência · EM CURSO (4/6 fatias)
+
+group_call_webrtc_hook: 2414 → 2165 linhas até agora. Uma fatia = um commit;
+o hook fica funcional (40 testes verdes) antes e depois de cada uma.
+
+- **W5.1 quality** ✓ → `lib/group_call/quality.js` (collectQualitySnapshot,
+  deriveParticipantQuality, participantQualityLevel/Label/Title). `resolveParticipantId`
+  e `now` injetados. +11 casos.
+- **W5.2 payload** ✓ → `lib/group_call/payload.js` (stringOrNull, idsFromValue,
+  payloadValue, normalizeLayoutMode, normalizeSelfView, tileDensity, hasOwn +
+  LAYOUT_MODES/SELF_VIEW_MODES). 7 métodos-sem-`this` deletados. +12 casos.
+- **W5.3 reactions** ✓ → `lib/group_call/reactions.js` (reactionEmoji,
+  ensureReactionStack, reactionIconNode, buildReactionBubble, REACTION_TTL_MS).
+  Timers e resolução de tile ficam no hook. +7 casos.
+- **W5.4 layout** ✓ → `lib/group_call/layout.js` (tileIsVisible, focusedTileIndex,
+  isTilePinned). Decisão de foco vira índice sobre descritores puros; aplicação
+  ao DOM fica no hook. +11 casos. Reversão OK.
+- **W5.5 tiles/participantes** — pendente
+- **W5.6 mídia/screen-share** — pendente (decidir antes: adotar rtc_media_hook_factory
+  na conferência ou des-parametrizar)
+
+**Aprendizados**
+- Fatiar um god-hook por descritor: passar `tiles.map(t => ({participantId,
+  streamId, isLocal}))` para a função pura e mapear o índice de volta ao elemento
+  é o que torna a decisão de foco testável sem grid — sem arrastar DOM para a lib.
+- `mkdir -p test/lib/<área>` antes do primeiro heredoc de cada área nova.
 ### W6 — file_transfer como redutor · pendente
 ### W7 — composer de chat · pendente
 ### W8 — varredura e remoção do andaime · pendente
