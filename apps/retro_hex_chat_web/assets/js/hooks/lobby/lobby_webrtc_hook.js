@@ -30,6 +30,14 @@ import {
   deriveFeatureStats,
   hasConnectionActivity,
 } from "../../lib/p2p/media.js";
+import {
+  advanceEpoch,
+  canApplyDescription,
+  isStaleEpoch,
+  nextConnectionEpoch,
+  normalizeEpoch,
+  ownsDescription,
+} from "../../lib/p2p/negotiation.js";
 
 // How often the always-on statistics window refreshes its per-feature metrics.
 const STATS_INTERVAL_MS = 2500;
@@ -299,7 +307,7 @@ const LobbyWebRTCHook = {
   // --- Single-offerer negotiation ---
 
   async _handleRemoteDescription(data) {
-    const epoch = this._normalizeEpoch(data.epoch);
+    const epoch = normalizeEpoch(data.epoch);
 
     if (this._isStaleEpoch(epoch)) {
       log.warn("[Lobby] Ignoring stale remote description", {
@@ -314,7 +322,7 @@ const LobbyWebRTCHook = {
     // ever applies offers. A description of the other kind is a misroute or a
     // replay aimed at the peer; applying it desyncs the state machine and every
     // later description for this round becomes unapplicable.
-    if (!this._isOwnDescription(data.type)) {
+    if (!ownsDescription(this.role, data.type)) {
       log.warn(`[Lobby] Ignoring ${data.type} meant for the peer (role=${this.role})`);
       return;
     }
@@ -424,7 +432,7 @@ const LobbyWebRTCHook = {
 
   async _handleRenegotiate({ kinds = [], recover = false, epoch, connection_reset }) {
     if (this.role !== "initiator" || !this.pc) return;
-    const requestedEpoch = this._normalizeEpoch(epoch);
+    const requestedEpoch = normalizeEpoch(epoch);
     if (this._isStaleEpoch(requestedEpoch)) return;
 
     if (connection_reset) {
@@ -513,7 +521,7 @@ const LobbyWebRTCHook = {
   async _handleRemoteCandidate(data) {
     if (!data.candidate) return;
 
-    const epoch = this._normalizeEpoch(data.epoch);
+    const epoch = normalizeEpoch(data.epoch);
     if (this._isStaleEpoch(epoch)) return;
     const key = this._remoteCandidateKey(data.candidate, epoch);
     if (this.remoteIceCandidateKeys.has(key)) return;
@@ -548,7 +556,7 @@ const LobbyWebRTCHook = {
     const keep = [];
     for (const entry of candidates) {
       const candidate = entry.candidate || entry;
-      const epoch = this._normalizeEpoch(entry.epoch);
+      const epoch = normalizeEpoch(entry.epoch);
       const key = this._remoteCandidateKey(candidate, epoch);
 
       if (this._isStaleEpoch(epoch)) continue;
@@ -572,7 +580,7 @@ const LobbyWebRTCHook = {
   _pendingIceCandidateKeys() {
     return new Set(
       this.pendingIceCandidates.map((entry) =>
-        this._remoteCandidateKey(entry.candidate || entry, this._normalizeEpoch(entry.epoch)),
+        this._remoteCandidateKey(entry.candidate || entry, normalizeEpoch(entry.epoch)),
       ),
     );
   },
@@ -598,13 +606,13 @@ const LobbyWebRTCHook = {
   // --- Connection management ---
 
   async _createConnection({ epoch } = {}) {
-    const nextEpoch = this._nextConnectionEpoch(epoch);
+    const nextEpoch = nextConnectionEpoch(this.signalingEpoch, epoch);
 
     if (this.pc) {
       // Rebuilding for a retry: candidates/descriptions for the old PC are stale.
       close(this.pc);
       this.pendingIceCandidates = this.pendingIceCandidates.filter((entry) => {
-        const pendingEpoch = this._normalizeEpoch(entry.epoch);
+        const pendingEpoch = normalizeEpoch(entry.epoch);
         return pendingEpoch && pendingEpoch >= nextEpoch;
       });
       this._pendingDescription = null;
@@ -905,21 +913,13 @@ const LobbyWebRTCHook = {
   // Which description kind this side is responsible for applying. Unknown until
   // the LiveView assigns a role, and until then nothing is filtered out: the
   // initiator's offer routinely beats "lobby_start_answer" to the client.
-  _isOwnDescription(type) {
-    if (!this.role) return true;
-    return this.role === "initiator" ? type === "answer" : type === "offer";
-  },
-
   // setRemoteDescription throws when the connection cannot accept the kind of
   // description on offer, and the catch turns that throw into a full rebuild —
   // which re-sends the signals that caused it. Screen the state first so a
   // stray description is dropped rather than escalated into a reconnect.
   _canApplyDescription(type) {
     const state = this.pc.signalingState;
-    const applicable =
-      type === "offer"
-        ? state === "stable" || state === "have-remote-offer"
-        : state === "have-local-offer";
+    const applicable = canApplyDescription(state, type);
 
     if (!applicable) {
       log.warn(`[Lobby] Ignoring ${type} in signalingState=${state}`);
@@ -928,30 +928,14 @@ const LobbyWebRTCHook = {
     return applicable;
   },
 
-  _normalizeEpoch(value) {
-    const number = Number(value);
-    return Number.isInteger(number) && number > 0 ? number : null;
-  },
-
-  _nextConnectionEpoch(value) {
-    const requested = this._normalizeEpoch(value);
-    if (requested && requested >= this.signalingEpoch) return requested;
-    return this.signalingEpoch + 1;
-  },
-
   _advanceSignalingEpoch(value) {
-    const requested = this._normalizeEpoch(value);
-    if (requested && requested > this.signalingEpoch) {
-      this.signalingEpoch = requested;
-    } else {
-      this.signalingEpoch += 1;
-    }
+    this.signalingEpoch = advanceEpoch(this.signalingEpoch, value);
     this.offerSeq = 0;
     this.currentOfferId = null;
   },
 
   _isStaleEpoch(epoch) {
-    return !!epoch && this.signalingEpoch > 0 && epoch < this.signalingEpoch;
+    return isStaleEpoch(this.signalingEpoch, epoch);
   },
 
   _markRecovering() {

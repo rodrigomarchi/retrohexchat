@@ -16,7 +16,7 @@ Baseline: main @ a1c9376e, 18/08/2026.
 | Hook | Linhas | Teste | Usa lib | pushEvent | Pacote | Estado | Módulos lib criados | Achados adiados |
 |---|---|---|---|---|---|---|---|---|
 | `group_call/group_call_webrtc_hook.js` | 2414 | sim | sim | sim | W4·W5 | pendente | — | — |
-| `lobby/lobby_webrtc_hook.js` | 1152 | sim | sim | sim | W4 | pendente | — | — |
+| `lobby/lobby_webrtc_hook.js` | 1152 | sim | sim | sim | W4 | **W4 feito** | p2p/negotiation | ainda >200; épocas+timers no hook |
 | `p2p/file_transfer_hook.js` | 663 | sim | sim | sim | W6 | pendente | — | — |
 | `chat/autocomplete_hook.js` | 631 | sim | sim | sim | W7 | pendente | — | — |
 | `ui/retro_table_hook.js` | 586→32 | sim | sim | — | W1 | **concluído** | ui/retro_table{,_layout,_selection} | — |

@@ -175,7 +175,34 @@ o exit code).
   `registry`) enquanto tira os callbacks de morphdom de dentro do arquivo de hook.
 - `mkdir -p test/lib/<área>` antes do heredoc: um `cat >` num diretório
   inexistente falha silencioso e o vitest reclama de "no files".
-### W4 — negociação WebRTC compartilhada · pendente
+### W4 — negociação WebRTC compartilhada · CONCLUÍDO
+
+**Feito**
+- `lib/p2p/negotiation.js`: `ownsDescription`, `canApplyDescription`,
+  `normalizeEpoch`, `nextConnectionEpoch`, `advanceEpoch`, `isStaleEpoch` —
+  regras puras sobre (role, signalingState, epoch), extraídas do lobby copiando
+  os corpos sem mudar condição.
+- Lobby religado: folhas puras (`_isOwnDescription`, `_normalizeEpoch`,
+  `_nextConnectionEpoch`) deletadas e inlinadas; `_canApplyDescription` (tem
+  log) e `_advanceSignalingEpoch` (muta estado) mantidos usando a lib;
+  `_isStaleEpoch` vira adaptador de uma linha. Os testes de negociação existentes
+  (via `_handleSignal`/`_maybeOffer`) seguem verdes sem edição.
+- Conferência passa a criar a conexão por
+  `createPeerConnection(iceServers, { turnOnly: false })` — um só caminho de
+  criação de `RTCPeerConnection` no repo. (turn_only é conceito só da sessão P2P;
+  a conferência é SFU.)
+- +12 casos de lib cobrindo a matriz 2 papéis × tipos × todos os signalingState.
+  Reversão OK (lib + hook reagem).
+
+**Aprendizados**
+- Distinguir folha pura de adaptador com estado: `_normalizeEpoch(value)` não usa
+  `this` → pass-through puro, inlinar nos 9 sites. `_isStaleEpoch(epoch)` liga
+  `this.signalingEpoch` → adaptador legítimo (tem callers de produção reais), não
+  é alias-só-de-teste que R6 proíbe.
+- Os testes de negociação chamam métodos de **alto nível** (`_handleSignal`),
+  não as folhas — então extrair/deletar as folhas não os quebra, e eles ficam
+  como a prova de que o comportamento composto foi preservado (reescrita contra a
+  lib fica para W8).
 ### W5 — fatiar a conferência · pendente
 ### W6 — file_transfer como redutor · pendente
 ### W7 — composer de chat · pendente

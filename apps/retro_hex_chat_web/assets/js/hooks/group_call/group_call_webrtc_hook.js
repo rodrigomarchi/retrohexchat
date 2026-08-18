@@ -9,6 +9,7 @@ import { t } from "../../lib/i18n.js";
 import { log } from "../../lib/logger.js";
 import { isEditableTarget } from "../../lib/ui/dom.js";
 import { captureConstraints } from "../../lib/p2p/device_constraints.js";
+import { createPeerConnection } from "../../lib/p2p/webrtc.js";
 import {
   acquireDisplayMedia,
   attachMediaStream,
@@ -396,7 +397,7 @@ const GroupCallWebRTCHook = {
   async _ensurePeerConnection(iceServers) {
     if (this.pc) return;
 
-    this.pc = new RTCPeerConnection({ iceServers });
+    this.pc = createPeerConnection(iceServers, { turnOnly: false });
     this.remoteCandidateFailures = 0;
 
     this.pc.onconnectionstatechange = () => this._handleConnectionStateChange();
