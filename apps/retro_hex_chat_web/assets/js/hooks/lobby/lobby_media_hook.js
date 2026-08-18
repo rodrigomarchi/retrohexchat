@@ -13,8 +13,6 @@ const LobbyMediaHook = createRtcMediaHook({
   pcReadyEvent: "lobby_media_pc_ready",
   pcClosedEvent: "lobby_media_pc_closed",
   actionAttribute: "data-lobby-media-action",
-  upgradeMode: "local",
-  autoJoin: true,
   elementIds: {
     remoteVideo: "lobby-remote-video",
     localVideo: "lobby-local-video",

@@ -49,12 +49,6 @@ function normalizeConfig(config) {
     pcClosedEvent: config.pcClosedEvent,
     actionAttribute: config.actionAttribute || "data-media-action",
     deviceKindAttribute: config.deviceKindAttribute || "data-device-kind",
-    upgradeMode: config.upgradeMode || "request",
-    // When true, this hook can be placed "in a call" by the server without
-    // acquiring any media (recvonly auto-join) and runs a watchdog that recovers
-    // a remote video track that negotiated but never started flowing. Lobby-only;
-    // the /p2p flow leaves it off so its bilateral-consent path is untouched.
-    autoJoin: config.autoJoin === true,
     elementIds: {
       remoteVideo: config.elementIds?.remoteVideo,
       localVideo: config.elementIds?.localVideo,
@@ -81,9 +75,7 @@ function normalizeConfig(config) {
       muteChanged: config.clientEvents?.muteChanged,
       cameraChanged: config.clientEvents?.cameraChanged,
       qualityUpdate: config.clientEvents?.qualityUpdate,
-      statsUpdate: config.clientEvents?.statsUpdate,
       durationTick: config.clientEvents?.durationTick,
-      requestUpgrade: config.clientEvents?.requestUpgrade,
       devicesListed: config.clientEvents?.devicesListed,
       deviceFallback: config.clientEvents?.deviceFallback,
       screenShareChanged: config.clientEvents?.screenShareChanged,
@@ -391,8 +383,7 @@ export function createRtcMediaHook(configInput) {
         type = "audio";
       }
 
-      const receiverEnablingAudio =
-        config.autoJoin && type === "audio" && this.callType === "receiving";
+      const receiverEnablingAudio = type === "audio" && this.callType === "receiving";
 
       if (this.callType && !receiverEnablingAudio) return;
 
@@ -575,12 +566,11 @@ export function createRtcMediaHook(configInput) {
     // the server keeps one entry point for "this peer's media changed".
     _reportSendState() {
       const type = this.videoOn ? "video" : this.audioOn ? "audio" : "receiving";
-      // Only the auto-join (lobby) flow carries the granular send flags; the /p2p
-      // and /game flows keep their original `{type}`-only payload untouched.
-      const payload = config.autoJoin
-        ? { type, audio_on: this.audioOn, video_on: this.videoOn }
-        : { type };
-      this._push(config.clientEvents.callStarted, payload);
+      this._push(config.clientEvents.callStarted, {
+        type,
+        audio_on: this.audioOn,
+        video_on: this.videoOn,
+      });
     },
 
     // Acquire and send the camera on demand. Works whether or not we already have
@@ -666,13 +656,13 @@ export function createRtcMediaHook(configInput) {
       }
     },
 
-    // --- Stalled-media watchdog (autoJoin only) ---
+    // --- Stalled-media watchdog ---
 
     // A remote video track that negotiates but never starts flowing stays
     // `muted` (no RTP). When that persists past the grace window, ask the WebRTC
     // hook to recover (ICE restart / re-offer) instead of leaving a black frame.
     _startMediaWatchdog() {
-      if (!config.autoJoin || this.watchdogInterval) return;
+      if (this.watchdogInterval) return;
 
       this._stalledSince = null;
       this._stalledRecoveries = 0;
@@ -810,9 +800,7 @@ export function createRtcMediaHook(configInput) {
     },
 
     _expectsRemoteVideo() {
-      return (
-        config.autoJoin && this.inCall && this.expectedRemoteVideo && this.peerCameraOff !== true
-      );
+      return this.inCall && this.expectedRemoteVideo && this.peerCameraOff !== true;
     },
 
     _clearMediaElements() {
@@ -944,11 +932,7 @@ export function createRtcMediaHook(configInput) {
             this._toggleScreenShare();
             break;
           case "upgrade":
-            if (config.upgradeMode === "local") {
-              this._handleUpgradeAccepted();
-            } else {
-              this._push(config.clientEvents.requestUpgrade, {});
-            }
+            this._handleUpgradeAccepted();
             break;
           case "device-settings":
             this._openDeviceSettings();
@@ -1318,11 +1302,6 @@ export function createRtcMediaHook(configInput) {
             level: derived.level,
             label: derived.label,
           });
-
-          // Full numeric telemetry feeds the network panel (P2P hook only).
-          if (config.clientEvents.statsUpdate) {
-            this._push(config.clientEvents.statsUpdate, derived);
-          }
         } catch (error) {
           // Stats can be unavailable until RTP starts flowing — debug, not warn,
           // to avoid spamming the console on every early poll.
