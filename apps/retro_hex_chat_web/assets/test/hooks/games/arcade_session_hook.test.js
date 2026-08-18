@@ -23,11 +23,12 @@ describe("ArcadeSessionHook", () => {
     vi.useRealTimers();
   });
 
-  it("registers arcade_close_tab and open_game_window handlers on mount", () => {
+  it("registers arcade_close_tab, open_game_window, and close_game_window handlers on mount", () => {
     hook.mounted();
 
     expect(hook.handleEvent).toHaveBeenCalledWith("arcade_close_tab", expect.any(Function));
     expect(hook.handleEvent).toHaveBeenCalledWith("open_game_window", expect.any(Function));
+    expect(hook.handleEvent).toHaveBeenCalledWith("close_game_window", expect.any(Function));
   });
 
   describe("open_game_window", () => {
@@ -160,6 +161,24 @@ describe("ArcadeSessionHook", () => {
 
       openSpy.mockRestore();
       closeSpy.mockRestore();
+    });
+
+    it("closes the owned game window on close_game_window", () => {
+      const mockWindow = { closed: false, close: vi.fn() };
+      const openSpy = vi.spyOn(window, "open").mockReturnValue(mockWindow);
+
+      hook.mounted();
+      eventHandlers["open_game_window"]({ url: "/arcade/token/doom" });
+
+      eventHandlers["close_game_window"]();
+
+      expect(mockWindow.close).toHaveBeenCalled();
+
+      mockWindow.closed = true;
+      vi.advanceTimersByTime(5000);
+      expect(hook.pushEvent).not.toHaveBeenCalledWith("game_window_closed", {});
+
+      openSpy.mockRestore();
     });
   });
 });

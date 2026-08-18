@@ -604,7 +604,7 @@
       />
     </.desktop_window>
 
-    <%!-- Arcade — server-managed solo-game picker, a pure read-model of the
+    <%!-- Arcade — server-managed solo-game launcher, a pure read-model of the
           @arcade_session assign.
           The X keeps the session alive while a game is running (the pop-up
           keeps playing); the Leave/Close button inside ends it. --%>
@@ -613,7 +613,7 @@
       {WindowRegistry.attrs("arcade-games")}
       persist_geometry={false}
       on_close="arcade_window_close"
-      body_class="p-2"
+      body_class="h-full min-h-0 overflow-hidden p-2"
       data-testid="arcade-games-window"
     >
       <:icon><Icons.icon_game_arcade class="h-4 w-4" /></:icon>
@@ -621,15 +621,13 @@
         id="arcade-lobby"
         games={arcade_games()}
         session_status={@arcade_session.status}
-        previewed_game={@arcade_session.previewed_game}
         game_name={@arcade_session.game_name}
         game_id={@arcade_session.game_id}
         game_started_at={@arcade_session.game_started_at}
         game_duration={@arcade_session.game_duration}
         inactivity_warning={@arcade_session.inactivity_warning}
-        on_preview_game="arcade_preview"
         on_select_game="arcade_select_game"
-        on_back="arcade_back"
+        on_back_to_launcher="arcade_back_to_launcher"
         on_close="arcade_leave"
       />
     </.desktop_window>

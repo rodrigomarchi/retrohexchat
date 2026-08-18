@@ -11,119 +11,74 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:160
-#, elixir-autogen, elixir-format
-msgid "%{engine} Engine"
-msgstr "%{engine} 引擎"
-
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:353
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:264
 #, elixir-autogen, elixir-format
 msgid "%{hours}h %{minutes}m %{seconds}s"
 msgstr "%{hours}h %{minutes}m %{seconds}s 光谱仪"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:359
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:270
 #, elixir-autogen, elixir-format
 msgid "%{minutes}m %{seconds}s"
 msgstr "%{minutes}m %{seconds}s (英语)."
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:343
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:254
 #, elixir-autogen, elixir-format
 msgid "%{seconds}s"
 msgstr "%{seconds}级"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:194
-#, elixir-autogen, elixir-format
-msgid "About"
-msgstr "关于"
-
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:218
-#, elixir-autogen, elixir-format
-msgid "Action"
-msgstr "行动"
-
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:336
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:168
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:180
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:225
 #, elixir-autogen, elixir-format
 msgid "Back"
 msgstr "返回"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:108
-#, elixir-autogen, elixir-format
-msgid "Choose a game:"
-msgstr "选择游戏 :"
-
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:101
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:92
 #, elixir-autogen, elixir-format
 msgid "Classic games running in your browser via WebAssembly"
 msgstr "通过 WebAssembly 在浏览器中运行的经典游戏"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:319
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:229
 #, elixir-autogen, elixir-format
 msgid "Close"
 msgstr "关闭"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:284
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:184
 #, elixir-autogen, elixir-format
 msgid "End Session"
 msgstr "结束会话"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:215
-#, elixir-autogen, elixir-format
-msgid "Key"
-msgstr "密钥"
-
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:209
-#, elixir-autogen, elixir-format
-msgid "Keyboard Controls"
-msgstr "键盘控制"
-
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:136
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:182
-#, elixir-autogen, elixir-format
-msgid "Leave"
-msgstr "离开"
-
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:312
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:217
 #, elixir-autogen, elixir-format
 msgid "Play time:"
 msgstr "播放时间 :"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:99
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:90
 #, elixir-autogen, elixir-format
 msgid "Retro Arcade"
 msgstr "复古拱门"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:45
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:43
 #, elixir-autogen, elixir-format
 msgid "Session will be closed due to inactivity soon. Select a game to keep it active."
 msgstr "由于会议即将结束。 选择一个游戏以保持其活动 。"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:178
-#, elixir-autogen, elixir-format
-msgid "Start Game"
-msgstr "开始游戏"
-
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:238
-#, elixir-autogen, elixir-format
-msgid "Tips"
-msgstr "提示"
-
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:264
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:159
 #, elixir-autogen, elixir-format
 msgid "Game in progress"
 msgstr "游戏中"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:306
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:211
 #, elixir-autogen, elixir-format
 msgid "Session complete"
 msgstr "会话完成"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:268
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:163
 #, elixir-autogen, elixir-format
 msgid "Started %{time}"
 msgstr "开始 %{time}"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:275
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:170
 #, elixir-autogen, elixir-format
 msgid "The game runs in a separate window. Keep this window open to track your session — closing the game window ends it."
 msgstr "游戏在单独的窗口中运行. 保持此窗口打开以跟踪您的会话——关闭游戏窗口结束它."
@@ -270,6 +225,7 @@ msgstr "游戏中"
 
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:90
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:579
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:132
 #, elixir-autogen, elixir-format
 msgid "Ready"
 msgstr "就绪"
@@ -495,3 +451,8 @@ msgstr "出拳"
 #, elixir-autogen, elixir-format
 msgid "Forward"
 msgstr "前进"
+
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:133
+#, elixir-autogen, elixir-format
+msgid "WebAssembly"
+msgstr "WebAssembly"

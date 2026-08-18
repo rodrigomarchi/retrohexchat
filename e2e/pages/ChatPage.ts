@@ -47,6 +47,8 @@ export class ChatPage {
   readonly retroGamesIconGrid: Locator;
   readonly arcadeMenuItem: Locator;
   readonly arcadeWindow: Locator;
+  readonly arcadeLibrary: Locator;
+  readonly arcadeIconGrid: Locator;
   readonly disconnectMenuItem: Locator;
   readonly adminSubmenuTrigger: Locator;
   readonly systemSubmenuTrigger: Locator;
@@ -331,6 +333,8 @@ export class ChatPage {
     this.retroGamesIconGrid = page.getByTestId("retro-games-icon-grid");
     this.arcadeMenuItem = visibleContextMenuItem(page, "open_arcade");
     this.arcadeWindow = page.getByTestId("arcade-games-window");
+    this.arcadeLibrary = page.getByTestId("arcade-library");
+    this.arcadeIconGrid = page.getByTestId("arcade-icon-grid");
     // context_menu_item exposes data-testid="context-menu-item-<action>".
     this.disconnectMenuItem = visibleContextMenuItem(page, "disconnect");
     this.adminSubmenuTrigger = page
@@ -778,6 +782,7 @@ export class ChatPage {
     await expect(this.arcadeMenuItem).toBeVisible();
     await this.arcadeMenuItem.click();
     await expect(this.arcadeWindow).toBeVisible();
+    await expect(this.arcadeIconGrid).toBeVisible();
   }
 
   async openRetroGamesFromGamesMenu() {

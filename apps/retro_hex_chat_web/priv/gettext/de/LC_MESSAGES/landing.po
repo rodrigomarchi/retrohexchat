@@ -319,7 +319,7 @@ msgstr "Code"
 
 #: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:173
 #: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:403
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:526
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:542
 #: lib/retro_hex_chat_web/live/landing_live/community.ex:19
 #, elixir-autogen, elixir-format
 msgid "Community"
@@ -398,7 +398,7 @@ msgstr "Muss ich meinen eigenen Server ausführen?"
 
 #: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:265
 #: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:398
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:392
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:408
 #, elixir-autogen, elixir-format
 msgid "Documentation"
 msgstr "Dokumentation"
@@ -450,7 +450,7 @@ msgid "Extensible"
 msgstr "Erweiterbar"
 
 #: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:176
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:529
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:545
 #: lib/retro_hex_chat_web/live/landing_live/faq.ex:20
 #, elixir-autogen, elixir-format
 msgid "FAQ"
@@ -467,7 +467,7 @@ msgid "FOTAQ"
 msgstr "FOTAQ"
 
 #: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:155
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:508
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:524
 #: lib/retro_hex_chat_web/live/landing_live/features.ex:20
 #, elixir-autogen, elixir-format
 msgid "Features"
@@ -551,7 +551,7 @@ msgid "Hockey"
 msgstr "Hockey"
 
 #: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:149
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:502
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:518
 #: lib/retro_hex_chat_web/live/landing_live/how_it_works.ex:20
 #, elixir-autogen, elixir-format
 msgid "How It Works"
@@ -596,7 +596,7 @@ msgstr ""
 "repräsentiert."
 
 #: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:167
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:520
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:536
 #: lib/retro_hex_chat_web/live/landing_live/install.ex:19
 #, elixir-autogen, elixir-format
 msgid "Install"
@@ -904,7 +904,7 @@ msgid "Powerful IRC-style commands."
 msgstr "Powerful IRC-Stil Befehle."
 
 #: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:161
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:514
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:530
 #: lib/retro_hex_chat_web/live/landing_live/index.html.heex:72
 #: lib/retro_hex_chat_web/live/landing_live/privacy.ex:19
 #, elixir-autogen, elixir-format
@@ -1805,7 +1805,7 @@ msgid "Help"
 msgstr "Hilfe"
 
 #: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:145
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:498
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:514
 #, elixir-autogen, elixir-format
 msgid "Home"
 msgstr "Home"
@@ -1822,7 +1822,7 @@ msgstr "Navigieren"
 msgid "Open the"
 msgstr "Öffne die"
 
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:412
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:428
 #, elixir-autogen, elixir-format
 msgid "Open the app"
 msgstr "App öffnen"
@@ -1837,13 +1837,6 @@ msgstr "Wählen Sie ein Spiel – es öffnet in einem neuen Browser-Fenster"
 #, elixir-autogen, elixir-format
 msgid "menu and choose"
 msgstr "Menü und Auswahl"
-
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:388
-#, elixir-autogen, elixir-format
-msgid "— a game picker opens right in the chat. Pick from DOOM, Quake, Wolfenstein 3D, Half-Life, and ScummVM adventures — all running as"
-msgstr ""
-"— ein Spiel Picker öffnet sich direkt im Chat. Pick aus DOOM, Quake, "
-"Wolfenstein 3D, Half-Life und ScummVM Abenteuer — alle laufen als"
 
 #: lib/retro_hex_chat_web/live/landing_live/index.html.heex:358
 #, elixir-autogen, elixir-format
@@ -2493,3 +2486,8 @@ msgstr "Willkommen"
 #, elixir-autogen, elixir-format
 msgid "Sign-in could not load. Check your connection and reload the page."
 msgstr "Die Anmeldung konnte nicht geladen werden. Prüfen Sie Ihre Verbindung und laden Sie die Seite neu."
+
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:388
+#, elixir-autogen, elixir-format
+msgid "— an icon launcher opens right in the chat. Pick from DOOM, Quake, Wolfenstein 3D, Half-Life, and ScummVM adventures — all running as"
+msgstr "— ein Symbolstarter öffnet sich direkt im Chat. Wähle aus DOOM, Quake, Wolfenstein 3D, Half-Life und ScummVM-Abenteuern — alle laufen als"

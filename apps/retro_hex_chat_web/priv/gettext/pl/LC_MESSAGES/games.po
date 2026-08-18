@@ -11,119 +11,74 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:160
-#, elixir-autogen, elixir-format
-msgid "%{engine} Engine"
-msgstr "%{engine} Silnik"
-
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:353
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:264
 #, elixir-autogen, elixir-format
 msgid "%{hours}h %{minutes}m %{seconds}s"
 msgstr "%{hours}h %{minutes}m %{seconds}s"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:359
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:270
 #, elixir-autogen, elixir-format
 msgid "%{minutes}m %{seconds}s"
 msgstr "%{minutes}m %{seconds}s"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:343
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:254
 #, elixir-autogen, elixir-format
 msgid "%{seconds}s"
 msgstr "%{seconds}s"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:194
-#, elixir-autogen, elixir-format
-msgid "About"
-msgstr "O programie"
-
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:218
-#, elixir-autogen, elixir-format
-msgid "Action"
-msgstr "Działanie"
-
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:336
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:168
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:180
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:225
 #, elixir-autogen, elixir-format
 msgid "Back"
 msgstr "Wstecz"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:108
-#, elixir-autogen, elixir-format
-msgid "Choose a game:"
-msgstr "Wybierz grę:"
-
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:101
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:92
 #, elixir-autogen, elixir-format
 msgid "Classic games running in your browser via WebAssembly"
 msgstr "Klasyczne gry uruchomione w przeglądarce przez WebAssembly"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:319
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:229
 #, elixir-autogen, elixir-format
 msgid "Close"
 msgstr "Zamknij"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:284
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:184
 #, elixir-autogen, elixir-format
 msgid "End Session"
 msgstr "Koniec sesji"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:215
-#, elixir-autogen, elixir-format
-msgid "Key"
-msgstr "Klucz"
-
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:209
-#, elixir-autogen, elixir-format
-msgid "Keyboard Controls"
-msgstr "Sterowanie klawiaturą"
-
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:136
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:182
-#, elixir-autogen, elixir-format
-msgid "Leave"
-msgstr "Opuść"
-
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:312
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:217
 #, elixir-autogen, elixir-format
 msgid "Play time:"
 msgstr "Czas odtwarzania:"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:99
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:90
 #, elixir-autogen, elixir-format
 msgid "Retro Arcade"
 msgstr "Retro Arcade"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:45
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:43
 #, elixir-autogen, elixir-format
 msgid "Session will be closed due to inactivity soon. Select a game to keep it active."
 msgstr "Sesja zostanie zamknięta z powodu nieaktywności. Wybierz grę, aby była aktywna."
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:178
-#, elixir-autogen, elixir-format
-msgid "Start Game"
-msgstr "Rozpocznij grę"
-
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:238
-#, elixir-autogen, elixir-format
-msgid "Tips"
-msgstr "Wskazówki"
-
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:264
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:159
 #, elixir-autogen, elixir-format
 msgid "Game in progress"
 msgstr "Gra w toku"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:306
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:211
 #, elixir-autogen, elixir-format
 msgid "Session complete"
 msgstr "Sesja zakończona"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:268
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:163
 #, elixir-autogen, elixir-format
 msgid "Started %{time}"
 msgstr "Rozpoczęty %{time}"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:275
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:170
 #, elixir-autogen, elixir-format
 msgid "The game runs in a separate window. Keep this window open to track your session — closing the game window ends it."
 msgstr "Gra toczy się w osobnym oknie. Trzymaj to okno otwarte, aby śledzić sesję - zamykanie okna gry go kończy."
@@ -270,6 +225,7 @@ msgstr "W trakcie"
 
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:90
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:579
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:132
 #, elixir-autogen, elixir-format
 msgid "Ready"
 msgstr "Gotowy"
@@ -495,3 +451,8 @@ msgstr "Cios"
 #, elixir-autogen, elixir-format
 msgid "Forward"
 msgstr "Naprzód"
+
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:133
+#, elixir-autogen, elixir-format
+msgid "WebAssembly"
+msgstr "WebAssembly"

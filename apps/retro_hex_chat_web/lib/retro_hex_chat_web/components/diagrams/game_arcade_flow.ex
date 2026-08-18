@@ -17,7 +17,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameArcadeFlow do
       aria-label={
         dgettext(
           "diagrams",
-          "Solo arcade flow: open the Games menu and choose Arcade, pick a game from the catalog, a new window opens, WASM game runs in browser"
+          "Solo arcade flow: open the Games menu and choose Arcade, pick a game icon, a new window opens, WASM game runs in browser"
         )
       }
     >
@@ -85,7 +85,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameArcadeFlow do
       <rect x="208" y="55" width="2" height="16" fill="#808080" />
       <path d="M204 69 h10 l-5 5 z" fill="#808080" />
 
-      <%!-- ── Step 2: Arcade Lobby / Catalog ── --%>
+      <%!-- ── Step 2: Arcade icon launcher ── --%>
       <%!-- Shadow --%>
       <rect x="64" y="82" width="300" height="82" fill="#000" />
       <%!-- Window --%>

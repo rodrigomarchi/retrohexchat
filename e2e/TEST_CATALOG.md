@@ -358,7 +358,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | M17 | Bot enable/disable/destroy changes response behavior and cleans up (features P2) | `tests/chat-bots.spec.ts` | done |
 | M18 | `/announce` broadcasts to connected users and bypasses ignore (features P1) | `tests/chat-announce.spec.ts` | done |
 | M19 | Regular user admin-only commands show permission errors (features P1) | `tests/chat-admin-permissions.spec.ts` | done |
-| M20 | Games menu → Arcade opens the in-chat game picker and previews a game (features P2) | `tests/chat-arcade.spec.ts` | done |
+| M20 | Games menu -> Arcade opens an icon launcher and game icons launch WASM sessions (features P2) | `tests/chat-arcade.spec.ts` | done |
 | M21 | The production provisioning script runs end to end with every line accepted by the Admin Console | `tests/chat-admin-server-provision.spec.ts` | done |
 | M22 | A newcomer joining a provisioned channel is greeted, and every advertised bot trigger answers | `tests/chat-admin-server-provision.spec.ts` | done |
 | M23 | The Bot Management roster describes each bot, and selecting one drills into it | `tests/chat-bot-management-window.spec.ts` | done |

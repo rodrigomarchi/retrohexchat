@@ -8,10 +8,8 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEvents do
 
   Opening "Games → Arcade" (registered + identified only) creates a solo session
   (`Arcade.create_session` + `join_session`), subscribes to `"arcade:\#{token}"`
-  and opens the managed "arcade-games" window with the picker; an optional
-  `game-id` param (the per-game Games-menu items) lands directly on that game's
-  preview instead. Selecting a game
-  drives the domain (`Arcade.select_game`); the resulting "playing" broadcast
+  and opens the managed "arcade-games" window with the icon launcher. Selecting
+  a game drives the domain (`Arcade.select_game`); the resulting "playing" broadcast
   makes the host push `open_game_window` to the ArcadeSession JS hook, which
   `window.open`s the external WASM game and polls it — its close bubbles back as
   `game_window_closed` → `Arcade.finish_game`.
@@ -43,30 +41,12 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEvents do
 
   @spec handle_event(String.t(), map(), Socket.t()) :: {:cont | :halt, Socket.t()}
   def handle_event("open_arcade", params, socket) do
-    socket = open_arcade(socket)
-
-    # A game-id (per-game Games-menu item) skips the picker and lands on that
-    # game's preview — only while the session sits in the lobby, so a running
-    # or finished game is never disturbed.
     socket =
-      case {Map.get(params, "game-id"), socket.assigns[:arcade_session]} do
-        {game_id, %{status: "lobby"}} when is_binary(game_id) -> preview_game(socket, game_id)
-        _ -> socket
-      end
+      socket
+      |> open_arcade()
+      |> maybe_select_game(params)
 
     {:halt, socket}
-  end
-
-  def handle_event(
-        "arcade_preview",
-        %{"game-id" => game_id},
-        %{assigns: %{arcade_session: %{}}} = socket
-      ) do
-    {:halt, preview_game(socket, game_id)}
-  end
-
-  def handle_event("arcade_back", _params, %{assigns: %{arcade_session: %{} = s}} = socket) do
-    {:halt, put_arcade(socket, %{s | previewed_game: nil})}
   end
 
   def handle_event(
@@ -107,13 +87,26 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEvents do
          game_id: nil,
          game_name: nil,
          game_started_at: nil,
-         game_duration: nil,
-         previewed_game: nil
+         game_duration: nil
      })}
   end
 
   def handle_event("arcade_leave", _params, %{assigns: %{arcade_session: %{}}} = socket) do
     {:halt, close_arcade(socket, "user_closed")}
+  end
+
+  def handle_event(
+        "arcade_back_to_launcher",
+        _params,
+        %{assigns: %{arcade_session: %{} = s}} = socket
+      ) do
+    socket =
+      socket
+      |> push_event("close_game_window", %{})
+      |> close_current_arcade(s, "user_returned_to_launcher")
+      |> start_session()
+
+    {:halt, socket}
   end
 
   # X on the picker: while a game is running keep the session alive (the popup
@@ -137,6 +130,14 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEvents do
 
   @spec handle_info(term(), Socket.t()) :: {:cont | :halt, Socket.t()}
   def handle_info(
+        %{payload: %{token: token}},
+        %{assigns: %{arcade_session: %{token: current_token}}} = socket
+      )
+      when is_binary(token) and token != current_token do
+    {:halt, socket}
+  end
+
+  def handle_info(
         %{
           event: "arcade_status_changed",
           payload: %{status: "playing", game_id: game_id} = payload
@@ -153,8 +154,7 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEvents do
           game_id: game_id,
           game_name: game.name,
           game_started_at: Map.get(payload, :started_at),
-          inactivity_warning: false,
-          previewed_game: nil
+          inactivity_warning: false
       })
       |> Windows.open(@window)
       |> push_event("open_game_window", %{url: Arcade.game_url(game)})
@@ -263,47 +263,39 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEvents do
       game_name: nil,
       game_started_at: nil,
       game_duration: nil,
-      previewed_game: nil,
       inactivity_warning: false
     }
   end
 
-  @spec preview_game(Socket.t(), String.t()) :: Socket.t()
-  defp preview_game(socket, game_id) do
-    case Arcade.get_game(game_id) do
-      {:ok, game} ->
-        content =
-          case Arcade.get_game_content(game_id) do
-            {:ok, c} -> c
-            {:error, _} -> %{about: [game.description], controls: [], tips: []}
-          end
+  @spec maybe_select_game(Socket.t(), map()) :: Socket.t()
+  defp maybe_select_game(socket, %{"game-id" => game_id}) when is_binary(game_id) do
+    case socket.assigns[:arcade_session] do
+      %{status: "lobby", token: token, user_id: user_id} ->
+        _ = Arcade.select_game(token, user_id, game_id)
+        socket
 
-        previewed = %{
-          id: game.id,
-          name: game.name,
-          description: Map.get(game, :tagline, game.description),
-          engine: game.engine,
-          about: content.about,
-          controls: content.controls,
-          tips: content.tips
-        }
-
-        put_arcade(socket, %{socket.assigns.arcade_session | previewed_game: previewed})
-
-      {:error, _} ->
+      _ ->
         socket
     end
   end
 
+  defp maybe_select_game(socket, _params), do: socket
+
   @spec close_arcade(Socket.t(), String.t()) :: Socket.t()
   defp close_arcade(socket, reason) do
     s = socket.assigns.arcade_session
-    _ = Arcade.close_session(s.token, s.user_id, reason)
-    Phoenix.PubSub.unsubscribe(@pubsub, "arcade:#{s.token}")
 
     socket
-    |> assign(arcade_session: nil)
+    |> push_event("close_game_window", %{})
+    |> close_current_arcade(s, reason)
     |> Windows.close_window(@window)
+  end
+
+  @spec close_current_arcade(Socket.t(), map(), String.t()) :: Socket.t()
+  defp close_current_arcade(socket, s, reason) do
+    _ = Arcade.close_session(s.token, s.user_id, reason)
+    Phoenix.PubSub.unsubscribe(@pubsub, "arcade:#{s.token}")
+    assign(socket, arcade_session: nil)
   end
 
   # Domain-driven teardown (terminal status / session_closed broadcast): the

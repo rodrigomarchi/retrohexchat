@@ -9,8 +9,10 @@ function closeArcadeTab() {
  * ArcadeSession hook — anchored on the in-chat arcade session element. Opens the
  * selected WASM game in a separate browser window on `open_game_window`, polls it
  * and reports `game_window_closed`/`game_window_blocked` back to the LiveView so
- * the host can finish the solo session. Also handles the `arcade_close_tab`
- * server event (legacy standalone-tab close; harmless in the chat context).
+ * the host can finish the solo session. The host can also ask it to close the
+ * owned game window when the user returns to the launcher or ends the session.
+ * Also handles the `arcade_close_tab` server event (legacy standalone-tab
+ * close; harmless in the chat context).
  */
 const ArcadeSessionHook = {
   mounted() {
@@ -31,6 +33,10 @@ const ArcadeSessionHook = {
       }
 
       this._startWindowPoll();
+    });
+
+    this.handleEvent("close_game_window", () => {
+      this._closeGameWindow();
     });
   },
 
@@ -63,6 +69,24 @@ const ArcadeSessionHook = {
       clearInterval(this._windowPoll);
       this._windowPoll = null;
     }
+  },
+
+  _closeGameWindow() {
+    this._stopWindowPoll();
+
+    if (!this._gameWindow) {
+      return;
+    }
+
+    try {
+      if (!this._gameWindow.closed) {
+        this._gameWindow.close();
+      }
+    } catch (error) {
+      console.warn("Could not close arcade game window", error);
+    }
+
+    this._gameWindow = null;
   },
 };
 

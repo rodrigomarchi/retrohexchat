@@ -49,7 +49,7 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEventsTest do
       refute "arcade-games" in open_windows(view)
     end
 
-    test "a game id opens the window already previewing that game", %{conn: conn} do
+    test "a game id starts that game from the launcher-compatible action", %{conn: conn} do
       nick = "arcd#{uid()}"
       register(nick)
       {:ok, view, _} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
@@ -59,13 +59,14 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEventsTest do
         "game-id" => "doom_shareware"
       })
 
-      assert %{status: "lobby", previewed_game: %{id: "doom_shareware"}} = arcade_session(view)
+      assert %{status: "playing", token: token, game_id: "doom_shareware"} = arcade_session(view)
       assert "arcade-games" in open_windows(view)
+      assert {:ok, %{status: "playing", game_id: "doom_shareware"}} = Arcade.get_session(token)
     end
   end
 
   describe "Games menu" do
-    test "lists every arcade game as a direct menu entry when available" do
+    test "shows Arcade as a single launcher entry when available" do
       document =
         render_component(&MenuBarApp.menu_bar_app/1,
           connected: true,
@@ -74,9 +75,8 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEventsTest do
         )
         |> Floki.parse_document!()
 
-      for game <- Arcade.list_games() do
-        assert [_ | _] = Floki.find(document, ~s([data-testid="menu-game-#{game.id}"]))
-      end
+      assert [_ | _] = Floki.find(document, ~s([data-testid="context-menu-item-open_arcade"]))
+      assert Floki.find(document, ~s([data-testid^="menu-game-"])) == []
     end
 
     test "hides the per-game entries when the arcade is unavailable" do
@@ -101,12 +101,15 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEventsTest do
       %{view: view, token: arcade_session(view).token}
     end
 
-    test "previewing a game stores the previewed game", %{view: view} do
-      render_click(view, "arcade_preview", %{"game-id" => "doom_shareware"})
-      assert %{previewed_game: %{id: "doom_shareware"}} = arcade_session(view)
+    test "renders the lobby as an icon launcher", %{view: view} do
+      html = render(view)
 
-      render_click(view, "arcade_back", %{})
-      assert %{previewed_game: nil} = arcade_session(view)
+      assert html =~ ~s(data-testid="arcade-library")
+      assert html =~ ~s(data-testid="arcade-icon-window")
+      assert html =~ ~s(data-testid="arcade-icon-grid")
+      assert html =~ ~s(data-testid="arcade-status-bar")
+      assert html =~ ~s(data-testid="arcade-game-doom_shareware")
+      assert html =~ ~s(phx-click="arcade_select_game")
     end
 
     test "selecting a game drives the domain to playing", %{view: view, token: token} do
@@ -115,6 +118,24 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEventsTest do
       # The domain is authoritative and updated synchronously by select_game;
       # assert the persisted status rather than the async status broadcast.
       assert {:ok, %{status: "playing", game_id: "doom_shareware"}} = Arcade.get_session(token)
+    end
+
+    test "returning to the launcher closes the current popup and starts a fresh lobby", %{
+      view: view,
+      token: token
+    } do
+      render_click(view, "arcade_select_game", %{"game-id" => "doom_shareware"})
+      render(view)
+
+      assert %{status: "playing", token: ^token} = arcade_session(view)
+
+      render_click(view, "arcade_back_to_launcher", %{})
+
+      assert_push_event(view, "close_game_window", %{})
+      assert %{status: "lobby", token: new_token} = arcade_session(view)
+      refute new_token == token
+      assert "arcade-games" in open_windows(view)
+      assert {:ok, %{status: "closed"}} = Arcade.get_session(token)
     end
 
     test "leaving closes the session and unmounts the window", %{view: view, token: token} do

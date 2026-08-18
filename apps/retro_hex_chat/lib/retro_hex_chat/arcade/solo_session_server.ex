@@ -329,7 +329,10 @@ defmodule RetroHexChat.Arcade.SoloSessionServer do
   end
 
   defp broadcast(token, event, payload) do
-    Phoenix.PubSub.broadcast(@pubsub, "arcade:#{token}", %{event: event, payload: payload})
+    Phoenix.PubSub.broadcast(@pubsub, "arcade:#{token}", %{
+      event: event,
+      payload: Map.put(payload, :token, token)
+    })
   end
 
   # Configurable timeouts for testing
