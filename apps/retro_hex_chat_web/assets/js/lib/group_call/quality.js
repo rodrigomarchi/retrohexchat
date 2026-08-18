@@ -11,6 +11,7 @@
  *
  * @module group_call/quality
  */
+import { t } from "../i18n.js";
 
 const SPEAKING_THRESHOLD = 0.03;
 
@@ -46,13 +47,13 @@ export function participantQualityLevel({
 export function participantQualityLabel(level) {
   return (
     {
-      excellent: "Excellent",
-      good: "Good",
-      fair: "Fair",
-      poor: "Poor",
-      reconnecting: "Reconnecting",
-      unknown: "Unknown",
-    }[level] || "Unknown"
+      excellent: t("Excellent"),
+      good: t("Good"),
+      fair: t("Fair"),
+      poor: t("Poor"),
+      reconnecting: t("Reconnecting"),
+      unknown: t("Unknown"),
+    }[level] || t("Unknown")
   );
 }
 

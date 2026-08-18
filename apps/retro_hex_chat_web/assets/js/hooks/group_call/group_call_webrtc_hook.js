@@ -1975,7 +1975,9 @@ const GroupCallWebRTCHook = {
       const normalized = {
         participant_id: participantId,
         level: quality.level || "unknown",
-        label: quality.label || participantQualityLabel(quality.level),
+        // Re-derive locally so each viewer reads the label in its own locale,
+        // rather than the sender's translated label from the broadcast payload.
+        label: participantQualityLabel(quality.level),
         speaking: quality.speaking === true,
         rtt_ms: Number(quality.rtt_ms || quality.rttMs || 0),
         jitter_ms: Number(quality.jitter_ms || quality.jitterMs || 0),
