@@ -1,6 +1,6 @@
 /**
  * @section M - Admin, Server Operations, Bots
- * @flow M20 [done] Games menu -> Arcade opens an icon launcher and game icons launch WASM sessions (features P2)
+ * @flow M20 [done] Games menu -> Arcade opens an icon launcher, game details, then launches WASM sessions (features P2)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -24,13 +24,16 @@ async function knownSignedInUser(
   browser: Browser,
   nick: string,
   password: string,
+  locale?: string,
 ): Promise<TestUser> {
-  const ctx = await browser.newContext();
+  const ctx = await browser.newContext(
+    locale ? { locale: locale.replace("_", "-") } : {},
+  );
   const page: Page = await ctx.newPage();
   const connect = new ConnectPage(page);
   const chat = new ChatPage(page);
 
-  await connect.open();
+  await connect.open(locale);
   await connect.signIn(nick, password);
   await chat.waitUntilConnected();
 
@@ -38,10 +41,15 @@ async function knownSignedInUser(
 }
 
 test.describe("In-chat Arcade", () => {
-  test("Games -> Arcade opens the icon launcher and launches DOOM", async ({
+  test("Games -> Arcade opens the icon launcher, previews, and launches DOOM", async ({
     browser,
   }) => {
-    const user = await knownSignedInUser(browser, ADMIN_NICK, ADMIN_PW);
+    const user = await knownSignedInUser(
+      browser,
+      ADMIN_NICK,
+      ADMIN_PW,
+      "pt_BR",
+    );
 
     try {
       await user.chat.gamesMenuTrigger.click();
@@ -62,8 +70,15 @@ test.describe("In-chat Arcade", () => {
       const doomIcon = user.page.getByTestId("arcade-game-doom_shareware");
       await expect(doomIcon).toBeVisible();
 
-      const popupPromise = user.page.waitForEvent("popup");
       await doomIcon.click();
+      await expect(user.page.getByTestId("arcade-game-preview")).toBeVisible();
+      await expect(
+        user.page.getByTestId("solo-game-start-doom_shareware"),
+      ).toBeVisible();
+      await shot(user.chat.arcadeWindow, "doom-game-preview");
+
+      const popupPromise = user.page.waitForEvent("popup");
+      await user.page.getByTestId("solo-game-start-doom_shareware").click();
       const gameWindow = await popupPromise;
       await gameWindow.waitForLoadState("domcontentloaded");
 

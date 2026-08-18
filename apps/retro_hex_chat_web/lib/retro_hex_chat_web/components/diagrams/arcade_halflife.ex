@@ -61,7 +61,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.ArcadeHalflife do
         font-size="11"
         font-family="'Courier New',monospace"
       >
-        {dgettext("diagrams", "Xash3D-FWGS WebAssembly")}
+        Xash3D-FWGS WebAssembly
       </text>
       <%!-- Uplink badge --%>
       <rect

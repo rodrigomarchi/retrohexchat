@@ -56,12 +56,6 @@ msgstr "Alice (tú)"
 msgid "Alice wants to call Bob"
 msgstr "Alice quiere llamar a Bob"
 
-#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:118
-#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:214
-#, elixir-autogen, elixir-format
-msgid "Arcade — Select a Game"
-msgstr "Arcada — Seleccione un Juego"
-
 #: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:171
 #, elixir-autogen, elixir-format
 msgid "BASS"
@@ -134,11 +128,6 @@ msgstr "DOOM"
 msgid "DOOM arcade logo: bold red angular letters on dark background"
 msgstr "DOOM arcade logo: bold red angular letters on dark background"
 
-#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:305
-#, elixir-autogen, elixir-format
-msgid "DOOM: Knee-Deep in the Dead"
-msgstr "DOOM: Knee-Deep in the Dead"
-
 #: lib/retro_hex_chat_web/components/diagrams/security.ex:293
 #, elixir-autogen, elixir-format
 msgid "DTLS / SRTP"
@@ -164,11 +153,6 @@ msgstr "ECWolf WebAssembly"
 #, elixir-autogen, elixir-format
 msgid "End"
 msgstr "Terminar"
-
-#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:331
-#, elixir-autogen, elixir-format
-msgid "Engine: Dwasm · Running in browser"
-msgstr "Motor: Dwasm · Corriendo en el navegador"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_enduro.ex:83
 #, elixir-autogen, elixir-format
@@ -319,11 +303,6 @@ msgstr "Vidas: 2"
 msgid "Lives: 3"
 msgstr "Vidas: 3"
 
-#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:261
-#, elixir-autogen, elixir-format
-msgid "Loading DOOM: Knee-Deep in the Dead..."
-msgstr "Cargando DOOM: Knee-Deep en los muertos..."
-
 #: lib/retro_hex_chat_web/components/diagrams/arcade_scummvm.ex:115
 #, elixir-autogen, elixir-format
 msgid "Look at"
@@ -333,11 +312,6 @@ msgstr "Mira."
 #, elixir-autogen, elixir-format
 msgid "Mute"
 msgstr "Silenciar"
-
-#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:247
-#, elixir-autogen, elixir-format
-msgid "New Window Opens"
-msgstr "Nueva ventana se abre"
 
 #: lib/retro_hex_chat_web/components/diagrams/arcade_scummvm.ex:75
 #, elixir-autogen, elixir-format
@@ -706,11 +680,6 @@ msgstr ""
 "Wolfenstein 3D arcade logo: emblema de escudo en tonos grises en fondo azul "
 "oscuro"
 
-#: lib/retro_hex_chat_web/components/diagrams/arcade_halflife.ex:64
-#, elixir-autogen, elixir-format
-msgid "Xash3D-FWGS WebAssembly"
-msgstr "Xash3D-FWGS WebAssembly"
-
 #: lib/retro_hex_chat_web/components/diagrams/arcade_quake2.ex:91
 #, elixir-autogen, elixir-format
 msgid "Yamagi Quake II WebAssembly"
@@ -923,7 +892,28 @@ msgstr "espacio en vivo"
 msgid "P2P Session"
 msgstr "P2P Sesión"
 
+#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:118
+#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:214
+#, elixir-autogen, elixir-format
+msgid "Arcade - Pick an Icon"
+msgstr "Arcade - Elige un icono"
+
+#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:247
+#, elixir-autogen, elixir-format
+msgid "Game Details"
+msgstr "Detalles del juego"
+
+#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:261
+#, elixir-autogen, elixir-format
+msgid "Review details, then Start Game"
+msgstr "Revisa los detalles y luego inicia el juego"
+
 #: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:18
 #, elixir-autogen, elixir-format
-msgid "Solo arcade flow: open the Games menu and choose Arcade, pick a game icon, a new window opens, WASM game runs in browser"
-msgstr "Flujo de arcade en solitario: abre el menú Juegos y elige Arcade, selecciona un icono de juego, se abre una nueva ventana y el juego WASM se ejecuta en el navegador"
+msgid "Solo arcade flow: open the Games menu and choose Arcade, pick a game icon, review details, press Start Game, then the WASM game runs in a browser window"
+msgstr "Flujo de arcade en solitario: abre el menú Juegos y elige Arcade, selecciona un icono, revisa los detalles, pulsa Iniciar juego y luego el juego WASM se ejecuta en una ventana del navegador"
+
+#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:331
+#, elixir-autogen, elixir-format
+msgid "Engine: %{engine} · Running in browser"
+msgstr "Engine: %{engine} · Ejecutándose en el navegador"

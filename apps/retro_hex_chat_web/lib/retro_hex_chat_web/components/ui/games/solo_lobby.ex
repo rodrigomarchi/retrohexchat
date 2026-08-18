@@ -9,7 +9,7 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
 
   @doc """
   Renders the multi-state body of the solo arcade window: the game launcher,
-  playing and finished states.
+  preview, playing and finished states.
 
   The window chrome (title bar, close control) is supplied by the enclosing
   `desktop_window` — this component renders only the body content. Composed from
@@ -18,12 +18,15 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
   attr :id, :string, required: true
   attr :games, :list, required: true
   attr :session_status, :string, default: "lobby"
+  attr :previewed_game, :map, default: nil
   attr :game_name, :string, default: nil
   attr :game_id, :string, default: nil
   attr :game_started_at, :string, default: nil
   attr :game_duration, :integer, default: nil
   attr :inactivity_warning, :boolean, default: false
+  attr :on_preview_game, :any, default: nil
   attr :on_select_game, :any, default: nil
+  attr :on_back, :any, default: nil
   attr :on_back_to_launcher, :any, default: nil
   attr :on_close, :any, default: nil
   attr :class, :string, default: nil
@@ -32,11 +35,11 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
   @spec solo_lobby(map()) :: Phoenix.LiveView.Rendered.t()
   def solo_lobby(assigns) do
     ~H"""
-    <div id={@id} class={classes(["flex h-full flex-col space-y-retro-12", @class])} {@rest}>
+    <div id={@id} class={classes(["flex h-full min-h-0 flex-col gap-retro-12", @class])} {@rest}>
       <%!-- Inactivity warning --%>
       <div
         :if={@inactivity_warning}
-        class="flex items-center gap-retro-4 shadow-retro-field bg-warning-light px-retro-8 py-retro-4 text-xs"
+        class="shadow-retro-field flex shrink-0 items-center gap-retro-4 bg-warning-light px-retro-8 py-retro-4 text-xs"
       >
         <Icons.icon_warning class="w-4 h-4 flex-shrink-0" />
         <span>
@@ -48,9 +51,17 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
       </div>
 
       <.lobby_launcher
-        :if={@session_status == "lobby"}
+        :if={@session_status == "lobby" && !@previewed_game}
         games={@games}
+        on_preview_game={@on_preview_game}
+        on_close={@on_close}
+      />
+
+      <.lobby_preview
+        :if={@session_status == "lobby" && @previewed_game}
+        previewed_game={@previewed_game}
         on_select_game={@on_select_game}
+        on_back={@on_back}
         on_close={@on_close}
       />
 
@@ -78,7 +89,7 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
   # ── Lobby: Game Launcher ────────────────────────────────
 
   attr :games, :list, required: true
-  attr :on_select_game, :any, default: nil
+  attr :on_preview_game, :any, default: nil
   attr :on_close, :any, default: nil
 
   defp lobby_launcher(assigns) do
@@ -105,7 +116,7 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
           <button
             :for={game <- @games}
             type="button"
-            phx-click={@on_select_game}
+            phx-click={@on_preview_game}
             phx-value-game-id={game.id}
             title={game.description}
             aria-label={game.name}
@@ -131,6 +142,124 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
       >
         <span>{dgettext("games", "Ready")}</span>
         <span class="font-bold">{dgettext("games", "WebAssembly")}</span>
+      </div>
+    </div>
+    """
+  end
+
+  # ── Lobby: Game Preview ─────────────────────────────────
+
+  attr :previewed_game, :map, required: true
+  attr :on_select_game, :any, default: nil
+  attr :on_back, :any, default: nil
+  attr :on_close, :any, default: nil
+
+  defp lobby_preview(assigns) do
+    ~H"""
+    <div
+      data-testid="arcade-game-preview"
+      class="flex min-h-0 flex-1 flex-col gap-retro-10"
+    >
+      <div class="flex shrink-0 items-center gap-retro-12 bg-white p-retro-10 shadow-retro-field">
+        <Icons.game_icon game_id={@previewed_game.id} class="h-12 w-12 flex-shrink-0" />
+        <div class="min-w-0 flex-1 space-y-retro-2">
+          <h3 class="truncate text-base font-bold leading-tight">{@previewed_game.name}</h3>
+          <p class="text-xs leading-snug text-muted-foreground">{@previewed_game.description}</p>
+          <.badge variant="secondary">
+            {dgettext("games", "%{engine} Engine",
+              engine: String.upcase(to_string(@previewed_game.engine))
+            )}
+          </.badge>
+        </div>
+        <div class="flex shrink-0 flex-wrap justify-end gap-retro-6">
+          <.button
+            variant="outline"
+            size="sm"
+            phx-click={@on_back}
+            data-testid="arcade-preview-back"
+          >
+            <:icon><Icons.icon_btn_prev class="w-4 h-4" /></:icon>
+            {dgettext("games", "Back")}
+          </.button>
+          <.button
+            size="sm"
+            class="font-bold"
+            phx-click={@on_select_game}
+            phx-value-game-id={@previewed_game.id}
+            data-testid={"solo-game-start-#{@previewed_game.id}"}
+          >
+            <:icon><Icons.icon_btn_join class="w-4 h-4" /></:icon>
+            {dgettext("games", "Start Game")}
+          </.button>
+          <.button variant="outline" size="sm" phx-click={@on_close}>
+            <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
+            {dgettext("games", "Leave")}
+          </.button>
+        </div>
+      </div>
+
+      <div class="retro-scrollbar min-h-0 flex-1 overflow-auto bg-white p-retro-10 shadow-retro-sunken">
+        <div class="grid min-h-full grid-cols-1 items-stretch gap-retro-10 md:grid-cols-[repeat(auto-fit,minmax(18rem,1fr))]">
+          <fieldset
+            :if={@previewed_game[:about] && @previewed_game.about != []}
+            class="retro-fieldset min-h-[160px] min-w-0 p-retro-8"
+          >
+            <legend class="px-retro-4 text-xs font-bold">{dgettext("games", "About")}</legend>
+            <div class="pr-retro-4">
+              <p
+                :for={paragraph <- @previewed_game.about}
+                class="mb-retro-6 text-xs leading-relaxed last:mb-0"
+              >
+                {paragraph}
+              </p>
+            </div>
+          </fieldset>
+
+          <fieldset
+            :if={@previewed_game[:controls] && @previewed_game.controls != []}
+            class="retro-fieldset min-h-[160px] min-w-0 p-retro-8"
+          >
+            <legend class="px-retro-4 text-xs font-bold">
+              {dgettext("games", "Keyboard Controls")}
+            </legend>
+            <div class="pr-retro-2">
+              <table class="w-full text-[11px] leading-snug">
+                <thead>
+                  <tr>
+                    <th class="w-[7.75rem] border-b border-gray-400 py-retro-2 pr-retro-6 text-left font-bold">
+                      {dgettext("games", "Key")}
+                    </th>
+                    <th class="border-b border-gray-400 py-retro-2 text-left font-bold">
+                      {dgettext("games", "Action")}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr :for={{key, action} <- @previewed_game.controls}>
+                    <td class="w-[7.75rem] whitespace-nowrap py-retro-2 pr-retro-6 align-top">
+                      <kbd class="shadow-retro-raised bg-surface px-retro-4 font-mono text-[11px]">
+                        {key}
+                      </kbd>
+                    </td>
+                    <td class="py-retro-2 align-top">{action}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </fieldset>
+
+          <fieldset
+            :if={@previewed_game[:tips] && @previewed_game.tips != []}
+            class="retro-fieldset min-h-[160px] min-w-0 p-retro-8"
+          >
+            <legend class="px-retro-4 text-xs font-bold">{dgettext("games", "Tips")}</legend>
+            <div class="pr-retro-4">
+              <ul class="list-disc space-y-retro-4 pl-retro-16 text-xs leading-relaxed">
+                <li :for={tip <- @previewed_game.tips}>{tip}</li>
+              </ul>
+            </div>
+          </fieldset>
+        </div>
       </div>
     </div>
     """

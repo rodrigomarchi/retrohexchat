@@ -20,7 +20,7 @@ defmodule RetroHexChat.Arcade.Catalog do
   @games [
     %{
       id: "doom_shareware",
-      name: dgettext_noop("arcade", "DOOM: Knee-Deep in the Dead"),
+      name: "DOOM: Knee-Deep in the Dead",
       tagline: dgettext_noop("arcade", "Episode 1 — The Original"),
       description:
         dgettext_noop(
@@ -34,7 +34,7 @@ defmodule RetroHexChat.Arcade.Catalog do
     },
     %{
       id: "freedoom1",
-      name: dgettext_noop("arcade", "Freedoom: Phase 1"),
+      name: "Freedoom: Phase 1",
       tagline: dgettext_noop("arcade", "36 levels of open-source doom"),
       description:
         dgettext_noop(
@@ -48,7 +48,7 @@ defmodule RetroHexChat.Arcade.Catalog do
     },
     %{
       id: "freedoom2",
-      name: dgettext_noop("arcade", "Freedoom: Phase 2"),
+      name: "Freedoom: Phase 2",
       tagline: dgettext_noop("arcade", "32 levels — Doom II compatible"),
       description:
         dgettext_noop(
@@ -62,7 +62,7 @@ defmodule RetroHexChat.Arcade.Catalog do
     },
     %{
       id: "freedm",
-      name: dgettext_noop("arcade", "FreeDM"),
+      name: "FreeDM",
       tagline: dgettext_noop("arcade", "Deathmatch arena — open source"),
       description:
         dgettext_noop(
@@ -76,7 +76,7 @@ defmodule RetroHexChat.Arcade.Catalog do
     },
     %{
       id: "chex_quest",
-      name: dgettext_noop("arcade", "Chex Quest"),
+      name: "Chex Quest",
       tagline: dgettext_noop("arcade", "The cereal box classic"),
       description:
         dgettext_noop(
@@ -90,7 +90,7 @@ defmodule RetroHexChat.Arcade.Catalog do
     },
     %{
       id: "hacx",
-      name: dgettext_noop("arcade", "HacX: Twitch 'n Kill"),
+      name: "HacX: Twitch 'n Kill",
       tagline: dgettext_noop("arcade", "Cyberpunk total conversion"),
       description:
         dgettext_noop(
@@ -104,7 +104,7 @@ defmodule RetroHexChat.Arcade.Catalog do
     },
     %{
       id: "rekkr",
-      name: dgettext_noop("arcade", "REKKR: Sunken Land"),
+      name: "REKKR: Sunken Land",
       tagline: dgettext_noop("arcade", "Viking-themed standalone"),
       description:
         dgettext_noop(
@@ -118,7 +118,7 @@ defmodule RetroHexChat.Arcade.Catalog do
     },
     %{
       id: "quake_shareware",
-      name: dgettext_noop("arcade", "Quake: Dimension of the Doomed"),
+      name: "Quake: Dimension of the Doomed",
       tagline: dgettext_noop("arcade", "Episode 1 — The Original"),
       description:
         dgettext_noop(
@@ -131,7 +131,7 @@ defmodule RetroHexChat.Arcade.Catalog do
     },
     %{
       id: "librequake",
-      name: dgettext_noop("arcade", "LibreQuake"),
+      name: "LibreQuake",
       tagline: dgettext_noop("arcade", "Open-source Quake replacement"),
       description:
         dgettext_noop(
@@ -144,7 +144,7 @@ defmodule RetroHexChat.Arcade.Catalog do
     },
     %{
       id: "quake2_shareware",
-      name: dgettext_noop("arcade", "Quake II: The Invasion"),
+      name: "Quake II: The Invasion",
       tagline: dgettext_noop("arcade", "Unit 1 — The Demo"),
       description:
         dgettext_noop(
@@ -161,7 +161,7 @@ defmodule RetroHexChat.Arcade.Catalog do
     },
     %{
       id: "wolfenstein_3d",
-      name: dgettext_noop("arcade", "Wolfenstein 3D: Escape from Castle"),
+      name: "Wolfenstein 3D: Escape from Castle",
       tagline: dgettext_noop("arcade", "Episode 1 — The Shareware Classic"),
       description:
         dgettext_noop(
@@ -178,7 +178,7 @@ defmodule RetroHexChat.Arcade.Catalog do
     },
     %{
       id: "halflife_uplink",
-      name: dgettext_noop("arcade", "Half-Life: Uplink"),
+      name: "Half-Life: Uplink",
       tagline: dgettext_noop("arcade", "The Official Demo — 3 Unique Missions"),
       description:
         dgettext_noop(
@@ -195,7 +195,7 @@ defmodule RetroHexChat.Arcade.Catalog do
     },
     %{
       id: "scummvm_bass",
-      name: dgettext_noop("arcade", "Beneath a Steel Sky"),
+      name: "Beneath a Steel Sky",
       tagline: dgettext_noop("arcade", "Cyberpunk point & click adventure (1994)"),
       description:
         dgettext_noop(
@@ -212,7 +212,7 @@ defmodule RetroHexChat.Arcade.Catalog do
     },
     %{
       id: "scummvm_drascula",
-      name: dgettext_noop("arcade", "Drascula: The Vampire Strikes Back"),
+      name: "Drascula: The Vampire Strikes Back",
       tagline: dgettext_noop("arcade", "Comedic Dracula parody adventure (1996)"),
       description:
         dgettext_noop(
@@ -229,7 +229,7 @@ defmodule RetroHexChat.Arcade.Catalog do
     },
     %{
       id: "scummvm_dreamweb",
-      name: dgettext_noop("arcade", "Dreamweb"),
+      name: "Dreamweb",
       tagline: dgettext_noop("arcade", "Dark cyberpunk adventure (1994)"),
       description:
         dgettext_noop(
@@ -246,7 +246,7 @@ defmodule RetroHexChat.Arcade.Catalog do
     },
     %{
       id: "scummvm_fotaq",
-      name: dgettext_noop("arcade", "Flight of the Amazon Queen"),
+      name: "Flight of the Amazon Queen",
       tagline: dgettext_noop("arcade", "Comic adventure in the Amazon (1995)"),
       description:
         dgettext_noop(
@@ -263,7 +263,7 @@ defmodule RetroHexChat.Arcade.Catalog do
     },
     %{
       id: "scummvm_lure",
-      name: dgettext_noop("arcade", "Lure of the Temptress"),
+      name: "Lure of the Temptress",
       tagline: dgettext_noop("arcade", "Medieval fantasy adventure (1992)"),
       description:
         dgettext_noop(
@@ -280,7 +280,7 @@ defmodule RetroHexChat.Arcade.Catalog do
     },
     %{
       id: "scummvm_soltys",
-      name: dgettext_noop("arcade", "Soltys"),
+      name: "Soltys",
       tagline: dgettext_noop("arcade", "Surreal Polish puzzle adventure (1995)"),
       description:
         dgettext_noop(
@@ -334,7 +334,6 @@ defmodule RetroHexChat.Arcade.Catalog do
 
   defp translate_game(game) do
     game
-    |> Map.update!(:name, &t/1)
     |> Map.update!(:tagline, &t/1)
     |> Map.update!(:description, &t/1)
     |> Map.update!(:controls, &t/1)

@@ -56,12 +56,6 @@ msgstr "Alice (ty)"
 msgid "Alice wants to call Bob"
 msgstr "Alice chce zadzwonić do Boba."
 
-#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:118
-#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:214
-#, elixir-autogen, elixir-format
-msgid "Arcade — Select a Game"
-msgstr "Arcade - Wybierz grę"
-
 #: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:171
 #, elixir-autogen, elixir-format
 msgid "BASS"
@@ -134,11 +128,6 @@ msgid "DOOM arcade logo: bold red angular letters on dark background"
 msgstr ""
 "Logo zręcznościowe DOOM: pogrubione czerwone litery kątowe na ciemnym tle"
 
-#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:305
-#, elixir-autogen, elixir-format
-msgid "DOOM: Knee-Deep in the Dead"
-msgstr "Knee- Deep in the Dead"
-
 #: lib/retro_hex_chat_web/components/diagrams/security.ex:293
 #, elixir-autogen, elixir-format
 msgid "DTLS / SRTP"
@@ -164,11 +153,6 @@ msgstr "ECWolf WebAssembly"
 #, elixir-autogen, elixir-format
 msgid "End"
 msgstr "Zakończ"
-
-#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:331
-#, elixir-autogen, elixir-format
-msgid "Engine: Dwasm · Running in browser"
-msgstr "Silnik: Dwasm · Uruchomienie w przeglądarce"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_enduro.ex:83
 #, elixir-autogen, elixir-format
@@ -310,11 +294,6 @@ msgstr "Życia: 2"
 msgid "Lives: 3"
 msgstr "Życia: 3"
 
-#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:261
-#, elixir-autogen, elixir-format
-msgid "Loading DOOM: Knee-Deep in the Dead..."
-msgstr "Wczytywanie DOOM: Knee- Deep in the Dead..."
-
 #: lib/retro_hex_chat_web/components/diagrams/arcade_scummvm.ex:115
 #, elixir-autogen, elixir-format
 msgid "Look at"
@@ -324,11 +303,6 @@ msgstr "Spójrz."
 #, elixir-autogen, elixir-format
 msgid "Mute"
 msgstr "Wycisz"
-
-#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:247
-#, elixir-autogen, elixir-format
-msgid "New Window Opens"
-msgstr "Otwiera nowe okno"
 
 #: lib/retro_hex_chat_web/components/diagrams/arcade_scummvm.ex:75
 #, elixir-autogen, elixir-format
@@ -696,11 +670,6 @@ msgstr ""
 "Wolfenstein 3D arcade logo: symbol tarczy w szarych odcieniach na "
 "ciemnoniebieskim tle"
 
-#: lib/retro_hex_chat_web/components/diagrams/arcade_halflife.ex:64
-#, elixir-autogen, elixir-format
-msgid "Xash3D-FWGS WebAssembly"
-msgstr "Xash3D- FWGS WebAssembly"
-
 #: lib/retro_hex_chat_web/components/diagrams/arcade_quake2.ex:91
 #, elixir-autogen, elixir-format
 msgid "Yamagi Quake II WebAssembly"
@@ -914,7 +883,28 @@ msgstr "przestrzeń jest na żywo"
 msgid "P2P Session"
 msgstr "Sesja P2P"
 
+#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:118
+#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:214
+#, elixir-autogen, elixir-format
+msgid "Arcade - Pick an Icon"
+msgstr "Arcade - Wybierz ikonę"
+
+#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:247
+#, elixir-autogen, elixir-format
+msgid "Game Details"
+msgstr "Szczegóły gry"
+
+#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:261
+#, elixir-autogen, elixir-format
+msgid "Review details, then Start Game"
+msgstr "Przejrzyj szczegóły, a potem uruchom grę"
+
 #: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:18
 #, elixir-autogen, elixir-format
-msgid "Solo arcade flow: open the Games menu and choose Arcade, pick a game icon, a new window opens, WASM game runs in browser"
-msgstr "Przepływ arcade solo: otwórz menu Gry i wybierz Arcade, wybierz ikonę gry, otworzy się nowe okno, a gra WASM działa w przeglądarce"
+msgid "Solo arcade flow: open the Games menu and choose Arcade, pick a game icon, review details, press Start Game, then the WASM game runs in a browser window"
+msgstr "Przepływ arcade solo: otwórz menu Gry i wybierz Arcade, wybierz ikonę gry, przejrzyj szczegóły, naciśnij Uruchom grę, a potem gra WASM działa w oknie przeglądarki"
+
+#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:331
+#, elixir-autogen, elixir-format
+msgid "Engine: %{engine} · Running in browser"
+msgstr "Engine: %{engine} · Działa w przeglądarce"

@@ -325,7 +325,7 @@ defmodule RetroHexChatWeb.ChatLive.WindowRegistry do
       window("arcade-games", dgettext("chat", "Arcade"), :icon_game_arcade,
         render_when: {:present_and_open, :arcade_session},
         taskbar_when: {:present_and_open, :arcade_session},
-        geometry: geometry(200, 80, 680, 520, 420, 340)
+        geometry: geometry(80, 24, 1040, 660, 760, 520)
       )
     ]
   end

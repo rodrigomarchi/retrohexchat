@@ -1,9 +1,9 @@
 defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEventsTest do
   @moduledoc """
   In-chat solo arcade flow: the Games → Arcade menu opens a managed window and
-  creates a solo session; previewing/selecting a game drives the domain; leaving
-  closes it. Asserts on synchronous LiveView state (`:sys.get_state`) and
-  persisted domain rows — never on async broadcasts.
+  creates a solo session; choosing a game previews it, starting from the preview
+  drives the domain, and leaving closes it. Asserts on synchronous LiveView state
+  (`:sys.get_state`) and persisted domain rows — never on async broadcasts.
   """
   use RetroHexChatWeb.LiveViewCase, async: false
 
@@ -49,7 +49,7 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEventsTest do
       refute "arcade-games" in open_windows(view)
     end
 
-    test "a game id starts that game from the launcher-compatible action", %{conn: conn} do
+    test "a game id opens the window already previewing that game", %{conn: conn} do
       nick = "arcd#{uid()}"
       register(nick)
       {:ok, view, _} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
@@ -59,9 +59,11 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEventsTest do
         "game-id" => "doom_shareware"
       })
 
-      assert %{status: "playing", token: token, game_id: "doom_shareware"} = arcade_session(view)
+      assert %{status: "lobby", token: token, previewed_game: %{id: "doom_shareware"}} =
+               arcade_session(view)
+
       assert "arcade-games" in open_windows(view)
-      assert {:ok, %{status: "playing", game_id: "doom_shareware"}} = Arcade.get_session(token)
+      assert {:ok, %{status: "lobby", game_id: nil}} = Arcade.get_session(token)
     end
   end
 
@@ -109,10 +111,33 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEventsTest do
       assert html =~ ~s(data-testid="arcade-icon-grid")
       assert html =~ ~s(data-testid="arcade-status-bar")
       assert html =~ ~s(data-testid="arcade-game-doom_shareware")
-      assert html =~ ~s(phx-click="arcade_select_game")
+      assert html =~ ~s(phx-click="arcade_preview")
     end
 
-    test "selecting a game drives the domain to playing", %{view: view, token: token} do
+    test "previewing a game stores the selected game details", %{view: view, token: token} do
+      render_click(view, "arcade_preview", %{"game-id" => "doom_shareware"})
+
+      assert %{
+               status: "lobby",
+               token: ^token,
+               previewed_game: %{id: "doom_shareware", about: [_ | _], controls: [_ | _]}
+             } = arcade_session(view)
+
+      assert {:ok, %{status: "lobby", game_id: nil}} = Arcade.get_session(token)
+    end
+
+    test "selecting directly without a preview does not start the game", %{
+      view: view,
+      token: token
+    } do
+      render_click(view, "arcade_select_game", %{"game-id" => "doom_shareware"})
+
+      assert %{status: "lobby", previewed_game: nil} = arcade_session(view)
+      assert {:ok, %{status: "lobby", game_id: nil}} = Arcade.get_session(token)
+    end
+
+    test "starting the previewed game drives the domain to playing", %{view: view, token: token} do
+      render_click(view, "arcade_preview", %{"game-id" => "doom_shareware"})
       render_click(view, "arcade_select_game", %{"game-id" => "doom_shareware"})
 
       # The domain is authoritative and updated synchronously by select_game;
@@ -124,6 +149,7 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEventsTest do
       view: view,
       token: token
     } do
+      render_click(view, "arcade_preview", %{"game-id" => "doom_shareware"})
       render_click(view, "arcade_select_game", %{"game-id" => "doom_shareware"})
       render(view)
 

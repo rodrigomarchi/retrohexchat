@@ -22,6 +22,39 @@
   </.showcase_card>
 
   <.showcase_card
+    title={dgettext("showcase", "Lobby — Game Preview")}
+    description={
+      dgettext(
+        "showcase",
+        "Detail view after clicking a game icon, showing about, controls, tips, and Start Game."
+      )
+    }
+  >
+    <div class="max-w-lg">
+      <.solo_lobby
+        id="lobby-preview"
+        games={@sample_games}
+        session_status="lobby"
+        previewed_game={@sample_preview}
+        on_select_game="arcade_select_game"
+        on_back="arcade_back"
+        on_close="arcade_leave"
+      />
+    </div>
+    <.code_example>
+      &lt;.solo_lobby
+      id="lobby-preview"
+      games=&#123;@games&#125;
+      session_status="lobby"
+      previewed_game=&#123;@previewed_game&#125;
+      on_select_game="arcade_select_game"
+      on_back="arcade_back"
+      on_close="arcade_leave"
+      /&gt;
+    </.code_example>
+  </.showcase_card>
+
+  <.showcase_card
     title={dgettext("showcase", "Playing State")}
     description="Active game session with timer and end session button."
   >

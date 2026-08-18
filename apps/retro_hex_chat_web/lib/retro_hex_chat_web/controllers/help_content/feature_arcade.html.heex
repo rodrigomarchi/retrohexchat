@@ -20,7 +20,7 @@
 <p>
   {dgettext(
     "help_arcade",
-    "A window opens right on the chat desktop with game icons. Choose an icon to open that game in a new browser window. You must be registered and identified ("
+    "A window opens right on the chat desktop with game icons. Choose an icon to review the game details, then press Start Game to open it in a new browser window. You must be registered and identified ("
   )}<code>{dgettext("help_arcade", "/ns identify")}</code>{dgettext("help_arcade", ") to play.")}
 </p>
 <p>
@@ -35,7 +35,7 @@
 <ul>
   <li>
     <.help_link topic="feature-arcade-halflife-uplink">
-      {dgettext("help_arcade", "Half-Life: Uplink")}
+      Half-Life: Uplink
     </.help_link>
     {dgettext("help_arcade", "— The official Valve demo with 3 unique missions (1999)")}
   </li>
@@ -46,7 +46,7 @@
 <ul>
   <li>
     <.help_link topic="feature-arcade-wolfenstein-3d">
-      {dgettext("help_arcade", "Wolfenstein 3D: Escape from Castle")}
+      Wolfenstein 3D: Escape from Castle
     </.help_link>
     {dgettext("help_arcade", "— The shareware Episode 1 (1992) — the grandfather of FPS games")}
   </li>
@@ -57,41 +57,41 @@
 <ul>
   <li>
     <.help_link topic="feature-arcade-doom-shareware">
-      {dgettext("help_arcade", "DOOM: Knee-Deep in the Dead")}
+      DOOM: Knee-Deep in the Dead
     </.help_link>
     {dgettext("help_arcade", "— The original shareware Episode 1 (1993)")}
   </li>
   <li>
     <.help_link topic="feature-arcade-freedoom1">
-      {dgettext("help_arcade", "Freedoom: Phase 1")}
+      Freedoom: Phase 1
     </.help_link>
     {dgettext("help_arcade", "— 36 levels of open-source DOOM (BSD license)")}
   </li>
   <li>
     <.help_link topic="feature-arcade-freedoom2">
-      {dgettext("help_arcade", "Freedoom: Phase 2")}
+      Freedoom: Phase 2
     </.help_link>
     {dgettext("help_arcade", "— 32 levels, Doom II compatible (BSD license)")}
   </li>
   <li>
-    <.help_link topic="feature-arcade-freedm">{dgettext("help_arcade", "FreeDM")}</.help_link>
+    <.help_link topic="feature-arcade-freedm">FreeDM</.help_link>
     {dgettext("help_arcade", "— 32 deathmatch arenas (BSD license)")}
   </li>
   <li>
     <.help_link topic="feature-arcade-chex-quest">
-      {dgettext("help_arcade", "Chex Quest")}
+      Chex Quest
     </.help_link>
     {dgettext("help_arcade", "— The 1996 cereal box classic")}
   </li>
   <li>
     <.help_link topic="feature-arcade-hacx">
-      {dgettext("help_arcade", "HacX: Twitch 'n Kill")}
+      HacX: Twitch 'n Kill
     </.help_link>
     {dgettext("help_arcade", "— Cyberpunk total conversion")}
   </li>
   <li>
     <.help_link topic="feature-arcade-rekkr">
-      {dgettext("help_arcade", "REKKR: Sunken Land")}
+      REKKR: Sunken Land
     </.help_link>
     {dgettext("help_arcade", "— Viking-themed standalone")}
   </li>
@@ -102,13 +102,13 @@
 <ul>
   <li>
     <.help_link topic="feature-arcade-quake-shareware">
-      {dgettext("help_arcade", "Quake: Dimension of the Doomed")}
+      Quake: Dimension of the Doomed
     </.help_link>
     {dgettext("help_arcade", "— The original shareware Episode 1 (1996)")}
   </li>
   <li>
     <.help_link topic="feature-arcade-librequake">
-      {dgettext("help_arcade", "LibreQuake")}
+      LibreQuake
     </.help_link>
     {dgettext("help_arcade", "— Open-source Quake replacement (BSD license)")}
   </li>
@@ -119,32 +119,35 @@
 <ul>
   <li>
     <.help_link topic="feature-arcade-quake2-shareware">
-      {dgettext("help_arcade", "Quake II: The Invasion")}
+      Quake II: The Invasion
     </.help_link>
     {dgettext("help_arcade", "— The official demo (1997) — Unit 1 of the singleplayer campaign")}
   </li>
 </ul>
 <.help_h4 icon={:icon_webrtc}>{dgettext("help_arcade", "Technology")}</.help_h4>
 <p>
-  {dgettext("help_arcade", "Half-Life: Uplink is powered by")}
-  <strong>{dgettext("help_arcade", "Xash3D-FWGS")}</strong>
-  {dgettext(
-    "help_arcade",
-    "(GoldSource reimplementation compiled to WebAssembly). Wolfenstein 3D is powered by"
+  {dgettext("help_arcade", "%{game} is powered by", game: "Half-Life: Uplink")}
+  <strong>Xash3D-FWGS</strong>
+  {dgettext("help_arcade", "(%{engine} reimplementation compiled to WebAssembly).",
+    engine: "GoldSource"
   )}
-  <strong>{dgettext("help_arcade", "ECWolf-JS")}</strong>
-  {dgettext(
-    "help_arcade",
-    "(ECWolf compiled to WebAssembly via Emscripten). DOOM games are powered by"
+  {dgettext("help_arcade", "%{game} is powered by", game: "Wolfenstein 3D")}
+  <strong>ECWolf-JS</strong>
+  {dgettext("help_arcade", "(%{engine} compiled to WebAssembly via Emscripten).",
+    engine: "ECWolf"
   )}
-  <strong>{dgettext("help_arcade", "Dwasm")}</strong>
-  {dgettext("help_arcade", "(PrBoom+ compiled to WebAssembly). Quake games are powered by")}
-  <strong>{dgettext("help_arcade", "Qwasm")}</strong>
-  {dgettext("help_arcade", "(QuakeSpasm compiled to WebAssembly). Quake II is powered by")}
-  <strong>{dgettext("help_arcade", "Qwasm2")}</strong>
+  {dgettext("help_arcade", "%{engine} games are powered by", engine: "DOOM")}
+  <strong>Dwasm</strong>
+  {dgettext("help_arcade", "(%{engine} compiled to WebAssembly).", engine: "PrBoom+")}
+  {dgettext("help_arcade", "%{engine} games are powered by", engine: "Quake")}
+  <strong>Qwasm</strong>
+  {dgettext("help_arcade", "(%{engine} compiled to WebAssembly).", engine: "QuakeSpasm")}
+  {dgettext("help_arcade", "%{game} is powered by", game: "Quake II")}
+  <strong>Qwasm2</strong>
   {dgettext(
     "help_arcade",
-    "(Yamagi Quake II compiled to WebAssembly). All support keyboard, mouse, and gamepad input."
+    "(%{engine} compiled to WebAssembly). All support keyboard, mouse, and gamepad input.",
+    engine: "Yamagi Quake II"
   )}
 </p>
 <.help_h4 icon={:icon_clock}>{dgettext("help_arcade", "Session Timeouts")}</.help_h4>
@@ -157,21 +160,20 @@
 <.help_h4 icon={:icon_link}>{dgettext("help_arcade", "See Also")}</.help_h4>
 <p>
   <.help_link topic="feature-arcade-halflife">
-    {dgettext("help_arcade", "Half-Life (Arcade)")}
+    Half-Life (Arcade)
   </.help_link>
   ·
   <.help_link topic="feature-arcade-wolfenstein">
-    {dgettext("help_arcade", "Wolfenstein 3D (Arcade)")}
+    Wolfenstein 3D (Arcade)
   </.help_link>
-  ·
-  <.help_link topic="feature-arcade-doom">{dgettext("help_arcade", "DOOM (Arcade)")}</.help_link>
+  · <.help_link topic="feature-arcade-doom">DOOM (Arcade)</.help_link>
   ·
   <.help_link topic="feature-arcade-quake">
-    {dgettext("help_arcade", "Quake (Arcade)")}
+    Quake (Arcade)
   </.help_link>
   ·
   <.help_link topic="feature-arcade-quake2">
-    {dgettext("help_arcade", "Quake II (Arcade)")}
+    Quake II (Arcade)
   </.help_link>
   ·
   <.help_link topic="feature-arcade-scummvm">

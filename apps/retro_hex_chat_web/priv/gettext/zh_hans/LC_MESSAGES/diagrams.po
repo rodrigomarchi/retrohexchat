@@ -56,12 +56,6 @@ msgstr "爱丽丝(你)"
 msgid "Alice wants to call Bob"
 msgstr "爱丽丝想给鲍勃打电话"
 
-#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:118
-#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:214
-#, elixir-autogen, elixir-format
-msgid "Arcade — Select a Game"
-msgstr "街机 — 选择游戏"
-
 #: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:171
 #, elixir-autogen, elixir-format
 msgid "BASS"
@@ -132,11 +126,6 @@ msgstr "多米尼克"
 msgid "DOOM arcade logo: bold red angular letters on dark background"
 msgstr "DOOM 街机标志:暗背景上的粗体红角字母"
 
-#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:305
-#, elixir-autogen, elixir-format
-msgid "DOOM: Knee-Deep in the Dead"
-msgstr "膝盖深处死者"
-
 #: lib/retro_hex_chat_web/components/diagrams/security.ex:293
 #, elixir-autogen, elixir-format
 msgid "DTLS / SRTP"
@@ -162,11 +151,6 @@ msgstr "ECWolf 网络大会"
 #, elixir-autogen, elixir-format
 msgid "End"
 msgstr "结束"
-
-#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:331
-#, elixir-autogen, elixir-format
-msgid "Engine: Dwasm · Running in browser"
-msgstr "引擎: Dwasm \\ 在浏览器中运行"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_enduro.ex:83
 #, elixir-autogen, elixir-format
@@ -294,11 +278,6 @@ msgstr "寿命:2人"
 msgid "Lives: 3"
 msgstr "寿命:3人"
 
-#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:261
-#, elixir-autogen, elixir-format
-msgid "Loading DOOM: Knee-Deep in the Dead..."
-msgstr "装入死亡的膝盖深处"
-
 #: lib/retro_hex_chat_web/components/diagrams/arcade_scummvm.ex:115
 #, elixir-autogen, elixir-format
 msgid "Look at"
@@ -308,11 +287,6 @@ msgstr "看着"
 #, elixir-autogen, elixir-format
 msgid "Mute"
 msgstr "静音"
-
-#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:247
-#, elixir-autogen, elixir-format
-msgid "New Window Opens"
-msgstr "新建窗口打开"
 
 #: lib/retro_hex_chat_web/components/diagrams/arcade_scummvm.ex:75
 #, elixir-autogen, elixir-format
@@ -666,11 +640,6 @@ msgstr "沃尔夫3D"
 msgid "Wolfenstein 3D arcade logo: shield emblem in grey tones on dark blue background"
 msgstr "Wolfenstein 3D 街机标志:深蓝色背景灰色色调的盾徽"
 
-#: lib/retro_hex_chat_web/components/diagrams/arcade_halflife.ex:64
-#, elixir-autogen, elixir-format
-msgid "Xash3D-FWGS WebAssembly"
-msgstr "Xash3D-FWGS 网络大会"
-
 #: lib/retro_hex_chat_web/components/diagrams/arcade_quake2.ex:91
 #, elixir-autogen, elixir-format
 msgid "Yamagi Quake II WebAssembly"
@@ -876,7 +845,28 @@ msgstr "空间是实时的"
 msgid "P2P Session"
 msgstr "P2P会议"
 
+#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:118
+#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:214
+#, elixir-autogen, elixir-format
+msgid "Arcade - Pick an Icon"
+msgstr "Arcade - 选择图标"
+
+#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:247
+#, elixir-autogen, elixir-format
+msgid "Game Details"
+msgstr "游戏详情"
+
+#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:261
+#, elixir-autogen, elixir-format
+msgid "Review details, then Start Game"
+msgstr "查看详情，然后开始游戏"
+
 #: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:18
 #, elixir-autogen, elixir-format
-msgid "Solo arcade flow: open the Games menu and choose Arcade, pick a game icon, a new window opens, WASM game runs in browser"
-msgstr "单人街机流程：打开游戏菜单并选择 Arcade，选择游戏图标，新窗口打开，WASM 游戏在浏览器中运行"
+msgid "Solo arcade flow: open the Games menu and choose Arcade, pick a game icon, review details, press Start Game, then the WASM game runs in a browser window"
+msgstr "单人街机流程：打开游戏菜单并选择 Arcade，选择游戏图标，查看详情，按开始游戏，然后 WASM 游戏在浏览器窗口中运行"
+
+#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:331
+#, elixir-autogen, elixir-format
+msgid "Engine: %{engine} · Running in browser"
+msgstr "Engine: %{engine} · 在浏览器中运行"

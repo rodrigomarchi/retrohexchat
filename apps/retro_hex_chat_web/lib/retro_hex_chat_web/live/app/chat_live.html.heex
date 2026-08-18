@@ -594,7 +594,7 @@
     <.desktop_window
       {WindowRegistry.attrs("retro-games")}
       open={false}
-      body_class="h-full min-h-0 overflow-hidden p-2"
+      body_class="h-full min-h-0 p-2"
       data-testid="retro-games-window"
     >
       <:icon><Icons.icon_game_pong class="h-4 w-4" /></:icon>
@@ -621,12 +621,15 @@
         id="arcade-lobby"
         games={arcade_games()}
         session_status={@arcade_session.status}
+        previewed_game={@arcade_session.previewed_game}
         game_name={@arcade_session.game_name}
         game_id={@arcade_session.game_id}
         game_started_at={@arcade_session.game_started_at}
         game_duration={@arcade_session.game_duration}
         inactivity_warning={@arcade_session.inactivity_warning}
+        on_preview_game="arcade_preview"
         on_select_game="arcade_select_game"
+        on_back="arcade_back"
         on_back_to_launcher="arcade_back_to_launcher"
         on_close="arcade_leave"
       />

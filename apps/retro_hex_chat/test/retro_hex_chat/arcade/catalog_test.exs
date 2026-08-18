@@ -4,6 +4,32 @@ defmodule RetroHexChat.Arcade.CatalogTest do
   alias RetroHexChat.Arcade.Catalog
 
   describe "list_games/0" do
+    test "keeps canonical game names across locales" do
+      Gettext.put_locale(RetroHexChat.Gettext, "pt_BR")
+      on_exit(fn -> Gettext.put_locale(RetroHexChat.Gettext, "en") end)
+
+      assert Enum.map(Catalog.list_games(), & &1.name) == [
+               "DOOM: Knee-Deep in the Dead",
+               "Freedoom: Phase 1",
+               "Freedoom: Phase 2",
+               "FreeDM",
+               "Chex Quest",
+               "HacX: Twitch 'n Kill",
+               "REKKR: Sunken Land",
+               "Quake: Dimension of the Doomed",
+               "LibreQuake",
+               "Quake II: The Invasion",
+               "Wolfenstein 3D: Escape from Castle",
+               "Half-Life: Uplink",
+               "Beneath a Steel Sky",
+               "Drascula: The Vampire Strikes Back",
+               "Dreamweb",
+               "Flight of the Amazon Queen",
+               "Lure of the Temptress",
+               "Soltys"
+             ]
+    end
+
     test "returns all games" do
       games = Catalog.list_games()
       assert length(games) == 18

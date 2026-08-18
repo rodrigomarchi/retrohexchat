@@ -322,9 +322,7 @@ export class ChatPage {
     this.toolsMenuTrigger = page
       .locator("button[data-menubar-trigger]")
       .filter({ hasText: "Tools" });
-    this.gamesMenuTrigger = page
-      .locator("button[data-menubar-trigger]")
-      .filter({ hasText: "Games" });
+    this.gamesMenuTrigger = page.getByTestId("app-menu-games");
     this.retroGamesMenuItem = page
       .getByTestId("menu-retro-games")
       .filter({ visible: true });

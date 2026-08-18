@@ -2643,18 +2643,11 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "help",
             "Play classic games in your browser via WebAssembly — 18 games including "
           ) <>
-            dgettext(
-              "help",
-              "Beneath a Steel Sky, Dreamweb, Drascula, Flight of the Amazon Queen, "
-            ) <>
-            dgettext(
-              "help",
-              "Lure of the Temptress, Soltys, Half-Life: Uplink, Wolfenstein 3D, DOOM, "
-            ) <>
-            dgettext(
-              "help",
-              "Quake, Quake II, Freedoom, Chex Quest, HacX, REKKR, and LibreQuake. "
-            ) <>
+            "Beneath a Steel Sky, Dreamweb, Drascula, Flight of the Amazon Queen, " <>
+            "Lure of the Temptress, Soltys, Half-Life: Uplink, Wolfenstein 3D, DOOM, " <>
+            "Quake, Quake II, Freedoom, Chex Quest, HacX, REKKR, " <>
+            dgettext("help", "and") <>
+            " LibreQuake. " <>
             dgettext(
               "help",
               "Click any game to see its detailed description, keyboard controls, and "
@@ -2692,7 +2685,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-arcade-doom",
-        title: dgettext("help", "DOOM (Arcade)"),
+        title: "DOOM (Arcade)",
         category: dgettext("help", "Solo Arcade: FPS"),
         keywords: [
           "doom",
@@ -2736,7 +2729,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-arcade-quake",
-        title: dgettext("help", "Quake (Arcade)"),
+        title: "Quake (Arcade)",
         category: dgettext("help", "Solo Arcade: FPS"),
         keywords: [
           "quake",
@@ -2754,7 +2747,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "help",
             "Play 2 Quake-engine games in your browser — Quake shareware and LibreQuake (open-source). "
           ) <>
-            dgettext("help", "Powered by Qwasm (QuakeSpasm → WebAssembly)."),
+            dgettext("help", "Powered by") <>
+            " Qwasm (QuakeSpasm → WebAssembly).",
         see_also: [
           "feature-arcade",
           "feature-arcade-quake-shareware",
@@ -2765,7 +2759,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-arcade-wolfenstein",
-        title: dgettext("help", "Wolfenstein 3D (Arcade)"),
+        title: "Wolfenstein 3D (Arcade)",
         category: dgettext("help", "Solo Arcade: FPS"),
         keywords: [
           "wolfenstein",
@@ -2786,7 +2780,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "Play Wolfenstein 3D Episode 1 (shareware) in your browser — 10 levels of the "
           ) <>
             dgettext("help", "classic that launched the FPS genre. ") <>
-            dgettext("help", "Powered by ECWolf-JS (ECWolf → WebAssembly)."),
+            dgettext("help", "Powered by") <>
+            " ECWolf-JS (ECWolf → WebAssembly).",
         see_also: [
           "feature-arcade",
           "feature-arcade-wolfenstein-3d",
@@ -2797,7 +2792,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-arcade-halflife",
-        title: dgettext("help", "Half-Life (Arcade)"),
+        title: "Half-Life (Arcade)",
         category: dgettext("help", "Solo Arcade: FPS"),
         keywords: [
           "half-life",
@@ -2833,7 +2828,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-arcade-quake2",
-        title: dgettext("help", "Quake II (Arcade)"),
+        title: "Quake II (Arcade)",
         category: dgettext("help", "Solo Arcade: FPS"),
         keywords: [
           dgettext("help", "quake 2"),
@@ -2855,7 +2850,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "help",
             "Play the Quake II demo in your browser — Unit 1 of the singleplayer campaign. "
           ) <>
-            dgettext("help", "Powered by Qwasm2 (Yamagi Quake II → WebAssembly)."),
+            dgettext("help", "Powered by") <>
+            " Qwasm2 (Yamagi Quake II → WebAssembly).",
         see_also: [
           "feature-arcade",
           "feature-arcade-quake2-shareware",
@@ -2906,15 +2902,12 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_game_bass,
         description:
-          dgettext(
-            "help",
-            "Play classic point & click adventures in your browser — Beneath a Steel Sky (1994), "
-          ) <>
-            dgettext(
-              "help",
-              "Drascula (1996), Dreamweb (1994), Flight of the Amazon Queen (1995), "
-            ) <>
-            dgettext("help", "Lure of the Temptress (1992), and Soltys (1995). ") <>
+          dgettext("help", "Play classic point & click adventures in your browser — ") <>
+            "Beneath a Steel Sky (1994), " <>
+            "Drascula (1996), Dreamweb (1994), Flight of the Amazon Queen (1995), " <>
+            "Lure of the Temptress (1992), " <>
+            dgettext("help", "and") <>
+            " Soltys (1995). " <>
             dgettext("help", "Powered by ScummVM (official Emscripten backend → WebAssembly)."),
         see_also: [
           "feature-arcade",
@@ -2931,7 +2924,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       # ── Solo Arcade: Individual DOOM Engine Games ──────────
       %{
         id: "feature-arcade-doom-shareware",
-        title: dgettext("help", "DOOM: Knee-Deep in the Dead"),
+        title: "DOOM: Knee-Deep in the Dead",
         category: dgettext("help", "Solo Arcade: FPS"),
         keywords: [
           "doom",
@@ -2960,7 +2953,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-arcade-freedoom1",
-        title: dgettext("help", "Freedoom: Phase 1"),
+        title: "Freedoom: Phase 1",
         category: dgettext("help", "Solo Arcade: FPS"),
         keywords: [
           "freedoom",
@@ -2988,7 +2981,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-arcade-freedoom2",
-        title: dgettext("help", "Freedoom: Phase 2"),
+        title: "Freedoom: Phase 2",
         category: dgettext("help", "Solo Arcade: FPS"),
         keywords: [
           "freedoom",
@@ -3018,7 +3011,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-arcade-freedm",
-        title: dgettext("help", "FreeDM"),
+        title: "FreeDM",
         category: dgettext("help", "Solo Arcade: FPS"),
         keywords: [
           "freedm",
@@ -3044,7 +3037,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-arcade-chex-quest",
-        title: dgettext("help", "Chex Quest"),
+        title: "Chex Quest",
         category: dgettext("help", "Solo Arcade: FPS"),
         keywords: [
           "chex",
@@ -3074,7 +3067,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-arcade-hacx",
-        title: dgettext("help", "HacX: Twitch 'n Kill"),
+        title: "HacX: Twitch 'n Kill",
         category: dgettext("help", "Solo Arcade: FPS"),
         keywords: [
           "hacx",
@@ -3103,7 +3096,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-arcade-rekkr",
-        title: dgettext("help", "REKKR: Sunken Land"),
+        title: "REKKR: Sunken Land",
         category: dgettext("help", "Solo Arcade: FPS"),
         keywords: [
           "rekkr",
@@ -3135,7 +3128,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       # ── Solo Arcade: Individual Quake Engine Games ──────────
       %{
         id: "feature-arcade-quake-shareware",
-        title: dgettext("help", "Quake: Dimension of the Doomed"),
+        title: "Quake: Dimension of the Doomed",
         category: dgettext("help", "Solo Arcade: FPS"),
         keywords: [
           "quake",
@@ -3161,7 +3154,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-arcade-librequake",
-        title: dgettext("help", "LibreQuake"),
+        title: "LibreQuake",
         category: dgettext("help", "Solo Arcade: FPS"),
         keywords: [
           "librequake",
@@ -3187,7 +3180,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       # ── Solo Arcade: Individual Quake II Game ──────────
       %{
         id: "feature-arcade-quake2-shareware",
-        title: dgettext("help", "Quake II: The Invasion"),
+        title: "Quake II: The Invasion",
         category: dgettext("help", "Solo Arcade: FPS"),
         keywords: [
           dgettext("help", "quake 2"),
@@ -3215,7 +3208,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       # ── Solo Arcade: Individual Wolfenstein 3D Game ──────────
       %{
         id: "feature-arcade-wolfenstein-3d",
-        title: dgettext("help", "Wolfenstein 3D: Escape from Castle"),
+        title: "Wolfenstein 3D: Escape from Castle",
         category: dgettext("help", "Solo Arcade: FPS"),
         keywords: [
           "wolfenstein",
@@ -3243,7 +3236,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       # ── Solo Arcade: Individual Half-Life Game ──────────
       %{
         id: "feature-arcade-halflife-uplink",
-        title: dgettext("help", "Half-Life: Uplink"),
+        title: "Half-Life: Uplink",
         category: dgettext("help", "Solo Arcade: FPS"),
         keywords: [
           "half-life",
@@ -3271,7 +3264,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       # ── Solo Arcade: Individual ScummVM Adventure Games ──────────
       %{
         id: "feature-arcade-scummvm-bass",
-        title: dgettext("help", "Beneath a Steel Sky"),
+        title: "Beneath a Steel Sky",
         category: dgettext("help", "Solo Arcade: Adventures"),
         keywords: [
           dgettext("help", "beneath a steel sky"),
@@ -3300,7 +3293,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-arcade-scummvm-drascula",
-        title: dgettext("help", "Drascula: The Vampire Strikes Back"),
+        title: "Drascula: The Vampire Strikes Back",
         category: dgettext("help", "Solo Arcade: Adventures"),
         keywords: [
           "drascula",
@@ -3329,7 +3322,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-arcade-scummvm-dreamweb",
-        title: dgettext("help", "Dreamweb"),
+        title: "Dreamweb",
         category: dgettext("help", "Solo Arcade: Adventures"),
         keywords: [
           "dreamweb",
@@ -3358,7 +3351,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-arcade-scummvm-fotaq",
-        title: dgettext("help", "Flight of the Amazon Queen"),
+        title: "Flight of the Amazon Queen",
         category: dgettext("help", "Solo Arcade: Adventures"),
         keywords: [
           dgettext("help", "flight of the amazon queen"),
@@ -3387,7 +3380,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-arcade-scummvm-lure",
-        title: dgettext("help", "Lure of the Temptress"),
+        title: "Lure of the Temptress",
         category: dgettext("help", "Solo Arcade: Adventures"),
         keywords: [
           dgettext("help", "lure of the temptress"),
@@ -3416,7 +3409,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-arcade-scummvm-soltys",
-        title: dgettext("help", "Soltys"),
+        title: "Soltys",
         category: dgettext("help", "Solo Arcade: Adventures"),
         keywords: [
           "soltys",

@@ -100,7 +100,12 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
         />
       </.menu>
 
-      <.menu class="app-menu-bar__desktop-menu" label={dgettext("ui", "Games")} disabled={!@connected}>
+      <.menu
+        class="app-menu-bar__desktop-menu"
+        label={dgettext("ui", "Games")}
+        disabled={!@connected}
+        testid="app-menu-games"
+      >
         <:icon><Icons.icon_game_arcade class="h-4 w-4" /></:icon>
         <.games_menu_items arcade_available={@arcade_available} on_action={@on_action} />
       </.menu>

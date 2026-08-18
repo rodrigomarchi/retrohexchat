@@ -108,6 +108,15 @@ defmodule RetroHexChatWeb.ChatLive.WindowRegistryTest do
       assert attrs.min_width > 0
     end
 
+    test "arcade opens large enough for game details" do
+      attrs = Registry.attrs("arcade-games")
+
+      assert attrs.width >= 960
+      assert attrs.height >= 640
+      assert attrs.min_width >= 720
+      assert attrs.min_height >= 500
+    end
+
     test "refuses an unknown id loudly rather than rendering a blank window" do
       assert_raise ArgumentError, fn -> Registry.attrs("no-such-window") end
     end

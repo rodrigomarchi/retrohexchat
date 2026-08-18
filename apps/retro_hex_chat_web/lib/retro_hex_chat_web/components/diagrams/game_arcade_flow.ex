@@ -17,7 +17,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameArcadeFlow do
       aria-label={
         dgettext(
           "diagrams",
-          "Solo arcade flow: open the Games menu and choose Arcade, pick a game icon, a new window opens, WASM game runs in browser"
+          "Solo arcade flow: open the Games menu and choose Arcade, pick a game icon, review details, press Start Game, then the WASM game runs in a browser window"
         )
       }
     >
@@ -115,7 +115,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameArcadeFlow do
         font-family="Tahoma,sans-serif"
         font-weight="bold"
       >
-        {dgettext("diagrams", "Arcade — Select a Game")}
+        {dgettext("diagrams", "Arcade - Pick an Icon")}
       </text>
       <%!-- Content inset --%>
       <rect x="66" y="100" width="288" height="52" fill="#dfdfdf" stroke="#000" stroke-width="1" />
@@ -199,7 +199,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameArcadeFlow do
       <rect x="208" y="162" width="2" height="16" fill="#808080" />
       <path d="M204 176 h10 l-5 5 z" fill="#808080" />
 
-      <%!-- ── Step 3: New Window Opens ── --%>
+      <%!-- ── Step 3: Game details ── --%>
       <%!-- Back window (lobby, dimmed) --%>
       <rect x="84" y="192" width="200" height="40" fill="#c0c0c0" stroke="#808080" stroke-width="1" />
       <rect x="87" y="195" width="194" height="14" fill="#808080" />
@@ -211,10 +211,10 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameArcadeFlow do
         font-size="8"
         font-family="Tahoma,sans-serif"
       >
-        {dgettext("diagrams", "Arcade — Select a Game")}
+        {dgettext("diagrams", "Arcade - Pick an Icon")}
       </text>
 
-      <%!-- Front window (game, opening) --%>
+      <%!-- Front window (game details) --%>
       <%!-- Shadow --%>
       <rect x="144" y="198" width="220" height="44" fill="#000" />
       <%!-- Window --%>
@@ -244,7 +244,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameArcadeFlow do
         font-family="Tahoma,sans-serif"
         font-weight="bold"
       >
-        {dgettext("diagrams", "New Window Opens")}
+        {dgettext("diagrams", "Game Details")}
       </text>
       <%!-- Content --%>
       <rect x="148" y="218" width="204" height="14" fill="#dfdfdf" stroke="#000" stroke-width="1" />
@@ -258,7 +258,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameArcadeFlow do
         font-size="8"
         font-family="Tahoma,sans-serif"
       >
-        {dgettext("diagrams", "Loading DOOM: Knee-Deep in the Dead...")}
+        {dgettext("diagrams", "Review details, then Start Game")}
       </text>
 
       <%!-- Arrow 3 → 4 (green accent) --%>
@@ -302,7 +302,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameArcadeFlow do
         font-family="Tahoma,sans-serif"
         font-weight="bold"
       >
-        {dgettext("diagrams", "DOOM: Knee-Deep in the Dead")}
+        DOOM: Knee-Deep in the Dead
       </text>
       <%!-- Black game canvas --%>
       <rect x="68" y="290" width="284" height="46" fill="#000" stroke="#808080" stroke-width="1" />
@@ -328,7 +328,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameArcadeFlow do
         font-size="8"
         font-family="Tahoma,sans-serif"
       >
-        {dgettext("diagrams", "Engine: Dwasm · Running in browser")}
+        {dgettext("diagrams", "Engine: %{engine} · Running in browser", engine: "Dwasm")}
       </text>
 
       <%!-- Tooltip --%>
