@@ -18,7 +18,13 @@ declared **only** in `lazy_feature_hooks.js`.
 
 **Full standard:** [`docs/AGENT-GUIDE.md` §15](../../docs/AGENT-GUIDE.md) — the
 readiness protocol for lazy hooks that receive server-pushed startup events, the
-approved dynamic-import sites, and exactly what the CI guard rejects.
+approved dynamic-import sites, and exactly what the CI guard rejects. **§15.1**
+governs what may live *inside* a hook: a hook is a thin binding (listeners,
+`handleEvent`, `pushEvent`, and creating a `lib/` controller); every decision,
+calculation and state machine lives in a `lib/` module tested without LiveView.
+The guard enforces a 200-line hook budget, a forbidden-primitive list, a ceiling
+on `hook._private` calls in tests, and no mutable module scope in `js/lib/`.
+`scripts/surface_snapshot.sh --check` pins the observable surface.
 
 **Enforcement:** `make lint.hooks` and `make lint.bundle` are both part of
 `make ci`. If the bundle budget fails, do not just raise the number: a chunk that

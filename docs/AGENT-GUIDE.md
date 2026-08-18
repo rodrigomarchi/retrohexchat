@@ -446,6 +446,48 @@ There is exactly ONE hook registration pattern; do not reintroduce local choice 
   sites: `lazy_feature_hooks.js`, the JS i18n catalog loader (`lib/i18n.js`), the game-engine
   loader — anything else must be added to the allowlist with rationale or it fails CI.
 
+### 15.1 What may live inside a hook (CI-enforced)
+
+§15 governs how a hook is *loaded*; this governs what may live *inside* one. A hook is a thin
+binding, nothing more. It may contain exactly four things:
+
+1. binding and unbinding DOM listeners,
+2. registering `handleEvent` callbacks,
+3. calling `pushEvent` / `pushEventTo`,
+4. creating and destroying a controller from `lib/`, handing it `this.el` and ports.
+
+Reading `this.el.dataset` and passing it on counts as part of (4). Everything else — any `if`
+over domain state, any calculation, any state machine — belongs in a module under `js/lib/` that
+knows nothing about LiveView and can therefore be tested without one. Three shapes cover all of it:
+
+- **Pure module** (`js/lib/<area>/<name>.js`) — decisions, maths, transforms. No DOM, no timers,
+  no `this`. Named exports with JSDoc `@param`/`@returns`, the way domain functions carry `@spec`.
+- **Controller** (`js/lib/<area>/<name>.js`) — DOM, timers, observers or a connection, but still
+  no LiveView. A `createX(el, ports)` factory returning `mount`/`reconcile`/`destroy`, whose
+  `destroy` is the exact mirror of `mount`. State lives in the closure, never at module scope.
+- **Hook** (`js/hooks/<area>/<name>_hook.js`) — `createXHook(deps = {})` + `export default
+  createXHook()`, so a test injects a double without mocking a module.
+
+The reference implementation is `hooks/games/retro_game_canvas_hook.js` with
+`lib/games/engine_loader.js`; copy that pair when in doubt. When a hook grows past a binding, it
+is a signal the logic is trapped in the wrong layer.
+
+**The operational test:** if a test needs `Object.create(Hook)` or reaches for a `hook._private`
+method, the logic is in the wrong place. Move it to the `lib/` module it belongs to and test it
+there.
+
+**Enforcement** (`enforce_hooks_contract.cjs`, via `make lint.hooks`), each a ratchet that only
+falls: a 200-line hook budget; a forbidden-primitive list in `js/hooks/`
+(`new RTCPeerConnection`, canvas `getContext`, `ResizeObserver`, `MutationObserver`,
+`navigator.mediaDevices`, `navigator.clipboard` — each is a controller in disguise); a ceiling on
+`hook._private` calls in `test/hooks/`; and no mutable module scope (`let`/`var` at top level) in
+`js/lib/`. A current violator carries a named override pointing at the package that resolves it,
+or — for the WebRTC hooks, whose residual is irreducible live-`RTCPeerConnection` and tile-DOM
+plumbing — a standing override with a written reason. `assets/js/SURFACE.txt` +
+`scripts/surface_snapshot.sh --check` pins the observable surface (event names, `data-*` keys) so
+a move that renames one is caught before commit. The refactor that introduced all this is logged
+in `docs/refactor/`.
+
 ---
 
 ## 16. i18n & public-page URLs
