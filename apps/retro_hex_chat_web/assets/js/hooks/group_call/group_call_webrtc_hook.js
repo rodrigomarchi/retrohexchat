@@ -17,6 +17,15 @@ import {
   participantQualityTitle,
 } from "../../lib/group_call/quality.js";
 import {
+  hasOwn,
+  idsFromValue,
+  normalizeLayoutMode,
+  normalizeSelfView,
+  payloadValue,
+  stringOrNull,
+  tileDensity,
+} from "../../lib/group_call/payload.js";
+import {
   acquireDisplayMedia,
   attachMediaStream,
   collectConnectionActivity,
@@ -29,8 +38,6 @@ import {
   getScreenShareConstraints,
   setSinkId,
 } from "../../lib/p2p/media.js";
-const LAYOUT_MODES = new Set(["auto", "grid", "focus", "sidebar", "speaker"]);
-const SELF_VIEW_MODES = new Set(["tile", "pip", "hidden"]);
 const STATS_INTERVAL_MS = 2500;
 const ICE_CANDIDATE_FAILURE_LIMIT = 3;
 const OFFER_WATCHDOG_DELAY_MS = 1500;
@@ -38,10 +45,6 @@ const OFFER_WATCHDOG_MAX_ATTEMPTS = 3;
 const RECOVERY_BACKOFF_MS = [1000, 2000, 4000];
 const DISCONNECTED_ACTIVITY_DEFERRAL_LIMIT = 2;
 const PUSH_TO_TALK_KEYS = new Set(["z", "Z"]);
-
-function hasOwn(object, key) {
-  return Object.prototype.hasOwnProperty.call(object || {}, key);
-}
 
 function emptyMediaStream() {
   if (typeof MediaStream === "function") return new MediaStream();
@@ -63,7 +66,7 @@ const GroupCallWebRTCHook = {
     this.channel = null;
     this.pendingCandidates = [];
     this.remoteCandidateFailures = 0;
-    this.participantId = this._stringOrNull(this.el.dataset.participantId);
+    this.participantId = stringOrNull(this.el.dataset.participantId);
     this.mediaEnabled = this._mediaStateFromDataset();
     this.serverAudioMuted = false;
     this.serverVideoBlocked = false;
@@ -729,29 +732,25 @@ const GroupCallWebRTCHook = {
 
   _layoutStateFromDataset() {
     return {
-      mode: this._normalizeLayoutMode(this.el.dataset.layoutMode),
-      focusedParticipantId: this._stringOrNull(this.el.dataset.focusedParticipantId),
+      mode: normalizeLayoutMode(this.el.dataset.layoutMode),
+      focusedParticipantId: stringOrNull(this.el.dataset.focusedParticipantId),
       focusedStreamId: null,
-      selfView: this._normalizeSelfView(this.el.dataset.selfView),
-      pinnedParticipantIds: this._idsFromValue(this.el.dataset.pinnedParticipantIds),
+      selfView: normalizeSelfView(this.el.dataset.selfView),
+      pinnedParticipantIds: idsFromValue(this.el.dataset.pinnedParticipantIds),
     };
   },
 
   _syncLayoutState(payload) {
-    const mode = this._payloadValue(payload, "mode");
-    const focusedParticipantId = this._payloadValue(
+    const mode = payloadValue(payload, "mode");
+    const focusedParticipantId = payloadValue(
       payload,
       "focused_participant_id",
       "focusedParticipantId",
     );
-    const focusedStreamId = this._payloadValue(payload, "focused_stream_id", "focusedStreamId");
-    const selfView = this._payloadValue(payload, "self_view", "selfView");
-    const selfParticipantId = this._payloadValue(
-      payload,
-      "self_participant_id",
-      "selfParticipantId",
-    );
-    const pinnedParticipantIds = this._payloadValue(
+    const focusedStreamId = payloadValue(payload, "focused_stream_id", "focusedStreamId");
+    const selfView = payloadValue(payload, "self_view", "selfView");
+    const selfParticipantId = payloadValue(payload, "self_participant_id", "selfParticipantId");
+    const pinnedParticipantIds = payloadValue(
       payload,
       "pinned_participant_ids",
       "pinnedParticipantIds",
@@ -759,21 +758,20 @@ const GroupCallWebRTCHook = {
 
     this.layoutState = {
       ...this.layoutState,
-      mode: mode === undefined ? this.layoutState.mode : this._normalizeLayoutMode(mode),
+      mode: mode === undefined ? this.layoutState.mode : normalizeLayoutMode(mode),
       focusedParticipantId:
         focusedParticipantId === undefined
           ? this.layoutState.focusedParticipantId
-          : this._stringOrNull(focusedParticipantId),
+          : stringOrNull(focusedParticipantId),
       focusedStreamId:
         focusedStreamId === undefined
           ? this.layoutState.focusedStreamId
-          : this._stringOrNull(focusedStreamId),
-      selfView:
-        selfView === undefined ? this.layoutState.selfView : this._normalizeSelfView(selfView),
+          : stringOrNull(focusedStreamId),
+      selfView: selfView === undefined ? this.layoutState.selfView : normalizeSelfView(selfView),
       pinnedParticipantIds:
         pinnedParticipantIds === undefined
           ? this.layoutState.pinnedParticipantIds
-          : this._idsFromValue(pinnedParticipantIds),
+          : idsFromValue(pinnedParticipantIds),
     };
 
     if (selfParticipantId !== undefined && selfParticipantId !== null) {
@@ -850,12 +848,12 @@ const GroupCallWebRTCHook = {
 
     const normalized = {
       id: String(track.id),
-      participantId: this._stringOrNull(track.participant_id ?? track.participantId),
+      participantId: stringOrNull(track.participant_id ?? track.participantId),
       kind: track.kind,
       source: track.source || "camera",
       status: track.status,
-      streamId: this._stringOrNull(track.stream_id ?? track.streamId),
-      webrtcTrackId: this._stringOrNull(track.webrtc_track_id ?? track.webrtcTrackId),
+      streamId: stringOrNull(track.stream_id ?? track.streamId),
+      webrtcTrackId: stringOrNull(track.webrtc_track_id ?? track.webrtcTrackId),
     };
 
     this.tracksById.set(normalized.id, normalized);
@@ -927,7 +925,7 @@ const GroupCallWebRTCHook = {
   },
 
   _applyScreenShareStateToTiles(payload) {
-    const participantId = this._stringOrNull(payload.participant_id ?? payload.participantId);
+    const participantId = stringOrNull(payload.participant_id ?? payload.participantId);
     if (!participantId) return;
 
     const active = payload.active === true;
@@ -999,11 +997,11 @@ const GroupCallWebRTCHook = {
     }
 
     host.dataset.tileCount = String(visibleTiles.length);
-    host.dataset.tileDensity = this._tileDensity(visibleTiles.length);
+    host.dataset.tileDensity = tileDensity(visibleTiles.length);
 
     for (const tile of tiles) {
       const focused = focusedTile === tile;
-      const participantId = this._stringOrNull(tile.dataset.participantId);
+      const participantId = stringOrNull(tile.dataset.participantId);
       const pinned =
         !!participantId && (this.layoutState.pinnedParticipantIds || []).includes(participantId);
       tile.dataset.focused = String(focused);
@@ -1048,48 +1046,6 @@ const GroupCallWebRTCHook = {
     return this.layoutState.selfView !== "hidden";
   },
 
-  _normalizeLayoutMode(mode) {
-    return LAYOUT_MODES.has(mode) ? mode : "auto";
-  },
-
-  _normalizeSelfView(mode) {
-    return SELF_VIEW_MODES.has(mode) ? mode : "tile";
-  },
-
-  _tileDensity(count) {
-    if (count >= 10) return "compact";
-    if (count >= 5) return "dense";
-    return "normal";
-  },
-
-  _idsFromValue(value) {
-    if (Array.isArray(value)) {
-      return value.map((id) => this._stringOrNull(id)).filter(Boolean);
-    }
-
-    if (typeof value === "string") {
-      return value
-        .split(",")
-        .map((id) => this._stringOrNull(id.trim()))
-        .filter(Boolean);
-    }
-
-    return [];
-  },
-
-  _stringOrNull(value) {
-    if (value === undefined || value === null || value === "") return null;
-    return String(value);
-  },
-
-  _payloadValue(payload, ...keys) {
-    for (const key of keys) {
-      if (Object.prototype.hasOwnProperty.call(payload, key)) return payload[key];
-    }
-
-    return undefined;
-  },
-
   _mediaStateFromDataset() {
     const audio = this.el.dataset.audio !== "false";
     const video = this.el.dataset.video !== "false";
@@ -1098,9 +1054,9 @@ const GroupCallWebRTCHook = {
 
   _devicePreferencesFromDataset() {
     return {
-      audioInputId: this._stringOrNull(this.el.dataset.audioInputId),
-      videoInputId: this._stringOrNull(this.el.dataset.videoInputId),
-      audioOutputId: this._stringOrNull(this.el.dataset.audioOutputId),
+      audioInputId: stringOrNull(this.el.dataset.audioInputId),
+      videoInputId: stringOrNull(this.el.dataset.videoInputId),
+      audioOutputId: stringOrNull(this.el.dataset.audioOutputId),
     };
   },
 
@@ -1133,10 +1089,10 @@ const GroupCallWebRTCHook = {
   },
 
   _applyReaction(payload = {}) {
-    const participantId = this._stringOrNull(payload.participant_id ?? payload.participantId);
+    const participantId = stringOrNull(payload.participant_id ?? payload.participantId);
     if (!participantId) return;
 
-    const reactionId = this._stringOrNull(payload.id) || `reaction-${Date.now()}`;
+    const reactionId = stringOrNull(payload.id) || `reaction-${Date.now()}`;
     const reaction = payload.reaction || "heart";
     const tiles = this._reactionTiles(participantId);
 
@@ -1872,7 +1828,7 @@ const GroupCallWebRTCHook = {
   },
 
   _handleRemoteVideoStalled(streamId, reason = "remote_video_stalled") {
-    const key = this._stringOrNull(streamId);
+    const key = stringOrNull(streamId);
     if (!key || this.remoteVideoStalls?.get(key) === true) return;
 
     this.remoteVideoStalls.set(key, true);
@@ -2065,10 +2021,10 @@ const GroupCallWebRTCHook = {
   },
 
   _participantIdForStatsReport(report) {
-    const explicitParticipantId = this._stringOrNull(report.participant_id ?? report.participantId);
+    const explicitParticipantId = stringOrNull(report.participant_id ?? report.participantId);
     if (explicitParticipantId) return explicitParticipantId;
 
-    const trackIdentifier = this._stringOrNull(
+    const trackIdentifier = stringOrNull(
       report.trackIdentifier ?? report.trackId ?? report.track_id,
     );
 
@@ -2093,12 +2049,12 @@ const GroupCallWebRTCHook = {
   },
 
   _syncParticipantQualityState(payload) {
-    this.activeSpeakerParticipantId = this._stringOrNull(
+    this.activeSpeakerParticipantId = stringOrNull(
       payload.active_speaker_participant_id ?? payload.activeSpeakerParticipantId,
     );
 
     for (const quality of payload.participants || []) {
-      const participantId = this._stringOrNull(quality.participant_id ?? quality.participantId);
+      const participantId = stringOrNull(quality.participant_id ?? quality.participantId);
       if (!participantId) continue;
 
       const normalized = {
@@ -2144,7 +2100,7 @@ const GroupCallWebRTCHook = {
   },
 
   _applyParticipantQualityToTile(tile, participantId) {
-    const id = this._stringOrNull(participantId);
+    const id = stringOrNull(participantId);
     const quality = id ? this.participantQualityById?.get(id) : null;
     const level = quality?.level || "unknown";
     const activeSpeaker = id && this.activeSpeakerParticipantId === id;
