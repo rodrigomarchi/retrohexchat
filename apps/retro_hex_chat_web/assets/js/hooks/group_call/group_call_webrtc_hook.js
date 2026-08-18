@@ -2034,7 +2034,7 @@ const GroupCallWebRTCHook = {
 
     const speakerBadge = tile.querySelector("[data-group-call-active-speaker-badge]");
     if (speakerBadge) {
-      speakerBadge.title = activeSpeaker ? "Speaking" : "Not speaking";
+      speakerBadge.title = activeSpeaker ? t("Speaking") : t("Not speaking");
       speakerBadge.setAttribute("aria-label", speakerBadge.title);
     }
   },
