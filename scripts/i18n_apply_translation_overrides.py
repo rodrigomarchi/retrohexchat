@@ -3172,6 +3172,24 @@ PO_RETRO_GAMES_OVERRIDES = {
             zh_hant="開啟遊戲選單並選擇復古遊戲。",
         ),
     ),
+    "Choose a game icon in the Retro Games window.": source_t(
+        "Choose a game icon in the Retro Games window.",
+        t(
+            "Wähle ein Spielsymbol im Retro-Spiele-Fenster.",
+            "Elige un icono de juego en la ventana Juegos retro.",
+            "Choisissez une icône de jeu dans la fenêtre Jeux rétro.",
+            "Pilih ikon game di jendela Game Retro.",
+            "レトロゲームウィンドウでゲームアイコンを選びます。",
+            "在复古游戏窗口中选择一个游戏图标。",
+            pt_BR="Escolha um ícone de jogo na janela Jogos Retro.",
+            pt_PT="Escolha um ícone de jogo na janela Jogos Retro.",
+            it="Scegli un'icona di gioco nella finestra Giochi retro.",
+            pl="Wybierz ikonę gry w oknie Gry retro.",
+            nl="Kies een gamepictogram in het venster Retrogames.",
+            ru="Выберите значок игры в окне ретро-игр.",
+            zh_hant="在復古遊戲視窗中選擇一個遊戲圖示。",
+        ),
+    ),
     "Play browser-native RetroHexChat games solo against AI inside the chat desktop. Hex Pong is available first.": source_t(
         "Play browser-native RetroHexChat games solo against AI inside the chat desktop. Hex Pong is available first.",
         t(

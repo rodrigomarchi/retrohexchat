@@ -141,6 +141,43 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     controls: "Arrow keys or WASD to move, Space or Shift to shoot/tackle"
   }
 
+  test "renders the library as a Windows-style icon launcher" do
+    html =
+      render_component(&retro_games_panel/1,
+        id: "retro-games-panel",
+        games: [@game, @tanks, @hockey],
+        status: "library",
+        selected_game: nil,
+        difficulty: "normal",
+        canvas_ready: false,
+        target: "retro-games-island"
+      )
+
+    document = Floki.parse_document!(html)
+    text = Floki.text(document)
+
+    assert [_] = Floki.find(document, ~s([data-testid="retro-games-library"]))
+    assert [_] = Floki.find(document, ~s([data-testid="retro-games-icon-window"]))
+    assert [_] = Floki.find(document, ~s([data-testid="retro-games-icon-grid"]))
+    assert [_] = Floki.find(document, ~s([data-testid="retro-games-status-bar"]))
+
+    for game <- [@game, @tanks, @hockey] do
+      assert [_] =
+               Floki.find(
+                 document,
+                 ~s([data-testid="retro-game-#{game.id}"][aria-label="#{game.name}"])
+               )
+
+      assert [_] = Floki.find(document, ~s([data-testid="retro-game-#{game.id}"] svg))
+      assert text =~ game.name
+    end
+
+    assert text =~ "Ready"
+    assert text =~ "Solo AI"
+    refute text =~ "Arrow keys"
+    refute text =~ "Browser-native games"
+  end
+
   test "renders the ready game with an integrated control panel" do
     html =
       render_component(&retro_games_panel/1,

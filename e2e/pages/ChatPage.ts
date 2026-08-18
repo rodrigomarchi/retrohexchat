@@ -41,6 +41,10 @@ export class ChatPage {
   readonly helpMenuTrigger: Locator;
   readonly toolsMenuTrigger: Locator;
   readonly gamesMenuTrigger: Locator;
+  readonly retroGamesMenuItem: Locator;
+  readonly retroGamesWindow: Locator;
+  readonly retroGamesLibrary: Locator;
+  readonly retroGamesIconGrid: Locator;
   readonly arcadeMenuItem: Locator;
   readonly arcadeWindow: Locator;
   readonly disconnectMenuItem: Locator;
@@ -319,6 +323,12 @@ export class ChatPage {
     this.gamesMenuTrigger = page
       .locator("button[data-menubar-trigger]")
       .filter({ hasText: "Games" });
+    this.retroGamesMenuItem = page
+      .getByTestId("menu-retro-games")
+      .filter({ visible: true });
+    this.retroGamesWindow = page.getByTestId("retro-games-window");
+    this.retroGamesLibrary = page.getByTestId("retro-games-library");
+    this.retroGamesIconGrid = page.getByTestId("retro-games-icon-grid");
     this.arcadeMenuItem = visibleContextMenuItem(page, "open_arcade");
     this.arcadeWindow = page.getByTestId("arcade-games-window");
     // context_menu_item exposes data-testid="context-menu-item-<action>".
@@ -768,6 +778,14 @@ export class ChatPage {
     await expect(this.arcadeMenuItem).toBeVisible();
     await this.arcadeMenuItem.click();
     await expect(this.arcadeWindow).toBeVisible();
+  }
+
+  async openRetroGamesFromGamesMenu() {
+    await this.gamesMenuTrigger.click();
+    await expect(this.retroGamesMenuItem).toBeVisible();
+    await this.retroGamesMenuItem.click();
+    await expect(this.retroGamesWindow).toBeVisible();
+    await expect(this.retroGamesIconGrid).toBeVisible();
   }
 
   async openNotifyListFromViewMenu() {

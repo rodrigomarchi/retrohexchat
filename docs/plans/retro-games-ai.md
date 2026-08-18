@@ -9,9 +9,8 @@ plano e mover apenas decisões duráveis para os guias adequados.
 ## Objetivo
 
 Adicionar uma nova superfície de jogos chamada **Retro Games**, separada do Arcade
-WASM e separada do console P2P. Ela lista os jogos leves integrados ao chat que
-hoje existem apenas no fluxo peer-to-peer e permite iniciar uma sessão solo contra
-AI.
+WASM e separada do console P2P. Ela abre uma janela estilo Windows 98 com ícones
+dos jogos leves integrados ao chat e permite iniciar uma sessão solo contra AI.
 
 O playbook já foi aplicado a Hex Pong, Light Trails, Pixel Tanks, Hex Boxing,
 Block Breakers, Hex Warlords e às famílias Star Duel, Hex Outlaw, Hex Raid,
@@ -21,6 +20,8 @@ Hex Tennis, Hex Invaders, Hex Enduro, Hex Skiing, Hex Frost e Hex Hockey.
 
 - **Retro Games é um item próprio no menu de jogos.** Ele deve aparecer ao lado do
   Arcade/WASM, não dentro dele.
+- **O menu `Games` não lista cada Retro Game.** Ele abre a janela Retro Games; a
+  seleção acontece na grade de ícones dentro da própria janela.
 - **Arcade/WASM continua sendo o fluxo de jogos externos/emulados.** Doom, Quake,
   Wolfenstein e similares permanecem no fluxo atual.
 - **P2P continua significando jogar contra outra pessoa.** O console P2P não deve
@@ -40,12 +41,12 @@ Entrada principal:
 
 Fluxo inicial:
 
-- A janela mostra o catálogo de jogos nativos.
+- A janela mostra uma grade de ícones estilo Control Panel/Windows 98.
 - Hex Pong, Light Trails, Pixel Tanks, Hex Boxing, Block Breakers, Hex
   Warlords, a família Star Duel, a família Hex Outlaw, a família Hex Raid, a
   família Hex Tennis, a família Hex Invaders, a família Hex Enduro, a família
-  Hex Skiing, a família Hex Frost e a família Hex Hockey aparecem como jogos
-  disponíveis.
+  Hex Skiing, a família Hex Frost e a família Hex Hockey aparecem como atalhos
+  de aplicativo.
 - Jogos futuros podem ficar ocultos até terem AI pronta. Se forem exibidos, devem
   aparecer como indisponíveis de forma explícita, sem prometer jogabilidade.
 
@@ -65,26 +66,26 @@ Partida:
 Resultado:
 
 - Ao fim da partida, a tela mostra placar final, dificuldade e duração.
-- Ações esperadas: revanche, trocar dificuldade, voltar para a lista.
+- Ações esperadas: revanche, trocar dificuldade, voltar para a grade de ícones.
 - O resultado não deve ser publicado no canal automaticamente. Compartilhar no chat
   pode ser uma ação futura explícita.
 
 ## Telas e estados
 
-### Lista de Retro Games
+### Launcher de Retro Games
 
 Responsabilidade:
 
-- apresentar o catálogo;
+- apresentar a biblioteca como uma grade de ícones;
 - destacar jogos disponíveis contra AI;
 - preservar a diferença entre jogos nativos e Arcade/WASM.
 
 Conteúdo inicial:
 
-- título `Retro Games`;
-- card ou lista compacta com os jogos suportados;
-- descrição curta;
-- ação primária para abrir o jogo.
+- área branca rebaixada, como o corpo do Control Panel;
+- ícones dos jogos com nome abaixo, sem cards;
+- barra de status da janela;
+- clique simples no ícone para abrir o jogo.
 
 ### Setup do jogo
 
@@ -152,7 +153,7 @@ Ações:
 Responsabilidade:
 
 - mostrar fechamento local da partida;
-- conduzir para revanche ou volta ao catálogo.
+- conduzir para revanche ou volta ao launcher de ícones.
 
 Conteúdo:
 

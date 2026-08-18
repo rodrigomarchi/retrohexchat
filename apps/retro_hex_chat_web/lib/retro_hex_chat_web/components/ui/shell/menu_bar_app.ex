@@ -11,7 +11,6 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
   use RetroHexChatWeb.Component
 
   alias RetroHexChat.Arcade
-  alias RetroHexChat.Games.Catalog
   alias RetroHexChatWeb.ChatLive.WindowRegistry
   alias RetroHexChatWeb.Icons
 
@@ -556,9 +555,11 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
 
   defp games_menu_items(assigns) do
     assigns =
-      assigns
-      |> assign(:arcade_games, if(assigns.arcade_available, do: Arcade.list_games(), else: []))
-      |> assign(:retro_games, Catalog.list_solo_games())
+      assign(
+        assigns,
+        :arcade_games,
+        if(assigns.arcade_available, do: Arcade.list_games(), else: [])
+      )
 
     ~H"""
     <.menu_item
@@ -568,16 +569,6 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
       on_action={@on_action}
       testid="menu-retro-games"
     />
-    <.context_menu_item
-      :for={game <- @retro_games}
-      on_click={@on_action}
-      action="open_retro_games"
-      phx-value-game-id={game.id}
-      testid={"menu-retro-game-#{game.id}"}
-    >
-      <:icon><Icons.game_icon game_id={game.id} class="w-[14px] h-[14px]" /></:icon>
-      {game.name}
-    </.context_menu_item>
     <.context_menu_separator />
     <.menu_item
       icon_fn={:icon_game_arcade}

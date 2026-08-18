@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **214 spec files** under `e2e/tests/`.
-- **437 Playwright `test()` cases**.
-- **429 documented flows**, 428 done, 1 not done.
+- **215 spec files** under `e2e/tests/`.
+- **438 Playwright `test()` cases**.
+- **430 documented flows**, 429 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -374,6 +374,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | M33 | A runtime listing is resized, narrowed, and read row by row | `tests/chat-system-windows.spec.ts` | done |
 | M34 | Open system windows are reachable from the taskbar | `tests/chat-system-windows.spec.ts` | done |
 | M35 | The system windows coexist on one desktop | `tests/chat-system-windows.spec.ts` | done |
+| M36 | Games menu -> Retro Games opens an icon launcher and game icons open solo sessions (features P2) | `tests/chat-retro-games.spec.ts` | done |
 
 ### N - P2P, File, Call, Game
 

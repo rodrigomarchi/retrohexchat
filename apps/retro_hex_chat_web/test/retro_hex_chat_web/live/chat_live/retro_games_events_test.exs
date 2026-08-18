@@ -3,7 +3,6 @@ defmodule RetroHexChatWeb.ChatLive.RetroGamesEventsTest do
 
   @moduletag :liveview_feature
 
-  alias RetroHexChat.Games.Catalog
   alias RetroHexChatWeb.Components.UI.MenuBarApp
 
   defp retro_games(view), do: :sys.get_state(view.pid).socket.assigns.retro_games
@@ -34,7 +33,7 @@ defmodule RetroHexChatWeb.ChatLive.RetroGamesEventsTest do
       assert %{status: "ready", selected_game: %{id: "hex_pong"}} = retro_games(view)
     end
 
-    test "an invalid game id leaves the catalog visible", %{conn: conn} do
+    test "an invalid game id leaves the launcher visible", %{conn: conn} do
       nick = "reti#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
@@ -44,13 +43,13 @@ defmodule RetroHexChatWeb.ChatLive.RetroGamesEventsTest do
       })
 
       assert_push_event(view, "window_command", %{action: "open", id: "retro-games"})
-      assert render(view) =~ ~s(data-testid="retro-games-catalog")
+      assert render(view) =~ ~s(data-testid="retro-games-library")
       assert %{status: "library", selected_game: nil} = retro_games(view)
     end
   end
 
   describe "Games menu" do
-    test "lists Retro Games beside the WASM Arcade entry" do
+    test "shows Retro Games as a single launcher beside the WASM Arcade entry" do
       document =
         render_component(&MenuBarApp.menu_bar_app/1,
           connected: true,
@@ -60,10 +59,8 @@ defmodule RetroHexChatWeb.ChatLive.RetroGamesEventsTest do
         |> Floki.parse_document!()
 
       assert [_ | _] = Floki.find(document, ~s([data-testid="menu-retro-games"]))
-
-      for game <- Catalog.list_solo_games() do
-        assert [_ | _] = Floki.find(document, ~s([data-testid="menu-retro-game-#{game.id}"]))
-      end
+      assert [_ | _] = Floki.find(document, ~s([data-testid="context-menu-item-open_arcade"]))
+      assert Floki.find(document, ~s([data-testid^="menu-retro-game-"])) == []
     end
   end
 
