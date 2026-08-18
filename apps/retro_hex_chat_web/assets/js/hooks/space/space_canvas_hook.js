@@ -11,6 +11,7 @@
  * @module hooks/space/space_canvas_hook
  */
 import { log } from "../../lib/logger.js";
+import { t } from "../../lib/i18n.js";
 import { Socket } from "phoenix";
 
 import { SpaceEngine } from "../../lib/space/engine.js";
@@ -58,7 +59,7 @@ export function createSpaceCanvasHook(deps = {}) {
       this._frameRenderedAfterAssets = false;
       this._loadingHidden = false;
       this._hoveredNick = null;
-      this._setLoadingText("Connecting to space...");
+      this._setLoadingText(t("Connecting to space..."));
 
       const canvas = this.el.querySelector("canvas");
       this._canvas = canvas;
@@ -67,7 +68,7 @@ export function createSpaceCanvasHook(deps = {}) {
         scale: RENDER_SCALE,
         onReady: () => {
           this._assetsReady = true;
-          this._setLoadingText("Drawing room...");
+          this._setLoadingText(t("Drawing room..."));
         },
       });
       this._engine = engineFactory({
@@ -131,7 +132,7 @@ export function createSpaceCanvasHook(deps = {}) {
       this._channel
         .join()
         .receive("ok", (reply) => {
-          this._setLoadingText("Loading room...");
+          this._setLoadingText(t("Loading room..."));
           this._engine.start(normalizeSpaceInit(reply));
           if (this._avatar) {
             this._channel.push(CLIENT_EVENTS.SELECT_AVATAR, { avatar: this._avatar });
@@ -139,11 +140,11 @@ export function createSpaceCanvasHook(deps = {}) {
         })
         .receive("error", (reply) => {
           log.error("[space] channel join rejected", reply);
-          this._setLoadingText("Could not open space.");
+          this._setLoadingText(t("Could not open space."));
         })
         .receive("timeout", () => {
           log.error("[space] channel join timed out");
-          this._setLoadingText("Space connection timed out.");
+          this._setLoadingText(t("Space connection timed out."));
         });
     },
 
