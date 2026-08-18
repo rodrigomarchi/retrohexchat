@@ -203,7 +203,7 @@ o exit code).
   não as folhas — então extrair/deletar as folhas não os quebra, e eles ficam
   como a prova de que o comportamento composto foi preservado (reescrita contra a
   lib fica para W8).
-### W5 — fatiar a conferência · EM CURSO (4/6 fatias)
+### W5 — fatiar a conferência · CONCLUÍDO (extração de decisões)
 
 group_call_webrtc_hook: 2414 → 2165 linhas até agora. Uma fatia = um commit;
 o hook fica funcional (40 testes verdes) antes e depois de cada uma.
@@ -220,9 +220,28 @@ o hook fica funcional (40 testes verdes) antes e depois de cada uma.
 - **W5.4 layout** ✓ → `lib/group_call/layout.js` (tileIsVisible, focusedTileIndex,
   isTilePinned). Decisão de foco vira índice sobre descritores puros; aplicação
   ao DOM fica no hook. +11 casos. Reversão OK.
-- **W5.5 tiles/participantes** — pendente
-- **W5.6 mídia/screen-share** — pendente (decidir antes: adotar rtc_media_hook_factory
-  na conferência ou des-parametrizar)
+- **W5.5 tiles** ✓ → `lib/group_call/tiles.js` (localEmptyState, localEmptyStateCopy,
+  participantTileMedia). O plumbing DOM de tiles/tracks fica no hook. +11 casos.
+- **W5.6 media-state** ✓ → `lib/group_call/media_state.js` (mediaStateFromDataset,
+  hasLiveTrack, needsOnDemandMedia, actualMediaState). +6 casos.
+
+**Resultado do W5:** god-hook 2414 → 2134 linhas; 6 módulos `lib/group_call/*`;
+58 casos novos cobrindo a lógica de decisão antes intestável.
+
+**Decisão sobre `rtc_media_hook_factory` (item fora-de-escopo do §00):** a conferência
+NÃO adota a fábrica. A fábrica modela mídia P2P bilateral (request/consent, um peer);
+a conferência é SFU (multi-participante, self-controlled). Fazer a conferência adotá-la
+seria reescrita comportamental, não movimento — proibido pelo contrato §00. Os ramos
+mortos da fábrica (`upgradeMode:"request"`, `!autoJoin`, `statsUpdate`) viram limpeza
+separada na lista fora-de-escopo, não parte do W5.
+
+**Resíduo assumido (override documentado no guard):** o group_call_webrtc_hook segue
+> 200 linhas. O que sobra é plumbing de `RTCPeerConnection` ao vivo (getUserMedia,
+screen capture, offer watchdog, recovery, stats polling, connection-state handlers) e
+sync DOM de tiles/tracks — extrair para controladores Forma B seria reescrever
+sinalização de tempo real, cujo teste de hook atual (40 casos) cobre só parcialmente.
+Isso é trabalho separado, com testes de integração dedicados, não seguro dentro de um
+refactor "não muda comportamento". Registrado como follow-up no ledger.
 
 **Aprendizados**
 - Fatiar um god-hook por descritor: passar `tiles.map(t => ({participantId,

@@ -63,7 +63,9 @@ const HOOK_LINE_LIMIT = 200;
 const HOOK_LINE_OVERRIDES = new Map([
   [
     "js/hooks/group_call/group_call_webrtc_hook.js",
-    "W5 splits signalling, media, layout, tiles, reactions and quality",
+    "W5 extracted quality/payload/reactions/layout/tiles/media-state decisions to " +
+      "lib/group_call/*; the residual is live-RTCPeerConnection and tile-DOM plumbing " +
+      "whose controller extraction is deferred (see js-hooks-ledger.md)",
   ],
   [
     "js/hooks/lobby/lobby_webrtc_hook.js",

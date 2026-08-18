@@ -39,6 +39,12 @@ import {
   participantTileMedia,
 } from "../../lib/group_call/tiles.js";
 import {
+  actualMediaState,
+  hasLiveTrack,
+  mediaStateFromDataset,
+  needsOnDemandMedia,
+} from "../../lib/group_call/media_state.js";
+import {
   acquireDisplayMedia,
   attachMediaStream,
   collectConnectionActivity,
@@ -1014,9 +1020,7 @@ const GroupCallWebRTCHook = {
   },
 
   _mediaStateFromDataset() {
-    const audio = this.el.dataset.audio !== "false";
-    const video = this.el.dataset.video !== "false";
-    return { audio, video };
+    return mediaStateFromDataset(this.el.dataset);
   },
 
   _devicePreferencesFromDataset() {
@@ -1325,10 +1329,7 @@ const GroupCallWebRTCHook = {
 
   _needsOnDemandMedia(desired) {
     if (!this.pc) return false;
-    return (
-      (desired.audio && !this._hasLocalAudioTrack()) ||
-      (desired.video && !this._hasLocalVideoTrack())
-    );
+    return needsOnDemandMedia(desired, this._hasLocalAudioTrack(), this._hasLocalVideoTrack());
   },
 
   async _ensureRequestedLocalTracks(desired) {
@@ -1378,10 +1379,7 @@ const GroupCallWebRTCHook = {
   },
 
   _actualMediaState(desired) {
-    return {
-      audio: desired.audio && this._hasLocalAudioTrack(),
-      video: desired.video && this._hasLocalVideoTrack(),
-    };
+    return actualMediaState(desired, this._hasLocalAudioTrack(), this._hasLocalVideoTrack());
   },
 
   _requestOfferAfterLocalMediaChange() {
@@ -1453,15 +1451,11 @@ const GroupCallWebRTCHook = {
   },
 
   _hasLocalAudioTrack() {
-    return (this.localStream?.getAudioTracks?.() || []).some(
-      (track) => track.readyState !== "ended",
-    );
+    return hasLiveTrack(this.localStream?.getAudioTracks?.());
   },
 
   _hasLocalVideoTrack() {
-    return (this.localStream?.getVideoTracks?.() || []).some(
-      (track) => track.readyState !== "ended",
-    );
+    return hasLiveTrack(this.localStream?.getVideoTracks?.());
   },
 
   _handleConnectionStateChange() {

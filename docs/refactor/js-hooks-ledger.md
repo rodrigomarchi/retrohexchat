@@ -15,7 +15,7 @@ Baseline: main @ a1c9376e, 18/08/2026.
 
 | Hook | Linhas | Teste | Usa lib | pushEvent | Pacote | Estado | Módulos lib criados | Achados adiados |
 |---|---|---|---|---|---|---|---|---|
-| `group_call/group_call_webrtc_hook.js` | 2414 | sim | sim | sim | W4·W5 | pendente | — | — |
+| `group_call/group_call_webrtc_hook.js` | 2414→2134 | sim | sim | sim | W4·W5 | **decisões extraídas** | p2p/negotiation, group_call/{quality,payload,reactions,layout,tiles,media_state} | resíduo: plumbing RTCPeerConnection+tile-DOM (controller Forma B = follow-up c/ testes de integração) |
 | `lobby/lobby_webrtc_hook.js` | 1152 | sim | sim | sim | W4 | **W4 feito** | p2p/negotiation | ainda >200; épocas+timers no hook |
 | `p2p/file_transfer_hook.js` | 663 | sim | sim | sim | W6 | pendente | — | — |
 | `chat/autocomplete_hook.js` | 631 | sim | sim | sim | W7 | pendente | — | — |
@@ -69,7 +69,7 @@ Baseline: main @ a1c9376e, 18/08/2026.
 |---|---|
 | 6 strings visíveis sem `t()` (space loading; `_participantQualityLabel`, `_participantQualityTitle`, badge Speaking) | pendente |
 | `enforce_hooks_contract.cjs:8` doc ref quebrada | **feito** (commit d3e0a9c1) |
-| `rtc_media_hook_factory.js`: 1 consumidor, ramos mortos — decidir adotar na conferência ou des-parametrizar | pendente (decidir em W5.6) |
+| `rtc_media_hook_factory.js`: 1 consumidor, ramos mortos | **decidido**: conferência NÃO adota (SFU ≠ P2P bilateral); des-parametrizar os ramos mortos = limpeza separada |
 | 9 hooks sem teste | pendente (consequência de W1–W7; resto em W8) |
 
 ## Legenda de pacote
