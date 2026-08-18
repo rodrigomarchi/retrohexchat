@@ -120,7 +120,7 @@ const FORBIDDEN_PRIMITIVE_OVERRIDES = new Map([
 // A test that reaches for hook._privateMethod is testing something the hook
 // should not own. The count is the honest measure of how much logic is still
 // trapped; it reaches zero when the extraction is done.
-const MAX_HOOK_PRIVATE_CALLS = 201;
+const MAX_HOOK_PRIVATE_CALLS = 184;
 
 // Mutable module scope in lib/ is shared state no test can reset between cases.
 // The three that remain are deliberate, not accidental: public_manager holds the
