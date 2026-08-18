@@ -19,7 +19,7 @@ Baseline: main @ a1c9376e, 18/08/2026.
 | `lobby/lobby_webrtc_hook.js` | 1152 | sim | sim | sim | W4 | pendente | — | — |
 | `p2p/file_transfer_hook.js` | 663 | sim | sim | sim | W6 | pendente | — | — |
 | `chat/autocomplete_hook.js` | 631 | sim | sim | sim | W7 | pendente | — | — |
-| `ui/retro_table_hook.js` | 586 | sim | sim | — | W1 | pendente | — | — |
+| `ui/retro_table_hook.js` | 586→32 | sim | sim | — | W1 | **concluído** | ui/retro_table{,_layout,_selection} | — |
 | `chat/chat_viewport_hook.js` | 462 | sim | sim | sim | W2·W7 | pendente | — | — |
 | `space/space_canvas_hook.js` | 408 | sim | sim | sim | W8 | pendente | — | — |
 | `chat/format_toolbar_hook.js` | 317 | sim | sim | — | W2 | pendente | — | — |

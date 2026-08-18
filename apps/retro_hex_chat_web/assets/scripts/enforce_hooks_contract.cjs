@@ -77,7 +77,6 @@ const HOOK_LINE_OVERRIDES = new Map([
     "js/hooks/chat/autocomplete_hook.js",
     "W7 extracts the composer key resolver to lib/chat/composer.js",
   ],
-  ["js/hooks/ui/retro_table_hook.js", "W1 moves the widget to lib/ui/retro_table.js"],
   ["js/hooks/chat/chat_viewport_hook.js", "W7 splits scrolling from reader interactions"],
   [
     "js/hooks/space/space_canvas_hook.js",
@@ -117,7 +116,6 @@ const FORBIDDEN_HOOK_PRIMITIVES = [
 ];
 
 const FORBIDDEN_PRIMITIVE_OVERRIDES = new Map([
-  ["js/hooks/ui/retro_table_hook.js", "W1"],
   ["js/hooks/ui/preserve_scroll_hook.js", "W3"],
   ["js/hooks/system/metric_chart_hook.js", "W3"],
   ["js/hooks/chat/search_highlight_hook.js", "W8"],

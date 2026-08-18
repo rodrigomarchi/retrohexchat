@@ -84,7 +84,35 @@ o exit code).
 - `mix format` antes de tudo: uma linha longa quebrada faz o CI pular estágios
   paralelos e desperdiça um ciclo.
 
-### W1 — RetroTable (piloto) · pendente
+### W1 — RetroTable (piloto) · CONCLUÍDO
+
+**Feito**
+- `js/hooks/ui/retro_table_hook.js`: 586 → **32 linhas**, forma
+  `createRetroTableHook({ tableFactory })`, só mount/updated/destroyed.
+- Novo controlador Forma B `js/lib/ui/retro_table.js` (`createRetroTable(el, ports)`)
+  com todo o comportamento; clipboard entra por `ports.writeText` (default
+  `navigator.clipboard`).
+- Dois módulos Forma A: `retro_table_layout.js` (`distributeWidths`,
+  `nextHiddenColumns`, `columnSignature`, `MIN_COLUMN_WIDTH`) e
+  `retro_table_selection.js` (`nextRowIndex`, `nextSelection`, `pruneSelection`,
+  `toTSV`).
+- Testes: `test/lib/ui/retro_table_layout.test.js` (+ selection, + controller) —
+  +37 casos. O teste de hook existente (black-box, 30 casos) segue verde sem
+  edição, provando comportamento preservado.
+- Guard: retro_table removido dos overrides de linha e de primitiva
+  (`getContext`/`navigator.clipboard` agora só no controlador em `lib/`).
+- Reversão verificada: quebrar `distributeWidths` deixa vermelho o teste de lib
+  (4) **e** o de hook (8) → religado, não copiado.
+
+**Aprendizados**
+- Import relativo ao mover: controlador em `lib/ui/` → `../logger`, `./menu`
+  (o hook usava `../../lib/...`). Um caminho errado só aparece no vitest
+  (transform error), não no eslint.
+- `node --check` não valida ESM (`.js` sem `type:module`); usar eslint/vitest.
+- Testes de lib que focam a linha (`scrollIntoView`, `ResizeObserver`) precisam
+  dos stubs que o `hook_helper` dá de graça — importar ou re-stubar no arquivo.
+- A porta de clipboard (`ports.writeText`) é o seam que o teste black-box de
+  hook não alcança; é o que justifica um teste de controlador dedicado.
 ### W2 — duplicações · pendente
 ### W3 — os quatro sem seam · pendente
 ### W4 — negociação WebRTC compartilhada · pendente
