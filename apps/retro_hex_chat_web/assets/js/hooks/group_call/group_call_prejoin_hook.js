@@ -2,10 +2,10 @@ import {
   acquireMedia,
   attachMediaStream,
   enumerateDevices,
-  getAudioConstraints,
-  getVideoConstraints,
   setSinkId,
 } from "../../lib/p2p/media.js";
+import { captureConstraints } from "../../lib/p2p/device_constraints.js";
+import { mediaErrorMessage, missingDeviceWarning } from "../../lib/p2p/device_errors.js";
 import { t } from "../../lib/i18n.js";
 import { log } from "../../lib/logger.js";
 
@@ -179,19 +179,10 @@ const GroupCallPreJoinHook = {
   },
 
   _constraints(preferences) {
-    return {
-      audio: preferences.audio
-        ? this._withDevice(getAudioConstraints(), preferences.audio_input_id)
-        : false,
-      video: preferences.video
-        ? this._withDevice(getVideoConstraints(), preferences.video_input_id)
-        : false,
-    };
-  },
-
-  _withDevice(base, deviceId) {
-    if (!deviceId) return base;
-    return { ...base, deviceId: { exact: deviceId } };
+    return captureConstraints(
+      { audio: preferences.audio, video: preferences.video },
+      { audioInputId: preferences.audio_input_id, videoInputId: preferences.video_input_id },
+    );
   },
 
   _pushPreferences() {
@@ -275,41 +266,12 @@ const GroupCallPreJoinHook = {
   },
 
   _showDeviceAvailabilityWarning(payload) {
-    const preferences = this._preferencesFromForm();
-    const missingAudio = preferences.audio && (payload.audioinput || []).length === 0;
-    const missingVideo = preferences.video && (payload.videoinput || []).length === 0;
-
-    if (missingAudio && missingVideo) {
-      this._showWarning(t("No microphone or camera found. You can join receive-only."));
-    } else if (missingAudio) {
-      this._showWarning(t("No microphone found. Turn microphone off or retry."));
-    } else if (missingVideo) {
-      this._showWarning(t("No camera found. Turn camera off or retry."));
-    }
+    const warning = missingDeviceWarning(this._preferencesFromForm(), payload);
+    if (warning) this._showWarning(warning);
   },
 
   _previewFailureMessage(error, preferences) {
-    if (error?.code === "permission_denied") {
-      return t("Permission denied. Retry after allowing access or join receive-only.");
-    }
-
-    switch (error?.name) {
-      case "NotAllowedError":
-      case "SecurityError":
-        return t("Permission denied. Retry after allowing access or join receive-only.");
-      case "NotFoundError":
-      case "DevicesNotFoundError":
-        return t("No matching microphone or camera was found. Check devices or join receive-only.");
-      case "OverconstrainedError":
-      case "ConstraintNotSatisfiedError":
-        return t("Selected device is unavailable. Choose another device or retry.");
-      case "NotReadableError":
-      case "TrackStartError":
-        return t("Device is already in use. Close the other app or retry.");
-      default:
-        if (!preferences.audio && !preferences.video) return t("Joining receive-only.");
-        return error?.message || t("Could not access your microphone or camera.");
-    }
+    return mediaErrorMessage(error, preferences);
   },
 };
 

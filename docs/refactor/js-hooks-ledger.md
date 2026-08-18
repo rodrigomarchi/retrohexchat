@@ -20,16 +20,16 @@ Baseline: main @ a1c9376e, 18/08/2026.
 | `p2p/file_transfer_hook.js` | 663 | sim | sim | sim | W6 | pendente | — | — |
 | `chat/autocomplete_hook.js` | 631 | sim | sim | sim | W7 | pendente | — | — |
 | `ui/retro_table_hook.js` | 586→32 | sim | sim | — | W1 | **concluído** | ui/retro_table{,_layout,_selection} | — |
-| `chat/chat_viewport_hook.js` | 462 | sim | sim | sim | W2·W7 | pendente | — | — |
+| `chat/chat_viewport_hook.js` | 462 | sim | sim | sim | W2·W7 | **W2 feito** | — | input/long_press (W2) |
 | `space/space_canvas_hook.js` | 408 | sim | sim | sim | W8 | pendente | — | — |
-| `chat/format_toolbar_hook.js` | 317 | sim | sim | — | W2 | pendente | — | — |
-| `group_call/group_call_prejoin_hook.js` | 316 | sim | sim | sim | W2·W8 | pendente | — | — |
+| `chat/format_toolbar_hook.js` | 317 | sim | sim | — | W2 | **W2 feito** | — | chat/markdown_format |
+| `group_call/group_call_prejoin_hook.js` | 316 | sim | sim | sim | W2·W8 | **W2 feito** | — | p2p/device_constraints+device_errors |
 | `ui/contextual_tips_hook.js` | 229 | sim | sim | sim | W8 | pendente | — | — |
 | `ui/preserve_scroll_hook.js` | 217 | sim | não | — | W3 | pendente | — | — |
 | `system/metric_chart_hook.js` | 217 | não | não | sim | W3 | pendente | — | — |
 | `connection/connection_status_hook.js` | 212 | sim | sim | sim | W8 | pendente | — | — |
-| `ui/conversations_hook.js` | 189 | sim | sim | sim | W2 | pendente | — | — |
-| `ui/nicklist_hook.js` | 173 | sim | sim | sim | W2 | pendente | — | — |
+| `ui/conversations_hook.js` | 189 | sim | sim | sim | W2 | **W2 feito** | — | input/long_press |
+| `ui/nicklist_hook.js` | 173 | sim | sim | sim | W2 | **W2 feito** | — | input/long_press |
 | `ui/infinite_scroll_hook.js` | 149 | sim | sim | sim | — | pendente | — | — |
 | `p2p/p2p_diagram_hook.js` | 146 | não | não | — | W3 | pendente | — | — |
 | `connection/connect_form_hook.js` | 138 | sim | sim | — | W8 | pendente | — | — |
@@ -42,7 +42,7 @@ Baseline: main @ a1c9376e, 18/08/2026.
 | `ui/context_menu_hook.js` | 80 | sim | sim | sim | — | pendente | — | — |
 | `chat/chat_pagination_hook.js` | 69 | sim | não | sim | W8 | pendente | — | — |
 | `ui/char_counter_hook.js` | 62 | sim | sim | — | — | pendente | — | — |
-| `input/shortcut_dispatcher_hook.js` | 61 | sim | sim | sim | W2 | pendente | — | — |
+| `input/shortcut_dispatcher_hook.js` | 61 | sim | sim | sim | W2 | **W2 feito** | — | ui/dom.isEditableTarget |
 | `ui/toolbar_group_hook.js` | 50 | não | não | — | W8 | pendente | — | — |
 | `lobby/lobby_media_hook.js` | 50 | sim | sim | — | — | pendente | — | — |
 | `connection/lag_hook.js` | 50 | sim | sim | sim | — | pendente | — | — |

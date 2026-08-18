@@ -113,7 +113,37 @@ o exit code).
   dos stubs que o `hook_helper` dá de graça — importar ou re-stubar no arquivo.
 - A porta de clipboard (`ports.writeText`) é o seam que o teste black-box de
   hook não alcança; é o que justifica um teste de controlador dedicado.
-### W2 — duplicações · pendente
+### W2 — as quatro duplicações · CONCLUÍDO
+
+**Feito**
+- **W2.1 long-press** → `lib/input/long_press.js` (`createLongPress`), religado
+  em nicklist, conversations e chat_viewport. `shouldFire` cobre o
+  `isConnected` do chat_viewport; `suppressNextClick` migrou para a máquina
+  (`consumeClickSuppression`); `suppressContextClick` do conversations ficou no
+  hook. Constantes 550/10 agora num só lugar. 12 casos de lib + reversão nos 3
+  hooks.
+- **W2.2 isEditableTarget** → `lib/ui/dom.js`; removidas as cópias de
+  shortcut_dispatcher e group_call_webrtc. +5 casos.
+- **W2.3 device** → `lib/p2p/device_constraints.js` (`withDevice`,
+  `captureConstraints`) e `lib/p2p/device_errors.js` (`mediaErrorMessage`,
+  `missingDeviceWarning`); religados prejoin (4 usos) e group_call_webrtc
+  (`_withDevice` eliminado, 4 usos). +19 casos.
+- **W2.4 markdown** → `lib/chat/markdown_format.js` (`MARKDOWN_FORMATS`,
+  `applyMarkdownFormat`); os 3 métodos quase-idênticos do format_toolbar viraram
+  uma transformação pura de `{value,selectionStart,selectionEnd}`. +7 casos.
+- Superfície intacta; 178 arquivos / 4545 testes (+43).
+
+**Aprendizados**
+- **Timer capturado na construção vs. no uso:** a máquina não pode fixar
+  `setTimeout` no closure — um hook monta em `beforeEach`, antes de o teste
+  ligar `vi.useFakeTimers()`. Resolver o global no momento do `start()`
+  (`(setTimeoutFn || setTimeout)`) reproduz o `setTimeout` inline original.
+- Ao extrair função que já usava `t()`, o módulo de lib importa `t` — traduzir
+  não é o movimento; preservar as mesmas chamadas `t()` é. `t()` sem catálogo
+  cai na string-fonte, então o teste asserta o inglês.
+- Quando um hook passa a ter dois destinos no fire (channel vs nick), o
+  `onFire(context)` recebe o contexto montado no `start()` — sem estado
+  intermediário no hook.
 ### W3 — os quatro sem seam · pendente
 ### W4 — negociação WebRTC compartilhada · pendente
 ### W5 — fatiar a conferência · pendente

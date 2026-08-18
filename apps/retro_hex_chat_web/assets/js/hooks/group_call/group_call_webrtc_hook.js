@@ -7,6 +7,8 @@
 import { Socket } from "phoenix";
 import { t } from "../../lib/i18n.js";
 import { log } from "../../lib/logger.js";
+import { isEditableTarget } from "../../lib/ui/dom.js";
+import { captureConstraints } from "../../lib/p2p/device_constraints.js";
 import {
   acquireDisplayMedia,
   attachMediaStream,
@@ -17,9 +19,7 @@ import {
   applyMediaProfile,
   applySenderProfile,
   applyTrackHints,
-  getAudioConstraints,
   getScreenShareConstraints,
-  getVideoConstraints,
   setSinkId,
 } from "../../lib/p2p/media.js";
 const LAYOUT_MODES = new Set(["auto", "grid", "focus", "sidebar", "speaker"]);
@@ -34,14 +34,6 @@ const PUSH_TO_TALK_KEYS = new Set(["z", "Z"]);
 
 function hasOwn(object, key) {
   return Object.prototype.hasOwnProperty.call(object || {}, key);
-}
-
-function isEditableKeyboardTarget(target) {
-  if (!(target instanceof Element)) return false;
-
-  return !!target.closest(
-    'input, textarea, select, [contenteditable=""], [contenteditable="true"], [role="textbox"]',
-  );
 }
 
 function emptyMediaStream() {
@@ -1106,19 +1098,7 @@ const GroupCallWebRTCHook = {
   },
 
   _captureConstraints() {
-    return {
-      audio: this.mediaEnabled.audio
-        ? this._withDevice(getAudioConstraints(), this.devicePreferences.audioInputId)
-        : false,
-      video: this.mediaEnabled.video
-        ? this._withDevice(getVideoConstraints(), this.devicePreferences.videoInputId)
-        : false,
-    };
-  },
-
-  _withDevice(base, deviceId) {
-    if (!deviceId) return base;
-    return { ...base, deviceId: { exact: deviceId } };
+    return captureConstraints(this.mediaEnabled, this.devicePreferences);
   },
 
   _applyAudioOutput(element) {
@@ -1474,14 +1454,9 @@ const GroupCallWebRTCHook = {
     const needsVideo = desired.video && !this._hasLocalVideoTrack();
     if (!needsAudio && !needsVideo) return;
 
-    const stream = await navigator.mediaDevices.getUserMedia({
-      audio: needsAudio
-        ? this._withDevice(getAudioConstraints(), this.devicePreferences.audioInputId)
-        : false,
-      video: needsVideo
-        ? this._withDevice(getVideoConstraints(), this.devicePreferences.videoInputId)
-        : false,
-    });
+    const stream = await navigator.mediaDevices.getUserMedia(
+      captureConstraints({ audio: needsAudio, video: needsVideo }, this.devicePreferences),
+    );
 
     applyTrackHints(stream);
     this._mergeLocalStream(stream);
@@ -1551,7 +1526,7 @@ const GroupCallWebRTCHook = {
   _handlePushToTalkKeydown(event) {
     if (!this._isPushToTalkEvent(event)) return;
     if (event.defaultPrevented || event.repeat || this.pushToTalkActive) return;
-    if (isEditableKeyboardTarget(event.target)) return;
+    if (isEditableTarget(event.target)) return;
     if (this.mediaEnabled.audio === true || this.serverAudioMuted) return;
 
     if (!this._hasLocalAudioTrack()) {
