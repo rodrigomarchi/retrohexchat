@@ -519,12 +519,6 @@ const AutocompleteHook = {
     }
   },
 
-  // ── Test-facing accessor (removed with the white-box test in W8) ──
-
-  loadRecentCommands() {
-    return this.historyManager.getRecentCommands();
-  },
-
   configureTextareaSizing() {
     this.maxLines = this.maxLinesForViewport();
     this.maxHeight = computeMaxHeight(this.inputEl, this.maxLines);

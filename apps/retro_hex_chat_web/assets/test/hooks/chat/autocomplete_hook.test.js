@@ -151,7 +151,7 @@ describe("AutocompleteHook", () => {
       });
 
       expect(hook.persistedHistory).toEqual(["from-server"]);
-      expect(hook.loadRecentCommands()).toEqual(["join"]);
+      expect(hook.historyManager.getRecentCommands()).toEqual(["join"]);
     });
 
     it("Ctrl+Up navigates to most recent history entry", () => {
@@ -290,7 +290,7 @@ describe("AutocompleteHook", () => {
         new KeyboardEvent("keydown", { key: "Enter", bubbles: true, cancelable: true }),
       );
 
-      expect(hook.loadRecentCommands()).not.toContain("ns");
+      expect(hook.historyManager.getRecentCommands()).not.toContain("ns");
     });
 
     it("pushes updated recent commands to LiveView for non-sensitive commands", () => {
