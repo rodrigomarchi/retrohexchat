@@ -5,12 +5,10 @@ const ASSETS_ROOT = path.resolve(__dirname, "..");
 const REPO_ROOT = path.resolve(ASSETS_ROOT, "../../..");
 const JS_ROOT = path.join(ASSETS_ROOT, "js");
 const WEB_LIB_ROOT = path.join(REPO_ROOT, "apps/retro_hex_chat_web/lib/retro_hex_chat_web");
-const CONTRACT_DOC = "docs/046-liveview-js-hook-loading-standard.md";
+const CONTRACT_DOC = "docs/AGENT-GUIDE.md §15";
 
 const ALLOWED_DYNAMIC_IMPORT_FILES = new Set([
   "js/hooks/lazy_feature_hooks.js",
-  "js/hooks/games/game_canvas_hook.js",
-  "js/hooks/lobby/lobby_game_canvas_hook.js",
   // Game engines stay lazy-loaded behind the canvas hooks; this loader is the
   // shared catalog for P2P and solo runtimes.
   "js/lib/games/engine_loader.js",
