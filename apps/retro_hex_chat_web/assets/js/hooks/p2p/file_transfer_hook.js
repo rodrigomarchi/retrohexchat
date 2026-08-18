@@ -30,10 +30,10 @@ import {
   formatFileSize,
   formatSpeed,
   formatEta,
-  markChunksReceived,
   isTransferActive,
   createQueueEntry,
 } from "../../lib/p2p/file_transfer.js";
+import { EFFECT, step } from "../../lib/p2p/transfer_session.js";
 import { t } from "../../lib/i18n.js";
 
 const FileTransferHook = {
@@ -308,43 +308,13 @@ const FileTransferHook = {
   // --- Sender: Peer Accepted ---
 
   _handlePeerAccept() {
-    if (!this._session || this._session.role !== "sender") {
-      // Receiver side — send file-accept via DataChannel
-      if (this._session && this._session.role === "receiver" && this._channel) {
-        this._channel.send(
-          encodeControlMessage(MSG.FILE_ACCEPT, { transferId: this._session.transferId }),
-        );
-        this._session.startTime = Date.now();
-        this._startProgressUpdates();
-        this.pushEvent("ft_accepted", {});
-      }
-      return;
-    }
-
-    this._session.state = STATE.TRANSFERRING;
-    this._session.startTime = Date.now();
-    this._startProgressUpdates();
-    this.pushEvent("ft_accepted", {});
-    this._startSending();
+    this._applyStep({ type: "peer_accept" });
   },
 
   // --- Sender: Peer Rejected ---
 
   _handlePeerReject() {
-    if (this._session && this._session.role === "sender") {
-      this._session.state = STATE.REJECTED;
-      this.pushEvent("ft_rejected", {});
-      cleanupSession(this._session);
-      this._session = null;
-    } else if (this._session && this._session.role === "receiver" && this._channel) {
-      this._channel.send(
-        encodeControlMessage(MSG.FILE_REJECT, { transferId: this._session.transferId }),
-      );
-      this.pushEvent("ft_rejected", {});
-      cleanupSession(this._session);
-      this._session = null;
-    }
-    this._processQueue();
+    this._applyStep({ type: "peer_reject" });
   },
 
   // --- Sender: Chunk Sending Loop ---
@@ -438,87 +408,30 @@ const FileTransferHook = {
   },
 
   _handleHashResult(match, blob) {
-    if (match && blob) {
-      this._session.state = STATE.COMPLETED;
-      this._triggerDownload(blob, this._session.fileName);
-      this.pushEvent("ft_completed", { file_name: this._session.fileName });
-      cleanupSession(this._session);
-      this._session = null;
-      this._processQueue();
-    } else {
-      this._session.state = STATE.FAILED;
-      this.pushEvent("ft_failed", {
-        reason: t("Integrity check failed"),
-      });
-    }
+    this._applyStep({ type: "receiver_hash_result", match, blob });
   },
 
   // --- Sender: Incoming Hash Result ---
 
   _handleIncomingHashResult(payload) {
-    if (!this._session || this._session.role !== "sender") return;
-
-    this._stopProgressUpdates();
-
-    if (payload.match) {
-      this._session.state = STATE.COMPLETED;
-      this.pushEvent("ft_completed", { file_name: this._session.fileName });
-      cleanupSession(this._session);
-      this._session = null;
-      this._processQueue();
-    } else {
-      this._session.state = STATE.FAILED;
-      this.pushEvent("ft_failed", {
-        reason: t("Integrity check failed"),
-      });
-    }
+    this._applyStep({ type: "sender_hash_result", match: payload.match });
   },
 
   // --- Cancel (T032) ---
 
   _handleCancel(nickname) {
-    if (!this._session) return;
-
-    if (this._channel && this._channel.readyState === "open") {
-      this._channel.send(
-        encodeControlMessage(MSG.CANCEL, {
-          transferId: this._session.transferId,
-          cancelledBy: nickname,
-        }),
-      );
-    }
-
-    this._session.state = STATE.CANCELLED;
-    this._stopProgressUpdates();
-    this.pushEvent("ft_cancelled", { cancelled_by: nickname });
-    cleanupSession(this._session);
-    this._session = null;
-    this._processQueue();
+    this._applyStep({ type: "local_cancel", nickname });
   },
 
   _handleIncomingCancel(payload) {
-    if (!this._session) return;
-
-    this._session.state = STATE.CANCELLED;
-    this._stopProgressUpdates();
-    this.pushEvent("ft_cancelled", { cancelled_by: payload.cancelledBy });
-    cleanupSession(this._session);
-    this._session = null;
-    this._processQueue();
+    this._applyStep({ type: "incoming_cancel", cancelledBy: payload.cancelledBy });
   },
 
   // --- Resume (T037) ---
 
   _handleChannelClose() {
-    if (
-      this._session &&
-      (this._session.state === STATE.TRANSFERRING || this._session.state === STATE.OFFERING)
-    ) {
-      this._session.state = STATE.PAUSED;
-      this._sending = false;
-      this._stopProgressUpdates();
-      this.pushEvent("ft_paused", {});
-    }
+    this._applyStep({ type: "channel_close" });
+    if (this._session?.state === STATE.PAUSED) this._sending = false;
   },
 
   _sendHaveChunks() {
@@ -539,51 +452,19 @@ const FileTransferHook = {
   _handleIncomingHaveChunks(rawData) {
     if (!this._session || this._session.role !== "sender") return;
 
-    // Strip the type byte
-    const payload = rawData.slice(1);
-    const { indices } = decodeHaveChunks(payload);
-
-    markChunksReceived(this._session, indices);
-    this._session.state = STATE.TRANSFERRING;
-    this._session.nextChunkIndex = 0; // Reset to scan from beginning
-    this._startProgressUpdates();
-    this.pushEvent("ft_resumed", {});
-    this._startSending();
+    // Strip the type byte before decoding the received-chunk bitmap.
+    const { indices } = decodeHaveChunks(rawData.slice(1));
+    this._applyStep({ type: "incoming_have_chunks", indices });
   },
 
   // --- Retry (T042) ---
 
   _handleRetryRequest() {
-    if (!this._session || this._session.role !== "sender") return;
-
-    // Reset session for full re-transfer
-    this._session.sentSet = new Set();
-    this._session.nextChunkIndex = 0;
-    this._session.bytesSent = 0;
-    this._session.speedSamples = [];
-    this._session.state = STATE.TRANSFERRING;
-    this._session.startTime = Date.now();
-
-    if (this._channel && this._channel.readyState === "open") {
-      this._channel.send(encodeControlMessage(MSG.RETRY, { transferId: this._session.transferId }));
-    }
-
-    this._startProgressUpdates();
-    this._startSending();
+    this._applyStep({ type: "retry_request" });
   },
 
   _handleIncomingRetry() {
-    if (!this._session || this._session.role !== "receiver") return;
-
-    // Reset receiver session
-    this._session.chunks = new Array(this._session.totalChunks).fill(null);
-    this._session.receivedSet = new Set();
-    this._session.bytesReceived = 0;
-    this._session.speedSamples = [];
-    this._session.state = STATE.TRANSFERRING;
-    this._session.startTime = Date.now();
-    this._startProgressUpdates();
-    this.pushEvent("ft_progress", { percent: 0, speed: "0 B/s", eta: "--" });
+    this._applyStep({ type: "incoming_retry" });
   },
 
   // --- Progress Updates ---
@@ -622,6 +503,48 @@ const FileTransferHook = {
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
+  },
+
+  // --- Reducer plumbing ---
+
+  // Run one protocol event through the pure reducer and execute the effects it
+  // returns. The reducer owns the transition; the hook owns the I/O.
+  _applyStep(event) {
+    const { session, effects } = step(this._session, event);
+    this._session = session;
+    this._applyEffects(effects);
+  },
+
+  _applyEffects(effects) {
+    for (const eff of effects) {
+      switch (eff.type) {
+        case EFFECT.SEND_CONTROL: {
+          const ready = this._channel && this._channel.readyState === "open";
+          if (eff.requireOpen ? ready : this._channel) {
+            this._channel.send(encodeControlMessage(eff.code, eff.payload));
+          }
+          break;
+        }
+        case EFFECT.PUSH:
+          this.pushEvent(eff.event, eff.payload);
+          break;
+        case EFFECT.START_PROGRESS:
+          this._startProgressUpdates();
+          break;
+        case EFFECT.STOP_PROGRESS:
+          this._stopProgressUpdates();
+          break;
+        case EFFECT.START_SENDING:
+          this._startSending();
+          break;
+        case EFFECT.PROCESS_QUEUE:
+          this._processQueue();
+          break;
+        case EFFECT.DOWNLOAD:
+          this._triggerDownload(eff.blob, eff.fileName);
+          break;
+      }
+    }
   },
 
   // --- Queue (T047) ---

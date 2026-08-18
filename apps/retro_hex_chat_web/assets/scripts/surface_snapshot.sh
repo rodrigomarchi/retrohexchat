@@ -29,8 +29,15 @@ SNAPSHOT="js/SURFACE.txt"
 
 generate() {
   echo "## liveview-events"
-  grep -rhoE '(pushEvent|pushEventTo|handleEvent)\([^)]*' js/ \
-    | grep -oE '"[a-zA-Z_0-9:.-]+"' | tr -d '"' | LC_ALL=C sort -u
+  # pushEvent/pushEventTo/handleEvent in hooks, plus the reducer helpers that a
+  # slice extracts them into: a bare push("event") not preceded by a dot (so
+  # channel.push topics, tracked separately below, are not swept in here).
+  {
+    grep -rhoE '(pushEvent|pushEventTo|handleEvent)\([^)]*' js/ \
+      | grep -oE '"[a-zA-Z_0-9:.-]+"'
+    grep -rhoE '(^|[^.a-zA-Z_])push\("[a-zA-Z_0-9:.-]+"' js/lib/ \
+      | grep -oE '"[a-zA-Z_0-9:.-]+"'
+  } | tr -d '"' | LC_ALL=C sort -u
   echo "## channel-events"
   grep -rhoE '\.(push|on)\("[a-zA-Z_0-9:.-]+"' js/ \
     | grep -oE '"[a-zA-Z_0-9:.-]+"' | tr -d '"' | LC_ALL=C sort -u

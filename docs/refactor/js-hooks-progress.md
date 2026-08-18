@@ -253,6 +253,31 @@ refactor "não muda comportamento". Registrado como follow-up no ledger.
 > — teste de concorrência do servidor, passa isolado e no arquivo inteiro (18/18).
 > Nenhum `.ex/.exs` foi tocado no refactor; é flakiness pré-existente, não regressão.
 
-### W6 — file_transfer como redutor · pendente
+### W6 — file_transfer como redutor · CONCLUÍDO
+
+**Feito**
+- `lib/p2p/transfer_session.js`: `step(session, event) → {session, effects}` —
+  redutor puro das transições discretas de protocolo (peer_accept/reject,
+  sender/receiver hash_result, local/incoming cancel, channel_close,
+  incoming_have_chunks, retry_request, incoming_retry). Efeitos declarativos
+  (`SEND_CONTROL` com `requireOpen`, `PUSH`, `START/STOP_PROGRESS`,
+  `START_SENDING`, `PROCESS_QUEUE`, `DOWNLOAD`).
+- Hook: `_applyStep(event)` roda o redutor e executa efeitos via `_applyEffects`.
+  Os 10 handlers discretos viraram uma linha cada. Os fluxos de I/O assíncrono
+  (loop de envio com backpressure, hash, assemble, download, timers) ficam no
+  hook — são efeito, não decisão. 663→586 linhas.
+- Redutor com 18 casos. **Teste white-box do hook (14) segue verde sem edição =
+  prova de equivalência.** Reescrita black-box do teste do hook fica para o W8
+  (mesma tática do W4 com os testes de negociação).
+- O reason `"Integrity check failed"` continua via `t()` (importado no redutor)
+  — o valor do payload não muda.
+
+**Aprendizado — o snapshot ganhou fidelidade:** ao mover `pushEvent("ft_accepted")`
+para `push("ft_accepted")` no redutor, o grep do snapshot deixou de ver 5 eventos
+(indireção `eff.event`). Corrigido estendendo o grep de `liveview-events` para
+reconhecer o helper `push("...")` de `js/lib/` (sem confundir com `channel.push`,
+via `[^.]push\(`). De quebra, o snapshot parou de capturar `"--"` (valor de
+payload `eta`, não evento) que o grep antigo pegava por imprecisão. Verificado que
+ainda pega rename real de evento (exit 1).
 ### W7 — composer de chat · pendente
 ### W8 — varredura e remoção do andaime · pendente
