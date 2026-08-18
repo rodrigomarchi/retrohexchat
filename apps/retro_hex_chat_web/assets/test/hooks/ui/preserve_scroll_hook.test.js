@@ -1,11 +1,14 @@
 import { afterEach, describe, expect, it } from "vitest";
 
-import PreserveScrollHook, {
-  preserveScrollBeforeElUpdated,
-  preserveScrollPatchEnd,
-  preserveScrollPatchStart,
-} from "../../../js/hooks/ui/preserve_scroll_hook.js";
+import PreserveScrollHook from "../../../js/hooks/ui/preserve_scroll_hook.js";
+import { scrollPreserver } from "../../../js/lib/ui/scroll_preservation.js";
 import { cleanupDOM, mountHook } from "../../helpers/hook_helper.js";
+
+// The hook registers with this same singleton, so driving its patch callbacks
+// exercises exactly the coordination the app wires into LiveSocket.
+const preserveScrollPatchStart = scrollPreserver.patchStart;
+const preserveScrollPatchEnd = scrollPreserver.patchEnd;
+const preserveScrollBeforeElUpdated = scrollPreserver.beforeElUpdated;
 
 function makeScrollable(el) {
   Object.defineProperties(el, {

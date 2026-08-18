@@ -8,9 +8,7 @@
  * cycling with state-specific behaviors (wave effect for audio, variable dot
  * count/speed for transfers and video).
  */
-
-const DEFAULT_DOT_COUNT = 3;
-const DEFAULT_CYCLE_MS = 1200;
+import { dotFrame, diagramConfig } from "../../lib/p2p/diagram.js";
 
 const P2PDiagramHook = {
   mounted() {
@@ -32,27 +30,18 @@ const P2PDiagramHook = {
   // --- Private ---
 
   _syncState() {
-    const state = this.el.dataset.state;
-    const direction = this.el.dataset.direction || "none";
+    const config = diagramConfig(this.el.dataset, this._reducedMotion);
 
     // Restart animation when dot count or cycle changes
-    const dotCount = parseInt(this.el.dataset.dots, 10) || DEFAULT_DOT_COUNT;
-    const cycleMs = parseInt(this.el.dataset.cycleMs, 10) || DEFAULT_CYCLE_MS;
+    const configChanged = this._dotCount !== config.dotCount || this._cycleMs !== config.cycleMs;
 
-    const configChanged = this._dotCount !== dotCount || this._cycleMs !== cycleMs;
+    this._dotCount = config.dotCount;
+    this._cycleMs = config.cycleMs;
+    this._state = config.state;
 
-    this._dotCount = dotCount;
-    this._cycleMs = cycleMs;
-    this._state = state;
-
-    // Dot animation needed for transferring / calls with direction
-    const needsDots =
-      !this._reducedMotion &&
-      (state === "transferring" || state === "video-call" || state === "audio-call");
-
-    if (needsDots && direction !== "none") {
+    if (config.needsDots && config.direction !== "none") {
       if (configChanged) this._stopAnimation();
-      this._startDotAnimation(direction);
+      this._startDotAnimation(config.direction);
     } else {
       this._stopAnimation();
     }
@@ -82,28 +71,16 @@ const P2PDiagramHook = {
           continue;
         }
 
-        const offset = i / dotCount;
-        let pos;
+        const frame = dotFrame({ direction, progress, index: i, dotCount, isAudio });
 
-        if (direction === "bidi") {
-          const raw = (progress + offset) % 1;
-          pos = raw < 0.5 ? raw * 2 : 2 - raw * 2;
-        } else if (direction === "rtl") {
-          pos = 1 - ((progress + offset) % 1);
-        } else {
-          pos = (progress + offset) % 1;
-        }
-
-        dots[i].style.left = `${pos * 100}%`;
-        dots[i].style.opacity = "1";
+        dots[i].style.left = frame.left;
+        dots[i].style.opacity = frame.opacity;
 
         // Audio wave: modulate dot size and Y position
         if (isAudio) {
-          const wave = Math.sin((progress + offset) * Math.PI * 4);
-          const size = 6 + wave * 3; // 3px to 9px
-          dots[i].style.width = `${size}px`;
-          dots[i].style.height = `${size}px`;
-          dots[i].style.top = `${1 - wave * 2}px`;
+          dots[i].style.width = frame.width;
+          dots[i].style.height = frame.height;
+          dots[i].style.top = frame.top;
         }
       }
 

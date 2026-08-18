@@ -144,7 +144,37 @@ o exit code).
 - Quando um hook passa a ter dois destinos no fire (channel vs nick), o
   `onFire(context)` recebe o contexto montado no `start()` — sem estado
   intermediário no hook.
-### W3 — os quatro sem seam · pendente
+### W3 — os quatro sem seam · CONCLUÍDO
+
+**Feito**
+- **metric_chart** (217→35): `lib/system/metric_chart.js` — funções puras
+  (`seriesBounds`, `formatAxisValue`, `readChartPalette`, `drawChart`) + controlador
+  Forma B `createMetricChart(el)` que detém ResizeObserver/getContext (R3). Hook
+  que não tinha teste agora tem 13 casos.
+- **preserve_scroll** (217→32): `lib/ui/scroll_preservation.js`
+  (`createScrollPreserver()` + singleton const `scrollPreserver`). As 6 globais
+  mutáveis viraram closure. `registry.js` re-exporta os 3 callbacks de morphdom
+  de lib (não mais de dentro de um hook); `app.js` inalterado. +5 casos de lib.
+- **p2p_diagram** (146): `lib/p2p/diagram.js` (`dotPosition`, `dotFrame`,
+  `diagramConfig`). Sem teste antes → 11 casos. RAF fica no hook (é o efeito).
+- **viewport_detect** (115): `lib/ui/viewport.js` (`computeViewport`,
+  `viewportPayload`, `viewportChanged`, `viewportCssVars`). `editableFocused`
+  vira parâmetro. +13 casos.
+- 182 arquivos / 4587 testes (+42). Reversões OK em metric_chart e
+  scroll_preservation.
+
+**Aprendizados**
+- **R3 vs. o texto do plano:** o plano dizia "o hook fica com o ResizeObserver",
+  mas R3 proíbe ResizeObserver/getContext em `js/hooks/`. O guard é a autoridade
+  — o controlador Forma B em `lib/` detém essas primitivas; o hook só o instancia.
+- **Singleton sem estado mutável de módulo:** `export const x = createX()` é um
+  `const`, não fere R5, e ainda deixa o teste criar instância fresca. Foi assim
+  que scroll_preservation saiu das 6 globais sem quebrar o compartilhamento entre
+  hook e callbacks de morphdom.
+- **Re-export de lib no registry** mantém o contrato §15 (`app.js` importa de
+  `registry`) enquanto tira os callbacks de morphdom de dentro do arquivo de hook.
+- `mkdir -p test/lib/<área>` antes do heredoc: um `cat >` num diretório
+  inexistente falha silencioso e o vitest reclama de "no files".
 ### W4 — negociação WebRTC compartilhada · pendente
 ### W5 — fatiar a conferência · pendente
 ### W6 — file_transfer como redutor · pendente

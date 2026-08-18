@@ -91,14 +91,6 @@ const HOOK_LINE_OVERRIDES = new Map([
     "W2 extracts device constraints and error copy",
   ],
   ["js/hooks/ui/contextual_tips_hook.js", "W8 extracts the tip queue to lib/ui/tip_queue.js"],
-  [
-    "js/hooks/ui/preserve_scroll_hook.js",
-    "W3 moves the patch coordinator to lib/ui/scroll_preservation.js",
-  ],
-  [
-    "js/hooks/system/metric_chart_hook.js",
-    "W3 moves the chart renderer to lib/system/metric_chart.js",
-  ],
   ["js/hooks/connection/connection_status_hook.js", "W8 extracts the state-to-view mapping"],
 ]);
 
@@ -116,8 +108,6 @@ const FORBIDDEN_HOOK_PRIMITIVES = [
 ];
 
 const FORBIDDEN_PRIMITIVE_OVERRIDES = new Map([
-  ["js/hooks/ui/preserve_scroll_hook.js", "W3"],
-  ["js/hooks/system/metric_chart_hook.js", "W3"],
   ["js/hooks/chat/search_highlight_hook.js", "W8"],
   ["js/hooks/chat/chat_viewport_hook.js", "W7"],
   ["js/hooks/group_call/group_call_prejoin_hook.js", "W2"],

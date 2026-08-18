@@ -25,17 +25,17 @@ Baseline: main @ a1c9376e, 18/08/2026.
 | `chat/format_toolbar_hook.js` | 317 | sim | sim | — | W2 | **W2 feito** | — | chat/markdown_format |
 | `group_call/group_call_prejoin_hook.js` | 316 | sim | sim | sim | W2·W8 | **W2 feito** | — | p2p/device_constraints+device_errors |
 | `ui/contextual_tips_hook.js` | 229 | sim | sim | sim | W8 | pendente | — | — |
-| `ui/preserve_scroll_hook.js` | 217 | sim | não | — | W3 | pendente | — | — |
-| `system/metric_chart_hook.js` | 217 | não | não | sim | W3 | pendente | — | — |
+| `ui/preserve_scroll_hook.js` | 217→32 | sim | não | — | W3 | **W3 feito** | — | ui/scroll_preservation |
+| `system/metric_chart_hook.js` | 217→35 | não | não | sim | W3 | **W3 feito** | — | system/metric_chart |
 | `connection/connection_status_hook.js` | 212 | sim | sim | sim | W8 | pendente | — | — |
 | `ui/conversations_hook.js` | 189 | sim | sim | sim | W2 | **W2 feito** | — | input/long_press |
 | `ui/nicklist_hook.js` | 173 | sim | sim | sim | W2 | **W2 feito** | — | input/long_press |
 | `ui/infinite_scroll_hook.js` | 149 | sim | sim | sim | — | pendente | — | — |
-| `p2p/p2p_diagram_hook.js` | 146 | não | não | — | W3 | pendente | — | — |
+| `p2p/p2p_diagram_hook.js` | 146→ | não | não | — | W3 | **W3 feito** | — | p2p/diagram |
 | `connection/connect_form_hook.js` | 138 | sim | sim | — | W8 | pendente | — | — |
 | `chat/search_highlight_hook.js` | 137 | sim | sim | sim | W8 | pendente | — | — |
 | `games/retro_game_canvas_hook.js` | 135 | sim | sim | sim | referência | pendente | — | — |
-| `ui/viewport_detect_hook.js` | 115 | sim | não | sim | W3 | pendente | — | — |
+| `ui/viewport_detect_hook.js` | 115→ | sim | não | sim | W3 | **W3 feito** | — | ui/viewport |
 | `lobby/lobby_game_canvas_hook.js` | 115 | não | sim | sim | W8 | pendente | — | — |
 | `lazy_feature_hook.js` | 99 | sim | não | — | infra | pendente | — | — |
 | `games/arcade_session_hook.js` | 93 | sim | não | sim | W8 | pendente | — | — |

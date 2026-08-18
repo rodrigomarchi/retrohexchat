@@ -5,13 +5,12 @@
  * address bar or keyboard changes the visible area. The server receives only
  * meaningful breakpoint changes; CSS variables update on every visual change.
  */
-const MOBILE_BREAKPOINT = 768;
-const KEYBOARD_INSET_THRESHOLD = 80;
-
-function round(value) {
-  return Math.round(Number(value) || 0);
-}
-
+import {
+  computeViewport,
+  viewportChanged,
+  viewportCssVars,
+  viewportPayload,
+} from "../../lib/ui/viewport.js";
 function editableFocused() {
   const active = document.activeElement;
   if (!active) return false;
@@ -72,42 +71,23 @@ export default {
   },
 
   updateViewport({ force = false } = {}) {
-    const visualViewport = window.visualViewport;
-    const width = round(window.innerWidth);
-    const height = round(window.innerHeight);
-    const visualWidth = round(visualViewport?.width || width);
-    const visualHeight = round(visualViewport?.height || height);
-    const offsetTop = round(visualViewport?.offsetTop || 0);
-    const offsetLeft = round(visualViewport?.offsetLeft || 0);
-    const keyboardInset = Math.max(0, height - visualHeight - offsetTop);
-    const mobile = width < MOBILE_BREAKPOINT;
-    const keyboardOpen = mobile && editableFocused() && keyboardInset >= KEYBOARD_INSET_THRESHOLD;
+    const state = computeViewport({
+      innerWidth: window.innerWidth,
+      innerHeight: window.innerHeight,
+      visualViewport: window.visualViewport,
+      editableFocused: editableFocused(),
+    });
 
     const root = document.documentElement;
-    root.style.setProperty("--rhc-visual-viewport-height", `${visualHeight}px`);
-    root.style.setProperty("--rhc-visual-viewport-width", `${visualWidth}px`);
-    root.style.setProperty("--rhc-visual-viewport-offset-top", `${offsetTop}px`);
-    root.style.setProperty("--rhc-visual-viewport-offset-left", `${offsetLeft}px`);
-    root.style.setProperty("--rhc-keyboard-inset-bottom", `${keyboardInset}px`);
-    root.classList.toggle("rhc-mobile-viewport", mobile);
-    root.classList.toggle("rhc-keyboard-open", keyboardOpen);
-    root.dataset.rhcKeyboardOpen = keyboardOpen ? "true" : "false";
+    for (const [name, value] of Object.entries(viewportCssVars(state))) {
+      root.style.setProperty(name, value);
+    }
+    root.classList.toggle("rhc-mobile-viewport", state.mobile);
+    root.classList.toggle("rhc-keyboard-open", state.keyboardOpen);
+    root.dataset.rhcKeyboardOpen = state.keyboardOpen ? "true" : "false";
 
-    const payload = {
-      width,
-      height,
-      visual_width: visualWidth,
-      visual_height: visualHeight,
-      mobile,
-    };
-
-    if (
-      force ||
-      !this.lastPayload ||
-      this.lastPayload.width !== payload.width ||
-      this.lastPayload.height !== payload.height ||
-      this.lastPayload.mobile !== payload.mobile
-    ) {
+    const payload = viewportPayload(state);
+    if (force || viewportChanged(this.lastPayload, payload)) {
       this.lastPayload = payload;
       this.pushEvent("viewport_info", payload);
     }
