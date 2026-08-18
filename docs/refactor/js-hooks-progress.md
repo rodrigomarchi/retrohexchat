@@ -248,6 +248,11 @@ refactor "não muda comportamento". Registrado como follow-up no ledger.
   streamId, isLocal}))` para a função pura e mapear o índice de volta ao elemento
   é o que torna a decisão de foco testável sem grid — sem arrastar DOM para a lib.
 - `mkdir -p test/lib/<área>` antes do primeiro heredoc de cada área nova.
+> **Nota (flaky pré-existente):** no `make ci` após W5, 1 falha em
+> `RetroHexChat.Lobby.SessionServerTest` "concurrent features … full game cycle"
+> — teste de concorrência do servidor, passa isolado e no arquivo inteiro (18/18).
+> Nenhum `.ex/.exs` foi tocado no refactor; é flakiness pré-existente, não regressão.
+
 ### W6 — file_transfer como redutor · pendente
 ### W7 — composer de chat · pendente
 ### W8 — varredura e remoção do andaime · pendente
