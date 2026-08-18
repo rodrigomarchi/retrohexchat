@@ -1,0 +1,94 @@
+# Refactor de padronização da camada JS — progresso e aprendizados
+
+Diário vivo do refactor descrito no plano **"Quatro Coisas num Hook"**
+(artifact: https://claude.ai/code/artifact/dd13089b-da12-486d-9787-3f1dfad79fff).
+A revisão que o originou: https://claude.ai/code/artifact/a99a0fb1-0153-4ed6-a7ad-bed87e392e56.
+
+O ledger por-hook está em [`js-hooks-ledger.md`](js-hooks-ledger.md).
+
+**Natureza do trabalho:** padronização pura. Nenhum comportamento muda. A prova
+disso roda antes de cada commit: `sh scripts/surface_snapshot.sh --check` +
+`make ci` verde. Ver §00 e §05 do plano.
+
+---
+
+## Baseline medido — main @ a1c9376e, 18/08/2026
+
+| Medida | Valor |
+|---|---|
+| Arquivos de teste JS | 171 |
+| Casos de teste JS | 4.465 (todos verdes, ~7 s) |
+| Entradas na superfície observável | 351 |
+| Linhas em `js/hooks/` | 10.464 (53 arquivos) |
+| Hooks > 200 linhas | 13 |
+| Chamadas `hook._priv` em teste | 201 |
+| Arquivos com primitiva proibida em `js/hooks/` | 8 |
+| Estados mutáveis de módulo em `js/lib/` | 4 |
+
+Catracas (só descem): teto de 200 linhas · `MAX_HOOK_PRIVATE_CALLS=201` ·
+allowlist de primitivas (8) · overrides de estado de módulo (4).
+
+---
+
+## Gate por commit
+
+Durante a iteração (por pacote/fatia), gate **direcionado** — rápido:
+
+```
+prettier --write <arquivos> && mix format
+cd apps/retro_hex_chat_web/assets && sh scripts/surface_snapshot.sh --check
+make test.js               # ~7 s
+make lint.hooks
+make lint.js && make lint.bundle
+```
+
+O **`make ci` completo (~5 min) roda só depois de acumular vários pacotes** —
+não a cada commit, para não atrasar o desenvolvimento. Postgres/compose sempre
+pelos alvos do Makefile (`make docker.up`), nunca à mão. Ao rodar:
+`make ci > /tmp/ci.log 2>&1; echo $?` — nunca `make ci | tail` (o pipe mascara
+o exit code).
+
+---
+
+## Registro por pacote
+
+### W0 — andaime · CONCLUÍDO
+
+**Feito**
+- Corrigido `enforce_hooks_contract.cjs`: `CONTRACT_DOC` apontava para
+  `docs/046-…md` inexistente → agora `docs/AGENT-GUIDE.md §15`. Removidas duas
+  entradas obsoletas da allowlist de import dinâmico (`games/game_canvas_hook.js`
+  deletado; `lobby/lobby_game_canvas_hook.js` agora carrega via
+  `lib/games/engine_loader.js`). Commit `d3e0a9c1`.
+- Criado `scripts/surface_snapshot.sh` (+ `js/SURFACE.txt`, 351 entradas).
+  Verificado que `--check` acusa diff e sai 1 ao renomear um evento, e volta a 0
+  ao restaurar.
+- Três catracas novas no guard, cada uma com baseline que só desce e cada uma
+  verificada falhando quando deveria:
+  - teto de 200 linhas/hook (`HOOK_LINE_OVERRIDES`, 13 entradas com o pacote que resolve);
+  - primitivas proibidas em `js/hooks/` (`FORBIDDEN_PRIMITIVE_OVERRIDES`, 8);
+  - `MAX_HOOK_PRIVATE_CALLS` (201) contra white-box em `test/hooks/`;
+  - bônus: estado mutável de módulo em `js/lib/` (`LIB_MODULE_STATE_OVERRIDES`, 4).
+
+**Aprendizados**
+- A árvore foi reescrita durante a fase de planejamento (mesmo commit
+  `a1c9376e`, mas arquivos de 12:52). Re-medi tudo: 53 hooks / 10.464 linhas /
+  201 chamadas privadas. O achado do switch de engines inline no
+  `lobby_game_canvas` **já estava resolvido** (extraído para
+  `lib/games/engine_loader.js`) — deixou de ser item.
+- `git checkout <file>` é bloqueado por hook do repositório (destrói trabalho
+  não-commitado paralelo). Para verificar catracas com mutação temporária, usar
+  `cp arquivo /tmp/bk` + restaurar por `cp`, nunca `git checkout`.
+- `make ci | tail` mascara o exit code (retorna status do `tail`). Sempre
+  redirecionar para arquivo e ler `$?`.
+- `mix format` antes de tudo: uma linha longa quebrada faz o CI pular estágios
+  paralelos e desperdiça um ciclo.
+
+### W1 — RetroTable (piloto) · pendente
+### W2 — duplicações · pendente
+### W3 — os quatro sem seam · pendente
+### W4 — negociação WebRTC compartilhada · pendente
+### W5 — fatiar a conferência · pendente
+### W6 — file_transfer como redutor · pendente
+### W7 — composer de chat · pendente
+### W8 — varredura e remoção do andaime · pendente

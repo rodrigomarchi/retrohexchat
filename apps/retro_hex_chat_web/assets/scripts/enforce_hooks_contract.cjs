@@ -41,6 +41,106 @@ const NON_IMPLEMENTATION_HOOK_FILES = new Set([
   "js/hooks/connect_hooks.js",
 ]);
 
+// ─── Thinness ratchets ──────────────────────────────────────────────────────
+//
+// AGENT-GUIDE §15 governs how hooks are *loaded*. These three govern what may
+// live *inside* one: a hook binds listeners, registers handleEvent, pushes
+// events, and drives a controller from lib/. Everything else — decisions,
+// calculations, state machines — belongs in a module that knows nothing about
+// LiveView and can therefore be tested without one.
+//
+// Each ratchet carries the count measured when it was introduced. The number is
+// allowed to fall and never to rise, so the standard arrives file by file
+// instead of demanding one impossible commit. Lowering a baseline after a
+// package lands is part of that package, not a follow-up.
+
+// A hook longer than this is carrying something that is not one of the four.
+const HOOK_LINE_LIMIT = 200;
+
+// Every entry is a hook still above the limit, with the package that resolves
+// it. Delete the entry in the same commit that shrinks the file — an override
+// that outlives its reason is how a budget stops meaning anything.
+const HOOK_LINE_OVERRIDES = new Map([
+  [
+    "js/hooks/group_call/group_call_webrtc_hook.js",
+    "W5 splits signalling, media, layout, tiles, reactions and quality",
+  ],
+  [
+    "js/hooks/lobby/lobby_webrtc_hook.js",
+    "W4 extracts the negotiation rules to lib/p2p/negotiation.js",
+  ],
+  [
+    "js/hooks/p2p/file_transfer_hook.js",
+    "W6 moves the transfer state machine to lib/p2p/transfer_session.js",
+  ],
+  [
+    "js/hooks/chat/autocomplete_hook.js",
+    "W7 extracts the composer key resolver to lib/chat/composer.js",
+  ],
+  ["js/hooks/ui/retro_table_hook.js", "W1 moves the widget to lib/ui/retro_table.js"],
+  ["js/hooks/chat/chat_viewport_hook.js", "W7 splits scrolling from reader interactions"],
+  [
+    "js/hooks/space/space_canvas_hook.js",
+    "W8 moves loading/modal rendering behind the controllers",
+  ],
+  [
+    "js/hooks/chat/format_toolbar_hook.js",
+    "W2 moves the markdown transforms to lib/chat/markdown_format.js",
+  ],
+  [
+    "js/hooks/group_call/group_call_prejoin_hook.js",
+    "W2 extracts device constraints and error copy",
+  ],
+  ["js/hooks/ui/contextual_tips_hook.js", "W8 extracts the tip queue to lib/ui/tip_queue.js"],
+  [
+    "js/hooks/ui/preserve_scroll_hook.js",
+    "W3 moves the patch coordinator to lib/ui/scroll_preservation.js",
+  ],
+  [
+    "js/hooks/system/metric_chart_hook.js",
+    "W3 moves the chart renderer to lib/system/metric_chart.js",
+  ],
+  ["js/hooks/connection/connection_status_hook.js", "W8 extracts the state-to-view mapping"],
+]);
+
+// Primitives that are a controller in disguise. setInterval and
+// requestAnimationFrame are deliberately absent: in a genuinely thin hook like
+// clock or lag the timer *is* the effect, and banning them would buy indirection
+// and nothing else.
+const FORBIDDEN_HOOK_PRIMITIVES = [
+  { pattern: /\bnew RTCPeerConnection\b/, name: "new RTCPeerConnection" },
+  { pattern: /\.getContext\(/, name: "canvas getContext()" },
+  { pattern: /\bnew ResizeObserver\b/, name: "new ResizeObserver" },
+  { pattern: /\bnew MutationObserver\b/, name: "new MutationObserver" },
+  { pattern: /\bnavigator\.mediaDevices\b/, name: "navigator.mediaDevices" },
+  { pattern: /\bnavigator\.clipboard\b/, name: "navigator.clipboard" },
+];
+
+const FORBIDDEN_PRIMITIVE_OVERRIDES = new Map([
+  ["js/hooks/ui/retro_table_hook.js", "W1"],
+  ["js/hooks/ui/preserve_scroll_hook.js", "W3"],
+  ["js/hooks/system/metric_chart_hook.js", "W3"],
+  ["js/hooks/chat/search_highlight_hook.js", "W8"],
+  ["js/hooks/chat/chat_viewport_hook.js", "W7"],
+  ["js/hooks/group_call/group_call_prejoin_hook.js", "W2"],
+  ["js/hooks/group_call/group_call_webrtc_hook.js", "W5"],
+  ["js/hooks/space/space_canvas_hook.js", "W8"],
+]);
+
+// A test that reaches for hook._privateMethod is testing something the hook
+// should not own. The count is the honest measure of how much logic is still
+// trapped; it reaches zero when the extraction is done.
+const MAX_HOOK_PRIVATE_CALLS = 201;
+
+// Mutable module scope in lib/ is shared state no test can reset between cases.
+// These four predate the standard and W8 resolves them.
+const LIB_MODULE_STATE_OVERRIDES = new Set([
+  "js/lib/ui/tips.js",
+  "js/lib/chat/interactive.js",
+  "js/lib/window_manager/public_manager.js",
+  "js/lib/p2p/file_transfer.js",
+]);
+
 const LIVESOCKET_ENTRYPOINTS = {
   "js/app.js": {
     registryImport: "./hooks/registry",
@@ -74,6 +174,10 @@ function main() {
   checkHookFileClassification(failures);
   checkLazyFacadeUsage(failures);
   checkDynamicImports(failures);
+  checkHookLineBudget(failures);
+  checkForbiddenHookPrimitives(failures);
+  checkHookTestWhiteBox(failures);
+  checkLibModuleState(failures);
 
   const criticalHooks = parseHookObjectKeys(criticalJs, "criticalHooks", failures);
   const helpHooks = parseHookObjectKeys(readAsset("js/hooks/help_hooks.js"), "helpHooks", failures);
@@ -213,6 +317,108 @@ function checkDynamicImports(failures) {
         `${rel} uses import(); dynamic imports must be added to the approved allowlist.`,
       );
     }
+  }
+}
+
+function hookImplementationFiles() {
+  const hooksRoot = path.join(JS_ROOT, "hooks");
+
+  return listFiles(hooksRoot, (filename) => filename.endsWith(".js")).filter(
+    (file) => !NON_IMPLEMENTATION_HOOK_FILES.has(assetRel(file)),
+  );
+}
+
+function checkHookLineBudget(failures) {
+  const over = new Set();
+
+  for (const file of hookImplementationFiles()) {
+    const rel = assetRel(file);
+    const lines = fs.readFileSync(file, "utf8").split("\n").length;
+    if (lines <= HOOK_LINE_LIMIT) continue;
+
+    over.add(rel);
+    if (HOOK_LINE_OVERRIDES.has(rel)) continue;
+
+    failures.push(
+      `${rel} is ${lines} lines, over the ${HOOK_LINE_LIMIT}-line hook budget. ` +
+        "Move the decisions into a lib/ module, or add an override naming the package that will.",
+    );
+  }
+
+  for (const rel of HOOK_LINE_OVERRIDES.keys()) {
+    if (over.has(rel)) continue;
+    failures.push(
+      `${rel} is within the hook budget; drop its HOOK_LINE_OVERRIDES entry in this commit.`,
+    );
+  }
+}
+
+function checkForbiddenHookPrimitives(failures) {
+  const used = new Set();
+
+  for (const file of hookImplementationFiles()) {
+    const rel = assetRel(file);
+    const source = stripComments(fs.readFileSync(file, "utf8"));
+    const found = FORBIDDEN_HOOK_PRIMITIVES.filter((primitive) => primitive.pattern.test(source));
+    if (found.length === 0) continue;
+
+    used.add(rel);
+    if (FORBIDDEN_PRIMITIVE_OVERRIDES.has(rel)) continue;
+
+    failures.push(
+      `${rel} uses ${found.map((primitive) => primitive.name).join(", ")}; ` +
+        "that belongs to a controller in lib/, which the hook then creates and destroys.",
+    );
+  }
+
+  for (const rel of FORBIDDEN_PRIMITIVE_OVERRIDES.keys()) {
+    if (used.has(rel)) continue;
+    failures.push(
+      `${rel} no longer uses a forbidden primitive; drop its FORBIDDEN_PRIMITIVE_OVERRIDES entry.`,
+    );
+  }
+}
+
+function checkHookTestWhiteBox(failures) {
+  const testRoot = path.join(ASSETS_ROOT, "test/hooks");
+  if (!fs.existsSync(testRoot)) return;
+
+  let calls = 0;
+
+  for (const file of listFiles(testRoot, (filename) => filename.endsWith(".js"))) {
+    const source = fs.readFileSync(file, "utf8");
+    calls += (source.match(/hook\._[a-zA-Z]/g) || []).length;
+  }
+
+  if (calls > MAX_HOOK_PRIVATE_CALLS) {
+    failures.push(
+      `test/hooks reaches into hook private methods ${calls} times, over the ceiling of ` +
+        `${MAX_HOOK_PRIVATE_CALLS}. Test the lib/ module the logic belongs to instead.`,
+    );
+  }
+
+  if (calls < MAX_HOOK_PRIVATE_CALLS) {
+    failures.push(
+      `test/hooks is down to ${calls} private-method calls; lower MAX_HOOK_PRIVATE_CALLS to ` +
+        `${calls} in this commit so the ratchet holds.`,
+    );
+  }
+}
+
+function checkLibModuleState(failures) {
+  const libRoot = path.join(JS_ROOT, "lib");
+
+  for (const file of listFiles(libRoot, (filename) => filename.endsWith(".js"))) {
+    const rel = assetRel(file);
+    if (LIB_MODULE_STATE_OVERRIDES.has(rel)) continue;
+
+    const source = stripComments(fs.readFileSync(file, "utf8"));
+    if (!/^(let|var)\s/m.test(source)) continue;
+
+    failures.push(
+      `${rel} declares mutable module scope; keep that state inside a create*() closure ` +
+        "so two tests cannot contaminate each other.",
+    );
   }
 }
 
