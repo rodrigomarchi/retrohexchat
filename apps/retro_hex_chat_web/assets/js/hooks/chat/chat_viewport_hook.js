@@ -43,8 +43,10 @@ import {
   cancelNickHoverTimer,
 } from "../../lib/chat/interactive.js";
 import { showFeedbackToast } from "../../lib/notifications/feedback_toast.js";
+import { copyText } from "../../lib/ui/dom.js";
 import { t } from "../../lib/i18n.js";
 import { createLongPress } from "../../lib/input/long_press.js";
+import { createViewportScroller } from "../../lib/chat/viewport_scroll.js";
 
 const ChatViewportHook = {
   mounted() {
@@ -53,8 +55,6 @@ const ChatViewportHook = {
     this.anchor = document.getElementById("chat-bottom-anchor");
     if (!this.scroller) return;
 
-    this.pinned = true;
-    this.pendingPrepend = null;
     this.mouseDownPos = null;
     this.longPress = createLongPress({
       shouldFire: ({ msgEl }) => msgEl.isConnected,
@@ -62,102 +62,31 @@ const ChatViewportHook = {
     });
     this.listeners = [];
 
-    this.scrollToBottom();
-    this.watchPinnedState();
-    this.watchContentChanges();
+    this.viewport = createViewportScroller(this.scroller, {
+      stream: this.stream,
+      anchor: this.anchor,
+    });
+    this.viewport.mount();
     this.bindServerEvents();
     this.bindReaderInteractions();
   },
 
   destroyed() {
     this.longPress.cancel();
-    if (this.pinnedObserver) this.pinnedObserver.disconnect();
-    if (this.contentObserver) this.contentObserver.disconnect();
-    if (this.sizeObserver) this.sizeObserver.disconnect();
+    this.viewport.destroy();
     this.listeners.forEach(([el, type, fn, opts]) => el.removeEventListener(type, fn, opts));
     this.listeners = [];
     removeTooltip();
     cancelNickHoverTimer();
   },
 
-  // ── Scroll position ─────────────────────────────────────────
-
-  scrollToBottom() {
-    this.scroller.scrollTop = this.scroller.scrollHeight;
-  },
-
-  distanceFromBottom() {
-    return this.scroller.scrollHeight - this.scroller.scrollTop;
-  },
-
-  // Whether the reader is at the newest message, read from the sentinel rather
-  // than from a scroll offset: no threshold to tune, and no scroll listener that
-  // has to tell the reader's gestures apart from our own writes.
-  watchPinnedState() {
-    if (typeof window.IntersectionObserver !== "function" || !this.anchor) return;
-
-    this.pinnedObserver = new window.IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          this.pinned = entry.isIntersecting;
-        });
-      },
-      { root: this.scroller, threshold: 0 },
-    );
-
-    this.pinnedObserver.observe(this.anchor);
-  },
-
-  watchContentChanges() {
-    const target = this.stream || this.scroller;
-
-    if (typeof window.MutationObserver === "function") {
-      this.contentObserver = new window.MutationObserver(() => this.settle());
-      this.contentObserver.observe(target, { childList: true });
-    }
-
-    // A row that grows after it lands — an image, a link preview, text that
-    // rewraps — moves the newest line without changing the child list.
-    if (typeof window.ResizeObserver === "function") {
-      this.sizeObserver = new window.ResizeObserver(() => this.settle());
-      this.sizeObserver.observe(target);
-    }
-  },
-
-  // The single place the scroll position is written in response to content.
-  settle() {
-    if (this.pendingPrepend !== null) {
-      this.scroller.scrollTop = this.scroller.scrollHeight - this.pendingPrepend;
-      this.pendingPrepend = null;
-      return;
-    }
-
-    if (this.pinned) this.scrollToBottom();
-  },
-
   // ── Server-driven events ────────────────────────────────────
 
   bindServerEvents() {
-    this.handleEvent("prepend_start", () => {
-      this.pendingPrepend = this.distanceFromBottom();
-    });
-
-    this.handleEvent("chat_scroll_reset", () => {
-      this.pendingPrepend = null;
-      this.pinned = true;
-      this.scrollToBottom();
-    });
-
-    this.handleEvent("scroll_to_bottom", () => {
-      this.pinned = true;
-      this.scrollToBottom();
-    });
-
-    this.handleEvent("clear_chat_messages", () => {
-      if (this.stream) this.stream.replaceChildren();
-      this.pendingPrepend = null;
-      this.pinned = true;
-    });
+    this.handleEvent("prepend_start", () => this.viewport.prepareForPrepend());
+    this.handleEvent("chat_scroll_reset", () => this.viewport.reset());
+    this.handleEvent("scroll_to_bottom", () => this.viewport.pinToBottom());
+    this.handleEvent("clear_chat_messages", () => this.viewport.clearMessages());
 
     this.handleEvent("scroll_to_message", ({ message_id }) => {
       if (!scrollToMessage(message_id)) {
@@ -199,18 +128,14 @@ const ChatViewportHook = {
     this.handleEvent("dismiss_hover_card", () => cancelNickHoverTimer());
 
     this.handleEvent("clipboard_copy", ({ text }) => {
-      navigator.clipboard
-        .writeText(text)
-        .then(() => showFeedbackToast(this.el, t("Copied!"), 2000));
+      copyText(text).then(() => showFeedbackToast(this.el, t("Copied!"), 2000));
     });
 
     this.handleEvent("clipboard_copy_selection", () => {
       const selection = window.getSelection().toString();
       if (!selection) return;
 
-      navigator.clipboard
-        .writeText(selection)
-        .then(() => showFeedbackToast(this.el, t("Copied!"), 2000));
+      copyText(selection).then(() => showFeedbackToast(this.el, t("Copied!"), 2000));
     });
 
     this.handleEvent("open_url", ({ url }) => {

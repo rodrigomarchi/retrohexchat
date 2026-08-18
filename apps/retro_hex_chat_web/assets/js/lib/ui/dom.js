@@ -45,3 +45,14 @@ export function isEditableTarget(target) {
     'input, textarea, select, [contenteditable=""], [contenteditable="true"], [role="textbox"]',
   );
 }
+
+/**
+ * Write text to the clipboard. Thin wrapper so hooks don't reach for
+ * navigator.clipboard directly (a controller-in-disguise primitive).
+ *
+ * @param {string} text
+ * @returns {Promise<void>}
+ */
+export function copyText(text) {
+  return navigator.clipboard.writeText(text);
+}

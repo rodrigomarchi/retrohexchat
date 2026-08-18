@@ -79,7 +79,10 @@ const HOOK_LINE_OVERRIDES = new Map([
     "js/hooks/chat/autocomplete_hook.js",
     "W7 extracts the composer key resolver to lib/chat/composer.js",
   ],
-  ["js/hooks/chat/chat_viewport_hook.js", "W7 splits scrolling from reader interactions"],
+  [
+    "js/hooks/chat/chat_viewport_hook.js",
+    "scroll extracted to lib/chat/viewport_scroll.js; residual is reader-interaction DOM event binding (pushEvent-coupled)",
+  ],
   [
     "js/hooks/space/space_canvas_hook.js",
     "W8 moves loading/modal rendering behind the controllers",
@@ -111,7 +114,6 @@ const FORBIDDEN_HOOK_PRIMITIVES = [
 
 const FORBIDDEN_PRIMITIVE_OVERRIDES = new Map([
   ["js/hooks/chat/search_highlight_hook.js", "W8"],
-  ["js/hooks/chat/chat_viewport_hook.js", "W7"],
   ["js/hooks/group_call/group_call_prejoin_hook.js", "W2"],
   ["js/hooks/group_call/group_call_webrtc_hook.js", "W5"],
   ["js/hooks/space/space_canvas_hook.js", "W8"],
