@@ -123,12 +123,15 @@ const FORBIDDEN_PRIMITIVE_OVERRIDES = new Map([
 const MAX_HOOK_PRIVATE_CALLS = 201;
 
 // Mutable module scope in lib/ is shared state no test can reset between cases.
-// These four predate the standard and W8 resolves them.
+// The three that remain are deliberate, not accidental: public_manager holds the
+// single window manager the entry bundle and the lazy hook chunk must share;
+// interactive coordinates tooltip/hover/context-menu state across the chat hooks;
+// tips holds the tip-seen state for the one contextual-tips hook. Each is a
+// singleton by design, not logic trapped in the wrong layer.
 const LIB_MODULE_STATE_OVERRIDES = new Set([
   "js/lib/ui/tips.js",
   "js/lib/chat/interactive.js",
   "js/lib/window_manager/public_manager.js",
-  "js/lib/p2p/file_transfer.js",
 ]);
 
 const LIVESOCKET_ENTRYPOINTS = {

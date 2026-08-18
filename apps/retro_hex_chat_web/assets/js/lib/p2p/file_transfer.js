@@ -243,14 +243,17 @@ export function formatEta(seconds) {
 
 // --- Transfer Session Management ---
 
-let idCounter = 0;
-
-function generateTransferId() {
-  idCounter++;
-  const ts = Date.now().toString(36);
-  const rnd = Math.random().toString(36).slice(2, 8);
-  return `${ts}-${rnd}-${idCounter}`;
-}
+// The counter lives in a closure, not at module scope, so it is shared state no
+// test can leak between cases; the id format is unchanged.
+const generateTransferId = (() => {
+  let idCounter = 0;
+  return () => {
+    idCounter++;
+    const ts = Date.now().toString(36);
+    const rnd = Math.random().toString(36).slice(2, 8);
+    return `${ts}-${rnd}-${idCounter}`;
+  };
+})();
 
 /**
  * Create a new transfer session (sender side).
