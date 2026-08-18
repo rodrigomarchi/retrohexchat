@@ -11,6 +11,12 @@ import { isEditableTarget } from "../../lib/ui/dom.js";
 import { captureConstraints } from "../../lib/p2p/device_constraints.js";
 import { createPeerConnection } from "../../lib/p2p/webrtc.js";
 import {
+  collectQualitySnapshot,
+  deriveParticipantQuality,
+  participantQualityLabel,
+  participantQualityTitle,
+} from "../../lib/group_call/quality.js";
+import {
   acquireDisplayMedia,
   attachMediaStream,
   collectConnectionActivity,
@@ -2043,121 +2049,19 @@ const GroupCallWebRTCHook = {
   },
 
   _deriveParticipantQuality(reports, connectionStats = {}) {
-    const snapshot = this._collectParticipantQualitySnapshot(reports);
+    const snapshot = collectQualitySnapshot(
+      reports,
+      (report) => this._participantIdForStatsReport(report),
+      Date.now(),
+    );
     const previous = this.participantStatsPrev;
     this.participantStatsPrev = snapshot;
 
-    const participants = [];
-    let activeSpeakerParticipantId = null;
-    let loudestAudioLevel = 0.03;
-
-    for (const [participantId, current] of snapshot.participants) {
-      const prev = previous?.participants?.get(participantId) || null;
-      const intervalSec = prev
-        ? Math.max((snapshot.timestamp - previous.timestamp) / 1000, 0.001)
-        : 1;
-      const bytesDelta = prev ? Math.max(0, current.bytesReceived - prev.bytesReceived) : 0;
-      const lostDelta = prev ? Math.max(0, current.packetsLost - prev.packetsLost) : 0;
-      const receivedDelta = prev ? Math.max(0, current.packetsReceived - prev.packetsReceived) : 0;
-      const totalPacketDelta = lostDelta + receivedDelta;
-      const lossPct =
-        totalPacketDelta > 0 ? Math.round((lostDelta / totalPacketDelta) * 1000) / 10 : 0;
-      const bitrateKbps = Math.round((bytesDelta * 8) / intervalSec / 1000);
-      const jitterMs = Math.round((current.jitter || 0) * 1000);
-      const rttMs = connectionStats.rtt_ms || 0;
-      const freezeDelta = prev ? Math.max(0, current.freezeCount - prev.freezeCount) : 0;
-      const fps = Math.round(current.fps || 0);
-      const audioLevel = Math.round((current.audioLevel || 0) * 1000) / 1000;
-      const speaking = audioLevel >= 0.03;
-      const level = this._participantQualityLevel({
-        connectionState: this.pc?.connectionState || "",
-        rttMs,
-        jitterMs,
-        lossPct,
-        freezeDelta,
-      });
-
-      if (speaking && audioLevel > loudestAudioLevel) {
-        loudestAudioLevel = audioLevel;
-        activeSpeakerParticipantId = participantId;
-      }
-
-      participants.push({
-        participant_id: participantId,
-        level,
-        label: this._participantQualityLabel(level),
-        speaking,
-        rtt_ms: rttMs,
-        jitter_ms: jitterMs,
-        loss_pct: lossPct,
-        bitrate_kbps: bitrateKbps,
-        fps,
-        freeze_count: current.freezeCount,
-        audio_level: audioLevel,
-      });
-    }
-
-    return {
-      active_speaker_participant_id: activeSpeakerParticipantId,
-      participants,
-      updated_at_ms: Date.now(),
-    };
-  },
-
-  _collectParticipantQualitySnapshot(reports) {
-    const snapshot = {
-      timestamp: Date.now(),
-      participants: new Map(),
-    };
-
-    reports?.forEach?.((report) => {
-      if (report?.type !== "inbound-rtp") return;
-
-      const kind = report.kind || report.mediaType;
-      if (kind !== "audio" && kind !== "video") return;
-
-      const participantId = this._participantIdForStatsReport(report);
-      if (!participantId) return;
-
-      const current = this._ensureParticipantStats(snapshot, participantId);
-      current.bytesReceived += report.bytesReceived || 0;
-      current.packetsLost += report.packetsLost || 0;
-      current.packetsReceived += report.packetsReceived || 0;
-
-      if (typeof report.jitter === "number") {
-        current.jitter = Math.max(current.jitter, report.jitter);
-      }
-
-      if (kind === "audio") {
-        current.audioLevel = Math.max(current.audioLevel, report.audioLevel || 0);
-      }
-
-      if (kind === "video") {
-        current.fps = Math.max(current.fps, report.framesPerSecond || 0);
-        current.freezeCount = Math.max(current.freezeCount, report.freezeCount || 0);
-      }
+    return deriveParticipantQuality(snapshot, previous, {
+      connectionStats,
+      connectionState: this.pc?.connectionState || "",
+      now: Date.now(),
     });
-
-    return snapshot;
-  },
-
-  _ensureParticipantStats(snapshot, participantId) {
-    const id = String(participantId);
-
-    if (!snapshot.participants.has(id)) {
-      snapshot.participants.set(id, {
-        participant_id: id,
-        bytesReceived: 0,
-        packetsLost: 0,
-        packetsReceived: 0,
-        jitter: 0,
-        audioLevel: 0,
-        fps: 0,
-        freezeCount: 0,
-      });
-    }
-
-    return snapshot.participants.get(id);
   },
 
   _participantIdForStatsReport(report) {
@@ -2188,30 +2092,6 @@ const GroupCallWebRTCHook = {
     return assignedTiles.length === 1 ? assignedTiles[0].dataset.participantId : null;
   },
 
-  _participantQualityLevel({ connectionState, rttMs, jitterMs, lossPct, freezeDelta }) {
-    if (["connecting", "disconnected", "failed"].includes(connectionState)) {
-      return "reconnecting";
-    }
-
-    if (lossPct >= 8 || rttMs >= 400 || jitterMs >= 80) return "poor";
-    if (lossPct >= 3 || rttMs >= 250 || jitterMs >= 50 || freezeDelta > 0) return "fair";
-    if (lossPct >= 1 || rttMs >= 120 || jitterMs >= 30) return "good";
-    return "excellent";
-  },
-
-  _participantQualityLabel(level) {
-    return (
-      {
-        excellent: "Excellent",
-        good: "Good",
-        fair: "Fair",
-        poor: "Poor",
-        reconnecting: "Reconnecting",
-        unknown: "Unknown",
-      }[level] || "Unknown"
-    );
-  },
-
   _syncParticipantQualityState(payload) {
     this.activeSpeakerParticipantId = this._stringOrNull(
       payload.active_speaker_participant_id ?? payload.activeSpeakerParticipantId,
@@ -2224,7 +2104,7 @@ const GroupCallWebRTCHook = {
       const normalized = {
         participant_id: participantId,
         level: quality.level || "unknown",
-        label: quality.label || this._participantQualityLabel(quality.level),
+        label: quality.label || participantQualityLabel(quality.level),
         speaking: quality.speaking === true,
         rtt_ms: Number(quality.rtt_ms || quality.rttMs || 0),
         jitter_ms: Number(quality.jitter_ms || quality.jitterMs || 0),
@@ -2276,8 +2156,7 @@ const GroupCallWebRTCHook = {
     if (qualityBadge) {
       qualityBadge.hidden = !quality || level === "unknown";
       qualityBadge.dataset.qualityLevel = level;
-      const qualityTitle =
-        quality && level !== "unknown" ? this._participantQualityTitle(quality) : "";
+      const qualityTitle = quality && level !== "unknown" ? participantQualityTitle(quality) : "";
       qualityBadge.title = qualityTitle;
       qualityBadge.setAttribute("aria-label", qualityTitle);
     }
@@ -2287,12 +2166,6 @@ const GroupCallWebRTCHook = {
       speakerBadge.title = activeSpeaker ? "Speaking" : "Not speaking";
       speakerBadge.setAttribute("aria-label", speakerBadge.title);
     }
-  },
-
-  _participantQualityTitle(quality) {
-    if (!quality) return "";
-
-    return `${quality.label}: RTT ${quality.rtt_ms} ms, loss ${quality.loss_pct}%, ${quality.bitrate_kbps} kbps, ${quality.fps} fps`;
   },
 
   _stopStatsPolling() {
