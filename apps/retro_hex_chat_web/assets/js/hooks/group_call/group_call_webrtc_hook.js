@@ -34,6 +34,11 @@ import {
 } from "../../lib/group_call/reactions.js";
 import { focusedTileIndex, isTilePinned, tileIsVisible } from "../../lib/group_call/layout.js";
 import {
+  localEmptyState,
+  localEmptyStateCopy,
+  participantTileMedia,
+} from "../../lib/group_call/tiles.js";
+import {
   acquireDisplayMedia,
   attachMediaStream,
   collectConnectionActivity,
@@ -666,46 +671,20 @@ const GroupCallWebRTCHook = {
   },
 
   _localEmptyState() {
-    if (this.screenShare?.active === true) return "screen-share";
-    if (this.mediaEnabled.audio === false && this.mediaEnabled.video === false) {
-      return "receive-only";
-    }
-    if (this.mediaEnabled.video === false) return "camera-off";
-    return "starting";
+    return localEmptyState({
+      screenShareActive: this.screenShare?.active === true,
+      audioEnabled: this.mediaEnabled.audio,
+      videoEnabled: this.mediaEnabled.video,
+    });
   },
 
   _syncLocalEmptyState(tile) {
     const title = tile.querySelector("[data-group-call-local-empty-title]");
     const detail = tile.querySelector("[data-group-call-local-empty-detail]");
-    const copy = this._localEmptyStateCopy(tile.dataset.localEmptyState);
+    const copy = localEmptyStateCopy(tile.dataset.localEmptyState);
 
     if (title) title.textContent = copy.title;
     if (detail) detail.textContent = copy.detail;
-  },
-
-  _localEmptyStateCopy(state) {
-    switch (state) {
-      case "screen-share":
-        return {
-          title: t("Sharing screen"),
-          detail: t("Your screen is replacing the camera feed."),
-        };
-      case "receive-only":
-        return {
-          title: t("Receive-only mode"),
-          detail: t("Your microphone and camera are off."),
-        };
-      case "camera-off":
-        return {
-          title: t("Camera off"),
-          detail: t("Your camera is not being sent."),
-        };
-      default:
-        return {
-          title: t("Camera preview starting"),
-          detail: t("Your local preview appears here when the camera is ready."),
-        };
-    }
   },
 
   _toggleTileFocus(tile) {
@@ -912,22 +891,18 @@ const GroupCallWebRTCHook = {
     const participant = this.participantsById.get(String(participantId));
     if (!participant) return;
 
-    const name = tile.querySelector("[data-group-call-tile-name]");
-    const media = participant.media_state || {};
-    const audio = media.audio !== false;
-    const video = media.video !== false;
-    const screen = media.screen === true || tile.dataset.trackSource === "screen";
-    const nickname = participant.nickname || t("Remote");
+    const nameEl = tile.querySelector("[data-group-call-tile-name]");
+    const { audio, video, screen, name, label } = participantTileMedia(
+      participant,
+      tile.dataset.trackSource || null,
+    );
 
-    if (name) {
-      name.textContent = screen ? t("%{nickname}'s screen", { nickname }) : nickname;
-    }
+    if (nameEl) nameEl.textContent = name;
     tile.dataset.mediaAudio = String(audio);
     tile.dataset.mediaVideo = String(video);
     tile.dataset.mediaScreen = String(screen);
     this._applyParticipantQualityToTile(tile, participantId);
 
-    const label = screen ? `Focus ${nickname}'s shared screen` : `Focus ${nickname}`;
     tile.setAttribute("aria-label", label);
     tile.title = label;
   },
