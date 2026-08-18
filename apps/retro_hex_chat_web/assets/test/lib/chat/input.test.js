@@ -4,6 +4,7 @@ import {
   getArgumentContext,
   computeMaxHeight,
   autoResize,
+  parseSlashCommand,
 } from "../../../js/lib/chat/input.js";
 import "../../helpers/hook_helper.js"; // for scrollIntoView stub
 import { cleanupDOM } from "../../helpers/hook_helper.js";
@@ -227,6 +228,34 @@ describe("lib/input", () => {
 
       expect(el.style.height).toBe("82px");
       expect(el.style.overflowY).toBe("hidden");
+    });
+  });
+});
+
+describe("parseSlashCommand", () => {
+  it("is none for a non-slash value", () => {
+    expect(parseSlashCommand("hello").kind).toBe("none");
+    expect(parseSlashCommand("").kind).toBe("none");
+  });
+
+  it("is pending until the command name is unambiguous", () => {
+    expect(parseSlashCommand("/").kind).toBe("pending");
+    expect(parseSlashCommand("/j").kind).toBe("pending");
+  });
+
+  it("queries once there is a 2+ char name", () => {
+    expect(parseSlashCommand("/jo")).toEqual({ kind: "query", command: "jo", args: "" });
+  });
+
+  it("queries a one-letter command once a space follows it", () => {
+    expect(parseSlashCommand("/j ")).toEqual({ kind: "query", command: "j", args: "" });
+  });
+
+  it("splits command and args on the first space", () => {
+    expect(parseSlashCommand("/join #general now")).toEqual({
+      kind: "query",
+      command: "join",
+      args: "#general now",
     });
   });
 });

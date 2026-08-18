@@ -161,3 +161,30 @@ export function autoResize(el, maxHeight) {
   el.style.height = newHeight + "px";
   el.style.overflowY = el.scrollHeight > maxHeight ? "auto" : "hidden";
 }
+
+/**
+ * Parse a composer value as a slash command for the syntax tooltip.
+ *
+ * Three outcomes: "none" when it is not a slash command (the caller dismisses
+ * any open tooltip), "query" once the command name is unambiguous (2+ chars, or
+ * a space after the name), and "pending" in between, where the caller does
+ * nothing and waits for more input.
+ *
+ * @param {string} value
+ * @returns {{kind: "none"}|{kind: "pending"}|{kind: "query", command: string, args: string}}
+ */
+export function parseSlashCommand(value) {
+  if (!value || !value.startsWith("/")) return { kind: "none" };
+
+  const spaceIdx = value.indexOf(" ");
+
+  if (spaceIdx > 1) {
+    return { kind: "query", command: value.slice(1, spaceIdx), args: value.slice(spaceIdx + 1) };
+  }
+
+  if (spaceIdx === -1 && value.length > 2) {
+    return { kind: "query", command: value.slice(1), args: "" };
+  }
+
+  return { kind: "pending" };
+}

@@ -11,9 +11,10 @@ import {
   getArgumentContext,
   computeMaxHeight,
   autoResize,
+  parseSlashCommand,
 } from "../../lib/chat/input.js";
 import { createHistoryManager, isSensitiveCommand } from "../../lib/chat/history.js";
-import { SHORTCUT_FORMAT_MAP } from "../../lib/chat/irc_format.js";
+import { INTENT, resolveComposerKey } from "../../lib/chat/composer.js";
 
 const MOBILE_BREAKPOINT = 768;
 const DESKTOP_MAX_LINES = 5;
@@ -94,156 +95,7 @@ const AutocompleteHook = {
       this.checkSyntaxTooltip(value);
     });
 
-    this.inputEl.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") {
-        if (this.historySearchActive) {
-          e.preventDefault();
-          e.stopPropagation();
-          this.closeHistorySearch(true);
-          return;
-        }
-        if (this.editMode) {
-          e.preventDefault();
-          e.stopPropagation();
-          this.editMode = false;
-          this.pushEvent("cancel_edit", {});
-          return;
-        }
-        if (this.isDropdownVisible()) {
-          e.preventDefault();
-          e.stopPropagation();
-          this.pushEvent("autocomplete_close", {});
-          this.hasNavigated = false;
-        } else if (this.tooltipVisible) {
-          e.preventDefault();
-          e.stopPropagation();
-          this.pushEvent("syntax_tooltip_dismiss", {});
-          this.tooltipVisible = false;
-        }
-        return;
-      }
-
-      if (e.key === "Enter") {
-        if (e.shiftKey) return;
-
-        e.preventDefault();
-
-        if (this.isDropdownVisible() && this.hasNavigated) {
-          this.pushEvent("autocomplete_select_current", {});
-          this.hasNavigated = false;
-          return;
-        }
-
-        if (this.isDropdownVisible()) {
-          this.pushEvent("autocomplete_close", {});
-        }
-
-        if (this.isTyping) {
-          this.isTyping = false;
-          clearTimeout(this.typingTimeout);
-          this.pushEvent("pm_stop_typing", {});
-        }
-
-        if (this.tooltipVisible) {
-          this.pushEvent("syntax_tooltip_dismiss", {});
-          this.tooltipVisible = false;
-        }
-
-        this.rememberSubmittedInput();
-
-        const form = this.formEl || this.inputEl.closest("form");
-        if (form) {
-          form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
-        }
-      }
-
-      // Ctrl+R — reverse history search
-      if (e.key === "r" && e.ctrlKey && !e.altKey && !e.metaKey && !e.shiftKey) {
-        e.preventDefault();
-        this.toggleHistorySearch();
-        return;
-      }
-
-      // Ctrl+Up/Down — enhanced history with draft preservation
-      if (e.key === "ArrowUp" && e.ctrlKey) {
-        e.preventDefault();
-        this.historyUp();
-        return;
-      }
-
-      if (e.key === "ArrowDown" && e.ctrlKey) {
-        e.preventDefault();
-        this.historyDown();
-        return;
-      }
-
-      // Arrow keys — navigate dropdown if visible, otherwise history/edit
-      if (e.key === "ArrowUp") {
-        e.preventDefault();
-        if (this.isDropdownVisible()) {
-          this.hasNavigated = true;
-          this.pushEvent("autocomplete_navigate", { direction: "up" });
-          this.scrollSelectedIntoView();
-        } else if (this.inputEl.value === "") {
-          // Empty input + ↑ = trigger edit mode for last own message
-          this.pushEvent("edit_last_message", {});
-        } else {
-          this.pushEvent("history_navigate", { direction: "up" });
-        }
-        return;
-      }
-
-      if (e.key === "ArrowDown") {
-        e.preventDefault();
-        if (this.isDropdownVisible()) {
-          this.hasNavigated = true;
-          this.pushEvent("autocomplete_navigate", { direction: "down" });
-          this.scrollSelectedIntoView();
-        } else {
-          this.pushEvent("history_navigate", { direction: "down" });
-        }
-        return;
-      }
-
-      if (e.key === "Tab") {
-        e.preventDefault();
-
-        if (this.isDropdownVisible()) {
-          this.pushEvent("autocomplete_select_current", {});
-          this.hasNavigated = false;
-          return;
-        }
-
-        if (this.tabCycleState) {
-          this.tabCycleState.index =
-            (this.tabCycleState.index + 1) % this.tabCycleState.matches.length;
-          const match = this.tabCycleState.matches[this.tabCycleState.index];
-          const suffix = this.tabCycleState.isStart ? ": " : " ";
-          this.inputEl.value = match + suffix;
-          this.inputEl.dispatchEvent(new Event("input", { bubbles: true }));
-          const state = this.tabCycleState;
-          setTimeout(() => {
-            this.tabCycleState = state;
-          }, 0);
-          return;
-        }
-
-        const value = this.inputEl.value;
-        const isStart = true;
-        this.pushEvent("tab_complete", { partial: value, is_start: isStart });
-        return;
-      }
-
-      // IRC formatting shortcuts (Ctrl+Shift+key)
-      if (e.ctrlKey && e.shiftKey && !e.altKey && !e.metaKey) {
-        const code = SHORTCUT_FORMAT_MAP[e.key.toLowerCase()];
-        if (code) {
-          e.preventDefault();
-          e.stopPropagation();
-          this.insertAtCursor(code);
-        }
-      }
-    });
+    this.inputEl.addEventListener("keydown", (e) => this._handleComposerKeydown(e));
 
     // Handle server events
     this.handleEvent("tab_matches", ({ matches, is_start }) => {
@@ -323,6 +175,94 @@ const AutocompleteHook = {
     clearTimeout(this.typingTimeout);
   },
 
+  // ── Composer keydown (resolver-driven) ─────────────────
+
+  _handleComposerKeydown(e) {
+    const intents = resolveComposerKey(e, {
+      historySearchActive: this.historySearchActive,
+      editMode: this.editMode,
+      dropdownVisible: this.isDropdownVisible(),
+      hasNavigated: this.hasNavigated,
+      isTyping: this.isTyping,
+      tooltipVisible: this.tooltipVisible,
+      tabCycleActive: !!this.tabCycleState,
+      value: this.inputEl.value,
+    });
+    this._applyComposerIntents(e, intents);
+  },
+
+  _applyComposerIntents(e, intents) {
+    for (const intent of intents) {
+      switch (intent.type) {
+        case INTENT.PREVENT_DEFAULT:
+          e.preventDefault();
+          break;
+        case INTENT.STOP_PROPAGATION:
+          e.stopPropagation();
+          break;
+        case INTENT.PUSH:
+          this.pushEvent(intent.event, intent.payload);
+          break;
+        case INTENT.SET_STATE:
+          Object.assign(this, intent.patch);
+          break;
+        case INTENT.ACTION:
+          this._runComposerAction(intent.name, intent.args);
+          break;
+      }
+    }
+  },
+
+  _runComposerAction(name, args) {
+    switch (name) {
+      case "closeHistorySearch":
+        this.closeHistorySearch(...args);
+        break;
+      case "toggleHistorySearch":
+        this.toggleHistorySearch();
+        break;
+      case "historyUp":
+        this.historyUp();
+        break;
+      case "historyDown":
+        this.historyDown();
+        break;
+      case "scrollSelectedIntoView":
+        this.scrollSelectedIntoView();
+        break;
+      case "rememberSubmittedInput":
+        this.rememberSubmittedInput();
+        break;
+      case "insertAtCursor":
+        this.insertAtCursor(...args);
+        break;
+      case "stopTyping":
+        clearTimeout(this.typingTimeout);
+        this.pushEvent("pm_stop_typing", {});
+        break;
+      case "submitForm": {
+        const form = this.formEl || this.inputEl.closest("form");
+        if (form) form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+        break;
+      }
+      case "tabCycle":
+        this._advanceTabCycle();
+        break;
+    }
+  },
+
+  _advanceTabCycle() {
+    this.tabCycleState.index = (this.tabCycleState.index + 1) % this.tabCycleState.matches.length;
+    const match = this.tabCycleState.matches[this.tabCycleState.index];
+    const suffix = this.tabCycleState.isStart ? ": " : " ";
+    this.inputEl.value = match + suffix;
+    this.inputEl.dispatchEvent(new Event("input", { bubbles: true }));
+    const state = this.tabCycleState;
+    setTimeout(() => {
+      this.tabCycleState = state;
+    }, 0);
+  },
+
   updated() {
     this.syncHistoryFromDataset();
 
@@ -356,7 +296,9 @@ const AutocompleteHook = {
   // ── Syntax tooltip ────────────────────────────────────
 
   checkSyntaxTooltip(value) {
-    if (!value || !value.startsWith("/")) {
+    const result = parseSlashCommand(value);
+
+    if (result.kind === "none") {
       if (this.tooltipVisible) {
         this.pushEvent("syntax_tooltip_dismiss", {});
         this.tooltipVisible = false;
@@ -364,22 +306,10 @@ const AutocompleteHook = {
       return;
     }
 
-    // Show tooltip as soon as command name has 2+ chars, even without space
-    const spaceIdx = value.indexOf(" ");
-    let command, args;
-
-    if (spaceIdx > 1) {
-      command = value.slice(1, spaceIdx);
-      args = value.slice(spaceIdx + 1);
-    } else if (spaceIdx === -1 && value.length > 2) {
-      command = value.slice(1);
-      args = "";
-    } else {
-      return;
-    }
+    if (result.kind === "pending") return;
 
     this.tooltipVisible = true;
-    this.pushEvent("syntax_tooltip_query", { command, args });
+    this.pushEvent("syntax_tooltip_query", { command: result.command, args: result.args });
   },
 
   // ── Dropdown helpers ────────────────────────────────────
@@ -589,33 +519,10 @@ const AutocompleteHook = {
     }
   },
 
-  // ── Compat aliases (used by tests) ─────────────────────
-
-  loadPersistedHistory() {
-    this.syncHistoryFromDataset();
-    this.persistedHistory = this.historyManager.getHistory();
-    return this.persistedHistory;
-  },
-
-  saveToPersistedHistory(text) {
-    this.historyManager.save(text);
-    this.persistedHistory = this.historyManager.getHistory();
-  },
+  // ── Test-facing accessor (removed with the white-box test in W8) ──
 
   loadRecentCommands() {
     return this.historyManager.getRecentCommands();
-  },
-
-  saveRecentCommand(cmdName) {
-    this.historyManager.saveRecentCommand(cmdName);
-  },
-
-  computeMaxHeight() {
-    this.maxHeight = computeMaxHeight(this.inputEl, this.maxLines || 5);
-  },
-
-  autoResize() {
-    autoResize(this.inputEl, this.maxHeight);
   },
 
   configureTextareaSizing() {

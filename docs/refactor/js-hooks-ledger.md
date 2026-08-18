@@ -18,7 +18,7 @@ Baseline: main @ a1c9376e, 18/08/2026.
 | `group_call/group_call_webrtc_hook.js` | 2414→2134 | sim | sim | sim | W4·W5 | **decisões extraídas** | p2p/negotiation, group_call/{quality,payload,reactions,layout,tiles,media_state} | resíduo: plumbing RTCPeerConnection+tile-DOM (controller Forma B = follow-up c/ testes de integração) |
 | `lobby/lobby_webrtc_hook.js` | 1152 | sim | sim | sim | W4 | **W4 feito** | p2p/negotiation | ainda >200; épocas+timers no hook |
 | `p2p/file_transfer_hook.js` | 663→586 | sim | sim | sim | W6 | **W6 feito** | p2p/transfer_session (redutor) | teste white-box reescrito p/ black-box no W8 |
-| `chat/autocomplete_hook.js` | 631 | sim | sim | sim | W7 | pendente | — | — |
+| `chat/autocomplete_hook.js` | 631→538 | sim | sim | sim | W7 | **W7.1/7.2 feito** | chat/composer, chat/input.parseSlashCommand | W7.3 (history-search hook) e W7.4 (chat_viewport split) + reescrita black-box do teste → W8 |
 | `ui/retro_table_hook.js` | 586→32 | sim | sim | — | W1 | **concluído** | ui/retro_table{,_layout,_selection} | — |
 | `chat/chat_viewport_hook.js` | 462 | sim | sim | sim | W2·W7 | **W2 feito** | — | input/long_press (W2) |
 | `space/space_canvas_hook.js` | 408 | sim | sim | sim | W8 | pendente | — | — |

@@ -279,5 +279,28 @@ reconhecer o helper `push("...")` de `js/lib/` (sem confundir com `channel.push`
 via `[^.]push\(`). De quebra, o snapshot parou de capturar `"--"` (valor de
 payload `eta`, não evento) que o grep antigo pegava por imprecisão. Verificado que
 ainda pega rename real de evento (exit 1).
-### W7 — composer de chat · pendente
+### W7 — composer de chat · W7.1/W7.2 CONCLUÍDOS (W7.3/W7.4 → W8)
+
+**Feito**
+- **W7.1 resolveComposerKey** → `lib/chat/composer.js`: o bloco `keydown` de ~230
+  linhas virou `resolveComposerKey(event, state) → intents[]` puro (padrão do W6:
+  intenções declarativas `preventDefault/stopPropagation/push/setState/action`).
+  O hook monta o estado, chama o resolver e interpreta via `_applyComposerIntents`
+  + `_runComposerAction`. Ordem dos ramos replicada fielmente (Escape → Enter →
+  Ctrl+R → Ctrl+Arrow → Arrow → Tab → Ctrl+Shift IRC). 20 casos de lib.
+- **W7.2 parseSlashCommand** → `lib/chat/input.js`: o parsing de `/cmd args` do
+  `checkSyntaxTooltip` (none/pending/query). 5 casos.
+- **5 compat aliases mortos removidos** (loadPersistedHistory, saveToPersistedHistory,
+  saveRecentCommand, computeMaxHeight, autoResize — 0 chamadores). `loadRecentCommands`
+  sobrevive com 2 testes → sai no W8 junto da reescrita black-box.
+- autocomplete 631→538. Teste black-box (38) verde sem edição = equivalência.
+  Reversão OK.
+- **W7.3** (painel Ctrl+R como hook/controlador próprio) e **W7.4** (split do
+  chat_viewport em scroll/reader) ficam para o W8 — são fatias grandes adicionais,
+  não bloqueiam o valor entregue.
+
+**Aprendizado:** mesmo padrão de fidelidade do snapshot do W6 — `up`/`down` eram
+valores de payload (`direction`), não eventos, capturados por imprecisão do grep
+antigo. Ao mover para `push("...", { direction })` no resolver (direction virou
+variável), sumiram do snapshot; os nomes de evento reais seguem rastreados.
 ### W8 — varredura e remoção do andaime · pendente
