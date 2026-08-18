@@ -26,6 +26,13 @@ import {
   tileDensity,
 } from "../../lib/group_call/payload.js";
 import {
+  REACTION_TTL_MS,
+  buildReactionBubble,
+  ensureReactionStack,
+  reactionEmoji,
+  reactionIconNode,
+} from "../../lib/group_call/reactions.js";
+import {
   acquireDisplayMedia,
   attachMediaStream,
   collectConnectionActivity,
@@ -1097,28 +1104,22 @@ const GroupCallWebRTCHook = {
     const tiles = this._reactionTiles(participantId);
 
     for (const tile of tiles) {
-      const stack = this._reactionStack(tile);
-      const bubble = document.createElement("span");
-      bubble.className = "group-call-reaction-bubble";
-      bubble.dataset.groupCallReactionBubble = "";
-      bubble.dataset.reaction = reaction;
-      bubble.dataset.reactionId = reactionId;
-      const icon = this._reactionIconNode(reaction);
-
-      if (icon) {
-        bubble.appendChild(icon);
-      } else {
-        bubble.textContent = this._reactionEmoji(reaction);
-      }
-
+      const stack = ensureReactionStack(tile);
+      const bubble = buildReactionBubble({
+        reaction,
+        reactionId,
+        iconNode: reactionIconNode(this.el, reaction),
+        emoji: reactionEmoji(reaction),
+      });
       stack.appendChild(bubble);
 
+      const key = `${reactionId}:${tile.dataset.streamId || "local"}`;
       const timer = setTimeout(() => {
         bubble.remove();
-        this.reactionTimers.delete(`${reactionId}:${tile.dataset.streamId || "local"}`);
-      }, 2400);
+        this.reactionTimers.delete(key);
+      }, REACTION_TTL_MS);
 
-      this.reactionTimers.set(`${reactionId}:${tile.dataset.streamId || "local"}`, timer);
+      this.reactionTimers.set(key, timer);
     }
   },
 
@@ -1138,46 +1139,6 @@ const GroupCallWebRTCHook = {
     }
 
     return tiles;
-  },
-
-  _reactionStack(tile) {
-    let stack = tile.querySelector("[data-group-call-reactions]");
-
-    if (!stack) {
-      stack = document.createElement("div");
-      stack.className = "group-call-reaction-stack";
-      stack.dataset.groupCallReactions = "";
-      tile.appendChild(stack);
-    }
-
-    return stack;
-  },
-
-  _reactionIconNode(reaction) {
-    const template = this.el?.querySelector?.(
-      `[data-group-call-reaction-icon-template="${reaction}"]`,
-    );
-    const node = template?.content?.firstElementChild?.cloneNode(true);
-    const isHTMLElement = typeof HTMLElement !== "undefined" && node instanceof HTMLElement;
-    const isSVGElement = typeof SVGElement !== "undefined" && node instanceof SVGElement;
-
-    if (isHTMLElement || isSVGElement) {
-      return node;
-    }
-
-    return null;
-  },
-
-  _reactionEmoji(reaction) {
-    return (
-      {
-        heart: "❤️",
-        thumbs_up: "👍",
-        clap: "👏",
-        laugh: "😄",
-        wow: "✨",
-      }[reaction] || "❤️"
-    );
   },
 
   async _toggleScreenShare() {
