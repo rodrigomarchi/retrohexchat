@@ -9,14 +9,7 @@
  * hooks (formatting shortcuts in AutocompleteHook) handle events first.
  */
 import { findShortcutAction } from "../../lib/input/shortcuts.js";
-
-function isEditableTarget(target) {
-  if (!(target instanceof Element)) return false;
-
-  return !!target.closest(
-    'input, textarea, select, [contenteditable=""], [contenteditable="true"], [role="textbox"]',
-  );
-}
+import { isEditableTarget } from "../../lib/ui/dom.js";
 
 function isConferenceAction(action) {
   return typeof action === "string" && action.startsWith("group_call_");

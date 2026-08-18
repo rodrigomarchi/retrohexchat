@@ -27,3 +27,21 @@ export function findClosestWithData(target, selector, dataKey) {
   }
   return el.getAttribute(dataKey);
 }
+
+/**
+ * Whether an event target sits inside an editable control.
+ *
+ * Used to let a text field keep a keystroke a global shortcut would otherwise
+ * claim — typing "z" in a message box must not fire push-to-talk, and a
+ * conference shortcut must not steal a key from an input.
+ *
+ * @param {EventTarget} target the event target (e.target)
+ * @returns {boolean}
+ */
+export function isEditableTarget(target) {
+  if (!(target instanceof Element)) return false;
+
+  return !!target.closest(
+    'input, textarea, select, [contenteditable=""], [contenteditable="true"], [role="textbox"]',
+  );
+}

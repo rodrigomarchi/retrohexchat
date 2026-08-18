@@ -44,9 +44,7 @@ import {
 } from "../../lib/chat/interactive.js";
 import { showFeedbackToast } from "../../lib/notifications/feedback_toast.js";
 import { t } from "../../lib/i18n.js";
-
-const LONG_PRESS_MS = 550;
-const MOVE_TOLERANCE_PX = 10;
+import { createLongPress } from "../../lib/input/long_press.js";
 
 const ChatViewportHook = {
   mounted() {
@@ -58,8 +56,10 @@ const ChatViewportHook = {
     this.pinned = true;
     this.pendingPrepend = null;
     this.mouseDownPos = null;
-    this.longPress = null;
-    this.suppressNextClick = false;
+    this.longPress = createLongPress({
+      shouldFire: ({ msgEl }) => msgEl.isConnected,
+      onFire: (context) => this.fireLongPress(context),
+    });
     this.listeners = [];
 
     this.scrollToBottom();
@@ -70,7 +70,7 @@ const ChatViewportHook = {
   },
 
   destroyed() {
-    this.cancelLongPress();
+    this.longPress.cancel();
     if (this.pinnedObserver) this.pinnedObserver.disconnect();
     if (this.contentObserver) this.contentObserver.disconnect();
     if (this.sizeObserver) this.sizeObserver.disconnect();
@@ -259,10 +259,9 @@ const ChatViewportHook = {
     });
 
     this.on(list, "click", (e) => {
-      if (this.suppressNextClick) {
+      if (this.longPress.consumeClickSuppression()) {
         e.preventDefault();
         e.stopPropagation();
-        this.suppressNextClick = false;
         return;
       }
 
@@ -303,7 +302,7 @@ const ChatViewportHook = {
     this.on(list, "pointerdown", (e) => this.startLongPress(e));
     this.on(list, "pointermove", (e) => this.moveLongPress(e));
     this.on(list, "pointerup", (e) => this.finishLongPress(e));
-    this.on(list, "pointercancel", () => this.cancelLongPress());
+    this.on(list, "pointercancel", () => this.longPress.cancel());
 
     this.on(list, "dblclick", (e) => {
       if (isContextMenuOpen()) return;
@@ -406,56 +405,32 @@ const ChatViewportHook = {
     const msgEl = e.target.closest(".chat-message");
     if (!msgEl) return;
 
-    this.cancelLongPress();
     cancelNickHoverTimer();
     removeTooltip();
-    this.longPress = {
+    this.longPress.start(e.clientX, e.clientY, {
       msgEl,
       target: e.target,
       x: e.clientX,
       y: e.clientY,
-      fired: false,
-      timer: setTimeout(() => this.fireLongPress(), LONG_PRESS_MS),
-    };
+    });
   },
 
   moveLongPress(e) {
-    if (!this.longPress || this.longPress.fired) return;
-
-    const dx = Math.abs(e.clientX - this.longPress.x);
-    const dy = Math.abs(e.clientY - this.longPress.y);
-    if (dx > MOVE_TOLERANCE_PX || dy > MOVE_TOLERANCE_PX) this.cancelLongPress();
+    this.longPress.move(e.clientX, e.clientY);
   },
 
   finishLongPress(e) {
-    if (this.longPress?.fired) {
+    if (this.longPress.finish()) {
       e.preventDefault();
       e.stopPropagation();
     }
-    this.cancelLongPress({ keepClickSuppression: true });
   },
 
-  fireLongPress() {
-    if (!this.longPress) return;
-
-    const { msgEl, target, x, y } = this.longPress;
-    if (!msgEl.isConnected) {
-      this.cancelLongPress();
-      return;
-    }
-
-    this.longPress.fired = true;
-    this.suppressNextClick = true;
+  fireLongPress({ msgEl, target, x, y }) {
     setContextMenuOpen(true);
     cancelNickHoverTimer();
     removeTooltip();
     this.detectAndPushContextMenu({ target, clientX: x, clientY: y }, msgEl);
-  },
-
-  cancelLongPress({ keepClickSuppression = false } = {}) {
-    if (this.longPress?.timer) clearTimeout(this.longPress.timer);
-    this.longPress = null;
-    if (!keepClickSuppression) this.suppressNextClick = false;
   },
 };
 

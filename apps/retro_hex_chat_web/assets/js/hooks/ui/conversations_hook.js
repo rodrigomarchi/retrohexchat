@@ -4,15 +4,12 @@
  */
 import { findClosestWithData } from "../../lib/ui/dom.js";
 import { showFeedbackToast } from "../../lib/notifications/feedback_toast.js";
-
-const LONG_PRESS_MS = 550;
-const MOVE_TOLERANCE_PX = 10;
+import { createLongPress } from "../../lib/input/long_press.js";
 
 const ConversationsHook = {
   mounted() {
     this.suppressContextClick = false;
-    this.longPress = null;
-    this.suppressNextClick = false;
+    this.longPress = createLongPress({ onFire: (context) => this.fireLongPress(context) });
 
     this.el.addEventListener(
       "mousedown",
@@ -36,10 +33,9 @@ const ConversationsHook = {
     this.el.addEventListener(
       "click",
       (e) => {
-        if (this.suppressNextClick) {
+        if (this.longPress.consumeClickSuppression()) {
           e.preventDefault();
           e.stopPropagation();
-          this.suppressNextClick = false;
           return;
         }
 
@@ -59,7 +55,7 @@ const ConversationsHook = {
     this._pointerDown = (e) => this.startLongPress(e);
     this._pointerMove = (e) => this.moveLongPress(e);
     this._pointerUp = (e) => this.finishLongPress(e);
-    this._pointerCancel = () => this.cancelLongPress();
+    this._pointerCancel = () => this.longPress.cancel();
 
     this.el.addEventListener("pointerdown", this._pointerDown);
     this.el.addEventListener("pointermove", this._pointerMove);
@@ -115,7 +111,7 @@ const ConversationsHook = {
   },
 
   destroyed() {
-    this.cancelLongPress();
+    this.longPress.cancel();
     clearTimeout(this._suppressContextClickTimer);
     this.el.removeEventListener("pointerdown", this._pointerDown);
     this.el.removeEventListener("pointermove", this._pointerMove);
@@ -130,43 +126,22 @@ const ConversationsHook = {
     const nick = findClosestWithData(e.target, "[data-nick]", "nick");
     if (!channel && !nick) return;
 
-    this.cancelLongPress();
-    this.longPress = {
-      channel,
-      nick,
-      x: e.clientX,
-      y: e.clientY,
-      fired: false,
-      timer: setTimeout(() => this.fireLongPress(), LONG_PRESS_MS),
-    };
+    this.longPress.start(e.clientX, e.clientY, { channel, nick, x: e.clientX, y: e.clientY });
   },
 
   moveLongPress(e) {
-    if (!this.longPress) return;
-    if (this.longPress.fired) return;
-
-    const dx = Math.abs(e.clientX - this.longPress.x);
-    const dy = Math.abs(e.clientY - this.longPress.y);
-    if (dx > MOVE_TOLERANCE_PX || dy > MOVE_TOLERANCE_PX) {
-      this.cancelLongPress();
-    }
+    this.longPress.move(e.clientX, e.clientY);
   },
 
   finishLongPress(e) {
-    if (this.longPress?.fired) {
+    if (this.longPress.finish()) {
       e.preventDefault();
       e.stopPropagation();
     }
-    this.cancelLongPress({ keepClickSuppression: true });
   },
 
-  fireLongPress() {
-    if (!this.longPress) return;
-
-    const { channel, nick, x, y } = this.longPress;
-    this.longPress.fired = true;
+  fireLongPress({ channel, nick, x, y }) {
     this.suppressContextClick = true;
-    this.suppressNextClick = true;
     clearTimeout(this._suppressContextClickTimer);
     this._suppressContextClickTimer = setTimeout(() => {
       this.suppressContextClick = false;
@@ -177,12 +152,6 @@ const ConversationsHook = {
     } else if (nick) {
       this.pushEvent("pm_right_click", { nick, x, y });
     }
-  },
-
-  cancelLongPress({ keepClickSuppression = false } = {}) {
-    if (this.longPress?.timer) clearTimeout(this.longPress.timer);
-    this.longPress = null;
-    if (!keepClickSuppression) this.suppressNextClick = false;
   },
 };
 
