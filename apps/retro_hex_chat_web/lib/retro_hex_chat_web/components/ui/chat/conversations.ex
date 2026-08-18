@@ -2,11 +2,12 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   @moduledoc """
   Conversations sidebar component for the showcase design system.
 
-  The sidebar is IRC-native: it presents joined channels, recent private
-  messages, the account auto-join list, and popular channel suggestions without
-  modeling a second workspace/navigation system. It remains hook-compatible with
-  ConversationsHook through `phx-hook="ConversationsHook"` plus
-  `data-channel` / `data-nick` attributes on actionable rows.
+  The sidebar is IRC-native: it presents joined channels ordered by recent
+  activity, recent private messages, the account auto-join list, and popular
+  channel suggestions without modeling a second workspace/navigation system. It
+  remains hook-compatible with ConversationsHook through
+  `phx-hook="ConversationsHook"` plus `data-channel` / `data-nick` attributes on
+  actionable rows.
 
   ## Usage
 
@@ -236,6 +237,11 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   attr :active_channel, :string, default: nil
   attr :unread_channels, :list, default: []
   attr :unread_counts, :map, default: %{}, doc: "Map of channel/pm name to unread count"
+
+  attr :channel_activity_order, :map,
+    default: %{},
+    doc: "Monotonic activity order keyed by channel name"
+
   attr :highlight_channels, :list, default: []
   attr :flash_channels, :list, default: [], doc: "Channels with recent activity flash"
   attr :muted_channels, :list, default: []
@@ -279,8 +285,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   def conversations(assigns) do
     assigns =
       assign(assigns,
-        activity_channels: activity_channels(assigns),
-        activity_pms: activity_pms(assigns),
+        ordered_channels: ordered_channels(assigns),
         has_conversations_content: has_conversations_content?(assigns),
         channel_count: length(assigns.channels),
         pm_count: length(assigns.pm_conversations),
@@ -363,56 +368,6 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
           </.empty_state>
         <% else %>
           <.conversation_section
-            :if={@activity_channels != [] or @activity_pms != []}
-            label={dgettext("chat", "ACTIVITY")}
-            section="alerts"
-            count={length(@activity_channels) + length(@activity_pms)}
-            open={section_open?(@collapsed_sections, "alerts")}
-            on_toggle={@on_toggle_section}
-            testid="conversations-section-alerts"
-          >
-            <.channel_item
-              :for={ch <- @activity_channels}
-              name={ch}
-              active={ch == @active_channel}
-              unread={member?(@unread_channels, ch)}
-              unread_count={unread_count(@unread_counts, ch)}
-              highlight={member?(@highlight_channels, ch) or member?(@flash_channels, ch)}
-              flash={member?(@flash_channels, ch)}
-              muted={member?(@muted_channels, ch)}
-              disconnected={member?(@disconnected_channels, ch)}
-              group_call_active={member?(@group_call_channels, ch)}
-              group_call_summary={Map.get(@group_call_summaries || %{}, ch)}
-              user_count={Map.get(@channel_user_counts || %{}, ch)}
-              on_click={@on_channel_click}
-              on_dblclick={@on_channel_dblclick}
-              testid={"activity-channel-#{ch}"}
-              unread_badge_testid={"activity-channel-unread-badge-#{ch}"}
-              unread_dot_testid={"activity-channel-unread-dot-#{ch}"}
-              activity
-            />
-
-            <.pm_item
-              :for={pm <- @activity_pms}
-              nick={pm}
-              active={pm == @active_pm}
-              open_tab={member?(@open_pm_tabs, pm)}
-              unread={member?(@unread_pms, pm)}
-              highlight={member?(@highlight_channels, "pm:#{pm}")}
-              unread_count={unread_count(@unread_counts, "pm:#{pm}")}
-              flash={member?(@flash_channels, "pm:#{pm}")}
-              muted={member?(@muted_channels, "pm:#{pm}")}
-              nick_color={nick_color(assigns, pm)}
-              p2p_session={p2p_session_for_pm(assigns, pm)}
-              on_click={@on_pm_click}
-              testid={"activity-pm-#{pm}"}
-              unread_badge_testid={"activity-pm-unread-badge-#{pm}"}
-              unread_dot_testid={"activity-pm-unread-dot-#{pm}"}
-              activity
-            />
-          </.conversation_section>
-
-          <.conversation_section
             :if={@channels != []}
             label={dgettext("chat", "OPEN CHANNELS")}
             section="channels"
@@ -422,7 +377,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
             testid="conversations-section-channels"
           >
             <.channel_item
-              :for={ch <- @channels}
+              :for={ch <- @ordered_channels}
               name={ch}
               active={ch == @active_channel}
               unread={member?(@unread_channels, ch)}
@@ -536,7 +491,6 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
     <section
       class={[
         "chat-conversations-section",
-        @section == "alerts" && "chat-conversations-section--alerts",
         @section == "autojoin" && "chat-conversations-section--autojoin",
         @section == "popular" && "chat-conversations-section--popular"
       ]}
@@ -584,7 +538,6 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   attr :testid, :string, default: nil
   attr :unread_badge_testid, :string, default: nil
   attr :unread_dot_testid, :string, default: nil
-  attr :activity, :boolean, default: false
 
   defp channel_item(assigns) do
     assigns =
@@ -599,7 +552,6 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
     <li
       class={[
         row_classes(@active),
-        @activity && "chat-conversations-row--activity",
         @unread && !@active && "font-bold",
         @highlight && !@active && "text-error",
         @flash && "animate-pulse",
@@ -673,7 +625,6 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   attr :testid, :string, default: nil
   attr :unread_badge_testid, :string, default: nil
   attr :unread_dot_testid, :string, default: nil
-  attr :activity, :boolean, default: false
 
   defp pm_item(assigns) do
     assigns =
@@ -687,7 +638,6 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
     <li
       class={[
         row_classes(@active),
-        @activity && "chat-conversations-row--activity",
         @unread && !@active && "font-bold italic",
         @highlight && !@active && "text-error",
         @flash && "animate-pulse",
@@ -902,24 +852,27 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
     """
   end
 
-  defp activity_channels(assigns) do
-    Enum.filter(assigns.channels, fn channel ->
-      unread_count(assigns.unread_counts, channel) > 0 or
-        member?(assigns.unread_channels, channel) or
-        member?(assigns.highlight_channels, channel) or
-        member?(assigns.flash_channels, channel)
+  defp ordered_channels(assigns) do
+    fallback_index =
+      assigns.channels
+      |> Enum.with_index()
+      |> Map.new()
+
+    Enum.sort_by(assigns.channels, fn channel ->
+      {-channel_activity_score(assigns, channel), Map.fetch!(fallback_index, channel)}
     end)
   end
 
-  defp activity_pms(assigns) do
-    Enum.filter(assigns.pm_conversations, fn nick ->
-      key = "pm:#{nick}"
+  defp channel_activity_score(assigns, channel) do
+    Map.get(assigns.channel_activity_order || %{}, channel) ||
+      if channel_attention?(assigns, channel), do: 1, else: 0
+  end
 
-      unread_count(assigns.unread_counts, key) > 0 or
-        member?(assigns.unread_pms, nick) or
-        member?(assigns.highlight_channels, key) or
-        member?(assigns.flash_channels, key)
-    end)
+  defp channel_attention?(assigns, channel) do
+    unread_count(assigns.unread_counts, channel) > 0 or
+      member?(assigns.unread_channels, channel) or
+      member?(assigns.highlight_channels, channel) or
+      member?(assigns.flash_channels, channel)
   end
 
   defp has_conversations_content?(assigns) do

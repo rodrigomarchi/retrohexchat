@@ -8,8 +8,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
   update, only when one of its own assigns changes.
 
   The parent stays the canonical owner of the underlying maps (`unread_counts`,
-  `highlight_channels`, `flash_channels`, `muted_channels`, `conversations_sections`,
-  `channel_user_counts`, `popular_channels`) because many subsystems read and write
+  `channel_activity_order`, `highlight_channels`, `flash_channels`, `muted_channels`,
+  `conversations_sections`, `channel_user_counts`, `popular_channels`) because many subsystems read and write
   them; they are passed in as raw values and this component derives the displayed
   lists (`unread_channels`, `unread_pms`, `collapsed_sections`,
   `autojoin_entries`) itself instead of the parent template computing them on
@@ -45,6 +45,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
        pm_conversations_truncated: false,
        autojoin_list: AutoJoinList.new(),
        unread_counts: %{},
+       channel_activity_order: %{},
        highlight_channels: MapSet.new(),
        flash_channels: MapSet.new(),
        muted_channels: MapSet.new(),
@@ -74,6 +75,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
       :pm_conversations_truncated,
       :autojoin_list,
       :unread_counts,
+      :channel_activity_order,
       :highlight_channels,
       :flash_channels,
       :muted_channels,
@@ -145,6 +147,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
           channels={@channels}
           active_channel={@active_channel}
           unread_counts={@unread_counts}
+          channel_activity_order={@channel_activity_order}
           unread_channels={@unread_channels}
           unread_pms={@unread_pms}
           highlight_channels={MapSet.to_list(@highlight_channels)}

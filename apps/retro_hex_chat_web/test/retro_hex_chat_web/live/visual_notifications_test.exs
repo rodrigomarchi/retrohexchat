@@ -56,6 +56,12 @@ defmodule RetroHexChatWeb.VisualNotificationsTest do
     end
   end
 
+  defp row_pos(html, testid) do
+    html
+    |> :binary.match(~s(data-testid="#{testid}"))
+    |> elem(0)
+  end
+
   # ── Conversations flash for channels ────────────────────────
 
   describe "conversations flash for channels" do
@@ -103,6 +109,33 @@ defmodule RetroHexChatWeb.VisualNotificationsTest do
       html = render(view)
       # The highlight class should be gone for the switched-to channel
       refute html =~ ~r/data-testid="channel-#{Regex.escape(ch)}"[^>]*text-error/
+    end
+
+    test "channel activity reorders the single open-channel list", %{conn: conn} do
+      nick = "VOrd#{uid()}"
+      first = "#vn_ord_a_#{uid()}"
+      second = "#vn_ord_b_#{uid()}"
+      ensure_channel(first)
+      ensure_channel(second)
+
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+
+      view
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/join #{first}"})
+
+      view
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/join #{second}"})
+
+      html = render(view)
+      assert row_pos(html, "channel-#{second}") < row_pos(html, "channel-#{first}")
+
+      send_new_message(view, "Other", "background message", first)
+
+      html = render(view)
+      assert row_pos(html, "channel-#{first}") < row_pos(html, "channel-#{second}")
+      refute html =~ "ACTIVITY"
     end
   end
 

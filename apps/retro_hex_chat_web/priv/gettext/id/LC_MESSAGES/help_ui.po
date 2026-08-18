@@ -16,7 +16,7 @@ msgstr ""
 msgid "#lobby (12)"
 msgstr "#lobby (12)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:57
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:51
 #, elixir-autogen, elixir-format
 msgid ". User counts appear next to all channels."
 msgstr "Jumlah pengguna muncul di samping semua kanal."
@@ -343,7 +343,7 @@ msgstr "Galat:"
 msgid "Every"
 msgstr "Setiap"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Features"
@@ -855,7 +855,7 @@ msgstr "Penangkap URL"
 msgid "User Count"
 msgstr "Cacah Pengguna"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:80
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:74
 #, elixir-autogen, elixir-format
 msgid "User Interactions"
 msgstr "Interaksi Pengguna"
@@ -2117,56 +2117,34 @@ msgstr ""
 "— Sebagian daftar dibatasi alih-alih dihalaman, dan menyatakannya. Hitungan "
 "seperti ini berarti daftar di layar bukan seluruh daftar."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:18
-#, elixir-autogen, elixir-format
-msgid ""
-"- Channels and PMs with unread messages, highlights, or recent flash "
-"activity"
-msgstr ""
-"- Kanal dan PM dengan pesan yang belum dibaca, highlights, atau aktivitas "
-"flash baru-baru ini"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:24
-#, elixir-autogen, elixir-format
-msgid ""
-"- Channels you are currently joined to, with user counts and unread badges"
-msgstr ""
-"- Kanal Anda saat ini bergabung dengan, dengan jumlah pengguna dan lencana "
-"yang belum dibaca"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:30
 #, elixir-autogen, elixir-format
 msgid ""
 "- PM conversations restored from the current session or account history"
 msgstr "- Percakapan PM dipulihkan dari sesi saat ini atau riwayat akun"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "- Saved channels that will be joined automatically on connect"
 msgstr ""
 "- Tersimpan saluran yang akan bergabung secara otomatis pada sambungan"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:48
 #, elixir-autogen, elixir-format
 msgid ". Rows with highlights"
 msgstr "Baris dengan sorot"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:18
-#, elixir-autogen, elixir-format
-msgid "ACTIVITY"
-msgstr "AKTIVITAS"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "AUTO-JOIN"
 msgstr "AUTO- JOIN"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:66
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "Auto-Join"
 msgstr "Otomatis-Gabung"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:68
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:62
 #, elixir-autogen, elixir-format
 msgid ""
 "Auto-Join shows saved channels from your account auto-join list. Channels "
@@ -2182,22 +2160,22 @@ msgstr ""
 msgid "Collapsible sections with clickable headers:"
 msgstr "Daerah yang dapat konflik dengan tajuk yang dapat diklik:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "OPEN CHANNELS"
 msgstr "OPEN CHANNELS"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "Open Channels"
 msgstr "Buka Kanal"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "RECENT PRIVATE MESSAGES"
 msgstr "RECENT PRIVATE MESSAGES"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:82
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:76
 #, elixir-autogen, elixir-format
 msgid ""
 "Right-click a channel or PM row for context actions. Double-click a PM row "
@@ -2205,16 +2183,6 @@ msgid ""
 msgstr ""
 "Klik kanal atau baris PM untuk aksi konteks. Klik ganda baris PM untuk "
 "membuka atau fokuskan tab pesan privat itu."
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:61
-#, elixir-autogen, elixir-format
-msgid ""
-"The active channel is highlighted in the Open Channels section. Closing a "
-"channel tab leaves the channel, so joined channels and channel tabs stay "
-"aligned."
-msgstr ""
-"Saluran aktif disorot dalam daerah Buka Kanal. Menutup tab saluran "
-"meninggalkan kanal, jadi gabung kanal dan tab kanal tetap selaras."
 
 #: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:16
 #, elixir-autogen, elixir-format
@@ -2224,15 +2192,6 @@ msgid ""
 msgstr ""
 "Tak ada pintasan papan tik khusus bagi aksi /me. Ketik /me secara langsung "
 "dalam sebuah masukan saluran."
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:51
-#, elixir-autogen, elixir-format
-msgid ""
-"Click a channel or PM to switch to it. Activity rows use an alert surface, "
-"unread rows appear"
-msgstr ""
-"Klik kanal atau PM untuk beralih. Baris aktivitas memakai permukaan "
-"peringatan, baris belum dibaca tampil"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:9
 #, elixir-autogen, elixir-format
@@ -2245,7 +2204,7 @@ msgstr ""
 "terbuka, PM terbaru, dan entri auto-join. Panel juga dapat ditoggle dari "
 "toolbar."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:43
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:37
 #, elixir-autogen, elixir-format
 msgid ""
 "- Active public channels you have not joined yet, plus a button that opens "
@@ -2254,17 +2213,17 @@ msgstr ""
 "- Kanal publik aktif yang belum Anda ikuti, ditambah tombol yang membuka "
 "daftar kanal lengkap"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "POPULAR CHANNELS"
 msgstr "KANAL POPULER"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:73
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:67
 #, elixir-autogen, elixir-format
 msgid "Popular Channels"
 msgstr "Kanal populer"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:75
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:69
 #, elixir-autogen, elixir-format
 msgid ""
 "Shows active public channels you have not joined yet when the server has "
@@ -2274,15 +2233,6 @@ msgstr ""
 "Menampilkan kanal publik aktif yang belum Anda ikuti saat server memiliki "
 "ruang untuk disarankan. Klik [+] untuk bergabung ke saran, atau klik "
 "\"Ramban Semua Kanal...\" untuk membuka dialog daftar kanal lengkap."
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"The Conversations sidebar is the left IRC navigation pane: activity, joined "
-"channels, recent PMs, auto-join channels, and popular channel suggestions."
-msgstr ""
-"Sidebar Percakapan adalah navigasi IRC kiri: aktivitas, kanal yang diikuti, "
-"PM terbaru, kanal auto-join, dan saran kanal populer."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:29
 #, elixir-autogen, elixir-format
@@ -3243,3 +3193,44 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "covers all of it."
 msgstr "Semuanya."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:18
+#, elixir-autogen, elixir-format
+msgid ""
+"- Channels you are currently joined to, ordered by recent activity, with "
+"user counts, unread badges, and highlight markers"
+msgstr ""
+"- Kanal Anda saat ini bergabung, memerintahkan oleh aktivitas baru-baru ini,"
+" dengan jumlah pengguna, lencana tidak terbaca, dan penanda sorot"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:45
+#, elixir-autogen, elixir-format
+msgid ""
+"Click a channel or PM to switch to it. Open channel rows keep unread badges "
+"and highlight markers in one place; unread rows appear"
+msgstr ""
+"Klik saluran atau PM untuk beralih ke itu. Buka baris saluran tetap tanda "
+"yang belum dibaca dan menandai di satu tempat; baris tidak terbaca muncul"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"The Conversations sidebar is the left IRC navigation pane: joined channels "
+"ordered by recent activity, recent PMs, auto-join channels, and popular "
+"channel suggestions."
+msgstr ""
+"Batang samping Percakapan adalah panel navigasi IRC kiri: menghubungkan "
+"saluran-saluran yang diperintahkan oleh aktivitas baru-baru ini, PM, "
+"otomatis bergabung dengan saluran, dan saran saluran populer."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:55
+#, elixir-autogen, elixir-format
+msgid ""
+"The active channel is highlighted in the Open Channels section. New channel "
+"activity moves that channel toward the top without changing the tab order. "
+"Closing a channel tab leaves the channel, so joined channels and channel "
+"tabs stay aligned."
+msgstr ""
+"Saluran aktif disorot dalam daerah Buka Kanal. Aktivitas saluran baru "
+"memindahkan kanal itu menuju puncak tanpa mengubah urutan tab. Menutup tab "
+"saluran meninggalkan kanal, jadi gabung kanal dan tab kanal tetap selaras."

@@ -3,7 +3,7 @@
 
   <.showcase_card
     title={dgettext("showcase", "Full Sidebar")}
-    description="IRC-native conversations sidebar with activity, joined channels, recent PMs, auto-join entries, and popular channel suggestions."
+    description="IRC-native conversations sidebar with activity-sorted joined channels, recent PMs, auto-join entries, and popular channel suggestions."
   >
     <div class="max-w-[260px] shadow-retro-field bg-white">
       <.conversations
@@ -12,6 +12,7 @@
         active_channel="#lobby"
         unread_channels={["#help", "#random"]}
         unread_counts={%{"#help" => 3, "#random" => 15, "pm:alice" => 2}}
+        channel_activity_order={%{"#help" => 2, "#random" => 3}}
         highlight_channels={["#random"]}
         flash_channels={["#random"]}
         muted_channels={["#music"]}
@@ -39,6 +40,7 @@
       channels=&#123;["#lobby", "#help"]&#125;
       active_channel="#lobby"
       unread_counts=&#123;%&#123;"#help" =&gt; 3&#125;&#125;
+      channel_activity_order=&#123;%&#123;"#help" =&gt; 1&#125;&#125;
       channel_user_counts=&#123;%&#123;"#lobby" =&gt; 12&#125;&#125;
       autojoin_entries=&#123;[%&#123;channel_name: "#lobby"&#125;]&#125;
       disconnected_channels=&#123;["#dev"]&#125;

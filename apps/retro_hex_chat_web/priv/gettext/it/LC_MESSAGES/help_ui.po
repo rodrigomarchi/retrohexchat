@@ -16,7 +16,7 @@ msgstr ""
 msgid "#lobby (12)"
 msgstr "#lobby (12)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:57
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:51
 #, elixir-autogen, elixir-format
 msgid ". User counts appear next to all channels."
 msgstr ". I conti degli utenti appaiono accanto a tutti i canali."
@@ -353,7 +353,7 @@ msgstr "Errori:"
 msgid "Every"
 msgstr "Ogni"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Features"
@@ -867,7 +867,7 @@ msgstr "Cattura URL"
 msgid "User Count"
 msgstr "Contesto utente"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:80
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:74
 #, elixir-autogen, elixir-format
 msgid "User Interactions"
 msgstr "Interazioni utente"
@@ -2162,56 +2162,34 @@ msgstr ""
 "Un conteggio come questo significa che l'elenco a schermo non è l'elenco "
 "intero."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:18
-#, elixir-autogen, elixir-format
-msgid ""
-"- Channels and PMs with unread messages, highlights, or recent flash "
-"activity"
-msgstr ""
-"- Canali e PM con messaggi non letti, evidenziazioni o attività flash "
-"recenti"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:24
-#, elixir-autogen, elixir-format
-msgid ""
-"- Channels you are currently joined to, with user counts and unread badges"
-msgstr ""
-"- I canali a cui sei attualmente iscritto, con conteggi utente e distintivi "
-"non letti"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:30
 #, elixir-autogen, elixir-format
 msgid ""
 "- PM conversations restored from the current session or account history"
 msgstr ""
 "- conversazioni PM ripristinate dalla sessione corrente o cronologia account"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "- Saved channels that will be joined automatically on connect"
 msgstr "- Canali salvati che saranno uniti automaticamente su connessione"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:48
 #, elixir-autogen, elixir-format
 msgid ". Rows with highlights"
 msgstr ". righe con punti salienti"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:18
-#, elixir-autogen, elixir-format
-msgid "ACTIVITY"
-msgstr "ATTIVITÀ"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "AUTO-JOIN"
 msgstr "AUTO-JOIN"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:66
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "Auto-Join"
 msgstr "Auto-Join"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:68
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:62
 #, elixir-autogen, elixir-format
 msgid ""
 "Auto-Join shows saved channels from your account auto-join list. Channels "
@@ -2227,22 +2205,22 @@ msgstr ""
 msgid "Collapsible sections with clickable headers:"
 msgstr "Sezioni collettori con intestazioni cliccabili:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "OPEN CHANNELS"
 msgstr "ALLEGATI"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "Open Channels"
 msgstr "Canali aperti"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "RECENT PRIVATE MESSAGES"
 msgstr "VALUTAZIONI PRIVATE"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:82
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:76
 #, elixir-autogen, elixir-format
 msgid ""
 "Right-click a channel or PM row for context actions. Double-click a PM row "
@@ -2252,17 +2230,6 @@ msgstr ""
 " azioni di contesto. Fare doppio clic su una riga PM per aprire o "
 "concentrarsi sulla scheda del messaggio privato."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:61
-#, elixir-autogen, elixir-format
-msgid ""
-"The active channel is highlighted in the Open Channels section. Closing a "
-"channel tab leaves the channel, so joined channels and channel tabs stay "
-"aligned."
-msgstr ""
-"Il canale attivo è evidenziato nella sezione Canali aperti. La chiusura di "
-"una scheda di canale lascia il canale, così i canali uniti e le schede di "
-"canale rimangono allineati."
-
 #: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:16
 #, elixir-autogen, elixir-format
 msgid ""
@@ -2271,15 +2238,6 @@ msgid ""
 msgstr ""
 "Non vi è alcun collegamento di tastiera dedicato per le azioni /me. Digitare"
 " /me direttamente in un canale di input."
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:51
-#, elixir-autogen, elixir-format
-msgid ""
-"Click a channel or PM to switch to it. Activity rows use an alert surface, "
-"unread rows appear"
-msgstr ""
-"Fai clic su un canale o PM per passare a esso. Le righe attività usano una "
-"superficie di avviso, le righe non lette appaiono"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:9
 #, elixir-autogen, elixir-format
@@ -2292,7 +2250,7 @@ msgstr ""
 "canali aperti, PM recenti e voci auto-join. Puoi anche alternare il pannello"
 " dalla toolbar."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:43
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:37
 #, elixir-autogen, elixir-format
 msgid ""
 "- Active public channels you have not joined yet, plus a button that opens "
@@ -2301,17 +2259,17 @@ msgstr ""
 "- Canali pubblici attivi a cui non ti sei ancora unito, più un pulsante che "
 "apre l'elenco completo dei canali"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "POPULAR CHANNELS"
 msgstr "CANALI POPOLARI"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:73
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:67
 #, elixir-autogen, elixir-format
 msgid "Popular Channels"
 msgstr "Canali popolari"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:75
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:69
 #, elixir-autogen, elixir-format
 msgid ""
 "Shows active public channels you have not joined yet when the server has "
@@ -2321,16 +2279,6 @@ msgstr ""
 "Mostra canali pubblici attivi a cui non ti sei ancora unito quando il server"
 " ha stanze da suggerire. Fai clic su [+] per unirti a un suggerimento, "
 "oppure su \"Sfoglia tutti i canali...\" per aprire l'elenco completo."
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"The Conversations sidebar is the left IRC navigation pane: activity, joined "
-"channels, recent PMs, auto-join channels, and popular channel suggestions."
-msgstr ""
-"La barra laterale Conversazioni è la navigazione IRC a sinistra: attività, "
-"canali aperti, PM recenti, canali auto-join e suggerimenti di canali "
-"popolari."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:29
 #, elixir-autogen, elixir-format
@@ -3309,3 +3257,46 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "covers all of it."
 msgstr "copre tutto."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:18
+#, elixir-autogen, elixir-format
+msgid ""
+"- Channels you are currently joined to, ordered by recent activity, with "
+"user counts, unread badges, and highlight markers"
+msgstr ""
+"- I canali a cui sei attualmente iscritto, ordinati per attività recenti, "
+"con conteggi utente, badge non letti, e marcatori di evidenziazione"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:45
+#, elixir-autogen, elixir-format
+msgid ""
+"Click a channel or PM to switch to it. Open channel rows keep unread badges "
+"and highlight markers in one place; unread rows appear"
+msgstr ""
+"Fare clic su un canale o PM per passare a esso. Le righe dei canali aperti "
+"tengono i distintivi non letti e evidenziano i marcatori in un posto; le "
+"righe non lette appaiono"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"The Conversations sidebar is the left IRC navigation pane: joined channels "
+"ordered by recent activity, recent PMs, auto-join channels, and popular "
+"channel suggestions."
+msgstr ""
+"La barra laterale Conversations è il pannello di navigazione IRC sinistro: "
+"canali uniti ordinati da attività recenti, PM recenti, canali di accesso "
+"automatico e suggerimenti di canale popolari."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:55
+#, elixir-autogen, elixir-format
+msgid ""
+"The active channel is highlighted in the Open Channels section. New channel "
+"activity moves that channel toward the top without changing the tab order. "
+"Closing a channel tab leaves the channel, so joined channels and channel "
+"tabs stay aligned."
+msgstr ""
+"Il canale attivo è evidenziato nella sezione Canali aperti. L'attività del "
+"nuovo canale muove quel canale verso l'alto senza cambiare l'ordine della "
+"scheda. La chiusura di una scheda di canale lascia il canale, così i canali "
+"uniti e le schede di canale rimangono allineati."

@@ -16,7 +16,7 @@ msgstr ""
 msgid "#lobby (12)"
 msgstr "#lobby (12) (中文(简体) )."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:57
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:51
 #, elixir-autogen, elixir-format
 msgid ". User counts appear next to all channels."
 msgstr "。用户数出现在所有频道旁边。"
@@ -334,7 +334,7 @@ msgstr "错误 :"
 msgid "Every"
 msgstr "每"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Features"
@@ -825,7 +825,7 @@ msgstr "URL 捕捉器"
 msgid "User Count"
 msgstr "用户数"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:80
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:74
 #, elixir-autogen, elixir-format
 msgid "User Interactions"
 msgstr "用户互动"
@@ -1961,51 +1961,33 @@ msgid ""
 " means the list on screen is not the whole list."
 msgstr "— 有些列表设有上限而非分页，并且会说明这一点。这样的计数表示屏幕上的列表并不是全部。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:18
-#, elixir-autogen, elixir-format
-msgid ""
-"- Channels and PMs with unread messages, highlights, or recent flash "
-"activity"
-msgstr "- 有未读信件、亮点或近期闪存活动的频道和首相"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:24
-#, elixir-autogen, elixir-format
-msgid ""
-"- Channels you are currently joined to, with user counts and unread badges"
-msgstr "- 目前加入的频道,包括用户数和未读徽章"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:30
 #, elixir-autogen, elixir-format
 msgid ""
 "- PM conversations restored from the current session or account history"
 msgstr "- 从当前会议或账户历史中恢复首相对话"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "- Saved channels that will be joined automatically on connect"
 msgstr "- 连接时自动加入的已保存频道"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:48
 #, elixir-autogen, elixir-format
 msgid ". Rows with highlights"
 msgstr "。带有亮点的行"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:18
-#, elixir-autogen, elixir-format
-msgid "ACTIVITY"
-msgstr "活动"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "AUTO-JOIN"
 msgstr "奥托-琼"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:66
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "Auto-Join"
 msgstr "自动加入"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:68
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:62
 #, elixir-autogen, elixir-format
 msgid ""
 "Auto-Join shows saved channels from your account auto-join list. Channels "
@@ -2018,35 +2000,27 @@ msgstr "Auto-Join 显示您账户自动连接列表中保存的频道 。 有保
 msgid "Collapsible sections with clickable headers:"
 msgstr "带有可点击标题的可折叠区域 :"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "OPEN CHANNELS"
 msgstr "打开目录"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "Open Channels"
 msgstr "打开频道"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "RECENT PRIVATE MESSAGES"
 msgstr "最近的一些私人言论"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:82
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:76
 #, elixir-autogen, elixir-format
 msgid ""
 "Right-click a channel or PM row for context actions. Double-click a PM row "
 "to open or focus that private message tab."
 msgstr "右键单击频道或 PM 行进行上下文动作 。 双击 PM 行打开或聚焦私人信件标签 。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:61
-#, elixir-autogen, elixir-format
-msgid ""
-"The active channel is highlighted in the Open Channels section. Closing a "
-"channel tab leaves the channel, so joined channels and channel tabs stay "
-"aligned."
-msgstr "活动频道在开放频道部分突出显示. 关闭一个频道标签离开频道,所以连接的频道和频道标签保持对齐."
 
 #: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:16
 #, elixir-autogen, elixir-format
@@ -2054,13 +2028,6 @@ msgid ""
 "There is no dedicated keyboard shortcut for /me actions. Type /me directly "
 "in a channel input."
 msgstr "/me动作没有专门的键盘快捷键. 在频道输入中直接输入 /me."
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:51
-#, elixir-autogen, elixir-format
-msgid ""
-"Click a channel or PM to switch to it. Activity rows use an alert surface, "
-"unread rows appear"
-msgstr "点击频道或私信即可切换。活动行使用提醒表面，未读行显示为"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:9
 #, elixir-autogen, elixir-format
@@ -2070,37 +2037,30 @@ msgid ""
 "via the toolbar."
 msgstr "页眉显示标题、关闭按钮，以及打开频道、最近私信和 auto-join 条目的紧凑计数器。也可以通过工具栏切换面板。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:43
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:37
 #, elixir-autogen, elixir-format
 msgid ""
 "- Active public channels you have not joined yet, plus a button that opens "
 "the full channel list"
 msgstr "- 你尚未加入的活跃公开频道，以及打开完整频道列表的按钮"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "POPULAR CHANNELS"
 msgstr "热门频道"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:73
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:67
 #, elixir-autogen, elixir-format
 msgid "Popular Channels"
 msgstr "热门频道"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:75
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:69
 #, elixir-autogen, elixir-format
 msgid ""
 "Shows active public channels you have not joined yet when the server has "
 "rooms to suggest. Click [+] to join a suggestion, or click \"Browse All "
 "Channels...\" to open the full channel list dialog."
 msgstr "当服务器有可建议的房间时，显示你尚未加入的活跃公开频道。点击 [+] 加入建议，或点击“浏览所有频道...”打开完整频道列表对话框。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"The Conversations sidebar is the left IRC navigation pane: activity, joined "
-"channels, recent PMs, auto-join channels, and popular channel suggestions."
-msgstr "Conversations 侧边栏是左侧 IRC 导航：活动、已加入频道、最近私信、auto-join 频道和热门频道建议。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:29
 #, elixir-autogen, elixir-format
@@ -2904,3 +2864,36 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "covers all of it."
 msgstr "覆盖一切."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:18
+#, elixir-autogen, elixir-format
+msgid ""
+"- Channels you are currently joined to, ordered by recent activity, with "
+"user counts, unread badges, and highlight markers"
+msgstr "- 频道,根据最近的活动,您正在连接,命令用户计数,未读徽章,并突出标记"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:45
+#, elixir-autogen, elixir-format
+msgid ""
+"Click a channel or PM to switch to it. Open channel rows keep unread badges "
+"and highlight markers in one place; unread rows appear"
+msgstr "点击频道或 PM 切换到它 。 打开频道行保留未读徽章并突出标记在一个地方;未读行出现"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"The Conversations sidebar is the left IRC navigation pane: joined channels "
+"ordered by recent activity, recent PMs, auto-join channels, and popular "
+"channel suggestions."
+msgstr ""
+"Conversations sidebar是左边的IRC导航面板:由最近的活动,最近的PMs,自动连接频道,以及流行频道建议所命令的加入频道."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:55
+#, elixir-autogen, elixir-format
+msgid ""
+"The active channel is highlighted in the Open Channels section. New channel "
+"activity moves that channel toward the top without changing the tab order. "
+"Closing a channel tab leaves the channel, so joined channels and channel "
+"tabs stay aligned."
+msgstr ""
+"活动频道在开放频道部分突出显示. 新的频道活动将该频道移动到顶部,而不改变制表顺序. 关闭一个频道标签离开频道,所以连接的频道和频道标签保持对齐."

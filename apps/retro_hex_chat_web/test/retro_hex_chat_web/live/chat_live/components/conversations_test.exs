@@ -61,18 +61,18 @@ defmodule RetroHexChatWeb.ChatLive.Components.ConversationsTest do
         popular_channels: [%{name: "#retro", user_count: 7}]
       )
 
-    assert html =~ ~s(data-testid="conversations-section-alerts")
     assert html =~ ~s(data-testid="conversations-section-channels")
     assert html =~ ~s(data-testid="conversations-section-pms")
     assert html =~ ~s(data-testid="conversations-section-autojoin")
     assert html =~ ~s(data-testid="conversations-section-popular")
 
-    assert html =~ "ACTIVITY"
     assert html =~ "OPEN CHANNELS"
     assert html =~ "RECENT PRIVATE MESSAGES"
     assert html =~ "AUTO-JOIN"
     assert html =~ "POPULAR CHANNELS"
 
+    refute html =~ ~s(data-testid="conversations-section-alerts")
+    refute html =~ "ACTIVITY"
     refute html =~ "MY CHANNELS"
   end
 
@@ -126,9 +126,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ConversationsTest do
     refute html =~ "hunter2"
   end
 
-  # A highlight in a conversation nobody is looking at has to survive being
-  # looked away from: the sidebar is where the reader finds it afterwards.
-  test "draws a highlighted PM the way it draws a highlighted channel" do
+  test "draws highlights in the canonical conversation rows" do
     html =
       render_conv(
         pm_conversations: ["alice", "bob"],
@@ -137,14 +135,29 @@ defmodule RetroHexChatWeb.ChatLive.Components.ConversationsTest do
 
     document = Floki.parse_document!(html)
 
-    alice = Floki.find(document, ~s([data-testid="activity-pm-alice"]))
-    channel = Floki.find(document, ~s([data-testid="activity-channel-#elixir"]))
+    alice = Floki.find(document, ~s([data-testid="pm-alice"]))
+    channel = Floki.find(document, ~s([data-testid="channel-#elixir"]))
 
-    assert alice != [], "a highlighted PM belongs in the activity section"
+    assert alice != []
     assert Floki.attribute(alice, "class") |> to_string() =~ "text-error"
 
     assert Floki.find(alice, ".chat-conversations-row__signal--highlight") != []
     assert Floki.find(channel, ".chat-conversations-row__signal--highlight") != []
+  end
+
+  test "orders open channels by recent activity before join order" do
+    html =
+      render_conv(
+        channels: ["#lobby", "#elixir", "#zig"],
+        channel_activity_order: %{"#elixir" => 2, "#zig" => 3}
+      )
+
+    zig_pos = :binary.match(html, ~s(data-testid="channel-#zig")) |> elem(0)
+    elixir_pos = :binary.match(html, ~s(data-testid="channel-#elixir")) |> elem(0)
+    lobby_pos = :binary.match(html, ~s(data-testid="channel-#lobby")) |> elem(0)
+
+    assert zig_pos < elixir_pos
+    assert elixir_pos < lobby_pos
   end
 
   test "a PM nobody highlighted is drawn plainly" do

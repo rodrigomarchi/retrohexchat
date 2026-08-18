@@ -33,6 +33,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
 
   alias RetroHexChat.Observability
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
+  alias RetroHexChatWeb.ChatLive.ConversationsReadModel
   alias RetroHexChatWeb.ChatLive.Helpers.Messages, as: MessageHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.PM
   alias RetroHexChatWeb.ChatLive.P2PSessionEvents
@@ -271,6 +272,8 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
   defp maybe_push_highlight_tip(socket, _decorated), do: socket
 
   defp apply_new_message(socket, decorated, channel, session) do
+    socket = ConversationsReadModel.touch_channel_activity(socket, channel)
+
     if channel == session.active_channel do
       apply_active_channel_message(socket, decorated, channel, session)
     else

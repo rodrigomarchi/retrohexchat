@@ -13,6 +13,30 @@ defmodule RetroHexChatWeb.ChatLive.ConversationsReadModel do
 
   @max_popular_channels 10
 
+  @spec touch_channel_activity(Phoenix.LiveView.Socket.t(), String.t()) ::
+          Phoenix.LiveView.Socket.t()
+  def touch_channel_activity(socket, channel_name) when is_binary(channel_name) do
+    next_sequence = Map.get(socket.assigns, :channel_activity_sequence, 0) + 1
+    activity_order = Map.get(socket.assigns, :channel_activity_order, %{})
+
+    assign(socket,
+      channel_activity_sequence: next_sequence,
+      channel_activity_order: Map.put(activity_order, channel_name, next_sequence)
+    )
+  end
+
+  def touch_channel_activity(socket, _channel_name), do: socket
+
+  @spec drop_channel_activity(Phoenix.LiveView.Socket.t(), String.t()) ::
+          Phoenix.LiveView.Socket.t()
+  def drop_channel_activity(socket, channel_name) when is_binary(channel_name) do
+    activity_order = Map.get(socket.assigns, :channel_activity_order, %{})
+
+    assign(socket, channel_activity_order: Map.delete(activity_order, channel_name))
+  end
+
+  def drop_channel_activity(socket, _channel_name), do: socket
+
   @spec load_popular_channels(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
   def load_popular_channels(socket) do
     joined = socket.assigns.session.channels

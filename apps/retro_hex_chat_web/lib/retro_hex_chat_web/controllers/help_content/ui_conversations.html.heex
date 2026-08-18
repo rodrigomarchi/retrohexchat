@@ -1,7 +1,7 @@
 <p>
   {dgettext(
     "help_ui",
-    "The Conversations sidebar is the left IRC navigation pane: activity, joined channels, recent PMs, auto-join channels, and popular channel suggestions."
+    "The Conversations sidebar is the left IRC navigation pane: joined channels ordered by recent activity, recent PMs, auto-join channels, and popular channel suggestions."
   )}
 </p>
 <.help_h4 icon={:icon_group_tools}>{dgettext("help_ui", "Header")}</.help_h4>
@@ -15,15 +15,9 @@
 <p>{dgettext("help_ui", "Collapsible sections with clickable headers:")}</p>
 <ul>
   <li>
-    <strong>{dgettext("help_ui", "ACTIVITY")}</strong> {dgettext(
-      "help_ui",
-      "- Channels and PMs with unread messages, highlights, or recent flash activity"
-    )}
-  </li>
-  <li>
     <strong>{dgettext("help_ui", "OPEN CHANNELS")}</strong> {dgettext(
       "help_ui",
-      "- Channels you are currently joined to, with user counts and unread badges"
+      "- Channels you are currently joined to, ordered by recent activity, with user counts, unread badges, and highlight markers"
     )}
   </li>
   <li>
@@ -50,7 +44,7 @@
 <p>
   {dgettext(
     "help_ui",
-    "Click a channel or PM to switch to it. Activity rows use an alert surface, unread rows appear"
+    "Click a channel or PM to switch to it. Open channel rows keep unread badges and highlight markers in one place; unread rows appear"
   )} <strong>bold</strong>{dgettext(
     "help_ui",
     ". Rows with highlights"
@@ -60,7 +54,7 @@
 <p>
   {dgettext(
     "help_ui",
-    "The active channel is highlighted in the Open Channels section. Closing a channel tab leaves the channel, so joined channels and channel tabs stay aligned."
+    "The active channel is highlighted in the Open Channels section. New channel activity moves that channel toward the top without changing the tab order. Closing a channel tab leaves the channel, so joined channels and channel tabs stay aligned."
   )}
 </p>
 <.help_h4 icon={:icon_dialog_autojoin}>{dgettext("help_ui", "Auto-Join")}</.help_h4>

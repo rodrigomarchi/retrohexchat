@@ -82,6 +82,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
       loading_channel: channel_name,
       show_status_tab: false
     )
+    |> ConversationsReadModel.touch_channel_activity(channel_name)
     |> GroupCallEvents.refresh_channel_call_state(channel_name)
     |> GroupCallEvents.rehydrate()
     |> tap(fn _ -> send_update(Composer, id: Composer.id(), reset_input: true) end)
@@ -105,6 +106,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
 
     socket
     |> assign(session: new_session)
+    |> ConversationsReadModel.touch_channel_activity(channel_name)
     |> GroupCallEvents.refresh_channel_call_state(channel_name)
     |> GroupCallEvents.rehydrate()
     |> load_channel_user_count(channel_name)
@@ -142,6 +144,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
         flash_channels: flash,
         tab_order: TabOrder.drop(socket.assigns[:tab_order] || [], :channel, channel_name)
       )
+      |> ConversationsReadModel.drop_channel_activity(channel_name)
       |> GroupCallEvents.mark_channel_call_inactive(channel_name)
 
     socket =
@@ -180,6 +183,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
         session: new_session,
         tab_order: TabOrder.drop(socket.assigns[:tab_order] || [], :channel, channel_name)
       )
+      |> ConversationsReadModel.drop_channel_activity(channel_name)
       |> GroupCallEvents.mark_channel_call_inactive(channel_name)
 
     if new_session.active_channel do

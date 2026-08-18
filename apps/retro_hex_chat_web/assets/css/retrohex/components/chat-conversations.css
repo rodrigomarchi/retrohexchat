@@ -57,14 +57,6 @@
   @apply shrink-0 bg-white px-1 text-[10px] font-bold leading-4 text-muted-foreground shadow-retro-status;
 }
 
-.chat-conversations-section--alerts .chat-conversations-section__trigger {
-  @apply border-l-2 border-warning bg-warning-bg text-foreground;
-}
-
-.chat-conversations-section--alerts .chat-conversations-section__count {
-  @apply bg-warning text-white;
-}
-
 .chat-conversations-section--autojoin .chat-conversations-section__trigger {
   @apply border-l-2 border-success bg-surface text-success-dark;
 }
@@ -101,10 +93,6 @@
 
 .chat-conversations-row--active {
   @apply border-primary bg-hover-bg font-bold text-foreground shadow-retro-sunken;
-}
-
-.chat-conversations-row--activity:not(.chat-conversations-row--active) {
-  @apply bg-highlight-bg;
 }
 
 .chat-conversations-section--autojoin .chat-conversations-row:not(.chat-conversations-row--active) {

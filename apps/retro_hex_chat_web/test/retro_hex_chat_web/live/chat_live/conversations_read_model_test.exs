@@ -79,6 +79,34 @@ defmodule RetroHexChatWeb.ChatLive.ConversationsReadModelTest do
     end
   end
 
+  describe "channel activity order" do
+    test "touch_channel_activity/2 records monotonic activity per channel" do
+      socket =
+        "Viewer"
+        |> Session.new()
+        |> socket_with_session()
+        |> ConversationsReadModel.touch_channel_activity("#one")
+        |> ConversationsReadModel.touch_channel_activity("#two")
+        |> ConversationsReadModel.touch_channel_activity("#one")
+
+      assert socket.assigns.channel_activity_sequence == 3
+      assert socket.assigns.channel_activity_order == %{"#one" => 3, "#two" => 2}
+    end
+
+    test "drop_channel_activity/2 removes a parted channel without rewinding the sequence" do
+      socket =
+        "Viewer"
+        |> Session.new()
+        |> socket_with_session()
+        |> ConversationsReadModel.touch_channel_activity("#one")
+        |> ConversationsReadModel.touch_channel_activity("#two")
+        |> ConversationsReadModel.drop_channel_activity("#one")
+
+      assert socket.assigns.channel_activity_sequence == 2
+      assert socket.assigns.channel_activity_order == %{"#two" => 2}
+    end
+  end
+
   describe "load_popular_channels/1" do
     test "reads the live channel directory and leaves out the joined ones" do
       popular = unique("sidebarpopular")
