@@ -69,7 +69,10 @@ const HOOK_LINE_OVERRIDES = new Map([
   ],
   [
     "js/hooks/lobby/lobby_webrtc_hook.js",
-    "W4 extracts the negotiation rules to lib/p2p/negotiation.js",
+    "negotiation rules in lib/p2p/negotiation.js (W4) and the signal-replay/" +
+      "renegotiation/disconnect-deferral backoff and guard decisions in " +
+      "lib/p2p/signaling_session.js; residual is the single live RTCPeerConnection, " +
+      "its setTimeout timers, ICE/track wiring and the pushEvent signaling — I/O",
   ],
   [
     "js/hooks/p2p/file_transfer_hook.js",

@@ -509,3 +509,27 @@ a zero p/ o lobby_media): o watchdog de mídia parada (`_startMediaWatchdog` rod
 `setInterval` e depende de estado interno de `remoteStream`/`signalingState`) e o
 fallback recvonly do auto-join (asserções são sobre estado interno `callType`/
 `inCall`, não sobre push observável).
+
+### W-D — lobby_webrtc: decisões de recuperação de sinalização · CONCLUÍDO
+
+**Feito**
+- `lib/p2p/signaling_session.js` (padrão idêntico ao `recovery.js`, funções puras):
+  `canScheduleSignalReplay`/`signalReplayDelay`/`needsSignalReplay` (o `_scheduleSignalReplay`
+  + `_needsSignalReplay`), `canScheduleRenegotiationRetry`/`renegotiationRetryDelay`/
+  `isFinalRenegotiationAttempt` (o `_scheduleRenegotiationRetry`) e
+  `canDeferDisconnectedRecovery` (o guard de adiamento do `_startDisconnectedGracePeriod`).
+  Só as DECISÕES (backoff, guarda de agendamento, predicados); os `setTimeout`, as
+  sondas de `pc` ao vivo e os `pushEvent` ficam no hook. 21 casos de lib.
+- Testes black-box do hook (`lobby_webrtc_hook` + `lobby_webrtc_negotiation`, 30)
+  verdes sem edição = equivalência. Override de linha reescrito.
+
+**Aprendizado — a reversão do W-D foi a prova de wiring FORTE (ao contrário do W-C):**
+quebrar as puras deixou vermelho o teste de lib E dois testes de hook ("requests
+signaling replay while startup remains unresolved" → usa
+`canScheduleSignalReplay`/`needsSignalReplay`; "enters recovery when renegotiation
+requests are not answered" → usa `isFinalRenegotiationAttempt`). O hook realmente
+dirige as decisões via as puras — o caminho é exercitado black-box, então a reversão
+pega tanto extração incompleta quanto cópia velha. Nota: o hook CRESCEU de 1136 p/
+1164 linhas (artefato do prettier quebrando as chamadas de 3-4 args em várias linhas);
+o valor do W-D não é encolher (segue >200, resíduo = 1 pc ao vivo + timers + I/O), é
+tornar backoff/tentativa/adiamento testáveis sem conexão.

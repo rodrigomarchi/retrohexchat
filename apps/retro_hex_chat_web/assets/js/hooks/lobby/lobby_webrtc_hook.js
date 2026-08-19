@@ -38,6 +38,15 @@ import {
   normalizeEpoch,
   ownsDescription,
 } from "../../lib/p2p/negotiation.js";
+import {
+  canScheduleSignalReplay,
+  signalReplayDelay,
+  needsSignalReplay,
+  canScheduleRenegotiationRetry,
+  renegotiationRetryDelay,
+  isFinalRenegotiationAttempt,
+  canDeferDisconnectedRecovery,
+} from "../../lib/p2p/signaling_session.js";
 
 // How often the always-on statistics window refreshes its per-feature metrics.
 const STATS_INTERVAL_MS = 2500;
@@ -848,7 +857,7 @@ const LobbyWebRTCHook = {
 
     const deferrals = this.disconnectedActivityDeferrals || 0;
 
-    if (deferrals >= DISCONNECTED_ACTIVITY_DEFERRAL_LIMIT) {
+    if (!canDeferDisconnectedRecovery(deferrals, DISCONNECTED_ACTIVITY_DEFERRAL_LIMIT)) {
       this.disconnectedActivityDeferrals = 0;
       return false;
     }
@@ -971,25 +980,38 @@ const LobbyWebRTCHook = {
   },
 
   _scheduleSignalReplay(reason) {
-    if (this.signalReplayTimer || this.signalReplayAttempts >= SIGNAL_REPLAY_MAX_ATTEMPTS) return;
+    if (
+      !canScheduleSignalReplay(
+        this.signalReplayAttempts,
+        SIGNAL_REPLAY_MAX_ATTEMPTS,
+        !!this.signalReplayTimer,
+      )
+    ) {
+      return;
+    }
 
     const attempt = this.signalReplayAttempts + 1;
     this.signalReplayAttempts = attempt;
 
-    this.signalReplayTimer = setTimeout(() => {
-      this.signalReplayTimer = null;
-      if (!this._needsSignalReplay()) return;
+    this.signalReplayTimer = setTimeout(
+      () => {
+        this.signalReplayTimer = null;
+        if (!this._needsSignalReplay()) return;
 
-      this._requestSignalReplay(reason, attempt);
-      this._scheduleSignalReplay(reason);
-    }, SIGNAL_REPLAY_DELAY_MS * attempt);
+        this._requestSignalReplay(reason, attempt);
+        this._scheduleSignalReplay(reason);
+      },
+      signalReplayDelay(attempt, SIGNAL_REPLAY_DELAY_MS),
+    );
   },
 
   _needsSignalReplay() {
-    if (!this.pc || this.recoveryFailed) return false;
-    return (
-      !["connected"].includes(this.pc.connectionState) && this.pc.iceConnectionState !== "completed"
-    );
+    return needsSignalReplay({
+      hasPc: !!this.pc,
+      connectionState: this.pc?.connectionState,
+      iceConnectionState: this.pc?.iceConnectionState,
+      recoveryFailed: this.recoveryFailed,
+    });
   },
 
   _requestSignalReplay(reason, attempt = null) {
@@ -1016,9 +1038,12 @@ const LobbyWebRTCHook = {
     }
 
     if (
-      this.role !== "answerer" ||
-      this.renegotiationRetryTimer ||
-      this.renegotiationRetryAttempts >= RENEGOTIATION_RETRY_MAX_ATTEMPTS
+      !canScheduleRenegotiationRetry(
+        this.role,
+        this.renegotiationRetryAttempts,
+        RENEGOTIATION_RETRY_MAX_ATTEMPTS,
+        !!this.renegotiationRetryTimer,
+      )
     ) {
       return;
     }
@@ -1026,25 +1051,28 @@ const LobbyWebRTCHook = {
     const attempt = this.renegotiationRetryAttempts + 1;
     this.renegotiationRetryAttempts = attempt;
 
-    this.renegotiationRetryTimer = setTimeout(() => {
-      this.renegotiationRetryTimer = null;
-      if (this.role !== "answerer" || !this.pc || this.recoveryFailed) return;
+    this.renegotiationRetryTimer = setTimeout(
+      () => {
+        this.renegotiationRetryTimer = null;
+        if (this.role !== "answerer" || !this.pc || this.recoveryFailed) return;
 
-      this.pushEvent("lobby_renegotiate", {
-        ...this.renegotiationRetryPayload,
-        retry_attempt: attempt,
-      });
+        this.pushEvent("lobby_renegotiate", {
+          ...this.renegotiationRetryPayload,
+          retry_attempt: attempt,
+        });
 
-      if (attempt >= RENEGOTIATION_RETRY_MAX_ATTEMPTS) {
-        this._recoverSignalingFailure(
-          "renegotiate_request",
-          new Error("renegotiation request was not answered"),
-        );
-        return;
-      }
+        if (isFinalRenegotiationAttempt(attempt, RENEGOTIATION_RETRY_MAX_ATTEMPTS)) {
+          this._recoverSignalingFailure(
+            "renegotiate_request",
+            new Error("renegotiation request was not answered"),
+          );
+          return;
+        }
 
-      this._scheduleRenegotiationRetry(this.renegotiationRetryPayload);
-    }, RENEGOTIATION_RETRY_DELAY_MS * attempt);
+        this._scheduleRenegotiationRetry(this.renegotiationRetryPayload);
+      },
+      renegotiationRetryDelay(attempt, RENEGOTIATION_RETRY_DELAY_MS),
+    );
   },
 
   _clearRenegotiationRetry() {
