@@ -70,13 +70,6 @@ const HOOK_LINE_OVERRIDES = new Map([
       "already-decided records to tiles",
   ],
   [
-    "js/hooks/lobby/lobby_webrtc_hook.js",
-    "negotiation rules in lib/p2p/negotiation.js (W4) and the signal-replay/" +
-      "renegotiation/disconnect-deferral backoff and guard decisions in " +
-      "lib/p2p/signaling_session.js; residual is the single live RTCPeerConnection, " +
-      "its setTimeout timers, ICE/track wiring and the pushEvent signaling — I/O",
-  ],
-  [
     "js/hooks/p2p/file_transfer_hook.js",
     "transitions in lib/p2p/transfer_session.js (reducer) and the framing/" +
       "backpressure/hash decisions in lib/p2p/file_transfer.js; residual is the " +
@@ -139,11 +132,6 @@ const HOOK_METHOD_COUNT_OVERRIDES = new Map([
     "js/hooks/group_call/group_call_webrtc_hook.js",
     "the irreducible residual is a large surface of RTCPeerConnection/getUserMedia " +
       "I/O methods and tile-DOM binding; the decisions are already in lib/group_call/*",
-  ],
-  [
-    "js/hooks/lobby/lobby_webrtc_hook.js",
-    "residual is the single live RTCPeerConnection's setup/ICE/track/timer methods; " +
-      "negotiation and signal-recovery decisions are in lib/p2p/{negotiation,signaling_session}.js",
   ],
   [
     "js/hooks/p2p/file_transfer_hook.js",

@@ -756,3 +756,36 @@ Channel (`channel.on`) e por eventos de `pc` ao vivo (ontrack/onicecandidate) �
 testes de INTEGRAÇÃO dirigindo o hook por entradas reais que o scaffold simula, não
 lógica presa (toda decisão está em lib com teste direto). Zerar exigiria mudar a
 natureza dos testes de integração, não mover mais lógica.
+
+### W-H (piloto) — lobby_webrtc vira casca de 13 linhas · CONCLUÍDO (part A)
+
+**O que motivou:** questionamento certeiro — por que os hooks de conexão ainda são
+gordos se dá pra ter hook magro + lógica em `lib/` testável? A prova de que dá é o
+`lobby_media_hook` (48 linhas) sobre `rtc_media_hook_factory` (lib, black-box). Eu
+vinha chamando de "irredutível" o que era, na real, um refactor grande que eu não
+tinha feito.
+
+**Feito (part A — afinar o hook):**
+- Movido o corpo inteiro do `lobby_webrtc_hook` (1164 linhas: pc ao vivo,
+  sinalização, negociação, recovery, ICE, stats, data channels) para
+  `lib/p2p/lobby_connection.js` como `createLobbyConnectionHook()` — controlador
+  livre de framework. Imports recalculados (`../../lib/p2p/x` → `./x`).
+- Hook virou **casca de 13 linhas**: `export default createLobbyConnectionHook()`.
+- Overrides de linha E de método-privado do lobby_webrtc **apagados** do guard
+  (o hook não é mais gordo).
+- **Equivalência:** os 2 testes existentes (30 casos, SEM edição) seguem verdes —
+  o hook re-exporta o mesmo objeto. Superfície intacta (o grep de custom-events já
+  varre `js/`, então o código em lib continua rastreado).
+
+**Prova em navegador + disciplina de baseline (a parte importante):** o E2E de P2P
+acusou 2 vermelhos. **Eu tinha pulado o baseline** — erro meu. Antes de assumir
+regressão, restaurei o código ORIGINAL (via `git show`, não `git checkout`),
+rebuildei e rodei: `chat-call-fault-injection:348` **falha na main também** (dívida
+pré-existente), e `chat-p2p:616` é flaky (passou no re-run). Ou seja: **minha
+extração NÃO quebrou nada** — os 16 testes de P2P que passam de forma confiável
+seguem verdes. Sem o baseline eu teria revertido trabalho bom achando que quebrei.
+
+**Falta (part B):** mover os testes do lobby_webrtc para `test/lib/` importando
+`createLobbyConnectionHook` e dirigindo black-box (pela superfície de eventos), o que
+tira ~45 reaches do `test/hooks/` e baixa a catraca de verdade. O hook já está magro;
+a part B é a qualidade do teste.
