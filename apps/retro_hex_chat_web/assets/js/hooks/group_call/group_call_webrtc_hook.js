@@ -42,6 +42,7 @@ import {
   reactionIconNode,
 } from "../../lib/group_call/reactions.js";
 import { focusedTileIndex, isTilePinned, tileIsVisible } from "../../lib/group_call/layout.js";
+import { createTrackRegistry } from "../../lib/group_call/track_registry.js";
 import {
   localEmptyState,
   localEmptyStateCopy,
@@ -105,9 +106,7 @@ const GroupCallWebRTCHook = {
     this.lastAnsweredOfferId = null;
     this.layoutState = this._layoutStateFromDataset();
     this.participantsById = new Map();
-    this.tracksById = new Map();
-    this.tracksByStreamId = new Map();
-    this.tracksByWebrtcTrackId = new Map();
+    this.trackRegistry = createTrackRegistry();
     this.remoteTiles = new Map();
     this.remoteVideoStalls = new Map();
     this.statsTimer = null;
@@ -846,47 +845,21 @@ const GroupCallWebRTCHook = {
   },
 
   _syncTrack(track) {
-    if (!track?.id) return;
-
-    const normalized = {
-      id: String(track.id),
-      participantId: stringOrNull(track.participant_id ?? track.participantId),
-      kind: track.kind,
-      source: track.source || "camera",
-      status: track.status,
-      streamId: stringOrNull(track.stream_id ?? track.streamId),
-      webrtcTrackId: stringOrNull(track.webrtc_track_id ?? track.webrtcTrackId),
-    };
-
-    this.tracksById.set(normalized.id, normalized);
+    const normalized = this.trackRegistry.upsert(track);
+    if (!normalized) return;
 
     if (normalized.streamId) {
-      this.tracksByStreamId.set(normalized.streamId, normalized);
       const tile = this.remoteTiles.get(normalized.streamId);
       if (tile) this._applyTrackToTile(tile, normalized.streamId);
-    }
-
-    if (normalized.webrtcTrackId) {
-      this.tracksByWebrtcTrackId.set(normalized.webrtcTrackId, normalized);
     }
   },
 
   _removeTrack(trackId) {
-    if (!trackId) return;
-
-    const track = this.tracksById.get(String(trackId));
-    this.tracksById.delete(String(trackId));
-    if (!track) return;
-
-    if (track.streamId) this.tracksByStreamId.delete(track.streamId);
-    if (track.webrtcTrackId) this.tracksByWebrtcTrackId.delete(track.webrtcTrackId);
+    this.trackRegistry.remove(trackId);
   },
 
   _applyTrackToTile(tile, streamId, browserTrack = null) {
-    const track =
-      this.tracksByStreamId.get(streamId) ||
-      this.tracksByWebrtcTrackId.get(browserTrack?.id) ||
-      null;
+    const track = this.trackRegistry.forTile(streamId, browserTrack?.id);
 
     if (track?.participantId) {
       tile.dataset.participantId = track.participantId;
@@ -1829,9 +1802,7 @@ const GroupCallWebRTCHook = {
 
     this.remoteTiles?.clear();
     this.remoteVideoStalls?.clear();
-    this.tracksById?.clear();
-    this.tracksByStreamId?.clear();
-    this.tracksByWebrtcTrackId?.clear();
+    this.trackRegistry.clear();
     this._applyLayout();
   },
 
@@ -1909,7 +1880,7 @@ const GroupCallWebRTCHook = {
           connection_state: this.pc.connectionState || "",
           participant_count: this.participantsById.size,
           remote_stream_count: this.remoteTiles.size,
-          track_count: this.tracksById.size,
+          track_count: this.trackRegistry.size,
           screen_share_active: this.screenShare?.active === true,
           offer_id: this.lastAnsweredOfferId || "",
           rejoin_epoch: this.rejoinEpoch || 0,
@@ -1950,7 +1921,7 @@ const GroupCallWebRTCHook = {
     );
 
     if (trackIdentifier) {
-      const persistedTrack = this.tracksByWebrtcTrackId.get(trackIdentifier);
+      const persistedTrack = this.trackRegistry.byWebrtcTrackId(trackIdentifier);
       if (persistedTrack?.participantId) return persistedTrack.participantId;
 
       for (const tile of this._remoteTileElements()) {
@@ -2131,9 +2102,7 @@ const GroupCallWebRTCHook = {
     this.reactionTimers?.clear();
     this.participantQualityById?.clear();
     this.participantsById?.clear();
-    this.tracksById?.clear();
-    this.tracksByStreamId?.clear();
-    this.tracksByWebrtcTrackId?.clear();
+    this.trackRegistry.clear();
     this.remoteTiles?.clear();
     this.remoteVideoStalls?.clear();
   },

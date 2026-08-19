@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import GroupCallWebRTCHook from "../../../js/hooks/group_call/group_call_webrtc_hook.js";
 import { FakeRTCPeerConnection } from "../../helpers/rtc_peer_connection.js";
+import { createTrackRegistry } from "../../../js/lib/group_call/track_registry.js";
 
 let hooks = [];
 
@@ -34,9 +35,7 @@ function setupHook() {
     pinnedParticipantIds: [],
   };
   hook.participantsById = new Map();
-  hook.tracksById = new Map();
-  hook.tracksByStreamId = new Map();
-  hook.tracksByWebrtcTrackId = new Map();
+  hook.trackRegistry = createTrackRegistry();
   hook.remoteTiles = new Map();
   hook.remoteVideoStalls = new Map();
   hook.statsTimer = null;
@@ -876,7 +875,7 @@ describe("GroupCallWebRTCHook media fallback", () => {
     hook.pc = pc;
     hook.remoteTiles.set("old-stream", oldTile);
     hook._videoGrid().appendChild(oldTile);
-    hook.tracksById.set("track-1", { id: "track-1" });
+    hook.trackRegistry.upsert({ id: "track-1" });
     hook.channel = {
       push: vi.fn((event) => {
         if (event === "group_call_request_offer") return requestOffer.push;
@@ -895,7 +894,7 @@ describe("GroupCallWebRTCHook media fallback", () => {
     expect(oldTile.isConnected).toBe(false);
     expect(hook.rejoinEpoch).toBe(1);
     expect(hook.pc).toBeNull();
-    expect(hook.tracksById.size).toBe(0);
+    expect(hook.trackRegistry.size).toBe(0);
     expect(hook.channel.push).toHaveBeenCalledWith(
       "group_call_join",
       expect.objectContaining({
@@ -1198,7 +1197,7 @@ describe("GroupCallWebRTCHook media fallback", () => {
     };
     hook.participantsById.set("123", { id: "123" });
     hook.remoteTiles.set("stream-456", document.createElement("div"));
-    hook.tracksById.set("track-1", { id: "track-1" });
+    hook.trackRegistry.upsert({ id: "track-1" });
     hook.lastAnsweredOfferId = "gc-12-1";
     hook.rejoinEpoch = 2;
 

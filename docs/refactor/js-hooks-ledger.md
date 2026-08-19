@@ -15,7 +15,7 @@ Baseline: main @ a1c9376e, 18/08/2026.
 
 | Hook | Linhas | Teste | Usa lib | pushEvent | Pacote | Estado | Módulos lib criados | Achados adiados |
 |---|---|---|---|---|---|---|---|---|
-| `group_call/group_call_webrtc_hook.js` | 2414→2134 | sim | sim | sim | W4·W5 | **decisões extraídas** | p2p/negotiation, group_call/{quality,payload,reactions,layout,tiles,media_state} | resíduo: plumbing RTCPeerConnection+tile-DOM (controller Forma B = follow-up c/ testes de integração) |
+| `group_call/group_call_webrtc_hook.js` | 2414→2111 | sim | sim | sim | W4·W5·W-E | **decisões + track registry extraídos** | p2p/negotiation, group_call/{quality,payload,reactions,layout,tiles,media_state,track_registry} | resíduo: pc ao vivo (irredutível) + mapa participantsById + DOM de tiles (slices W-E restantes) |
 | `lobby/lobby_webrtc_hook.js` | 1136→1164 | sim | sim | sim | W4·W-D | **W-D feito** | p2p/negotiation, p2p/signaling_session | resíduo: 1 pc ao vivo + timers + ICE/track + pushEvent (I/O); cresceu por prettier multi-arg |
 | `p2p/file_transfer_hook.js` | 663→580 | sim | sim | sim | W6·W-C | **W-C feito** | p2p/transfer_session (redutor); p2p/file_transfer.{frame,unframe}HaveChunks/isBackpressured/hashMatches | resíduo: laço de envio async + hash/assemble/download/timers (I/O) |
 | `chat/autocomplete_hook.js` | 631→406 | sim | sim | sim | W7·W-A | **W-A feito** | chat/{composer,input,history_search,typing_indicator,tab_cycle,dropdown_position} | tab-cycle do cliente é dead code (ver Achados adiados) |

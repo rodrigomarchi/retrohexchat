@@ -533,3 +533,31 @@ pega tanto extração incompleta quanto cópia velha. Nota: o hook CRESCEU de 11
 1164 linhas (artefato do prettier quebrando as chamadas de 3-4 args em várias linhas);
 o valor do W-D não é encolher (segue >200, resíduo = 1 pc ao vivo + timers + I/O), é
 tornar backoff/tentativa/adiamento testáveis sem conexão.
+
+### W-E slice 1 — group_call: registro de tracks · CONCLUÍDO
+
+**Feito**
+- `lib/group_call/track_registry.js` (`createTrackRegistry()`, Forma B pura — só
+  dados, sem DOM): os 3 mapas de track (`byId`/`byStreamId`/`byWebrtcTrackId`) + a
+  normalização (`upsert`, o `stringOrNull(x ?? y)` snake/camel + `source||"camera"`)
+  + a precedência de lookup (`forTile` = stream id, senão browser track id) +
+  `remove`/`byWebrtcTrackId`/`size`/`clear`. 12 casos de lib.
+- Hook: `_syncTrack`/`_removeTrack`/`_applyTrackToTile`/stats/cleanup passam pelo
+  registry; os 5 sites de mapa migraram. 2142 → 2111. Override reescrito.
+
+**Aprendizado — o teste do god-hook é WHITE-BOX (fixture manual), então NÃO fica
+"verde sem edição":** o `setupHook()` monta o hook à mão (`hook.tracksById = new
+Map()` etc.), não via `mounted()`. Trocar a representação interna quebrou 14 testes
+(`this.trackRegistry` indefinido) — o que, de quebra, PROVOU o wiring: se o hook não
+usasse o registry em toda parte, remover `tracksById` não quebraria nada. A resposta
+certa não é reverter: é trocar o scaffold (`hook.trackRegistry = createTrackRegistry()`)
+e os 3 sites white-box (`hook.tracksById.set` → `upsert`, `.size` → `.size`) — troca
+mecânica de representação, sem mudança de comportamento, e a contagem de `hook._`
+(catraca) fica intacta porque `hook.tracksById`/`hook.trackRegistry` não casam `hook\._`.
+Regra: teste black-box fica verde sem edição; teste white-box acoplado à representação
+DEVE acompanhar a troca — e a quebra dele é o sinal de wiring.
+
+**Slices restantes do W-E (não feitas aqui):** o mapa `participantsById` e o DOM de
+tiles (`_createRemoteTile`/`_applyParticipantToTile`/`remoteTiles`) — mais arriscado
+(entrelaçado com quality/layout/focus/local-tile). O irredutível continua sendo
+`ontrack`/`onicecandidate`/`getUserMedia`.
