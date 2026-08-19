@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import GroupCallWebRTCHook from "../../../js/hooks/group_call/group_call_webrtc_hook.js";
+import { createConferenceConnection } from "../../../js/lib/group_call/conference_connection.js";
 import { FakeRTCPeerConnection } from "../../helpers/rtc_peer_connection.js";
 import { createTrackRegistry } from "../../../js/lib/group_call/track_registry.js";
 import { createParticipantRegistry } from "../../../js/lib/group_call/participant_registry.js";
@@ -8,9 +8,18 @@ import { createTileView } from "../../../js/lib/group_call/tile_view.js";
 
 let hooks = [];
 
-function setupHook() {
-  const hook = Object.create(GroupCallWebRTCHook);
-  hook.el = { querySelector: vi.fn(() => null) };
+// Build the controller through its real factory, then seed the connection state
+// the case exercises. `el` and the pushEvent port are closed over by the
+// controller; `conn.el`/`conn.pushEvent` are re-exposed so the assertions read
+// the same element and spy. The channel/pc-delivered surface (offers, tracks,
+// candidates, connection state) is driven through the controller's methods that
+// those Phoenix Channel / RTCPeerConnection callbacks invoke.
+function setupHook({ el } = {}) {
+  const element = el || { querySelector: vi.fn(() => null) };
+  const pushEvent = vi.fn();
+  const hook = createConferenceConnection(element, { pushEvent });
+  hook.el = element;
+  hook.pushEvent = pushEvent;
   hook.pc = { addTrack: vi.fn() };
   hook.localStream = null;
   hook.mediaEnabled = { audio: true, video: true };
@@ -21,7 +30,6 @@ function setupHook() {
     videoInputId: null,
     audioOutputId: null,
   };
-  hook.pushEvent = vi.fn();
   hook.channel = { push: vi.fn() };
   hook.pendingCandidates = [];
   hook.remoteCandidateFailures = 0;
@@ -61,21 +69,22 @@ function setupHook() {
   hook.rejoinEpoch = 0;
   hook.rejoining = false;
 
-  // Wire the LiveView-pushed handlers over the bare hook so tests can drive the
-  // conference through its real event surface (fireServer) instead of reaching
-  // for the private methods those handlers call.
-  hook.__eventHandlers = {};
-  hook.handleEvent = vi.fn((event, handler) => {
-    hook.__eventHandlers[event] = handler;
-  });
-  hook._registerServerEvents();
-
   hooks.push(hook);
   return hook;
 }
 
+// The LiveView-pushed events are handled by the hook binding, which forwards
+// each to a public controller method. Drive them through those same methods so
+// the conference is exercised through its real server-event surface.
+const SERVER_EVENTS = {
+  group_call_set_media_state: (hook, payload) => hook.setMediaState(payload || {}),
+  group_call_stop_screen_share: (hook, payload) => hook.stopScreenShareByModerator(payload || {}),
+  group_call_retry_media: (hook) => hook.retryConnection("manual"),
+  group_call_layout_state: (hook, payload) => hook.syncLayoutState(payload || {}),
+};
+
 function fireServer(hook, event, payload) {
-  return hook.__eventHandlers[event](payload);
+  return SERVER_EVENTS[event](hook, payload);
 }
 
 function setupNegotiationHook() {
@@ -93,7 +102,6 @@ function setupNegotiationHook() {
 }
 
 function setupLayoutHook() {
-  const hook = setupHook();
   const el = document.createElement("div");
   el.dataset.layoutMode = "auto";
   el.dataset.selfView = "tile";
@@ -145,12 +153,12 @@ function setupLayoutHook() {
       </div>
     </div>
   `;
+  document.body.appendChild(el);
 
-  hook.el = el;
+  const hook = setupHook({ el });
   hook.tileView = createTileView(el, { onToggleFocus: (tile) => hook._toggleTileFocus(tile) });
   hook.layoutState = hook._layoutStateFromDataset();
   hook._bindLocalTile();
-  document.body.appendChild(el);
 
   return hook;
 }

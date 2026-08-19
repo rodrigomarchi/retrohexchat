@@ -8,17 +8,19 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import GroupCallWebRTCHook from "../../../js/hooks/group_call/group_call_webrtc_hook.js";
+import { createConferenceConnection } from "../../../js/lib/group_call/conference_connection.js";
 import { FakeRTCPeerConnection, sdpFor, mLinesOf } from "../../helpers/rtc_peer_connection.js";
 
 function buildHook({ localKinds = ["audio"] } = {}) {
-  const hook = Object.create(GroupCallWebRTCHook);
+  const el = { querySelector: vi.fn(() => null) };
+  const pushEvent = vi.fn();
+  const hook = createConferenceConnection(el, { pushEvent });
 
-  hook.el = { querySelector: vi.fn(() => null) };
+  hook.el = el;
+  hook.pushEvent = pushEvent;
   hook.pc = null;
   hook.localStream = null;
   hook.mediaEnabled = { audio: true, video: false };
-  hook.pushEvent = vi.fn();
   hook.channel = { push: vi.fn() };
   hook.pendingCandidates = [];
   hook.remoteCandidateFailures = 0;

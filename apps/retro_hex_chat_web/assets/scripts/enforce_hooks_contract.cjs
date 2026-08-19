@@ -62,14 +62,6 @@ const HOOK_LINE_LIMIT = 200;
 // that outlives its reason is how a budget stops meaning anything.
 const HOOK_LINE_OVERRIDES = new Map([
   [
-    "js/hooks/group_call/group_call_webrtc_hook.js",
-    "quality/payload/reactions/layout/tiles/media-state/recovery decisions, the track and " +
-      "participant registries and the remote-tile creation/lifecycle extracted to " +
-      "lib/group_call/* and lib/p2p/recovery.js; residual is live-RTCPeerConnection wiring " +
-      "(irreducible) plus the video-element attach and the dataset mutation that binds " +
-      "already-decided records to tiles",
-  ],
-  [
     "js/hooks/p2p/file_transfer_hook.js",
     "transitions in lib/p2p/transfer_session.js (reducer) and the framing/" +
       "backpressure/hash decisions in lib/p2p/file_transfer.js; residual is the " +
@@ -109,14 +101,12 @@ const FORBIDDEN_HOOK_PRIMITIVES = [
   { pattern: /\bnavigator\.clipboard\b/, name: "navigator.clipboard" },
 ];
 
-const FORBIDDEN_PRIMITIVE_OVERRIDES = new Map([
-  ["js/hooks/group_call/group_call_webrtc_hook.js", "W5"],
-]);
+const FORBIDDEN_PRIMITIVE_OVERRIDES = new Map([]);
 
 // A test that reaches for hook._privateMethod is testing something the hook
 // should not own. The count is the honest measure of how much logic is still
 // trapped; it reaches zero when the extraction is done.
-const MAX_HOOK_PRIVATE_CALLS = 94;
+const MAX_HOOK_PRIVATE_CALLS = 8;
 
 // The line budget catches a fat hook, but a controller can hide under 200 lines
 // as a dense cluster of private methods — connection_status did exactly that
@@ -128,11 +118,6 @@ const MAX_HOOK_PRIVATE_CALLS = 94;
 const MAX_HOOK_PRIVATE_METHODS = 7;
 
 const HOOK_METHOD_COUNT_OVERRIDES = new Map([
-  [
-    "js/hooks/group_call/group_call_webrtc_hook.js",
-    "the irreducible residual is a large surface of RTCPeerConnection/getUserMedia " +
-      "I/O methods and tile-DOM binding; the decisions are already in lib/group_call/*",
-  ],
   [
     "js/hooks/p2p/file_transfer_hook.js",
     "residual is the async send loop, file read/hash/assemble/download and channel " +

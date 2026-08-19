@@ -840,3 +840,59 @@ descoplamento sai de remover `pushEvent`/`el`/`handleEvent`/`mounted`, não de p
 controlador (como uma instância de classe); o teste black-box ainda pode semear
 `conn.pc = fake` sem alcançar lógica privada. O erro da part A não foi usar `this` —
 foi manter as portas do framework.
+
+### W-H3 — group_call: extração REAL (sem repetir o fake) · CONCLUÍDO
+
+**Mesma transformação do W-H2, no god-hook (2042 linhas), de verdade — não o fake.**
+- Novo `lib/group_call/conference_connection.js` (`createConferenceConnection(el, ports)`,
+  `ports = { pushEvent }`, `pushEventTo` = 0). O corpo inteiro (Socket RAW, pc ao vivo,
+  mídia, tiles, quality, reactions, recovery, stats) migrou; imports recalculados
+  (`../../lib/group_call/x` → `./x`, `../../lib/p2p/x` → `../p2p/x`, `../../lib/i18n` →
+  `../i18n`, etc.). `this.pushEvent` (26×) → `ports.pushEvent`; `this.el` (32×) → `el`;
+  `mounted`→`mount`, `destroyed`→`destroy`. Os 4 `handleEvent` (o `_registerServerEvents`)
+  saíram para o hook; os 4 métodos que eles chamam viraram públicos (`setMediaState`,
+  `stopScreenShareByModerator`, `retryConnection`, `syncLayoutState`) — e as chamadas
+  internas por `channel.on`/recovery foram reescritas. Auditoria: 0 markers de LiveView.
+- Hook (`group_call_webrtc_hook.js`) virou **binding de 37 linhas**: cria o controlador,
+  `conn.mount()`, registra os 4 `handleEvent` delegando a `conn.X`, `destroy` no destroyed.
+- O Socket RAW (`new Socket("/socket")`), `new RTCPeerConnection` (via `createPeerConnection`)
+  e `getUserMedia` ficam no controlador — em `lib/`, onde o guard de primitivas NÃO varre.
+  Por isso a extração é honesta: as primitivas saíram do arquivo de hook de verdade.
+
+**Testes black-box (`test/lib/group_call/conference_connection{,_negotiation}.test.js`,
+43 casos):** movidos de `test/hooks/` (86 reaches). O scaffold agora constrói o controlador
+pela fábrica (`createConferenceConnection(el, { pushEvent })`), re-expõe `conn.el`/`conn.pushEvent`
+para as asserções, e semeia o estado do caso. Os 4 eventos de servidor viram chamadas aos
+métodos públicos (via um mapa `SERVER_EVENTS`/`fireServer`). Os reaches por `channel.on`/`pc`
+(offers, tracks, candidates, connection-state) são as ENTRADAS de integração que o scaffold
+simula — dirigidos pelos métodos do controlador que esses callbacks invocam; as DECISÕES já
+estão em `lib/group_call/*` com teste direto. Como o teste vive em `test/lib/`, esses reaches
+não contam na catraca.
+
+**Catracas baixadas no mesmo commit:** `MAX_HOOK_PRIVATE_CALLS` **94 → 8** (−86 reaches do
+group_call saíram de `test/hooks/`). Overrides do group_call REMOVIDOS dos três mapas
+(`HOOK_LINE_OVERRIDES`, `HOOK_METHOD_COUNT_OVERRIDES`) e **`FORBIDDEN_PRIMITIVE_OVERRIDES`
+ficou VAZIO** — o hook não tem mais primitiva proibida (o guard falharia se um override
+sobrasse sem o primitivo).
+
+**Reversão + gate E2E com baseline:** quebrar o push de recovery-state do controlador
+derruba o teste black-box (restaurado, verde). `chat-group-call.spec.ts`: **18/19 flows-alvo
+verdes**; o único vermelho é `:1275` ("pre-join ... microphone and camera disabled"), do
+`group_call_prejoin_hook` (localStorage), NÃO do webrtc hook — confirmei que falha IGUAL no
+HEAD (baseline via `git show`, rebuild). Não é regressão.
+
+**Aprendizado — o bug que quase repetiu o fake do W-H:** ao adaptar o scaffold white-box,
+sobrou uma linha `hook.pushEvent = vi.fn()` DEPOIS de eu já ter ligado `hook.pushEvent` ao
+spy das portas — ela criava um SEGUNDO spy, então o controlador empurrava por um e as
+asserções liam o outro (15 testes "0 calls"). A porta e o handle de asserção têm que ser o
+MESMO `vi.fn()`: `const pushEvent = vi.fn(); createConferenceConnection(el, { pushEvent });
+conn.pushEvent = pushEvent;` — e nada pode reatribuir depois.
+
+**Aprendizado — mover o teste white-box de integração para `test/lib/` é a resposta certa
+para os reaches de `channel.on`.** O W-F1 pt2 já tinha concluído que esses ~70 reaches são
+entradas de integração (Phoenix Channel/pc ao vivo), não lógica presa — e por isso a catraca
+tinha piso 150 com o teste em `test/hooks/`. Com o controlador framework-free, o teste passa
+a viver em `test/lib/` dirigindo o controlador DIRETO; os reaches saem de `test/hooks/`
+(catraca despenca para 8) sem fingir que a integração virou unidade pura. O scaffold segue
+semeando o estado à mão (é white-box da REPRESENTAÇÃO, permitido num teste de controlador),
+mas o alvo do teste agora é o controlador, não um hook.
