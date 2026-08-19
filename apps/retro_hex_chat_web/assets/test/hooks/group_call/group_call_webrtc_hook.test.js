@@ -61,8 +61,21 @@ function setupHook() {
   hook.rejoinEpoch = 0;
   hook.rejoining = false;
 
+  // Wire the LiveView-pushed handlers over the bare hook so tests can drive the
+  // conference through its real event surface (fireServer) instead of reaching
+  // for the private methods those handlers call.
+  hook.__eventHandlers = {};
+  hook.handleEvent = vi.fn((event, handler) => {
+    hook.__eventHandlers[event] = handler;
+  });
+  hook._registerServerEvents();
+
   hooks.push(hook);
   return hook;
+}
+
+function fireServer(hook, event, payload) {
+  return hook.__eventHandlers[event](payload);
 }
 
 function setupNegotiationHook() {
@@ -374,7 +387,7 @@ describe("GroupCallWebRTCHook media fallback", () => {
     };
     hook._syncLocalTile = vi.fn();
 
-    hook._setMediaState({
+    fireServer(hook, "group_call_set_media_state", {
       audio: true,
       video: false,
       server_video_blocked: true,
@@ -402,13 +415,13 @@ describe("GroupCallWebRTCHook media fallback", () => {
     };
     hook._syncLocalTile = vi.fn();
 
-    hook._setMediaState({
+    fireServer(hook, "group_call_set_media_state", {
       audio: false,
       video: true,
       server_audio_muted: true,
       server_screen_blocked: true,
     });
-    hook._setMediaState({ audio: true, video: true });
+    fireServer(hook, "group_call_set_media_state", { audio: true, video: true });
 
     expect(hook.serverAudioMuted).toBe(true);
     expect(hook.screenShareBlocked).toBe(true);
@@ -851,7 +864,7 @@ describe("GroupCallWebRTCHook media fallback", () => {
     };
     hook.channel = { push: vi.fn(() => pushResult) };
 
-    hook._retryConnection("manual");
+    fireServer(hook, "group_call_retry_media", {});
 
     expect(hook.pushEvent).toHaveBeenCalledWith(
       "group_call_recovery_state",
@@ -882,7 +895,7 @@ describe("GroupCallWebRTCHook media fallback", () => {
       }),
     };
 
-    hook._retryConnection("manual");
+    fireServer(hook, "group_call_retry_media", {});
     requestOffer.receivers.error({
       code: "rejoin_required",
       message: "Media endpoint must rejoin",
@@ -933,7 +946,7 @@ describe("GroupCallWebRTCHook media fallback", () => {
     const hook = setupLayoutHook();
     const stream = { id: "stream-456" };
 
-    hook._syncLayoutState({
+    fireServer(hook, "group_call_layout_state", {
       participants: [
         {
           id: 456,
@@ -961,7 +974,7 @@ describe("GroupCallWebRTCHook media fallback", () => {
     expect(video.srcObject).toBe(stream);
     expect(tile.dataset.participantId).toBe("456");
 
-    hook._syncLayoutState({
+    fireServer(hook, "group_call_layout_state", {
       mode: "focus",
       focused_participant_id: 456,
       self_view: "tile",
@@ -988,7 +1001,7 @@ describe("GroupCallWebRTCHook media fallback", () => {
     };
 
     hook.channel = { push: vi.fn(() => pushResult) };
-    hook._syncLayoutState({
+    fireServer(hook, "group_call_layout_state", {
       participants: [{ id: 456, nickname: "Ada", media_state: { audio: true, video: true } }],
       tracks: [
         {
@@ -1033,7 +1046,7 @@ describe("GroupCallWebRTCHook media fallback", () => {
     const hook = setupLayoutHook();
     const stream = { id: "stream-789" };
 
-    hook._syncLayoutState({
+    fireServer(hook, "group_call_layout_state", {
       participants: [{ id: 789, nickname: "Grace", media_state: { audio: true, video: true } }],
       tracks: [{ id: 2, participant_id: 789, stream_id: "stream-789" }],
     });
@@ -1047,7 +1060,7 @@ describe("GroupCallWebRTCHook media fallback", () => {
       "participant-id": "789",
     });
 
-    hook._syncLayoutState({ mode: "focus", focused_participant_id: 789 });
+    fireServer(hook, "group_call_layout_state", { mode: "focus", focused_participant_id: 789 });
     tile.click();
 
     expect(hook.pushEvent).toHaveBeenCalledWith("group_call_clear_focus", {});
@@ -1059,7 +1072,7 @@ describe("GroupCallWebRTCHook media fallback", () => {
 
     expect(host.dataset.tileCount).toBe("1");
 
-    hook._syncLayoutState({ self_view: "hidden" });
+    fireServer(hook, "group_call_layout_state", { self_view: "hidden" });
 
     expect(hook.el.dataset.selfView).toBe("hidden");
     expect(host.dataset.tileCount).toBe("0");
@@ -1068,7 +1081,7 @@ describe("GroupCallWebRTCHook media fallback", () => {
   it("speaker layout follows the active speaker without replacing remote videos", () => {
     const hook = setupLayoutHook();
 
-    hook._syncLayoutState({
+    fireServer(hook, "group_call_layout_state", {
       participants: [
         { id: 456, nickname: "Ada", media_state: { audio: true, video: true } },
         { id: 789, nickname: "Grace", media_state: { audio: true, video: true } },
@@ -1086,7 +1099,7 @@ describe("GroupCallWebRTCHook media fallback", () => {
     const adaVideo = adaTile.querySelector("video");
     const graceVideo = graceTile.querySelector("video");
 
-    hook._syncLayoutState({ mode: "speaker", focused_participant_id: 456 });
+    fireServer(hook, "group_call_layout_state", { mode: "speaker", focused_participant_id: 456 });
 
     expect(hook.el.dataset.layoutMode).toBe("speaker");
     expect(adaTile.dataset.focused).toBe("true");
@@ -1114,7 +1127,7 @@ describe("GroupCallWebRTCHook media fallback", () => {
       media_state: { audio: true, video: true },
     }));
 
-    hook._syncLayoutState({
+    fireServer(hook, "group_call_layout_state", {
       participants,
       tracks: participants.map((participant) => ({
         id: participant.id,
@@ -1127,14 +1140,17 @@ describe("GroupCallWebRTCHook media fallback", () => {
       hook._attachRemoteStream({ id: `stream-${participant.id}` });
     }
 
-    hook._syncLayoutState({ mode: "grid", pinned_participant_ids: [456, "789"] });
+    fireServer(hook, "group_call_layout_state", {
+      mode: "grid",
+      pinned_participant_ids: [456, "789"],
+    });
 
     expect(host.dataset.tileCount).toBe("5");
     expect(host.dataset.tileDensity).toBe("dense");
     expect(hook.el.querySelector('[data-stream-id="stream-456"]').dataset.pinned).toBe("true");
     expect(hook.el.querySelector('[data-stream-id="stream-789"]').dataset.pinned).toBe("true");
 
-    hook._syncLayoutState({ pinned_participant_ids: ["789"] });
+    fireServer(hook, "group_call_layout_state", { pinned_participant_ids: ["789"] });
 
     expect(hook.el.querySelector('[data-stream-id="stream-456"]').dataset.pinned).toBe("false");
     expect(hook.el.querySelector('[data-stream-id="stream-789"]').dataset.pinned).toBe("true");
@@ -1156,7 +1172,7 @@ describe("GroupCallWebRTCHook media fallback", () => {
     vi.useFakeTimers();
     const hook = setupLayoutHook();
 
-    hook._syncLayoutState({
+    fireServer(hook, "group_call_layout_state", {
       participants: [{ id: 456, nickname: "Ada", media_state: { audio: true, video: true } }],
       tracks: [{ id: 2, participant_id: 456, stream_id: "stream-456" }],
     });
@@ -1221,7 +1237,7 @@ describe("GroupCallWebRTCHook media fallback", () => {
   it("derives active speaker and participant quality from remote media stats", async () => {
     const hook = setupLayoutHook();
 
-    hook._syncLayoutState({
+    fireServer(hook, "group_call_layout_state", {
       participants: [
         {
           id: 456,
@@ -1328,7 +1344,7 @@ describe("GroupCallWebRTCHook media fallback", () => {
   it("accepts an instrumented participant quality event for deterministic UI checks", () => {
     const hook = setupLayoutHook();
 
-    hook._syncLayoutState({
+    fireServer(hook, "group_call_layout_state", {
       participants: [
         {
           id: 456,
@@ -1528,10 +1544,11 @@ describe("GroupCallWebRTCHook media fallback", () => {
     hook.videoSender = sender;
     hook.screenShare = { active: true, stream: screenStream, track: screenTrack };
 
-    await hook._stopScreenShareByModerator({
+    await fireServer(hook, "group_call_stop_screen_share", {
       reason: "moderation",
       server_screen_blocked: true,
     });
+    await vi.waitFor(() => expect(screenTrack.stop).toHaveBeenCalled());
 
     expect(hook.screenShareBlocked).toBe(true);
     expect(sender.replaceTrack).toHaveBeenCalledWith(cameraTrack);
@@ -1551,7 +1568,7 @@ describe("GroupCallWebRTCHook media fallback", () => {
   it("marks remote screen-share tracks with a dedicated source and nameplate", () => {
     const hook = setupLayoutHook();
 
-    hook._syncLayoutState({
+    fireServer(hook, "group_call_layout_state", {
       participants: [
         {
           id: 456,
@@ -1585,7 +1602,7 @@ describe("GroupCallWebRTCHook media fallback", () => {
   it("applies screen-share state to the sole unassigned remote tile", () => {
     const hook = setupLayoutHook();
 
-    hook._syncLayoutState({
+    fireServer(hook, "group_call_layout_state", {
       participants: [
         {
           id: 456,

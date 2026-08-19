@@ -181,21 +181,7 @@ const GroupCallWebRTCHook = {
       return;
     }
 
-    this.handleEvent("group_call_set_media_state", (payload) => {
-      this._setMediaState(payload || {});
-    });
-
-    this.handleEvent("group_call_stop_screen_share", (payload) => {
-      this._stopScreenShareByModerator(payload || {});
-    });
-
-    this.handleEvent("group_call_retry_media", () => {
-      this._retryConnection("manual");
-    });
-
-    this.handleEvent("group_call_layout_state", (payload) => {
-      this._syncLayoutState(payload || {});
-    });
+    this._registerServerEvents();
 
     this._bindLocalTile();
     this.el.addEventListener("group-call:toggle-screen-share", this.toggleScreenShareHandler);
@@ -212,6 +198,27 @@ const GroupCallWebRTCHook = {
 
   destroyed() {
     this._cleanup();
+  },
+
+  // The LiveView-pushed events the conference reacts to. Registered from mounted;
+  // split out so a test can wire the same handlers over a bare hook and drive the
+  // conference through its real event surface instead of its private methods.
+  _registerServerEvents() {
+    this.handleEvent("group_call_set_media_state", (payload) => {
+      this._setMediaState(payload || {});
+    });
+
+    this.handleEvent("group_call_stop_screen_share", (payload) => {
+      this._stopScreenShareByModerator(payload || {});
+    });
+
+    this.handleEvent("group_call_retry_media", () => {
+      this._retryConnection("manual");
+    });
+
+    this.handleEvent("group_call_layout_state", (payload) => {
+      this._syncLayoutState(payload || {});
+    });
   },
 
   _connect() {

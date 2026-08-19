@@ -723,3 +723,36 @@ registros/quality — bind, não decisão; as decisões estão em lib com teste 
 dá pra dirigir black-box sem cirurgia de scaffold; o do group_call NÃO (monta à mão),
 e a maioria dos reaches dele vem por Phoenix Channel (`channel.on`), não por
 `handleEvent` — então lá a conversão é outra história (ver W-F1 parte 2).
+
+### W-F1 (parte 2) — group_call white-box → black-box; catraca 171→150 · CONCLUÍDO
+
+**Feito**
+- Refactor de produção (benigno): extraí `_registerServerEvents()` do `mounted()`
+  (as 4 registrações `handleEvent` do group_call). O `mounted()` chama o método;
+  nada mais muda. Isso deixa o teste fiar os MESMOS handlers sobre o hook nu e
+  dirigir a conferência pela superfície real (`fireServer`), sem alcançar os
+  privados que esses handlers chamam.
+- Convertidos 22 reaches: `_syncLayoutState` (×16) → `group_call_layout_state`;
+  `_setMediaState` (×3) → `group_call_set_media_state`; `_retryConnection("manual")`
+  (×2) → `group_call_retry_media`; `_stopScreenShareByModerator` (×1) →
+  `group_call_stop_screen_share`. **91 → 70 reaches no group_call.**
+- Catraca `MAX_HOOK_PRIVATE_CALLS` **171 → 150** (−13 lobby_media, −21 group_call,
+  +1 do `_registerServerEvents` no scaffold). 40/40 do group_call verdes, estável em
+  3 runs.
+
+**Prova em navegador do refactor de produção:** rebuildei os assets e rodei os 6
+flows E2E que exercitam os 4 handlers — N1 (call), camera-off/bulk (set_media_state),
+recovery (retry_media), stop screen (stop_screen_share), layout (layout_state) —
+todos **verdes**. `_registerServerEvents` fia idêntico ao inline anterior.
+
+**Aprendizado — `await` de handler assíncrono pode resolver cedo demais:** o
+`_stopScreenShareByModerator` via `fireServer` passava `screenShareBlocked` (sync) e
+`replaceTrack` mas não `screenTrack.stop` (mais fundo na cadeia). Espera-se pelo
+EFEITO final real (`vi.waitFor(() => screenTrack.stop foi chamado)`), não pelo
+retorno do `await` — mesma lição das conversões de screen-share do lobby.
+
+**Piso da catraca:** 150. Os ~70 reaches restantes do group_call vêm por Phoenix
+Channel (`channel.on`) e por eventos de `pc` ao vivo (ontrack/onicecandidate) — são
+testes de INTEGRAÇÃO dirigindo o hook por entradas reais que o scaffold simula, não
+lógica presa (toda decisão está em lib com teste direto). Zerar exigiria mudar a
+natureza dos testes de integração, não mover mais lógica.

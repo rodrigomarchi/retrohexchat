@@ -114,7 +114,7 @@ Catracas em CI (só descem):
 - teto 200 linhas/hook (6 overrides, cada um com resíduo de I/O descrito);
 - **`MAX_HOOK_PRIVATE_METHODS = 7`** (NOVA, W-F3) — pega controlador escondido em
   hook curto; 4 overrides (os hooks WebRTC/canvas grandes);
-- `MAX_HOOK_PRIVATE_CALLS = 184` — piso honesto atual. Baixar exige migrar os testes
+- `MAX_HOOK_PRIVATE_CALLS = 150` — abaixado de 184 no W-F1 (migração lobby_media + group_call para black-box via superfície real de eventos). Baixar exige migrar os testes
   de integração WebRTC (`group_call`, `lobby_media`) para black-box; o watchdog de
   mídia parada e a negociação/stats genuinamente precisam de white-box (ver progresso
   W-F2b), então 184 é o piso real sem uma reescrita de teste dedicada;
