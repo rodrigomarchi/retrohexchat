@@ -43,6 +43,7 @@ import {
 } from "../../lib/group_call/reactions.js";
 import { focusedTileIndex, isTilePinned, tileIsVisible } from "../../lib/group_call/layout.js";
 import { createTrackRegistry } from "../../lib/group_call/track_registry.js";
+import { createParticipantRegistry } from "../../lib/group_call/participant_registry.js";
 import {
   localEmptyState,
   localEmptyStateCopy,
@@ -105,7 +106,7 @@ const GroupCallWebRTCHook = {
     this.lastAnsweredOfferSdp = null;
     this.lastAnsweredOfferId = null;
     this.layoutState = this._layoutStateFromDataset();
-    this.participantsById = new Map();
+    this.participantRegistry = createParticipantRegistry();
     this.trackRegistry = createTrackRegistry();
     this.remoteTiles = new Map();
     this.remoteVideoStalls = new Map();
@@ -792,16 +793,10 @@ const GroupCallWebRTCHook = {
   },
 
   _upsertParticipant(participant) {
-    if (!participant?.id) return;
+    const record = this.participantRegistry.upsert(participant);
+    if (!record) return;
 
-    const id = String(participant.id);
-    this.participantsById.set(id, {
-      id,
-      nickname: participant.nickname || t("Remote"),
-      status: participant.status || "connected",
-      media_state: participant.media_state || participant.mediaState || {},
-    });
-
+    const id = record.id;
     for (const tile of this._tilesForParticipant(id)) {
       this._applyParticipantToTile(tile, id);
     }
@@ -815,7 +810,7 @@ const GroupCallWebRTCHook = {
     if (!participantId) return;
 
     const id = String(participantId);
-    this.participantsById.delete(id);
+    this.participantRegistry.remove(id);
     this.participantQualityById?.delete(id);
     if (this.activeSpeakerParticipantId === id) this.activeSpeakerParticipantId = null;
 
@@ -876,7 +871,7 @@ const GroupCallWebRTCHook = {
   },
 
   _applyParticipantToTile(tile, participantId) {
-    const participant = this.participantsById.get(String(participantId));
+    const participant = this.participantRegistry.get(participantId);
     if (!participant) return;
 
     const nameEl = tile.querySelector("[data-group-call-tile-name]");
@@ -901,7 +896,7 @@ const GroupCallWebRTCHook = {
 
     const active = payload.active === true;
     const source = active ? "screen" : "camera";
-    const participant = this.participantsById.get(participantId);
+    const participant = this.participantRegistry.get(participantId);
 
     if (participant) {
       participant.media_state = {
@@ -1878,7 +1873,7 @@ const GroupCallWebRTCHook = {
         connection_state: this.pc.connectionState || "",
         summary: {
           connection_state: this.pc.connectionState || "",
-          participant_count: this.participantsById.size,
+          participant_count: this.participantRegistry.size,
           remote_stream_count: this.remoteTiles.size,
           track_count: this.trackRegistry.size,
           screen_share_active: this.screenShare?.active === true,
@@ -1966,7 +1961,7 @@ const GroupCallWebRTCHook = {
       };
 
       this.participantQualityById.set(participantId, normalized);
-      const participant = this.participantsById.get(participantId);
+      const participant = this.participantRegistry.get(participantId);
       if (participant) participant.quality = normalized;
 
       const remoteTiles = this._tilesForParticipant(participantId).filter(
@@ -2101,7 +2096,7 @@ const GroupCallWebRTCHook = {
     }
     this.reactionTimers?.clear();
     this.participantQualityById?.clear();
-    this.participantsById?.clear();
+    this.participantRegistry.clear();
     this.trackRegistry.clear();
     this.remoteTiles?.clear();
     this.remoteVideoStalls?.clear();

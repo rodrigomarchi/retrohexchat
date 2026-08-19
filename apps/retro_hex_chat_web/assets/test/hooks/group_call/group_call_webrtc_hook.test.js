@@ -3,6 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import GroupCallWebRTCHook from "../../../js/hooks/group_call/group_call_webrtc_hook.js";
 import { FakeRTCPeerConnection } from "../../helpers/rtc_peer_connection.js";
 import { createTrackRegistry } from "../../../js/lib/group_call/track_registry.js";
+import { createParticipantRegistry } from "../../../js/lib/group_call/participant_registry.js";
 
 let hooks = [];
 
@@ -34,7 +35,7 @@ function setupHook() {
     sidebarOpen: true,
     pinnedParticipantIds: [],
   };
-  hook.participantsById = new Map();
+  hook.participantRegistry = createParticipantRegistry();
   hook.trackRegistry = createTrackRegistry();
   hook.remoteTiles = new Map();
   hook.remoteVideoStalls = new Map();
@@ -1195,7 +1196,7 @@ describe("GroupCallWebRTCHook media fallback", () => {
       connectionState: "connected",
       getStats: vi.fn(async () => new Map()),
     };
-    hook.participantsById.set("123", { id: "123" });
+    hook.participantRegistry.upsert({ id: "123" });
     hook.remoteTiles.set("stream-456", document.createElement("div"));
     hook.trackRegistry.upsert({ id: "track-1" });
     hook.lastAnsweredOfferId = "gc-12-1";

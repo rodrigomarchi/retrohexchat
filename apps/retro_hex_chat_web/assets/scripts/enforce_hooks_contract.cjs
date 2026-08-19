@@ -64,9 +64,9 @@ const HOOK_LINE_OVERRIDES = new Map([
   [
     "js/hooks/group_call/group_call_webrtc_hook.js",
     "quality/payload/reactions/layout/tiles/media-state/recovery decisions and the " +
-      "track registry extracted to lib/group_call/* and lib/p2p/recovery.js; residual is " +
-      "live-RTCPeerConnection wiring (irreducible) plus the participant map and the tile-DOM " +
-      "creation/mutation, still being pulled into a controller",
+      "track and participant registries extracted to lib/group_call/* and lib/p2p/recovery.js; " +
+      "residual is live-RTCPeerConnection wiring (irreducible) plus the tile-DOM " +
+      "creation/mutation that binds those records to elements",
   ],
   [
     "js/hooks/lobby/lobby_webrtc_hook.js",

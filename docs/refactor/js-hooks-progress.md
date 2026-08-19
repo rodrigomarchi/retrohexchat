@@ -557,10 +557,31 @@ mecânica de representação, sem mudança de comportamento, e a contagem de `ho
 Regra: teste black-box fica verde sem edição; teste white-box acoplado à representação
 DEVE acompanhar a troca — e a quebra dele é o sinal de wiring.
 
-**Slices restantes do W-E (não feitas aqui):** o mapa `participantsById` e o DOM de
-tiles (`_createRemoteTile`/`_applyParticipantToTile`/`remoteTiles`) — mais arriscado
-(entrelaçado com quality/layout/focus/local-tile). O irredutível continua sendo
-`ontrack`/`onicecandidate`/`getUserMedia`.
+**Slices restantes do W-E (depois da slice 2):** o DOM de tiles
+(`_createRemoteTile`/`_applyParticipantToTile`/`remoteTiles`) — o mais arriscado
+(entrelaçado com quality/layout/focus/local-tile e é binding DOM, não decisão). O
+irredutível continua sendo `ontrack`/`onicecandidate`/`getUserMedia`.
+
+### W-E slice 2 — group_call: registro de participantes · CONCLUÍDO
+
+**Feito**
+- `lib/group_call/participant_registry.js` (`createParticipantRegistry()`, Forma B
+  pura): o mapa `participantsById` + a normalização (`nickname||t("Remote")`,
+  `status||"connected"`, `media_state` snake/camel). `upsert`/`get`/`remove`/`size`/
+  `clear`. 8 casos de lib. `upsert` devolve o registro VIVO (o screen-share muta
+  `media_state` in-place via `get`, comportamento preservado).
+- Hook: os 6 sites de `participantsById` (upsert/delete/get×3/size/clear) passam
+  pelo registry; a aplicação ao DOM (`_applyParticipantToTile`/`_tilesForParticipant`)
+  e o cleanup de remoção (tiles/quality/layout) ficam no hook. 2111 → 2106. Teste
+  black-box do hook (40) verde. Override de linha reescrito.
+
+**Aprendizado — seed de teste com objeto NORMALIZADO é mais fiel que o cru:** o
+scaffold antes semeava `hook.participantsById.set("123", {id:"123"})` (objeto cru,
+sem nickname) — algo que NUNCA acontece em produção (todo participante passa por
+`_upsertParticipant`). Trocar por `hook.participantRegistry.upsert({id:"123"})`
+semeia o objeto normalizado, mais realista; a única asserção afetada era
+`participant_count` (o tamanho), que não muda. A troca de representação no teste
+white-box é a mesma mecânica da slice 1.
 
 ### W-G — connection_status: controlador escondido num hook curto · CONCLUÍDO
 
