@@ -84,6 +84,7 @@ própria ou é descartado com justificativa.
 | **Tab-cycle do cliente é dead code.** O echo síncrono de `dispatchEvent("input")` zera `tabCycleState` antes de o `setTimeout(0)` capturar `preserved`, então `tabCycleActive` é sempre `false` e o ciclo roda no servidor via `tab_complete` repetido. `createTabCycle.advance()` nunca é alcançado no browser. | `lib/chat/tab_cycle.js` + `autocomplete_hook.js` input listener | **aberto** — corrigir (capturar `preserved` antes do dispatch, ou guardar o echo) muda comportamento observável → commit próprio, não dentro de um movimento |
 | **`end_call` server event com payload vazio NÃO empurra `call_ended`.** O handler passa `{notify: payload.notify === true}`; um `end_call` do servidor com `{}` encerra em silêncio (assimetria vs. o botão DOM, que notifica). | `lib/p2p/rtc_media_hook_factory.js` handler de `endCall` | **aberto** — comportamento existente, não regressão; validar se é intencional antes de mexer |
 | **A fábrica de mídia despacha 2 CustomEvents com nome literal** (`lobby_media_recover`, `lobby_media_source_changed`) hardcoded, enquanto todo o resto é derivado de `config`. Pequeno acoplamento ao consumidor lobby. | `lib/p2p/rtc_media_hook_factory.js:727,1127` | **aberto** — mover p/ `config.clientEvents` seria mudança comportamental (nomes de evento) → commit próprio |
+| **W-E slice 3 (DOM de tiles) NÃO extraída — descartada com justificativa.** `remoteTiles` + `_createRemoteTile`/`_applyParticipantToTile`/`_applyTrackToTile` estão entrelaçados com quality/layout/focus/stats/screen-share (13 usos). Mas TODAS as decisões já saíram (participantTileMedia, quality, layout, media_state, os 2 registries); o que resta é BINDING de DOM (cria `<video>`, seta datasets, liga listeners), não decisão presa. | `group_call_webrtc_hook.js` | **descartado** — um controlador aqui seria I/O puro (§15.1 permite DOM num controlador, mas o ganho sobre o override honesto é nulo) com alto risco de regressão em mídia ao vivo; o override descreve isso fielmente e ninguém aponta decisão presa |
 
 ## Legenda de pacote
 
@@ -99,6 +100,29 @@ grandes, cada um com o pacote ou a razão do resíduo) · `MAX_HOOK_PRIVATE_CALL
 · primitivas proibidas (5 hooks WebRTC/canvas, override) · estado de módulo em
 `lib/` (3 singletons deliberados). Superfície observável pinada por
 `scripts/surface_snapshot.sh --check`.
+
+## Estado ao fim da segunda onda (W-A…W-G, W-F2, W-F3)
+
+Hooks > 200 linhas restantes (6), cada um com override cujo motivo descreve resíduo
+de I/O, sem decisão presa: `group_call_webrtc` (2106 — pc ao vivo + bind de tiles),
+`lobby_webrtc` (1164 — pc ao vivo + timers/ICE), `file_transfer` (580 — loop async +
+hash/download), `autocomplete` (406 — binding de input + plumbing de history),
+`chat_viewport` (362 — binding de reader-interactions), `space_canvas` (363 —
+Socket/pointer I/O).
+
+Catracas em CI (só descem):
+- teto 200 linhas/hook (6 overrides, cada um com resíduo de I/O descrito);
+- **`MAX_HOOK_PRIVATE_METHODS = 7`** (NOVA, W-F3) — pega controlador escondido em
+  hook curto; 4 overrides (os hooks WebRTC/canvas grandes);
+- `MAX_HOOK_PRIVATE_CALLS = 184` — piso honesto atual. Baixar exige migrar os testes
+  de integração WebRTC (`group_call`, `lobby_media`) para black-box; o watchdog de
+  mídia parada e a negociação/stats genuinamente precisam de white-box (ver progresso
+  W-F2b), então 184 é o piso real sem uma reescrita de teste dedicada;
+- primitivas proibidas — só `group_call_webrtc` agora (space_canvas saiu no W-B);
+- estado de módulo em `lib/` (3 singletons deliberados).
+
+Superfície: `custom-events` agora varre `js/` (W-G), acompanhando eventos que se
+mudam pra controladores de `lib/`.
 
 Follow-ups rastreados em [`js-hooks-progress.md`](js-hooks-progress.md) (seção W8):
 resíduo WebRTC (>200, controladores Forma B precisam de testes de integração),

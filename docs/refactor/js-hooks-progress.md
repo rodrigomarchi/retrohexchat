@@ -629,3 +629,33 @@ volta a 0 restaurado. É a mesma lição do W6 (o grep de `push(...)`), agora pa
 privados; cravar o teto nele o deixaria à beira de falhar ao ganhar 1 helper. 7 dá
 uma folga de um método sobre o padrão e ainda pega a classe do `connection_status`
 (8+). Nenhum hook atual tem exatamente 7, então a calibração não é arbitrária.
+
+## Balanço da segunda onda (W-A…W-G) — fechamento
+
+Onze pacotes, cada um com código + teste de lib + reversão + docs + guard/override
+coerente, superfície pinada verde o tempo todo, e `make ci` completo a cada bloco
+acumulado (3 rodadas, todas verdes):
+
+- **W-A** autocomplete tab-cycle + dropdown → `lib/chat/{tab_cycle,dropdown_position}`.
+- **W-B** space_canvas overlays + resizer → `lib/space/{space_overlays,canvas_resizer}`;
+  dropou o override de primitiva desonesto (ResizeObserver).
+- **W-F2a/b** testes de lib diretos: format_toolbar, menu_bar, prejoin, e o
+  black-box do `rtc_media_hook_factory` (o pior gap, 8 casos, zero private).
+- **W-C** file_transfer framing/backpressure/hash → funções puras.
+- **W-D** lobby_webrtc replay/renegotiation/deferral → `lib/p2p/signaling_session`.
+- **W-E slices 1+2** conference track + participant registries →
+  `lib/group_call/{track,participant}_registry`. Slice 3 (DOM de tiles) descartada
+  com justificativa (ver ledger: é bind de DOM, não decisão).
+- **W-G** connection_status: controlador escondido num hook curto extraído →
+  `lib/connection/connection_status_view` (187→109, 8→4 métodos privados).
+- **W-F3** nova catraca `MAX_HOOK_PRIVATE_METHODS` — pega o que o teto de linhas não vê.
+
+**Definição de pronto — onde chegamos:** todo hook > 200 linhas tem override cujo
+motivo descreve resíduo de I/O (pc ao vivo, Socket, loop async, binding de DOM/input),
+e nenhuma decisão está presa neles (todas foram para `lib/` e têm teste direto). A
+catraca de white-box (`MAX_HOOK_PRIVATE_CALLS=184`) está no piso real para a estrutura
+de teste atual — baixá-la exige migrar os testes de integração WebRTC para black-box,
+que é trabalho próprio (o watchdog e a negociação precisam de white-box). A nova
+catraca de conteúdo (W-F3) rejeita controlador escondido em hook curto. Os achados
+adiados viraram tarefas próprias documentadas (tab-cycle dead code, assimetria do
+`end_call`, nomes hardcoded na fábrica) ou foram descartados com justificativa (slice 3).
