@@ -588,3 +588,23 @@ rastreados — fullscreenchange, devicechange, etc. — e o `menubar:close-all` 
 volta; ZERO remoções). Confirmei que ainda pega um rename real de evento (exit 1) e
 volta a 0 restaurado. É a mesma lição do W6 (o grep de `push(...)`), agora para
 `custom-events`.
+
+### W-F3 — catraca de conteúdo: controlador escondido em hook curto · CONCLUÍDO
+
+**Feito**
+- Nova catraca no guard: `MAX_HOOK_PRIVATE_METHODS = 7`. Conta definições de método
+  privado (`^\s+_name(...) {`, comentários removidos) por hook. Um hook fino liga
+  listeners e dirige um controlador de `lib/`; não acumula helpers privados. O teto
+  fica logo acima do hook de referência (`retro_game_canvas`, 6). Overrides p/ os 4
+  hooks grandes (group_call 81, lobby_webrtc 35, file_transfer 25, space_canvas 9),
+  cada um nomeando o resíduo (I/O de pc ao vivo + binding DOM), com a mesma lógica
+  de "cai só, some quando sob o teto".
+- Verificado nos 3 caminhos: (A) baixando o teto p/ 5, o hook de referência (6) é
+  sinalizado sem override; (C) override para hook fino → "drop its entry"; e o
+  próprio `connection_status` (8 > 7 antes do W-G) teria sido pego. É a catraca que
+  o teto de linhas NÃO pega — controlador dentro de ≤200 linhas.
+
+**Por que 7 e não 6:** o hook de referência (o padrão-ouro fino) tem 6 métodos
+privados; cravar o teto nele o deixaria à beira de falhar ao ganhar 1 helper. 7 dá
+uma folga de um método sobre o padrão e ainda pega a classe do `connection_status`
+(8+). Nenhum hook atual tem exatamente 7, então a calibração não é arbitrária.

@@ -124,6 +124,38 @@ const FORBIDDEN_PRIMITIVE_OVERRIDES = new Map([
 // trapped; it reaches zero when the extraction is done.
 const MAX_HOOK_PRIVATE_CALLS = 184;
 
+// The line budget catches a fat hook, but a controller can hide under 200 lines
+// as a dense cluster of private methods — connection_status did exactly that
+// (eight private methods of DOM logic in 187 lines) until it was extracted. A
+// thin hook binds listeners and drives a lib/ controller; it does not accumulate
+// private helpers. The reference thin hook (retro_game_canvas) holds six, so the
+// budget sits just above it. A hook over the budget carries a controller and
+// either extracts it or names the residual in an override.
+const MAX_HOOK_PRIVATE_METHODS = 7;
+
+const HOOK_METHOD_COUNT_OVERRIDES = new Map([
+  [
+    "js/hooks/group_call/group_call_webrtc_hook.js",
+    "the irreducible residual is a large surface of RTCPeerConnection/getUserMedia " +
+      "I/O methods and tile-DOM binding; the decisions are already in lib/group_call/*",
+  ],
+  [
+    "js/hooks/lobby/lobby_webrtc_hook.js",
+    "residual is the single live RTCPeerConnection's setup/ICE/track/timer methods; " +
+      "negotiation and signal-recovery decisions are in lib/p2p/{negotiation,signaling_session}.js",
+  ],
+  [
+    "js/hooks/p2p/file_transfer_hook.js",
+    "residual is the async send loop, file read/hash/assemble/download and channel " +
+      "wiring; protocol transitions and framing are in lib/p2p/{transfer_session,file_transfer}.js",
+  ],
+  [
+    "js/hooks/space/space_canvas_hook.js",
+    "residual is the canvas pointer listeners and the Socket/channel event fan-out; " +
+      "overlays, resizer and coordinate math are in lib/space/*",
+  ],
+]);
+
 // Mutable module scope in lib/ is shared state no test can reset between cases.
 // The three that remain are deliberate, not accidental: public_manager holds the
 // single window manager the entry bundle and the lazy hook chunk must share;
@@ -170,6 +202,7 @@ function main() {
   checkLazyFacadeUsage(failures);
   checkDynamicImports(failures);
   checkHookLineBudget(failures);
+  checkHookPrivateMethodBudget(failures);
   checkForbiddenHookPrimitives(failures);
   checkHookTestWhiteBox(failures);
   checkLibModuleState(failures);
@@ -344,6 +377,33 @@ function checkHookLineBudget(failures) {
     if (over.has(rel)) continue;
     failures.push(
       `${rel} is within the hook budget; drop its HOOK_LINE_OVERRIDES entry in this commit.`,
+    );
+  }
+}
+
+function checkHookPrivateMethodBudget(failures) {
+  const over = new Set();
+
+  for (const file of hookImplementationFiles()) {
+    const rel = assetRel(file);
+    const source = stripComments(fs.readFileSync(file, "utf8"));
+    const count = (source.match(/^[ \t]+_[A-Za-z0-9_]+\s*\([^)]*\)\s*\{/gm) || []).length;
+    if (count <= MAX_HOOK_PRIVATE_METHODS) continue;
+
+    over.add(rel);
+    if (HOOK_METHOD_COUNT_OVERRIDES.has(rel)) continue;
+
+    failures.push(
+      `${rel} defines ${count} private methods, over the ${MAX_HOOK_PRIVATE_METHODS} a thin hook ` +
+        "should hold. That cluster is a controller: move the methods carrying logic into a lib/ " +
+        "module, or add an override naming the irreducible residual.",
+    );
+  }
+
+  for (const rel of HOOK_METHOD_COUNT_OVERRIDES.keys()) {
+    if (over.has(rel)) continue;
+    failures.push(
+      `${rel} is within the private-method budget; drop its HOOK_METHOD_COUNT_OVERRIDES entry in this commit.`,
     );
   }
 }
