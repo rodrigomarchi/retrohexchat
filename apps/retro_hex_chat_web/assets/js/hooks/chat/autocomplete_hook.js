@@ -316,14 +316,6 @@ const AutocompleteHook = {
     insertAtCursor(this.inputEl, text);
   },
 
-  getArgumentContext(cmdName) {
-    return getArgumentContext(cmdName);
-  },
-
-  isSensitiveCommand(text) {
-    return isSensitiveCommand(text);
-  },
-
   // ── History (delegated) ────────────────────────────────
 
   syncHistoryFromDataset() {

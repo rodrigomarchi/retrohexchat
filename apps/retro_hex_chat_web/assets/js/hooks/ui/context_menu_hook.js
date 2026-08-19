@@ -53,12 +53,10 @@ const ContextMenuHook = {
       case "ArrowDown":
         e.preventDefault();
         this.navigator.moveFocus(1);
-        this.focusedIndex = this.navigator.focusedIndex;
         break;
       case "ArrowUp":
         e.preventDefault();
         this.navigator.moveFocus(-1);
-        this.focusedIndex = this.navigator.focusedIndex;
         break;
       case "Enter":
         e.preventDefault();

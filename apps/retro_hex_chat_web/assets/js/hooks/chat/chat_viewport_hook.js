@@ -24,7 +24,7 @@
  *   * reset   — the server says so (`chat_scroll_reset`). A rebuilt list and a
  *               prepended page look identical to an observer.
  */
-import { detectContextTarget, buildMessageText, collectUrls } from "../../lib/chat/chat.js";
+import { detectContextTarget } from "../../lib/chat/chat.js";
 import { insertAtCursor } from "../../lib/chat/input.js";
 import {
   scrollToMessage,
@@ -313,14 +313,6 @@ const ChatViewportHook = {
 
   detectAndPushContextMenu(e, msgEl) {
     this.pushEvent("chat_context_menu", detectContextTarget(e, msgEl));
-  },
-
-  buildMessageText(msgEl) {
-    return buildMessageText(msgEl);
-  },
-
-  collectUrls(msgEl) {
-    return collectUrls(msgEl);
   },
 
   startLongPress(e) {

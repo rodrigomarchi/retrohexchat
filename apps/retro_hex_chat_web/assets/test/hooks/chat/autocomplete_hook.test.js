@@ -104,36 +104,6 @@ describe("AutocompleteHook", () => {
     });
   });
 
-  // ── isSensitiveCommand ─────────────────────────────────
-
-  describe("isSensitiveCommand", () => {
-    it("identifies /identify as sensitive", () => {
-      expect(hook.isSensitiveCommand("/identify mypass")).toBe(true);
-    });
-
-    it("identifies /nickserv as sensitive", () => {
-      expect(hook.isSensitiveCommand("/nickserv identify pass")).toBe(true);
-    });
-
-    it("identifies standalone /identify", () => {
-      expect(hook.isSensitiveCommand("/identify")).toBe(true);
-    });
-
-    it("is case-insensitive", () => {
-      expect(hook.isSensitiveCommand("/IDENTIFY pass")).toBe(true);
-    });
-
-    it("allows /msg (not sensitive)", () => {
-      expect(hook.isSensitiveCommand("/msg user hello")).toBe(false);
-    });
-
-    it("identifies NickServ passwords in PM and automation commands", () => {
-      expect(hook.isSensitiveCommand("/msg NickServ identify pass")).toBe(true);
-      expect(hook.isSensitiveCommand("/perform add /ns identify pass")).toBe(true);
-      expect(hook.isSensitiveCommand("/alias add auth /ns identify pass")).toBe(true);
-    });
-  });
-
   // ── history ────────────────────────────────────────────
 
   describe("history navigation", () => {
@@ -346,26 +316,6 @@ describe("AutocompleteHook", () => {
       setViewportWidth(900);
       hook.configureTextareaSizing();
       expect(hook.maxLines).toBe(5);
-    });
-  });
-
-  // ── getArgumentContext ─────────────────────────────────
-
-  describe("getArgumentContext", () => {
-    it("returns arg_nick for /msg", () => {
-      expect(hook.getArgumentContext("msg")).toBe("arg_nick");
-    });
-
-    it("returns arg_nick for /kick", () => {
-      expect(hook.getArgumentContext("kick")).toBe("arg_nick");
-    });
-
-    it("returns arg_channel for /join", () => {
-      expect(hook.getArgumentContext("join")).toBe("arg_channel");
-    });
-
-    it("returns null for unknown command", () => {
-      expect(hook.getArgumentContext("unknown")).toBeNull();
     });
   });
 });

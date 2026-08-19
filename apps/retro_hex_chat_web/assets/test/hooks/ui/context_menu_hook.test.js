@@ -57,21 +57,21 @@ describe("ContextMenuHook", () => {
     it("wraps from last to first", () => {
       // Go to last item
       document.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowUp", bubbles: true }));
-      expect(hook.focusedIndex).toBe(hook.items.length - 1);
+      expect(hook.navigator.focusedIndex).toBe(hook.items.length - 1);
 
       // Go down past last → wraps to first
       document.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown", bubbles: true }));
-      expect(hook.focusedIndex).toBe(0);
+      expect(hook.navigator.focusedIndex).toBe(0);
     });
 
     it("wraps from first to last", () => {
       // Go to first item
       document.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown", bubbles: true }));
-      expect(hook.focusedIndex).toBe(0);
+      expect(hook.navigator.focusedIndex).toBe(0);
 
       // Go up past first → wraps to last
       document.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowUp", bubbles: true }));
-      expect(hook.focusedIndex).toBe(hook.items.length - 1);
+      expect(hook.navigator.focusedIndex).toBe(hook.items.length - 1);
     });
   });
 

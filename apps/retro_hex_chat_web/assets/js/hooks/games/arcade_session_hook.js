@@ -1,3 +1,5 @@
+import { log } from "../../lib/logger.js";
+
 /**
  * Closes the arcade tab/window.
  */
@@ -83,7 +85,7 @@ const ArcadeSessionHook = {
         this._gameWindow.close();
       }
     } catch (error) {
-      console.warn("Could not close arcade game window", error);
+      log.warn("[ArcadeSessionHook] could not close game window", error);
     }
 
     this._gameWindow = null;
