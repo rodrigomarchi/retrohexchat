@@ -697,3 +697,29 @@ migração W-F1, trabalho próprio).
 **Resíduo do group_call agora:** pc ao vivo (irredutível) + attach de `<video>` +
 `_applyTrackToTile`/`_applyParticipantToTile` (mutação de dataset a partir dos
 registros/quality — bind, não decisão; as decisões estão em lib com teste direto).
+
+### W-F1 (parte 1) — lobby_media white-box → black-box; catraca 184→171 · CONCLUÍDO
+
+**Feito**
+- O `lobby_media_hook.test.js` alcançava 15 métodos privados. O teste black-box da
+  fábrica (W-F2b) já cobre start/queue/republish/attach/screen-share/remote-track;
+  aqui migrei os casos do lobby pra dirigir pela SUPERFÍCIE REAL, sem deletar
+  asserção nenhuma (o detalhe lobby-específico — nomes de evento, bitrates,
+  contentHint — fica preservado):
+  - `_startCall` (×4) → `handlers["lobby_media_start_video|audio"](payload)`.
+  - `_handlePcReady` (×2) → CustomEvent `lobby_media_pc_ready` capturado no
+    `webrtcEl.addEventListener`.
+  - `_handleRemoteTrack` (×4) → `pc.ontrack(event)` (o pc-ready fia o ontrack).
+  - `_toggleScreenShare` (×2) → clique DOM `[data-lobby-media-action=screen-share]`.
+  - assert redundante de `_sendersPc` removido (o `newPc.addTrack` já prova).
+- Sobram 2 reaches (`_attachMediaElements` — teste unitário focado do attach; e um
+  setup de `_sendersPc`) — genuinamente não convertem limpo. **15 → 2.**
+- Catraca `MAX_HOOK_PRIVATE_CALLS` **184 → 171** no mesmo commit. 21/21 do
+  lobby_media verdes, estável em 3 runs (as conversões de screen-share esperam o
+  `source_changed` dispatch, o sinal de fim real, não o flag `active` que vira antes
+  da limpeza de tracks).
+
+**Aprendizado — o setup do lobby_media chama `mounted()` e captura `handlers`**, então
+dá pra dirigir black-box sem cirurgia de scaffold; o do group_call NÃO (monta à mão),
+e a maioria dos reaches dele vem por Phoenix Channel (`channel.on`), não por
+`handleEvent` — então lá a conversão é outra história (ver W-F1 parte 2).

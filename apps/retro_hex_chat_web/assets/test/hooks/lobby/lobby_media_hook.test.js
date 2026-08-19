@@ -37,6 +37,27 @@ function setup({ querySelector = () => null, closest = () => null } = {}) {
   return { hook, pushed, handlers, webrtcEl };
 }
 
+// Drive the hook through its real surface instead of reaching private methods:
+// server events register through handleEvent, the peer connection arrives as a
+// CustomEvent on the WebRTC element, remote tracks fire the pc's own ontrack,
+// and controls are DOM clicks. The composed behaviour is also covered black-box
+// by test/lib/p2p/rtc_media_hook_factory.test.js and the chat-p2p E2E.
+function startCall(ctx, kind, payload = {}) {
+  return ctx.handlers[`lobby_media_start_${kind}`](payload);
+}
+
+function firePcReady(ctx, pc) {
+  const call = ctx.webrtcEl.addEventListener.mock.calls.find(
+    ([event]) => event === "lobby_media_pc_ready",
+  );
+  return call[1]({ detail: { pc } });
+}
+
+function clickAction(ctx, action) {
+  const call = ctx.hook.el.addEventListener.mock.calls.find(([type]) => type === "click");
+  return call[1]({ target: { closest: () => ({ getAttribute: () => action }) } });
+}
+
 // jsdom has no MediaStream, and the remote stream's identity is what decides
 // whether attaching reloads the media element — so it has to be modelled.
 let streamSeq = 0;
@@ -135,7 +156,7 @@ describe("LobbyMediaHook auto-join", () => {
     });
 
     // The server asks us to open media by default (auto), but permission is denied.
-    await hook._startCall("audio", { auto: true });
+    await startCall(ctx, "audio", { auto: true });
 
     // We still join the call as a pure receiver so the user can watch and listen.
     expect(hook.inCall).toBe(true);
@@ -171,7 +192,7 @@ describe("LobbyMediaHook auto-join", () => {
       getTransceivers: vi.fn(() => []),
     };
 
-    await hook._startCall("video", {
+    await startCall(ctx, "video", {
       device_preferences: {
         audio_input_id: "mic-1",
         video_input_id: "cam-1",
@@ -258,7 +279,7 @@ describe("LobbyMediaHook auto-join", () => {
       getTransceivers: vi.fn(() => []),
     };
 
-    await hook._startCall("video");
+    await startCall(ctx, "video");
     await deviceChangeHandler();
 
     expect(videoSender.replaceTrack).toHaveBeenCalledWith(newVideoTrack);
@@ -290,15 +311,16 @@ describe("LobbyMediaHook auto-join", () => {
       },
     });
 
-    await hook._startCall("video", { auto: true });
+    await startCall(ctx, "video", { auto: true });
     expect(navigator.mediaDevices.getUserMedia).not.toHaveBeenCalled();
 
     const pc = {
       addTrack: vi.fn((track) => ({ track })),
+      getReceivers: vi.fn(() => []),
       getTransceivers: vi.fn(() => []),
     };
 
-    hook._handlePcReady(pc);
+    firePcReady(ctx, pc);
 
     await vi.waitFor(() => {
       expect(navigator.mediaDevices.getUserMedia).toHaveBeenCalled();
@@ -349,12 +371,11 @@ describe("LobbyMediaHook auto-join", () => {
     hook.videoOn = true;
     hook.callType = "video";
 
-    hook._handlePcReady(newPc);
+    firePcReady(ctx, newPc);
 
     await vi.waitFor(() => {
       expect(newPc.addTrack).toHaveBeenCalledWith(audioTrack, localStream);
       expect(newPc.addTrack).toHaveBeenCalledWith(videoTrack, localStream);
-      expect(hook._sendersPc).toBe(newPc);
     });
 
     expect(hook.senders.map((sender) => sender.track)).toEqual([audioTrack, videoTrack]);
@@ -624,7 +645,15 @@ describe("LobbyMediaHook auto-join", () => {
     hook.audioOn = true;
     hook.videoOn = true;
 
-    await hook._toggleScreenShare();
+    clickAction(ctx, "screen-share");
+    await vi.waitFor(() =>
+      expect(ctx.webrtcEl.dispatchEvent).toHaveBeenCalledWith(
+        expect.objectContaining({
+          type: "lobby_media_source_changed",
+          detail: { source: "screen" },
+        }),
+      ),
+    );
 
     expect(navigator.mediaDevices.getDisplayMedia).toHaveBeenCalledWith({
       video: {
@@ -654,7 +683,15 @@ describe("LobbyMediaHook auto-join", () => {
       }),
     );
 
-    await hook._toggleScreenShare();
+    clickAction(ctx, "screen-share");
+    await vi.waitFor(() =>
+      expect(ctx.webrtcEl.dispatchEvent).toHaveBeenCalledWith(
+        expect.objectContaining({
+          type: "lobby_media_source_changed",
+          detail: { source: "camera" },
+        }),
+      ),
+    );
 
     expect(sender.replaceTrack).toHaveBeenCalledWith(cameraTrack);
     expect(sender.setParameters.mock.calls.at(-1)[0].encodings[0]).toEqual(
@@ -761,16 +798,19 @@ describe("remote track adoption", () => {
 
   it("keeps every remote track when they arrive in separate streams", () => {
     vi.stubGlobal("MediaStream", FakeMediaStream);
-    const { hook } = setup();
+    const ctx = setup();
+    const { hook } = ctx;
+    const pc = { getReceivers: () => [], getTransceivers: () => [] };
+    firePcReady(ctx, pc);
 
     const video = remoteTrack("video", "v1");
     const audio = remoteTrack("audio", "a1");
 
     // A peer that captures its camera and microphone at different moments
     // publishes them under different MediaStreams, so ontrack reports one each.
-    hook._handleRemoteTrack({ track: video, streams: [new FakeMediaStream([video])] });
+    pc.ontrack({ track: video, streams: [new FakeMediaStream([video])] });
     const adopted = hook.remoteStream;
-    hook._handleRemoteTrack({ track: audio, streams: [new FakeMediaStream([audio])] });
+    pc.ontrack({ track: audio, streams: [new FakeMediaStream([audio])] });
 
     expect(hook.remoteStream.getVideoTracks()).toHaveLength(1);
     expect(hook.remoteStream.getAudioTracks()).toHaveLength(1);
@@ -783,22 +823,24 @@ describe("remote track adoption", () => {
 
     const remoteVideo = fakeMediaElement();
     const remoteAudio = fakeMediaElement();
-    const { hook } = setup({
+    const ctx = setup({
       querySelector: (selector) => {
         if (selector === "#lobby-remote-video") return remoteVideo;
         if (selector === "#lobby-remote-audio") return remoteAudio;
         return null;
       },
     });
+    const pc = { getReceivers: () => [], getTransceivers: () => [] };
+    firePcReady(ctx, pc);
 
     const video = remoteTrack("video", "v1");
     const audio = remoteTrack("audio", "a1");
 
-    hook._handleRemoteTrack({ track: video, streams: [new FakeMediaStream([video])] });
+    pc.ontrack({ track: video, streams: [new FakeMediaStream([video])] });
     const attached = remoteVideo.srcObject;
     expect(attached).toBeTruthy();
 
-    hook._handleRemoteTrack({ track: audio, streams: [new FakeMediaStream([audio])] });
+    pc.ontrack({ track: audio, streams: [new FakeMediaStream([audio])] });
 
     expect(remoteVideo.srcObject).toBe(attached);
     expect(remoteVideo.srcObject.getVideoTracks()).toHaveLength(1);
