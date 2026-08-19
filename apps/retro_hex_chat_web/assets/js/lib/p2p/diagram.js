@@ -79,3 +79,110 @@ export function diagramConfig(dataset, reducedMotion) {
 
   return { dotCount, cycleMs, state, direction, needsDots };
 }
+
+/**
+ * The diagram animator — the RAF loop, dot elements and state sync, no LiveView.
+ *
+ * The per-frame maths is `dotFrame`; this owns the loop that applies it, creates
+ * the dot spans, and starts/stops the animation as the dataset state changes.
+ * The hook binds it and calls `sync()` on mount and update.
+ *
+ * @param {HTMLElement} el the diagram element
+ * @param {{matchMedia?: Function, raf?: Function, cancelRaf?: Function, now?: Function}} [deps]
+ * @returns {{sync(): void, stop(): void}}
+ */
+export function createDiagramAnimator(el, deps = {}) {
+  const matchMedia = deps.matchMedia || ((q) => window.matchMedia(q));
+  const raf = deps.raf || ((cb) => requestAnimationFrame(cb));
+  const cancelRaf = deps.cancelRaf || ((id) => cancelAnimationFrame(id));
+  const now = deps.now || (() => performance.now());
+
+  const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let rafId = null;
+  let dotStartTime = null;
+  let dotCount;
+  let cycleMs;
+  let state;
+
+  function ensureDots() {
+    const container = el.querySelector(".p2p-diagram__dots");
+    if (!container) return;
+
+    const existing = container.querySelectorAll(".p2p-diagram__dot").length;
+    for (let i = existing; i < dotCount; i++) {
+      const span = document.createElement("span");
+      span.className = "p2p-diagram__dot";
+      container.appendChild(span);
+    }
+  }
+
+  function startDotAnimation(direction) {
+    if (rafId) return; // already running
+
+    ensureDots();
+    const dots = el.querySelectorAll(".p2p-diagram__dot");
+    if (dots.length === 0) return;
+
+    dotStartTime = now();
+    const isAudio = state === "audio-call";
+
+    const animate = (frameNow) => {
+      const progress = ((frameNow - dotStartTime) % cycleMs) / cycleMs;
+      const visibleDots = Math.min(dots.length, dotCount);
+
+      for (let i = 0; i < dots.length; i++) {
+        if (i >= visibleDots) {
+          dots[i].style.opacity = "0";
+          continue;
+        }
+
+        const frame = dotFrame({ direction, progress, index: i, dotCount, isAudio });
+        dots[i].style.left = frame.left;
+        dots[i].style.opacity = frame.opacity;
+
+        if (isAudio) {
+          dots[i].style.width = frame.width;
+          dots[i].style.height = frame.height;
+          dots[i].style.top = frame.top;
+        }
+      }
+
+      rafId = raf(animate);
+    };
+
+    rafId = raf(animate);
+  }
+
+  function stop() {
+    if (rafId) {
+      cancelRaf(rafId);
+      rafId = null;
+    }
+
+    for (const dot of el.querySelectorAll(".p2p-diagram__dot")) {
+      dot.style.opacity = "0";
+      dot.style.width = "";
+      dot.style.height = "";
+      dot.style.top = "";
+    }
+  }
+
+  return {
+    sync() {
+      const config = diagramConfig(el.dataset, reducedMotion);
+      const configChanged = dotCount !== config.dotCount || cycleMs !== config.cycleMs;
+
+      dotCount = config.dotCount;
+      cycleMs = config.cycleMs;
+      state = config.state;
+
+      if (config.needsDots && config.direction !== "none") {
+        if (configChanged) stop();
+        startDotAnimation(config.direction);
+      } else {
+        stop();
+      }
+    },
+    stop,
+  };
+}

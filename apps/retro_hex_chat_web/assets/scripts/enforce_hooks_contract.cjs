@@ -103,7 +103,6 @@ const FORBIDDEN_HOOK_PRIMITIVES = [
 ];
 
 const FORBIDDEN_PRIMITIVE_OVERRIDES = new Map([
-  ["js/hooks/chat/search_highlight_hook.js", "W8"],
   ["js/hooks/group_call/group_call_webrtc_hook.js", "W5"],
   ["js/hooks/space/space_canvas_hook.js", "W8"],
 ]);

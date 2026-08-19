@@ -6,6 +6,7 @@ import {
   diagramConfig,
   dotFrame,
   dotPosition,
+  createDiagramAnimator,
 } from "../../../js/lib/p2p/diagram.js";
 
 describe("dotPosition", () => {
@@ -94,5 +95,73 @@ describe("diagramConfig", () => {
 
   it("suppresses dots under reduced motion", () => {
     expect(diagramConfig({ state: "transferring" }, true).needsDots).toBe(false);
+  });
+});
+
+describe("createDiagramAnimator", () => {
+  function harness(dataset, { reduced = false } = {}) {
+    const el = document.createElement("div");
+    Object.assign(el.dataset, dataset);
+    const container = document.createElement("div");
+    container.className = "p2p-diagram__dots";
+    el.appendChild(container);
+
+    let rafCb = null;
+    const raf = (cb) => {
+      rafCb = cb;
+      return 1;
+    };
+    const cancelRaf = () => {
+      rafCb = null;
+    };
+    const animator = createDiagramAnimator(el, {
+      matchMedia: () => ({ matches: reduced }),
+      raf,
+      cancelRaf,
+      now: () => 0,
+    });
+    return {
+      el,
+      animator,
+      tick: (t = 100) => rafCb && rafCb(t),
+      get running() {
+        return rafCb !== null;
+      },
+    };
+  }
+
+  const dots = (el) => el.querySelectorAll(".p2p-diagram__dot");
+
+  it("creates dots and animates a transferring state", () => {
+    const h = harness({ state: "transferring", direction: "ltr", dots: "3" });
+    h.animator.sync();
+    expect(dots(h.el).length).toBe(3);
+    expect(h.running).toBe(true);
+    h.tick(50);
+    expect(dots(h.el)[0].style.left).toMatch(/%$/);
+  });
+
+  it("does not animate under reduced motion", () => {
+    const h = harness({ state: "transferring", direction: "ltr", dots: "3" }, { reduced: true });
+    h.animator.sync();
+    expect(h.running).toBe(false);
+  });
+
+  it("stops and clears when the state goes idle", () => {
+    const h = harness({ state: "transferring", direction: "ltr", dots: "2" });
+    h.animator.sync();
+    expect(h.running).toBe(true);
+
+    h.el.dataset.state = "idle";
+    h.animator.sync();
+    expect(h.running).toBe(false);
+    expect(dots(h.el)[0].style.opacity).toBe("0");
+  });
+
+  it("stop() cancels the loop and resets styles", () => {
+    const h = harness({ state: "video-call", direction: "bidi", dots: "2" });
+    h.animator.sync();
+    h.animator.stop();
+    expect(h.running).toBe(false);
   });
 });
