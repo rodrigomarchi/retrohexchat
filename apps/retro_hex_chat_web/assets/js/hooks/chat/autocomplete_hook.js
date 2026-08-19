@@ -17,6 +17,8 @@ import { createHistoryManager, isSensitiveCommand } from "../../lib/chat/history
 import { INTENT, resolveComposerKey } from "../../lib/chat/composer.js";
 import { createHistorySearch } from "../../lib/chat/history_search.js";
 import { createTypingIndicator } from "../../lib/chat/typing_indicator.js";
+import { createTabCycle } from "../../lib/chat/tab_cycle.js";
+import { dropdownMaxHeight } from "../../lib/chat/dropdown_position.js";
 
 const MOBILE_BREAKPOINT = 768;
 const DESKTOP_MAX_LINES = 5;
@@ -31,7 +33,7 @@ const AutocompleteHook = {
     });
     this.hasNavigated = false;
     this.tooltipVisible = false;
-    this.tabCycleState = null;
+    this.tabCycle = createTabCycle(this.inputEl);
     this.editMode = false;
 
     // Enhanced history via lib. Durable state comes from the server; this hook
@@ -71,7 +73,7 @@ const AutocompleteHook = {
     // PM typing indicator — debounce input events + auto-resize
     this.inputEl.addEventListener("input", () => {
       const value = this.inputEl.value;
-      this.tabCycleState = null;
+      this.tabCycle.reset();
 
       autoResize(this.inputEl, this.maxHeight);
 
@@ -104,22 +106,7 @@ const AutocompleteHook = {
 
     // Handle server events
     this.handleEvent("tab_matches", ({ matches, is_start }) => {
-      if (matches.length === 0) return;
-
-      this.tabCycleState = {
-        original: this.inputEl.value,
-        matches: matches,
-        index: 0,
-        isStart: is_start,
-      };
-
-      const suffix = is_start ? ": " : " ";
-      this.inputEl.value = matches[0] + suffix;
-      this.inputEl.dispatchEvent(new Event("input", { bubbles: true }));
-      const state = this.tabCycleState;
-      setTimeout(() => {
-        this.tabCycleState = state;
-      }, 0);
+      this.tabCycle.start(matches, is_start);
     });
 
     this.handleEvent("set_input", ({ value }) => {
@@ -190,7 +177,7 @@ const AutocompleteHook = {
       hasNavigated: this.hasNavigated,
       isTyping: this.typing.active,
       tooltipVisible: this.tooltipVisible,
-      tabCycleActive: !!this.tabCycleState,
+      tabCycleActive: this.tabCycle.active,
       value: this.inputEl.value,
     });
     this._applyComposerIntents(e, intents);
@@ -251,21 +238,9 @@ const AutocompleteHook = {
         break;
       }
       case "tabCycle":
-        this._advanceTabCycle();
+        this.tabCycle.advance();
         break;
     }
-  },
-
-  _advanceTabCycle() {
-    this.tabCycleState.index = (this.tabCycleState.index + 1) % this.tabCycleState.matches.length;
-    const match = this.tabCycleState.matches[this.tabCycleState.index];
-    const suffix = this.tabCycleState.isStart ? ": " : " ";
-    this.inputEl.value = match + suffix;
-    this.inputEl.dispatchEvent(new Event("input", { bubbles: true }));
-    const state = this.tabCycleState;
-    setTimeout(() => {
-      this.tabCycleState = state;
-    }, 0);
   },
 
   updated() {
@@ -286,15 +261,12 @@ const AutocompleteHook = {
     const dropdown = document.getElementById("autocomplete-dropdown");
     if (!dropdown) return;
 
-    const rect = dropdown.getBoundingClientRect();
-    if (rect.top < 0) {
-      const windowEl = dropdown.querySelector(".window");
-      if (windowEl) {
-        const available = rect.bottom;
-        if (available > 60) {
-          windowEl.style.maxHeight = available + "px";
-        }
-      }
+    const windowEl = dropdown.querySelector(".window");
+    if (!windowEl) return;
+
+    const maxHeight = dropdownMaxHeight(dropdown.getBoundingClientRect());
+    if (maxHeight !== null) {
+      windowEl.style.maxHeight = maxHeight + "px";
     }
   },
 

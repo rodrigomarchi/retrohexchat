@@ -77,9 +77,10 @@ const HOOK_LINE_OVERRIDES = new Map([
   ],
   [
     "js/hooks/chat/autocomplete_hook.js",
-    "key resolver, history search and slash parsing extracted; residual is the " +
-      "input/keyup/keydown binding plus the typing-indicator and tab-cycle machines " +
-      "and the dropdown-reposition, still being pulled out",
+    "key resolver, history search, slash parsing, typing-indicator, tab-cycle and " +
+      "dropdown-reposition all extracted to lib/chat/*; residual is the input/keyup/" +
+      "keydown listener binding, the handleEvent registrations and the history/dataset " +
+      "plumbing that reads this.el.dataset and drives the lib managers",
   ],
   [
     "js/hooks/chat/chat_viewport_hook.js",

@@ -371,3 +371,47 @@ input/keyup + handleEvents; chat_viewport 362 — reader-interactions pushEvent-
 snapshot da superfície + 4 catracas em CI segurando a linha; padrão escrito no
 AGENT-GUIDE. Nenhum comportamento observável mudou (commits de refactor); os
 poucos commits comportamentais (i18n) são isolados e marcados.
+
+---
+
+## Segunda onda (pós-W8) — fechar a punch-list restante
+
+O W8 fechou o bloco mas deixou 6 hooks > 200 linhas com resíduo real (não só
+irredutível). Uma segunda leva de commits atacou isso; **os cinco commits
+`5b615b77`…`9622d3d5` não atualizaram este diário na época** — reconciliados aqui:
+
+- `5b615b77` recovery/watchdog da conferência → `lib/p2p/recovery.js` (+testes).
+- `42820f13` search_highlight, connect_form, p2p_diagram → controladores em
+  `lib/{chat,connection,p2p}/*` (os "três sub-200 que o guard não via").
+- `955ba202` typing-machine do autocomplete → `lib/chat/typing_indicator.js`;
+  fechou um dodge de classificação no guard; overrides honestos.
+- `8f799d6c` coordenada do space_canvas → `lib/space/canvas_point.js`; fechou o
+  gap de teste do infinite_scroll.
+- `9622d3d5` isenção do `audit.styles` seguindo o p2p_diagram pra `lib/`.
+
+### W-A — autocomplete: tab-cycle + reposição do dropdown · CONCLUÍDO
+
+**Feito**
+- `lib/chat/tab_cycle.js` (`createTabCycle(el, {setTimeoutFn})`, Forma B): a
+  máquina de ciclo de Tab. `start`/`advance`/`reset`/`active`. O handler
+  `tab_matches` virou uma linha (`this.tabCycle.start(...)`); o input listener
+  chama `reset()`; a action `tabCycle` chama `advance()`; o resolver lê
+  `this.tabCycle.active`. `_advanceTabCycle` deletado. 10 casos de lib.
+- `lib/chat/dropdown_position.js` (`dropdownMaxHeight(rect)`, Forma A): a decisão
+  de `getBoundingClientRect → maxHeight` do `updated()`. O hook faz a leitura de
+  rect e o writeback de `.style.maxHeight`; a decisão é pura. 4 casos.
+- autocomplete 434 → **406**. Teste black-box do hook verde sem edição =
+  equivalência. Override do guard reescrito (resíduo agora é binding de
+  listener + handleEvents + plumbing de history/dataset).
+
+**Aprendizado — a máquina de tab-cycle do cliente está MORTA e eu preservei a
+morte:** `dispatchEvent(input)` é síncrono, então o próprio echo do write dispara
+o input listener do hook, que zera `tabCycleState` **antes** de o `setTimeout(0)`
+capturar `preserved` — o restore reescreve `null`. Resultado: `tabCycleActive` é
+sempre `false` e o ciclo de Tab acontece no servidor (via `tab_complete`
+repetido), não no cliente. Provei isso empiricamente (scratch test: valor nunca
+avança de "alice: "). A extração reproduz a ordem exata (captura de `preserved`
+DEPOIS do dispatch), então o comportamento é byte-a-byte. **Não corrigi** — corrigir
+mudaria comportamento observável (seria commit próprio). Registrado como achado
+adiado no ledger. O teste de lib documenta as DUAS faces: a máquina cicla
+corretamente isolada (sem o listener do host), e morre quando o host reseta no echo.
