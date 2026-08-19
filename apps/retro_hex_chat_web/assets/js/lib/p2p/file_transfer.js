@@ -181,6 +181,40 @@ export function decodeHaveChunks(buffer) {
   return { transferId, indices };
 }
 
+/**
+ * Frame a have-chunks bitmap for the wire: the encoded payload behind a single
+ * MSG.HAVE_CHUNKS type byte, the way every DataChannel message is tagged.
+ * @param {string} transferId
+ * @param {Iterable<number>} receivedIndices
+ * @returns {ArrayBuffer} type byte + encoded payload, ready to send
+ */
+export function frameHaveChunks(transferId, receivedIndices) {
+  const payload = encodeHaveChunks(transferId, receivedIndices);
+  const framed = new ArrayBuffer(1 + payload.byteLength);
+  new Uint8Array(framed)[0] = MSG.HAVE_CHUNKS;
+  new Uint8Array(framed, 1).set(new Uint8Array(payload));
+  return framed;
+}
+
+/**
+ * Inverse of frameHaveChunks: strip the leading type byte and decode the bitmap.
+ * @param {ArrayBuffer} rawData - the framed message as received
+ * @returns {{ transferId: string, indices: Set<number> }}
+ */
+export function unframeHaveChunks(rawData) {
+  return decodeHaveChunks(rawData.slice(1));
+}
+
+/**
+ * Whether the DataChannel's send buffer is full enough to pause sending. The
+ * sender drains and resumes on `onbufferedamountlow`; this is the pause edge.
+ * @param {number} bufferedAmount - channel.bufferedAmount in bytes
+ * @returns {boolean}
+ */
+export function isBackpressured(bufferedAmount) {
+  return bufferedAmount >= HIGH_WATER_MARK;
+}
+
 // --- Hashing ---
 
 /**
@@ -194,6 +228,17 @@ export async function computeHash(buffer) {
   return Array.from(hashArray)
     .map((b) => b.toString(16).padStart(2, "0"))
     .join("");
+}
+
+/**
+ * Whether a received file's hash matches the sender's expected digest — the
+ * integrity verdict that decides accept vs. re-request.
+ * @param {string} actual - the digest computed over the assembled file
+ * @param {string} expected - the sender's declared digest
+ * @returns {boolean}
+ */
+export function hashMatches(actual, expected) {
+  return actual === expected;
 }
 
 // --- Formatting ---

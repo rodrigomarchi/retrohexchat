@@ -17,7 +17,7 @@ Baseline: main @ a1c9376e, 18/08/2026.
 |---|---|---|---|---|---|---|---|---|
 | `group_call/group_call_webrtc_hook.js` | 2414→2134 | sim | sim | sim | W4·W5 | **decisões extraídas** | p2p/negotiation, group_call/{quality,payload,reactions,layout,tiles,media_state} | resíduo: plumbing RTCPeerConnection+tile-DOM (controller Forma B = follow-up c/ testes de integração) |
 | `lobby/lobby_webrtc_hook.js` | 1152 | sim | sim | sim | W4 | **W4 feito** | p2p/negotiation | ainda >200; épocas+timers no hook |
-| `p2p/file_transfer_hook.js` | 663→586 | sim | sim | sim | W6 | **W6 feito** | p2p/transfer_session (redutor) | teste white-box reescrito p/ black-box no W8 |
+| `p2p/file_transfer_hook.js` | 663→580 | sim | sim | sim | W6·W-C | **W-C feito** | p2p/transfer_session (redutor); p2p/file_transfer.{frame,unframe}HaveChunks/isBackpressured/hashMatches | resíduo: laço de envio async + hash/assemble/download/timers (I/O) |
 | `chat/autocomplete_hook.js` | 631→406 | sim | sim | sim | W7·W-A | **W-A feito** | chat/{composer,input,history_search,typing_indicator,tab_cycle,dropdown_position} | tab-cycle do cliente é dead code (ver Achados adiados) |
 | `ui/retro_table_hook.js` | 586→32 | sim | sim | — | W1 | **concluído** | ui/retro_table{,_layout,_selection} | — |
 | `chat/chat_viewport_hook.js` | 462 | sim | sim | sim | W2·W7 | **W2 feito** | — | input/long_press (W2) |

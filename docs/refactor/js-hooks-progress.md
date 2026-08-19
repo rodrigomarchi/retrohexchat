@@ -458,3 +458,27 @@ LiveSocket. O gap de verdade (white-box) é o `rtc_media_hook_factory`: o
 `lobby_media_hook.test.js` alcança 6 métodos privados (`_startCall`,
 `_handlePcReady`, `_handleRemoteTrack`, `_attachMediaElements`, `_sendersPc`,
 `_toggleScreenShare`) — esse é o alvo do W-F2b, com teste direto black-box.
+
+### W-C — file_transfer: framing + backpressure + verificação como puras · CONCLUÍDO
+
+**Feito**
+- `lib/p2p/file_transfer.js` ganhou 4 funções puras: `frameHaveChunks`/
+  `unframeHaveChunks` (o enquadramento binário do have-chunks COM o type byte —
+  antes inline no hook em `_sendHaveChunks`/`_handleIncomingHaveChunks`),
+  `isBackpressured(bufferedAmount)` (`>= HIGH_WATER_MARK`) e
+  `hashMatches(actual, expected)` (`===`). Testadas por bytes (round-trip do frame
+  confirma o type byte; +10 casos).
+- Hook: as três decisões passam pelas puras; o laço `_startSending` fica no hook
+  (I/O). 586 → 580. Teste black-box do hook verde sem edição.
+- Override de linha reescrito; `HIGH_WATER_MARK`/`encodeHaveChunks`/
+  `decodeHaveChunks` saíram dos imports do hook.
+
+**Aprendizado — a reversão distinguiu "gap de cobertura" de "cópia velha":** quebrar
+as 3 puras deixou vermelho só o teste de lib; o teste de hook e o do reducer NÃO
+reagiram (os caminhos de resume/backpressure/verify não são exercitados black-box
+pelo teste de hook — é caro montar um DataChannel com `bufferedAmount` e um
+transfer completo). Isso NÃO é o modo de falha perigoso ("hook chama a cópia
+velha"): removi `encodeHaveChunks`/`decodeHaveChunks`/`HIGH_WATER_MARK` dos imports
+do hook, então qualquer cópia inline dangling daria `ReferenceError` no load — e o
+módulo do hook carrega verde. A prova de wiring é a ausência do símbolo antigo, não
+a reação do teste de hook. Grep confirmou zero inline residual.

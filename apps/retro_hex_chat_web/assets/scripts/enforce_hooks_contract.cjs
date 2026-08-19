@@ -73,7 +73,10 @@ const HOOK_LINE_OVERRIDES = new Map([
   ],
   [
     "js/hooks/p2p/file_transfer_hook.js",
-    "W6 moves the transfer state machine to lib/p2p/transfer_session.js",
+    "transitions in lib/p2p/transfer_session.js (reducer) and the framing/" +
+      "backpressure/hash decisions in lib/p2p/file_transfer.js; residual is the " +
+      "async send loop, file read/hash/assemble/download and progress timers — " +
+      "DataChannel I/O, not a trapped decision",
   ],
   [
     "js/hooks/chat/autocomplete_hook.js",

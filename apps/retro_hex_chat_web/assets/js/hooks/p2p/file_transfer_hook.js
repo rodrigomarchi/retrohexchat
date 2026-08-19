@@ -9,7 +9,6 @@ import { log } from "../../lib/logger.js";
 import {
   MSG,
   STATE,
-  HIGH_WATER_MARK,
   LOW_WATER_MARK,
   PROGRESS_THROTTLE_MS,
   validateFile,
@@ -17,8 +16,10 @@ import {
   encodeControlMessage,
   encodeChunk,
   decodeMessage,
-  encodeHaveChunks,
-  decodeHaveChunks,
+  frameHaveChunks,
+  unframeHaveChunks,
+  isBackpressured,
+  hashMatches,
   createSenderSession,
   createReceiverSession,
   getNextChunk,
@@ -326,7 +327,7 @@ const FileTransferHook = {
     try {
       while (this._session && this._session.state === STATE.TRANSFERRING) {
         // Backpressure check
-        if (this._channel.bufferedAmount >= HIGH_WATER_MARK) {
+        if (isBackpressured(this._channel.bufferedAmount)) {
           this._sending = false;
           return; // Will be resumed by onbufferedamountlow
         }
@@ -390,7 +391,7 @@ const FileTransferHook = {
       this._failTransfer(t("Could not verify the received file."), error);
       return;
     }
-    const match = hash === this._session.expectedHash;
+    const match = hashMatches(hash, this._session.expectedHash);
 
     // Send hash result to sender
     this._channel.send(
@@ -437,13 +438,7 @@ const FileTransferHook = {
   _sendHaveChunks() {
     if (!this._session || !this._channel) return;
 
-    // Encode have-chunks (without type byte — we prepend it)
-    const payload = encodeHaveChunks(this._session.transferId, this._session.receivedSet);
-    const msg = new ArrayBuffer(1 + payload.byteLength);
-    new Uint8Array(msg)[0] = MSG.HAVE_CHUNKS;
-    new Uint8Array(msg, 1).set(new Uint8Array(payload));
-
-    this._channel.send(msg);
+    this._channel.send(frameHaveChunks(this._session.transferId, this._session.receivedSet));
     this._session.state = STATE.TRANSFERRING;
     this._startProgressUpdates();
     this.pushEvent("ft_resumed", {});
@@ -452,8 +447,7 @@ const FileTransferHook = {
   _handleIncomingHaveChunks(rawData) {
     if (!this._session || this._session.role !== "sender") return;
 
-    // Strip the type byte before decoding the received-chunk bitmap.
-    const { indices } = decodeHaveChunks(rawData.slice(1));
+    const { indices } = unframeHaveChunks(rawData);
     this._applyStep({ type: "incoming_have_chunks", indices });
   },
 

@@ -25,6 +25,10 @@ import {
   recordSpeedSample,
   encodeHaveChunks,
   decodeHaveChunks,
+  frameHaveChunks,
+  unframeHaveChunks,
+  isBackpressured,
+  hashMatches,
   markChunksReceived,
   isTransferActive,
   createQueueEntry,
@@ -512,6 +516,53 @@ describe("encodeHaveChunks / decodeHaveChunks", () => {
     const decoded = decodeHaveChunks(encoded);
     expect(decoded.transferId).toBe("tid");
     expect(decoded.indices.size).toBe(0);
+  });
+});
+
+describe("frameHaveChunks / unframeHaveChunks", () => {
+  it("prepends the MSG.HAVE_CHUNKS type byte and round-trips through unframe", () => {
+    const transferId = "abc-123-def";
+    const indices = new Set([0, 3, 9, 42]);
+
+    const framed = frameHaveChunks(transferId, indices);
+    expect(framed).toBeInstanceOf(ArrayBuffer);
+    expect(new Uint8Array(framed)[0]).toBe(MSG.HAVE_CHUNKS);
+
+    const decoded = unframeHaveChunks(framed);
+    expect(decoded.transferId).toBe(transferId);
+    expect(decoded.indices).toEqual(indices);
+  });
+
+  it("frames one byte longer than the bare payload", () => {
+    const transferId = "tid";
+    const indices = new Set([1, 2]);
+    const bare = encodeHaveChunks(transferId, indices);
+    const framed = frameHaveChunks(transferId, indices);
+    expect(framed.byteLength).toBe(bare.byteLength + 1);
+    // The bytes behind the type byte are exactly the bare payload.
+    expect(new Uint8Array(framed, 1)).toEqual(new Uint8Array(bare));
+  });
+
+  it("unframe is the inverse of decodeHaveChunks after stripping the type byte", () => {
+    const framed = frameHaveChunks("tid", new Set());
+    expect(unframeHaveChunks(framed)).toEqual(decodeHaveChunks(framed.slice(1)));
+  });
+});
+
+describe("isBackpressured", () => {
+  it("pauses at or above the high-water mark and flows below it", () => {
+    expect(isBackpressured(HIGH_WATER_MARK)).toBe(true);
+    expect(isBackpressured(HIGH_WATER_MARK + 1)).toBe(true);
+    expect(isBackpressured(HIGH_WATER_MARK - 1)).toBe(false);
+    expect(isBackpressured(0)).toBe(false);
+  });
+});
+
+describe("hashMatches", () => {
+  it("is true only for identical digests", () => {
+    expect(hashMatches("deadbeef", "deadbeef")).toBe(true);
+    expect(hashMatches("deadbeef", "deadbeff")).toBe(false);
+    expect(hashMatches("", "")).toBe(true);
   });
 });
 
