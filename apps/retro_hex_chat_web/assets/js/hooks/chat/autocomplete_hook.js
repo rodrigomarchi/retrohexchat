@@ -16,6 +16,7 @@ import {
 import { createHistoryManager, isSensitiveCommand } from "../../lib/chat/history.js";
 import { INTENT, resolveComposerKey } from "../../lib/chat/composer.js";
 import { createHistorySearch } from "../../lib/chat/history_search.js";
+import { createTypingIndicator } from "../../lib/chat/typing_indicator.js";
 
 const MOBILE_BREAKPOINT = 768;
 const DESKTOP_MAX_LINES = 5;
@@ -24,8 +25,10 @@ const MOBILE_MAX_LINES = 3;
 const AutocompleteHook = {
   mounted() {
     this.inputEl = this.el;
-    this.typingTimeout = null;
-    this.isTyping = false;
+    this.typing = createTypingIndicator({
+      onStart: () => this.pushEvent("pm_typing", {}),
+      onStop: () => this.pushEvent("pm_stop_typing", {}),
+    });
     this.hasNavigated = false;
     this.tooltipVisible = false;
     this.tabCycleState = null;
@@ -74,16 +77,7 @@ const AutocompleteHook = {
 
       if (!value || value.startsWith("/")) return;
 
-      if (!this.isTyping) {
-        this.isTyping = true;
-        this.pushEvent("pm_typing", {});
-      }
-
-      clearTimeout(this.typingTimeout);
-      this.typingTimeout = setTimeout(() => {
-        this.isTyping = false;
-        this.pushEvent("pm_stop_typing", {});
-      }, 3000);
+      this.typing.keystroke();
     });
 
     this.inputEl.addEventListener("keyup", (e) => {
@@ -183,7 +177,7 @@ const AutocompleteHook = {
   destroyed() {
     window.removeEventListener("resize", this.onViewportResize);
     window.removeEventListener("orientationchange", this.onViewportResize);
-    clearTimeout(this.typingTimeout);
+    this.typing.stop();
   },
 
   // ── Composer keydown (resolver-driven) ─────────────────
@@ -194,7 +188,7 @@ const AutocompleteHook = {
       editMode: this.editMode,
       dropdownVisible: this.isDropdownVisible(),
       hasNavigated: this.hasNavigated,
-      isTyping: this.isTyping,
+      isTyping: this.typing.active,
       tooltipVisible: this.tooltipVisible,
       tabCycleActive: !!this.tabCycleState,
       value: this.inputEl.value,
@@ -248,7 +242,7 @@ const AutocompleteHook = {
         this.insertAtCursor(...args);
         break;
       case "stopTyping":
-        clearTimeout(this.typingTimeout);
+        this.typing.stop();
         this.pushEvent("pm_stop_typing", {});
         break;
       case "submitForm": {

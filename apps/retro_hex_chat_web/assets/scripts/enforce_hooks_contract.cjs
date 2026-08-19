@@ -63,9 +63,9 @@ const HOOK_LINE_LIMIT = 200;
 const HOOK_LINE_OVERRIDES = new Map([
   [
     "js/hooks/group_call/group_call_webrtc_hook.js",
-    "W5 extracted quality/payload/reactions/layout/tiles/media-state decisions to " +
-      "lib/group_call/*; the residual is live-RTCPeerConnection and tile-DOM plumbing " +
-      "whose controller extraction is deferred (see js-hooks-ledger.md)",
+    "quality/payload/reactions/layout/tiles/media-state/recovery decisions extracted to " +
+      "lib/group_call/* and lib/p2p/recovery.js; residual is live-RTCPeerConnection wiring " +
+      "(irreducible) plus a participant/track tile-DOM registry not yet made a controller",
   ],
   [
     "js/hooks/lobby/lobby_webrtc_hook.js",
@@ -77,7 +77,9 @@ const HOOK_LINE_OVERRIDES = new Map([
   ],
   [
     "js/hooks/chat/autocomplete_hook.js",
-    "W7 extracts the composer key resolver to lib/chat/composer.js",
+    "key resolver, history search and slash parsing extracted; residual is the " +
+      "input/keyup/keydown binding plus the typing-indicator and tab-cycle machines " +
+      "and the dropdown-reposition, still being pulled out",
   ],
   [
     "js/hooks/chat/chat_viewport_hook.js",
@@ -85,7 +87,8 @@ const HOOK_LINE_OVERRIDES = new Map([
   ],
   [
     "js/hooks/space/space_canvas_hook.js",
-    "W8 moves loading/modal rendering behind the controllers",
+    "socket/engine/input/pad/fullscreen already injected; residual is the canvas " +
+      "pointer/loading/modal DOM binding and the coordinate transform, still being pulled out",
   ],
 ]);
 

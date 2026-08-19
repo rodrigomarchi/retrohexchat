@@ -30,12 +30,7 @@ import ArcadeSessionHook from "./games/arcade_session_hook";
 import ViewportDetectHook from "./ui/viewport_detect_hook";
 import WindowManagerHook from "./ui/window_manager_hook";
 import FocusChatInputOnClickHook from "./ui/focus_chat_input_on_click_hook";
-
-const AutoFocusHook = {
-  mounted() {
-    requestAnimationFrame(() => this.el.focus());
-  },
-};
+import AutoFocusHook from "./ui/auto_focus_hook";
 
 export const criticalHooks = {
   AutoFocusHook: AutoFocusHook,

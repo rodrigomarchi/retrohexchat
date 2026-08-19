@@ -111,7 +111,7 @@ function enterIntents(state) {
   }
 
   if (state.isTyping) {
-    intents.push(setState({ isTyping: false }), action("stopTyping"));
+    intents.push(action("stopTyping"));
   }
 
   if (state.tooltipVisible) {
