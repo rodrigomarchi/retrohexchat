@@ -896,3 +896,43 @@ a viver em `test/lib/` dirigindo o controlador DIRETO; os reaches saem de `test/
 (catraca despenca para 8) sem fingir que a integração virou unidade pura. O scaffold segue
 semeando o estado à mão (é white-box da REPRESENTAÇÃO, permitido num teste de controlador),
 mas o alvo do teste agora é o controlador, não um hook.
+
+### W-H4 — file_transfer: extração REAL (o último hook gordo extraível) · CONCLUÍDO
+
+**Motivação:** numa auditoria lendo cada hook (não contando linhas), o `file_transfer`
+sobrou como o único > 200 que ainda escondia I/O extraível — 580 linhas, 25 métodos
+privados. Os outros 3 acima de 200 (`autocomplete`, `space_canvas`, `chat_viewport`) são
+largura de binding (handleEvent + listeners / DI de controladores), não lógica presa.
+
+**Feito — mesmo padrão dos W-H2/W-H3:**
+- Novo `lib/p2p/file_transfer_controller.js` (`createFileTransferController(el, ports)`):
+  dono do DataChannel, da sessão, do loop de envio com backpressure, do receive/assemble/
+  verify, resume, cancel, timers de progresso e do download. `this.pushEvent` (12×) →
+  `ports.pushEvent`; `this.el` (~10×) → `el`; `mounted`→`mount`, `destroyed`→`destroy`.
+  Auditoria: 0 markers de LiveView.
+- Os 6 `handleEvent` saíram pro hook; os métodos que eles chamam viraram públicos
+  (`setupChannel`, `handlePeerAccept`, `handlePeerReject`, `handleCancel`, `handleRetryRequest`)
+  + um novo `setConfig(config)` (era o corpo inline do `ft_config`). Cuidado com os pares
+  quase-homônimos: `handleCancel` (público, evento ft_cancel) ≠ `_handleIncomingCancel`
+  (interno, MSG.CANCEL); `handleRetryRequest` ≠ `_handleIncomingRetry`. Renomes com `\b`.
+- Hook virou **binding de 33 linhas**. As decisões já viviam no redutor
+  (`transfer_session.js`) e nas puras (`file_transfer.js`) desde o W6/W-C; este pacote
+  moveu o RESÍDUO de I/O para `lib/`, não decisão.
+
+**Teste black-box:** o `file_transfer_hook.test.js` já era black-box (0 `hook._`) — movido
+para `test/lib/p2p/file_transfer_controller.test.js` (8 casos) dirigindo `createFileTransferController`
+direto. Os 6 eventos de servidor viram chamadas aos métodos públicos; DOM (`selectFile`,
+dragover) continua igual. A asserção de "registra os handleEvent" (que era do binding) virou
+"anuncia readiness no mount" (`file_transfer_ready`).
+
+**Catracas:** `file_transfer_hook` REMOVIDO de `HOOK_LINE_OVERRIDES` e
+`HOOK_METHOD_COUNT_OVERRIDES`. `MAX_HOOK_PRIVATE_CALLS` fica em **8** (o teste já era
+black-box, então não havia reach de `hook._` pra remover). Reversão: quebrar `_applyStep`
+(a ponte pro redutor) derruba o teste do cancel; restaurado, verde. Gate E2E `chat-p2p`
+**10/10** (inclui N19 "file and game share the connection" — o file transfer sobre a conexão
+compartilhada do lobby), sem regressão.
+
+**Estado dos hooks agora:** só 3 acima de 200 linhas (`autocomplete` 398, `space_canvas` 363,
+`chat_viewport` 354), cada um binding fino com moduledoc — largura de listeners/handleEvent
+e DI de controladores, sem decisão presa (todas em `lib/` com teste direto). Não há mais hook
+gordo com I/O extraível pendente.

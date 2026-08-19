@@ -62,13 +62,6 @@ const HOOK_LINE_LIMIT = 200;
 // that outlives its reason is how a budget stops meaning anything.
 const HOOK_LINE_OVERRIDES = new Map([
   [
-    "js/hooks/p2p/file_transfer_hook.js",
-    "transitions in lib/p2p/transfer_session.js (reducer) and the framing/" +
-      "backpressure/hash decisions in lib/p2p/file_transfer.js; residual is the " +
-      "async send loop, file read/hash/assemble/download and progress timers — " +
-      "DataChannel I/O, not a trapped decision",
-  ],
-  [
     "js/hooks/chat/autocomplete_hook.js",
     "key resolver, history search, slash parsing, typing-indicator, tab-cycle and " +
       "dropdown-reposition all extracted to lib/chat/*; residual is the input/keyup/" +
@@ -118,11 +111,6 @@ const MAX_HOOK_PRIVATE_CALLS = 8;
 const MAX_HOOK_PRIVATE_METHODS = 7;
 
 const HOOK_METHOD_COUNT_OVERRIDES = new Map([
-  [
-    "js/hooks/p2p/file_transfer_hook.js",
-    "residual is the async send loop, file read/hash/assemble/download and channel " +
-      "wiring; protocol transitions and framing are in lib/p2p/{transfer_session,file_transfer}.js",
-  ],
   [
     "js/hooks/space/space_canvas_hook.js",
     "residual is the canvas pointer listeners and the Socket/channel event fan-out; " +
