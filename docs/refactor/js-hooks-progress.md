@@ -561,3 +561,30 @@ DEVE acompanhar a troca — e a quebra dele é o sinal de wiring.
 tiles (`_createRemoteTile`/`_applyParticipantToTile`/`remoteTiles`) — mais arriscado
 (entrelaçado com quality/layout/focus/local-tile). O irredutível continua sendo
 `ontrack`/`onicecandidate`/`getUserMedia`.
+
+### W-G — connection_status: controlador escondido num hook curto · CONCLUÍDO
+
+**Feito**
+- Medindo definições de método privado por hook (`^\s+_name(...) {`), o
+  `connection_status_hook` (187 linhas, **8 métodos privados**) sobressaiu como um
+  controlador disfarçado ABAIXO do teto de 200 linhas — o `_render` (estado→DOM),
+  `_updateChatInputDisabled`/`_restoreDraftIfNeeded` (DOM + preservação de rascunho
+  + RAF/setTimeout), `_updateShellDisabled` (DOM + menu). O W8 tinha extraído só o
+  MAPEAMENTO (connection_view); a APLICAÇÃO ao DOM ficou presa.
+- Extraído para `lib/connection/connection_status_view.js` (Forma B,
+  `createConnectionStatusView(el, {onActionClick})`): mount/render/clearDraft/
+  destroy + o rascunho e o shell-disable. Hook 187 → **109** linhas, 8 → 4 métodos
+  privados. Teste black-box do hook (16) verde sem edição = equivalência; +8 de lib;
+  reversão OK (quebrar o marcador de shell-disable derruba lib E o teste de shell do
+  hook).
+
+**Aprendizado — o snapshot pegou o `menubar:close-all` sumindo (fidelidade, não
+regressão):** mover o `dispatchEvent("menubar:close-all")` do hook pro controlador
+em `lib/` fez o evento SUMIR do snapshot — porque a seção `custom-events` só varria
+`js/hooks/`, enquanto o listener dele (`menu_bar.js`) também já vive em `lib/`. A
+correção é ESTENDER o grep pra `js/` (as outras 3 seções já varrem `js/`), não
+mascarar. Regenerei: **puramente aditivo** (16 eventos de lib/entrypoint agora
+rastreados — fullscreenchange, devicechange, etc. — e o `menubar:close-all` de
+volta; ZERO remoções). Confirmei que ainda pega um rename real de evento (exit 1) e
+volta a 0 restaurado. É a mesma lição do W6 (o grep de `push(...)`), agora para
+`custom-events`.

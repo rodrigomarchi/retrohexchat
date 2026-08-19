@@ -27,7 +27,7 @@ Baseline: main @ a1c9376e, 18/08/2026.
 | `ui/contextual_tips_hook.js` | 229 | sim | sim | sim | W8 | pendente | — | — |
 | `ui/preserve_scroll_hook.js` | 217→32 | sim | não | — | W3 | **W3 feito** | — | ui/scroll_preservation |
 | `system/metric_chart_hook.js` | 217→35 | não | não | sim | W3 | **W3 feito** | — | system/metric_chart |
-| `connection/connection_status_hook.js` | 212 | sim | sim | sim | W8 | pendente | — | — |
+| `connection/connection_status_hook.js` | 212→187→109 | sim | sim | sim | W8·W-G | **W-G feito** | connection/{connection_view,connection_status_view} | — (controlador escondido extraído; 8→4 métodos privados) |
 | `ui/conversations_hook.js` | 189 | sim | sim | sim | W2 | **W2 feito** | — | input/long_press |
 | `ui/nicklist_hook.js` | 173 | sim | sim | sim | W2 | **W2 feito** | — | input/long_press |
 | `ui/infinite_scroll_hook.js` | 149 | sim | sim | sim | — | pendente | — | — |

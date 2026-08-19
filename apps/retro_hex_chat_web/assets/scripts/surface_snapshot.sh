@@ -42,7 +42,10 @@ generate() {
   grep -rhoE '\.(push|on)\("[a-zA-Z_0-9:.-]+"' js/ \
     | grep -oE '"[a-zA-Z_0-9:.-]+"' | tr -d '"' | LC_ALL=C sort -u
   echo "## custom-events"
-  grep -rhoE '(CustomEvent|addEventListener|dispatchEvent)\([^,)]*' js/hooks/ \
+  # Scans all of js/ — like the other sections — because a controller extracted
+  # from a hook keeps its listeners and dispatches, so the event name lives in
+  # js/lib/ now; a hooks-only scan would silently drop it on the move.
+  grep -rhoE '(CustomEvent|addEventListener|dispatchEvent)\([^,)]*' js/ \
     | grep -oE '"[a-zA-Z_0-9:.-]+"' | tr -d '"' | LC_ALL=C sort -u
   echo "## dataset-keys"
   grep -rhoE 'dataset\.[a-zA-Z0-9]+' js/ | LC_ALL=C sort -u
