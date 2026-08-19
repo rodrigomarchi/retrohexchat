@@ -212,8 +212,11 @@ defmodule Mix.Tasks.Audit.Styles do
     cond do
       String.contains?(content, "style.display") -> :low
       String.contains?(content, "style.position") -> :low
-      # RAF animation in p2p diagram hook — data-driven, can't use CSS
+      # RAF dot animation for the p2p diagram — data-driven, can't be CSS. It
+      # lives in the hook or, since the standardization refactor, its lib
+      # controller (lib/p2p/diagram.js).
       String.contains?(file, "p2p_diagram") -> :info
+      String.contains?(file, "p2p/diagram.js") -> :info
       js_viewport_property?(file, content) -> :info
       true -> :medium
     end
