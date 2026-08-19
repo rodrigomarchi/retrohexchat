@@ -116,7 +116,7 @@ const FORBIDDEN_PRIMITIVE_OVERRIDES = new Map([
 // A test that reaches for hook._privateMethod is testing something the hook
 // should not own. The count is the honest measure of how much logic is still
 // trapped; it reaches zero when the extraction is done.
-const MAX_HOOK_PRIVATE_CALLS = 150;
+const MAX_HOOK_PRIVATE_CALLS = 94;
 
 // The line budget catches a fat hook, but a controller can hide under 200 lines
 // as a dense cluster of private methods — connection_status did exactly that

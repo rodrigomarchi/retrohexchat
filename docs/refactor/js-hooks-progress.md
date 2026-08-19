@@ -789,3 +789,54 @@ seguem verdes. Sem o baseline eu teria revertido trabalho bom achando que quebre
 `createLobbyConnectionHook` e dirigindo black-box (pela superfície de eventos), o que
 tira ~45 reaches do `test/hooks/` e baixa a catraca de verdade. O hook já está magro;
 a part B é a qualidade do teste.
+
+### W-H2 — lobby_webrtc: corrigir o fake da part A + part B black-box · CONCLUÍDO
+
+**O que era o fake (part A):** a "extração" da part A tinha só RELOCADO o hook. O
+`createLobbyConnectionHook()` retornava o objeto-hook inteiro — `mounted()`,
+`destroyed()`, `this.handleEvent(...)` (7×), `this.pushEvent(...)` (16×), `this.el`
+(15×) — ainda 100% acoplado ao LiveView, só que numa pasta `lib/`. Burlava a catraca
+de linha do ARQUIVO de hook (o hook tinha 13 linhas) sem descoplar nada.
+
+**Feito — controlador framework-free de verdade:**
+- Assinatura `createLobbyConnectionHook()` → **`createLobbyConnection(el, ports)`**
+  (`ports = { pushEvent }`). `el` e `ports` entram por parâmetro e ficam no closure
+  léxico de todos os métodos do objeto retornado — por isso `this.pushEvent(` vira
+  `ports.pushEvent(` (16×) e `this.el` vira `el` (15×) sem tocar no estado em `this.*`.
+- `mounted()`→`mount()`, `destroyed()`→`destroy()`, `reconnected()` fica público. Os
+  7 `this.handleEvent(...)` saíram do controlador — quem registra agora é o hook.
+- Os 7 handlers de servidor ficaram públicos (`_handleStartOffer`→`handleStartOffer`
+  etc.), com as 3 chamadas internas (`handleSignal`/`handleRenegotiate`) reescritas.
+  Auditoria final: `grep -cE "this\.(pushEvent|el\b|handleEvent)|mounted\("` = **0**.
+- Hook (`lobby_webrtc_hook.js`) virou **binding real de 40 linhas**: cria o
+  controlador com `this.el` + a porta `pushEvent`, chama `conn.mount()`, registra os
+  7 `handleEvent` delegando a `conn.handleX`, e relaia `destroyed`/`reconnected`.
+
+**Part B — teste black-box (`test/lib/p2p/lobby_connection.test.js`, 31 casos):**
+- Os 2 antigos (`test/hooks/lobby/lobby_webrtc_hook.test.js` + `_negotiation.test.js`,
+  56 reaches white-box) foram **apagados** e reescritos importando `createLobbyConnection`
+  direto. Cada `hook._createConnection`/`_maybeOffer`/`_handleRemoteDescription`/
+  `_handleFailure`/`_requestRenegotiation` privado virou: a API pública que o exercita
+  (`handleStartOffer`, `handleSignal`), ou o evento REAL que a dispara — o pc
+  (`conn.pc.onnegotiationneeded()`, `on*connectionstatechange()`, `ondatachannel()`) e
+  os CustomEvents de DOM no `el` (`lobby_media_recover`, `p2p-lobby:recovery-state`).
+  Só setup de estado é direto (`conn.pc.remoteDescription = …`, `conn.retryCount = 99`).
+- Catraca `MAX_HOOK_PRIVATE_CALLS` **150 → 94** no mesmo commit (−56 reaches).
+- Reversão FORTE: quebrar o offer_id de `_maybeOffer` derruba o teste black-box; restaurado, verde.
+- **Gate E2E verde com baseline:** `chat-p2p` 10/10; `chat-call-fault-injection` 7/8,
+  o único vermelho é o `:348` pré-existente — restaurei o HEAD via `git show`,
+  rebuildei e confirmei que `:348` falha IGUAL sem minha mudança (dívida, não regressão).
+
+**Aprendizado — `onnegotiationneeded` é fire-and-forget e a oferta resolve tarde:**
+o handler do pc não devolve a promise do `_maybeOffer`, e a oferta só é empurrada
+depois de ~4 microtasks (createOffer async → implicit desc → enqueue → setLocalDescription).
+`await flush()` (2 microtasks) não bastava e passava por sorte de scheduling. Drenar
+um macrotask inteiro (`setTimeout(0)` em real-timers, `advanceTimersByTimeAsync(0)` em
+fake-timers) depois de disparar o evento do pc é o certo — esperar o EFEITO, não contar hops.
+
+**Aprendizado — estado em `this.*` num controlador NÃO é acoplamento a LiveView.** O
+descoplamento sai de remover `pushEvent`/`el`/`handleEvent`/`mounted`, não de proibir
+`this`. Dentro do objeto retornado por `createLobbyConnection`, `this` é o próprio
+controlador (como uma instância de classe); o teste black-box ainda pode semear
+`conn.pc = fake` sem alcançar lógica privada. O erro da part A não foi usar `this` —
+foi manter as portas do framework.

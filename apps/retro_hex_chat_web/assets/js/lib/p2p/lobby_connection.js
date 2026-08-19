@@ -64,9 +64,9 @@ const DISCONNECTED_ACTIVITY_DEFERRAL_LIMIT = 2;
 // resolves with rollback but which, in practice, leaves the polite peer's freshly
 // received tracks muted (no RTP) when both peers add video at the same instant.
 // Single-offerer negotiation, serialized per round.
-export function createLobbyConnectionHook() {
+export function createLobbyConnection(el, ports) {
   return {
-    mounted() {
+    mount() {
       this.pc = null;
       this.iceServers = null;
       this.turnOnly = false;
@@ -112,21 +112,12 @@ export function createLobbyConnectionHook() {
           });
         } else if (payload.state === "reconnecting") {
           this._markRecovering();
-          this.pushEvent("lobby_retry", {
+          ports.pushEvent("lobby_retry", {
             attempt: payload.attempt || null,
             reason: payload.reason || "auto_retry",
           });
         }
       };
-
-      this.handleEvent("lobby_start_offer", (data) => this._handleStartOffer(data));
-      this.handleEvent("lobby_start_answer", (data) => this._handleStartAnswer(data));
-      this.handleEvent("lobby_restart", (data = {}) => this._handleRestart(data));
-      this.handleEvent("lobby_signal", (data) => this._handleSignal(data));
-      this.handleEvent("lobby_signal_replay", (data) => this._handleSignalReplay(data));
-      this.handleEvent("lobby_signal_rejected", (data = {}) => this._handleSignalRejected(data));
-      // Answerer → initiator request to (re)offer after the answerer added tracks.
-      this.handleEvent("lobby_renegotiate", (data = {}) => this._handleRenegotiate(data));
 
       // The media hook's stalled-stream watchdog asks us to recover a remote track
       // that negotiated but never started flowing (black frame, no RTP). Most
@@ -134,27 +125,27 @@ export function createLobbyConnectionHook() {
       // coordinated restart through the LiveView.
       this._onMediaRecover = (event) => {
         if (event.detail?.restart) {
-          this.pushEvent("lobby_media_restart", {
+          ports.pushEvent("lobby_media_restart", {
             reason: event.detail.reason || "media_startup_stalled",
           });
         } else {
           this._recoverMedia();
         }
       };
-      this.el.addEventListener("lobby_media_recover", this._onMediaRecover);
+      el.addEventListener("lobby_media_recover", this._onMediaRecover);
       this._onMediaSourceChanged = (event) => {
         this.videoSource = event.detail?.source === "screen" ? "screen" : "camera";
       };
-      this.el.addEventListener("lobby_media_source_changed", this._onMediaSourceChanged);
-      this.el.addEventListener("p2p-lobby:recovery-state", this.recoveryStateEventHandler);
+      el.addEventListener("lobby_media_source_changed", this._onMediaSourceChanged);
+      el.addEventListener("p2p-lobby:recovery-state", this.recoveryStateEventHandler);
 
-      this.pushEvent("lobby_webrtc_ready", {});
+      ports.pushEvent("lobby_webrtc_ready", {});
     },
 
-    destroyed() {
-      this.el.removeEventListener("lobby_media_recover", this._onMediaRecover);
-      this.el.removeEventListener("lobby_media_source_changed", this._onMediaSourceChanged);
-      this.el.removeEventListener("p2p-lobby:recovery-state", this.recoveryStateEventHandler);
+    destroy() {
+      el.removeEventListener("lobby_media_recover", this._onMediaRecover);
+      el.removeEventListener("lobby_media_source_changed", this._onMediaSourceChanged);
+      el.removeEventListener("p2p-lobby:recovery-state", this.recoveryStateEventHandler);
       this._cleanup();
     },
 
@@ -168,7 +159,7 @@ export function createLobbyConnectionHook() {
     // The initiator owns the two outgoing data channels; creating them triggers
     // onnegotiationneeded, which sends the first offer (no explicit createOffer
     // needed — that avoids a duplicate offer).
-    async _handleStartOffer({ ice_servers, turn_only }) {
+    async handleStartOffer({ ice_servers, turn_only }) {
       if (this.role === "initiator" && this.pc) return;
 
       this.iceServers = ice_servers;
@@ -188,7 +179,7 @@ export function createLobbyConnectionHook() {
 
     // The answerer never offers; it builds the connection up front so the inbound
     // offer and data channels have a target, then only ever answers.
-    async _handleStartAnswer({ ice_servers, turn_only }) {
+    async handleStartAnswer({ ice_servers, turn_only }) {
       if (this.role === "answerer" && this.pc) return;
 
       this.iceServers = ice_servers;
@@ -205,20 +196,20 @@ export function createLobbyConnectionHook() {
         if (this._pendingDescription) {
           const pending = this._pendingDescription;
           this._pendingDescription = null;
-          await this._handleSignal(pending);
+          await this.handleSignal(pending);
         }
       } catch (error) {
         this._failConnection("answer", error);
       }
     },
 
-    async _handleRestart({ epoch, ice_servers, turn_only, reason } = {}) {
+    async handleRestart({ epoch, ice_servers, turn_only, reason } = {}) {
       if (ice_servers) this.iceServers = ice_servers;
       if (typeof turn_only === "boolean") this.turnOnly = turn_only;
       const restartReason = reason || "manual_retry";
 
       if (!this.role || !this.iceServers) {
-        this.pushEvent("lobby_failed", { reason: "restart_unavailable" });
+        ports.pushEvent("lobby_failed", { reason: "restart_unavailable" });
         return;
       }
 
@@ -247,7 +238,7 @@ export function createLobbyConnectionHook() {
       }
     },
 
-    async _handleSignal(data) {
+    async handleSignal(data) {
       this.signalQueue = this.signalQueue.catch(() => {}).then(() => this._applySignal(data));
 
       return this.signalQueue;
@@ -271,7 +262,7 @@ export function createLobbyConnectionHook() {
     // retries are what hold the window shut. Stand down for as long as the server
     // asked, then resync from the peer's stored signalling rather than guessing
     // which descriptions and candidates went missing.
-    _handleSignalRejected({ code, retry_after_ms: retryAfterMs } = {}) {
+    handleSignalRejected({ code, retry_after_ms: retryAfterMs } = {}) {
       log.warn("[Lobby] Server rejected a signal", { code, retryAfterMs });
 
       if (code !== "rate_limited") return;
@@ -301,15 +292,15 @@ export function createLobbyConnectionHook() {
       }
     },
 
-    async _handleSignalReplay({ events = [] } = {}) {
+    async handleSignalReplay({ events = [] } = {}) {
       for (const entry of events || []) {
         const event = entry?.event;
         const payload = entry?.payload || {};
 
         if (event === "lobby_signal") {
-          await this._handleSignal(payload);
+          await this.handleSignal(payload);
         } else if (event === "lobby_renegotiate") {
-          await this._handleRenegotiate(payload);
+          await this.handleRenegotiate(payload);
         }
       }
     },
@@ -338,7 +329,7 @@ export function createLobbyConnectionHook() {
       }
 
       // The offer can arrive before the answerer's "lobby_start_answer" event has
-      // built the PC. Buffer it (we only ever keep the latest) so _handleStartAnswer
+      // built the PC. Buffer it (we only ever keep the latest) so handleStartAnswer
       // can apply it once the connection — and its ICE servers — exist.
       if (!this.pc) {
         if (data.type === "offer") this._pendingDescription = data;
@@ -367,7 +358,7 @@ export function createLobbyConnectionHook() {
           await this.pc.setLocalDescription();
           this.activeRemoteOfferId = data.offer_id || null;
           this._clearRenegotiationRetry();
-          this.pushEvent("lobby_signal", {
+          ports.pushEvent("lobby_signal", {
             type: this.pc.localDescription.type,
             sdp: this.pc.localDescription.sdp,
             epoch: this.signalingEpoch,
@@ -436,11 +427,11 @@ export function createLobbyConnectionHook() {
         connection_reset: options.connectionReset === true,
       };
 
-      this.pushEvent("lobby_renegotiate", payload);
+      ports.pushEvent("lobby_renegotiate", payload);
       this._scheduleRenegotiationRetry(payload);
     },
 
-    async _handleRenegotiate({ kinds = [], recover = false, epoch, connection_reset }) {
+    async handleRenegotiate({ kinds = [], recover = false, epoch, connection_reset }) {
       if (this.role !== "initiator" || !this.pc) return;
       const requestedEpoch = normalizeEpoch(epoch);
       if (this._isStaleEpoch(requestedEpoch)) return;
@@ -497,7 +488,7 @@ export function createLobbyConnectionHook() {
         this.currentOfferId = `p2p-${this.signalingEpoch}-${this.offerSeq}`;
         const connectionReset = options.connectionReset || this.connectionResetPending;
         this.connectionResetPending = false;
-        this.pushEvent("lobby_signal", {
+        ports.pushEvent("lobby_signal", {
           type: this.pc.localDescription.type,
           sdp: this.pc.localDescription.sdp,
           epoch: this.signalingEpoch,
@@ -650,7 +641,7 @@ export function createLobbyConnectionHook() {
 
       onIceCandidate(this.pc, (candidate) => {
         if (candidate) {
-          this.pushEvent("lobby_signal", {
+          ports.pushEvent("lobby_signal", {
             type: "ice-candidate",
             candidate: {
               candidate: candidate.candidate,
@@ -690,7 +681,7 @@ export function createLobbyConnectionHook() {
       // applied instead of being back-filled from the receivers afterwards, and
       // the local camera and microphone ride this first offer rather than forcing
       // a second negotiation round the moment the call comes up.
-      this.el._peerConnection = this.pc;
+      el._peerConnection = this.pc;
       this._dispatch("lobby_media_pc_ready", { pc: this.pc });
     },
 
@@ -737,11 +728,11 @@ export function createLobbyConnectionHook() {
     _setupFileChannel(channel) {
       this.fileChannel = channel;
       channel.onopen = () => {
-        this.el._fileTransferChannel = channel;
+        el._fileTransferChannel = channel;
         this._dispatch("ft_channel_ready", { channel });
       };
       channel.onclose = () => {
-        this.el._fileTransferChannel = null;
+        el._fileTransferChannel = null;
         this._dispatch("ft_channel_closed", { channel: null });
       };
     },
@@ -749,21 +740,21 @@ export function createLobbyConnectionHook() {
     _setupGameChannel(channel) {
       this.gameChannel = channel;
       channel.onopen = () => {
-        this.el._gameDataChannel = channel;
+        el._gameDataChannel = channel;
         this._dispatch("game_channel_ready", { channel });
       };
       channel.onclose = () => {
-        this.el._gameDataChannel = null;
+        el._gameDataChannel = null;
         this._dispatch("game_channel_closed", { channel: null });
       };
     },
 
     _dispatch(type, detail) {
-      this.el.dispatchEvent(new CustomEvent(type, { detail }));
+      el.dispatchEvent(new CustomEvent(type, { detail }));
     },
 
     _handleConnectionStateChange(state) {
-      this.pushEvent("lobby_state_change", { state });
+      ports.pushEvent("lobby_state_change", { state });
 
       switch (state) {
         case "connected":
@@ -773,7 +764,7 @@ export function createLobbyConnectionHook() {
           this._markRecovering();
           this.disconnectedActivityDeferrals = 0;
           this.retryCount = 0;
-          this.pushEvent("lobby_connected", {});
+          ports.pushEvent("lobby_connected", {});
           this._startStatsPolling();
           break;
 
@@ -826,7 +817,7 @@ export function createLobbyConnectionHook() {
       const beforeActivity = collectConnectionActivity(pc);
 
       if (!preserveDeferrals && !hadDisconnectedTimer) {
-        this.pushEvent("lobby_recovery_pending", { reason });
+        ports.pushEvent("lobby_recovery_pending", { reason });
       }
 
       this.disconnectedTimer = setTimeout(async () => {
@@ -884,7 +875,7 @@ export function createLobbyConnectionHook() {
         this.retryCount = attempt;
         const retryReason = reason || "auto_retry";
 
-        this.pushEvent("lobby_retry", { attempt, reason: retryReason });
+        ports.pushEvent("lobby_retry", { attempt, reason: retryReason });
 
         this.recoveryTimer = setTimeout(async () => {
           this.recoveryTimer = null;
@@ -959,7 +950,7 @@ export function createLobbyConnectionHook() {
       this._clearRecoveryTimer();
       this.recoveryFailed = true;
       this.failedReason = reason;
-      this.pushEvent("lobby_failed", {
+      ports.pushEvent("lobby_failed", {
         reason,
         manual_retry: manualRetry,
       });
@@ -1018,7 +1009,7 @@ export function createLobbyConnectionHook() {
     _requestSignalReplay(reason, attempt = null) {
       if (!this.role) return;
 
-      this.pushEvent("lobby_signal_replay_request", {
+      ports.pushEvent("lobby_signal_replay_request", {
         reason,
         attempt,
         epoch: this.signalingEpoch || null,
@@ -1057,7 +1048,7 @@ export function createLobbyConnectionHook() {
           this.renegotiationRetryTimer = null;
           if (this.role !== "answerer" || !this.pc || this.recoveryFailed) return;
 
-          this.pushEvent("lobby_renegotiate", {
+          ports.pushEvent("lobby_renegotiate", {
             ...this.renegotiationRetryPayload,
             retry_attempt: attempt,
           });
@@ -1114,7 +1105,7 @@ export function createLobbyConnectionHook() {
           offer_id:
             this.currentOfferId || this.activeRemoteOfferId || this.lastRemoteAnswerOfferId || "",
         };
-        this.pushEvent("lobby_stats", stats);
+        ports.pushEvent("lobby_stats", stats);
       } catch (error) {
         log.warn("[Lobby] Failed to sample stats", error);
       }
@@ -1135,9 +1126,9 @@ export function createLobbyConnectionHook() {
       this._clearRenegotiationRetry();
       this._clearSignalBackoff();
       this._stopStatsPolling();
-      this.el._peerConnection = null;
-      this.el._fileTransferChannel = null;
-      this.el._gameDataChannel = null;
+      el._peerConnection = null;
+      el._fileTransferChannel = null;
+      el._gameDataChannel = null;
       this._dispatch("lobby_media_pc_closed", {});
 
       for (const channel of [this.fileChannel, this.gameChannel]) {
