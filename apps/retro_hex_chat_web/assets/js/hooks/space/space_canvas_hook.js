@@ -23,6 +23,7 @@ import { interactTarget } from "../../lib/space/interactions.js";
 import { seatTarget } from "../../lib/space/seating.js";
 import { createSpriteAtlas } from "../../lib/space/sprite_atlas.js";
 import { normalizeSpaceInit, CLIENT_EVENTS, SERVER_EVENTS } from "../../lib/space/protocol.js";
+import { canvasPointFromEvent } from "../../lib/space/canvas_point.js";
 import {
   cancelNickHoverTimer,
   isContextMenuOpen,
@@ -338,12 +339,14 @@ export function createSpaceCanvasHook(deps = {}) {
       const engine = this._engine;
       if (!canvas || typeof engine?.participantAtCanvasPoint !== "function") return null;
 
-      const rect = canvas.getBoundingClientRect();
-      if (rect.width <= 0 || rect.height <= 0) return null;
-
-      const x = ((event.clientX - rect.left) * canvas.width) / rect.width;
-      const y = ((event.clientY - rect.top) * canvas.height) / rect.height;
-      return engine.participantAtCanvasPoint(x, y);
+      const point = canvasPointFromEvent(
+        event,
+        canvas.getBoundingClientRect(),
+        canvas.width,
+        canvas.height,
+      );
+      if (!point) return null;
+      return engine.participantAtCanvasPoint(point.x, point.y);
     },
 
     // Match the canvas backing store to its CSS box, then let the engine
