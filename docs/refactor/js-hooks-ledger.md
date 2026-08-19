@@ -69,7 +69,8 @@ Baseline: main @ a1c9376e, 18/08/2026.
 |---|---|
 | 6 strings visíveis sem `t()` (space loading; `_participantQualityLabel`, `_participantQualityTitle`, badge Speaking) | pendente |
 | `enforce_hooks_contract.cjs:8` doc ref quebrada | **feito** (commit d3e0a9c1) |
-| `rtc_media_hook_factory.js`: 1 consumidor, ramos mortos | **decidido**: conferência NÃO adota (SFU ≠ P2P bilateral); des-parametrizar os ramos mortos = limpeza separada |
+| `rtc_media_hook_factory.js`: 1 consumidor, ramos mortos | **des-parametrizado** (commit 7fa139d8); teste de lib direto black-box = W-F2b (o `lobby_media_hook.test.js` ainda alcança 6 privados) |
+| Testes de lib diretos p/ format_toolbar, menu_bar, prejoin | **feito (W-F2a)** — antes só via hook (mas já black-box); agora `createX` de `lib/` testado direto |
 | 9 hooks sem teste | pendente (consequência de W1–W7; resto em W8) |
 
 ## Achados adiados (bugs/gaps fora do escopo do movimento)

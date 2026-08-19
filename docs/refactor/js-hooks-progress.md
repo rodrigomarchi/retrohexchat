@@ -438,3 +438,23 @@ irredutível, então tirei o ResizeObserver do hook (foi pro `canvas_resizer`) e
 **apaguei o override** — o guard confirma (a catraca falha se um override sobra
 sem o primitivo correspondente). O que sobra no hook é I/O de Socket/channel e
 binding de listeners de ponteiro que fazem `pushEvent` — não decisão presa.
+
+### W-F2a — testes de lib diretos p/ os três controladores · CONCLUÍDO
+
+**Feito**
+- `test/lib/chat/format_toolbar.test.js` (7), `test/lib/ui/menu_bar.test.js` (5),
+  `test/lib/group_call/prejoin.test.js` (3): importam o controlador de `lib/`
+  DIRETO (`createFormatToolbar`/`createMenuBar`/`createGroupCallPreJoin`) e o
+  dirigem sem o hook. Reversão OK nos três (quebrar a decisão deixa vermelho).
+
+**Aprendizado — a definição-de-pronto já estava satisfeita para estes três, mas
+faltava a letra:** medi os testes de hook desses três com
+`grep -oE 'hook\._[a-zA-Z]'` → **zero** acessos white-box. Eles já eram black-box
+(dirigem DOM via `mountHook`), então "zero dependência de white-box para provar
+lógica" já valia. O gap real era só o acoplamento ao wrapper de hook: nenhum teste
+importava o controlador de `lib/`. Os testes diretos fecham isso e, no caso do
+`menu_bar`, provam a afirmação do moduledoc de que ele roda em página pública sem
+LiveSocket. O gap de verdade (white-box) é o `rtc_media_hook_factory`: o
+`lobby_media_hook.test.js` alcança 6 métodos privados (`_startCall`,
+`_handlePcReady`, `_handleRemoteTrack`, `_attachMediaElements`, `_sendersPc`,
+`_toggleScreenShare`) — esse é o alvo do W-F2b, com teste direto black-box.
