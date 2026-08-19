@@ -11,6 +11,15 @@ import { isEditableTarget } from "../../lib/ui/dom.js";
 import { captureConstraints } from "../../lib/p2p/device_constraints.js";
 import { createPeerConnection } from "../../lib/p2p/webrtc.js";
 import {
+  canDeferRecovery,
+  hasExhaustedRecovery,
+  hasExhaustedWatchdog,
+  isDisconnectedReason,
+  nextRecoveryAttempt,
+  recoveryBackoffDelay,
+  watchdogDelay,
+} from "../../lib/p2p/recovery.js";
+import {
   collectQualitySnapshot,
   deriveParticipantQuality,
   participantQualityLabel,
@@ -1506,7 +1515,7 @@ const GroupCallWebRTCHook = {
   _scheduleRecovery(reason, { countAttempt = true } = {}) {
     if (this.recoveryTimer) return;
 
-    if (countAttempt && this.recoveryAttempts >= this.maxRecoveryAttempts) {
+    if (countAttempt && hasExhaustedRecovery(this.recoveryAttempts, this.maxRecoveryAttempts)) {
       this._publishRecoveryState({
         state: "failed",
         reason,
@@ -1518,12 +1527,10 @@ const GroupCallWebRTCHook = {
       return;
     }
 
-    const attempt = countAttempt ? this.recoveryAttempts + 1 : this.recoveryAttempts || 1;
-    const delay = RECOVERY_BACKOFF_MS[Math.min(attempt - 1, RECOVERY_BACKOFF_MS.length - 1)];
+    const attempt = nextRecoveryAttempt(this.recoveryAttempts, countAttempt);
+    const delay = recoveryBackoffDelay(attempt, RECOVERY_BACKOFF_MS);
     if (countAttempt) this.recoveryAttempts = attempt;
-    const beforeActivity = this._disconnectedRecoveryReason(reason)
-      ? collectConnectionActivity(this.pc)
-      : null;
+    const beforeActivity = isDisconnectedReason(reason) ? collectConnectionActivity(this.pc) : null;
 
     this._publishRecoveryState({
       state: "reconnecting",
@@ -1545,12 +1552,8 @@ const GroupCallWebRTCHook = {
     }, delay);
   },
 
-  _disconnectedRecoveryReason(reason) {
-    return reason === "disconnected" || reason === "ice_disconnected";
-  },
-
   async _deferDisconnectedRecoveryForActivity(reason, beforeActivity) {
-    if (!beforeActivity || !this._disconnectedRecoveryReason(reason)) return false;
+    if (!beforeActivity || !isDisconnectedReason(reason)) return false;
 
     const before = await beforeActivity;
     const after = await collectConnectionActivity(this.pc);
@@ -1562,7 +1565,7 @@ const GroupCallWebRTCHook = {
 
     const deferrals = this.recoveryActivityDeferrals || 0;
 
-    if (deferrals >= DISCONNECTED_ACTIVITY_DEFERRAL_LIMIT) {
+    if (!canDeferRecovery(deferrals, DISCONNECTED_ACTIVITY_DEFERRAL_LIMIT)) {
       this.recoveryActivityDeferrals = 0;
       return false;
     }
@@ -1579,7 +1582,7 @@ const GroupCallWebRTCHook = {
   _scheduleOfferWatchdog(trigger = "join") {
     if (
       this.offerWatchdogTimer ||
-      this.offerWatchdogAttempts >= OFFER_WATCHDOG_MAX_ATTEMPTS ||
+      hasExhaustedWatchdog(this.offerWatchdogAttempts, OFFER_WATCHDOG_MAX_ATTEMPTS) ||
       !this._needsOfferWatchdog()
     ) {
       return;
@@ -1588,32 +1591,35 @@ const GroupCallWebRTCHook = {
     const attempt = this.offerWatchdogAttempts + 1;
     this.offerWatchdogAttempts = attempt;
 
-    this.offerWatchdogTimer = setTimeout(() => {
-      this.offerWatchdogTimer = null;
-      if (!this._needsOfferWatchdog()) return;
+    this.offerWatchdogTimer = setTimeout(
+      () => {
+        this.offerWatchdogTimer = null;
+        if (!this._needsOfferWatchdog()) return;
 
-      this._requestOfferFromWatchdog(trigger, attempt);
+        this._requestOfferFromWatchdog(trigger, attempt);
 
-      if (attempt >= OFFER_WATCHDOG_MAX_ATTEMPTS) {
-        this.offerWatchdogTimer = setTimeout(() => {
-          this.offerWatchdogTimer = null;
-          if (this._needsOfferWatchdog()) {
-            this._publishRecoveryState({
-              state: "failed",
-              reason: "offer_not_received",
-              trigger: "offer_watchdog",
-              attempt,
-              max_attempts: OFFER_WATCHDOG_MAX_ATTEMPTS,
-              manual_retry: true,
-              message: t("Media offer was not received. Retry the media connection."),
-            });
-          }
-        }, OFFER_WATCHDOG_DELAY_MS);
-        return;
-      }
+        if (hasExhaustedWatchdog(attempt, OFFER_WATCHDOG_MAX_ATTEMPTS)) {
+          this.offerWatchdogTimer = setTimeout(() => {
+            this.offerWatchdogTimer = null;
+            if (this._needsOfferWatchdog()) {
+              this._publishRecoveryState({
+                state: "failed",
+                reason: "offer_not_received",
+                trigger: "offer_watchdog",
+                attempt,
+                max_attempts: OFFER_WATCHDOG_MAX_ATTEMPTS,
+                manual_retry: true,
+                message: t("Media offer was not received. Retry the media connection."),
+              });
+            }
+          }, OFFER_WATCHDOG_DELAY_MS);
+          return;
+        }
 
-      this._scheduleOfferWatchdog(trigger);
-    }, OFFER_WATCHDOG_DELAY_MS * attempt);
+        this._scheduleOfferWatchdog(trigger);
+      },
+      watchdogDelay(attempt, OFFER_WATCHDOG_DELAY_MS),
+    );
   },
 
   _needsOfferWatchdog() {
