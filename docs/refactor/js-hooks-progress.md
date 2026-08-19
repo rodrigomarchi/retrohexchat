@@ -415,3 +415,26 @@ DEPOIS do dispatch), então o comportamento é byte-a-byte. **Não corrigi** —
 mudaria comportamento observável (seria commit próprio). Registrado como achado
 adiado no ledger. O teste de lib documenta as DUAS faces: a máquina cicla
 corretamente isolada (sem o listener do host), e morre quando o host reseta no echo.
+
+### W-B — space_canvas: overlays + resizer · CONCLUÍDO
+
+**Feito**
+- `lib/space/space_overlays.js` (`createSpaceOverlays(el, {board})`, Forma B): o
+  indicador de loading (`setLoadingText`/`hideLoading` com o latch de
+  `loadingHidden`) e o modal do tabuleiro (`renderModal`). O board é desenhado
+  pela porta `board` (o atlas continua sendo do hook). 8 casos.
+- `lib/space/canvas_resizer.js` (`nextCanvasSize` puro + `createCanvasResizer(el,
+  canvas, {onResized})`, Forma B): o `ResizeObserver` + a decisão de re-fit do
+  backing store. 6 casos.
+- space_canvas 412 → **364**. Teste black-box do hook verde sem edição
+  (os testes de loading passam pelo controlador). Override de linha reescrito.
+
+**Aprendizado — o override de primitiva "W8" era DÍVIDA, não justificativa:** o
+guard tinha `space_canvas` na `FORBIDDEN_PRIMITIVE_OVERRIDES` com a tag "W8" pelo
+`new ResizeObserver`. Um ResizeObserver está na lista proibida justamente porque
+é "um controlador disfarçado" — não é irredutível como o `RTCPeerConnection` ao
+vivo. A definição-de-pronto exige que overrides descrevam resíduo LITERALMENTE
+irredutível, então tirei o ResizeObserver do hook (foi pro `canvas_resizer`) e
+**apaguei o override** — o guard confirma (a catraca falha se um override sobra
+sem o primitivo correspondente). O que sobra no hook é I/O de Socket/channel e
+binding de listeners de ponteiro que fazem `pushEvent` — não decisão presa.

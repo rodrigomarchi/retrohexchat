@@ -88,8 +88,10 @@ const HOOK_LINE_OVERRIDES = new Map([
   ],
   [
     "js/hooks/space/space_canvas_hook.js",
-    "socket/engine/input/pad/fullscreen already injected; residual is the canvas " +
-      "pointer/loading/modal DOM binding and the coordinate transform, still being pulled out",
+    "socket/engine/input/pad/fullscreen/overlays/resizer all injected and the " +
+      "coordinate transform extracted; residual is the raw Phoenix Socket/channel " +
+      "wiring, the channel event fan-out and the canvas pointer listeners that push " +
+      "nick_hover/nick_right_click — I/O binding, not a trapped decision",
   ],
 ]);
 
@@ -108,7 +110,6 @@ const FORBIDDEN_HOOK_PRIMITIVES = [
 
 const FORBIDDEN_PRIMITIVE_OVERRIDES = new Map([
   ["js/hooks/group_call/group_call_webrtc_hook.js", "W5"],
-  ["js/hooks/space/space_canvas_hook.js", "W8"],
 ]);
 
 // A test that reaches for hook._privateMethod is testing something the hook

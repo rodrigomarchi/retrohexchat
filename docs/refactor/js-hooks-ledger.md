@@ -21,7 +21,7 @@ Baseline: main @ a1c9376e, 18/08/2026.
 | `chat/autocomplete_hook.js` | 631→406 | sim | sim | sim | W7·W-A | **W-A feito** | chat/{composer,input,history_search,typing_indicator,tab_cycle,dropdown_position} | tab-cycle do cliente é dead code (ver Achados adiados) |
 | `ui/retro_table_hook.js` | 586→32 | sim | sim | — | W1 | **concluído** | ui/retro_table{,_layout,_selection} | — |
 | `chat/chat_viewport_hook.js` | 462 | sim | sim | sim | W2·W7 | **W2 feito** | — | input/long_press (W2) |
-| `space/space_canvas_hook.js` | 408 | sim | sim | sim | W8 | pendente | — | — |
+| `space/space_canvas_hook.js` | 412→364 | sim | sim | sim | W-B | **W-B feito** | space/{canvas_point,space_overlays,canvas_resizer} | — (saiu do override de primitiva: ResizeObserver foi pro resizer) |
 | `chat/format_toolbar_hook.js` | 317 | sim | sim | — | W2 | **W2 feito** | — | chat/markdown_format |
 | `group_call/group_call_prejoin_hook.js` | 316 | sim | sim | sim | W2·W8 | **W2 feito** | — | p2p/device_constraints+device_errors |
 | `ui/contextual_tips_hook.js` | 229 | sim | sim | sim | W8 | pendente | — | — |

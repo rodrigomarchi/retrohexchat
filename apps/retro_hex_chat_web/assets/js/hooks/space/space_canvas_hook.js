@@ -24,6 +24,8 @@ import { seatTarget } from "../../lib/space/seating.js";
 import { createSpriteAtlas } from "../../lib/space/sprite_atlas.js";
 import { normalizeSpaceInit, CLIENT_EVENTS, SERVER_EVENTS } from "../../lib/space/protocol.js";
 import { canvasPointFromEvent } from "../../lib/space/canvas_point.js";
+import { createSpaceOverlays } from "../../lib/space/space_overlays.js";
+import { createCanvasResizer } from "../../lib/space/canvas_resizer.js";
 import {
   cancelNickHoverTimer,
   isContextMenuOpen,
@@ -58,9 +60,11 @@ export function createSpaceCanvasHook(deps = {}) {
       this._avatar = this.el.dataset.avatar || "";
       this._assetsReady = false;
       this._frameRenderedAfterAssets = false;
-      this._loadingHidden = false;
       this._hoveredNick = null;
-      this._setLoadingText(t("Connecting to space..."));
+      this._overlays = createSpaceOverlays(this.el, {
+        board: (asset) => this._atlas?.board?.(asset),
+      });
+      this._overlays.setLoadingText(t("Connecting to space..."));
 
       const canvas = this.el.querySelector("canvas");
       this._canvas = canvas;
@@ -69,7 +73,7 @@ export function createSpaceCanvasHook(deps = {}) {
         scale: RENDER_SCALE,
         onReady: () => {
           this._assetsReady = true;
-          this._setLoadingText(t("Drawing room..."));
+          this._overlays.setLoadingText(t("Drawing room..."));
         },
       });
       this._engine = engineFactory({
@@ -78,7 +82,7 @@ export function createSpaceCanvasHook(deps = {}) {
         onFrameRendered: () => {
           if (this._assetsReady) {
             this._frameRenderedAfterAssets = true;
-            this._hideLoading();
+            this._overlays.hideLoading();
           }
         },
         // The engine's render loop polls the held direction and paces repeat
@@ -88,13 +92,13 @@ export function createSpaceCanvasHook(deps = {}) {
       });
 
       // Size the canvas backing store to its laid-out box and keep it in sync,
-      // so a bigger window (maximize) reveals more map. ResizeObserver catches
-      // window-manager resizes that never fire a browser "resize" event.
-      this._resizeCanvas();
-      if (typeof ResizeObserver !== "undefined") {
-        this._resizeObserver = new ResizeObserver(() => this._resizeCanvas());
-        this._resizeObserver.observe(this.el);
-      }
+      // so a bigger window (maximize) reveals more map. The controller owns the
+      // ResizeObserver that catches window-manager resizes with no browser
+      // "resize" event.
+      this._resizer = createCanvasResizer(this.el, this._canvas, {
+        onResized: () => this._engine?.resize?.(),
+      });
+      this._resizer.attach();
 
       this._input = inputFactory({
         onIntent: (intent) => this._onIntent(intent),
@@ -108,7 +112,7 @@ export function createSpaceCanvasHook(deps = {}) {
       this._pad = padRoot ? padFactory({ root: padRoot, input: this._input }) : null;
       this._pad?.attach();
 
-      // Fullscreen presents the whole shell (canvas + overlays); the existing
+      // Fullscreen presents the whole shell (canvas + overlays); the resizer's
       // ResizeObserver re-fits the canvas when the shell size jumps.
       const fullscreenButton = this.el.querySelector("[data-space-fullscreen-toggle]");
       this._fullscreen = fullscreenButton
@@ -118,7 +122,7 @@ export function createSpaceCanvasHook(deps = {}) {
 
       this._attachPointerEvents();
 
-      this._modal = new ModalController({ onChange: (m) => this._renderModal(m) });
+      this._modal = new ModalController({ onChange: (m) => this._overlays.renderModal(m) });
       this._modal.attach();
 
       this._socket = socketFactory();
@@ -133,7 +137,7 @@ export function createSpaceCanvasHook(deps = {}) {
       this._channel
         .join()
         .receive("ok", (reply) => {
-          this._setLoadingText(t("Loading room..."));
+          this._overlays.setLoadingText(t("Loading room..."));
           this._engine.start(normalizeSpaceInit(reply));
           if (this._avatar) {
             this._channel.push(CLIENT_EVENTS.SELECT_AVATAR, { avatar: this._avatar });
@@ -141,11 +145,11 @@ export function createSpaceCanvasHook(deps = {}) {
         })
         .receive("error", (reply) => {
           log.error("[space] channel join rejected", reply);
-          this._setLoadingText(t("Could not open space."));
+          this._overlays.setLoadingText(t("Could not open space."));
         })
         .receive("timeout", () => {
           log.error("[space] channel join timed out");
-          this._setLoadingText(t("Space connection timed out."));
+          this._overlays.setLoadingText(t("Space connection timed out."));
         });
     },
 
@@ -156,7 +160,7 @@ export function createSpaceCanvasHook(deps = {}) {
       this._input?.detach();
       this._modal?.detach();
       cancelNickHoverTimer();
-      this._resizeObserver?.disconnect();
+      this._resizer?.detach();
       this._engine?.destroy();
       this._channel?.leave();
       this._socket?.disconnect();
@@ -164,32 +168,13 @@ export function createSpaceCanvasHook(deps = {}) {
       this._pad = null;
       this._input = null;
       this._modal = null;
-      this._resizeObserver = null;
+      this._resizer = null;
+      this._overlays = null;
       this._canvas = null;
       this._engine = null;
       this._channel = null;
       this._socket = null;
       this._hoveredNick = null;
-    },
-
-    _setLoadingText(text) {
-      const host = this.el.querySelector("[data-space-loading]");
-      if (!host || this._loadingHidden) return;
-
-      const indicatorText = host.querySelector("[data-space-loading-text]");
-      if (indicatorText) indicatorText.textContent = text;
-
-      const panel = host.querySelector("[data-space-loading-panel]");
-      const title = panel?.getAttribute("aria-label")?.split(":")[0];
-      if (panel && title) panel.setAttribute("aria-label", `${title}: ${text}`);
-    },
-
-    _hideLoading() {
-      const host = this.el.querySelector("[data-space-loading]");
-      if (!host || this._loadingHidden) return;
-      this._loadingHidden = true;
-      host.hidden = true;
-      host.setAttribute("aria-hidden", "true");
     },
 
     // A key intent predicts locally; only an accepted (locally-free) step is
@@ -347,40 +332,6 @@ export function createSpaceCanvasHook(deps = {}) {
       );
       if (!point) return null;
       return engine.participantAtCanvasPoint(point.x, point.y);
-    },
-
-    // Match the canvas backing store to its CSS box, then let the engine
-    // re-fit the camera viewport. No-op until the element has a real size.
-    _resizeCanvas() {
-      const canvas = this._canvas;
-      if (!canvas) return;
-      const width = canvas.clientWidth || this.el.clientWidth;
-      const height = canvas.clientHeight || this.el.clientHeight;
-      if (width > 0 && height > 0 && (canvas.width !== width || canvas.height !== height)) {
-        canvas.width = width;
-        canvas.height = height;
-      }
-      this._engine?.resize?.();
-    },
-
-    // Renders the board modal by drawing the atlas asset into a canvas overlay.
-    _renderModal(modal) {
-      const host = this.el.querySelector("[data-space-modal]");
-      if (!host) return;
-
-      if (!modal) {
-        host.hidden = true;
-        host.replaceChildren();
-        return;
-      }
-
-      host.hidden = false;
-      const title = document.createElement("div");
-      title.className = "font-bold";
-      title.textContent = modal.title ?? "";
-      const board = this._atlas?.board?.(modal.asset);
-      host.replaceChildren(title);
-      if (board?.canvas) host.appendChild(board.canvas);
     },
   };
 }
