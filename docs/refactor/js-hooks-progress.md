@@ -482,3 +482,30 @@ velha"): removi `encodeHaveChunks`/`decodeHaveChunks`/`HIGH_WATER_MARK` dos impo
 do hook, então qualquer cópia inline dangling daria `ReferenceError` no load — e o
 módulo do hook carrega verde. A prova de wiring é a ausência do símbolo antigo, não
 a reação do teste de hook. Grep confirmou zero inline residual.
+
+### W-F2b — teste de lib direto black-box para o rtc_media_hook_factory · CONCLUÍDO
+
+**Feito**
+- `test/lib/p2p/rtc_media_hook_factory.test.js` (8 casos): importa
+  `createRtcMediaHook` de `lib/` DIRETO e dirige o hook produzido 100% black-box
+  (mount + `handleEvent` via `simulateEvent` + `pc.ontrack`/CustomEvent pc-ready +
+  cliques DOM), asserta em `pushEvent`, `FakeRTCPeerConnection.getSenders()`,
+  `srcObject` e nos CustomEvents despachados. **Zero acesso a `produced._private`.**
+  Cobre: mount/ready, start_video publica tracks, auto-start em fila até pc-ready,
+  attach de track remoto, adoção multi-stream, screen-share on/off, republish em
+  reconexão, end-call. Reversão independente confirmada (quebrar `replaceTrack`
+  derruba o teste de screen-share; factory restaurado byte-a-byte).
+
+**Aprendizado — testar uma FÁBRICA parametrizada com config sintético é o certo:**
+o teste passa um `CONFIG` com as MESMAS chaves do consumidor real
+(`lobby_media_hook.js`) mas VALORES sintéticos (`"test_pc_ready"` vs
+`"lobby_media_pc_ready"`). Isso prova que a fábrica honra qualquer config que
+receber — não acopla o teste aos nomes de evento do lobby. (Achado de passagem: a
+fábrica despacha DOIS CustomEvents com nome literal `"lobby_media_recover"` e
+`"lobby_media_source_changed"` — hardcoded, não derivados de config; pequeno cheiro
+de acoplamento, registrado no ledger.) **Cobertura que NÃO deu p/ alcançar
+black-box** (fica no teste white-box do hook, por isso a catraca de private não vai
+a zero p/ o lobby_media): o watchdog de mídia parada (`_startMediaWatchdog` roda em
+`setInterval` e depende de estado interno de `remoteStream`/`signalingState`) e o
+fallback recvonly do auto-join (asserções são sobre estado interno `callType`/
+`inCall`, não sobre push observável).

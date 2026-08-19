@@ -69,7 +69,7 @@ Baseline: main @ a1c9376e, 18/08/2026.
 |---|---|
 | 6 strings visíveis sem `t()` (space loading; `_participantQualityLabel`, `_participantQualityTitle`, badge Speaking) | pendente |
 | `enforce_hooks_contract.cjs:8` doc ref quebrada | **feito** (commit d3e0a9c1) |
-| `rtc_media_hook_factory.js`: 1 consumidor, ramos mortos | **des-parametrizado** (commit 7fa139d8); teste de lib direto black-box = W-F2b (o `lobby_media_hook.test.js` ainda alcança 6 privados) |
+| `rtc_media_hook_factory.js`: 1 consumidor, ramos mortos | **des-parametrizado** (commit 7fa139d8); **teste de lib direto black-box feito (W-F2b, 8 casos, zero private)**. O `lobby_media_hook.test.js` ainda alcança 6 privados p/ o watchdog e o fallback recvonly (não alcançáveis black-box) → alvo do W-F1/F3 é reduzir os OUTROS, não zerar |
 | Testes de lib diretos p/ format_toolbar, menu_bar, prejoin | **feito (W-F2a)** — antes só via hook (mas já black-box); agora `createX` de `lib/` testado direto |
 | 9 hooks sem teste | pendente (consequência de W1–W7; resto em W8) |
 
@@ -82,6 +82,8 @@ própria ou é descartado com justificativa.
 | Achado | Onde | Estado |
 |---|---|---|
 | **Tab-cycle do cliente é dead code.** O echo síncrono de `dispatchEvent("input")` zera `tabCycleState` antes de o `setTimeout(0)` capturar `preserved`, então `tabCycleActive` é sempre `false` e o ciclo roda no servidor via `tab_complete` repetido. `createTabCycle.advance()` nunca é alcançado no browser. | `lib/chat/tab_cycle.js` + `autocomplete_hook.js` input listener | **aberto** — corrigir (capturar `preserved` antes do dispatch, ou guardar o echo) muda comportamento observável → commit próprio, não dentro de um movimento |
+| **`end_call` server event com payload vazio NÃO empurra `call_ended`.** O handler passa `{notify: payload.notify === true}`; um `end_call` do servidor com `{}` encerra em silêncio (assimetria vs. o botão DOM, que notifica). | `lib/p2p/rtc_media_hook_factory.js` handler de `endCall` | **aberto** — comportamento existente, não regressão; validar se é intencional antes de mexer |
+| **A fábrica de mídia despacha 2 CustomEvents com nome literal** (`lobby_media_recover`, `lobby_media_source_changed`) hardcoded, enquanto todo o resto é derivado de `config`. Pequeno acoplamento ao consumidor lobby. | `lib/p2p/rtc_media_hook_factory.js:727,1127` | **aberto** — mover p/ `config.clientEvents` seria mudança comportamental (nomes de evento) → commit próprio |
 
 ## Legenda de pacote
 
