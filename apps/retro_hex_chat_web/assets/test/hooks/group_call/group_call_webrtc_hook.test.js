@@ -4,6 +4,7 @@ import GroupCallWebRTCHook from "../../../js/hooks/group_call/group_call_webrtc_
 import { FakeRTCPeerConnection } from "../../helpers/rtc_peer_connection.js";
 import { createTrackRegistry } from "../../../js/lib/group_call/track_registry.js";
 import { createParticipantRegistry } from "../../../js/lib/group_call/participant_registry.js";
+import { createTileView } from "../../../js/lib/group_call/tile_view.js";
 
 let hooks = [];
 
@@ -37,7 +38,7 @@ function setupHook() {
   };
   hook.participantRegistry = createParticipantRegistry();
   hook.trackRegistry = createTrackRegistry();
-  hook.remoteTiles = new Map();
+  hook.tileView = createTileView(hook.el, { onToggleFocus: (tile) => hook._toggleTileFocus(tile) });
   hook.remoteVideoStalls = new Map();
   hook.statsTimer = null;
   hook.statsPrev = null;
@@ -133,6 +134,7 @@ function setupLayoutHook() {
   `;
 
   hook.el = el;
+  hook.tileView = createTileView(el, { onToggleFocus: (tile) => hook._toggleTileFocus(tile) });
   hook.layoutState = hook._layoutStateFromDataset();
   hook._bindLocalTile();
   document.body.appendChild(el);
@@ -866,16 +868,11 @@ describe("GroupCallWebRTCHook media fallback", () => {
     const requestOffer = pushWithReceivers();
     const rejoin = pushWithReceivers();
     const pc = { close: vi.fn(), connectionState: "failed" };
-    const oldTile = document.createElement("div");
-    oldTile.dataset.groupCallVideoTile = "";
-    oldTile.dataset.local = "false";
-    oldTile.dataset.streamId = "old-stream";
 
     hook.participantId = 42;
     hook.recoveryAttempts = 1;
     hook.pc = pc;
-    hook.remoteTiles.set("old-stream", oldTile);
-    hook._videoGrid().appendChild(oldTile);
+    const oldTile = hook.tileView.ensure("old-stream");
     hook.trackRegistry.upsert({ id: "track-1" });
     hook.channel = {
       push: vi.fn((event) => {
@@ -1024,7 +1021,7 @@ describe("GroupCallWebRTCHook media fallback", () => {
 
   it("builds remote tiles from the rendered icon template", () => {
     const hook = setupLayoutHook();
-    const tile = hook._createRemoteTile("stream-icons");
+    const tile = hook.tileView.ensure("stream-icons");
 
     expect(tile.querySelector('[data-test-icon="remote-microphone"]')).not.toBeNull();
     expect(tile.querySelector('[data-test-icon="remote-camera"]')).not.toBeNull();
@@ -1197,7 +1194,7 @@ describe("GroupCallWebRTCHook media fallback", () => {
       getStats: vi.fn(async () => new Map()),
     };
     hook.participantRegistry.upsert({ id: "123" });
-    hook.remoteTiles.set("stream-456", document.createElement("div"));
+    hook.tileView.ensure("stream-456");
     hook.trackRegistry.upsert({ id: "track-1" });
     hook.lastAnsweredOfferId = "gc-12-1";
     hook.rejoinEpoch = 2;

@@ -63,10 +63,11 @@ const HOOK_LINE_LIMIT = 200;
 const HOOK_LINE_OVERRIDES = new Map([
   [
     "js/hooks/group_call/group_call_webrtc_hook.js",
-    "quality/payload/reactions/layout/tiles/media-state/recovery decisions and the " +
-      "track and participant registries extracted to lib/group_call/* and lib/p2p/recovery.js; " +
-      "residual is live-RTCPeerConnection wiring (irreducible) plus the tile-DOM " +
-      "creation/mutation that binds those records to elements",
+    "quality/payload/reactions/layout/tiles/media-state/recovery decisions, the track and " +
+      "participant registries and the remote-tile creation/lifecycle extracted to " +
+      "lib/group_call/* and lib/p2p/recovery.js; residual is live-RTCPeerConnection wiring " +
+      "(irreducible) plus the video-element attach and the dataset mutation that binds " +
+      "already-decided records to tiles",
   ],
   [
     "js/hooks/lobby/lobby_webrtc_hook.js",

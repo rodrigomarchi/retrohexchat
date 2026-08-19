@@ -44,6 +44,7 @@ import {
 import { focusedTileIndex, isTilePinned, tileIsVisible } from "../../lib/group_call/layout.js";
 import { createTrackRegistry } from "../../lib/group_call/track_registry.js";
 import { createParticipantRegistry } from "../../lib/group_call/participant_registry.js";
+import { createTileView } from "../../lib/group_call/tile_view.js";
 import {
   localEmptyState,
   localEmptyStateCopy,
@@ -108,7 +109,9 @@ const GroupCallWebRTCHook = {
     this.layoutState = this._layoutStateFromDataset();
     this.participantRegistry = createParticipantRegistry();
     this.trackRegistry = createTrackRegistry();
-    this.remoteTiles = new Map();
+    this.tileView = createTileView(this.el, {
+      onToggleFocus: (tile) => this._toggleTileFocus(tile),
+    });
     this.remoteVideoStalls = new Map();
     this.statsTimer = null;
     this.statsPrev = null;
@@ -558,16 +561,8 @@ const GroupCallWebRTCHook = {
   _attachRemoteStream(stream, track = null) {
     if (!stream) return;
 
-    const host = this._videoGrid();
     const streamId = stream.id || `remote-${Date.now()}`;
-    let tile =
-      this.remoteTiles.get(streamId) || host.querySelector(`[data-stream-id="${streamId}"]`);
-
-    if (!tile) {
-      tile = this._createRemoteTile(streamId);
-      host.appendChild(tile);
-      this.remoteTiles.set(streamId, tile);
-    }
+    const tile = this.tileView.ensure(streamId);
 
     let video = tile.querySelector("video");
 
@@ -592,54 +587,6 @@ const GroupCallWebRTCHook = {
 
   _videoGrid() {
     return this.el.querySelector("[data-group-call-video-grid]") || this.el;
-  },
-
-  _createRemoteTile(streamId) {
-    const tile = this._remoteTileFromTemplate() || document.createElement("div");
-    tile.classList.add("group-call-video-tile", "group-call-video-tile--remote");
-    tile.dataset.groupCallVideoTile = "";
-    tile.dataset.streamId = streamId;
-    tile.dataset.mediaAudio = "true";
-    tile.dataset.mediaVideo = "true";
-    tile.dataset.local = "false";
-    tile.dataset.activeSpeaker = "false";
-    tile.dataset.qualityLevel = "unknown";
-    tile.dataset.pinned = "false";
-    tile.tabIndex = 0;
-    tile.role = "button";
-    tile.dataset.testid = `group-call-remote-tile-${streamId}`;
-    tile.addEventListener("click", () => this._toggleTileFocus(tile));
-    tile.addEventListener("keydown", (event) => {
-      if (event.key !== "Enter" && event.key !== " ") return;
-      event.preventDefault();
-      this._toggleTileFocus(tile);
-    });
-
-    this._ensureRemoteTileNameplate(tile);
-
-    return tile;
-  },
-
-  _remoteTileFromTemplate() {
-    const template = this.el.querySelector("[data-group-call-remote-tile-template]");
-    const node = template?.content?.firstElementChild?.cloneNode(true);
-
-    return node instanceof HTMLElement ? node : null;
-  },
-
-  _ensureRemoteTileNameplate(tile) {
-    if (tile.querySelector("[data-group-call-tile-name]")) return;
-
-    const nameplate = document.createElement("div");
-    nameplate.className = "group-call-video-tile__nameplate";
-
-    const name = document.createElement("span");
-    name.className = "truncate font-bold";
-    name.dataset.groupCallTileName = "";
-    name.textContent = t("Remote");
-
-    nameplate.append(name);
-    tile.appendChild(nameplate);
   },
 
   _bindLocalTile() {
@@ -797,7 +744,7 @@ const GroupCallWebRTCHook = {
     if (!record) return;
 
     const id = record.id;
-    for (const tile of this._tilesForParticipant(id)) {
+    for (const tile of this.tileView.tilesForParticipant(id)) {
       this._applyParticipantToTile(tile, id);
     }
 
@@ -814,10 +761,7 @@ const GroupCallWebRTCHook = {
     this.participantQualityById?.delete(id);
     if (this.activeSpeakerParticipantId === id) this.activeSpeakerParticipantId = null;
 
-    for (const [streamId, tile] of this.remoteTiles) {
-      if (tile.dataset.participantId !== id) continue;
-      tile.remove();
-      this.remoteTiles.delete(streamId);
+    for (const streamId of this.tileView.removeByParticipant(id)) {
       this.remoteVideoStalls?.delete(streamId);
     }
 
@@ -844,7 +788,7 @@ const GroupCallWebRTCHook = {
     if (!normalized) return;
 
     if (normalized.streamId) {
-      const tile = this.remoteTiles.get(normalized.streamId);
+      const tile = this.tileView.get(normalized.streamId);
       if (tile) this._applyTrackToTile(tile, normalized.streamId);
     }
   },
@@ -905,14 +849,14 @@ const GroupCallWebRTCHook = {
       };
     }
 
-    let tiles = this._tilesForParticipant(participantId).filter(
-      (tile) => tile.dataset.local !== "true",
-    );
+    let tiles = this.tileView
+      .tilesForParticipant(participantId)
+      .filter((tile) => tile.dataset.local !== "true");
 
     if (tiles.length === 0) {
-      const unassignedRemoteTiles = this._remoteTileElements().filter(
-        (tile) => !tile.dataset.participantId,
-      );
+      const unassignedRemoteTiles = this.tileView
+        .remoteTileElements()
+        .filter((tile) => !tile.dataset.participantId);
 
       if (unassignedRemoteTiles.length === 1) {
         tiles = unassignedRemoteTiles;
@@ -927,21 +871,6 @@ const GroupCallWebRTCHook = {
     }
 
     this._applyLayout();
-  },
-
-  _tilesForParticipant(participantId) {
-    return Array.from(this.el.querySelectorAll("[data-group-call-video-tile]")).filter(
-      (tile) => tile.dataset.participantId === String(participantId),
-    );
-  },
-
-  _remoteTileElements() {
-    const mappedTiles = Array.from(this.remoteTiles.values());
-    const domTiles = Array.from(
-      this.el.querySelectorAll('[data-group-call-video-tile][data-local="false"]'),
-    );
-
-    return Array.from(new Set([...mappedTiles, ...domTiles]));
   },
 
   _applyLayout() {
@@ -964,7 +893,9 @@ const GroupCallWebRTCHook = {
       })),
     );
     const focusedTile = focusedIndex >= 0 ? visibleTiles[focusedIndex] : null;
-    const remoteCount = this._remoteTileElements().filter((tile) => this._tileVisible(tile)).length;
+    const remoteCount = this.tileView
+      .remoteTileElements()
+      .filter((tile) => this._tileVisible(tile)).length;
 
     this.el.dataset.layoutMode = this.layoutState.mode;
     this.el.dataset.selfView = this.layoutState.selfView;
@@ -1065,12 +996,12 @@ const GroupCallWebRTCHook = {
   },
 
   _reactionTiles(participantId) {
-    let tiles = this._tilesForParticipant(participantId);
+    let tiles = this.tileView.tilesForParticipant(participantId);
 
     if (tiles.length === 0) {
-      const unassignedRemoteTiles = this._remoteTileElements().filter(
-        (tile) => !tile.dataset.participantId,
-      );
+      const unassignedRemoteTiles = this.tileView
+        .remoteTileElements()
+        .filter((tile) => !tile.dataset.participantId);
 
       if (unassignedRemoteTiles.length === 1) {
         unassignedRemoteTiles[0].dataset.participantId = participantId;
@@ -1791,11 +1722,7 @@ const GroupCallWebRTCHook = {
   },
 
   _clearRemoteTilesForRejoin() {
-    for (const tile of this.remoteTiles?.values?.() || []) {
-      tile.remove();
-    }
-
-    this.remoteTiles?.clear();
+    this.tileView.removeAll();
     this.remoteVideoStalls?.clear();
     this.trackRegistry.clear();
     this._applyLayout();
@@ -1874,7 +1801,7 @@ const GroupCallWebRTCHook = {
         summary: {
           connection_state: this.pc.connectionState || "",
           participant_count: this.participantRegistry.size,
-          remote_stream_count: this.remoteTiles.size,
+          remote_stream_count: this.tileView.size,
           track_count: this.trackRegistry.size,
           screen_share_active: this.screenShare?.active === true,
           offer_id: this.lastAnsweredOfferId || "",
@@ -1919,7 +1846,7 @@ const GroupCallWebRTCHook = {
       const persistedTrack = this.trackRegistry.byWebrtcTrackId(trackIdentifier);
       if (persistedTrack?.participantId) return persistedTrack.participantId;
 
-      for (const tile of this._remoteTileElements()) {
+      for (const tile of this.tileView.remoteTileElements()) {
         if (!tile.dataset.participantId) continue;
 
         const stream = tile.querySelector("video")?.srcObject;
@@ -1930,7 +1857,9 @@ const GroupCallWebRTCHook = {
       }
     }
 
-    const assignedTiles = this._remoteTileElements().filter((tile) => tile.dataset.participantId);
+    const assignedTiles = this.tileView
+      .remoteTileElements()
+      .filter((tile) => tile.dataset.participantId);
 
     return assignedTiles.length === 1 ? assignedTiles[0].dataset.participantId : null;
   },
@@ -1964,14 +1893,14 @@ const GroupCallWebRTCHook = {
       const participant = this.participantRegistry.get(participantId);
       if (participant) participant.quality = normalized;
 
-      const remoteTiles = this._tilesForParticipant(participantId).filter(
-        (tile) => tile.dataset.local !== "true",
-      );
+      const remoteTiles = this.tileView
+        .tilesForParticipant(participantId)
+        .filter((tile) => tile.dataset.local !== "true");
 
       if (remoteTiles.length === 0) {
-        const unassignedRemoteTiles = this._remoteTileElements().filter(
-          (tile) => !tile.dataset.participantId,
-        );
+        const unassignedRemoteTiles = this.tileView
+          .remoteTileElements()
+          .filter((tile) => !tile.dataset.participantId);
 
         if (unassignedRemoteTiles.length === 1) {
           unassignedRemoteTiles[0].dataset.participantId = participantId;
@@ -2098,7 +2027,7 @@ const GroupCallWebRTCHook = {
     this.participantQualityById?.clear();
     this.participantRegistry.clear();
     this.trackRegistry.clear();
-    this.remoteTiles?.clear();
+    this.tileView.clear();
     this.remoteVideoStalls?.clear();
   },
 };

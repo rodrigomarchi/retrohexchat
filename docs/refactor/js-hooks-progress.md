@@ -659,3 +659,41 @@ que é trabalho próprio (o watchdog e a negociação precisam de white-box). A 
 catraca de conteúdo (W-F3) rejeita controlador escondido em hook curto. Os achados
 adiados viraram tarefas próprias documentadas (tab-cycle dead code, assimetria do
 `end_call`, nomes hardcoded na fábrica) ou foram descartados com justificativa (slice 3).
+
+### W-E slice 3 — group_call: criação/lifecycle de tiles (com E2E de gate) · CONCLUÍDO
+
+**Contexto — a decisão de "descartar" foi revertida por dados.** Eu tinha parado a
+slice 3 chamando de "risco alto em mídia ao vivo". Rodei o `chat-group-call.spec.ts`
+primeiro pra ver se o E2E servia de rede: **N1** (2 users, vídeo real nos dois
+sentidos), **N4** (screen-share marca `data-track-source=screen` no tile remoto),
+**N5** (quality/active-speaker no tile), **N12/N14** (MESMO elemento `<video>`
+preservado em mini/layout), **N15** (reactions no tile), **N6** (recuperação de
+mídia). Todos verdes no código refatorado → o gate serve. Então fiz a extração.
+
+**Feito**
+- `lib/group_call/tile_view.js` (`createTileView(el, {onToggleFocus})`, Forma B — DOM
+  num controlador, permitido por §15.1): o mapa `remoteTiles` + criação de tile
+  (`ensure` find-or-create a partir do `<template>` ou div, datasets load-bearing,
+  nameplate, listeners click/Enter→porta), `removeByParticipant`/`removeAll`/`clear`/
+  `size` + as queries `tilesForParticipant`/`remoteTileElements`. 9 casos de lib.
+- Hook: `_attachRemoteStream` usa `tileView.ensure`; os ~13 sites de `remoteTiles` +
+  as queries passam pelo controlador; `_createRemoteTile`/`_remoteTileFromTemplate`/
+  `_ensureRemoteTileNameplate`/`_tilesForParticipant`/`_remoteTileElements` deletados.
+  **2106 → 2035; 81 → 76 métodos privados.** O `_toggleTileFocus` (pushEvent+layout)
+  fica no hook, chamado pela porta.
+- **Prova em mídia ao vivo:** reconstruí os assets e RE-rodei o gate — os 8 flows
+  (N1/N4/N5/N12/N14/N15/N6 + N2 três-users join/leave) **verdes** contra o código
+  extraído. Teste black-box do hook (40) verde; reversão OK (quebrar `ensure`/
+  `removeByParticipant` derruba lib + 11 do hook).
+
+**Aprendizado — E2E não está no `make ci`, mas É um gate real quando o unit não
+alcança.** O `chat-group-call.spec.ts` assert em Chromium com WebRTC de verdade nos
+datasets exatos que a extração toca. Rodar 8 flows-alvo (`--grep`) leva ~50s + boot;
+não é a suíte inteira (proibido), é o subconjunto que exercita o caminho. O
+white-box do god-hook trocou 2 reaches (`_createRemoteTile`/`_videoGrid`) por 2
+(`_toggleTileFocus` na fiação da porta) → catraca 184 intacta (baixar de fato é a
+migração W-F1, trabalho próprio).
+
+**Resíduo do group_call agora:** pc ao vivo (irredutível) + attach de `<video>` +
+`_applyTrackToTile`/`_applyParticipantToTile` (mutação de dataset a partir dos
+registros/quality — bind, não decisão; as decisões estão em lib com teste direto).
