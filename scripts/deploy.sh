@@ -66,9 +66,18 @@ echo "==> Version: ${RELEASE_VERSION} (SHA: ${FULL_SHA})"
 echo "==> Patching mix.exs version to ${RELEASE_VERSION}..."
 sed -i.bak "s/version: \"${MIX_VERSION}\"/version: \"${RELEASE_VERSION}\"/" mix.exs
 
+# Also stamp the web app's own version so RetroHexChatWeb.BuildInfo (and the
+# frontend RUM meta tag) reports the deployed SHA. DeployEx does not expose
+# RELEASE_VSN to the running node, so Application.spec(:retro_hex_chat_web, :vsn)
+# is the reliable runtime source of the release identity.
+WEB_MIX="apps/retro_hex_chat_web/mix.exs"
+echo "==> Patching ${WEB_MIX} version to ${RELEASE_VERSION}..."
+sed -i.bak "s/version: \"${MIX_VERSION}\"/version: \"${RELEASE_VERSION}\"/" "${WEB_MIX}"
+
 cleanup() {
-  echo "==> Restoring original mix.exs..."
+  echo "==> Restoring original mix.exs files..."
   mv mix.exs.bak mix.exs 2>/dev/null || true
+  mv "${WEB_MIX}.bak" "${WEB_MIX}" 2>/dev/null || true
 }
 trap cleanup EXIT
 
