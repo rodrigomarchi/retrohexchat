@@ -1259,7 +1259,12 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "relay",
           "ip",
           "hide",
-          "private mode"
+          "private mode",
+          "telemetry",
+          "monitoring",
+          "performance",
+          "errors",
+          "rum"
         ],
         icon: :icon_privacy,
         description:

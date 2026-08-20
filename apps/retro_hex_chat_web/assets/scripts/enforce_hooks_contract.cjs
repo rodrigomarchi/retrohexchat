@@ -16,6 +16,8 @@ const ALLOWED_DYNAMIC_IMPORT_FILES = new Set([
   // The public pages defer their LiveSocket until a reader touches the connect
   // window, so the critical bundle stays a fraction of the app's.
   "js/public_pages.js",
+  // Faro RUM loads from its own chunk so the SDK never weighs on the app entry.
+  "js/app.js",
 ]);
 
 const ALLOWED_LAZY_FACADE_FILES = new Set([

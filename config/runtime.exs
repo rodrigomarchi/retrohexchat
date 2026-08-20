@@ -5,6 +5,13 @@ import Config
 # attaches it as an `env` prop to every event.
 config :retro_hex_chat_web, :plausible_env, System.get_env("APP_ENV", "prod")
 
+# Grafana Faro real-user monitoring, surfaced to the browser via
+# <meta name="faro-*"> tags in the chat layout. Enabled only in production
+# (togglable with FARO_ENABLED without a recompile); dev and test never ship.
+config :retro_hex_chat_web,
+  faro_enabled: config_env() == :prod and System.get_env("FARO_ENABLED", "true") == "true",
+  faro_collector_url: System.get_env("FARO_COLLECTOR_URL", "/faro/collect")
+
 config :retro_hex_chat_web,
   public_origin: System.get_env("PUBLIC_ORIGIN") || "https://retrohexchat.app"
 
