@@ -142,6 +142,14 @@ config :esbuild,
       ~w(js/app.js --bundle --target=es2022 --format=esm --splitting --chunk-names=chunks/app-[name]-[hash] --outdir=../priv/static/assets/js --external:/fonts/* --external:/images/*),
     cd: Path.expand("../apps/retro_hex_chat_web/assets", __DIR__),
     env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
+  ],
+  # Standalone Grafana Faro RUM module, loaded by every layout that opts into
+  # real-user monitoring so the SDK stays out of each page's own bundle.
+  retro_hex_chat_web_faro_js: [
+    args:
+      ~w(js/faro_entry.js --bundle --target=es2022 --format=esm --outdir=../priv/static/assets/js --external:/fonts/* --external:/images/*),
+    cd: Path.expand("../apps/retro_hex_chat_web/assets", __DIR__),
+    env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
   ]
 
 # Configure Elixir's Logger

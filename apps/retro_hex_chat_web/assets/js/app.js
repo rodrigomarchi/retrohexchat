@@ -16,13 +16,6 @@ import { getClientInfo } from "./lib/connection/client_info";
 import { loadCurrentLocaleCatalog } from "./lib/i18n";
 import { S3DirectUploader } from "./lib/uploads/s3_direct";
 
-// Real-user monitoring boots from its own async chunk so the Faro SDK never
-// weighs on the app entry bundle. It self-gates: a no-op unless enabled and
-// off localhost (see lib/telemetry/faro.js).
-import("./lib/telemetry/faro_boot.js")
-  .then((faro) => faro.bootFaro())
-  .catch((error) => console.error("[faro] load failed", error));
-
 const Hooks = buildHooks();
 
 const liveSocket = new LiveSocket("/live", Socket, {

@@ -62,13 +62,6 @@ const CHUNK_OVERRIDES = [
     budget: 85 * KIB,
     reason: "SFU client: transport, simulcast, device management, layout engine",
   },
-  {
-    pattern: /^app-faro_boot-/,
-    budget: 690 * KIB,
-    reason:
-      "Grafana Faro RUM: web-sdk + OTel web tracing (browser OpenTelemetry). Async " +
-      "chunk fetched once after the app boots, never on the entry path; ~120kb gzip",
-  },
 ];
 
 const LOCALE_CHUNK_PATTERN =

@@ -39,4 +39,22 @@ defmodule RetroHexChatWeb.FaroMetaTest do
       assert html =~ ~s(<meta name="faro-enabled" content="true")
     end
   end
+
+  describe "Faro RUM on the public surfaces" do
+    test "the landing page carries the metas and the faro entrypoint", %{conn: conn} do
+      html = conn |> get("/") |> html_response(200)
+
+      assert html =~ ~s(<meta name="faro-collector-url" content="/faro/collect")
+      assert html =~ ~s(<meta name="faro-enabled")
+      assert html =~ "/assets/js/faro_entry.js"
+    end
+
+    test "the help page carries the metas and the faro entrypoint", %{conn: conn} do
+      html = conn |> get("/chat/help") |> html_response(200)
+
+      assert html =~ ~s(<meta name="faro-collector-url" content="/faro/collect")
+      assert html =~ ~s(<meta name="faro-enabled")
+      assert html =~ "/assets/js/faro_entry.js"
+    end
+  end
 end

@@ -49,6 +49,8 @@ config :retro_hex_chat_web, RetroHexChatWeb.Endpoint,
        [:retro_hex_chat_web_retrohex_content_js, ~w(--sourcemap=inline --watch)]},
     esbuild:
       {Esbuild, :install_and_run, [:retro_hex_chat_web_app_js, ~w(--sourcemap=inline --watch)]},
+    esbuild:
+      {Esbuild, :install_and_run, [:retro_hex_chat_web_faro_js, ~w(--sourcemap=inline --watch)]},
     node:
       ~w(scripts/bundle_retrohex_css.cjs --watch) ++
         [cd: Path.expand("../apps/retro_hex_chat_web/assets", __DIR__)],
