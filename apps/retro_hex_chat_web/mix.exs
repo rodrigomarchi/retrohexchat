@@ -120,13 +120,13 @@ defmodule RetroHexChatWeb.MixProject do
       ],
       "assets.deploy": [
         "assets.clean",
-        "esbuild retro_hex_chat_web_public_pages_js --minify",
-        "esbuild retro_hex_chat_web_help_live_js --minify",
-        "esbuild retro_hex_chat_web_retrohex_content_js --minify",
+        "esbuild retro_hex_chat_web_public_pages_js --minify --sourcemap=linked",
+        "esbuild retro_hex_chat_web_help_live_js --minify --sourcemap=linked",
+        "esbuild retro_hex_chat_web_retrohex_content_js --minify --sourcemap=linked",
         # No chunk sweep here: assets.clean above already emptied the directory,
         # and public_pages now emits chunks of its own that this would delete.
-        "esbuild retro_hex_chat_web_app_js --minify",
-        "esbuild retro_hex_chat_web_faro_js --minify",
+        "esbuild retro_hex_chat_web_app_js --minify --sourcemap=linked",
+        "esbuild retro_hex_chat_web_faro_js --minify --sourcemap=linked",
         "cmd node assets/scripts/bundle_retrohex_css.cjs",
         "cmd env BROWSERSLIST_IGNORE_OLD_DATA=1 assets/node_modules/.bin/tailwindcss -c assets/tailwind.config.js -i assets/css/.generated/retrohex.css -o priv/static/assets/css/retrohex.css --minify",
         "phx.digest"

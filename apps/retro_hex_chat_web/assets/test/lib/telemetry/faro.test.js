@@ -6,7 +6,7 @@
  * behaviour when the SDK throws. The real Faro SDK is dependency-injected so
  * these cases never load it or touch the network.
  */
-import { createFaro, readFaroConfig } from "../../../js/lib/telemetry/faro";
+import { createFaro, readFaroConfig, viewNameForPath } from "../../../js/lib/telemetry/faro";
 
 /**
  * Build a stub document whose `querySelector('meta[name="..."]')` resolves
@@ -73,6 +73,29 @@ describe("readFaroConfig", () => {
   it("treats a missing enabled meta as disabled", () => {
     const cfg = readFaroConfig(makeDoc({ "faro-collector-url": "/faro/collect" }));
     expect(cfg.enabled).toBe(false);
+  });
+});
+
+describe("viewNameForPath", () => {
+  it("maps the known surfaces to friendly names", () => {
+    expect(viewNameForPath("/")).toBe("landing");
+    expect(viewNameForPath("")).toBe("landing");
+    expect(viewNameForPath("/connect")).toBe("connect");
+    expect(viewNameForPath("/chat")).toBe("chat");
+    expect(viewNameForPath("/chat/help")).toBe("help");
+    expect(viewNameForPath("/chat/help/cmd-join")).toBe("help");
+  });
+
+  it("strips a leading locale segment", () => {
+    expect(viewNameForPath("/pt-BR/chat/help/welcome")).toBe("help");
+    expect(viewNameForPath("/en")).toBe("landing");
+    expect(viewNameForPath("/de/connect")).toBe("connect");
+  });
+
+  it("collapses id-like segments to :id and ignores a trailing slash", () => {
+    expect(viewNameForPath("/bio/12345")).toBe("/bio/:id");
+    expect(viewNameForPath("/game/a1b2c3d4e5")).toBe("/game/:id");
+    expect(viewNameForPath("/chat/")).toBe("chat");
   });
 });
 

@@ -14,6 +14,31 @@
 const APP_NAME = "retro_hex_chat_web";
 
 /**
+ * Normalise a URL path into a stable, low-cardinality RUM view name.
+ *
+ * Strips a leading locale segment (e.g. `/pt-BR`), maps the known surfaces to
+ * friendly names, and collapses id-like segments to `:id` so metrics group by
+ * route instead of by every distinct URL.
+ *
+ * @param {string} pathname - `location.pathname`.
+ * @returns {string} The view name (e.g. "landing", "chat", "help").
+ */
+export function viewNameForPath(pathname) {
+  let path = (pathname || "/").replace(/\/+$/, "");
+  path = path.replace(/^\/[a-z]{2}(-[A-Za-z]{2,4})?(?=\/|$)/, "");
+
+  if (path === "" || path === "/") return "landing";
+  if (path === "/connect") return "connect";
+  if (path === "/chat") return "chat";
+  if (path === "/chat/help" || path.startsWith("/chat/help/")) return "help";
+
+  return path
+    .split("/")
+    .map((seg) => (/^\d+$/.test(seg) || /^[0-9a-f]{8,}$/i.test(seg) ? ":id" : seg))
+    .join("/");
+}
+
+/**
  * Read the Faro configuration from document meta tags.
  *
  * @param {{ querySelector: (selector: string) => ({ content: string } | null) }} doc - Document-like object.
