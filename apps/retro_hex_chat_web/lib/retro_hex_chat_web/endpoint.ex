@@ -63,6 +63,8 @@ defmodule RetroHexChatWeb.Endpoint do
 
   plug Plug.RequestId
 
+  plug RetroHexChatWeb.Plugs.ServerTiming
+
   plug RetroHexChatWeb.PromExPlug, path: "/metrics"
 
   plug Plug.Telemetry, event_prefix: [:phoenix, :endpoint], log: :debug

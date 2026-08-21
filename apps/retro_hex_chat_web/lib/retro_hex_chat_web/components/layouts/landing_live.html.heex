@@ -33,6 +33,12 @@
       content={Application.get_env(:retro_hex_chat_web, :faro_collector_url, "/faro/collect")}
     />
     <meta name="faro-app-version" content={RetroHexChatWeb.BuildInfo.version()} />
+    <%!-- Faro's tracing instrumentation adopts this as the parent of the
+          page-load trace, so the browser's spans and the server's land in one
+          trace instead of two that never reference each other. --%>
+    <%= if traceparent = RetroHexChatWeb.TraceContext.traceparent() do %>
+      <meta name="traceparent" content={traceparent} />
+    <% end %>
 
     <%!-- SEO (dynamic per page) --%>
     <.live_title default="Retro Hex Chat — Your server. Your conversations. Nobody in between.">
