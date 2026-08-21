@@ -9,11 +9,24 @@
  * relays lifecycle callbacks.
  */
 import { createConferenceConnection } from "../../lib/group_call/conference_connection.js";
+import { log } from "../../lib/logger.js";
 
 const GroupCallWebRTCHook = {
   mounted() {
     this.conn = createConferenceConnection(this.el, {
-      pushEvent: (event, payload) => this.pushEvent(event, payload),
+      // Signalling outlives the socket: the controller keeps negotiating and
+      // recovering while LiveView is reconnecting, and pushing then throws.
+      // Those throws reached RUM as unhandled errors on every blip. Dropping
+      // the signal is the only option available anyway — a reconnect remounts
+      // the LiveView and the call renegotiates — so say so and carry on.
+      pushEvent: (event, payload) => {
+        if (!this.liveSocket?.isConnected?.()) {
+          log.warn("[group_call] signal dropped, LiveView not connected", event);
+          return;
+        }
+
+        this.pushEvent(event, payload);
+      },
     });
     this.conn.mount();
 

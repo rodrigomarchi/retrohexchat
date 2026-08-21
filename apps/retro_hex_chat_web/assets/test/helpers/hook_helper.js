@@ -21,10 +21,11 @@ if (!Element.prototype.scrollIntoView) {
  * @param {string} [options.html=""] - Inner HTML for the element
  * @param {Object} [options.attrs={}] - Attributes to set on the element
  * @param {HTMLElement} [options.parent] - Parent element (defaults to document.body)
- * @returns {Object} hook instance with el, pushEvent, pushEventTo, and helpers
+ * @param {boolean} [options.connected=true] - Whether `liveSocket.isConnected()` reports a live socket.
+ * @returns {Object} hook instance with el, pushEvent, pushEventTo, liveSocket, and helpers
  */
 export function mountHook(hookDef, options = {}) {
-  const { tag = "div", html = "", attrs = {}, parent } = options;
+  const { tag = "div", html = "", attrs = {}, parent, connected = true } = options;
 
   // Create the hook element
   const el = document.createElement(tag);
@@ -40,13 +41,30 @@ export function mountHook(hookDef, options = {}) {
   const hook = Object.create(hookDef);
   hook.el = el;
 
-  // Mock LiveView API
+  // Mock LiveView API. `liveSocket` is part of it: a hook that pushes while the
+  // socket is down gets an exception, not a no-op, so anything guarding against
+  // that needs to be able to say the socket is gone.
+  hook.__connected = connected;
+  hook.liveSocket = { isConnected: () => hook.__connected };
+
   hook.__pushEvents = [];
+
+  // LiveView throws rather than dropping the event, and a mock that quietly
+  // records instead lets a hook look correct in tests while breaking on any
+  // real reconnect. Reproduce the throw verbatim.
+  function refuseWhenDisconnected() {
+    if (!hook.__connected) {
+      throw new Error("unable to push hook event. LiveView not connected");
+    }
+  }
+
   hook.pushEvent = vi.fn((event, payload) => {
+    refuseWhenDisconnected();
     hook.__pushEvents.push({ event, payload });
   });
 
   hook.pushEventTo = vi.fn((target, event, payload) => {
+    refuseWhenDisconnected();
     hook.__pushEvents.push({ target, event, payload });
   });
 

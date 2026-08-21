@@ -215,6 +215,34 @@ describe("SpaceCanvasHook implementation", () => {
     );
   });
 
+  it("survives a join reply that lands after the space was closed", () => {
+    // Leaving the space before the server answers is ordinary, and destroyed()
+    // drops every reference these callbacks touch. The null deref this guards
+    // was seen in production RUM on 2026-08-21 (space_canvas_hook.js:76).
+    const engine = {
+      start: vi.fn(),
+      applyDelta: vi.fn(),
+      applySnapshot: vi.fn(),
+      destroy: vi.fn(),
+    };
+    const channel = fakeChannel();
+    const socket = fakeSocket(channel);
+    const hook = Object.assign(
+      Object.create(
+        createSpaceCanvasHook({ socketFactory: () => socket, engineFactory: () => engine }),
+      ),
+      mountContextWithLoading(),
+    );
+
+    hook.mounted();
+    hook.destroyed();
+
+    expect(() => channel._receivers.ok({ participants: [] })).not.toThrow();
+    expect(() => channel._receivers.error({ reason: "invalid_token" })).not.toThrow();
+    expect(() => channel._receivers.timeout()).not.toThrow();
+    expect(engine.start).not.toHaveBeenCalled();
+  });
+
   it("routes channel delta/snapshot/action events into the engine", () => {
     const engine = {
       start: vi.fn(),

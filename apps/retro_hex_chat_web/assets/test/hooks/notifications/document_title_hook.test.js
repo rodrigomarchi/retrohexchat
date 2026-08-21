@@ -77,6 +77,29 @@ describe("DocumentTitleHook", () => {
     expect(document.title).toBe("#retro[Troll]");
   });
 
+  it("pushes tab_focused when the tab comes back and the socket is up", () => {
+    simulateEvent(hook, "title_flash_start", { message: "Test" });
+
+    document.dispatchEvent(new Event("visibilitychange"));
+
+    expect(hook.pushEvent).toHaveBeenCalledWith("tab_focused", {});
+    expect(hook.title.isFlashing()).toBe(false);
+  });
+
+  it("still stops the flash when the socket is gone", () => {
+    // Regression: pushEvent throws when LiveView is not connected, which
+    // skipped stopFlash() and left the title announcing activity to someone
+    // already looking at the tab. Seen in production RUM on 2026-08-21.
+    hook.__connected = false;
+    simulateEvent(hook, "title_flash_start", { message: "Test" });
+
+    document.dispatchEvent(new Event("visibilitychange"));
+
+    expect(hook.title.isFlashing()).toBe(false);
+    expect(document.title).toBe("#lobby[Troll]");
+    expect(hook.pushEvent).not.toHaveBeenCalledWith("tab_focused", {});
+  });
+
   it("stops flashing and drops its listener on destroy", () => {
     simulateEvent(hook, "title_flash_start", { message: "Test" });
     hook.destroyed();

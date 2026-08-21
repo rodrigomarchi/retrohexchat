@@ -73,7 +73,7 @@ export function createSpaceCanvasHook(deps = {}) {
         scale: RENDER_SCALE,
         onReady: () => {
           this._assetsReady = true;
-          this._overlays.setLoadingText(t("Drawing room..."));
+          this._overlays?.setLoadingText(t("Drawing room..."));
         },
       });
       this._engine = engineFactory({
@@ -82,7 +82,7 @@ export function createSpaceCanvasHook(deps = {}) {
         onFrameRendered: () => {
           if (this._assetsReady) {
             this._frameRenderedAfterAssets = true;
-            this._overlays.hideLoading();
+            this._overlays?.hideLoading();
           }
         },
         // The engine's render loop polls the held direction and paces repeat
@@ -122,7 +122,7 @@ export function createSpaceCanvasHook(deps = {}) {
 
       this._attachPointerEvents();
 
-      this._modal = new ModalController({ onChange: (m) => this._overlays.renderModal(m) });
+      this._modal = new ModalController({ onChange: (m) => this._overlays?.renderModal(m) });
       this._modal.attach();
 
       this._socket = socketFactory();
@@ -137,19 +137,22 @@ export function createSpaceCanvasHook(deps = {}) {
       this._channel
         .join()
         .receive("ok", (reply) => {
-          this._overlays.setLoadingText(t("Loading room..."));
-          this._engine.start(normalizeSpaceInit(reply));
+          // A join reply can land after destroyed(), which drops every one of
+          // these references: leaving the space before the server answers is an
+          // ordinary thing for a user to do, not an edge case.
+          this._overlays?.setLoadingText(t("Loading room..."));
+          this._engine?.start(normalizeSpaceInit(reply));
           if (this._avatar) {
-            this._channel.push(CLIENT_EVENTS.SELECT_AVATAR, { avatar: this._avatar });
+            this._channel?.push(CLIENT_EVENTS.SELECT_AVATAR, { avatar: this._avatar });
           }
         })
         .receive("error", (reply) => {
           log.error("[space] channel join rejected", reply);
-          this._overlays.setLoadingText(t("Could not open space."));
+          this._overlays?.setLoadingText(t("Could not open space."));
         })
         .receive("timeout", () => {
           log.error("[space] channel join timed out");
-          this._overlays.setLoadingText(t("Space connection timed out."));
+          this._overlays?.setLoadingText(t("Space connection timed out."));
         });
     },
 

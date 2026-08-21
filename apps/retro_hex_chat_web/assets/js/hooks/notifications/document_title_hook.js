@@ -24,10 +24,15 @@ const DocumentTitleHook = {
     });
 
     this.onVisibilityChange = () => {
-      if (!document.hidden) {
-        this.pushEvent("tab_focused", {});
-        this.title.stopFlash();
-      }
+      if (document.hidden) return;
+
+      // Stop the flash first, and unconditionally. It is a purely local effect,
+      // and when the socket dropped while the tab was in the background the
+      // push below throws — which used to skip this line and leave the title
+      // announcing "new activity" to someone already looking at the tab.
+      this.title.stopFlash();
+
+      if (this.liveSocket?.isConnected?.()) this.pushEvent("tab_focused", {});
     };
 
     document.addEventListener("visibilitychange", this.onVisibilityChange);
