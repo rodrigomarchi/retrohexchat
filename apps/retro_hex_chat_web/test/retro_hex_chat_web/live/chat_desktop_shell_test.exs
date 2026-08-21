@@ -39,6 +39,20 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
              )
     end
 
+    test "pins game launchers as desktop shortcuts", %{conn: conn} do
+      {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/chat")
+
+      assert has_element?(
+               view,
+               ~s(#chat-desktop [data-testid="desktop-shortcut-retro-games"][data-window-shortcut="retro-games"][data-window-shortcut-action="open_retro_games"])
+             )
+
+      assert has_element?(
+               view,
+               ~s(#chat-desktop [data-testid="desktop-shortcut-arcade"][data-window-shortcut="arcade-games"][data-window-shortcut-action="open_arcade"])
+             )
+    end
+
     test "the chat window is pinned and opens windowed, not maximized", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/chat")
 

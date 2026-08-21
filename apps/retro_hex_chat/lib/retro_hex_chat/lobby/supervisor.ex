@@ -7,7 +7,13 @@ defmodule RetroHexChat.Lobby.Supervisor do
   @spec start_link(keyword()) :: Supervisor.on_start()
   def start_link(opts \\ []) do
     name = Keyword.get(opts, :name, __MODULE__)
-    DynamicSupervisor.start_link(strategy: :one_for_one, name: name)
+
+    DynamicSupervisor.start_link(
+      strategy: :one_for_one,
+      name: name,
+      max_restarts: 50,
+      max_seconds: 5
+    )
   end
 
   @spec child_spec(keyword()) :: Supervisor.child_spec()

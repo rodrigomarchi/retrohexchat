@@ -10,7 +10,7 @@ flows in an `@flow` header; the index below is generated from those headers by
 Everything outside the generated markers is hand-written and stays that way.
 
 Planned-but-unwritten journeys live in [`TEST_BACKLOG.md`](TEST_BACKLOG.md), not
-here: this file describes what the suite *does*, the backlog describes what it
+here: this file describes what the suite _does_, the backlog describes what it
 does not. A flow only appears below once a spec actually covers it.
 
 ## Operating Rules
@@ -135,8 +135,8 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 ## Coverage
 
 - **218 spec files** under `e2e/tests/`.
-- **452 Playwright `test()` cases**.
-- **444 documented flows**, 443 done, 1 not done.
+- **453 Playwright `test()` cases**.
+- **445 documented flows**, 444 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -375,6 +375,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | M34 | Open system windows are reachable from the taskbar | `tests/chat-system-windows.spec.ts` | done |
 | M35 | The system windows coexist on one desktop | `tests/chat-system-windows.spec.ts` | done |
 | M36 | Games menu -> Retro Games opens an icon launcher and game icons open solo sessions (features P2) | `tests/chat-retro-games.spec.ts` | done |
+| M37 | Desktop game shortcuts open Retro Games and Arcade launchers (features P2) | `tests/chat-retro-games.spec.ts` | done |
 
 ### N - P2P, File, Call, Game
 

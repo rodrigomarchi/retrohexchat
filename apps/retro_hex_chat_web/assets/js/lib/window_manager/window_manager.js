@@ -567,6 +567,12 @@ const WindowManagerCore = {
     if (shortcut) {
       if (!this.actsLocally(shortcut.dataset.windowShortcut)) return;
       e.preventDefault();
+      if (shortcut.dataset.windowShortcutAction && typeof this.pushEvent === "function") {
+        this.pushEvent(shortcut.dataset.windowShortcutAction, {
+          id: shortcut.dataset.windowShortcut,
+        });
+        return;
+      }
       this.command("open", shortcut.dataset.windowShortcut, shortcut);
       return;
     }

@@ -1,6 +1,7 @@
 /**
  * @section M - Admin, Server Operations, Bots
  * @flow M36 [done] Games menu -> Retro Games opens an icon launcher and game icons open solo sessions (features P2)
+ * @flow M37 [done] Desktop game shortcuts open Retro Games and Arcade launchers (features P2)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -50,5 +51,20 @@ test.describe("In-chat Retro Games", () => {
     await page.getByTestId("retro-game-back").click();
     await expect(chat.retroGamesLibrary).toBeVisible();
     await expect(chat.retroGamesIconGrid).toBeVisible();
+  });
+
+  test("desktop game shortcuts open Retro Games and Arcade launchers", async ({
+    page,
+  }) => {
+    const connect = new ConnectPage(page);
+    const chat = new ChatPage(page);
+
+    await connect.open();
+    await connect.enterNickname(uniqueNickname("deskgame"));
+    await connect.registerWithPassword("pass12345");
+    await chat.waitUntilConnected();
+
+    await chat.openRetroGamesFromDesktopShortcut();
+    await chat.openArcadeFromDesktopShortcut();
   });
 });

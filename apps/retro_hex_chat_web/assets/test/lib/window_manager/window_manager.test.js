@@ -1571,6 +1571,7 @@ describe("WindowManager — desktop shortcuts", () => {
       `<div class="desktop__shortcuts">
          <button data-window-shortcut="call">call</button>
          <button data-window-shortcut="chat">chat</button>
+         <button data-window-shortcut="arcade-games" data-window-shortcut-action="open_arcade">arcade</button>
        </div>`,
     );
 
@@ -1599,6 +1600,17 @@ describe("WindowManager — desktop shortcuts", () => {
     expect(hook.windows.call.state.open).toBe(false);
     shortcut("call").dispatchEvent(new MouseEvent("dblclick", { bubbles: true }));
     expect(hook.windows.call.state.open).toBe(true);
+  });
+
+  it("pushes a shortcut action on double click before opening server-owned launchers", () => {
+    hook.destroy();
+    hook = createWindowManager(el, { pushEvent: vi.fn() });
+    hook.mount();
+
+    shortcut("arcade-games").dispatchEvent(new MouseEvent("dblclick", { bubbles: true }));
+
+    expect(hook.pushEvent).toHaveBeenCalledWith("open_arcade", { id: "arcade-games" });
+    expect(hook.pendingWindows["arcade-games"]).toBeUndefined();
   });
 
   it("clears the selection when clicking elsewhere", () => {

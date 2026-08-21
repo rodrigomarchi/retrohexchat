@@ -1079,6 +1079,25 @@
       />
     </.desktop_window>
 
+    <:shortcuts>
+      <.desktop_shortcut
+        window="retro-games"
+        action="open_retro_games"
+        label={dgettext("chat", "Retro Games")}
+        data-testid="desktop-shortcut-retro-games"
+      >
+        <:icon><Icons.icon_game_pong class="h-8 w-8" /></:icon>
+      </.desktop_shortcut>
+      <.desktop_shortcut
+        window="arcade-games"
+        action="open_arcade"
+        label={dgettext("chat", "Arcade")}
+        data-testid="desktop-shortcut-arcade"
+      >
+        <:icon><Icons.icon_game_arcade class="h-8 w-8" /></:icon>
+      </.desktop_shortcut>
+    </:shortcuts>
+
     <:taskbar>
       <.chat_taskbar
         chat_label={ChatTitle.window_title(@session, @show_status_tab)}

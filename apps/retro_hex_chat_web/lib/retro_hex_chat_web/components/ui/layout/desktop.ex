@@ -109,15 +109,21 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
 
   @doc """
   Renders a Win98-style desktop shortcut: an icon above a label, pinned to the
-  workspace. Double-click opens (and focuses) the target window; a single click
-  just selects it (classic desktop behaviour). Wired to the `WindowManagerHook`
-  via `data-window-shortcut`.
+  workspace. Double-click opens (and focuses) the target window or, when
+  `action` is set, pushes that LiveView event so server-owned launchers can do
+  their setup first. A single click just selects it (classic desktop behaviour).
+  Wired to the `WindowManagerHook` via `data-window-shortcut`.
 
   Pass `href` or `navigate` when the target lives at its own URL — the shortcut
   becomes a real link and a single click follows it.
   """
   attr :window, :string, required: true, doc: "target window id to open on double-click"
   attr :label, :string, required: true
+
+  attr :action, :string,
+    default: nil,
+    doc: "LiveView event to push on double-click instead of opening the window locally"
+
   attr :href, :string, default: nil, doc: "render as a link to this URL instead of a button"
   attr :navigate, :string, default: nil, doc: "same, via LiveView navigation"
   attr :class, :any, default: nil
@@ -133,6 +139,7 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
       navigate={@navigate}
       class={classes(["desktop-shortcut", @class])}
       data-window-shortcut={@window}
+      data-window-shortcut-action={@action}
       {@rest}
     >
       <span class="desktop-shortcut__icon inline-flex h-8 w-8 items-center justify-center">

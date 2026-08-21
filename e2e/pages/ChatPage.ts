@@ -41,6 +41,8 @@ export class ChatPage {
   readonly helpMenuTrigger: Locator;
   readonly toolsMenuTrigger: Locator;
   readonly gamesMenuTrigger: Locator;
+  readonly retroGamesDesktopShortcut: Locator;
+  readonly arcadeDesktopShortcut: Locator;
   readonly retroGamesMenuItem: Locator;
   readonly retroGamesWindow: Locator;
   readonly retroGamesLibrary: Locator;
@@ -325,6 +327,10 @@ export class ChatPage {
       .locator("button[data-menubar-trigger]")
       .filter({ hasText: "Tools" });
     this.gamesMenuTrigger = page.getByTestId("app-menu-games");
+    this.retroGamesDesktopShortcut = page.getByTestId(
+      "desktop-shortcut-retro-games",
+    );
+    this.arcadeDesktopShortcut = page.getByTestId("desktop-shortcut-arcade");
     this.retroGamesMenuItem = page
       .getByTestId("menu-retro-games")
       .filter({ visible: true });
@@ -791,6 +797,20 @@ export class ChatPage {
     await this.retroGamesMenuItem.click();
     await expect(this.retroGamesWindow).toBeVisible();
     await expect(this.retroGamesIconGrid).toBeVisible();
+  }
+
+  async openRetroGamesFromDesktopShortcut() {
+    await expect(this.retroGamesDesktopShortcut).toBeVisible();
+    await this.retroGamesDesktopShortcut.dblclick();
+    await expect(this.retroGamesWindow).toBeVisible();
+    await expect(this.retroGamesIconGrid).toBeVisible();
+  }
+
+  async openArcadeFromDesktopShortcut() {
+    await expect(this.arcadeDesktopShortcut).toBeVisible();
+    await this.arcadeDesktopShortcut.dblclick();
+    await expect(this.arcadeWindow).toBeVisible();
+    await expect(this.arcadeIconGrid).toBeVisible();
   }
 
   async openNotifyListFromViewMenu() {

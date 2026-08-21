@@ -33,6 +33,19 @@ defmodule RetroHexChatWeb.Components.UI.DesktopTest do
       assert html =~ ~s(data-window-shortcut="chat")
       refute html =~ "href"
     end
+
+    test "a shortcut can carry a LiveView double-click action" do
+      html =
+        render_component(&desktop_shortcut/1,
+          window: "arcade-games",
+          action: "open_arcade",
+          label: "Arcade",
+          icon: icon()
+        )
+
+      assert html =~ ~s(data-window-shortcut="arcade-games")
+      assert html =~ ~s(data-window-shortcut-action="open_arcade")
+    end
   end
 
   # Everything a crawler needs is in the markup before any JavaScript runs, so
