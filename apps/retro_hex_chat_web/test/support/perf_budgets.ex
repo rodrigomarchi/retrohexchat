@@ -12,10 +12,10 @@ defmodule RetroHexChatWeb.PerfBudgets do
   spent rendering rather than waiting on the server. Inline SVG was 56% of the
   `/connect` document and 65% of a help page, half of it duplicate drawings.
 
-      surface     before (raw)   before (nodes)
-      /connect       191_772 B          1_804
-      /chat          568_352 B              —
-      help           611_705 B          6_049
+      surface     before (raw)   before (gzip)   before (nodes)
+      /connect       191_772 B        22_814 B            1_804
+      /chat          568_352 B        57_712 B                —
+      help           611_705 B        51_594 B            6_049
   """
 
   @doc """
@@ -24,6 +24,11 @@ defmodule RetroHexChatWeb.PerfBudgets do
   @spec html_bytes(atom()) :: pos_integer()
   def html_bytes(:connect), do: 115_000
   def html_bytes(:help), do: 300_000
+  # /chat's disconnected render is the boot overlay and the dialog mount points:
+  # the desktop under it is invisible and arrives with the connected render.
+  # 92_554 B raw measured, but 7_599 B gzipped — the dialog chrome repeats, so
+  # the wire cost fell from 57_712 B to 7_599 B.
+  def html_bytes(:chat), do: 105_000
 
   @doc """
   The most elements a surface's dead render may contain.
@@ -31,6 +36,17 @@ defmodule RetroHexChatWeb.PerfBudgets do
   @spec dom_nodes(atom()) :: pos_integer()
   def dom_nodes(:connect), do: 1_060
   def dom_nodes(:help), do: 2_900
+  def dom_nodes(:chat), do: 600
+
+  @doc """
+  The longest a connected mount may block before it renders.
+
+  It used to sit on a 1000 ms `receive` waiting for a previous session to hand
+  over — measured at 1486 ms end to end when the previous session was already
+  gone and could never answer, against ~50 ms when it was there.
+  """
+  @spec connected_mount_ms() :: pos_integer()
+  def connected_mount_ms, do: 600
 
   @doc """
   Counts the HTML elements in a rendered document, the way a browser would.

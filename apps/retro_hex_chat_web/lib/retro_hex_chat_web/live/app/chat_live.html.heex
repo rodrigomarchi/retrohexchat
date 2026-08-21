@@ -36,7 +36,12 @@
   phx-hook="SoundHook"
   data-muted={to_string(@muted)}
 >
+  <%!-- The disconnected render is covered edge to edge by the boot overlay
+        below and replaced wholesale the moment the socket joins, so building
+        the desktop into it means parsing 300 KB of markup into a DOM nobody
+        sees and then patching over it. Only the overlay ships until then. --%>
   <.desktop
+    :if={@live_ready}
     id="chat-desktop"
     persist_key="chat"
     escape_closes_windows

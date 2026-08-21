@@ -118,7 +118,13 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
   defp mount_connected_chat(params, http_session, socket, session, nickname) do
     default_channel = Application.get_env(:retro_hex_chat, :default_channel, "#lobby")
-    takeover_expected? = takeover_expected?(default_channel, nickname)
+
+    # Asked before the broadcast, so the answer is about who can receive it. A
+    # session that dies afterwards leaves the wait to time out, which is what
+    # already happened and is the safe direction.
+    takeover_expected? =
+      takeover_expected?(default_channel, nickname) and takeover_acker?(nickname)
+
     takeover_ref = make_ref()
     timezone = resolve_timezone(http_session, socket)
     connect_params = get_connect_params(socket) || %{}
@@ -200,6 +206,31 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
   defp takeover_expected?(default_channel, nickname) do
     Tracker.online?("presence:global", nickname) or channel_has_member?(default_channel, nickname)
+  end
+
+  # Presence and a channel's member list both answer "was a session here",
+  # which is not the same question as "is one here to hand over". A tab that
+  # vanished leaves the first true and the second false, and the mount then sat
+  # out the whole acknowledgement timeout — 1486 ms measured, against ~50 ms
+  # when a previous session really was there.
+  #
+  # A session subscribed to the nickname's inbox before it could receive the
+  # force_disconnect, and Phoenix.PubSub drops a subscriber the moment its
+  # process dies. So the subscriber list is the live answer, and the new mount
+  # is not on it yet — it subscribes after the handover. Anything unexpected
+  # from the lookup falls back to waiting, because being slow is the safe
+  # failure and joining ahead of the old session's departure is not.
+  defp takeover_acker?(nickname) do
+    RetroHexChat.PubSub
+    |> Registry.lookup(Topics.inbox(nickname))
+    |> Enum.any?(fn {pid, _value} -> Process.alive?(pid) end)
+  rescue
+    error ->
+      Logger.warning(
+        "Could not inspect inbox subscribers, waiting for takeover: #{inspect(error)}"
+      )
+
+      true
   end
 
   defp channel_has_member?(channel_name, nickname) do
