@@ -145,23 +145,133 @@
   @apply bg-transparent p-0 shadow-none;
 }
 
-.chat-message__text .chat-markdown-image,
-.composer-markdown-preview .chat-markdown-image {
+.chat-message__text .chat-markdown-image-shell,
+.composer-markdown-preview .chat-markdown-image-shell {
   @apply my-1 max-w-full bg-hover-bg shadow-retro-field;
   display: block;
   width: min(100%, 640px);
   height: clamp(160px, 48vw, 360px);
   aspect-ratio: 16 / 9;
-  object-fit: cover;
 }
 
-.composer-markdown-preview .chat-markdown-image {
+.chat-markdown-image-shell {
+  position: relative;
+  overflow: hidden;
+}
+
+.chat-markdown-image-shell[data-image-state="loading"] {
+  background-color: #d4d0c8;
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.42) 0 1px,
+      transparent 1px 7px
+    ),
+    repeating-linear-gradient(
+      135deg,
+      rgba(0, 0, 0, 0.08) 0 1px,
+      transparent 1px 7px
+    );
+}
+
+.chat-markdown-image-shell[data-image-state="loading"]::before {
+  content: "";
+  position: absolute;
+  inset: 14px;
+  background-color: #e8e4dc;
+  background-image:
+    linear-gradient(90deg, #000080, #1084d0),
+    linear-gradient(#ffffff, #ffffff),
+    linear-gradient(#c0c0c0, #c0c0c0),
+    linear-gradient(#ffffff, #ffffff),
+    linear-gradient(#c0c0c0, #c0c0c0),
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.3) 0 1px,
+      transparent 1px 7px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.06) 0 1px,
+      transparent 1px 7px
+    );
+  background-position:
+    0 0,
+    14px 31px,
+    66px 31px,
+    14px 47px,
+    94px 47px,
+    0 0,
+    0 0;
+  background-repeat:
+    no-repeat,
+    no-repeat,
+    no-repeat,
+    no-repeat,
+    no-repeat,
+    repeat,
+    repeat;
+  background-size:
+    100% 16px,
+    42px 8px,
+    calc(100% - 94px) 8px,
+    68px 8px,
+    calc(100% - 122px) 8px,
+    auto,
+    auto;
+  box-shadow:
+    inset 1px 1px #ffffff,
+    inset -1px -1px #808080,
+    0 0 0 1px #808080;
+  opacity: 0.96;
+}
+
+.chat-markdown-image-shell[data-image-state="loading"]::after {
+  content: "";
+  position: absolute;
+  right: 28px;
+  bottom: 28px;
+  left: 28px;
+  height: 14px;
+  background-image: repeating-linear-gradient(
+    90deg,
+    #000080 0 12px,
+    #1084d0 12px 24px,
+    transparent 24px 30px
+  );
+  background-size: 60px 100%;
+  box-shadow:
+    inset 1px 1px #0a0a0a,
+    inset -1px -1px #ffffff,
+    0 0 0 1px #808080;
+  animation: chat-markdown-image-placeholder-sweep 1.4s steps(10, end) infinite;
+}
+
+.chat-markdown-image-shell > .chat-markdown-image {
+  display: block;
+  margin: 0;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  background: transparent;
+  box-shadow: none;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 120ms ease-out;
+}
+
+.chat-markdown-image-shell[data-image-state="loaded"] > .chat-markdown-image,
+.chat-markdown-image-shell[data-image-state="failed"] > .chat-markdown-image {
+  opacity: 1;
+}
+
+.composer-markdown-preview .chat-markdown-image-shell {
   width: min(100%, 240px);
   height: 120px;
 }
 
 @media (max-width: 640px) {
-  .chat-message__text .chat-markdown-image {
+  .chat-message__text .chat-markdown-image-shell {
     height: clamp(140px, 48vw, 220px);
   }
 }
@@ -182,7 +292,19 @@
    somebody's sentence and the sentences keep coming, so the publisher's image
    is given a thumbnail's worth of room instead of a hero's. Same rule the
    composer preview already follows for the same reason. */
-.chat-link-card .chat-markdown-image {
+.chat-link-card .chat-markdown-image-shell {
   width: min(100%, 320px);
   height: clamp(120px, 30vw, 180px);
+}
+
+@keyframes chat-markdown-image-placeholder-sweep {
+  to {
+    background-position: 60px 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chat-markdown-image-shell[data-image-state="loading"]::after {
+    animation: none;
+  }
 }

@@ -63,6 +63,7 @@ defmodule RetroHexChat.Chat.ContentTest do
       rendered =
         html(Content.render_html("![diagram](https://example.com/diagram.png)", :markdown))
 
+      assert rendered =~ ~s(<span class="chat-markdown-image-shell" data-image-state="loading">)
       assert rendered =~ "<img"
       assert rendered =~ ~s(src="https://example.com/diagram.png")
       assert rendered =~ ~s(alt="diagram")

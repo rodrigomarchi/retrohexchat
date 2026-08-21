@@ -46,6 +46,7 @@ import { showFeedbackToast } from "../../lib/notifications/feedback_toast.js";
 import { copyText } from "../../lib/ui/dom.js";
 import { t } from "../../lib/i18n.js";
 import { createLongPress } from "../../lib/input/long_press.js";
+import { createMarkdownImageRevealer } from "../../lib/chat/markdown_images.js";
 import { createViewportScroller } from "../../lib/chat/viewport_scroll.js";
 
 const ChatViewportHook = {
@@ -67,12 +68,15 @@ const ChatViewportHook = {
       anchor: this.anchor,
     });
     this.viewport.mount();
+    this.markdownImages = createMarkdownImageRevealer(this.el.ownerDocument?.body || this.scroller);
+    this.markdownImages.mount();
     this.bindServerEvents();
     this.bindReaderInteractions();
   },
 
   destroyed() {
     this.longPress.cancel();
+    this.markdownImages.destroy();
     this.viewport.destroy();
     this.listeners.forEach(([el, type, fn, opts]) => el.removeEventListener(type, fn, opts));
     this.listeners = [];

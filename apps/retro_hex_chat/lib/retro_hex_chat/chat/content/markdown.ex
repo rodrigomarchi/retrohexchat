@@ -79,7 +79,7 @@ defmodule RetroHexChat.Chat.Content.Markdown do
           |> ensure_attr("referrerpolicy", "no-referrer")
           |> ensure_class("chat-markdown-image")
 
-        "<img#{attrs}>"
+        image_shell("<img#{attrs}>")
       else
         attrs
         |> attr_value("alt")
@@ -87,6 +87,11 @@ defmodule RetroHexChat.Chat.Content.Markdown do
         |> html_escape()
       end
     end)
+  end
+
+  @spec image_shell(String.t()) :: String.t()
+  defp image_shell(img_html) do
+    ~s(<span class="chat-markdown-image-shell" data-image-state="loading">#{img_html}</span>)
   end
 
   @spec safe_image_src?(String.t()) :: boolean()

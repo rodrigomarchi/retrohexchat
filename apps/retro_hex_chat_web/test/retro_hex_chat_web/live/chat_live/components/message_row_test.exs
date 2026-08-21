@@ -114,6 +114,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRowTest do
 
     assert html =~ "chat-link-card"
     assert html =~ "<strong>Example News</strong>"
+    assert html =~ "chat-markdown-image-shell"
     assert html =~ "chat-markdown-image"
   end
 
