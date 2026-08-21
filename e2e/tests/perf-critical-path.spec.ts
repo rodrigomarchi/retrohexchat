@@ -4,6 +4,7 @@
  * @flow PF8 [done] The RUM entrypoint stays a gate and never carries the SDK
  * @flow PF9 [done] No third-party stylesheet blocks the first paint
  * @flow PF10 [done] /connect paints inside its FCP and LCP budget
+ * @flow PF11 [done] Every content-addressed asset is cached immutably, never revalidated
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -108,5 +109,41 @@ test.describe("Critical path", () => {
     if (sample.lcp !== null) {
       expect(sample.lcp).toBeLessThan(VITALS_BUDGETS.lcp);
     }
+  });
+
+  test("a content-addressed chunk is never revalidated (M)", async ({
+    page,
+  }) => {
+    // A URL whose bytes can never change should be asked for once and never
+    // again. Production's nginx log showed the opposite: nine 304s per page
+    // view on esbuild's dynamic-import chunks, whose URL the bundler writes
+    // into the bundle — so it never carries the ?vsn that earns `immutable`.
+    //
+    // Scoped to the chunks because only they are content-addressed by name.
+    // Everything else earns `immutable` from its ?vsn, which exists only after
+    // phx.digest — a production build, not this one. That half is pinned in
+    // test/retro_hex_chat_web/endpoint_static_test.exs.
+    await page.goto("/connect");
+    await page.waitForLoadState("networkidle");
+
+    const chunks = (await sampleResources(page)).filter((entry) =>
+      new URL(entry.url).pathname.startsWith("/assets/js/chunks/"),
+    );
+
+    expect(chunks.length, "no lazy chunk was loaded at all").toBeGreaterThan(0);
+
+    const revalidating: string[] = [];
+    for (const chunk of chunks) {
+      const cacheControl =
+        (await page.request.get(chunk.url)).headers()["cache-control"] ?? "";
+      if (!cacheControl.includes("immutable")) {
+        revalidating.push(`${chunk.url} -> "${cacheControl}"`);
+      }
+    }
+
+    expect(
+      revalidating,
+      `these are asked for again on every page view:\n${revalidating.join("\n")}`,
+    ).toEqual([]);
   });
 });

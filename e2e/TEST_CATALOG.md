@@ -135,8 +135,8 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 ## Coverage
 
 - **217 spec files** under `e2e/tests/`.
-- **448 Playwright `test()` cases**.
-- **440 documented flows**, 439 done, 1 not done.
+- **449 Playwright `test()` cases**.
+- **441 documented flows**, 440 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -722,6 +722,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | PF8 | The RUM entrypoint stays a gate and never carries the SDK | `tests/perf-critical-path.spec.ts` | done |
 | PF9 | No third-party stylesheet blocks the first paint | `tests/perf-critical-path.spec.ts` | done |
 | PF10 | /connect paints inside its FCP and LCP budget | `tests/perf-critical-path.spec.ts` | done |
+| PF11 | Every content-addressed asset is cached immutably, never revalidated | `tests/perf-critical-path.spec.ts` | done |
 
 ## Spec files with no documented flows
 

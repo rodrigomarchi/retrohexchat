@@ -16,6 +16,11 @@ defmodule RetroHexChatWeb.Components.UI.AboutDialog do
   import RetroHexChatWeb.Components.UI.Separator
   import RetroHexChatWeb.Components.UI.Button
 
+  # Not `~p`: the design system deliberately knows nothing about routes. What
+  # this needs is the digested URL of a static file, which is exactly what
+  # `static_path/1` answers — and what makes the browser cache it forever
+  # instead of revalidating it on every page view.
+  alias RetroHexChatWeb.Endpoint
   alias RetroHexChatWeb.Icons
 
   @doc "Renders the about dialog."
@@ -35,7 +40,7 @@ defmodule RetroHexChatWeb.Components.UI.AboutDialog do
         <%!-- Logo --%>
         <div class="flex justify-center pt-2 pb-3">
           <img
-            src="/images/landing/logo-compact.svg"
+            src={Endpoint.static_path("/images/landing/logo-compact.svg")}
             alt={dgettext("dialogs", "RetroHexChat")}
             class="w-16 h-16"
             draggable="false"

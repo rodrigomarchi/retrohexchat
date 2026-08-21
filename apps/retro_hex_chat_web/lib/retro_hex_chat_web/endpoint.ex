@@ -20,6 +20,21 @@ defmodule RetroHexChatWeb.Endpoint do
     websocket: [connect_info: [session: @session_options], log: :debug],
     longpoll: [connect_info: [session: @session_options], log: :debug]
 
+  # esbuild's dynamic-import chunks, ahead of the general handler because they
+  # need a different cache policy. `Plug.Static` only grants `immutable` to a
+  # request carrying `?vsn=`, which `~p` appends from the digest manifest — but
+  # nothing here writes these URLs: esbuild bakes them into the bundle it emits,
+  # so the browser asks for the bare path and gets an ETag instead. Production's
+  # nginx log showed the result as nine 304s on every single page view.
+  #
+  # The filename already carries a content hash, which is the whole contract
+  # `immutable` asks for: this URL's bytes can never change.
+  plug Plug.Static,
+    at: "/assets/js/chunks",
+    from: {:retro_hex_chat_web, "priv/static/assets/js/chunks"},
+    gzip: not code_reloading?,
+    cache_control_for_etags: "public, max-age=31536000, immutable"
+
   # Serve at "/" the static files from "priv/static" directory.
   #
   # When code reloading is disabled (e.g., in production),

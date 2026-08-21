@@ -8,6 +8,7 @@ defmodule RetroHexChatWeb.LandingLive.Index do
   import RetroHexChatWeb.Components.UI.Window
   import RetroHexChatWeb.Components.Diagrams
 
+  alias RetroHexChatWeb.Endpoint
   alias RetroHexChatWeb.Icons
 
   @spec mount(map(), map(), Phoenix.LiveView.Socket.t()) ::
