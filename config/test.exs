@@ -49,7 +49,7 @@ config :retro_hex_chat_web, RetroHexChatWeb.Endpoint,
   server: false
 
 # Silence all logs during test (use @tag :capture_log to inspect per-test)
-config :logger, level: :none
+config :logger, level: String.to_atom(System.get_env("TEST_LOG_LEVEL", "none"))
 
 # Configure bcrypt with reduced rounds for fast tests
 config :bcrypt_elixir, log_rounds: 4

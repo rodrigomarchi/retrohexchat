@@ -4,28 +4,10 @@ defmodule RetroHexChat.Lobby.Supervisor do
   One child process per active session (Constitution III).
   """
 
-  # A DynamicSupervisor's default intensity — three restarts in five seconds —
-  # is sized to stop one child from crash-looping the scheduler. This pool holds
-  # nothing but independent sessions: separate people, separate peer
-  # connections. Under any real concurrency three of them failing close together
-  # is ordinary, and at the default it took the supervisor down and every other
-  # session with it — a whole lobby lost to one bad peer.
-  #
-  # High enough that unrelated failures never collapse the pool, low enough that
-  # a genuine crash loop (orders of magnitude faster than this) still trips it.
-  @max_restarts 100
-  @max_seconds 5
-
   @spec start_link(keyword()) :: Supervisor.on_start()
   def start_link(opts \\ []) do
     name = Keyword.get(opts, :name, __MODULE__)
-
-    DynamicSupervisor.start_link(
-      strategy: :one_for_one,
-      name: name,
-      max_restarts: @max_restarts,
-      max_seconds: @max_seconds
-    )
+    DynamicSupervisor.start_link(strategy: :one_for_one, name: name)
   end
 
   @spec child_spec(keyword()) :: Supervisor.child_spec()
