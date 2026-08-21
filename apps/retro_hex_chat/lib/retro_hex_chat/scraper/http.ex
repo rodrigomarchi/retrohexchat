@@ -29,6 +29,24 @@ defmodule RetroHexChat.Scraper.HTTP do
 
   @type metadata :: Client.metadata()
   @type fetch_error :: Client.error()
+  @typep image_candidate :: %{
+           optional(:alt) => String.t() | nil,
+           optional(:base_score) => integer(),
+           optional(:height) => pos_integer() | nil,
+           optional(:marker_text) => String.t() | nil,
+           optional(:raw_url) => String.t() | nil,
+           optional(:rejected) => String.t() | nil,
+           optional(:score) => integer(),
+           optional(:selector) => String.t() | nil,
+           optional(:source) => String.t(),
+           optional(:source_kind) => :metadata | :document,
+           optional(:url) => String.t() | nil,
+           optional(:width) => pos_integer() | nil
+         }
+  @typep image_selection :: %{
+           required(:candidates) => [image_candidate()],
+           required(:selected) => image_candidate() | nil
+         }
 
   # A ceiling, not a budget: high enough that no real page is cut short, low
   # enough that a hostile or runaway response cannot exhaust the node.
@@ -43,6 +61,8 @@ defmodule RetroHexChat.Scraper.HTTP do
   @max_tags 12
   @max_url_length 2_000
   @max_redirects 3
+  @image_min_score 70
+  @image_audit_limit 12
 
   # The ceiling the transport allows, not the budget a caller gets. Reading a
   # whole document rather than stopping at `</head>` made 5s tight enough that
@@ -62,14 +82,25 @@ defmodule RetroHexChat.Scraper.HTTP do
     with {:ok, html, final_url, headers, status} <- fetch_resource(url, :html, opts),
          true <- html_content?(first_header(headers, "content-type")),
          {:ok, document} <- parse_document(html),
-         {:ok, metadata, sources, oembed_url} <- metadata_from_document(document, final_url) do
+         {:ok, metadata, sources, oembed_url, image_selection} <-
+           metadata_from_document(document, final_url, opts) do
       oembed_url = oembed_url || oembed_header_url(headers, final_url)
       content = extract_content_info(document)
 
       metadata = maybe_merge_oembed(metadata, oembed_url, final_url)
 
       if useful_scrape?(metadata, content.excerpt) do
-        {:ok, build_scrape(metadata, sources, content, document, final_url, headers, status)}
+        {:ok,
+         build_scrape(
+           metadata,
+           sources,
+           content,
+           document,
+           final_url,
+           headers,
+           status,
+           image_selection
+         )}
       else
         {:error, empty_page_reason(html, headers)}
       end
@@ -127,9 +158,19 @@ defmodule RetroHexChat.Scraper.HTTP do
           Floki.html_tree(),
           String.t(),
           map(),
-          pos_integer()
+          pos_integer(),
+          image_selection()
         ) :: Client.scrape()
-  defp build_scrape(metadata, sources, content, document, final_url, headers, status) do
+  defp build_scrape(
+         metadata,
+         sources,
+         content,
+         document,
+         final_url,
+         headers,
+         status,
+         image_selection
+       ) do
     scope = head_scope(document)
     metas = meta_tags(scope)
     json_ld = json_ld_candidates(scope)
@@ -154,7 +195,7 @@ defmodule RetroHexChat.Scraper.HTTP do
       content_text: content.text,
       content_text_truncated: content.truncated?,
       content_word_count: content.word_count,
-      raw_metadata: raw_metadata(metas, json_ld, sources)
+      raw_metadata: raw_metadata(metas, json_ld, sources, image_selection)
     }
   end
 
@@ -413,14 +454,15 @@ defmodule RetroHexChat.Scraper.HTTP do
   # Everything the page said that did not earn a column of its own, plus which
   # standard each column came from. One place to look when a stored title is
   # wrong, and no need to re-fetch the page to find out why.
-  @spec raw_metadata([map()], [map()], map()) :: map()
-  defp raw_metadata(metas, json_ld, sources) do
+  @spec raw_metadata([map()], [map()], map(), image_selection()) :: map()
+  defp raw_metadata(metas, json_ld, sources, image_selection) do
     %{}
     |> put_unless_empty("sources", sources)
     |> put_unless_empty("og", namespaced_metas(metas, "property", "og:"))
     |> put_unless_empty("article", namespaced_metas(metas, "property", "article:"))
     |> put_unless_empty("twitter", namespaced_metas(metas, "name", "twitter:"))
     |> put_unless_empty("json_ld", json_ld)
+    |> put_unless_empty("image_selection", image_selection_audit(image_selection))
   end
 
   @spec namespaced_metas([map()], String.t(), String.t()) :: map()
@@ -435,7 +477,8 @@ defmodule RetroHexChat.Scraper.HTTP do
     |> Map.reject(fn {_key, value} -> is_nil(value) end)
   end
 
-  @spec put_unless_empty(map(), String.t(), map() | list()) :: map()
+  @spec put_unless_empty(map(), String.t(), term()) :: map()
+  defp put_unless_empty(map, _key, nil), do: map
   defp put_unless_empty(map, _key, value) when value == %{} or value == [], do: map
   defp put_unless_empty(map, key, value), do: Map.put(map, key, value)
 
@@ -468,7 +511,8 @@ defmodule RetroHexChat.Scraper.HTTP do
   @spec parse_metadata(String.t(), String.t() | nil) :: {:ok, metadata()} | {:error, atom()}
   def parse_metadata(html, page_url \\ nil) when is_binary(html) do
     with {:ok, document} <- parse_document(html),
-         {:ok, metadata, _sources, _oembed_url} <- metadata_from_document(document, page_url) do
+         {:ok, metadata, _sources, _oembed_url, _image_selection} <-
+           metadata_from_document(document, page_url, []) do
       ensure_useful_metadata(metadata)
     end
   end
@@ -664,25 +708,26 @@ defmodule RetroHexChat.Scraper.HTTP do
     end
   end
 
-  @spec metadata_from_document(Floki.html_tree(), String.t() | nil) ::
-          {:ok, metadata(), map(), String.t() | nil}
-  defp metadata_from_document(document, page_url) do
+  @spec metadata_from_document(Floki.html_tree(), String.t() | nil, Client.opts()) ::
+          {:ok, metadata(), map(), String.t() | nil, image_selection()}
+  defp metadata_from_document(document, page_url, opts) do
     scope = head_scope(document)
     metas = meta_tags(scope)
     links = link_tags(scope)
     json_ld = json_ld_candidates(scope)
+    hints = metadata_hints(opts)
 
     {title, title_source} = title(metas, json_ld, scope, document)
     {description, description_source} = description(metas, json_ld)
     {site_name, site_name_source} = site_name(metas, json_ld)
     {url_value, url_source} = page_url(metas, links, page_url)
-    {image, image_source} = image_url(metas, json_ld)
     {image_alt, image_alt_source} = image_alt(metas, json_ld)
-    {article_image, article_image_alt, article_image_source} = article_image(document, page_url)
-    image = image || article_image
-    image_source = image_source || article_image_source
-    image_alt = image_alt || article_image_alt
-    image_alt_source = image_alt_source || article_image_source
+    image_selection = image_selection(document, metas, json_ld, hints, page_url)
+    selected_image = image_selection.selected
+    {image, image_source} = selected_image_value(selected_image)
+
+    {image_alt, image_alt_source} =
+      selected_image_alt(selected_image, image_alt, image_alt_source)
 
     metadata =
       %{}
@@ -705,7 +750,7 @@ defmodule RetroHexChat.Scraper.HTTP do
       |> Map.take(metadata |> Map.keys() |> Enum.map(&Atom.to_string/1))
       |> Map.reject(fn {_key, source} -> is_nil(source) end)
 
-    {:ok, metadata, sources, oembed_url(links, page_url)}
+    {:ok, metadata, sources, oembed_url(links, page_url), image_selection}
   end
 
   @spec head_scope(Floki.html_tree()) :: Floki.html_tree()
@@ -757,18 +802,6 @@ defmodule RetroHexChat.Scraper.HTTP do
     ])
   end
 
-  @spec image_url([map()], [map()]) :: {String.t() | nil, String.t() | nil}
-  defp image_url(metas, json_ld) do
-    first_labelled([
-      {"og", meta_content(metas, "property", "og:image:secure_url")},
-      {"og", meta_content(metas, "property", "og:image:url")},
-      {"og", meta_content(metas, "property", "og:image")},
-      {"twitter", meta_content(metas, "name", "twitter:image")},
-      {"twitter", meta_content(metas, "name", "twitter:image:src")},
-      {"json_ld", json_ld_image(json_ld)}
-    ])
-  end
-
   @spec image_alt([map()], [map()]) :: {String.t() | nil, String.t() | nil}
   defp image_alt(metas, json_ld) do
     first_labelled([
@@ -790,40 +823,563 @@ defmodule RetroHexChat.Scraper.HTTP do
     _ -> nil
   end
 
-  @image_candidate_selectors [
-    "article img",
-    "main img",
-    "[role=main] img",
-    ".entry-content img",
-    ".post-content img",
-    ".article-content img",
-    ".story-body img",
-    "body img"
+  @metadata_image_candidates [
+    {"og", "property", "og:image:secure_url", 104},
+    {"og", "property", "og:image:url", 104},
+    {"og", "property", "og:image", 102},
+    {"twitter", "name", "twitter:image", 96},
+    {"twitter", "name", "twitter:image:src", 96}
   ]
 
-  @spec article_image(Floki.html_tree(), String.t() | nil) ::
-          {String.t() | nil, String.t() | nil, String.t() | nil}
-  defp article_image(document, page_url) do
-    Enum.find_value(@image_candidate_selectors, {nil, nil, nil}, fn selector ->
-      document
-      |> Floki.find(selector)
-      |> Enum.find_value(&image_candidate(&1, page_url))
+  @document_image_scopes [
+    {"article", "article img", 78},
+    {"main", "main img", 74},
+    {"main", "[role=main] img", 74},
+    {"readability", ".entry-content img", 72},
+    {"readability", ".post-content img", 72},
+    {"readability", ".article-content img", 72},
+    {"readability", ".article-body img", 72},
+    {"readability", ".story-body img", 72},
+    {"readability", "#content img", 68},
+    {"readability", "#main img", 68},
+    {"readability", ".article img", 68},
+    {"readability", ".post img", 68},
+    {"figure", "figure img", 68},
+    {"body", "body img", 15}
+  ]
+
+  @decorative_container_selectors [
+    {"header img", "decorative_container:header"},
+    {"nav img", "decorative_container:nav"},
+    {"footer img", "decorative_container:footer"},
+    {"aside img", "decorative_container:aside"},
+    {".related img", "decorative_container:related"},
+    {".recommend img", "decorative_container:recommend"},
+    {".recommendation img", "decorative_container:recommend"},
+    {".popular img", "decorative_container:popular"},
+    {".share img", "decorative_container:share"},
+    {".social img", "decorative_container:social"},
+    {".download img", "decorative_container:download"},
+    {".appDownload img", "decorative_container:download"},
+    {".app-download img", "decorative_container:download"},
+    {".qrcode img", "decorative_container:qrcode"},
+    {".qr-code img", "decorative_container:qrcode"},
+    {"[class*=Related] img", "decorative_container:related"},
+    {"[class*=related] img", "decorative_container:related"},
+    {"[class*=Recommend] img", "decorative_container:recommend"},
+    {"[class*=recommend] img", "decorative_container:recommend"},
+    {"[class*=Share] img", "decorative_container:share"},
+    {"[class*=share] img", "decorative_container:share"},
+    {"[class*=Social] img", "decorative_container:social"},
+    {"[class*=social] img", "decorative_container:social"},
+    {"[class*=Download] img", "decorative_container:download"},
+    {"[class*=download] img", "decorative_container:download"},
+    {"[class*=QRCode] img", "decorative_container:qrcode"},
+    {"[class*=qrcode] img", "decorative_container:qrcode"},
+    {"[class*=qr-code] img", "decorative_container:qrcode"},
+    {"[id*=Related] img", "decorative_container:related"},
+    {"[id*=related] img", "decorative_container:related"},
+    {"[id*=Recommend] img", "decorative_container:recommend"},
+    {"[id*=recommend] img", "decorative_container:recommend"},
+    {"[id*=Share] img", "decorative_container:share"},
+    {"[id*=share] img", "decorative_container:share"},
+    {"[id*=Download] img", "decorative_container:download"},
+    {"[id*=download] img", "decorative_container:download"},
+    {"[id*=QRCode] img", "decorative_container:qrcode"},
+    {"[id*=qrcode] img", "decorative_container:qrcode"},
+    {"[id*=qr-code] img", "decorative_container:qrcode"}
+  ]
+
+  @decorative_image_markers MapSet.new(~w(
+    adserver
+    appdownload
+    avatar
+    badge
+    banner
+    barcode
+    button
+    captcha
+    close
+    download
+    footer
+    header
+    icon
+    loading
+    logo
+    menu
+    nav
+    pixel
+    placeholder
+    promo
+    qrcode
+    recommend
+    related
+    search
+    share
+    social
+    spinner
+    sprite
+    subscribe
+    tracking
+    wechat
+    weibo
+    weixin
+  ))
+
+  @metadata_image_sources ~w(feed_media og twitter json_ld)
+
+  @spec metadata_hints(Client.opts()) :: map()
+  defp metadata_hints(opts) do
+    case Keyword.get(opts, :metadata_hints, %{}) do
+      hints when is_map(hints) -> hints
+      _other -> %{}
+    end
+  end
+
+  @spec image_selection(Floki.html_tree(), [map()], [map()], map(), String.t() | nil) ::
+          image_selection()
+  defp image_selection(document, metas, json_ld, hints, page_url) do
+    candidates =
+      metadata_image_candidates(metas, json_ld, hints, page_url) ++
+        document_image_candidates(document, page_url)
+
+    candidates
+    |> Enum.map(&score_image_candidate/1)
+    |> dedupe_image_candidates()
+    |> select_ranked_image()
+  end
+
+  @spec selected_image_value(image_candidate() | nil) :: {String.t() | nil, String.t() | nil}
+  defp selected_image_value(%{url: url, source: source}) when is_binary(url), do: {url, source}
+  defp selected_image_value(_candidate), do: {nil, nil}
+
+  @spec selected_image_alt(image_candidate() | nil, String.t() | nil, String.t() | nil) ::
+          {String.t() | nil, String.t() | nil}
+  defp selected_image_alt(%{alt: alt, source: source}, _fallback_alt, _fallback_source)
+       when is_binary(alt) do
+    {alt, source}
+  end
+
+  defp selected_image_alt(%{source: source}, fallback_alt, fallback_source)
+       when source in @metadata_image_sources do
+    {fallback_alt, fallback_source}
+  end
+
+  defp selected_image_alt(_selected, _fallback_alt, _fallback_source), do: {nil, nil}
+
+  @spec metadata_image_candidates([map()], [map()], map(), String.t() | nil) :: [
+          image_candidate()
+        ]
+  defp metadata_image_candidates(metas, json_ld, hints, page_url) do
+    feed_image_candidates(hints, page_url) ++
+      Enum.flat_map(@metadata_image_candidates, fn {source, key, wanted, score} ->
+        metas
+        |> meta_values(key, wanted)
+        |> Enum.map(fn value ->
+          image_candidate(value, page_url,
+            source: source,
+            source_kind: :metadata,
+            base_score: score
+          )
+        end)
+      end) ++
+      json_ld_image_candidates(json_ld, page_url)
+  end
+
+  @spec feed_image_candidates(map(), String.t() | nil) :: [image_candidate()]
+  defp feed_image_candidates(hints, page_url) do
+    case hint_value(hints, :image) do
+      image when is_binary(image) ->
+        [
+          image_candidate(image, page_url,
+            source: "feed_media",
+            source_kind: :metadata,
+            selector: clean_text(hint_value(hints, :image_source), max: @max_site_name_length),
+            alt: clean_text(hint_value(hints, :image_alt), max: @max_title_length),
+            base_score: 112
+          )
+        ]
+
+      _other ->
+        []
+    end
+  end
+
+  @spec hint_value(map(), atom()) :: term()
+  defp hint_value(hints, key) do
+    Map.get(hints, key) || Map.get(hints, Atom.to_string(key))
+  end
+
+  @spec json_ld_image_candidates([map()], String.t() | nil) :: [image_candidate()]
+  defp json_ld_image_candidates(json_ld, page_url) do
+    json_ld
+    |> Enum.flat_map(&json_ld_image_values/1)
+    |> Enum.map(fn {value, alt, width, height} ->
+      image_candidate(value, page_url,
+        source: "json_ld",
+        source_kind: :metadata,
+        alt: clean_text(alt, max: @max_title_length),
+        width: width,
+        height: height,
+        base_score: 92
+      )
     end)
   end
 
-  @spec image_candidate(Floki.html_node(), String.t() | nil) ::
-          {String.t(), String.t() | nil, String.t()} | nil
-  defp image_candidate(node, page_url) do
-    attrs = attrs_map(node)
+  @spec json_ld_image_values(map()) :: [
+          {term(), term(), pos_integer() | nil, pos_integer() | nil}
+        ]
+  defp json_ld_image_values(candidate) do
+    candidate
+    |> Map.get("image")
+    |> do_json_ld_image_values()
+    |> then(fn images ->
+      case candidate |> get_raw_path("thumbnailUrl") |> json_ld_scalar() do
+        nil -> images
+        thumbnail -> images ++ [{thumbnail, nil, nil, nil}]
+      end
+    end)
+  end
 
-    with false <- decorative_image?(attrs),
-         src when is_binary(src) <- image_src(attrs),
-         url when is_binary(url) <- normalize_url(src, page_url, :image) do
-      {url, clean_text(Map.get(attrs, "alt"), max: @max_title_length), "article_image"}
-    else
-      _ -> nil
+  @spec do_json_ld_image_values(term()) :: [
+          {term(), term(), pos_integer() | nil, pos_integer() | nil}
+        ]
+  defp do_json_ld_image_values(values) when is_list(values),
+    do: Enum.flat_map(values, &do_json_ld_image_values/1)
+
+  defp do_json_ld_image_values(value) when is_binary(value), do: [{value, nil, nil, nil}]
+
+  defp do_json_ld_image_values(%{} = value) do
+    case first_url_value([Map.get(value, "url"), Map.get(value, "contentUrl")]) do
+      nil ->
+        []
+
+      url ->
+        [
+          {url, image_alt_value(value), dimension(Map.get(value, "width")),
+           dimension(Map.get(value, "height"))}
+        ]
     end
   end
+
+  defp do_json_ld_image_values(_value), do: []
+
+  @spec first_url_value([term()]) :: String.t() | nil
+  defp first_url_value(values) do
+    Enum.find_value(values, &clean_url/1)
+  end
+
+  @spec document_image_candidates(Floki.html_tree(), String.t() | nil) :: [image_candidate()]
+  defp document_image_candidates(document, page_url) do
+    decorative_urls = decorative_container_image_urls(document, page_url)
+
+    @document_image_scopes
+    |> Enum.flat_map(fn {scope, selector, base_score} ->
+      document
+      |> Floki.find(selector)
+      |> Enum.map(fn node ->
+        node
+        |> document_image_candidate(page_url, selector, base_score)
+        |> reject_decorative_container(decorative_urls)
+        |> Map.put(:selector, scope)
+      end)
+    end)
+  end
+
+  @spec document_image_candidate(Floki.html_node(), String.t() | nil, String.t(), integer()) ::
+          image_candidate()
+  defp document_image_candidate(node, page_url, selector, base_score) do
+    attrs = attrs_map(node)
+
+    image_candidate(image_src(attrs), page_url,
+      source: "article_image",
+      source_kind: :document,
+      selector: selector,
+      alt: clean_text(Map.get(attrs, "alt"), max: @max_title_length),
+      width: dimension(Map.get(attrs, "width")),
+      height: dimension(Map.get(attrs, "height")),
+      marker_text: image_marker_text(attrs, selector),
+      base_score: base_score
+    )
+  end
+
+  @spec image_candidate(term(), String.t() | nil, keyword()) :: image_candidate()
+  defp image_candidate(raw_value, page_url, opts) do
+    raw_url = clean_url(raw_value)
+    url = normalize_url(raw_url, page_url, :image)
+
+    %{
+      url: url,
+      raw_url: raw_url,
+      source: Keyword.fetch!(opts, :source),
+      source_kind: Keyword.get(opts, :source_kind, :metadata),
+      selector: Keyword.get(opts, :selector),
+      alt: Keyword.get(opts, :alt),
+      width: Keyword.get(opts, :width),
+      height: Keyword.get(opts, :height),
+      marker_text: Keyword.get(opts, :marker_text),
+      base_score: Keyword.fetch!(opts, :base_score)
+    }
+  end
+
+  @spec score_image_candidate(image_candidate()) :: image_candidate()
+  defp score_image_candidate(%{url: nil} = candidate),
+    do: Map.put(candidate, :rejected, "invalid_or_blocked_url")
+
+  defp score_image_candidate(candidate) do
+    case image_rejection_reason(candidate) do
+      nil ->
+        Map.put(candidate, :score, image_candidate_score(candidate))
+
+      reason ->
+        Map.put(candidate, :rejected, reason)
+    end
+  end
+
+  @spec image_rejection_reason(image_candidate()) :: String.t() | nil
+  defp image_rejection_reason(candidate) do
+    cond do
+      small_image_dimensions?(candidate.width, candidate.height) ->
+        "small_dimensions"
+
+      implausible_aspect_ratio?(candidate.width, candidate.height) ->
+        "implausible_aspect_ratio"
+
+      marker = decorative_marker(candidate) ->
+        "decorative_marker:#{marker}"
+
+      true ->
+        Map.get(candidate, :rejected)
+    end
+  end
+
+  @spec image_candidate_score(image_candidate()) :: integer()
+  defp image_candidate_score(candidate) do
+    candidate.base_score +
+      dimension_score(candidate.width, candidate.height) +
+      alt_score(candidate.alt) +
+      url_quality_score(candidate.url)
+  end
+
+  @spec dimension_score(pos_integer() | nil, pos_integer() | nil) :: integer()
+  defp dimension_score(width, height) when is_integer(width) and is_integer(height) do
+    cond do
+      width >= 900 and height >= 450 -> 34
+      width >= 640 and height >= 320 -> 28
+      width >= 300 and height >= 150 -> 18
+      true -> 0
+    end
+  end
+
+  defp dimension_score(_width, _height), do: 0
+
+  @spec alt_score(String.t() | nil) :: integer()
+  defp alt_score(alt) when is_binary(alt) do
+    if decorative_marker_text?(alt), do: 0, else: 8
+  end
+
+  defp alt_score(_alt), do: 0
+
+  @spec url_quality_score(String.t() | nil) :: integer()
+  defp url_quality_score(url) when is_binary(url) do
+    path = url |> URI.parse() |> Map.get(:path) |> to_string() |> String.downcase()
+
+    cond do
+      String.contains?(path, "hero") -> 8
+      String.contains?(path, "article") -> 6
+      String.contains?(path, "story") -> 6
+      String.contains?(path, "news") -> 4
+      true -> 0
+    end
+  rescue
+    _ -> 0
+  end
+
+  defp url_quality_score(_url), do: 0
+
+  @spec small_image_dimensions?(pos_integer() | nil, pos_integer() | nil) :: boolean()
+  defp small_image_dimensions?(width, height) when is_integer(width) and is_integer(height),
+    do: width < 160 or height < 90
+
+  defp small_image_dimensions?(_width, _height), do: false
+
+  @spec implausible_aspect_ratio?(pos_integer() | nil, pos_integer() | nil) :: boolean()
+  defp implausible_aspect_ratio?(width, height)
+       when is_integer(width) and is_integer(height) and height > 0 do
+    ratio = width / height
+    ratio < 0.4 or ratio > 4.0
+  end
+
+  defp implausible_aspect_ratio?(_width, _height), do: false
+
+  @spec decorative_container_image_urls(Floki.html_tree(), String.t() | nil) :: map()
+  defp decorative_container_image_urls(document, page_url) do
+    @decorative_container_selectors
+    |> Enum.flat_map(&decorative_container_selector_urls(document, &1, page_url))
+    |> Map.new()
+  end
+
+  @spec decorative_container_selector_urls(
+          Floki.html_tree(),
+          {String.t(), String.t()},
+          String.t() | nil
+        ) :: [{String.t(), String.t()}]
+  defp decorative_container_selector_urls(document, {selector, reason}, page_url) do
+    document
+    |> Floki.find(selector)
+    |> Enum.flat_map(&decorative_container_node_url(&1, page_url, reason))
+  end
+
+  @spec decorative_container_node_url(Floki.html_node(), String.t() | nil, String.t()) ::
+          [{String.t(), String.t()}]
+  defp decorative_container_node_url(node, page_url, reason) do
+    url =
+      node
+      |> attrs_map()
+      |> image_src()
+      |> normalize_url(page_url, :image)
+
+    if url, do: [{url, reason}], else: []
+  end
+
+  @spec reject_decorative_container(image_candidate(), map()) :: image_candidate()
+  defp reject_decorative_container(
+         %{source_kind: :document, url: url} = candidate,
+         decorative_urls
+       )
+       when is_binary(url) do
+    case Map.get(decorative_urls, url) do
+      nil -> candidate
+      reason -> Map.put(candidate, :rejected, reason)
+    end
+  end
+
+  defp reject_decorative_container(candidate, _decorative_urls), do: candidate
+
+  @spec decorative_marker(image_candidate()) :: String.t() | nil
+  defp decorative_marker(candidate) do
+    [
+      Map.get(candidate, :marker_text),
+      Map.get(candidate, :url)
+    ]
+    |> Enum.filter(&is_binary/1)
+    |> Enum.find_value(&decorative_marker_from_text/1)
+  end
+
+  @spec decorative_marker_text?(String.t()) :: boolean()
+  defp decorative_marker_text?(text), do: not is_nil(decorative_marker_from_text(text))
+
+  @spec decorative_marker_from_text(String.t()) :: String.t() | nil
+  defp decorative_marker_from_text(text) do
+    text
+    |> marker_tokens()
+    |> Enum.find(&MapSet.member?(@decorative_image_markers, &1))
+  end
+
+  @spec marker_tokens(String.t()) :: [String.t()]
+  defp marker_tokens(text) do
+    text
+    |> String.replace(~r/([a-z])([A-Z])/, "\\1 \\2")
+    |> String.downcase()
+    |> then(&Regex.scan(~r/[[:alnum:]]+/u, &1))
+    |> List.flatten()
+  end
+
+  @spec image_marker_text(map(), String.t()) :: String.t()
+  defp image_marker_text(attrs, selector) do
+    [
+      selector,
+      attrs["class"],
+      attrs["id"],
+      attrs["role"],
+      attrs["aria-label"],
+      attrs["title"],
+      attrs["src"],
+      attrs["data-src"],
+      attrs["data-original"],
+      attrs["data-lazy-src"],
+      attrs["srcset"]
+    ]
+    |> Enum.filter(&is_binary/1)
+    |> Enum.join(" ")
+  end
+
+  @spec dedupe_image_candidates([image_candidate()]) :: [image_candidate()]
+  defp dedupe_image_candidates(candidates) do
+    candidates
+    |> Enum.group_by(&image_candidate_key/1)
+    |> Enum.map(fn {_key, group} -> best_image_candidate(group) end)
+    |> Enum.sort_by(&image_candidate_rank/1)
+  end
+
+  @spec image_candidate_key(image_candidate()) :: String.t()
+  defp image_candidate_key(%{url: url}) when is_binary(url), do: "url:#{url}"
+  defp image_candidate_key(%{raw_url: raw_url}) when is_binary(raw_url), do: "raw:#{raw_url}"
+  defp image_candidate_key(candidate), do: "candidate:#{:erlang.phash2(candidate)}"
+
+  @spec best_image_candidate([image_candidate()]) :: image_candidate()
+  defp best_image_candidate(candidates) do
+    Enum.max_by(candidates, &best_image_candidate_rank/1)
+  end
+
+  @spec best_image_candidate_rank(image_candidate()) :: {integer(), integer()}
+  defp best_image_candidate_rank(%{rejected: rejected, score: score}) when is_nil(rejected),
+    do: {1, score || 0}
+
+  defp best_image_candidate_rank(candidate), do: {0, Map.get(candidate, :base_score, 0)}
+
+  @spec image_candidate_rank(image_candidate()) :: {integer(), integer()}
+  defp image_candidate_rank(%{rejected: rejected, score: score}) when is_nil(rejected),
+    do: {0, -(score || 0)}
+
+  defp image_candidate_rank(candidate), do: {1, -Map.get(candidate, :base_score, 0)}
+
+  @spec select_ranked_image([image_candidate()]) :: image_selection()
+  defp select_ranked_image(candidates) do
+    selected =
+      Enum.find(candidates, fn candidate ->
+        is_nil(Map.get(candidate, :rejected)) and
+          Map.get(candidate, :score, 0) >= @image_min_score
+      end)
+
+    %{selected: selected, candidates: candidates}
+  end
+
+  @spec image_selection_audit(image_selection()) :: map() | nil
+  defp image_selection_audit(%{candidates: []}), do: nil
+
+  defp image_selection_audit(%{selected: selected, candidates: candidates}) do
+    %{
+      "selected" => image_candidate_audit(selected),
+      "candidates" =>
+        candidates
+        |> Enum.take(@image_audit_limit)
+        |> Enum.map(&image_candidate_audit/1)
+        |> Enum.reject(&is_nil/1)
+    }
+  end
+
+  @spec image_candidate_audit(image_candidate() | nil) :: map() | nil
+  defp image_candidate_audit(nil), do: nil
+
+  defp image_candidate_audit(candidate) do
+    %{}
+    |> put_unless_empty("url", Map.get(candidate, :url))
+    |> put_unless_empty("raw_url", audit_raw_url(candidate))
+    |> put_unless_empty("source", Map.get(candidate, :source))
+    |> put_unless_empty("selector", Map.get(candidate, :selector))
+    |> put_unless_empty("score", Map.get(candidate, :score))
+    |> put_unless_empty("rejected", Map.get(candidate, :rejected))
+    |> put_unless_empty("width", Map.get(candidate, :width))
+    |> put_unless_empty("height", Map.get(candidate, :height))
+  end
+
+  @spec audit_raw_url(image_candidate()) :: String.t() | nil
+  defp audit_raw_url(%{url: url, raw_url: raw_url}) when is_binary(url) and url == raw_url,
+    do: nil
+
+  defp audit_raw_url(%{raw_url: raw_url}), do: raw_url
+  defp audit_raw_url(_candidate), do: nil
 
   @spec image_src(map()) :: String.t() | nil
   defp image_src(attrs) do
@@ -868,29 +1424,7 @@ defmodule RetroHexChat.Scraper.HTTP do
     _ -> 0
   end
 
-  @decorative_image_markers ~w(avatar icon logo pixel placeholder sprite tracking)
-
-  @spec decorative_image?(map()) :: boolean()
-  defp decorative_image?(attrs) do
-    marker_text =
-      [attrs["alt"], attrs["class"], attrs["id"], attrs["role"]]
-      |> Enum.filter(&is_binary/1)
-      |> Enum.join(" ")
-      |> String.downcase()
-
-    small_image?(attrs) or
-      Enum.any?(@decorative_image_markers, &String.contains?(marker_text, &1))
-  end
-
-  @spec small_image?(map()) :: boolean()
-  defp small_image?(attrs) do
-    case {dimension(attrs["width"]), dimension(attrs["height"])} do
-      {width, height} when is_integer(width) and is_integer(height) -> width < 160 or height < 90
-      _other -> false
-    end
-  end
-
-  @spec dimension(String.t() | nil) :: pos_integer() | nil
+  @spec dimension(term()) :: pos_integer() | nil
   defp dimension(nil), do: nil
 
   defp dimension(value) do
@@ -1152,15 +1686,6 @@ defmodule RetroHexChat.Scraper.HTTP do
     end)
   end
 
-  @spec json_ld_image([map()]) :: String.t() | nil
-  defp json_ld_image(candidates) do
-    Enum.find_value(candidates, fn candidate ->
-      candidate
-      |> Map.get("image")
-      |> image_value()
-    end) || json_ld_value(candidates, ["thumbnailUrl"])
-  end
-
   @spec json_ld_image_alt([map()]) :: String.t() | nil
   defp json_ld_image_alt(candidates) do
     Enum.find_value(candidates, fn candidate ->
@@ -1169,16 +1694,6 @@ defmodule RetroHexChat.Scraper.HTTP do
       |> image_alt_value()
     end)
   end
-
-  @spec image_value(term()) :: String.t() | nil
-  defp image_value(value) when is_binary(value), do: value
-  defp image_value(values) when is_list(values), do: Enum.find_value(values, &image_value/1)
-
-  defp image_value(%{} = value) do
-    first_present([Map.get(value, "url"), Map.get(value, "contentUrl")])
-  end
-
-  defp image_value(_value), do: nil
 
   @spec image_alt_value(term()) :: String.t() | nil
   defp image_alt_value(values) when is_list(values),

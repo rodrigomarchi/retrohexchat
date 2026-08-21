@@ -198,10 +198,14 @@ defmodule RetroHexChat.Scraper do
           fetch_result()
   defp fetch_existing(prepared, page, opts, now) do
     cond do
-      Store.servable?(page) and Store.fresh?(page, now) ->
+      Store.servable?(page) and Store.fresh?(page, now) and
+          not image_hint_needs_refresh?(page, opts) ->
         record_hit(:fresh)
         Store.touch_access(page, now: now)
         {:ok, prepare_thumbnail(page, opts)}
+
+      Store.servable?(page) and Store.fresh?(page, now) ->
+        scrape_now(prepared, page, opts, now)
 
       Store.attempted?(page) and Store.fresh?(page, now) ->
         record_hit(:known_failure)
@@ -261,7 +265,7 @@ defmodule RetroHexChat.Scraper do
   defp do_scrape(prepared, existing, opts, now) do
     record_hit(:scrape)
 
-    case Client.impl().scrape(prepared.url, conditional_opts(existing)) do
+    case Client.impl().scrape(prepared.url, scraper_opts(existing, opts)) do
       {:ok, scrape} ->
         store_success(prepared.url, scrape, opts, now)
 
@@ -350,11 +354,64 @@ defmodule RetroHexChat.Scraper do
     end
   end
 
-  @spec conditional_opts(ScrapedPage.t() | nil) :: Client.opts()
-  defp conditional_opts(%ScrapedPage{status: "ready", etag: etag, last_modified: last_modified}),
-    do: [if_none_match: etag, if_modified_since: last_modified]
+  @spec scraper_opts(ScrapedPage.t() | nil, keyword()) :: Client.opts()
+  defp scraper_opts(existing, opts) do
+    existing
+    |> conditional_opts(opts)
+    |> Keyword.merge(metadata_hint_opts(opts))
+  end
 
-  defp conditional_opts(_page), do: []
+  @spec conditional_opts(ScrapedPage.t() | nil, keyword()) :: Client.opts()
+  defp conditional_opts(%ScrapedPage{} = page, opts) do
+    if image_hint_needs_refresh?(page, opts), do: [], else: stored_conditional_opts(page)
+  end
+
+  defp conditional_opts(_page, _opts), do: []
+
+  @spec stored_conditional_opts(ScrapedPage.t()) :: Client.opts()
+  defp stored_conditional_opts(%ScrapedPage{
+         status: "ready",
+         etag: etag,
+         last_modified: last_modified
+       }),
+       do: [if_none_match: etag, if_modified_since: last_modified]
+
+  defp stored_conditional_opts(_page), do: []
+
+  @spec metadata_hint_opts(keyword()) :: Client.opts()
+  defp metadata_hint_opts(opts) do
+    case Keyword.get(opts, :metadata_hints) do
+      hints when is_map(hints) and map_size(hints) > 0 -> [metadata_hints: hints]
+      _other -> []
+    end
+  end
+
+  @spec image_hint_needs_refresh?(ScrapedPage.t(), keyword()) :: boolean()
+  defp image_hint_needs_refresh?(%ScrapedPage{} = page, opts) do
+    case metadata_hint_image(opts) do
+      hint when is_binary(hint) ->
+        page.image_url != hint and weak_stored_image?(page)
+
+      _other ->
+        false
+    end
+  end
+
+  @spec metadata_hint_image(keyword()) :: String.t() | nil
+  defp metadata_hint_image(opts) do
+    case Keyword.get(opts, :metadata_hints) do
+      %{image: image} when is_binary(image) and image != "" -> image
+      %{"image" => image} when is_binary(image) and image != "" -> image
+      _other -> nil
+    end
+  end
+
+  @spec weak_stored_image?(ScrapedPage.t()) :: boolean()
+  defp weak_stored_image?(%ScrapedPage{image_url: nil}), do: true
+
+  defp weak_stored_image?(%ScrapedPage{raw_metadata: raw_metadata}) do
+    get_in(raw_metadata || %{}, ["sources", "image"]) in [nil, "article_image"]
+  end
 
   # ── Asking for a fetch later ───────────────────────────────
 

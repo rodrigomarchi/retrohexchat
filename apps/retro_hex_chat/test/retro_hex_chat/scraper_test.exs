@@ -143,6 +143,58 @@ defmodule RetroHexChat.ScraperTest do
       assert CountingClient.count() == 1
     end
 
+    test "passes feed metadata hints to the scraper client" do
+      Application.put_env(:retro_hex_chat, :page_scraper, CountingClient)
+
+      assert {:ok, _page} =
+               Scraper.fetch(@url,
+                 metadata_hints: %{
+                   image: "https://cdn.example.com/feed.jpg",
+                   image_alt: "Feed image",
+                   image_source: "media_content"
+                 }
+               )
+
+      assert [{@url, opts}] = CountingClient.calls()
+      assert opts[:metadata_hints].image == "https://cdn.example.com/feed.jpg"
+      assert opts[:metadata_hints].image_alt == "Feed image"
+      assert opts[:metadata_hints].image_source == "media_content"
+    end
+
+    test "reprocesses a fresh weak image when a feed supplies a stronger image" do
+      now = DateTime.utc_now()
+
+      {:ok, _page} =
+        Store.record_success(
+          @url,
+          %{
+            title: "Already stored",
+            image_url: "https://example.com/body.jpg",
+            raw_metadata: %{"sources" => %{"image" => "article_image"}}
+          },
+          now: now
+        )
+
+      Cache.clear()
+      Application.put_env(:retro_hex_chat, :page_scraper, CountingClient)
+
+      assert {:ok, page} =
+               Scraper.fetch(@url,
+                 now: now,
+                 metadata_hints: %{
+                   image: "https://cdn.example.com/feed.jpg",
+                   image_alt: "Feed image",
+                   image_source: "media_content"
+                 }
+               )
+
+      assert page.title == "Counted"
+      assert CountingClient.count() == 1
+      assert [{@url, opts}] = CountingClient.calls()
+      assert opts[:if_none_match] == nil
+      assert opts[:metadata_hints].image == "https://cdn.example.com/feed.jpg"
+    end
+
     test "serves a page read 119 days ago without touching the network" do
       now = DateTime.utc_now()
       {:ok, _} = Store.record_success(@url, %{title: "Archived"}, now: now)

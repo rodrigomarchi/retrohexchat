@@ -284,6 +284,69 @@ defmodule RetroHexChat.Scraper.HTTPTest do
       assert scrape.raw_metadata["sources"]["image"] == "article_image"
     end
 
+    test "rejects decorative content images instead of publishing a bad thumbnail" do
+      Req.Test.expect(__MODULE__, fn conn ->
+        Req.Test.html(conn, """
+        <head><title>Tokyo feels offshore quake</title></head>
+        <body>
+          <div id="content">
+            <h1>Tokyo feels offshore quake</h1>
+            <p>The article text is useful enough to publish even when the page has
+            no trustworthy representative image.</p>
+            <div id="appDownload">
+              <img src="/fileftp/2026/08/qr.png" width="1200" height="675">
+            </div>
+            <div class="recommend-list">
+              <img src="/images/related-story.jpg" width="1200" height="675">
+            </div>
+          </div>
+        </body>
+        """)
+      end)
+
+      assert {:ok, scrape} = HTTP.scrape("https://example.com/no-good-image")
+
+      refute Map.has_key?(scrape.metadata, :image)
+      assert scrape.raw_metadata["image_selection"]["selected"] == nil
+
+      rejected =
+        scrape.raw_metadata["image_selection"]["candidates"]
+        |> Enum.map(& &1["rejected"])
+
+      assert "decorative_container:download" in rejected
+      assert "decorative_marker:related" in rejected
+    end
+
+    test "uses an RSS feed image hint ahead of weak document fallbacks" do
+      Req.Test.expect(__MODULE__, fn conn ->
+        Req.Test.html(conn, """
+        <head><title>Feed supplied the photo</title></head>
+        <body>
+          <div id="content">
+            <h1>Feed supplied the photo</h1>
+            <p>The article has no social image but the feed carried the story photo.</p>
+            <img src="/body/fallback.jpg" width="1200" height="675">
+          </div>
+        </body>
+        """)
+      end)
+
+      assert {:ok, scrape} =
+               HTTP.scrape("https://example.com/feed-hint",
+                 metadata_hints: %{
+                   image: "https://example.com/feed-photo.jpg",
+                   image_alt: "Rescue workers on a flooded avenue",
+                   image_source: "media_content"
+                 }
+               )
+
+      assert scrape.metadata.image == "https://example.com/feed-photo.jpg"
+      assert scrape.metadata.image_alt == "Rescue workers on a flooded avenue"
+      assert scrape.raw_metadata["sources"]["image"] == "feed_media"
+      assert scrape.raw_metadata["image_selection"]["selected"]["source"] == "feed_media"
+      assert scrape.raw_metadata["image_selection"]["selected"]["selector"] == "media_content"
+    end
+
     test "caps a very long article and says so" do
       Req.Test.expect(__MODULE__, fn conn ->
         Req.Test.html(conn, """

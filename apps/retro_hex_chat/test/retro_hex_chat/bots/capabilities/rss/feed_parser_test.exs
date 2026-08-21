@@ -61,6 +61,76 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.FeedParserTest do
       assert first.link == "https://example.com/first"
       assert first.published =~ "2024"
     end
+
+    test "reads Media RSS images from items" do
+      xml = """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/">
+        <channel>
+          <title>Wire</title>
+          <item>
+            <title>Story with media</title>
+            <link>https://example.com/story</link>
+            <media:content
+              url="https://cdn.example.com/story.jpg"
+              medium="image"
+              title="People crossing a flooded street"/>
+          </item>
+        </channel>
+      </rss>
+      """
+
+      {:ok, feed} = FeedParser.parse(xml)
+
+      assert [%{image_url: "https://cdn.example.com/story.jpg"} = item] = feed.items
+      assert item.image_alt == "People crossing a flooded street"
+      assert item.image_source == "media_content"
+    end
+
+    test "reads image enclosures from items" do
+      xml = """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <rss version="2.0">
+        <channel>
+          <title>Wire</title>
+          <item>
+            <title>Story with enclosure</title>
+            <link>https://example.com/story</link>
+            <enclosure url="https://cdn.example.com/story.webp" type="image/webp"/>
+          </item>
+        </channel>
+      </rss>
+      """
+
+      {:ok, feed} = FeedParser.parse(xml)
+
+      assert [%{image_url: "https://cdn.example.com/story.webp", image_source: "enclosure"}] =
+               feed.items
+    end
+
+    test "reads the first description image when explicit feed media is absent" do
+      xml = """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <rss version="2.0">
+        <channel>
+          <title>Wire</title>
+          <item>
+            <title>Story with description HTML</title>
+            <link>https://example.com/story</link>
+            <description><![CDATA[
+              <p><img src="https://cdn.example.com/lead.png" alt="Lead photo"></p>
+            ]]></description>
+          </item>
+        </channel>
+      </rss>
+      """
+
+      {:ok, feed} = FeedParser.parse(xml)
+
+      assert [%{image_url: "https://cdn.example.com/lead.png"} = item] = feed.items
+      assert item.image_alt == "Lead photo"
+      assert item.image_source == "description_image"
+    end
   end
 
   describe "parse/1 — Atom" do
@@ -85,6 +155,26 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.FeedParserTest do
       {:ok, feed} = FeedParser.parse(@atom_xml)
       second = Enum.at(feed.items, 1)
       assert second.published =~ "2024"
+    end
+
+    test "keeps Atom enclosure images separate from the article link" do
+      atom = """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <feed xmlns="http://www.w3.org/2005/Atom">
+        <title>Atom Blog</title>
+        <entry>
+          <title>Atom Post</title>
+          <link rel="alternate" href="https://example.com/atom-post"/>
+          <link rel="enclosure" type="image/jpeg" href="https://cdn.example.com/atom.jpg"/>
+        </entry>
+      </feed>
+      """
+
+      {:ok, feed} = FeedParser.parse(atom)
+
+      assert [%{link: "https://example.com/atom-post"} = item] = feed.items
+      assert item.image_url == "https://cdn.example.com/atom.jpg"
+      assert item.image_source == "atom_link"
     end
   end
 

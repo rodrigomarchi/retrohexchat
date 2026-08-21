@@ -579,17 +579,39 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
   @spec fetch_preview_metadata([FeedParser.feed_item()]) :: [Scraper.Client.metadata()]
   defp fetch_preview_metadata(items) do
     items
-    |> Enum.map(& &1.link)
-    |> Scraper.fetch_many(
+    |> Task.async_stream(
+      fn item ->
+        Scraper.fetch(item.link,
+          metadata_hints: feed_item_metadata_hints(item),
+          thumbnail: :sync,
+          timeout: @preview_fetch_timeout_ms
+        )
+      end,
       max_concurrency: @preview_max_concurrency,
-      thumbnail: :sync,
+      ordered: true,
+      on_timeout: :kill_task,
       timeout: @preview_fetch_timeout_ms
     )
     |> Enum.map(fn
-      {:ok, page} -> Scraper.Client.to_metadata(page)
+      {:ok, {:ok, page}} -> Scraper.Client.to_metadata(page)
+      {:ok, {:error, _reason}} -> %{}
       {:error, _reason} -> %{}
+      {:exit, _reason} -> %{}
     end)
   end
+
+  @spec feed_item_metadata_hints(FeedParser.feed_item()) :: Scraper.Client.metadata_hints()
+  defp feed_item_metadata_hints(item) do
+    %{}
+    |> maybe_put_hint(:image, Map.get(item, :image_url))
+    |> maybe_put_hint(:image_alt, Map.get(item, :image_alt))
+    |> maybe_put_hint(:image_source, Map.get(item, :image_source))
+  end
+
+  @spec maybe_put_hint(map(), atom(), term()) :: map()
+  defp maybe_put_hint(map, _key, nil), do: map
+  defp maybe_put_hint(map, _key, ""), do: map
+  defp maybe_put_hint(map, key, value), do: Map.put(map, key, value)
 
   @doc """
   A feed item as one Markdown card.

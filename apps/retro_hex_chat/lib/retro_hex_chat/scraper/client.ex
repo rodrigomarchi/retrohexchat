@@ -60,6 +60,12 @@ defmodule RetroHexChat.Scraper.Client do
           optional(:word_count) => non_neg_integer() | nil
         }
 
+  @type metadata_hints :: %{
+          optional(:image) => String.t() | nil,
+          optional(:image_alt) => String.t() | nil,
+          optional(:image_source) => String.t() | nil
+        }
+
   @type error :: atom() | {:http_status, pos_integer()} | term()
 
   @typedoc """
@@ -69,7 +75,11 @@ defmodule RetroHexChat.Scraper.Client do
   expired page can be renewed by a `304` instead of a download.
 
   """
-  @type opts :: [if_none_match: String.t() | nil, if_modified_since: String.t() | nil]
+  @type opts :: [
+          if_none_match: String.t() | nil,
+          if_modified_since: String.t() | nil,
+          metadata_hints: metadata_hints()
+        ]
 
   @doc "Visit `url`, or learn that it has not changed since it was last visited."
   @callback scrape(url :: String.t(), opts()) ::
