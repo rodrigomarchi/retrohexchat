@@ -71,6 +71,7 @@ defmodule RetroHexChat.MixProject do
       {:ex_aws, "~> 2.7"},
       {:ex_aws_s3, "~> 2.5"},
       {:sweet_xml, "~> 0.7.5"},
+      {:vix, "~> 0.41.0"},
       {:oban, "~> 2.23"},
       {:ex_stun, "~> 0.2.0"},
       {:ex_webrtc, "~> 0.17.0"},

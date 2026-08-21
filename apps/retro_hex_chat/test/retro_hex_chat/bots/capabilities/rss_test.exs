@@ -495,7 +495,8 @@ defmodule RetroHexChat.Bots.Capabilities.RSSTest do
         RSS.format_item(an_item(), "Src", %{
           title: "Parsed title",
           description: "A clean professional summary.",
-          image: "https://example.com/cover.jpg",
+          cached_image: "https://chat.example.test/chat/scraped-pages/hash/thumbnail",
+          image: "https://publisher.example.com/cover.jpg",
           url: "https://example.com/canonical",
           site_name: "Example"
         })
@@ -503,10 +504,26 @@ defmodule RetroHexChat.Bots.Capabilities.RSSTest do
       assert line =~ "**Example**"
       assert line =~ "**Example** | Parsed title"
       refute line =~ "[Parsed title](<https://example.com/canonical>)"
-      assert line =~ "![Example preview image](<https://example.com/cover.jpg>)"
+
+      assert line =~
+               "![Example preview image](<https://chat.example.test/chat/scraped-pages/hash/thumbnail>)"
+
+      refute line =~ "publisher.example.com/cover.jpg"
       refute line =~ "![Parsed title]"
       assert line =~ "> A clean professional summary\\."
       assert line =~ "[Read full story](<https://example.com/canonical>)"
+    end
+
+    test "does not render a publisher image when no cached thumbnail is ready" do
+      line =
+        RSS.format_item(an_item(), "Src", %{
+          title: "Parsed title",
+          image: "https://publisher.example.com/cover.jpg",
+          site_name: "Example"
+        })
+
+      refute line =~ "!["
+      refute line =~ "publisher.example.com/cover.jpg"
     end
 
     test "escapes Markdown punctuation from publishers" do

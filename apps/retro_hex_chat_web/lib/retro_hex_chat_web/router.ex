@@ -135,6 +135,7 @@ defmodule RetroHexChatWeb.Router do
   scope "/", RetroHexChatWeb.App do
     pipe_through :app
 
+    get "/chat/scraped-pages/:url_hash/thumbnail", ScrapedPageThumbnailController, :show
     get "/chat/attachments/:id/preview", AttachmentController, :preview
     get "/chat/attachments/:id", AttachmentController, :show
 

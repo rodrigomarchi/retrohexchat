@@ -167,6 +167,20 @@ config :retro_hex_chat, :chat_uploads,
   max_size_mb: String.to_integer(System.get_env("CHAT_UPLOAD_MAX_SIZE_MB") || "25"),
   bucket: System.get_env("CHAT_UPLOAD_S3_BUCKET", "retrohexchat-uploads")
 
+config :retro_hex_chat, :scraped_image_cache,
+  storage:
+    if(config_env() == :test,
+      do: RetroHexChat.Chat.Attachments.TestStorage,
+      else: RetroHexChat.Chat.Attachments.S3Storage
+    ),
+  fetcher: RetroHexChat.Scraper.HTTPImageFetcher,
+  thumbnailer: RetroHexChat.Scraper.VixImageThumbnailer,
+  bucket:
+    System.get_env(
+      "SCRAPED_IMAGE_CACHE_S3_BUCKET",
+      System.get_env("CHAT_UPLOAD_S3_BUCKET", "retrohexchat-uploads")
+    )
+
 config :ex_aws,
   access_key_id: chat_upload_s3_access_key,
   secret_access_key: chat_upload_s3_secret_key,

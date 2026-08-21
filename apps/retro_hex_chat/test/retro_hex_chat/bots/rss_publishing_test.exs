@@ -15,6 +15,7 @@ defmodule RetroHexChat.Bots.RSSPublishingTest do
 
   alias RetroHexChat.Bots.{Queries, Supervisor}
   alias RetroHexChat.Channels
+  alias RetroHexChat.Scraper.Store
 
   @channel "#wire"
   @url "https://93.184.216.34/feed.xml"
@@ -73,6 +74,34 @@ defmodule RetroHexChat.Bots.RSSPublishingTest do
     end
 
     def scrape(_url, _opts), do: {:error, :fetch_failed}
+  end
+
+  defmodule StaticImageFetcher do
+    @moduledoc false
+    @behaviour RetroHexChat.Scraper.ImageFetcher
+
+    @impl true
+    def fetch(url, _opts) do
+      {:ok, %{body: "original", content_type: "image/jpeg", final_url: url, byte_size: 8}}
+    end
+  end
+
+  defmodule StaticImageThumbnailer do
+    @moduledoc false
+    @behaviour RetroHexChat.Scraper.ImageThumbnailer
+
+    @impl true
+    def thumbnail("original", _opts) do
+      {:ok,
+       %{
+         body: "thumb",
+         content_type: "image/jpeg",
+         extension: "jpg",
+         width: 640,
+         height: 360,
+         byte_size: 5
+       }}
+    end
   end
 
   defp feed_page(titles) do
@@ -165,12 +194,23 @@ defmodule RetroHexChat.Bots.RSSPublishingTest do
   setup do
     Application.put_env(:retro_hex_chat, :rss_fetcher, ScriptedFetcher)
     Application.put_env(:retro_hex_chat, :page_scraper, NoopPreview)
+    Application.put_env(:retro_hex_chat, :base_url, "https://chat.example.test")
+
+    Application.put_env(:retro_hex_chat, :scraped_image_cache,
+      storage: RetroHexChat.Chat.Attachments.TestStorage,
+      fetcher: StaticImageFetcher,
+      thumbnailer: StaticImageThumbnailer,
+      bucket: "retrohexchat-uploads"
+    )
+
     chan = start_channel(@channel)
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#{@channel}")
 
     on_exit(fn ->
       Application.delete_env(:retro_hex_chat, :rss_fetcher)
       Application.delete_env(:retro_hex_chat, :page_scraper)
+      Application.delete_env(:retro_hex_chat, :scraped_image_cache)
+      Application.delete_env(:retro_hex_chat, :base_url)
       Supervisor.stop_bot("WireBot")
       if Process.alive?(chan), do: Channels.Supervisor.stop_child(chan)
     end)
@@ -233,7 +273,11 @@ defmodule RetroHexChat.Bots.RSSPublishingTest do
     assert payload.content =~ "**Example News**"
     assert payload.content =~ "**Example News** | Parsed story"
     refute payload.content =~ "[Parsed story](<https://example.com/2>)"
-    assert payload.content =~ "![Example News preview image](<https://example.com/card.png>)"
+
+    assert payload.content =~
+             "![Example News preview image](<https://chat.example.test/chat/scraped-pages/#{url_hash!("https://example.com/2")}/thumbnail>)"
+
+    refute payload.content =~ "https://example.com/card.png"
     assert payload.content =~ "> A summary from Open Graph\\."
     assert payload.content =~ "[Read full story](<https://example.com/2>)"
   end
@@ -383,5 +427,10 @@ defmodule RetroHexChat.Bots.RSSPublishingTest do
       assert feed["last_polled_at"],
              "the check ran; dropping its state loses when it ran and why it failed"
     end
+  end
+
+  defp url_hash!(url) do
+    assert {:ok, %{url_hash: url_hash}} = Store.prepare_url(url)
+    url_hash
   end
 end

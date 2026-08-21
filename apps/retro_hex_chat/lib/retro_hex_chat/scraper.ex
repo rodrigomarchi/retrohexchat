@@ -31,7 +31,7 @@ defmodule RetroHexChat.Scraper do
   alias RetroHexChat.Jobs
   alias RetroHexChat.Jobs.PageScrapeWorker
   alias RetroHexChat.Observability
-  alias RetroHexChat.Scraper.{Cache, Card, Client, ScrapedPage, Store}
+  alias RetroHexChat.Scraper.{Cache, Card, Client, ImageCache, ScrapedPage, Store}
 
   require Logger
 
@@ -68,12 +68,14 @@ defmodule RetroHexChat.Scraper do
     cond do
       Store.servable?(page) and Store.fresh?(page, now) ->
         record_hit(:fresh)
+        _ = ImageCache.request(page)
         {:ok, page}
 
       Store.servable?(page) ->
         # Expired, but a 120-day-old title beats a blank line while the
         # conditional request that will confirm it is still in flight.
         record_hit(:stale)
+        _ = ImageCache.request(page)
         _ = request(url)
         {:ok, page}
 
@@ -199,7 +201,7 @@ defmodule RetroHexChat.Scraper do
       Store.servable?(page) and Store.fresh?(page, now) ->
         record_hit(:fresh)
         Store.touch_access(page, now: now)
-        {:ok, page}
+        {:ok, prepare_thumbnail(page, opts)}
 
       Store.attempted?(page) and Store.fresh?(page, now) ->
         record_hit(:known_failure)
@@ -261,10 +263,10 @@ defmodule RetroHexChat.Scraper do
 
     case Client.impl().scrape(prepared.url, conditional_opts(existing)) do
       {:ok, scrape} ->
-        store_success(prepared.url, scrape, now)
+        store_success(prepared.url, scrape, opts, now)
 
       {:not_modified} when not is_nil(existing) ->
-        renew(existing, now)
+        renew(existing, opts, now)
 
       {:not_modified} ->
         {:error, :not_modified}
@@ -274,10 +276,11 @@ defmodule RetroHexChat.Scraper do
     end
   end
 
-  @spec store_success(String.t(), Client.scrape(), DateTime.t()) :: fetch_result()
-  defp store_success(url, scrape, now) do
+  @spec store_success(String.t(), Client.scrape(), keyword(), DateTime.t()) :: fetch_result()
+  defp store_success(url, scrape, opts, now) do
     case Store.record_success(url, Client.to_page_attrs(scrape), now: now) do
       {:ok, page} ->
+        page = prepare_thumbnail(page, opts)
         cache_and_announce(page)
         {:ok, page}
 
@@ -286,16 +289,35 @@ defmodule RetroHexChat.Scraper do
     end
   end
 
-  @spec renew(ScrapedPage.t(), DateTime.t()) :: fetch_result()
-  defp renew(page, now) do
+  @spec renew(ScrapedPage.t(), keyword(), DateTime.t()) :: fetch_result()
+  defp renew(page, opts, now) do
     case Store.record_not_modified(page, now: now) do
       {:ok, renewed} ->
         record_hit(:not_modified)
+        renewed = prepare_thumbnail(renewed, opts)
         cache_and_announce(renewed)
         {:ok, renewed}
 
       {:error, reason} ->
         {:error, reason}
+    end
+  end
+
+  @spec prepare_thumbnail(ScrapedPage.t(), keyword()) :: ScrapedPage.t()
+  defp prepare_thumbnail(%ScrapedPage{} = page, opts) do
+    case Keyword.get(opts, :thumbnail, :async) do
+      :sync ->
+        case ImageCache.ensure_thumbnail(page, opts) do
+          {:ok, updated} -> updated
+          {:error, _reason, updated} -> updated
+        end
+
+      :skip ->
+        page
+
+      _async ->
+        _ = ImageCache.request(page)
+        page
     end
   end
 

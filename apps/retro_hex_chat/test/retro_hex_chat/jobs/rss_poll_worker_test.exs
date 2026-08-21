@@ -8,6 +8,7 @@ defmodule RetroHexChat.Jobs.RSSPollWorkerTest do
   alias RetroHexChat.Channels
   alias RetroHexChat.Chat.Queries, as: ChatQueries
   alias RetroHexChat.Jobs.RSSPollWorker
+  alias RetroHexChat.Scraper.Store
 
   @channel "#rss-worker"
   @url "https://93.184.216.34/feed.xml"
@@ -59,9 +60,45 @@ defmodule RetroHexChat.Jobs.RSSPollWorkerTest do
     def scrape(_url, _opts), do: {:error, :fetch_failed}
   end
 
+  defmodule StaticImageFetcher do
+    @moduledoc false
+    @behaviour RetroHexChat.Scraper.ImageFetcher
+
+    @impl true
+    def fetch(url, _opts) do
+      {:ok, %{body: "original", content_type: "image/jpeg", final_url: url, byte_size: 8}}
+    end
+  end
+
+  defmodule StaticImageThumbnailer do
+    @moduledoc false
+    @behaviour RetroHexChat.Scraper.ImageThumbnailer
+
+    @impl true
+    def thumbnail("original", _opts) do
+      {:ok,
+       %{
+         body: "thumb",
+         content_type: "image/jpeg",
+         extension: "jpg",
+         width: 640,
+         height: 360,
+         byte_size: 5
+       }}
+    end
+  end
+
   setup do
     Application.put_env(:retro_hex_chat, :rss_fetcher, ScriptedFetcher)
     Application.put_env(:retro_hex_chat, :page_scraper, RichPreview)
+    Application.put_env(:retro_hex_chat, :base_url, "https://chat.example.test")
+
+    Application.put_env(:retro_hex_chat, :scraped_image_cache,
+      storage: RetroHexChat.Chat.Attachments.TestStorage,
+      fetcher: StaticImageFetcher,
+      thumbnailer: StaticImageThumbnailer,
+      bucket: "retrohexchat-uploads"
+    )
 
     {:ok, chan} = Channels.Supervisor.start_child(@channel)
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#{@channel}")
@@ -69,6 +106,8 @@ defmodule RetroHexChat.Jobs.RSSPollWorkerTest do
     on_exit(fn ->
       Application.delete_env(:retro_hex_chat, :rss_fetcher)
       Application.delete_env(:retro_hex_chat, :page_scraper)
+      Application.delete_env(:retro_hex_chat, :scraped_image_cache)
+      Application.delete_env(:retro_hex_chat, :base_url)
       BotSupervisor.stop_bot("RSSWorkerBot")
       if Process.alive?(chan), do: Channels.Supervisor.stop_child(chan)
     end)
@@ -109,7 +148,9 @@ defmodule RetroHexChat.Jobs.RSSPollWorkerTest do
     assert payload.content =~ "**Worker News** | Parsed worker story"
 
     assert payload.content =~
-             "![Worker News preview image](<https://example.com/worker-card.png>)"
+             "![Worker News preview image](<https://chat.example.test/chat/scraped-pages/#{url_hash!("https://example.com/3")}/thumbnail>)"
+
+    refute payload.content =~ "https://example.com/worker-card.png"
 
     assert payload.content =~ "> Worker extracted this from standards metadata\\."
     assert payload.content =~ "[Read full story](<https://example.com/3>)"
@@ -120,6 +161,11 @@ defmodule RetroHexChat.Jobs.RSSPollWorkerTest do
       queue: :rss,
       args: %{bot_id: bot.id, feed_id: "f1"}
     )
+  end
+
+  defp url_hash!(url) do
+    assert {:ok, %{url_hash: url_hash}} = Store.prepare_url(url)
+    url_hash
   end
 
   test "emits observable RSS poll telemetry" do

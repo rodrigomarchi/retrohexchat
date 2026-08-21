@@ -42,6 +42,7 @@ defmodule RetroHexChat.Scraper.Store do
 
   @type prepared_url :: %{url: String.t(), url_hash: String.t()}
   @type fetch_error :: atom() | {:http_status, pos_integer()} | term()
+  @type image_thumbnail_object :: %{bucket: String.t(), key: String.t()}
 
   @doc "The extractor generation rows are currently written with."
   @spec scraper_version() :: pos_integer()
@@ -262,6 +263,7 @@ defmodule RetroHexChat.Scraper.Store do
 
     attrs =
       page_attrs
+      |> preserve_image_thumbnail(url)
       |> Map.merge(%{
         status: "ready",
         error_reason: nil,
@@ -275,6 +277,46 @@ defmodule RetroHexChat.Scraper.Store do
       |> Map.put_new(:raw_metadata, %{})
 
     upsert(url, attrs, now: now)
+  end
+
+  @spec preserve_image_thumbnail(map(), String.t()) :: map()
+  defp preserve_image_thumbnail(attrs, url) do
+    source_url = Map.get(attrs, :image_url)
+
+    with source_url when is_binary(source_url) and source_url != "" <- source_url,
+         {:ok, %{url_hash: url_hash}} <- prepare_url(url),
+         %ScrapedPage{} = existing <- get_by_hash(url_hash),
+         true <- reusable_image_thumbnail?(existing, source_url) do
+      Map.merge(attrs, image_thumbnail_attrs(existing))
+    else
+      _other -> attrs
+    end
+  end
+
+  @spec reusable_image_thumbnail?(ScrapedPage.t(), String.t()) :: boolean()
+  defp reusable_image_thumbnail?(%ScrapedPage{} = page, source_url) do
+    page.image_thumbnail_status == "ready" and
+      page.image_thumbnail_source_url == source_url and
+      is_binary(page.image_thumbnail_storage_bucket) and
+      is_binary(page.image_thumbnail_storage_key)
+  end
+
+  @spec image_thumbnail_attrs(ScrapedPage.t()) :: map()
+  defp image_thumbnail_attrs(%ScrapedPage{} = page) do
+    %{
+      image_thumbnail_status: page.image_thumbnail_status,
+      image_thumbnail_source_url: page.image_thumbnail_source_url,
+      image_thumbnail_storage_bucket: page.image_thumbnail_storage_bucket,
+      image_thumbnail_storage_key: page.image_thumbnail_storage_key,
+      image_thumbnail_content_type: page.image_thumbnail_content_type,
+      image_thumbnail_byte_size: page.image_thumbnail_byte_size,
+      image_thumbnail_width: page.image_thumbnail_width,
+      image_thumbnail_height: page.image_thumbnail_height,
+      image_thumbnail_fetched_at: page.image_thumbnail_fetched_at,
+      image_thumbnail_attempted_at: page.image_thumbnail_attempted_at,
+      image_thumbnail_error_reason: page.image_thumbnail_error_reason,
+      image_thumbnail_error_detail: page.image_thumbnail_error_detail || %{}
+    }
   end
 
   @doc """
@@ -295,6 +337,76 @@ defmodule RetroHexChat.Scraper.Store do
       last_attempted_at: now,
       revalidating_since: nil,
       expires_at: DateTime.add(now, @success_ttl_seconds, :second)
+    })
+    |> Repo.update()
+  end
+
+  @spec record_image_thumbnail_pending(ScrapedPage.t(), String.t(), keyword()) ::
+          {:ok, ScrapedPage.t()} | {:error, Ecto.Changeset.t()}
+  def record_image_thumbnail_pending(%ScrapedPage{} = page, source_url, opts \\ []) do
+    now = Keyword.get_lazy(opts, :now, &DateTime.utc_now/0)
+
+    page
+    |> ScrapedPage.changeset(%{
+      image_thumbnail_status: "pending",
+      image_thumbnail_source_url: source_url,
+      image_thumbnail_storage_bucket: nil,
+      image_thumbnail_storage_key: nil,
+      image_thumbnail_content_type: nil,
+      image_thumbnail_byte_size: nil,
+      image_thumbnail_width: nil,
+      image_thumbnail_height: nil,
+      image_thumbnail_fetched_at: nil,
+      image_thumbnail_attempted_at: now,
+      image_thumbnail_error_reason: nil,
+      image_thumbnail_error_detail: %{}
+    })
+    |> Repo.update()
+  end
+
+  @spec record_image_thumbnail_success(ScrapedPage.t(), map(), keyword()) ::
+          {:ok, ScrapedPage.t()} | {:error, Ecto.Changeset.t()}
+  def record_image_thumbnail_success(%ScrapedPage{} = page, attrs, opts \\ []) do
+    now = Keyword.get_lazy(opts, :now, &DateTime.utc_now/0)
+
+    page
+    |> ScrapedPage.changeset(%{
+      image_thumbnail_status: "ready",
+      image_thumbnail_source_url: Map.fetch!(attrs, :source_url),
+      image_thumbnail_storage_bucket: Map.fetch!(attrs, :storage_bucket),
+      image_thumbnail_storage_key: Map.fetch!(attrs, :storage_key),
+      image_thumbnail_content_type: Map.fetch!(attrs, :content_type),
+      image_thumbnail_byte_size: Map.fetch!(attrs, :byte_size),
+      image_thumbnail_width: Map.fetch!(attrs, :width),
+      image_thumbnail_height: Map.fetch!(attrs, :height),
+      image_thumbnail_fetched_at: now,
+      image_thumbnail_attempted_at: now,
+      image_thumbnail_error_reason: nil,
+      image_thumbnail_error_detail: %{}
+    })
+    |> Repo.update()
+  end
+
+  @spec record_image_thumbnail_failure(ScrapedPage.t(), String.t(), fetch_error(), keyword()) ::
+          {:ok, ScrapedPage.t()} | {:error, Ecto.Changeset.t()}
+  def record_image_thumbnail_failure(%ScrapedPage{} = page, source_url, reason, opts \\ []) do
+    now = Keyword.get_lazy(opts, :now, &DateTime.utc_now/0)
+    status = opts |> Keyword.get(:status, "failed") |> to_string()
+
+    page
+    |> ScrapedPage.changeset(%{
+      image_thumbnail_status: status,
+      image_thumbnail_source_url: source_url,
+      image_thumbnail_storage_bucket: nil,
+      image_thumbnail_storage_key: nil,
+      image_thumbnail_content_type: nil,
+      image_thumbnail_byte_size: nil,
+      image_thumbnail_width: nil,
+      image_thumbnail_height: nil,
+      image_thumbnail_fetched_at: nil,
+      image_thumbnail_attempted_at: now,
+      image_thumbnail_error_reason: error_reason(reason),
+      image_thumbnail_error_detail: error_detail(reason)
     })
     |> Repo.update()
   end
@@ -369,6 +481,7 @@ defmodule RetroHexChat.Scraper.Store do
 
   @spec error_reason(fetch_error()) :: String.t()
   def error_reason({:http_status, status}) when is_integer(status), do: "http_#{status}"
+  def error_reason({reason, _detail}) when is_atom(reason), do: Atom.to_string(reason)
   def error_reason(reason) when is_atom(reason), do: Atom.to_string(reason)
   def error_reason(reason) when is_binary(reason), do: reason
   def error_reason(_reason), do: "unknown"
@@ -487,7 +600,8 @@ defmodule RetroHexChat.Scraper.Store do
   @spec prune(keyword()) :: %{
           candidates: non_neg_integer(),
           deleted: non_neg_integer(),
-          oldest_expired_age_ms: non_neg_integer()
+          oldest_expired_age_ms: non_neg_integer(),
+          image_thumbnail_objects: [image_thumbnail_object()]
         }
   def prune(opts \\ []) do
     repo = Keyword.get(opts, :repo, Repo)
@@ -501,7 +615,17 @@ defmodule RetroHexChat.Scraper.Store do
     candidates = repo.one(from page in subquery(query), select: count(page.id))
     oldest = repo.one(from page in subquery(query), select: min(page.last_accessed_at))
 
-    ids = query |> select([page], page.id) |> limit(^limit) |> repo.all()
+    pruned_pages =
+      query
+      |> select([page], %{
+        id: page.id,
+        image_thumbnail_storage_bucket: page.image_thumbnail_storage_bucket,
+        image_thumbnail_storage_key: page.image_thumbnail_storage_key
+      })
+      |> limit(^limit)
+      |> repo.all()
+
+    ids = Enum.map(pruned_pages, & &1.id)
 
     {deleted, _} =
       ScrapedPage
@@ -511,8 +635,20 @@ defmodule RetroHexChat.Scraper.Store do
     %{
       candidates: candidates || 0,
       deleted: deleted,
-      oldest_expired_age_ms: age_ms(oldest, now)
+      oldest_expired_age_ms: age_ms(oldest, now),
+      image_thumbnail_objects: image_thumbnail_objects(pruned_pages)
     }
+  end
+
+  @spec image_thumbnail_objects([map()]) :: [image_thumbnail_object()]
+  defp image_thumbnail_objects(pages) do
+    pages
+    |> Enum.flat_map(fn page ->
+      case {page.image_thumbnail_storage_bucket, page.image_thumbnail_storage_key} do
+        {bucket, key} when is_binary(bucket) and is_binary(key) -> [%{bucket: bucket, key: key}]
+        _other -> []
+      end
+    end)
   end
 
   @spec prunable(DateTime.t(), DateTime.t()) :: Ecto.Query.t()
@@ -566,6 +702,12 @@ defmodule RetroHexChat.Scraper.Store do
   @spec error_detail(fetch_error()) :: map()
   defp error_detail({:http_status, status}) when is_integer(status),
     do: %{"http_status" => status}
+
+  defp error_detail({reason, detail}) when is_atom(reason),
+    do: %{
+      "reason" => Atom.to_string(reason),
+      "detail" => detail |> inspect() |> String.slice(0, 500)
+    }
 
   defp error_detail(_reason), do: %{}
 end

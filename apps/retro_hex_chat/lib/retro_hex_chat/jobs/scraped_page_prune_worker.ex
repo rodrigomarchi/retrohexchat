@@ -28,6 +28,7 @@ defmodule RetroHexChat.Jobs.ScrapedPagePruneWorker do
 
   alias RetroHexChat.Jobs.WorkerArgs
   alias RetroHexChat.Observability
+  alias RetroHexChat.Scraper.ImageCache
   alias RetroHexChat.Scraper.Store
 
   @default_limit 500
@@ -40,9 +41,16 @@ defmodule RetroHexChat.Jobs.ScrapedPagePruneWorker do
     Observability.span(
       [:retro_hex_chat, :scraper, :prune],
       %{limit: limit},
-      fn -> {:ok, Store.prune(limit: limit)} end,
+      fn -> prune(limit) end,
       &prune_result_metadata/1
     )
+  end
+
+  @spec prune(pos_integer()) :: {:ok, map()}
+  defp prune(limit) do
+    summary = Store.prune(limit: limit)
+    image_summary = ImageCache.delete_objects(summary.image_thumbnail_objects)
+    {:ok, Map.put(summary, :image_thumbnail_delete, image_summary)}
   end
 
   @spec prune_result_metadata({:ok, map()}) :: map()
@@ -51,6 +59,8 @@ defmodule RetroHexChat.Jobs.ScrapedPagePruneWorker do
       result: "ok",
       candidates: summary.candidates,
       deleted: summary.deleted,
+      image_thumbnails_deleted: summary.image_thumbnail_delete.deleted,
+      image_thumbnails_delete_failed: summary.image_thumbnail_delete.failed,
       oldest_expired_age_ms: summary.oldest_expired_age_ms
     }
   end

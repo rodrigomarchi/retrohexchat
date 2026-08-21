@@ -172,7 +172,7 @@ msgstr "/bot"
 #: lib/retro_hex_chat_web/controllers/help_content/bot_custom_commands.html.heex:94
 #: lib/retro_hex_chat_web/controllers/help_content/bot_dice.html.heex:83
 #: lib/retro_hex_chat_web/controllers/help_content/bot_moderation.html.heex:107
-#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:112
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:118
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:96
 #: lib/retro_hex_chat_web/controllers/help_content/bot_trivia.html.heex:87
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:190
@@ -346,7 +346,7 @@ msgstr "Bot Dice"
 msgid "Bot RSS"
 msgstr "Bot RSS"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:113
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:119
 #, elixir-autogen, elixir-format
 msgid "Bot Scheduler"
 msgstr "Bot Scheduler"
@@ -370,7 +370,7 @@ msgstr "Bot names must be 2–16 characters, unique"
 #: lib/retro_hex_chat_web/controllers/help_content/bot_custom_commands.html.heex:93
 #: lib/retro_hex_chat_web/controllers/help_content/bot_dice.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/bot_moderation.html.heex:106
-#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:111
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:117
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:95
 #: lib/retro_hex_chat_web/controllers/help_content/bot_trivia.html.heex:86
 #, elixir-autogen, elixir-format
@@ -521,7 +521,7 @@ msgid "Feeds are polled at a configurable interval (default: every 30 minutes)"
 msgstr ""
 "Feeds are polled at a configurable interval (default: every 30 minutes)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:106
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:112
 #, elixir-autogen, elixir-format
 msgid "Fetch errors are logged but do not stop future polls"
 msgstr "Fetch errors are logged but do not stop future polls"
@@ -744,7 +744,7 @@ msgstr "Scores reset when a new round starts"
 #: lib/retro_hex_chat_web/controllers/help_content/bot_custom_commands.html.heex:91
 #: lib/retro_hex_chat_web/controllers/help_content/bot_dice.html.heex:80
 #: lib/retro_hex_chat_web/controllers/help_content/bot_moderation.html.heex:104
-#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:109
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:115
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:93
 #: lib/retro_hex_chat_web/controllers/help_content/bot_trivia.html.heex:84
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:185
@@ -1653,21 +1653,26 @@ msgstr ""
 msgid "with no arguments opens the Bot Management dialog"
 msgstr "with no arguments opens the Bot Management dialog"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:56
-#, elixir-autogen, elixir-format
-msgid "Items are posted as rich Markdown link previews with a source label, linked title, optional image, and optional description"
-msgstr ""
-"Items are posted as rich Markdown link previews with a source label, linked "
-"title, optional image, and optional description"
-
-#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:116
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:122
 #, elixir-autogen, elixir-format
 msgid "Link Previews"
 msgstr "Link Previews"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:101
-#, elixir-autogen, elixir-format
-msgid "Preview metadata comes from page standards such as Open Graph, Schema.org JSON-LD, and oEmbed discovery"
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Preview metadata comes from page standards such as Open Graph, Schema.org JSON-LD, oEmbed discovery, article headings, article images, and readable body text"
 msgstr ""
 "Preview metadata comes from page standards such as Open Graph, Schema.org "
 "JSON-LD, and oEmbed discovery"
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:56
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Items are posted as rich Markdown link previews with a source label, linked title, optional local thumbnail or unavailable-image placeholder, optional description, and article details when the publisher exposes them"
+msgstr ""
+"Items are posted as rich Markdown link previews with a source label, linked "
+"title, optional image, and optional description"
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:107
+#, elixir-autogen, elixir-format
+msgid "The shared page archive stores extracted descriptions, image alt text, local thumbnail metadata, thumbnail failure details, article sections, tags, dates, and article text so later previews can reuse them"
+msgstr ""

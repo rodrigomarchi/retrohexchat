@@ -29,7 +29,8 @@ defmodule RetroHexChat.Scraper.Card do
   @type opts :: [
           fallback_title: String.t() | nil,
           fallback_source: String.t() | nil,
-          url: String.t() | nil
+          url: String.t() | nil,
+          image_policy: :any | :cached
         ]
 
   @doc """
@@ -61,7 +62,11 @@ defmodule RetroHexChat.Scraper.Card do
         [
           card_header(source, title),
           card_byline(metadata),
-          card_image_markdown(card_image(metadata), metadata, source),
+          card_image_markdown(
+            card_image(metadata, opts[:image_policy] || :any),
+            metadata,
+            source
+          ),
           card_quote(card_description(metadata)),
           card_story_link(url)
         ]
@@ -237,12 +242,24 @@ defmodule RetroHexChat.Scraper.Card do
     Enum.find([metadata[:url], fallback_url], &linkable_url?/1)
   end
 
-  @spec card_image(Client.metadata()) :: String.t() | nil
-  defp card_image(%{image: image}) when is_binary(image) and byte_size(image) > 0 do
+  @spec card_image(Client.metadata(), :any | :cached) :: String.t() | nil
+  defp card_image(%{cached_image: image}, :cached)
+       when is_binary(image) and byte_size(image) > 0 do
     if String.length(image) <= @message_url_limit and linkable_url?(image), do: image
   end
 
-  defp card_image(_metadata), do: nil
+  defp card_image(_metadata, :cached), do: nil
+
+  defp card_image(metadata, _policy) do
+    Enum.find_value([metadata[:cached_image], metadata[:image]], fn image ->
+      if is_binary(image) and
+           byte_size(image) > 0 and
+           String.length(image) <= @message_url_limit and
+           linkable_url?(image) do
+        image
+      end
+    end)
+  end
 
   @spec card_description(Client.metadata()) :: String.t() | nil
   defp card_description(%{description: description})

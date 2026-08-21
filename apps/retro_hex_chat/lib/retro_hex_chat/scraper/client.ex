@@ -13,7 +13,7 @@ defmodule RetroHexChat.Scraper.Client do
   compiler and still miss the entry point production used.
   """
 
-  alias RetroHexChat.Scraper.ScrapedPage
+  alias RetroHexChat.Scraper.{ImageCache, ScrapedPage}
 
   @typedoc """
   Everything one visit to a page produced.
@@ -47,6 +47,8 @@ defmodule RetroHexChat.Scraper.Client do
           optional(:title) => String.t() | nil,
           optional(:description) => String.t() | nil,
           optional(:image) => String.t() | nil,
+          optional(:cached_image) => String.t() | nil,
+          optional(:original_image) => String.t() | nil,
           optional(:image_alt) => String.t() | nil,
           optional(:url) => String.t() | nil,
           optional(:site_name) => String.t() | nil,
@@ -124,10 +126,14 @@ defmodule RetroHexChat.Scraper.Client do
   """
   @spec to_metadata(ScrapedPage.t()) :: metadata()
   def to_metadata(%ScrapedPage{} = page) do
+    cached_image = ImageCache.public_url(page)
+
     %{
       title: page.title,
       description: page.description || page.excerpt,
-      image: page.image_url,
+      image: cached_image || page.image_url,
+      cached_image: cached_image,
+      original_image: page.image_url,
       image_alt: page.image_alt,
       url: page.canonical_url,
       site_name: page.site_name,

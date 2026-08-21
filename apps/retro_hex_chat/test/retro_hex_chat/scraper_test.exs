@@ -57,6 +57,53 @@ defmodule RetroHexChat.ScraperTest do
     def scrape(_url, _opts), do: raise("the network must not be reached here")
   end
 
+  defmodule ImageClient do
+    @moduledoc false
+    @behaviour Client
+
+    @impl true
+    def scrape(url, _opts) do
+      {:ok,
+       %{
+         metadata: %{
+           title: "With image",
+           site_name: "Example",
+           image: "https://cdn.example.com/story.jpg"
+         },
+         final_url: url,
+         http_status: 200
+       }}
+    end
+  end
+
+  defmodule StaticImageFetcher do
+    @moduledoc false
+    @behaviour RetroHexChat.Scraper.ImageFetcher
+
+    @impl true
+    def fetch(url, _opts) do
+      {:ok, %{body: "original", content_type: "image/jpeg", final_url: url, byte_size: 8}}
+    end
+  end
+
+  defmodule StaticImageThumbnailer do
+    @moduledoc false
+    @behaviour RetroHexChat.Scraper.ImageThumbnailer
+
+    @impl true
+    def thumbnail("original", _opts) do
+      {:ok,
+       %{
+         body: "thumb",
+         content_type: "image/jpeg",
+         extension: "jpg",
+         width: 640,
+         height: 360,
+         byte_size: 5
+       }}
+    end
+  end
+
   setup do
     start_supervised!(%{
       id: CountingClient,
@@ -64,6 +111,8 @@ defmodule RetroHexChat.ScraperTest do
     })
 
     previous = Application.get_env(:retro_hex_chat, :page_scraper)
+    previous_image_cache = Application.get_env(:retro_hex_chat, :scraped_image_cache)
+    previous_base_url = Application.get_env(:retro_hex_chat, :base_url)
     Cache.clear()
 
     on_exit(fn ->
@@ -73,6 +122,9 @@ defmodule RetroHexChat.ScraperTest do
         nil -> Application.delete_env(:retro_hex_chat, :page_scraper)
         module -> Application.put_env(:retro_hex_chat, :page_scraper, module)
       end
+
+      restore_env(:scraped_image_cache, previous_image_cache)
+      restore_env(:base_url, previous_base_url)
     end)
 
     :ok
@@ -135,6 +187,30 @@ defmodule RetroHexChat.ScraperTest do
 
       assert {:ok, _page} = Scraper.fetch(@url)
       assert CountingClient.count() == 1
+    end
+
+    test "can return the page with a local thumbnail already generated" do
+      Application.put_env(:retro_hex_chat, :page_scraper, ImageClient)
+      Application.put_env(:retro_hex_chat, :base_url, "https://chat.example.test")
+
+      Application.put_env(:retro_hex_chat, :scraped_image_cache,
+        storage: RetroHexChat.Chat.Attachments.TestStorage,
+        fetcher: StaticImageFetcher,
+        thumbnailer: StaticImageThumbnailer,
+        bucket: "retrohexchat-uploads"
+      )
+
+      assert {:ok, page} = Scraper.fetch(@url, thumbnail: :sync)
+
+      assert page.image_thumbnail_status == "ready"
+      assert page.image_thumbnail_storage_key =~ "scraper/images/"
+
+      metadata = Client.to_metadata(page)
+
+      assert metadata.image ==
+               "https://chat.example.test/chat/scraped-pages/#{page.url_hash}/thumbnail"
+
+      assert metadata.original_image == "https://cdn.example.com/story.jpg"
     end
   end
 
@@ -261,4 +337,7 @@ defmodule RetroHexChat.ScraperTest do
     assert {:ok, prepared} = Store.prepare_url(url)
     prepared
   end
+
+  defp restore_env(key, nil), do: Application.delete_env(:retro_hex_chat, key)
+  defp restore_env(key, value), do: Application.put_env(:retro_hex_chat, key, value)
 end

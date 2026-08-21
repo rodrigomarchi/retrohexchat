@@ -89,6 +89,63 @@ defmodule RetroHexChat.Scraper.StoreTest do
       assert page.tags == ["space", "research"]
       assert page.content_word_count == 742
     end
+
+    test "preserves a ready thumbnail when a refresh keeps the same source image" do
+      {:ok, page} =
+        Store.record_success(@url, %{
+          title: "with image",
+          image_url: "https://cdn.example.com/story.jpg"
+        })
+
+      {:ok, _page} =
+        Store.record_image_thumbnail_success(page, %{
+          source_url: "https://cdn.example.com/story.jpg",
+          storage_bucket: "retrohexchat-uploads",
+          storage_key: "scraper/images/story.jpg",
+          content_type: "image/jpeg",
+          byte_size: 42,
+          width: 640,
+          height: 360
+        })
+
+      {:ok, refreshed} =
+        Store.record_success(@url, %{
+          title: "refreshed",
+          image_url: "https://cdn.example.com/story.jpg"
+        })
+
+      assert refreshed.title == "refreshed"
+      assert refreshed.image_thumbnail_status == "ready"
+      assert refreshed.image_thumbnail_storage_key == "scraper/images/story.jpg"
+    end
+
+    test "drops a cached thumbnail when the source image changes" do
+      {:ok, page} =
+        Store.record_success(@url, %{
+          title: "with image",
+          image_url: "https://cdn.example.com/old.jpg"
+        })
+
+      {:ok, _page} =
+        Store.record_image_thumbnail_success(page, %{
+          source_url: "https://cdn.example.com/old.jpg",
+          storage_bucket: "retrohexchat-uploads",
+          storage_key: "scraper/images/old.jpg",
+          content_type: "image/jpeg",
+          byte_size: 42,
+          width: 640,
+          height: 360
+        })
+
+      {:ok, refreshed} =
+        Store.record_success(@url, %{
+          title: "refreshed",
+          image_url: "https://cdn.example.com/new.jpg"
+        })
+
+      assert refreshed.image_thumbnail_status == "missing"
+      assert refreshed.image_thumbnail_storage_key == nil
+    end
   end
 
   describe "freshness" do
@@ -263,6 +320,39 @@ defmodule RetroHexChat.Scraper.StoreTest do
 
       assert summary.candidates == 3
       assert summary.deleted == 2
+    end
+
+    test "returns thumbnail objects that must be removed from Garage" do
+      now = DateTime.utc_now()
+      long_ago = DateTime.add(now, -100 * 24 * 60 * 60, :second)
+
+      {:ok, page} =
+        Store.record_success(
+          "https://example.com/with-thumbnail",
+          %{title: "thumb", image_url: "https://cdn.example.com/thumb.jpg"},
+          now: now
+        )
+
+      {:ok, page} =
+        Store.record_image_thumbnail_success(page, %{
+          source_url: "https://cdn.example.com/thumb.jpg",
+          storage_bucket: "retrohexchat-uploads",
+          storage_key: "scraper/images/thumb.jpg",
+          content_type: "image/jpeg",
+          byte_size: 42,
+          width: 640,
+          height: 360
+        })
+
+      Store.touch_access(page, now: long_ago)
+
+      summary = Store.prune(now: now)
+
+      assert summary.deleted == 1
+
+      assert summary.image_thumbnail_objects == [
+               %{bucket: "retrohexchat-uploads", key: "scraper/images/thumb.jpg"}
+             ]
     end
   end
 end

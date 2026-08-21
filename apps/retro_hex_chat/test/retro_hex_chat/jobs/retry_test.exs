@@ -20,8 +20,8 @@ defmodule RetroHexChat.Jobs.RetryTest do
     end
   end
 
-  # Sixteen workers had these two callbacks written out; this is what each one
-  # answered before they were shared, read out of the tree as it was. It is the
+  # Workers had these two callbacks written out; this is what each one answered
+  # before they were shared, read out of the tree as it was. It is the
   # only thing standing between a mechanical rewrite and a mistyped number that
   # nothing else would notice — a job's retry pace is invisible until a queue
   # misbehaves in production.
@@ -39,6 +39,7 @@ defmodule RetroHexChat.Jobs.RetryTest do
     {RetroHexChat.Jobs.RegisteredNickExpiryWorker, 120_000, 900, 30},
     {RetroHexChat.Jobs.RSSPollWorker, 300_000, 30 * 60, 60},
     {RetroHexChat.Jobs.RuntimeStaleCleanupWorker, 120_000, 15 * 60, 60},
+    {RetroHexChat.Jobs.ScrapedImageWorker, 30_000, 5 * 60, 15},
     {RetroHexChat.Jobs.ScrapedPagePruneWorker, 60_000, 15 * 60, 60},
     {RetroHexChat.Jobs.ServerBanExpiryWorker, 60_000, 900, 30},
     {RetroHexChat.Jobs.TrustedDeviceExpiryWorker, 60_000, 15 * 60, 60}

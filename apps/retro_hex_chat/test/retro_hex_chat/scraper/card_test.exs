@@ -129,6 +129,48 @@ defmodule RetroHexChat.Scraper.CardTest do
       assert card =~ "![Reporter speaking with residents](<https://example.com/card.png>)"
     end
 
+    test "prefers a cached thumbnail over the original publisher image" do
+      card =
+        Card.markdown(%{
+          title: "A story",
+          cached_image: "https://chat.example.test/chat/scraped-pages/hash/thumbnail",
+          image: "https://publisher.example.com/large.jpg"
+        })
+
+      assert card =~ "](<https://chat.example.test/chat/scraped-pages/hash/thumbnail>)"
+      refute card =~ "publisher.example.com/large.jpg"
+    end
+
+    test "cached image policy never falls back to the publisher image" do
+      card =
+        Card.markdown(
+          %{
+            title: "A story",
+            image: "https://publisher.example.com/large.jpg"
+          },
+          image_policy: :cached
+        )
+
+      refute card =~ "!["
+      refute card =~ "publisher.example.com/large.jpg"
+    end
+
+    test "cached image policy renders the local placeholder route when present" do
+      card =
+        Card.markdown(
+          %{
+            title: "A story",
+            cached_image: "https://chat.example.test/chat/scraped-pages/hash/thumbnail",
+            original_image: "https://publisher.example.com/large.jpg",
+            image: "https://chat.example.test/chat/scraped-pages/hash/thumbnail"
+          },
+          image_policy: :cached
+        )
+
+      assert card =~ "](<https://chat.example.test/chat/scraped-pages/hash/thumbnail>)"
+      refute card =~ "publisher.example.com/large.jpg"
+    end
+
     test "the story links to the page's own address when it names no canonical one" do
       assert Card.markdown(page()) =~ "[Read full story](<#{@url}>)"
 
