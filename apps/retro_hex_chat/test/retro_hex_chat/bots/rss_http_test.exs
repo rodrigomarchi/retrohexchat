@@ -107,12 +107,19 @@ defmodule RetroHexChat.Bots.RSSHTTPTest do
     {:ok, url: "http://127.0.0.1:#{port}/feed.xml"}
   end
 
-  defp headlines do
+  # Waiting for the first headline is waiting on a poll that fetches over HTTP,
+  # parses and broadcasts — seconds when CI has three partitions on one machine.
+  # Draining the rest afterwards only has to outwait a broadcast already on its
+  # way, so the two get different budgets.
+  @first_headline_timeout 5_000
+  @drain_timeout 300
+
+  defp headlines(timeout \\ @first_headline_timeout) do
     receive do
       %{event: "new_message", payload: %{author: "HttpWireBot", content: content}} ->
-        [content | headlines()]
+        [content | headlines(@drain_timeout)]
     after
-      500 -> []
+      timeout -> []
     end
   end
 

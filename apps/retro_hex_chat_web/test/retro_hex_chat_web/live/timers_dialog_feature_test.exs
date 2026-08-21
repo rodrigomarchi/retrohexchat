@@ -50,7 +50,10 @@ defmodule RetroHexChatWeb.TimersDialogFeatureTest do
       |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/timer"})
 
-      assert_push_event(view, "window_command", %{action: "open", id: "timers"})
+      # `/timer` pushes clear_input and chat_scroll_reset before the window
+      # command, and ExUnit's default 100 ms is not enough to drain them on a
+      # box running four feature partitions.
+      assert_push_event(view, "window_command", %{action: "open", id: "timers"}, 1_000)
       assert has_element?(view, ~s([data-window-id="timers"][data-window-managed="true"]))
       assert render(view) =~ "No active timers. Click Add to schedule one."
     end

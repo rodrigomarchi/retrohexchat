@@ -628,6 +628,11 @@ defmodule RetroHexChat.GroupCall.RuntimeTest do
     end
 
     test "marks a briefly disconnected participant as failed after reconnect timeout" do
+      # Both states have to be observable, and the suite's 30 ms timeout closes
+      # the first one before a loaded CI box can look. The room captures its
+      # config at start, so this goes before the call is created.
+      Application.put_env(:retro_hex_chat, :group_call_reconnect_timeout_ms, 500)
+
       ctx = create_call_with_member("reconnect-timeout", "member")
       payload = join_call(ctx)
 
@@ -636,7 +641,7 @@ defmodule RetroHexChat.GroupCall.RuntimeTest do
       assert %{status: "disconnected"} =
                wait_for_participant_status(payload.participant.id, "disconnected")
 
-      failed = wait_for_participant_status(payload.participant.id, "failed")
+      failed = wait_for_participant_status(payload.participant.id, "failed", 150)
 
       assert failed.left_at
       assert failed.reason == "reconnect_timeout"

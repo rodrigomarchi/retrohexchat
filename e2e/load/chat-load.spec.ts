@@ -534,47 +534,6 @@ test("realistic mixed load, chat-focused", async ({ browser }) => {
     );
     if (at + RAMP_BATCH < roles.length) await sleep(rand(500, 1_500));
   }
-  // The same Performance API numbers Grafana Faro reports as RUM, read from
-  // every simulated browser once it is on /chat. Recorded rather than asserted:
-  // a run against production is the one place these are measured under real
-  // concurrency, and correlating a regression with Loki otherwise depends on
-  // nothing but the wall clock. `e2e/tests/perf-payload.spec.ts` holds the same
-  // numbers to a budget against a local server.
-  const perfSamples: PerfSample[] = [];
-  for (const user of users) {
-    try {
-      perfSamples.push(await samplePerf(user.page));
-    } catch (error) {
-      user.errors.push(`perf sample failed: ${String(error)}`);
-    }
-  }
-  const perfStat = (key: keyof PerfSample) => {
-    const xs = perfSamples
-      .map((sample) => sample[key])
-      .filter((value): value is number => typeof value === "number")
-      .sort((a, b) => a - b);
-    return {
-      measured: xs.length,
-      p50: percentile(xs, 50),
-      p95: percentile(xs, 95),
-    };
-  };
-  const vitals = {
-    domNodes: perfStat("domNodes"),
-    navBytes: perfStat("navBytes"),
-    ttfb: perfStat("ttfb"),
-    fcp: perfStat("fcp"),
-    lcp: perfStat("lcp"),
-  };
-  console.log(
-    `[load] chat page (p50/p95): ` +
-      `dom ${vitals.domNodes.p50}/${vitals.domNodes.p95} nodes · ` +
-      `html ${vitals.navBytes.p50}/${vitals.navBytes.p95} B · ` +
-      `ttfb ${Math.round(vitals.ttfb.p50)}/${Math.round(vitals.ttfb.p95)} ms · ` +
-      `fcp ${Math.round(vitals.fcp.p50)}/${Math.round(vitals.fcp.p95)} ms · ` +
-      `lcp ${Math.round(vitals.lcp.p50)}/${Math.round(vitals.lcp.p95)} ms`,
-  );
-
   const connectFailures = connectErrors.length;
   if (connectFailures > 0) {
     const byStep: Record<string, number> = {};
@@ -627,6 +586,49 @@ test("realistic mixed load, chat-focused", async ({ browser }) => {
     }
   }
 
+  // The same Performance API numbers Grafana Faro reports as RUM, read from
+  // every simulated browser. Recorded rather than asserted: a run against
+  // production is the one place these are measured under real concurrency, and
+  // correlating a regression with Loki otherwise depends on nothing but the
+  // wall clock. `e2e/tests/perf-payload.spec.ts` holds the same numbers to a
+  // budget against a local server.
+  //
+  // Collected concurrently and outside the ramp window: sampling 20 contexts in
+  // sequence added half a minute to `rampMs` and to a timeout the WAN ramp
+  // already fills.
+  const collectVitals = async () => {
+    const samples = (
+      await Promise.all(
+        users.map((user) =>
+          samplePerf(user.page).catch((error) => {
+            user.errors.push(`perf sample failed: ${String(error)}`);
+            return null;
+          }),
+        ),
+      )
+    ).filter((sample): sample is PerfSample => sample !== null);
+
+    const stat = (key: keyof PerfSample) => {
+      const xs = samples
+        .map((sample) => sample[key])
+        .filter((value): value is number => typeof value === "number")
+        .sort((a, b) => a - b);
+      return {
+        measured: xs.length,
+        p50: percentile(xs, 50),
+        p95: percentile(xs, 95),
+      };
+    };
+
+    return {
+      domNodes: stat("domNodes"),
+      navBytes: stat("navBytes"),
+      ttfb: stat("ttfb"),
+      fcp: stat("fcp"),
+      lcp: stat("lcp"),
+    };
+  };
+
   const rampMs = Date.now() - rampStart;
   console.log(
     `[load] ramp-up done in ${Math.round(rampMs / 1000)}s, steady state begins`,
@@ -655,6 +657,7 @@ test("realistic mixed load, chat-focused", async ({ browser }) => {
     );
     await sleep(3_000); // brief settle once everyone is up
     const cycles = await runReconnectStorm(users, RECONNECT_CYCLES);
+    const vitals = await collectVitals();
     const report = {
       target: BASE_URL,
       startedAt: new Date(rampStart).toISOString(),
@@ -737,6 +740,7 @@ test("realistic mixed load, chat-focused", async ({ browser }) => {
     .filter((u) => u.errors.length > 0)
     .map((u) => ({ nick: u.nick, role: u.role, errors: u.errors }));
 
+  const vitals = await collectVitals();
   const report = {
     target: BASE_URL,
     startedAt: new Date(rampStart).toISOString(),
@@ -768,6 +772,15 @@ test("realistic mixed load, chat-focused", async ({ browser }) => {
   const reportPath = `test-results/load-report-${runId}.json`;
   fs.writeFileSync(reportPath, JSON.stringify(report, null, 2));
 
+  console.log(
+    `[load] chat page (p50/p95): ` +
+      `dom ${vitals.domNodes.p50}/${vitals.domNodes.p95} nodes · ` +
+      `html ${vitals.navBytes.p50}/${vitals.navBytes.p95} B · ` +
+      `ttfb ${Math.round(vitals.ttfb.p50)}/${Math.round(vitals.ttfb.p95)} ms · ` +
+      `fcp ${Math.round(vitals.fcp.p50)}/${Math.round(vitals.fcp.p95)} ms · ` +
+      `lcp ${Math.round(vitals.lcp.p50)}/${Math.round(vitals.lcp.p95)} ms ` +
+      `(${vitals.lcp.measured}/${users.length} measured)`,
+  );
   console.log(
     `[load] connected=${users.length}/${USERS} failed=${connectFailures} ` +
       `sent=${totalSent} measured=${latencies.length} lost=${lost} ` +

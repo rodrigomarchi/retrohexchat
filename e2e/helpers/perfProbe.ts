@@ -21,27 +21,54 @@ export type PerfSample = {
 
 /** Reads the sample for whatever is currently loaded in `page`. */
 export async function samplePerf(page: Page): Promise<PerfSample> {
-  return page.evaluate(() => {
-    const nav = performance.getEntriesByType("navigation")[0] as
-      | PerformanceNavigationTiming
-      | undefined;
-    const paint = performance
-      .getEntriesByType("paint")
-      .find((entry) => entry.name === "first-contentful-paint");
-    const lcpEntries = performance.getEntriesByType("largest-contentful-paint");
-    const lcp = lcpEntries.length
-      ? lcpEntries[lcpEntries.length - 1]
-      : undefined;
+  return page.evaluate(
+    () =>
+      new Promise<PerfSample>((resolve) => {
+        const nav = performance.getEntriesByType("navigation")[0] as
+          | PerformanceNavigationTiming
+          | undefined;
+        const paint = performance
+          .getEntriesByType("paint")
+          .find((entry) => entry.name === "first-contentful-paint");
 
-    return {
-      domNodes: document.querySelectorAll("*").length,
-      navBytes: nav?.decodedBodySize ?? 0,
-      navTransferBytes: nav?.transferSize ?? 0,
-      ttfb: nav ? nav.responseStart - nav.requestStart : 0,
-      fcp: paint ? paint.startTime : null,
-      lcp: lcp ? lcp.startTime : null,
-    };
-  });
+        const shape = (lcp: number | null): PerfSample => ({
+          domNodes: document.querySelectorAll("*").length,
+          navBytes: nav?.decodedBodySize ?? 0,
+          navTransferBytes: nav?.transferSize ?? 0,
+          ttfb: nav ? nav.responseStart - nav.requestStart : 0,
+          fcp: paint ? paint.startTime : null,
+          lcp,
+        });
+
+        // `getEntriesByType` never returns largest-contentful-paint — the entry
+        // only reaches a PerformanceObserver, and only a buffered one replays
+        // the paints that already happened. Reading it the other way reported
+        // an LCP of 0 for every user of the first instrumented load test.
+        let observer: PerformanceObserver;
+        const done = (lcp: number | null) => {
+          observer?.disconnect();
+          resolve(shape(lcp));
+        };
+
+        try {
+          observer = new PerformanceObserver((list) => {
+            const entries = list.getEntries();
+            if (entries.length) done(entries[entries.length - 1].startTime);
+          });
+          observer.observe({
+            type: "largest-contentful-paint",
+            buffered: true,
+          });
+        } catch {
+          done(null);
+          return;
+        }
+
+        // A page that has painted nothing large enough never fires, so the
+        // sample must not hang the caller waiting for it.
+        setTimeout(() => done(null), 500);
+      }),
+  );
 }
 
 /**

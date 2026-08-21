@@ -17,8 +17,12 @@ export default defineConfig({
   fullyParallel: false,
   workers: 1,
   retries: 0,
-  // Ramp-up + steady state + wind-down/report margin.
-  timeout: durationMs + 300_000,
+  // Ramp-up + steady state + wind-down/report margin. The margin is not slack:
+  // 20 users ramping against production take ~3 min of WAN round trips before
+  // steady state starts, and tearing down 20 browser contexts afterwards is not
+  // instant. A run that reaches steady state and then dies on the clock throws
+  // away the whole measurement.
+  timeout: durationMs + 480_000,
   // WAN latency + many tabs sharing one generator machine: the default 5s
   // expect timeout is too tight during ramp-up.
   expect: { timeout: 15_000 },
