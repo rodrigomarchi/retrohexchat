@@ -23,6 +23,10 @@ defmodule RetroHexChatWeb.ChatLive.ConnectionEvents do
   def handle_event("rum_session", %{"id" => id}, socket)
       when is_binary(id) and id != "" and byte_size(id) <= 64 do
     Logger.metadata(rum_session_id: id)
+    # One line per mount, and the only one guaranteed to exist: a session that
+    # goes on to log nothing would otherwise leave no record that the two sides
+    # were ever joined.
+    Logger.info("rum_session_adopted")
     {:halt, socket}
   end
 

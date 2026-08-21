@@ -154,10 +154,16 @@ config :esbuild,
     env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
   ]
 
-# Configure Elixir's Logger
+# Configure Elixir's Logger.
+#
+# `rum_session_id` is the browser's Grafana Faro session, adopted by the chat
+# LiveView. The chat rides a websocket, so no request header carries it across;
+# emitting it here is what lets a browser session and the server work it caused
+# be read side by side in Loki. A key absent from this list is dropped by the
+# formatter no matter who called `Logger.metadata/1`.
 config :logger, :default_formatter,
   format: "$time $metadata[$level] $message\n",
-  metadata: [:request_id]
+  metadata: [:request_id, :rum_session_id]
 
 # Metrics history for LiveDashboard
 config :live_dashboard_history, LiveDashboardHistory,
