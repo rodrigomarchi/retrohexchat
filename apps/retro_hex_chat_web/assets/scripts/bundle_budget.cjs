@@ -23,6 +23,11 @@ const ENTRIES = [
     chunkNames: "chunks/public-[name]-[hash]",
     metafile: path.join(OUTDIR, "meta-public.json"),
   },
+  {
+    entry: "js/faro_entry.js",
+    chunkNames: "chunks/faro-[name]-[hash]",
+    metafile: path.join(OUTDIR, "meta-faro.json"),
+  },
 ];
 
 // A budget catches regressions; it does not describe today's size. Each number
@@ -40,6 +45,13 @@ const BUDGETS = {
   // 10% of app.js is the whole reason the connect LiveSocket is a lazy chunk.
   publicEntry: 80 * KIB,
   publicEntryGzip: 18 * KIB,
+  // The RUM entrypoint is a gate, not a bundle: it reads three metas, decides
+  // whether this page sends telemetry at all, and only then imports the SDK.
+  // It went unmeasured until 2026-08-20, by which time it had grown to 262 KB
+  // — larger than app.js — and was downloading on every page view regardless
+  // of whether RUM was even enabled. Keep it small enough that it cannot.
+  faroEntry: 4 * KIB,
+  faroEntryGzip: 2 * KIB,
 };
 
 // Chunks that legitimately exceed the generic feature budget. The generic
@@ -62,6 +74,11 @@ const CHUNK_OVERRIDES = [
     budget: 85 * KIB,
     reason: "SFU client: transport, simulcast, device management, layout engine",
   },
+  {
+    pattern: /^faro-faro_sdk-/,
+    budget: 780 * KIB,
+    reason: "Grafana Faro SDK + OTel tracing: fetched only when RUM is on, and only once idle",
+  },
 ];
 
 const LOCALE_CHUNK_PATTERN =
@@ -83,6 +100,7 @@ function errorLine(message) {
 function budgetFor(filename) {
   if (filename === "app.js") return BUDGETS.entry;
   if (filename === "public_pages.js") return BUDGETS.publicEntry;
+  if (filename === "faro_entry.js") return BUDGETS.faroEntry;
 
   const override = CHUNK_OVERRIDES.find((entry) => entry.pattern.test(filename));
   if (override) return override.budget;
@@ -166,6 +184,7 @@ function checkBudget(rows) {
 
   checkGzipEntry(rows, "app.js", BUDGETS.entryGzip, failures);
   checkGzipEntry(rows, "public_pages.js", BUDGETS.publicEntryGzip, failures);
+  checkGzipEntry(rows, "faro_entry.js", BUDGETS.faroEntryGzip, failures);
 
   for (const row of rows) {
     if (row.overBudget) {

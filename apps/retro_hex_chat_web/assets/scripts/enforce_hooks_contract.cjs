@@ -16,6 +16,10 @@ const ALLOWED_DYNAMIC_IMPORT_FILES = new Set([
   // The public pages defer their LiveSocket until a reader touches the connect
   // window, so the critical bundle stays a fraction of the app's.
   "js/public_pages.js",
+  // The RUM entrypoint is a gate: it answers from three metas and the hostname
+  // before importing anything, so a page with RUM off never fetches the 262 KB
+  // Faro SDK, and a page with it on waits for idle first.
+  "js/faro_entry.js",
 ]);
 
 const ALLOWED_LAZY_FACADE_FILES = new Set([

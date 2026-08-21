@@ -54,6 +54,26 @@ export function readFaroConfig(doc) {
 }
 
 /**
+ * Whether this page should have RUM at all.
+ *
+ * Answerable from the meta tags and the hostname alone, which is the point:
+ * `faro_gate.js` asks before importing the SDK, so a disabled page never pays
+ * for 83 KB of telemetry it will not send. Dev traffic never ships, and a
+ * missing collector fails closed.
+ *
+ * @param {{ location: { hostname: string, protocol: string } }} win - Window-like object.
+ * @param {{ querySelector: (selector: string) => ({ content: string } | null) }} doc - Document-like object.
+ * @returns {boolean}
+ */
+export function rumEligible(win, doc) {
+  const config = readFaroConfig(doc);
+  const { hostname, protocol } = win.location;
+  const isLocal = hostname === "localhost" || hostname === "127.0.0.1" || protocol === "file:";
+
+  return config.enabled && !isLocal && Boolean(config.url);
+}
+
+/**
  * Build a Faro bootstrapper bound to an injected SDK.
  *
  * `boot()` is a no-op (returns null) on localhost, when disabled, or when no
@@ -75,11 +95,9 @@ export function createFaro({ initializeFaro, buildInstrumentations, win, doc }) 
    * @returns {unknown | null} The Faro instance, or null when it did not start.
    */
   function boot() {
-    const config = readFaroConfig(doc);
-    const { hostname, protocol } = win.location;
-    const isLocal = hostname === "localhost" || hostname === "127.0.0.1" || protocol === "file:";
+    if (!rumEligible(win, doc)) return null;
 
-    if (!config.enabled || isLocal || !config.url) return null;
+    const config = readFaroConfig(doc);
 
     try {
       return initializeFaro({

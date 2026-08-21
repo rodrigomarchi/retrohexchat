@@ -2,6 +2,7 @@ import { Browser, BrowserContext, Page, expect, test } from "@playwright/test";
 import fs from "node:fs";
 import { ChatPage } from "../pages/ChatPage";
 import { ConnectPage } from "../pages/ConnectPage";
+import { samplePerf, type PerfSample } from "../helpers/perfProbe";
 import { installSyntheticMedia } from "../helpers/syntheticMedia";
 
 // Realistic mixed-flow load scenario, chat-focused. One browser process,
@@ -533,6 +534,47 @@ test("realistic mixed load, chat-focused", async ({ browser }) => {
     );
     if (at + RAMP_BATCH < roles.length) await sleep(rand(500, 1_500));
   }
+  // The same Performance API numbers Grafana Faro reports as RUM, read from
+  // every simulated browser once it is on /chat. Recorded rather than asserted:
+  // a run against production is the one place these are measured under real
+  // concurrency, and correlating a regression with Loki otherwise depends on
+  // nothing but the wall clock. `e2e/tests/perf-payload.spec.ts` holds the same
+  // numbers to a budget against a local server.
+  const perfSamples: PerfSample[] = [];
+  for (const user of users) {
+    try {
+      perfSamples.push(await samplePerf(user.page));
+    } catch (error) {
+      user.errors.push(`perf sample failed: ${String(error)}`);
+    }
+  }
+  const perfStat = (key: keyof PerfSample) => {
+    const xs = perfSamples
+      .map((sample) => sample[key])
+      .filter((value): value is number => typeof value === "number")
+      .sort((a, b) => a - b);
+    return {
+      measured: xs.length,
+      p50: percentile(xs, 50),
+      p95: percentile(xs, 95),
+    };
+  };
+  const vitals = {
+    domNodes: perfStat("domNodes"),
+    navBytes: perfStat("navBytes"),
+    ttfb: perfStat("ttfb"),
+    fcp: perfStat("fcp"),
+    lcp: perfStat("lcp"),
+  };
+  console.log(
+    `[load] chat page (p50/p95): ` +
+      `dom ${vitals.domNodes.p50}/${vitals.domNodes.p95} nodes · ` +
+      `html ${vitals.navBytes.p50}/${vitals.navBytes.p95} B · ` +
+      `ttfb ${Math.round(vitals.ttfb.p50)}/${Math.round(vitals.ttfb.p95)} ms · ` +
+      `fcp ${Math.round(vitals.fcp.p50)}/${Math.round(vitals.fcp.p95)} ms · ` +
+      `lcp ${Math.round(vitals.lcp.p50)}/${Math.round(vitals.lcp.p95)} ms`,
+  );
+
   const connectFailures = connectErrors.length;
   if (connectFailures > 0) {
     const byStep: Record<string, number> = {};
@@ -622,6 +664,7 @@ test("realistic mixed load, chat-focused", async ({ browser }) => {
       connectFailures,
       rampBatch: RAMP_BATCH,
       rampMs,
+      chatPageVitals: vitals,
       reconnectCycles: cycles,
     };
     fs.mkdirSync("test-results", { recursive: true });
@@ -708,6 +751,7 @@ test("realistic mixed load, chat-focused", async ({ browser }) => {
     durationMs: DURATION_MS,
     messagesSent: totalSent,
     connectPhasesMs: timingSummary,
+    chatPageVitals: vitals,
     delivery: {
       measured: latencies.length,
       lost,

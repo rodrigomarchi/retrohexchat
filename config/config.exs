@@ -145,9 +145,11 @@ config :esbuild,
   ],
   # Standalone Grafana Faro RUM module, loaded by every layout that opts into
   # real-user monitoring so the SDK stays out of each page's own bundle.
+  # Split: the entry is a gate that decides whether RUM runs at all, so the SDK
+  # behind it must be a dynamic chunk rather than part of the download.
   retro_hex_chat_web_faro_js: [
     args:
-      ~w(js/faro_entry.js --bundle --target=es2022 --format=esm --outdir=../priv/static/assets/js --external:/fonts/* --external:/images/*),
+      ~w(js/faro_entry.js --bundle --target=es2022 --format=esm --splitting --chunk-names=chunks/faro-[name]-[hash] --outdir=../priv/static/assets/js --external:/fonts/* --external:/images/*),
     cd: Path.expand("../apps/retro_hex_chat_web/assets", __DIR__),
     env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
   ]

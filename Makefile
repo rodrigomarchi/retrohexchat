@@ -1,7 +1,7 @@
 .PHONY: help setup deps db.setup db.create db.migrate db.rollback db.reset db.seed \
        db.gen.migration server iex routes \
        test test.stale test.unit test.integration test.liveview test.feature test.all test.cover \
-       e2e e2e.headless e2e.changed e2e.shard e2e.smoke e2e.smoke.connect e2e.smoke.chat e2e.smoke.dialogs e2e.smoke.i18n e2e.smoke.calls e2e.smoke.mobile e2e.ui e2e.shots e2e.install e2e.db.setup load.test \
+       e2e e2e.headless e2e.changed e2e.shard e2e.smoke e2e.smoke.connect e2e.smoke.chat e2e.smoke.dialogs e2e.smoke.i18n e2e.smoke.calls e2e.smoke.mobile e2e.smoke.perf e2e.ui e2e.shots e2e.install e2e.db.setup load.test \
        test.cover.all test.domain test.domain.stale test.web test.web.stale test.failed test.seed test.file test.line \
        test.js test.js.changed test.js.related test.js.watch \
        ci ci.quick ci.changed ci.serial ci.quick.serial ci.partition-profile ci.partition-profile.plan \
@@ -29,6 +29,7 @@ E2E_SMOKE_DIALOGS_ARGS = tests/chat-dialog-close.spec.ts
 E2E_SMOKE_I18N_ARGS = tests/i18n.spec.ts --grep "switches the connect UI"
 E2E_SMOKE_CALLS_ARGS = tests/chat-p2p.spec.ts tests/chat-group-call.spec.ts --grep "accepting from the PM header|pre-join dialog keeps preview"
 E2E_SMOKE_MOBILE_ARGS = tests/chat-mobile-desktop.spec.ts --grep "shows one fullscreen window"
+E2E_SMOKE_PERF_ARGS = tests/perf-payload.spec.ts tests/perf-critical-path.spec.ts
 I18N_REQUIRED_LOCALES = pt_BR,es,fr,de,ja,zh_hans,id,ru,zh_hant,pt_PT,it,pl,nl
 
 ifneq (,$(wildcard .env))
@@ -245,7 +246,7 @@ e2e.shard: ## Run a Playwright shard (usage: make e2e.shard SHARD=1/2)
 	cd e2e && $(E2E_ENV) npx playwright test --shard=$(SHARD)
 
 e2e.smoke: ## Run a named Playwright smoke surface (usage: make e2e.smoke SURFACE=connect)
-	@test -n "$(SURFACE)" || { echo "usage: make e2e.smoke SURFACE=connect|chat|dialogs|i18n|calls|mobile"; exit 2; }
+	@test -n "$(SURFACE)" || { echo "usage: make e2e.smoke SURFACE=connect|chat|dialogs|i18n|calls|mobile|perf"; exit 2; }
 	$(MAKE) e2e.smoke.$(SURFACE)
 
 e2e.smoke.connect: ## Run connect-flow browser smoke
@@ -271,6 +272,10 @@ e2e.smoke.calls: ## Run P2P/group-call browser smoke
 e2e.smoke.mobile: ## Run mobile-layout browser smoke
 	$(E2E_MIX) assets.build
 	cd e2e && $(E2E_ENV) npx playwright test $(E2E_SMOKE_MOBILE_ARGS)
+
+e2e.smoke.perf: ## Run the payload and critical-path performance budgets
+	$(E2E_MIX) assets.build
+	cd e2e && $(E2E_ENV) npx playwright test $(E2E_SMOKE_PERF_ARGS)
 
 e2e.ui: ## Run Playwright in interactive UI mode (play/pause/inspect)
 	cd e2e && $(E2E_ENV) npm run test:ui

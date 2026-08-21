@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **216 spec files** under `e2e/tests/`.
-- **444 Playwright `test()` cases**.
-- **436 documented flows**, 435 done, 1 not done.
+- **217 spec files** under `e2e/tests/`.
+- **448 Playwright `test()` cases**.
+- **440 documented flows**, 439 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -718,6 +718,10 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | PF4 | The sprite really resolves — a referenced icon has painted pixels | `tests/perf-payload.spec.ts` | done |
 | PF5 | The second page pays nothing for the sprite | `tests/perf-payload.spec.ts` | done |
 | PF6 | The sprite is preloaded in the head, not discovered mid-body | `tests/perf-payload.spec.ts` | done |
+| PF7 | With RUM off, the Faro SDK is never downloaded | `tests/perf-critical-path.spec.ts` | done |
+| PF8 | The RUM entrypoint stays a gate and never carries the SDK | `tests/perf-critical-path.spec.ts` | done |
+| PF9 | No third-party stylesheet blocks the first paint | `tests/perf-critical-path.spec.ts` | done |
+| PF10 | /connect paints inside its FCP and LCP budget | `tests/perf-critical-path.spec.ts` | done |
 
 ## Spec files with no documented flows
 

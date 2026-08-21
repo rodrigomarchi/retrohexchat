@@ -692,6 +692,13 @@ defmodule RetroHexChat.GroupCall.RuntimeTest do
     end
 
     test "records ICE failure as a specific disconnect reason before reconnect timeout" do
+      # The suite runs a 30 ms reconnect timeout so other cases reach "failed"
+      # without waiting. This one is about the state *before* that timer, and
+      # 30 ms is not a window a CI box running three partitions can be relied on
+      # to look inside — the room captures its config at start, so the wider
+      # timeout has to be in place before the call is created.
+      Application.put_env(:retro_hex_chat, :group_call_reconnect_timeout_ms, 500)
+
       ctx = create_call_with_member("ice-failed", "member")
       payload = join_call(ctx)
 
@@ -702,7 +709,7 @@ defmodule RetroHexChat.GroupCall.RuntimeTest do
 
       assert disconnected.reason == "ice_connection_failed"
 
-      failed = wait_for_participant_status(payload.participant.id, "failed")
+      failed = wait_for_participant_status(payload.participant.id, "failed", 150)
 
       assert failed.left_at
       assert failed.reason == "reconnect_timeout"
