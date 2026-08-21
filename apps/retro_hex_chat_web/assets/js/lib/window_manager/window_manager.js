@@ -226,6 +226,14 @@ const WindowManagerCore = {
       ephemeral: d.windowEphemeral === "true",
       minW: int(d.windowMinWidth, 220),
       minH: int(d.windowMinHeight, 120),
+      // The registered size, kept beside the live one: a filled window
+      // recomputes from this every time the workspace changes, and reading the
+      // live size back would ratchet it up and never let it shrink again.
+      baseW: int(d.windowDefaultWidth, 360),
+      baseH: d.windowDefaultHeight ? int(d.windowDefaultHeight, null) : null,
+      // Fraction of the workspace a centered window opens at, when its
+      // registered size is smaller than that. Zero means "the registered size".
+      fill: float(d.windowDefaultFill, 0),
       state: {
         open,
         minimized: false,
@@ -1284,6 +1292,15 @@ const WindowManagerCore = {
         // outside an `overflow-hidden` workspace with no way to drag it back.
         const { w, h } = this.workspaceSize();
         if (st.centered) {
+          // A filled window is sized off the workspace, so a big screen gets a
+          // big window and a laptop gets one that still fits. It rides on
+          // `centered` rather than carrying a flag of its own: both mean "this
+          // geometry belongs to the workspace until you take it", and every
+          // place that hands ownership over already clears this one.
+          if (win.fill > 0) {
+            st.w = fitToWorkspace(win.baseW, w, win.fill);
+            if (win.baseH) st.h = fitToWorkspace(win.baseH, h, win.fill);
+          }
           // Auto-height windows have no --win-h; measure the laid-out element
           // (u-hidden was removed above). A zero-size workspace at mount is fine:
           // the workspace ResizeObserver re-runs applyAll once it has real
@@ -1294,7 +1311,10 @@ const WindowManagerCore = {
         }
         st.x = clamp(st.x, 0, Math.max(0, w - EDGE_MARGIN));
         st.y = clamp(st.y, 0, Math.max(0, h - EDGE_MARGIN));
-        this.setGeom(el, st.x, st.y, st.w, st.h, st.z);
+        // Only what is drawn is clamped to the workspace, never `st` itself: a
+        // window opened on a wide screen and then squeezed has to come back the
+        // size it was, not the size the narrow moment allowed.
+        this.setGeom(el, st.x, st.y, Math.min(st.w, w), st.h && Math.min(st.h, h), st.z);
       }
     }
 
@@ -1629,6 +1649,18 @@ const WindowManagerCore = {
 function int(value, fallback) {
   const n = parseInt(value, 10);
   return Number.isNaN(n) ? fallback : n;
+}
+
+function float(value, fallback) {
+  const n = parseFloat(value);
+  return Number.isNaN(n) ? fallback : n;
+}
+
+// The workspace share a window opens at, never below the size it registered and
+// never past the workspace itself. `preferred > available` collapses to the
+// workspace, which is what keeps a big window off a small screen.
+function fitToWorkspace(preferred, available, ratio) {
+  return Math.min(Math.max(Math.round(available * ratio), preferred), available);
 }
 
 function clamp(value, min, max) {

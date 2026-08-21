@@ -1,7 +1,7 @@
 defmodule RetroHexChatWeb.ChatDesktopShellTest do
   @moduledoc """
   The chat page renders as a Win98 desktop: the whole chat layout lives in one
-  pinned, maximized-by-default window over a taskbar with a tray clock.
+  pinned window over a taskbar with a tray clock.
   """
   use RetroHexChatWeb.LiveViewCase, async: false
 
@@ -34,13 +34,32 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
              )
     end
 
-    test "the chat window is pinned and maximized by default", %{conn: conn} do
+    test "the chat window is pinned and opens windowed, not maximized", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/chat")
 
       assert has_element?(
                view,
-               ~s(#chat-desktop [data-window-id="chat"][data-window-pinned="true"][data-window-default-maximized="true"])
+               ~s(#chat-desktop [data-window-id="chat"][data-window-pinned="true"][data-window-default-maximized="false"])
              )
+
+      # Windowed only means something if it opens somewhere sensible: centered,
+      # and sized off the workspace rather than in fixed pixels, with the
+      # registry's geometry as the floor it never opens below. Without the
+      # geometry reaching the DOM the manager falls back to its own 360px
+      # default and the chat opens as a sliver.
+      assert has_element?(
+               view,
+               ~s([data-window-id="chat"][data-window-default-centered="true"][data-window-default-fill="0.86"])
+             )
+
+      assert has_element?(
+               view,
+               ~s([data-window-id="chat"][data-window-default-width="920"][data-window-default-height="580"])
+             )
+
+      # Maximize is how you get the old behaviour back, so the control has to
+      # be there.
+      assert has_element?(view, ~s([data-window-id="chat"] [data-window-control="maximize"]))
 
       # Pinned: no close control in the window title bar.
       refute has_element?(view, ~s([data-window-id="chat"] [data-window-control="close"]))

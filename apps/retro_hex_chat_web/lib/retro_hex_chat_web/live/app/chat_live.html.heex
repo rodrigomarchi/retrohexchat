@@ -61,11 +61,19 @@
       />
     </:header>
 
-    <%!-- The whole chat surface is one pinned window: maximized by default,
-          restorable/draggable/resizable, never closable. --%>
+    <%!-- The whole chat surface is one pinned window: maximizable, draggable,
+          resizable, never closable. It opens windowed rather than maximized,
+          because maximized hid the desktop it sits on — there is a taskbar, a
+          Start menu and other windows under there.
+
+          Centered and filled rather than sized in pixels: this is the window
+          the reader spends the session in, so it takes most of whatever screen
+          it is given and still fits a laptop. `WindowRegistry`'s geometry
+          becomes the floor it never opens below. --%>
     <.desktop_window
       {WindowRegistry.attrs("chat")}
-      default_maximized
+      default_centered
+      default_fill={0.86}
       body_class="flex flex-col min-h-0 p-0 overflow-hidden"
       data-testid="chat-window"
     >

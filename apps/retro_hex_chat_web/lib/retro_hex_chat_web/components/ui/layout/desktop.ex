@@ -201,6 +201,13 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
       "center in the workspace when no remembered layout exists (recomputed on workspace resize); " <>
         "touching the window, cascade/tile or a saved position takes over"
 
+  attr :default_fill, :float,
+    default: 0.0,
+    doc:
+      "with default_centered: open at this share of the workspace in both axes, never smaller " <>
+        "than width/height and never larger than the workspace, so one window reads the same on " <>
+        "a laptop and on a large display. 0.0 keeps the registered size"
+
   attr :default_x, :integer, default: 24
   attr :default_y, :integer, default: 24
   attr :width, :integer, default: 360
@@ -245,6 +252,7 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
       data-window-initial-open={to_string(@open)}
       data-window-default-maximized={to_string(@default_maximized)}
       data-window-default-centered={to_string(@default_centered)}
+      data-window-default-fill={@default_fill > 0.0 && to_string(@default_fill)}
       data-window-default-x={@default_x}
       data-window-default-y={@default_y}
       data-window-default-width={@width}

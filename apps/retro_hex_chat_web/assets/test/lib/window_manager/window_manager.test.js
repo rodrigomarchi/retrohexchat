@@ -6,7 +6,14 @@ import {
 
 function windowMarkup(
   id,
-  { pinned = false, open = true, defaultMaximized = false, defaultCentered = false } = {},
+  {
+    pinned = false,
+    open = true,
+    defaultMaximized = false,
+    defaultCentered = false,
+    defaultFill = null,
+    defaultHeight = null,
+  } = {},
 ) {
   const controls = pinned
     ? `<button data-window-control="minimize"></button>
@@ -22,6 +29,8 @@ function windowMarkup(
          data-window-initial-open="${open}" data-window-default-maximized="${defaultMaximized}"
          data-window-default-centered="${defaultCentered}"
          data-window-default-x="20" data-window-default-y="20"
+         ${defaultFill ? `data-window-default-fill="${defaultFill}"` : ""}
+         ${defaultHeight ? `data-window-default-height="${defaultHeight}"` : ""}
          data-window-default-width="300" data-window-min-width="200" data-window-min-height="120">
       <div data-window-titlebar>${controls}</div>
       <div data-window-content></div>
@@ -610,6 +619,106 @@ describe("WindowManager", () => {
 
       expect(panelHidden()).toBe(true);
       expect(el.querySelectorAll('[data-window][data-window-open="true"]').length).toBe(before);
+    });
+  });
+
+  // A window the reader lives in should take most of whatever screen it is
+  // given and still fit a laptop, which a size in pixels cannot do. `fill`
+  // rides on `centered` — both mean "this geometry belongs to the workspace
+  // until you take it" — so everything that already hands ownership over
+  // (drag, resize, tile, a saved layout) ends it for free.
+  describe("workspace-filled windows", () => {
+    function filled(size, opts = {}) {
+      document.body.innerHTML = "";
+      const el = document.createElement("div");
+      el.className = "desktop";
+      el.innerHTML = `<div class="desktop__workspace">${windowMarkup("fill", {
+        open: true,
+        defaultCentered: true,
+        defaultFill: 0.8,
+        ...opts,
+      })}</div>`;
+      document.body.appendChild(el);
+
+      const wm = createWindowManager(el);
+      wm.mount();
+      wm.stacked = false;
+      wm.workspaceSize = () => size;
+      wm.applyAll();
+      return wm;
+    }
+
+    it("opens at its share of a large workspace", () => {
+      const wm = filled({ w: 2000, h: 1200 }, { defaultHeight: 400 });
+
+      expect(wm.windows.fill.state.w).toBe(1600);
+      expect(wm.windows.fill.state.h).toBe(960);
+    });
+
+    it("never opens below the size it registered", () => {
+      // 0.8 of 300 is 240, under the registered 300 — the registered size wins.
+      const wm = filled({ w: 375, h: 800 }, { defaultHeight: 400 });
+
+      expect(wm.windows.fill.state.w).toBe(300);
+    });
+
+    it("never opens larger than the workspace", () => {
+      const wm = filled({ w: 280, h: 800 }, { defaultHeight: 400 });
+
+      expect(wm.windows.fill.state.w).toBe(280);
+    });
+
+    it("recomputes from the registered size, so it can shrink again", () => {
+      // Reading the live size back as the floor would ratchet the window up and
+      // never let it come down when the workspace does.
+      const wm = filled({ w: 2000, h: 1200 }, { defaultHeight: 400 });
+      expect(wm.windows.fill.state.w).toBe(1600);
+
+      wm.workspaceSize = () => ({ w: 1000, h: 800 });
+      wm.applyAll();
+      expect(wm.windows.fill.state.w).toBe(800);
+    });
+
+    it("stops filling once the reader drags it", () => {
+      const wm = filled({ w: 2000, h: 1200 }, { defaultHeight: 400 });
+      const titlebar = document.querySelector("[data-window-titlebar]");
+      titlebar.dispatchEvent(
+        new MouseEvent("pointerdown", { bubbles: true, button: 0, clientX: 50, clientY: 10 }),
+      );
+      document.dispatchEvent(new MouseEvent("pointermove", { clientX: 90, clientY: 40 }));
+      document.dispatchEvent(new MouseEvent("pointerup", {}));
+
+      expect(wm.windows.fill.state.centered).toBe(false);
+
+      wm.workspaceSize = () => ({ w: 1000, h: 800 });
+      wm.applyAll();
+      expect(wm.windows.fill.state.w).toBe(1600);
+    });
+
+    it("leaves a window with no fill at its registered size", () => {
+      const wm = filled({ w: 2000, h: 1200 }, { defaultFill: null, defaultHeight: 400 });
+
+      expect(wm.windows.fill.state.w).toBe(300);
+    });
+  });
+
+  // Independent of fill: nothing stopped a window registered wider than the
+  // screen from being drawn off the edge of an overflow-hidden workspace.
+  describe("drawing a window bigger than the workspace", () => {
+    it("draws it clamped without shrinking the size it remembers", () => {
+      command({ action: "open", id: "call" });
+      hook.stacked = false;
+      hook.windows.call.state.w = 2000;
+      hook.windows.call.state.h = 1500;
+      hook.workspaceSize = () => ({ w: 800, h: 600 });
+      hook.applyWindow("call");
+
+      expect(win("call").style.getPropertyValue("--win-w")).toBe("800px");
+      expect(win("call").style.getPropertyValue("--win-h")).toBe("600px");
+
+      // The remembered size is untouched, so a wide screen gets it back.
+      expect(hook.windows.call.state.w).toBe(2000);
+      expect(hook.windows.call.state.h).toBe(1500);
     });
   });
 
