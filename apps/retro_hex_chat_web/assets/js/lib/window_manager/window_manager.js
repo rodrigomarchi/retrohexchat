@@ -56,6 +56,7 @@
  * it client-side pushes `"window_closed"`, so the host can mount/unmount its
  * island. Hosts with managed windows must handle both events.
  */
+import { handleCopySelectionClick, refreshCopySelectionItems } from "../ui/copy_selection";
 
 const rememberedLayouts = new Map();
 const Z_BASE = 10;
@@ -492,6 +493,13 @@ const WindowManagerCore = {
 
     if (e.target.closest("[data-window-start]")) {
       this.toggleStartMenu();
+      return;
+    }
+
+    // A copy row is neither a window opener nor a server action, so it has to
+    // be taken before either of those branches sees it.
+    if (e.target.closest("[data-window-start-menu]") && handleCopySelectionClick(e)) {
+      this.closeStartMenu();
       return;
     }
 
@@ -1375,6 +1383,9 @@ const WindowManagerCore = {
     const menu = this.startMenu();
     if (menu) this.closeStartSubmenus(menu, submenu);
     this.setStartSubmenu(submenu, true);
+    // The selection cannot change while the menu is up, so reading it as the
+    // group opens is enough — the same moment the menu bar reads it.
+    refreshCopySelectionItems(submenu);
   },
 
   closeStartSubmenus(root, except = null) {

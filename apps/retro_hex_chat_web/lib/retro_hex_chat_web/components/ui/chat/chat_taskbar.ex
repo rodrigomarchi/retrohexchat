@@ -21,6 +21,11 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
 
   attr :open_windows, :any, default: MapSet.new()
   attr :is_admin, :boolean, default: false
+
+  attr :arcade_available, :boolean,
+    default: false,
+    doc: "Enables Start ▸ Games ▸ Arcade (needs a registered + identified nick)"
+
   attr :p2p_session, :map, default: nil
   attr :group_call, :map, default: nil
   attr :arcade_session, :map, default: nil
@@ -40,7 +45,9 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
           id="chat-start-menu"
           screen={:chat}
           is_admin={@is_admin}
+          arcade_available={@arcade_available}
           p2p_active={@p2p_session != nil}
+          p2p_turn_available={(@p2p_session || %{})[:turn_configured] == true}
           windows={[%{id: "chat", label: @chat_label, icon_fn: :icon_chat}]}
         />
       </:start>

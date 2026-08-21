@@ -72,7 +72,10 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
   attr :windows, :list, required: true
 
   defp landing_taskbar(assigns) do
-    assigns = assign(assigns, :start_windows, start_windows(assigns.windows))
+    assigns =
+      assigns
+      |> assign(:start_windows, start_windows(assigns.windows))
+      |> assign(:current_path, active_page_path(assigns.active_page))
 
     ~H"""
     <.taskbar
@@ -84,7 +87,12 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
         <%!-- Closing a window takes its taskbar button with it, the way Win98
               does. Start ▸ Windows is how it comes back — without it a closed
               section would be unreachable. About is one of those sections. --%>
-        <.start_menu_app id="landing-start-menu" screen={:landing} windows={@start_windows} />
+        <.start_menu_app
+          id="landing-start-menu"
+          screen={:landing}
+          windows={@start_windows}
+          current_path={@current_path}
+        />
       </:start>
 
       <%!-- One button per window on this page, exactly as the app's taskbar

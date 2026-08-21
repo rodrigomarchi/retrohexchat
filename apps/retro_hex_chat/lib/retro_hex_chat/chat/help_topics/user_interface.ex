@@ -123,6 +123,11 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
           "tools",
           "automation",
           "settings",
+          "view",
+          "language",
+          "games",
+          "arcade",
+          "copy",
           "navigate",
           "windows",
           "admin",
@@ -147,13 +152,16 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
             " " <>
             dgettext(
               "help",
-              "The entries are grouped one level deep. Tools holds the address book, lists " <>
-                "and channel windows; Automation holds Perform, Auto-Join, aliases, custom " <>
-                "menus and timers; Settings holds nick colors, sounds and flood protection; " <>
-                "P2P appears once you have a peer session; Account and Admin hold their own; " <>
+              "The entries are grouped one level deep, and the menu carries everything the " <>
+                "app can do: anything a menu bar offers is offered here too. View acts on " <>
+                "the window in front of you; Tools holds the address book, lists, channel " <>
+                "windows and the display settings; Automation holds Perform, Auto-Join, " <>
+                "aliases, custom menus and timers; P2P comes alive with a peer session; " <>
+                "Games holds Retro Games and the Arcade; Account and Admin hold their own; " <>
                 "Windows reopens a window of the screen you are on; Navigate reaches the " <>
-                "public pages, the documentation and the app; Help holds the topics, the " <>
-                "shortcut cheatsheet and About. Disconnect sits alone at the bottom."
+                "public pages, the documentation and the app; Language switches locale; " <>
+                "Help holds the topics, the cheatsheet and About. Disconnect sits alone at " <>
+                "the bottom."
             ) <>
             " " <>
             dgettext(

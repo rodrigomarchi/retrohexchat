@@ -84,7 +84,7 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
         </.desktop_window>
 
         <:taskbar>
-          <.help_taskbar />
+          <.help_taskbar current_path={@canonical_path} />
         </:taskbar>
       </.desktop>
 
@@ -342,6 +342,8 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
     """
   end
 
+  attr :current_path, :string, required: true
+
   defp help_taskbar(assigns) do
     ~H"""
     <.taskbar>
@@ -349,6 +351,7 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
         <.start_menu_app
           id="help-start-menu"
           screen={:help}
+          current_path={@current_path}
           windows={[%{id: "help", label: dgettext("help", "Help"), icon_fn: :icon_notepad}]}
         />
       </:start>

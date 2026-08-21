@@ -75,7 +75,17 @@ defmodule RetroHexChatWeb.Components.UI.LanguageMenu do
     """
   end
 
-  defp locale_links(mode, current_path, return_to) do
+  @doc """
+  The locale rows behind every language menu: code, label, `hreflang` and the
+  URL that switches to it.
+
+  Public because the Start menu renders the same rows with its own row
+  primitive — one source for the hrefs, two presentations.
+  """
+  @spec locale_links(:app | :public, String.t() | nil, String.t() | nil) :: [
+          %{code: String.t(), label: String.t(), bcp47: String.t(), href: String.t()}
+        ]
+  def locale_links(mode, current_path, return_to) do
     Enum.map(I18n.supported_locales(), fn {code, label} ->
       %{
         code: code,

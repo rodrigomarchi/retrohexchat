@@ -65,6 +65,11 @@ function buildDesktop() {
           <button data-start-submenu-trigger>Admin</button>
           <div data-start-submenu-panel class="u-hidden">
             <button data-window-open="conn" data-testid="start-menu-item-open_admin"></button>
+            <button
+              data-menubar-copy-selection
+              data-copy-disabled="true"
+              data-testid="start-menu-item-copy_selection"
+            ></button>
           </div>
         </div>
       </div>
@@ -671,6 +676,43 @@ describe("WindowManager", () => {
       const menu = el.querySelector("[data-window-start-menu]");
       expect(menu.classList.contains("u-hidden")).toBe(true);
       expect(panelHidden()).toBe(true);
+    });
+
+    // Start ▸ View ▸ Copy is the one row whose live state is a property of the
+    // document rather than of the screen. `copy_selection.js` owns the rule;
+    // what is checked here is that the Start menu reaches it at all, since a
+    // row that fell through would be handled as a window opener instead.
+    it("syncs the copy row against the selection as a group opens", () => {
+      const chatLog = document.createElement("div");
+      chatLog.id = "chat-messages";
+      chatLog.innerHTML = "<p>a message</p>";
+      document.body.appendChild(chatLog);
+
+      vi.spyOn(window, "getSelection").mockReturnValue({
+        rangeCount: 1,
+        toString: () => "a message",
+        getRangeAt: () => ({ commonAncestorContainer: chatLog.firstChild }),
+      });
+
+      openStartMenu();
+      el.querySelector("[data-start-submenu-trigger]").click();
+
+      const copyRow = el.querySelector("[data-menubar-copy-selection]");
+      expect(copyRow.dataset.copyDisabled).toBe("false");
+
+      chatLog.remove();
+    });
+
+    it("claims a click on the copy row instead of treating it as an opener", () => {
+      const writeText = vi.fn().mockResolvedValue(undefined);
+      vi.stubGlobal("navigator", { clipboard: { writeText } });
+
+      openStartMenu();
+      el.querySelector("[data-start-submenu-trigger]").click();
+      el.querySelector("[data-menubar-copy-selection]").click();
+
+      const menu = el.querySelector("[data-window-start-menu]");
+      expect(menu.classList.contains("u-hidden")).toBe(true);
     });
 
     it("closes open groups when the Start menu itself closes", () => {

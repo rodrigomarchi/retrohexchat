@@ -90,6 +90,7 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
               <.start_menu_app
                 id="showcase-start-menu"
                 screen={:showcase}
+                current_path={ShowcaseCatalog.canonical_path(@active_page)}
                 windows={[
                   %{id: "component", label: @page.title, icon_fn: @page.icon},
                   %{

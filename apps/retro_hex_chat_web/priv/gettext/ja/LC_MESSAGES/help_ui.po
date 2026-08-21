@@ -385,7 +385,7 @@ msgstr "ハーフオプス(%):"
 msgid "Header"
 msgstr "ヘッダー"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:73
+#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:92
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:199
 #, elixir-autogen, elixir-format
 msgid "Help"
@@ -425,7 +425,7 @@ msgstr "入力とオートコンプリート"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/ui_listings.html.heex:83
-#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:104
+#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:123
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:219
 #, elixir-autogen, elixir-format
 msgid "Keyboard Shortcuts"
@@ -626,7 +626,7 @@ msgstr "セクション"
 #: lib/retro_hex_chat_web/controllers/help_content/ui_listings.html.heex:78
 #: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:46
-#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:94
+#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:113
 #: lib/retro_hex_chat_web/controllers/help_content/ui_status_tab.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:209
@@ -806,7 +806,7 @@ msgstr "Toggle Nicklist"
 msgid "Toolbar:"
 msgstr "ツールバー:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:25
+#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:93
 #, elixir-autogen, elixir-format
 msgid "Tools"
@@ -839,7 +839,7 @@ msgid "User Interactions"
 msgstr "ユーザーインタラクション"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:85
-#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:100
+#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:119
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:212
 #, elixir-autogen, elixir-format
 msgid "User Interface Overview"
@@ -865,6 +865,7 @@ msgstr "色の使用"
 msgid "Video Call:"
 msgstr "ビデオ通話:"
 
+#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:65
 #, elixir-autogen, elixir-format
 msgid "View"
@@ -1316,7 +1317,7 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:48
-#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:97
+#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:116
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:215
 #, elixir-autogen, elixir-format
 msgid "Desktop & Windows"
@@ -1822,7 +1823,7 @@ msgid "P2P Session"
 msgstr "P2Pセッション"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:16
-#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "Account"
 msgstr "パスワード"
@@ -2289,7 +2290,7 @@ msgstr ""
 "内側に何も適用しないと、グループ全体がグレースアウトしますが、まだ開きます。 "
 "つまり、メニューは同じ地図で、どこにいても立っているので、アプリが内部にいる前に何をしているかを確認できます。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:55
+#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "Admin"
 msgstr "アドミン"
@@ -2304,7 +2305,7 @@ msgstr ""
 "アプリ 情報は、実際にここにいる他の最初の質問に答えます。 チャネルを生き生き生き、異なる人々 を提示します。, 進行中の呼び出し, 仮想空間の実行, "
 "人々 を保持するチャネルのリスト."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:31
+#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "Automation"
 msgstr "自動化"
@@ -2331,7 +2332,7 @@ msgstr ""
 "データベース統計は、PostgreSQLに対して一度に1つの診断レポートを実行します: キャッシュヒット率, 未使用インデックス, bloat, "
 "長時間実行クエリ, 何ブロックしている. ライブデータベースに対する実際のクエリなので、レポートを選ぶまで何も実行しません。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:80
+#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:99
 #, elixir-autogen, elixir-format
 msgid ""
 "Disconnect sits alone under a rule at the bottom, where Windows 98 put Shut "
@@ -2385,7 +2386,7 @@ msgstr "メモリアロケータ"
 msgid "Metrics"
 msgstr "メトリック"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:67
+#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "Navigate"
 msgstr "移動"
@@ -2417,7 +2418,7 @@ msgstr ""
 "OSデータは、ホストのプロセッサー、ロード平均、メモリ、ディスクの外部からのビューです。 シェアしている機械がなくても、サーバーは健康に見えます。 "
 "ホストは、ゼロではなくダッシュとしてショーを報告しません。これらは異なる事実です。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:88
+#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:107
 #, elixir-autogen, elixir-format
 msgid ""
 "On a desktop a group flies out beside the menu; hovering another group "
@@ -2428,7 +2429,7 @@ msgstr ""
 "デスクトップでは、メニューの横にグループが飛び出します。別のグループがそれに切り替えるので、ほとんどのフライアウトは一度に示します。 "
 "代わりにメニューをドリルダウンする電話:グループをタップすると、そのエントリでリストを交換し、トップのグループ自身の行が戻ってきます。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:86
+#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:105
 #, elixir-autogen, elixir-format
 msgid "Opening a Group"
 msgstr "オープニング"
@@ -2446,7 +2447,7 @@ msgstr ""
 "サーバが構築されているErlangとElixirが、実行されている時間、トラフィックがどれだけ交差しているか、そしてその終了の3つの天井にどれだけ近いかを報告します。原子、ポート、プロセス。"
 " 以下は、サーバーのメモリを6つに分けて消費します。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:43
+#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "P2P"
 msgstr "P2P"
@@ -2472,17 +2473,12 @@ msgstr ""
 msgid "Reading Them Honestly"
 msgstr "読書Them Honestly"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:37
-#, elixir-autogen, elixir-format
-msgid "Settings"
-msgstr "設定"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_system_windows.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "Sockets"
 msgstr "ソケット"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "The Groups"
 msgstr "グループ"
@@ -2535,55 +2531,19 @@ msgstr ""
 msgid "Where To Start"
 msgstr "開始場所"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:61
+#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:74
 #, elixir-autogen, elixir-format
 msgid "Windows"
 msgstr "ウィンドウ"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:49
-#, elixir-autogen, elixir-format
-msgid "— Account, Profile, Away, User Modes and Trusted Terminals."
-msgstr "— アカウント、プロフィール、ユーザーモード、信頼できるターミナル。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:25
-#, elixir-autogen, elixir-format
-msgid ""
-"— Address Book, Notify List, Ignore List, Highlight Words, User Lookup, URL "
-"Catcher, Channel List and Channel Central."
-msgstr "— アドレス帳、通知リスト、無視リスト、ハイライトワード、ユーザー検索、URLキャッチャー、チャネルリスト、チャネル中央。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:43
-#, elixir-autogen, elixir-format
-msgid ""
-"— Audio and video calls, sending a file, playing a game, connection stats "
-"and ending the session. Live only while you have a peer session."
-msgstr "— 音声とビデオの呼び出し、ファイル送信、ゲーム再生、接続のステータスとセッション終了。 ピアセッションをしている間だけライブ。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:73
-#, elixir-autogen, elixir-format
-msgid "— Help Topics, help search, the shortcut cheatsheet and About."
-msgstr "— トピックのヘルプ、検索、ショートカットチートシートと概要。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:37
-#, elixir-autogen, elixir-format
-msgid "— Nick Colors, Sounds and Flood Protection."
-msgstr "—ニックカラー、サウンド、フラッドプロテクション"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:31
+#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:44
 #, elixir-autogen, elixir-format
 msgid ""
 "— Perform, Auto-Join, Auto Respond, Alias Editor, Custom Menus and Timers: "
 "the things that act on your behalf."
 msgstr "— 実行、自動進行、自動応答、エイリアスエディタ、カスタムメニューとタイマー:あなたの代わりに行動するもの。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:67
-#, elixir-autogen, elixir-format
-msgid ""
-"— The public pages, the documentation, the design system and the way into "
-"the app. These are real links, so they work with scripting off."
-msgstr "— 公開ページ、ドキュメント、設計システム、およびアプリへの方法。 これは本当のリンクなので、スクリプトオフで動作します。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:61
+#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:74
 #, elixir-autogen, elixir-format
 msgid ""
 "— The windows of the screen you are on. Closing a window takes its taskbar "
@@ -2592,7 +2552,7 @@ msgstr ""
 "— あなたがいる画面の窓。 ウィンドウを閉じると、タスクバーのボタンがそれで、Windows "
 "98のやり方が始まりました。これはそれがどのように戻ってくるかです。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:55
+#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:68
 #, elixir-autogen, elixir-format
 msgid ""
 "— Users, Channels, Server Settings, Audit Log, MOTD, TURN, Broadcast, Danger"
@@ -2982,3 +2942,92 @@ msgstr ""
 "アクティブなチャネルは Open Channels セクションでハイライトされます。 "
 "新しいチャンネルアクティビティは、タブの順番を変更することなく、そのチャンネルを上に移動します。 "
 "チャンネルタブを閉じると、チャンネルとチャンネルタブが整列されます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:56
+#, elixir-autogen, elixir-format
+msgid "Games"
+msgstr "ゲーム"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:86
+#, elixir-autogen, elixir-format
+msgid "Language"
+msgstr "日本語 English"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:23
+#, elixir-autogen, elixir-format
+msgid ""
+"The Start menu carries everything the app can do. Anything offered by a menu"
+" bar at the top of a screen is offered here too — the Start menu is the "
+"complete list, and the bars are shortcuts into parts of it."
+msgstr ""
+"スタートメニューには、このアプリにできることがすべて入っています。画面上部のメニューバーが提供するものはここでも提供されます。スタートメニューが完全な一覧で、メニューバーはその一部への近道です。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:38
+#, elixir-autogen, elixir-format
+msgid ""
+"— Address Book, Notify List, Ignore List, Highlight Words, User Lookup, URL "
+"Catcher, Channel List and Channel Central, followed by Nick Colors, Sounds "
+"and Flood Protection."
+msgstr ""
+"— "
+"アドレス帳、通知リスト、無視リスト、ハイライトワード、ユーザー検索、URLキャッチャー、チャンネル一覧、チャンネルセントラル。続いてニックの色、サウンド、フラッド保護。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:50
+#, elixir-autogen, elixir-format
+msgid ""
+"— Audio and video calls, sending a file, playing a game, connection stats, "
+"privacy mode and ending the session. Live only while you have a peer session"
+" — except the entry explaining how to start one, which is live precisely "
+"while you have none."
+msgstr ""
+"— "
+"音声通話とビデオ通話、ファイル送信、ゲームのプレイ、接続の統計、プライバシーモード、セッションの終了。ピアセッションがある間だけ有効です。ただしセッションの始め方を説明する項目だけは、セッションがないときにこそ有効になります。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:86
+#, elixir-autogen, elixir-format
+msgid ""
+"— Every language the app speaks. Picking one keeps you on the screen you are"
+" on."
+msgstr "— このアプリが話せるすべての言語。選んでも、今いる画面から動きません。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:92
+#, elixir-autogen, elixir-format
+msgid ""
+"— Help Topics, the shortcut cheatsheet, the Message of the Day, the source "
+"repository and its licence, and About."
+msgstr "— ヘルプトピック、ショートカット早見表、今日のメッセージ、ソースコードのリポジトリとそのライセンス、そしてバージョン情報。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:62
+#, elixir-autogen, elixir-format
+msgid ""
+"— Registering and identifying your nickname, then Account, Profile, Away, "
+"User Modes, Trusted Terminals and Account Info."
+msgstr "— ニックネームの登録と本人確認、続いてアカウント、プロフィール、離席、ユーザーモード、信頼済み端末、アカウント情報。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:56
+#, elixir-autogen, elixir-format
+msgid ""
+"— Retro Games, and the Arcade. The Arcade keeps scores against a nickname, "
+"so it stays gray until yours is registered and identified."
+msgstr "— レトロゲームとアーケード。アーケードはニックネームごとにスコアを記録するため、ニックネームを登録して本人確認するまでは灰色のままです。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:80
+#, elixir-autogen, elixir-format
+msgid ""
+"— The public pages, the documentation, the design system and the way into "
+"the app, plus Back and Forward through the Help viewer's own history. These "
+"are real links, so they work with scripting off."
+msgstr ""
+"— "
+"公開ページ、ドキュメント、デザインシステム、アプリへの入口。さらにヘルプビューア自身の履歴をたどる「戻る」と「進む」。いずれも本物のリンクなので、スクリプトを無効にしても動きます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:32
+#, elixir-autogen, elixir-format
+msgid ""
+"— What the window in front of you is showing: toggling the conversation list"
+" and the nicklist, clearing the window, copying the selected text and "
+"finding text in it. In the Help viewer the same group switches between "
+"Contents, Index and Search."
+msgstr ""
+"— "
+"目の前のウィンドウが映しているもの。会話一覧とニック一覧の表示切り替え、ウィンドウの消去、選択したテキストのコピー、テキストの検索です。ヘルプビューアでは同じグループが目次・索引・検索を切り替えます。"

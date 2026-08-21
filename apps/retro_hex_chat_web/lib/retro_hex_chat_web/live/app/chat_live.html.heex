@@ -1072,6 +1072,7 @@
         chat_label={ChatTitle.window_title(@session, @show_status_tab)}
         open_windows={@open_windows}
         is_admin={admin?(@session)}
+        arcade_available={@session.identified == true}
         p2p_session={@p2p_session}
         group_call={@group_call}
         arcade_session={@arcade_session}

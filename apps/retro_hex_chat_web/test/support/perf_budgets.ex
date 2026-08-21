@@ -16,14 +16,28 @@ defmodule RetroHexChatWeb.PerfBudgets do
       /connect       191_772 B        22_814 B            1_804
       /chat          568_352 B        57_712 B                —
       help           611_705 B        51_594 B            6_049
+
+  Raised once since, on 2026-08-21, when the Start menu became a superset of
+  every menu bar: it carries every entry on every screen, gray where the screen
+  cannot reach it, so completing the set added the same 177 rows everywhere.
+
+      surface     Δ raw      Δ gzip     Δ nodes
+      /connect    +17_628 B   +1_056 B     +177
+      help        +17_161 B   +1_076 B     +177
+      landing     +17_234 B   +1_035 B     +177
+
+  Raw grew by 17 KB and the wire by 1 KB: the rows are near-identical markup and
+  compress by 94%, the same effect that took `/chat` from 57_712 B to 7_599 B.
+  The node count is the half that is not free, and it is the half these numbers
+  are really guarding — a node costs main-thread time no compressor gives back.
   """
 
   @doc """
   The largest a surface's dead render may be, in bytes of HTML.
   """
   @spec html_bytes(atom()) :: pos_integer()
-  def html_bytes(:connect), do: 115_000
-  def html_bytes(:help), do: 300_000
+  def html_bytes(:connect), do: 132_000
+  def html_bytes(:help), do: 310_000
   # /chat's disconnected render is the boot overlay and the dialog mount points:
   # the desktop under it is invisible and arrives with the connected render.
   # 92_554 B raw measured, but 7_599 B gzipped — the dialog chrome repeats, so
@@ -34,8 +48,8 @@ defmodule RetroHexChatWeb.PerfBudgets do
   The most elements a surface's dead render may contain.
   """
   @spec dom_nodes(atom()) :: pos_integer()
-  def dom_nodes(:connect), do: 1_060
-  def dom_nodes(:help), do: 2_900
+  def dom_nodes(:connect), do: 1_260
+  def dom_nodes(:help), do: 3_090
   def dom_nodes(:chat), do: 600
 
   @doc """

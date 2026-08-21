@@ -584,7 +584,7 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
   attr :navigate, :string, default: nil, doc: "same, via LiveView navigation"
   attr :disabled, :boolean, default: false, doc: "gray the row and make it inert"
   attr :class, :any, default: nil
-  attr :rest, :global
+  attr :rest, :global, include: ~w(hreflang)
 
   slot :icon, required: true
 

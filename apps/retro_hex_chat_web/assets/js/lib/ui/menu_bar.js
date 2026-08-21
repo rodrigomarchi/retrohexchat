@@ -20,13 +20,14 @@
  *   - `[data-mobile-menu-category=<id>]` section tab inside the drawer
  *   - `[data-mobile-menu-section=<id>]`  section panel inside the drawer
  *
- * Copy-selection items (`[data-menubar-copy-selection]`) are enabled only while
- * the reader has text selected inside `#chat-messages`. Nothing else depends on
- * the chat, and on a screen without that element the items simply stay disabled.
+ * Copy-selection items (`[data-menubar-copy-selection]`) are driven by
+ * `copy_selection.js`, shared with the Start menu, which offers the same entry.
  *
  * Menus open on mousedown with preventDefault() so the composer — and the phone
  * keyboard with it — never loses focus to a menu.
  */
+import { handleCopySelectionClick, refreshCopySelectionItems } from "./copy_selection";
+
 const MenuBarCore = {
   mount() {
     this._activeMenu = null;
@@ -112,17 +113,7 @@ const MenuBarCore = {
       return;
     }
 
-    const copyItem = e.target.closest("[data-menubar-copy-selection]");
-
-    if (copyItem) {
-      e.preventDefault();
-      e.stopPropagation();
-
-      if (copyItem.dataset.copyDisabled === "true") {
-        return;
-      }
-
-      this._copyCurrentSelection();
+    if (handleCopySelectionClick(e)) {
       this._closeAll();
       return;
     }
@@ -163,7 +154,7 @@ const MenuBarCore = {
     this._closeAll();
     const dropdown = menu.querySelector("[data-menubar-dropdown]");
     if (!dropdown) return;
-    this._refreshCopySelectionItems(menu);
+    refreshCopySelectionItems(menu);
     dropdown.classList.remove("u-hidden");
     const trigger = menu.querySelector("[data-menubar-trigger]");
     if (trigger) {
@@ -287,61 +278,6 @@ const MenuBarCore = {
     // learns the section from here rather than from the tap that opened it.
     this._mobileSection = section;
     this._syncMobileRail(section);
-  },
-
-  _refreshCopySelectionItems(menu) {
-    const hasSelection = this._selectedChatLogText() !== "";
-
-    menu.querySelectorAll("[data-menubar-copy-selection]").forEach((item) => {
-      item.dataset.copyDisabled = hasSelection ? "false" : "true";
-      item.setAttribute("aria-disabled", hasSelection ? "false" : "true");
-      item.classList.toggle("menubar-copy-disabled", !hasSelection);
-    });
-  },
-
-  _selectedChatLogText() {
-    if (typeof window.getSelection !== "function") return "";
-
-    const selection = window.getSelection();
-    if (!selection || selection.rangeCount === 0) return "";
-
-    const text = selection.toString();
-    if (text.trim() === "") return "";
-
-    const chatLog = document.getElementById("chat-messages");
-    if (!chatLog) return "";
-
-    try {
-      const range = selection.getRangeAt(0);
-      return this._nodeInsideChatLog(range.commonAncestorContainer, chatLog) ? text : "";
-    } catch {
-      return "";
-    }
-  },
-
-  _nodeInsideChatLog(node, chatLog) {
-    if (!node) return false;
-
-    const element = node.nodeType === 1 ? node : node.parentElement;
-    return Boolean(element && chatLog.contains(element));
-  },
-
-  _copyCurrentSelection() {
-    const text = this._selectedChatLogText();
-    if (!text) return;
-
-    if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
-      navigator.clipboard.writeText(text).catch(() => this._copySelectionFallback());
-      return;
-    }
-
-    this._copySelectionFallback();
-  },
-
-  _copySelectionFallback() {
-    if (typeof document.execCommand === "function") {
-      document.execCommand("copy");
-    }
   },
 };
 

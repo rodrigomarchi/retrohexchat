@@ -20,14 +20,22 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
   and swallow the flyouts, which escape to the right — so the root list has to
   fit on screen at any height. Root rows stay one level of groups deep:
 
-      Tools ▸ Automation ▸ Settings ▸ P2P ▸ Games ▸ Account ▸ Admin ▸ System ▸
-      Windows ▸ Navigate ▸
+      View ▸ Tools ▸ Automation ▸ P2P ▸ Games ▸ Account ▸ Admin ▸ System ▸
+      Windows ▸ Navigate ▸ Language ▸
       Help ▸
       Disconnect
 
   One level is also the limit the `WindowManagerHook` supports: opening a group
   closes every other `[data-start-submenu]` in the menu, an ancestor included, so
-  a nested group would shut its own parent.
+  a nested group would shut its own parent. That limit is why Language is a root
+  group rather than a row inside Settings, and why Settings itself was folded
+  back into Tools: three windows never earned a row of their own once one had to
+  be given up.
+
+  This menu is a superset of every menu bar the app renders — the chat's
+  `MenuBarApp`, the help viewer's `HelpMenuBar` and the landing shell's own
+  strip. An item that exists in any of them exists here, on every screen, gray
+  where it has nothing to act on.
 
   Pure presentation: primitives and semantic event names only (no `Session`, no
   domain calls), like `MenuBarApp`.
@@ -38,10 +46,15 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
   import RetroHexChatWeb.Components.UI.Dialog, only: [show_modal: 1]
 
   alias RetroHexChatWeb.ChatLive.WindowRegistry
+  alias RetroHexChatWeb.Components.UI.LanguageMenu
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.ShowcaseCatalog
 
   @screens [:chat, :connect, :landing, :help, :showcase]
+
+  # The screens that switch locale through the app's redirect endpoint rather
+  # than through a localized public URL.
+  @app_screens [:chat, :connect]
 
   attr :id, :string, default: "start-menu"
 
@@ -53,9 +66,25 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
   attr :is_admin, :boolean, default: false
   attr :p2p_active, :boolean, default: false, doc: "Enables the P2P group while a session exists"
 
+  attr :p2p_turn_available, :boolean,
+    default: false,
+    doc: "Enables privacy mode (needs a configured TURN relay)"
+
+  attr :arcade_available, :boolean,
+    default: false,
+    doc: "Enables the Arcade entry (needs a registered + identified nick)"
+
   attr :windows, :list,
     default: [],
     doc: "%{id, label, icon_fn} windows of THIS desktop, listed under Windows"
+
+  attr :current_path, :string,
+    default: nil,
+    doc: "path the public locale links rewrite — public screens only"
+
+  attr :language_return_to, :string,
+    default: nil,
+    doc: "where the app's locale redirect lands; defaults to this screen's own path"
 
   attr :on_action, :any, default: "toolbar_action"
 
@@ -68,6 +97,11 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
       |> assign(:admin?, assigns.screen == :chat and assigns.is_admin)
       |> assign(:help?, assigns.screen == :help)
       |> assign(:nav_pages, nav_pages())
+      |> assign(:locales, locales(assigns))
+
+    # Offering a session to someone who already has one is the one P2P entry
+    # that reads the gate the other way round.
+    assigns = assign(assigns, :p2p_idle?, assigns.chat? and not assigns.p2p_active)
 
     ~H"""
     <div class="relative">
@@ -75,6 +109,80 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
         <:icon><Icons.icon_hex_stone class="h-4 w-4" /></:icon>
       </.start_button>
       <.start_menu id={@id}>
+        <%!-- ── What the window in front of you is showing ─────────── --%>
+        <%!-- The chat's Edit and View menus plus the help viewer's own View,
+              which are the same question asked of two different documents. The
+              group is live on both screens, so it is muted only where neither
+              half has anything to act on. --%>
+        <.start_menu_submenu
+          label={dgettext("ui", "View")}
+          muted={!@chat? and !@help?}
+          testid="start-menu-view-submenu"
+        >
+          <:icon><Icons.icon_channels class="h-4 w-4" /></:icon>
+          <.app_item
+            action="toggle_conversations"
+            on_action={@on_action}
+            label={dgettext("ui", "Toggle Conversations")}
+            icon_fn={:icon_btn_toggle_conversations}
+            disabled={!@chat?}
+          />
+          <.app_item
+            action="toggle_nicklist"
+            on_action={@on_action}
+            label={dgettext("ui", "Toggle Nicklist")}
+            icon_fn={:icon_btn_toggle_nicklist}
+            disabled={!@chat?}
+          />
+          <.start_menu_separator />
+          <.app_item
+            action="clear_window"
+            on_action={@on_action}
+            label={dgettext("ui", "Clear Window")}
+            icon_fn={:icon_btn_remove}
+            disabled={!@chat?}
+          />
+          <.copy_item disabled={!@chat?} />
+          <.app_item
+            action="toggle_search"
+            on_action={@on_action}
+            label={dgettext("ui", "Find")}
+            icon_fn={:icon_btn_find}
+            disabled={!@chat?}
+          />
+          <.start_menu_separator />
+          <%!-- The help viewer's three tabs. They travel together: split across
+                two groups they would read as three unrelated entries rather
+                than as one control with three positions. --%>
+          <.app_item
+            action="help_nav_tab"
+            on_action="help_nav_tab"
+            label={dgettext("help", "Contents")}
+            icon_fn={:icon_notepad}
+            disabled={!@help?}
+            phx-value-tab="contents"
+            testid="start-menu-item-help-contents"
+          />
+          <.app_item
+            action="help_nav_tab"
+            on_action="help_nav_tab"
+            label={dgettext("help", "Index")}
+            icon_fn={:icon_btn_channel_list}
+            disabled={!@help?}
+            phx-value-tab="index"
+            testid="start-menu-item-help-index"
+          />
+          <.app_item
+            action="help_nav_tab"
+            on_action="help_nav_tab"
+            label={dgettext("help", "Search")}
+            icon_fn={:icon_btn_search}
+            disabled={!@help?}
+            phx-value-tab="search"
+            testid="start-menu-item-help-search"
+          />
+        </.start_menu_submenu>
+
         <%!-- ── The app's own windows, by what they are for ────────── --%>
         <.start_menu_submenu
           label={dgettext("ui", "Tools")}
@@ -134,6 +242,27 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
             icon_fn={:icon_btn_channel_central}
             disabled={!@chat?}
           />
+          <%!-- Settings used to be a group of its own. Three windows do not earn
+                a root row when a root row is what the menu is short of. --%>
+          <.start_menu_separator />
+          <.window_item
+            window="nick-colors"
+            label={dgettext("ui", "Nick Colors")}
+            icon_fn={:icon_btn_nick_colors}
+            disabled={!@chat?}
+          />
+          <.window_item
+            window="sound-settings"
+            label={dgettext("ui", "Sounds")}
+            icon_fn={:icon_btn_sounds}
+            disabled={!@chat?}
+          />
+          <.window_item
+            window="flood-protection"
+            label={dgettext("ui", "Flood Protection")}
+            icon_fn={:icon_btn_flood_protection}
+            disabled={!@chat?}
+          />
         </.start_menu_submenu>
 
         <.start_menu_submenu
@@ -180,40 +309,23 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
           />
         </.start_menu_submenu>
 
-        <.start_menu_submenu
-          label={dgettext("ui", "Settings")}
-          muted={!@chat?}
-          testid="start-menu-settings-submenu"
-        >
-          <:icon><Icons.icon_btn_settings class="h-4 w-4" /></:icon>
-          <.window_item
-            window="nick-colors"
-            label={dgettext("ui", "Nick Colors")}
-            icon_fn={:icon_btn_nick_colors}
-            disabled={!@chat?}
-          />
-          <.window_item
-            window="sound-settings"
-            label={dgettext("ui", "Sounds")}
-            icon_fn={:icon_btn_sounds}
-            disabled={!@chat?}
-          />
-          <.window_item
-            window="flood-protection"
-            label={dgettext("ui", "Flood Protection")}
-            icon_fn={:icon_btn_flood_protection}
-            disabled={!@chat?}
-          />
-        </.start_menu_submenu>
-
         <%!-- Gated twice over: the whole group needs a chat, and every entry
-              needs a live peer session on top of it. --%>
+              needs a live peer session on top of it. The exception is the entry
+              that explains how to get one, which is live precisely while there
+              is none. --%>
         <.start_menu_submenu
           label={dgettext("ui", "P2P")}
-          muted={!@p2p?}
+          muted={!@p2p? and !@p2p_idle?}
           testid="start-menu-p2p-submenu"
         >
           <:icon><Icons.icon_p2p class="h-4 w-4" /></:icon>
+          <.app_item
+            action="p2p_how_to_start"
+            on_action={@on_action}
+            label={dgettext("ui", "Start a P2P Session...")}
+            icon_fn={:icon_protocol_p2p_compact}
+            disabled={!@p2p_idle?}
+          />
           <.app_item
             action="p2p_start_audio"
             on_action={@on_action}
@@ -255,6 +367,16 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
             phx-value-section="stats"
             testid="start-menu-item-p2p-stats"
           />
+          <%!-- Routing a call through the relay hides both peers' addresses,
+                so it needs a relay to be configured before it can be offered. --%>
+          <.app_item
+            action="p2p_toggle_privacy"
+            on_action={@on_action}
+            label={dgettext("ui", "Toggle Privacy Mode")}
+            icon_fn={:icon_lock}
+            disabled={!@p2p? or !@p2p_turn_available}
+          />
+          <.start_menu_separator />
           <.app_item
             action="p2p_end_session"
             on_action={@on_action}
@@ -278,6 +400,15 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
             disabled={!@chat?}
             testid="start-menu-item-retro-games"
           />
+          <%!-- The arcade keeps scores against a nick, so it needs one that is
+                registered and identified — a chat alone is not enough. --%>
+          <.app_item
+            action="open_arcade"
+            on_action={@on_action}
+            label={dgettext("ui", "Arcade...")}
+            icon_fn={:icon_game_arcade}
+            disabled={!@chat? or !@arcade_available}
+          />
         </.start_menu_submenu>
 
         <%!-- Account is action-driven, never `data-window-open`: opening these
@@ -288,6 +419,23 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
           testid="start-menu-account-submenu"
         >
           <:icon><Icons.icon_status_user class="h-4 w-4" /></:icon>
+          <%!-- Claiming a nick and proving it is the pair that comes before
+                everything else under here, so it leads. --%>
+          <.app_item
+            action="open_account_register"
+            on_action={@on_action}
+            label={dgettext("ui", "Register Nickname...")}
+            icon_fn={:icon_lock}
+            disabled={!@chat?}
+          />
+          <.app_item
+            action="open_account_identify"
+            on_action={@on_action}
+            label={dgettext("ui", "Identify...")}
+            icon_fn={:icon_status_user}
+            disabled={!@chat?}
+          />
+          <.start_menu_separator />
           <.app_item
             action="open_account_dialog"
             on_action={@on_action}
@@ -321,6 +469,16 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
             on_action={@on_action}
             label={dgettext("ui", "Trusted Terminals")}
             icon_fn={:icon_lock}
+            disabled={!@chat?}
+          />
+          <.start_menu_separator />
+          <%!-- Prints what the server knows about you into the status window,
+                rather than opening one of its own. --%>
+          <.app_item
+            action="account_info"
+            on_action={@on_action}
+            label={dgettext("ui", "Account Info")}
+            icon_fn={:icon_tab_status}
             disabled={!@chat?}
           />
         </.start_menu_submenu>
@@ -394,7 +552,23 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
           label={dgettext("ui", "Navigate")}
           testid="start-menu-navigate-submenu"
         >
-          <:icon><Icons.icon_globe class="h-4 w-4" /></:icon>
+          <:icon><Icons.icon_btn_next class="h-4 w-4" /></:icon>
+          <%!-- The help viewer's history, read by `HelpNavHook` client-side.
+                Nothing else on the app keeps a history of its own — the browser
+                owns it everywhere the desktop is not a document reader. --%>
+          <.help_nav_item
+            direction="back"
+            label={dgettext("help", "Back")}
+            icon_fn={:icon_btn_prev}
+            disabled={!@help?}
+          />
+          <.help_nav_item
+            direction="forward"
+            label={dgettext("help", "Forward")}
+            icon_fn={:icon_btn_next}
+            disabled={!@help?}
+          />
+          <.start_menu_separator />
           <.link_item
             :for={page <- @nav_pages}
             href={page.path}
@@ -452,25 +626,64 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
           />
         </.start_menu_submenu>
 
+        <%!-- Every locale as a real link, exactly as the menu bars render it —
+              `LanguageMenu` computes the hrefs for both, so a switch cannot mean
+              one thing in the bar and another here. A root group because the
+              window manager allows no group inside a group. --%>
+        <.start_menu_submenu
+          label={dgettext("ui", "Language")}
+          testid="start-menu-language-submenu"
+        >
+          <:icon><Icons.icon_globe class="h-4 w-4" /></:icon>
+          <.start_menu_item
+            :for={locale <- @locales}
+            href={locale.href}
+            label={locale.label}
+            hreflang={locale.bcp47}
+            data-locale={locale.code}
+            data-testid={"start-menu-item-language-#{locale.code}"}
+          >
+            <:icon><Icons.flag_icon locale={locale.code} class="h-4 w-4" /></:icon>
+          </.start_menu_item>
+        </.start_menu_submenu>
+
         <.start_menu_separator />
 
         <.start_menu_submenu label={dgettext("ui", "Help")} testid="start-menu-help-submenu">
           <:icon><Icons.icon_group_help class="h-4 w-4" /></:icon>
           <.help_topics_item screen={@screen} />
-          <.app_item
-            action="help_nav_tab"
-            on_action="help_nav_tab"
-            label={dgettext("help", "Search")}
-            icon_fn={:icon_btn_search}
-            disabled={!@help?}
-            phx-value-tab="search"
-            testid="start-menu-item-help-search"
-          />
           <.window_item
             window="cheatsheet"
             label={dgettext("ui", "Shortcut Cheatsheet")}
             icon_fn={:icon_dialog_cheatsheet}
             disabled={!@chat?}
+          />
+          <.app_item
+            action="show_motd"
+            on_action={@on_action}
+            label={dgettext("ui", "Message of the Day")}
+            icon_fn={:icon_notepad}
+            disabled={!@chat?}
+          />
+          <%!-- The landing shell's Help menu is where these two lived. They are
+                the only entries in the menu that leave the app entirely, so
+                they stay together and behind the separator. --%>
+          <.start_menu_separator />
+          <.link_item
+            href="https://github.com/rodrigomarchi/retro_hex_chat"
+            label="GitHub"
+            icon_fn={:icon_code}
+            target="_blank"
+            rel="noopener"
+            testid="start-menu-item-github"
+          />
+          <.link_item
+            href="https://github.com/rodrigomarchi/retro_hex_chat/blob/main/LICENSE"
+            label={dgettext("landing", "License (MIT)")}
+            icon_fn={:icon_legal}
+            target="_blank"
+            rel="noopener"
+            testid="start-menu-item-license"
           />
           <.start_menu_separator />
           <.about_item screen={@screen} />
@@ -492,6 +705,19 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
   end
 
   # ── Private helpers ─────────────────────────────────
+
+  # Public screens rewrite the path they are on; the app's two redirect through
+  # `/locale/:code` and come back where they started.
+  defp locales(%{screen: screen} = assigns) when screen in @app_screens do
+    LanguageMenu.locale_links(:app, nil, assigns.language_return_to || default_return_to(screen))
+  end
+
+  defp locales(assigns) do
+    LanguageMenu.locale_links(:public, assigns.current_path, nil)
+  end
+
+  defp default_return_to(:chat), do: "/chat"
+  defp default_return_to(:connect), do: "/connect"
 
   # Both privileged groups are derived from `WindowRegistry`, so a window
   # cannot be openable from a menu that no longer knows its title, nor carry a
@@ -665,6 +891,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
   attr :disabled, :boolean, default: false
   attr :testid, :string, required: true
   attr :class, :any, default: nil
+  attr :rest, :global
 
   defp link_item(assigns) do
     ~H"""
@@ -674,8 +901,51 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
       disabled={@disabled}
       class={@class}
       data-testid={@testid}
+      {@rest}
     >
       <:icon>{apply(Icons, @icon_fn, [%{class: "h-4 w-4"}])}</:icon>
+    </.start_menu_item>
+    """
+  end
+
+  # Steps the help viewer's own history. `HelpNavHook` reads the attribute off
+  # the DOM, so a dead row drops it rather than looking live to the hook.
+  attr :icon_fn, :atom, required: true
+  attr :label, :string, required: true
+  attr :direction, :string, required: true, values: ["back", "forward"]
+  attr :disabled, :boolean, default: false
+
+  defp help_nav_item(assigns) do
+    ~H"""
+    <.start_menu_item
+      data-help-nav={!@disabled && @direction}
+      label={@label}
+      disabled={@disabled}
+      data-testid={"start-menu-item-help-#{@direction}"}
+    >
+      <:icon>{apply(Icons, @icon_fn, [%{class: "h-4 w-4"}])}</:icon>
+    </.start_menu_item>
+    """
+  end
+
+  # Copies the current chat-log selection. The only row in the menu whose live
+  # state is not a property of the screen but of the document: it is enabled
+  # while something is selected, and `copy_selection.js` — shared with the menu
+  # bar — flips `data-copy-disabled` on it as the selection changes. The gate
+  # here is the coarse one, and says only whether a chat log exists at all.
+  attr :disabled, :boolean, default: false
+
+  defp copy_item(assigns) do
+    ~H"""
+    <.start_menu_item
+      label={dgettext("ui", "Copy")}
+      disabled={@disabled}
+      data-menubar-copy-selection="true"
+      data-copy-disabled="true"
+      aria-disabled="true"
+      data-testid="start-menu-item-copy_selection"
+    >
+      <:icon><Icons.icon_copy class="h-4 w-4" /></:icon>
     </.start_menu_item>
     """
   end

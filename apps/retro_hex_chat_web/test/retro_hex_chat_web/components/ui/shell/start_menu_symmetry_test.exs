@@ -19,6 +19,16 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSymmetryTest do
   # One window per screen, so Windows is never the empty case here.
   @windows [%{id: "w", label: "A window", icon_fn: :icon_chat}]
 
+  # Measured off the classes the primitives carry — see the height test.
+  @row_px 24
+  @separator_px 6
+  @menu_chrome_px 8
+  @taskbar_px 30
+
+  # The shortest window the non-stacked desktop is expected to serve. Stacking
+  # is keyed on width, so nothing else keeps a short window off this menu.
+  @min_viewport_px 480
+
   describe "symmetry" do
     test "every screen renders the identical set of entries, in the identical order" do
       [{_first_screen, reference} | rest] =
@@ -38,15 +48,31 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSymmetryTest do
       [reference | rest] = Enum.map(@screens, &group_ids/1)
 
       for ids <- rest, do: assert(ids == reference)
-      assert length(reference) == 11
     end
 
     test "the root list stays short enough to fit on screen without scrolling" do
-      # The desktop menu cannot scroll: `overflow` would clip the flyouts. Depth
-      # is what keeps it on screen, so the root row count is a real constraint,
-      # not a style preference.
+      # The desktop menu cannot scroll: `overflow` would clip the flyouts that
+      # escape to the right. Depth is what keeps it on screen, so the root's
+      # height is a real constraint — but it is a height, not a row count, and
+      # asserting a bare row count only ever gets ratcheted upward.
+      #
+      # So it is measured instead, from the classes the rows actually carry:
+      #
+      #   row        `px-2 py-1 text-xs` + `h-4` icon  → 16 + 2×4  = 24px
+      #   separator  `h-[2px] my-[2px]`                →  2 + 2×2  =  6px
+      #   menu       `p-[3px]` + `mb-[2px]`            →  2×3 + 2  =  8px
+      #   taskbar    `p-[2px]` around a start button              ≈ 30px
+      #
+      # Stacking is keyed on width (768px), never on height, so a wide but short
+      # window still gets this menu and is the case to survive.
       html = render_menu(:chat)
-      assert root_row_count(html) <= 12
+      height = root_height_px(html)
+
+      assert height <= @min_viewport_px,
+             """
+             the Start menu's root is #{height}px tall and would run off a              #{@min_viewport_px}px window.
+             Fold a group into another one rather than adding a row —              #{div(@min_viewport_px - height, @row_px)} rows of headroom left.
+             """
     end
 
     test "no group nests another group" do
@@ -129,6 +155,66 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSymmetryTest do
         assert enabled?(screen, "start-menu-item-show_about"),
                "#{screen} should be able to open About"
       end
+    end
+
+    test "the arcade needs an identified nick, not just a chat" do
+      refute enabled?(:chat, "start-menu-item-open_arcade")
+      assert enabled?(:chat, "start-menu-item-open_arcade", arcade_available: true)
+
+      # The capability without the screen is still nothing to act on.
+      refute enabled?(:landing, "start-menu-item-open_arcade", arcade_available: true)
+    end
+
+    test "privacy mode needs a relay on top of the session" do
+      refute enabled?(:chat, "start-menu-item-p2p_toggle_privacy", p2p_active: true)
+
+      assert enabled?(:chat, "start-menu-item-p2p_toggle_privacy",
+               p2p_active: true,
+               p2p_turn_available: true
+             )
+    end
+
+    test "offering a session reads the P2P gate the other way round" do
+      # The one entry that goes dead when the rest of its group comes alive.
+      assert enabled?(:chat, "start-menu-item-p2p_how_to_start")
+      refute enabled?(:chat, "start-menu-item-p2p_how_to_start", p2p_active: true)
+      refute enabled?(:connect, "start-menu-item-p2p_how_to_start")
+    end
+
+    test "the chat window's own menu needs the chat window" do
+      for entry <- ~w(clear_window copy_selection toggle_search toggle_nicklist) do
+        assert enabled?(:chat, "start-menu-item-#{entry}")
+
+        for screen <- @screens -- [:chat] do
+          refute enabled?(screen, "start-menu-item-#{entry}"),
+                 "#{screen} has no chat window for #{entry} to act on"
+        end
+      end
+    end
+
+    test "the help viewer's tabs and history need the help viewer" do
+      for entry <- ~w(contents index search back forward) do
+        assert enabled?(:help, "start-menu-item-help-#{entry}")
+
+        for screen <- @screens -- [:help] do
+          refute enabled?(screen, "start-menu-item-help-#{entry}")
+        end
+      end
+    end
+
+    test "every locale is offered from every screen" do
+      for screen <- @screens do
+        assert enabled?(screen, "start-menu-item-language-pt_BR"),
+               "#{screen} should be able to switch language"
+      end
+    end
+
+    test "the app switches locale through the redirect, the public pages by path" do
+      # Same rows, two href shapes — `LanguageMenu` owns both, and getting the
+      # wrong one here would drop a signed-in reader back on /connect.
+      assert locale_href(:chat, "pt_BR") =~ "/locale/pt_BR?return_to="
+      assert locale_href(:connect, "pt_BR") =~ "return_to=%2Fconnect"
+      refute locale_href(:landing, "pt_BR") =~ "/locale/"
     end
 
     test "help search only works where a help viewer is listening" do
@@ -238,6 +324,29 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSymmetryTest do
     loose = doc |> Floki.find("[data-window-start-menu] > button") |> length()
 
     groups + loose
+  end
+
+  defp root_separator_count(html) do
+    html
+    |> Floki.parse_document!()
+    |> Floki.find("[data-window-start-menu] > div:not([data-start-submenu])")
+    |> length()
+  end
+
+  # What the root claims above the taskbar, bottom edge of the screen included.
+  defp root_height_px(html) do
+    root_row_count(html) * @row_px +
+      root_separator_count(html) * @separator_px +
+      @menu_chrome_px + @taskbar_px
+  end
+
+  defp locale_href(screen, code) do
+    screen
+    |> document()
+    |> Floki.find(~s([data-testid="start-menu-item-language-#{code}"]))
+    |> Floki.attribute("href")
+    |> List.first()
+    |> Kernel.||("")
   end
 
   defp enabled?(screen, testid, opts \\ []) do
