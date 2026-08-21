@@ -1,77 +1,103 @@
 defmodule RetroHexChatWeb.ChatLive.Components.ChatShell do
   @moduledoc """
-  Chat-layer glue for the shell header.
+  Chat-layer glue for the chat window's menu bar.
 
-  Derives the view values the header needs — online-buddy count, admin?, arcade
-  availability and the call/session read models — from the `Session` struct and
-  delegates the markup to the design-system `chat_app_header/1`, so the main
-  template no longer carries those computations or the shell imports.
+  Derives what the menus need to know — admin?, arcade availability, whether a
+  peer session exists and whether a relay is configured for it — from the
+  `Session` struct and the host's call assigns, and delegates the markup to the
+  design-system `menu_bar_app/1`.
 
-  Identity and the active conversation are not among them: the chat window's
+  The menu bar hangs under the chat window's title bar, where Windows 98 put an
+  application's menus, rather than in a strip across the top of the screen. The
+  desk has no chrome of its own: what the app has to say about itself is in the
+  window's title bar, the taskbar and the tray.
+
+  Identity and the active conversation are not derived here: the chat window's
   title bar names both (see `ChatLive.ChatTitle`).
 
-  Pure function component (the header owns no draft/selection state). It holds the
-  domain derivation only (no raw layout markup — that lives in `components/ui/`),
-  keeping this lint-scanned glue free of raw Tailwind. Change-tracking memoizes it
-  on the assigns it reads, so a plain chat message that does not touch
-  `session`/`lag`/`mute` produces no header diff.
+  Pure function component (the menu owns no draft/selection state). It holds the
+  domain derivation only — no raw layout markup, which lives in `components/ui/`
+  — keeping this lint-scanned glue free of raw Tailwind. Change-tracking
+  memoizes it on the assigns it reads, so a plain chat message produces no menu
+  diff.
   """
   use RetroHexChatWeb, :html
 
-  import RetroHexChatWeb.Components.UI.ChatAppHeader
+  import RetroHexChatWeb.Components.UI.MenuBarApp
+  import RetroHexChatWeb.Components.UI.StatusBarApp
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChatWeb.ChatLive.ChatContext
 
-  attr :session, Session, required: true, doc: "Chat session struct (header is a function of it)"
-  attr :lag_ms, :any, default: nil, doc: "Lag in milliseconds, or nil when unknown/timed out"
-
-  attr :lag_status, :atom,
-    default: :normal,
-    values: [:normal, :warning, :critical, :timeout]
-
-  attr :muted, :boolean, default: false
-  attr :timezone, :string, default: "Etc/UTC"
+  attr :session, Session,
+    required: true,
+    doc: "Chat session struct (the menu is a function of it)"
 
   attr :p2p_session, :map,
     default: nil,
     doc: "The host's @p2p_session state-machine assign (nil when no session)"
 
-  attr :group_call, :map,
-    default: nil,
-    doc: "The host's @group_call state assign (nil when no channel call is active)"
-
   attr :mobile_viewport, :any,
     default: nil,
     doc: "The host's @mobile_viewport assign, threaded through to the menu bar"
 
-  @spec chat_shell_header(map()) :: Phoenix.LiveView.Rendered.t()
-  def chat_shell_header(assigns) do
+  @spec chat_shell_menu(map()) :: Phoenix.LiveView.Rendered.t()
+  def chat_shell_menu(assigns) do
     session = assigns.session
 
     assigns =
       assign(assigns,
         is_admin: ChatContext.admin?(session),
         arcade_available: session.identified == true,
-        online_buddy_count: online_buddy_count(session.notify_list),
-        group_call_display: group_call_display(assigns.group_call),
-        p2p: p2p_display(assigns.p2p_session),
         p2p_turn_available: (assigns.p2p_session || %{})[:turn_configured] == true
       )
 
     ~H"""
-    <.chat_app_header
-      lag_ms={@lag_ms}
-      lag_status={@lag_status}
-      online_buddy_count={@online_buddy_count}
-      muted={@muted}
-      timezone={@timezone}
+    <.menu_bar_app
+      id="menubar"
+      phx-hook="MenuBarHook"
+      connected={true}
       is_admin={@is_admin}
       arcade_available={@arcade_available}
-      group_call={@group_call_display}
-      p2p={@p2p}
+      p2p_active={@p2p_session != nil}
       p2p_turn_available={@p2p_turn_available}
+      language_return_to="/chat"
       mobile_viewport={@mobile_viewport}
+      on_action="toolbar_action"
+    />
+    """
+  end
+
+  attr :p2p_session, :map, default: nil, doc: "The host's @p2p_session assign"
+  attr :group_call, :map, default: nil, doc: "The host's @group_call assign"
+
+  @doc """
+  The chat window's own status bar: what this session is doing right now.
+
+  A Win98 application reported on itself along the bottom edge of its window,
+  and that is where an active call or file transfer belongs — not in a strip
+  across the whole screen, and not in the tray, which speaks for the machine
+  (the clock, the volume, the connection) rather than for one window.
+  """
+  @spec chat_shell_status(map()) :: Phoenix.LiveView.Rendered.t()
+  def chat_shell_status(assigns) do
+    assigns =
+      assign(assigns,
+        group_call_display: group_call_display(assigns.group_call),
+        p2p: p2p_display(assigns.p2p_session)
+      )
+
+    ~H"""
+    <.status_bar_zones
+      group_call={@group_call_display}
+      on_group_call_click="group_call_statusbar_click"
+      on_group_call_stop="group_call_statusbar_stop"
+      p2p={@p2p}
+      on_p2p_click="p2p_statusbar_click"
+      on_p2p_stop="p2p_statusbar_stop"
+      show_clock={false}
+      show_lag={false}
+      show_mute={false}
     />
     """
   end
@@ -196,10 +222,17 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShell do
   defp facet_title(:file), do: dgettext("chat", "file transfer active")
   defp facet_title(:game), do: dgettext("chat", "game active")
 
+  @doc """
+  How many buddies on the notify list are online right now.
+
+  Public because the tray shows the badge: the taskbar is rendered from the
+  chat template rather than from here, and the count is a property of the
+  session either way.
+  """
   @spec online_buddy_count(%{entries: list()} | nil) :: non_neg_integer()
-  defp online_buddy_count(%{entries: entries}) when is_list(entries) do
+  def online_buddy_count(%{entries: entries}) when is_list(entries) do
     Enum.count(entries, &(&1.online == true))
   end
 
-  defp online_buddy_count(_notify_list), do: 0
+  def online_buddy_count(_notify_list), do: 0
 end

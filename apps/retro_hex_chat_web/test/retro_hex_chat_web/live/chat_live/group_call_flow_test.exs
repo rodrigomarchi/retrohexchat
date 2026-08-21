@@ -242,6 +242,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
                call.channel_name
              )
 
+      # And the window says so along its own bottom edge.
       assert has_element?(view, ~s([data-testid="status-bar-group-call"]), "Call:")
 
       assert has_element?(
@@ -279,6 +280,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       assert rehydrated.status == :reconnecting
       assert rehydrated.recovery.state == :rejoining
 
+      assert has_element?(reconnect_view, ~s([data-testid="group-call-taskbar"]))
       assert has_element?(reconnect_view, ~s([data-testid="status-bar-group-call"]))
       assert has_element?(reconnect_view, ~s([data-testid="group-call-window"]))
 
@@ -330,6 +332,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       assert rehydrated.channel_name == channel
       assert rehydrated.participant_id == payload.participant.id
 
+      assert has_element?(reconnect_view, ~s([data-testid="group-call-taskbar"]))
       assert has_element?(reconnect_view, ~s([data-testid="status-bar-group-call"]))
       assert has_element?(reconnect_view, ~s([data-testid="group-call-window"]))
     end
@@ -349,6 +352,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       refute group_call_prejoin(view)
       refute group_call_assign(view)
       refute has_element?(view, ~s([data-testid="group-call-window"]))
+      refute has_element?(view, ~s([data-testid="group-call-taskbar"]))
       refute has_element?(view, ~s([data-testid="status-bar-group-call"]))
     end
 
@@ -622,6 +626,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       assert_push_event(view, "window_command", %{action: "close", id: "group-call"})
       assert group_call_assign(view) == nil
       refute has_element?(view, ~s([data-testid="group-call-window"]))
+      refute has_element?(view, ~s([data-testid="group-call-taskbar"]))
       refute has_element?(view, ~s([data-testid="status-bar-group-call"]))
     end
 

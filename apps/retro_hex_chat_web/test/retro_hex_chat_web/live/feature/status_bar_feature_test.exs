@@ -12,7 +12,9 @@ defmodule RetroHexChatWeb.StatusBarFeatureTest do
       nick = "SB1#{uid()}"
       {:ok, _view, html} = live(chat_conn(conn, nick), "/chat")
 
-      assert html =~ "data-testid=\"status-bar-app\""
+      # The bar is the chat window's own, along its bottom edge — the desk has
+      # no chrome of its own to hold one.
+      assert html =~ "data-window-status"
     end
 
     test "the bar carries session state, not identity", %{conn: conn} do
@@ -86,7 +88,7 @@ defmodule RetroHexChatWeb.StatusBarFeatureTest do
       nick = "SBA#{uid()}"
       {:ok, _view, html} = live(chat_conn(conn, nick), "/chat")
 
-      assert html =~ "data-testid=\"status-bar-app\""
+      assert html =~ "data-window-status"
     end
   end
 end

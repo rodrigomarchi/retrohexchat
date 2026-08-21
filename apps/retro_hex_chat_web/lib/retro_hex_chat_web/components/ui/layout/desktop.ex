@@ -238,6 +238,14 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
   slot :meta,
     doc: "Live status shown after the title — see window_title_bar/1. Hidden on narrow windows."
 
+  slot :menu,
+    doc: """
+    A `menu_bar/1` strip directly under the title bar, where Windows 98 put an
+    application's menus. Its dropdowns escape the window frame on purpose — the
+    window is not a clipping context, so a menu opens over the desktop the way
+    it did in Win98, and only the workspace edge cuts it off.
+    """
+
   slot :inner_block, required: true, doc: "window body content"
   slot :status, doc: "window_status_bar_field/1 elements, pinned under the body"
 
@@ -275,11 +283,15 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
           <:meta :if={@meta != []}>{render_slot(@meta)}</:meta>
         </.window_title_bar>
 
+        <div :if={@menu != []} data-window-menu class="shrink-0">
+          {render_slot(@menu)}
+        </div>
+
         <.window_body data-window-body class={classes(["overflow-auto", @body_class])}>
           {render_slot(@inner_block)}
         </.window_body>
 
-        <.window_status_bar :if={@status != []}>
+        <.window_status_bar :if={@status != []} data-window-status>
           {render_slot(@status)}
         </.window_status_bar>
 

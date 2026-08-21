@@ -23,9 +23,14 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
       {:ok, view, html} = live(chat_conn(conn, "Desk#{uid()}"), "/chat")
 
       assert has_element?(view, ~s(#chat-desktop[data-persist-key="chat"][data-persist="true"]))
-      # Header chrome (menu bar + status bar) lives in the desktop header slot,
-      # above the workspace.
-      assert html =~ ~s(data-testid="status-bar-app")
+
+      # The desk carries no chrome of its own: the menus hang under the chat
+      # window's own title bar, where Win98 put an application's menus, and
+      # there is no header strip above the workspace to hold them.
+      refute html =~ ~s(data-testid="app-header")
+      refute html =~ ~s(data-testid="status-bar-app")
+
+      assert has_element?(view, ~s([data-window-id="chat"] [data-window-menu] #menubar))
       assert has_element?(view, ~s(#menubar [data-testid="language-menu-item-pt_BR"]))
 
       assert has_element?(

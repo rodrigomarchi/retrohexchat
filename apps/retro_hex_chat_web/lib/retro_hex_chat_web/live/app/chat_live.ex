@@ -18,6 +18,8 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
   # ── Shell + tab glue (compose the design-system shell/tab components) ─────────
   import RetroHexChatWeb.ChatLive.Components.ChatShell
+
+  alias RetroHexChatWeb.ChatLive.Components.ChatShell
   import RetroHexChatWeb.ChatLive.Components.ChatTabs
 
   # ── Chat components ──────────────────────────────────────────

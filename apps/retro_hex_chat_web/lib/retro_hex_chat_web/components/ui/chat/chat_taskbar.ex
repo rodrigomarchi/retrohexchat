@@ -22,6 +22,12 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
   attr :open_windows, :any, default: MapSet.new()
   attr :is_admin, :boolean, default: false
 
+  attr :online_buddy_count, :integer,
+    default: 0,
+    doc: "Buddies on the notify list who are online; the tray badge hides at zero"
+
+  attr :on_notify_toggle, :any, default: "toggle_notify_list"
+
   attr :lag_ms, :any, default: nil, doc: "Round-trip to the server, or nil when unknown"
   attr :lag_status, :atom, default: :normal, values: [:normal, :warning, :critical, :timeout]
   attr :muted, :boolean, default: false
@@ -91,6 +97,26 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
             status first, then the volume, then the clock at the far edge. --%>
       <:tray>
         <.desktop_tray data-testid="chat-tray">
+          <%!-- Only while there is someone to report. Win98's tray worked the
+                same way: an icon appeared when it had something to say. --%>
+          <.desktop_tray_item
+            :if={@online_buddy_count > 0}
+            on_click={@on_notify_toggle}
+            title={
+              dngettext(
+                "ui",
+                "%{count} buddy online",
+                "%{count} buddies online",
+                @online_buddy_count
+              )
+            }
+            label={to_string(@online_buddy_count)}
+            class="hidden md:inline-flex"
+            data-testid="tray-notify-badge"
+          >
+            <:icon><Icons.icon_btn_bell class="h-3 w-3" /></:icon>
+          </.desktop_tray_item>
+
           <%!-- Hidden on a phone, as it was in the status bar: a number that
                 changes every few seconds is not worth a taskbar that scrolls. --%>
           <.desktop_tray_item

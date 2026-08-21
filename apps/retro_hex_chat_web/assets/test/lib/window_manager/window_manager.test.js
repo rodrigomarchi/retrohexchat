@@ -702,6 +702,70 @@ describe("WindowManager", () => {
     });
   });
 
+  // A window that carries its own menu bar decides between the text strip and
+  // the icon rail on ITS width, not the viewport's: the desk can be 1920 wide
+  // while the window on it is dragged to 480.
+  describe("a window that carries its own menu bar", () => {
+    function withMenu(size, { maximized = false, width = 1000 } = {}) {
+      document.body.innerHTML = "";
+      const el = document.createElement("div");
+      el.className = "desktop";
+      el.innerHTML = `<div class="desktop__workspace">${windowMarkup("app", {
+        open: true,
+      }).replace(
+        "<div data-window-content>",
+        "<div data-window-menu></div><div data-window-content>",
+      )}</div>`;
+      document.body.appendChild(el);
+
+      const wm = createWindowManager(el);
+      wm.mount();
+      wm.stacked = false;
+      wm.workspaceSize = () => size;
+      wm.windows.app.state.w = width;
+      wm.windows.app.state.maximized = maximized;
+      wm.applyAll();
+      return wm;
+    }
+
+    const narrow = () =>
+      document.querySelector('[data-window-id="app"]').classList.contains("desktop-window--narrow");
+
+    it("keeps the strip while the window is wide enough for it", () => {
+      withMenu({ w: 1600, h: 900 }, { width: 1000 });
+      expect(narrow()).toBe(false);
+    });
+
+    it("collapses when the window is dragged under the strip's width", () => {
+      withMenu({ w: 1600, h: 900 }, { width: 600 });
+      expect(narrow()).toBe(true);
+    });
+
+    it("reads a maximized window as the width of the desk, not of its restore size", () => {
+      // `st.w` still holds the size it will restore to, which is not the size
+      // it is being drawn at.
+      withMenu({ w: 1600, h: 900 }, { width: 600, maximized: true });
+      expect(narrow()).toBe(false);
+    });
+
+    it("collapses on a phone, where the window is the desk", () => {
+      const wm = withMenu({ w: 390, h: 780 }, { width: 1000 });
+      wm.stacked = true;
+      wm.applyAll();
+      expect(narrow()).toBe(true);
+    });
+
+    it("leaves a window with no menu bar alone", () => {
+      command({ action: "open", id: "call" });
+      hook.stacked = false;
+      hook.windows.call.state.w = 200;
+      hook.workspaceSize = () => ({ w: 1600, h: 900 });
+      hook.applyWindow("call");
+
+      expect(win("call").classList.contains("desktop-window--narrow")).toBe(false);
+    });
+  });
+
   // Independent of fill: nothing stopped a window registered wider than the
   // screen from being drawn off the edge of an overflow-hidden workspace.
   describe("drawing a window bigger than the workspace", () => {

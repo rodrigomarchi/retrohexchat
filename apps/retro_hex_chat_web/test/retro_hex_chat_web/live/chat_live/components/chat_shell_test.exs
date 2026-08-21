@@ -1,4 +1,13 @@
 defmodule RetroHexChatWeb.ChatLive.Components.ChatShellTest do
+  @moduledoc """
+  The chat window's own menu bar, and the one derivation the tray needs.
+
+  This used to cover an application header — a strip across the top of the
+  screen holding the menus and a status bar. That header is gone: the menus
+  hang under the chat window's title bar where Win98 put them, and what the
+  status bar reported is now either in the tray (lag, mute, buddies) or was
+  already a taskbar button of its own (an active call, a P2P session).
+  """
   use RetroHexChatWeb.ConnCase, async: true
 
   import Phoenix.LiveViewTest
@@ -8,108 +17,82 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShellTest do
 
   @moduletag :unit
 
-  defp header(session, overrides \\ %{}) do
-    assigns =
-      Map.merge(
-        %{
-          session: session,
-          lag_ms: nil,
-          lag_status: :normal,
-          muted: false,
-          timezone: "Etc/UTC"
-        },
-        overrides
-      )
-
-    render_component(&ChatShell.chat_shell_header/1, assigns)
+  defp menu(session, overrides \\ %{}) do
+    assigns = Map.merge(%{session: session}, overrides)
+    render_component(&ChatShell.chat_shell_menu/1, assigns)
   end
 
-  test "renders the header chrome: logo, menubar hook, status bar" do
-    html = header(Session.new("alice"))
+  describe "the window's menu bar" do
+    test "renders the menu bar and its hook, and nothing of a header" do
+      html = menu(Session.new("alice"))
 
-    assert html =~ ~s(data-testid="app-header")
-    assert html =~ ~s(id="menubar")
-    assert html =~ ~s(phx-hook="MenuBarHook")
-    assert html =~ ~s(data-testid="app-mobile-menu-trigger")
-    assert html =~ ~s(data-testid="app-mobile-menu-category-file")
-    assert html =~ ~s(data-testid="app-mobile-menu-category-tools")
-    assert html =~ ~s(data-testid="app-mobile-menu-section-file")
-    assert html =~ ~s(data-testid="app-mobile-menu-section-tools")
-    assert html =~ ~s(app-menu-bar__desktop-menu)
-    assert html =~ ~s(data-testid="status-bar-app")
-  end
+      assert html =~ ~s(id="menubar")
+      assert html =~ ~s(phx-hook="MenuBarHook")
+      assert html =~ ~s(app-menu-bar__desktop-menu)
 
-  test "the mobile rail carries every menu, each opening its own section" do
-    html = header(Session.new("alice"))
+      # The desk carries no chrome of its own any more.
+      refute html =~ ~s(data-testid="app-header")
+      refute html =~ ~s(data-testid="status-bar-app")
+    end
 
-    for section <- ~w(file edit view tools p2p games language help) do
-      assert html =~ ~s(data-testid="app-mobile-menu-rail-#{section}")
-      assert html =~ ~s(data-mobile-menu-open="#{section}")
-      assert html =~ ~s(data-testid="app-mobile-menu-category-#{section}")
-      assert html =~ ~s(data-testid="app-mobile-menu-section-#{section}")
+    test "the mobile rail carries every menu, each opening its own section" do
+      html = menu(Session.new("alice"))
+
+      for section <- ~w(file edit view tools p2p games language help) do
+        assert html =~ ~s(data-testid="app-mobile-menu-rail-#{section}")
+        assert html =~ ~s(data-mobile-menu-open="#{section}")
+        assert html =~ ~s(data-testid="app-mobile-menu-category-#{section}")
+        assert html =~ ~s(data-testid="app-mobile-menu-section-#{section}")
+      end
+    end
+
+    test "the menu names neither the user nor the conversation — the title bar does" do
+      session = %{Session.new("alice") | active_channel: "#lobby", active_pm: "bob"}
+      html = menu(session)
+
+      refute html =~ "alice"
+      refute html =~ "bob"
+      refute html =~ "#lobby"
+    end
+
+    test "a peer session opens the P2P menu, and a relay opens privacy mode" do
+      idle = menu(Session.new("alice"))
+      assert idle =~ ~s(data-testid="context-menu-item-p2p_how_to_start")
+
+      live =
+        menu(Session.new("alice"), %{
+          p2p_session: %{state: :connected, peer_nick: "trinity", turn_configured: true}
+        })
+
+      assert live =~ ~s(data-testid="context-menu-item-p2p_start_audio")
+      assert live =~ ~s(data-testid="context-menu-item-p2p_toggle_privacy")
+    end
+
+    test "the arcade is offered either way, but only acts for an identified nick" do
+      # The menus name what the app can do and gray what is out of reach, the
+      # same contract the Start menu holds — so the row is there in both cases
+      # and only the action goes with the gray.
+      idle = menu(Session.new("alice"))
+      identified = menu(%{Session.new("alice") | identified: true})
+
+      assert idle =~ ~s(data-testid="context-menu-item-open_arcade")
+      assert identified =~ ~s(data-testid="context-menu-item-open_arcade")
+
+      refute idle =~ ~s(phx-value-action="open_arcade")
+      assert identified =~ ~s(phx-value-action="open_arcade")
     end
   end
 
-  test "the header names neither the user nor the conversation — the title bar does" do
-    session = %{Session.new("alice") | active_channel: "#lobby", active_pm: "bob"}
-    html = header(session)
+  describe "online_buddy_count/1" do
+    test "counts only the buddies who are online" do
+      notify = %{entries: [%{online: true}, %{online: false}, %{online: true}]}
 
-    refute html =~ "alice"
-    refute html =~ "bob"
-    refute html =~ "#lobby"
-    refute html =~ ~s(data-testid="status-bar-account-widget")
-  end
+      assert ChatShell.online_buddy_count(notify) == 2
+    end
 
-  test "derives the online buddy count from the session notify list" do
-    notify = %{entries: [%{online: true}, %{online: false}, %{online: true}]}
-    html = header(%{Session.new("alice") | notify_list: notify})
-
-    assert html =~ ~s(data-testid="status-bar-notify-badge")
-    assert html =~ ">2<"
-  end
-
-  test "hides the buddy badge when no buddy is online" do
-    notify = %{entries: [%{online: false}]}
-    html = header(%{Session.new("alice") | notify_list: notify})
-
-    refute html =~ ~s(data-testid="status-bar-notify-badge")
-  end
-
-  test "renders active group call status bar controls" do
-    html =
-      header(Session.new("alice"), %{
-        group_call: %{
-          channel_name: "#lobby",
-          status: :connected,
-          participants: [%{id: 1}, %{id: 2}]
-        }
-      })
-
-    assert html =~ ~s(data-testid="status-bar-group-call")
-    assert html =~ ~s(data-testid="status-bar-group-call-stop")
-    assert html =~ "Call: #lobby (2)"
-  end
-
-  test "renders rich P2P status bar facets without losing the base label" do
-    html =
-      header(Session.new("alice"), %{
-        p2p_session: %{
-          state: :connected,
-          peer_nick: "trinity",
-          call_summary: %{type: "video", duration: "00:01:02", quality_label: "Good"},
-          file_summary: %{status: "sending", file_name: "report.pdf"},
-          game_summary: %{active?: true},
-          turn_only: true,
-          turn_configured: true
-        }
-      })
-
-    assert html =~ ~s(data-testid="status-bar-p2p")
-    assert html =~ "P2P: trinity 00:01:02"
-    assert html =~ ~s(data-testid="status-bar-p2p-facet-call")
-    assert html =~ ~s(data-testid="status-bar-p2p-facet-file")
-    assert html =~ ~s(data-testid="status-bar-p2p-facet-game")
-    assert html =~ ~s(data-testid="status-bar-p2p-quality")
-    assert html =~ ~s(data-testid="status-bar-p2p-relay")
+    test "is zero for an empty or missing notify list" do
+      assert ChatShell.online_buddy_count(%{entries: []}) == 0
+      assert ChatShell.online_buddy_count(nil) == 0
+    end
   end
 end

@@ -79,29 +79,37 @@
   min-width: 0;
 }
 
-/* The bar stops hugging its content on a phone: the icon rail spans whatever
-   the logo and the status zone leave, so no dead strip is left in the middle. */
-.desktop--stacked .app-menu-bar {
+/* The bar stops hugging its content when there is no room for the text strip:
+   the icon rail spans whatever is left beside it, so no dead strip sits in the
+   middle.
+
+   Two things can take that room away, and they are not the same thing. A phone
+   stacks the whole desk (`desktop--stacked`, keyed on the viewport). A window
+   carrying its own menu bar can also be dragged narrow on a wide screen, and
+   then only that window collapses (`desktop-window--narrow`, keyed on the
+   window's width by the `WindowManagerHook`). Every rule below answers to
+   either. */
+:is(.desktop--stacked, .desktop-window--narrow) .app-menu-bar {
   min-width: 0;
   flex: 1;
 }
 
-.desktop--stacked .app-menu-bar__desktop-menu {
+:is(.desktop--stacked, .desktop-window--narrow) .app-menu-bar__desktop-menu {
   display: none;
 }
 
-.desktop--stacked .app-menu-bar__mobile-menu {
+:is(.desktop--stacked, .desktop-window--narrow) .app-menu-bar__mobile-menu {
   display: inline-flex;
 }
 
 /* The rail replaces the hamburger — but the menu wrapper stays, since it is
    what holds the dropdown every rail button opens (fixed-positioned, so it does
    not care which button it is anchored to). */
-.desktop--stacked .app-menu-bar__mobile-trigger {
+:is(.desktop--stacked, .desktop-window--narrow) .app-menu-bar__mobile-trigger {
   display: none;
 }
 
-.desktop--stacked .app-menu-bar__mobile-rail {
+:is(.desktop--stacked, .desktop-window--narrow) .app-menu-bar__mobile-rail {
   display: flex;
   min-width: 0;
   flex: 1;
@@ -109,7 +117,7 @@
   gap: 2px;
 }
 
-.desktop--stacked .app-menu-bar__mobile-rail-button {
+:is(.desktop--stacked, .desktop-window--narrow) .app-menu-bar__mobile-rail-button {
   display: inline-flex;
   min-width: 28px;
   max-width: 44px;
@@ -126,19 +134,19 @@
     inset 1px 1px #ffffff;
 }
 
-.desktop--stacked .app-menu-bar__mobile-rail-button[data-active="true"] {
+:is(.desktop--stacked, .desktop-window--narrow) .app-menu-bar__mobile-rail-button[data-active="true"] {
   background: #a0a0a0;
   box-shadow:
     inset -1px -1px #ffffff,
     inset 1px 1px #808080;
 }
 
-.desktop--stacked .app-menu-bar__mobile-rail-button:focus-visible {
+:is(.desktop--stacked, .desktop-window--narrow) .app-menu-bar__mobile-rail-button:focus-visible {
   outline: 2px solid #000000;
   outline-offset: 1px;
 }
 
-.desktop--stacked .app-menu-bar__mobile-menu [data-menubar-dropdown] {
+:is(.desktop--stacked, .desktop-window--narrow) .app-menu-bar__mobile-menu [data-menubar-dropdown] {
   position: fixed;
   top: var(--rhc-chat-mobile-header-height, 40px);
   right: 4px;
@@ -156,7 +164,7 @@
   -webkit-overflow-scrolling: touch;
 }
 
-.desktop--stacked .app-menu-bar__mobile-menu [data-menubar-dropdown] > ul {
+:is(.desktop--stacked, .desktop-window--narrow) .app-menu-bar__mobile-menu [data-menubar-dropdown] > ul {
   margin: 0;
   padding: 0;
 }

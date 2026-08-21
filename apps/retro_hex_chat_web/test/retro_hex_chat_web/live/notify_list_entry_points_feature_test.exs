@@ -66,14 +66,14 @@ defmodule RetroHexChatWeb.NotifyListEntryPointsFeatureTest do
       assert buddy_html =~ ">2<"
     end
 
-    test "online buddies render a clickable status bar badge in chat", %{conn: conn} do
+    test "online buddies render a clickable tray badge in chat", %{conn: conn} do
       buddy = "Buddy#{uid()}"
       watcher = "Watch#{uid()}"
 
       {:ok, _buddy_view, _html} = live(chat_conn(conn, buddy), "/chat")
       view = connect_user(conn, watcher)
 
-      refute has_element?(view, ~s([data-testid="status-bar-notify-badge"]))
+      refute has_element?(view, ~s([data-testid="tray-notify-badge"]))
 
       render_click(view, "toggle_notify_list")
       # The Notify List is a stateful island in a managed window; fire its
@@ -86,7 +86,7 @@ defmodule RetroHexChatWeb.NotifyListEntryPointsFeatureTest do
       |> element(~s([data-testid="notify-add-form"]))
       |> render_submit(%{"nickname" => buddy, "note" => ""})
 
-      assert has_element?(view, ~s([data-testid="status-bar-notify-badge"]))
+      assert has_element?(view, ~s([data-testid="tray-notify-badge"]))
       assert render(view) =~ ~s(title="1 buddy online")
 
       # Re-invoking the action focuses the window (never toggle-closes); close it
@@ -95,7 +95,7 @@ defmodule RetroHexChatWeb.NotifyListEntryPointsFeatureTest do
       refute has_element?(view, ~s([data-window-id="notify-list"]))
 
       view
-      |> element(~s([data-testid="status-bar-notify-badge"]))
+      |> element(~s([data-testid="tray-notify-badge"]))
       |> render_click()
 
       assert has_element?(view, ~s([data-window-id="notify-list"]))

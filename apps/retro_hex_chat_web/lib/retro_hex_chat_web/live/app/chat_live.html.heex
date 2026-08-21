@@ -47,20 +47,6 @@
     escape_closes_windows
     data-testid="chat-desktop"
   >
-    <:header>
-      <%!-- App header with toolbar & status bar --%>
-      <.chat_shell_header
-        session={@session}
-        lag_ms={@lag_ms}
-        lag_status={@lag_status}
-        muted={@muted}
-        timezone={@timezone}
-        group_call={@group_call}
-        p2p_session={@p2p_session}
-        mobile_viewport={@mobile_viewport}
-      />
-    </:header>
-
     <%!-- The whole chat surface is one pinned window: maximizable, draggable,
           resizable, never closable. It opens windowed rather than maximized,
           because maximized hid the desktop it sits on — there is a taskbar, a
@@ -79,6 +65,24 @@
     >
       <:icon><Icons.icon_chat class="h-4 w-4" /></:icon>
       <:meta>{ChatTitle.window_meta(@session, length(@channel_users))}</:meta>
+
+      <%!-- The application's menus, under its own title bar, as Win98 had them.
+            Dragged narrower than the strip needs, the window collapses them to
+            the icon rail the phone already uses. --%>
+      <:menu>
+        <.chat_shell_menu
+          session={@session}
+          p2p_session={@p2p_session}
+          mobile_viewport={@mobile_viewport}
+        />
+      </:menu>
+
+      <%!-- What this session is doing, along the window's own bottom edge, the
+            way a Win98 application reported on itself. The tray speaks for the
+            machine; this speaks for the window. --%>
+      <:status>
+        <.chat_shell_status p2p_session={@p2p_session} group_call={@group_call} />
+      </:status>
 
       <%!-- MDI layout: conversations | chat | nicklist --%>
       <div class="flex flex-1 min-h-0">
@@ -1081,6 +1085,7 @@
         open_windows={@open_windows}
         is_admin={admin?(@session)}
         arcade_available={@session.identified == true}
+        online_buddy_count={ChatShell.online_buddy_count(@session.notify_list)}
         lag_ms={@lag_ms}
         lag_status={@lag_status}
         muted={@muted}

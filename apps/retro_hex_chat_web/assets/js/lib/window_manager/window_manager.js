@@ -61,6 +61,11 @@ import { handleCopySelectionClick, refreshCopySelectionItems } from "../ui/copy_
 const rememberedLayouts = new Map();
 const Z_BASE = 10;
 const STACK_BREAKPOINT = 768;
+// Below this, a window's own menu strip is swapped for the icon rail. Measured,
+// not guessed: the eight-menu strip is 616px in English and 757px in Indonesian,
+// the widest of the fourteen locales, plus the window's 3px padding either side.
+// The slack above that is room for a locale longer than any we ship today.
+const WINDOW_MENU_BREAKPOINT = 800;
 const EDGE_MARGIN = 40;
 const CASCADE_STEP = 26;
 const CASCADE_SIZE_RATIO = 0.6;
@@ -1277,6 +1282,7 @@ const WindowManagerCore = {
     this.setClass(el, "u-hidden", !visible);
     this.setClass(el, "desktop-window--blurred", this.focusedId !== id);
     this.setClass(el, "desktop-window--maximized", st.maximized);
+    this.syncWindowMenuWidth(el, st);
 
     // Geometry is driven through CSS custom properties (consumed by .desktop-window
     // in retrohex.css) so the hook never sets width/height/z-index inline directly.
@@ -1324,6 +1330,22 @@ const WindowManagerCore = {
     if (resBtn) this.setClass(resBtn, "u-hidden", !st.maximized);
 
     this.updateTaskbar(id);
+  },
+
+  // A window that carries its own menu bar has to decide between the text strip
+  // and the icon rail on ITS width, not the viewport's: the desk can be 1920px
+  // wide while the window on it is dragged down to 480. The desktop-wide
+  // `desktop--stacked` still applies on a phone; this is the same switch, per
+  // window, and `app-menu.css` honours either.
+  syncWindowMenuWidth(el, st) {
+    if (!el.querySelector("[data-window-menu]")) return;
+
+    // Stacked and maximized windows are as wide as the desk, whatever `st.w`
+    // remembers about the size they will restore to.
+    const workspace = this.workspaceSize().w;
+    const width = this.stacked || st.maximized ? workspace : Math.min(st.w, workspace);
+
+    this.setClass(el, "desktop-window--narrow", width < WINDOW_MENU_BREAKPOINT);
   },
 
   updateTaskbar(id) {
