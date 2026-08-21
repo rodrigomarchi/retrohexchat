@@ -3,7 +3,7 @@ defmodule RetroHexChatWeb.ChatLive.RetroGamesEventsTest do
 
   @moduletag :liveview_feature
 
-  alias RetroHexChatWeb.Components.UI.MenuBarApp
+  alias RetroHexChatWeb.Components.UI.StartMenuApp
 
   defp retro_games(view), do: :sys.get_state(view.pid).socket.assigns.retro_games
 
@@ -48,18 +48,14 @@ defmodule RetroHexChatWeb.ChatLive.RetroGamesEventsTest do
     end
   end
 
-  describe "Games menu" do
+  describe "Start menu ▸ Games" do
     test "shows Retro Games as a single launcher beside the WASM Arcade entry" do
       document =
-        render_component(&MenuBarApp.menu_bar_app/1,
-          connected: true,
-          arcade_available: false,
-          on_action: "toolbar_action"
-        )
+        render_component(&StartMenuApp.start_menu_app/1, screen: :chat, windows: [])
         |> Floki.parse_document!()
 
-      assert [_ | _] = Floki.find(document, ~s([data-testid="menu-retro-games"]))
-      assert [_ | _] = Floki.find(document, ~s([data-testid="context-menu-item-open_arcade"]))
+      assert [_ | _] = Floki.find(document, ~s([data-testid="start-menu-item-retro-games"]))
+      assert [_ | _] = Floki.find(document, ~s([data-testid="start-menu-item-open_arcade"]))
       assert Floki.find(document, ~s([data-testid^="menu-retro-game-"])) == []
     end
   end

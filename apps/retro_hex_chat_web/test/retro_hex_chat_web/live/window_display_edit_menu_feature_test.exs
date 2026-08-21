@@ -22,13 +22,14 @@ defmodule RetroHexChatWeb.WindowDisplayEditMenuFeatureTest do
         )
         |> Floki.parse_document!()
 
+      # Games left with the other launchers: what a window's menu bar carries is
+      # what acts on that window.
       assert trigger_labels(document) == [
                "File",
                "Edit",
                "View",
                "Tools",
                "P2P",
-               "Games",
                "Language",
                "Help"
              ]

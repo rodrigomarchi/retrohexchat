@@ -103,10 +103,11 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
             " " <>
             dgettext(
               "help",
-              "The menu bar becomes a rail of icons across the top of the screen — one per " <>
-                "menu, in the same order as on the desktop. Tapping one opens the menu already " <>
-                "on that section; tapping another switches to it, and tapping the one already " <>
-                "open closes the menu."
+              "The chat window's menu bar becomes a rail of icons under its title bar — one " <>
+                "per menu, in the same order as on the desktop. Tapping one opens the menu " <>
+                "already on that section; tapping another switches to it, and tapping the one " <>
+                "already open closes the menu. The same swap happens on a wide screen when " <>
+                "the window is dragged narrower than its menus need."
             ),
         see_also: ["ui-start-menu", "ui-overview", "keyboard-shortcuts"]
       },

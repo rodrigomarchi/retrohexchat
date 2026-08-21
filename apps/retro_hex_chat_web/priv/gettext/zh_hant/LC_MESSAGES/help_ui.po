@@ -1385,11 +1385,6 @@ msgstr "佈局持久性"
 msgid "Limits"
 msgstr "限制"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:17
-#, elixir-autogen, elixir-format
-msgid "Maximized by default"
-msgstr "默認最大化"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Maximum 5 active timers per session"
@@ -1435,19 +1430,6 @@ msgstr "通知名單"
 #, elixir-autogen, elixir-format
 msgid "On a Phone"
 msgstr "在電話上"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:65
-#, elixir-autogen, elixir-format
-msgid ""
-"On a narrow screen the desktop shows one window at a time: the current "
-"window fills the screen like a phone app. The menu bar, Start button and "
-"taskbar stay put — tap a taskbar button to switch between your open windows."
-" Windows can't be dragged, resized, minimized or maximized here; you just "
-"open, switch and close them. Dialogs and forms fill the screen too, so they "
-"always fit."
-msgstr ""
-"在狹長的屏幕上,桌面一次顯示一個窗口:當前窗口像手機應用一樣填充屏幕. 菜單欄、 啓動按鈕和任務欄保留 —— 打開任務欄按鈕在打開的窗口之間切換 。 "
-"視窗不能在這裏被拖曳,調整大小,最小化或最大化;你只是打開,切換和關閉它們. 對話框和表格也填滿了屏幕,所以總是適合."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:24
 #, elixir-autogen, elixir-format
@@ -1570,17 +1552,6 @@ msgid ""
 "taskbar, Start menu, and tray clock."
 msgstr "聊天居住在一個被固定的窗口上,一個Windows風格的桌面上,上面有任務欄,開始菜單和托盤鍾."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"The chat runs on a Windows-style desktop. The whole chat surface — "
-"conversations, tabs, messages, user list and input — lives in one window "
-"over a taskbar, and the familiar menu bar and status bar sit above the "
-"desktop."
-msgstr ""
-"聊天在Windows風格的桌面上運行. "
-"整個聊天表面——對話,標籤,消息,用戶列表和輸入——生活在一個任務欄上的窗口中,熟悉的菜單欄和狀態欄坐落在桌面上方."
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "The menu item runs"
@@ -1597,13 +1568,6 @@ msgstr "該表顯示每個活動計時器名稱,間隔,重複模式,下一場火
 #, elixir-autogen, elixir-format
 msgid "The tray at the right end of the taskbar shows a clock."
 msgstr "任務欄右端的托盤顯示一個時鐘."
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:73
-#, elixir-autogen, elixir-format
-msgid ""
-"The window layout — position, size, maximized state — is saved in your "
-"browser and restored on the next visit."
-msgstr "窗口布局——位置,大小,最大化狀態——保存在您的瀏覽器中,並在下次訪問時恢復."
 
 #: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:22
 #, elixir-autogen, elixir-format
@@ -1715,14 +1679,6 @@ msgstr "——從活動聊天窗口清除消息. 這一點是無法消除的。"
 #, elixir-autogen, elixir-format
 msgid "— Copy selected chat-log text when a selection exists."
 msgstr "—— 選擇存在時複製選中的聊天日誌文本 。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:17
-#, elixir-autogen, elixir-format
-msgid ""
-"— On first visit the chat fills the desktop. The restore button (or double-"
-"clicking the title bar) brings it back to a floating window you can drag by "
-"the title bar and resize from any edge or corner."
-msgstr "——在第一次訪問時,聊天會填充桌面. 恢復按鈕(或雙擊標題欄)將它帶回浮動窗口,您可以通過標題欄拖曳,並從任意邊框或角調整大小."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:13
 #, elixir-autogen, elixir-format
@@ -2441,18 +2397,6 @@ msgid ""
 msgstr ""
 "啓動按鈕在RetroHexChat的每個屏幕上打開相同的菜單:登陸頁,連接屏幕,聊天,這個幫助查看器和設計系統. 他們之間的變化是哪些條目是直播的."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:57
-#, elixir-autogen, elixir-format
-msgid ""
-"The Start button opens the same menu on every screen, grouped into Tools, "
-"Automation, Settings, P2P, Account, Admin, Windows, Navigate and Help, with "
-"Disconnect at the bottom. Entries you cannot use right now are grayed out "
-"rather than hidden. It covers the same ground as the menu bar — use "
-"whichever is closer."
-msgstr ""
-"啓動按鈕在每個屏幕上打開相同的菜單,分組爲工具,自動化,設置,P2P,賬戶,管理,Windows,導航和幫助,底部爲斷開連接. "
-"你現在不能使用的條目是灰色的而不是隱藏的。 它覆蓋了與菜單欄相同的區域——以更接近者爲準。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_system_windows.html.heex:122
 #, elixir-autogen, elixir-format
 msgid ""
@@ -2943,3 +2887,65 @@ msgid ""
 msgstr ""
 "— "
 "你面前這個視窗正在顯示的內容：切換對話清單和暱稱清單、清空視窗、複製選取的文字，以及在其中尋找文字。在說明檢視器裡，同一組用於在目錄、索引和搜尋之間切換。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "Opens windowed"
+msgstr "以視窗開啟"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:57
+#, elixir-autogen, elixir-format
+msgid ""
+"The Start button opens the same menu on every screen, grouped into View, "
+"Tools, Automation, P2P, Games, Account, Admin, System, Windows, Navigate, "
+"Language and Help, with Disconnect at the bottom. Entries you cannot use "
+"right now are grayed out rather than hidden. It carries everything the app "
+"can do, including everything the chat window's own menus offer."
+msgstr ""
+"「開始」按鈕在每個畫面上開啟同一個功能表，分為檢視、工具、自動化、P2P、遊戲、帳戶、管理、系統、視窗、導覽、語言和說明，最下面是中斷連線。目前用不了的項目是灰的，而不是被隱藏。它收錄了應用程式能做的一切，包括聊天視窗自己功能表提供的全部內容。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"The chat runs on a Windows-style desktop. The whole chat surface — "
+"conversations, tabs, messages, user list and input — lives in one window "
+"over a taskbar. The menus hang under that window's own title bar and its "
+"status bar runs along its bottom edge, the way a Windows 98 program carried "
+"its own; the desktop itself has no chrome."
+msgstr ""
+"聊天執行在一個 Windows "
+"風格的桌面上。整個聊天介面——對話、分頁、訊息、使用者清單和輸入框——都裝在工作列之上的一個視窗裡。功能表掛在這個視窗自己的標題列下方，狀態列沿著它的下緣展開，就像"
+" Windows 98 的程式各自帶著自己的一樣；桌面本身沒有任何外框。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:73
+#, elixir-autogen, elixir-format
+msgid ""
+"The window layout — position, size, maximized state — is remembered while "
+"the page is open, so moving between screens keeps it. Reloading starts from "
+"the default layout again."
+msgstr "視窗版面——位置、大小、最大化狀態——在頁面開啟期間會被記住，所以在畫面之間切換不會遺失。重新載入則從預設版面開始。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:17
+#, elixir-autogen, elixir-format
+msgid ""
+"— The chat opens centred, taking most of the desktop but never all of it, so"
+" the taskbar and anything else open stay in sight. Maximize (or double-"
+"clicking the title bar) fills the screen; you can also drag it by the title "
+"bar and resize it from any edge or corner."
+msgstr ""
+"— "
+"聊天置中開啟，佔據桌面的大部分但從不佔滿，好讓工作列和其他已開啟的東西保持可見。最大化（或雙擊標題列）會鋪滿螢幕；你也可以拖曳標題列移動它，並從任意邊或角調整大小。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:65
+#, elixir-autogen, elixir-format
+msgid ""
+"On a narrow screen the desktop shows one window at a time: the current "
+"window fills the screen like a phone app. Its menu bar shrinks to a row of "
+"icons — one per menu, tapping one opens it — and the Start button and "
+"taskbar stay put; tap a taskbar button to switch between your open windows. "
+"The same happens on a wide screen if you drag the window narrower than its "
+"menus need. Windows can't be dragged, resized, minimized or maximized on a "
+"phone; you just open, switch and close them. Dialogs and forms fill the "
+"screen too, so they always fit."
+msgstr ""
+"在窄螢幕上，桌面一次只顯示一個視窗：目前的視窗像手機應用程式一樣鋪滿螢幕。它的功能表列收縮成一列圖示——每個功能表一個，點一下就開啟——「開始」按鈕和工作列留在原處；點工作列按鈕可以在已開啟的視窗之間切換。在寬螢幕上把視窗拖得比功能表所需還窄時，也會這樣。在手機上視窗不能拖曳、調整大小、最小化或最大化；你只能開啟、切換和關閉。對話方塊和表單也鋪滿螢幕，所以總是放得下。"

@@ -38,7 +38,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShellTest do
     test "the mobile rail carries every menu, each opening its own section" do
       html = menu(Session.new("alice"))
 
-      for section <- ~w(file edit view tools p2p games language help) do
+      for section <- ~w(file edit view tools p2p language help) do
         assert html =~ ~s(data-testid="app-mobile-menu-rail-#{section}")
         assert html =~ ~s(data-mobile-menu-open="#{section}")
         assert html =~ ~s(data-testid="app-mobile-menu-category-#{section}")
@@ -68,18 +68,31 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShellTest do
       assert live =~ ~s(data-testid="context-menu-item-p2p_toggle_privacy")
     end
 
-    test "the arcade is offered either way, but only acts for an identified nick" do
-      # The menus name what the app can do and gray what is out of reach, the
-      # same contract the Start menu holds — so the row is there in both cases
-      # and only the action goes with the gray.
-      idle = menu(Session.new("alice"))
-      identified = menu(%{Session.new("alice") | identified: true})
+    test "launching another program is not this window's menu's job" do
+      # The arcade and the retro games open windows of their own that have
+      # nothing to do with this conversation, so they are reached from the
+      # Start menu. Same for the admin and runtime windows, which used to hang
+      # off File and made it a thirty-row menu.
+      html = menu(Session.new("alice"))
 
-      assert idle =~ ~s(data-testid="context-menu-item-open_arcade")
-      assert identified =~ ~s(data-testid="context-menu-item-open_arcade")
+      refute html =~ ~s(data-testid="app-menu-games")
+      refute html =~ "open_arcade"
+      refute html =~ "open_retro_games"
+      refute html =~ ~s(data-testid="app-menu-admin-submenu")
+      refute html =~ ~s(data-testid="app-menu-system-submenu")
+      refute html =~ "open_system_metrics"
+    end
 
-      refute idle =~ ~s(phx-value-action="open_arcade")
-      assert identified =~ ~s(phx-value-action="open_arcade")
+    test "the account window is reachable, not only its parts" do
+      html = menu(Session.new("alice"))
+
+      assert html =~ ~s(data-testid="context-menu-item-open_account_dialog")
+    end
+
+    test "View carries the display options, including stripping formatting" do
+      html = menu(Session.new("alice"))
+
+      assert html =~ ~s(data-testid="context-menu-item-toggle_strip_formatting")
     end
   end
 

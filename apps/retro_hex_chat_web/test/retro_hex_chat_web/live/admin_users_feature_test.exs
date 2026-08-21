@@ -13,7 +13,7 @@ defmodule RetroHexChatWeb.AdminUsersFeatureTest do
 
   alias RetroHexChat.Admin.{GlobalMutes, ServerBans}
   alias RetroHexChat.Services.Queries
-  alias RetroHexChatWeb.Components.UI.{AdminUsersDialog, MenuBarApp}
+  alias RetroHexChatWeb.Components.UI.{AdminUsersDialog, StartMenuApp}
 
   describe "Admin Users panel" do
     test "renders user filters, snapshots, ban list, and every action form" do
@@ -238,27 +238,32 @@ defmodule RetroHexChatWeb.AdminUsersFeatureTest do
   end
 
   describe "Admin Users entry points and gating" do
-    test "the admin submenu offers the window" do
+    test "the Start menu's Admin group offers the window" do
+      # Server administration opens programs of its own; it is reached from the
+      # Start menu, not from the chat window's File menu where it used to hang.
       html =
-        render_component(&MenuBarApp.menu_bar_app/1,
-          connected: true,
-          is_admin: true,
-          on_action: "toolbar_action"
+        render_component(&StartMenuApp.start_menu_app/1,
+          screen: :chat,
+          windows: [],
+          is_admin: true
         )
 
-      assert html =~ ~s(data-testid="app-menu-admin-submenu")
-      assert html =~ ~s(data-testid="context-menu-item-open_admin_users")
+      assert html =~ ~s(data-testid="start-menu-admin-submenu")
+      assert html =~ ~s(data-testid="start-menu-item-open_admin_users")
     end
 
-    test "non-admins never see the admin submenu" do
-      html =
-        render_component(&MenuBarApp.menu_bar_app/1,
-          connected: true,
-          is_admin: false,
-          on_action: "toolbar_action"
-        )
+    test "a non-admin sees the entry grayed, not hidden" do
+      # The Start menu names what the app can do and grays what is out of
+      # reach — asserting the row is simply absent would pass for the wrong
+      # reason now that the chat's File menu no longer carries it at all.
+      doc =
+        render_component(&StartMenuApp.start_menu_app/1, screen: :chat, windows: [])
+        |> Floki.parse_document!()
 
-      refute html =~ ~s(data-testid="context-menu-item-open_admin_users")
+      row = Floki.find(doc, ~s([data-testid="start-menu-item-open_admin_users"]))
+
+      assert row != []
+      assert Floki.attribute(row, "disabled") != []
     end
 
     test "opening mounts a managed window and closing unmounts it", %{conn: conn} do

@@ -2659,7 +2659,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             ) <>
             dgettext(
               "help",
-              "gameplay tips before launching. Open the Games menu and choose Arcade to " <>
+              "gameplay tips before launching. Open Start ▸ Games and choose Arcade to " <>
                 "start (you must be registered and identified). "
             ) <>
             dgettext(
@@ -2671,8 +2671,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             " " <>
             dgettext(
               "help",
-              "Every game is also listed directly in the Games menu — pick one to jump " <>
-                "straight to its detail screen."
+              "The library is the only list: the menu carries one entry for the arcade " <>
+                "rather than a row per game."
             ),
         see_also: [
           "feature-arcade-doom",

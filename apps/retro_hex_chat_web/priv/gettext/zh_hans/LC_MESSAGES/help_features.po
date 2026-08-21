@@ -1025,7 +1025,7 @@ msgid "Attempting to reconnect automatically."
 msgstr "试图自动重联."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_connection_diagram.html.heex:84
-#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:41
+#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "Audio Call"
 msgstr "音频调用"
@@ -3135,7 +3135,7 @@ msgstr "在当前频道或PM中以实时突出显示搜索消息."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:62
-#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/feature_quit_message.html.heex:20
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:32
@@ -3785,7 +3785,7 @@ msgid "Variables"
 msgstr "变量"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_connection_diagram.html.heex:85
-#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "Video Call"
 msgstr "视频呼叫"
@@ -5766,7 +5766,7 @@ msgstr "如果遗留的 P2P 邀请行无法再找到它的会话,则它会一直
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_connection_diagram.html.heex:78
 #: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:94
-#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
 msgstr "P2P会议"
@@ -5978,14 +5978,6 @@ msgid ""
 "Presence tab also lets you set a custom message. The window title bar then "
 "shows you as Away."
 msgstr "通过 文件 > 账户 > 设为离开 把自己标为离开，“在线状态”标签页还可以设置自定义消息。窗口标题栏随即显示“离开”。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"The status bar at the right of the menu bar reports your live session: an "
-"active call, who is online from your notify list, how fast the server is "
-"answering, and whether sounds are muted."
-msgstr "菜单栏右侧的状态栏显示你当前的会话状态：进行中的通话、通知列表里在线的好友、服务器的响应速度，以及声音是否静音。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:13
 #, elixir-autogen, elixir-format
@@ -6222,3 +6214,29 @@ msgid ""
 "sidebar and tab bar."
 msgstr ""
 "RetroHexChat 会突出显示在频道和私聊中提到你的昵称或自定义词语的消息。突出显示的消息带有彩色背景，并且该会话会在会话侧边栏和标签栏中闪烁。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "Anonymous Performance Monitoring"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:40
+#, elixir-autogen, elixir-format
+msgid ""
+"To keep the app fast and catch errors, your browser sends anonymous "
+"performance measurements (page load and responsiveness) and uncaught error "
+"reports to our own servers. No message content is collected, and the data is"
+" never shared with third parties."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"Your live session is reported in two places. The chat window's own status "
+"bar, along its bottom edge, shows what this conversation is doing: an active"
+" call or P2P session. The system tray, beside the clock, shows what the "
+"machine is doing: who is online from your notify list, how fast the server "
+"is answering, and whether sounds are muted."
+msgstr ""
+"你的当前会话在两个地方报告。聊天窗口自己的状态栏（沿着下边缘）显示这场对话在做什么：进行中的通话或 P2P "
+"会话。时钟旁边的系统托盘显示这台机器在做什么：通知列表里谁在线、服务器响应有多快，以及声音是否静音。"

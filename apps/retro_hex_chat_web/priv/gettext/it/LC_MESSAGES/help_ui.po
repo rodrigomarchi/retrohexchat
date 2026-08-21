@@ -1475,11 +1475,6 @@ msgstr "Layout Persistenza"
 msgid "Limits"
 msgstr "Limiti"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:17
-#, elixir-autogen, elixir-format
-msgid "Maximized by default"
-msgstr "Massimizzato per impostazione predefinita"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Maximum 5 active timers per session"
@@ -1529,24 +1524,6 @@ msgstr "Notifica Lista"
 #, elixir-autogen, elixir-format
 msgid "On a Phone"
 msgstr "Su un telefono"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:65
-#, elixir-autogen, elixir-format
-msgid ""
-"On a narrow screen the desktop shows one window at a time: the current "
-"window fills the screen like a phone app. The menu bar, Start button and "
-"taskbar stay put — tap a taskbar button to switch between your open windows."
-" Windows can't be dragged, resized, minimized or maximized here; you just "
-"open, switch and close them. Dialogs and forms fill the screen too, so they "
-"always fit."
-msgstr ""
-"Su uno schermo stretto il desktop mostra una finestra alla volta: la "
-"finestra corrente riempie lo schermo come un'app del telefono. La barra del "
-"menu, il pulsante Start e la barra delle applicazioni rimangono messi — "
-"toccare un pulsante della barra delle applicazioni per passare tra le "
-"finestre aperte. Windows non può essere trascinato, ridimensionato, "
-"minimizzato o massimizzato qui; basta aprire, commutare e chiuderli. Dialogi"
-" e moduli riempiono lo schermo anche, quindi si adattano sempre."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:24
 #, elixir-autogen, elixir-format
@@ -1690,19 +1667,6 @@ msgstr ""
 "La chat vive in una finestra pinned su un desktop in stile Windows con una "
 "barra delle applicazioni, menu Start e orologio vassoio."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"The chat runs on a Windows-style desktop. The whole chat surface — "
-"conversations, tabs, messages, user list and input — lives in one window "
-"over a taskbar, and the familiar menu bar and status bar sit above the "
-"desktop."
-msgstr ""
-"La chat funziona su un desktop in stile Windows. L'intera superficie di chat"
-" — conversazioni, schede, messaggi, lista utente e input — vive in una "
-"finestra su una barra delle applicazioni, e la barra dei menu familiare e "
-"barra di stato siedono sopra il desktop."
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "The menu item runs"
@@ -1724,15 +1688,6 @@ msgid "The tray at the right end of the taskbar shows a clock."
 msgstr ""
 "Il vassoio all'estremità destra della barra delle applicazioni mostra un "
 "orologio."
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:73
-#, elixir-autogen, elixir-format
-msgid ""
-"The window layout — position, size, maximized state — is saved in your "
-"browser and restored on the next visit."
-msgstr ""
-"Il layout della finestra — posizione, dimensione, stato massimizzato — viene"
-" salvato nel browser e ripristinato nella successiva visita."
 
 #: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:22
 #, elixir-autogen, elixir-format
@@ -1857,18 +1812,6 @@ msgstr ""
 msgid "— Copy selected chat-log text when a selection exists."
 msgstr ""
 "— Copiare il testo di chat-log selezionato quando esiste una selezione."
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:17
-#, elixir-autogen, elixir-format
-msgid ""
-"— On first visit the chat fills the desktop. The restore button (or double-"
-"clicking the title bar) brings it back to a floating window you can drag by "
-"the title bar and resize from any edge or corner."
-msgstr ""
-"— In prima visita la chat riempie il desktop. Il pulsante di ripristino (o "
-"fare doppio clic sulla barra del titolo) lo riporta a una finestra "
-"galleggiante che puoi trascinare dalla barra del titolo e ridimensionare da "
-"qualsiasi bordo o angolo."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:13
 #, elixir-autogen, elixir-format
@@ -2730,21 +2673,6 @@ msgstr ""
 "di Aiuto e il sistema di progettazione. Ciò che cambia tra loro è quali voci"
 " sono dal vivo."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:57
-#, elixir-autogen, elixir-format
-msgid ""
-"The Start button opens the same menu on every screen, grouped into Tools, "
-"Automation, Settings, P2P, Account, Admin, Windows, Navigate and Help, with "
-"Disconnect at the bottom. Entries you cannot use right now are grayed out "
-"rather than hidden. It covers the same ground as the menu bar — use "
-"whichever is closer."
-msgstr ""
-"Il pulsante Start apre lo stesso menu su ogni schermata, raggruppato in "
-"Strumenti, Automazione, Impostazioni, P2P, Account, Amministratore, Windows,"
-" Navigare e Guida, con Disconnettersi in basso. Le voci che non puoi usare "
-"in questo momento sono grigiate piuttosto che nascoste. Esso copre lo stesso"
-" terreno della barra dei menu — utilizzare quale è più vicino."
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_system_windows.html.heex:122
 #, elixir-autogen, elixir-format
 msgid ""
@@ -3357,3 +3285,89 @@ msgstr ""
 "conversazioni e l'elenco dei nick, svuotare la finestra, copiare il testo "
 "selezionato e cercarvi del testo. Nel visualizzatore della Guida lo stesso "
 "gruppo alterna tra Sommario, Indice e Ricerca."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "Opens windowed"
+msgstr "Si apre a finestra"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:57
+#, elixir-autogen, elixir-format
+msgid ""
+"The Start button opens the same menu on every screen, grouped into View, "
+"Tools, Automation, P2P, Games, Account, Admin, System, Windows, Navigate, "
+"Language and Help, with Disconnect at the bottom. Entries you cannot use "
+"right now are grayed out rather than hidden. It carries everything the app "
+"can do, including everything the chat window's own menus offer."
+msgstr ""
+"Il pulsante Start apre lo stesso menu su ogni schermata, raggruppato in "
+"Visualizza, Strumenti, Automazione, P2P, Giochi, Account, Admin, Sistema, "
+"Finestre, Naviga, Lingua e Guida, con Disconnetti in fondo. Le voci che non "
+"puoi usare ora sono in grigio anziché nascoste. Contiene tutto ciò che "
+"l'applicazione sa fare, comprese tutte le voci offerte dai menu della "
+"finestra di chat stessa."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"The chat runs on a Windows-style desktop. The whole chat surface — "
+"conversations, tabs, messages, user list and input — lives in one window "
+"over a taskbar. The menus hang under that window's own title bar and its "
+"status bar runs along its bottom edge, the way a Windows 98 program carried "
+"its own; the desktop itself has no chrome."
+msgstr ""
+"La chat gira su un desktop in stile Windows. L'intera superficie della chat "
+"— conversazioni, schede, messaggi, elenco utenti e campo di scrittura — sta "
+"in un'unica finestra sopra una barra delle applicazioni. I menu stanno sotto"
+" la barra del titolo di quella finestra e la sua barra di stato corre lungo "
+"il bordo inferiore, come un programma di Windows 98 portava i propri; il "
+"desktop in sé non ha alcuna cornice."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:73
+#, elixir-autogen, elixir-format
+msgid ""
+"The window layout — position, size, maximized state — is remembered while "
+"the page is open, so moving between screens keeps it. Reloading starts from "
+"the default layout again."
+msgstr ""
+"La disposizione delle finestre — posizione, dimensione, stato ingrandito — "
+"viene ricordata finché la pagina resta aperta, quindi spostarsi tra "
+"schermate la conserva. Ricaricando si riparte dalla disposizione "
+"predefinita."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:17
+#, elixir-autogen, elixir-format
+msgid ""
+"— The chat opens centred, taking most of the desktop but never all of it, so"
+" the taskbar and anything else open stay in sight. Maximize (or double-"
+"clicking the title bar) fills the screen; you can also drag it by the title "
+"bar and resize it from any edge or corner."
+msgstr ""
+"— La chat si apre centrata, occupando gran parte del desktop ma mai tutto, "
+"così la barra delle applicazioni e il resto di ciò che è aperto restano in "
+"vista. Ingrandire (o fare doppio clic sulla barra del titolo) riempie lo "
+"schermo; puoi anche trascinarla per la barra del titolo e ridimensionarla da"
+" qualsiasi bordo o angolo."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:65
+#, elixir-autogen, elixir-format
+msgid ""
+"On a narrow screen the desktop shows one window at a time: the current "
+"window fills the screen like a phone app. Its menu bar shrinks to a row of "
+"icons — one per menu, tapping one opens it — and the Start button and "
+"taskbar stay put; tap a taskbar button to switch between your open windows. "
+"The same happens on a wide screen if you drag the window narrower than its "
+"menus need. Windows can't be dragged, resized, minimized or maximized on a "
+"phone; you just open, switch and close them. Dialogs and forms fill the "
+"screen too, so they always fit."
+msgstr ""
+"Su uno schermo stretto il desktop mostra una finestra per volta: la finestra"
+" corrente riempie lo schermo come un'app per telefono. La sua barra dei menu"
+" si riduce a una fila di icone — una per menu, toccandone una si apre — e il"
+" pulsante Start e la barra delle applicazioni restano al loro posto; tocca "
+"un pulsante della barra per passare tra le finestre aperte. Lo stesso accade"
+" su uno schermo largo se trascini la finestra più stretta di quanto i suoi "
+"menu richiedano. Sul telefono le finestre non si possono trascinare, "
+"ridimensionare, ridurre a icona o ingrandire; si aprono, si cambiano e si "
+"chiudono, e basta. Anche finestre di dialogo e moduli riempiono lo schermo, "
+"quindi entrano sempre."

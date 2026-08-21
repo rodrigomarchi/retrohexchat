@@ -1099,7 +1099,7 @@ msgid "Attempting to reconnect automatically."
 msgstr "Próba automatycznego podłączenia."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_connection_diagram.html.heex:84
-#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:41
+#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "Audio Call"
 msgstr "Połączenie audio"
@@ -3372,7 +3372,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:62
-#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/feature_quit_message.html.heex:20
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:32
@@ -4105,7 +4105,7 @@ msgid "Variables"
 msgstr "Zmienne"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_connection_diagram.html.heex:85
-#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "Video Call"
 msgstr "Połączenie wideo"
@@ -6320,7 +6320,7 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_connection_diagram.html.heex:78
 #: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:94
-#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
 msgstr "Sesja P2P"
@@ -6562,17 +6562,6 @@ msgid ""
 msgstr ""
 "Ustaw nieobecność w Plik > Konto > Ustaw nieobecność; karta Obecność pozwala"
 " też dodać własną wiadomość. Pasek tytułu okna pokazuje wtedy Nieobecny."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"The status bar at the right of the menu bar reports your live session: an "
-"active call, who is online from your notify list, how fast the server is "
-"answering, and whether sounds are muted."
-msgstr ""
-"Pasek stanu po prawej stronie paska menu pokazuje Twoją sesję: aktywne "
-"połączenie, kto z listy powiadomień jest online, jak szybko odpowiada serwer"
-" i czy dźwięki są wyciszone."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:13
 #, elixir-autogen, elixir-format
@@ -6856,3 +6845,32 @@ msgstr ""
 "słowa, zarówno w kanałach, jak i w prywatnych rozmowach. Wyróżnione "
 "wiadomości mają kolorowe tło, a rozmowa miga na pasku bocznym rozmów i na "
 "pasku kart."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "Anonymous Performance Monitoring"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:40
+#, elixir-autogen, elixir-format
+msgid ""
+"To keep the app fast and catch errors, your browser sends anonymous "
+"performance measurements (page load and responsiveness) and uncaught error "
+"reports to our own servers. No message content is collected, and the data is"
+" never shared with third parties."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"Your live session is reported in two places. The chat window's own status "
+"bar, along its bottom edge, shows what this conversation is doing: an active"
+" call or P2P session. The system tray, beside the clock, shows what the "
+"machine is doing: who is online from your notify list, how fast the server "
+"is answering, and whether sounds are muted."
+msgstr ""
+"Twoja bieżąca sesja jest raportowana w dwóch miejscach. Pasek stanu samego "
+"okna czatu, wzdłuż jego dolnej krawędzi, pokazuje, co robi ta rozmowa: "
+"aktywne połączenie lub sesję P2P. Zasobnik systemowy, obok zegara, pokazuje,"
+" co robi maszyna: kto z twojej listy powiadomień jest online, jak szybko "
+"odpowiada serwer i czy dźwięki są wyciszone."

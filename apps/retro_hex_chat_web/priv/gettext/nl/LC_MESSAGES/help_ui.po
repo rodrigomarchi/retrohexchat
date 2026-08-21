@@ -1436,11 +1436,6 @@ msgstr "Layout Persistence"
 msgid "Limits"
 msgstr "Grenswaarden"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:17
-#, elixir-autogen, elixir-format
-msgid "Maximized by default"
-msgstr "Standaard gemaximaliseerd"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Maximum 5 active timers per session"
@@ -1490,23 +1485,6 @@ msgstr "Lijst aanmelden"
 #, elixir-autogen, elixir-format
 msgid "On a Phone"
 msgstr "Op een telefoon"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:65
-#, elixir-autogen, elixir-format
-msgid ""
-"On a narrow screen the desktop shows one window at a time: the current "
-"window fills the screen like a phone app. The menu bar, Start button and "
-"taskbar stay put — tap a taskbar button to switch between your open windows."
-" Windows can't be dragged, resized, minimized or maximized here; you just "
-"open, switch and close them. Dialogs and forms fill the screen too, so they "
-"always fit."
-msgstr ""
-"Op een smal scherm toont het bureaublad één venster tegelijk: het huidige "
-"venster vult het scherm als een telefoonapp. De menubalk, de Startknop en de"
-" taakbalk blijven staan en tik op een taakbalkknop om tussen uw geopende "
-"vensters te schakelen. Windows kan hier niet worden gesleept, verkleind, "
-"geminimaliseerd of gemaximaliseerd; je opent, schakelt en sluit ze gewoon. "
-"Dialogen en formulieren vullen ook het scherm, zodat ze altijd passen."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:24
 #, elixir-autogen, elixir-format
@@ -1649,19 +1627,6 @@ msgstr ""
 "De chat leeft in een venster met een pinned op een Windows-stijl bureaublad "
 "met een taakbalk, menu Start en tray klok."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"The chat runs on a Windows-style desktop. The whole chat surface — "
-"conversations, tabs, messages, user list and input — lives in one window "
-"over a taskbar, and the familiar menu bar and status bar sit above the "
-"desktop."
-msgstr ""
-"De chat draait op een Windows-stijl bureaublad. De hele chat-oppervlakte van"
-" de gesprekken, tabbladen, berichten, gebruikerslijst en invoer leven in één"
-" venster over een taakbalk, en de bekende menubalk en statusbalk zitten "
-"boven het bureaublad."
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "The menu item runs"
@@ -1681,15 +1646,6 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "The tray at the right end of the taskbar shows a clock."
 msgstr "Het dienblad aan de rechterkant van de taakbalk toont een klok."
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:73
-#, elixir-autogen, elixir-format
-msgid ""
-"The window layout — position, size, maximized state — is saved in your "
-"browser and restored on the next visit."
-msgstr ""
-"De vensteropmaak positie, grootte, gemaximaliseerde staat wordt opgeslagen "
-"in uw browser en hersteld bij het volgende bezoek."
 
 #: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:22
 #, elixir-autogen, elixir-format
@@ -1812,18 +1768,6 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "— Copy selected chat-log text when a selection exists."
 msgstr "Kopieer de geselecteerde chat-log tekst wanneer een selectie bestaat."
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:17
-#, elixir-autogen, elixir-format
-msgid ""
-"— On first visit the chat fills the desktop. The restore button (or double-"
-"clicking the title bar) brings it back to a floating window you can drag by "
-"the title bar and resize from any edge or corner."
-msgstr ""
-"Bij eerste bezoek vult de chat het bureaublad. De herstelknop (of "
-"dubbelklikken op de titelbalk) brengt het terug naar een zwevend venster dat"
-" u kunt slepen door de titelbalk en grootte wijzigen vanaf elke rand of "
-"hoek."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:13
 #, elixir-autogen, elixir-format
@@ -2670,21 +2614,6 @@ msgstr ""
 "landingspagina's, het Connect-scherm, de chat, deze Help-viewer en het "
 "ontwerpsysteem. Wat tussen hen verandert is welke inzendingen live zijn."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:57
-#, elixir-autogen, elixir-format
-msgid ""
-"The Start button opens the same menu on every screen, grouped into Tools, "
-"Automation, Settings, P2P, Account, Admin, Windows, Navigate and Help, with "
-"Disconnect at the bottom. Entries you cannot use right now are grayed out "
-"rather than hidden. It covers the same ground as the menu bar — use "
-"whichever is closer."
-msgstr ""
-"De Start knop opent hetzelfde menu op elk scherm, gegroepeerd in Tools, "
-"Automatisering, Instellingen, P2P, Account, Admin, Windows, Navigeren en "
-"Help, met Verbinding verbreken onderaan. Inzendingen die je nu niet kunt "
-"gebruiken zijn eerder grijs dan verborgen. Het beslaat dezelfde grond als de"
-" menubalk"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_system_windows.html.heex:122
 #, elixir-autogen, elixir-format
 msgid ""
@@ -3284,3 +3213,86 @@ msgstr ""
 "omschakelen, het venster wissen, de geselecteerde tekst kopiëren en erin "
 "zoeken. In de Help-viewer wisselt dezelfde groep tussen Inhoud, Index en "
 "Zoeken."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "Opens windowed"
+msgstr "Opent als venster"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:57
+#, elixir-autogen, elixir-format
+msgid ""
+"The Start button opens the same menu on every screen, grouped into View, "
+"Tools, Automation, P2P, Games, Account, Admin, System, Windows, Navigate, "
+"Language and Help, with Disconnect at the bottom. Entries you cannot use "
+"right now are grayed out rather than hidden. It carries everything the app "
+"can do, including everything the chat window's own menus offer."
+msgstr ""
+"De Start-knop opent op elk scherm hetzelfde menu, gegroepeerd in Beeld, "
+"Extra, Automatisering, P2P, Spellen, Account, Admin, Systeem, Vensters, "
+"Navigeren, Taal en Help, met Verbinding verbreken onderaan. Items die je nu "
+"niet kunt gebruiken zijn grijs in plaats van verborgen. Het bevat alles wat "
+"de app kan, inclusief alles wat de menu's van het chatvenster zelf bieden."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"The chat runs on a Windows-style desktop. The whole chat surface — "
+"conversations, tabs, messages, user list and input — lives in one window "
+"over a taskbar. The menus hang under that window's own title bar and its "
+"status bar runs along its bottom edge, the way a Windows 98 program carried "
+"its own; the desktop itself has no chrome."
+msgstr ""
+"De chat draait op een bureaublad in Windows-stijl. Het hele chatoppervlak — "
+"gesprekken, tabbladen, berichten, gebruikerslijst en invoerveld — zit in één"
+" venster boven een taakbalk. De menu's hangen onder de titelbalk van dat "
+"venster en de statusbalk loopt langs de onderrand ervan, zoals een Windows "
+"98-programma die van zichzelf droeg; het bureaublad zelf heeft geen enkele "
+"opsmuk."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:73
+#, elixir-autogen, elixir-format
+msgid ""
+"The window layout — position, size, maximized state — is remembered while "
+"the page is open, so moving between screens keeps it. Reloading starts from "
+"the default layout again."
+msgstr ""
+"De vensterindeling — positie, grootte, gemaximaliseerde staat — wordt "
+"onthouden zolang de pagina open is, dus wisselen tussen schermen behoudt "
+"hem. Herladen begint weer bij de standaardindeling."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:17
+#, elixir-autogen, elixir-format
+msgid ""
+"— The chat opens centred, taking most of the desktop but never all of it, so"
+" the taskbar and anything else open stay in sight. Maximize (or double-"
+"clicking the title bar) fills the screen; you can also drag it by the title "
+"bar and resize it from any edge or corner."
+msgstr ""
+"— De chat opent gecentreerd en neemt het grootste deel van het bureaublad "
+"in, maar nooit alles, zodat de taakbalk en al het andere dat open staat "
+"zichtbaar blijven. Maximaliseren (of dubbelklikken op de titelbalk) vult het"
+" scherm; je kunt hem ook aan de titelbalk verslepen en vanaf elke rand of "
+"hoek van formaat veranderen."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:65
+#, elixir-autogen, elixir-format
+msgid ""
+"On a narrow screen the desktop shows one window at a time: the current "
+"window fills the screen like a phone app. Its menu bar shrinks to a row of "
+"icons — one per menu, tapping one opens it — and the Start button and "
+"taskbar stay put; tap a taskbar button to switch between your open windows. "
+"The same happens on a wide screen if you drag the window narrower than its "
+"menus need. Windows can't be dragged, resized, minimized or maximized on a "
+"phone; you just open, switch and close them. Dialogs and forms fill the "
+"screen too, so they always fit."
+msgstr ""
+"Op een smal scherm toont het bureaublad één venster tegelijk: het huidige "
+"venster vult het scherm als een telefoon-app. De menubalk krimpt tot een rij"
+" pictogrammen — één per menu, erop tikken opent het — en de Start-knop en de"
+" taakbalk blijven staan; tik op een taakbalkknop om tussen je open vensters "
+"te wisselen. Hetzelfde gebeurt op een breed scherm als je het venster "
+"smaller sleept dan de menu's nodig hebben. Op een telefoon kunnen vensters "
+"niet worden versleept, van formaat veranderd, geminimaliseerd of "
+"gemaximaliseerd; je opent, wisselt en sluit alleen. Dialoogvensters en "
+"formulieren vullen het scherm ook, dus ze passen altijd."

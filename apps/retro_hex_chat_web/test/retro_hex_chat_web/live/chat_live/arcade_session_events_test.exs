@@ -11,7 +11,7 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEventsTest do
 
   alias RetroHexChat.Arcade
   alias RetroHexChat.Services.RegisteredNick
-  alias RetroHexChatWeb.Components.UI.MenuBarApp
+  alias RetroHexChatWeb.Components.UI.StartMenuApp
 
   defp register(nickname) do
     {:ok, nick} =
@@ -67,29 +67,31 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEventsTest do
     end
   end
 
-  describe "Games menu" do
-    test "shows Arcade as a single launcher entry when available" do
-      document =
-        render_component(&MenuBarApp.menu_bar_app/1,
-          connected: true,
-          arcade_available: true,
-          on_action: "toolbar_action"
-        )
-        |> Floki.parse_document!()
+  # Launching the arcade is the Start menu's job — it opens a program of its
+  # own, not something the chat window acts on.
+  describe "Start menu ▸ Games" do
+    defp start_menu(arcade_available) do
+      render_component(&StartMenuApp.start_menu_app/1,
+        screen: :chat,
+        windows: [],
+        arcade_available: arcade_available
+      )
+      |> Floki.parse_document!()
+    end
 
-      assert [_ | _] = Floki.find(document, ~s([data-testid="context-menu-item-open_arcade"]))
+    test "shows Arcade as a single launcher entry, never one row per game" do
+      document = start_menu(true)
+
+      assert [row] = Floki.find(document, ~s([data-testid="start-menu-item-open_arcade"]))
+      assert Floki.attribute([row], "disabled") == []
       assert Floki.find(document, ~s([data-testid^="menu-game-"])) == []
     end
 
-    test "hides the per-game entries when the arcade is unavailable" do
-      document =
-        render_component(&MenuBarApp.menu_bar_app/1,
-          connected: true,
-          arcade_available: false,
-          on_action: "toolbar_action"
-        )
-        |> Floki.parse_document!()
+    test "grays the entry when the arcade is unavailable, and still lists no games" do
+      document = start_menu(false)
 
+      assert [row] = Floki.find(document, ~s([data-testid="start-menu-item-open_arcade"]))
+      assert Floki.attribute([row], "disabled") != []
       assert Floki.find(document, ~s([data-testid^="menu-game-"])) == []
     end
   end

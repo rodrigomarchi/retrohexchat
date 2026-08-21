@@ -1476,11 +1476,6 @@ msgstr "Layout Persistence"
 msgid "Limits"
 msgstr "Limits"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:17
-#, elixir-autogen, elixir-format
-msgid "Maximized by default"
-msgstr "Maximizado por defecto"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Maximum 5 active timers per session"
@@ -1530,24 +1525,6 @@ msgstr "Notificar la lista"
 #, elixir-autogen, elixir-format
 msgid "On a Phone"
 msgstr "En un teléfono"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:65
-#, elixir-autogen, elixir-format
-msgid ""
-"On a narrow screen the desktop shows one window at a time: the current "
-"window fills the screen like a phone app. The menu bar, Start button and "
-"taskbar stay put — tap a taskbar button to switch between your open windows."
-" Windows can't be dragged, resized, minimized or maximized here; you just "
-"open, switch and close them. Dialogs and forms fill the screen too, so they "
-"always fit."
-msgstr ""
-"En una pantalla estrecha el escritorio muestra una ventana a la vez: la "
-"ventana actual llena la pantalla como una aplicación de teléfono. La barra "
-"de menús, el botón de inicio y la barra de tareas se colocan: pulsa un botón"
-" de barra de tareas para cambiar entre las ventanas abiertas. Windows no se "
-"puede arrastrar, redimensionar, minimizar o maximizar aquí; sólo se abre, "
-"cambia y cierra. Los diagramas y formas llenan la pantalla también, así que "
-"siempre encajan."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:24
 #, elixir-autogen, elixir-format
@@ -1690,19 +1667,6 @@ msgstr ""
 "El chat vive en una ventana pintada en un escritorio de estilo Windows con "
 "una barra de tareas, menú Inicio y reloj de bandeja."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ""
-"The chat runs on a Windows-style desktop. The whole chat surface — "
-"conversations, tabs, messages, user list and input — lives in one window "
-"over a taskbar, and the familiar menu bar and status bar sit above the "
-"desktop."
-msgstr ""
-"El chat se ejecuta en un escritorio de estilo Windows. Toda la superficie de"
-" chat —conversaciones, pestañas, mensajes, lista de usuarios y entrada— vive"
-" en una ventana sobre una barra de tareas, y la barra de menú familiar y la "
-"barra de estado se sienta por encima del escritorio."
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "The menu item runs"
@@ -1723,15 +1687,6 @@ msgstr ""
 msgid "The tray at the right end of the taskbar shows a clock."
 msgstr ""
 "La bandeja en el extremo derecho de la barra de tareas muestra un reloj."
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:73
-#, elixir-autogen, elixir-format
-msgid ""
-"The window layout — position, size, maximized state — is saved in your "
-"browser and restored on the next visit."
-msgstr ""
-"El diseño de la ventana — posición, tamaño, estado máximo— se guarda en su "
-"navegador y se restaura en la próxima visita."
 
 #: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:22
 #, elixir-autogen, elixir-format
@@ -1854,18 +1809,6 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "— Copy selected chat-log text when a selection exists."
 msgstr "— Copiar texto seleccionado de chat-log cuando existe una selección."
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:17
-#, elixir-autogen, elixir-format
-msgid ""
-"— On first visit the chat fills the desktop. The restore button (or double-"
-"clicking the title bar) brings it back to a floating window you can drag by "
-"the title bar and resize from any edge or corner."
-msgstr ""
-"— En primera visita el chat llena el escritorio. El botón de restauración (o"
-" doble clic en la barra de título) lo lleva de nuevo a una ventana flotante "
-"que puede arrastrar por la barra de título y cambiar de tamaño desde "
-"cualquier borde o esquina."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:13
 #, elixir-autogen, elixir-format
@@ -2730,21 +2673,6 @@ msgstr ""
 "el sistema de diseño. Lo que cambia entre ellos es cuáles son las entradas "
 "en vivo."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:57
-#, elixir-autogen, elixir-format
-msgid ""
-"The Start button opens the same menu on every screen, grouped into Tools, "
-"Automation, Settings, P2P, Account, Admin, Windows, Navigate and Help, with "
-"Disconnect at the bottom. Entries you cannot use right now are grayed out "
-"rather than hidden. It covers the same ground as the menu bar — use "
-"whichever is closer."
-msgstr ""
-"El botón Inicio abre el mismo menú en cada pantalla, agrupado en "
-"Herramientas, Automatización, Ajustes, P2P, Cuenta, Admin, Windows, Navigate"
-" y Ayuda, con Desconexión en la parte inferior. Las entradas que no puedes "
-"usar ahora son grises en lugar de ocultar. Cubre el mismo terreno que la "
-"barra de menús: utilice el que esté más cerca."
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_system_windows.html.heex:122
 #, elixir-autogen, elixir-format
 msgid ""
@@ -3358,3 +3286,87 @@ msgstr ""
 "conversaciones y la lista de apodos, limpiar la ventana, copiar el texto "
 "seleccionado y buscar texto en él. En el visor de Ayuda el mismo grupo "
 "alterna entre Contenido, Índice y Búsqueda."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "Opens windowed"
+msgstr "Se abre en ventana"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:57
+#, elixir-autogen, elixir-format
+msgid ""
+"The Start button opens the same menu on every screen, grouped into View, "
+"Tools, Automation, P2P, Games, Account, Admin, System, Windows, Navigate, "
+"Language and Help, with Disconnect at the bottom. Entries you cannot use "
+"right now are grayed out rather than hidden. It carries everything the app "
+"can do, including everything the chat window's own menus offer."
+msgstr ""
+"El botón Inicio abre el mismo menú en todas las pantallas, agrupado en Ver, "
+"Herramientas, Automatización, P2P, Juegos, Cuenta, Admin, Sistema, Ventanas,"
+" Navegar, Idioma y Ayuda, con Desconectar al final. Las entradas que no "
+"puedes usar ahora aparecen en gris en lugar de ocultarse. Contiene todo lo "
+"que la aplicación sabe hacer, incluido todo lo que ofrecen los menús de la "
+"propia ventana del chat."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"The chat runs on a Windows-style desktop. The whole chat surface — "
+"conversations, tabs, messages, user list and input — lives in one window "
+"over a taskbar. The menus hang under that window's own title bar and its "
+"status bar runs along its bottom edge, the way a Windows 98 program carried "
+"its own; the desktop itself has no chrome."
+msgstr ""
+"El chat funciona sobre un escritorio al estilo Windows. Toda la superficie "
+"del chat — conversaciones, pestañas, mensajes, lista de usuarios y campo de "
+"escritura — vive en una sola ventana sobre una barra de tareas. Los menús "
+"cuelgan bajo la barra de título de esa ventana y su barra de estado recorre "
+"el borde inferior, como un programa de Windows 98 llevaba los suyos; el "
+"escritorio en sí no tiene ningún adorno."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:73
+#, elixir-autogen, elixir-format
+msgid ""
+"The window layout — position, size, maximized state — is remembered while "
+"the page is open, so moving between screens keeps it. Reloading starts from "
+"the default layout again."
+msgstr ""
+"La disposición de las ventanas — posición, tamaño, estado maximizado — se "
+"recuerda mientras la página está abierta, así que cambiar de pantalla la "
+"conserva. Recargar vuelve a empezar con la disposición predeterminada."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:17
+#, elixir-autogen, elixir-format
+msgid ""
+"— The chat opens centred, taking most of the desktop but never all of it, so"
+" the taskbar and anything else open stay in sight. Maximize (or double-"
+"clicking the title bar) fills the screen; you can also drag it by the title "
+"bar and resize it from any edge or corner."
+msgstr ""
+"— El chat se abre centrado, ocupando la mayor parte del escritorio pero "
+"nunca todo, para que la barra de tareas y lo demás que esté abierto sigan a "
+"la vista. Maximizar (o hacer doble clic en la barra de título) llena la "
+"pantalla; también puedes arrastrarlo por la barra de título y "
+"redimensionarlo desde cualquier borde o esquina."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:65
+#, elixir-autogen, elixir-format
+msgid ""
+"On a narrow screen the desktop shows one window at a time: the current "
+"window fills the screen like a phone app. Its menu bar shrinks to a row of "
+"icons — one per menu, tapping one opens it — and the Start button and "
+"taskbar stay put; tap a taskbar button to switch between your open windows. "
+"The same happens on a wide screen if you drag the window narrower than its "
+"menus need. Windows can't be dragged, resized, minimized or maximized on a "
+"phone; you just open, switch and close them. Dialogs and forms fill the "
+"screen too, so they always fit."
+msgstr ""
+"En una pantalla estrecha el escritorio muestra una ventana a la vez: la "
+"ventana actual llena la pantalla como una aplicación de móvil. Su barra de "
+"menús se reduce a una fila de iconos — uno por menú, al tocar uno se abre — "
+"y el botón Inicio y la barra de tareas se quedan donde están; toca un botón "
+"de la barra de tareas para cambiar entre las ventanas abiertas. Lo mismo "
+"ocurre en una pantalla ancha si arrastras la ventana más estrecha de lo que "
+"necesitan sus menús. En el móvil las ventanas no se pueden arrastrar, "
+"redimensionar, minimizar ni maximizar; solo abres, cambias y cierras. Los "
+"diálogos y formularios también llenan la pantalla, así que siempre caben."

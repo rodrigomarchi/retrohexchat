@@ -16,7 +16,7 @@ defmodule RetroHexChatWeb.AdminWindowsFeatureTest do
 
   alias RetroHexChat.Admin.AuditLogs
   alias RetroHexChat.Services.Queries
-  alias RetroHexChatWeb.Components.UI.{MenuBarApp, StartMenuApp, ToolbarApp}
+  alias RetroHexChatWeb.Components.UI.{StartMenuApp, ToolbarApp}
 
   setup do
     Application.put_env(:retro_hex_chat, :motd_cache, :unset)
@@ -288,14 +288,11 @@ defmodule RetroHexChatWeb.AdminWindowsFeatureTest do
     end
   end
 
+  # The chat window's menu bar is deliberately not on this list any more. Server
+  # administration opens programs of its own, so it is reached from the Start
+  # menu; the bar carries what acts on the chat window.
   defp admin_surfaces(is_admin?) do
     [
-      {"menu bar",
-       render_component(&MenuBarApp.menu_bar_app/1,
-         connected: true,
-         is_admin: is_admin?,
-         on_action: "toolbar_action"
-       )},
       {"start menu",
        render_component(&StartMenuApp.start_menu_app/1,
          screen: :chat,

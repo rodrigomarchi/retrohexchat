@@ -62,10 +62,14 @@ const rememberedLayouts = new Map();
 const Z_BASE = 10;
 const STACK_BREAKPOINT = 768;
 // Below this, a window's own menu strip is swapped for the icon rail. Measured,
-// not guessed: the eight-menu strip is 616px in English and 757px in Indonesian,
+// not guessed: the six-menu strip runs 536px in English and 653px in German,
 // the widest of the fourteen locales, plus the window's 3px padding either side.
 // The slack above that is room for a locale longer than any we ship today.
-const WINDOW_MENU_BREAKPOINT = 800;
+//
+// It was 800 while the strip carried eight menus and ran to 757px. Games and
+// the two server groups left with the other launchers, and the number came
+// down with them — the bar now holds out to a narrower window before folding.
+const WINDOW_MENU_BREAKPOINT = 700;
 const EDGE_MARGIN = 40;
 const CASCADE_STEP = 26;
 const CASCADE_SIZE_RATIO = 0.6;

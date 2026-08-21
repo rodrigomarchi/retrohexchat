@@ -737,14 +737,14 @@ describe("WindowManager", () => {
     });
 
     it("collapses when the window is dragged under the strip's width", () => {
-      withMenu({ w: 1600, h: 900 }, { width: 600 });
+      withMenu({ w: 1600, h: 900 }, { width: 500 });
       expect(narrow()).toBe(true);
     });
 
     it("reads a maximized window as the width of the desk, not of its restore size", () => {
       // `st.w` still holds the size it will restore to, which is not the size
       // it is being drawn at.
-      withMenu({ w: 1600, h: 900 }, { width: 600, maximized: true });
+      withMenu({ w: 1600, h: 900 }, { width: 500, maximized: true });
       expect(narrow()).toBe(false);
     });
 

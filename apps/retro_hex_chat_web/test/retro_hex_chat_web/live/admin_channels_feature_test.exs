@@ -12,7 +12,7 @@ defmodule RetroHexChatWeb.AdminChannelsFeatureTest do
 
   alias RetroHexChat.Channels.{Registry, Server, Supervisor}
   alias RetroHexChat.Services.Queries
-  alias RetroHexChatWeb.Components.UI.{AdminChannelsDialog, MenuBarApp}
+  alias RetroHexChatWeb.Components.UI.{AdminChannelsDialog, StartMenuApp}
 
   describe "Admin Channels panel" do
     test "renders filters, snapshots, info/create, destructive and ChanServ forms" do
@@ -225,26 +225,29 @@ defmodule RetroHexChatWeb.AdminChannelsFeatureTest do
   end
 
   describe "Admin Channels entry points and gating" do
-    test "the admin submenu offers the window" do
+    test "the Start menu's Admin group offers the window" do
       html =
-        render_component(&MenuBarApp.menu_bar_app/1,
-          connected: true,
-          is_admin: true,
-          on_action: "toolbar_action"
+        render_component(&StartMenuApp.start_menu_app/1,
+          screen: :chat,
+          windows: [],
+          is_admin: true
         )
 
-      assert html =~ ~s(data-testid="context-menu-item-open_admin_channels")
+      assert html =~ ~s(data-testid="start-menu-item-open_admin_channels")
     end
 
-    test "non-admins never see it" do
-      html =
-        render_component(&MenuBarApp.menu_bar_app/1,
-          connected: true,
-          is_admin: false,
-          on_action: "toolbar_action"
-        )
+    test "a non-admin sees the entry grayed, not hidden" do
+      # The Start menu names what the app can do and grays what is out of
+      # reach — asserting the row is simply absent would pass for the wrong
+      # reason now that the chat's File menu no longer carries it at all.
+      doc =
+        render_component(&StartMenuApp.start_menu_app/1, screen: :chat, windows: [])
+        |> Floki.parse_document!()
 
-      refute html =~ ~s(data-testid="context-menu-item-open_admin_channels")
+      row = Floki.find(doc, ~s([data-testid="start-menu-item-open_admin_channels"]))
+
+      assert row != []
+      assert Floki.attribute(row, "disabled") != []
     end
 
     test "opening mounts a managed window and closing unmounts it", %{conn: conn} do

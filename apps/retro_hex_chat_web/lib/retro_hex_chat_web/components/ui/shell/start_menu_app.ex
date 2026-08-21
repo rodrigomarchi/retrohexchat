@@ -134,6 +134,13 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
             icon_fn={:icon_btn_toggle_nicklist}
             disabled={!@chat?}
           />
+          <.app_item
+            action="toggle_strip_formatting"
+            on_action={@on_action}
+            label={dgettext("chat", "Strip Formatting")}
+            icon_fn={:icon_fmt_color}
+            disabled={!@chat?}
+          />
           <.start_menu_separator />
           <.app_item
             action="clear_window"

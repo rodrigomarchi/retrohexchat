@@ -2,10 +2,14 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShell do
   @moduledoc """
   Chat-layer glue for the chat window's menu bar.
 
-  Derives what the menus need to know — admin?, arcade availability, whether a
-  peer session exists and whether a relay is configured for it — from the
-  `Session` struct and the host's call assigns, and delegates the markup to the
-  design-system `menu_bar_app/1`.
+  Derives what the menus need to know — whether a peer session exists and
+  whether a relay is configured for it — from the host's call assigns, and
+  delegates the markup to the design-system `menu_bar_app/1`.
+
+  The menus act on this window and nothing else. Launching another program —
+  the arcade, the retro games, an admin or a runtime window — is the Start
+  menu's job, which is why none of them are reached from here and why this no
+  longer reads the session at all.
 
   The menu bar hangs under the chat window's title bar, where Windows 98 put an
   application's menus, rather than in a strip across the top of the screen. The
@@ -23,15 +27,15 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShell do
   """
   use RetroHexChatWeb, :html
 
-  import RetroHexChatWeb.Components.UI.MenuBarApp
-  import RetroHexChatWeb.Components.UI.StatusBarApp
-
   alias RetroHexChat.Accounts.Session
   alias RetroHexChatWeb.ChatLive.ChatContext
 
+  import RetroHexChatWeb.Components.UI.MenuBarApp
+  import RetroHexChatWeb.Components.UI.StatusBarApp
+
   attr :session, Session,
     required: true,
-    doc: "Chat session struct (the menu is a function of it)"
+    doc: "Chat session struct — read only for the admin gate on Bot Management"
 
   attr :p2p_session, :map,
     default: nil,
@@ -43,12 +47,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShell do
 
   @spec chat_shell_menu(map()) :: Phoenix.LiveView.Rendered.t()
   def chat_shell_menu(assigns) do
-    session = assigns.session
-
     assigns =
       assign(assigns,
-        is_admin: ChatContext.admin?(session),
-        arcade_available: session.identified == true,
+        is_admin: ChatContext.admin?(assigns.session),
         p2p_turn_available: (assigns.p2p_session || %{})[:turn_configured] == true
       )
 
@@ -58,7 +59,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShell do
       phx-hook="MenuBarHook"
       connected={true}
       is_admin={@is_admin}
-      arcade_available={@arcade_available}
       p2p_active={@p2p_session != nil}
       p2p_turn_available={@p2p_turn_available}
       language_return_to="/chat"

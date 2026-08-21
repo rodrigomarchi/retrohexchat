@@ -10,7 +10,6 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
   """
   use RetroHexChatWeb.Component
 
-  alias RetroHexChatWeb.ChatLive.WindowRegistry
   alias RetroHexChatWeb.Icons
 
   import RetroHexChatWeb.Components.UI.ContextMenu
@@ -23,16 +22,16 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
   @doc "Renders the application menu bar."
   attr :id, :string, default: "menubar"
   attr :connected, :boolean, default: false
-  attr :is_admin, :boolean, default: false
+
+  attr :is_admin, :boolean,
+    default: false,
+    doc: "Reveals Tools ▸ Bot Management — the one admin window that acts on this chat"
+
   attr :p2p_active, :boolean, default: false, doc: "Enables the P2P menu while a session exists"
 
   attr :p2p_turn_available, :boolean,
     default: false,
     doc: "Shows the privacy-mode item (needs a configured TURN relay)"
-
-  attr :arcade_available, :boolean,
-    default: false,
-    doc: "Enables the Games/Arcade item (needs a registered + identified nick)"
 
   attr :language_return_to, :string, default: "/connect"
   attr :on_action, :any, default: nil
@@ -60,7 +59,6 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
         is_admin={@is_admin}
         p2p_active={@p2p_active}
         p2p_turn_available={@p2p_turn_available}
-        arcade_available={@arcade_available}
         language_return_to={@language_return_to}
         on_action={@on_action}
       />
@@ -74,7 +72,7 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
         offline_disabled
       >
         <:icon><Icons.icon_folder class="h-4 w-4" /></:icon>
-        <.file_menu_items is_admin={@is_admin} on_action={@on_action} />
+        <.file_menu_items on_action={@on_action} />
       </.menu>
 
       <.menu class="app-menu-bar__desktop-menu" label={dgettext("ui", "Edit")} disabled={!@connected}>
@@ -111,16 +109,6 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
         />
       </.menu>
 
-      <.menu
-        class="app-menu-bar__desktop-menu"
-        label={dgettext("ui", "Games")}
-        disabled={!@connected}
-        testid="app-menu-games"
-      >
-        <:icon><Icons.icon_game_arcade class="h-4 w-4" /></:icon>
-        <.games_menu_items arcade_available={@arcade_available} on_action={@on_action} />
-      </.menu>
-
       <.language_menu
         mode={:app}
         return_to={@language_return_to}
@@ -147,7 +135,6 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
   attr :is_admin, :boolean, default: false
   attr :p2p_active, :boolean, default: false
   attr :p2p_turn_available, :boolean, default: false
-  attr :arcade_available, :boolean, default: false
   attr :language_return_to, :string, default: "/connect"
   attr :on_action, :any, default: nil
   attr :mobile_viewport, :any, default: nil
@@ -172,7 +159,7 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
       active_section={@active_section}
     >
       <:section :if={@reachable and @connected} id="file">
-        <.file_menu_items is_admin={@is_admin} on_action={@on_action} />
+        <.file_menu_items on_action={@on_action} />
       </:section>
       <:section :if={@reachable and @connected} id="edit">
         <.edit_menu_items on_action={@on_action} />
@@ -189,9 +176,6 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
           p2p_turn_available={@p2p_turn_available}
           on_action={@on_action}
         />
-      </:section>
-      <:section :if={@reachable and @connected} id="games">
-        <.games_menu_items arcade_available={@arcade_available} on_action={@on_action} />
       </:section>
       <:section :if={@reachable} id="language">
         <.language_menu_items mode={:app} return_to={@language_return_to} />
@@ -230,12 +214,6 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
         needs_connection: true
       },
       %{
-        id: "games",
-        label: dgettext("ui", "Games"),
-        icon_fn: :icon_game_arcade,
-        needs_connection: true
-      },
-      %{
         id: "language",
         label: dgettext("ui", "Language"),
         icon_fn: :icon_globe,
@@ -256,12 +234,17 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
 
   # ── Shared menu item groups ───────────────────────────
 
-  attr :is_admin, :boolean, default: false
   attr :on_action, :any, default: nil
 
   defp file_menu_items(assigns) do
     ~H"""
     <.context_menu_label>{dgettext("ui", "Account")}</.context_menu_label>
+    <.menu_item
+      icon_fn={:icon_status_user}
+      label={dgettext("ui", "Account")}
+      action="open_account_dialog"
+      on_action={@on_action}
+    />
     <.menu_item
       icon_fn={:icon_lock}
       label={dgettext("ui", "Register Nickname...")}
@@ -317,23 +300,6 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
       action="disconnect"
       on_action={@on_action}
     />
-    <.context_menu_separator :if={@is_admin} />
-    <.submenu
-      :if={@is_admin}
-      label={dgettext("ui", "Admin")}
-      testid="app-menu-admin-submenu"
-    >
-      <:icon><Icons.icon_shield class="h-[14px] w-[14px]" /></:icon>
-      <.admin_menu_items on_action={@on_action} />
-    </.submenu>
-    <.submenu
-      :if={@is_admin}
-      label={dgettext("ui", "System")}
-      testid="app-menu-system-submenu"
-    >
-      <:icon><Icons.icon_server class="h-[14px] w-[14px]" /></:icon>
-      <.system_menu_items on_action={@on_action} />
-    </.submenu>
     """
   end
 
@@ -393,6 +359,16 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
       icon_fn={:icon_tab_notify}
       label={dgettext("ui", "Notify List")}
       action="toggle_notify_list"
+      on_action={@on_action}
+    />
+    <.context_menu_separator />
+    <%!-- Whether mIRC colour codes are rendered or shown stripped. It is a
+          property of how the conversation reads, so it belongs beside the pane
+          toggles rather than only on the composer's formatting bar. --%>
+    <.menu_item
+      icon_fn={:icon_fmt_color}
+      label={dgettext("chat", "Strip Formatting")}
+      action="toggle_strip_formatting"
       on_action={@on_action}
     />
     """
@@ -571,123 +547,6 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
       on_action={@on_action}
     />
     """
-  end
-
-  attr :arcade_available, :boolean, default: false
-  attr :on_action, :any, default: nil
-
-  defp games_menu_items(assigns) do
-    ~H"""
-    <.menu_item
-      icon_fn={:icon_game_pong}
-      label={dgettext("ui", "Retro Games...")}
-      action="open_retro_games"
-      on_action={@on_action}
-      testid="menu-retro-games"
-    />
-    <.context_menu_separator />
-    <.menu_item
-      icon_fn={:icon_game_arcade}
-      label={dgettext("ui", "Arcade...")}
-      action="open_arcade"
-      on_action={@on_action}
-      disabled={!@arcade_available}
-    />
-    <.context_menu_label :if={!@arcade_available}>
-      {dgettext("ui", "Register & identify to play")}
-    </.context_menu_label>
-    """
-  end
-
-  attr :on_action, :any, default: nil
-
-  # Server administration. Rendered only for admins and server operators.
-  # Each entry opens its own focused window; entries land here as the Admin
-  # Console's tabs are split out.
-  defp admin_menu_items(assigns) do
-    ~H"""
-    <.menu_item
-      icon_fn={:icon_community}
-      label={dgettext("ui", "Users")}
-      action="open_admin_users"
-      on_action={@on_action}
-    />
-    <.menu_item
-      icon_fn={:icon_channels}
-      label={dgettext("ui", "Channels")}
-      action="open_admin_channels"
-      on_action={@on_action}
-    />
-    <.menu_item
-      icon_fn={:icon_server}
-      label={dgettext("ui", "Server Settings")}
-      action="open_admin_server_settings"
-      on_action={@on_action}
-    />
-    <.menu_item
-      icon_fn={:icon_notepad}
-      label={dgettext("ui", "Audit Log")}
-      action="open_admin_audit_log"
-      on_action={@on_action}
-    />
-    <.menu_item
-      icon_fn={:icon_notepad}
-      label={dgettext("ui", "MOTD")}
-      action="open_admin_motd"
-      on_action={@on_action}
-    />
-    <.menu_item
-      icon_fn={:icon_websocket}
-      label={dgettext("ui", "TURN")}
-      action="open_admin_turn"
-      on_action={@on_action}
-    />
-    <.menu_item
-      icon_fn={:icon_megaphone}
-      label={dgettext("ui", "Broadcast")}
-      action="open_admin_broadcast"
-      on_action={@on_action}
-    />
-    <.menu_item
-      icon_fn={:icon_warning}
-      label={dgettext("ui", "Danger Zone")}
-      action="open_admin_danger_zone"
-      on_action={@on_action}
-    />
-    <.context_menu_separator />
-    <.menu_item
-      icon_fn={:icon_dialog_admin_console}
-      label={dgettext("ui", "Console")}
-      action="open_admin_console"
-      on_action={@on_action}
-    />
-    """
-  end
-
-  attr :on_action, :any, default: nil
-
-  # Runtime inspection. Sits beside the admin items and behind the same gate,
-  # but stays a separate list: every window here only reads the node, while
-  # everything under Admin acts on the server.
-  defp system_menu_items(assigns) do
-    ~H"""
-    <.menu_item
-      :for={{action, label, icon_fn} <- system_entries()}
-      icon_fn={icon_fn}
-      label={label}
-      action={action}
-      on_action={@on_action}
-    />
-    """
-  end
-
-  # Derived from `WindowRegistry` for the same reason the Start menu is: the
-  # title and icon a window is opened by must be the ones it opens with.
-  defp system_entries do
-    for window <- WindowRegistry.windows(),
-        window.opener,
-        window.family == :system,
-        do: {window.opener, window.title, window.icon}
   end
 
   # The Help menu is the one menu every shell shows, connected or not, so its
