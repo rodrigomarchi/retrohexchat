@@ -5,7 +5,7 @@
  * telemetry that only a page with RUM enabled ever fetches, and only once that
  * page has gone idle. `faro_gate.js` decides both.
  */
-import { getWebInstrumentations, initializeFaro } from "@grafana/faro-web-sdk";
+import { createSession, getWebInstrumentations, initializeFaro } from "@grafana/faro-web-sdk";
 import { getDefaultOTELInstrumentations, TracingInstrumentation } from "@grafana/faro-web-tracing";
 import { DocumentLoadInstrumentation } from "@opentelemetry/instrumentation-document-load";
 
@@ -40,6 +40,7 @@ export function bootFaro() {
         ],
       }),
     ],
+    createSession,
     win: window,
     doc: document,
   }).boot();

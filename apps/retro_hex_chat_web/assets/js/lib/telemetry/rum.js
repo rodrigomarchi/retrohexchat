@@ -47,6 +47,24 @@ export function recordMeasurement(type, values, context) {
 }
 
 /**
+ * The Faro session this browser is recording under.
+ *
+ * The chat rides a websocket, so no request header ever carries this to the
+ * server; something has to hand it over explicitly for the two sides to be
+ * readable together. Null until the SDK has booted.
+ *
+ * @returns {string | null} The session id, or null.
+ */
+export function sessionId() {
+  try {
+    return api()?.getSession?.()?.id ?? null;
+  } catch (error) {
+    log.warn("[rum] session id unavailable", error);
+    return null;
+  }
+}
+
+/**
  * Report a named event to RUM.
  *
  * @param {string} name - Event name, snake_case (e.g. "liveview_socket_lost").

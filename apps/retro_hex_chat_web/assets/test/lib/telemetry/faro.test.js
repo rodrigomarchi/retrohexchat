@@ -6,7 +6,13 @@
  * behaviour when the SDK throws. The real Faro SDK is dependency-injected so
  * these cases never load it or touch the network.
  */
-import { createFaro, readFaroConfig, viewNameForPath } from "../../../js/lib/telemetry/faro";
+import {
+  createFaro,
+  readFaroConfig,
+  TRAFFIC_KEY,
+  trafficKind,
+  viewNameForPath,
+} from "../../../js/lib/telemetry/faro";
 
 /**
  * Build a stub document whose `querySelector('meta[name="..."]')` resolves
@@ -52,16 +58,27 @@ const PROD_METAS = {
  * @param {object} [overrides]
  * @returns {{ faro: ReturnType<typeof createFaro>, initializeFaro: any, instrumentations: any[] }}
  */
-function build({ metas = PROD_METAS, href = "https://retrohexchat.app/chat", initImpl } = {}) {
+function build({
+  metas = PROD_METAS,
+  href = "https://retrohexchat.app/chat",
+  initImpl,
+  traffic,
+  createSession = vi.fn((attributes) => ({ id: "sess", attributes })),
+} = {}) {
   const instrumentations = [{ name: "web" }, { name: "tracing" }];
   const initializeFaro = initImpl ? vi.fn(initImpl) : vi.fn().mockReturnValue({ api: {} });
+  const win = makeWin(href);
+  if (traffic !== undefined) {
+    win.localStorage = { getItem: (key) => (key === TRAFFIC_KEY ? traffic : null) };
+  }
   const faro = createFaro({
     initializeFaro,
     buildInstrumentations: () => instrumentations,
-    win: makeWin(href),
+    createSession,
+    win,
     doc: makeDoc(metas),
   });
-  return { faro, initializeFaro, instrumentations };
+  return { faro, initializeFaro, instrumentations, createSession };
 }
 
 describe("readFaroConfig", () => {
@@ -170,5 +187,54 @@ describe("createFaro.boot", () => {
     expect(spy).toHaveBeenCalled();
 
     spy.mockRestore();
+  });
+});
+
+describe("trafficKind", () => {
+  it("is null when nothing marked this browser", () => {
+    expect(trafficKind({})).toBeNull();
+    expect(trafficKind({ localStorage: { getItem: () => null } })).toBeNull();
+  });
+
+  it("reads the marker the load harness writes", () => {
+    const win = { localStorage: { getItem: (key) => (key === TRAFFIC_KEY ? "synthetic" : null) } };
+
+    expect(trafficKind(win)).toBe("synthetic");
+  });
+
+  it("treats an empty marker as unmarked", () => {
+    expect(trafficKind({ localStorage: { getItem: () => "" } })).toBeNull();
+  });
+
+  it("survives storage being denied", () => {
+    const win = {
+      get localStorage() {
+        throw new Error("storage blocked");
+      },
+    };
+
+    expect(trafficKind(win)).toBeNull();
+  });
+});
+
+describe("createFaro.boot session labelling", () => {
+  it("seeds a labelled session so every signal carries the marker", () => {
+    const { faro, initializeFaro, createSession } = build({ traffic: "synthetic" });
+
+    faro.boot();
+
+    expect(createSession).toHaveBeenCalledWith({ traffic: "synthetic" });
+    expect(initializeFaro.mock.calls[0][0].sessionTracking).toEqual({
+      session: { id: "sess", attributes: { traffic: "synthetic" } },
+    });
+  });
+
+  it("leaves ordinary traffic's session tracking untouched", () => {
+    const { faro, initializeFaro, createSession } = build();
+
+    faro.boot();
+
+    expect(createSession).not.toHaveBeenCalled();
+    expect(initializeFaro.mock.calls[0][0]).not.toHaveProperty("sessionTracking");
   });
 });

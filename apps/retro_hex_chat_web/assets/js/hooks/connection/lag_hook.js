@@ -11,11 +11,18 @@
  * recording them.
  */
 import { calculateLag, PING_INTERVAL, PING_TIMEOUT } from "../../lib/connection/lag.js";
-import { recordEvent, recordMeasurement } from "../../lib/telemetry/rum.js";
+import { recordEvent, recordMeasurement, sessionId } from "../../lib/telemetry/rum.js";
+
+// How long to keep looking for the RUM session id. The SDK loads on idle with a
+// 4s ceiling, so this covers the wait without pinning a timer to a page that
+// will never have RUM at all.
+const RUM_SESSION_RETRY_MS = 2_000;
+const RUM_SESSION_ATTEMPTS = 5;
 
 const LagHook = {
   mounted() {
     this._offlineSince = null;
+    this._reportRumSession(RUM_SESSION_ATTEMPTS);
     this._startPinging();
 
     this.handleEvent("pong", ({ client_time: clientTime }) => {
@@ -47,7 +54,28 @@ const LagHook = {
   },
 
   destroyed() {
+    clearTimeout(this._rumSessionTimer);
+    this._rumSessionTimer = null;
     this._stopPinging();
+  },
+
+  // Hand the browser's RUM session id to the server so its logs can be read
+  // beside the browser's. The SDK boots on idle, after this hook mounts, so the
+  // first look usually misses and a few retries cover the gap.
+  _reportRumSession(attemptsLeft) {
+    const id = sessionId();
+
+    if (id) {
+      this.pushEvent("rum_session", { id });
+      return;
+    }
+
+    if (attemptsLeft <= 1) return;
+
+    this._rumSessionTimer = setTimeout(
+      () => this._reportRumSession(attemptsLeft - 1),
+      RUM_SESSION_RETRY_MS,
+    );
   },
 
   _startPinging() {

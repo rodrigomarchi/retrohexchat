@@ -166,6 +166,16 @@ async function connectUser(
   const ctx = await browser.newContext(
     role === "call" ? { permissions: ["microphone", "camera"] } : {},
   );
+  // Disown this traffic in RUM. Without it a load run rewrites the very p75
+  // tiles it is supposed to be judged against, and the only way to tell the two
+  // apart afterwards is a user-agent guess.
+  await ctx.addInitScript(() => {
+    try {
+      window.localStorage.setItem("retro_hex_chat_rum_traffic", "synthetic");
+    } catch {
+      /* storage unavailable — the run is still valid, just unlabelled */
+    }
+  });
   if (role === "call") await installSyntheticMedia(ctx);
 
   const page = await ctx.newPage();
@@ -448,6 +458,31 @@ async function runReconnectStorm(
   return results;
 }
 
+// CLS and INP are only reported when the page is hidden — web-vitals holds them
+// until then, because both can still change while the user is looking. Playwright
+// tears a context down without ever hiding it, so a whole load run produced zero
+// of the two vitals that describe interaction, while reporting LCP for everyone.
+// Hiding the page first lets web-vitals settle and Faro flush its beacon.
+async function flushHiddenVitals(users: LoadUser[]) {
+  await Promise.all(
+    users.map((user) =>
+      user.page
+        .evaluate(() => {
+          Object.defineProperty(document, "visibilityState", {
+            value: "hidden",
+            configurable: true,
+          });
+          document.dispatchEvent(new Event("visibilitychange"));
+          window.dispatchEvent(new Event("pagehide"));
+        })
+        .catch(() => {}),
+    ),
+  );
+
+  // The transport batches; give it a beat to actually leave the browser.
+  await sleep(3_000);
+}
+
 function percentile(sorted: number[], p: number): number {
   if (sorted.length === 0) return 0;
   const at = Math.min(sorted.length - 1, Math.floor((p / 100) * sorted.length));
@@ -674,6 +709,7 @@ test("realistic mixed load, chat-focused", async ({ browser }) => {
     const reportPath = `test-results/load-report-${runId}.json`;
     fs.writeFileSync(reportPath, JSON.stringify(report, null, 2));
     console.log(`[load] report: e2e/${reportPath}`);
+    await flushHiddenVitals(users);
     await Promise.all(users.map((u) => u.ctx.close().catch(() => {})));
 
     const worstFailed = Math.max(...cycles.map((c) => c.failed));
@@ -800,6 +836,7 @@ test("realistic mixed load, chat-focused", async ({ browser }) => {
     );
   }
 
+  await flushHiddenVitals(users);
   await Promise.all(users.map((u) => u.ctx.close().catch(() => {})));
 
   // Sanity floor, not a benchmark threshold: enough of the cohort must have

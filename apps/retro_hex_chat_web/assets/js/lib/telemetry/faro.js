@@ -14,6 +14,32 @@
 const APP_NAME = "retro_hex_chat_web";
 
 /**
+ * localStorage key the load harness sets to disown its own traffic.
+ *
+ * Twenty synthetic browsers move a p75 tile as surely as twenty real ones, so a
+ * load run silently rewrites the baseline it was meant to be measured against.
+ * Marking the session lets the dashboards exclude it instead of guessing from a
+ * user-agent.
+ */
+export const TRAFFIC_KEY = "retro_hex_chat_rum_traffic";
+
+/**
+ * Read the traffic kind this browser was told to report itself as.
+ *
+ * @param {{ localStorage?: Storage }} win - Window-like object.
+ * @returns {string | null} The marker, or null for ordinary traffic.
+ */
+export function trafficKind(win) {
+  try {
+    return win.localStorage?.getItem(TRAFFIC_KEY) || null;
+  } catch {
+    // Storage denied (private mode, blocked cookies): this is a nice-to-have
+    // label, never a reason to skip RUM.
+    return null;
+  }
+}
+
+/**
  * Normalise a URL path into a stable, low-cardinality RUM view name.
  *
  * Strips a leading locale segment (e.g. `/pt-BR`), maps the known surfaces to
@@ -84,11 +110,12 @@ export function rumEligible(win, doc) {
  * @param {object} options
  * @param {(config: object) => unknown} options.initializeFaro - Faro SDK initializer.
  * @param {() => unknown[]} options.buildInstrumentations - Returns the instrumentation list.
+ * @param {(attributes: Record<string, string>) => object} [options.createSession] - Faro SDK session factory, used only to label non-organic traffic.
  * @param {Window | { location: { hostname: string, protocol: string } }} options.win - Window-like object.
  * @param {{ querySelector: (selector: string) => ({ content: string } | null) }} options.doc - Document-like object.
  * @returns {{ boot: () => unknown | null }}
  */
-export function createFaro({ initializeFaro, buildInstrumentations, win, doc }) {
+export function createFaro({ initializeFaro, buildInstrumentations, createSession, win, doc }) {
   /**
    * Start Faro if the environment and config allow it.
    *
@@ -98,12 +125,19 @@ export function createFaro({ initializeFaro, buildInstrumentations, win, doc }) 
     if (!rumEligible(win, doc)) return null;
 
     const config = readFaroConfig(doc);
+    const traffic = trafficKind(win);
 
     try {
       return initializeFaro({
         url: config.url,
         app: { name: APP_NAME, version: config.version ?? "unknown" },
         instrumentations: buildInstrumentations(),
+        // Seeding the session is the only way to attach an attribute to every
+        // signal it produces; setting it after boot would leave the first
+        // batch unlabelled, which is exactly the ramp-up a load run cares about.
+        ...(traffic && createSession
+          ? { sessionTracking: { session: createSession({ traffic }) } }
+          : {}),
       });
     } catch (error) {
       console.error("[faro] init failed", error);
