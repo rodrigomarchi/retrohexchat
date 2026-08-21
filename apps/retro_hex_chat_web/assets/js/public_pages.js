@@ -212,8 +212,14 @@ function setupConnectBoot() {
     return;
   }
 
+  // The body, not the whole window: the menu strip hangs under this window's
+  // title bar now, and reading a menu is not reaching for the form. Booting
+  // there would spend the socket on a hover — and the join that follows repaints
+  // the subtree LiveView owns, closing the menu the reader had just opened.
+  const reachable = win.querySelector("[data-window-body]") || win;
+
   for (const event of ["pointerover", "pointerdown", "focusin"]) {
-    win.addEventListener(event, bootConnect, { once: true, passive: true });
+    reachable.addEventListener(event, bootConnect, { once: true, passive: true });
   }
 }
 

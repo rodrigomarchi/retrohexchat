@@ -195,9 +195,21 @@ defmodule RetroHexChatWeb.HelpLiveTest do
       assert has_element?(view, "[data-testid=help-desktop]")
       assert has_element?(view, "[data-testid=help-window]")
       assert has_element?(view, "[data-testid=help-content-pane]")
-      assert has_element?(view, "[data-testid=help-menu-bar]")
-      assert has_element?(view, "[data-testid=help-status-bar]")
       assert has_element?(view, "[data-testid=help-search-input]")
+
+      # The menus and the breadcrumb belong to the viewer window, not to a strip
+      # across the desk: under its own title bar and along its own bottom edge.
+      refute render(view) =~ ~s(data-testid="app-header")
+
+      assert has_element?(
+               view,
+               ~s([data-testid=help-window] [data-window-menu] [data-testid=help-menu-bar])
+             )
+
+      assert has_element?(
+               view,
+               ~s([data-testid=help-window] [data-window-status] [data-testid=help-status-topic])
+             )
     end
 
     test "search filters topics and links to them", %{conn: conn} do

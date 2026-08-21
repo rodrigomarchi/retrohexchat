@@ -706,15 +706,16 @@ describe("WindowManager", () => {
   // the icon rail on ITS width, not the viewport's: the desk can be 1920 wide
   // while the window on it is dragged to 480.
   describe("a window that carries its own menu bar", () => {
-    function withMenu(size, { maximized = false, width = 1000 } = {}) {
+    function withMenu(size, { maximized = false, width = 1000, menus = 0 } = {}) {
       document.body.innerHTML = "";
       const el = document.createElement("div");
       el.className = "desktop";
+      const strip = '<span class="app-menu-bar__desktop-menu"></span>'.repeat(menus);
       el.innerHTML = `<div class="desktop__workspace">${windowMarkup("app", {
         open: true,
       }).replace(
         "<div data-window-content>",
-        "<div data-window-menu></div><div data-window-content>",
+        `<div data-window-menu>${strip}</div><div data-window-content>`,
       )}</div>`;
       document.body.appendChild(el);
 
@@ -752,6 +753,17 @@ describe("WindowManager", () => {
       const wm = withMenu({ w: 390, h: 780 }, { width: 1000 });
       wm.stacked = true;
       wm.applyAll();
+      expect(narrow()).toBe(true);
+    });
+
+    // A bar is only as wide as the menus on it: folding the help viewer's four
+    // at the width the chat's seven need would collapse a strip with room to
+    // spare.
+    it("asks for less room when the bar carries fewer menus", () => {
+      withMenu({ w: 1600, h: 900 }, { width: 500, menus: 3 });
+      expect(narrow()).toBe(false);
+
+      withMenu({ w: 1600, h: 900 }, { width: 500, menus: 7 });
       expect(narrow()).toBe(true);
     });
 

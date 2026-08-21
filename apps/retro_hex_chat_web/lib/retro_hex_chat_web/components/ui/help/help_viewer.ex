@@ -4,13 +4,15 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
 
   The Help LiveView owns navigation/search state. This module owns the help
   desktop shell, toolbar, navigator, topic frame and empty state.
+
+  The viewer is one window on a bare desk: its menus hang under its own title
+  bar and the topic it is showing is reported along its bottom edge, the way a
+  CHM viewer did. Nothing sits above the workspace.
   """
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.AboutDialog
-  import RetroHexChatWeb.Components.UI.AppHeader
   import RetroHexChatWeb.Components.UI.Desktop
-  import RetroHexChatWeb.Components.UI.Dialog, only: [show_modal: 1]
   import RetroHexChatWeb.Components.UI.Help.HelpMenuBar
   import RetroHexChatWeb.Components.UI.Help.HelpStatusBar
   import RetroHexChatWeb.Components.UI.StartMenuApp
@@ -34,32 +36,36 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
     ~H"""
     <div class="flex flex-col h-screen bg-background font-system text-text">
       <.desktop id="help-desktop" persist_key="help" data-testid="help-desktop">
-        <:header>
-          <.app_header on_logo_click={show_modal("about-dialog")}>
-            <:panels>
-              <.help_menu_bar
-                id="help-menubar"
-                current_path={@canonical_path}
-                phx-hook="MenuBarHook"
-              />
-              <.help_status_bar
-                class="ml-auto"
-                selected_topic={@selected_topic}
-                topic_count={@topic_count}
-              />
-            </:panels>
-          </.app_header>
-        </:header>
-
+        <%!-- Opens maximized, but a reader can restore it — and then it has to
+              come back a viewer rather than the 360px default sliver every
+              window falls back to. --%>
         <.desktop_window
           id="help"
           title={dgettext("help", "Help — RetroHexChat")}
           pinned
           default_maximized
+          width={900}
+          height={620}
           body_class="p-0"
           data-testid="help-window"
         >
           <:icon><Icons.icon_notepad class="w-4 h-4" /></:icon>
+
+          <%!-- Navigate / View / Language / Help, under the viewer's own title
+                bar. The logo that used to open About went with the header;
+                Help ▸ About is the same dialog. --%>
+          <:menu>
+            <.help_menu_bar
+              id="help-menubar"
+              current_path={@canonical_path}
+              phx-hook="MenuBarHook"
+            />
+          </:menu>
+
+          <:status>
+            <.help_status_zones selected_topic={@selected_topic} topic_count={@topic_count} />
+          </:status>
+
           <div class="flex flex-col h-full">
             <.help_toolbar query={@search_query} />
 

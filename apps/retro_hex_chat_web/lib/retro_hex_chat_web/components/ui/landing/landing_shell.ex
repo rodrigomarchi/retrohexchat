@@ -4,10 +4,13 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
 
   Landing LiveViews provide page state and content. This module owns the shared
   desktop chrome, menu bar, taskbar, footer and page intro composition.
+
+  The desk carries nothing above the workspace: the menu bar hangs under the
+  Connect window's title bar (`LandingHelpers.landing_connect_window/1` puts it
+  there), which is the window that leads on every page.
   """
   use RetroHexChatWeb.Component
 
-  import RetroHexChatWeb.Components.UI.AppHeader
   import RetroHexChatWeb.Components.UI.Desktop
   import RetroHexChatWeb.Components.UI.Window
   import RetroHexChatWeb.Components.UI.MenuBar
@@ -48,10 +51,6 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
         window_manager_hook="PublicWindowManagerHook"
         class="flex-1"
       >
-        <:header>
-          <.landing_header active_page={@active_page} />
-        </:header>
-
         {render_slot(@inner_block)}
         <.landing_about_window active_page={@active_page} />
 
@@ -185,15 +184,24 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
     ]
   end
 
-  # Real dropdown menu bar (Navigate / Help / Language) built from the shared
-  # MenuBar/ContextMenu primitives — the same DOM contract, the same rail, and
-  # since public_pages.js runs the very same engine the app does, the same
-  # behaviour too. No phx-hook: every item is a real <a href>, so the menus
-  # navigate and index with JavaScript off.
+  @doc """
+  Real dropdown menu bar (Navigate / Help / Language) for the public pages.
+
+  Built from the shared MenuBar/ContextMenu primitives — the same DOM contract,
+  the same rail, and since `public_pages.js` runs the very same engine the app
+  does, the same behaviour too. No phx-hook: every item is a real `<a href>`, so
+  the menus navigate and index with JavaScript off.
+
+  Hangs under the Connect window's title bar rather than across the top of the
+  screen, as the chat's does under its own. The window is open on arrival on
+  every page; closing it takes the strip with it, and Start ▸ Windows brings
+  both back — the same bargain every window on this desk makes.
+  """
   attr :active_page, :atom, required: true
   attr :class, :any, default: nil
 
-  defp landing_menu_bar(assigns) do
+  @spec landing_menu_bar(map()) :: Phoenix.LiveView.Rendered.t()
+  def landing_menu_bar(assigns) do
     assigns =
       assigns
       |> assign(:current_path, active_page_path(assigns.active_page))
@@ -322,28 +330,6 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
         <.window_status_bar_field grow>{@status}</.window_status_bar_field>
       </:status>
     </.desktop_window>
-    """
-  end
-
-  attr :active_page, :atom, required: true
-
-  defp landing_header(assigns) do
-    ~H"""
-    <div class="sticky top-0 z-modal">
-      <%!-- The logo opens About, as it does on every other shell. Here About is
-            a desktop window rather than a modal, so the window manager opens it
-            — these pages run no LiveSocket for a phx-click to reach. Home stays
-            reachable from Navigate ▸ Home and the Start menu. --%>
-      <.app_header logo_window="about">
-        <:panels>
-          <%!-- No Connect button. The header carries menus and status on every
-                shell; the way in is the taskbar's Start menu, which names it the
-                same as everywhere else. Two CTAs — one here, one in the tray —
-                were the only chrome no other screen had. --%>
-          <.landing_menu_bar active_page={@active_page} />
-        </:panels>
-      </.app_header>
-    </div>
     """
   end
 

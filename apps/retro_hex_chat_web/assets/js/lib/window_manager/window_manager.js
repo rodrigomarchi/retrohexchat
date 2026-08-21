@@ -70,6 +70,14 @@ const STACK_BREAKPOINT = 768;
 // the two server groups left with the other launchers, and the number came
 // down with them — the bar now holds out to a narrower window before folding.
 const WINDOW_MENU_BREAKPOINT = 700;
+// Not every bar is the chat's. The help viewer hangs four menus under its title
+// bar and the landing pages three, and folding those into icons at the width
+// the chat's seven need would collapse a strip with room to spare. So the
+// measurement above is spent per menu — 700 across the seven it was taken on —
+// and each window asks for what its own bar holds. The chat lands back on 700,
+// exactly where it was.
+const MENU_ENTRY_WIDTH = 100;
+const MENU_ENTRY_SELECTOR = "[data-window-menu] .app-menu-bar__desktop-menu";
 const EDGE_MARGIN = 40;
 const CASCADE_STEP = 26;
 const CASCADE_SIZE_RATIO = 0.6;
@@ -1286,7 +1294,7 @@ const WindowManagerCore = {
     this.setClass(el, "u-hidden", !visible);
     this.setClass(el, "desktop-window--blurred", this.focusedId !== id);
     this.setClass(el, "desktop-window--maximized", st.maximized);
-    this.syncWindowMenuWidth(el, st);
+    this.syncWindowMenuBar(el, st);
 
     // Geometry is driven through CSS custom properties (consumed by .desktop-window
     // in retrohex.css) so the hook never sets width/height/z-index inline directly.
@@ -1341,15 +1349,39 @@ const WindowManagerCore = {
   // wide while the window on it is dragged down to 480. The desktop-wide
   // `desktop--stacked` still applies on a phone; this is the same switch, per
   // window, and `app-menu.css` honours either.
-  syncWindowMenuWidth(el, st) {
-    if (!el.querySelector("[data-window-menu]")) return;
+  syncWindowMenuBar(el, st) {
+    const strip = el.querySelector("[data-window-menu]");
+    if (!strip) return;
 
     // Stacked and maximized windows are as wide as the desk, whatever `st.w`
     // remembers about the size they will restore to.
     const workspace = this.workspaceSize().w;
     const width = this.stacked || st.maximized ? workspace : Math.min(st.w, workspace);
 
-    this.setClass(el, "desktop-window--narrow", width < WINDOW_MENU_BREAKPOINT);
+    // A bar this manager does not recognise falls back to the widest one there
+    // is, which folds early rather than overflowing the frame.
+    const entries = el.querySelectorAll(MENU_ENTRY_SELECTOR).length;
+    const needed = entries ? entries * MENU_ENTRY_WIDTH : WINDOW_MENU_BREAKPOINT;
+
+    this.setClass(el, "desktop-window--narrow", width < needed);
+    this.publishMenuStripMetrics(strip);
+  },
+
+  // The mobile drawer hangs off the bottom of the strip and is positioned
+  // `fixed`, so it needs that edge in viewport pixels — and the chat's sidebar
+  // overlays need the strip's height to know where the top chrome ends. Both
+  // used to be read off a screen-wide header that no longer exists; a strip
+  // under a window's title bar sits wherever that window does, so it is
+  // measured rather than assumed. Stacked only: that is the one layout where
+  // either number is used, and the read costs a reflow.
+  publishMenuStripMetrics(strip) {
+    if (!this.stacked) return;
+
+    const rect = strip.getBoundingClientRect();
+    if (!rect.height) return;
+
+    this.el.style.setProperty("--rhc-menu-strip-height", `${Math.round(rect.height)}px`);
+    this.el.style.setProperty("--rhc-menu-strip-bottom", `${Math.round(rect.bottom)}px`);
   },
 
   updateTaskbar(id) {

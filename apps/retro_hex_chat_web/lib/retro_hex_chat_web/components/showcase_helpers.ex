@@ -5,10 +5,8 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
 
   import RetroHexChatWeb.Components.UI.TreeView
   import RetroHexChatWeb.Components.UI.Desktop
-  import RetroHexChatWeb.Components.UI.AppHeader
   import RetroHexChatWeb.Components.UI.MenuBarApp
   import RetroHexChatWeb.Components.UI.StartMenuApp
-  import RetroHexChatWeb.Components.UI.Dialog, only: [show_modal: 1]
   import RetroHexChatWeb.Components.UI.AboutDialog
 
   alias RetroHexChatWeb.Icons
@@ -40,14 +38,6 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
     ~H"""
     <div class="bg-desktop font-system text-text flex h-screen flex-col">
       <.desktop id="showcase-desktop" persist_key="showcase" class="flex-1">
-        <:header>
-          <.app_header on_logo_click={show_modal("about-dialog")}>
-            <:panels>
-              <.menu_bar_app id="menubar" phx-hook="MenuBarHook" connected={false} />
-            </:panels>
-          </.app_header>
-        </:header>
-
         <%!-- The page itself. Pinned: closing the document you navigated to
               would leave nothing behind. One stable id across every component
               page, so a layout the reader adjusts survives navigation. --%>
@@ -63,6 +53,14 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
           data-testid="showcase-component-window"
         >
           <:icon>{apply(Icons, @page.icon, [%{class: "w-4 h-4"}])}</:icon>
+
+          <%!-- The app's menus, under the window they belong to, as on every
+                other shell. Signed out, so most of them are greyed: this is a
+                catalog, not a session. --%>
+          <:menu>
+            <.menu_bar_app id="menubar" phx-hook="MenuBarHook" connected={false} />
+          </:menu>
+
           {render_slot(@inner_block)}
         </.desktop_window>
 

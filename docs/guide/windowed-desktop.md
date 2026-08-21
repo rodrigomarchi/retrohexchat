@@ -31,8 +31,13 @@ Part of the [Agent Guide](../AGENT-GUIDE.md) (§7). Section numbers there are st
   become thin adapters → `send_update`.
 - **Don't extract a small, churny cross-cutting aggregator** (a connection/stats window that
   reads a bit of every feature). Keep it in the host and feed it via summaries — moving it just
-  relocates the coupling. There is a menu-bar top chrome (Session/Call/Window/Help) + status
-  bar built from the shared `menu_bar` primitive + a desktop `:header` slot.
+  relocates the coupling.
+- **A desk carries no chrome.** Menus and status belong to a window, not to the screen:
+  `desktop_window/1`'s `:menu` slot (a `menu_bar` under the title bar) and `:status` slot
+  (`window_status_bar_field` elements — fields, not a second frame). All five shells work this
+  way; `desktop/1` has no header slot to put a strip in. The manager decides strip-vs-icon-rail
+  from the window's own width against the menus its bar carries, so a bar with three menus
+  survives a narrower window than one with seven.
 
 ### 7.1 Chat: managed windows (server-owned lifecycle)
 

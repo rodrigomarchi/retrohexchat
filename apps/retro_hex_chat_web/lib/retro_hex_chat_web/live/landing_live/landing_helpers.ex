@@ -26,8 +26,13 @@ defmodule RetroHexChatWeb.LandingLive.LandingHelpers do
   without leaving the page they landed on. Composing the window here rather than
   in `LandingShell` keeps `components/ui/` free of `live/` references, matching
   how the chat desktop mounts its own islands.
+
+  It is also where the site's menus live. The window leads on every page — it is
+  the one that does something rather than explains something — so its title bar
+  is the one a Windows 98 desk hangs the menu strip under.
   """
   attr :trusted_device_id, :any, default: nil
+  attr :active_page, :atom, required: true, doc: "marks the current page in Navigate"
 
   @spec landing_connect_window(map()) :: Phoenix.LiveView.Rendered.t()
   def landing_connect_window(assigns) do
@@ -43,6 +48,10 @@ defmodule RetroHexChatWeb.LandingLive.LandingHelpers do
       data-testid="landing-connect-window"
     >
       <:icon><Icons.icon_connect class="w-4 h-4" /></:icon>
+
+      <:menu>
+        <.landing_menu_bar active_page={@active_page} />
+      </:menu>
       <%!-- The sign-in socket loads on first touch. If that chunk never
             arrives the form is inert, which reads as a dead page unless it
             says so — public_pages.js unhides this instead of failing quietly. --%>
@@ -73,6 +82,7 @@ defmodule RetroHexChatWeb.LandingLive.LandingHelpers do
   end
 
   defdelegate landing_layout(assigns), to: RetroHexChatWeb.Components.UI.Landing.LandingShell
+  defdelegate landing_menu_bar(assigns), to: RetroHexChatWeb.Components.UI.Landing.LandingShell
   defdelegate landing_page_intro(assigns), to: RetroHexChatWeb.Components.UI.Landing.LandingShell
 
   defdelegate readme_text(assigns), to: RetroHexChatWeb.Components.UI.Landing.LandingMockups

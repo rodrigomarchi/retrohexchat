@@ -2,7 +2,8 @@ defmodule RetroHexChatWeb.ConnectDesktopShellTest do
   @moduledoc """
   The connect page renders as a Win98 desktop: the sign-in flow lives in one
   pinned, centered logon window over a taskbar with a Start menu and a tray
-  clock, with a pre-auth status bar in the header.
+  clock. The window carries its own menus and reports the sign-in step along its
+  own bottom edge; the desk above it holds nothing.
   """
   use RetroHexChatWeb.LiveViewCase, async: false
 
@@ -13,9 +14,17 @@ defmodule RetroHexChatWeb.ConnectDesktopShellTest do
       {:ok, view, html} = live(conn, "/connect")
 
       assert has_element?(view, ~s(#connect-desktop[data-persist="false"]))
-      # Header chrome: disconnected menu bar + pre-auth status bar.
-      assert has_element?(view, ~s(#menubar))
-      assert html =~ ~s(data-testid="connect-status-bar")
+
+      # The desk carries no chrome of its own: the disconnected menu bar hangs
+      # under the logon window's title bar and the sign-in step is reported
+      # along its bottom edge.
+      refute html =~ ~s(data-testid="app-header")
+      assert has_element?(view, ~s([data-window-id="connect"] [data-window-menu] #menubar))
+
+      assert has_element?(
+               view,
+               ~s([data-window-id="connect"] [data-window-status] [data-testid="connect-status-step"])
+             )
     end
 
     test "the mobile rail offers only what works signed out", %{conn: conn} do
@@ -76,8 +85,8 @@ defmodule RetroHexChatWeb.ConnectDesktopShellTest do
 
       # A fresh nickname moves to the register step, still inside the window.
       assert has_element?(view, ~s([data-window-id="connect"] form[phx-submit="register"]))
-      # The status bar tracks the step.
-      assert render(element(view, ~s([data-testid="connect-status-bar"]))) =~ "Registration"
+      # The window's status bar tracks the step.
+      assert render(element(view, ~s([data-testid="connect-status-step"]))) =~ "Registration"
     end
   end
 

@@ -137,12 +137,10 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSupersetTest do
 
   defp landing_bar_entries do
     # The strip names a page by its atom (`how_it_works`), the Start menu by its
-    # path segment (`how-it-works`).
-    render_component(&LandingShell.landing_layout/1,
-      active_page: :home,
-      windows: [],
-      inner_block: [%{__slot__: :inner_block, inner_block: fn _args, _assigns -> "" end}]
-    )
+    # path segment (`how-it-works`). Rendered on its own: the bar hangs under
+    # the Connect window's title bar now, which the landing pages compose, not
+    # the shell.
+    render_component(&LandingShell.landing_menu_bar/1, active_page: :home)
     |> scan(~r/data-testid="landing-menu-(?:nav-)?([A-Za-z0-9_\-]+)"/)
     |> MapSet.delete("bar")
     |> Enum.map(&String.replace(&1, "_", "-"))

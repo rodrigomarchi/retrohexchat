@@ -2,9 +2,11 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
   @moduledoc """
   Desktop chrome for the pre-auth connect screen.
 
-  This component owns everything around the connect window — desktop, header,
-  menu bar, status bar, taskbar and About dialog — and renders the window body
-  from a slot. The body itself is
+  This component owns everything around the connect window — desktop, taskbar
+  and About dialog — and renders the window body from a slot. The menus hang
+  under the logon window's own title bar and the sign-in step is reported along
+  its bottom edge, where a Windows 98 application kept them; the desk itself
+  carries nothing. The body is
   `RetroHexChatWeb.Components.UI.ConnectFormPanel`, driven by a LiveComponent,
   so the same form also runs inside a window on the public landing pages.
   """
@@ -12,10 +14,8 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
 
   import RetroHexChatWeb.Components.UI.AboutDialog
   import RetroHexChatWeb.Components.UI.Alert
-  import RetroHexChatWeb.Components.UI.AppHeader
   import RetroHexChatWeb.Components.UI.ConnectStatusBar
   import RetroHexChatWeb.Components.UI.Desktop
-  import RetroHexChatWeb.Components.UI.Dialog, only: [show_modal: 1]
   import RetroHexChatWeb.Components.UI.MenuBarApp
   import RetroHexChatWeb.Components.UI.StartMenuApp
 
@@ -30,21 +30,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
     ~H"""
     <div id="connect-root" class="flex flex-col h-screen bg-background">
       <.desktop id="connect-desktop" persist={false} data-testid="connect-desktop">
-        <:header>
-          <.app_header on_logo_click={show_modal("about-dialog")}>
-            <:panels>
-              <.menu_bar_app
-                id="menubar"
-                phx-hook="MenuBarHook"
-                connected={false}
-                on_action="menu_action"
-              />
-              <.connect_status_bar class="ml-auto" step={@step} />
-            </:panels>
-          </.app_header>
-        </:header>
-
-        <.connect_window flash={@flash}>
+        <.connect_window flash={@flash} step={@step}>
           {render_slot(@inner_block)}
         </.connect_window>
 
@@ -59,22 +45,43 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
   end
 
   attr :flash, :map, default: %{}
+  attr :step, :atom, required: true
   slot :inner_block, required: true
 
   defp connect_window(assigns) do
     ~H"""
+    <%!-- Wide enough for the strip it now carries: the app menus run seven
+          across, and the 560px this window used to be could only ever have
+          shown them as the icon rail a phone gets. --%>
     <.desktop_window
       id="connect"
       title={dgettext("connect", "Connect to RetroHexChat")}
       pinned
       default_centered
-      width={560}
+      width={720}
       min_width={360}
       resizable={false}
       body_class="p-4"
       data-testid="connect-window"
     >
       <:icon><Icons.icon_connect class="w-4 h-4" /></:icon>
+
+      <%!-- The whole app's menus, greyed down to what works signed out. The
+            logo that used to open About went with the header; Help ▸ About and
+            Start ▸ About RetroHexChat are the same dialog. --%>
+      <:menu>
+        <.menu_bar_app
+          id="menubar"
+          phx-hook="MenuBarHook"
+          connected={false}
+          on_action="menu_action"
+        />
+      </:menu>
+
+      <:status>
+        <.connect_status_zones step={@step} />
+      </:status>
+
       <.alert
         :if={@flash["error"]}
         variant="destructive"

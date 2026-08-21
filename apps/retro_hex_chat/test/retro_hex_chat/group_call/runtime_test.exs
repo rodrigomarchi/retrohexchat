@@ -158,18 +158,25 @@ defmodule RetroHexChat.GroupCall.RuntimeTest do
     end
   end
 
+  # Returns the record that matched, never a fresh read taken afterwards. The
+  # status this waits for is often a step on the way to another one — the
+  # suite's 30 ms reconnect timer turns "disconnected" into "failed" — so a
+  # second query hands back whatever came next, and the case asserting on the
+  # step reads the state that replaced it.
   defp wait_for_participant_status(participant_id, status, retries \\ 50) do
-    wait_until(
-      fn ->
-        case Queries.get_participant(participant_id) do
-          %{status: ^status} -> true
-          _other -> false
-        end
-      end,
-      retries
-    )
+    participant = Queries.get_participant(participant_id)
 
-    Queries.get_participant(participant_id)
+    cond do
+      match?(%{status: ^status}, participant) ->
+        participant
+
+      retries <= 0 ->
+        flunk("participant never reached status #{status}")
+
+      true ->
+        Process.sleep(10)
+        wait_for_participant_status(participant_id, status, retries - 1)
+    end
   end
 
   defp audit_events(room_id) when is_integer(room_id) do

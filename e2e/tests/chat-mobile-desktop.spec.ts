@@ -67,15 +67,17 @@ test.describe("chat desktop on a phone (stacked single-window)", () => {
     await expect(railToolsButton).toBeVisible();
     await expect(desktopChatTaskbarBtn).toBeVisible();
 
-    // The rail is the header, not a button in it: it spans what the logo and
-    // the status zone leave, so the strip beside them is a touch target rather
-    // than dead space.
-    const headerBox = await page.getByTestId("app-header").boundingBox();
+    // The rail is the menu strip, not a button on it: it spans the width under
+    // the window's title bar, so the strip is a touch target rather than dead
+    // space beside a lone hamburger.
+    const stripBox = await chatWindow
+      .locator("[data-window-menu]")
+      .boundingBox();
     const railBox = await mobileRail.boundingBox();
-    expect(headerBox).not.toBeNull();
+    expect(stripBox).not.toBeNull();
     expect(railBox).not.toBeNull();
-    expect(railBox!.width).toBeGreaterThan(headerBox!.width * 0.6);
-    await shot(page, "mobile-header-menu-rail");
+    expect(railBox!.width).toBeGreaterThan(stripBox!.width * 0.6);
+    await shot(page, "mobile-window-menu-rail");
 
     // The chat window fills the workspace (fullscreen app layout).
     await expect(chatWindow).toBeVisible();

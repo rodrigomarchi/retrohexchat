@@ -11,9 +11,13 @@ import { expect, test } from "@playwright/test";
 import { shot } from "../helpers/screenshots";
 
 // The five desktops are meant to read as one product, and the place that kept
-// drifting is the header: the landing pages carried a Connect CTA and a lone
+// drifting is the menu bar: the landing pages carried a Connect CTA and a lone
 // hamburger while the chat had already moved to an icon rail, and help shipped
 // a status bar whose breadcrumb ate the width the rail needed.
+//
+// It hangs under a window's own title bar on every shell now, the way Win98 had
+// it — never in a strip across the desk. Each shell names the window it belongs
+// to, and the desk itself must carry no header at all.
 //
 // These are the public shells — the ones reachable with no session, so a single
 // spec can hold them side by side. The chat's own mobile chrome is covered by
@@ -21,9 +25,9 @@ import { shot } from "../helpers/screenshots";
 const PHONE = { width: 390, height: 780 };
 
 const SHELLS = [
-  { name: "landing", path: "/", rail: 3 },
-  { name: "connect", path: "/connect", rail: 2 },
-  { name: "help", path: "/chat/help", rail: 4 },
+  { name: "landing", path: "/", rail: 3, window: "landing-connect-window" },
+  { name: "connect", path: "/connect", rail: 2, window: "connect-window" },
+  { name: "help", path: "/chat/help", rail: 4, window: "help-window" },
 ];
 
 test.describe("Shell chrome parity", () => {
@@ -41,7 +45,13 @@ test.describe("Shell chrome parity", () => {
       });
 
       await page.goto(shell.path);
-      await expect(page.getByTestId("app-header")).toBeVisible();
+
+      // Under the window's own title bar, and nowhere else on the desk.
+      const strip = page
+        .getByTestId(shell.window)
+        .locator("[data-window-menu]");
+      await expect(strip).toBeVisible();
+      await expect(page.getByTestId("app-header")).toHaveCount(0);
 
       // Below 768px the window manager stamps the stacked class, which is what
       // swaps the textual menu strip for the rail.
@@ -69,7 +79,7 @@ test.describe("Shell chrome parity", () => {
     page,
   }) => {
     await page.goto("/");
-    await expect(page.getByTestId("app-header")).toBeVisible();
+    await expect(page.getByTestId("landing-menu-bar")).toBeVisible();
 
     // The landing runs this engine without a LiveSocket, so a working drawer
     // here is the proof that the vanilla bundle and the hook share one
@@ -95,14 +105,16 @@ test.describe("Shell chrome parity", () => {
 
   test("the landing keeps its Connect out of the chrome", async ({ page }) => {
     await page.goto("/");
-    await expect(page.getByTestId("app-header")).toBeVisible();
+    await expect(page.getByTestId("landing-menu-bar")).toBeVisible();
 
-    // A CTA in the header and a second one in the tray were chrome no other
-    // shell had, and the header still carries neither.
+    // A CTA in the chrome and a second one in the tray were chrome no other
+    // shell had, and the menu bar still carries neither.
     // Exact matches: the Start menu in the taskbar carries a Disconnect entry,
     // and a substring match would read that as the CTA coming back.
     await expect(
-      page.getByTestId("app-header").getByText("Connect", { exact: true }),
+      page
+        .getByTestId("landing-menu-bar")
+        .getByText("Connect", { exact: true }),
     ).toHaveCount(0);
 
     // The taskbar's Connect is not that CTA coming back: sign-in is a window

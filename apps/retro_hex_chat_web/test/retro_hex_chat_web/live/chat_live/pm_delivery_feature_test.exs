@@ -51,7 +51,9 @@ defmodule RetroHexChatWeb.ChatLive.PmDeliveryFeatureTest do
 
     {:ok, _pm} = Service.send_private_message(peer, nick, "zapdelivered")
 
-    assert_push_event(view, "tip_trigger", %{tip: "first_pm"})
+    # A second of grace: the default 100ms is the CI partition's, not this
+    # machine's, and the push queues behind the mount's own event burst.
+    assert_push_event(view, "tip_trigger", %{tip: "first_pm"}, 1_000)
     refute Map.has_key?(assigns(view).unread_counts, "pm:#{peer}")
   end
 

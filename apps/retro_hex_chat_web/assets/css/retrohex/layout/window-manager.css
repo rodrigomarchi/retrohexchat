@@ -263,15 +263,16 @@
   display: none;
 }
 .desktop--stacked {
-  --rhc-chat-mobile-header-height: 40px;
   --rhc-chat-window-chrome-height: 27px;
   --rhc-chat-tabbar-height: 38px;
   --rhc-chat-toolbar-height: 40px;
   --rhc-chat-topicbar-height: 28px;
   /* The tab row is bottom-anchored, so it is not part of the top chrome the
-     sidebar overlays hang below. */
+     sidebar overlays hang below. The menu strip is: it hangs under the window's
+     title bar, and the manager measures it rather than the constant a
+     screen-wide header used to supply. */
   --rhc-chat-sidebar-top: calc(
-    var(--rhc-chat-mobile-header-height) + var(--rhc-chat-window-chrome-height) +
+    var(--rhc-chat-window-chrome-height) + var(--rhc-menu-strip-height, 32px) +
       var(--rhc-chat-toolbar-height) + var(--rhc-chat-topicbar-height)
   );
   overflow: clip;
@@ -297,13 +298,6 @@
 .desktop--stacked [data-window-control="maximize"],
 .desktop--stacked [data-window-control="restore"] {
   display: none;
-}
-
-.desktop--stacked [data-testid="app-header"] {
-  position: relative;
-  z-index: 20;
-  min-height: var(--rhc-chat-mobile-header-height);
-  padding-inline: 4px;
 }
 
 /* An expanded sidebar overlays the chat content but stops below the fixed top

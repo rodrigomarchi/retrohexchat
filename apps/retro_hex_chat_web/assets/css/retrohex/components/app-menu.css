@@ -148,15 +148,16 @@
 
 :is(.desktop--stacked, .desktop-window--narrow) .app-menu-bar__mobile-menu [data-menubar-dropdown] {
   position: fixed;
-  top: var(--rhc-chat-mobile-header-height, 40px);
+  /* Under the strip it hangs from, wherever that window is: the manager
+     measures the strip and publishes its bottom edge. The fallback covers the
+     moment before the first measurement. */
+  top: var(--rhc-menu-strip-bottom, 60px);
   right: 4px;
   left: 4px;
   width: auto;
   min-width: 0;
   max-height: min(
-    calc(
-      var(--rhc-visual-viewport-height, 100dvh) - var(--rhc-chat-mobile-header-height, 40px) - 48px
-    ),
+    calc(var(--rhc-visual-viewport-height, 100dvh) - var(--rhc-menu-strip-bottom, 60px) - 48px),
     560px
   );
   overflow: hidden;
@@ -176,7 +177,7 @@
   width: 100%;
   height: min(
     calc(
-      var(--rhc-visual-viewport-height, 100dvh) - var(--rhc-chat-mobile-header-height, 40px) - 56px
+      var(--rhc-visual-viewport-height, 100dvh) - var(--rhc-menu-strip-bottom, 60px) - 56px
     ),
     520px
   );

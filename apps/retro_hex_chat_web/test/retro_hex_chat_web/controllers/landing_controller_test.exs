@@ -478,10 +478,15 @@ defmodule RetroHexChatWeb.LandingLiveTest do
   end
 
   describe "shared layout" do
-    test "all pages include header and footer", %{conn: conn} do
+    test "all pages include the menu bar and footer", %{conn: conn} do
       for {path, _} <- @landing_pages do
         {:ok, _view, html} = live(conn, path)
-        assert html =~ "app-header", "#{path} missing header"
+
+        # The menus hang under the Connect window's title bar — the desk itself
+        # carries nothing above the workspace.
+        refute html =~ "app-header", "#{path} still has a desk-wide header"
+
+        assert html =~ ~s(data-testid="landing-menu-bar"), "#{path} missing menu bar"
         assert html =~ "About", "#{path} missing footer"
         assert html =~ "Languages", "#{path} missing language links"
         assert html =~ ~s(hreflang="pt-BR"), "#{path} missing localized footer links"

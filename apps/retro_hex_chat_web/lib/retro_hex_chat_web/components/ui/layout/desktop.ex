@@ -29,6 +29,12 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
   Mount point for the `WindowManagerHook`. The `inner_block` slot holds
   `desktop_window/1` children (absolutely positioned within the workspace); the
   `taskbar` slot holds a `taskbar/1`.
+
+  The desk carries no chrome of its own: a workspace and a taskbar, nothing
+  above them. An application's menus hang under its own title bar
+  (`desktop_window/1`'s `:menu` slot) and what it has to say about itself runs
+  along its own bottom edge (`:status`), the way Windows 98 had it. The tray
+  speaks for the machine; a window speaks for itself.
   """
   attr :id, :string, required: true
   attr :persist_key, :string, default: nil, doc: "browser-memory key for layout persistence"
@@ -62,11 +68,6 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
   attr :class, :any, default: nil
   attr :rest, :global
 
-  slot :header,
-    doc:
-      "optional top bar (e.g. a menu/status bar) rendered above the workspace; lives inside " <>
-        "the hook element so its data-window-* controls are wired like the taskbar's"
-
   slot :shortcuts, doc: "desktop_shortcut/1 icons pinned to the workspace (behind windows)"
   slot :inner_block, required: true, doc: "desktop_window/1 children"
   slot :taskbar, doc: "a taskbar/1"
@@ -86,7 +87,6 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
       class={classes(["flex flex-1 flex-col overflow-hidden", @class])}
       {@rest}
     >
-      {render_slot(@header)}
       <%!-- The wallpaper arrives as custom properties rather than from the
             stylesheet: its URL carries a content hash, which a cached CSS file
             cannot know. window-manager.css picks which of the two to paint. --%>
