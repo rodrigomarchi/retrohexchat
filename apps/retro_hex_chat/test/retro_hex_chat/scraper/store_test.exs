@@ -67,6 +67,28 @@ defmodule RetroHexChat.Scraper.StoreTest do
       assert page.title == "second"
       assert page.description == nil
     end
+
+    test "persists the richer fields a scrape extracted" do
+      modified_at = ~U[2026-08-20 12:30:00Z]
+
+      {:ok, page} =
+        Store.record_success(@url, %{
+          title: "rich",
+          excerpt: "Lead paragraph from the article.",
+          image_alt: "A useful image description",
+          modified_at: modified_at,
+          section: "Science",
+          tags: ["space", "research"],
+          content_word_count: 742
+        })
+
+      assert page.excerpt == "Lead paragraph from the article."
+      assert page.image_alt == "A useful image description"
+      assert DateTime.compare(page.modified_at, modified_at) == :eq
+      assert page.section == "Science"
+      assert page.tags == ["space", "research"]
+      assert page.content_word_count == 742
+    end
   end
 
   describe "freshness" do

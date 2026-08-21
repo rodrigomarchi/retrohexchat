@@ -33,7 +33,7 @@ defmodule RetroHexChat.Jobs.RetryTest do
     {RetroHexChat.Jobs.ChatDeviceSessionCleanupWorker, 60_000, 15 * 60, 60},
     {RetroHexChat.Jobs.GlobalMuteExpiryWorker, 30_000, 15 * 60, 30},
     {RetroHexChat.Jobs.IgnoreExpiredCleanupWorker, 60_000, 15 * 60, 60},
-    {RetroHexChat.Jobs.PageScrapeWorker, 20_000, 5 * 60, 15},
+    {RetroHexChat.Jobs.PageScrapeWorker, 30_000, 5 * 60, 15},
     {RetroHexChat.Jobs.PreferenceSaveWorker, 30_000, 10 * 60, 15},
     {RetroHexChat.Jobs.RegisteredChannelExpiryWorker, 120_000, 900, 30},
     {RetroHexChat.Jobs.RegisteredNickExpiryWorker, 120_000, 900, 30},

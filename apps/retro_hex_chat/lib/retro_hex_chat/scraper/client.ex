@@ -29,11 +29,17 @@ defmodule RetroHexChat.Scraper.Client do
           optional(:content_type) => String.t() | nil,
           optional(:etag) => String.t() | nil,
           optional(:last_modified) => String.t() | nil,
+          optional(:excerpt) => String.t() | nil,
+          optional(:image_alt) => String.t() | nil,
           optional(:author) => String.t() | nil,
           optional(:published_at) => DateTime.t() | nil,
+          optional(:modified_at) => DateTime.t() | nil,
           optional(:lang) => String.t() | nil,
+          optional(:section) => String.t() | nil,
+          optional(:tags) => [String.t()],
           optional(:content_text) => String.t() | nil,
           optional(:content_text_truncated) => boolean(),
+          optional(:content_word_count) => non_neg_integer() | nil,
           optional(:raw_metadata) => map()
         }
 
@@ -41,10 +47,14 @@ defmodule RetroHexChat.Scraper.Client do
           optional(:title) => String.t() | nil,
           optional(:description) => String.t() | nil,
           optional(:image) => String.t() | nil,
+          optional(:image_alt) => String.t() | nil,
           optional(:url) => String.t() | nil,
           optional(:site_name) => String.t() | nil,
           optional(:author) => String.t() | nil,
           optional(:published_at) => DateTime.t() | nil,
+          optional(:modified_at) => DateTime.t() | nil,
+          optional(:section) => String.t() | nil,
+          optional(:tags) => [String.t()],
           optional(:word_count) => non_neg_integer() | nil
         }
 
@@ -83,7 +93,9 @@ defmodule RetroHexChat.Scraper.Client do
     %{
       title: metadata[:title],
       description: metadata[:description],
+      excerpt: Map.get(scrape, :excerpt),
       image_url: metadata[:image],
+      image_alt: metadata[:image_alt] || Map.get(scrape, :image_alt),
       canonical_url: metadata[:url],
       site_name: metadata[:site_name],
       final_url: Map.get(scrape, :final_url),
@@ -93,9 +105,13 @@ defmodule RetroHexChat.Scraper.Client do
       last_modified: Map.get(scrape, :last_modified),
       author: Map.get(scrape, :author),
       published_at: Map.get(scrape, :published_at),
+      modified_at: Map.get(scrape, :modified_at),
       lang: Map.get(scrape, :lang),
+      section: Map.get(scrape, :section),
+      tags: Map.get(scrape, :tags) || [],
       content_text: Map.get(scrape, :content_text),
       content_text_truncated: Map.get(scrape, :content_text_truncated, false),
+      content_word_count: Map.get(scrape, :content_word_count),
       raw_metadata: Map.get(scrape, :raw_metadata) || %{}
     }
   end
@@ -110,13 +126,17 @@ defmodule RetroHexChat.Scraper.Client do
   def to_metadata(%ScrapedPage{} = page) do
     %{
       title: page.title,
-      description: page.description,
+      description: page.description || page.excerpt,
       image: page.image_url,
+      image_alt: page.image_alt,
       url: page.canonical_url,
       site_name: page.site_name,
       author: byline(page.author),
       published_at: page.published_at,
-      word_count: word_count(page.content_text)
+      modified_at: page.modified_at,
+      section: page.section,
+      tags: tags(page.tags),
+      word_count: page.content_word_count || word_count(page.content_text)
     }
     |> Enum.reject(fn {_key, value} -> is_nil(value) end)
     |> Map.new()
@@ -150,6 +170,16 @@ defmodule RetroHexChat.Scraper.Client do
   end
 
   def byline(_author), do: nil
+
+  @spec tags([String.t()] | nil) :: [String.t()] | nil
+  defp tags(tags) when is_list(tags) do
+    case Enum.reject(tags, &(not is_binary(&1) or String.trim(&1) == "")) do
+      [] -> nil
+      present -> present
+    end
+  end
+
+  defp tags(_tags), do: nil
 
   # Derived on read rather than stored. Counting words costs a `String.split/1`
   # over a few kilobytes for the one to five items a poll actually renders, while

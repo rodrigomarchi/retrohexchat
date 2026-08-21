@@ -27,7 +27,7 @@ defmodule RetroHexChat.Jobs.PageScrapeWorker do
     ]
 
   use RetroHexChat.Jobs.Retry,
-    timeout: :timer.seconds(20),
+    timeout: :timer.seconds(30),
     cap_seconds: 5 * 60,
     step_seconds: 15
 

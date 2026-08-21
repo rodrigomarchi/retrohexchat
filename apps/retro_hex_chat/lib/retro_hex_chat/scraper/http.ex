@@ -36,7 +36,11 @@ defmodule RetroHexChat.Scraper.HTTP do
   @max_oembed_size 64_000
   @max_title_length 200
   @max_description_length 500
+  @max_excerpt_length 360
   @max_site_name_length 120
+  @max_section_length 120
+  @max_tag_length 48
+  @max_tags 12
   @max_url_length 2_000
   @max_redirects 3
 
@@ -60,19 +64,14 @@ defmodule RetroHexChat.Scraper.HTTP do
          {:ok, document} <- parse_document(html),
          {:ok, metadata, sources, oembed_url} <- metadata_from_document(document, final_url) do
       oembed_url = oembed_url || oembed_header_url(headers, final_url)
+      content = extract_content_info(document)
 
-      metadata
-      |> maybe_merge_oembed(oembed_url, final_url)
-      |> ensure_useful_metadata()
-      |> case do
-        {:ok, metadata} ->
-          {:ok, build_scrape(metadata, sources, document, final_url, headers, status)}
+      metadata = maybe_merge_oembed(metadata, oembed_url, final_url)
 
-        # `ensure_useful_metadata/1` has exactly one failure: the page said
-        # nothing about itself. Whether that is a page with nothing on it or a
-        # wall standing in front of one is decided here.
-        {:error, :no_metadata} ->
-          {:error, empty_page_reason(html, headers)}
+      if useful_scrape?(metadata, content.excerpt) do
+        {:ok, build_scrape(metadata, sources, content, document, final_url, headers, status)}
+      else
+        {:error, empty_page_reason(html, headers)}
       end
     else
       false -> {:error, :not_html}
@@ -124,17 +123,19 @@ defmodule RetroHexChat.Scraper.HTTP do
   @spec build_scrape(
           metadata(),
           map(),
+          map(),
           Floki.html_tree(),
           String.t(),
           map(),
           pos_integer()
         ) :: Client.scrape()
-  defp build_scrape(metadata, sources, document, final_url, headers, status) do
+  defp build_scrape(metadata, sources, content, document, final_url, headers, status) do
     scope = head_scope(document)
     metas = meta_tags(scope)
     json_ld = json_ld_candidates(scope)
-    {content_text, truncated?, strategy} = extract_content(document)
-    sources = if content_text, do: Map.put(sources, "content_text", strategy), else: sources
+
+    sources =
+      if content.text, do: Map.put(sources, "content_text", content.strategy), else: sources
 
     %{
       metadata: metadata,
@@ -143,11 +144,16 @@ defmodule RetroHexChat.Scraper.HTTP do
       content_type: first_header(headers, "content-type"),
       etag: first_header(headers, "etag"),
       last_modified: first_header(headers, "last-modified"),
+      excerpt: content.excerpt,
       author: author(metas, json_ld),
       published_at: published_at(metas, json_ld, document),
+      modified_at: modified_at(metas, json_ld, document),
       lang: lang(document, metas, json_ld),
-      content_text: content_text,
-      content_text_truncated: truncated?,
+      section: section(metas, json_ld),
+      tags: tags(metas, json_ld),
+      content_text: content.text,
+      content_text_truncated: content.truncated?,
+      content_word_count: content.word_count,
       raw_metadata: raw_metadata(metas, json_ld, sources)
     }
   end
@@ -170,25 +176,38 @@ defmodule RetroHexChat.Scraper.HTTP do
   """
   @spec extract_content(Floki.html_tree()) :: {String.t() | nil, boolean(), String.t()}
   def extract_content(document) do
+    content = extract_content_info(document)
+    {content.text, content.truncated?, content.strategy}
+  end
+
+  @spec extract_content_info(Floki.html_tree()) :: %{
+          text: String.t() | nil,
+          truncated?: boolean(),
+          strategy: String.t(),
+          word_count: non_neg_integer() | nil,
+          excerpt: String.t() | nil
+        }
+  defp extract_content_info(document) do
     {scope, strategy} = content_scope(document)
+    full_text = scope |> readable_text() |> collapse_whitespace()
+    {text, truncated?} = cap_content(full_text)
 
-    {text, truncated?} =
-      @boilerplate
-      |> Enum.reduce(scope, &Floki.filter_out(&2, &1))
-      |> Floki.text(sep: " ")
-      |> collapse_whitespace()
-      |> cap_content()
-
-    {text, truncated?, strategy}
+    %{
+      text: text,
+      truncated?: truncated?,
+      strategy: strategy,
+      word_count: word_count(full_text),
+      excerpt: excerpt(text)
+    }
   rescue
-    _ -> {nil, false, "none"}
+    _ -> %{text: nil, truncated?: false, strategy: "none", word_count: nil, excerpt: nil}
   end
 
   @spec content_scope(Floki.html_tree()) :: {Floki.html_tree(), String.t()}
   defp content_scope(document) do
     Enum.find_value(
-      [{"article", "article"}, {"main", "main"}, {"body", "body"}],
-      {document, "document"},
+      [{"article", "article"}, {"main", "main"}, {"[role=main]", "main"}],
+      readability_scope(document) || body_scope(document) || {document, "document"},
       fn {selector, strategy} ->
         case Floki.find(document, selector) do
           [] -> nil
@@ -198,8 +217,66 @@ defmodule RetroHexChat.Scraper.HTTP do
     )
   end
 
+  @content_candidate_selectors ~w(
+    .entry-content .post-content .article-content .article-body .story-body
+    .article .post #content #main section div
+  )
+
+  @min_candidate_text_length 180
+
+  @spec readability_scope(Floki.html_tree()) :: {Floki.html_tree(), String.t()} | nil
+  defp readability_scope(document) do
+    @content_candidate_selectors
+    |> Enum.flat_map(&Floki.find(document, &1))
+    |> Enum.map(&{[&1], readability_score([&1])})
+    |> Enum.reject(fn {_scope, score} -> score <= 0 end)
+    |> Enum.max_by(&elem(&1, 1), fn -> nil end)
+    |> case do
+      nil -> nil
+      {scope, _score} -> {scope, "readability"}
+    end
+  end
+
+  @spec body_scope(Floki.html_tree()) :: {Floki.html_tree(), String.t()} | nil
+  defp body_scope(document) do
+    case Floki.find(document, "body") do
+      [] -> nil
+      found -> {found, "body"}
+    end
+  end
+
+  @spec readability_score(Floki.html_tree()) :: integer()
+  defp readability_score(scope) do
+    text = readable_text(scope)
+    length = String.length(text)
+
+    if length < @min_candidate_text_length do
+      0
+    else
+      paragraph_count = scope |> Floki.find("p") |> length()
+      heading_count = ~w(h1 h2 h3) |> Enum.flat_map(&Floki.find(scope, &1)) |> length()
+      link_length = scope |> Floki.find("a") |> Floki.text(sep: " ") |> String.length()
+
+      length + paragraph_count * 80 + heading_count * 30 - link_length * 2
+    end
+  end
+
+  @spec readable_text(Floki.html_tree()) :: String.t()
+  defp readable_text(scope) do
+    @boilerplate
+    |> Enum.reduce(scope, &Floki.filter_out(&2, &1))
+    |> Floki.text(sep: " ")
+  end
+
   @spec collapse_whitespace(String.t()) :: String.t()
   defp collapse_whitespace(text), do: text |> String.split() |> Enum.join(" ")
+
+  @spec word_count(String.t() | nil) :: non_neg_integer() | nil
+  defp word_count(text) when is_binary(text) and text != "" do
+    text |> String.split() |> length()
+  end
+
+  defp word_count(_text), do: nil
 
   @spec cap_content(String.t()) :: {String.t() | nil, boolean()}
   defp cap_content(""), do: {nil, false}
@@ -210,6 +287,15 @@ defmodule RetroHexChat.Scraper.HTTP do
     else
       {text, false}
     end
+  end
+
+  @spec excerpt(String.t() | nil) :: String.t() | nil
+  defp excerpt(nil), do: nil
+
+  defp excerpt(text) do
+    text
+    |> truncate_text(@max_excerpt_length)
+    |> blank_to_nil()
   end
 
   # `twitter:creator` is deliberately absent. It is as often the publication's own
@@ -267,6 +353,23 @@ defmodule RetroHexChat.Scraper.HTTP do
     _ -> nil
   end
 
+  @spec modified_at([map()], [map()], Floki.html_tree()) :: DateTime.t() | nil
+  defp modified_at(metas, json_ld, document) do
+    [
+      meta_content(metas, "property", "article:modified_time"),
+      meta_content(metas, "property", "og:updated_time"),
+      meta_content(metas, "name", "lastmod"),
+      meta_content(metas, "name", "datemodified"),
+      json_ld_value(json_ld, ["dateModified", "dateUpdated"]),
+      document
+      |> Floki.find(~s(time[itemprop="dateModified"][datetime]))
+      |> Floki.attribute("datetime")
+      |> List.first()
+    ]
+    |> first_present()
+    |> parse_datetime()
+  end
+
   @spec lang(Floki.html_tree(), [map()], [map()]) :: String.t() | nil
   defp lang(document, metas, json_ld) do
     [
@@ -277,6 +380,34 @@ defmodule RetroHexChat.Scraper.HTTP do
     ]
     |> first_present()
     |> then(&clean_text(&1, max: 32))
+  end
+
+  @spec section([map()], [map()]) :: String.t() | nil
+  defp section(metas, json_ld) do
+    [
+      meta_content(metas, "property", "article:section"),
+      meta_content(metas, "name", "section"),
+      meta_content(metas, "name", "parsely-section"),
+      json_ld_value(json_ld, ["articleSection", "section.name", "about.name"])
+    ]
+    |> first_present()
+    |> then(&clean_text(&1, max: @max_section_length))
+  end
+
+  @spec tags([map()], [map()]) :: [String.t()]
+  defp tags(metas, json_ld) do
+    [
+      meta_values(metas, "property", "article:tag"),
+      meta_values(metas, "name", "keywords"),
+      meta_values(metas, "name", "news_keywords"),
+      json_ld_values(json_ld, ["keywords", "about.name"])
+    ]
+    |> List.flatten()
+    |> Enum.flat_map(&split_tag_value/1)
+    |> Enum.map(&clean_text(&1, max: @max_tag_length))
+    |> Enum.reject(&is_nil/1)
+    |> Enum.uniq_by(&String.downcase/1)
+    |> Enum.take(@max_tags)
   end
 
   # Everything the page said that did not earn a column of its own, plus which
@@ -325,7 +456,7 @@ defmodule RetroHexChat.Scraper.HTTP do
   @spec fetch_metadata_result(String.t()) :: {:ok, metadata()} | {:error, fetch_error()}
   def fetch_metadata_result(url) do
     case scrape(url, []) do
-      {:ok, %{metadata: metadata}} -> {:ok, metadata}
+      {:ok, %{metadata: metadata}} -> ensure_useful_metadata(metadata)
       {:not_modified} -> {:error, :not_modified}
       {:error, reason} -> {:error, reason}
     end
@@ -541,17 +672,24 @@ defmodule RetroHexChat.Scraper.HTTP do
     links = link_tags(scope)
     json_ld = json_ld_candidates(scope)
 
-    {title, title_source} = title(metas, json_ld, scope)
+    {title, title_source} = title(metas, json_ld, scope, document)
     {description, description_source} = description(metas, json_ld)
     {site_name, site_name_source} = site_name(metas, json_ld)
     {url_value, url_source} = page_url(metas, links, page_url)
     {image, image_source} = image_url(metas, json_ld)
+    {image_alt, image_alt_source} = image_alt(metas, json_ld)
+    {article_image, article_image_alt, article_image_source} = article_image(document, page_url)
+    image = image || article_image
+    image_source = image_source || article_image_source
+    image_alt = image_alt || article_image_alt
+    image_alt_source = image_alt_source || article_image_source
 
     metadata =
       %{}
       |> put_clean(:title, title)
       |> put_clean(:description, description)
       |> put_clean(:site_name, site_name)
+      |> put_clean(:image_alt, image_alt)
       |> put_url(:url, url_value, page_url, :page)
       |> put_url(:image, image, page_url, :image)
 
@@ -561,7 +699,8 @@ defmodule RetroHexChat.Scraper.HTTP do
         "description" => description_source,
         "site_name" => site_name_source,
         "url" => url_source,
-        "image" => image_source
+        "image" => image_source,
+        "image_alt" => image_alt_source
       }
       |> Map.take(metadata |> Map.keys() |> Enum.map(&Atom.to_string/1))
       |> Map.reject(fn {_key, source} -> is_nil(source) end)
@@ -577,13 +716,15 @@ defmodule RetroHexChat.Scraper.HTTP do
     end
   end
 
-  @spec title([map()], [map()], Floki.html_tree()) :: {String.t() | nil, String.t() | nil}
-  defp title(metas, json_ld, scope) do
+  @spec title([map()], [map()], Floki.html_tree(), Floki.html_tree()) ::
+          {String.t() | nil, String.t() | nil}
+  defp title(metas, json_ld, scope, document) do
     first_labelled([
       {"og", meta_content(metas, "property", "og:title")},
       {"twitter", meta_content(metas, "name", "twitter:title")},
       {"json_ld", json_ld_value(json_ld, ["headline", "name"])},
-      {"html", scope |> Floki.find("title") |> Floki.text()}
+      {"html", scope |> Floki.find("title") |> Floki.text()},
+      {"heading", heading_title(document)}
     ])
   end
 
@@ -628,6 +769,140 @@ defmodule RetroHexChat.Scraper.HTTP do
     ])
   end
 
+  @spec image_alt([map()], [map()]) :: {String.t() | nil, String.t() | nil}
+  defp image_alt(metas, json_ld) do
+    first_labelled([
+      {"og", meta_content(metas, "property", "og:image:alt")},
+      {"twitter", meta_content(metas, "name", "twitter:image:alt")},
+      {"json_ld", json_ld_image_alt(json_ld)}
+    ])
+  end
+
+  @spec heading_title(Floki.html_tree()) :: String.t() | nil
+  defp heading_title(document) do
+    document
+    |> content_scope()
+    |> elem(0)
+    |> Floki.find("h1")
+    |> Floki.text(sep: " ")
+    |> clean_text(max: @max_title_length)
+  rescue
+    _ -> nil
+  end
+
+  @image_candidate_selectors [
+    "article img",
+    "main img",
+    "[role=main] img",
+    ".entry-content img",
+    ".post-content img",
+    ".article-content img",
+    ".story-body img",
+    "body img"
+  ]
+
+  @spec article_image(Floki.html_tree(), String.t() | nil) ::
+          {String.t() | nil, String.t() | nil, String.t() | nil}
+  defp article_image(document, page_url) do
+    Enum.find_value(@image_candidate_selectors, {nil, nil, nil}, fn selector ->
+      document
+      |> Floki.find(selector)
+      |> Enum.find_value(&image_candidate(&1, page_url))
+    end)
+  end
+
+  @spec image_candidate(Floki.html_node(), String.t() | nil) ::
+          {String.t(), String.t() | nil, String.t()} | nil
+  defp image_candidate(node, page_url) do
+    attrs = attrs_map(node)
+
+    with false <- decorative_image?(attrs),
+         src when is_binary(src) <- image_src(attrs),
+         url when is_binary(url) <- normalize_url(src, page_url, :image) do
+      {url, clean_text(Map.get(attrs, "alt"), max: @max_title_length), "article_image"}
+    else
+      _ -> nil
+    end
+  end
+
+  @spec image_src(map()) :: String.t() | nil
+  defp image_src(attrs) do
+    first_present([
+      Map.get(attrs, "src"),
+      Map.get(attrs, "data-src"),
+      Map.get(attrs, "data-original"),
+      Map.get(attrs, "data-lazy-src"),
+      attrs |> Map.get("srcset") |> srcset_url()
+    ])
+  end
+
+  @spec srcset_url(String.t() | nil) :: String.t() | nil
+  defp srcset_url(nil), do: nil
+
+  defp srcset_url(srcset) do
+    srcset
+    |> String.split(",")
+    |> Enum.map(&String.trim/1)
+    |> Enum.reject(&(&1 == ""))
+    |> Enum.map(fn entry ->
+      case String.split(entry) do
+        [url, width | _] -> {url, srcset_width(width)}
+        [url] -> {url, 0}
+        _ -> nil
+      end
+    end)
+    |> Enum.reject(&is_nil/1)
+    |> Enum.max_by(&elem(&1, 1), fn -> nil end)
+    |> case do
+      {url, _width} -> url
+      nil -> nil
+    end
+  end
+
+  @spec srcset_width(String.t()) :: non_neg_integer()
+  defp srcset_width(width) do
+    width
+    |> String.trim_trailing("w")
+    |> String.to_integer()
+  rescue
+    _ -> 0
+  end
+
+  @decorative_image_markers ~w(avatar icon logo pixel placeholder sprite tracking)
+
+  @spec decorative_image?(map()) :: boolean()
+  defp decorative_image?(attrs) do
+    marker_text =
+      [attrs["alt"], attrs["class"], attrs["id"], attrs["role"]]
+      |> Enum.filter(&is_binary/1)
+      |> Enum.join(" ")
+      |> String.downcase()
+
+    small_image?(attrs) or
+      Enum.any?(@decorative_image_markers, &String.contains?(marker_text, &1))
+  end
+
+  @spec small_image?(map()) :: boolean()
+  defp small_image?(attrs) do
+    case {dimension(attrs["width"]), dimension(attrs["height"])} do
+      {width, height} when is_integer(width) and is_integer(height) -> width < 160 or height < 90
+      _other -> false
+    end
+  end
+
+  @spec dimension(String.t() | nil) :: pos_integer() | nil
+  defp dimension(nil), do: nil
+
+  defp dimension(value) do
+    value
+    |> to_string()
+    |> String.trim()
+    |> String.trim_trailing("px")
+    |> String.to_integer()
+  rescue
+    _ -> nil
+  end
+
   @spec first_labelled([{String.t(), String.t() | nil}]) :: {String.t() | nil, String.t() | nil}
   defp first_labelled(candidates) do
     Enum.find_value(candidates, {nil, nil}, fn {source, value} ->
@@ -663,6 +938,19 @@ defmodule RetroHexChat.Scraper.HTTP do
         clean_text(Map.get(attrs, "content"), max: max_length_for(wanted))
       end
     end)
+  end
+
+  @spec meta_values([map()], String.t(), String.t()) :: [String.t()]
+  defp meta_values(metas, key, wanted) do
+    metas
+    |> Enum.flat_map(fn attrs ->
+      if attrs |> Map.get(key) |> normalize_key() == wanted do
+        [Map.get(attrs, "content")]
+      else
+        []
+      end
+    end)
+    |> Enum.filter(&is_binary/1)
   end
 
   @spec canonical_url([map()]) :: String.t() | nil
@@ -853,6 +1141,17 @@ defmodule RetroHexChat.Scraper.HTTP do
     end)
   end
 
+  @spec json_ld_values([map()], [String.t()]) :: [String.t()]
+  defp json_ld_values(candidates, paths) do
+    Enum.flat_map(candidates, fn candidate ->
+      Enum.flat_map(paths, fn path ->
+        candidate
+        |> get_raw_path(path)
+        |> json_ld_scalars()
+      end)
+    end)
+  end
+
   @spec json_ld_image([map()]) :: String.t() | nil
   defp json_ld_image(candidates) do
     Enum.find_value(candidates, fn candidate ->
@@ -860,6 +1159,15 @@ defmodule RetroHexChat.Scraper.HTTP do
       |> Map.get("image")
       |> image_value()
     end) || json_ld_value(candidates, ["thumbnailUrl"])
+  end
+
+  @spec json_ld_image_alt([map()]) :: String.t() | nil
+  defp json_ld_image_alt(candidates) do
+    Enum.find_value(candidates, fn candidate ->
+      candidate
+      |> Map.get("image")
+      |> image_alt_value()
+    end)
   end
 
   @spec image_value(term()) :: String.t() | nil
@@ -872,19 +1180,47 @@ defmodule RetroHexChat.Scraper.HTTP do
 
   defp image_value(_value), do: nil
 
+  @spec image_alt_value(term()) :: String.t() | nil
+  defp image_alt_value(values) when is_list(values),
+    do: Enum.find_value(values, &image_alt_value/1)
+
+  defp image_alt_value(%{} = value) do
+    ["caption", "name", "description", "alternateName"]
+    |> Enum.find_value(fn key -> value |> Map.get(key) |> json_ld_scalar() end)
+    |> clean_text(max: @max_title_length)
+  end
+
+  defp image_alt_value(_value), do: nil
+
   @spec get_path(map(), String.t()) :: String.t() | nil
   defp get_path(map, path) do
-    path
-    |> String.split(".")
-    |> Enum.reduce_while(map, fn key, current ->
-      case current do
-        %{} -> {:cont, Map.get(current, key)}
-        _ -> {:halt, nil}
-      end
-    end)
+    map
+    |> get_raw_path(path)
     |> json_ld_scalar()
     |> clean_text(max: @max_description_length)
   end
+
+  @spec get_raw_path(map(), String.t()) :: term()
+  defp get_raw_path(map, path) do
+    path
+    |> String.split(".")
+    |> Enum.reduce(map, &json_ld_step/2)
+  end
+
+  @spec json_ld_step(String.t(), term()) :: term()
+  defp json_ld_step(key, values) when is_list(values) do
+    values
+    |> Enum.flat_map(fn value ->
+      case json_ld_step(key, value) do
+        nested when is_list(nested) -> nested
+        nil -> []
+        nested -> [nested]
+      end
+    end)
+  end
+
+  defp json_ld_step(key, %{} = map), do: Map.get(map, key)
+  defp json_ld_step(_key, _value), do: nil
 
   # JSON-LD lets any value be a bare string, an object that names itself, or a
   # list of either — `"author": "Ada"`, `"author": {"@type": "Person", "name":
@@ -907,6 +1243,28 @@ defmodule RetroHexChat.Scraper.HTTP do
     do: Enum.find_value(value, &json_ld_scalar/1)
 
   defp json_ld_scalar(_value), do: nil
+
+  @spec json_ld_scalars(term()) :: [String.t()]
+  defp json_ld_scalars(values) when is_list(values) do
+    Enum.flat_map(values, &json_ld_scalars/1)
+  end
+
+  defp json_ld_scalars(value) do
+    case json_ld_scalar(value) do
+      nil -> []
+      scalar -> [scalar]
+    end
+  end
+
+  @spec split_tag_value(term()) :: [String.t()]
+  defp split_tag_value(value) when is_binary(value) do
+    value
+    |> String.split([",", ";", "|"])
+    |> Enum.map(&String.trim/1)
+    |> Enum.reject(&(&1 == ""))
+  end
+
+  defp split_tag_value(_value), do: []
 
   @spec maybe_merge_oembed(metadata(), String.t() | nil, String.t()) :: metadata()
   defp maybe_merge_oembed(metadata, nil, _page_url), do: metadata
@@ -959,6 +1317,11 @@ defmodule RetroHexChat.Scraper.HTTP do
     end
   end
 
+  @spec useful_scrape?(metadata(), String.t() | nil) :: boolean()
+  defp useful_scrape?(metadata, excerpt) do
+    match?({:ok, _metadata}, ensure_useful_metadata(metadata)) or present?(excerpt)
+  end
+
   @spec complete_enough?(metadata()) :: boolean()
   defp complete_enough?(metadata) do
     present?(metadata[:title]) and present?(metadata[:description]) and present?(metadata[:image])
@@ -970,6 +1333,7 @@ defmodule RetroHexChat.Scraper.HTTP do
       case key do
         :title -> @max_title_length
         :description -> @max_description_length
+        :image_alt -> @max_title_length
         :site_name -> @max_site_name_length
       end
 
@@ -1107,8 +1471,16 @@ defmodule RetroHexChat.Scraper.HTTP do
 
   @spec max_length_for(String.t()) :: pos_integer()
   defp max_length_for(key) when key in ["og:title", "twitter:title"], do: @max_title_length
+
+  defp max_length_for(key) when key in ["og:image:alt", "twitter:image:alt"],
+    do: @max_title_length
+
   defp max_length_for("og:site_name"), do: @max_site_name_length
   defp max_length_for("application-name"), do: @max_site_name_length
+
+  defp max_length_for(key) when key in ["article:section", "section", "parsely-section"],
+    do: @max_section_length
+
   defp max_length_for(_key), do: @max_description_length
 
   @spec html_content?(String.t() | nil) :: boolean()

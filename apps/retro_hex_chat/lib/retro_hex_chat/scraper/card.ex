@@ -61,7 +61,7 @@ defmodule RetroHexChat.Scraper.Card do
         [
           card_header(source, title),
           card_byline(metadata),
-          card_image_markdown(card_image(metadata), source),
+          card_image_markdown(card_image(metadata), metadata, source),
           card_quote(card_description(metadata)),
           card_story_link(url)
         ]
@@ -264,11 +264,12 @@ defmodule RetroHexChat.Scraper.Card do
     "**#{source}** | #{title}"
   end
 
-  @spec card_image_markdown(String.t() | nil, String.t() | nil) :: String.t() | nil
-  defp card_image_markdown(nil, _source), do: nil
+  @spec card_image_markdown(String.t() | nil, Client.metadata(), String.t() | nil) ::
+          String.t() | nil
+  defp card_image_markdown(nil, _metadata, _source), do: nil
 
-  defp card_image_markdown(image, source) do
-    "![#{image_alt(source)}](<#{markdown_url(image)}>)"
+  defp card_image_markdown(image, metadata, source) do
+    "![#{card_image_alt(metadata, source)}](<#{markdown_url(image)}>)"
   end
 
   @spec card_quote(String.t() | nil) :: String.t() | nil
@@ -310,6 +311,13 @@ defmodule RetroHexChat.Scraper.Card do
   @spec image_alt(String.t() | nil) :: String.t()
   defp image_alt(nil), do: markdown_alt("preview image")
   defp image_alt(source), do: markdown_alt("#{source} preview image")
+
+  @spec card_image_alt(Client.metadata(), String.t() | nil) :: String.t()
+  defp card_image_alt(%{image_alt: alt}, _source) when is_binary(alt) and byte_size(alt) > 0 do
+    markdown_alt(alt)
+  end
+
+  defp card_image_alt(_metadata, source), do: image_alt(source)
 
   @spec markdown_url(String.t()) :: String.t()
   defp markdown_url(url), do: String.replace(url, ">", "%3E")

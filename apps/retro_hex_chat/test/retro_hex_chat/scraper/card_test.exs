@@ -111,6 +111,24 @@ defmodule RetroHexChat.Scraper.CardTest do
       refute Card.markdown(page(%{content_text: "Three short words"})) =~ "min read"
     end
 
+    test "uses a stored excerpt when the publisher had no description" do
+      card = Card.markdown(page(%{description: nil, excerpt: "Extracted from the article body."}))
+
+      assert card =~ "> Extracted from the article body\\."
+    end
+
+    test "uses stored image alt text when present" do
+      card =
+        Card.markdown(
+          page(%{
+            image_url: "https://example.com/card.png",
+            image_alt: "Reporter speaking with residents"
+          })
+        )
+
+      assert card =~ "![Reporter speaking with residents](<https://example.com/card.png>)"
+    end
+
     test "the story links to the page's own address when it names no canonical one" do
       assert Card.markdown(page()) =~ "[Read full story](<#{@url}>)"
 

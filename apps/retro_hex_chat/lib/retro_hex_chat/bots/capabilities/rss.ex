@@ -557,7 +557,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
   end
 
   @preview_max_concurrency 8
-  @preview_fetch_timeout_ms 2_000
+  @preview_fetch_timeout_ms 6_000
 
   @spec format_items([FeedParser.feed_item()], String.t() | nil) :: [map()]
   defp format_items(items, feed_title) do

@@ -38,14 +38,20 @@ defmodule RetroHexChat.Scraper.ScrapedPage do
 
     field :title, :string
     field :description, :string
+    field :excerpt, :string
     field :image_url, :string
+    field :image_alt, :string
     field :site_name, :string
     field :canonical_url, :string
     field :author, :string
     field :published_at, :utc_datetime_usec
+    field :modified_at, :utc_datetime_usec
     field :lang, :string
+    field :section, :string
+    field :tags, {:array, :string}, default: []
     field :content_text, :string
     field :content_text_truncated, :boolean, default: false
+    field :content_word_count, :integer
 
     field :final_url, :string
     field :http_status, :integer
@@ -70,8 +76,9 @@ defmodule RetroHexChat.Scraper.ScrapedPage do
 
   @castable ~w(
     url url_hash status
-    title description image_url site_name canonical_url author published_at lang
-    content_text content_text_truncated
+    title description excerpt image_url image_alt site_name canonical_url author
+    published_at modified_at lang section tags
+    content_text content_text_truncated content_word_count
     final_url http_status content_type etag last_modified scraper_version raw_metadata
     error_reason error_detail attempts last_attempted_at
     fetched_at expires_at last_accessed_at revalidating_since
@@ -94,6 +101,7 @@ defmodule RetroHexChat.Scraper.ScrapedPage do
     |> validate_length(:url_hash, is: 64)
     |> validate_number(:attempts, greater_than_or_equal_to: 0)
     |> validate_number(:scraper_version, greater_than: 0)
+    |> validate_number(:content_word_count, greater_than_or_equal_to: 0)
     |> validate_inclusion(:status, @statuses)
     |> validate_required_for_status()
     |> unique_constraint(:url_hash)

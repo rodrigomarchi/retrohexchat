@@ -236,6 +236,54 @@ defmodule RetroHexChat.Scraper.HTTPTest do
       assert scrape.raw_metadata["sources"]["content_text"] == "body"
     end
 
+    test "stores an excerpt and word count from the article body" do
+      Req.Test.expect(__MODULE__, fn conn ->
+        Req.Test.html(conn, """
+        <head><title>Article title</title></head>
+        <body>
+          <article>
+            <p>The newsroom did not ship a meta description, but the article has a
+            useful opening paragraph for the chat card.</p>
+            <p>More reporting follows after the lead.</p>
+          </article>
+        </body>
+        """)
+      end)
+
+      assert {:ok, scrape} = HTTP.scrape("https://example.com/body-summary")
+
+      assert scrape.metadata.title == "Article title"
+      assert scrape.excerpt =~ "The newsroom did not ship a meta description"
+      assert scrape.content_word_count >= 20
+      assert scrape.raw_metadata["sources"]["content_text"] == "article"
+    end
+
+    test "uses article heading and image when preview tags are thin" do
+      Req.Test.expect(__MODULE__, fn conn ->
+        Req.Test.html(conn, """
+        <body>
+          <article>
+            <h1>Headline from the story body</h1>
+            <img
+              srcset="/small.jpg 320w, /images/hero-large.jpg 1200w"
+              alt="Flooded avenue after the storm"
+              width="1200"
+              height="675">
+            <p>The page forgot its social tags, but the article itself is usable.</p>
+          </article>
+        </body>
+        """)
+      end)
+
+      assert {:ok, scrape} = HTTP.scrape("https://example.com/no-head")
+
+      assert scrape.metadata.title == "Headline from the story body"
+      assert scrape.metadata.image == "https://example.com/images/hero-large.jpg"
+      assert scrape.metadata.image_alt == "Flooded avenue after the storm"
+      assert scrape.raw_metadata["sources"]["title"] == "heading"
+      assert scrape.raw_metadata["sources"]["image"] == "article_image"
+    end
+
     test "caps a very long article and says so" do
       Req.Test.expect(__MODULE__, fn conn ->
         Req.Test.html(conn, """
@@ -248,6 +296,41 @@ defmodule RetroHexChat.Scraper.HTTPTest do
 
       assert String.length(scrape.content_text) == 200_000
       assert scrape.content_text_truncated
+      assert scrape.content_word_count == 50_000
+    end
+
+    test "stores news fields from article metadata" do
+      Req.Test.expect(__MODULE__, fn conn ->
+        Req.Test.html(conn, """
+        <head>
+          <meta property="og:title" content="Structured field story">
+          <meta property="article:modified_time" content="2026-08-20T12:30:00Z">
+          <meta property="article:section" content="Climate">
+          <meta property="article:tag" content="storms">
+          <meta property="article:tag" content="infrastructure">
+          <meta name="keywords" content="flooding, city planning">
+          <script type="application/ld+json">
+            {
+              "@type": "NewsArticle",
+              "keywords": ["resilience", "weather"],
+              "image": {
+                "url": "https://example.com/field.jpg",
+                "caption": "Residents clearing a street"
+              }
+            }
+          </script>
+        </head>
+        """)
+      end)
+
+      assert {:ok, scrape} = HTTP.scrape("https://example.com/fields")
+
+      assert scrape.modified_at == ~U[2026-08-20 12:30:00Z]
+      assert scrape.section == "Climate"
+      assert "storms" in scrape.tags
+      assert "city planning" in scrape.tags
+      assert "resilience" in scrape.tags
+      assert scrape.metadata.image_alt == "Residents clearing a street"
     end
 
     test "records who each preview field came from" do
