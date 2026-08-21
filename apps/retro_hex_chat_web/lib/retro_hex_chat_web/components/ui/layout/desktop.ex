@@ -738,6 +738,65 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
     """
   end
 
+  @doc """
+  Renders one widget inside the system tray.
+
+  Win98 kept the volume control and the connection indicators down here beside
+  the clock rather than up in a menu bar, and so does this: the tray is where
+  the machine reports on itself.
+
+  Pass `on_click` for a control (the mute toggle) and the item becomes a button;
+  without it the item is a readout (the lag, the clock) and stays a `<span>` —
+  a status line the reader cannot press should not answer the keyboard as if it
+  could.
+
+  The tray panel already draws the sunken frame, so items inside carry no border
+  of their own; spacing separates them, as in Win98.
+  """
+  attr :label, :string, default: nil, doc: "text beside the icon; omit for an icon-only item"
+  attr :title, :string, default: nil, doc: "tooltip and accessible name"
+  attr :on_click, :any, default: nil, doc: "makes the item a button"
+  attr :class, :any, default: nil
+  attr :rest, :global
+
+  slot :icon, required: true
+  slot :inner_block, doc: "live text (a hook-driven readout) in place of a static label"
+
+  @spec desktop_tray_item(map()) :: Phoenix.LiveView.Rendered.t()
+  def desktop_tray_item(%{on_click: nil} = assigns) do
+    ~H"""
+    <span class={classes([tray_item_class(), @class])} title={@title} {@rest}>
+      <span class="inline-flex h-3 w-3 shrink-0 items-center justify-center">
+        {render_slot(@icon)}
+      </span>
+      <span :if={@label}>{@label}</span>
+      {render_slot(@inner_block)}
+    </span>
+    """
+  end
+
+  def desktop_tray_item(assigns) do
+    ~H"""
+    <button
+      type="button"
+      phx-click={@on_click}
+      title={@title}
+      aria-label={@title}
+      class={classes([tray_item_class(), "hover:bg-accent active:shadow-retro-sunken", @class])}
+      {@rest}
+    >
+      <span class="inline-flex h-3 w-3 shrink-0 items-center justify-center">
+        {render_slot(@icon)}
+      </span>
+      <span :if={@label}>{@label}</span>
+      {render_slot(@inner_block)}
+    </button>
+    """
+  end
+
+  defp tray_item_class,
+    do: "inline-flex shrink-0 items-center gap-1 bg-transparent px-[2px] leading-none"
+
   # Pinned windows expose minimize + maximize/restore but never a close control.
   # Maximize and restore are both rendered; the WindowManagerHook shows exactly
   # one of them depending on the window's maximized state.

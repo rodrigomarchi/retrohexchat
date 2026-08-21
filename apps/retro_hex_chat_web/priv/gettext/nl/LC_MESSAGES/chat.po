@@ -727,7 +727,8 @@ msgstr "Poging %{attempt} van %{max_attempts}"
 
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:498
 #, elixir-autogen, elixir-format
-msgid "Auto-join list is full (20 channels). %{channel} was not added to auto-join."
+msgid ""
+"Auto-join list is full (20 channels). %{channel} was not added to auto-join."
 msgstr ""
 "Auto-join lijst is vol (20 kanalen). %{channel} is niet toegevoegd aan auto-"
 "join."
@@ -754,7 +755,9 @@ msgstr "Auto-responderregels:"
 
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/core.ex:122
 #, elixir-autogen, elixir-format
-msgid "Available commands: %{commands}\nType /help <command> for details, or open Help Topics from the menu for the full help system."
+msgid ""
+"Available commands: %{commands}\n"
+"Type /help <command> for details, or open Help Topics from the menu for the full help system."
 msgstr ""
 "Beschikbare opdrachten: %{commands}\n"
 "Type /help <command> voor details, of open Help Topics uit het menu voor het volledige hulpsysteem."
@@ -1557,7 +1560,8 @@ msgstr "Nick kleurlijst is vol (max 50)"
 
 #: lib/retro_hex_chat_web/live/app/chat_live.ex:1141
 #, elixir-autogen
-msgid "NickServ protects your nickname with a password so nobody else can use it."
+msgid ""
+"NickServ protects your nickname with a password so nobody else can use it."
 msgstr ""
 "NickServ beschermt uw bijnaam met een wachtwoord zodat niemand anders het "
 "kan gebruiken."
@@ -1791,7 +1795,9 @@ msgstr "Antwoord"
 
 #: lib/retro_hex_chat_web/live/chat_live/core_events.ex:312
 #, elixir-autogen, elixir-format
-msgid "Reply parent message is not currently loaded. Scroll up to load older history, then try again."
+msgid ""
+"Reply parent message is not currently loaded. Scroll up to load older "
+"history, then try again."
 msgstr ""
 "Antwoord moederbericht is momenteel niet geladen. Scroll omhoog om oudere "
 "geschiedenis te laden, probeer het dan opnieuw."
@@ -1812,7 +1818,7 @@ msgid "Reset (Ctrl+Shift+X)"
 msgstr "Reset (Ctrl+Shift+X)"
 
 #: lib/retro_hex_chat_web/live/app/chat_live.ex:1081
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1089
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1101
 #, elixir-autogen
 msgid "RetroHexChat"
 msgstr "RetroHexChat"
@@ -1946,7 +1952,7 @@ msgstr "Status"
 msgid "Symbols"
 msgstr "Symbolen"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:107
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:161
 #: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:55
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:104
 #: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:101
@@ -2336,7 +2342,9 @@ msgstr "Bijnaam Services Online"
 
 #: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:566
 #, elixir-autogen, elixir-format
-msgid "[NickServ] This nickname is registered. You have 60 seconds to identify via /ns identify <password> or you will be renamed."
+msgid ""
+"[NickServ] This nickname is registered. You have 60 seconds to identify via "
+"/ns identify <password> or you will be renamed."
 msgstr ""
 "[NickServ] Deze bijnaam is geregistreerd. U heeft 60 seconden om te "
 "identificeren via /ns identificeren <password> of u wordt hernoemd."
@@ -2474,7 +2482,7 @@ msgstr "* Ontbrekend uitnodigingskanaal"
 msgid "* Missing invite target"
 msgstr "* Ontbrekende uitnodiging doel"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:108
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:162
 #: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:279
 #, elixir-autogen, elixir-format
 msgid "Account"
@@ -2520,7 +2528,7 @@ msgstr "Bericht annuleren"
 msgid "Channel Central"
 msgstr "Kanaal centraal"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:698
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:706
 #, elixir-autogen, elixir-format
 msgid "Channel Central: %{channel}"
 msgstr "Kanaalcentrum: %{channel}"
@@ -2764,7 +2772,7 @@ msgstr "Alleen kanaaloperators kunnen dit kanaal registreren."
 msgid "Only the founder can drop a channel."
 msgstr "Alleen de oprichter kan een kanaal laten vallen."
 
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1090
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1102
 #, elixir-autogen, elixir-format
 msgid "Opening chat..."
 msgstr "Gesprek wordt geopend..."
@@ -3007,7 +3015,7 @@ msgstr "Arcade sessie beëindigd."
 msgid "Cancel the P2P invite"
 msgstr "Annuleer de P2P uitnodiging"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:266
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:274
 #, elixir-autogen, elixir-format
 msgid "Channel Space"
 msgstr "Kanaalruimte"
@@ -3065,7 +3073,7 @@ msgstr "P2P-oproepmedia beëindigen"
 msgid "End the P2P session"
 msgstr "De P2P-sessie beëindigen"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:271
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:279
 #, elixir-autogen, elixir-format
 msgid "Entering channel space..."
 msgstr "Kanaalruimte binnengaan..."
@@ -3090,7 +3098,7 @@ msgstr "Dempen, unmuteren of uw P2P microfoon inschakelen"
 msgid "Next P2P Layout"
 msgstr "Volgende P2P-indeling"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:270
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:278
 #, elixir-autogen, elixir-format
 msgid "Opening private room..."
 msgstr "Privékamer openen..."
@@ -3139,7 +3147,7 @@ msgstr "P2P-sessie met %{peer} is beëindigd."
 msgid "P2P session with %{peer} — %{facets}. Click to focus"
 msgstr "P2P-sessie met %{peer} — %{facets}. Klik om te focussen"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:202
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:256
 #: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:167
 #, elixir-autogen, elixir-format
 msgid "P2P: %{peer}"
@@ -3171,7 +3179,7 @@ msgid "Privacy mode enabled — the P2P connection will use the relay."
 msgstr ""
 "Privacy-modus ingeschakeld De P2P-verbinding zal het relais gebruiken."
 
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:265
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:273
 #, elixir-autogen, elixir-format
 msgid "Private Space"
 msgstr "Privéruimte"
@@ -3184,7 +3192,8 @@ msgstr "Ruimte"
 
 #: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:493
 #, elixir-autogen, elixir-format
-msgid "Start a P2P session with /p2p <nick>, or right-click a user in the nicklist."
+msgid ""
+"Start a P2P session with /p2p <nick>, or right-click a user in the nicklist."
 msgstr ""
 "Start een P2P-sessie met /p2p <nick>, of klik met de rechtermuisknop op een "
 "gebruiker in de nicklist."
@@ -3216,7 +3225,8 @@ msgstr "De P2P sessie zal binnenkort verlopen vanwege inactiviteit."
 
 #: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:96
 #, elixir-autogen, elixir-format
-msgid "The game window was blocked. Allow pop-ups for this site and try again."
+msgid ""
+"The game window was blocked. Allow pop-ups for this site and try again."
 msgstr ""
 "Het spelvenster was geblokkeerd. Laat pop-ups voor deze site en probeer het "
 "opnieuw."
@@ -3255,7 +3265,9 @@ msgstr "Wachten op peer..."
 
 #: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:245
 #, elixir-autogen, elixir-format
-msgid "You must be registered and identified to play. Use /ns register and /ns identify first."
+msgid ""
+"You must be registered and identified to play. Use /ns register and /ns "
+"identify first."
 msgstr ""
 "U moet worden geregistreerd en geïdentificeerd om te spelen. Gebruik /ns "
 "register en /ns identificeer eerst."
@@ -3339,9 +3351,9 @@ msgid "Joining..."
 msgstr "Ik doe mee..."
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:142
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:205
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:259
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:143
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:549
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:557
 #: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:304
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
@@ -3486,17 +3498,17 @@ msgstr "Lijst negeren"
 msgid "Nick Colors"
 msgstr "Nick kleuren"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:106
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:160
 #, elixir-autogen, elixir-format
 msgid "Admin"
 msgstr "Beheerder"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:109
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:163
 #, elixir-autogen, elixir-format
 msgid "Contacts"
 msgstr "Contacten"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:110
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:164
 #, elixir-autogen, elixir-format
 msgid "On Connect"
 msgstr "Bij verbinden"
@@ -3530,7 +3542,9 @@ msgstr "Sessie beëindigd."
 
 #: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:1722
 #, elixir-autogen, elixir-format
-msgid "This P2P session is still active in another window. Close that window or end this session here."
+msgid ""
+"This P2P session is still active in another window. Close that window or end"
+" this session here."
 msgstr ""
 "Deze P2P-sessie is nog actief in een ander venster. Sluit dat venster of "
 "beëindig deze sessie hier."
@@ -3581,7 +3595,7 @@ msgstr "AUTO-JOIN"
 msgid "Channel settings"
 msgstr "Kanaalinstellingen"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:119
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:127
 #, elixir-autogen, elixir-format
 msgid "Conversation toolbar"
 msgstr "Werkbalk voor gesprekken"
@@ -4027,3 +4041,8 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Thumbnail is being prepared"
 msgstr ""
+
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:98
+#, elixir-autogen, elixir-format
+msgid "Round-trip to the server"
+msgstr "Retourtijd naar de server"

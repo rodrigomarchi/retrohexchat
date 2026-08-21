@@ -4,7 +4,9 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
 
   Composed from Window (window_status_bar, window_status_bar_field) primitives.
   Shows live session state — active call or P2P session, online buddies, lag,
-  clock and the mute toggle.
+  clock and the mute toggle. The three readouts a desktop tray also has a place
+  for (`show_clock`, `show_lag`, `show_mute`) can be dropped here so they are
+  not reported twice on the same screen.
 
   Who you are and what you are reading are *not* here: the window title bar
   names them (`#lobby[Troll]` plus the identity state), and repeating that a few
@@ -52,6 +54,14 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
   attr :show_clock, :boolean,
     default: true,
     doc: "hide the clock zone when the surrounding chrome already shows one (e.g. a desktop tray)"
+
+  attr :show_lag, :boolean,
+    default: true,
+    doc: "same, for the lag readout"
+
+  attr :show_mute, :boolean,
+    default: true,
+    doc: "same, for the mute toggle"
 
   attr :on_mute_toggle, :any, default: nil
   attr :class, :string, default: nil
@@ -139,10 +149,13 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
       </.window_status_bar_field>
 
       <%!-- Zone 4: Lag display (hidden on mobile) --%>
-      <.window_status_bar_field class={[
-        "hidden md:flex items-center gap-retro-2 min-w-[64px]",
-        lag_class(@lag_status)
-      ]}>
+      <.window_status_bar_field
+        :if={@show_lag}
+        class={[
+          "hidden md:flex items-center gap-retro-2 min-w-[64px]",
+          lag_class(@lag_status)
+        ]}
+      >
         <Icons.icon_status_signal class="w-3 h-3 shrink-0" />
         <span id="lag-display" phx-hook="LagHook" class="text-xs">
           {lag_text(@lag_ms, @lag_status)}
@@ -159,7 +172,10 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
       </.window_status_bar_field>
 
       <%!-- Zone 6: Mute toggle --%>
-      <.window_status_bar_field class="flex items-center justify-center w-[28px] shrink-0">
+      <.window_status_bar_field
+        :if={@show_mute}
+        class="flex items-center justify-center w-[28px] shrink-0"
+      >
         <.button
           :if={@on_mute_toggle}
           type="button"

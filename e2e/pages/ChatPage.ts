@@ -96,7 +96,8 @@ export class ChatPage {
   readonly charCounter: Locator;
   readonly appLogo: Locator;
   readonly statusBarApp: Locator;
-  readonly statusBarMuteToggle: Locator;
+  readonly desktopTray: Locator;
+  readonly trayMuteToggle: Locator;
   readonly statusBarNotifyBadge: Locator;
   readonly connectionStatusHook: Locator;
   readonly connectionBanner: Locator;
@@ -272,7 +273,8 @@ export class ChatPage {
     this.charCounter = page.getByTestId("char-counter");
     this.appLogo = page.getByTestId("app-logo");
     this.statusBarApp = page.getByTestId("status-bar-app");
-    this.statusBarMuteToggle = page.getByTestId("status-bar-mute-toggle");
+    this.desktopTray = page.getByTestId("chat-tray");
+    this.trayMuteToggle = page.getByTestId("tray-mute-toggle");
     this.statusBarNotifyBadge = page.getByTestId("status-bar-notify-badge");
     this.connectionStatusHook = page.getByTestId("connection-status-hook");
     this.connectionBanner = this.connectionStatusHook.locator(

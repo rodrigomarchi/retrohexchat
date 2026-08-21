@@ -30,11 +30,11 @@ async function signedInUser(page: Page) {
  * truth and keeps telling it across a rerender.
  */
 async function expectMuteControl(chat: ChatPage, muted: boolean) {
-  await expect(chat.statusBarMuteToggle).toHaveAttribute(
+  await expect(chat.trayMuteToggle).toHaveAttribute(
     "aria-label",
     muted ? "Unmute" : "Mute",
   );
-  await expect(chat.statusBarMuteToggle.locator("svg")).toHaveCount(1);
+  await expect(chat.trayMuteToggle.locator("svg")).toHaveCount(1);
 }
 
 test.describe("Status bar", () => {
@@ -44,17 +44,21 @@ test.describe("Status bar", () => {
     const chat = await signedInUser(page);
     const rerenderMessage = `statusbar rerender ${Date.now()}`;
 
-    await expect(chat.statusBarApp).toBeVisible();
+    // The header's status bar holds only what a tray cannot say — an active
+    // call, a P2P session, buddies online — so it is empty on a quiet session.
+    // The mute toggle lives in the taskbar tray now, and that is what has to
+    // be on screen.
+    await expect(chat.desktopTray).toBeVisible();
     await expectMuteControl(chat, false);
 
-    await chat.statusBarMuteToggle.click();
+    await chat.trayMuteToggle.click();
     await expectMuteControl(chat, true);
 
     await chat.sendMessage(rerenderMessage);
     await chat.expectMessageVisible(rerenderMessage);
     await expectMuteControl(chat, true);
 
-    await chat.statusBarMuteToggle.click();
+    await chat.trayMuteToggle.click();
     await expectMuteControl(chat, false);
   });
 });

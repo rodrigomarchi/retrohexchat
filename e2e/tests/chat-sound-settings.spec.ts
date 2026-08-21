@@ -101,16 +101,10 @@ test.describe("Sound settings dialog", () => {
     const rerenderMessage = `sound mute rerender ${Date.now()}`;
     const connect = new ConnectPage(page);
 
-    await expect(chat.statusBarMuteToggle).toHaveAttribute(
-      "aria-label",
-      "Mute",
-    );
+    await expect(chat.trayMuteToggle).toHaveAttribute("aria-label", "Mute");
 
-    await chat.statusBarMuteToggle.click();
-    await expect(chat.statusBarMuteToggle).toHaveAttribute(
-      "aria-label",
-      "Unmute",
-    );
+    await chat.trayMuteToggle.click();
+    await expect(chat.trayMuteToggle).toHaveAttribute("aria-label", "Unmute");
     await chat.openSoundSettingsFromMenu();
     await resetAudioSpy(page);
     await chat.soundPreviewButton("message").click();
@@ -120,10 +114,7 @@ test.describe("Sound settings dialog", () => {
       .getByRole("button", { name: "Apply" })
       .click();
     await expect(chat.soundSettingsDialog).toBeVisible();
-    await expect(chat.statusBarMuteToggle).toHaveAttribute(
-      "aria-label",
-      "Unmute",
-    );
+    await expect(chat.trayMuteToggle).toHaveAttribute("aria-label", "Unmute");
     await resetAudioSpy(page);
     await chat.soundPreviewButton("message").click();
     await expectNoSoundStarts(page);
@@ -134,19 +125,13 @@ test.describe("Sound settings dialog", () => {
     await expect(chat.soundSettingsDialog).toBeHidden();
     await chat.sendMessage(rerenderMessage);
     await chat.expectMessageVisible(rerenderMessage);
-    await expect(chat.statusBarMuteToggle).toHaveAttribute(
-      "aria-label",
-      "Unmute",
-    );
+    await expect(chat.trayMuteToggle).toHaveAttribute("aria-label", "Unmute");
     await chat.disconnect();
     await connect.open();
     await connect.enterNickname(nick);
     await connect.authenticateWithPassword(password);
     await chat.waitUntilConnected();
-    await expect(chat.statusBarMuteToggle).toHaveAttribute(
-      "aria-label",
-      "Unmute",
-    );
+    await expect(chat.trayMuteToggle).toHaveAttribute("aria-label", "Unmute");
     await chat.openSoundSettingsFromMenu();
     await resetAudioSpy(page);
     await chat.soundPreviewButton("message").click();
@@ -156,11 +141,8 @@ test.describe("Sound settings dialog", () => {
       .getByRole("button", { name: "Cancel" })
       .click();
     await expect(chat.soundSettingsDialog).toBeHidden();
-    await chat.statusBarMuteToggle.click();
-    await expect(chat.statusBarMuteToggle).toHaveAttribute(
-      "aria-label",
-      "Mute",
-    );
+    await chat.trayMuteToggle.click();
+    await expect(chat.trayMuteToggle).toHaveAttribute("aria-label", "Mute");
     await chat.openSoundSettingsFromMenu();
     await resetAudioSpy(page);
     await chat.soundPreviewButton("message").click();

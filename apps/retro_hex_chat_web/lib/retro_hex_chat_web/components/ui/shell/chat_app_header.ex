@@ -64,10 +64,16 @@ defmodule RetroHexChatWeb.Components.UI.ChatAppHeader do
           mobile_viewport={@mobile_viewport}
           on_action={@on_toolbar_action}
         />
-        <%!-- The desktop tray owns the clock; the status bar drops its own. --%>
+        <%!-- The desktop tray owns the clock, the lag and the mute toggle, the
+              way Win98 kept the volume and the connection lights down beside
+              the clock rather than up in a menu bar. What stays here is what
+              the tray has no room to say: an active call or P2P session, and
+              the buddies online. --%>
         <.status_bar_app
           class="ml-auto"
           show_clock={false}
+          show_lag={false}
+          show_mute={false}
           lag_ms={@lag_ms}
           lag_status={@lag_status}
           online_buddy_count={@online_buddy_count}

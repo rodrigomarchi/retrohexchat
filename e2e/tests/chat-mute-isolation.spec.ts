@@ -53,19 +53,19 @@ test.describe("Mute isolation between sessions", () => {
     const isolatedUser = await newSignedInUser(browser, "aa8i");
 
     try {
-      await expect(mutedUser.chat.statusBarMuteToggle).toHaveAttribute(
+      await expect(mutedUser.chat.trayMuteToggle).toHaveAttribute(
         "aria-label",
         "Mute",
       );
-      await mutedUser.chat.statusBarMuteToggle.click();
-      await expect(mutedUser.chat.statusBarMuteToggle).toHaveAttribute(
+      await mutedUser.chat.trayMuteToggle.click();
+      await expect(mutedUser.chat.trayMuteToggle).toHaveAttribute(
         "aria-label",
         "Unmute",
       );
 
       await mutedUser.page.reload();
       await mutedUser.chat.waitUntilConnected();
-      await expect(mutedUser.chat.statusBarMuteToggle).toHaveAttribute(
+      await expect(mutedUser.chat.trayMuteToggle).toHaveAttribute(
         "aria-label",
         "Unmute",
       );
@@ -78,7 +78,7 @@ test.describe("Mute isolation between sessions", () => {
         .getByRole("button", { name: "Cancel" })
         .click();
 
-      await expect(isolatedUser.chat.statusBarMuteToggle).toHaveAttribute(
+      await expect(isolatedUser.chat.trayMuteToggle).toHaveAttribute(
         "aria-label",
         "Mute",
       );

@@ -21,7 +21,7 @@ defmodule RetroHexChatWeb.StatusBarFeatureTest do
 
       # The nickname and the active conversation moved to the window title bar.
       refute html =~ ~s(data-testid="status-bar-account-widget")
-      assert html =~ ~s(data-testid="status-bar-mute-toggle")
+      assert html =~ ~s(data-testid="tray-mute-toggle")
     end
 
     test "lag display shows initial dash", %{conn: conn} do

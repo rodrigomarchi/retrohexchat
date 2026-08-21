@@ -22,6 +22,11 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
   attr :open_windows, :any, default: MapSet.new()
   attr :is_admin, :boolean, default: false
 
+  attr :lag_ms, :any, default: nil, doc: "Round-trip to the server, or nil when unknown"
+  attr :lag_status, :atom, default: :normal, values: [:normal, :warning, :critical, :timeout]
+  attr :muted, :boolean, default: false
+  attr :on_mute_toggle, :any, default: "toggle_mute"
+
   attr :arcade_available, :boolean,
     default: false,
     doc: "Enables Start ▸ Games ▸ Arcade (needs a registered + identified nick)"
@@ -82,8 +87,37 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
         </.taskbar_button>
       <% end %>
 
+      <%!-- The tray reads left to right the way Win98's did: the machine's own
+            status first, then the volume, then the clock at the far edge. --%>
       <:tray>
-        <.desktop_tray>
+        <.desktop_tray data-testid="chat-tray">
+          <%!-- Hidden on a phone, as it was in the status bar: a number that
+                changes every few seconds is not worth a taskbar that scrolls. --%>
+          <.desktop_tray_item
+            class={classes(["hidden md:inline-flex", lag_class(@lag_status)])}
+            title={dgettext("chat", "Round-trip to the server")}
+            data-testid="tray-lag"
+          >
+            <:icon><Icons.icon_status_signal class="h-3 w-3" /></:icon>
+            <%!-- `LagHook` measures the round trip and the server patches the
+                  text back into this same span, which is why the hook sits on
+                  the readout rather than on the tray around it. --%>
+            <span id="lag-display" phx-hook="LagHook" class="font-mono tabular-nums">
+              {lag_text(@lag_ms, @lag_status)}
+            </span>
+          </.desktop_tray_item>
+
+          <.desktop_tray_item
+            on_click={@on_mute_toggle}
+            title={if @muted, do: dgettext("ui", "Unmute"), else: dgettext("ui", "Mute")}
+            data-testid="tray-mute-toggle"
+          >
+            <:icon>
+              <Icons.icon_mute :if={@muted} class="h-3 w-3" />
+              <Icons.icon_dialog_sound :if={!@muted} class="h-3 w-3" />
+            </:icon>
+          </.desktop_tray_item>
+
           <span id="chat-tray-clock" data-clock phx-hook="ClockHook" class="font-mono tabular-nums">
           </span>
         </.desktop_tray>
@@ -91,6 +125,19 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
     </.taskbar>
     """
   end
+
+  # The same readout the status bar used to show, kept here rather than shared
+  # with it: what a tray shows is a property of the tray.
+  @spec lag_text(integer() | nil, atom()) :: String.t()
+  defp lag_text(nil, :timeout), do: "?"
+  defp lag_text(nil, _lag_status), do: "—"
+  defp lag_text(ms, _lag_status), do: "#{ms}ms"
+
+  @spec lag_class(atom()) :: String.t() | nil
+  defp lag_class(:warning), do: "text-warning-alt"
+  defp lag_class(:critical), do: "text-error"
+  defp lag_class(:timeout), do: "text-error"
+  defp lag_class(_lag_status), do: nil
 
   # Window families that collapse into one taskbar entry. The taskbar is a
   # single `overflow-x-auto` strip of 12ch-truncated buttons, so 49 windows

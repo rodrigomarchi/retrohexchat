@@ -6,13 +6,13 @@ defmodule RetroHexChatWeb.MuteToggleTest do
   alias RetroHexChat.Chat.{PreferencePersistence, SoundSettings}
   alias RetroHexChat.Services.Queries
 
-  describe "mute toggle in status bar" do
-    test "mute toggle button renders in status bar", %{conn: conn} do
+  describe "mute toggle in the system tray" do
+    test "mute toggle button renders in the taskbar tray", %{conn: conn} do
       nick = "Mute#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       html = render(view)
-      assert html =~ "data-testid=\"status-bar-mute-toggle\""
+      assert html =~ "data-testid=\"tray-mute-toggle\""
       assert html =~ "mute-toggle"
     end
 
@@ -21,7 +21,7 @@ defmodule RetroHexChatWeb.MuteToggleTest do
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
-      |> element(~s([data-testid="status-bar-mute-toggle"]))
+      |> element(~s([data-testid="tray-mute-toggle"]))
       |> render_click()
 
       html = render(view)
@@ -29,7 +29,7 @@ defmodule RetroHexChatWeb.MuteToggleTest do
 
       # Toggle back
       view
-      |> element(~s([data-testid="status-bar-mute-toggle"]))
+      |> element(~s([data-testid="tray-mute-toggle"]))
       |> render_click()
 
       html = render(view)
@@ -41,7 +41,7 @@ defmodule RetroHexChatWeb.MuteToggleTest do
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
-      |> element(~s([data-testid="status-bar-mute-toggle"]))
+      |> element(~s([data-testid="tray-mute-toggle"]))
       |> render_click()
 
       assert_push_event(view, "mute_state_changed", %{muted: true})
@@ -57,7 +57,7 @@ defmodule RetroHexChatWeb.MuteToggleTest do
 
       assert assigns(view).muted == true
       assert html =~ ~s(data-muted="true")
-      assert has_element?(view, ~s([data-testid="status-bar-mute-toggle"][title="Unmute"]))
+      assert has_element?(view, ~s([data-testid="tray-mute-toggle"][title="Unmute"]))
       refute_push_event(view, "play_sound", %{})
     end
 
@@ -68,7 +68,7 @@ defmodule RetroHexChatWeb.MuteToggleTest do
       {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
 
       view
-      |> element(~s([data-testid="status-bar-mute-toggle"]))
+      |> element(~s([data-testid="tray-mute-toggle"]))
       |> render_click()
 
       assert_push_event(view, "mute_state_changed", %{muted: true})
@@ -78,7 +78,7 @@ defmodule RetroHexChatWeb.MuteToggleTest do
       assert SoundSettings.muted?(loaded)
 
       view
-      |> element(~s([data-testid="status-bar-mute-toggle"]))
+      |> element(~s([data-testid="tray-mute-toggle"]))
       |> render_click()
 
       assert_push_event(view, "mute_state_changed", %{muted: false})
@@ -93,7 +93,7 @@ defmodule RetroHexChatWeb.MuteToggleTest do
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
-      |> element(~s([data-testid="status-bar-mute-toggle"]))
+      |> element(~s([data-testid="tray-mute-toggle"]))
       |> render_click()
 
       assert_push_event(view, "mute_state_changed", %{muted: true})
@@ -110,7 +110,7 @@ defmodule RetroHexChatWeb.MuteToggleTest do
       render_click(view, "open_sound_settings_dialog", %{})
 
       view
-      |> element(~s([data-testid="status-bar-mute-toggle"]))
+      |> element(~s([data-testid="tray-mute-toggle"]))
       |> render_click()
 
       assert_push_event(view, "mute_state_changed", %{muted: true})
