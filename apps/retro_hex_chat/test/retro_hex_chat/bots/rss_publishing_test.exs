@@ -133,16 +133,27 @@ defmodule RetroHexChat.Bots.RSSPublishingTest do
   defp poll(pid),
     do: send(pid, {:capability_timer, :rss, %{type: :poll, feed_id: "f1", channel: @channel}})
 
-  defp bot_messages do
+  # Two different questions, and one timeout cannot answer both. "Did it say
+  # anything?" has to outwait a poll that fetches, parses and broadcasts —
+  # seconds, when CI is running three partitions on one machine. "Did it stay
+  # quiet?" only has to outwait a broadcast that is already on its way. So the
+  # first message gets a generous wait and the rest a short drain; asserting
+  # silence skips the wait entirely.
+  @first_message_timeout 5_000
+  @drain_timeout 300
+
+  defp bot_messages(timeout) do
     receive do
       %{event: "new_message", payload: %{author: "WireBot"} = payload} ->
-        [payload | bot_messages()]
+        [payload | bot_messages(@drain_timeout)]
     after
-      300 -> []
+      timeout -> []
     end
   end
 
-  defp headlines, do: Enum.map(bot_messages(), & &1.content)
+  defp headlines, do: Enum.map(bot_messages(@first_message_timeout), & &1.content)
+
+  defp no_headlines, do: Enum.map(bot_messages(@drain_timeout), & &1.content)
 
   defp start_channel(channel_name) do
     case Channels.Supervisor.start_child(channel_name) do
@@ -216,7 +227,7 @@ defmodule RetroHexChat.Bots.RSSPublishingTest do
       start_bot([%{"id" => "f1", "url" => @url, "channel" => @channel, "seen" => ["urn:wire:1"]}])
 
     poll(pid)
-    assert [payload] = bot_messages()
+    assert [payload] = bot_messages(@first_message_timeout)
 
     assert payload.content_format == "markdown"
     assert payload.content =~ "**Example News**"
@@ -238,7 +249,7 @@ defmodule RetroHexChat.Bots.RSSPublishingTest do
     poll(pid)
     poll(pid)
 
-    assert headlines() == [], "nothing changed, so there is nothing to say"
+    assert no_headlines() == [], "nothing changed, so there is nothing to say"
   end
 
   test "what it has published outlives the process" do
@@ -278,7 +289,7 @@ defmodule RetroHexChat.Bots.RSSPublishingTest do
 
     poll(pid2)
 
-    assert headlines() == [],
+    assert no_headlines() == [],
            "a restart must not replay the day's news into the channel"
   end
 
@@ -289,7 +300,7 @@ defmodule RetroHexChat.Bots.RSSPublishingTest do
     poll(pid)
     Process.sleep(80)
 
-    assert headlines() == []
+    assert no_headlines() == []
 
     %{feeds: [feed]} = :sys.get_state(pid).capability_states[:rss]
     assert feed["last_error"] =~ "503"
@@ -353,7 +364,7 @@ defmodule RetroHexChat.Bots.RSSPublishingTest do
       assert Enum.any?(headlines(), &(&1 =~ "Breaking news"))
 
       poll(pid)
-      assert headlines() == []
+      assert no_headlines() == []
     end
 
     test "a check with nothing new keeps the record of having run" do

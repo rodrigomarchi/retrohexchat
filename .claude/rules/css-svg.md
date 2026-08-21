@@ -32,9 +32,27 @@ submodules under `components/icons/`, chosen by **what the icon depicts**, not b
 where they are used. Adding one:
 
 1. Choose the submodule by subject (`ls` the directory — it is the catalog)
-2. Add `attr :class, :string, default: nil` + `@spec` + `~H""" <svg> """`
-3. Add `defdelegate` in `components/icons.ex` facade
+2. Add `attr :class, :any, default: nil` + `@spec` + `~H""" <svg> """`
+3. Add one line to `components/icons/registry.ex`
 4. Use `<Icons.icon_name />` in templates (or `<.icon_name />` if imported)
+
+**Pages carry a reference, not the drawing.** `mix retrohex.icons.sprite` renders
+every registered icon into `priv/static/assets/icons/sprite.svg` at build time
+(first step of `assets.build`/`assets.deploy`, before `phx.digest`), and the
+facade emits `<svg class={@class}><use href="…/sprite.svg#icon_name" /></svg>`.
+The sprite is generated, never committed. Skip the registry line and the icon has
+no `<symbol>` to point at — `test/retro_hex_chat_web/components/icons_registry_test.exs`
+catches that.
+
+Root attributes that carry geometry or rendering hints (`viewBox`,
+`shape-rendering`) move into the `<symbol>`; `class` and `aria-hidden` stay at the
+call site. So an icon must be a **single flat `<svg>`** — no nested `<svg>`, no
+`id=`, no `<defs>`/gradient/`filter`/`mask`/`url(#…)`, which would collide across
+344 symbols in one document. `currentColor` is fine; it inherits through `<use>`.
+The sprite task fails the build rather than emitting a broken symbol.
+
+CSS may style the outer `<svg>` (`.window-title-meta svg`, `> svg`) but never its
+children — they live in the `<use>` shadow tree and no selector reaches them.
 
 **Naming:** `icon_<name>`, `icon_btn_<name>` (buttons), `icon_dialog_<name>` (title bars), `icon_tab_<name>` (tabs), `icon_group_<name>` (32×32 groups), `icon_fmt_<name>` (formatting), `icon_game_<name>` (games)
 
@@ -54,6 +72,7 @@ Same pattern: `attr :class` + `@spec` + `~H""" <svg> """`.
 There is no hand-written inventory — a list of icons rots the week it is written.
 The submodules under `components/icons/` **are** the catalog: `ls` them, grep them,
 or visit `/showcase/icons` (dev only) to browse every icon visually.
+`components/icons/registry.ex` is the index of which submodule draws what.
 
 ## JS visual state
 

@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **215 spec files** under `e2e/tests/`.
-- **438 Playwright `test()` cases**.
-- **430 documented flows**, 429 done, 1 not done.
+- **216 spec files** under `e2e/tests/`.
+- **444 Playwright `test()` cases**.
+- **436 documented flows**, 435 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -707,6 +707,17 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | PW16 | The landing keeps its LiveSocket off until a reader reaches for the form | `tests/landing-connect-window.spec.ts` | done |
 | PW17 | A remembered terminal signs back in with one click from the landing | `tests/landing-connect-window.spec.ts` | done |
 | PW18 | The landing connect window opens fully on screen at every desktop size | `tests/landing-connect-window.spec.ts` | done |
+
+### P - Performance Budgets
+
+| # | Flow | Spec file | Status |
+| --- | --- | --- | --- |
+| PF1 | /connect stays inside its document-size and DOM-node budget | `tests/perf-payload.spec.ts` | done |
+| PF2 | A help topic stays inside its document-size and DOM-node budget | `tests/perf-payload.spec.ts` | done |
+| PF3 | Every icon is a sprite reference and none draws its art inline | `tests/perf-payload.spec.ts` | done |
+| PF4 | The sprite really resolves — a referenced icon has painted pixels | `tests/perf-payload.spec.ts` | done |
+| PF5 | The second page pays nothing for the sprite | `tests/perf-payload.spec.ts` | done |
+| PF6 | The sprite is preloaded in the head, not discovered mid-body | `tests/perf-payload.spec.ts` | done |
 
 ## Spec files with no documented flows
 

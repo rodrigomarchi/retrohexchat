@@ -111,11 +111,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
           <%!-- Privacy + metric-help, tucked to the right of the tab strip so
                 they don't cost a whole header row. --%>
           <div class="ml-auto flex items-center gap-2 self-center pl-2">
-            <Icons.icon_privacy
-              :if={@turn_only}
-              class="text-muted-foreground h-3.5 w-3.5"
-              data-testid="lobby-tray-privacy"
-            />
+            <Icons.icon_privacy :if={@turn_only} class="text-muted-foreground h-3.5 w-3.5" />
             <.toolbar variant="compact" class="gap-[1px]">
               <.toolbar_button
                 label={dgettext("p2p", "What do these mean?")}

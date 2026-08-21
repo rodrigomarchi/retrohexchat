@@ -37,6 +37,16 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
   attr :language_return_to, :string, default: "/connect"
   attr :on_action, :any, default: nil
   attr :class, :string, default: nil
+
+  attr :mobile_viewport, :any,
+    default: nil,
+    doc: """
+    Whether the client is on a narrow screen: `true`, `false`, or `nil` when it
+    has not said. Only `false` — a screen that has reported itself as wide —
+    skips the drawer's items, since they can never be reached there. A surface
+    with no viewport hook stays at `nil` and keeps them.
+    """
+
   attr :rest, :global
 
   @spec menu_bar_app(map()) :: Phoenix.LiveView.Rendered.t()
@@ -46,6 +56,7 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
       <.mobile_main_menu
         menu_id={@id}
         connected={@connected}
+        mobile_viewport={@mobile_viewport}
         is_admin={@is_admin}
         p2p_active={@p2p_active}
         p2p_turn_available={@p2p_turn_available}
@@ -139,12 +150,20 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
   attr :arcade_available, :boolean, default: false
   attr :language_return_to, :string, default: "/connect"
   attr :on_action, :any, default: nil
+  attr :mobile_viewport, :any, default: nil
 
+  # The drawer repeats every desktop menu as a drill-down, so its items are the
+  # same items a second time — around 34 KB and 300 nodes on the chat shell. A
+  # client that has reported a wide viewport can never open it, so it gets the
+  # tabs without the panels. The report arrives on the hook's first frame, well
+  # before anyone can tap a menu, and `nil` keeps the items for any surface that
+  # never reports at all.
   defp mobile_main_menu(assigns) do
     assigns =
       assigns
       |> assign(:active_section, default_mobile_section(assigns.connected))
       |> assign(:sections, mobile_sections(assigns.connected))
+      |> assign(:reachable, assigns.mobile_viewport != false)
 
     ~H"""
     <.mobile_menu_drawer
@@ -152,32 +171,32 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
       sections={@sections}
       active_section={@active_section}
     >
-      <:section :if={@connected} id="file">
+      <:section :if={@reachable and @connected} id="file">
         <.file_menu_items is_admin={@is_admin} on_action={@on_action} />
       </:section>
-      <:section :if={@connected} id="edit">
+      <:section :if={@reachable and @connected} id="edit">
         <.edit_menu_items on_action={@on_action} />
       </:section>
-      <:section :if={@connected} id="view">
+      <:section :if={@reachable and @connected} id="view">
         <.view_menu_items on_action={@on_action} />
       </:section>
-      <:section :if={@connected} id="tools">
+      <:section :if={@reachable and @connected} id="tools">
         <.tools_menu_items is_admin={@is_admin} on_action={@on_action} />
       </:section>
-      <:section :if={@connected} id="p2p">
+      <:section :if={@reachable and @connected} id="p2p">
         <.p2p_menu_items
           p2p_active={@p2p_active}
           p2p_turn_available={@p2p_turn_available}
           on_action={@on_action}
         />
       </:section>
-      <:section :if={@connected} id="games">
+      <:section :if={@reachable and @connected} id="games">
         <.games_menu_items arcade_available={@arcade_available} on_action={@on_action} />
       </:section>
-      <:section id="language">
+      <:section :if={@reachable} id="language">
         <.language_menu_items mode={:app} return_to={@language_return_to} />
       </:section>
-      <:section id="help">
+      <:section :if={@reachable} id="help">
         <.help_menu_items connected={@connected} on_action={@on_action} />
       </:section>
     </.mobile_menu_drawer>

@@ -101,6 +101,7 @@ defmodule RetroHexChatWeb.MixProject do
       "assets.setup": ["esbuild.install --if-missing"],
       "assets.clean": [
         "cmd rm -rf priv/static/assets/js",
+        "cmd rm -rf priv/static/assets/icons",
         "cmd rm -rf assets/css/.generated",
         "cmd rm -f priv/static/assets/css/retrohex.css.gz",
         "cmd rm -f priv/static/cache_manifest.json"
@@ -108,6 +109,9 @@ defmodule RetroHexChatWeb.MixProject do
       "assets.build": [
         "assets.clean",
         "compile",
+        # Before esbuild: the sprite is what every icon's <use> resolves to, and
+        # phx.digest at the end of assets.deploy has to find it already written.
+        "retrohex.icons.sprite",
         "esbuild retro_hex_chat_web_public_pages_js",
         "esbuild retro_hex_chat_web_help_live_js",
         "esbuild retro_hex_chat_web_retrohex_content_js",
@@ -120,6 +124,8 @@ defmodule RetroHexChatWeb.MixProject do
       ],
       "assets.deploy": [
         "assets.clean",
+        "compile",
+        "retrohex.icons.sprite",
         "esbuild retro_hex_chat_web_public_pages_js --minify --sourcemap=linked",
         "esbuild retro_hex_chat_web_help_live_js --minify --sourcemap=linked",
         "esbuild retro_hex_chat_web_retrohex_content_js --minify --sourcemap=linked",

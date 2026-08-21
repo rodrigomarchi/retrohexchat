@@ -41,6 +41,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShell do
     default: nil,
     doc: "The host's @group_call state assign (nil when no channel call is active)"
 
+  attr :mobile_viewport, :any,
+    default: nil,
+    doc: "The host's @mobile_viewport assign, threaded through to the menu bar"
+
   @spec chat_shell_header(map()) :: Phoenix.LiveView.Rendered.t()
   def chat_shell_header(assigns) do
     session = assigns.session
@@ -67,6 +71,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShell do
       group_call={@group_call_display}
       p2p={@p2p}
       p2p_turn_available={@p2p_turn_available}
+      mobile_viewport={@mobile_viewport}
     />
     """
   end

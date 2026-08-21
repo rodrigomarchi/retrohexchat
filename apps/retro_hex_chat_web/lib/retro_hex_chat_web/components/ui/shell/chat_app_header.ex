@@ -38,6 +38,10 @@ defmodule RetroHexChatWeb.Components.UI.ChatAppHeader do
   attr :on_p2p_click, :any, default: "p2p_statusbar_click"
   attr :on_p2p_stop, :any, default: "p2p_statusbar_stop"
 
+  attr :mobile_viewport, :any,
+    default: nil,
+    doc: "Narrow screen? `nil` until the client reports; only `false` trims the mobile drawer"
+
   attr :on_logo_action, :any, default: "about-dialog", doc: "Modal id opened by the logo"
   attr :on_toolbar_action, :any, default: "toolbar_action"
   attr :on_notify_toggle, :any, default: "toggle_notify_list"
@@ -57,6 +61,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatAppHeader do
           p2p_active={@p2p != nil}
           p2p_turn_available={@p2p_turn_available}
           language_return_to="/chat"
+          mobile_viewport={@mobile_viewport}
           on_action={@on_toolbar_action}
         />
         <%!-- The desktop tray owns the clock; the status bar drops its own. --%>
