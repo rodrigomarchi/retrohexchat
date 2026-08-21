@@ -9,6 +9,8 @@ defmodule RetroHexChatWeb.EndpointStaticTest do
   """
   use RetroHexChatWeb.ConnCase, async: false
 
+  alias RetroHexChatWeb.Wallpaper
+
   @moduletag :unit
 
   defp with_static_file(name, body) do
@@ -64,6 +66,39 @@ defmodule RetroHexChatWeb.EndpointStaticTest do
       assert response(conn, 200)
       assert get_resp_header(conn, "cache-control") == ["public, max-age=31536000, immutable"]
     end
+  end
+
+  # `priv/static`'s ignore rule for digest artefacts is `*-[0-9a-f]*.*`, and the
+  # `d` of `-desktop` is a hex digit: a wallpaper named `wallpaper-desktop.webp`
+  # is untracked by git, so it exists on the machine that made it and nowhere
+  # else. Nothing in the app fails without it — the desk just falls back to
+  # teal — so this is the only place the loss would ever be noticed.
+  describe "desktop wallpaper" do
+    test "both wallpapers are really served", %{conn: conn} do
+      for url <- [Wallpaper.desktop_url(), Wallpaper.mobile_url()] do
+        conn = get(conn, url)
+
+        assert response(conn, 200)
+        assert get_resp_header(conn, "content-type") == ["image/webp"]
+      end
+    end
+
+    test "the files are tracked by git", %{conn: _conn} do
+      for url <- [Wallpaper.desktop_url(), Wallpaper.mobile_url()] do
+        {out, status} =
+          System.cmd("git", ["check-ignore", "apps/retro_hex_chat_web/priv/static" <> url],
+            cd: repo_root(),
+            stderr_to_stdout: true
+          )
+
+        assert status == 1,
+               "the wallpaper is gitignored and will be missing from the release: #{out}"
+      end
+    end
+  end
+
+  defp repo_root do
+    :retro_hex_chat_web |> Application.app_dir() |> Path.join("../../../..") |> Path.expand()
   end
 
   describe "static paths in templates" do

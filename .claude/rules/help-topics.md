@@ -8,7 +8,8 @@ paths:
 
 # Help documentation is mandatory (Principle XI)
 
-Every user-facing change adds or updates topics in `RetroHexChat.Chat.HelpTopics`
+Every change that gives the reader something to **do** adds or updates topics in
+`RetroHexChat.Chat.HelpTopics`
 (`apps/retro_hex_chat/lib/retro_hex_chat/chat/help_topics.ex`):
 
 - New command → a topic in the **Commands** category (syntax, examples, "See Also")
@@ -18,6 +19,13 @@ Every user-facing change adds or updates topics in `RetroHexChat.Chat.HelpTopics
 - Update "See Also" cross-references in related topics
 - Reuse existing topic IDs when a new one already maps to an existing topic
   (`cmd-invite` vs `invite_send`) — update in place, never duplicate
+
+**No control surface, no topic.** The test is not "can the reader see it" but "is
+there anything the reader could type, click or choose here". Styling, a colour, a
+wallpaper, spacing, an animation — things they cannot act on and could not change if
+they wanted to — get nothing. Help answers "how do I…", never "what am I looking
+at", and a topic that only says a thing exists makes the help longer without making
+it more useful.
 
 Accessible via F1, Help menu → Help Topics, and `/help`. Stale or inaccurate help
 is a defect. Full rule: [`docs/AGENT-GUIDE.md` §12](../../docs/AGENT-GUIDE.md).

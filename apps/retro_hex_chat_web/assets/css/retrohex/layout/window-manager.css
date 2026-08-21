@@ -1,4 +1,29 @@
 /* ── Desktop / window manager (WindowManagerHook) ──────────── */
+/* The desk itself: the surface every window is dragged around on. The teal is
+   underneath the picture, not instead of it — it is what a browser without
+   WebP, or one that has not finished the download, is left looking at, and it
+   is the colour this desktop wore before there was art on it.
+
+   `cover` crops what does not fit and never stretches: the two images are
+   drawn at fixed proportions and a desk can be any shape at all. */
+.desktop__workspace {
+  @apply bg-desktop;
+  background-image: var(--rhc-wallpaper-desktop);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+/* Which wallpaper hangs is decided here rather than from `.desktop--stacked`,
+   the class the window manager sets for the same viewports. That class does not
+   exist until the hook mounts, so keying on it would flash the wide art on a
+   phone for a frame — and would leave the landing pages, which are read with
+   scripting off, on the wrong one forever. 768px is `STACK_BREAKPOINT` in
+   `window_manager.js`; the two have to move together. */
+@media (max-width: 767px) {
+  .desktop__workspace {
+    background-image: var(--rhc-wallpaper-mobile);
+  }
+}
 /* Geometry is driven by CSS custom properties set on the element by the hook. */
 .desktop-window {
   left: var(--win-x, 24px);

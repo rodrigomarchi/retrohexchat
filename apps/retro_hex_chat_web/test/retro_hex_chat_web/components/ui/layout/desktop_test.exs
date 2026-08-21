@@ -4,6 +4,8 @@ defmodule RetroHexChatWeb.Components.UI.DesktopTest do
   import Phoenix.LiveViewTest
   import RetroHexChatWeb.Components.UI.Desktop
 
+  alias RetroHexChatWeb.Wallpaper
+
   @moduletag :unit
 
   defp icon, do: %{inner_block: fn _, _ -> "icon" end}
@@ -100,4 +102,37 @@ defmodule RetroHexChatWeb.Components.UI.DesktopTest do
       assert link =~ "no-underline"
     end
   end
+
+  # The wallpaper reaches CSS through the document because its URL is digested;
+  # a stylesheet cannot spell a content hash. Every surface of the app is built
+  # on this one workspace, so losing the properties here loses the art
+  # everywhere at once.
+  describe "the workspace wallpaper" do
+    setup do
+      %{
+        html:
+          render_component(&desktop/1, id: "desk", inner_block: %{inner_block: fn _, _ -> "" end})
+      }
+    end
+
+    test "the workspace carries both wallpapers as custom properties", %{html: html} do
+      assert html =~ "desktop__workspace"
+      assert html =~ "--rhc-wallpaper-desktop:url("
+      assert html =~ "--rhc-wallpaper-mobile:url("
+    end
+
+    test "each property points at a really served file", %{html: html} do
+      for url <- [Wallpaper.desktop_url(), Wallpaper.mobile_url()] do
+        assert html =~ "url(#{url})"
+
+        assert File.exists?(
+                 Path.join(:code.priv_dir(:retro_hex_chat_web), "static/#{undigest(url)}")
+               )
+      end
+    end
+  end
+
+  # `Endpoint.static_path/1` fingerprints the name once a cache manifest exists;
+  # the file on disk always has the plain one.
+  defp undigest(url), do: Regex.replace(~r/-[0-9a-f]{32}(\.\w+)$/, url, "\\1")
 end

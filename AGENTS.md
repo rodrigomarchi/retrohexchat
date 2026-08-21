@@ -107,8 +107,12 @@ Read these when the trigger applies — not before.
 
 ## Documentation is part of the change
 
-- **Help topics are mandatory.** Every user-facing change adds or updates topics in
-  `RetroHexChat.Chat.HelpTopics`. Stale help is a defect. (`AGENT-GUIDE` §12)
+- **Help topics are mandatory — for anything the reader can act on.** Every change
+  that adds a command, control, setting, shortcut or behaviour to anticipate updates
+  `RetroHexChat.Chat.HelpTopics`. Something with no control surface — styling, a
+  colour, a wallpaper — gets no topic: help answers "how do I…", not "what am I
+  looking at". Stale help is a defect; help nobody can act on is noise.
+  (`AGENT-GUIDE` §12)
 - **Durable, cross-cutting learning** → `docs/AGENT-GUIDE.md` or a `docs/guide/` playbook.
 - **Living inventory that must track the code** → `docs/reference/`, linked from
   `docs/README.md`. If the code can answer the question directly — grep a module,

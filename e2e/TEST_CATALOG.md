@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **217 spec files** under `e2e/tests/`.
-- **449 Playwright `test()` cases**.
-- **441 documented flows**, 440 done, 1 not done.
+- **218 spec files** under `e2e/tests/`.
+- **452 Playwright `test()` cases**.
+- **444 documented flows**, 443 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -549,6 +549,9 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | T14 | Window title bar, taskbar button, and browser tab all name the active conversation `#channel[nick]` and follow tab switches (features P1) | `tests/chat-window-title.spec.ts` | done |
 | T15 | Activity flash alternates over the conversation's name and restores it (features P1) | `tests/chat-window-title.spec.ts` | done |
 | T16 | A private message titles the window `remote:mine` (features P2) | `tests/chat-window-title.spec.ts` | done |
+| T17 | Every desktop hangs the wallpaper, and the file behind it really loads | `tests/desktop-wallpaper.spec.ts` | done |
+| T18 | A phone-width viewport hangs the tall wallpaper instead of the wide one | `tests/desktop-wallpaper.spec.ts` | done |
+| T19 | The wide wallpaper is preloaded in the head; the tall one deliberately is not | `tests/desktop-wallpaper.spec.ts` | done |
 
 ### U - Dialog CRUD And Settings Depth
 

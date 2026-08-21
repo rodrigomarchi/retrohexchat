@@ -21,6 +21,7 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
   import RetroHexChatWeb.Components.UI.Window
 
   alias RetroHexChatWeb.Icons
+  alias RetroHexChatWeb.Wallpaper
 
   @doc """
   Renders the desktop workspace that hosts windows and a taskbar.
@@ -86,7 +87,13 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
       {@rest}
     >
       {render_slot(@header)}
-      <div class="desktop__workspace relative isolate flex-1 overflow-hidden">
+      <%!-- The wallpaper arrives as custom properties rather than from the
+            stylesheet: its URL carries a content hash, which a cached CSS file
+            cannot know. window-manager.css picks which of the two to paint. --%>
+      <div
+        class="desktop__workspace relative isolate flex-1 overflow-hidden"
+        style={"--rhc-wallpaper-desktop:url(#{Wallpaper.desktop_url()});--rhc-wallpaper-mobile:url(#{Wallpaper.mobile_url()})"}
+      >
         <div
           :if={@shortcuts != []}
           class="desktop__shortcuts absolute left-0 top-0 z-0 flex flex-col flex-wrap content-start gap-1 p-2"

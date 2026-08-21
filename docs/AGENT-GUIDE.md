@@ -57,8 +57,10 @@ until the principle itself is amended.
     scales via distributed Erlang; schemas partitionable; PubSub node-spanning). Simplicity
     is the default, but never a dead-end. Premature optimization is forbidden; premature
     architectural corners are equally forbidden.
-11. **User-facing documentation is mandatory.** Every user-facing feature ships help
-    topics in `RetroHexChat.Chat.HelpTopics` — undocumented features are incomplete. See §12.
+11. **User-facing documentation is mandatory.** Every feature that gives the reader
+    something to do ships help topics in `RetroHexChat.Chat.HelpTopics` — undocumented
+    features are incomplete. Something they cannot act on is not a feature and gets no
+    topic. See §12.
 12. **Never fork a concept per context.** When two surfaces handle the same thing — a
     message, an attachment, a reaction — the context is a **parameter**, not a second
     implementation. Two implementations do not diverge with a warning: they diverge when
@@ -349,7 +351,8 @@ get fresh timers with the *remaining* duration.
 
 ## 12. Help documentation is mandatory (Principle XI)
 
-Every user-facing change adds/updates topics in `RetroHexChat.Chat.HelpTopics`
+Every change that gives the reader something to **do** adds/updates topics in
+`RetroHexChat.Chat.HelpTopics`
 (`apps/retro_hex_chat/lib/retro_hex_chat/chat/help_topics.ex`):
 
 - New command → a topic in the **Commands** category (syntax, examples, "See Also").
@@ -359,6 +362,15 @@ Every user-facing change adds/updates topics in `RetroHexChat.Chat.HelpTopics`
 - Update "See Also" cross-references in related topics.
 - Reuse existing topic IDs when a new one already maps to an existing topic
   (`cmd-invite` vs `invite_send`) — update in place, never duplicate.
+
+**A change with no control surface gets no topic.** The test is not "can the reader
+see it" — it is "is there anything the reader could type, click, or choose here". A
+setting, a command, a window, a shortcut, a behaviour they have to anticipate: those
+are help. Styling, a colour, a wallpaper, spacing, an animation — anything they
+cannot act on and could not change if they wanted to — is not, and writing a topic
+about it makes the help longer without making it more useful. Help answers "how do
+I…", never "what am I looking at". The wallpaper shipped with a topic explaining
+that it exists; nobody could do anything with that, and it was removed.
 
 Accessible via F1, Help menu → Help Topics, and `/help`. Stale/inaccurate help is a defect.
 

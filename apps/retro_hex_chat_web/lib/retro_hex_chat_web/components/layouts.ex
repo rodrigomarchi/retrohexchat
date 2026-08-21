@@ -5,22 +5,38 @@ defmodule RetroHexChatWeb.Layouts do
   use RetroHexChatWeb, :html
 
   alias RetroHexChatWeb.Icons.Sprite
+  alias RetroHexChatWeb.Wallpaper
 
   embed_templates "layouts/*"
 
   @doc """
   The `<head>` links every surface shares, in the order the browser should act on them.
 
-  Two of these earn their place by what they *don't* do. The icon sprite is not
+  Three of these earn their place by what they *don't* do. The icon sprite is not
   discoverable until the parser reaches the first `<use>`, deep in the body, so
-  it is announced here and downloads alongside the stylesheet. And the web font
-  arrives as `media="print"`, which the browser fetches without letting it hold
-  up the first paint; the `onload` promotes it once it is there.
+  it is announced here and downloads alongside the stylesheet. The desktop
+  wallpaper is worse off still — nothing refers to it until the stylesheet has
+  been fetched and parsed — and on a desk it is the largest thing painted, so it
+  is announced too. And the web font arrives as `media="print"`, which the
+  browser fetches without letting it hold up the first paint; the `onload`
+  promotes it once it is there.
+
+  Only the wide wallpaper is preloaded. On a phone the window manager stacks,
+  and the window on top covers the desk entirely — the art behind it is never
+  the largest paint and rarely seen at all, so it is left to load whenever CSS
+  gets round to asking for it rather than competing on a phone's connection.
   """
   @spec head_assets(map()) :: Phoenix.LiveView.Rendered.t()
   def head_assets(assigns) do
     ~H"""
     <link rel="preload" as="image" type="image/svg+xml" href={Sprite.url()} />
+    <link
+      rel="preload"
+      as="image"
+      type="image/webp"
+      href={Wallpaper.desktop_url()}
+      media="(min-width: 768px)"
+    />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
