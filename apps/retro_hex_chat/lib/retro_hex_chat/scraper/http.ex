@@ -47,6 +47,13 @@ defmodule RetroHexChat.Scraper.HTTP do
            required(:candidates) => [image_candidate()],
            required(:selected) => image_candidate() | nil
          }
+  @typep content_info :: %{
+           text: String.t() | nil,
+           truncated?: boolean(),
+           strategy: String.t(),
+           word_count: non_neg_integer() | nil,
+           excerpt: String.t() | nil
+         }
 
   # A ceiling, not a budget: high enough that no real page is cut short, low
   # enough that a hostile or runaway response cannot exhaust the node.
@@ -54,12 +61,15 @@ defmodule RetroHexChat.Scraper.HTTP do
   @max_oembed_size 64_000
   @max_title_length 200
   @max_description_length 500
+  @max_hint_description_audit_length 2_000
+  @max_hint_content_text_length 50_000
   @max_excerpt_length 360
   @max_site_name_length 120
   @max_section_length 120
   @max_tag_length 48
   @max_tags 12
   @max_url_length 2_000
+  @max_readability_candidates 80
   @max_redirects 3
   @image_min_score 70
   @image_audit_limit 12
@@ -82,8 +92,9 @@ defmodule RetroHexChat.Scraper.HTTP do
     with {:ok, html, final_url, headers, status} <- fetch_resource(url, :html, opts),
          true <- html_content?(first_header(headers, "content-type")),
          {:ok, document} <- parse_document(html),
+         hints = metadata_hints(opts),
          {:ok, metadata, sources, oembed_url, image_selection} <-
-           metadata_from_document(document, final_url, opts) do
+           metadata_from_document(document, final_url, hints) do
       oembed_url = oembed_url || oembed_header_url(headers, final_url)
       content = extract_content_info(document)
 
@@ -97,9 +108,12 @@ defmodule RetroHexChat.Scraper.HTTP do
            content,
            document,
            final_url,
-           headers,
-           status,
-           image_selection
+           %{
+             headers: headers,
+             status: status,
+             image_selection: image_selection,
+             hints: hints
+           }
          )}
       else
         {:error, empty_page_reason(html, headers)}
@@ -157,9 +171,7 @@ defmodule RetroHexChat.Scraper.HTTP do
           map(),
           Floki.html_tree(),
           String.t(),
-          map(),
-          pos_integer(),
-          image_selection()
+          map()
         ) :: Client.scrape()
   defp build_scrape(
          metadata,
@@ -167,16 +179,26 @@ defmodule RetroHexChat.Scraper.HTTP do
          content,
          document,
          final_url,
-         headers,
-         status,
-         image_selection
+         context
        ) do
+    headers = Map.fetch!(context, :headers)
+    status = Map.fetch!(context, :status)
+    image_selection = Map.fetch!(context, :image_selection)
+    hints = Map.fetch!(context, :hints)
     scope = head_scope(document)
     metas = meta_tags(scope)
     json_ld = json_ld_candidates(scope)
+    content = enrich_content_info(content, hints)
 
     sources =
       if content.text, do: Map.put(sources, "content_text", content.strategy), else: sources
+
+    author = author(metas, json_ld, document) || hint_author(hints)
+    published_at = published_at(metas, json_ld, document) || hint_datetime(hints, :published_at)
+    tags = merge_tags(tags(metas, json_ld, document), hint_tags(hints))
+
+    quality =
+      quality_audit(metadata, content, author, published_at, tags, image_selection, sources)
 
     %{
       metadata: metadata,
@@ -186,16 +208,16 @@ defmodule RetroHexChat.Scraper.HTTP do
       etag: first_header(headers, "etag"),
       last_modified: first_header(headers, "last-modified"),
       excerpt: content.excerpt,
-      author: author(metas, json_ld),
-      published_at: published_at(metas, json_ld, document),
+      author: author,
+      published_at: published_at,
       modified_at: modified_at(metas, json_ld, document),
       lang: lang(document, metas, json_ld),
-      section: section(metas, json_ld),
-      tags: tags(metas, json_ld),
+      section: section(metas, json_ld, document),
+      tags: tags,
       content_text: content.text,
       content_text_truncated: content.truncated?,
       content_word_count: content.word_count,
-      raw_metadata: raw_metadata(metas, json_ld, sources, image_selection)
+      raw_metadata: raw_metadata(metas, json_ld, sources, image_selection, hints, quality)
     }
   end
 
@@ -205,6 +227,16 @@ defmodule RetroHexChat.Scraper.HTTP do
   @max_content_text_length 200_000
 
   @boilerplate ~w(script style noscript nav header footer aside form template iframe svg)
+
+  @content_candidate_selectors ~w(
+    [itemprop~=articleBody] [class*=ArticleBody] [class*=articleBody]
+    [class*=article-body] [class*=story-body] [class*=StoryBody]
+    [class*=content-body] [class*=post-body] [class*=entry-content]
+    [data-component=ArticleBody] [data-testid*=article] [data-testid*=story]
+    .entry-content .post-content .post__content .article-content .article-body
+    .story-body .story-content .storyBody .articleBody .article__body
+    .article-text .article-copy .article .post #content #main section div
+  )
 
   @doc """
   The page's own words, with the furniture removed.
@@ -221,27 +253,143 @@ defmodule RetroHexChat.Scraper.HTTP do
     {content.text, content.truncated?, content.strategy}
   end
 
-  @spec extract_content_info(Floki.html_tree()) :: %{
-          text: String.t() | nil,
-          truncated?: boolean(),
-          strategy: String.t(),
-          word_count: non_neg_integer() | nil,
-          excerpt: String.t() | nil
-        }
+  @spec extract_content_info(Floki.html_tree()) :: content_info()
   defp extract_content_info(document) do
-    {scope, strategy} = content_scope(document)
-    full_text = scope |> readable_text() |> collapse_whitespace()
-    {text, truncated?} = cap_content(full_text)
-
-    %{
-      text: text,
-      truncated?: truncated?,
-      strategy: strategy,
-      word_count: word_count(full_text),
-      excerpt: excerpt(text)
-    }
+    document
+    |> content_candidates()
+    |> best_content_info()
   rescue
     _ -> %{text: nil, truncated?: false, strategy: "none", word_count: nil, excerpt: nil}
+  end
+
+  @spec enrich_content_info(
+          content_info(),
+          map()
+        ) :: content_info()
+  defp enrich_content_info(content, hints) do
+    hint_text = hint_content_text(hints)
+    hint_words = word_count(hint_text) || 0
+    page_words = content.word_count || 0
+
+    if present?(hint_text) and hint_words > page_words do
+      %{
+        text: hint_text,
+        truncated?: false,
+        strategy: "feed_item",
+        word_count: hint_words,
+        excerpt: excerpt(hint_text)
+      }
+    else
+      content
+    end
+  end
+
+  @spec content_candidates(Floki.html_tree()) :: [content_info()]
+  defp content_candidates(document) do
+    scope = head_scope(document)
+    json_ld = json_ld_candidates(scope)
+
+    [
+      text_content_info(json_ld_article_body(json_ld), "json_ld_article_body"),
+      text_content_info(microdata_article_body(document), "microdata_article_body")
+      | html_content_candidates(document)
+    ]
+    |> Enum.reject(&is_nil/1)
+  end
+
+  @spec html_content_candidates(Floki.html_tree()) :: [content_info()]
+  defp html_content_candidates(document) do
+    explicit_content_candidates(document) ++
+      readability_content_candidates(document) ++
+      body_content_candidates(document)
+  end
+
+  @spec explicit_content_candidates(Floki.html_tree()) :: [content_info()]
+  defp explicit_content_candidates(document) do
+    [
+      {"article", "article"},
+      {"main", "main"},
+      {"main", "[role=main]"},
+      {"microdata_article_body", "[itemprop~=articleBody]"}
+    ]
+    |> Enum.flat_map(fn {strategy, selector} ->
+      document
+      |> Floki.find(selector)
+      |> Enum.map(&scope_content_info([&1], strategy))
+    end)
+    |> Enum.reject(&is_nil/1)
+  end
+
+  @spec body_content_candidates(Floki.html_tree()) :: [content_info()]
+  defp body_content_candidates(document) do
+    case body_scope(document) do
+      {scope, strategy} -> [scope_content_info(scope, strategy)]
+      nil -> []
+    end
+  end
+
+  @spec readability_content_candidates(Floki.html_tree()) :: [content_info()]
+  defp readability_content_candidates(document) do
+    @content_candidate_selectors
+    |> Enum.flat_map(&Floki.find(document, &1))
+    |> Enum.take(@max_readability_candidates)
+    |> Enum.map(&{[&1], readability_score([&1])})
+    |> Enum.reject(fn {_scope, score} -> score <= 0 end)
+    |> Enum.map(fn {scope, _score} -> scope_content_info(scope, "readability") end)
+    |> Enum.reject(&is_nil/1)
+  end
+
+  @spec scope_content_info(Floki.html_tree(), String.t()) :: content_info() | nil
+  defp scope_content_info(scope, strategy) do
+    scope
+    |> readable_text()
+    |> collapse_whitespace()
+    |> text_content_info(strategy)
+  end
+
+  @spec text_content_info(String.t() | nil, String.t()) :: content_info() | nil
+  defp text_content_info(text, strategy) when is_binary(text) do
+    full_text = collapse_whitespace(text)
+
+    case cap_content(full_text) do
+      {nil, _truncated?} ->
+        nil
+
+      {text, truncated?} ->
+        %{
+          text: text,
+          truncated?: truncated?,
+          strategy: strategy,
+          word_count: word_count(full_text),
+          excerpt: excerpt(text)
+        }
+    end
+  end
+
+  defp text_content_info(_text, _strategy), do: nil
+
+  @spec best_content_info([content_info()]) :: content_info()
+  defp best_content_info(candidates) do
+    Enum.max_by(
+      candidates,
+      &content_info_rank/1,
+      fn -> %{text: nil, truncated?: false, strategy: "none", word_count: nil, excerpt: nil} end
+    )
+  end
+
+  @content_strategy_weight %{
+    "json_ld_article_body" => 1_200,
+    "microdata_article_body" => 1_100,
+    "article" => 900,
+    "main" => 800,
+    "readability" => 700,
+    "body" => 100,
+    "document" => 0
+  }
+
+  @spec content_info_rank(content_info()) :: integer()
+  defp content_info_rank(%{strategy: strategy, word_count: word_count}) do
+    Map.get(@content_strategy_weight, strategy, 0) + min(word_count || 0, 1_000)
   end
 
   @spec content_scope(Floki.html_tree()) :: {Floki.html_tree(), String.t()}
@@ -257,11 +405,6 @@ defmodule RetroHexChat.Scraper.HTTP do
       end
     )
   end
-
-  @content_candidate_selectors ~w(
-    .entry-content .post-content .article-content .article-body .story-body
-    .article .post #content #main section div
-  )
 
   @min_candidate_text_length 180
 
@@ -297,10 +440,46 @@ defmodule RetroHexChat.Scraper.HTTP do
       paragraph_count = scope |> Floki.find("p") |> length()
       heading_count = ~w(h1 h2 h3) |> Enum.flat_map(&Floki.find(scope, &1)) |> length()
       link_length = scope |> Floki.find("a") |> Floki.text(sep: " ") |> String.length()
+      list_item_count = scope |> Floki.find("li") |> length()
+      form_control_count = scope |> Floki.find("input, button, select, textarea") |> length()
+      comma_count = text |> String.graphemes() |> Enum.count(&(&1 == ","))
+      link_density_penalty = div(link_length * 100, max(length, 1))
 
-      length + paragraph_count * 80 + heading_count * 30 - link_length * 2
+      length + paragraph_count * 120 + heading_count * 30 + comma_count * 8 -
+        link_length * 2 - link_density_penalty * 25 - list_item_count * 25 -
+        form_control_count * 100 - readability_marker_penalty(scope)
     end
   end
+
+  @readability_noise_markers MapSet.new(~w(
+    ad ads advertisement aside comment comments footer header menu nav newsletter
+    promo recirculation recommend related share sidebar social sponsor sponsored
+    subscribe trending widget
+  ))
+
+  @spec readability_marker_penalty(Floki.html_tree()) :: non_neg_integer()
+  defp readability_marker_penalty(scope) do
+    scope
+    |> Enum.flat_map(&readability_marker_attrs/1)
+    |> Enum.find_value(0, fn marker_text ->
+      marker_text
+      |> marker_tokens()
+      |> Enum.find(&MapSet.member?(@readability_noise_markers, &1))
+      |> case do
+        nil -> nil
+        _marker -> 500
+      end
+    end)
+  end
+
+  @spec readability_marker_attrs(Floki.html_node()) :: [String.t()]
+  defp readability_marker_attrs({_tag, attrs, _children}) when is_list(attrs) do
+    attrs
+    |> Enum.filter(fn {key, _value} -> key in ["class", "id", "role", "aria-label"] end)
+    |> Enum.map(fn {_key, value} -> to_string(value) end)
+  end
+
+  defp readability_marker_attrs(_node), do: []
 
   @spec readable_text(Floki.html_tree()) :: String.t()
   defp readable_text(scope) do
@@ -343,14 +522,18 @@ defmodule RetroHexChat.Scraper.HTTP do
   # handle as the writer's — Engadget puts `@engadget` there — so using it would
   # attribute an article to whoever runs the account. A missing byline is better
   # than a wrong one.
-  @spec author([map()], [map()]) :: String.t() | nil
-  defp author(metas, json_ld) do
+  @spec author([map()], [map()], Floki.html_tree()) :: String.t() | nil
+  defp author(metas, json_ld, document) do
     [
       meta_content(metas, "property", "article:author"),
       meta_content(metas, "property", "og:article:author"),
       meta_content(metas, "name", "author"),
       meta_content(metas, "name", "byl"),
-      json_ld_value(json_ld, ["author.name", "creator.name", "author"])
+      meta_content(metas, "name", "parsely-author"),
+      meta_content(metas, "name", "sailthru.author"),
+      dc_meta_content(metas, "creator"),
+      json_ld_value(json_ld, ["author.name", "creator.name", "author"]),
+      microdata_author(document)
     ]
     |> first_present()
     |> then(&clean_text(&1, max: @max_site_name_length))
@@ -364,7 +547,12 @@ defmodule RetroHexChat.Scraper.HTTP do
       meta_content(metas, "property", "og:article:published_time"),
       meta_content(metas, "name", "date"),
       meta_content(metas, "name", "pubdate"),
+      meta_content(metas, "name", "parsely-pub-date"),
+      meta_content(metas, "name", "sailthru.date"),
+      dc_meta_content(metas, "date"),
+      dc_meta_content(metas, "created"),
       json_ld_value(json_ld, ["datePublished", "dateCreated", "uploadDate"]),
+      microdata_value(document, ~w(datePublished dateCreated uploadDate), :date),
       document |> Floki.find("time[datetime]") |> Floki.attribute("datetime") |> List.first()
     ]
     |> first_present()
@@ -401,7 +589,9 @@ defmodule RetroHexChat.Scraper.HTTP do
       meta_content(metas, "property", "og:updated_time"),
       meta_content(metas, "name", "lastmod"),
       meta_content(metas, "name", "datemodified"),
+      dc_meta_content(metas, "modified"),
       json_ld_value(json_ld, ["dateModified", "dateUpdated"]),
+      microdata_value(document, ~w(dateModified dateUpdated), :date),
       document
       |> Floki.find(~s(time[itemprop="dateModified"][datetime]))
       |> Floki.attribute("datetime")
@@ -423,25 +613,31 @@ defmodule RetroHexChat.Scraper.HTTP do
     |> then(&clean_text(&1, max: 32))
   end
 
-  @spec section([map()], [map()]) :: String.t() | nil
-  defp section(metas, json_ld) do
+  @spec section([map()], [map()], Floki.html_tree()) :: String.t() | nil
+  defp section(metas, json_ld, document) do
     [
       meta_content(metas, "property", "article:section"),
       meta_content(metas, "name", "section"),
       meta_content(metas, "name", "parsely-section"),
-      json_ld_value(json_ld, ["articleSection", "section.name", "about.name"])
+      meta_content(metas, "name", "sailthru.vertical"),
+      json_ld_value(json_ld, ["articleSection", "section.name", "about.name"]),
+      microdata_value(document, ~w(articleSection genre), :text)
     ]
     |> first_present()
     |> then(&clean_text(&1, max: @max_section_length))
   end
 
-  @spec tags([map()], [map()]) :: [String.t()]
-  defp tags(metas, json_ld) do
+  @spec tags([map()], [map()], Floki.html_tree()) :: [String.t()]
+  defp tags(metas, json_ld, document) do
     [
       meta_values(metas, "property", "article:tag"),
       meta_values(metas, "name", "keywords"),
       meta_values(metas, "name", "news_keywords"),
-      json_ld_values(json_ld, ["keywords", "about.name"])
+      meta_values(metas, "name", "parsely-tags"),
+      meta_values(metas, "name", "sailthru.tags"),
+      dc_meta_values(metas, "subject"),
+      json_ld_values(json_ld, ["keywords", "about.name"]),
+      microdata_values(document, ~w(keywords about), :text)
     ]
     |> List.flatten()
     |> Enum.flat_map(&split_tag_value/1)
@@ -454,16 +650,136 @@ defmodule RetroHexChat.Scraper.HTTP do
   # Everything the page said that did not earn a column of its own, plus which
   # standard each column came from. One place to look when a stored title is
   # wrong, and no need to re-fetch the page to find out why.
-  @spec raw_metadata([map()], [map()], map(), image_selection()) :: map()
-  defp raw_metadata(metas, json_ld, sources, image_selection) do
+  @spec raw_metadata([map()], [map()], map(), image_selection(), map(), map()) :: map()
+  defp raw_metadata(metas, json_ld, sources, image_selection, hints, quality) do
     %{}
     |> put_unless_empty("sources", sources)
+    |> put_unless_empty("quality", quality)
+    |> put_unless_empty("feed_item", feed_item_hints_audit(hints))
     |> put_unless_empty("og", namespaced_metas(metas, "property", "og:"))
     |> put_unless_empty("article", namespaced_metas(metas, "property", "article:"))
     |> put_unless_empty("twitter", namespaced_metas(metas, "name", "twitter:"))
     |> put_unless_empty("json_ld", json_ld)
     |> put_unless_empty("image_selection", image_selection_audit(image_selection))
   end
+
+  @spec quality_audit(
+          metadata(),
+          content_info(),
+          String.t() | nil,
+          DateTime.t() | nil,
+          [String.t()],
+          image_selection(),
+          map()
+        ) :: map()
+  defp quality_audit(metadata, content, author, published_at, tags, image_selection, sources) do
+    missing = missing_quality_fields(metadata, content, author, published_at, tags)
+
+    %{}
+    |> put_unless_empty("score", quality_score(metadata, content, author, published_at, tags))
+    |> put_unless_empty("missing", missing)
+    |> put_unless_empty("title_source", Map.get(sources, "title"))
+    |> put_unless_empty("description_source", Map.get(sources, "description"))
+    |> put_unless_empty("image_source", Map.get(sources, "image"))
+    |> put_unless_empty("content_strategy", content.strategy)
+    |> put_unless_empty("content_word_count", content.word_count)
+    |> put_unless_empty("image_selected_source", selected_image_source(image_selection))
+  end
+
+  @spec missing_quality_fields(
+          metadata(),
+          content_info(),
+          String.t() | nil,
+          DateTime.t() | nil,
+          [String.t()]
+        ) :: [String.t()]
+  defp missing_quality_fields(metadata, content, author, published_at, tags) do
+    [
+      {"title", metadata[:title]},
+      {"description", metadata[:description]},
+      {"image", metadata[:image]},
+      {"author", author},
+      {"published_at", published_at},
+      {"tags", tags},
+      {"content_text", content.text}
+    ]
+    |> Enum.flat_map(fn {field, value} -> if quality_present?(value), do: [], else: [field] end)
+  end
+
+  @spec quality_score(metadata(), content_info(), String.t() | nil, DateTime.t() | nil, [
+          String.t()
+        ]) ::
+          non_neg_integer()
+  defp quality_score(metadata, content, author, published_at, tags) do
+    [
+      {metadata[:title], 20},
+      {metadata[:description], 20},
+      {metadata[:image], 15},
+      {author, 10},
+      {published_at, 10},
+      {tags, 5},
+      {content.text, content_score(content)}
+    ]
+    |> Enum.reduce(0, fn {value, points}, score ->
+      if quality_present?(value), do: score + points, else: score
+    end)
+    |> min(100)
+  end
+
+  @spec content_score(content_info()) :: non_neg_integer()
+  defp content_score(%{word_count: words}) when is_integer(words) and words >= 300, do: 20
+  defp content_score(%{word_count: words}) when is_integer(words) and words >= 100, do: 14
+  defp content_score(%{word_count: words}) when is_integer(words) and words >= 30, do: 8
+  defp content_score(_content), do: 0
+
+  @spec quality_present?(term()) :: boolean()
+  defp quality_present?(value) when is_binary(value), do: String.trim(value) != ""
+  defp quality_present?(value) when is_list(value), do: Enum.any?(value, &quality_present?/1)
+  defp quality_present?(nil), do: false
+  defp quality_present?(_value), do: true
+
+  @spec selected_image_source(image_selection()) :: String.t() | nil
+  defp selected_image_source(%{selected: %{source: source}}) when is_binary(source), do: source
+  defp selected_image_source(_selection), do: nil
+
+  @spec feed_item_hints_audit(map()) :: map()
+  defp feed_item_hints_audit(hints) do
+    source =
+      case hint_value(hints, :feed_item) do
+        value when is_map(value) -> value
+        _other -> %{}
+      end
+
+    [
+      {"title", [:title], @max_title_length},
+      {"link", [:link], @max_url_length},
+      {"guid", [:guid], @max_url_length},
+      {"published", [:published], @max_title_length},
+      {"published_at", [:published_at], @max_title_length},
+      {"description", [:description], @max_hint_description_audit_length},
+      {"content_text", [:content_text], @max_hint_content_text_length},
+      {"author", [:author], @max_site_name_length},
+      {"categories", [:categories, :tags], @max_tag_length},
+      {"image_url", [:image_url, :image], @max_url_length},
+      {"image_alt", [:image_alt], @max_title_length},
+      {"image_source", [:image_source], @max_site_name_length}
+    ]
+    |> Enum.reduce(%{}, fn {field, keys, max}, audit ->
+      value = hint_value_any(source, keys) || hint_value_any(hints, keys)
+      put_unless_empty(audit, field, audit_hint_value(field, value, max))
+    end)
+  end
+
+  @spec audit_hint_value(String.t(), term(), pos_integer()) :: term()
+  defp audit_hint_value("published_at", %DateTime{} = datetime, _max),
+    do: DateTime.to_iso8601(datetime)
+
+  defp audit_hint_value("categories", value, _max), do: normalize_hint_tags(value)
+
+  defp audit_hint_value(_field, value, max) when is_binary(value) or is_number(value),
+    do: clean_text(value, max: max)
+
+  defp audit_hint_value(_field, _value, _max), do: nil
 
   @spec namespaced_metas([map()], String.t(), String.t()) :: map()
   defp namespaced_metas(metas, key, prefix) do
@@ -483,11 +799,19 @@ defmodule RetroHexChat.Scraper.HTTP do
   defp put_unless_empty(map, key, value), do: Map.put(map, key, value)
 
   @json_ld_preferred_types MapSet.new(~w(
+    AnalysisNewsArticle
     Article
     BlogPosting
+    LiveBlogPosting
     NewsArticle
+    OpinionNewsArticle
     Product
     Recipe
+    ReportageNewsArticle
+    ReviewNewsArticle
+    ScholarlyArticle
+    SocialMediaPosting
+    TechArticle
     VideoObject
     WebPage
     WebSite
@@ -512,7 +836,7 @@ defmodule RetroHexChat.Scraper.HTTP do
   def parse_metadata(html, page_url \\ nil) when is_binary(html) do
     with {:ok, document} <- parse_document(html),
          {:ok, metadata, _sources, _oembed_url, _image_selection} <-
-           metadata_from_document(document, page_url, []) do
+           metadata_from_document(document, page_url, %{}) do
       ensure_useful_metadata(metadata)
     end
   end
@@ -708,23 +1032,32 @@ defmodule RetroHexChat.Scraper.HTTP do
     end
   end
 
-  @spec metadata_from_document(Floki.html_tree(), String.t() | nil, Client.opts()) ::
+  @spec metadata_from_document(Floki.html_tree(), String.t() | nil, map()) ::
           {:ok, metadata(), map(), String.t() | nil, image_selection()}
-  defp metadata_from_document(document, page_url, opts) do
+  defp metadata_from_document(document, page_url, hints) do
     scope = head_scope(document)
     metas = meta_tags(scope)
     links = link_tags(scope)
     json_ld = json_ld_candidates(scope)
-    hints = metadata_hints(opts)
 
     {title, title_source} = title(metas, json_ld, scope, document)
-    {description, description_source} = description(metas, json_ld)
+    {description, description_source} = description(metas, json_ld, document)
     {site_name, site_name_source} = site_name(metas, json_ld)
-    {url_value, url_source} = page_url(metas, links, page_url)
+    {url_value, url_source} = page_url(metas, links, page_url, document)
     {image_alt, image_alt_source} = image_alt(metas, json_ld)
     image_selection = image_selection(document, metas, json_ld, hints, page_url)
     selected_image = image_selection.selected
     {image, image_source} = selected_image_value(selected_image)
+
+    {title, title_source} =
+      labelled_fallback({title, title_source}, hint_value(hints, :title), "feed_item",
+        max: @max_title_length
+      )
+
+    {description, description_source} =
+      labelled_fallback({description, description_source}, hint_description(hints), "feed_item",
+        max: @max_description_length
+      )
 
     {image_alt, image_alt_source} =
       selected_image_alt(selected_image, image_alt, image_alt_source)
@@ -768,17 +1101,27 @@ defmodule RetroHexChat.Scraper.HTTP do
       {"og", meta_content(metas, "property", "og:title")},
       {"twitter", meta_content(metas, "name", "twitter:title")},
       {"json_ld", json_ld_value(json_ld, ["headline", "name"])},
+      {"parsely", meta_content(metas, "name", "parsely-title")},
+      {"sailthru", meta_content(metas, "name", "sailthru.title")},
+      {"dc", dc_meta_content(metas, "title")},
+      {"microdata", microdata_value(document, ~w(headline), :text)},
       {"html", scope |> Floki.find("title") |> Floki.text()},
-      {"heading", heading_title(document)}
+      {"heading", heading_title(document)},
+      {"microdata", microdata_value(document, ~w(name), :text)}
     ])
   end
 
-  @spec description([map()], [map()]) :: {String.t() | nil, String.t() | nil}
-  defp description(metas, json_ld) do
+  @spec description([map()], [map()], Floki.html_tree()) ::
+          {String.t() | nil, String.t() | nil}
+  defp description(metas, json_ld, document) do
     first_labelled([
       {"og", meta_content(metas, "property", "og:description")},
       {"twitter", meta_content(metas, "name", "twitter:description")},
       {"json_ld", json_ld_value(json_ld, ["description"])},
+      {"parsely", meta_content(metas, "name", "parsely-summary")},
+      {"sailthru", meta_content(metas, "name", "sailthru.description")},
+      {"dc", dc_meta_content(metas, "description")},
+      {"microdata", microdata_value(document, ~w(description), :text)},
       {"html", meta_content(metas, "name", "description")}
     ])
   end
@@ -788,16 +1131,19 @@ defmodule RetroHexChat.Scraper.HTTP do
     first_labelled([
       {"og", meta_content(metas, "property", "og:site_name")},
       {"html", meta_content(metas, "name", "application-name")},
+      {"dc", dc_meta_content(metas, "publisher")},
       {"json_ld", json_ld_value(json_ld, ["publisher.name", "provider.name"])}
     ])
   end
 
-  @spec page_url([map()], [map()], String.t() | nil) :: {String.t() | nil, String.t() | nil}
-  defp page_url(metas, links, fallback) do
+  @spec page_url([map()], [map()], String.t() | nil, Floki.html_tree()) ::
+          {String.t() | nil, String.t() | nil}
+  defp page_url(metas, links, fallback, document) do
     first_labelled([
       {"og", meta_content(metas, "property", "og:url")},
       {"twitter", meta_content(metas, "name", "twitter:url")},
       {"canonical", canonical_url(links)},
+      {"microdata", microdata_value(document, ~w(url mainEntityOfPage), :url)},
       {"request", fallback}
     ])
   end
@@ -828,7 +1174,10 @@ defmodule RetroHexChat.Scraper.HTTP do
     {"og", "property", "og:image:url", 104},
     {"og", "property", "og:image", 102},
     {"twitter", "name", "twitter:image", 96},
-    {"twitter", "name", "twitter:image:src", 96}
+    {"twitter", "name", "twitter:image:src", 96},
+    {"parsely", "name", "parsely-image-url", 94},
+    {"sailthru", "name", "sailthru.image.full", 92},
+    {"sailthru", "name", "sailthru.image.thumb", 88}
   ]
 
   @document_image_scopes [
@@ -926,7 +1275,7 @@ defmodule RetroHexChat.Scraper.HTTP do
     weixin
   ))
 
-  @metadata_image_sources ~w(feed_media og twitter json_ld)
+  @metadata_image_sources ~w(feed_media og twitter json_ld parsely sailthru microdata)
 
   @spec metadata_hints(Client.opts()) :: map()
   defp metadata_hints(opts) do
@@ -936,11 +1285,65 @@ defmodule RetroHexChat.Scraper.HTTP do
     end
   end
 
+  @spec hint_description(map()) :: String.t() | nil
+  defp hint_description(hints) do
+    first_present([hint_value(hints, :description), hint_value(hints, :content_text)])
+  end
+
+  @spec hint_content_text(map()) :: String.t() | nil
+  defp hint_content_text(hints) do
+    hints
+    |> hint_value(:content_text)
+    |> clean_text(max: @max_hint_content_text_length)
+  end
+
+  @spec hint_author(map()) :: String.t() | nil
+  defp hint_author(hints) do
+    hints
+    |> hint_value(:author)
+    |> clean_text(max: @max_site_name_length)
+    |> Client.byline()
+  end
+
+  @spec hint_datetime(map(), atom()) :: DateTime.t() | nil
+  defp hint_datetime(hints, key) do
+    case hint_value(hints, key) do
+      %DateTime{} = datetime -> datetime
+      value when is_binary(value) -> parse_datetime(value)
+      _other -> nil
+    end
+  end
+
+  @spec hint_tags(map()) :: [String.t()]
+  defp hint_tags(hints) do
+    hints
+    |> hint_value(:tags)
+    |> normalize_hint_tags()
+  end
+
+  @spec normalize_hint_tags(term()) :: [String.t()]
+  defp normalize_hint_tags(values) do
+    values
+    |> List.wrap()
+    |> Enum.flat_map(&split_tag_value/1)
+    |> Enum.map(&clean_text(&1, max: @max_tag_length))
+    |> Enum.reject(&is_nil/1)
+    |> Enum.uniq_by(&String.downcase/1)
+    |> Enum.take(@max_tags)
+  end
+
+  @spec merge_tags([String.t()], [String.t()]) :: [String.t()]
+  defp merge_tags(page_tags, hint_tags) do
+    (page_tags ++ hint_tags)
+    |> Enum.uniq_by(&String.downcase/1)
+    |> Enum.take(@max_tags)
+  end
+
   @spec image_selection(Floki.html_tree(), [map()], [map()], map(), String.t() | nil) ::
           image_selection()
   defp image_selection(document, metas, json_ld, hints, page_url) do
     candidates =
-      metadata_image_candidates(metas, json_ld, hints, page_url) ++
+      metadata_image_candidates(document, metas, json_ld, hints, page_url) ++
         document_image_candidates(document, page_url)
 
     candidates
@@ -967,10 +1370,11 @@ defmodule RetroHexChat.Scraper.HTTP do
 
   defp selected_image_alt(_selected, _fallback_alt, _fallback_source), do: {nil, nil}
 
-  @spec metadata_image_candidates([map()], [map()], map(), String.t() | nil) :: [
-          image_candidate()
-        ]
-  defp metadata_image_candidates(metas, json_ld, hints, page_url) do
+  @spec metadata_image_candidates(Floki.html_tree(), [map()], [map()], map(), String.t() | nil) ::
+          [
+            image_candidate()
+          ]
+  defp metadata_image_candidates(document, metas, json_ld, hints, page_url) do
     feed_image_candidates(hints, page_url) ++
       Enum.flat_map(@metadata_image_candidates, fn {source, key, wanted, score} ->
         metas
@@ -983,7 +1387,21 @@ defmodule RetroHexChat.Scraper.HTTP do
           )
         end)
       end) ++
-      json_ld_image_candidates(json_ld, page_url)
+      json_ld_image_candidates(json_ld, page_url) ++
+      microdata_image_candidates(document, page_url)
+  end
+
+  @spec microdata_image_candidates(Floki.html_tree(), String.t() | nil) :: [image_candidate()]
+  defp microdata_image_candidates(document, page_url) do
+    document
+    |> microdata_values(~w(image thumbnailUrl primaryImageOfPage), :image)
+    |> Enum.map(fn value ->
+      image_candidate(value, page_url,
+        source: "microdata",
+        source_kind: :metadata,
+        base_score: 88
+      )
+    end)
   end
 
   @spec feed_image_candidates(map(), String.t() | nil) :: [image_candidate()]
@@ -1007,7 +1425,25 @@ defmodule RetroHexChat.Scraper.HTTP do
 
   @spec hint_value(map(), atom()) :: term()
   defp hint_value(hints, key) do
-    Map.get(hints, key) || Map.get(hints, Atom.to_string(key))
+    [Map.get(hints, key), Map.get(hints, Atom.to_string(key))]
+    |> Enum.find_value(fn
+      nil -> nil
+      "" -> nil
+      [] -> nil
+      value -> value
+    end)
+  end
+
+  @spec hint_value_any(map(), [atom()]) :: term()
+  defp hint_value_any(hints, keys) do
+    Enum.find_value(keys, fn key ->
+      case hint_value(hints, key) do
+        nil -> nil
+        "" -> nil
+        [] -> nil
+        value -> value
+      end
+    end)
   end
 
   @spec json_ld_image_candidates([map()], String.t() | nil) :: [image_candidate()]
@@ -1444,6 +1880,23 @@ defmodule RetroHexChat.Scraper.HTTP do
     end)
   end
 
+  @spec labelled_fallback(
+          {String.t() | nil, String.t() | nil},
+          term(),
+          String.t(),
+          keyword()
+        ) :: {String.t() | nil, String.t() | nil}
+  defp labelled_fallback({value, source}, fallback, fallback_source, opts) do
+    if present?(value) do
+      {value, source}
+    else
+      case clean_text(fallback, opts) do
+        nil -> {value, source}
+        clean -> {clean, fallback_source}
+      end
+    end
+  end
+
   @spec meta_tags(Floki.html_tree()) :: [map()]
   defp meta_tags(scope) do
     scope
@@ -1474,6 +1927,28 @@ defmodule RetroHexChat.Scraper.HTTP do
     end)
   end
 
+  @spec dc_meta_content([map()], String.t()) :: String.t() | nil
+  defp dc_meta_content(metas, name) do
+    [
+      meta_content(metas, "name", "dc.#{name}"),
+      meta_content(metas, "name", "dcterms.#{name}"),
+      meta_content(metas, "property", "dc:#{name}"),
+      meta_content(metas, "property", "dcterms:#{name}")
+    ]
+    |> first_present()
+  end
+
+  @spec dc_meta_values([map()], String.t()) :: [String.t()]
+  defp dc_meta_values(metas, name) do
+    [
+      meta_values(metas, "name", "dc.#{name}"),
+      meta_values(metas, "name", "dcterms.#{name}"),
+      meta_values(metas, "property", "dc:#{name}"),
+      meta_values(metas, "property", "dcterms:#{name}")
+    ]
+    |> List.flatten()
+  end
+
   @spec meta_values([map()], String.t(), String.t()) :: [String.t()]
   defp meta_values(metas, key, wanted) do
     metas
@@ -1485,6 +1960,117 @@ defmodule RetroHexChat.Scraper.HTTP do
       end
     end)
     |> Enum.filter(&is_binary/1)
+  end
+
+  @spec microdata_value(Floki.html_tree(), [String.t()], :text | :date | :image | :url) ::
+          String.t() | nil
+  defp microdata_value(document, props, kind) do
+    document
+    |> microdata_values(props, kind)
+    |> first_present()
+  end
+
+  @spec microdata_values(Floki.html_tree(), [String.t()], :text | :date | :image | :url) :: [
+          String.t()
+        ]
+  defp microdata_values(document, props, kind) do
+    props = MapSet.new(props)
+
+    document
+    |> Floki.find("[itemprop]")
+    |> Enum.flat_map(&microdata_node_values(&1, props, kind))
+  end
+
+  @spec microdata_node_values(
+          Floki.html_node(),
+          MapSet.t(String.t()),
+          :text | :date | :image | :url
+        ) ::
+          [String.t()]
+  defp microdata_node_values(node, props, kind) do
+    attrs = attrs_map(node)
+
+    matches? =
+      attrs
+      |> Map.get("itemprop", "")
+      |> String.split()
+      |> Enum.any?(&MapSet.member?(props, &1))
+
+    if matches? do
+      node
+      |> microdata_node_value(kind)
+      |> List.wrap()
+      |> Enum.filter(&is_binary/1)
+    else
+      []
+    end
+  end
+
+  @spec microdata_node_value(Floki.html_node(), :text | :date | :image | :url) :: String.t() | nil
+  defp microdata_node_value(node, :date) do
+    attrs = attrs_map(node)
+
+    first_present([
+      Map.get(attrs, "content"),
+      Map.get(attrs, "datetime"),
+      Floki.text(node, sep: " ")
+    ])
+  end
+
+  defp microdata_node_value(node, :image) do
+    attrs = attrs_map(node)
+
+    first_present([
+      Map.get(attrs, "src"),
+      Map.get(attrs, "data-src"),
+      Map.get(attrs, "content"),
+      Map.get(attrs, "href"),
+      Floki.text(node, sep: " ")
+    ])
+  end
+
+  defp microdata_node_value(node, :url) do
+    attrs = attrs_map(node)
+
+    first_present([Map.get(attrs, "href"), Map.get(attrs, "content"), Floki.text(node, sep: " ")])
+  end
+
+  defp microdata_node_value(node, :text) do
+    attrs = attrs_map(node)
+
+    first_present([
+      Map.get(attrs, "content"),
+      Map.get(attrs, "datetime"),
+      Floki.text(node, sep: " ")
+    ])
+  end
+
+  @spec microdata_author(Floki.html_tree()) :: String.t() | nil
+  defp microdata_author(document) do
+    document
+    |> Floki.find("[itemprop~=author], [itemprop~=creator]")
+    |> Enum.find_value(&microdata_author_node/1)
+  end
+
+  @spec microdata_article_body(Floki.html_tree()) :: String.t() | nil
+  defp microdata_article_body(document) do
+    document
+    |> Floki.find("[itemprop~=articleBody]")
+    |> Enum.map(&readable_text([&1]))
+    |> Enum.join(" ")
+    |> collapse_whitespace()
+    |> blank_to_nil()
+  end
+
+  @spec microdata_author_node(Floki.html_node()) :: String.t() | nil
+  defp microdata_author_node(node) do
+    [
+      node
+      |> Floki.find("[itemprop~=name]")
+      |> Enum.find_value(&microdata_node_value(&1, :text)),
+      microdata_node_value(node, :text)
+    ]
+    |> first_present()
   end
 
   @spec canonical_url([map()]) :: String.t() | nil
@@ -1672,6 +2258,23 @@ defmodule RetroHexChat.Scraper.HTTP do
   defp json_ld_value(candidates, paths) do
     Enum.find_value(candidates, fn candidate ->
       Enum.find_value(paths, &get_path(candidate, &1))
+    end)
+  end
+
+  @spec json_ld_article_body([map()]) :: String.t() | nil
+  defp json_ld_article_body(candidates) do
+    Enum.find_value(candidates, fn candidate ->
+      [
+        "articleBody",
+        "text",
+        "reviewBody"
+      ]
+      |> Enum.find_value(fn path ->
+        candidate
+        |> get_raw_path(path)
+        |> json_ld_scalar()
+        |> clean_text(max: @max_content_text_length)
+      end)
     end)
   end
 

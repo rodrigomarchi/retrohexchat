@@ -157,7 +157,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Bots do
         description:
           dgettext(
             "help",
-            "Monitor RSS/Atom feeds and post new items to channels as rich Markdown link previews, reusing pages the server has already read."
+            "Monitor RSS/Atom feeds and post new items as rich Markdown cards, combining page metadata with feed summaries, authors, dates, media hints and cached thumbnails."
           ),
         see_also: ["feature-link-previews", "feature-url-catcher"]
       },

@@ -13,6 +13,10 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.FeedParser do
           # the only identity that stays put when a link is rewritten.
           required(:guid) => String.t() | nil,
           required(:published) => String.t() | nil,
+          optional(:description) => String.t() | nil,
+          optional(:content_text) => String.t() | nil,
+          optional(:author) => String.t() | nil,
+          optional(:categories) => [String.t()],
           optional(:image_url) => String.t() | nil,
           optional(:image_alt) => String.t() | nil,
           optional(:image_source) => String.t() | nil
@@ -28,6 +32,13 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.FeedParser do
           title: String.t() | nil,
           items: [feed_item()]
         }
+
+  @max_description_length 2_000
+  @max_content_text_length 50_000
+  @max_author_length 120
+  @max_category_length 48
+  @max_categories 12
+  @html_text_boilerplate ~w(script style noscript template iframe svg)
 
   @spec parse(String.t()) :: {:ok, feed_info()} | {:error, String.t()}
   def parse(xml_string) do
@@ -100,6 +111,9 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.FeedParser do
 
   @spec parse_rss_item(tuple()) :: feed_item()
   defp parse_rss_item(item) do
+    description = rss_item_description(item)
+    content_text = rss_item_content_text(item, description)
+
     item
     |> rss_item_image()
     |> put_item_image(%{
@@ -108,6 +122,10 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.FeedParser do
       guid: child_text(item, :guid),
       published: child_text(item, :pubDate)
     })
+    |> maybe_put(:description, description)
+    |> maybe_put(:content_text, content_text)
+    |> maybe_put(:author, rss_item_author(item))
+    |> maybe_put(:categories, rss_item_categories(item))
   end
 
   # ── Atom Parsing ──
@@ -121,6 +139,9 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.FeedParser do
 
   @spec parse_atom_entry(tuple()) :: feed_item()
   defp parse_atom_entry(entry) do
+    description = atom_entry_description(entry)
+    content_text = atom_entry_content_text(entry, description)
+
     entry
     |> atom_entry_image()
     |> put_item_image(%{
@@ -129,6 +150,10 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.FeedParser do
       guid: child_text(entry, :id),
       published: child_text(entry, :published) || child_text(entry, :updated)
     })
+    |> maybe_put(:description, description)
+    |> maybe_put(:content_text, content_text)
+    |> maybe_put(:author, atom_entry_author(entry))
+    |> maybe_put(:categories, atom_entry_categories(entry))
   end
 
   @spec atom_link(tuple()) :: String.t() | nil
@@ -142,6 +167,107 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.FeedParser do
         get_attribute(link, :href)
       end
     end) || Enum.find_value(links, &get_attribute(&1, :href))
+  end
+
+  # ── Rich Feed Item Fields ──
+
+  @spec rss_item_description(tuple()) :: String.t() | nil
+  defp rss_item_description(item) do
+    [
+      child_text(item, :description),
+      child_text_by_local_name(item, "description")
+    ]
+    |> first_clean_fragment(@max_description_length)
+  end
+
+  @spec rss_item_content_text(tuple(), String.t() | nil) :: String.t() | nil
+  defp rss_item_content_text(item, description) do
+    [
+      child_deep_text_by_local_name(item, "encoded"),
+      child_text(item, :description),
+      description
+    ]
+    |> first_clean_fragment(@max_content_text_length)
+  end
+
+  @spec rss_item_author(tuple()) :: String.t() | nil
+  defp rss_item_author(item) do
+    [
+      child_text_by_local_name(item, "creator"),
+      child_text(item, :author),
+      child_text_by_local_name(item, "credit")
+    ]
+    |> first_clean_text(@max_author_length)
+  end
+
+  @spec rss_item_categories(tuple()) :: [String.t()]
+  defp rss_item_categories(item) do
+    item
+    |> find_children(:category)
+    |> Enum.map(&extract_text/1)
+    |> clean_categories()
+  end
+
+  @spec atom_entry_description(tuple()) :: String.t() | nil
+  defp atom_entry_description(entry) do
+    [
+      child_deep_text(entry, :summary),
+      child_deep_text(entry, :subtitle)
+    ]
+    |> first_clean_fragment(@max_description_length)
+  end
+
+  @spec atom_entry_content_text(tuple(), String.t() | nil) :: String.t() | nil
+  defp atom_entry_content_text(entry, description) do
+    [
+      child_deep_text(entry, :content),
+      child_deep_text(entry, :summary),
+      description
+    ]
+    |> first_clean_fragment(@max_content_text_length)
+  end
+
+  @spec atom_entry_author(tuple()) :: String.t() | nil
+  defp atom_entry_author(entry) do
+    entry
+    |> find_children(:author)
+    |> Enum.flat_map(fn author ->
+      [child_deep_text(author, :name), child_deep_text(author, :email), extract_deep_text(author)]
+    end)
+    |> first_clean_text(@max_author_length)
+  end
+
+  @spec atom_entry_categories(tuple()) :: [String.t()]
+  defp atom_entry_categories(entry) do
+    entry
+    |> find_children_by_local_name("category")
+    |> Enum.flat_map(fn category ->
+      [
+        get_attribute(category, :term),
+        get_attribute(category, :label),
+        extract_deep_text(category)
+      ]
+    end)
+    |> clean_categories()
+  end
+
+  @spec first_clean_fragment([term()], pos_integer()) :: String.t() | nil
+  defp first_clean_fragment(values, max) do
+    Enum.find_value(values, &clean_fragment_text(&1, max))
+  end
+
+  @spec first_clean_text([term()], pos_integer()) :: String.t() | nil
+  defp first_clean_text(values, max) do
+    Enum.find_value(values, &clean_item_text(&1, max))
+  end
+
+  @spec clean_categories([term()]) :: [String.t()]
+  defp clean_categories(values) do
+    values
+    |> Enum.map(&clean_item_text(&1, @max_category_length))
+    |> Enum.reject(&is_nil/1)
+    |> Enum.uniq_by(&String.downcase/1)
+    |> Enum.take(@max_categories)
   end
 
   # ── Feed Item Images ──
@@ -243,7 +369,9 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.FeedParser do
   @spec media_image_alt(tuple()) :: String.t() | nil
   defp media_image_alt(element) do
     get_attribute(element, :title) ||
+      child_text_by_local_name(element, "title") ||
       get_attribute(element, :description) ||
+      child_text_by_local_name(element, "description") ||
       get_attribute(element, :alt)
   end
 
@@ -349,21 +477,85 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.FeedParser do
   @spec maybe_put(map(), atom(), term()) :: map()
   defp maybe_put(map, _key, nil), do: map
   defp maybe_put(map, _key, ""), do: map
+  defp maybe_put(map, _key, []), do: map
   defp maybe_put(map, key, value), do: Map.put(map, key, value)
 
   @spec clean_item_text(term()) :: String.t() | nil
-  defp clean_item_text(value) when is_binary(value) do
+  defp clean_item_text(value), do: clean_item_text(value, @max_description_length)
+
+  @spec clean_item_text(term(), pos_integer()) :: String.t() | nil
+  defp clean_item_text(value, max) when is_binary(value) do
     value
+    |> decode_html_entities()
     |> String.replace(~r/<[^>]*>/u, "")
+    |> String.replace(<<0xC2, 0xA0>>, " ")
     |> String.replace(~r/\s+/u, " ")
+    |> String.replace(~r/\s+([,.;:!?])/u, "\\1")
     |> String.trim()
     |> case do
       "" -> nil
-      clean -> clean
+      clean -> truncate_text(clean, max)
     end
   end
 
-  defp clean_item_text(_value), do: nil
+  defp clean_item_text(value, max) when is_number(value),
+    do: value |> to_string() |> clean_item_text(max)
+
+  defp clean_item_text(_value, _max), do: nil
+
+  @spec clean_fragment_text(term(), pos_integer()) :: String.t() | nil
+  defp clean_fragment_text(value, max) when is_binary(value) do
+    value
+    |> decode_html_entities()
+    |> fragment_text()
+    |> String.replace(<<0xC2, 0xA0>>, " ")
+    |> String.replace(~r/\s+/u, " ")
+    |> String.replace(~r/\s+([,.;:!?])/u, "\\1")
+    |> String.trim()
+    |> blank_to_nil()
+    |> truncate_text(max)
+  end
+
+  defp clean_fragment_text(value, max) when is_number(value),
+    do: value |> to_string() |> clean_fragment_text(max)
+
+  defp clean_fragment_text(_value, _max), do: nil
+
+  @spec fragment_text(String.t()) :: String.t()
+  defp fragment_text(text) do
+    if String.contains?(text, "<") do
+      case Floki.parse_fragment(text) do
+        {:ok, nodes} ->
+          @html_text_boilerplate
+          |> Enum.reduce(nodes, &Floki.filter_out(&2, &1))
+          |> Floki.text(sep: " ")
+
+        {:error, _reason} ->
+          String.replace(text, ~r/<[^>]*>/u, " ")
+      end
+    else
+      text
+    end
+  end
+
+  @spec blank_to_nil(String.t()) :: String.t() | nil
+  defp blank_to_nil(""), do: nil
+  defp blank_to_nil(value), do: value
+
+  @spec truncate_text(String.t() | nil, non_neg_integer()) :: String.t() | nil
+  defp truncate_text(nil, _max), do: nil
+
+  defp truncate_text(text, max) do
+    if String.length(text) <= max do
+      text
+    else
+      text
+      |> String.graphemes()
+      |> Enum.take(max)
+      |> Enum.join()
+      |> Kernel.<>("...")
+    end
+  end
 
   @spec first_present_attr([term()]) :: String.t() | nil
   defp first_present_attr(values) do
@@ -448,6 +640,42 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.FeedParser do
     end
   end
 
+  @spec child_text_by_local_name(tuple(), String.t()) :: String.t() | nil
+  defp child_text_by_local_name(parent, name) do
+    parent
+    |> find_children_by_local_name(name)
+    |> Enum.find_value(fn child ->
+      case extract_text(child) do
+        "" -> nil
+        text -> text
+      end
+    end)
+  end
+
+  @spec child_deep_text(tuple(), atom()) :: String.t() | nil
+  defp child_deep_text(parent, name) do
+    child = find_child(parent, name)
+
+    if child do
+      case extract_deep_text(child) do
+        "" -> nil
+        text -> text
+      end
+    end
+  end
+
+  @spec child_deep_text_by_local_name(tuple(), String.t()) :: String.t() | nil
+  defp child_deep_text_by_local_name(parent, name) do
+    parent
+    |> find_children_by_local_name(name)
+    |> Enum.find_value(fn child ->
+      case extract_deep_text(child) do
+        "" -> nil
+        text -> text
+      end
+    end)
+  end
+
   @spec extract_text(tuple()) :: String.t()
   defp extract_text({:xmlElement, _, _, _, _, _, _, _, content, _, _, _}) do
     content
@@ -462,6 +690,20 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.FeedParser do
 
   defp extract_text(_), do: ""
 
+  @spec extract_deep_text(tuple()) :: String.t()
+  defp extract_deep_text({:xmlElement, _, _, _, _, _, _, _, content, _, _, _}) do
+    content
+    |> Enum.map(fn
+      {:xmlText, _, _, _, text, _} -> to_string(text)
+      {:xmlElement, _, _, _, _, _, _, _, _, _, _, _} = element -> extract_deep_text(element)
+      _other -> ""
+    end)
+    |> Enum.join(" ")
+    |> String.trim()
+  end
+
+  defp extract_deep_text(_), do: ""
+
   @spec get_attribute(tuple(), atom()) :: String.t() | nil
   defp get_attribute({:xmlElement, _, _, _, _, _, _, attrs, _, _, _, _}, name) do
     case Enum.find(attrs, fn {:xmlAttribute, n, _, _, _, _, _, _, _, _} -> n == name end) do
@@ -471,4 +713,34 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.FeedParser do
   end
 
   defp get_attribute(_, _), do: nil
+
+  @entity_map %{
+    "amp" => "&",
+    "apos" => "'",
+    "gt" => ">",
+    "hellip" => "...",
+    "lt" => "<",
+    "nbsp" => " ",
+    "quot" => "\""
+  }
+
+  @spec decode_html_entities(String.t()) :: String.t()
+  defp decode_html_entities(text) do
+    text = Regex.replace(~r/&#x([0-9a-fA-F]+);/, text, fn _match, hex -> codepoint(hex, 16) end)
+    text = Regex.replace(~r/&#([0-9]+);/, text, fn _match, int -> codepoint(int, 10) end)
+
+    Regex.replace(~r/&([a-zA-Z][a-zA-Z0-9]+);/, text, fn match, name ->
+      Map.get(@entity_map, String.downcase(name), match)
+    end)
+  end
+
+  @spec codepoint(String.t(), 10 | 16) :: String.t()
+  defp codepoint(value, base) do
+    value
+    |> String.to_integer(base)
+    |> List.wrap()
+    |> List.to_string()
+  rescue
+    _ -> ""
+  end
 end

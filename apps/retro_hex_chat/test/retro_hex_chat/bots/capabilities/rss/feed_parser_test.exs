@@ -131,6 +131,47 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.FeedParserTest do
       assert item.image_alt == "Lead photo"
       assert item.image_source == "description_image"
     end
+
+    test "reads rich RSS item text, author and categories" do
+      xml = """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <rss version="2.0"
+        xmlns:content="http://purl.org/rss/1.0/modules/content/"
+        xmlns:dc="http://purl.org/dc/elements/1.1/">
+        <channel>
+          <title>Wire</title>
+          <item>
+            <title>Story with rich feed fields</title>
+            <link>https://example.com/rich</link>
+            <description><![CDATA[
+              <p>Short &amp; useful <strong>summary</strong>.</p>
+              <script>ignored()</script>
+            ]]></description>
+            <content:encoded><![CDATA[
+              <article>
+                <p>First full paragraph from the feed.</p>
+                <p>Second full paragraph from the feed.</p>
+              </article>
+            ]]></content:encoded>
+            <dc:creator>Ana Reporter</dc:creator>
+            <category>World</category>
+            <category>Asia</category>
+          </item>
+        </channel>
+      </rss>
+      """
+
+      {:ok, feed} = FeedParser.parse(xml)
+
+      assert [%{} = item] = feed.items
+      assert item.description == "Short & useful summary."
+
+      assert item.content_text ==
+               "First full paragraph from the feed. Second full paragraph from the feed."
+
+      assert item.author == "Ana Reporter"
+      assert item.categories == ["World", "Asia"]
+    end
   end
 
   describe "parse/1 — Atom" do
@@ -175,6 +216,37 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.FeedParserTest do
       assert [%{link: "https://example.com/atom-post"} = item] = feed.items
       assert item.image_url == "https://cdn.example.com/atom.jpg"
       assert item.image_source == "atom_link"
+    end
+
+    test "reads rich Atom entry text, author and categories" do
+      atom = """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <feed xmlns="http://www.w3.org/2005/Atom">
+        <title>Atom Blog</title>
+        <entry>
+          <title>Atom Post</title>
+          <link href="https://example.com/atom-post"/>
+          <summary type="html">&lt;p&gt;Brief &amp;amp; clear summary.&lt;/p&gt;</summary>
+          <content type="xhtml">
+            <div xmlns="http://www.w3.org/1999/xhtml">
+              <p>First Atom paragraph.</p>
+              <p>Second Atom paragraph.</p>
+            </div>
+          </content>
+          <author><name>Bruno Writer</name></author>
+          <category term="Technology"/>
+          <category label="Research"/>
+        </entry>
+      </feed>
+      """
+
+      {:ok, feed} = FeedParser.parse(atom)
+
+      assert [%{} = item] = feed.items
+      assert item.description == "Brief & clear summary."
+      assert item.content_text == "First Atom paragraph. Second Atom paragraph."
+      assert item.author == "Bruno Writer"
+      assert item.categories == ["Technology", "Research"]
     end
   end
 

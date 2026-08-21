@@ -33,7 +33,7 @@ defmodule RetroHexChat.Scraper.Store do
 
   # Bumped when the extractor learns to read something it previously missed.
   # Rows below the current version are stale regardless of `expires_at`.
-  @scraper_version 3
+  @scraper_version 5
 
   # Parameters that identify a campaign, not a page. Feeds are saturated with
   # them, so leaving them in means scraping the same article once per referrer.

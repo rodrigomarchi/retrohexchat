@@ -558,6 +558,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
 
   @preview_max_concurrency 8
   @preview_fetch_timeout_ms 20_000
+  @feed_card_excerpt_length 360
 
   @spec format_items([FeedParser.feed_item()], String.t() | nil) :: [map()]
   defp format_items(items, feed_title) do
@@ -602,7 +603,16 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
 
   @spec feed_item_metadata_hints(FeedParser.feed_item()) :: Scraper.Client.metadata_hints()
   defp feed_item_metadata_hints(item) do
+    published_at = feed_item_published_at(item)
+
     %{}
+    |> maybe_put_hint(:title, Map.get(item, :title))
+    |> maybe_put_hint(:description, Map.get(item, :description))
+    |> maybe_put_hint(:content_text, Map.get(item, :content_text))
+    |> maybe_put_hint(:author, Map.get(item, :author))
+    |> maybe_put_hint(:published_at, published_at)
+    |> maybe_put_hint(:tags, Map.get(item, :categories))
+    |> maybe_put_hint(:feed_item, feed_item_raw_hints(item, published_at))
     |> maybe_put_hint(:image, Map.get(item, :image_url))
     |> maybe_put_hint(:image_alt, Map.get(item, :image_alt))
     |> maybe_put_hint(:image_source, Map.get(item, :image_source))
@@ -611,7 +621,36 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
   @spec maybe_put_hint(map(), atom(), term()) :: map()
   defp maybe_put_hint(map, _key, nil), do: map
   defp maybe_put_hint(map, _key, ""), do: map
+  defp maybe_put_hint(map, _key, []), do: map
+  defp maybe_put_hint(map, _key, value) when value == %{}, do: map
   defp maybe_put_hint(map, key, value), do: Map.put(map, key, value)
+
+  @spec feed_item_raw_hints(FeedParser.feed_item(), DateTime.t() | nil) :: map()
+  defp feed_item_raw_hints(item, published_at) do
+    %{}
+    |> maybe_put_raw_hint("title", Map.get(item, :title))
+    |> maybe_put_raw_hint("link", Map.get(item, :link))
+    |> maybe_put_raw_hint("guid", Map.get(item, :guid))
+    |> maybe_put_raw_hint("published", Map.get(item, :published))
+    |> maybe_put_raw_hint("published_at", iso8601(published_at))
+    |> maybe_put_raw_hint("description", Map.get(item, :description))
+    |> maybe_put_raw_hint("content_text", Map.get(item, :content_text))
+    |> maybe_put_raw_hint("author", Map.get(item, :author))
+    |> maybe_put_raw_hint("categories", Map.get(item, :categories))
+    |> maybe_put_raw_hint("image_url", Map.get(item, :image_url))
+    |> maybe_put_raw_hint("image_alt", Map.get(item, :image_alt))
+    |> maybe_put_raw_hint("image_source", Map.get(item, :image_source))
+  end
+
+  @spec maybe_put_raw_hint(map(), String.t(), term()) :: map()
+  defp maybe_put_raw_hint(map, _key, nil), do: map
+  defp maybe_put_raw_hint(map, _key, ""), do: map
+  defp maybe_put_raw_hint(map, _key, []), do: map
+  defp maybe_put_raw_hint(map, key, value), do: Map.put(map, key, value)
+
+  @spec iso8601(DateTime.t() | nil) :: String.t() | nil
+  defp iso8601(%DateTime{} = datetime), do: DateTime.to_iso8601(datetime)
+  defp iso8601(_datetime), do: nil
 
   @doc """
   A feed item as one Markdown card.
@@ -628,7 +667,9 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
   @spec format_item(FeedParser.feed_item(), String.t() | nil, Scraper.Client.metadata() | nil) ::
           String.t()
   def format_item(item, feed_title, metadata \\ nil) do
-    Card.markdown(metadata || %{},
+    metadata = merge_card_metadata(metadata || %{}, feed_item_card_metadata(item))
+
+    Card.markdown(metadata,
       fallback_title: item_title(item),
       fallback_source: source_label(feed_title),
       image_policy: :cached,
@@ -639,6 +680,116 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
   @spec item_title(FeedParser.feed_item()) :: String.t()
   defp item_title(%{title: title}) when is_binary(title) and title != "", do: title
   defp item_title(_item), do: dgettext("bots", "(no title)")
+
+  @spec feed_item_card_metadata(FeedParser.feed_item()) :: Scraper.Client.metadata()
+  defp feed_item_card_metadata(item) do
+    content_text = Map.get(item, :content_text)
+
+    %{}
+    |> maybe_put_hint(:description, Map.get(item, :description) || excerpt(content_text))
+    |> maybe_put_hint(:author, Scraper.Client.byline(Map.get(item, :author)))
+    |> maybe_put_hint(:published_at, feed_item_published_at(item))
+    |> maybe_put_hint(:tags, Map.get(item, :categories))
+    |> maybe_put_hint(:word_count, word_count(content_text))
+  end
+
+  @spec merge_card_metadata(Scraper.Client.metadata(), Scraper.Client.metadata()) ::
+          Scraper.Client.metadata()
+  defp merge_card_metadata(page_metadata, feed_metadata) do
+    Map.merge(feed_metadata, page_metadata, fn _key, feed_value, page_value ->
+      present_metadata_value(page_value) || feed_value
+    end)
+  end
+
+  @spec present_metadata_value(term()) :: term() | nil
+  defp present_metadata_value(value) when is_binary(value) do
+    if String.trim(value) == "", do: nil, else: value
+  end
+
+  defp present_metadata_value(value) when is_list(value),
+    do: if(value == [], do: nil, else: value)
+
+  defp present_metadata_value(nil), do: nil
+  defp present_metadata_value(value), do: value
+
+  @spec excerpt(String.t() | nil) :: String.t() | nil
+  defp excerpt(nil), do: nil
+
+  defp excerpt(text) do
+    text
+    |> truncate(@feed_card_excerpt_length)
+    |> blank_to_nil()
+  end
+
+  @spec blank_to_nil(String.t()) :: String.t() | nil
+  defp blank_to_nil(""), do: nil
+  defp blank_to_nil(value), do: value
+
+  @spec word_count(String.t() | nil) :: non_neg_integer() | nil
+  defp word_count(text) when is_binary(text) and text != "" do
+    text |> String.split() |> length()
+  end
+
+  defp word_count(_text), do: nil
+
+  @spec feed_item_published_at(FeedParser.feed_item()) :: DateTime.t() | nil
+  defp feed_item_published_at(item), do: item |> Map.get(:published) |> parse_feed_datetime()
+
+  @spec parse_feed_datetime(String.t() | nil) :: DateTime.t() | nil
+  defp parse_feed_datetime(nil), do: nil
+
+  defp parse_feed_datetime(value) when is_binary(value) do
+    value = String.trim(value)
+
+    cond do
+      value == "" ->
+        nil
+
+      datetime = iso8601_datetime(value) ->
+        datetime
+
+      datetime = rfc_datetime(value) ->
+        datetime
+
+      true ->
+        nil
+    end
+  end
+
+  defp parse_feed_datetime(_value), do: nil
+
+  @spec iso8601_datetime(String.t()) :: DateTime.t() | nil
+  defp iso8601_datetime(value) do
+    case DateTime.from_iso8601(value) do
+      {:ok, datetime, _offset} ->
+        datetime
+
+      {:error, _reason} ->
+        case Date.from_iso8601(value) do
+          {:ok, date} -> DateTime.new!(date, ~T[00:00:00], "Etc/UTC")
+          {:error, _reason} -> nil
+        end
+    end
+  rescue
+    _ -> nil
+  end
+
+  @spec rfc_datetime(String.t()) :: DateTime.t() | nil
+  defp rfc_datetime(value) do
+    case :httpd_util.convert_request_date(String.to_charlist(value)) do
+      {{year, month, day}, {hour, minute, second}} ->
+        DateTime.new!(
+          Date.new!(year, month, day),
+          Time.new!(hour, minute, second),
+          "Etc/UTC"
+        )
+
+      _other ->
+        nil
+    end
+  rescue
+    _ -> nil
+  end
 
   @doc """
   The label a feed's items carry.

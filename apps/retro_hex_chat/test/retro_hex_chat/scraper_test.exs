@@ -195,6 +195,40 @@ defmodule RetroHexChat.ScraperTest do
       assert opts[:metadata_hints].image == "https://cdn.example.com/feed.jpg"
     end
 
+    test "reprocesses a fresh thin page when feed hints can enrich it" do
+      now = DateTime.utc_now()
+
+      {:ok, _page} =
+        Store.record_success(
+          @url,
+          %{
+            title: "Already stored",
+            etag: ~s("v1"),
+            last_modified: "Wed, 21 Oct 2026 07:28:00 GMT"
+          },
+          now: now
+        )
+
+      Cache.clear()
+      Application.put_env(:retro_hex_chat, :page_scraper, CountingClient)
+
+      assert {:ok, page} =
+               Scraper.fetch(@url,
+                 now: now,
+                 metadata_hints: %{
+                   description: "The feed has the missing summary.",
+                   content_text: "The feed has enough article text to improve the stored page."
+                 }
+               )
+
+      assert page.title == "Counted"
+      assert CountingClient.count() == 1
+      assert [{@url, opts}] = CountingClient.calls()
+      assert opts[:if_none_match] == nil
+      assert opts[:if_modified_since] == nil
+      assert opts[:metadata_hints].description == "The feed has the missing summary."
+    end
+
     test "serves a page read 119 days ago without touching the network" do
       now = DateTime.utc_now()
       {:ok, _} = Store.record_success(@url, %{title: "Archived"}, now: now)

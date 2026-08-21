@@ -199,7 +199,7 @@ defmodule RetroHexChat.Scraper do
   defp fetch_existing(prepared, page, opts, now) do
     cond do
       Store.servable?(page) and Store.fresh?(page, now) and
-          not image_hint_needs_refresh?(page, opts) ->
+          not metadata_hints_need_refresh?(page, opts) ->
         record_hit(:fresh)
         Store.touch_access(page, now: now)
         {:ok, prepare_thumbnail(page, opts)}
@@ -363,7 +363,7 @@ defmodule RetroHexChat.Scraper do
 
   @spec conditional_opts(ScrapedPage.t() | nil, keyword()) :: Client.opts()
   defp conditional_opts(%ScrapedPage{} = page, opts) do
-    if image_hint_needs_refresh?(page, opts), do: [], else: stored_conditional_opts(page)
+    if metadata_hints_need_refresh?(page, opts), do: [], else: stored_conditional_opts(page)
   end
 
   defp conditional_opts(_page, _opts), do: []
@@ -386,9 +386,43 @@ defmodule RetroHexChat.Scraper do
     end
   end
 
-  @spec image_hint_needs_refresh?(ScrapedPage.t(), keyword()) :: boolean()
-  defp image_hint_needs_refresh?(%ScrapedPage{} = page, opts) do
-    case metadata_hint_image(opts) do
+  @spec metadata_hints_need_refresh?(ScrapedPage.t(), keyword()) :: boolean()
+  defp metadata_hints_need_refresh?(%ScrapedPage{} = page, opts) do
+    hints = metadata_hints(opts)
+
+    Enum.any?([
+      hint_image_needs_refresh?(page, hints),
+      hint_description_needs_refresh?(page, hints),
+      hint_author_needs_refresh?(page, hints),
+      hint_published_at_needs_refresh?(page, hints),
+      hint_tags_need_refresh?(page, hints),
+      richer_content_hint?(page, hints)
+    ])
+  end
+
+  @spec hint_description_needs_refresh?(ScrapedPage.t(), map()) :: boolean()
+  defp hint_description_needs_refresh?(%ScrapedPage{} = page, hints) do
+    missing_text?(page.description || page.excerpt) and hint_description?(hints)
+  end
+
+  @spec hint_author_needs_refresh?(ScrapedPage.t(), map()) :: boolean()
+  defp hint_author_needs_refresh?(%ScrapedPage{} = page, hints) do
+    missing_text?(page.author) and hint_text?(hints, :author)
+  end
+
+  @spec hint_published_at_needs_refresh?(ScrapedPage.t(), map()) :: boolean()
+  defp hint_published_at_needs_refresh?(%ScrapedPage{} = page, hints) do
+    is_nil(page.published_at) and hint_datetime?(hints, :published_at)
+  end
+
+  @spec hint_tags_need_refresh?(ScrapedPage.t(), map()) :: boolean()
+  defp hint_tags_need_refresh?(%ScrapedPage{} = page, hints) do
+    empty_tags?(page.tags) and hint_tags?(hints)
+  end
+
+  @spec hint_image_needs_refresh?(ScrapedPage.t(), map()) :: boolean()
+  defp hint_image_needs_refresh?(%ScrapedPage{} = page, hints) do
+    case hint_value(hints, :image) do
       hint when is_binary(hint) ->
         page.image_url != hint and weak_stored_image?(page)
 
@@ -397,14 +431,80 @@ defmodule RetroHexChat.Scraper do
     end
   end
 
-  @spec metadata_hint_image(keyword()) :: String.t() | nil
-  defp metadata_hint_image(opts) do
+  @spec metadata_hints(keyword()) :: map()
+  defp metadata_hints(opts) do
     case Keyword.get(opts, :metadata_hints) do
-      %{image: image} when is_binary(image) and image != "" -> image
-      %{"image" => image} when is_binary(image) and image != "" -> image
-      _other -> nil
+      hints when is_map(hints) -> hints
+      _other -> %{}
     end
   end
+
+  @spec hint_value(map(), atom()) :: term()
+  defp hint_value(hints, key) do
+    [Map.get(hints, key), Map.get(hints, Atom.to_string(key))]
+    |> Enum.find_value(fn
+      nil -> nil
+      "" -> nil
+      [] -> nil
+      value -> value
+    end)
+  end
+
+  @spec hint_description?(map()) :: boolean()
+  defp hint_description?(hints),
+    do: hint_text?(hints, :description) or hint_text?(hints, :content_text)
+
+  @spec hint_text?(map(), atom()) :: boolean()
+  defp hint_text?(hints, key) do
+    case hint_value(hints, key) do
+      value when is_binary(value) -> String.trim(value) != ""
+      _other -> false
+    end
+  end
+
+  @spec hint_datetime?(map(), atom()) :: boolean()
+  defp hint_datetime?(hints, key) do
+    case hint_value(hints, key) do
+      %DateTime{} -> true
+      value when is_binary(value) -> String.trim(value) != ""
+      _other -> false
+    end
+  end
+
+  @spec hint_tags?(map()) :: boolean()
+  defp hint_tags?(hints) do
+    case hint_value(hints, :tags) do
+      tags when is_list(tags) -> Enum.any?(tags, &present_text?/1)
+      tag when is_binary(tag) -> String.trim(tag) != ""
+      _other -> false
+    end
+  end
+
+  @spec richer_content_hint?(ScrapedPage.t(), map()) :: boolean()
+  defp richer_content_hint?(%ScrapedPage{} = page, hints) do
+    hint_words = hints |> hint_value(:content_text) |> word_count()
+    stored_words = page.content_word_count || word_count(page.content_text) || 0
+
+    is_integer(hint_words) and hint_words > stored_words
+  end
+
+  @spec missing_text?(String.t() | nil) :: boolean()
+  defp missing_text?(value), do: not present_text?(value)
+
+  @spec present_text?(term()) :: boolean()
+  defp present_text?(value) when is_binary(value), do: String.trim(value) != ""
+  defp present_text?(_value), do: false
+
+  @spec empty_tags?([String.t()] | nil) :: boolean()
+  defp empty_tags?(tags) when is_list(tags), do: not Enum.any?(tags, &present_text?/1)
+  defp empty_tags?(_tags), do: true
+
+  @spec word_count(String.t() | nil) :: non_neg_integer() | nil
+  defp word_count(text) when is_binary(text) and text != "" do
+    text |> String.split() |> length()
+  end
+
+  defp word_count(_text), do: nil
 
   @spec weak_stored_image?(ScrapedPage.t()) :: boolean()
   defp weak_stored_image?(%ScrapedPage{image_url: nil}), do: true

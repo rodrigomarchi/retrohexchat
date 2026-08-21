@@ -340,12 +340,15 @@ defmodule RetroHexChat.Bots.Capabilities.RSSTest do
 
   describe "format_item/2 — the house style for every RSS bot" do
     defp an_item(opts \\ []) do
-      %{
-        title: Keyword.get(opts, :title, "A headline"),
-        link: Keyword.get(opts, :link, "https://example.com/a"),
-        guid: nil,
-        published: nil
-      }
+      Map.merge(
+        %{
+          title: Keyword.get(opts, :title, "A headline"),
+          link: Keyword.get(opts, :link, "https://example.com/a"),
+          guid: nil,
+          published: nil
+        },
+        Map.new(opts)
+      )
     end
 
     test "formats a compact Markdown card with source, headline, and final link" do
@@ -429,6 +432,27 @@ defmodule RetroHexChat.Bots.Capabilities.RSSTest do
 
       assert card ==
                "**The GitHub Blog** | A headline\n\n[Read full story](<https://example.com/a>)"
+    end
+
+    test "uses rich feed fields when the page scrape had nothing useful" do
+      content_text = Enum.map_join(1..120, " ", fn _ -> "palavra" end)
+
+      card =
+        RSS.format_item(
+          an_item(
+            description: "Feed summary from the publisher.",
+            content_text: content_text,
+            author: "Elena Reporter",
+            published: "Mon, 01 Jan 2024 00:00:00 GMT"
+          ),
+          "EL PAIS",
+          %{}
+        )
+
+      assert card =~ "_Elena Reporter"
+      assert card =~ "01 Jan 2024"
+      assert card =~ "1 min read"
+      assert card =~ "> Feed summary from the publisher\\."
     end
 
     test "a stub page is not credited with a reading time" do

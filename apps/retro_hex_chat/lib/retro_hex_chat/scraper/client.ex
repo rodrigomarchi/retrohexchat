@@ -61,6 +61,13 @@ defmodule RetroHexChat.Scraper.Client do
         }
 
   @type metadata_hints :: %{
+          optional(:title) => String.t() | nil,
+          optional(:description) => String.t() | nil,
+          optional(:content_text) => String.t() | nil,
+          optional(:author) => String.t() | nil,
+          optional(:published_at) => DateTime.t() | nil,
+          optional(:tags) => [String.t()],
+          optional(:feed_item) => map(),
           optional(:image) => String.t() | nil,
           optional(:image_alt) => String.t() | nil,
           optional(:image_source) => String.t() | nil

@@ -347,6 +347,50 @@ defmodule RetroHexChat.Scraper.HTTPTest do
       assert scrape.raw_metadata["image_selection"]["selected"]["selector"] == "media_content"
     end
 
+    test "uses rich RSS feed hints when the page itself is thin" do
+      Req.Test.expect(__MODULE__, fn conn ->
+        Req.Test.html(conn, """
+        <body><main><p>Login required.</p></main></body>
+        """)
+      end)
+
+      published_at = ~U[2026-08-20 12:00:00Z]
+
+      assert {:ok, scrape} =
+               HTTP.scrape("https://example.com/feed-rich",
+                 metadata_hints: %{
+                   title: "Feed supplied title",
+                   description: "Feed supplied a useful summary for the chat card.",
+                   content_text:
+                     "Feed paragraph one with real article context. Feed paragraph two has more detail.",
+                   author: "Lia Reporter",
+                   published_at: published_at,
+                   tags: ["World", "Asia"],
+                   feed_item: %{
+                     "title" => "Feed supplied title",
+                     "link" => "https://example.com/feed-rich",
+                     "description" => "Feed supplied a useful summary for the chat card.",
+                     "content_text" =>
+                       "Feed paragraph one with real article context. Feed paragraph two has more detail.",
+                     "author" => "Lia Reporter",
+                     "categories" => ["World", "Asia"]
+                   }
+                 }
+               )
+
+      assert scrape.metadata.title == "Feed supplied title"
+      assert scrape.metadata.description == "Feed supplied a useful summary for the chat card."
+      assert scrape.author == "Lia Reporter"
+      assert scrape.published_at == published_at
+      assert scrape.tags == ["World", "Asia"]
+      assert scrape.content_text =~ "Feed paragraph one"
+      assert scrape.raw_metadata["sources"]["title"] == "feed_item"
+      assert scrape.raw_metadata["sources"]["description"] == "feed_item"
+      assert scrape.raw_metadata["sources"]["content_text"] == "feed_item"
+      assert scrape.raw_metadata["feed_item"]["title"] == "Feed supplied title"
+      assert scrape.raw_metadata["feed_item"]["categories"] == ["World", "Asia"]
+    end
+
     test "caps a very long article and says so" do
       Req.Test.expect(__MODULE__, fn conn ->
         Req.Test.html(conn, """
@@ -394,6 +438,125 @@ defmodule RetroHexChat.Scraper.HTTPTest do
       assert "city planning" in scrape.tags
       assert "resilience" in scrape.tags
       assert scrape.metadata.image_alt == "Residents clearing a street"
+    end
+
+    test "reads generic publisher metadata beyond Open Graph" do
+      Req.Test.expect(__MODULE__, fn conn ->
+        Req.Test.html(conn, """
+        <head>
+          <meta name="parsely-title" content="Parsely title">
+          <meta name="sailthru.description" content="Sailthru summary">
+          <meta name="parsely-author" content="Nina Reporter">
+          <meta name="parsely-pub-date" content="2026-08-20T10:30:00Z">
+          <meta name="parsely-section" content="World">
+          <meta name="parsely-tags" content="diplomacy, elections">
+          <meta name="sailthru.image.full" content="https://example.com/parsely.jpg">
+        </head>
+        <body><p>Short body.</p></body>
+        """)
+      end)
+
+      assert {:ok, scrape} = HTTP.scrape("https://example.com/publisher-metadata")
+
+      assert scrape.metadata.title == "Parsely title"
+      assert scrape.metadata.description == "Sailthru summary"
+      assert scrape.metadata.image == "https://example.com/parsely.jpg"
+      assert scrape.author == "Nina Reporter"
+      assert scrape.published_at == ~U[2026-08-20 10:30:00Z]
+      assert scrape.section == "World"
+      assert "diplomacy" in scrape.tags
+      assert "elections" in scrape.tags
+      assert scrape.raw_metadata["sources"]["title"] == "parsely"
+      assert scrape.raw_metadata["sources"]["description"] == "sailthru"
+      assert scrape.raw_metadata["quality"]["image_selected_source"] == "sailthru"
+    end
+
+    test "uses JSON-LD articleBody as same-hit content when it is richer" do
+      body = Enum.map_join(1..160, " ", fn index -> "jsonld#{index}" end)
+
+      Req.Test.expect(__MODULE__, fn conn ->
+        Req.Test.html(conn, """
+        <head>
+          <script type="application/ld+json">
+            {
+              "@type": "NewsArticle",
+              "headline": "Story body from JSON-LD",
+              "articleBody": "#{body}"
+            }
+          </script>
+        </head>
+        <body><main><p>Thin page body.</p></main></body>
+        """)
+      end)
+
+      assert {:ok, scrape} = HTTP.scrape("https://example.com/jsonld-body")
+
+      assert scrape.metadata.title == "Story body from JSON-LD"
+      assert scrape.content_text =~ "jsonld1"
+      assert scrape.content_word_count == 160
+      assert scrape.raw_metadata["sources"]["content_text"] == "json_ld_article_body"
+      assert scrape.raw_metadata["quality"]["content_strategy"] == "json_ld_article_body"
+    end
+
+    test "reads microdata article fields from the document body" do
+      Req.Test.expect(__MODULE__, fn conn ->
+        Req.Test.html(conn, """
+        <body>
+          <article itemscope itemtype="https://schema.org/NewsArticle">
+            <h1 itemprop="headline">Microdata headline</h1>
+            <meta itemprop="description" content="Microdata summary">
+            <meta itemprop="datePublished" content="2026-08-20T09:00:00Z">
+            <span itemprop="author" itemscope itemtype="https://schema.org/Person">
+              <span itemprop="name">Mira Writer</span>
+            </span>
+            <meta itemprop="keywords" content="science, climate">
+            <img itemprop="image" src="/microdata.jpg" width="1200" height="675">
+            <div itemprop="articleBody">
+              <p>Microdata paragraph one has useful context.</p>
+              <p>Microdata paragraph two keeps the article readable.</p>
+            </div>
+          </article>
+        </body>
+        """)
+      end)
+
+      assert {:ok, scrape} = HTTP.scrape("https://example.com/microdata")
+
+      assert scrape.metadata.title == "Microdata headline"
+      assert scrape.metadata.description == "Microdata summary"
+      assert scrape.metadata.image == "https://example.com/microdata.jpg"
+      assert scrape.author == "Mira Writer"
+      assert scrape.published_at == ~U[2026-08-20 09:00:00Z]
+      assert "science" in scrape.tags
+      assert "climate" in scrape.tags
+      assert scrape.content_text =~ "Microdata paragraph one"
+      assert scrape.raw_metadata["sources"]["title"] == "microdata"
+      assert scrape.raw_metadata["sources"]["content_text"] == "microdata_article_body"
+    end
+
+    test "chooses a dense readability candidate over noisy body text" do
+      Req.Test.expect(__MODULE__, fn conn ->
+        Req.Test.html(conn, """
+        <head><title>Readable page</title></head>
+        <body>
+          <div class="menu">
+            <a href="/a">Home</a><a href="/b">Topics</a><a href="/c">Subscribe</a>
+          </div>
+          <div class="story-content">
+            <p>The first reported paragraph carries the actual story, with names,
+            places, and enough punctuation to look like prose.</p>
+            <p>The second paragraph continues the report with details readers can
+            use in the chat card.</p>
+          </div>
+        </body>
+        """)
+      end)
+
+      assert {:ok, scrape} = HTTP.scrape("https://example.com/readability")
+
+      assert scrape.content_text =~ "The first reported paragraph"
+      refute scrape.content_text =~ "Home Topics Subscribe"
+      assert scrape.raw_metadata["sources"]["content_text"] == "readability"
     end
 
     test "records who each preview field came from" do

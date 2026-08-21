@@ -171,7 +171,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "A link pasted in a conversation gets a card under the message — source, headline, byline, image and summary — the same card an RSS bot publishes. The page is read once and kept, so the same link posted again is never fetched twice."
+            "A link pasted in a conversation gets a card under the message — source, headline, byline, image and summary. RSS cards use the same renderer, enriched with feed metadata when the publisher page is thin."
           ),
         see_also: ["feature-url-catcher", "bot-rss"]
       },

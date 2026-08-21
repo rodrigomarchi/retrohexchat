@@ -4723,19 +4723,9 @@ msgstr ""
 msgid "Connect Window"
 msgstr ""
 
-#: lib/retro_hex_chat/chat/help_topics/bots.ex:158
-#, elixir-autogen, elixir-format
-msgid "Monitor RSS/Atom feeds and post new items to channels as rich Markdown link previews, reusing pages the server has already read."
-msgstr ""
-
 #: lib/retro_hex_chat/chat/help_topics/user_interface.ex:37
 #, elixir-autogen, elixir-format
 msgid "Sign in from the Connect window, which appears both on its own screen and on every public page. It carries the whole flow: pick a nickname, register a new one or enter a password for a registered one, and choose whether to remember the terminal. A remembered terminal signs you in with a single click, and one set to auto-login takes you straight to the chat."
-msgstr ""
-
-#: lib/retro_hex_chat/chat/help_topics/features.ex:172
-#, elixir-autogen, elixir-format
-msgid "A link pasted in a conversation gets a card under the message — source, headline, byline, image and summary — the same card an RSS bot publishes. The page is read once and kept, so the same link posted again is never fetched twice."
 msgstr ""
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:577
@@ -4797,4 +4787,14 @@ msgstr ""
 #: lib/retro_hex_chat/chat/help_topics/user_interface.ex:153
 #, elixir-autogen, elixir-format
 msgid "The entries are grouped one level deep, and the menu carries everything the app can do: anything a menu bar offers is offered here too. View acts on the window in front of you; Tools holds the address book, lists, channel windows and the display settings; Automation holds Perform, Auto-Join, aliases, custom menus and timers; P2P comes alive with a peer session; Games holds Retro Games and the Arcade; Account and Admin hold their own; Windows reopens a window of the screen you are on; Navigate reaches the public pages, the documentation and the app; Language switches locale; Help holds the topics, the cheatsheet and About. Disconnect sits alone at the bottom."
+msgstr ""
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:172
+#, elixir-autogen, elixir-format
+msgid "A link pasted in a conversation gets a card under the message — source, headline, byline, image and summary. RSS cards use the same renderer, enriched with feed metadata when the publisher page is thin."
+msgstr ""
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:158
+#, elixir-autogen, elixir-format
+msgid "Monitor RSS/Atom feeds and post new items as rich Markdown cards, combining page metadata with feed summaries, authors, dates, media hints and cached thumbnails."
 msgstr ""
