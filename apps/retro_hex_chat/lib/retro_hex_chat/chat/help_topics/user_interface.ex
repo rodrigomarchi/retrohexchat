@@ -62,6 +62,9 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
           "search topics",
           "logon",
           "connect screen",
+          "desktop folders",
+          "app folders",
+          "launcher",
           "phone",
           "mobile"
         ],
@@ -87,6 +90,15 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
               "help",
               "The Connect screen is a logon-style desktop too: the connect dialog is a pinned " <>
                 "window centered over the taskbar, with Help available from its Start menu."
+            ) <>
+            " " <>
+            dgettext(
+              "help",
+              "On desktop viewports, app-folder icons on the wallpaper expose the main app " <>
+                "groups while Windows and Navigate stay in the Start menu. In the chat they " <>
+                "open Windows-style launcher windows with the same icons and actions; on " <>
+                "public screens Language and Help stay available and the other desktop app " <>
+                "folders explain that you need to connect before those desktop apps can run."
             ) <>
             " " <>
             dgettext(

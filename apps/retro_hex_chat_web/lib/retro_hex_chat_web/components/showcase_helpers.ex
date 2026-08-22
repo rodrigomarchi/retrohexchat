@@ -5,6 +5,7 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
 
   import RetroHexChatWeb.Components.UI.TreeView
   import RetroHexChatWeb.Components.UI.Desktop
+  import RetroHexChatWeb.Components.UI.DesktopLaunchers
   import RetroHexChatWeb.Components.UI.MenuBarApp
   import RetroHexChatWeb.Components.UI.StartMenuApp
   import RetroHexChatWeb.Components.UI.AboutDialog
@@ -76,6 +77,19 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
           <:icon><Icons.icon_folder class="w-4 h-4" /></:icon>
           <.showcase_navigator active_page={@active_page} nav_tree={@nav_tree} />
         </.desktop_window>
+        <.desktop_launcher_windows
+          screen={:showcase}
+          current_path={ShowcaseCatalog.canonical_path(@active_page)}
+        />
+
+        <:shortcuts>
+          <.desktop_launcher_icons
+            screen={:showcase}
+            current_path={ShowcaseCatalog.canonical_path(@active_page)}
+          />
+        </:shortcuts>
+
+        <.desktop_connect_required_dialog />
 
         <:taskbar>
           <.taskbar id="showcase-taskbar">
@@ -100,6 +114,10 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
               />
             </:start>
 
+            <.desktop_launcher_taskbar_buttons
+              screen={:showcase}
+              current_path={ShowcaseCatalog.canonical_path(@active_page)}
+            />
             <.taskbar_button window="component" label={@page.title}>
               <:icon>{apply(Icons, @page.icon, [%{class: "w-3 h-3"}])}</:icon>
             </.taskbar_button>

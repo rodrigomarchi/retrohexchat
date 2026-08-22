@@ -1079,23 +1079,23 @@
       />
     </.desktop_window>
 
+    <.desktop_launcher_windows
+      screen={:chat}
+      is_admin={admin?(@session)}
+      arcade_available={@session.identified == true}
+      p2p_active={@p2p_session != nil}
+      p2p_turn_available={(@p2p_session || %{})[:turn_configured] == true}
+      windows={[
+        %{
+          id: "chat",
+          label: ChatTitle.window_title(@session, @show_status_tab),
+          icon_fn: :icon_chat
+        }
+      ]}
+    />
+
     <:shortcuts>
-      <.desktop_shortcut
-        window="retro-games"
-        action="open_retro_games"
-        label={dgettext("chat", "Retro Games")}
-        data-testid="desktop-shortcut-retro-games"
-      >
-        <:icon><Icons.icon_game_pong class="h-8 w-8" /></:icon>
-      </.desktop_shortcut>
-      <.desktop_shortcut
-        window="arcade-games"
-        action="open_arcade"
-        label={dgettext("chat", "Arcade")}
-        data-testid="desktop-shortcut-arcade"
-      >
-        <:icon><Icons.icon_game_arcade class="h-8 w-8" /></:icon>
-      </.desktop_shortcut>
+      <.desktop_launcher_icons screen={:chat} />
     </:shortcuts>
 
     <:taskbar>

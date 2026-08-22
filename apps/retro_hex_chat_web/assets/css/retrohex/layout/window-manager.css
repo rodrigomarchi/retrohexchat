@@ -252,6 +252,46 @@
   @apply bg-primary text-white;
   text-shadow: none;
 }
+
+.desktop-launcher-window {
+  @apply text-text;
+}
+
+.desktop-launcher-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(78px, 1fr));
+  gap: 8px 6px;
+  align-content: start;
+}
+
+.desktop-launcher-item {
+  @apply flex min-h-[78px] flex-col items-center justify-start gap-1 p-1 text-center;
+  cursor: default;
+}
+
+.desktop-launcher-item:hover:not(:disabled) .desktop-launcher-item__icon,
+.desktop-launcher-item:focus-visible:not(:disabled) .desktop-launcher-item__icon {
+  @apply bg-primary/15;
+}
+
+.desktop-launcher-item:focus-visible {
+  @apply outline outline-1 outline-primary;
+}
+
+.desktop-launcher-item--disabled {
+  @apply opacity-50;
+}
+
+.desktop-launcher-item__label {
+  @apply text-xs leading-tight;
+  overflow-wrap: anywhere;
+}
+
+.desktop-launcher-separator {
+  @apply shadow-retro-status h-[2px];
+  grid-column: 1 / -1;
+}
+
 /* Narrow viewports drop window management: exactly one window is shown at a
    time (the WM hook keeps only the focused window visible), filling the
    workspace like a fullscreen mobile app. The taskbar is the window switcher. */

@@ -16,6 +16,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
   import RetroHexChatWeb.Components.UI.MenuBar
   import RetroHexChatWeb.Components.UI.LanguageMenu
   import RetroHexChatWeb.Components.UI.ContextMenu
+  import RetroHexChatWeb.Components.UI.DesktopLaunchers
   import RetroHexChatWeb.Components.UI.StartMenuApp
 
   alias RetroHexChatWeb.Icons
@@ -53,6 +54,16 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
       >
         {render_slot(@inner_block)}
         <.landing_about_window active_page={@active_page} />
+        <.desktop_launcher_windows
+          screen={:landing}
+          current_path={active_page_path(@active_page)}
+        />
+
+        <:shortcuts>
+          <.desktop_launcher_icons screen={:landing} />
+        </:shortcuts>
+
+        <.desktop_connect_required_dialog />
 
         <:taskbar>
           <.landing_taskbar active_page={@active_page} windows={@windows} />
@@ -94,6 +105,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
         />
       </:start>
 
+      <.desktop_launcher_taskbar_buttons screen={:landing} current_path={@current_path} />
       <%!-- One button per window on this page, exactly as the app's taskbar
             behaves. Reaching another page is the Start menu's job. --%>
       <%!-- `desktop-taskbar__window-button` is what the stacked (mobile) shell

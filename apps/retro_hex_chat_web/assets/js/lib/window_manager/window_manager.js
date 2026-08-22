@@ -89,7 +89,7 @@ const ZOOM_FALLBACK_MS = 400;
 // [data-escape-guard] and are either removed from the DOM or u-hidden when
 // closed.
 const ESCAPE_OWNER_SELECTOR =
-  '[phx-show-modal][data-state="open"], [data-escape-guard]:not(.u-hidden)';
+  '[phx-show-modal][data-state="open"], [data-desktop-connect-dialog][data-state="open"], [data-desktop-static-dialog][data-state="open"], [data-escape-guard]:not(.u-hidden)';
 
 const WindowManagerCore = {
   mount() {
@@ -468,6 +468,41 @@ const WindowManagerCore = {
   // ── Click interactions (controls / taskbar / start menu) ───
 
   onClick(e) {
+    const clickTarget = e.target.closest("[data-desktop-click-target]");
+    if (clickTarget) {
+      e.preventDefault();
+      this.clearShortcutSelection();
+      this.clickDesktopTarget(clickTarget.dataset.desktopClickTarget);
+      return;
+    }
+
+    const staticDialogOpen = e.target.closest("[data-desktop-static-dialog-open]");
+    if (staticDialogOpen) {
+      e.preventDefault();
+      this.clearShortcutSelection();
+      this.showDesktopStaticDialog(staticDialogOpen.dataset.desktopStaticDialogOpen);
+      return;
+    }
+
+    const connectRequired = e.target.closest("[data-desktop-connect-required]");
+    if (connectRequired) {
+      e.preventDefault();
+      this.clearShortcutSelection();
+      this.showDesktopStaticDialog(connectRequired.dataset.desktopConnectDialog);
+      return;
+    }
+
+    const staticDialogClose = e.target.closest(
+      "[data-desktop-static-dialog-close], [data-desktop-connect-dialog-close]",
+    );
+    if (staticDialogClose) {
+      e.preventDefault();
+      this.hideDesktopStaticDialog(
+        staticDialogClose.closest("[data-desktop-static-dialog], [data-desktop-connect-dialog]"),
+      );
+      return;
+    }
+
     const menuItem = e.target.closest("[data-taskbar-menu-action]");
     if (menuItem) {
       this.onTaskbarMenuAction(menuItem.dataset.taskbarMenuAction);
@@ -522,9 +557,10 @@ const WindowManagerCore = {
     }
 
     // A copy row is neither a window opener nor a server action, so it has to
-    // be taken before either of those branches sees it.
-    if (e.target.closest("[data-window-start-menu]") && handleCopySelectionClick(e)) {
-      this.closeStartMenu();
+    // be taken before either of those branches sees it. It can live in the
+    // Start menu or in a desktop launcher window.
+    if (handleCopySelectionClick(e)) {
+      if (e.target.closest("[data-window-start-menu]")) this.closeStartMenu();
       return;
     }
 
@@ -683,6 +719,13 @@ const WindowManagerCore = {
   onKeyDown(e) {
     if (e.key !== "Escape") return;
 
+    const staticDialog = this.openDesktopStaticDialog();
+    if (staticDialog) {
+      e.stopPropagation();
+      this.hideDesktopStaticDialog(staticDialog);
+      return;
+    }
+
     // An open WM menu owns the press: close it and consume the event so the
     // server's window-level Escape ladder cannot also dismiss something.
     if (this.anyMenuOpen()) {
@@ -712,6 +755,48 @@ const WindowManagerCore = {
     const closeBtn = this.windows[id].el.querySelector('[data-window-control="close"][phx-click]');
     if (closeBtn) closeBtn.click();
     else this.closeWindow(id);
+  },
+
+  showDesktopStaticDialog(id) {
+    if (!id) return;
+    const dialog = this.el.querySelector(
+      `#${cssEscape(id)}[data-desktop-static-dialog], #${cssEscape(id)}[data-desktop-connect-dialog]`,
+    );
+    if (!dialog) return;
+
+    dialog.dataset.state = "open";
+    dialog.classList.remove("hidden");
+    document.body.classList.add("overflow-hidden");
+
+    const target =
+      dialog.querySelector(
+        "button[data-desktop-static-dialog-close]:not([aria-label]), button[data-desktop-connect-dialog-close]:not([aria-label])",
+      ) ||
+      dialog.querySelector(`#${cssEscape(id)}-surface`) ||
+      dialog;
+    target.focus?.();
+  },
+
+  hideDesktopStaticDialog(dialog) {
+    if (!dialog) return;
+
+    dialog.dataset.state = "closed";
+    dialog.classList.add("hidden");
+    document.body.classList.remove("overflow-hidden");
+  },
+
+  openDesktopStaticDialog() {
+    return this.ownedElements(
+      '[data-desktop-static-dialog][data-state="open"], [data-desktop-connect-dialog][data-state="open"]',
+    ).find((dialog) => !dialog.classList.contains("hidden"));
+  },
+
+  clickDesktopTarget(selector) {
+    if (!selector) return;
+    const target = this.el.querySelector(selector);
+    if (!target) return;
+    target.click();
+    target.focus?.();
   },
 
   anyMenuOpen() {

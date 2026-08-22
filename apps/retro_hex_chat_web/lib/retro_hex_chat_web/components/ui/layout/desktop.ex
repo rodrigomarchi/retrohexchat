@@ -68,7 +68,7 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
   attr :class, :any, default: nil
   attr :rest, :global
 
-  slot :shortcuts, doc: "desktop_shortcut/1 icons pinned to the workspace (behind windows)"
+  slot :shortcuts, doc: "desktop_icon/1 icons pinned to the workspace (behind windows)"
   slot :inner_block, required: true, doc: "desktop_window/1 children"
   slot :taskbar, doc: "a taskbar/1"
 
@@ -108,7 +108,7 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
   end
 
   @doc """
-  Renders a Win98-style desktop shortcut: an icon above a label, pinned to the
+  Renders a Win98-style desktop icon: an icon above a label, pinned to the
   workspace. Double-click opens (and focuses) the target window or, when
   `action` is set, pushes that LiveView event so server-owned launchers can do
   their setup first. A single click just selects it (classic desktop behaviour).
@@ -131,8 +131,8 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
 
   slot :icon, required: true, doc: "32×32 icon"
 
-  @spec desktop_shortcut(map()) :: Phoenix.LiveView.Rendered.t()
-  def desktop_shortcut(assigns) do
+  @spec desktop_icon(map()) :: Phoenix.LiveView.Rendered.t()
+  def desktop_icon(assigns) do
     ~H"""
     <.chrome_control
       href={@href}
@@ -149,6 +149,26 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
     </.chrome_control>
     """
   end
+
+  @doc """
+  Backward-compatible name for `desktop_icon/1`.
+  """
+  attr :window, :string, required: true, doc: "target window id to open on double-click"
+  attr :label, :string, required: true
+
+  attr :action, :string,
+    default: nil,
+    doc: "LiveView event to push on double-click instead of opening the window locally"
+
+  attr :href, :string, default: nil, doc: "render as a link to this URL instead of a button"
+  attr :navigate, :string, default: nil, doc: "same, via LiveView navigation"
+  attr :class, :any, default: nil
+  attr :rest, :global
+
+  slot :icon, required: true, doc: "32×32 icon"
+
+  @spec desktop_shortcut(map()) :: Phoenix.LiveView.Rendered.t()
+  def desktop_shortcut(assigns), do: desktop_icon(assigns)
 
   # Desktop chrome that can also be a link.
   #

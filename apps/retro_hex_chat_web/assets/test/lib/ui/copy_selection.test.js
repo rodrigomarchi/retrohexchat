@@ -157,6 +157,21 @@ describe("copy_selection", () => {
       expect(writeText).toHaveBeenCalledWith("a message");
     });
 
+    it("rechecks selection on click when an already-open row is stale", () => {
+      const writeText = vi.fn().mockResolvedValue(undefined);
+      vi.stubGlobal("navigator", { clipboard: { writeText } });
+      selectWithin(document.getElementById("message"), "a message");
+
+      const item = root.querySelector("[data-menubar-copy-selection]");
+      expect(item.dataset.copyDisabled).toBe("true");
+
+      const event = clickOn(item);
+
+      expect(handleCopySelectionClick(event)).toBe(true);
+      expect(item.dataset.copyDisabled).toBe("false");
+      expect(writeText).toHaveBeenCalledWith("a message");
+    });
+
     it("claims the click but copies nothing while the row is dead", () => {
       // Claiming it either way matters: the row is neither a window opener nor
       // a server action, so falling through would make the menu act on it.

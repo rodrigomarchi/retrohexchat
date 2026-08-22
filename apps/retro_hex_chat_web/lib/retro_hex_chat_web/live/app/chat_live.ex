@@ -35,6 +35,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
   # ── Desktop window manager ───────────────────────────────────
   import RetroHexChatWeb.Components.UI.Desktop
+  import RetroHexChatWeb.Components.UI.DesktopLaunchers
 
   # ── P2P session setup + console ──────────────────────────────
   import RetroHexChatWeb.Components.UI.P2P.SetupDialog

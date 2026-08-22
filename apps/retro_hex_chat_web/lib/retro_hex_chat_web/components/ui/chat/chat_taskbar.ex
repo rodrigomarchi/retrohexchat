@@ -10,6 +10,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Desktop
+  import RetroHexChatWeb.Components.UI.DesktopLaunchers
   import RetroHexChatWeb.Components.UI.StartMenuApp
 
   alias RetroHexChatWeb.ChatLive.WindowRegistry
@@ -62,6 +63,15 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
           windows={[%{id: "chat", label: @chat_label, icon_fn: :icon_chat}]}
         />
       </:start>
+
+      <.desktop_launcher_taskbar_buttons
+        screen={:chat}
+        is_admin={@is_admin}
+        arcade_available={@arcade_available}
+        p2p_active={@p2p_session != nil}
+        p2p_turn_available={(@p2p_session || %{})[:turn_configured] == true}
+        windows={[%{id: "chat", label: @chat_label, icon_fn: :icon_chat}]}
+      />
 
       <%= for slot <- @taskbar_slots do %>
         <.taskbar_group

@@ -136,12 +136,12 @@ msgstr ""
 msgid "7 days"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:340
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:348
 #, elixir-autogen, elixir-format
 msgid "Breadcrumb"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:130
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:138
 #, elixir-autogen, elixir-format
 msgid "Browse by category or open Help Topics from the chat menu."
 msgstr ""
@@ -219,19 +219,19 @@ msgstr ""
 #: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:82
 #: lib/retro_hex_chat_web/components/ui/help/help_status_bar.ex:55
 #: lib/retro_hex_chat_web/components/ui/help/help_status_bar.ex:57
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:342
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:361
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:365
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:350
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:369
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:374
 #, elixir-autogen, elixir-format
 msgid "Help"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:225
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:233
 #, elixir-autogen, elixir-format
 msgid "Help navigation"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:44
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:45
 #, elixir-autogen, elixir-format
 msgid "Help — RetroHexChat"
 msgstr ""
@@ -341,7 +341,7 @@ msgstr ""
 msgid "Registration Required"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:125
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:133
 #, elixir-autogen, elixir-format
 msgid "RetroHexChat Help"
 msgstr ""
@@ -356,7 +356,7 @@ msgstr ""
 msgid "RetroHexChat is a web-based IRC client with an authentic retro look and feel. It supports channels, private messages, text formatting, nick services, and much more."
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:149
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:157
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:54
 #: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:27
@@ -366,7 +366,7 @@ msgstr ""
 msgid "See Also"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:127
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:135
 #, elixir-autogen, elixir-format
 msgid "Select a topic from the navigation pane to get started."
 msgstr ""
@@ -473,7 +473,7 @@ msgid "About RetroHexChat"
 msgstr ""
 
 #: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:95
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:179
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:187
 #: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:568
 #, elixir-autogen, elixir-format
 msgid "Back"
@@ -486,7 +486,8 @@ msgid "Back to chat"
 msgstr ""
 
 #: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:112
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:228
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:236
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:365
 #: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:167
 #, elixir-autogen, elixir-format
 msgid "Contents"
@@ -498,20 +499,21 @@ msgid "For a lightweight message that does not open a PM tab on the recipient's 
 msgstr ""
 
 #: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:99
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:187
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:195
 #: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:574
 #, elixir-autogen, elixir-format
 msgid "Forward"
 msgstr ""
 
 #: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:90
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:191
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:199
 #, elixir-autogen, elixir-format
 msgid "Home"
 msgstr ""
 
 #: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:116
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:229
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:237
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:371
 #: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:176
 #, elixir-autogen, elixir-format
 msgid "Index"
@@ -523,7 +525,7 @@ msgstr ""
 msgid "Navigate"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:271
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:279
 #, elixir-autogen, elixir-format
 msgid "No topics match \"%{query}\"."
 msgstr ""
@@ -534,18 +536,19 @@ msgid "Notice Command"
 msgstr ""
 
 #: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:124
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:230
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:238
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:377
 #: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:185
 #, elixir-autogen, elixir-format
 msgid "Search"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:204
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:212
 #, elixir-autogen, elixir-format
 msgid "Search topics..."
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:264
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:272
 #, elixir-autogen, elixir-format
 msgid "Type in the search box to find topics."
 msgstr ""

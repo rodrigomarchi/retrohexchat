@@ -104,7 +104,12 @@ export function handleCopySelectionClick(e) {
   e.preventDefault();
   e.stopPropagation();
 
-  if (item.dataset.copyDisabled !== "true") copyCurrentSelection();
+  const hasSelection = selectedChatLogText() !== "";
+  item.dataset.copyDisabled = hasSelection ? "false" : "true";
+  item.setAttribute("aria-disabled", hasSelection ? "false" : "true");
+  item.classList.toggle("menubar-copy-disabled", !hasSelection);
+
+  if (hasSelection) copyCurrentSelection();
 
   return true;
 }

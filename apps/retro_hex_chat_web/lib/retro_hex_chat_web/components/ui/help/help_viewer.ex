@@ -13,6 +13,7 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
 
   import RetroHexChatWeb.Components.UI.AboutDialog
   import RetroHexChatWeb.Components.UI.Desktop
+  import RetroHexChatWeb.Components.UI.DesktopLaunchers
   import RetroHexChatWeb.Components.UI.Help.HelpMenuBar
   import RetroHexChatWeb.Components.UI.Help.HelpStatusBar
   import RetroHexChatWeb.Components.UI.StartMenuApp
@@ -88,6 +89,13 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
             </div>
           </div>
         </.desktop_window>
+        <.desktop_launcher_windows screen={:help} current_path={@canonical_path} />
+
+        <:shortcuts>
+          <.desktop_launcher_icons screen={:help} current_path={@canonical_path} />
+        </:shortcuts>
+
+        <.desktop_connect_required_dialog />
 
         <:taskbar>
           <.help_taskbar current_path={@canonical_path} />
@@ -362,6 +370,7 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
         />
       </:start>
 
+      <.desktop_launcher_taskbar_buttons screen={:help} current_path={@current_path} />
       <.taskbar_button window="help" label={dgettext("help", "Help")}>
         <:icon><Icons.icon_notepad class="h-4 w-4" /></:icon>
       </.taskbar_button>

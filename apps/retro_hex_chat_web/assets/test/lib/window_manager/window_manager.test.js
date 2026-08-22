@@ -1620,6 +1620,87 @@ describe("WindowManager — desktop shortcuts", () => {
     el.querySelector("[data-window-start]").click();
     expect(shortcut("call").classList.contains("is-selected")).toBe(false);
   });
+
+  it("opens and closes the static connect-required dialog from public desktop icons", () => {
+    const workspace = el.querySelector(".desktop__workspace");
+    workspace.insertAdjacentHTML(
+      "afterbegin",
+      `<button data-desktop-connect-required="true" data-desktop-connect-dialog="connect-required">Tools</button>
+       <div id="connect-required" data-desktop-connect-dialog data-state="closed" class="hidden">
+         <button data-desktop-connect-dialog-close>OK</button>
+       </div>`,
+    );
+
+    el.querySelector("[data-desktop-connect-required]").click();
+
+    const dialog = el.querySelector("[id][data-desktop-connect-dialog]");
+    expect(dialog.dataset.state).toBe("open");
+    expect(dialog.classList.contains("hidden")).toBe(false);
+    expect(document.body.classList.contains("overflow-hidden")).toBe(true);
+
+    el.querySelector("[data-desktop-connect-dialog-close]").click();
+
+    expect(dialog.dataset.state).toBe("closed");
+    expect(dialog.classList.contains("hidden")).toBe(true);
+    expect(document.body.classList.contains("overflow-hidden")).toBe(false);
+  });
+
+  it("closes the static connect-required dialog on Escape", () => {
+    const workspace = el.querySelector(".desktop__workspace");
+    workspace.insertAdjacentHTML(
+      "afterbegin",
+      `<button data-desktop-connect-required="true" data-desktop-connect-dialog="connect-required">Tools</button>
+       <div id="connect-required" data-desktop-connect-dialog data-state="closed" class="hidden">
+         <button data-desktop-connect-dialog-close>OK</button>
+       </div>`,
+    );
+
+    el.querySelector("[data-desktop-connect-required]").click();
+    document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
+
+    const dialog = el.querySelector("[id][data-desktop-connect-dialog]");
+    expect(dialog.dataset.state).toBe("closed");
+    expect(dialog.classList.contains("hidden")).toBe(true);
+  });
+
+  it("opens and closes a generic static desktop dialog", () => {
+    const workspace = el.querySelector(".desktop__workspace");
+    workspace.insertAdjacentHTML(
+      "afterbegin",
+      `<button data-desktop-static-dialog-open="language-dialog">Language</button>
+       <div id="language-dialog" data-desktop-static-dialog data-state="closed" class="hidden">
+         <button data-desktop-static-dialog-close>OK</button>
+       </div>`,
+    );
+
+    el.querySelector("[data-desktop-static-dialog-open]").click();
+
+    const dialog = el.querySelector("[id][data-desktop-static-dialog]");
+    expect(dialog.dataset.state).toBe("open");
+    expect(dialog.classList.contains("hidden")).toBe(false);
+    expect(document.body.classList.contains("overflow-hidden")).toBe(true);
+
+    el.querySelector("[data-desktop-static-dialog-close]").click();
+
+    expect(dialog.dataset.state).toBe("closed");
+    expect(dialog.classList.contains("hidden")).toBe(true);
+    expect(document.body.classList.contains("overflow-hidden")).toBe(false);
+  });
+
+  it("forwards a desktop icon click to an existing chrome target", () => {
+    const workspace = el.querySelector(".desktop__workspace");
+    const targetClick = vi.fn();
+    workspace.insertAdjacentHTML(
+      "afterbegin",
+      `<button data-desktop-click-target="#language-trigger">Language</button>
+       <button id="language-trigger">Menu language</button>`,
+    );
+    el.querySelector("#language-trigger").addEventListener("click", targetClick);
+
+    el.querySelector("[data-desktop-click-target]").click();
+
+    expect(targetClick).toHaveBeenCalledTimes(1);
+  });
 });
 
 // A desktop can be built from real links so the page works, and indexes, before

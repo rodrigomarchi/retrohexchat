@@ -39,17 +39,22 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
              )
     end
 
-    test "pins game launchers as desktop shortcuts", %{conn: conn} do
+    test "pins app folders and opens games from the Games folder", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/chat")
 
       assert has_element?(
                view,
-               ~s(#chat-desktop [data-testid="desktop-shortcut-retro-games"][data-window-shortcut="retro-games"][data-window-shortcut-action="open_retro_games"])
+               ~s(#chat-desktop [data-testid="desktop-icon-games"][data-window-shortcut="desktop-launcher-games"])
              )
 
       assert has_element?(
                view,
-               ~s(#chat-desktop [data-testid="desktop-shortcut-arcade"][data-window-shortcut="arcade-games"][data-window-shortcut-action="open_arcade"])
+               ~s(#chat-desktop [data-testid="desktop-launcher-window-games"][data-window-id="desktop-launcher-games"][data-window-initial-open="false"])
+             )
+
+      assert has_element?(
+               view,
+               ~s(#chat-desktop [data-testid="desktop-launcher-window-games"] [data-testid="desktop-launcher-item-retro-games"][phx-value-action="open_retro_games"])
              )
     end
 

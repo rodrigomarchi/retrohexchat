@@ -16,6 +16,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
   import RetroHexChatWeb.Components.UI.Alert
   import RetroHexChatWeb.Components.UI.ConnectStatusBar
   import RetroHexChatWeb.Components.UI.Desktop
+  import RetroHexChatWeb.Components.UI.DesktopLaunchers
   import RetroHexChatWeb.Components.UI.MenuBarApp
   import RetroHexChatWeb.Components.UI.StartMenuApp
 
@@ -33,6 +34,13 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
         <.connect_window flash={@flash} step={@step}>
           {render_slot(@inner_block)}
         </.connect_window>
+        <.desktop_launcher_windows screen={:connect} />
+
+        <:shortcuts>
+          <.desktop_launcher_icons screen={:connect} />
+        </:shortcuts>
+
+        <.desktop_connect_required_dialog />
 
         <:taskbar>
           <.connect_taskbar />
@@ -109,6 +117,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
           ]}
         />
       </:start>
+      <.desktop_launcher_taskbar_buttons screen={:connect} />
       <.taskbar_button window="connect" label={dgettext("connect", "Connect")}>
         <:icon><Icons.icon_connect class="h-4 w-4" /></:icon>
       </.taskbar_button>
