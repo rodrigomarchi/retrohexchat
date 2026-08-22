@@ -5,8 +5,9 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSymmetryTest do
   This is the test that keeps it that way. The old menus drifted apart one
   screen at a time — Connect had three entries, the chat had forty-one, and
   nothing failed when they diverged, because nothing compared them. Here they
-  are compared: same entries, same order, everywhere. What a screen is allowed
-  to change is which of them are live.
+  are compared: same base entries, same order, everywhere. What a screen is
+  allowed to change is which of them are live; the one visibility exception is
+  Admin/System, which are present only in the chat for admins.
   """
   use ExUnit.Case, async: true
 
@@ -48,6 +49,21 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSymmetryTest do
       [reference | rest] = Enum.map(@screens, &group_ids/1)
 
       for ids <- rest, do: assert(ids == reference)
+    end
+
+    test "only a chat admin gets the privileged Admin and System groups" do
+      for screen <- @screens do
+        refute has_group?(screen, "start-menu-admin-submenu")
+        refute has_group?(screen, "start-menu-system-submenu")
+      end
+
+      admin_groups = group_ids(:chat, is_admin: true)
+
+      assert "start-menu-admin-submenu" in admin_groups
+      assert "start-menu-system-submenu" in admin_groups
+
+      refute has_group?(:landing, "start-menu-admin-submenu", is_admin: true)
+      refute has_group?(:landing, "start-menu-system-submenu", is_admin: true)
     end
 
     test "the root list stays short enough to fit on screen without scrolling" do
@@ -104,11 +120,15 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSymmetryTest do
     end
 
     test "admin entries need an admin, not just a chat" do
-      refute enabled?(:chat, "start-menu-item-open_admin_users")
+      refute has_entry?(:chat, "start-menu-item-open_admin_users")
+      refute has_entry?(:chat, "start-menu-item-open_system_home")
+
       assert enabled?(:chat, "start-menu-item-open_admin_users", is_admin: true)
+      assert enabled?(:chat, "start-menu-item-open_system_home", is_admin: true)
 
       # An admin on the landing page is still not in the app.
-      refute enabled?(:landing, "start-menu-item-open_admin_users", is_admin: true)
+      refute has_entry?(:landing, "start-menu-item-open_admin_users", is_admin: true)
+      refute has_entry?(:landing, "start-menu-item-open_system_home", is_admin: true)
     end
 
     test "P2P entries need a session on top of the chat" do
@@ -308,9 +328,9 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSymmetryTest do
     ["start-menu-item-w", "start-menu-item-no-windows"]
   end
 
-  defp group_ids(screen) do
+  defp group_ids(screen, opts \\ []) do
     screen
-    |> document()
+    |> document(opts)
     |> Floki.find("[data-start-submenu-trigger]")
     |> Floki.attribute("data-testid")
   end
@@ -357,5 +377,19 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSymmetryTest do
       [] -> flunk("#{screen} has no entry #{testid} — symmetry is broken")
       row -> Floki.attribute(row, "disabled") == []
     end
+  end
+
+  defp has_entry?(screen, testid, opts \\ []) do
+    screen
+    |> document(opts)
+    |> Floki.find(~s([data-testid="#{testid}"]))
+    |> Enum.any?()
+  end
+
+  defp has_group?(screen, testid, opts \\ []) do
+    screen
+    |> document(opts)
+    |> Floki.find(~s([data-start-submenu-trigger][data-testid="#{testid}"]))
+    |> Enum.any?()
   end
 end

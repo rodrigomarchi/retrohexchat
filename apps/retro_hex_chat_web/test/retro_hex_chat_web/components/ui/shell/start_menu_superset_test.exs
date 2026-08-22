@@ -1,12 +1,15 @@
 defmodule RetroHexChatWeb.Components.UI.StartMenuSupersetTest do
   @moduledoc """
-  The Start menu offers everything every menu bar offers.
+  The Start menu offers everything every menu bar offers at the same privilege
+  level.
 
-  `StartMenuSymmetryTest` holds the menu identical across screens. This holds it
-  complete: an entry in the chat's `MenuBarApp`, the help viewer's `HelpMenuBar`
-  or the landing shell's strip exists here too. Without it the menus drift the
-  way they already drifted once — the bars grew Edit, View, Language, MOTD and
-  the Arcade while the Start menu never heard about any of them.
+  `StartMenuSymmetryTest` holds the base menu identical across screens, with
+  Admin/System added only for chat admins. This holds it complete: an entry in
+  the chat's `MenuBarApp`, the help viewer's `HelpMenuBar` or the landing
+  shell's strip exists here too when the same privilege is in force. Without it
+  the menus drift the way they already drifted once — the bars grew Edit, View,
+  Language, MOTD and the Arcade while the Start menu never heard about any of
+  them.
 
   It is also the precondition for retiring a menu bar: while this passes,
   removing one takes nothing away.
@@ -55,7 +58,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSupersetTest do
   }
 
   test "the chat's menu bar offers nothing the Start menu does not" do
-    assert missing(chat_bar_entries(), start_entries(:chat)) == []
+    assert missing(chat_bar_entries(), start_entries(:chat, is_admin: true)) == []
   end
 
   test "the help viewer's menu bar offers nothing the Start menu does not" do
@@ -113,8 +116,11 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSupersetTest do
     |> Enum.any?(&(&1 && MapSet.member?(start_entries, &1)))
   end
 
-  defp start_entries(screen) do
-    render_component(&StartMenuApp.start_menu_app/1, screen: screen, windows: [])
+  defp start_entries(screen, opts \\ []) do
+    render_component(
+      &StartMenuApp.start_menu_app/1,
+      Keyword.merge([screen: screen, windows: []], opts)
+    )
     |> scan(~r/data-testid="start-menu-item-([A-Za-z0-9_\-]+)"/)
   end
 

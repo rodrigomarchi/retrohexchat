@@ -110,16 +110,17 @@ defmodule RetroHexChatWeb.ConnectDesktopShellTest do
                ~s|#connect-start-menu [data-testid="start-menu-item-show_about"]:not([disabled])|
              )
 
-      # Present but out of reach without a session — the menu names the whole app
-      # from every screen rather than becoming a different menu on each one.
+      # Present but out of reach without a session — the menu names the app from
+      # every screen. Admin/System are the exception: privileged server
+      # operation is not advertised outside a chat admin session.
       assert has_element?(
                view,
                ~s(#connect-start-menu [data-testid="start-menu-item-address-book"][disabled])
              )
 
-      assert has_element?(
+      refute has_element?(
                view,
-               ~s(#connect-start-menu [data-testid="start-menu-item-open_admin_users"][disabled])
+               ~s(#connect-start-menu [data-testid="start-menu-item-open_admin_users"])
              )
 
       assert has_element?(

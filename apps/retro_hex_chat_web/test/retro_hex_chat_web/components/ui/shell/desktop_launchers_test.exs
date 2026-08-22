@@ -14,6 +14,17 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchersTest do
     desktop-icon-p2p
     desktop-icon-games
     desktop-icon-account
+    desktop-icon-language
+    desktop-icon-help
+  )
+
+  @admin_group_icon_ids ~w(
+    desktop-icon-view
+    desktop-icon-tools
+    desktop-icon-automation
+    desktop-icon-p2p
+    desktop-icon-games
+    desktop-icon-account
     desktop-icon-admin
     desktop-icon-system
     desktop-icon-language
@@ -27,7 +38,30 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchersTest do
     assert html =~ ~s(data-window-shortcut="desktop-launcher-games")
     refute html =~ ~s(data-testid="desktop-icon-windows")
     refute html =~ ~s(data-testid="desktop-icon-navigate")
+    refute html =~ ~s(data-testid="desktop-icon-admin")
+    refute html =~ ~s(data-testid="desktop-icon-system")
     refute html =~ "desktop-connect-required-dialog"
+  end
+
+  test "desktop icons render Admin and System only for a chat admin" do
+    guest_html = render_component(&DesktopLaunchers.desktop_launcher_icons/1, screen: :chat)
+
+    admin_html =
+      render_component(&DesktopLaunchers.desktop_launcher_icons/1, screen: :chat, is_admin: true)
+
+    landing_html =
+      render_component(&DesktopLaunchers.desktop_launcher_icons/1,
+        screen: :landing,
+        is_admin: true
+      )
+
+    refute guest_html =~ ~s(data-testid="desktop-icon-admin")
+    refute guest_html =~ ~s(data-testid="desktop-icon-system")
+
+    assert testids(admin_html, "[data-window-shortcut]") == @admin_group_icon_ids
+
+    refute landing_html =~ ~s(data-testid="desktop-icon-admin")
+    refute landing_html =~ ~s(data-testid="desktop-icon-system")
   end
 
   test "public desktop icons gate app folders except Language and Help" do
@@ -69,6 +103,8 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchersTest do
 
     refute html =~ ~s(data-testid="desktop-icon-windows")
     refute html =~ ~s(data-testid="desktop-icon-navigate")
+    refute html =~ ~s(data-testid="desktop-icon-admin")
+    refute html =~ ~s(data-testid="desktop-icon-system")
     refute html =~ "phx-click="
     assert html =~ ~s(data-desktop-connect-required="true")
     assert html =~ "desktop-connect-required-dialog"
@@ -82,6 +118,8 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchersTest do
     assert html =~ ~s(data-testid="desktop-launcher-grid-games")
     refute html =~ ~s(data-window-id="desktop-launcher-windows")
     refute html =~ ~s(data-window-id="desktop-launcher-navigate")
+    refute html =~ ~s(data-window-id="desktop-launcher-admin")
+    refute html =~ ~s(data-window-id="desktop-launcher-system")
     assert enabled?(html, "desktop-launcher-item-retro-games")
     refute enabled?(html, "desktop-launcher-item-open_arcade")
   end
@@ -95,6 +133,8 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchersTest do
     assert html =~ ~s(data-testid="desktop-launcher-grid-help")
     refute html =~ ~s(data-window-id="desktop-launcher-games")
     refute html =~ ~s(data-window-id="desktop-launcher-tools")
+    refute html =~ ~s(data-window-id="desktop-launcher-admin")
+    refute html =~ ~s(data-window-id="desktop-launcher-system")
     refute html =~ ~s(phx-click=)
     assert enabled?(html, "desktop-launcher-item-help_topics")
     assert enabled?(html, "desktop-launcher-item-show_about")
@@ -147,7 +187,8 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchersTest do
   test "launcher gates privileged and session-bound items like the Start menu" do
     guest_html = render_component(&DesktopLaunchers.desktop_launcher_windows/1, screen: :chat)
 
-    refute enabled?(guest_html, "desktop-launcher-item-open_admin_users")
+    refute has_testid?(guest_html, "desktop-launcher-item-open_admin_users")
+    refute has_testid?(guest_html, "desktop-launcher-item-open_system_home")
     refute enabled?(guest_html, "desktop-launcher-item-p2p_start_audio")
     assert enabled?(guest_html, "desktop-launcher-item-p2p_how_to_start")
 
@@ -161,6 +202,7 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchersTest do
       )
 
     assert enabled?(admin_html, "desktop-launcher-item-open_admin_users")
+    assert enabled?(admin_html, "desktop-launcher-item-open_system_home")
     assert enabled?(admin_html, "desktop-launcher-item-p2p_start_audio")
     assert enabled?(admin_html, "desktop-launcher-item-p2p_toggle_privacy")
     assert enabled?(admin_html, "desktop-launcher-item-open_arcade")
@@ -174,6 +216,19 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchersTest do
     assert html =~ ~s(data-testid="desktop-launcher-taskbar-tools")
     refute html =~ ~s(data-window-taskbar="desktop-launcher-windows")
     refute html =~ ~s(data-window-taskbar="desktop-launcher-navigate")
+    refute html =~ ~s(data-window-taskbar="desktop-launcher-admin")
+    refute html =~ ~s(data-window-taskbar="desktop-launcher-system")
+  end
+
+  test "launcher taskbar buttons include Admin and System for a chat admin" do
+    html =
+      render_component(&DesktopLaunchers.desktop_launcher_taskbar_buttons/1,
+        screen: :chat,
+        is_admin: true
+      )
+
+    assert html =~ ~s(data-window-taskbar="desktop-launcher-admin")
+    assert html =~ ~s(data-window-taskbar="desktop-launcher-system")
   end
 
   test "public launcher taskbar buttons only target Language and Help" do
@@ -209,6 +264,13 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchersTest do
     |> document()
     |> Floki.find(selector)
     |> Enum.map(&attrs(&1)["data-testid"])
+  end
+
+  defp has_testid?(html, testid) do
+    html
+    |> document()
+    |> Floki.find(~s([data-testid="#{testid}"]))
+    |> Enum.any?()
   end
 
   defp document(html), do: Floki.parse_fragment!(html)

@@ -170,8 +170,9 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
                 "the window in front of you; Tools holds the address book, lists, channel " <>
                 "windows and the display settings; Automation holds Perform, Auto-Join, " <>
                 "aliases, custom menus and timers; P2P comes alive with a peer session; " <>
-                "Games holds Retro Games and the Arcade; Account and Admin hold their own; " <>
-                "Windows reopens a window of the screen you are on; Navigate reaches the " <>
+                "Games holds Retro Games and the Arcade; Account holds identity and profile " <>
+                "tools; Admin and System appear only inside the chat for admins; Windows " <>
+                "reopens a window of the screen you are on; Navigate reaches the " <>
                 "public pages, the documentation and the app; Language switches locale; " <>
                 "Help holds the topics, the cheatsheet and About. Disconnect sits alone at " <>
                 "the bottom."

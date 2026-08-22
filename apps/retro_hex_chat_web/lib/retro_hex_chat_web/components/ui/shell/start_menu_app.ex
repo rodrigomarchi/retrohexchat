@@ -2,13 +2,12 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
   @moduledoc """
   The Start menu — the same one on every screen the app has.
 
-  Landing, Connect, Chat, Help and the showcase all render this component and all
-  get the identical list of entries. What changes between them is which entries
-  are live: a visitor on the landing page can open Start ▸ Tools and read
+  Landing, Connect, Chat, Help and the showcase all render this component and get
+  the same user-facing list of entries. What changes between them is which
+  entries are live: a visitor on the landing page can open Start ▸ Tools and read
   "Address Book", "Notify List", "Ignore List" grayed out, because those are real
-  parts of the app they have not connected to yet. Hiding them would make the
-  menu a different menu on every screen and leave the app's surface invisible
-  until you were already inside it.
+  parts of the app they have not connected to yet. The exception is privileged
+  server operation: Admin and System are visible only inside the chat for admins.
 
   `screen` is the only capability input a caller needs; the table below it is the
   single place that decides what each screen can reach, which is what makes the
@@ -20,7 +19,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
   and swallow the flyouts, which escape to the right — so the root list has to
   fit on screen at any height. Root rows stay one level of groups deep:
 
-      View ▸ Tools ▸ Automation ▸ P2P ▸ Games ▸ Account ▸ Admin ▸ System ▸
+      View ▸ Tools ▸ Automation ▸ P2P ▸ Games ▸ Account ▸ [Admin ▸ System ▸]
       Windows ▸ Navigate ▸ Language ▸
       Help ▸
       Disconnect
@@ -32,10 +31,11 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
   back into Tools: three windows never earned a row of their own once one had to
   be given up.
 
-  This menu is a superset of every menu bar the app renders — the chat's
-  `MenuBarApp`, the help viewer's `HelpMenuBar` and the landing shell's own
-  strip. An item that exists in any of them exists here, on every screen, gray
-  where it has nothing to act on.
+  This menu is a superset of every non-privileged menu bar the app renders — the
+  chat's `MenuBarApp`, the help viewer's `HelpMenuBar` and the landing shell's
+  own strip. An item that exists in any of them exists here, on every screen,
+  gray where it has nothing to act on. Admin/System are scoped to chat admins
+  instead of being advertised on public or non-admin desktops.
 
   Pure presentation: primitives and semantic event names only (no `Session`, no
   domain calls), like `MenuBarApp`.
@@ -491,8 +491,8 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
         </.start_menu_submenu>
 
         <.start_menu_submenu
+          :if={@admin?}
           label={dgettext("ui", "Admin")}
-          muted={!@admin?}
           testid="start-menu-admin-submenu"
         >
           <:icon><Icons.icon_shield class="h-4 w-4" /></:icon>
@@ -502,15 +502,14 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
             on_action={@on_action}
             label={label}
             icon_fn={icon_fn}
-            disabled={!@admin?}
           />
         </.start_menu_submenu>
 
         <%!-- Kept apart from Admin: these windows only read the node, while
               everything under Admin acts on the server. --%>
         <.start_menu_submenu
+          :if={@admin?}
           label={dgettext("ui", "System")}
-          muted={!@admin?}
           testid="start-menu-system-submenu"
         >
           <:icon><Icons.icon_server class="h-4 w-4" /></:icon>
@@ -520,7 +519,6 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
             on_action={@on_action}
             label={label}
             icon_fn={icon_fn}
-            disabled={!@admin?}
           />
         </.start_menu_submenu>
 

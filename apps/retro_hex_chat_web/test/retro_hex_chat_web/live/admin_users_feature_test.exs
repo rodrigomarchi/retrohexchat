@@ -252,18 +252,14 @@ defmodule RetroHexChatWeb.AdminUsersFeatureTest do
       assert html =~ ~s(data-testid="start-menu-item-open_admin_users")
     end
 
-    test "a non-admin sees the entry grayed, not hidden" do
-      # The Start menu names what the app can do and grays what is out of
-      # reach — asserting the row is simply absent would pass for the wrong
-      # reason now that the chat's File menu no longer carries it at all.
+    test "a non-admin does not see the entry" do
       doc =
         render_component(&StartMenuApp.start_menu_app/1, screen: :chat, windows: [])
         |> Floki.parse_document!()
 
       row = Floki.find(doc, ~s([data-testid="start-menu-item-open_admin_users"]))
 
-      assert row != []
-      assert Floki.attribute(row, "disabled") != []
+      assert row == []
     end
 
     test "opening mounts a managed window and closing unmounts it", %{conn: conn} do

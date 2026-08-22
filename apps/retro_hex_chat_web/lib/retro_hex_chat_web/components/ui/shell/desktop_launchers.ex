@@ -273,6 +273,7 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
       group(:language, dgettext("ui", "Language"), :icon_globe, language_items(cap)),
       group(:help, dgettext("ui", "Help"), :icon_group_help, help_items(cap))
     ]
+    |> Enum.reject(&privileged_group_hidden?(&1, cap))
     |> Enum.with_index()
     |> Enum.map(fn {group, index} ->
       group
@@ -333,6 +334,9 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
 
   defp group(id, label, icon_fn, items),
     do: %{id: id, label: label, icon_fn: icon_fn, items: items}
+
+  defp privileged_group_hidden?(%{id: id}, cap) when id in [:admin, :system], do: !cap.admin?
+  defp privileged_group_hidden?(_group, _cap), do: false
 
   defp object_count(items), do: Enum.count(items, &(&1.kind != :separator))
 

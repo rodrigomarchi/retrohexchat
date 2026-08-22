@@ -2365,11 +2365,6 @@ msgstr ""
 msgid "Opens windowed"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:71
-#, elixir-autogen, elixir-format
-msgid "The Start button opens the same menu on every screen, grouped into View, Tools, Automation, P2P, Games, Account, Admin, System, Windows, Navigate, Language and Help, with Disconnect at the bottom. Entries you cannot use right now are grayed out rather than hidden. It carries everything the app can do, including everything the chat window's own menus offer."
-msgstr ""
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "The chat runs on a Windows-style desktop. The whole chat surface — conversations, tabs, messages, user list and input — lives in one window over a taskbar. The menus hang under that window's own title bar and its status bar runs along its bottom edge, the way a Windows 98 program carried its own; the desktop itself has no chrome."
@@ -2395,12 +2390,17 @@ msgstr ""
 msgid "Desktop App Folders"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:57
-#, elixir-autogen, elixir-format
-msgid "On a desktop viewport, the wallpaper shows app-folder icons for the main app groups: View, Tools, Automation, P2P, Games, Account, Admin, System, Language and Help. Windows and Navigate stay in the Start menu. Double-click a folder icon to open a Windows-style folder window with icons for that group. A single click only selects the desktop icon."
-msgstr ""
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "Inside the chat, those folder icons launch the same windows, actions and links as the Start menu. On Landing, Connect, Help and Showcase, Language and Help stay available; the other desktop app folders show a dialog explaining that you need to connect before those desktop apps can run."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:57
+#, elixir-autogen, elixir-format
+msgid "On a desktop viewport, the wallpaper shows app-folder icons for the main app groups: View, Tools, Automation, P2P, Games, Account, Language and Help. Admin and System appear there only inside the chat for admins. Windows and Navigate stay in the Start menu. Double-click a folder icon to open a Windows-style folder window with icons for that group. A single click only selects the desktop icon."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:71
+#, elixir-autogen, elixir-format
+msgid "The Start button opens the same base menu on every screen, grouped into View, Tools, Automation, P2P, Games, Account, Windows, Navigate, Language and Help, with Disconnect at the bottom. Entries you cannot use right now are grayed out rather than hidden. Admin and System are shown only in the chat when you are an admin."
 msgstr ""
