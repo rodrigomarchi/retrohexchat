@@ -1022,12 +1022,12 @@ defmodule RetroHexChat.Jobs.ObanHealth do
        do: "pending work"
 
   defp maintenance_status(_active_jobs, _failure_jobs, _pending_work, %DateTime{}), do: "ok"
-  defp maintenance_status(_active_jobs, _failure_jobs, _pending_work, nil), do: "never run"
+  defp maintenance_status(_active_jobs, _failure_jobs, _pending_work, nil), do: "idle"
 
   defp maintenance_table(rows) do
     %Table{
       columns: [
-        Table.column(:sweep, "Sweep", sortable: true),
+        Table.column(:sweep, "Job", sortable: true),
         Table.column(:status, "Status", sortable: true),
         Table.column(:queue, "Queue", sortable: true),
         Table.column(:worker, "Worker", sortable: true),

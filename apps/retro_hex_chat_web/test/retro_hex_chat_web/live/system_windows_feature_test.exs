@@ -168,7 +168,7 @@ defmodule RetroHexChatWeb.SystemWindowsFeatureTest do
         |> element("[data-testid='system-oban-tab-maintenance']")
         |> render_click()
 
-      assert html =~ "Maintenance sweeps"
+      assert html =~ "Maintenance jobs"
       assert html =~ "Attachment orphan cleanup"
       assert html =~ "Trusted device expiry"
       assert html =~ "Chat device session cleanup"

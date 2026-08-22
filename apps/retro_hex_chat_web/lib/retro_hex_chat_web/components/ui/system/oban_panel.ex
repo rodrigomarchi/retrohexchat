@@ -369,7 +369,7 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
             data-testid={"#{@testid}-tabpanel-maintenance"}
           >
             <section class="min-h-[220px]">
-              <.section_heading icon={:icon_clock} label={dgettext("dialogs", "Maintenance sweeps")} />
+              <.section_heading icon={:icon_clock} label={dgettext("dialogs", "Maintenance jobs")} />
               <.table_shell>
                 <.retro_table
                   id={"#{@testid}-maintenance-table"}
@@ -377,7 +377,7 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
                   testid={"#{@testid}-maintenance-table"}
                   truncate
                   fit_pane
-                  empty_title={dgettext("dialogs", "No maintenance sweeps are configured")}
+                  empty_title={dgettext("dialogs", "No maintenance jobs are configured")}
                 />
               </.table_shell>
             </section>
