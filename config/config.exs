@@ -67,6 +67,7 @@ config :retro_hex_chat, Oban,
        {"50 * * * *", RetroHexChat.Jobs.ScrapedPagePruneWorker},
        {"55 * * * *", RetroHexChat.Jobs.IgnoreExpiredCleanupWorker}
      ]},
+    {Oban.Plugins.Lifeline, rescue_after: :timer.minutes(6)},
     Oban.Plugins.Pruner
   ],
   queues: [rss: 2, maintenance: 1, bots: 2, scrape: 2, persistence: 1]

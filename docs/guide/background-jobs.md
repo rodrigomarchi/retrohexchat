@@ -26,6 +26,9 @@ must survive a restart or deploy — every one of them was migrated out.
   silently lost job.
 - **Declare the envelope explicitly** on every worker: `queue`, `max_attempts`, `timeout/1`,
   `backoff/1`, `tags`, plus a `unique` rule whenever the work has a natural identity.
+- **Keep Oban's Lifeline plugin enabled.** Graceful deploys can still leave a row stuck in
+  `executing` when the VM shuts down mid-job; Lifeline is the generic recovery path that returns
+  orphaned work to the queue after the workers' timeout envelope.
 - **HTTP inside a job goes through `RetroHexChat.Net.HTTPRetry`**: retry only transient statuses
   (`408`, `425`, `429`, `5xx`) and transport failures; never retry deterministic `4xx` such as
   `404`; cap HTTP flows at `max_attempts: 3`.
