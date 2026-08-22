@@ -131,11 +131,10 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
 
   # ── US2: Incoming PM records sidebar activity and opens a background tab ───
 
-  describe "US2: incoming PM records sidebar activity and opens a background tab" do
-    test "new contact appears in conversations with unread and an unselected tab on PM activity",
-         %{
-           conn: conn
-         } do
+  describe "US2: incoming PM records sidebar activity without taking the screen" do
+    test "new contact appears in conversations with unread and no tab on PM activity", %{
+      conn: conn
+    } do
       nick = "AO#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
@@ -143,11 +142,11 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
 
       assert has_element?(view, pm_sidebar_selector("NewPerson"))
       assert has_element?(view, ~s([data-testid="pm-unread-badge-NewPerson"]))
-      assert has_element?(view, pm_tab_selector("NewPerson"))
-      assert has_element?(view, ~s(#{pm_tab_selector("NewPerson")}[aria-selected="false"]))
+      # It never took the screen, so it never took the bar.
+      refute has_element?(view, pm_tab_selector("NewPerson"))
     end
 
-    test "incoming P2P invite opens a PM tab without selecting it", %{conn: conn} do
+    test "incoming P2P invite lands in the sidebar without taking the screen", %{conn: conn} do
       nick = "PI#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
@@ -155,8 +154,7 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
 
       assert has_element?(view, pm_sidebar_selector("Caller"))
       assert has_element?(view, ~s([data-testid="pm-unread-badge-Caller"]))
-      assert has_element?(view, pm_tab_selector("Caller"))
-      assert has_element?(view, ~s(#{pm_tab_selector("Caller")}[aria-selected="false"]))
+      refute has_element?(view, pm_tab_selector("Caller"))
     end
 
     test "clicking a sidebar PM opens a tab and clears unread", %{conn: conn} do
@@ -217,15 +215,14 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
   # ── US3: pm_activity is the lightweight user-topic PM signal ───
 
   describe "US3: pm_activity updates PM conversations" do
-    test "{:pm_activity, ...} from new contact creates sidebar entry and tab", %{conn: conn} do
+    test "{:pm_activity, ...} from new contact creates a sidebar entry, not a tab", %{conn: conn} do
       nick = "IN#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send(view.pid, pm_activity("Dave"))
 
       assert has_element?(view, pm_sidebar_selector("Dave"))
-      assert has_element?(view, pm_tab_selector("Dave"))
-      assert has_element?(view, ~s(#{pm_tab_selector("Dave")}[aria-selected="false"]))
+      refute has_element?(view, pm_tab_selector("Dave"))
     end
 
     test "{:pm_activity, ...} from ignored user does NOT create sidebar entry", %{conn: conn} do
@@ -316,8 +313,8 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
 
       assert has_element?(view, pm_sidebar_selector("Eve"))
       assert has_element?(view, ~s([data-testid="pm-unread-badge-Eve"]))
-      assert has_element?(view, pm_tab_selector("Eve"))
-      assert has_element?(view, ~s(#{pm_tab_selector("Eve")}[aria-selected="false"]))
+      # Reopened in the sidebar only — it does not steal the bar back.
+      refute has_element?(view, pm_tab_selector("Eve"))
     end
   end
 

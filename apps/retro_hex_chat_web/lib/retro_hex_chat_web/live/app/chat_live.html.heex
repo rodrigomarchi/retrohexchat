@@ -335,13 +335,11 @@
             timezone={@timezone}
           />
 
-          <%!-- Tab bar: only conversation tabs belong here. It closes the chat
-               area from below, next to the composer the tabs switch between. --%>
+          <%!-- Tab bar: Status and the conversation in focus, nothing else. It
+               closes the chat area from below, next to the composer it switches
+               against. Every other conversation lives in the sidebar. --%>
           <.chat_tabs
             class="shrink-0 min-w-0"
-            channels={@session.channels}
-            pm_tabs={@open_pm_tabs}
-            tab_order={@tab_order}
             unread_counts={@unread_counts}
             status_unread={@status_unread}
             show_status_tab={@show_status_tab}

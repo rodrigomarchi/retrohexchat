@@ -59,8 +59,10 @@ defmodule RetroHexChatWeb.Live.WindowNavigationTest do
       send(view.pid, pm_activity("ClosedPm"))
       render(view)
 
+      # It lands in the sidebar, not in the bar: the bar only carries the
+      # conversation in focus, and this one has not taken the screen yet.
       assert has_element?(view, ~s([data-testid="pm-ClosedPm"]))
-      assert has_element?(view, ~s([role="tab"][phx-value-type="pm"][phx-value-label="ClosedPm"]))
+      refute has_element?(view, ~s([role="tab"][phx-value-type="pm"][phx-value-label="ClosedPm"]))
       refute assigns(view).session.active_pm == "ClosedPm"
 
       render_click(view, "window_next")

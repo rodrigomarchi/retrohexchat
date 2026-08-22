@@ -1,13 +1,37 @@
 <p>
   {dgettext(
     "help_ui",
-    "The tab bar at the bottom of the chat area provides another way to switch between the Status tab, channels, and PMs."
+    "The tab bar at the bottom of the chat area holds two tabs: Status, and the one conversation you are reading. It is a switch between those two, not a list of everything you have open."
   )}
 </p>
-<.help_h4 icon={:icon_star}>{dgettext("help_ui", "Features")}</.help_h4>
+<.help_h4 icon={:icon_star}>{dgettext("help_ui", "Switching Conversations")}</.help_h4>
 <p>
   {dgettext(
     "help_ui",
-    "Click a tab to switch. The active tab is highlighted. Tabs show close buttons (×) for channels and PMs. Unread tabs appear bold, and highlighted tabs flash."
+    "Use the conversations sidebar on the left to move between channels and private messages. Click a conversation there and it takes the screen, replacing whichever one the tab bar was showing."
   )}
+  {dgettext(
+    "help_ui",
+    "From the keyboard, Ctrl+Shift+] and Ctrl+Shift+[ walk through your joined channels and open private messages without touching the mouse."
+  )}
+</p>
+<.help_h4 icon={:icon_tab_channel}>
+  {dgettext("help_ui", "Switching Away vs Leaving")}
+</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "Reading something else does not leave the channel. A conversation you switch away from keeps receiving messages, keeps counting unread, and keeps flashing and playing its sound in the sidebar — you simply are not looking at it."
+  )}
+  {dgettext(
+    "help_ui",
+    "To actually leave, use the × on the tab, or right-click the channel in the sidebar and choose Leave Channel."
+  )}
+</p>
+<.help_h4 icon={:icon_link}>{dgettext("help_ui", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="ui-conversations">{dgettext("help_ui", "Conversations")}</.help_link>
+  · <.help_link topic="ui-status-tab">{dgettext("help_ui", "Status Tab")}</.help_link>
+  ·
+  <.help_link topic="keyboard-shortcuts">{dgettext("help_ui", "Keyboard Shortcuts")}</.help_link>
 </p>

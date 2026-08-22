@@ -13,7 +13,6 @@ defmodule RetroHexChat.Chat.Schemas.ReconnectState do
     field :active_channel, :string
     field :active_pm, :string
     field :open_pm_tabs, {:array, :string}, default: []
-    field :tab_order, {:array, :map}, default: []
     field :welcomed_channels, {:array, :string}, default: []
 
     timestamps(type: :utc_datetime_usec)
@@ -28,14 +27,12 @@ defmodule RetroHexChat.Chat.Schemas.ReconnectState do
       :active_channel,
       :active_pm,
       :open_pm_tabs,
-      :tab_order,
       :welcomed_channels
     ])
     |> validate_required([
       :owner_nickname,
       :channels,
       :open_pm_tabs,
-      :tab_order,
       :welcomed_channels
     ])
     |> validate_length(:owner_nickname, max: 16)

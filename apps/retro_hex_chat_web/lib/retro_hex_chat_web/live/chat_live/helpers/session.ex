@@ -33,7 +33,6 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
   alias RetroHexChatWeb.ChatLive.Helpers.PathHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.Persistence
   alias RetroHexChatWeb.ChatLive.Helpers.Presence, as: PresenceHelpers
-  alias RetroHexChatWeb.ChatLive.TabOrder
 
   # ── Nick color functions ───────────────────────────────────
 
@@ -339,7 +338,6 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
       active_channel: session.active_channel,
       active_pm: session.active_pm,
       open_pm_tabs: socket.assigns[:open_pm_tabs] || [],
-      tab_order: TabOrder.serialize(socket.assigns[:tab_order] || []),
       welcomed_channels: MapSet.to_list(session.welcomed_channels || MapSet.new())
     })
   end
@@ -369,8 +367,6 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
     open_pm_tabs =
       sanitize_open_pm_tabs(params.open_pm_tabs, socket.assigns.session.nickname)
 
-    tab_order = TabOrder.deserialize(params.tab_order)
-
     # Restore silently — this path only runs on a reconnect, and surfacing a
     # "Restoring session..." line on every deploy is noise the user never asked for.
     socket =
@@ -379,8 +375,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
       |> assign(
         reconnect_active_channel: active_channel,
         reconnect_active_pm: active_pm,
-        reconnect_open_pm_tabs: open_pm_tabs,
-        reconnect_tab_order: tab_order
+        reconnect_open_pm_tabs: open_pm_tabs
       )
 
     if channels != [] do

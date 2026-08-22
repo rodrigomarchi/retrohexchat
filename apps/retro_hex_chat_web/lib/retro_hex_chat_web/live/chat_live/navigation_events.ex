@@ -14,7 +14,6 @@ defmodule RetroHexChatWeb.ChatLive.NavigationEvents do
   alias RetroHexChat.Chat.UnreadTracker
   alias RetroHexChatWeb.ChatLive.Helpers
   alias RetroHexChatWeb.ChatLive.Helpers.PM
-  alias RetroHexChatWeb.ChatLive.TabOrder
 
   def handle_event("window_next", _params, socket) do
     {:halt, navigate(socket, :next)}
@@ -49,12 +48,7 @@ defmodule RetroHexChatWeb.ChatLive.NavigationEvents do
   # ---------------------------------------------------------------------------
 
   defp navigate(socket, direction) do
-    windows =
-      build_window_list(
-        socket.assigns.session,
-        socket.assigns[:open_pm_tabs] || [],
-        socket.assigns[:tab_order] || []
-      )
+    windows = build_window_list(socket.assigns.session, socket.assigns[:open_pm_tabs] || [])
 
     current = current_window(socket.assigns)
 
@@ -65,12 +59,7 @@ defmodule RetroHexChatWeb.ChatLive.NavigationEvents do
   end
 
   defp navigate_to_index(socket, index) when is_integer(index) do
-    windows =
-      build_window_list(
-        socket.assigns.session,
-        socket.assigns[:open_pm_tabs] || [],
-        socket.assigns[:tab_order] || []
-      )
+    windows = build_window_list(socket.assigns.session, socket.assigns[:open_pm_tabs] || [])
 
     # 1-based index, skip Status tab
     target_idx = index - 1
@@ -82,18 +71,18 @@ defmodule RetroHexChatWeb.ChatLive.NavigationEvents do
     end
   end
 
+  # Joined channels in join order, then open PMs. A fixed, predictable cycle:
+  # mIRC walks its window list, it does not jump to whatever was touched last.
   @spec build_window_list(Session.t(), [String.t()]) :: [
           {:channel, String.t()} | {:pm, String.t()}
         ]
   def build_window_list(session, open_pm_tabs) do
-    build_window_list(session, open_pm_tabs, [])
-  end
+    channel_keys =
+      for channel <- session.channels || [], is_binary(channel), do: {:channel, channel}
 
-  @spec build_window_list(Session.t(), [String.t()], [TabOrder.key()]) :: [
-          {:channel, String.t()} | {:pm, String.t()}
-        ]
-  def build_window_list(session, open_pm_tabs, tab_order) do
-    TabOrder.visible_order(session.channels, open_pm_tabs, tab_order)
+    pm_keys = for pm <- open_pm_tabs || [], is_binary(pm), do: {:pm, pm}
+
+    Enum.uniq(channel_keys ++ pm_keys)
   end
 
   defp current_window(assigns) do

@@ -89,9 +89,12 @@ defmodule RetroHexChatWeb.Components.UI.IrcTabs do
       <span class="w-4 h-4 flex-shrink-0 inline-flex items-center justify-center">
         {type_icon(assigns)}
       </span>
+      <%!-- A PM tab keeps its nick colour while selected. The bar holds one
+           conversation at a time, so the colour reads as who you are talking to
+           rather than as a way to scan a row of unselected tabs. --%>
       <span class={[
         "inline-block max-w-[16ch] overflow-hidden text-ellipsis whitespace-nowrap",
-        !@active && @nick_color
+        @nick_color
       ]}>
         {@label}
       </span>

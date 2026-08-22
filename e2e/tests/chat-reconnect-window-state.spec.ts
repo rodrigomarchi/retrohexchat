@@ -70,10 +70,7 @@ test.describe("Reconnect window state", () => {
       await carol.chat.sendMessage(`/msg ${alice.nick} ${unreadMessage}`);
       await alice.chat.expectTabSelected(bob.nick);
       await alice.chat.expectTabVisible(carol.nick);
-      await expect(alice.chat.tab(carol.nick)).toHaveAttribute(
-        "data-unread",
-        "true",
-      );
+      await alice.chat.expectTabUnread(carol.nick, true);
       await expect(alice.chat.pmUnreadBadge(carol.nick)).toHaveText("1");
 
       await alice.chat.chatInput.fill(draft);
@@ -89,10 +86,7 @@ test.describe("Reconnect window state", () => {
       await expect(alice.chat.chatInput).toBeDisabled();
       await expect(alice.chat.chatInput).toHaveValue(draft);
       await alice.chat.expectTabSelected(bob.nick);
-      await expect(alice.chat.tab(carol.nick)).toHaveAttribute(
-        "data-unread",
-        "true",
-      );
+      await alice.chat.expectTabUnread(carol.nick, true);
       await expect(bob.chat.typingIndicator).toHaveText(
         `${alice.nick} is typing...`,
       );
@@ -109,10 +103,7 @@ test.describe("Reconnect window state", () => {
       await alice.chat.expectTabSelected(bob.nick);
       await expect(alice.chat.chatInput).toBeEnabled();
       await expect(alice.chat.chatInput).toHaveValue(draft);
-      await expect(alice.chat.tab(carol.nick)).toHaveAttribute(
-        "data-unread",
-        "true",
-      );
+      await alice.chat.expectTabUnread(carol.nick, true);
       await expect(alice.chat.pmUnreadBadge(carol.nick)).toHaveText("1");
       await expect(bob.chat.typingIndicator).toHaveText(
         `${alice.nick} is typing...`,

@@ -9,22 +9,17 @@ defmodule RetroHexChat.Chat.ReconnectState do
   alias RetroHexChat.Chat.Schemas.ReconnectState, as: ReconnectStateSchema
   alias RetroHexChat.Repo
 
-  @type tab_order_item :: %{type: String.t(), label: String.t()}
-
   @type t :: %{
           nickname: String.t() | nil,
           channels: [String.t()],
           active_channel: String.t() | nil,
           active_pm: String.t() | nil,
           open_pm_tabs: [String.t()],
-          tab_order: [tab_order_item()],
           welcomed_channels: [String.t()]
         }
 
   @max_channels 50
   @max_open_pm_tabs 20
-  @max_tab_order_items 100
-  @max_tab_label_length 128
 
   @spec new() :: t()
   def new do
@@ -34,7 +29,6 @@ defmodule RetroHexChat.Chat.ReconnectState do
       active_channel: nil,
       active_pm: nil,
       open_pm_tabs: [],
-      tab_order: [],
       welcomed_channels: []
     }
   end
@@ -61,8 +55,6 @@ defmodule RetroHexChat.Chat.ReconnectState do
           open_pm_tabs
         ),
       open_pm_tabs: open_pm_tabs,
-      tab_order:
-        normalize_tab_order(Map.get(snapshot, :tab_order) || Map.get(snapshot, "tab_order")),
       welcomed_channels:
         normalize_channels(
           Map.get(snapshot, :welcomed_channels) || Map.get(snapshot, "welcomed_channels")
@@ -89,7 +81,6 @@ defmodule RetroHexChat.Chat.ReconnectState do
       active_channel: normalized.active_channel,
       active_pm: normalized.active_pm,
       open_pm_tabs: normalized.open_pm_tabs,
-      tab_order: normalized.tab_order,
       welcomed_channels: normalized.welcomed_channels
     }
 
@@ -125,7 +116,6 @@ defmodule RetroHexChat.Chat.ReconnectState do
            active_channel: db_entry.active_channel,
            active_pm: db_entry.active_pm,
            open_pm_tabs: db_entry.open_pm_tabs,
-           tab_order: db_entry.tab_order,
            welcomed_channels: db_entry.welcomed_channels
          })}
     end
@@ -181,26 +171,6 @@ defmodule RetroHexChat.Chat.ReconnectState do
 
   defp normalize_optional_string(value) when is_binary(value) and value != "", do: value
   defp normalize_optional_string(_value), do: nil
-
-  defp normalize_tab_order(tab_order) when is_list(tab_order) do
-    tab_order
-    |> Enum.flat_map(&normalize_tab_order_item/1)
-    |> Enum.take(@max_tab_order_items)
-  end
-
-  defp normalize_tab_order(_tab_order), do: []
-
-  defp normalize_tab_order_item(%{"type" => type, "label" => label}) do
-    normalize_tab_order_item(%{type: type, label: label})
-  end
-
-  defp normalize_tab_order_item(%{type: type, label: label})
-       when type in ["channel", "pm"] and is_binary(label) and label != "" and
-              byte_size(label) <= @max_tab_label_length do
-    [%{type: type, label: label}]
-  end
-
-  defp normalize_tab_order_item(_item), do: []
 
   defp valid_channel?(channel) when is_binary(channel) do
     String.starts_with?(channel, "#") and String.trim(channel) == channel and

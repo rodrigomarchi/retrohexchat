@@ -84,7 +84,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
   }
 
   alias RetroHexChatWeb.ChatLive.Helpers.PathHelpers
-  alias RetroHexChatWeb.ChatLive.TabOrder
   alias RetroHexChatWeb.ChatLive.WindowRegistry
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.Timezone
@@ -328,9 +327,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
   # Tab bar actions → type-specific v1 events
   def handle_event("switch_tab", %{"type" => type, "label" => label}, socket) do
-    socket =
-      assign(socket, tab_order: TabOrder.touch(socket.assigns[:tab_order] || [], type, label))
-
     case type do
       "status" -> dispatch_to_hooks("switch_to_status", %{}, socket)
       "channel" -> dispatch_to_hooks("switch_channel", %{"channel" => label}, socket)
@@ -907,7 +903,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
       account_last_away_message: nil,
       show_status_tab: false,
       open_pm_tabs: [],
-      tab_order: [],
       status_unread: false,
       highlight_channels: MapSet.new(),
       channel_activity_order: %{},
@@ -933,7 +928,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
       reconnect_active_channel: nil,
       reconnect_active_pm: nil,
       reconnect_open_pm_tabs: [],
-      reconnect_tab_order: [],
       knock_timestamps: %{},
       duplicate_tracker: DuplicateTracker.new(),
       flood_tracker: FloodTracker.new(),

@@ -335,14 +335,9 @@ test.describe("In-chat P2P session", () => {
       // Bob receives the PM tab in the background, then accepts from the PM
       // header — no page navigation and no actionable transcript card.
       await bob.chat.expectTabVisible(alice.nick);
-      await expect(bob.chat.tab(alice.nick)).toHaveAttribute(
-        "data-unread",
-        "true",
-      );
-      await expect(bob.chat.tab(alice.nick)).not.toHaveAttribute(
-        "aria-selected",
-        "true",
-      );
+      await bob.chat.expectTabUnread(alice.nick, true);
+      // Background means no tab of its own — the bar still belongs to #lobby.
+      await expect(bob.chat.tab(alice.nick)).toHaveCount(0);
       await bob.chat.switchToTab(alice.nick);
       await acceptP2PInvite(bob.page);
 

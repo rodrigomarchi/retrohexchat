@@ -137,11 +137,6 @@ msgstr ""
 msgid "Click a nickname to access Query, Whois, Kick, Ban, Mode, Add to Contacts, and Set Nick Color options. Double-click to open a private message."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "Click a tab to switch. The active tab is highlighted. Tabs show close buttons (×) for channels and PMs. Unread tabs appear bold, and highlighted tabs flash."
-msgstr ""
-
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/ui_status_tab.html.heex:37
 #, elixir-autogen, elixir-format
@@ -202,6 +197,7 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:18
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "Conversations"
 msgstr ""
@@ -287,7 +283,6 @@ msgid "Every"
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:43
-#: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Features"
 msgstr ""
@@ -367,6 +362,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/ui_listings.html.heex:83
 #: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:123
+#: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:219
 #, elixir-autogen, elixir-format
 msgid "Keyboard Shortcuts"
@@ -567,6 +563,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:113
 #: lib/retro_hex_chat_web/controllers/help_content/ui_status_tab.html.heex:43
+#: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:31
 #: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:209
 #: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:13
@@ -688,11 +685,6 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "The active channel shows a user count in parentheses next to the channel name, e.g."
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "The tab bar at the bottom of the chat area provides another way to switch between the Status tab, channels, and PMs."
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:2
@@ -2403,4 +2395,44 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:71
 #, elixir-autogen, elixir-format
 msgid "The Start button opens the same base menu on every screen, grouped into View, Tools, Automation, P2P, Games, Account, Windows, Navigate, Language and Help, with Disconnect at the bottom. Entries you cannot use right now are grayed out rather than hidden. Admin and System are shown only in the chat when you are an admin."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "From the keyboard, Ctrl+Shift+] and Ctrl+Shift+[ walk through your joined channels and open private messages without touching the mouse."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Reading something else does not leave the channel. A conversation you switch away from keeps receiving messages, keeps counting unread, and keeps flashing and playing its sound in the sidebar — you simply are not looking at it."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "Status Tab"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Switching Conversations"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "The tab bar at the bottom of the chat area holds two tabs: Status, and the one conversation you are reading. It is a switch between those two, not a list of everything you have open."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "To actually leave, use the × on the tab, or right-click the channel in the sidebar and choose Leave Channel."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Use the conversations sidebar on the left to move between channels and private messages. Click a conversation there and it takes the screen, replacing whichever one the tab bar was showing."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "Switching Away vs Leaving"
 msgstr ""

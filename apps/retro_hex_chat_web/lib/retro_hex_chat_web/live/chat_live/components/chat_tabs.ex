@@ -1,40 +1,40 @@
 defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
   @moduledoc """
-  Pure function component for the IRC tab bar (status + channels + PMs).
+  Pure function component for the IRC tab bar.
 
-  Normalizes the channel/PM/unread data into a single tab list BEFORE rendering
-  (instead of three inline `:for` comprehensions with `Map.get(@unread_counts, …)`
-  in the main template) and renders it through the design-system `irc_tab_bar`/
-  `irc_tab_item` components.
+  The bar is a two-position switch: Status, and the conversation currently in
+  focus. It never lists the other joined channels or open PMs — those live in
+  the conversations sidebar, which owns the same unread, highlight, group-call
+  and P2P signals and does not run out of horizontal room.
 
-  Function component (no local state): there is no drag/reorder/overflow/pin yet.
-  `switch_tab`/`close_tab` stay parent adapters (`navigation_events`), carried as
-  attr defaults so the legacy event contract is preserved; change-tracking
-  memoizes the bar on the few inputs it reads, so a message in the active channel
-  that does not change unread no longer re-renders the whole tab strip.
+  This mirrors the state it renders. The socket carries a single
+  `active_channel`/`active_pm` and a single message stream, so "one conversation
+  on screen" was always the truth; a strip of N tabs only suggested otherwise.
+  Leaving a conversation does not leave the channel — the PubSub subscription is
+  bound to join/part, so a backgrounded conversation keeps arriving and keeps
+  notifying in the sidebar.
+
+  Function component (no local state). `switch_tab`/`close_tab` stay parent
+  adapters (`navigation_events`), carried as attr defaults so the legacy event
+  contract is preserved.
   """
   use RetroHexChatWeb, :html
 
   import RetroHexChatWeb.Components.UI.IrcTabs
 
-  alias RetroHexChatWeb.ChatLive.TabOrder
-
   attr :class, :any, default: nil, doc: "Extra classes for the tab bar container"
-  attr :channels, :list, default: [], doc: "Joined channel names, in order"
-  attr :pm_tabs, :list, default: [], doc: "Open PM nicks, in order"
-  attr :tab_order, :list, default: [], doc: "User-controlled conversation tab order"
   attr :unread_counts, :map, default: %{}, doc: "Unread counts keyed by channel / \"pm:nick\""
   attr :status_unread, :boolean, default: false
   attr :show_status_tab, :boolean, default: false
   attr :active_channel, :string, default: nil
   attr :active_pm, :string, default: nil
-  attr :nick_color_fn, :any, required: true, doc: "nick -> CSS color class (PM tabs)"
+  attr :nick_color_fn, :any, required: true, doc: "nick -> CSS color class (PM tab)"
   attr :on_switch, :any, default: "switch_tab"
   attr :on_close, :any, default: "close_tab"
 
   attr :p2p_peer, :string,
     default: nil,
-    doc: "Peer of the active P2P session — that PM tab gets the session glyph"
+    doc: "Peer of the active P2P session — the PM tab gets the session glyph when it matches"
 
   attr :p2p_state, :atom,
     default: nil,
@@ -82,11 +82,15 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
     """
   end
 
-  # Build the normalized `%{type, label, active, unread, closeable, nick_color}`
-  # list outside the HEEx so the template carries no per-tab data shaping.
+  # Status plus at most one conversation. A session with nothing joined and no
+  # PM open renders the Status tab alone.
   @spec build_tabs(map()) :: [map()]
   defp build_tabs(assigns) do
-    status_tab = %{
+    [status_tab(assigns) | focused_tab(assigns)]
+  end
+
+  defp status_tab(assigns) do
+    %{
       type: "status",
       label: dgettext("chat", "Status"),
       active: assigns.show_status_tab,
@@ -99,20 +103,22 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
       group_call: false,
       group_call_summary: nil
     }
-
-    conversation_tabs =
-      assigns.channels
-      |> TabOrder.visible_order(assigns.pm_tabs, assigns.tab_order)
-      |> Enum.map(&conversation_tab(&1, assigns))
-
-    [status_tab | conversation_tabs]
   end
 
-  defp conversation_tab({:channel, channel}, assigns) do
+  # The PM wins when both are set: opening a PM is what last took the screen,
+  # and `active_channel` stays behind it so leaving the PM can fall back to it.
+  defp focused_tab(%{active_pm: pm} = assigns) when is_binary(pm), do: [pm_tab(pm, assigns)]
+
+  defp focused_tab(%{active_channel: channel} = assigns) when is_binary(channel),
+    do: [channel_tab(channel, assigns)]
+
+  defp focused_tab(_assigns), do: []
+
+  defp channel_tab(channel, assigns) do
     %{
       type: "channel",
       label: channel,
-      active: assigns.active_channel == channel && !assigns.show_status_tab,
+      active: !assigns.show_status_tab,
       unread: Map.get(assigns.unread_counts, channel, 0) > 0,
       closeable: true,
       nick_color: nil,
@@ -124,14 +130,14 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
     }
   end
 
-  defp conversation_tab({:pm, pm}, assigns) do
+  defp pm_tab(pm, assigns) do
     pm_p2p_session = p2p_session_for_pm(assigns, pm)
     pm_p2p_state = p2p_tab_state(value(pm_p2p_session, :state) || assigns.p2p_state)
 
     %{
       type: "pm",
       label: pm,
-      active: assigns.active_pm == pm && !assigns.show_status_tab,
+      active: !assigns.show_status_tab,
       unread: Map.get(assigns.unread_counts, "pm:#{pm}", 0) > 0,
       closeable: true,
       nick_color: assigns.nick_color_fn.(pm),
@@ -143,18 +149,17 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
     }
   end
 
-  defp channel_group_call?(channels, channel) when is_binary(channel) do
+  # `focused_tab/1` only builds a tab for a binary name, so no nil clause here.
+  defp channel_group_call?(channels, channel) do
     MapSet.member?(MapSet.new(channels || []), channel)
   end
-
-  defp channel_group_call?(_channels, _channel), do: false
 
   defp p2p_peer_key(assigns) do
     peer = assigns.p2p_peer || value(assigns.p2p_session, :peer_nick)
     if is_binary(peer), do: String.downcase(peer)
   end
 
-  defp p2p_session_for_pm(assigns, pm) when is_binary(pm) do
+  defp p2p_session_for_pm(assigns, pm) do
     key = String.downcase(pm)
 
     cond do
@@ -171,8 +176,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
         nil
     end
   end
-
-  defp p2p_session_for_pm(_assigns, _pm), do: nil
 
   defp p2p_tab_state(:idle), do: "idle"
   defp p2p_tab_state(:pending_received), do: "pending"

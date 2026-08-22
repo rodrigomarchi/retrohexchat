@@ -757,22 +757,36 @@ export class ChatPage {
   // Returns the tab element with the given visible label (e.g. "#lobby").
   // Names with leading "#" need no special escaping here — Playwright's
   // accessible-name match works literally.
+  //
+  // The bar holds Status plus the one conversation in focus, so this resolves
+  // only for whatever is currently on screen. Everything else is reachable
+  // through `conversationRow`.
   tab(name: string): Locator {
     return this.page.getByRole("tab", { name, exact: false });
   }
 
+  // The sidebar row for a conversation — the switcher that does carry every
+  // joined channel and every PM, and where unread badges live.
+  conversationRow(name: string): Locator {
+    const testid = name.startsWith("#") ? `channel-${name}` : `pm-${name}`;
+    return this.page.getByTestId(testid);
+  }
+
+  // Switching goes through the sidebar: the target has no tab until it is the
+  // conversation in focus, which is exactly what this then asserts.
   async switchToTab(name: string) {
-    const targetTab = this.tab(name);
-    await targetTab.click();
-    await expect(targetTab).toHaveAttribute("aria-selected", "true");
+    await this.conversationRow(name).click();
+    await expect(this.tab(name)).toHaveAttribute("aria-selected", "true");
     await expect(this.chatInput).toHaveAttribute(
       "placeholder",
       new RegExp(escapeRegExp(name)),
     );
   }
 
-  // Each tab contains a nested "Close tab" button.
+  // The focused tab carries a nested "Close tab" button. A conversation that is
+  // not in focus has none, so bring it forward first.
   async closeTab(name: string) {
+    await this.switchToTab(name);
     await this.tab(name).getByRole("button", { name: "Close tab" }).click();
   }
 
@@ -826,8 +840,10 @@ export class ChatPage {
     await expect(this.floodThresholdInput).toBeVisible();
   }
 
+  // "The conversation exists and is reachable" — the sidebar answers this for
+  // every conversation, focused or not.
   async expectTabVisible(name: string) {
-    await expect(this.tab(name)).toBeVisible();
+    await expect(this.conversationRow(name)).toBeVisible();
   }
 
   async expectTabSelected(name: string) {
@@ -835,11 +851,16 @@ export class ChatPage {
   }
 
   async expectTabHidden(name: string) {
-    await expect(this.tab(name)).toHaveCount(0);
+    await expect(this.conversationRow(name)).toHaveCount(0);
   }
 
+  // Unread is a sidebar signal: the bar only shows it for the focused
+  // conversation, which by definition has just been read.
   async expectTabUnread(name: string, unread: boolean) {
-    await expect(this.tab(name)).toHaveAttribute("data-unread", String(unread));
+    await expect(this.conversationRow(name)).toHaveAttribute(
+      "data-unread",
+      String(unread),
+    );
   }
 
   // Types a message (or slash command) into the chat input and submits

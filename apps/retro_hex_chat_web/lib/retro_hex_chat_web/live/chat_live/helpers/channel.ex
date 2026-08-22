@@ -17,7 +17,6 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
   alias RetroHexChatWeb.ChatLive.StreamItem
-  alias RetroHexChatWeb.ChatLive.TabOrder
 
   alias RetroHexChatWeb.ChatLive.Components.Composer
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
@@ -141,8 +140,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
         session: new_session,
         unread_counts: unread_counts,
         highlight_channels: highlight,
-        flash_channels: flash,
-        tab_order: TabOrder.drop(socket.assigns[:tab_order] || [], :channel, channel_name)
+        flash_channels: flash
       )
       |> ConversationsReadModel.drop_channel_activity(channel_name)
       |> GroupCallEvents.mark_channel_call_inactive(channel_name)
@@ -179,10 +177,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
 
     socket =
       socket
-      |> assign(
-        session: new_session,
-        tab_order: TabOrder.drop(socket.assigns[:tab_order] || [], :channel, channel_name)
-      )
+      |> assign(session: new_session)
       |> ConversationsReadModel.drop_channel_activity(channel_name)
       |> GroupCallEvents.mark_channel_call_inactive(channel_name)
 

@@ -81,19 +81,13 @@ test.describe("View menu", () => {
 
       await alice.chat.switchToTab("#lobby");
       await bob.chat.sendMessage(unread);
-      await expect(alice.chat.tab(channel)).toHaveAttribute(
-        "data-unread",
-        "true",
-      );
+      await alice.chat.expectTabUnread(channel, true);
 
       // Sidebars hide via CSS (mobile overlay design) — the node stays mounted.
       await clickViewItem(alice.chat, alice.chat.toggleConversationsMenuItem);
       await expect(alice.chat.page.getByTestId("conversations")).toBeHidden();
       await alice.chat.expectTabSelected("#lobby");
-      await expect(alice.chat.tab(channel)).toHaveAttribute(
-        "data-unread",
-        "true",
-      );
+      await alice.chat.expectTabUnread(channel, true);
 
       await clickViewItem(alice.chat, alice.chat.toggleConversationsMenuItem);
       await expect(alice.chat.page.getByTestId("conversations")).toBeVisible();
@@ -110,10 +104,7 @@ test.describe("View menu", () => {
       await clickViewItem(alice.chat, alice.chat.channelListMenuItem);
       await expect(alice.chat.channelListDialog).toBeVisible();
       await alice.chat.expectTabSelected("#lobby");
-      await expect(alice.chat.tab(channel)).toHaveAttribute(
-        "data-unread",
-        "true",
-      );
+      await alice.chat.expectTabUnread(channel, true);
       await alice.chat.channelListDialog
         .locator('[data-window-control="close"]')
         .click();
@@ -122,10 +113,7 @@ test.describe("View menu", () => {
       // Find lives in the Edit menu, not View.
       await alice.chat.openSearchFromEditMenu();
       await alice.chat.expectTabSelected("#lobby");
-      await expect(alice.chat.tab(channel)).toHaveAttribute(
-        "data-unread",
-        "true",
-      );
+      await alice.chat.expectTabUnread(channel, true);
       await alice.chat.searchBar.getByRole("button", { name: "Close" }).click();
       await expect(alice.chat.searchBar).toBeHidden();
     } finally {

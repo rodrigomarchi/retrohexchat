@@ -47,7 +47,6 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   alias RetroHexChatWeb.ChatLive.Helpers.Messages, as: MessageHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.PM
   alias RetroHexChatWeb.ChatLive.StreamItem
-  alias RetroHexChatWeb.ChatLive.TabOrder
   alias RetroHexChatWeb.Endpoint
 
   @page_size 50
@@ -201,7 +200,6 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
       |> assign(
         session: session,
         open_pm_tabs: remaining_pm_tabs,
-        tab_order: TabOrder.drop(socket.assigns[:tab_order] || [], :pm, nickname),
         show_status_tab: show_status_tab
       )
 

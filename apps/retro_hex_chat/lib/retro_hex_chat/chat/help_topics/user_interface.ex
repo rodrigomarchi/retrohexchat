@@ -196,7 +196,7 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
         description:
           dgettext(
             "help",
-            "Navigate channels and private conversations using the left-side conversations panel."
+            "Switch between every joined channel and private conversation, and watch unread pile up on the ones you are not reading."
           ),
         see_also: ["ui-lists", "ui-tab-bar"]
       },
@@ -204,13 +204,20 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
         id: "ui-tab-bar",
         title: dgettext("help", "Tab Bar"),
         category: dgettext("help", "User Interface"),
-        keywords: ["tab", dgettext("help", "tab bar"), "switch", dgettext("help", "close tab")],
+        keywords: [
+          "tab",
+          dgettext("help", "tab bar"),
+          "switch",
+          dgettext("help", "close tab"),
+          dgettext("help", "one conversation at a time")
+        ],
         icon: :icon_tab_channel,
         description:
           dgettext(
             "help",
-            "Switch between channels and conversations using the tab bar at the bottom of the chat area."
-          )
+            "Switch between Status and the one conversation on screen. Everything else is switched from the sidebar."
+          ),
+        see_also: ["ui-conversations", "ui-status-tab", "keyboard-shortcuts"]
       },
       %{
         id: "ui-nicklist",

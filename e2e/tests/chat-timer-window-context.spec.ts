@@ -101,7 +101,11 @@ test.describe("Timer window context", () => {
 
       await alice.chat.switchToTab(active);
 
-      await expect(alice.chat.tab(bob.nick)).toBeVisible({ timeout: 5_000 });
+      // The timer opened the PM without stealing the screen: it lands in the
+      // sidebar while the bar stays on the channel in focus.
+      await expect(alice.chat.conversationRow(bob.nick)).toBeVisible({
+        timeout: 5_000,
+      });
       await alice.chat.expectTabSelected(active);
     } finally {
       await alice.ctx.close();

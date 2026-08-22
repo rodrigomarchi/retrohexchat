@@ -11,8 +11,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabsTest do
     assigns =
       Map.merge(
         %{
-          channels: [],
-          pm_tabs: [],
           unread_counts: %{},
           status_unread: false,
           show_status_tab: false,
@@ -33,46 +31,52 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabsTest do
     |> Floki.attribute("phx-value-label")
   end
 
-  test "always renders the status tab first and it is not closeable" do
+  defp selection(html) do
+    html
+    |> Floki.parse_document!()
+    |> Floki.find(~s([data-testid="tab-bar"] [role="tab"]))
+    |> Enum.map(fn tab ->
+      {Floki.attribute(tab, "phx-value-label") |> List.first(),
+       Floki.attribute(tab, "aria-selected") |> List.first()}
+    end)
+  end
+
+  test "renders the status tab alone when nothing is focused" do
     html = tabs(%{show_status_tab: true})
 
-    assert html =~ "Status"
-    # status tab is active when show_status_tab is on
+    assert tab_labels(html) == ["Status"]
     assert html =~ ~s(aria-selected="true")
   end
 
-  test "renders a tab per channel and open PM" do
-    html =
-      tabs(%{
-        channels: ["#lobby"],
-        pm_tabs: ["bob"],
-        active_channel: "#lobby"
-      })
+  test "renders the focused channel next to status" do
+    html = tabs(%{active_channel: "#lobby"})
 
-    assert html =~ "#lobby"
-    assert html =~ "bob"
-    # the active channel tab is selected (status tab is off)
-    assert html =~ ~s(phx-value-label="#lobby")
-    assert html =~ ~s(phx-value-label="bob")
+    assert tab_labels(html) == ["Status", "#lobby"]
   end
 
-  test "uses tab_order to render clicked conversations before untouched tabs" do
-    html =
-      tabs(%{
-        channels: ["#lobby", "#security"],
-        pm_tabs: ["bob", "alice"],
-        tab_order: [{:pm, "alice"}, {:channel, "#security"}]
-      })
+  test "renders the focused PM next to status" do
+    html = tabs(%{active_pm: "bob"})
 
-    assert tab_labels(html) == ["Status", "alice", "#security", "#lobby", "bob"]
+    assert tab_labels(html) == ["Status", "bob"]
   end
 
-  test "marks a channel unread when its count is positive" do
-    html =
-      tabs(%{
-        channels: ["#lobby"],
-        unread_counts: %{"#lobby" => 3}
-      })
+  test "the PM wins the bar when a channel is still behind it" do
+    html = tabs(%{active_channel: "#lobby", active_pm: "bob"})
+
+    assert tab_labels(html) == ["Status", "bob"]
+  end
+
+  test "status takes selection from the conversation it covers" do
+    covered = tabs(%{active_channel: "#lobby", show_status_tab: true})
+    focused = tabs(%{active_channel: "#lobby", show_status_tab: false})
+
+    assert tab_labels(covered) == ["Status", "#lobby"]
+    assert selection(covered) == [{"Status", "true"}, {"#lobby", "false"}]
+    assert selection(focused) == [{"Status", "false"}, {"#lobby", "true"}]
+  end
+
+  test "marks the focused channel unread when its count is positive" do
+    html = tabs(%{active_channel: "#lobby", unread_counts: %{"#lobby" => 3}})
 
     assert html =~ ~s(data-unread="true")
   end
@@ -80,13 +84,20 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabsTest do
   test "marks a PM unread via the pm: key and applies the nick color" do
     html =
       tabs(%{
-        pm_tabs: ["bob"],
+        active_pm: "bob",
         unread_counts: %{"pm:bob" => 1},
         nick_color_fn: fn "bob" -> "nick-color-7" end
       })
 
     assert html =~ ~s(data-unread="true")
     assert html =~ "nick-color-7"
+  end
+
+  test "a channel that is joined but not focused never reaches the bar" do
+    html = tabs(%{active_channel: "#lobby", unread_counts: %{"#offscreen" => 9}})
+
+    assert tab_labels(html) == ["Status", "#lobby"]
+    refute html =~ "#offscreen"
   end
 
   test "marks the P2P peer PM tab through pending, connecting and connected states" do
@@ -97,12 +108,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabsTest do
     ]
 
     for {state, visual_state, title} <- cases do
-      html =
-        tabs(%{
-          pm_tabs: ["bob", "eve"],
-          p2p_peer: "BOB",
-          p2p_state: state
-        })
+      html = tabs(%{active_pm: "bob", p2p_peer: "BOB", p2p_state: state})
 
       assert html =~ ~s(data-testid="tab-p2p-glyph")
       assert html =~ ~s(data-p2p-state="#{visual_state}")
@@ -113,7 +119,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabsTest do
   test "passes P2P activity facets into the peer PM tab glyph" do
     html =
       tabs(%{
-        pm_tabs: ["bob", "eve"],
+        active_pm: "bob",
         p2p_session: %{
           peer_nick: "BOB",
           state: :connected,
@@ -130,14 +136,21 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabsTest do
     assert html =~ ~s(data-p2p-facets="call,file,game,relay")
   end
 
-  test "does not render sidebar-only PM conversations as tabs" do
+  test "does not glyph a P2P session belonging to someone other than the focused PM" do
+    html = tabs(%{active_pm: "eve", p2p_peer: "BOB", p2p_state: :connected})
+
+    assert tab_labels(html) == ["Status", "eve"]
+    refute html =~ ~s(data-testid="tab-p2p-glyph")
+  end
+
+  test "glyphs a group call on the focused channel" do
     html =
       tabs(%{
-        pm_conversations: ["alice"],
-        pm_tabs: []
+        active_channel: "#lobby",
+        group_call_channels: MapSet.new(["#lobby"]),
+        group_call_summaries: %{"#lobby" => %{participant_count: 2}}
       })
 
-    refute html =~ ~s(phx-value-type="pm")
-    refute html =~ ~s(phx-value-label="alice")
+    assert html =~ ~s(data-testid="tab-group-call-glyph")
   end
 end

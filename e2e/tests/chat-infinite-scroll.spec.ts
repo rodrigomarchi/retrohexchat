@@ -60,8 +60,11 @@ async function reopenChannel(user: TestUser, channel: string) {
   await user.page.reload();
   await user.chat.waitUntilConnected();
 
+  // The sidebar is what proves the channel came back: after a reload it may be
+  // restored without being the conversation in focus, and only the focused one
+  // has a tab.
   const restored = await user.chat
-    .tab(channel)
+    .conversationRow(channel)
     .isVisible()
     .catch(() => false);
 

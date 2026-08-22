@@ -14,12 +14,6 @@ defmodule RetroHexChat.Chat.ReconnectStateTest do
           "active_channel" => "#lobby",
           "active_pm" => "Alice",
           "open_pm_tabs" => ["Alice", "", "Alice", " Bob "],
-          "tab_order" => [
-            %{"type" => "channel", "label" => "#lobby"},
-            %{"type" => "bad", "label" => "#ignored"},
-            %{"type" => "pm", "label" => "Alice"},
-            %{"type" => "pm", "label" => ""}
-          ],
           "welcomed_channels" => ["#lobby", "#dev", "#lobby"]
         })
 
@@ -29,10 +23,6 @@ defmodule RetroHexChat.Chat.ReconnectStateTest do
                active_channel: "#lobby",
                active_pm: "Alice",
                open_pm_tabs: ["Alice"],
-               tab_order: [
-                 %{type: "channel", label: "#lobby"},
-                 %{type: "pm", label: "Alice"}
-               ],
                welcomed_channels: ["#lobby", "#dev"]
              }
     end
@@ -56,13 +46,11 @@ defmodule RetroHexChat.Chat.ReconnectStateTest do
       snapshot =
         ReconnectState.normalize(%{
           channels: Enum.map(1..60, &"#c#{&1}"),
-          open_pm_tabs: Enum.map(1..30, &"User#{&1}"),
-          tab_order: Enum.map(1..120, &%{type: "channel", label: "#c#{&1}"})
+          open_pm_tabs: Enum.map(1..30, &"User#{&1}")
         })
 
       assert length(snapshot.channels) == 50
       assert length(snapshot.open_pm_tabs) == 20
-      assert length(snapshot.tab_order) == 100
     end
 
     @tag :unit
@@ -71,8 +59,7 @@ defmodule RetroHexChat.Chat.ReconnectStateTest do
 
       assert ReconnectState.normalize(%{
                channels: "not a list",
-               open_pm_tabs: %{},
-               tab_order: "bad"
+               open_pm_tabs: %{}
              }) == ReconnectState.new()
     end
   end
@@ -89,7 +76,6 @@ defmodule RetroHexChat.Chat.ReconnectStateTest do
                  active_channel: "#dev",
                  open_pm_tabs: ["Alice"],
                  active_pm: "Alice",
-                 tab_order: [%{type: "channel", label: "#dev"}, %{type: "pm", label: "Alice"}],
                  welcomed_channels: ["#lobby"]
                })
 
@@ -101,7 +87,6 @@ defmodule RetroHexChat.Chat.ReconnectStateTest do
                active_channel: "#dev",
                active_pm: "Alice",
                open_pm_tabs: ["Alice"],
-               tab_order: [%{type: "channel", label: "#dev"}, %{type: "pm", label: "Alice"}],
                welcomed_channels: ["#lobby"]
              }
     end

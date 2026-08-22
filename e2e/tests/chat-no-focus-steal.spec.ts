@@ -70,10 +70,8 @@ test.describe("Chat no-focus-steal flows", () => {
 
       await bob.chat.expectTabSelected("#lobby");
       await bob.chat.expectTabVisible(alice.nick);
-      await expect(bob.chat.tab(alice.nick)).toHaveAttribute(
-        "data-unread",
-        "true",
-      );
+      // Backgrounded: it takes no tab, and the sidebar carries the unread.
+      await expect(bob.chat.tab(alice.nick)).toHaveCount(0);
       await expect(bob.chat.pmConversationItem(alice.nick)).toHaveAttribute(
         "data-unread",
         "true",
@@ -114,10 +112,8 @@ test.describe("Chat no-focus-steal flows", () => {
       await alice.chat.sendMessage(channelText);
 
       await bob.chat.expectTabSelected("#lobby");
-      await expect(bob.chat.tab(channel)).toHaveAttribute(
-        "data-unread",
-        "true",
-      );
+      // Backgrounded: it takes no tab, and the sidebar carries the unread.
+      await expect(bob.chat.tab(channel)).toHaveCount(0);
       await expect(bob.chat.channelConversationItem(channel)).toHaveAttribute(
         "data-unread",
         "true",
