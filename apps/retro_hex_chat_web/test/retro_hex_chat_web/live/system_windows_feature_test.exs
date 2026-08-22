@@ -10,6 +10,7 @@ defmodule RetroHexChatWeb.SystemWindowsFeatureTest do
   use RetroHexChatWeb.LiveViewCase, async: false
 
   @moduletag :liveview_feature
+  @async_timeout 2_000
 
   describe "System Overview window" do
     test "shows the node's banner, versions, limits and memory split", %{conn: conn} do
@@ -220,7 +221,7 @@ defmodule RetroHexChatWeb.SystemWindowsFeatureTest do
       })
       |> render_change()
 
-      html = render_async(view)
+      html = render_async(view, @async_timeout)
 
       assert html =~ "No jobs matched this filter"
     end
@@ -243,6 +244,6 @@ defmodule RetroHexChatWeb.SystemWindowsFeatureTest do
 
   defp open(view, action) do
     render_click(view, "toolbar_action", %{"action" => "open_#{action}"})
-    render_async(view)
+    render_async(view, @async_timeout)
   end
 end
