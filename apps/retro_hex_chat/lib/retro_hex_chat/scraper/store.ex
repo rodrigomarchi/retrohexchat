@@ -22,6 +22,7 @@ defmodule RetroHexChat.Scraper.Store do
 
   import Ecto.Query
 
+  alias Ecto.Adapters.SQL
   alias RetroHexChat.Net.HTTPRetry
   alias RetroHexChat.Repo
   alias RetroHexChat.Scraper.ScrapedPage
@@ -540,27 +541,38 @@ defmodule RetroHexChat.Scraper.Store do
   def provenance_stats(opts \\ []) do
     repo = Keyword.get(opts, :repo, Repo)
 
-    ScrapedPage
-    |> where([page], page.status == "ready")
-    |> select([page], page.raw_metadata)
-    |> repo.all()
-    |> Enum.flat_map(&Map.get(&1, "sources", %{}))
-    |> Enum.group_by(&elem(&1, 0), &elem(&1, 1))
-    |> Enum.map(fn {field, sources} ->
-      counts = Enum.frequencies(sources)
-
+    SQL.query!(
+      repo,
+      """
+      WITH source_counts AS (
+        SELECT source_entry.key AS field,
+               source_entry.value AS source,
+               count(*) AS count
+        FROM scraped_pages AS page
+        CROSS JOIN LATERAL jsonb_each_text(page.raw_metadata->'sources') AS source_entry(key, value)
+        WHERE page.status = 'ready'
+        GROUP BY source_entry.key, source_entry.value
+      )
+      SELECT field,
+             sum(count)::bigint AS total,
+             (array_agg(source ORDER BY count DESC, source ASC))[1] AS top_source,
+             string_agg(source || ' ' || count::text, ', ' ORDER BY count DESC, source ASC) AS breakdown
+      FROM source_counts
+      GROUP BY field
+      ORDER BY field
+      """,
+      []
+    )
+    |> Map.fetch!(:rows)
+    |> Enum.map(fn [field, total, top_source, breakdown] ->
       %{
         id: "provenance:#{field}",
         field: field,
-        total: length(sources),
-        top_source: counts |> Enum.max_by(&elem(&1, 1), fn -> {"—", 0} end) |> elem(0),
-        breakdown:
-          counts
-          |> Enum.sort_by(&(-elem(&1, 1)))
-          |> Enum.map_join(", ", fn {source, count} -> "#{source} #{count}" end)
+        total: total,
+        top_source: top_source || "—",
+        breakdown: breakdown || ""
       }
     end)
-    |> Enum.sort_by(& &1.field)
   end
 
   @doc """

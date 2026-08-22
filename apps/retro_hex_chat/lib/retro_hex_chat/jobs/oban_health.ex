@@ -578,6 +578,26 @@ defmodule RetroHexChat.Jobs.ObanHealth do
 
     rows =
       query
+      |> select([job], %{
+        id: job.id,
+        queue: job.queue,
+        state: job.state,
+        worker: job.worker,
+        attempt: job.attempt,
+        max_attempts: job.max_attempts,
+        inserted_at: job.inserted_at,
+        scheduled_at: job.scheduled_at,
+        attempted_at: job.attempted_at,
+        completed_at: job.completed_at,
+        discarded_at: job.discarded_at,
+        cancelled_at: job.cancelled_at,
+        error:
+          fragment(
+            "COALESCE((?)[1]->>'error', (?)[1]->>'message')",
+            job.errors,
+            job.errors
+          )
+      })
       |> repo.all()
       |> Enum.map(&job_row(&1, now))
 
@@ -606,7 +626,7 @@ defmodule RetroHexChat.Jobs.ObanHealth do
     ]
   end
 
-  defp job_row(%Oban.Job{} = job, now) do
+  defp job_row(%{} = job, now) do
     %{
       id: job.id,
       queue: job.queue,
@@ -616,7 +636,7 @@ defmodule RetroHexChat.Jobs.ObanHealth do
       age_ms: job_age(job, now),
       scheduled_at: job.scheduled_at,
       attempted_at: job.attempted_at,
-      error: latest_error(job.errors)
+      error: format_error(job.error)
     }
   end
 
@@ -636,7 +656,16 @@ defmodule RetroHexChat.Jobs.ObanHealth do
       from job in Oban.Job,
         where: job.worker == ^Oban.Worker.to_string(RSSPollWorker),
         where: job.queue == "rss",
-        where: job.state in ^@rss_incomplete_states
+        where: job.state in ^@rss_incomplete_states,
+        select: %{
+          id: job.id,
+          state: job.state,
+          bot_id: fragment("?->>'bot_id'", job.args),
+          feed_id: fragment("?->>'feed_id'", job.args),
+          inserted_at: job.inserted_at,
+          scheduled_at: job.scheduled_at,
+          attempted_at: job.attempted_at
+        }
     )
   end
 
@@ -647,7 +676,7 @@ defmodule RetroHexChat.Jobs.ObanHealth do
     bot
     |> Feeds.list()
     |> Enum.map(fn feed ->
-      job = Map.get(jobs_by_feed, {bot.id, feed["id"]})
+      job = Map.get(jobs_by_feed, {to_string(bot.id), feed["id"]})
       status = rss_status(bot.enabled, rss_enabled?, feed, job)
 
       %{
@@ -701,7 +730,24 @@ defmodule RetroHexChat.Jobs.ObanHealth do
       from job in Oban.Job,
         where: job.worker == ^Oban.Worker.to_string(BotScheduledMessageWorker),
         where: job.queue == "bots",
-        where: job.state in ^states
+        where: job.state in ^states,
+        select: %{
+          id: job.id,
+          state: job.state,
+          bot_id: fragment("?->>'bot_id'", job.args),
+          schedule_id: fragment("?->>'schedule_id'", job.args),
+          inserted_at: job.inserted_at,
+          scheduled_at: job.scheduled_at,
+          attempted_at: job.attempted_at,
+          discarded_at: job.discarded_at,
+          cancelled_at: job.cancelled_at,
+          error:
+            fragment(
+              "COALESCE((?)[1]->>'error', (?)[1]->>'message')",
+              job.errors,
+              job.errors
+            )
+        }
     )
   end
 
@@ -714,7 +760,7 @@ defmodule RetroHexChat.Jobs.ObanHealth do
     |> Enum.filter(&is_map/1)
     |> Enum.map(fn schedule ->
       schedule_id = Map.get(schedule, "id")
-      job = Map.get(jobs_by_schedule, {bot.id, schedule_id})
+      job = Map.get(jobs_by_schedule, {to_string(bot.id), schedule_id})
       status = bot_schedule_status(bot.enabled, scheduler_enabled?, schedule, job)
 
       %{
@@ -729,7 +775,7 @@ defmodule RetroHexChat.Jobs.ObanHealth do
         scheduled_at: job && job.scheduled_at,
         last_fired: Map.get(schedule, "last_fired"),
         next_delay_ms: Scheduler.calculate_next_delay(schedule, now),
-        last_error: job && latest_error(job.errors)
+        last_error: job && format_error(job.error)
       }
     end)
   end
@@ -757,29 +803,67 @@ defmodule RetroHexChat.Jobs.ObanHealth do
   defp bot_event_log_rows(repo, now) do
     states = (@active_states ++ @failure_states) |> Enum.uniq()
 
-    jobs =
-      repo.all(
-        from job in Oban.Job,
-          where: job.worker == ^Oban.Worker.to_string(BotEventLogWorker),
-          where: job.queue == "bots",
-          where: job.state in ^states
-      )
+    latest_errors = bot_event_log_latest_errors_by_state(repo)
 
-    jobs
-    |> Enum.group_by(& &1.state)
-    |> Enum.map(fn {state, state_jobs} ->
-      failed_job = latest_failed_job(state_jobs)
-
+    repo.all(
+      from job in Oban.Job,
+        where: job.worker == ^Oban.Worker.to_string(BotEventLogWorker),
+        where: job.queue == "bots",
+        where: job.state in ^states,
+        group_by: job.state,
+        select: %{
+          state: job.state,
+          count: count(job.id),
+          oldest_inserted_at: min(job.inserted_at),
+          oldest_scheduled_at: min(job.scheduled_at),
+          oldest_attempted_at: min(job.attempted_at),
+          oldest_discarded_at: min(job.discarded_at),
+          oldest_cancelled_at: min(job.cancelled_at)
+        }
+    )
+    |> Enum.map(fn row ->
       %{
-        id: "bot_event_log:#{state}",
-        state: state,
-        status: bot_event_log_status(state),
-        count: length(state_jobs),
-        oldest_age_ms: oldest_job_age(state_jobs, now),
-        last_error: failed_job && latest_error(failed_job.errors)
+        id: "bot_event_log:#{row.state}",
+        state: row.state,
+        status: bot_event_log_status(row.state),
+        count: row.count,
+        oldest_age_ms: grouped_job_age(row, now),
+        last_error: Map.get(latest_errors, row.state)
       }
     end)
     |> Enum.sort_by(&bot_event_log_state_rank(&1.state))
+  end
+
+  defp bot_event_log_latest_errors_by_state(repo) do
+    repo.all(
+      from job in Oban.Job,
+        where: job.worker == ^Oban.Worker.to_string(BotEventLogWorker),
+        where: job.queue == "bots",
+        where: job.state in ^@failure_states,
+        distinct: job.state,
+        order_by: [
+          asc: job.state,
+          desc:
+            fragment(
+              "COALESCE(?, ?, ?, ?)",
+              job.discarded_at,
+              job.cancelled_at,
+              job.attempted_at,
+              job.inserted_at
+            ),
+          desc: job.id
+        ],
+        select: %{
+          state: job.state,
+          error:
+            fragment(
+              "COALESCE((?)[1]->>'error', (?)[1]->>'message')",
+              job.errors,
+              job.errors
+            )
+        }
+    )
+    |> Map.new(&{&1.state, format_error(&1.error)})
   end
 
   defp bot_event_log_summary(rows) do
@@ -814,14 +898,14 @@ defmodule RetroHexChat.Jobs.ObanHealth do
 
   defp maintenance_rows(repo, now) do
     jobs_by_worker = maintenance_jobs_by_worker(repo)
+    latest_errors = maintenance_latest_errors_by_worker(repo)
 
     Enum.map(@maintenance_sweeps, fn sweep ->
       worker = Oban.Worker.to_string(sweep.worker)
-      jobs = Map.get(jobs_by_worker, worker, [])
-      active_jobs = Enum.count(jobs, &(&1.state in @active_states))
-      failure_jobs = Enum.count(jobs, &(&1.state in @failure_states))
-      last_completed_at = latest_timestamp(jobs, :completed_at)
-      failed_job = latest_failed_job(jobs)
+      stats = Map.get(jobs_by_worker, worker, %{})
+      active_jobs = Map.get(stats, :active_jobs, 0)
+      failure_jobs = Map.get(stats, :failure_jobs, 0)
+      last_completed_at = Map.get(stats, :last_completed_at)
       pending_work = maintenance_pending_work(sweep.id, now)
 
       %{
@@ -834,7 +918,7 @@ defmodule RetroHexChat.Jobs.ObanHealth do
         failure_jobs: failure_jobs,
         pending_work: pending_work,
         last_completed_at: last_completed_at,
-        last_error: failed_job && latest_error(failed_job.errors)
+        last_error: Map.get(latest_errors, worker)
       }
     end)
   end
@@ -844,8 +928,48 @@ defmodule RetroHexChat.Jobs.ObanHealth do
 
     Oban.Job
     |> where([job], job.worker in ^workers)
+    |> group_by([job], job.worker)
+    |> select([job], %{
+      worker: job.worker,
+      active_jobs: filter(count(job.id), job.state in ^@active_states),
+      failure_jobs: filter(count(job.id), job.state in ^@failure_states),
+      last_completed_at: max(job.completed_at)
+    })
     |> repo.all()
-    |> Enum.group_by(& &1.worker)
+    |> Map.new(&{&1.worker, &1})
+  end
+
+  defp maintenance_latest_errors_by_worker(repo) do
+    workers = Enum.map(@maintenance_sweeps, &Oban.Worker.to_string(&1.worker))
+
+    Oban.Job
+    |> where([job], job.worker in ^workers)
+    |> where([job], job.state in ^@failure_states)
+    |> distinct([job], job.worker)
+    |> order_by(
+      [job],
+      asc: job.worker,
+      desc:
+        fragment(
+          "COALESCE(?, ?, ?, ?)",
+          job.discarded_at,
+          job.cancelled_at,
+          job.attempted_at,
+          job.inserted_at
+        ),
+      desc: job.id
+    )
+    |> select([job], %{
+      worker: job.worker,
+      error:
+        fragment(
+          "COALESCE((?)[1]->>'error', (?)[1]->>'message')",
+          job.errors,
+          job.errors
+        )
+    })
+    |> repo.all()
+    |> Map.new(&{&1.worker, format_error(&1.error)})
   end
 
   defp maintenance_pending_work("server_ban_expiry", now), do: ServerBans.expired_count(now)
@@ -1062,32 +1186,40 @@ defmodule RetroHexChat.Jobs.ObanHealth do
   defp waiting_age(%{oldest_scheduled_at: scheduled_at}, _state, now),
     do: age_ms(scheduled_at, now)
 
-  defp job_age(%Oban.Job{state: "executing", attempted_at: attempted_at}, now) do
+  defp job_age(%{state: "executing", attempted_at: attempted_at}, now) do
     age_ms(attempted_at, now)
   end
 
-  defp job_age(%Oban.Job{state: state, scheduled_at: scheduled_at}, now)
+  defp job_age(%{state: state, scheduled_at: scheduled_at}, now)
        when state in ["available", "scheduled", "retryable", "suspended"] do
     age_ms(scheduled_at, now)
   end
 
-  defp job_age(%Oban.Job{completed_at: %DateTime{} = completed_at}, now),
+  defp job_age(%{completed_at: %DateTime{} = completed_at}, now),
     do: age_ms(completed_at, now)
 
-  defp job_age(%Oban.Job{discarded_at: %DateTime{} = discarded_at}, now),
+  defp job_age(%{discarded_at: %DateTime{} = discarded_at}, now),
     do: age_ms(discarded_at, now)
 
-  defp job_age(%Oban.Job{cancelled_at: %DateTime{} = cancelled_at}, now),
+  defp job_age(%{cancelled_at: %DateTime{} = cancelled_at}, now),
     do: age_ms(cancelled_at, now)
 
-  defp job_age(%Oban.Job{inserted_at: inserted_at}, now), do: age_ms(inserted_at, now)
+  defp job_age(%{inserted_at: inserted_at}, now), do: age_ms(inserted_at, now)
 
-  defp oldest_job_age(jobs, now) do
-    jobs
-    |> Enum.map(&job_age(&1, now))
-    |> Enum.reject(&is_nil/1)
-    |> Enum.max(fn -> nil end)
-  end
+  defp grouped_job_age(%{state: "executing", oldest_attempted_at: attempted_at}, now),
+    do: age_ms(attempted_at, now)
+
+  defp grouped_job_age(%{state: state, oldest_scheduled_at: scheduled_at}, now)
+       when state in ["available", "scheduled", "retryable", "suspended"],
+       do: age_ms(scheduled_at, now)
+
+  defp grouped_job_age(%{state: "discarded", oldest_discarded_at: discarded_at}, now),
+    do: age_ms(discarded_at, now)
+
+  defp grouped_job_age(%{state: "cancelled", oldest_cancelled_at: cancelled_at}, now),
+    do: age_ms(cancelled_at, now)
+
+  defp grouped_job_age(%{oldest_inserted_at: inserted_at}, now), do: age_ms(inserted_at, now)
 
   defp age_ms(nil, _now), do: nil
 
@@ -1209,7 +1341,7 @@ defmodule RetroHexChat.Jobs.ObanHealth do
   defp rss_status(_bot_enabled?, _rss_enabled?, %{"last_error" => error}, _job)
        when not is_nil(error), do: "feed error"
 
-  defp rss_status(_bot_enabled?, _rss_enabled?, _feed, %Oban.Job{state: state}), do: state
+  defp rss_status(_bot_enabled?, _rss_enabled?, _feed, %{state: state}), do: state
   defp rss_status(_bot_enabled?, _rss_enabled?, _feed, nil), do: "missing job"
 
   defp bot_schedule_status(false, _scheduler_enabled?, _schedule, _job), do: "bot disabled"
@@ -1217,13 +1349,13 @@ defmodule RetroHexChat.Jobs.ObanHealth do
   defp bot_schedule_status(_bot_enabled?, false, _schedule, _job),
     do: "scheduler disabled"
 
-  defp bot_schedule_status(_bot_enabled?, _scheduler_enabled?, %{"id" => id}, %Oban.Job{
+  defp bot_schedule_status(_bot_enabled?, _scheduler_enabled?, %{"id" => id}, %{
          state: state
        })
        when is_binary(id) and id != "" and state in ["discarded", "cancelled"],
        do: "failed job"
 
-  defp bot_schedule_status(_bot_enabled?, _scheduler_enabled?, %{"id" => id}, %Oban.Job{
+  defp bot_schedule_status(_bot_enabled?, _scheduler_enabled?, %{"id" => id}, %{
          state: state
        })
        when is_binary(id) and id != "",
@@ -1236,14 +1368,12 @@ defmodule RetroHexChat.Jobs.ObanHealth do
   defp bot_schedule_status(_bot_enabled?, _scheduler_enabled?, _schedule, _job),
     do: "invalid schedule"
 
-  defp rss_job_key(%Oban.Job{args: args}) do
-    {Map.get(args, "bot_id") || Map.get(args, :bot_id),
-     Map.get(args, "feed_id") || Map.get(args, :feed_id)}
+  defp rss_job_key(%{bot_id: bot_id, feed_id: feed_id}) do
+    {bot_id, feed_id}
   end
 
-  defp bot_schedule_job_key(%Oban.Job{args: args}) do
-    {Map.get(args, "bot_id") || Map.get(args, :bot_id),
-     Map.get(args, "schedule_id") || Map.get(args, :schedule_id)}
+  defp bot_schedule_job_key(%{bot_id: bot_id, schedule_id: schedule_id}) do
+    {bot_id, schedule_id}
   end
 
   defp best_rss_job(jobs) do
@@ -1254,7 +1384,7 @@ defmodule RetroHexChat.Jobs.ObanHealth do
     Enum.min_by(jobs, &rss_job_rank/1)
   end
 
-  defp rss_job_rank(%Oban.Job{} = job) do
+  defp rss_job_rank(%{} = job) do
     {rss_state_rank(job.state),
      rank_time(job.scheduled_at || job.attempted_at || job.inserted_at), job.id}
   end
@@ -1316,22 +1446,6 @@ defmodule RetroHexChat.Jobs.ObanHealth do
   defp rss_state_rank("suspended"), do: 4
   defp rss_state_rank(_state), do: 5
 
-  defp latest_error(nil), do: nil
-  defp latest_error([]), do: nil
-
-  defp latest_error([error | _rest]) do
-    error
-    |> error_value()
-    |> format_error()
-  end
-
-  defp error_value(error) when is_map(error) do
-    Map.get(error, "error") || Map.get(error, :error) || Map.get(error, "message") ||
-      Map.get(error, :message) || error
-  end
-
-  defp error_value(error), do: error
-
   defp format_error(nil), do: nil
   defp format_error(error) when is_binary(error), do: error
   defp format_error(error), do: inspect(error)
@@ -1347,22 +1461,6 @@ defmodule RetroHexChat.Jobs.ObanHealth do
 
   defp rank_time(nil), do: 0
   defp rank_time(%DateTime{} = timestamp), do: DateTime.to_unix(timestamp, :microsecond)
-
-  defp latest_timestamp(jobs, field) do
-    jobs
-    |> Enum.map(&Map.get(&1, field))
-    |> Enum.reject(&is_nil/1)
-    |> Enum.max_by(&rank_time/1, fn -> nil end)
-  end
-
-  defp latest_failed_job(jobs) do
-    jobs
-    |> Enum.filter(&(&1.state in @failure_states))
-    |> Enum.max_by(
-      &rank_time(&1.discarded_at || &1.cancelled_at || &1.attempted_at || &1.inserted_at),
-      fn -> nil end
-    )
-  end
 
   defp above?(nil, _threshold), do: false
   defp above?(value, threshold), do: value > threshold

@@ -212,14 +212,15 @@ defmodule RetroHexChatWeb.SystemWindowsFeatureTest do
       |> element("[data-testid='system-oban-tab-queues']")
       |> render_click()
 
-      html =
-        view
-        |> form("#system-oban-dialog-filter", %{
-          "filter" => "all",
-          "queue" => "queue-that-does-not-exist",
-          "worker" => "WorkerThatDoesNotExist"
-        })
-        |> render_change()
+      view
+      |> form("#system-oban-dialog-filter", %{
+        "filter" => "all",
+        "queue" => "queue-that-does-not-exist",
+        "worker" => "WorkerThatDoesNotExist"
+      })
+      |> render_change()
+
+      html = render_async(view)
 
       assert html =~ "No jobs matched this filter"
     end
@@ -242,6 +243,6 @@ defmodule RetroHexChatWeb.SystemWindowsFeatureTest do
 
   defp open(view, action) do
     render_click(view, "toolbar_action", %{"action" => "open_#{action}"})
-    render(view)
+    render_async(view)
   end
 end

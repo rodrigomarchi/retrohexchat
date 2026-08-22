@@ -72,6 +72,37 @@ defmodule RetroHexChat.Jobs.ObanHealthTest do
     assert empty.jobs_table.rows == []
   end
 
+  test "reads Oban health without selecting full JSON payload columns" do
+    now = DateTime.utc_now()
+
+    {:ok, job} =
+      %{bot_id: 123, feed_id: "wide-json"}
+      |> RSSPollWorker.new(schedule_in: 0)
+      |> Oban.insert()
+
+    from(stored in Oban.Job, where: stored.id == ^job.id)
+    |> Repo.update_all(
+      set: [
+        state: "retryable",
+        attempted_at: now,
+        scheduled_at: now,
+        errors: [%{"error" => String.duplicate("wide error ", 100)}]
+      ]
+    )
+
+    {queries, snapshot} =
+      capture_repo_queries(fn -> ObanHealth.snapshot(filter: "all", now: now) end)
+
+    oban_queries = Enum.filter(queries, &String.contains?(&1, ~s(FROM "oban_jobs")))
+
+    assert snapshot.status == :warning
+    assert oban_queries != []
+
+    refute Enum.any?(oban_queries, &Regex.match?(~r/\w\d+\."args",/, &1))
+    refute Enum.any?(oban_queries, &Regex.match?(~r/\w\d+\."errors",/, &1))
+    refute Enum.any?(oban_queries, &Regex.match?(~r/\w\d+\."meta"/, &1))
+  end
+
   test "reports RSS feeds missing successor jobs and feeds with poll errors" do
     now = DateTime.utc_now()
 
@@ -321,7 +352,12 @@ defmodule RetroHexChat.Jobs.ObanHealthTest do
     now = DateTime.utc_now()
 
     {:ok, _ready} =
-      ScraperStore.record_success("https://example.com/ready", %{title: "Ready"},
+      ScraperStore.record_success(
+        "https://example.com/ready",
+        %{
+          title: "Ready",
+          raw_metadata: %{"sources" => %{"description" => "html", "title" => "og"}}
+        },
         now: DateTime.add(now, -60, :second),
         attempt: 1
       )
@@ -363,6 +399,12 @@ defmodule RetroHexChat.Jobs.ObanHealthTest do
     assert rows_by_status["failed"].count == 1
     assert rows_by_status["failed"].final_failures == 1
     assert rows_by_status["failed"].expired == 1
+
+    provenance_by_field = Map.new(snapshot.scraper_provenance_table.rows, &{&1.field, &1})
+
+    assert provenance_by_field["title"].total == 1
+    assert provenance_by_field["title"].top_source == "og"
+    assert provenance_by_field["description"].breakdown == "html 1"
   end
 
   test "reports preference persistence backlog state" do
@@ -388,5 +430,34 @@ defmodule RetroHexChat.Jobs.ObanHealthTest do
     assert row.status == "pending"
     assert row.count == 1
     assert row.payload_size_bytes > 0
+  end
+
+  defp capture_repo_queries(fun) do
+    test_pid = self()
+    handler_id = {__MODULE__, make_ref()}
+
+    :telemetry.attach(
+      handler_id,
+      [:retro_hex_chat, :repo, :query],
+      fn _event, _measurements, metadata, _config ->
+        send(test_pid, {:repo_query, metadata.query})
+      end,
+      nil
+    )
+
+    try do
+      result = fun.()
+      {receive_repo_queries([]), result}
+    after
+      :telemetry.detach(handler_id)
+    end
+  end
+
+  defp receive_repo_queries(queries) do
+    receive do
+      {:repo_query, query} -> receive_repo_queries([query | queries])
+    after
+      0 -> Enum.reverse(queries)
+    end
   end
 end

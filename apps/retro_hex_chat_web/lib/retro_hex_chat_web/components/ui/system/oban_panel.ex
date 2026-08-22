@@ -7,6 +7,7 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
 
   import RetroHexChatWeb.Components.UI.RetroTable
   import RetroHexChatWeb.Components.UI.MediaSession.SummaryCard
+  import RetroHexChatWeb.Components.UI.LoadingSpinner
   import RetroHexChatWeb.Components.UI.Tabs
 
   alias RetroHexChatWeb.Components.UI.Format
@@ -14,6 +15,7 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
 
   attr :id, :string, required: true
   attr :snapshot, :any, required: true, doc: "%Jobs.ObanHealth.Snapshot{}"
+  attr :loading, :boolean, default: false
   attr :filters, :list, default: []
   attr :target, :any, default: nil
   attr :active_tab, :string, default: "overview"
@@ -33,425 +35,443 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
     <div
       id={"#{@id}-oban"}
       class="adm-dialog retro-scrollbar flex h-full min-h-0 flex-col gap-retro-8 overflow-y-auto"
+      data-loading={to_string(@loading)}
       data-testid={@testid}
     >
-      <section class="shrink-0">
-        <.section_heading icon={:icon_status_signal} label={dgettext("dialogs", "Oban health")}>
-          <.refresh_button target={@target} on_refresh={@on_refresh} />
-        </.section_heading>
+      <%= if @snapshot do %>
+        <section class="shrink-0">
+          <.section_heading icon={:icon_status_signal} label={dgettext("dialogs", "Oban health")}>
+            <.refresh_button target={@target} on_refresh={@on_refresh} />
+          </.section_heading>
 
-        <div class="grid grid-cols-2 gap-retro-6 lg:grid-cols-3 xl:grid-cols-5">
-          <.summary_card
-            variant={:prominent}
-            icon={:icon_status_signal}
-            label={dgettext("dialogs", "Status")}
-            value={status_label(@snapshot.status)}
-            detail={running_label(@snapshot.summary.running?)}
-            tone_class={status_class(@snapshot.status)}
-            testid="system-oban-status"
-          />
-          <.summary_card
-            variant={:prominent}
-            icon={:icon_table_grid}
-            label={dgettext("dialogs", "Active jobs")}
-            value={Format.number(@snapshot.summary.active_jobs)}
-            detail={
-              dgettext("dialogs", "%{count} executing",
-                count: Format.number(@snapshot.summary.executing_jobs)
-              )
-            }
-            testid="system-oban-active"
-          />
-          <.summary_card
-            variant={:prominent}
-            icon={:icon_warning}
-            label={dgettext("dialogs", "Failures")}
-            value={Format.number(@snapshot.summary.retryable_jobs + @snapshot.summary.discarded_jobs)}
-            detail={
-              dgettext("dialogs", "%{count} retryable",
-                count: Format.number(@snapshot.summary.retryable_jobs)
-              )
-            }
-            tone_class={failure_class(@snapshot.summary)}
-            testid="system-oban-failures"
-          />
-          <.summary_card
-            variant={:prominent}
-            icon={:icon_btn_bot_management}
-            label={dgettext("dialogs", "RSS feeds")}
-            value={rss_coverage(@snapshot.summary)}
-            detail={
-              dgettext("dialogs", "%{count} missing jobs",
-                count: Format.number(@snapshot.summary.rss_missing_jobs)
-              )
-            }
-            tone_class={rss_class(@snapshot.summary)}
-            testid="system-oban-rss"
-          />
-          <.summary_card
-            variant={:prominent}
-            icon={:icon_clock}
-            label={dgettext("dialogs", "Bot schedules")}
-            value={bot_schedule_coverage(@snapshot.summary)}
-            detail={
-              dgettext("dialogs", "%{count} missing jobs",
-                count: Format.number(@snapshot.summary.bot_schedule_missing_jobs)
-              )
-            }
-            tone_class={bot_schedule_class(@snapshot.summary)}
-            testid="system-oban-bot-schedules"
-          />
-          <.summary_card
-            variant={:prominent}
-            icon={:icon_notepad}
-            label={dgettext("dialogs", "Bot event logs")}
-            value={Format.number(@snapshot.summary.bot_event_log_active)}
-            detail={
-              dgettext("dialogs", "%{count} failures",
-                count: Format.number(@snapshot.summary.bot_event_log_failures)
-              )
-            }
-            tone_class={bot_event_log_class(@snapshot.summary)}
-            testid="system-oban-bot-event-logs"
-          />
-          <.summary_card
-            variant={:prominent}
-            icon={:icon_clock}
-            label={dgettext("dialogs", "Maintenance")}
-            value={maintenance_coverage(@snapshot.summary)}
-            detail={
-              dgettext("dialogs", "%{count} pending",
-                count: Format.number(@snapshot.summary.maintenance_pending_work)
-              )
-            }
-            tone_class={maintenance_class(@snapshot.summary)}
-            testid="system-oban-maintenance"
-          />
-          <.summary_card
-            variant={:prominent}
-            icon={:icon_link}
-            label={dgettext("dialogs", "Link previews")}
-            value={scraped_page_coverage(@snapshot.summary)}
-            detail={
-              dgettext("dialogs", "%{count} retrying",
-                count: Format.number(@snapshot.summary.scraped_page_retrying)
-              )
-            }
-            tone_class={scraped_page_class(@snapshot.summary)}
-            testid="system-oban-link-preview"
-          />
-          <.summary_card
-            variant={:prominent}
-            icon={:icon_notepad}
-            label={dgettext("dialogs", "Preference saves")}
-            value={persistence_coverage(@snapshot.summary)}
-            detail={
-              dgettext("dialogs", "%{count} pending",
-                count: Format.number(@snapshot.summary.persistence_pending)
-              )
-            }
-            tone_class={persistence_class(@snapshot.summary)}
-            testid="system-oban-persistence"
-          />
-        </div>
-      </section>
-
-      <.tabs
-        :let={builder}
-        id={"#{@id}-tabs"}
-        default={@active_tab}
-        data-active-tab={@active_tab}
-        class="shrink-0"
-      >
-        <.tabs_list
-          class="flex-wrap px-retro-2 pt-retro-4"
-          role="tablist"
-          aria-label={dgettext("dialogs", "Oban health sections")}
-          data-testid={"#{@testid}-tabs"}
-        >
-          <.oban_tab
-            :for={tab <- @tabs}
-            builder={builder}
-            tab={tab}
-            active_tab={@active_tab}
-            on_tab={@on_tab}
-            target={@target}
-            testid={@testid}
-          />
-        </.tabs_list>
-
-        <.tabs_content
-          value="overview"
-          builder={builder}
-          class="space-y-retro-8"
-          role="tabpanel"
-          data-testid={"#{@testid}-tabpanel-overview"}
-        >
-          <div class="grid gap-retro-4 border border-border bg-surface p-2 text-[11px] shadow-retro-sunken sm:grid-cols-2">
-            <.config_item label={dgettext("dialogs", "Supervisor")} value={@snapshot.config.name} />
-            <.config_item label={dgettext("dialogs", "Node")} value={@snapshot.config.node} />
-            <.config_item label={dgettext("dialogs", "Engine")} value={@snapshot.config.engine} />
-            <.config_item label={dgettext("dialogs", "Repo")} value={@snapshot.config.repo} />
-            <.config_item
-              label={dgettext("dialogs", "Queues")}
-              value={queue_config(@snapshot.config)}
+          <div class="grid grid-cols-2 gap-retro-6 lg:grid-cols-3 xl:grid-cols-5">
+            <.summary_card
+              variant={:prominent}
+              icon={:icon_status_signal}
+              label={dgettext("dialogs", "Status")}
+              value={status_label(@snapshot.status)}
+              detail={running_label(@snapshot.summary.running?)}
+              tone_class={status_class(@snapshot.status)}
+              testid="system-oban-status"
             />
-            <.config_item label={dgettext("dialogs", "Plugins")} value={plugins(@snapshot.config)} />
-          </div>
-
-          <section :if={@snapshot.status_reasons != []}>
-            <ul class="space-y-retro-2 bg-black p-retro-6 font-mono text-xs shadow-retro-sunken">
-              <li
-                :for={reason <- @snapshot.status_reasons}
-                class={status_reason_class(@snapshot.status)}
-              >
-                {reason}
-              </li>
-            </ul>
-          </section>
-        </.tabs_content>
-
-        <.tabs_content
-          value="queues"
-          builder={builder}
-          class="space-y-retro-8"
-          role="tabpanel"
-          data-testid={"#{@testid}-tabpanel-queues"}
-        >
-          <section class="min-h-[220px]">
-            <.section_heading
+            <.summary_card
+              variant={:prominent}
               icon={:icon_table_grid}
-              label={dgettext("dialogs", "Queues by state")}
+              label={dgettext("dialogs", "Active jobs")}
+              value={Format.number(@snapshot.summary.active_jobs)}
+              detail={
+                dgettext("dialogs", "%{count} executing",
+                  count: Format.number(@snapshot.summary.executing_jobs)
+                )
+              }
+              testid="system-oban-active"
             />
-            <.table_shell>
-              <.retro_table
-                id={"#{@testid}-queues-table"}
-                table={@snapshot.queue_table}
-                testid={"#{@testid}-queues-table"}
-                truncate
-                fit_pane
-                empty_title={dgettext("dialogs", "No Oban queues or jobs were found")}
-              />
-            </.table_shell>
-          </section>
-
-          <section class="min-h-[220px]">
-            <.section_heading icon={:icon_clock} label={dgettext("dialogs", "Recent jobs")}>
-              <form
-                id={"#{@id}-filter"}
-                phx-change={@on_filter}
-                phx-submit={@on_filter}
-                phx-target={@target}
-                class="flex min-w-0 flex-wrap items-center justify-end gap-retro-2"
-              >
-                <label for={"#{@id}-job-filter"} class="sr-only">
-                  {dgettext("dialogs", "Job filter")}
-                </label>
-                <select
-                  id={"#{@id}-job-filter"}
-                  name="filter"
-                  class="bg-white px-retro-4 py-retro-2 text-xs shadow-retro-sunken"
-                >
-                  <option
-                    :for={filter <- @filters}
-                    value={filter.id}
-                    selected={filter.id == @snapshot.job_filter}
-                  >
-                    {filter_label(filter)}
-                  </option>
-                </select>
-                <label for={"#{@id}-queue-filter"} class="sr-only">
-                  {dgettext("dialogs", "Queue filter")}
-                </label>
-                <input
-                  id={"#{@id}-queue-filter"}
-                  name="queue"
-                  value={@snapshot.job_queue_filter}
-                  placeholder={dgettext("dialogs", "Queue")}
-                  class="w-20 bg-white px-retro-4 py-retro-2 text-xs shadow-retro-sunken"
-                />
-                <label for={"#{@id}-worker-filter"} class="sr-only">
-                  {dgettext("dialogs", "Worker filter")}
-                </label>
-                <input
-                  id={"#{@id}-worker-filter"}
-                  name="worker"
-                  value={@snapshot.job_worker_filter}
-                  placeholder={dgettext("dialogs", "Worker")}
-                  class="w-32 bg-white px-retro-4 py-retro-2 text-xs shadow-retro-sunken"
-                />
-              </form>
-            </.section_heading>
-
-            <.table_shell>
-              <.retro_table
-                id={"#{@testid}-jobs-table"}
-                table={@snapshot.jobs_table}
-                testid={"#{@testid}-jobs-table"}
-                truncate
-                fit_pane
-                empty_title={dgettext("dialogs", "No jobs matched this filter")}
-              />
-            </.table_shell>
-          </section>
-        </.tabs_content>
-
-        <.tabs_content
-          value="bots"
-          builder={builder}
-          class="space-y-retro-8"
-          role="tabpanel"
-          data-testid={"#{@testid}-tabpanel-bots"}
-        >
-          <section class="min-h-[220px]">
-            <.section_heading
+            <.summary_card
+              variant={:prominent}
+              icon={:icon_warning}
+              label={dgettext("dialogs", "Failures")}
+              value={
+                Format.number(@snapshot.summary.retryable_jobs + @snapshot.summary.discarded_jobs)
+              }
+              detail={
+                dgettext("dialogs", "%{count} retryable",
+                  count: Format.number(@snapshot.summary.retryable_jobs)
+                )
+              }
+              tone_class={failure_class(@snapshot.summary)}
+              testid="system-oban-failures"
+            />
+            <.summary_card
+              variant={:prominent}
               icon={:icon_btn_bot_management}
-              label={dgettext("dialogs", "RSS feed coverage")}
+              label={dgettext("dialogs", "RSS feeds")}
+              value={rss_coverage(@snapshot.summary)}
+              detail={
+                dgettext("dialogs", "%{count} missing jobs",
+                  count: Format.number(@snapshot.summary.rss_missing_jobs)
+                )
+              }
+              tone_class={rss_class(@snapshot.summary)}
+              testid="system-oban-rss"
             />
-            <.table_shell>
-              <.retro_table
-                id={"#{@testid}-rss-table"}
-                table={@snapshot.rss_table}
-                testid={"#{@testid}-rss-table"}
-                truncate
-                fit_pane
-                empty_title={dgettext("dialogs", "No RSS feeds are configured")}
-              />
-            </.table_shell>
-          </section>
-
-          <section class="min-h-[220px]">
-            <.section_heading
+            <.summary_card
+              variant={:prominent}
               icon={:icon_clock}
-              label={dgettext("dialogs", "Bot schedule coverage")}
+              label={dgettext("dialogs", "Bot schedules")}
+              value={bot_schedule_coverage(@snapshot.summary)}
+              detail={
+                dgettext("dialogs", "%{count} missing jobs",
+                  count: Format.number(@snapshot.summary.bot_schedule_missing_jobs)
+                )
+              }
+              tone_class={bot_schedule_class(@snapshot.summary)}
+              testid="system-oban-bot-schedules"
             />
-            <.table_shell>
-              <.retro_table
-                id={"#{@testid}-bot-schedules-table"}
-                table={@snapshot.bot_schedule_table}
-                testid={"#{@testid}-bot-schedules-table"}
-                truncate
-                fit_pane
-                empty_title={dgettext("dialogs", "No bot schedules are configured")}
-              />
-            </.table_shell>
-          </section>
-
-          <section class="min-h-[220px]">
-            <.section_heading icon={:icon_notepad} label={dgettext("dialogs", "Bot event log jobs")} />
-            <.table_shell>
-              <.retro_table
-                id={"#{@testid}-bot-event-logs-table"}
-                table={@snapshot.bot_event_log_table}
-                testid={"#{@testid}-bot-event-logs-table"}
-                truncate
-                fit_pane
-                empty_title={dgettext("dialogs", "No bot event log jobs are pending")}
-              />
-            </.table_shell>
-          </section>
-        </.tabs_content>
-
-        <.tabs_content
-          value="maintenance"
-          builder={builder}
-          class="space-y-retro-8"
-          role="tabpanel"
-          data-testid={"#{@testid}-tabpanel-maintenance"}
-        >
-          <section class="min-h-[220px]">
-            <.section_heading icon={:icon_clock} label={dgettext("dialogs", "Maintenance sweeps")} />
-            <.table_shell>
-              <.retro_table
-                id={"#{@testid}-maintenance-table"}
-                table={@snapshot.maintenance_table}
-                testid={"#{@testid}-maintenance-table"}
-                truncate
-                fit_pane
-                empty_title={dgettext("dialogs", "No maintenance sweeps are configured")}
-              />
-            </.table_shell>
-          </section>
-        </.tabs_content>
-
-        <.tabs_content
-          value="previews"
-          builder={builder}
-          class="space-y-retro-8"
-          role="tabpanel"
-          data-testid={"#{@testid}-tabpanel-previews"}
-        >
-          <section class="min-h-[220px]">
-            <.section_heading icon={:icon_link} label={dgettext("dialogs", "Link preview cache")} />
-            <.table_shell>
-              <.retro_table
-                id={"#{@testid}-link-preview-table"}
-                table={@snapshot.scraped_page_table}
-                testid={"#{@testid}-link-preview-table"}
-                truncate
-                fit_pane
-                empty_title={dgettext("dialogs", "No link previews were cached")}
-              />
-            </.table_shell>
-          </section>
-
-          <section>
-            <.section_heading
-              icon={:icon_link}
-              label={dgettext("dialogs", "Where each field came from")}
-            />
-            <.table_shell>
-              <.retro_table
-                id={"#{@testid}-scraper-provenance-table"}
-                table={@snapshot.scraper_provenance_table}
-                testid={"#{@testid}-scraper-provenance-table"}
-                truncate
-                fit_pane
-                empty_title={dgettext("dialogs", "No pages have been read yet")}
-              />
-            </.table_shell>
-          </section>
-
-          <section>
-            <.section_heading icon={:icon_shield} label={dgettext("dialogs", "Why pages failed")} />
-            <.table_shell>
-              <.retro_table
-                id={"#{@testid}-scraper-failure-table"}
-                table={@snapshot.scraper_failure_table}
-                testid={"#{@testid}-scraper-failure-table"}
-                truncate
-                fit_pane
-                empty_title={dgettext("dialogs", "No page has failed to be read")}
-              />
-            </.table_shell>
-          </section>
-        </.tabs_content>
-
-        <.tabs_content
-          value="persistence"
-          builder={builder}
-          class="space-y-retro-8"
-          role="tabpanel"
-          data-testid={"#{@testid}-tabpanel-persistence"}
-        >
-          <section class="min-h-[220px]">
-            <.section_heading
+            <.summary_card
+              variant={:prominent}
               icon={:icon_notepad}
-              label={dgettext("dialogs", "Preference persistence")}
+              label={dgettext("dialogs", "Bot event logs")}
+              value={Format.number(@snapshot.summary.bot_event_log_active)}
+              detail={
+                dgettext("dialogs", "%{count} failures",
+                  count: Format.number(@snapshot.summary.bot_event_log_failures)
+                )
+              }
+              tone_class={bot_event_log_class(@snapshot.summary)}
+              testid="system-oban-bot-event-logs"
             />
-            <.table_shell>
-              <.retro_table
-                id={"#{@testid}-persistence-table"}
-                table={@snapshot.persistence_table}
-                testid={"#{@testid}-persistence-table"}
-                truncate
-                fit_pane
-                empty_title={dgettext("dialogs", "No preference saves are pending")}
+            <.summary_card
+              variant={:prominent}
+              icon={:icon_clock}
+              label={dgettext("dialogs", "Maintenance")}
+              value={maintenance_coverage(@snapshot.summary)}
+              detail={
+                dgettext("dialogs", "%{count} pending",
+                  count: Format.number(@snapshot.summary.maintenance_pending_work)
+                )
+              }
+              tone_class={maintenance_class(@snapshot.summary)}
+              testid="system-oban-maintenance"
+            />
+            <.summary_card
+              variant={:prominent}
+              icon={:icon_link}
+              label={dgettext("dialogs", "Link previews")}
+              value={scraped_page_coverage(@snapshot.summary)}
+              detail={
+                dgettext("dialogs", "%{count} retrying",
+                  count: Format.number(@snapshot.summary.scraped_page_retrying)
+                )
+              }
+              tone_class={scraped_page_class(@snapshot.summary)}
+              testid="system-oban-link-preview"
+            />
+            <.summary_card
+              variant={:prominent}
+              icon={:icon_notepad}
+              label={dgettext("dialogs", "Preference saves")}
+              value={persistence_coverage(@snapshot.summary)}
+              detail={
+                dgettext("dialogs", "%{count} pending",
+                  count: Format.number(@snapshot.summary.persistence_pending)
+                )
+              }
+              tone_class={persistence_class(@snapshot.summary)}
+              testid="system-oban-persistence"
+            />
+          </div>
+        </section>
+
+        <.tabs
+          :let={builder}
+          id={"#{@id}-tabs"}
+          default={@active_tab}
+          data-active-tab={@active_tab}
+          class="shrink-0"
+        >
+          <.tabs_list
+            class="flex-wrap px-retro-2 pt-retro-4"
+            role="tablist"
+            aria-label={dgettext("dialogs", "Oban health sections")}
+            data-testid={"#{@testid}-tabs"}
+          >
+            <.oban_tab
+              :for={tab <- @tabs}
+              builder={builder}
+              tab={tab}
+              active_tab={@active_tab}
+              on_tab={@on_tab}
+              target={@target}
+              testid={@testid}
+            />
+          </.tabs_list>
+
+          <.tabs_content
+            value="overview"
+            builder={builder}
+            class="space-y-retro-8"
+            role="tabpanel"
+            data-testid={"#{@testid}-tabpanel-overview"}
+          >
+            <div class="grid gap-retro-4 border border-border bg-surface p-2 text-[11px] shadow-retro-sunken sm:grid-cols-2">
+              <.config_item label={dgettext("dialogs", "Supervisor")} value={@snapshot.config.name} />
+              <.config_item label={dgettext("dialogs", "Node")} value={@snapshot.config.node} />
+              <.config_item label={dgettext("dialogs", "Engine")} value={@snapshot.config.engine} />
+              <.config_item label={dgettext("dialogs", "Repo")} value={@snapshot.config.repo} />
+              <.config_item
+                label={dgettext("dialogs", "Queues")}
+                value={queue_config(@snapshot.config)}
               />
-            </.table_shell>
-          </section>
-        </.tabs_content>
-      </.tabs>
+              <.config_item label={dgettext("dialogs", "Plugins")} value={plugins(@snapshot.config)} />
+            </div>
+
+            <section :if={@snapshot.status_reasons != []}>
+              <ul class="space-y-retro-2 bg-black p-retro-6 font-mono text-xs shadow-retro-sunken">
+                <li
+                  :for={reason <- @snapshot.status_reasons}
+                  class={status_reason_class(@snapshot.status)}
+                >
+                  {reason}
+                </li>
+              </ul>
+            </section>
+          </.tabs_content>
+
+          <.tabs_content
+            value="queues"
+            builder={builder}
+            class="space-y-retro-8"
+            role="tabpanel"
+            data-testid={"#{@testid}-tabpanel-queues"}
+          >
+            <section class="min-h-[220px]">
+              <.section_heading
+                icon={:icon_table_grid}
+                label={dgettext("dialogs", "Queues by state")}
+              />
+              <.table_shell>
+                <.retro_table
+                  id={"#{@testid}-queues-table"}
+                  table={@snapshot.queue_table}
+                  testid={"#{@testid}-queues-table"}
+                  truncate
+                  fit_pane
+                  empty_title={dgettext("dialogs", "No Oban queues or jobs were found")}
+                />
+              </.table_shell>
+            </section>
+
+            <section class="min-h-[220px]">
+              <.section_heading icon={:icon_clock} label={dgettext("dialogs", "Recent jobs")}>
+                <form
+                  id={"#{@id}-filter"}
+                  phx-change={@on_filter}
+                  phx-submit={@on_filter}
+                  phx-target={@target}
+                  class="flex min-w-0 flex-wrap items-center justify-end gap-retro-2"
+                >
+                  <label for={"#{@id}-job-filter"} class="sr-only">
+                    {dgettext("dialogs", "Job filter")}
+                  </label>
+                  <select
+                    id={"#{@id}-job-filter"}
+                    name="filter"
+                    class="bg-white px-retro-4 py-retro-2 text-xs shadow-retro-sunken"
+                  >
+                    <option
+                      :for={filter <- @filters}
+                      value={filter.id}
+                      selected={filter.id == @snapshot.job_filter}
+                    >
+                      {filter_label(filter)}
+                    </option>
+                  </select>
+                  <label for={"#{@id}-queue-filter"} class="sr-only">
+                    {dgettext("dialogs", "Queue filter")}
+                  </label>
+                  <input
+                    id={"#{@id}-queue-filter"}
+                    name="queue"
+                    value={@snapshot.job_queue_filter}
+                    placeholder={dgettext("dialogs", "Queue")}
+                    class="w-20 bg-white px-retro-4 py-retro-2 text-xs shadow-retro-sunken"
+                  />
+                  <label for={"#{@id}-worker-filter"} class="sr-only">
+                    {dgettext("dialogs", "Worker filter")}
+                  </label>
+                  <input
+                    id={"#{@id}-worker-filter"}
+                    name="worker"
+                    value={@snapshot.job_worker_filter}
+                    placeholder={dgettext("dialogs", "Worker")}
+                    class="w-32 bg-white px-retro-4 py-retro-2 text-xs shadow-retro-sunken"
+                  />
+                </form>
+              </.section_heading>
+
+              <.table_shell>
+                <.retro_table
+                  id={"#{@testid}-jobs-table"}
+                  table={@snapshot.jobs_table}
+                  testid={"#{@testid}-jobs-table"}
+                  truncate
+                  fit_pane
+                  empty_title={dgettext("dialogs", "No jobs matched this filter")}
+                />
+              </.table_shell>
+            </section>
+          </.tabs_content>
+
+          <.tabs_content
+            value="bots"
+            builder={builder}
+            class="space-y-retro-8"
+            role="tabpanel"
+            data-testid={"#{@testid}-tabpanel-bots"}
+          >
+            <section class="min-h-[220px]">
+              <.section_heading
+                icon={:icon_btn_bot_management}
+                label={dgettext("dialogs", "RSS feed coverage")}
+              />
+              <.table_shell>
+                <.retro_table
+                  id={"#{@testid}-rss-table"}
+                  table={@snapshot.rss_table}
+                  testid={"#{@testid}-rss-table"}
+                  truncate
+                  fit_pane
+                  empty_title={dgettext("dialogs", "No RSS feeds are configured")}
+                />
+              </.table_shell>
+            </section>
+
+            <section class="min-h-[220px]">
+              <.section_heading
+                icon={:icon_clock}
+                label={dgettext("dialogs", "Bot schedule coverage")}
+              />
+              <.table_shell>
+                <.retro_table
+                  id={"#{@testid}-bot-schedules-table"}
+                  table={@snapshot.bot_schedule_table}
+                  testid={"#{@testid}-bot-schedules-table"}
+                  truncate
+                  fit_pane
+                  empty_title={dgettext("dialogs", "No bot schedules are configured")}
+                />
+              </.table_shell>
+            </section>
+
+            <section class="min-h-[220px]">
+              <.section_heading
+                icon={:icon_notepad}
+                label={dgettext("dialogs", "Bot event log jobs")}
+              />
+              <.table_shell>
+                <.retro_table
+                  id={"#{@testid}-bot-event-logs-table"}
+                  table={@snapshot.bot_event_log_table}
+                  testid={"#{@testid}-bot-event-logs-table"}
+                  truncate
+                  fit_pane
+                  empty_title={dgettext("dialogs", "No bot event log jobs are pending")}
+                />
+              </.table_shell>
+            </section>
+          </.tabs_content>
+
+          <.tabs_content
+            value="maintenance"
+            builder={builder}
+            class="space-y-retro-8"
+            role="tabpanel"
+            data-testid={"#{@testid}-tabpanel-maintenance"}
+          >
+            <section class="min-h-[220px]">
+              <.section_heading icon={:icon_clock} label={dgettext("dialogs", "Maintenance sweeps")} />
+              <.table_shell>
+                <.retro_table
+                  id={"#{@testid}-maintenance-table"}
+                  table={@snapshot.maintenance_table}
+                  testid={"#{@testid}-maintenance-table"}
+                  truncate
+                  fit_pane
+                  empty_title={dgettext("dialogs", "No maintenance sweeps are configured")}
+                />
+              </.table_shell>
+            </section>
+          </.tabs_content>
+
+          <.tabs_content
+            value="previews"
+            builder={builder}
+            class="space-y-retro-8"
+            role="tabpanel"
+            data-testid={"#{@testid}-tabpanel-previews"}
+          >
+            <section class="min-h-[220px]">
+              <.section_heading icon={:icon_link} label={dgettext("dialogs", "Link preview cache")} />
+              <.table_shell>
+                <.retro_table
+                  id={"#{@testid}-link-preview-table"}
+                  table={@snapshot.scraped_page_table}
+                  testid={"#{@testid}-link-preview-table"}
+                  truncate
+                  fit_pane
+                  empty_title={dgettext("dialogs", "No link previews were cached")}
+                />
+              </.table_shell>
+            </section>
+
+            <section>
+              <.section_heading
+                icon={:icon_link}
+                label={dgettext("dialogs", "Where each field came from")}
+              />
+              <.table_shell>
+                <.retro_table
+                  id={"#{@testid}-scraper-provenance-table"}
+                  table={@snapshot.scraper_provenance_table}
+                  testid={"#{@testid}-scraper-provenance-table"}
+                  truncate
+                  fit_pane
+                  empty_title={dgettext("dialogs", "No pages have been read yet")}
+                />
+              </.table_shell>
+            </section>
+
+            <section>
+              <.section_heading icon={:icon_shield} label={dgettext("dialogs", "Why pages failed")} />
+              <.table_shell>
+                <.retro_table
+                  id={"#{@testid}-scraper-failure-table"}
+                  table={@snapshot.scraper_failure_table}
+                  testid={"#{@testid}-scraper-failure-table"}
+                  truncate
+                  fit_pane
+                  empty_title={dgettext("dialogs", "No page has failed to be read")}
+                />
+              </.table_shell>
+            </section>
+          </.tabs_content>
+
+          <.tabs_content
+            value="persistence"
+            builder={builder}
+            class="space-y-retro-8"
+            role="tabpanel"
+            data-testid={"#{@testid}-tabpanel-persistence"}
+          >
+            <section class="min-h-[220px]">
+              <.section_heading
+                icon={:icon_notepad}
+                label={dgettext("dialogs", "Preference persistence")}
+              />
+              <.table_shell>
+                <.retro_table
+                  id={"#{@testid}-persistence-table"}
+                  table={@snapshot.persistence_table}
+                  testid={"#{@testid}-persistence-table"}
+                  truncate
+                  fit_pane
+                  empty_title={dgettext("dialogs", "No preference saves are pending")}
+                />
+              </.table_shell>
+            </section>
+          </.tabs_content>
+        </.tabs>
+      <% else %>
+        <section class="shrink-0">
+          <.section_heading icon={:icon_status_signal} label={dgettext("dialogs", "Oban health")}>
+            <.refresh_button target={@target} on_refresh={@on_refresh} />
+          </.section_heading>
+        </section>
+
+        <div class="flex min-h-[260px] flex-1 items-center justify-center bg-white shadow-retro-sunken">
+          <.loading_spinner text={dgettext("dialogs", "Loading Oban health...")} />
+        </div>
+      <% end %>
     </div>
     """
   end
