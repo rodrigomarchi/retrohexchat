@@ -11,14 +11,13 @@ defmodule RetroHexChatWeb.WindowTitleFeatureTest do
     test "the active conversation names the window, the taskbar and the tab alike",
          %{conn: conn} do
       nick = "WT1#{uid()}"
-      {:ok, _view, html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, html} = live(chat_conn(conn, nick), "/chat")
 
       # Connecting auto-joins #lobby.
       title = "#lobby[#{nick}]"
 
-      # Window title bar (it carries the taskbar button's label too — the
-      # button reads the same string).
-      assert html =~ title
+      # Window title bar.
+      assert has_element?(view, ~s([data-window-id="chat"] [data-window-titlebar]), title)
       # Browser tab, handed to the hook that owns document.title.
       assert html =~ ~s(phx-hook="DocumentTitleHook")
       assert html =~ ~s(data-title="#{title}")
@@ -34,7 +33,7 @@ defmodule RetroHexChatWeb.WindowTitleFeatureTest do
 
       title = "#{channel}[#{nick}]"
 
-      assert html =~ title
+      assert has_element?(view, ~s([data-window-id="chat"] [data-window-titlebar]), title)
       assert html =~ ~s(data-title="#{title}")
       refute html =~ ~s(data-title="#lobby[#{nick}]")
     end
@@ -44,6 +43,12 @@ defmodule RetroHexChatWeb.WindowTitleFeatureTest do
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       html = render_click(view, "switch_tab", %{"type" => "status", "label" => "Status"})
+
+      assert has_element?(
+               view,
+               ~s([data-window-id="chat"] [data-window-titlebar]),
+               "Status[#{nick}]"
+             )
 
       assert html =~ ~s(data-title="Status[#{nick}]")
     end

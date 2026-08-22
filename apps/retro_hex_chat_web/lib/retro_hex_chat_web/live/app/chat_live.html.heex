@@ -57,7 +57,11 @@
           it is given and still fits a laptop. `WindowRegistry`'s geometry
           becomes the floor it never opens below. --%>
     <.desktop_window
-      {WindowRegistry.attrs("chat")}
+      {Map.put(
+        WindowRegistry.attrs("chat"),
+        :title,
+        ChatTitle.window_title(@session, @show_status_tab)
+      )}
       default_centered
       default_fill={0.86}
       body_class="flex flex-col min-h-0 p-0 overflow-hidden"
